@@ -18,26 +18,23 @@ namespace Solti.Utils.DI
 
     public sealed class Injector : IInjector
     {
-        private readonly ConcurrentDictionary<Type, InjectorEntry> mEntries = new ConcurrentDictionary<Type, InjectorEntry>();
+        private readonly ConcurrentDictionary<Type, InjectorEntry> FEntries = new ConcurrentDictionary<Type, InjectorEntry>();
 
-        private readonly ThreadLocal<ThreadContext> mContext = new ThreadLocal<ThreadContext>(() => new ThreadContext
+        private readonly ThreadLocal<ThreadContext> FContext = new ThreadLocal<ThreadContext>(() => new ThreadContext
         {
             CurrentPath = new Type[0]
         }, trackAllValues: false);
 
         public Injector()
         {
-            Factory(typeof(IInjector), (i, t) => this, Lifetime.Singleton);
+            Factory(typeof(IInjector), () => this, Lifetime.Singleton);
         }
 
         #region Helpers
-        private ThreadContext Context => mContext.Value;
+        private ThreadContext Context => FContext.Value;
 
         private InjectorEntry Service(Type iface, Type implementation, Lifetime lifetime)
         {
-            Check.NotNull(iface, nameof(iface));
-            Check.NotNull(implementation, nameof(implementation));
-
             if (!iface.IsInterface)
                 throw new ArgumentException(Resources.NOT_AN_INTERFACE, nameof(iface));
 
@@ -53,8 +50,7 @@ namespace Solti.Utils.DI
 
             IReadOnlyList<ConstructorInfo> constructors = implementation.GetConstructors();
             if (constructors.Count > 1)
-                throw new NotSupportedException(
-                    string.Format(Resources.CONSTRUCTOR_OVERLOADING_NOT_SUPPORTED, implementation));
+                throw new NotSupportedException(string.Format(Resources.CONSTRUCTOR_OVERLOADING_NOT_SUPPORTED, implementation));
 
             var entry = new InjectorEntry
             {
@@ -75,27 +71,17 @@ namespace Solti.Utils.DI
             // de azzal sincs gond).
             //
 
-            return mEntries.GetOrAdd(iface, entry);
+            return FEntries.GetOrAdd(iface, entry);
         }
 
-        private InjectorEntry Factory(Type iface, Func<IInjector, Type, object> factory, Lifetime lifetime)
+        private InjectorEntry Factory(Type iface, Func<object> factory, Lifetime lifetime)
         {
-            Check.NotNull(iface,   nameof(iface));
-            Check.NotNull(factory, nameof(factory));
-
             if (!iface.IsInterface)
                 throw new ArgumentException(Resources.NOT_AN_INTERFACE, nameof(iface));
 
-            return mEntries.GetOrAdd(iface, new InjectorEntry
+            return FEntries.GetOrAdd(iface, new InjectorEntry
             {
-                Factory = () =>
-                {
-                    object instance = factory(this, iface);
-                    if (!iface.IsInstanceOfType(instance))
-                        throw new Exception(string.Format(Resources.INVALID_TYPE, iface));
-
-                    return instance;
-                },
+                Factory   = factory,
                 Interface = iface,
                 Lifetime  = lifetime
             });
@@ -103,7 +89,7 @@ namespace Solti.Utils.DI
 
         private bool GetEntry(Type iface, out InjectorEntry entry)
         {
-            return mEntries.TryGetValue(iface, out entry);
+            return FEntries.TryGetValue(iface, out entry);
         }
 
         private Func<object> CreateFactory(ConstructorInfo constructor)
@@ -124,14 +110,12 @@ namespace Solti.Utils.DI
 
         private object Get(Type iface)
         {
-            Check.NotNull(iface, nameof(iface));
-
             IReadOnlyList<Type> oldPath = Context.CurrentPath;
             try
             {
                 //
-                // Miutan az aktualis utvonalat bovitettuk sajat magunkkal ellenorizzuk 
-                // h nincs e korkoros referencia.
+                // Miutan az utvonalat bovitettuk az aktualis interface-el a tipus csak 
+                // egyszer szerpelhet a listaban. Kulomben korkoros referencia.
                 //
 
                 IReadOnlyList<Type> currentPath = Context.CurrentPath = new List<Type>(oldPath) {iface};
@@ -161,12 +145,17 @@ namespace Solti.Utils.DI
                     //
 
                     if (entry.Factory == null)
+                    {
+#if DEBUG
+                        Debug.Assert(entry.Implementation.IsGenericTypeDefinition);
+#endif
                         //
                         // Regisztraljuk az uj konkret tipust. Nem gond ha parhuzamosan ide tobb szal
                         // is eljut, mert a regisztracio ugy is csak egyszer kerul be a rendszerbe.
                         //
 
                         entry = Service(iface, entry.Implementation.MakeGenericType(iface.GetGenericArguments()), entry.Lifetime);
+                    }
                 }
 #if DEBUG
                 Debug.Assert(entry.Factory != null);
@@ -179,11 +168,11 @@ namespace Solti.Utils.DI
                 if (entry.Lifetime == Lifetime.Singleton && entry.Value == null)
                     lock (entry)
                         if (entry.Value == null)
-                            entry.Value = entry.Factory();
+                            return entry.Value = entry.Factory();
 
                 //
-                // Elvileg jok vagyunk: Ha van "Value"-nk ("Singleton" es "__Self" tipus) akkor 
-                // visszaadjuk azt, kulomben legyartjuk az uj peldanyt.
+                // Elvileg jok vagyunk: Ha van "Value"-nk ("Singleton") akkor visszaadjuk azt, 
+                // kulomben legyartjuk az uj peldanyt.
                 //
 
                 return entry.Value ?? entry.Factory();
@@ -201,33 +190,31 @@ namespace Solti.Utils.DI
             // h a tipus mar tipizalva lett e v sem).
             //
 
-            if (iface.IsAssignableFrom(implementation)) return true;
+            if (iface.IsAssignableFrom(implementation))
+                return true;
 
             //
             // Innentol csak akkor kell tovabb mennunk ha mindket tipusunk generikus.
             //
 
-            if (!iface.IsGenericType || !implementation.IsGenericType) return false;
+            if (!iface.IsGenericType || !implementation.IsGenericType)
+                return false;
 
             //
             // "List<> -> IList<>"
             //
 
             if (iface.IsGenericTypeDefinition && implementation.IsGenericTypeDefinition)
-            {
                 return implementation.GetInterfaces().Where(i => i.IsGenericType).Any(i => i.GetGenericTypeDefinition() == iface);
-            }
 
             //
             // "List<T> -> IList<T>"
             //
 
             if (!iface.IsGenericTypeDefinition && !implementation.IsGenericTypeDefinition)
-            {
                 return 
                     iface.GetGenericArguments().SequenceEqual(implementation.GetGenericArguments()) &&
                     IsAssignableFrom(iface.GetGenericTypeDefinition(), implementation.GetGenericTypeDefinition());
-            }
 
             //
             // "List<T> -> IList<>", "List<> -> IList<T>"
@@ -240,7 +227,10 @@ namespace Solti.Utils.DI
         #region IInjector            
         IInjector IInjector.Service(Type iface, Type implementation, Lifetime lifetime)
         {
-            Service(iface, implementation, lifetime); // ellenorzi a parametereket
+            Check.NotNull(iface,          nameof(iface));
+            Check.NotNull(implementation, nameof(implementation));
+
+            Service(iface, implementation, lifetime);
             return this;
         }
 
@@ -252,13 +242,31 @@ namespace Solti.Utils.DI
 
         IInjector IInjector.Factory(Type iface, Func<IInjector, Type, object> factory, Lifetime lifetime)
         {
-            Factory(iface, factory, lifetime);
+            Check.NotNull(iface,   nameof(iface));
+            Check.NotNull(factory, nameof(factory));
+
+            Factory(iface, () =>
+            {
+                object instance = factory(this, iface);
+
+                //
+                // A letrhozott peldany tipusat ellenorizzuk.
+                //
+
+                if (!iface.IsInstanceOfType(instance))
+                    throw new Exception(string.Format(Resources.INVALID_TYPE, iface));
+
+                return instance;
+            }, lifetime);
+
             return this;
         }
 
         IInjector IInjector.Factory<TInterface>(Func<IInjector, TInterface> factory, Lifetime lifetime)
         {
-            Factory(typeof(TInterface), (me, @void) => factory(me), lifetime);
+            Check.NotNull(factory, nameof(factory));
+
+            Factory(typeof(TInterface), () => factory(this), lifetime);
             return this;
         }
 
@@ -274,7 +282,9 @@ namespace Solti.Utils.DI
 
         object IInjector.Get(Type iface)
         {
-            return Get(iface); // ellenorzi a parametert
+            Check.NotNull(iface, nameof(iface));
+
+            return Get(iface);
         }
 
         TInterface IInjector.Get<TInterface>()
@@ -285,7 +295,7 @@ namespace Solti.Utils.DI
 
         void IDisposable.Dispose()
         {
-            foreach (IDisposable disposable in mEntries
+            foreach (IDisposable disposable in FEntries
                 .Values
                 .Where(entry => entry.Lifetime == Lifetime.Singleton)
                 .Select(entry => entry.Value as IDisposable)
@@ -294,7 +304,7 @@ namespace Solti.Utils.DI
                     disposable.Dispose(); 
             }
 
-            mEntries.Clear(); 
+            FEntries.Clear(); 
         }
     }
 }
