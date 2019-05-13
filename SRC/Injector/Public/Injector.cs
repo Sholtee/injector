@@ -92,6 +92,35 @@ namespace Solti.Utils.DI
             return FEntries.TryGetValue(iface, out entry);
         }
 
+        private InjectorEntry GetEntry(Type iface)
+        {
+            InjectorEntry entry;
+            if (GetEntry(iface, out entry)) return entry;
+     
+            //
+            // Meg benne lehet generikus formaban.
+            //
+
+            if (!iface.IsGenericType || !GetEntry(iface.GetGenericTypeDefinition(), out entry))
+                throw new NotSupportedException(string.Format(Resources.DEPENDENCY_NOT_FOUND, iface));
+
+            //
+            // Ha a bejegyzesnek van kezzel felvett [Factory()] factory fv-e (akar generikusnak is)
+            // akkor nincs dolgunk.
+            //
+
+            if (entry.Factory != null) return entry;
+#if DEBUG
+            Debug.Assert(entry.Implementation.IsGenericTypeDefinition);
+#endif
+            //
+            // Regisztraljuk az uj konkret tipust. Nem gond ha parhuzamosan ide tobb szal
+            // is eljut, mert a regisztracio ugy is csak egyszer kerul be a rendszerbe.
+            //
+
+            return Service(iface, entry.Implementation.MakeGenericType(iface.GetGenericArguments()), entry.Lifetime);
+        }
+
         private Func<object> CreateFactory(ConstructorInfo constructor)
         { 
             return Expression.Lambda<Func<object>>
@@ -106,6 +135,30 @@ namespace Solti.Utils.DI
                     )
                 )
             ).Compile();     
+        }
+
+        private InjectorEntry Proxy(Type iface, Func<object, object> decorator)
+        {
+            if (!iface.IsInterface)
+                throw new ArgumentException(Resources.NOT_AN_INTERFACE, nameof(iface));
+
+            //
+            // Csak konkret tipusokat proxy-zhatunk.
+            //
+
+            if (iface.IsGenericTypeDefinition)
+                throw new InvalidOperationException(Resources.CANT_PROXY_GENERICS);
+
+            InjectorEntry entry = GetEntry(iface);
+
+            lock (entry) // igazabol ez nem is kene, de biztos ami tuti
+            {
+                Func<object> oldFactory = entry.Factory;
+
+                entry.Factory = () => decorator(oldFactory());
+            }
+
+            return entry;
         }
 
         private object Get(Type iface)
@@ -127,36 +180,9 @@ namespace Solti.Utils.DI
                 //
 
                 if (iface.IsGenericTypeDefinition)
-                    throw new InvalidOperationException(Resources.CANT_INSTANTIATE);
+                    throw new InvalidOperationException(Resources.CANT_INSTANTIATE_GENERICS);
 
-                InjectorEntry entry;
-                if (!GetEntry(iface, out entry))
-                {
-                    //
-                    // Meg benne lehet generikus formaban.
-                    //
-
-                    if (!iface.IsGenericType || !GetEntry(iface.GetGenericTypeDefinition(), out entry))
-                        throw new NotSupportedException(string.Format(Resources.DEPENDENCY_NOT_FOUND, iface));
-
-                    //
-                    // Ha a bejegyzesnek van kezzel felvett [Factory()] factory fv-e (akar generikusnak is)
-                    // akkor nincs dolgunk.
-                    //
-
-                    if (entry.Factory == null)
-                    {
-#if DEBUG
-                        Debug.Assert(entry.Implementation.IsGenericTypeDefinition);
-#endif
-                        //
-                        // Regisztraljuk az uj konkret tipust. Nem gond ha parhuzamosan ide tobb szal
-                        // is eljut, mert a regisztracio ugy is csak egyszer kerul be a rendszerbe.
-                        //
-
-                        entry = Service(iface, entry.Implementation.MakeGenericType(iface.GetGenericArguments()), entry.Lifetime);
-                    }
-                }
+                InjectorEntry entry = GetEntry(iface);
 #if DEBUG
                 Debug.Assert(entry.Factory != null);
 #endif
@@ -222,6 +248,23 @@ namespace Solti.Utils.DI
 
             return false;
         }
+
+        private Func<object> ConvertToTypeChecked(Func<object> factory, Type expectedType)
+        {
+            return () =>
+            {
+                object instance = factory();
+
+                //
+                // A letrhozott peldany tipusat ellenorizzuk.
+                //
+
+                if (!expectedType.IsInstanceOfType(instance))
+                    throw new Exception(string.Format(Resources.INVALID_TYPE, expectedType));
+
+                return instance;
+            };
+        }
         #endregion
 
         #region IInjector            
@@ -245,20 +288,7 @@ namespace Solti.Utils.DI
             Check.NotNull(iface,   nameof(iface));
             Check.NotNull(factory, nameof(factory));
 
-            Factory(iface, () =>
-            {
-                object instance = factory(this, iface);
-
-                //
-                // A letrhozott peldany tipusat ellenorizzuk.
-                //
-
-                if (!iface.IsInstanceOfType(instance))
-                    throw new Exception(string.Format(Resources.INVALID_TYPE, iface));
-
-                return instance;
-            }, lifetime);
-
+            Factory(iface, ConvertToTypeChecked(() => factory(this, iface), iface), lifetime);
             return this;
         }
 
@@ -270,14 +300,20 @@ namespace Solti.Utils.DI
             return this;
         }
 
-        IInjector IInjector.Proxy(Type iface, Func<IInjector, Type, object, object> factory)
+        IInjector IInjector.Proxy(Type iface, Func<IInjector, Type, object, object> decorator)
         {
+            Check.NotNull(iface,   nameof(iface));
+            Check.NotNull(decorator, nameof(decorator));
+
             throw new NotImplementedException();
         }
 
-        IInjector IInjector.Proxy<TInterface>(Func<IInjector, TInterface, TInterface> factory)
+        IInjector IInjector.Proxy<TInterface>(Func<IInjector, TInterface, TInterface> decorator)
         {
-            throw new NotImplementedException();
+            Check.NotNull(decorator, nameof(decorator));
+
+            Proxy(typeof(TInterface), current => decorator(this, (TInterface) current));
+            return this;
         }
 
         object IInjector.Get(Type iface)

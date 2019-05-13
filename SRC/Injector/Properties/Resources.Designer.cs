@@ -61,11 +61,20 @@ namespace Solti.Utils.DI.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Instantiating generic types are not allowed..
+        ///   Looks up a localized string similar to Instantiating open generic types are not allowed..
         /// </summary>
-        internal static string CANT_INSTANTIATE {
+        internal static string CANT_INSTANTIATE_GENERICS {
             get {
-                return ResourceManager.GetString("CANT_INSTANTIATE", resourceCulture);
+                return ResourceManager.GetString("CANT_INSTANTIATE_GENERICS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Can not create proxy on open generic type..
+        /// </summary>
+        internal static string CANT_PROXY_GENERICS {
+            get {
+                return ResourceManager.GetString("CANT_PROXY_GENERICS", resourceCulture);
             }
         }
         

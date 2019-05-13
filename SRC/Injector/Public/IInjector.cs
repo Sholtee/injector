@@ -34,12 +34,12 @@ namespace Solti.Utils.DI
         /// <summary>
         /// Hooks into the instantiating process.
         /// </summary>
-        IInjector Proxy([NotNull] Type iface, [NotNull] Func<IInjector, Type, object, object> factory);
+        IInjector Proxy([NotNull] Type iface, [NotNull] Func<IInjector, Type, object, object> decorator);
 
         /// <summary>
         /// Hooks into the instantiating process.
         /// </summary>
-        IInjector Proxy<TInterface>([NotNull] Func<IInjector, TInterface, TInterface> factory);
+        IInjector Proxy<TInterface>([NotNull] Func<IInjector, TInterface, TInterface> decorator);
 
         /// <summary>
         /// Resolves a dependency.
