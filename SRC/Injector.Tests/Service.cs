@@ -12,12 +12,11 @@ namespace Solti.Utils.DI.Tests
     {
         [TestCase(DependencyType.Transient)]
         [TestCase(DependencyType.Singleton)]
-        public void Injector_Service_ShouldHandleGenericTypes(object para)
+        public void Injector_Service_ShouldHandleGenericTypes(DependencyType type)
         {
-            DependencyType type = (DependencyType) para;
-
-            Injector.Service<IInterface_1, Implementation_1>();
-            Injector.Service(typeof(IInterface_3<>), typeof(Implementation_3<>), type);
+            Injector
+                .Service<IInterface_1, Implementation_1>()
+                .Service(typeof(IInterface_3<>), typeof(Implementation_3<>), type);
 
             var instance = Injector.Get<IInterface_3<int>>();
 
@@ -28,8 +27,9 @@ namespace Solti.Utils.DI.Tests
         [Test]
         public void Injector_Service_ShouldHandleClosedGenericTypes()
         {
-            Injector.Service<IInterface_1, Implementation_1>();
-            Injector.Service<IInterface_3<int>, Implementation_3<int>>();
+            Injector
+                .Service<IInterface_1, Implementation_1>()
+                .Service<IInterface_3<int>, Implementation_3<int>>();
 
             Assert.That(Injector.Get<IInterface_3<int>>(), Is.InstanceOf<Implementation_3<int>>());
         }

@@ -11,10 +11,8 @@ namespace Solti.Utils.DI.Tests
     {
         [TestCase(DependencyType.Transient)]
         [TestCase(DependencyType.Singleton)]
-        public void Injector_Get_ShouldInstantiate(object para)
+        public void Injector_Get_ShouldInstantiate(DependencyType type)
         {
-            DependencyType type = (DependencyType) para;
-
             Injector.Service<IInterface_1, Implementation_1>(type);
 
             var instance = Injector.Get<IInterface_1>();
@@ -32,8 +30,9 @@ namespace Solti.Utils.DI.Tests
         [Test]
         public void Injector_Get_ShouldResolveDependencies()
         {
-            Injector.Service<IInterface_2, Implementation_2>();
-            Injector.Service<IInterface_1, Implementation_1>(); // direkt masodikkent szerepel
+            Injector
+                .Service<IInterface_2, Implementation_2>()
+                .Service<IInterface_1, Implementation_1>(); // direkt masodikkent szerepel
 
             var instance = Injector.Get<IInterface_2>();
 
@@ -44,9 +43,10 @@ namespace Solti.Utils.DI.Tests
         [Test]
         public void Injector_Get_ShouldResolveGenericDependencies()
         {
-            Injector.Service<IInterface_1, Implementation_1>();
-            Injector.Service(typeof(IInterface_3<>), typeof(Implementation_3<>));
-            Injector.Service(typeof(IInterface_6<>), typeof(Implementation_6<>));
+            Injector
+                .Service<IInterface_1, Implementation_1>()
+                .Service(typeof(IInterface_3<>), typeof(Implementation_3<>))
+                .Service(typeof(IInterface_6<>), typeof(Implementation_6<>));
 
             var instance = Injector.Get<IInterface_6<string>>();
             
