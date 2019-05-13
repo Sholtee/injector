@@ -97,15 +97,6 @@ namespace Solti.Utils.DI.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Invalid dependency type..
-        /// </summary>
-        internal static string INVALID_DEPENDENCY_TYPE {
-            get {
-                return ResourceManager.GetString("INVALID_DEPENDENCY_TYPE", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to The returned object should be an instance of &quot;{0}&quot;..
         /// </summary>
         internal static string INVALID_TYPE {

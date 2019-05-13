@@ -129,9 +129,6 @@
   <data name="DEPENDENCY_NOT_FOUND" xml:space="preserve">
     <value>No registered implementation for "{0}".</value>
   </data>
-  <data name="INVALID_DEPENDENCY_TYPE" xml:space="preserve">
-    <value>Invalid dependency type.</value>
-  </data>
   <data name="INVALID_TYPE" xml:space="preserve">
     <value>The returned object should be an instance of "{0}".</value>
   </data>

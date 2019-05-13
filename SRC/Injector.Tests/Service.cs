@@ -10,18 +10,18 @@ namespace Solti.Utils.DI.Tests
     [TestFixture]
     public sealed partial class InjectorTests
     {
-        [TestCase(DependencyType.Transient)]
-        [TestCase(DependencyType.Singleton)]
-        public void Injector_Service_ShouldHandleGenericTypes(DependencyType type)
+        [TestCase(Lifetime.Transient)]
+        [TestCase(Lifetime.Singleton)]
+        public void Injector_Service_ShouldHandleGenericTypes(Lifetime lifetime)
         {
             Injector
                 .Service<IInterface_1, Implementation_1>()
-                .Service(typeof(IInterface_3<>), typeof(Implementation_3<>), type);
+                .Service(typeof(IInterface_3<>), typeof(Implementation_3<>), lifetime);
 
             var instance = Injector.Get<IInterface_3<int>>();
 
             Assert.That(instance, Is.InstanceOf<Implementation_3<int>>());
-            (type == DependencyType.Singleton ? Assert.AreSame : ((Action<object, object>) Assert.AreNotSame))(instance, Injector.Get<IInterface_3<int>>());
+            (lifetime == Lifetime.Singleton ? Assert.AreSame : ((Action<object, object>) Assert.AreNotSame))(instance, Injector.Get<IInterface_3<int>>());
         }
 
         [Test]

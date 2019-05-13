@@ -26,25 +26,17 @@ namespace Solti.Utils.DI
         }, trackAllValues: false);
 
         public Injector()
-        {    
-            mEntries.GetOrAdd(typeof(IInjector), new InjectorEntry
-            {
-                Interface = typeof(IInjector),
-                Type      = DependencyType.__Self,
-                Value     = this 
-            });
+        {
+            Factory(typeof(IInjector), (i, t) => this, Lifetime.Singleton);
         }
 
         #region Helpers
         private ThreadContext Context => mContext.Value;
 
-        private InjectorEntry Service(Type iface, Type implementation, DependencyType type)
+        private InjectorEntry Service(Type iface, Type implementation, Lifetime lifetime)
         {
             Check.NotNull(iface, nameof(iface));
             Check.NotNull(implementation, nameof(implementation));
-
-            if (type > DependencyType.Singleton)
-                throw new ArgumentException(Resources.INVALID_DEPENDENCY_TYPE, nameof(type));
 
             if (!iface.IsInterface)
                 throw new ArgumentException(Resources.NOT_AN_INTERFACE, nameof(iface));
@@ -68,7 +60,7 @@ namespace Solti.Utils.DI
             {
                 Interface      = iface,
                 Implementation = implementation,
-                Type           = type
+                Lifetime       = lifetime
             };
 
             //
@@ -86,13 +78,10 @@ namespace Solti.Utils.DI
             return mEntries.GetOrAdd(iface, entry);
         }
 
-        private InjectorEntry Factory(Type iface, Func<IInjector, Type, object> factory, DependencyType type)
+        private InjectorEntry Factory(Type iface, Func<IInjector, Type, object> factory, Lifetime lifetime)
         {
             Check.NotNull(iface,   nameof(iface));
             Check.NotNull(factory, nameof(factory));
-
-            if (type > DependencyType.Singleton)
-                throw new ArgumentException(Resources.INVALID_DEPENDENCY_TYPE, nameof(type));
 
             if (!iface.IsInterface)
                 throw new ArgumentException(Resources.NOT_AN_INTERFACE, nameof(iface));
@@ -108,7 +97,7 @@ namespace Solti.Utils.DI
                     return instance;
                 },
                 Interface = iface,
-                Type = type
+                Lifetime  = lifetime
             });
         }
 
@@ -177,7 +166,7 @@ namespace Solti.Utils.DI
                         // is eljut, mert a regisztracio ugy is csak egyszer kerul be a rendszerbe.
                         //
 
-                        entry = Service(iface, entry.Implementation.MakeGenericType(iface.GetGenericArguments()), entry.Type);
+                        entry = Service(iface, entry.Implementation.MakeGenericType(iface.GetGenericArguments()), entry.Lifetime);
                 }
 #if DEBUG
                 Debug.Assert(entry.Factory != null);
@@ -187,7 +176,7 @@ namespace Solti.Utils.DI
                 // gyartanunk a peldanyt.
                 //
 
-                if (entry.Type == DependencyType.Singleton && entry.Value == null)
+                if (entry.Lifetime == Lifetime.Singleton && entry.Value == null)
                     lock (entry)
                         if (entry.Value == null)
                             entry.Value = entry.Factory();
@@ -249,27 +238,27 @@ namespace Solti.Utils.DI
         #endregion
 
         #region IInjector            
-        IInjector IInjector.Service(Type iface, Type implementation, DependencyType type)
+        IInjector IInjector.Service(Type iface, Type implementation, Lifetime lifetime)
         {
-            Service(iface, implementation, type); // ellenorzi a parametereket
+            Service(iface, implementation, lifetime); // ellenorzi a parametereket
             return this;
         }
 
-        IInjector IInjector.Service<TInterface, TImplementation>(DependencyType type)
+        IInjector IInjector.Service<TInterface, TImplementation>(Lifetime lifetime)
         {
-            Service(typeof(TInterface), typeof(TImplementation), type);
+            Service(typeof(TInterface), typeof(TImplementation), lifetime);
             return this;
         }
 
-        IInjector IInjector.Factory(Type iface, Func<IInjector, Type, object> factory, DependencyType type)
+        IInjector IInjector.Factory(Type iface, Func<IInjector, Type, object> factory, Lifetime lifetime)
         {
-            Factory(iface, factory, type);
+            Factory(iface, factory, lifetime);
             return this;
         }
 
-        IInjector IInjector.Factory<TInterface>(Func<IInjector, TInterface> factory, DependencyType type)
+        IInjector IInjector.Factory<TInterface>(Func<IInjector, TInterface> factory, Lifetime lifetime)
         {
-            Factory(typeof(TInterface), (me, @void) => factory(me), type);
+            Factory(typeof(TInterface), (me, @void) => factory(me), lifetime);
             return this;
         }
 
@@ -298,9 +287,9 @@ namespace Solti.Utils.DI
         {
             foreach (IDisposable disposable in mEntries
                 .Values
-                .Where(entry => entry.Type == DependencyType.Singleton)
+                .Where(entry => entry.Lifetime == Lifetime.Singleton)
                 .Select(entry => entry.Value as IDisposable)
-                .Where(value => value != null))
+                .Where(value => value != null && !(value is IInjector)))
             {
                     disposable.Dispose(); 
             }

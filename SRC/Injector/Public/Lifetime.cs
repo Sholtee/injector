@@ -1,12 +1,12 @@
 /********************************************************************************
-* DependencyType.cs                                                             *
+* Lifetime.cs                                                                   *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 
 namespace Solti.Utils.DI
 {
-    public enum DependencyType
+    public enum Lifetime
     {
         /// <summary>
         /// Transient lifetime.
@@ -24,11 +24,6 @@ namespace Solti.Utils.DI
         /// - Services having singleton lifetime are created only once they are requested.
         /// - The system automatically frees them on IInjector.Dispose() call.
         /// </remarks>
-        Singleton,
-
-        /// <summary>
-        /// Internal, don't use.
-        /// </summary>
-        __Self
+        Singleton
     }
 }

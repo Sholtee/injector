@@ -7,16 +7,16 @@ namespace Solti.Utils.DI.Tests
     [TestFixture]
     public sealed partial class InjectorTests
     {
-        [TestCase(DependencyType.Transient)]
-        [TestCase(DependencyType.Singleton)]
-        public void Injector_Proxy_ShouldOverwriteTheFactoryFunction(DependencyType type)
+        [TestCase(Lifetime.Transient)]
+        [TestCase(Lifetime.Singleton)]
+        public void Injector_Proxy_ShouldOverwriteTheFactoryFunction(Lifetime lifetime)
         {
             int
                 callbackCallCount = 0,
                 typedCallbackCallCount = 0;
 
             Injector
-                .Service<IInterface_1, Implementation_1>(type)
+                .Service<IInterface_1, Implementation_1>(lifetime)
                 .Proxy(typeof(IInterface_1), (injector, t, inst) =>
                 {
                     Assert.AreSame(injector, Injector);
@@ -41,7 +41,7 @@ namespace Solti.Utils.DI.Tests
             Assert.That(typedCallbackCallCount, Is.EqualTo(1));
             Assert.That(callbackCallCount, Is.EqualTo(1));
 
-            (type == DependencyType.Singleton ? Assert.AreSame : ((Action<object, object>) Assert.AreNotSame))(instance, Injector.Get<IInterface_1>());
+            (lifetime == Lifetime.Singleton ? Assert.AreSame : ((Action<object, object>) Assert.AreNotSame))(instance, Injector.Get<IInterface_1>());
         }
 
         [Test]

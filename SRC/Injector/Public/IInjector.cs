@@ -14,22 +14,22 @@ namespace Solti.Utils.DI
         /// <summary>
         /// Registers a new service with the given type.
         /// </summary>
-        IInjector Service([NotNull] Type iface, [NotNull] Type implementation, DependencyType type = DependencyType.Transient);
+        IInjector Service([NotNull] Type iface, [NotNull] Type implementation, Lifetime lifetime = Lifetime.Transient);
 
         /// <summary>
         /// Registers a new service with the given type.
         /// </summary>
-        IInjector Service<TInterface, TImplementation>(DependencyType type = DependencyType.Transient);
+        IInjector Service<TInterface, TImplementation>(Lifetime lifetime = Lifetime.Transient);
 
         /// <summary>
         /// Registers a new service factory with the given type.
         /// </summary>
-        IInjector Factory([NotNull] Type iface, [NotNull] Func<IInjector, Type, object> factory, DependencyType type = DependencyType.Transient);
+        IInjector Factory([NotNull] Type iface, [NotNull] Func<IInjector, Type, object> factory, Lifetime lifetime = Lifetime.Transient);
 
         /// <summary>
         /// Registers a new service factory with the given type.
         /// </summary>
-        IInjector Factory<TInterface>([NotNull] Func<IInjector, TInterface> factory, DependencyType type = DependencyType.Transient);
+        IInjector Factory<TInterface>([NotNull] Func<IInjector, TInterface> factory, Lifetime lifetime = Lifetime.Transient);
 
         /// <summary>
         /// Hooks into the instantiating process.
