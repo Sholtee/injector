@@ -7,13 +7,21 @@ using System;
 
 using JetBrains.Annotations;
 
-namespace Solti.Utils.Injector
+namespace Solti.Utils.DI
 {
     public interface IInjector: IDisposable
     {
-        IDecorator Register([NotNull] Type iface, [NotNull] Type implementation, DependencyType type = DependencyType.Transient);
+        IInjector Service([NotNull] Type iface, [NotNull] Type implementation, DependencyType type = DependencyType.Transient);
 
-        IDecorator<TInterface> Register<TInterface, TImplementation>(DependencyType type = DependencyType.Transient);
+        IInjector Service<TInterface, TImplementation>(DependencyType type = DependencyType.Transient);
+
+        IInjector Factory([NotNull] Type iface, [NotNull] Func<IInjector, Type, object> factory, DependencyType type = DependencyType.Transient);
+
+        IInjector Factory<TInterface>([NotNull] Func<IInjector, TInterface> factory, DependencyType type = DependencyType.Transient);
+
+        IInjector Proxy([NotNull] Type iface, [NotNull] Func<IInjector, Type, object, object> factory);
+
+        IInjector Proxy<TInterface>([NotNull] Func<IInjector, TInterface, TInterface> factory);
 
         /// <summary>
         /// Resolves a dependency (thread safe).

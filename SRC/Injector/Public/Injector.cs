@@ -6,11 +6,13 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Threading;
 
-namespace Solti.Utils.Injector
+namespace Solti.Utils.DI
 {
     using Properties;
 
@@ -18,18 +20,29 @@ namespace Solti.Utils.Injector
     {
         private readonly ConcurrentDictionary<Type, InjectorEntry> mEntries = new ConcurrentDictionary<Type, InjectorEntry>();
 
-        public Injector()
+        private readonly ThreadLocal<ThreadContext> mContext = new ThreadLocal<ThreadContext>(() => new ThreadContext
         {
+            CurrentPath = new Type[0]
+        }, trackAllValues: false);
+
+        public Injector()
+        {    
             mEntries.GetOrAdd(typeof(IInjector), new InjectorEntry
             {
                 Interface = typeof(IInjector),
                 Type      = DependencyType.Self,
-                Factory   = @void => this
+                Factory   = () => this
             });
         }
 
         #region Helpers
-        private InjectorEntry Register(Type iface, Type implementation, DependencyType type)
+        private ThreadContext Context
+        {
+            get => mContext.Value;
+            set => mContext.Value = value;
+        }
+
+        private InjectorEntry Service(Type iface, Type implementation, DependencyType type)
         {
             Check.NotNull(iface, nameof(iface));
             Check.NotNull(implementation, nameof(implementation));
@@ -52,30 +65,57 @@ namespace Solti.Utils.Injector
 
             IReadOnlyList<ConstructorInfo> constructors = implementation.GetConstructors();
             if (constructors.Count > 1)
-                throw new NotSupportedException(string.Format(Resources.CONSTRUCTOR_OVERLOADING_NOT_SUPPORTED, implementation));
+                throw new NotSupportedException(
+                    string.Format(Resources.CONSTRUCTOR_OVERLOADING_NOT_SUPPORTED, implementation));
 
             //
             // Bejegyzes felvetele (szal biztos).
             //
 
-            return mEntries.GetOrAdd(iface, @void => iface.IsGenericTypeDefinition
+            return mEntries.GetOrAdd(iface, @void =>
+            {
+                var entry = new InjectorEntry
+                {
+                    Interface      = iface,
+                    Implementation = implementation,
+                    Type           = type
+                };
+
                 //
                 // Ha generikus interface-t regisztralunk akkor nem kell (nem is lehet) 
                 // legyartani a factory-t.
                 //
 
-                ? new InjectorEntry
+                if (!iface.IsGenericTypeDefinition) entry.Factory = CreateFactory(constructors[0]); // idoigenyes
+
+                return entry;
+            });
+        }
+
+        private InjectorEntry Factory(Type iface, Func<IInjector, Type, object> factory, DependencyType type)
+        {
+            Check.NotNull(iface,   nameof(iface));
+            Check.NotNull(factory, nameof(factory));
+
+            if (type > DependencyType.Singleton)
+                throw new ArgumentException(Resources.INVALID_DEPENDENCY_TYPE, nameof(type));
+
+            if (!iface.IsInterface)
+                throw new ArgumentException(Resources.NOT_AN_INTERFACE, nameof(iface));
+
+            return mEntries.GetOrAdd(iface, new InjectorEntry
+            {
+                Factory = () =>
                 {
-                    Interface             = iface,
-                    GenericImplementation = implementation,
-                    Type                  = type
-                }
-                : new InjectorEntry
-                {
-                    Interface = iface,
-                    Factory   = CreateFactory(constructors[0]), // idoigenyes
-                    Type      = type
-                });
+                    object instance = factory(this, iface);
+                    if (!iface.IsInstanceOfType(instance))
+                        throw new Exception(string.Format(Resources.INVALID_TYPE, iface));
+
+                    return instance;
+                },
+                Interface = iface,
+                Type = type
+            });
         }
 
         private bool GetEntry(Type iface, out InjectorEntry entry)
@@ -83,72 +123,89 @@ namespace Solti.Utils.Injector
             return mEntries.TryGetValue(iface, out entry);
         }
 
-        private Func<IReadOnlyList<Type>, object> CreateFactory(ConstructorInfo constructor)
+        private Func<object> CreateFactory(ConstructorInfo constructor)
         { 
-            ParameterExpression currentPath = Expression.Parameter(typeof(IReadOnlyList<Type>), "currentPath");
-
-            return Expression.Lambda<Func<IReadOnlyList<Type>, object>>
+            return Expression.Lambda<Func<object>>
             (
                 Expression.New
                 (
                     constructor,
                     constructor.GetParameters().Select(para => Expression.Convert
                     (
-                        Expression.Call(Expression.Constant(this), ((Func<Type, IReadOnlyList<Type>, object>) (Get)).Method, Expression.Constant(para.ParameterType), currentPath), 
+                        Expression.Call(Expression.Constant(this), ((Func<Type, object>) (Get)).Method, Expression.Constant(para.ParameterType)), 
                         para.ParameterType)
                     )
-                ),
-                currentPath
+                )
             ).Compile();     
         }
 
-        private object Get(Type iface, IReadOnlyList<Type> currentPath)
+        private object Get(Type iface)
         {
-            //
-            // Miutana az aktualis utvonalat bovitettuk sajat magunkkal ellenorizzuk 
-            // h nincs e korkoros referencia.
-            //
-
-            currentPath = new List<Type>(currentPath) {iface};
-            if (currentPath.Count(t => t == iface) > 1)
-                throw new InvalidOperationException(string.Format(Resources.CIRCULAR_REFERENCE, string.Join(" -> ", currentPath)));
-
-            InjectorEntry entry;
-            if (!GetEntry(iface, out entry))
+            IReadOnlyList<Type> oldPath = Context.CurrentPath;
+            try
             {
                 //
-                // Meg benne lehet generikus formaban.
+                // Miutan az aktualis utvonalat bovitettuk sajat magunkkal ellenorizzuk 
+                // h nincs e korkoros referencia.
                 //
 
-                if (!iface.IsGenericType || !GetEntry(iface.GetGenericTypeDefinition(), out entry))
-                    throw new NotSupportedException(string.Format(Resources.DEPENDENCY_NOT_FOUND, iface));
+                IReadOnlyList<Type> currentPath = Context.CurrentPath = new List<Type>(oldPath) {iface};
+                if (currentPath.Count(t => t == iface) > 1)
+                    throw new InvalidOperationException(string.Format(Resources.CIRCULAR_REFERENCE, string.Join(" -> ", currentPath)));
 
                 //
-                // Regisztraljuk az uj konkret tipust. Nem gond ha parhuzamosan ide tobb szal
-                // is eljut, mert a regisztracio ugy is csak egyszer kerul be a rendszerbe.
+                // Generikus tipusokat nem lehet peldanyositani.
                 //
 
-                entry = Register(iface, entry.GenericImplementation.MakeGenericType(iface.GetGenericArguments()), entry.Type);
-            }
+                if (iface.IsGenericTypeDefinition)
+                    throw new InvalidOperationException(Resources.CANT_INSTANTIATE);
 
-            if (entry.GenericImplementation != null)
-                throw new InvalidOperationException(Resources.CANT_INSTANTIATE);
-
-            if (entry.Type == DependencyType.Singleton)
-            {
-                lock (entry)
+                InjectorEntry entry;
+                if (!GetEntry(iface, out entry))
                 {
-                    if (entry.Type == DependencyType.Singleton)
-                    {
-                        object instance = entry.Factory(currentPath);
+                    //
+                    // Meg benne lehet generikus formaban.
+                    //
 
-                        entry.Factory = @void => instance;
-                        entry.Type = DependencyType.InstantiatedSingleton;
+                    if (!iface.IsGenericType || !GetEntry(iface.GetGenericTypeDefinition(), out entry))
+                        throw new NotSupportedException(string.Format(Resources.DEPENDENCY_NOT_FOUND, iface));
+
+                    //
+                    // Ha a bejegyzesnek van kezzel felvett [Factory()] factory fv-e (akar generikusnak is)
+                    // akkor nincs dolgunk.
+                    //
+
+                    if (entry.Factory == null)
+                        //
+                        // Regisztraljuk az uj konkret tipust. Nem gond ha parhuzamosan ide tobb szal
+                        // is eljut, mert a regisztracio ugy is csak egyszer kerul be a rendszerbe.
+                        //
+
+                        entry = Service(iface, entry.Implementation.MakeGenericType(iface.GetGenericArguments()), entry.Type);
+                }
+#if DEBUG
+                Debug.Assert(entry.Factory != null);
+#endif
+                if (entry.Type == DependencyType.Singleton)
+                {
+                    lock (entry)
+                    {
+                        if (entry.Type == DependencyType.Singleton)
+                        {
+                            object instance = entry.Factory();
+
+                            entry.Factory = () => instance;
+                            entry.Type = DependencyType.InstantiatedSingleton;
+                        }
                     }
                 }
-            }
 
-            return entry.Factory(currentPath);
+                return entry.Factory();
+            }
+            finally
+            {
+                Context.CurrentPath = oldPath;
+            }
         }
 
         private static bool IsAssignableFrom(Type iface, Type implementation)
@@ -194,34 +251,58 @@ namespace Solti.Utils.Injector
         }
         #endregion
 
-        IDecorator IInjector.Register(Type iface, Type implementation, DependencyType type)
+        #region IInjector            
+        IInjector IInjector.Service(Type iface, Type implementation, DependencyType type)
         {
-            return new Decorator(Register(iface, implementation, type));
+            throw new NotImplementedException();
         }
 
-        IDecorator<TInterface> IInjector.Register<TInterface, TImplementation>(DependencyType type)
+        IInjector IInjector.Service<TInterface, TImplementation>(DependencyType type)
         {
-            return new Decorator<TInterface>(Register(typeof(TInterface), typeof(TImplementation), type));
+            throw new NotImplementedException();
+        }
+
+        IInjector IInjector.Factory(Type iface, Func<IInjector, Type, object> factory, DependencyType type)
+        {
+            Factory(iface, factory, type);
+            return this;
+        }
+
+        IInjector IInjector.Factory<TInterface>(Func<IInjector, TInterface> factory, DependencyType type)
+        {
+            Factory(typeof(TInterface), (me, @void) => factory(me), type);
+            return this;
+        }
+
+        IInjector IInjector.Proxy(Type iface, Func<IInjector, Type, object, object> factory)
+        {
+            throw new NotImplementedException();
+        }
+
+        IInjector IInjector.Proxy<TInterface>(Func<IInjector, TInterface, TInterface> factory)
+        {
+            throw new NotImplementedException();
         }
 
         object IInjector.Get(Type iface)
         {
             Check.NotNull(iface, nameof(iface));
 
-            return Get(iface, new Type[0]);
+            return Get(iface);
         }
 
         TInterface IInjector.Get<TInterface>()
         {
-            return (TInterface) Get(typeof(TInterface), new Type[0]);
+            return (TInterface) Get(typeof(TInterface));
         }
+        #endregion
 
         void IDisposable.Dispose()
         {
             foreach (IDisposable disposable in mEntries
                 .Values
                 .Where(entry => entry.Type == DependencyType.InstantiatedSingleton)
-                .Select(entry => entry.Factory(null) as IDisposable)
+                .Select(entry => entry.Factory() as IDisposable)
                 .Where(value => value != null))
             {
                     disposable.Dispose(); 

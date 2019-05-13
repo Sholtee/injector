@@ -1,17 +1,15 @@
 ﻿/********************************************************************************
-* Check.cs                                                                      *
+* ThreadContext.cs                                                              *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Collections.Generic;
 
 namespace Solti.Utils.DI
 {
-    internal static class Check
+    internal sealed class ThreadContext
     {
-        public static void NotNull(object member, string name)
-        {
-            if (member == null) throw new ArgumentNullException(name);
-        }
+        public IReadOnlyList<Type> CurrentPath { get; set; }
     }
 }

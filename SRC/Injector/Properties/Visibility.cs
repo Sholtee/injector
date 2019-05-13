@@ -5,4 +5,4 @@
 ********************************************************************************/
 using System.Runtime.CompilerServices;
 
-[assembly: InternalsVisibleTo("Solti.Utils.Injector.Tests")]
+[assembly: InternalsVisibleTo("Solti.Injector.Tests")]

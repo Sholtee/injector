@@ -2,8 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <AssemblyName>Solti.Utils.Injector.Tests</AssemblyName>
-    <RootNamespace>Solti.Utils.Injector.Tests</RootNamespace>
+    <AssemblyName>Solti.Injector.Tests</AssemblyName>
+    <RootNamespace>Solti.Utils.DI.Tests</RootNamespace>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

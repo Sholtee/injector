@@ -132,6 +132,9 @@
   <data name="INVALID_DEPENDENCY_TYPE" xml:space="preserve">
     <value>Invalid dependency type.</value>
   </data>
+  <data name="INVALID_TYPE" xml:space="preserve">
+    <value>The returned object should be instance of {0}.</value>
+  </data>
   <data name="NOT_AN_INTERFACE" xml:space="preserve">
     <value>Parameter must be an interface.</value>
   </data>

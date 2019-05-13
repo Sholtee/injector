@@ -4,7 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 
-namespace Solti.Utils.Injector
+namespace Solti.Utils.DI
 {
     public enum DependencyType
     {

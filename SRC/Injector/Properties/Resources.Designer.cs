@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Solti.Utils.Injector.Properties {
+namespace Solti.Utils.DI.Properties {
     using System;
     
     
@@ -102,6 +102,15 @@ namespace Solti.Utils.Injector.Properties {
         internal static string INVALID_DEPENDENCY_TYPE {
             get {
                 return ResourceManager.GetString("INVALID_DEPENDENCY_TYPE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The returned object should be instance of {0}..
+        /// </summary>
+        internal static string INVALID_TYPE {
+            get {
+                return ResourceManager.GetString("INVALID_TYPE", resourceCulture);
             }
         }
         

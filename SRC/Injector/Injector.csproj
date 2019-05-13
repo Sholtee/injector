@@ -5,8 +5,8 @@
     <Company>Solti</Company>
     <Authors>Denes Solti</Authors>
     <Version>0.0.1</Version>
-    <AssemblyName>Solti.Utils.Injector</AssemblyName>
-    <RootNamespace>Solti.Utils.Injector</RootNamespace>
+    <AssemblyName>Solti.Injector</AssemblyName>
+    <RootNamespace>Solti.Utils.DI</RootNamespace>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
