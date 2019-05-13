@@ -30,17 +30,13 @@ namespace Solti.Utils.DI
             mEntries.GetOrAdd(typeof(IInjector), new InjectorEntry
             {
                 Interface = typeof(IInjector),
-                Type      = DependencyType.Self,
+                Type      = DependencyType.__Self,
                 Factory   = () => this
             });
         }
 
         #region Helpers
-        private ThreadContext Context
-        {
-            get => mContext.Value;
-            set => mContext.Value = value;
-        }
+        private ThreadContext Context => mContext.Value;
 
         private InjectorEntry Service(Type iface, Type implementation, DependencyType type)
         {
@@ -68,28 +64,26 @@ namespace Solti.Utils.DI
                 throw new NotSupportedException(
                     string.Format(Resources.CONSTRUCTOR_OVERLOADING_NOT_SUPPORTED, implementation));
 
-            //
-            // Bejegyzes felvetele (szal biztos).
-            //
-
-            return mEntries.GetOrAdd(iface, @void =>
+            var entry = new InjectorEntry
             {
-                var entry = new InjectorEntry
-                {
-                    Interface      = iface,
-                    Implementation = implementation,
-                    Type           = type
-                };
+                Interface      = iface,
+                Implementation = implementation,
+                Type           = type
+            };
 
-                //
-                // Ha generikus interface-t regisztralunk akkor nem kell (nem is lehet) 
-                // legyartani a factory-t.
-                //
+            //
+            // Ha generikus interface-t regisztralunk akkor nem kell (nem is lehet) 
+            // legyartani a factory-t.
+            //
 
-                if (!iface.IsGenericTypeDefinition) entry.Factory = CreateFactory(constructors[0]); // idoigenyes
+            if (!iface.IsGenericTypeDefinition) entry.Factory = CreateFactory(constructors[0]); // idoigenyes
 
-                return entry;
-            });
+            //
+            // Bejegyzes felvetele (szal biztos -> lehet egy korabbi hivas bejegyzeset adja vissza
+            // de azzal sincs gond).
+            //
+
+            return mEntries.GetOrAdd(iface, entry);
         }
 
         private InjectorEntry Factory(Type iface, Func<IInjector, Type, object> factory, DependencyType type)
@@ -141,6 +135,8 @@ namespace Solti.Utils.DI
 
         private object Get(Type iface)
         {
+            Check.NotNull(iface, nameof(iface));
+
             IReadOnlyList<Type> oldPath = Context.CurrentPath;
             try
             {
@@ -195,7 +191,7 @@ namespace Solti.Utils.DI
                             object instance = entry.Factory();
 
                             entry.Factory = () => instance;
-                            entry.Type = DependencyType.InstantiatedSingleton;
+                            entry.Type = DependencyType.__InstantiatedSingleton;
                         }
                     }
                 }
@@ -254,12 +250,14 @@ namespace Solti.Utils.DI
         #region IInjector            
         IInjector IInjector.Service(Type iface, Type implementation, DependencyType type)
         {
-            throw new NotImplementedException();
+            Service(iface, implementation, type); // ellenorzi a parametereket
+            return this;
         }
 
         IInjector IInjector.Service<TInterface, TImplementation>(DependencyType type)
         {
-            throw new NotImplementedException();
+            Service(typeof(TInterface), typeof(TImplementation), type);
+            return this;
         }
 
         IInjector IInjector.Factory(Type iface, Func<IInjector, Type, object> factory, DependencyType type)
@@ -286,9 +284,7 @@ namespace Solti.Utils.DI
 
         object IInjector.Get(Type iface)
         {
-            Check.NotNull(iface, nameof(iface));
-
-            return Get(iface);
+            return Get(iface); // ellenorzi a parametert
         }
 
         TInterface IInjector.Get<TInterface>()
@@ -301,7 +297,7 @@ namespace Solti.Utils.DI
         {
             foreach (IDisposable disposable in mEntries
                 .Values
-                .Where(entry => entry.Type == DependencyType.InstantiatedSingleton)
+                .Where(entry => entry.Type == DependencyType.__InstantiatedSingleton)
                 .Select(entry => entry.Factory() as IDisposable)
                 .Where(value => value != null))
             {
