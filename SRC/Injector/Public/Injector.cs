@@ -31,7 +31,7 @@ namespace Solti.Utils.DI
             {
                 Interface = typeof(IInjector),
                 Type      = DependencyType.__Self,
-                Factory   = () => this
+                Value     = this 
             });
         }
 
@@ -182,21 +182,22 @@ namespace Solti.Utils.DI
 #if DEBUG
                 Debug.Assert(entry.Factory != null);
 #endif
-                if (entry.Type == DependencyType.Singleton)
-                {
+                //
+                // Ha singleton eletciklusunk van akkor ha meg eddig nem volt akkor le kell 
+                // gyartanunk a peldanyt.
+                //
+
+                if (entry.Type == DependencyType.Singleton && entry.Value == null)
                     lock (entry)
-                    {
-                        if (entry.Type == DependencyType.Singleton)
-                        {
-                            object instance = entry.Factory();
+                        if (entry.Value == null)
+                            entry.Value = entry.Factory();
 
-                            entry.Factory = () => instance;
-                            entry.Type = DependencyType.__InstantiatedSingleton;
-                        }
-                    }
-                }
+                //
+                // Elvileg jok vagyunk: Ha van "Value"-nk ("Singleton" es "__Self" tipus) akkor 
+                // visszaadjuk azt, kulomben legyartjuk az uj peldanyt.
+                //
 
-                return entry.Factory();
+                return entry.Value ?? entry.Factory();
             }
             finally
             {
@@ -297,8 +298,8 @@ namespace Solti.Utils.DI
         {
             foreach (IDisposable disposable in mEntries
                 .Values
-                .Where(entry => entry.Type == DependencyType.__InstantiatedSingleton)
-                .Select(entry => entry.Factory() as IDisposable)
+                .Where(entry => entry.Type == DependencyType.Singleton)
+                .Select(entry => entry.Value as IDisposable)
                 .Where(value => value != null))
             {
                     disposable.Dispose(); 

@@ -13,5 +13,6 @@ namespace Solti.Utils.DI
         public DependencyType Type { get; set; }
         public Type Interface { get; set; }
         public Type Implementation { get; set; }
+        public object Value { get; set; }
     }
 }

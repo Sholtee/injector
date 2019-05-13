@@ -29,11 +29,6 @@ namespace Solti.Utils.DI
         /// <summary>
         /// Internal, don't use.
         /// </summary>
-        __InstantiatedSingleton,
-
-        /// <summary>
-        /// Internal, don't use.
-        /// </summary>
         __Self
     }
 }
