@@ -76,10 +76,10 @@ namespace Solti.Utils.DI
                 (
                     constructor,
                     constructor.GetParameters().Select(para => Expression.Convert
-                        (
-                            Expression.Call(Expression.Constant(this), ((Func<Type, object>)(Get)).Method, Expression.Constant(para.ParameterType)),
-                            para.ParameterType)
-                    )
+                    (
+                        Expression.Call(Expression.Constant(this), ((Func<Type, object>) (Get)).Method, Expression.Constant(para.ParameterType)),
+                        para.ParameterType
+                    ))
                 )
             ).Compile();
         }
@@ -89,7 +89,7 @@ namespace Solti.Utils.DI
             return FEntries.TryGetValue(iface, out entry);
         }
 
-        private Func<object> ConvertToTypeChecked(Func<object> factory, Type expectedType)
+        private static Func<object> ConvertToTypeChecked(Func<object> factory, Type expectedType)
         {
             return () =>
             {
