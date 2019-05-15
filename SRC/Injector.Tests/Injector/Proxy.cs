@@ -4,6 +4,8 @@ using NUnit.Framework;
 
 namespace Solti.Utils.DI.Tests
 {
+    using Properties;
+
     [TestFixture]
     public sealed partial class InjectorTests
     {
@@ -12,8 +14,8 @@ namespace Solti.Utils.DI.Tests
         public void Injector_Proxy_ShouldOverwriteTheFactoryFunction(Lifetime lifetime)
         {
             int
-                callbackCallCount = 0,
-                typedCallbackCallCount = 0;
+                callCount_1 = 0,
+                callCount_2 = 0;
 
             Injector
                 .Service<IInterface_1, Implementation_1>(lifetime)
@@ -23,23 +25,23 @@ namespace Solti.Utils.DI.Tests
                     Assert.That(t, Is.EqualTo(typeof(IInterface_1)));
                     Assert.That(inst, Is.InstanceOf<Implementation_1>());
 
-                    typedCallbackCallCount++;
+                    callCount_1++;
                     return inst;
                 })
                 .Proxy<IInterface_1>((injector, inst) =>
                 {
                     Assert.AreSame(injector, Injector);
                     Assert.That(inst, Is.TypeOf<Implementation_1>());
-                    
-                    callbackCallCount++;
+
+                    callCount_2++;
                     return new DecoratedImplementation_1();
                 });
 
             var instance = Injector.Get<IInterface_1>();
             
             Assert.That(instance, Is.InstanceOf<DecoratedImplementation_1>());
-            Assert.That(typedCallbackCallCount, Is.EqualTo(1));
-            Assert.That(callbackCallCount, Is.EqualTo(1));
+            Assert.That(callCount_1, Is.EqualTo(1));
+            Assert.That(callCount_2, Is.EqualTo(1));
 
             (lifetime == Lifetime.Singleton ? Assert.AreSame : ((Action<object, object>) Assert.AreNotSame))(instance, Injector.Get<IInterface_1>());
         }
@@ -47,24 +49,42 @@ namespace Solti.Utils.DI.Tests
         [Test]
         public void Injector_Proxy_ShouldWorkWithGenericTypes()
         {
-            int callbackCallCount = 0;
+            int callCount = 0;
 
             Injector
                 .Service(typeof(IInterface_3<>), typeof(Implementation_3<>))
-                .Proxy(typeof(IInterface_3<>), (injector, type, inst) =>
+                .Proxy(typeof(IInterface_3<int>), (injector, type, inst) =>
                 {
                     Assert.AreSame(injector, Injector);
                     Assert.AreSame(type, typeof(IInterface_3<int>));
                     Assert.That(inst, Is.InstanceOf<Implementation_3<int>>());
 
-                    callbackCallCount++;
+                    callCount++;
                     return new DecoratedImplementation_3<int>();
                 });
 
             var instance = Injector.Get<IInterface_3<int>>();
             
             Assert.That(instance, Is.InstanceOf<DecoratedImplementation_3<int>>());
-            Assert.That(callbackCallCount, Is.EqualTo(1));
+            Assert.That(callCount, Is.EqualTo(1));
+        }
+
+        [Test]
+        public void Injector_Proxy_ShouldThrowOnOpenGenericParameter()
+        {
+            Injector.Service(typeof(IInterface_3<>), typeof(Implementation_3<>));
+
+            Assert.Throws<InvalidOperationException>(() => Injector.Proxy(typeof(IInterface_3<>), (injector, type, inst) => inst), Resources.CANT_PROXY_GENERICS);
+        }
+
+        [Test]
+        public void Injector_Proxy_ShouldBeTypeChecked()
+        {
+            Injector
+                .Service<IInterface_1, Implementation_1>()
+                .Proxy(typeof(IInterface_1), (injector, type, inst) => new object());
+
+            Assert.Throws<Exception>(() => Injector.Get<IInterface_1>(), string.Format(Resources.INVALID_TYPE, typeof(IInterface_1)));
         }
     }
 }

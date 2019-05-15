@@ -97,7 +97,7 @@ namespace Solti.Utils.DI.Tests
         }
 
         [Test]
-        public void Injector_GetProxy_ShouldThrowOnCircularReference()
+        public void Injector_GetByProxy_ShouldThrowOnCircularReference()
         {
             Injector
                 .Service<IInterface_1, Implementation_1>()
