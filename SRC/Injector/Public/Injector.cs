@@ -343,6 +343,29 @@ namespace Solti.Utils.DI
         {
             return (TInterface) Get(typeof(TInterface));
         }
+
+        IInjector IInjector.CreateChild()
+        {
+            var child = new Injector();
+
+            //
+            // Vegig a szulo osszes eddig regisztralt bejegyzesen (szal biztos).
+            //
+
+            foreach (InjectorEntry entry in FEntries.Values)
+            {
+                if (entry.Factory != null)
+                    child.Factory(entry.Interface, entry.Factory,        entry.Lifetime);
+                else
+                    child.Service(entry.Interface, entry.Implementation, entry.Lifetime);
+
+                //
+                // entry.Value direkt nem kerul masolasra, hogy az ertekek keruljenek ujra legyartasra.
+                //
+            }
+
+            return child;
+        }
         #endregion
 
         #region IDisposable

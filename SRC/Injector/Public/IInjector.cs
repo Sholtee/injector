@@ -52,5 +52,10 @@ namespace Solti.Utils.DI
         /// </summary>
         /// <remarks>You can call it from different threads, parallelly.</remarks>
         TInterface Get<TInterface>();
+
+        /// <summary>
+        /// Creates a child injector that inherits all the entries of its parent.
+        /// </summary>
+        IInjector CreateChild();
     }
 }
