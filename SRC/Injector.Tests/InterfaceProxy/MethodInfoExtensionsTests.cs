@@ -49,7 +49,8 @@ namespace Solti.Utils.InterfaceProxy.Tests
     
             Assert.That(MethodInfoExtensions.MethodRegistered(toString.Method));
             Assert.That(MethodInfoExtensions.MethodRegistered(((Func<string>) (CICA).ToString).Method));
-            Assert.That(MethodInfoExtensions.MethodRegistered(typeof(string).GetMethod("toString")));
+            Assert.That(MethodInfoExtensions.MethodRegistered(typeof(string).GetMethod("ToString", new Type[0])));
+            Assert.That(MethodInfoExtensions.MethodRegistered(typeof(object).GetMethod("ToString")), Is.False);
         }
     }
 }
