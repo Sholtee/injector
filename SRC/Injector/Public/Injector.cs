@@ -94,23 +94,6 @@ namespace Solti.Utils.DI
         {
             return FEntries.TryGetValue(iface, out entry);
         }
-
-        private static Func<Type, object> ConvertToTypeChecked(Func<Type, object> factory)
-        {
-            return type =>
-            {
-                object instance = factory(type);
-
-                //
-                // A letrhozott peldany tipusat ellenorizzuk.
-                //
-
-                if (!type.IsInstanceOfType(instance))
-                    throw new Exception(string.Format(Resources.INVALID_TYPE, type));
-
-                return instance;
-            };
-        }
         #endregion
 
         #region Internal
@@ -292,7 +275,21 @@ namespace Solti.Utils.DI
             Check.NotNull(iface,   nameof(iface));
             Check.NotNull(factory, nameof(factory));
 
-            Factory(iface, ConvertToTypeChecked(type => factory(this, type)), lifetime);
+            Func<Type, object> typeChecked = type =>
+            {
+                object instance = factory(this, type);
+
+                //
+                // A letrhozott peldany tipusat ellenorizzuk.
+                //
+
+                if (!type.IsInstanceOfType(instance))
+                    throw new Exception(string.Format(Resources.INVALID_TYPE, type));
+
+                return instance;
+            };
+
+            Factory(iface, typeChecked, lifetime);
             return this;
         }
 
@@ -309,7 +306,22 @@ namespace Solti.Utils.DI
             Check.NotNull(iface,     nameof(iface));
             Check.NotNull(decorator, nameof(decorator));
 
-            throw new NotImplementedException();
+            Func<object, object> typeChecked = inst =>
+            {
+                inst = decorator(this, iface, inst);
+
+                //
+                // A letrhozott peldany tipusat ellenorizzuk.
+                //
+
+                if (!iface.IsInstanceOfType(inst))
+                    throw new Exception(string.Format(Resources.INVALID_TYPE, iface));
+
+                return inst;
+            };
+
+            Proxy(iface, typeChecked);
+            return this;
         }
 
         IInjector IInjector.Proxy<TInterface>(Func<IInjector, TInterface, TInterface> decorator)
