@@ -68,9 +68,9 @@ namespace Solti.Utils.DI
             return false;
         }
 
-        private Func<object> CreateFactory(ConstructorInfo constructor)
+        private Func<Type, object> CreateFactory(ConstructorInfo constructor)
         {
-            return Expression.Lambda<Func<object>>
+            return Expression.Lambda<Func<Type, object>>
             (
                 Expression.New
                 (
@@ -80,7 +80,13 @@ namespace Solti.Utils.DI
                         Expression.Call(Expression.Constant(this), ((Func<Type, object>) (Get)).Method, Expression.Constant(para.ParameterType)),
                         para.ParameterType
                     ))
-                )
+                ),
+
+                //
+                // Csak azert kell h a legyartott factory layout-ja stimmeljen.
+                //
+
+                Expression.Parameter(typeof(Type), "type")
             ).Compile();
         }
 
@@ -89,18 +95,18 @@ namespace Solti.Utils.DI
             return FEntries.TryGetValue(iface, out entry);
         }
 
-        private static Func<object> ConvertToTypeChecked(Func<object> factory, Type expectedType)
+        private static Func<Type, object> ConvertToTypeChecked(Func<Type, object> factory)
         {
-            return () =>
+            return type =>
             {
-                object instance = factory();
+                object instance = factory(type);
 
                 //
                 // A letrhozott peldany tipusat ellenorizzuk.
                 //
 
-                if (!expectedType.IsInstanceOfType(instance))
-                    throw new Exception(string.Format(Resources.INVALID_TYPE, expectedType));
+                if (!type.IsInstanceOfType(instance))
+                    throw new Exception(string.Format(Resources.INVALID_TYPE, type));
 
                 return instance;
             };
@@ -147,7 +153,7 @@ namespace Solti.Utils.DI
             });
         }
 
-        internal InjectorEntry Factory(Type iface, Func<object> factory, Lifetime lifetime)
+        internal InjectorEntry Factory(Type iface, Func<Type, object> factory, Lifetime lifetime)
         {
             if (!iface.IsInterface)
                 throw new ArgumentException(Resources.NOT_AN_INTERFACE, nameof(iface));
@@ -205,9 +211,9 @@ namespace Solti.Utils.DI
 
             lock (entry) // igazabol ez nem is kene, de biztos ami tuti
             {
-                Func<object> oldFactory = entry.Factory;
+                Func<Type, object> oldFactory = entry.Factory;
 
-                entry.Factory = () => decorator(oldFactory());
+                entry.Factory = type => decorator(oldFactory(type));
             }
 
             return entry;
@@ -246,14 +252,17 @@ namespace Solti.Utils.DI
                 if (entry.Lifetime == Lifetime.Singleton && entry.Value == null)
                     lock (entry)
                         if (entry.Value == null)
-                            return entry.Value = entry.Factory();
+                            return entry.Value = entry.Factory(iface);
 
                 //
                 // Elvileg jok vagyunk: Ha van "Value"-nk ("Singleton") akkor visszaadjuk azt, 
                 // kulomben legyartjuk az uj peldanyt.
                 //
+                // Megjegyzes: 
+                //   Ne az "entry.Interface"-t adjuk at parameterkent mert az lehet h generikus.
+                //
 
-                return entry.Value ?? entry.Factory();
+                return entry.Value ?? entry.Factory(iface);
             }
             finally
             {
@@ -283,7 +292,7 @@ namespace Solti.Utils.DI
             Check.NotNull(iface,   nameof(iface));
             Check.NotNull(factory, nameof(factory));
 
-            Factory(iface, ConvertToTypeChecked(() => factory(this, iface), iface), lifetime);
+            Factory(iface, ConvertToTypeChecked(type => factory(this, type)), lifetime);
             return this;
         }
 
@@ -291,13 +300,13 @@ namespace Solti.Utils.DI
         {
             Check.NotNull(factory, nameof(factory));
 
-            Factory(typeof(TInterface), () => factory(this), lifetime);
+            Factory(typeof(TInterface), type => factory(this), lifetime);
             return this;
         }
 
         IInjector IInjector.Proxy(Type iface, Func<IInjector, Type, object, object> decorator)
         {
-            Check.NotNull(iface,   nameof(iface));
+            Check.NotNull(iface,     nameof(iface));
             Check.NotNull(decorator, nameof(decorator));
 
             throw new NotImplementedException();
@@ -342,7 +351,7 @@ namespace Solti.Utils.DI
 
         public Injector()
         {
-            Factory(typeof(IInjector), () => this, Lifetime.Singleton);
+            Factory(typeof(IInjector), type => this, Lifetime.Singleton);
         }
     }
 }

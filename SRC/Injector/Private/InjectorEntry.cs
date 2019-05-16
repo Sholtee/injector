@@ -10,7 +10,7 @@ namespace Solti.Utils.DI
 {
     internal sealed class InjectorEntry
     {
-        public Func<object> Factory { get; set; }
+        public Func<Type, object> Factory { get; set; }
         public Lifetime Lifetime { get; set; }
         [NotNull]
         public Type Interface { get; set; }
