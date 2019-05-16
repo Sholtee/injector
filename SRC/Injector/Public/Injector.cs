@@ -178,7 +178,7 @@ namespace Solti.Utils.DI
             return Service(iface, entry.Implementation.MakeGenericType(iface.GetGenericArguments()), entry.Lifetime);
         }
 
-        internal InjectorEntry Proxy(Type iface, Func<object, object> decorator)
+        internal InjectorEntry Proxy(Type iface, Func<Type, object, object> decorator)
         {
             if (!iface.IsInterface)
                 throw new ArgumentException(Resources.NOT_AN_INTERFACE, nameof(iface));
@@ -196,7 +196,7 @@ namespace Solti.Utils.DI
             {
                 Func<Type, object> oldFactory = entry.Factory;
 
-                entry.Factory = type => decorator(oldFactory(type));
+                entry.Factory = type => decorator(type, oldFactory(type));
             }
 
             return entry;
@@ -306,16 +306,16 @@ namespace Solti.Utils.DI
             Check.NotNull(iface,     nameof(iface));
             Check.NotNull(decorator, nameof(decorator));
 
-            Func<object, object> typeChecked = inst =>
+            Func<Type, object, object> typeChecked = (type, inst) =>
             {
-                inst = decorator(this, iface, inst);
+                inst = decorator(this, type, inst);
 
                 //
-                // A letrhozott peldany tipusat ellenorizzuk.
+                // A letrhozott peldany tipusat ellenorizzuk. 
                 //
 
-                if (!iface.IsInstanceOfType(inst))
-                    throw new Exception(string.Format(Resources.INVALID_TYPE, iface));
+                if (!type.IsInstanceOfType(inst))
+                    throw new Exception(string.Format(Resources.INVALID_TYPE, type));
 
                 return inst;
             };
@@ -328,7 +328,7 @@ namespace Solti.Utils.DI
         {
             Check.NotNull(decorator, nameof(decorator));
 
-            Proxy(typeof(TInterface), current => decorator(this, (TInterface) current));
+            Proxy(typeof(TInterface), (type, current) => decorator(this, (TInterface) current));
             return this;
         }
 

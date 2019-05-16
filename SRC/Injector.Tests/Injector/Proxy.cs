@@ -52,6 +52,7 @@ namespace Solti.Utils.DI.Tests
             int callCount = 0;
 
             Injector
+                .Service<IInterface_1, Implementation_1>()
                 .Service(typeof(IInterface_3<>), typeof(Implementation_3<>))
                 .Proxy(typeof(IInterface_3<int>), (injector, type, inst) =>
                 {
