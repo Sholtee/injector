@@ -15,11 +15,16 @@ namespace Solti.Utils.DI
 {
     internal static class MethodInfoExtensions
     {
-        private static readonly ConcurrentDictionary<MethodInfo, Func<object, object[], object>> FInvocation = new ConcurrentDictionary<MethodInfo, Func<object, object[], object>>(); 
+        private static readonly ConcurrentDictionary<MethodInfo, Func<object, object[], object>> FCache = new ConcurrentDictionary<MethodInfo, Func<object, object[], object>>();
+
+        public static bool MethodRegistered([NotNull] MethodInfo method)
+        {
+            return FCache.ContainsKey(method);
+        }
 
         public static object FastInvoke([NotNull] this MethodInfo method, [NotNull] object target, [NotNull] params object[] args)
         {
-            Func<object, object[], object> invoke = FInvocation.GetOrAdd(method, @void =>
+            Func<object, object[], object> invoke = FCache.GetOrAdd(method, @void =>
             {
                 ParameterExpression
                     instance = Expression.Parameter(typeof(object),   "instance"),

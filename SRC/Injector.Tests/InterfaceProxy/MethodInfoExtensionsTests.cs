@@ -1,8 +1,10 @@
 ﻿using System;
 using NUnit.Framework;
 
-namespace Solti.Utils.DI.Tests.InterfaceProxy
+namespace Solti.Utils.InterfaceProxy.Tests
 {
+    using DI;
+
     [TestFixture]
     public sealed class MethodInfoExtensionsTests
     {
@@ -37,6 +39,17 @@ namespace Solti.Utils.DI.Tests.InterfaceProxy
 
             object ret = indexOf.Method.FastInvoke(CICA, "a");
             Assert.That(ret, Is.EqualTo(3));
+        }
+
+        [Test]
+        public void FastInvoke_ShouldCache()
+        {
+            Func<string> toString = CICA.ToString;
+            toString.Method.FastInvoke(CICA);
+    
+            Assert.That(MethodInfoExtensions.MethodRegistered(toString.Method));
+            Assert.That(MethodInfoExtensions.MethodRegistered(((Func<string>) (CICA).ToString).Method));
+            Assert.That(MethodInfoExtensions.MethodRegistered(typeof(string).GetMethod("toString")));
         }
     }
 }
