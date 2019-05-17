@@ -10,7 +10,7 @@ namespace Solti.Utils.DI.Tests
     public sealed partial class InjectorTests
     {
         [Test]
-        public void Injector_ChildShouldInheritParentEntries()
+        public void Injector_ChildShouldInheritTheParentEntries()
         {
             IInjector child = Injector
                 .Service<IInterface_1, Implementation_1>()
@@ -23,7 +23,7 @@ namespace Solti.Utils.DI.Tests
         }
 
         [Test]
-        public void Injector_ChildShouldInheritProxies()
+        public void Injector_ChildShouldInheritTheProxies()
         {
             IInjector child = Injector
                 .Service<IInterface_1, Implementation_1>()

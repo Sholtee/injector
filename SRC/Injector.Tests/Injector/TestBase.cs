@@ -10,7 +10,7 @@ namespace Solti.Utils.DI.Tests
         [SetUp]
         public void SetupTest()
         {
-            Injector = new Injector();
+            Injector = DI.Injector.Create();
         }
 
         private interface IInterface_1

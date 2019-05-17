@@ -28,6 +28,8 @@ namespace Solti.Utils.DI
 
         private ThreadContext Context => FContext.Value;
 
+        private Injector() { }
+
         private static bool IsAssignableFrom(Type iface, Type implementation)
         {
             //
@@ -257,9 +259,6 @@ namespace Solti.Utils.DI
         #region IInjector            
         IInjector IInjector.Service(Type iface, Type implementation, Lifetime lifetime)
         {
-            Check.NotNull(iface,          nameof(iface));
-            Check.NotNull(implementation, nameof(implementation));
-
             Service(iface, implementation, lifetime);
             return this;
         }
@@ -272,9 +271,6 @@ namespace Solti.Utils.DI
 
         IInjector IInjector.Factory(Type iface, Func<IInjector, Type, object> factory, Lifetime lifetime)
         {
-            Check.NotNull(iface,   nameof(iface));
-            Check.NotNull(factory, nameof(factory));
-
             Func<Type, object> typeChecked = type =>
             {
                 object instance = factory(this, type);
@@ -295,17 +291,12 @@ namespace Solti.Utils.DI
 
         IInjector IInjector.Factory<TInterface>(Func<IInjector, TInterface> factory, Lifetime lifetime)
         {
-            Check.NotNull(factory, nameof(factory));
-
             Factory(typeof(TInterface), type => factory(this), lifetime);
             return this;
         }
 
         IInjector IInjector.Proxy(Type iface, Func<IInjector, Type, object, object> decorator)
         {
-            Check.NotNull(iface,     nameof(iface));
-            Check.NotNull(decorator, nameof(decorator));
-
             Func<Type, object, object> typeChecked = (type, inst) =>
             {
                 inst = decorator(this, type, inst);
@@ -326,16 +317,12 @@ namespace Solti.Utils.DI
 
         IInjector IInjector.Proxy<TInterface>(Func<IInjector, TInterface, TInterface> decorator)
         {
-            Check.NotNull(decorator, nameof(decorator));
-
             Proxy(typeof(TInterface), (type, current) => decorator(this, (TInterface) current));
             return this;
         }
 
         object IInjector.Get(Type iface)
         {
-            Check.NotNull(iface, nameof(iface));
-
             return Get(iface);
         }
 
@@ -346,7 +333,7 @@ namespace Solti.Utils.DI
 
         IInjector IInjector.CreateChild()
         {
-            var child = new Injector();
+            IInjector child = Create();
 
             //
             // Vegig a szulo osszes eddig regisztralt bejegyzesen (szal biztos).
@@ -355,7 +342,7 @@ namespace Solti.Utils.DI
             foreach (InjectorEntry entry in FEntries.Values)
             {
                 if (entry.Factory != null)
-                    child.Factory(entry.Interface, entry.Factory,        entry.Lifetime);
+                    child.Factory(entry.Interface, (m, t) => entry.Factory(t), entry.Lifetime);
                 else
                     child.Service(entry.Interface, entry.Implementation, entry.Lifetime);
 
@@ -384,9 +371,14 @@ namespace Solti.Utils.DI
         }
         #endregion
 
-        public Injector()
+        public static IInjector Create()
         {
-            Factory(typeof(IInjector), type => this, Lifetime.Singleton);
+            IInjector result = new Injector();
+
+            return result
+                .Factory<IInjector>(me => me, Lifetime.Singleton)
+                .Proxy<IInjector>((type, me) => new ParameterValidator<IInjector>(me).Target)
+                .Get<IInjector>();
         }
     }
 }
