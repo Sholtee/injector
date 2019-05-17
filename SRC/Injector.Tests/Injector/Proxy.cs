@@ -75,7 +75,7 @@ namespace Solti.Utils.DI.Tests
         {
             Injector.Service(typeof(IInterface_3<>), typeof(Implementation_3<>));
 
-            Assert.Throws<InvalidOperationException>(() => Injector.Proxy(typeof(IInterface_3<>), (injector, type, inst) => inst), Resources.CANT_PROXY_GENERICS);
+            Assert.Throws<InvalidOperationException>(() => Injector.Proxy(typeof(IInterface_3<>), (injector, type, inst) => inst), Resources.CANT_PROXY);
         }
 
         [Test]

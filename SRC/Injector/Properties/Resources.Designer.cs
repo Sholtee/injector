@@ -70,11 +70,11 @@ namespace Solti.Utils.DI.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Can not create proxy on open generic type..
+        ///   Looks up a localized string similar to Creating proxy is not allowed here..
         /// </summary>
-        internal static string CANT_PROXY_GENERICS {
+        internal static string CANT_PROXY {
             get {
-                return ResourceManager.GetString("CANT_PROXY_GENERICS", resourceCulture);
+                return ResourceManager.GetString("CANT_PROXY", resourceCulture);
             }
         }
         

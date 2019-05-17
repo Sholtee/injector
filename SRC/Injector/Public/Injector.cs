@@ -28,6 +28,8 @@ namespace Solti.Utils.DI
 
         private ThreadContext Context => FContext.Value;
 
+        private IInjector Self => (IInjector) Get(typeof(IInjector));
+
         private Injector() { }
 
         private static bool IsAssignableFrom(Type iface, Type implementation)
@@ -99,7 +101,7 @@ namespace Solti.Utils.DI
         #endregion
 
         #region Internal
-        internal InjectorEntry Service(Type iface, Type implementation, Lifetime lifetime)
+        internal InjectorEntry Service(Type iface, Type implementation, Lifetime? lifetime)
         {
             if (!iface.IsInterface)
                 throw new ArgumentException(Resources.NOT_AN_INTERFACE, nameof(iface));
@@ -138,7 +140,7 @@ namespace Solti.Utils.DI
             });
         }
 
-        internal InjectorEntry Factory(Type iface, Func<Type, object> factory, Lifetime lifetime)
+        internal InjectorEntry Factory(Type iface, Func<Type, object> factory, Lifetime? lifetime)
         {
             if (!iface.IsInterface)
                 throw new ArgumentException(Resources.NOT_AN_INTERFACE, nameof(iface));
@@ -170,7 +172,8 @@ namespace Solti.Utils.DI
 
             if (entry.Factory != null) return entry;
 #if DEBUG
-            Debug.Assert(entry.Implementation.IsGenericTypeDefinition);
+            Debug.Assert(entry.Implementation.IsGenericTypeDefinition, "Not a generic type definition");
+            Debug.Assert(entry.Lifetime.HasValue, "Lifetime is NULL");
 #endif
             //
             // Regisztraljuk az uj konkret tipust. Nem gond ha parhuzamosan ide tobb szal
@@ -186,13 +189,12 @@ namespace Solti.Utils.DI
                 throw new ArgumentException(Resources.NOT_AN_INTERFACE, nameof(iface));
 
             //
-            // Csak konkret tipusokat proxy-zhatunk.
+            // Instance() hivassal felvett ertek vagy generikus szerviz eseten a metodus nem ertelmezett.
             //
 
-            if (iface.IsGenericTypeDefinition)
-                throw new InvalidOperationException(Resources.CANT_PROXY_GENERICS);
-
             InjectorEntry entry = GetEntry(iface);
+            if (entry.Factory == null)
+                throw new InvalidOperationException(Resources.CANT_PROXY);
 
             lock (entry) // igazabol ez nem is kene, de biztos ami tuti
             {
@@ -202,6 +204,23 @@ namespace Solti.Utils.DI
             }
 
             return entry;
+        }
+
+        internal InjectorEntry Instance(Type iface, object instance)
+        {
+            if (!iface.IsInterface)
+                throw new ArgumentException(Resources.NOT_AN_INTERFACE, nameof(iface));
+
+            Type instanceType = instance.GetType();
+
+            if (!IsAssignableFrom(iface, instanceType))
+                throw new InvalidOperationException(string.Format(Resources.NOT_ASSIGNABLE, iface, instanceType));
+
+            return FEntries.GetOrAdd(iface, new InjectorEntry
+            {
+                Interface = iface,
+                Value     = instance
+            });
         }
 
         internal object Get(Type iface)
@@ -256,24 +275,29 @@ namespace Solti.Utils.DI
         }
         #endregion
 
-        #region IInjector            
+        #region IInjector   
+        //
+        // Ebben a regioban CSAK explicit interface implementaciok legyenek, hogy a 
+        // hook-ok mindig meghivasra keruljenek.
+        //
+
         IInjector IInjector.Service(Type iface, Type implementation, Lifetime lifetime)
         {
             Service(iface, implementation, lifetime);
-            return this;
+            return Self;
         }
 
         IInjector IInjector.Service<TInterface, TImplementation>(Lifetime lifetime)
         {
             Service(typeof(TInterface), typeof(TImplementation), lifetime);
-            return this;
+            return Self;
         }
 
         IInjector IInjector.Factory(Type iface, Func<IInjector, Type, object> factory, Lifetime lifetime)
         {
             object TypeChecked(Type type)
             {
-                object instance = factory(this, type);
+                object instance = factory(Self, type);
 
                 //
                 // A letrhozott peldany tipusat ellenorizzuk.
@@ -286,20 +310,32 @@ namespace Solti.Utils.DI
             }
 
             Factory(iface, TypeChecked, lifetime);
-            return this;
+            return Self;
         }
 
         IInjector IInjector.Factory<TInterface>(Func<IInjector, TInterface> factory, Lifetime lifetime)
         {
-            Factory(typeof(TInterface), type => factory(this), lifetime);
-            return this;
+            Factory(typeof(TInterface), type => factory(Self), lifetime);
+            return Self;
+        }
+
+        IInjector IInjector.Instance(Type iface, object instance)
+        {
+            Instance(iface, instance);
+            return Self;
+        }
+
+        IInjector IInjector.Instance<TInterface>(TInterface instance)
+        {
+            Instance(typeof(TInterface), instance);
+            return Self;
         }
 
         IInjector IInjector.Proxy(Type iface, Func<IInjector, Type, object, object> decorator)
         {
             object TypeChecked(Type type, object inst)
             {
-                inst = decorator(this, type, inst);
+                inst = decorator(Self, type, inst);
 
                 //
                 // A letrhozott peldany tipusat ellenorizzuk. 
@@ -312,13 +348,13 @@ namespace Solti.Utils.DI
             }
 
             Proxy(iface, TypeChecked);
-            return this;
+            return Self;
         }
 
         IInjector IInjector.Proxy<TInterface>(Func<IInjector, TInterface, TInterface> decorator)
         {
-            Proxy(typeof(TInterface), (type, current) => decorator(this, (TInterface) current));
-            return this;
+            Proxy(typeof(TInterface), (type, current) => decorator(Self, (TInterface) current));
+            return Self;
         }
 
         object IInjector.Get(Type iface)
@@ -333,7 +369,7 @@ namespace Solti.Utils.DI
 
         IInjector IInjector.CreateChild()
         {
-            IInjector child = Create();
+            Injector child = (Injector) Create();
 
             //
             // Vegig a szulo osszes eddig regisztralt bejegyzesen (szal biztos).
@@ -342,7 +378,7 @@ namespace Solti.Utils.DI
             foreach (InjectorEntry entry in FEntries.Values)
             {
                 if (entry.Factory != null)
-                    child.Factory(entry.Interface, (m, t) => entry.Factory(t), entry.Lifetime);
+                    child.Factory(entry.Interface, entry.Factory, entry.Lifetime);
                 else
                     child.Service(entry.Interface, entry.Implementation, entry.Lifetime);
 
@@ -362,7 +398,7 @@ namespace Solti.Utils.DI
                 .Values
                 .Where(entry => entry.Lifetime == Lifetime.Singleton)
                 .Select(entry => entry.Value as IDisposable)
-                .Where(value => value != null && !(value is IInjector)))
+                .Where(value => value != null))
             {
                     disposable.Dispose(); 
             }
@@ -373,12 +409,10 @@ namespace Solti.Utils.DI
 
         public static IInjector Create()
         {
-            IInjector result = new Injector();
+            IInjector result = new ParameterValidator<IInjector>(new Injector()).Target;
+            result.Instance(result);
 
-            return result
-                .Factory<IInjector>(me => me, Lifetime.Singleton)
-                .Proxy<IInjector>((type, me) => new ParameterValidator<IInjector>(me).Target)
-                .Get<IInjector>();
+            return result;
         }
     }
 }

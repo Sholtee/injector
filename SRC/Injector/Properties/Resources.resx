@@ -120,8 +120,8 @@
   <data name="CANT_INSTANTIATE_GENERICS" xml:space="preserve">
     <value>Instantiating open generic types are not allowed.</value>
   </data>
-  <data name="CANT_PROXY_GENERICS" xml:space="preserve">
-    <value>Can not create proxy on open generic type.</value>
+  <data name="CANT_PROXY" xml:space="preserve">
+    <value>Creating proxy is not allowed here.</value>
   </data>
   <data name="CIRCULAR_REFERENCE" xml:space="preserve">
     <value>Circular reference: {0}.</value>

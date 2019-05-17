@@ -42,6 +42,16 @@ namespace Solti.Utils.DI
         IInjector Proxy<TInterface>([NotNull] Func<IInjector, TInterface, TInterface> decorator);
 
         /// <summary>
+        /// Registers a pre-created instance.
+        /// </summary>
+        IInjector Instance([NotNull] Type iface, [NotNull] object instance);
+
+        /// <summary>
+        /// Registers a pre-created instance.
+        /// </summary>
+        IInjector Instance<TInterface>([NotNull] TInterface instance);
+
+        /// <summary>
         /// Resolves a dependency.
         /// </summary>
         /// <remarks>You can call it from different threads, parallelly.</remarks>
