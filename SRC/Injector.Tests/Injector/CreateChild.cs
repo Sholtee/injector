@@ -61,5 +61,15 @@ namespace Solti.Utils.DI.Tests
             Assert.AreSame(child.Get<IInterface_1>(), child.Get<IInterface_1>());
             Assert.AreNotSame(Injector.Get<IInterface_1>(), child.Get<IInterface_1>());
         }
+
+        [Test]
+        public void Injector_ChildShouldResolveItself()
+        {
+            IInjector child = Injector.CreateChild();
+
+            Assert.AreSame(Injector, Injector.Get<IInjector>());
+            Assert.AreSame(child, child.Get<IInjector>());
+            Assert.AreNotSame(Injector, child);
+        }
     }
 }
