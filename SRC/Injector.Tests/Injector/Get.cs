@@ -9,6 +9,13 @@ namespace Solti.Utils.DI.Tests
     [TestFixture]
     public sealed partial class InjectorTests
     {
+        [Test]
+        public void Injector_Get_ShouldThrowOnNonInterfaceKey()
+        {
+            Assert.Throws<ArgumentException>(() => Injector.Get<Object>(), string.Format(Resources.NOT_AN_INTERFACE, "iface"));
+            Assert.Throws<ArgumentException>(() => Injector.Get(typeof(Object)), string.Format(Resources.NOT_AN_INTERFACE, "iface"));
+        }
+
         [TestCase(Lifetime.Transient)]
         [TestCase(Lifetime.Singleton)]
         public void Injector_Get_ShouldInstantiate(Lifetime lifetime)

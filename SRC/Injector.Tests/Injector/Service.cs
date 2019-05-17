@@ -10,6 +10,13 @@ namespace Solti.Utils.DI.Tests
     [TestFixture]
     public sealed partial class InjectorTests
     {
+        [Test]
+        public void Injector_Service_ShouldThrowOnNonInterfaceKey()
+        {
+            Assert.Throws<ArgumentException>(() => Injector.Service<Object, Object>(), string.Format(Resources.NOT_AN_INTERFACE, "iface"));
+            Assert.Throws<ArgumentException>(() => Injector.Service(typeof(Object), typeof(Object)), string.Format(Resources.NOT_AN_INTERFACE, "iface"));
+        }
+
         [TestCase(Lifetime.Transient)]
         [TestCase(Lifetime.Singleton)]
         public void Injector_Service_ShouldHandleGenericTypes(Lifetime lifetime)

@@ -244,6 +244,16 @@ namespace Solti.Utils.DI
 
         internal object Get(Type iface)
         {
+            if (!iface.IsInterface)
+                throw new ArgumentException(Resources.NOT_AN_INTERFACE, nameof(iface));
+
+            //
+            // Generikus tipusokat nem lehet peldanyositani.
+            //
+
+            if (iface.IsGenericTypeDefinition)
+                throw new InvalidOperationException(Resources.CANT_INSTANTIATE_GENERICS);
+
             IReadOnlyList<Type> oldPath = Context.CurrentPath;
             try
             {
@@ -257,18 +267,11 @@ namespace Solti.Utils.DI
                     throw new InvalidOperationException(string.Format(Resources.CIRCULAR_REFERENCE, string.Join(" -> ", currentPath)));
 
                 //
-                // Generikus tipusokat nem lehet peldanyositani.
-                //
-
-                if (iface.IsGenericTypeDefinition)
-                    throw new InvalidOperationException(Resources.CANT_INSTANTIATE_GENERICS);
-
-                InjectorEntry entry = GetEntry(iface);
-
-                //
                 // Ha singleton eletciklusunk van akkor ha meg eddig nem volt akkor le kell 
                 // gyartanunk a peldanyt.
                 //
+
+                InjectorEntry entry = GetEntry(iface);
 
                 if (entry.Lifetime == Lifetime.Singleton && entry.Value == null)
                     lock (entry)
@@ -293,11 +296,6 @@ namespace Solti.Utils.DI
         #endregion
 
         #region IInjector   
-        //
-        // Ebben a regioban CSAK explicit interface implementaciok legyenek, hogy a 
-        // hook-ok mindig meghivasra keruljenek.
-        //
-
         IInjector IInjector.Service(Type iface, Type implementation, Lifetime lifetime)
         {
             Service(iface, implementation, lifetime);

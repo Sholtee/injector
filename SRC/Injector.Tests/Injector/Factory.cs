@@ -10,6 +10,13 @@ namespace Solti.Utils.DI.Tests
     public sealed partial class InjectorTests
     {
         [Test]
+        public void Injector_Factory_ShouldThrowOnNonInterfaceKey()
+        {
+            Assert.Throws<ArgumentException>(() => Injector.Factory<Object>(p => null), string.Format(Resources.NOT_AN_INTERFACE, "iface"));
+            Assert.Throws<ArgumentException>(() => Injector.Factory(typeof(Object), (p1, p2) => null), string.Format(Resources.NOT_AN_INTERFACE, "iface"));
+        }
+
+        [Test]
         public void Injector_Factory_ShouldHandleGenericTypes()
         {
             int callCount = 0;

@@ -9,6 +9,13 @@ namespace Solti.Utils.DI.Tests
     [TestFixture]
     public sealed partial class InjectorTests
     {
+        [Test]
+        public void Injector_Proxy_ShouldThrowOnNonInterfaceKey()
+        {
+            Assert.Throws<ArgumentException>(() => Injector.Proxy<Object>((p1, p2) => null), string.Format(Resources.NOT_AN_INTERFACE, "iface"));
+            Assert.Throws<ArgumentException>(() => Injector.Proxy(typeof(Object), (p1, p2, p3) => null), string.Format(Resources.NOT_AN_INTERFACE, "iface"));
+        }
+
         [TestCase(Lifetime.Transient)]
         [TestCase(Lifetime.Singleton)]
         public void Injector_Proxy_ShouldOverwriteTheFactoryFunction(Lifetime lifetime)
@@ -86,6 +93,14 @@ namespace Solti.Utils.DI.Tests
                 .Proxy(typeof(IInterface_1), (injector, type, inst) => new object());
 
             Assert.Throws<Exception>(() => Injector.Get<IInterface_1>(), string.Format(Resources.INVALID_TYPE, typeof(IInterface_1)));
+        }
+
+        [Test]
+        public void Injector_Proxy_ShouldThrowOnInstances()
+        {
+            Injector.Instance<IInterface_1>(new Implementation_1());
+
+            Assert.Throws<InvalidOperationException>(() => Injector.Proxy<IInterface_1>((p1, p2) => null), Resources.CANT_PROXY);
         }
     }
 }
