@@ -1,4 +1,10 @@
-﻿using System;
+﻿/********************************************************************************
+* Instance.cs                                                                   *
+*                                                                               *
+* Author: Denes Solti                                                           *
+********************************************************************************/
+using System;
+
 using NUnit.Framework;
 
 namespace Solti.Utils.DI.Tests

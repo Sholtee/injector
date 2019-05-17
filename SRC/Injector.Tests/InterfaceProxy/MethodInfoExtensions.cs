@@ -1,4 +1,10 @@
-﻿using System;
+﻿/********************************************************************************
+* MethodInfoExtensions.cs                                                       *
+*                                                                               *
+* Author: Denes Solti                                                           *
+********************************************************************************/
+using System;
+
 using NUnit.Framework;
 
 namespace Solti.Utils.InterfaceProxy.Tests

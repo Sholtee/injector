@@ -1,4 +1,9 @@
-﻿using NUnit.Framework;
+﻿/********************************************************************************
+* TestBase.cs                                                                   *
+*                                                                               *
+* Author: Denes Solti                                                           *
+********************************************************************************/
+using NUnit.Framework;
 
 namespace Solti.Utils.DI.Tests
 {

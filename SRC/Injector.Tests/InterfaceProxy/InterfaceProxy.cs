@@ -1,4 +1,10 @@
-﻿using System.Reflection;
+﻿/********************************************************************************
+* InterfaceProxy.cs                                                             *
+*                                                                               *
+* Author: Denes Solti                                                           *
+********************************************************************************/
+using System.Reflection;
+
 using NUnit.Framework;
 
 namespace Solti.Utils.InterfaceProxy.Tests

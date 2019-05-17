@@ -1,4 +1,9 @@
-﻿using System;
+﻿/********************************************************************************
+* Service.cs                                                                    *
+*                                                                               *
+* Author: Denes Solti                                                           *
+********************************************************************************/
+using System;
 using System.Collections.Generic;
 
 using NUnit.Framework;
