@@ -271,7 +271,7 @@ namespace Solti.Utils.DI
 
         IInjector IInjector.Factory(Type iface, Func<IInjector, Type, object> factory, Lifetime lifetime)
         {
-            Func<Type, object> typeChecked = type =>
+            object TypeChecked(Type type)
             {
                 object instance = factory(this, type);
 
@@ -283,9 +283,9 @@ namespace Solti.Utils.DI
                     throw new Exception(string.Format(Resources.INVALID_TYPE, type));
 
                 return instance;
-            };
+            }
 
-            Factory(iface, typeChecked, lifetime);
+            Factory(iface, TypeChecked, lifetime);
             return this;
         }
 
@@ -297,7 +297,7 @@ namespace Solti.Utils.DI
 
         IInjector IInjector.Proxy(Type iface, Func<IInjector, Type, object, object> decorator)
         {
-            Func<Type, object, object> typeChecked = (type, inst) =>
+            object TypeChecked(Type type, object inst)
             {
                 inst = decorator(this, type, inst);
 
@@ -309,9 +309,9 @@ namespace Solti.Utils.DI
                     throw new Exception(string.Format(Resources.INVALID_TYPE, type));
 
                 return inst;
-            };
+            }
 
-            Proxy(iface, typeChecked);
+            Proxy(iface, TypeChecked);
             return this;
         }
 
