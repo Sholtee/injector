@@ -19,18 +19,37 @@ namespace Solti.Utils.DI
     public sealed class Injector : IInjector
     {
         #region Private
-        private readonly ConcurrentDictionary<Type, InjectorEntry> FEntries = new ConcurrentDictionary<Type, InjectorEntry>();
+        private readonly ConcurrentDictionary<Type, InjectorEntry> FEntries;
 
-        private readonly ThreadLocal<ThreadContext> FContext = new ThreadLocal<ThreadContext>(() => new ThreadContext
-        {
-            CurrentPath = new Type[0]
-        }, trackAllValues: false);
+        private readonly ThreadLocal<ThreadContext> FContext;
 
         private ThreadContext Context => FContext.Value;
 
         private IInjector Self => (IInjector) Get(typeof(IInjector));
 
-        private Injector() { }
+        private Injector(): this(new InjectorEntry[0])
+        {
+        }
+
+        private Injector(IEnumerable<InjectorEntry> entriesToCopy)
+        {
+            FEntries = new ConcurrentDictionary<Type, InjectorEntry>(entriesToCopy.ToDictionary(
+                entry => entry.Interface, 
+                entry => (InjectorEntry) entry.Clone()));
+
+            FContext = new ThreadLocal<ThreadContext>(() => new ThreadContext
+            {
+                CurrentPath = new Type[0]
+            }, trackAllValues: false);
+
+            //
+            // Felvesszuk sajat megunkat. Megjegyzendo h mivel peldanykent vesszuk fel 
+            // magunkat ezert kell a "kezi" proxy-zas, egyebkent Proxy() hivast kene 
+            // hasznalni.
+            //
+
+            Instance(typeof(IInjector), new ParameterValidator<IInjector>(this).Proxy);
+        }
 
         private static bool IsAssignableFrom(Type iface, Type implementation)
         {
@@ -172,8 +191,8 @@ namespace Solti.Utils.DI
 
             if (entry.Factory != null) return entry;
 #if DEBUG
-            Debug.Assert(entry.Implementation.IsGenericTypeDefinition, "Not a generic type definition");
-            Debug.Assert(entry.Lifetime.HasValue, "Lifetime is NULL");
+            Debug.Assert(entry.Implementation != null && entry.Implementation.IsGenericTypeDefinition, "Not a generic type definition");
+            Debug.Assert(entry.Lifetime != null, "Lifetime is NULL");
 #endif
             //
             // Regisztraljuk az uj konkret tipust. Nem gond ha parhuzamosan ide tobb szal
@@ -245,9 +264,7 @@ namespace Solti.Utils.DI
                     throw new InvalidOperationException(Resources.CANT_INSTANTIATE_GENERICS);
 
                 InjectorEntry entry = GetEntry(iface);
-#if DEBUG
-                Debug.Assert(entry.Factory != null);
-#endif
+
                 //
                 // Ha singleton eletciklusunk van akkor ha meg eddig nem volt akkor le kell 
                 // gyartanunk a peldanyt.
@@ -369,25 +386,13 @@ namespace Solti.Utils.DI
 
         IInjector IInjector.CreateChild()
         {
-            Injector child = (Injector) Create();
-
             //
-            // Vegig a szulo osszes eddig regisztralt bejegyzesen (szal biztos).
+            // A sajat magunkat tartalmazo bejegyzesen kivul az osszes tobbi bejegyzes
+            // masolasa (szal biztos). A masolas mikentjet lasd az InjectorEntry 
+            // implementaciojaban.
             //
 
-            foreach (InjectorEntry entry in FEntries.Values)
-            {
-                if (entry.Factory != null)
-                    child.Factory(entry.Interface, entry.Factory, entry.Lifetime);
-                else
-                    child.Service(entry.Interface, entry.Implementation, entry.Lifetime);
-
-                //
-                // entry.Value direkt nem kerul masolasra, hogy az ertekek keruljenek ujra legyartasra.
-                //
-            }
-
-            return child;
+            return new Injector(FEntries.Values.Where(entry => entry.Interface != typeof(IInjector))).Self;
         }
         #endregion
 
@@ -409,10 +414,7 @@ namespace Solti.Utils.DI
 
         public static IInjector Create()
         {
-            IInjector result = new ParameterValidator<IInjector>(new Injector()).Target;
-            result.Instance(result);
-
-            return result;
+            return new Injector().Self;
         }
     }
 }
