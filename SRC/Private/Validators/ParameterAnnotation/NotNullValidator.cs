@@ -11,7 +11,8 @@ namespace Solti.Utils.DI
     {
         protected override void Validate(object param, string paramName)
         {
-            if (param == null) throw new ArgumentNullException(paramName);
+            if (param == null)
+                throw new ArgumentNullException(paramName);
         }
     }
 }

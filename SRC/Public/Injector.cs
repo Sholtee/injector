@@ -259,13 +259,6 @@ namespace Solti.Utils.DI
 
         internal object Get(Type iface)
         {
-            //
-            // Generikus tipusokat nem lehet peldanyositani.
-            //
-
-            if (iface.IsGenericTypeDefinition)
-                throw new InvalidOperationException(Resources.CANT_INSTANTIATE_GENERICS);
-
             IReadOnlyList<Type> oldPath = Context.CurrentPath;
             try
             {

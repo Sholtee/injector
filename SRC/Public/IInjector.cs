@@ -34,7 +34,7 @@ namespace Solti.Utils.DI
         /// Resolves a dependency.
         /// </summary>
         /// <remarks>You can call it from different threads, parallelly.</remarks>
-        object Get([ParameterIs(typeof(NotNull), typeof(Interface))] Type iface);
+        object Get([ParameterIs(typeof(NotNull), typeof(Interface), typeof(NotGeneric))] Type iface);
 
         /// <summary>
         /// Creates a child injector that inherits all the entries of its parent.

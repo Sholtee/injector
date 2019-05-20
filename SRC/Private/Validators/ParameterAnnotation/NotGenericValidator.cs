@@ -1,5 +1,5 @@
 ﻿/********************************************************************************
-* ClassValidator.cs                                                           *
+* NotGenericValidator.cs                                                        *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
@@ -9,12 +9,12 @@ namespace Solti.Utils.DI
 {
     using Properties;
 
-    internal sealed class Class: Validator<Type>
+    internal sealed class NotGeneric : Validator<Type>
     {
         protected override void Validate(Type param, string paramName)
         {
-            if (!param.IsClass)
-                throw new ArgumentException(Resources.NOT_A_CLASS, paramName);
+            if (param.IsGenericTypeDefinition)
+                throw new ArgumentException(Resources.CANT_INSTANTIATE_GENERICS, paramName);
         }
     }
 }

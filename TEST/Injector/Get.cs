@@ -82,7 +82,7 @@ namespace Solti.Utils.DI.Tests
         {
             Injector.Service(typeof(IInterface_3<>), typeof(Implementation_3<>));
 
-            Assert.Throws<InvalidOperationException>(() => Injector.Get(typeof(IInterface_3<>)), Resources.CANT_INSTANTIATE_GENERICS);
+            Assert.Throws<ArgumentException>(() => Injector.Get(typeof(IInterface_3<>)), Resources.CANT_INSTANTIATE_GENERICS);
         }
 
         [Test]
