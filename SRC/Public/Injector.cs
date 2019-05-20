@@ -302,12 +302,6 @@ namespace Solti.Utils.DI
             return Self;
         }
 
-        IInjector IInjector.Service<TInterface, TImplementation>(Lifetime lifetime)
-        {
-            Service(typeof(TInterface), typeof(TImplementation), lifetime);
-            return Self;
-        }
-
         IInjector IInjector.Factory(Type iface, Func<IInjector, Type, object> factory, Lifetime lifetime)
         {
             object TypeChecked(Type type)
@@ -328,21 +322,9 @@ namespace Solti.Utils.DI
             return Self;
         }
 
-        IInjector IInjector.Factory<TInterface>(Func<IInjector, TInterface> factory, Lifetime lifetime)
-        {
-            Factory(typeof(TInterface), type => factory(Self), lifetime);
-            return Self;
-        }
-
         IInjector IInjector.Instance(Type iface, object instance)
         {
             Instance(iface, instance);
-            return Self;
-        }
-
-        IInjector IInjector.Instance<TInterface>(TInterface instance)
-        {
-            Instance(typeof(TInterface), instance);
             return Self;
         }
 
@@ -366,20 +348,9 @@ namespace Solti.Utils.DI
             return Self;
         }
 
-        IInjector IInjector.Proxy<TInterface>(Func<IInjector, TInterface, TInterface> decorator)
-        {
-            Proxy(typeof(TInterface), (type, current) => decorator(Self, (TInterface) current));
-            return Self;
-        }
-
         object IInjector.Get(Type iface)
         {
             return Get(iface);
-        }
-
-        TInterface IInjector.Get<TInterface>()
-        {
-            return (TInterface) Get(typeof(TInterface));
         }
 
         IInjector IInjector.CreateChild()
