@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Collections.Generic;
 
 namespace Solti.Utils.DI
 {
@@ -39,5 +40,10 @@ namespace Solti.Utils.DI
         /// Creates a child injector that inherits all the entries of its parent.
         /// </summary>
         IInjector CreateChild();
+
+        /// <summary>
+        /// Registered entries.
+        /// </summary>
+        IReadOnlyList<Type> Entries { get; }
     }
 }

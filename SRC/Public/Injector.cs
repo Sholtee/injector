@@ -372,6 +372,8 @@ namespace Solti.Utils.DI
 
             return new Injector(FEntries.Values.Where(entry => entry.Interface != typeof(IInjector))).Self;
         }
+
+        IReadOnlyList<Type> IInjector.Entries => FEntries.Keys.ToArray();
         #endregion
 
         #region IDisposable

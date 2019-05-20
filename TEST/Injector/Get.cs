@@ -52,19 +52,29 @@ namespace Solti.Utils.DI.Tests
             Assert.That(instance.Interface1, Is.InstanceOf<Implementation_1>());
         }
 
-        [Test]
-        public void Injector_Get_ShouldResolveGenericDependencies()
+        [TestCase(Lifetime.Transient)]
+        [TestCase(Lifetime.Singleton)]
+        public void Injector_Get_ShouldResolveGenericDependencies(Lifetime lifetime)
         {
             Injector
-                .Service<IInterface_1, Implementation_1>()
-                .Service(typeof(IInterface_3<>), typeof(Implementation_3<>))
-                .Service(typeof(IInterface_6<>), typeof(Implementation_6<>));
+                .Service<IInterface_1, Implementation_1>() // direkt nincs lifetime
+                .Service(typeof(IInterface_3<>), typeof(Implementation_3<>)) // direkt nincs lifetime
+                .Service(typeof(IInterface_6<>), typeof(Implementation_6<>), lifetime);
+
+            Assert.That(Injector.Entries.Count, Is.EqualTo(4)); // +1 == self
 
             var instance = Injector.Get<IInterface_6<string>>();
             
             Assert.That(instance, Is.InstanceOf<Implementation_6<string>>());
             Assert.That(instance.Interface3, Is.InstanceOf<Implementation_3<string>>());
             Assert.That(instance.Interface3.Interface1, Is.InstanceOf<Implementation_1>());
+
+            var assert = lifetime == Lifetime.Singleton ? Assert.AreSame : (Action<object, object>) Assert.AreNotSame;
+
+            assert(instance, Injector.Get<IInterface_6<string>>());
+            assert(instance.Interface3, Injector.Get<IInterface_6<string>>().Interface3);
+
+            Assert.That(Injector.Entries.Count, Is.EqualTo(6)); // Implementation_3<string>, Implementation_6<string>
         }
 
         [Test]
