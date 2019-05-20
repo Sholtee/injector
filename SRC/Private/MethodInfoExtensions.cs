@@ -22,6 +22,12 @@ namespace Solti.Utils.DI
 
         public static object FastInvoke(this MethodInfo method, object target, params object[] args)
         {
+            //
+            // (target, paramz) => (Type_3) target.Method((Type_1) paramz[0], (Type_2) paramz[1], ...)
+            // ----------------------------------------------------------------------------------------------------------
+            // (target, paramz) => {target.Method((Type_1) paramz[0], (Type_2) paramz[1], ...); return default(object);}
+            //
+
             Func<object, object[], object> invoke = FCache.GetOrAdd(method, @void =>
             {
                 ParameterExpression
