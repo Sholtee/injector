@@ -350,6 +350,8 @@ namespace Solti.Utils.DI
         #region IDisposable
         void IDisposable.Dispose()
         {
+            FContext.Dispose();
+
             foreach (IDisposable disposable in FEntries
                 .Values
                 .Where(entry => entry.Lifetime == Lifetime.Singleton)
@@ -359,7 +361,7 @@ namespace Solti.Utils.DI
                     disposable.Dispose(); 
             }
 
-            FEntries.Clear(); 
+            FEntries.Clear();
         }
         #endregion
 
