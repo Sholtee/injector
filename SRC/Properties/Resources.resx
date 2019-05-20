@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="ALREADY_REGISTERED" xml:space="preserve">
-    <value>Service ("{0}") already registered.</value>
+    <value>"{0}" is already registered.</value>
   </data>
   <data name="CANT_INSTANTIATE_GENERICS" xml:space="preserve">
     <value>Instantiating open generic types are not allowed.</value>

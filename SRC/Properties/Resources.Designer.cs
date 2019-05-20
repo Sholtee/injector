@@ -61,7 +61,7 @@ namespace Solti.Utils.DI.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Service (&quot;{0}&quot;) already registered..
+        ///   Looks up a localized string similar to &quot;{0}&quot; is already registered..
         /// </summary>
         internal static string ALREADY_REGISTERED {
             get {
