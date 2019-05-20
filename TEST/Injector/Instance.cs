@@ -25,6 +25,12 @@ namespace Solti.Utils.DI.Tests
         }
 
         [Test]
+        public void Injector_Instance_ShouldBeTypeChecked()
+        {
+            Assert.Throws<InvalidOperationException>(() => Injector.Instance(typeof(IInterface_1), new object()), string.Format(Resources.NOT_ASSIGNABLE, typeof(IInterface_1), typeof(object)));
+        }
+
+        [Test]
         public void Injector_Instance_ShouldThrowOnNonInterfaceKey()
         {
             Assert.Throws<ArgumentException>(() => Injector.Instance<Object>(null), string.Format(Resources.NOT_AN_INTERFACE, "iface"));
