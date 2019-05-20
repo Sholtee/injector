@@ -65,5 +65,13 @@ namespace Solti.Utils.DI.Tests
             Assert.Throws<InvalidOperationException>(() => Injector.Service(typeof(IList<>), typeof(Implementation_1)), string.Format(Resources.NOT_ASSIGNABLE, typeof(IList<>), typeof(Implementation_1)));
             Assert.Throws<InvalidOperationException>(() => Injector.Service<IList<int>, List<string>>(), string.Format(Resources.NOT_ASSIGNABLE, typeof(IList<int>), typeof(List<string>)));
         }
+
+        [Test]
+        public void Injector_Service_ShouldThrowOnMultipleRegistration()
+        {
+            Injector.Service<IInterface_1, Implementation_1>();
+
+            Assert.Throws<ServiceAlreadyRegisteredException>(() => Injector.Service<IInterface_1, Implementation_1>());
+        }
     }
 }

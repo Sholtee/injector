@@ -36,5 +36,13 @@ namespace Solti.Utils.DI.Tests
             Assert.Throws<ArgumentException>(() => Injector.Instance<Object>(null), string.Format(Resources.NOT_AN_INTERFACE, "iface"));
             Assert.Throws<ArgumentException>(() => Injector.Instance(typeof(Object), null), string.Format(Resources.NOT_AN_INTERFACE, "iface"));
         }
+
+        [Test]
+        public void Injector_Instance_ShouldThrowOnMultipleRegistration()
+        {
+            Injector.Instance<IInterface_1>(new Implementation_1());
+
+            Assert.Throws<ServiceAlreadyRegisteredException>(() => Injector.Instance<IInterface_1>(new Implementation_1()));
+        }
     }
 }

@@ -19,12 +19,18 @@ namespace Solti.Utils.DI
     public sealed class Injector : IInjector
     {
         #region Private
-        private readonly ConcurrentDictionary<Type, InjectorEntry> FEntries;
+        private readonly IDictionary<Type, InjectorEntry> FEntries;
 
         private readonly ThreadLocal<ThreadContext> FContext;
 
+        /// <summary>
+        /// Az aktualis szal kontextusa.
+        /// </summary>
         private ThreadContext Context => FContext.Value;
 
+        /// <summary>
+        /// "this" helyett hasznalando, hogy mindig a proxy-zott peldanyt adjuk vissza.
+        /// </summary>
         private IInjector Self => (IInjector) Get(typeof(IInjector));
 
         private Injector(): this(new InjectorEntry[0])
@@ -43,9 +49,7 @@ namespace Solti.Utils.DI
             }, trackAllValues: false);
 
             //
-            // Felvesszuk sajat megunkat. Megjegyzendo h mivel peldanykent vesszuk fel 
-            // magunkat ezert kell a "kezi" proxy-zas, egyebkent Proxy() hivast kene 
-            // hasznalni.
+            // Felvesszuk sajat magunkat.
             //
 
             Instance(typeof(IInjector), new ParameterValidator<IInjector>(this).Proxy);
@@ -93,6 +97,10 @@ namespace Solti.Utils.DI
 
         private Func<Type, object> CreateFactory(ConstructorInfo constructor)
         {
+            //
+            // type => (IService) new Service((IDependency_1) Get("dependency_1"), (IDependency_2) Get("dependency_2"), ...)
+            //
+
             return Expression.Lambda<Func<Type, object>>
             (
                 Expression.New
@@ -117,6 +125,19 @@ namespace Solti.Utils.DI
         {
             return FEntries.TryGetValue(iface, out entry);
         }
+
+        private InjectorEntry Register(InjectorEntry entry)
+        {
+            try
+            {
+                FEntries.Add(entry.Interface, entry);
+                return entry;
+            }
+            catch (ArgumentException e)
+            {
+                throw new ServiceAlreadyRegisteredException(entry.Interface, e);
+            }                      
+        }
         #endregion
 
         #region Internal
@@ -134,11 +155,10 @@ namespace Solti.Utils.DI
                 throw new NotSupportedException(string.Format(Resources.CONSTRUCTOR_OVERLOADING_NOT_SUPPORTED, implementation));
 
             //
-            // Bejegyzes felvetele (szal biztos -> lehet egy korabbi hivas bejegyzeset adja vissza
-            // de azzal sincs gond).
+            // Bejegyzes felvetele.
             //
 
-            return FEntries.GetOrAdd(iface, new InjectorEntry
+            return Register(new InjectorEntry
             {
                 Interface      = iface,
                 Implementation = implementation,
@@ -155,7 +175,7 @@ namespace Solti.Utils.DI
 
         internal InjectorEntry Factory(Type iface, Func<Type, object> factory, Lifetime? lifetime)
         {
-            return FEntries.GetOrAdd(iface, new InjectorEntry
+            return Register(new InjectorEntry
             {
                 Factory   = factory,
                 Interface = iface,
@@ -185,12 +205,22 @@ namespace Solti.Utils.DI
             Debug.Assert(entry.Implementation != null && entry.Implementation.IsGenericTypeDefinition, "Not a generic type definition");
             Debug.Assert(entry.Lifetime != null, "Lifetime is NULL");
 #endif
-            //
-            // Regisztraljuk az uj konkret tipust. Nem gond ha parhuzamosan ide tobb szal
-            // is eljut, mert a regisztracio ugy is csak egyszer kerul be a rendszerbe.
-            //
+            try
+            {
+                //
+                // Regisztraljuk az uj konkret tipust.
+                //
 
-            return Service(iface, entry.Implementation.MakeGenericType(iface.GetGenericArguments()), entry.Lifetime);
+                return Service(iface, entry.Implementation.MakeGenericType(iface.GetGenericArguments()), entry.Lifetime);
+            }
+            catch (ServiceAlreadyRegisteredException)
+            {
+                //
+                // Felteve ha nem regisztralta ido kozben mas.
+                //
+
+                return GetEntry(iface);
+            }            
         }
 
         internal InjectorEntry Proxy(Type iface, Func<Type, object, object> decorator)
@@ -220,7 +250,7 @@ namespace Solti.Utils.DI
             if (!IsAssignableFrom(iface, instanceType))
                 throw new InvalidOperationException(string.Format(Resources.NOT_ASSIGNABLE, iface, instanceType));
 
-            return FEntries.GetOrAdd(iface, new InjectorEntry
+            return Register(new InjectorEntry
             {
                 Interface = iface,
                 Value     = instance
@@ -261,11 +291,8 @@ namespace Solti.Utils.DI
                             return entry.Value = entry.Factory(iface);
 
                 //
-                // Elvileg jok vagyunk: Ha van "Value"-nk ("Singleton") akkor visszaadjuk azt, 
-                // kulomben legyartjuk az uj peldanyt.
-                //
-                // Megjegyzes: 
-                //   Ne az "entry.Interface"-t adjuk at parameterkent mert az lehet h generikus.
+                // Elvileg jok vagyunk: Ha van "Value"-nk ("Singleton" eletciklus vagy Instance() hivas) 
+                // akkor visszaadjuk azt, kulomben legyartjuk az uj peldanyt.
                 //
 
                 return entry.Value ?? entry.Factory(iface);

@@ -48,5 +48,13 @@ namespace Solti.Utils.DI.Tests
 
             Assert.Throws<Exception>(() => Injector.Get<IInterface_1>(), string.Format(Resources.INVALID_TYPE, typeof(IInterface_1)));
         }
+
+        [Test]
+        public void Injector_Factory_ShouldThrowOnMultipleRegistration()
+        {
+            Injector.Factory<IInterface_1>(me => new Implementation_1());
+
+            Assert.Throws<ServiceAlreadyRegisteredException>(() => Injector.Factory<IInterface_1>(me => new Implementation_1()));
+        }
     }
 }

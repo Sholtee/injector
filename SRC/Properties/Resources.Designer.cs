@@ -61,6 +61,15 @@ namespace Solti.Utils.DI.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Service (&quot;{0}&quot;) already registered..
+        /// </summary>
+        internal static string ALREADY_REGISTERED {
+            get {
+                return ResourceManager.GetString("ALREADY_REGISTERED", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Instantiating open generic types are not allowed..
         /// </summary>
         internal static string CANT_INSTANTIATE_GENERICS {
