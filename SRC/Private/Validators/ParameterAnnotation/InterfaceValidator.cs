@@ -1,5 +1,5 @@
 ﻿/********************************************************************************
-* IsInterfaceValidator.cs                                                       *
+* InterfaceValidator.cs                                                       *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
@@ -9,7 +9,7 @@ namespace Solti.Utils.DI
 {
     using Properties;
 
-    internal sealed class IsInterface: Validator<Type>
+    internal sealed class Interface: Validator<Type>
     {
         protected override void Validate(Type param, string paramName)
         {

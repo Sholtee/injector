@@ -20,12 +20,17 @@ namespace Solti.Utils.DI
 
             for (int i = 0; i < infos.Count; i++)
             {
-                ParameterInfo info = infos[i];
-                object arg = args[i];
+                ParameterInfo parameter = infos[i];
 
-                foreach (ExpectAttribute attr in info.GetCustomAttributes<ExpectAttribute>())
+                ParameterIsAttribute attr = parameter.GetCustomAttribute<ParameterIsAttribute>();
+                if (attr != null)
                 {
-                    attr.Validator.Validate(arg, info.Name);
+                    object arg = args[i];
+
+                    foreach (IValidator validator in attr.Validators)
+                    {
+                        validator.Validate(arg, parameter.Name);           
+                    }
                 }
             }
 

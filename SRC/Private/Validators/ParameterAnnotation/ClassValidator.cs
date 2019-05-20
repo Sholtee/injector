@@ -1,5 +1,5 @@
 ﻿/********************************************************************************
-* IsClassValidator.cs                                                           *
+* ClassValidator.cs                                                           *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
@@ -9,7 +9,7 @@ namespace Solti.Utils.DI
 {
     using Properties;
 
-    internal sealed class IsClass: Validator<Type>
+    internal sealed class Class: Validator<Type>
     {
         protected override void Validate(Type param, string paramName)
         {

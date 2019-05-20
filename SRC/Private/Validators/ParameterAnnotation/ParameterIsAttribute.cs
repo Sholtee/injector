@@ -1,24 +1,26 @@
 ﻿/********************************************************************************
-* Expect.cs                                                                     *
+* ParameterIsAttribute.cs                                                       *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 
 namespace Solti.Utils.DI
 {
-    [AttributeUsage(AttributeTargets.Parameter, AllowMultiple = true)]
-    internal sealed class ExpectAttribute: Attribute
+    [AttributeUsage(AttributeTargets.Parameter, AllowMultiple = false)]
+    internal sealed class ParameterIsAttribute: Attribute
     {
         private static readonly ConcurrentDictionary<Type, Func<IValidator>> Ctors = new ConcurrentDictionary<Type, Func<IValidator>>();
 
-        public IValidator Validator { get; }
+        public IReadOnlyList<IValidator> Validators { get; }
 
-        public ExpectAttribute(Type validator)
+        public ParameterIsAttribute(params Type[] validators)
         {
-            Func<IValidator> ctor = Ctors.GetOrAdd
+            Validators = validators.Select(validator => Ctors.GetOrAdd
             (
                 validator,
                 @void => Expression.Lambda<Func<IValidator>>
@@ -29,9 +31,7 @@ namespace Solti.Utils.DI
 
                     Expression.Convert(Expression.New(validator.GetConstructor(new Type[0])), typeof(IValidator))
                 ).Compile()
-            );
-
-            Validator = ctor();
+            )()).ToArray();
         }
     }
 }
