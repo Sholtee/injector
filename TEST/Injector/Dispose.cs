@@ -1,0 +1,71 @@
+﻿/********************************************************************************
+* Dispose.cs                                                                   *
+*                                                                               *
+* Author: Denes Solti                                                           *
+********************************************************************************/
+using System;
+
+using Moq;
+using NUnit.Framework;
+
+namespace Solti.Utils.DI.Tests
+{
+    [TestFixture]
+    public sealed partial class InjectorTests
+    {
+        public interface IInterface_1_Disaposable: IInterface_1, IDisposable
+        {            
+        }
+
+        public interface IInterface_2_Disaposable : IInterface_2, IDisposable
+        {
+        }
+
+        [Test]
+        public void Injector_DisposeShouldFreeSingletonEntries()
+        {
+            var mockSingleton = new Mock<IInterface_1_Disaposable>(MockBehavior.Strict);
+            mockSingleton.Setup(s => s.Dispose());
+
+            var mockTransient = new Mock<IInterface_2_Disaposable>(MockBehavior.Strict);
+            mockTransient.Setup(t => t.Dispose());
+
+            using (IInjector child = Injector.CreateChild())
+            {
+                //
+                // Register
+                //
+
+                child
+                    .Factory(inj => mockSingleton.Object, Lifetime.Singleton)
+                    .Factory(inj => mockTransient.Object, Lifetime.Transient);
+
+                //
+                // Use
+                //
+
+                child.Get<IInterface_1_Disaposable>();
+                child.Get<IInterface_2_Disaposable>();
+            }
+           
+            mockSingleton.Verify(s => s.Dispose(), Times.Once);
+            mockTransient.Verify(t => t.Dispose(), Times.Never);
+        }
+
+        [Test]
+        public void Injector_DisposeShouldNotFreeInstances()
+        {
+            var mockInstance = new Mock<IInterface_1_Disaposable>(MockBehavior.Strict);
+            mockInstance.Setup(i => i.Dispose());
+
+            using (IInjector child = Injector.CreateChild())
+            {
+                child
+                    .Instance(mockInstance.Object)
+                    .Get<IInterface_1_Disaposable>();
+            }
+
+            mockInstance.Verify(i => i.Dispose(), Times.Never);
+        }
+    }
+}
