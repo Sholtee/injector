@@ -18,6 +18,13 @@ namespace Solti.Utils.DI.Tests
             Injector = DI.Injector.Create();
         }
 
+        [TearDown]
+        public void TearDown()
+        {
+            Injector.Dispose();
+            Injector = null;
+        }
+
         private interface IInterface_1
         {
         }

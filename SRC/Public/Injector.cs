@@ -16,12 +16,12 @@ namespace Solti.Utils.DI
 {
     using Properties;
 
-    public sealed class Injector : IInjector
+    public sealed class Injector : Disposable, IInjector
     {
         #region Private
-        private readonly IDictionary<Type, InjectorEntry> FEntries;
+        private /*readonly*/ IDictionary<Type, InjectorEntry> FEntries;
 
-        private readonly ThreadLocal<ThreadContext> FContext;
+        private /*readonly*/ ThreadLocal<ThreadContext> FContext;
 
         /// <summary>
         /// Az aktualis szal kontextusa.
@@ -377,20 +377,25 @@ namespace Solti.Utils.DI
         #endregion
 
         #region IDisposable
-        void IDisposable.Dispose()
+        protected override void Dispose(bool disposeManaged)
         {
-            FContext.Dispose();
-
-            foreach (IDisposable disposable in FEntries
-                .Values
-                .Where(entry => entry.Lifetime == Lifetime.Singleton)
-                .Select(entry => entry.Value as IDisposable)
-                .Where(value => value != null))
+            if (disposeManaged)
             {
-                    disposable.Dispose(); 
-            }
+                FContext.Dispose();
+                FContext = null;
 
-            FEntries.Clear();
+                foreach (IDisposable disposable in FEntries
+                    .Values
+                    .Where(entry => entry.Lifetime == Lifetime.Singleton)
+                    .Select(entry => entry.Value as IDisposable)
+                    .Where(value => value != null))
+                {
+                    disposable.Dispose();
+                }
+
+                FEntries.Clear();
+                FEntries = null;
+            }
         }
         #endregion
 
