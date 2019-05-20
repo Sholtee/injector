@@ -122,12 +122,6 @@ namespace Solti.Utils.DI
         #region Internal
         internal InjectorEntry Service(Type iface, Type implementation, Lifetime? lifetime)
         {
-            if (!iface.IsInterface)
-                throw new ArgumentException(Resources.NOT_AN_INTERFACE, nameof(iface));
-
-            if (!implementation.IsClass)
-                throw new ArgumentException(Resources.NOT_A_CLASS, nameof(implementation));
-
             if (!IsAssignableFrom(iface, implementation))
                 throw new InvalidOperationException(string.Format(Resources.NOT_ASSIGNABLE, iface, implementation));
 
@@ -161,9 +155,6 @@ namespace Solti.Utils.DI
 
         internal InjectorEntry Factory(Type iface, Func<Type, object> factory, Lifetime? lifetime)
         {
-            if (!iface.IsInterface)
-                throw new ArgumentException(Resources.NOT_AN_INTERFACE, nameof(iface));
-
             return FEntries.GetOrAdd(iface, new InjectorEntry
             {
                 Factory   = factory,
@@ -204,9 +195,6 @@ namespace Solti.Utils.DI
 
         internal InjectorEntry Proxy(Type iface, Func<Type, object, object> decorator)
         {
-            if (!iface.IsInterface)
-                throw new ArgumentException(Resources.NOT_AN_INTERFACE, nameof(iface));
-
             //
             // Instance() hivassal felvett ertek vagy generikus szerviz eseten a metodus nem ertelmezett.
             //
@@ -227,9 +215,6 @@ namespace Solti.Utils.DI
 
         internal InjectorEntry Instance(Type iface, object instance)
         {
-            if (!iface.IsInterface)
-                throw new ArgumentException(Resources.NOT_AN_INTERFACE, nameof(iface));
-
             Type instanceType = instance.GetType();
 
             if (!IsAssignableFrom(iface, instanceType))
@@ -244,9 +229,6 @@ namespace Solti.Utils.DI
 
         internal object Get(Type iface)
         {
-            if (!iface.IsInterface)
-                throw new ArgumentException(Resources.NOT_AN_INTERFACE, nameof(iface));
-
             //
             // Generikus tipusokat nem lehet peldanyositani.
             //

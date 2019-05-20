@@ -5,8 +5,6 @@
 ********************************************************************************/
 using System;
 
-using JetBrains.Annotations;
-
 namespace Solti.Utils.DI
 {
     internal sealed class InjectorEntry: ICloneable
@@ -24,7 +22,6 @@ namespace Solti.Utils.DI
         /// <summary>
         /// A bejegyzes kulcsa (lehet generikus).
         /// </summary>
-        [NotNull]
         public Type Interface { get; set; }
 
         /// <summary>

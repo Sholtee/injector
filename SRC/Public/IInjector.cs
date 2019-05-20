@@ -5,8 +5,6 @@
 ********************************************************************************/
 using System;
 
-using JetBrains.Annotations;
-
 namespace Solti.Utils.DI
 {
     public interface IInjector: IDisposable
@@ -14,28 +12,28 @@ namespace Solti.Utils.DI
         /// <summary>
         /// Registers a new service with the given type.
         /// </summary>
-        IInjector Service([NotNull] Type iface, [NotNull] Type implementation, Lifetime lifetime = Lifetime.Transient);
+        IInjector Service([Expect(typeof(NotNull)), Expect(typeof(IsInterface))] Type iface, [Expect(typeof(NotNull)), Expect(typeof(IsClass))] Type implementation, Lifetime lifetime = Lifetime.Transient);
 
         /// <summary>
         /// Registers a new service factory with the given type.
         /// </summary>
-        IInjector Factory([NotNull] Type iface, [NotNull] Func<IInjector, Type, object> factory, Lifetime lifetime = Lifetime.Transient);
+        IInjector Factory([Expect(typeof(NotNull)), Expect(typeof(IsInterface))] Type iface, [Expect(typeof(NotNull))] Func<IInjector, Type, object> factory, Lifetime lifetime = Lifetime.Transient);
 
         /// <summary>
         /// Hooks into the instantiating process.
         /// </summary>
-        IInjector Proxy([NotNull] Type iface, [NotNull] Func<IInjector, Type, object, object> decorator);
+        IInjector Proxy([Expect(typeof(NotNull)), Expect(typeof(IsInterface))] Type iface, [Expect(typeof(NotNull))] Func<IInjector, Type, object, object> decorator);
 
         /// <summary>
         /// Registers a pre-created instance.
         /// </summary>
-        IInjector Instance([NotNull] Type iface, [NotNull] object instance);
+        IInjector Instance([Expect(typeof(NotNull)), Expect(typeof(IsInterface))] Type iface, [Expect(typeof(NotNull))] object instance);
 
         /// <summary>
         /// Resolves a dependency.
         /// </summary>
         /// <remarks>You can call it from different threads, parallelly.</remarks>
-        object Get([NotNull] Type iface);
+        object Get([Expect(typeof(NotNull)), Expect(typeof(IsInterface))] Type iface);
 
         /// <summary>
         /// Creates a child injector that inherits all the entries of its parent.

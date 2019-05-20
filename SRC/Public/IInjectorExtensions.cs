@@ -5,8 +5,6 @@
 ********************************************************************************/
 using System;
 
-using JetBrains.Annotations;
-
 namespace Solti.Utils.DI
 {
     public static class IInjectorExtensions
@@ -14,7 +12,7 @@ namespace Solti.Utils.DI
         /// <summary>
         /// Registers a new service with the given type.
         /// </summary>
-        public static IInjector Service<TInterface, TImplementation>([NotNull] this IInjector self, Lifetime lifetime = Lifetime.Transient)
+        public static IInjector Service<TInterface, TImplementation>(this IInjector self, Lifetime lifetime = Lifetime.Transient)
         {
             return self.Service(typeof(TInterface), typeof(TImplementation), lifetime);
         }
@@ -22,7 +20,7 @@ namespace Solti.Utils.DI
         /// <summary>
         /// Registers a new service factory with the given type.
         /// </summary>
-        public static IInjector Factory<TInterface>([NotNull] this IInjector self, [NotNull] Func<IInjector, TInterface> factory, Lifetime lifetime = Lifetime.Transient)
+        public static IInjector Factory<TInterface>(this IInjector self, Func<IInjector, TInterface> factory, Lifetime lifetime = Lifetime.Transient)
         {
             return self.Factory(typeof(TInterface), (me, type) => factory(me), lifetime);
         }
@@ -30,7 +28,7 @@ namespace Solti.Utils.DI
         /// <summary>
         /// Hooks into the instantiating process.
         /// </summary>
-        public static IInjector Proxy<TInterface>([NotNull] this IInjector self, [NotNull] Func<IInjector, TInterface, TInterface> decorator)
+        public static IInjector Proxy<TInterface>(this IInjector self, Func<IInjector, TInterface, TInterface> decorator)
         {
             return self.Proxy(typeof(TInterface), (me, type, instance) => decorator(me, (TInterface) instance));
         }
@@ -38,7 +36,7 @@ namespace Solti.Utils.DI
         /// <summary>
         /// Registers a pre-created instance.
         /// </summary>
-        public static IInjector Instance<TInterface>([NotNull] this IInjector self, [NotNull] TInterface instance)
+        public static IInjector Instance<TInterface>(this IInjector self, TInterface instance)
         {
             return self.Instance(typeof(TInterface), instance);
         }
@@ -47,7 +45,7 @@ namespace Solti.Utils.DI
         /// Resolves a dependency.
         /// </summary>
         /// <remarks>You can call it from different threads, parallelly.</remarks>
-        public static TInterface Get<TInterface>([NotNull] this IInjector self)
+        public static TInterface Get<TInterface>(this IInjector self)
         {
             return (TInterface) self.Get(typeof(TInterface));
         }

@@ -3,11 +3,8 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
-using System;
-using System.Linq;
+using System.Collections.Generic;
 using System.Reflection;
-
-using JetBrains.Annotations;
 
 namespace Solti.Utils.DI
 {
@@ -19,12 +16,18 @@ namespace Solti.Utils.DI
 
         protected override object Invoke(MethodInfo targetMethod, object[] args)
         {
-            ParameterInfo nullPara = targetMethod
-                .GetParameters()
-                .Where((para, i) => para.GetCustomAttribute<NotNullAttribute>() != null && args[i] == null)
-                .FirstOrDefault();
+            IReadOnlyList<ParameterInfo> infos = targetMethod.GetParameters();
 
-            if (nullPara != null) throw new ArgumentNullException(nullPara.Name);
+            for (int i = 0; i < infos.Count; i++)
+            {
+                ParameterInfo info = infos[i];
+                object arg = args[i];
+
+                foreach (ExpectAttribute attr in info.GetCustomAttributes<ExpectAttribute>())
+                {
+                    attr.Validator.Validate(arg, info.Name);
+                }
+            }
 
             return base.Invoke(targetMethod, args);
         }
