@@ -1,5 +1,5 @@
 ﻿/********************************************************************************
-* Validator.cs                                                                  *
+* ParameterValidator.cs                                                         *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
@@ -9,9 +9,9 @@ namespace Solti.Utils.DI.Internals
     /// <summary>
     /// Workaround h vhogy lehessen generikusokat es attributomukat egyutt hasznalni.
     /// </summary>
-    internal abstract class Validator<TParam> : IValidator
+    internal abstract class ParameterValidator<TParam> : IParameterValidator
     {
-        void IValidator.Validate(object param, string paramName)
+        void IParameterValidator.Validate(object param, string paramName)
         {
             Validate((TParam) param, paramName);
         }

@@ -14,22 +14,22 @@ namespace Solti.Utils.DI.Internals
     [AttributeUsage(AttributeTargets.Parameter, AllowMultiple = false)]
     internal sealed class ParameterIsAttribute: Attribute
     {
-        private static readonly ConcurrentDictionary<Type, Func<IValidator>> Ctors = new ConcurrentDictionary<Type, Func<IValidator>>();
+        private static readonly ConcurrentDictionary<Type, Func<IParameterValidator>> Ctors = new ConcurrentDictionary<Type, Func<IParameterValidator>>();
 
-        public IReadOnlyList<IValidator> Validators { get; }
+        public IReadOnlyList<IParameterValidator> Validators { get; }
 
         public ParameterIsAttribute(params Type[] validators)
         {
             Validators = validators.Select(validator => Ctors.GetOrAdd
             (
                 validator,
-                @void => Expression.Lambda<Func<IValidator>>
+                @void => Expression.Lambda<Func<IParameterValidator>>
                 (
                     //
                     // return (IValidator) new Validator()
                     //
 
-                    Expression.Convert(Expression.New(validator.GetConstructor(new Type[0])), typeof(IValidator))
+                    Expression.Convert(Expression.New(validator.GetConstructor(new Type[0])), typeof(IParameterValidator))
                 ).Compile()
             )()).ToArray();
         }

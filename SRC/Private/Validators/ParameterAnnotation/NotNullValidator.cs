@@ -7,7 +7,7 @@ using System;
 
 namespace Solti.Utils.DI.Internals
 {
-    internal sealed class NotNull: Validator<object>
+    internal sealed class NotNull: ParameterValidator<object>
     {
         protected override void Validate(object param, string paramName)
         {

@@ -9,7 +9,7 @@ namespace Solti.Utils.DI.Internals
 {
     using Properties;
 
-    internal sealed class Interface: Validator<Type>
+    internal sealed class Interface: ParameterValidator<Type>
     {
         protected override void Validate(Type param, string paramName)
         {

@@ -1,5 +1,5 @@
 ﻿/********************************************************************************
-* ParameterValidator.cs                                                         *
+* ParameterValidatorProxy.cs                                                    *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
@@ -8,9 +8,9 @@ using System.Reflection;
 
 namespace Solti.Utils.DI.Internals
 {
-    internal sealed class ParameterValidator<TInterface> : InterfaceProxy<TInterface>
+    internal sealed class ParameterValidatorProxy<TInterface> : InterfaceProxy<TInterface>
     {
-        public ParameterValidator(TInterface target): base(target)
+        public ParameterValidatorProxy(TInterface target): base(target)
         {
         }
 
@@ -27,7 +27,7 @@ namespace Solti.Utils.DI.Internals
                 {
                     object arg = args[i];
 
-                    foreach (IValidator validator in attr.Validators)
+                    foreach (IParameterValidator validator in attr.Validators)
                     {
                         validator.Validate(arg, parameter.Name);           
                     }

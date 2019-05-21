@@ -1,12 +1,12 @@
 ﻿/********************************************************************************
-* IValidator.cs                                                                 *
+* IParameterValidator.cs                                                        *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 
 namespace Solti.Utils.DI.Internals
 {
-    internal interface IValidator
+    internal interface IParameterValidator
     {
         void Validate(object param, string paramName);
     }

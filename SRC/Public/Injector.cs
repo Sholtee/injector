@@ -63,7 +63,7 @@ namespace Solti.Utils.DI
             // Felvesszuk sajat magunkat.
             //
 
-            Instance(typeof(IInjector), new ParameterValidator<IInjector>(this).Proxy);
+            Instance(typeof(IInjector), new ParameterValidatorProxy<IInjector>(this).Proxy);
         }
 
         private static bool IsAssignableFrom(Type iface, Type implementation)
