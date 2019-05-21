@@ -61,6 +61,15 @@ namespace Solti.Utils.DI.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The object has already been disposed..
+        /// </summary>
+        internal static string ALREADY_DISPOSED {
+            get {
+                return ResourceManager.GetString("ALREADY_DISPOSED", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to &quot;{0}&quot; is already registered..
         /// </summary>
         internal static string ALREADY_REGISTERED {
