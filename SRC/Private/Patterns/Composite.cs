@@ -4,17 +4,44 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Solti.Utils.DI
 {
-    public abstract class Composite<T>: Disposable, IComposite<T> where T: Composite<T>
+    public abstract class Composite<T>: Disposable, IComposite<T> where T: class, IComposite<T>
     {
         #region Private
-        private /*readonly*/ IDictionary<T, byte> FChildren = new ConcurrentDictionary<T, byte>();
+        private /*readonly*/ ICollection<T> FChildren = new DictionaryWrap(new ConcurrentDictionary<T, byte>());
         private /*readonly*/ T FParent;
+
+        private sealed class DictionaryWrap : ICollection<T>
+        {
+            private readonly IDictionary<T, byte> FEntries;
+
+            private ICollection<T> Entries => FEntries.Keys;
+
+            public DictionaryWrap(IDictionary<T, byte> entries) { FEntries = entries; }
+
+            IEnumerator<T> IEnumerable<T>.GetEnumerator() { return Entries.GetEnumerator(); }
+
+            IEnumerator IEnumerable.GetEnumerator() { return Entries.GetEnumerator(); }
+
+            void ICollection<T>.Add(T item){ FEntries.Add(item, 0); }
+
+            void ICollection<T>.Clear() { FEntries.Clear(); }
+
+            bool ICollection<T>.Contains(T item){ return Entries.Contains(item); }
+
+            void ICollection<T>.CopyTo(T[] array, int arrayIndex) { throw new NotImplementedException(); }
+
+            bool ICollection<T>.Remove(T item) { return FEntries.Remove(item); }
+
+            int ICollection<T>.Count => FEntries.Count;
+
+            bool ICollection<T>.IsReadOnly => FEntries.IsReadOnly;
+        }
         #endregion
 
         #region Protected
@@ -34,7 +61,7 @@ namespace Solti.Utils.DI
 
                 if (FParent != null)
                 {
-                    FParent.FChildren.Remove((T) this);
+                    FParent.Children.Remove(this as T);
                     FParent = null;
                 }
 
@@ -42,7 +69,7 @@ namespace Solti.Utils.DI
                 // Osszes gyereket eltavolitjuk majd toroljuk a listat.
                 //
 
-                foreach (IDisposable child in FChildren.Keys)
+                foreach (T child in FChildren)
                 {
                     child.Dispose();     
                 }
@@ -60,14 +87,16 @@ namespace Solti.Utils.DI
         #region IComposite
         T IComposite<T>.Parent => FParent;
 
-        IReadOnlyList<T> IComposite<T>.Children => FChildren.Keys.ToArray();
+        ICollection<T> IComposite<T>.Children => FChildren;
 
         T IComposite<T>.CreateChild()
         {
             T result = CreateChild();
-            FChildren.Add(result, 0);
+            FChildren.Add(result);
             return result;
         }
+
+        bool IComposite<T>.IsRoot => FParent == null;
         #endregion
     }
 }

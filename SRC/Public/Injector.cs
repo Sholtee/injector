@@ -16,7 +16,7 @@ namespace Solti.Utils.DI
 {
     using Properties;
 
-    public sealed class Injector : Disposable, IInjector
+    public sealed class Injector : Composite<IInjector>, IInjector
     {
         #region Private
         private /*readonly*/ IDictionary<Type, InjectorEntry> FEntries;
@@ -33,15 +33,30 @@ namespace Solti.Utils.DI
         /// </summary>
         private IInjector Self => (IInjector) Get(typeof(IInjector));
 
-        private Injector(): this(new InjectorEntry[0])
+        private Injector(): this(null)
         {
         }
 
-        private Injector(IEnumerable<InjectorEntry> entriesToCopy)
+        private Injector(Injector parent): base(parent)
         {
-            FEntries = new ConcurrentDictionary<Type, InjectorEntry>(entriesToCopy.ToDictionary(
-                entry => entry.Interface, 
-                entry => (InjectorEntry) entry.Clone()));
+            //
+            // Ha van szulo akkor a sajat magat tartalmazo bejegyzesen kivul 
+            // az osszes tobbi bejegyzest masoljuk.
+            //
+            // A masolas mikentjet lasd az InjectorEntry implementaciojaban.
+            //
+
+            IReadOnlyDictionary<Type, InjectorEntry> entriesToCopy = new Dictionary<Type, InjectorEntry>(0);
+
+            if (parent != null) entriesToCopy = parent
+                .FEntries
+                .Values
+                .Where(entry => entry.Interface != typeof(IInjector))
+                .ToDictionary(
+                    entry => entry.Interface,
+                    entry => (InjectorEntry) entry.Clone());
+
+            FEntries = new ConcurrentDictionary<Type, InjectorEntry>(entriesToCopy);
 
             FContext = new ThreadLocal<ThreadContext>(() => new ThreadContext
             {
@@ -355,21 +370,15 @@ namespace Solti.Utils.DI
             return Get(iface);
         }
 
-        IInjector IInjector.CreateChild()
-        {
-            //
-            // A sajat magunkat tartalmazo bejegyzesen kivul az osszes tobbi bejegyzes
-            // masolasa (szal biztos). A masolas mikentjet lasd az InjectorEntry 
-            // implementaciojaban.
-            //
-
-            return new Injector(FEntries.Values.Where(entry => entry.Interface != typeof(IInjector))).Self;
-        }
-
         IReadOnlyList<Type> IInjector.Entries => FEntries.Keys.ToArray();
         #endregion
 
-        #region IDisposable
+        #region Protected
+        protected override IInjector CreateChild()
+        {
+            return new Injector(this).Self;
+        }
+
         protected override void Dispose(bool disposeManaged)
         {
             if (disposeManaged)
@@ -389,6 +398,8 @@ namespace Solti.Utils.DI
                 FEntries.Clear();
                 FEntries = null;
             }
+
+            base.Dispose(disposeManaged);
         }
         #endregion
 

@@ -8,7 +8,7 @@ using System.Collections.Generic;
 
 namespace Solti.Utils.DI
 {
-    public interface IInjector: IDisposable
+    public interface IInjector: IComposite<IInjector>
     {
         /// <summary>
         /// Registers a new service with the given type.
@@ -35,11 +35,6 @@ namespace Solti.Utils.DI
         /// </summary>
         /// <remarks>You can call it from different threads, parallelly.</remarks>
         object Get([ParameterIs(typeof(NotNull), typeof(Interface), typeof(NotGeneric))] Type iface);
-
-        /// <summary>
-        /// Creates a child injector that inherits all the entries of its parent.
-        /// </summary>
-        IInjector CreateChild();
 
         /// <summary>
         /// Registered entries.
