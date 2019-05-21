@@ -17,6 +17,11 @@ namespace Solti.Utils.DI.Internals
         {
         }
 
+        protected void CheckDisposed()
+        {
+            if (Disposed) throw AlreadyDisposedException;
+        }
+
         ~Disposable()
         {
             Dispose(disposeManaged: false);
@@ -24,8 +29,7 @@ namespace Solti.Utils.DI.Internals
 
         void IDisposable.Dispose()
         {
-            if (Disposed)
-                throw AlreadyDisposedException;
+            CheckDisposed();
 
             Dispose(disposeManaged: true);
             GC.SuppressFinalize(this);
