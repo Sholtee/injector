@@ -7,7 +7,7 @@ using System;
 
 namespace Solti.Utils.DI.Internals
 {
-    internal sealed class InjectorEntry: ICloneable
+    internal sealed class InjectorEntry: Disposable, ICloneable
     {
         /// <summary>
         /// Peldany gyar. NULL generikus implementaciohoz tartozo es Instance() hivassal regisztralt bejegyzeseknel.
@@ -36,6 +36,8 @@ namespace Solti.Utils.DI.Internals
 
         public object Clone()
         {
+            CheckDisposed();
+
             return new InjectorEntry
             {
                 Factory        = Factory,
@@ -50,6 +52,23 @@ namespace Solti.Utils.DI.Internals
 
                 Value = Lifetime == null ? Value : null         
             };
+        }
+
+        protected override void Dispose(bool disposeManaged)
+        {
+            if (disposeManaged)
+            {
+                //
+                // Csak a Singleton eletciklusu entitasokat kell felszabaditsuk.
+                //
+
+                if (Lifetime == DI.Lifetime.Singleton)
+                {
+                    (Value as IDisposable)?.Dispose();
+                }
+            }
+
+            base.Dispose(disposeManaged);
         }
     }
 }

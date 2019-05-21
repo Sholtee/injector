@@ -388,11 +388,7 @@ namespace Solti.Utils.DI
                 FContext.Dispose();
                 FContext = null;
 
-                foreach (IDisposable disposable in FEntries
-                    .Values
-                    .Where(entry => entry.Lifetime == Lifetime.Singleton)
-                    .Select(entry => entry.Value as IDisposable)
-                    .Where(value => value != null))
+                foreach (IDisposable disposable in FEntries.Values)
                 {
                     disposable.Dispose();
                 }
