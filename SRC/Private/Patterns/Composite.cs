@@ -48,7 +48,14 @@ namespace Solti.Utils.DI.Internals
         #region Protected
         protected Composite(T parent)
         {
-            FParent = parent;
+            if ((FParent = parent) != null)
+                //
+                // Ez ne a CreateChild()-ban legyen mivel az visszaadhat proxy-t is aminek
+                // ertelem szeruen nem az lesz a referenciaja mint a "this"-nek (amit a 
+                // Dispose()-ban hasznalunk.
+                //
+
+                FParent.Children.Add(this as T);
         }
 
         protected override void Dispose(bool disposeManaged)
@@ -93,12 +100,7 @@ namespace Solti.Utils.DI.Internals
 
         ICollection<T> IComposite<T>.Children => FChildren;
 
-        T IComposite<T>.CreateChild()
-        {
-            T result = CreateChild();
-            FChildren.Add(result);
-            return result;
-        }
+        T IComposite<T>.CreateChild() { return CreateChild(); }
 
         bool IComposite<T>.IsRoot => FParent == null;
         #endregion
