@@ -11,51 +11,44 @@ using System.Diagnostics;
 
 namespace Solti.Utils.DI.Internals
 {
-    public abstract class Composite<T>: Disposable, IComposite<T> where T: class, IComposite<T>
+    public abstract class Composite<TInterface>: Disposable, IComposite<TInterface> where TInterface: class, IComposite<TInterface>
     {
         #region Private
-        private /*readonly*/ ICollection<T> FChildren = new DictionaryWrap(new ConcurrentDictionary<T, byte>());
-        private /*readonly*/ T FParent;
+        private /*readonly*/ ICollection<TInterface> FChildren = new DictionaryWrap(new ConcurrentDictionary<TInterface, byte>());
+        private /*readonly*/ TInterface FParent;
 
-        private sealed class DictionaryWrap : ICollection<T>
+        private sealed class DictionaryWrap : ICollection<TInterface>
         {
-            private readonly IDictionary<T, byte> FEntries;
+            private readonly IDictionary<TInterface, byte> FEntries;
 
-            private ICollection<T> Entries => FEntries.Keys;
+            private ICollection<TInterface> Entries => FEntries.Keys;
 
-            public DictionaryWrap(IDictionary<T, byte> entries) { FEntries = entries; }
+            public DictionaryWrap(IDictionary<TInterface, byte> entries) { FEntries = entries; }
 
-            IEnumerator<T> IEnumerable<T>.GetEnumerator() { return Entries.GetEnumerator(); }
+            IEnumerator<TInterface> IEnumerable<TInterface>.GetEnumerator() { return Entries.GetEnumerator(); }
 
             IEnumerator IEnumerable.GetEnumerator() { return Entries.GetEnumerator(); }
 
-            void ICollection<T>.Add(T item){ FEntries.Add(item, 0); }
+            void ICollection<TInterface>.Add(TInterface item){ FEntries.Add(item, 0); }
 
-            void ICollection<T>.Clear() { FEntries.Clear(); }
+            void ICollection<TInterface>.Clear() { FEntries.Clear(); }
 
-            bool ICollection<T>.Contains(T item){ return Entries.Contains(item); }
+            bool ICollection<TInterface>.Contains(TInterface item){ return Entries.Contains(item); }
 
-            void ICollection<T>.CopyTo(T[] array, int arrayIndex) { throw new NotImplementedException(); }
+            void ICollection<TInterface>.CopyTo(TInterface[] array, int arrayIndex) { throw new NotImplementedException(); }
 
-            bool ICollection<T>.Remove(T item) { return FEntries.Remove(item); }
+            bool ICollection<TInterface>.Remove(TInterface item) { return FEntries.Remove(item); }
 
-            int ICollection<T>.Count => FEntries.Count;
+            int ICollection<TInterface>.Count => FEntries.Count;
 
-            bool ICollection<T>.IsReadOnly => FEntries.IsReadOnly;
+            bool ICollection<TInterface>.IsReadOnly => FEntries.IsReadOnly;
         }
         #endregion
 
         #region Protected
-        protected Composite(T parent)
+        protected Composite(TInterface parent)
         {
-            if ((FParent = parent) != null)
-                //
-                // Ez ne a CreateChild()-ban legyen mivel az visszaadhat proxy-t is aminek
-                // ertelem szeruen nem az lesz a referenciaja mint a "this"-nek (amit a 
-                // Dispose()-ban hasznalunk.
-                //
-
-                FParent.Children.Add(this as T);
+            FParent = parent;
         }
 
         protected override void Dispose(bool disposeManaged)
@@ -63,13 +56,12 @@ namespace Solti.Utils.DI.Internals
             if (disposeManaged)
             {
                 //
-                // Kivesszuk magunkat a szulo gyerekei kozul (kiveve ha gyoker elemunk van,
-                // ott nincs szulo).
+                // Kivesszuk magunkat a szulo gyerekei kozul (kiveve ha gyoker elemunk van, ott nincs szulo).
                 //
 
                 if (FParent != null)
                 {
-                    bool removed = FParent.Children.Remove(this as T);
+                    bool removed = FParent.Children.Remove(Self);
 #if DEBUG
                     Debug.Assert(removed, "Parent does not contain this instance");
 #endif
@@ -80,7 +72,7 @@ namespace Solti.Utils.DI.Internals
                 // Osszes gyereket eltavolitjuk majd toroljuk a listat.
                 //
 
-                foreach (T child in FChildren)
+                foreach (TInterface child in FChildren)
                 {
                     child.Dispose();     
                 }
@@ -92,17 +84,31 @@ namespace Solti.Utils.DI.Internals
             base.Dispose(disposeManaged);
         }
 
-        protected abstract T CreateChild();
+        /// <summary>
+        /// Korbedolgozas h TInterface lehessen proxy.
+        /// </summary>
+        protected virtual TInterface Self => this as TInterface;
+
+        protected abstract TInterface CreateChild();
         #endregion
 
         #region IComposite
-        T IComposite<T>.Parent => FParent;
+        TInterface IComposite<TInterface>.Parent => FParent;
 
-        ICollection<T> IComposite<T>.Children => FChildren;
+        ICollection<TInterface> IComposite<TInterface>.Children => FChildren;
 
-        T IComposite<T>.CreateChild() { return CreateChild(); }
+        TInterface IComposite<TInterface>.CreateChild()
+        {
+            //
+            // Figyelem: A legyartott entitas lehet proxy (tehat nem lesz Composite<TInterface> leszarmazott).
+            //
 
-        bool IComposite<T>.IsRoot => FParent == null;
+            TInterface result = CreateChild();
+            FChildren.Add(result);
+            return result;
+        }
+
+        bool IComposite<TInterface>.IsRoot => FParent == null;
         #endregion
     }
 }

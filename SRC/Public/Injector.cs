@@ -29,11 +29,6 @@ namespace Solti.Utils.DI
         /// </summary>
         private ThreadContext Context => FContext.Value;
 
-        /// <summary>
-        /// "this" helyett hasznalando, hogy mindig a proxy-zott peldanyt adjuk vissza.
-        /// </summary>
-        private IInjector Self => (IInjector) Get(typeof(IInjector));
-
         private Injector(): this(null)
         {
         }
@@ -382,6 +377,12 @@ namespace Solti.Utils.DI
 
         protected override void Dispose(bool disposeManaged)
         {
+            //
+            // Elso helyen szerepeljen h a Self meg mukodjon az osben is.
+            //
+
+            base.Dispose(disposeManaged);
+
             if (disposeManaged)
             {
                 FContext.Dispose();
@@ -399,9 +400,12 @@ namespace Solti.Utils.DI
                 FEntries.Clear();
                 FEntries = null;
             }
-
-            base.Dispose(disposeManaged);
         }
+
+        /// <summary>
+        /// "this" helyett hasznalando, hogy mindig a proxy-zott peldanyt adjuk vissza.
+        /// </summary>
+        protected override IInjector Self => (IInjector) Get(typeof(IInjector));
         #endregion
 
         public static IInjector Create()
