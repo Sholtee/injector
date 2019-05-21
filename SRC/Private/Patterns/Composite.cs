@@ -7,8 +7,9 @@ using System;
 using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics;
 
-namespace Solti.Utils.DI
+namespace Solti.Utils.DI.Internals
 {
     public abstract class Composite<T>: Disposable, IComposite<T> where T: class, IComposite<T>
     {
@@ -61,7 +62,10 @@ namespace Solti.Utils.DI
 
                 if (FParent != null)
                 {
-                    FParent.Children.Remove(this as T);
+                    bool removed = FParent.Children.Remove(this as T);
+#if DEBUG
+                    Debug.Assert(removed, "Parent does not contain this instance");
+#endif
                     FParent = null;
                 }
 

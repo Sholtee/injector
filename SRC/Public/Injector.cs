@@ -15,6 +15,7 @@ using System.Threading;
 namespace Solti.Utils.DI
 {
     using Properties;
+    using Internals;
 
     public sealed class Injector : Composite<IInjector>, IInjector
     {

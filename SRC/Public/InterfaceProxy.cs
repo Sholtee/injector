@@ -8,6 +8,8 @@ using System.Reflection;
 
 namespace Solti.Utils.DI
 {
+    using Internals;
+
     public class InterfaceProxy<TInterface>
     {
         //

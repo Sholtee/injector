@@ -5,7 +5,7 @@
 ********************************************************************************/
 using System;
 
-namespace Solti.Utils.DI
+namespace Solti.Utils.DI.Internals
 {
     using Properties;
 
@@ -24,12 +24,15 @@ namespace Solti.Utils.DI
 
         void IDisposable.Dispose()
         {
-            if (Disposed) throw new InvalidOperationException(Resources.ALREADY_DISPOSED);
+            if (Disposed)
+                throw AlreadyDisposedException;
 
             Dispose(disposeManaged: true);
             GC.SuppressFinalize(this);
 
             Disposed = true;
         }
+
+        internal static readonly InvalidOperationException AlreadyDisposedException = new InvalidOperationException(Resources.ALREADY_DISPOSED);
     }
 }

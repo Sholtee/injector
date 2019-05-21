@@ -9,7 +9,7 @@ using NUnit.Framework;
 
 namespace Solti.Utils.InterfaceProxy.Tests
 {
-    using DI;
+    using DI.Internals;
 
     [TestFixture]
     public sealed class MethodInfoExtensionsTests

@@ -4,7 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 
-namespace Solti.Utils.DI
+namespace Solti.Utils.DI.Internals
 {
     internal interface IValidator
     {

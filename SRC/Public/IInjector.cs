@@ -8,6 +8,8 @@ using System.Collections.Generic;
 
 namespace Solti.Utils.DI
 {
+    using Internals;
+
     public interface IInjector: IComposite<IInjector>
     {
         /// <summary>

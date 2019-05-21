@@ -5,7 +5,7 @@
 ********************************************************************************/
 using System;
 
-namespace Solti.Utils.DI
+namespace Solti.Utils.DI.Internals
 {
     internal sealed class NotNull: Validator<object>
     {

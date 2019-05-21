@@ -6,7 +6,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Solti.Utils.DI
+namespace Solti.Utils.DI.Internals
 {
     internal sealed class ThreadContext
     {

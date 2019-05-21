@@ -6,7 +6,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace Solti.Utils.DI
+namespace Solti.Utils.DI.Internals
 {
     internal sealed class ParameterValidator<TInterface> : InterfaceProxy<TInterface>
     {

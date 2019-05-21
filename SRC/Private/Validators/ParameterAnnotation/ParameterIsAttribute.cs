@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace Solti.Utils.DI
+namespace Solti.Utils.DI.Internals
 {
     [AttributeUsage(AttributeTargets.Parameter, AllowMultiple = false)]
     internal sealed class ParameterIsAttribute: Attribute

@@ -6,7 +6,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Solti.Utils.DI
+namespace Solti.Utils.DI.Internals
 {
     public interface IComposite<T>: IDisposable where T : IComposite<T>
     {

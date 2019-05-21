@@ -9,7 +9,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 
-namespace Solti.Utils.DI
+namespace Solti.Utils.DI.Internals
 {
     internal static class MethodInfoExtensions
     {
