@@ -4,12 +4,15 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Linq;
 
 using Moq;
 using NUnit.Framework;
 
 namespace Solti.Utils.DI.Tests
 {
+    using Internals;
+
     [TestFixture]
     public sealed partial class InjectorTests
     {
@@ -66,6 +69,39 @@ namespace Solti.Utils.DI.Tests
             }
 
             mockInstance.Verify(i => i.Dispose(), Times.Never);
+        }
+
+        [Test]
+        public void Injector_ShouldKeepUpToDateTheChildrenList()
+        {
+            Assert.That(Injector.Children, Is.Empty);
+
+            using (IInjector child = Injector.CreateChild())
+            {
+                Assert.That(Injector.Children.Count, Is.EqualTo(1));
+                Assert.AreSame(Injector.Children.First(), child);
+            }
+
+            Assert.That(Injector.Children, Is.Empty);
+        }
+
+        [Test]
+        public void Injector_DisposeShouldDisposeChildInjectorAndItsEntries()
+        {
+            IInjector grandChild;
+            IDisposable singleton;
+            
+            using (IInjector child = Injector.CreateChild())
+            {
+                grandChild = child.CreateChild().Service<IDisposable, Disposable>(Lifetime.Singleton);
+                singleton  = grandChild.Get<IDisposable>();
+            }
+
+            var err = Assert.Throws<InvalidOperationException>(grandChild.Dispose);
+            Assert.AreSame(err, Disposable.AlreadyDisposedException);
+
+            err = Assert.Throws<InvalidOperationException>(singleton.Dispose);
+            Assert.AreSame(err, Disposable.AlreadyDisposedException);
         }
     }
 }
