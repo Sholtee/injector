@@ -30,7 +30,7 @@ namespace Solti.Utils.DI
         /// <summary>
         /// Registers a pre-created instance.
         /// </summary>
-        IInjector Instance([ParameterIs(typeof(NotNull), typeof(Interface))] Type iface, [ParameterIs(typeof(NotNull))] object instance);
+        IInjector Instance([ParameterIs(typeof(NotNull), typeof(Interface))] Type iface, [ParameterIs(typeof(NotNull))] object instance, bool releaseOnDispose = true);
 
         /// <summary>
         /// Resolves a dependency.

@@ -57,7 +57,7 @@ namespace Solti.Utils.DI
             // Felvesszuk sajat magunkat.
             //
 
-            Instance(typeof(IInjector), new ParameterValidatorProxy<IInjector>(this).Proxy);
+            Instance(typeof(IInjector), new ParameterValidatorProxy<IInjector>(this).Proxy, releaseOnDispose: false);
         }
 
         private Func<Type, object> CreateFactory(ConstructorInfo constructor)
@@ -208,7 +208,7 @@ namespace Solti.Utils.DI
             return entry;
         }
 
-        internal InjectorEntry Instance(Type iface, object instance)
+        internal InjectorEntry Instance(Type iface, object instance, bool releaseOnDispose)
         {
             Type instanceType = instance.GetType();
 
@@ -218,7 +218,14 @@ namespace Solti.Utils.DI
             return Register(new InjectorEntry
             {
                 Interface = iface,
-                Value     = instance
+                Value     = instance,
+
+                //
+                // Ha kezelni kell a peldany elettartamat akkor innentol ugyanugy viselkedunk mint
+                // egy mar legyartott Singleton eseten.
+                //
+
+                Lifetime  = releaseOnDispose ? Lifetime.Singleton : (Lifetime?) null
             });
         }
 
@@ -294,9 +301,9 @@ namespace Solti.Utils.DI
             return Self;
         }
 
-        IInjector IInjector.Instance(Type iface, object instance)
+        IInjector IInjector.Instance(Type iface, object instance, bool releaseOnDispose)
         {
-            Instance(iface, instance);
+            Instance(iface, instance, releaseOnDispose);
             return Self;
         }
 

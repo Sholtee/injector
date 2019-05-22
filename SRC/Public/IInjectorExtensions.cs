@@ -36,9 +36,9 @@ namespace Solti.Utils.DI
         /// <summary>
         /// Registers a pre-created instance.
         /// </summary>
-        public static IInjector Instance<TInterface>(this IInjector self, TInterface instance)
+        public static IInjector Instance<TInterface>(this IInjector self, TInterface instance, bool releaseOnDispose = true)
         {
-            return self.Instance(typeof(TInterface), instance);
+            return self.Instance(typeof(TInterface), instance, releaseOnDispose);
         }
 
         /// <summary>
