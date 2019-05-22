@@ -62,9 +62,7 @@ namespace Solti.Utils.DI.Internals
                 if (FParent != null)
                 {
                     bool removed = FParent.Children.Remove(Self);
-#if DEBUG
                     Debug.Assert(removed, "Parent does not contain this instance");
-#endif
                     FParent = null;
                 }
 
