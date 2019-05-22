@@ -166,10 +166,6 @@ namespace Solti.Utils.DI
             //
 
             if (entry.Factory != null) return entry;
-#if DEBUG
-            Debug.Assert(entry.Implementation != null && entry.Implementation.IsGenericTypeDefinition, "Not a generic type definition");
-            Debug.Assert(entry.Lifetime != null, "Lifetime is NULL");
-#endif
             try
             {
                 //
@@ -267,9 +263,7 @@ namespace Solti.Utils.DI
             finally
             {
                 Type removed = CurrentPath.Pop();
-#if DEBUG
                 Debug.Assert(removed == iface);
-#endif
             }
         }
         #endregion
