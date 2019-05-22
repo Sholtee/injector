@@ -60,23 +60,28 @@ namespace Solti.Utils.DI
             Instance(typeof(IInjector), new ParameterValidatorProxy<IInjector>(this).Proxy, releaseOnDispose: false);
         }
 
-        private Func<Type, object> CreateFactory(ConstructorInfo constructor)
+        private static readonly MethodInfo IfaceGet = ((MethodCallExpression) ((Expression<Action<IInjector>>) (injector => injector.Get(null))).Body).Method;
+
+        private Func<IInjector, Type, object> CreateFactory(ConstructorInfo constructor)
         {
             //
-            // type => (IService) new Service((IDependency_1) Get("dependency_1"), (IDependency_2) Get("dependency_2"), ...)
+            // (injector, type) => (IService) new Service((IDependency_1) injector.Get(typeof(IDependency_1)), ...)
             //
 
-            return Expression.Lambda<Func<Type, object>>
+            ParameterExpression injector = Expression.Parameter(typeof(IInjector), "injector");
+
+            return Expression.Lambda<Func<IInjector, Type, object>>
             (
                 Expression.New
                 (
                     constructor,
                     constructor.GetParameters().Select(para => Expression.Convert
                     (
-                        Expression.Call(Expression.Constant(this), ((Func<Type, object>) (Get)).Method, Expression.Constant(para.ParameterType)),
+                        Expression.Call(injector, IfaceGet, Expression.Constant(para.ParameterType)),
                         para.ParameterType
                     ))
                 ),
+                injector,
 
                 //
                 // Csak azert kell h a legyartott factory layout-ja stimmeljen.
@@ -138,7 +143,7 @@ namespace Solti.Utils.DI
             });
         }
 
-        internal InjectorEntry Factory(Type iface, Func<Type, object> factory, Lifetime? lifetime)
+        internal InjectorEntry Factory(Type iface, Func<IInjector, Type, object> factory, Lifetime? lifetime)
         {
             return Register(new InjectorEntry
             {
@@ -184,32 +189,35 @@ namespace Solti.Utils.DI
             }            
         }
 
-        internal InjectorEntry Proxy(Type iface, Func<Type, object, object> decorator)
+        internal InjectorEntry Proxy(Type iface, Func<IInjector, Type, object, object> decorator)
         {
             //
             // Instance() hivassal felvett ertek vagy generikus szerviz eseten a metodus nem ertelmezett.
             //
 
             InjectorEntry entry = GetEntry(iface);
+
             if (entry.Factory == null)
                 throw new InvalidOperationException(Resources.CANT_PROXY);
 
-            lock (entry) // igazabol ez nem is kene, de biztos ami tuti
-            {
-                Func<Type, object> oldFactory = entry.Factory;
+            //
+            // Lock igazabol nem is kene, csak kis paranoia.
+            //
 
-                entry.Factory = type => decorator(type, oldFactory(type));
+            lock (entry)
+            {
+                Func<IInjector, Type, object> oldFactory = entry.Factory;
+
+                entry.Factory = (injector, type) => decorator(injector, type, oldFactory(injector, type));
             }
 
             return entry;
         }
 
         internal InjectorEntry Instance(Type iface, object instance, bool releaseOnDispose)
-        {
-            Type instanceType = instance.GetType();
-
-            if (!iface.IsInterfaceOf(instanceType))
-                throw new InvalidOperationException(string.Format(Resources.NOT_ASSIGNABLE, iface, instanceType));
+        { 
+            if (!iface.IsInstanceOfType(instance))
+                throw new InvalidOperationException(string.Format(Resources.NOT_ASSIGNABLE, iface, instance.GetType()));
 
             return Register(new InjectorEntry
             {
@@ -251,14 +259,14 @@ namespace Solti.Utils.DI
 
                     lock (entry)
                         if (entry.Value == null)
-                            return entry.Value = entry.Factory(iface);
+                            return entry.Value = entry.Factory(Self, iface);
 
                 //
                 // Elvileg jok vagyunk: Ha van "Value"-nk ("Singleton" eletciklus vagy Instance() hivas) 
                 // akkor visszaadjuk azt, kulomben legyartjuk az uj peldanyt.
                 //
 
-                return entry.Value ?? entry.Factory(iface);
+                return entry.Value ?? entry.Factory(Self, iface);
             }
             finally
             {
@@ -277,9 +285,12 @@ namespace Solti.Utils.DI
 
         IInjector IInjector.Factory(Type iface, Func<IInjector, Type, object> factory, Lifetime lifetime)
         {
-            object TypeChecked(Type type)
+            Factory(iface, TypeChecked, lifetime);
+            return Self;
+
+            object TypeChecked(IInjector injector, Type type)
             {
-                object instance = factory(Self, type);
+                object instance = factory(injector, type);
 
                 //
                 // A letrhozott peldany tipusat ellenorizzuk.
@@ -290,9 +301,6 @@ namespace Solti.Utils.DI
 
                 return instance;
             }
-
-            Factory(iface, TypeChecked, lifetime);
-            return Self;
         }
 
         IInjector IInjector.Instance(Type iface, object instance, bool releaseOnDispose)
@@ -303,9 +311,12 @@ namespace Solti.Utils.DI
 
         IInjector IInjector.Proxy(Type iface, Func<IInjector, Type, object, object> decorator)
         {
-            object TypeChecked(Type type, object inst)
+            Proxy(iface, TypeChecked);
+            return Self;
+
+            object TypeChecked(IInjector injector, Type type, object inst)
             {
-                inst = decorator(Self, type, inst);
+                inst = decorator(injector, type, inst);
 
                 //
                 // A letrhozott peldany tipusat ellenorizzuk. 
@@ -316,9 +327,6 @@ namespace Solti.Utils.DI
 
                 return inst;
             }
-
-            Proxy(iface, TypeChecked);
-            return Self;
         }
 
         object IInjector.Get(Type iface)

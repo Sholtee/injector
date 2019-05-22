@@ -76,5 +76,26 @@ namespace Solti.Utils.DI.Tests
             Assert.AreSame(child, child.Get<IInjector>());
             Assert.AreNotSame(Injector, child);
         }
+
+        [Test]
+        public void Injector_ChildShouldPassItselfToItsFactories()
+        {
+            Injector
+                .Service<IInterface_1, Implementation_1>()
+                .Service<IInterface_2, Implementation_2>();
+
+            using (IInjector child = Injector.CreateChild())
+            {
+                child.Proxy<IInterface_1>((injector, type) =>
+                {
+                    Assert.AreSame(injector, child);
+
+                    return new DecoratedImplementation_1();
+                });
+
+                Assert.That(Injector.Get<IInterface_2>().Interface1, Is.InstanceOf<Implementation_1>());
+                Assert.That(child.Get<IInterface_2>().Interface1, Is.InstanceOf<DecoratedImplementation_1>());
+            }
+        }
     }
 }

@@ -12,7 +12,7 @@ namespace Solti.Utils.DI.Internals
         /// <summary>
         /// Peldany gyar. NULL generikus implementaciohoz tartozo es Instance() hivassal regisztralt bejegyzeseknel.
         /// </summary>
-        public Func<Type, object> Factory { get; set; }
+        public Func<IInjector, Type, object> Factory { get; set; }
 
         /// <summary>
         /// A letrehozando peldany elettartama. NULL Instance() hivassal regisztralt bejegyzeseknel.
