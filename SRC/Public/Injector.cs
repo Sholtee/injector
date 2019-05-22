@@ -24,10 +24,7 @@ namespace Solti.Utils.DI
 
         private /*readonly*/ ThreadLocal<ThreadContext> FContext;
 
-        /// <summary>
-        /// Az aktualis szal kontextusa.
-        /// </summary>
-        private ThreadContext Context => FContext.Value;
+        private Stack<Type> CurrentPath => FContext.Value.CurrentPath;
 
         private Injector(): this(null)
         {
@@ -54,10 +51,7 @@ namespace Solti.Utils.DI
 
             FEntries = new ConcurrentDictionary<Type, InjectorEntry>(entriesToCopy);
 
-            FContext = new ThreadLocal<ThreadContext>(() => new ThreadContext
-            {
-                CurrentPath = new Type[0]
-            }, trackAllValues: false);
+            FContext = new ThreadLocal<ThreadContext>(() => new ThreadContext(), trackAllValues: false);
 
             //
             // Felvesszuk sajat magunkat.
@@ -270,26 +264,28 @@ namespace Solti.Utils.DI
 
         internal object Get(Type iface)
         {
-            IReadOnlyList<Type> oldPath = Context.CurrentPath;
+            CurrentPath.Push(iface);
             try
             {
                 //
-                // Miutan az utvonalat bovitettuk az aktualis interface-el a tipus csak 
-                // egyszer szerpelhet a listaban. Kulomben korkoros referencia.
+                // Ha egynel tobbszor szerepel az aktualis interface akkor korkoros referenciank van.
                 //
-
-                IReadOnlyList<Type> currentPath = Context.CurrentPath = new List<Type>(oldPath) {iface};
-                if (currentPath.Count(t => t == iface) > 1)
-                    throw new InvalidOperationException(string.Format(Resources.CIRCULAR_REFERENCE, string.Join(" -> ", currentPath)));
+                
+                if (CurrentPath.Count(t => t == iface) > 1)
+                    throw new InvalidOperationException(string.Format(Resources.CIRCULAR_REFERENCE, string.Join(" -> ", CurrentPath)));
 
                 //
-                // Ha singleton eletciklusunk van akkor ha meg eddig nem volt akkor le kell 
-                // gyartanunk a peldanyt.
+                // Bejegyzes lekerdezes.
                 //
 
                 InjectorEntry entry = GetEntry(iface);
 
                 if (entry.Lifetime == Lifetime.Singleton && entry.Value == null)
+                    //
+                    // Ha singleton eletciklusunk van es eddig meg nem volt akkor le kell 
+                    // gyartanunk a peldanyt.
+                    //
+
                     lock (entry)
                         if (entry.Value == null)
                             return entry.Value = entry.Factory(iface);
@@ -303,7 +299,10 @@ namespace Solti.Utils.DI
             }
             finally
             {
-                Context.CurrentPath = oldPath;
+                Type removed = CurrentPath.Pop();
+#if DEBUG
+                Debug.Assert(removed == iface);
+#endif
             }
         }
         #endregion

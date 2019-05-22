@@ -10,6 +10,11 @@ namespace Solti.Utils.DI.Internals
 {
     internal sealed class ThreadContext
     {
-        public IReadOnlyList<Type> CurrentPath { get; set; }
+        public Stack<Type> CurrentPath { get; }
+
+        public ThreadContext()
+        {
+            CurrentPath = new Stack<Type>();
+        }
     }
 }
