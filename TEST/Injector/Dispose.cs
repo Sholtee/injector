@@ -55,8 +55,9 @@ namespace Solti.Utils.DI.Tests
             mockTransient.Verify(t => t.Dispose(), Times.Never);
         }
 
-        [Test]
-        public void Injector_DisposeShouldNotFreeInstances()
+        [TestCase(true)]
+        [TestCase(false)]
+        public void Injector_DisposeShouldFreeInstancesIfReleaseOnDisposeSetToTrue(bool releaseOnDispose)
         {
             var mockInstance = new Mock<IInterface_1_Disaposable>(MockBehavior.Strict);
             mockInstance.Setup(i => i.Dispose());
@@ -64,11 +65,11 @@ namespace Solti.Utils.DI.Tests
             using (IInjector child = Injector.CreateChild())
             {
                 child
-                    .Instance(mockInstance.Object)
+                    .Instance(mockInstance.Object, releaseOnDispose)
                     .Get<IInterface_1_Disaposable>();
             }
 
-            mockInstance.Verify(i => i.Dispose(), Times.Never);
+            mockInstance.Verify(i => i.Dispose(), releaseOnDispose ? Times.Once : (Func<Times>) Times.Never);
         }
 
         [Test]
