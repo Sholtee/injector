@@ -60,46 +60,6 @@ namespace Solti.Utils.DI
             Instance(typeof(IInjector), new ParameterValidatorProxy<IInjector>(this).Proxy);
         }
 
-        private static bool IsAssignableFrom(Type iface, Type implementation)
-        {
-            //
-            // Az IsAssignableFrom() csak nem generikus tipusokra mukodik (nem szamit
-            // h a tipus mar tipizalva lett e v sem).
-            //
-
-            if (iface.IsAssignableFrom(implementation))
-                return true;
-
-            //
-            // Innentol csak akkor kell tovabb mennunk ha mindket tipusunk generikus.
-            //
-
-            if (!iface.IsGenericType || !implementation.IsGenericType)
-                return false;
-
-            //
-            // "List<> -> IList<>"
-            //
-
-            if (iface.IsGenericTypeDefinition && implementation.IsGenericTypeDefinition)
-                return implementation.GetInterfaces().Where(i => i.IsGenericType).Any(i => i.GetGenericTypeDefinition() == iface);
-
-            //
-            // "List<T> -> IList<T>"
-            //
-
-            if (!iface.IsGenericTypeDefinition && !implementation.IsGenericTypeDefinition)
-                return
-                    iface.GetGenericArguments().SequenceEqual(implementation.GetGenericArguments()) &&
-                    IsAssignableFrom(iface.GetGenericTypeDefinition(), implementation.GetGenericTypeDefinition());
-
-            //
-            // "List<T> -> IList<>", "List<> -> IList<T>"
-            //
-
-            return false;
-        }
-
         private Func<Type, object> CreateFactory(ConstructorInfo constructor)
         {
             //
@@ -148,7 +108,7 @@ namespace Solti.Utils.DI
         #region Internal
         internal InjectorEntry Service(Type iface, Type implementation, Lifetime? lifetime)
         {
-            if (!IsAssignableFrom(iface, implementation))
+            if (!iface.IsInterfaceOf(implementation))
                 throw new InvalidOperationException(string.Format(Resources.NOT_ASSIGNABLE, iface, implementation));
 
             //
@@ -252,7 +212,7 @@ namespace Solti.Utils.DI
         {
             Type instanceType = instance.GetType();
 
-            if (!IsAssignableFrom(iface, instanceType))
+            if (!iface.IsInterfaceOf(instanceType))
                 throw new InvalidOperationException(string.Format(Resources.NOT_ASSIGNABLE, iface, instanceType));
 
             return Register(new InjectorEntry
