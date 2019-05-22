@@ -31,9 +31,8 @@ namespace Solti.Utils.DI
                 TInterface result = Create<TInterface, Dispatcher>();
 
                 Dispatcher dispatcher = result as Dispatcher;
-#if DEBUG
                 Debug.Assert(dispatcher != null);
-#endif
+
                 dispatcher.Parent = parent;
 
                 return result;
