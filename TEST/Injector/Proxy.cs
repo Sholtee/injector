@@ -5,6 +5,7 @@
 ********************************************************************************/
 using System;
 
+using Moq;
 using NUnit.Framework;
 
 namespace Solti.Utils.DI.Tests
@@ -59,7 +60,7 @@ namespace Solti.Utils.DI.Tests
         }
 
         [Test]
-        public void Injector_Proxy_ShouldWorkWithGenericTypes()
+        public void Injector_Proxy_ShouldWorkWithGenericServices()
         {
             int callCount = 0;
 
@@ -80,6 +81,27 @@ namespace Solti.Utils.DI.Tests
             
             Assert.That(instance, Is.InstanceOf<DecoratedImplementation_3<int>>());
             Assert.That(callCount, Is.EqualTo(1));
+        }
+
+        [Test]
+        public void Injector_ProxyShouldWorkWithLazyServices()
+        {
+            var mockResolver = new Mock<IResolver>(MockBehavior.Strict);
+            mockResolver
+                .Setup(r => r.Resolve(It.Is<Type>(t => t == typeof(IInterface_1))))
+                .Returns(typeof(Implementation_1));
+
+            Injector
+                .Lazy<IInterface_1>(mockResolver.Object)
+                .Proxy<IInterface_1>((injector, inst) => new DecoratedImplementation_1());
+
+            //
+            // Az elso Get()-eleskor kell hivja a rendszer a resolver-t
+            //
+
+            mockResolver.Verify(r => r.Resolve(It.Is<Type>(t => t == typeof(IInterface_1))), Times.Never);
+
+            Assert.That(Injector.Get<IInterface_1>(), Is.InstanceOf<DecoratedImplementation_1>());
         }
 
         [Test]

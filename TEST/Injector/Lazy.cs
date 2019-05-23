@@ -26,10 +26,20 @@ namespace Solti.Utils.DI.Tests
 
             Injector.Lazy<IInterface_1>(mockResolver.Object, lifetime);
 
+            //
+            // Az elso Get()-eleskor kell hivja a rendszer a resolver-t
+            //
+
+            mockResolver.Verify(r => r.Resolve(It.Is<Type>(t => t == typeof(IInterface_1))), Times.Never);
             var instance = Injector.Get<IInterface_1>();
-            
+            mockResolver.Verify(r => r.Resolve(It.Is<Type>(t => t == typeof(IInterface_1))), Times.Once);
+
             Assert.That(instance, Is.InstanceOf<Implementation_1>());
             (lifetime == Lifetime.Singleton ? Assert.AreSame : (Action<object, object>) Assert.AreNotSame)(instance, Injector.Get<IInterface_1>());
+
+            //
+            // De csak is egyszer.
+            //
 
             mockResolver.Verify(r => r.Resolve(It.Is<Type>(t => t == typeof(IInterface_1))), Times.Once);
         }
