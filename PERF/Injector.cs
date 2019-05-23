@@ -86,7 +86,7 @@ namespace Solti.Utils.DI.Perf
             {
                 using (IInjector child = injector.CreateChild())
                 {
-                    IInterface_3<string> iface = injector.Get<IInterface_3<string>>();
+                    IInterface_3<string> iface = child.Get<IInterface_3<string>>();
                 }  
             }
         }
