@@ -4,9 +4,6 @@ namespace Solti.Utils.DI.Perf
 {
     class Program
     {
-        static void Main()
-        {
-            BenchmarkRunner.Run<InterfaceProxy>();
-        }
+        static void Main(string[] args) => BenchmarkSwitcher.FromAssembly(typeof(Program).Assembly).Run(args);
     }
 }

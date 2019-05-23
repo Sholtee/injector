@@ -23,10 +23,7 @@ namespace Solti.Utils.DI.Perf
 
         public class Implementation : IInterface
         {
-            int IInterface.DoSomething(string param)
-            {
-                return 0;
-            }
+            int IInterface.DoSomething(string param) => 0;
         }
 
         [GlobalSetup(Target = nameof(InterfaceProxy))]
