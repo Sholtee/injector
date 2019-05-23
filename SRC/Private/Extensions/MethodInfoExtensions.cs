@@ -15,11 +15,8 @@ namespace Solti.Utils.DI.Internals
     {
         private static readonly ConcurrentDictionary<MethodInfo, Func<object, object[], object>> FCache = new ConcurrentDictionary<MethodInfo, Func<object, object[], object>>();
 
-        public static bool MethodRegistered(MethodInfo method)
-        {
-            return FCache.ContainsKey(method);
-        }
-
+        public static bool MethodRegistered(MethodInfo method) => FCache.ContainsKey(method);
+     
         public static object FastInvoke(this MethodInfo method, object target, params object[] args)
         {
             //
