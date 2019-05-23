@@ -21,11 +21,8 @@ namespace Solti.Utils.DI
         {
             private InterfaceProxy<TInterface> Parent { get; set; }
 
-            protected sealed override object Invoke(MethodInfo targetMethod, object[] args)
-            {
-                return Parent.Invoke(targetMethod, args);
-            }
-
+            protected sealed override object Invoke(MethodInfo targetMethod, object[] args) => Parent.Invoke(targetMethod, args);
+           
             public static TInterface Create(InterfaceProxy<TInterface> parent)
             {
                 TInterface result = Create<TInterface, Dispatcher>();
@@ -49,9 +46,6 @@ namespace Solti.Utils.DI
             Proxy  = Dispatcher.Create(this);
         }
 
-        protected virtual object Invoke(MethodInfo targetMethod, object[] args)
-        {
-            return targetMethod.FastInvoke(Target, args);
-        }
+        protected virtual object Invoke(MethodInfo targetMethod, object[] args) => targetMethod.FastInvoke(Target, args);     
     }
 }
