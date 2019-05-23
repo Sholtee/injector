@@ -108,6 +108,18 @@ namespace Solti.Utils.DI
                 throw new ServiceAlreadyRegisteredException(entry.Interface, e);
             }                      
         }
+
+        private static object TypeChecked(IInjector injector, Type type, object inst)
+        {
+            //
+            // A letrhozott peldany tipusat ellenorizzuk. 
+            //
+
+            if (!type.IsInstanceOfType(inst))
+                throw new Exception(string.Format(Resources.INVALID_TYPE, type));
+
+            return inst;
+        }
         #endregion
 
         #region Internal
@@ -276,22 +288,15 @@ namespace Solti.Utils.DI
 
         IInjector IInjector.Factory(Type iface, Func<IInjector, Type, object> factory, Lifetime lifetime)
         {
-            Factory(iface, TypeChecked, lifetime);
+            Factory(iface, factory, lifetime);
+
+            //
+            // A visszaadott peldany tipusat meg ellenorizni kell.
+            //
+
+            Proxy(iface, TypeChecked);
+
             return Self;
-
-            object TypeChecked(IInjector injector, Type type)
-            {
-                object instance = factory(injector, type);
-
-                //
-                // A letrhozott peldany tipusat ellenorizzuk.
-                //
-
-                if (!type.IsInstanceOfType(instance))
-                    throw new Exception(string.Format(Resources.INVALID_TYPE, type));
-
-                return instance;
-            }
         }
 
         IInjector IInjector.Instance(Type iface, object instance, bool releaseOnDispose)
@@ -302,22 +307,15 @@ namespace Solti.Utils.DI
 
         IInjector IInjector.Proxy(Type iface, Func<IInjector, Type, object, object> decorator)
         {
+            Proxy(iface, decorator);
+
+            //
+            // A visszaadott peldany tipusat meg ellenorizni kell.
+            //
+
             Proxy(iface, TypeChecked);
+
             return Self;
-
-            object TypeChecked(IInjector injector, Type type, object inst)
-            {
-                inst = decorator(injector, type, inst);
-
-                //
-                // A letrhozott peldany tipusat ellenorizzuk. 
-                //
-
-                if (!type.IsInstanceOfType(inst))
-                    throw new Exception(string.Format(Resources.INVALID_TYPE, type));
-
-                return inst;
-            }
         }
 
         object IInjector.Get(Type iface)
