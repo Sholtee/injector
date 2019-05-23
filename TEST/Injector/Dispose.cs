@@ -104,5 +104,26 @@ namespace Solti.Utils.DI.Tests
             err = Assert.Throws<InvalidOperationException>(singleton.Dispose);
             Assert.AreSame(err, Disposable.AlreadyDisposedException);
         }
+
+        [Test]
+        public void Injector_ShouldNotDisposeInheritedInstances()
+        {
+            var mockInstance = new Mock<IInterface_1_Disaposable>(MockBehavior.Strict);
+            mockInstance.Setup(i => i.Dispose());
+
+            using (IInjector child = Injector.CreateChild())
+            {
+                child.Instance(mockInstance.Object, releaseOnDispose: true);
+
+                using (IInjector grandChild = child.CreateChild())
+                {
+                    Assert.AreSame(mockInstance.Object, grandChild.Get<IInterface_1_Disaposable>());                   
+                }
+
+                mockInstance.Verify(i => i.Dispose(), Times.Never);
+            }
+
+            mockInstance.Verify(i => i.Dispose(), Times.Once);
+        }
     }
 }

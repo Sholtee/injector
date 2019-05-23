@@ -10,12 +10,12 @@ namespace Solti.Utils.DI.Internals
     internal sealed class InjectorEntry: Disposable, ICloneable
     {
         /// <summary>
-        /// Peldany gyar. NULL generikus implementaciohoz tartozo es Instance() hivassal regisztralt bejegyzeseknel.
+        /// Peldany gyar. Generikus implementacional (nem feltetlen) es Instance() hivasnal (biztosan) NULL.
         /// </summary>
         public Func<IInjector, Type, object> Factory { get; set; }
 
         /// <summary>
-        /// A letrehozando peldany elettartama. NULL Instance() hivassal regisztralt bejegyzeseknel.
+        /// A letrehozando peldany elettartama. NULL Instance(releaseOnDispose: false) hivassal regisztralt bejegyzeseknel.
         /// </summary>
         public Lifetime? Lifetime { get; set; }
 
@@ -25,7 +25,7 @@ namespace Solti.Utils.DI.Internals
         public Type Interface { get; set; }
 
         /// <summary>
-        /// Az interface implementacioja. NULL Factory() es Instance() hivassal regisztralt bejegyzeseknel.
+        /// Az interface implementacioja (lehet generikus). Nem NULL szervizek eseten.
         /// </summary>
         public Type Implementation { get; set; }
 
@@ -33,6 +33,12 @@ namespace Solti.Utils.DI.Internals
         /// Legyartott (Lifetime.Singleton eseten) vagy kivulrol definialt (Instance() hivas) peldany, kulomben NULL. 
         /// </summary>
         public object Value { get; set; }
+
+        public bool IsService => Implementation != null;
+
+        public bool IsFactory => Implementation == null && Factory != null;
+
+        public bool IsInstance => Implementation == null && Factory == null && Value != null;
 
         public object Clone()
         {
@@ -43,14 +49,22 @@ namespace Solti.Utils.DI.Internals
                 Factory        = Factory,
                 Implementation = Implementation,
                 Interface      = Interface,
-                Lifetime       = Lifetime,
+
+                //
+                // Ha a peldany regisztralasakor a "releaseOnDispose" igazra volt allitva akkor
+                // a peldany is lehet Singleton. Viszont mi nem akarjuk h a gyermek injektor
+                // felszabadatisasakor is felszabaditasra keruljon a peldany ezert az elettartamot
+                // nem masoljuk.
+                //
+
+                Lifetime = IsInstance ? null : Lifetime,
 
                 //
                 // Az ertekek keruljenek ujra legyartasra kiveve ha Instance() hivassal
                 // kerultek regisztralasra.
                 //
 
-                Value = Lifetime == null ? Value : null         
+                Value = IsInstance ? Value : null         
             };
         }
 
