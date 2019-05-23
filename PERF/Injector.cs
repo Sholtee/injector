@@ -48,16 +48,21 @@ namespace Solti.Utils.DI.Perf
         [GlobalSetup(Target = nameof(Injector))]
         public void Setup()
         {
-            injector = DI.Injector.Create();
-
-            injector
+            injector = DI.Injector.Create()
                 .Service<IInterface_1, Implementation_1>()
                 .Service(typeof(IInterface_2<>), typeof(Implementation_2<>))
                 .Service<IInterface_3<string>, Implementation_3<string>>();
         }
 
+        [GlobalCleanup]
+        public void Cleanup()
+        {
+            injector.Dispose();
+            injector = null;
+        }
+
         [Benchmark(Baseline = true, OperationsPerInvoke = OperationsPerInvoke)]
-        public void ThereIsNoInjector()
+        public void NoInjector()
         {
             for (int i = 0; i < OperationsPerInvoke; i++)
             {
@@ -66,11 +71,23 @@ namespace Solti.Utils.DI.Perf
         }
 
         [Benchmark(OperationsPerInvoke = OperationsPerInvoke)]
-        public void ThereIsInjector()
+        public void RootInjector()
         {
             for (int i = 0; i < OperationsPerInvoke; i++)
             {
                 IInterface_3<string> iface = injector.Get<IInterface_3<string>>();
+            }
+        }
+
+        [Benchmark(OperationsPerInvoke = OperationsPerInvoke)]
+        public void ChildInjector()
+        {
+            for (int i = 0; i < OperationsPerInvoke; i++)
+            {
+                using (IInjector child = injector.CreateChild())
+                {
+                    IInterface_3<string> iface = injector.Get<IInterface_3<string>>();
+                }  
             }
         }
     }
