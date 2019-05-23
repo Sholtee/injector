@@ -33,7 +33,7 @@ namespace Solti.Utils.DI.Tests
             var instance = Injector.Get<IInterface_3<int>>();
 
             Assert.That(instance, Is.InstanceOf<Implementation_3<int>>());
-            (lifetime == Lifetime.Singleton ? Assert.AreSame : ((Action<object, object>) Assert.AreNotSame))(instance, Injector.Get<IInterface_3<int>>());
+            (lifetime == Lifetime.Singleton ? Assert.AreSame : (Action<object, object>) Assert.AreNotSame)(instance, Injector.Get<IInterface_3<int>>());
         }
 
         [Test]

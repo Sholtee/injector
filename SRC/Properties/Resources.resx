@@ -145,7 +145,7 @@
     <value>The returned object should be an instance of "{0}".</value>
   </data>
   <data name="MULTIPLE_ASSIGN" xml:space="preserve">
-    <value>Value can be assigned only once.</value>
+    <value>Property can be assigned only once.</value>
   </data>
   <data name="NOT_AN_INTERFACE" xml:space="preserve">
     <value>Parameter must be an interface.</value>

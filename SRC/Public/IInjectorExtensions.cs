@@ -18,6 +18,14 @@ namespace Solti.Utils.DI
         }
 
         /// <summary>
+        /// Registers a service where the implementation will be resolved on the first request.
+        /// </summary>
+        public static IInjector Lazy<TInterface>(this IInjector self, IResolver resolver, Lifetime lifetime = Lifetime.Transient)
+        {
+            return self.Lazy(typeof(TInterface), resolver, lifetime);
+        }
+
+        /// <summary>
         /// Registers a new service factory with the given type.
         /// </summary>
         public static IInjector Factory<TInterface>(this IInjector self, Func<IInjector, TInterface> factory, Lifetime lifetime = Lifetime.Transient)

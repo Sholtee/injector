@@ -109,7 +109,7 @@ namespace Solti.Utils.DI
             }                      
         }
 
-        private static object TypeChecked(IInjector injector, Type type, object inst)
+        private static object TypeChecker(IInjector injector, Type type, object inst)
         {
             //
             // A letrhozott peldany tipusat ellenorizzuk. 
@@ -120,10 +120,8 @@ namespace Solti.Utils.DI
 
             return inst;
         }
-        #endregion
 
-        #region Internal
-        internal InjectorEntry Service(Type iface, Type implementation, Lifetime? lifetime)
+        private static ConstructorInfo ValidateImplementation(Type iface, Type implementation)
         {
             if (!iface.IsInterfaceOf(implementation))
                 throw new InvalidOperationException(string.Format(Resources.NOT_ASSIGNABLE, iface, implementation));
@@ -136,6 +134,15 @@ namespace Solti.Utils.DI
             if (constructors.Count > 1)
                 throw new NotSupportedException(string.Format(Resources.CONSTRUCTOR_OVERLOADING_NOT_SUPPORTED, implementation));
 
+            return constructors[0];
+        }
+        #endregion
+
+        #region Internal
+        internal InjectorEntry Service(Type iface, Type implementation, Lifetime? lifetime)
+        {
+            ConstructorInfo constructor = ValidateImplementation(iface, implementation);
+
             //
             // Bejegyzes felvetele.
             //
@@ -147,7 +154,7 @@ namespace Solti.Utils.DI
                 // legyartani a factory-t.
                 //
 
-                Factory = !iface.IsGenericTypeDefinition ? CreateFactory(constructors[0]) : null
+                Factory = !iface.IsGenericTypeDefinition ? CreateFactory(constructor) : null
             });
         }
 
@@ -157,6 +164,29 @@ namespace Solti.Utils.DI
             {
                 Factory = factory
             });
+        }
+
+        internal InjectorEntry Lazy(Type iface, IResolver resolver, Lifetime? lifetime)
+        {
+            Func<IInjector, Type, object> realFactory = null;
+
+            var entry = new InjectorEntry(iface, typeof(IResolver), lifetime);
+            entry.Factory = (injector, type) =>
+            {
+                //
+                // A varazslat az hogy a "realFactory" es "entry" meg itt is letezik hiaba 
+                // kerult a Factory kesobb meghivasra.
+                //
+
+                if (realFactory == null)
+                    lock (entry)
+                        if (realFactory == null)
+                            realFactory = CreateFactory(ValidateImplementation(iface, resolver.Resolve(iface)));
+
+                return realFactory(injector, type);
+            };
+
+            return Register(entry);
         }
 
         internal InjectorEntry GetEntry(Type iface)
@@ -286,6 +316,12 @@ namespace Solti.Utils.DI
             return Self;
         }
 
+        IInjector IInjector.Lazy(Type iface, IResolver resolver, Lifetime lifetime)
+        {
+            Lazy(iface, resolver, lifetime);
+            return Self;
+        }
+
         IInjector IInjector.Factory(Type iface, Func<IInjector, Type, object> factory, Lifetime lifetime)
         {
             Factory(iface, factory, lifetime);
@@ -294,7 +330,7 @@ namespace Solti.Utils.DI
             // A visszaadott peldany tipusat meg ellenorizni kell.
             //
 
-            Proxy(iface, TypeChecked);
+            Proxy(iface, TypeChecker);
 
             return Self;
         }
@@ -313,7 +349,7 @@ namespace Solti.Utils.DI
             // A visszaadott peldany tipusat meg ellenorizni kell.
             //
 
-            Proxy(iface, TypeChecked);
+            Proxy(iface, TypeChecker);
 
             return Self;
         }

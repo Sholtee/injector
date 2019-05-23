@@ -18,6 +18,11 @@ namespace Solti.Utils.DI
         IInjector Service([ParameterIs(typeof(NotNull), typeof(Interface))] Type iface, [ParameterIs(typeof(NotNull), typeof(Class))] Type implementation, Lifetime lifetime = Lifetime.Transient);
 
         /// <summary>
+        /// Registers a service where the implementation will be resolved on the first request.
+        /// </summary>
+        IInjector Lazy([ParameterIs(typeof(NotNull), typeof(Interface))] Type iface, [ParameterIs(typeof(NotNull))] IResolver resolver, Lifetime lifetime = Lifetime.Transient);
+
+        /// <summary>
         /// Registers a new service factory with the given type.
         /// </summary>
         IInjector Factory([ParameterIs(typeof(NotNull), typeof(Interface))] Type iface, [ParameterIs(typeof(NotNull))] Func<IInjector, Type, object> factory, Lifetime lifetime = Lifetime.Transient);

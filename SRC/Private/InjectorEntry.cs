@@ -32,6 +32,8 @@ namespace Solti.Utils.DI.Internals
 
         public bool IsService => Implementation != null;
 
+        public bool IsLazy => IsService && Implementation == typeof(IResolver);
+
         public bool IsFactory => Implementation == null && Factory != null;
 
         public bool IsInstance => Implementation == null && Factory == null && Value != null;

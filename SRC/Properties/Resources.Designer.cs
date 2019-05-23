@@ -142,7 +142,7 @@ namespace Solti.Utils.DI.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Value can be assigned only once..
+        ///   Looks up a localized string similar to Property can be assigned only once..
         /// </summary>
         internal static string MULTIPLE_ASSIGN {
             get {
