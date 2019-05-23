@@ -7,6 +7,7 @@
     <Version>0.0.1</Version>
     <AssemblyName>Solti.Injector</AssemblyName>
     <RootNamespace>Solti.Utils.DI</RootNamespace>
+    <Configurations>Debug;Release;Perf</Configurations>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -15,6 +16,11 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <OutputPath>..\BIN\</OutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Perf|AnyCPU'">
+    <Optimize>true</Optimize>
     <OutputPath>..\BIN\</OutputPath>
   </PropertyGroup>
 

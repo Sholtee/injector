@@ -7,19 +7,29 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Injector", "SRC\Injector.cs
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Injector.Tests", "TEST\Injector.Tests.csproj", "{E8413DF4-2216-4118-A864-862BF560158C}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Injector.Perf", "PERF\Injector.Perf.csproj", "{C062341B-E4CC-40F2-8F13-CCA79C516F90}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
+		Perf|Any CPU = Perf|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{62630B29-804A-407C-98E0-1043ED144FE4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{62630B29-804A-407C-98E0-1043ED144FE4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{62630B29-804A-407C-98E0-1043ED144FE4}.Perf|Any CPU.ActiveCfg = Perf|Any CPU
+		{62630B29-804A-407C-98E0-1043ED144FE4}.Perf|Any CPU.Build.0 = Perf|Any CPU
 		{62630B29-804A-407C-98E0-1043ED144FE4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{62630B29-804A-407C-98E0-1043ED144FE4}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E8413DF4-2216-4118-A864-862BF560158C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E8413DF4-2216-4118-A864-862BF560158C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E8413DF4-2216-4118-A864-862BF560158C}.Perf|Any CPU.ActiveCfg = Perf|Any CPU
 		{E8413DF4-2216-4118-A864-862BF560158C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C062341B-E4CC-40F2-8F13-CCA79C516F90}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C062341B-E4CC-40F2-8F13-CCA79C516F90}.Perf|Any CPU.ActiveCfg = Perf|Any CPU
+		{C062341B-E4CC-40F2-8F13-CCA79C516F90}.Perf|Any CPU.Build.0 = Perf|Any CPU
+		{C062341B-E4CC-40F2-8F13-CCA79C516F90}.Release|Any CPU.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

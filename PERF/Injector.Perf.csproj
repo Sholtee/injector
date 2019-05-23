@@ -1,35 +1,28 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp2.2</TargetFramework>
-    <IsPackable>false</IsPackable>
-    <IsTestProject>true</IsTestProject>
-    <AssemblyName>Solti.Injector.Tests</AssemblyName>
-    <RootNamespace>Solti.Utils.DI.Tests</RootNamespace>
     <Configurations>Debug;Release;Perf</Configurations>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <OutputPath>..\BIN\</OutputPath>
+    <Optimize>true</Optimize>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <Optimize>true</Optimize>
     <OutputPath>..\BIN\</OutputPath>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Perf|AnyCPU'">
     <OutputPath>..\BIN\</OutputPath>
+    <Optimize>true</Optimize>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Moq" Version="4.10.1" />
-    <PackageReference Include="nunit" Version="3.12.0" />
-    <PackageReference Include="NUnit3TestAdapter" Version="3.13.0" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.1.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\SRC\Injector.csproj" />
+    <PackageReference Include="BenchmarkDotNet" Version="0.11.5" />
   </ItemGroup>
 
 </Project>
