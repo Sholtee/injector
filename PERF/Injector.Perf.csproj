@@ -4,6 +4,8 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <Configurations>Debug;Release;Perf</Configurations>
+    <AssemblyName>Injector.Perf</AssemblyName>
+    <RootNamespace>Solti.Utils.DI.Perf</RootNamespace>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -23,6 +25,10 @@
 
   <ItemGroup>
     <PackageReference Include="BenchmarkDotNet" Version="0.11.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SRC\Injector.csproj" />
   </ItemGroup>
 
 </Project>

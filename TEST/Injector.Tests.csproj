@@ -4,7 +4,7 @@
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
-    <AssemblyName>Solti.Injector.Tests</AssemblyName>
+    <AssemblyName>Injector.Tests</AssemblyName>
     <RootNamespace>Solti.Utils.DI.Tests</RootNamespace>
     <Configurations>Debug;Release;Perf</Configurations>
   </PropertyGroup>

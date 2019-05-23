@@ -1,9 +1,12 @@
-﻿namespace Injector.Perf
+﻿using BenchmarkDotNet.Running;
+
+namespace Solti.Utils.DI.Perf
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
+            BenchmarkRunner.Run<InterfaceProxy>();
         }
     }
 }
