@@ -128,12 +128,8 @@ namespace Solti.Utils.DI
             // Bejegyzes felvetele.
             //
 
-            return Register(new InjectorEntry
+            return Register(new InjectorEntry(iface, implementation, lifetime)
             {
-                Interface      = iface,
-                Implementation = implementation,
-                Lifetime       = lifetime,
-
                 //
                 // Ha generikus interface-t regisztralunk akkor nem kell (nem is lehet) 
                 // legyartani a factory-t.
@@ -145,11 +141,9 @@ namespace Solti.Utils.DI
 
         internal InjectorEntry Factory(Type iface, Func<IInjector, Type, object> factory, Lifetime? lifetime)
         {
-            return Register(new InjectorEntry
+            return Register(new InjectorEntry(iface, lifetime: lifetime)
             {
-                Factory   = factory,
-                Interface = iface,
-                Lifetime  = lifetime
+                Factory = factory
             });
         }
 
@@ -219,17 +213,14 @@ namespace Solti.Utils.DI
             if (!iface.IsInstanceOfType(instance))
                 throw new InvalidOperationException(string.Format(Resources.NOT_ASSIGNABLE, iface, instance.GetType()));
 
-            return Register(new InjectorEntry
+            //
+            // Ha kezelni kell a peldany elettartamat akkor innentol ugyanugy viselkedunk mint
+            // egy mar legyartott Singleton eseten.
+            //
+
+            return Register(new InjectorEntry(iface, lifetime: releaseOnDispose ? Lifetime.Singleton : (Lifetime?) null)
             {
-                Interface = iface,
-                Value     = instance,
-
-                //
-                // Ha kezelni kell a peldany elettartamat akkor innentol ugyanugy viselkedunk mint
-                // egy mar legyartott Singleton eseten.
-                //
-
-                Lifetime  = releaseOnDispose ? Lifetime.Singleton : (Lifetime?) null
+                Value = instance
             });
         }
 
