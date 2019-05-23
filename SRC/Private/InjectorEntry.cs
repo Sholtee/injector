@@ -46,7 +46,8 @@ namespace Solti.Utils.DI.Internals
             get => FFactory;
             set
             {
-                if (FFactory != null && value == null) throw new ArgumentNullException(nameof(value));
+                if (FFactory != null && value == null)
+                    throw new ArgumentNullException(nameof(value));
                 FFactory = value;
             }
         }
@@ -59,7 +60,8 @@ namespace Solti.Utils.DI.Internals
             get => FValue;
             set
             {
-                if (FValue != null) throw new InvalidOperationException(Resources.MULTIPLE_ASSIGN);
+                if (FValue != null)
+                    throw new InvalidOperationException(Resources.MULTIPLE_ASSIGN);
                 FValue = value;
             }
         }
@@ -75,6 +77,9 @@ namespace Solti.Utils.DI.Internals
         public object Clone()
         {
             CheckDisposed();
+
+            if (Value is IInjector)
+                throw new InvalidOperationException(Resources.CANT_CLONE);
 
             //
             // Ha a peldany regisztralasakor a "releaseOnDispose" igazra volt allitva akkor
