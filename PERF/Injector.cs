@@ -45,13 +45,16 @@ namespace Solti.Utils.DI.Perf
         }
         #endregion
 
-        [GlobalSetup(Target = nameof(Injector))]
+        [Params(Lifetime.Transient, Lifetime.Singleton)]
+        public Lifetime LifeTime { get; set; }
+
+        [GlobalSetup]
         public void Setup()
         {
             injector = DI.Injector.Create()
-                .Service<IInterface_1, Implementation_1>()
-                .Service(typeof(IInterface_2<>), typeof(Implementation_2<>))
-                .Service<IInterface_3<string>, Implementation_3<string>>();
+                .Service<IInterface_1, Implementation_1>(Lifetime.Transient)
+                .Service(typeof(IInterface_2<>), typeof(Implementation_2<>), Lifetime.Transient)
+                .Service<IInterface_3<string>, Implementation_3<string>>(LifeTime);
         }
 
         [GlobalCleanup]

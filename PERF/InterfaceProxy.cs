@@ -26,7 +26,7 @@ namespace Solti.Utils.DI.Perf
             int IInterface.DoSomething(string param) => 0;
         }
 
-        [GlobalSetup(Target = nameof(InterfaceProxy))]
+        [GlobalSetup]
         public void Setup()
         {
             InstanceWithoutProxy = new Implementation();
