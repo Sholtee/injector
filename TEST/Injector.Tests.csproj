@@ -7,6 +7,9 @@
     <AssemblyName>Injector.Tests</AssemblyName>
     <RootNamespace>Solti.Utils.DI.Tests</RootNamespace>
     <Configurations>Debug;Release;Perf</Configurations>
+    <ApplicationIcon />
+    <OutputType>Library</OutputType>
+    <StartupObject />
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
