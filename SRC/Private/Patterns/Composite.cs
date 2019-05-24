@@ -23,21 +23,21 @@ namespace Solti.Utils.DI.Internals
 
             private ICollection<TInterface> Entries => FEntries.Keys;
 
-            public DictionaryWrap(IDictionary<TInterface, byte> entries) { FEntries = entries; }
+            public DictionaryWrap(IDictionary<TInterface, byte> entries) => FEntries = entries;
 
-            IEnumerator<TInterface> IEnumerable<TInterface>.GetEnumerator() { return Entries.GetEnumerator(); }
+            IEnumerator<TInterface> IEnumerable<TInterface>.GetEnumerator() => Entries.GetEnumerator();
 
-            IEnumerator IEnumerable.GetEnumerator() { return Entries.GetEnumerator(); }
+            IEnumerator IEnumerable.GetEnumerator() => Entries.GetEnumerator();
 
-            void ICollection<TInterface>.Add(TInterface item){ FEntries.Add(item, 0); }
+            void ICollection<TInterface>.Add(TInterface item) => FEntries.Add(item, 0);
 
-            void ICollection<TInterface>.Clear() { FEntries.Clear(); }
+            void ICollection<TInterface>.Clear() => FEntries.Clear();
 
-            bool ICollection<TInterface>.Contains(TInterface item){ return Entries.Contains(item); }
+            bool ICollection<TInterface>.Contains(TInterface item) => Entries.Contains(item);
 
-            void ICollection<TInterface>.CopyTo(TInterface[] array, int arrayIndex) { throw new NotImplementedException(); }
+            void ICollection<TInterface>.CopyTo(TInterface[] array, int arrayIndex) => throw new NotImplementedException();
 
-            bool ICollection<TInterface>.Remove(TInterface item) { return FEntries.Remove(item); }
+            bool ICollection<TInterface>.Remove(TInterface item) => FEntries.Remove(item);
 
             int ICollection<TInterface>.Count => FEntries.Count;
 

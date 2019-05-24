@@ -91,10 +91,7 @@ namespace Solti.Utils.DI
             ).Compile();
         }
 
-        private bool GetEntry(Type iface, out InjectorEntry entry)
-        {
-            return FEntries.TryGetValue(iface, out entry);
-        }
+        private bool GetEntry(Type iface, out InjectorEntry entry) => FEntries.TryGetValue(iface, out entry);
 
         private InjectorEntry Register(InjectorEntry entry)
         {
@@ -347,19 +344,13 @@ namespace Solti.Utils.DI
             return Self;
         }
 
-        object IInjector.Get(Type iface)
-        {
-            return Get(iface);
-        }
+        object IInjector.Get(Type iface) => Get(iface);
 
         IReadOnlyList<Type> IInjector.Entries => FEntries.Keys.ToArray();
         #endregion
 
         #region Protected
-        protected override IInjector CreateChild()
-        {
-            return new Injector(this).Self;
-        }
+        protected override IInjector CreateChild() => new Injector(this).Self;
 
         protected override void Dispose(bool disposeManaged)
         {
@@ -390,9 +381,6 @@ namespace Solti.Utils.DI
         protected override IInjector Self => (IInjector) Get(typeof(IInjector));
         #endregion
 
-        public static IInjector Create()
-        {
-            return new Injector().Self;
-        }
+        public static IInjector Create() => new Injector().Self;
     }
 }

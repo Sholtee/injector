@@ -22,10 +22,8 @@ namespace Solti.Utils.DI.Internals
             if (Disposed) throw AlreadyDisposedException;
         }
 
-        ~Disposable()
-        {
-            Dispose(disposeManaged: false);
-        }
+        ~Disposable() => Dispose(disposeManaged: false);
+ 
 
         void IDisposable.Dispose()
         {

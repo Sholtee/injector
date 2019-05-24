@@ -11,10 +11,7 @@ namespace Solti.Utils.DI.Internals
     /// </summary>
     internal abstract class ParameterValidator<TParam> : IParameterValidator
     {
-        void IParameterValidator.Validate(object param, string paramName)
-        {
-            Validate((TParam) param, paramName);
-        }
+        void IParameterValidator.Validate(object param, string paramName) => Validate((TParam) param, paramName);
 
         protected abstract void Validate(TParam param, string paramName);
     }
