@@ -5,7 +5,7 @@
     <Company></Company>
     <Authors>Denes Solti</Authors>
     <Version>0.0.1</Version>
-    <AssemblyName>Solti.Injector</AssemblyName>
+    <AssemblyName>Injector</AssemblyName>
     <RootNamespace>Solti.Utils.DI</RootNamespace>
     <Configurations>Debug;Release;Perf</Configurations>
   </PropertyGroup>
