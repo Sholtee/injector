@@ -191,14 +191,13 @@ namespace Solti.Utils.DI
 
         internal InjectorEntry GetEntry(Type iface)
         {
-            InjectorEntry entry;
-            if (GetEntry(iface, out entry)) return entry;
+            if (GetEntry(iface, out var entry)) return entry;
      
             //
             // Meg benne lehet generikus formaban.
             //
 
-            if (!iface.IsGenericType || !GetEntry(iface.GetGenericTypeDefinition(), out entry))
+            if (!iface.IsGenericType || !GetEntry(iface.GetGenericTypeDefinition(), out var genericEntry))
                 throw new NotSupportedException(string.Format(Resources.DEPENDENCY_NOT_FOUND, iface));
 
             //
@@ -206,23 +205,17 @@ namespace Solti.Utils.DI
             // akkor nincs dolgunk.
             //
 
-            if (entry.Factory != null) return entry;
-            try
-            {
-                //
-                // Regisztraljuk az uj konkret tipust.
-                //
+            if (genericEntry.Factory != null) return genericEntry;
 
-                return Service(iface, entry.Implementation.MakeGenericType(iface.GetGenericArguments()), entry.Lifetime);
-            }
-            catch (ServiceAlreadyRegisteredException)
-            {
-                //
-                // Felteve ha nem regisztralta ido kozben mas.
-                //
+            //
+            // Kulomben vegyuk fel az uj tipizalt bejegyzest. Megjegyzendo h a MakeGenericType() es Service()
+            // hivas idoigenyes.
+            //
 
-                return GetEntry(iface);
-            }            
+            lock (genericEntry)
+                return GetEntry(iface, out entry) 
+                    ? entry 
+                    : Service(iface, genericEntry.Implementation.MakeGenericType(iface.GetGenericArguments()), genericEntry.Lifetime);           
         }
 
         internal InjectorEntry Proxy(Type iface, Func<IInjector, Type, object, object> decorator)
