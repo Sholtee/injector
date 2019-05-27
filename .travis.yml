@@ -4,6 +4,9 @@ mono: none
 sudo: required
 dist: xenial
 dotnet: 2.2
+stages:
+  - name: test
+  - name: perf_test
 jobs:
   include:
     - stage: test
@@ -13,6 +16,4 @@ jobs:
     script:
       - dotnet build Injector.sln --configuration Perf 
       - dotnet BIN\netcoreapp2.2\Injector.Perf.dll -f *
-stages:
-  - test
-  - perf_test
+      
