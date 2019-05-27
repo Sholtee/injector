@@ -4,5 +4,15 @@ mono: none
 sudo: required
 dist: xenial
 dotnet: 2.2
-script:
-  - dotnet test "TEST\Injector.Tests.csproj" --configuration Debug
+jobs:
+  include:
+    - stage: test
+    script:
+      - dotnet test "TEST\Injector.Tests.csproj" --configuration Debug
+    - stage: perf_test 
+    script:
+      - dotnet build Injector.sln --configuration Perf 
+      - dotnet BIN\netcoreapp2.2\Injector.Perf.dll -f *
+stages:
+  - test
+  - perf_test
