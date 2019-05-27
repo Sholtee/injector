@@ -1,4 +1,3 @@
-sudo: false
 language: csharp
 mono: none
 sudo: required
@@ -10,10 +9,9 @@ stages:
 jobs:
   include:
     - stage: test
-    script:
-      - dotnet test "TEST\Injector.Tests.csproj" --configuration Debug
+      script:
+        - dotnet test "TEST\Injector.Tests.csproj" --configuration Debug
     - stage: perf_test 
-    script:
-      - dotnet build Injector.sln --configuration Perf 
-      - dotnet BIN\netcoreapp2.2\Injector.Perf.dll -f *
-      
+      script:
+        - dotnet build Injector.sln --configuration Perf 
+        - dotnet BIN\netcoreapp2.2\Injector.Perf.dll -f *
