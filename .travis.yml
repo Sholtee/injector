@@ -5,4 +5,4 @@ sudo: required
 dist: xenial
 dotnet: 2.2
 script:
-  - test
+  - dotnet test "TEST\Injector.Tests.csproj" --configuration Debug
