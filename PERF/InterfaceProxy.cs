@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System.Reflection;
+using System.Runtime.CompilerServices;
 
 using BenchmarkDotNet.Attributes;
 
@@ -36,6 +37,7 @@ namespace Solti.Utils.DI.Perf
 
         public class Implementation : IInterface
         {
+            [MethodImpl(MethodImplOptions.NoInlining)]
             int IInterface.DoSomething(string param) => 0;
         }
 
