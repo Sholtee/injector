@@ -13,4 +13,5 @@ jobs:
         - dotnet test "TEST\Injector.Tests.csproj" --configuration Debug
     - stage: perf_test 
       script:
-        - dotnet run "BIN\netcoreapp2.2\Injector.Perf.dll -f *" --configuration Perf 
+        - dotnet build Injector.sln --configuration Perf 
+        - dotnet run "BIN\netcoreapp2.2\Injector.Perf.dll -f *"
