@@ -10,7 +10,7 @@ jobs:
   include:
     - stage: test
       script:
-        - dotnet test "./TEST/Injector.Tests.csproj" --configuration Debug
+        - dotnet test "./TEST/Injector.Tests.csproj" --configuration "Debug"
     - stage: perf_test 
       script:
-        - dotnet run --project "./PERF/Injector.Perf.csproj" --configuration Perf --f *
+        - dotnet run --project "./PERF/Injector.Perf.csproj" --configuration "Perf" --f *
