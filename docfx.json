@@ -1,0 +1,24 @@
+{
+	"metadata": [{
+		"src": [{
+			"files": ["SRC/Injector.csproj"],
+			"exclude": ["**/bin/**", "**/obj/**"]
+		}],
+		"dest": "BIN/DOC",
+		"properties": {
+			"TargetFramework": "netcoreapp2.2"
+		}
+	}],
+	"build": {
+		"content": [{
+			"files": ["*.yml"],
+			"src": "BIN/DOC"
+		}],
+		"dest": "DOC",
+		"globalMetadata": {
+			"_appTitle": "Injector",
+			"_disableNavbar": true,
+			"_disableContribution": true
+		}
+	}
+}
