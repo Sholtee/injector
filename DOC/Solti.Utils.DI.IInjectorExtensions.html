@@ -1,0 +1,601 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class IInjectorExtensions
+   | Injector </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class IInjectorExtensions
+   | Injector ">
+    <meta name="generator" content="docfx 2.42.4.0">
+    
+    <link rel="shortcut icon" href="favicon.ico">
+    <link rel="stylesheet" href="styles/docfx.vendor.css">
+    <link rel="stylesheet" href="styles/docfx.css">
+    <link rel="stylesheet" href="styles/main.css">
+    <meta property="docfx:navrel" content="toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        <div class="article row grid">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Solti.Utils.DI.IInjectorExtensions">
+  
+  
+  <h1 id="Solti_Utils_DI_IInjectorExtensions" data-uid="Solti.Utils.DI.IInjectorExtensions" class="text-break">Class IInjectorExtensions
+  </h1>
+  <div class="markdown level0 summary"><p>Defines several handy extensions for the <a class="xref" href="Solti.Utils.DI.IInjector.html">IInjector</a> interface.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><span class="xref">System.Object</span></div>
+    <div class="level1"><span class="xref">IInjectorExtensions</span></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetHashCode()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetType()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ToString()</span>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Solti.Utils.DI.html">Solti.Utils.DI</a></h6>
+  <h6><strong>Assembly</strong>: Injector.dll</h6>
+  <h5 id="Solti_Utils_DI_IInjectorExtensions_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static class IInjectorExtensions</code></pre>
+  </div>
+  <h3 id="methods">Methods
+  </h3>
+  <a id="Solti_Utils_DI_IInjectorExtensions_Factory_" data-uid="Solti.Utils.DI.IInjectorExtensions.Factory*"></a>
+  <h4 id="Solti_Utils_DI_IInjectorExtensions_Factory__1_Solti_Utils_DI_IInjector_System_Func_Solti_Utils_DI_IInjector___0__Solti_Utils_DI_Lifetime_" data-uid="Solti.Utils.DI.IInjectorExtensions.Factory``1(Solti.Utils.DI.IInjector,System.Func{Solti.Utils.DI.IInjector,``0},Solti.Utils.DI.Lifetime)">Factory&lt;TInterface&gt;(IInjector, Func&lt;IInjector, TInterface&gt;, Lifetime)</h4>
+  <div class="markdown level1 summary"><p>Registers a new service factory with the given type. Factories are also services except that the instantiating process is delegated to the caller. Useful if a service has more than one constructor.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IInjector Factory&lt;TInterface&gt;(this IInjector self, Func&lt;IInjector, TInterface&gt; factory, Lifetime lifetime = Lifetime.Transient)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.IInjector.html">IInjector</a></td>
+        <td><span class="parametername">self</span></td>
+        <td><p>The injector itself.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Func</span>&lt;<a class="xref" href="Solti.Utils.DI.IInjector.html">IInjector</a>, TInterface&gt;</td>
+        <td><span class="parametername">factory</span></td>
+        <td><p>The factory function that is responsible for the instantiation. Its call count depends on the value of the <code data-dev-comment-type="paramref" class="paramref">lifetime</code> parameter.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.Lifetime.html">Lifetime</a></td>
+        <td><span class="parametername">lifetime</span></td>
+        <td><p>The lifetime of the service. For more information see the <a class="xref" href="Solti.Utils.DI.Lifetime.html">Lifetime</a> enum.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.IInjector.html">IInjector</a></td>
+        <td><p>The injector itself.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TInterface</span></td>
+        <td><p>The service interface to be registered. It can be registered only once.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Solti_Utils_DI_IInjectorExtensions_Get_" data-uid="Solti.Utils.DI.IInjectorExtensions.Get*"></a>
+  <h4 id="Solti_Utils_DI_IInjectorExtensions_Get__1_Solti_Utils_DI_IInjector_" data-uid="Solti.Utils.DI.IInjectorExtensions.Get``1(Solti.Utils.DI.IInjector)">Get&lt;TInterface&gt;(IInjector)</h4>
+  <div class="markdown level1 summary"><p>Resolves a dependency.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static TInterface Get&lt;TInterface&gt;(this IInjector self)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.IInjector.html">IInjector</a></td>
+        <td><span class="parametername">self</span></td>
+        <td><p>The injector itself.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TInterface</span></td>
+        <td><p>The resolved service.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TInterface</span></td>
+        <td><p>The &quot;id&quot; of the service to be resolved. It must be an interface.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Solti_Utils_DI_IInjectorExtensions_Get__1_Solti_Utils_DI_IInjector__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>This method is thread safe so you can call it parallelly.</p>
+</div>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.NotSupportedException</span></td>
+        <td><p>The service can not be found.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Solti_Utils_DI_IInjectorExtensions_Instance_" data-uid="Solti.Utils.DI.IInjectorExtensions.Instance*"></a>
+  <h4 id="Solti_Utils_DI_IInjectorExtensions_Instance__1_Solti_Utils_DI_IInjector___0_System_Boolean_" data-uid="Solti.Utils.DI.IInjectorExtensions.Instance``1(Solti.Utils.DI.IInjector,``0,System.Boolean)">Instance&lt;TInterface&gt;(IInjector, TInterface, Boolean)</h4>
+  <div class="markdown level1 summary"><p>Registers a pre-created instance. Useful when creating &quot;constant&quot; values (e.g. from command-line arguments).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IInjector Instance&lt;TInterface&gt;(this IInjector self, TInterface instance, bool releaseOnDispose = true)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.IInjector.html">IInjector</a></td>
+        <td><span class="parametername">self</span></td>
+        <td><p>The injector itself.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">TInterface</span></td>
+        <td><span class="parametername">instance</span></td>
+        <td><p>The pre-created instance to be registered.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">releaseOnDispose</span></td>
+        <td><p>Wheter the system should dispose the instance on injector disposal.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.IInjector.html">IInjector</a></td>
+        <td><p>The injector itself.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TInterface</span></td>
+        <td><p>The service interface to be registered. It can be registered only once.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Solti_Utils_DI_IInjectorExtensions_Lazy_" data-uid="Solti.Utils.DI.IInjectorExtensions.Lazy*"></a>
+  <h4 id="Solti_Utils_DI_IInjectorExtensions_Lazy__1_Solti_Utils_DI_IInjector_Solti_Utils_DI_IResolver_Solti_Utils_DI_Lifetime_" data-uid="Solti.Utils.DI.IInjectorExtensions.Lazy``1(Solti.Utils.DI.IInjector,Solti.Utils.DI.IResolver,Solti.Utils.DI.Lifetime)">Lazy&lt;TInterface&gt;(IInjector, IResolver, Lifetime)</h4>
+  <div class="markdown level1 summary"><p>Registers a service where the implementation will be resolved on the first request. It is useful when the implementation is unknown in compile time or you just want to load the containing assembly on the first request.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IInjector Lazy&lt;TInterface&gt;(this IInjector self, IResolver resolver, Lifetime lifetime = Lifetime.Transient)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.IInjector.html">IInjector</a></td>
+        <td><span class="parametername">self</span></td>
+        <td><p>The injector itself.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.IResolver.html">IResolver</a></td>
+        <td><span class="parametername">resolver</span></td>
+        <td><p>The resolver (<a class="xref" href="Solti.Utils.DI.IResolver.html">IResolver</a>) is responsible for resolving the implementation. The resolved <span class="xref">System.Type</span> can not be null and must implement the <see cref="!:TInterface"></see> interface. Additionally it must have only null or one constructor (that may request another dependecies). The resolver is called only once (on the first request) regardless the value of the <code data-dev-comment-type="paramref" class="paramref">lifetime</code> parameter.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.Lifetime.html">Lifetime</a></td>
+        <td><span class="parametername">lifetime</span></td>
+        <td><p>The lifetime of the service. For more information see the <a class="xref" href="Solti.Utils.DI.Lifetime.html">Lifetime</a> enum.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.IInjector.html">IInjector</a></td>
+        <td><p>The injector itself.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TInterface</span></td>
+        <td><p>The service interface to be registered. It can be registered only once.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Solti_Utils_DI_IInjectorExtensions_Proxy_" data-uid="Solti.Utils.DI.IInjectorExtensions.Proxy*"></a>
+  <h4 id="Solti_Utils_DI_IInjectorExtensions_Proxy__1_Solti_Utils_DI_IInjector_System_Func_Solti_Utils_DI_IInjector___0___0__" data-uid="Solti.Utils.DI.IInjectorExtensions.Proxy``1(Solti.Utils.DI.IInjector,System.Func{Solti.Utils.DI.IInjector,``0,``0})">Proxy&lt;TInterface&gt;(IInjector, Func&lt;IInjector, TInterface, TInterface&gt;)</h4>
+  <div class="markdown level1 summary"><p>Hooks into the instantiating process to let you decorate the original service. Useful when you want to add additional functionality (e.g. parameter validation). The easyest way to decorate an instance is using the <a class="xref" href="Solti.Utils.DI.InterfaceProxy-1.html">InterfaceProxy&lt;TInterface&gt;</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IInjector Proxy&lt;TInterface&gt;(this IInjector self, Func&lt;IInjector, TInterface, TInterface&gt; decorator)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.IInjector.html">IInjector</a></td>
+        <td><span class="parametername">self</span></td>
+        <td><p>The injector itself.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Func</span>&lt;<a class="xref" href="Solti.Utils.DI.IInjector.html">IInjector</a>, TInterface, TInterface&gt;</td>
+        <td><span class="parametername">decorator</span></td>
+        <td><p>The decorator funtion. It must return the decorated instance. The original instance can be accessed via the 2nd parameter.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.IInjector.html">IInjector</a></td>
+        <td><p>The injector itself.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TInterface</span></td>
+        <td><p>The &quot;id&quot; of the service to be decorated.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Solti_Utils_DI_IInjectorExtensions_QueryServiceInfo_" data-uid="Solti.Utils.DI.IInjectorExtensions.QueryServiceInfo*"></a>
+  <h4 id="Solti_Utils_DI_IInjectorExtensions_QueryServiceInfo__1_Solti_Utils_DI_IInjector_" data-uid="Solti.Utils.DI.IInjectorExtensions.QueryServiceInfo``1(Solti.Utils.DI.IInjector)">QueryServiceInfo&lt;TInterface&gt;(IInjector)</h4>
+  <div class="markdown level1 summary"><p>Gets basic informations about a registered service.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IServiceInfo QueryServiceInfo&lt;TInterface&gt;(this IInjector self)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.IInjector.html">IInjector</a></td>
+        <td><span class="parametername">self</span></td>
+        <td><p>The injector itself.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.IServiceInfo.html">IServiceInfo</a></td>
+        <td><p>An <a class="xref" href="Solti.Utils.DI.IServiceInfo.html">IServiceInfo</a> instance.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TInterface</span></td>
+        <td><p>The &quot;id&quot; of the service to be queried. It must be an interface.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Solti_Utils_DI_IInjectorExtensions_Service_" data-uid="Solti.Utils.DI.IInjectorExtensions.Service*"></a>
+  <h4 id="Solti_Utils_DI_IInjectorExtensions_Service__2_Solti_Utils_DI_IInjector_Solti_Utils_DI_Lifetime_" data-uid="Solti.Utils.DI.IInjectorExtensions.Service``2(Solti.Utils.DI.IInjector,Solti.Utils.DI.Lifetime)">Service&lt;TInterface, TImplementation&gt;(IInjector, Lifetime)</h4>
+  <div class="markdown level1 summary"><p>Registers a new service with the given type.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IInjector Service&lt;TInterface, TImplementation&gt;(this IInjector self, Lifetime lifetime = Lifetime.Transient)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.IInjector.html">IInjector</a></td>
+        <td><span class="parametername">self</span></td>
+        <td><p>The injector itself.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.Lifetime.html">Lifetime</a></td>
+        <td><span class="parametername">lifetime</span></td>
+        <td><p>The lifetime of the service. For more information see the <a class="xref" href="Solti.Utils.DI.Lifetime.html">Lifetime</a> enum.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.IInjector.html">IInjector</a></td>
+        <td><p>The injector itself.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TInterface</span></td>
+        <td><p>The service interface to be registered. It can be registered only once.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">TImplementation</span></td>
+        <td><p>The service implementation to be registered. It must implement the <see cref="!:TInterface"></see> interface and must have only null or one constructor (that may request another dependecies).</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="styles/docfx.js"></script>
+    <script type="text/javascript" src="styles/main.js"></script>
+  </body>
+</html>

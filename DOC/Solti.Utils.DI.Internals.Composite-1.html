@@ -1,0 +1,361 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class Composite&lt;TInterface&gt;
+   | Injector </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class Composite&lt;TInterface&gt;
+   | Injector ">
+    <meta name="generator" content="docfx 2.42.4.0">
+    
+    <link rel="shortcut icon" href="favicon.ico">
+    <link rel="stylesheet" href="styles/docfx.vendor.css">
+    <link rel="stylesheet" href="styles/docfx.css">
+    <link rel="stylesheet" href="styles/main.css">
+    <meta property="docfx:navrel" content="toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        <div class="article row grid">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Solti.Utils.DI.Internals.Composite`1">
+  
+  
+  <h1 id="Solti_Utils_DI_Internals_Composite_1" data-uid="Solti.Utils.DI.Internals.Composite`1" class="text-break">Class Composite&lt;TInterface&gt;
+  </h1>
+  <div class="markdown level0 summary"><p>A thread safe <a class="xref" href="Solti.Utils.DI.Internals.IComposite-1.html">IComposite&lt;T&gt;</a> implementation.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><span class="xref">System.Object</span></div>
+    <div class="level1"><a class="xref" href="Solti.Utils.DI.Internals.Disposable.html">Disposable</a></div>
+    <div class="level2"><span class="xref">Composite&lt;TInterface&gt;</span></div>
+      <div class="level3"><a class="xref" href="Solti.Utils.DI.Injector.html">Injector</a></div>
+  </div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="Solti.Utils.DI.Internals.IComposite-1.html">IComposite</a>&lt;TInterface&gt;</div>
+    <div><span class="xref">System.IDisposable</span></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="Solti.Utils.DI.Internals.Disposable.html#Solti_Utils_DI_Internals_Disposable_Disposed">Disposable.Disposed</a>
+    </div>
+    <div>
+      <a class="xref" href="Solti.Utils.DI.Internals.Disposable.html#Solti_Utils_DI_Internals_Disposable_CheckDisposed">Disposable.CheckDisposed()</a>
+    </div>
+    <div>
+      <a class="xref" href="Solti.Utils.DI.Internals.Disposable.html#Solti_Utils_DI_Internals_Disposable_System_IDisposable_Dispose">Disposable.IDisposable.Dispose()</a>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetHashCode()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetType()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ToString()</span>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Solti.Utils.DI.Internals.html">Solti.Utils.DI.Internals</a></h6>
+  <h6><strong>Assembly</strong>: Injector.dll</h6>
+  <h5 id="Solti_Utils_DI_Internals_Composite_1_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract class Composite&lt;TInterface&gt; : Disposable, IComposite&lt;TInterface&gt;, IDisposable where TInterface : class, IComposite&lt;TInterface&gt;</code></pre>
+  </div>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TInterface</span></td>
+        <td><p>The interface on which we want to apply the composite pattern.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Solti_Utils_DI_Internals_Composite_1_remarks"><strong>Remarks</strong></h5>
+  <div class="markdown level0 remarks"><p>This is an internal class so it can be changed from version to version. Don&apos;t use it!</p>
+</div>
+  <h3 id="constructors">Constructors
+  </h3>
+  <a id="Solti_Utils_DI_Internals_Composite_1__ctor_" data-uid="Solti.Utils.DI.Internals.Composite`1.#ctor*"></a>
+  <h4 id="Solti_Utils_DI_Internals_Composite_1__ctor__0_" data-uid="Solti.Utils.DI.Internals.Composite`1.#ctor(`0)">Composite(TInterface)</h4>
+  <div class="markdown level1 summary"><p>Creates a new instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected Composite(TInterface parent)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TInterface</span></td>
+        <td><span class="parametername">parent</span></td>
+        <td><p>The parent entity. It can be null.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  <a id="Solti_Utils_DI_Internals_Composite_1_Self_" data-uid="Solti.Utils.DI.Internals.Composite`1.Self*"></a>
+  <h4 id="Solti_Utils_DI_Internals_Composite_1_Self" data-uid="Solti.Utils.DI.Internals.Composite`1.Self">Self</h4>
+  <div class="markdown level1 summary"><p>Access this entity as a <see cref="!:TInterface"></see> interface.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual TInterface Self { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TInterface</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  <a id="Solti_Utils_DI_Internals_Composite_1_CreateChild_" data-uid="Solti.Utils.DI.Internals.Composite`1.CreateChild*"></a>
+  <h4 id="Solti_Utils_DI_Internals_Composite_1_CreateChild" data-uid="Solti.Utils.DI.Internals.Composite`1.CreateChild">CreateChild()</h4>
+  <div class="markdown level1 summary"><p>Creates a new child. For more information see the <a class="xref" href="Solti.Utils.DI.Internals.IComposite-1.html">IComposite&lt;T&gt;</a> interface.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected abstract TInterface CreateChild()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TInterface</span></td>
+        <td><p>The newly created child.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Solti_Utils_DI_Internals_Composite_1_Dispose_" data-uid="Solti.Utils.DI.Internals.Composite`1.Dispose*"></a>
+  <h4 id="Solti_Utils_DI_Internals_Composite_1_Dispose_System_Boolean_" data-uid="Solti.Utils.DI.Internals.Composite`1.Dispose(System.Boolean)">Dispose(Boolean)</h4>
+  <div class="markdown level1 summary"><p>Disposal logic related to this class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override void Dispose(bool disposeManaged)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">disposeManaged</span></td>
+        <td><p>Check out the <a class="xref" href="Solti.Utils.DI.Internals.Disposable.html">Disposable</a> class.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Solti.Utils.DI.Internals.Disposable.html#Solti_Utils_DI_Internals_Disposable_Dispose_System_Boolean_">Disposable.Dispose(Boolean)</a></div>
+  <h3 id="eii">Explicit Interface Implementations
+  </h3>
+  <a id="Solti_Utils_DI_Internals_Composite_1_Solti_Utils_DI_Internals_IComposite_TInterface__Children_" data-uid="Solti.Utils.DI.Internals.Composite`1.Solti#Utils#DI#Internals#IComposite{TInterface}#Children*"></a>
+  <h4 id="Solti_Utils_DI_Internals_Composite_1_Solti_Utils_DI_Internals_IComposite_TInterface__Children" data-uid="Solti.Utils.DI.Internals.Composite`1.Solti#Utils#DI#Internals#IComposite{TInterface}#Children">IComposite&lt;TInterface&gt;.Children</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">ICollection&lt;TInterface&gt; IComposite&lt;TInterface&gt;.Children { get; }</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.ICollection</span>&lt;TInterface&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Solti_Utils_DI_Internals_Composite_1_Solti_Utils_DI_Internals_IComposite_TInterface__CreateChild_" data-uid="Solti.Utils.DI.Internals.Composite`1.Solti#Utils#DI#Internals#IComposite{TInterface}#CreateChild*"></a>
+  <h4 id="Solti_Utils_DI_Internals_Composite_1_Solti_Utils_DI_Internals_IComposite_TInterface__CreateChild" data-uid="Solti.Utils.DI.Internals.Composite`1.Solti#Utils#DI#Internals#IComposite{TInterface}#CreateChild">IComposite&lt;TInterface&gt;.CreateChild()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">TInterface IComposite&lt;TInterface&gt;.CreateChild()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TInterface</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Solti_Utils_DI_Internals_Composite_1_Solti_Utils_DI_Internals_IComposite_TInterface__IsRoot_" data-uid="Solti.Utils.DI.Internals.Composite`1.Solti#Utils#DI#Internals#IComposite{TInterface}#IsRoot*"></a>
+  <h4 id="Solti_Utils_DI_Internals_Composite_1_Solti_Utils_DI_Internals_IComposite_TInterface__IsRoot" data-uid="Solti.Utils.DI.Internals.Composite`1.Solti#Utils#DI#Internals#IComposite{TInterface}#IsRoot">IComposite&lt;TInterface&gt;.IsRoot</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">bool IComposite&lt;TInterface&gt;.IsRoot { get; }</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Solti_Utils_DI_Internals_Composite_1_Solti_Utils_DI_Internals_IComposite_TInterface__Parent_" data-uid="Solti.Utils.DI.Internals.Composite`1.Solti#Utils#DI#Internals#IComposite{TInterface}#Parent*"></a>
+  <h4 id="Solti_Utils_DI_Internals_Composite_1_Solti_Utils_DI_Internals_IComposite_TInterface__Parent" data-uid="Solti.Utils.DI.Internals.Composite`1.Solti#Utils#DI#Internals#IComposite{TInterface}#Parent">IComposite&lt;TInterface&gt;.Parent</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">TInterface IComposite&lt;TInterface&gt;.Parent { get; }</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TInterface</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="Solti.Utils.DI.Internals.IComposite-1.html">IComposite&lt;T&gt;</a>
+  </div>
+  <div>
+      <span class="xref">System.IDisposable</span>
+  </div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="styles/docfx.js"></script>
+    <script type="text/javascript" src="styles/main.js"></script>
+  </body>
+</html>
