@@ -20,6 +20,7 @@ namespace Solti.Utils.DI
     /// <summary>
     /// Implements the <see cref="IInjector"/> interface.
     /// </summary>
+    /// <remarks>You can not instantiate this class directly, use the static <see cref="Create"/> method instead.</remarks>
     public sealed class Injector : Composite<IInjector>, IInjector
     {
         #region Private

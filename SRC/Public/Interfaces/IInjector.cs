@@ -36,10 +36,10 @@ namespace Solti.Utils.DI
         IInjector Lazy([ParameterIs(typeof(NotNull), typeof(Interface))] Type iface, [ParameterIs(typeof(NotNull))] IResolver resolver, Lifetime lifetime = Lifetime.Transient);
 
         /// <summary>
-        /// Registers a new service factory with the given type. Factories are also services except the instantiating process is delegated to the caller. Useful if a service has more than one constructor.
+        /// Registers a new service factory with the given type. Factories are also services except that the instantiating process is delegated to the caller. Useful if a service has more than one constructor.
         /// </summary>
         /// <param name="iface">The service interface to be registered. It can not be null and can be registered only once.</param>
-        /// <param name="factory">The factory function that is responsible for the instantiating. Its call count depends on the value of the <paramref name="lifetime"/> parameter. Note that the second parameter is never generic, not even if you registered the factory for an open generic interface.</param>
+        /// <param name="factory">The factory function that is responsible for the instantiation. Its call count depends on the value of the <paramref name="lifetime"/> parameter. Note that the second parameter is never generic, not even if you registered the factory for an open generic interface.</param>
         /// <param name="lifetime">The lifetime of the service. For more information see the <see cref="Lifetime"/> enum.</param>
         /// <returns>The injector itself.</returns>
         /// <remarks>You can register generic services (where the <paramref name="iface"/> parameter is an open generic type).</remarks>
@@ -49,13 +49,13 @@ namespace Solti.Utils.DI
         /// Hooks into the instantiating process to let you decorate the original service. Useful when you want to add additional functionality (e.g. parameter validation). The easyest way to decorate an instance is using the <see cref="InterfaceProxy{TInterface}"/> class.
         /// </summary>
         /// <param name="iface">The "id" of the service to be decorated.</param>
-        /// <param name="decorator">The decorator funtion. It must return the decorated instance. The original instance can be accessed by the 3rd parameter.</param>
+        /// <param name="decorator">The decorator funtion. It must return the decorated instance. The original instance can be accessed via the 3rd parameter.</param>
         /// <returns>The injector itself.</returns>
         /// <remarks>You can't create proxies against generic or instance entries. A service can be decorated multiple times.</remarks>
         IInjector Proxy([ParameterIs(typeof(NotNull), typeof(Interface))] Type iface, [ParameterIs(typeof(NotNull))] Func<IInjector, Type, object, object> decorator);
 
         /// <summary>
-        /// Registers a pre-created instance. Useful to creating "constant" values (e.g. command-line arguments)
+        /// Registers a pre-created instance. Useful to creating "constant" values (e.g. command-line arguments).
         /// </summary>
         /// <param name="iface">The service interface to be registered. It can not be null and can be registered only once.</param>
         /// <param name="instance">The pre-created instance to be registered. It can not be null and must implement the <see cref="iface"/> interface.</param>
