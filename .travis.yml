@@ -6,6 +6,7 @@ dotnet: 2.2
 stages:
   - name: test
   - name: perf_test
+    if: tag is PRESENT
 jobs:
   include:
     - stage: test
@@ -14,5 +15,3 @@ jobs:
     - stage: perf_test 
       script:
         - dotnet run --project "./PERF/Injector.Perf.csproj" --configuration Release --filter "*"
-      on:
-        tags: true
