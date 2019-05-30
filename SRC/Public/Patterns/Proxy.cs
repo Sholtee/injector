@@ -16,17 +16,25 @@ namespace Solti.Utils.DI
     /// <typeparam name="TInterface">The target interface.</typeparam>
     public class InterfaceProxy<TInterface>
     {
-        //
-        // DispatchProxy leszarmazottnak publikusnak kell lennie, nem lehet sealed es kell
-        // rendelkezzen parameter nelkuli publikus konstruktorral.
-        //
-
+        /// <summary>
+        /// Dispatches the calls to its parent.
+        /// </summary>
         public class Dispatcher : DispatchProxy
         {
+            //
+            // DispatchProxy leszarmazottnak publikusnak kell lennie, nem lehet sealed es kell
+            // rendelkezzen parameter nelkuli publikus konstruktorral.
+            //
+
             private InterfaceProxy<TInterface> Parent { get; set; }
 
             protected sealed override object Invoke(MethodInfo targetMethod, object[] args) => Parent.Invoke(targetMethod, args);
            
+            /// <summary>
+            /// Creates a new proxy with the given parent.
+            /// </summary>
+            /// <param name="parent">The parent of this proxy.</param>
+            /// <returns>The newly created proxy.</returns>
             public static TInterface Create(InterfaceProxy<TInterface> parent)
             {
                 TInterface result = Create<TInterface, Dispatcher>();
