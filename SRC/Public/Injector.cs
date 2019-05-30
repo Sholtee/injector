@@ -17,6 +17,9 @@ namespace Solti.Utils.DI
     using Properties;
     using Internals;
 
+    /// <summary>
+    /// Implements the <see cref="IInjector"/> interface.
+    /// </summary>
     public sealed class Injector : Composite<IInjector>, IInjector
     {
         #region Private
@@ -381,6 +384,10 @@ namespace Solti.Utils.DI
         protected override IInjector Self => (IInjector) Get(typeof(IInjector));
         #endregion
 
+        /// <summary>
+        /// Creates a new <see cref="IInjector"/> instance.
+        /// </summary>
+        /// <returns>The newly created instance.</returns>
         public static IInjector Create() => new Injector().Self;
     }
 }
