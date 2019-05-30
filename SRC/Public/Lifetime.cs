@@ -6,24 +6,19 @@
 
 namespace Solti.Utils.DI
 {
+    /// <summary>
+    /// Describes the lifetime of a service. A service can be registered in various ways. For more information check out the <see cref="IInjector"/> interface.
+    /// </summary>
     public enum Lifetime
     {
         /// <summary>
-        /// Transient lifetime.
+        /// Transient lifetime. Services having <see cref="Transient"/> lifetime are instantiated on every request and must be disposed (if necessary) by the caller. 
         /// </summary>
-        /// <remarks>
-        /// - Services having transient lifetime are created each time they are requested.
-        /// - The caller is responsible for freeing the requested services.
-        /// </remarks>
         Transient = 0,
 
         /// <summary>
-        /// Singleton lifetime.
+        /// Singleton lifetime. Services having <see cref="Singleton"/> liftime are instantiated only once on the first request and disposed automatically when the injector itself is disposed.
         /// </summary>
-        /// <remarks>
-        /// - Services having singleton lifetime are created only once they are requested.
-        /// - The system automatically frees them on IInjector.Dispose() call.
-        /// </remarks>
         Singleton
     }
 }
