@@ -59,7 +59,7 @@ namespace Solti.Utils.DI
         public TInterface Target { get; }
 
         /// <summary>
-        /// 
+        /// Creates a new <see cref="InterfaceProxy{TInterface}"/> instance.
         /// </summary>
         /// <param name="target">The target of the proxy. By default it can not be null.</param>
         public InterfaceProxy(TInterface target)
