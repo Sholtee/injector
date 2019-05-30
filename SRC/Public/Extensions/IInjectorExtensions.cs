@@ -52,7 +52,7 @@ namespace Solti.Utils.DI
         public static IInjector Proxy<TInterface>(this IInjector self, Func<IInjector, TInterface, TInterface> decorator) => self.Proxy(typeof(TInterface), (me, type, instance) => decorator(me, (TInterface) instance));
 
         /// <summary>
-        /// Registers a pre-created instance. Useful to creating "constant" values (e.g. command-line arguments).
+        /// Registers a pre-created instance. Useful when creating "constant" values (e.g. from command-line arguments).
         /// </summary>
         /// <typeparam name="TInterface">The service interface to be registered. It can be registered only once.</typeparam>
         /// <param name="self">The injector itself.</param>
