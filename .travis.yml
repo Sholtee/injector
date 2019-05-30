@@ -14,3 +14,5 @@ jobs:
     - stage: perf_test 
       script:
         - dotnet run --project "./PERF/Injector.Perf.csproj" --configuration Release --filter "*"
+      on:
+        tags: true
