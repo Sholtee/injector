@@ -9,7 +9,7 @@ namespace Solti.Utils.DI.Internals
 {
     using Properties;
 
-    internal sealed class InjectorEntry: Disposable, ICloneable
+    internal sealed class InjectorEntry: Disposable, IServiceInfo, ICloneable
     {
         private Func<IInjector, Type, object> FFactory;
         private object FValue;

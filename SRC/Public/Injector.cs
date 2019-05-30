@@ -351,6 +351,8 @@ namespace Solti.Utils.DI
         object IInjector.Get(Type iface) => Get(iface);
 
         IReadOnlyList<Type> IInjector.Entries => FEntries.Keys.ToArray();
+
+        IServiceInfo IInjector.QueryServiceInfo(Type iface) => GetEntry(iface);
         #endregion
 
         #region Protected

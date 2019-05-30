@@ -66,14 +66,23 @@ namespace Solti.Utils.DI
         /// <summary>
         /// Resolves a dependency.
         /// </summary>
-        /// <param name="iface">The "id" of the service to be resolved. Must be a non-generic interface.</param>
+        /// <param name="iface">The "id" of the service to be resolved. It must be a non-generic interface.</param>
         /// <returns>The resolved service.</returns>
         /// <remarks>This method is thread safe so you can call it parallelly.</remarks>
+        /// <exception cref="NotSupportedException">The service can not be found.</exception>
         object Get([ParameterIs(typeof(NotNull), typeof(Interface), typeof(NotGeneric))] Type iface);
 
         /// <summary>
         /// Registered entries. It contains the explicit and implicit entries as well.
         /// </summary>
         IReadOnlyList<Type> Entries { get; }
+
+        /// <summary>
+        /// Gets basic informations about a registered service.
+        /// </summary>
+        /// <param name="iface">The "id" of the service to be queried. It must be an interface.</param>
+        /// <returns>An <see cref="IServiceInfo"/> instance.</returns>
+        /// <exception cref="NotSupportedException">The service can not be found.</exception>
+        IServiceInfo QueryServiceInfo([ParameterIs(typeof(NotNull), typeof(Interface))] Type iface);
     }
 }

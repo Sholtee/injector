@@ -64,10 +64,19 @@ namespace Solti.Utils.DI
         /// <summary>
         /// Resolves a dependency.
         /// </summary>
-        /// <typeparam name="TInterface">The "id" of the service to be resolved.</typeparam>
+        /// <typeparam name="TInterface">The "id" of the service to be resolved. It must be an interface.</typeparam>
         /// <param name="self">The injector itself.</param>
         /// <returns>The resolved service.</returns>
         /// <remarks>This method is thread safe so you can call it parallelly.</remarks>
+        /// <exception cref="NotSupportedException">The service can not be found.</exception>
         public static TInterface Get<TInterface>(this IInjector self) => (TInterface) self.Get(typeof(TInterface));
+
+        /// <summary>
+        /// Gets basic informations about a registered service.
+        /// </summary>
+        /// <typeparam name="TInterface">The "id" of the service to be queried. It must be an interface.</typeparam>
+        /// <param name="self">The injector itself.</param>
+        /// <returns>An <see cref="IServiceInfo"/> instance.</returns>
+        public static IServiceInfo QueryServiceInfo<TInterface>(this IInjector self) => self.QueryServiceInfo(typeof(TInterface));
     }
 }
