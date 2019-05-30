@@ -11,6 +11,11 @@ using System.Diagnostics;
 
 namespace Solti.Utils.DI.Internals
 {
+    /// <summary>
+    /// A thread safe <see cref="IComposite{T}"/> implementation.
+    /// </summary>
+    /// <typeparam name="TInterface">The interface on which we want to apply the composite pattern.</typeparam>
+    /// <remarks>This is an internal class so it can be changed from version to version. Don't use it!</remarks>
     public abstract class Composite<TInterface>: Disposable, IComposite<TInterface> where TInterface: class, IComposite<TInterface>
     {
         #region Private
@@ -46,11 +51,19 @@ namespace Solti.Utils.DI.Internals
         #endregion
 
         #region Protected
+        /// <summary>
+        /// Creates a new instance.
+        /// </summary>
+        /// <param name="parent">The parent entity. It can be null.</param>
         protected Composite(TInterface parent)
         {
             FParent = parent;
         }
 
+        /// <summary>
+        /// Disposal logic related to this class.
+        /// </summary>
+        /// <param name="disposeManaged">Check out the <see cref="Disposable"/> class.</param>
         protected override void Dispose(bool disposeManaged)
         {
             if (disposeManaged)
@@ -83,10 +96,14 @@ namespace Solti.Utils.DI.Internals
         }
 
         /// <summary>
-        /// Korbedolgozas h TInterface lehessen proxy.
+        /// Access this entity as a <see cref="TInterface"/> interface.
         /// </summary>
         protected virtual TInterface Self => this as TInterface;
 
+        /// <summary>
+        /// Creates a new child. For more information see the <see cref="IComposite{T}"/> interface.
+        /// </summary>
+        /// <returns>The newly created child.</returns>
         protected abstract TInterface CreateChild();
         #endregion
 
