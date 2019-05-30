@@ -1,6 +1,4 @@
-# Injector
-[![Build Status](https://travis-ci.com/Sholtee/injector.svg?branch=master)](https://travis-ci.com/Sholtee/injector)
-
+# Injector [![Build Status](https://travis-ci.com/Sholtee/injector.svg?branch=master)](https://travis-ci.com/Sholtee/injector)
 > A featherweight dependency injector
 
 ## API Docs
