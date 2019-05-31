@@ -28,6 +28,8 @@ namespace Solti.Utils.DI
 
         private /*readonly*/ ThreadLocal<ThreadContext> FContext;
 
+        private bool FLocked;
+
         private Stack<Type> CurrentPath => FContext.Value.CurrentPath;
 
         private Injector(): this(null)
@@ -353,6 +355,12 @@ namespace Solti.Utils.DI
         IReadOnlyList<Type> IInjector.Entries => FEntries.Keys.ToArray();
 
         IServiceInfo IInjector.QueryServiceInfo(Type iface) => GetEntry(iface);
+        #endregion
+
+        #region IStateful
+        bool IStateful.Locked => FLocked;
+
+        void IStateful.Lock() => FLocked = true;
         #endregion
 
         #region Protected

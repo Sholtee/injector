@@ -144,6 +144,9 @@
   <data name="INVALID_TYPE" xml:space="preserve">
     <value>The returned object should be an instance of "{0}".</value>
   </data>
+  <data name="LOCKED" xml:space="preserve">
+    <value>Modifying locked entities is not allowed.</value>
+  </data>
   <data name="MULTIPLE_ASSIGN" xml:space="preserve">
     <value>Property can be assigned only once.</value>
   </data>

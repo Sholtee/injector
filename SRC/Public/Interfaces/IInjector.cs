@@ -13,7 +13,7 @@ namespace Solti.Utils.DI
     /// <summary>
     /// Provides a mechanism for injecting resources.
     /// </summary>
-    public interface IInjector: IComposite<IInjector>
+    public interface IInjector: IComposite<IInjector>, IStateful
     {
         /// <summary>
         /// Registers a new service with the given type.
@@ -23,6 +23,7 @@ namespace Solti.Utils.DI
         /// <param name="lifetime">The lifetime of the service. For more information see the <see cref="Lifetime"/> enum.</param>
         /// <returns>The injector itself.</returns>
         /// <remarks>You can register generic services (where the interface and the implementation are open generic types). The system will specialize the implementation if you request a concrete service.</remarks>
+        [StateCritical] 
         IInjector Service([ParameterIs(typeof(NotNull), typeof(Interface))] Type iface, [ParameterIs(typeof(NotNull), typeof(Class))] Type implementation, Lifetime lifetime = Lifetime.Transient);
 
         /// <summary>
@@ -33,6 +34,7 @@ namespace Solti.Utils.DI
         /// <param name="lifetime">The lifetime of the service. For more information see the <see cref="Lifetime"/> enum.</param>
         /// <returns>The injector itself.</returns>
         /// <remarks>You can register generic services (where the <paramref name="iface"/> parameter is an open generic type). In this case the resolver must return an open generic implementation.</remarks>
+        [StateCritical]
         IInjector Lazy([ParameterIs(typeof(NotNull), typeof(Interface))] Type iface, [ParameterIs(typeof(NotNull))] IResolver resolver, Lifetime lifetime = Lifetime.Transient);
 
         /// <summary>
@@ -43,6 +45,7 @@ namespace Solti.Utils.DI
         /// <param name="lifetime">The lifetime of the service. For more information see the <see cref="Lifetime"/> enum.</param>
         /// <returns>The injector itself.</returns>
         /// <remarks>You can register generic services (where the <paramref name="iface"/> parameter is an open generic type).</remarks>
+        [StateCritical]
         IInjector Factory([ParameterIs(typeof(NotNull), typeof(Interface))] Type iface, [ParameterIs(typeof(NotNull))] Func<IInjector, Type, object> factory, Lifetime lifetime = Lifetime.Transient);
 
         /// <summary>
@@ -52,6 +55,7 @@ namespace Solti.Utils.DI
         /// <param name="decorator">The decorator funtion. It must return the decorated instance. The original instance can be accessed via the 3rd parameter.</param>
         /// <returns>The injector itself.</returns>
         /// <remarks>You can't create proxies against generic or instance entries. A service can be decorated multiple times.</remarks>
+        [StateCritical]
         IInjector Proxy([ParameterIs(typeof(NotNull), typeof(Interface))] Type iface, [ParameterIs(typeof(NotNull))] Func<IInjector, Type, object, object> decorator);
 
         /// <summary>
@@ -61,6 +65,7 @@ namespace Solti.Utils.DI
         /// <param name="instance">The pre-created instance to be registered. It can not be null and must implement the <see cref="iface"/> interface.</param>
         /// <param name="releaseOnDispose">Wheter the system should dispose the instance on injector disposal.</param>
         /// <returns>The injector itself.</returns>
+        [StateCritical]
         IInjector Instance([ParameterIs(typeof(NotNull), typeof(Interface))] Type iface, [ParameterIs(typeof(NotNull))] object instance, bool releaseOnDispose = true);
 
         /// <summary>
