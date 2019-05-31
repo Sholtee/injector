@@ -15,8 +15,12 @@
 			"src": "BIN/DOC"
 		}],
 		"dest": "DOC",
+		"resource": [{
+			"files": ["favicon.ico"]
+		}],
 		"globalMetadata": {
 			"_appTitle": "Injector",
+			"_appFaviconPath": "favicon.ico",
 			"_disableNavbar": true,
 			"_disableContribution": true
 		}
