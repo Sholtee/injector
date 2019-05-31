@@ -40,11 +40,11 @@ using(IInjector injector = Injector.Create())
   Assert.That(child_1.Parent == injector);
   .
   .
-  using(IInjector child_2 = injector.Create())
+  using(IInjector child_2 = injector.CreateChild())
   {
     Assert.That(child_2.Parent == injector);
     .
-	.
+    .
   } // child_2 released here
 } // child_1 released here
 ```
