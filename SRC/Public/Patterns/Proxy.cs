@@ -77,11 +77,16 @@ namespace Solti.Utils.DI
         /// <param name="args">Arguments passed to the call.</param>
         /// <returns>By default <see cref="Invoke"/> returns the value returned by the <see cref="Target"/> method call.</returns>
         protected virtual object Invoke(MethodInfo targetMethod, object[] args) => targetMethod.FastInvoke(Target, args);
-        
-        internal static TInterface Chain(TInterface seed, params Type[] proxies) => proxies.Aggregate(seed, (current, proxy) =>
+
+        internal sealed class DynamicProxy
         {
-            Debug.Assert(typeof(InterfaceProxy<TInterface>).IsAssignableFrom(proxy));
-            return proxy.CreateInstance<InterfaceProxy<TInterface>>(new[] {typeof(TInterface)}, current).Proxy;
-        });
+            public TInterface Target { get; set; }
+
+            public InterfaceProxy<TInterface> Create<TProxy>() where TProxy : InterfaceProxy<TInterface>
+                => typeof(TProxy).CreateInstance<InterfaceProxy<TInterface>>(new[] {typeof(TInterface)}, Target);
+        }
+
+        internal static TInterface Chain(TInterface seed, params Func<DynamicProxy, InterfaceProxy<TInterface>>[] proxies) =>
+            proxies.Aggregate(seed, (current, proxy) => proxy(new DynamicProxy {Target = current}).Proxy);
     }
 }

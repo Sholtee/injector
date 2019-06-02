@@ -66,7 +66,12 @@ namespace Solti.Utils.DI
             Instance
             (
                 typeof(IInjector), 
-                Self = InterfaceProxy<IInjector>.Chain(this, typeof(ParameterValidatorProxy<IInjector>), typeof(StateValidatorProxy<IInjector>)), 
+                Self = InterfaceProxy<IInjector>.Chain
+                (
+                    this, 
+                    proxy => proxy.Create<ParameterValidatorProxy<IInjector>>(), 
+                    proxy => proxy.Create<StateValidatorProxy<IInjector>>()
+                ), 
                 releaseOnDispose: false
             );
         }
