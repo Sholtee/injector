@@ -63,12 +63,12 @@ namespace Solti.Utils.DI
             // Beallitjuk a proxykat, majd felvesszuk sajat magunkat.
             //
 
-            Instance(typeof(IInjector), Self = Chain(typeof(ParameterValidatorProxy<IInjector>), typeof(StateValidatorProxy<IInjector>)), releaseOnDispose: false);
-
-            IInjector Chain(params Type[] proxies)
-            {
-                return proxies.Aggregate((IInjector) this, (current, proxy) => proxy.CreateInstance<InterfaceProxy<IInjector>>(new[] {typeof(IInjector)}, current).Proxy);
-            }
+            Instance
+            (
+                typeof(IInjector), 
+                Self = InterfaceProxy<IInjector>.Chain(this, typeof(ParameterValidatorProxy<IInjector>), typeof(StateValidatorProxy<IInjector>)), 
+                releaseOnDispose: false
+            );
         }
 
         private static readonly MethodInfo IfaceGet = ((MethodCallExpression) ((Expression<Action<IInjector>>) (injector => injector.Get(null))).Body).Method;

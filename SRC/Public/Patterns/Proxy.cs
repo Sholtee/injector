@@ -3,7 +3,9 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
+using System;
 using System.Diagnostics;
+using System.Linq;
 using System.Reflection;
 
 namespace Solti.Utils.DI
@@ -74,6 +76,12 @@ namespace Solti.Utils.DI
         /// <param name="targetMethod">The <see cref="MethodInfo"/> representing the called method.</param>
         /// <param name="args">Arguments passed to the call.</param>
         /// <returns>By default <see cref="Invoke"/> returns the value returned by the <see cref="Target"/> method call.</returns>
-        protected virtual object Invoke(MethodInfo targetMethod, object[] args) => targetMethod.FastInvoke(Target, args);     
+        protected virtual object Invoke(MethodInfo targetMethod, object[] args) => targetMethod.FastInvoke(Target, args);
+        
+        internal static TInterface Chain(TInterface seed, params Type[] proxies) => proxies.Aggregate(seed, (current, proxy) =>
+        {
+            Debug.Assert(typeof(InterfaceProxy<TInterface>).IsAssignableFrom(proxy));
+            return proxy.CreateInstance<InterfaceProxy<TInterface>>(new[] {typeof(TInterface)}, current).Proxy;
+        });
     }
 }
