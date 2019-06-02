@@ -13,17 +13,17 @@ namespace Solti.Utils.DI.Internals
 {
     internal static class ConstructorInfoExtensions
     {
-        private static readonly ConcurrentDictionary<ConstructorInfo, Func<object[], object>> Factories = new ConcurrentDictionary<ConstructorInfo, Func<object[], object>>();
+        private static readonly ConcurrentDictionary<ConstructorInfo, Func<object[], object>> FCache = new ConcurrentDictionary<ConstructorInfo, Func<object[], object>>();
 
-        public static TDelegate ToDelegate<TDelegate>(this ConstructorInfo ctor, Func<int, Type, Expression> getArgumentExpression, params ParameterExpression[] parameters) => Expression.Lambda<TDelegate>
+        public static TDelegate ToDelegate<TDelegate>(this ConstructorInfo ctor, Func<Type, int, Expression> getArgument, params ParameterExpression[] parameters) => Expression.Lambda<TDelegate>
         (
             Expression.New
             (
                 ctor, 
-                ctor.GetParameters().Select((para, i) => Expression.Convert
+                ctor.GetParameters().Select((param, i) => Expression.Convert
                 (
-                    getArgumentExpression(i, para.ParameterType),
-                    para.ParameterType
+                    getArgument(param.ParameterType, i),
+                    param.ParameterType
                 ))
             ),
             parameters
@@ -31,12 +31,12 @@ namespace Solti.Utils.DI.Internals
 
         public static object Call(this ConstructorInfo ctor, params object[] args)
         {
-            Func<object[], object> factory = Factories.GetOrAdd(ctor, @void =>
+            Func<object[], object> factory = FCache.GetOrAdd(ctor, @void =>
             {
                 ParameterExpression paramz = Expression.Parameter(typeof(object[]), "paramz");
 
                 return ctor.ToDelegate<Func<object[], object>>(
-                    (i, parameterType) => Expression.ArrayAccess(paramz, Expression.Constant(i)),
+                    (parameterType, i) => Expression.ArrayAccess(paramz, Expression.Constant(i)),
                     paramz);
             });
             return factory(args);

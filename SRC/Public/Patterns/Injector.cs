@@ -88,7 +88,7 @@ namespace Solti.Utils.DI
 
             return constructor.ToDelegate<Func<IInjector, Type, object>>
             (
-                (i, parameterType) => Expression.Call(injector, IfaceGet, Expression.Constant(parameterType)),
+                (parameterType, i) => Expression.Call(injector, IfaceGet, Expression.Constant(parameterType)),
                 injector,
 
                 //

@@ -76,7 +76,7 @@ namespace Solti.Utils.DI
         /// <param name="targetMethod">The <see cref="MethodInfo"/> representing the called method.</param>
         /// <param name="args">Arguments passed to the call.</param>
         /// <returns>By default <see cref="Invoke"/> returns the value returned by the <see cref="Target"/> method call.</returns>
-        protected virtual object Invoke(MethodInfo targetMethod, object[] args) => targetMethod.FastInvoke(Target, args);
+        protected virtual object Invoke(MethodInfo targetMethod, object[] args) => targetMethod.Call(Target, args);
 
         internal sealed class DynamicProxy
         {

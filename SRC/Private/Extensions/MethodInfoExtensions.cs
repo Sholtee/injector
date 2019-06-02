@@ -15,9 +15,9 @@ namespace Solti.Utils.DI.Internals
     {
         private static readonly ConcurrentDictionary<MethodInfo, Func<object, object[], object>> FCache = new ConcurrentDictionary<MethodInfo, Func<object, object[], object>>();
 
-        public static bool MethodRegistered(MethodInfo method) => FCache.ContainsKey(method);
-     
-        public static object FastInvoke(this MethodInfo method, object target, params object[] args)
+        public static bool MethodRegistered(MethodInfo method) => FCache.ContainsKey(method); // TODO: remove
+
+        public static TDelegate ToDelegate<TDelegate>(this MethodInfo method, Expression instance, Func<Type, int, Expression> getArgument, params ParameterExpression[] parameters)
         {
             //
             // (target, paramz) => (Type_3) ((Type_0) target).Method((Type_1) paramz[0], (Type_2) paramz[1], ...)
@@ -25,31 +25,39 @@ namespace Solti.Utils.DI.Internals
             // (target, paramz) => {((Type_0) target).Method((Type_1) paramz[0], (Type_2) paramz[1], ...); return default(object);}
             //
 
+            Expression call = Expression.Call
+            (
+                instance != null ? Expression.Convert(instance, method.ReflectedType) : null,
+                method,
+                method
+                    .GetParameters()
+                    .Select((param, i) => Expression.Convert(getArgument(param.ParameterType, i), param.ParameterType))
+            );
+
+            call = method.ReturnType != typeof(void)
+                ? (Expression) Expression.Convert(call, typeof(object))
+                : Expression.Block(typeof(object), call, Expression.Default(typeof(object)));
+
+            return Expression.Lambda<TDelegate>
+            (
+                call,    
+                parameters
+            ).Compile();
+        }
+
+        public static object Call(this MethodInfo method, object target, params object[] args)
+        {
             Func<object, object[], object> invoke = FCache.GetOrAdd(method, @void =>
             {
                 ParameterExpression
                     instance = Expression.Parameter(typeof(object),   "instance"),
                     paramz   = Expression.Parameter(typeof(object[]), "paramz");
 
-                Expression call =  Expression.Call
-                (
-                    Expression.Convert(instance, method.ReflectedType), 
-                    method, 
-                    method
-                        .GetParameters()
-                        .Select((para, i) => Expression.Convert(Expression.ArrayIndex(paramz, Expression.Constant(i)), para.ParameterType))
-                );
-
-                call = method.ReturnType != typeof(void)
-                    ? (Expression) Expression.Convert(call, typeof(object))
-                    : Expression.Block(typeof(object), call, Expression.Default(typeof(object)));
-     
-                return Expression.Lambda<Func<object, object[], object>>
-                (
-                    call,
+                return method.ToDelegate<Func<object, object[], object>>(
                     instance, 
-                    paramz
-                ).Compile();
+                    (paramType, i) => Expression.ArrayIndex(paramz, Expression.Constant(i)),
+                    instance,
+                    paramz);
             });
 
             return invoke(target, args);
