@@ -52,6 +52,6 @@ namespace Solti.Utils.DI.Internals
             return false;
         }
 
-        public static T CreateInstance<T>(this Type src, Type[] argTypes, params object[] args) => (T) src.GetConstructor(argTypes).Call(args);
+        public static object CreateInstance(this Type src, Type[] argTypes, params object[] args) => src.GetConstructor(argTypes).Call(args);
     }
 }

@@ -22,7 +22,7 @@ namespace Solti.Utils.DI.Internals
             Validators = validators.Select(validator => Instances.GetOrAdd
             (
                 validator,
-                @void => validator.CreateInstance<IParameterValidator>(new Type[0])
+                @void => (IParameterValidator) validator.CreateInstance(new Type[0])
             )).ToArray();
         }
     }

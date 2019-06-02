@@ -80,13 +80,15 @@ namespace Solti.Utils.DI
 
         internal sealed class DynamicProxy
         {
-            public TInterface Target { get; set; }
+            public TInterface Target { get; }
+
+            public DynamicProxy(TInterface target) => Target = target;
 
             public InterfaceProxy<TInterface> Create<TProxy>() where TProxy : InterfaceProxy<TInterface>
-                => typeof(TProxy).CreateInstance<InterfaceProxy<TInterface>>(new[] {typeof(TInterface)}, Target);
+                => (InterfaceProxy<TInterface>) typeof(TProxy).CreateInstance(new[] {typeof(TInterface)}, Target);
         }
 
         internal static TInterface Chain(TInterface seed, params Func<DynamicProxy, InterfaceProxy<TInterface>>[] proxies) =>
-            proxies.Aggregate(seed, (current, proxy) => proxy(new DynamicProxy {Target = current}).Proxy);
+            proxies.Aggregate(seed, (current, proxy) => proxy(new DynamicProxy(current)).Proxy);
     }
 }
