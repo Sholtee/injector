@@ -76,22 +76,14 @@ namespace Solti.Utils.DI
         private Func<IInjector, Type, object> CreateFactory(ConstructorInfo constructor)
         {
             //
-            // (injector, type) => (IService) new Service((IDependency_1) injector.Get(typeof(IDependency_1)), ...)
+            // (injector, type) => new Service((IDependency_1) injector.Get(typeof(IDependency_1)), ...)
             //
 
             ParameterExpression injector = Expression.Parameter(typeof(IInjector), "injector");
 
-            return Expression.Lambda<Func<IInjector, Type, object>>
+            return constructor.ToDelegate<Func<IInjector, Type, object>>
             (
-                Expression.New
-                (
-                    constructor,
-                    constructor.GetParameters().Select(para => Expression.Convert
-                    (
-                        Expression.Call(injector, IfaceGet, Expression.Constant(para.ParameterType)),
-                        para.ParameterType
-                    ))
-                ),
+                (i, parameterType) => Expression.Call(injector, IfaceGet, Expression.Constant(parameterType)),
                 injector,
 
                 //
@@ -99,7 +91,7 @@ namespace Solti.Utils.DI
                 //
 
                 Expression.Parameter(typeof(Type), "type")
-            ).Compile();
+            );
         }
 
         private bool GetEntry(Type iface, out InjectorEntry entry) => FEntries.TryGetValue(iface, out entry);
