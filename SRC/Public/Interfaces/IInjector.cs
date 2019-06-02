@@ -13,7 +13,7 @@ namespace Solti.Utils.DI
     /// <summary>
     /// Provides a mechanism for injecting resources.
     /// </summary>
-    public interface IInjector: IComposite<IInjector>, IStateful
+    public interface IInjector: IComposite<IInjector>, ILockable
     {
         /// <summary>
         /// Registers a new service with the given type.

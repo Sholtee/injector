@@ -57,7 +57,7 @@
     <div><a class="xref" href="Solti.Utils.DI.IInjector.html">IInjector</a></div>
     <div><a class="xref" href="Solti.Utils.DI.Internals.IComposite-1.html">IComposite</a>&lt;<a class="xref" href="Solti.Utils.DI.IInjector.html">IInjector</a>&gt;</div>
     <div><span class="xref">System.IDisposable</span></div>
-    <div><a class="xref" href="Solti.Utils.DI.Internals.IStateful.html">IStateful</a></div>
+    <div><a class="xref" href="Solti.Utils.DI.Internals.ILockable.html">ILockable</a></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
@@ -108,7 +108,7 @@
   <h6><strong>Assembly</strong>: Injector.dll</h6>
   <h5 id="Solti_Utils_DI_Injector_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public sealed class Injector : Composite&lt;IInjector&gt;, IInjector, IComposite&lt;IInjector&gt;, IDisposable, IStateful</code></pre>
+    <pre><code class="lang-csharp hljs">public sealed class Injector : Composite&lt;IInjector&gt;, IInjector, IComposite&lt;IInjector&gt;, IDisposable, ILockable</code></pre>
   </div>
   <h5 id="Solti_Utils_DI_Injector_remarks"><strong>Remarks</strong></h5>
   <div class="markdown level0 remarks"><p>You can not instantiate this class directly, use the static <a class="xref" href="Solti.Utils.DI.Injector.html#Solti_Utils_DI_Injector_Create">Create()</a> method instead.</p>
@@ -570,21 +570,21 @@
       </tr>
     </tbody>
   </table>
-  <a id="Solti_Utils_DI_Injector_Solti_Utils_DI_Internals_IStateful_Lock_" data-uid="Solti.Utils.DI.Injector.Solti#Utils#DI#Internals#IStateful#Lock*"></a>
-  <h4 id="Solti_Utils_DI_Injector_Solti_Utils_DI_Internals_IStateful_Lock" data-uid="Solti.Utils.DI.Injector.Solti#Utils#DI#Internals#IStateful#Lock">IStateful.Lock()</h4>
+  <a id="Solti_Utils_DI_Injector_Solti_Utils_DI_Internals_ILockable_Lock_" data-uid="Solti.Utils.DI.Injector.Solti#Utils#DI#Internals#ILockable#Lock*"></a>
+  <h4 id="Solti_Utils_DI_Injector_Solti_Utils_DI_Internals_ILockable_Lock" data-uid="Solti.Utils.DI.Injector.Solti#Utils#DI#Internals#ILockable#Lock">ILockable.Lock()</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">void IStateful.Lock()</code></pre>
+    <pre><code class="lang-csharp hljs">void ILockable.Lock()</code></pre>
   </div>
-  <a id="Solti_Utils_DI_Injector_Solti_Utils_DI_Internals_IStateful_Locked_" data-uid="Solti.Utils.DI.Injector.Solti#Utils#DI#Internals#IStateful#Locked*"></a>
-  <h4 id="Solti_Utils_DI_Injector_Solti_Utils_DI_Internals_IStateful_Locked" data-uid="Solti.Utils.DI.Injector.Solti#Utils#DI#Internals#IStateful#Locked">IStateful.Locked</h4>
+  <a id="Solti_Utils_DI_Injector_Solti_Utils_DI_Internals_ILockable_Locked_" data-uid="Solti.Utils.DI.Injector.Solti#Utils#DI#Internals#ILockable#Locked*"></a>
+  <h4 id="Solti_Utils_DI_Injector_Solti_Utils_DI_Internals_ILockable_Locked" data-uid="Solti.Utils.DI.Injector.Solti#Utils#DI#Internals#ILockable#Locked">ILockable.Locked</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">bool IStateful.Locked { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">bool ILockable.Locked { get; }</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -612,7 +612,7 @@
       <span class="xref">System.IDisposable</span>
   </div>
   <div>
-      <a class="xref" href="Solti.Utils.DI.Internals.IStateful.html">IStateful</a>
+      <a class="xref" href="Solti.Utils.DI.Internals.ILockable.html">ILockable</a>
   </div>
   <h3 id="extensionmethods">Extension Methods</h3>
   <div>

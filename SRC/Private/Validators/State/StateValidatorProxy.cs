@@ -1,5 +1,5 @@
 ﻿/********************************************************************************
-* MethodValidatorProxy.cs                                                       *
+* StateValidatorProxy.cs                                                        *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
@@ -10,9 +10,9 @@ namespace Solti.Utils.DI.Internals
 {
     using Properties;
 
-    internal sealed class MethodValidatorProxy<TInterface> : InterfaceProxy<TInterface> where TInterface: IStateful
+    internal sealed class StateValidatorProxy<TInterface> : InterfaceProxy<TInterface> where TInterface: ILockable
     {
-        public MethodValidatorProxy(TInterface target) : base(target)
+        public StateValidatorProxy(TInterface target) : base(target)
         {
         }
 

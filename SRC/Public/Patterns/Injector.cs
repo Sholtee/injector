@@ -357,10 +357,10 @@ namespace Solti.Utils.DI
         IServiceInfo IInjector.QueryServiceInfo(Type iface) => GetEntry(iface);
         #endregion
 
-        #region IStateful
-        bool IStateful.Locked => FLocked;
+        #region ILockable
+        bool ILockable.Locked => FLocked;
 
-        void IStateful.Lock() => FLocked = true;
+        void ILockable.Lock() => FLocked = true;
         #endregion
 
         #region Protected
