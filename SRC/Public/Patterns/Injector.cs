@@ -8,7 +8,6 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Reflection;
 using System.Threading;
 
@@ -76,29 +75,6 @@ namespace Solti.Utils.DI
             );
         }
 
-        private static readonly MethodInfo IfaceGet = ((MethodCallExpression) ((Expression<Action<IInjector>>) (injector => injector.Get(null))).Body).Method;
-
-        private Func<IInjector, Type, object> CreateFactory(ConstructorInfo constructor)
-        {
-            //
-            // (injector, type) => new Service((IDependency_1) injector.Get(typeof(IDependency_1)), ...)
-            //
-
-            ParameterExpression injector = Expression.Parameter(typeof(IInjector), "injector");
-
-            return constructor.ToDelegate<Func<IInjector, Type, object>>
-            (
-                (parameterType, i) => Expression.Call(injector, IfaceGet, Expression.Constant(parameterType)),
-                injector,
-
-                //
-                // Csak azert kell h a legyartott factory layout-ja stimmeljen.
-                //
-
-                Expression.Parameter(typeof(Type), "type")
-            );
-        }
-
         private bool GetEntry(Type iface, out InjectorEntry entry) => FEntries.TryGetValue(iface, out entry);
 
         private InjectorEntry Register(InjectorEntry entry)
@@ -159,7 +135,7 @@ namespace Solti.Utils.DI
                 // legyartani a factory-t.
                 //
 
-                Factory = !iface.IsGenericTypeDefinition ? CreateFactory(constructor) : null
+                Factory = !iface.IsGenericTypeDefinition ? Resolver.Create(constructor) : null
             });
         }
 
@@ -186,7 +162,7 @@ namespace Solti.Utils.DI
                 if (realFactory == null)
                     lock (entry)
                         if (realFactory == null)
-                            realFactory = CreateFactory(ValidateImplementation(iface, resolver.Resolve(iface)));
+                            realFactory = Resolver.Create(ValidateImplementation(iface, resolver.Resolve(iface)));
 
                 return realFactory(injector, type);
             };
