@@ -60,10 +60,15 @@ namespace Solti.Utils.DI
             FContext = new ThreadLocal<ThreadContext>(() => new ThreadContext(), trackAllValues: false);
 
             //
-            // Felvesszuk sajat magunkat.
+            // Beallitjuk a proxykat, majd felvesszuk sajat magunkat.
             //
 
-            Instance(typeof(IInjector), new ParameterValidatorProxy<IInjector>(this).Proxy, releaseOnDispose: false);
+            Instance(typeof(IInjector), Self = Chain(typeof(ParameterValidatorProxy<IInjector>), typeof(StateValidatorProxy<IInjector>)), releaseOnDispose: false);
+
+            IInjector Chain(params Type[] proxies)
+            {
+                return proxies.Aggregate((IInjector) this, (current, proxy) => proxy.CreateInstance<InterfaceProxy<IInjector>>(new[] {typeof(IInjector)}, current).Proxy);
+            }
         }
 
         private static readonly MethodInfo IfaceGet = ((MethodCallExpression) ((Expression<Action<IInjector>>) (injector => injector.Get(null))).Body).Method;
@@ -223,14 +228,7 @@ namespace Solti.Utils.DI
 
         internal InjectorEntry Proxy(Type iface, Func<IInjector, Type, object, object> decorator)
         {
-            //
-            // Instance() hivassal felvett ertek vagy generikus szerviz eseten a metodus nem ertelmezett.
-            //
-
             InjectorEntry entry = GetEntry(iface);
-
-            if (entry.Factory == null)
-                throw new InvalidOperationException(Resources.CANT_PROXY);
 
             //
             // Lock igazabol nem is kene, csak kis paranoia.
@@ -238,12 +236,24 @@ namespace Solti.Utils.DI
 
             lock (entry)
             {
-                Func<IInjector, Type, object> oldFactory = entry.Factory;
+                //
+                // Service(), Factory(), Lazy()
+                //
 
-                entry.Factory = (injector, type) => decorator(injector, type, oldFactory(injector, type));
+                if (entry.Factory != null)
+                {
+                    Func<IInjector, Type, object> oldFactory = entry.Factory;
+
+                    entry.Factory = (injector, type) => decorator(injector, type, oldFactory(injector, type));
+                    return entry;
+                }
             }
 
-            return entry;
+            //
+            // Generikus szerviz es Instance() eseten a metodus nem ertelmezett.
+            //
+
+            throw new InvalidOperationException(Resources.CANT_PROXY);
         }
 
         internal InjectorEntry Instance(Type iface, object instance, bool releaseOnDispose)
@@ -355,9 +365,7 @@ namespace Solti.Utils.DI
         IReadOnlyList<Type> IInjector.Entries => FEntries.Keys.ToArray();
 
         IServiceInfo IInjector.QueryServiceInfo(Type iface) => GetEntry(iface);
-        #endregion
 
-        #region ILockable
         bool ILockable.Locked => FLocked;
 
         void ILockable.Lock() => FLocked = true;
@@ -389,10 +397,7 @@ namespace Solti.Utils.DI
             }
         }
 
-        /// <summary>
-        /// "this" helyett hasznalando, hogy mindig a proxy-zott peldanyt adjuk vissza.
-        /// </summary>
-        protected override IInjector Self => (IInjector) Get(typeof(IInjector));
+        protected override IInjector Self { get; }
         #endregion
 
         /// <summary>

@@ -7,7 +7,6 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -23,14 +22,7 @@ namespace Solti.Utils.DI.Internals
             Validators = validators.Select(validator => Instances.GetOrAdd
             (
                 validator,
-                @void => Expression.Lambda<Func<IParameterValidator>>
-                (
-                    //
-                    // return (IValidator) new Validator()
-                    //
-
-                    Expression.Convert(Expression.New(validator.GetConstructor(new Type[0])), typeof(IParameterValidator))
-                ).Compile()()
+                @void => validator.CreateInstance<IParameterValidator>(new Type[0])
             )).ToArray();
         }
     }

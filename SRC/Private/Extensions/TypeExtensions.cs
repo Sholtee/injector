@@ -5,6 +5,7 @@
 ********************************************************************************/
 using System;
 using System.Linq;
+using System.Linq.Expressions;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -50,6 +51,22 @@ namespace Solti.Utils.DI.Internals
             //
 
             return false;
+        }
+
+        public static T CreateInstance<T>(this Type src, Type[] argTypes, params object[] args) // TODO: func cache
+        {
+            //
+            // () => (T) new src((T_1) arg[0], (T_2) arg[1], ...)
+            //
+
+            return (T) Expression.Lambda<Func<object>>
+            (
+                Expression.New
+                (
+                    src.GetConstructor(argTypes), 
+                    args.Select((arg, i) => Expression.Convert(Expression.Constant(arg), argTypes[i]))
+                )
+            ).Compile()();
         }
     }
 }
