@@ -123,6 +123,12 @@ namespace Solti.Utils.DI
         internal InjectorEntry Service(Type iface, Type implementation, Lifetime? lifetime)
         {
             //
+            // Ne a Resolver.Create()-ban validaljunk, h generikusoknal is lefusson az ellenorzes.
+            //
+
+            ConstructorInfo constructor = ValidateImplementation(iface, implementation);
+
+            //
             // Bejegyzes felvetele.
             //
 
@@ -133,7 +139,7 @@ namespace Solti.Utils.DI
                 // legyartani a factory-t.
                 //
 
-                Factory = !iface.IsGenericTypeDefinition ? Resolver.Create(ValidateImplementation(iface, implementation)) : null
+                Factory = !iface.IsGenericTypeDefinition ? Resolver.Create(constructor) : null
             });
         }
 
