@@ -330,7 +330,7 @@
       <tr>
         <td><a class="xref" href="Solti.Utils.DI.ITypeResolver.html">ITypeResolver</a></td>
         <td><span class="parametername">implementation</span></td>
-        <td><p>The resolver (<a class="xref" href="Solti.Utils.DI.ITypeResolver.html">ITypeResolver</a>) is responsible for resolving the implementation. The resolved <span class="xref">System.Type</span> can not be null and must implement the <see cref="!:TInterface"></see> interface. Additionally it must have only null or one constructor (that may request another dependecies). The resolver is called only once (on the first request) regardless the value of the <code data-dev-comment-type="paramref" class="paramref">lifetime</code> parameter.</p>
+        <td><p>The resolver (<a class="xref" href="Solti.Utils.DI.ITypeResolver.html">ITypeResolver</a>) is responsible for resolving the implementation. The resolved <span class="xref">System.Type</span> can not be null and must implement the <typeparam name="TInterface"></typeparam> interface. Additionally it must have only null or one constructor (that may request another dependecies). The resolver is called only once (on the first request) regardless the value of the <code data-dev-comment-type="paramref" class="paramref">lifetime</code> parameter.</p>
 </td>
       </tr>
       <tr>
@@ -562,7 +562,7 @@
       </tr>
       <tr>
         <td><span class="parametername">TImplementation</span></td>
-        <td><p>The service implementation to be registered. It must implement the <see cref="!:TInterface"></see> interface and must have only null or one constructor (that may request another dependecies).</p>
+        <td><p>The service implementation to be registered. It must implement the <typeparam name="TInterface"></typeparam> interface and must have only null or one constructor (that may request another dependecies).</p>
 </td>
       </tr>
     </tbody>

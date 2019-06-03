@@ -48,7 +48,7 @@ using(IInjector injector = Injector.Create())
   } // child_2 released here
 } // child_1 released here
 ```
-Child injectors inherit their parent's services, but modifying a child does not affect its parent. In practice, every application should have only one *root* injector. 
+Child injectors inherit their parent's services, but modifying them does not affect their parents. In practice, every application should have only one *root* injector. 
 
 ## API Docs
 [Here](http://htmlpreview.github.io/?https://github.com/Sholtee/injector/blob/master/DOC/Solti.Utils.DI.html )

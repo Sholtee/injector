@@ -30,7 +30,7 @@ namespace Solti.Utils.DI
         /// Registers a service where the implementation will be resolved on the first request. It is useful when the implementation is unknown in compile time or you just want to load the containing assembly on the first request.
         /// </summary>
         /// <param name="iface">The service interface to be registered. It can not be null and can be registered only once.</param>
-        /// <param name="implementation">The resolver (<see cref="ITypeResolver"/>) is responsible for resolving the implementation. The resolved <see cref="Type"/> can not be null and must implement the <see cref="iface"/> interface. Additionally it must have only null or one constructor (that may request another dependecies). The resolver may be called several times.</param>
+        /// <param name="implementation">The resolver (<see cref="ITypeResolver"/>) is responsible for resolving the implementation. The resolved <see cref="Type"/> can not be null and must implement the <paramref name="iface"/> interface. Additionally it must have only null or one constructor (that may request another dependecies). The resolver may be called several times.</param>
         /// <param name="lifetime">The lifetime of the service. For more information see the <see cref="Lifetime"/> enum.</param>
         /// <returns>The injector itself.</returns>
         /// <remarks>You can register generic services (where the <paramref name="iface"/> parameter is an open generic type). In this case the resolver must return an open generic implementation.</remarks>
@@ -62,7 +62,7 @@ namespace Solti.Utils.DI
         /// Registers a pre-created instance. Useful to creating "constant" values (e.g. command-line arguments).
         /// </summary>
         /// <param name="iface">The service interface to be registered. It can not be null and can be registered only once.</param>
-        /// <param name="instance">The pre-created instance to be registered. It can not be null and must implement the <see cref="iface"/> interface.</param>
+        /// <param name="instance">The pre-created instance to be registered. It can not be null and must implement the <param name="iface"/> interface.</param>
         /// <param name="releaseOnDispose">Wheter the system should dispose the instance on injector disposal.</param>
         /// <returns>The injector itself.</returns>
         [StateCritical]

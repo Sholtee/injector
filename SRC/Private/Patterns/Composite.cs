@@ -96,7 +96,7 @@ namespace Solti.Utils.DI.Internals
         }
 
         /// <summary>
-        /// Access this entity as a <see cref="TInterface"/> interface.
+        /// Access this entity as a <typeparam name="TInterface"/> interface.
         /// </summary>
         protected virtual TInterface Self => this as TInterface;
 
