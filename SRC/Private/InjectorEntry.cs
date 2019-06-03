@@ -14,7 +14,7 @@ namespace Solti.Utils.DI.Internals
     {
         private Func<IInjector, Type, object> FFactory;
         private object FValue;
-        private readonly Func<Type> FGetImplementation;
+        private readonly ITypeResolver FImplementation;
 
         private sealed class DefaultTypeResolver : ITypeResolver
         {
@@ -36,27 +36,28 @@ namespace Solti.Utils.DI.Internals
 
         #region Immutables
         /// <summary>
-        /// A bejegyzes kulcsa (lehet generikus).
+        /// The key of the entry (can be open generic type).
         /// </summary>
         public Type Interface { get; }
 
         /// <summary>
-        /// Az interface implementacioja (lehet generikus). Nem NULL szervizek eseten.
+        /// The service implementation (can be open generic type). Not NULL in the case of services.
         /// </summary>
-        public Type Implementation => FGetImplementation();
+        /// <remarks>If the entry belongs to a lazy service, getting this property will trigger the type resolver.</remarks>
+        public Type Implementation => FImplementation?.Resolve(Interface);
 
         /// <summary>
-        /// A letrehozando peldany elettartama. NULL Instance(releaseOnDispose: false) hivassal regisztralt bejegyzeseknel.
+        /// The lifetime of the entity to be created. NULL if the entry was created by an "Instance(releaseOnDispose: false)" call.
         /// </summary>
         public Lifetime? Lifetime { get; }
 
-        public bool IsService => Implementation != null;
+        public bool IsService => FImplementation != null;
 
-        public bool IsLazy => IsService && Implementation == typeof(ITypeResolver);
+        public bool IsLazy => IsService && !(FImplementation is DefaultTypeResolver);
 
-        public bool IsFactory => Implementation == null && Factory != null;
+        public bool IsFactory => !IsService && Factory != null;
 
-        public bool IsInstance => Implementation == null && Factory == null && Value != null;
+        public bool IsInstance => !IsService && !IsFactory && Value != null;
         #endregion
 
         #region Mutables
@@ -89,16 +90,19 @@ namespace Solti.Utils.DI.Internals
         }
         #endregion
 
-        public InjectorEntry(Type @interface, Type implementation = null, Lifetime? lifetime = null): this(@interface, new DefaultTypeResolver(@interface, implementation), lifetime)
-        {
-        }
+        public InjectorEntry(Type @interface, Type implementation = null, Lifetime? lifetime = null): this
+        (
+            @interface, 
+            implementation != null ? new DefaultTypeResolver(@interface, implementation) : null, 
+            lifetime
+        ) {}
 
         public InjectorEntry(Type @interface, ITypeResolver implementation, Lifetime? lifetime = null)
         {
             Interface = @interface;
             Lifetime  = lifetime;
 
-            FGetImplementation = () => implementation.Resolve(@interface);
+            FImplementation = implementation;
         }
 
         public object Clone()
@@ -109,19 +113,22 @@ namespace Solti.Utils.DI.Internals
                 throw new InvalidOperationException(Resources.CANT_CLONE);
 
             //
-            // Ha a peldany regisztralasakor a "releaseOnDispose" igazra volt allitva akkor
-            // a peldany is lehet Singleton. Viszont mi nem akarjuk h a gyermek injektor
-            // felszabadatisasakor is dispose-olva legyen a peldany ezert az elettartamot
-            // nem masoljuk.
+            // 1) Hogy klonozaskor ne legyen a TypeResolver triggerelve ezert magat a resolvert
+            //    adjuk at.
+            //
+            // 2) Ha a peldany regisztralasakor a "releaseOnDispose" igazra volt allitva akkor
+            //    a peldany is lehet Singleton. Viszont mi nem akarjuk h a gyermek injektor
+            //    felszabadatisasakor is dispose-olva legyen a peldany ezert az elettartamot
+            //    nem masoljuk.
             //
 
-            return new InjectorEntry(Interface, Implementation, IsInstance ? null : Lifetime)
+            return new InjectorEntry(Interface, FImplementation, IsInstance ? null : Lifetime)
             {
                 Factory = Factory,
 
                 //
-                // Az ertekek keruljenek ujra legyartasra kiveve ha Instance() hivassal
-                // kerultek regisztralasra.
+                // 3) Az ertekek keruljenek ujra legyartasra kiveve ha Instance() hivassal
+                //    kerultek regisztralasra.
                 //
 
                 Value = IsInstance ? Value : null         

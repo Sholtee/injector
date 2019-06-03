@@ -5,6 +5,7 @@
 ********************************************************************************/
 using System;
 
+using Moq;
 using NUnit.Framework;
 
 namespace Solti.Utils.DI.Tests
@@ -96,6 +97,21 @@ namespace Solti.Utils.DI.Tests
                 Assert.That(Injector.Get<IInterface_2>().Interface1, Is.InstanceOf<Implementation_1>());
                 Assert.That(child.Get<IInterface_2>().Interface1, Is.InstanceOf<DecoratedImplementation_1>());
             }
+        }
+
+        [Test]
+        public void Injector_CreateChild_ShouldNotTriggerTheTypeResolver()
+        {
+            var mockTypeResolver = new Mock<ITypeResolver>(MockBehavior.Strict);
+            mockTypeResolver.Setup(i => i.Resolve(It.IsAny<Type>()));
+
+            Injector.Lazy<IInterface_1>(mockTypeResolver.Object);
+
+            using (Injector.CreateChild())
+            {
+            }
+
+            mockTypeResolver.Verify(i => i.Resolve(It.IsAny<Type>()), Times.Never);
         }
     }
 }
