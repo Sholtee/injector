@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Diagnostics;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -13,6 +14,25 @@ namespace Solti.Utils.DI.Internals
     {
         private Func<IInjector, Type, object> FFactory;
         private object FValue;
+        private readonly Func<Type> FGetImplementation;
+
+        private sealed class DefaultTypeResolver : ITypeResolver
+        {
+            private Type Interface { get; }
+            private Type Implementation { get; }
+
+            public DefaultTypeResolver(Type @interface, Type implementation)
+            {
+                Interface      = @interface;
+                Implementation = implementation;
+            }
+
+            Type ITypeResolver.Resolve(Type @interface)
+            {
+                Debug.Assert(@interface == Interface);
+                return Implementation;
+            }
+        }
 
         #region Immutables
         /// <summary>
@@ -23,7 +43,7 @@ namespace Solti.Utils.DI.Internals
         /// <summary>
         /// Az interface implementacioja (lehet generikus). Nem NULL szervizek eseten.
         /// </summary>
-        public Type Implementation { get; }
+        public Type Implementation => FGetImplementation();
 
         /// <summary>
         /// A letrehozando peldany elettartama. NULL Instance(releaseOnDispose: false) hivassal regisztralt bejegyzeseknel.
@@ -69,11 +89,16 @@ namespace Solti.Utils.DI.Internals
         }
         #endregion
 
-        public InjectorEntry(Type @interface, Type implementation = null, Lifetime? lifetime = null)
+        public InjectorEntry(Type @interface, Type implementation = null, Lifetime? lifetime = null): this(@interface, new DefaultTypeResolver(@interface, implementation), lifetime)
         {
-            Interface      = @interface;
-            Implementation = implementation;
-            Lifetime       = lifetime;
+        }
+
+        public InjectorEntry(Type @interface, ITypeResolver implementation, Lifetime? lifetime = null)
+        {
+            Interface = @interface;
+            Lifetime  = lifetime;
+
+            FGetImplementation = () => implementation.Resolve(@interface);
         }
 
         public object Clone()

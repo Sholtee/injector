@@ -17,7 +17,7 @@ namespace Solti.Utils.DI.Tests
     {
         [TestCase(Lifetime.Transient)]
         [TestCase(Lifetime.Singleton)]
-        public void Injector_Lazy_ShouldCallTheResolverOnlyOnce(Lifetime lifetime)
+        public void Injector_Lazy_ShouldCallTheResolverOnRequest(Lifetime lifetime)
         {
             var mockResolver = new Mock<ITypeResolver>(MockBehavior.Strict);
             mockResolver
@@ -36,11 +36,6 @@ namespace Solti.Utils.DI.Tests
 
             Assert.That(instance, Is.InstanceOf<Implementation_1>());
             (lifetime == Lifetime.Singleton ? Assert.AreSame : (Action<object, object>) Assert.AreNotSame)(instance, Injector.Get<IInterface_1>());
-
-            //
-            // De csak is egyszer.
-            //
-
             mockResolver.Verify(r => r.Resolve(It.Is<Type>(t => t == typeof(IInterface_1))), Times.Once);
         }
 
@@ -55,6 +50,31 @@ namespace Solti.Utils.DI.Tests
             Injector.Lazy<IInterface_1>(mockResolver.Object);
 
             Assert.Throws<InvalidOperationException>(() => Injector.Get<IInterface_1>(), string.Format(Resources.NOT_ASSIGNABLE, typeof(IInterface_1), typeof(object)));
+        }
+
+        [Test]
+        public void Injector_Lazy_ShouldHandleOpenGenericTypes()
+        {
+            var mockResolver = new Mock<ITypeResolver>(MockBehavior.Strict);
+            mockResolver
+                .Setup(r => r.Resolve(It.Is<Type>(t => t == typeof(IInterface_3<>))))
+                .Returns(typeof(Implementation_3<>));
+
+            Injector
+                .Service<IInterface_1, Implementation_1>()
+                .Lazy(typeof(IInterface_3<>), mockResolver.Object);
+
+            mockResolver.Verify(r => r.Resolve(It.Is<Type>(t => t == typeof(IInterface_1))),   Times.Never);
+            mockResolver.Verify(r => r.Resolve(It.Is<Type>(t => t == typeof(IInterface_3<>))), Times.Never);
+
+            for (int i = 0; i < 2; i++)
+            {
+                Injector.Get<IInterface_3<string>>();
+
+                mockResolver.Verify(r => r.Resolve(It.Is<Type>(t => t == typeof(IInterface_1))),         Times.Never);
+                mockResolver.Verify(r => r.Resolve(It.Is<Type>(t => t == typeof(IInterface_3<string>))), Times.Never);
+                mockResolver.Verify(r => r.Resolve(It.Is<Type>(t => t == typeof(IInterface_3<>))),       Times.Once);
+            }
         }
     }
 }

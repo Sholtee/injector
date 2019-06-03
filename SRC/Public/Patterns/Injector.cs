@@ -152,24 +152,33 @@ namespace Solti.Utils.DI
         }
 
         internal InjectorEntry Lazy(Type iface, ITypeResolver implementation, Lifetime? lifetime)
-        {
-            Func<IInjector, Type, object> realFactory = null;
+        {         
+            var entry = new InjectorEntry(iface, implementation, lifetime);
 
-            var entry = new InjectorEntry(iface, typeof(ITypeResolver), lifetime);
-            entry.Factory = (injector, type) =>
+            //
+            // Ha generikus interface-t regisztralunk akkor nem kell (nem is lehet) 
+            // legyartani a factory-t.
+            //
+            
+            if (!iface.IsGenericTypeDefinition)
             {
-                //
-                // A varazslat az hogy a "realFactory" es "entry" meg itt is letezik hiaba 
-                // kerult a Factory kesobb meghivasra.
-                //
+                Func<IInjector, Type, object> realFactory = null;
 
-                if (realFactory == null)
-                    lock (entry)
-                        if (realFactory == null)
-                            realFactory = Resolver.Create(ValidateImplementation(iface, implementation.Resolve(iface)));
+                entry.Factory = (injector, type) =>
+                {
+                    //
+                    // A varazslat az hogy a "realFactory" es "entry" meg itt is letezik hiaba 
+                    // kerult a Factory kesobb meghivasra.
+                    //
 
-                return realFactory(injector, type);
-            };
+                    if (realFactory == null)
+                        lock (entry)
+                            if (realFactory == null)
+                                realFactory = Resolver.Create(ValidateImplementation(entry.Interface, entry.Implementation));
+
+                    return realFactory(injector, type);
+                };
+            }
 
             return Register(entry);
         }
