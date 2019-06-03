@@ -67,6 +67,13 @@ namespace Solti.Utils.DI.Tests
                 child
                     .Instance(mockInstance.Object, releaseOnDispose)
                     .Get<IInterface_1_Disaposable>();
+
+                using (IInjector grandChild = child.CreateChild())
+                {
+                    grandChild.Get<IInterface_1_Disaposable>();       
+                }
+
+                mockInstance.Verify(i => i.Dispose(), Times.Never);
             }
 
             mockInstance.Verify(i => i.Dispose(), releaseOnDispose ? Times.Once : (Func<Times>) Times.Never);
