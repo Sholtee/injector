@@ -119,7 +119,7 @@ namespace Solti.Utils.DI.Tests
                 .Service<IInterface_1, Implementation_1>()
                 .Proxy(typeof(IInterface_1), (injector, type, inst) => new object());
 
-            Assert.Throws<Exception>(() => Injector.Get<IInterface_1>(), string.Format(Resources.INVALID_TYPE, typeof(IInterface_1)));
+            Assert.Throws<Exception>(() => Injector.Get<IInterface_1>(), string.Format(Resources.INVALID_INSTANCE, typeof(IInterface_1)));
         }
 
         [Test]

@@ -97,7 +97,7 @@ namespace Solti.Utils.DI
             //
 
             if (!type.IsInstanceOfType(inst))
-                throw new Exception(string.Format(Resources.INVALID_TYPE, type));
+                throw new Exception(string.Format(Resources.INVALID_INSTANCE, type));
 
             return inst;
         }

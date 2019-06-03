@@ -33,6 +33,13 @@ namespace Solti.Utils.DI.Tests
         {
         }
 
+        public class Implementation_1_Invalid : IInterface_1
+        {
+            public Implementation_1_Invalid(int invalidArg)
+            {              
+            }
+        }
+
         public class DecoratedImplementation_1 : IInterface_1
         {
         }

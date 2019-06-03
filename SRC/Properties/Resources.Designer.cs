@@ -133,11 +133,20 @@ namespace Solti.Utils.DI.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to All constructor arguments should be an interface..
+        /// </summary>
+        internal static string INVALID_CONSTRUCTOR {
+            get {
+                return ResourceManager.GetString("INVALID_CONSTRUCTOR", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The returned object should be an instance of &quot;{0}&quot;..
         /// </summary>
-        internal static string INVALID_TYPE {
+        internal static string INVALID_INSTANCE {
             get {
-                return ResourceManager.GetString("INVALID_TYPE", resourceCulture);
+                return ResourceManager.GetString("INVALID_INSTANCE", resourceCulture);
             }
         }
         

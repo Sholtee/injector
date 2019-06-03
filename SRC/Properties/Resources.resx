@@ -141,7 +141,10 @@
   <data name="DEPENDENCY_NOT_FOUND" xml:space="preserve">
     <value>No registered implementation for "{0}".</value>
   </data>
-  <data name="INVALID_TYPE" xml:space="preserve">
+  <data name="INVALID_CONSTRUCTOR" xml:space="preserve">
+    <value>All constructor arguments should be an interface.</value>
+  </data>
+  <data name="INVALID_INSTANCE" xml:space="preserve">
     <value>The returned object should be an instance of "{0}".</value>
   </data>
   <data name="LOCKED" xml:space="preserve">

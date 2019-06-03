@@ -59,6 +59,12 @@ namespace Solti.Utils.DI.Tests
         }
 
         [Test]
+        public void Injector_Service_ShouldThrowOnConstructorHavingNotInterfaceArgument()
+        {
+            Assert.Throws<ArgumentException>(() => Injector.Service<IInterface_1, Implementation_1_Invalid>());
+        }
+
+        [Test]
         public void Injector_Service_ShouldThrowIfTheInterfaceIsNotAssignableFromTheImplementation()
         {
             Assert.Throws<InvalidOperationException>(() => Injector.Service<IInterface_2, Implementation_1>(), string.Format(Resources.NOT_ASSIGNABLE, typeof(IInterface_2), typeof(Implementation_1)));

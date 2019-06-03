@@ -46,7 +46,7 @@ namespace Solti.Utils.DI.Tests
         {
             Injector.Factory(typeof(IInterface_1), (injector, type) => new object());
 
-            Assert.Throws<Exception>(() => Injector.Get<IInterface_1>(), string.Format(Resources.INVALID_TYPE, typeof(IInterface_1)));
+            Assert.Throws<Exception>(() => Injector.Get<IInterface_1>(), string.Format(Resources.INVALID_INSTANCE, typeof(IInterface_1)));
         }
 
         [Test]

@@ -9,6 +9,8 @@ using System.Reflection;
 
 namespace Solti.Utils.DI.Internals
 {
+    using Properties;
+
     internal static class Resolver
     {
         private static readonly MethodInfo IfaceGet = ((MethodCallExpression) ((Expression<Action<IInjector>>) (injector => injector.Get(null))).Body).Method;
@@ -26,7 +28,13 @@ namespace Solti.Utils.DI.Internals
 
             return constructor.ToDelegate<Func<IInjector, Type, object>>
             (
-                (parameterType, i) => Expression.Call(injector, IfaceGet, Expression.Constant(parameterType)),
+                (parameterType, i) =>
+                {
+                    if (!parameterType.IsInterface)
+                        throw new ArgumentException(Resources.INVALID_CONSTRUCTOR, nameof(constructor)); 
+
+                    return Expression.Call(injector, IfaceGet, Expression.Constant(parameterType));
+                },
                 injector,
 
                 //
