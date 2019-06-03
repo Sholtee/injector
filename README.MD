@@ -32,7 +32,7 @@ using(IInjector injector = Injector.Create())
   .
 }
 ```
-Why root? Because it has no parent injector which means we are the responsible for freeing (calling the `Dispose()` on) it. Child injectors (created by `injector.CreateChild()` call) can also be disposed arbitrarily, but it's not obligatory because the parent takes care about:
+Why root? Because it has no parent injector which means we are the responsible for freeing (calling the `Dispose()` on) it. Child injectors (created by `injector.CreateChild()` call) can also be disposed arbitrarily, but it's not obligatory because the parent takes care of it:
 ```csharp
 using(IInjector injector = Injector.Create())
 {
