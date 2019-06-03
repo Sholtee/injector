@@ -15,6 +15,24 @@ namespace Solti.Utils.DI.Tests
     [TestFixture]
     public sealed partial class InjectorTests
     {
+        [Test]
+        public void Injector_Lazy_ShouldBeAService()
+        {
+            var mockTypeResolver = new Mock<ITypeResolver>(MockBehavior.Strict);
+            mockTypeResolver.Setup(i => i.Resolve(It.IsAny<Type>()));
+
+            Injector.Lazy<IInterface_1>(mockTypeResolver.Object);
+
+            IServiceInfo serviceInfo = Injector.QueryServiceInfo<IInterface_1>();
+
+            Assert.That(serviceInfo.IsService);
+            Assert.That(serviceInfo.IsLazy);
+            Assert.False(serviceInfo.IsFactory);
+            Assert.False(serviceInfo.IsInstance);
+
+            mockTypeResolver.Verify(i => i.Resolve(It.IsAny<Type>()), Times.Never);
+        }
+
         [TestCase(Lifetime.Transient)]
         [TestCase(Lifetime.Singleton)]
         public void Injector_Lazy_ShouldCallTheResolverOnRequest(Lifetime lifetime)

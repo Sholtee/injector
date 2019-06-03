@@ -15,6 +15,19 @@ namespace Solti.Utils.DI.Tests
     public sealed partial class InjectorTests
     {
         [Test]
+        public void Injector_Instance_ShouldNotBeAServiceOrFactory()
+        {
+            Injector.Instance<IInterface_1>(new Implementation_1());
+
+            IServiceInfo serviceInfo = Injector.QueryServiceInfo<IInterface_1>();
+
+            Assert.That(serviceInfo.IsInstance);
+            Assert.False(serviceInfo.IsLazy);
+            Assert.False(serviceInfo.IsService);
+            Assert.False(serviceInfo.IsFactory);
+        }
+
+        [Test]
         public void Injector_Instance_ShouldNotChange()
         {
             IInterface_1 instance = new Implementation_1();
