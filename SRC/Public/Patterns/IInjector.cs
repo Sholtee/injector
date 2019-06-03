@@ -62,7 +62,7 @@ namespace Solti.Utils.DI
         /// Registers a pre-created instance. Useful to creating "constant" values (e.g. command-line arguments).
         /// </summary>
         /// <param name="iface">The service interface to be registered. It can not be null and can be registered only once.</param>
-        /// <param name="instance">The pre-created instance to be registered. It can not be null and must implement the <param name="iface"/> interface.</param>
+        /// <param name="instance">The pre-created instance to be registered. It can not be null and must implement the <paramref name="iface"/> interface.</param>
         /// <param name="releaseOnDispose">Wheter the system should dispose the instance on injector disposal.</param>
         /// <returns>The injector itself.</returns>
         [StateCritical]
