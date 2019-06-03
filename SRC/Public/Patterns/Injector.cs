@@ -122,8 +122,6 @@ namespace Solti.Utils.DI
         #region Internal
         internal InjectorEntry Service(Type iface, Type implementation, Lifetime? lifetime)
         {
-            ConstructorInfo constructor = ValidateImplementation(iface, implementation);
-
             //
             // Bejegyzes felvetele.
             //
@@ -135,7 +133,7 @@ namespace Solti.Utils.DI
                 // legyartani a factory-t.
                 //
 
-                Factory = !iface.IsGenericTypeDefinition ? Resolver.Create(constructor) : null
+                Factory = !iface.IsGenericTypeDefinition ? Resolver.Create(ValidateImplementation(iface, implementation)) : null
             });
         }
 
