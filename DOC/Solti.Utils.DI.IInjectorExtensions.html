@@ -303,13 +303,13 @@
     </tbody>
   </table>
   <a id="Solti_Utils_DI_IInjectorExtensions_Lazy_" data-uid="Solti.Utils.DI.IInjectorExtensions.Lazy*"></a>
-  <h4 id="Solti_Utils_DI_IInjectorExtensions_Lazy__1_Solti_Utils_DI_IInjector_Solti_Utils_DI_IResolver_Solti_Utils_DI_Lifetime_" data-uid="Solti.Utils.DI.IInjectorExtensions.Lazy``1(Solti.Utils.DI.IInjector,Solti.Utils.DI.IResolver,Solti.Utils.DI.Lifetime)">Lazy&lt;TInterface&gt;(IInjector, IResolver, Lifetime)</h4>
+  <h4 id="Solti_Utils_DI_IInjectorExtensions_Lazy__1_Solti_Utils_DI_IInjector_Solti_Utils_DI_ITypeResolver_Solti_Utils_DI_Lifetime_" data-uid="Solti.Utils.DI.IInjectorExtensions.Lazy``1(Solti.Utils.DI.IInjector,Solti.Utils.DI.ITypeResolver,Solti.Utils.DI.Lifetime)">Lazy&lt;TInterface&gt;(IInjector, ITypeResolver, Lifetime)</h4>
   <div class="markdown level1 summary"><p>Registers a service where the implementation will be resolved on the first request. It is useful when the implementation is unknown in compile time or you just want to load the containing assembly on the first request.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static IInjector Lazy&lt;TInterface&gt;(this IInjector self, IResolver resolver, Lifetime lifetime = Lifetime.Transient)</code></pre>
+    <pre><code class="lang-csharp hljs">public static IInjector Lazy&lt;TInterface&gt;(this IInjector self, ITypeResolver implementation, Lifetime lifetime = Lifetime.Transient)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -328,9 +328,9 @@
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="Solti.Utils.DI.IResolver.html">IResolver</a></td>
-        <td><span class="parametername">resolver</span></td>
-        <td><p>The resolver (<a class="xref" href="Solti.Utils.DI.IResolver.html">IResolver</a>) is responsible for resolving the implementation. The resolved <span class="xref">System.Type</span> can not be null and must implement the <see cref="!:TInterface"></see> interface. Additionally it must have only null or one constructor (that may request another dependecies). The resolver is called only once (on the first request) regardless the value of the <code data-dev-comment-type="paramref" class="paramref">lifetime</code> parameter.</p>
+        <td><a class="xref" href="Solti.Utils.DI.ITypeResolver.html">ITypeResolver</a></td>
+        <td><span class="parametername">implementation</span></td>
+        <td><p>The resolver (<a class="xref" href="Solti.Utils.DI.ITypeResolver.html">ITypeResolver</a>) is responsible for resolving the implementation. The resolved <span class="xref">System.Type</span> can not be null and must implement the <see cref="!:TInterface"></see> interface. Additionally it must have only null or one constructor (that may request another dependecies). The resolver is called only once (on the first request) regardless the value of the <code data-dev-comment-type="paramref" class="paramref">lifetime</code> parameter.</p>
 </td>
       </tr>
       <tr>

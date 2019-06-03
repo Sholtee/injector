@@ -32,7 +32,7 @@ namespace Solti.Utils.DI.Internals
 
         public bool IsService => Implementation != null;
 
-        public bool IsLazy => IsService && Implementation == typeof(IResolver);
+        public bool IsLazy => IsService && Implementation == typeof(ITypeResolver);
 
         public bool IsFactory => Implementation == null && Factory != null;
 

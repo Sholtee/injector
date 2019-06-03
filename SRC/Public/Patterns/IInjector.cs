@@ -30,12 +30,12 @@ namespace Solti.Utils.DI
         /// Registers a service where the implementation will be resolved on the first request. It is useful when the implementation is unknown in compile time or you just want to load the containing assembly on the first request.
         /// </summary>
         /// <param name="iface">The service interface to be registered. It can not be null and can be registered only once.</param>
-        /// <param name="resolver">The resolver (<see cref="IResolver"/>) is responsible for resolving the implementation. The resolved <see cref="Type"/> can not be null and must implement the <see cref="iface"/> interface. Additionally it must have only null or one constructor (that may request another dependecies). The resolver is called only once (on the first request) regardless the value of the <paramref name="lifetime"/> parameter.</param>
+        /// <param name="implementation">The resolver (<see cref="ITypeResolver"/>) is responsible for resolving the implementation. The resolved <see cref="Type"/> can not be null and must implement the <see cref="iface"/> interface. Additionally it must have only null or one constructor (that may request another dependecies). The resolver is called only once (on the first request) regardless the value of the <paramref name="lifetime"/> parameter.</param>
         /// <param name="lifetime">The lifetime of the service. For more information see the <see cref="Lifetime"/> enum.</param>
         /// <returns>The injector itself.</returns>
         /// <remarks>You can register generic services (where the <paramref name="iface"/> parameter is an open generic type). In this case the resolver must return an open generic implementation.</remarks>
         [StateCritical]
-        IInjector Lazy([ParameterIs(typeof(NotNull), typeof(Interface))] Type iface, [ParameterIs(typeof(NotNull))] IResolver resolver, Lifetime lifetime = Lifetime.Transient);
+        IInjector Lazy([ParameterIs(typeof(NotNull), typeof(Interface))] Type iface, [ParameterIs(typeof(NotNull))] ITypeResolver implementation, Lifetime lifetime = Lifetime.Transient);
 
         /// <summary>
         /// Registers a new service factory with the given type. Factories are also services except that the instantiating process is delegated to the caller. Useful if a service has more than one constructor.

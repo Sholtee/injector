@@ -19,7 +19,7 @@ namespace Solti.Utils.DI.Tests
         [TestCase(Lifetime.Singleton)]
         public void Injector_Lazy_ShouldCallTheResolverOnlyOnce(Lifetime lifetime)
         {
-            var mockResolver = new Mock<IResolver>(MockBehavior.Strict);
+            var mockResolver = new Mock<ITypeResolver>(MockBehavior.Strict);
             mockResolver
                 .Setup(r => r.Resolve(It.Is<Type>(t => t == typeof(IInterface_1))))
                 .Returns(typeof(Implementation_1));
@@ -47,7 +47,7 @@ namespace Solti.Utils.DI.Tests
         [Test]
         public void Injector_Lazy_ShouldBeTypeChecked()
         {
-            var mockResolver = new Mock<IResolver>(MockBehavior.Strict);
+            var mockResolver = new Mock<ITypeResolver>(MockBehavior.Strict);
             mockResolver
                 .Setup(r => r.Resolve(It.Is<Type>(t => t == typeof(IInterface_1))))
                 .Returns(typeof(Implementation_2));

@@ -147,11 +147,11 @@ namespace Solti.Utils.DI
             });
         }
 
-        internal InjectorEntry Lazy(Type iface, IResolver resolver, Lifetime? lifetime)
+        internal InjectorEntry Lazy(Type iface, ITypeResolver implementation, Lifetime? lifetime)
         {
             Func<IInjector, Type, object> realFactory = null;
 
-            var entry = new InjectorEntry(iface, typeof(IResolver), lifetime);
+            var entry = new InjectorEntry(iface, typeof(ITypeResolver), lifetime);
             entry.Factory = (injector, type) =>
             {
                 //
@@ -162,7 +162,7 @@ namespace Solti.Utils.DI
                 if (realFactory == null)
                     lock (entry)
                         if (realFactory == null)
-                            realFactory = Resolver.Create(ValidateImplementation(iface, resolver.Resolve(iface)));
+                            realFactory = Resolver.Create(ValidateImplementation(iface, implementation.Resolve(iface)));
 
                 return realFactory(injector, type);
             };
@@ -295,9 +295,9 @@ namespace Solti.Utils.DI
             return Self;
         }
 
-        IInjector IInjector.Lazy(Type iface, IResolver resolver, Lifetime lifetime)
+        IInjector IInjector.Lazy(Type iface, ITypeResolver implementation, Lifetime lifetime)
         {
-            Lazy(iface, resolver, lifetime);
+            Lazy(iface, implementation, lifetime);
             return Self;
         }
 
