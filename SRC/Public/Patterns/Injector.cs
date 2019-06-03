@@ -286,19 +286,28 @@ namespace Solti.Utils.DI
         }
         #endregion
 
-        #region IInjector   
+        #region IInjector
+        /// <summary>
+        /// See <see cref="IInjector"/>
+        /// </summary>
         IInjector IInjector.Service(Type iface, Type implementation, Lifetime lifetime)
         {
             Service(iface, implementation, lifetime);
             return Self;
         }
 
+        /// <summary>
+        /// See <see cref="IInjector"/>
+        /// </summary>
         IInjector IInjector.Lazy(Type iface, ITypeResolver implementation, Lifetime lifetime)
         {
             Lazy(iface, implementation, lifetime);
             return Self;
         }
 
+        /// <summary>
+        /// See <see cref="IInjector"/>
+        /// </summary>
         IInjector IInjector.Factory(Type iface, Func<IInjector, Type, object> factory, Lifetime lifetime)
         {
             Factory(iface, factory, lifetime);
@@ -312,12 +321,18 @@ namespace Solti.Utils.DI
             return Self;
         }
 
+        /// <summary>
+        /// See <see cref="IInjector"/>
+        /// </summary>
         IInjector IInjector.Instance(Type iface, object instance, bool releaseOnDispose)
         {
             Instance(iface, instance, releaseOnDispose);
             return Self;
         }
 
+        /// <summary>
+        /// See <see cref="IInjector"/>
+        /// </summary>
         IInjector IInjector.Proxy(Type iface, Func<IInjector, Type, object, object> decorator)
         {
             Proxy(iface, decorator);
@@ -331,14 +346,29 @@ namespace Solti.Utils.DI
             return Self;
         }
 
+        /// <summary>
+        /// See <see cref="IInjector"/>
+        /// </summary>
         object IInjector.Get(Type iface) => Get(iface);
 
+        /// <summary>
+        /// See <see cref="IInjector"/>
+        /// </summary>
         IReadOnlyList<Type> IInjector.Entries => FEntries.Keys.ToArray();
 
+        /// <summary>
+        /// See <see cref="IInjector"/>
+        /// </summary>
         IServiceInfo IInjector.QueryServiceInfo(Type iface) => GetEntry(iface);
 
+        /// <summary>
+        /// See <see cref="ILockable"/>
+        /// </summary>
         bool ILockable.Locked => FLocked;
 
+        /// <summary>
+        /// See <see cref="ILockable"/>
+        /// </summary>
         void ILockable.Lock() => FLocked = true;
         #endregion
 
