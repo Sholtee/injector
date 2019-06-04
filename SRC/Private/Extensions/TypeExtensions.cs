@@ -5,9 +5,12 @@
 ********************************************************************************/
 using System;
 using System.Linq;
+using System.Reflection;
 
 namespace Solti.Utils.DI.Internals
 {
+    using Properties;
+
     internal static class TypeExtensions
     {
         public static bool IsInterfaceOf(this Type iface, Type implementation)
@@ -52,6 +55,13 @@ namespace Solti.Utils.DI.Internals
             return false;
         }
 
-        public static object CreateInstance(this Type src, Type[] argTypes, params object[] args) => src.GetConstructor(argTypes).Call(args);
+        public static object CreateInstance(this Type src, Type[] argTypes, params object[] args)
+        {
+            ConstructorInfo ctor = src.GetConstructor(argTypes);
+            if (ctor == null)
+                throw new ArgumentException(Resources.CONSTRUCTOR_NOT_FOUND, nameof(argTypes));
+
+            return ctor.Call(args);
+        }
     }
 }

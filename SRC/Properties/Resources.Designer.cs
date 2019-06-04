@@ -115,6 +115,15 @@ namespace Solti.Utils.DI.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Public constructor with the given layout can not be found..
+        /// </summary>
+        internal static string CONSTRUCTOR_NOT_FOUND {
+            get {
+                return ResourceManager.GetString("CONSTRUCTOR_NOT_FOUND", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to &quot;{0}&quot; should have exactly one constructor..
         /// </summary>
         internal static string CONSTRUCTOR_OVERLOADING_NOT_SUPPORTED {
