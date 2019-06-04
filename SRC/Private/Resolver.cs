@@ -18,6 +18,7 @@ namespace Solti.Utils.DI.Internals
         /// <summary>
         /// Creates a resolver function.
         /// </summary>
+        /// <remarks>The caller is responsible for caching the returned delegate.</remarks>
         public static Func<IInjector, Type, object> Create(ConstructorInfo constructor)
         {
             //
