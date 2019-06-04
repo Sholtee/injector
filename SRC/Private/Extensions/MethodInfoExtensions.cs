@@ -15,9 +15,7 @@ namespace Solti.Utils.DI.Internals
     {
         private static readonly ConcurrentDictionary<MethodInfo, Func<object, object[], object>> FCache = new ConcurrentDictionary<MethodInfo, Func<object, object[], object>>();
 
-        public static bool MethodRegistered(MethodInfo method) => FCache.ContainsKey(method); // TODO: remove
-
-        public static TDelegate ToDelegate<TDelegate>(this MethodInfo method, Expression instance, Func<Type, int, Expression> getArgument, params ParameterExpression[] parameters)
+        public static Expression<TLambda> ToLambda<TLambda>(this MethodInfo method, Expression instance, Func<Type, int, Expression> getArgument, params ParameterExpression[] parameters)
         {
             //
             // (target, paramz) => (Type_3) ((Type_0) target).Method((Type_1) paramz[0], (Type_2) paramz[1], ...)
@@ -38,29 +36,28 @@ namespace Solti.Utils.DI.Internals
                 ? (Expression) Expression.Convert(call, typeof(object))
                 : Expression.Block(typeof(object), call, Expression.Default(typeof(object)));
 
-            return Expression.Lambda<TDelegate>
+            return Expression.Lambda<TLambda>
             (
                 call,    
                 parameters
-            ).Compile();
+            );
         }
 
-        public static object Call(this MethodInfo method, object target, params object[] args)
+        public static Func<object, object[], object> ToDelegate(this MethodInfo method) => FCache.GetOrAdd(method, @void =>
         {
-            Func<object, object[], object> invoke = FCache.GetOrAdd(method, @void =>
-            {
-                ParameterExpression
-                    instance = Expression.Parameter(typeof(object),   "instance"),
-                    paramz   = Expression.Parameter(typeof(object[]), "paramz");
+            ParameterExpression
+                instance = Expression.Parameter(typeof(object),   "instance"),
+                paramz   = Expression.Parameter(typeof(object[]), "paramz");
 
-                return method.ToDelegate<Func<object, object[], object>>(
-                    instance, 
-                    (paramType, i) => Expression.ArrayIndex(paramz, Expression.Constant(i)),
-                    instance,
-                    paramz);
-            });
+            return method.ToLambda<Func<object, object[], object>>
+            (
+                instance, 
+                (paramType, i) => Expression.ArrayIndex(paramz, Expression.Constant(i)),
+                instance,
+                paramz
+            ).Compile();
+        });
 
-            return invoke(target, args);
-        }
+        public static object Call(this MethodInfo method, object target, params object[] args) => method.ToDelegate()(target, args);
     }
 }

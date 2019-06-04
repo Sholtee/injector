@@ -48,15 +48,13 @@ namespace Solti.Utils.InterfaceProxy.Tests
         }
 
         [Test]
-        public void Call_ShouldCache()
+        public void ToDelegate_ShouldCache()
         {
             Func<string> toString = CICA.ToString;
-            toString.Method.Call(CICA);
-    
-            Assert.That(MethodInfoExtensions.MethodRegistered(toString.Method));
-            Assert.That(MethodInfoExtensions.MethodRegistered(((Func<string>) (CICA).ToString).Method));
-            Assert.That(MethodInfoExtensions.MethodRegistered(typeof(string).GetMethod("ToString", new Type[0])));
-            Assert.That(MethodInfoExtensions.MethodRegistered(typeof(object).GetMethod("ToString")), Is.False);
+            Assert.AreSame(toString.Method.ToDelegate(), toString.Method.ToDelegate());
+            Assert.AreSame(((Func<string>)(CICA).ToString).Method.ToDelegate(), toString.Method.ToDelegate());
+            Assert.AreSame(typeof(string).GetMethod("ToString", new Type[0]).ToDelegate(), toString.Method.ToDelegate());
+            Assert.That(typeof(object).GetMethod("ToString").ToDelegate(), Is.Not.SameAs(toString.Method.ToDelegate()));
         }
     }
 }
