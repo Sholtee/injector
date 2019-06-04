@@ -26,7 +26,7 @@ namespace Solti.Utils.DI.Internals
 
             ParameterExpression injector = Expression.Parameter(typeof(IInjector), "injector");
 
-            return constructor.ToDelegate<Func<IInjector, Type, object>>
+            return constructor.ToLambda<Func<IInjector, Type, object>>
             (
                 (parameterType, i) =>
                 {
@@ -42,7 +42,7 @@ namespace Solti.Utils.DI.Internals
                 //
 
                 Expression.Parameter(typeof(Type), "type")
-            );
+            ).Compile();
         }
     }
 }
