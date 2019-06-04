@@ -21,12 +21,7 @@ The lifetime of an injector is the following:
 ### Instantiating an injector
 Before we'd start we need to instantiate the *root* injector first:
 ```csharp
-using(IInjector injector = Injector.Create())
-{
-  .
-  .
-  .
-}
+using(IInjector injector = Injector.Create()){...}
 ```
 Why root? Because it has no parent injector which means we are the responsible for freeing (calling the `Dispose()` on) it. Child injectors (created by `injector.CreateChild()` call) can also be disposed arbitrarily, but it's not obligatory because the parent takes care of it:
 ```csharp
@@ -44,7 +39,9 @@ using(IInjector injector = Injector.Create())
   } // child_2 released here
 } // child_1 released here
 ```
-Child injectors inherit their parent's services, but modifying them does not affect their parents. In practice, every application should have only one *root* injector. 
+Remarks:
+- Child injectors inherit their parent's services, but modifying them does not affect their parents. 
+- Every application should have only one *root* injector. 
 ### Registering new services
 Registering a service can be done via several patterns (I name them recipes):
 - **Service recipe**: This is the most common way to file a service.
@@ -71,7 +68,7 @@ Registering a service can be done via several patterns (I name them recipes):
   ```csharp
   injector.Lazy<IMyService>(new MyServiceResolver(), Lifetime.Transient);
   ```
-  Note that we can also register generic services by this method.
+  Note that we can also register generic services via this method.
 - **Factory recipe**: As the name suggests, services registered by this way have a factory function (that is called on the first request): 
   ```csharp
   injector.Factory<IMyService>(thisInjector => new MyService(), Lifetime.Singleton);
