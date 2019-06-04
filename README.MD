@@ -52,7 +52,23 @@ Child injectors inherit their parent's services, but modifying them does not aff
 
 ### Registering new services
 Registering a service can be done via several patterns (I name them recipes):
-- **Service recipe**: The easiest way to register a service, just simply call the `Service()` generic method with the desired lifetime: `injector.Service<IMyService, MyService>(Lifetime.Transient)`. You can also register generic services: `injector.Service(typeof(IMyGenericService<>), typeof(MyGenericService<>), Lifetime.Singleton)`. Later you may request the specialized version of the service without registering it: `injector.Get<IMyGenericService<string>>()` (*instatiating is done on the first request*). A service can request other services via the constructor parameters: `public MyService(IInjector injector, IService_1 dep1, IService_2 dep2){...}` (*implementations must not have more than one public constructor*).
+- **Service recipe**: The easiest way to register a service, just simply call the `Service()` generic method with the desired lifetime:
+  ```csharp
+  injector.Service<IMyService, MyService>(Lifetime.Transient);
+  ```
+  You can also register generic services:
+  ```csharp
+  injector.Service(typeof(IMyGenericService<>), typeof(MyGenericService<>), Lifetime.Singleton);
+  ```
+  Later you may request the specialized version of the service without registering it:
+  ```csharp
+  injector.Get<IMyGenericService<string>>(); // note instatiating is done on the Get() call
+  ```
+  A service can request other services via the constructor parameters:
+  ```csharp  
+  public MyService(IInjector injector, IService_1 dep1, IService_2 dep2){...}
+  ```  
+  *Implementations must not have more than one public constructor!*
 - **Lazy recipe**: Similar to service recipe except that the implementation is unknown in build time (e.g. the service implementation is placed in a module we want to load only if the implementation is requested). So instead of passing the implementation we provide a [resolver](http://htmlpreview.github.io/?https://github.com/Sholtee/injector/blob/master/DOC/Solti.Utils.DI.ITypeResolver.html ) which will resolve the implementation (NOT a service instance) on the first request: `injector.Lazy<IMyService>(new MyServiceResolver(), Lifetime.Transient)`. Note that we can also register generic services by this method.
 - **Factory recipe**: As the name suggests, services registered by this way have a factory function (that is called on the first request): `injector.Factory<IMyService>(thisInjector => new MyService(), Lifetime.Singleton)`. It can be useful e.g. if the service has more than one public constructor. We also can register generic services, in this case the factory function  will be called with the specialized type: `injector.Factory(typeof(IMyGenericService<>), (thisInjector, specializedIMyGenericService) => MyActivator.CreateInstance(typeof(MyGenericService<>), specializedIMyGenericService.GetGenericArguments()))`.
 - **Instance recipe**: An instances is a "predefined value" that can act as a service (without lifetime): `injector.Instance<IMyInstance>(myInstance, true)`. *Note that the second parameter instructs the injector to manage the instance lifetime.*
