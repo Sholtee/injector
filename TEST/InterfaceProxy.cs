@@ -7,7 +7,7 @@ using System.Reflection;
 
 using NUnit.Framework;
 
-namespace Solti.Utils.InterfaceProxy.Tests
+namespace Solti.Utils.DI.InterfaceProxy.Tests
 {
     [TestFixture]
     public sealed class InterfaceProxyTests
@@ -31,7 +31,7 @@ namespace Solti.Utils.InterfaceProxy.Tests
             }
         }
 
-        private sealed class MyProxy : DI.InterfaceProxy<IMyInterface>
+        private sealed class MyProxy : InterfaceProxy<IMyInterface>
         {
             public MyProxy() : base(new MyClass())
             {

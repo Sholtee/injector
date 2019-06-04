@@ -9,7 +9,7 @@ using System.Linq;
 using Moq;
 using NUnit.Framework;
 
-namespace Solti.Utils.DI.Tests
+namespace Solti.Utils.DI.Injector.Tests
 {
     using Internals;
 

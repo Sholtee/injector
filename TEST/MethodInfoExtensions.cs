@@ -7,10 +7,8 @@ using System;
 
 using NUnit.Framework;
 
-namespace Solti.Utils.InterfaceProxy.Tests
+namespace Solti.Utils.DI.Internals.Tests
 {
-    using DI.Internals;
-
     [TestFixture]
     public sealed class MethodInfoExtensionsTests
     {

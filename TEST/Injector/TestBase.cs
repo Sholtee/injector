@@ -3,9 +3,11 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
+using System.Reflection;
+
 using NUnit.Framework;
 
-namespace Solti.Utils.DI.Tests
+namespace Solti.Utils.DI.Injector.Tests
 {
     [TestFixture]
     public sealed partial class InjectorTests
@@ -15,7 +17,14 @@ namespace Solti.Utils.DI.Tests
         [SetUp]
         public void SetupTest()
         {
-            Injector = DI.Injector.Create();
+            // 
+            // Baszott csunya =(
+            //
+
+            Injector = (IInjector) typeof(IInjector)
+                .Assembly
+                .GetType("Solti.Utils.DI.Injector", throwOnError: true)
+                .InvokeMember("Create", BindingFlags.Public | BindingFlags.Static | BindingFlags.InvokeMethod, null, null, new object[0]);
         }
 
         [TearDown]

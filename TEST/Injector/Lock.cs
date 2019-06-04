@@ -7,7 +7,7 @@ using System;
 
 using NUnit.Framework;
 
-namespace Solti.Utils.DI.Tests
+namespace Solti.Utils.DI.Injector.Tests
 {
     using Properties;
 
