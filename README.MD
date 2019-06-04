@@ -85,11 +85,11 @@ Registering a service can be done via several patterns (I name them recipes):
   ```csharp
   injector.Factory(typeof(IMyGenericService<>), (thisInjector, specializedIMyGenericService) => MyActivator.CreateInstance(typeof(MyGenericService<>), specializedIMyGenericService.GetGenericArguments()));
   ```
-- **Instance recipe**: An instances is a "predefined value" that can act as a service (without lifetime): 
+- **Instance recipe**: An instances is a "predefined value" that can act as a service: 
   ```csharp
   injector.Instance<IMyInstance>(myInstance, true);
   ```
-  The second parameter instructs the injector to manage the instance lifetime.
+  The second parameter instructs the injector to dispose the instance when the injector itself is disposed.
 *Note that you should not register the injector itself it is done by the system automatically.*
 ### Updating existing services
 In practice, it's useful to separate common functionality (e.g. parameter validation) from the implementation. In this library this can be achieved by [proxy pattern](https://en.wikipedia.org/wiki/Proxy_pattern ). In a brief example:
