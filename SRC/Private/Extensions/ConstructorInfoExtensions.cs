@@ -15,7 +15,7 @@ namespace Solti.Utils.DI.Internals
     {
         private static readonly ConcurrentDictionary<ConstructorInfo, Func<object[], object>> FCache = new ConcurrentDictionary<ConstructorInfo, Func<object[], object>>();
 
-        public static TDelegate ToDelegate<TDelegate>(this ConstructorInfo ctor, Func<Type, int, Expression> getArgument, params ParameterExpression[] parameters) => Expression.Lambda<TDelegate>
+        public static Expression<TLambda> ToLambda<TLambda>(this ConstructorInfo ctor, Func<Type, int, Expression> getArgument, params ParameterExpression[] parameters) => Expression.Lambda<TLambda>
         (
             Expression.New
             (
@@ -27,19 +27,19 @@ namespace Solti.Utils.DI.Internals
                 ))
             ),
             parameters
-        ).Compile();
+        );
 
-        public static object Call(this ConstructorInfo ctor, params object[] args)
+        public static Func<object[], object> ToDelegate(this ConstructorInfo ctor) => FCache.GetOrAdd(ctor, @void =>
         {
-            Func<object[], object> factory = FCache.GetOrAdd(ctor, @void =>
-            {
-                ParameterExpression paramz = Expression.Parameter(typeof(object[]), "paramz");
+            ParameterExpression paramz = Expression.Parameter(typeof(object[]), "paramz");
 
-                return ctor.ToDelegate<Func<object[], object>>(
-                    (parameterType, i) => Expression.ArrayAccess(paramz, Expression.Constant(i)),
-                    paramz);
-            });
-            return factory(args);
-        }
+            return ctor.ToLambda<Func<object[], object>>
+            (
+                (parameterType, i) => Expression.ArrayAccess(paramz, Expression.Constant(i)),
+                paramz
+            ).Compile();
+        });
+
+        public static object Call(this ConstructorInfo ctor, params object[] args) => ctor.ToDelegate()(args);
     }
 }
