@@ -1,9 +1,7 @@
 # Injector [![Build Status](https://travis-ci.com/Sholtee/injector.svg?branch=master)](https://travis-ci.com/Sholtee/injector)
 > A featherweight dependency injector written in C#.
-
 ## Overview
 [Dependency Injection](https://en.wikipedia.org/wiki/Dependency_injection ) is a design pattern that helps you separate the dependencies of your code from its behavior. Additionaly it makes the code easy to test by let you [mock](https://en.wikipedia.org/wiki/Mock_object ) the dependencies in your unit tests. This libary provides several mechanisms to register, acquire and inherit services. Let's see how!
-
 ## About services in general
 - They are interfaces (including the injector itself).
 - They are hosted in an injector.
@@ -12,16 +10,14 @@
 - Every service has its own lifetime, which can be:
   * `Singleton`: Instantiated only once on the first request and released automatically when the containing injector is released.
   * `Transient`: Instantiated on every request and the caller is responsible for freeing the requested services.
-
 ## Injector lifetime
 The lifetime of an injector is the following:
 1. [Instantiating the injector](#instantiating-an-injector)
 2. [Registering new services](#registering-new-services)
 3. [Updating existing services](#updating-existing-services)
-4. Locking the injector
+4. [Locking the injector](#locking-the-injector)
 5. Requesting services (even parallelly)
 6. Destroying the injector (either arbitrarily or automatically)
-
 ### Instantiating an injector
 Before we'd start we need to instantiate the *root* injector first:
 ```csharp
@@ -49,7 +45,6 @@ using(IInjector injector = Injector.Create())
 } // child_1 released here
 ```
 Child injectors inherit their parent's services, but modifying them does not affect their parents. In practice, every application should have only one *root* injector. 
-
 ### Registering new services
 Registering a service can be done via several patterns (I name them recipes):
 - **Service recipe**: This is the most common way to file a service.
@@ -100,10 +95,16 @@ injector
   .Proxy<IMyModule>((thisInjector, typeOfIMyModule, myModuleInstance) => new ParameterValidatorProxy<IMyModule>(myModuleInstance).Proxy);
 ```
 Where the `ParameterValidatorProxy<TInterface>` is an [InterfaceProxy<TInterface>](http://htmlpreview.github.io/?https://github.com/Sholtee/injector/blob/master/DOC/Solti.Utils.DI.InterfaceProxy-1.html ) containing the parameter validation logic. And that's all. Proxy pattern can be applied against every non-generic service, in any number.
-
 *Note that:*
 - Trying to proxy a generic service or an instance (registered via `Instance()` call) will throw an exception.
 - Proxying an inherited service WILL NOT affect the parent.
-
+### Locking the injector
+To prevent accidental modification of the injector, after configuring you can lock it (by call the prameterless `Lock()` method). After locking any attempt to modify the state of the injector will cause an exception.
+It's safe to call the following methods on a locked injector:
+- `Get()`
+- `CreateChild()`
+- `Dispose()` 
+ 
+Note that `Lock()` affects only the instance on which it was called. 
 ## API Docs
 You can find the detailed API docs [here](http://htmlpreview.github.io/?https://github.com/Sholtee/injector/blob/master/DOC/Solti.Utils.DI.html ).
