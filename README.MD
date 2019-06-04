@@ -15,14 +15,14 @@
 
 ## Injector lifetime
 The lifetime of an injector is the following:
-1. Instantiating the injector
-2. Update existing services (if the injector is a child)
-3. Registering new services
-4. Locking the injector (WIP feature yet)
+1. [Instantiating the injector](#instantiating-an-injector)
+2. Registering new services
+3. [Updating existing services](#updating-existing-services)
+4. Locking the injector
 5. Requesting services (even parallelly)
 6. Destroying the injector (either arbitrarily or automatically)
 
-## Instantiating an injector
+### Instantiating an injector
 Before we'd start we need to instantiate the *root* injector first:
 ```csharp
 using(IInjector injector = Injector.Create())
@@ -49,6 +49,19 @@ using(IInjector injector = Injector.Create())
 } // child_1 released here
 ```
 Child injectors inherit their parent's services, but modifying them does not affect their parents. In practice, every application should have only one *root* injector. 
+
+### Updating existing services
+In practice, it's useful to separate common functionality (e.g. parameter validation) from the implementation. In this library this can be achieved by [proxy pattern](https://en.wikipedia.org/wiki/Proxy_pattern ). In a brief example:
+```csharp
+injector
+  .Service<IMyModule, MyModule>()
+  .Proxy<IMyModule>((thisInjector, typeOfIMyModule, myModuleInstance) => new ParameterValidatorProxy<IMyModule>(myModuleInstance).Proxy);
+```
+Where the `ParameterValidatorProxy<TInterface>` is an [InterfaceProxy<TInterface>](http://htmlpreview.github.io/?https://github.com/Sholtee/injector/blob/master/DOC/Solti.Utils.DI.InterfaceProxy-1.html ) containing the parameter validation logic. And that's all. Proxy pattern can be applied against every non-generic service, in any number.
+
+*Note that:*
+- Trying to proxy a generic service or an instance (registered via `Instance()` call) will throw an exception.
+- Proxying an inherited service WILL NOT affect the parent.
 
 ## API Docs
 [Here](http://htmlpreview.github.io/?https://github.com/Sholtee/injector/blob/master/DOC/Solti.Utils.DI.html )
