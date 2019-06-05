@@ -78,17 +78,7 @@ namespace Solti.Utils.DI
         /// <returns>By default <see cref="Invoke"/> returns the value returned by the <see cref="Target"/> method call.</returns>
         protected virtual object Invoke(MethodInfo targetMethod, object[] args) => targetMethod.Call(Target, args);
 
-        internal sealed class DynamicProxy
-        {
-            public TInterface Target { get; }
-
-            public DynamicProxy(TInterface target) => Target = target;
-
-            public InterfaceProxy<TInterface> Create<TProxy>() where TProxy : InterfaceProxy<TInterface>
-                => (InterfaceProxy<TInterface>) typeof(TProxy).CreateInstance(new[] {typeof(TInterface)}, Target);
-        }
-
-        internal static TInterface Chain(TInterface seed, params Func<DynamicProxy, InterfaceProxy<TInterface>>[] proxies) =>
-            proxies.Aggregate(seed, (current, proxy) => proxy(new DynamicProxy(current)).Proxy);
+        internal static TInterface Chain(TInterface seed, params Func<TInterface, InterfaceProxy<TInterface>>[] proxies) =>
+            proxies.Aggregate(seed, (current, factory) => factory(current).Proxy);
     }
 }

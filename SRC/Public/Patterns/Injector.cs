@@ -68,8 +68,8 @@ namespace Solti.Utils.DI
                 Self = InterfaceProxy<IInjector>.Chain
                 (
                     this, 
-                    proxy => proxy.Create<ParameterValidatorProxy<IInjector>>(), 
-                    proxy => proxy.Create<StateValidatorProxy<IInjector>>()
+                    current => new ParameterValidatorProxy<IInjector>(current), 
+                    current => new StateValidatorProxy<IInjector>(current)
                 ), 
                 releaseOnDispose: false
             );
