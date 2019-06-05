@@ -34,21 +34,11 @@ namespace Solti.Utils.DI.Internals
             }
         }
 
-        #region Immutables
-        /// <summary>
-        /// The key of the entry (can be open generic type).
-        /// </summary>
+        #region Immutables (IServiceInfo)
         public Type Interface { get; }
 
-        /// <summary>
-        /// The service implementation (can be open generic type). Not NULL in the case of services.
-        /// </summary>
-        /// <remarks>If the entry belongs to a lazy service, getting this property will trigger the type resolver.</remarks>
         public Type Implementation => FImplementation?.Resolve(Interface);
 
-        /// <summary>
-        /// The lifetime of the entity to be created. NULL if the entry was created by an "Instance(releaseOnDispose: false)" call.
-        /// </summary>
         public Lifetime? Lifetime { get; }
 
         public bool IsService => FImplementation != null;

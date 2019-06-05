@@ -66,7 +66,7 @@ namespace Solti.Utils.DI
         /// <param name="releaseOnDispose">Wheter the system should dispose the instance on injector disposal.</param>
         /// <returns>The injector itself.</returns>
         [StateCritical]
-        IInjector Instance([ParameterIs(typeof(NotNull), typeof(Interface))] Type iface, [ParameterIs(typeof(NotNull))] object instance, bool releaseOnDispose = true);
+        IInjector Instance([ParameterIs(typeof(NotNull), typeof(Interface))] Type iface, [ParameterIs(typeof(NotNull))] object instance, bool releaseOnDispose = false);
 
         /// <summary>
         /// Resolves a dependency.
