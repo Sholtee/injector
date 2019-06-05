@@ -65,7 +65,7 @@ namespace Solti.Utils.DI
             Instance
             (
                 typeof(IInjector), 
-                Self = InterfaceProxy<IInjector>.Chain
+                InterfaceProxy<IInjector>.Chain
                 (
                     this, 
                     current => new ParameterValidatorProxy<IInjector>(current), 
@@ -415,7 +415,7 @@ namespace Solti.Utils.DI
             }
         }
 
-        protected override IInjector Self { get; }
+        protected override IInjector Self => (IInjector) Get(typeof(IInjector));
         #endregion
 
         /// <summary>
