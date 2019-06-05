@@ -276,6 +276,8 @@ namespace Solti.Utils.DI
 
                 InjectorEntry entry = GetEntry(iface);
 
+                Debug.Assert(entry.Value != null || entry.Factory != null);
+
                 if (entry.Lifetime == Lifetime.Singleton && entry.Value == null)
                     //
                     // Ha singleton eletciklusunk van es eddig meg nem volt akkor le kell 
