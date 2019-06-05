@@ -23,7 +23,7 @@ Before we'd start we need to instantiate the *root* injector first:
 ```csharp
 using(IInjector injector = Injector.Create()){...}
 ```
-Why root? Because it has no parent injector which means we are the responsible for freeing (calling the `Dispose()` on) it. Child injectors (created by `injector.CreateChild()` call) can also be disposed arbitrarily, but it's not obligatory because the parent takes care of it:
+Why root? Because it has no parent injector which means we are the responsible for freeing (calling the `Dispose()` on) it. Child injectors (created by `injector.CreateChild()` call) can also be disposed arbitrarily, but it's not mandatory because the parent takes care of it:
 ```csharp
 using(IInjector injector = Injector.Create())
 {
@@ -89,7 +89,7 @@ In practice, it's useful to separate common functionality (e.g. parameter valida
 ```csharp
 injector
   .Service<IMyModule, MyModule>()
-  .Proxy<IMyModule>((thisInjector, typeOfIMyModule, myModuleInstance) => new ParameterValidatorProxy<IMyModule>(myModuleInstance).Proxy);
+  .Proxy<IMyModule>((thisInjector, myModuleInstance) => new ParameterValidatorProxy<IMyModule>(myModuleInstance).Proxy);
 ```
 Where the `ParameterValidatorProxy<TInterface>` is an [InterfaceProxy<TInterface>](http://htmlpreview.github.io/?https://github.com/Sholtee/injector/blob/master/DOC/Solti.Utils.DI.InterfaceProxy-1.html ) containing the parameter validation logic. And that's all. Proxy pattern can be applied against every non-generic service, in any number.
 *Note that:*
@@ -97,7 +97,7 @@ Where the `ParameterValidatorProxy<TInterface>` is an [InterfaceProxy<TInterface
 - Proxying an inherited service WILL NOT affect the parent.
 ### Locking the injector
 To prevent accidental modification of the injector, after configuring you can lock it (by call the prameterless `Lock()` method). After locking any attempt to modify the state of the injector will cause an exception.
-It's safe to call the following methods on a locked injector:
+It's safe to call the following functions on a locked injector:
 - `Get()`
 - `CreateChild()`
 - `Dispose()` 
