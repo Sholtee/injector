@@ -1,7 +1,7 @@
 # Injector [![Build Status](https://travis-ci.com/Sholtee/injector.svg?branch=master)](https://travis-ci.com/Sholtee/injector)
 > A featherweight dependency injector written in C#.
 ## Overview
-[Dependency Injection](https://en.wikipedia.org/wiki/Dependency_injection ) is a design pattern that helps you separate the dependencies of your code from its behavior. Additionaly it makes the code easy to test by let you [mock](https://en.wikipedia.org/wiki/Mock_object ) the dependencies in your unit tests. This libary provides several mechanisms to register, acquire and inherit services. Let's see how!
+[Dependency Injection](https://en.wikipedia.org/wiki/Dependency_injection ) is a design pattern that helps you separate the dependencies of your code from its behavior. Additionaly it makes the code easy to test by let you [mock](https://en.wikipedia.org/wiki/Mock_object ) the dependencies in your unit tests. This library provides several mechanisms to register, acquire and inherit services. Let's see how!
 ## About services in general
 - They are interfaces (including the injector itself).
 - They are hosted in an injector.
@@ -23,7 +23,7 @@ Before we'd start we need to instantiate the *root* injector first:
 ```csharp
 using(IInjector injector = Injector.Create()){...}
 ```
-Why root? Because it has no parent injector which means we are the responsible for freeing (calling the `Dispose()` on) it. Child injectors (created by `injector.CreateChild()` call) can also be disposed arbitrarily, but it's not mandatory because the parent takes care of it:
+Why root? Because it has no parent injector which means we are responsible for freeing (calling the `Dispose()` on) it. Child injectors (created by `injector.CreateChild()` call) can also be disposed arbitrarily, but it's not mandatory because the parent takes care of it:
 ```csharp
 using(IInjector injector = Injector.Create())
 {
@@ -64,12 +64,12 @@ Registering a service can be done via several patterns (I name them recipes):
     public MyService(IInjector injector, IService_1 dep1, IService_2 dep2){...}
     ```  
   - Instatiating is done on the request (Get() call).
-- **Lazy recipe**: Similar to service recipe except that the implementation is unknown in build time (e.g. the service implementation is placed in a module we want to load only if the implementation is requested). So instead of passing the implementation we provide a [resolver](http://htmlpreview.github.io/?https://github.com/Sholtee/injector/blob/master/DOC/Solti.Utils.DI.ITypeResolver.html ) which will resolve the implementation (NOT a service instance) on the first request: 
+- **Lazy recipe**: Similar to the service recipe except that the implementation is unknown in build time (e.g. the service implementation is placed in a module we want to load only if the implementation is requested). So instead of passing the implementation we provide a [resolver](http://htmlpreview.github.io/?https://github.com/Sholtee/injector/blob/master/DOC/Solti.Utils.DI.ITypeResolver.html ) which will resolve the implementation (NOT a service instance) on the first request: 
   ```csharp
   injector.Lazy<IMyService>(new MyServiceResolver(), Lifetime.Transient);
   ```
   Note that we can also register generic services via this method.
-- **Factory recipe**: As the name suggests, services registered by this way have a factory function (that is called on the first request): 
+- **Factory recipe**: As the name suggests services registered by this way have a factory function (that is called on the first request): 
   ```csharp
   injector.Factory<IMyService>(thisInjector => new MyService(), Lifetime.Singleton);
   ```
