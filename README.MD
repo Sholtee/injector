@@ -12,13 +12,13 @@
   * `Transient`: Instantiated on every request and the caller is responsible for freeing the requested services.
 ## Injector lifetime
 The lifetime of an injector is the following:
-1. [Instantiating the injector](#instantiating-an-injector)
+1. [Instantiating the injector](#instantiating-the-injector)
 2. [Registering new services](#registering-new-services)
 3. [Updating existing services](#updating-existing-services)
 4. [Locking the injector](#locking-the-injector)
-5. Requesting services (even parallelly)
-6. Destroying the injector (either arbitrarily or automatically)
-### Instantiating an injector
+5. [Requesting services](#requesting-services) (even parallelly)
+6. Destroying the injector (either arbitrarily or automatically), see below
+### Instantiating the injector
 Before we'd start we need to instantiate the *root* injector first:
 ```csharp
 using(IInjector injector = Injector.Create()){...}
@@ -100,8 +100,17 @@ To prevent accidental modification of the injector, after configuring you can lo
 It's safe to call the following functions on a locked injector:
 - `Get()`
 - `CreateChild()`
-- `Dispose()` 
- 
-Note that `Lock()` affects only the instance on which it was called. 
+- `Dispose()`  
+Note that `Lock()` affects only the instance on which it was called.
+### Requesting services
+After finishing the configuration you can request services via the `Get()` method:
+```csharp
+IMyService svc = injector.Get<IMyService>();
+``` 
+Keep in mind the followings:
+- Calling `Get()` is a thread safe operation so you may share the configured injector between different threads.
+- Requesting an unregistered or and open generic service will cause an exception.
+- Requesting services as a constructor parameter is more convenient than using the `Get()` method.
+- The caller should free the requested service if it is an `IDisposable` and has the `Transient` lifetime. To determine it's lifetime call the `QueryServiceInfo()` method.
 ## API Docs
 You can find the detailed API docs [here](http://htmlpreview.github.io/?https://github.com/Sholtee/injector/blob/master/DOC/Solti.Utils.DI.html ).
