@@ -5,7 +5,10 @@
 ::
 @echo off
 
-call rmdir /Q /S "BIN"
+if exist "BIN" (
+	@echo cleanup...
+    call rmdir /Q /S "BIN"
+)
 
 setlocal enabledelayedexpansion
 for /f %%i in (targets) do (
