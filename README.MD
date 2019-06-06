@@ -109,7 +109,7 @@ IMyService svc = injector.Get<IMyService>();
 ``` 
 Keep in mind the followings:
 - Calling `Get()` is a thread safe operation so you may share the configured injector between different threads.
-- Requesting an unregistered or and open generic service will cause an exception.
+- Requesting an unregistered or an open generic service will cause an exception.
 - Requesting services as a constructor parameter is more convenient than using the `Get()` method.
 - The caller should free the requested service if it is an `IDisposable` and has the `Transient` lifetime. To determine it's lifetime call the `QueryServiceInfo()` method.
 ## API Docs
