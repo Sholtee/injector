@@ -114,3 +114,5 @@ Keep in mind the followings:
 - The caller should free the requested service if it is an `IDisposable` and has the `Transient` lifetime. To determine it's lifetime call the `QueryServiceInfo()` method.
 ## API Docs
 You can find the detailed API docs [here](http://htmlpreview.github.io/?https://github.com/Sholtee/injector/blob/master/DOC/Solti.Utils.DI.html ).
+## Supported frameworks
+This project currently targets *.NET Core 2.X* only.
