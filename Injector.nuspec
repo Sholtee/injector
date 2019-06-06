@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<package >
+	<metadata>
+		<id>Injector.NET</id>
+		<version>0.0.1</version>
+		<authors>Denes Solti</authors>
+		<owners>Denes Solti</owners>
+		<license type="expression">MIT</license>
+		<projectUrl>https://github.com/Sholtee/injector</projectUrl>
+		<requireLicenseAcceptance>false</requireLicenseAcceptance>
+		<description>A featherweight dependency injector.</description>
+		<releaseNotes>Initial version.</releaseNotes>
+		<copyright>Copyright 2019</copyright>
+		<tags>DI Dependency-Injector Dependency-Injection Injector</tags>
+		<dependencies />
+	</metadata>
+	<files>
+		<file src="BIN\netcoreapp2.2\Injector.dll" target="lib\netcoreapp2.2\Injector.dll" />
+	</files>  
+</package>
