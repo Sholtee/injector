@@ -5,4 +5,4 @@
 ::
 @echo off
 
-dotnet test "%~dp0TEST\Injector.Tests.csproj" --configuration Debug
+dotnet test "%~dp0TEST\Injector.Tests.csproj" /p:configuration=Debug;NoDocfx=True
