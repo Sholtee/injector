@@ -24,6 +24,12 @@ namespace Solti.Utils.DI
         Type Implementation { get; }
 
         /// <summary>
+        /// Factory function (if exists).
+        /// </summary>
+        /// <remarks>Proxying a service can change this function.</remarks>
+        Func<IInjector, Type, object> Factory { get; }
+
+        /// <summary>
         /// The service was registered via <see cref="IInjector.Service"/> call.
         /// </summary>
         bool IsService { get; }
