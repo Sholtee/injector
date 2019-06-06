@@ -15,6 +15,6 @@
 		<dependencies />
 	</metadata>
 	<files>
-		<file src="BIN\netcoreapp2.2\Injector.dll" target="lib\netcoreapp2.2\Injector.dll" />
+		<file src="BIN\**" target="lib" />
 	</files>  
 </package>

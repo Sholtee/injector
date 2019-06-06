@@ -5,8 +5,16 @@
 ::
 @echo off
 
-call dotnet clean "Injector.sln"
 call rmdir /Q /S "BIN"
-call dotnet build "SRC\Injector.csproj" /p:configuration=Release;NoDocfx=True
+
+setlocal enabledelayedexpansion
+for /f %%i in (targets) do (
+    @echo: 
+    @echo build against: %%i
+
+	call dotnet build "SRC\Injector.csproj" -c Release -p:TargetFramework=%%i;NoDocfx=True
+	if !errorlevel! neq 0 exit /b !errorlevel!
+)
+
 call nuget pack "Injector.nuspec" -OutputDirectory "BIN"
 
