@@ -39,7 +39,11 @@
     </EmbeddedResource>
   </ItemGroup>
 
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="'$(OS)' == 'Windows_NT'">
+  <PropertyGroup>
+    <NoDocfx Condition="'$(NoDocfx)'==''">False</NoDocfx>
+  </PropertyGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="'$(OS)' == 'Windows_NT' And '$(NoDocfx)'=='False'">
     <Exec Command="nuget install docfx.console -OutputDirectory ..\Vendor -Version 2.42.4&#xD;&#xA;..\Vendor\docfx.console.2.42.4\tools\docfx ..\docfx.json" />
   </Target>
 

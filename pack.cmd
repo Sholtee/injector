@@ -7,5 +7,6 @@
 
 call dotnet clean "Injector.sln"
 call rmdir /Q /S "BIN"
-call dotnet build "SRC\Injector.csproj" --configuration Release
+call dotnet build "SRC\Injector.csproj" /p:configuration=Release;NoDocfx=True
 call nuget pack "Injector.nuspec" -OutputDirectory "BIN"
+
