@@ -4,7 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
-using System.Diagnostics;
+using System.Threading;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -13,52 +13,19 @@ namespace Solti.Utils.DI.Internals
     internal sealed class InjectorEntry: Disposable, IServiceInfo, ICloneable // TODO: !!TESTS!!
     {
         private Func<IInjector, Type, object> FFactory;
-        private Type FImplementation;
+        private readonly Lazy<Type> FImplementation;
         private object FValue;
-        private readonly ITypeResolver FResolver;
-
-        //
-        // Kidelegalja a tipus lekerdezeset a szulo entitasnak. Ez a trukk arra van h ha klonozzuk a 
-        // bejegyzest a resolver akkor is csak egyszer keruljon meghivasra fuggetlenul attol melyik 
-        // bejegyzesben volt hivatkozva a tipus.
-        //
-
-        private sealed class DelegateTypeResolver : ITypeResolver
-        {
-            private InjectorEntry Parent { get; }
-
-            public DelegateTypeResolver(InjectorEntry parent) => Parent = parent;
-
-            Type ITypeResolver.Resolve(Type @interface)
-            {
-                Debug.Assert(@interface == Parent.Interface);
-                return Parent.Implementation;
-            }
-        }
 
         #region Immutables (IServiceInfo)
         public Type Interface { get; }
 
-        public Type Implementation
-        {
-            get
-            {
-                if (FImplementation == null)
-                {
-                    if (FResolver != null) lock (FResolver)
-                    {
-                        if (FImplementation == null) FImplementation = FResolver.Resolve(Interface);
-                    }
-                }
-                return FImplementation;
-            }
-        }
+        public Type Implementation => FImplementation.Value;
 
         public Lifetime? Lifetime { get; }
 
-        public bool IsService => FImplementation != null || FResolver != null;
+        public bool IsService => FImplementation != null;
 
-        public bool IsLazy => FResolver != null;
+        public bool IsLazy { get; }
 
         public bool IsFactory => !IsService && Factory != null;
 
@@ -72,12 +39,7 @@ namespace Solti.Utils.DI.Internals
         public Func<IInjector, Type, object> Factory
         {
             get => FFactory;
-            set
-            {
-                if (FFactory != null && value == null)
-                    throw new ArgumentNullException(nameof(value));
-                FFactory = value;
-            }
+            set => FFactory = value ?? throw new ArgumentNullException(nameof(value));
         }
 
         /// <summary>
@@ -86,30 +48,25 @@ namespace Solti.Utils.DI.Internals
         public object Value
         {
             get => FValue;
-            set
-            {
-                if (FValue != null)
-                    throw new InvalidOperationException(Resources.MULTIPLE_ASSIGN);
-                FValue = value;
-            }
+            set => FValue = FValue == null ? value : throw new InvalidOperationException(Resources.MULTIPLE_ASSIGN);
         }
         #endregion
 
-        public InjectorEntry(Type @interface, Type implementation = null, Lifetime? lifetime = null)
+        private InjectorEntry(Type @interface, Lazy<Type> implementation, Lifetime? lifetime, bool isLazy)
         {
             Interface = @interface;
-            Lifetime = lifetime;
+            Lifetime  = lifetime;
+            IsLazy    = isLazy;
 
             FImplementation = implementation;
         }
 
-        public InjectorEntry(Type @interface, ITypeResolver resolver, Lifetime? lifetime = null)
-        {
-            Interface = @interface;
-            Lifetime  = lifetime;
 
-            FResolver = resolver;
-        }
+        public InjectorEntry(Type @interface, Type implementation = null, Lifetime? lifetime = null): 
+            this(@interface, implementation != null ? new Lazy<Type>(() => implementation, LazyThreadSafetyMode.ExecutionAndPublication) : null, lifetime, false) {}
+
+        public InjectorEntry(Type @interface, ITypeResolver resolver, Lifetime? lifetime = null): 
+            this(@interface, new Lazy<Type>(() => resolver.Resolve(@interface)), lifetime, true) {}
 
         public object Clone()
         {
@@ -120,7 +77,7 @@ namespace Solti.Utils.DI.Internals
 
             //
             // 1) Hogy klonozaskor egyaltalan ne es kesobb is maximum csak egyszer legyen a TypeResolver 
-            //    triggerelve ezert sajat resolvert adunk at.
+            //    triggerelve ezert magat a Lazy<> peldanyt adjuk at.
             //
             // 2) Ha a peldany regisztralasakor a "releaseOnDispose" igazra volt allitva akkor
             //    a peldany is lehet Singleton. Viszont mi nem akarjuk h a gyermek injektor
@@ -128,7 +85,7 @@ namespace Solti.Utils.DI.Internals
             //    nem masoljuk.
             //
 
-            return new InjectorEntry(Interface, new DelegateTypeResolver(this), IsInstance ? null : Lifetime)
+            return new InjectorEntry(Interface, FImplementation, IsInstance ? null : Lifetime, IsLazy)
             {
                 Factory = Factory,
 
@@ -137,7 +94,7 @@ namespace Solti.Utils.DI.Internals
                 //    kerultek regisztralasra.
                 //
 
-                Value = IsInstance ? Value : null         
+                Value = IsInstance ? Value : null
             };
         }
 
