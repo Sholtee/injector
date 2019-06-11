@@ -36,11 +36,7 @@ namespace Solti.Utils.DI.Internals
         /// <summary>
         /// Peldany gyar. Generikus implementacional (nem feltetlen) es Instance() hivasnal (biztosan) NULL.
         /// </summary>
-        public Func<IInjector, Type, object> Factory
-        {
-            get => FFactory;
-            set => FFactory = value ?? throw new ArgumentNullException(nameof(value));
-        }
+        public Func<IInjector, Type, object> Factory { get; set; }
 
         /// <summary>
         /// Legyartott (Lifetime.Singleton eseten) vagy kivulrol definialt (Instance() hivas) peldany, kulomben NULL. 
@@ -61,12 +57,11 @@ namespace Solti.Utils.DI.Internals
             FImplementation = implementation;
         }
 
-
         public InjectorEntry(Type @interface, Type implementation = null, Lifetime? lifetime = null): 
-            this(@interface, implementation != null ? new Lazy<Type>(() => implementation, LazyThreadSafetyMode.ExecutionAndPublication) : null, lifetime, false) {}
+            this(@interface, implementation != null ? new Lazy<Type>(() => implementation) : null, lifetime, false) {}
 
         public InjectorEntry(Type @interface, ITypeResolver resolver, Lifetime? lifetime = null): 
-            this(@interface, new Lazy<Type>(() => resolver.Resolve(@interface)), lifetime, true) {}
+            this(@interface, new Lazy<Type>(() => resolver.Resolve(@interface), LazyThreadSafetyMode.ExecutionAndPublication), lifetime, true) {}
 
         public object Clone()
         {
