@@ -13,9 +13,11 @@ if %errorlevel% neq 0 exit /b %errorlevel%
 set /p ver=<%verFile%
 del %verFile%
 
-if exist "BIN" (
+set bin=".\BIN"
+
+if exist %bin% (
 	@echo cleanup...
-    call rmdir /Q /S ".\BIN"
+    call rmdir /Q /S %bin%
 )
 
 setlocal enabledelayedexpansion
@@ -27,5 +29,5 @@ for /f %%i in (targets) do (
     if !errorlevel! neq 0 exit /b !errorlevel!
 )
 
-call nuget pack "Injector.nuspec" -OutputDirectory "BIN" -Version %ver%
+call nuget pack "Injector.nuspec" -OutputDirectory %bin% -Version %ver%
 

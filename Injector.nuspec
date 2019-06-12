@@ -2,7 +2,7 @@
 <package >
 	<metadata>
 		<id>Injector.NET</id>
-		<version>0.0.1-a</version>
+		<version>0.0.0</version>
 		<authors>Denes Solti</authors>
 		<owners>Denes Solti</owners>
 		<license type="expression">MIT</license>
