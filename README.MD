@@ -116,3 +116,9 @@ Keep in mind the followings:
 You can find the detailed API docs [here](http://htmlpreview.github.io/?https://github.com/Sholtee/injector/blob/master/DOC/Solti.Utils.DI.html ).
 ## Supported frameworks
 This project currently targets *.NET Core 2.X* only.
+## Version history
+- 0.0.1: Initial release
+- 0.0.2:
+  - added `IServiceInfo.Factory`
+  - added `IInjectorExtensions.Proxy()` overload
+  - fixed multiple type resolver invocation issue
