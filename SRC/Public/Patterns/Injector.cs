@@ -201,10 +201,23 @@ namespace Solti.Utils.DI
             // hivas idoigenyes.
             //
 
-            lock (genericEntry)
-                return GetEntry(iface, out entry) 
-                    ? entry 
-                    : Service(iface, genericEntry.Implementation.MakeGenericType(iface.GetGenericArguments()), genericEntry.Lifetime);           
+            try
+            {
+                return Service
+                (
+                    iface, 
+                    genericEntry.Implementation.MakeGenericType(iface.GetGenericArguments()), 
+                    genericEntry.Lifetime
+                );
+            }
+            catch (ServiceAlreadyRegisteredException)
+            {
+                //
+                // Opi vki mar kozben regisztralta.
+                //
+
+                return GetEntry(iface);
+            }         
         }
 
         internal InjectorEntry Proxy(Type iface, Func<IInjector, Type, object, object> decorator)
