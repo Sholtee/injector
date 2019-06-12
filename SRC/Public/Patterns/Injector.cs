@@ -166,7 +166,7 @@ namespace Solti.Utils.DI
                 (
                     () =>
                     {
-                        ConstructorInfo constructor = ValidateImplementation(entry.Interface, entry.Implementation);
+                        ConstructorInfo constructor = ValidateImplementation(entry.Interface, entry.Implementation /*triggereli a resolvert*/);
                         return Resolver.Create(constructor);
                     }, 
                     LazyThreadSafetyMode.ExecutionAndPublication
@@ -197,8 +197,21 @@ namespace Solti.Utils.DI
             if (genericEntry.Factory != null) return genericEntry;
 
             //
-            // Kulomben vegyuk fel az uj tipizalt bejegyzest. Megjegyzendo h a MakeGenericType() es Service()
-            // hivas idoigenyes.
+            // Kulomben vegyuk fel az uj tipizalt bejegyzest. 
+            //
+            // Megjegyzendo h 
+            //   1) A MakeGenericType() es Service() hivas idoigenyes hivasok, ez van sprite.
+            //   2) Jo otletnek tunhet lock()-t hasznalni h ha parhuzamosan ide jut ket szal is akkor
+            //      ne kelljen kivetelt kezelni (ahogy korabban volt is):
+            //
+            //            lock(iface | genericEntry) return GetEntry(iface, out entry)
+            //               ? entry
+            //               : Service(...)
+            //
+            //      Az "iface" kivulrol is elerheto ezert azon nem lock-olnuk, a "genericEntry" hasznalata
+            //      pedig lassithatja a lekerdezest (gondoljunk egy rendszerre ahol a generikus szolgaltatas 
+            //      vmi Repository<T> es elofordul h parhuzasmosan a tobb modul is kulombozo repokat igenyel,
+            //      ekkor a lock kvazi sorositana ezeket a kereseket [a lenti megoldas nem]).
             //
 
             try
@@ -213,7 +226,7 @@ namespace Solti.Utils.DI
             catch (ServiceAlreadyRegisteredException)
             {
                 //
-                // Opi vki mar kozben regisztralta.
+                // Opi, vki mar kozben regisztralta.
                 //
 
                 return GetEntry(iface);
