@@ -89,7 +89,7 @@ In practice, it's useful to separate common functionality (e.g. parameter valida
 ```csharp
 injector
   .Service<IMyModule, MyModule>()
-  .Proxy<IMyModule>((thisInjector, myModuleInstance) => new ParameterValidatorProxy<IMyModule>(myModuleInstance).Proxy);
+  .Proxy<IMyModule>((thisInjector, myModuleInstance) => new ParameterValidatorProxy<IMyModule>(myModuleInstance));
 ```
 Where the `ParameterValidatorProxy<TInterface>` is an [InterfaceProxy<TInterface>](http://htmlpreview.github.io/?https://github.com/Sholtee/injector/blob/master/DOC/Solti.Utils.DI.InterfaceProxy-1.html ) containing the parameter validation logic. And that's all. Proxy pattern can be applied against every non-generic service, in any number.
 *Note that:*
@@ -122,3 +122,4 @@ This project currently targets *.NET Core 2.X* only.
   - added `IServiceInfo.Factory`
   - added `IInjectorExtensions.Proxy()` overload
   - fixed multiple type resolver invocation issue
+  - some code optimization
