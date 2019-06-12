@@ -12,7 +12,6 @@ namespace Solti.Utils.DI.Internals
 
     internal sealed class InjectorEntry: Disposable, IServiceInfo, ICloneable // TODO: !!TESTS!!
     {
-        private Func<IInjector, Type, object> FFactory;
         private readonly Lazy<Type> FImplementation;
         private object FValue;
 
