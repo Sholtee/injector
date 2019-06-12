@@ -52,6 +52,15 @@ namespace Solti.Utils.DI
         public static IInjector Proxy<TInterface>(this IInjector self, Func<IInjector, TInterface, TInterface> decorator) => self.Proxy(typeof(TInterface), (me, type, instance) => decorator(me, (TInterface) instance));
 
         /// <summary>
+        /// Hooks into the instantiating process to let you decorate the original service. Useful when you want to add additional functionality (e.g. parameter validation). The easyest way to decorate an instance is using the <see cref="InterfaceProxy{TInterface}"/> class.
+        /// </summary>
+        /// <typeparam name="TInterface">The "id" of the service to be decorated.</typeparam>
+        /// <param name="self">The injector itself.</param>
+        /// <param name="decorator">The decorator funtion.</param>
+        /// <returns>The injector itself.</returns>
+        public static IInjector Proxy<TInterface>(this IInjector self, Func<IInjector, TInterface, InterfaceProxy<TInterface>> decorator) => self.Proxy<TInterface>((me, instance) => decorator(me, instance).Proxy);
+
+        /// <summary>
         /// Registers a pre-created instance. Useful when creating "constant" values (e.g. from command-line arguments).
         /// </summary>
         /// <typeparam name="TInterface">The service interface to be registered. It can be registered only once.</typeparam>

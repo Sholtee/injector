@@ -127,7 +127,7 @@ namespace Solti.Utils.DI.Injector.Tests
         {
             Injector.Instance<IInterface_1>(new Implementation_1());
 
-            Assert.Throws<InvalidOperationException>(() => Injector.Proxy<IInterface_1>((p1, p2) => null), Resources.CANT_PROXY);
+            Assert.Throws<InvalidOperationException>(() => Injector.Proxy<IInterface_1>((p1, p2) => default(IInterface_1)), Resources.CANT_PROXY);
         }
     }
 }

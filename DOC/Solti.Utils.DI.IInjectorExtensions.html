@@ -438,6 +438,71 @@
       </tr>
     </tbody>
   </table>
+  <a id="Solti_Utils_DI_IInjectorExtensions_Proxy_" data-uid="Solti.Utils.DI.IInjectorExtensions.Proxy*"></a>
+  <h4 id="Solti_Utils_DI_IInjectorExtensions_Proxy__1_Solti_Utils_DI_IInjector_System_Func_Solti_Utils_DI_IInjector___0_Solti_Utils_DI_InterfaceProxy___0___" data-uid="Solti.Utils.DI.IInjectorExtensions.Proxy``1(Solti.Utils.DI.IInjector,System.Func{Solti.Utils.DI.IInjector,``0,Solti.Utils.DI.InterfaceProxy{``0}})">Proxy&lt;TInterface&gt;(IInjector, Func&lt;IInjector, TInterface, InterfaceProxy&lt;TInterface&gt;&gt;)</h4>
+  <div class="markdown level1 summary"><p>Hooks into the instantiating process to let you decorate the original service. Useful when you want to add additional functionality (e.g. parameter validation). The easyest way to decorate an instance is using the <a class="xref" href="Solti.Utils.DI.InterfaceProxy-1.html">InterfaceProxy&lt;TInterface&gt;</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IInjector Proxy&lt;TInterface&gt;(this IInjector self, Func&lt;IInjector, TInterface, InterfaceProxy&lt;TInterface&gt;&gt; decorator)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.IInjector.html">IInjector</a></td>
+        <td><span class="parametername">self</span></td>
+        <td><p>The injector itself.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Func</span>&lt;<a class="xref" href="Solti.Utils.DI.IInjector.html">IInjector</a>, TInterface, <a class="xref" href="Solti.Utils.DI.InterfaceProxy-1.html">InterfaceProxy</a>&lt;TInterface&gt;&gt;</td>
+        <td><span class="parametername">decorator</span></td>
+        <td><p>The decorator funtion.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.IInjector.html">IInjector</a></td>
+        <td><p>The injector itself.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TInterface</span></td>
+        <td><p>The &quot;id&quot; of the service to be decorated.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
   <a id="Solti_Utils_DI_IInjectorExtensions_QueryServiceInfo_" data-uid="Solti.Utils.DI.IInjectorExtensions.QueryServiceInfo*"></a>
   <h4 id="Solti_Utils_DI_IInjectorExtensions_QueryServiceInfo__1_Solti_Utils_DI_IInjector_" data-uid="Solti.Utils.DI.IInjectorExtensions.QueryServiceInfo``1(Solti.Utils.DI.IInjector)">QueryServiceInfo&lt;TInterface&gt;(IInjector)</h4>
   <div class="markdown level1 summary"><p>Gets basic informations about a registered service.</p>
