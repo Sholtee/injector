@@ -162,22 +162,17 @@ namespace Solti.Utils.DI
             
             if (!iface.IsGenericTypeDefinition)
             {
-                Func<IInjector, Type, object> realFactory = null;
+                Lazy<Func<IInjector, Type, object>> factory = new Lazy<Func<IInjector, Type, object>>
+                (
+                    () =>
+                    {
+                        ConstructorInfo constructor = ValidateImplementation(entry.Interface, entry.Implementation);
+                        return Resolver.Create(constructor);
+                    }, 
+                    LazyThreadSafetyMode.ExecutionAndPublication
+                );
 
-                entry.Factory = (injector, type) =>
-                {
-                    //
-                    // A varazslat az hogy a "realFactory" es "entry" meg itt is letezik hiaba 
-                    // kerult a Factory kesobb meghivasra.
-                    //
-
-                    if (realFactory == null)
-                        lock (entry)
-                            if (realFactory == null)
-                                realFactory = Resolver.Create(ValidateImplementation(entry.Interface, entry.Implementation));
-
-                    return realFactory(injector, type);
-                };
+                entry.Factory = (injector, type) => factory.Value(injector, type);
             }
 
             return Register(entry);
