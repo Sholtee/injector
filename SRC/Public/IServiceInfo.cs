@@ -52,7 +52,7 @@ namespace Solti.Utils.DI
         /// <summary>
         /// The lifetime of the service.
         /// </summary>
-        /// <remarks>Instances has not lifetime (unless the releaseOnDispose parameter was set to true).</remarks>
+        /// <remarks>Instances have no lifetime (unless the releaseOnDispose parameter was set to true).</remarks>
         Lifetime? Lifetime { get; }
     }
 }
