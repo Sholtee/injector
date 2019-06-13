@@ -68,7 +68,7 @@ namespace Solti.Utils.DI
         /// <param name="instance">The pre-created instance to be registered.</param>
         /// <param name="releaseOnDispose">Wheter the system should dispose the instance on injector disposal.</param>
         /// <returns>The injector itself.</returns>
-        public static IInjector Instance<TInterface>(this IInjector self, TInterface instance, bool releaseOnDispose = true) => self.Instance(typeof(TInterface), instance, releaseOnDispose);
+        public static IInjector Instance<TInterface>(this IInjector self, TInterface instance, bool releaseOnDispose = false) => self.Instance(typeof(TInterface), instance, releaseOnDispose);
 
         /// <summary>
         /// Resolves a dependency.
