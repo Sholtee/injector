@@ -8,7 +8,7 @@
 - Every service can be requested multiple times but can be registered only once.
 - Services are instantiated only when they are requested.
 - Every service has its own lifetime, which can be:
-  * `Singleton`: Instantiated only once on the first request and released automatically when the containing injector is released.
+  * `Singleton`: Instantiated only once (per injector) on the first request and released automatically when the containing injector is released.
   * `Transient`: Instantiated on every request and the caller is responsible for freeing the requested services.
 ## Injector lifetime
 The lifetime of an injector is the following:
@@ -122,10 +122,10 @@ This project currently targets *.NET Core 2.X* only.
 ## Version history
 - 0.0.1: Initial release
 - 0.0.2:
-  - *added* `IServiceInfo.Factory`
+  - *added* `IServiceInfo.Factory` property
   - *added* `IInjectorExtensions.Proxy()` overload
-  - *added* [ServiceAttribute](http://htmlpreview.github.io/?https://github.com/Sholtee/injector/blob/master/DOC/Solti.Utils.DI.Annotations.ServiceAttribute.html ) and [ConfigFromAssembly](http://htmlpreview.github.io/?https://github.com/Sholtee/injector/blob/master/DOC/Solti.Utils.DI.ConfigFromAssembly.html )
-  - *added* [ServiceActivatorAttribute](http://htmlpreview.github.io/?https://github.com/Sholtee/injector/blob/master/DOC/Solti.Utils.DI.Annotations.ServiceActivatorAttribute.html )
+  - *added* [ServiceAttribute](http://htmlpreview.github.io/?https://github.com/Sholtee/injector/blob/master/DOC/Solti.Utils.DI.Annotations.ServiceAttribute.html ) and [ConfigFromAssembly](http://htmlpreview.github.io/?https://github.com/Sholtee/injector/blob/master/DOC/Solti.Utils.DI.ConfigFromAssembly.html ) classes
+  - *added* [ServiceActivatorAttribute](http://htmlpreview.github.io/?https://github.com/Sholtee/injector/blob/master/DOC/Solti.Utils.DI.Annotations.ServiceActivatorAttribute.html ) class
   - *fixed* multiple type resolver invocation issue
   - *fixed* `IInjectorExtensions.Instance()` should not dispose the instance by default
   - some code optimization
