@@ -45,10 +45,7 @@ namespace Solti.Utils.DI.Internals
         /// Creates a new instance.
         /// </summary>
         /// <param name="parent">The parent entity. It can be null.</param>
-        protected Composite(Composite<TInterface> parent)
-        {
-            FParent = parent;
-        }
+        protected Composite(Composite<TInterface> parent) => FParent = parent;
 
         /// <summary>
         /// Disposal logic related to this class.
