@@ -121,6 +121,7 @@ This project currently targets *.NET Core 2.X* only.
 - 0.0.2:
   - *added* `IServiceInfo.Factory`
   - *added* `IInjectorExtensions.Proxy()` overload
+  - *added* `ConfigFromAssembly`
   - *fixed* multiple type resolver invocation issue
   - *fixed* `IInjectorExtensions.Instance()` should not dispose the instance by default
   - some code optimization
