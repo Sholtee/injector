@@ -100,7 +100,8 @@ To prevent accidental modification of the injector, after configuring you can lo
 It's safe to call the following functions on a locked injector:
 - `Get()`
 - `CreateChild()`
-- `Dispose()`  
+- `Dispose()`
+  
 Note that `Lock()` affects only the instance on which it was called.
 ### Requesting services
 After finishing the configuration you can request services via the `Get()` method:
@@ -112,6 +113,8 @@ Keep in mind the followings:
 - Requesting an unregistered or an open generic service will cause an exception.
 - Requesting services as a constructor parameter is more convenient than using the `Get()` method.
 - The caller should free the requested service if it is an `IDisposable` and has the `Transient` lifetime. To determine it's lifetime call the `QueryServiceInfo()` method.
+## Auto config the injector
+Starting from version *0.0.2* you can use the `ServiceAttribute` on service classes to annotate them for auto config. Auto config is done by a simple call to the `injector.Setup(sourceAssembly)` which instructs the system to seek and register all the annotated services from the `sourceAssembly`.
 ## API Docs
 You can find the detailed API docs [here](http://htmlpreview.github.io/?https://github.com/Sholtee/injector/blob/master/DOC/Solti.Utils.DI.html ).
 ## Supported frameworks
