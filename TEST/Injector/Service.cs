@@ -59,6 +59,12 @@ namespace Solti.Utils.DI.Injector.Tests
         }
 
         [Test]
+        public void Injector_Service_ShouldBeInstructedByServiceActivator()
+        {
+            Assert.DoesNotThrow(() => Injector.Service<IInterface_1, Implementation_8_multictor>());
+        }
+
+        [Test]
         public void Injector_Service_ShouldThrowOnConstructorHavingNotInterfaceArgument()
         {
             Assert.Throws<ArgumentException>(() => Injector.Service<IInterface_1, Implementation_1_Invalid>());

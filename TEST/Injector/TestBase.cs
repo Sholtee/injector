@@ -9,6 +9,8 @@ using NUnit.Framework;
 
 namespace Solti.Utils.DI.Injector.Tests
 {
+    using Annotations;
+
     [TestFixture]
     public sealed partial class InjectorTests
     {
@@ -132,6 +134,18 @@ namespace Solti.Utils.DI.Injector.Tests
             public Implementation_7_cdep(IInjector injector)
             {
                 injector.Get<IInterface_4>(); // cdep
+            }
+        }
+
+        public class Implementation_8_multictor : IInterface_1
+        {
+            [ServiceActivator]
+            public Implementation_8_multictor()
+            {                
+            }
+
+            public Implementation_8_multictor(IInterface_2 dep)
+            {                
             }
         }
     }
