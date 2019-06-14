@@ -58,7 +58,7 @@ Registering a service can be done via several patterns (I name them recipes):
   injector.Get<IMyGenericService<string>>();
   ```
   Remarks:
-  - Implementations must not have more than one public constructor!
+  - Implementations must not have more than one public constructor (or you must annotate the appropriate with the [ServiceActivatorAttribute](http://htmlpreview.github.io/?https://github.com/Sholtee/injector/blob/master/DOC/Solti.Utils.DI.Annotations.ServiceActivatorAttribute.html ))!
   - A service can request other services via the constructor parameters:
     ```csharp  
     public MyService(IInjector injector, IService_1 dep1, IService_2 dep2){...}
@@ -124,7 +124,8 @@ This project currently targets *.NET Core 2.X* only.
 - 0.0.2:
   - *added* `IServiceInfo.Factory`
   - *added* `IInjectorExtensions.Proxy()` overload
-  - *added* `ConfigFromAssembly`
+  - *added* [ServiceAttribute](http://htmlpreview.github.io/?https://github.com/Sholtee/injector/blob/master/DOC/Solti.Utils.DI.Annotations.ServiceAttribute.html ) and [ConfigFromAssembly](http://htmlpreview.github.io/?https://github.com/Sholtee/injector/blob/master/DOC/Solti.Utils.DI.ConfigFromAssembly.html )
+  - *added* [ServiceActivatorAttribute](http://htmlpreview.github.io/?https://github.com/Sholtee/injector/blob/master/DOC/Solti.Utils.DI.Annotations.ServiceActivatorAttribute.html )
   - *fixed* multiple type resolver invocation issue
   - *fixed* `IInjectorExtensions.Instance()` should not dispose the instance by default
   - some code optimization
