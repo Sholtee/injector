@@ -62,9 +62,14 @@ namespace Solti.Utils.DI.Injector.Tests
         public void Injector_Service_ShouldBeInstructedByServiceActivator()
         {
             Assert.DoesNotThrow(() => Injector.Service<IInterface_1, Implementation_8_multictor>());
+            Assert.DoesNotThrow(() => Injector.Service(typeof(IInterface_3<>), typeof(Implementation_9_multictor<>)));
 
             var obj = Injector.Get<IInterface_1>();
             Assert.That(obj, Is.InstanceOf<Implementation_8_multictor>());
+
+            var obj2 = Injector.Get<IInterface_3<string>>();
+            Assert.That(obj2, Is.InstanceOf<Implementation_9_multictor<string>>());
+            Assert.That(obj2.Interface1, Is.InstanceOf<Implementation_8_multictor>());
         }
 
         [Test]

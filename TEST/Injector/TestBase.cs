@@ -144,9 +144,24 @@ namespace Solti.Utils.DI.Injector.Tests
             {                
             }
 
-            public Implementation_8_multictor(IInterface_2 dep)
+            public Implementation_8_multictor(IInterface_2 useless)
             {                
             }
+        }
+
+        public class Implementation_9_multictor<T> : IInterface_3<T>
+        {        
+            public Implementation_9_multictor(int useless)
+            {
+            }
+
+            [ServiceActivator]
+            public Implementation_9_multictor(IInterface_1 dep)
+            {
+                Interface1 = dep;
+            }
+
+            public IInterface_1 Interface1 { get; }
         }
     }
 }
