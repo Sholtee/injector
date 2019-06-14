@@ -9,6 +9,8 @@ using System.Reflection;
 
 namespace Solti.Utils.DI
 {
+    using Annotations;
+
     /// <summary>
     /// Provides an extension to setup the injector.
     /// </summary>

@@ -10,6 +10,8 @@ using NUnit.Framework;
 
 namespace Solti.Utils.DI.Injector.Setup.Tests
 {
+    using Annotations;
+
     [TestFixture]
     public sealed class ConfigFromAssembly
     {

@@ -15,6 +15,7 @@ namespace Solti.Utils.DI
 {
     using Properties;
     using Internals;
+    using Annotations;
 
     /// <summary>
     /// Implements the <see cref="IInjector"/> interface.
@@ -108,14 +109,19 @@ namespace Solti.Utils.DI
                 throw new InvalidOperationException(string.Format(Resources.NOT_ASSIGNABLE, iface, implementation));
 
             //
-            // Az implementacionak pontosan egy konstruktoranak kell lennie.
+            // Az implementacionak pontosan egy (megjelolt) konstruktoranak kell lennie.
             //
 
-            IReadOnlyList<ConstructorInfo> constructors = implementation.GetConstructors();
-            if (constructors.Count > 1)
-                throw new NotSupportedException(string.Format(Resources.CONSTRUCTOR_OVERLOADING_NOT_SUPPORTED, implementation));
+            try
+            {
+                IReadOnlyList<ConstructorInfo> constructors = implementation.GetConstructors();
 
-            return constructors[0];
+                return constructors.SingleOrDefault(ctor => ctor.GetCustomAttribute<ServiceActivatorAttribute>() != null) ?? constructors.Single();
+            }
+            catch (InvalidOperationException)
+            {
+                throw new NotSupportedException(string.Format(Resources.CONSTRUCTOR_OVERLOADING_NOT_SUPPORTED, implementation));
+            }
         }
         #endregion
 

@@ -38,7 +38,7 @@ namespace Solti.Utils.DI.Injector.Tests
         {
         }
 
-        public class Implementation_1 : IInterface_1
+        public class Implementation_1 : IInterface_1 // nincs konstruktor definialva
         {
         }
 

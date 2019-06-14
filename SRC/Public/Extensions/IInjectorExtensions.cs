@@ -7,6 +7,8 @@ using System;
 
 namespace Solti.Utils.DI
 {
+    using Annotations;
+
     /// <summary>
     /// Defines several handy extensions for the <see cref="IInjector"/> interface.
     /// </summary>
@@ -16,7 +18,7 @@ namespace Solti.Utils.DI
         /// Registers a new service with the given type.
         /// </summary>
         /// <typeparam name="TInterface">The service interface to be registered. It can be registered only once.</typeparam>
-        /// <typeparam name="TImplementation">The service implementation to be registered. It must implement the <typeparam name="TInterface"/> interface and must have only null or one constructor (that may request another dependecies).</typeparam>
+        /// <typeparam name="TImplementation">The service implementation to be registered. It must implement the <typeparam name="TInterface"/> interface and must have only null or one constructor (that may request another dependecies). In case of multiple constructors you can use the <see cref="IInjectorExtensions.Factory{TInterface}(IInjector, Func{IInjector, TInterface}, Lifetime)"/> method or the <see cref="ServiceActivatorAttribute"/>.</typeparam>
         /// <param name="self">The injector itself.</param>
         /// <param name="lifetime">The lifetime of the service. For more information see the <see cref="Lifetime"/> enum.</param>
         /// <returns>The injector itself.</returns>

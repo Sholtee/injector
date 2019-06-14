@@ -5,7 +5,7 @@
 ********************************************************************************/
 using System;
 
-namespace Solti.Utils.DI
+namespace Solti.Utils.DI.Annotations
 {
     /// <summary>
     /// Indicates that a class is being used as a service.
