@@ -44,7 +44,7 @@
   </PropertyGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="'$(OS)' == 'Windows_NT' And '$(NoDocfx)'=='False'">
-    <Exec Command="nuget install docfx.console -OutputDirectory ..\Vendor -Version 2.42.4&#xD;&#xA;..\Vendor\docfx.console.2.42.4\tools\docfx ..\docfx.json" />
+    <Exec Command="set doc=..\doc&#xD;&#xA;if exist %doc% rmdir /Q /S %doc%&#xD;&#xA;set vendor=..\Vendor&#xD;&#xA;nuget install docfx.console -OutputDirectory %vendor% -Version 2.42.4&#xD;&#xA;%vendor%\docfx.console.2.42.4\tools\docfx ..\docfx.json" />
   </Target>
 
 </Project>
