@@ -7,7 +7,7 @@ using System;
 using System.Linq;
 using System.Reflection;
 
-namespace Solti.Utils.DI.Internals
+namespace Solti.Utils.DI
 {
     /// <summary>
     /// Provides an extension to setup the injector.
