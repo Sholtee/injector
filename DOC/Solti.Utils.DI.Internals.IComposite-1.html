@@ -55,7 +55,7 @@
   <h6><strong>Assembly</strong>: Injector.dll</h6>
   <h5 id="Solti_Utils_DI_Internals_IComposite_1_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public interface IComposite&lt;T&gt; : IDisposable where T : IComposite&lt;T&gt;</code></pre>
+    <pre><code class="lang-csharp hljs">public interface IComposite&lt;out T&gt; : IDisposable where T : IComposite&lt;T&gt;</code></pre>
   </div>
   <h5 class="typeParameters">Type Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -85,7 +85,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">ICollection&lt;T&gt; Children { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">IReadOnlyCollection&lt;T&gt; Children { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -97,7 +97,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Generic.ICollection</span>&lt;T&gt;</td>
+        <td><span class="xref">System.Collections.Generic.IReadOnlyCollection</span>&lt;T&gt;</td>
         <td></td>
       </tr>
     </tbody>

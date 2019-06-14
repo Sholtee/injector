@@ -13,7 +13,7 @@ namespace Solti.Utils.DI.Internals
     /// </summary>
     /// <typeparam name="T">The type on which we want to apply the composite pattern.</typeparam>
     /// <remarks>This is an internal interface so it can be changed from version to version. Don't use it!</remarks>
-    public interface IComposite<T>: IDisposable where T : IComposite<T>
+    public interface IComposite<out T>: IDisposable where T : IComposite<T>
     {
         /// <summary>
         /// The parent of this entity.
@@ -23,7 +23,7 @@ namespace Solti.Utils.DI.Internals
         /// <summary>
         /// All children of this entity.
         /// </summary>
-        ICollection<T> Children { get; }
+        IReadOnlyCollection<T> Children { get; }
 
         /// <summary>
         /// Creates a new child entity and puts it into the <see cref="Children"/> list.

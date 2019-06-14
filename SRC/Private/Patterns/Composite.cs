@@ -3,11 +3,11 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
-using System;
 using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -19,34 +19,24 @@ namespace Solti.Utils.DI.Internals
     public abstract class Composite<TInterface>: Disposable, IComposite<TInterface> where TInterface: class, IComposite<TInterface>
     {
         #region Private
-        private /*readonly*/ ICollection<TInterface> FChildren = new DictionaryWrap(new ConcurrentDictionary<TInterface, byte>());
-        private /*readonly*/ TInterface FParent;
+        private /*readonly*/ DictionaryWrap FChildren = new DictionaryWrap();
+        private /*readonly*/ Composite<TInterface> FParent;
 
-        private sealed class DictionaryWrap : ICollection<TInterface>
+        private sealed class DictionaryWrap : IReadOnlyCollection<TInterface>
         {
-            private readonly IDictionary<TInterface, byte> FEntries;
+            private readonly IDictionary<TInterface, byte> FEntries = new ConcurrentDictionary<TInterface, byte>();
 
             private ICollection<TInterface> Entries => FEntries.Keys;
 
-            public DictionaryWrap(IDictionary<TInterface, byte> entries) => FEntries = entries;
+            public void Add(TInterface item) => FEntries.Add(item, 0);
+
+            public bool Remove(TInterface item) => FEntries.Remove(item);
 
             IEnumerator<TInterface> IEnumerable<TInterface>.GetEnumerator() => Entries.GetEnumerator();
 
             IEnumerator IEnumerable.GetEnumerator() => Entries.GetEnumerator();
 
-            void ICollection<TInterface>.Add(TInterface item) => FEntries.Add(item, 0);
-
-            void ICollection<TInterface>.Clear() => FEntries.Clear();
-
-            bool ICollection<TInterface>.Contains(TInterface item) => Entries.Contains(item);
-
-            void ICollection<TInterface>.CopyTo(TInterface[] array, int arrayIndex) => throw new NotImplementedException();
-
-            bool ICollection<TInterface>.Remove(TInterface item) => FEntries.Remove(item);
-
-            int ICollection<TInterface>.Count => FEntries.Count;
-
-            bool ICollection<TInterface>.IsReadOnly => FEntries.IsReadOnly;
+            int IReadOnlyCollection<TInterface>.Count => FEntries.Count;
         }
         #endregion
 
@@ -55,7 +45,7 @@ namespace Solti.Utils.DI.Internals
         /// Creates a new instance.
         /// </summary>
         /// <param name="parent">The parent entity. It can be null.</param>
-        protected Composite(TInterface parent)
+        protected Composite(Composite<TInterface> parent)
         {
             FParent = parent;
         }
@@ -74,7 +64,7 @@ namespace Solti.Utils.DI.Internals
 
                 if (FParent != null)
                 {
-                    bool removed = FParent.Children.Remove(Self);
+                    bool removed = FParent.FChildren.Remove(Self);
                     Debug.Assert(removed, "Parent does not contain this instance");
                     FParent = null;
                 }
@@ -88,7 +78,7 @@ namespace Solti.Utils.DI.Internals
                     child.Dispose();     
                 }
 
-                FChildren.Clear();
+                Debug.Assert(!FChildren.Any());
                 FChildren = null;
             }
 
@@ -98,7 +88,7 @@ namespace Solti.Utils.DI.Internals
         /// <summary>
         /// Access this entity as a <typeparam name="TInterface"/> interface.
         /// </summary>
-        protected virtual TInterface Self => this as TInterface;
+        protected abstract TInterface Self { get; }
 
         /// <summary>
         /// Creates a new child. For more information see the <see cref="IComposite{T}"/> interface.
@@ -108,9 +98,9 @@ namespace Solti.Utils.DI.Internals
         #endregion
 
         #region IComposite
-        TInterface IComposite<TInterface>.Parent => FParent;
+        TInterface IComposite<TInterface>.Parent => FParent?.Self;
 
-        ICollection<TInterface> IComposite<TInterface>.Children => FChildren;
+        IReadOnlyCollection<TInterface> IComposite<TInterface>.Children => FChildren;
 
         TInterface IComposite<TInterface>.CreateChild()
         {
