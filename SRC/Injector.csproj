@@ -4,7 +4,7 @@
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <Company></Company>
     <Authors>Denes Solti</Authors>
-    <Version>0.0.1</Version>
+    <Version>0.0.2</Version>
     <AssemblyName>Injector</AssemblyName>
     <RootNamespace>Solti.Utils.DI</RootNamespace>
     <Configurations>Debug;Release;Perf</Configurations>
