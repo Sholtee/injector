@@ -398,7 +398,7 @@ namespace Solti.Utils.DI
         /// <summary>
         /// See <see cref="IInjector"/>
         /// </summary>
-        IReadOnlyList<Type> IInjector.Entries => FEntries.Keys.ToArray();
+        IReadOnlyCollection<Type> IInjector.Entries => FEntries.Keys.ToArray();
 
         /// <summary>
         /// See <see cref="IInjector"/>

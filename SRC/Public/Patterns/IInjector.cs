@@ -81,7 +81,7 @@ namespace Solti.Utils.DI
         /// <summary>
         /// Registered entries. It contains the explicit and implicit entries as well.
         /// </summary>
-        IReadOnlyList<Type> Entries { get; }
+        IReadOnlyCollection<Type> Entries { get; }
 
         /// <summary>
         /// Gets basic informations about a registered service.
