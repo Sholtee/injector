@@ -12,9 +12,6 @@ namespace Solti.Utils.DI.Internals
     {
         public Stack<Type> CurrentPath { get; }
 
-        public ThreadContext()
-        {
-            CurrentPath = new Stack<Type>();
-        }
+        public ThreadContext() => CurrentPath = new Stack<Type>();
     }
 }
