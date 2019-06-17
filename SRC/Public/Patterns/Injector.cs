@@ -45,17 +45,15 @@ namespace Solti.Utils.DI
             // A masolas mikentjet lasd az InjectorEntry implementaciojaban.
             //
 
-            IReadOnlyDictionary<Type, InjectorEntry> entriesToCopy = new Dictionary<Type, InjectorEntry>(0);
-
-            if (parent != null) entriesToCopy = parent
+            FEntries = new ConcurrentDictionary<Type, InjectorEntry>(parent?
                 .FEntries
                 .Values
                 .Where(entry => entry.Interface != typeof(IInjector))
-                .ToDictionary(
+                .ToDictionary
+                (
                     entry => entry.Interface,
-                    entry => (InjectorEntry) entry.Clone());
-
-            FEntries = new ConcurrentDictionary<Type, InjectorEntry>(entriesToCopy);
+                    entry => (InjectorEntry) entry.Clone()
+                ) ?? new Dictionary<Type, InjectorEntry>(0));
 
             FContext = new ThreadLocal<ThreadContext>(() => new ThreadContext(), trackAllValues: false);
 
