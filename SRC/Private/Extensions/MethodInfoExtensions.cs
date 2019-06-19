@@ -15,7 +15,7 @@ namespace Solti.Utils.DI.Internals
     {
         private static readonly ConcurrentDictionary<MethodInfo, Func<object, object[], object>> FCache = new ConcurrentDictionary<MethodInfo, Func<object, object[], object>>();
 
-        public static Expression<TLambda> ToLambda<TLambda>(this MethodInfo method, Expression instance, Func<Type, int, Expression> getArgument, params ParameterExpression[] parameters)
+        public static Expression<TLambda> ToLambda<TLambda>(this MethodInfo method, Expression instance, Func<ParameterInfo, int, Expression> getArgument, params ParameterExpression[] parameters)
         {
             //
             // (target, paramz) => (Type_3) ((Type_0) target).Method((Type_1) paramz[0], (Type_2) paramz[1], ...)
@@ -29,7 +29,7 @@ namespace Solti.Utils.DI.Internals
                 method,
                 method
                     .GetParameters()
-                    .Select((param, i) => Expression.Convert(getArgument(param.ParameterType, i), param.ParameterType))
+                    .Select((param, i) => Expression.Convert(getArgument(param, i), param.ParameterType))
             );
 
             call = method.ReturnType != typeof(void)
@@ -46,13 +46,13 @@ namespace Solti.Utils.DI.Internals
         public static Func<object, object[], object> ToDelegate(this MethodInfo method) => FCache.GetOrAdd(method, @void =>
         {
             ParameterExpression
-                instance = Expression.Parameter(typeof(object),   "instance"),
-                paramz   = Expression.Parameter(typeof(object[]), "paramz");
+                instance = Expression.Parameter(typeof(object),   nameof(instance)),
+                paramz   = Expression.Parameter(typeof(object[]), nameof(paramz));
 
             return method.ToLambda<Func<object, object[], object>>
             (
                 instance, 
-                (paramType, i) => Expression.ArrayIndex(paramz, Expression.Constant(i)),
+                (param, i) => Expression.ArrayIndex(paramz, Expression.Constant(i)),
                 instance,
                 paramz
             ).Compile();
