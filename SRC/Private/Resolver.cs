@@ -40,14 +40,10 @@ namespace Solti.Utils.DI.Internals
         
         public static Func<IInjector, IReadOnlyDictionary<string, object>, object> CreateExtended(ConstructorInfo constructor)
         {
-            //
-            // Az "out var" miatt ez nem lehet statikus mezo =(
-            //
-
-            MethodInfo getArg = ((Func<ParameterInfo, IInjector, IReadOnlyDictionary<string, object>, object>) 
-            (
-                (pi, i, ep) => ep.TryGetValue(pi.Name, out var value) ? value : i.Get(pi.ParameterType)
-            )).Method;
+            Func<ParameterInfo, IInjector, IReadOnlyDictionary<string, object>, object> getArg = 
+                (pi, i, ep) => ep.TryGetValue(pi.Name, out var value) 
+                    ? value 
+                    : i.Get(pi.ParameterType);
 
             //
             // (injector, explicitParamz) => new Service((IDependency_1) (explicitParamz[paramName] ||  injector.Get(typeof(IDependency_1))), ...)
@@ -59,7 +55,7 @@ namespace Solti.Utils.DI.Internals
 
             return constructor.ToLambda<Func<IInjector, IReadOnlyDictionary<string, object>, object>>
             (
-                (p, i) => Expression.Call(getArg, Expression.Constant(p), injector, explicitArgs),
+                (p, i) => Expression.Invoke(Expression.Constant(getArg), Expression.Constant(p), injector, explicitArgs),
                 injector,
                 explicitArgs
             ).Compile();
