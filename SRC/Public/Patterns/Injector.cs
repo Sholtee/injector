@@ -132,19 +132,20 @@ namespace Solti.Utils.DI
 
             ConstructorInfo constructor = ValidateImplementation(iface, implementation);
 
+            var entry = new InjectorEntry(iface, implementation, lifetime);
+
             //
-            // Bejegyzes felvetele.
+            // Ha generikus interface-t regisztralunk akkor nem kell (nem is lehet) 
+            // legyartani a factory-t.
             //
 
-            return Register(new InjectorEntry(iface, implementation, lifetime)
+            if (!iface.IsGenericTypeDefinition)
             {
-                //
-                // Ha generikus interface-t regisztralunk akkor nem kell (nem is lehet) 
-                // legyartani a factory-t.
-                //
+                Func<IInjector, object> resolver = Resolver.Create(constructor);
+                entry.Factory = (injector, type) => resolver(injector);
+            }
 
-                Factory = !iface.IsGenericTypeDefinition ? Resolver.Create(constructor) : null
-            });
+            return Register(entry);
         }
 
         internal InjectorEntry Factory(Type iface, Func<IInjector, Type, object> factory, Lifetime? lifetime)
@@ -170,8 +171,8 @@ namespace Solti.Utils.DI
                 (
                     () =>
                     {
-                        ConstructorInfo constructor = ValidateImplementation(entry.Interface, entry.Implementation /*triggereli a resolvert*/);
-                        return Resolver.Create(constructor);
+                        Func<IInjector, object> resolver = Resolver.Create(ValidateImplementation(entry.Interface, entry.Implementation /*triggereli a resolvert*/));
+                        return (injector, type) => resolver(injector);
                     }, 
                     LazyThreadSafetyMode.ExecutionAndPublication
                 );

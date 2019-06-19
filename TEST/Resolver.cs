@@ -45,7 +45,7 @@ namespace Solti.Utils.DI.Internals.Tests
                     return null;
                 });
 
-            Func<IInjector, Type, object> factory = Resolver
+            Func<IInjector, object> factory = Resolver
                 .Create(typeof(MyClass)
                 .GetConstructor(new[]
                 {
@@ -55,7 +55,7 @@ namespace Solti.Utils.DI.Internals.Tests
             
             Assert.That(factory, Is.Not.Null);
 
-            MyClass instance = (MyClass) factory(mockInjector.Object, null);
+            MyClass instance = (MyClass) factory(mockInjector.Object);
 
             Assert.That(instance, Is.Not.Null);
             Assert.That(instance.Dep1, Is.InstanceOf<Disposable>());
@@ -72,13 +72,13 @@ namespace Solti.Utils.DI.Internals.Tests
             var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
             mockInjector.Setup(i => i.Get(It.IsAny<Type>()));
 
-            Func<IInjector, Type, object> factory = Resolver
+            Func<IInjector, object> factory = Resolver
                 .Create(typeof(MyClass)
                 .GetConstructor(new Type[0]));
 
             Assert.That(factory, Is.Not.Null);
 
-            MyClass instance = (MyClass) factory(mockInjector.Object, null);
+            MyClass instance = (MyClass) factory(mockInjector.Object);
 
             Assert.That(instance, Is.Not.Null);
             Assert.That(instance.Dep1, Is.Null);
