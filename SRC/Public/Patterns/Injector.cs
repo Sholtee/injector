@@ -15,7 +15,6 @@ namespace Solti.Utils.DI
 {
     using Properties;
     using Internals;
-    using Annotations;
 
     /// <summary>
     /// Implements the <see cref="IInjector"/> interface.
@@ -131,9 +130,7 @@ namespace Solti.Utils.DI
             //
 
             if (!iface.IsGenericTypeDefinition)
-            {
                 entry.Factory = Resolver.GetFor(constructor).ConvertToFactory();
-            }
 
             return Register(entry);
         }
