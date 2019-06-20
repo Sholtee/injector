@@ -5,6 +5,7 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
+
 using Moq;
 using NUnit.Framework;
 
@@ -46,8 +47,7 @@ namespace Solti.Utils.DI.Internals.Tests
                 });
 
             Func<IInjector, object> factory = Resolver
-                .Create(typeof(MyClass)
-                .GetConstructor(new[]
+                .GetFor(typeof(MyClass).GetConstructor(new[]
                 {
                     typeof(IDisposable),
                     typeof(ICloneable)
@@ -73,8 +73,7 @@ namespace Solti.Utils.DI.Internals.Tests
             mockInjector.Setup(i => i.Get(It.IsAny<Type>()));
 
             Func<IInjector, object> factory = Resolver
-                .Create(typeof(MyClass)
-                .GetConstructor(new Type[0]));
+                .GetFor(typeof(MyClass).GetConstructor(new Type[0]));
 
             Assert.That(factory, Is.Not.Null);
 
@@ -94,7 +93,7 @@ namespace Solti.Utils.DI.Internals.Tests
             mockInjector.Setup(i => i.Get(It.IsAny<Type>()));
 
             Func<IInjector, IReadOnlyDictionary<string, object>, object> factory = Resolver
-                .CreateExtended(typeof(List<string>).GetConstructor(new[] {typeof(int)}));
+                .GetExtendedFor(typeof(List<string>).GetConstructor(new[] {typeof(int)}));
 
             object lst = factory(mockInjector.Object, new Dictionary<string, object>
             {
@@ -116,7 +115,7 @@ namespace Solti.Utils.DI.Internals.Tests
                 .Returns<Type>(type => null);
 
             Func<IInjector, IReadOnlyDictionary<string, object>, object> factory = Resolver
-                .CreateExtended(typeof(MyClass).GetConstructor(new[] {typeof(IDisposable), typeof(ICloneable)}));
+                .GetExtendedFor(typeof(MyClass).GetConstructor(new[] {typeof(IDisposable), typeof(ICloneable)}));
 
             object obj = factory(mockInjector.Object, new Dictionary<string, object>
             {

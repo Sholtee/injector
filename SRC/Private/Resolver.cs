@@ -14,9 +14,9 @@ namespace Solti.Utils.DI.Internals
 
     internal static class Resolver
     {
-        public static Func<IInjector, object> Create(ConstructorInfo constructor)
-        {
-            MethodInfo ifaceGet = ((MethodCallExpression)((Expression<Action<IInjector>>) (i => i.Get(null))).Body).Method;
+        public static Func<IInjector, object> GetFor(ConstructorInfo constructor) => Cache<ConstructorInfo, Func<IInjector, object>>.GetOrAdd(constructor, () =>
+        { 
+            MethodInfo ifaceGet = ((MethodCallExpression) ((Expression<Action<IInjector>>) (i => i.Get(null))).Body).Method;
 
             //
             // (injector, type) => new Service((IDependency_1) injector.Get(typeof(IDependency_1)), ...)
@@ -36,12 +36,11 @@ namespace Solti.Utils.DI.Internals
                 },
                 injector
             ).Compile();
-        }
+        });
 
-        public static Func<IInjector, object> GetFor(Type type) => Cache<Type, Func<IInjector, object>>
-            .GetOrAdd(type, () => Create(type.GetApplicableConstructor()));
+        public static Func<IInjector, object> GetFor(Type type) => Cache<Type, Func<IInjector, object>>.GetOrAdd(type, () => GetFor(type.GetApplicableConstructor()));
 
-        public static Func<IInjector, IReadOnlyDictionary<string, object>, object> CreateExtended(ConstructorInfo constructor)
+        public static Func<IInjector, IReadOnlyDictionary<string, object>, object> GetExtendedFor(ConstructorInfo constructor) => Cache<ConstructorInfo, Func<IInjector, IReadOnlyDictionary<string, object>, object>>.GetOrAdd(constructor, () =>
         {
             Func<ParameterInfo, IInjector, IReadOnlyDictionary<string, object>, object> getArg = 
                 (pi, i, ep) => ep.TryGetValue(pi.Name, out var value) 
@@ -62,9 +61,8 @@ namespace Solti.Utils.DI.Internals
                 injector,
                 explicitArgs
             ).Compile();
-        }
+        });
 
-        public static Func<IInjector, IReadOnlyDictionary<string, object>, object> GetExtendnedFor(Type type) => Cache<Type, Func<IInjector, IReadOnlyDictionary<string, object>, object>>
-            .GetOrAdd(type, () => CreateExtended(type.GetApplicableConstructor()));
+        public static Func<IInjector, IReadOnlyDictionary<string, object>, object> GetExtendnedFor(Type type) => Cache<Type, Func<IInjector, IReadOnlyDictionary<string, object>, object>>.GetOrAdd(type, () => GetExtendedFor(type.GetApplicableConstructor()));
     }
 }

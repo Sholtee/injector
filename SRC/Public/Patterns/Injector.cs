@@ -118,7 +118,7 @@ namespace Solti.Utils.DI
         internal InjectorEntry Service(Type iface, Type implementation, Lifetime? lifetime)
         {
             //
-            // Ne a Resolver.Create()-ban validaljunk, h generikusoknal is lefusson az ellenorzes.
+            // Ne a Resolver.GetFor()-ban validaljunk, h generikusoknal is lefusson az ellenorzes.
             //
 
             ConstructorInfo constructor = ValidateImplementation(iface, implementation);
@@ -132,7 +132,7 @@ namespace Solti.Utils.DI
 
             if (!iface.IsGenericTypeDefinition)
             {
-                entry.Factory = Resolver.Create(constructor).ConvertToFactory();
+                entry.Factory = Resolver.GetFor(constructor).ConvertToFactory();
             }
 
             return Register(entry);
@@ -157,10 +157,10 @@ namespace Solti.Utils.DI
             
             if (!iface.IsGenericTypeDefinition)
             {
-                Lazy<Func<IInjector, Type, object>> factory = new Lazy<Func<IInjector, Type, object>>
+                var factory = new Lazy<Func<IInjector, Type, object>>
                 (
                     () => Resolver
-                        .Create(ValidateImplementation(entry.Interface, entry.Implementation /*triggereli a resolvert*/))
+                        .GetFor(ValidateImplementation(entry.Interface, entry.Implementation /*triggereli a resolvert*/))
                         .ConvertToFactory(), 
                     LazyThreadSafetyMode.ExecutionAndPublication
                 );
