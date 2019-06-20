@@ -37,7 +37,10 @@ namespace Solti.Utils.DI.Internals
                 injector
             ).Compile();
         }
-        
+
+        public static Func<IInjector, object> GetFor(Type type) => Cache<Type, Func<IInjector, object>>
+            .GetOrAdd(type, () => Create(type.GetApplicableConstructor()));
+
         public static Func<IInjector, IReadOnlyDictionary<string, object>, object> CreateExtended(ConstructorInfo constructor)
         {
             Func<ParameterInfo, IInjector, IReadOnlyDictionary<string, object>, object> getArg = 
@@ -60,5 +63,8 @@ namespace Solti.Utils.DI.Internals
                 explicitArgs
             ).Compile();
         }
+
+        public static Func<IInjector, IReadOnlyDictionary<string, object>, object> GetExtendnedFor(Type type) => Cache<Type, Func<IInjector, IReadOnlyDictionary<string, object>, object>>
+            .GetOrAdd(type, () => CreateExtended(type.GetApplicableConstructor()));
     }
 }

@@ -4,7 +4,6 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
-using System.Collections.Concurrent;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -13,8 +12,6 @@ namespace Solti.Utils.DI.Internals
 {
     internal static class MethodInfoExtensions
     {
-        private static readonly ConcurrentDictionary<MethodInfo, Func<object, object[], object>> FCache = new ConcurrentDictionary<MethodInfo, Func<object, object[], object>>();
-
         public static Expression<TLambda> ToLambda<TLambda>(this MethodInfo method, Expression instance, Func<ParameterInfo, int, Expression> getArgument, params ParameterExpression[] parameters)
         {
             //
@@ -43,7 +40,7 @@ namespace Solti.Utils.DI.Internals
             );
         }
 
-        public static Func<object, object[], object> ToDelegate(this MethodInfo method) => FCache.GetOrAdd(method, @void =>
+        public static Func<object, object[], object> ToDelegate(this MethodInfo method) => Cache<MethodInfo, Func<object, object[], object>>.GetOrAdd(method, () =>
         {
             ParameterExpression
                 instance = Expression.Parameter(typeof(object),   nameof(instance)),

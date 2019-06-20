@@ -4,7 +4,6 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
-using System.Collections.Concurrent;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -13,8 +12,6 @@ namespace Solti.Utils.DI.Internals
 {
     internal static class ConstructorInfoExtensions
     {
-        private static readonly ConcurrentDictionary<ConstructorInfo, Func<object[], object>> FCache = new ConcurrentDictionary<ConstructorInfo, Func<object[], object>>();
-
         public static Expression<TLambda> ToLambda<TLambda>(this ConstructorInfo ctor, Func<ParameterInfo, int, Expression> getArgument, params ParameterExpression[] parameters) => Expression.Lambda<TLambda>
         (
             Expression.New
@@ -29,7 +26,7 @@ namespace Solti.Utils.DI.Internals
             parameters
         );
 
-        public static Func<object[], object> ToDelegate(this ConstructorInfo ctor) => FCache.GetOrAdd(ctor, @void =>
+        public static Func<object[], object> ToDelegate(this ConstructorInfo ctor) => Cache<ConstructorInfo, Func<object[], object>>.GetOrAdd(ctor, () =>
         {
             ParameterExpression paramz = Expression.Parameter(typeof(object[]), nameof(paramz));
 
