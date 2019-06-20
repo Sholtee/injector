@@ -45,15 +45,19 @@ namespace Solti.Utils.DI
             // A masolas mikentjet lasd az InjectorEntry implementaciojaban.
             //
 
-            FEntries = new ConcurrentDictionary<Type, InjectorEntry>(parent?
-                .FEntries
-                .Values
-                .Where(entry => entry.Interface != typeof(IInjector))
-                .ToDictionary
-                (
-                    entry => entry.Interface,
-                    entry => (InjectorEntry) entry.Clone()
-                ) ?? new Dictionary<Type, InjectorEntry>(0));
+            FEntries = new ConcurrentDictionary<Type, InjectorEntry>
+            (
+                parent?
+                    .FEntries
+                    .Values
+                    .Where(entry => entry.Interface != typeof(IInjector))
+                    .ToDictionary
+                    (
+                        entry => entry.Interface,
+                        entry => (InjectorEntry) entry.Clone()
+                    ) 
+                ?? new Dictionary<Type, InjectorEntry>(0)
+            );
 
             FContext = new ThreadLocal<ThreadContext>(() => new ThreadContext(), trackAllValues: false);
 
@@ -141,8 +145,7 @@ namespace Solti.Utils.DI
 
             if (!iface.IsGenericTypeDefinition)
             {
-                Func<IInjector, object> resolver = Resolver.Create(constructor);
-                entry.Factory = (injector, type) => resolver(injector);
+                entry.Factory = Resolver.Create(constructor).ConvertToFactory();
             }
 
             return Register(entry);
@@ -169,11 +172,9 @@ namespace Solti.Utils.DI
             {
                 Lazy<Func<IInjector, Type, object>> factory = new Lazy<Func<IInjector, Type, object>>
                 (
-                    () =>
-                    {
-                        Func<IInjector, object> resolver = Resolver.Create(ValidateImplementation(entry.Interface, entry.Implementation /*triggereli a resolvert*/));
-                        return (injector, type) => resolver(injector);
-                    }, 
+                    () => Resolver
+                        .Create(ValidateImplementation(entry.Interface, entry.Implementation /*triggereli a resolvert*/))
+                        .ConvertToFactory(), 
                     LazyThreadSafetyMode.ExecutionAndPublication
                 );
 
