@@ -110,20 +110,7 @@ namespace Solti.Utils.DI
             if (!iface.IsInterfaceOf(implementation))
                 throw new InvalidOperationException(string.Format(Resources.NOT_ASSIGNABLE, iface, implementation));
 
-            //
-            // Az implementacionak pontosan egy (megjelolt) konstruktoranak kell lennie.
-            //
-
-            try
-            {
-                IReadOnlyList<ConstructorInfo> constructors = implementation.GetConstructors();
-
-                return constructors.SingleOrDefault(ctor => ctor.GetCustomAttribute<ServiceActivatorAttribute>() != null) ?? constructors.Single();
-            }
-            catch (InvalidOperationException)
-            {
-                throw new NotSupportedException(string.Format(Resources.CONSTRUCTOR_OVERLOADING_NOT_SUPPORTED, implementation));
-            }
+            return implementation.GetApplicableConstructor();
         }
         #endregion
 

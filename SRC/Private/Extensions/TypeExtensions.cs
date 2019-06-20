@@ -4,12 +4,14 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
 namespace Solti.Utils.DI.Internals
 {
     using Properties;
+    using Annotations;
 
     internal static class TypeExtensions
     {
@@ -53,6 +55,24 @@ namespace Solti.Utils.DI.Internals
             //
 
             return false;
+        }
+
+        public static ConstructorInfo GetApplicableConstructor(this Type src)
+        {
+            //
+            // Az implementacionak pontosan egy (megjelolt) konstruktoranak kell lennie.
+            //
+
+            try
+            {
+                IReadOnlyList<ConstructorInfo> constructors = src.GetConstructors();
+
+                return constructors.SingleOrDefault(ctor => ctor.GetCustomAttribute<ServiceActivatorAttribute>() != null) ?? constructors.Single();
+            }
+            catch (InvalidOperationException)
+            {
+                throw new NotSupportedException(string.Format(Resources.CONSTRUCTOR_OVERLOADING_NOT_SUPPORTED, src));
+            }
         }
 
         public static object CreateInstance(this Type src, Type[] argTypes, params object[] args)
