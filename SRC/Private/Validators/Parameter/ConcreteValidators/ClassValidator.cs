@@ -15,6 +15,9 @@ namespace Solti.Utils.DI.Internals
         {
             if (!param.IsClass)
                 throw new ArgumentException(Resources.NOT_A_CLASS, paramName);
+
+            if (param.IsAbstract)
+                throw new ArgumentException(Resources.ABSTRACT, paramName);
         }
     }
 }

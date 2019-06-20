@@ -61,6 +61,15 @@ namespace Solti.Utils.DI.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The given class should not be abstract!.
+        /// </summary>
+        internal static string ABSTRACT {
+            get {
+                return ResourceManager.GetString("ABSTRACT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The object has already been disposed..
         /// </summary>
         internal static string ALREADY_DISPOSED {
