@@ -79,6 +79,15 @@ namespace Solti.Utils.DI
         object Get([ParameterIs(typeof(NotNull), typeof(Interface), typeof(NotGeneric))] Type iface);
 
         /// <summary>
+        /// Instantiates the given class.
+        /// </summary>
+        /// <param name="class">The class to be instantiated.</param>
+        /// <param name="explicitArgs">The explicit arguments (in the form of [parameter name - parameter value]) not to be resolved by the injector.</param>
+        /// <returns>The new instance.</returns>
+        /// <remarks>The <paramref name="@class"/> you passed must have only one public constructor or you must annotate the appropriate one with the <see cref="ServiceActivatorAttribute"/>. Constructor parameteres that are not present in the <paramref name="explicitArgs"/> are treated as normal dependency.</remarks>
+        object Instantiate([ParameterIs(typeof(NotNull), typeof(NotGeneric), typeof(Class))] Type @class, IReadOnlyDictionary<string, object> explicitArgs = null);
+
+        /// <summary>
         /// Registered entries. It contains the explicit and implicit entries as well.
         /// </summary>
         IReadOnlyCollection<Type> Entries { get; }

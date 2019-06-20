@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Collections.Generic;
 
 namespace Solti.Utils.DI
 {
@@ -81,6 +82,16 @@ namespace Solti.Utils.DI
         /// <remarks>This method is thread safe so you can call it parallelly.</remarks>
         /// <exception cref="NotSupportedException">The service can not be found.</exception>
         public static TInterface Get<TInterface>(this IInjector self) => (TInterface) self.Get(typeof(TInterface));
+
+        /// <summary>
+        /// Instantiates the given class.
+        /// </summary>
+        /// <typeparam name="TClass">The class to be instantiated.</typeparam>
+        /// <param name="self">The injector itself.</param>
+        /// <param name="explicitArgs">The explicit arguments (in the form of [parameter name - parameter value]) not to be resolved by the injector.</param>
+        /// <returns>The new instance.</returns>
+        /// <remarks>The <typeparamref name="TClass"/> you passed must have only one public constructor or you must annotate the appropriate one with the <see cref="ServiceActivatorAttribute"/>. Constructor parameteres that are not present in the <paramref name="explicitArgs"/> are treated as normal dependency.</remarks>
+        public static TClass Instantiate<TClass>(this IInjector self, IReadOnlyDictionary<string, object> explicitArgs = null) => (TClass) self.Instantiate(typeof(TClass), explicitArgs);
 
         /// <summary>
         /// Gets basic informations about a registered service.

@@ -382,6 +382,11 @@ namespace Solti.Utils.DI
         /// <summary>
         /// See <see cref="IInjector"/>
         /// </summary>
+        object IInjector.Instantiate(Type @class, IReadOnlyDictionary<string, object> explicitArgs) => Resolver.GetExtendnedFor(@class)(Self, explicitArgs ?? new Dictionary<string, object>(0));
+
+        /// <summary>
+        /// See <see cref="IInjector"/>
+        /// </summary>
         IReadOnlyCollection<Type> IInjector.Entries => FEntries.Keys.ToArray();
 
         /// <summary>
