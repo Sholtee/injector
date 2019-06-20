@@ -38,7 +38,7 @@ namespace Solti.Utils.DI.Perf
 
         public interface IInterface_3<T>
         {
-            int DoSomethis();
+            int DoSomething();
         }
 
         public class Implementation_3<T> : IInterface_3<T>
@@ -48,7 +48,7 @@ namespace Solti.Utils.DI.Perf
             }
 
             [MethodImpl(MethodImplOptions.NoInlining)]
-            public int DoSomethis() => 0;
+            public int DoSomething() => 0;
         }
         #endregion
 
@@ -77,7 +77,7 @@ namespace Solti.Utils.DI.Perf
             for (int i = 0; i < OperationsPerInvoke; i++)
             {
                 IInterface_3<string> iface = new Implementation_3<string>(new Implementation_2<string>(new Implementation_1()));
-                iface.DoSomethis();
+                iface.DoSomething();
             }
         }
 
@@ -87,7 +87,7 @@ namespace Solti.Utils.DI.Perf
             for (int i = 0; i < OperationsPerInvoke; i++)
             {
                 IInterface_3<string> iface = injector.Get<IInterface_3<string>>();
-                iface.DoSomethis();
+                iface.DoSomething();
             }
         }
 
@@ -99,8 +99,18 @@ namespace Solti.Utils.DI.Perf
                 using (IInjector child = injector.CreateChild())
                 {
                     IInterface_3<string> iface = child.Get<IInterface_3<string>>();
-                    iface.DoSomethis();
+                    iface.DoSomething();
                 }  
+            }
+        }
+
+        [Benchmark(OperationsPerInvoke = OperationsPerInvoke)]
+        public void RootInjectorInstantiate()
+        {
+            for (int i = 0; i < OperationsPerInvoke; i++)
+            {
+                Implementation_3<string> iface = injector.Instantiate<Implementation_3<string>>();
+                iface.DoSomething();
             }
         }
     }
