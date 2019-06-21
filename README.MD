@@ -81,7 +81,9 @@ Registering a service can be done via several patterns (I name them recipes):
   ```csharp
   injector.Instance<IMyInstance>(myInstance, true);
   ```
-  The second parameter instructs the injector to dispose the instance when the injector itself is disposed.
+  Remarks:
+  - The second parameter instructs the injector to dispose the instance when the injector itself is disposed.
+  - In contrast of `Singleton`s where each child injector can have its own service instance, values registered by this way are global so child injectors will have the same refernce.
   
 *Note that you should not register the injector itself it is done by the system automatically.*
 ### Updating existing services
@@ -99,6 +101,7 @@ Where the `ParameterValidatorProxy<TInterface>` is an [InterfaceProxy<TInterface
 To prevent accidental modification of the injector, after configuring you can lock it (by call the prameterless `Lock()` method). After locking any attempt to modify the state of the injector will cause an exception.
 It's safe to call the following functions on a locked injector:
 - `Get()`
+- `Instantiate()`
 - `CreateChild()`
 - `Dispose()`
   
@@ -113,6 +116,10 @@ Keep in mind the followings:
 - Requesting an unregistered or an open generic service will cause an exception.
 - Requesting services as a constructor parameter is more convenient than using the `Get()` method.
 - The caller should free the requested service if it is an `IDisposable` and has the `Transient` lifetime. To determine it's lifetime call the `QueryServiceInfo()` method.
+Alternatively you can use the `Instantiate()` function (since version *0.0.3*). This method takes a `Type` (non-abstract class) you want to instantate, resolves its dependencies (via constructor parameters) and creates a new instance from it. There are two major differences compared to `Get()`:
+- The instantiated `Type` does not have to be a registered service.
+- You can pass arbitrary arguments to the constructor via the `explicitArgs` parameter (which means the instantiated type can have non-registered/non-interface dependency).
+
 ## Auto config the injector
 Starting from version *0.0.2* you can use the `ServiceAttribute` on service classes to annotate them for auto config. Auto config is done by a simple call to the `injector.Setup(sourceAssembly)` which instructs the system to seek and register all the annotated services from the `sourceAssembly`.
 ## API Docs
@@ -129,3 +136,5 @@ This project currently targets *.NET Core 2.X* only.
   - *fixed* multiple type resolver invocation issue
   - *fixed* `IInjectorExtensions.Instance()` should not dispose the instance by default
   - some code optimization
+- 0.0.3
+  - *added* `IInjector.Instantiate()` method
