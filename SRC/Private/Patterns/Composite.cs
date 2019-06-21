@@ -4,7 +4,6 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System.Collections;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -12,19 +11,19 @@ using System.Linq;
 namespace Solti.Utils.DI.Internals
 {
     /// <summary>
-    /// A thread safe <see cref="IComposite{T}"/> implementation.
+    /// An <see cref="IComposite{T}"/> implementation.
     /// </summary>
     /// <typeparam name="TInterface">The interface on which we want to apply the composite pattern.</typeparam>
     /// <remarks>This is an internal class so it can be changed from version to version. Don't use it!</remarks>
     public abstract class Composite<TInterface>: Disposable, IComposite<TInterface> where TInterface: class, IComposite<TInterface>
     {
         #region Private
-        private /*readonly*/ DictionaryWrap FChildren = new DictionaryWrap();
-        private /*readonly*/ Composite<TInterface> FParent;
+        private readonly DictionaryWrap FChildren = new DictionaryWrap();
+        private readonly Composite<TInterface> FParent;
 
         private sealed class DictionaryWrap : IReadOnlyCollection<TInterface>
         {
-            private readonly IDictionary<TInterface, byte> FEntries = new ConcurrentDictionary<TInterface, byte>();
+            private readonly IDictionary<TInterface, byte> FEntries = new Dictionary<TInterface, byte>();
 
             private ICollection<TInterface> Entries => FEntries.Keys;
 
@@ -63,7 +62,6 @@ namespace Solti.Utils.DI.Internals
                 {
                     bool removed = FParent.FChildren.Remove(Self);
                     Debug.Assert(removed, "Parent does not contain this instance");
-                    FParent = null;
                 }
 
                 //
@@ -76,7 +74,6 @@ namespace Solti.Utils.DI.Internals
                 }
 
                 Debug.Assert(!FChildren.Any());
-                FChildren = null;
             }
 
             base.Dispose(disposeManaged);
