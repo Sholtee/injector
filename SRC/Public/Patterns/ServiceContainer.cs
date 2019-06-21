@@ -104,7 +104,7 @@ namespace Solti.Utils.DI
                     () => Resolver.GetFor(ValidateImplementation(entry.Interface, entry.Implementation /*triggereli a resolvert*/)).ConvertToFactory(),
                     
                     //
-                    // A container orklodes maitt a Lazy<> megosztasra kerulhet tobb szal kozt is
+                    // A container oroklodes maitt a Lazy<> megosztasra kerulhet tobb szal kozt is
                     // -> biztositsuk h csak egyszer legyen meghivva.
                     //
                     
@@ -130,46 +130,15 @@ namespace Solti.Utils.DI
 
             //
             // Ha a bejegyzesnek van kezzel felvett [Factory()] factory fv-e (akar generikusnak is)
-            // akkor nincs dolgunk.
+            // akkor nincs dolgunk, kulomben felvesszuk az uj tipizalt bejegyzest.
             //
 
-            if (genericEntry.Factory != null) return genericEntry;
-
-            //
-            // Kulomben vegyuk fel az uj tipizalt bejegyzest. 
-            //
-            // Megjegyzendo h 
-            //   1) A MakeGenericType() es Service() hivas idoigenyes hivasok, ez van sprite.
-            //   2) Jo otletnek tunhet lock()-t hasznalni h ha parhuzamosan ide jut ket szal is akkor
-            //      ne kelljen kivetelt kezelni (ahogy korabban volt is):
-            //
-            //            lock(iface | genericEntry) return GetEntry(iface, out entry)
-            //               ? entry
-            //               : Service(...)
-            //
-            //      Az "iface" kivulrol is elerheto ezert azon nem lock-olnuk, a "genericEntry" hasznalata
-            //      pedig lassithatja a lekerdezest (gondoljunk egy rendszerre ahol a generikus szolgaltatas 
-            //      vmi Repository<T> es elofordul h parhuzasmosan a tobb modul is kulombozo repokat igenyel,
-            //      ekkor a lock kvazi sorositana ezeket a kereseket [a lenti megoldas nem]).
-            //
-
-            try
-            {
-                return Service
-                (
-                    iface, 
-                    genericEntry.Implementation.MakeGenericType(iface.GetGenericArguments()), 
-                    genericEntry.Lifetime
-                );
-            }
-            catch (ServiceAlreadyRegisteredException)
-            {
-                //
-                // Opi, vki mar kozben regisztralta.
-                //
-
-                return GetEntry(iface);
-            }         
+            return genericEntry.Factory != null ? genericEntry : Service
+            (
+                iface,
+                genericEntry.Implementation.MakeGenericType(iface.GetGenericArguments()),
+                genericEntry.Lifetime
+            );        
         }
 
         internal ContainerEntry Proxy(Type iface, Func<IInjector, Type, object, object> decorator)
