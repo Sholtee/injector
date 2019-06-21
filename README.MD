@@ -116,6 +116,7 @@ Keep in mind the followings:
 - Requesting an unregistered or an open generic service will cause an exception.
 - Requesting services as a constructor parameter is more convenient than using the `Get()` method.
 - The caller should free the requested service if it is an `IDisposable` and has the `Transient` lifetime. To determine it's lifetime call the `QueryServiceInfo()` method.
+
 Alternatively you can use the `Instantiate()` function (since version *0.0.3*). This method takes a `Type` (non-abstract class) you want to instantate, resolves its dependencies (via constructor parameters) and creates a new instance from it. There are two major differences compared to `Get()`:
 - The instantiated `Type` does not have to be a registered service.
 - You can pass arbitrary arguments to the constructor via the `explicitArgs` parameter (which means the instantiated type can have non-registered/non-interface dependency).
