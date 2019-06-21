@@ -20,11 +20,11 @@ namespace Solti.Utils.DI
     public class ServiceContainer : Composite<IServiceContainer>, IServiceContainer
     {
         #region Private
-        private readonly Dictionary<Type, InjectorEntry> FEntries;
+        private readonly Dictionary<Type, ContainerEntry> FEntries;
 
-        private bool GetEntry(Type iface, out InjectorEntry entry) => FEntries.TryGetValue(iface, out entry);
+        private bool GetEntry(Type iface, out ContainerEntry entry) => FEntries.TryGetValue(iface, out entry);
 
-        private InjectorEntry Register(InjectorEntry entry)
+        private ContainerEntry Register(ContainerEntry entry)
         {
             try
             {
@@ -59,7 +59,7 @@ namespace Solti.Utils.DI
         #endregion
 
         #region Internal
-        internal InjectorEntry Service(Type iface, Type implementation, Lifetime? lifetime)
+        internal ContainerEntry Service(Type iface, Type implementation, Lifetime? lifetime)
         {
             //
             // Ne a Resolver.GetFor()-ban validaljunk, h generikusoknal is lefusson az ellenorzes.
@@ -67,7 +67,7 @@ namespace Solti.Utils.DI
 
             ConstructorInfo constructor = ValidateImplementation(iface, implementation);
 
-            var entry = new InjectorEntry(iface, implementation, lifetime);
+            var entry = new ContainerEntry(iface, implementation, lifetime);
 
             //
             // Ha generikus interface-t regisztralunk akkor nem kell (nem is lehet) 
@@ -80,17 +80,17 @@ namespace Solti.Utils.DI
             return Register(entry);
         }
 
-        internal InjectorEntry Factory(Type iface, Func<IInjector, Type, object> factory, Lifetime? lifetime)
+        internal ContainerEntry Factory(Type iface, Func<IInjector, Type, object> factory, Lifetime? lifetime)
         {
-            return Register(new InjectorEntry(iface, lifetime: lifetime)
+            return Register(new ContainerEntry(iface, lifetime: lifetime)
             {
                 Factory = factory
             });
         }
 
-        internal InjectorEntry Lazy(Type iface, ITypeResolver implementation, Lifetime? lifetime)
+        internal ContainerEntry Lazy(Type iface, ITypeResolver implementation, Lifetime? lifetime)
         {         
-            var entry = new InjectorEntry(iface, implementation, lifetime);
+            var entry = new ContainerEntry(iface, implementation, lifetime);
 
             //
             // Ha generikus interface-t regisztralunk akkor nem kell (nem is lehet) 
@@ -117,7 +117,7 @@ namespace Solti.Utils.DI
             return Register(entry);
         }
 
-        internal InjectorEntry GetEntry(Type iface)
+        internal ContainerEntry GetEntry(Type iface)
         {
             if (GetEntry(iface, out var entry)) return entry;
      
@@ -172,9 +172,9 @@ namespace Solti.Utils.DI
             }         
         }
 
-        internal InjectorEntry Proxy(Type iface, Func<IInjector, Type, object, object> decorator)
+        internal ContainerEntry Proxy(Type iface, Func<IInjector, Type, object, object> decorator)
         {
-            InjectorEntry entry = GetEntry(iface);
+            ContainerEntry entry = GetEntry(iface);
 
             //
             // Service(), Factory(), Lazy()
@@ -195,7 +195,7 @@ namespace Solti.Utils.DI
             throw new InvalidOperationException(Resources.CANT_PROXY);
         }
 
-        internal InjectorEntry Instance(Type iface, object instance, bool releaseOnDispose)
+        internal ContainerEntry Instance(Type iface, object instance, bool releaseOnDispose)
         { 
             if (!iface.IsInstanceOfType(instance))
                 throw new InvalidOperationException(string.Format(Resources.NOT_ASSIGNABLE, iface, instance.GetType()));
@@ -205,7 +205,7 @@ namespace Solti.Utils.DI
             // egy mar legyartott Singleton eseten.
             //
 
-            return Register(new InjectorEntry(iface, lifetime: releaseOnDispose ? Lifetime.Singleton : (Lifetime?) null)
+            return Register(new ContainerEntry(iface, lifetime: releaseOnDispose ? Lifetime.Singleton : (Lifetime?) null)
             {
                 Value = instance
             });
@@ -304,7 +304,7 @@ namespace Solti.Utils.DI
             // A masolas mikentjet lasd az InjectorEntry implementaciojaban.
             //
 
-            FEntries = new Dictionary<Type, InjectorEntry>
+            FEntries = new Dictionary<Type, ContainerEntry>
             (
                 parent?
                     .FEntries
@@ -312,9 +312,9 @@ namespace Solti.Utils.DI
                     .ToDictionary
                     (
                         entry => entry.Interface,
-                        entry => (InjectorEntry) entry.Clone()
+                        entry => (ContainerEntry) entry.Clone()
                     )
-                ?? new Dictionary<Type, InjectorEntry>(0)
+                ?? new Dictionary<Type, ContainerEntry>(0)
             );
 
             Self = InterfaceProxy<IServiceContainer>.Chain(this, current => new ParameterValidatorProxy<IServiceContainer>(current));

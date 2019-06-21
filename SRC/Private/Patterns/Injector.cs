@@ -48,7 +48,7 @@ namespace Solti.Utils.DI.Internals
                 // Bejegyzes lekerdezes.
                 //
 
-                InjectorEntry entry = GetEntry(iface);
+                ContainerEntry entry = GetEntry(iface);
 
                 Debug.Assert(entry.Value != null || entry.Factory != null);
 
