@@ -18,7 +18,7 @@ namespace Solti.Utils.DI
         /// Registers a new service with the given type.
         /// </summary>
         /// <typeparam name="TInterface">The service interface to be registered. It can be registered only once.</typeparam>
-        /// <typeparam name="TImplementation">The service implementation to be registered. It must implement the <typeparam name="TInterface"/> interface and must have only null or one constructor (that may request another dependecies). In case of multiple constructors you can use the <see cref="IServiceContainerExtensions.Factory{TInterface}(IInjector, Func{IInjector, TInterface}, Lifetime)"/> method or the <see cref="ServiceActivatorAttribute"/>.</typeparam>
+        /// <typeparam name="TImplementation">The service implementation to be registered. It must implement the <typeparam name="TInterface"/> interface and must have only null or one constructor (that may request another dependecies). In case of multiple constructors you can use the <see cref="IServiceContainerExtensions.Factory{TInterface}(IServiceContainer, Func{IInjector, TInterface}, Lifetime)"/> method or the <see cref="ServiceActivatorAttribute"/>.</typeparam>
         /// <param name="self">The container itself.</param>
         /// <param name="lifetime">The lifetime of the service. For more information see the <see cref="Lifetime"/> enum.</param>
         /// <returns>The container itself.</returns>

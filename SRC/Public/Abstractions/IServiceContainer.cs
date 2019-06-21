@@ -20,7 +20,7 @@ namespace Solti.Utils.DI
         /// Registers a new service with the given type.
         /// </summary>
         /// <param name="iface">The service interface to be registered. It can not be null and can be registered only once.</param>
-        /// <param name="implementation">The service implementation to be registered. It can not be null and must implement the <paramref name="iface"/> interface. Additionally it must have only null or one constructor (that may request another dependecies). In case of multiple constructors you can use the <see cref="IInjector.Factory(Type, Func{IInjector, Type, object}, Lifetime)"/> method or the <see cref="ServiceActivatorAttribute"/>.</param>
+        /// <param name="implementation">The service implementation to be registered. It can not be null and must implement the <paramref name="iface"/> interface. Additionally it must have only null or one constructor (that may request another dependecies). In case of multiple constructors you can use the <see cref="IServiceContainer.Factory(Type, Func{IInjector, Type, object}, Lifetime)"/> method or the <see cref="ServiceActivatorAttribute"/>.</param>
         /// <param name="lifetime">The lifetime of the service. For more information see the <see cref="Lifetime"/> enum.</param>
         /// <returns>The container itself.</returns>
         /// <remarks>You can register generic services (where the interface and the implementation are open generic types). The system will specialize the implementation if you request a concrete service.</remarks> 

@@ -133,7 +133,7 @@
   </table>
   <a id="Solti_Utils_DI_IServiceInfo_IsFactory_" data-uid="Solti.Utils.DI.IServiceInfo.IsFactory*"></a>
   <h4 id="Solti_Utils_DI_IServiceInfo_IsFactory" data-uid="Solti.Utils.DI.IServiceInfo.IsFactory">IsFactory</h4>
-  <div class="markdown level1 summary"><p>The service was registered via <see cref="!:IInjector.Factory"></see> call.</p>
+  <div class="markdown level1 summary"><p>The service was registered via <a class="xref" href="Solti.Utils.DI.IServiceContainer.html#Solti_Utils_DI_IServiceContainer_Factory_System_Type_System_Func_Solti_Utils_DI_IInjector_System_Type_System_Object__Solti_Utils_DI_Lifetime_">Factory(Type, Func&lt;IInjector, Type, Object&gt;, Lifetime)</a> call.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -157,7 +157,7 @@
   </table>
   <a id="Solti_Utils_DI_IServiceInfo_IsInstance_" data-uid="Solti.Utils.DI.IServiceInfo.IsInstance*"></a>
   <h4 id="Solti_Utils_DI_IServiceInfo_IsInstance" data-uid="Solti.Utils.DI.IServiceInfo.IsInstance">IsInstance</h4>
-  <div class="markdown level1 summary"><p>The service was registered via <see cref="!:IInjector.Instance"></see> call.</p>
+  <div class="markdown level1 summary"><p>The service was registered via <a class="xref" href="Solti.Utils.DI.IServiceContainer.html#Solti_Utils_DI_IServiceContainer_Instance_System_Type_System_Object_System_Boolean_">Instance(Type, Object, Boolean)</a> call.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -181,7 +181,7 @@
   </table>
   <a id="Solti_Utils_DI_IServiceInfo_IsLazy_" data-uid="Solti.Utils.DI.IServiceInfo.IsLazy*"></a>
   <h4 id="Solti_Utils_DI_IServiceInfo_IsLazy" data-uid="Solti.Utils.DI.IServiceInfo.IsLazy">IsLazy</h4>
-  <div class="markdown level1 summary"><p>The service was registered via <see cref="!:IInjector.Lazy"></see> call.</p>
+  <div class="markdown level1 summary"><p>The service was registered via <a class="xref" href="Solti.Utils.DI.IServiceContainer.html#Solti_Utils_DI_IServiceContainer_Lazy_System_Type_Solti_Utils_DI_ITypeResolver_Solti_Utils_DI_Lifetime_">Lazy(Type, ITypeResolver, Lifetime)</a> call.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -205,7 +205,7 @@
   </table>
   <a id="Solti_Utils_DI_IServiceInfo_IsService_" data-uid="Solti.Utils.DI.IServiceInfo.IsService*"></a>
   <h4 id="Solti_Utils_DI_IServiceInfo_IsService" data-uid="Solti.Utils.DI.IServiceInfo.IsService">IsService</h4>
-  <div class="markdown level1 summary"><p>The service was registered via <see cref="!:IInjector.Service"></see> call.</p>
+  <div class="markdown level1 summary"><p>The service was registered via <a class="xref" href="Solti.Utils.DI.IServiceContainer.html#Solti_Utils_DI_IServiceContainer_Service_System_Type_System_Type_Solti_Utils_DI_Lifetime_">Service(Type, Type, Lifetime)</a> call.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -254,6 +254,30 @@
   <h5 id="Solti_Utils_DI_IServiceInfo_Lifetime_remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>Instances have no lifetime (unless the releaseOnDispose parameter was set to true).</p>
 </div>
+  <a id="Solti_Utils_DI_IServiceInfo_Value_" data-uid="Solti.Utils.DI.IServiceInfo.Value*"></a>
+  <h4 id="Solti_Utils_DI_IServiceInfo_Value" data-uid="Solti.Utils.DI.IServiceInfo.Value">Value</h4>
+  <div class="markdown level1 summary"><p>A value associated with this entry. It is not-null only if the <a class="xref" href="Solti.Utils.DI.IServiceInfo.html#Solti_Utils_DI_IServiceInfo_IsInstance">IsInstance</a> is true or the <a class="xref" href="Solti.Utils.DI.IServiceInfo.html#Solti_Utils_DI_IServiceInfo_Lifetime">Lifetime</a> is <a class="xref" href="Solti.Utils.DI.Lifetime.html#Solti_Utils_DI_Lifetime_Singleton">Singleton</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">object Value { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Object</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
 </article>
           </div>
           
