@@ -3,7 +3,6 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -17,27 +16,8 @@ namespace Solti.Utils.DI.Internals
     /// <remarks>This is an internal class so it can be changed from version to version. Don't use it!</remarks>
     public abstract class Composite<TInterface>: Disposable, IComposite<TInterface> where TInterface: class, IComposite<TInterface>
     {
-        #region Private
-        private readonly DictionaryWrap FChildren = new DictionaryWrap();
+        private readonly HashSet<TInterface> FChildren = new HashSet<TInterface>();
         private readonly Composite<TInterface> FParent;
-
-        private sealed class DictionaryWrap : IReadOnlyCollection<TInterface>
-        {
-            private readonly IDictionary<TInterface, byte> FEntries = new Dictionary<TInterface, byte>();
-
-            private ICollection<TInterface> Entries => FEntries.Keys;
-
-            public void Add(TInterface item) => FEntries.Add(item, 0);
-
-            public bool Remove(TInterface item) => FEntries.Remove(item);
-
-            IEnumerator<TInterface> IEnumerable<TInterface>.GetEnumerator() => Entries.GetEnumerator();
-
-            IEnumerator IEnumerable.GetEnumerator() => Entries.GetEnumerator();
-
-            int IReadOnlyCollection<TInterface>.Count => FEntries.Count;
-        }
-        #endregion
 
         #region Protected
         /// <summary>
