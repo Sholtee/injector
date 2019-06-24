@@ -267,10 +267,8 @@ namespace Solti.Utils.DI
         protected ServiceContainer(ServiceContainer parent) : base(parent)
         {
             //
-            // Ha van szulo akkor a sajat magat tartalmazo bejegyzesen kivul 
-            // az osszes tobbi bejegyzest masoljuk.
-            //
-            // A masolas mikentjet lasd az InjectorEntry implementaciojaban.
+            // Ha van szulo akkor masoljuk a bejegyzeseit. A masolas mikentjet lasd az 
+            // ContainerEntry implementaciojaban.
             //
 
             FEntries = new Dictionary<Type, ContainerEntry>
@@ -293,12 +291,6 @@ namespace Solti.Utils.DI
 
         protected override void Dispose(bool disposeManaged)
         {
-            //
-            // Elso helyen szerepeljen h a Self meg mukodjon az osben is.
-            //
-
-            base.Dispose(disposeManaged);
-
             if (disposeManaged)
             {
                 foreach (IDisposable disposable in FEntries.Values)
@@ -308,6 +300,8 @@ namespace Solti.Utils.DI
 
                 FEntries.Clear();
             }
+
+            base.Dispose(disposeManaged);
         }
 
         protected override IServiceContainer Self { get; }
