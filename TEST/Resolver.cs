@@ -40,7 +40,7 @@ namespace Solti.Utils.DI.Internals.Tests
                 .Returns<Type>(type =>
                 {
                     if (type == typeof(IDisposable)) return new Disposable();
-                    if (type == typeof(ICloneable))  return new InjectorEntry(null);
+                    if (type == typeof(ICloneable))  return new ContainerEntry(null);
 
                     Assert.Fail("Unknown type");
                     return null;
@@ -59,7 +59,7 @@ namespace Solti.Utils.DI.Internals.Tests
 
             Assert.That(instance, Is.Not.Null);
             Assert.That(instance.Dep1, Is.InstanceOf<Disposable>());
-            Assert.That(instance.Dep2, Is.InstanceOf<InjectorEntry>());
+            Assert.That(instance.Dep2, Is.InstanceOf<ContainerEntry>());
             
             mockInjector.Verify(i => i.Get(It.Is<Type>(t => t == typeof(IDisposable))), Times.Once);
             mockInjector.Verify(i => i.Get(It.Is<Type>(t => t == typeof(ICloneable))),  Times.Once);

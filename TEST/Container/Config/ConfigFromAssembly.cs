@@ -8,7 +8,7 @@ using System;
 using Moq;
 using NUnit.Framework;
 
-namespace Solti.Utils.DI.Injector.Setup.Tests
+namespace Solti.Utils.DI.Container.Setup.Tests
 {
     using Annotations;
 

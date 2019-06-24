@@ -5,12 +5,12 @@
 ********************************************************************************/
 using NUnit.Framework;
 
-namespace Solti.Utils.DI.Injector.Tests
+namespace Solti.Utils.DI.Container.Tests
 {
     using DI.Tests;
 
     [TestFixture]
-    public sealed partial class InjectorTests: TestBase
+    public sealed partial class ContainerTests: TestBase
     {
     }
 }

@@ -9,23 +9,15 @@ using System.Linq;
 using Moq;
 using NUnit.Framework;
 
-namespace Solti.Utils.DI.Injector.Tests
+namespace Solti.Utils.DI.Container.Tests
 {
     using Internals;
 
     [TestFixture]
-    public sealed partial class InjectorTests
+    public sealed partial class ContainerTests
     {
-        public interface IInterface_1_Disaposable: IInterface_1, IDisposable
-        {            
-        }
-
-        public interface IInterface_2_Disaposable : IInterface_2, IDisposable
-        {
-        }
-
         [Test]
-        public void Injector_DisposeShouldFreeSingletonEntries()
+        public void Container_DisposeShouldFreeSingletonEntries()
         {
             var mockSingleton = new Mock<IInterface_1_Disaposable>(MockBehavior.Strict);
             mockSingleton.Setup(s => s.Dispose());
@@ -33,7 +25,7 @@ namespace Solti.Utils.DI.Injector.Tests
             var mockTransient = new Mock<IInterface_2_Disaposable>(MockBehavior.Strict);
             mockTransient.Setup(t => t.Dispose());
 
-            using (IInjector child = Injector.CreateChild())
+            using (IServiceContainer child = Container.CreateChild())
             {
                 //
                 // Register
@@ -47,8 +39,10 @@ namespace Solti.Utils.DI.Injector.Tests
                 // Use
                 //
 
-                child.Get<IInterface_1_Disaposable>();
-                child.Get<IInterface_2_Disaposable>();
+                IInjector childInjector = child.CreateInjector();
+
+                childInjector.Get<IInterface_1_Disaposable>();
+                childInjector.Get<IInterface_2_Disaposable>();
             }
            
             mockSingleton.Verify(s => s.Dispose(), Times.Once);
@@ -57,20 +51,17 @@ namespace Solti.Utils.DI.Injector.Tests
 
         [TestCase(true)]
         [TestCase(false)]
-        public void Injector_DisposeShouldFreeInstancesIfReleaseOnDisposeSetToTrue(bool releaseOnDispose)
+        public void Container_DisposeShouldFreeInstancesIfReleaseOnDisposeWasSetToTrue(bool releaseOnDispose)
         {
             var mockInstance = new Mock<IInterface_1_Disaposable>(MockBehavior.Strict);
             mockInstance.Setup(i => i.Dispose());
 
-            using (IInjector child = Injector.CreateChild())
+            using (IServiceContainer child = Container.CreateChild())
             {
-                child
-                    .Instance(mockInstance.Object, releaseOnDispose)
-                    .Get<IInterface_1_Disaposable>();
+                child.Instance(mockInstance.Object, releaseOnDispose);
 
-                using (IInjector grandChild = child.CreateChild())
+                using (child.CreateChild())
                 {
-                    grandChild.Get<IInterface_1_Disaposable>();       
                 }
 
                 mockInstance.Verify(i => i.Dispose(), Times.Never);
@@ -80,29 +71,29 @@ namespace Solti.Utils.DI.Injector.Tests
         }
 
         [Test]
-        public void Injector_ShouldKeepUpToDateTheChildrenList()
+        public void Container_ShouldKeepUpToDateTheChildrenList()
         {
-            Assert.That(Injector.Children, Is.Empty);
+            Assert.That(Container.Children, Is.Empty);
 
-            using (IInjector child = Injector.CreateChild())
+            using (IServiceContainer child = Container.CreateChild())
             {
-                Assert.That(Injector.Children.Count, Is.EqualTo(1));
-                Assert.AreSame(Injector.Children.First(), child);
+                Assert.That(Container.Children.Count, Is.EqualTo(1));
+                Assert.AreSame(Container.Children.First(), child);
             }
 
-            Assert.That(Injector.Children, Is.Empty);
+            Assert.That(Container.Children, Is.Empty);
         }
 
         [Test]
-        public void Injector_DisposeShouldDisposeChildInjectorAndItsEntries()
+        public void Container_DisposeShouldDisposeChildContainerAndItsEntries()
         {
-            IInjector grandChild;
+            IServiceContainer grandChild;
             IDisposable singleton;
             
-            using (IInjector child = Injector.CreateChild())
+            using (IServiceContainer child = Container.CreateChild())
             {
                 grandChild = child.CreateChild().Service<IDisposable, Disposable>(Lifetime.Singleton);
-                singleton  = grandChild.Get<IDisposable>();
+                singleton  = grandChild.CreateInjector().Get<IDisposable>();
             }
 
             var err = Assert.Throws<InvalidOperationException>(grandChild.Dispose);
@@ -110,27 +101,6 @@ namespace Solti.Utils.DI.Injector.Tests
 
             err = Assert.Throws<InvalidOperationException>(singleton.Dispose);
             Assert.AreSame(err, Disposable.AlreadyDisposedException);
-        }
-
-        [Test]
-        public void Injector_ShouldNotDisposeInheritedInstances()
-        {
-            var mockInstance = new Mock<IInterface_1_Disaposable>(MockBehavior.Strict);
-            mockInstance.Setup(i => i.Dispose());
-
-            using (IInjector child = Injector.CreateChild())
-            {
-                child.Instance(mockInstance.Object, releaseOnDispose: true);
-
-                using (IInjector grandChild = child.CreateChild())
-                {
-                    Assert.AreSame(mockInstance.Object, grandChild.Get<IInterface_1_Disaposable>());                   
-                }
-
-                mockInstance.Verify(i => i.Dispose(), Times.Never);
-            }
-
-            mockInstance.Verify(i => i.Dispose(), Times.Once);
         }
     }
 }
