@@ -260,7 +260,7 @@ namespace Solti.Utils.DI
         #endregion
 
         #region Protected
-        protected ServiceContainer() : base(null)
+        protected ServiceContainer() : this(null)
         {
         }
 
