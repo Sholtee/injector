@@ -67,6 +67,10 @@ namespace Solti.Utils.DI.Internals
             CheckDisposed();
 
             if (Value is IInjector)
+                //
+                // Ide csak akkor jutunk ha Injector peldanyt akarnank szulo kontenerkent hasznalni.
+                //
+
                 throw new InvalidOperationException(Resources.CANT_CLONE);
 
             //
@@ -74,7 +78,7 @@ namespace Solti.Utils.DI.Internals
             //    triggerelve ezert magat a Lazy<> peldanyt adjuk at.
             //
             // 2) Ha a peldany regisztralasakor a "releaseOnDispose" igazra volt allitva akkor
-            //    a peldany is lehet Singleton. Viszont mi nem akarjuk h a gyermek injektor
+            //    a peldany is lehet Singleton. Viszont mi nem akarjuk h a gyermek kontener
             //    felszabadatisasakor is dispose-olva legyen a peldany ezert az elettartamot
             //    nem masoljuk.
             //
@@ -86,6 +90,8 @@ namespace Solti.Utils.DI.Internals
                 //
                 // 3) Az ertekek keruljenek ujra legyartasra kiveve ha Instance() hivassal
                 //    kerultek regisztralasra.
+                //    Mondjuk ez jelen esetbe nem nagyon jatszik tekintve h Injector peldanyt
+                //    nem hasznalunk szulo kontenernek.
                 //
 
                 Value = IsInstance ? Value : null

@@ -13,7 +13,7 @@ namespace Solti.Utils.DI.Internals
     /// An <see cref="IComposite{T}"/> implementation.
     /// </summary>
     /// <typeparam name="TInterface">The interface on which we want to apply the composite pattern.</typeparam>
-    /// <remarks>This is an internal class so it can be changed from version to version. Don't use it!</remarks>
+    /// <remarks>This is an internal class so it may change from version to version. Don't use it!</remarks>
     public abstract class Composite<TInterface>: Disposable, IComposite<TInterface> where TInterface: class, IComposite<TInterface>
     {
         private readonly HashSet<TInterface> FChildren = new HashSet<TInterface>();
