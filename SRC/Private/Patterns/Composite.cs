@@ -45,14 +45,11 @@ namespace Solti.Utils.DI.Internals
                 }
 
                 //
-                // Osszes gyereket eltavolitjuk majd toroljuk a listat.
+                // Osszes gyereket Dispose()-oljuk. A ToList()-es varazslat azert kell h iteracio kozben
+                // is kivehessunk elemet a listabol.
                 //
 
-                foreach (TInterface child in FChildren)
-                {
-                    child.Dispose();     
-                }
-
+                FChildren.ToList().ForEach(child => child.Dispose());
                 Debug.Assert(!FChildren.Any());
             }
 
