@@ -42,7 +42,10 @@ namespace Solti.Utils.DI.Injector.Tests
         [Test]
         public void Injector_Get_ShouldThrowOnNonRegisteredDependency()
         {
-            Assert.Throws<NotSupportedException>(() => Container.CreateInjector().Get<IInterface_1>(), string.Format(Resources.DEPENDENCY_NOT_FOUND, typeof(IInterface_1)));         
+            using (IInjector injector = Container.CreateInjector())
+            {
+                Assert.Throws<NotSupportedException>(() => injector.Get<IInterface_1>(), string.Format(Resources.DEPENDENCY_NOT_FOUND, typeof(IInterface_1)));
+            }                 
         }
 
         [Test]
@@ -85,8 +88,8 @@ namespace Solti.Utils.DI.Injector.Tests
                 assert(instance, injector.Get<IInterface_6<string>>());
                 assert(instance.Interface3, injector.Get<IInterface_6<string>>().Interface3);
 
-                Assert.DoesNotThrow(() => injector.QueryServiceInfo<Implementation_3<string>>());
-                Assert.DoesNotThrow(() => injector.QueryServiceInfo<Implementation_6<string>>());
+                Assert.DoesNotThrow(() => injector.QueryServiceInfo<IInterface_3<string>>());
+                Assert.DoesNotThrow(() => injector.QueryServiceInfo<IInterface_6<string>>());
             }
         }
 
@@ -95,7 +98,10 @@ namespace Solti.Utils.DI.Injector.Tests
         {
             Container.Service(typeof(IInterface_3<>), typeof(Implementation_3<>));
 
-            Assert.Throws<ArgumentException>(() => Container.CreateInjector().Get(typeof(IInterface_3<>)), Resources.CANT_INSTANTIATE_GENERICS);
+            using (IInjector injector = Container.CreateInjector())
+            {
+                Assert.Throws<ArgumentException>(() => injector.Get(typeof(IInterface_3<>)), Resources.CANT_INSTANTIATE_GENERICS);
+            }          
         }
 
         [Test]
@@ -134,7 +140,10 @@ namespace Solti.Utils.DI.Injector.Tests
                 .Service<IInterface_4, Implementation_4_cdep>()
                 .Service<IInterface_5, Implementation_5_cdep>();
 
-            Assert.Throws<InvalidOperationException>(() => Container.CreateInjector().Get<IInterface_1>(), string.Join(" -> ", typeof(IInterface_1), typeof(IInterface_4), typeof(IInterface_5), typeof(IInterface_4)));
+            using (IInjector injector = Container.CreateInjector())
+            {
+                Assert.Throws<InvalidOperationException>(() => injector.Get<IInterface_1>(), string.Join(" -> ", typeof(IInterface_1), typeof(IInterface_4), typeof(IInterface_5), typeof(IInterface_4)));
+            }
         }
 
         [Test]
@@ -144,7 +153,10 @@ namespace Solti.Utils.DI.Injector.Tests
                 .Service<IInterface_1, Implementation_1>()
                 .Proxy<IInterface_1>((injector, inst) => injector.Get<IInterface_1>());
 
-            Assert.Throws<InvalidOperationException>(() => Container.CreateInjector().Get<IInterface_1>(), string.Join(" -> ", typeof(IInterface_1), typeof(IInterface_1)));
+            using (IInjector injector = Container.CreateInjector())
+            {
+                Assert.Throws<InvalidOperationException>(() => injector.Get<IInterface_1>(), string.Join(" -> ", typeof(IInterface_1), typeof(IInterface_1)));
+            }
         }
 
         [Test]

@@ -13,8 +13,10 @@ namespace Solti.Utils.DI.Injector.Tests
         [Test]
         public void Injector_ChildShouldResolveItself()
         {
-            IInjector injector = Container.CreateChild().CreateInjector();
-            Assert.AreSame(injector, injector.Get<IInjector>());
+            using (IInjector injector = Container.CreateChild().CreateInjector())
+            {
+                Assert.AreSame(injector, injector.Get<IInjector>());
+            }
         }
 
         [Test]

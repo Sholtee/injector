@@ -264,7 +264,7 @@ namespace Solti.Utils.DI
         {
         }
 
-        protected ServiceContainer(ServiceContainer parent) : base(parent)
+        protected ServiceContainer(ServiceContainer parent, bool orphan = false) : base(orphan ? null : parent)
         {
             //
             // Ha van szulo akkor masoljuk a bejegyzeseit. A masolas mikentjet lasd az 

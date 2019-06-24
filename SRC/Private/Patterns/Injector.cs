@@ -19,7 +19,7 @@ namespace Solti.Utils.DI.Internals
 
         private Injector(){}
 
-        private Injector(ServiceContainer parentContainer) : base(parentContainer)
+        private Injector(ServiceContainer parentContainer) : base(parentContainer, orphan: true)
         {
             //
             // Beallitjuk a proxyt, majd felvesszuk sajat magunkat.

@@ -49,12 +49,17 @@ namespace Solti.Utils.DI.Container.Tests
             //
 
             mockResolver.Verify(r => r.Resolve(It.Is<Type>(t => t == typeof(IInterface_1))), Times.Never);
-            var instance = Container.CreateInjector().Get<IInterface_1>();
-            mockResolver.Verify(r => r.Resolve(It.Is<Type>(t => t == typeof(IInterface_1))), Times.Once);
 
-            Assert.That(instance, Is.InstanceOf<Implementation_1>());
-            (lifetime == Lifetime.Singleton ? Assert.AreSame : (Action<object, object>) Assert.AreNotSame)(instance, Container.CreateInjector().Get<IInterface_1>());
-            mockResolver.Verify(r => r.Resolve(It.Is<Type>(t => t == typeof(IInterface_1))), Times.Once);
+            using (IInjector injector = Container.CreateInjector())
+            {
+                var instance = injector.Get<IInterface_1>();
+                mockResolver.Verify(r => r.Resolve(It.Is<Type>(t => t == typeof(IInterface_1))), Times.Once);
+
+                Assert.That(instance, Is.InstanceOf<Implementation_1>());
+
+                injector.Get<IInterface_1>();
+                mockResolver.Verify(r => r.Resolve(It.Is<Type>(t => t == typeof(IInterface_1))), Times.Once);
+            }
         }
 
         [Test]
@@ -67,7 +72,10 @@ namespace Solti.Utils.DI.Container.Tests
 
             Container.Lazy<IInterface_1>(mockResolver.Object);
 
-            Assert.Throws<InvalidOperationException>(() => Container.CreateInjector().Get<IInterface_1>(), string.Format(Resources.NOT_ASSIGNABLE, typeof(IInterface_1), typeof(object)));
+            using (IInjector injector = Container.CreateInjector())
+            {
+                Assert.Throws<InvalidOperationException>(() => injector.Get<IInterface_1>(), string.Format(Resources.NOT_ASSIGNABLE, typeof(IInterface_1), typeof(object)));
+            }         
         }
 
         [Test]
@@ -87,8 +95,11 @@ namespace Solti.Utils.DI.Container.Tests
 
             for (int i = 0; i < 2; i++)
             {
-                Container.CreateInjector().Get<IInterface_3<string>>();
-
+                using (IInjector injector = Container.CreateInjector())
+                {
+                    injector.Get<IInterface_3<string>>();
+                }
+                
                 mockResolver.Verify(r => r.Resolve(It.Is<Type>(t => t == typeof(IInterface_1))),         Times.Never);
                 mockResolver.Verify(r => r.Resolve(It.Is<Type>(t => t == typeof(IInterface_3<string>))), Times.Never);
                 mockResolver.Verify(r => r.Resolve(It.Is<Type>(t => t == typeof(IInterface_3<>))),       Times.Once);

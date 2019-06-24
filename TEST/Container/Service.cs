@@ -46,7 +46,10 @@ namespace Solti.Utils.DI.Container.Tests
                 .Service<IInterface_1, Implementation_1>()
                 .Service<IInterface_3<int>, Implementation_3<int>>();
 
-            Assert.That(Container.CreateInjector().Get<IInterface_3<int>>(), Is.InstanceOf<Implementation_3<int>>());
+            using (IInjector injector = Container.CreateInjector())
+            {
+                Assert.That(injector.Get<IInterface_3<int>>(), Is.InstanceOf<Implementation_3<int>>());
+            }
         }
 
         [Test]

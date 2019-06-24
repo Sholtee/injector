@@ -20,6 +20,7 @@ namespace Solti.Utils.DI.Internals
         private readonly Composite<TInterface> FParent;
 
         #region Protected
+
         /// <summary>
         /// Creates a new instance.
         /// </summary>

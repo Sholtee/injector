@@ -77,10 +77,13 @@ namespace Solti.Utils.DI.Container.Tests
                     return new DecoratedImplementation_3<int>();
                 });
 
-            var instance = Container.CreateInjector().Get<IInterface_3<int>>();
-            
-            Assert.That(instance, Is.InstanceOf<DecoratedImplementation_3<int>>());
-            Assert.That(callCount, Is.EqualTo(1));
+            using (IInjector injector = Container.CreateInjector())
+            {
+                var instance = injector.Get<IInterface_3<int>>();
+
+                Assert.That(instance, Is.InstanceOf<DecoratedImplementation_3<int>>());
+                Assert.That(callCount, Is.EqualTo(1));
+            }
         }
 
         [Test]
@@ -101,7 +104,10 @@ namespace Solti.Utils.DI.Container.Tests
 
             mockResolver.Verify(r => r.Resolve(It.Is<Type>(t => t == typeof(IInterface_1))), Times.Never);
 
-            Assert.That(Container.CreateInjector().Get<IInterface_1>(), Is.InstanceOf<DecoratedImplementation_1>());
+            using (IInjector injector = Container.CreateInjector())
+            {
+                Assert.That(injector.Get<IInterface_1>(), Is.InstanceOf<DecoratedImplementation_1>());
+            }         
         }
 
         [Test]
@@ -119,7 +125,10 @@ namespace Solti.Utils.DI.Container.Tests
                 .Service<IInterface_1, Implementation_1>()
                 .Proxy(typeof(IInterface_1), (injector, type, inst) => new object());
 
-            Assert.Throws<Exception>(() => Container.CreateInjector().Get<IInterface_1>(), string.Format(Resources.INVALID_INSTANCE, typeof(IInterface_1)));
+            using (IInjector injector = Container.CreateInjector())
+            {
+                Assert.Throws<Exception>(() => injector.Get<IInterface_1>(), string.Format(Resources.INVALID_INSTANCE, typeof(IInterface_1)));
+            }           
         }
 
         [Test]

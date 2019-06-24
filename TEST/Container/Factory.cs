@@ -34,10 +34,13 @@ namespace Solti.Utils.DI.Container.Tests
                 return new Implementation_3<string>(null);
             });
 
-            var instance = Container.CreateInjector().Get<IInterface_3<string>>();
+            using (IInjector injector = Container.CreateInjector())
+            {
+                var instance = injector.Get<IInterface_3<string>>();
 
-            Assert.That(instance, Is.InstanceOf<Implementation_3<string>>());
-            Assert.That(callCount, Is.EqualTo(1));
+                Assert.That(instance, Is.InstanceOf<Implementation_3<string>>());
+                Assert.That(callCount, Is.EqualTo(1));
+            }
         }
 
         [Test]
@@ -45,7 +48,10 @@ namespace Solti.Utils.DI.Container.Tests
         {
             Container.Factory(typeof(IInterface_1), (injector, type) => new object());
 
-            Assert.Throws<Exception>(() => Container.CreateInjector().Get<IInterface_1>(), string.Format(Resources.INVALID_INSTANCE, typeof(IInterface_1)));
+            using (IInjector injector = Container.CreateInjector())
+            {
+                Assert.Throws<Exception>(() => injector.Get<IInterface_1>(), string.Format(Resources.INVALID_INSTANCE, typeof(IInterface_1)));
+            }            
         }
 
         [Test]

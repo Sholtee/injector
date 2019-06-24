@@ -73,6 +73,7 @@ namespace Solti.Utils.DI
         /// Creates a new <see cref="IInjector"/> instance from this container.
         /// </summary>
         /// <returns>The newly created injector.</returns>
+        /// <remarks>The returned <see cref="IInjector"/> instance is independent from its parent so you are the responsible for freeing it.</remarks>
         IInjector CreateInjector();
     }
 }

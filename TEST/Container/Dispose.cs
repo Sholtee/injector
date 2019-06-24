@@ -16,39 +16,6 @@ namespace Solti.Utils.DI.Container.Tests
     [TestFixture]
     public sealed partial class ContainerTests
     {
-        [Test]
-        public void Container_DisposeShouldFreeSingletonEntries()
-        {
-            var mockSingleton = new Mock<IInterface_1_Disaposable>(MockBehavior.Strict);
-            mockSingleton.Setup(s => s.Dispose());
-
-            var mockTransient = new Mock<IInterface_2_Disaposable>(MockBehavior.Strict);
-            mockTransient.Setup(t => t.Dispose());
-
-            using (IServiceContainer child = Container.CreateChild())
-            {
-                //
-                // Register
-                //
-
-                child
-                    .Factory(inj => mockSingleton.Object, Lifetime.Singleton)
-                    .Factory(inj => mockTransient.Object, Lifetime.Transient);
-
-                //
-                // Use
-                //
-
-                IInjector childInjector = child.CreateInjector();
-
-                childInjector.Get<IInterface_1_Disaposable>();
-                childInjector.Get<IInterface_2_Disaposable>();
-            }
-           
-            mockSingleton.Verify(s => s.Dispose(), Times.Once);
-            mockTransient.Verify(t => t.Dispose(), Times.Never);
-        }
-
         [TestCase(true)]
         [TestCase(false)]
         public void Container_DisposeShouldFreeInstancesIfReleaseOnDisposeWasSetToTrue(bool releaseOnDispose)
@@ -88,18 +55,17 @@ namespace Solti.Utils.DI.Container.Tests
         public void Container_DisposeShouldDisposeChildContainerAndItsEntries()
         {
             IServiceContainer grandChild;
-            IDisposable singleton;
+            IDisposable instance;
             
             using (IServiceContainer child = Container.CreateChild())
             {
-                grandChild = child.CreateChild().Service<IDisposable, Disposable>(Lifetime.Singleton);
-                singleton  = grandChild.CreateInjector().Get<IDisposable>();
+                grandChild = child.CreateChild().Instance(instance = new Disposable(), releaseOnDispose: true);    
             }
 
             var err = Assert.Throws<InvalidOperationException>(grandChild.Dispose);
             Assert.AreSame(err, Disposable.AlreadyDisposedException);
 
-            err = Assert.Throws<InvalidOperationException>(singleton.Dispose);
+            err = Assert.Throws<InvalidOperationException>(instance.Dispose);
             Assert.AreSame(err, Disposable.AlreadyDisposedException);
         }
     }
