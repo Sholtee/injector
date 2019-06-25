@@ -62,7 +62,7 @@ namespace Solti.Utils.DI
         internal ContainerEntry Service(Type iface, Type implementation, Lifetime? lifetime)
         {
             //
-            // Ne a Resolver.GetFor()-ban validaljunk, h generikusoknal is lefusson az ellenorzes.
+            // Ne a Resolver.Get()-ban validaljunk, h generikusoknal is lefusson az ellenorzes.
             //
 
             ConstructorInfo constructor = ValidateImplementation(iface, implementation);
@@ -75,7 +75,7 @@ namespace Solti.Utils.DI
             //
 
             if (!iface.IsGenericTypeDefinition)
-                entry.Factory = Resolver.GetFor(constructor).ConvertToFactory();
+                entry.Factory = Resolver.Get(constructor).ConvertToFactory();
 
             return Register(entry);
         }
@@ -101,7 +101,7 @@ namespace Solti.Utils.DI
             {
                 var factory = new Lazy<Func<IInjector, Type, object>>
                 (
-                    () => Resolver.GetFor(ValidateImplementation(entry.Interface, entry.Implementation /*triggereli a resolvert*/)).ConvertToFactory(),
+                    () => Resolver.Get(ValidateImplementation(entry.Interface, entry.Implementation /*triggereli a resolvert*/)).ConvertToFactory(),
                     
                     //
                     // A container oroklodes maitt a Lazy<> megosztasra kerulhet tobb szal kozt is

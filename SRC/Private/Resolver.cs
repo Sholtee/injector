@@ -5,6 +5,7 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq.Expressions;
 using System.Reflection;
 
@@ -14,10 +15,10 @@ namespace Solti.Utils.DI.Internals
 
     internal static class Resolver
     {
-        public static Func<IInjector, object> GetFor(ConstructorInfo constructor) => Cache<ConstructorInfo, Func<IInjector, object>>.GetOrAdd(constructor, () =>
-        { 
-            MethodInfo ifaceGet = ((MethodCallExpression) ((Expression<Action<IInjector>>) (i => i.Get(null))).Body).Method;
+        private static readonly MethodInfo InjectorGet = ((MethodCallExpression) ((Expression<Action<IInjector>>) (i => i.Get(null))).Body).Method;
 
+        public static Func<IInjector, object> Get(ConstructorInfo constructor) => Cache<ConstructorInfo, Func<IInjector, object>>.GetOrAdd(constructor, () =>
+        { 
             //
             // (injector, type) => new Service((IDependency_1) injector.Get(typeof(IDependency_1)), ...)
             //
@@ -32,15 +33,15 @@ namespace Solti.Utils.DI.Internals
                     if (!parameterType.IsInterface)
                         throw new ArgumentException(Resources.INVALID_CONSTRUCTOR, nameof(constructor)); 
 
-                    return Expression.Call(injector, ifaceGet, Expression.Constant(parameterType));
+                    return Expression.Call(injector, InjectorGet, Expression.Constant(parameterType));
                 },
                 injector
             ).Compile();
         });
 
-        public static Func<IInjector, object> GetFor(Type type) => Cache<Type, Func<IInjector, object>>.GetOrAdd(type, () => GetFor(type.GetApplicableConstructor()));
+        public static Func<IInjector, object> Get(Type type) => Cache<Type, Func<IInjector, object>>.GetOrAdd(type, () => Get(type.GetApplicableConstructor()));
 
-        public static Func<IInjector, IReadOnlyDictionary<string, object>, object> GetExtendedFor(ConstructorInfo constructor) => Cache<ConstructorInfo, Func<IInjector, IReadOnlyDictionary<string, object>, object>>.GetOrAdd(constructor, () =>
+        public static Func<IInjector, IReadOnlyDictionary<string, object>, object> GetExtended(ConstructorInfo constructor) => Cache<ConstructorInfo, Func<IInjector, IReadOnlyDictionary<string, object>, object>>.GetOrAdd(constructor, () =>
         {
             Func<ParameterInfo, IInjector, IReadOnlyDictionary<string, object>, object> getArg = 
                 (pi, i, ep) => ep.TryGetValue(pi.Name, out var value) 
@@ -63,6 +64,50 @@ namespace Solti.Utils.DI.Internals
             ).Compile();
         });
 
-        public static Func<IInjector, IReadOnlyDictionary<string, object>, object> GetExtendnedFor(Type type) => Cache<Type, Func<IInjector, IReadOnlyDictionary<string, object>, object>>.GetOrAdd(type, () => GetExtendedFor(type.GetApplicableConstructor()));
+        public static Func<IInjector, IReadOnlyDictionary<string, object>, object> GetExtendned(Type type) => Cache<Type, Func<IInjector, IReadOnlyDictionary<string, object>, object>>.GetOrAdd(type, () => GetExtended(type.GetApplicableConstructor()));
+
+        public static Func<IInjector, object> CreateLazyFactory(Type iface) => Cache<Type, Func<IInjector, object>>.GetOrAdd(iface, () =>
+        {
+            Debug.Assert(iface.IsInterface);
+
+            Type delegateType = typeof(Func<>).MakeGenericType(iface);
+
+            //
+            // injector => () => (iface) injector.Get(iface)
+            //
+
+            ParameterExpression injector = Expression.Parameter(typeof(IInjector), nameof(injector));
+
+            Func<IInjector, Delegate> createValueFactory = Expression.Lambda<Func<IInjector, Delegate>>
+            (
+                Expression.Lambda
+                (
+                    delegateType,
+                    Expression.Convert
+                    (
+                        Expression.Call
+                        (
+                            injector,
+                            InjectorGet,
+                            Expression.Constant(iface)
+                        ),
+                        iface
+                    )
+                ),
+                injector
+            ).Compile();
+
+            //
+            // injector => new Lazy<iface>(Func<iface>)
+            //
+
+            ConstructorInfo ctor = typeof(Lazy<>)
+                .MakeGenericType(iface)
+                .GetConstructor(new []{ delegateType });
+
+            Debug.Assert(ctor != null);
+
+            return i => ctor.Call(createValueFactory(i));
+        });
     }
 }

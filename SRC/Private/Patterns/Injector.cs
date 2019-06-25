@@ -85,7 +85,7 @@ namespace Solti.Utils.DI.Internals
         /// <summary>
         /// See <see cref="IInjector"/>
         /// </summary>
-        object IInjector.Instantiate(Type @class, IReadOnlyDictionary<string, object> explicitArgs) => Resolver.GetExtendnedFor(@class)(Self, explicitArgs ?? new Dictionary<string, object>(0));
+        object IInjector.Instantiate(Type @class, IReadOnlyDictionary<string, object> explicitArgs) => Resolver.GetExtendned(@class)(Self, explicitArgs ?? new Dictionary<string, object>(0));
         #endregion
     }
 }
