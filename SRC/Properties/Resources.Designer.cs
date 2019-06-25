@@ -151,7 +151,7 @@ namespace Solti.Utils.DI.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to All constructor arguments should be an interface..
+        ///   Looks up a localized string similar to All constructor arguments should be interface or Lazy&lt;interface&gt;..
         /// </summary>
         internal static string INVALID_CONSTRUCTOR {
             get {

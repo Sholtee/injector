@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 
@@ -18,9 +19,9 @@ namespace Solti.Utils.DI.Internals
         private static readonly MethodInfo InjectorGet = ((MethodCallExpression) ((Expression<Action<IInjector>>) (i => i.Get(null))).Body).Method;
 
         public static Func<IInjector, object> Get(ConstructorInfo constructor) => Cache<ConstructorInfo, Func<IInjector, object>>.GetOrAdd(constructor, () =>
-        { 
+        {
             //
-            // (injector, type) => new Service((IDependency_1) injector.Get(typeof(IDependency_1)), ...)
+            // (injector, type) => new Service(IDependency_1 | Lazy<IDependency_1>, IDependency_2 | Lazy<IDependency_2>,...)
             //
 
             ParameterExpression injector = Expression.Parameter(typeof(IInjector), nameof(injector));
@@ -31,7 +32,28 @@ namespace Solti.Utils.DI.Internals
                 {
                     Type parameterType = param.ParameterType;
                     if (!parameterType.IsInterface)
-                        throw new ArgumentException(Resources.INVALID_CONSTRUCTOR, nameof(constructor)); 
+                    {
+                        //
+                        // Lazy<IInterface>(() => (IInterface) injector.Get(typeof(IInterface)))
+                        //
+
+                        if (parameterType.IsGenericType && parameterType.GetGenericTypeDefinition() == typeof(Lazy<>))
+                        {
+                            parameterType = parameterType.GetGenericArguments().Single();
+                            if (parameterType.IsInterface)
+                                return Expression.Invoke(Expression.Constant(GetLazyFactory(parameterType)), injector);
+                        }
+
+                        //
+                        // Vagy megsem 
+                        //
+
+                        throw new ArgumentException(Resources.INVALID_CONSTRUCTOR, nameof(constructor));
+                    }
+
+                    //
+                    // injector.Get(typeof(IInterface)
+                    //
 
                     return Expression.Call(injector, InjectorGet, Expression.Constant(parameterType));
                 },

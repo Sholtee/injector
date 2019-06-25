@@ -25,14 +25,20 @@ namespace Solti.Utils.DI.Internals.Tests
                 Dep2 = dep2;
             }
 
+            public MyClass(Lazy<IDisposable> dep1, Lazy<ICloneable> dep2)
+            {
+                Dep1 = dep1.Value;
+                Dep2 = dep2.Value;
+            }
+
             public MyClass()
             {
             }
         }
 
-
-        [Test]
-        public void Resolver_ShouldResolveDependencies()
+        [TestCase(typeof(IDisposable), typeof(ICloneable))]
+        [TestCase(typeof(Lazy<IDisposable>), typeof(Lazy<ICloneable>))]
+        public void Resolver_ShouldResolveDependencies(Type dep1, Type dep2)
         {
             var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
             mockInjector
@@ -46,12 +52,7 @@ namespace Solti.Utils.DI.Internals.Tests
                     return null;
                 });
 
-            Func<IInjector, object> factory = Resolver
-                .Get(typeof(MyClass).GetConstructor(new[]
-                {
-                    typeof(IDisposable),
-                    typeof(ICloneable)
-                }));
+            Func<IInjector, object> factory = Resolver.Get(typeof(MyClass).GetConstructor(new[] {dep1, dep2}));
             
             Assert.That(factory, Is.Not.Null);
 
@@ -129,7 +130,7 @@ namespace Solti.Utils.DI.Internals.Tests
         }
 
         [Test]
-        public void Reolver_GetLazyFactory_ShouldReturnProperFactory()
+        public void Resolver_GetLazyFactory_ShouldReturnProperFactory()
         {
             var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
             mockInjector
@@ -151,7 +152,7 @@ namespace Solti.Utils.DI.Internals.Tests
         }
 
         [Test]
-        public void Reolver_GetLazyFactory_ShouldCache()
+        public void Resolver_GetLazyFactory_ShouldCache()
         {
             Assert.AreSame(Resolver.GetLazyFactory(typeof(IDisposable)), Resolver.GetLazyFactory(typeof(IDisposable)));
         }

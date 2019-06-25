@@ -148,7 +148,7 @@
     <value>No registered implementation for "{0}".</value>
   </data>
   <data name="INVALID_CONSTRUCTOR" xml:space="preserve">
-    <value>All constructor arguments should be an interface.</value>
+    <value>All constructor arguments should be interface or Lazy&lt;interface&gt;.</value>
   </data>
   <data name="INVALID_INSTANCE" xml:space="preserve">
     <value>The returned object should be an instance of "{0}".</value>
