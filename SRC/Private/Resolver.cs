@@ -66,7 +66,7 @@ namespace Solti.Utils.DI.Internals
 
         public static Func<IInjector, IReadOnlyDictionary<string, object>, object> GetExtendned(Type type) => Cache<Type, Func<IInjector, IReadOnlyDictionary<string, object>, object>>.GetOrAdd(type, () => GetExtended(type.GetApplicableConstructor()));
 
-        public static Func<IInjector, object> CreateLazyFactory(Type iface) => Cache<Type, Func<IInjector, object>>.GetOrAdd(iface, () =>
+        public static Func<IInjector, object> GetLazyFactory(Type iface) => Cache<Type, Func<IInjector, object>>.GetOrAdd(iface, () =>
         {
             Debug.Assert(iface.IsInterface);
 

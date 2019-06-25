@@ -129,14 +129,14 @@ namespace Solti.Utils.DI.Internals.Tests
         }
 
         [Test]
-        public void Reolver_CreateLazy_ShouldCreateProperLazyInstance()
+        public void Reolver_GetLazyFactory_ShouldReturnProperFactory()
         {
             var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
             mockInjector
                 .Setup(i => i.Get(It.IsAny<Type>()))
                 .Returns<Type>(type => new Disposable());
 
-            Func<IInjector, object> factory = Resolver.CreateLazyFactory(typeof(IDisposable));
+            Func<IInjector, object> factory = Resolver.GetLazyFactory(typeof(IDisposable));
             Assert.That(factory, Is.Not.Null);
 
             Lazy<IDisposable> lazy = factory(mockInjector.Object) as Lazy<IDisposable>;
@@ -148,6 +148,12 @@ namespace Solti.Utils.DI.Internals.Tests
             Assert.That(retval, Is.InstanceOf<Disposable>());
 
             mockInjector.Verify(i => i.Get(It.IsAny<Type>()), Times.Once);
+        }
+
+        [Test]
+        public void Reolver_GetLazyFactory_ShouldCache()
+        {
+            Assert.AreSame(Resolver.GetLazyFactory(typeof(IDisposable)), Resolver.GetLazyFactory(typeof(IDisposable)));
         }
     }
 }
