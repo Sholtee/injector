@@ -5,12 +5,15 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 
 using Moq;
 using NUnit.Framework;
 
 namespace Solti.Utils.DI.Internals.Tests
 {
+    using Properties;
+
     [TestFixture]
     public sealed class ResolverTests
     {
@@ -20,6 +23,12 @@ namespace Solti.Utils.DI.Internals.Tests
             public ICloneable Dep2 { get; }
 
             public MyClass(IDisposable dep1, ICloneable dep2)
+            {
+                Dep1 = dep1;
+                Dep2 = dep2;
+            }
+
+            public MyClass(IDisposable dep1, ICloneable dep2, int @int)
             {
                 Dep1 = dep1;
                 Dep2 = dep2;
@@ -108,6 +117,21 @@ namespace Solti.Utils.DI.Internals.Tests
         }
 
         [Test]
+        public void Resolver_ShouldThrowOnNonInterfaceArguments()
+        {
+            ConstructorInfo ctor = typeof(MyClass).GetConstructor(new[] { typeof(IDisposable), typeof(ICloneable), typeof(int) });
+
+            Assert.Throws<ArgumentException>(() => Resolver.Get(ctor), Resources.INVALID_CONSTRUCTOR);
+
+            var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
+            mockInjector
+                .Setup(i => i.Get(It.IsAny<Type>()))
+                .Returns<Type>(type => null);
+
+            Assert.Throws<ArgumentException>(() => Resolver.GetExtended(ctor)(mockInjector.Object, new Dictionary<string, object>(0)), Resources.INVALID_CONSTRUCTOR_ARGUMENT);
+        }
+
+        [Test]
         public void Resolver_ExplicitArgumentsShouldSuppressTheInjectorInvocation()
         {
             var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
@@ -127,6 +151,20 @@ namespace Solti.Utils.DI.Internals.Tests
 
             mockInjector.Verify(i => i.Get(It.Is<Type>(t => t == typeof(IDisposable))), Times.Once);
             mockInjector.Verify(i => i.Get(It.Is<Type>(t => t == typeof(ICloneable))), Times.Never);
+        }
+
+        [Test]
+        public void Resolver_ExplicitArgumentsCanBeNonInterfaceValues()
+        {
+            ConstructorInfo ctor = typeof(MyClass).GetConstructor(new[] { typeof(IDisposable), typeof(ICloneable), typeof(int) });
+
+
+            var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
+            mockInjector
+                .Setup(i => i.Get(It.IsAny<Type>()))
+                .Returns<Type>(type => null);
+
+            Assert.DoesNotThrow(() => Resolver.GetExtended(ctor)(mockInjector.Object, new Dictionary<string, object>{ {"int", 0} }), Resources.INVALID_CONSTRUCTOR_ARGUMENT);
         }
 
         [Test]
