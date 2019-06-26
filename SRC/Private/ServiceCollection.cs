@@ -62,7 +62,7 @@ namespace Solti.Utils.DI.Internals
         /// <summary>
         /// Gets the entry associated with the given interface.
         /// </summary>
-        /// <param name="iface">The "id" of the entry. Must be a type of interface.</param>
+        /// <param name="iface">The "id" of the entry. Must be an interface <see cref="Type"/>.</param>
         /// <returns>The stored <see cref="ContainerEntry"/> instance.</returns>
         /// <remarks>This method supports entry specializing which means after registering a generic entry you can query its (unregistered) closed pair by passing the closed interface <see cref="Type"/> to this function.</remarks>
         public ContainerEntry QueryEntry(Type iface) // TODO: interface
@@ -132,7 +132,9 @@ namespace Solti.Utils.DI.Internals
                 {
                     disposable.Dispose();
                 }
-                catch(Exception e)
+                #pragma warning disable CS0168 // Variable is declared but never used
+                catch (Exception e)
+                #pragma warning restore CS0168
                 {
                     if (Debugger.IsAttached) Debugger.Break();
                 }
