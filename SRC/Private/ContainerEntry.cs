@@ -10,7 +10,11 @@ namespace Solti.Utils.DI.Internals
 {
     using Properties;
 
-    internal sealed class ContainerEntry: Disposable, IServiceInfo, ICloneable // TODO: !!TESTS!!
+    /// <summary>
+    /// Stores the service definitions.
+    /// </summary>
+    /// <remarks>This is an internal class so it may change from version to version. Don't use it!</remarks>
+    public sealed class ContainerEntry: Disposable, IServiceInfo, ICloneable // TODO: !!TESTS!!
     {
         private readonly Lazy<Type> FImplementation;
         private object FValue;
@@ -62,6 +66,9 @@ namespace Solti.Utils.DI.Internals
         public ContainerEntry(Type @interface, ITypeResolver resolver, Lifetime? lifetime = null): 
             this(@interface, new Lazy<Type>(() => resolver.Resolve(@interface), LazyThreadSafetyMode.ExecutionAndPublication), lifetime, true) {}
 
+        /// <summary>
+        /// See <see cref="ICloneable"/>.
+        /// </summary>
         public object Clone()
         {
             CheckDisposed();
@@ -97,6 +104,8 @@ namespace Solti.Utils.DI.Internals
                 Value = IsInstance ? Value : null
             };
         }
+
+        public ContainerEntry Specialize(params Type[] genericArguments) => throw new NotImplementedException();
 
         protected override void Dispose(bool disposeManaged)
         {
