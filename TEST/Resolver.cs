@@ -21,6 +21,7 @@ namespace Solti.Utils.DI.Internals.Tests
         {
             public IDisposable Dep1 { get; }
             public ICloneable Dep2 { get; }
+            public int Int { get; }
 
             public MyClass(IDisposable dep1, ICloneable dep2)
             {
@@ -32,6 +33,7 @@ namespace Solti.Utils.DI.Internals.Tests
             {
                 Dep1 = dep1;
                 Dep2 = dep2;
+                Int  = @int;
             }
 
             public MyClass(Lazy<IDisposable> dep1, Lazy<ICloneable> dep2)
@@ -156,15 +158,19 @@ namespace Solti.Utils.DI.Internals.Tests
         [Test]
         public void Resolver_ExplicitArgumentsCanBeNonInterfaceValues()
         {
-            ConstructorInfo ctor = typeof(MyClass).GetConstructor(new[] { typeof(IDisposable), typeof(ICloneable), typeof(int) });
+            const int TEN = 10;
 
+            ConstructorInfo ctor = typeof(MyClass).GetConstructor(new[] { typeof(IDisposable), typeof(ICloneable), typeof(int) });
 
             var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
             mockInjector
                 .Setup(i => i.Get(It.IsAny<Type>()))
                 .Returns<Type>(type => null);
 
-            Assert.DoesNotThrow(() => Resolver.GetExtended(ctor)(mockInjector.Object, new Dictionary<string, object>{ {"int", 0} }), Resources.INVALID_CONSTRUCTOR_ARGUMENT);
+            MyClass obj = Resolver.GetExtended(ctor)(mockInjector.Object, new Dictionary<string, object> { { "int", TEN } }) as MyClass;
+
+            Assert.That(obj, Is.Not.Null);
+            Assert.That(obj.Int, Is.EqualTo(TEN));
         }
 
         [Test]
