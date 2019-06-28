@@ -12,23 +12,44 @@ namespace Solti.Utils.DI.Internals
 {
     using Properties;
 
-    internal sealed class Injector : ServiceContainer, IInjector
+    internal sealed class Injector : Disposable, IInjector
     {
         #region Private
         private readonly Stack<Type> FCurrentPath = new Stack<Type>();
 
-        private Injector(){}
+        private /*readonly*/ ServiceCollection FServices;
 
-        private Injector(ServiceContainer parentContainer) : base(parentContainer, orphan: true)
+        private Injector() => throw new NotSupportedException();
+
+        private Injector(IEnumerable<ContainerEntry> inheritedServices)
         {
-            //
-            // Beallitjuk a proxyt, majd felvesszuk sajat magunkat.
-            //
+            FServices = new ServiceCollection(inheritedServices)
+            {
+                //
+                // Beallitjuk a proxyt, majd felvesszuk sajat magunkat.
+                //
 
-            Instance(typeof(IInjector), InterfaceProxy<IInjector>.Chain(this, current => new ParameterValidatorProxy<IInjector>(current)), releaseOnDispose: false);
+                new ContainerEntry(typeof(IInjector))
+                {
+                    Value = InterfaceProxy<IInjector>.Chain(this, current => new ParameterValidatorProxy<IInjector>(current))
+                }
+            };
         }
 
-        private new IInjector Self => (IInjector) Get(typeof(IInjector));
+        private IInjector Self => (IInjector) Get(typeof(IInjector));
+        #endregion
+
+        #region Protected
+        protected override void Dispose(bool disposeManaged)
+        {
+            if (disposeManaged)
+            {
+                FServices.Dispose();
+                FServices = null;
+            }
+
+            base.Dispose(disposeManaged);
+        }
         #endregion
 
         #region Internals
@@ -45,15 +66,15 @@ namespace Solti.Utils.DI.Internals
                     throw new InvalidOperationException(string.Format(Resources.CIRCULAR_REFERENCE, string.Join(" -> ", FCurrentPath)));
 
                 //
-                // Bejegyzes lekerdezes.
+                // A bejegyzesnek mar legyartottnak, vagy legyarthatonak kell lennie.
                 //
 
-                ContainerEntry entry = GetEntry(iface);
+                ContainerEntry entry = FServices.QueryEntry(iface);
 
                 Debug.Assert(entry.Value != null || entry.Factory != null);
 
                 //
-                // Singleton eletciklusnal az elso hivasnal le kell gyartsuk es mentsuk a peldanyt.
+                // Singleton eletciklusnal az elso hivasnal le kell gyartani es menteni a peldanyt.
                 //
 
                 if (entry.Lifetime == Lifetime.Singleton && entry.Value == null)
@@ -73,7 +94,7 @@ namespace Solti.Utils.DI.Internals
             }
         }
 
-        internal static IInjector Create(ServiceContainer parentContainer) => new Injector(parentContainer).Self;
+        internal static IInjector Create(ServiceContainer parentContainer) => new Injector((ServiceCollection) parentContainer).Self;
         #endregion
 
         #region IInjector
@@ -86,6 +107,10 @@ namespace Solti.Utils.DI.Internals
         /// See <see cref="IInjector"/>
         /// </summary>
         object IInjector.Instantiate(Type @class, IReadOnlyDictionary<string, object> explicitArgs) => Resolver.GetExtended(@class)(Self, explicitArgs ?? new Dictionary<string, object>(0));
+        #endregion
+
+        #region IQueryServiceInfo
+        IServiceInfo IQueryServiceInfo.QueryServiceInfo(Type iface) => FServices.QueryEntry(iface);
         #endregion
     }
 }

@@ -38,8 +38,7 @@ namespace Solti.Utils.DI.Internals
 
         ~Disposable() => Dispose(disposeManaged: false);
  
-
-        void IDisposable.Dispose()
+        public void Dispose()
         {
             CheckDisposed();
 

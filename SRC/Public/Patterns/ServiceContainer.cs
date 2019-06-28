@@ -6,7 +6,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Threading;
 
 namespace Solti.Utils.DI
@@ -20,21 +19,12 @@ namespace Solti.Utils.DI
     public class ServiceContainer : Composite<IServiceContainer>, IServiceContainer
     {
         #region Private
-        private readonly Dictionary<Type, ContainerEntry> FEntries;
-
-        private bool GetEntry(Type iface, out ContainerEntry entry) => FEntries.TryGetValue(iface, out entry);
+        private /*readonly*/ ServiceCollection FEntries;
 
         private ContainerEntry Register(ContainerEntry entry)
         {
-            try
-            {
-                FEntries.Add(entry.Interface, entry);
-                return entry;
-            }
-            catch (ArgumentException e)
-            {
-                throw new ServiceAlreadyRegisteredException(entry.Interface, e);
-            }                      
+            FEntries.Add(entry);
+            return entry;
         }
 
         private static object TypeChecker(IInjector injector, Type type, object inst)
@@ -49,23 +39,19 @@ namespace Solti.Utils.DI
             return inst;
         }
 
-        private static ConstructorInfo ValidateImplementation(Type iface, Type implementation)
+        private static void ValidateImplementation(Type iface, Type implementation)
         {
             if (!iface.IsInterfaceOf(implementation))
                 throw new InvalidOperationException(string.Format(Resources.NOT_ASSIGNABLE, iface, implementation));
 
-            return implementation.GetApplicableConstructor();
+            implementation.GetApplicableConstructor(); // validal is
         }
         #endregion
 
         #region Internal
         internal ContainerEntry Service(Type iface, Type implementation, Lifetime? lifetime)
         {
-            //
-            // Ne a Resolver.Get()-ban validaljunk, h generikusoknal is lefusson az ellenorzes.
-            //
-
-            ConstructorInfo constructor = ValidateImplementation(iface, implementation);
+            ValidateImplementation(iface, implementation);
 
             var entry = new ContainerEntry(iface, implementation, lifetime);
 
@@ -74,8 +60,7 @@ namespace Solti.Utils.DI
             // legyartani a factory-t.
             //
 
-            if (!iface.IsGenericTypeDefinition)
-                entry.Factory = Resolver.Get(constructor).ConvertToFactory();
+            if (!iface.IsGenericTypeDefinition) entry.SetFactory();
 
             return Register(entry);
         }
@@ -101,7 +86,15 @@ namespace Solti.Utils.DI
             {
                 var factory = new Lazy<Func<IInjector, Type, object>>
                 (
-                    () => Resolver.Get(ValidateImplementation(entry.Interface, entry.Implementation /*triggereli a resolvert*/)).ConvertToFactory(),
+                    () =>
+                    {
+                        //
+                        // Mivel a validalas triggerelne a resolver-t ezert azt az elso factory hivaskor tesszuk meg.
+                        //
+
+                        ValidateImplementation(entry.Interface, entry.Implementation);
+                        return entry.CreateFactory();
+                    },
                     
                     //
                     // A container oroklodes maitt a Lazy<> megosztasra kerulhet tobb szal kozt is
@@ -111,39 +104,19 @@ namespace Solti.Utils.DI
                     LazyThreadSafetyMode.ExecutionAndPublication
                 );
 
+                //
+                // Mivel van factory fv ezert a Lazy szervizek is Proxy-zhatok.
+                //
+
                 entry.Factory = (injector, type) => factory.Value(injector, type);
             }
 
             return Register(entry);
         }
 
-        internal ContainerEntry GetEntry(Type iface)
-        {
-            if (GetEntry(iface, out var entry)) return entry;
-     
-            //
-            // Meg benne lehet generikus formaban.
-            //
-
-            if (!iface.IsGenericType || !GetEntry(iface.GetGenericTypeDefinition(), out var genericEntry))
-                throw new NotSupportedException(string.Format(Resources.DEPENDENCY_NOT_FOUND, iface));
-
-            //
-            // Ha a bejegyzesnek van kezzel felvett [Factory()] factory fv-e (akar generikusnak is)
-            // akkor nincs dolgunk, kulomben felvesszuk az uj tipizalt bejegyzest.
-            //
-
-            return genericEntry.Factory != null ? genericEntry : Service
-            (
-                iface,
-                genericEntry.Implementation.MakeGenericType(iface.GetGenericArguments()),
-                genericEntry.Lifetime
-            );        
-        }
-
         internal ContainerEntry Proxy(Type iface, Func<IInjector, Type, object, object> decorator)
         {
-            ContainerEntry entry = GetEntry(iface);
+            ContainerEntry entry = FEntries.QueryEntry(iface);
 
             //
             // Service(), Factory(), Lazy()
@@ -179,6 +152,8 @@ namespace Solti.Utils.DI
                 Value = instance
             });
         }
+
+        public static explicit operator ServiceCollection(ServiceContainer container) => container?.FEntries;
         #endregion
 
         #region IServiceContainer
@@ -244,7 +219,7 @@ namespace Solti.Utils.DI
         /// <summary>
         /// See <see cref="IServiceContainer"/>
         /// </summary>
-        IReadOnlyCollection<Type> IServiceContainer.Entries => FEntries.Keys.ToArray();
+        IReadOnlyCollection<Type> IServiceContainer.Entries => FEntries.Select(entry => entry.Interface).ToArray();
 
         /// <summary>
         /// See <see cref="IServiceContainer"/>
@@ -256,7 +231,7 @@ namespace Solti.Utils.DI
         /// <summary>
         /// See <see cref="IQueryServiceInfo"/>
         /// </summary>
-        IServiceInfo IQueryServiceInfo.QueryServiceInfo(Type iface) => GetEntry(iface);
+        IServiceInfo IQueryServiceInfo.QueryServiceInfo(Type iface) => FEntries.QueryEntry(iface);
         #endregion
 
         #region Protected
@@ -264,25 +239,9 @@ namespace Solti.Utils.DI
         {
         }
 
-        protected ServiceContainer(ServiceContainer parent, bool orphan = false) : base(orphan ? null : parent)
+        protected ServiceContainer(ServiceContainer parent) : base(parent)
         {
-            //
-            // Ha van szulo akkor masoljuk a bejegyzeseit. A masolas mikentjet lasd az 
-            // ContainerEntry implementaciojaban.
-            //
-
-            FEntries = new Dictionary<Type, ContainerEntry>
-            (
-                parent?
-                    .FEntries
-                    .Values
-                    .ToDictionary
-                    (
-                        entry => entry.Interface,
-                        entry => (ContainerEntry) entry.Clone()
-                    )
-                ?? new Dictionary<Type, ContainerEntry>(0)
-            );
+            FEntries = new ServiceCollection((ServiceCollection) parent);
 
             Self = InterfaceProxy<IServiceContainer>.Chain(this, current => new ParameterValidatorProxy<IServiceContainer>(current));
         }
@@ -293,12 +252,8 @@ namespace Solti.Utils.DI
         {
             if (disposeManaged)
             {
-                foreach (IDisposable disposable in FEntries.Values)
-                {
-                    disposable.Dispose();
-                }
-
-                FEntries.Clear();
+                FEntries.Dispose();
+                FEntries = null;
             }
 
             base.Dispose(disposeManaged);

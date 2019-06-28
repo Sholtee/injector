@@ -105,7 +105,16 @@ namespace Solti.Utils.DI.Internals
             };
         }
 
-        public ContainerEntry Specialize(params Type[] genericArguments) => throw new NotImplementedException();
+        /// <summary>
+        /// Creates a new specialized version from this entry.
+        /// </summary>
+        public ContainerEntry Specialize(params Type[] genericArguments)
+        {
+            var specialied = new ContainerEntry(Interface.MakeGenericType(genericArguments), Implementation.MakeGenericType(genericArguments), Lifetime);
+            specialied.SetFactory();
+
+            return specialied;
+        }
 
         protected override void Dispose(bool disposeManaged)
         {
