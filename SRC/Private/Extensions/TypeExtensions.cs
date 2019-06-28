@@ -57,7 +57,7 @@ namespace Solti.Utils.DI.Internals
             return false;
         }
 
-        public static ConstructorInfo GetApplicableConstructor(this Type src)
+        public static ConstructorInfo GetApplicableConstructor(this Type src) => Cache<Type, ConstructorInfo>.GetOrAdd(src, () =>
         {
             //
             // Az implementacionak pontosan egy (megjelolt) konstruktoranak kell lennie.
@@ -73,7 +73,7 @@ namespace Solti.Utils.DI.Internals
             {
                 throw new NotSupportedException(string.Format(Resources.CONSTRUCTOR_OVERLOADING_NOT_SUPPORTED, src));
             }
-        }
+        });
 
         public static object CreateInstance(this Type src, Type[] argTypes, params object[] args)
         {
