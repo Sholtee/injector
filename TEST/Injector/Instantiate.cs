@@ -24,14 +24,14 @@ namespace Solti.Utils.DI.Injector.Tests
         [Test]
         public void Injector_Instantiate_ShouldUseTheCurrentInjector()
         {
-            MyClass obj = Injector.Instantiate<MyClass>();
-            Assert.That(obj.Injector, Is.SameAs(Injector));
-
-            using (IInjector child = Injector.CreateChild())
+            new List<IServiceContainer> {Container, Container.CreateChild()}.ForEach(container =>
             {
-                obj = child.Instantiate<MyClass>();
-                Assert.That(obj.Injector, Is.SameAs(child));
-            }
+                using (IInjector injector = container.CreateInjector())
+                {
+                    MyClass obj = injector.Instantiate<MyClass>();
+                    Assert.That(obj.Injector, Is.SameAs(injector));
+                }
+            });
         }
 
         [Test]
@@ -39,33 +39,57 @@ namespace Solti.Utils.DI.Injector.Tests
         {
             var dep = new Implementation_1();
 
-            Implementation_2 obj = Injector.Instantiate<Implementation_2>(new Dictionary<string, object>
+            using (IInjector injector = Container.CreateInjector())
             {
-                {"interface1", dep}
-            });
+                Implementation_2 obj = injector.Instantiate<Implementation_2>(new Dictionary<string, object>
+                {
+                    {"interface1", dep}
+                });
 
-            Assert.That(obj.Interface1, Is.SameAs(dep));
+                Assert.That(obj.Interface1, Is.SameAs(dep));
+            }
+        }
+
+        [Test]
+        public void Injector_Instantiate_ShouldResolveDependencies()
+        {
+            Container.Service<IInterface_1, Implementation_1>();
+
+            using (IInjector injector = Container.CreateInjector())
+            {
+                Implementation_2 obj = injector.Instantiate<Implementation_2>();
+                Assert.That(obj.Interface1, Is.InstanceOf<Implementation_1>());
+            }
         }
 
         [Test]
         public void Injector_Instantiate_ShouldThrowOnOpenGenericType()
         {
-            Assert.Throws<ArgumentException>(() => Injector.Instantiate(typeof(Implementation_3<>)), Resources.CANT_INSTANTIATE_GENERICS);
+            using (IInjector injector = Container.CreateInjector())
+            {
+                Assert.Throws<ArgumentException>(() => injector.Instantiate(typeof(Implementation_3<>)), Resources.CANT_INSTANTIATE_GENERICS);
+            }           
         }
 
         [Test]
         public void Injector_Instantiate_ShouldWorkWithClosedGenericTypes()
         {
-            Injector.Service<IInterface_1, Implementation_1>();
+            Container.Service<IInterface_1, Implementation_1>();
 
-            Implementation_3<string> obj = Injector.Instantiate<Implementation_3<string>>();
-            Assert.That(obj.Interface1, Is.InstanceOf<Implementation_1>());
+            using (IInjector injector = Container.CreateInjector())
+            {
+                Implementation_3<string> obj = injector.Instantiate<Implementation_3<string>>();
+                Assert.That(obj.Interface1, Is.InstanceOf<Implementation_1>());
+            }
         }
 
         [Test]
         public void Injector_Instantiate_ShouldTakeIntoAccountTheServiceActivatorAttribute()
         {
-            Assert.DoesNotThrow(() => Injector.Instantiate<Implementation_8_multictor>());
+            using (IInjector injector = Container.CreateInjector())
+            {
+                Assert.DoesNotThrow(() => injector.Instantiate<Implementation_8_multictor>());
+            }          
         }
     }
 }

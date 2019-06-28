@@ -1,5 +1,5 @@
 /********************************************************************************
-* InjectorEntry.cs                                                              *
+* ServiceEntry.cs                                                             *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
@@ -10,12 +10,16 @@ namespace Solti.Utils.DI.Internals
 {
     using Properties;
 
-    internal sealed class InjectorEntry: Disposable, IServiceInfo, ICloneable // TODO: !!TESTS!!
+    /// <summary>
+    /// Stores the service definitions.
+    /// </summary>
+    /// <remarks>This is an internal class so it may change from version to version. Don't use it!</remarks>
+    public sealed class ServiceEntry: Disposable, IServiceInfo, ICloneable // TODO: !!TESTS!!
     {
         private readonly Lazy<Type> FImplementation;
         private object FValue;
 
-        #region Immutables (IServiceInfo)
+        #region Immutables
         public Type Interface { get; }
 
         public Type Implementation => FImplementation.Value;
@@ -47,7 +51,7 @@ namespace Solti.Utils.DI.Internals
         }
         #endregion
 
-        private InjectorEntry(Type @interface, Lazy<Type> implementation, Lifetime? lifetime, bool isLazy)
+        private ServiceEntry(Type @interface, Lazy<Type> implementation, Lifetime? lifetime, bool isLazy)
         {
             Interface = @interface;
             Lifetime  = lifetime;
@@ -56,17 +60,24 @@ namespace Solti.Utils.DI.Internals
             FImplementation = implementation;
         }
 
-        public InjectorEntry(Type @interface, Type implementation = null, Lifetime? lifetime = null): 
+        public ServiceEntry(Type @interface, Type implementation = null, Lifetime? lifetime = null): 
             this(@interface, implementation != null ? new Lazy<Type>(() => implementation) : null, lifetime, false) {}
 
-        public InjectorEntry(Type @interface, ITypeResolver resolver, Lifetime? lifetime = null): 
+        public ServiceEntry(Type @interface, ITypeResolver resolver, Lifetime? lifetime = null): 
             this(@interface, new Lazy<Type>(() => resolver.Resolve(@interface), LazyThreadSafetyMode.ExecutionAndPublication), lifetime, true) {}
 
+        /// <summary>
+        /// See <see cref="ICloneable"/>.
+        /// </summary>
         public object Clone()
         {
             CheckDisposed();
 
             if (Value is IInjector)
+                //
+                // Ide csak akkor jutunk ha Injector peldanyt akarnank szulo kontenerkent hasznalni.
+                //
+
                 throw new InvalidOperationException(Resources.CANT_CLONE);
 
             //
@@ -74,22 +85,35 @@ namespace Solti.Utils.DI.Internals
             //    triggerelve ezert magat a Lazy<> peldanyt adjuk at.
             //
             // 2) Ha a peldany regisztralasakor a "releaseOnDispose" igazra volt allitva akkor
-            //    a peldany is lehet Singleton. Viszont mi nem akarjuk h a gyermek injektor
+            //    a peldany is lehet Singleton. Viszont mi nem akarjuk h a gyermek kontener
             //    felszabadatisasakor is dispose-olva legyen a peldany ezert az elettartamot
             //    nem masoljuk.
             //
 
-            return new InjectorEntry(Interface, FImplementation, IsInstance ? null : Lifetime, IsLazy)
+            return new ServiceEntry(Interface, FImplementation, IsInstance ? null : Lifetime, IsLazy)
             {
                 Factory = Factory,
 
                 //
                 // 3) Az ertekek keruljenek ujra legyartasra kiveve ha Instance() hivassal
                 //    kerultek regisztralasra.
+                //    Mondjuk ez jelen esetbe nem nagyon jatszik tekintve h Injector peldanyt
+                //    nem hasznalunk szulo kontenernek.
                 //
 
                 Value = IsInstance ? Value : null
             };
+        }
+
+        /// <summary>
+        /// Creates a new specialized version from this entry.
+        /// </summary>
+        public ServiceEntry Specialize(params Type[] genericArguments)
+        {
+            var specialied = new ServiceEntry(Interface.MakeGenericType(genericArguments), Implementation.MakeGenericType(genericArguments), Lifetime);
+            specialied.SetFactory();
+
+            return specialied;
         }
 
         protected override void Dispose(bool disposeManaged)

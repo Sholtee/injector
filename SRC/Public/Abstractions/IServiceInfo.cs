@@ -30,22 +30,27 @@ namespace Solti.Utils.DI
         Func<IInjector, Type, object> Factory { get; }
 
         /// <summary>
-        /// The service was registered via <see cref="IInjector.Service"/> call.
+        /// A value associated with this entry. It is not-null only if the <see cref="IServiceInfo.IsInstance"/> is true or the <see cref="IServiceInfo.Lifetime"/> is <see cref="Lifetime.Singleton"/>.
+        /// </summary>
+        object Value { get; }
+
+        /// <summary>
+        /// The service was registered via <see cref="IServiceContainer.Service"/> call.
         /// </summary>
         bool IsService { get; }
 
         /// <summary>
-        /// The service was registered via <see cref="IInjector.Lazy"/> call.
+        /// The service was registered via <see cref="IServiceContainer.Lazy"/> call.
         /// </summary>
         bool IsLazy { get; }
 
         /// <summary>
-        /// The service was registered via <see cref="IInjector.Factory"/> call.
+        /// The service was registered via <see cref="IServiceContainer.Factory"/> call.
         /// </summary>
         bool IsFactory { get; }
 
         /// <summary>
-        /// The service was registered via <see cref="IInjector.Instance"/> call.
+        /// The service was registered via <see cref="IServiceContainer.Instance"/> call.
         /// </summary>
         bool IsInstance { get; }
 

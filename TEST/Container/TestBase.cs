@@ -1,17 +1,16 @@
 ﻿/********************************************************************************
-* ThreadContext.cs                                                              *
+* TestBase.cs                                                                   *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
-using System;
-using System.Collections.Generic;
+using NUnit.Framework;
 
-namespace Solti.Utils.DI.Internals
+namespace Solti.Utils.DI.Container.Tests
 {
-    internal sealed class ThreadContext
-    {
-        public Stack<Type> CurrentPath { get; }
+    using DI.Tests;
 
-        public ThreadContext() => CurrentPath = new Stack<Type>();
+    [TestFixture]
+    public sealed partial class ContainerTests: TestBase
+    {
     }
 }

@@ -12,7 +12,7 @@ namespace Solti.Utils.DI.Internals
     /// Describes the composite pattern.
     /// </summary>
     /// <typeparam name="T">The type on which we want to apply the composite pattern.</typeparam>
-    /// <remarks>This is an internal interface so it can be changed from version to version. Don't use it!</remarks>
+    /// <remarks>This is an internal interface so it may change from version to version. Don't use it!</remarks>
     public interface IComposite<out T>: IDisposable where T : IComposite<T>
     {
         /// <summary>

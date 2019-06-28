@@ -12,7 +12,7 @@ namespace Solti.Utils.DI
     using Annotations;
 
     /// <summary>
-    /// Provides an extension to setup the injector.
+    /// Provides an extension to auto-config the <see cref="IServiceContainer"/>.
     /// </summary>
     public static class ConfigFromAssembly
     {
@@ -22,7 +22,7 @@ namespace Solti.Utils.DI
         /// <param name="target">The target injector.</param>
         /// <param name="assembly">The source assembly.</param>
         /// <returns>The injector itself.</returns>
-        public static IInjector Setup(this IInjector target, Assembly assembly)
+        public static IServiceContainer Setup(this IServiceContainer target, Assembly assembly)
         {
             foreach (Type service in assembly.DefinedTypes.Where(t => t.IsClass))
                 foreach (ServiceAttribute serviceAttribute in service.GetCustomAttributes<ServiceAttribute>())

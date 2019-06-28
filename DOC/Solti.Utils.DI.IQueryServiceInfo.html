@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Class ConfigFromAssembly
+    <title>Interface IQueryServiceInfo
    | Injector </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Class ConfigFromAssembly
+    <meta name="title" content="Interface IQueryServiceInfo
    | Injector ">
     <meta name="generator" content="docfx 2.42.4.0">
     
@@ -37,59 +37,30 @@
       <div role="main" class="container body-content hide-when-search">
         <div class="article row grid">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="Solti.Utils.DI.ConfigFromAssembly">
+            <article class="content wrap" id="_content" data-uid="Solti.Utils.DI.IQueryServiceInfo">
   
   
-  <h1 id="Solti_Utils_DI_ConfigFromAssembly" data-uid="Solti.Utils.DI.ConfigFromAssembly" class="text-break">Class ConfigFromAssembly
+  <h1 id="Solti_Utils_DI_IQueryServiceInfo" data-uid="Solti.Utils.DI.IQueryServiceInfo" class="text-break">Interface IQueryServiceInfo
   </h1>
-  <div class="markdown level0 summary"><p>Provides an extension to auto-config the <a class="xref" href="Solti.Utils.DI.IServiceContainer.html">IServiceContainer</a>.</p>
+  <div class="markdown level0 summary"><p>Provides the layout of <a class="xref" href="Solti.Utils.DI.IQueryServiceInfo.html#Solti_Utils_DI_IQueryServiceInfo_QueryServiceInfo_System_Type_">QueryServiceInfo(Type)</a>.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
-  <div class="inheritance">
-    <h5>Inheritance</h5>
-    <div class="level0"><span class="xref">System.Object</span></div>
-    <div class="level1"><span class="xref">ConfigFromAssembly</span></div>
-  </div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetHashCode()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetType()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.MemberwiseClone()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ToString()</span>
-    </div>
-  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Solti.Utils.DI.html">Solti.Utils.DI</a></h6>
   <h6><strong>Assembly</strong>: Injector.dll</h6>
-  <h5 id="Solti_Utils_DI_ConfigFromAssembly_syntax">Syntax</h5>
+  <h5 id="Solti_Utils_DI_IQueryServiceInfo_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static class ConfigFromAssembly</code></pre>
+    <pre><code class="lang-csharp hljs">public interface IQueryServiceInfo</code></pre>
   </div>
   <h3 id="methods">Methods
   </h3>
-  <a id="Solti_Utils_DI_ConfigFromAssembly_Setup_" data-uid="Solti.Utils.DI.ConfigFromAssembly.Setup*"></a>
-  <h4 id="Solti_Utils_DI_ConfigFromAssembly_Setup_Solti_Utils_DI_IServiceContainer_System_Reflection_Assembly_" data-uid="Solti.Utils.DI.ConfigFromAssembly.Setup(Solti.Utils.DI.IServiceContainer,System.Reflection.Assembly)">Setup(IServiceContainer, Assembly)</h4>
-  <div class="markdown level1 summary"><p>Registers the annotated services from the given assembly.</p>
+  <a id="Solti_Utils_DI_IQueryServiceInfo_QueryServiceInfo_" data-uid="Solti.Utils.DI.IQueryServiceInfo.QueryServiceInfo*"></a>
+  <h4 id="Solti_Utils_DI_IQueryServiceInfo_QueryServiceInfo_System_Type_" data-uid="Solti.Utils.DI.IQueryServiceInfo.QueryServiceInfo(System.Type)">QueryServiceInfo(Type)</h4>
+  <div class="markdown level1 summary"><p>Gets basic informations about a registered service.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static IServiceContainer Setup(this IServiceContainer target, Assembly assembly)</code></pre>
+    <pre><code class="lang-csharp hljs">IServiceInfo QueryServiceInfo(Type iface)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -102,15 +73,9 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Solti.Utils.DI.IServiceContainer.html">IServiceContainer</a></td>
-        <td><span class="parametername">target</span></td>
-        <td><p>The target injector.</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Reflection.Assembly</span></td>
-        <td><span class="parametername">assembly</span></td>
-        <td><p>The source assembly.</p>
+        <td><span class="xref">System.Type</span></td>
+        <td><span class="parametername">iface</span></td>
+        <td><p>The &quot;id&quot; of the service to be queried. It must be an interface.</p>
 </td>
       </tr>
     </tbody>
@@ -125,12 +90,32 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Solti.Utils.DI.IServiceContainer.html">IServiceContainer</a></td>
-        <td><p>The injector itself.</p>
+        <td><a class="xref" href="Solti.Utils.DI.IServiceInfo.html">IServiceInfo</a></td>
+        <td><p>An <a class="xref" href="Solti.Utils.DI.IServiceInfo.html">IServiceInfo</a> instance.</p>
 </td>
       </tr>
     </tbody>
   </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.NotSupportedException</span></td>
+        <td><p>The service can not be found.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="extensionmethods">Extension Methods</h3>
+  <div>
+      <a class="xref" href="Solti.Utils.DI.IQueryServiceInforExtensions.html#Solti_Utils_DI_IQueryServiceInforExtensions_QueryServiceInfo__1_Solti_Utils_DI_IQueryServiceInfo_">IQueryServiceInforExtensions.QueryServiceInfo&lt;TInterface&gt;(IQueryServiceInfo)</a>
+  </div>
 </article>
           </div>
           

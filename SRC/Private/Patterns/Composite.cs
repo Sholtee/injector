@@ -3,8 +3,6 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
-using System.Collections;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -12,35 +10,17 @@ using System.Linq;
 namespace Solti.Utils.DI.Internals
 {
     /// <summary>
-    /// A thread safe <see cref="IComposite{T}"/> implementation.
+    /// An <see cref="IComposite{T}"/> implementation.
     /// </summary>
     /// <typeparam name="TInterface">The interface on which we want to apply the composite pattern.</typeparam>
-    /// <remarks>This is an internal class so it can be changed from version to version. Don't use it!</remarks>
+    /// <remarks>This is an internal class so it may change from version to version. Don't use it!</remarks>
     public abstract class Composite<TInterface>: Disposable, IComposite<TInterface> where TInterface: class, IComposite<TInterface>
     {
-        #region Private
-        private /*readonly*/ DictionaryWrap FChildren = new DictionaryWrap();
-        private /*readonly*/ Composite<TInterface> FParent;
-
-        private sealed class DictionaryWrap : IReadOnlyCollection<TInterface>
-        {
-            private readonly IDictionary<TInterface, byte> FEntries = new ConcurrentDictionary<TInterface, byte>();
-
-            private ICollection<TInterface> Entries => FEntries.Keys;
-
-            public void Add(TInterface item) => FEntries.Add(item, 0);
-
-            public bool Remove(TInterface item) => FEntries.Remove(item);
-
-            IEnumerator<TInterface> IEnumerable<TInterface>.GetEnumerator() => Entries.GetEnumerator();
-
-            IEnumerator IEnumerable.GetEnumerator() => Entries.GetEnumerator();
-
-            int IReadOnlyCollection<TInterface>.Count => FEntries.Count;
-        }
-        #endregion
+        private readonly HashSet<TInterface> FChildren = new HashSet<TInterface>();
+        private readonly Composite<TInterface> FParent;
 
         #region Protected
+
         /// <summary>
         /// Creates a new instance.
         /// </summary>
@@ -63,20 +43,15 @@ namespace Solti.Utils.DI.Internals
                 {
                     bool removed = FParent.FChildren.Remove(Self);
                     Debug.Assert(removed, "Parent does not contain this instance");
-                    FParent = null;
                 }
 
                 //
-                // Osszes gyereket eltavolitjuk majd toroljuk a listat.
+                // Osszes gyereket Dispose()-oljuk. A ToList()-es varazslat azert kell h iteracio kozben
+                // is kivehessunk elemet a listabol.
                 //
 
-                foreach (TInterface child in FChildren)
-                {
-                    child.Dispose();     
-                }
-
+                FChildren.ToList().ForEach(child => child.Dispose());
                 Debug.Assert(!FChildren.Any());
-                FChildren = null;
             }
 
             base.Dispose(disposeManaged);

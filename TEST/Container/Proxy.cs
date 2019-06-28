@@ -8,33 +8,32 @@ using System;
 using Moq;
 using NUnit.Framework;
 
-namespace Solti.Utils.DI.Injector.Tests
+namespace Solti.Utils.DI.Container.Tests
 {
     using Properties;
 
     [TestFixture]
-    public sealed partial class InjectorTests
+    public sealed partial class ContainerTests
     {
         [Test]
-        public void Injector_Proxy_ShouldThrowOnNonInterfaceKey()
+        public void Container_Proxy_ShouldThrowOnNonInterfaceKey()
         {
-            Assert.Throws<ArgumentException>(() => Injector.Proxy<Object>((p1, p2) => null), string.Format(Resources.NOT_AN_INTERFACE, "iface"));
-            Assert.Throws<ArgumentException>(() => Injector.Proxy(typeof(Object), (p1, p2, p3) => null), string.Format(Resources.NOT_AN_INTERFACE, "iface"));
+            Assert.Throws<ArgumentException>(() => Container.Proxy<Object>((p1, p2) => null), string.Format(Resources.NOT_AN_INTERFACE, "iface"));
+            Assert.Throws<ArgumentException>(() => Container.Proxy(typeof(Object), (p1, p2, p3) => null), string.Format(Resources.NOT_AN_INTERFACE, "iface"));
         }
 
         [TestCase(Lifetime.Transient)]
         [TestCase(Lifetime.Singleton)]
-        public void Injector_Proxy_ShouldOverwriteTheFactoryFunction(Lifetime lifetime)
+        public void Container_Proxy_ShouldOverwriteTheFactoryFunction(Lifetime lifetime)
         {
             int
                 callCount_1 = 0,
                 callCount_2 = 0;
 
-            Injector
+            Container
                 .Service<IInterface_1, Implementation_1>(lifetime)
                 .Proxy(typeof(IInterface_1), (injector, t, inst) =>
                 {
-                    Assert.AreSame(injector, Injector);
                     Assert.That(t, Is.EqualTo(typeof(IInterface_1)));
                     Assert.That(inst, Is.InstanceOf<Implementation_1>());
 
@@ -43,33 +42,34 @@ namespace Solti.Utils.DI.Injector.Tests
                 })
                 .Proxy<IInterface_1>((injector, inst) =>
                 {
-                    Assert.AreSame(injector, Injector);
                     Assert.That(inst, Is.TypeOf<Implementation_1>());
 
                     callCount_2++;
                     return new DecoratedImplementation_1();
                 });
 
-            var instance = Injector.Get<IInterface_1>();
-            
-            Assert.That(instance, Is.InstanceOf<DecoratedImplementation_1>());
-            Assert.That(callCount_1, Is.EqualTo(1));
-            Assert.That(callCount_2, Is.EqualTo(1));
+            using (IInjector injector = Container.CreateInjector())
+            {
+                var instance = injector.Get<IInterface_1>();
 
-            (lifetime == Lifetime.Singleton ? Assert.AreSame : ((Action<object, object>) Assert.AreNotSame))(instance, Injector.Get<IInterface_1>());
+                Assert.That(instance, Is.InstanceOf<DecoratedImplementation_1>());
+                Assert.That(callCount_1, Is.EqualTo(1));
+                Assert.That(callCount_2, Is.EqualTo(1));
+
+                (lifetime == Lifetime.Singleton ? Assert.AreSame : ((Action<object, object>) Assert.AreNotSame))(instance, injector.Get<IInterface_1>());
+            }
         }
 
         [Test]
-        public void Injector_Proxy_ShouldWorkWithGenericServices()
+        public void Container_Proxy_ShouldWorkWithGenericServices()
         {
             int callCount = 0;
 
-            Injector
+            Container
                 .Service<IInterface_1, Implementation_1>()
                 .Service(typeof(IInterface_3<>), typeof(Implementation_3<>))
                 .Proxy(typeof(IInterface_3<int>), (injector, type, inst) =>
                 {
-                    Assert.AreSame(injector, Injector);
                     Assert.AreSame(type, typeof(IInterface_3<int>));
                     Assert.That(inst, Is.InstanceOf<Implementation_3<int>>());
 
@@ -77,21 +77,24 @@ namespace Solti.Utils.DI.Injector.Tests
                     return new DecoratedImplementation_3<int>();
                 });
 
-            var instance = Injector.Get<IInterface_3<int>>();
-            
-            Assert.That(instance, Is.InstanceOf<DecoratedImplementation_3<int>>());
-            Assert.That(callCount, Is.EqualTo(1));
+            using (IInjector injector = Container.CreateInjector())
+            {
+                var instance = injector.Get<IInterface_3<int>>();
+
+                Assert.That(instance, Is.InstanceOf<DecoratedImplementation_3<int>>());
+                Assert.That(callCount, Is.EqualTo(1));
+            }
         }
 
         [Test]
-        public void Injector_ProxyShouldWorkWithLazyServices()
+        public void Container_ProxyShouldWorkWithLazyServices()
         {
             var mockResolver = new Mock<ITypeResolver>(MockBehavior.Strict);
             mockResolver
                 .Setup(r => r.Resolve(It.Is<Type>(t => t == typeof(IInterface_1))))
                 .Returns(typeof(Implementation_1));
 
-            Injector
+            Container
                 .Lazy<IInterface_1>(mockResolver.Object)
                 .Proxy<IInterface_1>((injector, inst) => new DecoratedImplementation_1());
 
@@ -101,33 +104,39 @@ namespace Solti.Utils.DI.Injector.Tests
 
             mockResolver.Verify(r => r.Resolve(It.Is<Type>(t => t == typeof(IInterface_1))), Times.Never);
 
-            Assert.That(Injector.Get<IInterface_1>(), Is.InstanceOf<DecoratedImplementation_1>());
+            using (IInjector injector = Container.CreateInjector())
+            {
+                Assert.That(injector.Get<IInterface_1>(), Is.InstanceOf<DecoratedImplementation_1>());
+            }         
         }
 
         [Test]
-        public void Injector_Proxy_ShouldThrowOnOpenGenericParameter()
+        public void Container_Proxy_ShouldThrowOnOpenGenericParameter()
         {
-            Injector.Service(typeof(IInterface_3<>), typeof(Implementation_3<>));
+            Container.Service(typeof(IInterface_3<>), typeof(Implementation_3<>));
 
-            Assert.Throws<InvalidOperationException>(() => Injector.Proxy(typeof(IInterface_3<>), (injector, type, inst) => inst), Resources.CANT_PROXY);
+            Assert.Throws<InvalidOperationException>(() => Container.Proxy(typeof(IInterface_3<>), (injector, type, inst) => inst), Resources.CANT_PROXY);
         }
 
         [Test]
-        public void Injector_Proxy_ShouldBeTypeChecked()
+        public void Container_Proxy_ShouldBeTypeChecked()
         {
-            Injector
+            Container
                 .Service<IInterface_1, Implementation_1>()
                 .Proxy(typeof(IInterface_1), (injector, type, inst) => new object());
 
-            Assert.Throws<Exception>(() => Injector.Get<IInterface_1>(), string.Format(Resources.INVALID_INSTANCE, typeof(IInterface_1)));
+            using (IInjector injector = Container.CreateInjector())
+            {
+                Assert.Throws<Exception>(() => injector.Get<IInterface_1>(), string.Format(Resources.INVALID_INSTANCE, typeof(IInterface_1)));
+            }           
         }
 
         [Test]
-        public void Injector_Proxy_ShouldThrowOnInstances()
+        public void Container_Proxy_ShouldThrowOnInstances()
         {
-            Injector.Instance<IInterface_1>(new Implementation_1());
+            Container.Instance<IInterface_1>(new Implementation_1());
 
-            Assert.Throws<InvalidOperationException>(() => Injector.Proxy<IInterface_1>((p1, p2) => default(IInterface_1)), Resources.CANT_PROXY);
+            Assert.Throws<InvalidOperationException>(() => Container.Proxy<IInterface_1>((p1, p2) => default(IInterface_1)), Resources.CANT_PROXY);
         }
     }
 }

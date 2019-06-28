@@ -8,7 +8,7 @@ using System;
 using Moq;
 using NUnit.Framework;
 
-namespace Solti.Utils.DI.Injector.Setup.Tests
+namespace Solti.Utils.DI.Container.Setup.Tests
 {
     using Annotations;
 
@@ -27,14 +27,14 @@ namespace Solti.Utils.DI.Injector.Setup.Tests
         [Test]
         public void Setup_ShouldHandleGenericTypes()
         {
-            var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
-            mockInjector
+            var mockContainer = new Mock<IServiceContainer>(MockBehavior.Strict);
+            mockContainer
                 .Setup(i => i.Service(It.IsAny<Type>(), It.IsAny<Type>(), It.IsAny<Lifetime>()))
-                .Returns(mockInjector.Object);
+                .Returns(mockContainer.Object);
 
-            mockInjector.Object.Setup(typeof(GenericService<>).Assembly);
+            mockContainer.Object.Setup(typeof(GenericService<>).Assembly);
 
-            mockInjector.Verify(i => i.Service(It.Is<Type>(t => t == typeof(IGenericService<>)), It.Is<Type>(t => t == typeof(GenericService<>)), It.Is<Lifetime>(lt => lt == Lifetime.Singleton)), Times.Once);
+            mockContainer.Verify(i => i.Service(It.Is<Type>(t => t == typeof(IGenericService<>)), It.Is<Type>(t => t == typeof(GenericService<>)), It.Is<Lifetime>(lt => lt == Lifetime.Singleton)), Times.Once);
         }
     }
 }

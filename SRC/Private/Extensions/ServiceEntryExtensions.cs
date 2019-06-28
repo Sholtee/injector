@@ -1,5 +1,5 @@
 ﻿/********************************************************************************
-* StateCriticalAttribute.cs                                                     *
+* ServiceEntryExtensions.cs                                                     *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
@@ -7,8 +7,9 @@ using System;
 
 namespace Solti.Utils.DI.Internals
 {
-    [AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
-    internal sealed class StateCriticalAttribute: Attribute
+    internal static class ServiceEntryExtensions
     {
+        public static Func<IInjector, Type, object> CreateFactory(this ServiceEntry entry) => Resolver.Get(entry.Implementation).ConvertToFactory();
+        public static void SetFactory(this ServiceEntry entry) => entry.Factory = entry.CreateFactory();
     }
 }
