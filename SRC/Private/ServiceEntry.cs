@@ -1,5 +1,5 @@
 /********************************************************************************
-* ContainerEntry.cs                                                             *
+* ServiceEntry.cs                                                             *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
@@ -14,7 +14,7 @@ namespace Solti.Utils.DI.Internals
     /// Stores the service definitions.
     /// </summary>
     /// <remarks>This is an internal class so it may change from version to version. Don't use it!</remarks>
-    public sealed class ContainerEntry: Disposable, IServiceInfo, ICloneable // TODO: !!TESTS!!
+    public sealed class ServiceEntry: Disposable, IServiceInfo, ICloneable // TODO: !!TESTS!!
     {
         private readonly Lazy<Type> FImplementation;
         private object FValue;
@@ -51,7 +51,7 @@ namespace Solti.Utils.DI.Internals
         }
         #endregion
 
-        private ContainerEntry(Type @interface, Lazy<Type> implementation, Lifetime? lifetime, bool isLazy)
+        private ServiceEntry(Type @interface, Lazy<Type> implementation, Lifetime? lifetime, bool isLazy)
         {
             Interface = @interface;
             Lifetime  = lifetime;
@@ -60,10 +60,10 @@ namespace Solti.Utils.DI.Internals
             FImplementation = implementation;
         }
 
-        public ContainerEntry(Type @interface, Type implementation = null, Lifetime? lifetime = null): 
+        public ServiceEntry(Type @interface, Type implementation = null, Lifetime? lifetime = null): 
             this(@interface, implementation != null ? new Lazy<Type>(() => implementation) : null, lifetime, false) {}
 
-        public ContainerEntry(Type @interface, ITypeResolver resolver, Lifetime? lifetime = null): 
+        public ServiceEntry(Type @interface, ITypeResolver resolver, Lifetime? lifetime = null): 
             this(@interface, new Lazy<Type>(() => resolver.Resolve(@interface), LazyThreadSafetyMode.ExecutionAndPublication), lifetime, true) {}
 
         /// <summary>
@@ -90,7 +90,7 @@ namespace Solti.Utils.DI.Internals
             //    nem masoljuk.
             //
 
-            return new ContainerEntry(Interface, FImplementation, IsInstance ? null : Lifetime, IsLazy)
+            return new ServiceEntry(Interface, FImplementation, IsInstance ? null : Lifetime, IsLazy)
             {
                 Factory = Factory,
 
@@ -108,9 +108,9 @@ namespace Solti.Utils.DI.Internals
         /// <summary>
         /// Creates a new specialized version from this entry.
         /// </summary>
-        public ContainerEntry Specialize(params Type[] genericArguments)
+        public ServiceEntry Specialize(params Type[] genericArguments)
         {
-            var specialied = new ContainerEntry(Interface.MakeGenericType(genericArguments), Implementation.MakeGenericType(genericArguments), Lifetime);
+            var specialied = new ServiceEntry(Interface.MakeGenericType(genericArguments), Implementation.MakeGenericType(genericArguments), Lifetime);
             specialied.SetFactory();
 
             return specialied;

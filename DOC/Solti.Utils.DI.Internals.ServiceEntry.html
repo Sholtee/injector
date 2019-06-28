@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Class ContainerEntry
+    <title>Class ServiceEntry
    | Injector </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Class ContainerEntry
+    <meta name="title" content="Class ServiceEntry
    | Injector ">
     <meta name="generator" content="docfx 2.42.4.0">
     
@@ -37,10 +37,10 @@
       <div role="main" class="container body-content hide-when-search">
         <div class="article row grid">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="Solti.Utils.DI.Internals.ContainerEntry">
+            <article class="content wrap" id="_content" data-uid="Solti.Utils.DI.Internals.ServiceEntry">
   
   
-  <h1 id="Solti_Utils_DI_Internals_ContainerEntry" data-uid="Solti.Utils.DI.Internals.ContainerEntry" class="text-break">Class ContainerEntry
+  <h1 id="Solti_Utils_DI_Internals_ServiceEntry" data-uid="Solti.Utils.DI.Internals.ServiceEntry" class="text-break">Class ServiceEntry
   </h1>
   <div class="markdown level0 summary"><p>Stores the service definitions.</p>
 </div>
@@ -49,7 +49,7 @@
     <h5>Inheritance</h5>
     <div class="level0"><span class="xref">System.Object</span></div>
     <div class="level1"><a class="xref" href="Solti.Utils.DI.Internals.Disposable.html">Disposable</a></div>
-    <div class="level2"><span class="xref">ContainerEntry</span></div>
+    <div class="level2"><span class="xref">ServiceEntry</span></div>
   </div>
   <div classs="implements">
     <h5>Implements</h5>
@@ -92,22 +92,22 @@
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Solti.Utils.DI.Internals.html">Solti.Utils.DI.Internals</a></h6>
   <h6><strong>Assembly</strong>: Injector.dll</h6>
-  <h5 id="Solti_Utils_DI_Internals_ContainerEntry_syntax">Syntax</h5>
+  <h5 id="Solti_Utils_DI_Internals_ServiceEntry_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public sealed class ContainerEntry : Disposable, IDisposable, IServiceInfo, ICloneable</code></pre>
+    <pre><code class="lang-csharp hljs">public sealed class ServiceEntry : Disposable, IDisposable, IServiceInfo, ICloneable</code></pre>
   </div>
-  <h5 id="Solti_Utils_DI_Internals_ContainerEntry_remarks"><strong>Remarks</strong></h5>
+  <h5 id="Solti_Utils_DI_Internals_ServiceEntry_remarks"><strong>Remarks</strong></h5>
   <div class="markdown level0 remarks"><p>This is an internal class so it may change from version to version. Don&apos;t use it!</p>
 </div>
   <h3 id="constructors">Constructors
   </h3>
-  <a id="Solti_Utils_DI_Internals_ContainerEntry__ctor_" data-uid="Solti.Utils.DI.Internals.ContainerEntry.#ctor*"></a>
-  <h4 id="Solti_Utils_DI_Internals_ContainerEntry__ctor_System_Type_Solti_Utils_DI_ITypeResolver_System_Nullable_Solti_Utils_DI_Lifetime__" data-uid="Solti.Utils.DI.Internals.ContainerEntry.#ctor(System.Type,Solti.Utils.DI.ITypeResolver,System.Nullable{Solti.Utils.DI.Lifetime})">ContainerEntry(Type, ITypeResolver, Nullable&lt;Lifetime&gt;)</h4>
+  <a id="Solti_Utils_DI_Internals_ServiceEntry__ctor_" data-uid="Solti.Utils.DI.Internals.ServiceEntry.#ctor*"></a>
+  <h4 id="Solti_Utils_DI_Internals_ServiceEntry__ctor_System_Type_Solti_Utils_DI_ITypeResolver_System_Nullable_Solti_Utils_DI_Lifetime__" data-uid="Solti.Utils.DI.Internals.ServiceEntry.#ctor(System.Type,Solti.Utils.DI.ITypeResolver,System.Nullable{Solti.Utils.DI.Lifetime})">ServiceEntry(Type, ITypeResolver, Nullable&lt;Lifetime&gt;)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public ContainerEntry(Type interface, ITypeResolver resolver, Lifetime? lifetime = default(Lifetime? ))</code></pre>
+    <pre><code class="lang-csharp hljs">public ServiceEntry(Type interface, ITypeResolver resolver, Lifetime? lifetime = default(Lifetime? ))</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -136,13 +136,13 @@
       </tr>
     </tbody>
   </table>
-  <a id="Solti_Utils_DI_Internals_ContainerEntry__ctor_" data-uid="Solti.Utils.DI.Internals.ContainerEntry.#ctor*"></a>
-  <h4 id="Solti_Utils_DI_Internals_ContainerEntry__ctor_System_Type_System_Type_System_Nullable_Solti_Utils_DI_Lifetime__" data-uid="Solti.Utils.DI.Internals.ContainerEntry.#ctor(System.Type,System.Type,System.Nullable{Solti.Utils.DI.Lifetime})">ContainerEntry(Type, Type, Nullable&lt;Lifetime&gt;)</h4>
+  <a id="Solti_Utils_DI_Internals_ServiceEntry__ctor_" data-uid="Solti.Utils.DI.Internals.ServiceEntry.#ctor*"></a>
+  <h4 id="Solti_Utils_DI_Internals_ServiceEntry__ctor_System_Type_System_Type_System_Nullable_Solti_Utils_DI_Lifetime__" data-uid="Solti.Utils.DI.Internals.ServiceEntry.#ctor(System.Type,System.Type,System.Nullable{Solti.Utils.DI.Lifetime})">ServiceEntry(Type, Type, Nullable&lt;Lifetime&gt;)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public ContainerEntry(Type interface, Type implementation = null, Lifetime? lifetime = default(Lifetime? ))</code></pre>
+    <pre><code class="lang-csharp hljs">public ServiceEntry(Type interface, Type implementation = null, Lifetime? lifetime = default(Lifetime? ))</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -173,8 +173,8 @@
   </table>
   <h3 id="properties">Properties
   </h3>
-  <a id="Solti_Utils_DI_Internals_ContainerEntry_Factory_" data-uid="Solti.Utils.DI.Internals.ContainerEntry.Factory*"></a>
-  <h4 id="Solti_Utils_DI_Internals_ContainerEntry_Factory" data-uid="Solti.Utils.DI.Internals.ContainerEntry.Factory">Factory</h4>
+  <a id="Solti_Utils_DI_Internals_ServiceEntry_Factory_" data-uid="Solti.Utils.DI.Internals.ServiceEntry.Factory*"></a>
+  <h4 id="Solti_Utils_DI_Internals_ServiceEntry_Factory" data-uid="Solti.Utils.DI.Internals.ServiceEntry.Factory">Factory</h4>
   <div class="markdown level1 summary"><p>Peldany gyar. Generikus implementacional (nem feltetlen) es Instance() hivasnal (biztosan) NULL.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -197,8 +197,8 @@
       </tr>
     </tbody>
   </table>
-  <a id="Solti_Utils_DI_Internals_ContainerEntry_Implementation_" data-uid="Solti.Utils.DI.Internals.ContainerEntry.Implementation*"></a>
-  <h4 id="Solti_Utils_DI_Internals_ContainerEntry_Implementation" data-uid="Solti.Utils.DI.Internals.ContainerEntry.Implementation">Implementation</h4>
+  <a id="Solti_Utils_DI_Internals_ServiceEntry_Implementation_" data-uid="Solti.Utils.DI.Internals.ServiceEntry.Implementation*"></a>
+  <h4 id="Solti_Utils_DI_Internals_ServiceEntry_Implementation" data-uid="Solti.Utils.DI.Internals.ServiceEntry.Implementation">Implementation</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -220,8 +220,8 @@
       </tr>
     </tbody>
   </table>
-  <a id="Solti_Utils_DI_Internals_ContainerEntry_Interface_" data-uid="Solti.Utils.DI.Internals.ContainerEntry.Interface*"></a>
-  <h4 id="Solti_Utils_DI_Internals_ContainerEntry_Interface" data-uid="Solti.Utils.DI.Internals.ContainerEntry.Interface">Interface</h4>
+  <a id="Solti_Utils_DI_Internals_ServiceEntry_Interface_" data-uid="Solti.Utils.DI.Internals.ServiceEntry.Interface*"></a>
+  <h4 id="Solti_Utils_DI_Internals_ServiceEntry_Interface" data-uid="Solti.Utils.DI.Internals.ServiceEntry.Interface">Interface</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -243,8 +243,8 @@
       </tr>
     </tbody>
   </table>
-  <a id="Solti_Utils_DI_Internals_ContainerEntry_IsFactory_" data-uid="Solti.Utils.DI.Internals.ContainerEntry.IsFactory*"></a>
-  <h4 id="Solti_Utils_DI_Internals_ContainerEntry_IsFactory" data-uid="Solti.Utils.DI.Internals.ContainerEntry.IsFactory">IsFactory</h4>
+  <a id="Solti_Utils_DI_Internals_ServiceEntry_IsFactory_" data-uid="Solti.Utils.DI.Internals.ServiceEntry.IsFactory*"></a>
+  <h4 id="Solti_Utils_DI_Internals_ServiceEntry_IsFactory" data-uid="Solti.Utils.DI.Internals.ServiceEntry.IsFactory">IsFactory</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -266,8 +266,8 @@
       </tr>
     </tbody>
   </table>
-  <a id="Solti_Utils_DI_Internals_ContainerEntry_IsInstance_" data-uid="Solti.Utils.DI.Internals.ContainerEntry.IsInstance*"></a>
-  <h4 id="Solti_Utils_DI_Internals_ContainerEntry_IsInstance" data-uid="Solti.Utils.DI.Internals.ContainerEntry.IsInstance">IsInstance</h4>
+  <a id="Solti_Utils_DI_Internals_ServiceEntry_IsInstance_" data-uid="Solti.Utils.DI.Internals.ServiceEntry.IsInstance*"></a>
+  <h4 id="Solti_Utils_DI_Internals_ServiceEntry_IsInstance" data-uid="Solti.Utils.DI.Internals.ServiceEntry.IsInstance">IsInstance</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -289,8 +289,8 @@
       </tr>
     </tbody>
   </table>
-  <a id="Solti_Utils_DI_Internals_ContainerEntry_IsLazy_" data-uid="Solti.Utils.DI.Internals.ContainerEntry.IsLazy*"></a>
-  <h4 id="Solti_Utils_DI_Internals_ContainerEntry_IsLazy" data-uid="Solti.Utils.DI.Internals.ContainerEntry.IsLazy">IsLazy</h4>
+  <a id="Solti_Utils_DI_Internals_ServiceEntry_IsLazy_" data-uid="Solti.Utils.DI.Internals.ServiceEntry.IsLazy*"></a>
+  <h4 id="Solti_Utils_DI_Internals_ServiceEntry_IsLazy" data-uid="Solti.Utils.DI.Internals.ServiceEntry.IsLazy">IsLazy</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -312,8 +312,8 @@
       </tr>
     </tbody>
   </table>
-  <a id="Solti_Utils_DI_Internals_ContainerEntry_IsService_" data-uid="Solti.Utils.DI.Internals.ContainerEntry.IsService*"></a>
-  <h4 id="Solti_Utils_DI_Internals_ContainerEntry_IsService" data-uid="Solti.Utils.DI.Internals.ContainerEntry.IsService">IsService</h4>
+  <a id="Solti_Utils_DI_Internals_ServiceEntry_IsService_" data-uid="Solti.Utils.DI.Internals.ServiceEntry.IsService*"></a>
+  <h4 id="Solti_Utils_DI_Internals_ServiceEntry_IsService" data-uid="Solti.Utils.DI.Internals.ServiceEntry.IsService">IsService</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -335,8 +335,8 @@
       </tr>
     </tbody>
   </table>
-  <a id="Solti_Utils_DI_Internals_ContainerEntry_Lifetime_" data-uid="Solti.Utils.DI.Internals.ContainerEntry.Lifetime*"></a>
-  <h4 id="Solti_Utils_DI_Internals_ContainerEntry_Lifetime" data-uid="Solti.Utils.DI.Internals.ContainerEntry.Lifetime">Lifetime</h4>
+  <a id="Solti_Utils_DI_Internals_ServiceEntry_Lifetime_" data-uid="Solti.Utils.DI.Internals.ServiceEntry.Lifetime*"></a>
+  <h4 id="Solti_Utils_DI_Internals_ServiceEntry_Lifetime" data-uid="Solti.Utils.DI.Internals.ServiceEntry.Lifetime">Lifetime</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -358,8 +358,8 @@
       </tr>
     </tbody>
   </table>
-  <a id="Solti_Utils_DI_Internals_ContainerEntry_Value_" data-uid="Solti.Utils.DI.Internals.ContainerEntry.Value*"></a>
-  <h4 id="Solti_Utils_DI_Internals_ContainerEntry_Value" data-uid="Solti.Utils.DI.Internals.ContainerEntry.Value">Value</h4>
+  <a id="Solti_Utils_DI_Internals_ServiceEntry_Value_" data-uid="Solti.Utils.DI.Internals.ServiceEntry.Value*"></a>
+  <h4 id="Solti_Utils_DI_Internals_ServiceEntry_Value" data-uid="Solti.Utils.DI.Internals.ServiceEntry.Value">Value</h4>
   <div class="markdown level1 summary"><p>Legyartott (Lifetime.Singleton eseten) vagy kivulrol definialt (Instance() hivas) peldany, kulomben NULL. </p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -384,8 +384,8 @@
   </table>
   <h3 id="methods">Methods
   </h3>
-  <a id="Solti_Utils_DI_Internals_ContainerEntry_Clone_" data-uid="Solti.Utils.DI.Internals.ContainerEntry.Clone*"></a>
-  <h4 id="Solti_Utils_DI_Internals_ContainerEntry_Clone" data-uid="Solti.Utils.DI.Internals.ContainerEntry.Clone">Clone()</h4>
+  <a id="Solti_Utils_DI_Internals_ServiceEntry_Clone_" data-uid="Solti.Utils.DI.Internals.ServiceEntry.Clone*"></a>
+  <h4 id="Solti_Utils_DI_Internals_ServiceEntry_Clone" data-uid="Solti.Utils.DI.Internals.ServiceEntry.Clone">Clone()</h4>
   <div class="markdown level1 summary"><p>See <span class="xref">System.ICloneable</span>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -408,8 +408,8 @@
       </tr>
     </tbody>
   </table>
-  <a id="Solti_Utils_DI_Internals_ContainerEntry_Dispose_" data-uid="Solti.Utils.DI.Internals.ContainerEntry.Dispose*"></a>
-  <h4 id="Solti_Utils_DI_Internals_ContainerEntry_Dispose_System_Boolean_" data-uid="Solti.Utils.DI.Internals.ContainerEntry.Dispose(System.Boolean)">Dispose(Boolean)</h4>
+  <a id="Solti_Utils_DI_Internals_ServiceEntry_Dispose_" data-uid="Solti.Utils.DI.Internals.ServiceEntry.Dispose*"></a>
+  <h4 id="Solti_Utils_DI_Internals_ServiceEntry_Dispose_System_Boolean_" data-uid="Solti.Utils.DI.Internals.ServiceEntry.Dispose(System.Boolean)">Dispose(Boolean)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -435,14 +435,14 @@
   </table>
   <h5 class="overrides">Overrides</h5>
   <div><a class="xref" href="Solti.Utils.DI.Internals.Disposable.html#Solti_Utils_DI_Internals_Disposable_Dispose_System_Boolean_">Disposable.Dispose(Boolean)</a></div>
-  <a id="Solti_Utils_DI_Internals_ContainerEntry_Specialize_" data-uid="Solti.Utils.DI.Internals.ContainerEntry.Specialize*"></a>
-  <h4 id="Solti_Utils_DI_Internals_ContainerEntry_Specialize_System_Type___" data-uid="Solti.Utils.DI.Internals.ContainerEntry.Specialize(System.Type[])">Specialize(Type[])</h4>
+  <a id="Solti_Utils_DI_Internals_ServiceEntry_Specialize_" data-uid="Solti.Utils.DI.Internals.ServiceEntry.Specialize*"></a>
+  <h4 id="Solti_Utils_DI_Internals_ServiceEntry_Specialize_System_Type___" data-uid="Solti.Utils.DI.Internals.ServiceEntry.Specialize(System.Type[])">Specialize(Type[])</h4>
   <div class="markdown level1 summary"><p>Creates a new specialized version from this entry.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public ContainerEntry Specialize(params Type[] genericArguments)</code></pre>
+    <pre><code class="lang-csharp hljs">public ServiceEntry Specialize(params Type[] genericArguments)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -471,7 +471,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Solti.Utils.DI.Internals.ContainerEntry.html">ContainerEntry</a></td>
+        <td><a class="xref" href="Solti.Utils.DI.Internals.ServiceEntry.html">ServiceEntry</a></td>
         <td></td>
       </tr>
     </tbody>

@@ -19,7 +19,7 @@ namespace Solti.Utils.DI.Internals
     /// <remarks>This is an internal class so it may change from version to version. Don't use it!</remarks>
     public class ServiceCollection : Disposable, IServiceCollection
     {
-        private readonly Dictionary<Type, ContainerEntry> FEntries;
+        private readonly Dictionary<Type, ServiceEntry> FEntries;
 
         #region Protected
         /// <summary>
@@ -48,15 +48,15 @@ namespace Solti.Utils.DI.Internals
         /// Creates a new <see cref="ServiceCollection"/> instance.
         /// </summary>
         /// <param name="inheritedEntries">Entries to be inherited.</param>
-        public ServiceCollection(IEnumerable<ContainerEntry> inheritedEntries) => FEntries = new Dictionary<Type, ContainerEntry>
+        public ServiceCollection(IEnumerable<ServiceEntry> inheritedEntries) => FEntries = new Dictionary<Type, ServiceEntry>
         (
             inheritedEntries?
                 .ToDictionary
                 (
                     entry => entry.Interface,
-                    entry => (ContainerEntry) entry.Clone()
+                    entry => (ServiceEntry) entry.Clone()
                 )
-            ?? new Dictionary<Type, ContainerEntry>(0)
+            ?? new Dictionary<Type, ServiceEntry>(0)
         );
         #endregion
 
@@ -64,7 +64,7 @@ namespace Solti.Utils.DI.Internals
         /// <summary>
         /// See <see cref="IServiceCollection"/>
         /// </summary>
-        public ContainerEntry QueryEntry(Type iface)
+        public ServiceEntry QueryEntry(Type iface)
         {
             if (QueryEntry(iface, out var entry)) return entry;
 
@@ -88,13 +88,13 @@ namespace Solti.Utils.DI.Internals
             Add(entry = genericEntry.Specialize(iface.GetGenericArguments()));
             return entry;
             
-            bool QueryEntry(Type key, out ContainerEntry val) => FEntries.TryGetValue(key, out val);
+            bool QueryEntry(Type key, out ServiceEntry val) => FEntries.TryGetValue(key, out val);
         }
 
         /// <summary>
         /// See <see cref="ICollection{T}"/>
         /// </summary>
-        public IEnumerator<ContainerEntry> GetEnumerator() => FEntries.Values.GetEnumerator();
+        public IEnumerator<ServiceEntry> GetEnumerator() => FEntries.Values.GetEnumerator();
 
         /// <summary>
         /// See <see cref="ICollection{T}"/>
@@ -104,9 +104,9 @@ namespace Solti.Utils.DI.Internals
         /// <summary>
         /// Adds an entry to the collection.
         /// </summary>
-        /// <param name="item">The <see cref="ContainerEntry"/> instance to be added.</param>
+        /// <param name="item">The <see cref="ServiceEntry"/> instance to be added.</param>
         /// <remarks>A <see cref="ServiceAlreadyRegisteredException"/> is thrown if an item with the same interface already exists in the collection.</remarks>
-        public void Add(ContainerEntry item)
+        public void Add(ServiceEntry item)
         {
             try
             {
@@ -142,17 +142,17 @@ namespace Solti.Utils.DI.Internals
         /// <summary>
         /// See <see cref="ICollection{T}"/>
         /// </summary>
-        public bool Contains(ContainerEntry item) => FEntries.ContainsValue(item);
+        public bool Contains(ServiceEntry item) => FEntries.ContainsValue(item);
 
         /// <summary>
         /// NOT SUPPORTED! Don't use!
         /// </summary>
-        public void CopyTo(ContainerEntry[] array, int arrayIndex) => throw new NotSupportedException();
+        public void CopyTo(ServiceEntry[] array, int arrayIndex) => throw new NotSupportedException();
 
         /// <summary>
         /// NOT SUPPORTED! Don't use!
         /// </summary>
-        public bool Remove(ContainerEntry item) => throw new NotSupportedException();
+        public bool Remove(ServiceEntry item) => throw new NotSupportedException();
 
         /// <summary>
         /// See <see cref="ICollection{T}"/>

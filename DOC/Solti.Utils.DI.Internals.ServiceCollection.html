@@ -55,8 +55,8 @@
     <h5>Implements</h5>
     <div><span class="xref">System.IDisposable</span></div>
     <div><a class="xref" href="Solti.Utils.DI.Internals.IServiceCollection.html">IServiceCollection</a></div>
-    <div><span class="xref">System.Collections.Generic.ICollection</span>&lt;<a class="xref" href="Solti.Utils.DI.Internals.ContainerEntry.html">ContainerEntry</a>&gt;</div>
-    <div><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="Solti.Utils.DI.Internals.ContainerEntry.html">ContainerEntry</a>&gt;</div>
+    <div><span class="xref">System.Collections.Generic.ICollection</span>&lt;<a class="xref" href="Solti.Utils.DI.Internals.ServiceEntry.html">ServiceEntry</a>&gt;</div>
+    <div><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="Solti.Utils.DI.Internals.ServiceEntry.html">ServiceEntry</a>&gt;</div>
     <div><span class="xref">System.Collections.IEnumerable</span></div>
   </div>
   <div class="inheritedMembers">
@@ -96,7 +96,7 @@
   <h6><strong>Assembly</strong>: Injector.dll</h6>
   <h5 id="Solti_Utils_DI_Internals_ServiceCollection_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class ServiceCollection : Disposable, IDisposable, IServiceCollection, ICollection&lt;ContainerEntry&gt;, IEnumerable&lt;ContainerEntry&gt;, IEnumerable</code></pre>
+    <pre><code class="lang-csharp hljs">public class ServiceCollection : Disposable, IDisposable, IServiceCollection, ICollection&lt;ServiceEntry&gt;, IEnumerable&lt;ServiceEntry&gt;, IEnumerable</code></pre>
   </div>
   <h5 id="Solti_Utils_DI_Internals_ServiceCollection_remarks"><strong>Remarks</strong></h5>
   <div class="markdown level0 remarks"><p>This is an internal class so it may change from version to version. Don&apos;t use it!</p>
@@ -113,13 +113,13 @@
     <pre><code class="lang-csharp hljs">public ServiceCollection()</code></pre>
   </div>
   <a id="Solti_Utils_DI_Internals_ServiceCollection__ctor_" data-uid="Solti.Utils.DI.Internals.ServiceCollection.#ctor*"></a>
-  <h4 id="Solti_Utils_DI_Internals_ServiceCollection__ctor_System_Collections_Generic_IEnumerable_Solti_Utils_DI_Internals_ContainerEntry__" data-uid="Solti.Utils.DI.Internals.ServiceCollection.#ctor(System.Collections.Generic.IEnumerable{Solti.Utils.DI.Internals.ContainerEntry})">ServiceCollection(IEnumerable&lt;ContainerEntry&gt;)</h4>
+  <h4 id="Solti_Utils_DI_Internals_ServiceCollection__ctor_System_Collections_Generic_IEnumerable_Solti_Utils_DI_Internals_ServiceEntry__" data-uid="Solti.Utils.DI.Internals.ServiceCollection.#ctor(System.Collections.Generic.IEnumerable{Solti.Utils.DI.Internals.ServiceEntry})">ServiceCollection(IEnumerable&lt;ServiceEntry&gt;)</h4>
   <div class="markdown level1 summary"><p>Creates a new <a class="xref" href="Solti.Utils.DI.Internals.ServiceCollection.html">ServiceCollection</a> instance.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public ServiceCollection(IEnumerable&lt;ContainerEntry&gt; inheritedEntries)</code></pre>
+    <pre><code class="lang-csharp hljs">public ServiceCollection(IEnumerable&lt;ServiceEntry&gt; inheritedEntries)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -132,7 +132,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="Solti.Utils.DI.Internals.ContainerEntry.html">ContainerEntry</a>&gt;</td>
+        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="Solti.Utils.DI.Internals.ServiceEntry.html">ServiceEntry</a>&gt;</td>
         <td><span class="parametername">inheritedEntries</span></td>
         <td><p>Entries to be inherited.</p>
 </td>
@@ -192,13 +192,13 @@
   <h3 id="methods">Methods
   </h3>
   <a id="Solti_Utils_DI_Internals_ServiceCollection_Add_" data-uid="Solti.Utils.DI.Internals.ServiceCollection.Add*"></a>
-  <h4 id="Solti_Utils_DI_Internals_ServiceCollection_Add_Solti_Utils_DI_Internals_ContainerEntry_" data-uid="Solti.Utils.DI.Internals.ServiceCollection.Add(Solti.Utils.DI.Internals.ContainerEntry)">Add(ContainerEntry)</h4>
+  <h4 id="Solti_Utils_DI_Internals_ServiceCollection_Add_Solti_Utils_DI_Internals_ServiceEntry_" data-uid="Solti.Utils.DI.Internals.ServiceCollection.Add(Solti.Utils.DI.Internals.ServiceEntry)">Add(ServiceEntry)</h4>
   <div class="markdown level1 summary"><p>Adds an entry to the collection.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void Add(ContainerEntry item)</code></pre>
+    <pre><code class="lang-csharp hljs">public void Add(ServiceEntry item)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -211,14 +211,14 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Solti.Utils.DI.Internals.ContainerEntry.html">ContainerEntry</a></td>
+        <td><a class="xref" href="Solti.Utils.DI.Internals.ServiceEntry.html">ServiceEntry</a></td>
         <td><span class="parametername">item</span></td>
-        <td><p>The <a class="xref" href="Solti.Utils.DI.Internals.ContainerEntry.html">ContainerEntry</a> instance to be added.</p>
+        <td><p>The <a class="xref" href="Solti.Utils.DI.Internals.ServiceEntry.html">ServiceEntry</a> instance to be added.</p>
 </td>
       </tr>
     </tbody>
   </table>
-  <h5 id="Solti_Utils_DI_Internals_ServiceCollection_Add_Solti_Utils_DI_Internals_ContainerEntry__remarks">Remarks</h5>
+  <h5 id="Solti_Utils_DI_Internals_ServiceCollection_Add_Solti_Utils_DI_Internals_ServiceEntry__remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>A <a class="xref" href="Solti.Utils.DI.ServiceAlreadyRegisteredException.html">ServiceAlreadyRegisteredException</a> is thrown if an item with the same interface already exists in the collection.</p>
 </div>
   <a id="Solti_Utils_DI_Internals_ServiceCollection_Clear_" data-uid="Solti.Utils.DI.Internals.ServiceCollection.Clear*"></a>
@@ -234,13 +234,13 @@
   <div class="markdown level1 remarks"><p>All the contained entries will be disposed.</p>
 </div>
   <a id="Solti_Utils_DI_Internals_ServiceCollection_Contains_" data-uid="Solti.Utils.DI.Internals.ServiceCollection.Contains*"></a>
-  <h4 id="Solti_Utils_DI_Internals_ServiceCollection_Contains_Solti_Utils_DI_Internals_ContainerEntry_" data-uid="Solti.Utils.DI.Internals.ServiceCollection.Contains(Solti.Utils.DI.Internals.ContainerEntry)">Contains(ContainerEntry)</h4>
+  <h4 id="Solti_Utils_DI_Internals_ServiceCollection_Contains_Solti_Utils_DI_Internals_ServiceEntry_" data-uid="Solti.Utils.DI.Internals.ServiceCollection.Contains(Solti.Utils.DI.Internals.ServiceEntry)">Contains(ServiceEntry)</h4>
   <div class="markdown level1 summary"><p>See <span class="xref">System.Collections.Generic.ICollection&lt;T&gt;</span></p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool Contains(ContainerEntry item)</code></pre>
+    <pre><code class="lang-csharp hljs">public bool Contains(ServiceEntry item)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -253,7 +253,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Solti.Utils.DI.Internals.ContainerEntry.html">ContainerEntry</a></td>
+        <td><a class="xref" href="Solti.Utils.DI.Internals.ServiceEntry.html">ServiceEntry</a></td>
         <td><span class="parametername">item</span></td>
         <td></td>
       </tr>
@@ -275,13 +275,13 @@
     </tbody>
   </table>
   <a id="Solti_Utils_DI_Internals_ServiceCollection_CopyTo_" data-uid="Solti.Utils.DI.Internals.ServiceCollection.CopyTo*"></a>
-  <h4 id="Solti_Utils_DI_Internals_ServiceCollection_CopyTo_Solti_Utils_DI_Internals_ContainerEntry___System_Int32_" data-uid="Solti.Utils.DI.Internals.ServiceCollection.CopyTo(Solti.Utils.DI.Internals.ContainerEntry[],System.Int32)">CopyTo(ContainerEntry[], Int32)</h4>
+  <h4 id="Solti_Utils_DI_Internals_ServiceCollection_CopyTo_Solti_Utils_DI_Internals_ServiceEntry___System_Int32_" data-uid="Solti.Utils.DI.Internals.ServiceCollection.CopyTo(Solti.Utils.DI.Internals.ServiceEntry[],System.Int32)">CopyTo(ServiceEntry[], Int32)</h4>
   <div class="markdown level1 summary"><p>NOT SUPPORTED! Don&apos;t use!</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void CopyTo(ContainerEntry[] array, int arrayIndex)</code></pre>
+    <pre><code class="lang-csharp hljs">public void CopyTo(ServiceEntry[] array, int arrayIndex)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -294,7 +294,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Solti.Utils.DI.Internals.ContainerEntry.html">ContainerEntry</a>[]</td>
+        <td><a class="xref" href="Solti.Utils.DI.Internals.ServiceEntry.html">ServiceEntry</a>[]</td>
         <td><span class="parametername">array</span></td>
         <td></td>
       </tr>
@@ -340,7 +340,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IEnumerator&lt;ContainerEntry&gt; GetEnumerator()</code></pre>
+    <pre><code class="lang-csharp hljs">public IEnumerator&lt;ServiceEntry&gt; GetEnumerator()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -352,7 +352,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Generic.IEnumerator</span>&lt;<a class="xref" href="Solti.Utils.DI.Internals.ContainerEntry.html">ContainerEntry</a>&gt;</td>
+        <td><span class="xref">System.Collections.Generic.IEnumerator</span>&lt;<a class="xref" href="Solti.Utils.DI.Internals.ServiceEntry.html">ServiceEntry</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -364,7 +364,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public ContainerEntry QueryEntry(Type iface)</code></pre>
+    <pre><code class="lang-csharp hljs">public ServiceEntry QueryEntry(Type iface)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -393,19 +393,19 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Solti.Utils.DI.Internals.ContainerEntry.html">ContainerEntry</a></td>
+        <td><a class="xref" href="Solti.Utils.DI.Internals.ServiceEntry.html">ServiceEntry</a></td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <a id="Solti_Utils_DI_Internals_ServiceCollection_Remove_" data-uid="Solti.Utils.DI.Internals.ServiceCollection.Remove*"></a>
-  <h4 id="Solti_Utils_DI_Internals_ServiceCollection_Remove_Solti_Utils_DI_Internals_ContainerEntry_" data-uid="Solti.Utils.DI.Internals.ServiceCollection.Remove(Solti.Utils.DI.Internals.ContainerEntry)">Remove(ContainerEntry)</h4>
+  <h4 id="Solti_Utils_DI_Internals_ServiceCollection_Remove_Solti_Utils_DI_Internals_ServiceEntry_" data-uid="Solti.Utils.DI.Internals.ServiceCollection.Remove(Solti.Utils.DI.Internals.ServiceEntry)">Remove(ServiceEntry)</h4>
   <div class="markdown level1 summary"><p>NOT SUPPORTED! Don&apos;t use!</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool Remove(ContainerEntry item)</code></pre>
+    <pre><code class="lang-csharp hljs">public bool Remove(ServiceEntry item)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -418,7 +418,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Solti.Utils.DI.Internals.ContainerEntry.html">ContainerEntry</a></td>
+        <td><a class="xref" href="Solti.Utils.DI.Internals.ServiceEntry.html">ServiceEntry</a></td>
         <td><span class="parametername">item</span></td>
         <td></td>
       </tr>

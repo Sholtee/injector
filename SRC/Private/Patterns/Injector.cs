@@ -21,7 +21,7 @@ namespace Solti.Utils.DI.Internals
 
         private Injector() => throw new NotSupportedException();
 
-        private Injector(IEnumerable<ContainerEntry> inheritedServices)
+        private Injector(IEnumerable<ServiceEntry> inheritedServices)
         {
             FServices = new ServiceCollection(inheritedServices)
             {
@@ -29,7 +29,7 @@ namespace Solti.Utils.DI.Internals
                 // Beallitjuk a proxyt, majd felvesszuk sajat magunkat.
                 //
 
-                new ContainerEntry(typeof(IInjector))
+                new ServiceEntry(typeof(IInjector))
                 {
                     Value = InterfaceProxy<IInjector>.Chain(this, current => new ParameterValidatorProxy<IInjector>(current))
                 }
@@ -69,7 +69,7 @@ namespace Solti.Utils.DI.Internals
                 // A bejegyzesnek mar legyartottnak, vagy legyarthatonak kell lennie.
                 //
 
-                ContainerEntry entry = FServices.QueryEntry(iface);
+                ServiceEntry entry = FServices.QueryEntry(iface);
 
                 Debug.Assert(entry.Value != null || entry.Factory != null);
 

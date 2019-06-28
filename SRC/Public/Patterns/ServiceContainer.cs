@@ -21,7 +21,7 @@ namespace Solti.Utils.DI
         #region Private
         private /*readonly*/ ServiceCollection FEntries;
 
-        private ContainerEntry Register(ContainerEntry entry)
+        private ServiceEntry Register(ServiceEntry entry)
         {
             FEntries.Add(entry);
             return entry;
@@ -49,11 +49,11 @@ namespace Solti.Utils.DI
         #endregion
 
         #region Internal
-        internal ContainerEntry Service(Type iface, Type implementation, Lifetime? lifetime)
+        internal ServiceEntry Service(Type iface, Type implementation, Lifetime? lifetime)
         {
             ValidateImplementation(iface, implementation);
 
-            var entry = new ContainerEntry(iface, implementation, lifetime);
+            var entry = new ServiceEntry(iface, implementation, lifetime);
 
             //
             // Ha generikus interface-t regisztralunk akkor nem kell (nem is lehet) 
@@ -65,17 +65,17 @@ namespace Solti.Utils.DI
             return Register(entry);
         }
 
-        internal ContainerEntry Factory(Type iface, Func<IInjector, Type, object> factory, Lifetime? lifetime)
+        internal ServiceEntry Factory(Type iface, Func<IInjector, Type, object> factory, Lifetime? lifetime)
         {
-            return Register(new ContainerEntry(iface, lifetime: lifetime)
+            return Register(new ServiceEntry(iface, lifetime: lifetime)
             {
                 Factory = factory
             });
         }
 
-        internal ContainerEntry Lazy(Type iface, ITypeResolver implementation, Lifetime? lifetime)
+        internal ServiceEntry Lazy(Type iface, ITypeResolver implementation, Lifetime? lifetime)
         {         
-            var entry = new ContainerEntry(iface, implementation, lifetime);
+            var entry = new ServiceEntry(iface, implementation, lifetime);
 
             //
             // Ha generikus interface-t regisztralunk akkor nem kell (nem is lehet) 
@@ -114,9 +114,9 @@ namespace Solti.Utils.DI
             return Register(entry);
         }
 
-        internal ContainerEntry Proxy(Type iface, Func<IInjector, Type, object, object> decorator)
+        internal ServiceEntry Proxy(Type iface, Func<IInjector, Type, object, object> decorator)
         {
-            ContainerEntry entry = FEntries.QueryEntry(iface);
+            ServiceEntry entry = FEntries.QueryEntry(iface);
 
             //
             // Service(), Factory(), Lazy()
@@ -137,7 +137,7 @@ namespace Solti.Utils.DI
             throw new InvalidOperationException(Resources.CANT_PROXY);
         }
 
-        internal ContainerEntry Instance(Type iface, object instance, bool releaseOnDispose)
+        internal ServiceEntry Instance(Type iface, object instance, bool releaseOnDispose)
         { 
             if (!iface.IsInstanceOfType(instance))
                 throw new InvalidOperationException(string.Format(Resources.NOT_ASSIGNABLE, iface, instance.GetType()));
@@ -147,7 +147,7 @@ namespace Solti.Utils.DI
             // egy mar legyartott Singleton eseten.
             //
 
-            return Register(new ContainerEntry(iface, lifetime: releaseOnDispose ? Lifetime.Singleton : (Lifetime?) null)
+            return Register(new ServiceEntry(iface, lifetime: releaseOnDispose ? Lifetime.Singleton : (Lifetime?) null)
             {
                 Value = instance
             });
