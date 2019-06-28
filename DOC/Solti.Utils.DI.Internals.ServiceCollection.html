@@ -54,6 +54,7 @@
   <div classs="implements">
     <h5>Implements</h5>
     <div><span class="xref">System.IDisposable</span></div>
+    <div><a class="xref" href="Solti.Utils.DI.Internals.IServiceCollection.html">IServiceCollection</a></div>
     <div><span class="xref">System.Collections.Generic.ICollection</span>&lt;<a class="xref" href="Solti.Utils.DI.Internals.ContainerEntry.html">ContainerEntry</a>&gt;</div>
     <div><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="Solti.Utils.DI.Internals.ContainerEntry.html">ContainerEntry</a>&gt;</div>
     <div><span class="xref">System.Collections.IEnumerable</span></div>
@@ -95,7 +96,7 @@
   <h6><strong>Assembly</strong>: Injector.dll</h6>
   <h5 id="Solti_Utils_DI_Internals_ServiceCollection_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class ServiceCollection : Disposable, IDisposable, ICollection&lt;ContainerEntry&gt;, IEnumerable&lt;ContainerEntry&gt;, IEnumerable</code></pre>
+    <pre><code class="lang-csharp hljs">public class ServiceCollection : Disposable, IDisposable, IServiceCollection, ICollection&lt;ContainerEntry&gt;, IEnumerable&lt;ContainerEntry&gt;, IEnumerable</code></pre>
   </div>
   <h5 id="Solti_Utils_DI_Internals_ServiceCollection_remarks"><strong>Remarks</strong></h5>
   <div class="markdown level0 remarks"><p>This is an internal class so it may change from version to version. Don&apos;t use it!</p>
@@ -358,7 +359,7 @@
   </table>
   <a id="Solti_Utils_DI_Internals_ServiceCollection_QueryEntry_" data-uid="Solti.Utils.DI.Internals.ServiceCollection.QueryEntry*"></a>
   <h4 id="Solti_Utils_DI_Internals_ServiceCollection_QueryEntry_System_Type_" data-uid="Solti.Utils.DI.Internals.ServiceCollection.QueryEntry(System.Type)">QueryEntry(Type)</h4>
-  <div class="markdown level1 summary"><p>Gets the entry associated with the given interface.</p>
+  <div class="markdown level1 summary"><p>See <a class="xref" href="Solti.Utils.DI.Internals.IServiceCollection.html">IServiceCollection</a></p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -378,8 +379,7 @@
       <tr>
         <td><span class="xref">System.Type</span></td>
         <td><span class="parametername">iface</span></td>
-        <td><p>The &quot;id&quot; of the entry. Must be an interface <span class="xref">System.Type</span>.</p>
-</td>
+        <td></td>
       </tr>
     </tbody>
   </table>
@@ -394,14 +394,10 @@
     <tbody>
       <tr>
         <td><a class="xref" href="Solti.Utils.DI.Internals.ContainerEntry.html">ContainerEntry</a></td>
-        <td><p>The stored <a class="xref" href="Solti.Utils.DI.Internals.ContainerEntry.html">ContainerEntry</a> instance.</p>
-</td>
+        <td></td>
       </tr>
     </tbody>
   </table>
-  <h5 id="Solti_Utils_DI_Internals_ServiceCollection_QueryEntry_System_Type__remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>This method supports entry specializing which means after registering a generic entry you can query its (unregistered) closed pair by passing the closed interface <span class="xref">System.Type</span> to this function.</p>
-</div>
   <a id="Solti_Utils_DI_Internals_ServiceCollection_Remove_" data-uid="Solti.Utils.DI.Internals.ServiceCollection.Remove*"></a>
   <h4 id="Solti_Utils_DI_Internals_ServiceCollection_Remove_Solti_Utils_DI_Internals_ContainerEntry_" data-uid="Solti.Utils.DI.Internals.ServiceCollection.Remove(Solti.Utils.DI.Internals.ContainerEntry)">Remove(ContainerEntry)</h4>
   <div class="markdown level1 summary"><p>NOT SUPPORTED! Don&apos;t use!</p>
@@ -472,6 +468,9 @@
   <h3 id="implements">Implements</h3>
   <div>
       <span class="xref">System.IDisposable</span>
+  </div>
+  <div>
+      <a class="xref" href="Solti.Utils.DI.Internals.IServiceCollection.html">IServiceCollection</a>
   </div>
   <div>
       <span class="xref">System.Collections.Generic.ICollection&lt;T&gt;</span>
