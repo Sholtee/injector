@@ -142,11 +142,6 @@ namespace Solti.Utils.DI
             if (!iface.IsInstanceOfType(instance))
                 throw new InvalidOperationException(string.Format(Resources.NOT_ASSIGNABLE, iface, instance.GetType()));
 
-            //
-            // Ha kezelni kell a peldany elettartamat akkor innentol ugyanugy viselkedunk mint
-            // egy mar legyartott Singleton eseten.
-            //
-
             return Register(new ServiceEntry(iface, instance, releaseOnDispose));
         }
 
