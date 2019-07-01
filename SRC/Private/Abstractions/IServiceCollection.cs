@@ -19,7 +19,7 @@ namespace Solti.Utils.DI.Internals
         /// </summary>
         /// <param name="iface">The "id" of the entry. Must be an interface <see cref="Type"/>.</param>
         /// <returns>The stored <see cref="ServiceEntry"/> instance.</returns>
-        /// <remarks>This method supports entry specializing which means after registering a generic entry you can query its (unregistered) closed pair by passing the closed interface <see cref="Type"/> to this function.</remarks>
+        /// <remarks>This method supports entry specialization which means after registering a generic entry you can query its (unregistered) closed pair by passing the closed interface <see cref="Type"/> to this function.</remarks>
         ServiceEntry QueryEntry(Type iface);
     }
 }

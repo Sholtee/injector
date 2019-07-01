@@ -11,7 +11,7 @@ namespace Solti.Utils.DI.Internals
     using Properties;
 
     /// <summary>
-    /// Stores the service definitions.
+    /// Stores a service definition.
     /// </summary>
     /// <remarks>This is an internal class so it may change from version to version. Don't use it!</remarks>
     public sealed class ServiceEntry: Disposable, IServiceInfo, ICloneable // TODO: !!TESTS!!
