@@ -49,11 +49,11 @@ namespace Solti.Utils.DI
         #endregion
 
         #region Internal
-        internal ServiceEntry Service(Type iface, Type implementation, Lifetime? lifetime)
+        internal ServiceEntry Service(Type iface, Type implementation, Lifetime lifetime)
         {
             ValidateImplementation(iface, implementation);
 
-            var entry = new ServiceEntry(iface, implementation, lifetime);
+            var entry = new ServiceEntry(iface, lifetime, implementation);
 
             //
             // Ha generikus interface-t regisztralunk akkor nem kell (nem is lehet) 
@@ -65,17 +65,17 @@ namespace Solti.Utils.DI
             return Register(entry);
         }
 
-        internal ServiceEntry Factory(Type iface, Func<IInjector, Type, object> factory, Lifetime? lifetime)
+        internal ServiceEntry Factory(Type iface, Func<IInjector, Type, object> factory, Lifetime lifetime)
         {
-            return Register(new ServiceEntry(iface, lifetime: lifetime)
+            return Register(new ServiceEntry(iface, lifetime)
             {
                 Factory = factory
             });
         }
 
-        internal ServiceEntry Lazy(Type iface, ITypeResolver implementation, Lifetime? lifetime)
+        internal ServiceEntry Lazy(Type iface, ITypeResolver implementation, Lifetime lifetime)
         {         
-            var entry = new ServiceEntry(iface, implementation, lifetime);
+            var entry = new ServiceEntry(iface, lifetime, implementation);
 
             //
             // Ha generikus interface-t regisztralunk akkor nem kell (nem is lehet) 

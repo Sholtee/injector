@@ -69,9 +69,9 @@ namespace Solti.Utils.DI.Internals
             FAttributes     = attributes;
         }
 
-        private static bool ShouldRelease(Lifetime? lifetime) => new Lifetime?[]{ DI.Lifetime.Singleton }.Contains(lifetime);
+        private static bool ShouldRelease(Lifetime lifetime) => new []{ DI.Lifetime.Singleton }.Contains(lifetime);
 
-        public ServiceEntry(Type @interface, Type implementation = null, Lifetime? lifetime = null): this
+        public ServiceEntry(Type @interface, Lifetime lifetime, Type implementation = null): this
         (
             @interface, 
             (object) implementation, 
@@ -79,7 +79,7 @@ namespace Solti.Utils.DI.Internals
             ShouldRelease(lifetime) ? EntryAttributes.ReleaseOnDispose : EntryAttributes.None
         ) {}
 
-        public ServiceEntry(Type @interface, ITypeResolver resolver, Lifetime? lifetime = null): this
+        public ServiceEntry(Type @interface, Lifetime lifetime, ITypeResolver resolver): this
         (
             @interface, 
             new Lazy<Type>(() => resolver.Resolve(@interface), LazyThreadSafetyMode.ExecutionAndPublication), 

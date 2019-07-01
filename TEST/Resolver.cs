@@ -57,7 +57,7 @@ namespace Solti.Utils.DI.Internals.Tests
                 .Returns<Type>(type =>
                 {
                     if (type == typeof(IDisposable)) return new Disposable();
-                    if (type == typeof(ICloneable))  return new ServiceEntry(null);
+                    if (type == typeof(ICloneable))  return new ServiceEntry(type, Lifetime.Transient);
 
                     Assert.Fail("Unknown type");
                     return null;

@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Diagnostics;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -13,9 +14,11 @@ namespace Solti.Utils.DI.Internals
 
         public static void SetFactory(this ServiceEntry entry) => entry.Factory = entry.CreateFactory();
 
-        public static ServiceEntry Specialize(this ServiceEntry enty, params Type[] genericArguments)
+        public static ServiceEntry Specialize(this ServiceEntry entry, params Type[] genericArguments)
         {
-            var specialied = new ServiceEntry(enty.Interface.MakeGenericType(genericArguments), enty.Implementation.MakeGenericType(genericArguments), enty.Lifetime);
+            Debug.Assert(entry.Lifetime.HasValue);
+
+            var specialied = new ServiceEntry(entry.Interface.MakeGenericType(genericArguments), entry.Lifetime.Value, entry.Implementation.MakeGenericType(genericArguments));
             specialied.SetFactory();
 
             return specialied;
