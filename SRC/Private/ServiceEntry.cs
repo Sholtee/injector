@@ -105,17 +105,6 @@ namespace Solti.Utils.DI.Internals
             };
         }
 
-        /// <summary>
-        /// Creates a new specialized version from this entry.
-        /// </summary>
-        public ServiceEntry Specialize(params Type[] genericArguments)
-        {
-            var specialied = new ServiceEntry(Interface.MakeGenericType(genericArguments), Implementation.MakeGenericType(genericArguments), Lifetime);
-            specialied.SetFactory();
-
-            return specialied;
-        }
-
         protected override void Dispose(bool disposeManaged)
         {
             if (disposeManaged)
