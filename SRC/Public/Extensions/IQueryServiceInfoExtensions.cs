@@ -1,5 +1,5 @@
 /********************************************************************************
-* IQueryServiceInforExtensions.cs                                               *
+* IQueryServiceInfoExtensions.cs                                                *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
@@ -8,7 +8,7 @@ namespace Solti.Utils.DI
     /// <summary>
     /// Defines several handy extensions for the <see cref="IQueryServiceInfo"/> interface.
     /// </summary>
-    public static class IQueryServiceInforExtensions
+    public static class IQueryServiceInfoExtensions
     {
         /// <summary>
         /// Gets basic informations about a registered service.
