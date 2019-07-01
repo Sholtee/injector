@@ -11,6 +11,7 @@ using NUnit.Framework;
 namespace Solti.Utils.DI.Container.Tests
 {
     using Properties;
+    using Internals;
 
     [TestFixture]
     public sealed partial class ContainerTests
@@ -23,6 +24,29 @@ namespace Solti.Utils.DI.Container.Tests
                 .CreateChild();
 
             Assert.That(child.QueryServiceInfo<IInterface_1>().Implementation, Is.EqualTo(typeof(Implementation_1)));
+        }
+
+        [TestCase(Lifetime.Singleton)]
+        [TestCase(Lifetime.Transient)]
+        public void Container_ChildEnriesShouldNotChangeByDefault(Lifetime lifetime)
+        {
+            Container
+                .Service<IInterface_1, Implementation_1>(lifetime)
+                .Factory<IInterface_2>(i => new Implementation_2(i.Get<IInterface_1>()), lifetime)
+                .Instance<IDisposable>(new Disposable());
+
+            IServiceContainer child = Container.CreateChild();
+
+            Assert.AreEqual(Container.QueryServiceInfo<IInterface_1>(), child.QueryServiceInfo<IInterface_1>());
+            Assert.AreEqual(Container.QueryServiceInfo<IInterface_2>(), child.QueryServiceInfo<IInterface_2>());
+            Assert.AreEqual(Container.QueryServiceInfo<IDisposable>(),  child.QueryServiceInfo<IDisposable>());
+
+            using (IInjector injector = child.CreateInjector())
+            {
+                Assert.AreEqual(injector.QueryServiceInfo<IInterface_1>(), child.QueryServiceInfo<IInterface_1>());
+                Assert.AreEqual(injector.QueryServiceInfo<IInterface_2>(), child.QueryServiceInfo<IInterface_2>());
+                Assert.AreEqual(injector.QueryServiceInfo<IDisposable>(),  child.QueryServiceInfo<IDisposable>());
+            }
         }
 
         [Test]

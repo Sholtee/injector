@@ -29,10 +29,12 @@ namespace Solti.Utils.DI.Internals
                 // Beallitjuk a proxyt, majd felvesszuk sajat magunkat.
                 //
 
-                new ServiceEntry(typeof(IInjector))
-                {
-                    Value = InterfaceProxy<IInjector>.Chain(this, current => new ParameterValidatorProxy<IInjector>(current))
-                }
+                new ServiceEntry
+                (
+                    typeof(IInjector), 
+                    InterfaceProxy<IInjector>.Chain(this, current => new ParameterValidatorProxy<IInjector>(current)),
+                    releaseOnDispose: false
+                )
             };
         }
 

@@ -147,10 +147,7 @@ namespace Solti.Utils.DI
             // egy mar legyartott Singleton eseten.
             //
 
-            return Register(new ServiceEntry(iface, lifetime: releaseOnDispose ? Lifetime.Singleton : (Lifetime?) null)
-            {
-                Value = instance
-            });
+            return Register(new ServiceEntry(iface, instance, releaseOnDispose));
         }
 
         public static explicit operator ServiceCollection(ServiceContainer container) => container?.FEntries;

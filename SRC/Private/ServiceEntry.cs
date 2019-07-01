@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Linq;
 using System.Threading;
 
 namespace Solti.Utils.DI.Internals
@@ -16,19 +17,27 @@ namespace Solti.Utils.DI.Internals
     /// <remarks>This is an internal class so it may change from version to version. Don't use it!</remarks>
     public sealed class ServiceEntry: Disposable, IServiceInfo, ICloneable // TODO: !!TESTS!!
     {
-        private readonly Lazy<Type> FImplementation;
+        private readonly object FImplementation;
         private object FValue;
+        private readonly EntryAttributes FAttributes;
+
+        [Flags]
+        private enum EntryAttributes
+        {
+            None = 0,
+            ReleaseOnDispose
+        }
 
         #region Immutables
         public Type Interface { get; }
 
-        public Type Implementation => FImplementation.Value;
+        public Type Implementation => (FImplementation as Lazy<Type>)?.Value ?? (Type) FImplementation;
 
         public Lifetime? Lifetime { get; }
 
         public bool IsService => FImplementation != null;
 
-        public bool IsLazy { get; }
+        public bool IsLazy => FImplementation is Lazy<Type>;
 
         public bool IsFactory => !IsService && Factory != null;
 
@@ -51,20 +60,37 @@ namespace Solti.Utils.DI.Internals
         }
         #endregion
 
-        private ServiceEntry(Type @interface, Lazy<Type> implementation, Lifetime? lifetime, bool isLazy)
+        private ServiceEntry(Type @interface, object implementation, Lifetime? lifetime, EntryAttributes attributes)
         {
             Interface = @interface;
             Lifetime  = lifetime;
-            IsLazy    = isLazy;
 
             FImplementation = implementation;
+            FAttributes     = attributes;
         }
 
-        public ServiceEntry(Type @interface, Type implementation = null, Lifetime? lifetime = null): 
-            this(@interface, implementation != null ? new Lazy<Type>(() => implementation) : null, lifetime, false) {}
+        private static bool ShouldRelease(Lifetime? lifetime) => new Lifetime?[]{ DI.Lifetime.Singleton }.Contains(lifetime);
 
-        public ServiceEntry(Type @interface, ITypeResolver resolver, Lifetime? lifetime = null): 
-            this(@interface, new Lazy<Type>(() => resolver.Resolve(@interface), LazyThreadSafetyMode.ExecutionAndPublication), lifetime, true) {}
+        public ServiceEntry(Type @interface, Type implementation = null, Lifetime? lifetime = null): this
+        (
+            @interface, 
+            (object) implementation, 
+            lifetime,
+            ShouldRelease(lifetime) ? EntryAttributes.ReleaseOnDispose : EntryAttributes.None
+        ) {}
+
+        public ServiceEntry(Type @interface, ITypeResolver resolver, Lifetime? lifetime = null): this
+        (
+            @interface, 
+            new Lazy<Type>(() => resolver.Resolve(@interface), LazyThreadSafetyMode.ExecutionAndPublication), 
+            lifetime,
+            ShouldRelease(lifetime) ? EntryAttributes.ReleaseOnDispose : EntryAttributes.None
+        ) {}
+
+        public ServiceEntry(Type @interface, object value, bool releaseOnDispose) : this(@interface, null, null, releaseOnDispose ? EntryAttributes.ReleaseOnDispose : EntryAttributes.None)
+        {
+            Value = value;
+        }
 
         /// <summary>
         /// See <see cref="ICloneable"/>.
@@ -81,39 +107,49 @@ namespace Solti.Utils.DI.Internals
                 throw new InvalidOperationException(Resources.CANT_CLONE);
 
             //
-            // 1) Hogy klonozaskor egyaltalan ne es kesobb is maximum csak egyszer legyen a TypeResolver 
-            //    triggerelve ezert magat a Lazy<> peldanyt adjuk at.
-            //
-            // 2) Ha a peldany regisztralasakor a "releaseOnDispose" igazra volt allitva akkor
-            //    a peldany is lehet Singleton. Viszont mi nem akarjuk h a gyermek kontener
-            //    felszabadatisasakor is dispose-olva legyen a peldany ezert az elettartamot
-            //    nem masoljuk.
+            // Instance() hivassal felvett ertek felszabaditasa mindig csak a abban a bejegyzesben 
+            // tortenik ahol az ertek eloszor definialva lett.
             //
 
-            return new ServiceEntry(Interface, FImplementation, IsInstance ? null : Lifetime, IsLazy)
+            return new ServiceEntry(Interface, FImplementation, Lifetime, IsInstance ? FAttributes & ~EntryAttributes.ReleaseOnDispose : FAttributes)
             {
                 Factory = Factory,
-
-                //
-                // 3) Az ertekek keruljenek ujra legyartasra kiveve ha Instance() hivassal
-                //    kerultek regisztralasra.
-                //    Mondjuk ez jelen esetbe nem nagyon jatszik tekintve h Injector peldanyt
-                //    nem hasznalunk szulo kontenernek.
-                //
-
-                Value = IsInstance ? Value : null
+                Value   = Value
             };
+        }
+
+        /// <summary>
+        /// See <see cref="object.Equals(object)"/>
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(this, obj)) return true;
+
+            ServiceEntry that = obj as ServiceEntry;
+
+            return
+                that != null &&
+
+                //
+                // Ket szerviz bejegyzest akkor tekintunk egyenlonek ha az FAttributes kivetelevel (mivel
+                // klonozaskor az valtozhat) minden mas mezoje egyenlo.
+                //
+
+                Interface       == that.Interface &&
+                Lifetime        == that.Lifetime  &&
+                Factory         == that.Factory   &&
+
+                FValue          == that.FValue    &&
+                FImplementation == that.FImplementation;
         }
 
         protected override void Dispose(bool disposeManaged)
         {
             if (disposeManaged)
             {
-                //
-                // Csak a Singleton eletciklusu entitasokat kell felszabaditsuk.
-                //
-
-                if (Lifetime == DI.Lifetime.Singleton)
+                if (FAttributes.HasFlag(EntryAttributes.ReleaseOnDispose))
                 {
                     (Value as IDisposable)?.Dispose();
                 }
