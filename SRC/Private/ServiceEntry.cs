@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 
@@ -41,17 +42,17 @@ namespace Solti.Utils.DI.Internals
 
         public bool IsFactory => !IsService && Factory != null;
 
-        public bool IsInstance => !IsService && !IsFactory && Value != null;
+        public bool IsInstance => Lifetime == null && Value != null;
         #endregion
 
         #region Mutables
         /// <summary>
-        /// Peldany gyar. Generikus implementacional (nem feltetlen) es Instance() hivasnal (biztosan) NULL.
+        /// See <see cref="IServiceInfo"/>.
         /// </summary>
         public Func<IInjector, Type, object> Factory { get; set; }
 
         /// <summary>
-        /// Legyartott (Lifetime.Singleton eseten) vagy kivulrol definialt (Instance() hivas) peldany, kulomben NULL. 
+        /// See <see cref="IServiceInfo"/>.
         /// </summary>
         public object Value
         {
@@ -60,7 +61,7 @@ namespace Solti.Utils.DI.Internals
         }
         #endregion
 
-        private ServiceEntry(Type @interface, object implementation, Lifetime? lifetime, EntryAttributes attributes)
+        private ServiceEntry(Type @interface, Lifetime? lifetime, object implementation, EntryAttributes attributes)
         {
             Interface = @interface;
             Lifetime  = lifetime;
@@ -73,17 +74,17 @@ namespace Solti.Utils.DI.Internals
 
         public ServiceEntry(Type @interface, Lifetime lifetime, Type implementation = null): this
         (
-            @interface, 
-            (object) implementation, 
+            @interface,
             lifetime,
+            (object) implementation,         
             ShouldRelease(lifetime) ? EntryAttributes.ReleaseOnDispose : EntryAttributes.None
         ) {}
 
         public ServiceEntry(Type @interface, Lifetime lifetime, ITypeResolver resolver): this
         (
-            @interface, 
-            new Lazy<Type>(() => resolver.Resolve(@interface), LazyThreadSafetyMode.ExecutionAndPublication), 
+            @interface,
             lifetime,
+            new Lazy<Type>(() => resolver.Resolve(@interface), LazyThreadSafetyMode.ExecutionAndPublication),            
             ShouldRelease(lifetime) ? EntryAttributes.ReleaseOnDispose : EntryAttributes.None
         ) {}
 
@@ -99,22 +100,19 @@ namespace Solti.Utils.DI.Internals
         {
             CheckDisposed();
 
-            if (Value is IInjector)
-                //
-                // Ide csak akkor jutunk ha Injector peldanyt akarnank szulo kontenerkent hasznalni.
-                //
-
-                throw new InvalidOperationException(Resources.CANT_CLONE);
+            Debug.Assert(!(Value is IInjector));
 
             //
             // Instance() hivassal felvett ertek felszabaditasa mindig csak a abban a bejegyzesben 
             // tortenik ahol az ertek eloszor definialva lett.
             //
 
-            return new ServiceEntry(Interface, FImplementation, Lifetime, IsInstance ? FAttributes & ~EntryAttributes.ReleaseOnDispose : FAttributes)
+            bool shouldCopyValue = Lifetime == null;
+
+            return new ServiceEntry(Interface, Lifetime, FImplementation, shouldCopyValue ? FAttributes & ~EntryAttributes.ReleaseOnDispose : FAttributes)
             {
                 Factory = Factory,
-                Value   = Value
+                Value   = shouldCopyValue ? Value : null
             };
         }
 
@@ -140,9 +138,9 @@ namespace Solti.Utils.DI.Internals
                 Interface       == that.Interface &&
                 Lifetime        == that.Lifetime  &&
                 Factory         == that.Factory   &&
-
-                FValue          == that.FValue    &&
-                FImplementation == that.FImplementation;
+                Value           == that.Value     && 
+                
+                FImplementation == that.FImplementation; // nem triggereli a resolver-t
         }
 
         protected override void Dispose(bool disposeManaged)

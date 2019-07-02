@@ -88,15 +88,6 @@ namespace Solti.Utils.DI.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The item can not be cloned..
-        /// </summary>
-        internal static string CANT_CLONE {
-            get {
-                return ResourceManager.GetString("CANT_CLONE", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Instantiating open generic types are not allowed..
         /// </summary>
         internal static string CANT_INSTANTIATE_GENERICS {

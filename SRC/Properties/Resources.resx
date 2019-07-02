@@ -126,9 +126,6 @@
   <data name="ALREADY_REGISTERED" xml:space="preserve">
     <value>"{0}" is already registered.</value>
   </data>
-  <data name="CANT_CLONE" xml:space="preserve">
-    <value>The item can not be cloned.</value>
-  </data>
   <data name="CANT_INSTANTIATE_GENERICS" xml:space="preserve">
     <value>Instantiating open generic types are not allowed.</value>
   </data>
