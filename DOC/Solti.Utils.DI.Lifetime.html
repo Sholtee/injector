@@ -63,12 +63,12 @@
     <tbody>
       <tr>
         <td id="Solti_Utils_DI_Lifetime_Singleton">Singleton</td>
-        <td><p>Singleton lifetime. Services having <a class="xref" href="Solti.Utils.DI.Lifetime.html#Solti_Utils_DI_Lifetime_Singleton">Singleton</a> liftime are instantiated only once on the first request and disposed automatically when the injector itself is disposed.</p>
+        <td><p>Services having <a class="xref" href="Solti.Utils.DI.Lifetime.html#Solti_Utils_DI_Lifetime_Singleton">Singleton</a> liftime are instantiated only once (per injector) on the first request and disposed automatically when the parent injector is disposed.</p>
 </td>
       </tr>
       <tr>
         <td id="Solti_Utils_DI_Lifetime_Transient">Transient</td>
-        <td><p>Transient lifetime. Services having <a class="xref" href="Solti.Utils.DI.Lifetime.html#Solti_Utils_DI_Lifetime_Transient">Transient</a> lifetime are instantiated on every request and must be disposed (if necessary) by the caller. </p>
+        <td><p>Services having <a class="xref" href="Solti.Utils.DI.Lifetime.html#Solti_Utils_DI_Lifetime_Transient">Transient</a> lifetime are instantiated on every request. The caller must dispose them (if necessary). </p>
 </td>
       </tr>
     </tbody>

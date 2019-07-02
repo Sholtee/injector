@@ -12,13 +12,14 @@ namespace Solti.Utils.DI
     public enum Lifetime
     {
         /// <summary>
-        /// Transient lifetime. Services having <see cref="Transient"/> lifetime are instantiated on every request and must be disposed (if necessary) by the caller. 
+        /// Services having <see cref="Transient"/> lifetime are instantiated on every request. The caller must dispose them (if necessary). 
         /// </summary>
         Transient = 0,
 
         /// <summary>
-        /// Singleton lifetime. Services having <see cref="Singleton"/> liftime are instantiated only once on the first request and disposed automatically when the injector itself is disposed.
+        /// Services having <see cref="Singleton"/> liftime are instantiated only once (per injector) on the first request and disposed automatically when the parent injector is disposed.
         /// </summary>
+        /// <remarks>To create a "global" singleton consider using the <see cref="IServiceContainer.Instance"/> method.</remarks>
         Singleton
     }
 }
