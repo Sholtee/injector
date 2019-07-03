@@ -12,7 +12,7 @@ namespace Solti.Utils.DI.Internals
     /// Describes a service collection.
     /// </summary>
     /// <remarks>This is an internal interface so it may change from version to version. Don't use it!</remarks>
-    public interface IServiceCollection: ICollection<ServiceEntry>
+    internal interface IServiceCollection: ICollection<ServiceEntry>
     {
         /// <summary>
         /// Gets the entry associated with the given interface.
