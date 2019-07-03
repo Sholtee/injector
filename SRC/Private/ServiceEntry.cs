@@ -15,7 +15,13 @@ namespace Solti.Utils.DI.Internals
     /// Stores a service definition.
     /// </summary>
     /// <remarks>This is an internal class so it may change from version to version. Don't use it!</remarks>
-    public sealed class ServiceEntry: Disposable, IServiceFactory, IServiceInfo, ICloneable // TODO: !!TESTS!!
+    public sealed class ServiceEntry: 
+        Disposable, 
+        IServiceFactory, 
+        IServiceInfo
+#if !NETCOREAPP1_0 && !NETCOREAPP1_1
+        , ICloneable
+#endif
     {
         private readonly object FImplementation;
         private object FValue;
