@@ -25,7 +25,7 @@ namespace Solti.Utils.DI.Internals
             if (!@interface.IsInterfaceOf(implementation))
                 throw new InvalidOperationException(string.Format(Resources.NOT_ASSIGNABLE, @interface, implementation));
 
-            implementation.GetApplicableConstructor(); // validal is (mukodik generikus bejegyzesre is)
+            implementation.GetApplicableConstructor(); // validal is (mukodik generikus tipusra is)
         }
 
         public static ServiceEntry Specialize(this ServiceEntry entry, params Type[] genericArguments)
