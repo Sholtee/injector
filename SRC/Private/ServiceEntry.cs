@@ -143,8 +143,11 @@ namespace Solti.Utils.DI.Internals
             // "FAttributes" erteket ne hasznaljuk mert az klonozaskor valtozhat (viszont attol meg
             // tekintheto ket bejegyzes azonosnak).
             //
-
+#if NETCOREAPP1_0 || NETCOREAPP1_1 || NETCOREAPP2_0
+            return new {Interface, Lifetime, Factory, Value, FImplementation}.GetHashCode();
+#else
             return HashCode.Combine(Interface, Lifetime, Factory, Value, FImplementation);
+#endif
         }
 
         protected override void Dispose(bool disposeManaged)
