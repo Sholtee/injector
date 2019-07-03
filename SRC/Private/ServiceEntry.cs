@@ -108,7 +108,7 @@ namespace Solti.Utils.DI.Internals
         {
             CheckDisposed();
 
-            Debug.Assert(!(Value is IInjector));
+            Debug.Assert(!(Value is IInjector), "Entry containing an injector instance can not be cloned");
 
             //
             // Instance() hivassal felvett ertek felszabaditasa mindig csak a abban a bejegyzesben 

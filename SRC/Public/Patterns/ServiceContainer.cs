@@ -38,22 +38,13 @@ namespace Solti.Utils.DI
 
             return inst;
         }
-
-        private static void ValidateImplementation(Type iface, Type implementation)
-        {
-            if (!iface.IsInterfaceOf(implementation))
-                throw new InvalidOperationException(string.Format(Resources.NOT_ASSIGNABLE, iface, implementation));
-
-            implementation.GetApplicableConstructor(); // validal is
-        }
         #endregion
 
         #region Internal
         internal ServiceEntry Service(Type iface, Type implementation, Lifetime lifetime)
         {
-            ValidateImplementation(iface, implementation);
-
             var entry = new ServiceEntry(iface, lifetime, implementation);
+            entry.CheckValid();
 
             //
             // Ha generikus interface-t regisztralunk akkor nem kell (nem is lehet) 
@@ -92,7 +83,7 @@ namespace Solti.Utils.DI
                         // Mivel a validalas triggerelne a resolver-t ezert azt az elso factory hivaskor tesszuk meg.
                         //
 
-                        ValidateImplementation(entry.Interface, entry.Implementation);
+                        entry.CheckValid();
                         return entry.CreateFactory();
                     },
                     
