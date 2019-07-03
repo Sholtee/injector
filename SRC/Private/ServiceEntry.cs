@@ -5,7 +5,6 @@
 ********************************************************************************/
 using System;
 using System.Diagnostics;
-using System.Linq;
 using System.Threading;
 
 namespace Solti.Utils.DI.Internals
@@ -70,22 +69,31 @@ namespace Solti.Utils.DI.Internals
             FAttributes     = attributes;
         }
 
-        private static bool ShouldRelease(Lifetime lifetime) => new []{ DI.Lifetime.Singleton }.Contains(lifetime);
-
         public ServiceEntry(Type @interface, Lifetime lifetime, Type implementation = null): this
         (
             @interface,
             lifetime,
             (object) implementation,         
-            ShouldRelease(lifetime) ? EntryAttributes.ReleaseOnDispose : EntryAttributes.None
+            lifetime == DI.Lifetime.Singleton ? EntryAttributes.ReleaseOnDispose : EntryAttributes.None
         ) {}
 
         public ServiceEntry(Type @interface, Lifetime lifetime, ITypeResolver resolver): this
         (
             @interface,
             lifetime,
-            new Lazy<Type>(() => resolver.Resolve(@interface), LazyThreadSafetyMode.ExecutionAndPublication),            
-            ShouldRelease(lifetime) ? EntryAttributes.ReleaseOnDispose : EntryAttributes.None
+
+            //
+            // A "LazyThreadSafetyMode.ExecutionAndPublication" miatt orokolt bejegyzesek eseten is
+            // csak egyszer fog meghivasra kerulni a resolver (adott interface-el).
+            //
+
+            new Lazy<Type>(() => resolver.Resolve(@interface), LazyThreadSafetyMode.ExecutionAndPublication),
+
+            //
+            // Singleton eseten ha kesobb legyartasra kerul a Value akkor azt fel is kell szabaditani.
+            //
+
+            lifetime == DI.Lifetime.Singleton ? EntryAttributes.ReleaseOnDispose : EntryAttributes.None
         ) {}
 
         public ServiceEntry(Type @interface, object value, bool releaseOnDispose) : this(@interface, null, null, releaseOnDispose ? EntryAttributes.ReleaseOnDispose : EntryAttributes.None)
@@ -119,28 +127,24 @@ namespace Solti.Utils.DI.Internals
         /// <summary>
         /// See <see cref="object.Equals(object)"/>
         /// </summary>
-        /// <param name="obj"></param>
-        /// <returns></returns>
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(this, obj)) return true;
 
-            ServiceEntry that = obj as ServiceEntry;
+            return obj.GetHashCode() == GetHashCode();
+        }
 
-            return
-                that != null &&
+        /// <summary>
+        /// See <see cref="object.GetHashCode"/>
+        /// </summary>
+        public override int GetHashCode()
+        {
+            //
+            // "FAttributes" erteket ne hasznaljuk mert az klonozaskor valtozhat (viszont attol meg
+            // tekintheto ket bejegyzes azonosnak).
+            //
 
-                //
-                // Ket szerviz bejegyzest akkor tekintunk egyenlonek ha az FAttributes kivetelevel (mivel
-                // klonozaskor az valtozhat) minden mas mezoje egyenlo.
-                //
-
-                Interface       == that.Interface &&
-                Lifetime        == that.Lifetime  &&
-                Factory         == that.Factory   &&
-                Value           == that.Value     && 
-                
-                FImplementation == that.FImplementation; // nem triggereli a resolver-t
+            return HashCode.Combine(Interface, Lifetime, Factory, Value, FImplementation);
         }
 
         protected override void Dispose(bool disposeManaged)
