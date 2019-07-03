@@ -71,23 +71,23 @@ namespace Solti.Utils.DI.Internals
                 // A bejegyzesnek mar legyartottnak, vagy legyarthatonak kell lennie.
                 //
 
-                ServiceEntry entry = FServices.QueryEntry(iface);
+                IServiceFactory factory = FServices.QueryEntry(iface);
 
-                Debug.Assert(entry.Value != null || entry.Factory != null);
+                Debug.Assert(factory.Value != null || factory.Factory != null);
 
                 //
                 // Singleton eletciklusnal az elso hivasnal le kell gyartani es menteni a peldanyt.
                 //
 
-                if (entry.Lifetime == Lifetime.Singleton && entry.Value == null)
-                    entry.Value = entry.Factory(Self, iface);
+                if (factory.Lifetime == Lifetime.Singleton && factory.Value == null)
+                    factory.Value = factory.Factory(Self, iface);
 
                 //
                 // Elvileg jok vagyunk: Ha van "Value"-nk ("Singleton" eletciklus vagy Instance() hivas) 
                 // akkor visszaadjuk azt, kulomben legyartjuk az uj peldanyt.
                 //
 
-                return entry.Value ?? entry.Factory(Self, iface);
+                return factory.Value ?? factory.Factory(Self, iface);
             }
             finally
             {

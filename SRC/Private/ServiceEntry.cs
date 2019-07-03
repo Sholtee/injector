@@ -15,7 +15,7 @@ namespace Solti.Utils.DI.Internals
     /// Stores a service definition.
     /// </summary>
     /// <remarks>This is an internal class so it may change from version to version. Don't use it!</remarks>
-    public sealed class ServiceEntry: Disposable, IServiceInfo, ICloneable // TODO: !!TESTS!!
+    public sealed class ServiceEntry: Disposable, IServiceFactory, IServiceInfo, ICloneable // TODO: !!TESTS!!
     {
         private readonly object FImplementation;
         private object FValue;
@@ -73,7 +73,7 @@ namespace Solti.Utils.DI.Internals
         (
             @interface,
             lifetime,
-            (object) implementation,         
+            implementation,         
             lifetime == DI.Lifetime.Singleton ? EntryAttributes.ReleaseOnDispose : EntryAttributes.None
         ) {}
 
