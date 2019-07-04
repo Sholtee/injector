@@ -13,10 +13,10 @@ namespace Solti.Utils.DI.Internals
     {
         protected override void Validate(Type param, string paramName)
         {
-            if (!param.IsClass)
+            if (!param.IsClass())
                 throw new ArgumentException(Resources.NOT_A_CLASS, paramName);
 
-            if (param.IsAbstract)
+            if (param.IsAbstract())
                 throw new ArgumentException(Resources.ABSTRACT, paramName);
         }
     }

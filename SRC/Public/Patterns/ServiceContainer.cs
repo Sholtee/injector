@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading;
 
 namespace Solti.Utils.DI
@@ -51,7 +52,7 @@ namespace Solti.Utils.DI
             // legyartani a factory-t.
             //
 
-            if (!iface.IsGenericTypeDefinition) entry.SetFactory();
+            if (!iface.IsGenericTypeDefinition()) entry.SetFactory();
 
             return Register(entry);
         }
@@ -73,7 +74,7 @@ namespace Solti.Utils.DI
             // legyartani a factory-t.
             //
             
-            if (!iface.IsGenericTypeDefinition)
+            if (!iface.IsGenericTypeDefinition())
             {
                 var factory = new Lazy<Func<IInjector, Type, object>>
                 (

@@ -8,6 +8,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -72,7 +73,7 @@ namespace Solti.Utils.DI.Internals
             // Meg benne lehet generikus formaban.
             //
 
-            if (!iface.IsGenericType || !QueryEntry(iface.GetGenericTypeDefinition(), out var genericEntry))
+            if (!iface.IsGenericType() || !QueryEntry(iface.GetGenericTypeDefinition(), out var genericEntry))
                 throw new NotSupportedException(string.Format(Resources.DEPENDENCY_NOT_FOUND, iface));
 
             //

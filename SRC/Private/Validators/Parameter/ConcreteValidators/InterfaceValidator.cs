@@ -13,7 +13,7 @@ namespace Solti.Utils.DI.Internals
     {
         protected override void Validate(Type param, string paramName)
         {
-            if (!param.IsInterface)
+            if (!param.IsInterface())
                 throw new ArgumentException(Resources.NOT_AN_INTERFACE, paramName);
         }
     }

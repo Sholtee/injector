@@ -13,11 +13,11 @@ namespace Solti.Utils.DI.Internals
     using Properties;
     using Annotations;
 
-    internal static class TypeExtensions
+    internal static partial class TypeExtensions
     {
         public static bool IsInterfaceOf(this Type iface, Type implementation)
         {
-            if (!iface.IsInterface || !implementation.IsClass) return false;
+            if (!iface.IsInterface() || !implementation.IsClass()) return false;
 
             //
             // Az IsAssignableFrom() csak nem generikus tipusokra mukodik (nem szamit
@@ -31,21 +31,21 @@ namespace Solti.Utils.DI.Internals
             // Innentol csak akkor kell tovabb mennunk ha mindket tipusunk generikus.
             //
 
-            if (!iface.IsGenericType || !implementation.IsGenericType)
+            if (!iface.IsGenericType() || !implementation.IsGenericType())
                 return false;
 
             //
             // "List<> -> IList<>"
             //
 
-            if (iface.IsGenericTypeDefinition && implementation.IsGenericTypeDefinition)
-                return implementation.GetInterfaces().Where(i => i.IsGenericType).Any(i => i.GetGenericTypeDefinition() == iface);
+            if (iface.IsGenericTypeDefinition() && implementation.IsGenericTypeDefinition())
+                return implementation.GetInterfaces().Where(i => i.IsGenericType()).Any(i => i.GetGenericTypeDefinition() == iface);
 
             //
             // "List<T> -> IList<T>"
             //
 
-            if (!iface.IsGenericTypeDefinition && !implementation.IsGenericTypeDefinition)
+            if (!iface.IsGenericTypeDefinition() && !implementation.IsGenericTypeDefinition())
                 return
                     iface.GetGenericArguments().SequenceEqual(implementation.GetGenericArguments()) &&
                     iface.GetGenericTypeDefinition().IsInterfaceOf(implementation.GetGenericTypeDefinition());

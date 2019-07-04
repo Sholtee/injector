@@ -13,7 +13,7 @@ namespace Solti.Utils.DI.Internals
     {
         protected override void Validate(Type param, string paramName)
         {
-            if (param.IsGenericTypeDefinition)
+            if (param.IsGenericTypeDefinition())
                 throw new ArgumentException(Resources.CANT_INSTANTIATE_GENERICS, paramName);
         }
     }

@@ -9,7 +9,7 @@
 //------------------------------------------------------------------------------
 
 namespace Solti.Utils.DI.Properties {
-    using System;
+    using Internals;
     
     
     /// <summary>
@@ -39,7 +39,7 @@ namespace Solti.Utils.DI.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Solti.Utils.DI.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Solti.Utils.DI.Properties.Resources", typeof(Resources).Assembly());
                     resourceMan = temp;
                 }
                 return resourceMan;

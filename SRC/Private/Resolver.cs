@@ -22,16 +22,16 @@ namespace Solti.Utils.DI.Internals
         {
             Type parameterType = param.ParameterType;
 
-            if (parameterType.IsInterface)
+            if (parameterType.IsInterface())
             {
                 isLazy = false;
                 return parameterType;
             }
 
-            if (parameterType.IsGenericType && parameterType.GetGenericTypeDefinition() == typeof(Lazy<>))
+            if (parameterType.IsGenericType() && parameterType.GetGenericTypeDefinition() == typeof(Lazy<>))
             {
                 parameterType = parameterType.GetGenericArguments().Single();
-                if (parameterType.IsInterface)
+                if (parameterType.IsInterface())
                 {
                     isLazy = true;
                     return parameterType;
@@ -127,7 +127,7 @@ namespace Solti.Utils.DI.Internals
 
         public static Func<IInjector, object> GetLazyFactory(Type iface) => Cache<Type, Func<IInjector, object>>.GetOrAdd(iface, () =>
         {
-            Debug.Assert(iface.IsInterface);
+            Debug.Assert(iface.IsInterface());
 
             Type delegateType = typeof(Func<>).MakeGenericType(iface);
 

@@ -3,13 +3,13 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
-using System;
 using System.Linq;
 using System.Reflection;
 
 namespace Solti.Utils.DI
 {
     using Annotations;
+    using Internals;
 
     /// <summary>
     /// Provides an extension to auto-config the <see cref="IServiceContainer"/>.
@@ -24,9 +24,9 @@ namespace Solti.Utils.DI
         /// <returns>The injector itself.</returns>
         public static IServiceContainer Setup(this IServiceContainer target, Assembly assembly)
         {
-            foreach (Type service in assembly.DefinedTypes.Where(t => t.IsClass))
+            foreach (TypeInfo service in assembly.DefinedTypes.Where(t => t.IsClass))
                 foreach (ServiceAttribute serviceAttribute in service.GetCustomAttributes<ServiceAttribute>())
-                    target.Service(serviceAttribute.Interface, service, serviceAttribute.Lifetime);
+                    target.Service(serviceAttribute.Interface, service.AsType(), serviceAttribute.Lifetime);
 
             return target;
         }
