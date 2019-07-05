@@ -5,7 +5,7 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
-#if NETCOREAPP1_0 || NETCOREAPP1_0
+#if NETCOREAPP1_0 || NETCOREAPP1_1
 using System.Reflection;
 #endif
 
