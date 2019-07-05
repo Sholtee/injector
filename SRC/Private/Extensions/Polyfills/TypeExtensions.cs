@@ -3,7 +3,7 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
-#if NETCOREAPP1_0 || NETCOREAPP1_0
+#if NETCOREAPP1_0 || NETCOREAPP1_1
     #define NETCORE1
 #endif
 
