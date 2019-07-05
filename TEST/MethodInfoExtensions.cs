@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Reflection;
 
 using NUnit.Framework;
 
@@ -19,7 +20,7 @@ namespace Solti.Utils.DI.Internals.Tests
         {
             Func<string> toString = CICA.ToString;
 
-            object ret = toString.Method.Call(CICA);
+            object ret = toString.GetMethodInfo().Call(CICA);
             Assert.That(ret, Is.EqualTo(CICA));
         }
 
@@ -30,7 +31,7 @@ namespace Solti.Utils.DI.Internals.Tests
 
             Action<int, char[], int, int> copyTo = CICA.CopyTo;
 
-            object ret = copyTo.Method.Call(CICA, 3, chars, 0, 1);
+            object ret = copyTo.GetMethodInfo().Call(CICA, 3, chars, 0, 1);
 
             Assert.That(ret, Is.Null);
             Assert.That(chars[0], Is.EqualTo('a'));
@@ -41,7 +42,7 @@ namespace Solti.Utils.DI.Internals.Tests
         {
             Func<string, int> indexOf = CICA.IndexOf;
 
-            object ret = indexOf.Method.Call(CICA, "a");
+            object ret = indexOf.GetMethodInfo().Call(CICA, "a");
             Assert.That(ret, Is.EqualTo(3));
         }
 
@@ -49,10 +50,10 @@ namespace Solti.Utils.DI.Internals.Tests
         public void ToDelegate_ShouldCache()
         {
             Func<string> toString = CICA.ToString;
-            Assert.AreSame(toString.Method.ToDelegate(), toString.Method.ToDelegate());
-            Assert.AreSame(((Func<string>)(CICA).ToString).Method.ToDelegate(), toString.Method.ToDelegate());
-            Assert.AreSame(typeof(string).GetMethod("ToString", new Type[0]).ToDelegate(), toString.Method.ToDelegate());
-            Assert.That(typeof(object).GetMethod("ToString").ToDelegate(), Is.Not.SameAs(toString.Method.ToDelegate()));
+            Assert.AreSame(toString.GetMethodInfo().ToDelegate(), toString.GetMethodInfo().ToDelegate());
+            Assert.AreSame(((Func<string>)(CICA).ToString).GetMethodInfo().ToDelegate(), toString.GetMethodInfo().ToDelegate());
+            Assert.AreSame(typeof(string).GetMethod("ToString", new Type[0]).ToDelegate(), toString.GetMethodInfo().ToDelegate());
+            Assert.That(typeof(object).GetMethod("ToString").ToDelegate(), Is.Not.SameAs(toString.GetMethodInfo().ToDelegate()));
         }
     }
 }

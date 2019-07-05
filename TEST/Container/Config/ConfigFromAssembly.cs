@@ -11,6 +11,7 @@ using NUnit.Framework;
 namespace Solti.Utils.DI.Container.Setup.Tests
 {
     using Annotations;
+    using Internals;
 
     [TestFixture]
     public sealed class ConfigFromAssembly
@@ -32,7 +33,7 @@ namespace Solti.Utils.DI.Container.Setup.Tests
                 .Setup(i => i.Service(It.IsAny<Type>(), It.IsAny<Type>(), It.IsAny<Lifetime>()))
                 .Returns(mockContainer.Object);
 
-            mockContainer.Object.Setup(typeof(GenericService<>).Assembly);
+            mockContainer.Object.Setup(typeof(GenericService<>).Assembly());
 
             mockContainer.Verify(i => i.Service(It.Is<Type>(t => t == typeof(IGenericService<>)), It.Is<Type>(t => t == typeof(GenericService<>)), It.Is<Lifetime>(lt => lt == Lifetime.Singleton)), Times.Once);
         }

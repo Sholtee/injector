@@ -5,6 +5,9 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
+#if NETCOREAPP1_0 || NETCOREAPP1_0
+using System.Reflection;
+#endif
 
 using NUnit.Framework;
 

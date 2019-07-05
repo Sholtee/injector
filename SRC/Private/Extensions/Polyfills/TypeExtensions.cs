@@ -50,5 +50,10 @@ namespace Solti.Utils.DI.Internals
 #else
             type.Assembly;
 #endif
+#if NETCORE1
+        public static bool IsInstanceOfType(this Type type, object o) => System.Reflection.TypeExtensions.IsInstanceOfType(type, o);
+
+        public static Type[] GetGenericArguments(this Type type) => System.Reflection.TypeExtensions.GetGenericArguments(type);
+#endif
     }
 }
