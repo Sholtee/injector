@@ -3,7 +3,6 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
-
 using System;
 using System.Linq;
 using System.Collections.Generic;
@@ -55,7 +54,7 @@ namespace Solti.Utils.DI.Internals
             (
                 declaration: VariableDeclaration
                 (
-                    type: IdentifierName(typeof(T).FullName),
+                    type: typeof(T).ToIdentifierName(),
                     variables: SeparatedList(new List<VariableDeclaratorSyntax>
                     {
                         declarator
@@ -126,6 +125,40 @@ namespace Solti.Utils.DI.Internals
             )
         )
         .NormalizeWhitespace();
+
+        public static IReadOnlyList<ExpressionStatementSyntax> AssignByRefParameters(MethodInfo method, LocalDeclarationStatementSyntax argsArray)
+        {
+            IdentifierNameSyntax array = IdentifierName(argsArray.Declaration.Variables.Single().Identifier);
+
+            return method
+                .GetParameters()
+                .Select((param, i) => new {Parameter = param, Index = i})
+                .Where(p => p.Parameter.ParameterType.IsByRef)
+                .Select
+                (
+                    p => ExpressionStatement
+                    (
+                        AssignmentExpression
+                        (
+                            kind:  SyntaxKind.SimpleAssignmentExpression, 
+                            left:  p.Parameter.Name.ToIdentifierName(),
+                            right: CastExpression
+                            (
+                                type: p.Parameter.ParameterType.ToIdentifierName(),
+                                expression: ElementAccessExpression(array).WithArgumentList
+                                (
+                                    argumentList: BracketedArgumentList
+                                    (
+                                        SingletonSeparatedList(Argument(LiteralExpression(SyntaxKind.NumericLiteralExpression, Literal(p.Index))))
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    .NormalizeWhitespace()
+                )
+                .ToList();
+        }
 
         private static SeparatedSyntaxList<TNode> CreateList<T, TNode>(this IReadOnlyList<T> src, Func<T, TNode> factory) where TNode : SyntaxNode => SeparatedList<TNode>
         (

@@ -3,8 +3,11 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
+using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using NUnit.Framework;
 
 namespace Solti.Utils.DI.Internals.Tests
@@ -36,6 +39,15 @@ namespace Solti.Utils.DI.Internals.Tests
         public void DeclareMethod_ShouldDeclareAMethod()
         {
             Assert.That(ProxyGenerator.DeclareMethod(GetType().GetMethod(nameof(Foo))).ToFullString(), Is.EqualTo("public void Foo<T>(System.Int32 a, out System.String b, T c)"));
+        }
+
+        [Test]
+        public void AssignByRefParameters_ShouldAssignByRefParameters()
+        {
+            IReadOnlyList<ExpressionStatementSyntax> assignments = ProxyGenerator.AssignByRefParameters(GetMethod(nameof(Foo)), ProxyGenerator.DeclareLocal<object[]>("args"));
+
+            Assert.That(assignments.Count, Is.EqualTo(1));
+            Assert.That(assignments.Single().ToFullString(), Is.EqualTo("b = (System.String)args[1];"));
         }
 
         private MethodInfo GetMethod(string name) => GetType().GetMethod(name);
