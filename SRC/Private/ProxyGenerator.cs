@@ -31,28 +31,38 @@ namespace Solti.Utils.DI.Internals
             //
             //     object result = this.Invoke(currentMethod, args);
             //     
-            //     para2 = args[1];
-            //     para3 = args[2];
+            //     para2 = (T2) args[1];
+            //     para3 = (T3) args[2];
             //
             //     return (TResult) result; // ifaceMethod.ReturnType != typeof(void)
             // }
             //
         }
 
-        public static LocalDeclarationStatementSyntax DeclareLocal<T>(string name) => LocalDeclarationStatement
-        (
-            declaration: VariableDeclaration
+        public static LocalDeclarationStatementSyntax DeclareLocal<T>(string name, ExpressionSyntax initializer = null)
+        {
+            VariableDeclaratorSyntax declarator = VariableDeclarator
             (
-                type:      IdentifierName(typeof(T).FullName),
-                variables: SeparatedList(new List<VariableDeclaratorSyntax>
-                {
-                    VariableDeclarator
-                    (
-                        identifier: name.ToIdentifier()
-                    )
-                })
-            )
-        ).NormalizeWhitespace();
+                identifier: name.ToIdentifier()
+            );
+
+            if (initializer != null) declarator = declarator.WithInitializer
+            (
+                initializer: EqualsValueClause(initializer)
+            );
+
+            return LocalDeclarationStatement
+            (
+                declaration: VariableDeclaration
+                (
+                    type: IdentifierName(typeof(T).FullName),
+                    variables: SeparatedList(new List<VariableDeclaratorSyntax>
+                    {
+                        declarator
+                    })
+                )
+            ).NormalizeWhitespace();
+        }
 
         public static ArrayCreationExpressionSyntax CreateArgumentsArray(MethodInfo method) => ArrayCreationExpression
         (

@@ -16,6 +16,7 @@ namespace Solti.Utils.DI.Internals.Tests
         public void DeclareLocal_ShouldDeclareALocalVariable()
         {
             Assert.That(ProxyGenerator.DeclareLocal<string[]>("paramz").ToFullString(), Is.EqualTo("System.String[] paramz;"));
+            Assert.That(ProxyGenerator.DeclareLocal<object[]>("args", ProxyGenerator.CreateArgumentsArray(GetMethod(nameof(Foo)))).ToFullString(), Is.EqualTo("System.Object[] args = new System.Object[]{a, default(System.String), c};"));
         }
 
         public void Foo<T>(int a, out string b, T c)
@@ -28,9 +29,7 @@ namespace Solti.Utils.DI.Internals.Tests
         {
             Assert.That(ProxyGenerator.CreateArgumentsArray(GetMethod(nameof(Foo))).ToFullString(), Is.EqualTo("new System.Object[]{a, default(System.String), c}"));
 
-            Assert.That(ProxyGenerator.CreateArgumentsArray(GetMethod(nameof(CreateArgumentsArray_ShouldCreateAnObjectArrayFromTheArguments))).ToFullString(), Is.EqualTo("new System.Object[]{}"));
-
-            MethodInfo GetMethod(string name) => GetType().GetMethod(name);
+            Assert.That(ProxyGenerator.CreateArgumentsArray(GetMethod(nameof(CreateArgumentsArray_ShouldCreateAnObjectArrayFromTheArguments))).ToFullString(), Is.EqualTo("new System.Object[]{}"));          
         }
 
         [Test]
@@ -38,5 +37,7 @@ namespace Solti.Utils.DI.Internals.Tests
         {
             Assert.That(ProxyGenerator.DeclareMethod(GetType().GetMethod(nameof(Foo))).ToFullString(), Is.EqualTo("public void Foo<T>(System.Int32 a, out System.String b, T c)"));
         }
+
+        private MethodInfo GetMethod(string name) => GetType().GetMethod(name);
     }
 }
