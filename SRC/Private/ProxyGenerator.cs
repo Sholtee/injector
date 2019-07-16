@@ -48,7 +48,7 @@ namespace Solti.Utils.DI.Internals
                 {
                     VariableDeclarator
                     (
-                        identifier: Identifier(name)
+                        identifier: name.ToIdentifier()
                     )
                 })
             )
@@ -58,7 +58,7 @@ namespace Solti.Utils.DI.Internals
         (
             type: ArrayType
             (
-                PredefinedType(Token(SyntaxKind.ObjectKeyword))                   
+                elementType: typeof(object[]).ToIdentifierName()                  
             ),
             initializer: InitializerExpression(SyntaxKind.ArrayInitializerExpression).WithExpressions
             (
@@ -72,8 +72,8 @@ namespace Solti.Utils.DI.Internals
         (
             returnType: method.ReturnType != typeof(void) 
                 ? (TypeSyntax) method.ReturnType.ToIdentifierName()
-                : PredefinedType(Token(SyntaxKind.VoidKeyword)),
-            identifier: Identifier(method.Name)
+                : (TypeSyntax) PredefinedType(Token(SyntaxKind.VoidKeyword)),
+            identifier: method.Name.ToIdentifier() // ne siman a metoduson hivjuk a ToIdentifier()
         )
         .WithModifiers
         (
@@ -92,7 +92,7 @@ namespace Solti.Utils.DI.Internals
             (
                 parameters: method.GetParameters().CreateList(param =>
                 {
-                    ParameterSyntax parameter = Parameter(Identifier(param.Name)).WithType
+                    ParameterSyntax parameter = Parameter(param.Name.ToIdentifier()).WithType // ne siman a param-on hivjuk a ToIdentifier()-t
                     (
                         type: param.ParameterType.ToIdentifierName()
                     );
@@ -130,7 +130,7 @@ namespace Solti.Utils.DI.Internals
 
         private static IdentifierNameSyntax ToIdentifierName<T>(this T src) => IdentifierName(src
             .ToString() // tipus eseten "type.FullName ?? type.Name"-el egyenerteku
-            .Replace("&", "")); // HACK: typeof(String).ToString() == "System.String?" de csak string-nel, MSDN pedig semmit nem ir rola
+            .Replace("&", string.Empty)); // HACK: typeof(String).ToString() == "System.String?" de csak string-nel, MSDN peldaban pedig "System.String" szerepel
 
         private static SyntaxToken ToIdentifier<T>(this T src) => Identifier(src.ToString());
     }

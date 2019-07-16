@@ -26,9 +26,9 @@ namespace Solti.Utils.DI.Internals.Tests
         [Test]
         public void CreateArgumentsArray_ShouldCreateAnObjectArrayFromTheArguments()
         {
-            Assert.That(ProxyGenerator.CreateArgumentsArray(GetMethod(nameof(Foo))).ToFullString(), Is.EqualTo("new object {a, default(System.String), c}"));
+            Assert.That(ProxyGenerator.CreateArgumentsArray(GetMethod(nameof(Foo))).ToFullString(), Is.EqualTo("new System.Object[]{a, default(System.String), c}"));
 
-            Assert.That(ProxyGenerator.CreateArgumentsArray(GetMethod(nameof(CreateArgumentsArray_ShouldCreateAnObjectArrayFromTheArguments))).ToFullString(), Is.EqualTo("new object {}"));
+            Assert.That(ProxyGenerator.CreateArgumentsArray(GetMethod(nameof(CreateArgumentsArray_ShouldCreateAnObjectArrayFromTheArguments))).ToFullString(), Is.EqualTo("new System.Object[]{}"));
 
             MethodInfo GetMethod(string name) => GetType().GetMethod(name);
         }
