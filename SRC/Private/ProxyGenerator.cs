@@ -6,7 +6,9 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Reflection;
+using System.Text.RegularExpressions;
 
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -18,14 +20,22 @@ namespace Solti.Utils.DI.Internals
 {
     internal static class ProxyGenerator
     {
-        public static void GenerateProxyMethod(MethodInfo ifaceMethod)
+        private static void PreCheck(Type type)
+        {
+            if (!type.IsInterface) throw null;
+            if (type.IsNested) throw null;
+            if (!type.IsPublic) throw null;
+            if (type.ContainsGenericParameters) throw null;
+        }
+
+        internal static void GenerateProxyMethod(MethodInfo ifaceMethod)
         {
             //
             // TResult IInterface.Foo<TGeneric>(T1 para1, ref T2 para2, out T3 para3, TGeneric para4)
             // {
             //     object[] args = new object[] {para1, para2, default(T3), para4};
             //
-            //     Expression<Action<IInterface>> callExpr = () => i.Foo<TGeneric>(para1, ref para2, out para3, para4);
+            //     Expression<Action<IInterface>> callExpr = i => i.Foo<TGeneric>(para1, ref para2, out para3, para4);
             //     MethodInfo currentMethod = ((MethodCallExpression) callExpr.Body).Method; // MethodBase.GetCurrentMethod() lassu, nincs netcore1_X-ben es a generikus definiciot adna vissza
             //
             //     object result = this.Invoke(currentMethod, args);
@@ -38,11 +48,11 @@ namespace Solti.Utils.DI.Internals
             //
         }
 
-        public static LocalDeclarationStatementSyntax DeclareLocal<T>(string name, ExpressionSyntax initializer = null)
+        internal static LocalDeclarationStatementSyntax DeclareLocal(Type type, string name, ExpressionSyntax initializer = null)
         {
             VariableDeclaratorSyntax declarator = VariableDeclarator
             (
-                identifier: name.ToIdentifier()
+                identifier: Identifier(name)
             );
 
             if (initializer != null) declarator = declarator.WithInitializer
@@ -54,79 +64,94 @@ namespace Solti.Utils.DI.Internals
             (
                 declaration: VariableDeclaration
                 (
-                    type: typeof(T).ToIdentifierName(),
+                    type: CreateType(type),
                     variables: SeparatedList(new List<VariableDeclaratorSyntax>
                     {
                         declarator
                     })
                 )
-            ).NormalizeWhitespace();
+            );
         }
 
-        public static ArrayCreationExpressionSyntax CreateArgumentsArray(MethodInfo method) => ArrayCreationExpression
+        internal static LocalDeclarationStatementSyntax DeclareLocal<T>(string name, ExpressionSyntax initializer = null) => DeclareLocal(typeof(T), name, initializer);
+
+        internal static ArrayCreationExpressionSyntax CreateArgumentsArray(MethodInfo method) => ArrayCreationExpression
         (
             type: ArrayType
             (
-                elementType: typeof(object[]).ToIdentifierName()                  
+                elementType: CreateType(typeof(object[]))                  
             ),
             initializer: InitializerExpression(SyntaxKind.ArrayInitializerExpression).WithExpressions
             (
                 expressions: method
                     .GetParameters()
-                    .CreateList(param => param.IsOut ? DefaultExpression(param.ParameterType.ToIdentifierName()) : (ExpressionSyntax) IdentifierName(param.Name))
+                    .CreateList(param => param.IsOut ? DefaultExpression(CreateType(param.ParameterType)) : (ExpressionSyntax) IdentifierName(param.Name))
             )
-        ).NormalizeWhitespace();
+        );
 
-        public static MethodDeclarationSyntax DeclareMethod(MethodInfo method) => MethodDeclaration
-        (
-            returnType: method.ReturnType != typeof(void) 
-                ? (TypeSyntax) method.ReturnType.ToIdentifierName()
-                : (TypeSyntax) PredefinedType(Token(SyntaxKind.VoidKeyword)),
-            identifier: method.Name.ToIdentifier() // ne siman a metoduson hivjuk a ToIdentifier()
-        )
-        .WithModifiers
-        (
-            modifiers: TokenList(Token(SyntaxKind.PublicKeyword))
-        )
-        .WithTypeParameterList
-        (
-            typeParameterList: TypeParameterList
+        internal static MethodDeclarationSyntax DeclareMethod(MethodInfo method)
+        {
+            Type declaringType = method.DeclaringType;
+
+            MethodDeclarationSyntax result = MethodDeclaration
             (
-                parameters: method.GetGenericArguments().CreateList(type => TypeParameter(type.ToIdentifier()))
+                returnType: method.ReturnType != typeof(void) 
+                    ? CreateType(method.ReturnType)
+                    : PredefinedType(Token(SyntaxKind.VoidKeyword)),
+                identifier: Identifier(method.Name)
+            );
+
+            return 
+            (
+                declaringType.IsInterface
+                    ? result.WithExplicitInterfaceSpecifier
+                    (
+                        explicitInterfaceSpecifier: ExplicitInterfaceSpecifier((NameSyntax) CreateType(declaringType))
+                    )
+                    : result.WithModifiers // tesztekhez
+                    (
+                        modifiers: TokenList(Token(SyntaxKind.PublicKeyword))
+                    )
             )
-        )
-        .WithParameterList
-        (
-            ParameterList
+            .WithTypeParameterList
             (
-                parameters: method.GetParameters().CreateList(param =>
-                {
-                    ParameterSyntax parameter = Parameter(param.Name.ToIdentifier()).WithType // ne siman a param-on hivjuk a ToIdentifier()-t
-                    (
-                        type: param.ParameterType.ToIdentifierName()
-                    );
+                typeParameterList: TypeParameterList
+                (
+                    parameters: method.GetGenericArguments().CreateList(type => TypeParameter(CreateType(type).ToFullString()))
+                )
+            )
+            .WithParameterList
+            (
+                ParameterList
+                (
+                    parameters: method.GetParameters().CreateList(param =>
+                    {
+                        ParameterSyntax parameter = Parameter(Identifier(param.Name)).WithType
+                        (
+                            type: CreateType(param.ParameterType)
+                        );
 
-                    if (param.IsOut) parameter = parameter.WithModifiers
-                    (
-                        modifiers: TokenList(Token(SyntaxKind.OutKeyword))
-                    );
+                        if (param.IsOut) parameter = parameter.WithModifiers
+                        (
+                            modifiers: TokenList(Token(SyntaxKind.OutKeyword))
+                        );
 
-                    //
-                    // "ParameterType.IsByRef" param.IsOut eseten is igazat ad vissza -> IsOut teszt utan szerepeljen.
-                    //
+                        //
+                        // "ParameterType.IsByRef" param.IsOut eseten is igazat ad vissza -> IsOut teszt utan szerepeljen.
+                        //
 
-                    else if (param.ParameterType.IsByRef) parameter = parameter.WithModifiers
-                    (
-                        modifiers: TokenList(Token(SyntaxKind.RefKeyword))
-                    );
+                        else if (param.ParameterType.IsByRef) parameter = parameter.WithModifiers
+                        (
+                            modifiers: TokenList(Token(SyntaxKind.RefKeyword))
+                        );
      
-                    return parameter;
-                })
-            )
-        )
-        .NormalizeWhitespace();
+                        return parameter;
+                    })
+                )
+            );
+        }
 
-        public static IReadOnlyList<ExpressionStatementSyntax> AssignByRefParameters(MethodInfo method, LocalDeclarationStatementSyntax argsArray)
+        internal static IReadOnlyList<ExpressionStatementSyntax> AssignByRefParameters(MethodInfo method, LocalDeclarationStatementSyntax argsArray)
         {
             IdentifierNameSyntax array = IdentifierName(argsArray.Declaration.Variables.Single().Identifier);
 
@@ -141,10 +166,10 @@ namespace Solti.Utils.DI.Internals
                         AssignmentExpression
                         (
                             kind:  SyntaxKind.SimpleAssignmentExpression, 
-                            left:  p.Parameter.Name.ToIdentifierName(),
+                            left:  IdentifierName(p.Parameter.Name),
                             right: CastExpression
                             (
-                                type: p.Parameter.ParameterType.ToIdentifierName(),
+                                type: CreateType(p.Parameter.ParameterType),
                                 expression: ElementAccessExpression(array).WithArgumentList
                                 (
                                     argumentList: BracketedArgumentList
@@ -155,9 +180,59 @@ namespace Solti.Utils.DI.Internals
                             )
                         )
                     )
-                    .NormalizeWhitespace()
                 )
                 .ToList();
+        }
+
+        internal static LocalDeclarationStatementSyntax SelfCallExpression(MethodInfo method)
+        {
+            const string i = nameof(i);
+
+            Type declaringType = method.DeclaringType;
+            
+            //
+            // Expression<Action<IInterface>>
+            //
+            // TODO: erre a gyorsitotar bejegyzesre csak a proxy felepiteseig van szukseg.
+            //
+
+            Type expressionType = Cache<Type, Type>.GetOrAdd(declaringType, () => typeof(Expression<>).MakeGenericType(typeof(Action<>).MakeGenericType(declaringType)));
+
+            //
+            // Expression<Action<IInterface>> callExpr = i => i.Foo(...)
+            //
+
+            return DeclareLocal(expressionType, "callExpr", SimpleLambdaExpression
+            (
+                parameter: Parameter(Identifier(i)),
+                body: InvocationExpression
+                (
+                    expression: MemberAccessExpression
+                    (
+                        SyntaxKind.SimpleMemberAccessExpression,
+                        IdentifierName(i),
+                        IdentifierName(method.Name)
+                    )
+                )
+                .WithArgumentList
+                (
+                    argumentList: ArgumentList(method.GetParameters().CreateList(param =>
+                    {
+                        ArgumentSyntax argument = Argument(IdentifierName(param.Name));
+
+                        //
+                        // TODO: "IN"
+                        //
+
+                        if (param.ParameterType.IsByRef) argument = argument.WithRefKindKeyword
+                        (
+                            refKindKeyword: Token(param.IsOut ? SyntaxKind.OutKeyword : SyntaxKind.RefKeyword)
+                        );
+
+                        return argument;
+                    }))
+                )
+            ));
         }
 
         private static SeparatedSyntaxList<TNode> CreateList<T, TNode>(this IReadOnlyList<T> src, Func<T, TNode> factory) where TNode : SyntaxNode => SeparatedList<TNode>
@@ -171,10 +246,44 @@ namespace Solti.Utils.DI.Internals
             })
         );
 
-        private static IdentifierNameSyntax ToIdentifierName<T>(this T src) => IdentifierName(src
-            .ToString() // tipus eseten "type.FullName ?? type.Name"-el egyenerteku
-            .Replace("&", string.Empty)); // HACK: typeof(String).ToString() == "System.String?" de csak string-nel, MSDN peldaban pedig "System.String" szerepel
+        internal static TypeSyntax CreateType(Type src)
+        {
+            if (src.IsGenericType) return GenericName
+            (
+                identifier: Identifier(src.GetGenericTypeDefinition().GetFriendlyName())
+            )
+            .WithTypeArgumentList
+            (
+                typeArgumentList: TypeArgumentList
+                (
+                    arguments: src.GetGenericArguments().CreateList(CreateType)
+                )
+            );
 
-        private static SyntaxToken ToIdentifier<T>(this T src) => Identifier(src.ToString());
+            if (src.IsArray) ArrayType
+            (
+                elementType: CreateType(src.GetElementType())
+            )
+            .WithRankSpecifiers
+            (
+                rankSpecifiers: SingletonList
+                (
+                    node: ArrayRankSpecifier
+                    (
+                        //
+                        // TODO: kezelje az int[10]-t
+                        //
+
+                        sizes: Enumerable.Repeat(0, src.GetArrayRank()).ToList().CreateList(@void => (ExpressionSyntax) OmittedArraySizeExpression())
+                    )
+                )
+            );
+
+            return IdentifierName(src.GetFriendlyName());
+        }
+
+        private static readonly Regex TypeNameReplacer = new Regex(@"\&|`\d+\[[\w,]+\]", RegexOptions.Compiled);
+
+        private static string GetFriendlyName(this Type src) => TypeNameReplacer.Replace(src.ToString(), string.Empty);
     }
 }
