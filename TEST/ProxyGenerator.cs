@@ -68,11 +68,17 @@ namespace Solti.Utils.DI.Internals.Tests
         [Test]
         public void CreateType_ShouldCreateTheDesiredType()
         {
-            Assert.That(ProxyGenerator.CreateType(typeof(int[])).NormalizeWhitespace().ToFullString(), Is.EqualTo("System.Int32[]"));
-            Assert.That(ProxyGenerator.CreateType(typeof(IEnumerable<int[]>)).NormalizeWhitespace().ToFullString(), Is.EqualTo("System.Collections.Generic.IEnumerable<System.Int32[]>"));
-            Assert.That(ProxyGenerator.CreateType(typeof(int[,])).NormalizeWhitespace().ToFullString(), Is.EqualTo("System.Int32[,]"));
+            Assert.That(ProxyGenerator.CreateType<int[]>().NormalizeWhitespace().ToFullString(), Is.EqualTo("System.Int32[]"));
+            Assert.That(ProxyGenerator.CreateType<IEnumerable<int[]>>().NormalizeWhitespace().ToFullString(), Is.EqualTo("System.Collections.Generic.IEnumerable<System.Int32[]>"));
+            Assert.That(ProxyGenerator.CreateType<int[,]>().NormalizeWhitespace().ToFullString(), Is.EqualTo("System.Int32[,]"));
             Assert.That(ProxyGenerator.CreateType(typeof(IEnumerable<>)).NormalizeWhitespace().ToFullString(), Is.EqualTo("System.Collections.Generic.IEnumerable<T>"));
-            Assert.That(ProxyGenerator.CreateType(typeof(IEnumerable<IEnumerable<string>>)).NormalizeWhitespace().ToFullString(), Is.EqualTo("System.Collections.Generic.IEnumerable<System.Collections.Generic.IEnumerable<System.String>>"));
+            Assert.That(ProxyGenerator.CreateType<IEnumerable<IEnumerable<string>>>().NormalizeWhitespace().ToFullString(), Is.EqualTo("System.Collections.Generic.IEnumerable<System.Collections.Generic.IEnumerable<System.String>>"));
+        }
+
+        [Test]
+        public void AcquireMethodInfo_ShouldGetAMethodInfoInstance()
+        {
+            Assert.That(ProxyGenerator.AcquireMethodInfo(ProxyGenerator.SelfCallExpression(Foo)).NormalizeWhitespace().ToFullString(), Is.EqualTo("System.Reflection.MethodInfo currentMethod = ((System.Linq.Expressions.MethodCallExpression)callExpr.Body).Method;"));
         }
 
         private static MethodInfo GetMethod(string name) => typeof(IFoo<>).GetMethod(name);

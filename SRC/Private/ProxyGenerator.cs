@@ -20,14 +20,6 @@ namespace Solti.Utils.DI.Internals
 {
     internal static class ProxyGenerator
     {
-        private static void PreCheck(Type type)
-        {
-            if (!type.IsInterface) throw null;
-            if (type.IsNested) throw null;
-            if (!type.IsPublic) throw null;
-            if (type.ContainsGenericParameters) throw null;
-        }
-
         internal static void GenerateProxyMethod(MethodInfo ifaceMethod)
         {
             //
@@ -79,7 +71,7 @@ namespace Solti.Utils.DI.Internals
         (
             type: ArrayType
             (
-                elementType: CreateType(typeof(object[]))                  
+                elementType: CreateType<object[]>()                  
             ),
             initializer: InitializerExpression(SyntaxKind.ArrayInitializerExpression).WithExpressions
             (
@@ -235,17 +227,6 @@ namespace Solti.Utils.DI.Internals
             ));
         }
 
-        private static SeparatedSyntaxList<TNode> CreateList<T, TNode>(this IReadOnlyList<T> src, Func<T, TNode> factory) where TNode : SyntaxNode => SeparatedList<TNode>
-        (
-            nodesAndTokens: src.SelectMany((p, i) =>
-            {
-                var l = new List<SyntaxNodeOrToken> { factory(p) };
-                if (i < src.Count - 1) l.Add(Token(SyntaxKind.CommaToken));
-
-                return l;
-            })
-        );
-
         internal static TypeSyntax CreateType(Type src)
         {
             if (src.IsGenericType) return GenericName
@@ -282,8 +263,53 @@ namespace Solti.Utils.DI.Internals
             return IdentifierName(src.GetFriendlyName());
         }
 
+        internal static TypeSyntax CreateType<T>() => CreateType(typeof(T));
+
+        internal static LocalDeclarationStatementSyntax AcquireMethodInfo(LocalDeclarationStatementSyntax selfCallExpression) => DeclareLocal<MethodInfo>("currentMethod", MemberAccessExpression
+        (
+            kind: SyntaxKind.SimpleMemberAccessExpression,
+            expression: ParenthesizedExpression
+            (
+                expression: CastExpression
+                (
+                    CreateType<MethodCallExpression>(),
+                    MemberAccessExpression
+                    (
+                        kind: SyntaxKind.SimpleMemberAccessExpression,
+                        expression: IdentifierName
+                        (
+                            selfCallExpression.Declaration.Variables.Single().Identifier.Text
+                        ),
+                        name: IdentifierName(nameof(Expression<Action>.Body))
+                    )
+                )
+            ),
+            name: IdentifierName(nameof(MethodCallExpression.Method))
+        ));
+
+        #region Private
+        private static SeparatedSyntaxList<TNode> CreateList<T, TNode>(this IReadOnlyList<T> src, Func<T, TNode> factory) where TNode : SyntaxNode => SeparatedList<TNode>
+        (
+            nodesAndTokens: src.SelectMany((p, i) =>
+            {
+                var l = new List<SyntaxNodeOrToken> { factory(p) };
+                if (i < src.Count - 1) l.Add(Token(SyntaxKind.CommaToken));
+
+                return l;
+            })
+        );
+
         private static readonly Regex TypeNameReplacer = new Regex(@"\&|`\d+\[[\w,]+\]", RegexOptions.Compiled);
 
         private static string GetFriendlyName(this Type src) => TypeNameReplacer.Replace(src.ToString(), string.Empty);
+
+        private static void PreCheck(Type type)
+        {
+            if (!type.IsInterface) throw null;
+            if (type.IsNested) throw null;
+            if (!type.IsPublic) throw null;
+            if (type.ContainsGenericParameters) throw null;
+        }
+        #endregion
     }
 }
