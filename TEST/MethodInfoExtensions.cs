@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Linq.Expressions;
 using System.Reflection;
 
 using NUnit.Framework;
@@ -44,6 +45,16 @@ namespace Solti.Utils.DI.Internals.Tests
 
             object ret = indexOf.GetMethodInfo().Call(CICA, "a");
             Assert.That(ret, Is.EqualTo(3));
+        }
+
+        public int Prop { get; set; }
+
+        [Test]
+        public void Call_ShouldWorkWithGettersAndSetters()
+        {
+            var property = (PropertyInfo) ((MemberExpression) ((Expression<Func<MethodInfoExtensionsTests, int>>)(self => self.Prop)).Body).Member;
+            property.SetMethod.Call(this, 1);
+            Assert.That(property.GetMethod.Call(this), Is.EqualTo(1));
         }
 
         [Test]
