@@ -91,6 +91,13 @@ namespace Solti.Utils.DI.Internals.Tests
             ).NormalizeWhitespace().ToFullString(), Is.EqualTo("System.Object result = this.Invoke(currentMethod, args);"));
         }
 
+        [Test]
+        public void ReturnResult_ShouldCreateTheProperExpression()
+        {
+            Assert.That(ProxyGenerator.ReturnResult(typeof(void), ProxyGenerator.DeclareLocal<object>("@void")).NormalizeWhitespace().ToFullString(), Is.EqualTo("return;"));
+            Assert.That(ProxyGenerator.ReturnResult(typeof(List<int>), ProxyGenerator.DeclareLocal<object>("result")).NormalizeWhitespace().ToFullString(), Is.EqualTo("return (System.Collections.Generic.List<System.Int32>)result;"));
+        }
+
         private static MethodInfo GetMethod(string name) => typeof(IFoo<>).GetMethod(name);
     }
 }

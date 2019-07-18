@@ -6,6 +6,7 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Text.RegularExpressions;
@@ -312,6 +313,20 @@ namespace Solti.Utils.DI.Internals
             )
         ));
 
+        internal static ReturnStatementSyntax ReturnResult(Type returnType, LocalDeclarationStatementSyntax result) => ReturnStatement
+        (
+            expression: returnType == typeof(void)
+                ? null
+                : CastExpression
+                (
+                    type: CreateType(returnType),
+                    expression: IdentifierName
+                    (
+                        result.Declaration.Variables.Single().Identifier
+                    )
+                )
+        );
+
         #region Private
         private static SeparatedSyntaxList<TNode> CreateList<T, TNode>(this IReadOnlyList<T> src, Func<T, TNode> factory) where TNode : SyntaxNode => SeparatedList<TNode>
         (
@@ -326,7 +341,11 @@ namespace Solti.Utils.DI.Internals
 
         private static readonly Regex TypeNameReplacer = new Regex(@"\&|`\d+\[[\w,]+\]", RegexOptions.Compiled);
 
-        private static string GetFriendlyName(this Type src) => TypeNameReplacer.Replace(src.ToString(), string.Empty);
+        private static string GetFriendlyName(this Type src)
+        {
+            Debug.Assert(!src.IsGenericType || src.IsGenericTypeDefinition);
+            return TypeNameReplacer.Replace(src.ToString(), string.Empty);
+        }
 
         private static void PreCheck(Type type)
         {
