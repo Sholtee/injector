@@ -244,57 +244,6 @@ namespace Solti.Utils.DI.Internals
                 .ToList();
         }
 
-        internal static LocalDeclarationStatementSyntax SelfCallExpression(MethodInfo method)
-        {
-            const string i = nameof(i);
-
-            Type declaringType = method.DeclaringType;
-            
-            //
-            // Expression<Action<IInterface>>
-            //
-            // TODO: erre a gyorsitotar bejegyzesre csak a proxy felepiteseig van szukseg.
-            //
-
-            Type expressionType = Cache<Type, Type>.GetOrAdd(declaringType, () => typeof(Expression<>).MakeGenericType(typeof(Action<>).MakeGenericType(declaringType)));
-
-            //
-            // Expression<Action<IInterface>> callExpr = i => i.Foo(...)
-            //
-
-            return DeclareLocal(expressionType, "callExpr", SimpleLambdaExpression
-            (
-                parameter: Parameter(Identifier(i)),
-                body: InvocationExpression
-                (
-                    expression: MemberAccessExpression
-                    (
-                        kind: SyntaxKind.SimpleMemberAccessExpression,
-                        expression: IdentifierName(i),
-                        name: IdentifierName(method.Name)
-                    )
-                )
-                .WithArgumentList
-                (
-                    argumentList: ArgumentList(method.GetParameters().CreateList(param =>
-                    {
-                        ArgumentSyntax argument = Argument(IdentifierName(param.Name));
-
-                        //
-                        // TODO: "IN"
-                        //
-
-                        if (param.ParameterType.IsByRef) argument = argument.WithRefKindKeyword
-                        (
-                            refKindKeyword: Token(param.IsOut ? SyntaxKind.OutKeyword : SyntaxKind.RefKeyword)
-                        );
-
-                        return argument;
-                    }))
-                )
-            ));
-        }
-
         internal static TypeSyntax CreateType(Type src)
         {
             if (src.IsGenericType) return GenericName
@@ -333,27 +282,58 @@ namespace Solti.Utils.DI.Internals
 
         internal static TypeSyntax CreateType<T>() => CreateType(typeof(T));
 
-        internal static LocalDeclarationStatementSyntax AcquireMethodInfo(LocalDeclarationStatementSyntax selfCallExpression) => DeclareLocal<MethodInfo>("currentMethod", MemberAccessExpression
-        (
-            kind: SyntaxKind.SimpleMemberAccessExpression,
-            expression: ParenthesizedExpression
+        internal static LocalDeclarationStatementSyntax AcquireMethodInfo(MethodInfo method)
+        {
+            const string i = nameof(i);
+
+            return DeclareLocal<MethodInfo>("currentMethod", InvocationExpression
             (
-                expression: CastExpression
+                expression: IdentifierName(nameof(MethodAccess))
+            )
+            .WithArgumentList
+            (
+                argumentList: ArgumentList
                 (
-                    type: CreateType<MethodCallExpression>(),
-                    expression: MemberAccessExpression
+                    arguments: SingletonSeparatedList
                     (
-                        kind: SyntaxKind.SimpleMemberAccessExpression,
-                        expression: IdentifierName
+                        Argument
                         (
-                            selfCallExpression.Declaration.Variables.Single().Identifier
-                        ),
-                        name: IdentifierName(nameof(Expression<Action>.Body))
+                            expression: SimpleLambdaExpression
+                            (
+                                parameter: Parameter(Identifier(i)),
+                                body: InvocationExpression
+                                (
+                                    expression: MemberAccessExpression
+                                    (
+                                        kind: SyntaxKind.SimpleMemberAccessExpression,
+                                        expression: IdentifierName(i),
+                                        name: IdentifierName(method.Name)
+                                    )
+                                )   
+                                .WithArgumentList
+                                (
+                                    argumentList: ArgumentList(method.GetParameters().CreateList(param =>
+                                    {
+                                        ArgumentSyntax argument = Argument(IdentifierName(param.Name));
+
+                                        //
+                                        // TODO: "IN"
+                                        //
+
+                                        if (param.ParameterType.IsByRef) argument = argument.WithRefKindKeyword
+                                        (
+                                            refKindKeyword: Token(param.IsOut ? SyntaxKind.OutKeyword : SyntaxKind.RefKeyword)
+                                        );
+
+                                        return argument;
+                                    }))
+                                )
+                            )
+                        )
                     )
                 )
-            ),
-            name: IdentifierName(nameof(MethodCallExpression.Method))
-        ));
+            ));
+        }
 
         internal static LocalDeclarationStatementSyntax CallInvoke(params LocalDeclarationStatementSyntax[] arguments) => DeclareLocal<object>("result", InvocationExpression
         (

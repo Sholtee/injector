@@ -69,12 +69,6 @@ namespace Solti.Utils.DI.Internals.Tests
         }
 
         [Test]
-        public void SelfCallExpression_ShouldCreateAnExpressionCallingTheActualMethod()
-        {
-            Assert.That(ProxyGenerator.SelfCallExpression(Foo).NormalizeWhitespace().ToFullString(), Is.EqualTo("System.Linq.Expressions.Expression<System.Action<Solti.Utils.DI.Internals.Tests.IFoo<T>>> callExpr = i => i.Foo(a, out b, ref c);"));
-        }
-
-        [Test]
         public void CreateType_ShouldCreateTheDesiredType()
         {
             Assert.That(ProxyGenerator.CreateType<int[]>().NormalizeWhitespace().ToFullString(), Is.EqualTo("System.Int32[]"));
@@ -87,7 +81,8 @@ namespace Solti.Utils.DI.Internals.Tests
         [Test]
         public void AcquireMethodInfo_ShouldGetAMethodInfoInstance()
         {
-            Assert.That(ProxyGenerator.AcquireMethodInfo(ProxyGenerator.SelfCallExpression(Foo)).NormalizeWhitespace().ToFullString(), Is.EqualTo("System.Reflection.MethodInfo currentMethod = ((System.Linq.Expressions.MethodCallExpression)callExpr.Body).Method;"));
+            Assert.That(ProxyGenerator.AcquireMethodInfo(Foo).NormalizeWhitespace().ToFullString(), Is.EqualTo("System.Reflection.MethodInfo currentMethod = MethodAccess(i => i.Foo(a, out b, ref c));"));
+            Assert.That(ProxyGenerator.AcquireMethodInfo(Bar).NormalizeWhitespace().ToFullString(), Is.EqualTo("System.Reflection.MethodInfo currentMethod = MethodAccess(i => i.Bar());"));
         }
 
         [Test]
