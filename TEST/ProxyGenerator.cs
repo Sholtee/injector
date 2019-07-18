@@ -3,11 +3,13 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 using NUnit.Framework;
@@ -47,6 +49,13 @@ namespace Solti.Utils.DI.Internals.Tests
         public void DeclareMethod_ShouldDeclareTheDesiredMethod()
         {
             Assert.That(ProxyGenerator.DeclareMethod(Foo).NormalizeWhitespace().ToFullString(), Is.EqualTo("System.Int32 Solti.Utils.DI.Internals.Tests.IFoo<T>.Foo<TT>(System.Int32 a, out System.String b, ref TT c)"));
+
+            Type typeOfT = typeof(List<>).GetGenericArguments().Single();
+
+            Assert.That(ProxyGenerator.DeclareMethod(typeOfT, "Foo", new[] {SyntaxKind.PrivateKeyword, SyntaxKind.StaticKeyword}, new[] {typeOfT.Name}, new Dictionary<string, Type>
+            {
+                {"param", typeOfT}
+            }).NormalizeWhitespace().ToFullString(), Is.EqualTo("private static T Foo<T>(T param)"));
         }
 
         [Test]

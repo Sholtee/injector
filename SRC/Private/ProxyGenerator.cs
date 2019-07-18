@@ -24,12 +24,16 @@ namespace Solti.Utils.DI.Internals
         internal static void GenerateProxyMethod(MethodInfo ifaceMethod)
         {
             //
+            // private static MethodInfo MethodAccess(Expression<Action<IInterface>> methodAccess) 
+            // {
+            //     return ((MethodCallExpression) callExpr.Body).Method;
+            // }
+            //
             // TResult IInterface.Foo<TGeneric>(T1 para1, ref T2 para2, out T3 para3, TGeneric para4)
             // {
             //     object[] args = new object[] {para1, para2, default(T3), para4};
             //
-            //     Expression<Action<IInterface>> callExpr = i => i.Foo<TGeneric>(para1, ref para2, out para3, para4);
-            //     MethodInfo currentMethod = ((MethodCallExpression) callExpr.Body).Method; // MethodBase.GetCurrentMethod() lassu, nincs netcore1_X-ben es a generikus definiciot adna vissza
+            //     MethodInfo currentMethod = MethodAccess(i => i.Foo<TGeneric>(para1, ref para2, out para3, para4)); // MethodBase.GetCurrentMethod() az implementaciot adna vissza, reflexio-val meg kibaszott lassu lenne
             //
             //     object result = this.Invoke(currentMethod, args);
             //     
@@ -37,6 +41,32 @@ namespace Solti.Utils.DI.Internals
             //     para3 = (T3) args[2];
             //
             //     return (TResult) result; // ifaceMethod.ReturnType != typeof(void)
+            // }
+            //
+        }
+
+        internal static void GenerateProxyProperty(PropertyInfo ifaceProperty)
+        {
+            //
+            // private static PropertyInfo PropertyAccess<TResult>(Expression<Func<IInterface, TResult>> propertyAccess)
+            // {
+            //     return (PropertyInfo) ((MemberExpression) propertyAccess.Body).Member;
+            // }
+            //
+            // TResult IInterface.Prop
+            // {
+            //     get 
+            //     {
+            //         PropertyInfo prop = GetProperty(i => i.Prop);
+            //
+            //         return (TResult) this.Invoke(prop.GetMethod, new object[0])
+            //     }
+            //     set
+            //     {
+            //         PropertyInfo prop = GetProperty(i => i.Prop);
+            //
+            //         this.Invoke(prop.SetMethod, new object[]{ value });
+            //     }
             // }
             //
         }
@@ -82,31 +112,56 @@ namespace Solti.Utils.DI.Internals
             )
         );
 
+        internal static MethodDeclarationSyntax DeclareMethod(
+            Type returnType, 
+            string name, 
+            IReadOnlyList<SyntaxKind> modifiers, 
+            IReadOnlyList<string> genericArguments, 
+            IReadOnlyDictionary<string, Type> parameters) => MethodDeclaration
+        (
+            returnType: returnType != typeof(void)
+                ? CreateType(returnType)
+                : PredefinedType(Token(SyntaxKind.VoidKeyword)),
+            identifier: Identifier(name)
+        )
+        .WithModifiers
+        (
+            modifiers: TokenList(modifiers.Select(Token))
+        )
+        .WithTypeParameterList
+        (
+            typeParameterList: TypeParameterList
+            (
+                parameters: genericArguments.CreateList(TypeParameter)
+            )
+        )
+        .WithParameterList
+        (
+            parameterList: ParameterList
+            (
+                parameters: parameters.CreateList(param => Parameter(Identifier(param.Key)).WithType
+                (
+                    type: CreateType(param.Value)
+                ))
+            )
+        );
+
         internal static MethodDeclarationSyntax DeclareMethod(MethodInfo method)
         {
             Type 
                 declaringType = method.DeclaringType,
                 returnType    = method.ReturnType;
 
-            MethodDeclarationSyntax result = MethodDeclaration
+            return MethodDeclaration
             (
                 returnType: returnType != typeof(void) 
                     ? CreateType(returnType)
                     : PredefinedType(Token(SyntaxKind.VoidKeyword)),
                 identifier: Identifier(method.Name)
-            );
-
-            return 
+            )
+            .WithExplicitInterfaceSpecifier
             (
-                declaringType.IsInterface
-                    ? result.WithExplicitInterfaceSpecifier
-                    (
-                        explicitInterfaceSpecifier: ExplicitInterfaceSpecifier((NameSyntax) CreateType(declaringType))
-                    )
-                    : result.WithModifiers // tesztekhez
-                    (
-                        modifiers: TokenList(Token(SyntaxKind.PublicKeyword))
-                    )
+                explicitInterfaceSpecifier: ExplicitInterfaceSpecifier((NameSyntax) CreateType(declaringType))
             )
             .WithTypeParameterList
             (
@@ -328,7 +383,7 @@ namespace Solti.Utils.DI.Internals
         );
 
         #region Private
-        private static SeparatedSyntaxList<TNode> CreateList<T, TNode>(this IReadOnlyList<T> src, Func<T, TNode> factory) where TNode : SyntaxNode => SeparatedList<TNode>
+        private static SeparatedSyntaxList<TNode> CreateList<T, TNode>(this IReadOnlyCollection<T> src, Func<T, TNode> factory) where TNode : SyntaxNode => SeparatedList<TNode>
         (
             nodesAndTokens: src.SelectMany((p, i) =>
             {

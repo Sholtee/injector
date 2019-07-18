@@ -52,7 +52,7 @@ namespace Solti.Utils.DI.Internals.Tests
         [Test]
         public void Call_ShouldWorkWithGettersAndSetters()
         {
-            var property = (PropertyInfo) ((MemberExpression) ((Expression<Func<MethodInfoExtensionsTests, int>>)(self => self.Prop)).Body).Member;
+            var property = (PropertyInfo) ((MemberExpression) ((Expression<Func<int>>)(() => this.Prop)).Body).Member;
             property.SetMethod.Call(this, 1);
             Assert.That(property.GetMethod.Call(this), Is.EqualTo(1));
         }
