@@ -382,6 +382,60 @@ namespace Solti.Utils.DI.Internals
                 )
         );
 
+        internal static MethodDeclarationSyntax PropertyAccess(Type interfacType)
+        {
+            const string paraName = "propertyAccess";
+
+            Type TResult = typeof(Func<>).GetGenericArguments().Single();  // ugly
+
+            return DeclareMethod
+            (
+                returnType: typeof(PropertyInfo), 
+                name: nameof(PropertyAccess), 
+                modifiers: new []{ SyntaxKind.PrivateKeyword, SyntaxKind.StaticKeyword },
+                genericArguments: new []{ TResult.Name },
+                parameters: new Dictionary<string, Type>
+                {
+                    {paraName, typeof(Expression<>).MakeGenericType(typeof(Func<,>).MakeGenericType(interfacType, TResult))}
+                }
+            )
+            .WithBody
+            (
+                body: Block
+                (
+                    statements: SingletonList<StatementSyntax>
+                    (
+                        ReturnStatement
+                        (
+                            expression: CastMemberAccess<PropertyInfo>
+                            (
+                                expression: ParenthesizedExpression
+                                (
+                                    CastMemberAccess<MemberExpression>
+                                    (
+                                        expression: IdentifierName(paraName), 
+                                        name: nameof(Expression<int>.Body)
+                                    )
+                                ), 
+                                name: nameof(MemberExpression.Member)
+                            )
+                        )
+                    )
+                )
+            );
+
+            ExpressionSyntax CastMemberAccess<TType>(ExpressionSyntax expression, string name) => CastExpression
+            (
+                type: CreateType<TType>(),
+                expression: MemberAccessExpression
+                (
+                    kind: SyntaxKind.SimpleMemberAccessExpression,
+                    expression: expression,
+                    name: IdentifierName(name) 
+                )
+            );
+        }
+
         #region Private
         private static SeparatedSyntaxList<TNode> CreateList<T, TNode>(this IReadOnlyCollection<T> src, Func<T, TNode> factory) where TNode : SyntaxNode => SeparatedList<TNode>
         (
