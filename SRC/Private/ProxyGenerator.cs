@@ -159,6 +159,8 @@ namespace Solti.Utils.DI.Internals
                 declaringType = method.DeclaringType,
                 returnType    = method.ReturnType;
 
+            Debug.Assert(declaringType.IsInterface);
+
             MethodDeclarationSyntax result = MethodDeclaration
             (
                 returnType: returnType != typeof(void) 
@@ -209,6 +211,34 @@ namespace Solti.Utils.DI.Internals
             );
 
             return result;
+        }
+
+        internal static PropertyDeclarationSyntax DeclareProperty(PropertyInfo property)
+        {
+            Debug.Assert(property.DeclaringType.IsInterface);
+
+            PropertyDeclarationSyntax result = PropertyDeclaration
+            (
+                type: CreateType(property.PropertyType),
+                identifier: Identifier(property.Name)
+            )
+            .WithExplicitInterfaceSpecifier
+            (
+                explicitInterfaceSpecifier: ExplicitInterfaceSpecifier((NameSyntax) CreateType(property.DeclaringType))
+            );
+
+            List<AccessorDeclarationSyntax> accessors = new List<AccessorDeclarationSyntax>();
+
+            if (property.CanRead) accessors.Add(AccessorDeclaration(SyntaxKind.GetAccessorDeclaration));
+            if (property.CanWrite) accessors.Add(AccessorDeclaration(SyntaxKind.SetAccessorDeclaration));
+
+            return result.WithAccessorList
+            (
+                accessorList: AccessorList
+                (
+                    accessors: List(accessors)
+                )
+            );
         }
 
         internal static IReadOnlyList<ExpressionStatementSyntax> AssignByRefParameters(MethodInfo method, LocalDeclarationStatementSyntax argsArray)
@@ -335,7 +365,7 @@ namespace Solti.Utils.DI.Internals
             ));
         }
 
-        internal static LocalDeclarationStatementSyntax CallInvoke(params LocalDeclarationStatementSyntax[] arguments) => DeclareLocal<object>("result", InvocationExpression
+        internal static InvocationExpressionSyntax CallInvoke(params LocalDeclarationStatementSyntax[] arguments) => InvocationExpression
         (
             expression: MemberAccessExpression
             (
@@ -356,7 +386,7 @@ namespace Solti.Utils.DI.Internals
                     )
                 ))
             )
-        ));
+        );
 
         internal static ReturnStatementSyntax ReturnResult(Type returnType, LocalDeclarationStatementSyntax result) => ReturnStatement
         (

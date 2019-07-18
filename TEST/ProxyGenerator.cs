@@ -92,7 +92,7 @@ namespace Solti.Utils.DI.Internals.Tests
             (
                 ProxyGenerator.DeclareLocal<MethodInfo>("currentMethod"),
                 ProxyGenerator.DeclareLocal<object[]>("args")
-            ).NormalizeWhitespace().ToFullString(), Is.EqualTo("System.Object result = this.Invoke(currentMethod, args);"));
+            ).NormalizeWhitespace().ToFullString(), Is.EqualTo("this.Invoke(currentMethod, args)"));
         }
 
         [Test]
@@ -112,6 +112,13 @@ namespace Solti.Utils.DI.Internals.Tests
         public void MethodAccess_ShouldCreateTheProperMethod()
         {
             Assert.That(ProxyGenerator.MethodAccess(typeof(IFoo<int>)).NormalizeWhitespace().ToFullString(), Is.EqualTo($"private static System.Reflection.MethodInfo MethodAccess(System.Linq.Expressions.Expression<System.Action<Solti.Utils.DI.Internals.Tests.IFoo<System.Int32>>> methodAccess){Environment.NewLine}{{{Environment.NewLine}    return ((System.Linq.Expressions.MethodCallExpression)methodAccess.Body).Method;{Environment.NewLine}}}"));
+        }
+
+        [Test]
+        public void DeclareProperty_ShouldDeclareTheDesiredProperty()
+        {
+            // Nem gond h a "get set"-nel nincs ";", ez azert van mert nincs torzs meghatarozva.
+            Assert.That(ProxyGenerator.DeclareProperty(typeof(IFoo<>).GetProperty("Prop")).NormalizeWhitespace().ToFullString(), Is.EqualTo($"T Solti.Utils.DI.Internals.Tests.IFoo<T>.Prop{Environment.NewLine}{{{Environment.NewLine}    get set{Environment.NewLine}}}"));
         }
 
         private static MethodInfo GetMethod(string name) => typeof(IFoo<>).GetMethod(name);
