@@ -4,9 +4,9 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
-using System.Linq;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Text.RegularExpressions;
@@ -26,7 +26,7 @@ namespace Solti.Utils.DI.Internals
             //
             // private static MethodInfo MethodAccess(Expression<Action<IInterface>> methodAccess) 
             // {
-            //     return ((MethodCallExpression) callExpr.Body).Method;
+            //     return ((MethodCallExpression) methodAccess.Body).Method;
             // }
             //
             // TResult IInterface.Foo<TGeneric>(T1 para1, ref T2 para2, out T3 para3, TGeneric para4)
@@ -117,34 +117,41 @@ namespace Solti.Utils.DI.Internals
             string name, 
             IReadOnlyList<SyntaxKind> modifiers, 
             IReadOnlyList<string> genericArguments, 
-            IReadOnlyDictionary<string, Type> parameters) => MethodDeclaration
-        (
-            returnType: returnType != typeof(void)
-                ? CreateType(returnType)
-                : PredefinedType(Token(SyntaxKind.VoidKeyword)),
-            identifier: Identifier(name)
-        )
-        .WithModifiers
-        (
-            modifiers: TokenList(modifiers.Select(Token))
-        )
-        .WithTypeParameterList
-        (
-            typeParameterList: TypeParameterList
+            IReadOnlyDictionary<string, Type> parameters)
+        {
+            MethodDeclarationSyntax result = MethodDeclaration
             (
-                parameters: genericArguments.CreateList(TypeParameter)
+                returnType: returnType != typeof(void)
+                    ? CreateType(returnType)
+                    : PredefinedType(Token(SyntaxKind.VoidKeyword)),
+                identifier: Identifier(name)
             )
-        )
-        .WithParameterList
-        (
-            parameterList: ParameterList
+            .WithModifiers
             (
-                parameters: parameters.CreateList(param => Parameter(Identifier(param.Key)).WithType
+                modifiers: TokenList(modifiers.Select(Token))
+            )
+
+            .WithParameterList
+            (
+                parameterList: ParameterList
                 (
-                    type: CreateType(param.Value)
-                ))
-            )
-        );
+                    parameters: parameters.CreateList(param => Parameter(Identifier(param.Key)).WithType
+                    (
+                        type: CreateType(param.Value)
+                    ))
+                )
+            );
+
+            if (genericArguments.Any()) result = result.WithTypeParameterList // kulon legyen kulomben lesz egy ures "<>"
+            (
+                typeParameterList: TypeParameterList
+                (
+                    parameters: genericArguments.CreateList(TypeParameter)
+                )
+            );
+
+            return result;
+        }
 
         internal static MethodDeclarationSyntax DeclareMethod(MethodInfo method)
         {
@@ -152,7 +159,7 @@ namespace Solti.Utils.DI.Internals
                 declaringType = method.DeclaringType,
                 returnType    = method.ReturnType;
 
-            return MethodDeclaration
+            MethodDeclarationSyntax result = MethodDeclaration
             (
                 returnType: returnType != typeof(void) 
                     ? CreateType(returnType)
@@ -162,13 +169,6 @@ namespace Solti.Utils.DI.Internals
             .WithExplicitInterfaceSpecifier
             (
                 explicitInterfaceSpecifier: ExplicitInterfaceSpecifier((NameSyntax) CreateType(declaringType))
-            )
-            .WithTypeParameterList
-            (
-                typeParameterList: TypeParameterList
-                (
-                    parameters: method.GetGenericArguments().CreateList(type => TypeParameter(CreateType(type).ToFullString()))
-                )
             )
             .WithParameterList
             (
@@ -199,6 +199,16 @@ namespace Solti.Utils.DI.Internals
                     })
                 )
             );
+
+            if (method.IsGenericMethod) result = result.WithTypeParameterList // kulon legyen kulomben lesz egy ures "<>"
+            (
+                typeParameterList: TypeParameterList
+                (
+                    parameters: method.GetGenericArguments().CreateList(type => TypeParameter(CreateType(type).ToFullString()))
+                )
+            );
+
+            return result;
         }
 
         internal static IReadOnlyList<ExpressionStatementSyntax> AssignByRefParameters(MethodInfo method, LocalDeclarationStatementSyntax argsArray)
@@ -382,8 +392,9 @@ namespace Solti.Utils.DI.Internals
                 )
         );
 
-        internal static MethodDeclarationSyntax PropertyAccess(Type interfacType)
+        internal static MethodDeclarationSyntax PropertyAccess(Type interfaceType)
         {
+            Debug.Assert(interfaceType.IsInterface);
             const string paraName = "propertyAccess";
 
             Type TResult = typeof(Func<>).GetGenericArguments().Single();  // ugly
@@ -396,7 +407,7 @@ namespace Solti.Utils.DI.Internals
                 genericArguments: new []{ TResult.Name },
                 parameters: new Dictionary<string, Type>
                 {
-                    {paraName, typeof(Expression<>).MakeGenericType(typeof(Func<,>).MakeGenericType(interfacType, TResult))}
+                    {paraName, typeof(Expression<>).MakeGenericType(typeof(Func<,>).MakeGenericType(interfaceType, TResult))} // csak egyszer fut le interface-enkent -> nem kell gyorsitotarazni
                 }
             )
             .WithBody
@@ -414,7 +425,7 @@ namespace Solti.Utils.DI.Internals
                                     CastMemberAccess<MemberExpression>
                                     (
                                         expression: IdentifierName(paraName), 
-                                        name: nameof(Expression<int>.Body)
+                                        name: nameof(Expression<Action>.Body)
                                     )
                                 ), 
                                 name: nameof(MemberExpression.Member)
@@ -432,6 +443,54 @@ namespace Solti.Utils.DI.Internals
                     kind: SyntaxKind.SimpleMemberAccessExpression,
                     expression: expression,
                     name: IdentifierName(name) 
+                )
+            );
+        }
+
+        internal static MethodDeclarationSyntax MethodAccess(Type interfaceType)
+        {
+            Debug.Assert(interfaceType.IsInterface);
+            const string paraName = "methodAccess";
+
+            return DeclareMethod
+            (
+                returnType: typeof(MethodInfo),
+                name: nameof(MethodAccess),
+                modifiers: new[] { SyntaxKind.PrivateKeyword, SyntaxKind.StaticKeyword },
+                genericArguments: new string[0],
+                parameters: new Dictionary<string, Type>
+                {
+                    {paraName, typeof(Expression<>).MakeGenericType(typeof(Action<>).MakeGenericType(interfaceType))} // csak egyszer fut le interface-enkent -> nem kell gyorsitotarazni
+                }
+            )
+            .WithBody
+            (
+                body: Block
+                (
+                    statements: SingletonList<StatementSyntax>
+                    (
+                        ReturnStatement
+                        (
+                            expression: MemberAccessExpression
+                            (
+                                kind: SyntaxKind.SimpleMemberAccessExpression,
+                                expression: ParenthesizedExpression
+                                (
+                                    expression: CastExpression
+                                    (
+                                        type: CreateType<MethodCallExpression>(),
+                                        expression: MemberAccessExpression
+                                        (
+                                            kind: SyntaxKind.SimpleMemberAccessExpression,
+                                            expression: IdentifierName(paraName),
+                                            name: IdentifierName(nameof(Expression<Action>.Body))
+                                        )
+                                    ) 
+                                ),
+                                name: IdentifierName(nameof(MethodCallExpression.Method))
+                            )
+                        )
+                    )
                 )
             );
         }

@@ -113,6 +113,12 @@ namespace Solti.Utils.DI.Internals.Tests
             Assert.That(ProxyGenerator.PropertyAccess(typeof(IFoo<int>)).NormalizeWhitespace().ToFullString(), Is.EqualTo($"private static System.Reflection.PropertyInfo PropertyAccess<TResult>(System.Linq.Expressions.Expression<System.Func<Solti.Utils.DI.Internals.Tests.IFoo<System.Int32>, TResult>> propertyAccess){Environment.NewLine}{{{Environment.NewLine}    return (System.Reflection.PropertyInfo)((System.Linq.Expressions.MemberExpression)propertyAccess.Body).Member;{Environment.NewLine}}}"));
         }
 
+        [Test]
+        public void MethodAccess_ShouldCreateTheProperMethod()
+        {
+            Assert.That(ProxyGenerator.MethodAccess(typeof(IFoo<int>)).NormalizeWhitespace().ToFullString(), Is.EqualTo($"private static System.Reflection.MethodInfo MethodAccess(System.Linq.Expressions.Expression<System.Action<Solti.Utils.DI.Internals.Tests.IFoo<System.Int32>>> methodAccess){Environment.NewLine}{{{Environment.NewLine}    return ((System.Linq.Expressions.MethodCallExpression)methodAccess.Body).Method;{Environment.NewLine}}}"));
+        }
+
         private static MethodInfo GetMethod(string name) => typeof(IFoo<>).GetMethod(name);
     }
 }
