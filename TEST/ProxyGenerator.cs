@@ -81,6 +81,16 @@ namespace Solti.Utils.DI.Internals.Tests
             Assert.That(ProxyGenerator.AcquireMethodInfo(ProxyGenerator.SelfCallExpression(Foo)).NormalizeWhitespace().ToFullString(), Is.EqualTo("System.Reflection.MethodInfo currentMethod = ((System.Linq.Expressions.MethodCallExpression)callExpr.Body).Method;"));
         }
 
+        [Test]
+        public void CallInvoke_ShouldCallTheInvokeMetehodOnThis()
+        {
+            Assert.That(ProxyGenerator.CallInvoke
+            (
+                ProxyGenerator.DeclareLocal<MethodInfo>("currentMethod"),
+                ProxyGenerator.DeclareLocal<object[]>("args")
+            ).NormalizeWhitespace().ToFullString(), Is.EqualTo("System.Object result = this.Invoke(currentMethod, args);"));
+        }
+
         private static MethodInfo GetMethod(string name) => typeof(IFoo<>).GetMethod(name);
     }
 }

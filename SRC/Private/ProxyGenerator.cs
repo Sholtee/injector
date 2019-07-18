@@ -83,12 +83,14 @@ namespace Solti.Utils.DI.Internals
 
         internal static MethodDeclarationSyntax DeclareMethod(MethodInfo method)
         {
-            Type declaringType = method.DeclaringType;
+            Type 
+                declaringType = method.DeclaringType,
+                returnType    = method.ReturnType;
 
             MethodDeclarationSyntax result = MethodDeclaration
             (
-                returnType: method.ReturnType != typeof(void) 
-                    ? CreateType(method.ReturnType)
+                returnType: returnType != typeof(void) 
+                    ? CreateType(returnType)
                     : PredefinedType(Token(SyntaxKind.VoidKeyword)),
                 identifier: Identifier(method.Name)
             );
@@ -155,7 +157,7 @@ namespace Solti.Utils.DI.Internals
                 (
                     p => ExpressionStatement
                     (
-                        AssignmentExpression
+                        expression: AssignmentExpression
                         (
                             kind:  SyntaxKind.SimpleAssignmentExpression, 
                             left:  IdentifierName(p.Parameter.Name),
@@ -201,9 +203,9 @@ namespace Solti.Utils.DI.Internals
                 (
                     expression: MemberAccessExpression
                     (
-                        SyntaxKind.SimpleMemberAccessExpression,
-                        IdentifierName(i),
-                        IdentifierName(method.Name)
+                        kind: SyntaxKind.SimpleMemberAccessExpression,
+                        expression: IdentifierName(i),
+                        name: IdentifierName(method.Name)
                     )
                 )
                 .WithArgumentList
@@ -272,19 +274,42 @@ namespace Solti.Utils.DI.Internals
             (
                 expression: CastExpression
                 (
-                    CreateType<MethodCallExpression>(),
-                    MemberAccessExpression
+                    type: CreateType<MethodCallExpression>(),
+                    expression: MemberAccessExpression
                     (
                         kind: SyntaxKind.SimpleMemberAccessExpression,
                         expression: IdentifierName
                         (
-                            selfCallExpression.Declaration.Variables.Single().Identifier.Text
+                            selfCallExpression.Declaration.Variables.Single().Identifier
                         ),
                         name: IdentifierName(nameof(Expression<Action>.Body))
                     )
                 )
             ),
             name: IdentifierName(nameof(MethodCallExpression.Method))
+        ));
+
+        internal static LocalDeclarationStatementSyntax CallInvoke(params LocalDeclarationStatementSyntax[] arguments) => DeclareLocal<object>("result", InvocationExpression
+        (
+            expression: MemberAccessExpression
+            (
+                kind: SyntaxKind.SimpleMemberAccessExpression,
+                expression: ThisExpression(),
+                name: IdentifierName(nameof(InterfaceProxy<int>.Invoke))
+            )
+        )
+        .WithArgumentList
+        (
+            argumentList: ArgumentList
+            (
+                arguments.CreateList(arg => Argument
+                (
+                    expression: IdentifierName
+                    (
+                        arg.Declaration.Variables.Single().Identifier
+                    )
+                ))
+            )
         ));
 
         #region Private

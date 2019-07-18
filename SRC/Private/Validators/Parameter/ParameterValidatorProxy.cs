@@ -14,7 +14,7 @@ namespace Solti.Utils.DI.Internals
         {
         }
 
-        protected override object Invoke(MethodInfo targetMethod, object[] args)
+        public override object Invoke(MethodInfo targetMethod, object[] args)
         {
             IReadOnlyList<ParameterInfo> infos = targetMethod.GetParameters();
 

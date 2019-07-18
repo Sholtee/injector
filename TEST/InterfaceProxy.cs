@@ -37,7 +37,7 @@ namespace Solti.Utils.DI.InterfaceProxy.Tests
             {
             }
 
-            protected override object Invoke(MethodInfo targetMethod, object[] args)
+            public override object Invoke(MethodInfo targetMethod, object[] args)
             {
                 if (targetMethod.Name == nameof(Target.Hooked)) return 1986;
                 return base.Invoke(targetMethod, args);
