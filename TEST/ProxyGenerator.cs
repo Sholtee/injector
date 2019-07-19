@@ -30,8 +30,7 @@ namespace Solti.Utils.DI.Internals.Tests
         public void DeclareLocal_ShouldDeclareTheDesiredLocalVariable()
         {
             Assert.That(ProxyGenerator.DeclareLocal<string[]>("paramz").NormalizeWhitespace().ToFullString(), Is.EqualTo("System.String[] paramz;"));
-            Assert.That(ProxyGenerator.DeclareLocal<object[]>("args", ProxyGenerator.CreateArgumentsArray(GetMethod(nameof(Foo)))).NormalizeWhitespace().ToFullString(), Is.EqualTo("System.Object[] args = new System.Object[]{a, default(System.String), c};"));
-        }
+         }
 
         private static readonly MethodInfo
             Foo = GetMethod(nameof(Foo)),
@@ -42,9 +41,9 @@ namespace Solti.Utils.DI.Internals.Tests
         [Test]
         public void CreateArgumentsArray_ShouldCreateAnObjectArrayFromTheArguments()
         {
-            Assert.That(ProxyGenerator.CreateArgumentsArray(Foo).NormalizeWhitespace().ToFullString(), Is.EqualTo("new System.Object[]{a, default(System.String), c}"));
+            Assert.That(ProxyGenerator.CreateArgumentsArray(Foo).NormalizeWhitespace().ToFullString(), Is.EqualTo("System.Object[] args = new System.Object[]{a, default(System.String), c};"));
 
-            Assert.That(ProxyGenerator.CreateArgumentsArray(Bar).NormalizeWhitespace().ToFullString(), Is.EqualTo("new System.Object[]{}"));          
+            Assert.That(ProxyGenerator.CreateArgumentsArray(Bar).NormalizeWhitespace().ToFullString(), Is.EqualTo("System.Object[] args = new System.Object[]{};"));          
         }
 
         [Test]
@@ -127,6 +126,13 @@ namespace Solti.Utils.DI.Internals.Tests
         {
             // Nem gond h a "get set"-nel nincs ";", ez azert van mert nincs torzs meghatarozva.
             Assert.That(ProxyGenerator.DeclareProperty(Prop).NormalizeWhitespace().ToFullString(), Is.EqualTo($"System.Int32 Solti.Utils.DI.Internals.Tests.IFoo<System.Int32>.Prop{Environment.NewLine}{{{Environment.NewLine}    get set{Environment.NewLine}}}"));
+        }
+
+        [Test, Explicit]
+        public void GenerateProxyMethod_Test()
+        {
+            string x = ProxyGenerator.GenerateProxyMethod(Foo).NormalizeWhitespace().ToFullString();
+            x = ProxyGenerator.GenerateProxyMethod(Bar).NormalizeWhitespace().ToFullString();
         }
 
         private static MethodInfo GetMethod(string name) => typeof(IFoo<>).GetMethod(name);

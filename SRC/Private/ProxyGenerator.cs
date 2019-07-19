@@ -21,56 +21,7 @@ namespace Solti.Utils.DI.Internals
 {
     internal static class ProxyGenerator
     {
-        internal static void GenerateProxyMethod(MethodInfo ifaceMethod)
-        {
-            //
-            // private static MethodInfo MethodAccess(Expression<Action<IInterface>> methodAccess) 
-            // {
-            //     return ((MethodCallExpression) methodAccess.Body).Method;
-            // }
-            //
-            // TResult IInterface.Foo<TGeneric>(T1 para1, ref T2 para2, out T3 para3, TGeneric para4)
-            // {
-            //     object[] args = new object[] {para1, para2, default(T3), para4};
-            //
-            //     MethodInfo currentMethod = MethodAccess(i => i.Foo<TGeneric>(para1, ref para2, out para3, para4)); // MethodBase.GetCurrentMethod() az implementaciot adna vissza, reflexio-val meg kibaszott lassu lenne
-            //
-            //     object result = this.Invoke(currentMethod, args);
-            //     
-            //     para2 = (T2) args[1];
-            //     para3 = (T3) args[2];
-            //
-            //     return (TResult) result; // ifaceMethod.ReturnType != typeof(void)
-            // }
-            //
-        }
-
-        internal static void GenerateProxyProperty(PropertyInfo ifaceProperty)
-        {
-            //
-            // private static PropertyInfo PropertyAccess<TResult>(Expression<Func<IInterface, TResult>> propertyAccess)
-            // {
-            //     return (PropertyInfo) ((MemberExpression) propertyAccess.Body).Member;
-            // }
-            //
-            // TResult IInterface.Prop
-            // {
-            //     get 
-            //     {
-            //         PropertyInfo currentProperty = PropertyAccess(i => i.Prop);
-            //
-            //         return (TResult) this.Invoke(currentProperty.GetMethod, new object[0])
-            //     }
-            //     set
-            //     {
-            //         PropertyInfo currentProperty = PropertyAccess(i => i.Prop);
-            //
-            //         this.Invoke(currentProperty.SetMethod, new object[]{ value });
-            //     }
-            // }
-            //
-        }
-
+        #region Internal
         internal static LocalDeclarationStatementSyntax DeclareLocal(Type type, string name, ExpressionSyntax initializer = null)
         {
             VariableDeclaratorSyntax declarator = VariableDeclarator
@@ -98,7 +49,7 @@ namespace Solti.Utils.DI.Internals
 
         internal static LocalDeclarationStatementSyntax DeclareLocal<T>(string name, ExpressionSyntax initializer = null) => DeclareLocal(typeof(T), name, initializer);
 
-        internal static ArrayCreationExpressionSyntax CreateArgumentsArray(MethodInfo method) => ArrayCreationExpression
+        internal static LocalDeclarationStatementSyntax CreateArgumentsArray(MethodInfo method) => DeclareLocal<object[]>("args", ArrayCreationExpression
         (
             type: ArrayType
             (
@@ -110,7 +61,7 @@ namespace Solti.Utils.DI.Internals
                     .GetParameters()
                     .CreateList(param => param.IsOut ? DefaultExpression(CreateType(param.ParameterType)) : (ExpressionSyntax) IdentifierName(param.Name))
             )
-        );
+        ));
 
         internal static MethodDeclarationSyntax DeclareMethod(
             Type returnType, 
@@ -397,7 +348,7 @@ namespace Solti.Utils.DI.Internals
             ));
         }
 
-        internal static InvocationExpressionSyntax CallInvoke(params LocalDeclarationStatementSyntax[] arguments) => InvocationExpression
+        internal static InvocationExpressionSyntax CallInvoke(params ExpressionSyntax[] arguments) => InvocationExpression
         (
             expression: MemberAccessExpression
             (
@@ -410,15 +361,14 @@ namespace Solti.Utils.DI.Internals
         (
             argumentList: ArgumentList
             (
-                arguments.CreateList(arg => Argument
-                (
-                    expression: IdentifierName
-                    (
-                        arg.Declaration.Variables.Single().Identifier
-                    )
-                ))
+                arguments.CreateList(Argument)
             )
         );
+
+        internal static InvocationExpressionSyntax CallInvoke(params LocalDeclarationStatementSyntax[] arguments) => CallInvoke(arguments.Select(arg => (ExpressionSyntax) IdentifierName
+        (
+            arg.Declaration.Variables.Single().Identifier
+        )).ToArray());
 
         internal static ReturnStatementSyntax ReturnResult(Type returnType, LocalDeclarationStatementSyntax result) => ReturnStatement
         (
@@ -433,9 +383,78 @@ namespace Solti.Utils.DI.Internals
                     )
                 )
         );
+        #endregion
 
-        internal static MethodDeclarationSyntax PropertyAccess(Type interfaceType)
+        #region Public
+        public static MethodDeclarationSyntax GenerateProxyMethod(MethodInfo ifaceMethod)
         {
+            //
+            // TResult IInterface.Foo<TGeneric>(T1 para1, ref T2 para2, out T3 para3, TGeneric para4)
+            // {
+            //     object[] args = new object[] {para1, para2, default(T3), para4};
+            //
+            //     MethodInfo currentMethod = MethodAccess(i => i.Foo<TGeneric>(para1, ref para2, out para3, para4)); // MethodBase.GetCurrentMethod() az implementaciot adna vissza, reflexio-val meg kibaszott lassu lenne
+            //
+            //     object result = this.Invoke(currentMethod, args);
+            //     
+            //     para2 = (T2) args[1];
+            //     para3 = (T3) args[2];
+            //
+            //     return (TResult) result; // ifaceMethod.ReturnType != typeof(void)
+            // }
+            //
+
+            LocalDeclarationStatementSyntax args, currentMethod, result;
+
+            return DeclareMethod(ifaceMethod).WithBody
+            (
+                body: Block
+                (
+                    statements: List
+                    (
+                        new StatementSyntax[]
+                        {
+                            args          = CreateArgumentsArray(ifaceMethod),
+                            currentMethod = AcquireMethodInfo(ifaceMethod),
+                            result        = DeclareLocal<object>("result", CallInvoke(currentMethod, args))                           
+                        }
+                        .Concat(AssignByRefParameters(ifaceMethod, args))
+                        .Append(ReturnResult(ifaceMethod.ReturnType, result))
+                    )
+                )
+            );
+        }
+
+        public static void GenerateProxyProperty(PropertyInfo ifaceProperty)
+        {
+            //
+            // TResult IInterface.Prop
+            // {
+            //     get 
+            //     {
+            //         PropertyInfo currentProperty = PropertyAccess(i => i.Prop);
+            //
+            //         return (TResult) this.Invoke(currentProperty.GetMethod, new object[0])
+            //     }
+            //     set
+            //     {
+            //         PropertyInfo currentProperty = PropertyAccess(i => i.Prop);
+            //
+            //         this.Invoke(currentProperty.SetMethod, new object[]{ value });
+            //     }
+            // }
+            //
+        }      
+
+        public static MethodDeclarationSyntax PropertyAccess(Type interfaceType)
+        {
+            //
+            // private static PropertyInfo PropertyAccess<TResult>(Expression<Func<IInterface, TResult>> propertyAccess)
+            // {
+            //     return (PropertyInfo) ((MemberExpression) propertyAccess.Body).Member;
+            // }
+            //
+
             Debug.Assert(interfaceType.IsInterface);
             const string paraName = "propertyAccess";
 
@@ -489,8 +508,15 @@ namespace Solti.Utils.DI.Internals
             );
         }
 
-        internal static MethodDeclarationSyntax MethodAccess(Type interfaceType)
+        public static MethodDeclarationSyntax MethodAccess(Type interfaceType)
         {
+            //
+            // private static MethodInfo MethodAccess(Expression<Action<IInterface>> methodAccess) 
+            // {
+            //     return ((MethodCallExpression) methodAccess.Body).Method;
+            // }
+            //
+
             Debug.Assert(interfaceType.IsInterface);
             const string paraName = "methodAccess";
 
@@ -536,6 +562,7 @@ namespace Solti.Utils.DI.Internals
                 )
             );
         }
+        #endregion
 
         #region Private
         private static SeparatedSyntaxList<TNode> CreateList<T, TNode>(this IReadOnlyCollection<T> src, Func<T, TNode> factory) where TNode : SyntaxNode => SeparatedList<TNode>
