@@ -125,8 +125,8 @@ namespace Solti.Utils.DI.Internals.Tests
         [Test]
         public void DeclareProperty_ShouldDeclareTheDesiredProperty()
         {
-            // Nem gond h a "get set"-nel nincs ";", ez azert van mert nincs torzs meghatarozva.
-            Assert.That(ProxyGenerator.DeclareProperty(Prop).NormalizeWhitespace().ToFullString(), Is.EqualTo($"System.Int32 Solti.Utils.DI.Internals.Tests.IFoo<System.Int32>.Prop{Environment.NewLine}{{{Environment.NewLine}    get set{Environment.NewLine}}}"));
+            // Nem gond h a "get set" nincs, ez azert van mert nincs torzs meghatarozva.
+            Assert.That(ProxyGenerator.DeclareProperty(Prop, null, null).NormalizeWhitespace().ToFullString(), Is.EqualTo($"System.Int32 Solti.Utils.DI.Internals.Tests.IFoo<System.Int32>.Prop{Environment.NewLine}{{{Environment.NewLine}}}"));
         }
 
         [Test]
@@ -134,6 +134,12 @@ namespace Solti.Utils.DI.Internals.Tests
         {
             Assert.That(ProxyGenerator.GenerateProxyMethod(Foo).NormalizeWhitespace().ToFullString(), Is.EqualTo(File.ReadAllText("FooSrc.txt")));
             Assert.That(ProxyGenerator.GenerateProxyMethod(Bar).NormalizeWhitespace().ToFullString(), Is.EqualTo(File.ReadAllText("BarSrc.txt")));
+        }
+
+        [Test]
+        public void GenerateProxyProperty_Test()
+        {
+            Assert.That(ProxyGenerator.GenerateProxyProperty(Prop).NormalizeWhitespace().ToFullString(), Is.EqualTo(File.ReadAllText("PropSrc.txt")));
         }
 
         private static MethodInfo GetMethod(string name) => typeof(IFoo<>).GetMethod(name);

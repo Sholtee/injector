@@ -49,19 +49,22 @@ namespace Solti.Utils.DI.Internals
 
         internal static LocalDeclarationStatementSyntax DeclareLocal<T>(string name, ExpressionSyntax initializer = null) => DeclareLocal(typeof(T), name, initializer);
 
-        internal static LocalDeclarationStatementSyntax CreateArgumentsArray(MethodInfo method) => DeclareLocal<object[]>("args", ArrayCreationExpression
+        internal static ArrayCreationExpressionSyntax CreateArray<T>(params ExpressionSyntax[] elements) => ArrayCreationExpression
         (
             type: ArrayType
             (
-                elementType: CreateType<object[]>()                  
+                elementType: CreateType<T[]>()
             ),
             initializer: InitializerExpression(SyntaxKind.ArrayInitializerExpression).WithExpressions
             (
-                expressions: method
-                    .GetParameters()
-                    .CreateList(param => param.IsOut ? DefaultExpression(CreateType(param.ParameterType)) : (ExpressionSyntax) IdentifierName(param.Name))
+                expressions: elements.CreateList(e => e)
             )
-        ));
+        );
+
+        internal static LocalDeclarationStatementSyntax CreateArgumentsArray(MethodInfo method) => DeclareLocal<object[]>("args", CreateArray<object>(method
+            .GetParameters()
+            .Select(param => param.IsOut ? DefaultExpression(CreateType(param.ParameterType)) : (ExpressionSyntax) IdentifierName(param.Name))
+            .ToArray()));
 
         internal static MethodDeclarationSyntax DeclareMethod(
             Type returnType, 
@@ -164,7 +167,7 @@ namespace Solti.Utils.DI.Internals
             return result;
         }
 
-        internal static PropertyDeclarationSyntax DeclareProperty(PropertyInfo property)
+        internal static PropertyDeclarationSyntax DeclareProperty(PropertyInfo property, BlockSyntax getBody, BlockSyntax setBody)
         {
             Debug.Assert(property.DeclaringType.IsInterface);
 
@@ -180,8 +183,8 @@ namespace Solti.Utils.DI.Internals
 
             List<AccessorDeclarationSyntax> accessors = new List<AccessorDeclarationSyntax>();
 
-            if (property.CanRead) accessors.Add(AccessorDeclaration(SyntaxKind.GetAccessorDeclaration));
-            if (property.CanWrite) accessors.Add(AccessorDeclaration(SyntaxKind.SetAccessorDeclaration));
+            if (property.CanRead && getBody != null) accessors.Add(AccessorDeclaration(SyntaxKind.GetAccessorDeclaration).WithBody(getBody));
+            if (property.CanWrite && setBody != null) accessors.Add(AccessorDeclaration(SyntaxKind.SetAccessorDeclaration).WithBody(setBody));
 
             return result.WithAccessorList
             (
@@ -370,19 +373,21 @@ namespace Solti.Utils.DI.Internals
             arg.Declaration.Variables.Single().Identifier
         )).ToArray());
 
-        internal static ReturnStatementSyntax ReturnResult(Type returnType, LocalDeclarationStatementSyntax result) => ReturnStatement
+        internal static ReturnStatementSyntax ReturnResult(Type returnType, ExpressionSyntax result) => ReturnStatement
         (
             expression: returnType == typeof(void)
                 ? null
                 : CastExpression
                 (
                     type: CreateType(returnType),
-                    expression: IdentifierName
-                    (
-                        result.Declaration.Variables.Single().Identifier
-                    )
+                    expression: result
                 )
         );
+
+        internal static ReturnStatementSyntax ReturnResult(Type returnType, LocalDeclarationStatementSyntax result) => ReturnResult(returnType, IdentifierName
+        (
+            result.Declaration.Variables.Single().Identifier
+        ));
         #endregion
 
         #region Public
@@ -425,7 +430,7 @@ namespace Solti.Utils.DI.Internals
             );
         }
 
-        public static void GenerateProxyProperty(PropertyInfo ifaceProperty)
+        public static PropertyDeclarationSyntax GenerateProxyProperty(PropertyInfo ifaceProperty)
         {
             //
             // TResult IInterface.Prop
@@ -444,6 +449,48 @@ namespace Solti.Utils.DI.Internals
             //     }
             // }
             //
+
+            LocalDeclarationStatementSyntax currentProperty;
+
+            return DeclareProperty
+            (
+                property: ifaceProperty,
+                getBody: Block
+                (
+                    statements: new StatementSyntax[]
+                    {
+                        currentProperty = AcquirePropertyInfo(ifaceProperty),
+                        ReturnResult(ifaceProperty.PropertyType, CallInvoke
+                        (
+                            MemberAccessExpression // currentProperty.GetMethod
+                            (
+                                kind: SyntaxKind.SimpleMemberAccessExpression,
+                                expression: IdentifierName(currentProperty.Declaration.Variables.Single().Identifier),
+                                name: IdentifierName(nameof(PropertyInfo.GetMethod))
+                            ),
+                            CreateArray<object>() // new object[] {}
+                        ))
+                    }
+                ),
+                setBody: Block
+                (
+                    statements: new StatementSyntax[]
+                    {
+                        currentProperty = AcquirePropertyInfo(ifaceProperty),
+                        ReturnResult(ifaceProperty.PropertyType, CallInvoke
+                        (
+                            MemberAccessExpression // currentProperty.SetMethod
+                            (
+                                kind: SyntaxKind.SimpleMemberAccessExpression,
+                                expression: IdentifierName(currentProperty.Declaration.Variables.Single().Identifier),
+                                name: IdentifierName(nameof(PropertyInfo.SetMethod))
+                            ),
+                            // TODO: FIXME: nem string-kent szerepeljen a "value"
+                            CreateArray<object>(IdentifierName("value")) // new object[] {value}
+                        ))
+                    }
+                )
+            );
         }      
 
         public static MethodDeclarationSyntax PropertyAccess(Type interfaceType)
