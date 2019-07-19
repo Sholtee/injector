@@ -35,4 +35,13 @@
     <ProjectReference Include="..\SRC\Injector.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="BarSrc.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="FooSrc.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

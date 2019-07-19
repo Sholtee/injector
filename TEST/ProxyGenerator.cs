@@ -5,6 +5,7 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 
@@ -128,11 +129,11 @@ namespace Solti.Utils.DI.Internals.Tests
             Assert.That(ProxyGenerator.DeclareProperty(Prop).NormalizeWhitespace().ToFullString(), Is.EqualTo($"System.Int32 Solti.Utils.DI.Internals.Tests.IFoo<System.Int32>.Prop{Environment.NewLine}{{{Environment.NewLine}    get set{Environment.NewLine}}}"));
         }
 
-        [Test, Explicit]
+        [Test]
         public void GenerateProxyMethod_Test()
         {
-            string x = ProxyGenerator.GenerateProxyMethod(Foo).NormalizeWhitespace().ToFullString();
-            x = ProxyGenerator.GenerateProxyMethod(Bar).NormalizeWhitespace().ToFullString();
+            Assert.That(ProxyGenerator.GenerateProxyMethod(Foo).NormalizeWhitespace().ToFullString(), Is.EqualTo(File.ReadAllText("FooSrc.txt")));
+            Assert.That(ProxyGenerator.GenerateProxyMethod(Bar).NormalizeWhitespace().ToFullString(), Is.EqualTo(File.ReadAllText("BarSrc.txt")));
         }
 
         private static MethodInfo GetMethod(string name) => typeof(IFoo<>).GetMethod(name);

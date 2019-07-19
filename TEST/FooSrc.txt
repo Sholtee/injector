@@ -1,0 +1,9 @@
+System.Int32 Solti.Utils.DI.Internals.Tests.IFoo<T>.Foo<TT>(System.Int32 a, out System.String b, ref TT c)
+{
+    System.Object[] args = new System.Object[]{a, default(System.String), c};
+    System.Reflection.MethodInfo currentMethod = MethodAccess(i => i.Foo(a, out b, ref c));
+    System.Object result = this.Invoke(currentMethod, args);
+    b = (System.String)args[1];
+    c = (TT)args[2];
+    return (System.Int32)result;
+}
