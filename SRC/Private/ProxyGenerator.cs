@@ -84,7 +84,6 @@ namespace Solti.Utils.DI.Internals
             (
                 modifiers: TokenList(modifiers.Select(Token))
             )
-
             .WithParameterList
             (
                 parameterList: ParameterList
@@ -183,10 +182,10 @@ namespace Solti.Utils.DI.Internals
 
             List<AccessorDeclarationSyntax> accessors = new List<AccessorDeclarationSyntax>();
 
-            if (property.CanRead && getBody != null) accessors.Add(AccessorDeclaration(SyntaxKind.GetAccessorDeclaration).WithBody(getBody));
+            if (property.CanRead && getBody != null)  accessors.Add(AccessorDeclaration(SyntaxKind.GetAccessorDeclaration).WithBody(getBody));
             if (property.CanWrite && setBody != null) accessors.Add(AccessorDeclaration(SyntaxKind.SetAccessorDeclaration).WithBody(setBody));
 
-            return result.WithAccessorList
+            return !accessors.Any() ? result : result.WithAccessorList
             (
                 accessorList: AccessorList
                 (

@@ -125,8 +125,8 @@ namespace Solti.Utils.DI.Internals.Tests
         [Test]
         public void DeclareProperty_ShouldDeclareTheDesiredProperty()
         {
-            // Nem gond h a "get set" nincs, ez azert van mert nincs torzs meghatarozva.
-            Assert.That(ProxyGenerator.DeclareProperty(Prop, null, null).NormalizeWhitespace().ToFullString(), Is.EqualTo($"System.Int32 Solti.Utils.DI.Internals.Tests.IFoo<System.Int32>.Prop{Environment.NewLine}{{{Environment.NewLine}}}"));
+            // Nem gond h "get set" nincs, ez azert van mert nincs torzs meghatarozva.
+            Assert.That(ProxyGenerator.DeclareProperty(Prop, null, null).NormalizeWhitespace().ToFullString(), Is.EqualTo($"System.Int32 Solti.Utils.DI.Internals.Tests.IFoo<System.Int32>.Prop"));
         }
 
         [Test]
