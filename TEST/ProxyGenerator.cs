@@ -35,7 +35,9 @@ namespace Solti.Utils.DI.Internals.Tests
 
         private static readonly MethodInfo
             Foo = GetMethod(nameof(Foo)),
-            Bar = GetMethod(nameof(Bar)); 
+            Bar = GetMethod(nameof(Bar));
+
+        private static readonly PropertyInfo Prop = typeof(IFoo<int>).GetProperty(nameof(IFoo<int>.Prop));
 
         [Test]
         public void CreateArgumentsArray_ShouldCreateAnObjectArrayFromTheArguments()
@@ -86,6 +88,12 @@ namespace Solti.Utils.DI.Internals.Tests
         }
 
         [Test]
+        public void AcquirePropertyInfo_ShouldGetAPropertyInfoInstance()
+        {
+            Assert.That(ProxyGenerator.AcquirePropertyInfo(Prop).NormalizeWhitespace().ToFullString(), Is.EqualTo("System.Reflection.PropertyInfo currentProperty = PropertyAccess(i => i.Prop);"));
+        }
+
+        [Test]
         public void CallInvoke_ShouldCallTheInvokeMetehodOnThis()
         {
             Assert.That(ProxyGenerator.CallInvoke
@@ -118,7 +126,7 @@ namespace Solti.Utils.DI.Internals.Tests
         public void DeclareProperty_ShouldDeclareTheDesiredProperty()
         {
             // Nem gond h a "get set"-nel nincs ";", ez azert van mert nincs torzs meghatarozva.
-            Assert.That(ProxyGenerator.DeclareProperty(typeof(IFoo<>).GetProperty("Prop")).NormalizeWhitespace().ToFullString(), Is.EqualTo($"T Solti.Utils.DI.Internals.Tests.IFoo<T>.Prop{Environment.NewLine}{{{Environment.NewLine}    get set{Environment.NewLine}}}"));
+            Assert.That(ProxyGenerator.DeclareProperty(Prop).NormalizeWhitespace().ToFullString(), Is.EqualTo($"System.Int32 Solti.Utils.DI.Internals.Tests.IFoo<System.Int32>.Prop{Environment.NewLine}{{{Environment.NewLine}    get set{Environment.NewLine}}}"));
         }
 
         private static MethodInfo GetMethod(string name) => typeof(IFoo<>).GetMethod(name);

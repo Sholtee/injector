@@ -57,15 +57,15 @@ namespace Solti.Utils.DI.Internals
             // {
             //     get 
             //     {
-            //         PropertyInfo prop = GetProperty(i => i.Prop);
+            //         PropertyInfo currentProperty = PropertyAccess(i => i.Prop);
             //
-            //         return (TResult) this.Invoke(prop.GetMethod, new object[0])
+            //         return (TResult) this.Invoke(currentProperty.GetMethod, new object[0])
             //     }
             //     set
             //     {
-            //         PropertyInfo prop = GetProperty(i => i.Prop);
+            //         PropertyInfo currentProperty = PropertyAccess(i => i.Prop);
             //
-            //         this.Invoke(prop.SetMethod, new object[]{ value });
+            //         this.Invoke(currentProperty.SetMethod, new object[]{ value });
             //     }
             // }
             //
@@ -357,6 +357,38 @@ namespace Solti.Utils.DI.Internals
 
                                         return argument;
                                     }))
+                                )
+                            )
+                        )
+                    )
+                )
+            ));
+        }
+
+        internal static LocalDeclarationStatementSyntax AcquirePropertyInfo(PropertyInfo property)
+        {
+            const string i = nameof(i);
+
+            return DeclareLocal<PropertyInfo>("currentProperty", InvocationExpression
+            (
+                expression: IdentifierName(nameof(PropertyAccess))
+            )
+            .WithArgumentList
+            (
+                argumentList: ArgumentList
+                (
+                    arguments: SingletonSeparatedList
+                    (
+                        Argument
+                        (
+                            expression: SimpleLambdaExpression
+                            (
+                                parameter: Parameter(Identifier(i)),
+                                body: MemberAccessExpression
+                                (
+                                    kind: SyntaxKind.SimpleMemberAccessExpression,
+                                    expression: IdentifierName(i),
+                                    name: IdentifierName(property.Name)
                                 )
                             )
                         )
