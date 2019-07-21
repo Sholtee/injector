@@ -112,7 +112,7 @@ namespace Solti.Utils.DI.Internals
                 declaringType = method.DeclaringType,
                 returnType    = method.ReturnType;
 
-            Debug.Assert(declaringType.IsInterface);
+            Debug.Assert(declaringType.IsInterface());
 
             MethodDeclarationSyntax result = MethodDeclaration
             (
@@ -168,7 +168,7 @@ namespace Solti.Utils.DI.Internals
 
         internal static PropertyDeclarationSyntax DeclareProperty(PropertyInfo property, BlockSyntax getBody, BlockSyntax setBody)
         {
-            Debug.Assert(property.DeclaringType.IsInterface);
+            Debug.Assert(property.DeclaringType.IsInterface());
 
             PropertyDeclarationSyntax result = PropertyDeclaration
             (
@@ -196,7 +196,7 @@ namespace Solti.Utils.DI.Internals
 
         internal static IReadOnlyList<ExpressionStatementSyntax> AssignByRefParameters(MethodInfo method, LocalDeclarationStatementSyntax argsArray)
         {
-            IdentifierNameSyntax array = IdentifierName(argsArray.Declaration.Variables.Single().Identifier);
+            IdentifierNameSyntax array = argsArray.ToIdentifierName();
 
             return method
                 .GetParameters()
@@ -241,7 +241,7 @@ namespace Solti.Utils.DI.Internals
                 )
             );
 
-            if (src.IsArray) ArrayType
+            if (src.IsArray) return ArrayType
             (
                 elementType: CreateType(src.GetElementType())
             )
@@ -367,10 +367,7 @@ namespace Solti.Utils.DI.Internals
             )
         );
 
-        internal static InvocationExpressionSyntax CallInvoke(params LocalDeclarationStatementSyntax[] arguments) => CallInvoke(arguments.Select(arg => (ExpressionSyntax) IdentifierName
-        (
-            arg.Declaration.Variables.Single().Identifier
-        )).ToArray());
+        internal static InvocationExpressionSyntax CallInvoke(params LocalDeclarationStatementSyntax[] arguments) => CallInvoke(arguments.Select(arg => (ExpressionSyntax) arg.ToIdentifierName()).ToArray());
 
         internal static ReturnStatementSyntax ReturnResult(Type returnType, ExpressionSyntax result) => ReturnStatement
         (
@@ -383,10 +380,7 @@ namespace Solti.Utils.DI.Internals
                 )
         );
 
-        internal static ReturnStatementSyntax ReturnResult(Type returnType, LocalDeclarationStatementSyntax result) => ReturnResult(returnType, IdentifierName
-        (
-            result.Declaration.Variables.Single().Identifier
-        ));
+        internal static ReturnStatementSyntax ReturnResult(Type returnType, LocalDeclarationStatementSyntax result) => ReturnResult(returnType, result.ToIdentifierName());
         #endregion
 
         #region Public
@@ -464,7 +458,7 @@ namespace Solti.Utils.DI.Internals
                             MemberAccessExpression // currentProperty.GetMethod
                             (
                                 kind: SyntaxKind.SimpleMemberAccessExpression,
-                                expression: IdentifierName(currentProperty.Declaration.Variables.Single().Identifier),
+                                expression: currentProperty.ToIdentifierName(),
                                 name: IdentifierName(nameof(PropertyInfo.GetMethod))
                             ),
                             CreateArray<object>() // new object[] {}
@@ -476,12 +470,12 @@ namespace Solti.Utils.DI.Internals
                     statements: new StatementSyntax[]
                     {
                         currentProperty = AcquirePropertyInfo(ifaceProperty),
-                        ReturnResult(ifaceProperty.PropertyType, CallInvoke
+                        ExpressionStatement(CallInvoke
                         (
                             MemberAccessExpression // currentProperty.SetMethod
                             (
                                 kind: SyntaxKind.SimpleMemberAccessExpression,
-                                expression: IdentifierName(currentProperty.Declaration.Variables.Single().Identifier),
+                                expression: currentProperty.ToIdentifierName(),
                                 name: IdentifierName(nameof(PropertyInfo.SetMethod))
                             ),
                             // TODO: FIXME: nem string-kent szerepeljen a "value"
@@ -501,7 +495,7 @@ namespace Solti.Utils.DI.Internals
             // }
             //
 
-            Debug.Assert(interfaceType.IsInterface);
+            Debug.Assert(interfaceType.IsInterface());
             const string paraName = "propertyAccess";
 
             Type TResult = typeof(Func<>).GetGenericArguments().Single();  // ugly
@@ -563,7 +557,7 @@ namespace Solti.Utils.DI.Internals
             // }
             //
 
-            Debug.Assert(interfaceType.IsInterface);
+            Debug.Assert(interfaceType.IsInterface());
             const string paraName = "methodAccess";
 
             return DeclareMethod
@@ -622,11 +616,13 @@ namespace Solti.Utils.DI.Internals
             })
         );
 
+        private static IdentifierNameSyntax ToIdentifierName(this LocalDeclarationStatementSyntax variable) => IdentifierName(variable.Declaration.Variables.Single().Identifier);
+
         private static readonly Regex TypeNameReplacer = new Regex(@"\&|`\d+\[[\w,]+\]", RegexOptions.Compiled);
 
         private static string GetFriendlyName(this Type src)
         {
-            Debug.Assert(!src.IsGenericType || src.IsGenericTypeDefinition);
+            Debug.Assert(!src.IsGenericType() || src.IsGenericTypeDefinition());
             return TypeNameReplacer.Replace(src.ToString(), string.Empty);
         }
 
