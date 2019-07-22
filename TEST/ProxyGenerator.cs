@@ -24,6 +24,14 @@ namespace Solti.Utils.DI.Internals.Tests
         T Prop { get; set; }
     }
 
+    public class Foo : InterfaceInterceptor
+    {
+        protected override object Invoke(MethodInfo method, object[] args)
+        {
+            return null;
+        }
+    }
+
     [TestFixture]
     public sealed class ProxyGeneratorTests
     {
@@ -113,13 +121,13 @@ namespace Solti.Utils.DI.Internals.Tests
         [Test]
         public void PropertyAccess_ShouldCreateTheProperMethod()
         {
-            Assert.That(ProxyGenerator.PropertyAccess(typeof(IFoo<int>)).NormalizeWhitespace().ToFullString(), Is.EqualTo($"private static System.Reflection.PropertyInfo PropertyAccess<TResult>(System.Linq.Expressions.Expression<System.Func<Solti.Utils.DI.Internals.Tests.IFoo<System.Int32>, TResult>> propertyAccess){Environment.NewLine}{{{Environment.NewLine}    return (System.Reflection.PropertyInfo)((System.Linq.Expressions.MemberExpression)propertyAccess.Body).Member;{Environment.NewLine}}}"));
+            Assert.That(ProxyGenerator.PropertyAccess(typeof(IFoo<int>)).NormalizeWhitespace(eol: Environment.NewLine).ToFullString(), Is.EqualTo($"private static System.Reflection.PropertyInfo PropertyAccess<TResult>(System.Linq.Expressions.Expression<System.Func<Solti.Utils.DI.Internals.Tests.IFoo<System.Int32>, TResult>> propertyAccess){Environment.NewLine}{{{Environment.NewLine}    return (System.Reflection.PropertyInfo)((System.Linq.Expressions.MemberExpression)propertyAccess.Body).Member;{Environment.NewLine}}}"));
         }
 
         [Test]
         public void MethodAccess_ShouldCreateTheProperMethod()
         {
-            Assert.That(ProxyGenerator.MethodAccess(typeof(IFoo<int>)).NormalizeWhitespace().ToFullString(), Is.EqualTo($"private static System.Reflection.MethodInfo MethodAccess(System.Linq.Expressions.Expression<System.Action<Solti.Utils.DI.Internals.Tests.IFoo<System.Int32>>> methodAccess){Environment.NewLine}{{{Environment.NewLine}    return ((System.Linq.Expressions.MethodCallExpression)methodAccess.Body).Method;{Environment.NewLine}}}"));
+            Assert.That(ProxyGenerator.MethodAccess(typeof(IFoo<int>)).NormalizeWhitespace(eol: Environment.NewLine).ToFullString(), Is.EqualTo($"private static System.Reflection.MethodInfo MethodAccess(System.Linq.Expressions.Expression<System.Action<Solti.Utils.DI.Internals.Tests.IFoo<System.Int32>>> methodAccess){Environment.NewLine}{{{Environment.NewLine}    return ((System.Linq.Expressions.MethodCallExpression)methodAccess.Body).Method;{Environment.NewLine}}}"));
         }
 
         [Test]
@@ -132,14 +140,20 @@ namespace Solti.Utils.DI.Internals.Tests
         [Test]
         public void GenerateProxyMethod_Test()
         {
-            Assert.That(ProxyGenerator.GenerateProxyMethod(Foo).NormalizeWhitespace().ToFullString(), Is.EqualTo(File.ReadAllText("FooSrc.txt")));
-            Assert.That(ProxyGenerator.GenerateProxyMethod(Bar).NormalizeWhitespace().ToFullString(), Is.EqualTo(File.ReadAllText("BarSrc.txt")));
+            Assert.That(ProxyGenerator.GenerateProxyMethod(Foo).NormalizeWhitespace(eol: "\n").ToFullString(), Is.EqualTo(File.ReadAllText("FooSrc.txt")));
+            Assert.That(ProxyGenerator.GenerateProxyMethod(Bar).NormalizeWhitespace(eol: "\n").ToFullString(), Is.EqualTo(File.ReadAllText("BarSrc.txt")));
         }
 
         [Test]
         public void GenerateProxyProperty_Test()
         {
-            Assert.That(ProxyGenerator.GenerateProxyProperty(Prop).NormalizeWhitespace().ToFullString(), Is.EqualTo(File.ReadAllText("PropSrc.txt")));
+            Assert.That(ProxyGenerator.GenerateProxyProperty(Prop).NormalizeWhitespace(eol: "\n").ToFullString(), Is.EqualTo(File.ReadAllText("PropSrc.txt")));
+        }
+
+        [Test]
+        public void GenerateProxyClass_Test()
+        {
+            Assert.That(ProxyGenerator.GenerateProxyClass(typeof(Foo), typeof(IFoo<int>)).NormalizeWhitespace(eol: "\n").ToFullString(), Is.EqualTo(File.ReadAllText("ClsSrc.txt")));
         }
 
         private static MethodInfo GetMethod(string name) => typeof(IFoo<>).GetMethod(name);

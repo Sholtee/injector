@@ -602,6 +602,48 @@ namespace Solti.Utils.DI.Internals
                 )
             );
         }
+
+        public static ClassDeclarationSyntax GenerateProxyClass(Type @base, Type interfaceType)
+        {
+            Debug.Assert(typeof(InterfaceInterceptor).IsAssignableFrom(@base));
+            Debug.Assert(interfaceType.IsInterface);
+
+            ClassDeclarationSyntax cls = ClassDeclaration("GeneratedProxy")
+                .WithModifiers
+                (
+                    modifiers: TokenList
+                    (
+                        Token(SyntaxKind.PublicKeyword),
+                        Token(SyntaxKind.SealedKeyword)
+                    )
+                )
+                .WithBaseList
+                (
+                    baseList: BaseList
+                    (
+                        new[] {@base, interfaceType}.CreateList<Type, BaseTypeSyntax>(t => SimpleBaseType(CreateType(t)))
+                    )
+                );
+
+            List<MemberDeclarationSyntax> members = new List<MemberDeclarationSyntax>();
+
+            MethodInfo[] methods = interfaceType.GetMethods(BindingFlags.Instance | BindingFlags.Public).Where(method => !method.IsSpecialName).ToArray();
+            if (methods.Any())
+            {
+                members.Add(MethodAccess(interfaceType));
+                members.AddRange(methods.Select(GenerateProxyMethod));
+            }
+
+            PropertyInfo[] properties = interfaceType.GetProperties(BindingFlags.Instance | BindingFlags.Public);
+            if (properties.Any())
+            {
+                members.Add(PropertyAccess(interfaceType));
+                members.AddRange(properties.Select(GenerateProxyProperty));
+            }
+
+            if (members.Any()) cls = cls.WithMembers(List(members));
+            return cls;
+        }
         #endregion
 
         #region Private

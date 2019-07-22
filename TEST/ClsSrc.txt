@@ -1,0 +1,45 @@
+public sealed class GeneratedProxy : Solti.Utils.DI.Internals.Tests.Foo, Solti.Utils.DI.Internals.Tests.IFoo<System.Int32>
+{
+    private static System.Reflection.MethodInfo MethodAccess(System.Linq.Expressions.Expression<System.Action<Solti.Utils.DI.Internals.Tests.IFoo<System.Int32>>> methodAccess)
+    {
+        return ((System.Linq.Expressions.MethodCallExpression)methodAccess.Body).Method;
+    }
+
+    System.Int32 Solti.Utils.DI.Internals.Tests.IFoo<System.Int32>.Foo<TT>(System.Int32 a, out System.String b, ref TT c)
+    {
+        System.Object[] args = new System.Object[]{a, default(System.String), c};
+        System.Reflection.MethodInfo currentMethod = MethodAccess(i => i.Foo(a, out b, ref c));
+        System.Object result = this.Invoke(currentMethod, args);
+        b = (System.String)args[1];
+        c = (TT)args[2];
+        return (System.Int32)result;
+    }
+
+    void Solti.Utils.DI.Internals.Tests.IFoo<System.Int32>.Bar()
+    {
+        System.Object[] args = new System.Object[]{};
+        System.Reflection.MethodInfo currentMethod = MethodAccess(i => i.Bar());
+        System.Object result = this.Invoke(currentMethod, args);
+        return;
+    }
+
+    private static System.Reflection.PropertyInfo PropertyAccess<TResult>(System.Linq.Expressions.Expression<System.Func<Solti.Utils.DI.Internals.Tests.IFoo<System.Int32>, TResult>> propertyAccess)
+    {
+        return (System.Reflection.PropertyInfo)((System.Linq.Expressions.MemberExpression)propertyAccess.Body).Member;
+    }
+
+    System.Int32 Solti.Utils.DI.Internals.Tests.IFoo<System.Int32>.Prop
+    {
+        get
+        {
+            System.Reflection.PropertyInfo currentProperty = PropertyAccess(i => i.Prop);
+            return (System.Int32)this.Invoke(currentProperty.GetMethod, new System.Object[]{});
+        }
+
+        set
+        {
+            System.Reflection.PropertyInfo currentProperty = PropertyAccess(i => i.Prop);
+            this.Invoke(currentProperty.SetMethod, new System.Object[]{value});
+        }
+    }
+}
