@@ -265,11 +265,26 @@ namespace Solti.Utils.DI.Internals
 
         internal static TypeSyntax CreateType<T>() => CreateType(typeof(T));
 
-        internal static LocalDeclarationStatementSyntax AcquireMethodInfo(MethodInfo method)
+        internal static IReadOnlyList<StatementSyntax> AcquireMethodInfo(MethodInfo method, out LocalDeclarationStatementSyntax currentMethod)
         {
+            IReadOnlyList<ParameterInfo> paramz = method.GetParameters();
+
+            IReadOnlyList<LocalDeclarationStatementSyntax> dummies = paramz
+                .Where(param => param.ParameterType.IsByRef)
+                .Select(param => DeclareLocal
+                (
+                    type: param.ParameterType, 
+                    name: GetDummyName(param), 
+                    initializer: param.IsOut ? null : DefaultExpression
+                    (
+                        type: CreateType(param.ParameterType)
+                    )                   
+                ))
+                .ToArray();
+
             const string i = nameof(i);
 
-            return DeclareLocal<MethodInfo>("currentMethod", InvocationExpression
+            return dummies.Append(currentMethod = DeclareLocal<MethodInfo>(nameof(currentMethod), InvocationExpression
             (
                 expression: IdentifierName(nameof(MethodAccess))
             )
@@ -295,9 +310,12 @@ namespace Solti.Utils.DI.Internals
                                 )   
                                 .WithArgumentList
                                 (
-                                    argumentList: ArgumentList(method.GetParameters().CreateList(param =>
+                                    argumentList: ArgumentList(paramz.CreateList(param =>
                                     {
-                                        ArgumentSyntax argument = Argument(IdentifierName(param.Name));
+                                        ArgumentSyntax argument = Argument
+                                        (
+                                            expression: IdentifierName(param.ParameterType.IsByRef ? GetDummyName(param) : param.Name)
+                                        );
 
                                         //
                                         // TODO: "IN"
@@ -315,7 +333,9 @@ namespace Solti.Utils.DI.Internals
                         )
                     )
                 )
-            ));
+            ))).ToArray();
+
+            string GetDummyName(ParameterInfo param) => $"dummy_{param.Name}";
         }
 
         internal static LocalDeclarationStatementSyntax AcquirePropertyInfo(PropertyInfo property)
@@ -391,7 +411,9 @@ namespace Solti.Utils.DI.Internals
             // {
             //     object[] args = new object[] {para1, para2, default(T3), para4};
             //
-            //     MethodInfo currentMethod = MethodAccess(i => i.Foo<TGeneric>(para1, ref para2, out para3, para4)); // MethodBase.GetCurrentMethod() az implementaciot adna vissza, reflexio-val meg kibaszott lassu lenne
+            //     T2 dummy_para2 = default(T2); // ByRef metodus parameterek nem szerepelhetnek kifejezesekben
+            //     T3 dummy_para3;
+            //     MethodInfo currentMethod = MethodAccess(i => i.Foo<TGeneric>(para1, ref dummy_para2, out dummy_para3, para4)); // MethodBase.GetCurrentMethod() az implementaciot adna vissza, reflexio-val meg kibaszott lassu lenne
             //
             //     object result = this.Invoke(currentMethod, args);
             //     
@@ -401,8 +423,8 @@ namespace Solti.Utils.DI.Internals
             //     return (TResult) result; // ifaceMethod.ReturnType != typeof(void)
             // }
             //
-
-            LocalDeclarationStatementSyntax args, currentMethod, result;
+            
+            LocalDeclarationStatementSyntax currentMethod, args, result;
 
             return DeclareMethod(ifaceMethod).WithBody
             (
@@ -410,12 +432,9 @@ namespace Solti.Utils.DI.Internals
                 (
                     statements: List
                     (
-                        new StatementSyntax[]
-                        {
-                            args          = CreateArgumentsArray(ifaceMethod),
-                            currentMethod = AcquireMethodInfo(ifaceMethod),
-                            result        = DeclareLocal<object>("result", CallInvoke(currentMethod, args))                           
-                        }
+                        AcquireMethodInfo(ifaceMethod, out currentMethod)                        
+                        .Append(args = CreateArgumentsArray(ifaceMethod))
+                        .Append(result = DeclareLocal<object>("result", CallInvoke(currentMethod, args)))       
                         .Concat(AssignByRefParameters(ifaceMethod, args))
                         .Append(ReturnResult(ifaceMethod.ReturnType, result))
                     )
@@ -603,12 +622,14 @@ namespace Solti.Utils.DI.Internals
             );
         }
 
+        public const string GeneratedClassName = "GeneratedProxy";
+
         public static ClassDeclarationSyntax GenerateProxyClass(Type @base, Type interfaceType)
         {
             Debug.Assert(typeof(InterfaceInterceptor).IsAssignableFrom(@base));
             Debug.Assert(interfaceType.IsInterface);
 
-            ClassDeclarationSyntax cls = ClassDeclaration("GeneratedProxy")
+            ClassDeclarationSyntax cls = ClassDeclaration(GeneratedClassName)
                 .WithModifiers
                 (
                     modifiers: TokenList
@@ -666,14 +687,6 @@ namespace Solti.Utils.DI.Internals
         {
             Debug.Assert(!src.IsGenericType() || src.IsGenericTypeDefinition());
             return TypeNameReplacer.Replace(src.ToString(), string.Empty);
-        }
-
-        private static void PreCheck(Type type)
-        {
-            if (!type.IsInterface) throw null;
-            if (type.IsNested) throw null;
-            if (!type.IsPublic) throw null;
-            if (type.ContainsGenericParameters) throw null;
         }
         #endregion
     }

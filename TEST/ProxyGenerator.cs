@@ -91,8 +91,15 @@ namespace Solti.Utils.DI.Internals.Tests
         [Test]
         public void AcquireMethodInfo_ShouldGetAMethodInfoInstance()
         {
-            Assert.That(ProxyGenerator.AcquireMethodInfo(Foo).NormalizeWhitespace().ToFullString(), Is.EqualTo("System.Reflection.MethodInfo currentMethod = MethodAccess(i => i.Foo(a, out b, ref c));"));
-            Assert.That(ProxyGenerator.AcquireMethodInfo(Bar).NormalizeWhitespace().ToFullString(), Is.EqualTo("System.Reflection.MethodInfo currentMethod = MethodAccess(i => i.Bar());"));
+            LocalDeclarationStatementSyntax currentMethod;
+
+            IReadOnlyList<StatementSyntax> statements = ProxyGenerator.AcquireMethodInfo(Foo, out currentMethod);
+            Assert.That(statements.Count, Is.EqualTo(3));
+            Assert.That(statements.Last().NormalizeWhitespace().ToFullString(), Is.EqualTo("System.Reflection.MethodInfo currentMethod = MethodAccess(i => i.Foo(a, out dummy_b, ref dummy_c));"));
+
+            statements = ProxyGenerator.AcquireMethodInfo(Bar, out currentMethod);
+            Assert.That(statements.Count, Is.EqualTo(1));
+            Assert.That(statements.Last().NormalizeWhitespace().ToFullString(), Is.EqualTo("System.Reflection.MethodInfo currentMethod = MethodAccess(i => i.Bar());"));
         }
 
         [Test]
@@ -154,6 +161,12 @@ namespace Solti.Utils.DI.Internals.Tests
         public void GenerateProxyClass_Test()
         {
             Assert.That(ProxyGenerator.GenerateProxyClass(typeof(Foo), typeof(IFoo<int>)).NormalizeWhitespace(eol: "\n").ToFullString(), Is.EqualTo(File.ReadAllText("ClsSrc.txt")));
+        }
+
+        [Test]
+        public void GeneratedProxy_Test()
+        {
+            Type proxyType = GeneratedProxy<IFoo<int>, Foo>.Type;
         }
 
         private static MethodInfo GetMethod(string name) => typeof(IFoo<>).GetMethod(name);
