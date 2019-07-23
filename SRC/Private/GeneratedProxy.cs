@@ -56,30 +56,20 @@ namespace Solti.Utils.DI.Internals
                     members: SingletonList<MemberDeclarationSyntax>(ProxyGenerator.GenerateProxyClass(typeof(TBase), typeof(TInterface)))
                 )
             );
-            
+#if DEBUG
             if (Debugger.IsAttached)
             {
-                string src = tree.GetRoot().NormalizeWhitespace().ToFullString();
-                Debug.WriteLine(src);             
+                Debug.WriteLine(tree.GetRoot().NormalizeWhitespace().ToFullString());
+                Debug.WriteLine(string.Join(Environment.NewLine, ReferencedAssemblies()));
             }
-
+#endif
             tree = CSharpSyntaxTree.ParseText(tree.GetRoot().NormalizeWhitespace().ToFullString()); // TODO: !!!!kibaszott nagy HACK, kijavitani mielobb!!!!
-
-            IReadOnlyList<string> referencedAssemblies = new HashSet<Assembly>(ReferencedAssemblies(typeof(TInterface).Assembly))
-            {
-                typeof(Object).Assembly, // explicit meg kell adni
-                typeof(TBase).Assembly   // TBase szerelvenye mar lehet szerepel -> HashSet
-            }
-            .Select(asm => asm.Location)
-            .ToArray();
-
-            if (Debugger.IsAttached) Debug.WriteLine(string.Join(Environment.NewLine, referencedAssemblies));
 
             CSharpCompilation compilation = CSharpCompilation.Create
             (
                 assemblyName: Path.GetRandomFileName(),
                 syntaxTrees: new [] {tree},
-                references: referencedAssemblies.Select(asm => MetadataReference.CreateFromFile(asm)),
+                references: ReferencedAssemblies().Select(asm => MetadataReference.CreateFromFile(asm)),
                 options: new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary)
             );
 
@@ -105,6 +95,13 @@ namespace Solti.Utils.DI.Internals
         private static Assembly AsAssembly(AssemblyName asm) => Assembly.Load(asm);
 
         private static IEnumerable<Assembly> ReferencedAssemblies(Assembly asm) => asm.GetReferencedAssemblies().Select(AsAssembly);
+
+        private static IEnumerable<string> ReferencedAssemblies() => new HashSet<Assembly>(ReferencedAssemblies(typeof(TInterface).Assembly))
+        {
+            typeof(Object).Assembly, // explicit meg kell adni
+            typeof(TBase).Assembly   // TBase szerelvenye mar lehet szerepel -> HashSet
+        }
+        .Select(asm => asm.Location);
 
         private static void CheckInterface()
         {
