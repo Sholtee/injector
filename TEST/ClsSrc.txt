@@ -22,7 +22,6 @@ public sealed class GeneratedProxy : Solti.Utils.DI.Internals.Tests.Foo, Solti.U
         System.Reflection.MethodInfo currentMethod = MethodAccess(i => i.Bar());
         System.Object[] args = new System.Object[]{};
         System.Object result = this.Invoke(currentMethod, args);
-        return;
     }
 
     private static System.Reflection.PropertyInfo PropertyAccess<TResult>(System.Linq.Expressions.Expression<System.Func<Solti.Utils.DI.Internals.Tests.IFoo<System.Int32>, TResult>> propertyAccess)

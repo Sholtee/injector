@@ -10,10 +10,12 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Loader;
+
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Emit;
+
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Solti.Utils.DI.Internals
@@ -63,18 +65,21 @@ namespace Solti.Utils.DI.Internals
 
             tree = CSharpSyntaxTree.ParseText(tree.GetRoot().NormalizeWhitespace().ToFullString()); // TODO: !!!!kibaszott nagy HACK, kijavitani mielobb!!!!
 
-            IReadOnlyList<string> referencedAssmeblies = new HashSet<AssemblyName>(typeof(TInterface).Assembly.GetReferencedAssemblies())
+            IReadOnlyList<string> referencedAssemblies = new HashSet<Assembly>(ReferencedAssemblies(typeof(TInterface).Assembly))
             {
-                typeof(Object).Assembly.GetName(), // explocot meg kell adni
-                typeof(TBase).Assembly.GetName() // TBase szerelvenye mar lehet szerepel -> HashSet
-            }.Select(asm => Assembly.Load(asm).Location).ToArray();
-            if (Debugger.IsAttached) Debug.WriteLine(string.Join(Environment.NewLine, referencedAssmeblies));
+                typeof(Object).Assembly, // explicit meg kell adni
+                typeof(TBase).Assembly   // TBase szerelvenye mar lehet szerepel -> HashSet
+            }
+            .Select(asm => asm.Location)
+            .ToArray();
+
+            if (Debugger.IsAttached) Debug.WriteLine(string.Join(Environment.NewLine, referencedAssemblies));
 
             CSharpCompilation compilation = CSharpCompilation.Create
             (
                 assemblyName: Path.GetRandomFileName(),
                 syntaxTrees: new [] {tree},
-                references: referencedAssmeblies.Select(asm => MetadataReference.CreateFromFile(asm)),
+                references: referencedAssemblies.Select(asm => MetadataReference.CreateFromFile(asm)),
                 options: new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary)
             );
 
@@ -96,6 +101,10 @@ namespace Solti.Utils.DI.Internals
                 return asm.GetType(ProxyGenerator.GeneratedClassName, throwOnError: true);
             } 
         }
+
+        private static Assembly AsAssembly(AssemblyName asm) => Assembly.Load(asm);
+
+        private static IEnumerable<Assembly> ReferencedAssemblies(Assembly asm) => asm.GetReferencedAssemblies().Select(AsAssembly);
 
         private static void CheckInterface()
         {

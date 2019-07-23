@@ -265,11 +265,13 @@ namespace Solti.Utils.DI.Internals
 
         internal static TypeSyntax CreateType<T>() => CreateType(typeof(T));
 
-        internal static IReadOnlyList<StatementSyntax> AcquireMethodInfo(MethodInfo method, out LocalDeclarationStatementSyntax currentMethod)
+        internal static IReadOnlyList<LocalDeclarationStatementSyntax> AcquireMethodInfo(MethodInfo method, out LocalDeclarationStatementSyntax currentMethod)
         {
+            const string i = nameof(i);
+
             IReadOnlyList<ParameterInfo> paramz = method.GetParameters();
 
-            IReadOnlyList<LocalDeclarationStatementSyntax> dummies = paramz
+            return paramz
                 .Where(param => param.ParameterType.IsByRef)
                 .Select(param => DeclareLocal
                 (
@@ -280,60 +282,60 @@ namespace Solti.Utils.DI.Internals
                         type: CreateType(param.ParameterType)
                     )                   
                 ))
-                .ToArray();
-
-            const string i = nameof(i);
-
-            return dummies.Append(currentMethod = DeclareLocal<MethodInfo>(nameof(currentMethod), InvocationExpression
-            (
-                expression: IdentifierName(nameof(MethodAccess))
-            )
-            .WithArgumentList
-            (
-                argumentList: ArgumentList
+                .Append
                 (
-                    arguments: SingletonSeparatedList
+                    currentMethod = DeclareLocal<MethodInfo>(nameof(currentMethod), InvocationExpression
                     (
-                        Argument
+                        expression: IdentifierName(nameof(MethodAccess))
+                    )
+                    .WithArgumentList
+                    (
+                        argumentList: ArgumentList
                         (
-                            expression: SimpleLambdaExpression
+                            arguments: SingletonSeparatedList
                             (
-                                parameter: Parameter(Identifier(i)),
-                                body: InvocationExpression
+                                Argument
                                 (
-                                    expression: MemberAccessExpression
+                                    expression: SimpleLambdaExpression
                                     (
-                                        kind: SyntaxKind.SimpleMemberAccessExpression,
-                                        expression: IdentifierName(i),
-                                        name: IdentifierName(method.Name)
+                                        parameter: Parameter(Identifier(i)),
+                                        body: InvocationExpression
+                                        (
+                                            expression: MemberAccessExpression
+                                            (
+                                                kind: SyntaxKind.SimpleMemberAccessExpression,
+                                                expression: IdentifierName(i),
+                                                name: IdentifierName(method.Name)
+                                            )
+                                        )   
+                                        .WithArgumentList
+                                        (
+                                            argumentList: ArgumentList(paramz.CreateList(param =>
+                                            {
+                                                ArgumentSyntax argument = Argument
+                                                (
+                                                    expression: IdentifierName(param.ParameterType.IsByRef ? GetDummyName(param) : param.Name)
+                                                );
+
+                                                //
+                                                // TODO: "IN"
+                                                //
+
+                                                if (param.ParameterType.IsByRef) argument = argument.WithRefKindKeyword
+                                                (
+                                                    refKindKeyword: Token(param.IsOut ? SyntaxKind.OutKeyword : SyntaxKind.RefKeyword)
+                                                );
+
+                                                return argument;
+                                            }))
+                                        )
                                     )
-                                )   
-                                .WithArgumentList
-                                (
-                                    argumentList: ArgumentList(paramz.CreateList(param =>
-                                    {
-                                        ArgumentSyntax argument = Argument
-                                        (
-                                            expression: IdentifierName(param.ParameterType.IsByRef ? GetDummyName(param) : param.Name)
-                                        );
-
-                                        //
-                                        // TODO: "IN"
-                                        //
-
-                                        if (param.ParameterType.IsByRef) argument = argument.WithRefKindKeyword
-                                        (
-                                            refKindKeyword: Token(param.IsOut ? SyntaxKind.OutKeyword : SyntaxKind.RefKeyword)
-                                        );
-
-                                        return argument;
-                                    }))
                                 )
                             )
                         )
                     )
-                )
-            ))).ToArray();
+                ))
+                .ToArray();
 
             string GetDummyName(ParameterInfo param) => $"dummy_{param.Name}";
         }
@@ -426,18 +428,19 @@ namespace Solti.Utils.DI.Internals
             
             LocalDeclarationStatementSyntax currentMethod, args, result;
 
+            var statements = new List<StatementSyntax>()
+                .Concat(AcquireMethodInfo(ifaceMethod, out currentMethod))
+                .Append(args = CreateArgumentsArray(ifaceMethod))
+                .Append(result = DeclareLocal<object>(nameof(result), CallInvoke(currentMethod, args)))
+                .Concat(AssignByRefParameters(ifaceMethod, args));
+
+            if (ifaceMethod.ReturnType != typeof(void)) statements = statements.Append(ReturnResult(ifaceMethod.ReturnType, result));
+
             return DeclareMethod(ifaceMethod).WithBody
             (
                 body: Block
                 (
-                    statements: List
-                    (
-                        AcquireMethodInfo(ifaceMethod, out currentMethod)                        
-                        .Append(args = CreateArgumentsArray(ifaceMethod))
-                        .Append(result = DeclareLocal<object>("result", CallInvoke(currentMethod, args)))       
-                        .Concat(AssignByRefParameters(ifaceMethod, args))
-                        .Append(ReturnResult(ifaceMethod.ReturnType, result))
-                    )
+                    statements: List(statements)
                 )
             );
         }
@@ -451,7 +454,7 @@ namespace Solti.Utils.DI.Internals
             //     {
             //         PropertyInfo currentProperty = PropertyAccess(i => i.Prop);
             //
-            //         return (TResult) this.Invoke(currentProperty.GetMethod, new object[0])
+            //         return (TResult) this.Invoke(currentProperty.GetMethod, new object[]{})
             //     }
             //     set
             //     {

@@ -3,5 +3,4 @@ void Solti.Utils.DI.Internals.Tests.IFoo<T>.Bar()
     System.Reflection.MethodInfo currentMethod = MethodAccess(i => i.Bar());
     System.Object[] args = new System.Object[]{};
     System.Object result = this.Invoke(currentMethod, args);
-    return;
 }
