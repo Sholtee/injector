@@ -53,9 +53,23 @@ namespace Solti.Utils.DI.Internals
         (
             type: ArrayType
             (
-                elementType: CreateType<T[]>()
+                elementType: CreateType<T>()
+            )
+            .WithRankSpecifiers
+            (
+                rankSpecifiers: SingletonList
+                (
+                    ArrayRankSpecifier(SingletonSeparatedList
+                    (
+                        elements.Any() ? OmittedArraySizeExpression() : (ExpressionSyntax) LiteralExpression
+                        (
+                            SyntaxKind.NumericLiteralExpression,
+                            Literal(0)
+                        )
+                    ))
+                )
             ),
-            initializer: InitializerExpression(SyntaxKind.ArrayInitializerExpression).WithExpressions
+            initializer: !elements.Any() ? null : InitializerExpression(SyntaxKind.ArrayInitializerExpression).WithExpressions
             (
                 expressions: elements.CreateList(e => e)
             )
@@ -454,7 +468,7 @@ namespace Solti.Utils.DI.Internals
             //     {
             //         PropertyInfo currentProperty = PropertyAccess(i => i.Prop);
             //
-            //         return (TResult) this.Invoke(currentProperty.GetMethod, new object[]{})
+            //         return (TResult) this.Invoke(currentProperty.GetMethod, new object[0])
             //     }
             //     set
             //     {
@@ -483,7 +497,7 @@ namespace Solti.Utils.DI.Internals
                                 expression: currentProperty.ToIdentifierName(),
                                 name: IdentifierName(nameof(PropertyInfo.GetMethod))
                             ),
-                            CreateArray<object>() // new object[] {}
+                            CreateArray<object>() // new object[0]
                         ))
                     }
                 ),

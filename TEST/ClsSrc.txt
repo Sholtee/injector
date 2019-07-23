@@ -20,7 +20,7 @@ public sealed class GeneratedProxy : Solti.Utils.DI.Internals.Tests.Foo, Solti.U
     void Solti.Utils.DI.Internals.Tests.IFoo<System.Int32>.Bar()
     {
         System.Reflection.MethodInfo currentMethod = MethodAccess(i => i.Bar());
-        System.Object[] args = new System.Object[]{};
+        System.Object[] args = new System.Object[0];
         System.Object result = this.Invoke(currentMethod, args);
     }
 
@@ -34,7 +34,7 @@ public sealed class GeneratedProxy : Solti.Utils.DI.Internals.Tests.Foo, Solti.U
         get
         {
             System.Reflection.PropertyInfo currentProperty = PropertyAccess(i => i.Prop);
-            return (System.Int32)this.Invoke(currentProperty.GetMethod, new System.Object[]{});
+            return (System.Int32)this.Invoke(currentProperty.GetMethod, new System.Object[0]);
         }
 
         set
