@@ -28,7 +28,7 @@ namespace Solti.Utils.DI.Internals.Tests
     {
         protected override object Invoke(MethodInfo method, object[] args)
         {
-            return null;
+            return 1;
         }
     }
 
@@ -167,7 +167,12 @@ namespace Solti.Utils.DI.Internals.Tests
         [Test]
         public void GeneratedProxy_Test()
         {
-            Type proxyType = GeneratedProxy<IFoo<int>, Foo>.Type;
+            IFoo<int> proxy = GeneratedProxy<IFoo<int>, Foo>.Instantiate(new Type[0]);
+
+            string a, b = string.Empty;
+
+            Assert.That(proxy.Prop, Is.EqualTo(1));
+            Assert.That(proxy.Foo(0, out a, ref b), Is.EqualTo(1));
         }
 
         private static MethodInfo GetMethod(string name) => typeof(IFoo<>).GetMethod(name);

@@ -20,6 +20,8 @@ using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Solti.Utils.DI.Internals
 {
+    using Properties;
+
     //
     // Statikus generikus azert jo nekunk mert igy biztosan pontosan egyszer fog lefutni az inicializacio minden egyes 
     // TBase-TInterface parosra. Ugyanez a Cache osztallyal nem lenne garantalhato: 
@@ -31,6 +33,7 @@ namespace Solti.Utils.DI.Internals
     {
         private static readonly object FLock = new object();
 
+        // ReSharper disable once StaticMemberInGenericType
         private static Type FType;
 
         public static Type Type
@@ -44,6 +47,9 @@ namespace Solti.Utils.DI.Internals
             }
         }
 
+        public static TInterface Instantiate(Type[] argTypes, params object[] args) => (TInterface) Type.CreateInstance(argTypes, args);
+
+        #region Private
         private static Type GenerateType()
         {
             CheckInterface();
@@ -79,7 +85,10 @@ namespace Solti.Utils.DI.Internals
                 {
                     IReadOnlyList<Diagnostic> failures = result.Diagnostics.Where(d => d.Severity == DiagnosticSeverity.Error).ToArray();
 
-                    throw new Exception("Compilation failed");
+                    var ex = new Exception(Resources.COMPILATION_FAILED);
+                    ex.Data.Add("failures", failures);
+
+                    throw ex;
                 }
 
                 stm.Seek(0, SeekOrigin.Begin);
@@ -121,5 +130,6 @@ namespace Solti.Utils.DI.Internals
             if (type.ContainsGenericParameters) throw new NotSupportedException();
             if (type.IsSealed) throw new NotSupportedException();
         }
+        #endregion
     }
 }

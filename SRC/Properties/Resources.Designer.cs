@@ -9,7 +9,7 @@
 //------------------------------------------------------------------------------
 
 namespace Solti.Utils.DI.Properties {
-    using Internals;
+    using System;
     
     
     /// <summary>
@@ -39,7 +39,7 @@ namespace Solti.Utils.DI.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Solti.Utils.DI.Properties.Resources", typeof(Resources).Assembly());
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Solti.Utils.DI.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -111,6 +111,15 @@ namespace Solti.Utils.DI.Properties {
         internal static string CIRCULAR_REFERENCE {
             get {
                 return ResourceManager.GetString("CIRCULAR_REFERENCE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Compilation failed. This may not have been caused by you..
+        /// </summary>
+        internal static string COMPILATION_FAILED {
+            get {
+                return ResourceManager.GetString("COMPILATION_FAILED", resourceCulture);
             }
         }
         
