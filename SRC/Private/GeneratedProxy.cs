@@ -63,8 +63,6 @@ namespace Solti.Utils.DI.Internals
                 Debug.WriteLine(string.Join(Environment.NewLine, ReferencedAssemblies()));
             }
 #endif
-            tree = CSharpSyntaxTree.ParseText(tree.GetRoot().NormalizeWhitespace().ToFullString()); // TODO: !!!!kibaszott nagy HACK, kijavitani mielobb!!!!
-
             CSharpCompilation compilation = CSharpCompilation.Create
             (
                 assemblyName: Path.GetRandomFileName(),

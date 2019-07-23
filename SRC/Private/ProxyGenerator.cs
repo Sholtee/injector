@@ -243,17 +243,13 @@ namespace Solti.Utils.DI.Internals
 
         internal static TypeSyntax CreateType(Type src)
         {
-            if (src.IsGenericType) return GenericName
-            (
-                identifier: Identifier(src.GetGenericTypeDefinition().GetFriendlyName())
-            )
-            .WithTypeArgumentList
+            if (src.IsGenericType) return GetQualifiedName(src.GetGenericTypeDefinition(), name => GenericName(name).WithTypeArgumentList
             (
                 typeArgumentList: TypeArgumentList
                 (
                     arguments: src.GetGenericArguments().CreateList(CreateType)
                 )
-            );
+            ));
 
             if (src.IsArray) return ArrayType
             (
@@ -274,7 +270,25 @@ namespace Solti.Utils.DI.Internals
                 )
             );
 
-            return IdentifierName(src.GetFriendlyName());
+            return GetQualifiedName(src, IdentifierName);
+
+            NameSyntax GetQualifiedName(Type type, Func<string, NameSyntax> typeNameFactory) => Parts2QualifiedName
+            (
+                parts: type.GetFriendlyName().Split('.').Reverse().ToArray(),
+                typeNameFactory: typeNameFactory
+            );
+
+            NameSyntax Parts2QualifiedName(IReadOnlyCollection<string> parts, Func<string, NameSyntax> typeNameFactory) => parts.Count == 1
+                ? typeNameFactory(parts.Single())
+                : QualifiedName
+                (
+                    Parts2QualifiedName
+                    (
+                        parts: parts.Skip(1).ToArray(), 
+                        typeNameFactory: IdentifierName
+                    ),
+                    (SimpleNameSyntax) typeNameFactory(parts.First())
+                );
         }
 
         internal static TypeSyntax CreateType<T>() => CreateType(typeof(T));
