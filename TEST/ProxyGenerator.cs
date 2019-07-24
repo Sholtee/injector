@@ -171,7 +171,7 @@ namespace Solti.Utils.DI.Internals.Tests
         [Test]
         public void GeneratedProxy_Test()
         {
-            IFoo<int> proxy = GeneratedProxy<IFoo<int>, Foo>.Instantiate(new []{typeof(IFoo<int>)}, new object[] {null});
+            IFoo<int> proxy = GeneratedProxy<IFoo<int>, Foo>.Instantiate(new []{typeof(IFoo<int>)}, (object) null);
 
             string a, b = string.Empty;
 
@@ -184,6 +184,18 @@ namespace Solti.Utils.DI.Internals.Tests
         {
             Assert.That(ProxyGenerator.CallTarget(Foo).NormalizeWhitespace().ToFullString(), Is.EqualTo("return Target.Foo(a, out b, ref c);"));
             Assert.That(ProxyGenerator.CallTarget(Bar).NormalizeWhitespace(eol: "\n").ToFullString(), Is.EqualTo("{\n    Target.Bar();\n    return;\n}"));
+        }
+
+        [Test]
+        public void ReadTarget_ShouldReadTheGivenProperty()
+        {
+            Assert.That(ProxyGenerator.ReadTarget(Prop).NormalizeWhitespace().ToFullString(), Is.EqualTo("return Target.Prop;"));
+        }
+
+        [Test]
+        public void WriteTarget_ShouldWriteTheGivenProperty()
+        {
+            Assert.That(ProxyGenerator.WriteTarget(Prop).NormalizeWhitespace().ToFullString(), Is.EqualTo("Target.Prop = value;"));
         }
 
         private static MethodInfo GetMethod(string name) => typeof(IFoo<>).GetMethod(name);

@@ -455,6 +455,31 @@ namespace Solti.Utils.DI.Internals
                 );
         }
 
+        internal static StatementSyntax ReadTarget(PropertyInfo property) => ReturnStatement
+        (
+            expression: MemberAccessExpression
+            (
+                SyntaxKind.SimpleMemberAccessExpression,
+                IdentifierName(nameof(InterfaceInterceptor<IDisposable>.Target)),
+                IdentifierName(property.Name)
+            )
+        );
+
+        internal static StatementSyntax WriteTarget(PropertyInfo property) => ExpressionStatement
+        (
+            expression: AssignmentExpression
+            (
+                kind: SyntaxKind.SimpleAssignmentExpression,
+                left: MemberAccessExpression
+                (
+                    SyntaxKind.SimpleMemberAccessExpression,
+                    IdentifierName(nameof(InterfaceInterceptor<IDisposable>.Target)),
+                    IdentifierName(property.Name)
+                ),
+                right: IdentifierName(value)
+            )
+        );
+
         internal static ReturnStatementSyntax ReturnResult(Type returnType, ExpressionSyntax result) => ReturnStatement
         (
             expression: returnType == typeof(void)
@@ -609,8 +634,7 @@ namespace Solti.Utils.DI.Internals
                                 expression: currentProperty.ToIdentifierName(),
                                 name: IdentifierName(nameof(PropertyInfo.SetMethod))
                             ),
-                            // TODO: FIXME: nem string-kent szerepeljen a "value"
-                            CreateArray<object>(IdentifierName("value")) // new object[] {value}
+                            CreateArray<object>(IdentifierName(value)) // new object[] {value}
                         ))
                     }
                 )
@@ -778,6 +802,9 @@ namespace Solti.Utils.DI.Internals
         #endregion
 
         #region Private
+        // https://github.com/dotnet/roslyn/issues/4861
+        private const string value = nameof(value);
+
         private static SeparatedSyntaxList<TNode> CreateList<T, TNode>(this IReadOnlyCollection<T> src, Func<T, TNode> factory) where TNode : SyntaxNode => SeparatedList<TNode>
         (
             nodesAndTokens: src.SelectMany((p, i) =>
