@@ -4,7 +4,7 @@ public sealed class GeneratedProxy : Solti.Utils.DI.Internals.Tests.Foo, Solti.U
     {
     }
 
-    private static System.Reflection.MethodInfo MethodAccess(System.Linq.Expressions.Expression<System.Action<Solti.Utils.DI.Internals.Tests.IFoo<System.Int32>>> methodAccess)
+    private static System.Reflection.MethodInfo MethodAccess(System.Linq.Expressions.Expression<System.Action> methodAccess)
     {
         return ((System.Linq.Expressions.MethodCallExpression)methodAccess.Body).Method;
     }
@@ -13,9 +13,11 @@ public sealed class GeneratedProxy : Solti.Utils.DI.Internals.Tests.Foo, Solti.U
     {
         System.String dummy_b;
         TT dummy_c = default(TT);
-        System.Reflection.MethodInfo currentMethod = MethodAccess(i => i.Foo(a, out dummy_b, ref dummy_c));
+        System.Reflection.MethodInfo currentMethod = MethodAccess(() => Target.Foo(a, out dummy_b, ref dummy_c));
         System.Object[] args = new System.Object[]{a, default(System.String), c};
         System.Object result = Invoke(currentMethod, args);
+        if (result == CALL_TARGET)
+            return Target.Foo(a, out b, ref c);
         b = (System.String)args[1];
         c = (TT)args[2];
         return (System.Int32)result;
@@ -23,12 +25,17 @@ public sealed class GeneratedProxy : Solti.Utils.DI.Internals.Tests.Foo, Solti.U
 
     void Solti.Utils.DI.Internals.Tests.IFoo<System.Int32>.Bar()
     {
-        System.Reflection.MethodInfo currentMethod = MethodAccess(i => i.Bar());
+        System.Reflection.MethodInfo currentMethod = MethodAccess(() => Target.Bar());
         System.Object[] args = new System.Object[0];
         System.Object result = Invoke(currentMethod, args);
+        if (result == CALL_TARGET)
+        {
+            Target.Bar();
+            return;
+        }
     }
 
-    private static System.Reflection.PropertyInfo PropertyAccess<TResult>(System.Linq.Expressions.Expression<System.Func<Solti.Utils.DI.Internals.Tests.IFoo<System.Int32>, TResult>> propertyAccess)
+    private static System.Reflection.PropertyInfo PropertyAccess<TResult>(System.Linq.Expressions.Expression<System.Func<TResult>> propertyAccess)
     {
         return (System.Reflection.PropertyInfo)((System.Linq.Expressions.MemberExpression)propertyAccess.Body).Member;
     }
@@ -37,13 +44,13 @@ public sealed class GeneratedProxy : Solti.Utils.DI.Internals.Tests.Foo, Solti.U
     {
         get
         {
-            System.Reflection.PropertyInfo currentProperty = PropertyAccess(i => i.Prop);
+            System.Reflection.PropertyInfo currentProperty = PropertyAccess(() => Target.Prop);
             return (System.Int32)Invoke(currentProperty.GetMethod, new System.Object[0]);
         }
 
         set
         {
-            System.Reflection.PropertyInfo currentProperty = PropertyAccess(i => i.Prop);
+            System.Reflection.PropertyInfo currentProperty = PropertyAccess(() => Target.Prop);
             Invoke(currentProperty.SetMethod, new System.Object[]{value});
         }
     }

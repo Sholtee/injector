@@ -100,17 +100,17 @@ namespace Solti.Utils.DI.Internals.Tests
 
             IReadOnlyList<StatementSyntax> statements = ProxyGenerator.AcquireMethodInfo(Foo, out currentMethod);
             Assert.That(statements.Count, Is.EqualTo(3));
-            Assert.That(statements.Last().NormalizeWhitespace().ToFullString(), Is.EqualTo("System.Reflection.MethodInfo currentMethod = MethodAccess(i => i.Foo(a, out dummy_b, ref dummy_c));"));
+            Assert.That(statements.Last().NormalizeWhitespace().ToFullString(), Is.EqualTo("System.Reflection.MethodInfo currentMethod = MethodAccess(() => Target.Foo(a, out dummy_b, ref dummy_c));"));
 
             statements = ProxyGenerator.AcquireMethodInfo(Bar, out currentMethod);
             Assert.That(statements.Count, Is.EqualTo(1));
-            Assert.That(statements.Last().NormalizeWhitespace().ToFullString(), Is.EqualTo("System.Reflection.MethodInfo currentMethod = MethodAccess(i => i.Bar());"));
+            Assert.That(statements.Last().NormalizeWhitespace().ToFullString(), Is.EqualTo("System.Reflection.MethodInfo currentMethod = MethodAccess(() => Target.Bar());"));
         }
 
         [Test]
         public void AcquirePropertyInfo_ShouldGetAPropertyInfoInstance()
         {
-            Assert.That(ProxyGenerator.AcquirePropertyInfo(Prop).NormalizeWhitespace().ToFullString(), Is.EqualTo("System.Reflection.PropertyInfo currentProperty = PropertyAccess(i => i.Prop);"));
+            Assert.That(ProxyGenerator.AcquirePropertyInfo(Prop).NormalizeWhitespace().ToFullString(), Is.EqualTo("System.Reflection.PropertyInfo currentProperty = PropertyAccess(() => Target.Prop);"));
         }
 
         [Test]
@@ -133,13 +133,13 @@ namespace Solti.Utils.DI.Internals.Tests
         [Test]
         public void PropertyAccess_ShouldCreateTheProperMethod()
         {
-            Assert.That(ProxyGenerator.PropertyAccess(typeof(IFoo<int>)).NormalizeWhitespace(eol: Environment.NewLine).ToFullString(), Is.EqualTo($"private static System.Reflection.PropertyInfo PropertyAccess<TResult>(System.Linq.Expressions.Expression<System.Func<Solti.Utils.DI.Internals.Tests.IFoo<System.Int32>, TResult>> propertyAccess){Environment.NewLine}{{{Environment.NewLine}    return (System.Reflection.PropertyInfo)((System.Linq.Expressions.MemberExpression)propertyAccess.Body).Member;{Environment.NewLine}}}"));
+            Assert.That(ProxyGenerator.PropertyAccess(typeof(IFoo<int>)).NormalizeWhitespace(eol: Environment.NewLine).ToFullString(), Is.EqualTo($"private static System.Reflection.PropertyInfo PropertyAccess<TResult>(System.Linq.Expressions.Expression<System.Func<TResult>> propertyAccess){Environment.NewLine}{{{Environment.NewLine}    return (System.Reflection.PropertyInfo)((System.Linq.Expressions.MemberExpression)propertyAccess.Body).Member;{Environment.NewLine}}}"));
         }
 
         [Test]
         public void MethodAccess_ShouldCreateTheProperMethod()
         {
-            Assert.That(ProxyGenerator.MethodAccess(typeof(IFoo<int>)).NormalizeWhitespace(eol: Environment.NewLine).ToFullString(), Is.EqualTo($"private static System.Reflection.MethodInfo MethodAccess(System.Linq.Expressions.Expression<System.Action<Solti.Utils.DI.Internals.Tests.IFoo<System.Int32>>> methodAccess){Environment.NewLine}{{{Environment.NewLine}    return ((System.Linq.Expressions.MethodCallExpression)methodAccess.Body).Method;{Environment.NewLine}}}"));
+            Assert.That(ProxyGenerator.MethodAccess(typeof(IFoo<int>)).NormalizeWhitespace(eol: Environment.NewLine).ToFullString(), Is.EqualTo($"private static System.Reflection.MethodInfo MethodAccess(System.Linq.Expressions.Expression<System.Action> methodAccess){Environment.NewLine}{{{Environment.NewLine}    return ((System.Linq.Expressions.MethodCallExpression)methodAccess.Body).Method;{Environment.NewLine}}}"));
         }
 
         [Test]
@@ -196,6 +196,12 @@ namespace Solti.Utils.DI.Internals.Tests
         public void WriteTarget_ShouldWriteTheGivenProperty()
         {
             Assert.That(ProxyGenerator.WriteTarget(Prop).NormalizeWhitespace().ToFullString(), Is.EqualTo("Target.Prop = value;"));
+        }
+
+        [Test]
+        public void ShouldCallTarget_ShouldCreateAnIfStatement()
+        {
+            Assert.That(ProxyGenerator.ShouldCallTarget(ProxyGenerator.DeclareLocal<object>("result"), SyntaxFactory.Block()).NormalizeWhitespace(eol: "\n").ToFullString(), Is.EqualTo("if (result == CALL_TARGET)\n{\n}"));
         }
 
         private static MethodInfo GetMethod(string name) => typeof(IFoo<>).GetMethod(name);

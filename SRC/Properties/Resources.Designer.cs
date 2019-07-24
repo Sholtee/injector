@@ -133,7 +133,7 @@ namespace Solti.Utils.DI.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &quot;{0}&quot; must have exactly one (annotated) constructor..
+        ///   Looks up a localized string similar to &quot;{0}&quot; must have exactly one (annotated) public constructor..
         /// </summary>
         internal static string CONSTRUCTOR_OVERLOADING_NOT_SUPPORTED {
             get {

@@ -142,7 +142,7 @@
     <value>Public constructor with the given layout can not be found.</value>
   </data>
   <data name="CONSTRUCTOR_OVERLOADING_NOT_SUPPORTED" xml:space="preserve">
-    <value>"{0}" must have exactly one (annotated) constructor.</value>
+    <value>"{0}" must have exactly one (annotated) public constructor.</value>
   </data>
   <data name="DEPENDENCY_NOT_FOUND" xml:space="preserve">
     <value>No registered implementation for "{0}".</value>

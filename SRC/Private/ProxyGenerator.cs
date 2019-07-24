@@ -324,15 +324,14 @@ namespace Solti.Utils.DI.Internals
                             (
                                 Argument
                                 (
-                                    expression: SimpleLambdaExpression
+                                    expression: ParenthesizedLambdaExpression
                                     (
-                                        parameter: Parameter(Identifier(i)),
                                         body: InvocationExpression
                                         (
                                             expression: MemberAccessExpression
                                             (
                                                 kind: SyntaxKind.SimpleMemberAccessExpression,
-                                                expression: IdentifierName(i),
+                                                expression: IdentifierName(TARGET),
                                                 name: IdentifierName(method.Name)
                                             )
                                         )   
@@ -384,13 +383,12 @@ namespace Solti.Utils.DI.Internals
                     (
                         Argument
                         (
-                            expression: SimpleLambdaExpression
+                            expression: ParenthesizedLambdaExpression
                             (
-                                parameter: Parameter(Identifier(i)),
                                 body: MemberAccessExpression
                                 (
                                     kind: SyntaxKind.SimpleMemberAccessExpression,
-                                    expression: IdentifierName(i),
+                                    expression: IdentifierName(TARGET),
                                     name: IdentifierName(property.Name)
                                 )
                             )
@@ -421,7 +419,7 @@ namespace Solti.Utils.DI.Internals
                 expression: MemberAccessExpression
                 (
                     SyntaxKind.SimpleMemberAccessExpression,
-                    IdentifierName(nameof(InterfaceInterceptor<IDisposable>.Target)),
+                    IdentifierName(TARGET),
                     IdentifierName(method.Name)
                 )
             )
@@ -460,7 +458,7 @@ namespace Solti.Utils.DI.Internals
             expression: MemberAccessExpression
             (
                 SyntaxKind.SimpleMemberAccessExpression,
-                IdentifierName(nameof(InterfaceInterceptor<IDisposable>.Target)),
+                IdentifierName(TARGET),
                 IdentifierName(property.Name)
             )
         );
@@ -473,11 +471,22 @@ namespace Solti.Utils.DI.Internals
                 left: MemberAccessExpression
                 (
                     SyntaxKind.SimpleMemberAccessExpression,
-                    IdentifierName(nameof(InterfaceInterceptor<IDisposable>.Target)),
+                    IdentifierName(TARGET),
                     IdentifierName(property.Name)
                 ),
-                right: IdentifierName(value)
+                right: IdentifierName(VALUE)
             )
+        );
+
+        internal static IfStatementSyntax ShouldCallTarget(LocalDeclarationStatementSyntax result, StatementSyntax ifTrue) => IfStatement
+        (
+            condition: BinaryExpression
+            (
+                kind: SyntaxKind.EqualsExpression, 
+                left: result.ToIdentifierName(), 
+                right: IdentifierName(CALL_TARGET)
+            ),
+            statement: ifTrue
         );
 
         internal static ReturnStatementSyntax ReturnResult(Type returnType, ExpressionSyntax result) => ReturnStatement
@@ -544,7 +553,7 @@ namespace Solti.Utils.DI.Internals
             //
             //     T2 dummy_para2 = default(T2); // ByRef metodus parameterek nem szerepelhetnek kifejezesekben
             //     T3 dummy_para3;
-            //     MethodInfo currentMethod = MethodAccess(i => i.Foo(para1, ref dummy_para2, out dummy_para3, para4)); // MethodBase.GetCurrentMethod() az implementaciot adna vissza, reflexio-val meg kibaszott lassu lenne
+            //     MethodInfo currentMethod = MethodAccess(() => Target.Foo(para1, ref dummy_para2, out dummy_para3, para4)); // MethodBase.GetCurrentMethod() az implementaciot adna vissza, reflexio-val meg kibaszott lassu lenne
             //
             //     object result = Invoke(currentMethod, args);
             //     if (result == CALL_TARGET) return Target.Foo(para1, ref para2, out para3, para4); // void visszateresnel ures return
@@ -562,6 +571,7 @@ namespace Solti.Utils.DI.Internals
                 .Concat(AcquireMethodInfo(ifaceMethod, out currentMethod))
                 .Append(args = CreateArgumentsArray(ifaceMethod))
                 .Append(result = DeclareLocal<object>(nameof(result), CallInvoke(currentMethod, args)))
+                .Append(ShouldCallTarget(result, CallTarget(ifaceMethod)))
                 .Concat(AssignByRefParameters(ifaceMethod, args));
 
             if (ifaceMethod.ReturnType != typeof(void)) statements = statements.Append(ReturnResult(ifaceMethod.ReturnType, result));
@@ -582,7 +592,7 @@ namespace Solti.Utils.DI.Internals
             // {
             //     get 
             //     {
-            //         PropertyInfo currentProperty = PropertyAccess(i => i.Prop);
+            //         PropertyInfo currentProperty = PropertyAccess(() => Target.Prop);
             //
             //         object result = Invoke(currentProperty.GetMethod, new object[0]);
             //         if (result == CALL_TARGET) return Target.Prop;
@@ -591,7 +601,7 @@ namespace Solti.Utils.DI.Internals
             //     }
             //     set
             //     {
-            //         PropertyInfo currentProperty = PropertyAccess(i => i.Prop);
+            //         PropertyInfo currentProperty = PropertyAccess(() => Target.Prop);
             //
             //         object result = Invoke(currentProperty.SetMethod, new object[]{ value });
             //         if (result == CALL_TARGET) Target.Prop = value;
@@ -634,7 +644,7 @@ namespace Solti.Utils.DI.Internals
                                 expression: currentProperty.ToIdentifierName(),
                                 name: IdentifierName(nameof(PropertyInfo.SetMethod))
                             ),
-                            CreateArray<object>(IdentifierName(value)) // new object[] {value}
+                            CreateArray<object>(IdentifierName(VALUE)) // new object[] {value}
                         ))
                     }
                 )
@@ -644,7 +654,7 @@ namespace Solti.Utils.DI.Internals
         public static MethodDeclarationSyntax PropertyAccess(Type interfaceType)
         {
             //
-            // private static PropertyInfo PropertyAccess<TResult>(Expression<Func<IInterface, TResult>> propertyAccess)
+            // private static PropertyInfo PropertyAccess<TResult>(Expression<Func<TResult>> propertyAccess)
             // {
             //     return (PropertyInfo) ((MemberExpression) propertyAccess.Body).Member;
             // }
@@ -663,7 +673,7 @@ namespace Solti.Utils.DI.Internals
                 genericArguments: new []{ TResult.Name },
                 parameters: new Dictionary<string, Type>
                 {
-                    {paraName, typeof(Expression<>).MakeGenericType(typeof(Func<,>).MakeGenericType(interfaceType, TResult))} // csak egyszer fut le interface-enkent -> nem kell gyorsitotarazni
+                    {paraName, typeof(Expression<>).MakeGenericType(typeof(Func<>).MakeGenericType(TResult))} // csak egyszer fut le interface-enkent -> nem kell gyorsitotarazni
                 }
             )
             .WithBody
@@ -706,7 +716,7 @@ namespace Solti.Utils.DI.Internals
         public static MethodDeclarationSyntax MethodAccess(Type interfaceType)
         {
             //
-            // private static MethodInfo MethodAccess(Expression<Action<IInterface>> methodAccess) 
+            // private static MethodInfo MethodAccess(Expression<Action> methodAccess) 
             // {
             //     return ((MethodCallExpression) methodAccess.Body).Method;
             // }
@@ -723,7 +733,7 @@ namespace Solti.Utils.DI.Internals
                 genericArguments: new string[0],
                 parameters: new Dictionary<string, Type>
                 {
-                    {paraName, typeof(Expression<>).MakeGenericType(typeof(Action<>).MakeGenericType(interfaceType))} // csak egyszer fut le interface-enkent -> nem kell gyorsitotarazni
+                    {paraName, typeof(Expression<>).MakeGenericType(typeof(Action))} // csak egyszer fut le interface-enkent -> nem kell gyorsitotarazni
                 }
             )
             .WithBody
@@ -802,8 +812,12 @@ namespace Solti.Utils.DI.Internals
         #endregion
 
         #region Private
-        // https://github.com/dotnet/roslyn/issues/4861
-        private const string value = nameof(value);
+        
+        private static readonly string 
+            CALL_TARGET = nameof(InterfaceInterceptor<IDisposable>.CALL_TARGET),
+            TARGET = nameof(InterfaceInterceptor<IDisposable>.Target),
+            // https://github.com/dotnet/roslyn/issues/4861
+            VALUE = nameof(VALUE).ToLower();
 
         private static SeparatedSyntaxList<TNode> CreateList<T, TNode>(this IReadOnlyCollection<T> src, Func<T, TNode> factory) where TNode : SyntaxNode => SeparatedList<TNode>
         (

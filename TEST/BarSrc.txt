@@ -1,6 +1,11 @@
 void Solti.Utils.DI.Internals.Tests.IFoo<T>.Bar()
 {
-    System.Reflection.MethodInfo currentMethod = MethodAccess(i => i.Bar());
+    System.Reflection.MethodInfo currentMethod = MethodAccess(() => Target.Bar());
     System.Object[] args = new System.Object[0];
     System.Object result = Invoke(currentMethod, args);
+    if (result == CALL_TARGET)
+    {
+        Target.Bar();
+        return;
+    }
 }
