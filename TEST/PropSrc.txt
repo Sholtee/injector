@@ -3,12 +3,12 @@ System.Int32 Solti.Utils.DI.Internals.Tests.IFoo<System.Int32>.Prop
     get
     {
         System.Reflection.PropertyInfo currentProperty = PropertyAccess(i => i.Prop);
-        return (System.Int32)this.Invoke(currentProperty.GetMethod, new System.Object[0]);
+        return (System.Int32)Invoke(currentProperty.GetMethod, new System.Object[0]);
     }
 
     set
     {
         System.Reflection.PropertyInfo currentProperty = PropertyAccess(i => i.Prop);
-        this.Invoke(currentProperty.SetMethod, new System.Object[]{value});
+        Invoke(currentProperty.SetMethod, new System.Object[]{value});
     }
 }

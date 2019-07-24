@@ -29,7 +29,7 @@ namespace Solti.Utils.DI.Internals
     // https://docs.microsoft.com/en-us/dotnet/api/system.collections.concurrent.concurrentdictionary-2.getoradd?view=netcore-2.2
     //
 
-    internal static class GeneratedProxy<TInterface, TBase> where TInterface : class where TBase: InterfaceInterceptor
+    internal static class GeneratedProxy<TInterface, TBase> where TInterface : class where TBase: InterfaceInterceptor<TInterface>
     {
         private static readonly object FLock = new object();
 

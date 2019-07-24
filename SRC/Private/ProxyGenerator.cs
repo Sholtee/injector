@@ -402,12 +402,7 @@ namespace Solti.Utils.DI.Internals
 
         internal static InvocationExpressionSyntax CallInvoke(params ExpressionSyntax[] arguments) => InvocationExpression
         (
-            expression: MemberAccessExpression
-            (
-                kind: SyntaxKind.SimpleMemberAccessExpression,
-                expression: ThisExpression(),
-                name: IdentifierName(nameof(InterfaceProxy<int>.Invoke))
-            )
+            expression: IdentifierName(nameof(InterfaceInterceptor<IDisposable>.Invoke))
         )
         .WithArgumentList
         (
@@ -418,6 +413,47 @@ namespace Solti.Utils.DI.Internals
         );
 
         internal static InvocationExpressionSyntax CallInvoke(params LocalDeclarationStatementSyntax[] arguments) => CallInvoke(arguments.Select(arg => (ExpressionSyntax) arg.ToIdentifierName()).ToArray());
+
+        internal static StatementSyntax CallTarget(MethodInfo method)
+        {
+            InvocationExpressionSyntax invocation = InvocationExpression
+            (
+                expression: MemberAccessExpression
+                (
+                    SyntaxKind.SimpleMemberAccessExpression,
+                    IdentifierName(nameof(InterfaceInterceptor<IDisposable>.Target)),
+                    IdentifierName(method.Name)
+                )
+            )
+            .WithArgumentList
+            (
+                argumentList: ArgumentList(method.GetParameters().CreateList(param =>
+                {
+                    ArgumentSyntax argument = Argument
+                    (
+                        expression: IdentifierName(param.Name)
+                    );
+
+                    //
+                    // TODO: "IN"
+                    //
+
+                    if (param.ParameterType.IsByRef) argument = argument.WithRefKindKeyword
+                    (
+                        refKindKeyword: Token(param.IsOut ? SyntaxKind.OutKeyword : SyntaxKind.RefKeyword)
+                    );
+
+                    return argument;
+                }))
+            );
+
+            return method.ReturnType != typeof(void) 
+                ? (StatementSyntax) ReturnStatement(invocation)
+                : Block
+                (
+                    statements: List(new StatementSyntax[]{ExpressionStatement(invocation), ReturnStatement()})
+                );
+        }
 
         internal static ReturnStatementSyntax ReturnResult(Type returnType, ExpressionSyntax result) => ReturnStatement
         (
@@ -431,6 +467,46 @@ namespace Solti.Utils.DI.Internals
         );
 
         internal static ReturnStatementSyntax ReturnResult(Type returnType, LocalDeclarationStatementSyntax result) => ReturnResult(returnType, result.ToIdentifierName());
+
+        internal static ConstructorDeclarationSyntax Ctor(ConstructorInfo ctor)
+        {
+            IReadOnlyList<ParameterInfo> paramz = ctor.GetParameters();
+
+            return ConstructorDeclaration
+            (
+                identifier: Identifier(GeneratedClassName)
+            )
+            .WithModifiers
+            (
+                modifiers: TokenList
+                (
+                    Token(SyntaxKind.PublicKeyword)
+                )
+            )
+            .WithParameterList
+            (
+                parameterList: ParameterList(paramz.CreateList(param => Parameter
+                (
+                    identifier: Identifier(param.Name)
+                )
+                .WithType
+                (
+                    type: CreateType(param.ParameterType)
+                )))
+            )
+            .WithInitializer
+            (
+                initializer: ConstructorInitializer
+                (
+                    SyntaxKind.BaseConstructorInitializer,
+                    ArgumentList(paramz.CreateList(param => Argument
+                    (
+                        expression: IdentifierName(param.Name)
+                    )))
+                )
+            )
+            .WithBody(Block());
+        }
         #endregion
 
         #region Public
@@ -443,17 +519,18 @@ namespace Solti.Utils.DI.Internals
             //
             //     T2 dummy_para2 = default(T2); // ByRef metodus parameterek nem szerepelhetnek kifejezesekben
             //     T3 dummy_para3;
-            //     MethodInfo currentMethod = MethodAccess(i => i.Foo<TGeneric>(para1, ref dummy_para2, out dummy_para3, para4)); // MethodBase.GetCurrentMethod() az implementaciot adna vissza, reflexio-val meg kibaszott lassu lenne
+            //     MethodInfo currentMethod = MethodAccess(i => i.Foo(para1, ref dummy_para2, out dummy_para3, para4)); // MethodBase.GetCurrentMethod() az implementaciot adna vissza, reflexio-val meg kibaszott lassu lenne
             //
-            //     object result = this.Invoke(currentMethod, args);
-            //     
+            //     object result = Invoke(currentMethod, args);
+            //     if (result == CALL_TARGET) return Target.Foo(para1, ref para2, out para3, para4); // void visszateresnel ures return
+            //
             //     para2 = (T2) args[1];
             //     para3 = (T3) args[2];
             //
-            //     return (TResult) result; // ifaceMethod.ReturnType != typeof(void)
+            //     return (TResult) result; // void visszateresnel nincs
             // }
             //
-            
+
             LocalDeclarationStatementSyntax currentMethod, args, result;
 
             var statements = new List<StatementSyntax>()
@@ -482,13 +559,17 @@ namespace Solti.Utils.DI.Internals
             //     {
             //         PropertyInfo currentProperty = PropertyAccess(i => i.Prop);
             //
-            //         return (TResult) this.Invoke(currentProperty.GetMethod, new object[0])
+            //         object result = Invoke(currentProperty.GetMethod, new object[0]);
+            //         if (result == CALL_TARGET) return Target.Prop;
+            //
+            //         return (TResult) result;
             //     }
             //     set
             //     {
             //         PropertyInfo currentProperty = PropertyAccess(i => i.Prop);
             //
-            //         this.Invoke(currentProperty.SetMethod, new object[]{ value });
+            //         object result = Invoke(currentProperty.SetMethod, new object[]{ value });
+            //         if (result == CALL_TARGET) Target.Prop = value;
             //     }
             // }
             //
@@ -657,7 +738,6 @@ namespace Solti.Utils.DI.Internals
 
         public static ClassDeclarationSyntax GenerateProxyClass(Type @base, Type interfaceType)
         {
-            Debug.Assert(typeof(InterfaceInterceptor).IsAssignableFrom(@base));
             Debug.Assert(interfaceType.IsInterface);
 
             ClassDeclarationSyntax cls = ClassDeclaration(GeneratedClassName)
@@ -677,7 +757,7 @@ namespace Solti.Utils.DI.Internals
                     )
                 );
 
-            List<MemberDeclarationSyntax> members = new List<MemberDeclarationSyntax>();
+            List<MemberDeclarationSyntax> members = new List<MemberDeclarationSyntax>(new MemberDeclarationSyntax[]{Ctor(@base.GetApplicableConstructor()) });
 
             MethodInfo[] methods = interfaceType.GetMethods(BindingFlags.Instance | BindingFlags.Public).Where(method => !method.IsSpecialName).ToArray();
             if (methods.Any())
@@ -692,9 +772,8 @@ namespace Solti.Utils.DI.Internals
                 members.Add(PropertyAccess(interfaceType));
                 members.AddRange(properties.Select(GenerateProxyProperty));
             }
-
-            if (members.Any()) cls = cls.WithMembers(List(members));
-            return cls;
+            
+            return cls.WithMembers(List(members));
         }
         #endregion
 

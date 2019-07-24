@@ -24,11 +24,15 @@ namespace Solti.Utils.DI.Internals.Tests
         T Prop { get; set; }
     }
 
-    public class Foo : InterfaceInterceptor
+    public class Foo : InterfaceInterceptor<IFoo<int>>
     {
-        protected override object Invoke(MethodInfo method, object[] args)
+        public override object Invoke(MethodInfo method, object[] args)
         {
             return 1;
+        }
+
+        public Foo(IFoo<int> target) : base(target)
+        {
         }
     }
 
@@ -116,7 +120,7 @@ namespace Solti.Utils.DI.Internals.Tests
             (
                 ProxyGenerator.DeclareLocal<MethodInfo>("currentMethod"),
                 ProxyGenerator.DeclareLocal<object[]>("args")
-            ).NormalizeWhitespace().ToFullString(), Is.EqualTo("this.Invoke(currentMethod, args)"));
+            ).NormalizeWhitespace().ToFullString(), Is.EqualTo("Invoke(currentMethod, args)"));
         }
 
         [Test]
@@ -167,12 +171,19 @@ namespace Solti.Utils.DI.Internals.Tests
         [Test]
         public void GeneratedProxy_Test()
         {
-            IFoo<int> proxy = GeneratedProxy<IFoo<int>, Foo>.Instantiate(new Type[0]);
+            IFoo<int> proxy = GeneratedProxy<IFoo<int>, Foo>.Instantiate(new []{typeof(IFoo<int>)}, new object[] {null});
 
             string a, b = string.Empty;
 
             Assert.That(proxy.Prop, Is.EqualTo(1));
             Assert.That(proxy.Foo(0, out a, ref b), Is.EqualTo(1));
+        }
+
+        [Test]
+        public void CallTarget_ShouldInvokeTheTargetMethod()
+        {
+            Assert.That(ProxyGenerator.CallTarget(Foo).NormalizeWhitespace().ToFullString(), Is.EqualTo("return Target.Foo(a, out b, ref c);"));
+            Assert.That(ProxyGenerator.CallTarget(Bar).NormalizeWhitespace(eol: "\n").ToFullString(), Is.EqualTo("{\n    Target.Bar();\n    return;\n}"));
         }
 
         private static MethodInfo GetMethod(string name) => typeof(IFoo<>).GetMethod(name);

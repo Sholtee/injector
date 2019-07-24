@@ -4,7 +4,7 @@ System.Int32 Solti.Utils.DI.Internals.Tests.IFoo<T>.Foo<TT>(System.Int32 a, out 
     TT dummy_c = default(TT);
     System.Reflection.MethodInfo currentMethod = MethodAccess(i => i.Foo(a, out dummy_b, ref dummy_c));
     System.Object[] args = new System.Object[]{a, default(System.String), c};
-    System.Object result = this.Invoke(currentMethod, args);
+    System.Object result = Invoke(currentMethod, args);
     b = (System.String)args[1];
     c = (TT)args[2];
     return (System.Int32)result;
