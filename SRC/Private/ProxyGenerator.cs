@@ -398,7 +398,7 @@ namespace Solti.Utils.DI.Internals
             ));
         }
 
-        internal static InvocationExpressionSyntax CallInvoke(params ExpressionSyntax[] arguments) => InvocationExpression
+        internal static LocalDeclarationStatementSyntax CallInvoke(params ExpressionSyntax[] arguments) => DeclareLocal<object>("result", InvocationExpression
         (
             expression: IdentifierName(nameof(InterfaceInterceptor<IDisposable>.Invoke))
         )
@@ -408,11 +408,11 @@ namespace Solti.Utils.DI.Internals
             (
                 arguments.CreateList(Argument)
             )
-        );
+        ));
 
-        internal static InvocationExpressionSyntax CallInvoke(params LocalDeclarationStatementSyntax[] arguments) => CallInvoke(arguments.Select(arg => (ExpressionSyntax) arg.ToIdentifierName()).ToArray());
+        internal static LocalDeclarationStatementSyntax CallInvoke(params LocalDeclarationStatementSyntax[] arguments) => CallInvoke(arguments.Select(arg => (ExpressionSyntax) arg.ToIdentifierName()).ToArray());
 
-        internal static StatementSyntax CallTarget(MethodInfo method)
+        internal static StatementSyntax CallTargetAndReturn(MethodInfo method)
         {
             InvocationExpressionSyntax invocation = InvocationExpression
             (
@@ -453,7 +453,7 @@ namespace Solti.Utils.DI.Internals
                 );
         }
 
-        internal static StatementSyntax ReadTarget(PropertyInfo property) => ReturnStatement
+        internal static StatementSyntax ReadTargetAndReturn(PropertyInfo property) => ReturnStatement
         (
             expression: MemberAccessExpression
             (
@@ -570,8 +570,8 @@ namespace Solti.Utils.DI.Internals
             var statements = new List<StatementSyntax>()
                 .Concat(AcquireMethodInfo(ifaceMethod, out currentMethod))
                 .Append(args = CreateArgumentsArray(ifaceMethod))
-                .Append(result = DeclareLocal<object>(nameof(result), CallInvoke(currentMethod, args)))
-                .Append(ShouldCallTarget(result, CallTarget(ifaceMethod)))
+                .Append(result = CallInvoke(currentMethod, args))
+                .Append(ShouldCallTarget(result, ifTrue: CallTargetAndReturn(ifaceMethod)))
                 .Concat(AssignByRefParameters(ifaceMethod, args));
 
             if (ifaceMethod.ReturnType != typeof(void)) statements = statements.Append(ReturnResult(ifaceMethod.ReturnType, result));
@@ -609,7 +609,7 @@ namespace Solti.Utils.DI.Internals
             // }
             //
 
-            LocalDeclarationStatementSyntax currentProperty;
+            LocalDeclarationStatementSyntax currentProperty, result;
 
             return DeclareProperty
             (
@@ -619,7 +619,7 @@ namespace Solti.Utils.DI.Internals
                     statements: new StatementSyntax[]
                     {
                         currentProperty = AcquirePropertyInfo(ifaceProperty),
-                        ReturnResult(ifaceProperty.PropertyType, CallInvoke
+                        result = CallInvoke
                         (
                             MemberAccessExpression // currentProperty.GetMethod
                             (
@@ -628,7 +628,9 @@ namespace Solti.Utils.DI.Internals
                                 name: IdentifierName(nameof(PropertyInfo.GetMethod))
                             ),
                             CreateArray<object>() // new object[0]
-                        ))
+                        ),
+                        ShouldCallTarget(result, ifTrue: ReadTargetAndReturn(ifaceProperty)),
+                        ReturnResult(ifaceProperty.PropertyType, result)
                     }
                 ),
                 setBody: Block
@@ -636,7 +638,7 @@ namespace Solti.Utils.DI.Internals
                     statements: new StatementSyntax[]
                     {
                         currentProperty = AcquirePropertyInfo(ifaceProperty),
-                        ExpressionStatement(CallInvoke
+                        result = CallInvoke
                         (
                             MemberAccessExpression // currentProperty.SetMethod
                             (
@@ -645,7 +647,8 @@ namespace Solti.Utils.DI.Internals
                                 name: IdentifierName(nameof(PropertyInfo.SetMethod))
                             ),
                             CreateArray<object>(IdentifierName(VALUE)) // new object[] {value}
-                        ))
+                        ),
+                        ShouldCallTarget(result, ifTrue: WriteTarget(ifaceProperty))
                     }
                 )
             );

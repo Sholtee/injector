@@ -45,13 +45,18 @@ public sealed class GeneratedProxy : Solti.Utils.DI.Internals.Tests.Foo, Solti.U
         get
         {
             System.Reflection.PropertyInfo currentProperty = PropertyAccess(() => Target.Prop);
-            return (System.Int32)Invoke(currentProperty.GetMethod, new System.Object[0]);
+            System.Object result = Invoke(currentProperty.GetMethod, new System.Object[0]);
+            if (result == CALL_TARGET)
+                return Target.Prop;
+            return (System.Int32)result;
         }
 
         set
         {
             System.Reflection.PropertyInfo currentProperty = PropertyAccess(() => Target.Prop);
-            Invoke(currentProperty.SetMethod, new System.Object[]{value});
+            System.Object result = Invoke(currentProperty.SetMethod, new System.Object[]{value});
+            if (result == CALL_TARGET)
+                Target.Prop = value;
         }
     }
 }

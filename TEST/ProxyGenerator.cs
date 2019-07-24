@@ -120,7 +120,7 @@ namespace Solti.Utils.DI.Internals.Tests
             (
                 ProxyGenerator.DeclareLocal<MethodInfo>("currentMethod"),
                 ProxyGenerator.DeclareLocal<object[]>("args")
-            ).NormalizeWhitespace().ToFullString(), Is.EqualTo("Invoke(currentMethod, args)"));
+            ).NormalizeWhitespace().ToFullString(), Is.EqualTo("System.Object result = Invoke(currentMethod, args);"));
         }
 
         [Test]
@@ -180,16 +180,16 @@ namespace Solti.Utils.DI.Internals.Tests
         }
 
         [Test]
-        public void CallTarget_ShouldInvokeTheTargetMethod()
+        public void CallTargetAndReturn_ShouldInvokeTheTargetMethod()
         {
-            Assert.That(ProxyGenerator.CallTarget(Foo).NormalizeWhitespace().ToFullString(), Is.EqualTo("return Target.Foo(a, out b, ref c);"));
-            Assert.That(ProxyGenerator.CallTarget(Bar).NormalizeWhitespace(eol: "\n").ToFullString(), Is.EqualTo("{\n    Target.Bar();\n    return;\n}"));
+            Assert.That(ProxyGenerator.CallTargetAndReturn(Foo).NormalizeWhitespace().ToFullString(), Is.EqualTo("return Target.Foo(a, out b, ref c);"));
+            Assert.That(ProxyGenerator.CallTargetAndReturn(Bar).NormalizeWhitespace(eol: "\n").ToFullString(), Is.EqualTo("{\n    Target.Bar();\n    return;\n}"));
         }
 
         [Test]
-        public void ReadTarget_ShouldReadTheGivenProperty()
+        public void ReadTargetAndReturn_ShouldReadTheGivenProperty()
         {
-            Assert.That(ProxyGenerator.ReadTarget(Prop).NormalizeWhitespace().ToFullString(), Is.EqualTo("return Target.Prop;"));
+            Assert.That(ProxyGenerator.ReadTargetAndReturn(Prop).NormalizeWhitespace().ToFullString(), Is.EqualTo("return Target.Prop;"));
         }
 
         [Test]
