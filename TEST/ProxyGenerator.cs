@@ -17,14 +17,16 @@ using NUnit.Framework;
 
 namespace Solti.Utils.DI.Internals.Tests
 {
-    public interface IFoo<T> // szerepeljen a "T"
+    using Proxy;
+
+    internal interface IFoo<T> // szerepeljen a "T"
     {
         int Foo<TT>(int a, out string b, ref TT c);
         void Bar();
         T Prop { get; set; }
     }
 
-    public class Foo : InterfaceInterceptor<IFoo<int>>
+    internal class Foo : InterfaceInterceptor<IFoo<int>>
     {
         public override object Invoke(MethodInfo method, object[] args)
         {
@@ -171,7 +173,7 @@ namespace Solti.Utils.DI.Internals.Tests
         [Test]
         public void GeneratedProxy_Test()
         {
-            IFoo<int> proxy = GeneratedProxy<IFoo<int>, Foo>.Instantiate(new []{typeof(IFoo<int>)}, (object) null);
+            IFoo<int> proxy = (IFoo<int>) GeneratedProxy<IFoo<int>, Foo>.Type.CreateInstance(new []{typeof(IFoo<int>)}, (object) null);
 
             string a, b = string.Empty;
 

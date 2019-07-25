@@ -8,6 +8,7 @@ using System;
 namespace Solti.Utils.DI
 {
     using Annotations;
+    using Proxy;
 
     /// <summary>
     /// Defines several handy extensions for the <see cref="IServiceContainer"/> interface.
@@ -45,7 +46,7 @@ namespace Solti.Utils.DI
         public static IServiceContainer Factory<TInterface>(this IServiceContainer self, Func<IInjector, TInterface> factory, Lifetime lifetime = Lifetime.Transient) => self.Factory(typeof(TInterface), (me, type) => factory(me), lifetime);
 
         /// <summary>
-        /// Hooks into the instantiating process to let you decorate the original service. Useful when you want to add additional functionality (e.g. parameter validation). The easyest way to decorate an instance is using the <see cref="InterfaceProxy{TInterface}"/> class.
+        /// Hooks into the instantiating process to let you decorate the original service. Useful when you want to add additional functionality (e.g. parameter validation). The easyest way to decorate an instance is using the <see cref="InterfaceInterceptor{TInterface}"/> class.
         /// </summary>
         /// <typeparam name="TInterface">The "id" of the service to be decorated.</typeparam>
         /// <param name="self">The container itself.</param>
@@ -54,13 +55,13 @@ namespace Solti.Utils.DI
         public static IServiceContainer Proxy<TInterface>(this IServiceContainer self, Func<IInjector, TInterface, TInterface> decorator) => self.Proxy(typeof(TInterface), (me, type, instance) => decorator(me, (TInterface) instance));
 
         /// <summary>
-        /// Hooks into the instantiating process to let you decorate the original service. Useful when you want to add additional functionality (e.g. parameter validation). The easyest way to decorate an instance is using the <see cref="InterfaceProxy{TInterface}"/> class.
+        /// Hooks into the instantiating process to let you decorate the original service. Useful when you want to add additional functionality (e.g. parameter validation). The easyest way to decorate an instance is using the <see cref="InterfaceInterceptor{TInterface}"/> class.
         /// </summary>
         /// <typeparam name="TInterface">The "id" of the service to be decorated.</typeparam>
+        /// <typeparam name="TInterceptor">The interceptor class.</typeparam>
         /// <param name="self">The container itself.</param>
-        /// <param name="decorator">The decorator funtion.</param>
         /// <returns>The container itself.</returns>
-        public static IServiceContainer Proxy<TInterface>(this IServiceContainer self, Func<IInjector, TInterface, InterfaceProxy<TInterface>> decorator) => self.Proxy<TInterface>((me, instance) => decorator(me, instance).Proxy);
+        public static IServiceContainer Proxy<TInterface, TInterceptor>(this IServiceContainer self) where TInterface: class where TInterceptor: InterfaceInterceptor<TInterface> => self.Proxy<TInterface>((me, instance) => ProxyFactory.Create<TInterface, TInterceptor>(instance, me));
 
         /// <summary>
         /// Registers a pre-created instance. Useful when creating "constant" values (e.g. from command-line arguments).

@@ -12,7 +12,8 @@
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <Optimize>false</Optimize>
-    <OutputPath>..\BIN\</OutputPath>
+    <OutputPath>..\..\BIN\</OutputPath>
+    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
@@ -30,6 +31,10 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="3.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\IgnoresAccessChecksToAttribute\IgnoresAccessChecksToAttribute.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -52,7 +57,7 @@
   </PropertyGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="'$(OS)' == 'Windows_NT' And '$(NoDocfx)'=='False'">
-    <Exec Command="set doc=..\doc&#xD;&#xA;if exist %doc% rmdir /Q /S %doc%&#xD;&#xA;set vendor=..\Vendor&#xD;&#xA;nuget install docfx.console -OutputDirectory %vendor% -Version 2.42.4&#xD;&#xA;%vendor%\docfx.console.2.42.4\tools\docfx ..\docfx.json" />
+    <Exec Command="set doc=..\..\doc&#xD;&#xA;if exist %doc% rmdir /Q /S %doc%&#xD;&#xA;set vendor=..\..\Vendor&#xD;&#xA;nuget install docfx.console -OutputDirectory %vendor% -Version 2.42.4&#xD;&#xA;%vendor%\docfx.console.2.42.4\tools\docfx ..\..\docfx.json" />
   </Target>
 
 </Project>

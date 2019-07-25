@@ -8,7 +8,9 @@ using System.Reflection;
 
 namespace Solti.Utils.DI.Internals
 {
-    internal sealed class ParameterValidatorProxy<TInterface> : InterfaceProxy<TInterface>
+    using Proxy;
+
+    internal sealed class ParameterValidatorProxy<TInterface>: InterfaceInterceptor<TInterface> where TInterface: class
     {
         public ParameterValidatorProxy(TInterface target): base(target)
         {

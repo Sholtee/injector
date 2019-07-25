@@ -10,17 +10,16 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Loader;
+using System.Runtime.CompilerServices;
 
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Emit;
-
-using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Solti.Utils.DI.Internals
 {
     using Properties;
+    using Proxy;
 
     //
     // Statikus generikus azert jo nekunk mert igy biztosan pontosan egyszer fog lefutni az inicializacio minden egyes 
@@ -29,7 +28,7 @@ namespace Solti.Utils.DI.Internals
     // https://docs.microsoft.com/en-us/dotnet/api/system.collections.concurrent.concurrentdictionary-2.getoradd?view=netcore-2.2
     //
 
-    internal static class GeneratedProxy<TInterface, TBase> where TInterface : class where TBase: InterfaceInterceptor<TInterface>
+    internal static class GeneratedProxy<TInterface, TInterceptor> where TInterface : class where TInterceptor: InterfaceInterceptor<TInterface>
     {
         private static readonly object FLock = new object();
 
@@ -47,8 +46,6 @@ namespace Solti.Utils.DI.Internals
             }
         }
 
-        public static TInterface Instantiate(Type[] argTypes, params object[] args) => (TInterface) Type.CreateInstance(argTypes, args);
-
         #region Private
         private static Type GenerateType()
         {
@@ -57,10 +54,7 @@ namespace Solti.Utils.DI.Internals
 
             SyntaxTree tree = CSharpSyntaxTree.Create
             (
-                root: CompilationUnit().WithMembers
-                (
-                    members: SingletonList<MemberDeclarationSyntax>(ProxyGenerator.GenerateProxyClass(typeof(TBase), typeof(TInterface)))
-                )
+                root: ProxyGenerator.GenerateProxyUnit(typeof(TInterceptor), typeof(TInterface))
             );
 #if DEBUG
             if (Debugger.IsAttached)
@@ -76,7 +70,7 @@ namespace Solti.Utils.DI.Internals
                 references: ReferencedAssemblies().Select(asm => MetadataReference.CreateFromFile(asm)),
                 options: new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary)
             );
-
+            
             using (var stm = new MemoryStream())
             {
                 EmitResult result = compilation.Emit(stm);
@@ -86,7 +80,7 @@ namespace Solti.Utils.DI.Internals
                     IReadOnlyList<Diagnostic> failures = result.Diagnostics.Where(d => d.Severity == DiagnosticSeverity.Error).ToArray();
 
                     var ex = new Exception(Resources.COMPILATION_FAILED);
-                    ex.Data.Add("failures", failures);
+                    ex.Data.Add(nameof(failures), failures);
 
                     throw ex;
                 }
@@ -103,11 +97,18 @@ namespace Solti.Utils.DI.Internals
 
         private static IEnumerable<Assembly> ReferencedAssemblies(Assembly asm) => asm.GetReferencedAssemblies().Select(AsAssembly);
 
-        private static IEnumerable<string> ReferencedAssemblies() => new HashSet<Assembly>(ReferencedAssemblies(typeof(TInterface).Assembly))
-        {
-            typeof(Object).Assembly, // explicit meg kell adni
-            typeof(TBase).Assembly   // TBase szerelvenye mar lehet szerepel -> HashSet
-        }
+        private static IEnumerable<string> ReferencedAssemblies() => new HashSet<Assembly>
+        (
+            new[]
+            {
+                typeof(Object).Assembly, // explicit meg kell adni
+                typeof(IgnoresAccessChecksToAttribute).Assembly,
+                typeof(TInterface).Assembly,
+                typeof(TInterceptor).Assembly
+            } 
+            .Concat(ReferencedAssemblies(typeof(TInterface).Assembly))
+            .Concat(ReferencedAssemblies(typeof(TInterceptor).Assembly)) // az interceptor konstruktora miatt lehetnek uj referenciak
+        )
         .Select(asm => asm.Location);
 
         private static void CheckInterface()
@@ -116,17 +117,17 @@ namespace Solti.Utils.DI.Internals
 
             if (!type.IsInterface) throw new InvalidOperationException();
             if (type.IsNested) throw new NotSupportedException();
-            if (!type.IsPublic) throw new NotSupportedException();
+            //if (!type.IsPublic) throw new NotSupportedException();
             if (type.ContainsGenericParameters) throw new NotSupportedException();
         }
 
         private static void CheckBase()
         {
-            Type type = typeof(TBase);
+            Type type = typeof(TInterceptor);
 
             if (!type.IsClass) throw new InvalidOperationException();
             if (type.IsNested) throw new NotSupportedException();
-            if (!type.IsPublic) throw new NotSupportedException();
+            //if (!type.IsPublic) throw new NotSupportedException();
             if (type.ContainsGenericParameters) throw new NotSupportedException();
             if (type.IsSealed) throw new NotSupportedException();
         }

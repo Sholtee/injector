@@ -9,6 +9,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 
 using Microsoft.CodeAnalysis;
@@ -19,6 +20,8 @@ using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Solti.Utils.DI.Internals
 {
+    using Proxy;
+
     internal static class ProxyGenerator
     {
         #region Internal
@@ -782,7 +785,11 @@ namespace Solti.Utils.DI.Internals
                 (
                     modifiers: TokenList
                     (
-                        Token(SyntaxKind.PublicKeyword),
+                        //
+                        // "SyntaxKind.PublicKeyword" ne szerepeljen h nem publikus osbol is leszarmazhassunk.
+                        //
+
+                        Token(SyntaxKind.InternalKeyword),
                         Token(SyntaxKind.SealedKeyword)
                     )
                 )
@@ -811,6 +818,51 @@ namespace Solti.Utils.DI.Internals
             }
             
             return cls.WithMembers(List(members));
+        }
+
+        public static CompilationUnitSyntax GenerateProxyUnit(Type @base, Type interfaceType)
+        {
+            return CompilationUnit()
+            .WithAttributeLists
+            (
+                SingletonList
+                (
+                    AttributeList
+                    (
+                        attributes: new[]{@base, interfaceType}
+                            .Select(type => type.Assembly.GetName().Name)
+                            .Distinct()
+                            .ToArray() // ToArray() kell =(
+                            .CreateList(CreateIgnoresAccessChecksToAttribute)
+                    )
+                    .WithTarget
+                    (
+                        AttributeTargetSpecifier(Token(SyntaxKind.AssemblyKeyword))
+                    )
+                )
+            )
+            .WithMembers
+            (
+                members: SingletonList<MemberDeclarationSyntax>
+                (
+                    GenerateProxyClass(@base, interfaceType)
+                )
+            );
+
+            AttributeSyntax CreateIgnoresAccessChecksToAttribute(string asm) => Attribute
+            (
+                CreateType<IgnoresAccessChecksToAttribute>() as NameSyntax
+            )
+            .WithArgumentList
+            (
+                argumentList: AttributeArgumentList
+                (
+                    arguments: SingletonSeparatedList
+                    (
+                        AttributeArgument(LiteralExpression(SyntaxKind.StringLiteralExpression, Literal(asm)))
+                    )
+                )
+            );
         }
         #endregion
 

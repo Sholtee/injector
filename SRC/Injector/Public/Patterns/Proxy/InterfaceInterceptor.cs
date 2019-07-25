@@ -5,7 +5,7 @@
 ********************************************************************************/
 using System.Reflection;
 
-namespace Solti.Utils.DI.Internals
+namespace Solti.Utils.DI.Proxy
 {
     /// <summary>
     /// Provides a mechanism for interceptiong interface method calls.
@@ -28,7 +28,7 @@ namespace Solti.Utils.DI.Internals
         /// <summary>
         /// Called on proxy method invocation.
         /// </summary>
-        /// <param name="method">The <see cref="TInterface"/> method that was called</param>
+        /// <param name="method">The <typeparamref name="TInterface"/> method that was called</param>
         /// <param name="args">The arguments passed to the method.</param>
         /// <returns>The object to return to the caller, or null for void methods.</returns>
         /// <remarks>The invocation will be forwarded to the <see cref="Target"/> if this method returns <see cref="CALL_TARGET"/>.</remarks>

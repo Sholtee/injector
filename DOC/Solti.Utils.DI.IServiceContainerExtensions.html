@@ -297,7 +297,7 @@
   </table>
   <a id="Solti_Utils_DI_IServiceContainerExtensions_Proxy_" data-uid="Solti.Utils.DI.IServiceContainerExtensions.Proxy*"></a>
   <h4 id="Solti_Utils_DI_IServiceContainerExtensions_Proxy__1_Solti_Utils_DI_IServiceContainer_System_Func_Solti_Utils_DI_IInjector___0___0__" data-uid="Solti.Utils.DI.IServiceContainerExtensions.Proxy``1(Solti.Utils.DI.IServiceContainer,System.Func{Solti.Utils.DI.IInjector,``0,``0})">Proxy&lt;TInterface&gt;(IServiceContainer, Func&lt;IInjector, TInterface, TInterface&gt;)</h4>
-  <div class="markdown level1 summary"><p>Hooks into the instantiating process to let you decorate the original service. Useful when you want to add additional functionality (e.g. parameter validation). The easyest way to decorate an instance is using the <a class="xref" href="Solti.Utils.DI.InterfaceProxy-1.html">InterfaceProxy&lt;TInterface&gt;</a> class.</p>
+  <div class="markdown level1 summary"><p>Hooks into the instantiating process to let you decorate the original service. Useful when you want to add additional functionality (e.g. parameter validation). The easyest way to decorate an instance is using the <a class="xref" href="Solti.Utils.DI.Proxy.InterfaceInterceptor-1.html">InterfaceInterceptor&lt;TInterface&gt;</a> class.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -361,13 +361,14 @@
     </tbody>
   </table>
   <a id="Solti_Utils_DI_IServiceContainerExtensions_Proxy_" data-uid="Solti.Utils.DI.IServiceContainerExtensions.Proxy*"></a>
-  <h4 id="Solti_Utils_DI_IServiceContainerExtensions_Proxy__1_Solti_Utils_DI_IServiceContainer_System_Func_Solti_Utils_DI_IInjector___0_Solti_Utils_DI_InterfaceProxy___0___" data-uid="Solti.Utils.DI.IServiceContainerExtensions.Proxy``1(Solti.Utils.DI.IServiceContainer,System.Func{Solti.Utils.DI.IInjector,``0,Solti.Utils.DI.InterfaceProxy{``0}})">Proxy&lt;TInterface&gt;(IServiceContainer, Func&lt;IInjector, TInterface, InterfaceProxy&lt;TInterface&gt;&gt;)</h4>
-  <div class="markdown level1 summary"><p>Hooks into the instantiating process to let you decorate the original service. Useful when you want to add additional functionality (e.g. parameter validation). The easyest way to decorate an instance is using the <a class="xref" href="Solti.Utils.DI.InterfaceProxy-1.html">InterfaceProxy&lt;TInterface&gt;</a> class.</p>
+  <h4 id="Solti_Utils_DI_IServiceContainerExtensions_Proxy__2_Solti_Utils_DI_IServiceContainer_" data-uid="Solti.Utils.DI.IServiceContainerExtensions.Proxy``2(Solti.Utils.DI.IServiceContainer)">Proxy&lt;TInterface, TInterceptor&gt;(IServiceContainer)</h4>
+  <div class="markdown level1 summary"><p>Hooks into the instantiating process to let you decorate the original service. Useful when you want to add additional functionality (e.g. parameter validation). The easyest way to decorate an instance is using the <a class="xref" href="Solti.Utils.DI.Proxy.InterfaceInterceptor-1.html">InterfaceInterceptor&lt;TInterface&gt;</a> class.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static IServiceContainer Proxy&lt;TInterface&gt;(this IServiceContainer self, Func&lt;IInjector, TInterface, InterfaceProxy&lt;TInterface&gt;&gt; decorator)</code></pre>
+    <pre><code class="lang-csharp hljs">public static IServiceContainer Proxy&lt;TInterface, TInterceptor&gt;(this IServiceContainer self)
+    where TInterface : class where TInterceptor : InterfaceInterceptor&lt;TInterface&gt;</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -383,12 +384,6 @@
         <td><a class="xref" href="Solti.Utils.DI.IServiceContainer.html">IServiceContainer</a></td>
         <td><span class="parametername">self</span></td>
         <td><p>The container itself.</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Func</span>&lt;<a class="xref" href="Solti.Utils.DI.IInjector.html">IInjector</a>, TInterface, <a class="xref" href="Solti.Utils.DI.InterfaceProxy-1.html">InterfaceProxy</a>&lt;TInterface&gt;&gt;</td>
-        <td><span class="parametername">decorator</span></td>
-        <td><p>The decorator funtion.</p>
 </td>
       </tr>
     </tbody>
@@ -421,6 +416,11 @@
       <tr>
         <td><span class="parametername">TInterface</span></td>
         <td><p>The &quot;id&quot; of the service to be decorated.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">TInterceptor</span></td>
+        <td><p>The interceptor class.</p>
 </td>
       </tr>
     </tbody>

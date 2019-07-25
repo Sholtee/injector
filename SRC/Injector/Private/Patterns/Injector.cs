@@ -11,6 +11,7 @@ using System.Linq;
 namespace Solti.Utils.DI.Internals
 {
     using Properties;
+    using Proxy;
 
     internal sealed class Injector : Disposable, IInjector
     {
@@ -32,7 +33,7 @@ namespace Solti.Utils.DI.Internals
                 new ServiceEntry
                 (
                     typeof(IInjector), 
-                    InterfaceProxy<IInjector>.Chain(this, current => new ParameterValidatorProxy<IInjector>(current)),
+                    ProxyUtils.Chain<IInjector>(this, ProxyFactory.Create<IInjector, ParameterValidatorProxy<IInjector>>),
                     releaseOnDispose: false
                 )
             };

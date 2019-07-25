@@ -7,17 +7,32 @@ using System.Reflection;
 
 using NUnit.Framework;
 
-namespace Solti.Utils.DI.InterfaceProxy.Tests
+namespace Solti.Utils.DI.Proxy.Tests
 {
-    [TestFixture]
-    public sealed class InterfaceProxyTests
+    using Proxy;
+
+    public interface IMyInterface
     {
-        private interface IMyInterface
+        int Hooked(int val);
+        int NotHooked(int val);
+    }
+
+    public class MyProxy : InterfaceInterceptor<IMyInterface>
+    {
+        public override object Invoke(MethodInfo targetMethod, object[] args)
         {
-            int Hooked(int val);
-            int NotHooked(int val);
+            if (targetMethod.Name == nameof(Target.Hooked)) return 1986;
+            return base.Invoke(targetMethod, args);
         }
 
+        public MyProxy(IMyInterface target) : base(target)
+        {
+        }
+    }
+
+    [TestFixture]
+    public sealed class ProxyTests
+    {
         private sealed class MyClass : IMyInterface
         {
             public int Hooked(int val)
@@ -31,23 +46,10 @@ namespace Solti.Utils.DI.InterfaceProxy.Tests
             }
         }
 
-        private sealed class MyProxy : InterfaceProxy<IMyInterface>
-        {
-            public MyProxy() : base(new MyClass())
-            {
-            }
-
-            public override object Invoke(MethodInfo targetMethod, object[] args)
-            {
-                if (targetMethod.Name == nameof(Target.Hooked)) return 1986;
-                return base.Invoke(targetMethod, args);
-            }
-        }
-
         [Test]
         public void InterfaceProxy_ShouldHook()
         {
-            IMyInterface myInterface = new MyProxy().Proxy;
+            IMyInterface myInterface = ProxyFactory.Create<IMyInterface, MyProxy>(new MyClass());
 
             Assert.That(myInterface.NotHooked(1), Is.EqualTo(1));
             Assert.That(myInterface.Hooked(1), Is.EqualTo(1986));
