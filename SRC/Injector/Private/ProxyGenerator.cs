@@ -822,8 +822,20 @@ namespace Solti.Utils.DI.Internals
 
         public static CompilationUnitSyntax GenerateProxyUnit(Type @base, Type interfaceType)
         {
-            return CompilationUnit()
-            .WithAttributeLists
+            CompilationUnitSyntax unit = CompilationUnit().WithMembers
+            (
+                members: SingletonList<MemberDeclarationSyntax>
+                (
+                    GenerateProxyClass(@base, interfaceType)
+                )
+            );
+
+            IReadOnlyList<string> shouldIgnoreAccessCheck = new[] {@base, interfaceType}
+                .Where(type => !type.IsVisible)
+                .Select(type => type.Assembly.GetName().Name)
+                .Distinct()
+                .ToArray();
+            if (shouldIgnoreAccessCheck.Any()) unit = unit.WithAttributeLists
             (
                 SingletonList
                 (
@@ -840,14 +852,9 @@ namespace Solti.Utils.DI.Internals
                         AttributeTargetSpecifier(Token(SyntaxKind.AssemblyKeyword))
                     )
                 )
-            )
-            .WithMembers
-            (
-                members: SingletonList<MemberDeclarationSyntax>
-                (
-                    GenerateProxyClass(@base, interfaceType)
-                )
             );
+
+            return unit;
 
             AttributeSyntax CreateIgnoresAccessChecksToAttribute(string asm) => Attribute
             (

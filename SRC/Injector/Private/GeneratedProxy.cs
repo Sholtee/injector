@@ -68,9 +68,9 @@ namespace Solti.Utils.DI.Internals
                 assemblyName: Path.GetRandomFileName(),
                 syntaxTrees: new [] {tree},
                 references: ReferencedAssemblies().Select(asm => MetadataReference.CreateFromFile(asm)),
-                options: new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary)
+                options: CompilationOptionsFactory.Create(ignoreAccessChecks: true)           
             );
-            
+
             using (var stm = new MemoryStream())
             {
                 EmitResult result = compilation.Emit(stm);
