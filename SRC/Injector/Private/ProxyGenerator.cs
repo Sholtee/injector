@@ -246,7 +246,7 @@ namespace Solti.Utils.DI.Internals
 
         internal static TypeSyntax CreateType(Type src)
         {
-            if (src.IsGenericType) return GetQualifiedName(src.GetGenericTypeDefinition(), name => GenericName(name).WithTypeArgumentList
+            if (src.IsGenericType) return src.GetGenericTypeDefinition().GetQualifiedName(name => GenericName(name).WithTypeArgumentList
             (
                 typeArgumentList: TypeArgumentList
                 (
@@ -273,25 +273,7 @@ namespace Solti.Utils.DI.Internals
                 )
             );
 
-            return GetQualifiedName(src, IdentifierName);
-
-            NameSyntax GetQualifiedName(Type type, Func<string, NameSyntax> typeNameFactory) => Parts2QualifiedName
-            (
-                parts: type.GetFriendlyName().Split('.').Reverse().ToArray(),
-                typeNameFactory: typeNameFactory
-            );
-
-            NameSyntax Parts2QualifiedName(IReadOnlyCollection<string> parts, Func<string, NameSyntax> typeNameFactory) => parts.Count == 1
-                ? typeNameFactory(parts.Single())
-                : QualifiedName
-                (
-                    Parts2QualifiedName
-                    (
-                        parts: parts.Skip(1).ToArray(), 
-                        typeNameFactory: IdentifierName
-                    ),
-                    (SimpleNameSyntax) typeNameFactory(parts.First())
-                );
+            return src.GetQualifiedName();
         }
 
         internal static TypeSyntax CreateType<T>() => CreateType(typeof(T));
@@ -858,7 +840,7 @@ namespace Solti.Utils.DI.Internals
 
             AttributeSyntax CreateIgnoresAccessChecksToAttribute(string asm) => Attribute
             (
-                CreateType<IgnoresAccessChecksToAttribute>() as NameSyntax
+                typeof(IgnoresAccessChecksToAttribute).GetQualifiedName()
             )
             .WithArgumentList
             (
@@ -874,7 +856,6 @@ namespace Solti.Utils.DI.Internals
         #endregion
 
         #region Private
-        
         private static readonly string 
             CALL_TARGET = nameof(InterfaceInterceptor<IDisposable>.CALL_TARGET),
             TARGET = nameof(InterfaceInterceptor<IDisposable>.Target),
@@ -900,6 +881,27 @@ namespace Solti.Utils.DI.Internals
         {
             Debug.Assert(!src.IsGenericType() || src.IsGenericTypeDefinition());
             return TypeNameReplacer.Replace(src.ToString(), string.Empty);
+        }
+
+        private static NameSyntax GetQualifiedName(this Type type, Func<string, NameSyntax> typeNameFactory = null)
+        {
+            return Parts2QualifiedName
+            (
+                parts: type.GetFriendlyName().Split('.').Reverse().ToArray(),
+                factory: typeNameFactory ?? IdentifierName
+            );
+
+            NameSyntax Parts2QualifiedName(IReadOnlyCollection<string> parts, Func<string, NameSyntax> factory) => parts.Count == 1
+                ? factory(parts.Single())
+                : QualifiedName
+                (
+                    Parts2QualifiedName
+                    (
+                        parts: parts.Skip(1).ToArray(),
+                        factory: IdentifierName
+                    ),
+                    (SimpleNameSyntax) factory(parts.First())
+                );
         }
         #endregion
     }
