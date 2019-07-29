@@ -1,4 +1,4 @@
-public sealed class GeneratedProxy : Solti.Utils.DI.Internals.Tests.Foo, Solti.Utils.DI.Internals.Tests.IFoo<System.Int32>
+internal sealed class GeneratedProxy : Solti.Utils.DI.Internals.Tests.Foo, Solti.Utils.DI.Internals.Tests.IFoo<System.Int32>
 {
     public GeneratedProxy(Solti.Utils.DI.Internals.Tests.IFoo<System.Int32> target): base(target)
     {

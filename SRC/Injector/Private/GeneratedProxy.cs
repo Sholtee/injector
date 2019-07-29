@@ -9,8 +9,8 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.Loader;
 using System.Runtime.CompilerServices;
+using System.Runtime.Loader;
 
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -46,6 +46,8 @@ namespace Solti.Utils.DI.Internals
             }
         }
 
+        public static string AssemblyName => ProxyGenerator.GenerateAssemblyName(typeof(TInterceptor), typeof(TInterface));
+
         #region Private
         private static Type GenerateType()
         {
@@ -65,10 +67,14 @@ namespace Solti.Utils.DI.Internals
 #endif
             CSharpCompilation compilation = CSharpCompilation.Create
             (
-                assemblyName: Path.GetRandomFileName(),
+                assemblyName: AssemblyName,
                 syntaxTrees: new [] {tree},
                 references: ReferencedAssemblies().Select(asm => MetadataReference.CreateFromFile(asm)),
-                options: CompilationOptionsFactory.Create(ignoreAccessChecks: true)           
+#if IGNORE_VISIBILITY
+                options: CompilationOptionsFactory.Create(ignoreAccessChecks: true)
+#else
+                options: CompilationOptionsFactory.Create(ignoreAccessChecks: false)
+#endif
             );
 
             using (var stm = new MemoryStream())
@@ -102,7 +108,9 @@ namespace Solti.Utils.DI.Internals
             new[]
             {
                 typeof(Object).Assembly, // explicit meg kell adni
+#if IGNORE_VISIBILITY
                 typeof(IgnoresAccessChecksToAttribute).Assembly,
+#endif
                 typeof(TInterface).Assembly,
                 typeof(TInterceptor).Assembly
             } 
@@ -115,21 +123,33 @@ namespace Solti.Utils.DI.Internals
         {
             Type type = typeof(TInterface);
 
+            CheckVisibility(type);
+
             if (!type.IsInterface) throw new InvalidOperationException();
-            if (type.IsNested) throw new NotSupportedException();
-            //if (!type.IsPublic) throw new NotSupportedException();
             if (type.ContainsGenericParameters) throw new NotSupportedException();
+            if (type.GetEvents().Any()) throw new NotSupportedException();
         }
 
         private static void CheckBase()
         {
             Type type = typeof(TInterceptor);
 
+            CheckVisibility(type);
+
             if (!type.IsClass) throw new InvalidOperationException();
-            if (type.IsNested) throw new NotSupportedException();
-            //if (!type.IsPublic) throw new NotSupportedException();
             if (type.ContainsGenericParameters) throw new NotSupportedException();
             if (type.IsSealed) throw new NotSupportedException();
+        }
+
+        private static void CheckVisibility(Type type)
+        {
+            if (type.IsNested) throw new NotSupportedException(Resources.TYPE_IS_NESTED);
+
+            //
+            // TODO: FIXME: privat tipusokra mindenkepp fel kene robbanjon (ha annotalva van az asm ha nincs).
+            //
+
+            if (type.IsNotPublic && !type.Assembly.GetCustomAttributes<InternalsVisibleToAttribute>().Any(attr => attr.AssemblyName == AssemblyName)) throw new InvalidOperationException(string.Format(Resources.TYPE_NOT_VISIBLE, type));
         }
         #endregion
     }

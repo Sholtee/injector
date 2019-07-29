@@ -9,7 +9,9 @@ using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+#if IGNORE_VISIBILITY
 using System.Runtime.CompilerServices;
+#endif
 using System.Text.RegularExpressions;
 
 using Microsoft.CodeAnalysis;
@@ -756,6 +758,8 @@ namespace Solti.Utils.DI.Internals
             );
         }
 
+        public static string GenerateAssemblyName(Type @base, Type interfacType) => $"{CreateType(@base)}_{CreateType(interfacType)}_Proxy"; 
+
         public const string GeneratedClassName = "GeneratedProxy";
 
         public static ClassDeclarationSyntax GenerateProxyClass(Type @base, Type interfaceType)
@@ -768,7 +772,7 @@ namespace Solti.Utils.DI.Internals
                     modifiers: TokenList
                     (
                         //
-                        // "SyntaxKind.PublicKeyword" ne szerepeljen h nem publikus osbol is leszarmazhassunk.
+                        // Az osztaly ne publikus legyen h "internal" lathatosagu tipusokat is hasznalhassunk
                         //
 
                         Token(SyntaxKind.InternalKeyword),
@@ -783,16 +787,25 @@ namespace Solti.Utils.DI.Internals
                     )
                 );
 
-            List<MemberDeclarationSyntax> members = new List<MemberDeclarationSyntax>(new MemberDeclarationSyntax[]{Ctor(@base.GetApplicableConstructor()) });
+            List<MemberDeclarationSyntax> members = new List<MemberDeclarationSyntax>(new MemberDeclarationSyntax[]
+            {
+                Ctor(@base.GetApplicableConstructor())
+            });
 
-            MethodInfo[] methods = interfaceType.GetMethods(BindingFlags.Instance | BindingFlags.Public).Where(method => !method.IsSpecialName).ToArray();
+            //
+            // BindingFlags.FlattenHierarchy nem mukodik interface-ekre.
+            //
+
+            const BindingFlags bindingFlags = BindingFlags.Instance | BindingFlags.Public;
+
+            IReadOnlyList<MethodInfo> methods = GetMethods(interfaceType);
             if (methods.Any())
             {
                 members.Add(MethodAccess(interfaceType));
                 members.AddRange(methods.Select(GenerateProxyMethod));
             }
 
-            PropertyInfo[] properties = interfaceType.GetProperties(BindingFlags.Instance | BindingFlags.Public);
+            IReadOnlyList<PropertyInfo> properties = GetProperties(interfaceType);
             if (properties.Any())
             {
                 members.Add(PropertyAccess(interfaceType));
@@ -800,6 +813,25 @@ namespace Solti.Utils.DI.Internals
             }
             
             return cls.WithMembers(List(members));
+
+            IReadOnlyList<MethodInfo> GetMethods(Type type) => type
+                .GetMethods(bindingFlags)
+                .Where(method => !method.IsSpecialName)
+                .Concat
+                (
+                    type.GetInterfaces().SelectMany(GetMethods)
+                )
+                .Distinct()
+                .ToArray();
+
+            IReadOnlyList<PropertyInfo> GetProperties(Type type) => type
+                .GetProperties(bindingFlags)
+                .Concat
+                (
+                    type.GetInterfaces().SelectMany(GetProperties)
+                )
+                .Distinct()
+                .ToArray();
         }
 
         public static CompilationUnitSyntax GenerateProxyUnit(Type @base, Type interfaceType)
@@ -811,7 +843,7 @@ namespace Solti.Utils.DI.Internals
                     GenerateProxyClass(@base, interfaceType)
                 )
             );
-
+#if IGNORE_VISIBILITY
             IReadOnlyList<string> shouldIgnoreAccessCheck = new[] {@base, interfaceType}
                 .Where(type => !type.IsVisible)
                 .Select(type => type.Assembly.GetName().Name)
@@ -835,9 +867,9 @@ namespace Solti.Utils.DI.Internals
                     )
                 )
             );
-
+#endif
             return unit;
-
+#if IGNORE_VISIBILITY
             AttributeSyntax CreateIgnoresAccessChecksToAttribute(string asm) => Attribute
             (
                 typeof(IgnoresAccessChecksToAttribute).GetQualifiedName()
@@ -852,6 +884,7 @@ namespace Solti.Utils.DI.Internals
                     )
                 )
             );
+#endif
         }
         #endregion
 

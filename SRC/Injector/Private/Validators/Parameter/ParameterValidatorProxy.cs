@@ -10,7 +10,7 @@ namespace Solti.Utils.DI.Internals
 {
     using Proxy;
 
-    internal sealed class ParameterValidatorProxy<TInterface>: InterfaceInterceptor<TInterface> where TInterface: class
+    internal class ParameterValidatorProxy<TInterface>: InterfaceInterceptor<TInterface> where TInterface: class
     {
         public ParameterValidatorProxy(TInterface target): base(target)
         {

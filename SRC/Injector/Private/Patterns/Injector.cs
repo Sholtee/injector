@@ -32,8 +32,13 @@ namespace Solti.Utils.DI.Internals
 
                 new ServiceEntry
                 (
-                    typeof(IInjector), 
-                    ProxyUtils.Chain<IInjector>(this, ProxyFactory.Create<IInjector, ParameterValidatorProxy<IInjector>>),
+                    typeof(IInjector),
+                    
+                    //
+                    // "target" kell h a megfelelo overload-ot hivjuk
+                    //
+
+                    ProxyUtils.Chain<IInjector>(this, me => ProxyFactory.Create<IInjector, ParameterValidatorProxy<IInjector>>(target: me)),
                     releaseOnDispose: false
                 )
             };
