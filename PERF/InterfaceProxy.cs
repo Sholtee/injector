@@ -3,6 +3,7 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
+using System;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 
@@ -10,30 +11,19 @@ using BenchmarkDotNet.Attributes;
 
 namespace Solti.Utils.DI.Perf
 {
+    using Proxy;
+
     [MemoryDiagnoser]
     public class InterfaceProxy
     {
         private const int OperationsPerInvoke = 50000;
         private const string Param = "";
 
-        private sealed class InterfaceProxyWithoutTarget : InterfaceProxy<IInterface>
-        {
-            public InterfaceProxyWithoutTarget() : base(null)
-            {
-            }
-
-            protected override object Invoke(MethodInfo targetMethod, object[] args) => 0;
-        }
-
         private IInterface
             InstanceWithoutProxy,
             InstanceWithProxy,
-            InstanceWithProxyWithoutTarget;
-
-        public interface IInterface
-        {
-            int DoSomething(string param);
-        }
+            InstanceWithProxyWithoutTarget,
+            DispatchPropxyWithoutTarget;
 
         public class Implementation : IInterface
         {
@@ -45,8 +35,9 @@ namespace Solti.Utils.DI.Perf
         public void Setup()
         {
             InstanceWithoutProxy           = new Implementation();
-            InstanceWithProxy              = new InterfaceProxy<IInterface>(InstanceWithoutProxy).Proxy;
-            InstanceWithProxyWithoutTarget = new InterfaceProxyWithoutTarget().Proxy;
+            InstanceWithProxy              = ProxyFactory.Create<IInterface, InterfaceProxyWithTarget>(new Implementation());
+            InstanceWithProxyWithoutTarget = ProxyFactory.Create<IInterface, InterfaceProxyWithoutTarget>(new Type[0]);
+            DispatchPropxyWithoutTarget    = DispatchProxy.Create<IInterface, DispatchProxyWithoutTarget>();
         }
 
         [Benchmark(Baseline = true, OperationsPerInvoke = OperationsPerInvoke)]
@@ -73,6 +64,15 @@ namespace Solti.Utils.DI.Perf
             for (int i = 0; i < OperationsPerInvoke; i++)
             {
                 InstanceWithProxyWithoutTarget.DoSomething(Param);
+            }
+        }
+
+        [Benchmark(OperationsPerInvoke = OperationsPerInvoke)]
+        public void DispatchProxyWithoutTarget()
+        {
+            for (int i = 0; i < OperationsPerInvoke; i++)
+            {
+                DispatchPropxyWithoutTarget.DoSomething(Param);
             }
         }
     }
