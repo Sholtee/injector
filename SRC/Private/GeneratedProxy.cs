@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.Loader;
@@ -108,6 +109,7 @@ namespace Solti.Utils.DI.Internals
             new[]
             {
                 typeof(Object).Assembly, // explicit meg kell adni
+                typeof(Expression<>).Assembly,
 #if IGNORE_VISIBILITY
                 typeof(IgnoresAccessChecksToAttribute).Assembly,
 #endif
