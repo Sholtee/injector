@@ -13,7 +13,7 @@ namespace Solti.Utils.DI.Perf
 {
     using Proxy;
 
-    [MemoryDiagnoser]
+    [MemoryDiagnoser, MarkdownExporterAttribute.GitHub]
     public class InterfaceProxy
     {
         private const int OperationsPerInvoke = 50000;
