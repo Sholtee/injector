@@ -7,9 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Injector.Tests", "TEST\Inje
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Injector.Perf", "PERF\Injector.Perf.csproj", "{C062341B-E4CC-40F2-8F13-CCA79C516F90}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Injector", "SRC\Injector\Injector.csproj", "{CD77A733-0CA9-45C5-A9E0-7DA060205CB6}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IgnoresAccessChecksToAttribute", "SRC\IgnoresAccessChecksToAttribute\IgnoresAccessChecksToAttribute.csproj", "{33090212-001B-47E7-996E-AD653AB66EBA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Injector", "SRC\Injector.csproj", "{97BAA551-E664-461A-8E8E-CD585E3218DC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -26,18 +24,12 @@ Global
 		{C062341B-E4CC-40F2-8F13-CCA79C516F90}.Perf|Any CPU.ActiveCfg = Perf|Any CPU
 		{C062341B-E4CC-40F2-8F13-CCA79C516F90}.Perf|Any CPU.Build.0 = Perf|Any CPU
 		{C062341B-E4CC-40F2-8F13-CCA79C516F90}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CD77A733-0CA9-45C5-A9E0-7DA060205CB6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CD77A733-0CA9-45C5-A9E0-7DA060205CB6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CD77A733-0CA9-45C5-A9E0-7DA060205CB6}.Perf|Any CPU.ActiveCfg = Perf|Any CPU
-		{CD77A733-0CA9-45C5-A9E0-7DA060205CB6}.Perf|Any CPU.Build.0 = Perf|Any CPU
-		{CD77A733-0CA9-45C5-A9E0-7DA060205CB6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CD77A733-0CA9-45C5-A9E0-7DA060205CB6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{33090212-001B-47E7-996E-AD653AB66EBA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{33090212-001B-47E7-996E-AD653AB66EBA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{33090212-001B-47E7-996E-AD653AB66EBA}.Perf|Any CPU.ActiveCfg = Debug|Any CPU
-		{33090212-001B-47E7-996E-AD653AB66EBA}.Perf|Any CPU.Build.0 = Debug|Any CPU
-		{33090212-001B-47E7-996E-AD653AB66EBA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{33090212-001B-47E7-996E-AD653AB66EBA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{97BAA551-E664-461A-8E8E-CD585E3218DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{97BAA551-E664-461A-8E8E-CD585E3218DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{97BAA551-E664-461A-8E8E-CD585E3218DC}.Perf|Any CPU.ActiveCfg = Perf|Any CPU
+		{97BAA551-E664-461A-8E8E-CD585E3218DC}.Perf|Any CPU.Build.0 = Perf|Any CPU
+		{97BAA551-E664-461A-8E8E-CD585E3218DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{97BAA551-E664-461A-8E8E-CD585E3218DC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

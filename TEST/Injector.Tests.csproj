@@ -32,7 +32,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SRC\Injector\Injector.csproj" />
+    <ProjectReference Include="..\SRC\Injector.csproj" />
   </ItemGroup>
 
   <ItemGroup>
