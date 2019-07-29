@@ -20,10 +20,10 @@ namespace Solti.Utils.DI.Perf
         private const string Param = "";
 
         private IInterface
-            InstanceWithoutProxy,
-            InstanceWithProxy,
-            InstanceWithProxyWithoutTarget,
-            DispatchPropxyWithoutTarget;
+            FInstanceWithoutProxy,
+            FProxyWithTarget,
+            FProxyWithoutTarget,
+            FDispatchProxyWithoutTarget;
 
         public class Implementation : IInterface
         {
@@ -31,21 +31,24 @@ namespace Solti.Utils.DI.Perf
             int IInterface.DoSomething(string param) => 0;
         }
 
-        [GlobalSetup]
-        public void Setup()
-        {
-            InstanceWithoutProxy           = new Implementation();
-            InstanceWithProxy              = ProxyFactory.Create<IInterface, InterfaceProxyWithTarget>(new Implementation());
-            InstanceWithProxyWithoutTarget = ProxyFactory.Create<IInterface, InterfaceProxyWithoutTarget>(new Type[0]);
-            DispatchPropxyWithoutTarget    = DispatchProxy.Create<IInterface, DispatchProxyWithoutTarget>();
-        }
+        [GlobalSetup(Target = nameof(NoProxy))]
+        public void SetupNoProxy() => FInstanceWithoutProxy = new Implementation();
+
+        [GlobalSetup(Target = nameof(Proxy))]
+        public void SetupProxy() => FProxyWithTarget = ProxyFactory.Create<IInterface, InterfaceProxyWithTarget>(new Implementation());
+
+        [GlobalSetup(Target = nameof(ProxyWithoutTarget))]
+        public void SetupProxyWithoutTarget() => FProxyWithoutTarget = ProxyFactory.Create<IInterface, InterfaceProxyWithoutTarget>(new Type[0]);
+
+        [GlobalSetup(Target = nameof(DispatchProxyWithoutTarget))]
+        public void SetupDispatchPropxyWithoutTarget() => FDispatchProxyWithoutTarget = DispatchProxy.Create<IInterface, DispatchProxyWithoutTarget>();
 
         [Benchmark(Baseline = true, OperationsPerInvoke = OperationsPerInvoke)]
         public void NoProxy()
         {
             for (int i = 0; i < OperationsPerInvoke; i++)
             {
-                InstanceWithoutProxy.DoSomething(Param);
+                FInstanceWithoutProxy.DoSomething(Param);
             }
         }
 
@@ -54,7 +57,7 @@ namespace Solti.Utils.DI.Perf
         {
             for (int i = 0; i < OperationsPerInvoke; i++)
             {
-                InstanceWithProxy.DoSomething(Param);
+                FProxyWithTarget.DoSomething(Param);
             }
         }
 
@@ -63,7 +66,7 @@ namespace Solti.Utils.DI.Perf
         {
             for (int i = 0; i < OperationsPerInvoke; i++)
             {
-                InstanceWithProxyWithoutTarget.DoSomething(Param);
+                FProxyWithoutTarget.DoSomething(Param);
             }
         }
 
@@ -72,7 +75,7 @@ namespace Solti.Utils.DI.Perf
         {
             for (int i = 0; i < OperationsPerInvoke; i++)
             {
-                DispatchPropxyWithoutTarget.DoSomething(Param);
+                FDispatchProxyWithoutTarget.DoSomething(Param);
             }
         }
     }
