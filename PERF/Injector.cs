@@ -9,12 +9,12 @@ using BenchmarkDotNet.Attributes;
 
 namespace Solti.Utils.DI.Perf
 {
-    [MemoryDiagnoser]
+    [MemoryDiagnoser, MarkdownExporterAttribute.GitHub]
     public class Injector
     {
         private const int OperationsPerInvoke = 50000;
 
-        private IInjector injector;
+        private IInjector FInjector;
 
         #region Services
         public interface IInterface_1
@@ -58,7 +58,7 @@ namespace Solti.Utils.DI.Perf
         [GlobalSetup]
         public void Setup()
         {
-            injector = ServiceContainer.Create()
+            FInjector = ServiceContainer.Create()
                 .Service<IInterface_1, Implementation_1>(LifeTime)
                 .Service(typeof(IInterface_2<>), typeof(Implementation_2<>), LifeTime)
                 .Service<IInterface_3<string>, Implementation_3<string>>(LifeTime)
@@ -68,8 +68,8 @@ namespace Solti.Utils.DI.Perf
         [GlobalCleanup]
         public void Cleanup()
         {
-            injector.Dispose();
-            injector = null;
+            FInjector.Dispose();
+            FInjector = null;
         }
 
         [Benchmark(Baseline = true, OperationsPerInvoke = OperationsPerInvoke)]
@@ -87,7 +87,7 @@ namespace Solti.Utils.DI.Perf
         {
             for (int i = 0; i < OperationsPerInvoke; i++)
             {
-                IInterface_3<string> iface = injector.Get<IInterface_3<string>>();
+                IInterface_3<string> iface = FInjector.Get<IInterface_3<string>>();
                 iface.DoSomething();
             }
         }
@@ -97,7 +97,7 @@ namespace Solti.Utils.DI.Perf
         {
             for (int i = 0; i < OperationsPerInvoke; i++)
             {
-                Implementation_3<string> iface = injector.Instantiate<Implementation_3<string>>();
+                Implementation_3<string> iface = FInjector.Instantiate<Implementation_3<string>>();
                 iface.DoSomething();
             }
         }

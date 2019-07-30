@@ -3,6 +3,7 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
+using System;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 
@@ -10,30 +11,19 @@ using BenchmarkDotNet.Attributes;
 
 namespace Solti.Utils.DI.Perf
 {
-    [MemoryDiagnoser]
+    using Proxy;
+
+    [MemoryDiagnoser, MarkdownExporterAttribute.GitHub]
     public class InterfaceProxy
     {
         private const int OperationsPerInvoke = 50000;
         private const string Param = "";
 
-        private sealed class InterfaceProxyWithoutTarget : InterfaceProxy<IInterface>
-        {
-            public InterfaceProxyWithoutTarget() : base(null)
-            {
-            }
-
-            protected override object Invoke(MethodInfo targetMethod, object[] args) => 0;
-        }
-
         private IInterface
-            InstanceWithoutProxy,
-            InstanceWithProxy,
-            InstanceWithProxyWithoutTarget;
-
-        public interface IInterface
-        {
-            int DoSomething(string param);
-        }
+            FInstanceWithoutProxy,
+            FProxyWithTarget,
+            FProxyWithoutTarget,
+            FDispatchProxyWithoutTarget;
 
         public class Implementation : IInterface
         {
@@ -41,20 +31,24 @@ namespace Solti.Utils.DI.Perf
             int IInterface.DoSomething(string param) => 0;
         }
 
-        [GlobalSetup]
-        public void Setup()
-        {
-            InstanceWithoutProxy           = new Implementation();
-            InstanceWithProxy              = new InterfaceProxy<IInterface>(InstanceWithoutProxy).Proxy;
-            InstanceWithProxyWithoutTarget = new InterfaceProxyWithoutTarget().Proxy;
-        }
+        [GlobalSetup(Target = nameof(NoProxy))]
+        public void SetupNoProxy() => FInstanceWithoutProxy = new Implementation();
+
+        [GlobalSetup(Target = nameof(Proxy))]
+        public void SetupProxy() => FProxyWithTarget = ProxyFactory.Create<IInterface, InterfaceProxyWithTarget>(new Implementation());
+
+        [GlobalSetup(Target = nameof(ProxyWithoutTarget))]
+        public void SetupProxyWithoutTarget() => FProxyWithoutTarget = ProxyFactory.Create<IInterface, InterfaceProxyWithoutTarget>(new Type[0]);
+
+        [GlobalSetup(Target = nameof(DispatchProxyWithoutTarget))]
+        public void SetupDispatchPropxyWithoutTarget() => FDispatchProxyWithoutTarget = DispatchProxy.Create<IInterface, DispatchProxyWithoutTarget>();
 
         [Benchmark(Baseline = true, OperationsPerInvoke = OperationsPerInvoke)]
         public void NoProxy()
         {
             for (int i = 0; i < OperationsPerInvoke; i++)
             {
-                InstanceWithoutProxy.DoSomething(Param);
+                FInstanceWithoutProxy.DoSomething(Param);
             }
         }
 
@@ -63,7 +57,7 @@ namespace Solti.Utils.DI.Perf
         {
             for (int i = 0; i < OperationsPerInvoke; i++)
             {
-                InstanceWithProxy.DoSomething(Param);
+                FProxyWithTarget.DoSomething(Param);
             }
         }
 
@@ -72,7 +66,16 @@ namespace Solti.Utils.DI.Perf
         {
             for (int i = 0; i < OperationsPerInvoke; i++)
             {
-                InstanceWithProxyWithoutTarget.DoSomething(Param);
+                FProxyWithoutTarget.DoSomething(Param);
+            }
+        }
+
+        [Benchmark(OperationsPerInvoke = OperationsPerInvoke)]
+        public void DispatchProxyWithoutTarget()
+        {
+            for (int i = 0; i < OperationsPerInvoke; i++)
+            {
+                FDispatchProxyWithoutTarget.DoSomething(Param);
             }
         }
     }

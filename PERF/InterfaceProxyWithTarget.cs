@@ -1,21 +1,16 @@
 ﻿/********************************************************************************
-* Program.cs                                                                    *
+* InterfaceProxyWithTarget.cs                                                   *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
-using BenchmarkDotNet.Configs;
-using BenchmarkDotNet.Running;
-
 namespace Solti.Utils.DI.Perf
 {
-    class Program
+    using Proxy;
+
+    public class InterfaceProxyWithTarget : InterfaceInterceptor<IInterface>
     {
-        static void Main(string[] args) => BenchmarkSwitcher.FromAssembly(typeof(Program).Assembly).Run
-        (
-            args
-#if DEBUG
-            , new DebugInProcessConfig()
-#endif
-        );
+        public InterfaceProxyWithTarget(IInterface target) : base(target)
+        {
+        }        
     }
 }

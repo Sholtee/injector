@@ -135,11 +135,14 @@
   <data name="CIRCULAR_REFERENCE" xml:space="preserve">
     <value>Circular reference: {0}.</value>
   </data>
+  <data name="COMPILATION_FAILED" xml:space="preserve">
+    <value>Compilation failed. This may not have been caused by you.</value>
+  </data>
   <data name="CONSTRUCTOR_NOT_FOUND" xml:space="preserve">
     <value>Public constructor with the given layout can not be found.</value>
   </data>
   <data name="CONSTRUCTOR_OVERLOADING_NOT_SUPPORTED" xml:space="preserve">
-    <value>"{0}" must have exactly one (annotated) constructor.</value>
+    <value>"{0}" must have exactly one (annotated) public constructor.</value>
   </data>
   <data name="DEPENDENCY_NOT_FOUND" xml:space="preserve">
     <value>No registered implementation for "{0}".</value>
@@ -167,5 +170,11 @@
   </data>
   <data name="NOT_A_CLASS" xml:space="preserve">
     <value>Parameter must be a class.</value>
+  </data>
+  <data name="TYPE_IS_NESTED" xml:space="preserve">
+    <value>Nested types are not supported (yet).</value>
+  </data>
+  <data name="TYPE_NOT_VISIBLE" xml:space="preserve">
+    <value>{0} is not visible. The declaring assembly should be annotated with the InternalsVisibleToAttribute.</value>
   </data>
 </root>

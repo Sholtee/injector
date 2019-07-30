@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Class ServiceAlreadyRegisteredException
+    <title>Class ProxyUtils
    | Injector </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Class ServiceAlreadyRegisteredException
+    <meta name="title" content="Class ProxyUtils
    | Injector ">
     <meta name="generator" content="docfx 2.42.4.0">
     
@@ -37,35 +37,35 @@
       <div role="main" class="container body-content hide-when-search">
         <div class="article row grid">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="Solti.Utils.DI.ServiceAlreadyRegisteredException">
+            <article class="content wrap" id="_content" data-uid="Solti.Utils.DI.Proxy.ProxyUtils">
   
   
-  <h1 id="Solti_Utils_DI_ServiceAlreadyRegisteredException" data-uid="Solti.Utils.DI.ServiceAlreadyRegisteredException" class="text-break">Class ServiceAlreadyRegisteredException
+  <h1 id="Solti_Utils_DI_Proxy_ProxyUtils" data-uid="Solti.Utils.DI.Proxy.ProxyUtils" class="text-break">Class ProxyUtils
   </h1>
-  <div class="markdown level0 summary"><p>The exception that is thrown when a service has already been registered.</p>
+  <div class="markdown level0 summary"><p>Defines some handy utils related to proxies.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><span class="xref">System.Object</span></div>
-    <div class="level1"><span class="xref">ServiceAlreadyRegisteredException</span></div>
+    <div class="level1"><span class="xref">ProxyUtils</span></div>
   </div>
-  <h6><strong>Namespace</strong>: <a class="xref" href="Solti.Utils.DI.html">Solti.Utils.DI</a></h6>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Solti.Utils.DI.Proxy.html">Solti.Utils.DI.Proxy</a></h6>
   <h6><strong>Assembly</strong>: Injector.dll</h6>
-  <h5 id="Solti_Utils_DI_ServiceAlreadyRegisteredException_syntax">Syntax</h5>
+  <h5 id="Solti_Utils_DI_Proxy_ProxyUtils_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public sealed class ServiceAlreadyRegisteredException : ArgumentException</code></pre>
+    <pre><code class="lang-csharp hljs">public static class ProxyUtils : object</code></pre>
   </div>
-  <h3 id="constructors">Constructors
+  <h3 id="methods">Methods
   </h3>
-  <a id="Solti_Utils_DI_ServiceAlreadyRegisteredException__ctor_" data-uid="Solti.Utils.DI.ServiceAlreadyRegisteredException.#ctor*"></a>
-  <h4 id="Solti_Utils_DI_ServiceAlreadyRegisteredException__ctor_Type_Exception_" data-uid="Solti.Utils.DI.ServiceAlreadyRegisteredException.#ctor(Type,Exception)">ServiceAlreadyRegisteredException(Type, Exception)</h4>
-  <div class="markdown level1 summary"><p>Creates a new <a class="xref" href="Solti.Utils.DI.ServiceAlreadyRegisteredException.html">ServiceAlreadyRegisteredException</a> instance.</p>
-</div>
+  <a id="Solti_Utils_DI_Proxy_ProxyUtils_Chain_" data-uid="Solti.Utils.DI.Proxy.ProxyUtils.Chain*"></a>
+  <h4 id="Solti_Utils_DI_Proxy_ProxyUtils_Chain__1___0_Func___0___0____" data-uid="Solti.Utils.DI.Proxy.ProxyUtils.Chain``1(``0,Func{``0,``0}[])">Chain&lt;TInterface&gt;(TInterface, Func&lt;TInterface, TInterface&gt;[])</h4>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public ServiceAlreadyRegisteredException(Type iface, Exception innerException = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public static TInterface Chain&lt;TInterface&gt;(TInterface seed, params Func&lt;TInterface, TInterface&gt;[] proxies)
+    where TInterface : class</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -78,16 +78,44 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">Type</span></td>
-        <td><span class="parametername">iface</span></td>
-        <td><p>The interface which already was registered.</p>
-</td>
+        <td><span class="xref">TInterface</span></td>
+        <td><span class="parametername">seed</span></td>
+        <td></td>
       </tr>
       <tr>
-        <td><span class="xref">Exception</span></td>
-        <td><span class="parametername">innerException</span></td>
-        <td><p>The inner exception (if present).</p>
-</td>
+        <td><span class="xref">Func</span>&lt;TInterface, TInterface&gt;[]</td>
+        <td><span class="parametername">proxies</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TInterface</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TInterface</span></td>
+        <td></td>
       </tr>
     </tbody>
   </table>

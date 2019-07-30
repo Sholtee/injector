@@ -8,13 +8,15 @@ using System.Reflection;
 
 namespace Solti.Utils.DI.Internals
 {
-    internal sealed class ParameterValidatorProxy<TInterface> : InterfaceProxy<TInterface>
+    using Proxy;
+
+    internal class ParameterValidatorProxy<TInterface>: InterfaceInterceptor<TInterface> where TInterface: class
     {
         public ParameterValidatorProxy(TInterface target): base(target)
         {
         }
 
-        protected override object Invoke(MethodInfo targetMethod, object[] args)
+        public override object Invoke(MethodInfo targetMethod, object[] args)
         {
             IReadOnlyList<ParameterInfo> infos = targetMethod.GetParameters();
 

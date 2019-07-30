@@ -1,21 +1,12 @@
 ﻿/********************************************************************************
-* Program.cs                                                                    *
+* IInterface.cs                                                                 *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
-using BenchmarkDotNet.Configs;
-using BenchmarkDotNet.Running;
-
 namespace Solti.Utils.DI.Perf
 {
-    class Program
+    public interface IInterface
     {
-        static void Main(string[] args) => BenchmarkSwitcher.FromAssembly(typeof(Program).Assembly).Run
-        (
-            args
-#if DEBUG
-            , new DebugInProcessConfig()
-#endif
-        );
+        int DoSomething(string param);
     }
 }

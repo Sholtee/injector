@@ -6,11 +6,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading;
 
 namespace Solti.Utils.DI
 {
     using Internals;
+    using Proxy;
     using Properties;
 
     /// <summary>
@@ -226,7 +228,7 @@ namespace Solti.Utils.DI
         {
             FEntries = new ServiceCollection((ServiceCollection) parent);
 
-            Self = InterfaceProxy<IServiceContainer>.Chain(this, current => new ParameterValidatorProxy<IServiceContainer>(current));
+            Self = ProxyUtils.Chain<IServiceContainer>(this, ProxyFactory.Create<IServiceContainer, ParameterValidatorProxy<IServiceContainer>>);
         }
 
         protected override IServiceContainer CreateChild() => new ServiceContainer(this).Self;

@@ -9,6 +9,7 @@ using System.Collections.Generic;
 namespace Solti.Utils.DI
 {
     using Internals;
+    using Proxy;
     using Annotations;
 
     /// <summary>
@@ -47,7 +48,7 @@ namespace Solti.Utils.DI
         IServiceContainer Factory([ParameterIs(typeof(NotNull), typeof(Interface))] Type iface, [ParameterIs(typeof(NotNull))] Func<IInjector, Type, object> factory, Lifetime lifetime = Lifetime.Transient);
 
         /// <summary>
-        /// Hooks into the instantiating process to let you decorate the original service. Useful when you want to add additional functionality (e.g. parameter validation). The easyest way to decorate an instance is using the <see cref="InterfaceProxy{TInterface}"/> class.
+        /// Hooks into the instantiating process to let you decorate the original service. Useful when you want to add additional functionality (e.g. parameter validation). The easyest way to decorate an instance is using the <see cref="InterfaceInterceptor{TInterface}"/> class.
         /// </summary>
         /// <param name="iface">The "id" of the service to be decorated.</param>
         /// <param name="decorator">The decorator funtion. It must return the decorated instance. The original instance can be accessed via the 3rd parameter.</param>

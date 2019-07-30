@@ -1,21 +1,17 @@
 ﻿/********************************************************************************
-* Program.cs                                                                    *
+* DispatchProxyWithoutTarget.cs                                                 *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
-using BenchmarkDotNet.Configs;
-using BenchmarkDotNet.Running;
+using System.Reflection;
 
 namespace Solti.Utils.DI.Perf
 {
-    class Program
+    public class DispatchProxyWithoutTarget : DispatchProxy
     {
-        static void Main(string[] args) => BenchmarkSwitcher.FromAssembly(typeof(Program).Assembly).Run
-        (
-            args
-#if DEBUG
-            , new DebugInProcessConfig()
-#endif
-        );
+        protected override object Invoke(MethodInfo targetMethod, object[] args)
+        {
+            return 0;
+        }
     }
 }

@@ -115,6 +115,15 @@ namespace Solti.Utils.DI.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Compilation failed. This may not have been caused by you..
+        /// </summary>
+        internal static string COMPILATION_FAILED {
+            get {
+                return ResourceManager.GetString("COMPILATION_FAILED", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Public constructor with the given layout can not be found..
         /// </summary>
         internal static string CONSTRUCTOR_NOT_FOUND {
@@ -124,7 +133,7 @@ namespace Solti.Utils.DI.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &quot;{0}&quot; must have exactly one (annotated) constructor..
+        ///   Looks up a localized string similar to &quot;{0}&quot; must have exactly one (annotated) public constructor..
         /// </summary>
         internal static string CONSTRUCTOR_OVERLOADING_NOT_SUPPORTED {
             get {
@@ -210,6 +219,24 @@ namespace Solti.Utils.DI.Properties {
         internal static string NOT_ASSIGNABLE {
             get {
                 return ResourceManager.GetString("NOT_ASSIGNABLE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nested types are not supported (yet)..
+        /// </summary>
+        internal static string TYPE_IS_NESTED {
+            get {
+                return ResourceManager.GetString("TYPE_IS_NESTED", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} is not visible. The declaring assembly should be annotated with the InternalsVisibleToAttribute..
+        /// </summary>
+        internal static string TYPE_NOT_VISIBLE {
+            get {
+                return ResourceManager.GetString("TYPE_NOT_VISIBLE", resourceCulture);
             }
         }
     }

@@ -1,0 +1,19 @@
+System.Int32 Solti.Utils.DI.Internals.Tests.IFoo<System.Int32>.Prop
+{
+    get
+    {
+        System.Reflection.PropertyInfo currentProperty = PropertyAccess(() => Target.Prop);
+        System.Object result = Invoke(currentProperty.GetMethod, new System.Object[0]);
+        if (result == CALL_TARGET)
+            return Target.Prop;
+        return (System.Int32)result;
+    }
+
+    set
+    {
+        System.Reflection.PropertyInfo currentProperty = PropertyAccess(() => Target.Prop);
+        System.Object result = Invoke(currentProperty.SetMethod, new System.Object[]{value});
+        if (result == CALL_TARGET)
+            Target.Prop = value;
+    }
+}

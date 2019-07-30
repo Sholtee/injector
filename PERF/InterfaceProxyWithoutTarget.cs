@@ -1,21 +1,20 @@
 ﻿/********************************************************************************
-* Program.cs                                                                    *
+* InterfaceProxyWithoutTarget.cs                                                *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
-using BenchmarkDotNet.Configs;
-using BenchmarkDotNet.Running;
+using System.Reflection;
 
 namespace Solti.Utils.DI.Perf
 {
-    class Program
+    using Proxy;
+
+    public class InterfaceProxyWithoutTarget : InterfaceInterceptor<IInterface>
     {
-        static void Main(string[] args) => BenchmarkSwitcher.FromAssembly(typeof(Program).Assembly).Run
-        (
-            args
-#if DEBUG
-            , new DebugInProcessConfig()
-#endif
-        );
+        public InterfaceProxyWithoutTarget() : base(null)
+        {
+        }
+
+        public override object Invoke(MethodInfo targetMethod, object[] args) => 0;
     }
 }
