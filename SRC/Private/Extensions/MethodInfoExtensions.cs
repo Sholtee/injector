@@ -22,7 +22,7 @@ namespace Solti.Utils.DI.Internals
 
             Expression call = Expression.Call
             (
-                instance != null ? Expression.Convert(instance, method.DeclaringType /*ReflectedType csak .NET CORE 2.0-tol felfele van*/) : null,
+                instance != null ? Expression.Convert(instance, method.DeclaringType /*ReflectedType csak .NET Standard 2.0-tol felfele van*/) : null,
                 method,
                 method
                     .GetParameters()

@@ -71,14 +71,17 @@ namespace Solti.Utils.DI.Internals
                 assemblyName: AssemblyName,
                 syntaxTrees: new [] {tree},
                 references: ReferencedAssemblies().Select(asm => MetadataReference.CreateFromFile(asm)),
+                options: CompilationOptionsFactory.Create
+                (
 #if IGNORE_VISIBILITY
-                options: CompilationOptionsFactory.Create(ignoreAccessChecks: true)
+                    ignoreAccessChecks: true
 #else
-                options: CompilationOptionsFactory.Create(ignoreAccessChecks: false)
+                    ignoreAccessChecks: false
 #endif
+                )
             );
 
-            using (var stm = new MemoryStream())
+            using (Stream stm = new MemoryStream())
             {
                 EmitResult result = compilation.Emit(stm);
 
@@ -94,9 +97,10 @@ namespace Solti.Utils.DI.Internals
 
                 stm.Seek(0, SeekOrigin.Begin);
 
-                Assembly asm = AssemblyLoadContext.Default.LoadFromStream(stm);
-
-                return asm.GetType(ProxyGenerator.GeneratedClassName, throwOnError: true);
+                return AssemblyLoadContext
+                    .Default
+                    .LoadFromStream(stm)
+                    .GetType(ProxyGenerator.GeneratedClassName, throwOnError: true);
             } 
         }
 
@@ -106,18 +110,18 @@ namespace Solti.Utils.DI.Internals
 
         private static IEnumerable<string> ReferencedAssemblies() => new HashSet<Assembly>
         (
-            new[]
+            new []
             {
-                typeof(Object).Assembly, // explicit meg kell adni
-                typeof(Expression<>).Assembly,
+                typeof(Object).Assembly(), // explicit meg kell adni
+                typeof(Expression<>).Assembly(),
 #if IGNORE_VISIBILITY
-                typeof(IgnoresAccessChecksToAttribute).Assembly,
+                typeof(IgnoresAccessChecksToAttribute).Assembly(),
 #endif
-                typeof(TInterface).Assembly,
-                typeof(TInterceptor).Assembly
+                typeof(TInterface).Assembly(),
+                typeof(TInterceptor).Assembly()
             } 
-            .Concat(ReferencedAssemblies(typeof(TInterface).Assembly))
-            .Concat(ReferencedAssemblies(typeof(TInterceptor).Assembly)) // az interceptor konstruktora miatt lehetnek uj referenciak
+            .Concat(ReferencedAssemblies(typeof(TInterface).Assembly()))
+            .Concat(ReferencedAssemblies(typeof(TInterceptor).Assembly())) // az interceptor konstruktora miatt lehetnek uj referenciak
         )
         .Select(asm => asm.Location);
 
@@ -127,8 +131,8 @@ namespace Solti.Utils.DI.Internals
 
             CheckVisibility(type);
 
-            if (!type.IsInterface) throw new InvalidOperationException();
-            if (type.ContainsGenericParameters) throw new NotSupportedException();
+            if (!type.IsInterface()) throw new InvalidOperationException();
+            if (type.ContainsGenericParameters()) throw new NotSupportedException();
             if (type.GetEvents().Any()) throw new NotSupportedException();
         }
 
@@ -138,9 +142,9 @@ namespace Solti.Utils.DI.Internals
 
             CheckVisibility(type);
 
-            if (!type.IsClass) throw new InvalidOperationException();
-            if (type.ContainsGenericParameters) throw new NotSupportedException();
-            if (type.IsSealed) throw new NotSupportedException();
+            if (!type.IsClass()) throw new InvalidOperationException();
+            if (type.ContainsGenericParameters()) throw new NotSupportedException();
+            if (type.IsSealed()) throw new NotSupportedException();
         }
 
         private static void CheckVisibility(Type type)
@@ -151,7 +155,7 @@ namespace Solti.Utils.DI.Internals
             // TODO: FIXME: privat tipusokra mindenkepp fel kene robbanjon (ha annotalva van az asm ha nincs).
             //
 
-            if (type.IsNotPublic && !type.Assembly.GetCustomAttributes<InternalsVisibleToAttribute>().Any(attr => attr.AssemblyName == AssemblyName)) throw new InvalidOperationException(string.Format(Resources.TYPE_NOT_VISIBLE, type));
+            if (type.IsNotPublic() && type.Assembly().GetCustomAttributes<InternalsVisibleToAttribute>().All(attr => attr.AssemblyName != AssemblyName)) throw new InvalidOperationException(string.Format(Resources.TYPE_NOT_VISIBLE, type));
         }
         #endregion
     }

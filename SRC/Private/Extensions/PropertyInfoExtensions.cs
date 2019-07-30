@@ -23,7 +23,7 @@ namespace Solti.Utils.DI.Internals
                 (
                     Expression.Assign
                     (
-                        Expression.Property(Expression.Convert(inst, src.ReflectedType), src), 
+                        Expression.Property(Expression.Convert(inst, src.DeclaringType /*ReflectedType csak .NET Standard 2.0-tol felfele van*/), src), 
                         Expression.Convert(val, src.PropertyType)
                     ), 
                     inst, 

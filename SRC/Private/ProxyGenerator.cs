@@ -9,10 +9,11 @@ using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Text.RegularExpressions;
+
 #if IGNORE_VISIBILITY
 using System.Runtime.CompilerServices;
 #endif
-using System.Text.RegularExpressions;
 
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -248,7 +249,7 @@ namespace Solti.Utils.DI.Internals
 
         internal static TypeSyntax CreateType(Type src)
         {
-            if (src.IsGenericType) return src.GetGenericTypeDefinition().GetQualifiedName(name => GenericName(name).WithTypeArgumentList
+            if (src.IsGenericType()) return src.GetGenericTypeDefinition().GetQualifiedName(name => GenericName(name).WithTypeArgumentList
             (
                 typeArgumentList: TypeArgumentList
                 (
@@ -764,7 +765,7 @@ namespace Solti.Utils.DI.Internals
 
         public static ClassDeclarationSyntax GenerateProxyClass(Type @base, Type interfaceType)
         {
-            Debug.Assert(interfaceType.IsInterface);
+            Debug.Assert(interfaceType.IsInterface());
 
             ClassDeclarationSyntax cls = ClassDeclaration(GeneratedClassName)
                 .WithModifiers

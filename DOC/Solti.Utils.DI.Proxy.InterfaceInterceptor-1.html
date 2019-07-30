@@ -50,37 +50,11 @@
     <div class="level0"><span class="xref">System.Object</span></div>
     <div class="level1"><span class="xref">InterfaceInterceptor&lt;TInterface&gt;</span></div>
   </div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetHashCode()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetType()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.MemberwiseClone()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ToString()</span>
-    </div>
-  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Solti.Utils.DI.Proxy.html">Solti.Utils.DI.Proxy</a></h6>
   <h6><strong>Assembly</strong>: Injector.dll</h6>
   <h5 id="Solti_Utils_DI_Proxy_InterfaceInterceptor_1_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract class InterfaceInterceptor&lt;TInterface&gt;
-
-    where TInterface : class</code></pre>
+    <pre><code class="lang-csharp hljs">public abstract class InterfaceInterceptor&lt;TInterface&gt; : object where TInterface : class</code></pre>
   </div>
   <h5 class="typeParameters">Type Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -179,7 +153,7 @@
   <h3 id="methods">Methods
   </h3>
   <a id="Solti_Utils_DI_Proxy_InterfaceInterceptor_1_Invoke_" data-uid="Solti.Utils.DI.Proxy.InterfaceInterceptor`1.Invoke*"></a>
-  <h4 id="Solti_Utils_DI_Proxy_InterfaceInterceptor_1_Invoke_System_Reflection_MethodInfo_System_Object___" data-uid="Solti.Utils.DI.Proxy.InterfaceInterceptor`1.Invoke(System.Reflection.MethodInfo,System.Object[])">Invoke(MethodInfo, Object[])</h4>
+  <h4 id="Solti_Utils_DI_Proxy_InterfaceInterceptor_1_Invoke_MethodInfo_System_Object___" data-uid="Solti.Utils.DI.Proxy.InterfaceInterceptor`1.Invoke(MethodInfo,System.Object[])">Invoke(MethodInfo, Object[])</h4>
   <div class="markdown level1 summary"><p>Called on proxy method invocation.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -198,7 +172,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Reflection.MethodInfo</span></td>
+        <td><span class="xref">MethodInfo</span></td>
         <td><span class="parametername">method</span></td>
         <td><p>The <code data-dev-comment-type="typeparamref" class="typeparamref">TInterface</code> method that was called</p>
 </td>
@@ -227,7 +201,7 @@
       </tr>
     </tbody>
   </table>
-  <h5 id="Solti_Utils_DI_Proxy_InterfaceInterceptor_1_Invoke_System_Reflection_MethodInfo_System_Object____remarks">Remarks</h5>
+  <h5 id="Solti_Utils_DI_Proxy_InterfaceInterceptor_1_Invoke_MethodInfo_System_Object____remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>The invocation will be forwarded to the <a class="xref" href="Solti.Utils.DI.Proxy.InterfaceInterceptor-1.html#Solti_Utils_DI_Proxy_InterfaceInterceptor_1_Target">Target</a> if this method returns <a class="xref" href="Solti.Utils.DI.Proxy.InterfaceInterceptor-1.html#Solti_Utils_DI_Proxy_InterfaceInterceptor_1_CALL_TARGET">CALL_TARGET</a>.</p>
 </div>
 </article>
