@@ -107,19 +107,38 @@ namespace Solti.Utils.DI.Internals
         private static Assembly AsAssembly(AssemblyName asm) => Assembly.Load(asm);
 
         private static IEnumerable<Assembly> ReferencedAssemblies(Assembly asm) => asm.GetReferencedAssemblies().Select(AsAssembly);
+#if NETSTANDARD
+        private static IEnumerable<Assembly> RuntimeAssemblies()
+        {
+            string[] 
+                trustedAssembliesPaths = ((string) AppContext.GetData("TRUSTED_PLATFORM_ASSEMBLIES")).Split(Path.PathSeparator),
+                neededAssemblies = 
+                {
+                    "System.Runtime",
+                    "netstandard"
+                };
 
+            return trustedAssembliesPaths
+                .Where(p => neededAssemblies.Contains(Path.GetFileNameWithoutExtension(p)))
+                .Select(Assembly.LoadFile);
+        }
+#endif
         private static IEnumerable<string> ReferencedAssemblies() => new HashSet<Assembly>
         (
             new []
             {
                 typeof(Object).Assembly(), // explicit meg kell adni
                 typeof(Expression<>).Assembly(),
+                typeof(MethodInfo).Assembly(),
 #if IGNORE_VISIBILITY
                 typeof(IgnoresAccessChecksToAttribute).Assembly(),
 #endif
                 typeof(TInterface).Assembly(),
                 typeof(TInterceptor).Assembly()
-            } 
+            }
+#if NETSTANDARD
+            .Concat(RuntimeAssemblies())
+#endif
             .Concat(ReferencedAssemblies(typeof(TInterface).Assembly()))
             .Concat(ReferencedAssemblies(typeof(TInterceptor).Assembly())) // az interceptor konstruktora miatt lehetnek uj referenciak
         )
