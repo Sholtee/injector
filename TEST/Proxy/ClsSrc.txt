@@ -1,6 +1,6 @@
-internal sealed class GeneratedProxy : Solti.Utils.DI.Internals.Tests.Foo, Solti.Utils.DI.Internals.Tests.IFoo<System.Int32>
+internal sealed class GeneratedProxy : Solti.Utils.DI.Proxy.Tests.Foo, Solti.Utils.DI.Proxy.Tests.IFoo<System.Int32>
 {
-    public GeneratedProxy(Solti.Utils.DI.Internals.Tests.IFoo<System.Int32> target): base(target)
+    public GeneratedProxy(Solti.Utils.DI.Proxy.Tests.IFoo<System.Int32> target): base(target)
     {
     }
 
@@ -9,7 +9,7 @@ internal sealed class GeneratedProxy : Solti.Utils.DI.Internals.Tests.Foo, Solti
         return ((System.Linq.Expressions.MethodCallExpression)methodAccess.Body).Method;
     }
 
-    System.Int32 Solti.Utils.DI.Internals.Tests.IFoo<System.Int32>.Foo<TT>(System.Int32 a, out System.String b, ref TT c)
+    System.Int32 Solti.Utils.DI.Proxy.Tests.IFoo<System.Int32>.Foo<TT>(System.Int32 a, out System.String b, ref TT c)
     {
         System.String dummy_b;
         TT dummy_c = default(TT);
@@ -23,7 +23,7 @@ internal sealed class GeneratedProxy : Solti.Utils.DI.Internals.Tests.Foo, Solti
         return (System.Int32)result;
     }
 
-    void Solti.Utils.DI.Internals.Tests.IFoo<System.Int32>.Bar()
+    void Solti.Utils.DI.Proxy.Tests.IFoo<System.Int32>.Bar()
     {
         System.Reflection.MethodInfo currentMethod = MethodAccess(() => Target.Bar());
         System.Object[] args = new System.Object[0];
@@ -40,7 +40,7 @@ internal sealed class GeneratedProxy : Solti.Utils.DI.Internals.Tests.Foo, Solti
         return (System.Reflection.PropertyInfo)((System.Linq.Expressions.MemberExpression)propertyAccess.Body).Member;
     }
 
-    System.Int32 Solti.Utils.DI.Internals.Tests.IFoo<System.Int32>.Prop
+    System.Int32 Solti.Utils.DI.Proxy.Tests.IFoo<System.Int32>.Prop
     {
         get
         {

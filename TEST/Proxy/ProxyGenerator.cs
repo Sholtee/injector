@@ -15,9 +15,10 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 using NUnit.Framework;
 
-namespace Solti.Utils.DI.Internals.Tests
+namespace Solti.Utils.DI.Proxy.Tests
 {
     using Proxy;
+    using Internals;
 
     internal interface IFoo<T> // szerepeljen a "T"
     {
@@ -64,7 +65,7 @@ namespace Solti.Utils.DI.Internals.Tests
         [Test]
         public void DeclareMethod_ShouldDeclareTheDesiredMethod()
         {
-            Assert.That(ProxyGenerator.DeclareMethod(Foo).NormalizeWhitespace().ToFullString(), Is.EqualTo("System.Int32 Solti.Utils.DI.Internals.Tests.IFoo<T>.Foo<TT>(System.Int32 a, out System.String b, ref TT c)"));
+            Assert.That(ProxyGenerator.DeclareMethod(Foo).NormalizeWhitespace().ToFullString(), Is.EqualTo("System.Int32 Solti.Utils.DI.Proxy.Tests.IFoo<T>.Foo<TT>(System.Int32 a, out System.String b, ref TT c)"));
 
             Type typeOfT = typeof(List<>).GetGenericArguments().Single();
 
@@ -148,26 +149,26 @@ namespace Solti.Utils.DI.Internals.Tests
         public void DeclareProperty_ShouldDeclareTheDesiredProperty()
         {
             // Nem gond h "get set" nincs, ez azert van mert nincs torzs meghatarozva.
-            Assert.That(ProxyGenerator.DeclareProperty(Prop, null, null).NormalizeWhitespace().ToFullString(), Is.EqualTo($"System.Int32 Solti.Utils.DI.Internals.Tests.IFoo<System.Int32>.Prop"));
+            Assert.That(ProxyGenerator.DeclareProperty(Prop, null, null).NormalizeWhitespace().ToFullString(), Is.EqualTo($"System.Int32 Solti.Utils.DI.Proxy.Tests.IFoo<System.Int32>.Prop"));
         }
 
         [Test]
         public void GenerateProxyMethod_Test()
         {
-            Assert.That(ProxyGenerator.GenerateProxyMethod(Foo).NormalizeWhitespace(eol: "\n").ToFullString(), Is.EqualTo(File.ReadAllText("FooSrc.txt")));
-            Assert.That(ProxyGenerator.GenerateProxyMethod(Bar).NormalizeWhitespace(eol: "\n").ToFullString(), Is.EqualTo(File.ReadAllText("BarSrc.txt")));
+            Assert.That(ProxyGenerator.GenerateProxyMethod(Foo).NormalizeWhitespace(eol: "\n").ToFullString(), Is.EqualTo(File.ReadAllText(Path.Combine("Proxy", "FooSrc.txt"))));
+            Assert.That(ProxyGenerator.GenerateProxyMethod(Bar).NormalizeWhitespace(eol: "\n").ToFullString(), Is.EqualTo(File.ReadAllText(Path.Combine("Proxy", "BarSrc.txt"))));
         }
 
         [Test]
         public void GenerateProxyProperty_Test()
         {
-            Assert.That(ProxyGenerator.GenerateProxyProperty(Prop).NormalizeWhitespace(eol: "\n").ToFullString(), Is.EqualTo(File.ReadAllText("PropSrc.txt")));
+            Assert.That(ProxyGenerator.GenerateProxyProperty(Prop).NormalizeWhitespace(eol: "\n").ToFullString(), Is.EqualTo(File.ReadAllText(Path.Combine("Proxy", "PropSrc.txt"))));
         }
 
         [Test]
         public void GenerateProxyClass_Test()
         {
-            Assert.That(ProxyGenerator.GenerateProxyClass(typeof(Foo), typeof(IFoo<int>)).NormalizeWhitespace(eol: "\n").ToFullString(), Is.EqualTo(File.ReadAllText("ClsSrc.txt")));
+            Assert.That(ProxyGenerator.GenerateProxyClass(typeof(Foo), typeof(IFoo<int>)).NormalizeWhitespace(eol: "\n").ToFullString(), Is.EqualTo(File.ReadAllText(Path.Combine("Proxy", "ClsSrc.txt"))));
         }
 
         [Test]

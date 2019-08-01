@@ -1,4 +1,4 @@
-System.Int32 Solti.Utils.DI.Internals.Tests.IFoo<System.Int32>.Prop
+System.Int32 Solti.Utils.DI.Proxy.Tests.IFoo<System.Int32>.Prop
 {
     get
     {

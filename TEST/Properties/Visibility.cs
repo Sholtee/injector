@@ -5,4 +5,4 @@
 ********************************************************************************/
 using System.Runtime.CompilerServices;
 
-[assembly: InternalsVisibleTo("Solti.Utils.DI.Internals.Tests.Foo_Solti.Utils.DI.Internals.Tests.IFoo<System.Int32>_Proxy")]
+[assembly: InternalsVisibleTo("Solti.Utils.DI.Proxy.Tests.Foo_Solti.Utils.DI.Proxy.Tests.IFoo<System.Int32>_Proxy")]
