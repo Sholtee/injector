@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFrameworks>netstandard1.6;netstandard2.0</TargetFrameworks>
     <Company></Company>
     <Authors>Denes Solti</Authors>
     <Version>0.2.0</Version>
@@ -28,10 +28,6 @@
   <ItemGroup Condition="$(TargetFramework.StartsWith('netstandard1'))">
     <PackageReference Include="System.Reflection.TypeExtensions" Version="4.5.1" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="2.9.0" />
-  </ItemGroup>
-
-  <ItemGroup Condition="$(TargetFramework) != 'netstandard1.5'">
-    <Compile Remove="Private\Extensions\Polyfills\IEnumerableExtensions.cs" />
   </ItemGroup>
 
   <ItemGroup Condition="$(TargetFramework.StartsWith('netstandard2'))">
@@ -62,7 +58,7 @@
     <NoDocfx Condition="'$(NoDocfx)'==''">False</NoDocfx>
   </PropertyGroup>
 
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="'$(OS)' == 'Windows_NT' And '$(NoDocfx)'=='False'">
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="'$(TargetFramework)' == 'netstandard2.0' And '$(OS)' == 'Windows_NT' And '$(NoDocfx)'=='False'">
     <Exec Command="set doc=..\doc&#xD;&#xA;if exist %doc% rmdir /Q /S %doc%&#xD;&#xA;set vendor=..\Vendor&#xD;&#xA;nuget install docfx.console -OutputDirectory %vendor% -Version 2.42.4&#xD;&#xA;%vendor%\docfx.console.2.42.4\tools\docfx ..\docfx.json" />
   </Target>
 

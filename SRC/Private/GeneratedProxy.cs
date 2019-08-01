@@ -119,8 +119,12 @@ namespace Solti.Utils.DI.Internals
                 };
 
             return trustedAssembliesPaths
-                .Where(p => neededAssemblies.Contains(Path.GetFileNameWithoutExtension(p)))
-                .Select(Assembly.LoadFile);
+                .Where(path => neededAssemblies.Contains(Path.GetFileNameWithoutExtension(path)))
+                //
+                // Assembly.LoadFile() nincs NetStandard 2 alatt
+                //
+
+                .Select(AssemblyLoadContext.Default.LoadFromAssemblyPath);
         }
 #endif
         private static IEnumerable<string> ReferencedAssemblies() => new HashSet<Assembly>
