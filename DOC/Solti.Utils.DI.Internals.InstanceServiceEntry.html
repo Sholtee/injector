@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Class ServiceEntry
+    <title>Class InstanceServiceEntry
    | Injector </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Class ServiceEntry
+    <meta name="title" content="Class InstanceServiceEntry
    | Injector ">
     <meta name="generator" content="docfx 2.42.4.0">
     
@@ -37,21 +37,20 @@
       <div role="main" class="container body-content hide-when-search">
         <div class="article row grid">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="Solti.Utils.DI.Internals.ServiceEntry">
+            <article class="content wrap" id="_content" data-uid="Solti.Utils.DI.Internals.InstanceServiceEntry">
   
   
-  <h1 id="Solti_Utils_DI_Internals_ServiceEntry" data-uid="Solti.Utils.DI.Internals.ServiceEntry" class="text-break">Class ServiceEntry
+  <h1 id="Solti_Utils_DI_Internals_InstanceServiceEntry" data-uid="Solti.Utils.DI.Internals.InstanceServiceEntry" class="text-break">Class InstanceServiceEntry
   </h1>
-  <div class="markdown level0 summary"><p>Stores a service definition.</p>
+  <div class="markdown level0 summary"><p>Describes a singleton service entry.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><span class="xref">System.Object</span></div>
     <div class="level1"><a class="xref" href="Solti.Utils.DI.Internals.Disposable.html">Disposable</a></div>
-    <div class="level2"><span class="xref">ServiceEntry</span></div>
-      <div class="level3"><a class="xref" href="Solti.Utils.DI.Internals.InstanceServiceEntry.html">InstanceServiceEntry</a></div>
-      <div class="level3"><a class="xref" href="Solti.Utils.DI.Internals.ProducibleServiceEntry.html">ProducibleServiceEntry</a></div>
+    <div class="level2"><a class="xref" href="Solti.Utils.DI.Internals.ServiceEntry.html">ServiceEntry</a></div>
+    <div class="level3"><span class="xref">InstanceServiceEntry</span></div>
   </div>
   <div classs="implements">
     <h5>Implements</h5>
@@ -60,10 +59,19 @@
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
-      <a class="xref" href="Solti.Utils.DI.Internals.Disposable.html#Solti_Utils_DI_Internals_Disposable_Disposed">Disposable.Disposed</a>
+      <a class="xref" href="Solti.Utils.DI.Internals.ServiceEntry.html#Solti_Utils_DI_Internals_ServiceEntry_Interface">ServiceEntry.Interface</a>
     </div>
     <div>
-      <a class="xref" href="Solti.Utils.DI.Internals.Disposable.html#Solti_Utils_DI_Internals_Disposable_Dispose_System_Boolean_">Disposable.Dispose(Boolean)</a>
+      <a class="xref" href="Solti.Utils.DI.Internals.ServiceEntry.html#Solti_Utils_DI_Internals_ServiceEntry_Lifetime">ServiceEntry.Lifetime</a>
+    </div>
+    <div>
+      <a class="xref" href="Solti.Utils.DI.Internals.ServiceEntry.html#Solti_Utils_DI_Internals_ServiceEntry_Equals_System_Object_">ServiceEntry.Equals(Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="Solti.Utils.DI.Internals.ServiceEntry.html#Solti_Utils_DI_Internals_ServiceEntry_GetHashCode">ServiceEntry.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="Solti.Utils.DI.Internals.Disposable.html#Solti_Utils_DI_Internals_Disposable_Disposed">Disposable.Disposed</a>
     </div>
     <div>
       <a class="xref" href="Solti.Utils.DI.Internals.Disposable.html#Solti_Utils_DI_Internals_Disposable_CheckDisposed">Disposable.CheckDisposed()</a>
@@ -74,22 +82,19 @@
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Solti.Utils.DI.Internals.html">Solti.Utils.DI.Internals</a></h6>
   <h6><strong>Assembly</strong>: Injector.dll</h6>
-  <h5 id="Solti_Utils_DI_Internals_ServiceEntry_syntax">Syntax</h5>
+  <h5 id="Solti_Utils_DI_Internals_InstanceServiceEntry_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract class ServiceEntry : Disposable, IServiceFactory, IServiceInfo, ICloneable</code></pre>
+    <pre><code class="lang-csharp hljs">public class InstanceServiceEntry : ServiceEntry, IServiceFactory, IServiceInfo, ICloneable</code></pre>
   </div>
-  <h5 id="Solti_Utils_DI_Internals_ServiceEntry_remarks"><strong>Remarks</strong></h5>
-  <div class="markdown level0 remarks"><p>This is an internal class so it may change from version to version. Don&apos;t use it!</p>
-</div>
   <h3 id="constructors">Constructors
   </h3>
-  <a id="Solti_Utils_DI_Internals_ServiceEntry__ctor_" data-uid="Solti.Utils.DI.Internals.ServiceEntry.#ctor*"></a>
-  <h4 id="Solti_Utils_DI_Internals_ServiceEntry__ctor_Type_System_Nullable_Solti_Utils_DI_Lifetime__" data-uid="Solti.Utils.DI.Internals.ServiceEntry.#ctor(Type,System.Nullable{Solti.Utils.DI.Lifetime})">ServiceEntry(Type, Nullable&lt;Lifetime&gt;)</h4>
+  <a id="Solti_Utils_DI_Internals_InstanceServiceEntry__ctor_" data-uid="Solti.Utils.DI.Internals.InstanceServiceEntry.#ctor*"></a>
+  <h4 id="Solti_Utils_DI_Internals_InstanceServiceEntry__ctor_Type_System_Object_System_Boolean_" data-uid="Solti.Utils.DI.Internals.InstanceServiceEntry.#ctor(Type,System.Object,System.Boolean)">InstanceServiceEntry(Type, Object, Boolean)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected ServiceEntry(Type interface, Lifetime? lifetime)</code></pre>
+    <pre><code class="lang-csharp hljs">public InstanceServiceEntry(Type interface, object value, bool releaseOnDispose)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -107,21 +112,26 @@
         <td></td>
       </tr>
       <tr>
-        <td><span class="xref">System.Nullable</span>&lt;<a class="xref" href="Solti.Utils.DI.Lifetime.html">Lifetime</a>&gt;</td>
-        <td><span class="parametername">lifetime</span></td>
+        <td><span class="xref">System.Object</span></td>
+        <td><span class="parametername">value</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">releaseOnDispose</span></td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <h3 id="properties">Properties
   </h3>
-  <a id="Solti_Utils_DI_Internals_ServiceEntry_Factory_" data-uid="Solti.Utils.DI.Internals.ServiceEntry.Factory*"></a>
-  <h4 id="Solti_Utils_DI_Internals_ServiceEntry_Factory" data-uid="Solti.Utils.DI.Internals.ServiceEntry.Factory">Factory</h4>
+  <a id="Solti_Utils_DI_Internals_InstanceServiceEntry_Factory_" data-uid="Solti.Utils.DI.Internals.InstanceServiceEntry.Factory*"></a>
+  <h4 id="Solti_Utils_DI_Internals_InstanceServiceEntry_Factory" data-uid="Solti.Utils.DI.Internals.InstanceServiceEntry.Factory">Factory</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract Func&lt;IInjector, Type, object&gt; Factory { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public override Func&lt;IInjector, Type, object&gt; Factory { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -138,13 +148,15 @@
       </tr>
     </tbody>
   </table>
-  <a id="Solti_Utils_DI_Internals_ServiceEntry_Implementation_" data-uid="Solti.Utils.DI.Internals.ServiceEntry.Implementation*"></a>
-  <h4 id="Solti_Utils_DI_Internals_ServiceEntry_Implementation" data-uid="Solti.Utils.DI.Internals.ServiceEntry.Implementation">Implementation</h4>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Solti.Utils.DI.Internals.ServiceEntry.html#Solti_Utils_DI_Internals_ServiceEntry_Factory">ServiceEntry.Factory</a></div>
+  <a id="Solti_Utils_DI_Internals_InstanceServiceEntry_Implementation_" data-uid="Solti.Utils.DI.Internals.InstanceServiceEntry.Implementation*"></a>
+  <h4 id="Solti_Utils_DI_Internals_InstanceServiceEntry_Implementation" data-uid="Solti.Utils.DI.Internals.InstanceServiceEntry.Implementation">Implementation</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract Type Implementation { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public override Type Implementation { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -161,36 +173,15 @@
       </tr>
     </tbody>
   </table>
-  <a id="Solti_Utils_DI_Internals_ServiceEntry_Interface_" data-uid="Solti.Utils.DI.Internals.ServiceEntry.Interface*"></a>
-  <h4 id="Solti_Utils_DI_Internals_ServiceEntry_Interface" data-uid="Solti.Utils.DI.Internals.ServiceEntry.Interface">Interface</h4>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Solti.Utils.DI.Internals.ServiceEntry.html#Solti_Utils_DI_Internals_ServiceEntry_Implementation">ServiceEntry.Implementation</a></div>
+  <a id="Solti_Utils_DI_Internals_InstanceServiceEntry_IsFactory_" data-uid="Solti.Utils.DI.Internals.InstanceServiceEntry.IsFactory*"></a>
+  <h4 id="Solti_Utils_DI_Internals_InstanceServiceEntry_IsFactory" data-uid="Solti.Utils.DI.Internals.InstanceServiceEntry.IsFactory">IsFactory</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Type Interface { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">Type</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <a id="Solti_Utils_DI_Internals_ServiceEntry_IsFactory_" data-uid="Solti.Utils.DI.Internals.ServiceEntry.IsFactory*"></a>
-  <h4 id="Solti_Utils_DI_Internals_ServiceEntry_IsFactory" data-uid="Solti.Utils.DI.Internals.ServiceEntry.IsFactory">IsFactory</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract bool IsFactory { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public override bool IsFactory { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -207,13 +198,15 @@
       </tr>
     </tbody>
   </table>
-  <a id="Solti_Utils_DI_Internals_ServiceEntry_IsInstance_" data-uid="Solti.Utils.DI.Internals.ServiceEntry.IsInstance*"></a>
-  <h4 id="Solti_Utils_DI_Internals_ServiceEntry_IsInstance" data-uid="Solti.Utils.DI.Internals.ServiceEntry.IsInstance">IsInstance</h4>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Solti.Utils.DI.Internals.ServiceEntry.html#Solti_Utils_DI_Internals_ServiceEntry_IsFactory">ServiceEntry.IsFactory</a></div>
+  <a id="Solti_Utils_DI_Internals_InstanceServiceEntry_IsInstance_" data-uid="Solti.Utils.DI.Internals.InstanceServiceEntry.IsInstance*"></a>
+  <h4 id="Solti_Utils_DI_Internals_InstanceServiceEntry_IsInstance" data-uid="Solti.Utils.DI.Internals.InstanceServiceEntry.IsInstance">IsInstance</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract bool IsInstance { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public override bool IsInstance { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -230,13 +223,15 @@
       </tr>
     </tbody>
   </table>
-  <a id="Solti_Utils_DI_Internals_ServiceEntry_IsLazy_" data-uid="Solti.Utils.DI.Internals.ServiceEntry.IsLazy*"></a>
-  <h4 id="Solti_Utils_DI_Internals_ServiceEntry_IsLazy" data-uid="Solti.Utils.DI.Internals.ServiceEntry.IsLazy">IsLazy</h4>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Solti.Utils.DI.Internals.ServiceEntry.html#Solti_Utils_DI_Internals_ServiceEntry_IsInstance">ServiceEntry.IsInstance</a></div>
+  <a id="Solti_Utils_DI_Internals_InstanceServiceEntry_IsLazy_" data-uid="Solti.Utils.DI.Internals.InstanceServiceEntry.IsLazy*"></a>
+  <h4 id="Solti_Utils_DI_Internals_InstanceServiceEntry_IsLazy" data-uid="Solti.Utils.DI.Internals.InstanceServiceEntry.IsLazy">IsLazy</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract bool IsLazy { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public override bool IsLazy { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -253,13 +248,15 @@
       </tr>
     </tbody>
   </table>
-  <a id="Solti_Utils_DI_Internals_ServiceEntry_IsService_" data-uid="Solti.Utils.DI.Internals.ServiceEntry.IsService*"></a>
-  <h4 id="Solti_Utils_DI_Internals_ServiceEntry_IsService" data-uid="Solti.Utils.DI.Internals.ServiceEntry.IsService">IsService</h4>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Solti.Utils.DI.Internals.ServiceEntry.html#Solti_Utils_DI_Internals_ServiceEntry_IsLazy">ServiceEntry.IsLazy</a></div>
+  <a id="Solti_Utils_DI_Internals_InstanceServiceEntry_IsService_" data-uid="Solti.Utils.DI.Internals.InstanceServiceEntry.IsService*"></a>
+  <h4 id="Solti_Utils_DI_Internals_InstanceServiceEntry_IsService" data-uid="Solti.Utils.DI.Internals.InstanceServiceEntry.IsService">IsService</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract bool IsService { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public override bool IsService { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -276,36 +273,15 @@
       </tr>
     </tbody>
   </table>
-  <a id="Solti_Utils_DI_Internals_ServiceEntry_Lifetime_" data-uid="Solti.Utils.DI.Internals.ServiceEntry.Lifetime*"></a>
-  <h4 id="Solti_Utils_DI_Internals_ServiceEntry_Lifetime" data-uid="Solti.Utils.DI.Internals.ServiceEntry.Lifetime">Lifetime</h4>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Solti.Utils.DI.Internals.ServiceEntry.html#Solti_Utils_DI_Internals_ServiceEntry_IsService">ServiceEntry.IsService</a></div>
+  <a id="Solti_Utils_DI_Internals_InstanceServiceEntry_Value_" data-uid="Solti.Utils.DI.Internals.InstanceServiceEntry.Value*"></a>
+  <h4 id="Solti_Utils_DI_Internals_InstanceServiceEntry_Value" data-uid="Solti.Utils.DI.Internals.InstanceServiceEntry.Value">Value</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Lifetime? Lifetime { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Nullable</span>&lt;<a class="xref" href="Solti.Utils.DI.Lifetime.html">Lifetime</a>&gt;</td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <a id="Solti_Utils_DI_Internals_ServiceEntry_Value_" data-uid="Solti.Utils.DI.Internals.ServiceEntry.Value*"></a>
-  <h4 id="Solti_Utils_DI_Internals_ServiceEntry_Value" data-uid="Solti.Utils.DI.Internals.ServiceEntry.Value">Value</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract object Value { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public override object Value { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -322,16 +298,17 @@
       </tr>
     </tbody>
   </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Solti.Utils.DI.Internals.ServiceEntry.html#Solti_Utils_DI_Internals_ServiceEntry_Value">ServiceEntry.Value</a></div>
   <h3 id="methods">Methods
   </h3>
-  <a id="Solti_Utils_DI_Internals_ServiceEntry_Clone_" data-uid="Solti.Utils.DI.Internals.ServiceEntry.Clone*"></a>
-  <h4 id="Solti_Utils_DI_Internals_ServiceEntry_Clone" data-uid="Solti.Utils.DI.Internals.ServiceEntry.Clone">Clone()</h4>
-  <div class="markdown level1 summary"><p>See <span class="xref">Solti.Utils.DI.Internals.ICloneable</span>.</p>
-</div>
+  <a id="Solti_Utils_DI_Internals_InstanceServiceEntry_Clone_" data-uid="Solti.Utils.DI.Internals.InstanceServiceEntry.Clone*"></a>
+  <h4 id="Solti_Utils_DI_Internals_InstanceServiceEntry_Clone" data-uid="Solti.Utils.DI.Internals.InstanceServiceEntry.Clone">Clone()</h4>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract object Clone()</code></pre>
+    <pre><code class="lang-csharp hljs">public override object Clone()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -348,14 +325,15 @@
       </tr>
     </tbody>
   </table>
-  <a id="Solti_Utils_DI_Internals_ServiceEntry_Equals_" data-uid="Solti.Utils.DI.Internals.ServiceEntry.Equals*"></a>
-  <h4 id="Solti_Utils_DI_Internals_ServiceEntry_Equals_System_Object_" data-uid="Solti.Utils.DI.Internals.ServiceEntry.Equals(System.Object)">Equals(Object)</h4>
-  <div class="markdown level1 summary"><p>See <see cref="!:object.Equals(object)"></see></p>
-</div>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Solti.Utils.DI.Internals.ServiceEntry.html#Solti_Utils_DI_Internals_ServiceEntry_Clone">ServiceEntry.Clone()</a></div>
+  <a id="Solti_Utils_DI_Internals_InstanceServiceEntry_Dispose_" data-uid="Solti.Utils.DI.Internals.InstanceServiceEntry.Dispose*"></a>
+  <h4 id="Solti_Utils_DI_Internals_InstanceServiceEntry_Dispose_System_Boolean_" data-uid="Solti.Utils.DI.Internals.InstanceServiceEntry.Dispose(System.Boolean)">Dispose(Boolean)</h4>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override bool Equals(object obj)</code></pre>
+    <pre><code class="lang-csharp hljs">protected override void Dispose(bool disposeManaged)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -368,59 +346,21 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Object</span></td>
-        <td><span class="parametername">obj</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
         <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">disposeManaged</span></td>
         <td></td>
       </tr>
     </tbody>
   </table>
-  <a id="Solti_Utils_DI_Internals_ServiceEntry_GetHashCode_" data-uid="Solti.Utils.DI.Internals.ServiceEntry.GetHashCode*"></a>
-  <h4 id="Solti_Utils_DI_Internals_ServiceEntry_GetHashCode" data-uid="Solti.Utils.DI.Internals.ServiceEntry.GetHashCode">GetHashCode()</h4>
-  <div class="markdown level1 summary"><p>See <see cref="!:object.GetHashCode"></see></p>
-</div>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Solti.Utils.DI.Internals.Disposable.html#Solti_Utils_DI_Internals_Disposable_Dispose_System_Boolean_">Disposable.Dispose(Boolean)</a></div>
+  <a id="Solti_Utils_DI_Internals_InstanceServiceEntry_GetService_" data-uid="Solti.Utils.DI.Internals.InstanceServiceEntry.GetService*"></a>
+  <h4 id="Solti_Utils_DI_Internals_InstanceServiceEntry_GetService_Solti_Utils_DI_IInjector_" data-uid="Solti.Utils.DI.Internals.InstanceServiceEntry.GetService(Solti.Utils.DI.IInjector)">GetService(IInjector)</h4>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override int GetHashCode()</code></pre>
-  </div>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Int32</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <a id="Solti_Utils_DI_Internals_ServiceEntry_GetService_" data-uid="Solti.Utils.DI.Internals.ServiceEntry.GetService*"></a>
-  <h4 id="Solti_Utils_DI_Internals_ServiceEntry_GetService_Solti_Utils_DI_IInjector_" data-uid="Solti.Utils.DI.Internals.ServiceEntry.GetService(Solti.Utils.DI.IInjector)">GetService(IInjector)</h4>
-  <div class="markdown level1 summary"><p>Gets the service instance.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract object GetService(IInjector injector)</code></pre>
+    <pre><code class="lang-csharp hljs">public override object GetService(IInjector injector)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -435,8 +375,7 @@
       <tr>
         <td><a class="xref" href="Solti.Utils.DI.IInjector.html">IInjector</a></td>
         <td><span class="parametername">injector</span></td>
-        <td><p>Containing injector.</p>
-</td>
+        <td></td>
       </tr>
     </tbody>
   </table>
@@ -451,11 +390,12 @@
     <tbody>
       <tr>
         <td><span class="xref">System.Object</span></td>
-        <td><p>The service instance.</p>
-</td>
+        <td></td>
       </tr>
     </tbody>
   </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Solti.Utils.DI.Internals.ServiceEntry.html#Solti_Utils_DI_Internals_ServiceEntry_GetService_Solti_Utils_DI_IInjector_">ServiceEntry.GetService(IInjector)</a></div>
   <h3 id="implements">Implements</h3>
   <div>
       <a class="xref" href="Solti.Utils.DI.IServiceInfo.html">IServiceInfo</a>

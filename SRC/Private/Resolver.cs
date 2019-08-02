@@ -9,6 +9,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Threading;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -77,6 +78,12 @@ namespace Solti.Utils.DI.Internals
         });
 
         public static Func<IInjector, object> Get(Type type) => Cache<Type, Func<IInjector, object>>.GetOrAdd(type, () => Get(type.GetApplicableConstructor()));
+
+        public static Func<IInjector, object> Get(ITypeResolver type, Type @interface)
+        {
+            var factory = new Lazy<Func<IInjector, object>>(() => Get(type.Resolve(@interface)), LazyThreadSafetyMode.ExecutionAndPublication);
+            return injector => factory.Value(injector);
+        }
 
         public static Func<IInjector, IReadOnlyDictionary<string, object>, object> GetExtended(ConstructorInfo constructor) => Cache<ConstructorInfo, Func<IInjector, IReadOnlyDictionary<string, object>, object>>.GetOrAdd(constructor, () =>
         {

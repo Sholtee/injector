@@ -12,10 +12,6 @@ namespace Solti.Utils.DI.Internals
 
     internal static class ServiceEntryExtensions
     {
-        public static Func<IInjector, Type, object> CreateFactory(this ServiceEntry entry) => Resolver.Get(entry.Implementation).ConvertToFactory();
-
-        public static void SetFactory(this ServiceEntry entry) => entry.Factory = entry.CreateFactory();
-
         public static void CheckValid(this ServiceEntry entry)
         {
             Type
@@ -30,9 +26,20 @@ namespace Solti.Utils.DI.Internals
 
         public static ServiceEntry Specialize(this ServiceEntry entry, params Type[] genericArguments)
         {
-            Debug.Assert(entry.Lifetime.HasValue, "Entries containing Instance definition can not be specialized.");
+            Debug.Assert(entry.Lifetime.HasValue);
 
-            var specialied = new ServiceEntry(entry.Interface.MakeGenericType(genericArguments), entry.Lifetime.Value, entry.Implementation.MakeGenericType(genericArguments));
+            var specialied = (ServiceEntry) entry.GetType().CreateInstance
+            (
+                new []
+                {
+                    typeof(Type),
+                    typeof(Lifetime?),
+                    typeof(Type)
+                }, 
+                entry.Interface.MakeGenericType(genericArguments), 
+                entry.Lifetime.Value, 
+                entry.Implementation.MakeGenericType(genericArguments)
+            );
 
             //
             // Ha a generikus bejegyzesunk ITypeResolver-t hasznal akkor itt van az elso alkalom hogy
@@ -40,7 +47,6 @@ namespace Solti.Utils.DI.Internals
             //
 
             specialied.CheckValid(); 
-            specialied.SetFactory();
 
             return specialied;
         }

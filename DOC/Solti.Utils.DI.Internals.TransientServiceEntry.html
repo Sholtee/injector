@@ -1,0 +1,352 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class TransientServiceEntry
+   | Injector </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class TransientServiceEntry
+   | Injector ">
+    <meta name="generator" content="docfx 2.42.4.0">
+    
+    <link rel="shortcut icon" href="favicon.ico">
+    <link rel="stylesheet" href="styles/docfx.vendor.css">
+    <link rel="stylesheet" href="styles/docfx.css">
+    <link rel="stylesheet" href="styles/main.css">
+    <meta property="docfx:navrel" content="toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        <div class="article row grid">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Solti.Utils.DI.Internals.TransientServiceEntry">
+  
+  
+  <h1 id="Solti_Utils_DI_Internals_TransientServiceEntry" data-uid="Solti.Utils.DI.Internals.TransientServiceEntry" class="text-break">Class TransientServiceEntry
+  </h1>
+  <div class="markdown level0 summary"><p>Describes a transient service entry.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><span class="xref">System.Object</span></div>
+    <div class="level1"><a class="xref" href="Solti.Utils.DI.Internals.Disposable.html">Disposable</a></div>
+    <div class="level2"><a class="xref" href="Solti.Utils.DI.Internals.ServiceEntry.html">ServiceEntry</a></div>
+    <div class="level3"><a class="xref" href="Solti.Utils.DI.Internals.ProducibleServiceEntry.html">ProducibleServiceEntry</a></div>
+    <div class="level4"><span class="xref">TransientServiceEntry</span></div>
+  </div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="Solti.Utils.DI.IServiceInfo.html">IServiceInfo</a></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="Solti.Utils.DI.Internals.ProducibleServiceEntry.html#Solti_Utils_DI_Internals_ProducibleServiceEntry_FImplementation">ProducibleServiceEntry.FImplementation</a>
+    </div>
+    <div>
+      <a class="xref" href="Solti.Utils.DI.Internals.ProducibleServiceEntry.html#Solti_Utils_DI_Internals_ProducibleServiceEntry_Implementation">ProducibleServiceEntry.Implementation</a>
+    </div>
+    <div>
+      <a class="xref" href="Solti.Utils.DI.Internals.ProducibleServiceEntry.html#Solti_Utils_DI_Internals_ProducibleServiceEntry_Factory">ProducibleServiceEntry.Factory</a>
+    </div>
+    <div>
+      <a class="xref" href="Solti.Utils.DI.Internals.ProducibleServiceEntry.html#Solti_Utils_DI_Internals_ProducibleServiceEntry_IsService">ProducibleServiceEntry.IsService</a>
+    </div>
+    <div>
+      <a class="xref" href="Solti.Utils.DI.Internals.ProducibleServiceEntry.html#Solti_Utils_DI_Internals_ProducibleServiceEntry_IsLazy">ProducibleServiceEntry.IsLazy</a>
+    </div>
+    <div>
+      <a class="xref" href="Solti.Utils.DI.Internals.ProducibleServiceEntry.html#Solti_Utils_DI_Internals_ProducibleServiceEntry_IsFactory">ProducibleServiceEntry.IsFactory</a>
+    </div>
+    <div>
+      <a class="xref" href="Solti.Utils.DI.Internals.ProducibleServiceEntry.html#Solti_Utils_DI_Internals_ProducibleServiceEntry_IsInstance">ProducibleServiceEntry.IsInstance</a>
+    </div>
+    <div>
+      <a class="xref" href="Solti.Utils.DI.Internals.ServiceEntry.html#Solti_Utils_DI_Internals_ServiceEntry_Interface">ServiceEntry.Interface</a>
+    </div>
+    <div>
+      <a class="xref" href="Solti.Utils.DI.Internals.ServiceEntry.html#Solti_Utils_DI_Internals_ServiceEntry_Lifetime">ServiceEntry.Lifetime</a>
+    </div>
+    <div>
+      <a class="xref" href="Solti.Utils.DI.Internals.ServiceEntry.html#Solti_Utils_DI_Internals_ServiceEntry_Equals_System_Object_">ServiceEntry.Equals(Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="Solti.Utils.DI.Internals.ServiceEntry.html#Solti_Utils_DI_Internals_ServiceEntry_GetHashCode">ServiceEntry.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="Solti.Utils.DI.Internals.Disposable.html#Solti_Utils_DI_Internals_Disposable_Disposed">Disposable.Disposed</a>
+    </div>
+    <div>
+      <a class="xref" href="Solti.Utils.DI.Internals.Disposable.html#Solti_Utils_DI_Internals_Disposable_Dispose_System_Boolean_">Disposable.Dispose(Boolean)</a>
+    </div>
+    <div>
+      <a class="xref" href="Solti.Utils.DI.Internals.Disposable.html#Solti_Utils_DI_Internals_Disposable_CheckDisposed">Disposable.CheckDisposed()</a>
+    </div>
+    <div>
+      <a class="xref" href="Solti.Utils.DI.Internals.Disposable.html#Solti_Utils_DI_Internals_Disposable_Dispose">Disposable.Dispose()</a>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Solti.Utils.DI.Internals.html">Solti.Utils.DI.Internals</a></h6>
+  <h6><strong>Assembly</strong>: Injector.dll</h6>
+  <h5 id="Solti_Utils_DI_Internals_TransientServiceEntry_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class TransientServiceEntry : ProducibleServiceEntry, IServiceFactory, IServiceInfo, ICloneable</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+  </h3>
+  <a id="Solti_Utils_DI_Internals_TransientServiceEntry__ctor_" data-uid="Solti.Utils.DI.Internals.TransientServiceEntry.#ctor*"></a>
+  <h4 id="Solti_Utils_DI_Internals_TransientServiceEntry__ctor_Type_System_Nullable_Solti_Utils_DI_Lifetime__Func_Solti_Utils_DI_IInjector_Type_System_Object__" data-uid="Solti.Utils.DI.Internals.TransientServiceEntry.#ctor(Type,System.Nullable{Solti.Utils.DI.Lifetime},Func{Solti.Utils.DI.IInjector,Type,System.Object})">TransientServiceEntry(Type, Nullable&lt;Lifetime&gt;, Func&lt;IInjector, Type, Object&gt;)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TransientServiceEntry(Type interface, Lifetime? lifetime, Func&lt;IInjector, Type, object&gt; factory)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Type</span></td>
+        <td><span class="parametername">interface</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Nullable</span>&lt;<a class="xref" href="Solti.Utils.DI.Lifetime.html">Lifetime</a>&gt;</td>
+        <td><span class="parametername">lifetime</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">Func</span>&lt;<a class="xref" href="Solti.Utils.DI.IInjector.html">IInjector</a>, <span class="xref">Type</span>, <span class="xref">System.Object</span>&gt;</td>
+        <td><span class="parametername">factory</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Solti_Utils_DI_Internals_TransientServiceEntry__ctor_" data-uid="Solti.Utils.DI.Internals.TransientServiceEntry.#ctor*"></a>
+  <h4 id="Solti_Utils_DI_Internals_TransientServiceEntry__ctor_Type_System_Nullable_Solti_Utils_DI_Lifetime__Solti_Utils_DI_ITypeResolver_" data-uid="Solti.Utils.DI.Internals.TransientServiceEntry.#ctor(Type,System.Nullable{Solti.Utils.DI.Lifetime},Solti.Utils.DI.ITypeResolver)">TransientServiceEntry(Type, Nullable&lt;Lifetime&gt;, ITypeResolver)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TransientServiceEntry(Type interface, Lifetime? lifetime, ITypeResolver implementation)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Type</span></td>
+        <td><span class="parametername">interface</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Nullable</span>&lt;<a class="xref" href="Solti.Utils.DI.Lifetime.html">Lifetime</a>&gt;</td>
+        <td><span class="parametername">lifetime</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.ITypeResolver.html">ITypeResolver</a></td>
+        <td><span class="parametername">implementation</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Solti_Utils_DI_Internals_TransientServiceEntry__ctor_" data-uid="Solti.Utils.DI.Internals.TransientServiceEntry.#ctor*"></a>
+  <h4 id="Solti_Utils_DI_Internals_TransientServiceEntry__ctor_Type_System_Nullable_Solti_Utils_DI_Lifetime__Type_" data-uid="Solti.Utils.DI.Internals.TransientServiceEntry.#ctor(Type,System.Nullable{Solti.Utils.DI.Lifetime},Type)">TransientServiceEntry(Type, Nullable&lt;Lifetime&gt;, Type)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TransientServiceEntry(Type interface, Lifetime? lifetime, Type implementation)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Type</span></td>
+        <td><span class="parametername">interface</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Nullable</span>&lt;<a class="xref" href="Solti.Utils.DI.Lifetime.html">Lifetime</a>&gt;</td>
+        <td><span class="parametername">lifetime</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">Type</span></td>
+        <td><span class="parametername">implementation</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  <a id="Solti_Utils_DI_Internals_TransientServiceEntry_Value_" data-uid="Solti.Utils.DI.Internals.TransientServiceEntry.Value*"></a>
+  <h4 id="Solti_Utils_DI_Internals_TransientServiceEntry_Value" data-uid="Solti.Utils.DI.Internals.TransientServiceEntry.Value">Value</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override object Value { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Object</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Solti.Utils.DI.Internals.ServiceEntry.html#Solti_Utils_DI_Internals_ServiceEntry_Value">ServiceEntry.Value</a></div>
+  <h3 id="methods">Methods
+  </h3>
+  <a id="Solti_Utils_DI_Internals_TransientServiceEntry_Clone_" data-uid="Solti.Utils.DI.Internals.TransientServiceEntry.Clone*"></a>
+  <h4 id="Solti_Utils_DI_Internals_TransientServiceEntry_Clone" data-uid="Solti.Utils.DI.Internals.TransientServiceEntry.Clone">Clone()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override object Clone()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Object</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Solti.Utils.DI.Internals.ServiceEntry.html#Solti_Utils_DI_Internals_ServiceEntry_Clone">ServiceEntry.Clone()</a></div>
+  <a id="Solti_Utils_DI_Internals_TransientServiceEntry_GetService_" data-uid="Solti.Utils.DI.Internals.TransientServiceEntry.GetService*"></a>
+  <h4 id="Solti_Utils_DI_Internals_TransientServiceEntry_GetService_Solti_Utils_DI_IInjector_" data-uid="Solti.Utils.DI.Internals.TransientServiceEntry.GetService(Solti.Utils.DI.IInjector)">GetService(IInjector)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override object GetService(IInjector injector)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.IInjector.html">IInjector</a></td>
+        <td><span class="parametername">injector</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Object</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Solti.Utils.DI.Internals.ServiceEntry.html#Solti_Utils_DI_Internals_ServiceEntry_GetService_Solti_Utils_DI_IInjector_">ServiceEntry.GetService(IInjector)</a></div>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="Solti.Utils.DI.IServiceInfo.html">IServiceInfo</a>
+  </div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="styles/docfx.js"></script>
+    <script type="text/javascript" src="styles/main.js"></script>
+  </body>
+</html>

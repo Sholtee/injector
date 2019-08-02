@@ -7,7 +7,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Threading;
 
 namespace Solti.Utils.DI
 {
@@ -45,63 +44,52 @@ namespace Solti.Utils.DI
         #region Internal
         internal ServiceEntry Service(Type iface, Type implementation, Lifetime lifetime)
         {
-            var entry = new ServiceEntry(iface, lifetime, implementation);
+            ServiceEntry entry;
+            switch (lifetime)
+            {
+                case Lifetime.Transient:
+                    entry = new TransientServiceEntry(iface, lifetime, implementation);
+                    break;
+                case Lifetime.Singleton:
+                    entry = new SingletonServiceEntry(iface, lifetime, implementation);
+                    break;
+                default: throw new ArgumentException("TODO", nameof(lifetime));
+            }
+
             entry.CheckValid();
-
-            //
-            // Ha generikus interface-t regisztralunk akkor nem kell (nem is lehet) 
-            // legyartani a factory-t.
-            //
-
-            if (!iface.IsGenericTypeDefinition()) entry.SetFactory();
 
             return Register(entry);
         }
 
         internal ServiceEntry Factory(Type iface, Func<IInjector, Type, object> factory, Lifetime lifetime)
         {
-            return Register(new ServiceEntry(iface, lifetime)
+            ServiceEntry entry;
+            switch (lifetime)
             {
-                Factory = factory
-            });
+                case Lifetime.Transient:
+                    entry = new TransientServiceEntry(iface, lifetime, factory);
+                    break;
+                case Lifetime.Singleton:
+                    entry = new SingletonServiceEntry(iface, lifetime, factory);
+                    break;
+                default: throw new ArgumentException("TODO", nameof(lifetime));
+            }
+
+            return Register(entry);
         }
 
         internal ServiceEntry Lazy(Type iface, ITypeResolver implementation, Lifetime lifetime)
-        {         
-            var entry = new ServiceEntry(iface, lifetime, implementation);
-
-            //
-            // Ha generikus interface-t regisztralunk akkor nem kell (nem is lehet) 
-            // legyartani a factory-t.
-            //
-            
-            if (!iface.IsGenericTypeDefinition())
+        {
+            ServiceEntry entry;
+            switch (lifetime)
             {
-                var factory = new Lazy<Func<IInjector, Type, object>>
-                (
-                    () =>
-                    {
-                        //
-                        // Mivel a validalas triggerelne a resolver-t ezert azt az elso factory hivaskor tesszuk meg.
-                        //
-
-                        entry.CheckValid();
-                        return entry.CreateFactory();
-                    },
-                    
-                    //
-                    // A container oroklodes maitt a Lazy<> megosztasra kerulhet tobb szal kozt is
-                    // -> biztositsuk h csak egyszer legyen meghivva.
-                    //
-                    
-                    LazyThreadSafetyMode.ExecutionAndPublication
-                );
-
-                //
-                // Mivel van factory fv ezert a Lazy szervizek is Proxy-zhatok.
-                //
-
-                entry.Factory = (injector, type) => factory.Value(injector, type);
+                case Lifetime.Transient:
+                    entry = new TransientServiceEntry(iface, lifetime, implementation);
+                    break;
+                case Lifetime.Singleton:
+                    entry = new SingletonServiceEntry(iface, lifetime, implementation);
+                    break;
+                default: throw new ArgumentException("TODO", nameof(lifetime));
             }
 
             return Register(entry);
@@ -109,13 +97,13 @@ namespace Solti.Utils.DI
 
         internal ServiceEntry Proxy(Type iface, Func<IInjector, Type, object, object> decorator)
         {
-            ServiceEntry entry = FEntries.QueryEntry(iface);
+            ProducibleServiceEntry entry = FEntries.QueryEntry(iface) as ProducibleServiceEntry;
 
             //
             // Service(), Factory(), Lazy()
             //
 
-            if (entry.Factory != null)
+            if (entry?.Factory != null)
             {
                 Func<IInjector, Type, object> oldFactory = entry.Factory;
 
@@ -135,7 +123,7 @@ namespace Solti.Utils.DI
             if (!iface.IsInstanceOfType(instance))
                 throw new InvalidOperationException(string.Format(Resources.NOT_ASSIGNABLE, iface, instance.GetType()));
 
-            return Register(new ServiceEntry(iface, instance, releaseOnDispose));
+            return Register(new InstanceServiceEntry(iface, instance, releaseOnDispose));
         }
 
         public static explicit operator ServiceCollection(ServiceContainer container) => container?.FEntries;

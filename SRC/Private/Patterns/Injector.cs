@@ -30,7 +30,7 @@ namespace Solti.Utils.DI.Internals
                 // Beallitjuk a proxyt, majd felvesszuk sajat magunkat.
                 //
 
-                new ServiceEntry
+                new InstanceServiceEntry
                 (
                     typeof(IInjector),
                     
@@ -38,13 +38,13 @@ namespace Solti.Utils.DI.Internals
                     // "target" kell h a megfelelo overload-ot hivjuk
                     //
 
-                    ProxyUtils.Chain<IInjector>(this, me => ProxyFactory.Create<IInjector, ParameterValidatorProxy<IInjector>>(target: me)),
+                    Self = ProxyUtils.Chain<IInjector>(this, me => ProxyFactory.Create<IInjector, ParameterValidatorProxy<IInjector>>(target: me)),
                     releaseOnDispose: false
                 )
             };
         }
 
-        private IInjector Self => (IInjector) Get(typeof(IInjector));
+        private IInjector Self { get; }
         #endregion
 
         #region Protected
@@ -73,27 +73,8 @@ namespace Solti.Utils.DI.Internals
                 if (FCurrentPath.Count(t => t == iface) > 1)
                     throw new InvalidOperationException(string.Format(Resources.CIRCULAR_REFERENCE, string.Join(" -> ", FCurrentPath)));
 
-                //
-                // A bejegyzesnek mar legyartottnak, vagy legyarthatonak kell lennie.
-                //
-
                 IServiceFactory factory = FServices.QueryEntry(iface);
-
-                Debug.Assert(factory.Value != null || factory.Factory != null);
-
-                //
-                // Singleton eletciklusnal az elso hivasnal le kell gyartani es menteni a peldanyt.
-                //
-
-                if (factory.Lifetime == Lifetime.Singleton && factory.Value == null)
-                    factory.Value = factory.Factory(Self, iface);
-
-                //
-                // Elvileg jok vagyunk: Ha van "Value"-nk ("Singleton" eletciklus vagy Instance() hivas) 
-                // akkor visszaadjuk azt, kulomben legyartjuk az uj peldanyt.
-                //
-
-                return factory.Value ?? factory.Factory(Self, iface);
+                return factory.GetService(Self);
             }
             finally
             {
