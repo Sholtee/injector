@@ -177,4 +177,7 @@
   <data name="TYPE_NOT_VISIBLE" xml:space="preserve">
     <value>{0} is not visible. The declaring assembly should be annotated with the InternalsVisibleToAttribute.</value>
   </data>
+  <data name="UNKNOWN_LIFETIME" xml:space="preserve">
+    <value>Unknown lifetime: {0}</value>
+  </data>
 </root>

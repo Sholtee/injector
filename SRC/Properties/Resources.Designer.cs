@@ -9,7 +9,8 @@
 //------------------------------------------------------------------------------
 
 namespace Solti.Utils.DI.Properties {
-    using Internals;
+    using System;
+    using System.Reflection;
     
     
     /// <summary>
@@ -39,7 +40,7 @@ namespace Solti.Utils.DI.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Solti.Utils.DI.Properties.Resources", typeof(Resources).Assembly());
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Solti.Utils.DI.Properties.Resources", typeof(Resources).GetTypeInfo().Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -237,6 +238,15 @@ namespace Solti.Utils.DI.Properties {
         internal static string TYPE_NOT_VISIBLE {
             get {
                 return ResourceManager.GetString("TYPE_NOT_VISIBLE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unknown lifetime: {0}.
+        /// </summary>
+        internal static string UNKNOWN_LIFETIME {
+            get {
+                return ResourceManager.GetString("UNKNOWN_LIFETIME", resourceCulture);
             }
         }
     }

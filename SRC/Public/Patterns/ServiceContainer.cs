@@ -44,18 +44,7 @@ namespace Solti.Utils.DI
         #region Internal
         internal ServiceEntry Service(Type iface, Type implementation, Lifetime lifetime)
         {
-            ServiceEntry entry;
-            switch (lifetime)
-            {
-                case Lifetime.Transient:
-                    entry = new TransientServiceEntry(iface,  implementation);
-                    break;
-                case Lifetime.Singleton:
-                    entry = new SingletonServiceEntry(iface, implementation);
-                    break;
-                default: throw new ArgumentException("TODO", nameof(lifetime));
-            }
-
+            ServiceEntry entry = ProducibleServiceEntryFactory.CreateEntry(lifetime, iface, implementation);
             entry.CheckValid();
 
             return Register(entry);
@@ -63,35 +52,13 @@ namespace Solti.Utils.DI
 
         internal ServiceEntry Factory(Type iface, Func<IInjector, Type, object> factory, Lifetime lifetime)
         {
-            ServiceEntry entry;
-            switch (lifetime)
-            {
-                case Lifetime.Transient:
-                    entry = new TransientServiceEntry(iface, factory);
-                    break;
-                case Lifetime.Singleton:
-                    entry = new SingletonServiceEntry(iface, factory);
-                    break;
-                default: throw new ArgumentException("TODO", nameof(lifetime));
-            }
-
+            ServiceEntry entry = ProducibleServiceEntryFactory.CreateEntry(lifetime, iface, factory);
             return Register(entry);
         }
 
         internal ServiceEntry Lazy(Type iface, ITypeResolver implementation, Lifetime lifetime)
         {
-            ServiceEntry entry;
-            switch (lifetime)
-            {
-                case Lifetime.Transient:
-                    entry = new TransientServiceEntry(iface, implementation);
-                    break;
-                case Lifetime.Singleton:
-                    entry = new SingletonServiceEntry(iface, implementation);
-                    break;
-                default: throw new ArgumentException("TODO", nameof(lifetime));
-            }
-
+            ServiceEntry entry = ProducibleServiceEntryFactory.CreateEntry(lifetime, iface, implementation);
             return Register(entry);
         }
 
