@@ -14,15 +14,15 @@ namespace Solti.Utils.DI.Internals
     {
         private object FValue;
 
-        public SingletonServiceEntry(Type @interface, Lifetime? lifetime, Func<IInjector, Type, object> factory) : base(@interface, lifetime, factory)
+        public SingletonServiceEntry(Type @interface, Func<IInjector, Type, object> factory) : base(@interface, DI.Lifetime.Singleton, factory)
         {
         }
 
-        public SingletonServiceEntry(Type @interface, Lifetime? lifetime, Type implementation) : base(@interface, lifetime, implementation)
+        public SingletonServiceEntry(Type @interface, Type implementation) : base(@interface, DI.Lifetime.Singleton, implementation)
         {
         }
 
-        public SingletonServiceEntry(Type @interface, Lifetime? lifetime, ITypeResolver implementation) : base(@interface, lifetime, implementation)
+        public SingletonServiceEntry(Type @interface, ITypeResolver implementation) : base(@interface, DI.Lifetime.Singleton, implementation)
         {
         }
 
@@ -30,7 +30,7 @@ namespace Solti.Utils.DI.Internals
 
         public override object GetService(IInjector injector) => FValue ?? (FValue = Factory(injector, Interface));
 
-        public override object Clone() => new SingletonServiceEntry(Interface, Lifetime, Factory)
+        public override object Clone() => new SingletonServiceEntry(Interface, Factory)
         {
             FImplementation = FImplementation
         };

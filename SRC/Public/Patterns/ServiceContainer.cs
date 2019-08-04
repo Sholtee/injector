@@ -48,10 +48,10 @@ namespace Solti.Utils.DI
             switch (lifetime)
             {
                 case Lifetime.Transient:
-                    entry = new TransientServiceEntry(iface, lifetime, implementation);
+                    entry = new TransientServiceEntry(iface,  implementation);
                     break;
                 case Lifetime.Singleton:
-                    entry = new SingletonServiceEntry(iface, lifetime, implementation);
+                    entry = new SingletonServiceEntry(iface, implementation);
                     break;
                 default: throw new ArgumentException("TODO", nameof(lifetime));
             }
@@ -67,10 +67,10 @@ namespace Solti.Utils.DI
             switch (lifetime)
             {
                 case Lifetime.Transient:
-                    entry = new TransientServiceEntry(iface, lifetime, factory);
+                    entry = new TransientServiceEntry(iface, factory);
                     break;
                 case Lifetime.Singleton:
-                    entry = new SingletonServiceEntry(iface, lifetime, factory);
+                    entry = new SingletonServiceEntry(iface, factory);
                     break;
                 default: throw new ArgumentException("TODO", nameof(lifetime));
             }
@@ -84,10 +84,10 @@ namespace Solti.Utils.DI
             switch (lifetime)
             {
                 case Lifetime.Transient:
-                    entry = new TransientServiceEntry(iface, lifetime, implementation);
+                    entry = new TransientServiceEntry(iface, implementation);
                     break;
                 case Lifetime.Singleton:
-                    entry = new SingletonServiceEntry(iface, lifetime, implementation);
+                    entry = new SingletonServiceEntry(iface, implementation);
                     break;
                 default: throw new ArgumentException("TODO", nameof(lifetime));
             }
@@ -97,13 +97,13 @@ namespace Solti.Utils.DI
 
         internal ServiceEntry Proxy(Type iface, Func<IInjector, Type, object, object> decorator)
         {
-            ProducibleServiceEntry entry = FEntries.QueryEntry(iface) as ProducibleServiceEntry;
+            ServiceEntry entry = FEntries.QueryEntry(iface);
 
             //
             // Service(), Factory(), Lazy()
             //
 
-            if (entry?.Factory != null)
+            if (entry.Factory != null)
             {
                 Func<IInjector, Type, object> oldFactory = entry.Factory;
 

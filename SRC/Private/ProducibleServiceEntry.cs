@@ -15,17 +15,17 @@ namespace Solti.Utils.DI.Internals
     {
         protected object FImplementation;
 
-        protected ProducibleServiceEntry(Type @interface, Lifetime? lifetime, Func<IInjector, Type, object> factory) : base(@interface, lifetime)
+        protected ProducibleServiceEntry(Type @interface, Lifetime lifetime, Func<IInjector, Type, object> factory) : base(@interface, lifetime)
         {
             Factory = factory;
         }
 
-        protected ProducibleServiceEntry(Type @interface, Lifetime? lifetime, Type implementation) : this(@interface, lifetime, !@interface.IsGenericTypeDefinition() ? Resolver.Get(implementation).ConvertToFactory() : null)
+        protected ProducibleServiceEntry(Type @interface, Lifetime lifetime, Type implementation) : this(@interface, lifetime, !@interface.IsGenericTypeDefinition() ? Resolver.Get(implementation).ConvertToFactory() : null)
         {
             FImplementation = implementation;
         }
 
-        protected ProducibleServiceEntry(Type @interface, Lifetime? lifetime, ITypeResolver implementation): this(@interface, lifetime, !@interface.IsGenericTypeDefinition() ? Resolver.Get(implementation, @interface).ConvertToFactory() : null)
+        protected ProducibleServiceEntry(Type @interface, Lifetime lifetime, ITypeResolver implementation): this(@interface, lifetime, !@interface.IsGenericTypeDefinition() ? Resolver.Get(implementation, @interface).ConvertToFactory() : null)
         {
             //
             // A "LazyThreadSafetyMode.ExecutionAndPublication" miatt orokolt bejegyzesek eseten is

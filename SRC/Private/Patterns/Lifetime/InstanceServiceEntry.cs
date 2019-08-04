@@ -8,7 +8,7 @@ using System;
 namespace Solti.Utils.DI.Internals
 {
     /// <summary>
-    /// Describes a singleton service entry.
+    /// Describes an instance service entry.
     /// </summary>
     public class InstanceServiceEntry : ServiceEntry
     {
@@ -24,7 +24,12 @@ namespace Solti.Utils.DI.Internals
 
         public override Func<IInjector, Type, object> Factory
         {
-            get => throw new InvalidOperationException();
+            //
+            // Nem kell lekerdezeskor kivetelt dobni (Proxy() hivaskor ha a Factory null ugy is
+            // hiba van).
+            //
+
+            get => null;
             set => throw new InvalidOperationException();
         }
         public override object Value { get; }
@@ -39,7 +44,7 @@ namespace Solti.Utils.DI.Internals
 
         protected override void Dispose(bool disposeManaged)
         {
-            if (FReleaseOnDispose) (Value as IDisposable)?.Dispose();
+            if (disposeManaged && FReleaseOnDispose) (Value as IDisposable)?.Dispose();
             base.Dispose(disposeManaged);
         }
     }
