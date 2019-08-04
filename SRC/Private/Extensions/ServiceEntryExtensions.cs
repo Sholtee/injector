@@ -46,7 +46,7 @@ namespace Solti.Utils.DI.Internals
             // validaljunk.
             //
 
-            specialied.CheckValid(); 
+            if (entry.IsLazy) specialied.CheckValid(); 
 
             return specialied;
         }

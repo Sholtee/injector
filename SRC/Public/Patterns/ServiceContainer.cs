@@ -85,13 +85,7 @@ namespace Solti.Utils.DI
             throw new InvalidOperationException(Resources.CANT_PROXY);
         }
 
-        internal ServiceEntry Instance(Type iface, object instance, bool releaseOnDispose)
-        { 
-            if (!iface.IsInstanceOfType(instance))
-                throw new InvalidOperationException(string.Format(Resources.NOT_ASSIGNABLE, iface, instance.GetType()));
-
-            return Register(new InstanceServiceEntry(iface, instance, releaseOnDispose));
-        }
+        internal ServiceEntry Instance(Type iface, object instance, bool releaseOnDispose) => Register(new InstanceServiceEntry(iface, instance, releaseOnDispose));
 
         public static explicit operator ServiceCollection(ServiceContainer container) => container?.FEntries;
         #endregion
@@ -112,6 +106,14 @@ namespace Solti.Utils.DI
         IServiceContainer IServiceContainer.Lazy(Type iface, ITypeResolver implementation, Lifetime lifetime)
         {
             Lazy(iface, implementation, lifetime);
+
+            //
+            // Ha nem generikusunk van (van Factory) akkor a gyarnak tipus validaltnak kell
+            // lennie.
+            //
+
+            if (!iface.IsGenericTypeDefinition()) Proxy(iface, TypeChecker);
+
             return Self;
         }
 
@@ -136,7 +138,11 @@ namespace Solti.Utils.DI
         /// </summary>
         IServiceContainer IServiceContainer.Instance(Type iface, object instance, bool releaseOnDispose)
         {
+            if (!iface.IsInstanceOfType(instance))
+                throw new InvalidOperationException(string.Format(Resources.NOT_ASSIGNABLE, iface, instance.GetType()));
+
             Instance(iface, instance, releaseOnDispose);
+
             return Self;
         }
 
