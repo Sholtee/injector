@@ -49,6 +49,26 @@ namespace Solti.Utils.DI.Internals
                 Factory = Resolver.Get(lazyImplementation).ConvertToFactory();
         }
 
+        protected bool IsValid(Type iface)
+        {
+            //
+            // Generikus szervizhez csak akkor tartozhat Factory ha az explicit meg volt adva
+            // -> ha nincs Factory akkor szopas.
+            //
+
+            if (Factory == null) return false;
+
+            //
+            // A fenti esetnel nincs implementacio, minden mas esetben az interface-nek az 
+            // implementaciohoz kell tartoznia (amibol a Factory generalva lett).
+            //
+
+            if (iface != null && Implementation != null && !iface.IsInterfaceOf(Implementation))
+                return false;
+
+            return true;
+        }
+
         public sealed override Type Implementation => (FImplementation as Lazy<Type>)?.Value ?? (Type) FImplementation;
         public sealed override Func<IInjector, Type, object> Factory { get; set; }
         public override bool IsService => FImplementation != null;

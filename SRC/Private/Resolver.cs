@@ -80,6 +80,11 @@ namespace Solti.Utils.DI.Internals
 
         public static Func<IInjector, object> Get(Lazy<Type> type)
         {    
+            //
+            // A Lazy<> csak azert kell h minden egyes factory hivasnal ne forduljunk a 
+            // gyorsitotarhoz.
+            //
+
             var factory = new Lazy<Func<IInjector, object>>(() => Get(type.Value));
 
             return injector => factory.Value(injector);
