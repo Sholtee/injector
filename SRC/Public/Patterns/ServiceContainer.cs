@@ -42,25 +42,20 @@ namespace Solti.Utils.DI
         #endregion
 
         #region Internal
-        internal ServiceEntry Service(Type iface, Type implementation, Lifetime lifetime)
-        {
-            ServiceEntry entry = ProducibleServiceEntryFactory.CreateEntry(lifetime, iface, implementation);
-            entry.CheckValid();
+        internal ServiceEntry Service(Type iface, Type implementation, Lifetime lifetime) => Register
+        (
+            ProducibleServiceEntryFactory.CreateEntry(lifetime, iface, implementation)
+        );
 
-            return Register(entry);
-        }
+        internal ServiceEntry Factory(Type iface, Func<IInjector, Type, object> factory, Lifetime lifetime) => Register
+        (
+            ProducibleServiceEntryFactory.CreateEntry(lifetime, iface, factory)
+        );
 
-        internal ServiceEntry Factory(Type iface, Func<IInjector, Type, object> factory, Lifetime lifetime)
-        {
-            ServiceEntry entry = ProducibleServiceEntryFactory.CreateEntry(lifetime, iface, factory);
-            return Register(entry);
-        }
-
-        internal ServiceEntry Lazy(Type iface, ITypeResolver implementation, Lifetime lifetime)
-        {
-            ServiceEntry entry = ProducibleServiceEntryFactory.CreateEntry(lifetime, iface, implementation);
-            return Register(entry);
-        }
+        internal ServiceEntry Lazy(Type iface, ITypeResolver implementation, Lifetime lifetime) => Register
+        (
+            ProducibleServiceEntryFactory.CreateEntry(lifetime, iface, implementation)
+        );
 
         internal ServiceEntry Proxy(Type iface, Func<IInjector, Type, object, object> decorator)
         {
@@ -96,6 +91,13 @@ namespace Solti.Utils.DI
         /// </summary>
         IServiceContainer IServiceContainer.Service(Type iface, Type implementation, Lifetime lifetime)
         {
+            //
+            // Implementacio validalas (mukodik generikusokra is).
+            //
+
+            if (!iface.IsInterfaceOf(implementation))
+                throw new InvalidOperationException(string.Format(Resources.NOT_ASSIGNABLE, iface, implementation));
+
             Service(iface, implementation, lifetime);
             return Self;
         }

@@ -23,7 +23,7 @@ namespace Solti.Utils.DI
         /// <param name="self">The container itself.</param>
         /// <param name="lifetime">The lifetime of the service. For more information see the <see cref="Lifetime"/> enum.</param>
         /// <returns>The container itself.</returns>
-        public static IServiceContainer Service<TInterface, TImplementation>(this IServiceContainer self, Lifetime lifetime = Lifetime.Transient) => self.Service(typeof(TInterface), typeof(TImplementation), lifetime);
+        public static IServiceContainer Service<TInterface, TImplementation>(this IServiceContainer self, Lifetime lifetime = Lifetime.Transient) where TImplementation: TInterface => self.Service(typeof(TInterface), typeof(TImplementation), lifetime);
 
         /// <summary>
         /// Registers a service where the implementation will be resolved on the first request. It is useful when the implementation is unknown in compile time or you just want to load the containing assembly on the first request.

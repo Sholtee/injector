@@ -90,9 +90,9 @@ namespace Solti.Utils.DI.Container.Tests
         [Test]
         public void Container_Service_ShouldThrowIfTheInterfaceIsNotAssignableFromTheImplementation()
         {
-            Assert.Throws<InvalidOperationException>(() => Container.Service<IInterface_2, Implementation_1>(), string.Format(Resources.NOT_ASSIGNABLE, typeof(IInterface_2), typeof(Implementation_1)));
+            Assert.Throws<InvalidOperationException>(() => Container.Service(typeof(IInterface_2), typeof(Implementation_1)), string.Format(Resources.NOT_ASSIGNABLE, typeof(IInterface_2), typeof(Implementation_1)));
             Assert.Throws<InvalidOperationException>(() => Container.Service(typeof(IList<>), typeof(Implementation_1)), string.Format(Resources.NOT_ASSIGNABLE, typeof(IList<>), typeof(Implementation_1)));
-            Assert.Throws<InvalidOperationException>(() => Container.Service<IList<int>, List<string>>(), string.Format(Resources.NOT_ASSIGNABLE, typeof(IList<int>), typeof(List<string>)));
+            Assert.Throws<InvalidOperationException>(() => Container.Service(typeof(IList<int>), typeof(List<string>)), string.Format(Resources.NOT_ASSIGNABLE, typeof(IList<int>), typeof(List<string>)));
         }
 
         [Test]
