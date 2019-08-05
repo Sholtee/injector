@@ -74,7 +74,7 @@ namespace Solti.Utils.DI.Internals
                     throw new InvalidOperationException(string.Format(Resources.CIRCULAR_REFERENCE, string.Join(" -> ", FCurrentPath)));
 
                 IServiceFactory factory = FServices.QueryEntry(iface);
-                return factory.GetService(Self);
+                return factory.GetService(Self, iface);
             }
             finally
             {

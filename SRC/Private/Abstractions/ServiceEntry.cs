@@ -20,10 +20,19 @@ namespace Solti.Utils.DI.Internals
         }
 
         #region Immutables
+        /// <summary>
+        /// The interface of the service.
+        /// </summary>
         public Type Interface { get; }
 
+        /// <summary>
+        /// The lefiteime of the service (if present).
+        /// </summary>
         public Lifetime? Lifetime { get; }
 
+        /// <summary>
+        /// The implementation of the service (if present).
+        /// </summary>
         public abstract Type Implementation { get; }
 
         public abstract bool IsService { get; }
@@ -36,8 +45,14 @@ namespace Solti.Utils.DI.Internals
         #endregion
 
         #region Mutables
+        /// <summary>
+        /// The concrete factory. Don't use it directly.
+        /// </summary>
         public abstract Func<IInjector, Type, object> Factory { get; set; }
 
+        /// <summary>
+        /// The previously created service instance. Don't use it directly.
+        /// </summary>
         public abstract object Value { get; } // hiaba csak getter, valtozhat
         #endregion
 
@@ -45,8 +60,9 @@ namespace Solti.Utils.DI.Internals
         /// Gets the service instance.
         /// </summary>
         /// <param name="injector">Containing injector.</param>
+        /// <param name="iface">The service type to be queried. If null the <see cref="Interface"/> will be used</param>
         /// <returns>The service instance.</returns>
-        public abstract object GetService(IInjector injector);
+        public abstract object GetService(IInjector injector, Type iface = null);
 
         /// <summary>
         /// See <see cref="ICloneable"/>.

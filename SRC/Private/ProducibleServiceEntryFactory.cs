@@ -14,6 +14,7 @@ namespace Solti.Utils.DI.Internals
         public static ProducibleServiceEntry CreateEntry<TParam>(Lifetime lifetime, Type @interface, TParam param)
         {
             Type serviceEntryType;
+
             switch (lifetime)
             {
                 case Lifetime.Singleton:
@@ -25,7 +26,17 @@ namespace Solti.Utils.DI.Internals
                 default:
                     throw new ArgumentException(string.Format(Resources.UNKNOWN_LIFETIME, lifetime), nameof(lifetime));                  
             }
-            return (ProducibleServiceEntry) serviceEntryType.CreateInstance(new[] {typeof(Type), typeof(TParam)}, @interface, param);
+
+            return (ProducibleServiceEntry) serviceEntryType.CreateInstance
+            (
+                new[]
+                {
+                    typeof(Type),
+                    typeof(TParam)
+                }, 
+                @interface, 
+                param
+            );
         }
     }
 }

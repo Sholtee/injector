@@ -98,6 +98,12 @@ namespace Solti.Utils.DI
             if (!iface.IsInterfaceOf(implementation))
                 throw new InvalidOperationException(string.Format(Resources.NOT_ASSIGNABLE, iface, implementation));
 
+            //
+            // "implementation.GetApplicableConstructor()" hivassal itt ellenorizhetnenk a
+            // konstruktort is (mukodne generikusokra is) de h a Lazy() hivashoz hasonloan
+            // mukodjunk ezt kihagyjuk es peldanyositaskor validalunk.
+            //
+
             Service(iface, implementation, lifetime);
             return Self;
         }

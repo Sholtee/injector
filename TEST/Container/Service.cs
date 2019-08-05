@@ -56,12 +56,19 @@ namespace Solti.Utils.DI.Container.Tests
         public void Container_Service_ShouldThrowOnMultipleConstructors()
         {
             Assert.Throws<NotSupportedException>(
-                () => Container.Service(typeof(IList<>), typeof(List<>)),
-                string.Format(Resources.CONSTRUCTOR_OVERLOADING_NOT_SUPPORTED, typeof(List<>)));
-
-            Assert.Throws<NotSupportedException>(
                 () => Container.Service<IList<int>, List<int>>(),
                 string.Format(Resources.CONSTRUCTOR_OVERLOADING_NOT_SUPPORTED, typeof(List<int>)));
+
+            //
+            // Generikusnal legkorabban csak peldanyositaskor derulhet ki h szopas van.
+            //
+
+            Assert.Throws<NotSupportedException>(
+                () => Container
+                    .Service(typeof(IList<>), typeof(List<>))
+                    .CreateInjector()
+                    .Get<IList<int>>(),
+                string.Format(Resources.CONSTRUCTOR_OVERLOADING_NOT_SUPPORTED, typeof(List<>)));
         }
 
         [Test]

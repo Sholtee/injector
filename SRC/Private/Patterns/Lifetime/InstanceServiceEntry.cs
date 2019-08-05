@@ -33,7 +33,12 @@ namespace Solti.Utils.DI.Internals
             set => throw new InvalidOperationException();
         }
         public override object Value { get; }
-        public override object GetService(IInjector injector) => Value;
+
+        public override object GetService(IInjector injector, Type iface = null)
+        {
+            if (iface != null && iface != Interface) throw new InvalidOperationException();
+            return Value;
+        }
 
         public override object Clone() => new InstanceServiceEntry(Interface, Value, releaseOnDispose: false /*csak egyszer szabaditsuk fel*/);
 

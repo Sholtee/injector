@@ -355,12 +355,12 @@
   <h5 class="overrides">Overrides</h5>
   <div><a class="xref" href="Solti.Utils.DI.Internals.Disposable.html#Solti_Utils_DI_Internals_Disposable_Dispose_System_Boolean_">Disposable.Dispose(Boolean)</a></div>
   <a id="Solti_Utils_DI_Internals_InstanceServiceEntry_GetService_" data-uid="Solti.Utils.DI.Internals.InstanceServiceEntry.GetService*"></a>
-  <h4 id="Solti_Utils_DI_Internals_InstanceServiceEntry_GetService_Solti_Utils_DI_IInjector_" data-uid="Solti.Utils.DI.Internals.InstanceServiceEntry.GetService(Solti.Utils.DI.IInjector)">GetService(IInjector)</h4>
+  <h4 id="Solti_Utils_DI_Internals_InstanceServiceEntry_GetService_Solti_Utils_DI_IInjector_Type_" data-uid="Solti.Utils.DI.Internals.InstanceServiceEntry.GetService(Solti.Utils.DI.IInjector,Type)">GetService(IInjector, Type)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override object GetService(IInjector injector)</code></pre>
+    <pre><code class="lang-csharp hljs">public override object GetService(IInjector injector, Type iface = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -375,6 +375,11 @@
       <tr>
         <td><a class="xref" href="Solti.Utils.DI.IInjector.html">IInjector</a></td>
         <td><span class="parametername">injector</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">Type</span></td>
+        <td><span class="parametername">iface</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -395,7 +400,7 @@
     </tbody>
   </table>
   <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="Solti.Utils.DI.Internals.ServiceEntry.html#Solti_Utils_DI_Internals_ServiceEntry_GetService_Solti_Utils_DI_IInjector_">ServiceEntry.GetService(IInjector)</a></div>
+  <div><a class="xref" href="Solti.Utils.DI.Internals.ServiceEntry.html#Solti_Utils_DI_Internals_ServiceEntry_GetService_Solti_Utils_DI_IInjector_Type_">ServiceEntry.GetService(IInjector, Type)</a></div>
   <h3 id="implements">Implements</h3>
   <div>
       <a class="xref" href="Solti.Utils.DI.IServiceInfo.html">IServiceInfo</a>

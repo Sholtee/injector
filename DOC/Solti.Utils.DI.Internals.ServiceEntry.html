@@ -117,7 +117,8 @@
   </h3>
   <a id="Solti_Utils_DI_Internals_ServiceEntry_Factory_" data-uid="Solti.Utils.DI.Internals.ServiceEntry.Factory*"></a>
   <h4 id="Solti_Utils_DI_Internals_ServiceEntry_Factory" data-uid="Solti.Utils.DI.Internals.ServiceEntry.Factory">Factory</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>The concrete factory. Don&apos;t use it directly.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -140,7 +141,8 @@
   </table>
   <a id="Solti_Utils_DI_Internals_ServiceEntry_Implementation_" data-uid="Solti.Utils.DI.Internals.ServiceEntry.Implementation*"></a>
   <h4 id="Solti_Utils_DI_Internals_ServiceEntry_Implementation" data-uid="Solti.Utils.DI.Internals.ServiceEntry.Implementation">Implementation</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>The implementation of the service (if present).</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -163,7 +165,8 @@
   </table>
   <a id="Solti_Utils_DI_Internals_ServiceEntry_Interface_" data-uid="Solti.Utils.DI.Internals.ServiceEntry.Interface*"></a>
   <h4 id="Solti_Utils_DI_Internals_ServiceEntry_Interface" data-uid="Solti.Utils.DI.Internals.ServiceEntry.Interface">Interface</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>The interface of the service.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -278,7 +281,8 @@
   </table>
   <a id="Solti_Utils_DI_Internals_ServiceEntry_Lifetime_" data-uid="Solti.Utils.DI.Internals.ServiceEntry.Lifetime*"></a>
   <h4 id="Solti_Utils_DI_Internals_ServiceEntry_Lifetime" data-uid="Solti.Utils.DI.Internals.ServiceEntry.Lifetime">Lifetime</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>The lefiteime of the service (if present).</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -301,7 +305,8 @@
   </table>
   <a id="Solti_Utils_DI_Internals_ServiceEntry_Value_" data-uid="Solti.Utils.DI.Internals.ServiceEntry.Value*"></a>
   <h4 id="Solti_Utils_DI_Internals_ServiceEntry_Value" data-uid="Solti.Utils.DI.Internals.ServiceEntry.Value">Value</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>The previously created service instance. Don&apos;t use it directly.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -414,13 +419,13 @@
     </tbody>
   </table>
   <a id="Solti_Utils_DI_Internals_ServiceEntry_GetService_" data-uid="Solti.Utils.DI.Internals.ServiceEntry.GetService*"></a>
-  <h4 id="Solti_Utils_DI_Internals_ServiceEntry_GetService_Solti_Utils_DI_IInjector_" data-uid="Solti.Utils.DI.Internals.ServiceEntry.GetService(Solti.Utils.DI.IInjector)">GetService(IInjector)</h4>
+  <h4 id="Solti_Utils_DI_Internals_ServiceEntry_GetService_Solti_Utils_DI_IInjector_Type_" data-uid="Solti.Utils.DI.Internals.ServiceEntry.GetService(Solti.Utils.DI.IInjector,Type)">GetService(IInjector, Type)</h4>
   <div class="markdown level1 summary"><p>Gets the service instance.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract object GetService(IInjector injector)</code></pre>
+    <pre><code class="lang-csharp hljs">public abstract object GetService(IInjector injector, Type iface = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -436,6 +441,12 @@
         <td><a class="xref" href="Solti.Utils.DI.IInjector.html">IInjector</a></td>
         <td><span class="parametername">injector</span></td>
         <td><p>Containing injector.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">Type</span></td>
+        <td><span class="parametername">iface</span></td>
+        <td><p>The service type to be queried. If null the <a class="xref" href="Solti.Utils.DI.Internals.ServiceEntry.html#Solti_Utils_DI_Internals_ServiceEntry_Interface">Interface</a> will be used</p>
 </td>
       </tr>
     </tbody>

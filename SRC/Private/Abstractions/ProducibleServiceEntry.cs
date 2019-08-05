@@ -25,14 +25,28 @@ namespace Solti.Utils.DI.Internals
             FImplementation = implementation;
         }
 
-        protected ProducibleServiceEntry(Type @interface, Lifetime lifetime, ITypeResolver implementation): this(@interface, lifetime, !@interface.IsGenericTypeDefinition() ? Resolver.Get(implementation, @interface).ConvertToFactory() : null)
+        protected ProducibleServiceEntry(Type @interface, Lifetime lifetime, ITypeResolver implementation): base(@interface, lifetime)
         {
+            var lazyImplementation = new Lazy<Type>
+            (
+                () => implementation.Resolve(@interface),
+
+                //
+                // A "LazyThreadSafetyMode.ExecutionAndPublication" miatt orokolt bejegyzesek eseten is
+                // csak egyszer fog meghivasra kerulni a resolver (adott interface-el).
+                //
+
+                LazyThreadSafetyMode.ExecutionAndPublication
+            );
+
+            FImplementation = lazyImplementation;
+
             //
-            // A "LazyThreadSafetyMode.ExecutionAndPublication" miatt orokolt bejegyzesek eseten is
-            // csak egyszer fog meghivasra kerulni a resolver (adott interface-el).
+            // Mivel van factory ezert lusta bejegyzesek is Proxy-zhatok.
             //
 
-            FImplementation = new Lazy<Type>(() => implementation.Resolve(@interface), LazyThreadSafetyMode.ExecutionAndPublication);
+            if (!@interface.IsGenericTypeDefinition())
+                Factory = Resolver.Get(lazyImplementation).ConvertToFactory();
         }
 
         public sealed override Type Implementation => (FImplementation as Lazy<Type>)?.Value ?? (Type) FImplementation;

@@ -11,6 +11,6 @@ namespace Solti.Utils.DI.Internals
     {
         Func<IInjector, Type, object> Factory { get; set; }
 
-        object GetService(IInjector injector);
+        object GetService(IInjector injector, Type iface = null);
     }
 }
