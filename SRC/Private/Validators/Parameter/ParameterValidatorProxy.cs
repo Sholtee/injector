@@ -3,7 +3,9 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 
 namespace Solti.Utils.DI.Internals
@@ -18,23 +20,26 @@ namespace Solti.Utils.DI.Internals
 
         public override object Invoke(MethodInfo targetMethod, object[] args)
         {
-            IReadOnlyList<ParameterInfo> infos = targetMethod.GetParameters();
-
-            for (int i = 0; i < infos.Count; i++)
-            {
-                ParameterInfo parameter = infos[i];
-
-                ParameterIsAttribute attr = parameter.GetCustomAttribute<ParameterIsAttribute>();
-                if (attr != null)
+            IReadOnlyList<Exception> validationErrors = targetMethod
+                .GetParameters()
+                .Select((param, i) => new
                 {
-                    object arg = args[i];
+                    param.Name,
+                    Value = args[i],
+                    param.GetCustomAttribute<ParameterIsAttribute>()?.Validators
+                })
+                .Where(param => param.Validators != null)
+                .SelectMany
+                (
+                    param => param.Validators.SelectMany
+                    (
+                        validator => validator.Validate(param.Value, param.Name)
+                    )
+                )
+                .ToArray();
 
-                    foreach (IParameterValidator validator in attr.Validators)
-                    {
-                        validator.Validate(arg, parameter.Name);           
-                    }
-                }
-            }
+            if (validationErrors.Any())
+                throw validationErrors.Count == 1 ? validationErrors.Single() : new AggregateException(validationErrors);
 
             return base.Invoke(targetMethod, args);
         }

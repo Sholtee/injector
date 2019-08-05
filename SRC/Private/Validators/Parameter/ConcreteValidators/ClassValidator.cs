@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Collections.Generic;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -11,13 +12,13 @@ namespace Solti.Utils.DI.Internals
 
     internal sealed class Class: ParameterValidator<Type>
     {
-        protected override void Validate(Type param, string paramName)
+        protected override IEnumerable<Exception> Validate(Type param, string paramName)
         {
             if (!param.IsClass())
-                throw new ArgumentException(Resources.NOT_A_CLASS, paramName);
+                yield return new ArgumentException(Resources.NOT_A_CLASS, paramName);
 
             if (param.IsAbstract())
-                throw new ArgumentException(Resources.ABSTRACT, paramName);
+                yield return new ArgumentException(Resources.ABSTRACT, paramName);
         }
     }
 }

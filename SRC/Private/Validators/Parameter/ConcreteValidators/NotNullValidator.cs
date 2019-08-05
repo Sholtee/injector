@@ -4,15 +4,16 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Collections.Generic;
 
 namespace Solti.Utils.DI.Internals
 {
     internal sealed class NotNull: ParameterValidator<object>
     {
-        protected override void Validate(object param, string paramName)
+        protected override IEnumerable<Exception> Validate(object param, string paramName)
         {
             if (param == null)
-                throw new ArgumentNullException(paramName);
+                yield return new ArgumentNullException(paramName);
         }
     }
 }

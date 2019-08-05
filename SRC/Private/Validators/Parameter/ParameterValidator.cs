@@ -3,6 +3,8 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
+using System;
+using System.Collections.Generic;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -11,8 +13,8 @@ namespace Solti.Utils.DI.Internals
     /// </summary>
     internal abstract class ParameterValidator<TParam> : IParameterValidator
     {
-        void IParameterValidator.Validate(object param, string paramName) => Validate((TParam) param, paramName);
+        IEnumerable<Exception> IParameterValidator.Validate(object param, string paramName) => Validate((TParam) param, paramName);
 
-        protected abstract void Validate(TParam param, string paramName);
+        protected abstract IEnumerable<Exception> Validate(TParam param, string paramName);
     }
 }

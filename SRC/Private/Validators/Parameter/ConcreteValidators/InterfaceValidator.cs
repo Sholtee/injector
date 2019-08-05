@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Collections.Generic;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -11,10 +12,10 @@ namespace Solti.Utils.DI.Internals
 
     internal sealed class Interface: ParameterValidator<Type>
     {
-        protected override void Validate(Type param, string paramName)
+        protected override IEnumerable<Exception> Validate(Type param, string paramName)
         {
             if (!param.IsInterface())
-                throw new ArgumentException(Resources.NOT_AN_INTERFACE, paramName);
+                yield return new ArgumentException(Resources.NOT_AN_INTERFACE, paramName);
         }
     }
 }
