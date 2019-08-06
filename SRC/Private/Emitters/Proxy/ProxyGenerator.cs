@@ -645,10 +645,7 @@ namespace Solti.Utils.DI.Internals
         public static MethodDeclarationSyntax PropertyAccess(Type interfaceType)
         {
             //
-            // private static PropertyInfo PropertyAccess<TResult>(Expression<Func<TResult>> propertyAccess)
-            // {
-            //     return (PropertyInfo) ((MemberExpression) propertyAccess.Body).Member;
-            // }
+            // private static PropertyInfo PropertyAccess<TResult>(Expression<Func<TResult>> propertyAccess) => (PropertyInfo) ((MemberExpression) propertyAccess.Body).Member;
             //
 
             Debug.Assert(interfaceType.IsInterface());
@@ -667,29 +664,27 @@ namespace Solti.Utils.DI.Internals
                     {paramName, typeof(Expression<>).MakeGenericType(typeof(Func<>).MakeGenericType(TResult))} // csak egyszer fut le interface-enkent -> nem kell gyorsitotarazni
                 }
             )
-            .WithBody
+            .WithExpressionBody
             (
-                body: Block
+                expressionBody: ArrowExpressionClause
                 (
-                    statements: SingletonList<StatementSyntax>
+                    expression: CastMemberAccess<PropertyInfo>
                     (
-                        ReturnStatement
+                        expression: ParenthesizedExpression
                         (
-                            expression: CastMemberAccess<PropertyInfo>
+                            CastMemberAccess<MemberExpression>
                             (
-                                expression: ParenthesizedExpression
-                                (
-                                    CastMemberAccess<MemberExpression>
-                                    (
-                                        expression: IdentifierName(paramName), 
-                                        name: nameof(Expression<Action>.Body)
-                                    )
-                                ), 
-                                name: nameof(MemberExpression.Member)
+                                expression: IdentifierName(paramName), 
+                                name: nameof(Expression<Action>.Body)
                             )
-                        )
+                        ), 
+                        name: nameof(MemberExpression.Member)
                     )
                 )
+            )
+            .WithSemicolonToken
+            (
+                semicolonToken: Token(SyntaxKind.SemicolonToken)
             );
 
             ExpressionSyntax CastMemberAccess<TType>(ExpressionSyntax expression, string name) => CastExpression
@@ -707,10 +702,7 @@ namespace Solti.Utils.DI.Internals
         public static MethodDeclarationSyntax MethodAccess(Type interfaceType)
         {
             //
-            // private static MethodInfo MethodAccess(Expression<Action> methodAccess) 
-            // {
-            //     return ((MethodCallExpression) methodAccess.Body).Method;
-            // }
+            // private static MethodInfo MethodAccess(Expression<Action> methodAccess) => ((MethodCallExpression) methodAccess.Body).Method;
             //
 
             Debug.Assert(interfaceType.IsInterface());
@@ -727,35 +719,33 @@ namespace Solti.Utils.DI.Internals
                     {paramName, typeof(Expression<>).MakeGenericType(typeof(Action))} // csak egyszer fut le interface-enkent -> nem kell gyorsitotarazni
                 }
             )
-            .WithBody
+            .WithExpressionBody
             (
-                body: Block
+                expressionBody: ArrowExpressionClause
                 (
-                    statements: SingletonList<StatementSyntax>
+                    expression: MemberAccessExpression
                     (
-                        ReturnStatement
+                        kind: SyntaxKind.SimpleMemberAccessExpression,
+                        expression: ParenthesizedExpression
                         (
-                            expression: MemberAccessExpression
+                            expression: CastExpression
                             (
-                                kind: SyntaxKind.SimpleMemberAccessExpression,
-                                expression: ParenthesizedExpression
+                                type: CreateType<MethodCallExpression>(),
+                                expression: MemberAccessExpression
                                 (
-                                    expression: CastExpression
-                                    (
-                                        type: CreateType<MethodCallExpression>(),
-                                        expression: MemberAccessExpression
-                                        (
-                                            kind: SyntaxKind.SimpleMemberAccessExpression,
-                                            expression: IdentifierName(paramName),
-                                            name: IdentifierName(nameof(Expression<Action>.Body))
-                                        )
-                                    ) 
-                                ),
-                                name: IdentifierName(nameof(MethodCallExpression.Method))
-                            )
-                        )
+                                    kind: SyntaxKind.SimpleMemberAccessExpression,
+                                    expression: IdentifierName(paramName),
+                                    name: IdentifierName(nameof(Expression<Action>.Body))
+                                )
+                            ) 
+                        ),
+                        name: IdentifierName(nameof(MethodCallExpression.Method))
                     )
                 )
+            )
+            .WithSemicolonToken
+            (
+                semicolonToken: Token(SyntaxKind.SemicolonToken)
             );
         }
 

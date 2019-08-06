@@ -4,10 +4,7 @@ internal sealed class GeneratedProxy : Solti.Utils.DI.Proxy.Tests.Foo, Solti.Uti
     {
     }
 
-    private static System.Reflection.MethodInfo MethodAccess(System.Linq.Expressions.Expression<System.Action> methodAccess)
-    {
-        return ((System.Linq.Expressions.MethodCallExpression)methodAccess.Body).Method;
-    }
+    private static System.Reflection.MethodInfo MethodAccess(System.Linq.Expressions.Expression<System.Action> methodAccess) => ((System.Linq.Expressions.MethodCallExpression)methodAccess.Body).Method;
 
     System.Int32 Solti.Utils.DI.Proxy.Tests.IFoo<System.Int32>.Foo<TT>(System.Int32 a, out System.String b, ref TT c)
     {
@@ -35,10 +32,7 @@ internal sealed class GeneratedProxy : Solti.Utils.DI.Proxy.Tests.Foo, Solti.Uti
         }
     }
 
-    private static System.Reflection.PropertyInfo PropertyAccess<TResult>(System.Linq.Expressions.Expression<System.Func<TResult>> propertyAccess)
-    {
-        return (System.Reflection.PropertyInfo)((System.Linq.Expressions.MemberExpression)propertyAccess.Body).Member;
-    }
+    private static System.Reflection.PropertyInfo PropertyAccess<TResult>(System.Linq.Expressions.Expression<System.Func<TResult>> propertyAccess) => (System.Reflection.PropertyInfo)((System.Linq.Expressions.MemberExpression)propertyAccess.Body).Member;
 
     System.Int32 Solti.Utils.DI.Proxy.Tests.IFoo<System.Int32>.Prop
     {
