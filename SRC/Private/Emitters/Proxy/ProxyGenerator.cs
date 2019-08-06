@@ -1067,7 +1067,7 @@ namespace Solti.Utils.DI.Internals
                 .GetProperties(bindingFlags)
                 .Concat
                 (
-                    interfaceType.GetInterfaces().SelectMany(GetProperties)
+                    type.GetInterfaces().SelectMany(GetProperties)
                 )
                 .Distinct()
                 .ToArray();
@@ -1076,7 +1076,7 @@ namespace Solti.Utils.DI.Internals
                 .GetEvents(bindingFlags)
                 .Concat
                 (
-                    interfaceType.GetInterfaces().SelectMany(GetEvents)
+                    type.GetInterfaces().SelectMany(GetEvents)
                 )
                 .Distinct()
                 .ToArray();
