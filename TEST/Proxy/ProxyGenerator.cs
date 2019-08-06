@@ -217,5 +217,11 @@ namespace Solti.Utils.DI.Proxy.Tests
         {
             Assert.That(ProxyGenerator.GetEvent(typeof(IFoo<int>).GetEvent("Event", BindingFlags.Public | BindingFlags.Instance)).NormalizeWhitespace().ToFullString(), Is.EqualTo("private static System.Reflection.EventInfo GetEvent(System.String eventName) => typeof(Solti.Utils.DI.Proxy.Tests.IFoo<System.Int32>).GetEvent(eventName, System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance);"));
         }
+
+        [Test]
+        public void DeclareField_ShouldDeclareAField()
+        {
+            Assert.That(ProxyGenerator.DeclareField<EventInfo>("FEvent", SyntaxFactory.LiteralExpression(SyntaxKind.NullLiteralExpression), SyntaxKind.PrivateKeyword, SyntaxKind.StaticKeyword, SyntaxKind.ReadOnlyKeyword).NormalizeWhitespace().ToFullString(), Is.EqualTo("private static readonly System.Reflection.EventInfo FEvent = null;"));
+        }
     }
 }

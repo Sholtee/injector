@@ -214,6 +214,38 @@ namespace Solti.Utils.DI.Internals
             );
         }
 
+        internal static FieldDeclarationSyntax DeclareField<TField>(string name, ExpressionSyntax initializer = null, params SyntaxKind[] modifiers)
+        {
+            VariableDeclaratorSyntax declarator = VariableDeclarator
+            (
+                identifier: Identifier(name)
+            );
+
+            if (initializer != null) declarator = declarator.WithInitializer
+            (
+                initializer: EqualsValueClause(initializer)
+            );
+
+            return FieldDeclaration
+            (
+                VariableDeclaration
+                (
+                    type: CreateType<TField>()                    
+                )
+                .WithVariables
+                (
+                    variables: SingletonSeparatedList(declarator)
+                )
+            )
+            .WithModifiers
+            (
+                modifiers: TokenList
+                (
+                    tokens: modifiers.Select(Token)
+                )
+            );
+        }
+
         internal static IReadOnlyList<ExpressionStatementSyntax> AssignByRefParameters(MethodInfo method, LocalDeclarationStatementSyntax argsArray)
         {
             IdentifierNameSyntax array = argsArray.ToIdentifierName();
