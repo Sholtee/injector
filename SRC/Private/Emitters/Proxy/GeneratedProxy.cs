@@ -156,7 +156,6 @@ namespace Solti.Utils.DI.Internals
 
             if (!type.IsInterface()) throw new InvalidOperationException();
             if (type.ContainsGenericParameters()) throw new NotSupportedException();
-            if (type.GetEvents().Any()) throw new NotSupportedException();
         }
 
         private static void CheckBase()

@@ -217,7 +217,7 @@ namespace Solti.Utils.DI.Proxy.Tests
         [Test]
         public void GetEvent_ShouldCreateTheProperMethod()
         {
-            Assert.That(ProxyGenerator.GetEvent(Event).NormalizeWhitespace().ToFullString(), Is.EqualTo("private static System.Reflection.EventInfo GetEvent(System.String eventName) => typeof(Solti.Utils.DI.Proxy.Tests.IFoo<System.Int32>).GetEvent(eventName, System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance);"));
+            Assert.That(ProxyGenerator.GetEvent(typeof(IFoo<int>)).NormalizeWhitespace().ToFullString(), Is.EqualTo("private static System.Reflection.EventInfo GetEvent(System.String eventName) => typeof(Solti.Utils.DI.Proxy.Tests.IFoo<System.Int32>).GetEvent(eventName, System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance);"));
         }
 
         [Test]

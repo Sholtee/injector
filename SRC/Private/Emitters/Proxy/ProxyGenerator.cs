@@ -913,12 +913,13 @@ namespace Solti.Utils.DI.Internals
             );
         }
 
-        public static MethodDeclarationSyntax GetEvent(EventInfo @event)
+        public static MethodDeclarationSyntax GetEvent(Type interfaceType)
         {
             //
             // private static EventInfo GetEvent(string eventName) => typeof(TInterface).GetEvent(eventName, BindingFlags.Public | BindingFlags.Instance);
             //
 
+            Debug.Assert(interfaceType.IsInterface());
             const string paramName = "eventName";
 
             TypeSyntax bf = CreateType<BindingFlags>();
@@ -944,7 +945,7 @@ namespace Solti.Utils.DI.Internals
                         (
                             expression: TypeOfExpression
                             (
-                                type: CreateType(@event.DeclaringType)
+                                type: CreateType(interfaceType)
                             ),
                             name: nameof(System.Reflection.TypeInfo.GetEvent)
                         )
@@ -1042,7 +1043,14 @@ namespace Solti.Utils.DI.Internals
                 members.Add(PropertyAccess(interfaceType));
                 members.AddRange(properties.Select(GenerateProxyProperty));
             }
-            
+
+            IReadOnlyList<EventInfo> events = GetEvents(interfaceType);
+            if (events.Any())
+            {
+                members.Add(GetEvent(interfaceType));
+                members.AddRange(events.SelectMany(GenerateProxyEvent));
+            }
+
             return cls.WithMembers(List(members));
 
             IReadOnlyList<MethodInfo> GetMethods(Type type) => type
@@ -1059,7 +1067,16 @@ namespace Solti.Utils.DI.Internals
                 .GetProperties(bindingFlags)
                 .Concat
                 (
-                    type.GetInterfaces().SelectMany(GetProperties)
+                    interfaceType.GetInterfaces().SelectMany(GetProperties)
+                )
+                .Distinct()
+                .ToArray();
+
+            IReadOnlyList<EventInfo> GetEvents(Type type) => type
+                .GetEvents(bindingFlags)
+                .Concat
+                (
+                    interfaceType.GetInterfaces().SelectMany(GetEvents)
                 )
                 .Distinct()
                 .ToArray();
