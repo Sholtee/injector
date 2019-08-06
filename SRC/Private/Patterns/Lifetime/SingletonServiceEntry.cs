@@ -28,9 +28,14 @@ namespace Solti.Utils.DI.Internals
 
         public override object Value => FValue;
 
-        public override object GetService(IInjector injector, Type iface = null) => IsValid(iface)
-            ? FValue ?? (FValue = Factory(injector, iface ?? Interface))
-            : throw new InvalidOperationException();
+        public override object GetService(IInjector injector, Type iface = null)
+        {
+            CheckDisposed();
+
+            return IsValid(iface)
+                ? FValue ?? (FValue = Factory(injector, iface ?? Interface))
+                : throw new InvalidOperationException();
+        }
 
         public override object Clone() => new SingletonServiceEntry(Interface, Factory)
         {
@@ -44,7 +49,11 @@ namespace Solti.Utils.DI.Internals
 
         protected override void Dispose(bool disposeManaged)
         {
-            if (disposeManaged) (FValue as IDisposable)?.Dispose();
+            if (disposeManaged)
+            {
+                (FValue as IDisposable)?.Dispose();
+                FValue = null;
+            }
             base.Dispose(disposeManaged);
         }
     }

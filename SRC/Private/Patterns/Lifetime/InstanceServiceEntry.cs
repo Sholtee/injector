@@ -13,10 +13,11 @@ namespace Solti.Utils.DI.Internals
     public class InstanceServiceEntry : ServiceEntry
     {
         private readonly bool FReleaseOnDispose;
+        private object FValue;
 
         public InstanceServiceEntry(Type @interface, object value, bool releaseOnDispose) : base(@interface, null)
         {
-            Value = value;
+            FValue = value;
             FReleaseOnDispose = releaseOnDispose;
         }
 
@@ -32,10 +33,13 @@ namespace Solti.Utils.DI.Internals
             get => null;
             set => throw new InvalidOperationException();
         }
-        public override object Value { get; }
+
+        public override object Value => FValue;
 
         public override object GetService(IInjector injector, Type iface = null)
         {
+            CheckDisposed();
+
             if (iface != null && iface != Interface) throw new InvalidOperationException();
             return Value;
         }
@@ -49,7 +53,11 @@ namespace Solti.Utils.DI.Internals
 
         protected override void Dispose(bool disposeManaged)
         {
-            if (disposeManaged && FReleaseOnDispose) (Value as IDisposable)?.Dispose();
+            if (disposeManaged && FReleaseOnDispose)
+            {
+                (FValue as IDisposable)?.Dispose();
+                FValue = null;
+            }
             base.Dispose(disposeManaged);
         }
     }
