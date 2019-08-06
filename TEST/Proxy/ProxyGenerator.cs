@@ -231,5 +231,11 @@ namespace Solti.Utils.DI.Proxy.Tests
         {
             Assert.That(ProxyGenerator.DeclareEvent(Event, SyntaxFactory.Block(), SyntaxFactory.Block()).NormalizeWhitespace(eol: "\n").ToString(), Is.EqualTo("event Solti.Utils.DI.Proxy.Tests.TestDelegate<System.Int32> Solti.Utils.DI.Proxy.Tests.IFoo<System.Int32>.Event\n{\n    add\n    {\n    }\n\n    remove\n    {\n    }\n}"));
         }
+
+        [Test]
+        public void GenerateProxyEvent_Test()
+        {
+            Assert.That(SyntaxFactory.ClassDeclaration("Test").WithMembers(SyntaxFactory.List(ProxyGenerator.GenerateProxyEvent(Event))).NormalizeWhitespace(eol: "\n").ToString(), Is.EqualTo(File.ReadAllText(Path.Combine("Proxy", "EventSrc.txt"))));
+        }
     }
 }

@@ -246,7 +246,7 @@ namespace Solti.Utils.DI.Internals
             );
         }
 
-        internal static EventDeclarationSyntax DeclareEvent(EventInfo @event, BlockSyntax addBody, BlockSyntax removeBody)
+        internal static EventDeclarationSyntax DeclareEvent(EventInfo @event, BlockSyntax addBody = null, BlockSyntax removeBody = null)
         {
             EventDeclarationSyntax result = EventDeclaration
             (
@@ -524,6 +524,21 @@ namespace Solti.Utils.DI.Internals
             )
         );
 
+        internal static StatementSyntax RegisterTargetEvent(EventInfo @event, bool add) => ExpressionStatement
+        (
+            expression: AssignmentExpression
+            (
+                kind: add ? SyntaxKind.AddAssignmentExpression : SyntaxKind.SubtractAssignmentExpression,
+                left: MemberAccessExpression
+                (
+                    SyntaxKind.SimpleMemberAccessExpression,
+                    IdentifierName(TARGET),
+                    IdentifierName(@event.Name)
+                ),
+                right: IdentifierName(VALUE)
+            )
+        );
+
         internal static IfStatementSyntax ShouldCallTarget(LocalDeclarationStatementSyntax result, StatementSyntax ifTrue) => IfStatement
         (
             condition: BinaryExpression
@@ -698,7 +713,98 @@ namespace Solti.Utils.DI.Internals
                     }
                 )
             );
-        }      
+        }
+
+        public static IReadOnlyList<MemberDeclarationSyntax> GenerateProxyEvent(EventInfo @event)
+        {
+            //
+            // private static readonly EventInfo FEvent = GetEvent("Event");
+            //
+            // event EventType IInterface.Event
+            // {
+            //     add 
+            //     {
+            //         object result = Invoke(FEvent.AddMethod, new object[]{ value });
+            //         if (result == CALL_TARGET) Target.Event += value;
+            //     }
+            //     remove
+            //     {
+            //         object result = Invoke(FEvent.RemoveMethod, new object[]{ value });
+            //         if (result == CALL_TARGET) Target.Event -= value;
+            //     }
+            // }
+            //
+
+            string fieldName = $"F{@event.Name}";
+
+            LocalDeclarationStatementSyntax result;
+
+            return new MemberDeclarationSyntax[]
+            {
+                DeclareField<EventInfo>
+                (
+                    name: fieldName, 
+                    initializer: InvocationExpression
+                    (
+                        expression: IdentifierName(nameof(GetEvent))
+                    )
+                    .WithArgumentList
+                    (
+                        argumentList: ArgumentList
+                        (
+                            SingletonSeparatedList
+                            (
+                                Argument(LiteralExpression(SyntaxKind.StringLiteralExpression, Literal(@event.Name)))
+                            )
+                        )
+                    ),
+                    modifiers: new []
+                    {
+                        SyntaxKind.PrivateKeyword,
+                        SyntaxKind.StaticKeyword,
+                        SyntaxKind.ReadOnlyKeyword
+                    }
+                ),
+                DeclareEvent
+                (
+                    @event: @event,
+                    addBody: Block
+                    (
+                        statements: new StatementSyntax[]
+                        {
+                            result = CallInvoke
+                            (
+                                MemberAccessExpression // FEvent.AddMethod
+                                (
+                                    kind: SyntaxKind.SimpleMemberAccessExpression,
+                                    expression: IdentifierName(fieldName),
+                                    name: IdentifierName(nameof(EventInfo.AddMethod))
+                                ),
+                                CreateArray<object>(IdentifierName(VALUE)) // new object[] {value}
+                            ),
+                            ShouldCallTarget(result, ifTrue: RegisterTargetEvent(@event, add: true))
+                        }
+                    ),
+                    removeBody: Block
+                    (
+                        statements: new StatementSyntax[]
+                        {
+                            result = CallInvoke
+                            (
+                                MemberAccessExpression
+                                (
+                                    kind: SyntaxKind.SimpleMemberAccessExpression,
+                                    expression: IdentifierName(fieldName),
+                                    name: IdentifierName(nameof(EventInfo.RemoveMethod))
+                                ),
+                                CreateArray<object>(IdentifierName(VALUE))
+                            ),
+                            ShouldCallTarget(result, ifTrue: RegisterTargetEvent(@event, add: false))
+                        }
+                    )
+                )
+            };
+        }
 
         public static MethodDeclarationSyntax PropertyAccess(Type interfaceType)
         {
