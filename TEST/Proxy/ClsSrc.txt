@@ -4,11 +4,7 @@ internal sealed class GeneratedProxy : Solti.Utils.DI.Proxy.Tests.Foo, Solti.Uti
     {
     }
 
-    private static System.Reflection.MethodInfo MethodAccess(System.Linq.Expressions.Expression<System.Action> methodAccess)
-    {
-        return ((System.Linq.Expressions.MethodCallExpression)methodAccess.Body).Method;
-    }
-
+    private static System.Reflection.MethodInfo MethodAccess(System.Linq.Expressions.Expression<System.Action> methodAccess) => ((System.Linq.Expressions.MethodCallExpression)methodAccess.Body).Method;
     System.Int32 Solti.Utils.DI.Proxy.Tests.IFoo<System.Int32>.Foo<TT>(System.Int32 a, out System.String b, ref TT c)
     {
         System.String dummy_b;
@@ -35,11 +31,7 @@ internal sealed class GeneratedProxy : Solti.Utils.DI.Proxy.Tests.Foo, Solti.Uti
         }
     }
 
-    private static System.Reflection.PropertyInfo PropertyAccess<TResult>(System.Linq.Expressions.Expression<System.Func<TResult>> propertyAccess)
-    {
-        return (System.Reflection.PropertyInfo)((System.Linq.Expressions.MemberExpression)propertyAccess.Body).Member;
-    }
-
+    private static System.Reflection.PropertyInfo PropertyAccess<TResult>(System.Linq.Expressions.Expression<System.Func<TResult>> propertyAccess) => (System.Reflection.PropertyInfo)((System.Linq.Expressions.MemberExpression)propertyAccess.Body).Member;
     System.Int32 Solti.Utils.DI.Proxy.Tests.IFoo<System.Int32>.Prop
     {
         get
@@ -57,6 +49,25 @@ internal sealed class GeneratedProxy : Solti.Utils.DI.Proxy.Tests.Foo, Solti.Uti
             System.Object result = Invoke(currentProperty.SetMethod, new System.Object[]{value});
             if (result == CALL_TARGET)
                 Target.Prop = value;
+        }
+    }
+
+    private static System.Reflection.EventInfo GetEvent(System.String eventName) => typeof(Solti.Utils.DI.Proxy.Tests.IFoo<System.Int32>).GetEvent(eventName, System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance);
+    private static readonly System.Reflection.EventInfo FEvent = GetEvent("Event");
+    event Solti.Utils.DI.Proxy.Tests.TestDelegate<System.Int32> Solti.Utils.DI.Proxy.Tests.IFoo<System.Int32>.Event
+    {
+        add
+        {
+            System.Object result = Invoke(FEvent.AddMethod, new System.Object[]{value});
+            if (result == CALL_TARGET)
+                Target.Event += value;
+        }
+
+        remove
+        {
+            System.Object result = Invoke(FEvent.RemoveMethod, new System.Object[]{value});
+            if (result == CALL_TARGET)
+                Target.Event -= value;
         }
     }
 }

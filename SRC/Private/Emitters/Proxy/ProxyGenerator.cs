@@ -214,6 +214,64 @@ namespace Solti.Utils.DI.Internals
             );
         }
 
+        internal static FieldDeclarationSyntax DeclareField<TField>(string name, ExpressionSyntax initializer = null, params SyntaxKind[] modifiers)
+        {
+            VariableDeclaratorSyntax declarator = VariableDeclarator
+            (
+                identifier: Identifier(name)
+            );
+
+            if (initializer != null) declarator = declarator.WithInitializer
+            (
+                initializer: EqualsValueClause(initializer)
+            );
+
+            return FieldDeclaration
+            (
+                VariableDeclaration
+                (
+                    type: CreateType<TField>()                    
+                )
+                .WithVariables
+                (
+                    variables: SingletonSeparatedList(declarator)
+                )
+            )
+            .WithModifiers
+            (
+                modifiers: TokenList
+                (
+                    tokens: modifiers.Select(Token)
+                )
+            );
+        }
+
+        internal static EventDeclarationSyntax DeclareEvent(EventInfo @event, BlockSyntax addBody = null, BlockSyntax removeBody = null)
+        {
+            EventDeclarationSyntax result = EventDeclaration
+            (
+                type: CreateType(@event.EventHandlerType),
+                identifier: Identifier(@event.Name)
+            )
+            .WithExplicitInterfaceSpecifier
+            (
+                explicitInterfaceSpecifier: ExplicitInterfaceSpecifier((NameSyntax) CreateType(@event.DeclaringType))
+            );
+
+            List<AccessorDeclarationSyntax> accessors = new List<AccessorDeclarationSyntax>();
+
+            if (@event.AddMethod    != null && addBody    != null) accessors.Add(AccessorDeclaration(SyntaxKind.AddAccessorDeclaration).WithBody(addBody));
+            if (@event.RemoveMethod != null && removeBody != null) accessors.Add(AccessorDeclaration(SyntaxKind.RemoveAccessorDeclaration).WithBody(removeBody));
+
+            return !accessors.Any() ? result : result.WithAccessorList
+            (
+                accessorList: AccessorList
+                (
+                    accessors: List(accessors)
+                )
+            );
+        }
+
         internal static IReadOnlyList<ExpressionStatementSyntax> AssignByRefParameters(MethodInfo method, LocalDeclarationStatementSyntax argsArray)
         {
             IdentifierNameSyntax array = argsArray.ToIdentifierName();
@@ -466,6 +524,21 @@ namespace Solti.Utils.DI.Internals
             )
         );
 
+        internal static StatementSyntax RegisterTargetEvent(EventInfo @event, bool add) => ExpressionStatement
+        (
+            expression: AssignmentExpression
+            (
+                kind: add ? SyntaxKind.AddAssignmentExpression : SyntaxKind.SubtractAssignmentExpression,
+                left: MemberAccessExpression
+                (
+                    SyntaxKind.SimpleMemberAccessExpression,
+                    IdentifierName(TARGET),
+                    IdentifierName(@event.Name)
+                ),
+                right: IdentifierName(VALUE)
+            )
+        );
+
         internal static IfStatementSyntax ShouldCallTarget(LocalDeclarationStatementSyntax result, StatementSyntax ifTrue) => IfStatement
         (
             condition: BinaryExpression
@@ -640,19 +713,107 @@ namespace Solti.Utils.DI.Internals
                     }
                 )
             );
-        }      
+        }
+
+        public static IReadOnlyList<MemberDeclarationSyntax> GenerateProxyEvent(EventInfo @event)
+        {
+            //
+            // private static readonly EventInfo FEvent = GetEvent("Event");
+            //
+            // event EventType IInterface.Event
+            // {
+            //     add 
+            //     {
+            //         object result = Invoke(FEvent.AddMethod, new object[]{ value });
+            //         if (result == CALL_TARGET) Target.Event += value;
+            //     }
+            //     remove
+            //     {
+            //         object result = Invoke(FEvent.RemoveMethod, new object[]{ value });
+            //         if (result == CALL_TARGET) Target.Event -= value;
+            //     }
+            // }
+            //
+
+            string fieldName = $"F{@event.Name}";
+
+            LocalDeclarationStatementSyntax result;
+
+            return new MemberDeclarationSyntax[]
+            {
+                DeclareField<EventInfo>
+                (
+                    name: fieldName, 
+                    initializer: InvocationExpression
+                    (
+                        expression: IdentifierName(nameof(GetEvent))
+                    )
+                    .WithArgumentList
+                    (
+                        argumentList: ArgumentList
+                        (
+                            SingletonSeparatedList
+                            (
+                                Argument(LiteralExpression(SyntaxKind.StringLiteralExpression, Literal(@event.Name)))
+                            )
+                        )
+                    ),
+                    modifiers: new []
+                    {
+                        SyntaxKind.PrivateKeyword,
+                        SyntaxKind.StaticKeyword,
+                        SyntaxKind.ReadOnlyKeyword
+                    }
+                ),
+                DeclareEvent
+                (
+                    @event: @event,
+                    addBody: Block
+                    (
+                        statements: new StatementSyntax[]
+                        {
+                            result = CallInvoke
+                            (
+                                MemberAccessExpression // FEvent.AddMethod
+                                (
+                                    kind: SyntaxKind.SimpleMemberAccessExpression,
+                                    expression: IdentifierName(fieldName),
+                                    name: IdentifierName(nameof(EventInfo.AddMethod))
+                                ),
+                                CreateArray<object>(IdentifierName(VALUE)) // new object[] {value}
+                            ),
+                            ShouldCallTarget(result, ifTrue: RegisterTargetEvent(@event, add: true))
+                        }
+                    ),
+                    removeBody: Block
+                    (
+                        statements: new StatementSyntax[]
+                        {
+                            result = CallInvoke
+                            (
+                                MemberAccessExpression
+                                (
+                                    kind: SyntaxKind.SimpleMemberAccessExpression,
+                                    expression: IdentifierName(fieldName),
+                                    name: IdentifierName(nameof(EventInfo.RemoveMethod))
+                                ),
+                                CreateArray<object>(IdentifierName(VALUE))
+                            ),
+                            ShouldCallTarget(result, ifTrue: RegisterTargetEvent(@event, add: false))
+                        }
+                    )
+                )
+            };
+        }
 
         public static MethodDeclarationSyntax PropertyAccess(Type interfaceType)
         {
             //
-            // private static PropertyInfo PropertyAccess<TResult>(Expression<Func<TResult>> propertyAccess)
-            // {
-            //     return (PropertyInfo) ((MemberExpression) propertyAccess.Body).Member;
-            // }
+            // private static PropertyInfo PropertyAccess<TResult>(Expression<Func<TResult>> propertyAccess) => (PropertyInfo) ((MemberExpression) propertyAccess.Body).Member;
             //
 
             Debug.Assert(interfaceType.IsInterface());
-            const string paraName = "propertyAccess";
+            const string paramName = "propertyAccess";
 
             Type TResult = typeof(Func<>).GetGenericArguments().Single();  // ugly
 
@@ -664,32 +825,30 @@ namespace Solti.Utils.DI.Internals
                 genericArguments: new []{ TResult.Name },
                 parameters: new Dictionary<string, Type>
                 {
-                    {paraName, typeof(Expression<>).MakeGenericType(typeof(Func<>).MakeGenericType(TResult))} // csak egyszer fut le interface-enkent -> nem kell gyorsitotarazni
+                    {paramName, typeof(Expression<>).MakeGenericType(typeof(Func<>).MakeGenericType(TResult))} // csak egyszer fut le interface-enkent -> nem kell gyorsitotarazni
                 }
             )
-            .WithBody
+            .WithExpressionBody
             (
-                body: Block
+                expressionBody: ArrowExpressionClause
                 (
-                    statements: SingletonList<StatementSyntax>
+                    expression: CastMemberAccess<PropertyInfo>
                     (
-                        ReturnStatement
+                        expression: ParenthesizedExpression
                         (
-                            expression: CastMemberAccess<PropertyInfo>
+                            CastMemberAccess<MemberExpression>
                             (
-                                expression: ParenthesizedExpression
-                                (
-                                    CastMemberAccess<MemberExpression>
-                                    (
-                                        expression: IdentifierName(paraName), 
-                                        name: nameof(Expression<Action>.Body)
-                                    )
-                                ), 
-                                name: nameof(MemberExpression.Member)
+                                expression: IdentifierName(paramName), 
+                                name: nameof(Expression<Action>.Body)
                             )
-                        )
+                        ), 
+                        name: nameof(MemberExpression.Member)
                     )
                 )
+            )
+            .WithSemicolonToken
+            (
+                semicolonToken: Token(SyntaxKind.SemicolonToken)
             );
 
             ExpressionSyntax CastMemberAccess<TType>(ExpressionSyntax expression, string name) => CastExpression
@@ -707,14 +866,11 @@ namespace Solti.Utils.DI.Internals
         public static MethodDeclarationSyntax MethodAccess(Type interfaceType)
         {
             //
-            // private static MethodInfo MethodAccess(Expression<Action> methodAccess) 
-            // {
-            //     return ((MethodCallExpression) methodAccess.Body).Method;
-            // }
+            // private static MethodInfo MethodAccess(Expression<Action> methodAccess) => ((MethodCallExpression) methodAccess.Body).Method;
             //
 
             Debug.Assert(interfaceType.IsInterface());
-            const string paraName = "methodAccess";
+            const string paramName = "methodAccess";
 
             return DeclareMethod
             (
@@ -724,38 +880,113 @@ namespace Solti.Utils.DI.Internals
                 genericArguments: new string[0],
                 parameters: new Dictionary<string, Type>
                 {
-                    {paraName, typeof(Expression<>).MakeGenericType(typeof(Action))} // csak egyszer fut le interface-enkent -> nem kell gyorsitotarazni
+                    {paramName, typeof(Expression<>).MakeGenericType(typeof(Action))} // csak egyszer fut le interface-enkent -> nem kell gyorsitotarazni
                 }
             )
-            .WithBody
+            .WithExpressionBody
             (
-                body: Block
+                expressionBody: ArrowExpressionClause
                 (
-                    statements: SingletonList<StatementSyntax>
+                    expression: MemberAccessExpression
                     (
-                        ReturnStatement
+                        kind: SyntaxKind.SimpleMemberAccessExpression,
+                        expression: ParenthesizedExpression
                         (
-                            expression: MemberAccessExpression
+                            expression: CastExpression
                             (
-                                kind: SyntaxKind.SimpleMemberAccessExpression,
-                                expression: ParenthesizedExpression
+                                type: CreateType<MethodCallExpression>(),
+                                expression: MemberAccessExpression
                                 (
-                                    expression: CastExpression
+                                    kind: SyntaxKind.SimpleMemberAccessExpression,
+                                    expression: IdentifierName(paramName),
+                                    name: IdentifierName(nameof(Expression<Action>.Body))
+                                )
+                            ) 
+                        ),
+                        name: IdentifierName(nameof(MethodCallExpression.Method))
+                    )
+                )
+            )
+            .WithSemicolonToken
+            (
+                semicolonToken: Token(SyntaxKind.SemicolonToken)
+            );
+        }
+
+        public static MethodDeclarationSyntax GetEvent(Type interfaceType)
+        {
+            //
+            // private static EventInfo GetEvent(string eventName) => typeof(TInterface).GetEvent(eventName, BindingFlags.Public | BindingFlags.Instance);
+            //
+
+            Debug.Assert(interfaceType.IsInterface());
+            const string paramName = "eventName";
+
+            TypeSyntax bf = CreateType<BindingFlags>();
+
+            return DeclareMethod
+            (
+                returnType: typeof(EventInfo),
+                name: nameof(GetEvent),
+                modifiers: new[] { SyntaxKind.PrivateKeyword, SyntaxKind.StaticKeyword },
+                genericArguments: new string[0],
+                parameters: new Dictionary<string, Type>
+                {
+                    {paramName, typeof(string)} 
+                }
+            )
+            .WithExpressionBody
+            (
+                expressionBody: ArrowExpressionClause
+                (
+                    expression: InvocationExpression
+                    (
+                        expression: MemberAccess
+                        (
+                            expression: TypeOfExpression
+                            (
+                                type: CreateType(interfaceType)
+                            ),
+                            name: nameof(System.Reflection.TypeInfo.GetEvent)
+                        )
+                    )
+                    .WithArgumentList
+                    (
+                        argumentList: ArgumentList
+                        (
+                            arguments: new ExpressionSyntax[]
+                            {
+                                IdentifierName(paramName),
+                                BinaryExpression
+                                (
+                                    kind: SyntaxKind.BitwiseOrExpression,
+                                    left: MemberAccess
                                     (
-                                        type: CreateType<MethodCallExpression>(),
-                                        expression: MemberAccessExpression
-                                        (
-                                            kind: SyntaxKind.SimpleMemberAccessExpression,
-                                            expression: IdentifierName(paraName),
-                                            name: IdentifierName(nameof(Expression<Action>.Body))
-                                        )
-                                    ) 
-                                ),
-                                name: IdentifierName(nameof(MethodCallExpression.Method))
-                            )
+                                        expression: bf,
+                                        name: nameof(BindingFlags.Public)
+                                    ),
+                                    right: MemberAccess
+                                    (
+                                        expression: bf,
+                                        name: nameof(BindingFlags.Instance)
+                                    )
+                                )    
+                            }
+                            .CreateList(Argument)
                         )
                     )
                 )
+            )
+            .WithSemicolonToken
+            (
+                semicolonToken: Token(SyntaxKind.SemicolonToken)
+            );
+
+            MemberAccessExpressionSyntax MemberAccess(ExpressionSyntax expression, string name) => MemberAccessExpression
+            (
+                kind: SyntaxKind.SimpleMemberAccessExpression,
+                expression: expression,
+                name: IdentifierName(name)
             );
         }
 
@@ -812,7 +1043,14 @@ namespace Solti.Utils.DI.Internals
                 members.Add(PropertyAccess(interfaceType));
                 members.AddRange(properties.Select(GenerateProxyProperty));
             }
-            
+
+            IReadOnlyList<EventInfo> events = GetEvents(interfaceType);
+            if (events.Any())
+            {
+                members.Add(GetEvent(interfaceType));
+                members.AddRange(events.SelectMany(GenerateProxyEvent));
+            }
+
             return cls.WithMembers(List(members));
 
             IReadOnlyList<MethodInfo> GetMethods(Type type) => type
@@ -830,6 +1068,15 @@ namespace Solti.Utils.DI.Internals
                 .Concat
                 (
                     type.GetInterfaces().SelectMany(GetProperties)
+                )
+                .Distinct()
+                .ToArray();
+
+            IReadOnlyList<EventInfo> GetEvents(Type type) => type
+                .GetEvents(bindingFlags)
+                .Concat
+                (
+                    type.GetInterfaces().SelectMany(GetEvents)
                 )
                 .Distinct()
                 .ToArray();

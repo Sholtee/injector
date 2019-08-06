@@ -20,11 +20,14 @@ namespace Solti.Utils.DI.Proxy.Tests
     using Proxy;
     using Internals;
 
-    internal interface IFoo<T> // szerepeljen a "T"
+    internal delegate void TestDelegate<in T>(object sender, T eventArg);
+
+    internal interface IFoo<T>
     {
         int Foo<TT>(int a, out string b, ref TT c);
         void Bar();
         T Prop { get; set; }
+        event TestDelegate<T> Event;
     }
 
     internal class Foo : InterfaceInterceptor<IFoo<int>>
@@ -51,6 +54,9 @@ namespace Solti.Utils.DI.Proxy.Tests
         private static readonly MethodInfo
             Foo = GetMethod(nameof(Foo)),
             Bar = GetMethod(nameof(Bar));
+
+        private static readonly EventInfo
+            Event = typeof(IFoo<int>).GetEvent("Event", BindingFlags.Public | BindingFlags.Instance);
 
         private static readonly PropertyInfo Prop = typeof(IFoo<int>).GetProperty(nameof(IFoo<int>.Prop));
 
@@ -136,20 +142,19 @@ namespace Solti.Utils.DI.Proxy.Tests
         [Test]
         public void PropertyAccess_ShouldCreateTheProperMethod()
         {
-            Assert.That(ProxyGenerator.PropertyAccess(typeof(IFoo<int>)).NormalizeWhitespace(eol: Environment.NewLine).ToFullString(), Is.EqualTo($"private static System.Reflection.PropertyInfo PropertyAccess<TResult>(System.Linq.Expressions.Expression<System.Func<TResult>> propertyAccess){Environment.NewLine}{{{Environment.NewLine}    return (System.Reflection.PropertyInfo)((System.Linq.Expressions.MemberExpression)propertyAccess.Body).Member;{Environment.NewLine}}}"));
+            Assert.That(ProxyGenerator.PropertyAccess(typeof(IFoo<int>)).NormalizeWhitespace(eol: Environment.NewLine).ToFullString(), Is.EqualTo($"private static System.Reflection.PropertyInfo PropertyAccess<TResult>(System.Linq.Expressions.Expression<System.Func<TResult>> propertyAccess) => (System.Reflection.PropertyInfo)((System.Linq.Expressions.MemberExpression)propertyAccess.Body).Member;"));
         }
 
         [Test]
         public void MethodAccess_ShouldCreateTheProperMethod()
         {
-            Assert.That(ProxyGenerator.MethodAccess(typeof(IFoo<int>)).NormalizeWhitespace(eol: Environment.NewLine).ToFullString(), Is.EqualTo($"private static System.Reflection.MethodInfo MethodAccess(System.Linq.Expressions.Expression<System.Action> methodAccess){Environment.NewLine}{{{Environment.NewLine}    return ((System.Linq.Expressions.MethodCallExpression)methodAccess.Body).Method;{Environment.NewLine}}}"));
+            Assert.That(ProxyGenerator.MethodAccess(typeof(IFoo<int>)).NormalizeWhitespace(eol: Environment.NewLine).ToFullString(), Is.EqualTo($"private static System.Reflection.MethodInfo MethodAccess(System.Linq.Expressions.Expression<System.Action> methodAccess) => ((System.Linq.Expressions.MethodCallExpression)methodAccess.Body).Method;"));
         }
 
         [Test]
         public void DeclareProperty_ShouldDeclareTheDesiredProperty()
         {
-            // Nem gond h "get set" nincs, ez azert van mert nincs torzs meghatarozva.
-            Assert.That(ProxyGenerator.DeclareProperty(Prop, null, null).NormalizeWhitespace().ToFullString(), Is.EqualTo($"System.Int32 Solti.Utils.DI.Proxy.Tests.IFoo<System.Int32>.Prop"));
+            Assert.That(ProxyGenerator.DeclareProperty(Prop, SyntaxFactory.Block(), SyntaxFactory.Block()).NormalizeWhitespace(eol: "\n").ToFullString(), Is.EqualTo("System.Int32 Solti.Utils.DI.Proxy.Tests.IFoo<System.Int32>.Prop\n{\n    get\n    {\n    }\n\n    set\n    {\n    }\n}"));
         }
 
         [Test]
@@ -208,5 +213,29 @@ namespace Solti.Utils.DI.Proxy.Tests
         }
 
         private static MethodInfo GetMethod(string name) => typeof(IFoo<>).GetMethod(name);
+
+        [Test]
+        public void GetEvent_ShouldCreateTheProperMethod()
+        {
+            Assert.That(ProxyGenerator.GetEvent(typeof(IFoo<int>)).NormalizeWhitespace().ToFullString(), Is.EqualTo("private static System.Reflection.EventInfo GetEvent(System.String eventName) => typeof(Solti.Utils.DI.Proxy.Tests.IFoo<System.Int32>).GetEvent(eventName, System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance);"));
+        }
+
+        [Test]
+        public void DeclareField_ShouldDeclareAField()
+        {
+            Assert.That(ProxyGenerator.DeclareField<EventInfo>("FEvent", SyntaxFactory.LiteralExpression(SyntaxKind.NullLiteralExpression), SyntaxKind.PrivateKeyword, SyntaxKind.StaticKeyword, SyntaxKind.ReadOnlyKeyword).NormalizeWhitespace().ToFullString(), Is.EqualTo("private static readonly System.Reflection.EventInfo FEvent = null;"));
+        }
+
+        [Test]
+        public void DeclareEvent_ShouldDeclareTheDesiredEvent()
+        {
+            Assert.That(ProxyGenerator.DeclareEvent(Event, SyntaxFactory.Block(), SyntaxFactory.Block()).NormalizeWhitespace(eol: "\n").ToString(), Is.EqualTo("event Solti.Utils.DI.Proxy.Tests.TestDelegate<System.Int32> Solti.Utils.DI.Proxy.Tests.IFoo<System.Int32>.Event\n{\n    add\n    {\n    }\n\n    remove\n    {\n    }\n}"));
+        }
+
+        [Test]
+        public void GenerateProxyEvent_Test()
+        {
+            Assert.That(SyntaxFactory.ClassDeclaration("Test").WithMembers(SyntaxFactory.List(ProxyGenerator.GenerateProxyEvent(Event))).NormalizeWhitespace(eol: "\n").ToString(), Is.EqualTo(File.ReadAllText(Path.Combine("Proxy", "EventSrc.txt"))));
+        }
     }
 }

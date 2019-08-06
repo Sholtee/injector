@@ -54,6 +54,9 @@
     <None Update="Proxy\ClsSrc.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Proxy\EventSrc.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Proxy\FooSrc.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
