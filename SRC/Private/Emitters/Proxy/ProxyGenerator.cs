@@ -652,7 +652,7 @@ namespace Solti.Utils.DI.Internals
             //
 
             Debug.Assert(interfaceType.IsInterface());
-            const string paraName = "propertyAccess";
+            const string paramName = "propertyAccess";
 
             Type TResult = typeof(Func<>).GetGenericArguments().Single();  // ugly
 
@@ -664,7 +664,7 @@ namespace Solti.Utils.DI.Internals
                 genericArguments: new []{ TResult.Name },
                 parameters: new Dictionary<string, Type>
                 {
-                    {paraName, typeof(Expression<>).MakeGenericType(typeof(Func<>).MakeGenericType(TResult))} // csak egyszer fut le interface-enkent -> nem kell gyorsitotarazni
+                    {paramName, typeof(Expression<>).MakeGenericType(typeof(Func<>).MakeGenericType(TResult))} // csak egyszer fut le interface-enkent -> nem kell gyorsitotarazni
                 }
             )
             .WithBody
@@ -681,7 +681,7 @@ namespace Solti.Utils.DI.Internals
                                 (
                                     CastMemberAccess<MemberExpression>
                                     (
-                                        expression: IdentifierName(paraName), 
+                                        expression: IdentifierName(paramName), 
                                         name: nameof(Expression<Action>.Body)
                                     )
                                 ), 
@@ -714,7 +714,7 @@ namespace Solti.Utils.DI.Internals
             //
 
             Debug.Assert(interfaceType.IsInterface());
-            const string paraName = "methodAccess";
+            const string paramName = "methodAccess";
 
             return DeclareMethod
             (
@@ -724,7 +724,7 @@ namespace Solti.Utils.DI.Internals
                 genericArguments: new string[0],
                 parameters: new Dictionary<string, Type>
                 {
-                    {paraName, typeof(Expression<>).MakeGenericType(typeof(Action))} // csak egyszer fut le interface-enkent -> nem kell gyorsitotarazni
+                    {paramName, typeof(Expression<>).MakeGenericType(typeof(Action))} // csak egyszer fut le interface-enkent -> nem kell gyorsitotarazni
                 }
             )
             .WithBody
@@ -746,7 +746,7 @@ namespace Solti.Utils.DI.Internals
                                         expression: MemberAccessExpression
                                         (
                                             kind: SyntaxKind.SimpleMemberAccessExpression,
-                                            expression: IdentifierName(paraName),
+                                            expression: IdentifierName(paramName),
                                             name: IdentifierName(nameof(Expression<Action>.Body))
                                         )
                                     ) 
@@ -756,6 +756,82 @@ namespace Solti.Utils.DI.Internals
                         )
                     )
                 )
+            );
+        }
+
+        public static MethodDeclarationSyntax GetEvent(EventInfo @event)
+        {
+            //
+            // private static EventInfo GetEvent(string eventName) => typeof(TInterface).GetEvent(eventName, BindingFlags.Public | BindingFlags.Instance);
+            //
+
+            const string paramName = "eventName";
+
+            TypeSyntax bf = CreateType<BindingFlags>();
+
+            return DeclareMethod
+            (
+                returnType: typeof(EventInfo),
+                name: nameof(GetEvent),
+                modifiers: new[] { SyntaxKind.PrivateKeyword, SyntaxKind.StaticKeyword },
+                genericArguments: new string[0],
+                parameters: new Dictionary<string, Type>
+                {
+                    {paramName, typeof(string)} 
+                }
+            )
+            .WithExpressionBody
+            (
+                expressionBody: ArrowExpressionClause
+                (
+                    expression: InvocationExpression
+                    (
+                        expression: MemberAccess
+                        (
+                            expression: TypeOfExpression
+                            (
+                                type: CreateType(@event.DeclaringType)
+                            ),
+                            name: nameof(System.Reflection.TypeInfo.GetEvent)
+                        )
+                    )
+                    .WithArgumentList
+                    (
+                        argumentList: ArgumentList
+                        (
+                            arguments: new ExpressionSyntax[]
+                            {
+                                IdentifierName(paramName),
+                                BinaryExpression
+                                (
+                                    kind: SyntaxKind.BitwiseOrExpression,
+                                    left: MemberAccess
+                                    (
+                                        expression: bf,
+                                        name: nameof(BindingFlags.Public)
+                                    ),
+                                    right: MemberAccess
+                                    (
+                                        expression: bf,
+                                        name: nameof(BindingFlags.Instance)
+                                    )
+                                )    
+                            }
+                            .CreateList(Argument)
+                        )
+                    )
+                )
+            )
+            .WithSemicolonToken
+            (
+                semicolonToken: Token(SyntaxKind.SemicolonToken)
+            );
+
+            MemberAccessExpressionSyntax MemberAccess(ExpressionSyntax expression, string name) => MemberAccessExpression
+            (
+                kind: SyntaxKind.SimpleMemberAccessExpression,
+                expression: expression,
+                name: IdentifierName(name)
             );
         }
 

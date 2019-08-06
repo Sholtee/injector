@@ -20,11 +20,14 @@ namespace Solti.Utils.DI.Proxy.Tests
     using Proxy;
     using Internals;
 
-    internal interface IFoo<T> // szerepeljen a "T"
+    internal delegate void TestDelegate<in T>(object sender, T eventArg);
+
+    internal interface IFoo<T>
     {
         int Foo<TT>(int a, out string b, ref TT c);
         void Bar();
         T Prop { get; set; }
+        event TestDelegate<T> Event;
     }
 
     internal class Foo : InterfaceInterceptor<IFoo<int>>
@@ -208,5 +211,11 @@ namespace Solti.Utils.DI.Proxy.Tests
         }
 
         private static MethodInfo GetMethod(string name) => typeof(IFoo<>).GetMethod(name);
+
+        [Test]
+        public void GetEvent_ShouldCreateTheProperMethod()
+        {
+            Assert.That(ProxyGenerator.GetEvent(typeof(IFoo<int>).GetEvent("Event", BindingFlags.Public | BindingFlags.Instance)).NormalizeWhitespace().ToFullString(), Is.EqualTo("private static System.Reflection.EventInfo GetEvent(System.String eventName) => typeof(Solti.Utils.DI.Proxy.Tests.IFoo<System.Int32>).GetEvent(eventName, System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance);"));
+        }
     }
 }
