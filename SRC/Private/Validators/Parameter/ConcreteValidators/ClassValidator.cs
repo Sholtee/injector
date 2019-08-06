@@ -14,6 +14,8 @@ namespace Solti.Utils.DI.Internals
     {
         protected override IEnumerable<Exception> Validate(Type param, string paramName)
         {
+            if (param == null) yield break;
+
             if (!param.IsClass())
                 yield return new ArgumentException(Resources.NOT_A_CLASS, paramName);
 

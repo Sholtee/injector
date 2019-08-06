@@ -16,7 +16,7 @@ namespace Solti.Utils.DI.Internals
 
     internal static class Resolver
     {
-        private static readonly MethodInfo InjectorGet = ((MethodCallExpression) ((Expression<Action<IInjector>>) (i => i.Get(null))).Body).Method;
+        private static readonly MethodInfo InjectorGet = ((MethodCallExpression) ((Expression<Action<IInjector>>) (i => i.Get(null, null))).Body).Method;
 
         private static Type GetParameterType(ParameterInfo param, out bool isLazy)
         {
@@ -50,6 +50,8 @@ namespace Solti.Utils.DI.Internals
 
             ParameterExpression injector = Expression.Parameter(typeof(IInjector), nameof(injector));
 
+            Type target = constructor.DeclaringType;
+
             return constructor.ToLambda<Func<IInjector, object>>
             (
                 (param, i) =>
@@ -64,13 +66,13 @@ namespace Solti.Utils.DI.Internals
                         // Lazy<IInterface>(() => (IInterface) injector.Get(typeof(IInterface)))
                         //
 
-                        ? (Expression) Expression.Invoke(Expression.Constant(GetLazyFactory(parameterType)), injector)
+                        ? (Expression) Expression.Invoke(Expression.Constant(GetLazyFactory(parameterType)), injector, Expression.Constant(target))
 
                         //
                         // injector.Get(typeof(IInterface)
                         //
 
-                        : (Expression) Expression.Call(injector, InjectorGet, Expression.Constant(parameterType));
+                        : (Expression) Expression.Call(injector, InjectorGet, Expression.Constant(parameterType), Expression.Constant(target));
                 },
                 injector
             ).Compile();
@@ -100,6 +102,8 @@ namespace Solti.Utils.DI.Internals
                 injector     = Expression.Parameter(typeof(IInjector), nameof(injector)),
                 explicitArgs = Expression.Parameter(typeof(IReadOnlyDictionary<string, object>), nameof(explicitArgs));
 
+            Type target = constructor.DeclaringType;
+
             return constructor.ToLambda<Func<IInjector, IReadOnlyDictionary<string, object>, object>>
             (
                 (param, i) => Expression.Invoke(Expression.Constant((Func<ParameterInfo, IInjector, IReadOnlyDictionary<string, object>, object>) GetArg), Expression.Constant(param), injector, explicitArgs),
@@ -118,26 +122,26 @@ namespace Solti.Utils.DI.Internals
 
                 Type parameterType = GetParameterType(param, out var isLazy);
                 if (parameterType == null)
-                    throw new ArgumentException(Resources.INVALID_CONSTRUCTOR_ARGUMENT); 
+                    throw new ArgumentException(Resources.INVALID_CONSTRUCTOR_ARGUMENT);
 
                 return isLazy
                     //
-                    // Lazy<IInterface>(() => (IInterface) injector.Get(typeof(IInterface)))
+                    // Lazy<IInterface>(() => (IInterface) injector.Get(typeof(IInterface), target))
                     //
 
-                    ? GetLazyFactory(parameterType)(injectorInst)
+                    ? GetLazyFactory(parameterType)(injectorInst, target)
 
                     //
-                    // Normal mod.
+                    // injector.Get(typeof(IInterface), target)
                     //
 
-                    : injectorInst.Get(parameterType);
+                    : injectorInst.Get(parameterType, target);
             }
         });
 
         public static Func<IInjector, IReadOnlyDictionary<string, object>, object> GetExtended(Type type) => Cache<Type, Func<IInjector, IReadOnlyDictionary<string, object>, object>>.GetOrAdd(type, () => GetExtended(type.GetApplicableConstructor()));
 
-        public static Func<IInjector, object> GetLazyFactory(Type iface) => Cache<Type, Func<IInjector, object>>.GetOrAdd(iface, () =>
+        public static Func<IInjector, Type, object> GetLazyFactory(Type iface) => Cache<Type, Func<IInjector, Type, object>>.GetOrAdd(iface, () =>
         {
             Debug.Assert(iface.IsInterface());
 
@@ -147,9 +151,11 @@ namespace Solti.Utils.DI.Internals
             // injector => () => (iface) injector.Get(iface)
             //
 
-            ParameterExpression injector = Expression.Parameter(typeof(IInjector), nameof(injector));
+            ParameterExpression 
+                injector = Expression.Parameter(typeof(IInjector), nameof(injector)),
+                target   = Expression.Parameter(typeof(Type), nameof(target));
 
-            Func<IInjector, Delegate> createValueFactory = Expression.Lambda<Func<IInjector, Delegate>>
+            Func<IInjector, Type, Delegate> createValueFactory = Expression.Lambda<Func<IInjector, Type, Delegate>>
             (
                 Expression.Lambda
                 (
@@ -160,12 +166,14 @@ namespace Solti.Utils.DI.Internals
                         (
                             injector,
                             InjectorGet,
-                            Expression.Constant(iface)
+                            Expression.Constant(iface),
+                            target
                         ),
                         iface
                     )
                 ),
-                injector
+                injector,
+                target
             ).Compile();
 
             //
@@ -178,7 +186,7 @@ namespace Solti.Utils.DI.Internals
 
             Debug.Assert(ctor != null);
 
-            return i => ctor.Call(createValueFactory(i));
+            return (i, t) => ctor.Call(createValueFactory(i, t));
         });
     }
 }

@@ -61,8 +61,16 @@ namespace Solti.Utils.DI.Internals
         #endregion
 
         #region Internals
-        internal object Get(Type iface)
+        internal object Get(Type iface, Type target)
         {
+            //
+            // Ha az OnServiceRequest esemenyben visszakaptunk szerviz peldanyt akkor visszaadjuk azt.
+            //
+
+            var ev = new InjectorEventArg(target);
+            OnServiceRequest?.Invoke(Self, ev);
+            if (ev.Service != null) return ev.Service; // TODO: tipus ellenorzes
+
             FCurrentPath.Push(iface);
             try
             {
@@ -74,13 +82,45 @@ namespace Solti.Utils.DI.Internals
                     throw new InvalidOperationException(string.Format(Resources.CIRCULAR_REFERENCE, string.Join(" -> ", FCurrentPath)));
 
                 IServiceFactory factory = FServices.QueryEntry(iface);
-                return factory.GetService(Self, iface);
+
+                //
+                // Ha az OnServiceRequested esemenyben felulirjak a szervizt akkor azt
+                // adjuk vissza.
+                //
+
+                ev.Service = factory.GetService(Self, iface);
+                OnServiceRequested?.Invoke(Self, ev);
+
+                return ev.Service;
             }
             finally
             {
                 Type removed = FCurrentPath.Pop();
                 Debug.Assert(removed == iface);
             }
+        }
+
+        internal object Instantiate(Type @class, IReadOnlyDictionary<string, object> explicitArgs)
+        {
+            //
+            // Ha az OnServiceRequest esemenyben visszakaptunk szerviz peldanyt akkor visszaadjuk azt.
+            //
+
+            var ev = new InjectorEventArg(@class);
+            OnServiceRequest?.Invoke(Self, ev);
+            if (ev.Service != null) return ev.Service; // TODO: tipus ellenorzes
+
+            Func<IInjector, IReadOnlyDictionary<string, object>, object> factory = Resolver.GetExtended(@class);
+
+            //
+            // Ha az OnServiceRequested esemenyben felulirjak a szervizt akkor azt
+            // adjuk vissza.
+            //
+
+            ev.Service = factory(Self, explicitArgs ?? new Dictionary<string, object>(0));
+            OnServiceRequested?.Invoke(Self, ev);
+
+            return ev.Service;
         }
 
         internal static IInjector Create(ServiceContainer parentContainer) => new Injector((ServiceCollection) parentContainer).Self;
@@ -90,12 +130,16 @@ namespace Solti.Utils.DI.Internals
         /// <summary>
         /// See <see cref="IInjector"/>
         /// </summary>
-        object IInjector.Get(Type iface) => Get(iface);
+        object IInjector.Get(Type iface, Type target) => Get(iface, target);
 
         /// <summary>
         /// See <see cref="IInjector"/>
         /// </summary>
-        object IInjector.Instantiate(Type @class, IReadOnlyDictionary<string, object> explicitArgs) => Resolver.GetExtended(@class)(Self, explicitArgs ?? new Dictionary<string, object>(0));
+        object IInjector.Instantiate(Type @class, IReadOnlyDictionary<string, object> explicitArgs) => Instantiate(@class, explicitArgs);
+
+        public event InjectorEventHandler<InjectorEventArg> OnServiceRequest;
+
+        public event InjectorEventHandler<InjectorEventArg> OnServiceRequested;
         #endregion
 
         #region IQueryServiceInfo

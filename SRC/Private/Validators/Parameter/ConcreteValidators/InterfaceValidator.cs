@@ -14,6 +14,8 @@ namespace Solti.Utils.DI.Internals
     {
         protected override IEnumerable<Exception> Validate(Type param, string paramName)
         {
+            if (param == null) yield break;
+
             if (!param.IsInterface())
                 yield return new ArgumentException(Resources.NOT_AN_INTERFACE, paramName);
         }
