@@ -246,6 +246,32 @@ namespace Solti.Utils.DI.Internals
             );
         }
 
+        internal static EventDeclarationSyntax DeclareEvent(EventInfo @event, BlockSyntax addBody, BlockSyntax removeBody)
+        {
+            EventDeclarationSyntax result = EventDeclaration
+            (
+                type: CreateType(@event.EventHandlerType),
+                identifier: Identifier(@event.Name)
+            )
+            .WithExplicitInterfaceSpecifier
+            (
+                explicitInterfaceSpecifier: ExplicitInterfaceSpecifier((NameSyntax) CreateType(@event.DeclaringType))
+            );
+
+            List<AccessorDeclarationSyntax> accessors = new List<AccessorDeclarationSyntax>();
+
+            if (@event.AddMethod    != null && addBody    != null) accessors.Add(AccessorDeclaration(SyntaxKind.AddAccessorDeclaration).WithBody(addBody));
+            if (@event.RemoveMethod != null && removeBody != null) accessors.Add(AccessorDeclaration(SyntaxKind.RemoveAccessorDeclaration).WithBody(removeBody));
+
+            return !accessors.Any() ? result : result.WithAccessorList
+            (
+                accessorList: AccessorList
+                (
+                    accessors: List(accessors)
+                )
+            );
+        }
+
         internal static IReadOnlyList<ExpressionStatementSyntax> AssignByRefParameters(MethodInfo method, LocalDeclarationStatementSyntax argsArray)
         {
             IdentifierNameSyntax array = argsArray.ToIdentifierName();
