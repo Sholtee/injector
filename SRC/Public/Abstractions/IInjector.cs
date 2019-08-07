@@ -14,7 +14,7 @@ namespace Solti.Utils.DI
     /// <summary>
     /// Provides a mechanism for injecting resources.
     /// </summary>
-    /// <remarks>Due to performance reasons <see cref="IInjector"/> is not thread safe.</remarks>
+    /// <remarks>Since requesting a generic service may cause write operations the <see cref="IInjector"/> should be treated as not thread safe.</remarks>
     public interface IInjector: IQueryServiceInfo, IDisposable
     {
         /// <summary>
@@ -36,12 +36,12 @@ namespace Solti.Utils.DI
         object Instantiate([ParameterIs(typeof(NotNull), typeof(NotGeneric), typeof(Class))] Type @class, IReadOnlyDictionary<string, object> explicitArgs = null);
 
         /// <summary>
-        /// The event fired before the service request. It's useful when you want to resolve contextual dependencies or return service mocks.
+        /// The event fired before a service requested. It's useful when you want to resolve contextual dependencies or return service mocks.
         /// </summary>
         event InjectorEventHandler<InjectorEventArg> OnServiceRequest;
 
         /// <summary>
-        /// The event fired after the service request.
+        /// The event fired after a service requested.
         /// </summary>
         /// <remarks>The handler might specifiy a mock service to be returned.</remarks>
         event InjectorEventHandler<InjectorEventArg> OnServiceRequested;

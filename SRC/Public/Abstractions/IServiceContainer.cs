@@ -15,6 +15,7 @@ namespace Solti.Utils.DI
     /// <summary>
     /// Provides a mechanism for registering services.
     /// </summary>
+    /// <remarks>This interface should be treated as not thread safe.</remarks>
     public interface IServiceContainer : IComposite<IServiceContainer>, IQueryServiceInfo
     {
         /// <summary>
