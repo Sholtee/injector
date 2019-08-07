@@ -67,9 +67,9 @@ namespace Solti.Utils.DI.Internals
             // Ha az OnServiceRequest esemenyben visszakaptunk szerviz peldanyt akkor visszaadjuk azt.
             //
 
-            var ev = new InjectorEventArg(target);
+            var ev = new InjectorEventArg(iface, target);
             OnServiceRequest?.Invoke(Self, ev);
-            if (ev.Service != null) return ev.Service; // TODO: tipus ellenorzes
+            if (ev.Service != null) return ev.Service;
 
             FCurrentPath.Push(iface);
             try
@@ -103,13 +103,9 @@ namespace Solti.Utils.DI.Internals
         internal object Instantiate(Type @class, IReadOnlyDictionary<string, object> explicitArgs)
         {
             //
-            // Ha az OnServiceRequest esemenyben visszakaptunk szerviz peldanyt akkor visszaadjuk azt.
+            // Itt nincs ertelme OnServiceRequest esemenynek mivel nincs szerviz interface-unk.
             //
-
-            var ev = new InjectorEventArg(@class);
-            OnServiceRequest?.Invoke(Self, ev);
-            if (ev.Service != null) return ev.Service; // TODO: tipus ellenorzes
-
+           
             Func<IInjector, IReadOnlyDictionary<string, object>, object> factory = Resolver.GetExtended(@class);
 
             //
@@ -117,7 +113,10 @@ namespace Solti.Utils.DI.Internals
             // adjuk vissza.
             //
 
-            ev.Service = factory(Self, explicitArgs ?? new Dictionary<string, object>(0));
+            var ev = new InjectorEventArg(@class)
+            {
+                Service = factory(Self, explicitArgs ?? new Dictionary<string, object>(0))
+            };
             OnServiceRequested?.Invoke(Self, ev);
 
             return ev.Service;

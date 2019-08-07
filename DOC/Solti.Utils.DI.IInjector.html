@@ -58,7 +58,7 @@
     <pre><code class="lang-csharp hljs">public interface IInjector : IQueryServiceInfo, IDisposable</code></pre>
   </div>
   <h5 id="Solti_Utils_DI_IInjector_remarks"><strong>Remarks</strong></h5>
-  <div class="markdown level0 remarks"><p>Due to performance reasons <a class="xref" href="Solti.Utils.DI.IInjector.html">IInjector</a> is not thread safe.</p>
+  <div class="markdown level0 remarks"><p>Since requesting a generic service may cause write operations the <a class="xref" href="Solti.Utils.DI.IInjector.html">IInjector</a> should be treated as not thread safe.</p>
 </div>
   <h3 id="methods">Methods
   </h3>
@@ -166,7 +166,7 @@
   <h3 id="events">Events
   </h3>
   <h4 id="Solti_Utils_DI_IInjector_OnServiceRequest" data-uid="Solti.Utils.DI.IInjector.OnServiceRequest">OnServiceRequest</h4>
-  <div class="markdown level1 summary"><p>The event fired before the service request. It&apos;s useful when you want to resolve contextual dependencies or return service mocks.</p>
+  <div class="markdown level1 summary"><p>The event fired before a service requested. It&apos;s useful when you want to resolve contextual dependencies or return service mocks.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -189,7 +189,7 @@
     </tbody>
   </table>
   <h4 id="Solti_Utils_DI_IInjector_OnServiceRequested" data-uid="Solti.Utils.DI.IInjector.OnServiceRequested">OnServiceRequested</h4>
-  <div class="markdown level1 summary"><p>The event fired after the service request.</p>
+  <div class="markdown level1 summary"><p>The event fired after a service requested.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
