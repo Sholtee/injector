@@ -63,13 +63,13 @@ namespace Solti.Utils.DI.Internals
 
                     return isLazy
                         //
-                        // Lazy<IInterface>(() => (IInterface) injector.Get(typeof(IInterface)))
+                        // Lazy<IInterface>(() => (IInterface) injector.Get(typeof(IInterface), target))
                         //
 
                         ? (Expression) Expression.Invoke(Expression.Constant(GetLazyFactory(parameterType)), injector, Expression.Constant(target))
 
                         //
-                        // injector.Get(typeof(IInterface)
+                        // injector.Get(typeof(IInterface), target)
                         //
 
                         : (Expression) Expression.Call(injector, InjectorGet, Expression.Constant(parameterType), Expression.Constant(target));
@@ -95,7 +95,7 @@ namespace Solti.Utils.DI.Internals
         public static Func<IInjector, IReadOnlyDictionary<string, object>, object> GetExtended(ConstructorInfo constructor) => Cache<ConstructorInfo, Func<IInjector, IReadOnlyDictionary<string, object>, object>>.GetOrAdd(constructor, () =>
         {
             //
-            // (injector, explicitParamz) => new Service((IDependency_1) (explicitParamz[paramName] ||  injector.Get(typeof(IDependency_1))), ...)
+            // (injector, explicitParamz) => new Service((IDependency_1) (explicitParamz[paramName] ||  injector.Get(typeof(IDependency_1), target)), ...)
             //
 
             ParameterExpression
@@ -148,7 +148,7 @@ namespace Solti.Utils.DI.Internals
             Type delegateType = typeof(Func<>).MakeGenericType(iface);
 
             //
-            // injector => () => (iface) injector.Get(iface)
+            // (injector, target) => () => (iface) injector.Get(iface, target)
             //
 
             ParameterExpression 
@@ -177,7 +177,7 @@ namespace Solti.Utils.DI.Internals
             ).Compile();
 
             //
-            // injector => new Lazy<iface>(Func<iface>)
+            // (injector, target) => new Lazy<iface>(Func<iface>)
             //
 
             ConstructorInfo ctor = typeof(Lazy<>)
