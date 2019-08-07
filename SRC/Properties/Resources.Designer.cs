@@ -179,24 +179,6 @@ namespace Solti.Utils.DI.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Modifying locked entities is not allowed..
-        /// </summary>
-        internal static string LOCKED {
-            get {
-                return ResourceManager.GetString("LOCKED", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Property can be assigned only once..
-        /// </summary>
-        internal static string MULTIPLE_ASSIGN {
-            get {
-                return ResourceManager.GetString("MULTIPLE_ASSIGN", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Parameter must be a class..
         /// </summary>
         internal static string NOT_A_CLASS {

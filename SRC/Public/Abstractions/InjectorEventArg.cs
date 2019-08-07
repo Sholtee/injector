@@ -8,6 +8,8 @@ using System.Reflection;
 
 namespace Solti.Utils.DI
 {
+    using Properties;
+
     /// <summary>
     /// Contains the <see cref="IInjector"/> event data.
     /// </summary>
@@ -43,7 +45,7 @@ namespace Solti.Utils.DI
             get => FService;
             set => FService = Interface == null || Interface.IsInstanceOfType(value)
                 ? value
-                : throw new InvalidOperationException();
+                : throw new InvalidOperationException(string.Format(Resources.NOT_ASSIGNABLE, Interface, value.GetType()));
         }
     }
 }
