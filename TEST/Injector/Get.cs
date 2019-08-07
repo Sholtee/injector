@@ -64,6 +64,23 @@ namespace Solti.Utils.DI.Injector.Tests
             }
         }
 
+        [Test]
+        public void Injector_Get_ShouldResolveLazyDependencies()
+        {
+            Container
+                .Service<IInterface_1, Implementation_1>()
+                .Service<IInterface_2_LazyDep, Implementation_2_LazyDep>();
+
+            using (IInjector injector = Container.CreateInjector())
+            {
+                var instance = injector.Get<IInterface_2_LazyDep>();
+
+                Assert.That(instance, Is.InstanceOf<Implementation_2_LazyDep>());
+                Assert.That(instance.Interface1, Is.InstanceOf<Lazy<IInterface_1>>());
+                Assert.That(instance.Interface1.Value, Is.InstanceOf<IInterface_1>());
+            }
+        }
+
         [TestCase(Lifetime.Transient)]
         [TestCase(Lifetime.Singleton)]
         public void Injector_Get_ShouldResolveGenericDependencies(Lifetime lifetime)

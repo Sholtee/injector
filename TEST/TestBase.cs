@@ -49,6 +49,11 @@ namespace Solti.Utils.DI.Tests
             IInterface_1 Interface1 { get; }
         }
 
+        public interface IInterface_2_LazyDep
+        {
+            Lazy<IInterface_1> Interface1 { get; }
+        }
+
         public class Implementation_2 : IInterface_2
         {
             public Implementation_2(IInterface_1 interface1)
@@ -57,6 +62,16 @@ namespace Solti.Utils.DI.Tests
             }
 
             public IInterface_1 Interface1 { get; }
+        }
+
+        public class Implementation_2_LazyDep : IInterface_2_LazyDep
+        {
+            public Implementation_2_LazyDep(Lazy<IInterface_1> interface1)
+            {
+                Interface1 = interface1;
+            }
+
+            public Lazy<IInterface_1> Interface1 { get; }
         }
 
         public interface IInterface_3<T>
