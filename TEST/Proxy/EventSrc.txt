@@ -1,7 +1,7 @@
 class Test
 {
     private static readonly System.Reflection.EventInfo FEvent = GetEvent("Event");
-    event Solti.Utils.DI.Proxy.Tests.TestDelegate<System.Int32> Solti.Utils.DI.Proxy.Tests.IFoo<System.Int32>.Event
+    event Solti.Utils.DI.Proxy.Tests.ProxyGeneratorTests.TestDelegate<System.Int32> Solti.Utils.DI.Proxy.Tests.ProxyGeneratorTests.IFoo<System.Int32>.Event
     {
         add
         {

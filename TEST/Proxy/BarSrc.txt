@@ -1,4 +1,4 @@
-void Solti.Utils.DI.Proxy.Tests.IFoo<T>.Bar()
+void Solti.Utils.DI.Proxy.Tests.ProxyGeneratorTests.IFoo<T>.Bar()
 {
     System.Reflection.MethodInfo currentMethod = MethodAccess(() => Target.Bar());
     System.Object[] args = new System.Object[0];

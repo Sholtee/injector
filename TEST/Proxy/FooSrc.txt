@@ -1,4 +1,4 @@
-System.Int32 Solti.Utils.DI.Proxy.Tests.IFoo<T>.Foo<TT>(System.Int32 a, out System.String b, ref TT c)
+System.Int32 Solti.Utils.DI.Proxy.Tests.ProxyGeneratorTests.IFoo<T>.Foo<TT>(System.Int32 a, out System.String b, ref TT c)
 {
     System.String dummy_b;
     TT dummy_c = default(TT);

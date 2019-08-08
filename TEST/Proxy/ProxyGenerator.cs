@@ -20,31 +20,31 @@ namespace Solti.Utils.DI.Proxy.Tests
     using Proxy;
     using Internals;
 
-    internal delegate void TestDelegate<in T>(object sender, T eventArg);
-
-    internal interface IFoo<T>
-    {
-        int Foo<TT>(int a, out string b, ref TT c);
-        void Bar();
-        T Prop { get; set; }
-        event TestDelegate<T> Event;
-    }
-
-    internal class Foo : InterfaceInterceptor<IFoo<int>>
-    {
-        public override object Invoke(MethodInfo method, object[] args)
-        {
-            return 1;
-        }
-
-        public Foo(IFoo<int> target) : base(target)
-        {
-        }
-    }
-
     [TestFixture]
     public sealed class ProxyGeneratorTests
     {
+        public delegate void TestDelegate<in T>(object sender, T eventArg);
+
+        public interface IFoo<T> // TODO: FIXME: nem lehet internal (private eddig se lehetett).
+        {
+            int Foo<TT>(int a, out string b, ref TT c);
+            void Bar();
+            T Prop { get; set; }
+            event TestDelegate<T> Event;
+        }
+
+        public class FooInterceptor : InterfaceInterceptor<IFoo<int>>
+        {
+            public override object Invoke(MethodInfo method, object[] args)
+            {
+                return 1;
+            }
+
+            public FooInterceptor(IFoo<int> target) : base(target)
+            {
+            }
+        }
+
         [Test]
         public void DeclareLocal_ShouldDeclareTheDesiredLocalVariable()
         {
@@ -71,7 +71,7 @@ namespace Solti.Utils.DI.Proxy.Tests
         [Test]
         public void DeclareMethod_ShouldDeclareTheDesiredMethod()
         {
-            Assert.That(ProxyGenerator.DeclareMethod(Foo).NormalizeWhitespace().ToFullString(), Is.EqualTo("System.Int32 Solti.Utils.DI.Proxy.Tests.IFoo<T>.Foo<TT>(System.Int32 a, out System.String b, ref TT c)"));
+            Assert.That(ProxyGenerator.DeclareMethod(Foo).NormalizeWhitespace().ToFullString(), Is.EqualTo("System.Int32 Solti.Utils.DI.Proxy.Tests.ProxyGeneratorTests.IFoo<T>.Foo<TT>(System.Int32 a, out System.String b, ref TT c)"));
 
             Type typeOfT = typeof(List<>).GetGenericArguments().Single();
 
@@ -174,7 +174,7 @@ namespace Solti.Utils.DI.Proxy.Tests
         [Test]
         public void DeclareProperty_ShouldDeclareTheDesiredProperty()
         {
-            Assert.That(ProxyGenerator.DeclareProperty(Prop, SyntaxFactory.Block(), SyntaxFactory.Block()).NormalizeWhitespace(eol: "\n").ToFullString(), Is.EqualTo("System.Int32 Solti.Utils.DI.Proxy.Tests.IFoo<System.Int32>.Prop\n{\n    get\n    {\n    }\n\n    set\n    {\n    }\n}"));
+            Assert.That(ProxyGenerator.DeclareProperty(Prop, SyntaxFactory.Block(), SyntaxFactory.Block()).NormalizeWhitespace(eol: "\n").ToFullString(), Is.EqualTo("System.Int32 Solti.Utils.DI.Proxy.Tests.ProxyGeneratorTests.IFoo<System.Int32>.Prop\n{\n    get\n    {\n    }\n\n    set\n    {\n    }\n}"));
         }
 
         [Test]
@@ -193,13 +193,13 @@ namespace Solti.Utils.DI.Proxy.Tests
         [Test]
         public void GenerateProxyClass_Test()
         {
-            Assert.That(ProxyGenerator.GenerateProxyClass(typeof(Foo), typeof(IFoo<int>)).NormalizeWhitespace(eol: "\n").ToFullString(), Is.EqualTo(File.ReadAllText(Path.Combine("Proxy", "ClsSrc.txt"))));
+            Assert.That(ProxyGenerator.GenerateProxyClass(typeof(FooInterceptor), typeof(IFoo<int>)).NormalizeWhitespace(eol: "\n").ToFullString(), Is.EqualTo(File.ReadAllText(Path.Combine("Proxy", "ClsSrc.txt"))));
         }
 
         [Test]
         public void GeneratedProxy_Test()
         {
-            IFoo<int> proxy = (IFoo<int>) GeneratedProxy<IFoo<int>, Foo>.Type.CreateInstance(new []{typeof(IFoo<int>)}, (object) null);
+            IFoo<int> proxy = (IFoo<int>) GeneratedProxy<IFoo<int>, FooInterceptor>.Type.CreateInstance(new []{typeof(IFoo<int>)}, (object) null);
 
             string a, b = string.Empty;
 
@@ -237,7 +237,7 @@ namespace Solti.Utils.DI.Proxy.Tests
         [Test]
         public void GetEvent_ShouldCreateTheProperMethod()
         {
-            Assert.That(ProxyGenerator.GetEvent(typeof(IFoo<int>)).NormalizeWhitespace().ToFullString(), Is.EqualTo("private static System.Reflection.EventInfo GetEvent(System.String eventName) => typeof(Solti.Utils.DI.Proxy.Tests.IFoo<System.Int32>).GetEvent(eventName, System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance);"));
+            Assert.That(ProxyGenerator.GetEvent(typeof(IFoo<int>)).NormalizeWhitespace().ToFullString(), Is.EqualTo("private static System.Reflection.EventInfo GetEvent(System.String eventName) => typeof(Solti.Utils.DI.Proxy.Tests.ProxyGeneratorTests.IFoo<System.Int32>).GetEvent(eventName, System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance);"));
         }
 
         [Test]
@@ -249,7 +249,7 @@ namespace Solti.Utils.DI.Proxy.Tests
         [Test]
         public void DeclareEvent_ShouldDeclareTheDesiredEvent()
         {
-            Assert.That(ProxyGenerator.DeclareEvent(Event, SyntaxFactory.Block(), SyntaxFactory.Block()).NormalizeWhitespace(eol: "\n").ToString(), Is.EqualTo("event Solti.Utils.DI.Proxy.Tests.TestDelegate<System.Int32> Solti.Utils.DI.Proxy.Tests.IFoo<System.Int32>.Event\n{\n    add\n    {\n    }\n\n    remove\n    {\n    }\n}"));
+            Assert.That(ProxyGenerator.DeclareEvent(Event, SyntaxFactory.Block(), SyntaxFactory.Block()).NormalizeWhitespace(eol: "\n").ToString(), Is.EqualTo("event Solti.Utils.DI.Proxy.Tests.ProxyGeneratorTests.TestDelegate<System.Int32> Solti.Utils.DI.Proxy.Tests.ProxyGeneratorTests.IFoo<System.Int32>.Event\n{\n    add\n    {\n    }\n\n    remove\n    {\n    }\n}"));
         }
 
         [Test]

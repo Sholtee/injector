@@ -206,15 +206,6 @@ namespace Solti.Utils.DI.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Nested types are not supported (yet)..
-        /// </summary>
-        internal static string TYPE_IS_NESTED {
-            get {
-                return ResourceManager.GetString("TYPE_IS_NESTED", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to {0} is not visible. The declaring assembly should be annotated with the InternalsVisibleToAttribute..
         /// </summary>
         internal static string TYPE_NOT_VISIBLE {

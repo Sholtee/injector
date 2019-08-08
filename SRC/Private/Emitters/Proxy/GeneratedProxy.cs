@@ -171,8 +171,6 @@ namespace Solti.Utils.DI.Internals
 
         private static void CheckVisibility(Type type)
         {
-            if (type.IsNested) throw new NotSupportedException(Resources.TYPE_IS_NESTED);
-
             //
             // TODO: FIXME: privat tipusokra mindenkepp fel kene robbanjon (ha annotalva van az asm ha nincs).
             //

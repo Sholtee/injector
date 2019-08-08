@@ -165,9 +165,6 @@
   <data name="NOT_A_CLASS" xml:space="preserve">
     <value>Parameter must be a class.</value>
   </data>
-  <data name="TYPE_IS_NESTED" xml:space="preserve">
-    <value>Nested types are not supported (yet).</value>
-  </data>
   <data name="TYPE_NOT_VISIBLE" xml:space="preserve">
     <value>{0} is not visible. The declaring assembly should be annotated with the InternalsVisibleToAttribute.</value>
   </data>

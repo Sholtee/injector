@@ -11,28 +11,28 @@ namespace Solti.Utils.DI.Proxy.Tests
 {
     using Proxy;
 
-    public interface IMyInterface
-    {
-        int Hooked(int val);
-        int NotHooked(int val);
-    }
-
-    public class MyProxy : InterfaceInterceptor<IMyInterface>
-    {
-        public override object Invoke(MethodInfo targetMethod, object[] args)
-        {
-            if (targetMethod.Name == nameof(Target.Hooked)) return 1986;
-            return base.Invoke(targetMethod, args);
-        }
-
-        public MyProxy(IMyInterface target) : base(target)
-        {
-        }
-    }
-
     [TestFixture]
     public sealed class ProxyTests
     {
+        public interface IMyInterface
+        {
+            int Hooked(int val);
+            int NotHooked(int val);
+        }
+
+        public class MyProxy : InterfaceInterceptor<IMyInterface>
+        {
+            public override object Invoke(MethodInfo targetMethod, object[] args)
+            {
+                if (targetMethod.Name == nameof(Target.Hooked)) return 1986;
+                return base.Invoke(targetMethod, args);
+            }
+
+            public MyProxy(IMyInterface target) : base(target)
+            {
+            }
+        }
+
         private sealed class MyClass : IMyInterface
         {
             public int Hooked(int val)
