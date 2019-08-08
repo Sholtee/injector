@@ -26,7 +26,7 @@ namespace Solti.Utils.DI.Internals
 
         public override object Value => null;
 
-        public override object GetService(IInjector injector, Type iface = null) => IsValid(iface)
+        public override object GetService(IInjector injector, Type iface = null) => InterfaceSupported(iface)
             ? Factory(injector, iface ?? Interface)
             : throw new InvalidOperationException();
 

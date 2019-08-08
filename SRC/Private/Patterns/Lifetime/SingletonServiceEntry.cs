@@ -32,7 +32,7 @@ namespace Solti.Utils.DI.Internals
         {
             CheckDisposed();
 
-            return IsValid(iface)
+            return InterfaceSupported(iface)
                 ? FValue ?? (FValue = Factory(injector, iface ?? Interface))
                 : throw new InvalidOperationException();
         }

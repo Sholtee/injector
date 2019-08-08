@@ -49,7 +49,7 @@ namespace Solti.Utils.DI.Internals
                 Factory = Resolver.Get(lazyImplementation).ConvertToFactory();
         }
 
-        protected bool IsValid(Type iface)
+        protected bool InterfaceSupported(Type iface)
         {
             //
             // Generikus szervizhez csak akkor tartozhat Factory ha az explicit meg volt adva
