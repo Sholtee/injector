@@ -11,6 +11,7 @@ using NUnit.Framework;
 namespace Solti.Utils.DI.Container.Tests
 {
     using Properties;
+    using Proxy;
 
     [TestFixture]
     public sealed partial class ContainerTests
@@ -137,6 +138,37 @@ namespace Solti.Utils.DI.Container.Tests
             Container.Instance<IInterface_1>(new Implementation_1());
 
             Assert.Throws<InvalidOperationException>(() => Container.Proxy<IInterface_1>((p1, p2) => default(IInterface_1)), Resources.CANT_PROXY);
+        }
+       
+        [Test]
+        public void Container_Proxy_MayHaveDependency()
+        {
+            Container
+                .Service<IInterface_1, Implementation_1>()
+                .Service<IInterface_2, Implementation_2>()
+                .Proxy<IInterface_2, MyProxyWithDependency>();
+
+            using (IInjector injector = Container.CreateInjector())
+            {
+                IInterface_2 instance = injector.Get<IInterface_2>();
+
+                Assert.That(instance, Is.InstanceOf<MyProxyWithDependency>());
+
+                MyProxyWithDependency implementor = (MyProxyWithDependency) instance;
+
+                Assert.That(implementor.Dependency, Is.InstanceOf<Implementation_1>());
+                Assert.That(implementor.Target, Is.InstanceOf<Implementation_2>());
+            }
+        }
+
+        public class MyProxyWithDependency : InterfaceInterceptor<IInterface_2>
+        {
+            public MyProxyWithDependency(IInterface_1 dependency, IInterface_2 target) : base(target)
+            {
+                Dependency = dependency;
+            }
+
+            public IInterface_1 Dependency { get; }
         }
     }
 }
