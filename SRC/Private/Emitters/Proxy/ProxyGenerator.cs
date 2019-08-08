@@ -307,13 +307,58 @@ namespace Solti.Utils.DI.Internals
 
         internal static TypeSyntax CreateType(Type src)
         {
-            if (src.IsGenericType()) return src.GetGenericTypeDefinition().GetQualifiedName(name => GenericName(name).WithTypeArgumentList
+            //
+            // "Cica<T>.Mica<TT>"-nal a "TT" is beagyazott ami nekunk nem jo
+            //
+
+            if (src.IsNested && !src.IsGenericParameter)
+            {
+                NameSyntax[] parts;
+
+                if (!src.IsGenericType()) parts = src
+                    .GetParents()
+                    .Append(src)
+                    .Select(type => type.GetQualifiedName())
+                    .ToArray();
+                else
+                { 
+                    //
+                    // "Cica<T>.Mica<TT>.Kutya" is generikusnak minosul: Generikus formaban Cica<T>.Mica<TT>.Kutya<T, TT>
+                    // mig tipizaltan "Cica<T>.Mica<T>.Kutya<TConcrete1, TConcrete2>".
+                    // Ami azert lassuk be igy eleg szopas.
+                    //
+
+                    IReadOnlyList<Type> genericArguments = src.GetGenericArguments(); // "<T, TT>" vagy "<TConcrete1, TConcrete2>"
+
+                    parts = src
+                        .GetParents()
+                        .Append(src.GetGenericTypeDefinition())
+                        .Select(type =>
+                        {
+                            int relatedGACount = type.GetOwnGenericArguments().Count;
+
+                            //
+                            // Ha csak "orokolt" argumentumok voltak akkor a GetQualifiedName() a rovid
+                            // nevet fogja feldolgozni: "Cica<T>.Mica<TT>.Kutya<T, TT>" -> "Kutya".
+                            //
+
+                            if (relatedGACount == 0) return type.GetQualifiedName();
+
+                            IReadOnlyList<Type> relatedGAs = genericArguments.Take(relatedGACount).ToArray();
+                            genericArguments = genericArguments.Skip(relatedGACount).ToArray();
+
+                            return type.GetQualifiedName(name => CreateGenericName(name, relatedGAs));
+                        })
+                        .ToArray();
+                }
+
+                return Qualify(parts);
+            }
+
+            if (src.IsGenericType()) return src.GetGenericTypeDefinition().GetQualifiedName
             (
-                typeArgumentList: TypeArgumentList
-                (
-                    arguments: src.GetGenericArguments().CreateList(CreateType)
-                )
-            ));
+                name => CreateGenericName(name, src.GetGenericArguments())
+            );
 
             if (src.IsArray) return ArrayType
             (
@@ -329,12 +374,23 @@ namespace Solti.Utils.DI.Internals
                         // TODO: kezelje az int[10]-t
                         //
 
-                        sizes: Enumerable.Repeat(0, src.GetArrayRank()).ToList().CreateList(@void => (ExpressionSyntax) OmittedArraySizeExpression())
+                        sizes: Enumerable
+                            .Repeat(0, src.GetArrayRank())
+                            .ToArray() // ToArray() kell =(
+                            .CreateList(@void => (ExpressionSyntax) OmittedArraySizeExpression())
                     )
                 )
             );
 
             return src.GetQualifiedName();
+
+            NameSyntax CreateGenericName(string name, IReadOnlyCollection<Type> genericArguments) => GenericName(name).WithTypeArgumentList
+            (
+                typeArgumentList: TypeArgumentList
+                (
+                    arguments: genericArguments.CreateList(CreateType)
+                )
+            );
         }
 
         internal static TypeSyntax CreateType<T>() => CreateType(typeof(T));
@@ -1156,34 +1212,37 @@ namespace Solti.Utils.DI.Internals
 
         private static IdentifierNameSyntax ToIdentifierName(this LocalDeclarationStatementSyntax variable) => IdentifierName(variable.Declaration.Variables.Single().Identifier);
 
-        private static readonly Regex TypeNameReplacer = new Regex(@"\&|`\d+\[[\w,]+\]", RegexOptions.Compiled);
+        private static readonly Regex TypeNameReplacer = new Regex(@"\&|`\d+(\[[\w,]+\])?", RegexOptions.Compiled);
 
         private static string GetFriendlyName(this Type src)
         {
             Debug.Assert(!src.IsGenericType() || src.IsGenericTypeDefinition());
-            return TypeNameReplacer.Replace(src.ToString(), string.Empty);
+            return TypeNameReplacer.Replace(src.IsNested ? src.Name : src.ToString(), string.Empty);
         }
 
         private static NameSyntax GetQualifiedName(this Type type, Func<string, NameSyntax> typeNameFactory = null)
         {
             return Parts2QualifiedName
             (
-                parts: type.GetFriendlyName().Split('.').Reverse().ToArray(),
+                parts: type.GetFriendlyName().Split('.').ToArray(),
                 factory: typeNameFactory ?? IdentifierName
             );
 
-            NameSyntax Parts2QualifiedName(IReadOnlyCollection<string> parts, Func<string, NameSyntax> factory) => parts.Count == 1
-                ? factory(parts.Single())
-                : QualifiedName
-                (
-                    Parts2QualifiedName
-                    (
-                        parts: parts.Skip(1).ToArray(),
-                        factory: IdentifierName
-                    ),
-                    (SimpleNameSyntax) factory(parts.First())
-                );
+            NameSyntax Parts2QualifiedName(IReadOnlyCollection<string> parts, Func<string, NameSyntax> factory) => Qualify
+            (
+                parts
+                    .Take(parts.Count - 1)
+                    .Select(part => (NameSyntax) IdentifierName(part))
+                    .Append(factory(parts.Last()))
+                    .ToArray()
+            );
         }
+
+        private static NameSyntax Qualify(params NameSyntax[] parts) => parts.Length <= 1 ? parts.Single() : QualifiedName
+        (
+            left: Qualify(parts.Take(parts.Length - 1).ToArray()),
+            right: (SimpleNameSyntax) parts.Last()
+        );
         #endregion
     }
 }

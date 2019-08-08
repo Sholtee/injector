@@ -83,5 +83,37 @@ namespace Solti.Utils.DI.Internals
 
             return ctor.Call(args);
         }
+
+        public static IReadOnlyList<Type> GetOwnGenericArguments(this Type src) => src
+            .GetGenericArguments()
+            .Except(src.DeclaringType?.GetGenericArguments() ?? new Type[0], new GenericArgumentComparer())
+            .ToArray();
+
+        //
+        // Sajat comparer azert kell mert pl List<T> es Action<T> eseten typeof(List<T>).GetGenericArguments[0] != typeof(Action<T>).GetGenericArguments[0] 
+        // testzoleges "T"-re.
+        //
+
+        private sealed class GenericArgumentComparer : IEqualityComparer<Type>
+        {
+            public bool Equals(Type x, Type y) => GetHashCode(x) == GetHashCode(y);
+
+            public int GetHashCode(Type obj)
+            {
+                object key = obj.IsGenericParameter ? obj.Name : (object) obj;
+                return key.GetHashCode();
+            }
+        }
+
+        public static IReadOnlyList<Type> GetParents(this Type type)
+        {
+            return GetParentsInternal().Reverse().ToArray();
+
+            IEnumerable<Type> GetParentsInternal()
+            {
+                for(Type parent = type.DeclaringType; parent != null; parent = parent.DeclaringType)
+                    yield return parent;
+            }
+        }
     }
 }

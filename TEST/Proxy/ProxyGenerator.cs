@@ -102,6 +102,26 @@ namespace Solti.Utils.DI.Proxy.Tests
             Assert.That(ProxyGenerator.CreateType<IEnumerable<IEnumerable<string>>>().NormalizeWhitespace().ToFullString(), Is.EqualTo("System.Collections.Generic.IEnumerable<System.Collections.Generic.IEnumerable<System.String>>"));
         }
 
+        private class CicaNested<T>
+        {
+            public class Mica<TT>
+            {
+                public enum Hajj
+                {                   
+                }
+            }
+        }
+
+        [Test]
+        public void CreateType_ShouldHandleNestedTypes()
+        {
+            Assert.That(ProxyGenerator.CreateType(typeof(Cica<>.Mica<>.Hajj)).NormalizeWhitespace().ToFullString(), Is.EqualTo("Solti.Utils.DI.Proxy.Tests.Cica<T>.Mica<TT>.Hajj"));
+            Assert.That(ProxyGenerator.CreateType<Cica<List<int>>.Mica<string>.Hajj>().NormalizeWhitespace().ToFullString(), Is.EqualTo("Solti.Utils.DI.Proxy.Tests.Cica<System.Collections.Generic.List<System.Int32>>.Mica<System.String>.Hajj"));
+
+            Assert.That(ProxyGenerator.CreateType(typeof(CicaNested<>.Mica<>.Hajj)).NormalizeWhitespace().ToFullString(), Is.EqualTo("Solti.Utils.DI.Proxy.Tests.ProxyGeneratorTests.CicaNested<T>.Mica<TT>.Hajj"));
+            Assert.That(ProxyGenerator.CreateType<CicaNested<List<int>>.Mica<string>.Hajj>().NormalizeWhitespace().ToFullString(), Is.EqualTo("Solti.Utils.DI.Proxy.Tests.ProxyGeneratorTests.CicaNested<System.Collections.Generic.List<System.Int32>>.Mica<System.String>.Hajj"));
+        }
+
         [Test]
         public void AcquireMethodInfo_ShouldGetAMethodInfoInstance()
         {
@@ -236,6 +256,16 @@ namespace Solti.Utils.DI.Proxy.Tests
         public void GenerateProxyEvent_Test()
         {
             Assert.That(SyntaxFactory.ClassDeclaration("Test").WithMembers(SyntaxFactory.List(ProxyGenerator.GenerateProxyEvent(Event))).NormalizeWhitespace(eol: "\n").ToString(), Is.EqualTo(File.ReadAllText(Path.Combine("Proxy", "EventSrc.txt"))));
+        }
+    }
+
+    internal class Cica<T> // NE nested legyen
+    {
+        public class Mica<TT>
+        {
+            public enum Hajj
+            {
+            }
         }
     }
 }
