@@ -313,13 +313,11 @@ namespace Solti.Utils.DI.Internals
 
             if (src.IsNested && !src.IsGenericParameter)
             {
-                NameSyntax[] parts;
+                IEnumerable<NameSyntax> partNames;
 
-                if (!src.IsGenericType()) parts = src
-                    .GetParents()
-                    .Append(src)
-                    .Select(type => type.GetQualifiedName())
-                    .ToArray();
+                IEnumerable<Type> parts = src.GetParents();
+
+                if (!src.IsGenericType()) partNames = parts.Append(src).Select(type => type.GetQualifiedName());
                 else
                 { 
                     //
@@ -330,29 +328,28 @@ namespace Solti.Utils.DI.Internals
 
                     IReadOnlyList<Type> genericArguments = src.GetGenericArguments(); // "<T, TT>" vagy "<TConcrete1, TConcrete2>"
 
-                    parts = src
-                        .GetParents()
-                        .Append(src.GetGenericTypeDefinition())
-                        .Select(type =>
+                    partNames = parts.Append(src.GetGenericTypeDefinition()).Select(type =>
+                    {
+                        int relatedGACount = type.GetOwnGenericArguments().Count;
+
+                        //
+                        // Beagyazott tipusnal a GetQualifiedName() a rovid nevet fogja feldolgozni: 
+                        // "Cica<T>.Mica<TT>.Kutya<T, TT>" -> "Kutya".
+                        //
+
+                        if (relatedGACount > 0)
                         {
-                            int relatedGACount = type.GetOwnGenericArguments().Count;
-
-                            //
-                            // Ha csak "orokolt" argumentumok voltak akkor a GetQualifiedName() a rovid
-                            // nevet fogja feldolgozni: "Cica<T>.Mica<TT>.Kutya<T, TT>" -> "Kutya".
-                            //
-
-                            if (relatedGACount == 0) return type.GetQualifiedName();
-
-                            IReadOnlyList<Type> relatedGAs = genericArguments.Take(relatedGACount).ToArray();
+                            IEnumerable<Type> relatedGAs = genericArguments.Take(relatedGACount);
                             genericArguments = genericArguments.Skip(relatedGACount).ToArray();
 
-                            return type.GetQualifiedName(name => CreateGenericName(name, relatedGAs));
-                        })
-                        .ToArray();
+                            return type.GetQualifiedName(name => CreateGenericName(name, relatedGAs.ToArray()));
+                        }
+
+                        return type.GetQualifiedName();
+                    });
                 }
 
-                return Qualify(parts);
+                return Qualify(partNames.ToArray());
             }
 
             if (src.IsGenericType()) return src.GetGenericTypeDefinition().GetQualifiedName
