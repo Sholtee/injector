@@ -67,11 +67,6 @@ namespace Solti.Utils.DI
         IServiceContainer Instance([ParameterIs(typeof(NotNull), typeof(Interface))] Type iface, [ParameterIs(typeof(NotNull))] object instance, bool releaseOnDispose = false);
 
         /// <summary>
-        /// Registered entries.
-        /// </summary>
-        IReadOnlyCollection<Type> Entries { get; }
-
-        /// <summary>
         /// Creates a new <see cref="IInjector"/> instance from this container.
         /// </summary>
         /// <returns>The newly created injector.</returns>

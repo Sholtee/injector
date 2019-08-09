@@ -18,13 +18,13 @@ namespace Solti.Utils.DI.Internals
         #region Private
         private readonly Stack<Type> FCurrentPath = new Stack<Type>();
 
-        private /*readonly*/ ServiceCollection FServices;
+        private /*readonly*/ ServiceCollection FEntries;
 
         private Injector() => throw new NotSupportedException();
 
-        private Injector(IEnumerable<ServiceEntry> inheritedServices)
+        private Injector(IEnumerable<ServiceEntry> inheritedEntries)
         {
-            FServices = new ServiceCollection(inheritedServices)
+            FEntries = new ServiceCollection(inheritedEntries)
             {
                 //
                 // Beallitjuk a proxyt, majd felvesszuk sajat magunkat.
@@ -52,8 +52,8 @@ namespace Solti.Utils.DI.Internals
         {
             if (disposeManaged)
             {
-                FServices.Dispose();
-                FServices = null;
+                FEntries.Dispose();
+                FEntries = null;
             }
 
             base.Dispose(disposeManaged);
@@ -81,7 +81,7 @@ namespace Solti.Utils.DI.Internals
                 if (FCurrentPath.Count(t => t == iface) > 1)
                     throw new InvalidOperationException(string.Format(Resources.CIRCULAR_REFERENCE, string.Join(" -> ", FCurrentPath)));
 
-                IServiceFactory factory = FServices.QueryEntry(iface);
+                IServiceFactory factory = FEntries.QueryEntry(iface);
 
                 //
                 // Ha az OnServiceRequested esemenyben felulirjak a szervizt akkor azt
@@ -142,7 +142,9 @@ namespace Solti.Utils.DI.Internals
         #endregion
 
         #region IQueryServiceInfo
-        IServiceInfo IQueryServiceInfo.QueryServiceInfo(Type iface) => FServices.QueryEntry(iface);
+        IServiceInfo IQueryServiceInfo.QueryServiceInfo(Type iface) => FEntries.QueryEntry(iface);
+
+        IReadOnlyCollection<IServiceInfo> IQueryServiceInfo.Entries => FEntries.ToArray();
         #endregion
     }
 }

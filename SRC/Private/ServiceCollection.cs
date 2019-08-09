@@ -146,9 +146,16 @@ namespace Solti.Utils.DI.Internals
         public bool Contains(ServiceEntry item) => FEntries.ContainsValue(item);
 
         /// <summary>
-        /// NOT SUPPORTED! Don't use!
+        /// See <see cref="ICollection{T}"/>
         /// </summary>
-        public void CopyTo(ServiceEntry[] array, int arrayIndex) => throw new NotSupportedException();
+        public void CopyTo(ServiceEntry[] array, int arrayIndex)
+        {
+            int i = 0; 
+            foreach (ServiceEntry entry in this)
+            {
+                array.SetValue(entry, i++ + arrayIndex);
+            }
+        }
 
         /// <summary>
         /// NOT SUPPORTED! Don't use!

@@ -173,11 +173,6 @@ namespace Solti.Utils.DI
         /// <summary>
         /// See <see cref="IServiceContainer"/>
         /// </summary>
-        IReadOnlyCollection<Type> IServiceContainer.Entries => FEntries.Select(entry => entry.Interface).ToArray();
-
-        /// <summary>
-        /// See <see cref="IServiceContainer"/>
-        /// </summary>
         IInjector IServiceContainer.CreateInjector() => Injector.Create(this);
         #endregion
 
@@ -186,6 +181,11 @@ namespace Solti.Utils.DI
         /// See <see cref="IQueryServiceInfo"/>
         /// </summary>
         IServiceInfo IQueryServiceInfo.QueryServiceInfo(Type iface) => FEntries.QueryEntry(iface);
+
+        /// <summary>
+        /// See <see cref="IQueryServiceInfo"/>
+        /// </summary>
+        IReadOnlyCollection<IServiceInfo> IQueryServiceInfo.Entries => FEntries.ToArray();
         #endregion
 
         #region Protected

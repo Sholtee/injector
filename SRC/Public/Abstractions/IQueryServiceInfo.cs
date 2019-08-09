@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Collections.Generic;
 
 namespace Solti.Utils.DI
 {
@@ -21,5 +22,10 @@ namespace Solti.Utils.DI
         /// <returns>An <see cref="IServiceInfo"/> instance.</returns>
         /// <exception cref="NotSupportedException">The service can not be found.</exception>
         IServiceInfo QueryServiceInfo([ParameterIs(typeof(NotNull), typeof(Interface))] Type iface);
+
+        /// <summary>
+        /// Registered entries.
+        /// </summary>
+        IReadOnlyCollection<IServiceInfo> Entries { get; }
     }
 }
