@@ -122,7 +122,7 @@ namespace Solti.Utils.DI.Internals
             return ev.Service;
         }
 
-        internal static IInjector Create(ServiceContainer parentContainer) => new Injector((ServiceCollection) parentContainer).Self;
+        internal static IInjector Create(IEnumerable<ServiceEntry> entries) => new Injector(entries).Self;
         #endregion
 
         #region IInjector

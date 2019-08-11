@@ -42,6 +42,8 @@ namespace Solti.Utils.DI
         #endregion
 
         #region Internal
+        internal IEnumerable<ServiceEntry> Entries => FEntries;
+
         internal ServiceEntry Service(Type iface, Type implementation, Lifetime lifetime) => Register
         (
             ProducibleServiceEntryFactory.CreateEntry(lifetime, iface, implementation)
@@ -81,8 +83,6 @@ namespace Solti.Utils.DI
         }
 
         internal ServiceEntry Instance(Type iface, object instance, bool releaseOnDispose) => Register(new InstanceServiceEntry(iface, instance, releaseOnDispose));
-
-        public static explicit operator ServiceCollection(ServiceContainer container) => container?.FEntries;
         #endregion
 
         #region IServiceContainer
@@ -173,7 +173,7 @@ namespace Solti.Utils.DI
         /// <summary>
         /// See <see cref="IServiceContainer"/>
         /// </summary>
-        IInjector IServiceContainer.CreateInjector() => Injector.Create(this);
+        IInjector IServiceContainer.CreateInjector() => Injector.Create(Entries);
         #endregion
 
         #region IQueryServiceInfo
@@ -195,7 +195,7 @@ namespace Solti.Utils.DI
 
         protected ServiceContainer(ServiceContainer parent) : base(parent)
         {
-            FEntries = new ServiceCollection((ServiceCollection) parent);
+            FEntries = new ServiceCollection(parent?.Entries);
 
             Self = ProxyUtils.Chain<IServiceContainer>(this, ProxyFactory.Create<IServiceContainer, ParameterValidatorProxy<IServiceContainer>>);
         }
