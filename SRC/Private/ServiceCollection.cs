@@ -16,7 +16,7 @@ namespace Solti.Utils.DI.Internals
     /// Implements the mechanism of storing service entries.
     /// </summary>
     /// <remarks>This is an internal class so it may change from version to version. Don't use it!</remarks>
-    public class ServiceCollection : Disposable, IServiceCollection
+    internal class ServiceCollection : Disposable, ICollection<ServiceEntry>, IReadOnlyCollection<ServiceEntry>
     {
         private readonly Dictionary<Type, ServiceEntry> FEntries;
 
@@ -57,12 +57,14 @@ namespace Solti.Utils.DI.Internals
                 )
             ?? new Dictionary<Type, ServiceEntry>(0)
         );
-        #endregion
-
-        #region IServiceCollection
+        
         /// <summary>
-        /// See <see cref="IServiceCollection"/>
+        /// Gets the entry associated with the given interface.
         /// </summary>
+        /// <param name="iface">The "id" of the entry. Must be an interface <see cref="Type"/>.</param>
+        /// <returns>The stored <see cref="ServiceEntry"/> instance.</returns>
+        /// <remarks>This method supports entry specialization which means after registering a generic entry you can query its (unregistered) closed pair by passing the closed interface <see cref="Type"/> to this function.</remarks>
+
         public ServiceEntry QueryEntry(Type iface)
         {
             if (QueryEntry(iface, out var entry)) return entry;
@@ -89,7 +91,9 @@ namespace Solti.Utils.DI.Internals
             
             bool QueryEntry(Type key, out ServiceEntry val) => FEntries.TryGetValue(key, out val);
         }
+        #endregion
 
+        #region ICollection
         /// <summary>
         /// See <see cref="ICollection{T}"/>
         /// </summary>

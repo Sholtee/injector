@@ -144,7 +144,7 @@ namespace Solti.Utils.DI.Internals
         #region IQueryServiceInfo
         IServiceInfo IQueryServiceInfo.QueryServiceInfo(Type iface) => FEntries.QueryEntry(iface);
 
-        IReadOnlyCollection<IServiceInfo> IQueryServiceInfo.Entries => FEntries.ToArray();
+        IReadOnlyCollection<IServiceInfo> IQueryServiceInfo.Entries => FEntries;
         #endregion
     }
 }

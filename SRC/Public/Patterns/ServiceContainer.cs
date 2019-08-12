@@ -42,7 +42,7 @@ namespace Solti.Utils.DI
         #endregion
 
         #region Internal
-        internal IEnumerable<ServiceEntry> Entries => FEntries;
+        internal IReadOnlyCollection<ServiceEntry> Entries => FEntries;
 
         internal ServiceEntry Service(Type iface, Type implementation, Lifetime lifetime) => Register
         (
@@ -185,7 +185,7 @@ namespace Solti.Utils.DI
         /// <summary>
         /// See <see cref="IQueryServiceInfo"/>
         /// </summary>
-        IReadOnlyCollection<IServiceInfo> IQueryServiceInfo.Entries => FEntries.ToArray();
+        IReadOnlyCollection<IServiceInfo> IQueryServiceInfo.Entries => FEntries;
         #endregion
 
         #region Protected
