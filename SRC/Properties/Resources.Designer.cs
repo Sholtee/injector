@@ -143,15 +143,6 @@ namespace Solti.Utils.DI.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No registered implementation for &quot;{0}&quot;..
-        /// </summary>
-        internal static string DEPENDENCY_NOT_FOUND {
-            get {
-                return ResourceManager.GetString("DEPENDENCY_NOT_FOUND", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to All constructor arguments must be an interface/Lazy&lt;interface&gt;..
         /// </summary>
         internal static string INVALID_CONSTRUCTOR {
@@ -202,6 +193,15 @@ namespace Solti.Utils.DI.Properties {
         internal static string NOT_ASSIGNABLE {
             get {
                 return ResourceManager.GetString("NOT_ASSIGNABLE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No registered implementation for &quot;{0}&quot;..
+        /// </summary>
+        internal static string SERVICE_NOT_FOUND {
+            get {
+                return ResourceManager.GetString("SERVICE_NOT_FOUND", resourceCulture);
             }
         }
         

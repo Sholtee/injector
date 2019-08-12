@@ -9,15 +9,13 @@ using NUnit.Framework;
 
 namespace Solti.Utils.DI.Container.Tests
 {
-    using Properties;
-
     [TestFixture]
     public sealed partial class ContainerTests
     {
         [Test]
         public void Container_QueryServiceInfo_ShouldThrowOnNonRegisteredService()
         {
-            Assert.Throws<NotSupportedException>(() => Container.QueryServiceInfo<IDisposable>(), string.Format(Resources.DEPENDENCY_NOT_FOUND, typeof(IDisposable)));
+            Assert.Throws<ServiceNotFoundException>(() => Container.QueryServiceInfo<IDisposable>());
         }
 
         [Test]

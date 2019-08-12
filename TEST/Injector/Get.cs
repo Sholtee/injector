@@ -44,7 +44,7 @@ namespace Solti.Utils.DI.Injector.Tests
         {
             using (IInjector injector = Container.CreateInjector())
             {
-                Assert.Throws<NotSupportedException>(() => injector.Get<IInterface_1>(), string.Format(Resources.DEPENDENCY_NOT_FOUND, typeof(IInterface_1)));
+                Assert.Throws<ServiceNotFoundException>(() => injector.Get<IInterface_1>());
             }                 
         }
 

@@ -12,8 +12,6 @@ using System.Reflection;
 
 namespace Solti.Utils.DI.Internals
 {
-    using Properties;
-
     /// <summary>
     /// Implements the mechanism of storing service entries.
     /// </summary>
@@ -74,7 +72,7 @@ namespace Solti.Utils.DI.Internals
             //
 
             if (!iface.IsGenericType() || !QueryEntry(iface.GetGenericTypeDefinition(), out var genericEntry))
-                throw new NotSupportedException(string.Format(Resources.DEPENDENCY_NOT_FOUND, iface));
+                throw new ServiceNotFoundException(iface);
 
             //
             // Ha a generikus bejegyzes legyarthato (van kivulrol beallitott Factory fv-e) akkor nincs dolgunk.

@@ -10,7 +10,6 @@ using NUnit.Framework;
 
 namespace Solti.Utils.DI.Container.Tests
 {
-    using Properties;
     using Internals;
 
     [TestFixture]
@@ -74,7 +73,7 @@ namespace Solti.Utils.DI.Container.Tests
                 .CreateChild()
                 .Service<IInterface_1, Implementation_1>();
 
-            Assert.Throws<NotSupportedException>(() => Container.QueryServiceInfo<IInterface_1>(), string.Format(Resources.DEPENDENCY_NOT_FOUND, typeof(IInterface_1)));
+            Assert.Throws<ServiceNotFoundException>(() => Container.QueryServiceInfo<IInterface_1>());
             Assert.DoesNotThrow(() => child.QueryServiceInfo<IInterface_1>());
         }
 
