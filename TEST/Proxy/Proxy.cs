@@ -22,10 +22,10 @@ namespace Solti.Utils.DI.Proxy.Tests
 
         public class MyProxy : InterfaceInterceptor<IMyInterface>
         {
-            public override object Invoke(MethodInfo targetMethod, object[] args)
+            public override object Invoke(MethodInfo targetMethod, object[] args, MemberInfo extra)
             {
                 if (targetMethod.Name == nameof(Target.Hooked)) return 1986;
-                return base.Invoke(targetMethod, args);
+                return base.Invoke(targetMethod, args, extra);
             }
 
             public MyProxy(IMyInterface target) : base(target)

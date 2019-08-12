@@ -669,7 +669,7 @@ namespace Solti.Utils.DI.Internals
             //     T3 dummy_para3;
             //     MethodInfo currentMethod = MethodAccess(() => Target.Foo(para1, ref dummy_para2, out dummy_para3, para4)); // MethodBase.GetCurrentMethod() az implementaciot adna vissza, reflexio-val meg kibaszott lassu lenne
             //
-            //     object result = Invoke(currentMethod, args);
+            //     object result = Invoke(currentMethod, args, currentMethod);
             //     if (result == CALL_TARGET) return Target.Foo(para1, ref para2, out para3, para4); // void visszateresnel ures return
             //
             //     para2 = (T2) args[1];
@@ -684,7 +684,7 @@ namespace Solti.Utils.DI.Internals
             var statements = new List<StatementSyntax>()
                 .Concat(AcquireMethodInfo(ifaceMethod, out currentMethod))
                 .Append(args = CreateArgumentsArray(ifaceMethod))
-                .Append(result = CallInvoke(currentMethod, args))
+                .Append(result = CallInvoke(currentMethod, args, currentMethod))
                 .Append(ShouldCallTarget(result, ifTrue: CallTargetAndReturn(ifaceMethod)))
                 .Concat(AssignByRefParameters(ifaceMethod, args));
 
@@ -708,7 +708,7 @@ namespace Solti.Utils.DI.Internals
             //     {
             //         PropertyInfo currentProperty = PropertyAccess(() => Target.Prop);
             //
-            //         object result = Invoke(currentProperty.GetMethod, new object[0]);
+            //         object result = Invoke(currentProperty.GetMethod, new object[0], currentProperty);
             //         if (result == CALL_TARGET) return Target.Prop;
             //
             //         return (TResult) result;
@@ -717,7 +717,7 @@ namespace Solti.Utils.DI.Internals
             //     {
             //         PropertyInfo currentProperty = PropertyAccess(() => Target.Prop);
             //
-            //         object result = Invoke(currentProperty.SetMethod, new object[]{ value });
+            //         object result = Invoke(currentProperty.SetMethod, new object[]{ value }, currentProperty);
             //         if (result == CALL_TARGET) Target.Prop = value;
             //     }
             // }
@@ -741,7 +741,8 @@ namespace Solti.Utils.DI.Internals
                                 expression: currentProperty.ToIdentifierName(),
                                 name: IdentifierName(nameof(PropertyInfo.GetMethod))
                             ),
-                            CreateArray<object>() // new object[0]
+                            CreateArray<object>(), // new object[0],
+                            currentProperty.ToIdentifierName() // currentProperty
                         ),
                         ShouldCallTarget(result, ifTrue: ReadTargetAndReturn(ifaceProperty)),
                         ReturnResult(ifaceProperty.PropertyType, result)
@@ -760,7 +761,8 @@ namespace Solti.Utils.DI.Internals
                                 expression: currentProperty.ToIdentifierName(),
                                 name: IdentifierName(nameof(PropertyInfo.SetMethod))
                             ),
-                            CreateArray<object>(IdentifierName(VALUE)) // new object[] {value}
+                            CreateArray<object>(IdentifierName(VALUE)), // new object[] {value}
+                            currentProperty.ToIdentifierName() // currentProperty
                         ),
                         ShouldCallTarget(result, ifTrue: WriteTarget(ifaceProperty))
                     }
@@ -777,12 +779,12 @@ namespace Solti.Utils.DI.Internals
             // {
             //     add 
             //     {
-            //         object result = Invoke(FEvent.AddMethod, new object[]{ value });
+            //         object result = Invoke(FEvent.AddMethod, new object[]{ value }, FEvent);
             //         if (result == CALL_TARGET) Target.Event += value;
             //     }
             //     remove
             //     {
-            //         object result = Invoke(FEvent.RemoveMethod, new object[]{ value });
+            //         object result = Invoke(FEvent.RemoveMethod, new object[]{ value }, FEvent);
             //         if (result == CALL_TARGET) Target.Event -= value;
             //     }
             // }
@@ -833,7 +835,8 @@ namespace Solti.Utils.DI.Internals
                                     expression: IdentifierName(fieldName),
                                     name: IdentifierName(nameof(EventInfo.AddMethod))
                                 ),
-                                CreateArray<object>(IdentifierName(VALUE)) // new object[] {value}
+                                CreateArray<object>(IdentifierName(VALUE)), // new object[] {value}
+                                IdentifierName(fieldName) //FEvent
                             ),
                             ShouldCallTarget(result, ifTrue: RegisterTargetEvent(@event, add: true))
                         }
@@ -850,7 +853,8 @@ namespace Solti.Utils.DI.Internals
                                     expression: IdentifierName(fieldName),
                                     name: IdentifierName(nameof(EventInfo.RemoveMethod))
                                 ),
-                                CreateArray<object>(IdentifierName(VALUE))
+                                CreateArray<object>(IdentifierName(VALUE)),
+                                IdentifierName(fieldName)
                             ),
                             ShouldCallTarget(result, ifTrue: RegisterTargetEvent(@event, add: false))
                         }

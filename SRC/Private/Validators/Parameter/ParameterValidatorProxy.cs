@@ -18,7 +18,7 @@ namespace Solti.Utils.DI.Internals
         {
         }
 
-        public override object Invoke(MethodInfo targetMethod, object[] args)
+        public override object Invoke(MethodInfo targetMethod, object[] args, MemberInfo extra)
         {
             IReadOnlyList<Exception> validationErrors = targetMethod
                 .GetParameters()
@@ -41,7 +41,7 @@ namespace Solti.Utils.DI.Internals
             if (validationErrors.Any())
                 throw validationErrors.Count == 1 ? validationErrors.Single() : new AggregateException(validationErrors);
 
-            return base.Invoke(targetMethod, args);
+            return base.Invoke(targetMethod, args, extra);
         }
     }
 }

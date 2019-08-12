@@ -3,7 +3,7 @@ System.Int32 Solti.Utils.DI.Proxy.Tests.ProxyGeneratorTests.IFoo<System.Int32>.P
     get
     {
         System.Reflection.PropertyInfo currentProperty = PropertyAccess(() => Target.Prop);
-        System.Object result = Invoke(currentProperty.GetMethod, new System.Object[0]);
+        System.Object result = Invoke(currentProperty.GetMethod, new System.Object[0], currentProperty);
         if (result == CALL_TARGET)
             return Target.Prop;
         return (System.Int32)result;
@@ -12,7 +12,7 @@ System.Int32 Solti.Utils.DI.Proxy.Tests.ProxyGeneratorTests.IFoo<System.Int32>.P
     set
     {
         System.Reflection.PropertyInfo currentProperty = PropertyAccess(() => Target.Prop);
-        System.Object result = Invoke(currentProperty.SetMethod, new System.Object[]{value});
+        System.Object result = Invoke(currentProperty.SetMethod, new System.Object[]{value}, currentProperty);
         if (result == CALL_TARGET)
             Target.Prop = value;
     }

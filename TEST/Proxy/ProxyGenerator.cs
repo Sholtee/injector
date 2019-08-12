@@ -35,7 +35,7 @@ namespace Solti.Utils.DI.Proxy.Tests
 
         public class FooInterceptor : InterfaceInterceptor<IFoo<int>>
         {
-            public override object Invoke(MethodInfo method, object[] args)
+            public override object Invoke(MethodInfo method, object[] args, MemberInfo extra)
             {
                 return 1;
             }
@@ -145,10 +145,14 @@ namespace Solti.Utils.DI.Proxy.Tests
         [Test]
         public void CallInvoke_ShouldCallTheInvokeMetehodOnThis()
         {
+            LocalDeclarationStatementSyntax
+                currentMethod = ProxyGenerator.DeclareLocal<MethodInfo>(nameof(currentMethod)),
+                args = ProxyGenerator.DeclareLocal<object[]>(nameof(args));
+
             Assert.That(ProxyGenerator.CallInvoke
             (
-                ProxyGenerator.DeclareLocal<MethodInfo>("currentMethod"),
-                ProxyGenerator.DeclareLocal<object[]>("args")
+                currentMethod,
+                args
             ).NormalizeWhitespace().ToFullString(), Is.EqualTo("System.Object result = Invoke(currentMethod, args);"));
         }
 
