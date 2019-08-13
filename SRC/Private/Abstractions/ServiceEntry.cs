@@ -11,7 +11,7 @@ namespace Solti.Utils.DI.Internals
     /// Stores a service definition.
     /// </summary>
     /// <remarks>This is an internal class so it may change from version to version. Don't use it!</remarks>
-    public abstract class ServiceEntry: Disposable, IServiceFactory, IServiceInfo, ICloneable
+    internal abstract class ServiceEntry: Disposable, IServiceFactory, IServiceInfo, ICloneable
     {
         protected ServiceEntry(Type @interface, Lifetime? lifetime)
         {

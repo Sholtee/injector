@@ -10,7 +10,7 @@ namespace Solti.Utils.DI.Internals
     /// <summary>
     /// Describes an instance service entry.
     /// </summary>
-    public class InstanceServiceEntry : ServiceEntry
+    internal class InstanceServiceEntry : ServiceEntry
     {
         private readonly bool FReleaseOnDispose;
         private object FValue;
@@ -40,7 +40,7 @@ namespace Solti.Utils.DI.Internals
         {
             CheckDisposed();
 
-            if (iface != null && iface != Interface) throw new InvalidOperationException();
+            if (iface != null && iface != Interface) throw new ArgumentException("TODO", nameof(iface));
             return Value;
         }
 

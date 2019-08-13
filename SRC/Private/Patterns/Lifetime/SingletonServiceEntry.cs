@@ -10,7 +10,7 @@ namespace Solti.Utils.DI.Internals
     /// <summary>
     /// Describes a singleton service entry.
     /// </summary>
-    public class SingletonServiceEntry : ProducibleServiceEntry
+    internal class SingletonServiceEntry : ProducibleServiceEntry
     {
         private object FValue;
 
@@ -32,9 +32,10 @@ namespace Solti.Utils.DI.Internals
         {
             CheckDisposed();
 
-            return InterfaceSupported(iface)
-                ? FValue ?? (FValue = Factory(injector, iface ?? Interface))
-                : throw new InvalidOperationException();
+            if (iface != null)
+                CheckInterfaceSupported(iface);
+
+            return FValue ?? (FValue = Factory(injector, iface ?? Interface));
         }
 
         public override object Clone() => new SingletonServiceEntry(Interface, Factory)

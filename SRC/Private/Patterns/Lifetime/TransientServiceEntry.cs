@@ -10,7 +10,7 @@ namespace Solti.Utils.DI.Internals
     /// <summary>
     /// Describes a transient service entry.
     /// </summary>
-    public class TransientServiceEntry : ProducibleServiceEntry
+    internal class TransientServiceEntry : ProducibleServiceEntry
     {
         public TransientServiceEntry(Type @interface,  Func<IInjector, Type, object> factory) : base(@interface, DI.Lifetime.Transient, factory)
         {
@@ -26,9 +26,14 @@ namespace Solti.Utils.DI.Internals
 
         public override object Value => null;
 
-        public override object GetService(IInjector injector, Type iface = null) => InterfaceSupported(iface)
-            ? Factory(injector, iface ?? Interface)
-            : throw new InvalidOperationException();
+        public override object GetService(IInjector injector, Type iface = null)
+        {
+            if (iface != null)
+                CheckInterfaceSupported(iface);
+
+            return Factory(injector, iface ?? Interface);
+
+        }
 
         public override object Clone() => new TransientServiceEntry(Interface, Factory)
         {

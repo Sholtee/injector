@@ -11,7 +11,7 @@ namespace Solti.Utils.DI.Internals
     /// <summary>
     /// Describes a producible service entry.
     /// </summary>
-    public abstract class ProducibleServiceEntry : ServiceEntry
+    internal abstract class ProducibleServiceEntry : ServiceEntry
     {
         protected object FImplementation;
 
@@ -49,24 +49,40 @@ namespace Solti.Utils.DI.Internals
                 Factory = Resolver.Get(lazyImplementation).ConvertToFactory();
         }
 
-        protected bool InterfaceSupported(Type iface)
+        protected void CheckInterfaceSupported(Type iface)
         {
             //
-            // Generikus szervizhez csak akkor tartozhat Factory ha az explicit meg volt adva
-            // -> ha nincs Factory akkor szopas.
+            // Generikust sose peldanyosithatunk.
             //
 
-            if (Factory == null) return false;
+            if (iface.IsGenericTypeDefinition())
+                throw new ArgumentException("TODO", nameof(iface));
 
             //
-            // A fenti esetnel nincs implementacio, minden mas esetben az interface-nek az 
-            // implementaciohoz kell tartoznia (amibol a Factory generalva lett).
+            // Ha nincs factory akkor amugy sem lehet peldanyositani a szervizt tok mind1 mi az.
             //
 
-            if (iface != null && Implementation != null && !iface.IsInterfaceOf(Implementation))
-                return false;
+            if (Factory == null)
+                throw new InvalidOperationException();
 
-            return true;
+            //
+            // Generikus interface-hez tartozo factory-nal megengedjuk specializalt peldany lekerdezeset.
+            //
+
+            if (IsFactory && Interface.IsGenericTypeDefinition())
+            {
+                if (!iface.IsGenericType())
+                    throw new ArgumentException("TODO", nameof(iface));
+
+                iface = iface.GetGenericTypeDefinition();
+            }
+
+            //
+            // Minden mas esetben csak a regisztralt szervizt kerdezhetjuk le.
+            //
+
+            if (iface != Interface)
+                throw new ArgumentException("TODO", nameof(iface));
         }
 
         public sealed override Type Implementation => (FImplementation as Lazy<Type>)?.Value ?? (Type) FImplementation;
