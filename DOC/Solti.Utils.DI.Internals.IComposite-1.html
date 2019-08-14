@@ -172,7 +172,7 @@
     </tbody>
   </table>
   <h5 id="Solti_Utils_DI_Internals_IComposite_1_CreateChild_remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><ul><li>The child created by this method should inherit the state of this entity (but modifying the child should not affect it).</li><li>Disposing the child should cause its removal from the <a class="xref" href="Solti.Utils.DI.Internals.IComposite-1.html#Solti_Utils_DI_Internals_IComposite_1_Children">Children</a> list. Without it, this entity is responsible for freeing it on dispose.</li></ul>
+  <div class="markdown level1 remarks"><ul><li>The child created by this method should inherit the state of its parent (but modifying the child should not affect it).</li><li>Freeing the created child should cause its removal from the <a class="xref" href="Solti.Utils.DI.Internals.IComposite-1.html#Solti_Utils_DI_Internals_IComposite_1_Children">Children</a> list. Otherwise its parent is responsible for disposing it.</li></ul>
 </div>
 </article>
           </div>

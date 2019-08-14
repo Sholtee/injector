@@ -32,10 +32,10 @@ namespace Solti.Utils.DI.Internals
         /// <remarks>
         /// <list type="bullet">
         /// <item>
-        /// <description>The child created by this method should inherit the state of this entity (but modifying the child should not affect it).</description>
+        /// <description>The child created by this method should inherit the state of its parent (but modifying the child should not affect it).</description>
         /// </item>
         /// <item>
-        /// <description>Disposing the child should cause its removal from the <see cref="Children"/> list. Without it, this entity is responsible for freeing it on dispose.</description>
+        /// <description>Freeing the created child should cause its removal from the <see cref="Children"/> list. Otherwise its parent is responsible for disposing it.</description>
         /// </item>
         /// </list>
         /// </remarks>
