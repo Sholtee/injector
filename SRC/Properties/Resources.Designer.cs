@@ -161,7 +161,7 @@ namespace Solti.Utils.DI.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The returned object should be an instance of &quot;{0}&quot;..
+        ///   Looks up a localized string similar to The returned object must be an instance of &quot;{0}&quot;..
         /// </summary>
         internal static string INVALID_INSTANCE {
             get {
@@ -197,6 +197,24 @@ namespace Solti.Utils.DI.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The service has no factory function..
+        /// </summary>
+        internal static string NOT_PRODUCIBLE {
+            get {
+                return ResourceManager.GetString("NOT_PRODUCIBLE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The given service is not supported..
+        /// </summary>
+        internal static string NOT_SUPPORTED {
+            get {
+                return ResourceManager.GetString("NOT_SUPPORTED", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No registered implementation for &quot;{0}&quot;..
         /// </summary>
         internal static string SERVICE_NOT_FOUND {
@@ -215,7 +233,7 @@ namespace Solti.Utils.DI.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Unknown lifetime: {0}.
+        ///   Looks up a localized string similar to Unknown lifetime: {0}..
         /// </summary>
         internal static string UNKNOWN_LIFETIME {
             get {

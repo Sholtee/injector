@@ -8,6 +8,8 @@ using System.Threading;
 
 namespace Solti.Utils.DI.Internals
 {
+    using Properties;
+
     /// <summary>
     /// Describes a producible service entry.
     /// </summary>
@@ -58,7 +60,7 @@ namespace Solti.Utils.DI.Internals
             //
 
             if (Factory == null)
-                throw new InvalidOperationException();
+                throw new InvalidOperationException(Resources.NOT_PRODUCIBLE);
         }
 
         protected void CheckInterfaceSupported(Type iface)
@@ -68,26 +70,22 @@ namespace Solti.Utils.DI.Internals
             //
 
             if (iface.IsGenericTypeDefinition())
-                throw new ArgumentException("TODO", nameof(iface));
+                throw new ArgumentException(Resources.CANT_INSTANTIATE_GENERICS, nameof(iface));
 
             //
             // Generikus interface-hez tartozo factory-nal megengedjuk specializalt peldany lekerdezeset.
+            // Megjegyzes: a GetGenericTypeDefinition() dobhat kivetelt ha "iface" nem generikus.
             //
 
             if (IsFactory && Interface.IsGenericTypeDefinition())
-            {
-                if (!iface.IsGenericType())
-                    throw new ArgumentException("TODO", nameof(iface));
-
                 iface = iface.GetGenericTypeDefinition();
-            }
 
             //
             // Minden mas esetben csak a regisztralt szervizt kerdezhetjuk le.
             //
 
             if (iface != Interface)
-                throw new ArgumentException("TODO", nameof(iface));
+                throw new NotSupportedException(Resources.NOT_SUPPORTED);
         }
 
         public sealed override Type Implementation => (FImplementation as Lazy<Type>)?.Value ?? (Type) FImplementation;
