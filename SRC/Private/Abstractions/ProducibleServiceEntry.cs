@@ -49,6 +49,18 @@ namespace Solti.Utils.DI.Internals
                 Factory = Resolver.Get(lazyImplementation).ConvertToFactory();
         }
 
+        protected void CheckProducible()
+        {
+            CheckDisposed();
+
+            //
+            // Ha nincs factory akkor amugy sem lehet peldanyositani a szervizt tok mind1 mi az.
+            //
+
+            if (Factory == null)
+                throw new InvalidOperationException();
+        }
+
         protected void CheckInterfaceSupported(Type iface)
         {
             //
@@ -57,13 +69,6 @@ namespace Solti.Utils.DI.Internals
 
             if (iface.IsGenericTypeDefinition())
                 throw new ArgumentException("TODO", nameof(iface));
-
-            //
-            // Ha nincs factory akkor amugy sem lehet peldanyositani a szervizt tok mind1 mi az.
-            //
-
-            if (Factory == null)
-                throw new InvalidOperationException();
 
             //
             // Generikus interface-hez tartozo factory-nal megengedjuk specializalt peldany lekerdezeset.

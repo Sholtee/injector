@@ -28,6 +28,8 @@ namespace Solti.Utils.DI.Internals
 
         public override object GetService(IInjector injector, Type iface = null)
         {
+            CheckProducible();
+
             if (iface != null)
                 CheckInterfaceSupported(iface);
 
