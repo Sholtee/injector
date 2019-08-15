@@ -245,3 +245,4 @@ BenchmarkDotNet.Artifacts
 [Vv]endor/
 DOC/*.yml
 DOC/manifest.json
+Coverage Report
