@@ -81,7 +81,7 @@ namespace Solti.Utils.DI.Internals
                 if (FCurrentPath.Count(t => t == iface) > 1)
                     throw new InvalidOperationException(string.Format(Resources.CIRCULAR_REFERENCE, string.Join(" -> ", FCurrentPath)));
 
-                IServiceFactory factory = FEntries.QueryEntry(iface);
+                IServiceFactory factory = FEntries.Query(iface);
 
                 //
                 // Ha az OnServiceRequested esemenyben felulirjak a szervizt akkor azt
@@ -142,7 +142,7 @@ namespace Solti.Utils.DI.Internals
         #endregion
 
         #region IQueryServiceInfo
-        IServiceInfo IQueryServiceInfo.QueryServiceInfo(Type iface) => FEntries.QueryEntry(iface);
+        IServiceInfo IQueryServiceInfo.QueryServiceInfo(Type iface) => FEntries.Query(iface);
 
         IReadOnlyCollection<IServiceInfo> IQueryServiceInfo.Entries => FEntries;
         #endregion

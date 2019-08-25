@@ -61,7 +61,7 @@ namespace Solti.Utils.DI
 
         internal ServiceEntry Proxy(Type iface, Func<IInjector, Type, object, object> decorator)
         {
-            ServiceEntry entry = FEntries.QueryEntry(iface);
+            ServiceEntry entry = FEntries.Query(iface);
 
             //
             // Service(), Factory(), Lazy()
@@ -180,7 +180,7 @@ namespace Solti.Utils.DI
         /// <summary>
         /// See <see cref="IQueryServiceInfo"/>
         /// </summary>
-        IServiceInfo IQueryServiceInfo.QueryServiceInfo(Type iface) => FEntries.QueryEntry(iface);
+        IServiceInfo IQueryServiceInfo.QueryServiceInfo(Type iface) => FEntries.Query(iface);
 
         /// <summary>
         /// See <see cref="IQueryServiceInfo"/>

@@ -23,7 +23,7 @@ namespace Solti.Utils.DI.Internals
             }           
         }
 
-        public override ServiceEntry QueryEntry(Type iface)
+        public override ServiceEntry Query(Type iface)
         {
             ServiceEntry entry, genericEntry;
 
@@ -44,7 +44,7 @@ namespace Solti.Utils.DI.Internals
             }
             catch (ServiceAlreadyRegisteredException)
             {
-                return this.QueryEntry(iface);
+                return this.Query(iface);
             }
 
             bool QueryEntry(Type key, out ServiceEntry val) => FEntries.TryGetValue(key, out val);
