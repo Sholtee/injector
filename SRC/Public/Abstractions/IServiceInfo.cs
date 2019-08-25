@@ -18,7 +18,7 @@ namespace Solti.Utils.DI
         Type Interface { get; }
 
         /// <summary>
-        /// The service implementation (can be open an generic type).
+        /// The service implementation (may be an open generic type).
         /// </summary>
         /// <remarks>If the entry belongs to a lazy service, getting this property will trigger the type resolver.</remarks>
         Type Implementation { get; }
