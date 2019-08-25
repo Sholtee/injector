@@ -18,7 +18,7 @@ namespace Solti.Utils.DI.Internals
     /// <remarks>This is an internal class so it may change from version to version. Don't use it!</remarks>
     internal class ServiceCollection : Disposable, ICollection<ServiceEntry>, IReadOnlyCollection<ServiceEntry>
     {
-        private readonly Dictionary<Type, ServiceEntry> FEntries;
+        protected readonly Dictionary<Type, ServiceEntry> FEntries;
 
         #region Protected
         /// <summary>
@@ -64,8 +64,7 @@ namespace Solti.Utils.DI.Internals
         /// <param name="iface">The "id" of the entry. Must be an interface <see cref="Type"/>.</param>
         /// <returns>The stored <see cref="ServiceEntry"/> instance.</returns>
         /// <remarks>This method supports entry specialization which means after registering a generic entry you can query its (unregistered) closed pair by passing the closed interface <see cref="Type"/> to this function.</remarks>
-
-        public ServiceEntry QueryEntry(Type iface)
+        public virtual ServiceEntry QueryEntry(Type iface)
         {
             if (QueryEntry(iface, out var entry)) return entry;
 
@@ -97,7 +96,7 @@ namespace Solti.Utils.DI.Internals
         /// <summary>
         /// See <see cref="ICollection{T}"/>
         /// </summary>
-        public IEnumerator<ServiceEntry> GetEnumerator() => FEntries.Values.GetEnumerator();
+        public virtual IEnumerator<ServiceEntry> GetEnumerator() => FEntries.Values.GetEnumerator();
 
         /// <summary>
         /// See <see cref="ICollection{T}"/>
@@ -109,7 +108,7 @@ namespace Solti.Utils.DI.Internals
         /// </summary>
         /// <param name="item">The <see cref="ServiceEntry"/> instance to be added.</param>
         /// <remarks>A <see cref="ServiceAlreadyRegisteredException"/> is thrown if an item with the same interface already exists in the collection.</remarks>
-        public void Add(ServiceEntry item)
+        public virtual void Add(ServiceEntry item)
         {
             try
             {
@@ -125,7 +124,7 @@ namespace Solti.Utils.DI.Internals
         /// Clears the collection.
         /// </summary>
         /// <remarks>All the contained entries will be disposed.</remarks>
-        public void Clear()
+        public virtual void Clear()
         {
             foreach (IDisposable disposable in FEntries.Values)
                 try
@@ -145,12 +144,12 @@ namespace Solti.Utils.DI.Internals
         /// <summary>
         /// See <see cref="ICollection{T}"/>
         /// </summary>
-        public bool Contains(ServiceEntry item) => FEntries.ContainsValue(item);
+        public virtual bool Contains(ServiceEntry item) => FEntries.ContainsValue(item);
 
         /// <summary>
         /// See <see cref="ICollection{T}"/>
         /// </summary>
-        public void CopyTo(ServiceEntry[] array, int arrayIndex)
+        public virtual void CopyTo(ServiceEntry[] array, int arrayIndex)
         {
             int i = 0; 
             foreach (ServiceEntry entry in this)
@@ -162,12 +161,12 @@ namespace Solti.Utils.DI.Internals
         /// <summary>
         /// NOT SUPPORTED! Don't use!
         /// </summary>
-        public bool Remove(ServiceEntry item) => throw new NotSupportedException();
+        public virtual bool Remove(ServiceEntry item) => throw new NotSupportedException();
 
         /// <summary>
         /// See <see cref="ICollection{T}"/>
         /// </summary>
-        public int Count => FEntries.Count;
+        public virtual int Count => FEntries.Count;
 
         /// <summary>
         /// See <see cref="ICollection{T}"/>
