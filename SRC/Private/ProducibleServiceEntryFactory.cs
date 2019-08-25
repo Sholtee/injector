@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Collections.Generic;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -11,7 +12,7 @@ namespace Solti.Utils.DI.Internals
 
     internal static class ProducibleServiceEntryFactory
     {
-        public static ProducibleServiceEntry CreateEntry<TParam>(Lifetime lifetime, Type @interface, TParam param)
+        public static ProducibleServiceEntry CreateEntry<TParam>(Lifetime? lifetime, Type @interface, TParam param, ICollection<ServiceEntry> owner)
         {
             Type serviceEntryType;
 
@@ -31,11 +32,13 @@ namespace Solti.Utils.DI.Internals
             (
                 new[]
                 {
-                    typeof(Type),
-                    typeof(TParam)
+                    typeof(Type), // interface
+                    typeof(TParam),
+                    typeof(ICollection<ServiceEntry>) // owner
                 }, 
                 @interface, 
-                param
+                param,
+                owner
             );
         }
     }

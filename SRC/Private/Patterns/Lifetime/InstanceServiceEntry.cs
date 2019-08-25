@@ -4,9 +4,12 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Collections.Generic;
 
 namespace Solti.Utils.DI.Internals
 {
+    using Properties;
+
     /// <summary>
     /// Describes an instance service entry.
     /// </summary>
@@ -15,7 +18,7 @@ namespace Solti.Utils.DI.Internals
         private readonly bool FReleaseOnDispose;
         private object FValue;
 
-        public InstanceServiceEntry(Type @interface, object value, bool releaseOnDispose) : base(@interface, null)
+        public InstanceServiceEntry(Type @interface, object value, bool releaseOnDispose, ICollection<ServiceEntry> owner) : base(@interface, null, owner)
         {
             FValue = value;
             FReleaseOnDispose = releaseOnDispose;
@@ -40,11 +43,11 @@ namespace Solti.Utils.DI.Internals
         {
             CheckDisposed();
 
-            if (iface != null && iface != Interface) throw new ArgumentException("TODO", nameof(iface));
+            if (iface != null && iface != Interface) throw new NotSupportedException(Resources.NOT_SUPPORTED);
             return Value;
         }
 
-        public override object Clone() => new InstanceServiceEntry(Interface, Value, releaseOnDispose: false /*csak egyszer szabaditsuk fel*/);
+        public override object Clone() => new InstanceServiceEntry(Interface, Value, releaseOnDispose: false /*csak egyszer szabaditsuk fel*/, owner: Owner);
 
         public override bool IsService => false;
         public override bool IsLazy => false;

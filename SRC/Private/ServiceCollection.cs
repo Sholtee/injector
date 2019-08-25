@@ -47,16 +47,16 @@ namespace Solti.Utils.DI.Internals
         /// Creates a new <see cref="ServiceCollection"/> instance.
         /// </summary>
         /// <param name="inheritedEntries">Entries to be inherited.</param>
-        public ServiceCollection(IEnumerable<ServiceEntry> inheritedEntries) => FEntries = new Dictionary<Type, ServiceEntry>
-        (
-            inheritedEntries?
-                .ToDictionary
-                (
-                    entry => entry.Interface,
-                    entry => (ServiceEntry) entry.Clone()
-                )
-            ?? new Dictionary<Type, ServiceEntry>(0)
-        );
+        public ServiceCollection(IReadOnlyCollection<ServiceEntry> inheritedEntries)
+        {
+            FEntries = new Dictionary<Type, ServiceEntry>(inheritedEntries?.Count ?? 0);
+            if (inheritedEntries == null) return;
+
+            foreach (ServiceEntry entry in inheritedEntries)
+            {
+                entry.CopyTo(this);
+            }
+        }
         
         /// <summary>
         /// Gets the entry associated with the given interface.
@@ -66,13 +66,13 @@ namespace Solti.Utils.DI.Internals
         /// <remarks>This method supports entry specialization which means after registering a generic entry you can query its (unregistered) closed pair by passing the closed interface <see cref="Type"/> to this function.</remarks>
         public virtual ServiceEntry Query(Type iface)
         {
-            if (QueryEntry(iface, out var entry)) return entry;
+            if (Query(iface, out var entry)) return entry;
 
             //
             // Meg benne lehet generikus formaban.
             //
 
-            if (!iface.IsGenericType() || !QueryEntry(iface.GetGenericTypeDefinition(), out var genericEntry))
+            if (!iface.IsGenericType() || !Query(iface.GetGenericTypeDefinition(), out var genericEntry))
                 throw new ServiceNotFoundException(iface);
 
             //
@@ -82,13 +82,13 @@ namespace Solti.Utils.DI.Internals
             if (genericEntry.Factory != null) return genericEntry;
 
             //
-            // Kuloben letrehozzuk a tipizalt bejegyzest, rogzitjuk, majd visszaadjuk azt.
+            // Kuloben letrehozzuk a tipizalt bejegyzest (a Specialize() rogziti is az uj bejegyzest ha van
+            // a generikus bejegyzesnek tulajdonosa).
             //
-
-            Add(entry = genericEntry.Specialize(iface.GetGenericArguments()));
-            return entry;
             
-            bool QueryEntry(Type key, out ServiceEntry val) => FEntries.TryGetValue(key, out val);
+            return genericEntry.Specialize(iface.GetGenericArguments());
+            
+            bool Query(Type key, out ServiceEntry val) => FEntries.TryGetValue(key, out val);
         }
         #endregion
 
@@ -126,7 +126,7 @@ namespace Solti.Utils.DI.Internals
         /// <remarks>All the contained entries will be disposed.</remarks>
         public virtual void Clear()
         {
-            foreach (IDisposable disposable in FEntries.Values)
+            foreach (IDisposable disposable in FEntries.Values.Where(entry => entry.Owner == this))
                 try
                 {
                     disposable.Dispose();

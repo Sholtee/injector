@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Collections.Generic;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -13,10 +14,11 @@ namespace Solti.Utils.DI.Internals
     /// <remarks>This is an internal class so it may change from version to version. Don't use it!</remarks>
     internal abstract class ServiceEntry: Disposable, IServiceFactory, IServiceInfo, ICloneable
     {
-        protected ServiceEntry(Type @interface, Lifetime? lifetime)
+        protected ServiceEntry(Type @interface, Lifetime? lifetime, ICollection<ServiceEntry> owner)
         {
             Interface = @interface;
             Lifetime  = lifetime;
+            Owner     = owner;
         }
 
         #region Immutables
@@ -29,6 +31,11 @@ namespace Solti.Utils.DI.Internals
         /// The lefiteime of the service (if present).
         /// </summary>
         public Lifetime? Lifetime { get; }
+
+        /// <summary>
+        /// The owner of this entry.
+        /// </summary>
+        public ICollection<ServiceEntry> Owner { get; }
 
         /// <summary>
         /// The implementation of the service (if present).
@@ -70,18 +77,31 @@ namespace Solti.Utils.DI.Internals
         public abstract object Clone();
 
         /// <summary>
+        /// Copies this entry into a new collection.
+        /// </summary>
+        public virtual ServiceEntry CopyTo(ICollection<ServiceEntry> target)
+        {
+            var result = (ServiceEntry) Clone();
+            target?.Add(result);
+            return result;
+        }
+
+        /// <summary>
         /// See <see cref="object.Equals(object)"/>
         /// </summary>
-        public override bool Equals(object obj)
-        {
-            if (ReferenceEquals(this, obj)) return true;
-
-            return obj.GetHashCode() == GetHashCode();
-        }
+        public override bool Equals(object obj) => obj != null && (ReferenceEquals(this, obj) || obj.GetHashCode() == GetHashCode());
 
         /// <summary>
         /// See <see cref="object.GetHashCode"/>
         /// </summary>
-        public override int GetHashCode() => new {Interface, Lifetime, Factory, Value, Implementation}.GetHashCode();
+        public override int GetHashCode() => new
+        {
+            Owner,
+            Interface,
+            Lifetime,
+            Factory,
+            Value,
+            Implementation
+        }.GetHashCode();
     }
 }

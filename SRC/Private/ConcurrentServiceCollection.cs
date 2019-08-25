@@ -25,13 +25,13 @@ namespace Solti.Utils.DI.Internals
 
         public override ServiceEntry Query(Type iface)
         {
-            ServiceEntry entry, genericEntry;
+            ServiceEntry genericEntry;
 
             using (FLock.AcquireReaderLock())
             {
-                if (QueryEntry(iface, out entry)) return entry;
+                if (Query(iface, out var entry)) return entry;
 
-                if (!iface.IsGenericType() || !QueryEntry(iface.GetGenericTypeDefinition(), out genericEntry))
+                if (!iface.IsGenericType() || !Query(iface.GetGenericTypeDefinition(), out genericEntry))
                     throw new ServiceNotFoundException(iface);
 
                 if (genericEntry.Factory != null) return genericEntry;
@@ -39,15 +39,14 @@ namespace Solti.Utils.DI.Internals
 
             try
             {
-                Add(entry = genericEntry.Specialize(iface.GetGenericArguments()));
-                return entry;
+                return genericEntry.Specialize(iface.GetGenericArguments());
             }
             catch (ServiceAlreadyRegisteredException)
             {
                 return this.Query(iface);
             }
 
-            bool QueryEntry(Type key, out ServiceEntry val) => FEntries.TryGetValue(key, out val);
+            bool Query(Type key, out ServiceEntry val) => FEntries.TryGetValue(key, out val);
         }
 
         public override void Clear()

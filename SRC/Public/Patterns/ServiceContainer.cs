@@ -5,7 +5,6 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 
 namespace Solti.Utils.DI
@@ -46,17 +45,17 @@ namespace Solti.Utils.DI
 
         internal ServiceEntry Service(Type iface, Type implementation, Lifetime lifetime) => Register
         (
-            ProducibleServiceEntryFactory.CreateEntry(lifetime, iface, implementation)
+            ProducibleServiceEntryFactory.CreateEntry(lifetime, iface, implementation, FEntries)
         );
 
         internal ServiceEntry Factory(Type iface, Func<IInjector, Type, object> factory, Lifetime lifetime) => Register
         (
-            ProducibleServiceEntryFactory.CreateEntry(lifetime, iface, factory)
+            ProducibleServiceEntryFactory.CreateEntry(lifetime, iface, factory, FEntries)
         );
 
         internal ServiceEntry Lazy(Type iface, ITypeResolver implementation, Lifetime lifetime) => Register
         (
-            ProducibleServiceEntryFactory.CreateEntry(lifetime, iface, implementation)
+            ProducibleServiceEntryFactory.CreateEntry(lifetime, iface, implementation, FEntries)
         );
 
         internal ServiceEntry Proxy(Type iface, Func<IInjector, Type, object, object> decorator)
@@ -82,7 +81,7 @@ namespace Solti.Utils.DI
             throw new InvalidOperationException(Resources.CANT_PROXY);
         }
 
-        internal ServiceEntry Instance(Type iface, object instance, bool releaseOnDispose) => Register(new InstanceServiceEntry(iface, instance, releaseOnDispose));
+        internal ServiceEntry Instance(Type iface, object instance, bool releaseOnDispose) => Register(new InstanceServiceEntry(iface, instance, releaseOnDispose, FEntries));
         #endregion
 
         #region IServiceContainer

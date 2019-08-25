@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Collections.Generic;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -12,15 +13,15 @@ namespace Solti.Utils.DI.Internals
     /// </summary>
     internal class TransientServiceEntry : ProducibleServiceEntry
     {
-        public TransientServiceEntry(Type @interface,  Func<IInjector, Type, object> factory) : base(@interface, DI.Lifetime.Transient, factory)
+        public TransientServiceEntry(Type @interface, Func<IInjector, Type, object> factory, ICollection<ServiceEntry> owner) : base(@interface, DI.Lifetime.Transient, factory, owner)
         {
         }
 
-        public TransientServiceEntry(Type @interface, Type implementation) : base(@interface, DI.Lifetime.Transient, implementation)
+        public TransientServiceEntry(Type @interface, Type implementation, ICollection<ServiceEntry> owner) : base(@interface, DI.Lifetime.Transient, implementation, owner)
         {
         }
 
-        public TransientServiceEntry(Type @interface, ITypeResolver implementation) : base(@interface, DI.Lifetime.Transient, implementation)
+        public TransientServiceEntry(Type @interface, ITypeResolver implementation, ICollection<ServiceEntry> owner) : base(@interface, DI.Lifetime.Transient, implementation, owner)
         {
         }
 
@@ -37,7 +38,7 @@ namespace Solti.Utils.DI.Internals
 
         }
 
-        public override object Clone() => new TransientServiceEntry(Interface, Factory)
+        public override object Clone() => new TransientServiceEntry(Interface, Factory, null)
         {
             //
             // Ne az Implementation-t magat adjuk at h a resolver ne triggerelodjon ha 
@@ -46,5 +47,15 @@ namespace Solti.Utils.DI.Internals
 
             FImplementation = FImplementation
         };
+
+        public override ServiceEntry CopyTo(ICollection<ServiceEntry> target)
+        {
+            var result = new TransientServiceEntry(Interface, Factory, target)
+            {
+                FImplementation = FImplementation
+            };
+            target?.Add(result);
+            return result;
+        }
     }
 }

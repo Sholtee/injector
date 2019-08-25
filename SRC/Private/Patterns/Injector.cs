@@ -22,26 +22,26 @@ namespace Solti.Utils.DI.Internals
 
         private Injector() => throw new NotSupportedException();
 
-        private Injector(IEnumerable<ServiceEntry> inheritedEntries)
+        private Injector(IReadOnlyCollection<ServiceEntry> inheritedEntries)
         {
-            FEntries = new ServiceCollection(inheritedEntries)
-            {
-                //
-                // Beallitjuk a proxyt, majd felvesszuk sajat magunkat.
-                //
+            FEntries = new ServiceCollection(inheritedEntries);
 
-                new InstanceServiceEntry
-                (
-                    typeof(IInjector),
+            //
+            // Beallitjuk a proxyt, majd felvesszuk sajat magunkat.
+            //
+
+            FEntries.Add(new InstanceServiceEntry
+            (
+                typeof(IInjector),
                     
-                    //
-                    // "target" kell h a megfelelo overload-ot hivjuk
-                    //
+                //
+                // "target" kell h a megfelelo overload-ot hivjuk
+                //
 
-                    Self = ProxyUtils.Chain<IInjector>(this, me => ProxyFactory.Create<IInjector, ParameterValidatorProxy<IInjector>>(target: me)),
-                    releaseOnDispose: false
-                )
-            };
+                Self = ProxyUtils.Chain<IInjector>(this, me => ProxyFactory.Create<IInjector, ParameterValidatorProxy<IInjector>>(target: me)),
+                releaseOnDispose: false,
+                owner: FEntries
+            ));
         }
 
         private IInjector Self { get; }
@@ -122,7 +122,7 @@ namespace Solti.Utils.DI.Internals
             return ev.Service;
         }
 
-        internal static IInjector Create(IEnumerable<ServiceEntry> entries) => new Injector(entries).Self;
+        internal static IInjector Create(IReadOnlyCollection<ServiceEntry> entries) => new Injector(entries).Self;
         #endregion
 
         #region IInjector
