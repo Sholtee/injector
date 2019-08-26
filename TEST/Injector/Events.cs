@@ -68,7 +68,7 @@ namespace Solti.Utils.DI.Injector.Tests
             }
         }
 
-        [TestCase(Lifetime.Singleton)]
+        [TestCase(Lifetime.Scoped)]
         [TestCase(Lifetime.Transient)]
         public void Injector_OnServiceRequest_CanChangeTheReturnedService(Lifetime lifetime)
         {
@@ -97,7 +97,7 @@ namespace Solti.Utils.DI.Injector.Tests
             }
         }
 
-        [TestCase(Lifetime.Singleton)]
+        [TestCase(Lifetime.Scoped)]
         [TestCase(Lifetime.Transient)]
         public void Injector_OnServiceRequested_CanChangeTheReturnedService(Lifetime lifetime)
         {

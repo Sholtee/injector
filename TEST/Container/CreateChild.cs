@@ -25,7 +25,7 @@ namespace Solti.Utils.DI.Container.Tests
             Assert.That(child.QueryServiceInfo<IInterface_1>().Implementation, Is.EqualTo(typeof(Implementation_1)));
         }
 
-        [TestCase(Lifetime.Singleton)]
+        [TestCase(Lifetime.Scoped)]
         [TestCase(Lifetime.Transient)]
         public void Container_ChildEnriesShouldNotChangeByDefault(Lifetime lifetime)
         {

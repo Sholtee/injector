@@ -14,7 +14,7 @@ namespace Solti.Utils.DI.Injector.Tests
     public sealed partial class InjectorTests
     {
         [Test]
-        public void Injector_DisposeShouldFreeSingletonEntries()
+        public void Injector_DisposeShouldFreeScopedEntries()
         {
             var mockSingleton = new Mock<IInterface_1_Disaposable>(MockBehavior.Strict);
             mockSingleton.Setup(s => s.Dispose());
@@ -23,7 +23,7 @@ namespace Solti.Utils.DI.Injector.Tests
             mockTransient.Setup(t => t.Dispose());
 
             Container
-                .Factory(inj => mockSingleton.Object, Lifetime.Singleton)
+                .Factory(inj => mockSingleton.Object, Lifetime.Scoped)
                 .Factory(inj => mockTransient.Object, Lifetime.Transient);
 
             using (IInjector injector = Container.CreateInjector())

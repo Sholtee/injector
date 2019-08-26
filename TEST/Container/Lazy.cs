@@ -34,7 +34,7 @@ namespace Solti.Utils.DI.Container.Tests
         }
 
         [TestCase(Lifetime.Transient)]
-        [TestCase(Lifetime.Singleton)]
+        [TestCase(Lifetime.Scoped)]
         public void Container_Lazy_ShouldCallTheResolverOnRequest(Lifetime lifetime)
         {
             var mockResolver = new Mock<ITypeResolver>(MockBehavior.Strict);
