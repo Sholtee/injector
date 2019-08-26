@@ -5,7 +5,6 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 
 namespace Solti.Utils.DI.Internals
@@ -13,6 +12,10 @@ namespace Solti.Utils.DI.Internals
     internal class ConcurrentServiceCollection: ServiceCollection
     {
         private readonly ReaderWriterLockSlim FLock = new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
+
+        public ConcurrentServiceCollection(IReadOnlyCollection<ServiceEntry> inheritedEntries): base(inheritedEntries)
+        {           
+        }
 
         protected override ServiceEntry QueryInternal(Type iface)
         {
@@ -73,13 +76,28 @@ namespace Solti.Utils.DI.Internals
             using (FLock.AcquireReaderLock())
             {
                 //
-                // ToArray() kell h masolatot adjunk vissza
+                // Masolatot adjunk vissza. Megjegyzes: NE this.ToArray()-t hasznaljunk hogy
+                // elkeruljuk a SOException-t
                 //
 
-                return ((IEnumerable<ServiceEntry>) this.ToArray()).GetEnumerator();
+                var ar = new ServiceEntry[Count];
+
+                using (IEnumerator<ServiceEntry> enumerator = base.GetEnumerator())
+                {
+                    for (int i = 0; enumerator.MoveNext(); i++)
+                    {
+                        ar[i] = enumerator.Current;
+                    }
+                }
+
+                return ((IEnumerable<ServiceEntry>) ar).GetEnumerator();
             }
         }
 
+        //
+        // Nem kell override-olni mert az os ugy is a felulirt GetEnumerator()-t fogja hasznalni.
+        //
+/*
         public override void CopyTo(ServiceEntry[] array, int arrayIndex)
         {
             using (FLock.AcquireReaderLock())
@@ -87,7 +105,7 @@ namespace Solti.Utils.DI.Internals
                 base.CopyTo(array, arrayIndex);
             }
         }
-
+*/
         public override int Count
         {
             get

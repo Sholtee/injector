@@ -19,7 +19,12 @@ namespace Solti.Utils.DI
     public class ServiceContainer : Composite<IServiceContainer>, IServiceContainer
     {
         #region Private
-        private /*readonly*/ ServiceCollection FEntries;
+        //
+        // Singleton elettartamnal parhuzamosan is modositasra kerulhet a lista (generikus 
+        // bejegyzes lezarasakor) ezert szalbiztosnak kell h legyen.
+        //
+
+        private /*readonly*/ ConcurrentServiceCollection FEntries;
 
         private ServiceEntry Register(ServiceEntry entry)
         {
@@ -194,7 +199,7 @@ namespace Solti.Utils.DI
 
         protected ServiceContainer(ServiceContainer parent) : base(parent)
         {
-            FEntries = new ServiceCollection(parent?.Entries);
+            FEntries = new ConcurrentServiceCollection(parent?.Entries);
 
             Self = ProxyUtils.Chain<IServiceContainer>(this, ProxyFactory.Create<IServiceContainer, ParameterValidatorProxy<IServiceContainer>>);
         }

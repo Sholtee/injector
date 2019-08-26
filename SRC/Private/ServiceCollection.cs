@@ -18,7 +18,7 @@ namespace Solti.Utils.DI.Internals
     /// <remarks>This is an internal class so it may change from version to version. Don't use it!</remarks>
     internal class ServiceCollection : Disposable, ICollection<ServiceEntry>, IReadOnlyCollection<ServiceEntry>
     {
-        protected readonly Dictionary<Type, ServiceEntry> FEntries;
+        private readonly Dictionary<Type, ServiceEntry> FEntries;
 
         #region Protected
         /// <summary>
