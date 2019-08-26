@@ -54,7 +54,7 @@ namespace Solti.Utils.DI
         /// <param name="iface">The "id" of the service to be decorated.</param>
         /// <param name="decorator">The decorator funtion. It must return the decorated instance. The original instance can be accessed via the 3rd parameter.</param>
         /// <returns>The container itself.</returns>
-        /// <remarks>You can't create proxies against generic or instance entries. A service can be decorated multiple times.</remarks>
+        /// <remarks>You can't create proxies against generic, instance or not owned entries. A service can be decorated multiple times.</remarks>
         IServiceContainer Proxy([ParameterIs(typeof(NotNull), typeof(Interface))] Type iface, [ParameterIs(typeof(NotNull))] Func<IInjector, Type, object, object> decorator);
 
         /// <summary>

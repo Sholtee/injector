@@ -52,6 +52,7 @@ namespace Solti.Utils.DI
         /// <param name="self">The container itself.</param>
         /// <param name="decorator">The decorator funtion. It must return the decorated instance. The original instance can be accessed via the 2nd parameter.</param>
         /// <returns>The container itself.</returns>
+        ///<remarks>You can't create proxies against instance or not owned entries. A service can be decorated multiple times.</remarks>
         public static IServiceContainer Proxy<TInterface>(this IServiceContainer self, Func<IInjector, TInterface, TInterface> decorator) => self.Proxy(typeof(TInterface), (me, type, instance) => decorator(me, (TInterface) instance));
 
         /// <summary>
@@ -61,6 +62,7 @@ namespace Solti.Utils.DI
         /// <typeparam name="TInterceptor">The interceptor class.</typeparam>
         /// <param name="self">The container itself.</param>
         /// <returns>The container itself.</returns>
+        /// <remarks>You can't create proxies against instance or not owned entries. A service can be decorated multiple times.</remarks>
         public static IServiceContainer Proxy<TInterface, TInterceptor>(this IServiceContainer self) where TInterface: class where TInterceptor: InterfaceInterceptor<TInterface> => self.Proxy<TInterface>((me, instance) => ProxyFactory.Create<TInterface, TInterceptor>(instance, me));
 
         /// <summary>
