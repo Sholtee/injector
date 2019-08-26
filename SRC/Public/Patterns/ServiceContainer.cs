@@ -66,7 +66,7 @@ namespace Solti.Utils.DI
             // Service(), Factory(), Lazy()
             //
 
-            if (entry.Factory != null)
+            if (entry.Owner == FEntries && entry.Factory != null)
             {
                 Func<IInjector, Type, object> oldFactory = entry.Factory;
 
