@@ -38,5 +38,7 @@ namespace Solti.Utils.DI.Internals
                 .Select(ga => ga.GetHashCode())
                 .Aggregate(new {entry.Interface, entry.Implementation}.GetHashCode(), (accu, current) => new {accu, current}.GetHashCode());
         }
+
+        public static bool IsGeneric(this ServiceEntry entry) => entry.Interface.IsGenericTypeDefinition();
     }
 }

@@ -33,6 +33,22 @@ namespace Solti.Utils.DI.Internals
 
             base.Dispose(disposeManaged);
         }
+
+        protected virtual ServiceEntry QueryInternal(Type iface)
+        {
+            if (Query(iface, out var entry)) return entry;
+
+            //
+            // Meg benne lehet generikus formaban.
+            //
+
+            if (!iface.IsGenericType() || !Query(iface.GetGenericTypeDefinition(), out entry))
+                throw new ServiceNotFoundException(iface);
+
+            return entry;
+
+            bool Query(Type key, out ServiceEntry val) => FEntries.TryGetValue(key, out val);
+        }
         #endregion
 
         #region Public
@@ -66,29 +82,33 @@ namespace Solti.Utils.DI.Internals
         /// <remarks>This method supports entry specialization which means after registering a generic entry you can query its (unregistered) closed pair by passing the closed interface <see cref="Type"/> to this function.</remarks>
         public virtual ServiceEntry Query(Type iface)
         {
-            if (Query(iface, out var entry)) return entry;
+            ServiceEntry entry = QueryInternal(iface);
 
             //
-            // Meg benne lehet generikus formaban.
+            // 1. eset: Azt az entitast adjuk vissza amit kerestunk.
             //
 
-            if (!iface.IsGenericType() || !Query(iface.GetGenericTypeDefinition(), out var genericEntry))
-                throw new ServiceNotFoundException(iface);
+            if (entry.Interface == iface) return entry;
 
             //
-            // Ha a generikus bejegyzes legyarthato (van kivulrol beallitott Factory fv-e) akkor nincs dolgunk.
+            // 2. eset: Egy generikus bejegyzes lezart parjat kerdezzuk le
             //
 
-            if (genericEntry.Factory != null) return genericEntry;
+            if (entry.IsGeneric()) return entry.Factory != null 
+                //
+                // 2a eset: A bejegyzesnek van beallitott gyar fv-e (pl Factory<TCica>() hivas).
+                //
 
-            //
-            // Kuloben letrehozzuk a tipizalt bejegyzest (a Specialize() rogziti is az uj bejegyzest ha van
-            // a generikus bejegyzesnek tulajdonosa).
-            //
-            
-            return genericEntry.Specialize(iface.GetGenericArguments());
-            
-            bool Query(Type key, out ServiceEntry val) => FEntries.TryGetValue(key, out val);
+                ? entry
+
+                //
+                // 2b eset: Konkretizalni kell a tipust. Megjegyzendo h Specialize() rogiziti is az uj bejegyzest
+                //          -> legkozelebbi hivasnal mar az 1. eset fog lefutni.
+                //
+
+                : entry.Specialize(iface.GetGenericArguments());
+
+            throw new InvalidOperationException();           
         }
         #endregion
 
