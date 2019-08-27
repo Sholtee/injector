@@ -45,10 +45,6 @@ namespace Solti.Utils.DI.Internals
                 // Ez itt viccesen nez ki viszont a motorhazteto alatt a Query() rogzithet is uj elemet
                 // (generikus bejegyzes lekerdezesekor) ami parhuzamos esetben dobhat kivetelt. Ilyenkor
                 // visszaadjuk a masik szal altal regisztralt bejegyzest.
-                // 
-                // Ha vmiert kezzel akarnank felvinni mar regisztralt elemet akkor itt mivel az ost hivjuk
-                // az egyszeruen ujra fogja dobni a ServiceAlreadyRegisteredException-t szoval jol kezeli
-                // ezt az esetet is.
                 //
 
                 return base.Query(iface);

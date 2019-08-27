@@ -30,9 +30,7 @@ namespace Solti.Utils.DI.Internals
                 )
             );
 
-            ServiceEntry result = ProducibleServiceEntryFactory.CreateEntry(entry.Lifetime, concrete.Key, concrete.Value, entry.Owner);
-            entry.Owner?.Add(result);
-            return result;
+            return ProducibleServiceEntryFactory.CreateEntry(entry.Lifetime, concrete.Key, concrete.Value, entry.Owner);
 
             int GetKey() => genericArguments
                 .Select(ga => ga.GetHashCode())

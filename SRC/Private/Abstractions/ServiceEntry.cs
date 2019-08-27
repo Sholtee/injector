@@ -4,7 +4,6 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
-using System.Collections.Generic;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -14,7 +13,7 @@ namespace Solti.Utils.DI.Internals
     /// <remarks>This is an internal class so it may change from version to version. Don't use it!</remarks>
     internal abstract class ServiceEntry: Disposable, IServiceFactory, IServiceInfo, ICloneable
     {
-        protected ServiceEntry(Type @interface, Lifetime? lifetime, ICollection<ServiceEntry> owner)
+        protected ServiceEntry(Type @interface, Lifetime? lifetime, ServiceCollection owner)
         {
             Interface = @interface;
             Lifetime  = lifetime;
@@ -35,7 +34,7 @@ namespace Solti.Utils.DI.Internals
         /// <summary>
         /// The owner of this entry.
         /// </summary>
-        public ICollection<ServiceEntry> Owner { get; }
+        public ServiceCollection Owner { get; }
 
         /// <summary>
         /// The implementation of the service (if present).
@@ -79,7 +78,7 @@ namespace Solti.Utils.DI.Internals
         /// <summary>
         /// Copies this entry into a new collection.
         /// </summary>
-        public virtual ServiceEntry CopyTo(ICollection<ServiceEntry> target)
+        public virtual ServiceEntry CopyTo(ServiceCollection target)
         {
             var result = (ServiceEntry) Clone();
             target?.Add(result);

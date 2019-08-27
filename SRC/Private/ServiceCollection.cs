@@ -94,19 +94,30 @@ namespace Solti.Utils.DI.Internals
             // 2. eset: Egy generikus bejegyzes lezart parjat kerdezzuk le
             //
 
-            if (entry.IsGeneric()) return entry.Factory != null 
+            if (entry.IsGeneric())
+            {
                 //
-                // 2a eset: A bejegyzesnek van beallitott gyar fv-e (pl Factory<TCica>() hivas).
+                // 2a eset: A bejegyzesnek van beallitott gyar fv-e (pl Factory<TCica>() hivas) akkor nincs dolgunk.
                 //
-
-                ? entry
-
-                //
-                // 2b eset: Konkretizalni kell a tipust. Megjegyzendo h Specialize() rogiziti is az uj bejegyzest
-                //          -> legkozelebbi hivasnal mar az 1. eset fog lefutni.
+                // 2b eset: Konkretizalni kell a bejegyzest. Megjegyzendo h mentjuk is az uj bejegyzest igy a legkozelebb
+                //          mar csak az elso esetig fog futni a Query().
                 //
 
-                : entry.Specialize(iface.GetGenericArguments());
+                if (entry.Factory == null) Add(entry = entry.Owner != this
+                    //
+                    // Lekerdezzuk a tulajdonostol (ez rogziti is a lezart peldanyt a tulajdonosnal).
+                    //
+
+                    ? entry.Owner.Query(iface)
+
+                    //
+                    // Mi vagyunk a tulajdonosok, nekunk kell lezarni a tipust.
+                    //
+
+                    : entry.Specialize(iface.GetGenericArguments()));
+
+                return entry;
+            }
 
             throw new InvalidOperationException();           
         }

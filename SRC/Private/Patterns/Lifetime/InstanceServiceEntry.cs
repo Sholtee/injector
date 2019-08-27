@@ -4,7 +4,6 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
-using System.Collections.Generic;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -18,7 +17,7 @@ namespace Solti.Utils.DI.Internals
         private readonly bool FReleaseOnDispose;
         private object FValue;
 
-        public InstanceServiceEntry(Type @interface, object value, bool releaseOnDispose, ICollection<ServiceEntry> owner) : base(@interface, null, owner)
+        public InstanceServiceEntry(Type @interface, object value, bool releaseOnDispose, ServiceCollection owner) : base(@interface, null, owner)
         {
             FValue = value;
             FReleaseOnDispose = releaseOnDispose;
@@ -48,6 +47,12 @@ namespace Solti.Utils.DI.Internals
         }
 
         public override object Clone() => new InstanceServiceEntry(Interface, Value, releaseOnDispose: false /*csak egyszer szabaditsuk fel*/, owner: Owner);
+
+        public override ServiceEntry CopyTo(ServiceCollection target)
+        {
+            target.Add(this);
+            return this;
+        }
 
         public override bool IsService => false;
         public override bool IsLazy => false;

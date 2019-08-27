@@ -4,7 +4,6 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
-using System.Collections.Generic;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -15,15 +14,15 @@ namespace Solti.Utils.DI.Internals
     {
         private object FValue;
 
-        public ScopedServiceEntry(Type @interface, Func<IInjector, Type, object> factory, ICollection<ServiceEntry> owner) : base(@interface, DI.Lifetime.Scoped, factory, owner)
+        public ScopedServiceEntry(Type @interface, Func<IInjector, Type, object> factory, ServiceCollection owner) : base(@interface, DI.Lifetime.Scoped, factory, owner)
         {
         }
 
-        public ScopedServiceEntry(Type @interface, Type implementation, ICollection<ServiceEntry> owner) : base(@interface, DI.Lifetime.Scoped, implementation, owner)
+        public ScopedServiceEntry(Type @interface, Type implementation, ServiceCollection owner) : base(@interface, DI.Lifetime.Scoped, implementation, owner)
         {
         }
 
-        public ScopedServiceEntry(Type @interface, ITypeResolver implementation, ICollection<ServiceEntry> owner) : base(@interface, DI.Lifetime.Scoped, implementation, owner)
+        public ScopedServiceEntry(Type @interface, ITypeResolver implementation, ServiceCollection owner) : base(@interface, DI.Lifetime.Scoped, implementation, owner)
         {
         }
 
@@ -49,14 +48,14 @@ namespace Solti.Utils.DI.Internals
             FImplementation = FImplementation
         };
 
-        public override ServiceEntry CopyTo(ICollection<ServiceEntry> target)
+        public override ServiceEntry CopyTo(ServiceCollection target)
         {
             var result = new ScopedServiceEntry(Interface, Factory, target)
             {
                 FImplementation = FImplementation
             };
 
-            target?.Add(result);
+            target.Add(result);
             return result;
         }
 

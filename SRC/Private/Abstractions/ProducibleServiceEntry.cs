@@ -4,7 +4,6 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
-using System.Collections.Generic;
 using System.Threading;
 
 namespace Solti.Utils.DI.Internals
@@ -18,17 +17,17 @@ namespace Solti.Utils.DI.Internals
     {
         protected object FImplementation;
 
-        protected ProducibleServiceEntry(Type @interface, Lifetime lifetime, Func<IInjector, Type, object> factory, ICollection<ServiceEntry> owner) : base(@interface, lifetime, owner)
+        protected ProducibleServiceEntry(Type @interface, Lifetime lifetime, Func<IInjector, Type, object> factory, ServiceCollection owner) : base(@interface, lifetime, owner)
         {
             Factory = factory;
         }
 
-        protected ProducibleServiceEntry(Type @interface, Lifetime lifetime, Type implementation, ICollection<ServiceEntry> owner) : this(@interface, lifetime, !@interface.IsGenericTypeDefinition() ? Resolver.Get(implementation).ConvertToFactory() : null, owner)
+        protected ProducibleServiceEntry(Type @interface, Lifetime lifetime, Type implementation, ServiceCollection owner) : this(@interface, lifetime, !@interface.IsGenericTypeDefinition() ? Resolver.Get(implementation).ConvertToFactory() : null, owner)
         {
             FImplementation = implementation;
         }
 
-        protected ProducibleServiceEntry(Type @interface, Lifetime lifetime, ITypeResolver implementation, ICollection<ServiceEntry> owner) : base(@interface, lifetime, owner)
+        protected ProducibleServiceEntry(Type @interface, Lifetime lifetime, ITypeResolver implementation, ServiceCollection owner) : base(@interface, lifetime, owner)
         {
             var lazyImplementation = new Lazy<Type>
             (

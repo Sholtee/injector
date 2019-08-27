@@ -4,7 +4,6 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
-using System.Collections.Generic;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -13,15 +12,15 @@ namespace Solti.Utils.DI.Internals
     /// </summary>
     internal class TransientServiceEntry : ProducibleServiceEntry
     {
-        public TransientServiceEntry(Type @interface, Func<IInjector, Type, object> factory, ICollection<ServiceEntry> owner) : base(@interface, DI.Lifetime.Transient, factory, owner)
+        public TransientServiceEntry(Type @interface, Func<IInjector, Type, object> factory, ServiceCollection owner) : base(@interface, DI.Lifetime.Transient, factory, owner)
         {
         }
 
-        public TransientServiceEntry(Type @interface, Type implementation, ICollection<ServiceEntry> owner) : base(@interface, DI.Lifetime.Transient, implementation, owner)
+        public TransientServiceEntry(Type @interface, Type implementation, ServiceCollection owner) : base(@interface, DI.Lifetime.Transient, implementation, owner)
         {
         }
 
-        public TransientServiceEntry(Type @interface, ITypeResolver implementation, ICollection<ServiceEntry> owner) : base(@interface, DI.Lifetime.Transient, implementation, owner)
+        public TransientServiceEntry(Type @interface, ITypeResolver implementation, ServiceCollection owner) : base(@interface, DI.Lifetime.Transient, implementation, owner)
         {
         }
 
@@ -48,13 +47,13 @@ namespace Solti.Utils.DI.Internals
             FImplementation = FImplementation
         };
 
-        public override ServiceEntry CopyTo(ICollection<ServiceEntry> target)
+        public override ServiceEntry CopyTo(ServiceCollection target)
         {
             var result = new TransientServiceEntry(Interface, Factory, target)
             {
                 FImplementation = FImplementation
             };
-            target?.Add(result);
+            target.Add(result);
             return result;
         }
     }
