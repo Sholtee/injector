@@ -38,7 +38,13 @@ namespace Solti.Utils.DI.Internals.Tests
         [Test]
         public void ServiceCollection_ShouldCopyTheInheritedEntries()
         {
-            Mock<ServiceEntry> entry = new Mock<ServiceEntry>(MockBehavior.Strict, typeof(IDisposable) /*iface*/, Lifetime.Transient, new ServiceCollection());              
+            //
+            // MockBehavior ne legyen megadva h mikor a GC felszabaditja a mock entitast
+            // akkor az ne hasaljon el azert mert a Dispose(bool)-ra (ami egyebkent vedett
+            // tag) nem volt hivva a Setup().
+            //
+
+            Mock<ServiceEntry> entry = new Mock<ServiceEntry>(typeof(IDisposable) /*iface*/, Lifetime.Transient, new ServiceCollection());              
             entry.Setup(e => e.CopyTo(It.IsAny<ServiceCollection>())).Returns<ServiceCollection>(sc => null);
 
             using (var collection = new ServiceCollection(new []{entry.Object}))
