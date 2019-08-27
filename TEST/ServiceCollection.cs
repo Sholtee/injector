@@ -46,5 +46,22 @@ namespace Solti.Utils.DI.Internals.Tests
                 entry.Verify(e => e.CopyTo(It.Is<ServiceCollection>(sc => sc == collection)), Times.Once);
             }
         }
+
+        [Test]
+        public void ServiceCollection_ShouldContainUniqueEntries()
+        {
+            var collection = new ServiceCollection(new []
+            {
+                new InstanceServiceEntry(typeof(IDisposable), null, false, null)
+            });
+
+            Assert.Throws<ServiceAlreadyRegisteredException>(() => collection.Add(new InstanceServiceEntry(typeof(IDisposable), null, false, null)));
+
+            Assert.Throws<ServiceAlreadyRegisteredException>(() => new ServiceCollection(new[]
+            {
+                new InstanceServiceEntry(typeof(IDisposable), null, false, null),
+                new InstanceServiceEntry(typeof(IDisposable), null, false, null)
+            }));
+        }
     }
 }
