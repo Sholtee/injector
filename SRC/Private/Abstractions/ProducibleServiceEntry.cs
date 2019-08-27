@@ -63,31 +63,6 @@ namespace Solti.Utils.DI.Internals
                 throw new InvalidOperationException(Resources.NOT_PRODUCIBLE);
         }
 
-        protected void CheckInterfaceSupported(Type iface)
-        {
-            //
-            // Generikust sose peldanyosithatunk.
-            //
-
-            if (iface.IsGenericTypeDefinition())
-                throw new ArgumentException(Resources.CANT_INSTANTIATE_GENERICS, nameof(iface));
-
-            //
-            // Generikus interface-hez tartozo factory-nal megengedjuk specializalt peldany lekerdezeset.
-            // Megjegyzes: a GetGenericTypeDefinition() dobhat kivetelt ha "iface" nem generikus.
-            //
-
-            if (IsFactory && Interface.IsGenericTypeDefinition())
-                iface = iface.GetGenericTypeDefinition();
-
-            //
-            // Minden mas esetben csak a regisztralt szervizt kerdezhetjuk le.
-            //
-
-            if (iface != Interface)
-                throw new NotSupportedException(Resources.NOT_SUPPORTED);
-        }
-
         public sealed override Type Implementation => (FImplementation as Lazy<Type>)?.Value ?? (Type) FImplementation;
         public sealed override Func<IInjector, Type, object> Factory { get; set; }
         public override bool IsService => FImplementation != null;

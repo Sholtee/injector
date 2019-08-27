@@ -17,6 +17,9 @@ namespace Solti.Utils.DI.Internals
 
             switch (lifetime)
             {
+                case Lifetime.Singleton:
+                    serviceEntryType = typeof(SingletonServiceEntry);
+                    break;
                 case Lifetime.Scoped:
                     serviceEntryType = typeof(ScopedServiceEntry);
                     break;

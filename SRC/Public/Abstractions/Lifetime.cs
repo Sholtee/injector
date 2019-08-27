@@ -19,6 +19,11 @@ namespace Solti.Utils.DI
         /// <summary>
         /// Services having <see cref="Scoped"/> liftime are instantiated only once (per injector) on the first request and disposed automatically when the parent injector is disposed.
         /// </summary>
-        Scoped
+        Scoped,
+
+        /// <summary>
+        /// Services having <see cref="Singleton"/> liftime are instantiated only once (per declaring container) on the first request and disposed automatically when the declaring container is disposed.
+        /// </summary>
+        Singleton
     }
 }

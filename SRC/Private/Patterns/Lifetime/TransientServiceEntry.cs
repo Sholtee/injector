@@ -7,6 +7,8 @@ using System;
 
 namespace Solti.Utils.DI.Internals
 {
+    using Properties;
+
     /// <summary>
     /// Describes a transient service entry.
     /// </summary>
@@ -31,10 +33,29 @@ namespace Solti.Utils.DI.Internals
             CheckProducible();
 
             if (iface != null)
-                CheckInterfaceSupported(iface);
+            {
+                Type requested = iface;
+
+                if (requested.IsGenericTypeDefinition())
+                    throw new ArgumentException(Resources.CANT_INSTANTIATE_GENERICS, nameof(iface));
+
+                //
+                // Generikus interface-hez tartozo factory-nal megengedjuk specializalt peldany lekerdezeset.
+                // Megjegyzes: a GetGenericTypeDefinition() dobhat kivetelt ha "iface" nem generikus.
+                //
+
+                if (IsFactory && Interface.IsGenericTypeDefinition())
+                    requested = requested.GetGenericTypeDefinition();
+
+                //
+                // Minden mas esetben csak a regisztralt szervizt kerdezhetjuk le.
+                //
+
+                if (requested != Interface)
+                    throw new NotSupportedException(Resources.NOT_SUPPORTED);
+            }
 
             return Factory(injector, iface ?? Interface);
-
         }
 
         public override object Clone() => new TransientServiceEntry(Interface, Factory, null)
