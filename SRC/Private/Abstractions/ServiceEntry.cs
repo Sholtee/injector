@@ -81,7 +81,7 @@ namespace Solti.Utils.DI.Internals
         public virtual ServiceEntry CopyTo(ServiceCollection target)
         {
             var result = (ServiceEntry) Clone();
-            target?.Add(result);
+            target.Add(result);
             return result;
         }
 

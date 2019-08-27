@@ -99,23 +99,29 @@ namespace Solti.Utils.DI.Internals
                 //
                 // 2a eset: A bejegyzesnek van beallitott gyar fv-e (pl Factory<TCica>() hivas) akkor nincs dolgunk.
                 //
+
+                if (entry.Factory != null) return entry;
+
+                //
                 // 2b eset: Konkretizalni kell a bejegyzest. Megjegyzendo h mentjuk is az uj bejegyzest igy a legkozelebb
                 //          mar csak az elso esetig fog futni a Query().
                 //
 
-                if (entry.Factory == null) Add(entry = entry.Owner != this
-                    //
-                    // Lekerdezzuk a tulajdonostol (ez rogziti is a lezart peldanyt a tulajdonosnal).
-                    //
+                //
+                // Ha nem mi vagyunk a tulajdonosok akkor lekerdezzuk a tulajdonostol es masoljuk sajat magunkhoz
+                // (a tulajdonos nyilvan rogzitani fogja az uj bejegyzest magahoz is).
+                //
 
-                    ? entry.Owner.Query(iface)
+                if (entry.Owner != this) return entry
+                    .Owner
+                    .Query(iface)
+                    .CopyTo(this);
 
-                    //
-                    // Mi vagyunk a tulajdonosok, nekunk kell lezarni a tipust.
-                    //
+                //
+                // Ha mi vagyunk a tulajdonosok akkor nekunk kell lezarni es rogziteni a bejegyzest.
+                //
 
-                    : entry.Specialize(iface.GetGenericArguments()));
-
+                Add(entry = entry.Specialize(iface.GetGenericArguments()));
                 return entry;
             }
 
