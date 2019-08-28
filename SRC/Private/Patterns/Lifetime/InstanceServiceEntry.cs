@@ -25,6 +25,8 @@ namespace Solti.Utils.DI.Internals
 
         public override Type Implementation => null;
 
+        public override object UnderlyingImplementation => null;
+
         public override Func<IInjector, Type, object> Factory
         {
             //
@@ -51,11 +53,6 @@ namespace Solti.Utils.DI.Internals
             target.Add(this);
             return this;
         }
-
-        public override bool IsService => false;
-        public override bool IsLazy => false;
-        public override bool IsFactory => false;
-        public override bool IsInstance => true;
 
         protected override void Dispose(bool disposeManaged)
         {

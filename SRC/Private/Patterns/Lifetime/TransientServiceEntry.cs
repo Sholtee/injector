@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Diagnostics;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -14,6 +15,10 @@ namespace Solti.Utils.DI.Internals
     /// </summary>
     internal class TransientServiceEntry : ProducibleServiceEntry
     {
+        private TransientServiceEntry(TransientServiceEntry entry, ServiceCollection owner) : base(entry, owner)
+        {
+        }
+
         public TransientServiceEntry(Type @interface, Func<IInjector, Type, object> factory, ServiceCollection owner) : base(@interface, DI.Lifetime.Transient, factory, owner)
         {
         }
@@ -44,8 +49,11 @@ namespace Solti.Utils.DI.Internals
                 // Megjegyzes: a GetGenericTypeDefinition() dobhat kivetelt ha "iface" nem generikus.
                 //
 
-                if (IsFactory && Interface.IsGenericTypeDefinition())
+                if (Factory != null && Interface.IsGenericTypeDefinition())
+                {
+                    Debug.Assert(UnderlyingImplementation == null);
                     requested = requested.GetGenericTypeDefinition();
+                }
 
                 //
                 // Minden mas esetben csak a regisztralt szervizt kerdezhetjuk le.
@@ -60,15 +68,7 @@ namespace Solti.Utils.DI.Internals
 
         public override ServiceEntry CopyTo(ServiceCollection target)
         {
-            var result = new TransientServiceEntry(Interface, Factory, target)
-            {
-                //
-                // Ne az Implementation-t magat adjuk at h a resolver ne triggerelodjon ha 
-                // meg nem volt hivva.
-                //
-
-                FImplementation = FImplementation
-            };
+            var result = new TransientServiceEntry(this, target);
             target.Add(result);
             return result;
         }

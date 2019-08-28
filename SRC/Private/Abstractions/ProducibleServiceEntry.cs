@@ -15,7 +15,17 @@ namespace Solti.Utils.DI.Internals
     /// </summary>
     internal abstract class ProducibleServiceEntry : ServiceEntry
     {
-        protected object FImplementation;
+        protected ProducibleServiceEntry(ProducibleServiceEntry entry, ServiceCollection owner): base(entry.Interface, entry.Lifetime, owner)
+        {
+            Factory = entry.Factory;
+
+            //
+            // Ne az Implementation-t magat adjuk at h a resolver ne triggerelodjon ha 
+            // meg nem volt hivva.
+            //
+
+            UnderlyingImplementation = entry.UnderlyingImplementation;
+        }
 
         protected ProducibleServiceEntry(Type @interface, Lifetime lifetime, Func<IInjector, Type, object> factory, ServiceCollection owner) : base(@interface, lifetime, owner)
         {
@@ -24,7 +34,7 @@ namespace Solti.Utils.DI.Internals
 
         protected ProducibleServiceEntry(Type @interface, Lifetime lifetime, Type implementation, ServiceCollection owner) : this(@interface, lifetime, !@interface.IsGenericTypeDefinition() ? Resolver.Get(implementation).ConvertToFactory() : null, owner)
         {
-            FImplementation = implementation;
+            UnderlyingImplementation = implementation;
         }
 
         protected ProducibleServiceEntry(Type @interface, Lifetime lifetime, ITypeResolver implementation, ServiceCollection owner) : base(@interface, lifetime, owner)
@@ -41,7 +51,7 @@ namespace Solti.Utils.DI.Internals
                 LazyThreadSafetyMode.ExecutionAndPublication
             );
 
-            FImplementation = lazyImplementation;
+            UnderlyingImplementation = lazyImplementation;
 
             //
             // Mivel van factory ezert lusta bejegyzesek is Proxy-zhatok.
@@ -63,11 +73,8 @@ namespace Solti.Utils.DI.Internals
                 throw new InvalidOperationException(Resources.NOT_PRODUCIBLE);
         }
 
-        public sealed override Type Implementation => (FImplementation as Lazy<Type>)?.Value ?? (Type) FImplementation;
+        public sealed override Type Implementation => (UnderlyingImplementation as Lazy<Type>)?.Value ?? (Type) UnderlyingImplementation;
+        public override object UnderlyingImplementation { get; }
         public sealed override Func<IInjector, Type, object> Factory { get; set; }
-        public override bool IsService => FImplementation != null;
-        public override bool IsLazy => FImplementation is Lazy<Type>;
-        public override bool IsFactory => !IsService && Factory != null;
-        public override bool IsInstance => false;
     }
 }

@@ -41,13 +41,7 @@ namespace Solti.Utils.DI.Internals
         /// </summary>
         public abstract Type Implementation { get; }
 
-        public abstract bool IsService { get; }
-
-        public abstract bool IsLazy { get; }
-
-        public abstract bool IsFactory { get; }
-
-        public abstract bool IsInstance { get; }       
+        public abstract object UnderlyingImplementation { get; }     
         #endregion
 
         #region Mutables

@@ -16,6 +16,10 @@ namespace Solti.Utils.DI.Internals
     {
         private object FValue;
 
+        private ScopedServiceEntry(ScopedServiceEntry entry, ServiceCollection owner) : base(entry, owner)
+        {
+        }
+
         public ScopedServiceEntry(Type @interface, Func<IInjector, Type, object> factory, ServiceCollection owner) : base(@interface, DI.Lifetime.Scoped, factory, owner)
         {
         }
@@ -42,16 +46,7 @@ namespace Solti.Utils.DI.Internals
 
         public override ServiceEntry CopyTo(ServiceCollection target)
         {
-            var result = new ScopedServiceEntry(Interface, Factory, target)
-            {
-                //
-                // Ne az Implementation-t magat adjuk at h a resolver ne triggerelodjon ha 
-                // meg nem volt hivva.
-                //
-
-                FImplementation = FImplementation
-            };
-
+            var result = new ScopedServiceEntry(this, target);
             target.Add(result);
             return result;
         }
