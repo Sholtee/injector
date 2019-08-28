@@ -27,6 +27,7 @@ namespace Solti.Utils.DI.Container.Tests
 
         [TestCase(Lifetime.Scoped)]
         [TestCase(Lifetime.Transient)]
+        [TestCase(Lifetime.Singleton)]
         public void Container_ChildEnriesShouldNotChangeByDefault(Lifetime lifetime)
         {
             Container

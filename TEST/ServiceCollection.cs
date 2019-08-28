@@ -24,7 +24,7 @@ namespace Solti.Utils.DI.Internals.Tests
             var collection = new ServiceCollection();
 
             collection.Add(new InstanceServiceEntry(typeof(IDisposable), owned, releaseOnDispose: true, owner: collection));
-            collection.Add(new InstanceServiceEntry(typeof(IList<>) /*tok mind1*/, notOwned, releaseOnDispose: true, owner: null));
+            collection.Add(new InstanceServiceEntry(typeof(IServiceContainer) /*tok mind1*/, notOwned, releaseOnDispose: true, owner: null));
 
             Assert.That(collection.Count, Is.EqualTo(2));
 
