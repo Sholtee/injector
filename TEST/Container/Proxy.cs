@@ -24,6 +24,7 @@ namespace Solti.Utils.DI.Container.Tests
         }
 
         [TestCase(Lifetime.Transient)]
+        [TestCase(Lifetime.Scoped)]
         [TestCase(Lifetime.Singleton)]
         public void Container_Proxy_ShouldOverwriteTheFactoryFunction(Lifetime lifetime)
         {
@@ -56,8 +57,6 @@ namespace Solti.Utils.DI.Container.Tests
                 Assert.That(instance, Is.InstanceOf<DecoratedImplementation_1>());
                 Assert.That(callCount_1, Is.EqualTo(1));
                 Assert.That(callCount_2, Is.EqualTo(1));
-
-                (lifetime == Lifetime.Singleton ? Assert.AreSame : ((Action<object, object>) Assert.AreNotSame))(instance, injector.Get<IInterface_1>());
             }
         }
 
@@ -88,7 +87,7 @@ namespace Solti.Utils.DI.Container.Tests
         }
 
         [Test]
-        public void Container_ProxyShouldWorkWithLazyServices()
+        public void Container_Proxy_ShouldWorkWithLazyServices()
         {
             var mockResolver = new Mock<ITypeResolver>(MockBehavior.Strict);
             mockResolver

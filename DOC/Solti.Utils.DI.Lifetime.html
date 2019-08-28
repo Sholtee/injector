@@ -62,8 +62,13 @@
     <thead>
     <tbody>
       <tr>
+        <td id="Solti_Utils_DI_Lifetime_Scoped">Scoped</td>
+        <td><p>Services having <a class="xref" href="Solti.Utils.DI.Lifetime.html#Solti_Utils_DI_Lifetime_Scoped">Scoped</a> liftime are instantiated only once (per injector) on the first request and disposed automatically when the parent injector is disposed.</p>
+</td>
+      </tr>
+      <tr>
         <td id="Solti_Utils_DI_Lifetime_Singleton">Singleton</td>
-        <td><p>Services having <a class="xref" href="Solti.Utils.DI.Lifetime.html#Solti_Utils_DI_Lifetime_Singleton">Singleton</a> liftime are instantiated only once (per injector) on the first request and disposed automatically when the parent injector is disposed.</p>
+        <td><p>Services having <a class="xref" href="Solti.Utils.DI.Lifetime.html#Solti_Utils_DI_Lifetime_Singleton">Singleton</a> liftime are instantiated only once (per declaring container) on the first request and disposed automatically when the declaring container is disposed.</p>
 </td>
       </tr>
       <tr>

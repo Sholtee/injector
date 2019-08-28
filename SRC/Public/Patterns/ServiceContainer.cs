@@ -5,7 +5,6 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 
 namespace Solti.Utils.DI
@@ -20,7 +19,12 @@ namespace Solti.Utils.DI
     public class ServiceContainer : Composite<IServiceContainer>, IServiceContainer
     {
         #region Private
-        private /*readonly*/ ServiceCollection FEntries;
+        //
+        // Singleton elettartamnal parhuzamosan is modositasra kerulhet a lista (generikus 
+        // bejegyzes lezarasakor) ezert szalbiztosnak kell h legyen.
+        //
+
+        private /*readonly*/ ConcurrentServiceCollection FEntries;
 
         private ServiceEntry Register(ServiceEntry entry)
         {
@@ -46,28 +50,28 @@ namespace Solti.Utils.DI
 
         internal ServiceEntry Service(Type iface, Type implementation, Lifetime lifetime) => Register
         (
-            ProducibleServiceEntryFactory.CreateEntry(lifetime, iface, implementation)
+            ProducibleServiceEntryFactory.CreateEntry(lifetime, iface, implementation, FEntries)
         );
 
         internal ServiceEntry Factory(Type iface, Func<IInjector, Type, object> factory, Lifetime lifetime) => Register
         (
-            ProducibleServiceEntryFactory.CreateEntry(lifetime, iface, factory)
+            ProducibleServiceEntryFactory.CreateEntry(lifetime, iface, factory, FEntries)
         );
 
         internal ServiceEntry Lazy(Type iface, ITypeResolver implementation, Lifetime lifetime) => Register
         (
-            ProducibleServiceEntryFactory.CreateEntry(lifetime, iface, implementation)
+            ProducibleServiceEntryFactory.CreateEntry(lifetime, iface, implementation, FEntries)
         );
 
         internal ServiceEntry Proxy(Type iface, Func<IInjector, Type, object, object> decorator)
         {
-            ServiceEntry entry = FEntries.QueryEntry(iface);
+            ServiceEntry entry = FEntries.Query(iface);
 
             //
             // Service(), Factory(), Lazy()
             //
 
-            if (entry.Factory != null)
+            if (entry.Owner == FEntries && entry.Factory != null)
             {
                 Func<IInjector, Type, object> oldFactory = entry.Factory;
 
@@ -82,7 +86,7 @@ namespace Solti.Utils.DI
             throw new InvalidOperationException(Resources.CANT_PROXY);
         }
 
-        internal ServiceEntry Instance(Type iface, object instance, bool releaseOnDispose) => Register(new InstanceServiceEntry(iface, instance, releaseOnDispose));
+        internal ServiceEntry Instance(Type iface, object instance, bool releaseOnDispose) => Register(new InstanceServiceEntry(iface, instance, releaseOnDispose, FEntries));
         #endregion
 
         #region IServiceContainer
@@ -180,7 +184,7 @@ namespace Solti.Utils.DI
         /// <summary>
         /// See <see cref="IQueryServiceInfo"/>
         /// </summary>
-        IServiceInfo IQueryServiceInfo.QueryServiceInfo(Type iface) => FEntries.QueryEntry(iface);
+        IServiceInfo IQueryServiceInfo.QueryServiceInfo(Type iface) => FEntries.Query(iface);
 
         /// <summary>
         /// See <see cref="IQueryServiceInfo"/>
@@ -195,7 +199,7 @@ namespace Solti.Utils.DI
 
         protected ServiceContainer(ServiceContainer parent) : base(parent)
         {
-            FEntries = new ServiceCollection(parent?.Entries);
+            FEntries = new ConcurrentServiceCollection(parent?.Entries);
 
             Self = ProxyUtils.Chain<IServiceContainer>(this, ProxyFactory.Create<IServiceContainer, ParameterValidatorProxy<IServiceContainer>>);
         }

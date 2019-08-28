@@ -20,7 +20,7 @@ namespace Solti.Utils.DI.Container.Setup.Tests
         {
         }
 
-        [Service(typeof(IGenericService<>), Lifetime.Singleton)]
+        [Service(typeof(IGenericService<>), Lifetime.Scoped)]
         private class GenericService<T> : IGenericService<T>
         {
         }
@@ -35,7 +35,7 @@ namespace Solti.Utils.DI.Container.Setup.Tests
 
             mockContainer.Object.Setup(typeof(GenericService<>).Assembly());
 
-            mockContainer.Verify(i => i.Service(It.Is<Type>(t => t == typeof(IGenericService<>)), It.Is<Type>(t => t == typeof(GenericService<>)), It.Is<Lifetime>(lt => lt == Lifetime.Singleton)), Times.Once);
+            mockContainer.Verify(i => i.Service(It.Is<Type>(t => t == typeof(IGenericService<>)), It.Is<Type>(t => t == typeof(GenericService<>)), It.Is<Lifetime>(lt => lt == Lifetime.Scoped)), Times.Once);
         }
     }
 }

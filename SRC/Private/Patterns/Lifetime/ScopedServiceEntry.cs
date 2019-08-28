@@ -1,5 +1,5 @@
 /********************************************************************************
-* SingletonServiceEntry.cs                                                      *
+* ScopedServiceEntry.cs                                                         *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
@@ -10,22 +10,25 @@ namespace Solti.Utils.DI.Internals
     using Properties;
 
     /// <summary>
-    /// Describes a singleton service entry.
+    /// Describes a scoped service entry.
     /// </summary>
-    internal class SingletonServiceEntry : ProducibleServiceEntry
+    internal class ScopedServiceEntry : ProducibleServiceEntry
     {
         private object FValue;
-        private readonly object FLock = new object();
 
-        public SingletonServiceEntry(Type @interface, Func<IInjector, Type, object> factory, ServiceCollection owner) : base(@interface, DI.Lifetime.Singleton, factory, owner)
+        private ScopedServiceEntry(ScopedServiceEntry entry, ServiceCollection owner) : base(entry, owner)
         {
         }
 
-        public SingletonServiceEntry(Type @interface, Type implementation, ServiceCollection owner) : base(@interface, DI.Lifetime.Singleton, implementation, owner)
+        public ScopedServiceEntry(Type @interface, Func<IInjector, Type, object> factory, ServiceCollection owner) : base(@interface, DI.Lifetime.Scoped, factory, owner)
         {
         }
 
-        public SingletonServiceEntry(Type @interface, ITypeResolver implementation, ServiceCollection owner) : base(@interface, DI.Lifetime.Singleton, implementation, owner)
+        public ScopedServiceEntry(Type @interface, Type implementation, ServiceCollection owner) : base(@interface, DI.Lifetime.Scoped, implementation, owner)
+        {
+        }
+
+        public ScopedServiceEntry(Type @interface, ITypeResolver implementation, ServiceCollection owner) : base(@interface, DI.Lifetime.Scoped, implementation, owner)
         {
         }
 
@@ -38,18 +41,14 @@ namespace Solti.Utils.DI.Internals
             if (iface != null && iface != Interface)
                 throw new NotSupportedException(Resources.NOT_SUPPORTED);
 
-            if (FValue == null)
-                lock (FLock)
-                    if (FValue == null)
-                        FValue = Factory(injector, Interface);
-
-            return FValue;
+            return FValue ?? (FValue = Factory(injector, Interface));
         }
 
         public override ServiceEntry CopyTo(ServiceCollection target)
         {
-            target.Add(this);
-            return this;
+            var result = new ScopedServiceEntry(this, target);
+            target.Add(result);
+            return result;
         }
 
         protected override void Dispose(bool disposeManaged)

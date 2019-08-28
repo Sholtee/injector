@@ -15,19 +15,29 @@ namespace Solti.Utils.DI.Internals
     /// </summary>
     internal abstract class ProducibleServiceEntry : ServiceEntry
     {
-        protected object FImplementation;
+        protected ProducibleServiceEntry(ProducibleServiceEntry entry, ServiceCollection owner): base(entry.Interface, entry.Lifetime, owner)
+        {
+            Factory = entry.Factory;
 
-        protected ProducibleServiceEntry(Type @interface, Lifetime lifetime, Func<IInjector, Type, object> factory) : base(@interface, lifetime)
+            //
+            // Ne az Implementation-t magat adjuk at h a resolver ne triggerelodjon ha 
+            // meg nem volt hivva.
+            //
+
+            UnderlyingImplementation = entry.UnderlyingImplementation;
+        }
+
+        protected ProducibleServiceEntry(Type @interface, Lifetime lifetime, Func<IInjector, Type, object> factory, ServiceCollection owner) : base(@interface, lifetime, owner)
         {
             Factory = factory;
         }
 
-        protected ProducibleServiceEntry(Type @interface, Lifetime lifetime, Type implementation) : this(@interface, lifetime, !@interface.IsGenericTypeDefinition() ? Resolver.Get(implementation).ConvertToFactory() : null)
+        protected ProducibleServiceEntry(Type @interface, Lifetime lifetime, Type implementation, ServiceCollection owner) : this(@interface, lifetime, !@interface.IsGenericTypeDefinition() ? Resolver.Get(implementation).ConvertToFactory() : null, owner)
         {
-            FImplementation = implementation;
+            UnderlyingImplementation = implementation;
         }
 
-        protected ProducibleServiceEntry(Type @interface, Lifetime lifetime, ITypeResolver implementation): base(@interface, lifetime)
+        protected ProducibleServiceEntry(Type @interface, Lifetime lifetime, ITypeResolver implementation, ServiceCollection owner) : base(@interface, lifetime, owner)
         {
             var lazyImplementation = new Lazy<Type>
             (
@@ -41,7 +51,7 @@ namespace Solti.Utils.DI.Internals
                 LazyThreadSafetyMode.ExecutionAndPublication
             );
 
-            FImplementation = lazyImplementation;
+            UnderlyingImplementation = lazyImplementation;
 
             //
             // Mivel van factory ezert lusta bejegyzesek is Proxy-zhatok.
@@ -63,36 +73,8 @@ namespace Solti.Utils.DI.Internals
                 throw new InvalidOperationException(Resources.NOT_PRODUCIBLE);
         }
 
-        protected void CheckInterfaceSupported(Type iface)
-        {
-            //
-            // Generikust sose peldanyosithatunk.
-            //
-
-            if (iface.IsGenericTypeDefinition())
-                throw new ArgumentException(Resources.CANT_INSTANTIATE_GENERICS, nameof(iface));
-
-            //
-            // Generikus interface-hez tartozo factory-nal megengedjuk specializalt peldany lekerdezeset.
-            // Megjegyzes: a GetGenericTypeDefinition() dobhat kivetelt ha "iface" nem generikus.
-            //
-
-            if (IsFactory && Interface.IsGenericTypeDefinition())
-                iface = iface.GetGenericTypeDefinition();
-
-            //
-            // Minden mas esetben csak a regisztralt szervizt kerdezhetjuk le.
-            //
-
-            if (iface != Interface)
-                throw new NotSupportedException(Resources.NOT_SUPPORTED);
-        }
-
-        public sealed override Type Implementation => (FImplementation as Lazy<Type>)?.Value ?? (Type) FImplementation;
+        public sealed override Type Implementation => (UnderlyingImplementation as Lazy<Type>)?.Value ?? (Type) UnderlyingImplementation;
+        public override object UnderlyingImplementation { get; }
         public sealed override Func<IInjector, Type, object> Factory { get; set; }
-        public override bool IsService => FImplementation != null;
-        public override bool IsLazy => FImplementation is Lazy<Type>;
-        public override bool IsFactory => !IsService && Factory != null;
-        public override bool IsInstance => false;
     }
 }

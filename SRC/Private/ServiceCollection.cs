@@ -33,6 +33,22 @@ namespace Solti.Utils.DI.Internals
 
             base.Dispose(disposeManaged);
         }
+
+        protected virtual ServiceEntry QueryInternal(Type iface)
+        {
+            if (Query(iface, out var entry)) return entry;
+
+            //
+            // Meg benne lehet generikus formaban.
+            //
+
+            if (!iface.IsGenericType() || !Query(iface.GetGenericTypeDefinition(), out entry))
+                throw new ServiceNotFoundException(iface);
+
+            return entry;
+
+            bool Query(Type key, out ServiceEntry val) => FEntries.TryGetValue(key, out val);
+        }
         #endregion
 
         #region Public
@@ -47,16 +63,16 @@ namespace Solti.Utils.DI.Internals
         /// Creates a new <see cref="ServiceCollection"/> instance.
         /// </summary>
         /// <param name="inheritedEntries">Entries to be inherited.</param>
-        public ServiceCollection(IEnumerable<ServiceEntry> inheritedEntries) => FEntries = new Dictionary<Type, ServiceEntry>
-        (
-            inheritedEntries?
-                .ToDictionary
-                (
-                    entry => entry.Interface,
-                    entry => (ServiceEntry) entry.Clone()
-                )
-            ?? new Dictionary<Type, ServiceEntry>(0)
-        );
+        public ServiceCollection(IReadOnlyCollection<ServiceEntry> inheritedEntries)
+        {
+            FEntries = new Dictionary<Type, ServiceEntry>(inheritedEntries?.Count ?? 0);
+            if (inheritedEntries == null) return;
+
+            foreach (ServiceEntry entry in inheritedEntries)
+            {
+                entry.CopyTo(this);
+            }
+        }
         
         /// <summary>
         /// Gets the entry associated with the given interface.
@@ -64,32 +80,52 @@ namespace Solti.Utils.DI.Internals
         /// <param name="iface">The "id" of the entry. Must be an interface <see cref="Type"/>.</param>
         /// <returns>The stored <see cref="ServiceEntry"/> instance.</returns>
         /// <remarks>This method supports entry specialization which means after registering a generic entry you can query its (unregistered) closed pair by passing the closed interface <see cref="Type"/> to this function.</remarks>
-
-        public ServiceEntry QueryEntry(Type iface)
+        public virtual ServiceEntry Query(Type iface)
         {
-            if (QueryEntry(iface, out var entry)) return entry;
+            ServiceEntry entry = QueryInternal(iface);
 
             //
-            // Meg benne lehet generikus formaban.
+            // 1. eset: Azt az entitast adjuk vissza amit kerestunk.
             //
 
-            if (!iface.IsGenericType() || !QueryEntry(iface.GetGenericTypeDefinition(), out var genericEntry))
-                throw new ServiceNotFoundException(iface);
+            if (entry.Interface == iface) return entry;
 
             //
-            // Ha a generikus bejegyzes legyarthato (van kivulrol beallitott Factory fv-e) akkor nincs dolgunk.
+            // 2. eset: Egy generikus bejegyzes lezart parjat kerdezzuk le
             //
 
-            if (genericEntry.Factory != null) return genericEntry;
+            if (entry.IsGeneric())
+            {
+                //
+                // 2a eset: A bejegyzesnek van beallitott gyar fv-e (pl Factory<TCica>() hivas) akkor nincs dolgunk.
+                //
 
-            //
-            // Kuloben letrehozzuk a tipizalt bejegyzest, rogzitjuk, majd visszaadjuk azt.
-            //
+                if (entry.Factory != null) return entry;
 
-            Add(entry = genericEntry.Specialize(iface.GetGenericArguments()));
-            return entry;
-            
-            bool QueryEntry(Type key, out ServiceEntry val) => FEntries.TryGetValue(key, out val);
+                //
+                // 2b eset: Konkretizalni kell a bejegyzest. Megjegyzendo h mentjuk is az uj bejegyzest igy a legkozelebb
+                //          mar csak az elso esetig fog futni a Query().
+                //
+
+                //
+                // Ha nem mi vagyunk a tulajdonosok akkor lekerdezzuk a tulajdonostol es masoljuk sajat magunkhoz
+                // (a tulajdonos nyilvan rogzitani fogja az uj bejegyzest magahoz is).
+                //
+
+                if (entry.Owner != this) return entry
+                    .Owner
+                    .Query(iface)
+                    .CopyTo(this);
+
+                //
+                // Ha mi vagyunk a tulajdonosok akkor nekunk kell lezarni es rogziteni a bejegyzest.
+                //
+
+                Add(entry = entry.Specialize(iface.GetGenericArguments()));
+                return entry;
+            }
+
+            throw new InvalidOperationException();           
         }
         #endregion
 
@@ -97,7 +133,7 @@ namespace Solti.Utils.DI.Internals
         /// <summary>
         /// See <see cref="ICollection{T}"/>
         /// </summary>
-        public IEnumerator<ServiceEntry> GetEnumerator() => FEntries.Values.GetEnumerator();
+        public virtual IEnumerator<ServiceEntry> GetEnumerator() => FEntries.Values.GetEnumerator();
 
         /// <summary>
         /// See <see cref="ICollection{T}"/>
@@ -109,7 +145,7 @@ namespace Solti.Utils.DI.Internals
         /// </summary>
         /// <param name="item">The <see cref="ServiceEntry"/> instance to be added.</param>
         /// <remarks>A <see cref="ServiceAlreadyRegisteredException"/> is thrown if an item with the same interface already exists in the collection.</remarks>
-        public void Add(ServiceEntry item)
+        public virtual void Add(ServiceEntry item)
         {
             try
             {
@@ -125,9 +161,9 @@ namespace Solti.Utils.DI.Internals
         /// Clears the collection.
         /// </summary>
         /// <remarks>All the contained entries will be disposed.</remarks>
-        public void Clear()
+        public virtual void Clear()
         {
-            foreach (IDisposable disposable in FEntries.Values)
+            foreach (IDisposable disposable in FEntries.Values.Where(entry => entry.Owner == this))
                 try
                 {
                     disposable.Dispose();
@@ -145,12 +181,12 @@ namespace Solti.Utils.DI.Internals
         /// <summary>
         /// See <see cref="ICollection{T}"/>
         /// </summary>
-        public bool Contains(ServiceEntry item) => FEntries.ContainsValue(item);
+        public virtual bool Contains(ServiceEntry item) => FEntries.ContainsValue(item);
 
         /// <summary>
         /// See <see cref="ICollection{T}"/>
         /// </summary>
-        public void CopyTo(ServiceEntry[] array, int arrayIndex)
+        public virtual void CopyTo(ServiceEntry[] array, int arrayIndex)
         {
             int i = 0; 
             foreach (ServiceEntry entry in this)
@@ -162,12 +198,12 @@ namespace Solti.Utils.DI.Internals
         /// <summary>
         /// NOT SUPPORTED! Don't use!
         /// </summary>
-        public bool Remove(ServiceEntry item) => throw new NotSupportedException();
+        public virtual bool Remove(ServiceEntry item) => throw new NotSupportedException();
 
         /// <summary>
         /// See <see cref="ICollection{T}"/>
         /// </summary>
-        public int Count => FEntries.Count;
+        public virtual int Count => FEntries.Count;
 
         /// <summary>
         /// See <see cref="ICollection{T}"/>

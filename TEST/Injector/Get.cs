@@ -25,6 +25,7 @@ namespace Solti.Utils.DI.Injector.Tests
         }
 
         [TestCase(Lifetime.Transient)]
+        [TestCase(Lifetime.Scoped)]
         [TestCase(Lifetime.Singleton)]
         public void Injector_Get_ShouldInstantiate(Lifetime lifetime)
         {
@@ -35,7 +36,6 @@ namespace Solti.Utils.DI.Injector.Tests
                 var instance = injector.Get<IInterface_1>();
 
                 Assert.That(instance, Is.InstanceOf<Implementation_1>());
-                (lifetime == Lifetime.Singleton ? Assert.AreSame : ((Action<object, object>)Assert.AreNotSame))(instance, injector.Get<IInterface_1>());
             }
         }
 
@@ -82,6 +82,7 @@ namespace Solti.Utils.DI.Injector.Tests
         }
 
         [TestCase(Lifetime.Transient)]
+        [TestCase(Lifetime.Scoped)]
         [TestCase(Lifetime.Singleton)]
         public void Injector_Get_ShouldResolveGenericDependencies(Lifetime lifetime)
         {
@@ -99,12 +100,6 @@ namespace Solti.Utils.DI.Injector.Tests
                 Assert.That(instance, Is.InstanceOf<Implementation_6<string>>());
                 Assert.That(instance.Interface3, Is.InstanceOf<Implementation_3<string>>());
                 Assert.That(instance.Interface3.Interface1, Is.InstanceOf<Implementation_1>());
-
-                var assert = lifetime == Lifetime.Singleton ? Assert.AreSame : (Action<object, object>) Assert.AreNotSame;
-
-                assert(instance, injector.Get<IInterface_6<string>>());
-                assert(instance.Interface3, injector.Get<IInterface_6<string>>().Interface3);
-
                 Assert.DoesNotThrow(() => injector.QueryServiceInfo<IInterface_3<string>>());
                 Assert.DoesNotThrow(() => injector.QueryServiceInfo<IInterface_6<string>>());
             }

@@ -11,12 +11,13 @@ namespace Solti.Utils.DI.Internals
     /// Stores a service definition.
     /// </summary>
     /// <remarks>This is an internal class so it may change from version to version. Don't use it!</remarks>
-    internal abstract class ServiceEntry: Disposable, IServiceFactory, IServiceInfo, ICloneable
+    internal abstract class ServiceEntry: Disposable, IServiceFactory, IServiceInfo
     {
-        protected ServiceEntry(Type @interface, Lifetime? lifetime)
+        protected ServiceEntry(Type @interface, Lifetime? lifetime, ServiceCollection owner)
         {
             Interface = @interface;
             Lifetime  = lifetime;
+            Owner     = owner;
         }
 
         #region Immutables
@@ -31,17 +32,16 @@ namespace Solti.Utils.DI.Internals
         public Lifetime? Lifetime { get; }
 
         /// <summary>
+        /// The owner of this entry.
+        /// </summary>
+        public ServiceCollection Owner { get; }
+
+        /// <summary>
         /// The implementation of the service (if present).
         /// </summary>
         public abstract Type Implementation { get; }
 
-        public abstract bool IsService { get; }
-
-        public abstract bool IsLazy { get; }
-
-        public abstract bool IsFactory { get; }
-
-        public abstract bool IsInstance { get; }       
+        public abstract object UnderlyingImplementation { get; }     
         #endregion
 
         #region Mutables
@@ -65,23 +65,26 @@ namespace Solti.Utils.DI.Internals
         public abstract object GetService(IInjector injector, Type iface = null);
 
         /// <summary>
-        /// See <see cref="ICloneable"/>.
+        /// Copies this entry into a new collection.
         /// </summary>
-        public abstract object Clone();
+        public abstract ServiceEntry CopyTo(ServiceCollection target);
 
         /// <summary>
         /// See <see cref="object.Equals(object)"/>
         /// </summary>
-        public override bool Equals(object obj)
-        {
-            if (ReferenceEquals(this, obj)) return true;
-
-            return obj.GetHashCode() == GetHashCode();
-        }
+        public override bool Equals(object obj) => obj != null && (ReferenceEquals(this, obj) || obj.GetHashCode() == GetHashCode());
 
         /// <summary>
         /// See <see cref="object.GetHashCode"/>
         /// </summary>
-        public override int GetHashCode() => new {Interface, Lifetime, Factory, Value, Implementation}.GetHashCode();
+        public override int GetHashCode() => new
+        {
+            Owner,
+            Interface,
+            Lifetime,
+            Factory,
+            Value,
+            Implementation
+        }.GetHashCode();
     }
 }

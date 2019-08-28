@@ -25,8 +25,9 @@ namespace Solti.Utils.DI.Container.Tests
             Assert.That(child.QueryServiceInfo<IInterface_1>().Implementation, Is.EqualTo(typeof(Implementation_1)));
         }
 
-        [TestCase(Lifetime.Singleton)]
+        [TestCase(Lifetime.Scoped)]
         [TestCase(Lifetime.Transient)]
+        [TestCase(Lifetime.Singleton)]
         public void Container_ChildEnriesShouldNotChangeByDefault(Lifetime lifetime)
         {
             Container
@@ -36,16 +37,29 @@ namespace Solti.Utils.DI.Container.Tests
 
             IServiceContainer child = Container.CreateChild();
 
-            Assert.AreEqual(Container.QueryServiceInfo<IInterface_1>(), child.QueryServiceInfo<IInterface_1>());
-            Assert.AreEqual(Container.QueryServiceInfo<IInterface_2>(), child.QueryServiceInfo<IInterface_2>());
-            Assert.AreEqual(Container.QueryServiceInfo<IDisposable>(),  child.QueryServiceInfo<IDisposable>());
+            Assert.AreEqual(GetHashCode(Container.QueryServiceInfo<IInterface_1>()), GetHashCode(child.QueryServiceInfo<IInterface_1>()));
+            Assert.AreEqual(GetHashCode(Container.QueryServiceInfo<IInterface_2>()), GetHashCode(child.QueryServiceInfo<IInterface_2>()));
+            Assert.AreEqual(GetHashCode(Container.QueryServiceInfo<IDisposable>()), GetHashCode(child.QueryServiceInfo<IDisposable>()));
 
             using (IInjector injector = child.CreateInjector())
             {
-                Assert.AreEqual(injector.QueryServiceInfo<IInterface_1>(), child.QueryServiceInfo<IInterface_1>());
-                Assert.AreEqual(injector.QueryServiceInfo<IInterface_2>(), child.QueryServiceInfo<IInterface_2>());
-                Assert.AreEqual(injector.QueryServiceInfo<IDisposable>(),  child.QueryServiceInfo<IDisposable>());
+                Assert.AreEqual(GetHashCode(injector.QueryServiceInfo<IInterface_1>()), GetHashCode(child.QueryServiceInfo<IInterface_1>()));
+                Assert.AreEqual(GetHashCode(injector.QueryServiceInfo<IInterface_2>()), GetHashCode(child.QueryServiceInfo<IInterface_2>()));
+                Assert.AreEqual(GetHashCode(injector.QueryServiceInfo<IDisposable>()), GetHashCode(child.QueryServiceInfo<IDisposable>()));
             }
+
+            int GetHashCode(IServiceInfo info) => new
+            {
+                //
+                // Owner NE szerepeljen
+                //
+
+                info.Interface,
+                info.Lifetime,
+                info.Factory,
+                info.Value,
+                info.Implementation
+            }.GetHashCode();
         }
 
         [Test]

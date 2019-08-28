@@ -21,10 +21,10 @@ namespace Solti.Utils.DI.Container.Tests
 
             IServiceInfo serviceInfo = Container.QueryServiceInfo<IInterface_1>();
 
-            Assert.That(serviceInfo.IsInstance);
-            Assert.False(serviceInfo.IsLazy);
-            Assert.False(serviceInfo.IsService);
-            Assert.False(serviceInfo.IsFactory);
+            Assert.That(serviceInfo.IsInstance());
+            Assert.False(serviceInfo.IsLazy());
+            Assert.False(serviceInfo.IsService());
+            Assert.False(serviceInfo.IsFactory());
         }
 
         [Test]

@@ -23,6 +23,7 @@ namespace Solti.Utils.DI.Container.Tests
         }
 
         [TestCase(Lifetime.Transient)]
+        [TestCase(Lifetime.Scoped)]
         [TestCase(Lifetime.Singleton)]
         public void Container_Service_ShouldHandleGenericTypes(Lifetime lifetime)
         {
@@ -35,7 +36,6 @@ namespace Solti.Utils.DI.Container.Tests
                 var instance = injector.Get<IInterface_3<int>>();
 
                 Assert.That(instance, Is.InstanceOf<Implementation_3<int>>());
-                (lifetime == Lifetime.Singleton ? Assert.AreSame : (Action<object, object>) Assert.AreNotSame)(instance, injector.Get<IInterface_3<int>>());
             }
         }
 

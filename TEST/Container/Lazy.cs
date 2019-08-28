@@ -25,15 +25,16 @@ namespace Solti.Utils.DI.Container.Tests
 
             IServiceInfo serviceInfo = Container.QueryServiceInfo<IInterface_1>();
 
-            Assert.That(serviceInfo.IsService);
-            Assert.That(serviceInfo.IsLazy);
-            Assert.False(serviceInfo.IsFactory);
-            Assert.False(serviceInfo.IsInstance);
+            Assert.That(serviceInfo.IsService());
+            Assert.That(serviceInfo.IsLazy());
+            Assert.False(serviceInfo.IsFactory());
+            Assert.False(serviceInfo.IsInstance());
 
             mockTypeResolver.Verify(i => i.Resolve(It.IsAny<Type>()), Times.Never);
         }
 
         [TestCase(Lifetime.Transient)]
+        [TestCase(Lifetime.Scoped)]
         [TestCase(Lifetime.Singleton)]
         public void Container_Lazy_ShouldCallTheResolverOnRequest(Lifetime lifetime)
         {
