@@ -26,7 +26,7 @@ namespace Solti.Utils.DI
 
         private /*readonly*/ ConcurrentServiceCollection FEntries;
 
-        private ServiceEntry Register(ServiceEntry entry)
+        private AbstractServiceEntry Register(AbstractServiceEntry entry)
         {
             FEntries.Add(entry);
             return entry;
@@ -46,26 +46,26 @@ namespace Solti.Utils.DI
         #endregion
 
         #region Internal
-        internal IReadOnlyCollection<ServiceEntry> Entries => FEntries;
+        internal IReadOnlyCollection<AbstractServiceEntry> Entries => FEntries;
 
-        internal ServiceEntry Service(Type iface, Type implementation, Lifetime lifetime) => Register
+        internal AbstractServiceEntry Service(Type iface, Type implementation, Lifetime lifetime) => Register
         (
             ProducibleServiceEntryFactory.CreateEntry(lifetime, iface, implementation, FEntries)
         );
 
-        internal ServiceEntry Factory(Type iface, Func<IInjector, Type, object> factory, Lifetime lifetime) => Register
+        internal AbstractServiceEntry Factory(Type iface, Func<IInjector, Type, object> factory, Lifetime lifetime) => Register
         (
             ProducibleServiceEntryFactory.CreateEntry(lifetime, iface, factory, FEntries)
         );
 
-        internal ServiceEntry Lazy(Type iface, ITypeResolver implementation, Lifetime lifetime) => Register
+        internal AbstractServiceEntry Lazy(Type iface, ITypeResolver implementation, Lifetime lifetime) => Register
         (
             ProducibleServiceEntryFactory.CreateEntry(lifetime, iface, implementation, FEntries)
         );
 
-        internal ServiceEntry Proxy(Type iface, Func<IInjector, Type, object, object> decorator)
+        internal AbstractServiceEntry Proxy(Type iface, Func<IInjector, Type, object, object> decorator)
         {
-            ServiceEntry entry = FEntries.Query(iface);
+            AbstractServiceEntry entry = FEntries.Query(iface);
 
             //
             // Service(), Factory(), Lazy()
@@ -86,7 +86,7 @@ namespace Solti.Utils.DI
             throw new InvalidOperationException(Resources.CANT_PROXY);
         }
 
-        internal ServiceEntry Instance(Type iface, object instance, bool releaseOnDispose) => Register(new InstanceServiceEntry(iface, instance, releaseOnDispose, FEntries));
+        internal AbstractServiceEntry Instance(Type iface, object instance, bool releaseOnDispose) => Register(new InstanceServiceEntry(iface, instance, releaseOnDispose, FEntries));
         #endregion
 
         #region IServiceContainer

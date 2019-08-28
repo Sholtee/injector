@@ -12,7 +12,7 @@ namespace Solti.Utils.DI.Internals
     /// <summary>
     /// Describes an instance service entry.
     /// </summary>
-    internal class InstanceServiceEntry : ServiceEntry
+    internal class InstanceServiceEntry : AbstractServiceEntry
     {
         private readonly bool FReleaseOnDispose;
         private object FValue;
@@ -48,7 +48,7 @@ namespace Solti.Utils.DI.Internals
             return Value;
         }
 
-        public override ServiceEntry CopyTo(ServiceCollection target)
+        public override AbstractServiceEntry CopyTo(ServiceCollection target)
         {
             target.Add(this);
             return this;

@@ -46,7 +46,7 @@ namespace Solti.Utils.DI.Internals
             return FValue;
         }
 
-        public override ServiceEntry CopyTo(ServiceCollection target)
+        public override AbstractServiceEntry CopyTo(ServiceCollection target)
         {
             target.Add(this);
             return this;

@@ -1,5 +1,5 @@
 /********************************************************************************
-* ServiceEntry.cs                                                               *
+* AbstractServiceEntry.cs                                                       *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
@@ -8,12 +8,12 @@ using System;
 namespace Solti.Utils.DI.Internals
 {
     /// <summary>
-    /// Stores a service definition.
+    /// Describes an abstract service definition.
     /// </summary>
     /// <remarks>This is an internal class so it may change from version to version. Don't use it!</remarks>
-    internal abstract class ServiceEntry: Disposable, IServiceFactory, IServiceInfo
+    internal class AbstractServiceEntry: Disposable, IServiceFactory, IServiceInfo
     {
-        protected ServiceEntry(Type @interface, Lifetime? lifetime, ServiceCollection owner)
+        protected AbstractServiceEntry(Type @interface, Lifetime? lifetime, ServiceCollection owner)
         {
             Interface = @interface;
             Lifetime  = lifetime;
@@ -39,21 +39,21 @@ namespace Solti.Utils.DI.Internals
         /// <summary>
         /// The implementation of the service (if present).
         /// </summary>
-        public abstract Type Implementation { get; }
+        public virtual Type Implementation => throw new NotImplementedException();
 
-        public abstract object UnderlyingImplementation { get; }     
+        public virtual object UnderlyingImplementation => throw new NotImplementedException();
         #endregion
 
         #region Mutables
         /// <summary>
         /// The concrete factory. Don't use it directly.
         /// </summary>
-        public abstract Func<IInjector, Type, object> Factory { get; set; }
+        public virtual Func<IInjector, Type, object> Factory { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         /// <summary>
         /// The previously created service instance. Don't use it directly.
         /// </summary>
-        public abstract object Value { get; } // hiaba csak getter, valtozhat
+        public virtual object Value => throw new NotImplementedException();
         #endregion
 
         /// <summary>
@@ -62,12 +62,12 @@ namespace Solti.Utils.DI.Internals
         /// <param name="injector">Containing injector.</param>
         /// <param name="iface">The service type to be queried. If null the <see cref="Interface"/> will be used</param>
         /// <returns>The service instance.</returns>
-        public abstract object GetService(IInjector injector, Type iface = null);
+        public virtual object GetService(IInjector injector, Type iface = null) => throw new NotImplementedException();
 
         /// <summary>
         /// Copies this entry into a new collection.
         /// </summary>
-        public abstract ServiceEntry CopyTo(ServiceCollection target);
+        public virtual AbstractServiceEntry CopyTo(ServiceCollection target) => throw new NotImplementedException();
 
         /// <summary>
         /// See <see cref="object.Equals(object)"/>

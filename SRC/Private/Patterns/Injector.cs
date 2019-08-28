@@ -22,7 +22,7 @@ namespace Solti.Utils.DI.Internals
 
         private Injector() => throw new NotSupportedException();
 
-        private Injector(IReadOnlyCollection<ServiceEntry> inheritedEntries)
+        private Injector(IReadOnlyCollection<AbstractServiceEntry> inheritedEntries)
         {
             FEntries = new ServiceCollection(inheritedEntries);
 
@@ -122,7 +122,7 @@ namespace Solti.Utils.DI.Internals
             return ev.Service;
         }
 
-        internal static IInjector Create(IReadOnlyCollection<ServiceEntry> entries) => new Injector(entries).Self;
+        internal static IInjector Create(IReadOnlyCollection<AbstractServiceEntry> entries) => new Injector(entries).Self;
         #endregion
 
         #region IInjector

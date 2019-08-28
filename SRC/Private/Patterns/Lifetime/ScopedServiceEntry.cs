@@ -44,7 +44,7 @@ namespace Solti.Utils.DI.Internals
             return FValue ?? (FValue = Factory(injector, Interface));
         }
 
-        public override ServiceEntry CopyTo(ServiceCollection target)
+        public override AbstractServiceEntry CopyTo(ServiceCollection target)
         {
             var result = new ScopedServiceEntry(this, target);
             target.Add(result);

@@ -44,7 +44,7 @@ namespace Solti.Utils.DI.Internals.Tests
             // tag) nem volt hivva a Setup().
             //
 
-            Mock<ServiceEntry> entry = new Mock<ServiceEntry>(typeof(IDisposable) /*iface*/, Lifetime.Transient, new ServiceCollection());              
+            Mock<AbstractServiceEntry> entry = new Mock<AbstractServiceEntry>(typeof(IDisposable) /*iface*/, Lifetime.Transient, new ServiceCollection());              
             entry.Setup(e => e.CopyTo(It.IsAny<ServiceCollection>())).Returns<ServiceCollection>(sc => null);
 
             using (var collection = new ServiceCollection(new []{entry.Object}))
@@ -106,7 +106,7 @@ namespace Solti.Utils.DI.Internals.Tests
             });
             Assert.That(collection.Count, Is.EqualTo(1));
 
-            ServiceEntry entry = collection.Query(typeof(IList<int>));
+            AbstractServiceEntry entry = collection.Query(typeof(IList<int>));
             Assert.That(entry, Is.Not.Null);
             Assert.That(collection.Contains(entry));
             Assert.That(collection.Count, Is.EqualTo(2));
@@ -121,7 +121,7 @@ namespace Solti.Utils.DI.Internals.Tests
             var childCollection = new ServiceCollection(parentCollection);
             Assert.That(childCollection.Count, Is.EqualTo(1));
 
-            ServiceEntry entry = childCollection.Query(typeof(IList<int>));
+            AbstractServiceEntry entry = childCollection.Query(typeof(IList<int>));
             Assert.That(entry, Is.Not.Null);
             Assert.That(entry.Owner, Is.EqualTo(parentCollection));
 
