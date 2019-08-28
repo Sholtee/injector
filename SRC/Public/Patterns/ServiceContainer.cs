@@ -29,6 +29,17 @@ namespace Solti.Utils.DI
 
         private AbstractServiceEntry Register(AbstractServiceEntry entry)
         {
+            //
+            // Abstract bejegyzest felul lehet irni (de csak azt).
+            //
+
+            AbstractServiceEntry entryToRemove = FEntries.SingleOrDefault(e => e.GetType() == typeof(AbstractServiceEntry) && e.Interface == entry.Interface);
+            if (entryToRemove != null) FEntries.Remove(entryToRemove);
+
+            //
+            // Uj elem felvetele.
+            //
+
             FEntries.Add(entry);
             return entry;
         }
@@ -81,7 +92,8 @@ namespace Solti.Utils.DI
             }
 
             //
-            // Generikus szerviz es Instance() eseten a metodus nem ertelmezett.
+            // Generikus szerviz, Abstract(), Instance() eseten valamint ha nem ez a 
+            // tarolo birtokolja az adott bejegyzest a metodus nem ertelmezett.
             //
 
             throw new InvalidOperationException(Resources.CANT_PROXY);
