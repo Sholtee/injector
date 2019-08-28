@@ -159,7 +159,23 @@ namespace Solti.Utils.DI.Internals.Tests
             Assert.That(entry1, Is.EqualTo(entry2));
             Assert.False(collection.Remove(entry2));
             Assert.True(collection.Remove(entry1));
-            Assert.That(!collection.Any());
+            Assert.That(collection, Is.Empty);
+        }
+
+        [Test]
+        public void ConcurrentServiceCollection_EnumeratorShouldBeIndependent()
+        {
+            var entry = new AbstractServiceEntry(typeof(IDisposable));
+
+            var collection = new ConcurrentServiceCollection(new []{ entry });
+
+            using (IEnumerator<AbstractServiceEntry> enumerator = collection.GetEnumerator())
+            {
+                Assert.That(collection.Remove(entry));
+                Assert.That(collection, Is.Empty);
+                Assert.That(enumerator.MoveNext);
+                Assert.AreSame(enumerator.Current, entry);
+            }
         }
     }
 }
