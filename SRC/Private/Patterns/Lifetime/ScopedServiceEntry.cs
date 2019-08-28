@@ -40,20 +40,15 @@ namespace Solti.Utils.DI.Internals
             return FValue ?? (FValue = Factory(injector, Interface));
         }
 
-        public override object Clone() => new ScopedServiceEntry(Interface, Factory, Owner)
-        {
-            //
-            // Ne az Implementation-t magat adjuk at h a resolver ne triggerelodjon ha 
-            // meg nem volt hivva.
-            //
-
-            FImplementation = FImplementation
-        };
-
         public override ServiceEntry CopyTo(ServiceCollection target)
         {
             var result = new ScopedServiceEntry(Interface, Factory, target)
             {
+                //
+                // Ne az Implementation-t magat adjuk at h a resolver ne triggerelodjon ha 
+                // meg nem volt hivva.
+                //
+
                 FImplementation = FImplementation
             };
 

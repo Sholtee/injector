@@ -31,7 +31,6 @@
   </ItemGroup>
 
   <ItemGroup Condition="$(TargetFramework.StartsWith('netstandard2'))">
-    <Compile Remove="Private\Abstractions\ICloneable.cs" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="3.1.0" />
   </ItemGroup>
 

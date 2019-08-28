@@ -58,20 +58,15 @@ namespace Solti.Utils.DI.Internals
             return Factory(injector, iface ?? Interface);
         }
 
-        public override object Clone() => new TransientServiceEntry(Interface, Factory, null)
-        {
-            //
-            // Ne az Implementation-t magat adjuk at h a resolver ne triggerelodjon ha 
-            // meg nem volt hivva.
-            //
-
-            FImplementation = FImplementation
-        };
-
         public override ServiceEntry CopyTo(ServiceCollection target)
         {
             var result = new TransientServiceEntry(Interface, Factory, target)
             {
+                //
+                // Ne az Implementation-t magat adjuk at h a resolver ne triggerelodjon ha 
+                // meg nem volt hivva.
+                //
+
                 FImplementation = FImplementation
             };
             target.Add(result);

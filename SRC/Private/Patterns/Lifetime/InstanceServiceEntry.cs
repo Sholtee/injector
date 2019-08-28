@@ -46,8 +46,6 @@ namespace Solti.Utils.DI.Internals
             return Value;
         }
 
-        public override object Clone() => new InstanceServiceEntry(Interface, Value, releaseOnDispose: false /*csak egyszer szabaditsuk fel*/, owner: Owner);
-
         public override ServiceEntry CopyTo(ServiceCollection target)
         {
             target.Add(this);

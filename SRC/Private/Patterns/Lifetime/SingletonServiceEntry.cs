@@ -46,16 +46,6 @@ namespace Solti.Utils.DI.Internals
             return FValue;
         }
 
-        public override object Clone() => new SingletonServiceEntry(Interface, Factory, Owner)
-        {
-            //
-            // Ne az Implementation-t magat adjuk at h a resolver ne triggerelodjon ha 
-            // meg nem volt hivva.
-            //
-
-            FImplementation = FImplementation
-        };
-
         public override ServiceEntry CopyTo(ServiceCollection target)
         {
             target.Add(this);

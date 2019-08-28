@@ -20,23 +20,23 @@ namespace Solti.Utils.DI.Internals.Tests
         private class MyClass
         {
             public IDisposable Dep1 { get; }
-            public ICloneable Dep2 { get; }
+            public IServiceFactory Dep2 { get; }
             public int Int { get; }
 
-            public MyClass(IDisposable dep1, ICloneable dep2)
+            public MyClass(IDisposable dep1, IServiceFactory dep2)
             {
                 Dep1 = dep1;
                 Dep2 = dep2;
             }
 
-            public MyClass(IDisposable dep1, ICloneable dep2, int @int)
+            public MyClass(IDisposable dep1, IServiceFactory dep2, int @int)
             {
                 Dep1 = dep1;
                 Dep2 = dep2;
                 Int  = @int;
             }
 
-            public MyClass(Lazy<IDisposable> dep1, Lazy<ICloneable> dep2)
+            public MyClass(Lazy<IDisposable> dep1, Lazy<IServiceFactory> dep2)
             {
                 Dep1 = dep1.Value;
                 Dep2 = dep2.Value;
@@ -47,8 +47,8 @@ namespace Solti.Utils.DI.Internals.Tests
             }
         }
 
-        [TestCase(typeof(IDisposable), typeof(ICloneable))]
-        [TestCase(typeof(Lazy<IDisposable>), typeof(Lazy<ICloneable>))]
+        [TestCase(typeof(IDisposable), typeof(IServiceFactory))]
+        [TestCase(typeof(Lazy<IDisposable>), typeof(Lazy<IServiceFactory>))]
         public void Resolver_ShouldResolveDependencies(Type dep1, Type dep2)
         {
             var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
@@ -57,7 +57,7 @@ namespace Solti.Utils.DI.Internals.Tests
                 .Returns<Type, Type>((type, target) =>
                 {
                     if (type == typeof(IDisposable)) return new Disposable();
-                    if (type == typeof(ICloneable))  return new TransientServiceEntry(type, factory: null, owner: null);
+                    if (type == typeof(IServiceFactory)) return new TransientServiceEntry(type, factory: null, owner: null);
 
                     Assert.Fail("Unknown type");
                     return null;
@@ -74,7 +74,7 @@ namespace Solti.Utils.DI.Internals.Tests
             Assert.That(instance.Dep2, Is.InstanceOf<ServiceEntry>());
             
             mockInjector.Verify(i => i.Get(It.Is<Type>(t => t == typeof(IDisposable)), It.Is<Type>(t => t == typeof(MyClass))), Times.Once);
-            mockInjector.Verify(i => i.Get(It.Is<Type>(t => t == typeof(ICloneable)),  It.Is<Type>(t => t == typeof(MyClass))), Times.Once);
+            mockInjector.Verify(i => i.Get(It.Is<Type>(t => t == typeof(IServiceFactory)),  It.Is<Type>(t => t == typeof(MyClass))), Times.Once);
             mockInjector.Verify(i => i.Get(It.IsAny<Type>(), It.IsAny<Type>()), Times.Exactly(2));
         }
 
@@ -121,7 +121,7 @@ namespace Solti.Utils.DI.Internals.Tests
         [Test]
         public void Resolver_ShouldThrowOnNonInterfaceArguments()
         {
-            ConstructorInfo ctor = typeof(MyClass).GetConstructor(new[] { typeof(IDisposable), typeof(ICloneable), typeof(int) });
+            ConstructorInfo ctor = typeof(MyClass).GetConstructor(new[] { typeof(IDisposable), typeof(IServiceFactory), typeof(int) });
 
             Assert.Throws<ArgumentException>(() => Resolver.Get(ctor), Resources.INVALID_CONSTRUCTOR);
 
@@ -142,7 +142,7 @@ namespace Solti.Utils.DI.Internals.Tests
                 .Returns<Type, Type>((type, target) => null);
 
             Func<IInjector, IReadOnlyDictionary<string, object>, object> factory = Resolver
-                .GetExtended(typeof(MyClass).GetConstructor(new[] {typeof(IDisposable), typeof(ICloneable)}));
+                .GetExtended(typeof(MyClass).GetConstructor(new[] {typeof(IDisposable), typeof(IServiceFactory) }));
 
             object obj = factory(mockInjector.Object, new Dictionary<string, object>
             {
@@ -152,7 +152,7 @@ namespace Solti.Utils.DI.Internals.Tests
             Assert.That(obj, Is.InstanceOf<MyClass>());
 
             mockInjector.Verify(i => i.Get(It.Is<Type>(t => t == typeof(IDisposable)), It.Is<Type>(t => t == typeof(MyClass))), Times.Once);
-            mockInjector.Verify(i => i.Get(It.Is<Type>(t => t == typeof(ICloneable)),  It.Is<Type>(t => t == typeof(MyClass))), Times.Never);
+            mockInjector.Verify(i => i.Get(It.Is<Type>(t => t == typeof(IServiceFactory)),  It.Is<Type>(t => t == typeof(MyClass))), Times.Never);
         }
 
         [Test]
@@ -160,7 +160,7 @@ namespace Solti.Utils.DI.Internals.Tests
         {
             const int TEN = 10;
 
-            ConstructorInfo ctor = typeof(MyClass).GetConstructor(new[] { typeof(IDisposable), typeof(ICloneable), typeof(int) });
+            ConstructorInfo ctor = typeof(MyClass).GetConstructor(new[] { typeof(IDisposable), typeof(IServiceFactory), typeof(int) });
 
             var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
             mockInjector

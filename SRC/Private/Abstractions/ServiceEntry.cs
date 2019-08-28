@@ -11,7 +11,7 @@ namespace Solti.Utils.DI.Internals
     /// Stores a service definition.
     /// </summary>
     /// <remarks>This is an internal class so it may change from version to version. Don't use it!</remarks>
-    internal abstract class ServiceEntry: Disposable, IServiceFactory, IServiceInfo, ICloneable
+    internal abstract class ServiceEntry: Disposable, IServiceFactory, IServiceInfo
     {
         protected ServiceEntry(Type @interface, Lifetime? lifetime, ServiceCollection owner)
         {
@@ -71,19 +71,9 @@ namespace Solti.Utils.DI.Internals
         public abstract object GetService(IInjector injector, Type iface = null);
 
         /// <summary>
-        /// See <see cref="ICloneable"/>.
-        /// </summary>
-        public abstract object Clone();
-
-        /// <summary>
         /// Copies this entry into a new collection.
         /// </summary>
-        public virtual ServiceEntry CopyTo(ServiceCollection target)
-        {
-            var result = (ServiceEntry) Clone();
-            target.Add(result);
-            return result;
-        }
+        public abstract ServiceEntry CopyTo(ServiceCollection target);
 
         /// <summary>
         /// See <see cref="object.Equals(object)"/>
