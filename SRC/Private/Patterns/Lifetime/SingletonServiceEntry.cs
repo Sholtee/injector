@@ -46,12 +46,6 @@ namespace Solti.Utils.DI.Internals
             return FValue;
         }
 
-        public override AbstractServiceEntry CopyTo(ServiceCollection target)
-        {
-            target.Add(this);
-            return this;
-        }
-
         protected override void Dispose(bool disposeManaged)
         {
             if (disposeManaged)

@@ -43,21 +43,21 @@ namespace Solti.Utils.DI.Internals
         /// <summary>
         /// The implementation of the service (if present).
         /// </summary>
-        public virtual Type Implementation => throw new NotImplementedException();
+        public virtual Type Implementation => null;
 
-        public virtual object UnderlyingImplementation => throw new NotImplementedException();
+        public virtual object UnderlyingImplementation => null; // ne NotImplementedException-t dobjon h a GetHashCode() mukodjon
         #endregion
 
         #region Mutables
         /// <summary>
         /// The concrete factory. Don't use it directly.
         /// </summary>
-        public virtual Func<IInjector, Type, object> Factory { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public virtual Func<IInjector, Type, object> Factory { get => null; set => throw new NotImplementedException(); }
 
         /// <summary>
         /// The previously created service instance. Don't use it directly.
         /// </summary>
-        public virtual object Value => throw new NotImplementedException();
+        public virtual object Value => null;
         #endregion
 
         /// <summary>
@@ -71,7 +71,11 @@ namespace Solti.Utils.DI.Internals
         /// <summary>
         /// Copies this entry into a new collection.
         /// </summary>
-        public virtual AbstractServiceEntry CopyTo(ServiceCollection target) => throw new NotImplementedException();
+        public virtual AbstractServiceEntry CopyTo(ServiceCollection target)
+        {
+            target.Add(this);
+            return this;
+        }
 
         /// <summary>
         /// See <see cref="object.Equals(object)"/>
