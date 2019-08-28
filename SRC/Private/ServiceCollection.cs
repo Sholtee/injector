@@ -181,11 +181,6 @@ namespace Solti.Utils.DI.Internals
         /// <summary>
         /// See <see cref="ICollection{T}"/>
         /// </summary>
-        public virtual bool Contains(AbstractServiceEntry item) => FEntries.ContainsValue(item);
-
-        /// <summary>
-        /// See <see cref="ICollection{T}"/>
-        /// </summary>
         public virtual void CopyTo(AbstractServiceEntry[] array, int arrayIndex)
         {
             int i = 0; 
@@ -196,9 +191,23 @@ namespace Solti.Utils.DI.Internals
         }
 
         /// <summary>
-        /// NOT SUPPORTED! Don't use!
+        /// See <see cref="ICollection{T}"/>
         /// </summary>
-        public virtual bool Remove(AbstractServiceEntry item) => throw new NotSupportedException();
+        public virtual bool Contains(AbstractServiceEntry item) =>
+            //
+            // Itt keruljuk a ContainsValue() hivast mert:
+            //   1) Az abstract bejegyzesre NotImplementedException-el elszall (entry.GetHashCode() nem implementalt mezore hivatkozik).
+            //   2) By design az Equals() tulajdonsag osszehasnlitassal mukodik ezert amugy se lenne jo
+            //
+
+            FEntries.Values.Any(entry => ReferenceEquals(entry, item));
+
+        /// <summary>
+        /// See <see cref="ICollection{T}"/>
+        /// </summary>
+        public virtual bool Remove(AbstractServiceEntry item) => 
+            FEntries.Values.Any(entry => ReferenceEquals(entry, item)) && // Ne Contains() legyen h a ConcurrentServiceCollection-ben is mukodjunk
+            FEntries.Remove(item.Interface);
 
         /// <summary>
         /// See <see cref="ICollection{T}"/>

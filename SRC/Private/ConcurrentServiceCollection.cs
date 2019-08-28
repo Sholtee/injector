@@ -33,6 +33,14 @@ namespace Solti.Utils.DI.Internals
             }           
         }
 
+        public override bool Remove(AbstractServiceEntry item)
+        {
+            using (FLock.AcquireWriterLock())
+            {
+                return base.Remove(item);
+            }
+        }
+
         public override AbstractServiceEntry Query(Type iface)
         {
             try
