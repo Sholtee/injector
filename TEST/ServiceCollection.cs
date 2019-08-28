@@ -5,6 +5,7 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 using Moq;
 using NUnit.Framework;
@@ -129,6 +130,36 @@ namespace Solti.Utils.DI.Internals.Tests
             Assert.That(childCollection.Count, Is.EqualTo(2));
             Assert.That(parentCollection.Contains(entry));
             Assert.That(parentCollection.Count, Is.EqualTo(2));
+        }
+
+        [Test]
+        public void ServiceCollection_ContainsShouldSearchByReference()
+        {
+            AbstractServiceEntry 
+                entry1 = new AbstractServiceEntry(typeof(IDisposable)),
+                entry2 = new AbstractServiceEntry(typeof(IDisposable));
+
+            var collection = new ServiceCollection(new[]{ entry1 });
+            
+            Assert.That(entry1, Is.EqualTo(entry2));
+            Assert.True(collection.Contains(entry1));
+            Assert.False(collection.Contains(entry2));
+        }
+
+        [Test]
+        public void ServiceCollection_RemoveShouldRemoveByReference()
+        {
+            AbstractServiceEntry
+                entry1 = new AbstractServiceEntry(typeof(IDisposable)),
+                entry2 = new AbstractServiceEntry(typeof(IDisposable));
+
+            var collection = new ServiceCollection(new[] { entry1 });
+
+            Assert.That(collection.Count, Is.EqualTo(1));
+            Assert.That(entry1, Is.EqualTo(entry2));
+            Assert.False(collection.Remove(entry2));
+            Assert.True(collection.Remove(entry1));
+            Assert.That(!collection.Any());
         }
     }
 }

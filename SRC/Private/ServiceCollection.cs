@@ -195,9 +195,7 @@ namespace Solti.Utils.DI.Internals
         /// </summary>
         public virtual bool Contains(AbstractServiceEntry item) =>
             //
-            // Itt keruljuk a ContainsValue() hivast mert:
-            //   1) Az abstract bejegyzesre NotImplementedException-el elszall (entry.GetHashCode() nem implementalt mezore hivatkozik).
-            //   2) By design az Equals() tulajdonsag osszehasnlitassal mukodik ezert amugy se lenne jo
+            // Itt keruljuk a ContainsValue() hivast mert az Equals() by desgin tulajdonsag osszehasnlitassal mukodik
             //
 
             FEntries.Values.Any(entry => ReferenceEquals(entry, item));
