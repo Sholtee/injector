@@ -203,6 +203,7 @@ namespace Solti.Utils.DI.Internals
         /// <summary>
         /// See <see cref="ICollection{T}"/>
         /// </summary>
+        /// <remarks>Removing an item will NOT dipose it.</remarks>
         public virtual bool Remove(AbstractServiceEntry item) => 
             FEntries.Values.Any(entry => ReferenceEquals(entry, item)) && // Ne Contains() legyen h a ConcurrentServiceCollection-ben is mukodjunk
             FEntries.Remove(item.Interface);
