@@ -74,5 +74,12 @@ namespace Solti.Utils.DI
         /// <param name="releaseOnDispose">Wheter the system should dispose the instance on injector disposal.</param>
         /// <returns>The container itself.</returns>
         public static IServiceContainer Instance<TInterface>(this IServiceContainer self, TInterface instance, bool releaseOnDispose = false) => self.Instance(typeof(TInterface), instance, releaseOnDispose);
+
+        /// <summary>
+        /// Resgisters an abstract service. It must be overridden in the child container(s).
+        /// </summary>
+        /// <param name="self">The container itself.</param>
+        /// <returns>The container itself.</returns>
+        public static IServiceContainer Abstract<TInterface>(this IServiceContainer self) => self.Abstract(typeof(TInterface));
     }
 }

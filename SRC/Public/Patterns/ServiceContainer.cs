@@ -100,6 +100,8 @@ namespace Solti.Utils.DI
         }
 
         internal AbstractServiceEntry Instance(Type iface, object instance, bool releaseOnDispose) => Register(new InstanceServiceEntry(iface, instance, releaseOnDispose, FEntries));
+
+        internal AbstractServiceEntry Abstract(Type iface) => Register(new AbstractServiceEntry(iface));
         #endregion
 
         #region IServiceContainer
@@ -190,10 +192,20 @@ namespace Solti.Utils.DI
         /// <summary>
         /// See <see cref="IServiceContainer"/>
         /// </summary>
+        IServiceContainer IServiceContainer.Abstract(Type iface)
+        {
+            Abstract(iface);
+            return this;
+        }
+
+        /// <summary>
+        /// See <see cref="IServiceContainer"/>
+        /// </summary>
         IInjector IServiceContainer.CreateInjector()
         {
-            IReadOnlyList<AbstractServiceEntry> abstractEntries = Entries
+            IReadOnlyList<Type> abstractEntries = Entries
                 .Where(entry => entry.GetType() == typeof(AbstractServiceEntry))
+                .Select(entry => entry.Interface)
                 .ToArray();
 
             if (abstractEntries.Any())
@@ -205,7 +217,6 @@ namespace Solti.Utils.DI
 
             return Injector.Create(Entries);
         }
-
         #endregion
 
         #region IQueryServiceInfo
