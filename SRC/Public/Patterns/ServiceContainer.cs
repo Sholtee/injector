@@ -5,6 +5,7 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 
 namespace Solti.Utils.DI
@@ -177,14 +178,29 @@ namespace Solti.Utils.DI
         /// <summary>
         /// See <see cref="IServiceContainer"/>
         /// </summary>
-        IInjector IServiceContainer.CreateInjector() => Injector.Create(Entries);
+        IInjector IServiceContainer.CreateInjector()
+        {
+            IReadOnlyList<AbstractServiceEntry> abstractEntries = Entries
+                .Where(entry => entry.GetType() == typeof(AbstractServiceEntry))
+                .ToArray();
+
+            if (abstractEntries.Any())
+            {
+                var ioEx = new InvalidOperationException(Resources.INVALID_INJECTOR_ENTRY);
+                ioEx.Data.Add(nameof(abstractEntries), abstractEntries);
+                throw ioEx;
+            }
+
+            return Injector.Create(Entries);
+        }
+
         #endregion
 
         #region IQueryServiceInfo
         /// <summary>
         /// See <see cref="IQueryServiceInfo"/>
         /// </summary>
-        IServiceInfo IQueryServiceInfo.QueryServiceInfo(Type iface) => FEntries.Query(iface);
+        IServiceInfo IQueryServiceInfo.QueryServiceInfo(Type iface) => FEntries.Query(iface); // TODO: TBD: abstract entry should not be queryable
 
         /// <summary>
         /// See <see cref="IQueryServiceInfo"/>

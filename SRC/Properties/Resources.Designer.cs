@@ -161,6 +161,15 @@ namespace Solti.Utils.DI.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Injector must not contain abstract service entries..
+        /// </summary>
+        internal static string INVALID_INJECTOR_ENTRY {
+            get {
+                return ResourceManager.GetString("INVALID_INJECTOR_ENTRY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The returned object must be an instance of &quot;{0}&quot;..
         /// </summary>
         internal static string INVALID_INSTANCE {
