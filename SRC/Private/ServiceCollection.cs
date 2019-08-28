@@ -125,7 +125,8 @@ namespace Solti.Utils.DI.Internals
                 return entry;
             }
 
-            throw new InvalidOperationException();           
+            Debug.Fail("Failed to query an existing entry");
+            return null;
         }
         #endregion
 
