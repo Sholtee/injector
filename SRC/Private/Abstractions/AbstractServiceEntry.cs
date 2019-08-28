@@ -13,6 +13,10 @@ namespace Solti.Utils.DI.Internals
     /// <remarks>This is an internal class so it may change from version to version. Don't use it!</remarks>
     internal class AbstractServiceEntry: Disposable, IServiceFactory, IServiceInfo
     {
+        public AbstractServiceEntry(Type @interface) : this(@interface, null, null)
+        {
+        }
+
         protected AbstractServiceEntry(Type @interface, Lifetime? lifetime, ServiceCollection owner)
         {
             Interface = @interface;
