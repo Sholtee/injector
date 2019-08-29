@@ -76,7 +76,7 @@ namespace Solti.Utils.DI
         public static IServiceContainer Instance<TInterface>(this IServiceContainer self, TInterface instance, bool releaseOnDispose = false) => self.Instance(typeof(TInterface), instance, releaseOnDispose);
 
         /// <summary>
-        /// Resgisters an abstract service. It must be overridden in the child container(s).
+        /// Registers an abstract service. It must be overridden in the child container(s).
         /// </summary>
         /// <param name="self">The container itself.</param>
         /// <returns>The container itself.</returns>

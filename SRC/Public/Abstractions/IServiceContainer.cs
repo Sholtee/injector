@@ -66,7 +66,7 @@ namespace Solti.Utils.DI
         IServiceContainer Instance([ParameterIs(typeof(NotNull), typeof(Interface))] Type iface, [ParameterIs(typeof(NotNull))] object instance, bool releaseOnDispose = false);
 
         /// <summary>
-        /// Resgisters an abstract service. It must be overridden in the child container(s).
+        /// Registers an abstract service. It must be overridden in the child container(s).
         /// </summary>
         /// <param name="iface">The service interface to be registered. It can not be null and can be registered only once.</param>
         /// <returns>The container itself.</returns>
