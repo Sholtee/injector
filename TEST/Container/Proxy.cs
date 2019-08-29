@@ -119,6 +119,18 @@ namespace Solti.Utils.DI.Container.Tests
         }
 
         [Test]
+        public void Container_Proxy_ShouldThrowOnNotOwnedSingletonService()
+        {
+            Container.Service<IInterface_1, Implementation_1>(Lifetime.Singleton);
+            Assert.DoesNotThrow(() => Container.Proxy<IInterface_1>((i, c) => c));
+
+            using (IServiceContainer child = Container.CreateChild())
+            {
+                Assert.Throws<InvalidOperationException>(() => child.Proxy<IInterface_1>((i, c) => c), Resources.CANT_PROXY);
+            }
+        }
+
+        [Test]
         public void Container_Proxy_ShouldBeTypeChecked()
         {
             Container
