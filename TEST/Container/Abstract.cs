@@ -27,11 +27,43 @@ namespace Solti.Utils.DI.Container.Tests
 
             using (IServiceContainer child = Container.CreateChild())
             {
+                //
+                // Meglevo nem absztrakt szervizeket nem irhatjuk felul.
+                //
+
                 Assert.Throws<ServiceAlreadyRegisteredException>(() => child.Service<IInterface_1, Implementation_1>());
                 Assert.Throws<ServiceAlreadyRegisteredException>(() => child.Abstract<IInterface_1>());
 
+                //
+                // Es az absztraktot is csak egyszer lehet felulirni.
+                //
+
                 Assert.DoesNotThrow(() => child.Service<IInterface_2, Implementation_2>());
                 Assert.Throws<ServiceAlreadyRegisteredException>(() => child.Service<IInterface_2, Implementation_2>());
+            }
+        }
+
+        [Test]
+        public void Container_Abstract_InheritanceTest()
+        {
+            Container
+                .Service<IInterface_1, Implementation_1>()
+                .Abstract<IInterface_2>();
+
+            using (IServiceContainer child = Container.CreateChild())
+            {
+                using (IServiceContainer grandChild = child.CreateChild())
+                {
+                    Assert.DoesNotThrow(() => grandChild.Service<IInterface_2, Implementation_2>());
+                    Assert.Throws<ServiceAlreadyRegisteredException>(() => grandChild.Service<IInterface_2, Implementation_2>());
+
+                    //
+                    // Az h a gyerekben felulirtuk nem szabad h hatassal legyen a szulore.
+                    //
+
+                    Assert.DoesNotThrow(() => child.Service<IInterface_2, Implementation_2>());
+                    Assert.Throws<ServiceAlreadyRegisteredException>(() => child.Service<IInterface_2, Implementation_2>());
+                }             
             }
         }
 
