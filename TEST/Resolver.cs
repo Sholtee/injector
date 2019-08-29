@@ -71,7 +71,7 @@ namespace Solti.Utils.DI.Internals.Tests
 
             Assert.That(instance, Is.Not.Null);
             Assert.That(instance.Dep1, Is.InstanceOf<Disposable>());
-            Assert.That(instance.Dep2, Is.InstanceOf<ServiceEntry>());
+            Assert.That(instance.Dep2, Is.InstanceOf<AbstractServiceEntry>());
             
             mockInjector.Verify(i => i.Get(It.Is<Type>(t => t == typeof(IDisposable)), It.Is<Type>(t => t == typeof(MyClass))), Times.Once);
             mockInjector.Verify(i => i.Get(It.Is<Type>(t => t == typeof(IServiceFactory)),  It.Is<Type>(t => t == typeof(MyClass))), Times.Once);

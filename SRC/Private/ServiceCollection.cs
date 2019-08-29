@@ -16,9 +16,9 @@ namespace Solti.Utils.DI.Internals
     /// Implements the mechanism of storing service entries.
     /// </summary>
     /// <remarks>This is an internal class so it may change from version to version. Don't use it!</remarks>
-    internal class ServiceCollection : Disposable, ICollection<ServiceEntry>, IReadOnlyCollection<ServiceEntry>
+    internal class ServiceCollection : Disposable, ICollection<AbstractServiceEntry>, IReadOnlyCollection<AbstractServiceEntry>
     {
-        private readonly Dictionary<Type, ServiceEntry> FEntries;
+        private readonly Dictionary<Type, AbstractServiceEntry> FEntries;
 
         #region Protected
         /// <summary>
@@ -34,7 +34,7 @@ namespace Solti.Utils.DI.Internals
             base.Dispose(disposeManaged);
         }
 
-        protected virtual ServiceEntry QueryInternal(Type iface)
+        protected virtual AbstractServiceEntry QueryInternal(Type iface)
         {
             if (Query(iface, out var entry)) return entry;
 
@@ -47,7 +47,7 @@ namespace Solti.Utils.DI.Internals
 
             return entry;
 
-            bool Query(Type key, out ServiceEntry val) => FEntries.TryGetValue(key, out val);
+            bool Query(Type key, out AbstractServiceEntry val) => FEntries.TryGetValue(key, out val);
         }
         #endregion
 
@@ -63,26 +63,26 @@ namespace Solti.Utils.DI.Internals
         /// Creates a new <see cref="ServiceCollection"/> instance.
         /// </summary>
         /// <param name="inheritedEntries">Entries to be inherited.</param>
-        public ServiceCollection(IReadOnlyCollection<ServiceEntry> inheritedEntries)
+        public ServiceCollection(IReadOnlyCollection<AbstractServiceEntry> inheritedEntries)
         {
-            FEntries = new Dictionary<Type, ServiceEntry>(inheritedEntries?.Count ?? 0);
+            FEntries = new Dictionary<Type, AbstractServiceEntry>(inheritedEntries?.Count ?? 0);
             if (inheritedEntries == null) return;
 
-            foreach (ServiceEntry entry in inheritedEntries)
+            foreach (AbstractServiceEntry entry in inheritedEntries)
             {
                 entry.CopyTo(this);
             }
         }
-        
+
         /// <summary>
         /// Gets the entry associated with the given interface.
         /// </summary>
         /// <param name="iface">The "id" of the entry. Must be an interface <see cref="Type"/>.</param>
-        /// <returns>The stored <see cref="ServiceEntry"/> instance.</returns>
+        /// <returns>The stored <see cref="AbstractServiceEntry"/> instance.</returns>
         /// <remarks>This method supports entry specialization which means after registering a generic entry you can query its (unregistered) closed pair by passing the closed interface <see cref="Type"/> to this function.</remarks>
-        public virtual ServiceEntry Query(Type iface)
+        public virtual AbstractServiceEntry Query(Type iface)
         {
-            ServiceEntry entry = QueryInternal(iface);
+            AbstractServiceEntry entry = QueryInternal(iface);
 
             //
             // 1. eset: Azt az entitast adjuk vissza amit kerestunk.
@@ -125,7 +125,8 @@ namespace Solti.Utils.DI.Internals
                 return entry;
             }
 
-            throw new InvalidOperationException();           
+            Debug.Fail("Failed to query an existing entry");
+            return null;
         }
         #endregion
 
@@ -133,7 +134,7 @@ namespace Solti.Utils.DI.Internals
         /// <summary>
         /// See <see cref="ICollection{T}"/>
         /// </summary>
-        public virtual IEnumerator<ServiceEntry> GetEnumerator() => FEntries.Values.GetEnumerator();
+        public virtual IEnumerator<AbstractServiceEntry> GetEnumerator() => FEntries.Values.GetEnumerator();
 
         /// <summary>
         /// See <see cref="ICollection{T}"/>
@@ -143,9 +144,9 @@ namespace Solti.Utils.DI.Internals
         /// <summary>
         /// Adds an entry to the collection.
         /// </summary>
-        /// <param name="item">The <see cref="ServiceEntry"/> instance to be added.</param>
+        /// <param name="item">The <see cref="AbstractServiceEntry"/> instance to be added.</param>
         /// <remarks>A <see cref="ServiceAlreadyRegisteredException"/> is thrown if an item with the same interface already exists in the collection.</remarks>
-        public virtual void Add(ServiceEntry item)
+        public virtual void Add(AbstractServiceEntry item)
         {
             try
             {
@@ -181,24 +182,32 @@ namespace Solti.Utils.DI.Internals
         /// <summary>
         /// See <see cref="ICollection{T}"/>
         /// </summary>
-        public virtual bool Contains(ServiceEntry item) => FEntries.ContainsValue(item);
-
-        /// <summary>
-        /// See <see cref="ICollection{T}"/>
-        /// </summary>
-        public virtual void CopyTo(ServiceEntry[] array, int arrayIndex)
+        public virtual void CopyTo(AbstractServiceEntry[] array, int arrayIndex)
         {
             int i = 0; 
-            foreach (ServiceEntry entry in this)
+            foreach (AbstractServiceEntry entry in this)
             {
                 array.SetValue(entry, i++ + arrayIndex);
             }
         }
 
         /// <summary>
-        /// NOT SUPPORTED! Don't use!
+        /// See <see cref="ICollection{T}"/>
         /// </summary>
-        public virtual bool Remove(ServiceEntry item) => throw new NotSupportedException();
+        public virtual bool Contains(AbstractServiceEntry item) =>
+            //
+            // Itt keruljuk a ContainsValue() hivast mert az Equals() by desgin tulajdonsag osszehasnlitassal mukodik
+            //
+
+            FEntries.Values.Any(entry => ReferenceEquals(entry, item));
+
+        /// <summary>
+        /// See <see cref="ICollection{T}"/>
+        /// </summary>
+        /// <remarks>Removing an item will NOT dipose it.</remarks>
+        public virtual bool Remove(AbstractServiceEntry item) => 
+            FEntries.Values.Any(entry => ReferenceEquals(entry, item)) && // Ne Contains() legyen h a ConcurrentServiceCollection-ben is mukodjunk
+            FEntries.Remove(item.Interface);
 
         /// <summary>
         /// See <see cref="ICollection{T}"/>

@@ -66,7 +66,7 @@ namespace Solti.Utils.DI.Internals
             return Factory(injector, iface ?? Interface);
         }
 
-        public override ServiceEntry CopyTo(ServiceCollection target)
+        public override AbstractServiceEntry CopyTo(ServiceCollection target)
         {
             var result = new TransientServiceEntry(this, target);
             target.Add(result);

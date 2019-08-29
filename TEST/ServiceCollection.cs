@@ -5,6 +5,7 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 using Moq;
 using NUnit.Framework;
@@ -44,7 +45,7 @@ namespace Solti.Utils.DI.Internals.Tests
             // tag) nem volt hivva a Setup().
             //
 
-            Mock<ServiceEntry> entry = new Mock<ServiceEntry>(typeof(IDisposable) /*iface*/, Lifetime.Transient, new ServiceCollection());              
+            Mock<AbstractServiceEntry> entry = new Mock<AbstractServiceEntry>(typeof(IDisposable) /*iface*/, Lifetime.Transient, new ServiceCollection());              
             entry.Setup(e => e.CopyTo(It.IsAny<ServiceCollection>())).Returns<ServiceCollection>(sc => null);
 
             using (var collection = new ServiceCollection(new []{entry.Object}))
@@ -106,7 +107,7 @@ namespace Solti.Utils.DI.Internals.Tests
             });
             Assert.That(collection.Count, Is.EqualTo(1));
 
-            ServiceEntry entry = collection.Query(typeof(IList<int>));
+            AbstractServiceEntry entry = collection.Query(typeof(IList<int>));
             Assert.That(entry, Is.Not.Null);
             Assert.That(collection.Contains(entry));
             Assert.That(collection.Count, Is.EqualTo(2));
@@ -121,7 +122,7 @@ namespace Solti.Utils.DI.Internals.Tests
             var childCollection = new ServiceCollection(parentCollection);
             Assert.That(childCollection.Count, Is.EqualTo(1));
 
-            ServiceEntry entry = childCollection.Query(typeof(IList<int>));
+            AbstractServiceEntry entry = childCollection.Query(typeof(IList<int>));
             Assert.That(entry, Is.Not.Null);
             Assert.That(entry.Owner, Is.EqualTo(parentCollection));
 
@@ -129,6 +130,52 @@ namespace Solti.Utils.DI.Internals.Tests
             Assert.That(childCollection.Count, Is.EqualTo(2));
             Assert.That(parentCollection.Contains(entry));
             Assert.That(parentCollection.Count, Is.EqualTo(2));
+        }
+
+        [Test]
+        public void ServiceCollection_ContainsShouldSearchByReference()
+        {
+            AbstractServiceEntry 
+                entry1 = new AbstractServiceEntry(typeof(IDisposable)),
+                entry2 = new AbstractServiceEntry(typeof(IDisposable));
+
+            var collection = new ServiceCollection(new[]{ entry1 });
+            
+            Assert.That(entry1, Is.EqualTo(entry2));
+            Assert.True(collection.Contains(entry1));
+            Assert.False(collection.Contains(entry2));
+        }
+
+        [Test]
+        public void ServiceCollection_RemoveShouldRemoveByReference()
+        {
+            AbstractServiceEntry
+                entry1 = new AbstractServiceEntry(typeof(IDisposable)),
+                entry2 = new AbstractServiceEntry(typeof(IDisposable));
+
+            var collection = new ServiceCollection(new[] { entry1 });
+
+            Assert.That(collection.Count, Is.EqualTo(1));
+            Assert.That(entry1, Is.EqualTo(entry2));
+            Assert.False(collection.Remove(entry2));
+            Assert.True(collection.Remove(entry1));
+            Assert.That(collection, Is.Empty);
+        }
+
+        [Test]
+        public void ConcurrentServiceCollection_EnumeratorShouldBeIndependent()
+        {
+            var entry = new AbstractServiceEntry(typeof(IDisposable));
+
+            var collection = new ConcurrentServiceCollection(new []{ entry });
+
+            using (IEnumerator<AbstractServiceEntry> enumerator = collection.GetEnumerator())
+            {
+                Assert.That(collection.Remove(entry));
+                Assert.That(collection, Is.Empty);
+                Assert.That(enumerator.MoveNext);
+                Assert.AreSame(enumerator.Current, entry);
+            }
         }
     }
 }

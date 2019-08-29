@@ -13,11 +13,11 @@ namespace Solti.Utils.DI.Internals
     {
         private readonly ReaderWriterLockSlim FLock = new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
 
-        public ConcurrentServiceCollection(IReadOnlyCollection<ServiceEntry> inheritedEntries): base(inheritedEntries)
+        public ConcurrentServiceCollection(IReadOnlyCollection<AbstractServiceEntry> inheritedEntries): base(inheritedEntries)
         {           
         }
 
-        protected override ServiceEntry QueryInternal(Type iface)
+        protected override AbstractServiceEntry QueryInternal(Type iface)
         {
             using (FLock.AcquireReaderLock())
             {
@@ -25,7 +25,7 @@ namespace Solti.Utils.DI.Internals
             }
         }
 
-        public override void Add(ServiceEntry item)
+        public override void Add(AbstractServiceEntry item)
         {
             using (FLock.AcquireWriterLock())
             {
@@ -33,7 +33,15 @@ namespace Solti.Utils.DI.Internals
             }           
         }
 
-        public override ServiceEntry Query(Type iface)
+        public override bool Remove(AbstractServiceEntry item)
+        {
+            using (FLock.AcquireWriterLock())
+            {
+                return base.Remove(item);
+            }
+        }
+
+        public override AbstractServiceEntry Query(Type iface)
         {
             try
             {
@@ -59,7 +67,7 @@ namespace Solti.Utils.DI.Internals
             }        
         }
 
-        public override bool Contains(ServiceEntry item)
+        public override bool Contains(AbstractServiceEntry item)
         {
             using (FLock.AcquireReaderLock())
             {
@@ -67,7 +75,7 @@ namespace Solti.Utils.DI.Internals
             }
         }
 
-        public override IEnumerator<ServiceEntry> GetEnumerator()
+        public override IEnumerator<AbstractServiceEntry> GetEnumerator()
         {
             using (FLock.AcquireReaderLock())
             {
@@ -76,9 +84,9 @@ namespace Solti.Utils.DI.Internals
                 // elkeruljuk a SOException-t
                 //
 
-                var ar = new ServiceEntry[Count];
+                var ar = new AbstractServiceEntry[Count];
 
-                using (IEnumerator<ServiceEntry> enumerator = base.GetEnumerator())
+                using (IEnumerator<AbstractServiceEntry> enumerator = base.GetEnumerator())
                 {
                     for (int i = 0; enumerator.MoveNext(); i++)
                     {
@@ -86,7 +94,7 @@ namespace Solti.Utils.DI.Internals
                     }
                 }
 
-                return ((IEnumerable<ServiceEntry>) ar).GetEnumerator();
+                return ((IEnumerable<AbstractServiceEntry>) ar).GetEnumerator();
             }
         }
 

@@ -5,6 +5,7 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 
 namespace Solti.Utils.DI
@@ -26,8 +27,19 @@ namespace Solti.Utils.DI
 
         private /*readonly*/ ConcurrentServiceCollection FEntries;
 
-        private ServiceEntry Register(ServiceEntry entry)
+        private AbstractServiceEntry Register(AbstractServiceEntry entry)
         {
+            //
+            // Abstract bejegyzest felul lehet irni (de csak azt).
+            //
+
+            AbstractServiceEntry entryToRemove = FEntries.SingleOrDefault(e => e.GetType() == typeof(AbstractServiceEntry) && e.Interface == entry.Interface);
+            if (entryToRemove != null) FEntries.Remove(entryToRemove);
+
+            //
+            // Uj elem felvetele.
+            //
+
             FEntries.Add(entry);
             return entry;
         }
@@ -46,26 +58,26 @@ namespace Solti.Utils.DI
         #endregion
 
         #region Internal
-        internal IReadOnlyCollection<ServiceEntry> Entries => FEntries;
+        internal IReadOnlyCollection<AbstractServiceEntry> Entries => FEntries;
 
-        internal ServiceEntry Service(Type iface, Type implementation, Lifetime lifetime) => Register
+        internal AbstractServiceEntry Service(Type iface, Type implementation, Lifetime lifetime) => Register
         (
             ProducibleServiceEntryFactory.CreateEntry(lifetime, iface, implementation, FEntries)
         );
 
-        internal ServiceEntry Factory(Type iface, Func<IInjector, Type, object> factory, Lifetime lifetime) => Register
+        internal AbstractServiceEntry Factory(Type iface, Func<IInjector, Type, object> factory, Lifetime lifetime) => Register
         (
             ProducibleServiceEntryFactory.CreateEntry(lifetime, iface, factory, FEntries)
         );
 
-        internal ServiceEntry Lazy(Type iface, ITypeResolver implementation, Lifetime lifetime) => Register
+        internal AbstractServiceEntry Lazy(Type iface, ITypeResolver implementation, Lifetime lifetime) => Register
         (
             ProducibleServiceEntryFactory.CreateEntry(lifetime, iface, implementation, FEntries)
         );
 
-        internal ServiceEntry Proxy(Type iface, Func<IInjector, Type, object, object> decorator)
+        internal AbstractServiceEntry Proxy(Type iface, Func<IInjector, Type, object, object> decorator)
         {
-            ServiceEntry entry = FEntries.Query(iface);
+            AbstractServiceEntry entry = FEntries.Query(iface);
 
             //
             // Service(), Factory(), Lazy()
@@ -80,13 +92,16 @@ namespace Solti.Utils.DI
             }
 
             //
-            // Generikus szerviz es Instance() eseten a metodus nem ertelmezett.
+            // Generikus szerviz, Abstract(), Instance() eseten valamint ha nem ez a 
+            // tarolo birtokolja az adott bejegyzest a metodus nem ertelmezett.
             //
 
             throw new InvalidOperationException(Resources.CANT_PROXY);
         }
 
-        internal ServiceEntry Instance(Type iface, object instance, bool releaseOnDispose) => Register(new InstanceServiceEntry(iface, instance, releaseOnDispose, FEntries));
+        internal AbstractServiceEntry Instance(Type iface, object instance, bool releaseOnDispose) => Register(new InstanceServiceEntry(iface, instance, releaseOnDispose, FEntries));
+
+        internal AbstractServiceEntry Abstract(Type iface) => Register(new AbstractServiceEntry(iface));
         #endregion
 
         #region IServiceContainer
@@ -177,14 +192,38 @@ namespace Solti.Utils.DI
         /// <summary>
         /// See <see cref="IServiceContainer"/>
         /// </summary>
-        IInjector IServiceContainer.CreateInjector() => Injector.Create(Entries);
+        IServiceContainer IServiceContainer.Abstract(Type iface)
+        {
+            Abstract(iface);
+            return this;
+        }
+
+        /// <summary>
+        /// See <see cref="IServiceContainer"/>
+        /// </summary>
+        IInjector IServiceContainer.CreateInjector()
+        {
+            IReadOnlyList<Type> abstractEntries = Entries
+                .Where(entry => entry.GetType() == typeof(AbstractServiceEntry))
+                .Select(entry => entry.Interface)
+                .ToArray();
+
+            if (abstractEntries.Any())
+            {
+                var ioEx = new InvalidOperationException(Resources.INVALID_INJECTOR_ENTRY);
+                ioEx.Data.Add(nameof(abstractEntries), abstractEntries);
+                throw ioEx;
+            }
+
+            return Injector.Create(Entries);
+        }
         #endregion
 
         #region IQueryServiceInfo
         /// <summary>
         /// See <see cref="IQueryServiceInfo"/>
         /// </summary>
-        IServiceInfo IQueryServiceInfo.QueryServiceInfo(Type iface) => FEntries.Query(iface);
+        IServiceInfo IQueryServiceInfo.QueryServiceInfo(Type iface) => FEntries.Query(iface); // TODO: TBD: abstract entry should not be queryable
 
         /// <summary>
         /// See <see cref="IQueryServiceInfo"/>

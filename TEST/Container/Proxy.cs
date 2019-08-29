@@ -150,7 +150,15 @@ namespace Solti.Utils.DI.Container.Tests
 
             Assert.Throws<InvalidOperationException>(() => Container.Proxy<IInterface_1>((p1, p2) => default(IInterface_1)), Resources.CANT_PROXY);
         }
-       
+
+        [Test]
+        public void Container_Proxy_ShouldThrowOnAbstractService()
+        {
+            Container.Abstract<IInterface_1>();
+
+            Assert.Throws<InvalidOperationException>(() => Container.Proxy<IInterface_1>((p1, p2) => default(IInterface_1)), Resources.CANT_PROXY);
+        }
+
         [Test]
         public void Container_Proxy_MayHaveDependency()
         {

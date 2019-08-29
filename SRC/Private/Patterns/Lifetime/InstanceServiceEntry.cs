@@ -12,7 +12,7 @@ namespace Solti.Utils.DI.Internals
     /// <summary>
     /// Describes an instance service entry.
     /// </summary>
-    internal class InstanceServiceEntry : ServiceEntry
+    internal class InstanceServiceEntry : AbstractServiceEntry
     {
         private readonly bool FReleaseOnDispose;
         private object FValue;
@@ -46,12 +46,6 @@ namespace Solti.Utils.DI.Internals
 
             if (iface != null && iface != Interface) throw new NotSupportedException(Resources.NOT_SUPPORTED);
             return Value;
-        }
-
-        public override ServiceEntry CopyTo(ServiceCollection target)
-        {
-            target.Add(this);
-            return this;
         }
 
         protected override void Dispose(bool disposeManaged)

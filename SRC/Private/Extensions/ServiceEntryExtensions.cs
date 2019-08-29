@@ -12,7 +12,7 @@ namespace Solti.Utils.DI.Internals
 {
     internal static class ServiceEntryExtensions
     {
-        public static ServiceEntry Specialize(this ServiceEntry entry, params Type[] genericArguments)
+        public static AbstractServiceEntry Specialize(this AbstractServiceEntry entry, params Type[] genericArguments)
         {
             Debug.Assert(entry.Implementation != null, "Attempt to specialize an entry without implementation");
 
@@ -37,6 +37,6 @@ namespace Solti.Utils.DI.Internals
                 .Aggregate(new {entry.Interface, entry.Implementation}.GetHashCode(), (accu, current) => new {accu, current}.GetHashCode());
         }
 
-        public static bool IsGeneric(this ServiceEntry entry) => entry.Interface.IsGenericTypeDefinition();
+        public static bool IsGeneric(this AbstractServiceEntry entry) => entry.Interface.IsGenericTypeDefinition();
     }
 }

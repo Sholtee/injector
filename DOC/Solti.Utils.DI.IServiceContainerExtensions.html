@@ -58,6 +58,64 @@
   </div>
   <h3 id="methods">Methods
   </h3>
+  <a id="Solti_Utils_DI_IServiceContainerExtensions_Abstract_" data-uid="Solti.Utils.DI.IServiceContainerExtensions.Abstract*"></a>
+  <h4 id="Solti_Utils_DI_IServiceContainerExtensions_Abstract__1_Solti_Utils_DI_IServiceContainer_" data-uid="Solti.Utils.DI.IServiceContainerExtensions.Abstract``1(Solti.Utils.DI.IServiceContainer)">Abstract&lt;TInterface&gt;(IServiceContainer)</h4>
+  <div class="markdown level1 summary"><p>Resgisters an abstract service. It must be overridden in the child container(s).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IServiceContainer Abstract&lt;TInterface&gt;(this IServiceContainer self)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.IServiceContainer.html">IServiceContainer</a></td>
+        <td><span class="parametername">self</span></td>
+        <td><p>The container itself.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.IServiceContainer.html">IServiceContainer</a></td>
+        <td><p>The container itself.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TInterface</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   <a id="Solti_Utils_DI_IServiceContainerExtensions_Factory_" data-uid="Solti.Utils.DI.IServiceContainerExtensions.Factory*"></a>
   <h4 id="Solti_Utils_DI_IServiceContainerExtensions_Factory__1_Solti_Utils_DI_IServiceContainer_Func_Solti_Utils_DI_IInjector___0__Solti_Utils_DI_Lifetime_" data-uid="Solti.Utils.DI.IServiceContainerExtensions.Factory``1(Solti.Utils.DI.IServiceContainer,Func{Solti.Utils.DI.IInjector,``0},Solti.Utils.DI.Lifetime)">Factory&lt;TInterface&gt;(IServiceContainer, Func&lt;IInjector, TInterface&gt;, Lifetime)</h4>
   <div class="markdown level1 summary"><p>Registers a new service factory with the given type. Factories are also services except that the instantiating process is delegated to the caller. Useful if a service has more than one constructor.</p>
