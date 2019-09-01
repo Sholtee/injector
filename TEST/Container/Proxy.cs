@@ -93,6 +93,9 @@ namespace Solti.Utils.DI.Container.Tests
             mockResolver
                 .Setup(r => r.Resolve(It.Is<Type>(t => t == typeof(IInterface_1))))
                 .Returns(typeof(Implementation_1));
+            mockResolver
+                .Setup(r => r.Supports(It.Is<Type>(t => t == typeof(IInterface_1))))
+                .Returns(true);
 
             Container
                 .Lazy<IInterface_1>(mockResolver.Object)

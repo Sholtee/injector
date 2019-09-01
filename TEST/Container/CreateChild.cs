@@ -96,7 +96,8 @@ namespace Solti.Utils.DI.Container.Tests
         public void Container_CreateChild_ShouldNotTriggerTheTypeResolver()
         {
             var mockTypeResolver = new Mock<ITypeResolver>(MockBehavior.Strict);
-            mockTypeResolver.Setup(i => i.Resolve(It.IsAny<Type>()));
+            mockTypeResolver.Setup(i => i.Resolve(It.IsAny<Type>())).Returns<Type>(null);
+            mockTypeResolver.Setup(i => i.Supports(It.IsAny<Type>())).Returns(true);
 
             Container.Lazy<IInterface_1>(mockTypeResolver.Object);
 

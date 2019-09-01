@@ -13,6 +13,11 @@ namespace Solti.Utils.DI
     public interface ITypeResolver
     {
         /// <summary>
+        /// Returns true if the resolver supports the given interface, false otherwise.
+        /// </summary>
+        bool Supports(Type @interface);
+
+        /// <summary>
         /// Resolves the implementation of the given interface.
         /// </summary>
         /// <param name="interface">The service interface whose implementation is requested. It can be an open generic type. In this case the returned implementation must also be an open generic type.</param>

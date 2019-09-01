@@ -143,6 +143,15 @@ namespace Solti.Utils.DI.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The resolver does not support the given interface: {0}..
+        /// </summary>
+        internal static string INTERFACE_NOT_SUPPORTED {
+            get {
+                return ResourceManager.GetString("INTERFACE_NOT_SUPPORTED", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to All constructor arguments must be an interface/Lazy&lt;interface&gt;..
         /// </summary>
         internal static string INVALID_CONSTRUCTOR {

@@ -119,7 +119,7 @@ namespace Solti.Utils.DI
 
             //
             // Konstruktor validalas csak generikus esetben kell (mert ilyenkor nincs Resolver.Get()
-            // hivas). A GetApplicableConstructor() validal is, valamint mukodik generikusokra is.
+            // hivas). A GetApplicableConstructor() validal valamint mukodik generikusokra is.
             // 
 
             if (implementation.IsGenericTypeDefinition()) implementation.GetApplicableConstructor();
@@ -133,15 +133,15 @@ namespace Solti.Utils.DI
         /// </summary>
         IServiceContainer IServiceContainer.Lazy(Type iface, ITypeResolver implementation, Lifetime lifetime)
         {
+            //
+            // A konstruktort validalni fogja a Resolver.Get() hivas az elso peldanyositaskor, igy
+            // itt nekunk csak azt kell ellenoriznunk, h az interface tamogatott e.
+            //
+
+            if (!implementation.Supports(iface))
+                throw new NotSupportedException(string.Format(Resources.INTERFACE_NOT_SUPPORTED, iface));
+
             Lazy(iface, implementation, lifetime);
-
-            //
-            // Ha nem generikusunk van (van Factory) akkor a gyarnak tipus validaltnak kell
-            // lennie.
-            //
-
-            if (!iface.IsGenericTypeDefinition()) Proxy(iface, TypeChecker);
-
             return Self;
         }
 
