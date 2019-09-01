@@ -118,10 +118,11 @@ namespace Solti.Utils.DI
                 throw new InvalidOperationException(string.Format(Resources.NOT_ASSIGNABLE, iface, implementation));
 
             //
-            // "implementation.GetApplicableConstructor()" hivassal itt ellenorizhetnenk a
-            // konstruktort is (mukodne generikusokra is) de h a Lazy() hivashoz hasonloan
-            // mukodjunk ezt kihagyjuk es peldanyositaskor validalunk.
-            //
+            // Konstruktor validalas csak generikus esetben kell (mert ilyenkor nincs Resolver.Get()
+            // hivas). A GetApplicableConstructor() validal is, valamint mukodik generikusokra is.
+            // 
+
+            if (implementation.IsGenericTypeDefinition()) implementation.GetApplicableConstructor();
 
             Service(iface, implementation, lifetime);
             return Self;

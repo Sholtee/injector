@@ -59,15 +59,8 @@ namespace Solti.Utils.DI.Container.Tests
                 () => Container.Service<IList<int>, List<int>>(),
                 string.Format(Resources.CONSTRUCTOR_OVERLOADING_NOT_SUPPORTED, typeof(List<int>)));
 
-            //
-            // Generikusnal legkorabban csak peldanyositaskor derulhet ki h szopas van.
-            //
-
             Assert.Throws<NotSupportedException>(
-                () => Container
-                    .Service(typeof(IList<>), typeof(List<>))
-                    .CreateInjector()
-                    .Get<IList<int>>(),
+                () => Container.Service(typeof(IList<>), typeof(List<>)),
                 string.Format(Resources.CONSTRUCTOR_OVERLOADING_NOT_SUPPORTED, typeof(List<>)));
         }
 
@@ -100,6 +93,8 @@ namespace Solti.Utils.DI.Container.Tests
             Assert.Throws<InvalidOperationException>(() => Container.Service(typeof(IInterface_2), typeof(Implementation_1)), string.Format(Resources.NOT_ASSIGNABLE, typeof(IInterface_2), typeof(Implementation_1)));
             Assert.Throws<InvalidOperationException>(() => Container.Service(typeof(IList<>), typeof(Implementation_1)), string.Format(Resources.NOT_ASSIGNABLE, typeof(IList<>), typeof(Implementation_1)));
             Assert.Throws<InvalidOperationException>(() => Container.Service(typeof(IList<int>), typeof(List<string>)), string.Format(Resources.NOT_ASSIGNABLE, typeof(IList<int>), typeof(List<string>)));
+            Assert.Throws<InvalidOperationException>(() => Container.Service(typeof(IList<int>), typeof(List<>)), string.Format(Resources.NOT_ASSIGNABLE, typeof(IList<int>), typeof(List<>)));
+            Assert.Throws<InvalidOperationException>(() => Container.Service(typeof(IList<>), typeof(List<string>)), string.Format(Resources.NOT_ASSIGNABLE, typeof(IList<>), typeof(List<string>)));
         }
 
         [Test]
