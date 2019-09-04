@@ -2,14 +2,5 @@ image: Visual Studio 2017
 
 skip_tags: true
 
-configuration: Debug
-
-nuget:
-  disable_publish_on_pr: true
-
-install:
-  - dotnet restore
-
-build:
-  project: Injector.sln
-  verbosity: minimal
+test_script:
+  - cover.cmd
