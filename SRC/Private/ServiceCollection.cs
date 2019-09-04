@@ -49,6 +49,13 @@ namespace Solti.Utils.DI.Internals
 
             bool Query(Type key, out AbstractServiceEntry val) => FEntries.TryGetValue(key, out val);
         }
+
+        protected bool ContainsByRef(AbstractServiceEntry item) // ne virtual legyen
+        {
+            if (item == null) return false;
+
+            return FEntries.TryGetValue(item.Interface, out var entry) && ReferenceEquals(entry, item);
+        }
         #endregion
 
         #region Public
@@ -199,15 +206,26 @@ namespace Solti.Utils.DI.Internals
             // Itt keruljuk a ContainsValue() hivast mert az Equals() by desgin tulajdonsag osszehasnlitassal mukodik
             //
 
-            FEntries.Values.Any(entry => ReferenceEquals(entry, item));
+            ContainsByRef(item);
 
         /// <summary>
         /// See <see cref="ICollection{T}"/>
         /// </summary>
         /// <remarks>Removing an item will NOT dipose it.</remarks>
-        public virtual bool Remove(AbstractServiceEntry item) => 
-            FEntries.Values.Any(entry => ReferenceEquals(entry, item)) && // Ne Contains() legyen h a ConcurrentServiceCollection-ben is mukodjunk
-            FEntries.Remove(item.Interface);
+        public virtual bool Remove(AbstractServiceEntry item) =>
+            //
+            //  Ne Contains() legyen h a ConcurrentServiceCollection-ben is mukodjunk.
+            //
+
+            ContainsByRef(item) &&
+
+            //
+            // A ContainsByRef() miatt "item" sose null ezert nem kell h a resharper
+            // baszogasson miatta.
+            //
+
+            // ReSharper disable once PossibleNullReferenceException
+            FEntries.Remove(item.Interface); // "item" sose null (ContainsByRef miatt)
 
         /// <summary>
         /// See <see cref="ICollection{T}"/>
