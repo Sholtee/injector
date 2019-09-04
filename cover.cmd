@@ -15,5 +15,5 @@ if exist "%reports%" rmdir /Q /S "%reports%"
 nuget install ReportGenerator -OutputDirectory %vendor% -Version 4.2.15
 nuget install OpenCover -OutputDirectory %vendor% -Version 4.7.922
 
-call "%vendor%\OpenCover.4.7.922\tools\OpenCover.Console.exe" -target:"%ProgramFiles%\dotnet\dotnet.exe" -targetargs:"test %~dp0TEST\Injector.Tests.csproj --configuration:Debug -p:NoDocfx=True" -output:"%coveragexml%" -oldStyle -register:user
+call "%vendor%\OpenCover.4.7.922\tools\OpenCover.Console.exe" -target:"%ProgramFiles%\dotnet\dotnet.exe" -targetargs:"test %~dp0TEST\Injector.Tests.csproj --configuration:Debug -p:NoDocfx=True" -output:"%coveragexml%" -oldStyle -register:user -filter:"+[Injector*]* -[Injector.Tests]*"
 dotnet "%vendor%\ReportGenerator.4.2.15\tools\netcoreapp2.1\ReportGenerator.dll" "-reports:%coveragexml%" "-targetdir:%reports%"
