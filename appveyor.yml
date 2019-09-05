@@ -9,14 +9,16 @@ build_script:
   - echo Starting build
  
 test_script:
-  - cover.cmd
-  - perf.cmd
-  
-artifacts:
-  - path: Coverage Report
-    name: Coverage Report
-    type: zip
-    
-  - path: BenchmarkDotNet.Artifacts
-    name: BenchmarkDotNet.Artifacts
-    type: zip  
+  - test.cmd
+  - uploadresults.ps1
+#   - cover.cmd
+#   - perf.cmd
+#  
+# artifacts:
+#   - path: Coverage Report
+#     name: Coverage Report
+#     type: zip
+#     
+#   - path: BenchmarkDotNet.Artifacts
+#     name: BenchmarkDotNet.Artifacts
+#     type: zip  
