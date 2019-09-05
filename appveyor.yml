@@ -5,5 +5,13 @@ skip_tags: true
 install:
   - dotnet restore
   
+build_script:
+  - echo Running cover.cmd
+  
 test_script:
   - cover.cmd
+  
+artifacts:
+  - path: Coverage Report
+    name: Coverage Report
+    type: zip
