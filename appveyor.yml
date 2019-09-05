@@ -9,8 +9,8 @@ build_script:
   - echo Starting build
  
 test_script:
-  - test.cmd
-  - uploadresults.ps1
+  - cmd: test.cmd
+  - ps: uploadresults.ps1
 #   - cover.cmd
 #   - perf.cmd
 #  
