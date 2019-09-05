@@ -6,8 +6,7 @@ install:
   - dotnet restore
   
 build_script:
-  - echo Running cover.cmd
-  
+ 
 test_script:
   - cover.cmd
   
