@@ -9,16 +9,16 @@ build_script:
   - echo Starting build
  
 test_script:
-  - cmd: test.cmd
+  - cmd: test
   - ps: (New-Object 'System.Net.WebClient').UploadFile("https://ci.appveyor.com/api/testresults/nunit/$($env:APPVEYOR_JOB_ID)", (Resolve-Path .\BIN\testresults.xml))
-#   - cover.cmd
-#   - perf.cmd
-#  
-# artifacts:
-#   - path: Coverage Report
-#     name: Coverage Report
-#     type: zip
-#     
-#   - path: BenchmarkDotNet.Artifacts
-#     name: BenchmarkDotNet.Artifacts
-#     type: zip  
+  - cmd: cover
+  - cmd: perf
+
+artifacts:
+  - path: Coverage Report
+    name: Coverage Report
+    type: zip
+
+  - path: BenchmarkDotNet.Artifacts
+    name: BenchmarkDotNet.Artifacts
+    type: zip  
