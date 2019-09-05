@@ -15,6 +15,6 @@ namespace Solti.Utils.DI.Perf
         {
         }
 
-        public override object Invoke(MethodInfo targetMethod, object[] args) => 0;
+        public override object Invoke(MethodInfo method, object[] args, MemberInfo extra) => 0;
     }
 }

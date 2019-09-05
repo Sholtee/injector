@@ -9,9 +9,6 @@ namespace Solti.Utils.DI.Perf
 {
     public class DispatchProxyWithoutTarget : DispatchProxy
     {
-        protected override object Invoke(MethodInfo targetMethod, object[] args)
-        {
-            return 0;
-        }
+        protected override object Invoke(MethodInfo targetMethod, object[] args) => 0;
     }
 }

@@ -10,8 +10,13 @@ build_script:
  
 test_script:
   - cover.cmd
+  - perf.cmd
   
 artifacts:
   - path: Coverage Report
     name: Coverage Report
     type: zip
+    
+  - path: BenchmarkDotNet.Artifacts
+    name: BenchmarkDotNet.Artifacts
+    type: zip  
