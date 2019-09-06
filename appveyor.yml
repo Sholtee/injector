@@ -1,18 +1,18 @@
 image: Visual Studio 2017
 
 skip_tags: true
-
-install:
-  - dotnet restore
-  
+ 
 build_script:
+# Prevent MSBuild from running 
   - echo Starting build
  
 test_script:
   - cmd: test
-  - ps: (New-Object 'System.Net.WebClient').UploadFile("https://ci.appveyor.com/api/testresults/nunit/$($env:APPVEYOR_JOB_ID)", (Resolve-Path .\BIN\testresults.xml))
   - cmd: cover
   - cmd: perf
+  
+after_test:  
+  - ps: (New-Object 'System.Net.WebClient').UploadFile("https://ci.appveyor.com/api/testresults/nunit/$($env:APPVEYOR_JOB_ID)", (Resolve-Path .\BIN\testresults.xml))
 
 artifacts:
   - path: Coverage Report
