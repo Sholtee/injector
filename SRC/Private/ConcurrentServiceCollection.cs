@@ -17,11 +17,11 @@ namespace Solti.Utils.DI.Internals
         {           
         }
 
-        protected override AbstractServiceEntry QueryInternal(Type iface)
+        protected override AbstractServiceEntry GetClosest(Type iface)
         {
             using (FLock.AcquireReaderLock())
             {
-                return base.QueryInternal(iface);
+                return base.GetClosest(iface);
             }
         }
 
@@ -31,6 +31,14 @@ namespace Solti.Utils.DI.Internals
             {
                 base.Add(item);
             }           
+        }
+
+        public override AbstractServiceEntry Get(Type iface)
+        {
+            using (FLock.AcquireReaderLock())
+            {
+                return base.Get(iface);
+            }            
         }
 
         public override bool Remove(AbstractServiceEntry item)

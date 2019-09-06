@@ -34,28 +34,21 @@ namespace Solti.Utils.DI.Internals
             base.Dispose(disposeManaged);
         }
 
-        protected virtual AbstractServiceEntry QueryInternal(Type iface)
+        protected virtual AbstractServiceEntry GetClosest(Type iface)
         {
-            if (Query(iface, out var entry)) return entry;
+            AbstractServiceEntry result = Get(iface);
 
-            //
-            // Meg benne lehet generikus formaban.
-            //
+            if (result == null && iface.IsGenericType())
+                //
+                // Meg benne lehet generikus formaban.
+                //
 
-            if (!iface.IsGenericType() || !Query(iface.GetGenericTypeDefinition(), out entry))
-                throw new ServiceNotFoundException(iface);
+                result = Get(iface.GetGenericTypeDefinition());
 
-            return entry;
-
-            bool Query(Type key, out AbstractServiceEntry val) => FEntries.TryGetValue(key, out val);
+            return result;
         }
 
-        protected bool ContainsByRef(AbstractServiceEntry item) // ne virtual legyen
-        {
-            if (item == null) return false;
-
-            return FEntries.TryGetValue(item.Interface, out var entry) && ReferenceEquals(entry, item);
-        }
+        protected bool ContainsByRef(AbstractServiceEntry item) => item != null && ReferenceEquals(Get(item.Interface)/*visszaadhat NULL-t*/, item);
         #endregion
 
         #region Public
@@ -81,6 +74,10 @@ namespace Solti.Utils.DI.Internals
             }
         }
 
+        public virtual AbstractServiceEntry Get(Type iface) => FEntries.TryGetValue(iface, out var result)
+            ? result
+            : null;
+
         /// <summary>
         /// Gets the entry associated with the given interface.
         /// </summary>
@@ -89,7 +86,13 @@ namespace Solti.Utils.DI.Internals
         /// <remarks>This method supports entry specialization which means after registering a generic entry you can query its (unregistered) closed pair by passing the closed interface <see cref="Type"/> to this function.</remarks>
         public virtual AbstractServiceEntry Query(Type iface)
         {
-            AbstractServiceEntry entry = QueryInternal(iface);
+            AbstractServiceEntry entry = GetClosest(iface);
+
+            //
+            // 0. eset: Nem talalhato bejegyzes semmilyen formaban.
+            //
+
+            if (entry == null) throw new ServiceNotFoundException(iface);
 
             //
             // 1. eset: Azt az entitast adjuk vissza amit kerestunk.
@@ -125,7 +128,7 @@ namespace Solti.Utils.DI.Internals
                     .CopyTo(this);
 
                 //
-                // Ha mi vagyunk a tulajdonosok akkor nekunk kell lezarni es rogziteni a bejegyzest.
+                // Ha mi vagyunk a tulajdonosok akkor nekunk kell lezarni a bejegyzest.
                 //
 
                 Add(entry = entry.Specialize(iface.GetGenericArguments()));
@@ -213,10 +216,6 @@ namespace Solti.Utils.DI.Internals
         /// </summary>
         /// <remarks>Removing an item will NOT dipose it.</remarks>
         public virtual bool Remove(AbstractServiceEntry item) =>
-            //
-            //  Ne Contains() legyen h a ConcurrentServiceCollection-ben is mukodjunk.
-            //
-
             ContainsByRef(item) &&
 
             //
@@ -225,7 +224,7 @@ namespace Solti.Utils.DI.Internals
             //
 
             // ReSharper disable once PossibleNullReferenceException
-            FEntries.Remove(item.Interface); // "item" sose null (ContainsByRef miatt)
+            FEntries.Remove(item.Interface);
 
         /// <summary>
         /// See <see cref="ICollection{T}"/>

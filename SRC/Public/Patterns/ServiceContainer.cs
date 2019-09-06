@@ -5,6 +5,7 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 
@@ -33,8 +34,13 @@ namespace Solti.Utils.DI
             // Abstract bejegyzest felul lehet irni (de csak azt).
             //
 
-            AbstractServiceEntry entryToRemove = FEntries.SingleOrDefault(e => e.GetType() == typeof(AbstractServiceEntry) && e.Interface == entry.Interface);
-            if (entryToRemove != null) FEntries.Remove(entryToRemove);
+            AbstractServiceEntry entryToRemove = FEntries.Get(entry.Interface);
+
+            if (entryToRemove != null && entryToRemove.GetType() == typeof(AbstractServiceEntry))
+            {
+                bool removed = FEntries.Remove(entryToRemove);
+                Debug.Assert(removed, "Can't remove entry");
+            }
 
             //
             // Uj elem felvetele.

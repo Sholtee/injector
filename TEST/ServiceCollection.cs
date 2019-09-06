@@ -13,8 +13,10 @@ using NUnit.Framework;
 namespace Solti.Utils.DI.Internals.Tests
 {
     [TestFixture]
-    public sealed class ServiceCollectionTests
+    public class ServiceCollectionTests
     {
+        internal virtual ServiceCollection CreateCollection(params AbstractServiceEntry[] entries) => new ServiceCollection(entries);
+
         [Test]
         public void ServiceCollection_ShouldDisposeOwnedEntriesOnly()
         {
@@ -22,7 +24,7 @@ namespace Solti.Utils.DI.Internals.Tests
                 owned    = new Disposable(),
                 notOwned = new Disposable();
 
-            var collection = new ServiceCollection();
+            ServiceCollection collection = CreateCollection();
 
             collection.Add(new InstanceServiceEntry(typeof(IDisposable), owned, releaseOnDispose: true, owner: collection));
             collection.Add(new InstanceServiceEntry(typeof(IServiceContainer) /*tok mind1*/, notOwned, releaseOnDispose: true, owner: null));
@@ -48,7 +50,7 @@ namespace Solti.Utils.DI.Internals.Tests
             Mock<AbstractServiceEntry> entry = new Mock<AbstractServiceEntry>(typeof(IDisposable) /*iface*/, Lifetime.Transient, new ServiceCollection());              
             entry.Setup(e => e.CopyTo(It.IsAny<ServiceCollection>())).Returns<ServiceCollection>(sc => null);
 
-            using (var collection = new ServiceCollection(new []{entry.Object}))
+            using (ServiceCollection collection = CreateCollection(entry.Object))
             {
                 entry.Verify(e => e.CopyTo(It.Is<ServiceCollection>(sc => sc == collection)), Times.Once);
             }
@@ -57,24 +59,24 @@ namespace Solti.Utils.DI.Internals.Tests
         [Test]
         public void ServiceCollection_ShouldContainUniqueEntries()
         {
-            var collection = new ServiceCollection(new []
-            {
+            ServiceCollection collection = CreateCollection
+            (
                 new InstanceServiceEntry(typeof(IDisposable), null, false, null)
-            });
+            );
 
             Assert.Throws<ServiceAlreadyRegisteredException>(() => collection.Add(new InstanceServiceEntry(typeof(IDisposable), null, false, null)));
 
-            Assert.Throws<ServiceAlreadyRegisteredException>(() => new ServiceCollection(new[]
-            {
+            Assert.Throws<ServiceAlreadyRegisteredException>(() => CreateCollection
+            (
                 new InstanceServiceEntry(typeof(IDisposable), null, false, null),
                 new InstanceServiceEntry(typeof(IDisposable), null, false, null)
-            }));
+            ));
         }
 
         [Test]
         public void ServiceCollection_QueryShouldReturnOnTypeMatch()
         {          
-            var collection = new ServiceCollection();
+            ServiceCollection collection = CreateCollection();
             var entry = new TransientServiceEntry(typeof(IList<>), typeof(List<>), collection);
             collection.Add(entry);
 
@@ -84,7 +86,7 @@ namespace Solti.Utils.DI.Internals.Tests
         [Test]
         public void ServiceCollection_QueryShouldReturnIfTheGenerisEntryIsProducible()
         {
-            var collection = new ServiceCollection();
+            ServiceCollection collection = CreateCollection();
             var entry = new TransientServiceEntry(typeof(IList<>), (injector, type) => null, collection);
             collection.Add(entry);
 
@@ -101,10 +103,10 @@ namespace Solti.Utils.DI.Internals.Tests
         [Test]
         public void ServiceCollection_QueryShouldSpecialize()
         {
-            var collection = new ServiceCollection(new []
-            {
+            ServiceCollection collection = CreateCollection
+            (
                 new TransientServiceEntry(typeof(IList<>), typeof(MyList<>), null)
-            });
+            );
             Assert.That(collection.Count, Is.EqualTo(1));
 
             AbstractServiceEntry entry = collection.Query(typeof(IList<int>));
@@ -116,10 +118,10 @@ namespace Solti.Utils.DI.Internals.Tests
         [Test]
         public void ServiceCollection_QueryShouldSpecializeNotOwnedEtries()
         {
-            var parentCollection = new ServiceCollection();
+            ServiceCollection parentCollection = CreateCollection();
             parentCollection.Add(new SingletonServiceEntry(typeof(IList<>), typeof(MyList<>), parentCollection));
 
-            var childCollection = new ServiceCollection(parentCollection);
+            ServiceCollection childCollection = CreateCollection(parentCollection.ToArray());
             Assert.That(childCollection.Count, Is.EqualTo(1));
 
             AbstractServiceEntry entry = childCollection.Query(typeof(IList<int>));
@@ -133,13 +135,25 @@ namespace Solti.Utils.DI.Internals.Tests
         }
 
         [Test]
+        public void ServiceCollection_GetShouldReturnExistingEntriesOnly()
+        {
+            ServiceCollection collection = CreateCollection
+            (
+                new SingletonServiceEntry(typeof(IList<>), typeof(List<>), null) 
+            );
+            
+            Assert.IsNull(collection.Get(typeof(IList<int>)));
+            Assert.AreEqual(new SingletonServiceEntry(typeof(IList<>), typeof(List<>), null), collection.Get(typeof(IList<>)));
+        }
+
+        [Test]
         public void ServiceCollection_ContainsShouldSearchByReference()
         {
             AbstractServiceEntry 
                 entry1 = new AbstractServiceEntry(typeof(IDisposable)),
                 entry2 = new AbstractServiceEntry(typeof(IDisposable));
 
-            var collection = new ServiceCollection(new[]{ entry1 });
+            ServiceCollection collection = CreateCollection(entry1);
             
             Assert.That(entry1, Is.EqualTo(entry2));
             Assert.True(collection.Contains(entry1));
@@ -153,7 +167,7 @@ namespace Solti.Utils.DI.Internals.Tests
                 entry1 = new AbstractServiceEntry(typeof(IDisposable)),
                 entry2 = new AbstractServiceEntry(typeof(IDisposable));
 
-            var collection = new ServiceCollection(new[] { entry1 });
+            ServiceCollection collection = CreateCollection(entry1);
 
             Assert.That(collection.Count, Is.EqualTo(1));
             Assert.That(entry1, Is.EqualTo(entry2));
@@ -161,13 +175,19 @@ namespace Solti.Utils.DI.Internals.Tests
             Assert.True(collection.Remove(entry1));
             Assert.That(collection, Is.Empty);
         }
+    }
+
+    [TestFixture]
+    public class ConcurrentServiceCollectionTests: ServiceCollectionTests
+    {
+        internal override ServiceCollection CreateCollection(params AbstractServiceEntry[] entries) => new ConcurrentServiceCollection(entries);
 
         [Test]
-        public void ConcurrentServiceCollection_EnumeratorShouldBeIndependent()
+        public void ServiceCollection_EnumeratorShouldBeIndependent()
         {
             var entry = new AbstractServiceEntry(typeof(IDisposable));
 
-            var collection = new ConcurrentServiceCollection(new []{ entry });
+            ServiceCollection collection = CreateCollection(entry);
 
             using (IEnumerator<AbstractServiceEntry> enumerator = collection.GetEnumerator())
             {
