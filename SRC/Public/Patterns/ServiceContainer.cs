@@ -21,6 +21,11 @@ namespace Solti.Utils.DI
     public class ServiceContainer : Composite<IServiceContainer>, IServiceContainer
     {
         #region Private
+        private static readonly HashSet<Type> ReservedInterfaces = new HashSet<Type>
+        {
+            typeof(IInjector)
+        };
+
         //
         // Singleton elettartamnal parhuzamosan is modositasra kerulhet a lista (generikus 
         // bejegyzes lezarasakor) ezert szalbiztosnak kell h legyen.
@@ -30,6 +35,13 @@ namespace Solti.Utils.DI
 
         private AbstractServiceEntry Register(AbstractServiceEntry entry)
         {
+            if (ReservedInterfaces.Contains(entry.Interface))
+            {
+                var ioEx = new InvalidOperationException(Resources.RESERVED_INTERFACE);
+                ioEx.Data.Add("interface", entry.Interface);
+                throw ioEx;
+            }
+
             //
             // Abstract bejegyzest felul lehet irni (de csak azt).
             //
