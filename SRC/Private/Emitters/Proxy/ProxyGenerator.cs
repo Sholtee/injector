@@ -9,7 +9,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Text.RegularExpressions;
 
 #if IGNORE_VISIBILITY
 using System.Runtime.CompilerServices;
@@ -1213,14 +1212,6 @@ namespace Solti.Utils.DI.Internals
 
         private static IdentifierNameSyntax ToIdentifierName(this LocalDeclarationStatementSyntax variable) => IdentifierName(variable.Declaration.Variables.Single().Identifier);
 
-        private static readonly Regex TypeNameReplacer = new Regex(@"\&|`\d+(\[[\w,]+\])?", RegexOptions.Compiled);
-
-        private static string GetFriendlyName(this Type src)
-        {
-            Debug.Assert(!src.IsGenericType() || src.IsGenericTypeDefinition());
-            return TypeNameReplacer.Replace(src.IsNested ? src.Name : src.ToString(), string.Empty);
-        }
-
         private static NameSyntax GetQualifiedName(this Type type, Func<string, NameSyntax> typeNameFactory = null)
         {
             return Parts2QualifiedName
@@ -1232,8 +1223,17 @@ namespace Solti.Utils.DI.Internals
             NameSyntax Parts2QualifiedName(IReadOnlyCollection<string> parts, Func<string, NameSyntax> factory) => Qualify
             (
                 parts
+                    //
+                    // Nevter, szulo osztaly (beagyazott tipus eseten)
+                    //
+
                     .Take(parts.Count - 1)
                     .Select(part => (NameSyntax) IdentifierName(part))
+
+                    //
+                    // Tipus neve
+                    //
+
                     .Append(factory(parts.Last()))
                     .ToArray()
             );

@@ -5,8 +5,10 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using System.Text.RegularExpressions;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -114,6 +116,14 @@ namespace Solti.Utils.DI.Internals
                 for(Type parent = type.DeclaringType; parent != null; parent = parent.DeclaringType)
                     yield return parent;
             }
+        }
+
+        private static readonly Regex TypeNameReplacer = new Regex(@"\&|`\d+(\[[\w,]+\])?", RegexOptions.Compiled);
+
+        public static string GetFriendlyName(this Type src)
+        {
+            Debug.Assert(!src.IsGenericType() || src.IsGenericTypeDefinition());
+            return TypeNameReplacer.Replace(src.IsNested ? src.Name : src.ToString(), string.Empty);
         }
     }
 }
