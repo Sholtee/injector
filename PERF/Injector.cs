@@ -9,7 +9,7 @@ using BenchmarkDotNet.Attributes;
 
 namespace Solti.Utils.DI.Perf
 {
-    [MemoryDiagnoser, MarkdownExporterAttribute.GitHub]
+    [MemoryDiagnoser]
     public class Injector
     {
         private const int OperationsPerInvoke = 50000;
