@@ -326,7 +326,6 @@ namespace Solti.Utils.DI.Internals
 
                         sizes: Enumerable
                             .Repeat(0, src.GetArrayRank())
-                            .ToArray() // ToArray() kell =(
                             .CreateList(@void => (ExpressionSyntax) OmittedArraySizeExpression())
                     )
                 )
@@ -345,16 +344,21 @@ namespace Solti.Utils.DI.Internals
 
         public static TypeSyntax CreateType<T>() => CreateType(typeof(T));
 
-        public static SeparatedSyntaxList<TNode> CreateList<T, TNode>(this IReadOnlyCollection<T> src, Func<T, TNode> factory) where TNode : SyntaxNode => SeparatedList<TNode>
-        (
-            nodesAndTokens: src.SelectMany((p, i) =>
-            {
-                var l = new List<SyntaxNodeOrToken> { factory(p) };
-                if (i < src.Count - 1) l.Add(Token(SyntaxKind.CommaToken));
+        public static SeparatedSyntaxList<TNode> CreateList<T, TNode>(this IEnumerable<T> src, Func<T, TNode> factory) where TNode : SyntaxNode
+        {
+            int count = (src as IReadOnlyCollection<T>)?.Count ?? (src as ICollection<T>)?.Count ?? (src = src.ToArray()).Count();
 
-                return l;
-            })
-        );
+            return SeparatedList<TNode>
+            (
+                nodesAndTokens: src.SelectMany((p, i) =>
+                {
+                    var l = new List<SyntaxNodeOrToken> {factory(p)};
+                    if (i < count - 1) l.Add(Token(SyntaxKind.CommaToken));
+
+                    return l;
+                })
+            );
+        }
 
         public static NameSyntax GetQualifiedName(this Type type, Func<string, NameSyntax> typeNameFactory = null)
         {
