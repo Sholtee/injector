@@ -29,6 +29,8 @@ namespace Solti.Utils.DI.Internals
 
         public static bool IsNotPublic(this Type type) => type.GetTypeInfo().IsNotPublic;
 
+        public static bool IsVisible(this Type type) => type.GetTypeInfo().IsVisible;
+
         public static IReadOnlyList<EventInfo> GetEvents(this Type type) => type.GetTypeInfo().GetEvents();
     }
 }
