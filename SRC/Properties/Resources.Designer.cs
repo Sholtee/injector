@@ -188,6 +188,15 @@ namespace Solti.Utils.DI.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The target does not implement the desired method..
+        /// </summary>
+        internal static string METHOD_NOT_SUPPORTED {
+            get {
+                return ResourceManager.GetString("METHOD_NOT_SUPPORTED", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Parameter must be a class..
         /// </summary>
         internal static string NOT_A_CLASS {

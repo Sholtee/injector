@@ -159,6 +159,9 @@
   <data name="INVALID_INSTANCE" xml:space="preserve">
     <value>The returned object must be an instance of "{0}".</value>
   </data>
+  <data name="METHOD_NOT_SUPPORTED" xml:space="preserve">
+    <value>The target does not implement the desired method.</value>
+  </data>
   <data name="NOT_AN_INTERFACE" xml:space="preserve">
     <value>Parameter must be an interface.</value>
   </data>
