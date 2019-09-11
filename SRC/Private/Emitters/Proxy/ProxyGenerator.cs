@@ -104,35 +104,16 @@ namespace Solti.Utils.DI.Internals
                                 (
                                     expression: ParenthesizedLambdaExpression
                                     (
-                                        body: InvocationExpression
+                                        body: Invoke
                                         (
-                                            expression: MemberAccessExpression
-                                            (
-                                                kind: SyntaxKind.SimpleMemberAccessExpression,
-                                                expression: IdentifierName(TARGET),
-                                                name: IdentifierName(method.Name)
-                                            )
-                                        )   
-                                        .WithArgumentList
-                                        (
-                                            argumentList: ArgumentList(paramz.CreateList(param =>
-                                            {
-                                                ArgumentSyntax argument = Argument
-                                                (
-                                                    expression: IdentifierName(param.ParameterType.IsByRef ? GetDummyName(param) : param.Name)
-                                                );
+                                            method: method, 
+                                            target: TARGET,
 
-                                                //
-                                                // TODO: "IN"
-                                                //
+                                            //
+                                            // GetDummyName() azert kell mert hivatkozott parameterek nem szerepelhetnek kifejezesekben.
+                                            //
 
-                                                if (param.ParameterType.IsByRef) argument = argument.WithRefKindKeyword
-                                                (
-                                                    refKindKeyword: Token(param.IsOut ? SyntaxKind.OutKeyword : SyntaxKind.RefKeyword)
-                                                );
-
-                                                return argument;
-                                            }))
+                                            arguments: paramz.Select(param => param.ParameterType.IsByRef ? GetDummyName(param) : param.Name).ToArray()
                                         )
                                     )
                                 )

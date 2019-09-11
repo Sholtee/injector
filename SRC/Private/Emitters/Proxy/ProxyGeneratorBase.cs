@@ -344,7 +344,7 @@ namespace Solti.Utils.DI.Internals
 
         public static TypeSyntax CreateType<T>() => CreateType(typeof(T));
 
-        public static SeparatedSyntaxList<TNode> CreateList<T, TNode>(this IEnumerable<T> src, Func<T, TNode> factory) where TNode : SyntaxNode
+        public static SeparatedSyntaxList<TNode> CreateList<T, TNode>(this IEnumerable<T> src, Func<T, int, TNode> factory) where TNode : SyntaxNode
         {
             int count = (src as IReadOnlyCollection<T>)?.Count ?? (src as ICollection<T>)?.Count ?? (src = src.ToArray()).Count();
 
@@ -352,13 +352,15 @@ namespace Solti.Utils.DI.Internals
             (
                 nodesAndTokens: src.SelectMany((p, i) =>
                 {
-                    var l = new List<SyntaxNodeOrToken> {factory(p)};
+                    var l = new List<SyntaxNodeOrToken> {factory(p, i)};
                     if (i < count - 1) l.Add(Token(SyntaxKind.CommaToken));
 
                     return l;
                 })
             );
         }
+
+        public static SeparatedSyntaxList<TNode> CreateList<T, TNode>(this IEnumerable<T> src, Func<T, TNode> factory) where TNode : SyntaxNode => src.CreateList((p, i) => factory(p));
 
         public static NameSyntax GetQualifiedName(this Type type, Func<string, NameSyntax> typeNameFactory = null)
         {
@@ -394,5 +396,36 @@ namespace Solti.Utils.DI.Internals
         );
 
         public static IdentifierNameSyntax ToIdentifierName(this LocalDeclarationStatementSyntax variable) => IdentifierName(variable.Declaration.Variables.Single().Identifier);
+
+        public static InvocationExpressionSyntax Invoke(MethodInfo method, string target, IReadOnlyList<string> arguments = null) => InvocationExpression
+        (
+            expression: MemberAccessExpression
+            (
+                kind: SyntaxKind.SimpleMemberAccessExpression,
+                expression: IdentifierName(target),
+                name: IdentifierName(method.Name)
+            )
+        )
+        .WithArgumentList
+        (
+            argumentList: ArgumentList(method.GetParameters().CreateList((param, i) =>
+            {
+                ArgumentSyntax argument = Argument
+                (
+                    expression: IdentifierName(arguments?[i] ?? param.Name)
+                );
+
+                //
+                // TODO: "IN"
+                //
+
+                if (param.ParameterType.IsByRef) argument = argument.WithRefKindKeyword
+                (
+                    refKindKeyword: Token(param.IsOut ? SyntaxKind.OutKeyword : SyntaxKind.RefKeyword)
+                );
+
+                return argument;
+            }))
+        );
     }
 }
