@@ -21,18 +21,15 @@ namespace Solti.Utils.DI.Internals
         static CompilationOptionsFactory()
         {
             TopLevelBinderFlagsProperty = typeof(CSharpCompilationOptions)
-                .GetTypeInfo()
                 .GetProperty("TopLevelBinderFlags", BindingFlags.Instance | BindingFlags.NonPublic);
             Debug.Assert(TopLevelBinderFlagsProperty != null);
 
             Type binderFlagsType = typeof(CSharpCompilationOptions)
-                .GetTypeInfo()
-                .Assembly
+                .Assembly()
                 .GetType("Microsoft.CodeAnalysis.CSharp.BinderFlags");
             Debug.Assert(binderFlagsType != null);
 
             FieldInfo ignoreAccessibility = binderFlagsType
-                .GetTypeInfo()
                 .GetField("IgnoreAccessibility", BindingFlags.Static | BindingFlags.Public);
             Debug.Assert(ignoreAccessibility != null);
 
