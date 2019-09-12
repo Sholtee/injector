@@ -61,7 +61,7 @@ namespace Solti.Utils.DI.Internals
                 // Lasd GenericArgumentComparer
                 //
 
-                Name = obj.ParameterType.Name ?? obj.ParameterType.FullName,
+                Name = obj.ParameterType.FullName ?? obj.ParameterType.Name,
                 obj.Attributes
             }.GetHashCode();
         }
