@@ -118,6 +118,12 @@ namespace Solti.Utils.DI.Internals
             }
         }
 
+        //
+        // "&":  referencia szerinti parameter
+        // "`d": generikus tipus ahol "d" egesz szam
+        // "[T, TT]": generikus parameterek
+        //
+
         private static readonly Regex TypeNameReplacer = new Regex(@"\&|`\d+(\[[\w,]+\])?", RegexOptions.Compiled);
 
         public static string GetFriendlyName(this Type src)
