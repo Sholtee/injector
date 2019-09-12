@@ -27,27 +27,11 @@ namespace Solti.Utils.DI.Internals
         {
             IReadOnlyList<ParameterInfo> paramz = ifaceMethod.GetParameters();
 
-            MethodInfo targetMethod = Target.GetMethod
-            (
-                name: ifaceMethod.Name, 
-                types: paramz.Select(param => param.ParameterType).ToArray()
-            );
+            MethodInfo targetMethod = Target
+                .GetMethods(BindingFlags.Instance | BindingFlags.Public)
+                .FirstOrDefault(m => m.GetParameters().SequenceEqual(paramz, new ParameterComparer()));
 
-            bool valid;
-
-            if (valid = targetMethod?.IsPublic == true)
-            {
-                IReadOnlyList<ParameterInfo> targetParamz = targetMethod.GetParameters();
-
-                for (int i = 0; i < paramz.Count && valid; i++)
-                    //
-                    // In, Out, stb
-                    //
-
-                    valid = paramz[i].Attributes != targetParamz[i].Attributes;
-            }
-
-            if (!valid)
+            if (targetMethod == null)
             {
                 var mme = new MissingMethodException(Resources.METHOD_NOT_SUPPORTED);
                 mme.Data.Add(nameof(ifaceMethod), ifaceMethod);
@@ -55,7 +39,7 @@ namespace Solti.Utils.DI.Internals
             }
 
             //
-            // TResult IInterface.Foo<TGeneric>(T1 para1, ref T2 para2, out T3 para3, TGeneric para4) => Target.Foo(para1, ref para2, out para3, para4);
+            // TResult IInterface.Foo<TGeneric>(T1 para1, ref T2 para2, out T3 para3, TGeneric para4) => Target.Foo(para1, ref para2, out para3, para4)
             //
 
             return DeclareMethod(ifaceMethod).WithExpressionBody
@@ -65,6 +49,21 @@ namespace Solti.Utils.DI.Internals
                     expression: Invoke(targetMethod, nameof(Target))
                 )
             );
+        }
+
+        private sealed class ParameterComparer : IEqualityComparer<ParameterInfo>
+        {
+            public bool Equals(ParameterInfo x, ParameterInfo y) => GetHashCode(x) == GetHashCode(y);
+
+            public int GetHashCode(ParameterInfo obj) => new
+            {
+                //
+                // Lasd GenericArgumentComparer
+                //
+
+                Name = obj.ParameterType.Name ?? obj.ParameterType.FullName,
+                obj.Attributes
+            }.GetHashCode();
         }
     }
 }
