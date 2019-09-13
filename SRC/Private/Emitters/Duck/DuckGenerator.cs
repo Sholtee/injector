@@ -29,7 +29,7 @@ namespace Solti.Utils.DI.Internals
 
             MethodInfo targetMethod = Target
                 .GetMethods(BindingFlags.Instance | BindingFlags.Public)
-                .FirstOrDefault(m => m.GetParameters().SequenceEqual(paramz, new ParameterComparer()));
+                .FirstOrDefault(m => m.Name.Equals(ifaceMethod.Name, StringComparison.Ordinal) && m.GetParameters().SequenceEqual(paramz, new ParameterComparer()));
 
             if (targetMethod == null)
             {
