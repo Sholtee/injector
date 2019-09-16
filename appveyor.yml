@@ -5,20 +5,24 @@ skip_tags: true
 build_script:
 # Prevent MSBuild from running 
   - echo Starting build
+  
+environment:
+  COVERALLS_REPO_TOKEN:  
+    secure: p2Kcud3WthUkXXcArmyAEggtW8E3L7ELxH0TXnjlnhmCUMPAQ9s5ApIX3By05W8B
  
 test_script:
   - cmd: test
-  - cmd: cover
-  - cmd: perf
+  - cmd: coveralls.io
+#  - cmd: perf
   
 after_test:  
   - ps: (New-Object 'System.Net.WebClient').UploadFile("https://ci.appveyor.com/api/testresults/nunit/$($env:APPVEYOR_JOB_ID)", (Resolve-Path .\BIN\testresults.xml))
 
-artifacts:
-  - path: Coverage Report
-    name: Coverage Report
-    type: zip
-
-  - path: BenchmarkDotNet.Artifacts
-    name: BenchmarkDotNet.Artifacts
-    type: zip  
+#artifacts:
+#  - path: Coverage Report
+#    name: Coverage Report
+#    type: zip
+#
+#  - path: BenchmarkDotNet.Artifacts
+#    name: BenchmarkDotNet.Artifacts
+#    type: zip  
