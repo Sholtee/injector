@@ -113,6 +113,11 @@ namespace Solti.Utils.DI.Internals
                 name: IdentifierName(ifaceProperty.Name)
             );
 
+            //
+            // Nem gond ha mondjuk az interface property-nek nincs gettere, akkor a "getBody"
+            // figyelmen kivul lesz hagyva.
+            //
+
             return DeclareProperty
             (
                 property: ifaceProperty,
