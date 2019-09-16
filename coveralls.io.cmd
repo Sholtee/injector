@@ -8,7 +8,6 @@
 set vendor=%~dp0Vendor
 set bin=%~dp0BIN
 set coveragexml=%bin%\coverage.xml
-set reports=%~dp0Coverage Report
 
 if exist "%reports%" rmdir /Q /S "%reports%"
 
