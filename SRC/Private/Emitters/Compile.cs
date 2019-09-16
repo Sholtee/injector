@@ -28,21 +28,19 @@ namespace Solti.Utils.DI.Internals
     {
         public static Assembly ToAssembly(CompilationUnitSyntax root, string asmName, params Assembly[] references)
         {
-            SyntaxTree tree = CSharpSyntaxTree.Create
-            (
-                root: root
-            );
-#if DEBUG
-            if (Debugger.IsAttached)
-            {
-                Debug.WriteLine(tree.GetRoot().NormalizeWhitespace().ToFullString());
-                Debug.WriteLine(string.Join<Assembly>(Environment.NewLine, references));
-            }
-#endif
+            Debug.WriteLine(root.NormalizeWhitespace().ToFullString());
+            Debug.WriteLine(string.Join<Assembly>(Environment.NewLine, references));
+ 
             CSharpCompilation compilation = CSharpCompilation.Create
             (
                 assemblyName: asmName,
-                syntaxTrees: new [] {tree},
+                syntaxTrees: new []
+                {
+                    CSharpSyntaxTree.Create
+                    (
+                        root: root
+                    )
+                },
                 references: references
 #if NETSTANDARD
                     .Concat(RuntimeAssemblies)
@@ -65,6 +63,8 @@ namespace Solti.Utils.DI.Internals
             using (Stream stm = new MemoryStream())
             {
                 EmitResult result = compilation.Emit(stm);
+
+                Debug.WriteLine(string.Join(Environment.NewLine, result.Diagnostics));
 
                 if (!result.Success)
                 {
