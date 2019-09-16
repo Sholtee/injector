@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
@@ -19,11 +20,13 @@ namespace Solti.Utils.DI.Internals
 
     internal class DuckGenerator
     {
+        private const string TARGET = "Target";
+
         public Type Target { get; }
 
         public DuckGenerator(Type target) => Target = target;
 
-        public MethodDeclarationSyntax GenerateDuckMethod(MethodInfo ifaceMethod)
+        internal MethodDeclarationSyntax GenerateDuckMethod(MethodInfo ifaceMethod)
         {
             IReadOnlyList<ParameterInfo> paramz = ifaceMethod.GetParameters();
 
@@ -46,7 +49,7 @@ namespace Solti.Utils.DI.Internals
             (
                 expressionBody: ArrowExpressionClause
                 (
-                    expression: Invoke(targetMethod, nameof(Target))
+                    expression: Invoke(targetMethod, TARGET)
                 )
             );
         }
@@ -64,6 +67,69 @@ namespace Solti.Utils.DI.Internals
                 Name = obj.ParameterType.FullName ?? obj.ParameterType.Name,
                 obj.Attributes
             }.GetHashCode();
+        }
+
+        internal PropertyDeclarationSyntax GenerateDuckProperty(PropertyInfo ifaceProperty)
+        {
+            PropertyInfo targetProperty = Target.GetProperty(ifaceProperty.Name, BindingFlags.Instance | BindingFlags.Public);
+
+            if 
+            (
+                //
+                // Nincs ilyen nevvel v nem publikus.
+                //
+
+                targetProperty == null ||
+                
+                //
+                // Tipusa nem megfelelo.
+                //
+
+                (targetProperty.PropertyType != ifaceProperty.PropertyType) ||
+
+                //
+                // Ha az interface tulajdonsaga irhato akkor targetnak is irhatonak kell lennie
+                // (kulomben mind1 h irhato e v sem).
+                //
+
+                (ifaceProperty.CanWrite && !targetProperty.CanWrite) ||
+
+                //
+                // Olvasasnal ugyanigy
+                //
+
+                (ifaceProperty.CanRead && !targetProperty.CanRead)
+            )
+            {
+                var mme = new MissingMethodException(Resources.PROPERTY_NOT_SUPPORTED);
+                mme.Data.Add(nameof(ifaceProperty), ifaceProperty);
+                throw mme;
+            }
+
+            MemberAccessExpressionSyntax accessProperty = MemberAccessExpression
+            (
+                kind: SyntaxKind.SimpleMemberAccessExpression,
+                expression: IdentifierName(TARGET),
+                name: IdentifierName(ifaceProperty.Name)
+            );
+
+            return DeclareProperty
+            (
+                property: ifaceProperty,
+                getBody: ArrowExpressionClause
+                (
+                    expression: accessProperty
+                ),
+                setBody: ArrowExpressionClause
+                (
+                    expression: AssignmentExpression
+                    (
+                        kind: SyntaxKind.SimpleAssignmentExpression,
+                        left: accessProperty,
+                        right: IdentifierName(VALUE)
+                    )
+                )
+            );
         }
     }
 }

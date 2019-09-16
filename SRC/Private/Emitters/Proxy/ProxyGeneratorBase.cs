@@ -19,6 +19,10 @@ namespace Solti.Utils.DI.Internals
 {
     internal static class ProxyGeneratorBase
     {
+        public static readonly string             
+            // https://github.com/dotnet/roslyn/issues/4861
+            VALUE = nameof(VALUE).ToLower();
+
         public static LocalDeclarationStatementSyntax DeclareLocal(Type type, string name, ExpressionSyntax initializer = null)
         {
             VariableDeclaratorSyntax declarator = VariableDeclarator
@@ -172,7 +176,7 @@ namespace Solti.Utils.DI.Internals
             return result;
         }
 
-        public static PropertyDeclarationSyntax DeclareProperty(PropertyInfo property, BlockSyntax getBody = null, BlockSyntax setBody = null)
+        public static PropertyDeclarationSyntax DeclareProperty(PropertyInfo property, CSharpSyntaxNode getBody = null, CSharpSyntaxNode setBody = null)
         {
             Debug.Assert(property.DeclaringType.IsInterface());
 
@@ -188,8 +192,8 @@ namespace Solti.Utils.DI.Internals
 
             List<AccessorDeclarationSyntax> accessors = new List<AccessorDeclarationSyntax>();
 
-            if (property.CanRead && getBody != null)  accessors.Add(AccessorDeclaration(SyntaxKind.GetAccessorDeclaration).WithBody(getBody));
-            if (property.CanWrite && setBody != null) accessors.Add(AccessorDeclaration(SyntaxKind.SetAccessorDeclaration).WithBody(setBody));
+            if (property.CanRead && getBody != null)  accessors.Add(DeclareAccessor(SyntaxKind.GetAccessorDeclaration, getBody));
+            if (property.CanWrite && setBody != null) accessors.Add(DeclareAccessor(SyntaxKind.SetAccessorDeclaration, setBody));
 
             return !accessors.Any() ? result : result.WithAccessorList
             (
@@ -198,6 +202,19 @@ namespace Solti.Utils.DI.Internals
                     accessors: List(accessors)
                 )
             );
+
+            AccessorDeclarationSyntax DeclareAccessor(SyntaxKind kind, CSharpSyntaxNode body)
+            {
+                AccessorDeclarationSyntax declaration = AccessorDeclaration(kind);
+
+                if (body is BlockSyntax) return declaration.WithBody((BlockSyntax) body);
+                if (body is ArrowExpressionClauseSyntax) return declaration
+                    .WithExpressionBody((ArrowExpressionClauseSyntax) body)
+                    .WithSemicolonToken(Token(SyntaxKind.SemicolonToken));
+
+                Debug.Fail("Unknown node type");
+                return null;
+            }
         }
 
         public static FieldDeclarationSyntax DeclareField<TField>(string name, ExpressionSyntax initializer = null, params SyntaxKind[] modifiers)

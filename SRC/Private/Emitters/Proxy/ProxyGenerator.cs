@@ -28,9 +28,7 @@ namespace Solti.Utils.DI.Internals
     {
         private static readonly string
             CALL_TARGET = nameof(InterfaceInterceptor<IDisposable>.CALL_TARGET),
-            TARGET = nameof(InterfaceInterceptor<IDisposable>.Target),
-            // https://github.com/dotnet/roslyn/issues/4861
-            VALUE = nameof(VALUE).ToLower();
+            TARGET = nameof(InterfaceInterceptor<IDisposable>.Target);
 
         #region Internal
         internal static LocalDeclarationStatementSyntax CreateArgumentsArray(MethodInfo method) => DeclareLocal<object[]>("args", CreateArray<object>(method

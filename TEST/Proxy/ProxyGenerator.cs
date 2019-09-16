@@ -169,13 +169,13 @@ namespace Solti.Utils.DI.Proxy.Tests
         [Test]
         public void PropertyAccess_ShouldCreateTheProperMethod()
         {
-            Assert.That(PropertyAccess(typeof(IFoo<int>)).NormalizeWhitespace(eol: Environment.NewLine).ToFullString(), Is.EqualTo($"private static System.Reflection.PropertyInfo PropertyAccess<TResult>(System.Linq.Expressions.Expression<System.Func<TResult>> propertyAccess) => (System.Reflection.PropertyInfo)((System.Linq.Expressions.MemberExpression)propertyAccess.Body).Member;"));
+            Assert.That(PropertyAccess(typeof(IFoo<int>)).NormalizeWhitespace().ToFullString(), Is.EqualTo("private static System.Reflection.PropertyInfo PropertyAccess<TResult>(System.Linq.Expressions.Expression<System.Func<TResult>> propertyAccess) => (System.Reflection.PropertyInfo)((System.Linq.Expressions.MemberExpression)propertyAccess.Body).Member;"));
         }
 
         [Test]
         public void MethodAccess_ShouldCreateTheProperMethod()
         {
-            Assert.That(MethodAccess(typeof(IFoo<int>)).NormalizeWhitespace(eol: Environment.NewLine).ToFullString(), Is.EqualTo($"private static System.Reflection.MethodInfo MethodAccess(System.Linq.Expressions.Expression<System.Action> methodAccess) => ((System.Linq.Expressions.MethodCallExpression)methodAccess.Body).Method;"));
+            Assert.That(MethodAccess(typeof(IFoo<int>)).NormalizeWhitespace().ToFullString(), Is.EqualTo("private static System.Reflection.MethodInfo MethodAccess(System.Linq.Expressions.Expression<System.Action> methodAccess) => ((System.Linq.Expressions.MethodCallExpression)methodAccess.Body).Method;"));
         }
 
         [Test]

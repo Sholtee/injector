@@ -177,6 +177,9 @@
   <data name="NOT_SUPPORTED" xml:space="preserve">
     <value>The given service is not supported.</value>
   </data>
+  <data name="PROPERTY_NOT_SUPPORTED" xml:space="preserve">
+    <value>The target does not implement the desired property.</value>
+  </data>
   <data name="RESERVED_INTERFACE" xml:space="preserve">
     <value>Registering reserved interfaces is not allowed.</value>
   </data>

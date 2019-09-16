@@ -242,6 +242,15 @@ namespace Solti.Utils.DI.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The target does not implement the desired property..
+        /// </summary>
+        internal static string PROPERTY_NOT_SUPPORTED {
+            get {
+                return ResourceManager.GetString("PROPERTY_NOT_SUPPORTED", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Registering reserved interfaces is not allowed..
         /// </summary>
         internal static string RESERVED_INTERFACE {
