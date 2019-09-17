@@ -231,7 +231,7 @@ namespace Solti.Utils.DI.Internals
                     IdentifierName(TARGET),
                     IdentifierName(property.Name)
                 ),
-                right: IdentifierName(VALUE)
+                right: IdentifierName(Value)
             )
         );
 
@@ -246,7 +246,7 @@ namespace Solti.Utils.DI.Internals
                     IdentifierName(TARGET),
                     IdentifierName(@event.Name)
                 ),
-                right: IdentifierName(VALUE)
+                right: IdentifierName(Value)
             )
         );
 
@@ -273,46 +273,6 @@ namespace Solti.Utils.DI.Internals
         );
 
         internal static ReturnStatementSyntax ReturnResult(Type returnType, LocalDeclarationStatementSyntax result) => ReturnResult(returnType, result.ToIdentifierName());
-
-        internal static ConstructorDeclarationSyntax Ctor(ConstructorInfo ctor)
-        {
-            IReadOnlyList<ParameterInfo> paramz = ctor.GetParameters();
-
-            return ConstructorDeclaration
-            (
-                identifier: Identifier(GeneratedClassName)
-            )
-            .WithModifiers
-            (
-                modifiers: TokenList
-                (
-                    Token(SyntaxKind.PublicKeyword)
-                )
-            )
-            .WithParameterList
-            (
-                parameterList: ParameterList(paramz.CreateList(param => Parameter
-                (
-                    identifier: Identifier(param.Name)
-                )
-                .WithType
-                (
-                    type: CreateType(param.ParameterType)
-                )))
-            )
-            .WithInitializer
-            (
-                initializer: ConstructorInitializer
-                (
-                    SyntaxKind.BaseConstructorInitializer,
-                    ArgumentList(paramz.CreateList(param => Argument
-                    (
-                        expression: IdentifierName(param.Name)
-                    )))
-                )
-            )
-            .WithBody(Block());
-        }
         #endregion
 
         #region Public
@@ -424,7 +384,7 @@ namespace Solti.Utils.DI.Internals
                                 expression: currentProperty.ToIdentifierName(),
                                 name: IdentifierName(nameof(PropertyInfo.SetMethod))
                             ),
-                            CreateArray<object>(IdentifierName(VALUE)), // new object[] {value}
+                            CreateArray<object>(IdentifierName(Value)), // new object[] {value}
                             currentProperty.ToIdentifierName() // currentProperty
                         ),
                         ShouldCallTarget(result, ifTrue: WriteTarget(ifaceProperty))
@@ -498,7 +458,7 @@ namespace Solti.Utils.DI.Internals
                                     expression: IdentifierName(fieldName),
                                     name: IdentifierName(nameof(EventInfo.AddMethod))
                                 ),
-                                CreateArray<object>(IdentifierName(VALUE)), // new object[] {value}
+                                CreateArray<object>(IdentifierName(Value)), // new object[] {value}
                                 IdentifierName(fieldName) //FEvent
                             ),
                             ShouldCallTarget(result, ifTrue: RegisterTargetEvent(@event, add: true))
@@ -516,7 +476,7 @@ namespace Solti.Utils.DI.Internals
                                     expression: IdentifierName(fieldName),
                                     name: IdentifierName(nameof(EventInfo.RemoveMethod))
                                 ),
-                                CreateArray<object>(IdentifierName(VALUE)),
+                                CreateArray<object>(IdentifierName(Value)),
                                 IdentifierName(fieldName)
                             ),
                             ShouldCallTarget(result, ifTrue: RegisterTargetEvent(@event, add: false))
@@ -712,36 +672,34 @@ namespace Solti.Utils.DI.Internals
 
         public static string GenerateAssemblyName(Type @base, Type interfacType) => $"{CreateType(@base)}_{CreateType(interfacType)}_Proxy"; 
 
-        public const string GeneratedClassName = "GeneratedProxy";
-
         public static ClassDeclarationSyntax GenerateProxyClass(Type @base, Type interfaceType)
         {
             Debug.Assert(interfaceType.IsInterface());
 
             ClassDeclarationSyntax cls = ClassDeclaration(GeneratedClassName)
-                .WithModifiers
+            .WithModifiers
+            (
+                modifiers: TokenList
                 (
-                    modifiers: TokenList
-                    (
-                        //
-                        // Az osztaly ne publikus legyen h "internal" lathatosagu tipusokat is hasznalhassunk
-                        //
+                    //
+                    // Az osztaly ne publikus legyen h "internal" lathatosagu tipusokat is hasznalhassunk
+                    //
 
-                        Token(SyntaxKind.InternalKeyword),
-                        Token(SyntaxKind.SealedKeyword)
-                    )
+                    Token(SyntaxKind.InternalKeyword),
+                    Token(SyntaxKind.SealedKeyword)
                 )
-                .WithBaseList
+            )
+            .WithBaseList
+            (
+                baseList: BaseList
                 (
-                    baseList: BaseList
-                    (
-                        new[] {@base, interfaceType}.CreateList<Type, BaseTypeSyntax>(t => SimpleBaseType(CreateType(t)))
-                    )
-                );
+                    new[] {@base, interfaceType}.CreateList<Type, BaseTypeSyntax>(t => SimpleBaseType(CreateType(t)))
+                )
+            );
 
             List<MemberDeclarationSyntax> members = new List<MemberDeclarationSyntax>(new MemberDeclarationSyntax[]
             {
-                Ctor(@base.GetApplicableConstructor())
+                DeclareCtor(@base.GetApplicableConstructor())
             });
 
             //

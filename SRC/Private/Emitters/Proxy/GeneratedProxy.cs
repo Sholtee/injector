@@ -15,6 +15,7 @@ namespace Solti.Utils.DI.Internals
     using Properties;
     using Proxy;
 
+    using static ProxyGeneratorBase;
     using static ProxyGenerator;
 
     //
@@ -54,7 +55,6 @@ namespace Solti.Utils.DI.Internals
             (
                 new[]
                 {
-                    typeof(Object).Assembly(), // explicit meg kell adni
                     typeof(Expression<>).Assembly(),
                     typeof(MethodInfo).Assembly(),
                     typeof(TInterface).Assembly(),

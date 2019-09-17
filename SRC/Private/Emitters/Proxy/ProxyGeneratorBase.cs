@@ -21,7 +21,8 @@ namespace Solti.Utils.DI.Internals
     {
         public static readonly string             
             // https://github.com/dotnet/roslyn/issues/4861
-            VALUE = nameof(VALUE).ToLower();
+            Value = nameof(Value).ToLower(),
+            GeneratedClassName = "GeneratedProxy";
 
         public static LocalDeclarationStatementSyntax DeclareLocal(Type type, string name, ExpressionSyntax initializer = null)
         {
@@ -444,5 +445,45 @@ namespace Solti.Utils.DI.Internals
                 return argument;
             }))
         );
+
+        public static ConstructorDeclarationSyntax DeclareCtor(ConstructorInfo ctor)
+        {
+            IReadOnlyList<ParameterInfo> paramz = ctor.GetParameters();
+
+            return ConstructorDeclaration
+            (
+                identifier: Identifier(GeneratedClassName)
+            )
+            .WithModifiers
+            (
+                modifiers: TokenList
+                (
+                    Token(SyntaxKind.PublicKeyword)
+                )
+            )
+            .WithParameterList
+            (
+                parameterList: ParameterList(paramz.CreateList(param => Parameter
+                    (
+                        identifier: Identifier(param.Name)
+                    )
+                    .WithType
+                    (
+                        type: CreateType(param.ParameterType)
+                    )))
+            )
+            .WithInitializer
+            (
+                initializer: ConstructorInitializer
+                (
+                    SyntaxKind.BaseConstructorInitializer,
+                    ArgumentList(paramz.CreateList(param => Argument
+                    (
+                        expression: IdentifierName(param.Name)
+                    )))
+                )
+            )
+            .WithBody(Block());
+        }
     }
 }

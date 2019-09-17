@@ -5,6 +5,7 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 
@@ -141,10 +142,81 @@ namespace Solti.Utils.DI.Internals
                     (
                         kind: SyntaxKind.SimpleAssignmentExpression,
                         left: propertyAccess,
-                        right: IdentifierName(VALUE)
+                        right: IdentifierName(Value)
                     )
                 )
             );
+        }
+
+        public ClassDeclarationSyntax GenerateDuckClass(Type interfaceType)
+        {
+            Debug.Assert(interfaceType.IsInterface());
+
+            //
+            // Nem kell gyorsitotarazni mert elvileg ugy is csak egyszer fut le ez a metodus
+            // (es ezzel a MakeGenericType() is).
+            //
+
+            Type @base = typeof(DuckBase<>).MakeGenericType(Target);
+
+            ClassDeclarationSyntax cls = ClassDeclaration(GeneratedClassName)
+            .WithModifiers
+            (
+                modifiers: TokenList
+                (
+                    //
+                    // Az osztaly ne publikus legyen h "internal" lathatosagu tipusokat is hasznalhassunk
+                    //
+
+                    Token(SyntaxKind.InternalKeyword),
+                    Token(SyntaxKind.SealedKeyword)
+                )
+            )
+            .WithBaseList
+            (
+                baseList: BaseList
+                (
+                    new[] { @base, interfaceType }.CreateList<Type, BaseTypeSyntax>(t => SimpleBaseType(CreateType(t)))
+                )
+            );
+
+            List<MemberDeclarationSyntax> members = new List<MemberDeclarationSyntax>(new MemberDeclarationSyntax[]
+            {
+                DeclareCtor(@base.GetApplicableConstructor())
+            });
+
+            //
+            // BindingFlags.FlattenHierarchy nem mukodik interface-ekre.
+            //
+
+            const BindingFlags bindingFlags = BindingFlags.Instance | BindingFlags.Public;
+
+            IReadOnlyList<MethodInfo> methods = GetMethods(interfaceType);
+            if (methods.Any()) members.AddRange(methods.Select(GenerateDuckMethod));
+
+            IReadOnlyList<PropertyInfo> properties = GetProperties(interfaceType);
+            if (properties.Any()) members.AddRange(properties.Select(GenerateDuckProperty));
+
+            return cls.WithMembers(List(members));
+
+            IReadOnlyList<MethodInfo> GetMethods(Type type) => type
+                .GetMethods(bindingFlags)
+                .Where(method => !method.IsSpecialName)
+                .Concat
+                (
+                    type.GetInterfaces().SelectMany(GetMethods)
+                )
+                .Distinct()
+                .ToArray();
+
+            IReadOnlyList<PropertyInfo> GetProperties(Type type) => type
+                .GetProperties(bindingFlags)
+                .Concat
+                (
+                    type.GetInterfaces().SelectMany(GetProperties)
+                )
+                .Distinct()
+                .ToArray();
         }
     }
 }
