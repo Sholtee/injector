@@ -485,5 +485,56 @@ namespace Solti.Utils.DI.Internals
             )
             .WithBody(Block());
         }
+
+        public static CompilationUnitSyntax GenerateProxyUnit
+        (
+            ClassDeclarationSyntax @class
+#if IGNORE_VISIBILITY
+            ,
+            params string[] ignoresAccessChecksTo
+#endif
+        )
+        {
+            CompilationUnitSyntax unit = CompilationUnit().WithMembers
+            (
+                members: SingletonList<MemberDeclarationSyntax>
+                (
+                    @class
+                )
+            );
+#if IGNORE_VISIBILITY
+            if (ignoresAccessChecksTo.Any()) unit = unit.WithAttributeLists
+            (
+                SingletonList
+                (
+                    AttributeList
+                    (
+                        attributes: ignoresAccessChecksTo.CreateList(CreateIgnoresAccessChecksToAttribute)
+                    )
+                    .WithTarget
+                    (
+                        AttributeTargetSpecifier(Token(SyntaxKind.AssemblyKeyword))
+                    )
+                )
+            );
+#endif
+            return unit;
+#if IGNORE_VISIBILITY
+            AttributeSyntax CreateIgnoresAccessChecksToAttribute(string asm) => Attribute
+            (
+                typeof(IgnoresAccessChecksToAttribute).GetQualifiedName()
+            )
+            .WithArgumentList
+            (
+                argumentList: AttributeArgumentList
+                (
+                    arguments: SingletonSeparatedList
+                    (
+                        AttributeArgument(LiteralExpression(SyntaxKind.StringLiteralExpression, Literal(asm)))
+                    )
+                )
+            );
+#endif
+        }
     }
 }

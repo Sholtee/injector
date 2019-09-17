@@ -759,61 +759,6 @@ namespace Solti.Utils.DI.Internals
                 .Distinct()
                 .ToArray();
         }
-
-        public static CompilationUnitSyntax GenerateProxyUnit(Type @base, Type interfaceType)
-        {
-            CompilationUnitSyntax unit = CompilationUnit().WithMembers
-            (
-                members: SingletonList<MemberDeclarationSyntax>
-                (
-                    GenerateProxyClass(@base, interfaceType)
-                )
-            );
-#if IGNORE_VISIBILITY
-            IReadOnlyList<Type> inspectedTypes = new[] {@base, interfaceType};
-
-            IReadOnlyList<string> shouldIgnoreAccessCheck = inspectedTypes
-                .Where(type => !type.IsVisible())
-                .Select(type => type.Assembly().GetName().Name)
-                .Distinct()
-                .ToArray();
-            if (shouldIgnoreAccessCheck.Any()) unit = unit.WithAttributeLists
-            (
-                SingletonList
-                (
-                    AttributeList
-                    (
-                        attributes: inspectedTypes
-                            .Select(type => type.Assembly().GetName().Name)
-                            .Distinct()
-                            .ToArray() // ToArray() kell =(
-                            .CreateList(CreateIgnoresAccessChecksToAttribute)
-                    )
-                    .WithTarget
-                    (
-                        AttributeTargetSpecifier(Token(SyntaxKind.AssemblyKeyword))
-                    )
-                )
-            );
-#endif
-            return unit;
-#if IGNORE_VISIBILITY
-            AttributeSyntax CreateIgnoresAccessChecksToAttribute(string asm) => Attribute
-            (
-                typeof(IgnoresAccessChecksToAttribute).GetQualifiedName()
-            )
-            .WithArgumentList
-            (
-                argumentList: AttributeArgumentList
-                (
-                    arguments: SingletonSeparatedList
-                    (
-                        AttributeArgument(LiteralExpression(SyntaxKind.StringLiteralExpression, Literal(asm)))
-                    )
-                )
-            );
-#endif
-        }
         #endregion
     }
 }

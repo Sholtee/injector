@@ -66,7 +66,15 @@ namespace Solti.Utils.DI.Internals
             .ToArray();
 
             return Compile
-                .ToAssembly(GenerateProxyUnit(typeof(TInterceptor), typeof(TInterface)), AssemblyName, references)
+                .ToAssembly
+                (
+                    root: GenerateProxyUnit
+                    (
+                        @class: GenerateProxyClass(typeof(TInterceptor), typeof(TInterface))
+                    ), 
+                    asmName: AssemblyName, 
+                    references: references
+                )
                 .GetType(GeneratedClassName, throwOnError: true);
         }
 
