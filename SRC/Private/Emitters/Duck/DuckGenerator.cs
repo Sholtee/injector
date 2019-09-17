@@ -20,7 +20,7 @@ namespace Solti.Utils.DI.Internals
 
     internal class DuckGenerator
     {
-        private const string TARGET = "Target";
+        private const string TARGET = nameof(DuckBase<object>.Target);
 
         public Type Target { get; }
 
@@ -29,6 +29,15 @@ namespace Solti.Utils.DI.Internals
         internal MethodDeclarationSyntax GenerateDuckMethod(MethodInfo ifaceMethod)
         {
             IReadOnlyList<ParameterInfo> paramz = ifaceMethod.GetParameters();
+
+            //
+            // Ne a "GetMethod(string, Type[])"-ot hasznaljuk mert az nem fogja megtalalni a nyilt
+            // generikus metodusokat mivel:
+            //
+            // "interface IFoo {void Foo<T>();}" es "class Foo {void Foo<T>(){}}"
+            //
+            // eseten amennyiben Foo nem valositja meg IFoo-t a ket generikus "T" nem ugyanaz a tipus.
+            //
 
             MethodInfo targetMethod = Target
                 .GetMethods(BindingFlags.Instance | BindingFlags.Public)
@@ -82,7 +91,8 @@ namespace Solti.Utils.DI.Internals
                 targetProperty == null ||
                 
                 //
-                // Tipusa nem megfelelo.
+                // Tipusa nem megfelelo. Megjegyzendo h itt nem kell a metodusoknal latott tipusellenorzest
+                // vegezni mert peldanynal sose lehet nyitott generikus property.
                 //
 
                 (targetProperty.PropertyType != ifaceProperty.PropertyType) ||
@@ -106,7 +116,7 @@ namespace Solti.Utils.DI.Internals
                 throw mme;
             }
 
-            MemberAccessExpressionSyntax accessProperty = MemberAccessExpression
+            MemberAccessExpressionSyntax propertyAccess = MemberAccessExpression
             (
                 kind: SyntaxKind.SimpleMemberAccessExpression,
                 expression: IdentifierName(TARGET),
@@ -123,14 +133,14 @@ namespace Solti.Utils.DI.Internals
                 property: ifaceProperty,
                 getBody: ArrowExpressionClause
                 (
-                    expression: accessProperty
+                    expression: propertyAccess
                 ),
                 setBody: ArrowExpressionClause
                 (
                     expression: AssignmentExpression
                     (
                         kind: SyntaxKind.SimpleAssignmentExpression,
-                        left: accessProperty,
+                        left: propertyAccess,
                         right: IdentifierName(VALUE)
                     )
                 )
