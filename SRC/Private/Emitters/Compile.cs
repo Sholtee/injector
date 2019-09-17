@@ -41,10 +41,8 @@ namespace Solti.Utils.DI.Internals
                         root: root
                     )
                 },
-                references: references
-#if NETSTANDARD
-                    .Concat(RuntimeAssemblies)
-#endif
+                references: RuntimeAssemblies
+                    .Concat(references)
 #if IGNORE_VISIBILITY
                     .Append(typeof(IgnoresAccessChecksToAttribute).Assembly())
 #endif
@@ -68,7 +66,10 @@ namespace Solti.Utils.DI.Internals
 
                 if (!result.Success)
                 {
-                    IReadOnlyList<Diagnostic> failures = result.Diagnostics.Where(d => d.Severity == DiagnosticSeverity.Error).ToArray();
+                    Diagnostic[] failures = result
+                        .Diagnostics
+                        .Where(d => d.Severity == DiagnosticSeverity.Error)
+                        .ToArray();
 
                     var ex = new Exception(Resources.COMPILATION_FAILED);
                     ex.Data.Add(nameof(failures), failures);
@@ -83,28 +84,25 @@ namespace Solti.Utils.DI.Internals
                     .LoadFromStream(stm);
             } 
         }
-#if NETSTANDARD
-        private static readonly Assembly[] RuntimeAssemblies = GetRuntimeAssemblies();
 
-        private static Assembly[] GetRuntimeAssemblies()
+        private static readonly Assembly[] RuntimeAssemblies = GetRuntimeAssemblies().ToArray();
+
+        private static IEnumerable<Assembly> GetRuntimeAssemblies()
         {
-            string[] 
-                trustedAssembliesPaths = ((string) AppContext.GetData("TRUSTED_PLATFORM_ASSEMBLIES")).Split(Path.PathSeparator),
-                mandatoryAssemblies = 
-                {
-                    "System.Runtime",
-                    "netstandard"
-                };
+            yield return typeof(Object).Assembly();
+#if NETSTANDARD
+            string[] mandatoryAssemblies = 
+            {
+                "System.Runtime",
+                "netstandard"
+            };
 
-            return trustedAssembliesPaths
-                .Where(path => mandatoryAssemblies.Contains(Path.GetFileNameWithoutExtension(path)))
-                //
-                // Assembly.LoadFile() nincs NetStandard 2 alatt
-                //
-
-                .Select(AssemblyLoadContext.Default.LoadFromAssemblyPath)
-                .ToArray();
-        }
+            foreach (string assemblyPath in ((string) AppContext.GetData("TRUSTED_PLATFORM_ASSEMBLIES")).Split(Path.PathSeparator))
+            {
+                if (mandatoryAssemblies.Contains(Path.GetFileNameWithoutExtension(assemblyPath)))
+                    yield return AssemblyLoadContext.Default.LoadFromAssemblyPath(assemblyPath);
+            }
 #endif
+        }
     }
 }
