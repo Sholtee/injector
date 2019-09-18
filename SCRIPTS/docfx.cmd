@@ -5,7 +5,7 @@
 ::
 @echo off
 
-set root=..
+set /p root=<root
 set doc=%root%\doc
 
 if exist %doc% rmdir /Q /S %doc%

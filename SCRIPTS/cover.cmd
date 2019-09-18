@@ -5,10 +5,11 @@
 ::
 @echo off
 
-set vendor=%~dp0Vendor
-set bin=%~dp0BIN
+set /p root=<root
+set vendor=%root%\Vendor
+set bin=%root%\BIN
 set coveragexml=%bin%\coverage.xml
-set reports=%~dp0Coverage Report
+set reports=%root%\Coverage Report
 
 if exist "%reports%" rmdir /Q /S "%reports%"
 
@@ -17,7 +18,7 @@ nuget install OpenCover -OutputDirectory %vendor% -Version 4.7.922
 
 if not exist %bin% mkdir %bin%
 
-call "%vendor%\OpenCover.4.7.922\tools\OpenCover.Console.exe" -target:"%ProgramFiles%\dotnet\dotnet.exe" -targetargs:"test %~dp0TEST\Injector.Tests.csproj --configuration:Debug -p:NoDocfx=True" -output:"%coveragexml%" -oldStyle -register:user -filter:"+[Injector*]* -[Injector.Tests]*"
+call "%vendor%\OpenCover.4.7.922\tools\OpenCover.Console.exe" -target:"%ProgramFiles%\dotnet\dotnet.exe" -targetargs:"test %root%\TEST\Injector.Tests.csproj --configuration:Debug -p:NoDocfx=True" -output:"%coveragexml%" -oldStyle -register:user -filter:"+[Injector*]* -[Injector.Tests]*"
 if %errorlevel% neq 0 exit /b %errorlevel%
 
 dotnet "%vendor%\ReportGenerator.4.2.15\tools\netcoreapp2.1\ReportGenerator.dll" "-reports:%coveragexml%" "-targetdir:%reports%"
