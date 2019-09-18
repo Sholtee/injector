@@ -5,9 +5,9 @@
 ::
 @echo off
 
-set /p root=<root
+set /p root=<%~dp0root
 
 dotnet build %root%\Injector.sln -c Perf -p:NoDocfx=True 
 if %errorlevel% neq 0 exit /b %errorlevel%
 
-dotnet "%root%\BIN\netcoreapp2.2\Injector.Perf.dll" -f * -e GitHub -a %root%
+dotnet "%root%\BIN\netcoreapp2.2\Injector.Perf.dll" -f * -e GitHub -a %root%\BenchmarkDotNet.Artifacts
