@@ -11,9 +11,9 @@ environment:
     secure: p2Kcud3WthUkXXcArmyAEggtW8E3L7ELxH0TXnjlnhmCUMPAQ9s5ApIX3By05W8B
  
 test_script:
-  - cmd: .\SCRIPTS\test
-  - cmd: .\SCRIPTS\coveralls.io
-  - cmd: .\SCRIPTS\perf
+  - cmd: scripts\test
+  - cmd: scripts\coveralls.io
+  - cmd: scripts\perf
   
 after_test:  
   - ps: (New-Object 'System.Net.WebClient').UploadFile("https://ci.appveyor.com/api/testresults/nunit/$($env:APPVEYOR_JOB_ID)", (Resolve-Path .\BIN\testresults.xml))
