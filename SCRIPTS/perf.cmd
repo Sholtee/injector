@@ -5,7 +5,7 @@
 ::
 @echo off
 
-set /p root=<%~dp0root
+set /p root=<root
 
 dotnet build %root%\Injector.sln -c Perf -p:NoDocfx=True 
 if %errorlevel% neq 0 exit /b %errorlevel%
