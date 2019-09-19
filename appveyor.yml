@@ -9,9 +9,11 @@ build_script:
 environment:
   COVERALLS_REPO_TOKEN:  
     secure: p2Kcud3WthUkXXcArmyAEggtW8E3L7ELxH0TXnjlnhmCUMPAQ9s5ApIX3By05W8B
- 
-test_script:
+
+before_test:
   - cmd: cd scripts
+  
+test_script:
   - cmd: test
   - cmd: coveralls.io
   - cmd: perf
