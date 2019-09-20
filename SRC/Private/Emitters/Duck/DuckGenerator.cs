@@ -244,5 +244,7 @@ namespace Solti.Utils.DI.Internals
                 }
             }
         }
+
+        public static string GenerateAssemblyName(Type target, Type interfacType) => $"{CreateType(target)}_{CreateType(interfacType)}_Duck";
     }
 }

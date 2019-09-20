@@ -1,5 +1,5 @@
 /********************************************************************************
-* GeneratedProxy.cs                                                             *
+* GeneratedDuck.cs                                                              *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
@@ -13,19 +13,11 @@ using System.Runtime.CompilerServices;
 namespace Solti.Utils.DI.Internals
 {
     using Properties;
-    using Proxy;
 
     using static ProxyGeneratorBase;
-    using static ProxyGenerator;
+    using static DuckGenerator;
 
-    //
-    // Statikus generikus azert jo nekunk mert igy biztosan pontosan egyszer fog lefutni az inicializacio minden egyes 
-    // TBase-TInterface parosra. Ugyanez a Cache osztallyal nem lenne garantalhato: 
-    //
-    // https://docs.microsoft.com/en-us/dotnet/api/system.collections.concurrent.concurrentdictionary-2.getoradd?view=netcore-2.2
-    //
-
-    internal static class GeneratedProxy<TInterface, TInterceptor> where TInterface : class where TInterceptor: InterfaceInterceptor<TInterface>
+    internal static class GeneratedDuck<TInterface, TTarget> where TInterface: class
     {
         public static Type Type
         {
@@ -38,7 +30,7 @@ namespace Solti.Utils.DI.Internals
             }
         }
 
-        public static string AssemblyName => GenerateAssemblyName(typeof(TInterceptor), typeof(TInterface));
+        public static string AssemblyName => GenerateAssemblyName(typeof(TTarget), typeof(TInterface));
 
         #region Private
         private static readonly object FLock = new object();
@@ -49,7 +41,6 @@ namespace Solti.Utils.DI.Internals
         private static Type GenerateType()
         {
             CheckInterface();
-            CheckBase();
 
             Assembly[] references = new HashSet<Assembly>
             (
@@ -58,10 +49,9 @@ namespace Solti.Utils.DI.Internals
                     typeof(Expression<>).Assembly(),
                     typeof(MethodInfo).Assembly(),
                     typeof(TInterface).Assembly(),
-                    typeof(TInterceptor).Assembly()
+                    typeof(TTarget).Assembly()
                 }
                 .Concat(typeof(TInterface).Assembly().GetReferences())
-                .Concat(typeof(TInterceptor).Assembly().GetReferences()) // az interceptor konstruktora miatt lehetnek uj referenciak
             )
             .ToArray();
 
@@ -70,7 +60,7 @@ namespace Solti.Utils.DI.Internals
                 (
                     root: GenerateProxyUnit
                     (
-                        @class: GenerateProxyClass(typeof(TInterceptor), typeof(TInterface))
+                        @class: new DuckGenerator(typeof(TTarget)).GenerateDuckClass(typeof(TInterface))
                     ), 
                     asmName: AssemblyName, 
                     references: references
@@ -88,24 +78,9 @@ namespace Solti.Utils.DI.Internals
             if (type.ContainsGenericParameters()) throw new NotSupportedException();
         }
 
-        private static void CheckBase()
-        {
-            Type type = typeof(TInterceptor);
-
-            CheckVisibility(type);
-
-            if (!type.IsClass()) throw new InvalidOperationException();
-            if (type.ContainsGenericParameters()) throw new NotSupportedException();
-            if (type.IsSealed()) throw new NotSupportedException();
-        }
-
         private static void CheckVisibility(Type type)
         {
-            //
-            // TODO: FIXME: privat tipusokra mindenkepp fel kene robbanjon (ha annotalva van az asm ha nincs).
-            //
-
-            if (type.IsNotPublic() && type.Assembly().GetCustomAttributes<InternalsVisibleToAttribute>().All(attr => attr.AssemblyName != AssemblyName)) throw new InvalidOperationException(string.Format(Resources.TYPE_NOT_VISIBLE, type));
+            if (type.IsNotPublic()) throw new InvalidOperationException(string.Format(Resources.TYPE_NOT_VISIBLE, type));
         }
         #endregion
     }

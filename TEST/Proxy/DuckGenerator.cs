@@ -18,14 +18,14 @@ namespace Solti.Utils.DI.Duck.Tests
     [TestFixture]
     public sealed class DuckGeneratorTests
     {
-        internal delegate void TestDelegate<in T>(object sender, T eventArg);
+        public delegate void TestDelegate<in T>(object sender, T eventArg);
 
-        internal interface IFoo<T>
+        public interface IFoo<T>
         {
             int Foo<TT>(int a, out string b, ref TT c);
             void Bar();
             T Prop { get; set; }
-            event TestDelegate<T> Event;
+           // event TestDelegate<T> Event;
         }
 
         private static readonly MethodInfo IfaceFoo = typeof(IFoo<int>).GetMethod("Foo", BindingFlags.Instance | BindingFlags.Public);
@@ -122,6 +122,21 @@ namespace Solti.Utils.DI.Duck.Tests
         public void GenerateDuckClass_ShouldGenerateTheDesiredClass()
         {
             Assert.That(new DuckGenerator(typeof(GoodFoo<int>)).GenerateDuckClass(typeof(IFoo<int>)).NormalizeWhitespace(eol: "\n").ToFullString(), Is.EqualTo(File.ReadAllText(Path.Combine("Proxy", "DuckClsSrc.txt"))));
+        }
+
+        [Test]
+        public void GeneratedDuck_Test()
+        {
+            var target = new GoodFoo<int>();
+
+            IFoo<int> proxy = (IFoo<int>) GeneratedDuck<IFoo<int>, GoodFoo<int>>.Type.CreateInstance(new[] { typeof(GoodFoo<int>) }, target);
+
+            proxy.Prop = 1;
+            Assert.That(target.Prop, Is.EqualTo(1));
+
+            string a, b = String.Empty;
+
+            Assert.That(proxy.Foo(0, out a, ref b), Is.EqualTo(string.Empty.GetHashCode()));
         }
     }
 }
