@@ -1,0 +1,14 @@
+internal sealed class GeneratedProxy : Solti.Utils.DI.Internals.DuckBase<Solti.Utils.DI.Duck.Tests.DuckGeneratorTests.GoodFoo<System.Int32>>, Solti.Utils.DI.Duck.Tests.DuckGeneratorTests.IFoo<System.Int32>
+{
+    public GeneratedProxy(Solti.Utils.DI.Duck.Tests.DuckGeneratorTests.GoodFoo<System.Int32> target): base(target)
+    {
+    }
+
+    System.Int32 Solti.Utils.DI.Duck.Tests.DuckGeneratorTests.IFoo<System.Int32>.Foo<TT>(System.Int32 a, out System.String b, ref TT c) => Target.Foo(a, out b, ref c);
+    void Solti.Utils.DI.Duck.Tests.DuckGeneratorTests.IFoo<System.Int32>.Bar() => Target.Bar();
+    System.Int32 Solti.Utils.DI.Duck.Tests.DuckGeneratorTests.IFoo<System.Int32>.Prop
+    {
+        get => Target.Prop;
+        set => Target.Prop = value;
+    }
+}

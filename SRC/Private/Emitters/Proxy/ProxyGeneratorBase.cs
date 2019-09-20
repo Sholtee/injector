@@ -208,10 +208,13 @@ namespace Solti.Utils.DI.Internals
             {
                 AccessorDeclarationSyntax declaration = AccessorDeclaration(kind);
 
-                if (body is BlockSyntax) return declaration.WithBody((BlockSyntax) body);
-                if (body is ArrowExpressionClauseSyntax) return declaration
-                    .WithExpressionBody((ArrowExpressionClauseSyntax) body)
-                    .WithSemicolonToken(Token(SyntaxKind.SemicolonToken));
+                if (body is BlockSyntax)
+                    return declaration.WithBody((BlockSyntax) body);
+
+                if (body is ArrowExpressionClauseSyntax)
+                    return declaration
+                        .WithExpressionBody((ArrowExpressionClauseSyntax) body)
+                        .WithSemicolonToken(Token(SyntaxKind.SemicolonToken));
 
                 Debug.Fail("Unknown node type");
                 return null;

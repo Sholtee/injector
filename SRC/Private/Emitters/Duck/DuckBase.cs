@@ -16,6 +16,6 @@ namespace Solti.Utils.DI.Internals
         /// </summary>
         public T Target { get; }
 
-        protected DuckBase(T target) => Target = target;
+        public DuckBase(T target) => Target = target; // ne Protected legyen
     }
 }

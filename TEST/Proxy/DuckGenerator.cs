@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.IO;
 using System.Reflection;
 
 using Microsoft.CodeAnalysis;
@@ -41,6 +42,11 @@ namespace Solti.Utils.DI.Duck.Tests
         public sealed class GoodFoo<T>
         {
             public int Foo<TT>(int a, out string b, ref TT c) => (b = string.Empty).GetHashCode();
+
+            public void Bar()
+            {
+            }
+
             public T Prop { get; set; }
         }
 
@@ -61,7 +67,7 @@ namespace Solti.Utils.DI.Duck.Tests
         {
             var generator = new DuckGenerator(typeof(GoodFoo<>));
 
-            Assert.That(generator.GenerateDuckMethod(IfaceFoo).NormalizeWhitespace().ToFullString(), Is.EqualTo("System.Int32 Solti.Utils.DI.Duck.Tests.DuckGeneratorTests.IFoo<System.Int32>.Foo<TT>(System.Int32 a, out System.String b, ref TT c) => Target.Foo(a, out b, ref c)"));
+            Assert.That(generator.GenerateDuckMethod(IfaceFoo).NormalizeWhitespace().ToFullString(), Is.EqualTo("System.Int32 Solti.Utils.DI.Duck.Tests.DuckGeneratorTests.IFoo<System.Int32>.Foo<TT>(System.Int32 a, out System.String b, ref TT c) => Target.Foo(a, out b, ref c);"));
         }
 
         [Test]
@@ -99,6 +105,23 @@ namespace Solti.Utils.DI.Duck.Tests
             var generator = new DuckGenerator(typeof(GoodFoo<int>));
 
             Assert.That(generator.GenerateDuckProperty(IfaceProp).NormalizeWhitespace(eol: "\n").ToFullString(), Is.EqualTo("System.Int32 Solti.Utils.DI.Duck.Tests.DuckGeneratorTests.IFoo<System.Int32>.Prop\n{\n    get => Target.Prop;\n    set => Target.Prop = value;\n}"));
+        }
+
+        private class Dummy
+        {
+        }
+
+        [Test]
+        public void GenerateDuckClass_ShouldThrowOnMissingImplementation()
+        {
+            var ex = Assert.Throws<AggregateException>(() => new DuckGenerator(typeof(Dummy)).GenerateDuckClass(typeof(IFoo<>)));
+            Assert.That(ex.InnerExceptions.Count, Is.EqualTo(3));
+        }
+
+        [Test]
+        public void GenerateDuckClass_ShouldGenerateTheDesiredClass()
+        {
+            Assert.That(new DuckGenerator(typeof(GoodFoo<int>)).GenerateDuckClass(typeof(IFoo<int>)).NormalizeWhitespace(eol: "\n").ToFullString(), Is.EqualTo(File.ReadAllText(Path.Combine("Proxy", "DuckClsSrc.txt"))));
         }
     }
 }

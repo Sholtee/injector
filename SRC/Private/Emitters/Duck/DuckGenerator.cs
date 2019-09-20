@@ -40,6 +40,10 @@ namespace Solti.Utils.DI.Internals
             // eseten amennyiben Foo nem valositja meg IFoo-t a ket generikus "T" nem ugyanaz a tipus.
             //
 
+            //
+            // TODO: A ProxyGenerator-hoz hasonloan tamogassa az internal lathatosagot is.
+            //
+
             MethodInfo targetMethod = Target
                 .GetMethods(BindingFlags.Instance | BindingFlags.Public)
                 .FirstOrDefault(m => m.Name.Equals(ifaceMethod.Name, StringComparison.Ordinal) && m.GetParameters().SequenceEqual(paramz, new ParameterComparer()));
@@ -52,7 +56,7 @@ namespace Solti.Utils.DI.Internals
             }
 
             //
-            // TResult IInterface.Foo<TGeneric>(T1 para1, ref T2 para2, out T3 para3, TGeneric para4) => Target.Foo(para1, ref para2, out para3, para4)
+            // TResult IInterface.Foo<TGeneric>(T1 para1, ref T2 para2, out T3 para3, TGeneric para4) => Target.Foo(para1, ref para2, out para3, para4);
             //
 
             return DeclareMethod(ifaceMethod).WithExpressionBody
@@ -61,7 +65,8 @@ namespace Solti.Utils.DI.Internals
                 (
                     expression: Invoke(targetMethod, TARGET)
                 )
-            );
+            )
+            .WithSemicolonToken(Token(SyntaxKind.SemicolonToken));
         }
 
         private sealed class ParameterComparer : IEqualityComparer<ParameterInfo>
@@ -191,11 +196,19 @@ namespace Solti.Utils.DI.Internals
 
             const BindingFlags bindingFlags = BindingFlags.Instance | BindingFlags.Public;
 
+            var exceptions = new List<Exception>();
+
             IReadOnlyList<MethodInfo> methods = GetMethods(interfaceType);
-            if (methods.Any()) members.AddRange(methods.Select(GenerateDuckMethod));
+            if (methods.Any()) members.AddRange(methods.Select(m => AggregateException(m, GenerateDuckMethod, exceptions)));
 
             IReadOnlyList<PropertyInfo> properties = GetProperties(interfaceType);
-            if (properties.Any()) members.AddRange(properties.Select(GenerateDuckProperty));
+            if (properties.Any()) members.AddRange(properties.Select(p => AggregateException(p, GenerateDuckProperty, exceptions)));
+
+            //
+            // Az osszes hibat visszaadjuk (ha voltak).
+            //
+
+            if (exceptions.Any()) throw exceptions.Count == 1 ? exceptions.Single() : new AggregateException(exceptions);
 
             return cls.WithMembers(List(members));
 
@@ -217,6 +230,19 @@ namespace Solti.Utils.DI.Internals
                 )
                 .Distinct()
                 .ToArray();
+
+            TResult AggregateException<T, TResult>(T arg, Func<T, TResult> selector, List<Exception> exs)
+            {
+                try
+                {
+                    return selector(arg);
+                }
+                catch (Exception e)
+                {
+                    exs.Add(e);
+                    return default(TResult);
+                }
+            }
         }
     }
 }
