@@ -6,16 +6,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Reflection;
-using System.Runtime.CompilerServices;
 
 namespace Solti.Utils.DI.Internals
 {
     using Properties;
 
     using static ProxyGeneratorBase;
-    using static DuckGenerator;
 
     internal static class GeneratedDuck<TInterface, TTarget> where TInterface: class
     {
@@ -30,7 +27,7 @@ namespace Solti.Utils.DI.Internals
             }
         }
 
-        public static string AssemblyName => GenerateAssemblyName(typeof(TTarget), typeof(TInterface));
+        public static string AssemblyName => DuckGenerator<TTarget>.GenerateAssemblyName<TInterface>();
 
         #region Private
         private static readonly object FLock = new object();
@@ -46,8 +43,6 @@ namespace Solti.Utils.DI.Internals
             (
                 new[]
                 {
-                    typeof(Expression<>).Assembly(),
-                    typeof(MethodInfo).Assembly(),
                     typeof(TInterface).Assembly(),
                     typeof(TTarget).Assembly()
                 }
@@ -60,7 +55,7 @@ namespace Solti.Utils.DI.Internals
                 (
                     root: GenerateProxyUnit
                     (
-                        @class: new DuckGenerator(typeof(TTarget)).GenerateDuckClass(typeof(TInterface))
+                        @class: DuckGenerator<TTarget>.GenerateDuckClass<TInterface>()
                     ), 
                     asmName: AssemblyName, 
                     references: references

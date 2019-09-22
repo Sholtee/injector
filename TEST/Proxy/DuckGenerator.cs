@@ -53,11 +53,9 @@ namespace Solti.Utils.DI.Duck.Tests
         [Test]
         public void GenerateDuckMethod_ShouldThrowIfMethodNotSupported()
         {
-            var generator = new DuckGenerator(typeof(BadFoo));
-
             Assert.Throws<MissingMethodException>
             (
-                () => generator.GenerateDuckMethod(IfaceFoo),
+                () => DuckGenerator<BadFoo>.GenerateDuckMethod(IfaceFoo),
                 Resources.METHOD_NOT_SUPPORTED
             );
         }
@@ -65,9 +63,7 @@ namespace Solti.Utils.DI.Duck.Tests
         [Test]
         public void GenerateDuckMethod_ShouldGenerateTheDesiredMethodIfSupported()
         {
-            var generator = new DuckGenerator(typeof(GoodFoo<>));
-
-            Assert.That(generator.GenerateDuckMethod(IfaceFoo).NormalizeWhitespace().ToFullString(), Is.EqualTo("System.Int32 Solti.Utils.DI.Duck.Tests.DuckGeneratorTests.IFoo<System.Int32>.Foo<TT>(System.Int32 a, out System.String b, ref TT c) => Target.Foo(a, out b, ref c);"));
+            Assert.That(DuckGenerator<GoodFoo<int>>.GenerateDuckMethod(IfaceFoo).NormalizeWhitespace().ToFullString(), Is.EqualTo("System.Int32 Solti.Utils.DI.Duck.Tests.DuckGeneratorTests.IFoo<System.Int32>.Foo<TT>(System.Int32 a, out System.String b, ref TT c) => Target.Foo(a, out b, ref c);"));
         }
 
         [Test]
@@ -77,23 +73,19 @@ namespace Solti.Utils.DI.Duck.Tests
             // Nincs setter.
             //
 
-            var generator = new DuckGenerator(typeof(BadFoo));
-
             Assert.Throws<MissingMethodException>
             (
-                () => generator.GenerateDuckProperty(IfaceProp),
+                () => DuckGenerator<BadFoo>.GenerateDuckProperty(IfaceProp),
                 Resources.PROPERTY_NOT_SUPPORTED
             );
 
             //
-            // Van getter setter is csak a tipus nem megfelelo.
+            // Van getter es setter is csak a tipus nem megfelelo.
             //
-
-            generator = new DuckGenerator(typeof(GoodFoo<string>));
 
             Assert.Throws<MissingMethodException>
             (
-                () => generator.GenerateDuckProperty(IfaceProp),
+                () => DuckGenerator<GoodFoo<string>>.GenerateDuckProperty(IfaceProp),
                 Resources.PROPERTY_NOT_SUPPORTED
             );
         }
@@ -102,9 +94,7 @@ namespace Solti.Utils.DI.Duck.Tests
         [Test]
         public void GenerateDuckProperty_ShouldGenerateTheDesiredPropertyIfSupported()
         {
-            var generator = new DuckGenerator(typeof(GoodFoo<int>));
-
-            Assert.That(generator.GenerateDuckProperty(IfaceProp).NormalizeWhitespace(eol: "\n").ToFullString(), Is.EqualTo("System.Int32 Solti.Utils.DI.Duck.Tests.DuckGeneratorTests.IFoo<System.Int32>.Prop\n{\n    get => Target.Prop;\n    set => Target.Prop = value;\n}"));
+            Assert.That(DuckGenerator<GoodFoo<int>>.GenerateDuckProperty(IfaceProp).NormalizeWhitespace(eol: "\n").ToFullString(), Is.EqualTo("System.Int32 Solti.Utils.DI.Duck.Tests.DuckGeneratorTests.IFoo<System.Int32>.Prop\n{\n    get => Target.Prop;\n    set => Target.Prop = value;\n}"));
         }
 
         private class Dummy
@@ -114,14 +104,14 @@ namespace Solti.Utils.DI.Duck.Tests
         [Test]
         public void GenerateDuckClass_ShouldThrowOnMissingImplementation()
         {
-            var ex = Assert.Throws<AggregateException>(() => new DuckGenerator(typeof(Dummy)).GenerateDuckClass(typeof(IFoo<>)));
+            var ex = Assert.Throws<AggregateException>(() => DuckGenerator<Dummy>.GenerateDuckClass<IFoo<int>>());
             Assert.That(ex.InnerExceptions.Count, Is.EqualTo(3));
         }
 
         [Test]
         public void GenerateDuckClass_ShouldGenerateTheDesiredClass()
         {
-            Assert.That(new DuckGenerator(typeof(GoodFoo<int>)).GenerateDuckClass(typeof(IFoo<int>)).NormalizeWhitespace(eol: "\n").ToFullString(), Is.EqualTo(File.ReadAllText(Path.Combine("Proxy", "DuckClsSrc.txt"))));
+            Assert.That(DuckGenerator<GoodFoo<int>>.GenerateDuckClass<IFoo<int>>().NormalizeWhitespace(eol: "\n").ToFullString(), Is.EqualTo(File.ReadAllText(Path.Combine("Proxy", "DuckClsSrc.txt"))));
         }
 
         [Test]

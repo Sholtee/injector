@@ -19,15 +19,11 @@ namespace Solti.Utils.DI.Internals
     using Properties;
     using static ProxyGeneratorBase;
 
-    internal class DuckGenerator
+    internal static class DuckGenerator<TTarget>
     {
-        private const string TARGET = nameof(DuckBase<object>.Target);
+        private const string TARGET = nameof(DuckBase<TTarget>.Target);
 
-        public Type Target { get; }
-
-        public DuckGenerator(Type target) => Target = target;
-
-        internal MethodDeclarationSyntax GenerateDuckMethod(MethodInfo ifaceMethod)
+        internal static MethodDeclarationSyntax GenerateDuckMethod(MethodInfo ifaceMethod)
         {
             IReadOnlyList<ParameterInfo> paramz = ifaceMethod.GetParameters();
 
@@ -44,7 +40,7 @@ namespace Solti.Utils.DI.Internals
             // TODO: A ProxyGenerator-hoz hasonloan tamogassa az internal lathatosagot is.
             //
 
-            MethodInfo targetMethod = Target
+            MethodInfo targetMethod = typeof(TTarget)
                 .GetMethods(BindingFlags.Instance | BindingFlags.Public)
                 .FirstOrDefault(m => m.Name.Equals(ifaceMethod.Name, StringComparison.Ordinal) && m.GetParameters().SequenceEqual(paramz, new ParameterComparer()));
 
@@ -84,9 +80,9 @@ namespace Solti.Utils.DI.Internals
             }.GetHashCode();
         }
 
-        internal PropertyDeclarationSyntax GenerateDuckProperty(PropertyInfo ifaceProperty)
+        internal static PropertyDeclarationSyntax GenerateDuckProperty(PropertyInfo ifaceProperty)
         {
-            PropertyInfo targetProperty = Target.GetProperty(ifaceProperty.Name, BindingFlags.Instance | BindingFlags.Public);
+            PropertyInfo targetProperty = typeof(TTarget).GetProperty(ifaceProperty.Name, BindingFlags.Instance | BindingFlags.Public);
 
             if 
             (
@@ -153,16 +149,13 @@ namespace Solti.Utils.DI.Internals
             );
         }
 
-        public ClassDeclarationSyntax GenerateDuckClass(Type interfaceType)
+        public static ClassDeclarationSyntax GenerateDuckClass<TInterface>()
         {
+            Type 
+                interfaceType = typeof(TInterface),
+                @base = typeof(DuckBase<TTarget>);
+
             Debug.Assert(interfaceType.IsInterface());
-
-            //
-            // Nem kell gyorsitotarazni mert elvileg ugy is csak egyszer fut le ez a metodus
-            // (es ezzel a MakeGenericType() is).
-            //
-
-            Type @base = typeof(DuckBase<>).MakeGenericType(Target);
 
             ClassDeclarationSyntax cls = ClassDeclaration(GeneratedClassName)
             .WithModifiers
@@ -197,12 +190,16 @@ namespace Solti.Utils.DI.Internals
             const BindingFlags bindingFlags = BindingFlags.Instance | BindingFlags.Public;
 
             var exceptions = new List<Exception>();
-
-            IReadOnlyList<MethodInfo> methods = GetMethods(interfaceType);
-            if (methods.Any()) members.AddRange(methods.Select(m => AggregateException(m, GenerateDuckMethod, exceptions)));
-
-            IReadOnlyList<PropertyInfo> properties = GetProperties(interfaceType);
-            if (properties.Any()) members.AddRange(properties.Select(p => AggregateException(p, GenerateDuckProperty, exceptions)));
+            
+            members.AddRange
+            (
+                GetMethods(interfaceType).Select(m => AggregateException(m, GenerateDuckMethod, exceptions))
+            );  
+            
+            members.AddRange
+            (
+                GetProperties(interfaceType).Select(p => AggregateException(p, GenerateDuckProperty, exceptions))
+            );
 
             //
             // Az osszes hibat visszaadjuk (ha voltak).
@@ -245,6 +242,6 @@ namespace Solti.Utils.DI.Internals
             }
         }
 
-        public static string GenerateAssemblyName(Type target, Type interfacType) => $"{CreateType(target)}_{CreateType(interfacType)}_Duck";
+        public static string GenerateAssemblyName<TInterface>() => $"{CreateType<TTarget>()}_{CreateType<TInterface>()}_Duck";
     }
 }
