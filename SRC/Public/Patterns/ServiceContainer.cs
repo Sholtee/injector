@@ -46,9 +46,7 @@ namespace Solti.Utils.DI
             // Abstract bejegyzest felul lehet irni (de csak azt).
             //
 
-            AbstractServiceEntry entryToRemove = FEntries.Get(entry.Interface);
-
-            if (entryToRemove != null && entryToRemove.GetType() == typeof(AbstractServiceEntry))
+            if (FEntries.TryGet(entry.Interface, out var entryToRemove) && entryToRemove.GetType() == typeof(AbstractServiceEntry))
             {
                 bool removed = FEntries.Remove(entryToRemove);
                 Debug.Assert(removed, "Can't remove entry");

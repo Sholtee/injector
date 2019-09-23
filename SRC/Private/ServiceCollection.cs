@@ -34,20 +34,6 @@ namespace Solti.Utils.DI.Internals
             base.Dispose(disposeManaged);
         }
 
-        protected virtual AbstractServiceEntry GetClosest(Type iface)
-        {
-            AbstractServiceEntry result = Get(iface);
-
-            if (result == null && iface.IsGenericType())
-                //
-                // Meg benne lehet generikus formaban.
-                //
-
-                result = Get(iface.GetGenericTypeDefinition());
-
-            return result;
-        }
-
         protected bool ContainsByRef(AbstractServiceEntry item) => item != null && ReferenceEquals(Get(item.Interface)/*visszaadhat NULL-t*/, item);
         #endregion
 
@@ -74,9 +60,24 @@ namespace Solti.Utils.DI.Internals
             }
         }
 
-        public virtual AbstractServiceEntry Get(Type iface) => FEntries.TryGetValue(iface, out var result)
+        public virtual bool TryGet(Type iface, out AbstractServiceEntry entry) => FEntries.TryGetValue(iface, out entry);
+
+        public virtual AbstractServiceEntry Get(Type iface) => TryGet(iface, out var result)
             ? result
-            : null;
+            : throw new ServiceNotFoundException(iface);
+
+        public virtual bool TryGetClosest(Type iface, out AbstractServiceEntry entry) =>
+            TryGet(iface, out entry) ||
+
+            //
+            // Meg benne lehet generikus formaban.
+            //
+
+            iface.IsGenericType() && TryGet(iface.GetGenericTypeDefinition(), out entry);
+
+        public virtual AbstractServiceEntry GetClosest(Type iface) => TryGetClosest(iface, out var result)
+            ? result
+            : throw new ServiceNotFoundException(iface);
 
         /// <summary>
         /// Gets the entry associated with the given interface.
@@ -87,12 +88,6 @@ namespace Solti.Utils.DI.Internals
         public virtual AbstractServiceEntry Query(Type iface)
         {
             AbstractServiceEntry entry = GetClosest(iface);
-
-            //
-            // 0. eset: Nem talalhato bejegyzes semmilyen formaban.
-            //
-
-            if (entry == null) throw new ServiceNotFoundException(iface);
 
             //
             // 1. eset: Azt az entitast adjuk vissza amit kerestunk.

@@ -17,14 +17,6 @@ namespace Solti.Utils.DI.Internals
         {           
         }
 
-        protected override AbstractServiceEntry GetClosest(Type iface)
-        {
-            using (FLock.AcquireReaderLock())
-            {
-                return base.GetClosest(iface);
-            }
-        }
-
         public override void Add(AbstractServiceEntry item)
         {
             using (FLock.AcquireWriterLock())
@@ -33,12 +25,24 @@ namespace Solti.Utils.DI.Internals
             }           
         }
 
-        public override AbstractServiceEntry Get(Type iface)
+        //
+        // Get-et nem kell felulirni mert az is a TryGet()-et hivja.
+        //
+
+        public override bool TryGet(Type iface, out AbstractServiceEntry entry)
         {
             using (FLock.AcquireReaderLock())
             {
-                return base.Get(iface);
+                return base.TryGet(iface, out entry);
             }            
+        }
+
+        public override bool TryGetClosest(Type iface, out AbstractServiceEntry entry)
+        {
+            using (FLock.AcquireReaderLock())
+            {
+                return base.TryGetClosest(iface, out entry);
+            }
         }
 
         public override bool Remove(AbstractServiceEntry item)
