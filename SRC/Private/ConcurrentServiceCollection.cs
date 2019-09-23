@@ -25,10 +25,6 @@ namespace Solti.Utils.DI.Internals
             }           
         }
 
-        //
-        // Get-et nem kell felulirni mert az is a TryGet()-et hivja.
-        //
-
         public override bool TryGet(Type iface, out AbstractServiceEntry entry)
         {
             using (FLock.AcquireReaderLock())
@@ -51,24 +47,6 @@ namespace Solti.Utils.DI.Internals
             {
                 return base.Remove(item);
             }
-        }
-
-        public override AbstractServiceEntry Query(Type iface)
-        {
-            try
-            {
-                return base.Query(iface);
-            }
-            catch (ServiceAlreadyRegisteredException)
-            {
-                //
-                // Ez itt viccesen nez ki viszont a motorhazteto alatt a Query() rogzithet is uj elemet
-                // (generikus bejegyzes lekerdezesekor) ami parhuzamos esetben dobhat kivetelt. Ilyenkor
-                // visszaadjuk a masik szal altal regisztralt bejegyzest.
-                //
-
-                return base.Query(iface);
-            }           
         }
 
         public override void Clear()

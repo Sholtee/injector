@@ -8,7 +8,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Reflection;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -34,7 +33,10 @@ namespace Solti.Utils.DI.Internals
             base.Dispose(disposeManaged);
         }
 
-        protected bool ContainsByRef(AbstractServiceEntry item) => item != null && ReferenceEquals(Get(item.Interface)/*visszaadhat NULL-t*/, item);
+        protected bool ContainsByRef(AbstractServiceEntry item) => 
+            item != null && 
+            TryGet(item.Interface, out var that) && 
+            ReferenceEquals(that, item);
         #endregion
   
         /// <summary>
@@ -62,10 +64,6 @@ namespace Solti.Utils.DI.Internals
         #region IServiceCollection
         public virtual bool TryGet(Type iface, out AbstractServiceEntry entry) => FEntries.TryGetValue(iface, out entry);
 
-        public virtual AbstractServiceEntry Get(Type iface) => TryGet(iface, out var result)
-            ? result
-            : throw new ServiceNotFoundException(iface);
-
         public virtual bool TryGetClosest(Type iface, out AbstractServiceEntry entry) =>
             TryGet(iface, out entry) ||
 
@@ -74,65 +72,6 @@ namespace Solti.Utils.DI.Internals
             //
 
             iface.IsGenericType() && TryGet(iface.GetGenericTypeDefinition(), out entry);
-
-        public virtual AbstractServiceEntry GetClosest(Type iface) => TryGetClosest(iface, out var result)
-            ? result
-            : throw new ServiceNotFoundException(iface);
-
-        /// <summary>
-        /// Gets the entry associated with the given interface.
-        /// </summary>
-        /// <param name="iface">The "id" of the entry. Must be an interface <see cref="Type"/>.</param>
-        /// <returns>The stored <see cref="AbstractServiceEntry"/> instance.</returns>
-        /// <remarks>This method supports entry specialization which means after registering a generic entry you can query its (unregistered) closed pair by passing the closed interface <see cref="Type"/> to this function.</remarks>
-        public virtual AbstractServiceEntry Query(Type iface)
-        {
-            AbstractServiceEntry entry = GetClosest(iface);
-
-            //
-            // 1. eset: Azt az entitast adjuk vissza amit kerestunk.
-            //
-
-            if (entry.Interface == iface) return entry;
-
-            //
-            // 2. eset: Egy generikus bejegyzes lezart parjat kerdezzuk le
-            //
-
-            if (entry.IsGeneric())
-            {
-                //
-                // 2a eset: A bejegyzesnek van beallitott gyar fv-e (pl Factory<TCica>() hivas) akkor nincs dolgunk.
-                //
-
-                if (entry.Factory != null) return entry;
-
-                //
-                // 2b eset: Konkretizalni kell a bejegyzest. Megjegyzendo h mentjuk is az uj bejegyzest igy a legkozelebb
-                //          mar csak az elso esetig fog futni a Query().
-                //
-
-                //
-                // Ha nem mi vagyunk a tulajdonosok akkor lekerdezzuk a tulajdonostol es masoljuk sajat magunkhoz
-                // (a tulajdonos nyilvan rogzitani fogja az uj bejegyzest magahoz is).
-                //
-
-                if (entry.Owner != this) return entry
-                    .Owner
-                    .Query(iface)
-                    .CopyTo(this);
-
-                //
-                // Ha mi vagyunk a tulajdonosok akkor nekunk kell lezarni a bejegyzest.
-                //
-
-                Add(entry = entry.Specialize(iface.GetGenericArguments()));
-                return entry;
-            }
-
-            Debug.Fail("Failed to query an existing entry");
-            return null;
-        }
         #endregion
 
         #region ICollection
