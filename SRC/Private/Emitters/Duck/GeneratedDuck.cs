@@ -4,7 +4,6 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
@@ -27,7 +26,7 @@ namespace Solti.Utils.DI.Internals
             }
         }
 
-        public static string AssemblyName => DuckGenerator<TTarget>.GenerateAssemblyName<TInterface>();
+        public static string AssemblyName => DuckGenerator<TTarget, TInterface>.AssemblyName;
 
         #region Private
         private static readonly object FLock = new object();
@@ -39,15 +38,13 @@ namespace Solti.Utils.DI.Internals
         {
             CheckInterface();
 
-            Assembly[] references = new HashSet<Assembly>
-            (
-                new[]
-                {
-                    typeof(TInterface).Assembly(),
-                    typeof(TTarget).Assembly()
-                }
-                .Concat(typeof(TInterface).Assembly().GetReferences())
-            )
+            Assembly[] references = new[]
+            {
+                typeof(TInterface).Assembly(),
+                typeof(TTarget).Assembly()
+            }
+            .Concat(typeof(TInterface).Assembly().GetReferences())
+            .Distinct()
             .ToArray();
 
             return Compile
@@ -55,7 +52,7 @@ namespace Solti.Utils.DI.Internals
                 (
                     root: GenerateProxyUnit
                     (
-                        @class: DuckGenerator<TTarget>.GenerateDuckClass<TInterface>()
+                        @class: DuckGenerator<TTarget, TInterface>.GenerateDuckClass()
                     ), 
                     asmName: AssemblyName, 
                     references: references
@@ -75,6 +72,10 @@ namespace Solti.Utils.DI.Internals
 
         private static void CheckVisibility(Type type)
         {
+            //
+            // TODO: Hasonloan a ProxyGenerator-hoz tamogassuk az internal lathatosgot is.
+            //
+
             if (type.IsNotPublic()) throw new InvalidOperationException(string.Format(Resources.TYPE_NOT_VISIBLE, type));
         }
         #endregion

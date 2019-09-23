@@ -4,7 +4,6 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -16,7 +15,6 @@ namespace Solti.Utils.DI.Internals
     using Proxy;
 
     using static ProxyGeneratorBase;
-    using static ProxyGenerator;
 
     //
     // Statikus generikus azert jo nekunk mert igy biztosan pontosan egyszer fog lefutni az inicializacio minden egyes 
@@ -38,7 +36,7 @@ namespace Solti.Utils.DI.Internals
             }
         }
 
-        public static string AssemblyName => GenerateAssemblyName(typeof(TInterceptor), typeof(TInterface));
+        public static string AssemblyName => ProxyGenerator<TInterface, TInterceptor>.AssemblyName;
 
         #region Private
         private static readonly object FLock = new object();
@@ -51,18 +49,16 @@ namespace Solti.Utils.DI.Internals
             CheckInterface();
             CheckBase();
 
-            Assembly[] references = new HashSet<Assembly>
-            (
-                new[]
-                {
-                    typeof(Expression<>).Assembly(),
-                    typeof(MethodInfo).Assembly(),
-                    typeof(TInterface).Assembly(),
-                    typeof(TInterceptor).Assembly()
-                }
-                .Concat(typeof(TInterface).Assembly().GetReferences())
-                .Concat(typeof(TInterceptor).Assembly().GetReferences()) // az interceptor konstruktora miatt lehetnek uj referenciak
-            )
+            Assembly[] references = new[]
+            {
+                typeof(Expression<>).Assembly(),
+                typeof(MethodInfo).Assembly(),
+                typeof(TInterface).Assembly(),
+                typeof(TInterceptor).Assembly()
+            }
+            .Concat(typeof(TInterface).Assembly().GetReferences())
+            .Concat(typeof(TInterceptor).Assembly().GetReferences()) // az interceptor konstruktora miatt lehetnek uj referenciak
+            .Distinct()
             .ToArray();
 
             return Compile
@@ -70,7 +66,7 @@ namespace Solti.Utils.DI.Internals
                 (
                     root: GenerateProxyUnit
                     (
-                        @class: GenerateProxyClass(typeof(TInterceptor), typeof(TInterface))
+                        @class: ProxyGenerator<TInterface, TInterceptor>.GenerateProxyClass()
                     ), 
                     asmName: AssemblyName, 
                     references: references

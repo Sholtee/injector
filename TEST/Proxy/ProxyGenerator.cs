@@ -19,9 +19,9 @@ namespace Solti.Utils.DI.Proxy.Tests
 {
     using Proxy;
     using Internals;
-
-    using static Internals.ProxyGenerator;
+    
     using static Internals.ProxyGeneratorBase;
+    using static Internals.ProxyGenerator<ProxyGeneratorTests.IFoo<int>, ProxyGeneratorTests.FooInterceptor>;
 
     [TestFixture]
     public sealed class ProxyGeneratorTests
@@ -169,13 +169,13 @@ namespace Solti.Utils.DI.Proxy.Tests
         [Test]
         public void PropertyAccess_ShouldCreateTheProperMethod()
         {
-            Assert.That(PropertyAccess(typeof(IFoo<int>)).NormalizeWhitespace().ToFullString(), Is.EqualTo("private static System.Reflection.PropertyInfo PropertyAccess<TResult>(System.Linq.Expressions.Expression<System.Func<TResult>> propertyAccess) => (System.Reflection.PropertyInfo)((System.Linq.Expressions.MemberExpression)propertyAccess.Body).Member;"));
+            Assert.That(PropertyAccess().NormalizeWhitespace().ToFullString(), Is.EqualTo("private static System.Reflection.PropertyInfo PropertyAccess<TResult>(System.Linq.Expressions.Expression<System.Func<TResult>> propertyAccess) => (System.Reflection.PropertyInfo)((System.Linq.Expressions.MemberExpression)propertyAccess.Body).Member;"));
         }
 
         [Test]
         public void MethodAccess_ShouldCreateTheProperMethod()
         {
-            Assert.That(MethodAccess(typeof(IFoo<int>)).NormalizeWhitespace().ToFullString(), Is.EqualTo("private static System.Reflection.MethodInfo MethodAccess(System.Linq.Expressions.Expression<System.Action> methodAccess) => ((System.Linq.Expressions.MethodCallExpression)methodAccess.Body).Method;"));
+            Assert.That(MethodAccess().NormalizeWhitespace().ToFullString(), Is.EqualTo("private static System.Reflection.MethodInfo MethodAccess(System.Linq.Expressions.Expression<System.Action> methodAccess) => ((System.Linq.Expressions.MethodCallExpression)methodAccess.Body).Method;"));
         }
 
         [Test]
@@ -200,7 +200,7 @@ namespace Solti.Utils.DI.Proxy.Tests
         [Test]
         public void GenerateProxyClass_Test()
         {
-            Assert.That(GenerateProxyClass(typeof(FooInterceptor), typeof(IFoo<int>)).NormalizeWhitespace(eol: "\n").ToFullString(), Is.EqualTo(File.ReadAllText(Path.Combine("Proxy", "ClsSrc.txt"))));
+            Assert.That(GenerateProxyClass().NormalizeWhitespace(eol: "\n").ToFullString(), Is.EqualTo(File.ReadAllText(Path.Combine("Proxy", "ClsSrc.txt"))));
         }
 
         [Test]
@@ -244,7 +244,7 @@ namespace Solti.Utils.DI.Proxy.Tests
         [Test]
         public void GetEvent_ShouldCreateTheProperMethod()
         {
-            Assert.That(GetEvent(typeof(IFoo<int>)).NormalizeWhitespace().ToFullString(), Is.EqualTo("private static System.Reflection.EventInfo GetEvent(System.String eventName) => typeof(Solti.Utils.DI.Proxy.Tests.ProxyGeneratorTests.IFoo<System.Int32>).GetEvent(eventName, System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance);"));
+            Assert.That(GetEvent().NormalizeWhitespace().ToFullString(), Is.EqualTo("private static System.Reflection.EventInfo GetEvent(System.String eventName) => typeof(Solti.Utils.DI.Proxy.Tests.ProxyGeneratorTests.IFoo<System.Int32>).GetEvent(eventName, System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance);"));
         }
 
         [Test]

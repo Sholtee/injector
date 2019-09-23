@@ -24,11 +24,11 @@ namespace Solti.Utils.DI.Internals
     using Proxy;
     using static ProxyGeneratorBase;
 
-    internal static class ProxyGenerator
+    internal static class ProxyGenerator<TInterface, TInterceptor> where TInterface : class where TInterceptor: InterfaceInterceptor<TInterface>
     {
         private static readonly string
-            CALL_TARGET = nameof(InterfaceInterceptor<IDisposable>.CALL_TARGET),
-            TARGET = nameof(InterfaceInterceptor<IDisposable>.Target);
+            CALL_TARGET = nameof(InterfaceInterceptor<TInterface>.CALL_TARGET),
+            TARGET      = nameof(InterfaceInterceptor<TInterface>.Target);
 
         #region Internal
         internal static LocalDeclarationStatementSyntax CreateArgumentsArray(MethodInfo method) => DeclareLocal<object[]>("args", CreateArray<object>(method
@@ -486,13 +486,12 @@ namespace Solti.Utils.DI.Internals
             };
         }
 
-        public static MethodDeclarationSyntax PropertyAccess(Type interfaceType)
+        public static MethodDeclarationSyntax PropertyAccess()
         {
             //
             // private static PropertyInfo PropertyAccess<TResult>(Expression<Func<TResult>> propertyAccess) => (PropertyInfo) ((MemberExpression) propertyAccess.Body).Member;
             //
-
-            Debug.Assert(interfaceType.IsInterface());
+            
             const string paramName = "propertyAccess";
 
             Type TResult = typeof(Func<>).GetGenericArguments().Single();  // ugly
@@ -543,13 +542,12 @@ namespace Solti.Utils.DI.Internals
             );
         }
 
-        public static MethodDeclarationSyntax MethodAccess(Type interfaceType)
+        public static MethodDeclarationSyntax MethodAccess()
         {
             //
             // private static MethodInfo MethodAccess(Expression<Action> methodAccess) => ((MethodCallExpression) methodAccess.Body).Method;
             //
-
-            Debug.Assert(interfaceType.IsInterface());
+            
             const string paramName = "methodAccess";
 
             return DeclareMethod
@@ -593,11 +591,13 @@ namespace Solti.Utils.DI.Internals
             );
         }
 
-        public static MethodDeclarationSyntax GetEvent(Type interfaceType)
+        public static MethodDeclarationSyntax GetEvent()
         {
             //
             // private static EventInfo GetEvent(string eventName) => typeof(TInterface).GetEvent(eventName, BindingFlags.Public | BindingFlags.Instance);
             //
+
+            Type interfaceType = typeof(TInterface);
 
             Debug.Assert(interfaceType.IsInterface());
             const string paramName = "eventName";
@@ -670,10 +670,14 @@ namespace Solti.Utils.DI.Internals
             );
         }
 
-        public static string GenerateAssemblyName(Type @base, Type interfacType) => $"{CreateType(@base)}_{CreateType(interfacType)}_Proxy"; 
+        public static string AssemblyName => $"{CreateType<TInterceptor>()}_{CreateType<TInterface>()}_Proxy"; 
 
-        public static ClassDeclarationSyntax GenerateProxyClass(Type @base, Type interfaceType)
+        public static ClassDeclarationSyntax GenerateProxyClass()
         {
+            Type
+                interfaceType   = typeof(TInterface),
+                interceptorType = typeof(TInterceptor);
+
             Debug.Assert(interfaceType.IsInterface());
 
             ClassDeclarationSyntax cls = ClassDeclaration(GeneratedClassName)
@@ -693,13 +697,13 @@ namespace Solti.Utils.DI.Internals
             (
                 baseList: BaseList
                 (
-                    new[] {@base, interfaceType}.CreateList<Type, BaseTypeSyntax>(t => SimpleBaseType(CreateType(t)))
+                    new[] { interceptorType, interfaceType}.CreateList<Type, BaseTypeSyntax>(t => SimpleBaseType(CreateType(t)))
                 )
             );
 
             List<MemberDeclarationSyntax> members = new List<MemberDeclarationSyntax>(new MemberDeclarationSyntax[]
             {
-                DeclareCtor(@base.GetApplicableConstructor())
+                DeclareCtor(interceptorType.GetApplicableConstructor())
             });
 
             //
@@ -711,21 +715,21 @@ namespace Solti.Utils.DI.Internals
             IReadOnlyList<MethodInfo> methods = GetMethods(interfaceType);
             if (methods.Any())
             {
-                members.Add(MethodAccess(interfaceType));
+                members.Add(MethodAccess());
                 members.AddRange(methods.Select(GenerateProxyMethod));
             }
 
             IReadOnlyList<PropertyInfo> properties = GetProperties(interfaceType);
             if (properties.Any())
             {
-                members.Add(PropertyAccess(interfaceType));
+                members.Add(PropertyAccess());
                 members.AddRange(properties.Select(GenerateProxyProperty));
             }
 
             IReadOnlyList<EventInfo> events = GetEvents(interfaceType);
             if (events.Any())
             {
-                members.Add(GetEvent(interfaceType));
+                members.Add(GetEvent());
                 members.AddRange(events.SelectMany(GenerateProxyEvent));
             }
 

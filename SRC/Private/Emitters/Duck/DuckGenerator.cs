@@ -19,7 +19,7 @@ namespace Solti.Utils.DI.Internals
     using Properties;
     using static ProxyGeneratorBase;
 
-    internal static class DuckGenerator<TTarget>
+    internal static class DuckGenerator<TTarget, TInterface>
     {
         private const string TARGET = nameof(DuckBase<TTarget>.Target);
 
@@ -34,10 +34,6 @@ namespace Solti.Utils.DI.Internals
             // "interface IFoo {void Foo<T>();}" es "class Foo {void Foo<T>(){}}"
             //
             // eseten amennyiben Foo nem valositja meg IFoo-t a ket generikus "T" nem ugyanaz a tipus.
-            //
-
-            //
-            // TODO: A ProxyGenerator-hoz hasonloan tamogassa az internal lathatosagot is.
             //
 
             MethodInfo targetMethod = typeof(TTarget)
@@ -149,7 +145,7 @@ namespace Solti.Utils.DI.Internals
             );
         }
 
-        public static ClassDeclarationSyntax GenerateDuckClass<TInterface>()
+        public static ClassDeclarationSyntax GenerateDuckClass()
         {
             Type 
                 interfaceType = typeof(TInterface),
@@ -162,11 +158,7 @@ namespace Solti.Utils.DI.Internals
             (
                 modifiers: TokenList
                 (
-                    //
-                    // Az osztaly ne publikus legyen h "internal" lathatosagu tipusokat is hasznalhassunk
-                    //
-
-                    Token(SyntaxKind.InternalKeyword),
+                    Token(SyntaxKind.PublicKeyword),
                     Token(SyntaxKind.SealedKeyword)
                 )
             )
@@ -242,6 +234,6 @@ namespace Solti.Utils.DI.Internals
             }
         }
 
-        public static string GenerateAssemblyName<TInterface>() => $"{CreateType<TTarget>()}_{CreateType<TInterface>()}_Duck";
+        public static string AssemblyName => $"{CreateType<TTarget>()}_{CreateType<TInterface>()}_Duck";
     }
 }
