@@ -16,7 +16,7 @@ namespace Solti.Utils.DI.Internals
     /// Implements the mechanism of storing service entries.
     /// </summary>
     /// <remarks>This is an internal class so it may change from version to version. Don't use it!</remarks>
-    internal class ServiceCollection : Disposable, ICollection<AbstractServiceEntry>, IReadOnlyCollection<AbstractServiceEntry>
+    internal class ServiceCollection : Disposable, IServiceCollection, IReadOnlyCollection<AbstractServiceEntry>
     {
         private readonly Dictionary<Type, AbstractServiceEntry> FEntries;
 
@@ -36,8 +36,7 @@ namespace Solti.Utils.DI.Internals
 
         protected bool ContainsByRef(AbstractServiceEntry item) => item != null && ReferenceEquals(Get(item.Interface)/*visszaadhat NULL-t*/, item);
         #endregion
-
-        #region Public
+  
         /// <summary>
         /// Creates a new <see cref="ServiceCollection"/> instance.
         /// </summary>
@@ -60,6 +59,7 @@ namespace Solti.Utils.DI.Internals
             }
         }
 
+        #region IServiceCollection
         public virtual bool TryGet(Type iface, out AbstractServiceEntry entry) => FEntries.TryGetValue(iface, out entry);
 
         public virtual AbstractServiceEntry Get(Type iface) => TryGet(iface, out var result)

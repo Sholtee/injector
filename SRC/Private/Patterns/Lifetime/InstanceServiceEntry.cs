@@ -17,7 +17,7 @@ namespace Solti.Utils.DI.Internals
         private readonly bool FReleaseOnDispose;
         private object FValue;
 
-        public InstanceServiceEntry(Type @interface, object value, bool releaseOnDispose, ServiceCollection owner) : base(@interface, null, owner)
+        public InstanceServiceEntry(Type @interface, object value, bool releaseOnDispose, IServiceCollection owner) : base(@interface, null, owner)
         {
             FValue = value;
             FReleaseOnDispose = releaseOnDispose;

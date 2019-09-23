@@ -11,7 +11,7 @@ namespace Solti.Utils.DI.Internals
 
     internal static class ProducibleServiceEntryFactory
     {
-        public static ProducibleServiceEntry CreateEntry<TParam>(Lifetime? lifetime, Type @interface, TParam param, ServiceCollection owner)
+        public static ProducibleServiceEntry CreateEntry<TParam>(Lifetime? lifetime, Type @interface, TParam param, IServiceCollection owner)
         {
             Type serviceEntryType;
 
@@ -36,7 +36,7 @@ namespace Solti.Utils.DI.Internals
                 {
                     typeof(Type), // interface
                     typeof(TParam),
-                    typeof(ServiceCollection) // owner
+                    typeof(IServiceCollection) // owner
                 }, 
                 @interface, 
                 param,

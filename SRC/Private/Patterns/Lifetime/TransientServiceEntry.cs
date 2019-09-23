@@ -15,19 +15,19 @@ namespace Solti.Utils.DI.Internals
     /// </summary>
     internal class TransientServiceEntry : ProducibleServiceEntry
     {
-        private TransientServiceEntry(TransientServiceEntry entry, ServiceCollection owner) : base(entry, owner)
+        private TransientServiceEntry(TransientServiceEntry entry, IServiceCollection owner) : base(entry, owner)
         {
         }
 
-        public TransientServiceEntry(Type @interface, Func<IInjector, Type, object> factory, ServiceCollection owner) : base(@interface, DI.Lifetime.Transient, factory, owner)
+        public TransientServiceEntry(Type @interface, Func<IInjector, Type, object> factory, IServiceCollection owner) : base(@interface, DI.Lifetime.Transient, factory, owner)
         {
         }
 
-        public TransientServiceEntry(Type @interface, Type implementation, ServiceCollection owner) : base(@interface, DI.Lifetime.Transient, implementation, owner)
+        public TransientServiceEntry(Type @interface, Type implementation, IServiceCollection owner) : base(@interface, DI.Lifetime.Transient, implementation, owner)
         {
         }
 
-        public TransientServiceEntry(Type @interface, ITypeResolver implementation, ServiceCollection owner) : base(@interface, DI.Lifetime.Transient, implementation, owner)
+        public TransientServiceEntry(Type @interface, ITypeResolver implementation, IServiceCollection owner) : base(@interface, DI.Lifetime.Transient, implementation, owner)
         {
         }
 
@@ -66,7 +66,7 @@ namespace Solti.Utils.DI.Internals
             return Factory(injector, iface ?? Interface);
         }
 
-        public override AbstractServiceEntry CopyTo(ServiceCollection target)
+        public override AbstractServiceEntry CopyTo(IServiceCollection target)
         {
             var result = new TransientServiceEntry(this, target);
             target.Add(result);

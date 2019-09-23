@@ -13,7 +13,7 @@ namespace Solti.Utils.DI.Internals
     /// <remarks>This is an internal class so it may change from version to version. Don't use it!</remarks>
     internal class AbstractServiceEntry: Disposable, IServiceFactory, IServiceInfo
     {
-        public AbstractServiceEntry(Type @interface, Lifetime? lifetime = null, ServiceCollection owner = null)
+        public AbstractServiceEntry(Type @interface, Lifetime? lifetime = null, IServiceCollection owner = null)
         {
             Interface = @interface;
             Lifetime  = lifetime;
@@ -34,7 +34,7 @@ namespace Solti.Utils.DI.Internals
         /// <summary>
         /// The owner of this entry.
         /// </summary>
-        public ServiceCollection Owner { get; }
+        public IServiceCollection Owner { get; }
 
         /// <summary>
         /// The implementation of the service (if present).
@@ -67,7 +67,7 @@ namespace Solti.Utils.DI.Internals
         /// <summary>
         /// Copies this entry into a new collection.
         /// </summary>
-        public virtual AbstractServiceEntry CopyTo(ServiceCollection target)
+        public virtual AbstractServiceEntry CopyTo(IServiceCollection target)
         {
             target.Add(this);
             return this;

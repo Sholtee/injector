@@ -15,7 +15,7 @@ namespace Solti.Utils.DI.Internals
     /// </summary>
     internal abstract class ProducibleServiceEntry : AbstractServiceEntry
     {
-        protected ProducibleServiceEntry(ProducibleServiceEntry entry, ServiceCollection owner): base(entry.Interface, entry.Lifetime, owner)
+        protected ProducibleServiceEntry(ProducibleServiceEntry entry, IServiceCollection owner): base(entry.Interface, entry.Lifetime, owner)
         {
             Factory = entry.Factory;
 
@@ -27,17 +27,17 @@ namespace Solti.Utils.DI.Internals
             UnderlyingImplementation = entry.UnderlyingImplementation;
         }
 
-        protected ProducibleServiceEntry(Type @interface, Lifetime lifetime, Func<IInjector, Type, object> factory, ServiceCollection owner) : base(@interface, lifetime, owner)
+        protected ProducibleServiceEntry(Type @interface, Lifetime lifetime, Func<IInjector, Type, object> factory, IServiceCollection owner) : base(@interface, lifetime, owner)
         {
             Factory = factory;
         }
 
-        protected ProducibleServiceEntry(Type @interface, Lifetime lifetime, Type implementation, ServiceCollection owner) : this(@interface, lifetime, !@interface.IsGenericTypeDefinition() ? Resolver.Get(implementation).ConvertToFactory() : null, owner)
+        protected ProducibleServiceEntry(Type @interface, Lifetime lifetime, Type implementation, IServiceCollection owner) : this(@interface, lifetime, !@interface.IsGenericTypeDefinition() ? Resolver.Get(implementation).ConvertToFactory() : null, owner)
         {
             UnderlyingImplementation = implementation;
         }
 
-        protected ProducibleServiceEntry(Type @interface, Lifetime lifetime, ITypeResolver implementation, ServiceCollection owner) : base(@interface, lifetime, owner)
+        protected ProducibleServiceEntry(Type @interface, Lifetime lifetime, ITypeResolver implementation, IServiceCollection owner) : base(@interface, lifetime, owner)
         {
             var lazyImplementation = new Lazy<Type>
             (
