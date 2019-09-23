@@ -58,7 +58,7 @@
   </PropertyGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="'$(TargetFramework)' == 'netstandard2.0' And '$(OS)' == 'Windows_NT' And '$(NoDocfx)'=='False'">
-    <Exec Command="..\scripts\docfx" />
+    <Exec Command="cd ..\scripts&#xD;&#xA;docfx" />
   </Target>
 
 </Project>
