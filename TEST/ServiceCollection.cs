@@ -145,7 +145,19 @@ namespace Solti.Utils.DI.Internals.Tests
             Assert.IsNull(collection.Get(typeof(IList<int>)));
             Assert.Throws<ServiceNotFoundException>(() => collection.Get(typeof(IList<int>), QueryMode.ThrowOnError));
 
-            Assert.AreEqual(new SingletonServiceEntry(typeof(IList<>), typeof(List<>), null), collection.Get(typeof(IList<>), QueryMode.ThrowOnError));
+            Assert.That(collection.Get(typeof(IList<>), QueryMode.ThrowOnError), Is.EqualTo(new SingletonServiceEntry(typeof(IList<>), typeof(List<>), null)));
+        }
+
+        [Test]
+        public void ServiceCollection_GetShouldReturnSpecializableEntries()
+        {
+            ServiceCollection collection = CreateCollection
+            (
+                new SingletonServiceEntry(typeof(IList<>), typeof(List<>), null)
+            );
+
+            Assert.That(collection.Get(typeof(IList<>), QueryMode.AllowSpecialization), Is.EqualTo(new SingletonServiceEntry(typeof(IList<>), typeof(List<>), null)));
+            Assert.That(collection.Get(typeof(IList<int>), QueryMode.AllowSpecialization), Is.EqualTo(new SingletonServiceEntry(typeof(IList<>), typeof(List<>), null)));
         }
 
         [Test]
