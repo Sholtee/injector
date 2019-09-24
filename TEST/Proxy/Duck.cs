@@ -10,6 +10,7 @@ using NUnit.Framework;
 
 namespace Solti.Utils.DI.Proxy.Tests
 {
+    using Properties;
     using Internals;
 
     [TestFixture]
@@ -25,7 +26,7 @@ namespace Solti.Utils.DI.Proxy.Tests
         }
 
         [Test]
-        public void Line_ShouldGenerateAProxy()
+        public void Like_ShouldGenerateAProxy()
         {
             var mock = new Mock<MyDisposable>(MockBehavior.Strict);
             mock.Setup(x => x.Dispose());
@@ -43,6 +44,23 @@ namespace Solti.Utils.DI.Proxy.Tests
         public abstract class MyDisposable
         {
             public abstract void Dispose();
+        }
+
+        [Test]
+        public void Like_ShouldValidate()
+        {
+            Assert.Throws<ArgumentException>(() => this.Act().Like<object>(), Resources.NOT_AN_INTERFACE);
+            Assert.Throws<InvalidOperationException>(() => this.Act().Like<IPrivateInterface>());
+            Assert.Throws<InvalidOperationException>(() => new PrivateClass().Act().Like<IDisposable>());
+            Assert.Throws<MissingMethodException>(() => this.Act().Like<IDisposable>());
+        }
+
+        internal interface IPrivateInterface
+        {            
+        }
+
+        internal class PrivateClass
+        {
         }
     }
 }
