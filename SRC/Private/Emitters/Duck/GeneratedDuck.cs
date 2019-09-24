@@ -41,7 +41,8 @@ namespace Solti.Utils.DI.Internals
             Assembly[] references = new[]
             {
                 typeof(TInterface).Assembly(),
-                typeof(TTarget).Assembly()
+                typeof(TTarget).Assembly(),
+                typeof(DuckBase<>).Assembly()
             }
             .Concat(typeof(TInterface).Assembly().GetReferences())
             .Distinct()

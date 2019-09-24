@@ -12,7 +12,7 @@ namespace Solti.Utils.DI.Internals
     public abstract class DuckBase<T>
     {
         /// <summary>
-        /// The target of 
+        /// The target.
         /// </summary>
         public T Target { get; }
 

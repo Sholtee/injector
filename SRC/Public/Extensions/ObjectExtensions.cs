@@ -16,7 +16,7 @@ namespace Solti.Utils.DI.Proxy
     public static class ObjectExtensions
     {
         /// <summary>
-        /// Generates duck typing related proxy objects.
+        /// Generates duck typing proxy objects.
         /// </summary>
         public class DuckFactory<TTarget>
         {
@@ -25,7 +25,7 @@ namespace Solti.Utils.DI.Proxy
             public DuckFactory(TTarget target) => Target = target;
 
             /// <summary>
-            /// Generates a proxy object to let the <see cref="Target"/> behave like a <typeparamref name="TInterface"/> instance.
+            /// Generates a proxy object to let the target behave like a <typeparamref name="TInterface"/> instance.
             /// </summary>
             /// <returns>The newly created proxy object.</returns>
             public TInterface Like<TInterface>() where TInterface: class
@@ -34,8 +34,9 @@ namespace Solti.Utils.DI.Proxy
                 // Kell egyaltalan proxy-t letrhoznunk?
                 //
 
-                var possibleResult = Target as TInterface;
-                if (possibleResult != null) return possibleResult;
+                TInterface possibleResult = Target as TInterface;
+                if (possibleResult != null)
+                    return possibleResult;
 
                 Type interfaceType = typeof(TInterface);
 
@@ -53,14 +54,16 @@ namespace Solti.Utils.DI.Proxy
                 if (targetType.IsNotPublic())
                     throw new InvalidOperationException(string.Format(Resources.TYPE_NOT_VISIBLE, targetType));
 
-                return (TInterface)GeneratedDuck<TInterface, TTarget>.Type.CreateInstance(new[] { typeof(TTarget) }, Target);
+                return (TInterface) GeneratedDuck<TInterface, TTarget>
+                    .Type
+                    .CreateInstance(new[] { typeof(TTarget) }, Target);
             }
         }
 
         /// <summary>
         /// Marks a <typeparamref name="TTarget"/> instance for duck typing.
         /// </summary>
-        public static DuckFactory<TTarget> Acts<TTarget>(this TTarget target)
+        public static DuckFactory<TTarget> Act<TTarget>(this TTarget target)
         {
             if (target == null)
                 throw new ArgumentNullException(nameof(target));

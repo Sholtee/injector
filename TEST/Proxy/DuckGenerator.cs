@@ -10,7 +10,7 @@ using System.Reflection;
 using Microsoft.CodeAnalysis;
 using NUnit.Framework;
 
-namespace Solti.Utils.DI.Duck.Tests
+namespace Solti.Utils.DI.Proxy.Tests
 {
     using Internals;
     using Properties;
@@ -63,7 +63,7 @@ namespace Solti.Utils.DI.Duck.Tests
         [Test]
         public void GenerateDuckMethod_ShouldGenerateTheDesiredMethodIfSupported()
         {
-            Assert.That(DuckGenerator<GoodFoo<int>, IFoo<int>>.GenerateDuckMethod(IfaceFoo).NormalizeWhitespace().ToFullString(), Is.EqualTo("System.Int32 Solti.Utils.DI.Duck.Tests.DuckGeneratorTests.IFoo<System.Int32>.Foo<TT>(System.Int32 a, out System.String b, ref TT c) => Target.Foo(a, out b, ref c);"));
+            Assert.That(DuckGenerator<GoodFoo<int>, IFoo<int>>.GenerateDuckMethod(IfaceFoo).NormalizeWhitespace().ToFullString(), Is.EqualTo("System.Int32 Solti.Utils.DI.Proxy.Tests.DuckGeneratorTests.IFoo<System.Int32>.Foo<TT>(System.Int32 a, out System.String b, ref TT c) => Target.Foo(a, out b, ref c);"));
         }
 
         [Test]
@@ -94,7 +94,7 @@ namespace Solti.Utils.DI.Duck.Tests
         [Test]
         public void GenerateDuckProperty_ShouldGenerateTheDesiredPropertyIfSupported()
         {
-            Assert.That(DuckGenerator<GoodFoo<int>, IFoo<int>>.GenerateDuckProperty(IfaceProp).NormalizeWhitespace(eol: "\n").ToFullString(), Is.EqualTo("System.Int32 Solti.Utils.DI.Duck.Tests.DuckGeneratorTests.IFoo<System.Int32>.Prop\n{\n    get => Target.Prop;\n    set => Target.Prop = value;\n}"));
+            Assert.That(DuckGenerator<GoodFoo<int>, IFoo<int>>.GenerateDuckProperty(IfaceProp).NormalizeWhitespace(eol: "\n").ToFullString(), Is.EqualTo("System.Int32 Solti.Utils.DI.Proxy.Tests.DuckGeneratorTests.IFoo<System.Int32>.Prop\n{\n    get => Target.Prop;\n    set => Target.Prop = value;\n}"));
         }
 
         private class Dummy
