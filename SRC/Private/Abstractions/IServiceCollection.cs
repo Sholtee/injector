@@ -11,7 +11,11 @@ namespace Solti.Utils.DI.Internals
     [Flags]
     internal enum QueryMode
     {
+        /// <summary>
+        /// Allows returning NULL if the desired service was not found.
+        /// </summary>
         Default = 0,
+
         ThrowOnError,
 
         /// <summary>
