@@ -33,10 +33,11 @@ namespace Solti.Utils.DI.Internals
             base.Dispose(disposeManaged);
         }
 
-        protected bool ContainsByRef(AbstractServiceEntry item) => 
-            item != null && 
-            TryGet(item.Interface, out var that) && 
-            ReferenceEquals(that, item);
+        protected bool ContainsByRef(AbstractServiceEntry item) => item != null && ReferenceEquals
+        (
+            Get(item.Interface), // Visszaadhat NULL-t
+            item
+        );
         #endregion
   
         /// <summary>
@@ -62,16 +63,25 @@ namespace Solti.Utils.DI.Internals
         }
 
         #region IServiceCollection
-        public virtual bool TryGet(Type iface, out AbstractServiceEntry entry) => FEntries.TryGetValue(iface, out entry);
+        public virtual AbstractServiceEntry Get(Type iface, QueryMode mode = QueryMode.Default)
+        {
+            if (FEntries.TryGetValue(iface, out var result)) return result;
 
-        public virtual bool TryGetClosest(Type iface, out AbstractServiceEntry entry) =>
-            TryGet(iface, out entry) ||
+            if (mode.HasFlag(QueryMode.AllowSpecialization))
+            {
+                //
+                // Meg benne lehet generikus formaban.
+                //
 
-            //
-            // Meg benne lehet generikus formaban.
-            //
+                if (iface.IsGenericType() && FEntries.TryGetValue(iface.GetGenericTypeDefinition(), out result))
+                    return result;
+            }
 
-            iface.IsGenericType() && TryGet(iface.GetGenericTypeDefinition(), out entry);
+            if (mode.HasFlag(QueryMode.ThrowOnError))
+                throw new ServiceNotFoundException(iface);
+
+            return null;
+        }
         #endregion
 
         #region ICollection

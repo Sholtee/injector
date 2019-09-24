@@ -25,20 +25,12 @@ namespace Solti.Utils.DI.Internals
             }           
         }
 
-        public override bool TryGet(Type iface, out AbstractServiceEntry entry)
+        public override AbstractServiceEntry Get(Type iface, QueryMode mode = QueryMode.Default)
         {
             using (FLock.AcquireReaderLock())
             {
-                return base.TryGet(iface, out entry);
+                return base.Get(iface, mode);
             }            
-        }
-
-        public override bool TryGetClosest(Type iface, out AbstractServiceEntry entry)
-        {
-            using (FLock.AcquireReaderLock())
-            {
-                return base.TryGetClosest(iface, out entry);
-            }
         }
 
         public override bool Remove(AbstractServiceEntry item)

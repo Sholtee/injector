@@ -141,9 +141,11 @@ namespace Solti.Utils.DI.Internals.Tests
             (
                 new SingletonServiceEntry(typeof(IList<>), typeof(List<>), null) 
             );
-            
-            Assert.Throws<ServiceNotFoundException>(() => collection.Get(typeof(IList<int>)));
-            Assert.AreEqual(new SingletonServiceEntry(typeof(IList<>), typeof(List<>), null), collection.Get(typeof(IList<>)));
+
+            Assert.IsNull(collection.Get(typeof(IList<int>)));
+            Assert.Throws<ServiceNotFoundException>(() => collection.Get(typeof(IList<int>), QueryMode.ThrowOnError));
+
+            Assert.AreEqual(new SingletonServiceEntry(typeof(IList<>), typeof(List<>), null), collection.Get(typeof(IList<>), QueryMode.ThrowOnError));
         }
 
         [Test]

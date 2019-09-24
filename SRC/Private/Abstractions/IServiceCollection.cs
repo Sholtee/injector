@@ -8,9 +8,20 @@ using System.Collections.Generic;
 
 namespace Solti.Utils.DI.Internals
 {
+    [Flags]
+    internal enum QueryMode
+    {
+        Default = 0,
+        ThrowOnError,
+
+        /// <summary>
+        /// Allows returning the open generic pair of a missing entry (if available).
+        /// </summary>
+        AllowSpecialization
+    }
+
     internal interface IServiceCollection: ICollection<AbstractServiceEntry>
     {
-        bool TryGet(Type iface, out AbstractServiceEntry entry);
-        bool TryGetClosest(Type iface, out AbstractServiceEntry entry);
+        AbstractServiceEntry Get(Type iface, QueryMode mode = QueryMode.Default);
     }
 }

@@ -11,17 +11,9 @@ namespace Solti.Utils.DI.Internals
 {
     internal static class IServiceCollectionExtensions
     {
-        public static AbstractServiceEntry Get(this IServiceCollection src, Type iface) => src.TryGet(iface, out var result)
-            ? result
-            : throw new ServiceNotFoundException(iface);
-
-        public static AbstractServiceEntry GetClosest(this IServiceCollection src, Type iface) => src.TryGetClosest(iface, out var result)
-            ? result
-            : throw new ServiceNotFoundException(iface);
-
         public static AbstractServiceEntry Query(this IServiceCollection src, Type iface)
         {
-            AbstractServiceEntry entry = src.GetClosest(iface);
+            AbstractServiceEntry entry = src.Get(iface, QueryMode.AllowSpecialization | QueryMode.ThrowOnError);
 
             //
             // 1. eset: Azt az entitast adjuk vissza amit kerestunk.
@@ -73,7 +65,7 @@ namespace Solti.Utils.DI.Internals
                     // peldanyt.
                     //
 
-                    return src.Get(iface);
+                    return src.Get(iface, QueryMode.ThrowOnError);
                 }
             }
 
