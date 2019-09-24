@@ -31,13 +31,14 @@ namespace Solti.Utils.DI.Proxy.Tests
             var mock = new Mock<MyDisposable>(MockBehavior.Strict);
             mock.Setup(x => x.Dispose());
 
-            IDisposable disposable = mock.Object.Act().Like<IDisposable>();
+            using (IDisposable disposable = mock.Object.Act().Like<IDisposable>())
+            {
+                Assert.That(disposable, Is.Not.Null);
+                Assert.AreNotSame(mock.Object, disposable);
 
-            Assert.That(disposable, Is.Not.Null);
-            Assert.AreNotSame(mock.Object, disposable);
+                mock.Verify(x => x.Dispose(), Times.Never);
+            }
 
-            mock.Verify(x => x.Dispose(), Times.Never);
-            disposable.Dispose();
             mock.Verify(x => x.Dispose(), Times.Once);
         }
 
