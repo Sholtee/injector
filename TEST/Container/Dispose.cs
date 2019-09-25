@@ -62,11 +62,37 @@ namespace Solti.Utils.DI.Container.Tests
                 grandChild = child.CreateChild().Instance(instance = new Disposable(), releaseOnDispose: true);    
             }
 
-            var err = Assert.Throws<InvalidOperationException>(grandChild.Dispose);
-            Assert.AreSame(err, Disposable.AlreadyDisposedException);
+            Assert.Throws<ObjectDisposedException>(grandChild.Dispose);
+            Assert.Throws<ObjectDisposedException>(instance.Dispose);
+        }
 
-            err = Assert.Throws<InvalidOperationException>(instance.Dispose);
-            Assert.AreSame(err, Disposable.AlreadyDisposedException);
+        [Test]
+        public void Container_DisposeShouldDisposeSpecializedEntries()
+        {
+            Disposable testDisposable;
+
+            using (IServiceContainer child = Container.CreateChild())
+            {
+                child
+                    .Service<IInterface_1, Implementation_1>()
+                    .Service(typeof(IGenericDisposable<>), typeof(GenericDisposable<>), Lifetime.Singleton);
+
+                Assert.That(Container.Count(), Is.EqualTo(2));
+                Assert.AreSame(child.CreateInjector().Get<IGenericDisposable<int>>(), child.CreateInjector().Get<IGenericDisposable<int>>());
+
+                testDisposable = (Disposable) child.CreateInjector().Get<IGenericDisposable<int>>();
+                Assert.That(testDisposable.Disposed, Is.False);
+            }
+
+            Assert.That(testDisposable.Disposed, Is.True);
+        }
+
+        public interface IGenericDisposable<T> : IDisposable
+        {
+        }
+
+        public class GenericDisposable<T> : Disposable, IGenericDisposable<T>
+        {
         }
     }
 }

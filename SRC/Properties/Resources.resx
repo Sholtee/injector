@@ -120,9 +120,6 @@
   <data name="ABSTRACT" xml:space="preserve">
     <value>The given class should not be abstract!</value>
   </data>
-  <data name="ALREADY_DISPOSED" xml:space="preserve">
-    <value>The object has already been disposed.</value>
-  </data>
   <data name="ALREADY_REGISTERED" xml:space="preserve">
     <value>"{0}" is already registered.</value>
   </data>
