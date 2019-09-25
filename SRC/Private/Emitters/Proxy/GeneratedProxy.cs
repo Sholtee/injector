@@ -101,7 +101,13 @@ namespace Solti.Utils.DI.Internals
             // TODO: FIXME: privat tipusokra mindenkepp fel kene robbanjon (ha annotalva van az asm ha nincs).
             //
 
-            if (type.IsNotPublic() && type.Assembly().GetCustomAttributes<InternalsVisibleToAttribute>().All(attr => attr.AssemblyName != AssemblyName)) throw new InvalidOperationException(string.Format(Resources.TYPE_NOT_VISIBLE, type));
+            if (type.IsNotPublic() && !HasInternalVisibleToAttribute())
+                throw new InvalidOperationException(string.Format(Resources.TYPE_NOT_VISIBLE, type));
+
+            bool HasInternalVisibleToAttribute() => type
+                .Assembly()
+                .GetCustomAttributes<InternalsVisibleToAttribute>()
+                .Any(attr => attr.AssemblyName == AssemblyName);
         }
         #endregion
     }

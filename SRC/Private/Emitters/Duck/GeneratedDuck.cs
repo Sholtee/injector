@@ -37,6 +37,7 @@ namespace Solti.Utils.DI.Internals
         private static Type GenerateType()
         {
             CheckInterface();
+            CheckTarget();
 
             Assembly[] references = new[]
             {
@@ -67,17 +68,32 @@ namespace Solti.Utils.DI.Internals
 
             CheckVisibility(type);
 
-            if (!type.IsInterface()) throw new InvalidOperationException();
+            if (!type.IsInterface()) throw new InvalidOperationException(Resources.NOT_AN_INTERFACE);
             if (type.ContainsGenericParameters()) throw new NotSupportedException();
+        }
+
+        private static void CheckTarget()
+        {
+            //
+            // Konstruktor parameterben atadasra kerul -> lathatonak kell lennie.
+            //
+
+            CheckVisibility(typeof(TTarget));
         }
 
         private static void CheckVisibility(Type type)
         {
             //
+            // NE az IsNotPublic()-ot hivjuk a tipuson mert az internal lathatosagra hamissal
+            // fog visszaterni.
+            //
+
+            //
             // TODO: Hasonloan a ProxyGenerator-hoz tamogassuk az internal lathatosgot is.
             //
 
-            if (type.IsNotPublic()) throw new InvalidOperationException(string.Format(Resources.TYPE_NOT_VISIBLE, type));
+            if (!type.IsPublic() && !type.IsNestedPublic())
+                throw new InvalidOperationException(string.Format(Resources.TYPE_NOT_VISIBLE, type));
         }
         #endregion
     }
