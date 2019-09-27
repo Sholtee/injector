@@ -14,7 +14,7 @@ namespace Solti.Utils.DI.Container.Tests
     }
 
     [TestFixture]
-    public class ContainerTests : ContainerTestsBase<ServiceContainer>
+    public class IServiceContainerExtensionsTests : ContainerTestsBase<ServiceContainer>
     {
     }
 }

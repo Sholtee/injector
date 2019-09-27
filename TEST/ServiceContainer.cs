@@ -12,8 +12,10 @@ using NUnit.Framework;
 
 using Solti.Utils.DI.Tests;
 
-namespace Solti.Utils.DI.Internals.Tests
+namespace Solti.Utils.DI.Container.Tests
 {   
+    using Internals;
+
     public abstract class ServiceContainerTestsBase<TImplementation>: TestBase<TImplementation> where TImplementation : IServiceContainer, new()
     {
         internal virtual IServiceContainer CreateContainer(params AbstractServiceEntry[] entries)
@@ -334,7 +336,7 @@ namespace Solti.Utils.DI.Internals.Tests
 
 
         [Test]
-        public void IServiceContainer_CreateChild_ShouldNotTriggerTheTypeResolver()
+        public void IServiceContainer_CreateChildShouldNotTriggerTheTypeResolver()
         {
             var mockTypeResolver = new Mock<ITypeResolver>(MockBehavior.Strict);
             mockTypeResolver.Setup(i => i.Resolve(It.IsAny<Type>())).Returns<Type>(null);
@@ -351,7 +353,7 @@ namespace Solti.Utils.DI.Internals.Tests
     }
 
     [TestFixture]
-    public class ServiceContainerTests : ServiceContainerTestsBase<ServiceContainer>
+    public class IServiceContainerTests : ServiceContainerTestsBase<ServiceContainer>
     {
     }
 
