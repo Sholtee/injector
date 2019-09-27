@@ -26,7 +26,7 @@ namespace Solti.Utils.DI
         /// <summary>
         /// Gets the underlying implementation.
         /// </summary>
-        object UnderlyingImplementation { get; }
+        object UserData { get; }
 
         /// <summary>
         /// Factory function (if exists).

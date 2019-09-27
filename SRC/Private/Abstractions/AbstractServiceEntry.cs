@@ -44,7 +44,10 @@ namespace Solti.Utils.DI.Internals
         /// </summary>
         public virtual Type Implementation => null;
 
-        public virtual object UnderlyingImplementation => null; // ne NotImplementedException-t dobjon h a GetHashCode() mukodjon
+        /// <summary>
+        /// Custom data.
+        /// </summary>
+        public virtual object UserData => null;
         #endregion
 
         #region Mutables

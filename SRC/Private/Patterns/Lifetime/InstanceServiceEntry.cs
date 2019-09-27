@@ -25,7 +25,7 @@ namespace Solti.Utils.DI.Internals
 
         public override Type Implementation => null;
 
-        public override object UnderlyingImplementation => null;
+        public override object UserData => null;
 
         public override Func<IInjector, Type, object> Factory
         {

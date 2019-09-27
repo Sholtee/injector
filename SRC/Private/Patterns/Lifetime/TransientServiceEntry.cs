@@ -51,7 +51,7 @@ namespace Solti.Utils.DI.Internals
 
                 if (Factory != null && Interface.IsGenericTypeDefinition())
                 {
-                    Debug.Assert(UnderlyingImplementation == null);
+                    Debug.Assert(UserData == null);
                     requested = requested.GetGenericTypeDefinition();
                 }
 

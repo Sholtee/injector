@@ -24,7 +24,7 @@ namespace Solti.Utils.DI.Internals
             // meg nem volt hivva.
             //
 
-            UnderlyingImplementation = entry.UnderlyingImplementation;
+            UserData = entry.UserData;
         }
 
         protected ProducibleServiceEntry(Type @interface, Lifetime lifetime, Func<IInjector, Type, object> factory, IServiceContainer owner) : base(@interface, lifetime, owner)
@@ -34,7 +34,7 @@ namespace Solti.Utils.DI.Internals
 
         protected ProducibleServiceEntry(Type @interface, Lifetime lifetime, Type implementation, IServiceContainer owner) : this(@interface, lifetime, !@interface.IsGenericTypeDefinition() ? Resolver.Get(implementation).ConvertToFactory() : null, owner)
         {
-            UnderlyingImplementation = implementation;
+            UserData = implementation;
         }
 
         protected ProducibleServiceEntry(Type @interface, Lifetime lifetime, ITypeResolver implementation, IServiceContainer owner) : base(@interface, lifetime, owner)
@@ -51,7 +51,7 @@ namespace Solti.Utils.DI.Internals
                 LazyThreadSafetyMode.ExecutionAndPublication
             );
 
-            UnderlyingImplementation = lazyImplementation;
+            UserData = lazyImplementation;
 
             //
             // Mivel van factory ezert lusta bejegyzesek is Proxy-zhatok.
@@ -73,8 +73,8 @@ namespace Solti.Utils.DI.Internals
                 throw new InvalidOperationException(Resources.NOT_PRODUCIBLE);
         }
 
-        public sealed override Type Implementation => (UnderlyingImplementation as Lazy<Type>)?.Value ?? (Type) UnderlyingImplementation;
-        public override object UnderlyingImplementation { get; }
+        public sealed override Type Implementation => (UserData as Lazy<Type>)?.Value ?? (Type) UserData;
+        public override object UserData { get; }
         public sealed override Func<IInjector, Type, object> Factory { get; set; }
     }
 }

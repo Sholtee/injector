@@ -15,12 +15,12 @@ namespace Solti.Utils.DI
         /// <summary>
         /// The service was registered via <see cref="IServiceContainer.Service"/> call.
         /// </summary>
-        public static bool IsService(this IServiceInfo self) => self.UnderlyingImplementation != null;
+        public static bool IsService(this IServiceInfo self) => self.UserData != null;
 
         /// <summary>
         /// The service was registered via <see cref="IServiceContainer.Lazy"/> call.
         /// </summary>
-        public static bool IsLazy(this IServiceInfo self) => self.UnderlyingImplementation is Lazy<Type>;
+        public static bool IsLazy(this IServiceInfo self) => self.UserData is Lazy<Type>;
 
         /// <summary>
         /// The service was registered via <see cref="IServiceContainer.Factory"/> call.
