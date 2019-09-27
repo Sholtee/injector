@@ -29,7 +29,7 @@ namespace Solti.Utils.DI.Internals.Tests
         }
 
         [Test]
-        public void IServiceContainer_ShouldDisposeOwnedEntriesOnly()
+        public void IServiceContainer_DisposeShouldDisposeOwnedEntriesOnly()
         {
             Disposable 
                 owned    = new Disposable(),
@@ -44,13 +44,12 @@ namespace Solti.Utils.DI.Internals.Tests
 
             container.Dispose();
             
-            Assert.That(container.Count, Is.EqualTo(0));
             Assert.That(owned.Disposed);
             Assert.That(notOwned.Disposed, Is.False);
         }
 
         [Test]
-        public void IServiceContainer_ShouldCopyTheInheritedEntries()
+        public void IServiceContainer_CreateChildShouldCopyTheInheritedEntries()
         {
             //
             // MockBehavior ne legyen megadva h mikor a GC felszabaditja a mock entitast
@@ -61,7 +60,7 @@ namespace Solti.Utils.DI.Internals.Tests
             Mock<AbstractServiceEntry> entry = new Mock<AbstractServiceEntry>(typeof(IDisposable) /*iface*/, Lifetime.Transient, new TImplementation());              
             entry.Setup(e => e.CopyTo(It.IsAny<IServiceContainer>())).Returns<IServiceContainer>(sc => null);
 
-            using (IServiceContainer container = CreateContainer(entry.Object))
+            using (IServiceContainer container = CreateContainer(entry.Object).CreateChild())
             {
                 entry.Verify(e => e.CopyTo(It.Is<IServiceContainer>(sc => sc == container)), Times.Once);
             }
