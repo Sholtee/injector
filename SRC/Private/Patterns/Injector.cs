@@ -55,6 +55,8 @@ namespace Solti.Utils.DI.Internals
             // patent ha ObjectAlreadyDisposedException-t dob mert az az jelenti h a szulo
             // kontener felszabaditasa utan probaltuk az Injector-t magat felszabaditani.
             //
+            // TODO: FIXME: Viszont a fentibol fakadoan itt mas Dispose() hivas nem szerepelhet.
+            //
 
             if (disposeManaged) FContainer.Dispose();
 
@@ -83,7 +85,7 @@ namespace Solti.Utils.DI.Internals
                 if (FCurrentPath.Count(t => t == iface) > 1)
                     throw new InvalidOperationException(string.Format(Resources.CIRCULAR_REFERENCE, string.Join(" -> ", FCurrentPath)));
 
-                IServiceFactory factory = FContainer.Get(iface);
+                IServiceFactory factory = FContainer.Get(iface, QueryMode.AllowSpecialization | QueryMode.ThrowOnError);
 
                 //
                 // Ha az OnServiceRequested esemenyben felulirjak a szervizt akkor azt

@@ -14,7 +14,6 @@ using System.Threading;
 namespace Solti.Utils.DI
 {
     using Internals;
-    using Properties;
 
     /// <summary>
     /// Implements the <see cref="IServiceContainer"/> interface.
@@ -22,11 +21,6 @@ namespace Solti.Utils.DI
     public class ServiceContainer : Composite<IServiceContainer>, IServiceContainer
     {
         #region Private
-        private static readonly HashSet<Type> ReservedInterfaces = new HashSet<Type>
-        {
-            typeof(IInjector)
-        };
-
         private readonly Dictionary<Type, AbstractServiceEntry> FEntries;
 
         private readonly ReaderWriterLockSlim FLock = new ReaderWriterLockSlim();
@@ -53,13 +47,6 @@ namespace Solti.Utils.DI
         {
             if (entry == null)
                 throw new ArgumentNullException(nameof(entry));
-
-            if (ReservedInterfaces.Contains(entry.Interface))
-            {
-                var ioEx = new InvalidOperationException(Resources.RESERVED_INTERFACE);
-                ioEx.Data.Add(nameof(entry.Interface), entry.Interface);
-                throw ioEx;
-            }
 
             using (FLock.AcquireWriterLock())
             {
@@ -213,9 +200,12 @@ namespace Solti.Utils.DI
         {
             if (disposeManaged)
             {
-                FLock.Dispose();
+                //
+                // Itt ne "this.Where()"-t hivjunk mert az felesleges hivna egy ToArray()-t is
+                // (lasd GetEnumerator() implementacio).
+                //
 
-                foreach (IDisposable disposable in this.Where(entry => entry.Owner == this))
+                foreach (IDisposable disposable in FEntries.Values.Where(entry => entry.Owner == this))
                 {
                     try
                     {
@@ -228,6 +218,8 @@ namespace Solti.Utils.DI
                 }
 
                 FEntries.Clear();
+
+                FLock.Dispose();
             }
 
             base.Dispose(disposeManaged);

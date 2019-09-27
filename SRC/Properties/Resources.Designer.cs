@@ -224,15 +224,6 @@ namespace Solti.Utils.DI.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Registering reserved interfaces is not allowed..
-        /// </summary>
-        internal static string RESERVED_INTERFACE {
-            get {
-                return ResourceManager.GetString("RESERVED_INTERFACE", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to No registered implementation for &quot;{0}&quot;..
         /// </summary>
         internal static string SERVICE_NOT_FOUND {

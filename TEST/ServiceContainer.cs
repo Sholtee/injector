@@ -14,7 +14,7 @@ using Solti.Utils.DI.Tests;
 
 namespace Solti.Utils.DI.Internals.Tests
 {   
-    public class ServiceContainerTestsBase<TImplementation>: TestBase<TImplementation> where TImplementation : IServiceContainer, new()
+    public abstract class ServiceContainerTestsBase<TImplementation>: TestBase<TImplementation> where TImplementation : IServiceContainer, new()
     {
         internal virtual IServiceContainer CreateContainer(params AbstractServiceEntry[] entries)
         {
@@ -98,16 +98,19 @@ namespace Solti.Utils.DI.Internals.Tests
         public void IServiceContainer_GetShouldReturnTheSpecializedEntry()
         {
             IServiceContainer container = CreateContainer();
-            var entry = new TransientServiceEntry(typeof(IList<>), typeof(MyList<>), container);
-            container.Add(entry);
+
+            //
+            // Azert singleton h az owner kontener ne valtozzon.
+            //
+            
+            container.Add(new SingletonServiceEntry(typeof(IList<>), typeof(MyList<>), container));
 
             Assert.That(container.Count, Is.EqualTo(1));
             Assert.Throws<ServiceNotFoundException>(() => container.Get(typeof(IList<int>), QueryMode.ThrowOnError));
             Assert.That(container.Count, Is.EqualTo(1));
-            Assert.That(container.Get(typeof(IList<int>), QueryMode.AllowSpecialization | QueryMode.ThrowOnError), Is.EqualTo(new TransientServiceEntry(typeof(IList<int>), typeof(MyList<int>), container)));
+            Assert.That(container.Get(typeof(IList<int>), QueryMode.AllowSpecialization | QueryMode.ThrowOnError), Is.EqualTo(new SingletonServiceEntry(typeof(IList<int>), typeof(MyList<int>), container)));
             Assert.That(container.Count, Is.EqualTo(2));
         }
-
 
         [Test]
         public void IServiceContainer_GetShouldReturnTheSpecializedInheritedEntry()
@@ -130,13 +133,6 @@ namespace Solti.Utils.DI.Internals.Tests
             Assert.That(container.Get(typeof(IList<int>), QueryMode.ThrowOnError), Is.EqualTo(new TransientServiceEntry(typeof(IList<int>), typeof(MyList<int>), container)));
         }
 
-        private class MyList<T> : List<T> // azert kell leszarmazni h pontosan egy konstruktorunk legyen
-        {          
-            public MyList()
-            {               
-            }
-        }
-
         [Test]
         public void IServiceContainer_GetShouldReturnExistingEntriesOnly()
         {
@@ -151,7 +147,7 @@ namespace Solti.Utils.DI.Internals.Tests
         }
 
         [Test]
-        public void IServiceContainer_ContainsShouldSearchByReference()
+        public void IServiceContainer_ContainsShouldSearchByGetHashCode()
         {
             AbstractServiceEntry 
                 entry1 = new AbstractServiceEntry(typeof(IDisposable)),
@@ -161,7 +157,7 @@ namespace Solti.Utils.DI.Internals.Tests
             
             Assert.That(entry1, Is.EqualTo(entry2));
             Assert.True(container.Contains(entry1));
-            Assert.False(container.Contains(entry2));
+            Assert.True(container.Contains(entry2));
         }
 
 
@@ -242,10 +238,11 @@ namespace Solti.Utils.DI.Internals.Tests
                     .Service<IInterface_1, Implementation_1>()
                     .Service(typeof(IGenericDisposable<>), typeof(GenericDisposable<>), Lifetime.Singleton);
 
-                Assert.That(Container.Count(), Is.EqualTo(2));
+                Assert.That(child.Count, Is.EqualTo(2));
                 Assert.AreSame(child.CreateInjector().Get<IGenericDisposable<int>>(), child.CreateInjector().Get<IGenericDisposable<int>>());
+                Assert.That(child.Count, Is.EqualTo(3));
 
-                testDisposable = (Disposable)child.CreateInjector().Get<IGenericDisposable<int>>();
+                testDisposable = (Disposable) child.CreateInjector().Get<IGenericDisposable<int>>();
                 Assert.That(testDisposable.Disposed, Is.False);
             }
 
@@ -357,5 +354,17 @@ namespace Solti.Utils.DI.Internals.Tests
     [TestFixture]
     public class ServiceContainerTests : ServiceContainerTestsBase<ServiceContainer>
     {
+    }
+
+    //
+    // 1) Ne generikus alatt legyen nested-kent (mert akkor valojaban "MyList<TParent, T>" a definicio).
+    // 2) Azert kell leszarmazni h pontosan egy konstruktorunk legyen
+    //
+
+    public class MyList<T> : List<T> 
+    {
+        public MyList()
+        {
+        }
     }
 }

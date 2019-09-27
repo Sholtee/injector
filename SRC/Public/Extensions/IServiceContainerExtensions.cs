@@ -38,7 +38,7 @@ namespace Solti.Utils.DI
         /// <param name="mode">Options</param>
         /// <returns>The requested service entry.</returns>
         /// <exception cref="ServiceNotFoundException">If the service could not be found.</exception>
-        public static AbstractServiceEntry Get<TInterface>(this IServiceContainer self, QueryMode mode = QueryMode.Default) => self.Get(typeof(TInterface));
+        public static AbstractServiceEntry Get<TInterface>(this IServiceContainer self, QueryMode mode = QueryMode.Default) => self.Get(typeof(TInterface), mode);
 
         /// <summary>
         /// Registers a new service with the given type.
@@ -57,6 +57,9 @@ namespace Solti.Utils.DI
 
             if (iface == null)
                 throw new ArgumentNullException(nameof(iface));
+
+            if (!iface.IsInterface())
+                throw new ArgumentException(Resources.NOT_AN_INTERFACE, nameof(iface));
 
             if (implementation == null)
                 throw new ArgumentNullException(nameof(implementation));
@@ -98,6 +101,9 @@ namespace Solti.Utils.DI
             if (iface == null)
                 throw new ArgumentNullException(nameof(iface));
 
+            if (!iface.IsInterface())
+                throw new ArgumentException(Resources.NOT_AN_INTERFACE, nameof(iface));
+
             if (implementation == null)
                 throw new ArgumentNullException(nameof(implementation));
 
@@ -132,6 +138,9 @@ namespace Solti.Utils.DI
             if (iface == null)
                 throw new ArgumentNullException(nameof(iface));
 
+            if (!iface.IsInterface())
+                throw new ArgumentException(Resources.NOT_AN_INTERFACE, nameof(iface));
+
             if (factory == null)
                 throw new ArgumentNullException(nameof(factory));
 
@@ -161,10 +170,13 @@ namespace Solti.Utils.DI
             if (iface == null)
                 throw new ArgumentNullException(nameof(iface));
 
+            if (!iface.IsInterface())
+                throw new ArgumentException(Resources.NOT_AN_INTERFACE, nameof(iface));
+
             if (decorator == null)
                 throw new ArgumentNullException(nameof(decorator));
 
-            AbstractServiceEntry entry = self.Get(iface);
+            AbstractServiceEntry entry = self.Get(iface, QueryMode.AllowSpecialization | QueryMode.ThrowOnError);
 
             //
             // Generikus szerviz, Abstract(), Instance() eseten valamint ha nem ez a 
@@ -209,6 +221,9 @@ namespace Solti.Utils.DI
             if (iface == null)
                 throw new ArgumentNullException(nameof(iface));
 
+            if (!iface.IsInterface())
+                throw new ArgumentException(Resources.NOT_AN_INTERFACE, nameof(iface));
+
             if (instance == null)
                 throw new ArgumentNullException(nameof(instance));
 
@@ -231,6 +246,9 @@ namespace Solti.Utils.DI
 
             if (iface == null)
                 throw new ArgumentNullException(nameof(iface));
+
+            if (!iface.IsInterface())
+                throw new ArgumentException(Resources.NOT_AN_INTERFACE, nameof(iface));
 
             return self.Add(new AbstractServiceEntry(iface));
         }
