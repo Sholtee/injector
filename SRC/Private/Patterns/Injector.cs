@@ -18,19 +18,19 @@ namespace Solti.Utils.DI.Internals
         #region Private
         private readonly Stack<Type> FCurrentPath = new Stack<Type>();
 
-        private /*readonly*/ ServiceCollection FEntries;
+        private readonly IServiceContainer FContainer;
 
         private Injector() => throw new NotSupportedException();
 
-        private Injector(IReadOnlyCollection<AbstractServiceEntry> inheritedEntries)
+        private Injector(IServiceContainer parent)
         {
-            FEntries = new ServiceCollection(inheritedEntries);
+            FContainer = parent.CreateChild();
 
             //
             // Beallitjuk a proxyt, majd felvesszuk sajat magunkat.
             //
 
-            FEntries.Add(new InstanceServiceEntry
+            FContainer.Add(new InstanceServiceEntry
             (
                 typeof(IInjector),
                     
@@ -40,7 +40,7 @@ namespace Solti.Utils.DI.Internals
 
                 Self = ProxyUtils.Chain<IInjector>(this, me => ProxyFactory.Create<IInjector, ParameterValidatorProxy<IInjector>>(target: me)),
                 releaseOnDispose: false,
-                owner: FEntries
+                owner: FContainer
             ));
         }
 
@@ -50,11 +50,13 @@ namespace Solti.Utils.DI.Internals
         #region Protected
         protected override void Dispose(bool disposeManaged)
         {
-            if (disposeManaged)
-            {
-                FEntries.Dispose();
-                FEntries = null;
-            }
+            //
+            // FContainer a szuloen keresztul mar fel lehet szabaditva, ilyenkor teljesen
+            // patent ha ObjectAlreadyDisposedException-t dob mert az az jelenti h a szulo
+            // kontener felszabaditasa utan probaltuk az Injector-t magat felszabaditani.
+            //
+
+            if (disposeManaged) FContainer.Dispose();
 
             base.Dispose(disposeManaged);
         }
@@ -81,7 +83,7 @@ namespace Solti.Utils.DI.Internals
                 if (FCurrentPath.Count(t => t == iface) > 1)
                     throw new InvalidOperationException(string.Format(Resources.CIRCULAR_REFERENCE, string.Join(" -> ", FCurrentPath)));
 
-                IServiceFactory factory = FEntries.Query(iface);
+                IServiceFactory factory = FContainer.Get(iface);
 
                 //
                 // Ha az OnServiceRequested esemenyben felulirjak a szervizt akkor azt
@@ -122,7 +124,7 @@ namespace Solti.Utils.DI.Internals
             return ev.Service;
         }
 
-        internal static IInjector Create(IReadOnlyCollection<AbstractServiceEntry> entries) => new Injector(entries).Self;
+        internal static IInjector Create(IServiceContainer parent) => new Injector(parent).Self;
         #endregion
 
         #region IInjector
@@ -142,9 +144,9 @@ namespace Solti.Utils.DI.Internals
         #endregion
 
         #region IQueryServiceInfo
-        IServiceInfo IQueryServiceInfo.QueryServiceInfo(Type iface) => FEntries.Query(iface);
+        IServiceInfo IQueryServiceInfo.QueryServiceInfo(Type iface) => FContainer.Get(iface);
 
-        IReadOnlyCollection<IServiceInfo> IQueryServiceInfo.Entries => FEntries;
+        IReadOnlyCollection<IServiceInfo> IQueryServiceInfo.Entries => FContainer.ToArray();
         #endregion
     }
 }

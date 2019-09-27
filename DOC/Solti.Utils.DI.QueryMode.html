@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Namespace Solti.Utils.DI.Internals
+    <title>Enum QueryMode
    | Injector </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Namespace Solti.Utils.DI.Internals
+    <meta name="title" content="Enum QueryMode
    | Injector ">
     <meta name="generator" content="docfx 2.42.4.0">
     
@@ -37,29 +37,46 @@
       <div role="main" class="container body-content hide-when-search">
         <div class="article row grid">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="Solti.Utils.DI.Internals">
+            <article class="content wrap" id="_content" data-uid="Solti.Utils.DI.QueryMode">
   
-  <h1 id="Solti_Utils_DI_Internals" data-uid="Solti.Utils.DI.Internals" class="text-break">Namespace Solti.Utils.DI.Internals
+  
+  <h1 id="Solti_Utils_DI_QueryMode" data-uid="Solti.Utils.DI.QueryMode" class="text-break">Enum QueryMode
   </h1>
   <div class="markdown level0 summary"></div>
   <div class="markdown level0 conceptual"></div>
-  <div class="markdown level0 remarks"></div>
-    <h3 id="classes">Classes
+  <h6><strong>Namespace</strong>: <a class="xref" href="Solti.Utils.DI.html">Solti.Utils.DI</a></h6>
+  <h6><strong>Assembly</strong>: Injector.dll</h6>
+  <h5 id="Solti_Utils_DI_QueryMode_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public enum QueryMode : int</code></pre>
+  </div>
+  <h3 id="fields">Fields
   </h3>
-      <h4><a class="xref" href="Solti.Utils.DI.Internals.AbstractServiceEntry.html">AbstractServiceEntry</a></h4>
-      <section><p>Describes an abstract service definition.</p>
-</section>
-      <h4><a class="xref" href="Solti.Utils.DI.Internals.Composite-1.html">Composite&lt;TInterface&gt;</a></h4>
-      <section><p>An <a class="xref" href="Solti.Utils.DI.Internals.IComposite-1.html">IComposite&lt;T&gt;</a> implementation.</p>
-</section>
-      <h4><a class="xref" href="Solti.Utils.DI.Internals.Disposable.html">Disposable</a></h4>
-      <section><p>Implements the <see cref="!:IDisposable"></see> interface.</p>
-</section>
-    <h3 id="interfaces">Interfaces
-  </h3>
-      <h4><a class="xref" href="Solti.Utils.DI.Internals.IComposite-1.html">IComposite&lt;T&gt;</a></h4>
-      <section><p>Describes the composite pattern.</p>
-</section>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    <thead>
+    <tbody>
+      <tr>
+        <td id="Solti_Utils_DI_QueryMode_AllowSpecialization">AllowSpecialization</td>
+        <td><p>Allows &quot;auto registering&quot; if the entry can be specialized.</p>
+</td>
+      </tr>
+      <tr>
+        <td id="Solti_Utils_DI_QueryMode_Default">Default</td>
+        <td><p>Allows returning NULL if the desired service was not found.</p>
+</td>
+      </tr>
+      <tr>
+        <td id="Solti_Utils_DI_QueryMode_ThrowOnError">ThrowOnError</td>
+        <td><p>Instructs the <a class="xref" href="Solti.Utils.DI.IServiceContainer.html">IServiceContainer</a> to throw if the desired service could not be found.</p>
+</td>
+      </tr>
+    </tbody>
+  </thead></thead></table>
 </article>
           </div>
           

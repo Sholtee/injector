@@ -7,8 +7,7 @@ using NUnit.Framework;
 
 namespace Solti.Utils.DI.Injector.Tests
 {
-    [TestFixture]
-    public sealed partial class InjectorTests
+    public partial class InjectorTestsBase<TContainer>
     {
         [Test]
         public void Injector_ChildShouldResolveItself()

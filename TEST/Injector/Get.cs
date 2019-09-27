@@ -10,9 +10,8 @@ using NUnit.Framework;
 namespace Solti.Utils.DI.Injector.Tests
 {
     using Properties;
-
-    [TestFixture]
-    public sealed partial class InjectorTests
+    
+    public partial class InjectorTestsBase<TContainer>
     {
         [Test]
         public void Injector_Get_ShouldThrowOnNonInterfaceKey()
@@ -91,7 +90,7 @@ namespace Solti.Utils.DI.Injector.Tests
                 .Service(typeof(IInterface_3<>), typeof(Implementation_3<>)) // direkt nincs lifetime
                 .Service(typeof(IInterface_6<>), typeof(Implementation_6<>), lifetime);
 
-            Assert.That(Container.Entries.Count, Is.EqualTo(3));
+            Assert.That(Container.Count, Is.EqualTo(3));
 
             using (IInjector injector = Container.CreateInjector())
             {         

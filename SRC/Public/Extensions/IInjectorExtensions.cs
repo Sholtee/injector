@@ -22,7 +22,7 @@ namespace Solti.Utils.DI
         /// <param name="self">The injector itself.</param>
         /// <returns>The resolved service.</returns>
         /// <remarks>This method is thread safe so you can call it parallelly.</remarks>
-        /// <exception cref="NotSupportedException">The service can not be found.</exception>
+        /// <exception cref="ServiceNotFoundException">The service could not be found.</exception>
         public static TInterface Get<TInterface>(this IInjector self) => (TInterface) self.Get(typeof(TInterface));
 
         /// <summary>

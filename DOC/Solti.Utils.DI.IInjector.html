@@ -61,7 +61,7 @@
     <pre><code class="lang-csharp hljs">public interface IInjector : IQueryServiceInfo, IDisposable</code></pre>
   </div>
   <h5 id="Solti_Utils_DI_IInjector_remarks"><strong>Remarks</strong></h5>
-  <div class="markdown level0 remarks"><p>Since requesting a generic service may cause write operations the <a class="xref" href="Solti.Utils.DI.IInjector.html">IInjector</a> should be treated as not thread safe.</p>
+  <div class="markdown level0 remarks"><p>Since requesting a generic service may cause write operations the <a class="xref" href="Solti.Utils.DI.IInjector.html">IInjector</a> should not be treated as thread safe.</p>
 </div>
   <h3 id="methods">Methods
   </h3>
@@ -110,6 +110,22 @@
       <tr>
         <td><span class="xref">System.Object</span></td>
         <td><p>The resolved service.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.ServiceNotFoundException.html">ServiceNotFoundException</a></td>
+        <td><p>The service can not be found.</p>
 </td>
       </tr>
     </tbody>
@@ -166,6 +182,22 @@
   <h5 id="Solti_Utils_DI_IInjector_Instantiate_Type_IReadOnlyDictionary_System_String_System_Object___remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>The <code data-dev-comment-type="paramref" class="paramref">@class</code> you passed must have only one public constructor or you must annotate the appropriate one with the <a class="xref" href="Solti.Utils.DI.Annotations.ServiceActivatorAttribute.html">ServiceActivatorAttribute</a>. Constructor parameteres that are not present in the <code data-dev-comment-type="paramref" class="paramref">explicitArgs</code> are treated as a normal dependency.</p>
 </div>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.ServiceNotFoundException.html">ServiceNotFoundException</a></td>
+        <td><p>One or more dependecies could not be found.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
   <h3 id="events">Events
   </h3>
   <h4 id="Solti_Utils_DI_IInjector_OnServiceRequest" data-uid="Solti.Utils.DI.IInjector.OnServiceRequest">OnServiceRequest</h4>

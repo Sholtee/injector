@@ -20,7 +20,7 @@ namespace Solti.Utils.DI
         /// </summary>
         /// <param name="iface">The "id" of the service to be queried. It must be an interface.</param>
         /// <returns>An <see cref="IServiceInfo"/> instance.</returns>
-        /// <exception cref="NotSupportedException">The service can not be found.</exception>
+        /// <exception cref="ServiceNotFoundException">The service could not be found.</exception>
         IServiceInfo QueryServiceInfo([ParameterIs(typeof(NotNull), typeof(Interface))] Type iface);
 
         /// <summary>

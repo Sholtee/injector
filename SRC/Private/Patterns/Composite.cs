@@ -6,6 +6,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -18,9 +19,15 @@ namespace Solti.Utils.DI.Internals
     {
         private readonly HashSet<TInterface> FChildren = new HashSet<TInterface>();
         private readonly Composite<TInterface> FParent;
+        private readonly ReaderWriterLockSlim FLock = new ReaderWriterLockSlim();
+
+        private void RemoveChild(Composite<TInterface> child)
+        {
+            bool removed = FChildren.Remove(child as TInterface);
+            Debug.Assert(removed, "Child could not be found");
+        }
 
         #region Protected
-
         /// <summary>
         /// Creates a new instance.
         /// </summary>
@@ -39,11 +46,7 @@ namespace Solti.Utils.DI.Internals
                 // Kivesszuk magunkat a szulo gyerekei kozul (kiveve ha gyoker elemunk van, ott nincs szulo).
                 //
 
-                if (FParent != null)
-                {
-                    bool removed = FParent.FChildren.Remove(Self);
-                    Debug.Assert(removed, "Parent does not contain this instance");
-                }
+                FParent?.RemoveChild(this);
 
                 //
                 // Osszes gyereket Dispose()-oljuk. A ToList()-es varazslat azert kell h iteracio kozben
@@ -52,15 +55,12 @@ namespace Solti.Utils.DI.Internals
 
                 FChildren.ToList().ForEach(child => child.Dispose());
                 Debug.Assert(!FChildren.Any());
+
+                FLock.Dispose();
             }
 
             base.Dispose(disposeManaged);
         }
-
-        /// <summary>
-        /// Access this entity as a <typeparam name="TInterface"/> interface.
-        /// </summary>
-        protected abstract TInterface Self { get; }
 
         /// <summary>
         /// Creates a new child. For more information see the <see cref="IComposite{T}"/> interface.
@@ -70,18 +70,17 @@ namespace Solti.Utils.DI.Internals
         #endregion
 
         #region IComposite
-        TInterface IComposite<TInterface>.Parent => FParent?.Self;
+        TInterface IComposite<TInterface>.Parent => FParent as TInterface;
 
         IReadOnlyCollection<TInterface> IComposite<TInterface>.Children => FChildren;
 
         TInterface IComposite<TInterface>.CreateChild()
         {
-            //
-            // Figyelem: A legyartott entitas lehet proxy (tehat nem lesz Composite<TInterface> leszarmazott).
-            //
-
             TInterface result = CreateChild();
-            FChildren.Add(result);
+
+            using (FLock.AcquireWriterLock())
+                FChildren.Add(result);
+
             return result;
         }
 

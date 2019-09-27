@@ -4,15 +4,16 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
 
 namespace Solti.Utils.DI
 {
     using Internals;
-    using Proxy;
     using Properties;
 
     /// <summary>
@@ -26,262 +27,220 @@ namespace Solti.Utils.DI
             typeof(IInjector)
         };
 
-        //
-        // Singleton elettartamnal parhuzamosan is modositasra kerulhet a lista (generikus 
-        // bejegyzes lezarasakor) ezert szalbiztosnak kell h legyen.
-        //
+        private readonly Dictionary<Type, AbstractServiceEntry> FEntries;
 
-        private /*readonly*/ ConcurrentServiceCollection FEntries;
+        private readonly ReaderWriterLockSlim FLock = new ReaderWriterLockSlim();
 
-        private AbstractServiceEntry Register(AbstractServiceEntry entry)
-        {
-            if (ReservedInterfaces.Contains(entry.Interface))
-            {
-                var ioEx = new InvalidOperationException(Resources.RESERVED_INTERFACE);
-                ioEx.Data.Add("interface", entry.Interface);
-                throw ioEx;
-            }
-
-            //
-            // Abstract bejegyzest felul lehet irni (de csak azt).
-            //
-
-            AbstractServiceEntry entryToRemove;
-
-            if ((entryToRemove = FEntries.Get(entry.Interface)) != null && entryToRemove.GetType() == typeof(AbstractServiceEntry))
-            {
-                bool removed = FEntries.Remove(entryToRemove);
-                Debug.Assert(removed, "Can't remove entry");
-            }
-
-            //
-            // Uj elem felvetele.
-            //
-
-            FEntries.Add(entry);
-            return entry;
-        }
-
-        private static object TypeChecker(IInjector injector, Type type, object inst)
+        private ServiceContainer(ServiceContainer parent) : base(parent)
         {
             //
-            // A letrhozott peldany tipusat ellenorizzuk. 
+            // Singleton elettartamnal parhuzamosan is modositasra kerulhet a lista (generikus 
+            // bejegyzes lezarasakor) ezert szalbiztosnak kell h legyen.
             //
 
-            if (!type.IsInstanceOfType(inst))
-                throw new Exception(string.Format(Resources.INVALID_INSTANCE, type));
+            FEntries = new Dictionary<Type, AbstractServiceEntry>(parent?.Count ?? 0);
+            if (parent == null) return;
 
-            return inst;
-        }
-        #endregion
-
-        #region Internal
-        internal IReadOnlyCollection<AbstractServiceEntry> Entries => FEntries;
-
-        internal AbstractServiceEntry Service(Type iface, Type implementation, Lifetime lifetime) => Register
-        (
-            ProducibleServiceEntryFactory.CreateEntry(lifetime, iface, implementation, FEntries)
-        );
-
-        internal AbstractServiceEntry Factory(Type iface, Func<IInjector, Type, object> factory, Lifetime lifetime) => Register
-        (
-            ProducibleServiceEntryFactory.CreateEntry(lifetime, iface, factory, FEntries)
-        );
-
-        internal AbstractServiceEntry Lazy(Type iface, ITypeResolver implementation, Lifetime lifetime) => Register
-        (
-            ProducibleServiceEntryFactory.CreateEntry(lifetime, iface, implementation, FEntries)
-        );
-
-        internal AbstractServiceEntry Proxy(Type iface, Func<IInjector, Type, object, object> decorator)
-        {
-            AbstractServiceEntry entry = FEntries.Query(iface);
-
-            //
-            // Service(), Factory(), Lazy()
-            //
-
-            if (entry.Owner == FEntries && entry.Factory != null)
+            foreach (AbstractServiceEntry entry in parent)
             {
-                Func<IInjector, Type, object> oldFactory = entry.Factory;
-
-                entry.Factory = (injector, type) => decorator(injector, type, oldFactory(injector, type));
-                return entry;
+                entry.CopyTo(this);
             }
-
-            //
-            // Generikus szerviz, Abstract(), Instance() eseten valamint ha nem ez a 
-            // tarolo birtokolja az adott bejegyzest a metodus nem ertelmezett.
-            //
-
-            throw new InvalidOperationException(Resources.CANT_PROXY);
         }
-
-        internal AbstractServiceEntry Instance(Type iface, object instance, bool releaseOnDispose) => Register(new InstanceServiceEntry(iface, instance, releaseOnDispose, FEntries));
-
-        internal AbstractServiceEntry Abstract(Type iface) => Register(new AbstractServiceEntry(iface));
         #endregion
 
         #region IServiceContainer
-        /// <summary>
-        /// See <see cref="IServiceContainer"/>
-        /// </summary>
-        IServiceContainer IServiceContainer.Service(Type iface, Type implementation, Lifetime lifetime)
+        public IServiceContainer Add(AbstractServiceEntry entry)
         {
-            //
-            // Implementacio validalas (mukodik generikusokra is).
-            //
+            if (entry == null)
+                throw new ArgumentNullException(nameof(entry));
 
-            if (!iface.IsInterfaceOf(implementation))
-                throw new InvalidOperationException(string.Format(Resources.NOT_ASSIGNABLE, iface, implementation));
-
-            //
-            // Konstruktor validalas csak generikus esetben kell (mert ilyenkor nincs Resolver.Get()
-            // hivas). A GetApplicableConstructor() validal valamint mukodik generikusokra is.
-            // 
-
-            if (implementation.IsGenericTypeDefinition()) implementation.GetApplicableConstructor();
-
-            Service(iface, implementation, lifetime);
-            return Self;
-        }
-
-        /// <summary>
-        /// See <see cref="IServiceContainer"/>
-        /// </summary>
-        IServiceContainer IServiceContainer.Lazy(Type iface, ITypeResolver implementation, Lifetime lifetime)
-        {
-            //
-            // A konstruktort validalni fogja a Resolver.Get() hivas az elso peldanyositaskor, igy
-            // itt nekunk csak azt kell ellenoriznunk, h az interface tamogatott e.
-            //
-
-            if (!implementation.Supports(iface))
-                throw new NotSupportedException(string.Format(Resources.INTERFACE_NOT_SUPPORTED, iface));
-
-            Lazy(iface, implementation, lifetime);
-            return Self;
-        }
-
-        /// <summary>
-        /// See <see cref="IServiceContainer"/>
-        /// </summary>
-        IServiceContainer IServiceContainer.Factory(Type iface, Func<IInjector, Type, object> factory, Lifetime lifetime)
-        {
-            Factory(iface, factory, lifetime);
-
-            //
-            // A visszaadott peldany tipusat meg ellenorizni kell.
-            //
-
-            Proxy(iface, TypeChecker);
-
-            return Self;
-        }
-
-        /// <summary>
-        /// See <see cref="IServiceContainer"/>
-        /// </summary>
-        IServiceContainer IServiceContainer.Instance(Type iface, object instance, bool releaseOnDispose)
-        {
-            if (!iface.IsInstanceOfType(instance))
-                throw new InvalidOperationException(string.Format(Resources.NOT_ASSIGNABLE, iface, instance.GetType()));
-
-            Instance(iface, instance, releaseOnDispose);
-
-            return Self;
-        }
-
-        /// <summary>
-        /// See <see cref="IServiceContainer"/>
-        /// </summary>
-        IServiceContainer IServiceContainer.Proxy(Type iface, Func<IInjector, Type, object, object> decorator)
-        {
-            Proxy(iface, decorator);
-
-            //
-            // A visszaadott peldany tipusat meg ellenorizni kell.
-            //
-
-            Proxy(iface, TypeChecker);
-
-            return Self;
-        }
-
-        /// <summary>
-        /// See <see cref="IServiceContainer"/>
-        /// </summary>
-        IServiceContainer IServiceContainer.Abstract(Type iface)
-        {
-            Abstract(iface);
-            return this;
-        }
-
-        /// <summary>
-        /// See <see cref="IServiceContainer"/>
-        /// </summary>
-        IInjector IServiceContainer.CreateInjector()
-        {
-            IReadOnlyList<Type> abstractEntries = Entries
-                .Where(entry => entry.GetType() == typeof(AbstractServiceEntry))
-                .Select(entry => entry.Interface)
-                .ToArray();
-
-            if (abstractEntries.Any())
+            if (ReservedInterfaces.Contains(entry.Interface))
             {
-                var ioEx = new InvalidOperationException(Resources.INVALID_INJECTOR_ENTRY);
-                ioEx.Data.Add(nameof(abstractEntries), abstractEntries);
+                var ioEx = new InvalidOperationException(Resources.RESERVED_INTERFACE);
+                ioEx.Data.Add(nameof(entry.Interface), entry.Interface);
                 throw ioEx;
             }
 
-            return Injector.Create(Entries);
+            using (FLock.AcquireWriterLock())
+            {
+                //
+                // Abstract bejegyzest felul lehet irni (de csak azt).
+                //
+
+                if (FEntries.TryGetValue(entry.Interface, out var entryToRemove) && entryToRemove.GetType() == typeof(AbstractServiceEntry))
+                {
+                    bool removed = FEntries.Remove(entry.Interface);
+                    Debug.Assert(removed, "Can't remove entry");
+                }
+
+                //
+                // Uj elem felvetele.
+                //
+
+                try
+                {
+                    FEntries.Add(entry.Interface, entry);
+                }
+                catch (ArgumentException e)
+                {
+                    throw new ServiceAlreadyRegisteredException(entry.Interface, e);
+                }
+            }
+
+            return this;
+        }
+
+        public AbstractServiceEntry Get(Type serviceInterface, QueryMode mode = QueryMode.Default)
+        {
+            if (serviceInterface == null)
+                throw new ArgumentNullException(nameof(serviceInterface));
+
+            AbstractServiceEntry result;
+
+            using (FLock.AcquireReaderLock())
+            {
+                //
+                // 1. eset: Vissza tudjuk adni amit kerestunk.
+                //
+
+                if (FEntries.TryGetValue(serviceInterface, out result))
+                    return result;
+
+                //
+                // 2. eset: A bejegyzes generikus parjat kell majd feldolgozni.
+                //
+
+                bool hasGenericEntry = mode.HasFlag(QueryMode.AllowSpecialization) &&
+                                       serviceInterface.IsGenericType() &&
+                                       FEntries.TryGetValue(serviceInterface.GetGenericTypeDefinition(), out result);
+
+                //
+                // 3. eset: Egyik se jott be, vagy kivetelt v NULL-t adunk vissza.
+                //
+
+                if (!hasGenericEntry)
+                    return !mode.HasFlag(QueryMode.ThrowOnError) ? (AbstractServiceEntry) null : throw new ServiceNotFoundException(serviceInterface);
+            }
+
+            Debug.Assert(result.IsGeneric());
+
+            //
+            // Ha van factory fv akkor nincs dolgunk [pl Factory(typeof(IGeneric<>), ...) hivas utan lehet ilyen bejegyzes]
+            //
+            // TODO: TBD: Ennek kulon flag?
+            //
+
+            if (result.Factory != null)
+                return result;
+
+            try
+            {
+                //
+                // Ha nem mi vagyunk a tulajdonosok akkor ertesitjuk a tulajdonost h tipizalja o a bejegyzest
+                // majd masoljuk az uj elemet sajat magunkhoz (epp ugy mint ha "orokoltuk" vna).
+                //
+                // Igy lehetove tesszuk h pl singleton elettartamnal a tipizalt peldany elettartamarol is a
+                // deklaralo kollekcio gondoskodjon.
+                //
+
+                if (result.Owner != this)
+                {
+                    Debug.Assert(result.Owner != null, $"Entry without owner for {serviceInterface}");
+
+                    return result
+                        .Owner
+                        .Get(serviceInterface, QueryMode.AllowSpecialization)
+
+                        //
+                        // A CopyTo() belsoleg a this.Add()-et fogja hivni, reszleteket lasd a kivetel kezeloben.
+                        //
+
+                        .CopyTo(this);
+                }
+
+                //
+                // Ha mi vagyunk a tulajdonosok akkor nekunk kell tipizalni majd felvenni a bejegyzest.
+                //
+
+                Debug.Assert(result.Implementation != null, $"Naked generic entry for {serviceInterface}");
+
+                Add(result = result.Specialize(serviceInterface.GetGenericArguments()));
+                return result;
+            }
+            catch (ServiceAlreadyRegisteredException)
+            {
+                //
+                // Parhuzamos esetben az Add() dobhat ServiceAlreadyRegisteredException-t ekkor 
+                // egyszeruen visszaadjuk a masik szal altal regisztralt peldanyt.
+                //
+
+                return Get(serviceInterface, QueryMode.ThrowOnError);
+            }
+        }
+
+        public int Count
+        {
+            get
+            {
+                using (FLock.AcquireReaderLock())
+                {
+                    return FEntries.Count;
+                }
+            }
         }
         #endregion
 
-        #region IQueryServiceInfo
-        /// <summary>
-        /// See <see cref="IQueryServiceInfo"/>
-        /// </summary>
-        IServiceInfo IQueryServiceInfo.QueryServiceInfo(Type iface) => FEntries.Query(iface); // TODO: TBD: abstract entry should not be queryable
+        #region IEnumerable
+        public IEnumerator<AbstractServiceEntry> GetEnumerator()
+        {
+            using (FLock.AcquireReaderLock())
+            {
+                //
+                // Masolatot adjunk vissza.
+                //
 
-        /// <summary>
-        /// See <see cref="IQueryServiceInfo"/>
-        /// </summary>
-        IReadOnlyCollection<IServiceInfo> IQueryServiceInfo.Entries => FEntries;
+                return ((IEnumerable<AbstractServiceEntry>) FEntries.Values.ToArray()).GetEnumerator();
+            }
+        }
+
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
         #endregion
 
         #region Protected
-        protected ServiceContainer() : this(null)
-        {
-        }
-
-        protected ServiceContainer(ServiceContainer parent) : base(parent)
-        {
-            FEntries = new ConcurrentServiceCollection(parent?.Entries);
-
-            Self = ProxyUtils.Chain<IServiceContainer>(this, ProxyFactory.Create<IServiceContainer, ParameterValidatorProxy<IServiceContainer>>);
-        }
-
-        protected override IServiceContainer CreateChild() => new ServiceContainer(this).Self;
+        protected override IServiceContainer CreateChild() => new ServiceContainer(this);
 
         protected override void Dispose(bool disposeManaged)
         {
             if (disposeManaged)
             {
-                FEntries.Dispose();
-                FEntries = null;
+                FLock.Dispose();
+
+                foreach (IDisposable disposable in this.Where(entry => entry.Owner == this))
+                {
+                    try
+                    {
+                        disposable.Dispose();
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.WriteLine(e);
+                    }
+                }
+
+                FEntries.Clear();
             }
 
             base.Dispose(disposeManaged);
         }
-
-        protected override IServiceContainer Self { get; }
         #endregion
 
+        #region Public
         /// <summary>
-        /// Creates a new <see cref="IServiceContainer"/> instance.
+        /// Creates a new <see cref="ServiceContainer"/> instance.
         /// </summary>
-        /// <returns>The newly created instance.</returns>
-        public static IServiceContainer Create() => new ServiceContainer().Self;
+        public ServiceContainer() : this(null)
+        {
+        }
+        #endregion
     }
 }

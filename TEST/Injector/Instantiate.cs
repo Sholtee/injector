@@ -11,9 +11,8 @@ using NUnit.Framework;
 namespace Solti.Utils.DI.Injector.Tests
 {
     using Properties;
-
-    [TestFixture]
-    public sealed partial class InjectorTests
+    
+    public partial class InjectorTestsBase<TContainer>
     {
         private sealed class MyClass
         {

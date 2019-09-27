@@ -11,9 +11,8 @@ using NUnit.Framework;
 namespace Solti.Utils.DI.Container.Tests
 {
     using Properties;
-
-    [TestFixture]
-    public sealed partial class ContainerTests
+    
+    public partial class ContainerTestsBase<TContainer>
     {
         [Test]
         public void Container_Lazy_ShouldBeAService()
@@ -26,7 +25,7 @@ namespace Solti.Utils.DI.Container.Tests
 
             Container.Lazy<IInterface_1>(mockTypeResolver.Object);
 
-            IServiceInfo serviceInfo = Container.QueryServiceInfo<IInterface_1>();
+            IServiceInfo serviceInfo = Container.Get<IInterface_1>(QueryMode.ThrowOnError);
 
             Assert.That(serviceInfo.IsService());
             Assert.That(serviceInfo.IsLazy());
