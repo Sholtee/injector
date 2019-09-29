@@ -117,8 +117,7 @@ namespace Solti.Utils.DI.Container.Tests
         public void IServiceContainer_GetShouldReturnTheSpecializedInheritedEntry()
         {
             IServiceContainer container = CreateContainer();
-            var entry = new TransientServiceEntry(typeof(IList<>), typeof(MyList<>), container);
-            container.Add(entry);
+            container.Add(new SingletonServiceEntry(typeof(IList<>), typeof(MyList<>), container));
 
             using (IServiceContainer child = container.CreateChild())
             {
@@ -126,12 +125,12 @@ namespace Solti.Utils.DI.Container.Tests
                 Assert.Throws<ServiceNotFoundException>(() => child.Get(typeof(IList<int>), QueryMode.ThrowOnError));
                 Assert.That(container.Count, Is.EqualTo(1));
                 Assert.That(child.Count, Is.EqualTo(1));
-                Assert.That(child.Get(typeof(IList<int>), QueryMode.AllowSpecialization | QueryMode.ThrowOnError), Is.EqualTo(new TransientServiceEntry(typeof(IList<int>), typeof(MyList<int>), container)));
+                Assert.That(child.Get(typeof(IList<int>), QueryMode.AllowSpecialization | QueryMode.ThrowOnError), Is.EqualTo(new SingletonServiceEntry(typeof(IList<int>), typeof(MyList<int>), container)));
                 Assert.That(container.Count, Is.EqualTo(2));
                 Assert.That(child.Count, Is.EqualTo(2));
             }
 
-            Assert.That(container.Get(typeof(IList<int>), QueryMode.ThrowOnError), Is.EqualTo(new TransientServiceEntry(typeof(IList<int>), typeof(MyList<int>), container)));
+            Assert.That(container.Get(typeof(IList<int>), QueryMode.ThrowOnError), Is.EqualTo(new SingletonServiceEntry(typeof(IList<int>), typeof(MyList<int>), container)));
         }
 
         [Test]

@@ -32,7 +32,7 @@ namespace Solti.Utils.DI.Internals
             Factory = factory;
         }
 
-        protected ProducibleServiceEntry(Type @interface, Lifetime lifetime, Type implementation, IServiceContainer owner) : this(@interface, lifetime, !@interface.IsGenericTypeDefinition() ? Resolver.Get(implementation).ConvertToFactory() : null, owner)
+        protected ProducibleServiceEntry(Type @interface, Lifetime lifetime, Type implementation, IServiceContainer owner) : this(@interface, lifetime, !@interface.IsGenericTypeDefinition() ? Resolver.GetAsFactory(implementation) : null, owner)
         {
             UserData = implementation;
         }
@@ -58,7 +58,7 @@ namespace Solti.Utils.DI.Internals
             //
 
             if (!@interface.IsGenericTypeDefinition())
-                Factory = Resolver.Get(lazyImplementation).ConvertToFactory();
+                Factory = Resolver.GetAsFactory(lazyImplementation);
         }
 
         protected void CheckProducible()

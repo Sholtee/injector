@@ -3,8 +3,6 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
-using System;
-
 using Moq;
 using NUnit.Framework;
 
@@ -30,12 +28,12 @@ namespace Solti.Utils.DI.Container.Setup.Tests
         {
             var mockContainer = new Mock<IServiceContainer>(MockBehavior.Strict);
             mockContainer
-                .Setup(i => i.Service(It.IsAny<Type>(), It.IsAny<Type>(), It.IsAny<Lifetime>()))
+                .Setup(i => i.Add(It.IsAny<AbstractServiceEntry>()))
                 .Returns(mockContainer.Object);
 
             mockContainer.Object.Setup(typeof(GenericService<>).Assembly());
 
-            mockContainer.Verify(i => i.Service(It.Is<Type>(t => t == typeof(IGenericService<>)), It.Is<Type>(t => t == typeof(GenericService<>)), It.Is<Lifetime>(lt => lt == Lifetime.Scoped)), Times.Once);
+            mockContainer.Verify(i => i.Add(It.Is<ScopedServiceEntry>(se => se.Equals(new ScopedServiceEntry(typeof(IGenericService<>), typeof(GenericService<>), mockContainer.Object)))), Times.Once);
         }
     }
 }
