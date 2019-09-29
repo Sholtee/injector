@@ -64,7 +64,7 @@ namespace Solti.Utils.DI.Internals
         #region IComposite
         public TInterface Parent => FParent as TInterface;
 
-        public IReadOnlyCollection<TInterface> Children
+        public virtual IReadOnlyCollection<TInterface> Children
         {
             get
             {
@@ -85,7 +85,7 @@ namespace Solti.Utils.DI.Internals
         /// <returns>The newly created child.</returns>
         public abstract TInterface CreateChild();
 
-        public void AddChild(TInterface child)
+        public virtual void AddChild(TInterface child)
         {
             Debug.Assert(child.Parent == this, "Invalid parent");  // TODO: exception
 
@@ -97,7 +97,7 @@ namespace Solti.Utils.DI.Internals
             }
         }
 
-        public void RemoveChild(TInterface child)
+        public virtual void RemoveChild(TInterface child)
         {
             bool removed;
 

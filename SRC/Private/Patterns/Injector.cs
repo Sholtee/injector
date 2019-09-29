@@ -14,7 +14,6 @@ namespace Solti.Utils.DI.Internals
 
     internal sealed class Injector : ServiceContainer, IInjector
     {
-        #region Private
         private readonly Stack<Type> FCurrentPath = new Stack<Type>();
 
         private Injector() => throw new NotSupportedException();
@@ -33,7 +32,6 @@ namespace Solti.Utils.DI.Internals
                 owner: this
             ));
         }
-        #endregion
 
         #region IInjector
         public object Get(Type iface, Type target)
@@ -121,6 +119,16 @@ namespace Solti.Utils.DI.Internals
         public event InjectorEventHandler<InjectorEventArg> OnServiceRequest;
 
         public event InjectorEventHandler<InjectorEventArg> OnServiceRequested;
+        #endregion
+
+        #region Composite
+        public override IReadOnlyCollection<IServiceContainer> Children => throw new NotSupportedException();
+
+        public override IServiceContainer CreateChild() => throw new NotSupportedException();
+
+        public override void AddChild(IServiceContainer child) => throw new NotSupportedException();
+
+        public override void RemoveChild(IServiceContainer child) => throw new NotSupportedException();
         #endregion
     }
 }
