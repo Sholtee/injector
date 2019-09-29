@@ -283,14 +283,7 @@ namespace Solti.Utils.DI.Container.Tests
             Assert.AreEqual(GetHashCode(Container.Get<IInterface_2>(QueryMode.ThrowOnError)), GetHashCode(child.Get<IInterface_2>(QueryMode.ThrowOnError)));
             Assert.AreEqual(GetHashCode(Container.Get<IDisposable>(QueryMode.ThrowOnError)), GetHashCode(child.Get<IDisposable>(QueryMode.ThrowOnError)));
 
-            using (IInjector injector = child.CreateInjector())
-            {
-                Assert.AreEqual(GetHashCode(injector.QueryServiceInfo<IInterface_1>()), GetHashCode(child.Get<IInterface_1>(QueryMode.ThrowOnError)));
-                Assert.AreEqual(GetHashCode(injector.QueryServiceInfo<IInterface_2>()), GetHashCode(child.Get<IInterface_2>(QueryMode.ThrowOnError)));
-                Assert.AreEqual(GetHashCode(injector.QueryServiceInfo<IDisposable>()), GetHashCode(child.Get<IDisposable>(QueryMode.ThrowOnError)));
-            }
-
-            int GetHashCode(IServiceInfo info) => new
+            int GetHashCode(AbstractServiceEntry info) => new
             {
                 //
                 // Owner NE szerepeljen

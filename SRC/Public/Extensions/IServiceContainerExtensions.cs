@@ -273,7 +273,7 @@ namespace Solti.Utils.DI
                 throw ioEx;
             }
 
-            return Injector.Create(self);
+            return new Injector(self);
         }
 
         /// <summary>

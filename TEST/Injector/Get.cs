@@ -99,8 +99,6 @@ namespace Solti.Utils.DI.Injector.Tests
                 Assert.That(instance, Is.InstanceOf<Implementation_6<string>>());
                 Assert.That(instance.Interface3, Is.InstanceOf<Implementation_3<string>>());
                 Assert.That(instance.Interface3.Interface1, Is.InstanceOf<Implementation_1>());
-                Assert.DoesNotThrow(() => injector.QueryServiceInfo<IInterface_3<string>>());
-                Assert.DoesNotThrow(() => injector.QueryServiceInfo<IInterface_6<string>>());
             }
         }
 

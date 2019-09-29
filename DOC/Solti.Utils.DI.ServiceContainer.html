@@ -62,16 +62,16 @@
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
-      <a class="xref" href="Solti.Utils.DI.Internals.Composite-1.html#Solti_Utils_DI_Internals_Composite_1_Solti_Utils_DI_Internals_IComposite_TInterface__Parent">Composite&lt;IServiceContainer&gt;.IComposite&lt;IServiceContainer&gt;.Parent</a>
+      <a class="xref" href="Solti.Utils.DI.Internals.Composite-1.html#Solti_Utils_DI_Internals_Composite_1_Parent">Composite&lt;IServiceContainer&gt;.Parent</a>
     </div>
     <div>
-      <a class="xref" href="Solti.Utils.DI.Internals.Composite-1.html#Solti_Utils_DI_Internals_Composite_1_Solti_Utils_DI_Internals_IComposite_TInterface__Children">Composite&lt;IServiceContainer&gt;.IComposite&lt;IServiceContainer&gt;.Children</a>
+      <a class="xref" href="Solti.Utils.DI.Internals.Composite-1.html#Solti_Utils_DI_Internals_Composite_1_Children">Composite&lt;IServiceContainer&gt;.Children</a>
     </div>
     <div>
-      <a class="xref" href="Solti.Utils.DI.Internals.Composite-1.html#Solti_Utils_DI_Internals_Composite_1_Solti_Utils_DI_Internals_IComposite_TInterface__CreateChild">Composite&lt;IServiceContainer&gt;.IComposite&lt;IServiceContainer&gt;.CreateChild()</a>
+      <a class="xref" href="Solti.Utils.DI.Internals.Composite-1.html#Solti_Utils_DI_Internals_Composite_1_AddChild__0_">Composite&lt;IServiceContainer&gt;.AddChild(IServiceContainer)</a>
     </div>
     <div>
-      <a class="xref" href="Solti.Utils.DI.Internals.Composite-1.html#Solti_Utils_DI_Internals_Composite_1_Solti_Utils_DI_Internals_IComposite_TInterface__IsRoot">Composite&lt;IServiceContainer&gt;.IComposite&lt;IServiceContainer&gt;.IsRoot</a>
+      <a class="xref" href="Solti.Utils.DI.Internals.Composite-1.html#Solti_Utils_DI_Internals_Composite_1_RemoveChild__0_">Composite&lt;IServiceContainer&gt;.RemoveChild(IServiceContainer)</a>
     </div>
     <div>
       <a class="xref" href="Solti.Utils.DI.Internals.Disposable.html#Solti_Utils_DI_Internals_Disposable_Disposed">Disposable.Disposed</a>
@@ -100,6 +100,31 @@
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public ServiceContainer()</code></pre>
   </div>
+  <a id="Solti_Utils_DI_ServiceContainer__ctor_" data-uid="Solti.Utils.DI.ServiceContainer.#ctor*"></a>
+  <h4 id="Solti_Utils_DI_ServiceContainer__ctor_Solti_Utils_DI_IServiceContainer_" data-uid="Solti.Utils.DI.ServiceContainer.#ctor(Solti.Utils.DI.IServiceContainer)">ServiceContainer(IServiceContainer)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected ServiceContainer(IServiceContainer parent)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.IServiceContainer.html">IServiceContainer</a></td>
+        <td><span class="parametername">parent</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   <h3 id="properties">Properties
   </h3>
   <a id="Solti_Utils_DI_ServiceContainer_Count_" data-uid="Solti.Utils.DI.ServiceContainer.Count*"></a>
@@ -173,7 +198,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected override IServiceContainer CreateChild()</code></pre>
+    <pre><code class="lang-csharp hljs">public override IServiceContainer CreateChild()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">

@@ -45,20 +45,11 @@
   <div class="markdown level0 summary"><p>Provides a mechanism for injecting resources.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <a class="xref" href="Solti.Utils.DI.IQueryServiceInfo.html#Solti_Utils_DI_IQueryServiceInfo_QueryServiceInfo_Type_">IQueryServiceInfo.QueryServiceInfo(Type)</a>
-    </div>
-    <div>
-      <a class="xref" href="Solti.Utils.DI.IQueryServiceInfo.html#Solti_Utils_DI_IQueryServiceInfo_Entries">IQueryServiceInfo.Entries</a>
-    </div>
-  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Solti.Utils.DI.html">Solti.Utils.DI</a></h6>
   <h6><strong>Assembly</strong>: Injector.dll</h6>
   <h5 id="Solti_Utils_DI_IInjector_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public interface IInjector : IQueryServiceInfo, IDisposable</code></pre>
+    <pre><code class="lang-csharp hljs">public interface IInjector : IDisposable</code></pre>
   </div>
   <h5 id="Solti_Utils_DI_IInjector_remarks"><strong>Remarks</strong></h5>
   <div class="markdown level0 remarks"><p>Since requesting a generic service may cause write operations the <a class="xref" href="Solti.Utils.DI.IInjector.html">IInjector</a> should not be treated as thread safe.</p>
@@ -255,9 +246,6 @@
   </div>
   <div>
       <a class="xref" href="Solti.Utils.DI.IInjectorExtensions.html#Solti_Utils_DI_IInjectorExtensions_Instantiate__1_Solti_Utils_DI_IInjector_IReadOnlyDictionary_System_String_System_Object__">IInjectorExtensions.Instantiate&lt;TClass&gt;(IInjector, IReadOnlyDictionary&lt;String, Object&gt;)</a>
-  </div>
-  <div>
-      <a class="xref" href="Solti.Utils.DI.IQueryServiceInfoExtensions.html#Solti_Utils_DI_IQueryServiceInfoExtensions_QueryServiceInfo__1_Solti_Utils_DI_IQueryServiceInfo_">IQueryServiceInfoExtensions.QueryServiceInfo&lt;TInterface&gt;(IQueryServiceInfo)</a>
   </div>
 </article>
           </div>

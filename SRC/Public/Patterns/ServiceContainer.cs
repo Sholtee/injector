@@ -8,7 +8,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+#if NETSTANDARD1_6
 using System.Reflection;
+#endif
 using System.Threading;
 
 namespace Solti.Utils.DI
@@ -20,29 +22,16 @@ namespace Solti.Utils.DI
     /// </summary>
     public class ServiceContainer : Composite<IServiceContainer>, IServiceContainer
     {
-        #region Private
         private readonly Dictionary<Type, AbstractServiceEntry> FEntries;
+
+        //
+        // Singleton elettartamnal parhuzamosan is modositasra kerulhet a  bejegyzes lista 
+        // (generikus bejegyzes lezarasakor) ezert szalbiztosnak kell h legyen.
+        //
 
         private readonly ReaderWriterLockSlim FLock = new ReaderWriterLockSlim();
 
-        private ServiceContainer(ServiceContainer parent) : base(parent)
-        {
-            //
-            // Singleton elettartamnal parhuzamosan is modositasra kerulhet a lista (generikus 
-            // bejegyzes lezarasakor) ezert szalbiztosnak kell h legyen.
-            //
-
-            FEntries = new Dictionary<Type, AbstractServiceEntry>(parent?.Count ?? 0);
-            if (parent == null) return;
-
-            foreach (AbstractServiceEntry entry in parent)
-            {
-                entry.CopyTo(this);
-            }
-        }
-        #endregion
-
-        #region IServiceContainer
+#region IServiceContainer
         public IServiceContainer Add(AbstractServiceEntry entry)
         {
             if (entry == null)
@@ -175,9 +164,9 @@ namespace Solti.Utils.DI
                 }
             }
         }
-        #endregion
+#endregion
 
-        #region IEnumerable
+#region IEnumerable
         public IEnumerator<AbstractServiceEntry> GetEnumerator()
         {
             using (FLock.AcquireReaderLock())
@@ -191,10 +180,19 @@ namespace Solti.Utils.DI
         }
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-        #endregion
+#endregion
 
-        #region Protected
-        protected override IServiceContainer CreateChild() => new ServiceContainer(this);
+#region Protected
+        protected ServiceContainer(IServiceContainer parent) : base(parent)
+        {
+            FEntries = new Dictionary<Type, AbstractServiceEntry>(parent?.Count ?? 0);
+            if (parent == null) return;
+
+            foreach (AbstractServiceEntry entry in parent)
+            {
+                entry.CopyTo(this);
+            }
+        }
 
         protected override void Dispose(bool disposeManaged)
         {
@@ -223,16 +221,18 @@ namespace Solti.Utils.DI
             }
 
             base.Dispose(disposeManaged);
-        }
-        #endregion
+        }   
+#endregion
 
-        #region Public
+#region Public
         /// <summary>
         /// Creates a new <see cref="ServiceContainer"/> instance.
         /// </summary>
         public ServiceContainer() : this(null)
         {
         }
-        #endregion
+
+        public override IServiceContainer CreateChild() => new ServiceContainer(this);
+#endregion
     }
 }

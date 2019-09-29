@@ -10,6 +10,7 @@ using NUnit.Framework;
 
 namespace Solti.Utils.DI.Container.Tests
 {
+    using Internals;
     using Properties;
     
     public partial class ContainerTestsBase<TContainer>
@@ -25,12 +26,12 @@ namespace Solti.Utils.DI.Container.Tests
 
             Container.Lazy<IInterface_1>(mockTypeResolver.Object);
 
-            IServiceInfo serviceInfo = Container.Get<IInterface_1>(QueryMode.ThrowOnError);
+            AbstractServiceEntry entry = Container.Get<IInterface_1>(QueryMode.ThrowOnError);
 
-            Assert.That(serviceInfo.IsService());
-            Assert.That(serviceInfo.IsLazy());
-            Assert.False(serviceInfo.IsFactory());
-            Assert.False(serviceInfo.IsInstance());
+            Assert.That(entry.IsService());
+            Assert.That(entry.IsLazy());
+            Assert.False(entry.IsFactory());
+            Assert.False(entry.IsInstance());
 
             mockTypeResolver.Verify(i => i.Resolve(It.IsAny<Type>()), Times.Never);
         }

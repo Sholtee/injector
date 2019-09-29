@@ -18,21 +18,19 @@ namespace Solti.Utils.DI.Internals
     public abstract class Composite<TInterface>: Disposable, IComposite<TInterface> where TInterface: class, IComposite<TInterface>
     {
         private readonly HashSet<TInterface> FChildren = new HashSet<TInterface>();
-        private readonly Composite<TInterface> FParent;
+        private readonly IComposite<TInterface> FParent;
         private readonly ReaderWriterLockSlim FLock = new ReaderWriterLockSlim();
-
-        private void RemoveChild(Composite<TInterface> child)
-        {
-            bool removed = FChildren.Remove(child as TInterface);
-            Debug.Assert(removed, "Child could not be found");
-        }
 
         #region Protected
         /// <summary>
         /// Creates a new instance.
         /// </summary>
         /// <param name="parent">The parent entity. It can be null.</param>
-        protected Composite(Composite<TInterface> parent) => FParent = parent;
+        protected Composite(IComposite<TInterface> parent)
+        {
+            FParent = parent;
+            FParent?.AddChild(this as TInterface);
+        }
 
         /// <summary>
         /// Disposal logic related to this class.
@@ -46,7 +44,7 @@ namespace Solti.Utils.DI.Internals
                 // Kivesszuk magunkat a szulo gyerekei kozul (kiveve ha gyoker elemunk van, ott nincs szulo).
                 //
 
-                FParent?.RemoveChild(this);
+                FParent?.RemoveChild(this as TInterface);
 
                 //
                 // Osszes gyereket Dispose()-oljuk. A ToList()-es varazslat azert kell h iteracio kozben
@@ -61,30 +59,53 @@ namespace Solti.Utils.DI.Internals
 
             base.Dispose(disposeManaged);
         }
+        #endregion
+
+        #region IComposite
+        public TInterface Parent => FParent as TInterface;
+
+        public IReadOnlyCollection<TInterface> Children
+        {
+            get
+            {
+                using (FLock.AcquireReaderLock())
+                {
+                    //
+                    // Masolatot adjunk vissza.
+                    //
+
+                    return FChildren.ToArray();
+                }
+            }
+        }
 
         /// <summary>
         /// Creates a new child. For more information see the <see cref="IComposite{T}"/> interface.
         /// </summary>
         /// <returns>The newly created child.</returns>
-        protected abstract TInterface CreateChild();
-        #endregion
+        public abstract TInterface CreateChild();
 
-        #region IComposite
-        TInterface IComposite<TInterface>.Parent => FParent as TInterface;
-
-        IReadOnlyCollection<TInterface> IComposite<TInterface>.Children => FChildren;
-
-        TInterface IComposite<TInterface>.CreateChild()
+        public void AddChild(TInterface child)
         {
-            TInterface result = CreateChild();
+            Debug.Assert(child.Parent == this, "Invalid parent");  // TODO: exception
 
             using (FLock.AcquireWriterLock())
-                FChildren.Add(result);
+            {
+                Debug.Assert(!FChildren.Contains(child), "Attempt to add a child twice");
 
-            return result;
+                FChildren.Add(child);
+            }
         }
 
-        bool IComposite<TInterface>.IsRoot => FParent == null;
+        public void RemoveChild(TInterface child)
+        {
+            bool removed;
+
+            using (FLock.AcquireWriterLock())
+                removed = FChildren.Remove(child);
+                    
+            Debug.Assert(removed, "Child could not be found"); // TODO: exception  
+        }
         #endregion
     }
 }

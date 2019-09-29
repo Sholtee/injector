@@ -11,68 +11,51 @@ using System.Linq;
 namespace Solti.Utils.DI.Internals
 {
     using Properties;
-    using Proxy;
 
-    internal sealed class Injector : Disposable, IInjector
+    internal sealed class Injector : ServiceContainer, IInjector
     {
         #region Private
         private readonly Stack<Type> FCurrentPath = new Stack<Type>();
 
-        private readonly IServiceContainer FContainer;
-
         private Injector() => throw new NotSupportedException();
 
-        private Injector(IServiceContainer parent)
+        public Injector(IServiceContainer parent): base(parent)
         {
-            FContainer = parent.CreateChild();
-
             //
             // Beallitjuk a proxyt, majd felvesszuk sajat magunkat.
             //
 
-            FContainer.Add(new InstanceServiceEntry
+            Add(new InstanceServiceEntry
             (
-                typeof(IInjector),
-                    
-                //
-                // "target" kell h a megfelelo overload-ot hivjuk
-                //
-
-                Self = ProxyUtils.Chain<IInjector>(this, me => ProxyFactory.Create<IInjector, ParameterValidatorProxy<IInjector>>(target: me)),
+                @interface: typeof(IInjector),
+                value: this,
                 releaseOnDispose: false,
-                owner: FContainer
+                owner: this
             ));
         }
-
-        private IInjector Self { get; }
         #endregion
 
-        #region Protected
-        protected override void Dispose(bool disposeManaged)
+        #region IInjector
+        public object Get(Type iface, Type target)
         {
-            //
-            // FContainer a szuloen keresztul mar fel lehet szabaditva, ilyenkor teljesen
-            // patent ha ObjectAlreadyDisposedException-t dob mert az az jelenti h a szulo
-            // kontener felszabaditasa utan probaltuk az Injector-t magat felszabaditani.
-            //
-            // TODO: FIXME: Viszont a fentibol fakadoan itt mas Dispose() hivas nem szerepelhet.
-            //
+            if (iface == null)
+                throw new ArgumentNullException(nameof(iface));
 
-            if (disposeManaged) FContainer.Dispose();
+            if (!iface.IsInterface())
+                throw new ArgumentException(Resources.NOT_AN_INTERFACE, nameof(iface));
 
-            base.Dispose(disposeManaged);
-        }
-        #endregion
+            if (iface.IsGenericTypeDefinition())
+                throw new ArgumentException(Resources.CANT_INSTANTIATE_GENERICS, nameof(iface));
 
-        #region Internals
-        internal object Get(Type iface, Type target)
-        {
+            if (target != null && !target.IsClass())
+                throw new ArgumentException(Resources.NOT_A_CLASS, nameof(target));
+
             //
             // Ha az OnServiceRequest esemenyben visszakaptunk szerviz peldanyt akkor visszaadjuk azt.
             //
 
             var ev = new InjectorEventArg(iface, target);
-            OnServiceRequest?.Invoke(Self, ev);
+            OnServiceRequest?.Invoke(this, ev);
             if (ev.Service != null) return ev.Service;
 
             FCurrentPath.Push(iface);
@@ -85,15 +68,15 @@ namespace Solti.Utils.DI.Internals
                 if (FCurrentPath.Count(t => t == iface) > 1)
                     throw new InvalidOperationException(string.Format(Resources.CIRCULAR_REFERENCE, string.Join(" -> ", FCurrentPath)));
 
-                IServiceFactory factory = FContainer.Get(iface, QueryMode.AllowSpecialization | QueryMode.ThrowOnError);
+                IServiceFactory factory = Get(iface, QueryMode.AllowSpecialization | QueryMode.ThrowOnError);
 
                 //
                 // Ha az OnServiceRequested esemenyben felulirjak a szervizt akkor azt
                 // adjuk vissza.
                 //
 
-                ev.Service = factory.GetService(Self, iface);
-                OnServiceRequested?.Invoke(Self, ev);
+                ev.Service = factory.GetService(this, iface);
+                OnServiceRequested?.Invoke(this, ev);
 
                 return ev.Service;
             }
@@ -104,12 +87,21 @@ namespace Solti.Utils.DI.Internals
             }
         }
 
-        internal object Instantiate(Type @class, IReadOnlyDictionary<string, object> explicitArgs)
+        public object Instantiate(Type @class, IReadOnlyDictionary<string, object> explicitArgs)
         {
+            if (@class == null)
+                throw new ArgumentNullException(nameof(@class));
+
+            if (!@class.IsClass())
+                throw new ArgumentException(Resources.NOT_A_CLASS, nameof(@class));
+
+            if (@class.IsGenericTypeDefinition())
+                throw new ArgumentException(Resources.CANT_INSTANTIATE_GENERICS, nameof(@class));
+
             //
             // Itt nincs ertelme OnServiceRequest esemenynek mivel nincs szerviz interface-unk.
             //
-           
+
             Func<IInjector, IReadOnlyDictionary<string, object>, object> factory = Resolver.GetExtended(@class);
 
             //
@@ -119,36 +111,16 @@ namespace Solti.Utils.DI.Internals
 
             var ev = new InjectorEventArg(@class)
             {
-                Service = factory(Self, explicitArgs ?? new Dictionary<string, object>(0))
+                Service = factory(this, explicitArgs ?? new Dictionary<string, object>(0))
             };
-            OnServiceRequested?.Invoke(Self, ev);
+            OnServiceRequested?.Invoke(this, ev);
 
             return ev.Service;
         }
 
-        internal static IInjector Create(IServiceContainer parent) => new Injector(parent).Self;
-        #endregion
-
-        #region IInjector
-        /// <summary>
-        /// See <see cref="IInjector"/>
-        /// </summary>
-        object IInjector.Get(Type iface, Type target) => Get(iface, target);
-
-        /// <summary>
-        /// See <see cref="IInjector"/>
-        /// </summary>
-        object IInjector.Instantiate(Type @class, IReadOnlyDictionary<string, object> explicitArgs) => Instantiate(@class, explicitArgs);
-
         public event InjectorEventHandler<InjectorEventArg> OnServiceRequest;
 
         public event InjectorEventHandler<InjectorEventArg> OnServiceRequested;
-        #endregion
-
-        #region IQueryServiceInfo
-        IServiceInfo IQueryServiceInfo.QueryServiceInfo(Type iface) => FContainer.Get(iface);
-
-        IReadOnlyCollection<IServiceInfo> IQueryServiceInfo.Entries => FContainer.ToArray();
         #endregion
     }
 }
