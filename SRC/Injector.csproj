@@ -53,10 +53,6 @@
     </EmbeddedResource>
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Private\Annotations\" />
-  </ItemGroup>
-
   <PropertyGroup>
     <NoDocfx Condition="'$(NoDocfx)'==''">False</NoDocfx>
   </PropertyGroup>

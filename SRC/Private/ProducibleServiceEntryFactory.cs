@@ -4,6 +4,9 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -11,25 +14,26 @@ namespace Solti.Utils.DI.Internals
 
     internal static class ProducibleServiceEntryFactory
     {
+        private static readonly IReadOnlyDictionary<Lifetime, Type> ServiceEntryTypes = Enum
+            .GetValues(typeof(Lifetime))
+            .Cast<Lifetime>()
+            .Select(lt => new
+            {
+                Lifetime = lt,
+                typeof(Lifetime)
+                    .GetMember(lt.ToString())
+                    .Single()
+                    .GetCustomAttribute<RelatedEntryKindAttribute>()?
+                    .ServiceEntry
+            })
+            .Where(lt => lt.ServiceEntry != null)
+            .ToDictionary(lt => lt.Lifetime, lt => lt.ServiceEntry);
+
         public static ProducibleServiceEntry CreateEntry<TParam>(Lifetime? lifetime, Type @interface, TParam param, IServiceContainer owner)
         {
-            Type serviceEntryType;
-
-            switch (lifetime)
-            {
-                case Lifetime.Singleton:
-                    serviceEntryType = typeof(SingletonServiceEntry);
-                    break;
-                case Lifetime.Scoped:
-                    serviceEntryType = typeof(ScopedServiceEntry);
-                    break;
-                case Lifetime.Transient:
-                    serviceEntryType = typeof(TransientServiceEntry);
-                    break;
-                default:
-                    throw new ArgumentException(string.Format(Resources.UNKNOWN_LIFETIME, lifetime), nameof(lifetime));                  
-            }
-
+            if (lifetime == null || !ServiceEntryTypes.TryGetValue(lifetime.Value, out var serviceEntryType))
+                throw new ArgumentException(string.Format(Resources.UNKNOWN_LIFETIME, lifetime), nameof(lifetime));                
+        
             return (ProducibleServiceEntry) serviceEntryType.CreateInstance
             (
                 new[]
