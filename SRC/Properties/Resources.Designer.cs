@@ -64,15 +64,6 @@ namespace Solti.Utils.DI.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The given class should not be abstract!.
-        /// </summary>
-        internal static string ABSTRACT {
-            get {
-                return ResourceManager.GetString("ABSTRACT", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to &quot;{0}&quot; is already registered..
         /// </summary>
         internal static string ALREADY_REGISTERED {
@@ -208,20 +199,20 @@ namespace Solti.Utils.DI.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The target does not implement the desired method..
-        /// </summary>
-        internal static string METHOD_NOT_SUPPORTED {
-            get {
-                return ResourceManager.GetString("METHOD_NOT_SUPPORTED", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Child must have the same parent on which the operation was perfomred..
         /// </summary>
         internal static string INVALID_PARENT {
             get {
                 return ResourceManager.GetString("INVALID_PARENT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The target does not implement the desired method..
+        /// </summary>
+        internal static string METHOD_NOT_SUPPORTED {
+            get {
+                return ResourceManager.GetString("METHOD_NOT_SUPPORTED", resourceCulture);
             }
         }
         
