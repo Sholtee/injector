@@ -122,8 +122,6 @@ namespace Solti.Utils.DI.Internals
         #endregion
 
         #region Composite
-        public override IReadOnlyCollection<IServiceContainer> Children => throw new NotSupportedException();
-
         public override IServiceContainer CreateChild() => throw new NotSupportedException();
 
         public override void AddChild(IServiceContainer child) => throw new NotSupportedException();
