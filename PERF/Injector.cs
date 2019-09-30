@@ -11,7 +11,7 @@ namespace Solti.Utils.DI.Perf
 {
     using static Consts;
 
-    [MemoryDiagnoser, MarkdownExporterAttribute.GitHub]
+    [MemoryDiagnoser]
     public class Injector
     {
         private IInjector FInjector;
@@ -52,13 +52,13 @@ namespace Solti.Utils.DI.Perf
         }
         #endregion
 
-        [Params(Lifetime.Transient, Lifetime.Scoped)]
+        [Params(Lifetime.Transient, Lifetime.Scoped, Lifetime.Singleton)]
         public Lifetime LifeTime { get; set; }
 
         [GlobalSetup]
         public void Setup()
         {
-            FInjector = ServiceContainer.Create()
+            FInjector = new ServiceContainer()
                 .Service<IInterface_1, Implementation_1>(LifeTime)
                 .Service(typeof(IInterface_2<>), typeof(Implementation_2<>), LifeTime)
                 .Service<IInterface_3<string>, Implementation_3<string>>(LifeTime)

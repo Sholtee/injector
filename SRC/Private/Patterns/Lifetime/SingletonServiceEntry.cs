@@ -15,17 +15,23 @@ namespace Solti.Utils.DI.Internals
     internal class SingletonServiceEntry : ProducibleServiceEntry
     {
         private object FValue;
+
+        //
+        // Lock azert kell mert ez az entitas egyszerre tobb szerviz kollekcioban is szerepelhet
+        // (GetService() lehet hivva parhuzamosan).
+        //
+
         private readonly object FLock = new object();
 
-        public SingletonServiceEntry(Type @interface, Func<IInjector, Type, object> factory, ServiceCollection owner) : base(@interface, DI.Lifetime.Singleton, factory, owner)
+        public SingletonServiceEntry(Type @interface, Func<IInjector, Type, object> factory, IServiceContainer owner) : base(@interface, DI.Lifetime.Singleton, factory, owner)
         {
         }
 
-        public SingletonServiceEntry(Type @interface, Type implementation, ServiceCollection owner) : base(@interface, DI.Lifetime.Singleton, implementation, owner)
+        public SingletonServiceEntry(Type @interface, Type implementation, IServiceContainer owner) : base(@interface, DI.Lifetime.Singleton, implementation, owner)
         {
         }
 
-        public SingletonServiceEntry(Type @interface, ITypeResolver implementation, ServiceCollection owner) : base(@interface, DI.Lifetime.Singleton, implementation, owner)
+        public SingletonServiceEntry(Type @interface, ITypeResolver implementation, IServiceContainer owner) : base(@interface, DI.Lifetime.Singleton, implementation, owner)
         {
         }
 

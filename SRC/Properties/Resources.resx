@@ -120,9 +120,6 @@
   <data name="ABSTRACT" xml:space="preserve">
     <value>The given class should not be abstract!</value>
   </data>
-  <data name="ALREADY_DISPOSED" xml:space="preserve">
-    <value>The object has already been disposed.</value>
-  </data>
   <data name="ALREADY_REGISTERED" xml:space="preserve">
     <value>"{0}" is already registered.</value>
   </data>
@@ -131,6 +128,12 @@
   </data>
   <data name="CANT_PROXY" xml:space="preserve">
     <value>Creating proxy is not allowed here.</value>
+  </data>
+  <data name="CHILD_ALREADY_CONTAINED" xml:space="preserve">
+    <value>Attempt to add a child twice.</value>
+  </data>
+  <data name="CHILD_NOT_CONTAINED" xml:space="preserve">
+    <value>Child not contained.</value>
   </data>
   <data name="CIRCULAR_REFERENCE" xml:space="preserve">
     <value>Circular reference: {0}.</value>
@@ -165,6 +168,9 @@
   <data name="METHOD_NOT_SUPPORTED" xml:space="preserve">
     <value>The target does not implement the desired method.</value>
   </data>
+  <data name="INVALID_PARENT" xml:space="preserve">
+    <value>Child must have the same parent on which the operation was perfomred.</value>
+  </data>
   <data name="NOT_AN_INTERFACE" xml:space="preserve">
     <value>Parameter must be an interface.</value>
   </data>
@@ -182,9 +188,6 @@
   </data>
   <data name="PROPERTY_NOT_SUPPORTED" xml:space="preserve">
     <value>The target does not implement the desired property.</value>
-  </data>
-  <data name="RESERVED_INTERFACE" xml:space="preserve">
-    <value>Registering reserved interfaces is not allowed.</value>
   </data>
   <data name="SERVICE_NOT_FOUND" xml:space="preserve">
     <value>No registered implementation for "{0}".</value>

@@ -1,9 +1,21 @@
-# Injector.NET [![Build status](https://ci.appveyor.com/api/projects/status/2fej57bdmyij4v08?svg=true)](https://ci.appveyor.com/project/Sholtee/injector) [![NuGet Badge](https://buildstats.info/nuget/injector.net)](https://www.nuget.org/packages/injector.net/)
-> A featherweight dependency injector written in C#.
+# Injector.NET [![Build status](https://ci.appveyor.com/api/projects/status/2fej57bdmyij4v08?svg=true)](https://ci.appveyor.com/project/Sholtee/injector) [![NuGet Badge](https://buildstats.info/nuget/injector.net)](https://www.nuget.org/packages/injector.net/) [![Coverage Status](https://coveralls.io/repos/github/Sholtee/injector/badge.svg?branch=master)](https://coveralls.io/github/Sholtee/injector?branch=master)
+> A featherweight dependency injector & proxy generator written in C#.
 
-**This documentation is OUTDATED, new version is coming soon**
+**This documentation is OUTDATED, new version coming soon**
 ## Overview
 [Dependency Injection](https://en.wikipedia.org/wiki/Dependency_injection ) is a design pattern that helps you separate the dependencies of your code from its behavior. Additionaly it makes the code easy to test by let you [mock](https://en.wikipedia.org/wiki/Mock_object ) the dependencies in your unit tests. This library provides several mechanisms to register, acquire and inherit services. Let's see how!
+## Key features
+- Dependency injection via [constructor parameters](https://en.wikipedia.org/wiki/Dependency_injection#Constructor_injection )
+- [Lazy dependency resolution](https://www.quickdevnotes.com/lazy-initialization/ )
+- Dynamic [proxy](https://en.wikipedia.org/wiki/Proxy_pattern ) generator
+- Custom service decoration (using proxies)
+- [Duck typing](https://en.wikipedia.org/wiki/Duck_typing ) support (using proxies)
+- Container inheritance
+- All common service lifecycles are supported: `Singleton`, `Transient`, `Scoped`, `Instance`
+- Configurable constructor selection (using attributes)
+- "Auto" service registration (using attributes)
+- Extensible
+- and many more...
 ## About services in general
 - They are interfaces (including the injector itself).
 - They are hosted in an injector.

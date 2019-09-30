@@ -49,7 +49,7 @@
   <h6><strong>Assembly</strong>: Injector.dll</h6>
   <h5 id="Solti_Utils_DI_Internals_IComposite_1_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public interface IComposite&lt;out T&gt; : IDisposable where T : IComposite&lt;T&gt;</code></pre>
+    <pre><code class="lang-csharp hljs">public interface IComposite&lt;T&gt; : IDisposable where T : IComposite&lt;T&gt;</code></pre>
   </div>
   <h5 class="typeParameters">Type Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -96,30 +96,6 @@
       </tr>
     </tbody>
   </table>
-  <a id="Solti_Utils_DI_Internals_IComposite_1_IsRoot_" data-uid="Solti.Utils.DI.Internals.IComposite`1.IsRoot*"></a>
-  <h4 id="Solti_Utils_DI_Internals_IComposite_1_IsRoot" data-uid="Solti.Utils.DI.Internals.IComposite`1.IsRoot">IsRoot</h4>
-  <div class="markdown level1 summary"><p>Whether the entity has a parent or not.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">bool IsRoot { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Boolean</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
   <a id="Solti_Utils_DI_Internals_IComposite_1_Parent_" data-uid="Solti.Utils.DI.Internals.IComposite`1.Parent*"></a>
   <h4 id="Solti_Utils_DI_Internals_IComposite_1_Parent" data-uid="Solti.Utils.DI.Internals.IComposite`1.Parent">Parent</h4>
   <div class="markdown level1 summary"><p>The parent of this entity.</p>
@@ -146,6 +122,33 @@
   </table>
   <h3 id="methods">Methods
   </h3>
+  <a id="Solti_Utils_DI_Internals_IComposite_1_AddChild_" data-uid="Solti.Utils.DI.Internals.IComposite`1.AddChild*"></a>
+  <h4 id="Solti_Utils_DI_Internals_IComposite_1_AddChild__0_" data-uid="Solti.Utils.DI.Internals.IComposite`1.AddChild(`0)">AddChild(T)</h4>
+  <div class="markdown level1 summary"><p>Adds a new child.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">void AddChild(T child)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">T</span></td>
+        <td><span class="parametername">child</span></td>
+        <td><p>The child being added.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
   <a id="Solti_Utils_DI_Internals_IComposite_1_CreateChild_" data-uid="Solti.Utils.DI.Internals.IComposite`1.CreateChild*"></a>
   <h4 id="Solti_Utils_DI_Internals_IComposite_1_CreateChild" data-uid="Solti.Utils.DI.Internals.IComposite`1.CreateChild">CreateChild()</h4>
   <div class="markdown level1 summary"><p>Creates a new child entity and puts it into the <a class="xref" href="Solti.Utils.DI.Internals.IComposite-1.html#Solti_Utils_DI_Internals_IComposite_1_Children">Children</a> list.</p>
@@ -173,6 +176,36 @@
   </table>
   <h5 id="Solti_Utils_DI_Internals_IComposite_1_CreateChild_remarks">Remarks</h5>
   <div class="markdown level1 remarks"><ul><li>The child created by this method should inherit the state of its parent (but modifying the child should not affect it).</li><li>Freeing the created child should cause its removal from the <a class="xref" href="Solti.Utils.DI.Internals.IComposite-1.html#Solti_Utils_DI_Internals_IComposite_1_Children">Children</a> list. Otherwise its parent is responsible for disposing it.</li></ul>
+</div>
+  <a id="Solti_Utils_DI_Internals_IComposite_1_RemoveChild_" data-uid="Solti.Utils.DI.Internals.IComposite`1.RemoveChild*"></a>
+  <h4 id="Solti_Utils_DI_Internals_IComposite_1_RemoveChild__0_" data-uid="Solti.Utils.DI.Internals.IComposite`1.RemoveChild(`0)">RemoveChild(T)</h4>
+  <div class="markdown level1 summary"><p>Removes the given child.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">void RemoveChild(T child)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">T</span></td>
+        <td><span class="parametername">child</span></td>
+        <td><p>The child to be removed</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Solti_Utils_DI_Internals_IComposite_1_RemoveChild__0__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>The entry being removed will not be disposed.</p>
 </div>
   <h3 id="extensionmethods">Extension Methods</h3>
   <div>

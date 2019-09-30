@@ -15,19 +15,19 @@ namespace Solti.Utils.DI.Internals
     /// </summary>
     internal class TransientServiceEntry : ProducibleServiceEntry
     {
-        private TransientServiceEntry(TransientServiceEntry entry, ServiceCollection owner) : base(entry, owner)
+        private TransientServiceEntry(TransientServiceEntry entry, IServiceContainer owner) : base(entry, owner)
         {
         }
 
-        public TransientServiceEntry(Type @interface, Func<IInjector, Type, object> factory, ServiceCollection owner) : base(@interface, DI.Lifetime.Transient, factory, owner)
+        public TransientServiceEntry(Type @interface, Func<IInjector, Type, object> factory, IServiceContainer owner) : base(@interface, DI.Lifetime.Transient, factory, owner)
         {
         }
 
-        public TransientServiceEntry(Type @interface, Type implementation, ServiceCollection owner) : base(@interface, DI.Lifetime.Transient, implementation, owner)
+        public TransientServiceEntry(Type @interface, Type implementation, IServiceContainer owner) : base(@interface, DI.Lifetime.Transient, implementation, owner)
         {
         }
 
-        public TransientServiceEntry(Type @interface, ITypeResolver implementation, ServiceCollection owner) : base(@interface, DI.Lifetime.Transient, implementation, owner)
+        public TransientServiceEntry(Type @interface, ITypeResolver implementation, IServiceContainer owner) : base(@interface, DI.Lifetime.Transient, implementation, owner)
         {
         }
 
@@ -51,7 +51,7 @@ namespace Solti.Utils.DI.Internals
 
                 if (Factory != null && Interface.IsGenericTypeDefinition())
                 {
-                    Debug.Assert(UnderlyingImplementation == null);
+                    Debug.Assert(UserData == null);
                     requested = requested.GetGenericTypeDefinition();
                 }
 
@@ -66,7 +66,7 @@ namespace Solti.Utils.DI.Internals
             return Factory(injector, iface ?? Interface);
         }
 
-        public override AbstractServiceEntry CopyTo(ServiceCollection target)
+        public override AbstractServiceEntry CopyTo(IServiceContainer target)
         {
             var result = new TransientServiceEntry(this, target);
             target.Add(result);

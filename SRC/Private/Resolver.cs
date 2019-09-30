@@ -80,6 +80,15 @@ namespace Solti.Utils.DI.Internals
 
         public static Func<IInjector, object> Get(Type type) => Cache<Type, Func<IInjector, object>>.GetOrAdd(type, () => Get(type.GetApplicableConstructor()));
 
+        private static Func<IInjector, Type, object> ConvertToFactory(Func<IInjector, object> fn) => (injector, type) => fn(injector);
+
+        //
+        // Az GetAsFactory() fv-ek azert vannak gyorsitotarazva h ket szervizbejegyzes azonos parameterekkel
+        // azonos hash kodot is adjon vissza.
+        //
+
+        public static Func<IInjector, Type, object> GetAsFactory(Type type) => Cache<Type, Func<IInjector, Type, object>>.GetOrAdd(type, () => ConvertToFactory(Get(type)));
+
         public static Func<IInjector, object> Get(Lazy<Type> type)
         {    
             //
@@ -91,6 +100,12 @@ namespace Solti.Utils.DI.Internals
 
             return injector => factory.Value(injector);
         }
+
+        //
+        // TODO: FIXME: vhogy gyorsitotarazni
+        //
+
+        public static Func<IInjector, Type, object> GetAsFactory(Lazy<Type> type) => ConvertToFactory(Get(type));
 
         public static Func<IInjector, IReadOnlyDictionary<string, object>, object> GetExtended(ConstructorInfo constructor) => Cache<ConstructorInfo, Func<IInjector, IReadOnlyDictionary<string, object>, object>>.GetOrAdd(constructor, () =>
         {

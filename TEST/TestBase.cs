@@ -11,12 +11,12 @@ namespace Solti.Utils.DI.Tests
 {
     using Annotations;
 
-    public class TestBase
+    public class TestBase<TContainer> where TContainer: IServiceContainer, new()
     {
         protected IServiceContainer Container;
 
         [SetUp]
-        public void SetupTest() => Container = ServiceContainer.Create();
+        public void SetupTest() => Container = new TContainer();
 
         [TearDown]
         public void TearDown()

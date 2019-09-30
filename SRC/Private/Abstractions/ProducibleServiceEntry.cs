@@ -15,7 +15,7 @@ namespace Solti.Utils.DI.Internals
     /// </summary>
     internal abstract class ProducibleServiceEntry : AbstractServiceEntry
     {
-        protected ProducibleServiceEntry(ProducibleServiceEntry entry, ServiceCollection owner): base(entry.Interface, entry.Lifetime, owner)
+        protected ProducibleServiceEntry(ProducibleServiceEntry entry, IServiceContainer owner): base(entry.Interface, entry.Lifetime, owner)
         {
             Factory = entry.Factory;
 
@@ -24,20 +24,20 @@ namespace Solti.Utils.DI.Internals
             // meg nem volt hivva.
             //
 
-            UnderlyingImplementation = entry.UnderlyingImplementation;
+            UserData = entry.UserData;
         }
 
-        protected ProducibleServiceEntry(Type @interface, Lifetime lifetime, Func<IInjector, Type, object> factory, ServiceCollection owner) : base(@interface, lifetime, owner)
+        protected ProducibleServiceEntry(Type @interface, Lifetime lifetime, Func<IInjector, Type, object> factory, IServiceContainer owner) : base(@interface, lifetime, owner)
         {
             Factory = factory;
         }
 
-        protected ProducibleServiceEntry(Type @interface, Lifetime lifetime, Type implementation, ServiceCollection owner) : this(@interface, lifetime, !@interface.IsGenericTypeDefinition() ? Resolver.Get(implementation).ConvertToFactory() : null, owner)
+        protected ProducibleServiceEntry(Type @interface, Lifetime lifetime, Type implementation, IServiceContainer owner) : this(@interface, lifetime, !@interface.IsGenericTypeDefinition() ? Resolver.GetAsFactory(implementation) : null, owner)
         {
-            UnderlyingImplementation = implementation;
+            UserData = implementation;
         }
 
-        protected ProducibleServiceEntry(Type @interface, Lifetime lifetime, ITypeResolver implementation, ServiceCollection owner) : base(@interface, lifetime, owner)
+        protected ProducibleServiceEntry(Type @interface, Lifetime lifetime, ITypeResolver implementation, IServiceContainer owner) : base(@interface, lifetime, owner)
         {
             var lazyImplementation = new Lazy<Type>
             (
@@ -51,14 +51,14 @@ namespace Solti.Utils.DI.Internals
                 LazyThreadSafetyMode.ExecutionAndPublication
             );
 
-            UnderlyingImplementation = lazyImplementation;
+            UserData = lazyImplementation;
 
             //
             // Mivel van factory ezert lusta bejegyzesek is Proxy-zhatok.
             //
 
             if (!@interface.IsGenericTypeDefinition())
-                Factory = Resolver.Get(lazyImplementation).ConvertToFactory();
+                Factory = Resolver.GetAsFactory(lazyImplementation);
         }
 
         protected void CheckProducible()
@@ -73,8 +73,8 @@ namespace Solti.Utils.DI.Internals
                 throw new InvalidOperationException(Resources.NOT_PRODUCIBLE);
         }
 
-        public sealed override Type Implementation => (UnderlyingImplementation as Lazy<Type>)?.Value ?? (Type) UnderlyingImplementation;
-        public override object UnderlyingImplementation { get; }
+        public sealed override Type Implementation => (UserData as Lazy<Type>)?.Value ?? (Type) UserData;
+        public override object UserData { get; }
         public sealed override Func<IInjector, Type, object> Factory { get; set; }
     }
 }

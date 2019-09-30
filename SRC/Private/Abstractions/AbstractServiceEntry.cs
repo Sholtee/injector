@@ -7,14 +7,25 @@ using System;
 
 namespace Solti.Utils.DI.Internals
 {
+    using Properties;
+
     /// <summary>
     /// Describes an abstract service definition.
     /// </summary>
     /// <remarks>This is an internal class so it may change from version to version. Don't use it!</remarks>
-    internal class AbstractServiceEntry: Disposable, IServiceFactory, IServiceInfo
+    public class AbstractServiceEntry: Disposable, IServiceFactory
     {
-        public AbstractServiceEntry(Type @interface, Lifetime? lifetime = null, ServiceCollection owner = null)
+        /// <summary>
+        /// Creates a new <see cref="AbstractServiceEntry"/> instance.
+        /// </summary>
+        public AbstractServiceEntry(Type @interface, Lifetime? lifetime = null, IServiceContainer owner = null)
         {
+            if (@interface == null)
+                throw new ArgumentNullException(nameof(@interface));
+
+            if (!@interface.IsInterface())
+                throw new ArgumentException(Resources.NOT_AN_INTERFACE, nameof(@interface));
+
             Interface = @interface;
             Lifetime  = lifetime;
             Owner     = owner;
@@ -34,14 +45,17 @@ namespace Solti.Utils.DI.Internals
         /// <summary>
         /// The owner of this entry.
         /// </summary>
-        public ServiceCollection Owner { get; }
+        public IServiceContainer Owner { get; }
 
         /// <summary>
         /// The implementation of the service (if present).
         /// </summary>
         public virtual Type Implementation => null;
 
-        public virtual object UnderlyingImplementation => null; // ne NotImplementedException-t dobjon h a GetHashCode() mukodjon
+        /// <summary>
+        /// Custom data.
+        /// </summary>
+        public virtual object UserData => null;
         #endregion
 
         #region Mutables
@@ -67,8 +81,11 @@ namespace Solti.Utils.DI.Internals
         /// <summary>
         /// Copies this entry into a new collection.
         /// </summary>
-        public virtual AbstractServiceEntry CopyTo(ServiceCollection target)
+        public virtual AbstractServiceEntry CopyTo(IServiceContainer target)
         {
+            if (target == null)
+                throw new ArgumentNullException(nameof(target));
+
             target.Add(this);
             return this;
         }
