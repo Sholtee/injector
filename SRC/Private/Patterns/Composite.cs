@@ -3,6 +3,7 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -10,6 +11,8 @@ using System.Threading;
 
 namespace Solti.Utils.DI.Internals
 {
+    using Properties;
+
     /// <summary>
     /// An <see cref="IComposite{T}"/> implementation.
     /// </summary>
@@ -44,15 +47,19 @@ namespace Solti.Utils.DI.Internals
                 // Kivesszuk magunkat a szulo gyerekei kozul (kiveve ha gyoker elemunk van, ott nincs szulo).
                 //
 
-                FParent?.RemoveChild(this as TInterface);
+                Parent?.RemoveChild(this as TInterface);
 
                 //
-                // Osszes gyereket Dispose()-oljuk. A ToList()-es varazslat azert kell h iteracio kozben
-                // is kivehessunk elemet a listabol.
+                // Osszes gyereket Dispose()-oljuk. Mivel a Children amugy is masolatot ad vissza ezert
+                // iteracio kozben is kivehessunk elemet a listabol.
                 //
 
-                FChildren.ToList().ForEach(child => child.Dispose());
-                Debug.Assert(!FChildren.Any());
+                foreach (TInterface child in Children)
+                {
+                    child.Dispose();            
+                }
+                
+                Debug.Assert(!Children.Any());
 
                 FLock.Dispose();
             }
@@ -62,8 +69,14 @@ namespace Solti.Utils.DI.Internals
         #endregion
 
         #region IComposite
+        /// <summary>
+        /// See <see cref="IComposite{T}"/>
+        /// </summary>
         public TInterface Parent => FParent as TInterface;
 
+        /// <summary>
+        /// See <see cref="IComposite{T}"/>
+        /// </summary>
         public virtual IReadOnlyCollection<TInterface> Children
         {
             get
@@ -85,26 +98,30 @@ namespace Solti.Utils.DI.Internals
         /// <returns>The newly created child.</returns>
         public abstract TInterface CreateChild();
 
+        /// <summary>
+        /// See <see cref="IComposite{T}"/>
+        /// </summary>
         public virtual void AddChild(TInterface child)
         {
-            Debug.Assert(child.Parent == this, "Invalid parent");  // TODO: exception
+            if (child.Parent != this)
+                throw new InvalidOperationException(Resources.INVALID_PARENT);
 
             using (FLock.AcquireWriterLock())
-            {
-                Debug.Assert(!FChildren.Contains(child), "Attempt to add a child twice");
-
-                FChildren.Add(child);
-            }
+                if (!FChildren.Add(child))
+                    throw new InvalidOperationException(Resources.CHILD_ALREADY_CONTAINED);
         }
 
+        /// <summary>
+        /// See <see cref="IComposite{T}"/>
+        /// </summary>
         public virtual void RemoveChild(TInterface child)
         {
-            bool removed;
+            if (child.Parent != this)
+                throw new InvalidOperationException(Resources.INVALID_PARENT);
 
             using (FLock.AcquireWriterLock())
-                removed = FChildren.Remove(child);
-                    
-            Debug.Assert(removed, "Child could not be found"); // TODO: exception  
+                if (!FChildren.Remove(child))
+                    throw new InvalidOperationException(Resources.CHILD_NOT_CONTAINED);
         }
         #endregion
     }

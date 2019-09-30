@@ -45,6 +45,7 @@ namespace Solti.Utils.DI.Internals
         /// Adds a new child.
         /// </summary>
         /// <param name="child">The child being added.</param>
+        /// <exception cref="InvalidOperationException">The child has already been added.</exception>
         void AddChild(T child);
 
         /// <summary>
@@ -52,6 +53,7 @@ namespace Solti.Utils.DI.Internals
         /// </summary>
         /// <param name="child">The child to be removed</param>
         /// <remarks>The entry being removed will not be disposed.</remarks>
+        /// <exception cref="InvalidOperationException">The child is not contained by the parent on which the operation was performed.</exception>
         void RemoveChild(T child);
     }
 }

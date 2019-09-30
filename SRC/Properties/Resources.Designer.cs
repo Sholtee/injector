@@ -98,6 +98,24 @@ namespace Solti.Utils.DI.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Attempt to add a child twice..
+        /// </summary>
+        internal static string CHILD_ALREADY_CONTAINED {
+            get {
+                return ResourceManager.GetString("CHILD_ALREADY_CONTAINED", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Child not contained..
+        /// </summary>
+        internal static string CHILD_NOT_CONTAINED {
+            get {
+                return ResourceManager.GetString("CHILD_NOT_CONTAINED", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Circular reference: {0}..
         /// </summary>
         internal static string CIRCULAR_REFERENCE {
@@ -175,6 +193,15 @@ namespace Solti.Utils.DI.Properties {
         internal static string INVALID_INSTANCE {
             get {
                 return ResourceManager.GetString("INVALID_INSTANCE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Child must have the same parent on which the operation was perfomred..
+        /// </summary>
+        internal static string INVALID_PARENT {
+            get {
+                return ResourceManager.GetString("INVALID_PARENT", resourceCulture);
             }
         }
         

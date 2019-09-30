@@ -129,6 +129,12 @@
   <data name="CANT_PROXY" xml:space="preserve">
     <value>Creating proxy is not allowed here.</value>
   </data>
+  <data name="CHILD_ALREADY_CONTAINED" xml:space="preserve">
+    <value>Attempt to add a child twice.</value>
+  </data>
+  <data name="CHILD_NOT_CONTAINED" xml:space="preserve">
+    <value>Child not contained.</value>
+  </data>
   <data name="CIRCULAR_REFERENCE" xml:space="preserve">
     <value>Circular reference: {0}.</value>
   </data>
@@ -155,6 +161,9 @@
   </data>
   <data name="INVALID_INSTANCE" xml:space="preserve">
     <value>The returned object must be an instance of "{0}".</value>
+  </data>
+  <data name="INVALID_PARENT" xml:space="preserve">
+    <value>Child must have the same parent on which the operation was perfomred.</value>
   </data>
   <data name="NOT_AN_INTERFACE" xml:space="preserve">
     <value>Parameter must be an interface.</value>
