@@ -7,6 +7,8 @@ using System;
 
 namespace Solti.Utils.DI.Internals
 {
+    using Properties;
+
     /// <summary>
     /// Describes an abstract service definition.
     /// </summary>
@@ -18,6 +20,12 @@ namespace Solti.Utils.DI.Internals
         /// </summary>
         public AbstractServiceEntry(Type @interface, Lifetime? lifetime = null, IServiceContainer owner = null)
         {
+            if (@interface == null)
+                throw new ArgumentNullException(nameof(@interface));
+
+            if (!@interface.IsInterface())
+                throw new ArgumentException(Resources.NOT_AN_INTERFACE, nameof(@interface));
+
             Interface = @interface;
             Lifetime  = lifetime;
             Owner     = owner;
@@ -75,6 +83,9 @@ namespace Solti.Utils.DI.Internals
         /// </summary>
         public virtual AbstractServiceEntry CopyTo(IServiceContainer target)
         {
+            if (target == null)
+                throw new ArgumentNullException(nameof(target));
+
             target.Add(this);
             return this;
         }
