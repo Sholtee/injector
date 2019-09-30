@@ -31,7 +31,7 @@ namespace Solti.Utils.DI
 
         private readonly ReaderWriterLockSlim FLock = new ReaderWriterLockSlim();
 
-#region IServiceContainer
+        #region IServiceContainer
         public IServiceContainer Add(AbstractServiceEntry entry)
         {
             if (entry == null)
@@ -164,9 +164,9 @@ namespace Solti.Utils.DI
                 }
             }
         }
-#endregion
+        #endregion
 
-#region IEnumerable
+        #region IEnumerable
         public IEnumerator<AbstractServiceEntry> GetEnumerator()
         {
             using (FLock.AcquireReaderLock())
@@ -180,9 +180,9 @@ namespace Solti.Utils.DI
         }
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-#endregion
+        #endregion
 
-#region Protected
+        #region Protected
         protected ServiceContainer(IServiceContainer parent) : base(parent)
         {
             FEntries = new Dictionary<Type, AbstractServiceEntry>(parent?.Count ?? 0);
@@ -222,9 +222,9 @@ namespace Solti.Utils.DI
 
             base.Dispose(disposeManaged);
         }   
-#endregion
+        #endregion
 
-#region Public
+        #region Public
         /// <summary>
         /// Creates a new <see cref="ServiceContainer"/> instance.
         /// </summary>
@@ -233,6 +233,6 @@ namespace Solti.Utils.DI
         }
 
         public override IServiceContainer CreateChild() => new ServiceContainer(this);
-#endregion
+        #endregion
     }
 }

@@ -258,6 +258,21 @@ namespace Solti.Utils.DI.Container.Tests
         }
 
         [Test]
+        public void IServiceContainer_DisposeShouldEatExceptions()
+        {
+            IServiceContainer child = Container
+                .CreateChild()
+                .Instance<IDisposable>(new BadDisposable(), releaseOnDispose: true);
+
+            Assert.DoesNotThrow(() => child.Dispose());
+        }
+
+        private sealed class BadDisposable: Disposable
+        {
+            protected override void Dispose(bool disposeManaged) => throw new Exception();
+        }
+
+        [Test]
         public void IServiceContainer_ChildShouldInheritTheParentEntries()
         {
             IServiceContainer child = Container
@@ -342,6 +357,12 @@ namespace Solti.Utils.DI.Container.Tests
 
             mockTypeResolver.Verify(i => i.Resolve(It.IsAny<Type>()), Times.Never);
         }
+
+        [Test]
+        public void IServiceContainer_GetShuoldThrowOnNull() => Assert.Throws<ArgumentNullException>(() => Container.Get(null));
+
+        [Test]
+        public void IServiceContainer_AddShuoldThrowOnNull() => Assert.Throws<ArgumentNullException>(() => Container.Add(null));
     }
 
     [TestFixture]
