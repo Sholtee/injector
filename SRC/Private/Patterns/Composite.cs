@@ -21,7 +21,6 @@ namespace Solti.Utils.DI.Internals
     public abstract class Composite<TInterface>: Disposable, IComposite<TInterface> where TInterface: class, IComposite<TInterface>
     {
         private readonly HashSet<TInterface> FChildren = new HashSet<TInterface>();
-        private readonly IComposite<TInterface> FParent;
         private readonly ReaderWriterLockSlim FLock = new ReaderWriterLockSlim();
 
         #region Protected
@@ -29,10 +28,10 @@ namespace Solti.Utils.DI.Internals
         /// Creates a new instance.
         /// </summary>
         /// <param name="parent">The parent entity. It can be null.</param>
-        protected Composite(IComposite<TInterface> parent)
+        protected Composite(TInterface parent)
         {
-            FParent = parent;
-            FParent?.AddChild(this as TInterface);
+            Parent = parent;
+            Parent?.AddChild(this as TInterface);
         }
 
         /// <summary>
@@ -72,7 +71,7 @@ namespace Solti.Utils.DI.Internals
         /// <summary>
         /// See <see cref="IComposite{T}"/>
         /// </summary>
-        public TInterface Parent => FParent as TInterface;
+        public TInterface Parent { get; }
 
         /// <summary>
         /// See <see cref="IComposite{T}"/>
