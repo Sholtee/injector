@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Class ServiceAttribute
+    <title>Class ObjectExtensions.DuckFactory&lt;TTarget&gt;
    | Injector </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Class ServiceAttribute
+    <meta name="title" content="Class ObjectExtensions.DuckFactory&lt;TTarget&gt;
    | Injector ">
     <meta name="generator" content="docfx 2.42.4.0">
     
@@ -37,34 +37,49 @@
       <div role="main" class="container body-content hide-when-search">
         <div class="article row grid">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="Solti.Utils.DI.Annotations.ServiceAttribute">
+            <article class="content wrap" id="_content" data-uid="Solti.Utils.DI.Proxy.ObjectExtensions.DuckFactory`1">
   
   
-  <h1 id="Solti_Utils_DI_Annotations_ServiceAttribute" data-uid="Solti.Utils.DI.Annotations.ServiceAttribute" class="text-break">Class ServiceAttribute
+  <h1 id="Solti_Utils_DI_Proxy_ObjectExtensions_DuckFactory_1" data-uid="Solti.Utils.DI.Proxy.ObjectExtensions.DuckFactory`1" class="text-break">Class ObjectExtensions.DuckFactory&lt;TTarget&gt;
   </h1>
-  <div class="markdown level0 summary"><p>Indicates that a class is being used as a service.</p>
+  <div class="markdown level0 summary"><p>Generates duck typing proxy objects.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><span class="xref">System.Object</span></div>
-    <div class="level1"><span class="xref">ServiceAttribute</span></div>
+    <div class="level1"><span class="xref">ObjectExtensions.DuckFactory&lt;TTarget&gt;</span></div>
   </div>
-  <h6><strong>Namespace</strong>: <a class="xref" href="Solti.Utils.DI.Annotations.html">Solti.Utils.DI.Annotations</a></h6>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Solti.Utils.DI.Proxy.html">Solti.Utils.DI.Proxy</a></h6>
   <h6><strong>Assembly</strong>: Injector.dll</h6>
-  <h5 id="Solti_Utils_DI_Annotations_ServiceAttribute_syntax">Syntax</h5>
+  <h5 id="Solti_Utils_DI_Proxy_ObjectExtensions_DuckFactory_1_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public sealed class ServiceAttribute : Attribute</code></pre>
+    <pre><code class="lang-csharp hljs">public class DuckFactory&lt;TTarget&gt; : object</code></pre>
   </div>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TTarget</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   <h3 id="constructors">Constructors
   </h3>
-  <a id="Solti_Utils_DI_Annotations_ServiceAttribute__ctor_" data-uid="Solti.Utils.DI.Annotations.ServiceAttribute.#ctor*"></a>
-  <h4 id="Solti_Utils_DI_Annotations_ServiceAttribute__ctor_Type_Solti_Utils_DI_Lifetime_" data-uid="Solti.Utils.DI.Annotations.ServiceAttribute.#ctor(Type,Solti.Utils.DI.Lifetime)">ServiceAttribute(Type, Lifetime)</h4>
+  <a id="Solti_Utils_DI_Proxy_ObjectExtensions_DuckFactory_1__ctor_" data-uid="Solti.Utils.DI.Proxy.ObjectExtensions.DuckFactory`1.#ctor*"></a>
+  <h4 id="Solti_Utils_DI_Proxy_ObjectExtensions_DuckFactory_1__ctor__0_" data-uid="Solti.Utils.DI.Proxy.ObjectExtensions.DuckFactory`1.#ctor(`0)">DuckFactory(TTarget)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public ServiceAttribute(Type interface, Lifetime lifetime = default(Lifetime))</code></pre>
+    <pre><code class="lang-csharp hljs">public DuckFactory(TTarget target)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -77,29 +92,25 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">Type</span></td>
-        <td><span class="parametername">interface</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="Solti.Utils.DI.Lifetime.html">Lifetime</a></td>
-        <td><span class="parametername">lifetime</span></td>
+        <td><span class="xref">TTarget</span></td>
+        <td><span class="parametername">target</span></td>
         <td></td>
       </tr>
     </tbody>
   </table>
-  <h3 id="properties">Properties
+  <h3 id="methods">Methods
   </h3>
-  <a id="Solti_Utils_DI_Annotations_ServiceAttribute_Interface_" data-uid="Solti.Utils.DI.Annotations.ServiceAttribute.Interface*"></a>
-  <h4 id="Solti_Utils_DI_Annotations_ServiceAttribute_Interface" data-uid="Solti.Utils.DI.Annotations.ServiceAttribute.Interface">Interface</h4>
-  <div class="markdown level1 summary"><p>The service interface implemented by the marked class.</p>
+  <a id="Solti_Utils_DI_Proxy_ObjectExtensions_DuckFactory_1_Like_" data-uid="Solti.Utils.DI.Proxy.ObjectExtensions.DuckFactory`1.Like*"></a>
+  <h4 id="Solti_Utils_DI_Proxy_ObjectExtensions_DuckFactory_1_Like__1" data-uid="Solti.Utils.DI.Proxy.ObjectExtensions.DuckFactory`1.Like``1">Like&lt;TInterface&gt;()</h4>
+  <div class="markdown level1 summary"><p>Generates a proxy object to let the target behave like a <code data-dev-comment-type="typeparamref" class="typeparamref">TInterface</code> instance.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Type Interface { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public TInterface Like&lt;TInterface&gt;()
+    where TInterface : class</code></pre>
   </div>
-  <h5 class="propertyValue">Property Value</h5>
+  <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
@@ -109,31 +120,23 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">Type</span></td>
-        <td></td>
+        <td><span class="xref">TInterface</span></td>
+        <td><p>The newly created proxy object.</p>
+</td>
       </tr>
     </tbody>
   </table>
-  <a id="Solti_Utils_DI_Annotations_ServiceAttribute_Lifetime_" data-uid="Solti.Utils.DI.Annotations.ServiceAttribute.Lifetime*"></a>
-  <h4 id="Solti_Utils_DI_Annotations_ServiceAttribute_Lifetime" data-uid="Solti.Utils.DI.Annotations.ServiceAttribute.Lifetime">Lifetime</h4>
-  <div class="markdown level1 summary"><p>The lifetime of the service.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Lifetime Lifetime { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
+  <h5 class="typeParameters">Type Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
-        <th>Type</th>
+        <th>Name</th>
         <th>Description</th>
       </tr>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Solti.Utils.DI.Lifetime.html">Lifetime</a></td>
+        <td><span class="parametername">TInterface</span></td>
         <td></td>
       </tr>
     </tbody>

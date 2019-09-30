@@ -12,11 +12,11 @@ using BenchmarkDotNet.Attributes;
 namespace Solti.Utils.DI.Perf
 {
     using Proxy;
+    using static Consts;
 
     [MemoryDiagnoser]
     public class InterfaceProxy
     {
-        private const int OperationsPerInvoke = 50000;
         private const string Param = "";
 
         private IInterface

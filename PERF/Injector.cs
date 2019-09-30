@@ -9,11 +9,11 @@ using BenchmarkDotNet.Attributes;
 
 namespace Solti.Utils.DI.Perf
 {
+    using static Consts;
+
     [MemoryDiagnoser]
     public class Injector
     {
-        private const int OperationsPerInvoke = 50000;
-
         private IInjector FInjector;
 
         #region Services

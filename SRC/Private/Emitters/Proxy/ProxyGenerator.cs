@@ -9,13 +9,11 @@ using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Text.RegularExpressions;
 
 #if IGNORE_VISIBILITY
 using System.Runtime.CompilerServices;
 #endif
 
-using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
@@ -24,253 +22,19 @@ using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 namespace Solti.Utils.DI.Internals
 {
     using Proxy;
+    using static ProxyGeneratorBase;
 
-    internal static class ProxyGenerator
+    internal static class ProxyGenerator<TInterface, TInterceptor> where TInterface : class where TInterceptor: InterfaceInterceptor<TInterface>
     {
+        private static readonly string
+            CALL_TARGET = nameof(InterfaceInterceptor<TInterface>.CALL_TARGET),
+            TARGET      = nameof(InterfaceInterceptor<TInterface>.Target);
+
         #region Internal
-        internal static LocalDeclarationStatementSyntax DeclareLocal(Type type, string name, ExpressionSyntax initializer = null)
-        {
-            VariableDeclaratorSyntax declarator = VariableDeclarator
-            (
-                identifier: Identifier(name)
-            );
-
-            if (initializer != null) declarator = declarator.WithInitializer
-            (
-                initializer: EqualsValueClause(initializer)
-            );
-
-            return LocalDeclarationStatement
-            (
-                declaration: VariableDeclaration
-                (
-                    type: CreateType(type),
-                    variables: SeparatedList(new List<VariableDeclaratorSyntax>
-                    {
-                        declarator
-                    })
-                )
-            );
-        }
-
-        internal static LocalDeclarationStatementSyntax DeclareLocal<T>(string name, ExpressionSyntax initializer = null) => DeclareLocal(typeof(T), name, initializer);
-
-        internal static ArrayCreationExpressionSyntax CreateArray<T>(params ExpressionSyntax[] elements) => ArrayCreationExpression
-        (
-            type: ArrayType
-            (
-                elementType: CreateType<T>()
-            )
-            .WithRankSpecifiers
-            (
-                rankSpecifiers: SingletonList
-                (
-                    ArrayRankSpecifier(SingletonSeparatedList
-                    (
-                        elements.Any() ? OmittedArraySizeExpression() : (ExpressionSyntax) LiteralExpression
-                        (
-                            SyntaxKind.NumericLiteralExpression,
-                            Literal(0)
-                        )
-                    ))
-                )
-            ),
-            initializer: !elements.Any() ? null : InitializerExpression(SyntaxKind.ArrayInitializerExpression).WithExpressions
-            (
-                expressions: elements.CreateList(e => e)
-            )
-        );
-
         internal static LocalDeclarationStatementSyntax CreateArgumentsArray(MethodInfo method) => DeclareLocal<object[]>("args", CreateArray<object>(method
             .GetParameters()
             .Select(param => param.IsOut ? DefaultExpression(CreateType(param.ParameterType)) : (ExpressionSyntax) IdentifierName(param.Name))
             .ToArray()));
-
-        internal static MethodDeclarationSyntax DeclareMethod(
-            Type returnType, 
-            string name, 
-            IReadOnlyList<SyntaxKind> modifiers, 
-            IReadOnlyList<string> genericArguments, 
-            IReadOnlyDictionary<string, Type> parameters)
-        {
-            MethodDeclarationSyntax result = MethodDeclaration
-            (
-                returnType: returnType != typeof(void)
-                    ? CreateType(returnType)
-                    : PredefinedType(Token(SyntaxKind.VoidKeyword)),
-                identifier: Identifier(name)
-            )
-            .WithModifiers
-            (
-                modifiers: TokenList(modifiers.Select(Token))
-            )
-            .WithParameterList
-            (
-                parameterList: ParameterList
-                (
-                    parameters: parameters.CreateList(param => Parameter(Identifier(param.Key)).WithType
-                    (
-                        type: CreateType(param.Value)
-                    ))
-                )
-            );
-
-            if (genericArguments.Any()) result = result.WithTypeParameterList // kulon legyen kulomben lesz egy ures "<>"
-            (
-                typeParameterList: TypeParameterList
-                (
-                    parameters: genericArguments.CreateList(TypeParameter)
-                )
-            );
-
-            return result;
-        }
-
-        internal static MethodDeclarationSyntax DeclareMethod(MethodInfo method)
-        {
-            Type 
-                declaringType = method.DeclaringType,
-                returnType    = method.ReturnType;
-
-            Debug.Assert(declaringType.IsInterface());
-
-            MethodDeclarationSyntax result = MethodDeclaration
-            (
-                returnType: returnType != typeof(void) 
-                    ? CreateType(returnType)
-                    : PredefinedType(Token(SyntaxKind.VoidKeyword)),
-                identifier: Identifier(method.Name)
-            )
-            .WithExplicitInterfaceSpecifier
-            (
-                explicitInterfaceSpecifier: ExplicitInterfaceSpecifier((NameSyntax) CreateType(declaringType))
-            )
-            .WithParameterList
-            (
-                ParameterList
-                (
-                    parameters: method.GetParameters().CreateList(param =>
-                    {
-                        ParameterSyntax parameter = Parameter(Identifier(param.Name)).WithType
-                        (
-                            type: CreateType(param.ParameterType)
-                        );
-
-                        if (param.IsOut) parameter = parameter.WithModifiers
-                        (
-                            modifiers: TokenList(Token(SyntaxKind.OutKeyword))
-                        );
-
-                        //
-                        // "ParameterType.IsByRef" param.IsOut eseten is igazat ad vissza -> IsOut teszt utan szerepeljen.
-                        //
-
-                        else if (param.ParameterType.IsByRef) parameter = parameter.WithModifiers
-                        (
-                            modifiers: TokenList(Token(SyntaxKind.RefKeyword))
-                        );
-     
-                        return parameter;
-                    })
-                )
-            );
-
-            if (method.IsGenericMethod) result = result.WithTypeParameterList // kulon legyen kulomben lesz egy ures "<>"
-            (
-                typeParameterList: TypeParameterList
-                (
-                    parameters: method.GetGenericArguments().CreateList(type => TypeParameter(CreateType(type).ToFullString()))
-                )
-            );
-
-            return result;
-        }
-
-        internal static PropertyDeclarationSyntax DeclareProperty(PropertyInfo property, BlockSyntax getBody, BlockSyntax setBody)
-        {
-            Debug.Assert(property.DeclaringType.IsInterface());
-
-            PropertyDeclarationSyntax result = PropertyDeclaration
-            (
-                type: CreateType(property.PropertyType),
-                identifier: Identifier(property.Name)
-            )
-            .WithExplicitInterfaceSpecifier
-            (
-                explicitInterfaceSpecifier: ExplicitInterfaceSpecifier((NameSyntax) CreateType(property.DeclaringType))
-            );
-
-            List<AccessorDeclarationSyntax> accessors = new List<AccessorDeclarationSyntax>();
-
-            if (property.CanRead && getBody != null)  accessors.Add(AccessorDeclaration(SyntaxKind.GetAccessorDeclaration).WithBody(getBody));
-            if (property.CanWrite && setBody != null) accessors.Add(AccessorDeclaration(SyntaxKind.SetAccessorDeclaration).WithBody(setBody));
-
-            return !accessors.Any() ? result : result.WithAccessorList
-            (
-                accessorList: AccessorList
-                (
-                    accessors: List(accessors)
-                )
-            );
-        }
-
-        internal static FieldDeclarationSyntax DeclareField<TField>(string name, ExpressionSyntax initializer = null, params SyntaxKind[] modifiers)
-        {
-            VariableDeclaratorSyntax declarator = VariableDeclarator
-            (
-                identifier: Identifier(name)
-            );
-
-            if (initializer != null) declarator = declarator.WithInitializer
-            (
-                initializer: EqualsValueClause(initializer)
-            );
-
-            return FieldDeclaration
-            (
-                VariableDeclaration
-                (
-                    type: CreateType<TField>()                    
-                )
-                .WithVariables
-                (
-                    variables: SingletonSeparatedList(declarator)
-                )
-            )
-            .WithModifiers
-            (
-                modifiers: TokenList
-                (
-                    tokens: modifiers.Select(Token)
-                )
-            );
-        }
-
-        internal static EventDeclarationSyntax DeclareEvent(EventInfo @event, BlockSyntax addBody = null, BlockSyntax removeBody = null)
-        {
-            EventDeclarationSyntax result = EventDeclaration
-            (
-                type: CreateType(@event.EventHandlerType),
-                identifier: Identifier(@event.Name)
-            )
-            .WithExplicitInterfaceSpecifier
-            (
-                explicitInterfaceSpecifier: ExplicitInterfaceSpecifier((NameSyntax) CreateType(@event.DeclaringType))
-            );
-
-            List<AccessorDeclarationSyntax> accessors = new List<AccessorDeclarationSyntax>();
-
-            if (@event.AddMethod    != null && addBody    != null) accessors.Add(AccessorDeclaration(SyntaxKind.AddAccessorDeclaration).WithBody(addBody));
-            if (@event.RemoveMethod != null && removeBody != null) accessors.Add(AccessorDeclaration(SyntaxKind.RemoveAccessorDeclaration).WithBody(removeBody));
-
-            return !accessors.Any() ? result : result.WithAccessorList
-            (
-                accessorList: AccessorList
-                (
-                    accessors: List(accessors)
-                )
-            );
-        }
 
         internal static IReadOnlyList<ExpressionStatementSyntax> AssignByRefParameters(MethodInfo method, LocalDeclarationStatementSyntax argsArray)
         {
@@ -305,93 +69,6 @@ namespace Solti.Utils.DI.Internals
                 .ToList();
         }
 
-        internal static TypeSyntax CreateType(Type src)
-        {
-            //
-            // "Cica<T>.Mica<TT>"-nal a "TT" is beagyazott ami nekunk nem jo
-            //
-
-            if (src.IsNested && !src.IsGenericParameter)
-            {
-                IEnumerable<NameSyntax> partNames;
-
-                IEnumerable<Type> parts = src.GetParents();
-
-                if (!src.IsGenericType()) partNames = parts.Append(src).Select(type => type.GetQualifiedName());
-                else
-                { 
-                    //
-                    // "Cica<T>.Mica<TT>.Kutya" is generikusnak minosul: Generikus formaban Cica<T>.Mica<TT>.Kutya<T, TT>
-                    // mig tipizaltan "Cica<T>.Mica<T>.Kutya<TConcrete1, TConcrete2>".
-                    // Ami azert lassuk be igy eleg szopas.
-                    //
-
-                    IReadOnlyList<Type> genericArguments = src.GetGenericArguments(); // "<T, TT>" vagy "<TConcrete1, TConcrete2>"
-
-                    partNames = parts.Append(src.GetGenericTypeDefinition()).Select(type =>
-                    {
-                        int relatedGACount = type.GetOwnGenericArguments().Count;
-
-                        //
-                        // Beagyazott tipusnal a GetQualifiedName() a rovid nevet fogja feldolgozni: 
-                        // "Cica<T>.Mica<TT>.Kutya<T, TT>" -> "Kutya".
-                        //
-
-                        if (relatedGACount > 0)
-                        {
-                            IEnumerable<Type> relatedGAs = genericArguments.Take(relatedGACount);
-                            genericArguments = genericArguments.Skip(relatedGACount).ToArray();
-
-                            return type.GetQualifiedName(name => CreateGenericName(name, relatedGAs.ToArray()));
-                        }
-
-                        return type.GetQualifiedName();
-                    });
-                }
-
-                return Qualify(partNames.ToArray());
-            }
-
-            if (src.IsGenericType()) return src.GetGenericTypeDefinition().GetQualifiedName
-            (
-                name => CreateGenericName(name, src.GetGenericArguments())
-            );
-
-            if (src.IsArray) return ArrayType
-            (
-                elementType: CreateType(src.GetElementType())
-            )
-            .WithRankSpecifiers
-            (
-                rankSpecifiers: SingletonList
-                (
-                    node: ArrayRankSpecifier
-                    (
-                        //
-                        // TODO: kezelje az int[10]-t
-                        //
-
-                        sizes: Enumerable
-                            .Repeat(0, src.GetArrayRank())
-                            .ToArray() // ToArray() kell =(
-                            .CreateList(@void => (ExpressionSyntax) OmittedArraySizeExpression())
-                    )
-                )
-            );
-
-            return src.GetQualifiedName();
-
-            NameSyntax CreateGenericName(string name, IReadOnlyCollection<Type> genericArguments) => GenericName(name).WithTypeArgumentList
-            (
-                typeArgumentList: TypeArgumentList
-                (
-                    arguments: genericArguments.CreateList(CreateType)
-                )
-            );
-        }
-
-        internal static TypeSyntax CreateType<T>() => CreateType(typeof(T));
-
         internal static IReadOnlyList<LocalDeclarationStatementSyntax> AcquireMethodInfo(MethodInfo method, out LocalDeclarationStatementSyntax currentMethod)
         {
             const string i = nameof(i);
@@ -425,35 +102,16 @@ namespace Solti.Utils.DI.Internals
                                 (
                                     expression: ParenthesizedLambdaExpression
                                     (
-                                        body: InvocationExpression
+                                        body: Invoke
                                         (
-                                            expression: MemberAccessExpression
-                                            (
-                                                kind: SyntaxKind.SimpleMemberAccessExpression,
-                                                expression: IdentifierName(TARGET),
-                                                name: IdentifierName(method.Name)
-                                            )
-                                        )   
-                                        .WithArgumentList
-                                        (
-                                            argumentList: ArgumentList(paramz.CreateList(param =>
-                                            {
-                                                ArgumentSyntax argument = Argument
-                                                (
-                                                    expression: IdentifierName(param.ParameterType.IsByRef ? GetDummyName(param) : param.Name)
-                                                );
+                                            method: method, 
+                                            target: TARGET,
 
-                                                //
-                                                // TODO: "IN"
-                                                //
+                                            //
+                                            // GetDummyName() azert kell mert hivatkozott parameterek nem szerepelhetnek kifejezesekben.
+                                            //
 
-                                                if (param.ParameterType.IsByRef) argument = argument.WithRefKindKeyword
-                                                (
-                                                    refKindKeyword: Token(param.IsOut ? SyntaxKind.OutKeyword : SyntaxKind.RefKeyword)
-                                                );
-
-                                                return argument;
-                                            }))
+                                            arguments: paramz.Select(param => param.ParameterType.IsByRef ? GetDummyName(param) : param.Name).ToArray()
                                         )
                                     )
                                 )
@@ -573,22 +231,7 @@ namespace Solti.Utils.DI.Internals
                     IdentifierName(TARGET),
                     IdentifierName(property.Name)
                 ),
-                right: IdentifierName(VALUE)
-            )
-        );
-
-        internal static StatementSyntax RegisterTargetEvent(EventInfo @event, bool add) => ExpressionStatement
-        (
-            expression: AssignmentExpression
-            (
-                kind: add ? SyntaxKind.AddAssignmentExpression : SyntaxKind.SubtractAssignmentExpression,
-                left: MemberAccessExpression
-                (
-                    SyntaxKind.SimpleMemberAccessExpression,
-                    IdentifierName(TARGET),
-                    IdentifierName(@event.Name)
-                ),
-                right: IdentifierName(VALUE)
+                right: IdentifierName(Value)
             )
         );
 
@@ -615,46 +258,6 @@ namespace Solti.Utils.DI.Internals
         );
 
         internal static ReturnStatementSyntax ReturnResult(Type returnType, LocalDeclarationStatementSyntax result) => ReturnResult(returnType, result.ToIdentifierName());
-
-        internal static ConstructorDeclarationSyntax Ctor(ConstructorInfo ctor)
-        {
-            IReadOnlyList<ParameterInfo> paramz = ctor.GetParameters();
-
-            return ConstructorDeclaration
-            (
-                identifier: Identifier(GeneratedClassName)
-            )
-            .WithModifiers
-            (
-                modifiers: TokenList
-                (
-                    Token(SyntaxKind.PublicKeyword)
-                )
-            )
-            .WithParameterList
-            (
-                parameterList: ParameterList(paramz.CreateList(param => Parameter
-                (
-                    identifier: Identifier(param.Name)
-                )
-                .WithType
-                (
-                    type: CreateType(param.ParameterType)
-                )))
-            )
-            .WithInitializer
-            (
-                initializer: ConstructorInitializer
-                (
-                    SyntaxKind.BaseConstructorInitializer,
-                    ArgumentList(paramz.CreateList(param => Argument
-                    (
-                        expression: IdentifierName(param.Name)
-                    )))
-                )
-            )
-            .WithBody(Block());
-        }
         #endregion
 
         #region Public
@@ -725,6 +328,11 @@ namespace Solti.Utils.DI.Internals
 
             LocalDeclarationStatementSyntax currentProperty, result;
 
+            //
+            // Nem gond ha mondjuk az interface property-nek nincs gettere, akkor a "getBody"
+            // figyelmen kivul lesz hagyva.
+            //
+
             return DeclareProperty
             (
                 property: ifaceProperty,
@@ -761,7 +369,7 @@ namespace Solti.Utils.DI.Internals
                                 expression: currentProperty.ToIdentifierName(),
                                 name: IdentifierName(nameof(PropertyInfo.SetMethod))
                             ),
-                            CreateArray<object>(IdentifierName(VALUE)), // new object[] {value}
+                            CreateArray<object>(IdentifierName(Value)), // new object[] {value}
                             currentProperty.ToIdentifierName() // currentProperty
                         ),
                         ShouldCallTarget(result, ifTrue: WriteTarget(ifaceProperty))
@@ -835,10 +443,13 @@ namespace Solti.Utils.DI.Internals
                                     expression: IdentifierName(fieldName),
                                     name: IdentifierName(nameof(EventInfo.AddMethod))
                                 ),
-                                CreateArray<object>(IdentifierName(VALUE)), // new object[] {value}
+                                CreateArray<object>(IdentifierName(Value)), // new object[] {value}
                                 IdentifierName(fieldName) //FEvent
                             ),
-                            ShouldCallTarget(result, ifTrue: RegisterTargetEvent(@event, add: true))
+                            ShouldCallTarget(result, ifTrue: ExpressionStatement
+                            (
+                                expression: RegisterEvent(@event, TARGET, add: true))
+                            )
                         }
                     ),
                     removeBody: Block
@@ -853,23 +464,25 @@ namespace Solti.Utils.DI.Internals
                                     expression: IdentifierName(fieldName),
                                     name: IdentifierName(nameof(EventInfo.RemoveMethod))
                                 ),
-                                CreateArray<object>(IdentifierName(VALUE)),
+                                CreateArray<object>(IdentifierName(Value)),
                                 IdentifierName(fieldName)
                             ),
-                            ShouldCallTarget(result, ifTrue: RegisterTargetEvent(@event, add: false))
+                            ShouldCallTarget(result, ifTrue: ExpressionStatement
+                            ( 
+                                expression: RegisterEvent(@event, TARGET, add: false))
+                            )
                         }
                     )
                 )
             };
         }
 
-        public static MethodDeclarationSyntax PropertyAccess(Type interfaceType)
+        public static MethodDeclarationSyntax PropertyAccess()
         {
             //
             // private static PropertyInfo PropertyAccess<TResult>(Expression<Func<TResult>> propertyAccess) => (PropertyInfo) ((MemberExpression) propertyAccess.Body).Member;
             //
-
-            Debug.Assert(interfaceType.IsInterface());
+            
             const string paramName = "propertyAccess";
 
             Type TResult = typeof(Func<>).GetGenericArguments().Single();  // ugly
@@ -920,13 +533,12 @@ namespace Solti.Utils.DI.Internals
             );
         }
 
-        public static MethodDeclarationSyntax MethodAccess(Type interfaceType)
+        public static MethodDeclarationSyntax MethodAccess()
         {
             //
             // private static MethodInfo MethodAccess(Expression<Action> methodAccess) => ((MethodCallExpression) methodAccess.Body).Method;
             //
-
-            Debug.Assert(interfaceType.IsInterface());
+            
             const string paramName = "methodAccess";
 
             return DeclareMethod
@@ -970,11 +582,13 @@ namespace Solti.Utils.DI.Internals
             );
         }
 
-        public static MethodDeclarationSyntax GetEvent(Type interfaceType)
+        public static MethodDeclarationSyntax GetEvent()
         {
             //
             // private static EventInfo GetEvent(string eventName) => typeof(TInterface).GetEvent(eventName, BindingFlags.Public | BindingFlags.Instance);
             //
+
+            Type interfaceType = typeof(TInterface);
 
             Debug.Assert(interfaceType.IsInterface());
             const string paramName = "eventName";
@@ -1047,38 +661,40 @@ namespace Solti.Utils.DI.Internals
             );
         }
 
-        public static string GenerateAssemblyName(Type @base, Type interfacType) => $"{CreateType(@base)}_{CreateType(interfacType)}_Proxy"; 
+        public static string AssemblyName => $"{CreateType<TInterceptor>()}_{CreateType<TInterface>()}_Proxy"; 
 
-        public const string GeneratedClassName = "GeneratedProxy";
-
-        public static ClassDeclarationSyntax GenerateProxyClass(Type @base, Type interfaceType)
+        public static ClassDeclarationSyntax GenerateProxyClass()
         {
+            Type
+                interfaceType   = typeof(TInterface),
+                interceptorType = typeof(TInterceptor);
+
             Debug.Assert(interfaceType.IsInterface());
 
             ClassDeclarationSyntax cls = ClassDeclaration(GeneratedClassName)
-                .WithModifiers
+            .WithModifiers
+            (
+                modifiers: TokenList
                 (
-                    modifiers: TokenList
-                    (
-                        //
-                        // Az osztaly ne publikus legyen h "internal" lathatosagu tipusokat is hasznalhassunk
-                        //
+                    //
+                    // Az osztaly ne publikus legyen h "internal" lathatosagu tipusokat is hasznalhassunk
+                    //
 
-                        Token(SyntaxKind.InternalKeyword),
-                        Token(SyntaxKind.SealedKeyword)
-                    )
+                    Token(SyntaxKind.InternalKeyword),
+                    Token(SyntaxKind.SealedKeyword)
                 )
-                .WithBaseList
+            )
+            .WithBaseList
+            (
+                baseList: BaseList
                 (
-                    baseList: BaseList
-                    (
-                        new[] {@base, interfaceType}.CreateList<Type, BaseTypeSyntax>(t => SimpleBaseType(CreateType(t)))
-                    )
-                );
+                    new[] { interceptorType, interfaceType}.CreateList<Type, BaseTypeSyntax>(t => SimpleBaseType(CreateType(t)))
+                )
+            );
 
             List<MemberDeclarationSyntax> members = new List<MemberDeclarationSyntax>(new MemberDeclarationSyntax[]
             {
-                Ctor(@base.GetApplicableConstructor())
+                DeclareCtor(interceptorType.GetApplicableConstructor())
             });
 
             //
@@ -1087,30 +703,30 @@ namespace Solti.Utils.DI.Internals
 
             const BindingFlags bindingFlags = BindingFlags.Instance | BindingFlags.Public;
 
-            IReadOnlyList<MethodInfo> methods = GetMethods(interfaceType);
+            MethodInfo[] methods = GetMethods(interfaceType);
             if (methods.Any())
             {
-                members.Add(MethodAccess(interfaceType));
+                members.Add(MethodAccess());
                 members.AddRange(methods.Select(GenerateProxyMethod));
             }
 
-            IReadOnlyList<PropertyInfo> properties = GetProperties(interfaceType);
+            PropertyInfo[] properties = GetProperties(interfaceType);
             if (properties.Any())
             {
-                members.Add(PropertyAccess(interfaceType));
+                members.Add(PropertyAccess());
                 members.AddRange(properties.Select(GenerateProxyProperty));
             }
 
-            IReadOnlyList<EventInfo> events = GetEvents(interfaceType);
+            EventInfo[] events = GetEvents(interfaceType);
             if (events.Any())
             {
-                members.Add(GetEvent(interfaceType));
+                members.Add(GetEvent());
                 members.AddRange(events.SelectMany(GenerateProxyEvent));
             }
 
             return cls.WithMembers(List(members));
 
-            IReadOnlyList<MethodInfo> GetMethods(Type type) => type
+            MethodInfo[] GetMethods(Type type) => type
                 .GetMethods(bindingFlags)
                 .Where(method => !method.IsSpecialName)
                 .Concat
@@ -1120,7 +736,7 @@ namespace Solti.Utils.DI.Internals
                 .Distinct()
                 .ToArray();
 
-            IReadOnlyList<PropertyInfo> GetProperties(Type type) => type
+            PropertyInfo[] GetProperties(Type type) => type
                 .GetProperties(bindingFlags)
                 .Concat
                 (
@@ -1129,7 +745,7 @@ namespace Solti.Utils.DI.Internals
                 .Distinct()
                 .ToArray();
 
-            IReadOnlyList<EventInfo> GetEvents(Type type) => type
+            EventInfo[] GetEvents(Type type) => type
                 .GetEvents(bindingFlags)
                 .Concat
                 (
@@ -1138,112 +754,6 @@ namespace Solti.Utils.DI.Internals
                 .Distinct()
                 .ToArray();
         }
-
-        public static CompilationUnitSyntax GenerateProxyUnit(Type @base, Type interfaceType)
-        {
-            CompilationUnitSyntax unit = CompilationUnit().WithMembers
-            (
-                members: SingletonList<MemberDeclarationSyntax>
-                (
-                    GenerateProxyClass(@base, interfaceType)
-                )
-            );
-#if IGNORE_VISIBILITY
-            IReadOnlyList<string> shouldIgnoreAccessCheck = new[] {@base, interfaceType}
-                .Where(type => !type.IsVisible)
-                .Select(type => type.Assembly.GetName().Name)
-                .Distinct()
-                .ToArray();
-            if (shouldIgnoreAccessCheck.Any()) unit = unit.WithAttributeLists
-            (
-                SingletonList
-                (
-                    AttributeList
-                    (
-                        attributes: new[]{@base, interfaceType}
-                            .Select(type => type.Assembly.GetName().Name)
-                            .Distinct()
-                            .ToArray() // ToArray() kell =(
-                            .CreateList(CreateIgnoresAccessChecksToAttribute)
-                    )
-                    .WithTarget
-                    (
-                        AttributeTargetSpecifier(Token(SyntaxKind.AssemblyKeyword))
-                    )
-                )
-            );
-#endif
-            return unit;
-#if IGNORE_VISIBILITY
-            AttributeSyntax CreateIgnoresAccessChecksToAttribute(string asm) => Attribute
-            (
-                typeof(IgnoresAccessChecksToAttribute).GetQualifiedName()
-            )
-            .WithArgumentList
-            (
-                argumentList: AttributeArgumentList
-                (
-                    arguments: SingletonSeparatedList
-                    (
-                        AttributeArgument(LiteralExpression(SyntaxKind.StringLiteralExpression, Literal(asm)))
-                    )
-                )
-            );
-#endif
-        }
-        #endregion
-
-        #region Private
-        private static readonly string 
-            CALL_TARGET = nameof(InterfaceInterceptor<IDisposable>.CALL_TARGET),
-            TARGET = nameof(InterfaceInterceptor<IDisposable>.Target),
-            // https://github.com/dotnet/roslyn/issues/4861
-            VALUE = nameof(VALUE).ToLower();
-
-        private static SeparatedSyntaxList<TNode> CreateList<T, TNode>(this IReadOnlyCollection<T> src, Func<T, TNode> factory) where TNode : SyntaxNode => SeparatedList<TNode>
-        (
-            nodesAndTokens: src.SelectMany((p, i) =>
-            {
-                var l = new List<SyntaxNodeOrToken> { factory(p) };
-                if (i < src.Count - 1) l.Add(Token(SyntaxKind.CommaToken));
-
-                return l;
-            })
-        );
-
-        private static IdentifierNameSyntax ToIdentifierName(this LocalDeclarationStatementSyntax variable) => IdentifierName(variable.Declaration.Variables.Single().Identifier);
-
-        private static readonly Regex TypeNameReplacer = new Regex(@"\&|`\d+(\[[\w,]+\])?", RegexOptions.Compiled);
-
-        private static string GetFriendlyName(this Type src)
-        {
-            Debug.Assert(!src.IsGenericType() || src.IsGenericTypeDefinition());
-            return TypeNameReplacer.Replace(src.IsNested ? src.Name : src.ToString(), string.Empty);
-        }
-
-        private static NameSyntax GetQualifiedName(this Type type, Func<string, NameSyntax> typeNameFactory = null)
-        {
-            return Parts2QualifiedName
-            (
-                parts: type.GetFriendlyName().Split('.').ToArray(),
-                factory: typeNameFactory ?? IdentifierName
-            );
-
-            NameSyntax Parts2QualifiedName(IReadOnlyCollection<string> parts, Func<string, NameSyntax> factory) => Qualify
-            (
-                parts
-                    .Take(parts.Count - 1)
-                    .Select(part => (NameSyntax) IdentifierName(part))
-                    .Append(factory(parts.Last()))
-                    .ToArray()
-            );
-        }
-
-        private static NameSyntax Qualify(params NameSyntax[] parts) => parts.Length <= 1 ? parts.Single() : QualifiedName
-        (
-            left: Qualify(parts.Take(parts.Length - 1).ToArray()),
-            right: (SimpleNameSyntax) parts.Last()
-        );
         #endregion
     }
 }

@@ -52,6 +52,9 @@
     <None Update="Proxy\BarSrc.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Proxy\DuckClsSrc.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Proxy\ClsSrc.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

@@ -154,6 +154,15 @@ namespace Solti.Utils.DI.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The target does not implement the desired event..
+        /// </summary>
+        internal static string EVENT_NOT_SUPPORTED {
+            get {
+                return ResourceManager.GetString("EVENT_NOT_SUPPORTED", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The resolver does not support the given interface: {0}..
         /// </summary>
         internal static string INTERFACE_NOT_SUPPORTED {
@@ -195,6 +204,15 @@ namespace Solti.Utils.DI.Properties {
         internal static string INVALID_INSTANCE {
             get {
                 return ResourceManager.GetString("INVALID_INSTANCE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The target does not implement the desired method..
+        /// </summary>
+        internal static string METHOD_NOT_SUPPORTED {
+            get {
+                return ResourceManager.GetString("METHOD_NOT_SUPPORTED", resourceCulture);
             }
         }
         
@@ -249,6 +267,15 @@ namespace Solti.Utils.DI.Properties {
         internal static string NOT_SUPPORTED {
             get {
                 return ResourceManager.GetString("NOT_SUPPORTED", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The target does not implement the desired property..
+        /// </summary>
+        internal static string PROPERTY_NOT_SUPPORTED {
+            get {
+                return ResourceManager.GetString("PROPERTY_NOT_SUPPORTED", resourceCulture);
             }
         }
         
