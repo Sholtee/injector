@@ -15,6 +15,7 @@ using System.Threading;
 
 namespace Solti.Utils.DI
 {
+    using Properties;
     using Internals;
 
     /// <summary>
@@ -70,6 +71,9 @@ namespace Solti.Utils.DI
         {
             if (serviceInterface == null)
                 throw new ArgumentNullException(nameof(serviceInterface));
+
+            if (!serviceInterface.IsInterface())
+                throw new ArgumentException(Resources.NOT_AN_INTERFACE, nameof(serviceInterface));
 
             AbstractServiceEntry result;
 

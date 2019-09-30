@@ -6,7 +6,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using System.Threading;
+using System.Threading.Tasks;
 using Moq;
 using NUnit.Framework;
 
@@ -362,10 +363,108 @@ namespace Solti.Utils.DI.Container.Tests
         }
 
         [Test]
-        public void IServiceContainer_GetShuoldThrowOnNull() => Assert.Throws<ArgumentNullException>(() => Container.Get(null));
+        public void IServiceContainer_GetShouldThrowOnNull() => Assert.Throws<ArgumentNullException>(() => Container.Get(null));
 
         [Test]
-        public void IServiceContainer_AddShuoldThrowOnNull() => Assert.Throws<ArgumentNullException>(() => Container.Add(null));
+        public void IServiceContainer_AddShouldThrowOnNull() => Assert.Throws<ArgumentNullException>(() => Container.Add(null));
+
+        [Test]
+        public void IServiceContainer_GetShouldReturnTheSpecializedEntryInMultithreadedEnvironment()
+        {
+            var entry = new LockableSingletonServiceEntry(typeof(IList<>), typeof(MyList<>), Container);
+
+            Container.Add(entry);
+            entry.Lock.Reset();
+
+            Task<AbstractServiceEntry>
+                t1 = Task.Run(() => Container.Get(typeof(IList<int>), QueryMode.ThrowOnError | QueryMode.AllowSpecialization)),
+                t2 = Task.Run(() => Container.Get(typeof(IList<int>), QueryMode.ThrowOnError | QueryMode.AllowSpecialization));
+           
+            Thread.Sleep(10);
+
+            //
+            // Mindket szal a lock-nal varakozik.
+            //
+
+            entry.Lock.Set();
+
+            //
+            // Megvarjuk mig lefutnak.
+            //
+
+            Task.WaitAll(t1, t2);
+
+            Assert.AreSame(t1.Result, t2.Result);
+            Assert.That(t1.Result, Is.EqualTo(new SingletonServiceEntry(typeof(IList<int>), typeof(MyList<int>), Container)));
+        }
+
+        //
+        // TODO: FIXME: Ez igy elegge az implementaciora tamaszkodik (arra alapozunk h a factory-t ugy is specializalas elott keri el a kontener)
+        //
+
+        private sealed class LockableSingletonServiceEntry : AbstractServiceEntry
+        {
+            public readonly ManualResetEventSlim Lock = new ManualResetEventSlim(true);
+
+            public LockableSingletonServiceEntry(Type @interface, Type implementation, IServiceContainer owner) : base(@interface, DI.Lifetime.Singleton, owner)
+            {
+                Implementation = implementation;
+            }
+
+            public override Type Implementation { get; }
+
+            public override Func<IInjector, Type, object> Factory
+            {
+                get
+                {
+                    Lock.Wait();
+                    return null;   
+                }
+            }
+        }
+
+        [Test]
+        public void IServiceContainer_GetShouldReturnTheSpecializedInheritedEntryInMultithreadedEnvironment()
+        {
+            var entry = new LockableSingletonServiceEntry(typeof(IList<>), typeof(MyList<>), Container);
+
+            Container.Add(entry);
+            Assert.That(Container.Count, Is.EqualTo(1));
+
+            using (IServiceContainer child = Container.CreateChild())
+            {
+                Assert.That(child.Count, Is.EqualTo(1));
+
+                entry.Lock.Reset();
+
+                Task<AbstractServiceEntry>
+                    t1 = Task.Run(() => child.Get(typeof(IList<int>), QueryMode.ThrowOnError | QueryMode.AllowSpecialization)),
+                    t2 = Task.Run(() => child.Get(typeof(IList<int>), QueryMode.ThrowOnError | QueryMode.AllowSpecialization));
+
+                Thread.Sleep(10);
+
+                //
+                // Mindket szal a lock-nal varakozik.
+                //
+
+                entry.Lock.Set();
+
+                //
+                // Megvarjuk mig lefutnak.
+                //
+
+                Task.WaitAll(t1, t2);
+
+                Assert.AreSame(t1.Result, t2.Result);
+                Assert.That(t1.Result, Is.EqualTo(new SingletonServiceEntry(typeof(IList<int>), typeof(MyList<int>), Container)));
+                Assert.That(child.Count, Is.EqualTo(2));
+            }
+
+            Assert.That(Container.Count, Is.EqualTo(2));
+        }
+
+        [Test]
+        public void IServiceContainer_GetShouldThrowOnNonInterface() => Assert.Throws<ArgumentException>(() => Container.Get(typeof(object)));
     }
 
     [TestFixture]
