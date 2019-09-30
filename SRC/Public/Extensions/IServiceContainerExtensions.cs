@@ -76,7 +76,8 @@ namespace Solti.Utils.DI
             // hivas). A GetApplicableConstructor() validal valamint mukodik generikusokra is.
             // 
 
-            if (implementation.IsGenericTypeDefinition()) implementation.GetApplicableConstructor();
+            if (implementation.IsGenericTypeDefinition())
+                implementation.GetApplicableConstructor();
 
             return self.Add
             (
@@ -195,7 +196,6 @@ namespace Solti.Utils.DI
             Install(TypeChecker);
 
             return self;
-
 
             void Install(Func<IInjector, Type, object, object> fn)
             {
