@@ -11,4 +11,10 @@ public sealed class GeneratedProxy : Solti.Utils.DI.Internals.DuckBase<Solti.Uti
         get => Target.Prop;
         set => Target.Prop = value;
     }
+
+    event Solti.Utils.DI.Proxy.Tests.DuckGeneratorTests.TestDelegate<System.Int32> Solti.Utils.DI.Proxy.Tests.DuckGeneratorTests.IFoo<System.Int32>.Event
+    {
+        add => Target.Event += value;
+        remove => Target.Event -= value;
+    }
 }

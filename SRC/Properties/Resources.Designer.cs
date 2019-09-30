@@ -143,6 +143,15 @@ namespace Solti.Utils.DI.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The target does not implement the desired event..
+        /// </summary>
+        internal static string EVENT_NOT_SUPPORTED {
+            get {
+                return ResourceManager.GetString("EVENT_NOT_SUPPORTED", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The resolver does not support the given interface: {0}..
         /// </summary>
         internal static string INTERFACE_NOT_SUPPORTED {

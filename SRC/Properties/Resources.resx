@@ -144,6 +144,9 @@
   <data name="CONSTRUCTOR_OVERLOADING_NOT_SUPPORTED" xml:space="preserve">
     <value>"{0}" must have exactly one (annotated) public constructor.</value>
   </data>
+  <data name="EVENT_NOT_SUPPORTED" xml:space="preserve">
+    <value>The target does not implement the desired event.</value>
+  </data>
   <data name="INTERFACE_NOT_SUPPORTED" xml:space="preserve">
     <value>The resolver does not support the given interface: {0}.</value>
   </data>

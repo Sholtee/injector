@@ -55,11 +55,11 @@ namespace Solti.Utils.DI.Proxy.Tests
          }
 
         private static readonly MethodInfo
-            Foo = GetMethod(nameof(Foo)),
-            Bar = GetMethod(nameof(Bar));
+            Foo = GetMethod(nameof(IFoo<int>.Foo)),
+            Bar = GetMethod(nameof(IFoo<int>.Bar));
 
         private static readonly EventInfo
-            Event = typeof(IFoo<int>).GetEvent("Event", BindingFlags.Public | BindingFlags.Instance);
+            Event = typeof(IFoo<int>).GetEvent(nameof(IFoo<int>.Event), BindingFlags.Public | BindingFlags.Instance);
 
         private static readonly PropertyInfo Prop = typeof(IFoo<int>).GetProperty(nameof(IFoo<int>.Prop));
 

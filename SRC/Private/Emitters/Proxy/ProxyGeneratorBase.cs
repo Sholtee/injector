@@ -24,6 +24,22 @@ namespace Solti.Utils.DI.Internals
             Value = nameof(Value).ToLower(),
             GeneratedClassName = "GeneratedProxy";
 
+        private static AccessorDeclarationSyntax DeclareAccessor(SyntaxKind kind, CSharpSyntaxNode body)
+        {
+            AccessorDeclarationSyntax declaration = AccessorDeclaration(kind);
+
+            if (body is BlockSyntax)
+                return declaration.WithBody((BlockSyntax) body);
+
+            if (body is ArrowExpressionClauseSyntax)
+                return declaration
+                    .WithExpressionBody((ArrowExpressionClauseSyntax) body)
+                    .WithSemicolonToken(Token(SyntaxKind.SemicolonToken));
+
+            Debug.Fail("Unknown node type");
+            return null;
+        }
+
         public static LocalDeclarationStatementSyntax DeclareLocal(Type type, string name, ExpressionSyntax initializer = null)
         {
             VariableDeclaratorSyntax declarator = VariableDeclarator
@@ -203,22 +219,6 @@ namespace Solti.Utils.DI.Internals
                     accessors: List(accessors)
                 )
             );
-
-            AccessorDeclarationSyntax DeclareAccessor(SyntaxKind kind, CSharpSyntaxNode body)
-            {
-                AccessorDeclarationSyntax declaration = AccessorDeclaration(kind);
-
-                if (body is BlockSyntax)
-                    return declaration.WithBody((BlockSyntax) body);
-
-                if (body is ArrowExpressionClauseSyntax)
-                    return declaration
-                        .WithExpressionBody((ArrowExpressionClauseSyntax) body)
-                        .WithSemicolonToken(Token(SyntaxKind.SemicolonToken));
-
-                Debug.Fail("Unknown node type");
-                return null;
-            }
         }
 
         public static FieldDeclarationSyntax DeclareField<TField>(string name, ExpressionSyntax initializer = null, params SyntaxKind[] modifiers)
@@ -253,7 +253,7 @@ namespace Solti.Utils.DI.Internals
             );
         }
 
-        public static EventDeclarationSyntax DeclareEvent(EventInfo @event, BlockSyntax addBody = null, BlockSyntax removeBody = null)
+        public static EventDeclarationSyntax DeclareEvent(EventInfo @event, CSharpSyntaxNode addBody = null, CSharpSyntaxNode removeBody = null)
         {
             EventDeclarationSyntax result = EventDeclaration
             (
@@ -267,8 +267,8 @@ namespace Solti.Utils.DI.Internals
 
             List<AccessorDeclarationSyntax> accessors = new List<AccessorDeclarationSyntax>();
 
-            if (@event.AddMethod    != null && addBody    != null) accessors.Add(AccessorDeclaration(SyntaxKind.AddAccessorDeclaration).WithBody(addBody));
-            if (@event.RemoveMethod != null && removeBody != null) accessors.Add(AccessorDeclaration(SyntaxKind.RemoveAccessorDeclaration).WithBody(removeBody));
+            if (@event.AddMethod    != null && addBody    != null) accessors.Add(DeclareAccessor(SyntaxKind.AddAccessorDeclaration, addBody));
+            if (@event.RemoveMethod != null && removeBody != null) accessors.Add(DeclareAccessor(SyntaxKind.RemoveAccessorDeclaration, removeBody));
 
             return !accessors.Any() ? result : result.WithAccessorList
             (
@@ -278,6 +278,18 @@ namespace Solti.Utils.DI.Internals
                 )
             );
         }
+
+        public static AssignmentExpressionSyntax RegisterEvent(EventInfo @event, string target, bool add) => AssignmentExpression
+        (
+            kind: add ? SyntaxKind.AddAssignmentExpression : SyntaxKind.SubtractAssignmentExpression,
+            left: MemberAccessExpression
+            (
+                SyntaxKind.SimpleMemberAccessExpression,
+                IdentifierName(target),
+                IdentifierName(@event.Name)
+            ),
+            right: IdentifierName(Value)
+        );
 
         public static TypeSyntax CreateType(Type src)
         {

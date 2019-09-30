@@ -235,21 +235,6 @@ namespace Solti.Utils.DI.Internals
             )
         );
 
-        internal static StatementSyntax RegisterTargetEvent(EventInfo @event, bool add) => ExpressionStatement
-        (
-            expression: AssignmentExpression
-            (
-                kind: add ? SyntaxKind.AddAssignmentExpression : SyntaxKind.SubtractAssignmentExpression,
-                left: MemberAccessExpression
-                (
-                    SyntaxKind.SimpleMemberAccessExpression,
-                    IdentifierName(TARGET),
-                    IdentifierName(@event.Name)
-                ),
-                right: IdentifierName(Value)
-            )
-        );
-
         internal static IfStatementSyntax ShouldCallTarget(LocalDeclarationStatementSyntax result, StatementSyntax ifTrue) => IfStatement
         (
             condition: BinaryExpression
@@ -461,7 +446,10 @@ namespace Solti.Utils.DI.Internals
                                 CreateArray<object>(IdentifierName(Value)), // new object[] {value}
                                 IdentifierName(fieldName) //FEvent
                             ),
-                            ShouldCallTarget(result, ifTrue: RegisterTargetEvent(@event, add: true))
+                            ShouldCallTarget(result, ifTrue: ExpressionStatement
+                            (
+                                expression: RegisterEvent(@event, TARGET, add: true))
+                            )
                         }
                     ),
                     removeBody: Block
@@ -479,7 +467,10 @@ namespace Solti.Utils.DI.Internals
                                 CreateArray<object>(IdentifierName(Value)),
                                 IdentifierName(fieldName)
                             ),
-                            ShouldCallTarget(result, ifTrue: RegisterTargetEvent(@event, add: false))
+                            ShouldCallTarget(result, ifTrue: ExpressionStatement
+                            ( 
+                                expression: RegisterEvent(@event, TARGET, add: false))
+                            )
                         }
                     )
                 )

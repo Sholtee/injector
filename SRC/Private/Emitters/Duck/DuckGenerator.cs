@@ -145,6 +145,28 @@ namespace Solti.Utils.DI.Internals
             );
         }
 
+        internal static EventDeclarationSyntax GenerateDuckEvent(EventInfo ifaceEvent)
+        {
+            EventInfo targetEvent = typeof(TTarget).GetEvent(ifaceEvent.Name, BindingFlags.Instance | BindingFlags.Public);
+
+            if (targetEvent == null)
+            {
+                var mme = new MissingMethodException(Resources.EVENT_NOT_SUPPORTED);
+                mme.Data.Add(nameof(ifaceEvent), ifaceEvent);
+                throw mme;
+            }
+
+            return DeclareEvent
+            (
+                ifaceEvent, 
+                addBody: ArrowExpressionClause
+                (
+                    expression: RegisterEvent(targetEvent, TARGET, add: true)
+                ),
+                removeBody: ArrowExpressionClause(RegisterEvent(targetEvent, TARGET, add: false))
+            );
+        }
+
         public static ClassDeclarationSyntax GenerateDuckClass()
         {
             Type 
@@ -153,7 +175,10 @@ namespace Solti.Utils.DI.Internals
 
             Debug.Assert(interfaceType.IsInterface());
 
-            ClassDeclarationSyntax cls = ClassDeclaration(GeneratedClassName)
+            ClassDeclarationSyntax cls = ClassDeclaration
+            (
+                identifier: GeneratedClassName
+            )
             .WithModifiers
             (
                 modifiers: TokenList
@@ -193,6 +218,11 @@ namespace Solti.Utils.DI.Internals
                 GetProperties(interfaceType).Select(p => AggregateException(p, GenerateDuckProperty, exceptions))
             );
 
+            members.AddRange
+            (
+                GetEvents(interfaceType).Select(e => AggregateException(e, GenerateDuckEvent, exceptions))
+            );
+
             //
             // Az osszes hibat visszaadjuk (ha voltak).
             //
@@ -218,7 +248,15 @@ namespace Solti.Utils.DI.Internals
                 )
                 .Distinct();
 
-            TResult AggregateException<T, TResult>(T arg, Func<T, TResult> selector, List<Exception> exs)
+            IEnumerable<EventInfo> GetEvents(Type type) => type
+                .GetEvents(bindingFlags)
+                .Concat
+                (
+                    type.GetInterfaces().SelectMany(GetEvents)
+                )
+                .Distinct();
+
+            TResult AggregateException<T, TResult>(T arg, Func<T, TResult> selector, ICollection<Exception> exs)
             {
                 try
                 {
