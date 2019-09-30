@@ -201,24 +201,22 @@ namespace Solti.Utils.DI.Internals
 
             return cls.WithMembers(List(members));
 
-            IReadOnlyList<MethodInfo> GetMethods(Type type) => type
+            IEnumerable<MethodInfo> GetMethods(Type type) => type
                 .GetMethods(bindingFlags)
                 .Where(method => !method.IsSpecialName)
                 .Concat
                 (
                     type.GetInterfaces().SelectMany(GetMethods)
                 )
-                .Distinct()
-                .ToArray();
+                .Distinct();
 
-            IReadOnlyList<PropertyInfo> GetProperties(Type type) => type
+            IEnumerable<PropertyInfo> GetProperties(Type type) => type
                 .GetProperties(bindingFlags)
                 .Concat
                 (
                     type.GetInterfaces().SelectMany(GetProperties)
                 )
-                .Distinct()
-                .ToArray();
+                .Distinct();
 
             TResult AggregateException<T, TResult>(T arg, Func<T, TResult> selector, List<Exception> exs)
             {

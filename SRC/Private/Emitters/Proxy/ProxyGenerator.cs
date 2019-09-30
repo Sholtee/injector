@@ -712,21 +712,21 @@ namespace Solti.Utils.DI.Internals
 
             const BindingFlags bindingFlags = BindingFlags.Instance | BindingFlags.Public;
 
-            IReadOnlyList<MethodInfo> methods = GetMethods(interfaceType);
+            MethodInfo[] methods = GetMethods(interfaceType);
             if (methods.Any())
             {
                 members.Add(MethodAccess());
                 members.AddRange(methods.Select(GenerateProxyMethod));
             }
 
-            IReadOnlyList<PropertyInfo> properties = GetProperties(interfaceType);
+            PropertyInfo[] properties = GetProperties(interfaceType);
             if (properties.Any())
             {
                 members.Add(PropertyAccess());
                 members.AddRange(properties.Select(GenerateProxyProperty));
             }
 
-            IReadOnlyList<EventInfo> events = GetEvents(interfaceType);
+            EventInfo[] events = GetEvents(interfaceType);
             if (events.Any())
             {
                 members.Add(GetEvent());
@@ -735,7 +735,7 @@ namespace Solti.Utils.DI.Internals
 
             return cls.WithMembers(List(members));
 
-            IReadOnlyList<MethodInfo> GetMethods(Type type) => type
+            MethodInfo[] GetMethods(Type type) => type
                 .GetMethods(bindingFlags)
                 .Where(method => !method.IsSpecialName)
                 .Concat
@@ -745,7 +745,7 @@ namespace Solti.Utils.DI.Internals
                 .Distinct()
                 .ToArray();
 
-            IReadOnlyList<PropertyInfo> GetProperties(Type type) => type
+            PropertyInfo[] GetProperties(Type type) => type
                 .GetProperties(bindingFlags)
                 .Concat
                 (
@@ -754,7 +754,7 @@ namespace Solti.Utils.DI.Internals
                 .Distinct()
                 .ToArray();
 
-            IReadOnlyList<EventInfo> GetEvents(Type type) => type
+            EventInfo[] GetEvents(Type type) => type
                 .GetEvents(bindingFlags)
                 .Concat
                 (
