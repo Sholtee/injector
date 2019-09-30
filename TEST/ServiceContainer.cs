@@ -51,7 +51,7 @@ namespace Solti.Utils.DI.Container.Tests
         }
 
         [Test]
-        public void IServiceContainer_CreateChildShouldCopyTheInheritedEntries()
+        public void IServiceContainer_CreateChildShouldCopyTheEntriesFromItsParent()
         {
             //
             // MockBehavior ne legyen megadva h mikor a GC felszabaditja a mock entitast
@@ -269,7 +269,10 @@ namespace Solti.Utils.DI.Container.Tests
 
         private sealed class BadDisposable: Disposable
         {
-            protected override void Dispose(bool disposeManaged) => throw new Exception();
+            protected override void Dispose(bool disposeManaged)
+            {
+                if (disposeManaged) throw new Exception();
+            }
         }
 
         [Test]
