@@ -35,7 +35,7 @@
   </ItemGroup>
 
   <ItemGroup Condition="'$(Configuration)'!='Debug'">
-    <Compile Remove="Private\Annotations\ExcludeFromCoverageAttribute .cs" />
+    <Compile Remove="Private\Annotations\ExcludeFromCoverageAttribute.cs" />
   </ItemGroup>
 
   <ItemGroup>   
