@@ -34,6 +34,10 @@
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="3.2.1" />
   </ItemGroup>
 
+  <ItemGroup Condition="'$(Configuration)'!='Debug'">
+    <Compile Remove="Private\Annotations\ExcludeFromCoverageAttribute .cs" />
+  </ItemGroup>
+
   <ItemGroup>   
     <PackageReference Include="System.Runtime.Loader" Version="4.3.0" />
   </ItemGroup>
