@@ -12,9 +12,8 @@ using NUnit.Framework;
 namespace Solti.Utils.DI.Container.Tests
 {
     using Properties;
-
-    [TestFixture]
-    public sealed partial class ContainerTests
+    
+    public partial class ContainerTestsBase<TContainer>
     {
         [Test]
         public void Container_Abstract_ShouldRegisterAnOverridableService()
@@ -23,7 +22,7 @@ namespace Solti.Utils.DI.Container.Tests
                 .Service<IInterface_1, Implementation_1>()
                 .Abstract<IInterface_2>();
 
-            Assert.That(Container.Entries.Count, Is.EqualTo(2));
+            Assert.That(Container.Count, Is.EqualTo(2));
 
             using (IServiceContainer child = Container.CreateChild())
             {

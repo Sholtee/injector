@@ -7,11 +7,8 @@ using Moq;
 using NUnit.Framework;
 
 namespace Solti.Utils.DI.Injector.Tests
-{
-    using Internals;
-
-    [TestFixture]
-    public sealed partial class InjectorTests
+{ 
+    public partial class InjectorTestsBase<TContainer>
     {
         [Test]
         public void Injector_DisposeShouldFreeScopedEntries()

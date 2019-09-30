@@ -57,21 +57,21 @@
     <div><a class="xref" href="Solti.Utils.DI.IServiceContainer.html">IServiceContainer</a></div>
     <div><a class="xref" href="Solti.Utils.DI.Internals.IComposite-1.html">IComposite</a>&lt;<a class="xref" href="Solti.Utils.DI.IServiceContainer.html">IServiceContainer</a>&gt;</div>
     <div><span class="xref">IDisposable</span></div>
-    <div><a class="xref" href="Solti.Utils.DI.IQueryServiceInfo.html">IQueryServiceInfo</a></div>
+    <div><span class="xref">IEnumerable</span>&lt;<a class="xref" href="Solti.Utils.DI.Internals.AbstractServiceEntry.html">AbstractServiceEntry</a>&gt;</div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
-      <a class="xref" href="Solti.Utils.DI.Internals.Composite-1.html#Solti_Utils_DI_Internals_Composite_1_Solti_Utils_DI_Internals_IComposite_TInterface__Parent">Composite&lt;IServiceContainer&gt;.IComposite&lt;IServiceContainer&gt;.Parent</a>
+      <a class="xref" href="Solti.Utils.DI.Internals.Composite-1.html#Solti_Utils_DI_Internals_Composite_1_Parent">Composite&lt;IServiceContainer&gt;.Parent</a>
     </div>
     <div>
-      <a class="xref" href="Solti.Utils.DI.Internals.Composite-1.html#Solti_Utils_DI_Internals_Composite_1_Solti_Utils_DI_Internals_IComposite_TInterface__Children">Composite&lt;IServiceContainer&gt;.IComposite&lt;IServiceContainer&gt;.Children</a>
+      <a class="xref" href="Solti.Utils.DI.Internals.Composite-1.html#Solti_Utils_DI_Internals_Composite_1_Children">Composite&lt;IServiceContainer&gt;.Children</a>
     </div>
     <div>
-      <a class="xref" href="Solti.Utils.DI.Internals.Composite-1.html#Solti_Utils_DI_Internals_Composite_1_Solti_Utils_DI_Internals_IComposite_TInterface__CreateChild">Composite&lt;IServiceContainer&gt;.IComposite&lt;IServiceContainer&gt;.CreateChild()</a>
+      <a class="xref" href="Solti.Utils.DI.Internals.Composite-1.html#Solti_Utils_DI_Internals_Composite_1_AddChild__0_">Composite&lt;IServiceContainer&gt;.AddChild(IServiceContainer)</a>
     </div>
     <div>
-      <a class="xref" href="Solti.Utils.DI.Internals.Composite-1.html#Solti_Utils_DI_Internals_Composite_1_Solti_Utils_DI_Internals_IComposite_TInterface__IsRoot">Composite&lt;IServiceContainer&gt;.IComposite&lt;IServiceContainer&gt;.IsRoot</a>
+      <a class="xref" href="Solti.Utils.DI.Internals.Composite-1.html#Solti_Utils_DI_Internals_Composite_1_RemoveChild__0_">Composite&lt;IServiceContainer&gt;.RemoveChild(IServiceContainer)</a>
     </div>
     <div>
       <a class="xref" href="Solti.Utils.DI.Internals.Disposable.html#Solti_Utils_DI_Internals_Disposable_Disposed">Disposable.Disposed</a>
@@ -87,25 +87,26 @@
   <h6><strong>Assembly</strong>: Injector.dll</h6>
   <h5 id="Solti_Utils_DI_ServiceContainer_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class ServiceContainer : Composite&lt;IServiceContainer&gt;, IServiceContainer, IComposite&lt;IServiceContainer&gt;, IDisposable, IQueryServiceInfo</code></pre>
+    <pre><code class="lang-csharp hljs">public class ServiceContainer : Composite&lt;IServiceContainer&gt;, IServiceContainer, IComposite&lt;IServiceContainer&gt;, IDisposable, IEnumerable&lt;AbstractServiceEntry&gt;</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
   <a id="Solti_Utils_DI_ServiceContainer__ctor_" data-uid="Solti.Utils.DI.ServiceContainer.#ctor*"></a>
   <h4 id="Solti_Utils_DI_ServiceContainer__ctor" data-uid="Solti.Utils.DI.ServiceContainer.#ctor">ServiceContainer()</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Creates a new <a class="xref" href="Solti.Utils.DI.ServiceContainer.html">ServiceContainer</a> instance.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected ServiceContainer()</code></pre>
+    <pre><code class="lang-csharp hljs">public ServiceContainer()</code></pre>
   </div>
   <a id="Solti_Utils_DI_ServiceContainer__ctor_" data-uid="Solti.Utils.DI.ServiceContainer.#ctor*"></a>
-  <h4 id="Solti_Utils_DI_ServiceContainer__ctor_Solti_Utils_DI_ServiceContainer_" data-uid="Solti.Utils.DI.ServiceContainer.#ctor(Solti.Utils.DI.ServiceContainer)">ServiceContainer(ServiceContainer)</h4>
+  <h4 id="Solti_Utils_DI_ServiceContainer__ctor_Solti_Utils_DI_IServiceContainer_" data-uid="Solti.Utils.DI.ServiceContainer.#ctor(Solti.Utils.DI.IServiceContainer)">ServiceContainer(IServiceContainer)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected ServiceContainer(ServiceContainer parent)</code></pre>
+    <pre><code class="lang-csharp hljs">protected ServiceContainer(IServiceContainer parent)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -118,7 +119,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Solti.Utils.DI.ServiceContainer.html">ServiceContainer</a></td>
+        <td><a class="xref" href="Solti.Utils.DI.IServiceContainer.html">IServiceContainer</a></td>
         <td><span class="parametername">parent</span></td>
         <td></td>
       </tr>
@@ -126,13 +127,13 @@
   </table>
   <h3 id="properties">Properties
   </h3>
-  <a id="Solti_Utils_DI_ServiceContainer_Self_" data-uid="Solti.Utils.DI.ServiceContainer.Self*"></a>
-  <h4 id="Solti_Utils_DI_ServiceContainer_Self" data-uid="Solti.Utils.DI.ServiceContainer.Self">Self</h4>
+  <a id="Solti_Utils_DI_ServiceContainer_Count_" data-uid="Solti.Utils.DI.ServiceContainer.Count*"></a>
+  <h4 id="Solti_Utils_DI_ServiceContainer_Count" data-uid="Solti.Utils.DI.ServiceContainer.Count">Count</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected override IServiceContainer Self { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public int Count { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -144,24 +145,38 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Solti.Utils.DI.IServiceContainer.html">IServiceContainer</a></td>
+        <td><span class="xref">System.Int32</span></td>
         <td></td>
       </tr>
     </tbody>
   </table>
-  <h5 class="overrides">Overrides</h5>
-  <div><span class="xref">Solti.Utils.DI.Internals.Composite&lt;Solti.Utils.DI.IServiceContainer&gt;.Self</span></div>
   <h3 id="methods">Methods
   </h3>
-  <a id="Solti_Utils_DI_ServiceContainer_Create_" data-uid="Solti.Utils.DI.ServiceContainer.Create*"></a>
-  <h4 id="Solti_Utils_DI_ServiceContainer_Create" data-uid="Solti.Utils.DI.ServiceContainer.Create">Create()</h4>
-  <div class="markdown level1 summary"><p>Creates a new <a class="xref" href="Solti.Utils.DI.IServiceContainer.html">IServiceContainer</a> instance.</p>
-</div>
+  <a id="Solti_Utils_DI_ServiceContainer_Add_" data-uid="Solti.Utils.DI.ServiceContainer.Add*"></a>
+  <h4 id="Solti_Utils_DI_ServiceContainer_Add_Solti_Utils_DI_Internals_AbstractServiceEntry_" data-uid="Solti.Utils.DI.ServiceContainer.Add(Solti.Utils.DI.Internals.AbstractServiceEntry)">Add(AbstractServiceEntry)</h4>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static IServiceContainer Create()</code></pre>
+    <pre><code class="lang-csharp hljs">public IServiceContainer Add(AbstractServiceEntry entry)</code></pre>
   </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.Internals.AbstractServiceEntry.html">AbstractServiceEntry</a></td>
+        <td><span class="parametername">entry</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
@@ -173,8 +188,7 @@
     <tbody>
       <tr>
         <td><a class="xref" href="Solti.Utils.DI.IServiceContainer.html">IServiceContainer</a></td>
-        <td><p>The newly created instance.</p>
-</td>
+        <td></td>
       </tr>
     </tbody>
   </table>
@@ -184,7 +198,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected override IServiceContainer CreateChild()</code></pre>
+    <pre><code class="lang-csharp hljs">public override IServiceContainer CreateChild()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -230,40 +244,13 @@
   </table>
   <h5 class="overrides">Overrides</h5>
   <div><span class="xref">Solti.Utils.DI.Internals.Composite&lt;Solti.Utils.DI.IServiceContainer&gt;.Dispose(System.Boolean)</span></div>
-  <h3 id="eii">Explicit Interface Implementations
-  </h3>
-  <a id="Solti_Utils_DI_ServiceContainer_Solti_Utils_DI_IQueryServiceInfo_Entries_" data-uid="Solti.Utils.DI.ServiceContainer.Solti#Utils#DI#IQueryServiceInfo#Entries*"></a>
-  <h4 id="Solti_Utils_DI_ServiceContainer_Solti_Utils_DI_IQueryServiceInfo_Entries" data-uid="Solti.Utils.DI.ServiceContainer.Solti#Utils#DI#IQueryServiceInfo#Entries">IQueryServiceInfo.Entries</h4>
-  <div class="markdown level1 summary"><p>See <a class="xref" href="Solti.Utils.DI.IQueryServiceInfo.html">IQueryServiceInfo</a></p>
-</div>
+  <a id="Solti_Utils_DI_ServiceContainer_Get_" data-uid="Solti.Utils.DI.ServiceContainer.Get*"></a>
+  <h4 id="Solti_Utils_DI_ServiceContainer_Get_Type_Solti_Utils_DI_QueryMode_" data-uid="Solti.Utils.DI.ServiceContainer.Get(Type,Solti.Utils.DI.QueryMode)">Get(Type, QueryMode)</h4>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">IReadOnlyCollection&lt;IServiceInfo&gt; IQueryServiceInfo.Entries { get; }</code></pre>
-  </div>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">IReadOnlyCollection</span>&lt;<a class="xref" href="Solti.Utils.DI.IServiceInfo.html">IServiceInfo</a>&gt;</td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <a id="Solti_Utils_DI_ServiceContainer_Solti_Utils_DI_IQueryServiceInfo_QueryServiceInfo_" data-uid="Solti.Utils.DI.ServiceContainer.Solti#Utils#DI#IQueryServiceInfo#QueryServiceInfo*"></a>
-  <h4 id="Solti_Utils_DI_ServiceContainer_Solti_Utils_DI_IQueryServiceInfo_QueryServiceInfo_Type_" data-uid="Solti.Utils.DI.ServiceContainer.Solti#Utils#DI#IQueryServiceInfo#QueryServiceInfo(Type)">IQueryServiceInfo.QueryServiceInfo(Type)</h4>
-  <div class="markdown level1 summary"><p>See <a class="xref" href="Solti.Utils.DI.IQueryServiceInfo.html">IQueryServiceInfo</a></p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">IServiceInfo IQueryServiceInfo.QueryServiceInfo(Type iface)</code></pre>
+    <pre><code class="lang-csharp hljs">public AbstractServiceEntry Get(Type serviceInterface, QueryMode mode = default(QueryMode))</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -277,7 +264,12 @@
     <tbody>
       <tr>
         <td><span class="xref">Type</span></td>
-        <td><span class="parametername">iface</span></td>
+        <td><span class="parametername">serviceInterface</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.QueryMode.html">QueryMode</a></td>
+        <td><span class="parametername">mode</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -292,60 +284,18 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Solti.Utils.DI.IServiceInfo.html">IServiceInfo</a></td>
+        <td><a class="xref" href="Solti.Utils.DI.Internals.AbstractServiceEntry.html">AbstractServiceEntry</a></td>
         <td></td>
       </tr>
     </tbody>
   </table>
-  <a id="Solti_Utils_DI_ServiceContainer_Solti_Utils_DI_IServiceContainer_Abstract_" data-uid="Solti.Utils.DI.ServiceContainer.Solti#Utils#DI#IServiceContainer#Abstract*"></a>
-  <h4 id="Solti_Utils_DI_ServiceContainer_Solti_Utils_DI_IServiceContainer_Abstract_Type_" data-uid="Solti.Utils.DI.ServiceContainer.Solti#Utils#DI#IServiceContainer#Abstract(Type)">IServiceContainer.Abstract(Type)</h4>
-  <div class="markdown level1 summary"><p>See <a class="xref" href="Solti.Utils.DI.IServiceContainer.html">IServiceContainer</a></p>
-</div>
+  <a id="Solti_Utils_DI_ServiceContainer_GetEnumerator_" data-uid="Solti.Utils.DI.ServiceContainer.GetEnumerator*"></a>
+  <h4 id="Solti_Utils_DI_ServiceContainer_GetEnumerator" data-uid="Solti.Utils.DI.ServiceContainer.GetEnumerator">GetEnumerator()</h4>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">IServiceContainer IServiceContainer.Abstract(Type iface)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">Type</span></td>
-        <td><span class="parametername">iface</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Solti.Utils.DI.IServiceContainer.html">IServiceContainer</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <a id="Solti_Utils_DI_ServiceContainer_Solti_Utils_DI_IServiceContainer_CreateInjector_" data-uid="Solti.Utils.DI.ServiceContainer.Solti#Utils#DI#IServiceContainer#CreateInjector*"></a>
-  <h4 id="Solti_Utils_DI_ServiceContainer_Solti_Utils_DI_IServiceContainer_CreateInjector" data-uid="Solti.Utils.DI.ServiceContainer.Solti#Utils#DI#IServiceContainer#CreateInjector">IServiceContainer.CreateInjector()</h4>
-  <div class="markdown level1 summary"><p>See <a class="xref" href="Solti.Utils.DI.IServiceContainer.html">IServiceContainer</a></p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">IInjector IServiceContainer.CreateInjector()</code></pre>
+    <pre><code class="lang-csharp hljs">public IEnumerator&lt;AbstractServiceEntry&gt; GetEnumerator()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -357,257 +307,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Solti.Utils.DI.IInjector.html">IInjector</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <a id="Solti_Utils_DI_ServiceContainer_Solti_Utils_DI_IServiceContainer_Factory_" data-uid="Solti.Utils.DI.ServiceContainer.Solti#Utils#DI#IServiceContainer#Factory*"></a>
-  <h4 id="Solti_Utils_DI_ServiceContainer_Solti_Utils_DI_IServiceContainer_Factory_Type_Func_Solti_Utils_DI_IInjector_Type_System_Object__Solti_Utils_DI_Lifetime_" data-uid="Solti.Utils.DI.ServiceContainer.Solti#Utils#DI#IServiceContainer#Factory(Type,Func{Solti.Utils.DI.IInjector,Type,System.Object},Solti.Utils.DI.Lifetime)">IServiceContainer.Factory(Type, Func&lt;IInjector, Type, Object&gt;, Lifetime)</h4>
-  <div class="markdown level1 summary"><p>See <a class="xref" href="Solti.Utils.DI.IServiceContainer.html">IServiceContainer</a></p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">IServiceContainer IServiceContainer.Factory(Type iface, Func&lt;IInjector, Type, object&gt; factory, Lifetime lifetime)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">Type</span></td>
-        <td><span class="parametername">iface</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">Func</span>&lt;<a class="xref" href="Solti.Utils.DI.IInjector.html">IInjector</a>, <span class="xref">Type</span>, <span class="xref">System.Object</span>&gt;</td>
-        <td><span class="parametername">factory</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="Solti.Utils.DI.Lifetime.html">Lifetime</a></td>
-        <td><span class="parametername">lifetime</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Solti.Utils.DI.IServiceContainer.html">IServiceContainer</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <a id="Solti_Utils_DI_ServiceContainer_Solti_Utils_DI_IServiceContainer_Instance_" data-uid="Solti.Utils.DI.ServiceContainer.Solti#Utils#DI#IServiceContainer#Instance*"></a>
-  <h4 id="Solti_Utils_DI_ServiceContainer_Solti_Utils_DI_IServiceContainer_Instance_Type_System_Object_System_Boolean_" data-uid="Solti.Utils.DI.ServiceContainer.Solti#Utils#DI#IServiceContainer#Instance(Type,System.Object,System.Boolean)">IServiceContainer.Instance(Type, Object, Boolean)</h4>
-  <div class="markdown level1 summary"><p>See <a class="xref" href="Solti.Utils.DI.IServiceContainer.html">IServiceContainer</a></p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">IServiceContainer IServiceContainer.Instance(Type iface, object instance, bool releaseOnDispose)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">Type</span></td>
-        <td><span class="parametername">iface</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Object</span></td>
-        <td><span class="parametername">instance</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Boolean</span></td>
-        <td><span class="parametername">releaseOnDispose</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Solti.Utils.DI.IServiceContainer.html">IServiceContainer</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <a id="Solti_Utils_DI_ServiceContainer_Solti_Utils_DI_IServiceContainer_Lazy_" data-uid="Solti.Utils.DI.ServiceContainer.Solti#Utils#DI#IServiceContainer#Lazy*"></a>
-  <h4 id="Solti_Utils_DI_ServiceContainer_Solti_Utils_DI_IServiceContainer_Lazy_Type_Solti_Utils_DI_ITypeResolver_Solti_Utils_DI_Lifetime_" data-uid="Solti.Utils.DI.ServiceContainer.Solti#Utils#DI#IServiceContainer#Lazy(Type,Solti.Utils.DI.ITypeResolver,Solti.Utils.DI.Lifetime)">IServiceContainer.Lazy(Type, ITypeResolver, Lifetime)</h4>
-  <div class="markdown level1 summary"><p>See <a class="xref" href="Solti.Utils.DI.IServiceContainer.html">IServiceContainer</a></p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">IServiceContainer IServiceContainer.Lazy(Type iface, ITypeResolver implementation, Lifetime lifetime)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">Type</span></td>
-        <td><span class="parametername">iface</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="Solti.Utils.DI.ITypeResolver.html">ITypeResolver</a></td>
-        <td><span class="parametername">implementation</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="Solti.Utils.DI.Lifetime.html">Lifetime</a></td>
-        <td><span class="parametername">lifetime</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Solti.Utils.DI.IServiceContainer.html">IServiceContainer</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <a id="Solti_Utils_DI_ServiceContainer_Solti_Utils_DI_IServiceContainer_Proxy_" data-uid="Solti.Utils.DI.ServiceContainer.Solti#Utils#DI#IServiceContainer#Proxy*"></a>
-  <h4 id="Solti_Utils_DI_ServiceContainer_Solti_Utils_DI_IServiceContainer_Proxy_Type_Func_Solti_Utils_DI_IInjector_Type_System_Object_System_Object__" data-uid="Solti.Utils.DI.ServiceContainer.Solti#Utils#DI#IServiceContainer#Proxy(Type,Func{Solti.Utils.DI.IInjector,Type,System.Object,System.Object})">IServiceContainer.Proxy(Type, Func&lt;IInjector, Type, Object, Object&gt;)</h4>
-  <div class="markdown level1 summary"><p>See <a class="xref" href="Solti.Utils.DI.IServiceContainer.html">IServiceContainer</a></p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">IServiceContainer IServiceContainer.Proxy(Type iface, Func&lt;IInjector, Type, object, object&gt; decorator)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">Type</span></td>
-        <td><span class="parametername">iface</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">Func</span>&lt;<a class="xref" href="Solti.Utils.DI.IInjector.html">IInjector</a>, <span class="xref">Type</span>, <span class="xref">System.Object</span>, <span class="xref">System.Object</span>&gt;</td>
-        <td><span class="parametername">decorator</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Solti.Utils.DI.IServiceContainer.html">IServiceContainer</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <a id="Solti_Utils_DI_ServiceContainer_Solti_Utils_DI_IServiceContainer_Service_" data-uid="Solti.Utils.DI.ServiceContainer.Solti#Utils#DI#IServiceContainer#Service*"></a>
-  <h4 id="Solti_Utils_DI_ServiceContainer_Solti_Utils_DI_IServiceContainer_Service_Type_Type_Solti_Utils_DI_Lifetime_" data-uid="Solti.Utils.DI.ServiceContainer.Solti#Utils#DI#IServiceContainer#Service(Type,Type,Solti.Utils.DI.Lifetime)">IServiceContainer.Service(Type, Type, Lifetime)</h4>
-  <div class="markdown level1 summary"><p>See <a class="xref" href="Solti.Utils.DI.IServiceContainer.html">IServiceContainer</a></p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">IServiceContainer IServiceContainer.Service(Type iface, Type implementation, Lifetime lifetime)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">Type</span></td>
-        <td><span class="parametername">iface</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">Type</span></td>
-        <td><span class="parametername">implementation</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="Solti.Utils.DI.Lifetime.html">Lifetime</a></td>
-        <td><span class="parametername">lifetime</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Solti.Utils.DI.IServiceContainer.html">IServiceContainer</a></td>
+        <td><span class="xref">IEnumerator</span>&lt;<a class="xref" href="Solti.Utils.DI.Internals.AbstractServiceEntry.html">AbstractServiceEntry</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -623,14 +323,35 @@
       <span class="xref">IDisposable</span>
   </div>
   <div>
-      <a class="xref" href="Solti.Utils.DI.IQueryServiceInfo.html">IQueryServiceInfo</a>
+      <span class="xref">IEnumerable&lt;&gt;</span>
   </div>
   <h3 id="extensionmethods">Extension Methods</h3>
   <div>
       <a class="xref" href="Solti.Utils.DI.ConfigFromAssembly.html#Solti_Utils_DI_ConfigFromAssembly_Setup_Solti_Utils_DI_IServiceContainer_Assembly_">ConfigFromAssembly.Setup(IServiceContainer, Assembly)</a>
   </div>
   <div>
-      <a class="xref" href="Solti.Utils.DI.IQueryServiceInfoExtensions.html#Solti_Utils_DI_IQueryServiceInfoExtensions_QueryServiceInfo__1_Solti_Utils_DI_IQueryServiceInfo_">IQueryServiceInfoExtensions.QueryServiceInfo&lt;TInterface&gt;(IQueryServiceInfo)</a>
+      <a class="xref" href="Solti.Utils.DI.IServiceContainerExtensions.html#Solti_Utils_DI_IServiceContainerExtensions_Get__1_Solti_Utils_DI_IServiceContainer_Solti_Utils_DI_QueryMode_">IServiceContainerExtensions.Get&lt;TInterface&gt;(IServiceContainer, QueryMode)</a>
+  </div>
+  <div>
+      <a class="xref" href="Solti.Utils.DI.IServiceContainerExtensions.html#Solti_Utils_DI_IServiceContainerExtensions_Service_Solti_Utils_DI_IServiceContainer_Type_Type_Solti_Utils_DI_Lifetime_">IServiceContainerExtensions.Service(IServiceContainer, Type, Type, Lifetime)</a>
+  </div>
+  <div>
+      <a class="xref" href="Solti.Utils.DI.IServiceContainerExtensions.html#Solti_Utils_DI_IServiceContainerExtensions_Lazy_Solti_Utils_DI_IServiceContainer_Type_Solti_Utils_DI_ITypeResolver_Solti_Utils_DI_Lifetime_">IServiceContainerExtensions.Lazy(IServiceContainer, Type, ITypeResolver, Lifetime)</a>
+  </div>
+  <div>
+      <a class="xref" href="Solti.Utils.DI.IServiceContainerExtensions.html#Solti_Utils_DI_IServiceContainerExtensions_Factory_Solti_Utils_DI_IServiceContainer_Type_Func_Solti_Utils_DI_IInjector_Type_System_Object__Solti_Utils_DI_Lifetime_">IServiceContainerExtensions.Factory(IServiceContainer, Type, Func&lt;IInjector, Type, Object&gt;, Lifetime)</a>
+  </div>
+  <div>
+      <a class="xref" href="Solti.Utils.DI.IServiceContainerExtensions.html#Solti_Utils_DI_IServiceContainerExtensions_Proxy_Solti_Utils_DI_IServiceContainer_Type_Func_Solti_Utils_DI_IInjector_Type_System_Object_System_Object__">IServiceContainerExtensions.Proxy(IServiceContainer, Type, Func&lt;IInjector, Type, Object, Object&gt;)</a>
+  </div>
+  <div>
+      <a class="xref" href="Solti.Utils.DI.IServiceContainerExtensions.html#Solti_Utils_DI_IServiceContainerExtensions_Instance_Solti_Utils_DI_IServiceContainer_Type_System_Object_System_Boolean_">IServiceContainerExtensions.Instance(IServiceContainer, Type, Object, Boolean)</a>
+  </div>
+  <div>
+      <a class="xref" href="Solti.Utils.DI.IServiceContainerExtensions.html#Solti_Utils_DI_IServiceContainerExtensions_Abstract_Solti_Utils_DI_IServiceContainer_Type_">IServiceContainerExtensions.Abstract(IServiceContainer, Type)</a>
+  </div>
+  <div>
+      <a class="xref" href="Solti.Utils.DI.IServiceContainerExtensions.html#Solti_Utils_DI_IServiceContainerExtensions_CreateInjector_Solti_Utils_DI_IServiceContainer_">IServiceContainerExtensions.CreateInjector(IServiceContainer)</a>
   </div>
   <div>
       <a class="xref" href="Solti.Utils.DI.IServiceContainerExtensions.html#Solti_Utils_DI_IServiceContainerExtensions_Service__2_Solti_Utils_DI_IServiceContainer_Solti_Utils_DI_Lifetime_">IServiceContainerExtensions.Service&lt;TInterface, TImplementation&gt;(IServiceContainer, Lifetime)</a>

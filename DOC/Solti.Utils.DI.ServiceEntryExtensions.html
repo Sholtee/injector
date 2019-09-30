@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Class IServiceInfoExtensions
+    <title>Class ServiceEntryExtensions
    | Injector </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Class IServiceInfoExtensions
+    <meta name="title" content="Class ServiceEntryExtensions
    | Injector ">
     <meta name="generator" content="docfx 2.42.4.0">
     
@@ -37,35 +37,35 @@
       <div role="main" class="container body-content hide-when-search">
         <div class="article row grid">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="Solti.Utils.DI.IServiceInfoExtensions">
+            <article class="content wrap" id="_content" data-uid="Solti.Utils.DI.ServiceEntryExtensions">
   
   
-  <h1 id="Solti_Utils_DI_IServiceInfoExtensions" data-uid="Solti.Utils.DI.IServiceInfoExtensions" class="text-break">Class IServiceInfoExtensions
+  <h1 id="Solti_Utils_DI_ServiceEntryExtensions" data-uid="Solti.Utils.DI.ServiceEntryExtensions" class="text-break">Class ServiceEntryExtensions
   </h1>
-  <div class="markdown level0 summary"><p>Defines several handy extensions for the <a class="xref" href="Solti.Utils.DI.IServiceInfo.html">IServiceInfo</a> interface.</p>
+  <div class="markdown level0 summary"><p>Defines several handy extensions for the <a class="xref" href="Solti.Utils.DI.Internals.AbstractServiceEntry.html">AbstractServiceEntry</a> class.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><span class="xref">System.Object</span></div>
-    <div class="level1"><span class="xref">IServiceInfoExtensions</span></div>
+    <div class="level1"><span class="xref">ServiceEntryExtensions</span></div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Solti.Utils.DI.html">Solti.Utils.DI</a></h6>
   <h6><strong>Assembly</strong>: Injector.dll</h6>
-  <h5 id="Solti_Utils_DI_IServiceInfoExtensions_syntax">Syntax</h5>
+  <h5 id="Solti_Utils_DI_ServiceEntryExtensions_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static class IServiceInfoExtensions : object</code></pre>
+    <pre><code class="lang-csharp hljs">public static class ServiceEntryExtensions : object</code></pre>
   </div>
   <h3 id="methods">Methods
   </h3>
-  <a id="Solti_Utils_DI_IServiceInfoExtensions_IsFactory_" data-uid="Solti.Utils.DI.IServiceInfoExtensions.IsFactory*"></a>
-  <h4 id="Solti_Utils_DI_IServiceInfoExtensions_IsFactory_Solti_Utils_DI_IServiceInfo_" data-uid="Solti.Utils.DI.IServiceInfoExtensions.IsFactory(Solti.Utils.DI.IServiceInfo)">IsFactory(IServiceInfo)</h4>
-  <div class="markdown level1 summary"><p>The service was registered via <a class="xref" href="Solti.Utils.DI.IServiceContainer.html#Solti_Utils_DI_IServiceContainer_Factory_Type_Func_Solti_Utils_DI_IInjector_Type_System_Object__Solti_Utils_DI_Lifetime_">Factory(Type, Func&lt;IInjector, Type, Object&gt;, Lifetime)</a> call.</p>
+  <a id="Solti_Utils_DI_ServiceEntryExtensions_IsFactory_" data-uid="Solti.Utils.DI.ServiceEntryExtensions.IsFactory*"></a>
+  <h4 id="Solti_Utils_DI_ServiceEntryExtensions_IsFactory_Solti_Utils_DI_Internals_AbstractServiceEntry_" data-uid="Solti.Utils.DI.ServiceEntryExtensions.IsFactory(Solti.Utils.DI.Internals.AbstractServiceEntry)">IsFactory(AbstractServiceEntry)</h4>
+  <div class="markdown level1 summary"><p>The service was registered via <a class="xref" href="Solti.Utils.DI.IServiceContainerExtensions.html#Solti_Utils_DI_IServiceContainerExtensions_Factory_Solti_Utils_DI_IServiceContainer_Type_Func_Solti_Utils_DI_IInjector_Type_System_Object__Solti_Utils_DI_Lifetime_">Factory(IServiceContainer, Type, Func&lt;IInjector, Type, Object&gt;, Lifetime)</a> call.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static bool IsFactory(this IServiceInfo self)</code></pre>
+    <pre><code class="lang-csharp hljs">public static bool IsFactory(this AbstractServiceEntry self)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -78,7 +78,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Solti.Utils.DI.IServiceInfo.html">IServiceInfo</a></td>
+        <td><a class="xref" href="Solti.Utils.DI.Internals.AbstractServiceEntry.html">AbstractServiceEntry</a></td>
         <td><span class="parametername">self</span></td>
         <td></td>
       </tr>
@@ -99,14 +99,14 @@
       </tr>
     </tbody>
   </table>
-  <a id="Solti_Utils_DI_IServiceInfoExtensions_IsInstance_" data-uid="Solti.Utils.DI.IServiceInfoExtensions.IsInstance*"></a>
-  <h4 id="Solti_Utils_DI_IServiceInfoExtensions_IsInstance_Solti_Utils_DI_IServiceInfo_" data-uid="Solti.Utils.DI.IServiceInfoExtensions.IsInstance(Solti.Utils.DI.IServiceInfo)">IsInstance(IServiceInfo)</h4>
-  <div class="markdown level1 summary"><p>The service was registered via <a class="xref" href="Solti.Utils.DI.IServiceContainer.html#Solti_Utils_DI_IServiceContainer_Instance_Type_System_Object_System_Boolean_">Instance(Type, Object, Boolean)</a> call.</p>
+  <a id="Solti_Utils_DI_ServiceEntryExtensions_IsInstance_" data-uid="Solti.Utils.DI.ServiceEntryExtensions.IsInstance*"></a>
+  <h4 id="Solti_Utils_DI_ServiceEntryExtensions_IsInstance_Solti_Utils_DI_Internals_AbstractServiceEntry_" data-uid="Solti.Utils.DI.ServiceEntryExtensions.IsInstance(Solti.Utils.DI.Internals.AbstractServiceEntry)">IsInstance(AbstractServiceEntry)</h4>
+  <div class="markdown level1 summary"><p>The service was registered via <a class="xref" href="Solti.Utils.DI.IServiceContainerExtensions.html#Solti_Utils_DI_IServiceContainerExtensions_Instance_Solti_Utils_DI_IServiceContainer_Type_System_Object_System_Boolean_">Instance(IServiceContainer, Type, Object, Boolean)</a> call.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static bool IsInstance(this IServiceInfo self)</code></pre>
+    <pre><code class="lang-csharp hljs">public static bool IsInstance(this AbstractServiceEntry self)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -119,7 +119,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Solti.Utils.DI.IServiceInfo.html">IServiceInfo</a></td>
+        <td><a class="xref" href="Solti.Utils.DI.Internals.AbstractServiceEntry.html">AbstractServiceEntry</a></td>
         <td><span class="parametername">self</span></td>
         <td></td>
       </tr>
@@ -140,14 +140,14 @@
       </tr>
     </tbody>
   </table>
-  <a id="Solti_Utils_DI_IServiceInfoExtensions_IsLazy_" data-uid="Solti.Utils.DI.IServiceInfoExtensions.IsLazy*"></a>
-  <h4 id="Solti_Utils_DI_IServiceInfoExtensions_IsLazy_Solti_Utils_DI_IServiceInfo_" data-uid="Solti.Utils.DI.IServiceInfoExtensions.IsLazy(Solti.Utils.DI.IServiceInfo)">IsLazy(IServiceInfo)</h4>
-  <div class="markdown level1 summary"><p>The service was registered via <a class="xref" href="Solti.Utils.DI.IServiceContainer.html#Solti_Utils_DI_IServiceContainer_Lazy_Type_Solti_Utils_DI_ITypeResolver_Solti_Utils_DI_Lifetime_">Lazy(Type, ITypeResolver, Lifetime)</a> call.</p>
+  <a id="Solti_Utils_DI_ServiceEntryExtensions_IsLazy_" data-uid="Solti.Utils.DI.ServiceEntryExtensions.IsLazy*"></a>
+  <h4 id="Solti_Utils_DI_ServiceEntryExtensions_IsLazy_Solti_Utils_DI_Internals_AbstractServiceEntry_" data-uid="Solti.Utils.DI.ServiceEntryExtensions.IsLazy(Solti.Utils.DI.Internals.AbstractServiceEntry)">IsLazy(AbstractServiceEntry)</h4>
+  <div class="markdown level1 summary"><p>The service was registered via <a class="xref" href="Solti.Utils.DI.IServiceContainerExtensions.html#Solti_Utils_DI_IServiceContainerExtensions_Lazy_Solti_Utils_DI_IServiceContainer_Type_Solti_Utils_DI_ITypeResolver_Solti_Utils_DI_Lifetime_">Lazy(IServiceContainer, Type, ITypeResolver, Lifetime)</a> call.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static bool IsLazy(this IServiceInfo self)</code></pre>
+    <pre><code class="lang-csharp hljs">public static bool IsLazy(this AbstractServiceEntry self)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -160,7 +160,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Solti.Utils.DI.IServiceInfo.html">IServiceInfo</a></td>
+        <td><a class="xref" href="Solti.Utils.DI.Internals.AbstractServiceEntry.html">AbstractServiceEntry</a></td>
         <td><span class="parametername">self</span></td>
         <td></td>
       </tr>
@@ -181,14 +181,14 @@
       </tr>
     </tbody>
   </table>
-  <a id="Solti_Utils_DI_IServiceInfoExtensions_IsService_" data-uid="Solti.Utils.DI.IServiceInfoExtensions.IsService*"></a>
-  <h4 id="Solti_Utils_DI_IServiceInfoExtensions_IsService_Solti_Utils_DI_IServiceInfo_" data-uid="Solti.Utils.DI.IServiceInfoExtensions.IsService(Solti.Utils.DI.IServiceInfo)">IsService(IServiceInfo)</h4>
-  <div class="markdown level1 summary"><p>The service was registered via <a class="xref" href="Solti.Utils.DI.IServiceContainer.html#Solti_Utils_DI_IServiceContainer_Service_Type_Type_Solti_Utils_DI_Lifetime_">Service(Type, Type, Lifetime)</a> call.</p>
+  <a id="Solti_Utils_DI_ServiceEntryExtensions_IsService_" data-uid="Solti.Utils.DI.ServiceEntryExtensions.IsService*"></a>
+  <h4 id="Solti_Utils_DI_ServiceEntryExtensions_IsService_Solti_Utils_DI_Internals_AbstractServiceEntry_" data-uid="Solti.Utils.DI.ServiceEntryExtensions.IsService(Solti.Utils.DI.Internals.AbstractServiceEntry)">IsService(AbstractServiceEntry)</h4>
+  <div class="markdown level1 summary"><p>The service was registered via <a class="xref" href="Solti.Utils.DI.IServiceContainerExtensions.html#Solti_Utils_DI_IServiceContainerExtensions_Service_Solti_Utils_DI_IServiceContainer_Type_Type_Solti_Utils_DI_Lifetime_">Service(IServiceContainer, Type, Type, Lifetime)</a> call.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static bool IsService(this IServiceInfo self)</code></pre>
+    <pre><code class="lang-csharp hljs">public static bool IsService(this AbstractServiceEntry self)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -201,7 +201,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Solti.Utils.DI.IServiceInfo.html">IServiceInfo</a></td>
+        <td><a class="xref" href="Solti.Utils.DI.Internals.AbstractServiceEntry.html">AbstractServiceEntry</a></td>
         <td><span class="parametername">self</span></td>
         <td></td>
       </tr>

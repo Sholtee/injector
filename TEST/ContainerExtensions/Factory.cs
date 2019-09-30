@@ -10,9 +10,8 @@ using NUnit.Framework;
 namespace Solti.Utils.DI.Container.Tests
 {
     using Properties;
-
-    [TestFixture]
-    public sealed partial class ContainerTests
+    
+    public partial class ContainerTestsBase<TContainer>
     {
         [Test]
         public void Container_Factory_ShouldThrowOnNonInterfaceKey()

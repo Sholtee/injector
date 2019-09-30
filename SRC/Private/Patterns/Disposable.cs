@@ -7,8 +7,6 @@ using System;
 
 namespace Solti.Utils.DI.Internals
 {
-    using Properties;
-
     /// <summary>
     /// Implements the <see cref="IDisposable"/> interface.
     /// </summary>
@@ -33,7 +31,7 @@ namespace Solti.Utils.DI.Internals
         /// </summary>
         protected void CheckDisposed()
         {
-            if (Disposed) throw AlreadyDisposedException;
+            if (Disposed) throw new ObjectDisposedException(GetType().FullName);
         }
 
         ~Disposable() => Dispose(disposeManaged: false);
@@ -47,7 +45,5 @@ namespace Solti.Utils.DI.Internals
 
             Disposed = true;
         }
-
-        internal static readonly InvalidOperationException AlreadyDisposedException = new InvalidOperationException(Resources.ALREADY_DISPOSED);
     }
 }

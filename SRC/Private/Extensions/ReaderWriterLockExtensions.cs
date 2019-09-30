@@ -13,17 +13,17 @@ namespace Solti.Utils.DI.Internals
         #region Helpers
         private sealed class Lock : Disposable
         {
-            private readonly Action FMReleaseAction;
+            private readonly Action FReleaseAction;
 
             public Lock(Action acquireAction, Action releaseAction)
             {
                 acquireAction();
-                FMReleaseAction = releaseAction;
+                FReleaseAction = releaseAction;
             }
 
             protected override void Dispose(bool disposeManaged)
             {
-                FMReleaseAction();
+                if (disposeManaged) FReleaseAction();
                 base.Dispose(disposeManaged);
             }
         }

@@ -9,9 +9,8 @@
 //------------------------------------------------------------------------------
 
 namespace Solti.Utils.DI.Properties {
-    using System;
     using System.Reflection;
-    
+    using Internals;
     
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
@@ -23,6 +22,9 @@ namespace Solti.Utils.DI.Properties {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
+#if DEBUG
+    [ExcludeFromCoverage]
+#endif
     internal class Resources {
         
         private static global::System.Resources.ResourceManager resourceMan;
@@ -71,15 +73,6 @@ namespace Solti.Utils.DI.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The object has already been disposed..
-        /// </summary>
-        internal static string ALREADY_DISPOSED {
-            get {
-                return ResourceManager.GetString("ALREADY_DISPOSED", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to &quot;{0}&quot; is already registered..
         /// </summary>
         internal static string ALREADY_REGISTERED {
@@ -103,6 +96,24 @@ namespace Solti.Utils.DI.Properties {
         internal static string CANT_PROXY {
             get {
                 return ResourceManager.GetString("CANT_PROXY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Attempt to add a child twice..
+        /// </summary>
+        internal static string CHILD_ALREADY_CONTAINED {
+            get {
+                return ResourceManager.GetString("CHILD_ALREADY_CONTAINED", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Child not contained..
+        /// </summary>
+        internal static string CHILD_NOT_CONTAINED {
+            get {
+                return ResourceManager.GetString("CHILD_NOT_CONTAINED", resourceCulture);
             }
         }
         
@@ -188,6 +199,15 @@ namespace Solti.Utils.DI.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Child must have the same parent on which the operation was perfomred..
+        /// </summary>
+        internal static string INVALID_PARENT {
+            get {
+                return ResourceManager.GetString("INVALID_PARENT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Parameter must be a class..
         /// </summary>
         internal static string NOT_A_CLASS {
@@ -229,15 +249,6 @@ namespace Solti.Utils.DI.Properties {
         internal static string NOT_SUPPORTED {
             get {
                 return ResourceManager.GetString("NOT_SUPPORTED", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Registering reserved interfaces is not allowed..
-        /// </summary>
-        internal static string RESERVED_INTERFACE {
-            get {
-                return ResourceManager.GetString("RESERVED_INTERFACE", resourceCulture);
             }
         }
         

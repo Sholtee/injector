@@ -11,64 +11,49 @@ using System.Linq;
 namespace Solti.Utils.DI.Internals
 {
     using Properties;
-    using Proxy;
 
-    internal sealed class Injector : Disposable, IInjector
+    internal sealed class Injector : ServiceContainer, IInjector
     {
-        #region Private
         private readonly Stack<Type> FCurrentPath = new Stack<Type>();
-
-        private /*readonly*/ ServiceCollection FEntries;
 
         private Injector() => throw new NotSupportedException();
 
-        private Injector(IReadOnlyCollection<AbstractServiceEntry> inheritedEntries)
+        public Injector(IServiceContainer parent): base(parent)
         {
-            FEntries = new ServiceCollection(inheritedEntries);
-
             //
             // Beallitjuk a proxyt, majd felvesszuk sajat magunkat.
             //
 
-            FEntries.Add(new InstanceServiceEntry
+            Add(new InstanceServiceEntry
             (
-                typeof(IInjector),
-                    
-                //
-                // "target" kell h a megfelelo overload-ot hivjuk
-                //
-
-                Self = ProxyUtils.Chain<IInjector>(this, me => ProxyFactory.Create<IInjector, ParameterValidatorProxy<IInjector>>(target: me)),
+                @interface: typeof(IInjector),
+                value: this,
                 releaseOnDispose: false,
-                owner: FEntries
+                owner: this
             ));
         }
 
-        private IInjector Self { get; }
-        #endregion
-
-        #region Protected
-        protected override void Dispose(bool disposeManaged)
+        #region IInjector
+        public object Get(Type iface, Type target)
         {
-            if (disposeManaged)
-            {
-                FEntries.Dispose();
-                FEntries = null;
-            }
+            if (iface == null)
+                throw new ArgumentNullException(nameof(iface));
 
-            base.Dispose(disposeManaged);
-        }
-        #endregion
+            if (!iface.IsInterface())
+                throw new ArgumentException(Resources.NOT_AN_INTERFACE, nameof(iface));
 
-        #region Internals
-        internal object Get(Type iface, Type target)
-        {
+            if (iface.IsGenericTypeDefinition())
+                throw new ArgumentException(Resources.CANT_INSTANTIATE_GENERICS, nameof(iface));
+
+            if (target != null && !target.IsClass())
+                throw new ArgumentException(Resources.NOT_A_CLASS, nameof(target));
+
             //
             // Ha az OnServiceRequest esemenyben visszakaptunk szerviz peldanyt akkor visszaadjuk azt.
             //
 
             var ev = new InjectorEventArg(iface, target);
-            OnServiceRequest?.Invoke(Self, ev);
+            OnServiceRequest?.Invoke(this, ev);
             if (ev.Service != null) return ev.Service;
 
             FCurrentPath.Push(iface);
@@ -81,15 +66,15 @@ namespace Solti.Utils.DI.Internals
                 if (FCurrentPath.Count(t => t == iface) > 1)
                     throw new InvalidOperationException(string.Format(Resources.CIRCULAR_REFERENCE, string.Join(" -> ", FCurrentPath)));
 
-                IServiceFactory factory = FEntries.Query(iface);
+                IServiceFactory factory = Get(iface, QueryMode.AllowSpecialization | QueryMode.ThrowOnError);
 
                 //
                 // Ha az OnServiceRequested esemenyben felulirjak a szervizt akkor azt
                 // adjuk vissza.
                 //
 
-                ev.Service = factory.GetService(Self, iface);
-                OnServiceRequested?.Invoke(Self, ev);
+                ev.Service = factory.GetService(this, iface);
+                OnServiceRequested?.Invoke(this, ev);
 
                 return ev.Service;
             }
@@ -100,12 +85,21 @@ namespace Solti.Utils.DI.Internals
             }
         }
 
-        internal object Instantiate(Type @class, IReadOnlyDictionary<string, object> explicitArgs)
+        public object Instantiate(Type @class, IReadOnlyDictionary<string, object> explicitArgs)
         {
+            if (@class == null)
+                throw new ArgumentNullException(nameof(@class));
+
+            if (!@class.IsClass())
+                throw new ArgumentException(Resources.NOT_A_CLASS, nameof(@class));
+
+            if (@class.IsGenericTypeDefinition())
+                throw new ArgumentException(Resources.CANT_INSTANTIATE_GENERICS, nameof(@class));
+
             //
             // Itt nincs ertelme OnServiceRequest esemenynek mivel nincs szerviz interface-unk.
             //
-           
+
             Func<IInjector, IReadOnlyDictionary<string, object>, object> factory = Resolver.GetExtended(@class);
 
             //
@@ -115,36 +109,24 @@ namespace Solti.Utils.DI.Internals
 
             var ev = new InjectorEventArg(@class)
             {
-                Service = factory(Self, explicitArgs ?? new Dictionary<string, object>(0))
+                Service = factory(this, explicitArgs ?? new Dictionary<string, object>(0))
             };
-            OnServiceRequested?.Invoke(Self, ev);
+            OnServiceRequested?.Invoke(this, ev);
 
             return ev.Service;
         }
-
-        internal static IInjector Create(IReadOnlyCollection<AbstractServiceEntry> entries) => new Injector(entries).Self;
-        #endregion
-
-        #region IInjector
-        /// <summary>
-        /// See <see cref="IInjector"/>
-        /// </summary>
-        object IInjector.Get(Type iface, Type target) => Get(iface, target);
-
-        /// <summary>
-        /// See <see cref="IInjector"/>
-        /// </summary>
-        object IInjector.Instantiate(Type @class, IReadOnlyDictionary<string, object> explicitArgs) => Instantiate(@class, explicitArgs);
 
         public event InjectorEventHandler<InjectorEventArg> OnServiceRequest;
 
         public event InjectorEventHandler<InjectorEventArg> OnServiceRequested;
         #endregion
 
-        #region IQueryServiceInfo
-        IServiceInfo IQueryServiceInfo.QueryServiceInfo(Type iface) => FEntries.Query(iface);
+        #region Composite
+        public override IServiceContainer CreateChild() => throw new NotSupportedException();
 
-        IReadOnlyCollection<IServiceInfo> IQueryServiceInfo.Entries => FEntries;
+        public override void AddChild(IServiceContainer child) => throw new NotSupportedException();
+
+        public override void RemoveChild(IServiceContainer child) => throw new NotSupportedException();
         #endregion
     }
 }

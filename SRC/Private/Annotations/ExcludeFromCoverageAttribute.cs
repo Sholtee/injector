@@ -1,15 +1,15 @@
 ﻿/********************************************************************************
-* IParameterValidator.cs                                                        *
+* ExcludeFromCoverageAttribute.cs                                               *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
-using System.Collections.Generic;
 
 namespace Solti.Utils.DI.Internals
 {
-    internal interface IParameterValidator
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method | AttributeTargets.Property)]
+    [ExcludeFromCoverage]
+    internal sealed class ExcludeFromCoverageAttribute: Attribute
     {
-        IEnumerable<Exception> Validate(object param, string paramName);
     }
 }

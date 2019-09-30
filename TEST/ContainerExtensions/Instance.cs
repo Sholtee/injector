@@ -9,22 +9,22 @@ using NUnit.Framework;
 
 namespace Solti.Utils.DI.Container.Tests
 {
+    using Internals;
     using Properties;
-
-    [TestFixture]
-    public sealed partial class ContainerTests
+    
+    public partial class ContainerTestsBase<TContainer>
     {
         [Test]
         public void Container_Instance_ShouldNotBeAServiceOrFactory()
         {
             Container.Instance<IInterface_1>(new Implementation_1());
 
-            IServiceInfo serviceInfo = Container.QueryServiceInfo<IInterface_1>();
+            AbstractServiceEntry entry = Container.Get<IInterface_1>(QueryMode.ThrowOnError);
 
-            Assert.That(serviceInfo.IsInstance());
-            Assert.False(serviceInfo.IsLazy());
-            Assert.False(serviceInfo.IsService());
-            Assert.False(serviceInfo.IsFactory());
+            Assert.That(entry.IsInstance());
+            Assert.False(entry.IsLazy());
+            Assert.False(entry.IsService());
+            Assert.False(entry.IsFactory());
         }
 
         [Test]
@@ -34,7 +34,7 @@ namespace Solti.Utils.DI.Container.Tests
 
             Container.Instance(instance);
 
-            Assert.AreSame(instance, Container.CreateChild().QueryServiceInfo<IInterface_1>().Value);
+            Assert.AreSame(instance, Container.CreateChild().Get<IInterface_1>(QueryMode.ThrowOnError).Value);
         }
 
         [Test]

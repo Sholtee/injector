@@ -14,6 +14,7 @@
 - All common service lifecycles are supported: `Singleton`, `Transient`, `Scoped`, `Instance`
 - Configurable constructor selection (using attributes)
 - "Auto" service registration (using attributes)
+- Extensible
 - and many more...
 ## About services in general
 - They are interfaces (including the injector itself).

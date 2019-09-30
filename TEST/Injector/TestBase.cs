@@ -9,8 +9,12 @@ namespace Solti.Utils.DI.Injector.Tests
 {
     using DI.Tests;
 
+    public abstract partial class InjectorTestsBase<TContainer> : TestBase<TContainer> where TContainer : IServiceContainer, new()
+    {
+    }
+
     [TestFixture]
-    public sealed partial class InjectorTests: TestBase
+    public class InjectorTests : InjectorTestsBase<ServiceContainer>
     {
     }
 }
