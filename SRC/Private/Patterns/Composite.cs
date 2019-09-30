@@ -46,7 +46,10 @@ namespace Solti.Utils.DI.Internals
                 // Kivesszuk magunkat a szulo gyerekei kozul (kiveve ha gyoker elemunk van, ott nincs szulo).
                 //
 
-                Parent?.RemoveChild(this as TInterface);
+                TInterface self = this as TInterface;
+                Debug.Assert(self != null, $"{typeof(TInterface)} is not implemented");
+
+                Parent?.RemoveChild(self);
 
                 //
                 // Osszes gyereket Dispose()-oljuk. Mivel a Children amugy is masolatot ad vissza ezert
