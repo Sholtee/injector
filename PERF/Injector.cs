@@ -52,7 +52,7 @@ namespace Solti.Utils.DI.Perf
         }
         #endregion
 
-        [Params(Lifetime.Transient, Lifetime.Scoped)]
+        [Params(Lifetime.Transient, Lifetime.Scoped, Lifetime.Singleton)]
         public Lifetime LifeTime { get; set; }
 
         [GlobalSetup]
