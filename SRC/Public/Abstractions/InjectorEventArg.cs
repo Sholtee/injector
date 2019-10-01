@@ -17,18 +17,28 @@ namespace Solti.Utils.DI
     {
         private object FService;
 
+        /// <summary>
+        /// Creates a new <see cref="InjectorEventArg"/> instance.
+        /// </summary>
+        /// <param name="interface">The service interface.</param>
+        /// <param name="target">The (optional) target who requested the service.</param>
         public InjectorEventArg(Type @interface, Type target)
         {
             Interface = @interface;
             Target = target;
         }
 
+        /// <summary>
+        /// Creates a new <see cref="InjectorEventArg"/> instance.
+        /// </summary>
+        /// <param name="target">The target who requested the service.</param>
+        /// <remarks>This constructor is tipically used in <see cref="IInjector.Instantiate"/> calls.</remarks>
         public InjectorEventArg(Type target): this(null, target)
         {           
         }
 
         /// <summary>
-        /// The service interface (if presents).
+        /// The service interface (if it is present).
         /// </summary>
         public Type Interface { get; }
 

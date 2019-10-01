@@ -17,7 +17,7 @@ namespace Solti.Utils.DI
         /// <summary>
         /// Creates a new <see cref="ServiceNotFoundException"/> instance.
         /// </summary>
-        /// <param name="iface">The interface that could not be found.</param>
+        /// <param name="iface">The service that could not be found.</param>
         public ServiceNotFoundException(Type iface): base(string.Format(Resources.SERVICE_NOT_FOUND, iface))
         {
         }

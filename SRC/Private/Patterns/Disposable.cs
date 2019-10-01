@@ -19,7 +19,7 @@ namespace Solti.Utils.DI.Internals
         public bool Disposed { get; private set; }
 
         /// <summary>
-        /// Method to be overridden to implement custom logic.
+        /// Method to be overridden to implement custom disposal logic.
         /// </summary>
         /// <param name="disposeManaged">It is set to true on <see cref="IDisposable.Dispose"/> call.</param>
         protected virtual void Dispose(bool disposeManaged)
@@ -36,6 +36,9 @@ namespace Solti.Utils.DI.Internals
 
         ~Disposable() => Dispose(disposeManaged: false);
  
+        /// <summary>
+        /// Implements the <see cref="IDisposable.Dispose"/> method.
+        /// </summary>
         public void Dispose()
         {
             CheckDisposed();

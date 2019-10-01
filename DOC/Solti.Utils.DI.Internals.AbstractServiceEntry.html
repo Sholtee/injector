@@ -99,17 +99,20 @@
       <tr>
         <td><span class="xref">Type</span></td>
         <td><span class="parametername">interface</span></td>
-        <td></td>
+        <td><p>The &quot;id&quot; of the service. Must be an interface.</p>
+</td>
       </tr>
       <tr>
         <td><span class="xref">System.Nullable</span>&lt;<a class="xref" href="Solti.Utils.DI.Lifetime.html">Lifetime</a>&gt;</td>
         <td><span class="parametername">lifetime</span></td>
-        <td></td>
+        <td><p>The lifetime of the service.</p>
+</td>
       </tr>
       <tr>
         <td><a class="xref" href="Solti.Utils.DI.IServiceContainer.html">IServiceContainer</a></td>
         <td><span class="parametername">owner</span></td>
-        <td></td>
+        <td><p>The owner of the entry.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -141,7 +144,7 @@
   </table>
   <a id="Solti_Utils_DI_Internals_AbstractServiceEntry_Implementation_" data-uid="Solti.Utils.DI.Internals.AbstractServiceEntry.Implementation*"></a>
   <h4 id="Solti_Utils_DI_Internals_AbstractServiceEntry_Implementation" data-uid="Solti.Utils.DI.Internals.AbstractServiceEntry.Implementation">Implementation</h4>
-  <div class="markdown level1 summary"><p>The implementation of the service (if present).</p>
+  <div class="markdown level1 summary"><p>The implementation of the service (if it is present).</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -165,7 +168,7 @@
   </table>
   <a id="Solti_Utils_DI_Internals_AbstractServiceEntry_Interface_" data-uid="Solti.Utils.DI.Internals.AbstractServiceEntry.Interface*"></a>
   <h4 id="Solti_Utils_DI_Internals_AbstractServiceEntry_Interface" data-uid="Solti.Utils.DI.Internals.AbstractServiceEntry.Interface">Interface</h4>
-  <div class="markdown level1 summary"><p>The interface of the service.</p>
+  <div class="markdown level1 summary"><p>The &quot;id&quot; of the service.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -189,7 +192,7 @@
   </table>
   <a id="Solti_Utils_DI_Internals_AbstractServiceEntry_Lifetime_" data-uid="Solti.Utils.DI.Internals.AbstractServiceEntry.Lifetime*"></a>
   <h4 id="Solti_Utils_DI_Internals_AbstractServiceEntry_Lifetime" data-uid="Solti.Utils.DI.Internals.AbstractServiceEntry.Lifetime">Lifetime</h4>
-  <div class="markdown level1 summary"><p>The lefiteime of the service (if present).</p>
+  <div class="markdown level1 summary"><p>The lefiteime of the service (if it is present).</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -237,7 +240,7 @@
   </table>
   <a id="Solti_Utils_DI_Internals_AbstractServiceEntry_UserData_" data-uid="Solti.Utils.DI.Internals.AbstractServiceEntry.UserData*"></a>
   <h4 id="Solti_Utils_DI_Internals_AbstractServiceEntry_UserData" data-uid="Solti.Utils.DI.Internals.AbstractServiceEntry.UserData">UserData</h4>
-  <div class="markdown level1 summary"><p>Custom data.</p>
+  <div class="markdown level1 summary"><p>Custom user data.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -287,7 +290,7 @@
   </h3>
   <a id="Solti_Utils_DI_Internals_AbstractServiceEntry_CopyTo_" data-uid="Solti.Utils.DI.Internals.AbstractServiceEntry.CopyTo*"></a>
   <h4 id="Solti_Utils_DI_Internals_AbstractServiceEntry_CopyTo_Solti_Utils_DI_IServiceContainer_" data-uid="Solti.Utils.DI.Internals.AbstractServiceEntry.CopyTo(Solti.Utils.DI.IServiceContainer)">CopyTo(IServiceContainer)</h4>
-  <div class="markdown level1 summary"><p>Copies this entry into a new collection.</p>
+  <div class="markdown level1 summary"><p>Copies this entry to a new collection.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -307,7 +310,8 @@
       <tr>
         <td><a class="xref" href="Solti.Utils.DI.IServiceContainer.html">IServiceContainer</a></td>
         <td><span class="parametername">target</span></td>
-        <td></td>
+        <td><p>The target <a class="xref" href="Solti.Utils.DI.IServiceContainer.html">IServiceContainer</a> to which we want to copy this entry.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -328,7 +332,7 @@
   </table>
   <a id="Solti_Utils_DI_Internals_AbstractServiceEntry_Equals_" data-uid="Solti.Utils.DI.Internals.AbstractServiceEntry.Equals*"></a>
   <h4 id="Solti_Utils_DI_Internals_AbstractServiceEntry_Equals_System_Object_" data-uid="Solti.Utils.DI.Internals.AbstractServiceEntry.Equals(System.Object)">Equals(Object)</h4>
-  <div class="markdown level1 summary"><p>See <see cref="!:object.Equals(object)"></see></p>
+  <div class="markdown level1 summary"><p>Compares this entry with an another one.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -367,9 +371,12 @@
       </tr>
     </tbody>
   </table>
+  <h5 id="Solti_Utils_DI_Internals_AbstractServiceEntry_Equals_System_Object__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Entries having the same property values are considered equivalent.</p>
+</div>
   <a id="Solti_Utils_DI_Internals_AbstractServiceEntry_GetHashCode_" data-uid="Solti.Utils.DI.Internals.AbstractServiceEntry.GetHashCode*"></a>
   <h4 id="Solti_Utils_DI_Internals_AbstractServiceEntry_GetHashCode" data-uid="Solti.Utils.DI.Internals.AbstractServiceEntry.GetHashCode">GetHashCode()</h4>
-  <div class="markdown level1 summary"><p>See <see cref="!:object.GetHashCode"></see></p>
+  <div class="markdown level1 summary"><p>Gets the hash code of this entry.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -387,7 +394,8 @@
     <tbody>
       <tr>
         <td><span class="xref">System.Int32</span></td>
-        <td></td>
+        <td><p>The hash code of this entry.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -413,7 +421,7 @@
       <tr>
         <td><a class="xref" href="Solti.Utils.DI.IInjector.html">IInjector</a></td>
         <td><span class="parametername">injector</span></td>
-        <td><p>Containing injector.</p>
+        <td><p>The containing <a class="xref" href="Solti.Utils.DI.IInjector.html">IInjector</a>.</p>
 </td>
       </tr>
       <tr>

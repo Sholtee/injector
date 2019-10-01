@@ -18,6 +18,10 @@ namespace Solti.Utils.DI.Internals
         /// <summary>
         /// Creates a new <see cref="AbstractServiceEntry"/> instance.
         /// </summary>
+        /// <param name="interface">The "id" of the service. Must be an interface.</param>
+        /// <param name="lifetime">The lifetime of the service.</param>
+        /// <param name="owner">The owner of the entry.</param>
+        /// <exception cref="ArgumentException">The <paramref name="interface"/> is not an interface.</exception>
         public AbstractServiceEntry(Type @interface, Lifetime? lifetime = null, IServiceContainer owner = null)
         {
             if (@interface == null)
@@ -33,12 +37,12 @@ namespace Solti.Utils.DI.Internals
 
         #region Immutables
         /// <summary>
-        /// The interface of the service.
+        /// The "id" of the service.
         /// </summary>
         public Type Interface { get; }
 
         /// <summary>
-        /// The lefiteime of the service (if present).
+        /// The lefiteime of the service (if it is present).
         /// </summary>
         public Lifetime? Lifetime { get; }
 
@@ -48,12 +52,12 @@ namespace Solti.Utils.DI.Internals
         public IServiceContainer Owner { get; }
 
         /// <summary>
-        /// The implementation of the service (if present).
+        /// The implementation of the service (if it is present).
         /// </summary>
         public virtual Type Implementation => null;
 
         /// <summary>
-        /// Custom data.
+        /// Custom user data.
         /// </summary>
         public virtual object UserData => null;
         #endregion
@@ -73,14 +77,15 @@ namespace Solti.Utils.DI.Internals
         /// <summary>
         /// Gets the service instance.
         /// </summary>
-        /// <param name="injector">Containing injector.</param>
+        /// <param name="injector">The containing <see cref="IInjector"/>.</param>
         /// <param name="iface">The service type to be queried. If null the <see cref="Interface"/> will be used</param>
         /// <returns>The service instance.</returns>
         public virtual object GetService(IInjector injector, Type iface = null) => throw new NotImplementedException();
 
         /// <summary>
-        /// Copies this entry into a new collection.
+        /// Copies this entry to a new collection.
         /// </summary>
+        /// <param name="target">The target <see cref="IServiceContainer"/> to which we want to copy this entry.</param>
         public virtual AbstractServiceEntry CopyTo(IServiceContainer target)
         {
             if (target == null)
@@ -91,13 +96,15 @@ namespace Solti.Utils.DI.Internals
         }
 
         /// <summary>
-        /// See <see cref="object.Equals(object)"/>
+        /// Compares this entry with an another one.
         /// </summary>
+        /// <remarks>Entries having the same property values are considered equivalent.</remarks>
         public override bool Equals(object obj) => obj != null && (ReferenceEquals(this, obj) || obj.GetHashCode() == GetHashCode());
 
         /// <summary>
-        /// See <see cref="object.GetHashCode"/>
+        /// Gets the hash code of this entry.
         /// </summary>
+        /// <returns>The hash code of this entry.</returns>
         public override int GetHashCode() => new
         {
             Owner,

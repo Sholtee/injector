@@ -14,7 +14,7 @@ namespace Solti.Utils.DI.Internals
     using Properties;
 
     /// <summary>
-    /// An <see cref="IComposite{T}"/> implementation.
+    /// Implements the <see cref="IComposite{T}"/> interface.
     /// </summary>
     /// <typeparam name="TInterface">The interface on which we want to apply the composite pattern.</typeparam>
     /// <remarks>This is an internal class so it may change from version to version. Don't use it!</remarks>
@@ -25,7 +25,7 @@ namespace Solti.Utils.DI.Internals
 
         #region Protected
         /// <summary>
-        /// Creates a new instance.
+        /// Creates a new <see cref="Composite{TInterface}"/> instance.
         /// </summary>
         /// <param name="parent">The parent entity. It can be null.</param>
         protected Composite(TInterface parent)
@@ -72,12 +72,12 @@ namespace Solti.Utils.DI.Internals
 
         #region IComposite
         /// <summary>
-        /// See <see cref="IComposite{T}"/>
+        /// The parent of this entity. Can be null.
         /// </summary>
         public TInterface Parent { get; }
 
         /// <summary>
-        /// See <see cref="IComposite{T}"/>
+        /// The children of this entity.
         /// </summary>
         public virtual IReadOnlyCollection<TInterface> Children
         {
@@ -101,7 +101,7 @@ namespace Solti.Utils.DI.Internals
         public abstract TInterface CreateChild();
 
         /// <summary>
-        /// See <see cref="IComposite{T}"/>
+        /// Adds a new child to the <see cref="Children"/> list. For more information see the <see cref="IComposite{T}"/> interface.
         /// </summary>
         public virtual void AddChild(TInterface child)
         {
@@ -114,7 +114,7 @@ namespace Solti.Utils.DI.Internals
         }
 
         /// <summary>
-        /// See <see cref="IComposite{T}"/>
+        /// Removes a new child from the <see cref="Children"/> list. For more information see the <see cref="IComposite{T}"/> interface.
         /// </summary>
         public virtual void RemoveChild(TInterface child)
         {

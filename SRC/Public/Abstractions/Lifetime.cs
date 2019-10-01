@@ -8,7 +8,7 @@ namespace Solti.Utils.DI
     using Internals;
 
     /// <summary>
-    /// Describes the lifetime of a service. A service can be registered in various ways. For more information check out the <see cref="IInjector"/> interface.
+    /// Describes the lifetime of a service. A service can be registered in various ways. For more information check out the <see cref="IServiceContainerExtensions"/> class.
     /// </summary>
     public enum Lifetime
     {

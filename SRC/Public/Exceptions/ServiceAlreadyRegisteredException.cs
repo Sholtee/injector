@@ -17,8 +17,8 @@ namespace Solti.Utils.DI
         /// <summary>
         /// Creates a new <see cref="ServiceAlreadyRegisteredException"/> instance.
         /// </summary>
-        /// <param name="iface">The interface which already was registered.</param>
-        /// <param name="innerException">The inner exception (if present).</param>
+        /// <param name="iface">The "id" of the service.</param>
+        /// <param name="innerException">The inner exception (if it is present).</param>
         public ServiceAlreadyRegisteredException(Type iface, Exception innerException = null): base(string.Format(Resources.ALREADY_REGISTERED, iface), innerException)
         {
         }

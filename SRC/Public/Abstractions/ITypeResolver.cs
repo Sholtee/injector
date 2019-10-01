@@ -8,13 +8,14 @@ using System;
 namespace Solti.Utils.DI
 {
     /// <summary>
-    /// Provides a mechanism for resolving types.
+    /// Provides the mechanism of resolving types.
     /// </summary>
     public interface ITypeResolver
     {
         /// <summary>
         /// Returns true if the resolver supports the given interface, false otherwise.
         /// </summary>
+        /// <param name="interface">The interface to be checked.</param>
         bool Supports(Type @interface);
 
         /// <summary>

@@ -11,16 +11,16 @@ namespace Solti.Utils.DI
     using Internals;
 
     /// <summary>
-    /// Provides a mechanism of storing services.
+    /// Provides the mechanism of storing services.
     /// </summary>
     public interface IServiceContainer : IComposite<IServiceContainer>, IEnumerable<AbstractServiceEntry>
     {
         /// <summary>
-        /// Adds a new entry to the container, overwriting the existing value (if it was abstract).
+        /// Adds a new entry to the container overwriting the existing value (if it was abstract).
         /// </summary>
         /// <param name="entry">The entry to be add.</param>
         /// <returns>The container itself.</returns>
-        /// <exception cref="ServiceAlreadyRegisteredException">A service has been registered with the given interface.</exception>
+        /// <exception cref="ServiceAlreadyRegisteredException">A service has already been registered with the given interface.</exception>
         IServiceContainer Add(AbstractServiceEntry entry);
 
         /// <summary>

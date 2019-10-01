@@ -23,6 +23,11 @@ namespace Solti.Utils.DI.Annotations
         /// </summary>
         public Lifetime Lifetime { get; }
 
+        /// <summary>
+        /// Creates a new <see cref="ServiceAttribute"/> instance.
+        /// </summary>
+        /// <param name="interface">The service interface implemented by the marked class.</param>
+        /// <param name="lifetime">The <see cref="Lifetime"/> of the service.</param>
         public ServiceAttribute(Type @interface, Lifetime lifetime = Lifetime.Transient)
         {
             Interface = @interface;
