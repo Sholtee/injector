@@ -33,6 +33,9 @@ namespace Solti.Utils.DI
         private readonly ReaderWriterLockSlim FLock = new ReaderWriterLockSlim();
 
         #region IServiceContainer
+        /// <summary>
+        /// See <see cref="IServiceContainer.Add"/>.
+        /// </summary>
         public IServiceContainer Add(AbstractServiceEntry entry)
         {
             if (entry == null)
@@ -67,6 +70,9 @@ namespace Solti.Utils.DI
             return this;
         }
 
+        /// <summary>
+        /// See <see cref="IServiceContainer.Get"/>.
+        /// </summary>
         public AbstractServiceEntry Get(Type serviceInterface, QueryMode mode = QueryMode.Default)
         {
             if (serviceInterface == null)
@@ -158,6 +164,9 @@ namespace Solti.Utils.DI
             }
         }
 
+        /// <summary>
+        /// The number of the elements in this <see cref="IServiceContainer"/>.
+        /// </summary>
         public int Count
         {
             get
@@ -171,6 +180,10 @@ namespace Solti.Utils.DI
         #endregion
 
         #region IEnumerable
+        /// <summary>
+        /// Returns a new <see cref="IEnumerator{AbstractServiceEntry}"/> instance that enumerates on the shallow copy of this instance.
+        /// </summary>
+        /// <returns>The newly crated <see cref="IEnumerator{AbstractServiceEntry}"/> instance.</returns>
         public IEnumerator<AbstractServiceEntry> GetEnumerator()
         {
             using (FLock.AcquireReaderLock())
@@ -187,6 +200,10 @@ namespace Solti.Utils.DI
         #endregion
 
         #region Protected
+        /// <summary>
+        /// Creates a new <see cref="ServiceContainer"/> instance copying the entries from the <paramref name="parent"/>.
+        /// </summary>
+        /// <param name="parent">The parent <see cref="IServiceContainer"/>.</param>
         protected ServiceContainer(IServiceContainer parent) : base(parent)
         {
             FEntries = new Dictionary<Type, AbstractServiceEntry>(parent?.Count ?? 0);
@@ -198,6 +215,10 @@ namespace Solti.Utils.DI
             }
         }
 
+        /// <summary>
+        /// Disposes this instance freeing all the owned entries.
+        /// </summary>
+        /// <param name="disposeManaged">See <see cref="Disposable.Dispose(bool)"/>.</param>
         protected override void Dispose(bool disposeManaged)
         {
             if (disposeManaged)
@@ -236,6 +257,10 @@ namespace Solti.Utils.DI
         {
         }
 
+        /// <summary>
+        /// Creates a new <see cref="IServiceContainer"/> child.
+        /// </summary>
+        /// <returns>The newly created child.</returns>
         public override IServiceContainer CreateChild() => new ServiceContainer(this);
         #endregion
     }

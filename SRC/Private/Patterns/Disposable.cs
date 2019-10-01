@@ -34,6 +34,9 @@ namespace Solti.Utils.DI.Internals
             if (Disposed) throw new ObjectDisposedException(GetType().FullName);
         }
 
+        /// <summary>
+        /// Destructor of this class.
+        /// </summary>
         ~Disposable() => Dispose(disposeManaged: false);
  
         /// <summary>

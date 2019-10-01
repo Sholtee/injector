@@ -16,6 +16,10 @@ namespace Solti.Utils.DI.Internals
         /// </summary>
         public T Target { get; }
 
+        /// <summary>
+        /// Creates a new <see cref="DuckBase{T}"/> instance.
+        /// </summary>
+        /// <param name="target">The target of the entity being created.</param>
         public DuckBase(T target) => Target = target; // ne Protected legyen
     }
 }

@@ -48,7 +48,7 @@ namespace Solti.Utils.DI
         /// Creates a new <see cref="LazyTypeResolver{TInterface}"/> instance.
         /// </summary>
         /// <param name="asmPath">The absolute path of the containing <see cref="System.Reflection.Assembly"/>. This assembly will be loaded (using <see cref="System.Runtime.Loader.AssemblyLoadContext"/>) on the first <see cref="ITypeResolver.Resolve"/> call.</param>
-        /// <param name="className">The full name of the <see cref="Type"/> that implemenets the <see cref="TInterface"/>.</param>
+        /// <param name="className">The full name of the <see cref="Type"/> that implemenets the <typeparamref name="TInterface"/>.</param>
         public LazyTypeResolver(string asmPath, string className): this(asmPath, className, System.Runtime.Loader.AssemblyLoadContext.Default.Act().Like<IAssemblyLoadContext>())
         {
         }
@@ -59,7 +59,7 @@ namespace Solti.Utils.DI
         public string AssamblyPath { get; }
 
         /// <summary>
-        /// The full name of the <see cref="Type"/> that implemenets the <see cref="TInterface"/>.
+        /// The full name of the <see cref="Type"/> that implemenets the <typeparamref name="TInterface"/>.
         /// </summary>
         public string ClassName { get; }
 

@@ -14,8 +14,9 @@ namespace Solti.Utils.DI.Proxy
     public abstract class InterfaceInterceptor<TInterface> where TInterface: class
     {
         /// <summary>
-        /// Internal, don't use it!
+        /// Signals that the original method should be called.
         /// </summary>
+        /// <remarks>Internal, don't use it!</remarks>
         public static object CALL_TARGET = new object();
 
         /// <summary>
@@ -23,6 +24,10 @@ namespace Solti.Utils.DI.Proxy
         /// </summary>
         public TInterface Target { get; }
 
+        /// <summary>
+        /// Creates a new <see cref="InterfaceInterceptor{TInterface}"/> instance against the given <paramref name="target"/>.
+        /// </summary>
+        /// <param name="target">The target of this interceptor.</param>
         public InterfaceInterceptor(TInterface target) => Target = target;
 
         /// <summary>

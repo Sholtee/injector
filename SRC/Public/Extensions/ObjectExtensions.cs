@@ -21,6 +21,10 @@ namespace Solti.Utils.DI.Proxy
         {
             internal TTarget Target { get; }
 
+            /// <summary>
+            /// Creates a new <see cref="DuckFactory{TTarget}"/> instance against the given <paramref name="target"/>.
+            /// </summary>
+            /// <param name="target">The target of this factory.</param>
             public DuckFactory(TTarget target) => Target = target;
 
             /// <summary>
