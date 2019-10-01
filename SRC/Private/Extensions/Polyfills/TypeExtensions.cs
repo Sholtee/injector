@@ -4,7 +4,6 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
-using System.Collections.Generic;
 using System.Reflection;
 
 namespace Solti.Utils.DI.Internals
@@ -27,14 +26,6 @@ namespace Solti.Utils.DI.Internals
 
         public static bool IsSealed(this Type type) => type.GetTypeInfo().IsSealed;
 
-        public static bool IsPublic(this Type type) => type.GetTypeInfo().IsPublic;
-
-        public static bool IsNestedPublic(this Type type) => type.GetTypeInfo().IsNestedPublic;
-
-        public static bool IsNotPublic(this Type type) => type.GetTypeInfo().IsNotPublic;
-
         public static bool IsVisible(this Type type) => type.GetTypeInfo().IsVisible;
-
-        public static IReadOnlyList<EventInfo> GetEvents(this Type type) => type.GetTypeInfo().GetEvents();
     }
 }

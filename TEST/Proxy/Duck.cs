@@ -56,11 +56,11 @@ namespace Solti.Utils.DI.Proxy.Tests
             Assert.Throws<MissingMethodException>(() => this.Act().Like<IDisposable>());
         }
 
-        internal interface IPrivateInterface
+        private interface IPrivateInterface
         {            
         }
 
-        internal class PrivateClass
+        private class PrivateClass
         {
         }
     }

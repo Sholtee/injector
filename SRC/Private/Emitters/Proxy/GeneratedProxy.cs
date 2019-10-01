@@ -7,14 +7,13 @@ using System;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Runtime.CompilerServices;
 
 namespace Solti.Utils.DI.Internals
 {
-    using Properties;
     using Proxy;
 
     using static ProxyGeneratorBase;
+    using static Compile;
 
     //
     // Statikus generikus azert jo nekunk mert igy biztosan pontosan egyszer fog lefutni az inicializacio minden egyes 
@@ -61,24 +60,23 @@ namespace Solti.Utils.DI.Internals
             .Distinct()
             .ToArray();
 
-            return Compile
-                .ToAssembly
+            return ToAssembly
+            (
+                root: GenerateProxyUnit
                 (
-                    root: GenerateProxyUnit
-                    (
-                        @class: ProxyGenerator<TInterface, TInterceptor>.GenerateProxyClass()
-                    ), 
-                    asmName: AssemblyName, 
-                    references: references
-                )
-                .GetType(GeneratedClassName, throwOnError: true);
+                    @class: ProxyGenerator<TInterface, TInterceptor>.GenerateProxyClass()
+                ), 
+                asmName: AssemblyName, 
+                references: references
+            )
+            .GetType(GeneratedClassName, throwOnError: true);
         }
 
         private static void CheckInterface()
         {
             Type type = typeof(TInterface);
 
-            CheckVisibility(type);
+            CheckVisibility(type, AssemblyName);
 
             if (!type.IsInterface()) throw new InvalidOperationException();
             if (type.ContainsGenericParameters()) throw new NotSupportedException();
@@ -88,26 +86,11 @@ namespace Solti.Utils.DI.Internals
         {
             Type type = typeof(TInterceptor);
 
-            CheckVisibility(type);
+            CheckVisibility(type, AssemblyName);
 
             if (!type.IsClass()) throw new InvalidOperationException();
             if (type.ContainsGenericParameters()) throw new NotSupportedException();
             if (type.IsSealed()) throw new NotSupportedException();
-        }
-
-        private static void CheckVisibility(Type type)
-        {
-            //
-            // TODO: FIXME: privat tipusokra mindenkepp fel kene robbanjon (ha annotalva van az asm ha nincs).
-            //
-
-            if (type.IsNotPublic() && !HasInternalVisibleToAttribute())
-                throw new InvalidOperationException(string.Format(Resources.TYPE_NOT_VISIBLE, type));
-
-            bool HasInternalVisibleToAttribute() => type
-                .Assembly()
-                .GetCustomAttributes<InternalsVisibleToAttribute>()
-                .Any(attr => attr.AssemblyName == AssemblyName);
         }
         #endregion
     }

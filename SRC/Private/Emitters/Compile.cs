@@ -9,6 +9,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.Loader;
 
 #if IGNORE_VISIBILITY
@@ -26,6 +27,21 @@ namespace Solti.Utils.DI.Internals
 
     internal static class Compile
     {
+        public static void CheckVisibility(Type type, string assemblyName)
+        {
+            //
+            // TODO: FIXME: privat tipusokra mindenkepp fel kene robbanjon (ha annotalva van az asm ha nincs).
+            //
+
+            if (!type.IsVisible() && !HasInternalVisibleToAttribute())
+                throw new InvalidOperationException(string.Format(Resources.TYPE_NOT_VISIBLE, type));
+
+            bool HasInternalVisibleToAttribute() => type
+                .Assembly()
+                .GetCustomAttributes<InternalsVisibleToAttribute>()
+                .Any(attr => attr.AssemblyName == assemblyName);
+        }
+
         public static Assembly ToAssembly(CompilationUnitSyntax root, string asmName, params Assembly[] references)
         {
             Debug.WriteLine(root.NormalizeWhitespace().ToFullString());

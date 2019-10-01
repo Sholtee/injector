@@ -19,6 +19,10 @@ namespace Solti.Utils.DI.Internals
     using Properties;
     using static ProxyGeneratorBase;
 
+    //
+    // TODO: Mukodjunk internal lathatosagu tagokra is.
+    //
+
     internal static class DuckGenerator<TTarget, TInterface>
     {
         private const string TARGET = nameof(DuckBase<TTarget>.Target);

@@ -12,6 +12,7 @@ namespace Solti.Utils.DI.Internals
     using Properties;
 
     using static ProxyGeneratorBase;
+    using static Compile;
 
     internal static class GeneratedDuck<TInterface, TTarget> where TInterface: class
     {
@@ -49,24 +50,23 @@ namespace Solti.Utils.DI.Internals
             .Distinct()
             .ToArray();
 
-            return Compile
-                .ToAssembly
+            return ToAssembly
+            (
+                root: GenerateProxyUnit
                 (
-                    root: GenerateProxyUnit
-                    (
-                        @class: DuckGenerator<TTarget, TInterface>.GenerateDuckClass()
-                    ), 
-                    asmName: AssemblyName, 
-                    references: references
-                )
-                .GetType(GeneratedClassName, throwOnError: true);
+                    @class: DuckGenerator<TTarget, TInterface>.GenerateDuckClass()
+                ), 
+                asmName: AssemblyName, 
+                references: references
+            )
+            .GetType(GeneratedClassName, throwOnError: true);
         }
 
         private static void CheckInterface()
         {
             Type type = typeof(TInterface);
 
-            CheckVisibility(type);
+            CheckVisibility(type, AssemblyName);
 
             if (!type.IsInterface()) throw new InvalidOperationException(Resources.NOT_AN_INTERFACE);
             if (type.ContainsGenericParameters()) throw new NotSupportedException();
@@ -78,22 +78,7 @@ namespace Solti.Utils.DI.Internals
             // Konstruktor parameterben atadasra kerul -> lathatonak kell lennie.
             //
 
-            CheckVisibility(typeof(TTarget));
-        }
-
-        private static void CheckVisibility(Type type)
-        {
-            //
-            // NE az IsNotPublic()-ot hivjuk a tipuson mert az internal lathatosagra hamissal
-            // fog visszaterni.
-            //
-
-            //
-            // TODO: Hasonloan a ProxyGenerator-hoz tamogassuk az internal lathatosgot is.
-            //
-
-            if (!type.IsPublic() && !type.IsNestedPublic())
-                throw new InvalidOperationException(string.Format(Resources.TYPE_NOT_VISIBLE, type));
+            CheckVisibility(typeof(TTarget), AssemblyName);
         }
         #endregion
     }
