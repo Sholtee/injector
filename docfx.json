@@ -23,6 +23,9 @@
 			"_appFaviconPath": "favicon.ico",
 			"_disableNavbar": true,
 			"_disableContribution": true
-		}
+		},
+		"xrefService": [
+			"https://xref.docs.microsoft.com/query?uid={uid}"
+		]
 	}
 }
