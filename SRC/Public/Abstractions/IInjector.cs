@@ -13,7 +13,6 @@ namespace Solti.Utils.DI
     /// <summary>
     /// Provides a mechanism for injecting resources.
     /// </summary>
-    /// <remarks>Since requesting a generic service may cause write operations the <see cref="IInjector"/> should not be treated as thread safe.</remarks>
     public interface IInjector: IDisposable
     {
         /// <summary>
