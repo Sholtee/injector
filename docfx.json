@@ -6,7 +6,7 @@
 		}],
 		"dest": "BIN/DOC",
 		"properties": {
-			"TargetFramework": "netcoreapp2.2"
+			"TargetFramework": "netstandard2.0"
 		}
 	}],
 	"build": {
