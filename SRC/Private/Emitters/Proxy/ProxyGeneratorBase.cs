@@ -430,7 +430,7 @@ namespace Solti.Utils.DI.Internals
 
         public static IdentifierNameSyntax ToIdentifierName(this LocalDeclarationStatementSyntax variable) => IdentifierName(variable.Declaration.Variables.Single().Identifier);
 
-        public static InvocationExpressionSyntax Invoke(MethodInfo method, string target, IReadOnlyList<string> arguments = null) => InvocationExpression
+        public static InvocationExpressionSyntax Invoke(MethodInfo method, string target, IReadOnlyList<string> arguments) => InvocationExpression
         (
             expression: MemberAccessExpression
             (
@@ -445,7 +445,7 @@ namespace Solti.Utils.DI.Internals
             {
                 ArgumentSyntax argument = Argument
                 (
-                    expression: IdentifierName(arguments?[i] ?? param.Name)
+                    expression: IdentifierName(arguments[i])
                 );
 
                 //
