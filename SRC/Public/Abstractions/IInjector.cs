@@ -35,7 +35,7 @@ namespace Solti.Utils.DI
         object Instantiate(Type @class, IReadOnlyDictionary<string, object> explicitArgs = null);
 
         /// <summary>
-        /// The event fired before a service requested. It's useful when you want to resolve contextual dependencies or return service mocks.
+        /// The event fired before a service requested. It's useful when you want to resolve contextual dependencies (e.g. HTTP request) or return service mocks.
         /// </summary>
         event InjectorEventHandler<InjectorEventArg> OnServiceRequest;
 
