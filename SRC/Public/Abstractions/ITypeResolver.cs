@@ -23,6 +23,7 @@ namespace Solti.Utils.DI
         /// </summary>
         /// <param name="interface">The service interface whose implementation is requested. It can be an open generic type. In this case the returned implementation must also be an open generic type.</param>
         /// <returns>The resolved service implementation.</returns>
+        /// <exception cref="NotSupportedException">In case of unsupported interface.</exception>
         Type Resolve(Type @interface);
     }
 }
