@@ -9,19 +9,19 @@ using System.Reflection;
 namespace Solti.Utils.DI
 {
     using Annotations;
-    using Internals;
 
     /// <summary>
-    /// Provides an extension to auto-config the <see cref="IServiceContainer"/>.
+    /// Provides the mechanism of <see cref="IServiceContainer"/> "auto-config".
     /// </summary>
     public static class ConfigFromAssembly
     {
         /// <summary>
-        /// Registers the annotated services from the given assembly.
+        /// Registers the annotated services from the given <see cref="Assembly"/>.
         /// </summary>
-        /// <param name="target">The target injector.</param>
-        /// <param name="assembly">The source assembly.</param>
+        /// <param name="target">The target <see cref="IInjector"/>.</param>
+        /// <param name="assembly">The source <see cref="Assembly"/>.</param>
         /// <returns>The injector itself.</returns>
+        /// <remarks>You can annotate services with the <see cref="ServiceAttribute"/> attribute.</remarks>
         public static IServiceContainer Setup(this IServiceContainer target, Assembly assembly)
         {
             foreach (TypeInfo service in assembly.DefinedTypes.Where(t => t.IsClass))
