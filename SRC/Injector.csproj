@@ -61,6 +61,10 @@
     <NoDocfx Condition="'$(NoDocfx)'==''">False</NoDocfx>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <DocumentationFile>..\BIN\Injector.xml</DocumentationFile>
+  </PropertyGroup>
+
   <Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="'$(TargetFramework)' == 'netstandard2.0' And '$(OS)' == 'Windows_NT' And '$(NoDocfx)'=='False'">
     <Exec Command="cd ..\scripts&#xD;&#xA;docfx" />
   </Target>
