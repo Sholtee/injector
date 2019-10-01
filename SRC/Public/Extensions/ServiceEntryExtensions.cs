@@ -15,14 +15,14 @@ namespace Solti.Utils.DI
     public static class ServiceEntryExtensions
     {
         /// <summary>
-        /// The service was registered via <see cref="IServiceContainerExtensions.Service"/> call.
+        /// The service was registered via <see cref="IServiceContainerExtensions.Service"/> or <see cref="IServiceContainerExtensions.Lazy"/> call.
         /// </summary>
-        public static bool IsService(this AbstractServiceEntry self) => self.UserData != null;
+        public static bool IsService(this AbstractServiceEntry self) => self.IsLazy() /*nem triggereli a resolvert*/ || self.Implementation != null;
 
         /// <summary>
         /// The service was registered via <see cref="IServiceContainerExtensions.Lazy"/> call.
         /// </summary>
-        public static bool IsLazy(this AbstractServiceEntry self) => self.UserData is Lazy<Type>;
+        public static bool IsLazy(this AbstractServiceEntry self) => self is ProducibleServiceEntry && self.UserData is Lazy<Type>;
 
         /// <summary>
         /// The service was registered via <see cref="IServiceContainerExtensions.Factory"/> call.
@@ -32,6 +32,6 @@ namespace Solti.Utils.DI
         /// <summary>
         /// The service was registered via <see cref="IServiceContainerExtensions.Instance"/> call.
         /// </summary>
-        public static bool IsInstance(this AbstractServiceEntry self) => !self.IsService() && !self.IsFactory() && self.Value != null;
+        public static bool IsInstance(this AbstractServiceEntry self) => self is InstanceServiceEntry;
     }
 }
