@@ -17,7 +17,7 @@ namespace Solti.Utils.DI.Proxy
         /// <summary>
         /// Generates duck typing proxy objects.
         /// </summary>
-        public class DuckFactory<TTarget>
+        public class DuckFactory<TTarget> where TTarget: class
         {
             internal TTarget Target { get; }
 
@@ -50,7 +50,7 @@ namespace Solti.Utils.DI.Proxy
         /// <summary>
         /// Marks a <typeparamref name="TTarget"/> instance for duck typing.
         /// </summary>
-        public static DuckFactory<TTarget> Act<TTarget>(this TTarget target)
+        public static DuckFactory<TTarget> Act<TTarget>(this TTarget target) where TTarget: class
         {
             if (target == null)
                 throw new ArgumentNullException(nameof(target));
