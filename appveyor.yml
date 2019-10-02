@@ -1,28 +1,40 @@
+# common configuration for ALL branches
 image: Visual Studio 2017
 
 skip_tags: true
- 
-build_script:
-# Prevent MSBuild from running 
-  - echo Starting build
-  
+
 environment:
   COVERALLS_REPO_TOKEN:  
     secure: p2Kcud3WthUkXXcArmyAEggtW8E3L7ELxH0TXnjlnhmCUMPAQ9s5ApIX3By05W8B
 
+build_script:
+  # Prevent MSBuild from running 
+  - echo Starting build
+
 before_test:
   - cmd: cd scripts
-  
+
 test_script:
   - cmd: test
   - cmd: coveralls.io
-  - cmd: perf
-  
+
 after_test:
-  - cmd: cd ..  
+  - cmd: cd ..
+  # push test results  
   - ps: (New-Object 'System.Net.WebClient').UploadFile("https://ci.appveyor.com/api/testresults/nunit/$($env:APPVEYOR_JOB_ID)", (Resolve-Path .\BIN\testresults.xml))
 
-artifacts:
-  - path: BenchmarkDotNet.Artifacts
-    name: BenchmarkDotNet.Artifacts
-    type: zip  
+# override settings for `master` branch
+-
+  branches:
+    only:
+      - master
+
+  test_script:
+    - cmd: test
+    - cmd: coveralls.io
+    - cmd: perf
+
+  artifacts:
+    - path: BenchmarkDotNet.Artifacts
+      name: BenchmarkDotNet.Artifacts
+      type: zip  
