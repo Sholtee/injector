@@ -243,6 +243,6 @@ ModelManifest.xml
 
 BenchmarkDotNet.Artifacts
 [Vv]endor/
-DOC/*.yml
-DOC/manifest.json
 Coverage Report
+gh-pages
+[Dd][Oo][Cc]

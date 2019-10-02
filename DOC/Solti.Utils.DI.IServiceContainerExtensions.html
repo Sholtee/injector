@@ -899,6 +899,7 @@
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public static IServiceContainer Proxy&lt;TInterface, TInterceptor&gt;(this IServiceContainer self)
+
     where TInterface : class where TInterceptor : InterfaceInterceptor&lt;TInterface&gt;</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
@@ -1047,6 +1048,7 @@
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public static IServiceContainer Service&lt;TInterface, TImplementation&gt;(this IServiceContainer self, Lifetime lifetime = Lifetime.Transient)
+
     where TImplementation : TInterface</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
