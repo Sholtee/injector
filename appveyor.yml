@@ -1,7 +1,13 @@
+#############################################################################
+#                                                                           #
+# appveyor.yml                                                              #
+#                                                                           #
+# Author: Denes Solti                                                       #
+#                                                                           #
+#############################################################################
+
 # common configuration for ALL branches
 image: Visual Studio 2017
-
-skip_tags: true
 
 environment:
   COVERALLS_REPO_TOKEN:  
@@ -10,6 +16,11 @@ environment:
     secure: qJEufJv866eebR/Boe1UnV3p1arOIX9BTyqAQnAVY49h4Ks40Sr0rHb3iN70e7BZ
   GITHUB_EMAIL:
     secure: Z6F+xZzdZzc5DMYB/4J0KUhyoTzTlXH75ciGl7hFH9s=
+
+branches:
+  # blacklist
+  except:
+    - gh-pages
 
 build_script:
   # Prevent MSBuild from running 
