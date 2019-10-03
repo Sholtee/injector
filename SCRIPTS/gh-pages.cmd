@@ -22,6 +22,6 @@ if exist %dox% (
     call rmdir /Q /S %dox%
 )
 
-docfx
+call docfx
 
 move "%root%\doc" "%repo_dir%"
