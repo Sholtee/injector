@@ -50,7 +50,11 @@ namespace Solti.Utils.DI.Proxy.Tests
             }
 
             public T Prop { get; set; }
+
+            #pragma warning disable 67  // impliciten hasznalva van
             public event TestDelegate<T> Event;
+            #pragma warning restore 67
+
         }
 
         [Test]
