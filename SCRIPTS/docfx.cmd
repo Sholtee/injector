@@ -14,4 +14,4 @@ set vendor=%root%\Vendor
 
 nuget install docfx.console -OutputDirectory %vendor% -Version 2.42.4
 
-call %vendor%\docfx.console.2.42.4\tools\docfx.exe %root%\docfx.json
+call %vendor%\docfx.console.2.42.4\tools\docfx.exe %root%\SRC\docfx.json

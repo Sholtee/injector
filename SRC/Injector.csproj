@@ -38,6 +38,11 @@
     <Compile Remove="Private\Annotations\ExcludeFromCoverageAttribute.cs" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="docfx.json" />
+    <None Remove="index.md" />
+  </ItemGroup>
+
   <ItemGroup>   
     <PackageReference Include="System.Runtime.Loader" Version="4.3.0" />
   </ItemGroup>

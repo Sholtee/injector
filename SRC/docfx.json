@@ -1,10 +1,10 @@
 {
 	"metadata": [{
 		"src": [{
-			"files": ["SRC/Injector.csproj"],
+			"files": ["Injector.csproj"],
 			"exclude": ["**/bin/**", "**/obj/**"]
 		}],
-		"dest": "BIN/DOC",
+		"dest": "../BIN/DOC",
 		"properties": {
 			"TargetFramework": "netstandard1.6"
 		}
@@ -13,19 +13,20 @@
 		"content": [
 			{
 				"files": ["*.yml"],
-				"src": "BIN/DOC"
+				"src": "../BIN/DOC"
 			},
 			{
 				"files": ["index.md"]
 			}
 		],
-		"dest": "DOC",
+		"dest": "../DOC",
 		"resource": [{
-			"files": ["favicon.ico"]
+			"files": ["favicon.ico"],
+			"src": "../"
 		}],
 		"globalMetadata": {
 			"_appTitle": "Injector",
-			"_appFaviconPath": "favicon.ico",
+			"_appFaviconPath": "../favicon.ico",
 			"_disableNavbar": true,
 			"_disableContribution": true
 		},
