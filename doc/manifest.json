@@ -1,0 +1,450 @@
+{
+  "homepages": [],
+  "source_base_path": "d:/DENES/__SAJAT__/injector",
+  "xrefmap": "xrefmap.yml",
+  "files": [
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "BIN/DOC/Solti.Utils.DI.Annotations.ServiceActivatorAttribute.yml",
+      "output": {
+        ".html": {
+          "relative_path": "Solti.Utils.DI.Annotations.ServiceActivatorAttribute.html",
+          "hash": "dJA9pzMYeBGTY9tFfS06uQ=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "BIN/DOC/Solti.Utils.DI.Annotations.ServiceAttribute.yml",
+      "output": {
+        ".html": {
+          "relative_path": "Solti.Utils.DI.Annotations.ServiceAttribute.html",
+          "hash": "N4a8iPd7Q4mZJKycN0Phqw=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "BIN/DOC/Solti.Utils.DI.Annotations.yml",
+      "output": {
+        ".html": {
+          "relative_path": "Solti.Utils.DI.Annotations.html",
+          "hash": "MUD+AIO9l7uFvUoHEgfung=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "BIN/DOC/Solti.Utils.DI.ConfigFromAssembly.yml",
+      "output": {
+        ".html": {
+          "relative_path": "Solti.Utils.DI.ConfigFromAssembly.html",
+          "hash": "rxefBMRBNxetLtuFwQnAaw=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "BIN/DOC/Solti.Utils.DI.IInjector.yml",
+      "output": {
+        ".html": {
+          "relative_path": "Solti.Utils.DI.IInjector.html",
+          "hash": "W0mLbukitIQRxeOm7OeaHA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "BIN/DOC/Solti.Utils.DI.IInjectorExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "Solti.Utils.DI.IInjectorExtensions.html",
+          "hash": "PyUizv95ukL4pqrNVe6OWg=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "BIN/DOC/Solti.Utils.DI.IServiceContainer.yml",
+      "output": {
+        ".html": {
+          "relative_path": "Solti.Utils.DI.IServiceContainer.html",
+          "hash": "zAFn5E7zZciHQOH4BshviA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "BIN/DOC/Solti.Utils.DI.IServiceContainerExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "Solti.Utils.DI.IServiceContainerExtensions.html",
+          "hash": "AWraBioEwxt9WIvYzfUoIg=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "BIN/DOC/Solti.Utils.DI.ITypeResolver.yml",
+      "output": {
+        ".html": {
+          "relative_path": "Solti.Utils.DI.ITypeResolver.html",
+          "hash": "Id4YnBusdRlMI82Tct8OWw=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "BIN/DOC/Solti.Utils.DI.InjectorEventArg.yml",
+      "output": {
+        ".html": {
+          "relative_path": "Solti.Utils.DI.InjectorEventArg.html",
+          "hash": "6saEoSM+800lwPP0q5Do8w=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "BIN/DOC/Solti.Utils.DI.InjectorEventHandler-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "Solti.Utils.DI.InjectorEventHandler-1.html",
+          "hash": "zSP8ZJ1lhoZOox9VbFjD2A=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "BIN/DOC/Solti.Utils.DI.Internals.AbstractServiceEntry.yml",
+      "output": {
+        ".html": {
+          "relative_path": "Solti.Utils.DI.Internals.AbstractServiceEntry.html",
+          "hash": "/WdqfiJwTJ3wPGYnGqB1MQ=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "BIN/DOC/Solti.Utils.DI.Internals.Composite-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "Solti.Utils.DI.Internals.Composite-1.html",
+          "hash": "Xe6p2DPTiA4AXzfvVPqFfA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "BIN/DOC/Solti.Utils.DI.Internals.Disposable.yml",
+      "output": {
+        ".html": {
+          "relative_path": "Solti.Utils.DI.Internals.Disposable.html",
+          "hash": "R5efqJG4b0eTzM+L2Vf4LA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "BIN/DOC/Solti.Utils.DI.Internals.DuckBase-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "Solti.Utils.DI.Internals.DuckBase-1.html",
+          "hash": "ZhaJbNNxtDEbGgCUu+GbXA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "BIN/DOC/Solti.Utils.DI.Internals.IComposite-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "Solti.Utils.DI.Internals.IComposite-1.html",
+          "hash": "9ayriR3KD6/8esk1fRe9Tw=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "BIN/DOC/Solti.Utils.DI.Internals.yml",
+      "output": {
+        ".html": {
+          "relative_path": "Solti.Utils.DI.Internals.html",
+          "hash": "hwDkabIgR/qF+QWV3LwDsA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "BIN/DOC/Solti.Utils.DI.LazyTypeResolver-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "Solti.Utils.DI.LazyTypeResolver-1.html",
+          "hash": "01+PkW5vnKFivK/rYyHPfw=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "BIN/DOC/Solti.Utils.DI.Lifetime.yml",
+      "output": {
+        ".html": {
+          "relative_path": "Solti.Utils.DI.Lifetime.html",
+          "hash": "SBWXkUfsSWpXl/Ppkp0OEw=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "BIN/DOC/Solti.Utils.DI.Proxy.InterfaceInterceptor-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "Solti.Utils.DI.Proxy.InterfaceInterceptor-1.html",
+          "hash": "HKhjCfY/cqbmB03sHt8BeQ=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "BIN/DOC/Solti.Utils.DI.Proxy.ObjectExtensions.DuckFactory-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "Solti.Utils.DI.Proxy.ObjectExtensions.DuckFactory-1.html",
+          "hash": "YYqbCHJEXZxc7Hm6tq0RTw=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "BIN/DOC/Solti.Utils.DI.Proxy.ObjectExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "Solti.Utils.DI.Proxy.ObjectExtensions.html",
+          "hash": "8oFb7W/vO2u/La8dxK9b1w=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "BIN/DOC/Solti.Utils.DI.Proxy.ProxyFactory.yml",
+      "output": {
+        ".html": {
+          "relative_path": "Solti.Utils.DI.Proxy.ProxyFactory.html",
+          "hash": "5WDVppNYotxnp8jBoQNLJQ=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "BIN/DOC/Solti.Utils.DI.Proxy.ProxyUtils.yml",
+      "output": {
+        ".html": {
+          "relative_path": "Solti.Utils.DI.Proxy.ProxyUtils.html",
+          "hash": "//Ow8OSE0gvsjDEKf+x89g=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "BIN/DOC/Solti.Utils.DI.Proxy.yml",
+      "output": {
+        ".html": {
+          "relative_path": "Solti.Utils.DI.Proxy.html",
+          "hash": "wjXWAoakRzgOLQhiO9mHKQ=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "BIN/DOC/Solti.Utils.DI.QueryMode.yml",
+      "output": {
+        ".html": {
+          "relative_path": "Solti.Utils.DI.QueryMode.html",
+          "hash": "kr9cr+bnQp0QFgz6YNCpog=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "BIN/DOC/Solti.Utils.DI.ServiceAlreadyRegisteredException.yml",
+      "output": {
+        ".html": {
+          "relative_path": "Solti.Utils.DI.ServiceAlreadyRegisteredException.html",
+          "hash": "E3O5L9Z9neL7XDruD6opjw=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "BIN/DOC/Solti.Utils.DI.ServiceContainer.yml",
+      "output": {
+        ".html": {
+          "relative_path": "Solti.Utils.DI.ServiceContainer.html",
+          "hash": "UCZnAGcK3rApIvBLCFRSQA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "BIN/DOC/Solti.Utils.DI.ServiceEntryExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "Solti.Utils.DI.ServiceEntryExtensions.html",
+          "hash": "o+Qf6ufqDtPi6okJEBdvjA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "BIN/DOC/Solti.Utils.DI.ServiceNotFoundException.yml",
+      "output": {
+        ".html": {
+          "relative_path": "Solti.Utils.DI.ServiceNotFoundException.html",
+          "hash": "+zUlediAImejgLEuOnR0rA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "BIN/DOC/Solti.Utils.DI.yml",
+      "output": {
+        ".html": {
+          "relative_path": "Solti.Utils.DI.html",
+          "hash": "RrlrkTXXuMa8kRhqfV30fA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "BIN/DOC/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "toc.html",
+          "hash": "7jj9dkdgX4aWW/xQraqhWQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "favicon.ico",
+      "output": {
+        "resource": {
+          "relative_path": "favicon.ico"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    }
+  ],
+  "incremental_info": [
+    {
+      "status": {
+        "can_incremental": true,
+        "incrementalPhase": "build",
+        "total_file_count": 0,
+        "skipped_file_count": 0
+      },
+      "processors": {
+        "ResourceDocumentProcessor": {
+          "can_incremental": false,
+          "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "incrementalPhase": "build",
+          "total_file_count": 0,
+          "skipped_file_count": 0
+        },
+        "TocDocumentProcessor": {
+          "can_incremental": false,
+          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "incrementalPhase": "build",
+          "total_file_count": 0,
+          "skipped_file_count": 0
+        },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": true,
+          "incrementalPhase": "build",
+          "total_file_count": 31,
+          "skipped_file_count": 31
+        }
+      }
+    },
+    {
+      "status": {
+        "can_incremental": true,
+        "details": "Can support incremental post processing.",
+        "incrementalPhase": "postProcessing",
+        "total_file_count": 0,
+        "skipped_file_count": 0
+      },
+      "processors": {}
+    }
+  ],
+  "version_info": {},
+  "groups": [
+    {
+      "xrefmap": "xrefmap.yml"
+    }
+  ]
+}
