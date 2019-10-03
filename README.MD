@@ -138,7 +138,7 @@ Alternatively you can use the `Instantiate()` function (since version *0.0.3*). 
 ## Auto config the injector
 Starting from version *0.0.2* you can use the `ServiceAttribute` on service classes to annotate them for auto config. Auto config is done by a simple call to the `injector.Setup(sourceAssembly)` which instructs the system to seek and register all the annotated services from the `sourceAssembly`.
 ## API Docs
-You can find the detailed API docs [here](http://htmlpreview.github.io/?https://github.com/Sholtee/injector/blob/master/DOC/Solti.Utils.DI.html ).
+You can find the detailed API docs [here](https://sholtee.github.io/injector ).
 ## Supported frameworks
 This project currently targets *.NET Core 2.X* only.
 ## Version history
