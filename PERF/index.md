@@ -1,4 +1,4 @@
-# Injector.NET Benchmark results
+# Injector.NET Benchmark Results
 
 - [Activator](https://sholtee.github.io/injector/perf/Solti.Utils.DI.Perf.Activator-report-github.html )
 - [Duck typing](https://sholtee.github.io/injector/perf/Solti.Utils.DI.Perf.DuckTyping-report-github.html )

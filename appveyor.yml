@@ -37,7 +37,7 @@ for:
   test_script:
     - cmd: test
     - cmd: coveralls.io
-#   - cmd: perf
+    - cmd: perf
 
   # update documentation
   deploy_script:
@@ -47,8 +47,3 @@ for:
     - cmd: git config --global user.name "[Bot]"
     - cmd: cd scripts
     - cmd: gh-pages
-  
-  artifacts:
-    - path: BenchmarkDotNet.Artifacts
-      name: BenchmarkDotNet.Artifacts
-      type: zip

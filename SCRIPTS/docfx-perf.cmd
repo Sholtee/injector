@@ -6,7 +6,7 @@
 @echo off
 
 set /p root=<root
-set dist=%root%\BenchmarkDotNet.Artifacts\dist
+set dist=%root%\BenchmarkDotNet.Artifacts\perf
 
 if exist %dist% rmdir /Q /S %dist%
 
