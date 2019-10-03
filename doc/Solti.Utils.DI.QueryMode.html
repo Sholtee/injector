@@ -42,14 +42,15 @@
   
   <h1 id="Solti_Utils_DI_QueryMode" data-uid="Solti.Utils.DI.QueryMode" class="text-break">Enum QueryMode
   </h1>
-  <div class="markdown level0 summary"><p>Specifies flags that control the <a class="xref" href="Solti.Utils.DI.IServiceContainer.html#Solti_Utils_DI_IServiceContainer_Get_Type_Solti_Utils_DI_QueryMode_">Get(Type, QueryMode)</a> method.</p>
+  <div class="markdown level0 summary"><p>Specifies flags that control the <a class="xref" href="Solti.Utils.DI.IServiceContainer.html#Solti_Utils_DI_IServiceContainer_Get_System_Type_Solti_Utils_DI_QueryMode_">Get(Type, QueryMode)</a> method.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Solti.Utils.DI.html">Solti.Utils.DI</a></h6>
   <h6><strong>Assembly</strong>: Injector.dll</h6>
   <h5 id="Solti_Utils_DI_QueryMode_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public enum QueryMode : int</code></pre>
+    <pre><code class="lang-csharp hljs">[Flags]
+public enum QueryMode</code></pre>
   </div>
   <h3 id="fields">Fields
   </h3>
@@ -73,7 +74,7 @@
       </tr>
       <tr>
         <td id="Solti_Utils_DI_QueryMode_ThrowOnError">ThrowOnError</td>
-        <td><p>Instructs the <a class="xref" href="Solti.Utils.DI.IServiceContainer.html#Solti_Utils_DI_IServiceContainer_Get_Type_Solti_Utils_DI_QueryMode_">Get(Type, QueryMode)</a> to throw if the desired service could not be found.</p>
+        <td><p>Instructs the <a class="xref" href="Solti.Utils.DI.IServiceContainer.html#Solti_Utils_DI_IServiceContainer_Get_System_Type_Solti_Utils_DI_QueryMode_">Get(Type, QueryMode)</a> to throw if the desired service could not be found.</p>
 </td>
       </tr>
     </tbody>

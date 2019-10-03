@@ -1,6 +1,6 @@
 {
   "homepages": [],
-  "source_base_path": "d:/DENES/__SAJAT__/injector",
+  "source_base_path": "C:/projects/injector",
   "xrefmap": "xrefmap.yml",
   "files": [
     {
@@ -9,10 +9,10 @@
       "output": {
         ".html": {
           "relative_path": "Solti.Utils.DI.Annotations.ServiceActivatorAttribute.html",
-          "hash": "dJA9pzMYeBGTY9tFfS06uQ=="
+          "hash": "2zzFLiyNDvvcZmvL8ypWkg=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -21,10 +21,10 @@
       "output": {
         ".html": {
           "relative_path": "Solti.Utils.DI.Annotations.ServiceAttribute.html",
-          "hash": "N4a8iPd7Q4mZJKycN0Phqw=="
+          "hash": "o4/KLYzHhU6km50utoZLxw=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -36,7 +36,7 @@
           "hash": "MUD+AIO9l7uFvUoHEgfung=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -45,10 +45,10 @@
       "output": {
         ".html": {
           "relative_path": "Solti.Utils.DI.ConfigFromAssembly.html",
-          "hash": "rxefBMRBNxetLtuFwQnAaw=="
+          "hash": "e07cMuuDmMAJK07Plr4VSw=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -57,10 +57,10 @@
       "output": {
         ".html": {
           "relative_path": "Solti.Utils.DI.IInjector.html",
-          "hash": "W0mLbukitIQRxeOm7OeaHA=="
+          "hash": "vbgLNaMjZNROweq7TA9xZw=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -69,10 +69,10 @@
       "output": {
         ".html": {
           "relative_path": "Solti.Utils.DI.IInjectorExtensions.html",
-          "hash": "PyUizv95ukL4pqrNVe6OWg=="
+          "hash": "sfZAflunsQOv1jFu83tLfg=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -81,10 +81,10 @@
       "output": {
         ".html": {
           "relative_path": "Solti.Utils.DI.IServiceContainer.html",
-          "hash": "zAFn5E7zZciHQOH4BshviA=="
+          "hash": "QTUFO+QbJLcvp7DMtNLcBA=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -93,10 +93,10 @@
       "output": {
         ".html": {
           "relative_path": "Solti.Utils.DI.IServiceContainerExtensions.html",
-          "hash": "AWraBioEwxt9WIvYzfUoIg=="
+          "hash": "hZPG1MfEqyDd2afJtuBbqw=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -105,10 +105,10 @@
       "output": {
         ".html": {
           "relative_path": "Solti.Utils.DI.ITypeResolver.html",
-          "hash": "Id4YnBusdRlMI82Tct8OWw=="
+          "hash": "4jy9IJOF40OHdSGYqhaoEQ=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -117,10 +117,10 @@
       "output": {
         ".html": {
           "relative_path": "Solti.Utils.DI.InjectorEventArg.html",
-          "hash": "6saEoSM+800lwPP0q5Do8w=="
+          "hash": "BsY1m512yHLITyz27qdEIQ=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -129,10 +129,10 @@
       "output": {
         ".html": {
           "relative_path": "Solti.Utils.DI.InjectorEventHandler-1.html",
-          "hash": "zSP8ZJ1lhoZOox9VbFjD2A=="
+          "hash": "pnP2JGdIHaA/BPZnpTGviw=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -141,10 +141,10 @@
       "output": {
         ".html": {
           "relative_path": "Solti.Utils.DI.Internals.AbstractServiceEntry.html",
-          "hash": "/WdqfiJwTJ3wPGYnGqB1MQ=="
+          "hash": "4r5gq78lRhzZ6NlYjC9rnw=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -153,10 +153,10 @@
       "output": {
         ".html": {
           "relative_path": "Solti.Utils.DI.Internals.Composite-1.html",
-          "hash": "Xe6p2DPTiA4AXzfvVPqFfA=="
+          "hash": "m0qoc3nxwXjnO6UtitwoMA=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -165,10 +165,10 @@
       "output": {
         ".html": {
           "relative_path": "Solti.Utils.DI.Internals.Disposable.html",
-          "hash": "R5efqJG4b0eTzM+L2Vf4LA=="
+          "hash": "KsreDwTTaW+KWhNlfZB5EQ=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -177,10 +177,10 @@
       "output": {
         ".html": {
           "relative_path": "Solti.Utils.DI.Internals.DuckBase-1.html",
-          "hash": "ZhaJbNNxtDEbGgCUu+GbXA=="
+          "hash": "MMUZ2PDas+3+q+e6CVLLWw=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -189,10 +189,10 @@
       "output": {
         ".html": {
           "relative_path": "Solti.Utils.DI.Internals.IComposite-1.html",
-          "hash": "9ayriR3KD6/8esk1fRe9Tw=="
+          "hash": "r9XoZwV+/pODCh7g1tXgGw=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -201,10 +201,10 @@
       "output": {
         ".html": {
           "relative_path": "Solti.Utils.DI.Internals.html",
-          "hash": "hwDkabIgR/qF+QWV3LwDsA=="
+          "hash": "EkebeFrK9m1N8OMC7k50Ig=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -213,10 +213,10 @@
       "output": {
         ".html": {
           "relative_path": "Solti.Utils.DI.LazyTypeResolver-1.html",
-          "hash": "01+PkW5vnKFivK/rYyHPfw=="
+          "hash": "j4R1pSCP6WQTfbs/yHOouw=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -225,10 +225,10 @@
       "output": {
         ".html": {
           "relative_path": "Solti.Utils.DI.Lifetime.html",
-          "hash": "SBWXkUfsSWpXl/Ppkp0OEw=="
+          "hash": "td2QtFk/rca0EVkm5CZjZA=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -237,10 +237,10 @@
       "output": {
         ".html": {
           "relative_path": "Solti.Utils.DI.Proxy.InterfaceInterceptor-1.html",
-          "hash": "HKhjCfY/cqbmB03sHt8BeQ=="
+          "hash": "o6zDwY65/I+ASPQZ38EaUg=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -249,10 +249,10 @@
       "output": {
         ".html": {
           "relative_path": "Solti.Utils.DI.Proxy.ObjectExtensions.DuckFactory-1.html",
-          "hash": "YYqbCHJEXZxc7Hm6tq0RTw=="
+          "hash": "ruJybaE5IybjD9lB9/R7BA=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -261,10 +261,10 @@
       "output": {
         ".html": {
           "relative_path": "Solti.Utils.DI.Proxy.ObjectExtensions.html",
-          "hash": "8oFb7W/vO2u/La8dxK9b1w=="
+          "hash": "zgUXG3aUDjKlu0WAlhwrfw=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -273,10 +273,10 @@
       "output": {
         ".html": {
           "relative_path": "Solti.Utils.DI.Proxy.ProxyFactory.html",
-          "hash": "5WDVppNYotxnp8jBoQNLJQ=="
+          "hash": "R3vLu0+2yEqO3Oy7IKspig=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -285,10 +285,10 @@
       "output": {
         ".html": {
           "relative_path": "Solti.Utils.DI.Proxy.ProxyUtils.html",
-          "hash": "//Ow8OSE0gvsjDEKf+x89g=="
+          "hash": "3VqW9SVgsJIETen1Lpayuw=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -300,7 +300,7 @@
           "hash": "wjXWAoakRzgOLQhiO9mHKQ=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -309,10 +309,10 @@
       "output": {
         ".html": {
           "relative_path": "Solti.Utils.DI.QueryMode.html",
-          "hash": "kr9cr+bnQp0QFgz6YNCpog=="
+          "hash": "40hqPOfGtPm3GJjipTLyBg=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -321,10 +321,10 @@
       "output": {
         ".html": {
           "relative_path": "Solti.Utils.DI.ServiceAlreadyRegisteredException.html",
-          "hash": "E3O5L9Z9neL7XDruD6opjw=="
+          "hash": "fwcz7N3dim0HUa3WI24gyQ=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -333,10 +333,10 @@
       "output": {
         ".html": {
           "relative_path": "Solti.Utils.DI.ServiceContainer.html",
-          "hash": "UCZnAGcK3rApIvBLCFRSQA=="
+          "hash": "LjQlcdO5VGak3sVe1KRnWg=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -345,10 +345,10 @@
       "output": {
         ".html": {
           "relative_path": "Solti.Utils.DI.ServiceEntryExtensions.html",
-          "hash": "o+Qf6ufqDtPi6okJEBdvjA=="
+          "hash": "W5kMreLCTcTs/c+YgZqvDQ=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -357,10 +357,10 @@
       "output": {
         ".html": {
           "relative_path": "Solti.Utils.DI.ServiceNotFoundException.html",
-          "hash": "+zUlediAImejgLEuOnR0rA=="
+          "hash": "pCQT4sA4usudhAgwjTi+yA=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -369,10 +369,10 @@
       "output": {
         ".html": {
           "relative_path": "Solti.Utils.DI.html",
-          "hash": "RrlrkTXXuMa8kRhqfV30fA=="
+          "hash": "cK/Ii8Hhf57OgBpN2eiWOQ=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -402,19 +402,14 @@
   "incremental_info": [
     {
       "status": {
-        "can_incremental": true,
+        "can_incremental": false,
+        "details": "Cannot build incrementally because last build info is missing.",
         "incrementalPhase": "build",
         "total_file_count": 0,
-        "skipped_file_count": 0
+        "skipped_file_count": 0,
+        "full_build_reason_code": "NoAvailableBuildCache"
       },
       "processors": {
-        "ResourceDocumentProcessor": {
-          "can_incremental": false,
-          "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
-          "incrementalPhase": "build",
-          "total_file_count": 0,
-          "skipped_file_count": 0
-        },
         "TocDocumentProcessor": {
           "can_incremental": false,
           "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
@@ -423,17 +418,24 @@
           "skipped_file_count": 0
         },
         "ManagedReferenceDocumentProcessor": {
-          "can_incremental": true,
+          "can_incremental": false,
           "incrementalPhase": "build",
           "total_file_count": 31,
-          "skipped_file_count": 31
+          "skipped_file_count": 0
+        },
+        "ResourceDocumentProcessor": {
+          "can_incremental": false,
+          "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "incrementalPhase": "build",
+          "total_file_count": 0,
+          "skipped_file_count": 0
         }
       }
     },
     {
       "status": {
-        "can_incremental": true,
-        "details": "Can support incremental post processing.",
+        "can_incremental": false,
+        "details": "Cannot support incremental post processing, the reason is: last post processor info is null.",
         "incrementalPhase": "postProcessing",
         "total_file_count": 0,
         "skipped_file_count": 0
