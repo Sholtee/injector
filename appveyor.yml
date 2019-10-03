@@ -33,7 +33,7 @@ for:
   test_script:
     - cmd: test
     - cmd: coveralls.io
-    - cmd: perf
+#   - cmd: perf
 
   artifacts:
     - path: BenchmarkDotNet.Artifacts

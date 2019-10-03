@@ -25,3 +25,9 @@ if exist %dox% (
 call docfx
 
 move "%root%\doc" "%repo_dir%"
+
+set git_dir=%repo_dir%\.git
+
+git --git-dir %git_dir% add . -A
+git --git-dir %git_dir% commit -m "docs up"
+git --git-dir %git_dir% push origin gh-pages
