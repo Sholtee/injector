@@ -27,7 +27,7 @@ for /f %%i in (%root%\targets) do (
     @echo: 
     @echo build against: %%i
 
-    dotnet build %csproj% -c Release -p:TargetFramework=%%i;NoDocfx=True
+    dotnet build %csproj% -c Release -p:TargetFramework=%%i
     if !errorlevel! neq 0 exit /b !errorlevel!
 )
 

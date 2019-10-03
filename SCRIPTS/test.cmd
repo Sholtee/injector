@@ -7,4 +7,4 @@
 
 set /p root=<root
 
-dotnet test %root%\TEST\Injector.Tests.csproj --configuration:Debug --test-adapter-path:. --logger:"nunit;LogFilePath=%root%\BIN\testresults.xml" -p:NoDocfx=True
+dotnet test %root%\TEST\Injector.Tests.csproj --configuration:Debug --test-adapter-path:. --logger:"nunit;LogFilePath=%root%\BIN\testresults.xml"
