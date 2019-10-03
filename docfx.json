@@ -10,10 +10,15 @@
 		}
 	}],
 	"build": {
-		"content": [{
-			"files": ["*.yml"],
-			"src": "BIN/DOC"
-		}],
+		"content": [
+			{
+				"files": ["*.yml"],
+				"src": "BIN/DOC"
+			},
+			{
+				"files": ["index.md"]
+			}
+		],
 		"dest": "DOC",
 		"resource": [{
 			"files": ["favicon.ico"]
