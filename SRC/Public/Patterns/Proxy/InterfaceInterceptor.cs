@@ -8,7 +8,7 @@ using System.Reflection;
 namespace Solti.Utils.DI.Proxy
 {
     /// <summary>
-    /// Provides a mechanism for interceptiong interface method calls.
+    /// Provides the mechanism for intercepting interface method calls.
     /// </summary>
     /// <typeparam name="TInterface">The interface to be intercepted.</typeparam>
     public abstract class InterfaceInterceptor<TInterface> where TInterface: class

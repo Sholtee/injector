@@ -96,7 +96,7 @@ namespace Solti.Utils.DI.Internals
         }
 
         /// <summary>
-        /// Compares this entry with an another one.
+        /// Compares this entry with another one.
         /// </summary>
         /// <remarks>Entries having the same property values are considered equivalent.</remarks>
         public override bool Equals(object obj) => obj != null && (ReferenceEquals(this, obj) || obj.GetHashCode() == GetHashCode());

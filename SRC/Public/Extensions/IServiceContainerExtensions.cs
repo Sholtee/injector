@@ -155,7 +155,7 @@ namespace Solti.Utils.DI
         }
 
         /// <summary>
-        /// Hooks into the instantiating process to let you decorate the original service. Useful when you want to add additional functionality (e.g. parameter validation). The easyest way to decorate an instance is using the <see cref="InterfaceInterceptor{TInterface}"/> class.
+        /// Hooks into the instantiating process to let you decorate the original service. Useful when you want to add additional functionality (e.g. parameter validation). The easiest way to decorate an instance is using the <see cref="InterfaceInterceptor{TInterface}"/> class.
         /// </summary>
         /// <param name="self">The target <see cref="IServiceContainer"/>.</param>
         /// <param name="iface">The service to be decorated.</param>
@@ -259,7 +259,7 @@ namespace Solti.Utils.DI
         /// <param name="self">The target <see cref="IServiceContainer"/>.</param>
         /// <returns>The newly created <see cref="IInjector"/> instance.</returns>
         /// <remarks>The lifetime of the returned <see cref="IInjector"/> is controlled by its parent. Despite this you may dispose it manually.</remarks>
-        /// <exception cref="InvalidOperationException">There are one or more abstract entry in the collection.</exception>
+        /// <exception cref="InvalidOperationException">There are one or more abstract entries in the collection.</exception>
         public static IInjector CreateInjector(this IServiceContainer self)
         {
             Type[] abstractEntries = self
@@ -308,25 +308,25 @@ namespace Solti.Utils.DI
         public static IServiceContainer Factory<TInterface>(this IServiceContainer self, Func<IInjector, TInterface> factory, Lifetime lifetime = Lifetime.Transient) => self.Factory(typeof(TInterface), (me, type) => factory(me), lifetime);
 
         /// <summary>
-        /// Hooks into the instantiating process to let you decorate the original service. Useful when you want to add additional functionality (e.g. parameter validation). The easyest way to decorate an instance is using the <see cref="InterfaceInterceptor{TInterface}"/> class.
+        /// Hooks into the instantiating process to let you decorate the original service. Useful when you want to add additional functionality (e.g. parameter validation). The easiest way to decorate an instance is using the <see cref="InterfaceInterceptor{TInterface}"/> class.
         /// </summary>
         /// <typeparam name="TInterface">The service to be decorated.</typeparam>
         /// <param name="self">The target <see cref="IServiceContainer"/>.</param>
         /// <param name="decorator">The decorator funtion. It must return the decorated instance. The original instance can be accessed via the 2nd parameter of the decorator function.</param>
         /// <returns>The container itself.</returns>
         /// <remarks>You can't create proxies against instances or not owned entries. A service can be decorated multiple times.</remarks>
-        /// <exception cref="InvalidOperationException">When proxying not allowed (see above).</exception>
+        /// <exception cref="InvalidOperationException">When proxying is not allowed (see above).</exception>
         public static IServiceContainer Proxy<TInterface>(this IServiceContainer self, Func<IInjector, TInterface, TInterface> decorator) => self.Proxy(typeof(TInterface), (me, type, instance) => decorator(me, (TInterface) instance));
 
         /// <summary>
-        /// Hooks into the instantiating process to let you decorate the original service. Useful when you want to add additional functionality (e.g. parameter validation). The easyest way to decorate an instance is using the <see cref="InterfaceInterceptor{TInterface}"/> class.
+        /// Hooks into the instantiating process to let you decorate the original service. Useful when you want to add additional functionality (e.g. parameter validation). The easiest way to decorate an instance is using the <see cref="InterfaceInterceptor{TInterface}"/> class.
         /// </summary>
         /// <typeparam name="TInterface">The service to be decorated.</typeparam>
         /// <typeparam name="TInterceptor">The interceptor class.</typeparam>
         /// <param name="self">The target <see cref="IServiceContainer"/>.</param>
         /// <returns>The container itself.</returns>
         /// <remarks>You can't create proxies against instances or not owned entries. A service can be decorated multiple times.</remarks>
-        /// <exception cref="InvalidOperationException">When proxying not allowed (see above).</exception>
+        /// <exception cref="InvalidOperationException">When proxying is not allowed (see above).</exception>
         public static IServiceContainer Proxy<TInterface, TInterceptor>(this IServiceContainer self) where TInterface: class where TInterceptor: InterfaceInterceptor<TInterface> => self.Proxy<TInterface>((me, instance) => ProxyFactory.Create<TInterface, TInterceptor>(instance, me));
 
         /// <summary>
@@ -342,6 +342,7 @@ namespace Solti.Utils.DI
         /// <summary>
         /// Registers an abstract service. It must be overridden in the child container(s).
         /// </summary>
+        /// <typeparam name="TInterface">The service interface to be registered. It can be registered only once.</typeparam>
         /// <param name="self">The target <see cref="IServiceContainer"/>.</param>
         /// <returns>The container itself.</returns>
         public static IServiceContainer Abstract<TInterface>(this IServiceContainer self) => self.Abstract(typeof(TInterface));

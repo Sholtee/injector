@@ -48,7 +48,7 @@ namespace Solti.Utils.DI
         public Type Target { get; }
 
         /// <summary>
-        /// The newly created service (if the invocation was successfull). 
+        /// The newly created service (if the invocation was successful). 
         /// </summary>
         public object Service
         {
