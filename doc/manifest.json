@@ -388,23 +388,23 @@
       "version": ""
     },
     {
-      "type": "Conceptual",
-      "source_relative_path": "INDEX.MD",
+      "type": "Resource",
+      "source_relative_path": "favicon.ico",
       "output": {
-        ".html": {
-          "relative_path": "INDEX.html",
-          "hash": "YgtUSltPdH+keunbnyvnsA=="
+        "resource": {
+          "relative_path": "favicon.ico"
         }
       },
       "is_incremental": false,
       "version": ""
     },
     {
-      "type": "Resource",
-      "source_relative_path": "favicon.ico",
+      "type": "Conceptual",
+      "source_relative_path": "index.md",
       "output": {
-        "resource": {
-          "relative_path": "favicon.ico"
+        ".html": {
+          "relative_path": "index.html",
+          "hash": "GjA44GfqCVyfKkMR+N0Fbg=="
         }
       },
       "is_incremental": false,
@@ -422,6 +422,13 @@
         "full_build_reason_code": "NoAvailableBuildCache"
       },
       "processors": {
+        "TocDocumentProcessor": {
+          "can_incremental": false,
+          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "incrementalPhase": "build",
+          "total_file_count": 0,
+          "skipped_file_count": 0
+        },
         "ResourceDocumentProcessor": {
           "can_incremental": false,
           "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
@@ -433,13 +440,6 @@
           "can_incremental": false,
           "incrementalPhase": "build",
           "total_file_count": 1,
-          "skipped_file_count": 0
-        },
-        "TocDocumentProcessor": {
-          "can_incremental": false,
-          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
-          "incrementalPhase": "build",
-          "total_file_count": 0,
           "skipped_file_count": 0
         },
         "ManagedReferenceDocumentProcessor": {
