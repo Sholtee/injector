@@ -44,7 +44,7 @@ for:
     - cmd: git config --global credential.helper store
     - ps: Add-Content "$env:USERPROFILE\.git-credentials" "https://$($env:GITHUB_REPO_TOKEN):x-oauth-basic@github.com`n"
     - cmd: git config --global user.email %GITHUB_EMAIL%
-    - cmd: git config --global user.name "Dénes Solti"
+    - cmd: git config --global user.name "[Bot]"
     - cmd: cd scripts
     - cmd: gh-pages
   
