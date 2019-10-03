@@ -7,27 +7,34 @@
 
 set /p root=<root
 set repo_dir=%root%\gh-pages
+set docs_branch=gh-pages
+
 
 if exist %repo_dir% (
     @echo cleanup...
     call rmdir /Q /S %repo_dir%
 )
 
-git clone https://github.com/sholtee/injector.git --branch gh-pages %repo_dir%
+git clone https://github.com/sholtee/injector.git --branch %docs_branch% %repo_dir%
 
-set dox=%repo_dir%\doc
+set docs_dir=%repo_dir%\doc
 
-if exist %dox% (
+if exist %docs_dir% (
     @echo cleanup...
-    call rmdir /Q /S %dox%
+    call rmdir /Q /S %docs_dir%
 )
 
 call docfx
 
 move "%root%\doc" "%repo_dir%"
 
-set git_dir=%repo_dir%\.git
+cd %repo_dir%
 
-git --git-dir %git_dir% add . -A
-git --git-dir %git_dir% commit -m "docs up"
-git --git-dir %git_dir% push origin gh-pages
+git checkout %docs_branch%
+git add doc -A
+git commit -m "docs up"
+git push origin %docs_branch%
+
+cd %~dp0
+
+rmdir /Q /S %repo_dir%
