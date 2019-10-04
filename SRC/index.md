@@ -1,6 +1,6 @@
 # Injector.NET
 
-You can find the docs separeted by their namepsaces:
+You can find the docs separated by their namepsaces:
 - [Solti.Utils.DI](https://sholtee.github.io/injector/doc/Solti.Utils.DI.html )
 - [Solti.Utils.DI.Annotations](https://sholtee.github.io/injector/doc/Solti.Utils.DI.Annotations.html )
 - [Solti.Utils.DI.Internals](https://sholtee.github.io/injector/doc/Solti.Utils.DI.Internals.html )
