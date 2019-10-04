@@ -23,7 +23,7 @@ branches:
     - gh-pages
 
 build_script:
-  # Prevent MSBuild from running 
+  # frevent MSBuild from running 
   - echo Starting build
 
 before_test:
@@ -38,17 +38,14 @@ after_test:
   # push test results  
   - ps: (New-Object 'System.Net.WebClient').UploadFile("https://ci.appveyor.com/api/testresults/nunit/$($env:APPVEYOR_JOB_ID)", (Resolve-Path .\BIN\testresults.xml))
 
-# override settings for `master` branch
+# override settings for `master` branch and version tags
 for:
 -
   branches:
     only:
       - master
-
-  test_script:
-    - cmd: test
-    - cmd: coveralls.io
-    - cmd: perf
+      # works with tag names: https://www.appveyor.com/docs/branches/#build-on-tags
+      - /v\d+\.\d+\.\d+[-\w]*/
 
   # update documentation
   deploy_script:
@@ -58,3 +55,13 @@ for:
     - cmd: git config --global user.name "[Bot]"
     - cmd: cd scripts
     - cmd: gh-pages
+-
+  branches:
+    only:
+      - /v\d+\.\d+\.\d+[-\w]*/
+
+  test_script:
+    - cmd: test
+    - cmd: coveralls.io
+    # performance tests should run on version tags only (time consuming)
+    - cmd: perf
