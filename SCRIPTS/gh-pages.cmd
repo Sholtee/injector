@@ -15,9 +15,9 @@ set /p root=<root
 set repo_dir=%root%\gh-pages
 set docs_branch=gh-pages
 
-if exist %repo_dir% (
-    @echo cleanup...
-    call rmdir /Q /S %repo_dir%
+if exist "%repo_dir%" (
+  @echo cleanup...
+  rmdir /Q /S %repo_dir%
 )
 
 git clone https://github.com/sholtee/injector.git --branch %docs_branch% %repo_dir%
@@ -29,8 +29,8 @@ git clone https://github.com/sholtee/injector.git --branch %docs_branch% %repo_d
 
 set docs_dir=%repo_dir%\doc
 
-if exist %docs_dir% (
-    call rmdir /Q /S %docs_dir%
+if exist "%docs_dir%" (
+  rmdir /Q /S %docs_dir%
 )
 
 call docfx
@@ -41,13 +41,13 @@ move "%root%\doc" "%repo_dir%"
 ::-----------------------------------------
 set bm_dir="%root%\BenchmarkDotNet.Artifacts"
 
-if exist %bm_dir% (
+if exist "%bm_dir%" (
   @echo generating benchmark docs...
 
   set perf_dir=%repo_dir%\perf
 
-  if exist %perf_dir% (
-      call rmdir /Q /S %perf_dir%
+  if exist "%perf_dir%" (
+    rmdir /Q /S %perf_dir%
   )
   
   call docfx-perf
@@ -64,7 +64,7 @@ cd %repo_dir%
 git checkout %docs_branch%
 git add doc -A
 git commit -m "docs up"
-if exist %bm_dir% (
+if exist "%bm_dir%" (
   git add perf -A
   git commit -m "benchmarks up"
 )
