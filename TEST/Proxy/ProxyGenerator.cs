@@ -8,12 +8,15 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 using NUnit.Framework;
+
+[assembly: InternalsVisibleTo("Solti.Utils.DI.Proxy.Tests.ProxyGeneratorTests.FooInterceptor_Solti.Utils.DI.Proxy.Tests.ProxyGeneratorTests.IFoo<System.Int32>_Proxy")]
 
 namespace Solti.Utils.DI.Proxy.Tests
 {
@@ -26,9 +29,9 @@ namespace Solti.Utils.DI.Proxy.Tests
     [TestFixture]
     public sealed class ProxyGeneratorTests
     {
-        public delegate void TestDelegate<in T>(object sender, T eventArg);
+        internal delegate void TestDelegate<in T>(object sender, T eventArg);
 
-        public interface IFoo<T> // TODO: FIXME: nem lehet internal (private eddig se lehetett).
+        internal interface IFoo<T>
         {
             int Foo<TT>(int a, out string b, ref TT c);
             void Bar();
@@ -36,7 +39,7 @@ namespace Solti.Utils.DI.Proxy.Tests
             event TestDelegate<T> Event;
         }
 
-        public class FooInterceptor : InterfaceInterceptor<IFoo<int>>
+        internal class FooInterceptor : InterfaceInterceptor<IFoo<int>>
         {
             public override object Invoke(MethodInfo method, object[] args, MemberInfo extra)
             {

@@ -9,7 +9,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Runtime.Loader;
 
 #if IGNORE_VISIBILITY
@@ -21,25 +20,67 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Emit;
 
+using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
+
 namespace Solti.Utils.DI.Internals
 {
     using Properties;
 
     internal static class Compile
     {
-        public static void CheckVisibility(Type type, string assemblyName)
+        public static void CheckVisibility(Type type, string asmName)
         {
+#if !IGNORE_VISIBILITY
             //
-            // TODO: FIXME: privat tipusokra mindenkepp fel kene robbanjon (ha annotalva van az asm ha nincs).
+            // Mivel az "internal" es "protected" kulcsszavak nem leteznek IL szinten ezert itt reflexioval
+            // nem tudjuk megallapitani h a tipus lathato e a kodunk szamara =(
+            //
+            // TODO: ennel vmi hatekonyabb implementaciot.
             //
 
-            if (!type.IsVisible() && !HasInternalVisibleToAttribute())
+            CompilationUnitSyntax unitToCheck = CompilationUnit().WithUsings
+            (
+                usings: SingletonList
+                (
+                    UsingDirective
+                    (
+                        name: (NameSyntax) ProxyGeneratorBase.CreateType(type)
+                    )
+                    .WithAlias(
+                        alias: NameEquals(IdentifierName("t"))
+                    )
+                )
+            );
+
+            CSharpCompilation compilation = CSharpCompilation.Create
+            (
+                assemblyName: asmName,
+                syntaxTrees: new[]
+                {
+                    CSharpSyntaxTree.Create
+                    (
+                        root: unitToCheck
+                    )
+                },
+                references: RuntimeAssemblies
+                    .Append(type.Assembly())
+                    .Concat(type.Assembly().GetReferences())
+                    .Select(asm => MetadataReference.CreateFromFile(asm.Location)),
+                options: CompilationOptionsFactory.Create
+                (
+                    ignoreAccessChecks: false
+                )
+            );
+
+            using (var stm = new MemoryStream())
+            {
+                EmitResult result = compilation.Emit(stm);
+                if (result.Success) return;
+
+                Debug.WriteLine(string.Join(Environment.NewLine, result.Diagnostics));
                 throw new InvalidOperationException(string.Format(Resources.TYPE_NOT_VISIBLE, type));
-
-            bool HasInternalVisibleToAttribute() => type
-                .Assembly()
-                .GetCustomAttributes<InternalsVisibleToAttribute>()
-                .Any(attr => attr.AssemblyName == assemblyName);
+            }
+#endif
         }
 
         public static Assembly ToAssembly(CompilationUnitSyntax root, string asmName, params Assembly[] references)
