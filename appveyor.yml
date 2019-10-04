@@ -23,7 +23,7 @@ branches:
     - gh-pages
 
 build_script:
-  # frevent MSBuild from running 
+  # prevent MSBuild from running 
   - echo Starting build
 
 before_test:
