@@ -3,7 +3,7 @@
 
 **This documentation is OUTDATED, new version coming soon**
 ## Overview
-[Dependency Injection](https://en.wikipedia.org/wiki/Dependency_injection ) is a design pattern that helps you separate the dependencies of your code from its behavior. Additionaly it makes the code easy to test by let you [mock](https://en.wikipedia.org/wiki/Mock_object ) the dependencies in your unit tests. This library provides several mechanisms to register, acquire and inherit services. Let's see how!
+[Dependency Injection](https://en.wikipedia.org/wiki/Dependency_injection ) is a design pattern that helps you separate the dependencies of your code from its behavior. Additionaly it makes the code easy to test by let you [mock](https://en.wikipedia.org/wiki/Mock_object ) the dependencies in your unit tests. This library provides several mechanisms to register, acquire and inherit services.
 ## Key features
 - Dependency injection via [constructor parameters](https://en.wikipedia.org/wiki/Dependency_injection#Constructor_injection )
 - [Lazy dependency resolution](https://www.quickdevnotes.com/lazy-initialization/ )
@@ -18,20 +18,23 @@
 - and many more...
 ## About services in general
 - They are interfaces (including the injector itself).
-- They are hosted in an injector.
+- They are hosted in containers.
 - Every service can be requested multiple times but can be registered only once.
-- Services are instantiated only when they are requested.
-- Every service has its own lifetime, which can be:
-  * `Singleton`: Instantiated only once (per injector) on the first request and released automatically when the containing injector is released.
+- Producible services are instantiated only when they are requested.
+- Every producible service has its own lifetime, which can be:
+  * `Singleton`: Instantiated only once (per declaring container) on the first request and released automatically when the declaring container is disposed.
+  * `Scoped`: Instantiated only once (per injector) on the first request and released automatically when the injector is disposed.
   * `Transient`: Instantiated on every request and the caller is responsible for freeing the requested services.
-## Injector lifetime
-The lifetime of an injector is the following:
-1. [Instantiating the injector](#instantiating-the-injector)
-2. [Registering new services](#registering-new-services)
-3. [Updating existing services](#updating-existing-services)
-4. [Locking the injector](#locking-the-injector)
-5. [Requesting services](#requesting-services) (even parallelly)
-6. Destroying the injector (either arbitrarily or automatically), see below
+## Workflow of DI
+1. [Creating the root container](#)
+2. [Registering services](#)
+3. [Deriving child containers](#) (optional) 
+4. [Decorating inherited services](#) or adding new ones (optional)
+5. [Creating an injector](#) It's often referred as "creating a scope"
+6. [Requesting service instances](#)
+7. Destroying the injector
+8. Destroying the root container
+Points from 1 to 4 are done in initialization time (typically at application startup), points from 5 to 7 are executed multiple times, parallelly (e.g. per WEB request). Point 8 is done in finalization time (mostly at termination). Note that child containers don't have to be freed since they lifetimes are controlled by the root container.
 ### Instantiating the injector
 Before we'd start we need to instantiate the *root* injector first:
 ```csharp
