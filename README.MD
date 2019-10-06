@@ -34,6 +34,7 @@
 6. [Requesting service instances](#)
 7. Destroying the injector
 8. Destroying the root container
+
 Points from 1 to 4 are done in initialization time (typically at application startup), points from 5 to 7 are executed multiple times, parallelly (e.g. per WEB request). Point 8 is done in finalization time (mostly at termination). Note that child containers don't have to be freed since they lifetimes are controlled by the root container.
 ### Instantiating the injector
 Before we'd start we need to instantiate the *root* injector first:
