@@ -42,7 +42,7 @@
   
   <h1 id="Solti_Utils_DI_Proxy_ObjectExtensions" data-uid="Solti.Utils.DI.Proxy.ObjectExtensions" class="text-break">Class ObjectExtensions
   </h1>
-  <div class="markdown level0 summary"><p>Defines the base class for duck typing (for classes).</p>
+  <div class="markdown level0 summary"><p>Defines the base class for duck typing.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
@@ -89,8 +89,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static DuckFactory&lt;TTarget&gt; Act&lt;TTarget&gt;(this TTarget target)
-    where TTarget : class</code></pre>
+    <pre><code class="lang-csharp hljs">public static DuckFactory&lt;TTarget&gt; Act&lt;TTarget&gt;(this TTarget target)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -121,7 +120,7 @@
     <tbody>
       <tr>
         <td><a class="xref" href="Solti.Utils.DI.Proxy.DuckFactory-1.html">DuckFactory</a>&lt;TTarget&gt;</td>
-        <td><p>The proxy object.</p>
+        <td><p>The <a class="xref" href="Solti.Utils.DI.Proxy.DuckFactory-1.html">DuckFactory&lt;TTarget&gt;</a> instance for the <code data-dev-comment-type="paramref" class="paramref">target</code>.</p>
 </td>
       </tr>
     </tbody>
@@ -137,7 +136,7 @@
     <tbody>
       <tr>
         <td><span class="parametername">TTarget</span></td>
-        <td><p>The type of the target (must be a class).</p>
+        <td><p>The type of the target.</p>
 </td>
       </tr>
     </tbody>

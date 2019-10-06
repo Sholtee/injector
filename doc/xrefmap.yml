@@ -1347,28 +1347,6 @@ references:
   fullName.vb: Solti.Utils.DI.Proxy.ProxyUtils.Chain(Of TInterface)(TInterface, System.Func(Of TInterface, TInterface)())
   nameWithType: ProxyUtils.Chain<TInterface>(TInterface, Func<TInterface, TInterface>[])
   nameWithType.vb: ProxyUtils.Chain(Of TInterface)(TInterface, Func(Of TInterface, TInterface)())
-- uid: Solti.Utils.DI.Proxy.StructExtensions
-  name: StructExtensions
-  href: Solti.Utils.DI.Proxy.StructExtensions.html
-  commentId: T:Solti.Utils.DI.Proxy.StructExtensions
-  fullName: Solti.Utils.DI.Proxy.StructExtensions
-  nameWithType: StructExtensions
-- uid: Solti.Utils.DI.Proxy.StructExtensions.Acts*
-  name: Acts
-  href: Solti.Utils.DI.Proxy.StructExtensions.html#Solti_Utils_DI_Proxy_StructExtensions_Acts_
-  commentId: Overload:Solti.Utils.DI.Proxy.StructExtensions.Acts
-  isSpec: "True"
-  fullName: Solti.Utils.DI.Proxy.StructExtensions.Acts
-  nameWithType: StructExtensions.Acts
-- uid: Solti.Utils.DI.Proxy.StructExtensions.Acts``1(``0)
-  name: Acts<TTarget>(TTarget)
-  href: Solti.Utils.DI.Proxy.StructExtensions.html#Solti_Utils_DI_Proxy_StructExtensions_Acts__1___0_
-  commentId: M:Solti.Utils.DI.Proxy.StructExtensions.Acts``1(``0)
-  name.vb: Acts(Of TTarget)(TTarget)
-  fullName: Solti.Utils.DI.Proxy.StructExtensions.Acts<TTarget>(TTarget)
-  fullName.vb: Solti.Utils.DI.Proxy.StructExtensions.Acts(Of TTarget)(TTarget)
-  nameWithType: StructExtensions.Acts<TTarget>(TTarget)
-  nameWithType.vb: StructExtensions.Acts(Of TTarget)(TTarget)
 - uid: Solti.Utils.DI.QueryMode
   name: QueryMode
   href: Solti.Utils.DI.QueryMode.html
