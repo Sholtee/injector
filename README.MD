@@ -27,7 +27,7 @@
   * `Transient`: Instantiated on every request and the caller is responsible for freeing the requested services.
 ## Workflow of DI
 1. [Creating the root container](#creating-the-root-container)
-2. [Registering services](#)
+2. [Registering services](#registering-services)
 3. [Deriving child containers](#deriving-child-containers) (optional) 
 4. [Decorating inherited services](#) or adding new ones (optional)
 5. [Creating an injector](#) It's often referred as "creating a scope"
@@ -37,7 +37,7 @@
 
 Points from 1 to 4 are done in initialization time (typically at application startup), points from 5 to 7 are executed multiple times, parallelly (e.g. per WEB request). Point 8 is done in finalization time (mostly at termination). Note that child containers don't have to be freed since they lifetimes are controlled by the root container.
 ### Creating the root container
-Before we'd start we need to instantiate a *root* container first:
+The first step before we'd start is creating a *root* container:
 ```csharp
 using Solti.Utils.DI;
 
@@ -47,60 +47,72 @@ In most of cases you should declare only one *root* container although you can h
 ### Deriving child containers
 Container inheritance is one of the key features of this library. It lets you define a base container and derive children that inherit services from it.
 ```csharp
-using(IServiceContainer root =  = new ServiceContainer())
+using(IServiceContainer root = new ServiceContainer())
 {
-    ...
-
-    IServiceContainer child = root.CreateChild(); // There is no need for disposing it manually
-	
-	...
+  ...
+  IServiceContainer child = root.CreateChild(); // There is no need for disposing it manually	
+  ...
 }
 ```
 Remarks:
 - Modifying child containers does not affect their parents.
 - You may declare *abstract* services that must be overridden in the derived container.
-### Registering new services
+### Registering services
 Registering a service can be done via several patterns (I name them recipes):
 - **Service recipe**: This is the most common way to file a service.
   To register a simple service just call the `Service()` generic method with the desired interface, implementation and lifetime:
   ```csharp
-  injector.Service<IMyService, MyService>(Lifetime.Transient);
+  container.Service<IMyService, MyService>(Lifetime.Transient);
   ```
   You can register generic services as well:
   ```csharp
-  injector.Service(typeof(IMyGenericService<>), typeof(MyGenericService<>), Lifetime.Singleton);
+  container.Service(typeof(IMyGenericService<>), typeof(MyGenericService<>), Lifetime.Singleton);
   ```
-  Later you may request the specialized version of the service without registering it:
+  Later you may request the specialized version of the service entry without registering it:
   ```csharp
-  injector.Get<IMyGenericService<string>>();
+  container.Get<IMyGenericService<string>>(QueryMode.AllowSpecialization);
   ```
   Remarks:
-  - Implementations must not have more than one public constructor (or you must annotate the appropriate with the [ServiceActivatorAttribute](http://htmlpreview.github.io/?https://github.com/Sholtee/injector/blob/master/DOC/Solti.Utils.DI.Annotations.ServiceActivatorAttribute.html ))!
-  - A service can request other services via the constructor parameters:
-    ```csharp  
-    public MyService(IInjector injector, IService_1 dep1, IService_2 dep2){...}
-    ```  
-  - Instatiating is done on the request (Get() call).
-- **Lazy recipe**: Similar to the service recipe except that the implementation is unknown in build time (e.g. the service implementation is placed in a module we want to load only if the implementation is requested). So instead of passing the implementation we provide a [resolver](http://htmlpreview.github.io/?https://github.com/Sholtee/injector/blob/master/DOC/Solti.Utils.DI.ITypeResolver.html ) which will resolve the implementation (NOT a service instance) on the first request: 
+  - Implementations must not have more than one public constructor (or you must annotate the appropriate one with the `ServiceActivatorAttribute`)!
+  - A service may request other services via the constructor parameters:
+    ```csharp 
+    public class MyService: IMyService
+    {
+      public MyService(IInjector injector, IService_1 dep1, IService_2 dep2) {...}
+    }
+    ```
+- **Lazy recipe**: Similar to the service recipe except that the implementation is unknown in build time (e.g. the service implementation is placed in a module we want to load only if the service is requested). So instead of passing the implementation we provide an `ITypeResolver` which will resolve the implementation: 
   ```csharp
-  injector.Lazy<IMyService>(new MyServiceResolver(), Lifetime.Transient);
+  container.Lazy<IMyService>(new LazyTypeResolver<IMyService>("Absolute.Path.To.Assembly", "Implementation.Fullname"), Lifetime.Transient);
   ```
-  Note that we can also register generic services via this method.
-- **Factory recipe**: As the name suggests services registered by this way have a factory function (that is called on the first request): 
+  Remarks: 
+  - You may also register generic lazy services by the same way.
+  - In most of cases the built in `LazyTypeResolver` is suitable.
+- **Factory recipe**: As the name suggests services registered by this way have a factory function: 
   ```csharp
-  injector.Factory<IMyService>(thisInjector => new MyService(), Lifetime.Singleton);
+  container.Factory<IMyService>(injector => new MyService(), Lifetime.Singleton);
   ```
-  It can be useful e.g. if the service has more than one public constructor. In addition we can also register generic services, in this case the factory function will be called with the specialized interface:
+  It can be useful e.g. if the service has more than one public constructor. In case of generic services the factory function will be called with the specialized interface:
   ```csharp
-  injector.Factory(typeof(IMyGenericService<>), (thisInjector, specializedIMyGenericService) => MyActivator.CreateInstance(typeof(MyGenericService<>), specializedIMyGenericService.GetGenericArguments()));
+  container.Factory(typeof(IMyGenericService<>), (injector, serviceInterface) => 
+  {
+    Assert.That(serviceInterface.IsGenericTypeDefinition, Is.False);
+	Assert.That(serviceInterface.GetGenericTypeDefinition(), Is.EqualTo(typeof(IMyGenericService<>)));
+    ...  
+  });
   ```
-- **Instance recipe**: An instances is a "predefined value" that can act as a service: 
+- **Instance recipe**: Instances are "predefined values" that can act as a service: 
   ```csharp
-  injector.Instance<IMyInstance>(myInstance, true);
+  container.Instance<IMyService>(service, true);
   ```
-  Remarks:
-  - The second parameter instructs the injector to dispose the instance when the injector itself is disposed.
-  - In contrast of `Singleton`s where each child injector can have its own service instance, values registered by this way are global so child injectors will have the same refernce.
+  The second parameter instructs the injector to dispose the instance when the injector itself is released (defaults to false).
+- **Abstract recipe**: Defines an abstract service that must be overridden in the derived container(s).
+  ```csharp
+  container.Abstract<IMyService>();
+  ```
+  Remarks: 
+  - You can override an abstract entry by using any of the recepies described above.
+  - You can not create injector from a container having abstract entry.
   
 *Note that you should not register the injector itself it is done by the system automatically.*
 ### Updating existing services
