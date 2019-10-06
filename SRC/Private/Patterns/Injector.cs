@@ -21,7 +21,7 @@ namespace Solti.Utils.DI.Internals
         public Injector(IServiceContainer parent): base(parent)
         {
             //
-            // Beallitjuk a proxyt, majd felvesszuk sajat magunkat.
+            // Felvesszuk sajat magunkat.
             //
 
             Add(new InstanceServiceEntry
