@@ -7,55 +7,37 @@ using System;
 
 namespace Solti.Utils.DI.Proxy
 {
-    using Internals;
-
     /// <summary>
-    /// Defines the base class for duck typing.
+    /// Defines the base class for duck typing (for classes).
     /// </summary>
     public static class ObjectExtensions
     {
         /// <summary>
-        /// Generates duck typing proxy objects.
-        /// </summary>
-        public class DuckFactory<TTarget> where TTarget: class
-        {
-            internal TTarget Target { get; }
-
-            /// <summary>
-            /// Creates a new <see cref="DuckFactory{TTarget}"/> instance against the given <paramref name="target"/>.
-            /// </summary>
-            /// <param name="target">The target of this factory.</param>
-            public DuckFactory(TTarget target) => Target = target;
-
-            /// <summary>
-            /// Generates a proxy object to let the target behave like a <typeparamref name="TInterface"/> instance.
-            /// </summary>
-            /// <returns>The newly created proxy object.</returns>
-            public TInterface Like<TInterface>() where TInterface: class
-            {
-                //
-                // Kell egyaltalan proxy-t letrhoznunk?
-                //
-
-                TInterface possibleResult = Target as TInterface;
-                if (possibleResult != null)
-                    return possibleResult;
-
-                return (TInterface) GeneratedDuck<TInterface, TTarget>
-                    .Type
-                    .CreateInstance(new[] { typeof(TTarget) }, Target);
-            }
-        }
-
-        /// <summary>
         /// Marks a <typeparamref name="TTarget"/> instance for duck typing.
         /// </summary>
-        public static DuckFactory<TTarget> Act<TTarget>(this TTarget target) where TTarget: class
+        /// <typeparam name="TTarget">The type of the target (must be a class).</typeparam>
+        /// <param name="target">The target instance to which the proxy will be generated.</param>
+        /// <returns>The proxy object.</returns>
+        public static DuckFactory<TTarget> Act<TTarget>(this TTarget target) where TTarget : class
         {
             if (target == null)
                 throw new ArgumentNullException(nameof(target));
 
             return new DuckFactory<TTarget>(target);
         }
+    }
+
+    /// <summary>
+    /// Defines the base class for duck typing (for structs).
+    /// </summary>
+    public static class StructExtensions
+    {
+        /// <summary>
+        /// Marks a <typeparamref name="TTarget"/> instance for duck typing.
+        /// </summary>
+        /// <typeparam name="TTarget">The type of the target (must be a struct).</typeparam>
+        /// <param name="target">The target instance to which the proxy will be generated.</param>
+        /// <returns>The proxy object.</returns>
+        public static DuckFactory<TTarget> Acts<TTarget>(this TTarget target) where TTarget : struct => new DuckFactory<TTarget>(target);
     }
 }

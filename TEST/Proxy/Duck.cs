@@ -42,9 +42,37 @@ namespace Solti.Utils.DI.Proxy.Tests
             mock.Verify(x => x.Dispose(), Times.Once);
         }
 
+        [Test]
+        public void Like_ShouldWorkWithStructs()
+        {
+            var s = MyDisposableStruct.Create();
+
+            using (IDisposable disposable = s.Acts().Like<IDisposable>())
+            {
+                Assert.That(disposable, Is.Not.Null);
+            }
+
+            Assert.That(s.Disposed.Value, Is.True);
+        }
+
         public abstract class MyDisposable
         {
             public abstract void Dispose();
+        }
+
+        public class Reference<T> where T : struct
+        {
+            public T Value { get; set; }
+        }
+
+        public struct MyDisposableStruct
+        {
+            public static MyDisposableStruct Create() => new MyDisposableStruct
+            {
+                Disposed = new Reference<bool>()
+            };
+            public Reference<bool> Disposed;
+            public void Dispose() => Disposed.Value = true;
         }
 
         [Test]
