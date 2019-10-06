@@ -46,11 +46,14 @@ namespace Solti.Utils.DI.Internals
                     (
                         name: (NameSyntax) ProxyGeneratorBase.CreateType(type)
                     )
-                    .WithAlias(
+                    .WithAlias
+                    (
                         alias: NameEquals(IdentifierName("t"))
                     )
                 )
             );
+
+            Debug.WriteLine(unitToCheck.NormalizeWhitespace().ToFullString());
 
             CSharpCompilation compilation = CSharpCompilation.Create
             (
