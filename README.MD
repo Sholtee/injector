@@ -26,9 +26,9 @@
   * `Scoped`: Instantiated only once (per injector) on the first request and released automatically when the injector is disposed.
   * `Transient`: Instantiated on every request and the caller is responsible for freeing the requested services.
 ## Workflow of DI
-1. [Creating the root container](#)
+1. [Creating the root container](#creating-the-root-container)
 2. [Registering services](#)
-3. [Deriving child containers](#) (optional) 
+3. [Deriving child containers](#deriving-child-containers) (optional) 
 4. [Decorating inherited services](#) or adding new ones (optional)
 5. [Creating an injector](#) It's often referred as "creating a scope"
 6. [Requesting service instances](#)
@@ -36,30 +36,29 @@
 8. Destroying the root container
 
 Points from 1 to 4 are done in initialization time (typically at application startup), points from 5 to 7 are executed multiple times, parallelly (e.g. per WEB request). Point 8 is done in finalization time (mostly at termination). Note that child containers don't have to be freed since they lifetimes are controlled by the root container.
-### Instantiating the injector
-Before we'd start we need to instantiate the *root* injector first:
+### Creating the root container
+Before we'd start we need to instantiate a *root* container first:
 ```csharp
-using(IInjector injector = Injector.Create()){...}
+using Solti.Utils.DI;
+
+using(IServiceContainer container = new ServiceContainer()){...}
 ```
-Why root? Because it has no parent injector which means we are responsible for freeing (calling the `Dispose()` on) it. Child injectors (created by `injector.CreateChild()` call) can also be disposed arbitrarily, but it's not mandatory because the parent takes care of it:
+In most of cases you should declare only one *root* container although you can have as much as you want.
+### Deriving child containers
+Container inheritance is one of the key features of this library. It lets you define a base container and derive children that inherit services from it.
 ```csharp
-using(IInjector injector = Injector.Create())
+using(IServiceContainer root =  = new ServiceContainer())
 {
-  IInjector child_1 = injector.CreateChild();
-  Assert.That(child_1.Parent == injector);
-  .
-  .
-  using(IInjector child_2 = injector.CreateChild())
-  {
-    Assert.That(child_2.Parent == injector);
-    .
-    .
-  } // child_2 released here
-} // child_1 released here
+    ...
+
+    IServiceContainer child = root.CreateChild(); // There is no need for disposing it manually
+	
+	...
+}
 ```
 Remarks:
-- Child injectors inherit their parent's services, but modifying them does not affect their parents. 
-- Every application should have only one *root* injector. 
+- Modifying child containers does not affect their parents.
+- You may declare *abstract* services that must be overridden in the derived container.
 ### Registering new services
 Registering a service can be done via several patterns (I name them recipes):
 - **Service recipe**: This is the most common way to file a service.
