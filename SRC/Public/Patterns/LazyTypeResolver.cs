@@ -5,6 +5,9 @@
 ********************************************************************************/
 using System;
 using System.Reflection;
+using System.Runtime.CompilerServices;
+
+[assembly: InternalsVisibleTo("System.Runtime.Loader.AssemblyLoadContext_Solti.Utils.DI.IAssemblyLoadContext_Duck")]
 
 namespace Solti.Utils.DI
 {

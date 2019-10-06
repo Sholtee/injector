@@ -11,6 +11,5 @@ assembly:
     InternalsVisibleTo("Injector.Tests"),
     InternalsVisibleTo("DynamicProxyGenAssembly2"), // Moq
 #endif
-    InternalsVisibleTo("Injector.Perf"),
-    InternalsVisibleTo("System.Runtime.Loader.AssemblyLoadContext_Solti.Utils.DI.IAssemblyLoadContext_Duck")    
+    InternalsVisibleTo("Injector.Perf")
 ]
