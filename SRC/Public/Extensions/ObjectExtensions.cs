@@ -8,36 +8,22 @@ using System;
 namespace Solti.Utils.DI.Proxy
 {
     /// <summary>
-    /// Defines the base class for duck typing (for classes).
+    /// Defines the base class for duck typing.
     /// </summary>
     public static class ObjectExtensions
     {
         /// <summary>
         /// Marks a <typeparamref name="TTarget"/> instance for duck typing.
         /// </summary>
-        /// <typeparam name="TTarget">The type of the target (must be a class).</typeparam>
+        /// <typeparam name="TTarget">The type of the target.</typeparam>
         /// <param name="target">The target instance to which the proxy will be generated.</param>
-        /// <returns>The proxy object.</returns>
-        public static DuckFactory<TTarget> Act<TTarget>(this TTarget target) where TTarget : class
+        /// <returns>The <see cref="DuckFactory{TTarget}"/> instance for the <paramref name="target"/>.</returns>
+        public static DuckFactory<TTarget> Act<TTarget>(this TTarget target)
         {
             if (target == null)
                 throw new ArgumentNullException(nameof(target));
 
             return new DuckFactory<TTarget>(target);
         }
-    }
-
-    /// <summary>
-    /// Defines the base class for duck typing (for structs).
-    /// </summary>
-    public static class StructExtensions
-    {
-        /// <summary>
-        /// Marks a <typeparamref name="TTarget"/> instance for duck typing.
-        /// </summary>
-        /// <typeparam name="TTarget">The type of the target (must be a struct).</typeparam>
-        /// <param name="target">The target instance to which the proxy will be generated.</param>
-        /// <returns>The proxy object.</returns>
-        public static DuckFactory<TTarget> Acts<TTarget>(this TTarget target) where TTarget : struct => new DuckFactory<TTarget>(target);
     }
 }

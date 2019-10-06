@@ -47,7 +47,7 @@ namespace Solti.Utils.DI.Proxy.Tests
         {
             var s = MyDisposableStruct.Create();
 
-            using (IDisposable disposable = s.Acts().Like<IDisposable>())
+            using (IDisposable disposable = s.Act().Like<IDisposable>())
             {
                 Assert.That(disposable, Is.Not.Null);
             }
