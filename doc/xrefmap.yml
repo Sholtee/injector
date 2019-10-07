@@ -118,6 +118,19 @@ references:
   isSpec: "True"
   fullName: Solti.Utils.DI.IInjector.Instantiate
   nameWithType: IInjector.Instantiate
+- uid: Solti.Utils.DI.IInjector.LifetimeOf(System.Type)
+  name: LifetimeOf(Type)
+  href: Solti.Utils.DI.IInjector.html#Solti_Utils_DI_IInjector_LifetimeOf_System_Type_
+  commentId: M:Solti.Utils.DI.IInjector.LifetimeOf(System.Type)
+  fullName: Solti.Utils.DI.IInjector.LifetimeOf(System.Type)
+  nameWithType: IInjector.LifetimeOf(Type)
+- uid: Solti.Utils.DI.IInjector.LifetimeOf*
+  name: LifetimeOf
+  href: Solti.Utils.DI.IInjector.html#Solti_Utils_DI_IInjector_LifetimeOf_
+  commentId: Overload:Solti.Utils.DI.IInjector.LifetimeOf
+  isSpec: "True"
+  fullName: Solti.Utils.DI.IInjector.LifetimeOf
+  nameWithType: IInjector.LifetimeOf
 - uid: Solti.Utils.DI.IInjector.OnServiceRequest
   name: OnServiceRequest
   href: Solti.Utils.DI.IInjector.html#Solti_Utils_DI_IInjector_OnServiceRequest
@@ -168,6 +181,22 @@ references:
   fullName.vb: Solti.Utils.DI.IInjectorExtensions.Instantiate(Of TClass)(Solti.Utils.DI.IInjector, System.Collections.Generic.IReadOnlyDictionary(Of System.String, System.Object))
   nameWithType: IInjectorExtensions.Instantiate<TClass>(IInjector, IReadOnlyDictionary<String, Object>)
   nameWithType.vb: IInjectorExtensions.Instantiate(Of TClass)(IInjector, IReadOnlyDictionary(Of String, Object))
+- uid: Solti.Utils.DI.IInjectorExtensions.LifetimeOf*
+  name: LifetimeOf
+  href: Solti.Utils.DI.IInjectorExtensions.html#Solti_Utils_DI_IInjectorExtensions_LifetimeOf_
+  commentId: Overload:Solti.Utils.DI.IInjectorExtensions.LifetimeOf
+  isSpec: "True"
+  fullName: Solti.Utils.DI.IInjectorExtensions.LifetimeOf
+  nameWithType: IInjectorExtensions.LifetimeOf
+- uid: Solti.Utils.DI.IInjectorExtensions.LifetimeOf``1(Solti.Utils.DI.IInjector)
+  name: LifetimeOf<TInterface>(IInjector)
+  href: Solti.Utils.DI.IInjectorExtensions.html#Solti_Utils_DI_IInjectorExtensions_LifetimeOf__1_Solti_Utils_DI_IInjector_
+  commentId: M:Solti.Utils.DI.IInjectorExtensions.LifetimeOf``1(Solti.Utils.DI.IInjector)
+  name.vb: LifetimeOf(Of TInterface)(IInjector)
+  fullName: Solti.Utils.DI.IInjectorExtensions.LifetimeOf<TInterface>(Solti.Utils.DI.IInjector)
+  fullName.vb: Solti.Utils.DI.IInjectorExtensions.LifetimeOf(Of TInterface)(Solti.Utils.DI.IInjector)
+  nameWithType: IInjectorExtensions.LifetimeOf<TInterface>(IInjector)
+  nameWithType.vb: IInjectorExtensions.LifetimeOf(Of TInterface)(IInjector)
 - uid: Solti.Utils.DI.InjectorEventArg
   name: InjectorEventArg
   href: Solti.Utils.DI.InjectorEventArg.html
