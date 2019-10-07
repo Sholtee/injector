@@ -29,7 +29,7 @@
 1. [Creating the root container](#creating-the-root-container)
 2. [Registering services](#registering-services)
 3. [Deriving child containers](#deriving-child-containers) (optional) 
-4. [Decorating inherited services](#) or adding new ones (optional)
+4. [Decorating inherited services](#decorating-services) or adding new ones (optional)
 5. [Creating an injector](#) It's often referred as "creating a scope"
 6. [Requesting service instances](#)
 7. Destroying the injector
@@ -112,29 +112,22 @@ Registering a service can be done via several patterns (I name them recipes):
   ```
   Remarks: 
   - You can override an abstract entry by using any of the recepies described above.
-  - You can not create injector from a container having abstract entry.
+  - You can not create injector from a container having abstract entries.
   
 *Note that you should not register the injector itself it is done by the system automatically.*
-### Updating existing services
+### Decorating services
 In practice, it's useful to separate common functionality (e.g. parameter validation) from the implementation. In this library this can be achieved by [proxy pattern](https://en.wikipedia.org/wiki/Proxy_pattern ). In a brief example:
 ```csharp
-injector
+container
   .Service<IMyModule, MyModule>()
-  .Proxy<IMyModule>((thisInjector, myModuleInstance) => new ParameterValidatorProxy<IMyModule>(myModuleInstance));
+  .Proxy<IMyModule>((injector, serviceInstance) => new ParameterValidatorProxy<IMyModule>(serviceInstance));
 ```
-Where the `ParameterValidatorProxy<TInterface>` is an [InterfaceProxy<TInterface>](http://htmlpreview.github.io/?https://github.com/Sholtee/injector/blob/master/DOC/Solti.Utils.DI.InterfaceProxy-1.html ) containing the parameter validation logic. And that's all. Proxy pattern can be applied against every non-generic service, in any number.
-*Note that:*
-- Trying to proxy a generic service or an instance (registered via `Instance()` call) will throw an exception.
-- Proxying an inherited service WILL NOT affect the parent.
-### Locking the injector
-To prevent accidental modification of the injector, after configuring you can lock it (by call the prameterless `Lock()` method). After locking any attempt to modify the state of the injector will cause an exception.
-It's safe to call the following functions on a locked injector:
-- `Get()`
-- `Instantiate()`
-- `CreateChild()`
-- `Dispose()`
-  
-Note that `Lock()` affects only the instance on which it was called.
+Where the `ParameterValidatorProxy<TInterface>` is an `InterfaceInterceptor<TInterface>` descendant containing the parameter validation logic.
+*Remarks:*
+- Proxy pattern can be applied in any number against a service.
+- Applying proxies is done on the service request.
+- Trying to decorate a non producible servce (generic, instance, abstract) will throw.
+- Decorating an inherited service WILL NOT affect the parent.
 ### Requesting services
 After finishing the configuration you can request services via the `Get()` method:
 ```csharp
