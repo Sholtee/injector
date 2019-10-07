@@ -9,7 +9,8 @@
 - [Lazy dependency resolution](https://www.quickdevnotes.com/lazy-initialization/ )
 - Dynamic [proxy](https://en.wikipedia.org/wiki/Proxy_pattern ) generator
 - Custom service decoration (using proxies)
-- [Duck typing](https://en.wikipedia.org/wiki/Duck_typing ) support (using proxies)
+- [Duck typing](https://en.wikipedia.org/wiki/Duck_typing ) (using proxies)
+- Generic service support
 - Container inheritance
 - All common service lifecycles are supported: `Singleton`, `Transient`, `Scoped`, `Instance`
 - Configurable constructor selection (using attributes)
@@ -31,7 +32,7 @@
 3. [Deriving child containers](#deriving-child-containers) (optional) 
 4. [Decorating inherited services](#decorating-services) or adding new ones (optional)
 5. [Creating an injector](#creating-an-injector) It's often referred as "creating a scope"
-6. [Requesting service instances](#)
+6. [Requesting service instances](#requesting-services)
 7. Destroying the injector
 8. Destroying the root container
 
@@ -149,14 +150,13 @@ After finishing the configuration you can request services via the `Get()` metho
 IMyService svc = injector.Get<IMyService>();
 ``` 
 Keep in mind the followings:
-- Calling `Get()` is a thread safe operation so you may share the configured injector between different threads.
 - Requesting an unregistered or an open generic service will cause an exception.
-- Requesting services as a constructor parameter is more convenient than using the `Get()` method.
-- The caller should free the requested service if it is an `IDisposable` and has the `Transient` lifetime. To determine it's lifetime call the `QueryServiceInfo()` method.
+- Requesting services as a constructor parameter is more convenient than using the `injector.Get()` method.
+- The caller should free the requested service if it is an `IDisposable` and has the `Transient` lifetime. To determine the lifetime call the `injector.LifetimeOf<IMyService>()` method.
 
-Alternatively you can use the `Instantiate()` function (since version *0.0.3*). This method takes a `Type` (non-abstract class) you want to instantate, resolves its dependencies (via constructor parameters) and creates a new instance from it. There are two major differences compared to `Get()`:
+Alternatively you can use the `injector.Instantiate()` function that takes a `Type` (non-abstract class) you want to instantate, resolves its dependencies (via constructor parameters) and creates a new instance from it. There are two major differences compared to `injector.Get()`:
 - The instantiated `Type` does not have to be a registered service.
-- You can pass arbitrary arguments to the constructor via the `explicitArgs` parameter (which means the instantiated type can have non-registered/non-interface dependency).
+- You can pass arbitrary arguments to the constructor via the `explicitArgs` parameter (which means the instantiated type may have non-registered/non-interface dependency).
 ### Resolving contextual dependencies
 Sometimes the service being requested is contextual (for instance resolving the `HttpRequest` that triggered the current session). In this case you have two options: deriving a new container for the current session or use the events provided by the injector (recommended):
 ```csharp
@@ -196,14 +196,14 @@ injector.OnServiceRequest += (sender, arg) =>
 ## Resources
 You can browse the [detailed API docs](https://sholtee.github.io/injector ) or the [benchmark results](https://sholtee.github.io/injector/perf/ ).
 ## Supported frameworks
-This project currently targets *.NET Core 2.X* only.
+This project currently targets *.NET Standard* 1.6 and 2.0.
 ## Version history
 - 0.0.1: Initial release
 - 0.0.2:
   - *added* `IServiceInfo.Factory` property
   - *added* `IInjectorExtensions.Proxy()` overload
-  - *added* [ServiceAttribute](http://htmlpreview.github.io/?https://github.com/Sholtee/injector/blob/master/DOC/Solti.Utils.DI.Annotations.ServiceAttribute.html ) and [ConfigFromAssembly](http://htmlpreview.github.io/?https://github.com/Sholtee/injector/blob/master/DOC/Solti.Utils.DI.ConfigFromAssembly.html ) classes
-  - *added* [ServiceActivatorAttribute](http://htmlpreview.github.io/?https://github.com/Sholtee/injector/blob/master/DOC/Solti.Utils.DI.Annotations.ServiceActivatorAttribute.html ) class
+  - *added* `ServiceAttribute` and `ConfigFromAssembly` classes
+  - *added* `ServiceActivatorAttribute` class
   - *fixed* multiple type resolver invocation issue
   - *fixed* `IInjectorExtensions.Instance()` should not dispose the instance by default
   - some code optimization
