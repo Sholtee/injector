@@ -150,7 +150,7 @@ After finishing the configuration you can request services via the `Get()` metho
 ```csharp
 IMyService svc = injector.Get<IMyService>();
 ``` 
-Keep in mind the followings:
+*Remarks:*
 - Requesting an unregistered or an open generic service will cause an exception.
 - Requesting services as a constructor parameter is more convenient than using the `injector.Get()` method.
 - The caller should free the requested service if it is an `IDisposable` and has the `Transient` lifetime. To determine the lifetime call the `injector.LifetimeOf<IMyService>()` method.
@@ -214,8 +214,9 @@ This project currently targets *.NET Standard* 1.6 and 2.0.
   - *added* `IInjectorExtensions.Proxy()` overload
   - *added* `ServiceAttribute` and `ConfigFromAssembly` classes
   - *added* `ServiceActivatorAttribute` class
-  - *fixed* multiple type resolver invocation issue
+  - *fixed* Multiple type resolver invocation issue
   - *fixed* `IInjectorExtensions.Instance()` should not dispose the instance by default
-  - some code optimization
+  - Some code optimization
 - 0.0.3
   - *added* `IInjector.Instantiate()` method
+- 1.0.0-preview1: Rewritten from the scratch
