@@ -1,7 +1,7 @@
 # Injector.NET [![Build status](https://ci.appveyor.com/api/projects/status/2fej57bdmyij4v08?svg=true)](https://ci.appveyor.com/project/Sholtee/injector) [![NuGet Badge](https://buildstats.info/nuget/injector.net)](https://www.nuget.org/packages/injector.net/) [![Coverage Status](https://coveralls.io/repos/github/Sholtee/injector/badge.svg?branch=master)](https://coveralls.io/github/Sholtee/injector?branch=master)
 > A featherweight dependency injector & proxy generator written in C#.
 
-**This documentation is OUTDATED, new version coming soon**
+**This documentation refers the new, unreleased version of the library**
 ## Overview
 [Dependency Injection](https://en.wikipedia.org/wiki/Dependency_injection ) is a design pattern that helps you separate the dependencies of your code from its behavior. Additionaly it makes the code easy to test by let you [mock](https://en.wikipedia.org/wiki/Mock_object ) the dependencies in your unit tests. This library provides several mechanisms to register, acquire and inherit services.
 ## Key features
@@ -30,7 +30,7 @@
 2. [Registering services](#registering-services)
 3. [Deriving child containers](#deriving-child-containers) (optional) 
 4. [Decorating inherited services](#decorating-services) or adding new ones (optional)
-5. [Creating an injector](#) It's often referred as "creating a scope"
+5. [Creating an injector](#creating-an-injector) It's often referred as "creating a scope"
 6. [Requesting service instances](#)
 7. Destroying the injector
 8. Destroying the root container
@@ -118,6 +118,9 @@ Registering a service can be done via several patterns (I name them recipes):
 ### Decorating services
 In practice, it's useful to separate common functionality (e.g. parameter validation) from the implementation. In this library this can be achieved by [proxy pattern](https://en.wikipedia.org/wiki/Proxy_pattern ). In a brief example:
 ```csharp
+using Solti.Utils.DI;
+using Solti.Utils.DI.Proxy; 
+...
 container
   .Service<IMyModule, MyModule>()
   .Proxy<IMyModule>((injector, serviceInstance) => new ParameterValidatorProxy<IMyModule>(serviceInstance));
@@ -129,6 +132,17 @@ Where the `ParameterValidatorProxy<TInterface>` is an `InterfaceInterceptor<TInt
 - Applying proxies is done on the service request.
 - Trying to decorate a non producible servce (generic, instance, abstract) will throw.
 - Decorating an inherited service WILL NOT affect the parent.
+### Auto config
+Starting from version *0.0.2* you can use the `ServiceAttribute` on service classes to annotate them for auto config. Auto config is done by a simple call to the `container.Setup(sourceAssembly)` which instructs the system to seek and register all the annotated services from the `sourceAssembly`.
+### Creating an injector
+```csharp
+using (IInjector injector = container.CreateInjector())
+{
+}
+```
+*Remarks:*
+- Injector instances are thread safe but in practice every session / worker should have its own injector.
+- For proper resource management, at the end of the session you should dispose the injector (though the parent container disposal would release it as well).
 ### Requesting services
 After finishing the configuration you can request services via the `Get()` method:
 ```csharp
@@ -146,6 +160,9 @@ Alternatively you can use the `Instantiate()` function (since version *0.0.3*). 
 ### Resolving contextual dependencies
 Sometimes the service being requested is contextual (for instance resolving the `HttpRequest` that triggered the current session). In this case you have two options: deriving a new container for the current session or use the events provided by the injector (recommended):
 ```csharp
+using Solti.Utils.DI;
+using Solti.Utils.DI.Proxy;
+...
 injector.OnServiceRequest += (sender, arg) =>
 {
   // Note that there was no service registered with this interface
@@ -159,6 +176,7 @@ injector.OnServiceRequest += (sender, arg) =>
 ``` 
 Note that as we learned the requested service always must be an interface but the `HttpRequest` implements nothing. That's the time when the [duck typing](https://en.wikipedia.org/wiki/Duck_typing ) comes into view:
 ```csharp
+...
 // Custom interface covering the necessary members from the `HttpRequest`
 public interface IHttpRequest
 {
@@ -175,8 +193,6 @@ injector.OnServiceRequest += (sender, arg) =>
   }
 }
 ``` 
-## Auto config the injector
-Starting from version *0.0.2* you can use the `ServiceAttribute` on service classes to annotate them for auto config. Auto config is done by a simple call to the `injector.Setup(sourceAssembly)` which instructs the system to seek and register all the annotated services from the `sourceAssembly`.
 ## Resources
 You can browse the [detailed API docs](https://sholtee.github.io/injector ) or the [benchmark results](https://sholtee.github.io/injector/perf/ ).
 ## Supported frameworks
