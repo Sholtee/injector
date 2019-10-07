@@ -123,6 +123,7 @@ container
   .Proxy<IMyModule>((injector, serviceInstance) => new ParameterValidatorProxy<IMyModule>(serviceInstance));
 ```
 Where the `ParameterValidatorProxy<TInterface>` is an `InterfaceInterceptor<TInterface>` descendant containing the parameter validation logic.
+
 *Remarks:*
 - Proxy pattern can be applied in any number against a service.
 - Applying proxies is done on the service request.
@@ -142,7 +143,38 @@ Keep in mind the followings:
 Alternatively you can use the `Instantiate()` function (since version *0.0.3*). This method takes a `Type` (non-abstract class) you want to instantate, resolves its dependencies (via constructor parameters) and creates a new instance from it. There are two major differences compared to `Get()`:
 - The instantiated `Type` does not have to be a registered service.
 - You can pass arbitrary arguments to the constructor via the `explicitArgs` parameter (which means the instantiated type can have non-registered/non-interface dependency).
-
+### Resolving contextual dependencies
+Sometimes the service being requested is contextual (for instance resolving the `HttpRequest` that triggered the current session). In this case you have two options: deriving a new container for the current session or use the events provided by the injector (recommended):
+```csharp
+injector.OnServiceRequest += (sender, arg) =>
+{
+  // Note that there was no service registered with this interface
+  // so without this the injector.Get() call would throw.
+  if (arg.Interface == typeof(IHttpRequest))
+  {
+    // Define a value to be returned.  
+    arg.Service = ...;
+  }
+}
+``` 
+Note that as we learned the requested service always must be an interface but the `HttpRequest` implements nothing. That's the time when the [duck typing](https://en.wikipedia.org/wiki/Duck_typing ) comes into view:
+```csharp
+// Custom interface covering the necessary members from the `HttpRequest`
+public interface IHttpRequest
+{
+  string this[string key] { get; }
+}
+...
+injector.OnServiceRequest += (sender, arg) =>
+{
+  if (arg.Interface == typeof(IHttpRequest))
+  {  
+    arg.Service = Request
+	  .Act()
+	  .Like<IHttpRequest>();
+  }
+}
+``` 
 ## Auto config the injector
 Starting from version *0.0.2* you can use the `ServiceAttribute` on service classes to annotate them for auto config. Auto config is done by a simple call to the `injector.Setup(sourceAssembly)` which instructs the system to seek and register all the annotated services from the `sourceAssembly`.
 ## Resources
