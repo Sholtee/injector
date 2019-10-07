@@ -227,4 +227,5 @@ This project currently targets *.NET Standard* 1.6 and 2.0.
   - *added* own interface proxy implementation
   - *added* duck typing support
   - *added* abstract service recipe
-  - *added* `LazyTypeResolver` class 
+  - *added* `LazyTypeResolver` class
+  - *using* [semantic versioning](https://semver.org/ )
