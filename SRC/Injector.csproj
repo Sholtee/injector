@@ -4,7 +4,7 @@
     <TargetFrameworks>netstandard1.6;netstandard2.0</TargetFrameworks>
     <Company></Company>
     <Authors>Denes Solti</Authors>
-    <Version>0.2.0</Version>
+    <Version>1.0.0-preview1</Version>
     <AssemblyName>Injector</AssemblyName>
     <RootNamespace>Solti.Utils.DI</RootNamespace>
     <Configurations>Debug;Release;Perf</Configurations>
@@ -64,6 +64,9 @@
 
   <PropertyGroup>
     <DocumentationFile>..\BIN\Injector.xml</DocumentationFile>
+    <PackageId>Injector.NET</PackageId>
+    <Product>Injector.NET</Product>
+    <Description>A featherweight dependency injector for .NET</Description>
   </PropertyGroup>
 
 </Project>
