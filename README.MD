@@ -18,8 +18,9 @@
 - Extensible
 - and many more...
 ## About services in general
-- They are interfaces (including the injector itself).
+- They are interfaces.
 - They are hosted in containers.
+- They are provided by injectors.
 - Every service can be requested multiple times but can be registered only once.
 - Producible services are instantiated only when they are requested.
 - Every producible service has its own lifetime, which can be:
@@ -36,7 +37,7 @@
 7. Destroying the injector
 8. Destroying the root container
 
-Points from 1 to 4 are done in initialization time (typically at application startup), points from 5 to 7 are executed multiple times, parallelly (e.g. per WEB request). Point 8 is done in finalization time (mostly at termination). Note that child containers don't have to be freed since they lifetimes are controlled by the root container.
+Points from 1 to 4 are done in initialization time (typically at application startup), points from 5 to 7 are executed multiple times, parallelly (e.g. per WEB request). Point 8 is done in finalization time (mostly at termination). Note that child containers don't have to be freed since they lifetimes are controlled by their parent.
 ### Creating the root container
 The first step before we'd start is creating a *root* container:
 ```csharp
@@ -153,6 +154,15 @@ Keep in mind the followings:
 - Requesting an unregistered or an open generic service will cause an exception.
 - Requesting services as a constructor parameter is more convenient than using the `injector.Get()` method.
 - The caller should free the requested service if it is an `IDisposable` and has the `Transient` lifetime. To determine the lifetime call the `injector.LifetimeOf<IMyService>()` method.
+- You may request the closed pair of an open generic service without registering it:
+  ```csharp
+  container.Service(typeof(IMyGenericService<>));
+  ...
+  using(IInjector injector = container.CreateInjector())
+  {  
+    IMyGenericService<string> scv = injector.Get<IMyGenericService<string>>();
+  }
+  ```
 
 Alternatively you can use the `injector.Instantiate()` function that takes a `Type` (non-abstract class) you want to instantate, resolves its dependencies (via constructor parameters) and creates a new instance from it. There are two major differences compared to `injector.Get()`:
 - The instantiated `Type` does not have to be a registered service.
