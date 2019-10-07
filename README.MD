@@ -1,7 +1,7 @@
 # Injector.NET [![Build status](https://ci.appveyor.com/api/projects/status/2fej57bdmyij4v08?svg=true)](https://ci.appveyor.com/project/Sholtee/injector) [![NuGet Badge](https://buildstats.info/nuget/injector.net)](https://www.nuget.org/packages/injector.net/) [![Coverage Status](https://coveralls.io/repos/github/Sholtee/injector/badge.svg?branch=master)](https://coveralls.io/github/Sholtee/injector?branch=master)
 > A featherweight dependency injector & proxy generator written in C#.
 
-**This documentation refers the new, unreleased version of the library**
+**This documentation refers the (unreleased) version 1.X of the library**
 ## Overview
 [Dependency Injection](https://en.wikipedia.org/wiki/Dependency_injection ) is a design pattern that helps you separate the dependencies of your code from its behavior. Additionaly it makes the code easy to test by let you [mock](https://en.wikipedia.org/wiki/Mock_object ) the dependencies in your unit tests. This library provides several mechanisms to register, acquire and inherit services.
 ## Key features
@@ -105,7 +105,7 @@ Registering a service can be done via several patterns (I name them recipes):
   ```
 - **Instance recipe**: Instances are "predefined values" that can act as a service: 
   ```csharp
-  container.Instance<IMyService>(service, true);
+  container.Instance<IMyService>(service, releaseOnDispose: true);
   ```
   The second parameter instructs the injector to dispose the instance when the injector itself is released (defaults to false).
 - **Abstract recipe**: Defines an abstract service that must be overridden in the derived container(s).
@@ -125,7 +125,7 @@ using Solti.Utils.DI.Proxy;
 ...
 container
   .Service<IMyModule, MyModule>()
-  .Proxy<IMyModule>((injector, serviceInstance) => new ParameterValidatorProxy<IMyModule>(serviceInstance));
+  .Proxy<IMyModule>((injector, serviceInstance) => ProxyFactory.Create<IMyModule, ParameterValidatorProxy<IMyModule>>(target: serviceInstance));
 ```
 Where the `ParameterValidatorProxy<TInterface>` is an `InterfaceInterceptor<TInterface>` descendant containing the parameter validation logic.
 
@@ -219,4 +219,12 @@ This project currently targets *.NET Standard* 1.6 and 2.0.
   - Some code optimization
 - 0.0.3
   - *added* `IInjector.Instantiate()` method
-- 1.0.0-preview1: Rewritten from the scratch
+- 1.0.0-preview1:
+  - Core rewritten from the scratch
+  - *added* service containers
+  - *added* `Scoped` lifetime
+  - *added* extension based architecture
+  - *added* own interface proxy implementation
+  - *added* duck typing support
+  - *added* abstract service recipe
+  - *added* `LazyTypeResolver` class 
