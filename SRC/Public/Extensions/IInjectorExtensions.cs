@@ -24,7 +24,7 @@ namespace Solti.Utils.DI
         /// <returns>The resolved service.</returns>
         /// <remarks>This method is thread safe so you can call it parallelly.</remarks>
         /// <exception cref="ServiceNotFoundException">The service could not be found.</exception>
-        public static TInterface Get<TInterface>(this IInjector self, Type target = null) => (TInterface) self.Get(typeof(TInterface), target);
+        public static TInterface Get<TInterface>(this IInjector self, Type target = null) => self != null ? (TInterface) self.Get(typeof(TInterface), target) : throw new ArgumentNullException(nameof(self));
 
         /// <summary>
         /// Instantiates the given class.
@@ -34,6 +34,15 @@ namespace Solti.Utils.DI
         /// <param name="explicitArgs">The explicit arguments (in the form of [parameter name - parameter value]) not to be resolved by the injector.</param>
         /// <returns>The new instance.</returns>
         /// <remarks>The <typeparamref name="TClass"/> you passed must have only one public constructor or you must annotate the appropriate one with the <see cref="ServiceActivatorAttribute"/>. Constructor parameteres that are not present in the <paramref name="explicitArgs"/> are treated as normal dependency.</remarks>
-        public static TClass Instantiate<TClass>(this IInjector self, IReadOnlyDictionary<string, object> explicitArgs = null) => (TClass) self.Instantiate(typeof(TClass), explicitArgs);
+        public static TClass Instantiate<TClass>(this IInjector self, IReadOnlyDictionary<string, object> explicitArgs = null) => self != null ? (TClass) self.Instantiate(typeof(TClass), explicitArgs) : throw new ArgumentNullException(nameof(self));
+
+        /// <summary>
+        /// Gets the <see cref="Lifetime"/> of the given service (type).
+        /// </summary>
+        /// <typeparam name="TInterface">The "id" of the service.</typeparam>
+        /// <param name="self">The injector itself.</param>
+        /// <returns>The <see cref="Lifetime"/> of the service if it is producible null otherwise.</returns>
+        /// <exception cref="ServiceNotFoundException">The service could not be found.</exception>
+        public static Lifetime? LifetimeOf<TInterface>(this IInjector self) => self != null ? self.LifetimeOf(typeof(TInterface)) : throw new ArgumentNullException(nameof(self));
     }
 }

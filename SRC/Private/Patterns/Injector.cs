@@ -116,6 +116,21 @@ namespace Solti.Utils.DI.Internals
             return ev.Service;
         }
 
+        public Lifetime? LifetimeOf(Type iface)
+        {
+            if (iface == null)
+                throw new ArgumentNullException(nameof(iface));
+
+            if (!iface.IsInterface())
+                throw new ArgumentException(Resources.NOT_AN_INTERFACE, nameof(iface));
+
+            //
+            // Nem specializalunk.
+            //
+
+            return Get(iface, QueryMode.ThrowOnError).Lifetime;
+        }
+
         public event InjectorEventHandler<InjectorEventArg> OnServiceRequest;
 
         public event InjectorEventHandler<InjectorEventArg> OnServiceRequested;

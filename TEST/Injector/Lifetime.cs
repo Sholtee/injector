@@ -3,10 +3,15 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
+using System;
+
 using NUnit.Framework;
 
 namespace Solti.Utils.DI.Injector.Tests
 {
+    using Properties;
+    using Internals;
+
     public partial class InjectorTestsBase<TContainer>
     {
         [Test]
@@ -88,6 +93,43 @@ namespace Solti.Utils.DI.Injector.Tests
                         Assert.AreSame(injector3.Get<IInterface_1>(), injector3.Get<IInterface_1>());
                     }
                 }
+            }
+        }
+
+        [Test]
+        public void Injector_LifetimeOf_ShouldReturnTheProperLifetime()
+        {
+            Container
+                .Service<IInterface_1, Implementation_1>(Lifetime.Scoped)
+                .Service<IInterface_2, Implementation_2>(Lifetime.Singleton)
+                .Instance<IDisposable>(new Disposable());
+
+            using (IInjector injector = Container.CreateInjector())
+            {
+                Assert.That(injector.LifetimeOf<IInterface_1>(), Is.EqualTo(Lifetime.Scoped));
+                Assert.That(injector.LifetimeOf<IInterface_2>(), Is.EqualTo(Lifetime.Singleton));
+                Assert.That(injector.LifetimeOf<IDisposable>(),  Is.Null);
+            }
+        }
+
+        [Test]
+        public void Injector_LifetimeOf_ShouldNotSpecialize()
+        {
+            Container.Service(typeof(IInterface_3<>), typeof(Implementation_3<>));
+
+            using (IInjector injector = Container.CreateInjector())
+            {
+                Assert.Throws<ServiceNotFoundException>(() => injector.LifetimeOf<IInterface_3<int>>());
+            }
+        }
+
+        [Test]
+        public void Injector_LifetimeOf_ShouldValidate()
+        {
+            using (IInjector injector = Container.CreateInjector())
+            {
+                Assert.Throws<ArgumentNullException>(() => injector.LifetimeOf(null));
+                Assert.Throws<ArgumentException>(() => injector.LifetimeOf<object>(), Resources.NOT_AN_INTERFACE);
             }
         }
     }

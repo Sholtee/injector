@@ -21,7 +21,7 @@ namespace Solti.Utils.DI
         /// <param name="iface">The "id" of the service to be resolved. It must be a non-generic interface.</param>
         /// <param name="target">The (optional) target who requested the dependency.</param>
         /// <returns>The resolved service.</returns>
-        /// <exception cref="ServiceNotFoundException">The service could not be found.</exception>
+        /// <exception cref="ServiceNotFoundException">The service or one or more dependencies could not be found.</exception>
         object Get(Type iface, Type target = null);
 
         /// <summary>
@@ -33,6 +33,14 @@ namespace Solti.Utils.DI
         /// <remarks>The <paramref name="class"/> you passed must have only one public constructor or you must annotate the appropriate one with the <see cref="ServiceActivatorAttribute"/>. Constructor parameteres that are not present in the <paramref name="explicitArgs"/> are treated as a normal dependency.</remarks>
         /// <exception cref="ServiceNotFoundException">One or more dependecies could not be found.</exception>
         object Instantiate(Type @class, IReadOnlyDictionary<string, object> explicitArgs = null);
+
+        /// <summary>
+        /// Gets the <see cref="Lifetime"/> of the given service (type).
+        /// </summary>
+        /// <param name="iface">>The "id" of the service.</param>
+        /// <returns>The <see cref="Lifetime"/> of the service if it is producible null otherwise.</returns>
+        /// <exception cref="ServiceNotFoundException">The service could not be found.</exception>
+        Lifetime? LifetimeOf(Type iface);
 
         /// <summary>
         /// The event fired before a service requested. It's useful when you want to resolve contextual dependencies (e.g. HTTP request) or return service mocks.
