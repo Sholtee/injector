@@ -274,7 +274,7 @@ namespace Solti.Utils.DI.Internals
         public static IEnumerable<MemberDeclarationSyntax> GenerateProxyProperty(PropertyInfo ifaceProperty)
         {
             //
-            // private static readonly PropertyInfo FProp = PropertyAccess("Prop");
+            // private static readonly PropertyInfo FProp = Properties["Prop"];
             //
             // TResult IInterface.Prop
             // {
@@ -298,15 +298,15 @@ namespace Solti.Utils.DI.Internals
             yield return DeclareField<PropertyInfo>
             (
                 name: fieldName.Identifier.Text,
-                initializer: InvocationExpression
+                initializer: ElementAccessExpression
                 (
-                    expression: IdentifierName(nameof(InterfaceInterceptor<TInterface>.PropertyAccess))
+                    expression: IdentifierName(nameof(InterfaceInterceptor<TInterface>.Properties))
                 )
                 .WithArgumentList
                 (
-                    argumentList: ArgumentList
+                    argumentList: BracketedArgumentList
                     (
-                        SingletonSeparatedList
+                        arguments: SingletonSeparatedList
                         (
                             Argument(LiteralExpression(SyntaxKind.StringLiteralExpression, Literal(ifaceProperty.Name)))
                         )
@@ -453,7 +453,7 @@ namespace Solti.Utils.DI.Internals
         public static IEnumerable<MemberDeclarationSyntax> GenerateProxyEvent(EventInfo @event)
         {
             //
-            // private static readonly EventInfo FEvent = EventAccess("Event");
+            // private static readonly EventInfo FEvent = Events("Event");
             //
             // event EventType IInterface.Event
             // {
@@ -477,15 +477,15 @@ namespace Solti.Utils.DI.Internals
             yield return  DeclareField<EventInfo>
             (
                 name: fieldName.Identifier.Text, 
-                initializer: InvocationExpression
+                initializer: ElementAccessExpression
                 (
-                    expression: IdentifierName(nameof(InterfaceInterceptor<TInterface>.EventAccess))
+                    expression: IdentifierName(nameof(InterfaceInterceptor<TInterface>.Events))
                 )
                 .WithArgumentList
                 (
-                    argumentList: ArgumentList
+                    argumentList: BracketedArgumentList
                     (
-                        SingletonSeparatedList
+                        arguments: SingletonSeparatedList
                         (
                             Argument(LiteralExpression(SyntaxKind.StringLiteralExpression, Literal(@event.Name)))
                         )

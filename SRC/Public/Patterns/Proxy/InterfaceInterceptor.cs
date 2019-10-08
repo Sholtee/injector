@@ -60,23 +60,17 @@ namespace Solti.Utils.DI.Proxy
                 )
                 .Distinct();
 
-        private static readonly IReadOnlyDictionary<string, PropertyInfo> Properties = ListMembers(typeof(TInterface), TypeExtensions.GetProperties)
+        /// <summary>
+        /// All the <typeparamref name="TInterface"/> properties.
+        /// </summary>
+        public static readonly IReadOnlyDictionary<string, PropertyInfo> Properties = ListMembers(typeof(TInterface), TypeExtensions.GetProperties)
             .ToDictionary(prop => prop.Name);
 
         /// <summary>
-        /// Get the <see cref="PropertyInfo"/> with the given name.
+        /// All the <typeparamref name="TInterface"/> events.
         /// </summary>
-        /// <remarks>This is an internal method, don't use it.</remarks>
-        public static PropertyInfo PropertyAccess(string name) => Properties[name];
-
-        private static readonly IReadOnlyDictionary<string, EventInfo> Events = ListMembers(typeof(TInterface), TypeExtensions.GetEvents)
+        public static readonly IReadOnlyDictionary<string, EventInfo> Events = ListMembers(typeof(TInterface), TypeExtensions.GetEvents)
             .ToDictionary(ev => ev.Name);
-
-        /// <summary>
-        /// Gets the <see cref="EventInfo"/> with the given name.
-        /// </summary>
-        /// <remarks>This is an internal method, don't use it.</remarks>
-        public static EventInfo EventAccess(string name) => Events[name];
 
         /// <summary>
         /// The target of this interceptor.

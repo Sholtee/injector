@@ -30,7 +30,7 @@ internal sealed class GeneratedProxy : Solti.Utils.DI.Proxy.Tests.ProxyGenerator
         }
     }
 
-    private static readonly System.Reflection.PropertyInfo FProp = PropertyAccess("Prop");
+    private static readonly System.Reflection.PropertyInfo FProp = Properties["Prop"];
     System.Int32 Solti.Utils.DI.Proxy.Tests.ProxyGeneratorTests.IFoo<System.Int32>.Prop
     {
         get
@@ -49,7 +49,7 @@ internal sealed class GeneratedProxy : Solti.Utils.DI.Proxy.Tests.ProxyGenerator
         }
     }
 
-    private static readonly System.Reflection.EventInfo FEvent = EventAccess("Event");
+    private static readonly System.Reflection.EventInfo FEvent = Events["Event"];
     event Solti.Utils.DI.Proxy.Tests.ProxyGeneratorTests.TestDelegate<System.Int32> Solti.Utils.DI.Proxy.Tests.ProxyGeneratorTests.IFoo<System.Int32>.Event
     {
         add
