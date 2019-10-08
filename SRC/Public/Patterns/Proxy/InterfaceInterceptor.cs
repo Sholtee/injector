@@ -4,6 +4,8 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 
@@ -28,74 +30,53 @@ namespace Solti.Utils.DI.Proxy
         /// <returns>The extracted <see cref="MethodInfo"/> object.</returns>
         /// <remarks>This is an internal method, don't use it.</remarks>
         public static MethodInfo MethodAccess(Expression<Action> methodAccess) => ((MethodCallExpression) methodAccess.Body).Method;
- /*
-        //
-        // Ez itt nem mukodik write-only property-kre
-        //
 
+        //
+        // Ez itt NEM mukodik write-only property-kre
+        //
+/*
         protected static PropertyInfo PropertyAccess<TResult>(Expression<Func<TResult>> propertyAccess) => (PropertyInfo) ((MemberExpression) propertyAccess.Body).Member;
-
+*/
         //
         // Ez mukodne viszont forditas ideju kifejezesek nem tartalmazhatnak ertekadast (lasd: http://blog.ashmind.com/2007/09/07/expression-tree-limitations-in-c-30/) 
         // tehat pl: "() => i.Prop = 0" hiaba helyes nem fog fordulni.
         //
-
+/*
         protected static PropertyInfo PropertyAccess(Expression<Action> propertyAccess) => (PropertyInfo) ((MemberExpression) ((BinaryExpression) propertyAccess.Body).Left).Member;
-
-        //
-        // Szoval marad a mersekelten szep megoldas:
-        //
 */
+        //
+        // Szoval marad a mersekelten szep megoldas (esemenyeket pedig amugy sem lehet kitalalni kifejezesek segitsegevel):
+        //
+
+        private static IEnumerable<TMember> ListMembers<TMember>(Type type, Func<Type, BindingFlags, TMember[]> factory) where TMember : MemberInfo =>
+            //
+            // Az BindingFlags.FlattenHierarchy interface-ekre nem mukodik ezert gyorsitotarazzuk az osszes tagot.
+            //
+
+            factory(type, BindingFlags.Public | BindingFlags.Instance)
+                .Concat
+                (
+                    type.GetInterfaces().SelectMany(iface => ListMembers(iface, factory))
+                )
+                .Distinct();
+
+        private static readonly IReadOnlyDictionary<string, PropertyInfo> Properties = ListMembers(typeof(TInterface), TypeExtensions.GetProperties)
+            .ToDictionary(prop => prop.Name);
+
         /// <summary>
         /// Get the <see cref="PropertyInfo"/> with the given name.
         /// </summary>
-        public static PropertyInfo PropertyAccess(string name)
-        {
-            //
-            // Az BindingFlags.FlattenHierarchy interface-ekre nem mukodik =(
-            //
+        /// <remarks>This is an internal method, don't use it.</remarks>
+        public static PropertyInfo PropertyAccess(string name) => Properties[name];
 
-            return PropertyAccess(typeof(TInterface));
-
-            PropertyInfo PropertyAccess(Type type)
-            {
-                PropertyInfo result = type.GetProperty(name, BindingFlags.Instance | BindingFlags.Public);
-
-                if (result == null)
-                    foreach (Type subType in type.GetInterfaces())
-                        if ((result = PropertyAccess(subType)) != null)
-                            break;
-
-                return result;
-            }
-        }
-        //
-        // Esemenyeket pedig amugy sem lehet kitalalni kifejezesek segitsegevel
-        //
+        private static readonly IReadOnlyDictionary<string, EventInfo> Events = ListMembers(typeof(TInterface), TypeExtensions.GetEvents)
+            .ToDictionary(ev => ev.Name);
 
         /// <summary>
         /// Gets the <see cref="EventInfo"/> with the given name.
         /// </summary>
-        public static EventInfo EventAccess(string name)
-        {
-            //
-            // Az BindingFlags.FlattenHierarchy interface-ekre nem mukodik =(
-            //
-
-            return EventAccess(typeof(TInterface));
-
-            EventInfo EventAccess(Type type)
-            {
-                EventInfo result = type.GetEvent(name, BindingFlags.Instance | BindingFlags.Public);
-
-                if (result == null)
-                    foreach (Type subType in type.GetInterfaces())
-                        if ((result = EventAccess(subType)) != null)
-                            break;
-
-                return result;
-            }
-        }
+        /// <remarks>This is an internal method, don't use it.</remarks>
+        public static EventInfo EventAccess(string name) => Events[name];
 
         /// <summary>
         /// The target of this interceptor.
