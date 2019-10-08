@@ -132,7 +132,7 @@ Where the `ParameterValidatorProxy<TInterface>` is an `InterfaceInterceptor<TInt
 *Remarks:*
 - Proxy pattern can be applied in any number against a service.
 - Applying proxies is done on the service request.
-- Trying to decorate a non producible servce (generic, instance, abstract) will throw.
+- Trying to decorate a non producible service (generic, instance, abstract) will throw.
 - Decorating an inherited service WILL NOT affect the parent.
 ### Auto config
 Starting from version *0.0.2* you can use the `ServiceAttribute` on service classes to annotate them for auto config. Auto config is done by a simple call to the `container.Setup(sourceAssembly)` which instructs the system to seek and register all the annotated services from the `sourceAssembly`.
