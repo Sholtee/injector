@@ -415,7 +415,7 @@ namespace Solti.Utils.DI.Internals
                                 expression: fieldName,
                                 name: IdentifierName(nameof(PropertyInfo.GetMethod))
                             ),
-                            CreateArray<object>(paramz // new object[] {p1, p2, value}
+                            CreateArray<object>(paramz // new object[] {p1, p2}
                                 .Select(param => IdentifierName(param.Identifier))
                                 .Cast<ExpressionSyntax>()
                                 .ToArray()),
@@ -431,7 +431,7 @@ namespace Solti.Utils.DI.Internals
                     {
                         result = CallInvoke
                         (
-                            MemberAccessExpression // FProp.GetMethod
+                            MemberAccessExpression // FProp.SetMethod
                             (
                                 kind: SyntaxKind.SimpleMemberAccessExpression,
                                 expression: fieldName,
