@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 
@@ -64,7 +65,21 @@ namespace Solti.Utils.DI.Proxy.Tests
         private static readonly EventInfo
             Event = typeof(IFoo<int>).GetEvent(nameof(IFoo<int>.Event), BindingFlags.Public | BindingFlags.Instance);
 
-        private static readonly PropertyInfo Prop = typeof(IFoo<int>).GetProperty(nameof(IFoo<int>.Prop));
+        private static readonly PropertyInfo 
+            Prop    = GetProperty<IFoo<int>, int>(i => i.Prop),
+            Indexer = GetProperty<IList<int>, int>(i => i[0]); // i.Item nem mukodik mivel lehet tultoltott
+
+        private static PropertyInfo GetProperty<TSource, TResult>(Expression<System.Func<TSource, TResult>> propertyAccess)
+        {
+            PropertyInfo result = (propertyAccess.Body as MemberExpression)?.Member as PropertyInfo;
+            if (result != null) return result;
+
+            //
+            // Indexer lehett tultoltott -> typeof(TSource).GetProperty("Item") nem mindig lenne jo.
+            //
+
+            return typeof(TSource).GetProperties(BindingFlags.Public | BindingFlags.Instance).Single(prop => prop.GetMethod == ((MethodCallExpression) propertyAccess.Body).Method);
+        }
 
         [Test]
         public void CreateArgumentsArray_ShouldCreateAnObjectArrayFromTheArguments()
@@ -228,6 +243,7 @@ namespace Solti.Utils.DI.Proxy.Tests
         public void ReadTargetAndReturn_ShouldReadTheGivenProperty()
         {
             Assert.That(ReadTargetAndReturn(Prop).NormalizeWhitespace().ToFullString(), Is.EqualTo("return Target.Prop;"));
+            Assert.That(ReadTargetAndReturn(Indexer).NormalizeWhitespace().ToFullString(), Is.EqualTo("return Target[index];"));
         }
 
         [Test]

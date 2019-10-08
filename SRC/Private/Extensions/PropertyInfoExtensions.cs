@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 
@@ -34,5 +35,7 @@ namespace Solti.Utils.DI.Internals
 
             setter(instance, value);
         }
+
+        public static bool IsIndexer(this PropertyInfo src) => src.GetIndexParameters().Any();
     }
 }

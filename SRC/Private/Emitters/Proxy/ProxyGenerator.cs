@@ -210,27 +210,30 @@ namespace Solti.Utils.DI.Internals
                 );
         }
 
-        internal static StatementSyntax ReadTargetAndReturn(PropertyInfo property) => ReturnStatement
-        (
-            expression: MemberAccessExpression
+        internal static ExpressionSyntax PropertyAccessExpression(PropertyInfo property) => property.IsIndexer()
+            ? ElementAccessExpression
+            (
+                expression: IdentifierName(TARGET),
+                argumentList: BracketedArgumentList
+                (
+                    arguments: property.GetIndexParameters().CreateList(param => Argument(IdentifierName(param.Name)))
+                )
+            )
+            : (ExpressionSyntax) MemberAccessExpression
             (
                 SyntaxKind.SimpleMemberAccessExpression,
                 IdentifierName(TARGET),
                 IdentifierName(property.Name)
-            )
-        );
+            );
+
+        internal static StatementSyntax ReadTargetAndReturn(PropertyInfo property) => ReturnStatement(PropertyAccessExpression(property));
 
         internal static StatementSyntax WriteTarget(PropertyInfo property) => ExpressionStatement
         (
             expression: AssignmentExpression
             (
                 kind: SyntaxKind.SimpleAssignmentExpression,
-                left: MemberAccessExpression
-                (
-                    SyntaxKind.SimpleMemberAccessExpression,
-                    IdentifierName(TARGET),
-                    IdentifierName(property.Name)
-                ),
+                left: PropertyAccessExpression(property),
                 right: IdentifierName(Value)
             )
         );
@@ -376,6 +379,34 @@ namespace Solti.Utils.DI.Internals
                     }
                 )
             );
+        }
+
+        public static IndexerDeclarationSyntax GenerateProxyIndexer(PropertyInfo ifaceProperty)
+        {
+            //
+            // TResult IInterface.this[TParam1 p1, TPAram2 p2]
+            // {
+            //     get 
+            //     {
+            //         PropertyInfo currentProperty = PropertyAccess(() => Target[p1, p2]);
+            //
+            //         object result = Invoke(currentProperty.GetMethod, new object[]{ p1, p2 }, currentProperty);
+            //         if (result == CALL_TARGET) return Target[p1, p2];
+            //
+            //         return (TResult) result;
+            //     }
+            //     set
+            //     {
+            //         PropertyInfo currentProperty = PropertyAccess(() => Target[p1, p2]);
+            //
+            //         object result = Invoke(currentProperty.SetMethod, new object[]{ p1, p2, value }, currentProperty);
+            //         if (result == CALL_TARGET) Target[p1, p2] = value;
+            //     }
+            // }
+            //
+
+
+            return null;
         }
 
         public static IReadOnlyList<MemberDeclarationSyntax> GenerateProxyEvent(EventInfo @event)
