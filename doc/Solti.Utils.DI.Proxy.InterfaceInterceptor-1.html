@@ -182,6 +182,47 @@
   </table>
   <h3 id="methods">Methods
   </h3>
+  <a id="Solti_Utils_DI_Proxy_InterfaceInterceptor_1_EventAccess_" data-uid="Solti.Utils.DI.Proxy.InterfaceInterceptor`1.EventAccess*"></a>
+  <h4 id="Solti_Utils_DI_Proxy_InterfaceInterceptor_1_EventAccess_System_String_" data-uid="Solti.Utils.DI.Proxy.InterfaceInterceptor`1.EventAccess(System.String)">EventAccess(String)</h4>
+  <div class="markdown level1 summary"><p>Gets the <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.reflection.eventinfo">EventInfo</a> with the given name.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static EventInfo EventAccess(string name)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">name</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.reflection.eventinfo">EventInfo</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   <a id="Solti_Utils_DI_Proxy_InterfaceInterceptor_1_Invoke_" data-uid="Solti.Utils.DI.Proxy.InterfaceInterceptor`1.Invoke*"></a>
   <h4 id="Solti_Utils_DI_Proxy_InterfaceInterceptor_1_Invoke_System_Reflection_MethodInfo_System_Object___System_Reflection_MemberInfo_" data-uid="Solti.Utils.DI.Proxy.InterfaceInterceptor`1.Invoke(System.Reflection.MethodInfo,System.Object[],System.Reflection.MemberInfo)">Invoke(MethodInfo, Object[], MemberInfo)</h4>
   <div class="markdown level1 summary"><p>Called on proxy method invocation.</p>
@@ -240,6 +281,93 @@
   <h5 id="Solti_Utils_DI_Proxy_InterfaceInterceptor_1_Invoke_System_Reflection_MethodInfo_System_Object___System_Reflection_MemberInfo__remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>The invocation will be forwarded to the <a class="xref" href="Solti.Utils.DI.Proxy.InterfaceInterceptor-1.html#Solti_Utils_DI_Proxy_InterfaceInterceptor_1_Target">Target</a> if this method returns <a class="xref" href="Solti.Utils.DI.Proxy.InterfaceInterceptor-1.html#Solti_Utils_DI_Proxy_InterfaceInterceptor_1_CALL_TARGET">CALL_TARGET</a>.</p>
 </div>
+  <a id="Solti_Utils_DI_Proxy_InterfaceInterceptor_1_MethodAccess_" data-uid="Solti.Utils.DI.Proxy.InterfaceInterceptor`1.MethodAccess*"></a>
+  <h4 id="Solti_Utils_DI_Proxy_InterfaceInterceptor_1_MethodAccess_System_Linq_Expressions_Expression_System_Action__" data-uid="Solti.Utils.DI.Proxy.InterfaceInterceptor`1.MethodAccess(System.Linq.Expressions.Expression{System.Action})">MethodAccess(Expression&lt;Action&gt;)</h4>
+  <div class="markdown level1 summary"><p>Extracts the <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.reflection.methodinfo">MethodInfo</a> from the given expression.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static MethodInfo MethodAccess(Expression&lt;Action&gt; methodAccess)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.linq.expressions.expression-1">Expression</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.action">Action</a>&gt;</td>
+        <td><span class="parametername">methodAccess</span></td>
+        <td><p>The expression to be process.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.reflection.methodinfo">MethodInfo</a></td>
+        <td><p>The extracted <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.reflection.methodinfo">MethodInfo</a> object.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Solti_Utils_DI_Proxy_InterfaceInterceptor_1_MethodAccess_System_Linq_Expressions_Expression_System_Action___remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>This is an internal method, don&apos;t use it.</p>
+</div>
+  <a id="Solti_Utils_DI_Proxy_InterfaceInterceptor_1_PropertyAccess_" data-uid="Solti.Utils.DI.Proxy.InterfaceInterceptor`1.PropertyAccess*"></a>
+  <h4 id="Solti_Utils_DI_Proxy_InterfaceInterceptor_1_PropertyAccess_System_String_" data-uid="Solti.Utils.DI.Proxy.InterfaceInterceptor`1.PropertyAccess(System.String)">PropertyAccess(String)</h4>
+  <div class="markdown level1 summary"><p>Get the <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.reflection.propertyinfo">PropertyInfo</a> with the given name.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static PropertyInfo PropertyAccess(string name)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">name</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.reflection.propertyinfo">PropertyInfo</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   <h3 id="extensionmethods">Extension Methods</h3>
   <div>
       <a class="xref" href="Solti.Utils.DI.Proxy.ObjectExtensions.html#Solti_Utils_DI_Proxy_ObjectExtensions_Act__1___0_">ObjectExtensions.Act&lt;TTarget&gt;(TTarget)</a>
