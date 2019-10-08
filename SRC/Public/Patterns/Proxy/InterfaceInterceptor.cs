@@ -3,6 +3,9 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
+using System;
+using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Reflection;
 
 namespace Solti.Utils.DI.Proxy
@@ -18,6 +21,45 @@ namespace Solti.Utils.DI.Proxy
         /// </summary>
         /// <remarks>Internal, don't use it!</remarks>
         public static object CALL_TARGET = new object();
+
+        /// <summary>
+        /// Extracts the <see cref="MethodInfo"/> from the given expression.
+        /// </summary>
+        /// <param name="methodAccess">The expression to be process.</param>
+        /// <returns>The extracted <see cref="MethodInfo"/> object.</returns>
+        /// <remarks>This is an internal method, don't use it.</remarks>
+        public static MethodInfo MethodAccess(Expression<Action> methodAccess) => ((MethodCallExpression) methodAccess.Body).Method;
+ /*
+        //
+        // Ez itt nem mukodik write-only property-kre
+        //
+
+        protected static PropertyInfo PropertyAccess<TResult>(Expression<Func<TResult>> propertyAccess) => (PropertyInfo) ((MemberExpression) propertyAccess.Body).Member;
+
+        //
+        // Ez mukodne viszont forditas ideju kifejezesek nem tartalmazhatnak ertekadast (lasd: http://blog.ashmind.com/2007/09/07/expression-tree-limitations-in-c-30/) 
+        // tehat pl: "() => i.Prop = 0" hiaba helyes nem fog fordulni.
+        //
+
+        protected static PropertyInfo PropertyAccess(Expression<Action> propertyAccess) => (PropertyInfo) ((MemberExpression) ((BinaryExpression) propertyAccess.Body).Left).Member;
+
+        //
+        // Szoval marad a mersekelten szep megoldas:
+        //
+*/
+        /// <summary>
+        /// Get the <see cref="PropertyInfo"/> with the given name.
+        /// </summary>
+        public static PropertyInfo PropertyAccess(string name) => typeof(TInterface).GetProperty(name, BindingFlags.Instance | BindingFlags.Public);
+
+        //
+        // Esemenyeket pedig amugy sem lehet kitalalni kifejezesek segitsegevel
+        //
+
+        /// <summary>
+        /// Gets the <see cref="EventInfo"/> with the given name.
+        /// </summary>
+        public static EventInfo EventAccess(string name) => typeof(TInterface).GetEvent(name, BindingFlags.Instance | BindingFlags.Public);
 
         /// <summary>
         /// The target of this interceptor.

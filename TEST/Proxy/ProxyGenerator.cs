@@ -158,12 +158,6 @@ namespace Solti.Utils.DI.Proxy.Tests
         }
 
         [Test]
-        public void AcquirePropertyInfo_ShouldGetAPropertyInfoInstance()
-        {
-            Assert.That(AcquirePropertyInfo(Prop).NormalizeWhitespace().ToFullString(), Is.EqualTo("System.Reflection.PropertyInfo currentProperty = PropertyAccess(() => Target.Prop);"));
-        }
-
-        [Test]
         public void CallInvoke_ShouldCallTheInvokeMetehodOnThis()
         {
             LocalDeclarationStatementSyntax
@@ -185,18 +179,6 @@ namespace Solti.Utils.DI.Proxy.Tests
         }
 
         [Test]
-        public void PropertyAccess_ShouldCreateTheProperMethod()
-        {
-            Assert.That(PropertyAccess().NormalizeWhitespace().ToFullString(), Is.EqualTo("private static System.Reflection.PropertyInfo PropertyAccess<TResult>(System.Linq.Expressions.Expression<System.Func<TResult>> propertyAccess) => (System.Reflection.PropertyInfo)((System.Linq.Expressions.MemberExpression)propertyAccess.Body).Member;"));
-        }
-
-        [Test]
-        public void MethodAccess_ShouldCreateTheProperMethod()
-        {
-            Assert.That(MethodAccess().NormalizeWhitespace().ToFullString(), Is.EqualTo("private static System.Reflection.MethodInfo MethodAccess(System.Linq.Expressions.Expression<System.Action> methodAccess) => ((System.Linq.Expressions.MethodCallExpression)methodAccess.Body).Method;"));
-        }
-
-        [Test]
         public void DeclareProperty_ShouldDeclareTheDesiredProperty()
         {
             Assert.That(DeclareProperty(Prop, SyntaxFactory.Block(), SyntaxFactory.Block()).NormalizeWhitespace(eol: "\n").ToFullString(), Is.EqualTo("System.Int32 Solti.Utils.DI.Proxy.Tests.ProxyGeneratorTests.IFoo<System.Int32>.Prop\n{\n    get\n    {\n    }\n\n    set\n    {\n    }\n}"));
@@ -212,7 +194,7 @@ namespace Solti.Utils.DI.Proxy.Tests
         [Test]
         public void GenerateProxyProperty_Test()
         {
-            Assert.That(GenerateProxyProperty(Prop).NormalizeWhitespace(eol: "\n").ToFullString(), Is.EqualTo(File.ReadAllText(Path.Combine("Proxy", "PropSrc.txt"))));
+            Assert.That(GenerateProxyProperty(Prop).Last().NormalizeWhitespace(eol: "\n").ToFullString(), Is.EqualTo(File.ReadAllText(Path.Combine("Proxy", "PropSrc.txt"))));
         }
 
         [Test]
@@ -259,12 +241,6 @@ namespace Solti.Utils.DI.Proxy.Tests
         }
 
         private static MethodInfo GetMethod(string name) => typeof(IFoo<>).GetMethod(name);
-
-        [Test]
-        public void GetEvent_ShouldCreateTheProperMethod()
-        {
-            Assert.That(GetEvent().NormalizeWhitespace().ToFullString(), Is.EqualTo("private static System.Reflection.EventInfo GetEvent(System.String eventName) => typeof(Solti.Utils.DI.Proxy.Tests.ProxyGeneratorTests.IFoo<System.Int32>).GetEvent(eventName, System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance);"));
-        }
 
         [Test]
         public void DeclareField_ShouldDeclareAField()
