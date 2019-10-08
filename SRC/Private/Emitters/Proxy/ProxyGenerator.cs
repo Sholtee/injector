@@ -242,7 +242,7 @@ namespace Solti.Utils.DI.Internals
             //     MethodInfo currentMethod = MethodAccess(() => Target.Foo(para1, ref dummy_para2, out dummy_para3, para4)); // MethodBase.GetCurrentMethod() az implementaciot adna vissza, reflexio-val meg kibaszott lassu lenne
             //
             //     object result = Invoke(currentMethod, args, currentMethod);
-            //     if (result == CALL_TARGET) return Target.Foo(para1, ref para2, out para3, para4); // void visszateresnel ures return
+            //     if (result == CALL_TARGET) return Target.Foo(para1, ref para2, out para3, para4); // void visszateresnel ures return -> argumentumok semmi kepp sem lesznek visszairva
             //
             //     para2 = (T2) args[1];
             //     para3 = (T3) args[2];
@@ -320,6 +320,12 @@ namespace Solti.Utils.DI.Internals
                 }
             );
 
+            if (ifaceProperty.IsIndexer())
+            {
+                yield return GenerateProxyIndexer(ifaceProperty);
+                yield break;
+            }
+
             LocalDeclarationStatementSyntax result;
 
             //
@@ -370,10 +376,8 @@ namespace Solti.Utils.DI.Internals
             );
         }
 
-        public static IEnumerable<MemberDeclarationSyntax> GenerateProxyIndexer(PropertyInfo ifaceProperty)
+        public static MemberDeclarationSyntax GenerateProxyIndexer(PropertyInfo ifaceProperty)
         {
-            //
-            // private static readonly PropertyInfo FProp = PropertyAccess("Prop");
             //
             // TResult IInterface.this[TParam1 p1, TPAram2 p2]
             // {
@@ -394,34 +398,9 @@ namespace Solti.Utils.DI.Internals
 
             IdentifierNameSyntax fieldName = IdentifierName($"F{ifaceProperty.Name}");
 
-            yield return DeclareField<PropertyInfo>
-            (
-                name: fieldName.Identifier.Text,
-                initializer: InvocationExpression
-                (
-                    expression: IdentifierName(nameof(InterfaceInterceptor<TInterface>.PropertyAccess))
-                )
-                .WithArgumentList
-                (
-                    argumentList: ArgumentList
-                    (
-                        SingletonSeparatedList
-                        (
-                            Argument(LiteralExpression(SyntaxKind.StringLiteralExpression, Literal(ifaceProperty.Name)))
-                        )
-                    )
-                ),
-                modifiers: new[]
-                {
-                    SyntaxKind.PrivateKeyword,
-                    SyntaxKind.StaticKeyword,
-                    SyntaxKind.ReadOnlyKeyword
-                }
-            );
-
             LocalDeclarationStatementSyntax result;
 
-            yield return DeclareIndexer
+            return DeclareIndexer
             (
                 property: ifaceProperty,
                 getBody: paramz => Block

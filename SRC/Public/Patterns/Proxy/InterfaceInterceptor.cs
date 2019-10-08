@@ -4,7 +4,6 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
-using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
 
@@ -50,8 +49,26 @@ namespace Solti.Utils.DI.Proxy
         /// <summary>
         /// Get the <see cref="PropertyInfo"/> with the given name.
         /// </summary>
-        public static PropertyInfo PropertyAccess(string name) => typeof(TInterface).GetProperty(name, BindingFlags.Instance | BindingFlags.Public);
+        public static PropertyInfo PropertyAccess(string name)
+        {
+            //
+            // Az BindingFlags.FlattenHierarchy interface-ekre nem mukodik =(
+            //
 
+            return PropertyAccess(typeof(TInterface));
+
+            PropertyInfo PropertyAccess(Type type)
+            {
+                PropertyInfo result = type.GetProperty(name, BindingFlags.Instance | BindingFlags.Public);
+
+                if (result == null)
+                    foreach (Type subType in type.GetInterfaces())
+                        if ((result = PropertyAccess(subType)) != null)
+                            break;
+
+                return result;
+            }
+        }
         //
         // Esemenyeket pedig amugy sem lehet kitalalni kifejezesek segitsegevel
         //
@@ -59,7 +76,26 @@ namespace Solti.Utils.DI.Proxy
         /// <summary>
         /// Gets the <see cref="EventInfo"/> with the given name.
         /// </summary>
-        public static EventInfo EventAccess(string name) => typeof(TInterface).GetEvent(name, BindingFlags.Instance | BindingFlags.Public);
+        public static EventInfo EventAccess(string name)
+        {
+            //
+            // Az BindingFlags.FlattenHierarchy interface-ekre nem mukodik =(
+            //
+
+            return EventAccess(typeof(TInterface));
+
+            EventInfo EventAccess(Type type)
+            {
+                EventInfo result = type.GetEvent(name, BindingFlags.Instance | BindingFlags.Public);
+
+                if (result == null)
+                    foreach (Type subType in type.GetInterfaces())
+                        if ((result = EventAccess(subType)) != null)
+                            break;
+
+                return result;
+            }
+        }
 
         /// <summary>
         /// The target of this interceptor.

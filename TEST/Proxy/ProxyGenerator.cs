@@ -7,7 +7,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 
@@ -32,7 +31,7 @@ namespace Solti.Utils.DI.Proxy.Tests
     {
         internal delegate void TestDelegate<in T>(object sender, T eventArg);
 
-        internal interface IFoo<T>
+        internal interface IFoo<T> // direkt internal
         {
             int Foo<TT>(int a, out string b, ref TT c);
             void Bar();
@@ -40,7 +39,7 @@ namespace Solti.Utils.DI.Proxy.Tests
             event TestDelegate<T> Event;
         }
 
-        internal class FooInterceptor : InterfaceInterceptor<IFoo<int>>
+        internal class FooInterceptor : InterfaceInterceptor<IFoo<int>> // direkt internal
         {
             public override object Invoke(MethodInfo method, object[] args, MemberInfo extra)
             {
@@ -48,6 +47,13 @@ namespace Solti.Utils.DI.Proxy.Tests
             }
 
             public FooInterceptor(IFoo<int> target) : base(target)
+            {
+            }
+        }
+
+        public class ListInterceptor : InterfaceInterceptor<IList<int>>
+        {
+            public ListInterceptor(IList<int> target) : base(target)
             {
             }
         }
@@ -66,20 +72,8 @@ namespace Solti.Utils.DI.Proxy.Tests
             Event = typeof(IFoo<int>).GetEvent(nameof(IFoo<int>.Event), BindingFlags.Public | BindingFlags.Instance);
 
         private static readonly PropertyInfo 
-            Prop    = GetProperty<IFoo<int>, int>(i => i.Prop),
-            Indexer = GetProperty<IList<int>, int>(i => i[0]); // i.Item nem mukodik mivel lehet tultoltott
-
-        private static PropertyInfo GetProperty<TSource, TResult>(Expression<System.Func<TSource, TResult>> propertyAccess)
-        {
-            PropertyInfo result = (propertyAccess.Body as MemberExpression)?.Member as PropertyInfo;
-            if (result != null) return result;
-
-            //
-            // Indexer lehett tultoltott -> typeof(TSource).GetProperty("Item") nem mindig lenne jo.
-            //
-
-            return typeof(TSource).GetProperties(BindingFlags.Public | BindingFlags.Instance).Single(prop => prop.GetMethod == ((MethodCallExpression) propertyAccess.Body).Method);
-        }
+            Prop    = typeof(IFoo<int>).GetProperty(nameof(IFoo<int>.Prop)),
+            Indexer = typeof(IList<int>).GetProperty("Item");
 
         [Test]
         public void CreateArgumentsArray_ShouldCreateAnObjectArrayFromTheArguments()
@@ -198,13 +192,19 @@ namespace Solti.Utils.DI.Proxy.Tests
         }
 
         [Test]
+        public void GenerateProxyIndexer_Test()
+        {
+            Assert.That(GenerateProxyIndexer(Indexer).NormalizeWhitespace(eol: "\n").ToFullString(), Is.EqualTo(File.ReadAllText(Path.Combine("Proxy", "IndexerSrc.txt"))));
+        }
+
+        [Test]
         public void GenerateProxyClass_Test()
         {
             Assert.That(GenerateProxyClass().NormalizeWhitespace(eol: "\n").ToFullString(), Is.EqualTo(File.ReadAllText(Path.Combine("Proxy", "ClsSrc.txt"))));
         }
 
         [Test]
-        public void GeneratedProxy_Test()
+        public void GeneratedProxy_MethodOverrideTest()
         {
             IFoo<int> proxy = (IFoo<int>) GeneratedProxy<IFoo<int>, FooInterceptor>.Type.CreateInstance(new []{typeof(IFoo<int>)}, (object) null);
 
@@ -212,6 +212,22 @@ namespace Solti.Utils.DI.Proxy.Tests
 
             Assert.That(proxy.Prop, Is.EqualTo(1));
             Assert.That(proxy.Foo(0, out a, ref b), Is.EqualTo(1));
+        }
+
+        [Test]
+        public void GeneratedProxy_IndexerTest()
+        {
+            IList<int>
+                src = new List<int>(),
+                proxy = (IList<int>) GeneratedProxy<IList<int>, ListInterceptor>.Type.CreateInstance(new[] { typeof(IList<int>) }, src);
+
+            proxy.Add(1986);
+
+            Assert.That(proxy.Count, Is.EqualTo(1));
+            Assert.That(proxy[0], Is.EqualTo(1986));
+
+            proxy[0]++;
+            Assert.That(src[0], Is.EqualTo(1987));
         }
 
         [Test]

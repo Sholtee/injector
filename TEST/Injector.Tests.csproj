@@ -64,6 +64,9 @@
     <None Update="Proxy\FooSrc.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Proxy\IndexerSrc.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Proxy\PropSrc.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
