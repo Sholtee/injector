@@ -224,7 +224,7 @@ namespace Solti.Utils.DI.Internals
             );
         }
 
-        public static IndexerDeclarationSyntax DeclareIndexer(PropertyInfo property,  Func<IReadOnlyList<ParameterSyntax>, CSharpSyntaxNode> getBody = null, Func<IReadOnlyList<ParameterSyntax>, CSharpSyntaxNode> setBody = null)
+        public static IndexerDeclarationSyntax DeclareIndexer(PropertyInfo property, Func<IReadOnlyList<ParameterSyntax>, CSharpSyntaxNode> getBody = null, Func<IReadOnlyList<ParameterSyntax>, CSharpSyntaxNode> setBody = null)
         {
             Debug.Assert(property.DeclaringType.IsInterface());
             Debug.Assert(property.IsIndexer());

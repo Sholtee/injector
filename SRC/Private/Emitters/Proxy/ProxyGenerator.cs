@@ -342,7 +342,7 @@ namespace Solti.Utils.DI.Internals
                                 expression: fieldName,
                                 name: IdentifierName(nameof(PropertyInfo.GetMethod))
                             ),
-                            CreateArray<object>(), // new object[0],
+                            CreateArray<object>(), // new object[0]
                             fieldName // FProp
                         ),
                         ShouldCallTarget(result, ifTrue: ReadTargetAndReturn(ifaceProperty)),
@@ -370,32 +370,105 @@ namespace Solti.Utils.DI.Internals
             );
         }
 
-        public static IndexerDeclarationSyntax GenerateProxyIndexer(PropertyInfo ifaceProperty)
+        public static IEnumerable<MemberDeclarationSyntax> GenerateProxyIndexer(PropertyInfo ifaceProperty)
         {
+            //
+            // private static readonly PropertyInfo FProp = PropertyAccess("Prop");
             //
             // TResult IInterface.this[TParam1 p1, TPAram2 p2]
             // {
             //     get 
             //     {
-            //         PropertyInfo currentProperty = PropertyAccess(() => Target[p1, p2]);
-            //
-            //         object result = Invoke(currentProperty.GetMethod, new object[]{ p1, p2 }, currentProperty);
+            //         object result = Invoke(FProp.GetMethod, new object[]{ p1, p2 }, FProp);
             //         if (result == CALL_TARGET) return Target[p1, p2];
             //
             //         return (TResult) result;
             //     }
             //     set
             //     {
-            //         PropertyInfo currentProperty = PropertyAccess(() => Target[p1, p2]);
-            //
-            //         object result = Invoke(currentProperty.SetMethod, new object[]{ p1, p2, value }, currentProperty);
+            //         object result = Invoke(FProp.SetMethod, new object[]{ p1, p2, value }, FProp);
             //         if (result == CALL_TARGET) Target[p1, p2] = value;
             //     }
             // }
             //
 
+            IdentifierNameSyntax fieldName = IdentifierName($"F{ifaceProperty.Name}");
 
-            return null;
+            yield return DeclareField<PropertyInfo>
+            (
+                name: fieldName.Identifier.Text,
+                initializer: InvocationExpression
+                (
+                    expression: IdentifierName(nameof(InterfaceInterceptor<TInterface>.PropertyAccess))
+                )
+                .WithArgumentList
+                (
+                    argumentList: ArgumentList
+                    (
+                        SingletonSeparatedList
+                        (
+                            Argument(LiteralExpression(SyntaxKind.StringLiteralExpression, Literal(ifaceProperty.Name)))
+                        )
+                    )
+                ),
+                modifiers: new[]
+                {
+                    SyntaxKind.PrivateKeyword,
+                    SyntaxKind.StaticKeyword,
+                    SyntaxKind.ReadOnlyKeyword
+                }
+            );
+
+            LocalDeclarationStatementSyntax result;
+
+            yield return DeclareIndexer
+            (
+                property: ifaceProperty,
+                getBody: paramz => Block
+                (
+                    statements: new StatementSyntax[]
+                    {
+                        result = CallInvoke
+                        (
+                            MemberAccessExpression // FProp.GetMethod
+                            (
+                                kind: SyntaxKind.SimpleMemberAccessExpression,
+                                expression: fieldName,
+                                name: IdentifierName(nameof(PropertyInfo.GetMethod))
+                            ),
+                            CreateArray<object>(paramz // new object[] {p1, p2, value}
+                                .Select(param => IdentifierName(param.Identifier))
+                                .Cast<ExpressionSyntax>()
+                                .ToArray()),
+                            fieldName // FProp
+                        ),
+                        ShouldCallTarget(result, ifTrue: ReadTargetAndReturn(ifaceProperty)),
+                        ReturnResult(ifaceProperty.PropertyType, result)
+                    }
+                ),
+                setBody: paramz => Block
+                (
+                    statements: new StatementSyntax[]
+                    {
+                        result = CallInvoke
+                        (
+                            MemberAccessExpression // FProp.GetMethod
+                            (
+                                kind: SyntaxKind.SimpleMemberAccessExpression,
+                                expression: fieldName,
+                                name: IdentifierName(nameof(PropertyInfo.SetMethod))
+                            ),
+                            CreateArray<object>(paramz // new object[] {p1, p2, value}
+                                .Select(param => IdentifierName(param.Identifier))
+                                .Append(IdentifierName(Value))
+                                .Cast<ExpressionSyntax>()
+                                .ToArray()),
+                            fieldName // FProp
+                        ),
+                        ShouldCallTarget(result, ifTrue: WriteTarget(ifaceProperty))
+                    }
+                )
+            );
         }
 
         public static IEnumerable<MemberDeclarationSyntax> GenerateProxyEvent(EventInfo @event)
