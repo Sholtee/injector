@@ -8,10 +8,10 @@
 		<license type="expression">MIT</license>
 		<projectUrl>https://github.com/Sholtee/injector</projectUrl>
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>
-		<description>A featherweight dependency injector.</description>
-		<releaseNotes>Initial version.</releaseNotes>
+		<description>A featherweight dependency injector &amp; proxy generator.</description>
+		<releaseNotes>See homepage.</releaseNotes>
 		<copyright>Copyright 2019</copyright>
-		<tags>DI Dependency-Injector Dependency-Injection Injector</tags>
+		<tags>DI Dependency-Injector Dependency-Injection Injector Proxy Proxy-Generator Duck-Typing IOC</tags>
 		<dependencies />
 	</metadata>
 	<files>
