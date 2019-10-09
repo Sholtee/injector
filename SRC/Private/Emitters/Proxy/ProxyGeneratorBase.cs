@@ -349,6 +349,24 @@ namespace Solti.Utils.DI.Internals
             right: IdentifierName(Value)
         );
 
+        public static ExpressionSyntax PropertyAccessExpression(PropertyInfo property, string target) => property.IsIndexer()
+            ? ElementAccessExpression
+            (
+                expression: IdentifierName(target),
+                argumentList: BracketedArgumentList
+                (
+                    arguments: property
+                        .GetIndexParameters()
+                        .CreateList(param => Argument(IdentifierName(param.Name)))
+                )
+            )
+            : (ExpressionSyntax) MemberAccessExpression
+            (
+                SyntaxKind.SimpleMemberAccessExpression,
+                IdentifierName(target),
+                IdentifierName(property.Name)
+            );
+
         public static TypeSyntax CreateType(Type src)
         {
             //

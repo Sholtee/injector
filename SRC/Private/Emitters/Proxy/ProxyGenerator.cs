@@ -176,30 +176,14 @@ namespace Solti.Utils.DI.Internals
                 );
         }
 
-        internal static ExpressionSyntax PropertyAccessExpression(PropertyInfo property) => property.IsIndexer()
-            ? ElementAccessExpression
-            (
-                expression: IdentifierName(TARGET),
-                argumentList: BracketedArgumentList
-                (
-                    arguments: property.GetIndexParameters().CreateList(param => Argument(IdentifierName(param.Name)))
-                )
-            )
-            : (ExpressionSyntax) MemberAccessExpression
-            (
-                SyntaxKind.SimpleMemberAccessExpression,
-                IdentifierName(TARGET),
-                IdentifierName(property.Name)
-            );
-
-        internal static StatementSyntax ReadTargetAndReturn(PropertyInfo property) => ReturnStatement(PropertyAccessExpression(property));
+        internal static StatementSyntax ReadTargetAndReturn(PropertyInfo property) => ReturnStatement(PropertyAccessExpression(property, TARGET));
 
         internal static StatementSyntax WriteTarget(PropertyInfo property) => ExpressionStatement
         (
             expression: AssignmentExpression
             (
                 kind: SyntaxKind.SimpleAssignmentExpression,
-                left: PropertyAccessExpression(property),
+                left: PropertyAccessExpression(property, TARGET),
                 right: IdentifierName(Value)
             )
         );

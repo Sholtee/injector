@@ -127,12 +127,7 @@ namespace Solti.Utils.DI.Internals
                 throw mme;
             }
 
-            MemberAccessExpressionSyntax propertyAccess = MemberAccessExpression
-            (
-                kind: SyntaxKind.SimpleMemberAccessExpression,
-                expression: IdentifierName(TARGET),
-                name: IdentifierName(ifaceProperty.Name)
-            );
+            ExpressionSyntax propertyAccess = PropertyAccessExpression(ifaceProperty, TARGET);
 
             //
             // Nem gond ha mondjuk az interface property-nek nincs gettere, akkor a "getBody"
