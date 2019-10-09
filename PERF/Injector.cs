@@ -3,12 +3,17 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
+using System;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
 using BenchmarkDotNet.Attributes;
 
 namespace Solti.Utils.DI.Perf
 {
+    using Annotations;
+    using Internals;
+
     using static Consts;
 
     [MemoryDiagnoser]
@@ -26,13 +31,13 @@ namespace Solti.Utils.DI.Perf
         }
 
         public interface IInterface_2<T>
-        {            
+        {
         }
 
         public class Implementation_2<T> : IInterface_2<T>
         {
             public Implementation_2(IInterface_1 dep)
-            {               
+            {
             }
         }
 
@@ -77,8 +82,8 @@ namespace Solti.Utils.DI.Perf
         {
             for (int i = 0; i < OperationsPerInvoke; i++)
             {
-                IInterface_3<string> iface = new Implementation_3<string>(new Implementation_2<string>(new Implementation_1()));
-                iface.DoSomething();
+                IInterface_3<string> instance = new Implementation_3<string>(new Implementation_2<string>(new Implementation_1()));
+                instance.DoSomething();
             }
         }
 
@@ -87,8 +92,8 @@ namespace Solti.Utils.DI.Perf
         {
             for (int i = 0; i < OperationsPerInvoke; i++)
             {
-                IInterface_3<string> iface = FInjector.Get<IInterface_3<string>>();
-                iface.DoSomething();
+                IInterface_3<string> instance = FInjector.Get<IInterface_3<string>>();
+                instance.DoSomething();
             }
         }
 
@@ -97,8 +102,65 @@ namespace Solti.Utils.DI.Perf
         {
             for (int i = 0; i < OperationsPerInvoke; i++)
             {
-                Implementation_3<string> iface = FInjector.Instantiate<Implementation_3<string>>();
-                iface.DoSomething();
+                Implementation_3<string> instance = FInjector.Instantiate<Implementation_3<string>>();
+                instance.DoSomething();
+            }
+        }
+    }
+
+    [MemoryDiagnoser]
+    public class LazyInjector
+    {
+        public interface IInterface
+        {
+            void Bar();
+        }
+
+        public class Implementation : IInterface
+        {            
+            [ServiceActivator]
+            public Implementation(Lazy<IDisposable> disposable, Lazy<IList<int>> lst)
+            {               
+            }
+
+            public Implementation(IDisposable disposable, IList<int> lst)
+            {
+            }
+
+            public void Bar()
+            {
+            }
+        }
+
+        private IInjector FInjector;
+
+        [GlobalSetup]
+        public void Setup()
+        {
+            FInjector = new ServiceContainer()
+                .Service<IDisposable, Disposable>()
+                .Factory(typeof(IList<>), (i, t) => System.Activator.CreateInstance(typeof(List<>).MakeGenericType(t.GetGenericArguments())))
+                .Service<IInterface, Implementation>()
+                .CreateInjector();
+        }
+
+        [Benchmark(Baseline = true, OperationsPerInvoke = OperationsPerInvoke)]
+        public void NoInjector()
+        {
+            for (int i = 0; i < OperationsPerInvoke; i++)
+            {
+                var instance = new Implementation(FInjector.Get<IDisposable>(), FInjector.Get<IList<int>>());
+                instance.Bar();
+            }
+        }
+
+        [Benchmark(OperationsPerInvoke = OperationsPerInvoke)]
+        public void Injector_Get()
+        {
+            for (int i = 0; i < OperationsPerInvoke; i++)
+            {
+                var instance = FInjector.Get<IInterface>();
+                instance.Bar();
             }
         }
     }
