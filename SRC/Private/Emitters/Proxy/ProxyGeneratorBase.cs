@@ -209,8 +209,61 @@ namespace Solti.Utils.DI.Internals
 
             List<AccessorDeclarationSyntax> accessors = new List<AccessorDeclarationSyntax>();
 
-            if (property.CanRead && getBody != null)  accessors.Add(DeclareAccessor(SyntaxKind.GetAccessorDeclaration, getBody));
-            if (property.CanWrite && setBody != null) accessors.Add(DeclareAccessor(SyntaxKind.SetAccessorDeclaration, setBody));
+            if (property.CanRead && getBody != null)
+                accessors.Add(DeclareAccessor(SyntaxKind.GetAccessorDeclaration, getBody));
+
+            if (property.CanWrite && setBody != null)
+                accessors.Add(DeclareAccessor(SyntaxKind.SetAccessorDeclaration, setBody));
+
+            return !accessors.Any() ? result : result.WithAccessorList
+            (
+                accessorList: AccessorList
+                (
+                    accessors: List(accessors)
+                )
+            );
+        }
+
+        public static IndexerDeclarationSyntax DeclareIndexer(PropertyInfo property, Func<IReadOnlyList<ParameterSyntax>, CSharpSyntaxNode> getBody = null, Func<IReadOnlyList<ParameterSyntax>, CSharpSyntaxNode> setBody = null)
+        {
+            Debug.Assert(property.DeclaringType.IsInterface());
+            Debug.Assert(property.IsIndexer());
+
+            ParameterInfo[] indices = property.GetIndexParameters();
+
+            IndexerDeclarationSyntax result = IndexerDeclaration
+            (
+                type: CreateType(property.PropertyType)
+            )
+            .WithExplicitInterfaceSpecifier
+            (
+                explicitInterfaceSpecifier: ExplicitInterfaceSpecifier((NameSyntax) CreateType(property.DeclaringType))
+            )
+            .WithParameterList
+            (
+                parameterList: BracketedParameterList
+                (
+                    parameters: indices.CreateList
+                    (
+                        index => Parameter
+                        (
+                            identifier: Identifier(index.Name)                          
+                        )
+                        .WithType
+                        (
+                            type: CreateType(index.ParameterType)
+                        )
+                    )
+                )
+            );
+
+            List<AccessorDeclarationSyntax> accessors = new List<AccessorDeclarationSyntax>();
+
+            if (property.CanRead && getBody != null)
+                accessors.Add(DeclareAccessor(SyntaxKind.GetAccessorDeclaration, getBody(result.ParameterList.Parameters)));
+
+            if (property.CanWrite && setBody != null)
+                accessors.Add(DeclareAccessor(SyntaxKind.SetAccessorDeclaration, setBody(result.ParameterList.Parameters)));
 
             return !accessors.Any() ? result : result.WithAccessorList
             (
@@ -255,6 +308,8 @@ namespace Solti.Utils.DI.Internals
 
         public static EventDeclarationSyntax DeclareEvent(EventInfo @event, CSharpSyntaxNode addBody = null, CSharpSyntaxNode removeBody = null)
         {
+            Debug.Assert(@event.DeclaringType.IsInterface());
+
             EventDeclarationSyntax result = EventDeclaration
             (
                 type: CreateType(@event.EventHandlerType),
@@ -267,8 +322,11 @@ namespace Solti.Utils.DI.Internals
 
             List<AccessorDeclarationSyntax> accessors = new List<AccessorDeclarationSyntax>();
 
-            if (@event.AddMethod    != null && addBody    != null) accessors.Add(DeclareAccessor(SyntaxKind.AddAccessorDeclaration, addBody));
-            if (@event.RemoveMethod != null && removeBody != null) accessors.Add(DeclareAccessor(SyntaxKind.RemoveAccessorDeclaration, removeBody));
+            if (@event.AddMethod != null && addBody != null)
+                accessors.Add(DeclareAccessor(SyntaxKind.AddAccessorDeclaration, addBody));
+
+            if (@event.RemoveMethod != null && removeBody != null)
+                accessors.Add(DeclareAccessor(SyntaxKind.RemoveAccessorDeclaration, removeBody));
 
             return !accessors.Any() ? result : result.WithAccessorList
             (
@@ -290,6 +348,24 @@ namespace Solti.Utils.DI.Internals
             ),
             right: IdentifierName(Value)
         );
+
+        public static ExpressionSyntax PropertyAccessExpression(PropertyInfo property, string target) => property.IsIndexer()
+            ? ElementAccessExpression
+            (
+                expression: IdentifierName(target),
+                argumentList: BracketedArgumentList
+                (
+                    arguments: property
+                        .GetIndexParameters()
+                        .CreateList(param => Argument(IdentifierName(param.Name)))
+                )
+            )
+            : (ExpressionSyntax) MemberAccessExpression
+            (
+                SyntaxKind.SimpleMemberAccessExpression,
+                IdentifierName(target),
+                IdentifierName(property.Name)
+            );
 
         public static TypeSyntax CreateType(Type src)
         {

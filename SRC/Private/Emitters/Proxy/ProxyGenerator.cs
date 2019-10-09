@@ -176,27 +176,14 @@ namespace Solti.Utils.DI.Internals
                 );
         }
 
-        internal static StatementSyntax ReadTargetAndReturn(PropertyInfo property) => ReturnStatement
-        (
-            expression: MemberAccessExpression
-            (
-                SyntaxKind.SimpleMemberAccessExpression,
-                IdentifierName(TARGET),
-                IdentifierName(property.Name)
-            )
-        );
+        internal static StatementSyntax ReadTargetAndReturn(PropertyInfo property) => ReturnStatement(PropertyAccessExpression(property, TARGET));
 
         internal static StatementSyntax WriteTarget(PropertyInfo property) => ExpressionStatement
         (
             expression: AssignmentExpression
             (
                 kind: SyntaxKind.SimpleAssignmentExpression,
-                left: MemberAccessExpression
-                (
-                    SyntaxKind.SimpleMemberAccessExpression,
-                    IdentifierName(TARGET),
-                    IdentifierName(property.Name)
-                ),
+                left: PropertyAccessExpression(property, TARGET),
                 right: IdentifierName(Value)
             )
         );
@@ -239,7 +226,7 @@ namespace Solti.Utils.DI.Internals
             //     MethodInfo currentMethod = MethodAccess(() => Target.Foo(para1, ref dummy_para2, out dummy_para3, para4)); // MethodBase.GetCurrentMethod() az implementaciot adna vissza, reflexio-val meg kibaszott lassu lenne
             //
             //     object result = Invoke(currentMethod, args, currentMethod);
-            //     if (result == CALL_TARGET) return Target.Foo(para1, ref para2, out para3, para4); // void visszateresnel ures return
+            //     if (result == CALL_TARGET) return Target.Foo(para1, ref para2, out para3, para4); // void visszateresnel ures return -> argumentumok semmi kepp sem lesznek visszairva
             //
             //     para2 = (T2) args[1];
             //     para3 = (T3) args[2];
@@ -271,7 +258,7 @@ namespace Solti.Utils.DI.Internals
         public static IEnumerable<MemberDeclarationSyntax> GenerateProxyProperty(PropertyInfo ifaceProperty)
         {
             //
-            // private static readonly PropertyInfo FProp = PropertyAccess("Prop");
+            // private static readonly PropertyInfo FProp = Properties["Prop"];
             //
             // TResult IInterface.Prop
             // {
@@ -295,15 +282,15 @@ namespace Solti.Utils.DI.Internals
             yield return DeclareField<PropertyInfo>
             (
                 name: fieldName.Identifier.Text,
-                initializer: InvocationExpression
+                initializer: ElementAccessExpression
                 (
-                    expression: IdentifierName(nameof(InterfaceInterceptor<TInterface>.PropertyAccess))
+                    expression: IdentifierName(nameof(InterfaceInterceptor<TInterface>.Properties))
                 )
                 .WithArgumentList
                 (
-                    argumentList: ArgumentList
+                    argumentList: BracketedArgumentList
                     (
-                        SingletonSeparatedList
+                        arguments: SingletonSeparatedList
                         (
                             Argument(LiteralExpression(SyntaxKind.StringLiteralExpression, Literal(ifaceProperty.Name)))
                         )
@@ -316,6 +303,12 @@ namespace Solti.Utils.DI.Internals
                     SyntaxKind.ReadOnlyKeyword
                 }
             );
+
+            if (ifaceProperty.IsIndexer())
+            {
+                yield return GenerateProxyIndexer(ifaceProperty);
+                yield break;
+            }
 
             LocalDeclarationStatementSyntax result;
 
@@ -339,7 +332,7 @@ namespace Solti.Utils.DI.Internals
                                 expression: fieldName,
                                 name: IdentifierName(nameof(PropertyInfo.GetMethod))
                             ),
-                            CreateArray<object>(), // new object[0],
+                            CreateArray<object>(), // new object[0]
                             fieldName // FProp
                         ),
                         ShouldCallTarget(result, ifTrue: ReadTargetAndReturn(ifaceProperty)),
@@ -367,10 +360,84 @@ namespace Solti.Utils.DI.Internals
             );
         }
 
+        public static MemberDeclarationSyntax GenerateProxyIndexer(PropertyInfo ifaceProperty)
+        {
+            //
+            // TResult IInterface.this[TParam1 p1, TPAram2 p2]
+            // {
+            //     get 
+            //     {
+            //         object result = Invoke(FProp.GetMethod, new object[]{ p1, p2 }, FProp);
+            //         if (result == CALL_TARGET) return Target[p1, p2];
+            //
+            //         return (TResult) result;
+            //     }
+            //     set
+            //     {
+            //         object result = Invoke(FProp.SetMethod, new object[]{ p1, p2, value }, FProp);
+            //         if (result == CALL_TARGET) Target[p1, p2] = value;
+            //     }
+            // }
+            //
+
+            IdentifierNameSyntax fieldName = IdentifierName($"F{ifaceProperty.Name}");
+
+            LocalDeclarationStatementSyntax result;
+
+            return DeclareIndexer
+            (
+                property: ifaceProperty,
+                getBody: paramz => Block
+                (
+                    statements: new StatementSyntax[]
+                    {
+                        result = CallInvoke
+                        (
+                            MemberAccessExpression // FProp.GetMethod
+                            (
+                                kind: SyntaxKind.SimpleMemberAccessExpression,
+                                expression: fieldName,
+                                name: IdentifierName(nameof(PropertyInfo.GetMethod))
+                            ),
+                            CreateArray<object>(paramz // new object[] {p1, p2}
+                                .Select(param => IdentifierName(param.Identifier))
+                                .Cast<ExpressionSyntax>()
+                                .ToArray()),
+                            fieldName // FProp
+                        ),
+                        ShouldCallTarget(result, ifTrue: ReadTargetAndReturn(ifaceProperty)),
+                        ReturnResult(ifaceProperty.PropertyType, result)
+                    }
+                ),
+                setBody: paramz => Block
+                (
+                    statements: new StatementSyntax[]
+                    {
+                        result = CallInvoke
+                        (
+                            MemberAccessExpression // FProp.SetMethod
+                            (
+                                kind: SyntaxKind.SimpleMemberAccessExpression,
+                                expression: fieldName,
+                                name: IdentifierName(nameof(PropertyInfo.SetMethod))
+                            ),
+                            CreateArray<object>(paramz // new object[] {p1, p2, value}
+                                .Select(param => IdentifierName(param.Identifier))
+                                .Append(IdentifierName(Value))
+                                .Cast<ExpressionSyntax>()
+                                .ToArray()),
+                            fieldName // FProp
+                        ),
+                        ShouldCallTarget(result, ifTrue: WriteTarget(ifaceProperty))
+                    }
+                )
+            );
+        }
+
         public static IEnumerable<MemberDeclarationSyntax> GenerateProxyEvent(EventInfo @event)
         {
             //
-            // private static readonly EventInfo FEvent = EventAccess("Event");
+            // private static readonly EventInfo FEvent = Events("Event");
             //
             // event EventType IInterface.Event
             // {
@@ -394,15 +461,15 @@ namespace Solti.Utils.DI.Internals
             yield return  DeclareField<EventInfo>
             (
                 name: fieldName.Identifier.Text, 
-                initializer: InvocationExpression
+                initializer: ElementAccessExpression
                 (
-                    expression: IdentifierName(nameof(InterfaceInterceptor<TInterface>.EventAccess))
+                    expression: IdentifierName(nameof(InterfaceInterceptor<TInterface>.Events))
                 )
                 .WithArgumentList
                 (
-                    argumentList: ArgumentList
+                    argumentList: BracketedArgumentList
                     (
-                        SingletonSeparatedList
+                        arguments: SingletonSeparatedList
                         (
                             Argument(LiteralExpression(SyntaxKind.StringLiteralExpression, Literal(@event.Name)))
                         )
@@ -500,42 +567,29 @@ namespace Solti.Utils.DI.Internals
                 DeclareCtor(interceptorType.GetApplicableConstructor())
             });
 
-            //
-            // BindingFlags.FlattenHierarchy nem mukodik interface-ekre.
-            //
+            members.AddRange
+            (
+                interfaceType
+                    .ListInterfaceMembers(System.Reflection.TypeExtensions.GetMethods)
+                    .Where(m => !m.IsSpecialName)
+                    .Select(GenerateProxyMethod)
+            );
 
-            const BindingFlags bindingFlags = BindingFlags.Instance | BindingFlags.Public;
+            members.AddRange
+            (
+                interfaceType
+                    .ListInterfaceMembers(System.Reflection.TypeExtensions.GetProperties)
+                    .SelectMany(GenerateProxyProperty)
+            );
 
-            members.AddRange(GetMethods(interfaceType).Select(GenerateProxyMethod));
-            members.AddRange(GetProperties(interfaceType).SelectMany(GenerateProxyProperty));
-            members.AddRange(GetEvents(interfaceType).SelectMany(GenerateProxyEvent));
+            members.AddRange
+            (
+                interfaceType
+                    .ListInterfaceMembers(System.Reflection.TypeExtensions.GetEvents)
+                    .SelectMany(GenerateProxyEvent)
+            );
 
             return cls.WithMembers(List(members));
-
-            IEnumerable<MethodInfo> GetMethods(Type type) => type
-                .GetMethods(bindingFlags)
-                .Where(method => !method.IsSpecialName)
-                .Concat
-                (
-                    type.GetInterfaces().SelectMany(GetMethods)
-                )
-                .Distinct();
-
-            IEnumerable<PropertyInfo> GetProperties(Type type) => type
-                .GetProperties(bindingFlags)
-                .Concat
-                (
-                    type.GetInterfaces().SelectMany(GetProperties)
-                )
-                .Distinct();
-
-            IEnumerable<EventInfo> GetEvents(Type type) => type
-                .GetEvents(bindingFlags)
-                .Concat
-                (
-                    type.GetInterfaces().SelectMany(GetEvents)
-                )
-                .Distinct();
         }
         #endregion
     }

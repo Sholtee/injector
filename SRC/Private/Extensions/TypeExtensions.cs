@@ -132,5 +132,21 @@ namespace Solti.Utils.DI.Internals
             Debug.Assert(!src.IsGenericType() || src.IsGenericTypeDefinition());
             return TypeNameReplacer.Replace(src.IsNested ? src.Name : src.ToString(), string.Empty);
         }
+
+        public static IEnumerable<TMember> ListInterfaceMembers<TMember>(this Type src, Func<Type, BindingFlags, TMember[]> factory) where TMember : MemberInfo
+        {
+            Debug.Assert(src.IsInterface());
+
+            //
+            // Az BindingFlags.FlattenHierarchy interface-ekre nem mukodik ezert gyorsitotarazzuk az osszes tagot.
+            //
+
+            return factory(src, BindingFlags.Public | BindingFlags.Instance)
+                .Concat
+                (
+                    src.GetInterfaces().SelectMany(iface => ListInterfaceMembers(iface, factory))
+                )
+                .Distinct();
+        }
     }
 }
