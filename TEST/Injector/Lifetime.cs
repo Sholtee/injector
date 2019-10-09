@@ -119,7 +119,7 @@ namespace Solti.Utils.DI.Injector.Tests
 
             using (IInjector injector = Container.CreateInjector())
             {
-                Assert.Throws<ServiceNotFoundException>(() => injector.LifetimeOf<IInterface_3<int>>());
+                Assert.Null(injector.LifetimeOf<IInterface_3<int>>());
             }
         }
 
