@@ -78,7 +78,13 @@ namespace Solti.Utils.DI.Internals
                 //
 
                 Name = obj.ParameterType.FullName ?? obj.ParameterType.Name,
-                obj.Attributes
+                obj.Attributes // IN, OUT, stb
+
+                //
+                // Parameter neve nem erdekel bennunket (azonos tipussal es attributumokkal ket parametert
+                // azonosnak veszunk).
+                //
+
             }.GetHashCode();
         }
 
@@ -126,6 +132,11 @@ namespace Solti.Utils.DI.Internals
                 mme.Data.Add(nameof(ifaceProperty), ifaceProperty);
                 throw mme;
             }
+
+            //
+            // Ne a "targetProperty"-n hivjuk h akkor is jol mukodjunk ha az interface indexerenek
+            // maskepp vannak elnvezve a parameterei.
+            //
 
             ExpressionSyntax propertyAccess = PropertyAccessExpression(ifaceProperty, TARGET);
 
