@@ -197,6 +197,28 @@ references:
   fullName.vb: Solti.Utils.DI.IInjectorExtensions.LifetimeOf(Of TInterface)(Solti.Utils.DI.IInjector)
   nameWithType: IInjectorExtensions.LifetimeOf<TInterface>(IInjector)
   nameWithType.vb: IInjectorExtensions.LifetimeOf(Of TInterface)(IInjector)
+- uid: Solti.Utils.DI.IInjectorExtensions.ShouldRelease(Solti.Utils.DI.IInjector,System.Type)
+  name: ShouldRelease(IInjector, Type)
+  href: Solti.Utils.DI.IInjectorExtensions.html#Solti_Utils_DI_IInjectorExtensions_ShouldRelease_Solti_Utils_DI_IInjector_System_Type_
+  commentId: M:Solti.Utils.DI.IInjectorExtensions.ShouldRelease(Solti.Utils.DI.IInjector,System.Type)
+  fullName: Solti.Utils.DI.IInjectorExtensions.ShouldRelease(Solti.Utils.DI.IInjector, System.Type)
+  nameWithType: IInjectorExtensions.ShouldRelease(IInjector, Type)
+- uid: Solti.Utils.DI.IInjectorExtensions.ShouldRelease*
+  name: ShouldRelease
+  href: Solti.Utils.DI.IInjectorExtensions.html#Solti_Utils_DI_IInjectorExtensions_ShouldRelease_
+  commentId: Overload:Solti.Utils.DI.IInjectorExtensions.ShouldRelease
+  isSpec: "True"
+  fullName: Solti.Utils.DI.IInjectorExtensions.ShouldRelease
+  nameWithType: IInjectorExtensions.ShouldRelease
+- uid: Solti.Utils.DI.IInjectorExtensions.ShouldRelease``1(Solti.Utils.DI.IInjector)
+  name: ShouldRelease<TInterface>(IInjector)
+  href: Solti.Utils.DI.IInjectorExtensions.html#Solti_Utils_DI_IInjectorExtensions_ShouldRelease__1_Solti_Utils_DI_IInjector_
+  commentId: M:Solti.Utils.DI.IInjectorExtensions.ShouldRelease``1(Solti.Utils.DI.IInjector)
+  name.vb: ShouldRelease(Of TInterface)(IInjector)
+  fullName: Solti.Utils.DI.IInjectorExtensions.ShouldRelease<TInterface>(Solti.Utils.DI.IInjector)
+  fullName.vb: Solti.Utils.DI.IInjectorExtensions.ShouldRelease(Of TInterface)(Solti.Utils.DI.IInjector)
+  nameWithType: IInjectorExtensions.ShouldRelease<TInterface>(IInjector)
+  nameWithType.vb: IInjectorExtensions.ShouldRelease(Of TInterface)(IInjector)
 - uid: Solti.Utils.DI.InjectorEventArg
   name: InjectorEventArg
   href: Solti.Utils.DI.InjectorEventArg.html
