@@ -125,11 +125,12 @@ namespace Solti.Utils.DI.Internals
                 throw new ArgumentException(Resources.NOT_AN_INTERFACE, nameof(iface));
 
             //
-            // Mivel ez a fv elsodlegesen arra szolgal h megallapitsuk az EZZEL az injector peldannyal
-            // lekerdezett szervizek elettartamat ezert nem specializalunk.
+            // Az OnServiceRequest esemenyben visszaadhatunk olyan szervizt is ami nem volt regisztralva.
+            // Ez a tortenet viszont a kliens szamara lathatatlan -> megprobalhatja az elettartamat
+            // lekerdezni, ekkor ne legyen kivetel.
             //
 
-            return Get(iface, QueryMode.ThrowOnError).Lifetime;
+            return Get(iface, QueryMode.Default)?.Lifetime;
         }
 
         public event InjectorEventHandler<InjectorEventArg> OnServiceRequest;

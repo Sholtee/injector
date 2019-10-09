@@ -42,8 +42,7 @@ namespace Solti.Utils.DI
         /// </summary>
         /// <typeparam name="TInterface">The "id" of the service.</typeparam>
         /// <param name="self">The injector itself.</param>
-        /// <returns>The <see cref="Lifetime"/> of the service if it is producible null otherwise.</returns>
-        /// <exception cref="ServiceNotFoundException">The service could not be found.</exception>
+        /// <returns>The <see cref="Lifetime"/> of the service if it is producible, null otherwise.</returns>
         public static Lifetime? LifetimeOf<TInterface>(this IInjector self) => self != null ? self.LifetimeOf(typeof(TInterface)) : throw new ArgumentNullException(nameof(self));
 
         /// <summary>

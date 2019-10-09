@@ -38,8 +38,7 @@ namespace Solti.Utils.DI
         /// Gets the <see cref="Lifetime"/> of the given service (type).
         /// </summary>
         /// <param name="iface">>The "id" of the service.</param>
-        /// <returns>The <see cref="Lifetime"/> of the service if it is producible null otherwise.</returns>
-        /// <exception cref="ServiceNotFoundException">The service could not be found.</exception>
+        /// <returns>The <see cref="Lifetime"/> of the service if it is producible, null otherwise.</returns>
         Lifetime? LifetimeOf(Type iface);
 
         /// <summary>
