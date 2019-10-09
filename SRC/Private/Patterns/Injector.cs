@@ -125,7 +125,8 @@ namespace Solti.Utils.DI.Internals
                 throw new ArgumentException(Resources.NOT_AN_INTERFACE, nameof(iface));
 
             //
-            // Nem specializalunk.
+            // Mivel ez a fv elsodlegesen arra szolgal h megallapitsuk az EZZEL az injector peldannyal
+            // lekerdezett szervizek elettartamat ezert nem specializalunk.
             //
 
             return Get(iface, QueryMode.ThrowOnError).Lifetime;
