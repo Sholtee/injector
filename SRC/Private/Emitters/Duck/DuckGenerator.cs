@@ -88,7 +88,7 @@ namespace Solti.Utils.DI.Internals
             }.GetHashCode();
         }
 
-        internal static PropertyDeclarationSyntax GenerateDuckProperty(PropertyInfo ifaceProperty)
+        internal static MemberDeclarationSyntax GenerateDuckProperty(PropertyInfo ifaceProperty)
         {
             PropertyInfo targetProperty = typeof(TTarget).GetProperty(ifaceProperty.Name, BINDING_FLAGS);
 
@@ -145,14 +145,12 @@ namespace Solti.Utils.DI.Internals
             // figyelmen kivul lesz hagyva.
             //
 
-            return DeclareProperty
-            (
-                property: ifaceProperty,
-                getBody: ArrowExpressionClause
+            ArrowExpressionClauseSyntax 
+                getBody = ArrowExpressionClause
                 (
                     expression: propertyAccess
                 ),
-                setBody: ArrowExpressionClause
+                setBody = ArrowExpressionClause
                 (
                     expression: AssignmentExpression
                     (
@@ -160,8 +158,21 @@ namespace Solti.Utils.DI.Internals
                         left: propertyAccess,
                         right: IdentifierName(Value)
                     )
+                );
+
+            return ifaceProperty.IsIndexer()
+                ? DeclareIndexer
+                (
+                    property: ifaceProperty,
+                    getBody: paramz => getBody,
+                    setBody: paramz => setBody
                 )
-            );
+                : (MemberDeclarationSyntax) DeclareProperty
+                (
+                    property: ifaceProperty,
+                    getBody: getBody,
+                    setBody: setBody
+                );
         }
 
         internal static EventDeclarationSyntax GenerateDuckEvent(EventInfo ifaceEvent)
