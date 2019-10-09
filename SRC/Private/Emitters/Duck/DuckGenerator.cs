@@ -27,6 +27,8 @@ namespace Solti.Utils.DI.Internals
     {
         private const string TARGET = nameof(DuckBase<TTarget>.Target);
 
+        private const BindingFlags BINDING_FLAGS = BindingFlags.Instance | BindingFlags.Public | BindingFlags.FlattenHierarchy;
+
         internal static MethodDeclarationSyntax GenerateDuckMethod(MethodInfo ifaceMethod)
         {
             IReadOnlyList<ParameterInfo> paramz = ifaceMethod.GetParameters();
@@ -41,7 +43,7 @@ namespace Solti.Utils.DI.Internals
             //
 
             MethodInfo targetMethod = typeof(TTarget)
-                .GetMethods(BindingFlags.Instance | BindingFlags.Public)
+                .GetMethods(BINDING_FLAGS)
                 .FirstOrDefault(m => m.Name.Equals(ifaceMethod.Name, StringComparison.Ordinal) && m.GetParameters().SequenceEqual(paramz, new ParameterComparer()));
 
             if (targetMethod == null)
@@ -82,7 +84,7 @@ namespace Solti.Utils.DI.Internals
 
         internal static PropertyDeclarationSyntax GenerateDuckProperty(PropertyInfo ifaceProperty)
         {
-            PropertyInfo targetProperty = typeof(TTarget).GetProperty(ifaceProperty.Name, BindingFlags.Instance | BindingFlags.Public);
+            PropertyInfo targetProperty = typeof(TTarget).GetProperty(ifaceProperty.Name, BINDING_FLAGS);
 
             if 
             (
@@ -107,10 +109,17 @@ namespace Solti.Utils.DI.Internals
                 (ifaceProperty.CanWrite && !targetProperty.CanWrite) ||
 
                 //
-                // Olvasasnal ugyanigy
+                // Olvasasnal ugyanigy.
                 //
 
-                (ifaceProperty.CanRead && !targetProperty.CanRead)
+                (ifaceProperty.CanRead && !targetProperty.CanRead) ||
+
+                //
+                // Indexer property-knel pedig meg kell egyezniuk az index parameterek
+                // sorrendjenek es tipusanak.
+                //
+
+                !ifaceProperty.GetIndexParameters().Select(p => p.ParameterType).SequenceEqual(targetProperty.GetIndexParameters().Select(p => p.ParameterType))
             )
             {
                 var mme = new MissingMethodException(Resources.PROPERTY_NOT_SUPPORTED);
@@ -151,7 +160,7 @@ namespace Solti.Utils.DI.Internals
 
         internal static EventDeclarationSyntax GenerateDuckEvent(EventInfo ifaceEvent)
         {
-            EventInfo targetEvent = typeof(TTarget).GetEvent(ifaceEvent.Name, BindingFlags.Instance | BindingFlags.Public);
+            EventInfo targetEvent = typeof(TTarget).GetEvent(ifaceEvent.Name, BINDING_FLAGS);
 
             if (targetEvent == null)
             {
@@ -204,27 +213,28 @@ namespace Solti.Utils.DI.Internals
                 DeclareCtor(@base.GetApplicableConstructor())
             });
 
-            //
-            // BindingFlags.FlattenHierarchy nem mukodik interface-ekre.
-            //
-
-            const BindingFlags bindingFlags = BindingFlags.Instance | BindingFlags.Public;
-
             var exceptions = new List<Exception>();
             
             members.AddRange
             (
-                GetMethods(interfaceType).Select(m => AggregateException(m, GenerateDuckMethod, exceptions))
+                interfaceType
+                    .ListInterfaceMembers(System.Reflection.TypeExtensions.GetMethods)
+                    .Where(m => !m.IsSpecialName)
+                    .Select(m => AggregateException(m, GenerateDuckMethod, exceptions))
             );  
             
             members.AddRange
             (
-                GetProperties(interfaceType).Select(p => AggregateException(p, GenerateDuckProperty, exceptions))
+                interfaceType
+                    .ListInterfaceMembers(System.Reflection.TypeExtensions.GetProperties)
+                    .Select(p => AggregateException(p, GenerateDuckProperty, exceptions))
             );
 
             members.AddRange
             (
-                GetEvents(interfaceType).Select(e => AggregateException(e, GenerateDuckEvent, exceptions))
+                interfaceType
+                    .ListInterfaceMembers(System.Reflection.TypeExtensions.GetEvents)
+                    .Select(e => AggregateException(e, GenerateDuckEvent, exceptions))
             );
 
             //
@@ -234,31 +244,6 @@ namespace Solti.Utils.DI.Internals
             if (exceptions.Any()) throw exceptions.Count == 1 ? exceptions.Single() : new AggregateException(exceptions);
 
             return cls.WithMembers(List(members));
-
-            IEnumerable<MethodInfo> GetMethods(Type type) => type
-                .GetMethods(bindingFlags)
-                .Where(method => !method.IsSpecialName)
-                .Concat
-                (
-                    type.GetInterfaces().SelectMany(GetMethods)
-                )
-                .Distinct();
-
-            IEnumerable<PropertyInfo> GetProperties(Type type) => type
-                .GetProperties(bindingFlags)
-                .Concat
-                (
-                    type.GetInterfaces().SelectMany(GetProperties)
-                )
-                .Distinct();
-
-            IEnumerable<EventInfo> GetEvents(Type type) => type
-                .GetEvents(bindingFlags)
-                .Concat
-                (
-                    type.GetInterfaces().SelectMany(GetEvents)
-                )
-                .Distinct();
 
             TResult AggregateException<T, TResult>(T arg, Func<T, TResult> selector, ICollection<Exception> exs)
             {

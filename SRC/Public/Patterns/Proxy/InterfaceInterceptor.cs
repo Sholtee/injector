@@ -11,6 +11,8 @@ using System.Reflection;
 
 namespace Solti.Utils.DI.Proxy
 {
+    using Internals;
+
     /// <summary>
     /// Provides the mechanism for intercepting interface method calls.
     /// </summary>
@@ -48,28 +50,16 @@ namespace Solti.Utils.DI.Proxy
         // Szoval marad a mersekelten szep megoldas (esemenyeket pedig amugy sem lehet kitalalni kifejezesek segitsegevel):
         //
 
-        private static IEnumerable<TMember> ListMembers<TMember>(Type type, Func<Type, BindingFlags, TMember[]> factory) where TMember : MemberInfo =>
-            //
-            // Az BindingFlags.FlattenHierarchy interface-ekre nem mukodik ezert gyorsitotarazzuk az osszes tagot.
-            //
-
-            factory(type, BindingFlags.Public | BindingFlags.Instance)
-                .Concat
-                (
-                    type.GetInterfaces().SelectMany(iface => ListMembers(iface, factory))
-                )
-                .Distinct();
-
         /// <summary>
         /// All the <typeparamref name="TInterface"/> properties.
         /// </summary>
-        public static readonly IReadOnlyDictionary<string, PropertyInfo> Properties = ListMembers(typeof(TInterface), TypeExtensions.GetProperties)
+        public static readonly IReadOnlyDictionary<string, PropertyInfo> Properties = typeof(TInterface).ListInterfaceMembers(System.Reflection.TypeExtensions.GetProperties)
             .ToDictionary(prop => prop.Name);
 
         /// <summary>
         /// All the <typeparamref name="TInterface"/> events.
         /// </summary>
-        public static readonly IReadOnlyDictionary<string, EventInfo> Events = ListMembers(typeof(TInterface), TypeExtensions.GetEvents)
+        public static readonly IReadOnlyDictionary<string, EventInfo> Events = typeof(TInterface).ListInterfaceMembers(System.Reflection.TypeExtensions.GetEvents)
             .ToDictionary(ev => ev.Name);
 
         /// <summary>

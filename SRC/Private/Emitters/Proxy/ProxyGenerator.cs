@@ -583,42 +583,29 @@ namespace Solti.Utils.DI.Internals
                 DeclareCtor(interceptorType.GetApplicableConstructor())
             });
 
-            //
-            // BindingFlags.FlattenHierarchy nem mukodik interface-ekre.
-            //
+            members.AddRange
+            (
+                interfaceType
+                    .ListInterfaceMembers(System.Reflection.TypeExtensions.GetMethods)
+                    .Where(m => !m.IsSpecialName)
+                    .Select(GenerateProxyMethod)
+            );
 
-            const BindingFlags bindingFlags = BindingFlags.Instance | BindingFlags.Public;
+            members.AddRange
+            (
+                interfaceType
+                    .ListInterfaceMembers(System.Reflection.TypeExtensions.GetProperties)
+                    .SelectMany(GenerateProxyProperty)
+            );
 
-            members.AddRange(GetMethods(interfaceType).Select(GenerateProxyMethod));
-            members.AddRange(GetProperties(interfaceType).SelectMany(GenerateProxyProperty));
-            members.AddRange(GetEvents(interfaceType).SelectMany(GenerateProxyEvent));
+            members.AddRange
+            (
+                interfaceType
+                    .ListInterfaceMembers(System.Reflection.TypeExtensions.GetEvents)
+                    .SelectMany(GenerateProxyEvent)
+            );
 
             return cls.WithMembers(List(members));
-
-            IEnumerable<MethodInfo> GetMethods(Type type) => type
-                .GetMethods(bindingFlags)
-                .Where(method => !method.IsSpecialName)
-                .Concat
-                (
-                    type.GetInterfaces().SelectMany(GetMethods)
-                )
-                .Distinct();
-
-            IEnumerable<PropertyInfo> GetProperties(Type type) => type
-                .GetProperties(bindingFlags)
-                .Concat
-                (
-                    type.GetInterfaces().SelectMany(GetProperties)
-                )
-                .Distinct();
-
-            IEnumerable<EventInfo> GetEvents(Type type) => type
-                .GetEvents(bindingFlags)
-                .Concat
-                (
-                    type.GetInterfaces().SelectMany(GetEvents)
-                )
-                .Distinct();
         }
         #endregion
     }
