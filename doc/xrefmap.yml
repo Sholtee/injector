@@ -1248,23 +1248,14 @@ references:
   fullName.vb: Solti.Utils.DI.Proxy.InterfaceInterceptor(Of TInterface).CALL_TARGET
   nameWithType: InterfaceInterceptor<TInterface>.CALL_TARGET
   nameWithType.vb: InterfaceInterceptor(Of TInterface).CALL_TARGET
-- uid: Solti.Utils.DI.Proxy.InterfaceInterceptor`1.EventAccess(System.String)
-  name: EventAccess(String)
-  href: Solti.Utils.DI.Proxy.InterfaceInterceptor-1.html#Solti_Utils_DI_Proxy_InterfaceInterceptor_1_EventAccess_System_String_
-  commentId: M:Solti.Utils.DI.Proxy.InterfaceInterceptor`1.EventAccess(System.String)
-  fullName: Solti.Utils.DI.Proxy.InterfaceInterceptor<TInterface>.EventAccess(System.String)
-  fullName.vb: Solti.Utils.DI.Proxy.InterfaceInterceptor(Of TInterface).EventAccess(System.String)
-  nameWithType: InterfaceInterceptor<TInterface>.EventAccess(String)
-  nameWithType.vb: InterfaceInterceptor(Of TInterface).EventAccess(String)
-- uid: Solti.Utils.DI.Proxy.InterfaceInterceptor`1.EventAccess*
-  name: EventAccess
-  href: Solti.Utils.DI.Proxy.InterfaceInterceptor-1.html#Solti_Utils_DI_Proxy_InterfaceInterceptor_1_EventAccess_
-  commentId: Overload:Solti.Utils.DI.Proxy.InterfaceInterceptor`1.EventAccess
-  isSpec: "True"
-  fullName: Solti.Utils.DI.Proxy.InterfaceInterceptor<TInterface>.EventAccess
-  fullName.vb: Solti.Utils.DI.Proxy.InterfaceInterceptor(Of TInterface).EventAccess
-  nameWithType: InterfaceInterceptor<TInterface>.EventAccess
-  nameWithType.vb: InterfaceInterceptor(Of TInterface).EventAccess
+- uid: Solti.Utils.DI.Proxy.InterfaceInterceptor`1.Events
+  name: Events
+  href: Solti.Utils.DI.Proxy.InterfaceInterceptor-1.html#Solti_Utils_DI_Proxy_InterfaceInterceptor_1_Events
+  commentId: F:Solti.Utils.DI.Proxy.InterfaceInterceptor`1.Events
+  fullName: Solti.Utils.DI.Proxy.InterfaceInterceptor<TInterface>.Events
+  fullName.vb: Solti.Utils.DI.Proxy.InterfaceInterceptor(Of TInterface).Events
+  nameWithType: InterfaceInterceptor<TInterface>.Events
+  nameWithType.vb: InterfaceInterceptor(Of TInterface).Events
 - uid: Solti.Utils.DI.Proxy.InterfaceInterceptor`1.Invoke(System.Reflection.MethodInfo,System.Object[],System.Reflection.MemberInfo)
   name: Invoke(MethodInfo, Object[], MemberInfo)
   href: Solti.Utils.DI.Proxy.InterfaceInterceptor-1.html#Solti_Utils_DI_Proxy_InterfaceInterceptor_1_Invoke_System_Reflection_MethodInfo_System_Object___System_Reflection_MemberInfo_
@@ -1301,23 +1292,14 @@ references:
   fullName.vb: Solti.Utils.DI.Proxy.InterfaceInterceptor(Of TInterface).MethodAccess
   nameWithType: InterfaceInterceptor<TInterface>.MethodAccess
   nameWithType.vb: InterfaceInterceptor(Of TInterface).MethodAccess
-- uid: Solti.Utils.DI.Proxy.InterfaceInterceptor`1.PropertyAccess(System.String)
-  name: PropertyAccess(String)
-  href: Solti.Utils.DI.Proxy.InterfaceInterceptor-1.html#Solti_Utils_DI_Proxy_InterfaceInterceptor_1_PropertyAccess_System_String_
-  commentId: M:Solti.Utils.DI.Proxy.InterfaceInterceptor`1.PropertyAccess(System.String)
-  fullName: Solti.Utils.DI.Proxy.InterfaceInterceptor<TInterface>.PropertyAccess(System.String)
-  fullName.vb: Solti.Utils.DI.Proxy.InterfaceInterceptor(Of TInterface).PropertyAccess(System.String)
-  nameWithType: InterfaceInterceptor<TInterface>.PropertyAccess(String)
-  nameWithType.vb: InterfaceInterceptor(Of TInterface).PropertyAccess(String)
-- uid: Solti.Utils.DI.Proxy.InterfaceInterceptor`1.PropertyAccess*
-  name: PropertyAccess
-  href: Solti.Utils.DI.Proxy.InterfaceInterceptor-1.html#Solti_Utils_DI_Proxy_InterfaceInterceptor_1_PropertyAccess_
-  commentId: Overload:Solti.Utils.DI.Proxy.InterfaceInterceptor`1.PropertyAccess
-  isSpec: "True"
-  fullName: Solti.Utils.DI.Proxy.InterfaceInterceptor<TInterface>.PropertyAccess
-  fullName.vb: Solti.Utils.DI.Proxy.InterfaceInterceptor(Of TInterface).PropertyAccess
-  nameWithType: InterfaceInterceptor<TInterface>.PropertyAccess
-  nameWithType.vb: InterfaceInterceptor(Of TInterface).PropertyAccess
+- uid: Solti.Utils.DI.Proxy.InterfaceInterceptor`1.Properties
+  name: Properties
+  href: Solti.Utils.DI.Proxy.InterfaceInterceptor-1.html#Solti_Utils_DI_Proxy_InterfaceInterceptor_1_Properties
+  commentId: F:Solti.Utils.DI.Proxy.InterfaceInterceptor`1.Properties
+  fullName: Solti.Utils.DI.Proxy.InterfaceInterceptor<TInterface>.Properties
+  fullName.vb: Solti.Utils.DI.Proxy.InterfaceInterceptor(Of TInterface).Properties
+  nameWithType: InterfaceInterceptor<TInterface>.Properties
+  nameWithType.vb: InterfaceInterceptor(Of TInterface).Properties
 - uid: Solti.Utils.DI.Proxy.InterfaceInterceptor`1.Target
   name: Target
   href: Solti.Utils.DI.Proxy.InterfaceInterceptor-1.html#Solti_Utils_DI_Proxy_InterfaceInterceptor_1_Target
