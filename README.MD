@@ -229,3 +229,7 @@ This project currently targets *.NET Standard* 1.6 and 2.0.
   - *added* abstract service recipe
   - *added* `LazyTypeResolver` class
   - *using* [semantic versioning](https://semver.org/ )
+- 1.0.0-preview2:
+  - *added* `IInjectorExtensions.ShouldRelease()` method
+  - *added* nuget icon
+  - *updated* performance tests
