@@ -66,7 +66,14 @@
     <DocumentationFile>..\BIN\Injector.xml</DocumentationFile>
     <PackageId>Injector.NET</PackageId>
     <Product>Injector.NET</Product>
-    <Description>A featherweight dependency injector for .NET</Description>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Description>A featherweight dependency injector &amp; proxy generator.</Description>
+    <Tags>DI Dependency-Injector Dependency-Injection Injector Proxy Proxy-Generator Duck-Typing IOC</Tags>
+    <PackageIconUrl>https://github.com/Sholtee/injector/raw/master/icon.png</PackageIconUrl>
+    <PackageTags>IOC;DI;Dependency-Injector;Dependency-Injection;Injector;Proxy;Proxy-Generator;Duck-Typing</PackageTags>
+    <PackageReleaseNotes>See homepage.</PackageReleaseNotes>
+    <RepositoryUrl>https://github.com/sholtee/injector.git</RepositoryUrl>
+    <RepositoryBranch>master</RepositoryBranch>
   </PropertyGroup>
 
 </Project>
