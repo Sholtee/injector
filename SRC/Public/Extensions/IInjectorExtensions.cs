@@ -50,15 +50,39 @@ namespace Solti.Utils.DI
         /// </summary>
         /// <param name="self">The injector itself.</param>
         /// <param name="iface">The interface to be checked.</param>
-        /// <remarks>This method is intended to be called in the Dispose method of an object.</remarks>
-        public static bool ShouldRelease(this IInjector self, Type iface) => typeof(IDisposable).IsAssignableFrom(iface) && self.LifetimeOf(iface) == Lifetime.Transient;
+        /// <remarks>
+        /// <list type="bullet">
+        /// <item>
+        /// <description>This method is intended to be called in the Dispose method of an object.</description>
+        /// </item>
+        /// <item>
+        /// <description>Returning true indicates the the service has the <see cref="Lifetime.Transient"/> lifetime.</description>
+        /// </item>
+        /// </list>
+        /// </remarks>
+        public static bool ShouldRelease(this IInjector self, Type iface) => 
+            //
+            // Azt ne ellenorizzuk h az interface IDisposable leszarmazott mert ha az nem is, az implementacio
+            // meg siman lehet az.
+            //
+
+            self.LifetimeOf(iface) == Lifetime.Transient;
 
         /// <summary>
         /// Returns true if you should release service(s) with the given <typeparamref name="TInterface"/>, false otherwise.
         /// </summary>
         /// <typeparam name="TInterface"></typeparam>
         /// <param name="self">The injector itself.</param>
-        /// <remarks>This method is intended to be called in the Dispose method of an object.</remarks>
+        /// <remarks>
+        /// <list type="bullet">
+        /// <item>
+        /// <description>This method is intended to be called in the Dispose method of an object.</description>
+        /// </item>
+        /// <item>
+        /// <description>Returning true indicates the the service has the <see cref="Lifetime.Transient"/> lifetime.</description>
+        /// </item>
+        /// </list>
+        /// </remarks>
         public static bool ShouldRelease<TInterface>(this IInjector self) => self.ShouldRelease(typeof(TInterface));
     }
 }
