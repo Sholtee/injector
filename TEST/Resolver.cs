@@ -200,5 +200,12 @@ namespace Solti.Utils.DI.Internals.Tests
         {
             Assert.AreSame(Resolver.GetLazyFactory(typeof(IDisposable)), Resolver.GetLazyFactory(typeof(IDisposable)));
         }
+
+        [Test]
+        public void Resolver_Get_ShouldCache()
+        {
+            Assert.AreSame(Resolver.Get(typeof(Disposable)), Resolver.Get(typeof(Disposable)));
+            Assert.AreSame(Resolver.Get(typeof(Disposable).GetApplicableConstructor()), Resolver.Get(typeof(Disposable).GetApplicableConstructor()));
+        }
     }
 }
