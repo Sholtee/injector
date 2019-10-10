@@ -207,5 +207,12 @@ namespace Solti.Utils.DI.Internals.Tests
             Assert.AreSame(Resolver.Get(typeof(Disposable)), Resolver.Get(typeof(Disposable)));
             Assert.AreSame(Resolver.Get(typeof(Disposable).GetApplicableConstructor()), Resolver.Get(typeof(Disposable).GetApplicableConstructor()));
         }
+
+        [Test]
+        public void Resolver_GetExtended_ShouldCache()
+        {
+            Assert.AreSame(Resolver.GetExtended(typeof(Disposable)), Resolver.GetExtended(typeof(Disposable)));
+            Assert.AreSame(Resolver.GetExtended(typeof(Disposable).GetApplicableConstructor()), Resolver.GetExtended(typeof(Disposable).GetApplicableConstructor()));
+        }
     }
 }
