@@ -21,12 +21,12 @@
 		],
 		"dest": "../DOC",
 		"resource": [{
-			"files": ["favicon.ico"],
+			"files": ["icon.png"],
 			"src": "../"
 		}],
 		"globalMetadata": {
 			"_appTitle": "Injector",
-			"_appFaviconPath": "../favicon.ico",
+			"_appFaviconPath": "icon.png",
 			"_disableNavbar": true,
 			"_disableContribution": true
 		},

@@ -11,12 +11,12 @@
 		],
 		"dest": "../BenchmarkDotNet.Artifacts/perf",
 		"resource": [{
-			"files": ["favicon.ico"],
+			"files": ["icon.png"],
 			"src": "../"
 		}],
 		"globalMetadata": {
 			"_appTitle": "Benchmark Results",
-			"_appFaviconPath": "../favicon.ico",
+			"_appFaviconPath": "icon.png",
 			"_disableNavbar": true,
 			"_disableContribution": true
 		}
