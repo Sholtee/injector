@@ -20,13 +20,9 @@
 			}
 		],
 		"dest": "../DOC",
-		"resource": [{
-			"files": ["icon.png"],
-			"src": "../"
-		}],
 		"globalMetadata": {
 			"_appTitle": "Injector",
-			"_appFaviconPath": "icon.png",
+			"_appFaviconPath": "../icon.png",
 			"_disableNavbar": true,
 			"_disableContribution": true
 		},
