@@ -77,12 +77,19 @@ Registering a service can be done via several patterns (I name them recipes):
   Remarks:
   - Implementations must not have more than one public constructor (or you must annotate the appropriate one with the `ServiceActivatorAttribute`)!
   - A service may request other services via the constructor parameters:
-    ```csharp 
-    public class MyService: IMyService
-    {
-      public MyService(IInjector injector, IService_1 dep1, IService_2 dep2) {...}
-    }
-    ```
+    - ```csharp 
+      public class MyService: IMyService
+      {
+        public MyService(IInjector injector, IService_1 dep1, IService_2 dep2) {...}
+      }
+      ```
+    - Lazy initialization also possible:
+	  ```csharp 
+      public class MyService: IMyService
+      {
+        public MyService(Lazy<IService_1> dep1, Lazy<IService_2> dep2) {...}
+      }
+      ```
 - **Lazy recipe**: Similar to the service recipe except that the implementation is unknown in build time (e.g. the service implementation is placed in a module we want to load only if the service is requested). So instead of passing the implementation we provide an `ITypeResolver` which will resolve the implementation: 
   ```csharp
   container.Lazy<IMyService>(new LazyTypeResolver<IMyService>("Absolute.Path.To.Assembly", "Implementation.Fullname"), Lifetime.Transient);
@@ -198,8 +205,8 @@ injector.OnServiceRequest += (sender, arg) =>
   if (arg.Interface == typeof(IHttpRequest))
   {  
     arg.Service = Request
-	  .Act()
-	  .Like<IHttpRequest>();
+      .Act()
+      .Like<IHttpRequest>();
   }
 }
 ``` 
@@ -223,6 +230,7 @@ This project currently targets *.NET Standard* 1.6 and 2.0.
   - Core rewritten from the scratch
   - *added* service containers
   - *added* `Scoped` lifetime
+  - *added* lazy dependency resolution support
   - *added* extension based architecture
   - *added* own interface proxy implementation
   - *added* duck typing support
