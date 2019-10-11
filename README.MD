@@ -133,6 +133,9 @@ using Solti.Utils.DI.Proxy;
 container
   .Service<IMyModule, MyModule>()
   .Proxy<IMyModule>((injector, serviceInstance) => ProxyFactory.Create<IMyModule, ParameterValidatorProxy<IMyModule>>(target: serviceInstance));
+  
+// There is a shortcut to the line above:
+// container.Proxy<IMyModule, ParameterValidatorProxy<IMyModule>>();
 ```
 Where the `ParameterValidatorProxy<TInterface>` is an `InterfaceInterceptor<TInterface>` descendant containing the parameter validation logic:
 ```csharp
@@ -158,6 +161,7 @@ public class ParameterValidatorProxy<TInterface> : InterfaceInterceptor<TInterfa
 - Applying proxies is done on the service request.
 - Trying to decorate a non producible service (generic, instance, abstract) will throw.
 - Decorating an inherited service WILL NOT affect the parent.
+- `ProxyFactory` is an individual component so you can use it anywhere in your code.
 ### Auto config
 Starting from version *0.0.2* you can use the `ServiceAttribute` on service classes to annotate them for auto config. Auto config is done by a simple call to the `container.Setup(sourceAssembly)` which instructs the system to seek and register all the annotated services from the `sourceAssembly`.
 ### Creating an injector
