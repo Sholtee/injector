@@ -134,8 +134,25 @@ container
   .Service<IMyModule, MyModule>()
   .Proxy<IMyModule>((injector, serviceInstance) => ProxyFactory.Create<IMyModule, ParameterValidatorProxy<IMyModule>>(target: serviceInstance));
 ```
-Where the `ParameterValidatorProxy<TInterface>` is an `InterfaceInterceptor<TInterface>` descendant containing the parameter validation logic.
+Where the `ParameterValidatorProxy<TInterface>` is an `InterfaceInterceptor<TInterface>` descendant containing the parameter validation logic:
+```csharp
+using Solti.Utils.DI.Proxy; 
+...
+public class ParameterValidatorProxy<TInterface> : InterfaceInterceptor<TInterface>
+{
+  public override object Invoke(MethodInfo targetMethod, object[] args, MemberInfo extra)
+  {
+    // Do the validation here then call the base to let the original method 
+    // do its work. 
+    return base.Invoke(targetMethod, args, extra);
+  }
 
+  public ParameterValidatorProxy(TInterface target) : base(target)
+  {
+    // Do nothing
+  }
+}
+```
 *Remarks:*
 - Proxy pattern can be applied in any number against a service.
 - Applying proxies is done on the service request.
