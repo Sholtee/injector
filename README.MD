@@ -114,7 +114,7 @@ Registering a service can be done via several patterns (I name them recipes):
   ```csharp
   container.Instance<IMyService>(service, releaseOnDispose: true);
   ```
-  The second parameter instructs the injector to dispose the instance when the injector itself is released (defaults to false).
+  The second parameter instructs the container to dispose the instance when the container itself is released (defaults to false).
 - **Abstract recipe**: Defines an abstract service that must be overridden in the derived container(s).
   ```csharp
   container.Abstract<IMyService>();
