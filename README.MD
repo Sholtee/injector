@@ -171,7 +171,7 @@ using (IInjector injector = container.CreateInjector())
 }
 ```
 *Remarks:*
-- Injector instances are thread safe but in practice every session / worker should have its own injector.
+- Injector instances are not thread safe so every session / worker must have its own injector.
 - For proper resource management, at the end of the session you should dispose the injector (though the parent container disposal would release it as well).
 ### Requesting services
 After finishing the configuration you can request services via the `Get()` method:
