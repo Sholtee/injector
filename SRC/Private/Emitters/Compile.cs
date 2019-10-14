@@ -5,6 +5,7 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -34,8 +35,6 @@ namespace Solti.Utils.DI.Internals
             //
             // Mivel az "internal" es "protected" kulcsszavak nem leteznek IL szinten ezert itt reflexioval
             // nem tudjuk megallapitani h a tipus lathato e a kodunk szamara =(
-            //
-            // TODO: ennel vmi hatekonyabb implementaciot.
             //
 
             CompilationUnitSyntax unitToCheck = CompilationUnit().WithUsings
@@ -75,14 +74,9 @@ namespace Solti.Utils.DI.Internals
                 )
             );
 
-            using (var stm = new MemoryStream())
-            {
-                EmitResult result = compilation.Emit(stm);
-                if (result.Success) return;
-
-                Debug.WriteLine(string.Join(Environment.NewLine, result.Diagnostics));
+            ImmutableArray<Diagnostic> diagnostics = compilation.GetDeclarationDiagnostics();
+            if (diagnostics.Any(diag => diag.Severity == DiagnosticSeverity.Error))
                 throw new InvalidOperationException(string.Format(Resources.TYPE_NOT_VISIBLE, type));
-            }
 #endif
         }
 
