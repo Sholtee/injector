@@ -234,7 +234,7 @@ injector.OnServiceRequest += (sender, arg) =>
 ## Resources
 You can browse the [detailed API docs](https://sholtee.github.io/injector ) or the [benchmark results](https://sholtee.github.io/injector/perf/ ).
 ## Supported frameworks
-This project currently targets *.NET Standard* 1.6 and 2.0.
+This project currently targets *.NET Standard* 1.6, 2.0 and 2.1.
 ## Version history
 - 0.0.1: Initial release
 - 0.0.2:
@@ -262,3 +262,6 @@ This project currently targets *.NET Standard* 1.6 and 2.0.
   - *added* `IInjectorExtensions.ShouldRelease()` method
   - *added* nuget icon
   - *updated* performance tests
+- 1.0.0-preview3:
+  - *added* netstandard2.1 target
+  - *removed* some TODOs
