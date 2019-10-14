@@ -100,5 +100,16 @@ namespace Solti.Utils.DI
             }
             throw new NotSupportedException(string.Format(Resources.INTERFACE_NOT_SUPPORTED, @interface));
         }
+
+        /// <summary>
+        /// Gets the hash code of this resolver.
+        /// </summary>
+        /// <returns>The hash code of this resolver.</returns>
+        public override int GetHashCode() => new
+        {
+            Type = GetType(),
+            AssamblyPath,
+            ClassName
+        }.GetHashCode();
     }
 }

@@ -4,7 +4,6 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
-using System.Threading;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -32,33 +31,23 @@ namespace Solti.Utils.DI.Internals
             Factory = factory;
         }
 
-        protected ProducibleServiceEntry(Type @interface, Lifetime lifetime, Type implementation, IServiceContainer owner) : this(@interface, lifetime, !@interface.IsGenericTypeDefinition() ? Resolver.GetAsFactory(implementation) : null, owner)
+        protected ProducibleServiceEntry(Type @interface, Lifetime lifetime, Type implementation, IServiceContainer owner) : this(@interface, lifetime, !@interface.IsGenericTypeDefinition() ? Resolver.Get(implementation) : null, owner)
         {
             UserData = implementation;
         }
 
         protected ProducibleServiceEntry(Type @interface, Lifetime lifetime, ITypeResolver implementation, IServiceContainer owner) : base(@interface, lifetime, owner)
         {
-            var lazyImplementation = new Lazy<Type>
-            (
-                () => implementation.Resolve(@interface),
-
-                //
-                // A "LazyThreadSafetyMode.ExecutionAndPublication" miatt orokolt bejegyzesek eseten is
-                // csak egyszer fog meghivasra kerulni a resolver (adott interface-el).
-                //
-
-                LazyThreadSafetyMode.ExecutionAndPublication
-            );
+            Lazy<Type> lazyImplementation = implementation.AsLazy(@interface);
 
             UserData = lazyImplementation;
 
-            //
-            // Mivel van factory ezert lusta bejegyzesek is Proxy-zhatok.
-            //
-
             if (!@interface.IsGenericTypeDefinition())
-                Factory = Resolver.GetAsFactory(lazyImplementation);
+                //
+                // Mivel van factory ezert lusta bejegyzesek is Proxy-zhatok.
+                //
+
+                Factory = Resolver.Get(lazyImplementation);
         }
 
         protected void CheckProducible()
@@ -74,7 +63,7 @@ namespace Solti.Utils.DI.Internals
         }
 
         public sealed override Type Implementation => (UserData as Lazy<Type>)?.Value ?? (Type) UserData;
-        public override object UserData { get; }
+        public sealed override object UserData { get; }
         public sealed override Func<IInjector, Type, object> Factory { get; set; }
     }
 }

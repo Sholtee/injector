@@ -42,17 +42,19 @@ namespace Solti.Utils.DI.Internals
             return null;
         }
 
-        public static Func<IInjector, object> Get(ConstructorInfo constructor) => Cache<ConstructorInfo, Func<IInjector, object>>.GetOrAdd(constructor, () =>
+        public static Func<IInjector, Type, object> Get(ConstructorInfo constructor) => Cache<ConstructorInfo, Func<IInjector, Type, object>>.GetOrAdd(constructor, () =>
         {
             //
-            // injector => new Service(IDependency_1 | Lazy<IDependency_1>, IDependency_2 | Lazy<IDependency_2>,...)
+            // (injector, iface)  => new Service(IDependency_1 | Lazy<IDependency_1>, IDependency_2 | Lazy<IDependency_2>,...)
             //
 
-            ParameterExpression injector = Expression.Parameter(typeof(IInjector), nameof(injector));
+            ParameterExpression 
+                injector = Expression.Parameter(typeof(IInjector), nameof(injector)),
+                iface    = Expression.Parameter(typeof(Type),      nameof(iface));
 
             Type target = constructor.DeclaringType;
 
-            return constructor.ToLambda<Func<IInjector, object>>
+            return constructor.ToLambda<Func<IInjector, Type, object>>
             (
                 (param, i) =>
                 {
@@ -74,38 +76,29 @@ namespace Solti.Utils.DI.Internals
 
                         : (Expression) Expression.Call(injector, InjectorGet, Expression.Constant(parameterType), Expression.Constant(target));
                 },
-                injector
+                injector,
+                iface
             ).Compile();
         });
 
-        public static Func<IInjector, object> Get(Type type) => Cache<Type, Func<IInjector, object>>.GetOrAdd(type, () => Get(type.GetApplicableConstructor()));
-
-        private static Func<IInjector, Type, object> ConvertToFactory(Func<IInjector, object> fn) => (injector, type) => fn(injector);
+        public static Func<IInjector, Type, object> Get(Type type) => Cache<Type, Func<IInjector, Type, object>>.GetOrAdd(type, () => Get(type.GetApplicableConstructor()));
 
         //
-        // Az GetAsFactory() fv-ek azert vannak gyorsitotarazva h ket szervizbejegyzes azonos parameterekkel
-        // azonos hash kodot is adjon vissza.
+        // Igaz itt nincs idoigenyes operacio ami miatt gyorsitotarazni kene viszont a ServiceEntry-k
+        // egyezossegenek vizsgalatahoz kell.
         //
 
-        public static Func<IInjector, Type, object> GetAsFactory(Type type) => Cache<Type, Func<IInjector, Type, object>>.GetOrAdd(type, () => ConvertToFactory(Get(type)));
-
-        public static Func<IInjector, object> Get(Lazy<Type> type)
+        public static Func<IInjector, Type, object> Get(Lazy<Type> type) => Cache<Lazy<Type>, Func<IInjector, Type, object>>.GetOrAdd(type, () =>
         {    
             //
             // A Lazy<> csak azert kell h minden egyes factory hivasnal ne forduljunk a 
             // gyorsitotarhoz.
             //
 
-            var factory = new Lazy<Func<IInjector, object>>(() => Get(type.Value));
+            var factory = new Lazy<Func<IInjector, Type, object>>(() => Get(type.Value));
 
-            return injector => factory.Value(injector);
-        }
-
-        //
-        // TODO: FIXME: vhogy gyorsitotarazni
-        //
-
-        public static Func<IInjector, Type, object> GetAsFactory(Lazy<Type> type) => ConvertToFactory(Get(type));
+            return (injector, iface) => factory.Value(injector, iface);
+        });
 
         public static Func<IInjector, IReadOnlyDictionary<string, object>, object> GetExtended(ConstructorInfo constructor) => Cache<ConstructorInfo, Func<IInjector, IReadOnlyDictionary<string, object>, object>>.GetOrAdd(constructor, () =>
         {

@@ -63,11 +63,11 @@ namespace Solti.Utils.DI.Internals.Tests
                     return null;
                 });
 
-            Func<IInjector, object> factory = Resolver.Get(typeof(MyClass).GetConstructor(new[] {dep1, dep2}));
+            Func<IInjector, Type, object> factory = Resolver.Get(typeof(MyClass).GetConstructor(new[] {dep1, dep2}));
             
             Assert.That(factory, Is.Not.Null);
 
-            MyClass instance = (MyClass) factory(mockInjector.Object);
+            MyClass instance = (MyClass) factory(mockInjector.Object, null);
 
             Assert.That(instance, Is.Not.Null);
             Assert.That(instance.Dep1, Is.InstanceOf<Disposable>());
@@ -84,12 +84,12 @@ namespace Solti.Utils.DI.Internals.Tests
             var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
             mockInjector.Setup(i => i.Get(It.IsAny<Type>(), It.IsAny<Type>()));
 
-            Func<IInjector, object> factory = Resolver
+            Func<IInjector, Type, object> factory = Resolver
                 .Get(typeof(MyClass).GetConstructor(new Type[0]));
 
             Assert.That(factory, Is.Not.Null);
 
-            MyClass instance = (MyClass) factory(mockInjector.Object);
+            MyClass instance = (MyClass) factory(mockInjector.Object, null);
 
             Assert.That(instance, Is.Not.Null);
             Assert.That(instance.Dep1, Is.Null);
@@ -206,6 +206,7 @@ namespace Solti.Utils.DI.Internals.Tests
         {
             Assert.AreSame(Resolver.Get(typeof(Disposable)), Resolver.Get(typeof(Disposable)));
             Assert.AreSame(Resolver.Get(typeof(Disposable).GetApplicableConstructor()), Resolver.Get(typeof(Disposable).GetApplicableConstructor()));
+            Assert.AreSame(Resolver.Get(new LazyTypeResolver<IDisposable>(string.Empty, string.Empty).AsLazy(typeof(IDisposable))), Resolver.Get(new LazyTypeResolver<IDisposable>(string.Empty, string.Empty).AsLazy(typeof(IDisposable))));
         }
 
         [Test]
