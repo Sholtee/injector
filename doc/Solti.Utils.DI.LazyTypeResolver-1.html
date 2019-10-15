@@ -48,7 +48,8 @@
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
-    <div class="level1"><span class="xref">LazyTypeResolver&lt;TInterface&gt;</span></div>
+    <div class="level1"><a class="xref" href="Solti.Utils.DI.LazyTypeResolver.html">LazyTypeResolver</a></div>
+    <div class="level2"><span class="xref">LazyTypeResolver&lt;TInterface&gt;</span></div>
   </div>
   <div classs="implements">
     <h5>Implements</h5>
@@ -56,6 +57,27 @@
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="Solti.Utils.DI.LazyTypeResolver.html#Solti_Utils_DI_LazyTypeResolver_AssamblyPath">LazyTypeResolver.AssamblyPath</a>
+    </div>
+    <div>
+      <a class="xref" href="Solti.Utils.DI.LazyTypeResolver.html#Solti_Utils_DI_LazyTypeResolver_ClassName">LazyTypeResolver.ClassName</a>
+    </div>
+    <div>
+      <a class="xref" href="Solti.Utils.DI.LazyTypeResolver.html#Solti_Utils_DI_LazyTypeResolver_Interface">LazyTypeResolver.Interface</a>
+    </div>
+    <div>
+      <a class="xref" href="Solti.Utils.DI.LazyTypeResolver.html#Solti_Utils_DI_LazyTypeResolver_Assembly">LazyTypeResolver.Assembly</a>
+    </div>
+    <div>
+      <a class="xref" href="Solti.Utils.DI.LazyTypeResolver.html#Solti_Utils_DI_LazyTypeResolver_Supports_System_Type_">LazyTypeResolver.Supports(Type)</a>
+    </div>
+    <div>
+      <a class="xref" href="Solti.Utils.DI.LazyTypeResolver.html#Solti_Utils_DI_LazyTypeResolver_Resolve_System_Type_">LazyTypeResolver.Resolve(Type)</a>
+    </div>
+    <div>
+      <a class="xref" href="Solti.Utils.DI.LazyTypeResolver.html#Solti_Utils_DI_LazyTypeResolver_GetHashCode">LazyTypeResolver.GetHashCode()</a>
+    </div>
     <div>
       <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a>
     </div>
@@ -79,7 +101,7 @@
   <h6><strong>Assembly</strong>: Injector.dll</h6>
   <h5 id="Solti_Utils_DI_LazyTypeResolver_1_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class LazyTypeResolver&lt;TInterface&gt; : ITypeResolver where TInterface : class</code></pre>
+    <pre><code class="lang-csharp hljs">public class LazyTypeResolver&lt;TInterface&gt; : LazyTypeResolver, ITypeResolver where TInterface : class</code></pre>
   </div>
   <h5 class="typeParameters">Type Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -92,8 +114,7 @@
     <tbody>
       <tr>
         <td><span class="parametername">TInterface</span></td>
-        <td><p>The target interface.</p>
-</td>
+        <td></td>
       </tr>
     </tbody>
   </table>
@@ -129,191 +150,6 @@
         <td><span class="parametername">className</span></td>
         <td><p>The full name of the <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.type">Type</a> that implemenets the <code data-dev-comment-type="typeparamref" class="typeparamref">TInterface</code>.</p>
 </td>
-      </tr>
-    </tbody>
-  </table>
-  <h3 id="properties">Properties
-  </h3>
-  <a id="Solti_Utils_DI_LazyTypeResolver_1_AssamblyPath_" data-uid="Solti.Utils.DI.LazyTypeResolver`1.AssamblyPath*"></a>
-  <h4 id="Solti_Utils_DI_LazyTypeResolver_1_AssamblyPath" data-uid="Solti.Utils.DI.LazyTypeResolver`1.AssamblyPath">AssamblyPath</h4>
-  <div class="markdown level1 summary"><p>The absolute path of the containing <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.reflection.assembly">Assembly</a>.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public string AssamblyPath { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <a id="Solti_Utils_DI_LazyTypeResolver_1_Assembly_" data-uid="Solti.Utils.DI.LazyTypeResolver`1.Assembly*"></a>
-  <h4 id="Solti_Utils_DI_LazyTypeResolver_1_Assembly" data-uid="Solti.Utils.DI.LazyTypeResolver`1.Assembly">Assembly</h4>
-  <div class="markdown level1 summary"><p>The lazily loaded <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.reflection.assembly">Assembly</a>.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Assembly Assembly { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.reflection.assembly">Assembly</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <a id="Solti_Utils_DI_LazyTypeResolver_1_ClassName_" data-uid="Solti.Utils.DI.LazyTypeResolver`1.ClassName*"></a>
-  <h4 id="Solti_Utils_DI_LazyTypeResolver_1_ClassName" data-uid="Solti.Utils.DI.LazyTypeResolver`1.ClassName">ClassName</h4>
-  <div class="markdown level1 summary"><p>The full name of the <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.type">Type</a> that implemenets the <code data-dev-comment-type="typeparamref" class="typeparamref">TInterface</code>.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public string ClassName { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h3 id="methods">Methods
-  </h3>
-  <a id="Solti_Utils_DI_LazyTypeResolver_1_GetHashCode_" data-uid="Solti.Utils.DI.LazyTypeResolver`1.GetHashCode*"></a>
-  <h4 id="Solti_Utils_DI_LazyTypeResolver_1_GetHashCode" data-uid="Solti.Utils.DI.LazyTypeResolver`1.GetHashCode">GetHashCode()</h4>
-  <div class="markdown level1 summary"><p>Gets the hash code of this resolver.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override int GetHashCode()</code></pre>
-  </div>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
-        <td><p>The hash code of this resolver.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a></div>
-  <a id="Solti_Utils_DI_LazyTypeResolver_1_Resolve_" data-uid="Solti.Utils.DI.LazyTypeResolver`1.Resolve*"></a>
-  <h4 id="Solti_Utils_DI_LazyTypeResolver_1_Resolve_System_Type_" data-uid="Solti.Utils.DI.LazyTypeResolver`1.Resolve(System.Type)">Resolve(Type)</h4>
-  <div class="markdown level1 summary"><p>See <a class="xref" href="Solti.Utils.DI.ITypeResolver.html#Solti_Utils_DI_ITypeResolver_Resolve_System_Type_">Resolve(Type)</a>.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public virtual Type Resolve(Type interface)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.type">Type</a></td>
-        <td><span class="parametername">interface</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.type">Type</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <a id="Solti_Utils_DI_LazyTypeResolver_1_Supports_" data-uid="Solti.Utils.DI.LazyTypeResolver`1.Supports*"></a>
-  <h4 id="Solti_Utils_DI_LazyTypeResolver_1_Supports_System_Type_" data-uid="Solti.Utils.DI.LazyTypeResolver`1.Supports(System.Type)">Supports(Type)</h4>
-  <div class="markdown level1 summary"><p>See <a class="xref" href="Solti.Utils.DI.ITypeResolver.html#Solti_Utils_DI_ITypeResolver_Supports_System_Type_">Supports(Type)</a>.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public virtual bool Supports(Type interface)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.type">Type</a></td>
-        <td><span class="parametername">interface</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td></td>
       </tr>
     </tbody>
   </table>
