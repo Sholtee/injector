@@ -163,7 +163,23 @@ public class ParameterValidatorProxy<TInterface> : InterfaceInterceptor<TInterfa
 - Decorating an inherited service WILL NOT affect the parent.
 - `ProxyFactory` is an individual component so you can use it anywhere in your code.
 ### Auto config
-Starting from version *0.0.2* you can use the `ServiceAttribute` on service classes to annotate them for auto config. Auto config is done by a simple call to the `container.Setup(sourceAssembly)` which instructs the system to seek and register all the annotated services from the `sourceAssembly`.
+There are several attributes to annotate services / service interface to "auto config" e.g.:
+- ```csharp
+  using Solti.Utils.DI.Annotations
+  ...
+  [Service(typeof(IMyService), Lifetime.Scoped)] // It will use the "service recipe"
+  public MyService: IMyService {...}
+  ```
+- ```csharp
+  [ServiceInterfaceOf("Absolute.Path.To.Assembly", "Implementation.Fullname", Lifetime.Transient)] // It will use the "lazy recipe"
+  public IMyService {...}
+  ```
+- ```csharp
+  [ServiceInterfaceOf(typeof(MyService), Lifetime.Singleton)] // It will use the "service recipe"
+  public IMyService {...}
+  ```
+  
+After annotating the desired types you just have to simply call the `container.Setup(sourceAssembly)` (extension) method which instructs the system to seek and register all the annotated services from the `sourceAssembly`.
 ### Creating an injector
 ```csharp
 using (IInjector injector = container.CreateInjector())
@@ -264,4 +280,6 @@ This project currently targets *.NET Standard* 1.6, 2.0 and 2.1.
   - *updated* performance tests
 - 1.0.0-preview3:
   - *added* netstandard2.1 target
+  - *added* extensible "auto config"
+  - *added* `ServiceInterfaceOfAttribute`
   - *removed* some TODOs
