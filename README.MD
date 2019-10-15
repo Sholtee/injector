@@ -163,7 +163,7 @@ public class ParameterValidatorProxy<TInterface> : InterfaceInterceptor<TInterfa
 - Decorating an inherited service WILL NOT affect the parent.
 - `ProxyFactory` is an individual component so you can use it anywhere in your code.
 ### Auto config
-There are several attributes to annotate services / service interface to "auto config" e.g.:
+There are several attributes to annotate services / service interfaces to "auto config" e.g.:
 - ```csharp
   using Solti.Utils.DI.Annotations
   ...
