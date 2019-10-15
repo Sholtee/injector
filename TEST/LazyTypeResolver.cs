@@ -10,7 +10,7 @@ using System.Runtime.Loader;
 using Moq;
 using NUnit.Framework;
 
-namespace Solti.Utils.DI.LazyTypeResolver.Tests
+namespace Solti.Utils.DI.TypeResolver.Tests
 {
     using Properties;
 
@@ -35,7 +35,7 @@ namespace Solti.Utils.DI.LazyTypeResolver.Tests
                 .Setup(l => l.LoadFromAssemblyPath(It.IsAny<string>()))
                 .Returns<string>(AssemblyLoadContext.Default.LoadFromAssemblyPath);
             
-            var resolver = new LazyTypeResolver<IDisposable>(AsmPath, TypeName, mockLoadCtx.Object);
+            var resolver = new LazyTypeResolver(typeof(IDisposable), AsmPath, TypeName, mockLoadCtx.Object);
 
             mockLoadCtx.Verify(l => l.LoadFromAssemblyPath(It.IsAny<string>()), Times.Never);
 

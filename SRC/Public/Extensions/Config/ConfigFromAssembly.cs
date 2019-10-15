@@ -18,17 +18,17 @@ namespace Solti.Utils.DI
         /// <summary>
         /// Registers the annotated services from the given <see cref="Assembly"/>.
         /// </summary>
-        /// <param name="target">The target <see cref="IInjector"/>.</param>
+        /// <param name="container">The target <see cref="IServiceContainer"/>.</param>
         /// <param name="assembly">The source <see cref="Assembly"/>.</param>
-        /// <returns>The injector itself.</returns>
-        /// <remarks>You can annotate services with the <see cref="ServiceAttribute"/> attribute.</remarks>
-        public static IServiceContainer Setup(this IServiceContainer target, Assembly assembly)
+        /// <returns>The container itself.</returns>
+        /// <remarks>You can annotate services with the <see cref="ServiceRegistrationAttribute"/> descendants.</remarks>
+        public static IServiceContainer Setup(this IServiceContainer container, Assembly assembly)
         {
-            foreach (TypeInfo service in assembly.DefinedTypes.Where(t => t.IsClass))
-                foreach (ServiceAttribute serviceAttribute in service.GetCustomAttributes<ServiceAttribute>())
-                    target.Service(serviceAttribute.Interface, service.AsType(), serviceAttribute.Lifetime);
+            foreach (TypeInfo ti in assembly.DefinedTypes)
+                foreach (ServiceRegistrationAttribute attr in ti.GetCustomAttributes<ServiceRegistrationAttribute>())
+                    attr.Register(container, ti.AsType());
 
-            return target;
+            return container;
         }
     }
 }

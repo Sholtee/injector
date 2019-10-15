@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.IO;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 
@@ -28,31 +29,32 @@ namespace Solti.Utils.DI
     /// <summary>
     /// Implements a resolver that postpones the <see cref="System.Reflection.Assembly"/> and <see cref="Type"/> resolution until the first request.
     /// </summary>
-    /// <typeparam name="TInterface">The target interface.</typeparam>
-    public class LazyTypeResolver<TInterface>: ITypeResolver where TInterface: class
+    public class LazyTypeResolver: ITypeResolver
     {
         private readonly object FLock = new object();
-    
+
         private Assembly FAssembly;
 
         internal IAssemblyLoadContext AssemblyLoadContext { get; }
 
-        internal LazyTypeResolver(string asmPath, string className, IAssemblyLoadContext assemblyLoadContext) // tesztekhez
+        internal LazyTypeResolver(Type iface, string asmPath, string className, IAssemblyLoadContext assemblyLoadContext) // tesztekhez
         {
-            if (!typeof(TInterface).IsInterface())
+            if (!iface.IsInterface())
                 throw new ArgumentException(Resources.NOT_AN_INTERFACE);
 
-            AssamblyPath = asmPath;
+            Interface = iface;
+            AssamblyPath = Path.GetFullPath(asmPath);
             ClassName = className;
             AssemblyLoadContext = assemblyLoadContext;
         }
 
         /// <summary>
-        /// Creates a new <see cref="LazyTypeResolver{TInterface}"/> instance.
+        /// Creates a new <see cref="LazyTypeResolver"/> instance.
         /// </summary>
+        /// <param name="iface">The service interface.</param>
         /// <param name="asmPath">The absolute path of the containing <see cref="System.Reflection.Assembly"/>. This assembly will be loaded (using <see cref="System.Runtime.Loader.AssemblyLoadContext"/>) on the first <see cref="ITypeResolver.Resolve"/> call.</param>
-        /// <param name="className">The full name of the <see cref="Type"/> that implemenets the <typeparamref name="TInterface"/>.</param>
-        public LazyTypeResolver(string asmPath, string className): this(asmPath, className, System.Runtime.Loader.AssemblyLoadContext.Default.Act().Like<IAssemblyLoadContext>())
+        /// <param name="className">The full name of the <see cref="Type"/> that implemenets the <paramref name="iface"/>.</param>
+        public LazyTypeResolver(Type iface, string asmPath, string className): this(iface, asmPath, className, System.Runtime.Loader.AssemblyLoadContext.Default.Act().Like<IAssemblyLoadContext>())
         {
         }
 
@@ -62,9 +64,14 @@ namespace Solti.Utils.DI
         public string AssamblyPath { get; }
 
         /// <summary>
-        /// The full name of the <see cref="Type"/> that implemenets the <typeparamref name="TInterface"/>.
+        /// The full name of the <see cref="Type"/> that implemenets the <see cref="Interface"/>.
         /// </summary>
         public string ClassName { get; }
+
+        /// <summary>
+        /// The service interface.
+        /// </summary>
+        public Type Interface { get; }
 
         /// <summary>
         /// The lazily loaded <see cref="System.Reflection.Assembly"/>.
@@ -84,21 +91,21 @@ namespace Solti.Utils.DI
         /// <summary>
         /// See <see cref="ITypeResolver.Supports"/>.
         /// </summary>
-        public virtual bool Supports(Type @interface) => @interface == typeof(TInterface);
+        public virtual bool Supports(Type iface) => iface == Interface;
 
         /// <summary>
         /// See <see cref="ITypeResolver.Resolve"/>.
         /// </summary>
-        public virtual Type Resolve(Type @interface)
+        public virtual Type Resolve(Type iface)
         {
-            if (Supports(@interface))
+            if (Supports(iface))
             {
                 Type result = Assembly.GetType(ClassName, throwOnError: true);
 
-                if (@interface.IsAssignableFrom(result))
+                if (iface.IsAssignableFrom(result))
                     return result;
             }
-            throw new NotSupportedException(string.Format(Resources.INTERFACE_NOT_SUPPORTED, @interface));
+            throw new NotSupportedException(string.Format(Resources.INTERFACE_NOT_SUPPORTED, iface));
         }
 
         /// <summary>
@@ -111,5 +118,20 @@ namespace Solti.Utils.DI
             AssamblyPath,
             ClassName
         }.GetHashCode();
+    }
+
+    /// <summary>
+    /// Implements a resolver that postpones the <see cref="Assembly"/> and <see cref="Type"/> resolution until the first request.
+    /// </summary>
+    public class LazyTypeResolver<TInterface> : LazyTypeResolver where TInterface : class
+    {
+        /// <summary>
+        /// Creates a new <see cref="LazyTypeResolver{TInterface}"/> instance.
+        /// </summary>
+        /// <param name="asmPath">The absolute path of the containing <see cref="Assembly"/>. This assembly will be loaded (using <see cref="System.Runtime.Loader.AssemblyLoadContext"/>) on the first <see cref="ITypeResolver.Resolve"/> call.</param>
+        /// <param name="className">The full name of the <see cref="Type"/> that implemenets the <typeparamref name="TInterface"/>.</param>
+        public LazyTypeResolver(string asmPath, string className) : base(typeof(TInterface), asmPath, className)
+        {
+        }
     }
 }

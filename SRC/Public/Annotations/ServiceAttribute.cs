@@ -11,7 +11,7 @@ namespace Solti.Utils.DI.Annotations
     /// Indicates that a class is being used as a service.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
-    public sealed class ServiceAttribute: Attribute
+    public sealed class ServiceAttribute: ServiceRegistrationAttribute
     {
         /// <summary>
         /// The service interface implemented by the marked class.
@@ -19,19 +19,27 @@ namespace Solti.Utils.DI.Annotations
         public Type Interface { get; }
 
         /// <summary>
-        /// The lifetime of the service.
+        /// The <see cref="Lifetime"/> of the service being registered.
         /// </summary>
         public Lifetime Lifetime { get; }
 
         /// <summary>
-        /// Creates a new <see cref="ServiceAttribute"/> instance.
+        /// Registers a service calling the <see cref="IServiceContainerExtensions.Service(IServiceContainer, Type, Type, Lifetime)"/> method.
         /// </summary>
         /// <param name="interface">The service interface implemented by the marked class.</param>
         /// <param name="lifetime">The <see cref="Lifetime"/> of the service.</param>
         public ServiceAttribute(Type @interface, Lifetime lifetime = Lifetime.Transient)
         {
             Interface = @interface;
-            Lifetime  = lifetime;
+            Lifetime = lifetime;
+        }
+
+        /// <summary>
+        /// See <see cref="ServiceRegistrationAttribute"/>.
+        /// </summary>
+        public override void Register(IServiceContainer container, Type target)
+        {
+            container.Service(Interface, target, Lifetime);
         }
     }
 }
