@@ -278,7 +278,7 @@ This project currently targets *.NET Standard* 1.6, 2.0 and 2.1.
   - *added* `IInjectorExtensions.ShouldRelease()` method
   - *added* nuget icon
   - *updated* performance tests
-- 1.0.0-preview3:
+- 1.0.0-preview3 (unreleased):
   - *added* netstandard2.1 target
   - *added* extensible "auto config"
   - *added* `ServiceInterfaceOfAttribute`
