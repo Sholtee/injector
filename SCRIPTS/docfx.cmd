@@ -12,8 +12,6 @@ if exist %doc% rmdir /Q /S %doc%
 
 set vendor=%root%\Vendor
 
-nuget install docfx.console -OutputDirectory %vendor% -Version 2.42.4
+nuget install docfx.console -OutputDirectory %vendor% -Version 2.46.0
 
-set VSINSTALLDIR=%ProgramFiles(x86)%\Microsoft Visual Studio\2019\Community\MSBuild\Current\Bin\
-
-call %vendor%\docfx.console.2.42.4\tools\docfx.exe %root%\SRC\docfx.json
+call %vendor%\docfx.console.2.46.0\tools\docfx.exe %root%\SRC\docfx.json
