@@ -162,6 +162,7 @@ public class ParameterValidatorProxy<TInterface> : InterfaceInterceptor<TInterfa
 - Trying to decorate a non producible service (generic, instance, abstract) will throw.
 - Decorating an inherited service WILL NOT affect the parent.
 - `ProxyFactory` is an individual component so you can use it anywhere in your code.
+- Proxies may also have dependencies (`ProxyFactory` supports this scenario).
 ### Auto config
 There are several attributes to annotate services / service interfaces to "auto config" e.g.:
 - ```csharp
