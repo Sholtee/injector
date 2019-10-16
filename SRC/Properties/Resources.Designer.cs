@@ -298,7 +298,7 @@ namespace Solti.Utils.DI.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0} is not visible. The declaring assembly should be annotated with the InternalsVisibleToAttribute..
+        ///   Looks up a localized string similar to {0} (or its enclosing type) is not visible. The declaring assembly should be annotated with the InternalsVisibleToAttribute..
         /// </summary>
         internal static string TYPE_NOT_VISIBLE {
             get {
