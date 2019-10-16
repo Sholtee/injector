@@ -5,9 +5,11 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 
 namespace Solti.Utils.DI.Proxy
 {
+    using Properties;
     using Internals;
 
     /// <summary>
@@ -60,5 +62,25 @@ namespace Solti.Utils.DI.Proxy
         /// <returns>The newly created proxy instance.</returns>
         public static TInterface Create<TInterface, TInterceptor>(IInjector injector) where TInterface : class where TInterceptor : InterfaceInterceptor<TInterface> => (TInterface) 
             injector.Instantiate(GeneratedProxy<TInterface, TInterceptor>.Type);
+
+        internal static Type GetGeneratedProxyType(Type iface, Type interceptor)
+        {
+            if (!iface.IsInterface())
+                throw new ArgumentException(Resources.NOT_AN_INTERFACE, nameof(iface));
+/*
+            if (!typeof(InterfaceInterceptor<>).MakeGenericType(iface).IsAssignableFrom(interceptor))
+                throw new ArgumentException();
+*/
+            return Cache<object, Type>.GetOrAdd(new { iface, interceptor }, () => (Type) typeof(GeneratedProxy<,>)
+                .MakeGenericType(iface, interceptor)
+#if NETSTANDARD1_6
+                .GetProperty(nameof(Type), BindingFlags.Public | BindingFlags.Static)
+                .GetValue(null)
+#else
+                .InvokeMember(nameof(Type), BindingFlags.Public | BindingFlags.Static | BindingFlags.GetProperty, null, null, new object[0])
+#endif
+            );   
+            
+        }
     }
 }

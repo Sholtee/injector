@@ -54,5 +54,11 @@ namespace Solti.Utils.DI.Proxy.Tests
             Assert.That(myInterface.NotHooked(1), Is.EqualTo(1));
             Assert.That(myInterface.Hooked(1), Is.EqualTo(1986));
         }
+
+        [Test]
+        public void GetGeneratedProxyType_ShouldCache() 
+        {
+            Assert.AreSame(ProxyFactory.GetGeneratedProxyType(typeof(IMyInterface), typeof(MyProxy)), ProxyFactory.GetGeneratedProxyType(typeof(IMyInterface), typeof(MyProxy)));
+        }
     }
 }
