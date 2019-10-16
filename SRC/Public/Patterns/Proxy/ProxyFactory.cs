@@ -67,10 +67,10 @@ namespace Solti.Utils.DI.Proxy
         {
             if (!iface.IsInterface())
                 throw new ArgumentException(Resources.NOT_AN_INTERFACE, nameof(iface));
-/*
+
             if (!typeof(InterfaceInterceptor<>).MakeGenericType(iface).IsAssignableFrom(interceptor))
-                throw new ArgumentException();
-*/
+                throw new ArgumentException(Resources.INVALID_INTERCEPETOR, nameof(interceptor));
+
             return Cache<object, Type>.GetOrAdd(new { iface, interceptor }, () => (Type) typeof(GeneratedProxy<,>)
                 .MakeGenericType(iface, interceptor)
 #if NETSTANDARD1_6

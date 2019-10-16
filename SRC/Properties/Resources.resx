@@ -198,4 +198,7 @@
   <data name="TARGET_IS_NULL" xml:space="preserve">
     <value>Target is null.</value>
   </data>
+  <data name="INVALID_INTERCEPETOR" xml:space="preserve">
+    <value>Interceptor must be an InterfaceInterceptor desecndant.</value>
+  </data>
 </root>

@@ -3,6 +3,7 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
+using System;
 using System.Reflection;
 
 using NUnit.Framework;
@@ -59,6 +60,16 @@ namespace Solti.Utils.DI.Proxy.Tests
         public void GetGeneratedProxyType_ShouldCache() 
         {
             Assert.AreSame(ProxyFactory.GetGeneratedProxyType(typeof(IMyInterface), typeof(MyProxy)), ProxyFactory.GetGeneratedProxyType(typeof(IMyInterface), typeof(MyProxy)));
+        }
+
+        [Test]
+        public void GetGeneratedProxyType_ShouldValidate() 
+        {
+            var ex = Assert.Throws<ArgumentException>(() => ProxyFactory.GetGeneratedProxyType(typeof(IMyInterface), typeof(InterfaceInterceptor<IDisposable>)));
+            Assert.That(ex.ParamName, Is.EqualTo("interceptor"));
+
+            ex = Assert.Throws<ArgumentException>(() => ProxyFactory.GetGeneratedProxyType(typeof(object), typeof(InterfaceInterceptor<object>)));
+            Assert.That(ex.ParamName, Is.EqualTo("iface"));
         }
     }
 }

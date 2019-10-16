@@ -199,6 +199,15 @@ namespace Solti.Utils.DI.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Interceptor must be an InterfaceInterceptor desecndant..
+        /// </summary>
+        internal static string INVALID_INTERCEPETOR {
+            get {
+                return ResourceManager.GetString("INVALID_INTERCEPETOR", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Child must have the same parent on which the operation was perfomred..
         /// </summary>
         internal static string INVALID_PARENT {
