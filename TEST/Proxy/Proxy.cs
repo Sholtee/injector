@@ -10,6 +10,7 @@ using NUnit.Framework;
 
 namespace Solti.Utils.DI.Proxy.Tests
 {
+    using Internals;
     using Proxy;
 
     [TestFixture]
@@ -31,7 +32,17 @@ namespace Solti.Utils.DI.Proxy.Tests
 
             public MyProxy(IMyInterface target) : base(target)
             {
+            }        
+        }
+
+        public class MyProxyEx : MyProxy 
+        {
+            public MyProxyEx(IDisposable dependency, IMyInterface target) : base(target)
+            {
+                Dependency = dependency;
             }
+
+            public IDisposable Dependency { get; }
         }
 
         private sealed class MyClass : IMyInterface
@@ -50,10 +61,42 @@ namespace Solti.Utils.DI.Proxy.Tests
         [Test]
         public void InterfaceProxy_ShouldHook()
         {
-            IMyInterface myInterface = ProxyFactory.Create<IMyInterface, MyProxy>(new MyClass());
+            foreach (IMyInterface myInterface in new[]
+            {
+                ProxyFactory.Create<IMyInterface, MyProxy>(new MyClass()),
+                ProxyFactory.Create(typeof(IMyInterface), typeof(MyProxy), new MyClass()) as IMyInterface
+            })
+            {
+                Assert.NotNull(myInterface);
+                Assert.That(myInterface.NotHooked(1), Is.EqualTo(1));
+                Assert.That(myInterface.Hooked(1), Is.EqualTo(1986));
+            }
+        }
 
-            Assert.That(myInterface.NotHooked(1), Is.EqualTo(1));
-            Assert.That(myInterface.Hooked(1), Is.EqualTo(1986));
+        [Test]
+        public void InterfaceProxy_MayUseInjector() 
+        {
+            using (IServiceContainer container = new ServiceContainer()) 
+            {
+                IDisposable instance = new Disposable();
+
+                IInjector injector = container
+                    .Instance(instance)
+                    .CreateInjector();
+
+                foreach (IMyInterface myInterface in new[] 
+                { 
+                    ProxyFactory.Create(typeof(IMyInterface), typeof(MyProxyEx), new MyClass(), injector) as IMyInterface, 
+                    ProxyFactory.Create<IMyInterface, MyProxyEx>(new MyClass(), injector) 
+                })
+                {
+                    Assert.NotNull(myInterface);
+                    Assert.That(myInterface.NotHooked(1), Is.EqualTo(1));
+                    Assert.That(myInterface.Hooked(1), Is.EqualTo(1986));
+                    Assert.That(myInterface is MyProxyEx);
+                    Assert.AreSame(((MyProxyEx) myInterface).Dependency, instance);
+                }
+            }
         }
 
         [Test]

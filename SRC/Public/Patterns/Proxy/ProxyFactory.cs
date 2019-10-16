@@ -53,16 +53,6 @@ namespace Solti.Utils.DI.Proxy
                 {targetParamName, target}
             });
 
-        /// <summary>
-        /// Creates a new proxy instance with the given injector (without target).
-        /// </summary>
-        /// <typeparam name="TInterface">The interface to be intercepted.</typeparam>
-        /// <typeparam name="TInterceptor">The interceptor class.</typeparam>
-        /// <param name="injector">The injector to resolve the dependencies of the proxy.</param>
-        /// <returns>The newly created proxy instance.</returns>
-        public static TInterface Create<TInterface, TInterceptor>(IInjector injector) where TInterface : class where TInterceptor : InterfaceInterceptor<TInterface> => (TInterface) 
-            injector.Instantiate(GeneratedProxy<TInterface, TInterceptor>.Type);
-
         internal static Type GetGeneratedProxyType(Type iface, Type interceptor)
         {
             if (!iface.IsInterface())
@@ -79,8 +69,41 @@ namespace Solti.Utils.DI.Proxy
 #else
                 .InvokeMember(nameof(Type), BindingFlags.Public | BindingFlags.Static | BindingFlags.GetProperty, null, null, new object[0])
 #endif
-            );   
-            
+            );
         }
+
+        /// <summary>
+        /// Creates a new proxy instance with the given arguments.
+        /// </summary>
+        /// <param name="iface">The interface to be intercepted.</param>
+        /// <param name="interceptor">The interceptor class.</param>
+        /// <param name="argTypes">Types of arguments passed to the constructor of <paramref name="iface"/></param>
+        /// <param name="args">Arguments to be passed to the constructor of <paramref name="interceptor"/></param>
+        /// <returns>The newly created proxy instance.</returns>
+        public static object Create(Type iface, Type interceptor, Type[] argTypes, params object[] args) => GetGeneratedProxyType(iface, interceptor).CreateInstance(argTypes, args);
+
+        /// <summary>
+        /// Creates a new proxy instance with the given target.
+        /// </summary>
+        /// <param name="iface">The interface to be intercepted.</param>
+        /// <param name="interceptor">The interceptor class.</param>
+        /// <param name="target">The target of the proxy. Must be an <paramref name="iface"/> instance.</param>
+        /// <returns>The newly created proxy instance.</returns>
+        public static object Create(Type iface, Type interceptor, object target) => Create(iface, interceptor, new[] { iface }, target);
+
+        /// <summary>
+        /// Creates a new proxy instance with the given injector.
+        /// </summary>
+        /// <param name="iface">The interface to be intercepted.</param>
+        /// <param name="interceptor">The interceptor class.</param>
+        /// <param name="target">The target of the proxy.</param>
+        /// <param name="injector">The injector to resolve the dependencies of the proxy.</param>
+        /// <param name="targetParamName">Parameter name of the target (usually "target").</param>
+        /// <returns>The newly created proxy instance.</returns>
+        public static object Create(Type iface, Type interceptor, object target, IInjector injector, string targetParamName = "target") => 
+            injector.Instantiate(GetGeneratedProxyType(iface, interceptor), new Dictionary<string, object>
+            {
+                {targetParamName, target}
+            });
     }
 }
