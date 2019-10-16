@@ -11,7 +11,7 @@
 namespace Solti.Utils.DI.Properties {
     using System.Reflection;
     using Internals;
-    
+
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>
@@ -19,7 +19,7 @@ namespace Solti.Utils.DI.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
 #if DEBUG
@@ -276,6 +276,15 @@ namespace Solti.Utils.DI.Properties {
         internal static string SERVICE_NOT_FOUND {
             get {
                 return ResourceManager.GetString("SERVICE_NOT_FOUND", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Target is null..
+        /// </summary>
+        internal static string TARGET_IS_NULL {
+            get {
+                return ResourceManager.GetString("TARGET_IS_NULL", resourceCulture);
             }
         }
         

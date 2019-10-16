@@ -195,4 +195,7 @@
   <data name="UNKNOWN_LIFETIME" xml:space="preserve">
     <value>Unknown lifetime: {0}.</value>
   </data>
+  <data name="TARGET_IS_NULL" xml:space="preserve">
+    <value>Target is null.</value>
+  </data>
 </root>

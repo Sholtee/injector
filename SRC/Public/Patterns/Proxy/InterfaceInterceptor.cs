@@ -11,6 +11,7 @@ using System.Reflection;
 
 namespace Solti.Utils.DI.Proxy
 {
+    using Properties;
     using Internals;
 
     /// <summary>
@@ -81,6 +82,6 @@ namespace Solti.Utils.DI.Proxy
         /// <param name="extra">Extra info about the member from which the <paramref name="method"/> was extracted.</param>
         /// <returns>The object to return to the caller, or null for void methods.</returns>
         /// <remarks>The invocation will be forwarded to the <see cref="Target"/> if this method returns <see cref="CALL_TARGET"/>.</remarks>
-        public virtual object Invoke(MethodInfo method, object[] args, MemberInfo extra) => CALL_TARGET;
+        public virtual object Invoke(MethodInfo method, object[] args, MemberInfo extra) => Target != null ? CALL_TARGET : throw new InvalidOperationException(Resources.TARGET_IS_NULL);
     }
 }
