@@ -22,5 +22,11 @@ namespace Solti.Utils.DI.Internals.Tests
 
         private static object CacheUsage_1() => Cache<string, object>.GetOrAdd(key, () => new object());
         private static object CacheUsage_2() => Cache<string, object>.GetOrAdd(key, () => new object());
+
+        [Test]
+        public void Cache_ShouldHandleComplexKeys() 
+        {
+            Assert.AreSame(Cache<object, object>.GetOrAdd(new {k1 = typeof(object), k2 = "cica"}, () => new object()), Cache<object, object>.GetOrAdd(new { k1 = typeof(object), k2 = "cica" }, () => new object()));
+        }
     }
 }
