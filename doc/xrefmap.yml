@@ -1462,6 +1462,27 @@ references:
   commentId: T:Solti.Utils.DI.Proxy.ProxyFactory
   fullName: Solti.Utils.DI.Proxy.ProxyFactory
   nameWithType: ProxyFactory
+- uid: Solti.Utils.DI.Proxy.ProxyFactory.Create(System.Type,System.Type,System.Object)
+  name: Create(Type, Type, Object)
+  href: Solti.Utils.DI.Proxy.ProxyFactory.html#Solti_Utils_DI_Proxy_ProxyFactory_Create_System_Type_System_Type_System_Object_
+  commentId: M:Solti.Utils.DI.Proxy.ProxyFactory.Create(System.Type,System.Type,System.Object)
+  fullName: Solti.Utils.DI.Proxy.ProxyFactory.Create(System.Type, System.Type, System.Object)
+  nameWithType: ProxyFactory.Create(Type, Type, Object)
+- uid: Solti.Utils.DI.Proxy.ProxyFactory.Create(System.Type,System.Type,System.Object,Solti.Utils.DI.IInjector,System.String)
+  name: Create(Type, Type, Object, IInjector, String)
+  href: Solti.Utils.DI.Proxy.ProxyFactory.html#Solti_Utils_DI_Proxy_ProxyFactory_Create_System_Type_System_Type_System_Object_Solti_Utils_DI_IInjector_System_String_
+  commentId: M:Solti.Utils.DI.Proxy.ProxyFactory.Create(System.Type,System.Type,System.Object,Solti.Utils.DI.IInjector,System.String)
+  fullName: Solti.Utils.DI.Proxy.ProxyFactory.Create(System.Type, System.Type, System.Object, Solti.Utils.DI.IInjector, System.String)
+  nameWithType: ProxyFactory.Create(Type, Type, Object, IInjector, String)
+- uid: Solti.Utils.DI.Proxy.ProxyFactory.Create(System.Type,System.Type,System.Type[],System.Object[])
+  name: Create(Type, Type, Type[], Object[])
+  href: Solti.Utils.DI.Proxy.ProxyFactory.html#Solti_Utils_DI_Proxy_ProxyFactory_Create_System_Type_System_Type_System_Type___System_Object___
+  commentId: M:Solti.Utils.DI.Proxy.ProxyFactory.Create(System.Type,System.Type,System.Type[],System.Object[])
+  name.vb: Create(Type, Type, Type(), Object())
+  fullName: Solti.Utils.DI.Proxy.ProxyFactory.Create(System.Type, System.Type, System.Type[], System.Object[])
+  fullName.vb: Solti.Utils.DI.Proxy.ProxyFactory.Create(System.Type, System.Type, System.Type(), System.Object())
+  nameWithType: ProxyFactory.Create(Type, Type, Type[], Object[])
+  nameWithType.vb: ProxyFactory.Create(Type, Type, Type(), Object())
 - uid: Solti.Utils.DI.Proxy.ProxyFactory.Create*
   name: Create
   href: Solti.Utils.DI.Proxy.ProxyFactory.html#Solti_Utils_DI_Proxy_ProxyFactory_Create_
@@ -1487,15 +1508,6 @@ references:
   fullName.vb: Solti.Utils.DI.Proxy.ProxyFactory.Create(Of TInterface, TInterceptor)(TInterface, Solti.Utils.DI.IInjector, System.String)
   nameWithType: ProxyFactory.Create<TInterface, TInterceptor>(TInterface, IInjector, String)
   nameWithType.vb: ProxyFactory.Create(Of TInterface, TInterceptor)(TInterface, IInjector, String)
-- uid: Solti.Utils.DI.Proxy.ProxyFactory.Create``2(Solti.Utils.DI.IInjector)
-  name: Create<TInterface, TInterceptor>(IInjector)
-  href: Solti.Utils.DI.Proxy.ProxyFactory.html#Solti_Utils_DI_Proxy_ProxyFactory_Create__2_Solti_Utils_DI_IInjector_
-  commentId: M:Solti.Utils.DI.Proxy.ProxyFactory.Create``2(Solti.Utils.DI.IInjector)
-  name.vb: Create(Of TInterface, TInterceptor)(IInjector)
-  fullName: Solti.Utils.DI.Proxy.ProxyFactory.Create<TInterface, TInterceptor>(Solti.Utils.DI.IInjector)
-  fullName.vb: Solti.Utils.DI.Proxy.ProxyFactory.Create(Of TInterface, TInterceptor)(Solti.Utils.DI.IInjector)
-  nameWithType: ProxyFactory.Create<TInterface, TInterceptor>(IInjector)
-  nameWithType.vb: ProxyFactory.Create(Of TInterface, TInterceptor)(IInjector)
 - uid: Solti.Utils.DI.Proxy.ProxyFactory.Create``2(System.Type[],System.Object[])
   name: Create<TInterface, TInterceptor>(Type[], Object[])
   href: Solti.Utils.DI.Proxy.ProxyFactory.html#Solti_Utils_DI_Proxy_ProxyFactory_Create__2_System_Type___System_Object___
