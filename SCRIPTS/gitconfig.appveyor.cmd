@@ -5,7 +5,9 @@
 ::
 @echo off
 
+echo Configuring git...
+
 git config --global credential.helper store
-powershell -nologo -noprofile -command "Add-Content '%USERPROFILE%\.git-credentials' 'https://%GITHUB_REPO_TOKEN%:x-oauth-basic@github.com/sholtee/injector.git'"
+echo "https://%GITHUB_REPO_TOKEN%:x-oauth-basic@github.com/sholtee/injector.git" >> %USERPROFILE%\.git-credentials
 git config --global user.email %GITHUB_EMAIL%
 git config --global user.name "[Bot]"
