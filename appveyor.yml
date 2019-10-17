@@ -22,9 +22,8 @@ branches:
   except:
     - gh-pages
 
-build_script:
-  # prevent MSBuild from running 
-  - echo Starting build
+# prevent MSBuild from running
+build: off
 
 before_test:
   - cmd: cd scripts
@@ -44,8 +43,5 @@ for:
 
   # update documentation
   deploy_script:
-    - cmd: git config --global credential.helper store
-    - ps: Add-Content "$env:USERPROFILE\.git-credentials" "https://$($env:GITHUB_REPO_TOKEN):x-oauth-basic@github.com`n"
-    - cmd: git config --global user.email %GITHUB_EMAIL%
-    - cmd: git config --global user.name "[Bot]"
+    - cmd: gitconfig.appveyor
     - cmd: gh-pages
