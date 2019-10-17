@@ -34,7 +34,7 @@ if exist "%docs_dir%" (
 )
 
 call docfx
-move "%root%\doc" "%repo_dir%"
+xcopy /e /i "%root%\doc" "%repo_dir%"
 
 ::-----------------------------------------
 :: generate benchmark results (if needed)
@@ -51,7 +51,7 @@ if exist "%bm_dir%" (
   )
   
   call docfx-perf
-  move "%bm_dir%\perf" "%repo_dir%"
+  xcopy /e /i "%bm_dir%\perf" "%repo_dir%"
 )
 
 ::--------------------------------
