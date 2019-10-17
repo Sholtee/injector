@@ -4,12 +4,14 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Linq;
 
 using Moq;
 using NUnit.Framework;
 
 namespace Solti.Utils.DI.Container.Tests
 {
+    using Internals;
     using Properties;
     using Proxy;
     
@@ -191,5 +193,30 @@ namespace Solti.Utils.DI.Container.Tests
 
             public IInterface_1 Dependency { get; }
         }
+
+        [Test]
+        public void Container_Bulked_ProxyingTest() 
+        {
+            Container
+                .Service<IDisposable, Disposable>()
+                .Service<IMyModule1, Module1>()
+                .Service<IMyModule2, Module2>();
+
+            foreach (AbstractServiceEntry entry in Container.Where(e => typeof(IModule).IsAssignableFrom(e.Interface)))
+                Container.Proxy(entry.Interface, typeof(InterfaceInterceptor<>).MakeGenericType(entry.Interface));
+
+            using (IInjector injector = Container.CreateInjector()) 
+            {
+                Assert.That(injector.Get<IDisposable>() is Disposable);
+                Assert.That(injector.Get<IMyModule1>()  is InterfaceInterceptor<IMyModule1>);
+                Assert.That(injector.Get<IMyModule2>()  is InterfaceInterceptor<IMyModule2>);
+            }
+        }
+
+        public interface IModule { }
+        public interface IMyModule1: IModule { }
+        public interface IMyModule2 : IModule { }
+        public class Module1 : IMyModule1 { }
+        public class Module2 : IMyModule2 { }
     }
 }
