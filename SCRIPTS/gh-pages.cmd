@@ -41,12 +41,10 @@ move "%root%\doc" "%repo_dir%"
 ::-----------------------------------------
 :: generate benchmark results (if needed)
 ::-----------------------------------------
-set bm_dir="%root%\BenchmarkDotNet.Artifacts"
-
-if exist "%bm_dir%" (
+if exist "%root%\BenchmarkDotNet.Artifacts" (
   @echo Generating benchmark docs...
 
-  set perf_dir=%repo_dir%\perf
+  set perf_dir=%repo_dir%\doc.perf
 
   if exist "%perf_dir%" (
     echo Removing old docs...
@@ -54,8 +52,9 @@ if exist "%bm_dir%" (
   )
   
   call docfx-perf
+  
   echo Adding new docs...
-  move "%bm_dir%\perf" "%repo_dir%"
+  move "%root%\doc.perf" "%repo_dir%"
 )
 
 ::--------------------------------
