@@ -268,7 +268,7 @@ injector.OnServiceRequest += (sender, arg) =>
 }
 ``` 
 ## Resources
-You can browse the [detailed API docs](https://sholtee.github.io/injector ) or the [benchmark results](https://sholtee.github.io/injector/doc.perf/ ).
+You can browse the [detailed API docs](https://sholtee.github.io/injector ) or the [benchmark results](https://sholtee.github.io/injector/perf/ ).
 ## Supported frameworks
 This project currently targets *.NET Standard* 1.6, 2.0 and 2.1.
 ## Version history
