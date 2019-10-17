@@ -104,7 +104,7 @@ namespace Solti.Utils.DI.Internals
             // Generikus argumentumnak nincs teljes neve ezert a lenti sor jol kezeli a fenti
             // problemat.
             //
-            
+
             public int GetHashCode(Type obj) => (obj.FullName ?? obj.Name).GetHashCode();
         }
 
@@ -114,7 +114,7 @@ namespace Solti.Utils.DI.Internals
 
             IEnumerable<Type> GetParentsInternal()
             {
-                for(Type parent = type.DeclaringType; parent != null; parent = parent.DeclaringType)
+                for (Type parent = type.DeclaringType; parent != null; parent = parent.DeclaringType)
                     yield return parent;
             }
         }
@@ -147,6 +147,23 @@ namespace Solti.Utils.DI.Internals
                     src.GetInterfaces().SelectMany(iface => ListInterfaceMembers(iface, factory))
                 )
                 .Distinct();
+        }
+
+        public static IEnumerable<Assembly> GetReferences(this Type src)
+        {
+            Assembly declaringAsm = src.Assembly();
+
+            var references = new[] { declaringAsm }.Concat(declaringAsm.GetReferences());
+
+            //
+            // Generikus parameterek szerepelhetnek masik szerelvenyben.
+            //
+
+            if (src.IsGenericType())
+                foreach (Type type in src.GetGenericArguments().Where(t => !t.IsGenericParameter))
+                    references = references.Concat(type.GetReferences());
+
+            return references.Distinct();
         }
     }
 }

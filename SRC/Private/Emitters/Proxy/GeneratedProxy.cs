@@ -52,11 +52,9 @@ namespace Solti.Utils.DI.Internals
             {
                 typeof(Expression<>).Assembly(),
                 typeof(MethodInfo).Assembly(),
-                typeof(TInterface).Assembly(),
-                typeof(TInterceptor).Assembly()
             }
-            .Concat(typeof(TInterface).Assembly().GetReferences())
-            .Concat(typeof(TInterceptor).Assembly().GetReferences()) // az interceptor konstruktora miatt lehetnek uj referenciak
+            .Concat(typeof(TInterface).GetReferences())
+            .Concat(typeof(TInterceptor).GetReferences()) // az interceptor konstruktora miatt lehetnek uj referenciak
             .Distinct()
             .ToArray();
 

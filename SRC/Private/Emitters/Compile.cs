@@ -65,8 +65,8 @@ namespace Solti.Utils.DI.Internals
                     )
                 },
                 references: RuntimeAssemblies
-                    .Append(type.Assembly())
-                    .Concat(type.Assembly().GetReferences())
+                    .Concat(type.GetReferences())
+                    .Distinct()
                     .Select(asm => MetadataReference.CreateFromFile(asm.Location)),
                 options: CompilationOptionsFactory.Create
                 (
