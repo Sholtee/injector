@@ -10,9 +10,9 @@ set /p root=<root
 ::--------------------------------
 :: prepare repo
 ::--------------------------------
-echo cloning gh-pages...
+set repo_dir="%root%\gh-pages"
+echo Repo dir: %repo_dir%
 
-set repo_dir=%root%\gh-pages
 set docs_branch=gh-pages
 
 if exist "%repo_dir%" (
@@ -63,15 +63,18 @@ if not exist "%bm_artifacts%" (
 ::--------------------------------
 :: committing changes
 ::--------------------------------
-echo Committing...
-
 cd %repo_dir%
 
 git checkout %docs_branch%
+
 if not exist "%bm_artifacts%" (
+  echo Committing API docs...
+  
   git add doc -A
   git commit -m "docs up"
 ) else (
+  echo Committing benchmark docs...
+  
   git add perf -A
   git commit -m "benchmarks up"
 )
