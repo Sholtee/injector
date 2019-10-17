@@ -39,15 +39,16 @@ if not exist "%root%\%bm_artifacts%" (
   )
 
   call docfx
+  
   echo Adding new docs...
-  move "%root%\doc" "%repo_dir%"
+  xcopy /e /i /y "%root%\doc" "%docs_dir%"
 ) else (
   ::-----------------------------------------
   :: generate benchmark results
   ::-----------------------------------------
   @echo Generating benchmark docs...
 
-  set perf_dir=%repo_dir%\doc.perf
+  set perf_dir=%repo_dir%\perf
 
   if exist "%perf_dir%" (
     echo Removing old docs...
@@ -57,7 +58,7 @@ if not exist "%root%\%bm_artifacts%" (
   call docfx-perf
   
   echo Adding new docs...
-  move "%root%\doc.perf" "%repo_dir%"
+  move "%root%\%bm_artifacts%\perf" "%repo_dir%"
 )
 
 ::--------------------------------

@@ -9,7 +9,7 @@
 				"files": ["index.md"]
 			}
 		],
-		"dest": "../doc.perf",
+		"dest": "../BenchmarkDotNet.Artifacts/perf",
 		"resource": [{
 			"files": ["icon.png"],
 			"src": "../"
