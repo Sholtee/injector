@@ -55,8 +55,7 @@ for:
 -
   branches:
     only:
-      - master     
-      - /^perf$/
+      - master
 
   # update documentation
   deploy_script:
