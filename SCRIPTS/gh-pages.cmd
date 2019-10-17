@@ -24,10 +24,11 @@ git clone https://github.com/sholtee/injector.git --branch %docs_branch% %repo_d
 
 set bm_artifacts=BenchmarkDotNet.Artifacts
 
-::--------------------------------
-:: generate API docs
-::--------------------------------
+
 if not exist "%root%\%bm_artifacts%" (
+  ::--------------------------------
+  :: generate API docs
+  ::--------------------------------
   @echo Generating API docs...
 
   set docs_dir=%repo_dir%\doc
@@ -40,12 +41,10 @@ if not exist "%root%\%bm_artifacts%" (
   call docfx
   echo Adding new docs...
   move "%root%\doc" "%repo_dir%"
-)
-
-::-----------------------------------------
-:: generate benchmark results
-::-----------------------------------------
-else (
+) else (
+  ::-----------------------------------------
+  :: generate benchmark results
+  ::-----------------------------------------
   @echo Generating benchmark docs...
 
   set perf_dir=%repo_dir%\doc.perf
