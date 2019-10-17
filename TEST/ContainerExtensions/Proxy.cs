@@ -14,6 +14,7 @@ namespace Solti.Utils.DI.Container.Tests
     using Internals;
     using Properties;
     using Proxy;
+    using Annotations;
     
     public partial class ContainerTestsBase<TContainer>
     {
@@ -198,9 +199,8 @@ namespace Solti.Utils.DI.Container.Tests
         public void Container_Bulked_ProxyingTest() 
         {
             Container
-                .Service<IDisposable, Disposable>()
-                .Service<IMyModule1, Module1>()
-                .Service<IMyModule2, Module2>();
+                .Setup(typeof(ContainerTestsBase<>).Assembly())
+                .Service<IDisposable, Disposable>();
 
             foreach (AbstractServiceEntry entry in Container.Where(e => typeof(IModule).IsAssignableFrom(e.Interface)))
                 Container.Proxy(entry.Interface, typeof(InterfaceInterceptor<>).MakeGenericType(entry.Interface));
@@ -212,11 +212,13 @@ namespace Solti.Utils.DI.Container.Tests
                 Assert.That(injector.Get<IMyModule2>()  is InterfaceInterceptor<IMyModule2>);
             }
         }
-
-        public interface IModule { }
-        public interface IMyModule1: IModule { }
-        public interface IMyModule2 : IModule { }
-        public class Module1 : IMyModule1 { }
-        public class Module2 : IMyModule2 { }
     }
+
+    public interface IModule { }
+    public interface IMyModule1 : IModule { }
+    public interface IMyModule2 : IModule { }
+    [Service(typeof(IMyModule1))]
+    public class Module1 : IMyModule1 { }
+    [Service(typeof(IMyModule2))]
+    public class Module2 : IMyModule2 { }
 }
