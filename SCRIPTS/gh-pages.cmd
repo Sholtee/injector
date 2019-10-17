@@ -30,10 +30,12 @@ git clone https://github.com/sholtee/injector.git --branch %docs_branch% %repo_d
 set docs_dir=%repo_dir%\doc
 
 if exist "%docs_dir%" (
+  echo Removing old docs...
   rmdir /Q /S %docs_dir%
 )
 
 call docfx
+echo Adding new docs...
 move "%root%\doc" "%repo_dir%"
 
 ::-----------------------------------------
@@ -42,15 +44,17 @@ move "%root%\doc" "%repo_dir%"
 set bm_dir="%root%\BenchmarkDotNet.Artifacts"
 
 if exist "%bm_dir%" (
-  @echo generating benchmark docs...
+  @echo Generating benchmark docs...
 
   set perf_dir=%repo_dir%\perf
 
   if exist "%perf_dir%" (
+    echo Removing old docs...
     rmdir /Q /S %perf_dir%
   )
   
   call docfx-perf
+  echo Adding new docs...
   move "%bm_dir%\perf" "%repo_dir%"
 )
 
@@ -61,7 +65,7 @@ if exist "%bm_dir%" (
 
 cd %repo_dir%
 
-::git checkout %docs_branch%
+git checkout %docs_branch%
 git add doc -A
 git commit -m "docs up"
 if exist "%bm_dir%" (
