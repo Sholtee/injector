@@ -163,8 +163,33 @@ public class ParameterValidatorProxy<TInterface> : InterfaceInterceptor<TInterfa
 - Decorating an inherited service WILL NOT affect the parent.
 - `ProxyFactory` is an individual component so you can use it anywhere in your code.
 - Proxies may also have dependencies (`ProxyFactory` supports this scenario).
+- Bulked decoration also possible:
+  ```csharp
+  using Solti.Utils.DI.Proxy;
+  ...
+  public interface IModule {...}
+  public interface IMyModule1: IModule {...}
+  public interface IMyModule2 : IModule {...}
+  
+  [Service(typeof(IMyModule1))]
+  public class Module1 : IMyModule1 {...}
+  
+  [Service(typeof(IMyModule2))]
+  public class Module2 : IMyModule2 {...}
+  ...
+  void Setup()
+  {
+    Container
+      .Setup(typeof(ContainerTestsBase<>).Assembly()) // see "auto-config"
+      .Service<IMyOtherService, MyOtherService>();
+
+    foreach (AbstractServiceEntry entry in Container.Where(e => typeof(IModule).IsAssignableFrom(e.Interface)))
+      Container.Proxy(entry.Interface, typeof(InterfaceInterceptor<>).MakeGenericType(entry.Interface));
+  }
+  ```
+  
 ### Auto config
-There are some attributes to annotate services to "auto config" e.g.:
+There are some attributes to annotate services for "auto config" e.g.:
 - ```csharp
   using Solti.Utils.DI.Annotations
   ...
