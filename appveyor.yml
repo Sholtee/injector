@@ -30,25 +30,15 @@ before_test:
   - cmd: cd scripts
 
 test_script:
-  - cmd: test
-  - cmd: coveralls.io
+  - cmd: test.appveyor
 
 after_test:
   - cmd: cd ..
   # push test results  
   - ps: (New-Object 'System.Net.WebClient').UploadFile("https://ci.appveyor.com/api/testresults/nunit/$($env:APPVEYOR_JOB_ID)", (Resolve-Path .\BIN\testresults.xml))
 
-# override settings for `master` branch and version tags
+# override settings for `master` branch
 for:
--
-  branches:
-    only:
-      # works with tag names: https://www.appveyor.com/docs/branches/#build-on-tags
-      - /^perf$/
-
-  test_script:
-    # performance tests should run on "perf" tags only (time consuming)
-    - cmd: perf
 -
   branches:
     only:
