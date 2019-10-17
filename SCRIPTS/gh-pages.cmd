@@ -25,7 +25,7 @@ git clone https://github.com/sholtee/injector.git --branch %docs_branch% %repo_d
 ::--------------------------------
 :: generate API docs
 ::--------------------------------
-@echo generating API docs...
+@echo Generating API docs...
 
 set docs_dir=%repo_dir%\doc
 
@@ -57,11 +57,11 @@ if exist "%bm_dir%" (
 ::--------------------------------
 :: committing changes
 ::--------------------------------
-@echo committing...
+@echo Committing...
 
 cd %repo_dir%
 
-git checkout %docs_branch%
+::git checkout %docs_branch%
 git add doc -A
 git commit -m "docs up"
 if exist "%bm_dir%" (

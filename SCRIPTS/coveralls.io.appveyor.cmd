@@ -20,4 +20,5 @@ if not exist %bin% mkdir %bin%
 call "%vendor%\OpenCover.4.7.922\tools\OpenCover.Console.exe" -target:"%ProgramFiles%\dotnet\dotnet.exe" -targetargs:"test %root%\TEST\Injector.Tests.csproj --framework:netcoreapp2.2 --configuration:Debug" -output:"%coveragexml%" -oldStyle -register:user -filter:"+[Injector*]* -[Injector.Tests]*" -excludebyattribute:"*.ExcludeFromCoverage*"
 if %errorlevel% neq 0 exit /b %errorlevel%
 
+echo Uploading coverage reports...
 call %vendor%\coveralls.io.1.4.2\tools\coveralls.net.exe --opencover %coveragexml% -r %COVERALLS_REPO_TOKEN%
