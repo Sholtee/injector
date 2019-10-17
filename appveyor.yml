@@ -48,7 +48,7 @@ for:
     only:
       - master
       # works with tag names: https://www.appveyor.com/docs/branches/#build-on-tags
-      - /v\d+\.\d+\.\d+[-\w]*/
+      - /^perf$/i
 
   # update documentation
   deploy_script:
@@ -61,10 +61,8 @@ for:
 -
   branches:
     only:
-      - /v\d+\.\d+\.\d+[-\w]*/
+      - /^perf$/i
 
   test_script:
-    - cmd: test
-    - cmd: coveralls.io
-    # performance tests should run on version tags only (time consuming)
+    # performance tests should run on "perf" tags only (time consuming)
     - cmd: perf
