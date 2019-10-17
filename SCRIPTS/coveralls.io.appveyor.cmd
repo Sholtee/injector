@@ -1,5 +1,5 @@
 ::
-:: coveralls.io.cmd
+:: coveralls.io.appveyor.cmd
 ::
 :: Author: Denes Solti
 ::
