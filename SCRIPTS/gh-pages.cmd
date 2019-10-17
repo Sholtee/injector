@@ -22,10 +22,9 @@ if exist "%repo_dir%" (
 
 git clone https://github.com/sholtee/injector.git --branch %docs_branch% %repo_dir%
 
-set bm_artifacts=BenchmarkDotNet.Artifacts
+set bm_artifacts=%~dp0%root%\BenchmarkDotNet.Artifacts
 
-
-if not exist "%root%\%bm_artifacts%" (
+if not exist "%bm_artifacts%" (
   ::--------------------------------
   :: generate API docs
   ::--------------------------------
@@ -58,7 +57,7 @@ if not exist "%root%\%bm_artifacts%" (
   call docfx-perf
   
   echo Adding new docs...
-  move "%root%\%bm_artifacts%\perf" "%repo_dir%"
+  xcopy /e /i /y  "%bm_artifacts%\perf" "%perf_dir%"
 )
 
 ::--------------------------------
