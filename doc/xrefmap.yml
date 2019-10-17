@@ -77,44 +77,6 @@ references:
   isSpec: "True"
   fullName: Solti.Utils.DI.Annotations.ServiceAttribute.Register
   nameWithType: ServiceAttribute.Register
-- uid: Solti.Utils.DI.Annotations.ServiceInterfaceOfAttribute
-  name: ServiceInterfaceOfAttribute
-  href: Solti.Utils.DI.Annotations.ServiceInterfaceOfAttribute.html
-  commentId: T:Solti.Utils.DI.Annotations.ServiceInterfaceOfAttribute
-  fullName: Solti.Utils.DI.Annotations.ServiceInterfaceOfAttribute
-  nameWithType: ServiceInterfaceOfAttribute
-- uid: Solti.Utils.DI.Annotations.ServiceInterfaceOfAttribute.#ctor(System.String,System.String,Solti.Utils.DI.Lifetime)
-  name: ServiceInterfaceOfAttribute(String, String, Lifetime)
-  href: Solti.Utils.DI.Annotations.ServiceInterfaceOfAttribute.html#Solti_Utils_DI_Annotations_ServiceInterfaceOfAttribute__ctor_System_String_System_String_Solti_Utils_DI_Lifetime_
-  commentId: M:Solti.Utils.DI.Annotations.ServiceInterfaceOfAttribute.#ctor(System.String,System.String,Solti.Utils.DI.Lifetime)
-  fullName: Solti.Utils.DI.Annotations.ServiceInterfaceOfAttribute.ServiceInterfaceOfAttribute(System.String, System.String, Solti.Utils.DI.Lifetime)
-  nameWithType: ServiceInterfaceOfAttribute.ServiceInterfaceOfAttribute(String, String, Lifetime)
-- uid: Solti.Utils.DI.Annotations.ServiceInterfaceOfAttribute.#ctor(System.Type,Solti.Utils.DI.Lifetime)
-  name: ServiceInterfaceOfAttribute(Type, Lifetime)
-  href: Solti.Utils.DI.Annotations.ServiceInterfaceOfAttribute.html#Solti_Utils_DI_Annotations_ServiceInterfaceOfAttribute__ctor_System_Type_Solti_Utils_DI_Lifetime_
-  commentId: M:Solti.Utils.DI.Annotations.ServiceInterfaceOfAttribute.#ctor(System.Type,Solti.Utils.DI.Lifetime)
-  fullName: Solti.Utils.DI.Annotations.ServiceInterfaceOfAttribute.ServiceInterfaceOfAttribute(System.Type, Solti.Utils.DI.Lifetime)
-  nameWithType: ServiceInterfaceOfAttribute.ServiceInterfaceOfAttribute(Type, Lifetime)
-- uid: Solti.Utils.DI.Annotations.ServiceInterfaceOfAttribute.#ctor*
-  name: ServiceInterfaceOfAttribute
-  href: Solti.Utils.DI.Annotations.ServiceInterfaceOfAttribute.html#Solti_Utils_DI_Annotations_ServiceInterfaceOfAttribute__ctor_
-  commentId: Overload:Solti.Utils.DI.Annotations.ServiceInterfaceOfAttribute.#ctor
-  isSpec: "True"
-  fullName: Solti.Utils.DI.Annotations.ServiceInterfaceOfAttribute.ServiceInterfaceOfAttribute
-  nameWithType: ServiceInterfaceOfAttribute.ServiceInterfaceOfAttribute
-- uid: Solti.Utils.DI.Annotations.ServiceInterfaceOfAttribute.Register(Solti.Utils.DI.IServiceContainer,System.Type)
-  name: Register(IServiceContainer, Type)
-  href: Solti.Utils.DI.Annotations.ServiceInterfaceOfAttribute.html#Solti_Utils_DI_Annotations_ServiceInterfaceOfAttribute_Register_Solti_Utils_DI_IServiceContainer_System_Type_
-  commentId: M:Solti.Utils.DI.Annotations.ServiceInterfaceOfAttribute.Register(Solti.Utils.DI.IServiceContainer,System.Type)
-  fullName: Solti.Utils.DI.Annotations.ServiceInterfaceOfAttribute.Register(Solti.Utils.DI.IServiceContainer, System.Type)
-  nameWithType: ServiceInterfaceOfAttribute.Register(IServiceContainer, Type)
-- uid: Solti.Utils.DI.Annotations.ServiceInterfaceOfAttribute.Register*
-  name: Register
-  href: Solti.Utils.DI.Annotations.ServiceInterfaceOfAttribute.html#Solti_Utils_DI_Annotations_ServiceInterfaceOfAttribute_Register_
-  commentId: Overload:Solti.Utils.DI.Annotations.ServiceInterfaceOfAttribute.Register
-  isSpec: "True"
-  fullName: Solti.Utils.DI.Annotations.ServiceInterfaceOfAttribute.Register
-  nameWithType: ServiceInterfaceOfAttribute.Register
 - uid: Solti.Utils.DI.Annotations.ServiceRegistrationAttribute
   name: ServiceRegistrationAttribute
   href: Solti.Utils.DI.Annotations.ServiceRegistrationAttribute.html
