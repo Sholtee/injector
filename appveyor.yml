@@ -48,7 +48,7 @@ for:
     only:
       - master
       # works with tag names: https://www.appveyor.com/docs/branches/#build-on-tags
-      - /^perf$/i
+      - /^perf$/
 
   # update documentation
   deploy_script:
@@ -61,7 +61,7 @@ for:
 -
   branches:
     only:
-      - /^perf$/i
+      - /^perf$/
 
   test_script:
     # performance tests should run on "perf" tags only (time consuming)
