@@ -164,22 +164,14 @@ public class ParameterValidatorProxy<TInterface> : InterfaceInterceptor<TInterfa
 - `ProxyFactory` is an individual component so you can use it anywhere in your code.
 - Proxies may also have dependencies (`ProxyFactory` supports this scenario).
 ### Auto config
-There are several attributes to annotate services / service interfaces to "auto config" e.g.:
+There are some attributes to annotate services to "auto config" e.g.:
 - ```csharp
   using Solti.Utils.DI.Annotations
   ...
   [Service(typeof(IMyService), Lifetime.Scoped)] // It will use the "service recipe"
   public MyService: IMyService {...}
   ```
-- ```csharp
-  [ServiceInterfaceOf("Absolute.Path.To.Assembly", "Implementation.Fullname", Lifetime.Transient)] // It will use the "lazy recipe"
-  public IMyService {...}
-  ```
-- ```csharp
-  [ServiceInterfaceOf(typeof(MyService), Lifetime.Singleton)] // It will use the "service recipe"
-  public IMyService {...}
-  ```
-  
+
 After annotating the desired types you just have to simply call the `container.Setup(sourceAssembly)` (extension) method which instructs the system to seek and register all the annotated services from the `sourceAssembly`.
 ### Creating an injector
 ```csharp
@@ -282,5 +274,6 @@ This project currently targets *.NET Standard* 1.6, 2.0 and 2.1.
 - 1.0.0-preview3 (unreleased):
   - *added* netstandard2.1 target
   - *added* extensible "auto config"
-  - *added* `ServiceInterfaceOfAttribute`
+  - *added* `ProxyFactory.Create()` non generic overloads
   - *removed* some TODOs
+  - *fixed* possible missing reference error during proxy generation
