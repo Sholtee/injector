@@ -46,8 +46,16 @@ for:
 -
   branches:
     only:
-      - master
       # works with tag names: https://www.appveyor.com/docs/branches/#build-on-tags
+      - /^perf$/
+
+  test_script:
+    # performance tests should run on "perf" tags only (time consuming)
+    - cmd: perf
+-
+  branches:
+    only:
+      - master     
       - /^perf$/
 
   # update documentation
@@ -58,11 +66,3 @@ for:
     - cmd: git config --global user.name "[Bot]"
     - cmd: cd scripts
     - cmd: gh-pages
--
-  branches:
-    only:
-      - /^perf$/
-
-  test_script:
-    # performance tests should run on "perf" tags only (time consuming)
-    - cmd: perf
