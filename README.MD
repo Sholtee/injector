@@ -165,6 +165,8 @@ public class ParameterValidatorProxy<TInterface> : InterfaceInterceptor<TInterfa
 - Proxies may also have dependencies (`ProxyFactory` supports this scenario).
 - Bulked decoration also possible:
   ```csharp
+  using Solti.Utils.DI;
+  using Solti.Utils.DI.Annotations;
   using Solti.Utils.DI.Proxy;
   ...
   public interface IModule {...}
