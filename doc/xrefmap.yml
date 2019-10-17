@@ -1042,6 +1042,12 @@ references:
   fullName.vb: Solti.Utils.DI.IServiceContainerExtensions.Proxy(Solti.Utils.DI.IServiceContainer, System.Type, System.Func(Of Solti.Utils.DI.IInjector, System.Type, System.Object, System.Object))
   nameWithType: IServiceContainerExtensions.Proxy(IServiceContainer, Type, Func<IInjector, Type, Object, Object>)
   nameWithType.vb: IServiceContainerExtensions.Proxy(IServiceContainer, Type, Func(Of IInjector, Type, Object, Object))
+- uid: Solti.Utils.DI.IServiceContainerExtensions.Proxy(Solti.Utils.DI.IServiceContainer,System.Type,System.Type)
+  name: Proxy(IServiceContainer, Type, Type)
+  href: Solti.Utils.DI.IServiceContainerExtensions.html#Solti_Utils_DI_IServiceContainerExtensions_Proxy_Solti_Utils_DI_IServiceContainer_System_Type_System_Type_
+  commentId: M:Solti.Utils.DI.IServiceContainerExtensions.Proxy(Solti.Utils.DI.IServiceContainer,System.Type,System.Type)
+  fullName: Solti.Utils.DI.IServiceContainerExtensions.Proxy(Solti.Utils.DI.IServiceContainer, System.Type, System.Type)
+  nameWithType: IServiceContainerExtensions.Proxy(IServiceContainer, Type, Type)
 - uid: Solti.Utils.DI.IServiceContainerExtensions.Proxy*
   name: Proxy
   href: Solti.Utils.DI.IServiceContainerExtensions.html#Solti_Utils_DI_IServiceContainerExtensions_Proxy_
