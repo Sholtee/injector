@@ -10,13 +10,13 @@ set /p root=<root
 ::--------------------------------
 :: prepare repo
 ::--------------------------------
-@echo cloning gh-pages...
+echo cloning gh-pages...
 
 set repo_dir=%root%\gh-pages
 set docs_branch=gh-pages
 
 if exist "%repo_dir%" (
-  @echo cleanup...
+  echo Cleanup...
   rmdir /Q /S %repo_dir%
 )
 
@@ -28,7 +28,7 @@ if not exist "%bm_artifacts%" (
   ::--------------------------------
   :: generate API docs
   ::--------------------------------
-  @echo Generating API docs...
+  echo Generating API docs...
 
   set docs_dir=%repo_dir%\doc
 
@@ -39,13 +39,13 @@ if not exist "%bm_artifacts%" (
 
   call docfx
   
-  echo Adding new docs...
+  echo "Adding new docs (%root%\doc -> %docs_dir%)..."
   xcopy /e /i /y "%root%\doc" "%docs_dir%"
 ) else (
   ::-----------------------------------------
   :: generate benchmark results
   ::-----------------------------------------
-  @echo Generating benchmark docs...
+  echo Generating benchmark docs...
 
   set perf_dir=%repo_dir%\perf
 
@@ -56,14 +56,14 @@ if not exist "%bm_artifacts%" (
   
   call docfx-perf
   
-  echo Adding new docs...
+  echo "Adding new docs (%bm_artifacts%\perf -> %perf_dir%)..."
   xcopy /e /i /y  "%bm_artifacts%\perf" "%perf_dir%"
 )
 
 ::--------------------------------
 :: committing changes
 ::--------------------------------
-@echo Committing...
+echo Committing...
 
 cd %repo_dir%
 
