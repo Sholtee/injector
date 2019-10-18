@@ -10,10 +10,10 @@ set /p root=<root
 ::--------------------------------
 :: prepare repo
 ::--------------------------------
-set repo_dir="%root%\gh-pages"
-echo Repo dir: %repo_dir%
-
 set docs_branch=gh-pages
+set repo_dir="%root%\%docs_branch%"
+
+echo Repo dir: %repo_dir%
 
 if exist "%repo_dir%" (
   echo Cleanup...
@@ -28,9 +28,9 @@ if not exist "%bm_artifacts%" (
   ::--------------------------------
   :: generate API docs
   ::--------------------------------
-  echo Generating API docs...
-
   set docs_dir=%repo_dir%\doc
+  
+  echo Generating API docs "%docs_dir%"...
 
   if exist "%docs_dir%" (
     echo Removing old docs...
@@ -39,15 +39,15 @@ if not exist "%bm_artifacts%" (
 
   call docfx
   
-  echo "Adding new docs (%root%\doc -> %docs_dir%)..."
+  echo Adding new docs: "%root%\doc -> %docs_dir%"...
   xcopy /e /i /y "%root%\doc" "%docs_dir%"
 ) else (
   ::-----------------------------------------
   :: generate benchmark results
   ::-----------------------------------------
-  echo Generating benchmark docs...
-
   set perf_dir=%repo_dir%\perf
+  
+  echo Generating benchmark docs in "%perf_dir%"...
 
   if exist "%perf_dir%" (
     echo Removing old docs...
@@ -56,7 +56,7 @@ if not exist "%bm_artifacts%" (
   
   call docfx-perf
   
-  echo "Adding new docs (%bm_artifacts%\perf -> %perf_dir%)..."
+  echo Adding new docs: "%bm_artifacts%\perf -> %perf_dir%"...
   xcopy /e /i /y  "%bm_artifacts%\perf" "%perf_dir%"
 )
 
