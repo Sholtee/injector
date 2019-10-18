@@ -5,10 +5,11 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
-using System.Reflection;
 
 namespace Solti.Utils.DI
 {
+    using Properties;
+    using Internals;
     using Annotations;
 
     /// <summary>
@@ -27,6 +28,31 @@ namespace Solti.Utils.DI
         /// <exception cref="ServiceNotFoundException">The service could not be found.</exception>
         public static TInterface Get<TInterface>(this IInjector self, Type target = null) => self != null ? (TInterface) self.Get(typeof(TInterface), target) : throw new ArgumentNullException(nameof(self));
 
+        /// <summary>
+        /// Instantiates the given class.
+        /// </summary>
+        /// <param name="self">The injector itself.</param>
+        /// <param name="class">The class to be instantiated.</param>
+        /// <param name="explicitArgs">The explicit arguments (in the form of [parameter name - parameter value]). Explicit arguments won't be resolved by the injector.</param>
+        /// <returns>The new instance.</returns>
+        /// <remarks>The <paramref name="class"/> you passed must have only one public constructor or you must annotate the appropriate one with the <see cref="ServiceActivatorAttribute"/>. Constructor parameteres that are not present in the <paramref name="explicitArgs"/> are treated as a normal dependency.</remarks>
+        /// <exception cref="ServiceNotFoundException">One or more dependecies could not be found.</exception>
+        public static object Instantiate(this IInjector self, Type @class, IReadOnlyDictionary<string, object> explicitArgs = null)
+        {
+            if (self == null)
+                throw new ArgumentNullException(nameof(self));
+
+            if (@class == null)
+                throw new ArgumentNullException(nameof(@class));
+
+            if (!@class.IsClass())
+                throw new ArgumentException(Resources.NOT_A_CLASS, nameof(@class));
+
+            if (@class.IsGenericTypeDefinition())
+                throw new ArgumentException(Resources.CANT_INSTANTIATE_GENERICS, nameof(@class));
+
+            return Resolver.GetExtended(@class)(self, explicitArgs ?? new Dictionary<string, object>(0));
+        }
         /// <summary>
         /// Instantiates the given class.
         /// </summary>

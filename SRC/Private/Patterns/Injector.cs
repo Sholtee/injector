@@ -85,37 +85,6 @@ namespace Solti.Utils.DI.Internals
             }
         }
 
-        public object Instantiate(Type @class, IReadOnlyDictionary<string, object> explicitArgs)
-        {
-            if (@class == null)
-                throw new ArgumentNullException(nameof(@class));
-
-            if (!@class.IsClass())
-                throw new ArgumentException(Resources.NOT_A_CLASS, nameof(@class));
-
-            if (@class.IsGenericTypeDefinition())
-                throw new ArgumentException(Resources.CANT_INSTANTIATE_GENERICS, nameof(@class));
-
-            //
-            // Itt nincs ertelme OnServiceRequest esemenynek mivel nincs szerviz interface-unk.
-            //
-
-            Func<IInjector, IReadOnlyDictionary<string, object>, object> factory = Resolver.GetExtended(@class);
-
-            //
-            // Ha az OnServiceRequested esemenyben felulirjak a szervizt akkor azt
-            // adjuk vissza.
-            //
-
-            var ev = new InjectorEventArg(@class)
-            {
-                Service = factory(this, explicitArgs ?? new Dictionary<string, object>(0))
-            };
-            OnServiceRequested?.Invoke(this, ev);
-
-            return ev.Service;
-        }
-
         public Lifetime? LifetimeOf(Type iface)
         {
             if (iface == null)

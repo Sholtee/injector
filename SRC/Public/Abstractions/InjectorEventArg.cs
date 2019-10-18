@@ -32,7 +32,7 @@ namespace Solti.Utils.DI
         /// Creates a new <see cref="InjectorEventArg"/> instance.
         /// </summary>
         /// <param name="target">The target who requested the service.</param>
-        /// <remarks>This constructor is tipically used in <see cref="IInjector.Instantiate"/> calls.</remarks>
+        /// <remarks>This constructor is tipically used in <see cref="IInjectorExtensions.Instantiate"/> calls.</remarks>
         public InjectorEventArg(Type target): this(null, target)
         {           
         }

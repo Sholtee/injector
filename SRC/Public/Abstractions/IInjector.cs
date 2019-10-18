@@ -25,16 +25,6 @@ namespace Solti.Utils.DI
         object Get(Type iface, Type target = null);
 
         /// <summary>
-        /// Instantiates the given class.
-        /// </summary>
-        /// <param name="class">The class to be instantiated.</param>
-        /// <param name="explicitArgs">The explicit arguments (in the form of [parameter name - parameter value]). Explicit arguments won't be resolved by the injector.</param>
-        /// <returns>The new instance.</returns>
-        /// <remarks>The <paramref name="class"/> you passed must have only one public constructor or you must annotate the appropriate one with the <see cref="ServiceActivatorAttribute"/>. Constructor parameteres that are not present in the <paramref name="explicitArgs"/> are treated as a normal dependency.</remarks>
-        /// <exception cref="ServiceNotFoundException">One or more dependecies could not be found.</exception>
-        object Instantiate(Type @class, IReadOnlyDictionary<string, object> explicitArgs = null);
-
-        /// <summary>
         /// Gets the <see cref="Lifetime"/> of the given service (type).
         /// </summary>
         /// <param name="iface">>The "id" of the service.</param>

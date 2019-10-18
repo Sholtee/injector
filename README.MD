@@ -304,3 +304,4 @@ This project currently targets *.NET Standard* 1.6, 2.0 and 2.1.
   - *added* `ProxyFactory.Create()` non generic overloads
   - *removed* some TODOs
   - *fixed* possible missing reference error during proxy generation
+  - `IInjector.Instantiate()` is an extension from now
