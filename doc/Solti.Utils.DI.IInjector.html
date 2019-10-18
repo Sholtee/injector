@@ -124,74 +124,6 @@
       </tr>
     </tbody>
   </table>
-  <a id="Solti_Utils_DI_IInjector_Instantiate_" data-uid="Solti.Utils.DI.IInjector.Instantiate*"></a>
-  <h4 id="Solti_Utils_DI_IInjector_Instantiate_System_Type_System_Collections_Generic_IReadOnlyDictionary_System_String_System_Object__" data-uid="Solti.Utils.DI.IInjector.Instantiate(System.Type,System.Collections.Generic.IReadOnlyDictionary{System.String,System.Object})">Instantiate(Type, IReadOnlyDictionary&lt;String, Object&gt;)</h4>
-  <div class="markdown level1 summary"><p>Instantiates the given class.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">object Instantiate(Type class, IReadOnlyDictionary&lt;string, object&gt; explicitArgs = null)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.type">Type</a></td>
-        <td><span class="parametername">class</span></td>
-        <td><p>The class to be instantiated.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2">IReadOnlyDictionary</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a>&gt;</td>
-        <td><span class="parametername">explicitArgs</span></td>
-        <td><p>The explicit arguments (in the form of [parameter name - parameter value]). Explicit arguments won&apos;t be resolved by the injector.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></td>
-        <td><p>The new instance.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Solti_Utils_DI_IInjector_Instantiate_System_Type_System_Collections_Generic_IReadOnlyDictionary_System_String_System_Object___remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>The <code data-dev-comment-type="paramref" class="paramref">class</code> you passed must have only one public constructor or you must annotate the appropriate one with the <a class="xref" href="Solti.Utils.DI.Annotations.ServiceActivatorAttribute.html">ServiceActivatorAttribute</a>. Constructor parameteres that are not present in the <code data-dev-comment-type="paramref" class="paramref">explicitArgs</code> are treated as a normal dependency.</p>
-</div>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Solti.Utils.DI.ServiceNotFoundException.html">ServiceNotFoundException</a></td>
-        <td><p>One or more dependecies could not be found.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
   <a id="Solti_Utils_DI_IInjector_LifetimeOf_" data-uid="Solti.Utils.DI.IInjector.LifetimeOf*"></a>
   <h4 id="Solti_Utils_DI_IInjector_LifetimeOf_System_Type_" data-uid="Solti.Utils.DI.IInjector.LifetimeOf(System.Type)">LifetimeOf(Type)</h4>
   <div class="markdown level1 summary"><p>Gets the <a class="xref" href="Solti.Utils.DI.Lifetime.html">Lifetime</a> of the given service (type).</p>
@@ -290,6 +222,9 @@
   <h3 id="extensionmethods">Extension Methods</h3>
   <div>
       <a class="xref" href="Solti.Utils.DI.IInjectorExtensions.html#Solti_Utils_DI_IInjectorExtensions_Get__1_Solti_Utils_DI_IInjector_System_Type_">IInjectorExtensions.Get&lt;TInterface&gt;(IInjector, Type)</a>
+  </div>
+  <div>
+      <a class="xref" href="Solti.Utils.DI.IInjectorExtensions.html#Solti_Utils_DI_IInjectorExtensions_Instantiate_Solti_Utils_DI_IInjector_System_Type_System_Collections_Generic_IReadOnlyDictionary_System_String_System_Object__">IInjectorExtensions.Instantiate(IInjector, Type, IReadOnlyDictionary&lt;String, Object&gt;)</a>
   </div>
   <div>
       <a class="xref" href="Solti.Utils.DI.IInjectorExtensions.html#Solti_Utils_DI_IInjectorExtensions_Instantiate__1_Solti_Utils_DI_IInjector_System_Collections_Generic_IReadOnlyDictionary_System_String_System_Object__">IInjectorExtensions.Instantiate&lt;TClass&gt;(IInjector, IReadOnlyDictionary&lt;String, Object&gt;)</a>
