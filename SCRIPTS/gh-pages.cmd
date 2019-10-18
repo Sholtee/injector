@@ -34,13 +34,14 @@ set bm_artifacts=%~dp0%root%\BenchmarkDotNet.Artifacts
 if not exist "%bm_artifacts%" (
   set docs_dir=%repo_dir%\doc
   
-  echo Generating API docs in "!docs_dir!"...
+  echo API docs folder: "!docs_dir!"
 
   if exist "!docs_dir!" (
     echo Removing old docs...
     rmdir /Q /S "!docs_dir!"
   )
 
+  echo Building API docs...
   call docfx
   
   echo Moving docs...  
@@ -48,13 +49,14 @@ if not exist "%bm_artifacts%" (
 ) else (
   set perf_dir=%repo_dir%\perf
   
-  echo Generating benchmark docs in "!perf_dir!"...
+  echo Benchmark docs folder: "!perf_dir!"
 
   if exist "!perf_dir!" (
     echo Removing old docs...
     rmdir /Q /S "!perf_dir!"
   )
   
+  echo Building benchmark docs...
   call docfx-perf
   
   echo Moving docs... 
