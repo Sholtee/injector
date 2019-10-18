@@ -20,17 +20,17 @@ if exist "%repo_dir%" (
   rmdir /Q /S %repo_dir%
 )
 
-git clone https://github.com/sholtee/injector.git --branch %docs_branch% %repo_dir%
+git clone https://github.com/sholtee/injector.git --branch "%docs_branch%" "%repo_dir%"
 
-set bm_artifacts=%~dp0%root%\BenchmarkDotNet.Artifacts
+set bm_artifacts="%~dp0%root%\BenchmarkDotNet.Artifacts"
 
+::--------------------------------
+:: generate API docs
+::--------------------------------
 if not exist "%bm_artifacts%" (
-  ::--------------------------------
-  :: generate API docs
-  ::--------------------------------
-  set docs_dir=%repo_dir%\doc
+  set docs_dir="%repo_dir%\doc"
   
-  echo Generating API docs "%docs_dir%"...
+  echo Generating API docs in "%docs_dir%"...
 
   if exist "%docs_dir%" (
     echo Removing old docs...
@@ -41,11 +41,12 @@ if not exist "%bm_artifacts%" (
   
   echo Adding new docs: "%root%\doc -> %docs_dir%"...
   xcopy /e /i /y "%root%\doc" "%docs_dir%"
+  
+::-----------------------------------------
+:: generate benchmark results
+::-----------------------------------------
 ) else (
-  ::-----------------------------------------
-  :: generate benchmark results
-  ::-----------------------------------------
-  set perf_dir=%repo_dir%\perf
+  set perf_dir="%repo_dir%\perf"
   
   echo Generating benchmark docs in "%perf_dir%"...
 
