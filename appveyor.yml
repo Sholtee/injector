@@ -29,7 +29,7 @@ before_test:
   - cmd: cd scripts
 
 test_script:
-  - cmd: echo running tests...
+  - cmd: test.appveyor
 
 after_test:
   - cmd: uploadtestresults.appveyor
