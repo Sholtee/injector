@@ -43,8 +43,8 @@ if not exist "%bm_artifacts%" (
 
   call docfx
   
-  echo Adding new docs: "%root%\doc" -> "!docs_dir!"...
-  xcopy /e /i /y "%root%\doc" "!docs_dir!"
+  echo Moving docs...  
+  move "%root%\doc" "%repo_dir%"
 ) else (
   set perf_dir=%repo_dir%\perf
   
@@ -57,8 +57,8 @@ if not exist "%bm_artifacts%" (
   
   call docfx-perf
   
-  echo Adding new docs: "%bm_artifacts%\perf" -> "!perf_dir!"...
-  xcopy /e /i /y  "%bm_artifacts%\perf" "!perf_dir!"
+  echo Moving docs... 
+  move "%bm_artifacts%\perf" "%repo_dir%"
 )
 
 ::--------------------------------
