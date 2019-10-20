@@ -8,16 +8,16 @@
 setlocal EnableDelayedExpansion
 
 set /p root=<root
-set bin=%root%\BIN
+set artifacts=%root%\Artifacts
 
-set testresults=%bin%\testresults.xml
+set testresults=%artifacts%\testresults.xml
 
 if exist %testresults% (
   echo Uploading test results...
   powershell -nologo -noprofile -command "(New-Object 'System.Net.WebClient').UploadFile('https://ci.appveyor.com/api/testresults/nunit/%APPVEYOR_JOB_ID%', (Resolve-Path %testresults%))"
 )
 
-set coveragereport=%bin%\coverage.xml
+set coveragereport=%artifacts%\coverage.xml
 
 if exist %coveragereport% (
   echo Uploading coverage report...
