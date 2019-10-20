@@ -14,6 +14,8 @@ environment:
     secure: p2Kcud3WthUkXXcArmyAEggtW8E3L7ELxH0TXnjlnhmCUMPAQ9s5ApIX3By05W8B
   GITHUB_REPO_TOKEN:
     secure: qJEufJv866eebR/Boe1UnV3p1arOIX9BTyqAQnAVY49h4Ks40Sr0rHb3iN70e7BZ
+  NUGET_REPO_TOKEN:
+    secure: UlwkykISUtzAOpzVe0HdezbxNzE5UAXBpnMGu7rApIgjWbDG3ueXuFC92IOIpmtk
   GITHUB_EMAIL:
     secure: Z6F+xZzdZzc5DMYB/4J0KUhyoTzTlXH75ciGl7hFH9s=
 
