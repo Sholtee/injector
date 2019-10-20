@@ -24,6 +24,6 @@ if exist %coveragereport% (
   
   set vendor=%root%\Vendor
   
-  nuget install OpenCover -OutputDirectory !vendor! -Version 4.7.922
+  nuget install coveralls.io -OutputDirectory !vendor! -Version 1.4.2
   call !vendor!\coveralls.io.1.4.2\tools\coveralls.net.exe --opencover %coveragereport% -r %COVERALLS_REPO_TOKEN%
 )
