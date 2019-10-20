@@ -42,7 +42,7 @@ if not exist "%bm_artifacts%" (
   )
 
   echo Building new API docs...
-  call docfx
+  call docfx %root%\src\docfx.json
   
   echo Moving docs...  
   move "%root%\doc" "%repo_dir%"
@@ -57,7 +57,7 @@ if not exist "%bm_artifacts%" (
   )
   
   echo Building new benchmark docs...
-  call docfx-perf
+  call docfx %root%\perf\docfx.json
   
   echo Moving docs... 
   move "%bm_artifacts%\perf" "%repo_dir%"
