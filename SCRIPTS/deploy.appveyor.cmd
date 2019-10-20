@@ -23,5 +23,5 @@ if /i %deploying% == true (
 
   echo Deploying...
   call pack
-  dotnet nuget push !bin!\*.nupkg -k %NUGET_REPO_TOKEN%
+  dotnet nuget push !bin!\*.nupkg -s https://api.nuget.org/v3/index.json -k %NUGET_REPO_TOKEN%
 )
