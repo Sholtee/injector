@@ -10,6 +10,5 @@ if /i "%APPVEYOR_REPO_TAG_NAME%" == "perf" (
   call perf
 ) else (
   echo Running regular tests...
-  call test
-  call coveralls.io.appveyor
+  call testNcover
 )
