@@ -6,7 +6,7 @@
 @echo off
 
 set /p root=<root
-set tmpfile="%root%\BIN\currentbranch"
+set tmpfile="%root%\currentbranch"
 git rev-parse --abbrev-ref HEAD>%tmpfile%
 set /p currentbranch=<%tmpfile%
 del %tmpfile%

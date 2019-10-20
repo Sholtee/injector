@@ -41,7 +41,11 @@ for:
     only:
       - master
 
-  # update documentation
-  deploy_script:
+  before_deploy:
     - cmd: gitconfig.appveyor
+ 
+  deploy_script:
+    # update documentation
     - cmd: gh-pages
+    # publish nuget package
+    - cmd: deploy.appveyor
