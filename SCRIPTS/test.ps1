@@ -5,6 +5,8 @@
 #
 .("$(Join-Path . common.ps1)")
 
+Create-Directory $PROJECT.vendor
+
 $result = Exec "nuget.exe" -commandArgs "install OpenCover -OutputDirectory `"$(Resolve-Path $PROJECT.vendor)`" -Version 4.7.922"
 
 if ($result -Ne 0) {
