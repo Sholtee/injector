@@ -1,3 +1,7 @@
 {
-  "solution": "Injector.sln"
+  "solution": "..\\Injector.sln",
+  "vendor": "..\\Vendor",
+  "tests": "..\\TEST\\Injector.Tests.csproj",
+  "artifacts": "..\\Artifacts",
+  "coveragefilter": "+[Injector*]* -[Injector.Tests]*"
 }
