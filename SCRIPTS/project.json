@@ -1,7 +1,11 @@
 {
+  "bin": "..\\BIN",
   "solution": "..\\Injector.sln",
   "vendor": "..\\Vendor",
   "tests": "..\\TEST\\Injector.Tests.csproj",
+  "testtarget": "netcoreapp2.2",
   "artifacts": "..\\Artifacts",
-  "coveragefilter": "+[Injector*]* -[Injector.Tests]*"
+  "coveragefilter": "+[Injector*]* -[Injector.Tests]*",
+  "perftests": "..\\PERF\\Injector.Perf.csproj",
+  "perftarget": "netcoreapp3.0"
 }
