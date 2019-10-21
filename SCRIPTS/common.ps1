@@ -5,7 +5,7 @@
 #
 $ErrorActionPreference = "Stop"
 
-Set-Variable PROJECT -option Constant -value (Get-Content .\project.json -raw | ConvertFrom-Json)
+Set-Variable PROJECT -option Constant -value (Get-Content (Join-Path . project.json) -raw | ConvertFrom-Json)
 
 function Create-Directory([Parameter(Position = 0)][string[]] $path) {
   if (!(Test-Path $path)) {
