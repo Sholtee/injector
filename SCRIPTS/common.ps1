@@ -5,9 +5,11 @@
 #
 $ErrorActionPreference = "Stop"
 
+Set-Variable PROJECT -option Constant -value (Get-Content .\project.json -raw | ConvertFrom-Json)
+
 function Create-Directory([Parameter(Position = 0)][string[]] $path) {
   if (!(Test-Path $path)) {
-    New-Item -path $path -force -itemType "Directory"  | Out-Null
+    New-Item -path $path -force -itemType "Directory" | Out-Null
   }
 }
 
@@ -31,7 +33,7 @@ function Directory-Of([Parameter(Position = 0)][string] $filename) {
 }
 
 function Get-Solution-Directory() {
-  return Directory-Of($Env:SolutionName)
+  return Directory-Of($PROJECT.solution)
 }
 
 function Exec([Parameter(Position = 0)][string]$command, [string]$commandArgs = $null) {
