@@ -28,12 +28,13 @@ branches:
 build: off
 
 before_test:
-  - cmd: cd scripts
+  - ps: cd scripts
 
 test_script:
-  - ps: test.appveyor.ps1
+  - ps: test.appveyor
 
 after_test:
+  - cmd: cd scripts
   - cmd: uploadtestresults.appveyor
 
 # override settings for `master` branch
