@@ -34,7 +34,6 @@ test_script:
   - ps: .(".\test.appveyor.ps1")
 
 after_test:
-  - cmd: cd scripts
   - cmd: uploadtestresults.appveyor
 
 # override settings for `master` branch
