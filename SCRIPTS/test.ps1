@@ -18,7 +18,7 @@ $opencover=Join-Path $PROJECT.vendor "OpenCover.4.7.922\tools\OpenCover.Console.
 
 $args="
   -target:`"$(Join-Path $Env:ProgramFiles dotnet\dotnet.exe)`"
-  -targetargs:`"test $(Resolve-Path $PROJECT.tests) --framework $(PROJECT.testtarget) --configuration:Debug --test-adapter-path:. --logger:nunit;LogFilePath=$(Join-Path (Resolve-Path $PROJECT.artifacts) testresults.xml)`"
+  -targetargs:`"test $(Resolve-Path $PROJECT.tests) --framework $($PROJECT.testtarget) --configuration:Debug --test-adapter-path:. --logger:nunit;LogFilePath=$(Join-Path (Resolve-Path $PROJECT.artifacts) testresults.xml)`"
   -output:`"$(Join-Path (Resolve-Path $PROJECT.artifacts) coverage.xml)`"
   -oldStyle 
   -register:user 
