@@ -72,7 +72,7 @@
     <PackageTags>IOC;DI;Dependency-Injector;Dependency-Injection;Injector;Proxy;Proxy-Generator;Duck-Typing</PackageTags>
     <PackageReleaseNotes>See homepage.</PackageReleaseNotes>
     <RepositoryType>git</RepositoryType>
-    <RepositoryUrl>https://github.com/sholtee/injector.git</RepositoryUrl>
+    <RepositoryUrl>https://github.com/sholtee/injector</RepositoryUrl>
     <RepositoryBranch>$(CurrentBranch)</RepositoryBranch>
   </PropertyGroup>
 
