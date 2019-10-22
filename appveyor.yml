@@ -37,7 +37,7 @@ test_script:
   - ps: Run-Script ".\test.appveyor.ps1"
 
 after_test:
-  - cmd: uploadtestresults.appveyor
+  - ps: Run-Script ".\uploadtestresults.appveyor.ps1"
 
 # override settings for `master` branch
 for:
