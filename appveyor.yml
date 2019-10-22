@@ -32,7 +32,7 @@ before_test:
 
       Set-Location -path "scripts"
 
-      .(".\common.ps1")
+      .(".\includes.ps1")
 
 test_script:
   - ps: Run-Script ".\test.appveyor.ps1"
