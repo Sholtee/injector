@@ -5,7 +5,7 @@
 #
 $ErrorActionPreference = "Stop"
 
-Set-Variable PROJECT -option Constant -value (Get-Content (Join-Path . project.json) -raw | ConvertFrom-Json)
+Set-Variable PROJECT -option Constant -value (Get-Content ".\project.json" -raw | ConvertFrom-Json)
 
 function Create-Directory([Parameter(Position = 0)][string[]] $path) {
   if (!(Test-Path $path)) {
@@ -19,6 +19,10 @@ function Remove-Directory([Parameter(Position = 0)][string[]] $path) {
   }
 }
 
+function Path-Combine([Parameter(Position = 0)][string[]] $path) {
+  return [IO.Path]::Combine($path)
+}
+
 function Directory-Of([Parameter(Position = 0)][string] $filename) {
   $path = Join-Path "$(Get-Location)" $filename
   
@@ -27,7 +31,7 @@ function Directory-Of([Parameter(Position = 0)][string] $filename) {
       return (Get-Item $path).Directory.FullName
     }
 	
-	return Directory-Of "$(Join-Path .. $filename)"
+	return Directory-Of "$(Path-Combine '..', $filename)"
   } catch {
   }    
 }
@@ -58,4 +62,3 @@ function Exec([Parameter(Position = 0)][string]$command, [string]$commandArgs = 
     }
   }
 }
-
