@@ -3,9 +3,9 @@
 #
 # Author: Denes Solti
 #
-.("$(Join-Path . common.ps1)")
+.(".\common.ps1")
 
-$artifacts=Join-Path $PROJECT.artifacts BenchmarkDotNet.Artifacts
+$artifacts=Path-Combine $PROJECT.artifacts, "BenchmarkDotNet.Artifacts"
 
 Remove-Directory $artifacts
 Create-Directory $artifacts
@@ -21,4 +21,4 @@ if ($result -Ne 0) {
 
 $perfexe="$([io.path]::GetFileNameWithoutExtension($($PROJECT.perftests))).exe"
 
-Exit Exec "$(Join-Path $PROJECT.bin $perfexe | Resolve-Path)" -commandArgs "-f * -e GitHub -a `"$(Resolve-Path $artifacts)`""
+Exit Exec "$(Path-Combine $PROJECT.bin, $perfexe | Resolve-Path)" -commandArgs "-f * -e GitHub -a `"$(Resolve-Path $artifacts)`""
