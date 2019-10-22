@@ -1,6 +1,7 @@
 {
   "bin": "..\\BIN",
   "solution": "..\\Injector.sln",
+  "githubrepo": "sholtee/injector.git",
   "vendor": "..\\Vendor",
   "tests": "..\\TEST\\Injector.Tests.csproj",
   "testtarget": "netcoreapp2.2",
