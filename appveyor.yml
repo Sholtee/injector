@@ -29,7 +29,9 @@ build: off
 
 init:
   - ps: >-
+
       Set-Location -path "scripts"
+
       .(".\common.ps1")
 
 test_script:
