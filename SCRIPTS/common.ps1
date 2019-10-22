@@ -62,3 +62,9 @@ function Exec([Parameter(Position = 0)][string]$command, [string]$commandArgs = 
     }
   }
 }
+
+function Check([Parameter(Position = 0)][int]$ret){
+  if($ret -Ne 0) {
+    Exit $ret
+  }
+}

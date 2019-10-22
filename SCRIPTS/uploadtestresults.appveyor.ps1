@@ -19,11 +19,7 @@ $coveragereport=Path-Combine $PROJECT.artifacts, "coverage.xml"
 if (Test-Path $coveragereport) {
   Write-Host Uploading coverage report...
 
-  $result = Exec "nuget.exe" -commandArgs "install coveralls.io -OutputDirectory `"$(Resolve-Path $PROJECT.vendor)`" -Version 1.4.2"
+  Check (Exec "nuget.exe" -commandArgs "install coveralls.io -OutputDirectory `"$(Resolve-Path $PROJECT.vendor)`" -Version 1.4.2")
 
-  if ($result -Ne 0) {
-    Exit $result
-  }
-  
-  Exec (Path-Combine $PROJECT.vendor, "coveralls.io.1.4.2", "tools", "coveralls.net.exe" | Resolve-Path) -commandArgs "--opencover `"$(Resolve-Path $coveragereport)`" -r $Env:COVERALLS_REPO_TOKEN"
+  Check (Exec (Path-Combine $PROJECT.vendor, "coveralls.io.1.4.2", "tools", "coveralls.net.exe" | Resolve-Path) -commandArgs "--opencover `"$(Resolve-Path $coveragereport)`" -r $Env:COVERALLS_REPO_TOKEN")
 }

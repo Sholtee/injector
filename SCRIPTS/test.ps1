@@ -7,11 +7,7 @@
 
 Create-Directory $PROJECT.vendor
 
-$result = Exec "nuget.exe" -commandArgs "install OpenCover -OutputDirectory `"$(Resolve-Path $PROJECT.vendor)`" -Version 4.7.922"
-
-if ($result -Ne 0) {
-  Exit $result
-}
+Check (Exec "nuget.exe" -commandArgs "install OpenCover -OutputDirectory `"$(Resolve-Path $PROJECT.vendor)`" -Version 4.7.922")
 
 Remove-Directory $PROJECT.artifacts
 Create-Directory $PROJECT.artifacts
@@ -28,4 +24,4 @@ $args="
   -filter:`"$($PROJECT.coveragefilter)`"
 "
 
-Exit Exec $opencover -commandArgs $args
+Check (Exec $opencover -commandArgs $args)

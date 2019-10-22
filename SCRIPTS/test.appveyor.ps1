@@ -5,8 +5,8 @@
 #
 if ($Env:APPVEYOR_REPO_TAG_NAME -eq "perf") {
   Write-Host Running performance tests...
-  .("$(Join-Path . perf.ps1)")
+  .(".\perf.ps1")
 } else {
   Write-Host Running regular tests...
-  .("$(Join-Path . test.ps1)")
+  .(".\test.ps1")
 }
