@@ -3,8 +3,6 @@
 #
 # Author: Denes Solti
 #
-.(".\common.ps1")
-
 $artifacts=Path-Combine $PROJECT.artifacts, "BenchmarkDotNet.Artifacts"
 
 Remove-Directory $artifacts

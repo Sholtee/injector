@@ -3,8 +3,6 @@
 #
 # Author: Denes Solti
 #
-.(".\common.ps1")
-
 function DocFx([Parameter(Position = 0)][string] $jsonpath) {
   Create-Directory $PROJECT.vendor
   

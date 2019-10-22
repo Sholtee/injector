@@ -68,3 +68,7 @@ function Check([Parameter(Position = 0)][int]$ret){
     Exit $ret
   }
 }
+
+function Run-Script([Parameter(Position = 0)][string]$script){
+  .("$script")
+}

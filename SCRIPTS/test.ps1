@@ -3,8 +3,6 @@
 #
 # Author: Denes Solti
 #
-.(".\common.ps1")
-
 Create-Directory $PROJECT.vendor
 
 Check (Exec "nuget.exe" -commandArgs "install OpenCover -OutputDirectory `"$(Resolve-Path $PROJECT.vendor)`" -Version 4.7.922")

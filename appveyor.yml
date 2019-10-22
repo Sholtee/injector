@@ -28,10 +28,9 @@ branches:
 build: off
 
 init:
-  - ps: function Run-Script([Parameter(Position = 0)][string]$script){.("$script")}
-
-before_test:
-  - ps: cd scripts
+  - ps: >-
+    Set-Location -path "scripts"
+    .(".\common.ps1")
 
 test_script:
   - ps: Run-Script ".\test.appveyor.ps1"

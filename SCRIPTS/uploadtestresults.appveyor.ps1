@@ -3,8 +3,6 @@
 #
 # Author: Denes Solti
 #
-.(".\common.ps1")
-
 $testresults=Path-Combine $PROJECT.artifacts, "testresults.xml"
 
 if (Test-Path $testresults) {
