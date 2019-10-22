@@ -27,7 +27,7 @@ branches:
 # prevent MSBuild from running
 build: off
 
-init:
+before_test:
   - ps: >-
 
       Set-Location -path "scripts"
