@@ -23,12 +23,36 @@ function Path-Combine([Parameter(Position = 0)][string[]] $path) {
   return [IO.Path]::Combine($path)
 }
 
+function Move-Directory([Parameter(Position = 0)][string] $src, [Parameter(Position = 1)][string] $dst, [switch] $clearDst) {
+  if (!(Test-Path $src)) {
+    throw "'$($src)' could not be found";
+  }
+  
+  if ($clearDst) {
+    if ($src -notmatch "\\$") {
+	  $src += "\"
+    }
+
+	Remove-Directory (Path-Combine $dst, (Directory-Name $src))
+  }
+  
+  Move-Item -path $src -destination $dst -force | Out-Null
+}
+
+function Directory-Path([Parameter(Position = 0)][string] $path) {
+  return [IO.Path]::GetDirectoryName($path);
+}
+
+function Directory-Name([Parameter(Position = 0)][string] $path) {
+  return  (New-Object System.IO.DirectoryInfo -ArgumentList (Directory-Path $path)).Name
+}
+
 function Directory-Of([Parameter(Position = 0)][string] $filename) {
-  $path = Join-Path "$(Get-Location)" $filename
+  $path = Path-Combine "$(Get-Location)" $filename
   
   try {
     if (Test-Path $path) {
-      return (Get-Item $path).Directory.FullName
+      return Directory-Name $path
     }
 	
 	return Directory-Of "$(Path-Combine '..', $filename)"
