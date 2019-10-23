@@ -23,16 +23,26 @@ function Path-Combine([Parameter(Position = 0)][string[]] $path) {
   return [IO.Path]::Combine($path)
 }
 
-function Move-Directory([Parameter(Position = 0)][string] $src, [Parameter(Position = 1)][string] $dst, [switch] $clearDst) {
-  if (!(Test-Path $src)) {
-    throw "'$($src)' could not be found";
+function Path-Add-Slash([Parameter(Position = 0)][string] $path) {
+  $sep=[IO.Path]::DirectorySeparatorChar
+  
+  if ($path -notmatch "\$($sep)$") {
+    $path += $sep
   }
   
-  if ($clearDst) {
-    if ($src -notmatch "\\$") {
-	  $src += "\"
-    }
+  return $path
+}
 
+function Move-Directory([Parameter(Position = 0)][string] $src, [Parameter(Position = 1)][string] $dst, [switch] $clearDst) {
+  $src=Path-Add-Slash $src
+
+  if (!(Test-Path $src)) {
+    throw "`"$($src)`" could not be found"
+  }
+  
+  $dst=Path-Add-Slash $dst
+  
+  if ($clearDst) {
 	Remove-Directory (Path-Combine $dst, (Directory-Name $src))
   }
   
