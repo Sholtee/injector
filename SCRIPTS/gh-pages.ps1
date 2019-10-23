@@ -1,4 +1,8 @@
-
+#
+# gh-pages.ps1
+#
+# Author: Denes Solti
+#
 Write-Host Prepare DOCS repo...
 
 $repodir=Path-Combine (Directory-Path $PROJECT.solution | Resolve-Path), $PROJECT.docsbranch
