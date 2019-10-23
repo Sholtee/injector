@@ -52,6 +52,6 @@ for:
  
   deploy_script:
     # update documentation
-    - cmd: gh-pages
+    - ps: Run-Script ".\gh-pages.ps1"
     # publish nuget package
     - cmd: deploy.appveyor

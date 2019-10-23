@@ -25,7 +25,11 @@ try {
   } else {
     Write-Host Building benchmark docs...
 	
-	DocFx "$(Path-Combine (Directory-Path $PROJECT.app | Resolve-Path), 'docfx.json')"
+	DocFx "$(Path-Combine (Directory-Path $PROJECT.perftests | Resolve-Path), 'docfx.json')"
+	
+	Write-Host Moving benchmark docs...
+	
+	Move-Directory (Path-Combine $PROJECT.artifacts, "BenchmarkDotNet.Artifacts", "perf" | Resolve-Path) $repodir -clearDst
   }
 
   Write-Host Committing changes...
@@ -37,9 +41,12 @@ try {
     if ($updateAPI) {
       Exec "git.exe" -commandArgs "add doc -A"
       Exec "git.exe" -commandArgs "commit -m `"docs up`""
+	} else {
+      Exec "git.exe" -commandArgs "add perf -A"
+      Exec "git.exe" -commandArgs "commit -m `"benchmarks up`""	
 	}
 	
-	Exec "git.exe" -commandArgs "push origin $($PROJECT.docsbranch)"
+    Exec "git.exe" -commandArgs "push origin $($PROJECT.docsbranch)"
   } finally {
     Set-Location -path $oldLocation    
   }
