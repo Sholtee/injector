@@ -62,18 +62,12 @@
     <div>
       <a class="xref" href="Solti.Utils.DI.Internals.IComposite-1.html#Solti_Utils_DI_Internals_IComposite_1_RemoveChild__0_">IComposite&lt;IServiceContainer&gt;.RemoveChild(IServiceContainer)</a>
     </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.idisposable.dispose#System_IDisposable_Dispose">IDisposable.Dispose()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1.getenumerator#System_Collections_Generic_IEnumerable_1_GetEnumerator">IEnumerable&lt;AbstractServiceEntry&gt;.GetEnumerator()</a>
-    </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Solti.Utils.DI.html">Solti.Utils.DI</a></h6>
   <h6><strong>Assembly</strong>: Injector.dll</h6>
   <h5 id="Solti_Utils_DI_IServiceContainer_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public interface IServiceContainer : IComposite&lt;IServiceContainer&gt;, IDisposable, IEnumerable&lt;AbstractServiceEntry&gt;, IEnumerable</code></pre>
+    <pre><code class="lang-csharp hljs">public interface IServiceContainer : IComposite&lt;IServiceContainer&gt;, IDisposable, IEnumerable&lt;AbstractServiceEntry&gt;</code></pre>
   </div>
   <h3 id="properties">Properties
   </h3>
@@ -163,13 +157,13 @@
     </tbody>
   </table>
   <a id="Solti_Utils_DI_IServiceContainer_Get_" data-uid="Solti.Utils.DI.IServiceContainer.Get*"></a>
-  <h4 id="Solti_Utils_DI_IServiceContainer_Get_System_Type_Solti_Utils_DI_QueryMode_" data-uid="Solti.Utils.DI.IServiceContainer.Get(System.Type,Solti.Utils.DI.QueryMode)">Get(Type, QueryMode)</h4>
+  <h4 id="Solti_Utils_DI_IServiceContainer_Get_Type_Solti_Utils_DI_QueryMode_" data-uid="Solti.Utils.DI.IServiceContainer.Get(Type,Solti.Utils.DI.QueryMode)">Get(Type, QueryMode)</h4>
   <div class="markdown level1 summary"><p>Gets the service associated with the given interface.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">AbstractServiceEntry Get(Type serviceInterface, QueryMode mode = QueryMode.Default)</code></pre>
+    <pre><code class="lang-csharp hljs">AbstractServiceEntry Get(Type serviceInterface, QueryMode mode = default(QueryMode))</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -182,7 +176,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.type">Type</a></td>
+        <td><span class="xref">Type</span></td>
         <td><span class="parametername">serviceInterface</span></td>
         <td><p>The service interface.</p>
 </td>
@@ -229,28 +223,28 @@
   </table>
   <h3 id="extensionmethods">Extension Methods</h3>
   <div>
-      <a class="xref" href="Solti.Utils.DI.ConfigFromAssembly.html#Solti_Utils_DI_ConfigFromAssembly_Setup_Solti_Utils_DI_IServiceContainer_System_Reflection_Assembly_">ConfigFromAssembly.Setup(IServiceContainer, Assembly)</a>
+      <a class="xref" href="Solti.Utils.DI.ConfigFromAssembly.html#Solti_Utils_DI_ConfigFromAssembly_Setup_Solti_Utils_DI_IServiceContainer_Assembly_">ConfigFromAssembly.Setup(IServiceContainer, Assembly)</a>
   </div>
   <div>
       <a class="xref" href="Solti.Utils.DI.IServiceContainerExtensions.html#Solti_Utils_DI_IServiceContainerExtensions_Get__1_Solti_Utils_DI_IServiceContainer_Solti_Utils_DI_QueryMode_">IServiceContainerExtensions.Get&lt;TInterface&gt;(IServiceContainer, QueryMode)</a>
   </div>
   <div>
-      <a class="xref" href="Solti.Utils.DI.IServiceContainerExtensions.html#Solti_Utils_DI_IServiceContainerExtensions_Service_Solti_Utils_DI_IServiceContainer_System_Type_System_Type_Solti_Utils_DI_Lifetime_">IServiceContainerExtensions.Service(IServiceContainer, Type, Type, Lifetime)</a>
+      <a class="xref" href="Solti.Utils.DI.IServiceContainerExtensions.html#Solti_Utils_DI_IServiceContainerExtensions_Service_Solti_Utils_DI_IServiceContainer_Type_Type_Solti_Utils_DI_Lifetime_">IServiceContainerExtensions.Service(IServiceContainer, Type, Type, Lifetime)</a>
   </div>
   <div>
-      <a class="xref" href="Solti.Utils.DI.IServiceContainerExtensions.html#Solti_Utils_DI_IServiceContainerExtensions_Lazy_Solti_Utils_DI_IServiceContainer_System_Type_Solti_Utils_DI_ITypeResolver_Solti_Utils_DI_Lifetime_">IServiceContainerExtensions.Lazy(IServiceContainer, Type, ITypeResolver, Lifetime)</a>
+      <a class="xref" href="Solti.Utils.DI.IServiceContainerExtensions.html#Solti_Utils_DI_IServiceContainerExtensions_Lazy_Solti_Utils_DI_IServiceContainer_Type_Solti_Utils_DI_ITypeResolver_Solti_Utils_DI_Lifetime_">IServiceContainerExtensions.Lazy(IServiceContainer, Type, ITypeResolver, Lifetime)</a>
   </div>
   <div>
-      <a class="xref" href="Solti.Utils.DI.IServiceContainerExtensions.html#Solti_Utils_DI_IServiceContainerExtensions_Factory_Solti_Utils_DI_IServiceContainer_System_Type_System_Func_Solti_Utils_DI_IInjector_System_Type_System_Object__Solti_Utils_DI_Lifetime_">IServiceContainerExtensions.Factory(IServiceContainer, Type, Func&lt;IInjector, Type, Object&gt;, Lifetime)</a>
+      <a class="xref" href="Solti.Utils.DI.IServiceContainerExtensions.html#Solti_Utils_DI_IServiceContainerExtensions_Factory_Solti_Utils_DI_IServiceContainer_Type_Func_Solti_Utils_DI_IInjector_Type_System_Object__Solti_Utils_DI_Lifetime_">IServiceContainerExtensions.Factory(IServiceContainer, Type, Func&lt;IInjector, Type, Object&gt;, Lifetime)</a>
   </div>
   <div>
-      <a class="xref" href="Solti.Utils.DI.IServiceContainerExtensions.html#Solti_Utils_DI_IServiceContainerExtensions_Proxy_Solti_Utils_DI_IServiceContainer_System_Type_System_Func_Solti_Utils_DI_IInjector_System_Type_System_Object_System_Object__">IServiceContainerExtensions.Proxy(IServiceContainer, Type, Func&lt;IInjector, Type, Object, Object&gt;)</a>
+      <a class="xref" href="Solti.Utils.DI.IServiceContainerExtensions.html#Solti_Utils_DI_IServiceContainerExtensions_Proxy_Solti_Utils_DI_IServiceContainer_Type_Func_Solti_Utils_DI_IInjector_Type_System_Object_System_Object__">IServiceContainerExtensions.Proxy(IServiceContainer, Type, Func&lt;IInjector, Type, Object, Object&gt;)</a>
   </div>
   <div>
-      <a class="xref" href="Solti.Utils.DI.IServiceContainerExtensions.html#Solti_Utils_DI_IServiceContainerExtensions_Instance_Solti_Utils_DI_IServiceContainer_System_Type_System_Object_System_Boolean_">IServiceContainerExtensions.Instance(IServiceContainer, Type, Object, Boolean)</a>
+      <a class="xref" href="Solti.Utils.DI.IServiceContainerExtensions.html#Solti_Utils_DI_IServiceContainerExtensions_Instance_Solti_Utils_DI_IServiceContainer_Type_System_Object_System_Boolean_">IServiceContainerExtensions.Instance(IServiceContainer, Type, Object, Boolean)</a>
   </div>
   <div>
-      <a class="xref" href="Solti.Utils.DI.IServiceContainerExtensions.html#Solti_Utils_DI_IServiceContainerExtensions_Abstract_Solti_Utils_DI_IServiceContainer_System_Type_">IServiceContainerExtensions.Abstract(IServiceContainer, Type)</a>
+      <a class="xref" href="Solti.Utils.DI.IServiceContainerExtensions.html#Solti_Utils_DI_IServiceContainerExtensions_Abstract_Solti_Utils_DI_IServiceContainer_Type_">IServiceContainerExtensions.Abstract(IServiceContainer, Type)</a>
   </div>
   <div>
       <a class="xref" href="Solti.Utils.DI.IServiceContainerExtensions.html#Solti_Utils_DI_IServiceContainerExtensions_CreateInjector_Solti_Utils_DI_IServiceContainer_">IServiceContainerExtensions.CreateInjector(IServiceContainer)</a>
@@ -262,16 +256,16 @@
       <a class="xref" href="Solti.Utils.DI.IServiceContainerExtensions.html#Solti_Utils_DI_IServiceContainerExtensions_Lazy__1_Solti_Utils_DI_IServiceContainer_Solti_Utils_DI_ITypeResolver_Solti_Utils_DI_Lifetime_">IServiceContainerExtensions.Lazy&lt;TInterface&gt;(IServiceContainer, ITypeResolver, Lifetime)</a>
   </div>
   <div>
-      <a class="xref" href="Solti.Utils.DI.IServiceContainerExtensions.html#Solti_Utils_DI_IServiceContainerExtensions_Factory__1_Solti_Utils_DI_IServiceContainer_System_Func_Solti_Utils_DI_IInjector___0__Solti_Utils_DI_Lifetime_">IServiceContainerExtensions.Factory&lt;TInterface&gt;(IServiceContainer, Func&lt;IInjector, TInterface&gt;, Lifetime)</a>
+      <a class="xref" href="Solti.Utils.DI.IServiceContainerExtensions.html#Solti_Utils_DI_IServiceContainerExtensions_Factory__1_Solti_Utils_DI_IServiceContainer_Func_Solti_Utils_DI_IInjector___0__Solti_Utils_DI_Lifetime_">IServiceContainerExtensions.Factory&lt;TInterface&gt;(IServiceContainer, Func&lt;IInjector, TInterface&gt;, Lifetime)</a>
   </div>
   <div>
-      <a class="xref" href="Solti.Utils.DI.IServiceContainerExtensions.html#Solti_Utils_DI_IServiceContainerExtensions_Proxy__1_Solti_Utils_DI_IServiceContainer_System_Func_Solti_Utils_DI_IInjector___0___0__">IServiceContainerExtensions.Proxy&lt;TInterface&gt;(IServiceContainer, Func&lt;IInjector, TInterface, TInterface&gt;)</a>
+      <a class="xref" href="Solti.Utils.DI.IServiceContainerExtensions.html#Solti_Utils_DI_IServiceContainerExtensions_Proxy__1_Solti_Utils_DI_IServiceContainer_Func_Solti_Utils_DI_IInjector___0___0__">IServiceContainerExtensions.Proxy&lt;TInterface&gt;(IServiceContainer, Func&lt;IInjector, TInterface, TInterface&gt;)</a>
   </div>
   <div>
       <a class="xref" href="Solti.Utils.DI.IServiceContainerExtensions.html#Solti_Utils_DI_IServiceContainerExtensions_Proxy__2_Solti_Utils_DI_IServiceContainer_">IServiceContainerExtensions.Proxy&lt;TInterface, TInterceptor&gt;(IServiceContainer)</a>
   </div>
   <div>
-      <a class="xref" href="Solti.Utils.DI.IServiceContainerExtensions.html#Solti_Utils_DI_IServiceContainerExtensions_Proxy_Solti_Utils_DI_IServiceContainer_System_Type_System_Type_">IServiceContainerExtensions.Proxy(IServiceContainer, Type, Type)</a>
+      <a class="xref" href="Solti.Utils.DI.IServiceContainerExtensions.html#Solti_Utils_DI_IServiceContainerExtensions_Proxy_Solti_Utils_DI_IServiceContainer_Type_Type_">IServiceContainerExtensions.Proxy(IServiceContainer, Type, Type)</a>
   </div>
   <div>
       <a class="xref" href="Solti.Utils.DI.IServiceContainerExtensions.html#Solti_Utils_DI_IServiceContainerExtensions_Instance__1_Solti_Utils_DI_IServiceContainer___0_System_Boolean_">IServiceContainerExtensions.Instance&lt;TInterface&gt;(IServiceContainer, TInterface, Boolean)</a>
