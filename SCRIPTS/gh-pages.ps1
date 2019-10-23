@@ -24,12 +24,12 @@ try {
     Move-Directory (Path-Combine $PROJECT.artifacts, "doc" | Resolve-Path) $repodir -clearDst
   } else {
     Write-Host Building benchmark docs...
-	
-	DocFx "$(Path-Combine (Directory-Path $PROJECT.perftests | Resolve-Path), 'docfx.json')"
-	
-	Write-Host Moving benchmark docs...
-	
-	Move-Directory (Path-Combine $PROJECT.artifacts, "BenchmarkDotNet.Artifacts", "perf" | Resolve-Path) $repodir -clearDst
+
+    DocFx "$(Path-Combine (Directory-Path $PROJECT.perftests | Resolve-Path), 'docfx.json')"
+
+    Write-Host Moving benchmark docs...
+
+    Move-Directory (Path-Combine $PROJECT.artifacts, "BenchmarkDotNet.Artifacts", "perf" | Resolve-Path) $repodir -clearDst
   }
 
   Write-Host Committing changes...
@@ -41,10 +41,10 @@ try {
     if ($updateAPI) {
       Exec "git.exe" -commandArgs "add doc -A"
       Exec "git.exe" -commandArgs "commit -m `"docs up`""
-	} else {
+    } else {
       Exec "git.exe" -commandArgs "add perf -A"
       Exec "git.exe" -commandArgs "commit -m `"benchmarks up`""	
-	}
+    }
 	
     Exec "git.exe" -commandArgs "push origin $($PROJECT.docsbranch)"
   } finally {
