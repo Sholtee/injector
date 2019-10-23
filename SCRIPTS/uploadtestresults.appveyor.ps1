@@ -17,7 +17,7 @@ $coveragereport=Path-Combine $PROJECT.artifacts, "coverage.xml"
 if (Test-Path $coveragereport) {
   Write-Host Uploading coverage report...
 
-  Check (Exec "nuget.exe" -commandArgs "install coveralls.io -OutputDirectory `"$(Resolve-Path $PROJECT.vendor)`" -Version 1.4.2")
+  Exec "nuget.exe" -commandArgs "install coveralls.io -OutputDirectory `"$(Resolve-Path $PROJECT.vendor)`" -Version 1.4.2"
 
-  Check (Exec (Path-Combine $PROJECT.vendor, "coveralls.io.1.4.2", "tools", "coveralls.net.exe" | Resolve-Path) -commandArgs "--opencover `"$(Resolve-Path $coveragereport)`" -r $Env:COVERALLS_REPO_TOKEN")
+  Exec (Path-Combine $PROJECT.vendor, "coveralls.io.1.4.2", "tools", "coveralls.net.exe" | Resolve-Path) -commandArgs "--opencover `"$(Resolve-Path $coveragereport)`" -r $Env:COVERALLS_REPO_TOKEN"
 }

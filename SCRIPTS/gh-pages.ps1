@@ -9,7 +9,7 @@ $repodir=Path-Combine (Directory-Path $PROJECT.solution | Resolve-Path), $PROJEC
 Remove-Directory $repodir
 
 try {
-  Check (Exec "git.exe" -commandArgs "clone https://github.com/$($PROJECT.githubrepo) --branch `"$($PROJECT.docsbranch)`" `"$repodir`"")
+  Exec "git.exe" -commandArgs "clone https://github.com/$($PROJECT.githubrepo) --branch `"$($PROJECT.docsbranch)`" `"$repodir`""
   $repodir=Resolve-Path $repodir
 
   $updateAPI=!(Path-Combine $PROJECT.artifacts, "BenchmarkDotNet.Artifacts" | Test-Path)
@@ -17,11 +17,15 @@ try {
   if ($updateAPI) {
     Write-Host Building API docs...
   
-    Check (DocFx "$(Path-Combine (Directory-Path $PROJECT.app | Resolve-Path), 'docfx.json')")
+    DocFx "$(Path-Combine (Directory-Path $PROJECT.app | Resolve-Path), 'docfx.json')"
   
     Write-Host Moving API docs...
   
     Move-Directory (Path-Combine $PROJECT.artifacts, "doc" | Resolve-Path) $repodir -clearDst
+  } else {
+    Write-Host Building benchmark docs...
+	
+	DocFx "$(Path-Combine (Directory-Path $PROJECT.app | Resolve-Path), 'docfx.json')"
   }
 
   Write-Host Committing changes...
@@ -31,11 +35,11 @@ try {
 
   try {
     if ($updateAPI) {
-	    Check (Exec "git.exe" -commandArgs "add doc -A")
-        Check (Exec "git.exe" -commandArgs "commit -m `"docs up`"")    
+      Exec "git.exe" -commandArgs "add doc -A"
+      Exec "git.exe" -commandArgs "commit -m `"docs up`""
 	}
 	
-	Check (Exec "git.exe" -commandArgs "push origin $($PROJECT.docsbranch)")	
+	Exec "git.exe" -commandArgs "push origin $($PROJECT.docsbranch)"
   } finally {
     Set-Location -path $oldLocation    
   }

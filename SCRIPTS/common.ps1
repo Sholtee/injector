@@ -70,6 +70,12 @@ function Directory-Of([Parameter(Position = 0)][string] $filename) {
   }    
 }
 
+function Check([Parameter(Position = 0)][int]$ret){
+  if($ret -Ne 0) {
+    Exit $ret
+  }
+}
+
 function Exec([Parameter(Position = 0)][string]$command, [string]$commandArgs = $null) {
   $startInfo = New-Object System.Diagnostics.ProcessStartInfo
   $startInfo.FileName = $command
@@ -88,17 +94,11 @@ function Exec([Parameter(Position = 0)][string]$command, [string]$commandArgs = 
     }
 
     $finished = $true
-    return $process.ExitCode
+    Check $process.ExitCode
   } finally {
     if (!$finished) {
       $process.Kill()
     }
-  }
-}
-
-function Check([Parameter(Position = 0)][int]$ret){
-  if($ret -Ne 0) {
-    Exit $ret
   }
 }
 
