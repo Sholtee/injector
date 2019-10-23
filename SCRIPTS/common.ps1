@@ -89,8 +89,7 @@ function Exec([Parameter(Position = 0)][string]$command, [string]$commandArgs = 
 
     $finished = $true
     return $process.ExitCode
-  }
-  finally {
+  } finally {
     if (!$finished) {
       $process.Kill()
     }
