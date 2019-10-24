@@ -30,9 +30,9 @@ build: off
 before_test:
   - ps: >-
 
-      Set-Location -path "scripts"
+      Set-Location -path ".\scripts"
 
-      .(Join-Path "." "includes.ps1")
+      .(".\includes.ps1")
 
 test_script:
   - ps: Test
