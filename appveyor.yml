@@ -35,10 +35,10 @@ before_test:
       .(".\includes.ps1")
 
 test_script:
-  - ps: Run-Script ".\test.appveyor.ps1"
+  - ps: Test
 
 after_test:
-  - ps: Run-Script ".\uploadtestresults.appveyor.ps1"
+  - ps: Upload-Results
 
 # override settings for `master` branch
 for:
@@ -48,10 +48,10 @@ for:
       - master
 
   before_deploy:
-    - cmd: gitconfig.appveyor
+    - ps: Git-Config
  
   deploy_script:
     # update documentation
-    - ps: Run-Script ".\gh-pages.ps1"
+    - ps: GH-Pages
     # publish nuget package
     - ps: Deploy

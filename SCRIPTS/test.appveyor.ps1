@@ -3,10 +3,12 @@
 #
 # Author: Denes Solti
 #
-if ($Env:APPVEYOR_REPO_TAG_NAME -eq "perf") {
-  Write-Host Running performance tests...
-  Run-Script ".\perf.ps1"
-} else {
-  Write-Host Running regular tests...
-  Run-Script ".\test.ps1"
+function Test() {
+  if ($Env:APPVEYOR_REPO_TAG_NAME -eq "perf") {
+    Write-Host Running performance tests...
+    Run-Script ".\perf.ps1"
+  } else {
+    Write-Host Running regular tests...
+    Run-Script ".\test.ps1"
+  }
 }
