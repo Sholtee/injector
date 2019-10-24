@@ -40,6 +40,10 @@ test_script:
 after_test:
   - ps: Upload-Results
 
+artifacts:
+  - path: Artifacts\log.txt
+    name: Log
+
 # override settings for `master` branch
 for:
 -

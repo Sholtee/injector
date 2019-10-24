@@ -74,12 +74,12 @@ function FileName-Without-Extension([Parameter(Position = 0)][string] $filename)
   return [System.IO.Path]::GetFileNameWithoutExtension($filename)
 }
 
-function Exec([Parameter(Position = 0)][string]$command, [string]$commandArgs = $null, [switch] $redirectOutput) {
+function Exec([Parameter(Position = 0)][string]$command, [string]$commandArgs = $null, [switch] $redirectOutput, [switch] $noLog) {
   $startInfo = New-Object System.Diagnostics.ProcessStartInfo
   $startInfo.FileName = $command
   $startInfo.Arguments = $commandArgs
   $startInfo.UseShellExecute = $false
-  $startInfo.RedirectStandardOutput = $redirectOutput
+  $startInfo.RedirectStandardOutput = $true
   $startInfo.WorkingDirectory = Get-Location
 
   $process = New-Object System.Diagnostics.Process
@@ -92,15 +92,22 @@ function Exec([Parameter(Position = 0)][string]$command, [string]$commandArgs = 
       # Non-blocking loop done to allow ctr-c interrupts
     }
 
-    $finished = $true
-	
+    $finished = $true	
     $exitCode = $process.ExitCode
+	
     if ($exitCode -Ne 0) {
       Exit $exitCode
     }
 	
+	$output=$process.StandardOutput.ReadToEnd()
+	
+    if (!$noLog) {
+      Create-Directory $PROJECT.artifacts
+      $output | Out-File (Path-Combine $PROJECT.artifacts, "log.txt") -force -append
+    }
+	
     if ($redirectOutput) {
-      return $process.StandardOutput.ReadToEnd()
+      return $output
     }
   } finally {
     if (!$finished) {
