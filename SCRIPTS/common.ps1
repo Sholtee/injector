@@ -58,7 +58,7 @@ function Directory-Name([Parameter(Position = 0)][string] $path) {
 }
 
 function Directory-Of([Parameter(Position = 0)][string] $filename) {
-  $path = Path-Combine "$(Get-Location)" $filename
+  $path = Path-Combine Get-Location $filename
   
   try {
     if (Test-Path $path) {
