@@ -95,9 +95,9 @@ function Exec([Parameter(Position = 0)][string]$command, [string]$commandArgs = 
     $finished = $true
 	
     $exitCode = $process.ExitCode
-	if ($exitCode -Ne 0) {
+    if ($exitCode -Ne 0) {
       Exit $exitCode
-	}
+    }
 	
     if ($redirectOutput) {
       return $process.StandardOutput.ReadToEnd()
