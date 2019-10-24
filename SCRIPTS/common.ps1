@@ -43,7 +43,7 @@ function Move-Directory([Parameter(Position = 0)][string] $src, [Parameter(Posit
   $dst=Path-Add-Slash $dst
   
   if ($clearDst) {
-	Remove-Directory (Path-Combine $dst, (Directory-Name $src))
+    Remove-Directory (Path-Combine $dst, (Directory-Name $src))
   }
   
   Move-Item -path $src -destination $dst -force | Out-Null
@@ -65,7 +65,7 @@ function Directory-Of([Parameter(Position = 0)][string] $filename) {
       return Directory-Name $path
     }
 	
-	return Directory-Of "$(Path-Combine '..', $filename)"
+    return Directory-Of "$(Path-Combine '..', $filename)"
   } catch {
   }    
 }
