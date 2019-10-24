@@ -47,7 +47,7 @@ function GH-Pages() {
         Exec "git.exe" -commandArgs "commit -m `"benchmarks up`""	
       }
 	
-      Exec "git.exe" -commandArgs "push origin $($PROJECT.docsbranch)"
+      #Exec "git.exe" -commandArgs "push origin $($PROJECT.docsbranch)"
     } finally {
       Set-Location -path $oldLocation    
     }
