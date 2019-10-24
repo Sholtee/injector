@@ -118,7 +118,7 @@ namespace Solti.Utils.DI.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Compilation failed. This may not have been caused by you..
+        ///   Looks up a localized string similar to Compilation failed. It might not be your fault..
         /// </summary>
         internal static string COMPILATION_FAILED {
             get {
