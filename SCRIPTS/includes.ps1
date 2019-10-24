@@ -6,5 +6,4 @@
 .(".\deploy.appveyor.ps1")
 .(".\gitconfig.appveyor.ps1")
 .(".\test.appveyor.ps1")
-.(".\uploadartifacts.appveyor.ps1")
 .(".\uploadtestresults.appveyor.ps1")
