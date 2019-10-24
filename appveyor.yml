@@ -38,9 +38,13 @@ test_script:
 after_test:
   - ps: Upload-Results
 
+# on build failure
+on_failure:
+  -ps: Push-AppveyorArtifact (Path-Combine $PROJECT.artifacts, "errors.txt")
+
 # after build failure or success
 on_finish:
-  - ps: Upload-Artifacts
+  - ps: Push-AppveyorArtifact (Path-Combine $PROJECT.artifacts, "log.txt")
 
 # override settings for `master` branch
 for:

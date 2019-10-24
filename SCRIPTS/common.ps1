@@ -105,7 +105,7 @@ function Exec([Parameter(Position = 0)][string]$command, [string]$commandArgs = 
       Exit $exitCode
     }
 	
-	$output=$process.StandardOutput.ReadToEnd()
+    $output=$process.StandardOutput.ReadToEnd()
 	
     if (!$noLog) {
       Create-Directory $PROJECT.artifacts
