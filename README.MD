@@ -284,7 +284,7 @@ This project currently targets *.NET Standard* 1.6, 2.0 and 2.1.
 - 0.0.3
   - *added* `IInjector.Instantiate()` method
 - 1.0.0-preview1:
-  - Core rewritten from the scratch
+  - *rewritten* core
   - *added* service containers
   - *added* `Scoped` lifetime
   - *added* lazy dependency resolution support
@@ -305,3 +305,5 @@ This project currently targets *.NET Standard* 1.6, 2.0 and 2.1.
   - *removed* some TODOs
   - *fixed* possible missing reference error during proxy generation
   - `IInjector.Instantiate()` is an extension from now
+- 1.0.0-preview4 (unreleased):
+  - *rewritten* build system
