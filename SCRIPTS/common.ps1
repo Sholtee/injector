@@ -74,17 +74,12 @@ function FileName-Without-Extension([Parameter(Position = 0)][string] $filename)
   return [System.IO.Path]::GetFileNameWithoutExtension($filename)
 }
 
-function Check([Parameter(Position = 0)][int]$ret){
-  if($ret -Ne 0) {
-    Exit $ret
-  }
-}
-
-function Exec([Parameter(Position = 0)][string]$command, [string]$commandArgs = $null) {
+function Exec([Parameter(Position = 0)][string]$command, [string]$commandArgs = $null, [switch] $redirectOutput) {
   $startInfo = New-Object System.Diagnostics.ProcessStartInfo
   $startInfo.FileName = $command
   $startInfo.Arguments = $commandArgs
   $startInfo.UseShellExecute = $false
+  $startInfo.RedirectStandardOutput = $redirectOutput
   $startInfo.WorkingDirectory = Get-Location
 
   $process = New-Object System.Diagnostics.Process
@@ -98,7 +93,15 @@ function Exec([Parameter(Position = 0)][string]$command, [string]$commandArgs = 
     }
 
     $finished = $true
-    Check $process.ExitCode
+	
+    $exitCode = $process.ExitCode
+	if ($exitCode -Ne 0) {
+      Exit $exitCode
+	}
+	
+    if ($redirectOutput) {
+      return $process.StandardOutput.ReadToEnd()
+    }
   } finally {
     if (!$finished) {
       $process.Kill()
