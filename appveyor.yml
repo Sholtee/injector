@@ -32,7 +32,7 @@ before_test:
 
       Set-Location -path "scripts"
 
-      .(".\includes.ps1")
+      .(Join-Path "." "includes.ps1")
 
 test_script:
   - ps: Test
