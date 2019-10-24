@@ -54,4 +54,4 @@ for:
     # update documentation
     - ps: Run-Script ".\gh-pages.ps1"
     # publish nuget package
-    - cmd: deploy.appveyor
+    - ps: Deploy
