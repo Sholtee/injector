@@ -79,7 +79,7 @@ function Exec([Parameter(Position = 0)][string]$command, [string]$commandArgs = 
   $startInfo.FileName = $command
   $startInfo.Arguments = $commandArgs
   $startInfo.UseShellExecute = $false
-  $startInfo.RedirectStandardOutput = $true
+  $startInfo.RedirectStandardOutput = ($redirectOutput -or !$noLog)
   $startInfo.WorkingDirectory = Get-Location
 
   $process = New-Object System.Diagnostics.Process
