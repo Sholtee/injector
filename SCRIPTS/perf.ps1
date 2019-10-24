@@ -13,6 +13,6 @@ Create-Directory $PROJECT.bin
 
 Exec "dotnet.exe" -commandArgs "build $(Resolve-Path $PROJECT.perftests) --framework $($PROJECT.perftarget) --configuration Perf --output `"$(Resolve-Path $PROJECT.bin)`""
 
-$perfexe="$([io.path]::GetFileNameWithoutExtension($($PROJECT.perftests))).exe"
+$perfexe="$(FileName-Without-Extension $PROJECT.perftests).exe"
 
 Exec "$(Path-Combine $PROJECT.bin, $perfexe | Resolve-Path)" -commandArgs "-f * -e GitHub -a `"$(Resolve-Path $artifacts)`""

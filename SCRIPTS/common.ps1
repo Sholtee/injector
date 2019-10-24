@@ -20,11 +20,11 @@ function Remove-Directory([Parameter(Position = 0)][string[]] $path) {
 }
 
 function Path-Combine([Parameter(Position = 0)][string[]] $path) {
-  return [IO.Path]::Combine($path)
+  return [System.IO.Path]::Combine($path)
 }
 
 function Path-Add-Slash([Parameter(Position = 0)][string] $path) {
-  $sep=[IO.Path]::DirectorySeparatorChar
+  $sep=[System.IO.Path]::DirectorySeparatorChar
   
   if ($path -notmatch "\$($sep)$") {
     $path += $sep
@@ -50,7 +50,7 @@ function Move-Directory([Parameter(Position = 0)][string] $src, [Parameter(Posit
 }
 
 function Directory-Path([Parameter(Position = 0)][string] $path) {
-  return [IO.Path]::GetDirectoryName($path);
+  return [System.IO.Path]::GetDirectoryName($path);
 }
 
 function Directory-Name([Parameter(Position = 0)][string] $path) {
@@ -68,6 +68,10 @@ function Directory-Of([Parameter(Position = 0)][string] $filename) {
 	return Directory-Of "$(Path-Combine '..', $filename)"
   } catch {
   }    
+}
+
+function FileName-Without-Extension([Parameter(Position = 0)][string] $filename) {
+  return [System.IO.Path]::GetFileNameWithoutExtension($filename)
 }
 
 function Check([Parameter(Position = 0)][int]$ret){
