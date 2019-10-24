@@ -28,13 +28,17 @@ branches:
 build: off
 
 before_test:
-  - cmd: cd scripts
+  - ps: >-
+
+      Set-Location -path ".\scripts"
+
+      .(".\includes.ps1")
 
 test_script:
-  - cmd: test.appveyor
+  - ps: Test
 
 after_test:
-  - cmd: uploadtestresults.appveyor
+  - ps: Upload-Results
 
 # override settings for `master` branch
 for:
@@ -44,10 +48,10 @@ for:
       - master
 
   before_deploy:
-    - cmd: gitconfig.appveyor
+    - ps: Git-Config
  
   deploy_script:
     # update documentation
-    - cmd: gh-pages
+    - ps: GH-Pages
     # publish nuget package
-    - cmd: deploy.appveyor
+    - ps: Deploy

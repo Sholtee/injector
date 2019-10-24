@@ -1,0 +1,14 @@
+{
+  "bin": "..\\BIN",
+  "solution": "..\\Injector.sln",
+  "app": "..\\SRC\\Injector.csproj",
+  "githubrepo": "sholtee/injector.git",
+  "vendor": "..\\Vendor",
+  "tests": "..\\TEST\\Injector.Tests.csproj",
+  "testtarget": "netcoreapp2.2",
+  "artifacts": "..\\Artifacts",
+  "coveragefilter": "+[Injector*]* -[Injector.Tests]*",
+  "perftests": "..\\PERF\\Injector.Perf.csproj",
+  "perftarget": "netcoreapp3.0",
+  "docsbranch": "gh-pages"
+}
