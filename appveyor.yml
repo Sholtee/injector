@@ -28,10 +28,8 @@ branches:
 build: off
 
 before_test:
-  - ps: >-
-
+  - ps: |
       Set-Location -path ".\scripts"
-
       .(".\includes.ps1")
 
 test_script:
@@ -42,7 +40,7 @@ after_test:
 
 # after build failure or success
 on_finish:
-  - ps: Push-AppveyorArtifact "..\Artifacts\log.txt"
+  - ps: Upload-Artifacts
 
 # override settings for `master` branch
 for:

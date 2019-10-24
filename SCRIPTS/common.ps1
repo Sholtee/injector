@@ -80,6 +80,7 @@ function Exec([Parameter(Position = 0)][string]$command, [string]$commandArgs = 
   $startInfo.Arguments = $commandArgs
   $startInfo.UseShellExecute = $false
   $startInfo.RedirectStandardOutput = ($redirectOutput -or !$noLog)
+  $startInfo.RedirectStandardError = !$noLog 
   $startInfo.WorkingDirectory = Get-Location
 
   $process = New-Object System.Diagnostics.Process
@@ -96,6 +97,11 @@ function Exec([Parameter(Position = 0)][string]$command, [string]$commandArgs = 
     $exitCode = $process.ExitCode
 	
     if ($exitCode -Ne 0) {
+      if (!$noLog) {
+        Create-Directory $PROJECT.artifacts
+        $process.StandardError.ReadToEnd() | Out-File (Path-Combine $PROJECT.artifacts, "errors.txt") -force -append
+      }
+		
       Exit $exitCode
     }
 	
