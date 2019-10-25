@@ -1,11 +1,8 @@
-.(".\common.ps1")
-.(".\docfx.ps1")
-.(".\gh-pages.ps1")
-.(".\pack.ps1")
-.(".\perf.ps1")
-.(".\test.ps1")
-
-.(".\deploy.appveyor.ps1")
-.(".\gitconfig.appveyor.ps1")
-.(".\test.appveyor.ps1")
-.(".\uploadtestresults.appveyor.ps1")
+#
+# includes.ps1
+#
+# Author: Denes Solti
+#
+Get-ChildItem -path "." | where { $_.Name -match "\.ps1$" -and ($_.Name -ne (Split-Path $MyInvocation.PSCommandPath -Leaf)) } | foreach {
+  .(".\$($_.Name)")
+}
