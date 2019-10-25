@@ -13,44 +13,43 @@ function GH-Pages() {
     Exec "git.exe" -commandArgs "clone https://github.com/$($PROJECT.githubrepo) --branch `"$($PROJECT.docsbranch)`" `"$repodir`""
     $repodir=Resolve-Path $repodir
 
+    function BuildNMove([string] $projectDir, [string] $docsOutput) {
+      DocFx "$(Path-Combine $projectDir, 'docfx.json')"
+      Write-Host "Moving docs..."
+      Move-Directory $docsOutput $repodir -clearDst	
+    }
+
     $updateAPI=!(Path-Combine $PROJECT.artifacts, "BenchmarkDotNet.Artifacts" | Test-Path)
 
     if ($updateAPI) {
       Write-Host Building API docs...
-
-      DocFx "$(Path-Combine (Directory-Path $PROJECT.app | Resolve-Path), 'docfx.json')"
-  
-      Write-Host Moving API docs...
-  
-      Move-Directory (Path-Combine $PROJECT.artifacts, "doc" | Resolve-Path) $repodir -clearDst
+      BuildNMove -projectDir (Directory-Path $PROJECT.app) -docsOutput (Path-Combine $PROJECT.artifacts, "doc")
     } else {
       Write-Host Building benchmark docs...
-
-      DocFx "$(Path-Combine (Directory-Path $PROJECT.perftests | Resolve-Path), 'docfx.json')"
-
-      Write-Host Moving benchmark docs...
-
-      Move-Directory (Path-Combine $PROJECT.artifacts, "BenchmarkDotNet.Artifacts", "perf" | Resolve-Path) $repodir -clearDst
+      BuildNMove -projectDir (Directory-Path $PROJECT.perftests) -docsOutput (Path-Combine $PROJECT.artifacts, "BenchmarkDotNet.Artifacts", "perf")
     }
 
-    Write-Host Committing changes...
+    function Commit([string] $message) {
+	  Write-Host Committing changes...
+      $oldLocation=Get-Location
+      Set-Location -path $repodir
+      try {
+	    #Adding folders would freeze git.exe =(
+	    Get-ChildItem -path "." -Recurse | where { !$_.PSIsContainer } | foreach {
+		  Exec "git.exe" -commandArgs "add `"$($_.FullName)`" -A" 		
+		}       
+        Exec "git.exe" -commandArgs "commit -m `"$($message)`""
+        Exec "git.exe" -commandArgs "push origin $($PROJECT.docsbranch)"
+	  } finally {
+        Set-Location -path $oldLocation	  
+	  }	  
+	}
 
-    $oldLocation=Get-Location
-    Set-Location -path $repodir
-
-    try {
-      if ($updateAPI) {
-        Exec "git.exe" -commandArgs "add doc -A"
-        Exec "git.exe" -commandArgs "commit -m `"docs up`""
-      } else {
-        Exec "git.exe" -commandArgs "add perf -A"
-        Exec "git.exe" -commandArgs "commit -m `"benchmarks up`""	
-      }
-	
-      #Exec "git.exe" -commandArgs "push origin $($PROJECT.docsbranch)"
-    } finally {
-      Set-Location -path $oldLocation    
-    }
+    if ($updateAPI) {
+      Commit -message "docs up"
+    } else {
+      Commit -message "benchmarks up"	
+    }	
   } finally {
     Remove-Directory $repodir
   }

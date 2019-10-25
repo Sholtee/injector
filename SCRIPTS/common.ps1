@@ -50,7 +50,7 @@ function Move-Directory([Parameter(Position = 0)][string] $src, [Parameter(Posit
 }
 
 function Directory-Path([Parameter(Position = 0)][string] $path) {
-  return [System.IO.Path]::GetDirectoryName($path);
+  return [System.IO.Path]::GetDirectoryName($path)
 }
 
 function Directory-Name([Parameter(Position = 0)][string] $path) {
