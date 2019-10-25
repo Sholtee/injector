@@ -74,7 +74,7 @@ function FileName-Without-Extension([Parameter(Position = 0)][string] $filename)
   return [System.IO.Path]::GetFileNameWithoutExtension($filename)
 }
 
-function Exec([Parameter(Position = 0)][string]$command, [string]$commandArgs = $null, [switch] $redirectOutput, [switch] $noLog) {
+function Exec([Parameter(Position = 0)][string]$command, [string]$commandArgs = $null, [switch] $redirectOutput, [switch] $noLog, [switch] $ignoreError) {
   $startInfo = New-Object System.Diagnostics.ProcessStartInfo
   $startInfo.FileName = $command
   $startInfo.Arguments = $commandArgs
@@ -102,7 +102,9 @@ function Exec([Parameter(Position = 0)][string]$command, [string]$commandArgs = 
         $process.StandardError.ReadToEnd() | Out-File (Path-Combine $PROJECT.artifacts, "errors.txt") -force -append
       }
 		
-      Exit $exitCode
+      if (!$ignoreError) {	
+        Exit $exitCode
+      }
     }
 	
     $output=$process.StandardOutput.ReadToEnd()

@@ -36,9 +36,9 @@ function GH-Pages() {
       try {
 	    #Adding folders would freeze git.exe =(
 	    Get-ChildItem -path "." -Recurse | where { !$_.PSIsContainer } | foreach {
-		  Exec "git.exe" -commandArgs "add `"$($_.FullName)`" -A" 		
+		  Exec "git.exe" -commandArgs "add `"$($_.FullName)`"" -ignoreError
 		}       
-        Exec "git.exe" -commandArgs "commit -m `"$($message)`""
+        Exec "git.exe" -commandArgs "commit -m `"$($message)`"" -ignoreError
         Exec "git.exe" -commandArgs "push origin $($PROJECT.docsbranch)"
 	  } finally {
         Set-Location -path $oldLocation	  
