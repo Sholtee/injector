@@ -2,6 +2,8 @@
 .(".\docfx.ps1")
 .(".\gh-pages.ps1")
 .(".\pack.ps1")
+.(".\perf.ps1")
+.(".\test.ps1")
 
 .(".\deploy.appveyor.ps1")
 .(".\gitconfig.appveyor.ps1")

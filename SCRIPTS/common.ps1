@@ -123,7 +123,3 @@ function Exec([Parameter(Position = 0)][string]$command, [string]$commandArgs = 
     }
   }
 }
-
-function Run-Script([Parameter(Position = 0)][string]$script){
-  .("$script")
-}

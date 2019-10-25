@@ -6,9 +6,9 @@
 function Test() {
   if ($Env:APPVEYOR_REPO_TAG_NAME -eq "perf") {
     Write-Host Running performance tests...
-    Run-Script ".\perf.ps1"
+    Performance-Tests
   } else {
     Write-Host Running regular tests...
-    Run-Script ".\test.ps1"
+    Regular-Tests
   }
 }
