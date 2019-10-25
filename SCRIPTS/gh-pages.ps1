@@ -30,20 +30,20 @@ function GH-Pages() {
     }
 
     function Commit([string] $message) {
-	  Write-Host Committing changes...
+      Write-Host Committing changes...
       $oldLocation=Get-Location
       Set-Location -path $repodir
       try {
-	    #Adding folders would freeze git.exe =(
-	    Get-ChildItem -path "." -Recurse | where { !$_.PSIsContainer } | foreach {
-		  Exec "git.exe" -commandArgs "add `"$($_.FullName)`"" -ignoreError
-		}       
+        #Adding folders would freeze git.exe =(
+        Get-ChildItem -path "." -Recurse | where { !$_.PSIsContainer } | foreach {
+          Exec "git.exe" -commandArgs "add `"$($_.FullName)`"" -ignoreError
+        }       
         Exec "git.exe" -commandArgs "commit -m `"$($message)`"" -ignoreError
         Exec "git.exe" -commandArgs "push origin $($PROJECT.docsbranch)"
-	  } finally {
+      } finally {
         Set-Location -path $oldLocation	  
-	  }	  
-	}
+      }	  
+    }
 
     if ($updateAPI) {
       Commit -message "docs up"
