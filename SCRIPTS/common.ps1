@@ -103,13 +103,15 @@ function Exec([Parameter(Position = 0)][string]$command, [string]$commandArgs = 
 	
     if ($exitCode -Ne 0) {
       if (!$noLog) {
-		$process.StandardOutput.ReadToEnd() | Write-Log -filename "log.txt"
+        $process.StandardOutput.ReadToEnd() | Write-Log -filename "log.txt"
         $process.StandardError.ReadToEnd()  | Write-Log -filename "errors.txt"
       }
 		
       if (!$ignoreError) {	
         Exit $exitCode
       }
+	  
+      return
     }
 	
     if ($redirectOutput -or !$noLog) {
