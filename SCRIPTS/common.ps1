@@ -74,6 +74,11 @@ function FileName-Without-Extension([Parameter(Position = 0)][string] $filename)
   return [System.IO.Path]::GetFileNameWithoutExtension($filename)
 }
 
+function Write-Log([Parameter(ValueFromPipeline)][string] $text, [Parameter(Position = 0)][string] $filename) {
+  Create-Directory $PROJECT.artifacts
+  $text | Out-File (Path-Combine $PROJECT.artifacts, $filename) -force -append
+}
+
 function Exec([Parameter(Position = 0)][string]$command, [string]$commandArgs = $null, [switch] $redirectOutput, [switch] $noLog, [switch] $ignoreError) {
   $startInfo = New-Object System.Diagnostics.ProcessStartInfo
   $startInfo.FileName = $command
@@ -98,8 +103,8 @@ function Exec([Parameter(Position = 0)][string]$command, [string]$commandArgs = 
 	
     if ($exitCode -Ne 0) {
       if (!$noLog) {
-        Create-Directory $PROJECT.artifacts
-        $process.StandardError.ReadToEnd() | Out-File (Path-Combine $PROJECT.artifacts, "errors.txt") -force -append
+		$process.StandardOutput.ReadToEnd() | Write-Log -filename "log.txt"
+        $process.StandardError.ReadToEnd()  | Write-Log -filename "errors.txt"
       }
 		
       if (!$ignoreError) {	
@@ -107,15 +112,16 @@ function Exec([Parameter(Position = 0)][string]$command, [string]$commandArgs = 
       }
     }
 	
-    $output=$process.StandardOutput.ReadToEnd()
+    if ($redirectOutput -or !$noLog) {
+      $output=$process.StandardOutput.ReadToEnd()
 	
-    if (!$noLog) {
-      Create-Directory $PROJECT.artifacts
-      $output | Out-File (Path-Combine $PROJECT.artifacts, "log.txt") -force -append
-    }
+      if (!$noLog) {
+        $output | Write-Log -filename "log.txt"
+      }
 	
-    if ($redirectOutput) {
-      return $output
+      if ($redirectOutput) {
+        return $output
+      }
     }
   } finally {
     if (!$finished) {
