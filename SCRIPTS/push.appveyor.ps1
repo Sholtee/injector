@@ -1,9 +1,9 @@
 #
-# uploadtestresults.appveyor.ps1
+# push.appveyor.ps1
 #
 # Author: Denes Solti
 #
-function Upload-Results() {
+function Push-Test-Results() {
   $testresults=Path-Combine $PROJECT.artifacts, "testresults.xml"
 
   if (Test-Path $testresults) {
@@ -21,5 +21,12 @@ function Upload-Results() {
     Exec "nuget.exe" -commandArgs "install coveralls.io -OutputDirectory `"$(Resolve-Path $PROJECT.vendor)`" -Version 1.4.2"
 
     Exec (Path-Combine $PROJECT.vendor, "coveralls.io.1.4.2", "tools", "coveralls.net.exe" | Resolve-Path) -commandArgs "--opencover `"$(Resolve-Path $coveragereport)`" -r $Env:COVERALLS_REPO_TOKEN"
+  }
+}
+
+function Push-Artifact([Parameter(Position = 0)][string]$file) {
+  $file=Path-Combine $PROJECT.artifacts, $file
+  if (Test-Path $file) {
+    Push-AppveyorArtifact $file
   }
 }

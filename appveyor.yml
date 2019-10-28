@@ -36,15 +36,13 @@ test_script:
   - ps: Test
 
 after_test:
-  - ps: Upload-Results
-
-# on build failure
-on_failure:
-  -ps: Push-AppveyorArtifact (Path-Combine $PROJECT.artifacts, "errors.txt")
+  - ps: Push-Test-Results
 
 # after build failure or success
 on_finish:
-  - ps: Push-AppveyorArtifact (Path-Combine $PROJECT.artifacts, "log.txt")
+  - ps: |
+      Push-Artifact "log.txt"
+      Push-Artifact "errors.txt"    
 
 # override settings for `master` branch
 for:
@@ -54,10 +52,10 @@ for:
       - master
 
   before_deploy:
-    - ps: Git-Config
- 
-  deploy_script:
-    # update documentation
-    - ps: GH-Pages
-    # publish nuget package
-    - ps: Deploy
+    - ps: Git-Config 
+  
+  deploy_script: 
+    # update documentation & publish nuget package
+    - ps: |
+        GH-Pages
+        Deploy

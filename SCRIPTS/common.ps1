@@ -110,12 +110,12 @@ function Exec([Parameter(Position = 0)][string]$command, [string]$commandArgs = 
       if (!$ignoreError) {	
         Exit $exitCode
       }
-	  
+
       return
     }
 	
     if ($redirectOutput -or !$noLog) {
-      $output=$process.StandardOutput.ReadToEnd()
+      $output = $process.StandardOutput.ReadToEnd()
 	
       if (!$noLog) {
         $output | Write-Log -filename "log.txt"
