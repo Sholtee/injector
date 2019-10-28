@@ -3,7 +3,7 @@
 		"content": [
 			{
 				"files": ["*.md"],
-				"src": "../BenchmarkDotNet.Artifacts/results"
+				"src": "../Artifacts/BenchmarkDotNet.Artifacts/results"
 			},
 			{
 				"files": ["index.md"]
