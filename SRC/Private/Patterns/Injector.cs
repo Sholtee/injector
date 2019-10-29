@@ -27,6 +27,7 @@ namespace Solti.Utils.DI.Internals
             Add(new InstanceServiceEntry
             (
                 @interface: typeof(IInjector),
+                name: null,
                 value: this,
                 releaseOnDispose: false,
                 owner: this
@@ -34,7 +35,7 @@ namespace Solti.Utils.DI.Internals
         }
 
         #region IInjector
-        public object Get(Type iface, Type target)
+        public object Get(Type iface, string name, Type target)
         {
             if (iface == null)
                 throw new ArgumentNullException(nameof(iface));
@@ -66,7 +67,7 @@ namespace Solti.Utils.DI.Internals
                 if (FCurrentPath.Count(t => t == iface) > 1)
                     throw new InvalidOperationException(string.Format(Resources.CIRCULAR_REFERENCE, string.Join(" -> ", FCurrentPath)));
 
-                IServiceFactory factory = Get(iface, QueryMode.AllowSpecialization | QueryMode.ThrowOnError);
+                IServiceFactory factory = Get(iface, name, QueryMode.AllowSpecialization | QueryMode.ThrowOnError);
 
                 //
                 // Ha az OnServiceRequested esemenyben felulirjak a szervizt akkor azt
@@ -85,7 +86,7 @@ namespace Solti.Utils.DI.Internals
             }
         }
 
-        public Lifetime? LifetimeOf(Type iface)
+        public Lifetime? LifetimeOf(Type iface, string name)
         {
             if (iface == null)
                 throw new ArgumentNullException(nameof(iface));
@@ -99,7 +100,7 @@ namespace Solti.Utils.DI.Internals
             // lekerdezni, ekkor ne legyen kivetel.
             //
 
-            return Get(iface, QueryMode.Default)?.Lifetime;
+            return Get(iface, name, QueryMode.Default)?.Lifetime;
         }
 
         public event InjectorEventHandler<InjectorEventArg> OnServiceRequest;

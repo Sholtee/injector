@@ -33,7 +33,7 @@ namespace Solti.Utils.DI.Container.Setup.Tests
 
             mockContainer.Object.Setup(typeof(GenericService<>).Assembly());
 
-            mockContainer.Verify(i => i.Add(It.Is<ScopedServiceEntry>(se => se.Equals(new ScopedServiceEntry(typeof(IGenericService<>), typeof(GenericService<>), mockContainer.Object)))), Times.Once);
+            mockContainer.Verify(i => i.Add(It.Is<ScopedServiceEntry>(se => se.Equals(new ScopedServiceEntry(typeof(IGenericService<>), null, typeof(GenericService<>), mockContainer.Object)))), Times.Once);
         }
     }
 }

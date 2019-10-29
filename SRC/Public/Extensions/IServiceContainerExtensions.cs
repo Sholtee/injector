@@ -40,7 +40,7 @@ namespace Solti.Utils.DI
         /// <param name="mode">Options.</param>
         /// <returns>The requested service entry.</returns>
         /// <exception cref="ServiceNotFoundException">If the service could not be found.</exception>
-        public static AbstractServiceEntry Get<TInterface>(this IServiceContainer self, QueryMode mode = QueryMode.Default) => self.Get(typeof(TInterface), mode);
+        public static AbstractServiceEntry Get<TInterface>(this IServiceContainer self, QueryMode mode = QueryMode.Default) => self.Get(typeof(TInterface), null, mode);
 
         /// <summary>
         /// Registers a new service with the given implementation.
@@ -82,7 +82,7 @@ namespace Solti.Utils.DI
 
             return self.Add
             (
-                ProducibleServiceEntryFactory.CreateEntry(lifetime, iface, implementation, self)
+                ProducibleServiceEntryFactory.CreateEntry(lifetime, iface, null, implementation, self)
             );           
         }
 
@@ -119,7 +119,7 @@ namespace Solti.Utils.DI
 
             return self.Add
             (
-                ProducibleServiceEntryFactory.CreateEntry(lifetime, iface, implementation, self)
+                ProducibleServiceEntryFactory.CreateEntry(lifetime, iface, null, implementation, self)
             );
         }
 
@@ -147,7 +147,7 @@ namespace Solti.Utils.DI
                 throw new ArgumentNullException(nameof(factory));
 
             return self
-                .Add(ProducibleServiceEntryFactory.CreateEntry(lifetime, iface, factory, self))
+                .Add(ProducibleServiceEntryFactory.CreateEntry(lifetime, iface, null, factory, self))
                 
                 //
                 // A kivulrol legyartott peldany tipusat meg ellenorizzuk.
@@ -179,7 +179,7 @@ namespace Solti.Utils.DI
             if (decorator == null)
                 throw new ArgumentNullException(nameof(decorator));
 
-            AbstractServiceEntry entry = self.Get(iface, QueryMode.AllowSpecialization | QueryMode.ThrowOnError);
+            AbstractServiceEntry entry = self.Get(iface, null, QueryMode.AllowSpecialization | QueryMode.ThrowOnError);
 
             //
             // Generikus szerviz, Abstract(), Instance() eseten valamint ha nem ez a 
@@ -232,7 +232,7 @@ namespace Solti.Utils.DI
             if (!iface.IsInstanceOfType(instance))
                 throw new InvalidOperationException(string.Format(Resources.NOT_ASSIGNABLE, iface, instance.GetType()));
 
-            return self.Add(new InstanceServiceEntry(iface, instance, releaseOnDispose, self));
+            return self.Add(new InstanceServiceEntry(iface, null, instance, releaseOnDispose, self));
         }
 
         /// <summary>
@@ -252,7 +252,7 @@ namespace Solti.Utils.DI
             if (!iface.IsInterface())
                 throw new ArgumentException(Resources.NOT_AN_INTERFACE, nameof(iface));
 
-            return self.Add(new AbstractServiceEntry(iface));
+            return self.Add(new AbstractServiceEntry(iface, null));
         }
 
         /// <summary>

@@ -19,15 +19,15 @@ namespace Solti.Utils.DI.Internals
         {
         }
 
-        public TransientServiceEntry(Type @interface, Func<IInjector, Type, object> factory, IServiceContainer owner) : base(@interface, DI.Lifetime.Transient, factory, owner)
+        public TransientServiceEntry(Type @interface, string name, Func<IInjector, Type, object> factory, IServiceContainer owner) : base(@interface, name, DI.Lifetime.Transient, factory, owner)
         {
         }
 
-        public TransientServiceEntry(Type @interface, Type implementation, IServiceContainer owner) : base(@interface, DI.Lifetime.Transient, implementation, owner)
+        public TransientServiceEntry(Type @interface, string name, Type implementation, IServiceContainer owner) : base(@interface, name, DI.Lifetime.Transient, implementation, owner)
         {
         }
 
-        public TransientServiceEntry(Type @interface, ITypeResolver implementation, IServiceContainer owner) : base(@interface, DI.Lifetime.Transient, implementation, owner)
+        public TransientServiceEntry(Type @interface, string name, ITypeResolver implementation, IServiceContainer owner) : base(@interface, name, DI.Lifetime.Transient, implementation, owner)
         {
         }
 

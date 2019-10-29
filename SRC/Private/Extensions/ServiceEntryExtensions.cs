@@ -4,9 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -16,25 +14,14 @@ namespace Solti.Utils.DI.Internals
         {
             Debug.Assert(entry.Implementation != null, "Attempt to specialize an entry without implementation");
 
-            //
-            // Mivel a MakeGenericType() idoigenyes ezert gyorsitotarazunk.
-            //
-
-            var concrete = Cache<int, KeyValuePair<Type, Type>>.GetOrAdd
+            return ProducibleServiceEntryFactory.CreateEntry
             (
-                GetKey(), 
-                () => new KeyValuePair<Type, Type>
-                (
-                    entry.Interface.MakeGenericType(genericArguments), 
-                    entry.Implementation.MakeGenericType(genericArguments)
-                )
+                entry.Lifetime,
+                entry.Interface.MakeGenericType(genericArguments), 
+                entry.Name,
+                entry.Implementation.MakeGenericType(genericArguments), 
+                entry.Owner
             );
-
-            return ProducibleServiceEntryFactory.CreateEntry(entry.Lifetime, concrete.Key, concrete.Value, entry.Owner);
-
-            int GetKey() => genericArguments
-                .Select(ga => ga.GetHashCode())
-                .Aggregate(new {entry.Interface, entry.Implementation}.GetHashCode(), (accu, current) => new {accu, current}.GetHashCode());
         }
 
         public static bool IsGeneric(this AbstractServiceEntry entry) => entry.Interface.IsGenericTypeDefinition();

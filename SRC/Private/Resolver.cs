@@ -16,7 +16,7 @@ namespace Solti.Utils.DI.Internals
 
     internal static class Resolver
     {
-        private static readonly MethodInfo InjectorGet = ((MethodCallExpression) ((Expression<Action<IInjector>>) (i => i.Get(null, null))).Body).Method;
+        private static readonly MethodInfo InjectorGet = ((MethodCallExpression) ((Expression<Action<IInjector>>) (i => i.Get(null, null, null))).Body).Method;
 
         private static Type GetParameterType(ParameterInfo param, out bool isLazy)
         {
@@ -74,7 +74,7 @@ namespace Solti.Utils.DI.Internals
                         // injector.Get(typeof(IInterface), target)
                         //
 
-                        : (Expression) Expression.Call(injector, InjectorGet, Expression.Constant(parameterType), Expression.Constant(target));
+                        : (Expression) Expression.Call(injector, InjectorGet, Expression.Constant(parameterType), Expression.Constant(null, typeof(string)), Expression.Constant(target));
                 },
                 injector,
                 iface
@@ -143,7 +143,7 @@ namespace Solti.Utils.DI.Internals
                     // injector.Get(typeof(IInterface), target)
                     //
 
-                    : injectorInst.Get(parameterType, target);
+                    : injectorInst.Get(parameterType, null, target);
             }
         });
 
@@ -175,6 +175,7 @@ namespace Solti.Utils.DI.Internals
                             injector,
                             InjectorGet,
                             Expression.Constant(iface),
+                            Expression.Constant(null, typeof(string)),
                             target
                         ),
                         iface

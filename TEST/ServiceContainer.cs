@@ -40,8 +40,8 @@ namespace Solti.Utils.DI.Container.Tests
 
             IServiceContainer container = CreateContainer();
 
-            container.Add(new InstanceServiceEntry(typeof(IDisposable), owned, releaseOnDispose: true, owner: container));
-            container.Add(new InstanceServiceEntry(typeof(IServiceContainer) /*tok mind1*/, notOwned, releaseOnDispose: true, owner: null));
+            container.Add(new InstanceServiceEntry(typeof(IDisposable), null, owned, releaseOnDispose: true, owner: container));
+            container.Add(new InstanceServiceEntry(typeof(IServiceContainer) /*tok mind1*/, null, notOwned, releaseOnDispose: true, owner: null));
 
             Assert.That(container.Count, Is.EqualTo(2));
 
@@ -60,7 +60,7 @@ namespace Solti.Utils.DI.Container.Tests
             // tag) nem volt hivva a Setup().
             //
 
-            Mock<AbstractServiceEntry> entry = new Mock<AbstractServiceEntry>(typeof(IDisposable) /*iface*/, Lifetime.Transient, new TImplementation());              
+            Mock<AbstractServiceEntry> entry = new Mock<AbstractServiceEntry>(typeof(IDisposable) /*iface*/, null, Lifetime.Transient, new TImplementation());              
             entry.Setup(e => e.CopyTo(It.IsAny<IServiceContainer>())).Returns<IServiceContainer>(sc => null);
 
             using (IServiceContainer container = CreateContainer(entry.Object).CreateChild())
@@ -74,15 +74,15 @@ namespace Solti.Utils.DI.Container.Tests
         {
             IServiceContainer container = CreateContainer
             (
-                new InstanceServiceEntry(typeof(IDisposable), null, false, null)
+                new InstanceServiceEntry(typeof(IDisposable), null, null, false, null)
             );
 
-            Assert.Throws<ServiceAlreadyRegisteredException>(() => container.Add(new InstanceServiceEntry(typeof(IDisposable), null, false, null)));
+            Assert.Throws<ServiceAlreadyRegisteredException>(() => container.Add(new InstanceServiceEntry(typeof(IDisposable), null, null, false, null)));
 
             Assert.Throws<ServiceAlreadyRegisteredException>(() => CreateContainer
             (
-                new InstanceServiceEntry(typeof(IDisposable), null, false, null),
-                new InstanceServiceEntry(typeof(IDisposable), null, false, null)
+                new InstanceServiceEntry(typeof(IDisposable), null, null, false, null),
+                new InstanceServiceEntry(typeof(IDisposable), null, null, false, null)
             ));
         }
 
@@ -90,10 +90,10 @@ namespace Solti.Utils.DI.Container.Tests
         public void IServiceContainer_GetShouldReturnOnTypeMatch()
         {          
             IServiceContainer container = CreateContainer();
-            var entry = new TransientServiceEntry(typeof(IList<>), typeof(List<>), container);
+            var entry = new TransientServiceEntry(typeof(IList<>), null, typeof(List<>), container);
             container.Add(entry);
 
-            Assert.That(container.Get(typeof(IList<>), QueryMode.ThrowOnError), Is.EqualTo(entry));
+            Assert.That(container.Get(typeof(IList<>), null, QueryMode.ThrowOnError), Is.EqualTo(entry));
         }
 
         [Test]
@@ -105,12 +105,12 @@ namespace Solti.Utils.DI.Container.Tests
             // Azert singleton h az owner kontener ne valtozzon.
             //
             
-            container.Add(new SingletonServiceEntry(typeof(IList<>), typeof(MyList<>), container));
+            container.Add(new SingletonServiceEntry(typeof(IList<>), null, typeof(MyList<>), container));
 
             Assert.That(container.Count, Is.EqualTo(1));
-            Assert.Throws<ServiceNotFoundException>(() => container.Get(typeof(IList<int>), QueryMode.ThrowOnError));
+            Assert.Throws<ServiceNotFoundException>(() => container.Get(typeof(IList<int>), null, QueryMode.ThrowOnError));
             Assert.That(container.Count, Is.EqualTo(1));
-            Assert.That(container.Get(typeof(IList<int>), QueryMode.AllowSpecialization | QueryMode.ThrowOnError), Is.EqualTo(new SingletonServiceEntry(typeof(IList<int>), typeof(MyList<int>), container)));
+            Assert.That(container.Get(typeof(IList<int>), null, QueryMode.AllowSpecialization | QueryMode.ThrowOnError), Is.EqualTo(new SingletonServiceEntry(typeof(IList<int>), null, typeof(MyList<int>), container)));
             Assert.That(container.Count, Is.EqualTo(2));
         }
 
@@ -118,20 +118,20 @@ namespace Solti.Utils.DI.Container.Tests
         public void IServiceContainer_GetShouldReturnTheSpecializedInheritedEntry()
         {
             IServiceContainer container = CreateContainer();
-            container.Add(new SingletonServiceEntry(typeof(IList<>), typeof(MyList<>), container));
+            container.Add(new SingletonServiceEntry(typeof(IList<>), null, typeof(MyList<>), container));
 
             using (IServiceContainer child = container.CreateChild())
             {
                 Assert.That(child.Count, Is.EqualTo(1));
-                Assert.Throws<ServiceNotFoundException>(() => child.Get(typeof(IList<int>), QueryMode.ThrowOnError));
+                Assert.Throws<ServiceNotFoundException>(() => child.Get(typeof(IList<int>), null, QueryMode.ThrowOnError));
                 Assert.That(container.Count, Is.EqualTo(1));
                 Assert.That(child.Count, Is.EqualTo(1));
-                Assert.That(child.Get(typeof(IList<int>), QueryMode.AllowSpecialization | QueryMode.ThrowOnError), Is.EqualTo(new SingletonServiceEntry(typeof(IList<int>), typeof(MyList<int>), container)));
+                Assert.That(child.Get(typeof(IList<int>), null, QueryMode.AllowSpecialization | QueryMode.ThrowOnError), Is.EqualTo(new SingletonServiceEntry(typeof(IList<int>), null, typeof(MyList<int>), container)));
                 Assert.That(container.Count, Is.EqualTo(2));
                 Assert.That(child.Count, Is.EqualTo(2));
             }
 
-            Assert.That(container.Get(typeof(IList<int>), QueryMode.ThrowOnError), Is.EqualTo(new SingletonServiceEntry(typeof(IList<int>), typeof(MyList<int>), container)));
+            Assert.That(container.Get(typeof(IList<int>), null, QueryMode.ThrowOnError), Is.EqualTo(new SingletonServiceEntry(typeof(IList<int>), null, typeof(MyList<int>), container)));
         }
 
         [Test]
@@ -139,20 +139,20 @@ namespace Solti.Utils.DI.Container.Tests
         {
             IServiceContainer container = CreateContainer
             (
-                new SingletonServiceEntry(typeof(IList<>), typeof(List<>), null) 
+                new SingletonServiceEntry(typeof(IList<>), null, typeof(List<>), null) 
             );
 
             Assert.IsNull(container.Get(typeof(IList<int>)));
-            Assert.Throws<ServiceNotFoundException>(() => container.Get(typeof(IList<int>), QueryMode.ThrowOnError));
-            Assert.That(container.Get(typeof(IList<>), QueryMode.ThrowOnError), Is.EqualTo(new SingletonServiceEntry(typeof(IList<>), typeof(List<>), null)));
+            Assert.Throws<ServiceNotFoundException>(() => container.Get(typeof(IList<int>), null, QueryMode.ThrowOnError));
+            Assert.That(container.Get(typeof(IList<>), null, QueryMode.ThrowOnError), Is.EqualTo(new SingletonServiceEntry(typeof(IList<>), null, typeof(List<>), null)));
         }
 
         [Test]
         public void IServiceContainer_ContainsShouldSearchByGetHashCode()
         {
             AbstractServiceEntry 
-                entry1 = new AbstractServiceEntry(typeof(IDisposable)),
-                entry2 = new AbstractServiceEntry(typeof(IDisposable));
+                entry1 = new AbstractServiceEntry(typeof(IDisposable), null),
+                entry2 = new AbstractServiceEntry(typeof(IDisposable), null);
 
             IServiceContainer container = CreateContainer(entry1);
             
@@ -165,13 +165,13 @@ namespace Solti.Utils.DI.Container.Tests
         [Test]
         public void IServiceContainer_EnumeratorShouldBeIndependent()
         {
-            var entry = new AbstractServiceEntry(typeof(IDisposable));
+            var entry = new AbstractServiceEntry(typeof(IDisposable), null);
 
             IServiceContainer container = CreateContainer(entry);
 
             using (IEnumerator<AbstractServiceEntry> enumerator = container.GetEnumerator())
             {
-                container.Add(new AbstractServiceEntry(typeof(IList<>)));
+                container.Add(new AbstractServiceEntry(typeof(IList<>), null));
                 Assert.That(enumerator.MoveNext);
                 Assert.AreSame(enumerator.Current, entry);
                 Assert.False(enumerator.MoveNext());
@@ -377,8 +377,8 @@ namespace Solti.Utils.DI.Container.Tests
             entry.Lock.Reset();
 
             Task<AbstractServiceEntry>
-                t1 = Task.Run(() => Container.Get(typeof(IList<int>), QueryMode.ThrowOnError | QueryMode.AllowSpecialization)),
-                t2 = Task.Run(() => Container.Get(typeof(IList<int>), QueryMode.ThrowOnError | QueryMode.AllowSpecialization));
+                t1 = Task.Run(() => Container.Get(typeof(IList<int>), null, QueryMode.ThrowOnError | QueryMode.AllowSpecialization)),
+                t2 = Task.Run(() => Container.Get(typeof(IList<int>), null, QueryMode.ThrowOnError | QueryMode.AllowSpecialization));
            
             Thread.Sleep(10);
 
@@ -395,7 +395,7 @@ namespace Solti.Utils.DI.Container.Tests
             Task.WaitAll(t1, t2);
 
             Assert.AreSame(t1.Result, t2.Result);
-            Assert.That(t1.Result, Is.EqualTo(new SingletonServiceEntry(typeof(IList<int>), typeof(MyList<int>), Container)));
+            Assert.That(t1.Result, Is.EqualTo(new SingletonServiceEntry(typeof(IList<int>), null, typeof(MyList<int>), Container)));
         }
 
         //
@@ -406,7 +406,7 @@ namespace Solti.Utils.DI.Container.Tests
         {
             public readonly ManualResetEventSlim Lock = new ManualResetEventSlim(true);
 
-            public LockableSingletonServiceEntry(Type @interface, Type implementation, IServiceContainer owner) : base(@interface, DI.Lifetime.Singleton, owner)
+            public LockableSingletonServiceEntry(Type @interface, Type implementation, IServiceContainer owner) : base(@interface, null, DI.Lifetime.Singleton, owner)
             {
                 Implementation = implementation;
             }
@@ -438,8 +438,8 @@ namespace Solti.Utils.DI.Container.Tests
                 entry.Lock.Reset();
 
                 Task<AbstractServiceEntry>
-                    t1 = Task.Run(() => child.Get(typeof(IList<int>), QueryMode.ThrowOnError | QueryMode.AllowSpecialization)),
-                    t2 = Task.Run(() => child.Get(typeof(IList<int>), QueryMode.ThrowOnError | QueryMode.AllowSpecialization));
+                    t1 = Task.Run(() => child.Get(typeof(IList<int>), null, QueryMode.ThrowOnError | QueryMode.AllowSpecialization)),
+                    t2 = Task.Run(() => child.Get(typeof(IList<int>), null, QueryMode.ThrowOnError | QueryMode.AllowSpecialization));
 
                 Thread.Sleep(10);
 
@@ -456,7 +456,7 @@ namespace Solti.Utils.DI.Container.Tests
                 Task.WaitAll(t1, t2);
 
                 Assert.AreSame(t1.Result, t2.Result);
-                Assert.That(t1.Result, Is.EqualTo(new SingletonServiceEntry(typeof(IList<int>), typeof(MyList<int>), Container)));
+                Assert.That(t1.Result, Is.EqualTo(new SingletonServiceEntry(typeof(IList<int>), null, typeof(MyList<int>), Container)));
                 Assert.That(child.Count, Is.EqualTo(2));
             }
 

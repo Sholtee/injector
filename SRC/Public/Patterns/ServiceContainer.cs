@@ -23,7 +23,7 @@ namespace Solti.Utils.DI
     /// </summary>
     public class ServiceContainer : Composite<IServiceContainer>, IServiceContainer
     {
-        private readonly Dictionary<Type, AbstractServiceEntry> FEntries;
+        private readonly Dictionary<string, AbstractServiceEntry> FEntries;
 
         //
         // Singleton elettartamnal parhuzamosan is modositasra kerulhet a  bejegyzes lista 
@@ -31,6 +31,13 @@ namespace Solti.Utils.DI
         //
 
         private readonly ReaderWriterLockSlim FLock = new ReaderWriterLockSlim();
+
+        private static string GenerateKey(Type serviceInterface, string name) 
+        {
+            string result = serviceInterface.FullName;
+            if (name != null) result += $":{name}";
+            return result;
+        }
 
         #region IServiceContainer
         /// <summary>
@@ -41,15 +48,17 @@ namespace Solti.Utils.DI
             if (entry == null)
                 throw new ArgumentNullException(nameof(entry));
 
+            string key = GenerateKey(entry.Interface, entry.Name);
+
             using (FLock.AcquireWriterLock())
             {
                 //
                 // Abstract bejegyzest felul lehet irni (de csak azt).
                 //
 
-                if (FEntries.TryGetValue(entry.Interface, out var entryToRemove) && entryToRemove.GetType() == typeof(AbstractServiceEntry))
+                if (FEntries.TryGetValue(key, out var entryToRemove) && entryToRemove.GetType() == typeof(AbstractServiceEntry))
                 {
-                    bool removed = FEntries.Remove(entry.Interface);
+                    bool removed = FEntries.Remove(key);
                     Debug.Assert(removed, "Can't remove entry");
                 }
 
@@ -59,7 +68,7 @@ namespace Solti.Utils.DI
 
                 try
                 {
-                    FEntries.Add(entry.Interface, entry);
+                    FEntries.Add(key, entry);
                 }
                 catch (ArgumentException e)
                 {
@@ -73,7 +82,7 @@ namespace Solti.Utils.DI
         /// <summary>
         /// See <see cref="IServiceContainer.Get"/>.
         /// </summary>
-        public AbstractServiceEntry Get(Type serviceInterface, QueryMode mode = QueryMode.Default)
+        public AbstractServiceEntry Get(Type serviceInterface, string name, QueryMode mode)
         {
             if (serviceInterface == null)
                 throw new ArgumentNullException(nameof(serviceInterface));
@@ -89,7 +98,7 @@ namespace Solti.Utils.DI
                 // 1. eset: Vissza tudjuk adni amit kerestunk.
                 //
 
-                if (FEntries.TryGetValue(serviceInterface, out result))
+                if (FEntries.TryGetValue(GenerateKey(serviceInterface, name), out result))
                     return result;
 
                 //
@@ -98,7 +107,11 @@ namespace Solti.Utils.DI
 
                 bool hasGenericEntry = mode.HasFlag(QueryMode.AllowSpecialization) &&
                                        serviceInterface.IsGenericType() &&
-                                       FEntries.TryGetValue(serviceInterface.GetGenericTypeDefinition(), out result);
+                                       FEntries.TryGetValue
+                                       (
+                                           key: GenerateKey(serviceInterface.GetGenericTypeDefinition(), name), 
+                                           value: out result
+                                       );
 
                 //
                 // 3. eset: Egyik se jott be, vagy kivetelt v NULL-t adunk vissza.
@@ -135,7 +148,7 @@ namespace Solti.Utils.DI
 
                     return result
                         .Owner
-                        .Get(serviceInterface, QueryMode.AllowSpecialization)
+                        .Get(serviceInterface, name, QueryMode.AllowSpecialization)
 
                         //
                         // A CopyTo() belsoleg a this.Add()-et fogja hivni, reszleteket lasd a kivetel kezeloben.
@@ -160,7 +173,7 @@ namespace Solti.Utils.DI
                 // egyszeruen visszaadjuk a masik szal altal regisztralt peldanyt.
                 //
 
-                return Get(serviceInterface, QueryMode.ThrowOnError);
+                return Get(serviceInterface, name, QueryMode.ThrowOnError);
             }
         }
 
@@ -206,7 +219,7 @@ namespace Solti.Utils.DI
         /// <param name="parent">The parent <see cref="IServiceContainer"/>.</param>
         protected ServiceContainer(IServiceContainer parent) : base(parent)
         {
-            FEntries = new Dictionary<Type, AbstractServiceEntry>(parent?.Count ?? 0);
+            FEntries = new Dictionary<string, AbstractServiceEntry>(parent?.Count ?? 0);
             if (parent == null) return;
 
             foreach (AbstractServiceEntry entry in parent)
