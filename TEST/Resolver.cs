@@ -57,7 +57,7 @@ namespace Solti.Utils.DI.Internals.Tests
                 .Returns<Type, string, Type>((type, name, target) =>
                 {
                     if (type == typeof(IDisposable)) return new Disposable();
-                    if (type == typeof(IServiceFactory)) return new TransientServiceEntry(type, name: null, factory: null, owner: null);
+                    if (type == typeof(IServiceFactory)) return new TransientServiceEntry(type, name: null, factory: (i, t) => null, owner: null);
 
                     Assert.Fail("Unknown type");
                     return null;

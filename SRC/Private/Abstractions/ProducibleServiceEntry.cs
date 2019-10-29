@@ -28,16 +28,33 @@ namespace Solti.Utils.DI.Internals
 
         protected ProducibleServiceEntry(Type @interface, string name, Lifetime lifetime, Func<IInjector, Type, object> factory, IServiceContainer owner) : base(@interface, name, lifetime, owner)
         {
-            Factory = factory;
+            //
+            // Interface-t nem kell ellenorizni (az os megteszi).
+            //
+
+            Factory = factory ?? throw new ArgumentNullException(nameof(factory));
         }
 
-        protected ProducibleServiceEntry(Type @interface, string name, Lifetime lifetime, Type implementation, IServiceContainer owner) : this(@interface, name, lifetime, !@interface.IsGenericTypeDefinition() ? Resolver.Get(implementation) : null, owner)
+        protected ProducibleServiceEntry(Type @interface, string name, Lifetime lifetime, Type implementation, IServiceContainer owner) : base(@interface, name, lifetime, owner)
         {
+            //
+            // Interface-t nem kell ellenorizni (az os megteszi).
+            //
+
+            if (implementation == null)
+                throw new ArgumentNullException(nameof(implementation));
+
+            if (!@interface.IsGenericTypeDefinition())
+                Factory = Resolver.Get(implementation);
+
             UserData = implementation;
         }
 
         protected ProducibleServiceEntry(Type @interface, string name, Lifetime lifetime, ITypeResolver implementation, IServiceContainer owner) : base(@interface, name, lifetime, owner)
         {
+            if (implementation == null)
+                throw new ArgumentNullException(nameof(implementation));
+
             Lazy<Type> lazyImplementation = implementation.AsLazy(@interface);
 
             UserData = lazyImplementation;
