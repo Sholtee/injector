@@ -369,6 +369,52 @@ namespace Solti.Utils.DI.Container.Tests
         public void IServiceContainer_AddShouldThrowOnNull() => Assert.Throws<ArgumentNullException>(() => Container.Add(null));
 
         [Test]
+        public void IServiceContainer_AddShouldAcceptMoreThanOneNamedService()
+        {
+            Assert.DoesNotThrow(() => Container.Add(new SingletonServiceEntry(typeof(IDisposable), "cica", typeof(Disposable), Container)));
+            Assert.DoesNotThrow(() => Container.Add(new SingletonServiceEntry(typeof(IDisposable), "kutya", typeof(Disposable), Container)));
+
+            Assert.That(Container.Count, Is.EqualTo(2));
+        }
+
+        [Test]
+        public void IServiceContainer_AddShouldThrowOnAlreadyRegisteredService()
+        {
+            Container.Add(new SingletonServiceEntry(typeof(IDisposable), null, typeof(Disposable), Container));
+            Container.Add(new SingletonServiceEntry(typeof(IDisposable), "cica", typeof(Disposable), Container));
+
+            Assert.Throws<ServiceAlreadyRegisteredException>(() => Container.Add(new SingletonServiceEntry(typeof(IDisposable), null, typeof(Disposable), Container)));
+            Assert.Throws<ServiceAlreadyRegisteredException>(() => Container.Add(new SingletonServiceEntry(typeof(IDisposable), "cica", typeof(Disposable), Container)));
+        }
+
+        [Test]
+        public void IServiceContainer_AddShouldOverwriteAbstractEntries() 
+        {
+            Container.Add(new AbstractServiceEntry(typeof(IDisposable), null));
+            Container.Add(new AbstractServiceEntry(typeof(IDisposable), "cica"));
+
+            Assert.DoesNotThrow(() => Container.Add(new SingletonServiceEntry(typeof(IDisposable), null, typeof(Disposable), Container)));
+            Assert.DoesNotThrow(() => Container.Add(new SingletonServiceEntry(typeof(IDisposable), "cica", typeof(Disposable), Container)));
+
+            Assert.That(Container.Get(typeof(IDisposable)), Is.InstanceOf<SingletonServiceEntry>());
+            Assert.That(Container.Get(typeof(IDisposable), "cica"), Is.InstanceOf<SingletonServiceEntry>());
+        }
+
+        [Test]
+        public void IServiceContainer_GetShouldTakeNameIntoAccount() 
+        {
+            AbstractServiceEntry
+                entryWithoutName = new AbstractServiceEntry(typeof(IDisposable), null),
+                entryWithName    = new AbstractServiceEntry(typeof(IDisposable), "cica");
+
+            Container.Add(entryWithName);
+            Container.Add(entryWithoutName);
+
+            Assert.AreSame(Container.Get(typeof(IDisposable)), entryWithoutName);
+            Assert.AreSame(Container.Get(typeof(IDisposable), "cica"), entryWithName);
+        }
+
+        [Test]
         public void IServiceContainer_GetShouldReturnTheSpecializedEntryInMultithreadedEnvironment()
         {
             var entry = new LockableSingletonServiceEntry(typeof(IList<>), typeof(MyList<>), Container);
