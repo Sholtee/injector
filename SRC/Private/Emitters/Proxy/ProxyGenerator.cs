@@ -25,7 +25,7 @@ namespace Solti.Utils.DI.Internals
 
     internal static class ProxyGenerator<TInterface, TInterceptor> where TInterface : class where TInterceptor: InterfaceInterceptor<TInterface>
     {
-        private static readonly string
+        private const string
             CALL_TARGET = nameof(InterfaceInterceptor<TInterface>.CALL_TARGET),
             TARGET      = nameof(InterfaceInterceptor<TInterface>.Target);
 
