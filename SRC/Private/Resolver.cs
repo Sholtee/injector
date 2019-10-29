@@ -12,6 +12,7 @@ using System.Reflection;
 
 namespace Solti.Utils.DI.Internals
 {
+    using Annotations;
     using Properties;
 
     internal static class Resolver
@@ -58,23 +59,22 @@ namespace Solti.Utils.DI.Internals
             (
                 (param, i) =>
                 {
-                    Type parameterType = GetParameterType(param, out var isLazy);
+                    Type parameterType = GetParameterType(param, out var isLazy) ?? throw new ArgumentException(Resources.INVALID_CONSTRUCTOR, nameof(constructor));
 
-                    if (parameterType == null)
-                        throw new ArgumentException(Resources.INVALID_CONSTRUCTOR, nameof(constructor));
+                    string svcName = param.GetCustomAttribute<QueryOptionsAttribute>()?.Name;
 
                     return isLazy
                         //
                         // Lazy<IInterface>(() => (IInterface) injector.Get(typeof(IInterface), target))
                         //
 
-                        ? (Expression) Expression.Invoke(Expression.Constant(GetLazyFactory(parameterType)), injector, Expression.Constant(target))
+                        ? (Expression) Expression.Invoke(Expression.Constant(GetLazyFactory(parameterType, svcName)), injector, Expression.Constant(target))
 
                         //
                         // injector.Get(typeof(IInterface), target)
                         //
 
-                        : (Expression) Expression.Call(injector, InjectorGet, Expression.Constant(parameterType), Expression.Constant(null, typeof(string)), Expression.Constant(target));
+                        : (Expression) Expression.Call(injector, InjectorGet, Expression.Constant(parameterType), Expression.Constant(svcName /*lehet NULL*/, typeof(string)), Expression.Constant(target));
                 },
                 injector,
                 iface
@@ -128,28 +128,28 @@ namespace Solti.Utils.DI.Internals
                 // megadhato legyen.
                 //
 
-                Type parameterType = GetParameterType(param, out var isLazy);
-                if (parameterType == null)
-                    throw new ArgumentException(Resources.INVALID_CONSTRUCTOR_ARGUMENT);
+                Type parameterType = GetParameterType(param, out var isLazy) ?? throw new ArgumentException(Resources.INVALID_CONSTRUCTOR_ARGUMENT);
+
+                string svcName = param.GetCustomAttribute<QueryOptionsAttribute>()?.Name;
 
                 return isLazy
                     //
                     // Lazy<IInterface>(() => (IInterface) injector.Get(typeof(IInterface), target))
                     //
 
-                    ? GetLazyFactory(parameterType)(injectorInst, target)
+                    ? GetLazyFactory(parameterType, svcName)(injectorInst, target)
 
                     //
                     // injector.Get(typeof(IInterface), target)
                     //
 
-                    : injectorInst.Get(parameterType, null, target);
+                    : injectorInst.Get(parameterType, svcName, target);
             }
         });
 
         public static Func<IInjector, IReadOnlyDictionary<string, object>, object> GetExtended(Type type) => Cache<Type, Func<IInjector, IReadOnlyDictionary<string, object>, object>>.GetOrAdd(type, () => GetExtended(type.GetApplicableConstructor()));
 
-        public static Func<IInjector, Type, object> GetLazyFactory(Type iface) => Cache<Type, Func<IInjector, Type, object>>.GetOrAdd(iface, () =>
+        public static Func<IInjector, Type, object> GetLazyFactory(Type iface, string name) => Cache<object, Func<IInjector, Type, object>>.GetOrAdd(new {iface, name}, () =>
         {
             Debug.Assert(iface.IsInterface());
 
@@ -175,7 +175,7 @@ namespace Solti.Utils.DI.Internals
                             injector,
                             InjectorGet,
                             Expression.Constant(iface),
-                            Expression.Constant(null, typeof(string)),
+                            Expression.Constant(name /*lehet NULL*/, typeof(string)),
                             target
                         ),
                         iface
