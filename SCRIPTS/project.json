@@ -10,5 +10,6 @@
   "coveragefilter": "+[Injector*]* -[Injector.Tests]*",
   "perftests": "..\\PERF\\Injector.Perf.csproj",
   "perftarget": "netcoreapp3.0",
-  "docsbranch": "gh-pages"
+  "docsbranch": "gh-pages",
+  "CI": "AppVeyor"
 }

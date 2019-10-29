@@ -7,6 +7,8 @@ $ErrorActionPreference = "Stop"
 
 Set-Variable PROJECT -option Constant -value (Get-Content ".\project.json" -raw | ConvertFrom-Json)
 
+$Env:CI = $PROJECT.CI
+
 function Create-Directory([Parameter(Position = 0)][string[]] $path) {
   if (!(Test-Path $path)) {
     New-Item -path $path -force -itemType "Directory" | Out-Null
