@@ -14,7 +14,7 @@ namespace Solti.Utils.DI.Internals
 
     internal sealed class Injector : ServiceContainer, IInjector
     {
-        private readonly Stack<Type> FCurrentPath = new Stack<Type>();
+        private readonly Stack<(Type Interface, string Name)> FCurrentPath = new Stack<(Type Interface, string Name)>();
 
         private Injector() => throw new NotSupportedException();
 
@@ -57,15 +57,26 @@ namespace Solti.Utils.DI.Internals
             OnServiceRequest?.Invoke(this, ev);
             if (ev.Service != null) return ev.Service;
 
-            FCurrentPath.Push(iface);
+            (Type Interface, string Name) currentHop = (iface, name);
+            FCurrentPath.Push(currentHop);
+
             try
             {
                 //
-                // Ha egynel tobbszor szerepel az aktualis interface akkor korkoros referenciank van.
+                // Ha egynel tobbszor szerepel az aktualis szerviz akkor korkoros referenciank van.
                 //
 
-                if (FCurrentPath.Count(t => t == iface) > 1)
-                    throw new InvalidOperationException(string.Format(Resources.CIRCULAR_REFERENCE, string.Join(" -> ", FCurrentPath)));
+                if (FCurrentPath.Count(t => t == currentHop) > 1)
+                {
+                    IEnumerable<string> friendlyPath = FCurrentPath.Select(cp => 
+                    {
+                        string result = cp.Interface.FullName;
+                        if (cp.Name != null) result += $":{cp.Name}";
+                        return result;
+                    });
+
+                    throw new InvalidOperationException(string.Format(Resources.CIRCULAR_REFERENCE, string.Join(" -> ", friendlyPath)));
+                }
 
                 IServiceFactory factory = Get(iface, name, QueryMode.AllowSpecialization | QueryMode.ThrowOnError);
 
@@ -81,8 +92,8 @@ namespace Solti.Utils.DI.Internals
             }
             finally
             {
-                Type removed = FCurrentPath.Pop();
-                Debug.Assert(removed == iface);
+                (Type Interface, string Name) removed = FCurrentPath.Pop();
+                Debug.Assert(removed == currentHop);
             }
         }
 
