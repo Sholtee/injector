@@ -23,7 +23,7 @@ namespace Solti.Utils.DI
     /// </summary>
     public class ServiceContainer : Composite<IServiceContainer>, IServiceContainer
     {
-        private readonly Dictionary<string, AbstractServiceEntry> FEntries;
+        private readonly Dictionary<(Type Interface, string Name), AbstractServiceEntry> FEntries;
 
         //
         // Singleton elettartamnal parhuzamosan is modositasra kerulhet a  bejegyzes lista 
@@ -31,13 +31,6 @@ namespace Solti.Utils.DI
         //
 
         private readonly ReaderWriterLockSlim FLock = new ReaderWriterLockSlim();
-
-        private static string GenerateKey(Type serviceInterface, string name) 
-        {
-            string result = serviceInterface.FullName;
-            if (name != null) result += $":{name}";
-            return result;
-        }
 
         #region IServiceContainer
         /// <summary>
@@ -48,10 +41,10 @@ namespace Solti.Utils.DI
             if (entry == null)
                 throw new ArgumentNullException(nameof(entry));
 
-            string key = GenerateKey(entry.Interface, entry.Name);
-
             using (FLock.AcquireWriterLock())
             {
+                var key = (entry.Interface, entry.Name);
+
                 //
                 // Abstract bejegyzest felul lehet irni (de csak azt).
                 //
@@ -98,7 +91,7 @@ namespace Solti.Utils.DI
                 // 1. eset: Vissza tudjuk adni amit kerestunk.
                 //
 
-                if (FEntries.TryGetValue(GenerateKey(serviceInterface, name), out result))
+                if (FEntries.TryGetValue((serviceInterface, name), out result))
                     return result;
 
                 //
@@ -109,8 +102,8 @@ namespace Solti.Utils.DI
                                        serviceInterface.IsGenericType() &&
                                        FEntries.TryGetValue
                                        (
-                                           key: GenerateKey(serviceInterface.GetGenericTypeDefinition(), name), 
-                                           value: out result
+                                           (serviceInterface.GetGenericTypeDefinition(), name), 
+                                           out result
                                        );
 
                 //
@@ -219,7 +212,7 @@ namespace Solti.Utils.DI
         /// <param name="parent">The parent <see cref="IServiceContainer"/>.</param>
         protected ServiceContainer(IServiceContainer parent) : base(parent)
         {
-            FEntries = new Dictionary<string, AbstractServiceEntry>(parent?.Count ?? 0);
+            FEntries = new Dictionary<(Type Interface, string Name), AbstractServiceEntry>(parent?.Count ?? 0);
             if (parent == null) return;
 
             foreach (AbstractServiceEntry entry in parent)
