@@ -47,11 +47,12 @@ namespace Solti.Utils.DI
         /// </summary>
         /// <param name="self">The target <see cref="IServiceContainer"/>.</param>
         /// <param name="iface">The service interface to be registered. It can not be null and can be registered only once.</param>
+        /// <param name="name">The (optional) name of the service.</param>
         /// <param name="implementation">The service implementation to be registered. It can not be null and must implement the <paramref name="iface"/> interface. Additionally it must have only null or one constructor (that may request another dependecies). In case of multiple constructors you can use the <see cref="IServiceContainerExtensions.Factory(IServiceContainer, Type, Func{IInjector, Type, object}, Lifetime)"/> method or the <see cref="ServiceActivatorAttribute"/>.</param>
         /// <param name="lifetime">The <see cref="Lifetime"/> of the service.</param>
         /// <returns>The container itself.</returns>
         /// <remarks>You may register generic services (where both the interface and the implementation are open generic types). The system will specialize the implementation if you request the concrete service.</remarks> 
-        public static IServiceContainer Service(this IServiceContainer self, Type iface, Type implementation, Lifetime lifetime = Lifetime.Transient)
+        public static IServiceContainer Service(this IServiceContainer self, Type iface, string name, Type implementation, Lifetime lifetime = Lifetime.Transient)
         {
             if (self == null)
                 throw new ArgumentNullException(nameof(self));
@@ -82,9 +83,20 @@ namespace Solti.Utils.DI
 
             return self.Add
             (
-                ProducibleServiceEntryFactory.CreateEntry(lifetime, iface, null, implementation, self)
+                ProducibleServiceEntryFactory.CreateEntry(lifetime, iface, name, implementation, self)
             );           
         }
+
+        /// <summary>
+        /// Registers a new service with the given implementation.
+        /// </summary>
+        /// <param name="self">The target <see cref="IServiceContainer"/>.</param>
+        /// <param name="iface">The service interface to be registered. It can not be null and can be registered only once.</param>
+        /// <param name="implementation">The service implementation to be registered. It can not be null and must implement the <paramref name="iface"/> interface. Additionally it must have only null or one constructor (that may request another dependecies). In case of multiple constructors you can use the <see cref="IServiceContainerExtensions.Factory(IServiceContainer, Type, Func{IInjector, Type, object}, Lifetime)"/> method or the <see cref="ServiceActivatorAttribute"/>.</param>
+        /// <param name="lifetime">The <see cref="Lifetime"/> of the service.</param>
+        /// <returns>The container itself.</returns>
+        /// <remarks>You may register generic services (where both the interface and the implementation are open generic types). The system will specialize the implementation if you request the concrete service.</remarks> 
+        public static IServiceContainer Service(this IServiceContainer self, Type iface, Type implementation, Lifetime lifetime = Lifetime.Transient) => self.Service(iface, null, implementation, lifetime);
 
         /// <summary>
         /// Registers a service where the implementation will be resolved on the first request. It is useful when the implementation is unknown in compile time or you just want to load the containing assembly on the first request.

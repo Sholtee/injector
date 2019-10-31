@@ -19,6 +19,11 @@ namespace Solti.Utils.DI.Annotations
         public Type Interface { get; }
 
         /// <summary>
+        /// The (optional) name of the service.
+        /// </summary>
+        public string Name { get; }
+
+        /// <summary>
         /// The <see cref="Lifetime"/> of the service being registered.
         /// </summary>
         public Lifetime Lifetime { get; }
@@ -35,11 +40,22 @@ namespace Solti.Utils.DI.Annotations
         }
 
         /// <summary>
+        /// Registers a service calling the <see cref="IServiceContainerExtensions.Service(IServiceContainer, Type, string, Type, Lifetime)"/> method.
+        /// </summary>
+        /// <param name="interface">The service interface implemented by the marked class.</param>
+        /// <param name="name">The (optional) name of the service.</param>
+        /// <param name="lifetime">The <see cref="Lifetime"/> of the service.</param>
+        public ServiceAttribute(Type @interface, string name, Lifetime lifetime = Lifetime.Transient): this(@interface, lifetime)
+        {
+            Name = name;
+        }
+
+        /// <summary>
         /// See <see cref="ServiceRegistrationAttribute"/>.
         /// </summary>
         public override void Register(IServiceContainer container, Type target)
         {
-            container.Service(Interface, target, Lifetime);
+            container.Service(Interface, Name, target, Lifetime);
         }
     }
 }
