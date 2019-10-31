@@ -37,10 +37,20 @@ namespace Solti.Utils.DI
         /// Gets the service associated with the given interface.
         /// </summary>
         /// <param name="self">The target <see cref="IServiceContainer"/>.</param>
+        /// <param name="name">The (optional) name of the entry.</param>
         /// <param name="mode">Options.</param>
         /// <returns>The requested service entry.</returns>
         /// <exception cref="ServiceNotFoundException">If the service could not be found.</exception>
-        public static AbstractServiceEntry Get<TInterface>(this IServiceContainer self, QueryMode mode = QueryMode.Default) => self.Get(typeof(TInterface), null, mode);
+        public static AbstractServiceEntry Get<TInterface>(this IServiceContainer self, string name, QueryMode mode = QueryMode.Default) => self.Get(typeof(TInterface), name, mode);
+
+        /// <summary>
+        /// Gets the service associated with the given interface.
+        /// </summary>
+        /// <param name="self">The target <see cref="IServiceContainer"/>.</param>
+        /// <param name="mode">Options.</param>
+        /// <returns>The requested service entry.</returns>
+        /// <exception cref="ServiceNotFoundException">If the service could not be found.</exception>
+        public static AbstractServiceEntry Get<TInterface>(this IServiceContainer self, QueryMode mode = QueryMode.Default) => self.Get<TInterface>(null, mode);
 
         /// <summary>
         /// Registers a new service with the given implementation.
@@ -300,6 +310,17 @@ namespace Solti.Utils.DI
         /// <param name="lifetime">The <see cref="Lifetime"/> of the service.</param>
         /// <returns>The container itself.</returns>
         public static IServiceContainer Service<TInterface, TImplementation>(this IServiceContainer self, Lifetime lifetime = Lifetime.Transient) where TImplementation: TInterface => self.Service(typeof(TInterface), typeof(TImplementation), lifetime);
+
+        /// <summary>
+        /// Registers a new service.
+        /// </summary>
+        /// <typeparam name="TInterface">The service interface to be registered. It can be registered only once.</typeparam>
+        /// <typeparam name="TImplementation">The service implementation to be registered. It must implement the <typeparamref name="TInterface"/> interface and must have only null or one constructor (that may request another dependecies). In case of multiple constructors you can use the <see cref="IServiceContainerExtensions.Factory{TInterface}(IServiceContainer, Func{IInjector, TInterface}, Lifetime)"/> method or the <see cref="ServiceActivatorAttribute"/>.</typeparam>
+        /// <param name="self">The target <see cref="IServiceContainer"/>.</param>
+        /// <param name="name">The (optional) name of the service.</param>
+        /// <param name="lifetime">The <see cref="Lifetime"/> of the service.</param>
+        /// <returns>The container itself.</returns>
+        public static IServiceContainer Service<TInterface, TImplementation>(this IServiceContainer self, string name, Lifetime lifetime = Lifetime.Transient) where TImplementation : TInterface => self.Service(typeof(TInterface), name, typeof(TImplementation), lifetime);
 
         /// <summary>
         /// Registers a service where the implementation will be resolved on the first request. It is useful when the implementation is unknown in compile time or you just want to load the containing assembly on the first request.
