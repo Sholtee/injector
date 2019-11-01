@@ -14,7 +14,7 @@ namespace Solti.Utils.DI.Internals
         {
             Debug.Assert(entry.Implementation != null, "Attempt to specialize an entry without implementation");
 
-            return ProducibleServiceEntryFactory.CreateEntry
+            return ProducibleServiceEntry.Create
             (
                 entry.Lifetime,
                 entry.Interface.MakeGenericType(genericArguments), 

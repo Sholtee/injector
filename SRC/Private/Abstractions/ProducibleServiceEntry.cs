@@ -12,7 +12,7 @@ namespace Solti.Utils.DI.Internals
     /// <summary>
     /// Describes a producible service entry.
     /// </summary>
-    internal abstract class ProducibleServiceEntry : AbstractServiceEntry
+    internal abstract partial class ProducibleServiceEntry : AbstractServiceEntry
     {
         protected ProducibleServiceEntry(ProducibleServiceEntry entry, IServiceContainer owner): base(entry.Interface, entry.Name, entry.Lifetime, owner)
         {

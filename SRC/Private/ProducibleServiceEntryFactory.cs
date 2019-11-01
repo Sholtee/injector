@@ -12,7 +12,7 @@ namespace Solti.Utils.DI.Internals
 {
     using Properties;
 
-    internal static class ProducibleServiceEntryFactory
+    internal partial class ProducibleServiceEntry
     {
         private static readonly IReadOnlyDictionary<Lifetime, Type> ServiceEntryTypes = Enum
             .GetValues(typeof(Lifetime))
@@ -29,7 +29,7 @@ namespace Solti.Utils.DI.Internals
             .Where(lt => lt.ServiceEntry != null)
             .ToDictionary(lt => lt.Lifetime, lt => lt.ServiceEntry);
 
-        public static ProducibleServiceEntry CreateEntry<TParam>(Lifetime? lifetime, Type @interface, string name, TParam param, IServiceContainer owner)
+        public static ProducibleServiceEntry Create<TParam>(Lifetime? lifetime, Type @interface, string name, TParam param, IServiceContainer owner)
         {
             if (lifetime == null || !ServiceEntryTypes.TryGetValue(lifetime.Value, out var serviceEntryType))
                 throw new ArgumentException(string.Format(Resources.UNKNOWN_LIFETIME, lifetime), nameof(lifetime));                

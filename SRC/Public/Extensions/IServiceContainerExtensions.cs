@@ -81,7 +81,7 @@ namespace Solti.Utils.DI
 
             return self.Add
             (
-                ProducibleServiceEntryFactory.CreateEntry(lifetime, iface, name, implementation, self)
+                ProducibleServiceEntry.Create(lifetime, iface, name, implementation, self)
             );           
         }
 
@@ -130,7 +130,7 @@ namespace Solti.Utils.DI
 
             return self.Add
             (
-                ProducibleServiceEntryFactory.CreateEntry(lifetime, iface, name, implementation, self)
+                ProducibleServiceEntry.Create(lifetime, iface, name, implementation, self)
             );
         }
 
@@ -168,7 +168,7 @@ namespace Solti.Utils.DI
             if (factory == null)
                 throw new ArgumentNullException(nameof(factory));
 
-            return self.Add(ProducibleServiceEntryFactory.CreateEntry(lifetime, iface, null, factory, self));
+            return self.Add(ProducibleServiceEntry.Create(lifetime, iface, null, factory, self));
         }
 
         /// <summary>
