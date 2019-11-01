@@ -324,3 +324,4 @@ This project currently targets *.NET Standard* 1.6, 2.0 and 2.1.
 - 1.0.0-preview4 (unreleased):
   - *rewritten* build system
   - *added* named service support
+  - *fixed* generic service entry having factory could not be specialized
