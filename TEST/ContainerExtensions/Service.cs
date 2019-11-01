@@ -42,9 +42,9 @@ namespace Solti.Utils.DI.Container.Tests
         [Test]
         public void Container_Service_ShouldHandleNamedServices() 
         {
-            Container
+            Assert.DoesNotThrow(() => Container
                 .Service<IInterface_1, Implementation_1>("svc1")
-                .Service<IInterface_1, DecoratedImplementation_1>("svc2");
+                .Service<IInterface_1, DecoratedImplementation_1>("svc2"));
 
             Assert.IsNull(Container.Get<IInterface_1>());
             Assert.IsNull(Container.Get<IInterface_1>("invalidname"));

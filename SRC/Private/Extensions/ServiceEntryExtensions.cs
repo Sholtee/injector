@@ -4,7 +4,6 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
-using System.Diagnostics;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -12,14 +11,33 @@ namespace Solti.Utils.DI.Internals
     {
         public static AbstractServiceEntry Specialize(this AbstractServiceEntry entry, params Type[] genericArguments)
         {
-            Debug.Assert(entry.Implementation != null, "Attempt to specialize an entry without implementation");
+            //
+            // "Service(typeof(IGeneric<>), ...)" eseten az implementaciot konkretizaljuk.
+            //
 
-            return ProducibleServiceEntry.Create
+            if (entry.Implementation != null) return SpecializeBy
+            (
+                entry.Implementation.MakeGenericType(genericArguments)
+            );
+
+            //
+            // "Factory(typeof(IGeneric<>), ...)" eseten az eredeti factory lesz hivva a 
+            // konkretizalt interface-re.
+            //
+
+            if (entry.Factory != null) return SpecializeBy
+            (
+                entry.Factory
+            );
+
+            throw new NotSupportedException();
+
+            AbstractServiceEntry SpecializeBy<TParam>(TParam param) => ProducibleServiceEntry.Create
             (
                 entry.Lifetime,
-                entry.Interface.MakeGenericType(genericArguments), 
+                entry.Interface.MakeGenericType(genericArguments),
                 entry.Name,
-                entry.Implementation.MakeGenericType(genericArguments), 
+                param,
                 entry.Owner
             );
         }

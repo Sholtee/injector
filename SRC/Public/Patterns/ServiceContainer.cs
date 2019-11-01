@@ -116,15 +116,6 @@ namespace Solti.Utils.DI
 
             Debug.Assert(result.IsGeneric());
 
-            //
-            // Ha van factory fv akkor nincs dolgunk [pl Factory(typeof(IGeneric<>), ...) hivas utan lehet ilyen bejegyzes]
-            //
-            // TODO: TBD: Ennek kulon flag?
-            //
-
-            if (result.Factory != null)
-                return result;
-
             try
             {
                 //
@@ -153,8 +144,6 @@ namespace Solti.Utils.DI
                 //
                 // Ha mi vagyunk a tulajdonosok akkor nekunk kell tipizalni majd felvenni a bejegyzest.
                 //
-
-                Debug.Assert(result.Implementation != null, $"Naked generic entry for {serviceInterface}");
 
                 Add(result = result.Specialize(serviceInterface.GetGenericArguments()));
                 return result;
