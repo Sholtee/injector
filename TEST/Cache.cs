@@ -27,6 +27,7 @@ namespace Solti.Utils.DI.Internals.Tests
         public void Cache_ShouldHandleComplexKeys() 
         {
             Assert.AreSame(Cache<object, object>.GetOrAdd(new {k1 = typeof(object), k2 = "cica"}, () => new object()), Cache<object, object>.GetOrAdd(new { k1 = typeof(object), k2 = "cica" }, () => new object()));
+            Assert.AreSame(Cache<(object Key1, string Key2), object>.GetOrAdd((typeof(object), "cica"), () => new object()), Cache<(object Key1, string Key2), object>.GetOrAdd((typeof(object), "cica"), () => new object()));
         }
     }
 }
