@@ -7,6 +7,9 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+#if NETSTANDARD1_6
+using System.Reflection;
+#endif
 
 namespace Solti.Utils.DI.Internals
 {
@@ -81,11 +84,19 @@ namespace Solti.Utils.DI.Internals
                 IServiceFactory factory = Get(iface, name, QueryMode.AllowSpecialization | QueryMode.ThrowOnError);
 
                 //
+                // Peldany tipusat ellenorizzuk mert a Factory(), Lazy() stb visszaadhat vicces dolgokat.
+                //
+
+                object instance = factory.GetService(this, iface);
+                if (!iface.IsInstanceOfType(instance))
+                    throw new Exception(string.Format(Resources.INVALID_INSTANCE, iface));
+
+                //
                 // Ha az OnServiceRequested esemenyben felulirjak a szervizt akkor azt
                 // adjuk vissza.
                 //
 
-                ev.Service = factory.GetService(this, iface);
+                ev.Service = instance;
                 OnServiceRequested?.Invoke(this, ev);
 
                 return ev.Service;

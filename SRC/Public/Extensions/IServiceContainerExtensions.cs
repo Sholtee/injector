@@ -21,18 +21,6 @@ namespace Solti.Utils.DI
     /// </summary>
     public static class IServiceContainerExtensions
     {
-        private static object TypeChecker(IInjector injector, Type type, object inst)
-        {
-            //
-            // A letrhozott peldany tipusat ellenorizzuk. 
-            //
-
-            if (!type.IsInstanceOfType(inst))
-                throw new Exception(string.Format(Resources.INVALID_INSTANCE, type));
-
-            return inst;
-        }
-
         /// <summary>
         /// Gets the service associated with the given interface.
         /// </summary>
@@ -56,7 +44,7 @@ namespace Solti.Utils.DI
         /// Registers a new service with the given implementation.
         /// </summary>
         /// <param name="self">The target <see cref="IServiceContainer"/>.</param>
-        /// <param name="iface">The service interface to be registered. It can not be null and can be registered only once.</param>
+        /// <param name="iface">The service interface to be registered. It can not be null and can be registered only once (with the given <paramref name="name"/>).</param>
         /// <param name="name">The (optional) name of the service.</param>
         /// <param name="implementation">The service implementation to be registered. It can not be null and must implement the <paramref name="iface"/> interface. Additionally it must have only null or one constructor (that may request another dependecies). In case of multiple constructors you can use the <see cref="IServiceContainerExtensions.Factory(IServiceContainer, Type, Func{IInjector, Type, object}, Lifetime)"/> method or the <see cref="ServiceActivatorAttribute"/>.</param>
         /// <param name="lifetime">The <see cref="Lifetime"/> of the service.</param>
@@ -112,12 +100,13 @@ namespace Solti.Utils.DI
         /// Registers a service where the implementation will be resolved on the first request. It is useful when the implementation is unknown in compile time or you just want to load the containing assembly on the first request.
         /// </summary>
         /// <param name="self">The target <see cref="IServiceContainer"/>.</param>
-        /// <param name="iface">The service interface to be registered. It can not be null and can be registered only once.</param>
+        /// <param name="iface">The service interface to be registered. It can not be null and can be registered only once (with the given <paramref name="name"/>).</param>
+        /// <param name="name">The (optional) name of the service.</param>
         /// <param name="implementation">The <see cref="ITypeResolver"/> is responsible for resolving the implementation. The resolved <see cref="Type"/> can not be null and must implement the <paramref name="iface"/> interface. Additionally it must have only null or one constructor (that may request another dependecies). The resolver is called only once (on the first request) regardless the value of the <paramref name="lifetime"/> parameter. For an implementation see the <see cref="LazyTypeResolver{TInterface}"/> class.</param>
         /// <param name="lifetime">The <see cref="Lifetime"/> of the service.</param>
         /// <returns>The container itself.</returns>
         /// <remarks>You may register generic services (where the <paramref name="iface"/> parameter is an open generic <see cref="Type"/>). In this case the resolver must return an open generic implementation.</remarks>
-        public static IServiceContainer Lazy(this IServiceContainer self, Type iface, ITypeResolver implementation, Lifetime lifetime = Lifetime.Transient)
+        public static IServiceContainer Lazy(this IServiceContainer self, Type iface, string name, ITypeResolver implementation, Lifetime lifetime = Lifetime.Transient)
         {
             if (self == null)
                 throw new ArgumentNullException(nameof(self));
@@ -141,9 +130,20 @@ namespace Solti.Utils.DI
 
             return self.Add
             (
-                ProducibleServiceEntryFactory.CreateEntry(lifetime, iface, null, implementation, self)
+                ProducibleServiceEntryFactory.CreateEntry(lifetime, iface, name, implementation, self)
             );
         }
+
+        /// <summary>
+        /// Registers a service where the implementation will be resolved on the first request. It is useful when the implementation is unknown in compile time or you just want to load the containing assembly on the first request.
+        /// </summary>
+        /// <param name="self">The target <see cref="IServiceContainer"/>.</param>
+        /// <param name="iface">The service interface to be registered. It can not be null and can be registered only once.</param>
+        /// <param name="implementation">The <see cref="ITypeResolver"/> is responsible for resolving the implementation. The resolved <see cref="Type"/> can not be null and must implement the <paramref name="iface"/> interface. Additionally it must have only null or one constructor (that may request another dependecies). The resolver is called only once (on the first request) regardless the value of the <paramref name="lifetime"/> parameter. For an implementation see the <see cref="LazyTypeResolver{TInterface}"/> class.</param>
+        /// <param name="lifetime">The <see cref="Lifetime"/> of the service.</param>
+        /// <returns>The container itself.</returns>
+        /// <remarks>You may register generic services (where the <paramref name="iface"/> parameter is an open generic <see cref="Type"/>). In this case the resolver must return an open generic implementation.</remarks>
+        public static IServiceContainer Lazy(this IServiceContainer self, Type iface, ITypeResolver implementation, Lifetime lifetime = Lifetime.Transient) => self.Lazy(iface, null, implementation, lifetime);
 
         /// <summary>
         /// Registers a new service factory with the given type. Factories are also services except that the instantiating process is delegated to the caller. Useful if a service has more than one constructor.
@@ -168,14 +168,7 @@ namespace Solti.Utils.DI
             if (factory == null)
                 throw new ArgumentNullException(nameof(factory));
 
-            return self
-                .Add(ProducibleServiceEntryFactory.CreateEntry(lifetime, iface, null, factory, self))
-                
-                //
-                // A kivulrol legyartott peldany tipusat meg ellenorizzuk.
-                //
-
-                .Proxy(iface, TypeChecker);
+            return self.Add(ProducibleServiceEntryFactory.CreateEntry(lifetime, iface, null, factory, self));
         }
 
         /// <summary>
@@ -211,22 +204,14 @@ namespace Solti.Utils.DI
             if (entry.Owner != self || entry.Factory == null)
                 throw new InvalidOperationException(Resources.CANT_PROXY);
 
-            Install(decorator);
-
             //
-            // A kivulrol legyartott peldany tipusat meg ellenorizzuk.
+            // Bovitjuk a hivasi lancot a decorator-al.
             //
 
-            Install(TypeChecker);
+            Func<IInjector, Type, object> oldFactory = entry.Factory;
+            entry.Factory = (injector, type) => decorator(injector, type, oldFactory(injector, type));
 
             return self;
-
-            void Install(Func<IInjector, Type, object, object> fn)
-            {
-                Func<IInjector, Type, object> oldFactory = entry.Factory;
-
-                entry.Factory = (injector, type) => fn(injector, type, oldFactory(injector, type));
-            }
         }
 
         /// <summary>
@@ -314,7 +299,7 @@ namespace Solti.Utils.DI
         /// <summary>
         /// Registers a new service.
         /// </summary>
-        /// <typeparam name="TInterface">The service interface to be registered. It can be registered only once.</typeparam>
+        /// <typeparam name="TInterface">The service interface to be registered. It can be registered only once (with the given <paramref name="name"/>).</typeparam>
         /// <typeparam name="TImplementation">The service implementation to be registered. It must implement the <typeparamref name="TInterface"/> interface and must have only null or one constructor (that may request another dependecies). In case of multiple constructors you can use the <see cref="IServiceContainerExtensions.Factory{TInterface}(IServiceContainer, Func{IInjector, TInterface}, Lifetime)"/> method or the <see cref="ServiceActivatorAttribute"/>.</typeparam>
         /// <param name="self">The target <see cref="IServiceContainer"/>.</param>
         /// <param name="name">The (optional) name of the service.</param>
@@ -330,7 +315,18 @@ namespace Solti.Utils.DI
         /// <param name="implementation">The <see cref="ITypeResolver"/> is responsible for resolving the implementation. The resolved <see cref="Type"/> can not be null and must implement the <typeparamref name="TInterface"/> interface. Additionally it must have only null or one constructor (that may request another dependecies). The resolver is called only once (on the first request) regardless the value of the <paramref name="lifetime"/> parameter. For an implementation see the <see cref="LazyTypeResolver{TInterface}"/> class.</param>
         /// <param name="lifetime">The <see cref="Lifetime"/> of the service.</param>
         /// <returns>The container itself.</returns>
-        public static IServiceContainer Lazy<TInterface>(this IServiceContainer self, ITypeResolver implementation, Lifetime lifetime = Lifetime.Transient) => self.Lazy(typeof(TInterface), implementation, lifetime);
+        public static IServiceContainer Lazy<TInterface>(this IServiceContainer self, ITypeResolver implementation, Lifetime lifetime = Lifetime.Transient) => self.Lazy<TInterface>(null, implementation, lifetime);
+
+        /// <summary>
+        /// Registers a service where the implementation will be resolved on the first request. It is useful when the implementation is unknown in compile time or you just want to load the containing assembly on the first request.
+        /// </summary>
+        /// <typeparam name="TInterface">The service interface to be registered. It can be registered only once (with the given <paramref name="name"/>).</typeparam>
+        /// <param name="self">The target <see cref="IServiceContainer"/>.</param>
+        /// <param name="name">The (optional) name of the service.</param>
+        /// <param name="implementation">The <see cref="ITypeResolver"/> is responsible for resolving the implementation. The resolved <see cref="Type"/> can not be null and must implement the <typeparamref name="TInterface"/> interface. Additionally it must have only null or one constructor (that may request another dependecies). The resolver is called only once (on the first request) regardless the value of the <paramref name="lifetime"/> parameter. For an implementation see the <see cref="LazyTypeResolver{TInterface}"/> class.</param>
+        /// <param name="lifetime">The <see cref="Lifetime"/> of the service.</param>
+        /// <returns>The container itself.</returns>
+        public static IServiceContainer Lazy<TInterface>(this IServiceContainer self, string name, ITypeResolver implementation, Lifetime lifetime = Lifetime.Transient) => self.Lazy(typeof(TInterface), name, implementation, lifetime);
 
         /// <summary>
         /// Registers a new service factory with the given type. Factories are also services except that the instantiating process is delegated to the caller. Useful if a service has more than one constructor.

@@ -11,7 +11,6 @@ using NUnit.Framework;
 namespace Solti.Utils.DI.Container.Tests
 {
     using Internals;
-    using Properties;
     
     public partial class ContainerTestsBase<TContainer>
     {
@@ -58,35 +57,11 @@ namespace Solti.Utils.DI.Container.Tests
             mockResolver.Verify(r => r.Resolve(It.Is<Type>(t => t == typeof(IInterface_1))), Times.Never);
             mockResolver.Verify(r => r.Supports(It.Is<Type>(t => t == typeof(IInterface_1))), Times.Once);
 
-            using (IInjector injector = Container.CreateInjector())
-            {
-                var instance = injector.Get<IInterface_1>();
-                mockResolver.Verify(r => r.Resolve(It.Is<Type>(t => t == typeof(IInterface_1))), Times.Once);
+            _ = Container.Get<IInterface_1>().Implementation;
+            mockResolver.Verify(r => r.Resolve(It.Is<Type>(t => t == typeof(IInterface_1))), Times.Once);
 
-                Assert.That(instance, Is.InstanceOf<Implementation_1>());
-
-                injector.Get<IInterface_1>();
-                mockResolver.Verify(r => r.Resolve(It.Is<Type>(t => t == typeof(IInterface_1))), Times.Once);
-            }
-        }
-
-        [Test]
-        public void Container_Lazy_ShouldBeTypeChecked()
-        {
-            var mockResolver = new Mock<ITypeResolver>(MockBehavior.Strict);
-            mockResolver
-                .Setup(r => r.Resolve(It.Is<Type>(t => t == typeof(IInterface_1))))
-                .Returns(typeof(Implementation_2));
-            mockResolver
-                .Setup(r => r.Supports(It.Is<Type>(t => t == typeof(IInterface_1))))
-                .Returns(true);
-
-            Container.Lazy<IInterface_1>(mockResolver.Object);
-
-            using (IInjector injector = Container.CreateInjector())
-            {
-                Assert.Throws<InvalidOperationException>(() => injector.Get<IInterface_1>(), string.Format(Resources.NOT_ASSIGNABLE, typeof(IInterface_1), typeof(object)));
-            }         
+            _ = Container.Get<IInterface_1>().Implementation;
+            mockResolver.Verify(r => r.Resolve(It.Is<Type>(t => t == typeof(IInterface_1))), Times.Once);
         }
 
         [Test]
@@ -100,25 +75,36 @@ namespace Solti.Utils.DI.Container.Tests
                 .Setup(r => r.Supports(It.Is<Type>(t => t == typeof(IInterface_3<>))))
                 .Returns(true);
 
-            Container
-                .Service<IInterface_1, Implementation_1>()
-                .Lazy(typeof(IInterface_3<>), mockResolver.Object);
+            Container.Lazy(typeof(IInterface_3<>), mockResolver.Object);
 
-            mockResolver.Verify(r => r.Resolve(It.Is<Type>(t => t == typeof(IInterface_1))),    Times.Never);
             mockResolver.Verify(r => r.Resolve(It.Is<Type>(t => t == typeof(IInterface_3<>))),  Times.Never);
             mockResolver.Verify(r => r.Supports(It.Is<Type>(t => t == typeof(IInterface_3<>))), Times.Once);
 
             for (int i = 0; i < 2; i++)
             {
-                using (IInjector injector = Container.CreateInjector())
-                {
-                    injector.Get<IInterface_3<string>>();
-                }
-                
-                mockResolver.Verify(r => r.Resolve(It.Is<Type>(t => t == typeof(IInterface_1))),          Times.Never);
+                Assert.AreEqual(new TransientServiceEntry(typeof(IInterface_3<int>), null, typeof(Implementation_3<int>), Container), Container.Get<IInterface_3<int>>(QueryMode.AllowSpecialization));
+
                 mockResolver.Verify(r => r.Resolve(It.Is<Type>(t => t == typeof(IInterface_3<string>))),  Times.Never);
                 mockResolver.Verify(r => r.Resolve(It.Is<Type>(t => t == typeof(IInterface_3<>))),        Times.Once);
             }
+        }
+
+        [Test]
+        public void Container_Lazy_ShouldHandleNamedServices()
+        {
+            var mockResolver = new Mock<ITypeResolver>(MockBehavior.Strict);
+            mockResolver
+                .Setup(r => r.Resolve(It.Is<Type>(t => t == typeof(IInterface_1))))
+                .Returns(typeof(Implementation_1));
+            mockResolver
+                .Setup(r => r.Supports(It.Is<Type>(t => t == typeof(IInterface_1))))
+                .Returns(true);
+
+            Container.Lazy<IInterface_1>("svc1", mockResolver.Object);
+
+            Assert.IsNull(Container.Get<IInterface_1>());
+            Assert.IsNull(Container.Get<IInterface_1>("invalidname"));
+            Assert.AreEqual(new TransientServiceEntry(typeof(IInterface_1), "svc1", mockResolver.Object, Container), Container.Get<IInterface_1>("svc1"));
         }
     }
 }
