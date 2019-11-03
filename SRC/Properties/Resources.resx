@@ -180,9 +180,6 @@
   <data name="NOT_PRODUCIBLE" xml:space="preserve">
     <value>The service has no factory function.</value>
   </data>
-  <data name="NOT_SUPPORTED" xml:space="preserve">
-    <value>The given service is not supported.</value>
-  </data>
   <data name="PROPERTY_NOT_SUPPORTED" xml:space="preserve">
     <value>The target does not implement the desired property.</value>
   </data>

@@ -4,12 +4,9 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
-using System.Diagnostics;
 
 namespace Solti.Utils.DI.Internals
 {
-    using Properties;
-
     /// <summary>
     /// Describes a transient service entry.
     /// </summary>
@@ -33,37 +30,11 @@ namespace Solti.Utils.DI.Internals
 
         public override object Value => null;
 
-        public override object GetService(IInjector injector, Type iface = null)
+        public override object GetService(IInjector injector)
         {
             CheckProducible();
 
-            if (iface != null)
-            {
-                Type requested = iface;
-
-                if (requested.IsGenericTypeDefinition())
-                    throw new ArgumentException(Resources.CANT_INSTANTIATE_GENERICS, nameof(iface));
-
-                //
-                // Generikus interface-hez tartozo factory-nal megengedjuk specializalt peldany lekerdezeset.
-                // Megjegyzes: a GetGenericTypeDefinition() dobhat kivetelt ha "iface" nem generikus.
-                //
-
-                if (Factory != null && Interface.IsGenericTypeDefinition())
-                {
-                    Debug.Assert(UserData == null);
-                    requested = requested.GetGenericTypeDefinition();
-                }
-
-                //
-                // Minden mas esetben csak a regisztralt szervizt kerdezhetjuk le.
-                //
-
-                if (requested != Interface)
-                    throw new NotSupportedException(Resources.NOT_SUPPORTED);
-            }
-
-            return Factory(injector, iface ?? Interface);
+            return Factory(injector, Interface);
         }
 
         public override AbstractServiceEntry CopyTo(IServiceContainer target)

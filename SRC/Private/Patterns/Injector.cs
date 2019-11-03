@@ -87,7 +87,7 @@ namespace Solti.Utils.DI.Internals
                 // Peldany tipusat ellenorizzuk mert a Factory(), Lazy() stb visszaadhat vicces dolgokat.
                 //
 
-                object instance = factory.GetService(this, iface);
+                object instance = factory.GetService(this);
                 if (!iface.IsInstanceOfType(instance))
                     throw new Exception(string.Format(Resources.INVALID_INSTANCE, iface));
 

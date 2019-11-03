@@ -95,9 +95,8 @@ namespace Solti.Utils.DI.Internals
         /// Gets the service instance.
         /// </summary>
         /// <param name="injector">The containing <see cref="IInjector"/>.</param>
-        /// <param name="iface">The service type to be queried. If null the <see cref="Interface"/> will be used</param>
         /// <returns>The service instance.</returns>
-        public virtual object GetService(IInjector injector, Type iface = null) => throw new NotImplementedException();
+        public virtual object GetService(IInjector injector) => throw new NotImplementedException();
 
         /// <summary>
         /// Copies this entry to a new collection.

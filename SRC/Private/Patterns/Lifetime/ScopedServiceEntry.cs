@@ -7,8 +7,6 @@ using System;
 
 namespace Solti.Utils.DI.Internals
 {
-    using Properties;
-
     /// <summary>
     /// Describes a scoped service entry.
     /// </summary>
@@ -34,12 +32,9 @@ namespace Solti.Utils.DI.Internals
 
         public override object Value => FValue;
 
-        public override object GetService(IInjector injector, Type iface = null)
+        public override object GetService(IInjector injector)
         {
             CheckProducible();
-
-            if (iface != null && iface != Interface)
-                throw new NotSupportedException(Resources.NOT_SUPPORTED);
 
             return FValue ?? (FValue = Factory(injector, Interface));
         }
