@@ -64,10 +64,10 @@ namespace Solti.Utils.DI.Proxy
             return Cache<object, Type>.GetOrAdd(new { iface, interceptor }, () => (Type) typeof(GeneratedProxy<,>)
                 .MakeGenericType(iface, interceptor)
 #if NETSTANDARD1_6
-                .GetProperty(nameof(Type), BindingFlags.Public | BindingFlags.Static)
+                .GetProperty(nameof(GeneratedProxy<object, InterfaceInterceptor<object>>.Type), BindingFlags.Public | BindingFlags.Static)
                 .GetValue(null)
 #else
-                .InvokeMember(nameof(Type), BindingFlags.Public | BindingFlags.Static | BindingFlags.GetProperty, null, null, new object[0])
+                .InvokeMember(nameof(GeneratedProxy<object, InterfaceInterceptor<object>>.Type), BindingFlags.Public | BindingFlags.Static | BindingFlags.GetProperty, null, null, Array.Empty<object>())
 #endif
             );
         }
