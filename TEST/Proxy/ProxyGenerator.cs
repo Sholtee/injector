@@ -125,16 +125,26 @@ namespace Solti.Utils.DI.Proxy.Tests
                 {                   
                 }
             }
+            public class Mica 
+            {
+                public class Hajj<TT, TTT> 
+                { 
+                }
+            }
         }
 
         [Test]
         public void CreateType_ShouldHandleNestedTypes()
         {
             Assert.That(CreateType(typeof(Cica<>.Mica<>.Hajj)).NormalizeWhitespace().ToFullString(), Is.EqualTo("Solti.Utils.DI.Proxy.Tests.Cica<T>.Mica<TT>.Hajj"));
+            Assert.That(CreateType(typeof(Cica<>.Mica.Hajj<,>)).NormalizeWhitespace().ToFullString(), Is.EqualTo("Solti.Utils.DI.Proxy.Tests.Cica<T>.Mica.Hajj<TT, TTT>"));
             Assert.That(CreateType<Cica<List<int>>.Mica<string>.Hajj>().NormalizeWhitespace().ToFullString(), Is.EqualTo("Solti.Utils.DI.Proxy.Tests.Cica<System.Collections.Generic.List<System.Int32>>.Mica<System.String>.Hajj"));
+            Assert.That(CreateType(typeof(Cica<int>.Mica.Hajj<string, object>)).NormalizeWhitespace().ToFullString(), Is.EqualTo("Solti.Utils.DI.Proxy.Tests.Cica<System.Int32>.Mica.Hajj<System.String, System.Object>"));
 
             Assert.That(CreateType(typeof(CicaNested<>.Mica<>.Hajj)).NormalizeWhitespace().ToFullString(), Is.EqualTo("Solti.Utils.DI.Proxy.Tests.ProxyGeneratorTests.CicaNested<T>.Mica<TT>.Hajj"));
+            Assert.That(CreateType(typeof(CicaNested<>.Mica.Hajj<,>)).NormalizeWhitespace().ToFullString(), Is.EqualTo("Solti.Utils.DI.Proxy.Tests.ProxyGeneratorTests.CicaNested<T>.Mica.Hajj<TT, TTT>"));
             Assert.That(CreateType<CicaNested<List<int>>.Mica<string>.Hajj>().NormalizeWhitespace().ToFullString(), Is.EqualTo("Solti.Utils.DI.Proxy.Tests.ProxyGeneratorTests.CicaNested<System.Collections.Generic.List<System.Int32>>.Mica<System.String>.Hajj"));
+            Assert.That(CreateType(typeof(CicaNested<int>.Mica.Hajj<string, object>)).NormalizeWhitespace().ToFullString(), Is.EqualTo("Solti.Utils.DI.Proxy.Tests.ProxyGeneratorTests.CicaNested<System.Int32>.Mica.Hajj<System.String, System.Object>"));
         }
 
         [Test]
@@ -282,6 +292,12 @@ namespace Solti.Utils.DI.Proxy.Tests
         public class Mica<TT>
         {
             public enum Hajj
+            {
+            }
+        }
+        public class Mica
+        {
+            public class Hajj<TT, TTT>
             {
             }
         }
