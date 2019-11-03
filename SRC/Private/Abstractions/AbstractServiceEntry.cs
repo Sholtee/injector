@@ -13,7 +13,7 @@ namespace Solti.Utils.DI.Internals
     /// Describes an abstract service definition.
     /// </summary>
     /// <remarks>This is an internal class so it may change from version to version. Don't use it!</remarks>
-    public class AbstractServiceEntry: Disposable, IServiceFactory
+    public class AbstractServiceEntry: Disposable, IServiceFactory, IServiceID
     {
         /// <summary>
         /// Creates a new <see cref="AbstractServiceEntry"/> instance.

@@ -11,11 +11,12 @@ using System.Reflection;
 namespace Solti.Utils.DI
 {
     using Properties;
+    using Internals;
 
     /// <summary>
     /// Contains the <see cref="IInjector"/> event data.
     /// </summary>
-    public class InjectorEventArg
+    public class InjectorEventArg: IServiceID
     {
         private object FService;
 
@@ -23,26 +24,24 @@ namespace Solti.Utils.DI
         /// Creates a new <see cref="InjectorEventArg"/> instance.
         /// </summary>
         /// <param name="interface">The service interface.</param>
+        /// <param name="name">The (optional) name of the service.</param>
         /// <param name="target">The (optional) target who requested the service.</param>
-        public InjectorEventArg(Type @interface, Type target)
+        public InjectorEventArg(Type @interface, string name, Type target)
         {
             Interface = @interface;
+            Name = name;
             Target = target;
-        }
-
-        /// <summary>
-        /// Creates a new <see cref="InjectorEventArg"/> instance.
-        /// </summary>
-        /// <param name="target">The target who requested the service.</param>
-        /// <remarks>This constructor is tipically used in <see cref="IInjectorExtensions.Instantiate"/> calls.</remarks>
-        public InjectorEventArg(Type target): this(null, target)
-        {           
         }
 
         /// <summary>
         /// The service interface (if it is present).
         /// </summary>
         public Type Interface { get; }
+
+        /// <summary>
+        /// The (optional) name of the service.
+        /// </summary>
+        public string Name { get; }
 
         /// <summary>
         /// The (optional) target who invocated the <see cref="IInjector"/>.

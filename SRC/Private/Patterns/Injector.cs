@@ -56,7 +56,7 @@ namespace Solti.Utils.DI.Internals
             // Ha az OnServiceRequest esemenyben visszakaptunk szerviz peldanyt akkor visszaadjuk azt.
             //
 
-            var ev = new InjectorEventArg(iface, target);
+            var ev = new InjectorEventArg(iface, name, target);
             OnServiceRequest?.Invoke(this, ev);
             if (ev.Service != null) return ev.Service;
 
