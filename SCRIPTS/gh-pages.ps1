@@ -4,7 +4,7 @@
 # Author: Denes Solti
 #
 function GH-Pages() {
-  Write-Host Prepare DOCS repo...
+  Write-Host Preparing DOCS repo...
 
   $repodir=Path-Combine (Directory-Path $PROJECT.solution | Resolve-Path), $PROJECT.docsbranch
   Remove-Directory $repodir
