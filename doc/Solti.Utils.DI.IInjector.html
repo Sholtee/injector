@@ -60,13 +60,13 @@
   <h3 id="methods">Methods
   </h3>
   <a id="Solti_Utils_DI_IInjector_Get_" data-uid="Solti.Utils.DI.IInjector.Get*"></a>
-  <h4 id="Solti_Utils_DI_IInjector_Get_System_Type_System_Type_" data-uid="Solti.Utils.DI.IInjector.Get(System.Type,System.Type)">Get(Type, Type)</h4>
+  <h4 id="Solti_Utils_DI_IInjector_Get_System_Type_System_String_System_Type_" data-uid="Solti.Utils.DI.IInjector.Get(System.Type,System.String,System.Type)">Get(Type, String, Type)</h4>
   <div class="markdown level1 summary"><p>Resolves a dependency.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">object Get(Type iface, Type target = null)</code></pre>
+    <pre><code class="lang-csharp hljs">object Get(Type iface, string name = null, Type target = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -82,6 +82,12 @@
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.type">Type</a></td>
         <td><span class="parametername">iface</span></td>
         <td><p>The &quot;id&quot; of the service to be resolved. It must be a non-generic interface.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">name</span></td>
+        <td><p>The (optional) name of the service.</p>
 </td>
       </tr>
       <tr>
@@ -125,13 +131,13 @@
     </tbody>
   </table>
   <a id="Solti_Utils_DI_IInjector_LifetimeOf_" data-uid="Solti.Utils.DI.IInjector.LifetimeOf*"></a>
-  <h4 id="Solti_Utils_DI_IInjector_LifetimeOf_System_Type_" data-uid="Solti.Utils.DI.IInjector.LifetimeOf(System.Type)">LifetimeOf(Type)</h4>
+  <h4 id="Solti_Utils_DI_IInjector_LifetimeOf_System_Type_System_String_" data-uid="Solti.Utils.DI.IInjector.LifetimeOf(System.Type,System.String)">LifetimeOf(Type, String)</h4>
   <div class="markdown level1 summary"><p>Gets the <a class="xref" href="Solti.Utils.DI.Lifetime.html">Lifetime</a> of the given service (type).</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">Lifetime? LifetimeOf(Type iface)</code></pre>
+    <pre><code class="lang-csharp hljs">Lifetime? LifetimeOf(Type iface, string name = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -148,6 +154,12 @@
         <td><span class="parametername">iface</span></td>
         <td><blockquote><p>The &quot;id&quot; of the service.</p>
 </blockquote>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">name</span></td>
+        <td><p>The (optional) name of the service.</p>
 </td>
       </tr>
     </tbody>
