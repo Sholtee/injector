@@ -242,11 +242,12 @@ namespace Solti.Utils.DI
         /// Registers a pre-created instance. Useful to creating "constant" values (e.g. command-line arguments).
         /// </summary>
         /// <param name="self">The target <see cref="IServiceContainer"/>.</param>
-        /// <param name="iface">The service interface to be registered. It can not be null and can be registered only onc.</param>
+        /// <param name="iface">The service interface to be registered. It can not be null and can be registered only once (with the given <paramref name="name"/>).</param>
+        /// <param name="name">The (optional) name of the service.</param>
         /// <param name="instance">The pre-created instance to be registered. It can not be null and must implement the <paramref name="iface"/> interface.</param>
         /// <param name="releaseOnDispose">Whether the system should dispose the instance on container disposal or not.</param>
         /// <returns>The container itself.</returns>
-        public static IServiceContainer Instance(this IServiceContainer self, Type iface, object instance, bool releaseOnDispose = false)
+        public static IServiceContainer Instance(this IServiceContainer self, Type iface, string name, object instance, bool releaseOnDispose = false)
         {
             if (self == null)
                 throw new ArgumentNullException(nameof(self));
@@ -263,8 +264,18 @@ namespace Solti.Utils.DI
             if (!iface.IsInstanceOfType(instance))
                 throw new InvalidOperationException(string.Format(Resources.NOT_ASSIGNABLE, iface, instance.GetType()));
 
-            return self.Add(new InstanceServiceEntry(iface, null, instance, releaseOnDispose, self));
+            return self.Add(new InstanceServiceEntry(iface, name, instance, releaseOnDispose, self));
         }
+
+        /// <summary>
+        /// Registers a pre-created instance. Useful to creating "constant" values (e.g. command-line arguments).
+        /// </summary>
+        /// <param name="self">The target <see cref="IServiceContainer"/>.</param>
+        /// <param name="iface">The service interface to be registered. It can not be null and can be registered only once.</param>
+        /// <param name="instance">The pre-created instance to be registered. It can not be null and must implement the <paramref name="iface"/> interface.</param>
+        /// <param name="releaseOnDispose">Whether the system should dispose the instance on container disposal or not.</param>
+        /// <returns>The container itself.</returns>
+        public static IServiceContainer Instance(this IServiceContainer self, Type iface, object instance, bool releaseOnDispose = false) => self.Instance(iface, null, instance, releaseOnDispose);
 
         /// <summary>
         /// Registers an abstract service. It must be overridden in the child container(s).
@@ -434,12 +445,23 @@ namespace Solti.Utils.DI
         /// <summary>
         /// Registers a pre-created instance. Useful when creating "constant" values (e.g. from command-line arguments).
         /// </summary>
+        /// <typeparam name="TInterface">The service interface to be registered. It can be registered only once (with the given <paramref name="name"/>).</typeparam>
+        /// <param name="self">The target <see cref="IServiceContainer"/>.</param>
+        /// <param name="name">The (optional) name of the service.</param>
+        /// <param name="instance">The pre-created instance to be registered.</param>
+        /// <param name="releaseOnDispose">Whether the system should dispose the instance on container disposal or not.</param>
+        /// <returns>The container itself.</returns>
+        public static IServiceContainer Instance<TInterface>(this IServiceContainer self, string name, TInterface instance, bool releaseOnDispose = false) => self.Instance(typeof(TInterface), name, instance, releaseOnDispose);
+
+        /// <summary>
+        /// Registers a pre-created instance. Useful when creating "constant" values (e.g. from command-line arguments).
+        /// </summary>
         /// <typeparam name="TInterface">The service interface to be registered. It can be registered only once.</typeparam>
         /// <param name="self">The target <see cref="IServiceContainer"/>.</param>
         /// <param name="instance">The pre-created instance to be registered.</param>
         /// <param name="releaseOnDispose">Whether the system should dispose the instance on container disposal or not.</param>
         /// <returns>The container itself.</returns>
-        public static IServiceContainer Instance<TInterface>(this IServiceContainer self, TInterface instance, bool releaseOnDispose = false) => self.Instance(typeof(TInterface), instance, releaseOnDispose);
+        public static IServiceContainer Instance<TInterface>(this IServiceContainer self, TInterface instance, bool releaseOnDispose = false) => self.Instance(null, instance, releaseOnDispose);
 
         /// <summary>
         /// Registers an abstract service. It must be overridden in the child container(s).

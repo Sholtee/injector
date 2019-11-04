@@ -57,5 +57,15 @@ namespace Solti.Utils.DI.Container.Tests
 
             Assert.Throws<ServiceAlreadyRegisteredException>(() => Container.Instance<IInterface_1>(new Implementation_1()));
         }
+
+        [Test]
+        public void Container_Instance_ShouldHandleNamedServices() 
+        {
+            Container.Instance<IDisposable>(new Disposable());
+
+            IDisposable inst = new Disposable();
+            Assert.DoesNotThrow(() => Container.Instance("cica", inst));
+            Assert.That(Container.Get<IDisposable>("cica"), Is.EqualTo(new InstanceServiceEntry(typeof(IDisposable), "cica", inst, false, Container)));
+        }
     }
 }
