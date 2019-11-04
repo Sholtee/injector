@@ -198,7 +198,7 @@ public class ParameterValidatorProxy<TInterface> : InterfaceInterceptor<TInterfa
   void Setup()
   {
     Container
-      .Setup(typeof(ContainerTestsBase<>).Assembly()) // see "auto-config"
+      .Setup(Assembly.GetExecutingAssembly()) // see "auto-config"
       .Service<IMyOtherService, MyOtherService>();
 
     foreach (AbstractServiceEntry entry in Container.Where(e => typeof(IModule).IsAssignableFrom(e.Interface)))
