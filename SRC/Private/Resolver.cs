@@ -12,11 +12,12 @@ using System.Reflection;
 
 namespace Solti.Utils.DI.Internals
 {
+    using Annotations;
     using Properties;
 
     internal static class Resolver
     {
-        private static readonly MethodInfo InjectorGet = ((MethodCallExpression) ((Expression<Action<IInjector>>) (i => i.Get(null, null))).Body).Method;
+        private static readonly MethodInfo InjectorGet = ((MethodCallExpression) ((Expression<Action<IInjector>>) (i => i.Get(null, null, null))).Body).Method;
 
         private static Type GetParameterType(ParameterInfo param, out bool isLazy)
         {
@@ -58,23 +59,22 @@ namespace Solti.Utils.DI.Internals
             (
                 (param, i) =>
                 {
-                    Type parameterType = GetParameterType(param, out var isLazy);
+                    Type parameterType = GetParameterType(param, out var isLazy) ?? throw new ArgumentException(Resources.INVALID_CONSTRUCTOR, nameof(constructor));
 
-                    if (parameterType == null)
-                        throw new ArgumentException(Resources.INVALID_CONSTRUCTOR, nameof(constructor));
+                    string svcName = param.GetCustomAttribute<QueryOptionsAttribute>()?.Name;
 
                     return isLazy
                         //
-                        // Lazy<IInterface>(() => (IInterface) injector.Get(typeof(IInterface), target))
+                        // Lazy<IInterface>(() => (IInterface) injector.Get(typeof(IInterface), svcName, target))
                         //
 
-                        ? (Expression) Expression.Invoke(Expression.Constant(GetLazyFactory(parameterType)), injector, Expression.Constant(target))
+                        ? (Expression) Expression.Invoke(Expression.Constant(GetLazyFactory(parameterType, svcName)), injector, Expression.Constant(target))
 
                         //
-                        // injector.Get(typeof(IInterface), target)
+                        // injector.Get(typeof(IInterface), svcName, target)
                         //
 
-                        : (Expression) Expression.Call(injector, InjectorGet, Expression.Constant(parameterType), Expression.Constant(target));
+                        : (Expression) Expression.Call(injector, InjectorGet, Expression.Constant(parameterType), Expression.Constant(svcName /*lehet NULL*/, typeof(string)), Expression.Constant(target));
                 },
                 injector,
                 iface
@@ -128,38 +128,38 @@ namespace Solti.Utils.DI.Internals
                 // megadhato legyen.
                 //
 
-                Type parameterType = GetParameterType(param, out var isLazy);
-                if (parameterType == null)
-                    throw new ArgumentException(Resources.INVALID_CONSTRUCTOR_ARGUMENT);
+                Type parameterType = GetParameterType(param, out var isLazy) ?? throw new ArgumentException(Resources.INVALID_CONSTRUCTOR_ARGUMENT);
+
+                string svcName = param.GetCustomAttribute<QueryOptionsAttribute>()?.Name;
 
                 return isLazy
                     //
-                    // Lazy<IInterface>(() => (IInterface) injector.Get(typeof(IInterface), target))
+                    // Lazy<IInterface>(() => (IInterface) injector.Get(typeof(IInterface), svcName, target))
                     //
 
-                    ? GetLazyFactory(parameterType)(injectorInst, target)
+                    ? GetLazyFactory(parameterType, svcName)(injectorInst, target)
 
                     //
-                    // injector.Get(typeof(IInterface), target)
+                    // injector.Get(typeof(IInterface), svcName, target)
                     //
 
-                    : injectorInst.Get(parameterType, target);
+                    : injectorInst.Get(parameterType, svcName, target);
             }
         });
 
         public static Func<IInjector, IReadOnlyDictionary<string, object>, object> GetExtended(Type type) => Cache<Type, Func<IInjector, IReadOnlyDictionary<string, object>, object>>.GetOrAdd(type, () => GetExtended(type.GetApplicableConstructor()));
 
-        public static Func<IInjector, Type, object> GetLazyFactory(Type iface) => Cache<Type, Func<IInjector, Type, object>>.GetOrAdd(iface, () =>
+        public static Func<IInjector, Type, object> GetLazyFactory(Type iface, string svcName) => Cache<(Type Interface, string Name), Func<IInjector, Type, object>>.GetOrAdd((iface, svcName), () =>
         {
             Debug.Assert(iface.IsInterface());
 
             Type delegateType = typeof(Func<>).MakeGenericType(iface);
 
             //
-            // (injector, target) => () => (iface) injector.Get(iface, target)
+            // (injector, target) => () => (iface) injector.Get(iface, svcName, target)
             //
 
-            ParameterExpression 
+            ParameterExpression
                 injector = Expression.Parameter(typeof(IInjector), nameof(injector)),
                 target   = Expression.Parameter(typeof(Type), nameof(target));
 
@@ -175,6 +175,7 @@ namespace Solti.Utils.DI.Internals
                             injector,
                             InjectorGet,
                             Expression.Constant(iface),
+                            Expression.Constant(svcName /*lehet NULL*/, typeof(string)),
                             target
                         ),
                         iface

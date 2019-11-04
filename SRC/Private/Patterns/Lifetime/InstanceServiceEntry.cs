@@ -7,8 +7,6 @@ using System;
 
 namespace Solti.Utils.DI.Internals
 {
-    using Properties;
-
     /// <summary>
     /// Describes an instance service entry.
     /// </summary>
@@ -17,15 +15,13 @@ namespace Solti.Utils.DI.Internals
         private readonly bool FReleaseOnDispose;
         private object FValue;
 
-        public InstanceServiceEntry(Type @interface, object value, bool releaseOnDispose, IServiceContainer owner) : base(@interface, null, owner)
+        public InstanceServiceEntry(Type @interface, string name, object value, bool releaseOnDispose, IServiceContainer owner) : base(@interface, name, null, owner)
         {
             FValue = value;
             FReleaseOnDispose = releaseOnDispose;
         }
 
         public override Type Implementation => null;
-
-        public override object UserData => null;
 
         public override Func<IInjector, Type, object> Factory
         {
@@ -40,11 +36,10 @@ namespace Solti.Utils.DI.Internals
 
         public override object Value => FValue;
 
-        public override object GetService(IInjector injector, Type iface = null)
+        public override object GetService(IInjector injector)
         {
             CheckDisposed();
 
-            if (iface != null && iface != Interface) throw new NotSupportedException(Resources.NOT_SUPPORTED);
             return Value;
         }
 

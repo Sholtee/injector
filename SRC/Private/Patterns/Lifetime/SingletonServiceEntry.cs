@@ -7,8 +7,6 @@ using System;
 
 namespace Solti.Utils.DI.Internals
 {
-    using Properties;
-
     /// <summary>
     /// Describes a singleton service entry.
     /// </summary>
@@ -23,26 +21,23 @@ namespace Solti.Utils.DI.Internals
 
         private readonly object FLock = new object();
 
-        public SingletonServiceEntry(Type @interface, Func<IInjector, Type, object> factory, IServiceContainer owner) : base(@interface, DI.Lifetime.Singleton, factory, owner)
+        public SingletonServiceEntry(Type @interface, string name, Func<IInjector, Type, object> factory, IServiceContainer owner) : base(@interface, name, DI.Lifetime.Singleton, factory, owner)
         {
         }
 
-        public SingletonServiceEntry(Type @interface, Type implementation, IServiceContainer owner) : base(@interface, DI.Lifetime.Singleton, implementation, owner)
+        public SingletonServiceEntry(Type @interface, string name, Type implementation, IServiceContainer owner) : base(@interface, name, DI.Lifetime.Singleton, implementation, owner)
         {
         }
 
-        public SingletonServiceEntry(Type @interface, ITypeResolver implementation, IServiceContainer owner) : base(@interface, DI.Lifetime.Singleton, implementation, owner)
+        public SingletonServiceEntry(Type @interface, string name, ITypeResolver implementation, IServiceContainer owner) : base(@interface, name, DI.Lifetime.Singleton, implementation, owner)
         {
         }
 
         public override object Value => FValue;
 
-        public override object GetService(IInjector injector, Type iface = null)
+        public override object GetService(IInjector injector)
         {
             CheckProducible();
-
-            if (iface != null && iface != Interface)
-                throw new NotSupportedException(Resources.NOT_SUPPORTED);
 
             if (FValue == null)
                 lock (FLock)

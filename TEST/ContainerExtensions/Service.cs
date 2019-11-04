@@ -5,11 +5,13 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 
 using NUnit.Framework;
 
 namespace Solti.Utils.DI.Container.Tests
 {
+    using Internals;
     using Properties;
     
     public partial class ContainerTestsBase<TContainer>
@@ -27,28 +29,37 @@ namespace Solti.Utils.DI.Container.Tests
         public void Container_Service_ShouldHandleGenericTypes(Lifetime lifetime)
         {
             Container
-                .Service<IInterface_1, Implementation_1>()
                 .Service(typeof(IInterface_3<>), typeof(Implementation_3<>), lifetime);
 
-            using (IInjector injector = Container.CreateInjector())
-            {
-                var instance = injector.Get<IInterface_3<int>>();
+            AbstractServiceEntry entry = Container.Get<IInterface_3<int>>(QueryMode.AllowSpecialization);
 
-                Assert.That(instance, Is.InstanceOf<Implementation_3<int>>());
-            }
+            Assert.That(entry, Is.Not.Null);
+            Assert.That(entry.Interface, Is.EqualTo(typeof(IInterface_3<int>)));
+            Assert.That(entry.Implementation, Is.EqualTo(typeof(Implementation_3<int>)));
+            Assert.That(entry.Lifetime, Is.EqualTo(lifetime));
+        }
+
+        [Test]
+        public void Container_Service_ShouldHandleNamedServices() 
+        {
+            Assert.DoesNotThrow(() => Container
+                .Service<IInterface_1, Implementation_1>("svc1")
+                .Service<IInterface_1, DecoratedImplementation_1>("svc2"));
+
+            Assert.IsNull(Container.Get<IInterface_1>());
+            Assert.IsNull(Container.Get<IInterface_1>("invalidname"));
+
+            Assert.AreEqual(new TransientServiceEntry(typeof(IInterface_1), "svc1", typeof(Implementation_1), Container), Container.Get<IInterface_1>("svc1"));
+            Assert.AreEqual(new TransientServiceEntry(typeof(IInterface_1), "svc2", typeof(DecoratedImplementation_1), Container), Container.Get<IInterface_1>("svc2"));
         }
 
         [Test]
         public void Container_Service_ShouldHandleClosedGenericTypes()
         {
             Container
-                .Service<IInterface_1, Implementation_1>()
                 .Service<IInterface_3<int>, Implementation_3<int>>();
 
-            using (IInjector injector = Container.CreateInjector())
-            {
-                Assert.That(injector.Get<IInterface_3<int>>(), Is.InstanceOf<Implementation_3<int>>());
-            }
+            Assert.AreEqual(new TransientServiceEntry(typeof(IInterface_3<int>), null, typeof(Implementation_3<int>), Container), Container.Get<IInterface_3<int>>());
         }
 
         [Test]
@@ -69,15 +80,13 @@ namespace Solti.Utils.DI.Container.Tests
             Assert.DoesNotThrow(() => Container.Service<IInterface_1, Implementation_8_multictor>());
             Assert.DoesNotThrow(() => Container.Service(typeof(IInterface_3<>), typeof(Implementation_9_multictor<>)));
 
-            using (IInjector injector = Container.CreateInjector())
-            {
-                var obj = injector.Get<IInterface_1>();
-                Assert.That(obj, Is.InstanceOf<Implementation_8_multictor>());
+            ConstructorInfo ctor = typeof(Implementation_8_multictor).GetConstructor(new Type[0]);
 
-                var obj2 = injector.Get<IInterface_3<string>>();
-                Assert.That(obj2, Is.InstanceOf<Implementation_9_multictor<string>>());
-                Assert.That(obj2.Interface1, Is.InstanceOf<Implementation_8_multictor>());
-            }
+            Assert.That(Container.Get<IInterface_1>().Factory, Is.EqualTo(Resolver.Get(ctor)));
+
+            ctor = typeof(Implementation_9_multictor<int>).GetConstructor(new Type[] { typeof(IInterface_1) });
+
+            Assert.That(Container.Get<IInterface_3<int>>(QueryMode.AllowSpecialization).Factory, Is.EqualTo(Resolver.Get(ctor)));
         }
 
         [Test]

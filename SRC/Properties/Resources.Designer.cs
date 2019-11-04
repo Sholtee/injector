@@ -262,15 +262,6 @@ namespace Solti.Utils.DI.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The given service is not supported..
-        /// </summary>
-        internal static string NOT_SUPPORTED {
-            get {
-                return ResourceManager.GetString("NOT_SUPPORTED", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to The target does not implement the desired property..
         /// </summary>
         internal static string PROPERTY_NOT_SUPPORTED {

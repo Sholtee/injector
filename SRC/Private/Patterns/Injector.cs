@@ -7,6 +7,9 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+#if NETSTANDARD1_6
+using System.Reflection;
+#endif
 
 namespace Solti.Utils.DI.Internals
 {
@@ -14,7 +17,7 @@ namespace Solti.Utils.DI.Internals
 
     internal sealed class Injector : ServiceContainer, IInjector
     {
-        private readonly Stack<Type> FCurrentPath = new Stack<Type>();
+        private readonly Stack<(Type Interface, string Name)> FCurrentPath = new Stack<(Type Interface, string Name)>();
 
         private Injector() => throw new NotSupportedException();
 
@@ -27,6 +30,7 @@ namespace Solti.Utils.DI.Internals
             Add(new InstanceServiceEntry
             (
                 @interface: typeof(IInjector),
+                name: null,
                 value: this,
                 releaseOnDispose: false,
                 owner: this
@@ -34,7 +38,7 @@ namespace Solti.Utils.DI.Internals
         }
 
         #region IInjector
-        public object Get(Type iface, Type target)
+        public object Get(Type iface, string name, Type target)
         {
             if (iface == null)
                 throw new ArgumentNullException(nameof(iface));
@@ -52,40 +56,59 @@ namespace Solti.Utils.DI.Internals
             // Ha az OnServiceRequest esemenyben visszakaptunk szerviz peldanyt akkor visszaadjuk azt.
             //
 
-            var ev = new InjectorEventArg(iface, target);
+            var ev = new InjectorEventArg(iface, name, target);
             OnServiceRequest?.Invoke(this, ev);
             if (ev.Service != null) return ev.Service;
 
-            FCurrentPath.Push(iface);
+            (Type Interface, string Name) currentHop = (iface, name);
+            FCurrentPath.Push(currentHop);
+
             try
             {
                 //
-                // Ha egynel tobbszor szerepel az aktualis interface akkor korkoros referenciank van.
+                // Ha egynel tobbszor szerepel az aktualis szerviz akkor korkoros referenciank van.
                 //
 
-                if (FCurrentPath.Count(t => t == iface) > 1)
-                    throw new InvalidOperationException(string.Format(Resources.CIRCULAR_REFERENCE, string.Join(" -> ", FCurrentPath)));
+                if (FCurrentPath.Count(t => t == currentHop) > 1)
+                {
+                    IEnumerable<string> friendlyPath = FCurrentPath.Select(cp => 
+                    {
+                        string result = cp.Interface.FullName;
+                        if (cp.Name != null) result += $":{cp.Name}";
+                        return result;
+                    });
 
-                IServiceFactory factory = Get(iface, QueryMode.AllowSpecialization | QueryMode.ThrowOnError);
+                    throw new InvalidOperationException(string.Format(Resources.CIRCULAR_REFERENCE, string.Join(" -> ", friendlyPath)));
+                }
+
+                IServiceFactory factory = Get(iface, name, QueryMode.AllowSpecialization | QueryMode.ThrowOnError);
+
+                //
+                // Peldany tipusat ellenorizzuk mert a Factory(), Lazy() stb visszaadhat vicces dolgokat.
+                //
+
+                object instance = factory.GetService(this);
+                if (!iface.IsInstanceOfType(instance))
+                    throw new Exception(string.Format(Resources.INVALID_INSTANCE, iface));
 
                 //
                 // Ha az OnServiceRequested esemenyben felulirjak a szervizt akkor azt
                 // adjuk vissza.
                 //
 
-                ev.Service = factory.GetService(this, iface);
+                ev.Service = instance;
                 OnServiceRequested?.Invoke(this, ev);
 
                 return ev.Service;
             }
             finally
             {
-                Type removed = FCurrentPath.Pop();
-                Debug.Assert(removed == iface);
+                (Type Interface, string Name) removed = FCurrentPath.Pop();
+                Debug.Assert(removed == currentHop);
             }
         }
 
-        public Lifetime? LifetimeOf(Type iface)
+        public Lifetime? LifetimeOf(Type iface, string name)
         {
             if (iface == null)
                 throw new ArgumentNullException(nameof(iface));
@@ -99,7 +122,7 @@ namespace Solti.Utils.DI.Internals
             // lekerdezni, ekkor ne legyen kivetel.
             //
 
-            return Get(iface, QueryMode.Default)?.Lifetime;
+            return Get(iface, name, QueryMode.Default)?.Lifetime;
         }
 
         public event InjectorEventHandler<InjectorEventArg> OnServiceRequest;

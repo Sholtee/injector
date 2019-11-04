@@ -13,16 +13,27 @@ namespace Solti.Utils.DI.Internals
     /// Describes an abstract service definition.
     /// </summary>
     /// <remarks>This is an internal class so it may change from version to version. Don't use it!</remarks>
-    public class AbstractServiceEntry: Disposable, IServiceFactory
+    public class AbstractServiceEntry: Disposable, IServiceFactory, IServiceID
     {
         /// <summary>
         /// Creates a new <see cref="AbstractServiceEntry"/> instance.
         /// </summary>
         /// <param name="interface">The "id" of the service. Must be an interface.</param>
-        /// <param name="lifetime">The lifetime of the service.</param>
-        /// <param name="owner">The owner of the entry.</param>
+        /// <param name="name">The (optional) name of the service.</param>
         /// <exception cref="ArgumentException">The <paramref name="interface"/> is not an interface.</exception>
-        public AbstractServiceEntry(Type @interface, Lifetime? lifetime = null, IServiceContainer owner = null)
+        public AbstractServiceEntry(Type @interface, string name): this(@interface, name, null, null)
+        { 
+        }
+
+        /// <summary>
+        /// Creates a new <see cref="AbstractServiceEntry"/> instance.
+        /// </summary>
+        /// <param name="interface">The "id" of the service. Must be an interface.</param>
+        /// <param name="name">The (optional) name of the service.</param>
+        /// <param name="lifetime">The lifetime of the service.</param>
+        /// <param name="owner">The owner of this entry.</param>
+        /// <exception cref="ArgumentException">The <paramref name="interface"/> is not an interface.</exception>
+        protected AbstractServiceEntry(Type @interface, string name, Lifetime? lifetime, IServiceContainer owner)
         {
             if (@interface == null)
                 throw new ArgumentNullException(nameof(@interface));
@@ -31,6 +42,7 @@ namespace Solti.Utils.DI.Internals
                 throw new ArgumentException(Resources.NOT_AN_INTERFACE, nameof(@interface));
 
             Interface = @interface;
+            Name      = name;
             Lifetime  = lifetime;
             Owner     = owner;
         }
@@ -52,14 +64,14 @@ namespace Solti.Utils.DI.Internals
         public IServiceContainer Owner { get; }
 
         /// <summary>
+        /// The name of the service (optional).
+        /// </summary>
+        public string Name { get; }
+
+        /// <summary>
         /// The implementation of the service (if it is present).
         /// </summary>
         public virtual Type Implementation => null;
-
-        /// <summary>
-        /// Custom user data.
-        /// </summary>
-        public virtual object UserData => null;
         #endregion
 
         #region Mutables
@@ -78,9 +90,8 @@ namespace Solti.Utils.DI.Internals
         /// Gets the service instance.
         /// </summary>
         /// <param name="injector">The containing <see cref="IInjector"/>.</param>
-        /// <param name="iface">The service type to be queried. If null the <see cref="Interface"/> will be used</param>
         /// <returns>The service instance.</returns>
-        public virtual object GetService(IInjector injector, Type iface = null) => throw new NotImplementedException();
+        public virtual object GetService(IInjector injector) => throw new NotImplementedException();
 
         /// <summary>
         /// Copies this entry to a new collection.
@@ -105,10 +116,11 @@ namespace Solti.Utils.DI.Internals
         /// Gets the hash code of this entry.
         /// </summary>
         /// <returns>The hash code of this entry.</returns>
-        public override int GetHashCode() => new
+        public override int GetHashCode() => new // muszaj anonimnak lennie
         {
             Owner,
             Interface,
+            Name,
             Lifetime,
             Factory,
             Value,

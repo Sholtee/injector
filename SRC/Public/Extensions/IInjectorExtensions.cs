@@ -26,7 +26,7 @@ namespace Solti.Utils.DI
         /// <returns>The resolved service.</returns>
         /// <remarks>This method is thread safe so you can call it parallelly.</remarks>
         /// <exception cref="ServiceNotFoundException">The service could not be found.</exception>
-        public static TInterface Get<TInterface>(this IInjector self, Type target = null) => self != null ? (TInterface) self.Get(typeof(TInterface), target) : throw new ArgumentNullException(nameof(self));
+        public static TInterface Get<TInterface>(this IInjector self, Type target = null) => self != null ? (TInterface) self.Get(typeof(TInterface), null, target) : throw new ArgumentNullException(nameof(self));
 
         /// <summary>
         /// Instantiates the given class.

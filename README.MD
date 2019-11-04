@@ -122,8 +122,24 @@ Registering a service can be done via several patterns (I name them recipes):
   Remarks: 
   - You can override an abstract entry by using any of the recepies described above.
   - You can not create injector from a container having abstract entries.
-  
-*Note that you should not register the injector itself it is done by the system automatically.*
+ 
+Remarks: 
+- You may also register more service with the same interface by naming them:
+  ```csharp
+  container.Service<IMyService, MyServiceImeplementation_1>("svc1", Lifetime.Transient);
+  //container.Service<IMyService, MyServiceImeplementation_2>("svc1", Lifetime.Singleton);  // would throw
+  container.Service<IMyService, MyServiceImeplementation_2>("svc2", Lifetime.Singleton);
+  ...
+  ```
+  Later you can request them via constructor parameters as well:
+  ```csharp
+  class MyOtherService: IMyOtherService
+  {
+    public MyOtherService([QueryOptions(Name = "svc2")]IMyService dep) {...}
+	...
+  }  
+  ```
+- You should not register the injector itself it is done by the system automatically.
 ### Decorating services
 In practice, it's useful to separate common functionality (e.g. parameter validation) from the implementation. In this library this can be achieved by [proxy pattern](https://en.wikipedia.org/wiki/Proxy_pattern ). In a brief example:
 ```csharp
@@ -307,3 +323,5 @@ This project currently targets *.NET Standard* 1.6, 2.0 and 2.1.
   - `IInjector.Instantiate()` is an extension from now
 - 1.0.0-preview4 (unreleased):
   - *rewritten* build system
+  - *added* named service support
+  - *fixed* generic service entry having factory could not be specialized

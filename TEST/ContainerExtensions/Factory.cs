@@ -9,8 +9,9 @@ using NUnit.Framework;
 
 namespace Solti.Utils.DI.Container.Tests
 {
+    using Internals;
     using Properties;
-    
+
     public partial class ContainerTestsBase<TContainer>
     {
         [Test]
@@ -23,42 +24,37 @@ namespace Solti.Utils.DI.Container.Tests
         [Test]
         public void Container_Factory_ShouldHandleGenericTypes()
         {
-            int callCount = 0;
+            Func<IInjector, Type, object> factory = (injector, type) => null;
 
-            Container.Factory(typeof(IInterface_3<>), (injector, type) =>
-            {
-                Assert.AreSame(type, typeof(IInterface_3<string>));
+            Container.Factory(typeof(IInterface_3<>), factory);
 
-                callCount++;
-                return new Implementation_3<string>(null);
-            });
+            Assert.That(Container.Count, Is.EqualTo(1));
+            Assert.AreEqual(new TransientServiceEntry(typeof(IInterface_3<int>), null, factory, Container), Container.Get<IInterface_3<int>>(QueryMode.AllowSpecialization));
+            Assert.That(Container.Count, Is.EqualTo(2));
+        }
 
-            using (IInjector injector = Container.CreateInjector())
-            {
-                var instance = injector.Get<IInterface_3<string>>();
-
-                Assert.That(instance, Is.InstanceOf<Implementation_3<string>>());
-                Assert.That(callCount, Is.EqualTo(1));
-            }
+        [TestCase(null)]
+        [TestCase("cica")]
+        public void Container_Factory_ShouldThrowOnMultipleRegistration(string name)
+        {
+            Container.Factory<IInterface_1>(name, me => new Implementation_1());
+            Assert.Throws<ServiceAlreadyRegisteredException>(() => Container.Factory<IInterface_1>(name, me => new Implementation_1()));
         }
 
         [Test]
-        public void Container_Factory_ShouldBeTypeChecked()
+        public void Container_Factory_ShouldHandleNamedServices()
         {
-            Container.Factory(typeof(IInterface_1), (injector, type) => new object());
+            Func<IInjector, Type, IInterface_1> factory = (injector, type) => new Implementation_1();
 
-            using (IInjector injector = Container.CreateInjector())
-            {
-                Assert.Throws<Exception>(() => injector.Get<IInterface_1>(), string.Format(Resources.INVALID_INSTANCE, typeof(IInterface_1)));
-            }            
-        }
+            Assert.DoesNotThrow(() => Container
+                .Factory(typeof(IInterface_1), "svc1", factory)
+                .Factory(typeof(IInterface_1), "svc2", factory));
 
-        [Test]
-        public void Container_Factory_ShouldThrowOnMultipleRegistration()
-        {
-            Container.Factory<IInterface_1>(me => new Implementation_1());
+            Assert.IsNull(Container.Get<IInterface_1>());
+            Assert.IsNull(Container.Get<IInterface_1>("invalidname"));
 
-            Assert.Throws<ServiceAlreadyRegisteredException>(() => Container.Factory<IInterface_1>(me => new Implementation_1()));
+            Assert.AreEqual(new TransientServiceEntry(typeof(IInterface_1), "svc1", factory, Container), Container.Get<IInterface_1>("svc1"));
+            Assert.AreEqual(new TransientServiceEntry(typeof(IInterface_1), "svc2", factory, Container), Container.Get<IInterface_1>("svc2"));
         }
     }
 }

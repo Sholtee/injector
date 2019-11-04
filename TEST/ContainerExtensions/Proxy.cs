@@ -30,62 +30,50 @@ namespace Solti.Utils.DI.Container.Tests
         [TestCase(Lifetime.Singleton)]
         public void Container_Proxy_ShouldOverwriteTheFactoryFunction(Lifetime lifetime)
         {
-            int
-                callCount_1 = 0,
-                callCount_2 = 0;
+            var mockCallback1 = new Mock<Func<IInjector, IInterface_1, IInterface_1>>(MockBehavior.Strict);
+            mockCallback1
+                .Setup(_ => _(It.IsAny<IInjector>(), It.Is<IInterface_1>(inst => inst is Implementation_1)))
+                .Returns<IInjector, IInterface_1>((injector, inst) => inst);
+
+            var mockCallback2 = new Mock<Func<IInjector, IInterface_1, IInterface_1>>(MockBehavior.Strict);
+            mockCallback2
+                .Setup(_ => _(It.IsAny<IInjector>(), It.Is<IInterface_1>(inst => inst is Implementation_1)))
+                .Returns(new DecoratedImplementation_1());
 
             Container
                 .Service<IInterface_1, Implementation_1>(lifetime)
-                .Proxy(typeof(IInterface_1), (injector, t, inst) =>
-                {
-                    Assert.That(t, Is.EqualTo(typeof(IInterface_1)));
-                    Assert.That(inst, Is.InstanceOf<Implementation_1>());
+                .Proxy(mockCallback1.Object)
+                .Proxy(mockCallback2.Object);
 
-                    callCount_1++;
-                    return inst;
-                })
-                .Proxy<IInterface_1>((injector, inst) =>
-                {
-                    Assert.That(inst, Is.TypeOf<Implementation_1>());
-
-                    callCount_2++;
-                    return new DecoratedImplementation_1();
-                });
-
-            using (IInjector injector = Container.CreateInjector())
-            {
-                var instance = injector.Get<IInterface_1>();
-
-                Assert.That(instance, Is.InstanceOf<DecoratedImplementation_1>());
-                Assert.That(callCount_1, Is.EqualTo(1));
-                Assert.That(callCount_2, Is.EqualTo(1));
-            }
+            Assert.That(Container.Get<IInterface_1>().GetService(null), Is.InstanceOf<DecoratedImplementation_1>());
+            mockCallback1.Verify(_ => _(It.IsAny<IInjector>(), It.IsAny<IInterface_1>()), Times.Once);
+            mockCallback2.Verify(_ => _(It.IsAny<IInjector>(), It.IsAny<IInterface_1>()), Times.Once);
         }
 
         [Test]
         public void Container_Proxy_ShouldWorkWithGenericServices()
         {
-            int callCount = 0;
+            var mockCallback = new Mock<Func<IInjector, IInterface_3<int>, IInterface_3<int>>>(MockBehavior.Strict);
+            mockCallback
+                .Setup(_ => _(It.IsAny<IInjector>(), It.Is<IInterface_3<int>>(inst => inst is Implementation_3<int>)))
+                .Returns(new DecoratedImplementation_3<int>());
 
             Container
-                .Service<IInterface_1, Implementation_1>()
                 .Service(typeof(IInterface_3<>), typeof(Implementation_3<>))
-                .Proxy(typeof(IInterface_3<int>), (injector, type, inst) =>
-                {
-                    Assert.AreSame(type, typeof(IInterface_3<int>));
-                    Assert.That(inst, Is.InstanceOf<Implementation_3<int>>());
+                .Proxy(mockCallback.Object);
 
-                    callCount++;
-                    return new DecoratedImplementation_3<int>();
-                });
+            var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
+            mockInjector
+                .Setup(i => i.Get(It.Is<Type>(t => t == typeof(IInterface_1)), null, It.Is<Type>(t => t == typeof(Implementation_3<int>))))
+                .Returns(new Implementation_1());
 
-            using (IInjector injector = Container.CreateInjector())
-            {
-                var instance = injector.Get<IInterface_3<int>>();
+            //
+            // Nem kell QueryMode.AllowSpecialization mert a Proxy() hivas mar
+            // rogzitette az uj elemet.
+            //
 
-                Assert.That(instance, Is.InstanceOf<DecoratedImplementation_3<int>>());
-                Assert.That(callCount, Is.EqualTo(1));
-            }
+            Assert.That(Container.Get<IInterface_3<int>>(QueryMode.ThrowOnError).GetService(mockInjector.Object), Is.InstanceOf<DecoratedImplementation_3<int>>());
+            mockCallback.Verify(_ => _(It.IsAny<IInjector>(), It.IsAny<IInterface_3<int>>()), Times.Once);
         }
 
         [Test]
@@ -109,10 +97,7 @@ namespace Solti.Utils.DI.Container.Tests
 
             mockResolver.Verify(r => r.Resolve(It.Is<Type>(t => t == typeof(IInterface_1))), Times.Never);
 
-            using (IInjector injector = Container.CreateInjector())
-            {
-                Assert.That(injector.Get<IInterface_1>(), Is.InstanceOf<DecoratedImplementation_1>());
-            }         
+            Assert.That(Container.Get<IInterface_1>().GetService(null), Is.InstanceOf<DecoratedImplementation_1>());     
         }
 
         [Test]
@@ -136,24 +121,11 @@ namespace Solti.Utils.DI.Container.Tests
         }
 
         [Test]
-        public void Container_Proxy_ShouldBeTypeChecked()
-        {
-            Container
-                .Service<IInterface_1, Implementation_1>()
-                .Proxy(typeof(IInterface_1), (injector, type, inst) => new object());
-
-            using (IInjector injector = Container.CreateInjector())
-            {
-                Assert.Throws<Exception>(() => injector.Get<IInterface_1>(), string.Format(Resources.INVALID_INSTANCE, typeof(IInterface_1)));
-            }           
-        }
-
-        [Test]
         public void Container_Proxy_ShouldThrowOnInstances()
         {
             Container.Instance<IInterface_1>(new Implementation_1());
 
-            Assert.Throws<InvalidOperationException>(() => Container.Proxy<IInterface_1>((p1, p2) => default(IInterface_1)), Resources.CANT_PROXY);
+            Assert.Throws<InvalidOperationException>(() => Container.Proxy<IInterface_1>((p1, p2) => default), Resources.CANT_PROXY);
         }
 
         [Test]
@@ -161,28 +133,37 @@ namespace Solti.Utils.DI.Container.Tests
         {
             Container.Abstract<IInterface_1>();
 
-            Assert.Throws<InvalidOperationException>(() => Container.Proxy<IInterface_1>((p1, p2) => default(IInterface_1)), Resources.CANT_PROXY);
+            Assert.Throws<InvalidOperationException>(() => Container.Proxy<IInterface_1>((p1, p2) => default), Resources.CANT_PROXY);
         }
 
         [Test]
         public void Container_Proxy_MayHaveDependency()
         {
             Container
-                .Service<IInterface_1, Implementation_1>()
                 .Service<IInterface_2, Implementation_2>()
                 .Proxy<IInterface_2, MyProxyWithDependency>();
 
-            using (IInjector injector = Container.CreateInjector())
-            {
-                IInterface_2 instance = injector.Get<IInterface_2>();
+            var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
 
-                Assert.That(instance, Is.InstanceOf<MyProxyWithDependency>());
+            mockInjector
+                .Setup(i => i.Get(It.Is<Type>(t => t == typeof(IInterface_1)), null, It.Is<Type>(t => typeof(MyProxyWithDependency).IsAssignableFrom(t))))
+                .Returns(new Implementation_1());
 
-                MyProxyWithDependency implementor = (MyProxyWithDependency) instance;
+            mockInjector
+                .Setup(i => i.Get(It.Is<Type>(t => t == typeof(IInterface_1)), null, It.Is<Type>(t => t == typeof(Implementation_2))))
+                .Returns(new Implementation_1());
 
-                Assert.That(implementor.Dependency, Is.InstanceOf<Implementation_1>());
-                Assert.That(implementor.Target, Is.InstanceOf<Implementation_2>());
-            }
+            object instance =  Container.Get<IInterface_2>().GetService(mockInjector.Object);
+
+            Assert.That(instance, Is.InstanceOf<MyProxyWithDependency>());
+
+            MyProxyWithDependency implementor = (MyProxyWithDependency) instance;
+
+            Assert.That(implementor.Dependency, Is.InstanceOf<Implementation_1>());
+            Assert.That(implementor.Target, Is.InstanceOf<Implementation_2>());
+
+            mockInjector.Verify(i => i.Get(It.Is<Type>(t => t == typeof(IInterface_1)), null, It.Is<Type>(t => typeof(MyProxyWithDependency).IsAssignableFrom(t))), Times.Once);
+            mockInjector.Verify(i => i.Get(It.Is<Type>(t => t == typeof(IInterface_1)), null, It.Is<Type>(t => t == typeof(Implementation_2))), Times.Once);
         }
 
         public class MyProxyWithDependency : InterfaceInterceptor<IInterface_2>
@@ -205,12 +186,19 @@ namespace Solti.Utils.DI.Container.Tests
             foreach (AbstractServiceEntry entry in Container.Where(e => typeof(IModule).IsAssignableFrom(e.Interface)))
                 Container.Proxy(entry.Interface, typeof(InterfaceInterceptor<>).MakeGenericType(entry.Interface));
 
-            using (IInjector injector = Container.CreateInjector()) 
-            {
-                Assert.That(injector.Get<IDisposable>() is Disposable);
-                Assert.That(injector.Get<IMyModule1>()  is InterfaceInterceptor<IMyModule1>);
-                Assert.That(injector.Get<IMyModule2>()  is InterfaceInterceptor<IMyModule2>);
-            }
+            var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
+
+            Assert.That(Container.Get<IDisposable>().GetService(mockInjector.Object) is Disposable);
+            Assert.That(Container.Get<IMyModule1>().GetService(mockInjector.Object)  is InterfaceInterceptor<IMyModule1>);
+            Assert.That(Container.Get<IMyModule2>().GetService(mockInjector.Object)  is InterfaceInterceptor<IMyModule2>);
+        }
+
+        [Test]
+        public void Container_Proxy_ShouldHandleNamedServices() 
+        {
+            Container.Service<IInterface_1, Implementation_1>("cica");
+            Assert.DoesNotThrow(() => Container.Proxy<IInterface_1>("cica", (injector, svc) => new DecoratedImplementation_1()));
+            Assert.That(Container.Get<IInterface_1>("cica").GetService(null), Is.TypeOf<DecoratedImplementation_1>());
         }
     }
 

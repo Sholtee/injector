@@ -24,13 +24,14 @@ namespace Solti.Utils.DI
         IServiceContainer Add(AbstractServiceEntry entry);
 
         /// <summary>
-        /// Gets the service associated with the given interface.
+        /// Gets the service associated with the given interface and name.
         /// </summary>
         /// <param name="serviceInterface">The service interface.</param>
+        /// <param name="name">The (optional) name of the service.</param>
         /// <param name="mode">Options</param>
         /// <returns>The requested service entry.</returns>
         /// <exception cref="ServiceNotFoundException">If the service could not be found.</exception>
-        AbstractServiceEntry Get(Type serviceInterface, QueryMode mode = QueryMode.Default);
+        AbstractServiceEntry Get(Type serviceInterface, string name = null, QueryMode mode = QueryMode.Default);
 
         /// <summary>
         /// The number of entries in this container.

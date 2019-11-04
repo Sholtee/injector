@@ -176,5 +176,16 @@ namespace Solti.Utils.DI.Injector.Tests
                 Assert.AreSame(injector, injector.Get<IInjector>());
             }         
         }
+
+        [Test]
+        public void Injector_Get_ShouldBeTypeChecked() 
+        {
+            Container.Factory(typeof(IInterface_1), (injector, iface) => new object());
+
+            using (IInjector injector = Container.CreateInjector()) 
+            {
+                Assert.Throws<Exception>(() => injector.Get<IInterface_1>(), string.Format(Resources.INVALID_INSTANCE, typeof(IInterface_1)));
+            }
+        }
     }
 }

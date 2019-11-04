@@ -12,9 +12,11 @@ namespace Solti.Utils.DI.Internals
     /// <summary>
     /// Describes a producible service entry.
     /// </summary>
-    internal abstract class ProducibleServiceEntry : AbstractServiceEntry
+    internal abstract partial class ProducibleServiceEntry : AbstractServiceEntry
     {
-        protected ProducibleServiceEntry(ProducibleServiceEntry entry, IServiceContainer owner): base(entry.Interface, entry.Lifetime, owner)
+        internal object UnderlyingImplementation { get; }
+
+        protected ProducibleServiceEntry(ProducibleServiceEntry entry, IServiceContainer owner): base(entry.Interface, entry.Name, entry.Lifetime, owner)
         {
             Factory = entry.Factory;
 
@@ -23,24 +25,41 @@ namespace Solti.Utils.DI.Internals
             // meg nem volt hivva.
             //
 
-            UserData = entry.UserData;
+            UnderlyingImplementation = entry.UnderlyingImplementation;
         }
 
-        protected ProducibleServiceEntry(Type @interface, Lifetime lifetime, Func<IInjector, Type, object> factory, IServiceContainer owner) : base(@interface, lifetime, owner)
+        protected ProducibleServiceEntry(Type @interface, string name, Lifetime lifetime, Func<IInjector, Type, object> factory, IServiceContainer owner) : base(@interface, name, lifetime, owner)
         {
-            Factory = factory;
+            //
+            // Interface-t nem kell ellenorizni (az os megteszi).
+            //
+
+            Factory = factory ?? throw new ArgumentNullException(nameof(factory));
         }
 
-        protected ProducibleServiceEntry(Type @interface, Lifetime lifetime, Type implementation, IServiceContainer owner) : this(@interface, lifetime, !@interface.IsGenericTypeDefinition() ? Resolver.Get(implementation) : null, owner)
+        protected ProducibleServiceEntry(Type @interface, string name, Lifetime lifetime, Type implementation, IServiceContainer owner) : base(@interface, name, lifetime, owner)
         {
-            UserData = implementation;
+            //
+            // Interface-t nem kell ellenorizni (az os megteszi).
+            //
+
+            if (implementation == null)
+                throw new ArgumentNullException(nameof(implementation));
+
+            if (!@interface.IsGenericTypeDefinition())
+                Factory = Resolver.Get(implementation);
+
+            UnderlyingImplementation = implementation;
         }
 
-        protected ProducibleServiceEntry(Type @interface, Lifetime lifetime, ITypeResolver implementation, IServiceContainer owner) : base(@interface, lifetime, owner)
+        protected ProducibleServiceEntry(Type @interface, string name, Lifetime lifetime, ITypeResolver implementation, IServiceContainer owner) : base(@interface, name, lifetime, owner)
         {
+            if (implementation == null)
+                throw new ArgumentNullException(nameof(implementation));
+
             Lazy<Type> lazyImplementation = implementation.AsLazy(@interface);
 
-            UserData = lazyImplementation;
+            UnderlyingImplementation = lazyImplementation;
 
             if (!@interface.IsGenericTypeDefinition())
                 //
@@ -62,8 +81,7 @@ namespace Solti.Utils.DI.Internals
                 throw new InvalidOperationException(Resources.NOT_PRODUCIBLE);
         }
 
-        public sealed override Type Implementation => (UserData as Lazy<Type>)?.Value ?? (Type) UserData;
-        public sealed override object UserData { get; }
+        public sealed override Type Implementation => (UnderlyingImplementation as Lazy<Type>)?.Value ?? (Type) UnderlyingImplementation;
         public sealed override Func<IInjector, Type, object> Factory { get; set; }
     }
 }

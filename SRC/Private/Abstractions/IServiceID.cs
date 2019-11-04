@@ -1,5 +1,5 @@
 ﻿/********************************************************************************
-* IServiceFactory.cs                                                            *
+* IServiceID.cs                                                                 *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
@@ -7,10 +7,9 @@ using System;
 
 namespace Solti.Utils.DI.Internals
 {
-    internal interface IServiceFactory
+    internal interface IServiceID
     {
-        Func<IInjector, Type, object> Factory { get; set; }
-
-        object GetService(IInjector injector);
+        Type Interface { get; }
+        string Name { get; }
     }
 }
