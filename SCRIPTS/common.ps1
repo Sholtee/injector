@@ -112,12 +112,12 @@ function Exec([Parameter(Position = 0)][string]$command, [string]$commandArgs = 
 
   if ($exitCode -Ne 0) {
     if (!$noLog) {
-	  $process.StandardOutput.ReadToEnd() | Write-Log -filename "log.txt"
-	  $process.StandardError.ReadToEnd()  | Write-Log -filename "errors.txt"
+      $process.StandardOutput.ReadToEnd() | Write-Log -filename "log.txt"
+      $process.StandardError.ReadToEnd()  | Write-Log -filename "errors.txt"
     }
 	
     if (!$ignoreError) {	
-	  Exit $exitCode
+      Exit $exitCode
     }
 
     return
@@ -127,11 +127,11 @@ function Exec([Parameter(Position = 0)][string]$command, [string]$commandArgs = 
     $output = $process.StandardOutput.ReadToEnd()
 
     if (!$noLog) {
-	  $output | Write-Log -filename "log.txt"
+      $output | Write-Log -filename "log.txt"
     }
 
     if ($redirectOutput) {
-	  return $output
+      return $output
     }
   }
 }
@@ -140,7 +140,7 @@ function Get-SysInfo() {
   return New-Object -TypeName PSObject -Property @{
     WinVer = (Get-WmiObject Win32_OperatingSystem).Version
     PSVer = $PSVersionTable.PSVersion
-	CoreVer = Get-CoreVer
+    CoreVer = Get-CoreVer
   }
 }
 
