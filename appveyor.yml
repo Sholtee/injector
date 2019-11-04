@@ -31,6 +31,7 @@ before_test:
   - ps: |
       Set-Location -path ".\scripts"
       .(".\includes.ps1")
+      Get-SysInfo
 
 test_script:
   - ps: Test

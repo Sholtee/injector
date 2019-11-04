@@ -95,41 +95,55 @@ function Exec([Parameter(Position = 0)][string]$command, [string]$commandArgs = 
   $process.Start() | Out-Null
 
   $finished = $false
+  
   try {
     while (!$process.WaitForExit(100)) {
       # Non-blocking loop done to allow ctr-c interrupts
     }
-
-    $finished = $true	
-    $exitCode = $process.ExitCode
 	
-    if ($exitCode -Ne 0) {
-      if (!$noLog) {
-        $process.StandardOutput.ReadToEnd() | Write-Log -filename "log.txt"
-        $process.StandardError.ReadToEnd()  | Write-Log -filename "errors.txt"
-      }
-		
-      if (!$ignoreError) {	
-        Exit $exitCode
-      }
-
-      return
-    }
-	
-    if ($redirectOutput -or !$noLog) {
-      $output = $process.StandardOutput.ReadToEnd()
-	
-      if (!$noLog) {
-        $output | Write-Log -filename "log.txt"
-      }
-	
-      if ($redirectOutput) {
-        return $output
-      }
-    }
+    $finished = $true
   } finally {
     if (!$finished) {
       $process.Kill()
     }
   }
+  
+  $exitCode = $process.ExitCode
+
+  if ($exitCode -Ne 0) {
+    if (!$noLog) {
+	  $process.StandardOutput.ReadToEnd() | Write-Log -filename "log.txt"
+	  $process.StandardError.ReadToEnd()  | Write-Log -filename "errors.txt"
+    }
+	
+    if (!$ignoreError) {	
+	  Exit $exitCode
+    }
+
+    return
+  }
+
+  if ($redirectOutput -or !$noLog) {
+    $output = $process.StandardOutput.ReadToEnd()
+
+    if (!$noLog) {
+	  $output | Write-Log -filename "log.txt"
+    }
+
+    if ($redirectOutput) {
+	  return $output
+    }
+  }
+}
+
+function Get-SysInfo() {
+  return New-Object -TypeName PSObject -Property @{
+    WinVer = (Get-WmiObject Win32_OperatingSystem).Version
+    PSVer = $PSVersionTable.PSVersion
+	CoreVer = Get-CoreVer
+  }
+}
+
+function Get-CoreVer() {
+  return (dir (Get-Command dotnet).Path.Replace("dotnet.exe", "shared\Microsoft.NETCore.App")).Name.Split($("" | Out-String)) | where { $_ -Match "^\d+.\d+.\d+$" }
 }
