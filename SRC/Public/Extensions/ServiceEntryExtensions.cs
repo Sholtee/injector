@@ -22,7 +22,7 @@ namespace Solti.Utils.DI
         /// <summary>
         /// The service was registered via <see cref="IServiceContainerExtensions.Lazy"/> call.
         /// </summary>
-        public static bool IsLazy(this AbstractServiceEntry self) => self is ProducibleServiceEntry && self.UserData is Lazy<Type>;
+        public static bool IsLazy(this AbstractServiceEntry self) => (self as ProducibleServiceEntry)?.UnderlyingImplementation as Lazy<Type> != null;
 
         /// <summary>
         /// The service was registered via <see cref="IServiceContainerExtensions.Factory"/> call.

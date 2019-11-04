@@ -72,11 +72,6 @@ namespace Solti.Utils.DI.Internals
         /// The implementation of the service (if it is present).
         /// </summary>
         public virtual Type Implementation => null;
-
-        /// <summary>
-        /// Custom user data.
-        /// </summary>
-        public virtual object UserData => null;
         #endregion
 
         #region Mutables

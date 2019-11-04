@@ -14,6 +14,8 @@ namespace Solti.Utils.DI.Internals
     /// </summary>
     internal abstract partial class ProducibleServiceEntry : AbstractServiceEntry
     {
+        internal object UnderlyingImplementation { get; }
+
         protected ProducibleServiceEntry(ProducibleServiceEntry entry, IServiceContainer owner): base(entry.Interface, entry.Name, entry.Lifetime, owner)
         {
             Factory = entry.Factory;
@@ -23,7 +25,7 @@ namespace Solti.Utils.DI.Internals
             // meg nem volt hivva.
             //
 
-            UserData = entry.UserData;
+            UnderlyingImplementation = entry.UnderlyingImplementation;
         }
 
         protected ProducibleServiceEntry(Type @interface, string name, Lifetime lifetime, Func<IInjector, Type, object> factory, IServiceContainer owner) : base(@interface, name, lifetime, owner)
@@ -47,7 +49,7 @@ namespace Solti.Utils.DI.Internals
             if (!@interface.IsGenericTypeDefinition())
                 Factory = Resolver.Get(implementation);
 
-            UserData = implementation;
+            UnderlyingImplementation = implementation;
         }
 
         protected ProducibleServiceEntry(Type @interface, string name, Lifetime lifetime, ITypeResolver implementation, IServiceContainer owner) : base(@interface, name, lifetime, owner)
@@ -57,7 +59,7 @@ namespace Solti.Utils.DI.Internals
 
             Lazy<Type> lazyImplementation = implementation.AsLazy(@interface);
 
-            UserData = lazyImplementation;
+            UnderlyingImplementation = lazyImplementation;
 
             if (!@interface.IsGenericTypeDefinition())
                 //
@@ -79,8 +81,7 @@ namespace Solti.Utils.DI.Internals
                 throw new InvalidOperationException(Resources.NOT_PRODUCIBLE);
         }
 
-        public sealed override Type Implementation => (UserData as Lazy<Type>)?.Value ?? (Type) UserData;
-        public sealed override object UserData { get; }
+        public sealed override Type Implementation => (UnderlyingImplementation as Lazy<Type>)?.Value ?? (Type) UnderlyingImplementation;
         public sealed override Func<IInjector, Type, object> Factory { get; set; }
     }
 }
