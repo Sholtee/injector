@@ -15,12 +15,13 @@ namespace Solti.Utils.DI.Container.Tests
     
     public partial class ContainerTestsBase<TContainer>
     {
-        [Test]
-        public void Container_Abstract_ShouldRegisterAnOverridableService()
+        [TestCase(null)]
+        [TestCase("cica")]
+        public void Container_Abstract_ShouldRegisterAnOverridableService(string name)
         {
             Container
                 .Service<IInterface_1, Implementation_1>()
-                .Abstract<IInterface_2>();
+                .Abstract<IInterface_2>(name);
 
             Assert.That(Container.Count, Is.EqualTo(2));
 
@@ -37,8 +38,8 @@ namespace Solti.Utils.DI.Container.Tests
                 // Es az absztraktot is csak egyszer lehet felulirni.
                 //
 
-                Assert.DoesNotThrow(() => child.Service<IInterface_2, Implementation_2>());
-                Assert.Throws<ServiceAlreadyRegisteredException>(() => child.Service<IInterface_2, Implementation_2>());
+                Assert.DoesNotThrow(() => child.Service<IInterface_2, Implementation_2>(name));
+                Assert.Throws<ServiceAlreadyRegisteredException>(() => child.Service<IInterface_2, Implementation_2>(name));
             }
         }
 

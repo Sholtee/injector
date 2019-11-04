@@ -281,9 +281,10 @@ namespace Solti.Utils.DI
         /// Registers an abstract service. It must be overridden in the child container(s).
         /// </summary>
         /// <param name="self">The target <see cref="IServiceContainer"/>.</param>
-        /// <param name="iface">The service interface to be registered. It can not be null and can be registered only once.</param>
+        /// <param name="iface">The service interface to be registered. It can not be null and can be registered only once (with the given <paramref name="name"/>).</param>
+        /// <param name="name">The (optional) name of the service.</param>
         /// <returns>The container itself.</returns>
-        public static IServiceContainer Abstract(this IServiceContainer self, Type iface)
+        public static IServiceContainer Abstract(this IServiceContainer self, Type iface, string name = null)
         {
             if (self == null)
                 throw new ArgumentNullException(nameof(self));
@@ -294,7 +295,7 @@ namespace Solti.Utils.DI
             if (!iface.IsInterface())
                 throw new ArgumentException(Resources.NOT_AN_INTERFACE, nameof(iface));
 
-            return self.Add(new AbstractServiceEntry(iface, null));
+            return self.Add(new AbstractServiceEntry(iface, name));
         }
 
         /// <summary>
@@ -466,9 +467,10 @@ namespace Solti.Utils.DI
         /// <summary>
         /// Registers an abstract service. It must be overridden in the child container(s).
         /// </summary>
-        /// <typeparam name="TInterface">The service interface to be registered. It can be registered only once.</typeparam>
+        /// <typeparam name="TInterface">The service interface to be registered. It can be registered only once (with the given <paramref name="name"/>).</typeparam>
         /// <param name="self">The target <see cref="IServiceContainer"/>.</param>
+        /// <param name="name">The (optional) name of the service.</param>
         /// <returns>The container itself.</returns>
-        public static IServiceContainer Abstract<TInterface>(this IServiceContainer self) => self.Abstract(typeof(TInterface));
+        public static IServiceContainer Abstract<TInterface>(this IServiceContainer self, string name = null) => self.Abstract(typeof(TInterface), name);
     }
 }
