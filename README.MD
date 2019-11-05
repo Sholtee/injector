@@ -325,3 +325,4 @@ This project currently targets *.NET Standard* 1.6, 2.0 and 2.1.
   - *rewritten* build system
   - *added* named service support
   - *fixed* generic service entry having factory could not be specialized
+  - *fixed* `Composite` child could not be disposed in certain cases
