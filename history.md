@@ -1,4 +1,4 @@
-# Injector.NET Version history
+# Injector.NET Version History
 - 0.0.1: Initial release
 - 0.0.2:
   - *added:* `IServiceInfo.Factory` property
@@ -31,7 +31,7 @@
   - *added:* `ProxyFactory.Create()` non generic overloads
   - *removed:* Some TODOs
   - *fixed:* Possible missing reference error during proxy generation
-  - `IInjector.Instantiate()` is an extension from now
+  - *done:* `IInjector.Instantiate()` is an extension from now
 - 1.0.0-preview4 (unreleased):
   - *rewritten:* Build system
   - *added:* Named service support
