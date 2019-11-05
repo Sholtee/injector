@@ -23,16 +23,14 @@ namespace Solti.Utils.DI.Internals
         private readonly HashSet<TInterface> FChildren = new HashSet<TInterface>();
         private readonly ReaderWriterLockSlim FLock = new ReaderWriterLockSlim();
 
+        private TInterface Self => this as TInterface;
+
         #region Protected
         /// <summary>
         /// Creates a new <see cref="Composite{TInterface}"/> instance.
         /// </summary>
         /// <param name="parent">The parent entity. It can be null.</param>
-        protected Composite(TInterface parent)
-        {
-            Parent = parent;
-            Parent?.AddChild(this as TInterface);
-        }
+        protected Composite(TInterface parent) => parent?.AddChild(Self);
 
         /// <summary>
         /// Disposal logic related to this class.
@@ -46,10 +44,7 @@ namespace Solti.Utils.DI.Internals
                 // Kivesszuk magunkat a szulo gyerekei kozul (kiveve ha gyoker elemunk van, ott nincs szulo).
                 //
 
-                TInterface self = this as TInterface;
-                Debug.Assert(self != null, $"{typeof(TInterface)} is not implemented");
-
-                Parent?.RemoveChild(self);
+                Parent?.RemoveChild(Self);
 
                 //
                 // Osszes gyereket Dispose()-oljuk. Mivel a Children amugy is masolatot ad vissza ezert
@@ -74,7 +69,7 @@ namespace Solti.Utils.DI.Internals
         /// <summary>
         /// The parent of this entity. Can be null.
         /// </summary>
-        public TInterface Parent { get; }
+        public TInterface Parent { get; set; }
 
         /// <summary>
         /// The children of this entity.
@@ -105,12 +100,16 @@ namespace Solti.Utils.DI.Internals
         /// </summary>
         public virtual void AddChild(TInterface child)
         {
-            if (child.Parent != this)
-                throw new InvalidOperationException(Resources.INVALID_PARENT);
+            if (child == null)
+                throw new ArgumentNullException(nameof(child));
+
+            if (child.Parent != null)
+                throw new InvalidOperationException(Resources.NOT_ORPHAN);
 
             using (FLock.AcquireWriterLock())
-                if (!FChildren.Add(child))
-                    throw new InvalidOperationException(Resources.CHILD_ALREADY_CONTAINED);
+                FChildren.Add(child);
+
+            child.Parent = Self;
         }
 
         /// <summary>
@@ -118,12 +117,16 @@ namespace Solti.Utils.DI.Internals
         /// </summary>
         public virtual void RemoveChild(TInterface child)
         {
+            if (child == null)
+                throw new ArgumentNullException(nameof(child));
+
             if (child.Parent != this)
                 throw new InvalidOperationException(Resources.INVALID_PARENT);
 
             using (FLock.AcquireWriterLock())
-                if (!FChildren.Remove(child))
-                    throw new InvalidOperationException(Resources.CHILD_NOT_CONTAINED);
+                FChildren.Remove(child);
+
+            child.Parent = null;
         }
         #endregion
     }

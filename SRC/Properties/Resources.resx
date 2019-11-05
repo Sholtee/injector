@@ -126,12 +126,6 @@
   <data name="CANT_PROXY" xml:space="preserve">
     <value>Creating proxy is not allowed here.</value>
   </data>
-  <data name="CHILD_ALREADY_CONTAINED" xml:space="preserve">
-    <value>Attempt to add a child twice.</value>
-  </data>
-  <data name="CHILD_NOT_CONTAINED" xml:space="preserve">
-    <value>Child not contained.</value>
-  </data>
   <data name="CIRCULAR_REFERENCE" xml:space="preserve">
     <value>Circular reference: {0}.</value>
   </data>
@@ -197,5 +191,8 @@
   </data>
   <data name="INVALID_INTERCEPETOR" xml:space="preserve">
     <value>Interceptor must be an InterfaceInterceptor desecndant.</value>
+  </data>
+  <data name="NOT_ORPHAN" xml:space="preserve">
+    <value>Child already has parent.</value>
   </data>
 </root>

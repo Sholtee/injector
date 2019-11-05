@@ -18,7 +18,7 @@ namespace Solti.Utils.DI.Internals
         /// <summary>
         /// The parent of this entity.
         /// </summary>
-        T Parent { get; }
+        T Parent { get; set; }
 
         /// <summary>
         /// The children of this entity.
