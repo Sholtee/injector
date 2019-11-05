@@ -43,7 +43,7 @@ namespace Solti.Utils.DI.Container.Tests
             var mockResolver = new Mock<ITypeResolver>(MockBehavior.Strict);
             mockResolver
                 .Setup(r => r.Resolve(It.Is<Type>(t => t == typeof(IInterface_1))))
-                .Returns(typeof(Implementation_1));
+                .Returns(typeof(Implementation_1_No_Dep));
             mockResolver
                 .Setup(r => r.Supports(It.Is<Type>(t => t == typeof(IInterface_1))))
                 .Returns(true);
@@ -70,7 +70,7 @@ namespace Solti.Utils.DI.Container.Tests
             var mockResolver = new Mock<ITypeResolver>(MockBehavior.Strict);
             mockResolver
                 .Setup(r => r.Resolve(It.Is<Type>(t => t == typeof(IInterface_3<>))))
-                .Returns(typeof(Implementation_3<>));
+                .Returns(typeof(Implementation_3_IInterface_1_Dependant<>));
             mockResolver
                 .Setup(r => r.Supports(It.Is<Type>(t => t == typeof(IInterface_3<>))))
                 .Returns(true);
@@ -82,7 +82,7 @@ namespace Solti.Utils.DI.Container.Tests
 
             for (int i = 0; i < 2; i++)
             {
-                Assert.AreEqual(new TransientServiceEntry(typeof(IInterface_3<int>), null, typeof(Implementation_3<int>), Container), Container.Get<IInterface_3<int>>(QueryMode.AllowSpecialization));
+                Assert.AreEqual(new TransientServiceEntry(typeof(IInterface_3<int>), null, typeof(Implementation_3_IInterface_1_Dependant<int>), Container), Container.Get<IInterface_3<int>>(QueryMode.AllowSpecialization));
 
                 mockResolver.Verify(r => r.Resolve(It.Is<Type>(t => t == typeof(IInterface_3<string>))),  Times.Never);
                 mockResolver.Verify(r => r.Resolve(It.Is<Type>(t => t == typeof(IInterface_3<>))),        Times.Once);
@@ -95,7 +95,7 @@ namespace Solti.Utils.DI.Container.Tests
             var mockResolver = new Mock<ITypeResolver>(MockBehavior.Strict);
             mockResolver
                 .Setup(r => r.Resolve(It.Is<Type>(t => t == typeof(IInterface_1))))
-                .Returns(typeof(Implementation_1));
+                .Returns(typeof(Implementation_1_No_Dep));
             mockResolver
                 .Setup(r => r.Supports(It.Is<Type>(t => t == typeof(IInterface_1))))
                 .Returns(true);

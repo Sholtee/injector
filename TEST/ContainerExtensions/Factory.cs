@@ -37,14 +37,14 @@ namespace Solti.Utils.DI.Container.Tests
         [TestCase("cica")]
         public void Container_Factory_ShouldThrowOnMultipleRegistration(string name)
         {
-            Container.Factory<IInterface_1>(name, me => new Implementation_1());
-            Assert.Throws<ServiceAlreadyRegisteredException>(() => Container.Factory<IInterface_1>(name, me => new Implementation_1()));
+            Container.Factory<IInterface_1>(name, me => new Implementation_1_No_Dep());
+            Assert.Throws<ServiceAlreadyRegisteredException>(() => Container.Factory<IInterface_1>(name, me => new Implementation_1_No_Dep()));
         }
 
         [Test]
         public void Container_Factory_ShouldHandleNamedServices()
         {
-            Func<IInjector, Type, IInterface_1> factory = (injector, type) => new Implementation_1();
+            Func<IInjector, Type, IInterface_1> factory = (injector, type) => new Implementation_1_No_Dep();
 
             Assert.DoesNotThrow(() => Container
                 .Factory(typeof(IInterface_1), "svc1", factory)

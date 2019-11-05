@@ -26,7 +26,7 @@ namespace Solti.Utils.DI.Injector.Tests
             Container.Factory<IInterface_1>(i =>
             {
                 injector = i;
-                return new Implementation_1();
+                return new Implementation_1_No_Dep();
             });
 
             using (IInjector i = Container.CreateChild().CreateInjector())

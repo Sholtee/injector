@@ -236,7 +236,7 @@ namespace Solti.Utils.DI.Container.Tests
             using (IServiceContainer child = Container.CreateChild())
             {
                 child
-                    .Service<IInterface_1, Implementation_1>()
+                    .Service<IInterface_1, Implementation_1_No_Dep>()
                     .Service(typeof(IGenericDisposable<>), typeof(GenericDisposable<>), Lifetime.Singleton);
 
                 Assert.That(child.Count, Is.EqualTo(2));
@@ -280,10 +280,10 @@ namespace Solti.Utils.DI.Container.Tests
         public void IServiceContainer_ChildShouldInheritTheParentEntries()
         {
             IServiceContainer child = Container
-                .Service<IInterface_1, Implementation_1>()
+                .Service<IInterface_1, Implementation_1_No_Dep>()
                 .CreateChild();
 
-            Assert.That(child.Get<IInterface_1>(QueryMode.ThrowOnError).Implementation, Is.EqualTo(typeof(Implementation_1)));
+            Assert.That(child.Get<IInterface_1>(QueryMode.ThrowOnError).Implementation, Is.EqualTo(typeof(Implementation_1_No_Dep)));
         }
 
         [TestCase(Lifetime.Scoped)]
@@ -292,8 +292,8 @@ namespace Solti.Utils.DI.Container.Tests
         public void IServiceContainer_ChildEnriesShouldNotChangeByDefault(Lifetime lifetime)
         {
             Container
-                .Service<IInterface_1, Implementation_1>(lifetime)
-                .Factory<IInterface_2>(i => new Implementation_2(i.Get<IInterface_1>()), lifetime)
+                .Service<IInterface_1, Implementation_1_No_Dep>(lifetime)
+                .Factory<IInterface_2>(i => new Implementation_2_IInterface_1_Dependant(i.Get<IInterface_1>()), lifetime)
                 .Instance<IDisposable>(new Disposable());
 
             IServiceContainer child = Container.CreateChild();
@@ -319,7 +319,7 @@ namespace Solti.Utils.DI.Container.Tests
         [Test]
         public void IServiceContainer_ChildShouldInheritTheProxies()
         {
-            Container.Service<IInterface_1, Implementation_1>();
+            Container.Service<IInterface_1, Implementation_1_No_Dep>();
 
             Func<IInjector, Type, object>
                 originalFactory = Container.Get<IInterface_1>(QueryMode.ThrowOnError).Factory,
@@ -339,7 +339,7 @@ namespace Solti.Utils.DI.Container.Tests
         {
             IServiceContainer child = Container
                 .CreateChild()
-                .Service<IInterface_1, Implementation_1>();
+                .Service<IInterface_1, Implementation_1_No_Dep>();
 
             Assert.Throws<ServiceNotFoundException>(() => Container.Get<IInterface_1>(QueryMode.ThrowOnError));
             Assert.DoesNotThrow(() => child.Get<IInterface_1>(QueryMode.ThrowOnError));

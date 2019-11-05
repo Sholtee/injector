@@ -28,13 +28,13 @@ namespace Solti.Utils.DI.Injector.Tests
         [TestCase(Lifetime.Singleton)]
         public void Injector_Get_ShouldInstantiate(Lifetime lifetime)
         {
-            Container.Service<IInterface_1, Implementation_1>(lifetime);
+            Container.Service<IInterface_1, Implementation_1_No_Dep>(lifetime);
 
             using (IInjector injector = Container.CreateInjector())
             {
                 var instance = injector.Get<IInterface_1>();
 
-                Assert.That(instance, Is.InstanceOf<Implementation_1>());
+                Assert.That(instance, Is.InstanceOf<Implementation_1_No_Dep>());
             }
         }
 
@@ -51,15 +51,15 @@ namespace Solti.Utils.DI.Injector.Tests
         public void Injector_Get_ShouldResolveDependencies()
         {
             Container
-                .Service<IInterface_2, Implementation_2>()
-                .Service<IInterface_1, Implementation_1>(); // direkt masodikkent szerepel
+                .Service<IInterface_2, Implementation_2_IInterface_1_Dependant>()
+                .Service<IInterface_1, Implementation_1_No_Dep>(); // direkt masodikkent szerepel
 
             using (IInjector injector = Container.CreateInjector())
             {
                 var instance = injector.Get<IInterface_2>();
 
-                Assert.That(instance, Is.InstanceOf<Implementation_2>());
-                Assert.That(instance.Interface1, Is.InstanceOf<Implementation_1>());
+                Assert.That(instance, Is.InstanceOf<Implementation_2_IInterface_1_Dependant>());
+                Assert.That(instance.Interface1, Is.InstanceOf<Implementation_1_No_Dep>());
             }
         }
 
@@ -67,14 +67,14 @@ namespace Solti.Utils.DI.Injector.Tests
         public void Injector_Get_ShouldResolveLazyDependencies()
         {
             Container
-                .Service<IInterface_1, Implementation_1>()
-                .Service<IInterface_2_LazyDep, Implementation_2_LazyDep>();
+                .Service<IInterface_1, Implementation_1_No_Dep>()
+                .Service<IInterface_2_LazyDep, Implementation_2_Lazy__IInterface_1_Dependant>();
 
             using (IInjector injector = Container.CreateInjector())
             {
                 var instance = injector.Get<IInterface_2_LazyDep>();
 
-                Assert.That(instance, Is.InstanceOf<Implementation_2_LazyDep>());
+                Assert.That(instance, Is.InstanceOf<Implementation_2_Lazy__IInterface_1_Dependant>());
                 Assert.That(instance.Interface1, Is.InstanceOf<Lazy<IInterface_1>>());
                 Assert.That(instance.Interface1.Value, Is.InstanceOf<IInterface_1>());
             }
@@ -86,9 +86,9 @@ namespace Solti.Utils.DI.Injector.Tests
         public void Injector_Get_ShouldResolveGenericDependencies(Lifetime lifetime)
         {
             Container
-                .Service<IInterface_1, Implementation_1>() // direkt nincs lifetime
-                .Service(typeof(IInterface_3<>), typeof(Implementation_3<>)) // direkt nincs lifetime
-                .Service(typeof(IInterface_6<>), typeof(Implementation_6<>), lifetime);
+                .Service<IInterface_1, Implementation_1_No_Dep>() // direkt nincs lifetime
+                .Service(typeof(IInterface_3<>), typeof(Implementation_3_IInterface_1_Dependant<>)) // direkt nincs lifetime
+                .Service(typeof(IInterface_6<>), typeof(Implementation_6_IInterface_3_Dependant<>), lifetime);
 
             Assert.That(Container.Count, Is.EqualTo(3));
 
@@ -96,16 +96,16 @@ namespace Solti.Utils.DI.Injector.Tests
             {         
                 var instance = injector.Get<IInterface_6<string>>();
             
-                Assert.That(instance, Is.InstanceOf<Implementation_6<string>>());
-                Assert.That(instance.Interface3, Is.InstanceOf<Implementation_3<string>>());
-                Assert.That(instance.Interface3.Interface1, Is.InstanceOf<Implementation_1>());
+                Assert.That(instance, Is.InstanceOf<Implementation_6_IInterface_3_Dependant<string>>());
+                Assert.That(instance.Interface3, Is.InstanceOf<Implementation_3_IInterface_1_Dependant<string>>());
+                Assert.That(instance.Interface3.Interface1, Is.InstanceOf<Implementation_1_No_Dep>());
             }
         }
 
         [Test]
         public void Injector_Get_ShouldNotInstantiateGenericType()
         {
-            Container.Service(typeof(IInterface_3<>), typeof(Implementation_3<>));
+            Container.Service(typeof(IInterface_3<>), typeof(Implementation_3_IInterface_1_Dependant<>));
 
             using (IInjector injector = Container.CreateInjector())
             {
@@ -117,8 +117,8 @@ namespace Solti.Utils.DI.Injector.Tests
         public void Injector_GetByService_ShouldThrowOnCircularReference()
         {
             Container
-                .Service<IInterface_4, Implementation_4_cdep>()
-                .Service<IInterface_5, Implementation_5_cdep>();
+                .Service<IInterface_4, Implementation_4_CDep>()
+                .Service<IInterface_5, Implementation_5_CDep>();
 
             using (IInjector injector = Container.CreateInjector())
             {     
@@ -131,8 +131,8 @@ namespace Solti.Utils.DI.Injector.Tests
         public void Injector_GetByFactory_ShouldThrowOnCircularReference()
         {
             Container
-                .Factory<IInterface_4>(injector => new Implementation_4_cdep(injector.Get<IInterface_5>()))
-                .Factory<IInterface_5>(injector => new Implementation_5_cdep(injector.Get<IInterface_4>()));
+                .Factory<IInterface_4>(injector => new Implementation_4_CDep(injector.Get<IInterface_5>()))
+                .Factory<IInterface_5>(injector => new Implementation_5_CDep(injector.Get<IInterface_4>()));
 
             using (IInjector injector = Container.CreateInjector())
             {
@@ -145,9 +145,9 @@ namespace Solti.Utils.DI.Injector.Tests
         public void Injector_GetByInjector_ShouldThrowOnCircularReference()
         {
             Container
-                .Service<IInterface_1, Implementation_7_cdep>()
-                .Service<IInterface_4, Implementation_4_cdep>()
-                .Service<IInterface_5, Implementation_5_cdep>();
+                .Service<IInterface_1, Implementation_7_CDep>()
+                .Service<IInterface_4, Implementation_4_CDep>()
+                .Service<IInterface_5, Implementation_5_CDep>();
 
             using (IInjector injector = Container.CreateInjector())
             {
@@ -159,7 +159,7 @@ namespace Solti.Utils.DI.Injector.Tests
         public void Injector_GetByProxy_ShouldThrowOnCircularReference()
         {
             Container
-                .Service<IInterface_1, Implementation_1>()
+                .Service<IInterface_1, Implementation_1_No_Dep>()
                 .Proxy<IInterface_1>((injector, inst) => injector.Get<IInterface_1>());
 
             using (IInjector injector = Container.CreateInjector())

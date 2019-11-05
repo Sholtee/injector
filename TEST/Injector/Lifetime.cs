@@ -17,7 +17,7 @@ namespace Solti.Utils.DI.Injector.Tests
         [Test]
         public void Lifetime_TransientService_ShouldBeInstantiatedOnEveryRequest()
         {
-            Container.Service<IInterface_1, Implementation_1>(Lifetime.Transient);
+            Container.Service<IInterface_1, Implementation_1_No_Dep>(Lifetime.Transient);
 
             using (IInjector injector = Container.CreateInjector())
             {
@@ -28,7 +28,7 @@ namespace Solti.Utils.DI.Injector.Tests
         [Test]
         public void Lifetime_InheritedTransientService_ShouldBeInstantiatedOnEveryRequest()
         {
-            Container.Service<IInterface_1, Implementation_1>(Lifetime.Transient);
+            Container.Service<IInterface_1, Implementation_1_No_Dep>(Lifetime.Transient);
 
             using (IInjector injector = Container.CreateChild().CreateInjector())
             {
@@ -39,7 +39,7 @@ namespace Solti.Utils.DI.Injector.Tests
         [Test]
         public void Lifetime_ScopedService_ShouldBeInstantiatedOnlyOncePerInjector()
         {
-            Container.Service<IInterface_1, Implementation_1>(Lifetime.Scoped);
+            Container.Service<IInterface_1, Implementation_1_No_Dep>(Lifetime.Scoped);
 
             using (IInjector injector1 = Container.CreateInjector())
             {
@@ -57,7 +57,7 @@ namespace Solti.Utils.DI.Injector.Tests
         public void Lifetime_InheritedScopedService_ShouldBeInstantiatedOnlyOncePerInjector()
         {
             IServiceContainer childContainer = Container // nem muszaj dispose-olni Container felszabaditasakor ugy is dispose-olva lesz
-                .Service<IInterface_1, Implementation_1>(Lifetime.Scoped)
+                .Service<IInterface_1, Implementation_1_No_Dep>(Lifetime.Scoped)
                 .CreateChild();
 
             using (IInjector injector1 = childContainer.CreateInjector())
@@ -75,7 +75,7 @@ namespace Solti.Utils.DI.Injector.Tests
         [Test]
         public void Lifetime_SingletonService_ShouldBeInstantiatedOnlyOncePerContainer()
         {
-            Container.Service<IInterface_1, Implementation_1>(Lifetime.Singleton);
+            Container.Service<IInterface_1, Implementation_1_No_Dep>(Lifetime.Singleton);
 
             using (IInjector injector1 = Container.CreateInjector())
             {
@@ -100,15 +100,15 @@ namespace Solti.Utils.DI.Injector.Tests
         public void Lifetime_SingletonService_ShouldUseItsDeclaringContainerForDependecyResolution_Decoration() 
         {
             Container
-                .Service<IInterface_1, Implementation_1>(Lifetime.Transient)
-                .Service<IInterface_2, Implementation_2>(Lifetime.Scoped);
+                .Service<IInterface_1, Implementation_1_No_Dep>(Lifetime.Transient)
+                .Service<IInterface_2, Implementation_2_IInterface_1_Dependant>(Lifetime.Scoped);
 
             IServiceContainer child = Container.CreateChild();
             child.Proxy<IInterface_1>((i, curr) => new DecoratedImplementation_1());
 
             using (IInjector injector = child.CreateInjector()) 
             {
-                Assert.That(injector.Get<IInterface_2>().Interface1, Is.InstanceOf<Implementation_1>());
+                Assert.That(injector.Get<IInterface_2>().Interface1, Is.InstanceOf<Implementation_1_No_Dep>());
                 Assert.That(injector.Get<IInterface_1>(), Is.InstanceOf<DecoratedImplementation_1>());
             }
         }
@@ -116,10 +116,10 @@ namespace Solti.Utils.DI.Injector.Tests
         [Test]
         public void Lifetime_SingletonService_ShouldUseItsDeclaringContainerForDependecyResolution_Declaration()
         {
-            Container.Service<IInterface_2, Implementation_2>(Lifetime.Singleton);
+            Container.Service<IInterface_2, Implementation_2_IInterface_1_Dependant>(Lifetime.Singleton);
 
             IServiceContainer child = Container.CreateChild();
-            child.Service<IInterface_1, Implementation_1>(Lifetime.Transient);
+            child.Service<IInterface_1, Implementation_1_No_Dep>(Lifetime.Transient);
 
             using (IInjector injector = child.CreateInjector()) 
             {
@@ -131,10 +131,10 @@ namespace Solti.Utils.DI.Injector.Tests
         [TestCase(Lifetime.Scoped)]
         public void Lifetime_NonSingletonService_ShouldResolveDependencyFromChildContainer(Lifetime lifetime) 
         {
-            Container.Service<IInterface_2, Implementation_2>(lifetime);
+            Container.Service<IInterface_2, Implementation_2_IInterface_1_Dependant>(lifetime);
 
             IServiceContainer child = Container.CreateChild();
-            child.Service<IInterface_1, Implementation_1>(Lifetime.Transient);
+            child.Service<IInterface_1, Implementation_1_No_Dep>(Lifetime.Transient);
 
             using (IInjector injector = child.CreateInjector())
             {
@@ -146,8 +146,8 @@ namespace Solti.Utils.DI.Injector.Tests
         public void Injector_LifetimeOf_ShouldReturnTheProperLifetime()
         {
             Container
-                .Service<IInterface_1, Implementation_1>(Lifetime.Scoped)
-                .Service<IInterface_2, Implementation_2>(Lifetime.Singleton)
+                .Service<IInterface_1, Implementation_1_No_Dep>(Lifetime.Scoped)
+                .Service<IInterface_2, Implementation_2_IInterface_1_Dependant>(Lifetime.Singleton)
                 .Instance<IDisposable>(new Disposable());
 
             using (IInjector injector = Container.CreateInjector())
@@ -161,7 +161,7 @@ namespace Solti.Utils.DI.Injector.Tests
         [Test]
         public void Injector_LifetimeOf_ShouldNotSpecialize()
         {
-            Container.Service(typeof(IInterface_3<>), typeof(Implementation_3<>));
+            Container.Service(typeof(IInterface_3<>), typeof(Implementation_3_IInterface_1_Dependant<>));
 
             using (IInjector injector = Container.CreateInjector())
             {
