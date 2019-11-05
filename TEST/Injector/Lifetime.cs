@@ -97,6 +97,52 @@ namespace Solti.Utils.DI.Injector.Tests
         }
 
         [Test]
+        public void Lifetime_SingletonService_ShouldUseItsDeclaringContainerForDependecyResolution_Decoration() 
+        {
+            Container
+                .Service<IInterface_1, Implementation_1>(Lifetime.Transient)
+                .Service<IInterface_2, Implementation_2>(Lifetime.Scoped);
+
+            IServiceContainer child = Container.CreateChild();
+            child.Proxy<IInterface_1>((i, curr) => new DecoratedImplementation_1());
+
+            using (IInjector injector = child.CreateInjector()) 
+            {
+                Assert.That(injector.Get<IInterface_2>().Interface1, Is.InstanceOf<Implementation_1>());
+                Assert.That(injector.Get<IInterface_1>(), Is.InstanceOf<DecoratedImplementation_1>());
+            }
+        }
+
+        [Test]
+        public void Lifetime_SingletonService_ShouldUseItsDeclaringContainerForDependecyResolution_Declaration()
+        {
+            Container.Service<IInterface_2, Implementation_2>(Lifetime.Singleton);
+
+            IServiceContainer child = Container.CreateChild();
+            child.Service<IInterface_1, Implementation_1>(Lifetime.Transient);
+
+            using (IInjector injector = child.CreateInjector()) 
+            {
+                Assert.Throws<ServiceNotFoundException>(() => injector.Get<IInterface_2>());         
+            }
+        }
+
+        [TestCase(Lifetime.Transient)]
+        [TestCase(Lifetime.Scoped)]
+        public void Lifetime_NonSingletonService_ShouldResolveDependencyFromChildContainer(Lifetime lifetime) 
+        {
+            Container.Service<IInterface_2, Implementation_2>(lifetime);
+
+            IServiceContainer child = Container.CreateChild();
+            child.Service<IInterface_1, Implementation_1>(Lifetime.Transient);
+
+            using (IInjector injector = child.CreateInjector())
+            {
+                Assert.DoesNotThrow(() => injector.Get<IInterface_2>());
+            }
+        }
+
+        [Test]
         public void Injector_LifetimeOf_ShouldReturnTheProperLifetime()
         {
             Container
