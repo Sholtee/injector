@@ -288,41 +288,4 @@ You can browse the [detailed API docs](https://sholtee.github.io/injector ) or t
 ## Supported frameworks
 This project currently targets *.NET Standard* 1.6, 2.0 and 2.1.
 ## Version history
-- 0.0.1: Initial release
-- 0.0.2:
-  - *added* `IServiceInfo.Factory` property
-  - *added* `IInjectorExtensions.Proxy()` overload
-  - *added* `ServiceAttribute` and `ConfigFromAssembly` classes
-  - *added* `ServiceActivatorAttribute` class
-  - *fixed* Multiple type resolver invocation issue
-  - *fixed* `IInjectorExtensions.Instance()` should not dispose the instance by default
-  - Some code optimization
-- 0.0.3
-  - *added* `IInjector.Instantiate()` method
-- 1.0.0-preview1:
-  - *rewritten* core
-  - *added* service containers
-  - *added* `Scoped` lifetime
-  - *added* lazy dependency resolution support
-  - *added* extension based architecture
-  - *added* own interface proxy implementation
-  - *added* duck typing support
-  - *added* abstract service recipe
-  - *added* `LazyTypeResolver` class
-  - *using* [semantic versioning](https://semver.org/ )
-- 1.0.0-preview2:
-  - *added* `IInjectorExtensions.ShouldRelease()` method
-  - *added* nuget icon
-  - *updated* performance tests
-- 1.0.0-preview3:
-  - *added* netstandard2.1 target
-  - *added* extensible "auto config"
-  - *added* `ProxyFactory.Create()` non generic overloads
-  - *removed* some TODOs
-  - *fixed* possible missing reference error during proxy generation
-  - `IInjector.Instantiate()` is an extension from now
-- 1.0.0-preview4 (unreleased):
-  - *rewritten* build system
-  - *added* named service support
-  - *fixed* generic service entry having factory could not be specialized
-  - *fixed* `Composite` child could not be disposed in certain cases
+Can be found [here](https://github.com/Sholtee/injector/blob/master/history.md )

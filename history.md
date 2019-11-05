@@ -1,0 +1,39 @@
+# Injector.NET Version history
+- 0.0.1: Initial release
+- 0.0.2:
+  - *added:* `IServiceInfo.Factory` property
+  - *added:* `IInjectorExtensions.Proxy()` overload
+  - *added:* `ServiceAttribute` and `ConfigFromAssembly` classes
+  - *added:* `ServiceActivatorAttribute` class
+  - *fixed:* Multiple type resolver invocation issue
+  - *fixed:* `IInjectorExtensions.Instance()` should not dispose the instance by default
+  - *done:* Some code optimization
+- 0.0.3
+  - *added:* `IInjector.Instantiate()` method
+- 1.0.0-preview1:
+  - *rewritten:* Core
+  - *added:* Service containers
+  - *added:* `Scoped` lifetime
+  - *added:* Lazy dependency resolution support
+  - *added:* Extension based architecture
+  - *added:* Own interface proxy implementation
+  - *added:* Duck typing support
+  - *added:* Abstract service recipe
+  - *added:* `LazyTypeResolver` class
+  - *using:* [semantic versioning](https://semver.org/ )
+- 1.0.0-preview2:
+  - *added:* `IInjectorExtensions.ShouldRelease()` method
+  - *added:* Nuget icon
+  - *updated:* Performance tests
+- 1.0.0-preview3:
+  - *added:* NETStandard2.1 target
+  - *added:* Extensible "auto config"
+  - *added:* `ProxyFactory.Create()` non generic overloads
+  - *removed:* Some TODOs
+  - *fixed:* Possible missing reference error during proxy generation
+  - `IInjector.Instantiate()` is an extension from now
+- 1.0.0-preview4 (unreleased):
+  - *rewritten:* Build system
+  - *added:* Named service support
+  - *fixed:* Generic service entry having factory could not be specialized
+  - *fixed:* `Composite` child could not be disposed in certain cases
