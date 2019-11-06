@@ -123,6 +123,11 @@ namespace Solti.Utils.DI.Tests
             IInterface_3<T> Interface3 { get; }
         }
 
+        public interface IInterface_7<TInterface> where TInterface: class
+        {
+            TInterface Interface { get; }
+        }
+
         public class Implementation_6_IInterface_3_Dependant<T> : IInterface_6<T>
         {
             public Implementation_6_IInterface_3_Dependant(IInterface_3<T> dep)
@@ -166,6 +171,16 @@ namespace Solti.Utils.DI.Tests
             }
 
             public IInterface_1 Interface1 { get; }
+        }
+
+        public class Implementation_7_TInterface_Dependant<TInterface> : IInterface_7<TInterface> where TInterface : class
+        {
+            public Implementation_7_TInterface_Dependant(TInterface dep) 
+            {
+                Interface = dep;
+            }
+
+            public TInterface Interface { get; }
         }
 
         public interface IInterface_1_Disaposable : IInterface_1, IDisposable

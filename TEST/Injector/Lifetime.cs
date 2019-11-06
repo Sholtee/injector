@@ -101,7 +101,7 @@ namespace Solti.Utils.DI.Injector.Tests
         {
             Container
                 .Service<IInterface_1, Implementation_1_No_Dep>(Lifetime.Transient)
-                .Service<IInterface_2, Implementation_2_IInterface_1_Dependant>(Lifetime.Scoped);
+                .Service<IInterface_2, Implementation_2_IInterface_1_Dependant>(Lifetime.Singleton);
 
             IServiceContainer child = Container.CreateChild();
             child.Proxy<IInterface_1>((i, curr) => new DecoratedImplementation_1());
@@ -124,6 +124,25 @@ namespace Solti.Utils.DI.Injector.Tests
             using (IInjector injector = child.CreateInjector()) 
             {
                 Assert.Throws<ServiceNotFoundException>(() => injector.Get<IInterface_2>());         
+            }
+        }
+
+        [Test]
+        public void Lifetime_SingletonService_MayHaveScopedDependency()
+        {
+            Container
+                .Service<IDisposable, Disposable>(Lifetime.Scoped)
+                .Service<IInterface_7<IDisposable>, Implementation_7_TInterface_Dependant<IDisposable>>(Lifetime.Singleton);
+
+            using (IInjector injector = Container.CreateInjector()) 
+            {
+                injector.Get<IInterface_7<IDisposable>>();
+            }
+
+            using (IInjector injector = Container.CreateInjector())
+            {
+                var instance = injector.Get<IInterface_7<IDisposable>>();
+                Assert.DoesNotThrow(instance.Interface.Dispose);
             }
         }
 
