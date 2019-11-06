@@ -30,11 +30,11 @@ namespace Solti.Utils.DI.Internals
 
         public override object Value => null;
 
-        public override object GetService(IInjector injector)
+        public override object GetService(Func<IInjector> injectorFactory)
         {
             CheckProducible();
 
-            return Factory(injector, Interface);
+            return Factory(injectorFactory(), Interface);
         }
 
         public override AbstractServiceEntry CopyTo(IServiceContainer target)

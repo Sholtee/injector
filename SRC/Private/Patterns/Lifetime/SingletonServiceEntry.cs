@@ -35,14 +35,14 @@ namespace Solti.Utils.DI.Internals
 
         public override object Value => FValue;
 
-        public override object GetService(IInjector injector)
+        public override object GetService(Func<IInjector> injectorFactory)
         {
             CheckProducible();
 
             if (FValue == null)
                 lock (FLock)
                     if (FValue == null)
-                        FValue = Factory(injector, Interface);
+                        FValue = Factory(injectorFactory(), Interface);
 
             return FValue;
         }

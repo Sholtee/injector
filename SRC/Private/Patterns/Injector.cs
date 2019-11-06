@@ -81,13 +81,21 @@ namespace Solti.Utils.DI.Internals
                     throw new InvalidOperationException(string.Format(Resources.CIRCULAR_REFERENCE, string.Join(" -> ", friendlyPath)));
                 }
 
-                IServiceFactory factory = Get(iface, name, QueryMode.AllowSpecialization | QueryMode.ThrowOnError);
+                AbstractServiceEntry entry = Get(iface, name, QueryMode.AllowSpecialization | QueryMode.ThrowOnError);
+
+                //
+                // Lekerdezeshez mindig a deklaralo szervizkollekciobol csinalunk injector-t.
+                //   - Igy a fuggosegek is a deklaralo kollekciobol lesznek feloldva.
+                //   - Ujonan letrehozott injector eseten annak felszabaditasa a deklaralo kollekcio felszabaditasokor tortenik 
+                //     (mivel annak a gyermeke lesz).
+                //
+
+                object instance = entry.GetService(() => entry.Owner == this ? this : new Injector(entry.Owner));
 
                 //
                 // Peldany tipusat ellenorizzuk mert a Factory(), Lazy() stb visszaadhat vicces dolgokat.
                 //
 
-                object instance = factory.GetService(this);
                 if (!iface.IsInstanceOfType(instance))
                     throw new Exception(string.Format(Resources.INVALID_INSTANCE, iface));
 
