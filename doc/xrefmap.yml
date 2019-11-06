@@ -448,12 +448,15 @@ references:
   isSpec: "True"
   fullName: Solti.Utils.DI.Internals.AbstractServiceEntry.GetHashCode
   nameWithType: AbstractServiceEntry.GetHashCode
-- uid: Solti.Utils.DI.Internals.AbstractServiceEntry.GetService(Solti.Utils.DI.IInjector)
-  name: GetService(IInjector)
-  href: Solti.Utils.DI.Internals.AbstractServiceEntry.html#Solti_Utils_DI_Internals_AbstractServiceEntry_GetService_Solti_Utils_DI_IInjector_
-  commentId: M:Solti.Utils.DI.Internals.AbstractServiceEntry.GetService(Solti.Utils.DI.IInjector)
-  fullName: Solti.Utils.DI.Internals.AbstractServiceEntry.GetService(Solti.Utils.DI.IInjector)
-  nameWithType: AbstractServiceEntry.GetService(IInjector)
+- uid: Solti.Utils.DI.Internals.AbstractServiceEntry.GetService(System.Func{Solti.Utils.DI.IInjector})
+  name: GetService(Func<IInjector>)
+  href: Solti.Utils.DI.Internals.AbstractServiceEntry.html#Solti_Utils_DI_Internals_AbstractServiceEntry_GetService_System_Func_Solti_Utils_DI_IInjector__
+  commentId: M:Solti.Utils.DI.Internals.AbstractServiceEntry.GetService(System.Func{Solti.Utils.DI.IInjector})
+  name.vb: GetService(Func(Of IInjector))
+  fullName: Solti.Utils.DI.Internals.AbstractServiceEntry.GetService(System.Func<Solti.Utils.DI.IInjector>)
+  fullName.vb: Solti.Utils.DI.Internals.AbstractServiceEntry.GetService(System.Func(Of Solti.Utils.DI.IInjector))
+  nameWithType: AbstractServiceEntry.GetService(Func<IInjector>)
+  nameWithType.vb: AbstractServiceEntry.GetService(Func(Of IInjector))
 - uid: Solti.Utils.DI.Internals.AbstractServiceEntry.GetService*
   name: GetService
   href: Solti.Utils.DI.Internals.AbstractServiceEntry.html#Solti_Utils_DI_Internals_AbstractServiceEntry_GetService_

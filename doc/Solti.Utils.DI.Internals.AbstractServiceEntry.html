@@ -494,13 +494,13 @@
   <h5 class="overrides">Overrides</h5>
   <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a></div>
   <a id="Solti_Utils_DI_Internals_AbstractServiceEntry_GetService_" data-uid="Solti.Utils.DI.Internals.AbstractServiceEntry.GetService*"></a>
-  <h4 id="Solti_Utils_DI_Internals_AbstractServiceEntry_GetService_Solti_Utils_DI_IInjector_" data-uid="Solti.Utils.DI.Internals.AbstractServiceEntry.GetService(Solti.Utils.DI.IInjector)">GetService(IInjector)</h4>
+  <h4 id="Solti_Utils_DI_Internals_AbstractServiceEntry_GetService_System_Func_Solti_Utils_DI_IInjector__" data-uid="Solti.Utils.DI.Internals.AbstractServiceEntry.GetService(System.Func{Solti.Utils.DI.IInjector})">GetService(Func&lt;IInjector&gt;)</h4>
   <div class="markdown level1 summary"><p>Gets the service instance.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public virtual object GetService(IInjector injector)</code></pre>
+    <pre><code class="lang-csharp hljs">public virtual object GetService(Func&lt;IInjector&gt; injectorFactory)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -513,9 +513,9 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Solti.Utils.DI.IInjector.html">IInjector</a></td>
-        <td><span class="parametername">injector</span></td>
-        <td><p>The containing <a class="xref" href="Solti.Utils.DI.IInjector.html">IInjector</a>.</p>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.func-1">Func</a>&lt;<a class="xref" href="Solti.Utils.DI.IInjector.html">IInjector</a>&gt;</td>
+        <td><span class="parametername">injectorFactory</span></td>
+        <td><p>Creates an injector instance from the <a class="xref" href="Solti.Utils.DI.Internals.AbstractServiceEntry.html#Solti_Utils_DI_Internals_AbstractServiceEntry_Owner">Owner</a> container.</p>
 </td>
       </tr>
     </tbody>
