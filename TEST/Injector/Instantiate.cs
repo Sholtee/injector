@@ -36,11 +36,11 @@ namespace Solti.Utils.DI.Injector.Tests
         [Test]
         public void Injector_Instantiate_ShouldAcceptExplicitArguments()
         {
-            var dep = new Implementation_1();
+            var dep = new Implementation_1_No_Dep();
 
             using (IInjector injector = Container.CreateInjector())
             {
-                Implementation_2 obj = injector.Instantiate<Implementation_2>(new Dictionary<string, object>
+                Implementation_2_IInterface_1_Dependant obj = injector.Instantiate<Implementation_2_IInterface_1_Dependant>(new Dictionary<string, object>
                 {
                     {"interface1", dep}
                 });
@@ -52,12 +52,12 @@ namespace Solti.Utils.DI.Injector.Tests
         [Test]
         public void Injector_Instantiate_ShouldResolveDependencies()
         {
-            Container.Service<IInterface_1, Implementation_1>();
+            Container.Service<IInterface_1, Implementation_1_No_Dep>();
 
             using (IInjector injector = Container.CreateInjector())
             {
-                Implementation_2 obj = injector.Instantiate<Implementation_2>();
-                Assert.That(obj.Interface1, Is.InstanceOf<Implementation_1>());
+                Implementation_2_IInterface_1_Dependant obj = injector.Instantiate<Implementation_2_IInterface_1_Dependant>();
+                Assert.That(obj.Interface1, Is.InstanceOf<Implementation_1_No_Dep>());
             }
         }
 
@@ -66,19 +66,19 @@ namespace Solti.Utils.DI.Injector.Tests
         {
             using (IInjector injector = Container.CreateInjector())
             {
-                Assert.Throws<ArgumentException>(() => injector.Instantiate(typeof(Implementation_3<>)), Resources.CANT_INSTANTIATE_GENERICS);
+                Assert.Throws<ArgumentException>(() => injector.Instantiate(typeof(Implementation_3_IInterface_1_Dependant<>)), Resources.CANT_INSTANTIATE_GENERICS);
             }           
         }
 
         [Test]
         public void Injector_Instantiate_ShouldWorkWithClosedGenericTypes()
         {
-            Container.Service<IInterface_1, Implementation_1>();
+            Container.Service<IInterface_1, Implementation_1_No_Dep>();
 
             using (IInjector injector = Container.CreateInjector())
             {
-                Implementation_3<string> obj = injector.Instantiate<Implementation_3<string>>();
-                Assert.That(obj.Interface1, Is.InstanceOf<Implementation_1>());
+                Implementation_3_IInterface_1_Dependant<string> obj = injector.Instantiate<Implementation_3_IInterface_1_Dependant<string>>();
+                Assert.That(obj.Interface1, Is.InstanceOf<Implementation_1_No_Dep>());
             }
         }
 
@@ -87,7 +87,7 @@ namespace Solti.Utils.DI.Injector.Tests
         {
             using (IInjector injector = Container.CreateInjector())
             {
-                Assert.DoesNotThrow(() => injector.Instantiate<Implementation_8_multictor>());
+                Assert.DoesNotThrow(() => injector.Instantiate<Implementation_8_MultiCtor>());
             }          
         }
     }

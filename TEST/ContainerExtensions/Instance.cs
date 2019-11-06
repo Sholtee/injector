@@ -17,7 +17,7 @@ namespace Solti.Utils.DI.Container.Tests
         [Test]
         public void Container_Instance_ShouldNotBeAServiceOrFactory()
         {
-            Container.Instance<IInterface_1>(new Implementation_1());
+            Container.Instance<IInterface_1>(new Implementation_1_No_Dep());
 
             AbstractServiceEntry entry = Container.Get<IInterface_1>(QueryMode.ThrowOnError);
 
@@ -30,7 +30,7 @@ namespace Solti.Utils.DI.Container.Tests
         [Test]
         public void Container_Instance_ShouldNotChange()
         {
-            IInterface_1 instance = new Implementation_1();
+            IInterface_1 instance = new Implementation_1_No_Dep();
 
             Container.Instance(instance);
 
@@ -53,9 +53,9 @@ namespace Solti.Utils.DI.Container.Tests
         [Test]
         public void Container_Instance_ShouldThrowOnMultipleRegistration()
         {
-            Container.Instance<IInterface_1>(new Implementation_1());
+            Container.Instance<IInterface_1>(new Implementation_1_No_Dep());
 
-            Assert.Throws<ServiceAlreadyRegisteredException>(() => Container.Instance<IInterface_1>(new Implementation_1()));
+            Assert.Throws<ServiceAlreadyRegisteredException>(() => Container.Instance<IInterface_1>(new Implementation_1_No_Dep()));
         }
 
         [Test]

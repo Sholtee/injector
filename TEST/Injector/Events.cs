@@ -17,7 +17,7 @@ namespace Solti.Utils.DI.Injector.Tests
             Container.Factory<IInterface_1>(injector =>
             {
                 serviceCreated = true;
-                return new Implementation_1();
+                return new Implementation_1_No_Dep();
             });
 
             using (IInjector injector = Container.CreateInjector())
@@ -46,7 +46,7 @@ namespace Solti.Utils.DI.Injector.Tests
             Container.Factory<IInterface_1>(injector =>
             {
                 serviceCreated = true;
-                return new Implementation_1();
+                return new Implementation_1_No_Dep();
             });
 
             using (IInjector injector = Container.CreateInjector())
@@ -59,7 +59,7 @@ namespace Solti.Utils.DI.Injector.Tests
 
                     Assert.That(serviceCreated, Is.True);
                     Assert.That(arg.Interface, Is.SameAs(typeof(IInterface_1)));
-                    Assert.That(arg.Service, Is.InstanceOf<Implementation_1>());
+                    Assert.That(arg.Service, Is.InstanceOf<Implementation_1_No_Dep>());
                 };
 
                 injector.Get<IInterface_1>();
@@ -72,11 +72,11 @@ namespace Solti.Utils.DI.Injector.Tests
         [TestCase(Lifetime.Singleton)]
         public void Injector_OnServiceRequest_CanChangeTheReturnedService(Lifetime lifetime)
         {
-            Container.Service<IInterface_1, Implementation_1>(lifetime);
+            Container.Service<IInterface_1, Implementation_1_No_Dep>(lifetime);
 
             using (IInjector injector = Container.CreateInjector())
             {
-                var myImplementation = new Implementation_1();
+                var myImplementation = new Implementation_1_No_Dep();
 
                 bool eventFired = false;
 
@@ -102,11 +102,11 @@ namespace Solti.Utils.DI.Injector.Tests
         [TestCase(Lifetime.Singleton)]
         public void Injector_OnServiceRequested_CanChangeTheReturnedService(Lifetime lifetime)
         {
-            Container.Service<IInterface_1, Implementation_1>(lifetime);
+            Container.Service<IInterface_1, Implementation_1_No_Dep>(lifetime);
 
             using (IInjector injector = Container.CreateInjector())
             {
-                var myImplementation = new Implementation_1();
+                var myImplementation = new Implementation_1_No_Dep();
 
                 bool eventFired = false;
 
@@ -115,7 +115,7 @@ namespace Solti.Utils.DI.Injector.Tests
                     eventFired = true;
 
                     Assert.AreSame(injector, sender);
-                    Assert.That(arg.Service, Is.InstanceOf<Implementation_1>());
+                    Assert.That(arg.Service, Is.InstanceOf<Implementation_1_No_Dep>());
                     Assert.That(arg.Interface, Is.SameAs(typeof(IInterface_1)));
 
                     arg.Service = myImplementation;
