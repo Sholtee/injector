@@ -37,3 +37,4 @@
   - *added:* Named service support
   - *fixed:* Generic service entry having factory could not be specialized
   - *fixed:* `Composite` child could not be disposed in certain cases
+  - *fixed:* Singleton service related dependency resolution issue
