@@ -32,7 +32,7 @@
   - *removed:* Some TODOs
   - *fixed:* Possible missing reference error during proxy generation
   - *done:* `IInjector.Instantiate()` is an extension from now
-- 1.0.0-preview4 (unreleased):
+- 1.0.0-preview4:
   - *rewritten:* Build system
   - *added:* Named service support
   - *fixed:* Generic service entry having factory could not be specialized
