@@ -130,20 +130,27 @@ namespace Solti.Utils.DI.Injector.Tests
         [Test]
         public void Lifetime_SingletonService_MayHaveScopedDependency()
         {
-            Container
-                .Service<IDisposable, Disposable>(Lifetime.Scoped)
-                .Service<IInterface_7<IDisposable>, Implementation_7_TInterface_Dependant<IDisposable>>(Lifetime.Singleton);
+            Disposable instance;
 
-            using (IInjector injector = Container.CreateInjector()) 
+            using (IServiceContainer child = Container.CreateChild())
             {
-                injector.Get<IInterface_7<IDisposable>>();
+                child
+                    .Service<IDisposable, Disposable>(Lifetime.Scoped)
+                    .Service<IInterface_7<IDisposable>, Implementation_7_TInterface_Dependant<IDisposable>>(Lifetime.Singleton);
+
+                using (IInjector injector = child.CreateInjector())
+                {
+                    injector.Get<IInterface_7<IDisposable>>();
+                }
+
+                using (IInjector injector = child.CreateInjector())
+                {
+                    instance = (Disposable) injector.Get<IInterface_7<IDisposable>>().Interface;
+                    Assert.That(instance.Disposed, Is.False);
+                }
             }
 
-            using (IInjector injector = Container.CreateInjector())
-            {
-                var instance = injector.Get<IInterface_7<IDisposable>>();
-                Assert.DoesNotThrow(instance.Interface.Dispose);
-            }
+            Assert.That(instance.Disposed);
         }
 
         [TestCase(Lifetime.Transient)]
