@@ -25,7 +25,13 @@ function Push-Test-Results() {
 }
 
 function Push-Artifact([Parameter(Position = 0)][string]$pattern) {
-  Get-ChildItem -path (Path-Combine $PROJECT.artifacts, $pattern) | foreach {
+  $pattern=Path-Combine $PROJECT.artifacts, $pattern
+
+  if (!(Directory-Path $pattern | Test-Path)) {
+    return
+  }
+  
+  Get-ChildItem -path $pattern | foreach {
     Push-AppveyorArtifact $_.FullName
   }
 }
