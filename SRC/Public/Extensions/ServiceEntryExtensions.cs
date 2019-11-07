@@ -15,22 +15,22 @@ namespace Solti.Utils.DI
     public static class ServiceEntryExtensions
     {
         /// <summary>
-        /// The service was registered via <see cref="IServiceContainerExtensions.Service"/> or <see cref="IServiceContainerExtensions.Lazy"/> call.
+        /// The service was registered via <see cref="IServiceContainerExtensions.Service(IServiceContainer, Type, string, Type, Lifetime)"/> or <see cref="IServiceContainerExtensions.Lazy(IServiceContainer, Type, string, ITypeResolver, Lifetime)"/> call.
         /// </summary>
         public static bool IsService(this AbstractServiceEntry self) => self.IsLazy() /*nem triggereli a resolvert*/ || self.Implementation != null;
 
         /// <summary>
-        /// The service was registered via <see cref="IServiceContainerExtensions.Lazy"/> call.
+        /// The service was registered via <see cref="IServiceContainerExtensions.Lazy(IServiceContainer, Type, string, ITypeResolver, Lifetime)"/> call.
         /// </summary>
         public static bool IsLazy(this AbstractServiceEntry self) => (self as ProducibleServiceEntry)?.UnderlyingImplementation as Lazy<Type> != null;
 
         /// <summary>
-        /// The service was registered via <see cref="IServiceContainerExtensions.Factory"/> call.
+        /// The service was registered via <see cref="IServiceContainerExtensions.Factory(IServiceContainer, Type, string, Func{IInjector, Type, object}, Lifetime)"/> call.
         /// </summary>
         public static bool IsFactory(this AbstractServiceEntry self) => !self.IsService() && self.Factory != null;
 
         /// <summary>
-        /// The service was registered via <see cref="IServiceContainerExtensions.Instance"/> call.
+        /// The service was registered via <see cref="IServiceContainerExtensions.Instance(IServiceContainer, Type, string, object, bool)"/> call.
         /// </summary>
         public static bool IsInstance(this AbstractServiceEntry self) => self is InstanceServiceEntry;
     }
