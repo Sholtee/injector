@@ -8,6 +8,6 @@ function Deploy() {
     Write-Host Deploying...
 	
     $nupkgPath=Pack
-    Exec "nuget.exe" -commandArgs "push `"$nupkgPath`" -s https://api.nuget.org/v3/index.json -k $($Env:NUGET_REPO_TOKEN)"
+    Exec "dotnet.exe" -commandArgs "nuget push `"$nupkgPath`" -s https://api.nuget.org/v3/index.json -k $($Env:NUGET_REPO_TOKEN)"
   }
 }
