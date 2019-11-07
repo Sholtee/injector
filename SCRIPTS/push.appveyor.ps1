@@ -24,9 +24,8 @@ function Push-Test-Results() {
   }
 }
 
-function Push-Artifact([Parameter(Position = 0)][string]$file) {
-  $file=Path-Combine $PROJECT.artifacts, $file
-  if (Test-Path $file) {
-    Push-AppveyorArtifact $file
+function Push-Artifact([Parameter(Position = 0)][string]$pattern) {
+  Get-ChildItem -path (Path-Combine ($PROJECT.artifacts | Resolve-Path), $pattern) | foreach {
+    Push-AppveyorArtifac $_.FullName
   }
 }

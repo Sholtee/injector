@@ -42,8 +42,8 @@ after_test:
 # after build failure or success
 on_finish:
   - ps: |
-      Push-Artifact "log.txt"
-      Push-Artifact "errors.txt"    
+      Push-Artifact "*.txt"
+      Push-Artifact "BenchmarkDotNet.Artifacts\BenchmarkRun-*.log"    
 
 # override settings for `master` branch
 for:
