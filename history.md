@@ -35,6 +35,7 @@
 - 1.0.0-preview4:
   - *rewritten:* Build system
   - *added:* Named service support
+  - *added:* `CircularReferenceException` (previously on CR an `InvalidOperationException` was thrown) 
   - *fixed:* Generic service entry having factory could not be specialized
   - *fixed:* `Composite` child could not be disposed in certain cases
   - *fixed:* Singleton service related dependency resolution issue
