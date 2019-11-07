@@ -78,7 +78,8 @@ namespace Solti.Utils.DI.Internals
 
                 //
                 // Lekerdezeshez mindig a deklaralo szervizkollekciobol csinalunk injector-t.
-                //   - Igy a fuggosegek is a deklaralo kollekciobol lesznek feloldva.
+                //   - Igy a fuggosegek is a deklaralo kollekciobol lesznek feloldva (mellekhataskent Singleton szerviz peldaul
+                //     hivatkozhat abstract fuggosegre, de az rossz konfiguracio).
                 //   - Ujonan letrehozott injector eseten annak felszabaditasa a deklaralo kollekcio felszabaditasokor tortenik 
                 //     (mivel annak a gyermeke lesz).
                 //
