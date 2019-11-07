@@ -17,6 +17,10 @@ namespace Solti.Utils.DI
     /// </summary>
     public sealed class CircularReferenceException: Exception
     {
+        /// <summary>
+        /// Creates a new <see cref="CircularReferenceException"/> instance.
+        /// </summary>
+        /// <param name="path">The current path on which the circular reference was found.</param>
         public CircularReferenceException(IEnumerable<(Type Interface, string Name)> path) : base(string.Format(
             Resources.CIRCULAR_REFERENCE,
             string.Join(" -> ", path.Select(cp => cp.FriendlyName())))) {}
