@@ -65,7 +65,7 @@ namespace Solti.Utils.DI
                 }
                 catch (ArgumentException e)
                 {
-                    throw new ServiceAlreadyRegisteredException(entry.Interface, e);
+                    throw new ServiceAlreadyRegisteredException(key, e);
                 }
             }
 
@@ -111,7 +111,7 @@ namespace Solti.Utils.DI
                 //
 
                 if (!hasGenericEntry)
-                    return !mode.HasFlag(QueryMode.ThrowOnError) ? (AbstractServiceEntry) null : throw new ServiceNotFoundException(serviceInterface);
+                    return !mode.HasFlag(QueryMode.ThrowOnError) ? (AbstractServiceEntry) null : throw new ServiceNotFoundException((serviceInterface, name));
             }
 
             Debug.Assert(result.IsGeneric());

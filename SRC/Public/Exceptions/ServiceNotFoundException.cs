@@ -7,6 +7,7 @@ using System;
 
 namespace Solti.Utils.DI
 {
+    using Internals;
     using Properties;
 
     /// <summary>
@@ -17,8 +18,8 @@ namespace Solti.Utils.DI
         /// <summary>
         /// Creates a new <see cref="ServiceNotFoundException"/> instance.
         /// </summary>
-        /// <param name="iface">The service that could not be found.</param>
-        public ServiceNotFoundException(Type iface): base(string.Format(Resources.SERVICE_NOT_FOUND, iface))
+        /// <param name="key">The "id" of the service that could not be found.</param>
+        public ServiceNotFoundException((Type Interface, string Name) key) : base(string.Format(Resources.SERVICE_NOT_FOUND, key.FriendlyName()))
         {
         }
     }

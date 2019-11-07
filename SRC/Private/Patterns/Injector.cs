@@ -70,16 +70,9 @@ namespace Solti.Utils.DI.Internals
                 //
 
                 if (FCurrentPath.Count(t => t == currentHop) > 1)
-                {
-                    IEnumerable<string> friendlyPath = FCurrentPath.Select(cp => 
-                    {
-                        string result = cp.Interface.FullName;
-                        if (cp.Name != null) result += $":{cp.Name}";
-                        return result;
-                    });
-
-                    throw new InvalidOperationException(string.Format(Resources.CIRCULAR_REFERENCE, string.Join(" -> ", friendlyPath)));
-                }
+                    throw new InvalidOperationException(string.Format(
+                        Resources.CIRCULAR_REFERENCE, 
+                        string.Join(" -> ", FCurrentPath.Select(cp => cp.FriendlyName()))));
 
                 AbstractServiceEntry entry = Get(iface, name, QueryMode.AllowSpecialization | QueryMode.ThrowOnError);
 

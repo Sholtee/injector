@@ -7,6 +7,7 @@ using System;
 
 namespace Solti.Utils.DI
 {
+    using Internals;
     using Properties;
 
     /// <summary>
@@ -17,9 +18,9 @@ namespace Solti.Utils.DI
         /// <summary>
         /// Creates a new <see cref="ServiceAlreadyRegisteredException"/> instance.
         /// </summary>
-        /// <param name="iface">The "id" of the service.</param>
+        /// <param name="key">The "id" of the service.</param>
         /// <param name="innerException">The inner exception (if it is present).</param>
-        public ServiceAlreadyRegisteredException(Type iface, Exception innerException = null): base(string.Format(Resources.ALREADY_REGISTERED, iface), innerException)
+        public ServiceAlreadyRegisteredException((Type Interface, string Name) key, Exception innerException = null): base(string.Format(Resources.ALREADY_REGISTERED, key.FriendlyName()), innerException)
         {
         }
     }
