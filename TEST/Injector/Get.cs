@@ -122,8 +122,8 @@ namespace Solti.Utils.DI.Injector.Tests
 
             using (IInjector injector = Container.CreateInjector())
             {     
-                Assert.Throws<InvalidOperationException>(() => injector.Get<IInterface_4>(), string.Join(" -> ", typeof(IInterface_4), typeof(IInterface_5), typeof(IInterface_4)));
-                Assert.Throws<InvalidOperationException>(() => injector.Get<IInterface_5>(), string.Join(" -> ", typeof(IInterface_5), typeof(IInterface_4), typeof(IInterface_5)));
+                Assert.Throws<CircularReferenceException>(() => injector.Get<IInterface_4>(), string.Join(" -> ", typeof(IInterface_4), typeof(IInterface_5), typeof(IInterface_4)));
+                Assert.Throws<CircularReferenceException>(() => injector.Get<IInterface_5>(), string.Join(" -> ", typeof(IInterface_5), typeof(IInterface_4), typeof(IInterface_5)));
             }
         }
 
@@ -136,8 +136,8 @@ namespace Solti.Utils.DI.Injector.Tests
 
             using (IInjector injector = Container.CreateInjector())
             {
-                Assert.Throws<InvalidOperationException>(() => injector.Get<IInterface_4>(), string.Join(" -> ", typeof(IInterface_4), typeof(IInterface_5), typeof(IInterface_4)));
-                Assert.Throws<InvalidOperationException>(() => injector.Get<IInterface_5>(), string.Join(" -> ", typeof(IInterface_5), typeof(IInterface_4), typeof(IInterface_5)));
+                Assert.Throws<CircularReferenceException>(() => injector.Get<IInterface_4>(), string.Join(" -> ", typeof(IInterface_4), typeof(IInterface_5), typeof(IInterface_4)));
+                Assert.Throws<CircularReferenceException>(() => injector.Get<IInterface_5>(), string.Join(" -> ", typeof(IInterface_5), typeof(IInterface_4), typeof(IInterface_5)));
             }
         }
 
@@ -151,7 +151,7 @@ namespace Solti.Utils.DI.Injector.Tests
 
             using (IInjector injector = Container.CreateInjector())
             {
-                Assert.Throws<InvalidOperationException>(() => injector.Get<IInterface_1>(), string.Join(" -> ", typeof(IInterface_1), typeof(IInterface_4), typeof(IInterface_5), typeof(IInterface_4)));
+                Assert.Throws<CircularReferenceException>(() => injector.Get<IInterface_1>(), string.Join(" -> ", typeof(IInterface_1), typeof(IInterface_4), typeof(IInterface_5), typeof(IInterface_4)));
             }
         }
 
@@ -164,7 +164,7 @@ namespace Solti.Utils.DI.Injector.Tests
 
             using (IInjector injector = Container.CreateInjector())
             {
-                Assert.Throws<InvalidOperationException>(() => injector.Get<IInterface_1>(), string.Join(" -> ", typeof(IInterface_1), typeof(IInterface_1)));
+                Assert.Throws<CircularReferenceException>(() => injector.Get<IInterface_1>(), string.Join(" -> ", typeof(IInterface_1), typeof(IInterface_1)));
             }
         }
 

@@ -70,9 +70,7 @@ namespace Solti.Utils.DI.Internals
                 //
 
                 if (FCurrentPath.Count(t => t == currentHop) > 1)
-                    throw new InvalidOperationException(string.Format(
-                        Resources.CIRCULAR_REFERENCE, 
-                        string.Join(" -> ", FCurrentPath.Select(cp => cp.FriendlyName()))));
+                    throw new CircularReferenceException(FCurrentPath);
 
                 AbstractServiceEntry entry = Get(iface, name, QueryMode.AllowSpecialization | QueryMode.ThrowOnError);
 
