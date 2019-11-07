@@ -82,7 +82,7 @@ namespace Solti.Utils.DI.Internals
                 //     (mivel annak a gyermeke lesz).
                 //
 
-                object instance = entry.GetService(() => entry.Owner == this ? this : new Injector(entry.Owner));
+                object instance = entry.GetService(() => entry.Owner == this ? this : new Injector(entry.Owner), default);
 
                 //
                 // Peldany tipusat ellenorizzuk mert a Factory(), Lazy() stb visszaadhat vicces dolgokat.

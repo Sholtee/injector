@@ -24,7 +24,7 @@ namespace Solti.Utils.DI.Internals.Tests
             public IServiceFactory Dep2 { get; }
             public int Int { get; }
 
-            public MyClass(IDisposable dep1, [QueryOptions(Name = "cica")] IServiceFactory dep2)
+            public MyClass(IDisposable dep1, [Options(Name = "cica")] IServiceFactory dep2)
             {
                 Dep1 = dep1;
                 Dep2 = dep2;
@@ -37,7 +37,7 @@ namespace Solti.Utils.DI.Internals.Tests
                 Int  = @int;
             }
 
-            public MyClass([QueryOptions(Name = "cica")] Lazy<IDisposable> dep1, Lazy<IServiceFactory> dep2)
+            public MyClass([Options(Name = "cica")] Lazy<IDisposable> dep1, Lazy<IServiceFactory> dep2)
             {
                 Dep1 = dep1.Value;
                 Dep2 = dep2.Value;

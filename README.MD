@@ -135,7 +135,7 @@ Remarks:
   ```csharp
   class MyOtherService: IMyOtherService
   {
-    public MyOtherService([QueryOptions(Name = "svc2")]IMyService dep) {...}
+    public MyOtherService([Options(Name = "svc2")]IMyService dep) {...}
 	...
   }  
   ```

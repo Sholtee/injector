@@ -36,7 +36,7 @@ namespace Solti.Utils.DI.Internals
 
         public override object Value => FValue;
 
-        public override object GetService(Func<IInjector> injectorFactory)
+        public override object GetService(Func<IInjector> injectorFactory, FactoryOptions options)
         {
             CheckDisposed();
 
