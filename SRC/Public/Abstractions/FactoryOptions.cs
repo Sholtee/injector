@@ -8,7 +8,7 @@ using System;
 namespace Solti.Utils.DI
 {
     /// <summary>
-    /// Controls the factory during the service creation.
+    /// Specifies flags that control the <see cref="IInjector.Get"/> method.
     /// </summary>
     [Flags]
     public enum FactoryOptions
