@@ -39,3 +39,5 @@
   - *fixed:* Generic service entry having factory could not be specialized
   - *fixed:* `Composite` child could not be disposed in certain cases
   - *fixed:* Singleton service related dependency resolution issue
+1.0.0-preview5 (unreleased)
+  - *added:* `Transient` services are freed on injector disposal (if they have not been disposed programmatically)
