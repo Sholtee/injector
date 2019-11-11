@@ -22,9 +22,9 @@ namespace Solti.Utils.DI.Internals
     // https://docs.microsoft.com/en-us/dotnet/api/system.collections.concurrent.concurrentdictionary-2.getoradd?view=netcore-2.2
     //
 
-    internal static class GeneratedProxy<TInterface, TInterceptor> where TInterface : class where TInterceptor: InterfaceInterceptor<TInterface>
+    internal sealed class GeneratedProxy<TInterface, TInterceptor> : ITypeGenerator where TInterface : class where TInterceptor: InterfaceInterceptor<TInterface>
     {
-        public static Type Type
+        public Type Type
         {
             get
             {

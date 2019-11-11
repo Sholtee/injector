@@ -14,7 +14,7 @@ namespace Solti.Utils.DI.Internals
     using static ProxyGeneratorBase;
     using static Compile;
 
-    internal class GeneratedDisposable<TInterface>: ITypeGenerator where TInterface: class
+    internal sealed class GeneratedDisposable<TInterface>: ITypeGenerator where TInterface: class
     {
         public Type Type
         {

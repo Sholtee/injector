@@ -18,7 +18,7 @@ namespace Solti.Utils.DI.Proxy
     /// Provides the mechanism for intercepting interface method calls.
     /// </summary>
     /// <typeparam name="TInterface">The interface to be intercepted.</typeparam>
-    public abstract class InterfaceInterceptor<TInterface> where TInterface: class
+    public abstract class InterfaceInterceptor<TInterface>: IHasTarget<TInterface> where TInterface: class
     {
         /// <summary>
         /// Signals that the original method should be called.

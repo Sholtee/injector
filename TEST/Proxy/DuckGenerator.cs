@@ -141,7 +141,7 @@ namespace Solti.Utils.DI.Proxy.Tests
         {
             var target = new GoodFoo<int>();
 
-            IFoo<int> proxy = (IFoo<int>) GeneratedDuck<IFoo<int>, GoodFoo<int>>.Type.CreateInstance(new[] { typeof(GoodFoo<int>) }, target);
+            IFoo<int> proxy = (IFoo<int>) new GeneratedDuck<IFoo<int>, GoodFoo<int>>().Type.CreateInstance(new[] { typeof(GoodFoo<int>) }, target);
 
             proxy.Prop = 1;
             Assert.That(target.Prop, Is.EqualTo(1));

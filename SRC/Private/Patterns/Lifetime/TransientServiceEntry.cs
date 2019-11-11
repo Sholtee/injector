@@ -41,17 +41,11 @@ namespace Solti.Utils.DI.Internals
 
             if (result is IDisposable)
             {
+                IDisposableEx disposable = DisposableWrapper.Create(Interface, (IDisposable) result);
+                result = disposable;
+
                 if (FServicesToDispose == null) FServicesToDispose = new List<IDisposableEx>(1);
-
-                Type wrapper = Cache<Type, Type>.GetOrAdd(Interface, () =>
-                {
-                    var gen = (ITypeGenerator) typeof(GeneratedDisposable<>).MakeGenericType(Interface).CreateInstance(Array.Empty<Type>());
-                    return gen.Type;
-                });
-
-                result = wrapper.CreateInstance(new[] { Interface }, result);
-
-                FServicesToDispose.Add((IDisposableEx) result);
+                FServicesToDispose.Add(disposable);       
             }
 
             return result;
@@ -75,7 +69,7 @@ namespace Solti.Utils.DI.Internals
                         svc.Dispose();
                     }
                 });
-                FServicesToDispose = null;
+                FServicesToDispose.Clear();
             }
 
             base.Dispose(disposeManaged);

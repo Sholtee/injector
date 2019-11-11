@@ -14,9 +14,9 @@ namespace Solti.Utils.DI.Internals
     using static ProxyGeneratorBase;
     using static Compile;
 
-    internal static class GeneratedDuck<TInterface, TTarget> where TInterface: class
+    internal sealed class GeneratedDuck<TInterface, TTarget>: ITypeGenerator where TInterface: class
     {
-        public static Type Type
+        public Type Type
         {
             get
             {
