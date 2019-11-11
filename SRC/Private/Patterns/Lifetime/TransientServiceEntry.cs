@@ -4,7 +4,6 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
-using System.Diagnostics;
 using System.Collections.Generic;
 
 namespace Solti.Utils.DI.Internals
@@ -14,7 +13,7 @@ namespace Solti.Utils.DI.Internals
     /// </summary>
     internal class TransientServiceEntry : ProducibleServiceEntry
     {
-        private List<IDisposable> FServicesToDispose;
+        private List<IDisposableEx> FServicesToDispose;
 
         private TransientServiceEntry(TransientServiceEntry entry, IServiceContainer owner) : base(entry, owner)
         {
@@ -34,20 +33,25 @@ namespace Solti.Utils.DI.Internals
 
         public override object Value => null;
 
-        public override object GetService(Func<IInjector> injectorFactory, FactoryOptions options)
+        public override object GetService(Func<IInjector> injectorFactory)
         {
             CheckProducible();
 
             object result = Factory(injectorFactory(), Interface);
-            
-            if (options.HasFlag(FactoryOptions.ForceAutoDispose)) 
+
+            if (result is IDisposable)
             {
-                IDisposable disposable = result as IDisposable;
-                if (result != null)
+                if (FServicesToDispose == null) FServicesToDispose = new List<IDisposableEx>(1);
+
+                Type wrapper = Cache<Type, Type>.GetOrAdd(Interface, () =>
                 {
-                    if (FServicesToDispose == null) FServicesToDispose = new List<IDisposable>(1);
-                    FServicesToDispose.Add(disposable);
-                }
+                    var gen = (ITypeGenerator) typeof(GeneratedDisposable<>).MakeGenericType(Interface).CreateInstance(Array.Empty<Type>());
+                    return gen.Type;
+                });
+
+                result = wrapper.CreateInstance(new[] { Interface }, result);
+
+                FServicesToDispose.Add((IDisposableEx) result);
             }
 
             return result;
@@ -64,7 +68,13 @@ namespace Solti.Utils.DI.Internals
         {
             if (FServicesToDispose != null) 
             {
-                FServicesToDispose.ForEach(svc => svc.Dispose());
+                FServicesToDispose.ForEach(svc => 
+                {
+                    if (!svc.Disposed) 
+                    {
+                        svc.Dispose();
+                    }
+                });
                 FServicesToDispose = null;
             }
 

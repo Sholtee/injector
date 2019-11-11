@@ -17,10 +17,5 @@ namespace Solti.Utils.DI.Annotations
         /// The name of the service.
         /// </summary>
         public string Name { get; set; }
-
-        /// <summary>
-        /// The factory options.
-        /// </summary>
-        public FactoryOptions FactoryOptions { get; set; }
     }
 }
