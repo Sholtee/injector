@@ -138,7 +138,7 @@ namespace Solti.Utils.DI.Internals
             Debug.Assert(src.IsInterface());
 
             //
-            // Az BindingFlags.FlattenHierarchy interface-ekre nem mukodik ezert gyorsitotarazzuk az osszes tagot.
+            // Az BindingFlags.FlattenHierarchy interface-ekre nem mukodik.
             //
 
             return factory(src, BindingFlags.Public | BindingFlags.Instance)
