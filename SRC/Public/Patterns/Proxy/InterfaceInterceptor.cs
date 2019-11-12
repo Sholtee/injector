@@ -54,13 +54,13 @@ namespace Solti.Utils.DI.Proxy
         /// <summary>
         /// All the <typeparamref name="TInterface"/> properties.
         /// </summary>
-        public static readonly IReadOnlyDictionary<string, PropertyInfo> Properties = typeof(TInterface).ListInterfaceMembers(System.Reflection.TypeExtensions.GetProperties)
+        public static readonly IReadOnlyDictionary<string, PropertyInfo> Properties = typeof(TInterface).ListMembers(System.Reflection.TypeExtensions.GetProperties)
             .ToDictionary(prop => prop.Name);
 
         /// <summary>
         /// All the <typeparamref name="TInterface"/> events.
         /// </summary>
-        public static readonly IReadOnlyDictionary<string, EventInfo> Events = typeof(TInterface).ListInterfaceMembers(System.Reflection.TypeExtensions.GetEvents)
+        public static readonly IReadOnlyDictionary<string, EventInfo> Events = typeof(TInterface).ListMembers(System.Reflection.TypeExtensions.GetEvents)
             .ToDictionary(ev => ev.Name);
 
         /// <summary>

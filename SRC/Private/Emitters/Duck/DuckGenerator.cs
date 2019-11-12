@@ -235,7 +235,7 @@ namespace Solti.Utils.DI.Internals
             members.AddRange
             (
                 interfaceType
-                    .ListInterfaceMembers(System.Reflection.TypeExtensions.GetMethods)
+                    .ListMembers(System.Reflection.TypeExtensions.GetMethods)
                     .Where(m => !m.IsSpecialName)
                     .Select(m => AggregateException(m, GenerateDuckMethod, exceptions))
             );  
@@ -243,14 +243,14 @@ namespace Solti.Utils.DI.Internals
             members.AddRange
             (
                 interfaceType
-                    .ListInterfaceMembers(System.Reflection.TypeExtensions.GetProperties)
+                    .ListMembers(System.Reflection.TypeExtensions.GetProperties)
                     .Select(p => AggregateException(p, GenerateDuckProperty, exceptions))
             );
 
             members.AddRange
             (
                 interfaceType
-                    .ListInterfaceMembers(System.Reflection.TypeExtensions.GetEvents)
+                    .ListMembers(System.Reflection.TypeExtensions.GetEvents)
                     .Select(e => AggregateException(e, GenerateDuckEvent, exceptions))
             );
 

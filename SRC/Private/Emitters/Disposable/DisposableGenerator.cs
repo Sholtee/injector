@@ -64,7 +64,7 @@ namespace Solti.Utils.DI.Internals
             members.AddRange
             (
                 interfaceType
-                    .ListInterfaceMembers(System.Reflection.TypeExtensions.GetMethods)
+                    .ListMembers(System.Reflection.TypeExtensions.GetMethods)
                     .Where(m => !m.IsSpecialName && m != dispose)
                     .Select(DuckGenerator<TInterface, TInterface>.GenerateDuckMethod)
             );
@@ -72,14 +72,14 @@ namespace Solti.Utils.DI.Internals
             members.AddRange
             (
                 interfaceType
-                    .ListInterfaceMembers(System.Reflection.TypeExtensions.GetProperties)
+                    .ListMembers(System.Reflection.TypeExtensions.GetProperties)
                     .Select(DuckGenerator<TInterface, TInterface>.GenerateDuckProperty)
             );
 
             members.AddRange
             (
                 interfaceType
-                    .ListInterfaceMembers(System.Reflection.TypeExtensions.GetEvents)
+                    .ListMembers(System.Reflection.TypeExtensions.GetEvents)
                     .Select(DuckGenerator<TInterface, TInterface>.GenerateDuckEvent)
             );
 
