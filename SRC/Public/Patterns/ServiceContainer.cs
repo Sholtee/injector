@@ -225,14 +225,7 @@ namespace Solti.Utils.DI
 
                 foreach (IDisposable disposable in FEntries.Values.Where(entry => entry.Owner == this))
                 {
-                    try
-                    {
-                        disposable.Dispose();
-                    }
-                    catch (Exception e)
-                    {
-                        Debug.WriteLine(e);
-                    }
+                    disposable.Dispose();
                 }
 
                 FEntries.Clear();
