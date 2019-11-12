@@ -27,15 +27,14 @@ namespace Solti.Utils.DI.Internals
             }
         }
 
-        public static string AssemblyName => $"{CreateType<TInterface>()}_Disposable";
+        public string AssemblyName => $"{CreateType<TInterface>()}_Disposable";
 
         #region Private
         private static readonly object FLock = new object();
 
-        // ReSharper disable once StaticMemberInGenericType
         private static Type FType;
 
-        private static Type GenerateType()
+        private Type GenerateType()
         {
             CheckInterface();
 
@@ -51,7 +50,7 @@ namespace Solti.Utils.DI.Internals
             (
                 root: GenerateProxyUnit
                 (
-                    @class: DisposableGenerator<TInterface>.GenerateDuckClass()
+                    @class: DisposableGenerator<TInterface>.GenerateProxyClass()
                 ), 
                 asmName: AssemblyName, 
                 references: references
@@ -59,7 +58,7 @@ namespace Solti.Utils.DI.Internals
             .GetType(GeneratedClassName, throwOnError: true);
         }
 
-        private static void CheckInterface()
+        private void CheckInterface()
         {
             Type type = typeof(TInterface);
 

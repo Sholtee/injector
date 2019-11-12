@@ -22,9 +22,7 @@ namespace Solti.Utils.DI.Internals
 
     internal static class DisposableGenerator<TInterface>
     {
-        private static MethodInfo MethodAccess<T>(Expression<Action<T>> methodAccess) => ((MethodCallExpression) methodAccess.Body).Method;
-
-        public static ClassDeclarationSyntax GenerateDuckClass()
+        public static ClassDeclarationSyntax GenerateProxyClass()
         {
             Type
                 interfaceType = typeof(TInterface),
@@ -61,7 +59,7 @@ namespace Solti.Utils.DI.Internals
             // Az os osztaly megvalositja.
             //
 
-            MethodInfo dispose = MethodAccess<IDisposable>(d => d.Dispose());
+            MethodInfo dispose = ((MethodCallExpression) ((Expression<Action<IDisposable>>) (d => d.Dispose())).Body).Method;
 
             members.AddRange
             (

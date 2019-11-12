@@ -10,5 +10,6 @@ namespace Solti.Utils.DI.Internals
     internal interface ITypeGenerator
     {
         Type Type { get; }
+        string AssemblyName { get; }
     }
 }

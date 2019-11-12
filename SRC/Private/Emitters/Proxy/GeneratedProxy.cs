@@ -35,15 +35,14 @@ namespace Solti.Utils.DI.Internals
             }
         }
 
-        public static string AssemblyName => ProxyGenerator<TInterface, TInterceptor>.AssemblyName;
+        public string AssemblyName => ProxyGenerator<TInterface, TInterceptor>.AssemblyName;
 
         #region Private
         private static readonly object FLock = new object();
 
-        // ReSharper disable once StaticMemberInGenericType
         private static Type FType;
 
-        private static Type GenerateType()
+        private Type GenerateType()
         {
             CheckInterface();
             CheckBase();
@@ -70,7 +69,7 @@ namespace Solti.Utils.DI.Internals
             .GetType(GeneratedClassName, throwOnError: true);
         }
 
-        private static void CheckInterface()
+        private void CheckInterface()
         {
             Type type = typeof(TInterface);
 
@@ -80,7 +79,7 @@ namespace Solti.Utils.DI.Internals
             if (type.ContainsGenericParameters()) throw new NotSupportedException();
         }
 
-        private static void CheckBase()
+        private void CheckBase()
         {
             Type type = typeof(TInterceptor);
 
