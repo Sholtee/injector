@@ -258,16 +258,6 @@ namespace Solti.Utils.DI.Container.Tests
         {
         }
 
-        [Test]
-        public void IServiceContainer_DisposeShouldEatExceptions()
-        {
-            IServiceContainer child = Container
-                .CreateChild()
-                .Instance<IDisposable>(new BadDisposable(), releaseOnDispose: true);
-
-            Assert.DoesNotThrow(() => child.Dispose());
-        }
-
         private sealed class BadDisposable: Disposable
         {
             protected override void Dispose(bool disposeManaged)
