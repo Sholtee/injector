@@ -41,3 +41,4 @@
   - *fixed:* Singleton service related dependency resolution issue
 1.0.0-preview5 (unreleased)
   - *added:* `Transient` services are freed on injector disposal (if they have not been disposed programmatically)
+  - *added:* `ObjectExtensions.Act()` can be called on interfaces 
