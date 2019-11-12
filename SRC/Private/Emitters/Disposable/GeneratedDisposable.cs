@@ -5,68 +5,39 @@
 ********************************************************************************/
 using System;
 using System.Linq;
-using System.Reflection;
 
 namespace Solti.Utils.DI.Internals
 {
     using Properties;
 
-    using static ProxyGeneratorBase;
-    using static Compile;
-
-    internal sealed class GeneratedDisposable<TInterface>: ITypeGenerator where TInterface: class
+    internal sealed class GeneratedDisposable<TInterface>: TypeGenerator<GeneratedDisposable<TInterface>> where TInterface: class
     {
-        public Type Type
-        {
-            get
-            {
-                if (FType == null)
-                    lock (FLock)
-                        if (FType == null) FType = GenerateType();
-                return FType;
-            }
-        }
+        public override string AssemblyName => $"{ProxyGeneratorBase.CreateType<TInterface>()}_Disposable";
 
-        public string AssemblyName => $"{CreateType<TInterface>()}_Disposable";
-
-        #region Private
-        private static readonly object FLock = new object();
-
-        private static Type FType;
-
-        private Type GenerateType()
+        protected override Type GenerateType()
         {
             CheckInterface();
 
-            Assembly[] references = new[]
-            {
-                typeof(DisposableWrapper<>).Assembly()
-            }
-            .Concat(typeof(TInterface).GetReferences())
-            .Distinct()
-            .ToArray();
-
-            return ToAssembly
+            return GenerateType
             (
-                root: GenerateProxyUnit
-                (
-                    @class: DisposableGenerator<TInterface>.GenerateProxyClass()
-                ), 
-                asmName: AssemblyName, 
-                references: references
-            )
-            .GetType(GeneratedClassName, throwOnError: true);
+                @class: DisposableGenerator<TInterface>.GenerateProxyClass(),
+                references: new[]
+                {
+                    typeof(DisposableWrapper<>).Assembly()
+                }
+                .Concat(typeof(TInterface).GetReferences())
+                .Distinct()
+            );
         }
 
         private void CheckInterface()
         {
             Type type = typeof(TInterface);
 
-            CheckVisibility(type, AssemblyName);
+            CheckVisibility(type);
 
             if (!type.IsInterface()) throw new InvalidOperationException(Resources.NOT_AN_INTERFACE);
             if (type.ContainsGenericParameters()) throw new NotSupportedException();
         }
-        #endregion
     }
 }

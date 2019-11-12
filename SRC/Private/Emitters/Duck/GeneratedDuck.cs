@@ -5,66 +5,38 @@
 ********************************************************************************/
 using System;
 using System.Linq;
-using System.Reflection;
 
 namespace Solti.Utils.DI.Internals
 {
     using Properties;
 
-    using static ProxyGeneratorBase;
-    using static Compile;
-
-    internal sealed class GeneratedDuck<TInterface, TTarget>: ITypeGenerator where TInterface: class
+    internal sealed class GeneratedDuck<TInterface, TTarget>: TypeGenerator<GeneratedDuck<TInterface, TTarget>> where TInterface: class
     {
-        public Type Type
-        {
-            get
-            {
-                if (FType == null)
-                    lock (FLock)
-                        if (FType == null) FType = GenerateType();
-                return FType;
-            }
-        }
+        public override string AssemblyName => DuckGenerator<TTarget, TInterface>.AssemblyName;
 
-        public string AssemblyName => DuckGenerator<TTarget, TInterface>.AssemblyName;
-
-        #region Private
-        private static readonly object FLock = new object();
-
-        private static Type FType;
-
-        private Type GenerateType()
+        protected override Type GenerateType()
         {
             CheckInterface();
             CheckTarget();
 
-            Assembly[] references = new[]
-            {
-                typeof(DuckBase<>).Assembly()
-            }
-            .Concat(typeof(TInterface).GetReferences())
-            .Concat(typeof(TTarget).GetReferences())
-            .Distinct()
-            .ToArray();
-
-            return ToAssembly
+            return GenerateType
             (
-                root: GenerateProxyUnit
-                (
-                    @class: DuckGenerator<TTarget, TInterface>.GenerateDuckClass()
-                ), 
-                asmName: AssemblyName, 
-                references: references
-            )
-            .GetType(GeneratedClassName, throwOnError: true);
+                @class: DuckGenerator<TTarget, TInterface>.GenerateDuckClass(),
+                references: new[]
+                {
+                    typeof(DuckBase<>).Assembly()
+                }
+                .Concat(typeof(TInterface).GetReferences())
+                .Concat(typeof(TTarget).GetReferences())
+                .Distinct()
+            );
         }
 
         private void CheckInterface()
         {
             Type type = typeof(TInterface);
 
-            CheckVisibility(type, AssemblyName);
+            CheckVisibility(type);
 
             if (!type.IsInterface()) throw new InvalidOperationException(Resources.NOT_AN_INTERFACE);
             if (type.ContainsGenericParameters()) throw new NotSupportedException();
@@ -76,8 +48,7 @@ namespace Solti.Utils.DI.Internals
             // Konstruktor parameterben atadasra kerul -> lathatonak kell lennie.
             //
 
-            CheckVisibility(typeof(TTarget), AssemblyName);
+            CheckVisibility(typeof(TTarget));
         }
-        #endregion
     }
 }
