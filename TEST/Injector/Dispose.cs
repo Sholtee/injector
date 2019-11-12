@@ -4,14 +4,13 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Collections.Generic;
 
 using Moq;
 using NUnit.Framework;
 
 namespace Solti.Utils.DI.Injector.Tests
 {
-    using Internals;
-
     public partial class InjectorTestsBase<TContainer>
     {
         [Test]
@@ -36,8 +35,8 @@ namespace Solti.Utils.DI.Injector.Tests
             var obj1 = new Mock<IInterface_1_Disaposable>(MockBehavior.Strict);
             obj1.Setup(t => t.Dispose());
 
-            var obj2 = new Mock<IDisposable>(MockBehavior.Strict);
-            obj1.Setup(t => t.Dispose());
+            var obj2 = new Mock<IEnumerator<string>>(MockBehavior.Strict);
+            obj2.Setup(t => t.Dispose());
 
             Container
                 .Factory(i => obj1.Object, Lifetime.Transient)
@@ -52,7 +51,7 @@ namespace Solti.Utils.DI.Injector.Tests
                 disposed = injector.Get<IInterface_1_Disaposable>();
                 disposed.Dispose();
 
-                notDisposed = injector.Get<IDisposable>();
+                notDisposed = injector.Get<IEnumerator<string>>();
             }
 
             obj1.Verify(t => t.Dispose(), Times.Once);
