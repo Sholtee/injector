@@ -4,12 +4,9 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
-using System.Collections.Generic;
 
 namespace Solti.Utils.DI
 {
-    using Annotations;
-
     /// <summary>
     /// Provides the mechanism for injecting resources.
     /// </summary>

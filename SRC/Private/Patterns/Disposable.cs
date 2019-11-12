@@ -8,10 +8,10 @@ using System;
 namespace Solti.Utils.DI.Internals
 {
     /// <summary>
-    /// Implements the <see cref="IDisposable"/> interface.
+    /// Implements the <see cref="IDisposableEx"/> interface.
     /// </summary>
     /// <remarks>This is an internal class so it may change from version to version. Don't use it!</remarks>
-    public class Disposable: IDisposable
+    public class Disposable: IDisposableEx
     {
         /// <summary>
         /// Indicates whether the object was disposed or not.

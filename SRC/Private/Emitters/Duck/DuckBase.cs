@@ -9,7 +9,7 @@ namespace Solti.Utils.DI.Internals
     /// Defines the base class for duck typing.
     /// </summary>
     /// <typeparam name="T">The target type.</typeparam>
-    public abstract class DuckBase<T>
+    public abstract class DuckBase<T>: IHasTarget<T>
     {
         /// <summary>
         /// The target.

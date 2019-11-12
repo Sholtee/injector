@@ -18,7 +18,7 @@ namespace Solti.Utils.DI.Proxy
     /// Provides the mechanism for intercepting interface method calls.
     /// </summary>
     /// <typeparam name="TInterface">The interface to be intercepted.</typeparam>
-    public abstract class InterfaceInterceptor<TInterface> where TInterface: class
+    public abstract class InterfaceInterceptor<TInterface>: IHasTarget<TInterface> where TInterface: class
     {
         /// <summary>
         /// Signals that the original method should be called.
@@ -54,13 +54,13 @@ namespace Solti.Utils.DI.Proxy
         /// <summary>
         /// All the <typeparamref name="TInterface"/> properties.
         /// </summary>
-        public static readonly IReadOnlyDictionary<string, PropertyInfo> Properties = typeof(TInterface).ListInterfaceMembers(System.Reflection.TypeExtensions.GetProperties)
+        public static readonly IReadOnlyDictionary<string, PropertyInfo> Properties = typeof(TInterface).ListMembers(System.Reflection.TypeExtensions.GetProperties)
             .ToDictionary(prop => prop.Name);
 
         /// <summary>
         /// All the <typeparamref name="TInterface"/> events.
         /// </summary>
-        public static readonly IReadOnlyDictionary<string, EventInfo> Events = typeof(TInterface).ListInterfaceMembers(System.Reflection.TypeExtensions.GetEvents)
+        public static readonly IReadOnlyDictionary<string, EventInfo> Events = typeof(TInterface).ListMembers(System.Reflection.TypeExtensions.GetEvents)
             .ToDictionary(ev => ev.Name);
 
         /// <summary>

@@ -24,9 +24,9 @@
 - Every service can be requested multiple times but can be registered only once.
 - Producible services are instantiated only when they are requested.
 - Every producible service has its own lifetime, which can be:
-  * `Singleton`: Instantiated only once (per declaring container) on the first request and released automatically when the declaring container is disposed.
-  * `Scoped`: Instantiated only once (per injector) on the first request and released automatically when the injector is disposed.
-  * `Transient`: Instantiated on every request and the caller is responsible for freeing the requested services.
+  * `Singleton`: Instantiated only once (in declaring container) on the first request and released automatically when the container is disposed. Dependency resolution is also done from the declaring container.
+  * `Scoped`: Instantiated only once (per injector) on the first request and released automatically when the parent injector is disposed.
+  * `Transient`: Instantiated on every request and released automatically when the parent injector is disposed. Note that the caller may also free the requested service (the system can handle it properly). This is a new behavior since version *1.0.0-preview5*, prior it the caller was responsible for releasing the requested services.
 ## Workflow of DI
 1. [Creating the root container](#creating-the-root-container)
 2. [Registering services](#registering-services)
@@ -135,7 +135,7 @@ Remarks:
   ```csharp
   class MyOtherService: IMyOtherService
   {
-    public MyOtherService([QueryOptions(Name = "svc2")]IMyService dep) {...}
+    public MyOtherService([Options(Name = "svc2")]IMyService dep) {...}
 	...
   }  
   ```

@@ -570,7 +570,7 @@ namespace Solti.Utils.DI.Internals
             members.AddRange
             (
                 interfaceType
-                    .ListInterfaceMembers(System.Reflection.TypeExtensions.GetMethods)
+                    .ListMembers(System.Reflection.TypeExtensions.GetMethods)
                     .Where(m => !m.IsSpecialName)
                     .Select(GenerateProxyMethod)
             );
@@ -578,14 +578,14 @@ namespace Solti.Utils.DI.Internals
             members.AddRange
             (
                 interfaceType
-                    .ListInterfaceMembers(System.Reflection.TypeExtensions.GetProperties)
+                    .ListMembers(System.Reflection.TypeExtensions.GetProperties)
                     .SelectMany(GenerateProxyProperty)
             );
 
             members.AddRange
             (
                 interfaceType
-                    .ListInterfaceMembers(System.Reflection.TypeExtensions.GetEvents)
+                    .ListMembers(System.Reflection.TypeExtensions.GetEvents)
                     .SelectMany(GenerateProxyEvent)
             );
 

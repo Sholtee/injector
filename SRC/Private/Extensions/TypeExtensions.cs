@@ -133,20 +133,23 @@ namespace Solti.Utils.DI.Internals
             return TypeNameReplacer.Replace(src.IsNested ? src.Name : src.ToString(), string.Empty);
         }
 
-        public static IEnumerable<TMember> ListInterfaceMembers<TMember>(this Type src, Func<Type, BindingFlags, TMember[]> factory) where TMember : MemberInfo
+        public static IEnumerable<TMember> ListMembers<TMember>(this Type src, Func<Type, BindingFlags, TMember[]> factory) where TMember : MemberInfo
         {
-            Debug.Assert(src.IsInterface());
+            const BindingFlags flags = BindingFlags.Public | BindingFlags.Instance;
 
-            //
-            // Az BindingFlags.FlattenHierarchy interface-ekre nem mukodik ezert gyorsitotarazzuk az osszes tagot.
-            //
+            if (src.IsInterface())
+                //
+                // Az BindingFlags.FlattenHierarchy interface-ekre nem mukodik.
+                //
 
-            return factory(src, BindingFlags.Public | BindingFlags.Instance)
-                .Concat
-                (
-                    src.GetInterfaces().SelectMany(iface => ListInterfaceMembers(iface, factory))
-                )
-                .Distinct();
+                return factory(src, flags)
+                    .Concat
+                    (
+                        src.GetInterfaces().SelectMany(iface => ListMembers(iface, factory))
+                    )
+                    .Distinct();
+
+            return factory(src, flags | BindingFlags.FlattenHierarchy);
         }
 
         public static IEnumerable<Assembly> GetReferences(this Type src)

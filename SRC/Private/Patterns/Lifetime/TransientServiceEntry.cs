@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Collections.Generic;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -12,6 +13,8 @@ namespace Solti.Utils.DI.Internals
     /// </summary>
     internal class TransientServiceEntry : ProducibleServiceEntry
     {
+        private List<IDisposableEx> FServicesToDispose;
+
         private TransientServiceEntry(TransientServiceEntry entry, IServiceContainer owner) : base(entry, owner)
         {
         }
@@ -34,7 +37,18 @@ namespace Solti.Utils.DI.Internals
         {
             CheckProducible();
 
-            return Factory(injectorFactory(), Interface);
+            object result = Factory(injectorFactory(), Interface);
+
+            if (result is IDisposable)
+            {
+                IDisposableEx disposable = DisposableWrapper.Create(Interface, (IDisposable) result);
+                result = disposable;
+
+                if (FServicesToDispose == null) FServicesToDispose = new List<IDisposableEx>(1);
+                FServicesToDispose.Add(disposable);       
+            }
+
+            return result;
         }
 
         public override AbstractServiceEntry CopyTo(IServiceContainer target)
@@ -42,6 +56,23 @@ namespace Solti.Utils.DI.Internals
             var result = new TransientServiceEntry(this, target);
             target.Add(result);
             return result;
+        }
+
+        protected override void Dispose(bool disposeManaged)
+        {
+            if (FServicesToDispose != null) 
+            {
+                FServicesToDispose.ForEach(svc => 
+                {
+                    if (!svc.Disposed) 
+                    {
+                        svc.Dispose();
+                    }
+                });
+                FServicesToDispose.Clear();
+            }
+
+            base.Dispose(disposeManaged);
         }
     }
 }

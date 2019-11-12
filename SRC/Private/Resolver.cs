@@ -61,7 +61,7 @@ namespace Solti.Utils.DI.Internals
                 {
                     Type parameterType = GetParameterType(param, out var isLazy) ?? throw new ArgumentException(Resources.INVALID_CONSTRUCTOR, nameof(constructor));
 
-                    string svcName = param.GetCustomAttribute<QueryOptionsAttribute>()?.Name;
+                    string svcName = param.GetCustomAttribute<OptionsAttribute>()?.Name;
 
                     return isLazy
                         //
@@ -130,7 +130,7 @@ namespace Solti.Utils.DI.Internals
 
                 Type parameterType = GetParameterType(param, out var isLazy) ?? throw new ArgumentException(Resources.INVALID_CONSTRUCTOR_ARGUMENT);
 
-                string svcName = param.GetCustomAttribute<QueryOptionsAttribute>()?.Name;
+                string svcName = param.GetCustomAttribute<OptionsAttribute>()?.Name;
 
                 return isLazy
                     //

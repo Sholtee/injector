@@ -25,9 +25,7 @@ namespace Solti.Utils.DI.Internals
 
     internal static class DuckGenerator<TTarget, TInterface>
     {
-        private const string TARGET = nameof(DuckBase<TTarget>.Target);
-
-        private const BindingFlags BINDING_FLAGS = BindingFlags.Instance | BindingFlags.Public | BindingFlags.FlattenHierarchy;
+        private const string TARGET = nameof(IHasTarget<TTarget>.Target);
 
         internal static MethodDeclarationSyntax GenerateDuckMethod(MethodInfo ifaceMethod)
         {
@@ -43,8 +41,8 @@ namespace Solti.Utils.DI.Internals
             //
 
             MethodInfo targetMethod = typeof(TTarget)
-                .GetMethods(BINDING_FLAGS)
-                .FirstOrDefault(m => m.Name.Equals(ifaceMethod.Name, StringComparison.Ordinal) && m.GetParameters().SequenceEqual(paramz, new ParameterComparer()));
+                .ListMembers(System.Reflection.TypeExtensions.GetMethods)
+                .SingleOrDefault(m => m.Name.Equals(ifaceMethod.Name, StringComparison.Ordinal) && m.GetParameters().SequenceEqual(paramz, new ParameterComparer()));
 
             if (targetMethod == null)
             {
@@ -90,43 +88,28 @@ namespace Solti.Utils.DI.Internals
 
         internal static MemberDeclarationSyntax GenerateDuckProperty(PropertyInfo ifaceProperty)
         {
-            PropertyInfo targetProperty = typeof(TTarget).GetProperty(ifaceProperty.Name, BINDING_FLAGS);
+            PropertyInfo targetProperty = typeof(TTarget)
+                .ListMembers(System.Reflection.TypeExtensions.GetProperties)
+                .SingleOrDefault(p => 
+                    p.Name == ifaceProperty.Name && 
+                    p.PropertyType == ifaceProperty.PropertyType &&
 
-            if 
-            (
-                //
-                // Nincs ilyen nevvel v nem publikus.
-                //
+                    //
+                    // Ha az interface tulajdonsaga irhato akkor targetnak is irhatonak kell lennie
+                    // (kulomben mind1 h irhato e v sem).
+                    //
 
-                targetProperty == null ||
-                
-                //
-                // Tipusa nem megfelelo. Megjegyzendo h itt nem kell a metodusoknal latott tipusellenorzest
-                // vegezni mert peldanynal sose lehet nyitott generikus property.
-                //
+                    (!ifaceProperty.CanWrite || p.CanWrite) &&
+                    (!ifaceProperty.CanRead || p.CanRead) &&
 
-                (targetProperty.PropertyType != ifaceProperty.PropertyType) ||
+                    //
+                    // Indexer property-knel pedig meg kell egyezniuk az index parameterek
+                    // sorrendjenek es tipusanak.
+                    //
 
-                //
-                // Ha az interface tulajdonsaga irhato akkor targetnak is irhatonak kell lennie
-                // (kulomben mind1 h irhato e v sem).
-                //
+                    ifaceProperty.GetIndexParameters().Select(ip => ip.ParameterType).SequenceEqual(p.GetIndexParameters().Select(ip => ip.ParameterType)));
 
-                (ifaceProperty.CanWrite && !targetProperty.CanWrite) ||
-
-                //
-                // Olvasasnal ugyanigy.
-                //
-
-                (ifaceProperty.CanRead && !targetProperty.CanRead) ||
-
-                //
-                // Indexer property-knel pedig meg kell egyezniuk az index parameterek
-                // sorrendjenek es tipusanak.
-                //
-
-                !ifaceProperty.GetIndexParameters().Select(p => p.ParameterType).SequenceEqual(targetProperty.GetIndexParameters().Select(p => p.ParameterType))
-            )
+            if(targetProperty == null)
             {
                 var mme = new MissingMethodException(Resources.PROPERTY_NOT_SUPPORTED);
                 mme.Data.Add(nameof(ifaceProperty), ifaceProperty);
@@ -177,7 +160,9 @@ namespace Solti.Utils.DI.Internals
 
         internal static EventDeclarationSyntax GenerateDuckEvent(EventInfo ifaceEvent)
         {
-            EventInfo targetEvent = typeof(TTarget).GetEvent(ifaceEvent.Name, BINDING_FLAGS);
+            EventInfo targetEvent = typeof(TTarget)
+                .ListMembers(System.Reflection.TypeExtensions.GetEvents)
+                .SingleOrDefault(ev => ev.Name == ifaceEvent.Name && ev.EventHandlerType == ifaceEvent.EventHandlerType);
 
             if (targetEvent == null)
             {
@@ -235,7 +220,7 @@ namespace Solti.Utils.DI.Internals
             members.AddRange
             (
                 interfaceType
-                    .ListInterfaceMembers(System.Reflection.TypeExtensions.GetMethods)
+                    .ListMembers(System.Reflection.TypeExtensions.GetMethods)
                     .Where(m => !m.IsSpecialName)
                     .Select(m => AggregateException(m, GenerateDuckMethod, exceptions))
             );  
@@ -243,14 +228,14 @@ namespace Solti.Utils.DI.Internals
             members.AddRange
             (
                 interfaceType
-                    .ListInterfaceMembers(System.Reflection.TypeExtensions.GetProperties)
+                    .ListMembers(System.Reflection.TypeExtensions.GetProperties)
                     .Select(p => AggregateException(p, GenerateDuckProperty, exceptions))
             );
 
             members.AddRange
             (
                 interfaceType
-                    .ListInterfaceMembers(System.Reflection.TypeExtensions.GetEvents)
+                    .ListMembers(System.Reflection.TypeExtensions.GetEvents)
                     .Select(e => AggregateException(e, GenerateDuckEvent, exceptions))
             );
 

@@ -1,13 +1,16 @@
 ﻿/********************************************************************************
-* Dispose.cs                                                                   *
+* Dispose.cs                                                                    *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
+using System;
+using System.Collections.Generic;
+
 using Moq;
 using NUnit.Framework;
 
 namespace Solti.Utils.DI.Injector.Tests
-{ 
+{
     public partial class InjectorTestsBase<TContainer>
     {
         [Test]
@@ -16,21 +19,43 @@ namespace Solti.Utils.DI.Injector.Tests
             var mockSingleton = new Mock<IInterface_1_Disaposable>(MockBehavior.Strict);
             mockSingleton.Setup(s => s.Dispose());
 
-            var mockTransient = new Mock<IInterface_2_Disaposable>(MockBehavior.Strict);
-            mockTransient.Setup(t => t.Dispose());
-
-            Container
-                .Factory(inj => mockSingleton.Object, Lifetime.Scoped)
-                .Factory(inj => mockTransient.Object, Lifetime.Transient);
+            Container.Factory(inj => mockSingleton.Object, Lifetime.Scoped);
 
             using (IInjector injector = Container.CreateInjector())
             {
                 injector.Get<IInterface_1_Disaposable>();
-                injector.Get<IInterface_2_Disaposable>();
             }
            
             mockSingleton.Verify(s => s.Dispose(), Times.Once);
-            mockTransient.Verify(t => t.Dispose(), Times.Never);
+        }
+
+        [Test]
+        public void Injector_DisposeShouldFreeTransientEntries() 
+        {
+            var obj1 = new Mock<IInterface_1_Disaposable>(MockBehavior.Strict);
+            obj1.Setup(t => t.Dispose());
+
+            var obj2 = new Mock<IEnumerator<string>>(MockBehavior.Strict);
+            obj2.Setup(t => t.Dispose());
+
+            Container
+                .Factory(i => obj1.Object, Lifetime.Transient)
+                .Factory(i => obj2.Object, Lifetime.Transient);
+
+            IDisposable
+                disposed,
+                notDisposed;
+
+            using (IInjector injector = Container.CreateInjector()) 
+            {
+                disposed = injector.Get<IInterface_1_Disaposable>();
+                disposed.Dispose();
+
+                notDisposed = injector.Get<IEnumerator<string>>();
+            }
+
+            obj1.Verify(t => t.Dispose(), Times.Once);
+            obj2.Verify(t => t.Dispose(), Times.Once);
         }
     }
 }

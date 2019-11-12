@@ -14,9 +14,9 @@ namespace Solti.Utils.DI.Internals
     using static ProxyGeneratorBase;
     using static Compile;
 
-    internal static class GeneratedDuck<TInterface, TTarget> where TInterface: class
+    internal sealed class GeneratedDuck<TInterface, TTarget>: ITypeGenerator where TInterface: class
     {
-        public static Type Type
+        public Type Type
         {
             get
             {
@@ -27,15 +27,14 @@ namespace Solti.Utils.DI.Internals
             }
         }
 
-        public static string AssemblyName => DuckGenerator<TTarget, TInterface>.AssemblyName;
+        public string AssemblyName => DuckGenerator<TTarget, TInterface>.AssemblyName;
 
         #region Private
         private static readonly object FLock = new object();
 
-        // ReSharper disable once StaticMemberInGenericType
         private static Type FType;
 
-        private static Type GenerateType()
+        private Type GenerateType()
         {
             CheckInterface();
             CheckTarget();
@@ -61,7 +60,7 @@ namespace Solti.Utils.DI.Internals
             .GetType(GeneratedClassName, throwOnError: true);
         }
 
-        private static void CheckInterface()
+        private void CheckInterface()
         {
             Type type = typeof(TInterface);
 
@@ -71,7 +70,7 @@ namespace Solti.Utils.DI.Internals
             if (type.ContainsGenericParameters()) throw new NotSupportedException();
         }
 
-        private static void CheckTarget()
+        private void CheckTarget()
         {
             //
             // Konstruktor parameterben atadasra kerul -> lathatonak kell lennie.
