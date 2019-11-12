@@ -13,25 +13,25 @@ references:
   commentId: N:Solti.Utils.DI.Annotations
   fullName: Solti.Utils.DI.Annotations
   nameWithType: Solti.Utils.DI.Annotations
-- uid: Solti.Utils.DI.Annotations.QueryOptionsAttribute
-  name: QueryOptionsAttribute
-  href: Solti.Utils.DI.Annotations.QueryOptionsAttribute.html
-  commentId: T:Solti.Utils.DI.Annotations.QueryOptionsAttribute
-  fullName: Solti.Utils.DI.Annotations.QueryOptionsAttribute
-  nameWithType: QueryOptionsAttribute
-- uid: Solti.Utils.DI.Annotations.QueryOptionsAttribute.Name
+- uid: Solti.Utils.DI.Annotations.OptionsAttribute
+  name: OptionsAttribute
+  href: Solti.Utils.DI.Annotations.OptionsAttribute.html
+  commentId: T:Solti.Utils.DI.Annotations.OptionsAttribute
+  fullName: Solti.Utils.DI.Annotations.OptionsAttribute
+  nameWithType: OptionsAttribute
+- uid: Solti.Utils.DI.Annotations.OptionsAttribute.Name
   name: Name
-  href: Solti.Utils.DI.Annotations.QueryOptionsAttribute.html#Solti_Utils_DI_Annotations_QueryOptionsAttribute_Name
-  commentId: P:Solti.Utils.DI.Annotations.QueryOptionsAttribute.Name
-  fullName: Solti.Utils.DI.Annotations.QueryOptionsAttribute.Name
-  nameWithType: QueryOptionsAttribute.Name
-- uid: Solti.Utils.DI.Annotations.QueryOptionsAttribute.Name*
+  href: Solti.Utils.DI.Annotations.OptionsAttribute.html#Solti_Utils_DI_Annotations_OptionsAttribute_Name
+  commentId: P:Solti.Utils.DI.Annotations.OptionsAttribute.Name
+  fullName: Solti.Utils.DI.Annotations.OptionsAttribute.Name
+  nameWithType: OptionsAttribute.Name
+- uid: Solti.Utils.DI.Annotations.OptionsAttribute.Name*
   name: Name
-  href: Solti.Utils.DI.Annotations.QueryOptionsAttribute.html#Solti_Utils_DI_Annotations_QueryOptionsAttribute_Name_
-  commentId: Overload:Solti.Utils.DI.Annotations.QueryOptionsAttribute.Name
+  href: Solti.Utils.DI.Annotations.OptionsAttribute.html#Solti_Utils_DI_Annotations_OptionsAttribute_Name_
+  commentId: Overload:Solti.Utils.DI.Annotations.OptionsAttribute.Name
   isSpec: "True"
-  fullName: Solti.Utils.DI.Annotations.QueryOptionsAttribute.Name
-  nameWithType: QueryOptionsAttribute.Name
+  fullName: Solti.Utils.DI.Annotations.OptionsAttribute.Name
+  nameWithType: OptionsAttribute.Name
 - uid: Solti.Utils.DI.Annotations.ServiceActivatorAttribute
   name: ServiceActivatorAttribute
   href: Solti.Utils.DI.Annotations.ServiceActivatorAttribute.html
@@ -756,6 +756,66 @@ references:
   isSpec: "True"
   fullName: Solti.Utils.DI.Internals.Disposable.Finalize
   nameWithType: Disposable.Finalize
+- uid: Solti.Utils.DI.Internals.DisposableWrapper`1
+  name: DisposableWrapper<T>
+  href: Solti.Utils.DI.Internals.DisposableWrapper-1.html
+  commentId: T:Solti.Utils.DI.Internals.DisposableWrapper`1
+  name.vb: DisposableWrapper(Of T)
+  fullName: Solti.Utils.DI.Internals.DisposableWrapper<T>
+  fullName.vb: Solti.Utils.DI.Internals.DisposableWrapper(Of T)
+  nameWithType: DisposableWrapper<T>
+  nameWithType.vb: DisposableWrapper(Of T)
+- uid: Solti.Utils.DI.Internals.DisposableWrapper`1.#ctor(`0)
+  name: DisposableWrapper(T)
+  href: Solti.Utils.DI.Internals.DisposableWrapper-1.html#Solti_Utils_DI_Internals_DisposableWrapper_1__ctor__0_
+  commentId: M:Solti.Utils.DI.Internals.DisposableWrapper`1.#ctor(`0)
+  fullName: Solti.Utils.DI.Internals.DisposableWrapper<T>.DisposableWrapper(T)
+  fullName.vb: Solti.Utils.DI.Internals.DisposableWrapper(Of T).DisposableWrapper(T)
+  nameWithType: DisposableWrapper<T>.DisposableWrapper(T)
+  nameWithType.vb: DisposableWrapper(Of T).DisposableWrapper(T)
+- uid: Solti.Utils.DI.Internals.DisposableWrapper`1.#ctor*
+  name: DisposableWrapper
+  href: Solti.Utils.DI.Internals.DisposableWrapper-1.html#Solti_Utils_DI_Internals_DisposableWrapper_1__ctor_
+  commentId: Overload:Solti.Utils.DI.Internals.DisposableWrapper`1.#ctor
+  isSpec: "True"
+  fullName: Solti.Utils.DI.Internals.DisposableWrapper<T>.DisposableWrapper
+  fullName.vb: Solti.Utils.DI.Internals.DisposableWrapper(Of T).DisposableWrapper
+  nameWithType: DisposableWrapper<T>.DisposableWrapper
+  nameWithType.vb: DisposableWrapper(Of T).DisposableWrapper
+- uid: Solti.Utils.DI.Internals.DisposableWrapper`1.Dispose(System.Boolean)
+  name: Dispose(Boolean)
+  href: Solti.Utils.DI.Internals.DisposableWrapper-1.html#Solti_Utils_DI_Internals_DisposableWrapper_1_Dispose_System_Boolean_
+  commentId: M:Solti.Utils.DI.Internals.DisposableWrapper`1.Dispose(System.Boolean)
+  fullName: Solti.Utils.DI.Internals.DisposableWrapper<T>.Dispose(System.Boolean)
+  fullName.vb: Solti.Utils.DI.Internals.DisposableWrapper(Of T).Dispose(System.Boolean)
+  nameWithType: DisposableWrapper<T>.Dispose(Boolean)
+  nameWithType.vb: DisposableWrapper(Of T).Dispose(Boolean)
+- uid: Solti.Utils.DI.Internals.DisposableWrapper`1.Dispose*
+  name: Dispose
+  href: Solti.Utils.DI.Internals.DisposableWrapper-1.html#Solti_Utils_DI_Internals_DisposableWrapper_1_Dispose_
+  commentId: Overload:Solti.Utils.DI.Internals.DisposableWrapper`1.Dispose
+  isSpec: "True"
+  fullName: Solti.Utils.DI.Internals.DisposableWrapper<T>.Dispose
+  fullName.vb: Solti.Utils.DI.Internals.DisposableWrapper(Of T).Dispose
+  nameWithType: DisposableWrapper<T>.Dispose
+  nameWithType.vb: DisposableWrapper(Of T).Dispose
+- uid: Solti.Utils.DI.Internals.DisposableWrapper`1.Target
+  name: Target
+  href: Solti.Utils.DI.Internals.DisposableWrapper-1.html#Solti_Utils_DI_Internals_DisposableWrapper_1_Target
+  commentId: P:Solti.Utils.DI.Internals.DisposableWrapper`1.Target
+  fullName: Solti.Utils.DI.Internals.DisposableWrapper<T>.Target
+  fullName.vb: Solti.Utils.DI.Internals.DisposableWrapper(Of T).Target
+  nameWithType: DisposableWrapper<T>.Target
+  nameWithType.vb: DisposableWrapper(Of T).Target
+- uid: Solti.Utils.DI.Internals.DisposableWrapper`1.Target*
+  name: Target
+  href: Solti.Utils.DI.Internals.DisposableWrapper-1.html#Solti_Utils_DI_Internals_DisposableWrapper_1_Target_
+  commentId: Overload:Solti.Utils.DI.Internals.DisposableWrapper`1.Target
+  isSpec: "True"
+  fullName: Solti.Utils.DI.Internals.DisposableWrapper<T>.Target
+  fullName.vb: Solti.Utils.DI.Internals.DisposableWrapper(Of T).Target
+  nameWithType: DisposableWrapper<T>.Target
+  nameWithType.vb: DisposableWrapper(Of T).Target
 - uid: Solti.Utils.DI.Internals.DuckBase`1
   name: DuckBase<T>
   href: Solti.Utils.DI.Internals.DuckBase-1.html
@@ -893,6 +953,25 @@ references:
   fullName.vb: Solti.Utils.DI.Internals.IComposite(Of T).RemoveChild
   nameWithType: IComposite<T>.RemoveChild
   nameWithType.vb: IComposite(Of T).RemoveChild
+- uid: Solti.Utils.DI.Internals.IDisposableEx
+  name: IDisposableEx
+  href: Solti.Utils.DI.Internals.IDisposableEx.html
+  commentId: T:Solti.Utils.DI.Internals.IDisposableEx
+  fullName: Solti.Utils.DI.Internals.IDisposableEx
+  nameWithType: IDisposableEx
+- uid: Solti.Utils.DI.Internals.IDisposableEx.Disposed
+  name: Disposed
+  href: Solti.Utils.DI.Internals.IDisposableEx.html#Solti_Utils_DI_Internals_IDisposableEx_Disposed
+  commentId: P:Solti.Utils.DI.Internals.IDisposableEx.Disposed
+  fullName: Solti.Utils.DI.Internals.IDisposableEx.Disposed
+  nameWithType: IDisposableEx.Disposed
+- uid: Solti.Utils.DI.Internals.IDisposableEx.Disposed*
+  name: Disposed
+  href: Solti.Utils.DI.Internals.IDisposableEx.html#Solti_Utils_DI_Internals_IDisposableEx_Disposed_
+  commentId: Overload:Solti.Utils.DI.Internals.IDisposableEx.Disposed
+  isSpec: "True"
+  fullName: Solti.Utils.DI.Internals.IDisposableEx.Disposed
+  nameWithType: IDisposableEx.Disposed
 - uid: Solti.Utils.DI.IServiceContainer
   name: IServiceContainer
   href: Solti.Utils.DI.IServiceContainer.html

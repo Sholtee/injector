@@ -54,6 +54,7 @@
   </div>
   <div classs="implements">
     <h5>Implements</h5>
+    <div><a class="xref" href="Solti.Utils.DI.Internals.IDisposableEx.html">IDisposableEx</a></div>
     <div><a class="xref" href="Solti.Utils.DI.Internals.IComposite-1.html">IComposite</a>&lt;TInterface&gt;</div>
     <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.idisposable">IDisposable</a></div>
   </div>
@@ -94,7 +95,7 @@
   <h6><strong>Assembly</strong>: Injector.dll</h6>
   <h5 id="Solti_Utils_DI_Internals_Composite_1_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract class Composite&lt;TInterface&gt; : Disposable, IComposite&lt;TInterface&gt;, IDisposable where TInterface : class, IComposite&lt;TInterface&gt;</code></pre>
+    <pre><code class="lang-csharp hljs">public abstract class Composite&lt;TInterface&gt; : Disposable, IDisposableEx, IComposite&lt;TInterface&gt;, IDisposable where TInterface : class, IComposite&lt;TInterface&gt;</code></pre>
   </div>
   <h5 class="typeParameters">Type Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -303,6 +304,9 @@
     </tbody>
   </table>
   <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="Solti.Utils.DI.Internals.IDisposableEx.html">IDisposableEx</a>
+  </div>
   <div>
       <a class="xref" href="Solti.Utils.DI.Internals.IComposite-1.html">IComposite&lt;T&gt;</a>
   </div>
