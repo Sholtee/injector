@@ -26,7 +26,7 @@ namespace Solti.Utils.DI.Proxy
         /// <param name="args">Arguments to be passed to the constructor of <typeparamref name="TInterceptor"/></param>
         /// <returns>The newly created proxy instance.</returns>
         public static TInterface Create<TInterface, TInterceptor>(Type[] argTypes, params object[] args) where TInterface : class where TInterceptor : InterfaceInterceptor<TInterface> => (TInterface) 
-            new GeneratedProxy<TInterface, TInterceptor>().Type.CreateInstance(argTypes, args);
+            GeneratedProxy<TInterface, TInterceptor>.Type.CreateInstance(argTypes, args);
 
         /// <summary>
         /// Creates a new proxy instance with the given target.
@@ -48,7 +48,7 @@ namespace Solti.Utils.DI.Proxy
         /// <param name="targetParamName">Parameter name of the target (usually "target").</param>
         /// <returns>The newly created proxy instance.</returns>
         public static TInterface Create<TInterface, TInterceptor>(TInterface target, IInjector injector, string targetParamName = "target") where TInterface : class where TInterceptor : InterfaceInterceptor<TInterface> => (TInterface) 
-            injector.Instantiate(new GeneratedProxy<TInterface, TInterceptor>().Type, new Dictionary<string, object>
+            injector.Instantiate(GeneratedProxy<TInterface, TInterceptor>.Type, new Dictionary<string, object>
             {
                 {targetParamName, target}
             });
@@ -64,14 +64,7 @@ namespace Solti.Utils.DI.Proxy
             return Cache<(Type Interface, Type Interceptor), Type>.GetOrAdd
             (
                 (iface, interceptor), 
-                () =>
-                {
-                    var gen = (ITypeGenerator) typeof(GeneratedProxy<,>)
-                        .MakeGenericType(iface, interceptor)
-                        .CreateInstance(Array.Empty<Type>());
-
-                    return gen.Type;
-                }
+                () => (TypeGenerator) typeof(GeneratedProxy<,>).MakeGenericType(iface, interceptor).CreateInstance(Array.Empty<Type>())
             );
         }
 

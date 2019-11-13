@@ -14,33 +14,15 @@ namespace Solti.Utils.DI.Internals
 {
     using static ProxyGeneratorBase;
 
-    //
-    // Generikus osztaly azert jo nekunk mert igy biztosan pontosan egyszer fog lefutni az inicializacio minden egyes 
-    // TDescendant-ra. Ugyanez a Cache osztallyal nem lenne garantalhato: 
-    //
-    // https://docs.microsoft.com/en-us/dotnet/api/system.collections.concurrent.concurrentdictionary-2.getoradd?view=netcore-2.2
-    //
-
-    internal abstract class TypeGenerator<TDescendant> : ITypeGenerator where TDescendant: TypeGenerator<TDescendant>
+    internal abstract class TypeGenerator
     {
-        private static Type FType;
-
-        private static readonly object FLock = new object();
-
-        public Type Type
-        {
-            get
-            {
-                if (FType == null)
-                    lock (FLock)
-                        if (FType == null) FType = GenerateType();
-                return FType;
-            }
-        }
+        public static implicit operator Type(TypeGenerator self) => self.GeneratedType;
 
         public abstract string AssemblyName { get; }
 
         protected abstract Type GenerateType();
+
+        protected abstract Type GeneratedType { get; }
 
         protected Type GenerateType(ClassDeclarationSyntax @class, IEnumerable<Assembly> references) => Compile
             .ToAssembly
@@ -51,6 +33,41 @@ namespace Solti.Utils.DI.Internals
             )
             .GetType(GeneratedClassName, throwOnError: true);
 
-        protected void CheckVisibility(Type type) => Compile.CheckVisibility(type, AssemblyName);
+        protected void CheckVisibility(Type type) => Compile.CheckVisibility(type, AssemblyName);   
+    }
+
+    //
+    // Generikus osztaly azert jo nekunk mert igy biztosan pontosan egyszer fog lefutni az inicializacio minden egyes 
+    // TDescendant-ra. Ugyanez a Cache osztallyal nem lenne garantalhato: 
+    //
+    // https://docs.microsoft.com/en-us/dotnet/api/system.collections.concurrent.concurrentdictionary-2.getoradd?view=netcore-2.2
+    //
+
+    internal abstract class TypeGenerator<TDescendant> : TypeGenerator where TDescendant : TypeGenerator<TDescendant>, new()
+    {
+        //
+        // A lenti modszer bar mukodik de hiba eseten "TypeInitializationException"-t dob vissza
+        // ami nekunk nem adja.
+        //
+        // public static Type Type = new TDescendant().GenerateType();
+        //
+
+        private static readonly object FLock = new object();
+
+        private static Type FType;
+
+        public static Type Type 
+        {
+            get 
+            {
+                if (FType == null)
+                    lock (FLock)
+                        if (FType == null)
+                            FType = new TDescendant().GenerateType();
+                return FType;
+            }
+        }
+
+        protected sealed override Type GeneratedType => Type;
     }
 }

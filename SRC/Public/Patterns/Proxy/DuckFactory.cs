@@ -49,7 +49,7 @@ namespace Solti.Utils.DI.Proxy
             if (possibleResult != null)
                 return possibleResult;
 
-            return (TInterface) new GeneratedDuck<TInterface, TTarget>()
+            return (TInterface) GeneratedDuck<TInterface, TTarget>
                 .Type
                 .CreateInstance(new[] {typeof(TTarget)}, Target);
         }

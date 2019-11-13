@@ -216,7 +216,7 @@ namespace Solti.Utils.DI.Proxy.Tests
         [Test]
         public void GeneratedProxy_MethodOverrideTest()
         {
-            IFoo<int> proxy = (IFoo<int>) new GeneratedProxy<IFoo<int>, FooInterceptor>().Type.CreateInstance(new []{typeof(IFoo<int>)}, (object) null);
+            IFoo<int> proxy = (IFoo<int>) GeneratedProxy<IFoo<int>, FooInterceptor>.Type.CreateInstance(new []{typeof(IFoo<int>)}, (object) null);
 
             string a, b = string.Empty;
 
@@ -229,7 +229,7 @@ namespace Solti.Utils.DI.Proxy.Tests
         {
             IList<int>
                 src = new List<int>(),
-                proxy = (IList<int>) new GeneratedProxy<IList<int>, ListInterceptor>().Type.CreateInstance(new[] { typeof(IList<int>) }, src);
+                proxy = (IList<int>) GeneratedProxy<IList<int>, ListInterceptor>.Type.CreateInstance(new[] { typeof(IList<int>) }, src);
 
             proxy.Add(1986);
 

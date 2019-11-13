@@ -56,11 +56,11 @@ namespace Solti.Utils.DI.Internals
         {
             Debug.Assert(iface.IsInstanceOfType(instance));
 
-            Type wrapper = Cache<Type, Type>.GetOrAdd(iface, () =>
-            {
-                var gen = (ITypeGenerator) typeof(GeneratedDisposable<>).MakeGenericType(iface).CreateInstance(Array.Empty<Type>());
-                return gen.Type;
-            });
+            Type wrapper = Cache<Type, Type>.GetOrAdd
+            (
+                iface,
+                () => (TypeGenerator) typeof(GeneratedDisposable<>).MakeGenericType(iface).CreateInstance(Array.Empty<Type>())          
+            );
 
             return (IDisposableEx) wrapper.CreateInstance(new[] { iface }, instance);
         }        
