@@ -21,7 +21,7 @@ namespace Solti.Utils.DI.Internals
     // https://docs.microsoft.com/en-us/dotnet/api/system.collections.concurrent.concurrentdictionary-2.getoradd?view=netcore-2.2
     //
 
-    internal abstract class TypeGenerator<TDescendant> : ITypeGenerator
+    internal abstract class TypeGenerator<TDescendant> : ITypeGenerator where TDescendant: TypeGenerator<TDescendant>
     {
         private static Type FType;
 
