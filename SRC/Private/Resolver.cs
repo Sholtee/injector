@@ -14,6 +14,7 @@ namespace Solti.Utils.DI.Internals
 {
     using Annotations;
     using Properties;
+    using System.Threading;
 
     internal static class Resolver
     {
@@ -95,7 +96,7 @@ namespace Solti.Utils.DI.Internals
             // gyorsitotarhoz.
             //
 
-            var factory = new Lazy<Func<IInjector, Type, object>>(() => Get(type.Value));
+            var factory = new Lazy<Func<IInjector, Type, object>>(() => Get(type.Value), LazyThreadSafetyMode.ExecutionAndPublication);
 
             return (injector, iface) => factory.Value(injector, iface);
         });
