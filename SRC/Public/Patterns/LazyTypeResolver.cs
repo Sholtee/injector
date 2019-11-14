@@ -103,17 +103,6 @@ namespace Solti.Utils.DI
             }
             throw new NotSupportedException(string.Format(Resources.INTERFACE_NOT_SUPPORTED, iface));
         }
-
-        /// <summary>
-        /// Gets the hash code of this resolver.
-        /// </summary>
-        /// <returns>The hash code of this resolver.</returns>
-        public override int GetHashCode() => new
-        {
-            Interface,
-            AssamblyPath,
-            ClassName
-        }.GetHashCode();
     }
 
     /// <summary>
