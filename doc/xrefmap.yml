@@ -1391,19 +1391,6 @@ references:
   isSpec: "True"
   fullName: Solti.Utils.DI.LazyTypeResolver.ClassName
   nameWithType: LazyTypeResolver.ClassName
-- uid: Solti.Utils.DI.LazyTypeResolver.GetHashCode
-  name: GetHashCode()
-  href: Solti.Utils.DI.LazyTypeResolver.html#Solti_Utils_DI_LazyTypeResolver_GetHashCode
-  commentId: M:Solti.Utils.DI.LazyTypeResolver.GetHashCode
-  fullName: Solti.Utils.DI.LazyTypeResolver.GetHashCode()
-  nameWithType: LazyTypeResolver.GetHashCode()
-- uid: Solti.Utils.DI.LazyTypeResolver.GetHashCode*
-  name: GetHashCode
-  href: Solti.Utils.DI.LazyTypeResolver.html#Solti_Utils_DI_LazyTypeResolver_GetHashCode_
-  commentId: Overload:Solti.Utils.DI.LazyTypeResolver.GetHashCode
-  isSpec: "True"
-  fullName: Solti.Utils.DI.LazyTypeResolver.GetHashCode
-  nameWithType: LazyTypeResolver.GetHashCode
 - uid: Solti.Utils.DI.LazyTypeResolver.Interface
   name: Interface
   href: Solti.Utils.DI.LazyTypeResolver.html#Solti_Utils_DI_LazyTypeResolver_Interface
