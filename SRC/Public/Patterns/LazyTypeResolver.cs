@@ -31,8 +31,6 @@ namespace Solti.Utils.DI
     /// </summary>
     public class LazyTypeResolver: ITypeResolver
     {
-        private readonly object FLock = new object();
-
         private Assembly FAssembly;
 
         internal IAssemblyLoadContext AssemblyLoadContext { get; }
@@ -81,9 +79,7 @@ namespace Solti.Utils.DI
             get
             {
                 if (FAssembly == null)
-                    lock (FLock)
-                        if (FAssembly == null)
-                            FAssembly = AssemblyLoadContext.LoadFromAssemblyPath(AssamblyPath);
+                    FAssembly = AssemblyLoadContext.LoadFromAssemblyPath(AssamblyPath);
                 return FAssembly;
             }
         }
