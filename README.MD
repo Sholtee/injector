@@ -233,7 +233,7 @@ IMyService svc = injector.Get<IMyService>();
 *Remarks:*
 - Requesting an unregistered or an open generic service will cause an exception.
 - Requesting services as a constructor parameter is more convenient than using the `injector.Get()` method.
-- The caller should free the requested service if it is an `IDisposable` and has the `Transient` lifetime. To determine the lifetime call the `injector.LifetimeOf<IMyService>()` method.
+- The caller may free the requested service if it is an `IDisposable` and has the `Transient` lifetime. To determine the lifetime call the `injector.LifetimeOf<IMyService>()` method.
 - You may request the closed pair of an open generic service without registering it:
   ```csharp
   container.Service(typeof(IMyGenericService<>));
