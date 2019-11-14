@@ -114,7 +114,7 @@ namespace Solti.Utils.DI
         /// <returns>The hash code of this resolver.</returns>
         public override int GetHashCode() => new
         {
-            Type = GetType(),
+            Interface,
             AssamblyPath,
             ClassName
         }.GetHashCode();

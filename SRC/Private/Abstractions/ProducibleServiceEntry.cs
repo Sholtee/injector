@@ -59,14 +59,14 @@ namespace Solti.Utils.DI.Internals
 
             Lazy<Type> lazyImplementation = implementation.AsLazy(@interface);
 
-            UnderlyingImplementation = lazyImplementation;
-
             if (!@interface.IsGenericTypeDefinition())
                 //
                 // Mivel van factory ezert lusta bejegyzesek is Proxy-zhatok.
                 //
 
                 Factory = Resolver.Get(lazyImplementation);
+
+            UnderlyingImplementation = lazyImplementation;
         }
 
         protected void CheckProducible()
