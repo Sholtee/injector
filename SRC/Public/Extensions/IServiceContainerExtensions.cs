@@ -5,9 +5,6 @@
 ********************************************************************************/
 using System;
 using System.Linq;
-#if NETSTANDARD1_6
-using System.Reflection;
-#endif
 
 namespace Solti.Utils.DI
 {
@@ -29,7 +26,13 @@ namespace Solti.Utils.DI
         /// <param name="mode">Options.</param>
         /// <returns>The requested service entry.</returns>
         /// <exception cref="ServiceNotFoundException">If the service could not be found.</exception>
-        public static AbstractServiceEntry Get<TInterface>(this IServiceContainer self, string name, QueryMode mode = QueryMode.Default) => self.Get(typeof(TInterface), name, mode);
+        public static AbstractServiceEntry Get<TInterface>(this IServiceContainer self, string name, QueryMode mode = QueryMode.Default)
+        {
+            if (self == null)
+                throw new ArgumentNullException(nameof(self));
+
+            return self.Get(typeof(TInterface), name, mode);
+        }
 
         /// <summary>
         /// Gets the service associated with the given interface.
@@ -54,30 +57,6 @@ namespace Solti.Utils.DI
         {
             if (self == null)
                 throw new ArgumentNullException(nameof(self));
-
-            if (iface == null)
-                throw new ArgumentNullException(nameof(iface));
-
-            if (!iface.IsInterface())
-                throw new ArgumentException(Resources.NOT_AN_INTERFACE, nameof(iface));
-
-            if (implementation == null)
-                throw new ArgumentNullException(nameof(implementation));
-
-            //
-            // Implementacio validalas (mukodik generikusokra is).
-            //
-
-            if (!iface.IsInterfaceOf(implementation))
-                throw new InvalidOperationException(string.Format(Resources.NOT_ASSIGNABLE, iface, implementation));
-
-            //
-            // Konstruktor validalas csak generikus esetben kell (mert ilyenkor nincs Resolver.Get()
-            // hivas). A GetApplicableConstructor() validal valamint mukodik generikusokra is.
-            // 
-
-            if (implementation.IsGenericTypeDefinition())
-                implementation.GetApplicableConstructor();
 
             return self.Add
             (
@@ -111,23 +90,6 @@ namespace Solti.Utils.DI
             if (self == null)
                 throw new ArgumentNullException(nameof(self));
 
-            if (iface == null)
-                throw new ArgumentNullException(nameof(iface));
-
-            if (!iface.IsInterface())
-                throw new ArgumentException(Resources.NOT_AN_INTERFACE, nameof(iface));
-
-            if (implementation == null)
-                throw new ArgumentNullException(nameof(implementation));
-
-            //
-            // A konstruktort validalni fogja a Resolver.Get() hivas az elso peldanyositaskor, igy
-            // itt nekunk csak azt kell ellenoriznunk, h az interface tamogatott e.
-            //
-
-            if (!implementation.Supports(iface))
-                throw new NotSupportedException(string.Format(Resources.INTERFACE_NOT_SUPPORTED, iface));
-
             return self.Add
             (
                 ProducibleServiceEntry.Create(lifetime, iface, name, implementation, self)
@@ -160,15 +122,6 @@ namespace Solti.Utils.DI
             if (self == null)
                 throw new ArgumentNullException(nameof(self));
 
-            if (iface == null)
-                throw new ArgumentNullException(nameof(iface));
-
-            if (!iface.IsInterface())
-                throw new ArgumentException(Resources.NOT_AN_INTERFACE, nameof(iface));
-
-            if (factory == null)
-                throw new ArgumentNullException(nameof(factory));
-
             return self.Add(ProducibleServiceEntry.Create(lifetime, iface, name, factory, self));
         }
 
@@ -197,12 +150,6 @@ namespace Solti.Utils.DI
         {
             if (self == null)
                 throw new ArgumentNullException(nameof(self));
-
-            if (iface == null)
-                throw new ArgumentNullException(nameof(iface));
-
-            if (!iface.IsInterface())
-                throw new ArgumentException(Resources.NOT_AN_INTERFACE, nameof(iface));
 
             if (decorator == null)
                 throw new ArgumentNullException(nameof(decorator));
@@ -252,18 +199,6 @@ namespace Solti.Utils.DI
             if (self == null)
                 throw new ArgumentNullException(nameof(self));
 
-            if (iface == null)
-                throw new ArgumentNullException(nameof(iface));
-
-            if (!iface.IsInterface())
-                throw new ArgumentException(Resources.NOT_AN_INTERFACE, nameof(iface));
-
-            if (instance == null)
-                throw new ArgumentNullException(nameof(instance));
-
-            if (!iface.IsInstanceOfType(instance))
-                throw new InvalidOperationException(string.Format(Resources.NOT_ASSIGNABLE, iface, instance.GetType()));
-
             return self.Add(new InstanceServiceEntry(iface, name, instance, releaseOnDispose, self));
         }
 
@@ -289,12 +224,6 @@ namespace Solti.Utils.DI
             if (self == null)
                 throw new ArgumentNullException(nameof(self));
 
-            if (iface == null)
-                throw new ArgumentNullException(nameof(iface));
-
-            if (!iface.IsInterface())
-                throw new ArgumentException(Resources.NOT_AN_INTERFACE, nameof(iface));
-
             return self.Add(new AbstractServiceEntry(iface, name));
         }
 
@@ -307,6 +236,9 @@ namespace Solti.Utils.DI
         /// <exception cref="InvalidOperationException">There are one or more abstract entries in the collection.</exception>
         public static IInjector CreateInjector(this IServiceContainer self)
         {
+            if (self == null)
+                throw new ArgumentNullException(nameof(self));
+
             Type[] abstractEntries = self
                 .Where(entry => entry.GetType() == typeof(AbstractServiceEntry))
                 .Select(entry => entry.Interface)

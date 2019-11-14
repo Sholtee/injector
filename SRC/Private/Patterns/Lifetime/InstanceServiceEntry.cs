@@ -4,20 +4,33 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Reflection;
 
 namespace Solti.Utils.DI.Internals
 {
+    using Properties;
+
     /// <summary>
     /// Describes an instance service entry.
     /// </summary>
     internal class InstanceServiceEntry : AbstractServiceEntry
     {
         private readonly bool FReleaseOnDispose;
-        private object FValue;
+        private object FInstance;
 
-        public InstanceServiceEntry(Type @interface, string name, object value, bool releaseOnDispose, IServiceContainer owner) : base(@interface, name, null, owner)
+        public InstanceServiceEntry(Type @interface, string name, object instance, bool releaseOnDispose, IServiceContainer owner) : base(@interface, name, null, owner)
         {
-            FValue = value;
+            //
+            // Interface-t nem kell ellenorizni (az os megteszi).
+            //
+
+            if (instance == null)
+                throw new ArgumentNullException(nameof(instance));
+
+            if (!@interface.IsInstanceOfType(instance))
+                throw new InvalidOperationException(string.Format(Resources.NOT_ASSIGNABLE, @interface, instance.GetType()));
+
+            FInstance = instance;
             FReleaseOnDispose = releaseOnDispose;
         }
 
@@ -34,7 +47,7 @@ namespace Solti.Utils.DI.Internals
             set => throw new InvalidOperationException();
         }
 
-        public override object Value => FValue;
+        public override object Value => FInstance;
 
         public override object GetService(Func<IInjector> injectorFactory)
         {
@@ -47,8 +60,8 @@ namespace Solti.Utils.DI.Internals
         {
             if (disposeManaged && FReleaseOnDispose)
             {
-                (FValue as IDisposable)?.Dispose();
-                FValue = null;
+                (FInstance as IDisposable)?.Dispose();
+                FInstance = null;
             }
             base.Dispose(disposeManaged);
         }

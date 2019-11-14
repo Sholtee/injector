@@ -8,13 +8,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+
 using Moq;
 using NUnit.Framework;
 
-using Solti.Utils.DI.Tests;
-
 namespace Solti.Utils.DI.Container.Tests
-{   
+{
+    using DI.Tests;
     using Internals;
 
     public abstract class ServiceContainerTestsBase<TImplementation>: TestBase<TImplementation> where TImplementation : IServiceContainer, new()
@@ -41,7 +41,7 @@ namespace Solti.Utils.DI.Container.Tests
             IServiceContainer container = CreateContainer();
 
             container.Add(new InstanceServiceEntry(typeof(IDisposable), null, owned, releaseOnDispose: true, owner: container));
-            container.Add(new InstanceServiceEntry(typeof(IServiceContainer) /*tok mind1*/, null, notOwned, releaseOnDispose: true, owner: null));
+            container.Add(new InstanceServiceEntry(typeof(IDisposableEx), null, notOwned, releaseOnDispose: true, owner: null));
 
             Assert.That(container.Count, Is.EqualTo(2));
 
@@ -74,15 +74,15 @@ namespace Solti.Utils.DI.Container.Tests
         {
             IServiceContainer container = CreateContainer
             (
-                new InstanceServiceEntry(typeof(IDisposable), null, null, false, null)
+                new InstanceServiceEntry(typeof(IDisposable), null, new Disposable(), false, null)
             );
 
-            Assert.Throws<ServiceAlreadyRegisteredException>(() => container.Add(new InstanceServiceEntry(typeof(IDisposable), null, null, false, null)));
+            Assert.Throws<ServiceAlreadyRegisteredException>(() => container.Add(new InstanceServiceEntry(typeof(IDisposable), null, new Disposable(), false, null)));
 
             Assert.Throws<ServiceAlreadyRegisteredException>(() => CreateContainer
             (
-                new InstanceServiceEntry(typeof(IDisposable), null, null, false, null),
-                new InstanceServiceEntry(typeof(IDisposable), null, null, false, null)
+                new InstanceServiceEntry(typeof(IDisposable), null, new Disposable(), false, null),
+                new InstanceServiceEntry(typeof(IDisposable), null, new Disposable(), false, null)
             ));
         }
 
@@ -90,7 +90,7 @@ namespace Solti.Utils.DI.Container.Tests
         public void IServiceContainer_GetShouldReturnOnTypeMatch()
         {          
             IServiceContainer container = CreateContainer();
-            var entry = new TransientServiceEntry(typeof(IList<>), null, typeof(List<>), container);
+            var entry = new TransientServiceEntry(typeof(IList<>), null, typeof(MyList<>), container);
             container.Add(entry);
 
             Assert.That(container.Get(typeof(IList<>), null, QueryMode.ThrowOnError), Is.EqualTo(entry));
@@ -139,12 +139,12 @@ namespace Solti.Utils.DI.Container.Tests
         {
             IServiceContainer container = CreateContainer
             (
-                new SingletonServiceEntry(typeof(IList<>), null, typeof(List<>), null) 
+                new SingletonServiceEntry(typeof(IList<>), null, typeof(MyList<>), null) 
             );
 
             Assert.IsNull(container.Get(typeof(IList<int>)));
             Assert.Throws<ServiceNotFoundException>(() => container.Get(typeof(IList<int>), null, QueryMode.ThrowOnError));
-            Assert.That(container.Get(typeof(IList<>), null, QueryMode.ThrowOnError), Is.EqualTo(new SingletonServiceEntry(typeof(IList<>), null, typeof(List<>), null)));
+            Assert.That(container.Get(typeof(IList<>), null, QueryMode.ThrowOnError), Is.EqualTo(new SingletonServiceEntry(typeof(IList<>), null, typeof(MyList<>), null)));
         }
 
         [Test]
@@ -515,8 +515,5 @@ namespace Solti.Utils.DI.Container.Tests
 
     public class MyList<T> : List<T> 
     {
-        public MyList()
-        {
-        }
     }
 }

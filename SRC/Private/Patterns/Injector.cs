@@ -31,7 +31,7 @@ namespace Solti.Utils.DI.Internals
             (
                 @interface: typeof(IInjector),
                 name: null,
-                value: this,
+                instance: this,
                 releaseOnDispose: false,
                 owner: this
             ));

@@ -46,8 +46,22 @@ namespace Solti.Utils.DI.Internals
             if (implementation == null)
                 throw new ArgumentNullException(nameof(implementation));
 
+            //
+            // Implementacio validalas (mukodik generikusokra is).
+            //
+
+            if (!@interface.IsInterfaceOf(implementation))
+                throw new InvalidOperationException(string.Format(Resources.NOT_ASSIGNABLE, @interface, implementation));
+
             if (!@interface.IsGenericTypeDefinition())
                 Factory = Resolver.Get(implementation);
+            else
+                //
+                // Konstruktor validalas csak generikus esetben kell (mert ilyenkor nincs Resolver.Get()
+                // hivas). A GetApplicableConstructor() validal valamint mukodik generikusokra is.
+                // 
+
+                implementation.GetApplicableConstructor();
 
             UnderlyingImplementation = implementation;
         }
@@ -56,6 +70,14 @@ namespace Solti.Utils.DI.Internals
         {
             if (implementation == null)
                 throw new ArgumentNullException(nameof(implementation));
+
+            //
+            // A konstruktort validalni fogja a Resolver.Get() hivas az elso peldanyositaskor, igy
+            // itt nekunk csak azt kell ellenoriznunk, h az interface tamogatott e.
+            //
+
+            if (!implementation.Supports(@interface))
+                throw new NotSupportedException(string.Format(Resources.INTERFACE_NOT_SUPPORTED, @interface));
 
             Lazy<Type> lazyImplementation = implementation.AsLazy(@interface);
 
