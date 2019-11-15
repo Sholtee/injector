@@ -59,7 +59,7 @@ namespace Solti.Utils.DI.Internals
             (
                 expressionBody: ArrowExpressionClause
                 (
-                    expression: Invoke(targetMethod, TARGET, ifaceMethod.GetParameters().Select(para => para.Name).ToArray())
+                    expression: InvokeMethod(targetMethod, TARGET, ifaceMethod.GetParameters().Select(para => para.Name).ToArray())
                 )
             )
             .WithSemicolonToken(Token(SyntaxKind.SemicolonToken));

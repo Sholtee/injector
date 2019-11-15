@@ -42,7 +42,7 @@ namespace Solti.Utils.DI.Internals
             return method
                 .GetParameters()
                 .Select((param, i) => new {Parameter = param, Index = i})
-                .Where(p => p.Parameter.ParameterType.IsByRef)
+                .Where(p => p.Parameter.ParameterType.IsByRef && !p.Parameter.IsIn)
                 .Select
                 (
                     p => ExpressionStatement
@@ -99,7 +99,7 @@ namespace Solti.Utils.DI.Internals
                                 (
                                     expression: ParenthesizedLambdaExpression
                                     (
-                                        body: Invoke
+                                        body: InvokeMethod
                                         (
                                             method: method, 
                                             target: TARGET,
@@ -137,36 +137,13 @@ namespace Solti.Utils.DI.Internals
 
         internal static StatementSyntax CallTargetAndReturn(MethodInfo method)
         {
-            InvocationExpressionSyntax invocation = InvocationExpression
-            (
-                expression: MemberAccessExpression
-                (
-                    SyntaxKind.SimpleMemberAccessExpression,
-                    IdentifierName(TARGET),
-                    IdentifierName(method.Name)
-                )
-            )
-            .WithArgumentList
-            (
-                argumentList: ArgumentList(method.GetParameters().CreateList(param =>
-                {
-                    ArgumentSyntax argument = Argument
-                    (
-                        expression: IdentifierName(param.Name)
-                    );
-
-                    //
-                    // TODO: "IN"
-                    //
-
-                    if (param.ParameterType.IsByRef) argument = argument.WithRefKindKeyword
-                    (
-                        refKindKeyword: Token(param.IsOut ? SyntaxKind.OutKeyword : SyntaxKind.RefKeyword)
-                    );
-
-                    return argument;
-                }))
-            );
+            InvocationExpressionSyntax invocation = InvokeMethod(
+                method, 
+                TARGET, 
+                method
+                    .GetParameters()
+                    .Select(p => p.Name)
+                    .ToArray());
 
             return method.ReturnType != typeof(void) 
                 ? (StatementSyntax) ReturnStatement(invocation)

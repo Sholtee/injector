@@ -93,46 +93,6 @@ namespace Solti.Utils.DI.Internals
             )
         );
 
-        public static MethodDeclarationSyntax DeclareMethod(
-            Type returnType, 
-            string name, 
-            IReadOnlyList<SyntaxKind> modifiers, 
-            IReadOnlyList<string> genericArguments, 
-            IReadOnlyDictionary<string, Type> parameters)
-        {
-            MethodDeclarationSyntax result = MethodDeclaration
-            (
-                returnType: returnType != typeof(void)
-                    ? CreateType(returnType)
-                    : PredefinedType(Token(SyntaxKind.VoidKeyword)),
-                identifier: Identifier(name)
-            )
-            .WithModifiers
-            (
-                modifiers: TokenList(modifiers.Select(Token))
-            )
-            .WithParameterList
-            (
-                parameterList: ParameterList
-                (
-                    parameters: parameters.CreateList(param => Parameter(Identifier(param.Key)).WithType
-                    (
-                        type: CreateType(param.Value)
-                    ))
-                )
-            );
-
-            if (genericArguments.Any()) result = result.WithTypeParameterList // kulon legyen kulomben lesz egy ures "<>"
-            (
-                typeParameterList: TypeParameterList
-                (
-                    parameters: genericArguments.CreateList(TypeParameter)
-                )
-            );
-
-            return result;
-        }
-
         public static MethodDeclarationSyntax DeclareMethod(MethodInfo method)
         {
             Type 
@@ -168,8 +128,13 @@ namespace Solti.Utils.DI.Internals
                             modifiers: TokenList(Token(SyntaxKind.OutKeyword))
                         );
 
+                        else if (param.IsIn) parameter = parameter.WithModifiers
+                        (
+                            modifiers: TokenList(Token(SyntaxKind.InKeyword))
+                        );
+
                         //
-                        // "ParameterType.IsByRef" param.IsOut eseten is igazat ad vissza -> IsOut teszt utan szerepeljen.
+                        // "ParameterType.IsByRef" param.Is[In|Out] eseten is igazat ad vissza -> a lenti feltetel utoljara szerepeljen.
                         //
 
                         else if (param.ParameterType.IsByRef) parameter = parameter.WithModifiers
@@ -473,6 +438,8 @@ namespace Solti.Utils.DI.Internals
 
         public static NameSyntax GetQualifiedName(this Type type, Func<string, NameSyntax> typeNameFactory = null)
         {
+            Debug.Assert(!type.IsGenericType() || type.IsGenericTypeDefinition());
+
             return Parts2QualifiedName
             (
                 parts: type.GetFriendlyName().Split('.').ToArray(),
@@ -506,7 +473,7 @@ namespace Solti.Utils.DI.Internals
 
         public static IdentifierNameSyntax ToIdentifierName(this LocalDeclarationStatementSyntax variable) => IdentifierName(variable.Declaration.Variables.Single().Identifier);
 
-        public static InvocationExpressionSyntax Invoke(MethodInfo method, string target, IReadOnlyList<string> arguments) => InvocationExpression
+        public static InvocationExpressionSyntax InvokeMethod(MethodInfo method, string target, IReadOnlyList<string> arguments) => InvocationExpression
         (
             expression: MemberAccessExpression
             (
@@ -524,13 +491,23 @@ namespace Solti.Utils.DI.Internals
                     expression: IdentifierName(arguments[i])
                 );
 
+                if (param.IsOut) argument = argument.WithRefKindKeyword
+                (
+                    refKindKeyword: Token(SyntaxKind.OutKeyword)
+                );
+
+                else if (param.IsIn) argument = argument.WithRefKindKeyword
+                (
+                    refKindKeyword: Token(SyntaxKind.InKeyword)
+                );
+
                 //
-                // TODO: "IN"
+                // "ParameterType.IsByRef" param.Is[In|Out] eseten is igazat ad vissza -> a lenti feltetel utoljara szerepeljen.
                 //
 
-                if (param.ParameterType.IsByRef) argument = argument.WithRefKindKeyword
+                else if (param.ParameterType.IsByRef) argument = argument.WithRefKindKeyword
                 (
-                    refKindKeyword: Token(param.IsOut ? SyntaxKind.OutKeyword : SyntaxKind.RefKeyword)
+                    refKindKeyword: Token(SyntaxKind.RefKeyword)
                 );
 
                 return argument;

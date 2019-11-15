@@ -84,19 +84,6 @@ namespace Solti.Utils.DI.Proxy.Tests
         }
 
         [Test]
-        public void DeclareMethod_ShouldDeclareTheDesiredMethod()
-        {
-            Assert.That(DeclareMethod(Foo).NormalizeWhitespace().ToFullString(), Is.EqualTo("System.Int32 Solti.Utils.DI.Proxy.Tests.ProxyGeneratorTests.IFoo<T>.Foo<TT>(System.Int32 a, out System.String b, ref TT c)"));
-
-            Type typeOfT = typeof(List<>).GetGenericArguments().Single();
-
-            Assert.That(DeclareMethod(typeOfT, "Foo", new[] {SyntaxKind.PrivateKeyword, SyntaxKind.StaticKeyword}, new[] {typeOfT.Name}, new Dictionary<string, Type>
-            {
-                {"param", typeOfT}
-            }).NormalizeWhitespace().ToFullString(), Is.EqualTo("private static T Foo<T>(T param)"));
-        }
-
-        [Test]
         public void AssignByRefParameters_ShouldAssignByRefParameters()
         {
             IReadOnlyList<ExpressionStatementSyntax> assignments = AssignByRefParameters(Foo, DeclareLocal<object[]>("args"));
@@ -284,6 +271,23 @@ namespace Solti.Utils.DI.Proxy.Tests
         public void GenerateProxyEvent_Test()
         {
             Assert.That(SyntaxFactory.ClassDeclaration("Test").WithMembers(SyntaxFactory.List(GenerateProxyEvent(Event))).NormalizeWhitespace(eol: "\n").ToString(), Is.EqualTo(File.ReadAllText(Path.Combine("Proxy", "EventSrc.txt"))));
+        }
+
+        [Test]
+        public void DeclareMethod_ShouldSupportRefKeywords() 
+        {
+            Assert.That(DeclareMethod(typeof(IRefInterfacce).GetMethod(nameof(IRefInterfacce.RefMethod), BindingFlags.Instance | BindingFlags.Public)).NormalizeWhitespace().ToString(), Is.EqualTo("void Solti.Utils.DI.Proxy.Tests.ProxyGeneratorTests.IRefInterfacce.RefMethod(in System.Object a, out System.Object b, ref System.Object c)"));
+        }
+
+        [Test]
+        public void InvokeMethod_ShouldSupportRefKeywords() 
+        {
+            Assert.That(InvokeMethod(typeof(IRefInterfacce).GetMethod(nameof(IRefInterfacce.RefMethod), BindingFlags.Instance | BindingFlags.Public), "target", new[] {"a", "b", "c"}).NormalizeWhitespace().ToString(), Is.EqualTo("target.RefMethod(in a, out b, ref c)"));
+        }
+
+        private interface IRefInterfacce 
+        {
+            void RefMethod(in object a, out object b, ref object c);
         }
     }
 

@@ -18,7 +18,7 @@ namespace Solti.Utils.DI.Proxy.Tests
     {
         public interface IMyInterface
         {
-            int Hooked(int val);
+            int Hooked(in int val);
             int NotHooked(int val);
         }
 
@@ -47,7 +47,7 @@ namespace Solti.Utils.DI.Proxy.Tests
 
         private sealed class MyClass : IMyInterface
         {
-            public int Hooked(int val)
+            public int Hooked(in int val)
             {
                 return val;
             }
