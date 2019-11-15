@@ -1,5 +1,5 @@
 ﻿/********************************************************************************
-* IServiceFactory.cs                                                            *
+* IDisposableEx.cs                                                              *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
@@ -7,10 +7,14 @@ using System;
 
 namespace Solti.Utils.DI.Internals
 {
-    internal interface IServiceFactory
+    /// <summary>
+    /// Extends the <see cref="IDisposable"/> interface.
+    /// </summary>
+    public interface IDisposableEx: IDisposable
     {
-        Func<IInjector, Type, object> Factory { get; set; }
-
-        object GetService(Func<IInjector> injectorFactory);
+        /// <summary>
+        /// Indicates that the object was disposed or not.
+        /// </summary>
+        bool Disposed { get; }
     }
 }
