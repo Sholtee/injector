@@ -72,7 +72,7 @@ Registering a service can be done via several patterns (I name them recipes):
   ```
   Later you may request the specialized version of the service entry without registering it:
   ```csharp
-  container.Get<IMyGenericService<string>>(QueryMode.AllowSpecialization);
+  container.Get<IMyGenericService<string>>(QueryModes.AllowSpecialization);
   ```
   Remarks:
   - Implementations must not have more than one public constructor (or you must annotate the appropriate one with the `ServiceActivatorAttribute`)!
