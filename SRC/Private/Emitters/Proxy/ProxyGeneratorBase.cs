@@ -20,10 +20,9 @@ namespace Solti.Utils.DI.Internals
 {
     internal static class ProxyGeneratorBase
     {
-        public static readonly string
-            // https://github.com/dotnet/roslyn/issues/4861
-            Value = nameof(Value).ToLower();
         public const string
+            // https://github.com/dotnet/roslyn/issues/4861
+            Value = "value",
             GeneratedClassName = "GeneratedProxy";
 
         private static AccessorDeclarationSyntax DeclareAccessor(SyntaxKind kind, CSharpSyntaxNode body)

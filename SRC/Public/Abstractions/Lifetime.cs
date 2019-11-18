@@ -3,6 +3,8 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
+using System.Diagnostics.CodeAnalysis;
+
 namespace Solti.Utils.DI
 {
     using Internals;
@@ -10,6 +12,7 @@ namespace Solti.Utils.DI
     /// <summary>
     /// Describes the lifetime of a service. A service can be registered in various ways. For more information check out the <see cref="IServiceContainerExtensions"/> class.
     /// </summary>
+    [SuppressMessage("Naming", "CA1724:Type names should not match namespaces", Justification = "The 'Lifetime' namepsace exists only in .NET Framework which won't be targeted.")]
     public enum Lifetime
     {
         /// <summary>

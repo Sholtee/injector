@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
@@ -106,6 +107,7 @@ namespace Solti.Utils.DI.Internals
             // problemat.
             //
 
+            [SuppressMessage("Globalization", "CA1307: Specify StringComparison", Justification = "Type names are not localized.")]
             public int GetHashCode(Type obj) => (obj.FullName ?? obj.Name).GetHashCode();
         }
 

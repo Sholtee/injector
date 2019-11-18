@@ -95,6 +95,9 @@ namespace Solti.Utils.DI
         /// </summary>
         public virtual Type Resolve(Type iface)
         {
+            if (iface == null)
+                throw new ArgumentNullException(nameof(iface));
+
             if (Supports(iface))
             {
                 Type result = Assembly.GetType(ClassName, throwOnError: true);
