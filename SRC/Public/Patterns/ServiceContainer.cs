@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -18,9 +19,11 @@ namespace Solti.Utils.DI
     using Properties;
     using Internals;
 
+
     /// <summary>
     /// Implements the <see cref="IServiceContainer"/> interface.
     /// </summary>
+    [SuppressMessage("Naming", "CA1710:Identifiers should have correct suffix", Justification = "The name provides meaningful information about the implementation")]
     public class ServiceContainer : Composite<IServiceContainer>, IServiceContainer
     {
         private readonly Dictionary<(Type Interface, string Name), AbstractServiceEntry> FEntries;
@@ -75,7 +78,7 @@ namespace Solti.Utils.DI
         /// <summary>
         /// See <see cref="IServiceContainer.Get"/>.
         /// </summary>
-        public AbstractServiceEntry Get(Type serviceInterface, string name, QueryMode mode)
+        public AbstractServiceEntry Get(Type serviceInterface, string name, QueryModes mode)
         {
             if (serviceInterface == null)
                 throw new ArgumentNullException(nameof(serviceInterface));
@@ -98,7 +101,7 @@ namespace Solti.Utils.DI
                 // 2. eset: A bejegyzes generikus parjat kell majd feldolgozni.
                 //
 
-                bool hasGenericEntry = mode.HasFlag(QueryMode.AllowSpecialization) &&
+                bool hasGenericEntry = mode.HasFlag(QueryModes.AllowSpecialization) &&
                                        serviceInterface.IsGenericType() &&
                                        FEntries.TryGetValue
                                        (
@@ -111,7 +114,7 @@ namespace Solti.Utils.DI
                 //
 
                 if (!hasGenericEntry)
-                    return !mode.HasFlag(QueryMode.ThrowOnError) ? (AbstractServiceEntry) null : throw new ServiceNotFoundException((serviceInterface, name));
+                    return !mode.HasFlag(QueryModes.ThrowOnError) ? (AbstractServiceEntry) null : throw new ServiceNotFoundException((serviceInterface, name));
             }
 
             Debug.Assert(result.IsGeneric());
@@ -132,7 +135,7 @@ namespace Solti.Utils.DI
 
                     return result
                         .Owner
-                        .Get(serviceInterface, name, QueryMode.AllowSpecialization)
+                        .Get(serviceInterface, name, QueryModes.AllowSpecialization)
 
                         //
                         // A CopyTo() belsoleg a this.Add()-et fogja hivni, reszleteket lasd a kivetel kezeloben.
@@ -155,7 +158,7 @@ namespace Solti.Utils.DI
                 // egyszeruen visszaadjuk a masik szal altal regisztralt peldanyt.
                 //
 
-                return Get(serviceInterface, name, QueryMode.ThrowOnError);
+                return Get(serviceInterface, name, QueryModes.ThrowOnError);
             }
         }
 

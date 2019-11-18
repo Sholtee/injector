@@ -3,9 +3,11 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
+#if IGNORE_VISIBILITY
 using System;
 using System.Diagnostics;
 using System.Reflection;
+#endif
 
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -14,16 +16,21 @@ namespace Solti.Utils.DI.Internals
 {
     internal static class CompilationOptionsFactory
     {
-        private static readonly PropertyInfo TopLevelBinderFlagsProperty;
+#if IGNORE_VISIBILITY
+        private static readonly PropertyInfo TopLevelBinderFlagsProperty = GetTopLevelBinderFlags();
 
-        private static readonly uint IgnoreAccessibility;
+        private static readonly uint IgnoreAccessibility = GetIgnoreAccessibilityFlag();
 
-        static CompilationOptionsFactory()
+        private static PropertyInfo GetTopLevelBinderFlags() 
         {
-            TopLevelBinderFlagsProperty = typeof(CSharpCompilationOptions)
+            PropertyInfo result = typeof(CSharpCompilationOptions)
                 .GetProperty("TopLevelBinderFlags", BindingFlags.Instance | BindingFlags.NonPublic);
-            Debug.Assert(TopLevelBinderFlagsProperty != null);
+            Debug.Assert(result != null);
+            return result;
+        }
 
+        private static uint GetIgnoreAccessibilityFlag() 
+        {
             Type binderFlagsType = typeof(CSharpCompilationOptions)
                 .Assembly()
                 .GetType("Microsoft.CodeAnalysis.CSharp.BinderFlags");
@@ -33,20 +40,25 @@ namespace Solti.Utils.DI.Internals
                 .GetField("IgnoreAccessibility", BindingFlags.Static | BindingFlags.Public);
             Debug.Assert(ignoreAccessibility != null);
 
-            IgnoreAccessibility = (uint) ignoreAccessibility.GetValue(null);
+            return (uint) ignoreAccessibility.GetValue(null);
         }
-
-        public static CSharpCompilationOptions Create(bool ignoreAccessChecks)
+#endif
+        public static CSharpCompilationOptions Create()
         {
             var options = new CSharpCompilationOptions
             (
                 outputKind: OutputKind.DynamicallyLinkedLibrary,
-                metadataImportOptions: ignoreAccessChecks ? MetadataImportOptions.All : MetadataImportOptions.Public,
+                metadataImportOptions:
+#if IGNORE_VISIBILITY
+                    MetadataImportOptions.All,
+#else
+                    MetadataImportOptions.Public,
+#endif
                 optimizationLevel: OptimizationLevel.Release
             );
-
+#if IGNORE_VISIBILITY
             if (ignoreAccessChecks) TopLevelBinderFlagsProperty.FastSetValue(options, IgnoreAccessibility);
-
+#endif
             return options;
         }
     }

@@ -44,3 +44,4 @@
   - *added:* `ObjectExtensions.Act()` can be called against interfaces
   - *added:* `ProxyGenerator` now supports `in` parameter modifier (introduced in C# 7.2)
   - *renamed:* `QueryOptionsAttribute` to `OptionsAttribute`
+  - *renamed:* `QueryMode` to `QueryModes`

@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Globalization;
 using System.Reflection;
 
 namespace Solti.Utils.DI.Internals
@@ -28,7 +29,7 @@ namespace Solti.Utils.DI.Internals
                 throw new ArgumentNullException(nameof(instance));
 
             if (!@interface.IsInstanceOfType(instance))
-                throw new InvalidOperationException(string.Format(Resources.NOT_ASSIGNABLE, @interface, instance.GetType()));
+                throw new InvalidOperationException(string.Format(CultureInfo.CurrentCulture, Resources.NOT_ASSIGNABLE, @interface, instance.GetType()));
 
             FInstance = instance;
             FReleaseOnDispose = releaseOnDispose;

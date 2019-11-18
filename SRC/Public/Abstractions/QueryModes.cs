@@ -1,5 +1,5 @@
 /********************************************************************************
-* QueryMode.cs                                                                  *
+* QueryModes.cs                                                                 *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
@@ -11,7 +11,7 @@ namespace Solti.Utils.DI
     /// Specifies flags that control the <see cref="IServiceContainer.Get"/> method.
     /// </summary>
     [Flags]
-    public enum QueryMode
+    public enum QueryModes
     {
         /// <summary>
         /// Allows returning NULL if the desired service could not be found.

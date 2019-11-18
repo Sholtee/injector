@@ -3,6 +3,7 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
+using System;
 using System.Linq;
 using System.Reflection;
 
@@ -24,6 +25,12 @@ namespace Solti.Utils.DI
         /// <remarks>You can annotate services with the <see cref="ServiceRegistrationAttribute"/> descendants.</remarks>
         public static IServiceContainer Setup(this IServiceContainer container, Assembly assembly)
         {
+            if (container == null)
+                throw new ArgumentNullException(nameof(container));
+
+            if (assembly == null)
+                throw new ArgumentNullException(nameof(assembly));
+
             foreach (TypeInfo ti in assembly.DefinedTypes.Where(t => t.IsClass || t.IsInterface))
                 foreach (ServiceRegistrationAttribute attr in ti.GetCustomAttributes<ServiceRegistrationAttribute>())
                     attr.Register(container, ti.AsType());

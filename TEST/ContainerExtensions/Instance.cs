@@ -19,7 +19,7 @@ namespace Solti.Utils.DI.Container.Tests
         {
             Container.Instance<IInterface_1>(new Implementation_1_No_Dep());
 
-            AbstractServiceEntry entry = Container.Get<IInterface_1>(QueryMode.ThrowOnError);
+            AbstractServiceEntry entry = Container.Get<IInterface_1>(QueryModes.ThrowOnError);
 
             Assert.That(entry.IsInstance());
             Assert.False(entry.IsLazy());
@@ -34,7 +34,7 @@ namespace Solti.Utils.DI.Container.Tests
 
             Container.Instance(instance);
 
-            Assert.AreSame(instance, Container.CreateChild().Get<IInterface_1>(QueryMode.ThrowOnError).Value);
+            Assert.AreSame(instance, Container.CreateChild().Get<IInterface_1>(QueryModes.ThrowOnError).Value);
         }
 
         [Test]

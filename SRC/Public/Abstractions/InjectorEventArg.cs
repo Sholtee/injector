@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Globalization;
 #if NETSTANDARD1_6
 using System.Reflection;
 #endif
@@ -56,7 +57,7 @@ namespace Solti.Utils.DI
             get => FService;
             set => FService = Interface == null || Interface.IsInstanceOfType(value)
                 ? value
-                : throw new Exception(string.Format(Resources.INVALID_INSTANCE, Interface));
+                : throw new Exception(string.Format(CultureInfo.CurrentCulture, Resources.INVALID_INSTANCE, Interface));
         }
     }
 }

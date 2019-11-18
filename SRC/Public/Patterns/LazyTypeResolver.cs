@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Globalization;
 using System.IO;
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -101,7 +102,7 @@ namespace Solti.Utils.DI
                 if (iface.IsAssignableFrom(result))
                     return result;
             }
-            throw new NotSupportedException(string.Format(Resources.INTERFACE_NOT_SUPPORTED, iface));
+            throw new NotSupportedException(string.Format(CultureInfo.CurrentCulture, Resources.INTERFACE_NOT_SUPPORTED, iface));
         }
     }
 

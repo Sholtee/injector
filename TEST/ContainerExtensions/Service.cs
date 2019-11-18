@@ -31,7 +31,7 @@ namespace Solti.Utils.DI.Container.Tests
             Container
                 .Service(typeof(IInterface_3<>), typeof(Implementation_3_IInterface_1_Dependant<>), lifetime);
 
-            AbstractServiceEntry entry = Container.Get<IInterface_3<int>>(QueryMode.AllowSpecialization);
+            AbstractServiceEntry entry = Container.Get<IInterface_3<int>>(QueryModes.AllowSpecialization);
 
             Assert.That(entry, Is.Not.Null);
             Assert.That(entry.Interface, Is.EqualTo(typeof(IInterface_3<int>)));
@@ -86,7 +86,7 @@ namespace Solti.Utils.DI.Container.Tests
 
             ctor = typeof(Implementation_9_MultiCtor<int>).GetConstructor(new Type[] { typeof(IInterface_1) });
 
-            Assert.That(Container.Get<IInterface_3<int>>(QueryMode.AllowSpecialization).Factory, Is.EqualTo(Resolver.Get(ctor)));
+            Assert.That(Container.Get<IInterface_3<int>>(QueryModes.AllowSpecialization).Factory, Is.EqualTo(Resolver.Get(ctor)));
         }
 
         [Test]

@@ -25,7 +25,7 @@ namespace Solti.Utils.DI.Container.Tests
 
             Container.Lazy<IInterface_1>(mockTypeResolver.Object);
 
-            AbstractServiceEntry entry = Container.Get<IInterface_1>(QueryMode.ThrowOnError);
+            AbstractServiceEntry entry = Container.Get<IInterface_1>(QueryModes.ThrowOnError);
 
             Assert.That(entry.IsService());
             Assert.That(entry.IsLazy());
@@ -82,7 +82,7 @@ namespace Solti.Utils.DI.Container.Tests
 
             for (int i = 0; i < 2; i++)
             {
-                Assert.AreEqual(new TransientServiceEntry(typeof(IInterface_3<int>), null, typeof(Implementation_3_IInterface_1_Dependant<int>), Container), Container.Get<IInterface_3<int>>(QueryMode.AllowSpecialization));
+                Assert.AreEqual(new TransientServiceEntry(typeof(IInterface_3<int>), null, typeof(Implementation_3_IInterface_1_Dependant<int>), Container), Container.Get<IInterface_3<int>>(QueryModes.AllowSpecialization));
 
                 mockResolver.Verify(r => r.Resolve(It.Is<Type>(t => t == typeof(IInterface_3<string>))),  Times.Never);
                 mockResolver.Verify(r => r.Resolve(It.Is<Type>(t => t == typeof(IInterface_3<>))),        Times.Once);

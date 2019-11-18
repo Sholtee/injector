@@ -6,6 +6,8 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using System.Linq;
 #if NETSTANDARD1_6
 using System.Reflection;
@@ -21,6 +23,7 @@ namespace Solti.Utils.DI.Internals
 
         private Injector() => throw new NotSupportedException();
 
+        [SuppressMessage("Reliability", "CA2000:Dispose objects before losing scope", Justification = "The injector is responsible for disposing the entry.")]
         public Injector(IServiceContainer parent): base(parent)
         {
             //
@@ -72,7 +75,7 @@ namespace Solti.Utils.DI.Internals
                 if (FCurrentPath.Count(t => t == currentHop) > 1)
                     throw new CircularReferenceException(FCurrentPath);
 
-                AbstractServiceEntry entry = Get(iface, name, QueryMode.AllowSpecialization | QueryMode.ThrowOnError);
+                AbstractServiceEntry entry = Get(iface, name, QueryModes.AllowSpecialization | QueryModes.ThrowOnError);
 
                 //
                 // Lekerdezeshez mindig a deklaralo szervizkollekciobol csinalunk injector-t.
@@ -89,7 +92,7 @@ namespace Solti.Utils.DI.Internals
                 //
 
                 if (!iface.IsInstanceOfType(instance))
-                    throw new Exception(string.Format(Resources.INVALID_INSTANCE, iface));
+                    throw new Exception(string.Format(CultureInfo.CurrentCulture, Resources.INVALID_INSTANCE, iface));
 
                 //
                 // Ha az OnServiceRequested esemenyben felulirjak a szervizt akkor azt
@@ -122,7 +125,7 @@ namespace Solti.Utils.DI.Internals
             // lekerdezni, ekkor ne legyen kivetel.
             //
 
-            return Get(iface, name, QueryMode.Default)?.Lifetime;
+            return Get(iface, name, QueryModes.Default)?.Lifetime;
         }
 
         public event InjectorEventHandler<InjectorEventArg> OnServiceRequest;

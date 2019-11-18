@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Globalization;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
@@ -68,15 +69,12 @@ namespace Solti.Utils.DI.Internals
                     .Concat(type.GetReferences())
                     .Distinct()
                     .Select(asm => MetadataReference.CreateFromFile(asm.Location)),
-                options: CompilationOptionsFactory.Create
-                (
-                    ignoreAccessChecks: false
-                )
+                options: CompilationOptionsFactory.Create()
             );
 
             ImmutableArray<Diagnostic> diagnostics = compilation.GetDeclarationDiagnostics();
             if (diagnostics.Any(diag => diag.Severity == DiagnosticSeverity.Error))
-                throw new InvalidOperationException(string.Format(Resources.TYPE_NOT_VISIBLE, type));
+                throw new InvalidOperationException(string.Format(CultureInfo.CurrentCulture, Resources.TYPE_NOT_VISIBLE, type));
 #endif
         }
 
@@ -102,14 +100,7 @@ namespace Solti.Utils.DI.Internals
 #endif
                     .Select(asm => MetadataReference.CreateFromFile(asm.Location))
                 ,
-                options: CompilationOptionsFactory.Create
-                (
-#if IGNORE_VISIBILITY
-                    ignoreAccessChecks: true
-#else
-                    ignoreAccessChecks: false
-#endif
-                )
+                options: CompilationOptionsFactory.Create()
             );
 
             using (Stream stm = new MemoryStream())

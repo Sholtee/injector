@@ -29,7 +29,7 @@ namespace Solti.Utils.DI.Proxy
                 throw new ArgumentNullException(nameof(target));
 
             if (!typeof(TTarget).IsClass())
-                throw new ArgumentException(Resources.NOT_A_CLASS, nameof(TTarget));
+                throw new ArgumentException(Resources.NOT_A_CLASS);
 
             Target = target;
         }

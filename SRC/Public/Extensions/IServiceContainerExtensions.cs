@@ -5,6 +5,7 @@
 ********************************************************************************/
 using System;
 using System.Linq;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Solti.Utils.DI
 {
@@ -26,7 +27,7 @@ namespace Solti.Utils.DI
         /// <param name="mode">Options.</param>
         /// <returns>The requested service entry.</returns>
         /// <exception cref="ServiceNotFoundException">If the service could not be found.</exception>
-        public static AbstractServiceEntry Get<TInterface>(this IServiceContainer self, string name, QueryMode mode = QueryMode.Default)
+        public static AbstractServiceEntry Get<TInterface>(this IServiceContainer self, string name, QueryModes mode = QueryModes.Default)
         {
             if (self == null)
                 throw new ArgumentNullException(nameof(self));
@@ -41,7 +42,7 @@ namespace Solti.Utils.DI
         /// <param name="mode">Options.</param>
         /// <returns>The requested service entry.</returns>
         /// <exception cref="ServiceNotFoundException">If the service could not be found.</exception>
-        public static AbstractServiceEntry Get<TInterface>(this IServiceContainer self, QueryMode mode = QueryMode.Default) => self.Get<TInterface>(null, mode);
+        public static AbstractServiceEntry Get<TInterface>(this IServiceContainer self, QueryModes mode = QueryModes.Default) => self.Get<TInterface>(null, mode);
 
         /// <summary>
         /// Registers a new service with the given implementation.
@@ -154,7 +155,7 @@ namespace Solti.Utils.DI
             if (decorator == null)
                 throw new ArgumentNullException(nameof(decorator));
 
-            AbstractServiceEntry entry = self.Get(iface, name, QueryMode.AllowSpecialization | QueryMode.ThrowOnError);
+            AbstractServiceEntry entry = self.Get(iface, name, QueryModes.AllowSpecialization | QueryModes.ThrowOnError);
 
             //
             // Generikus szerviz, Abstract(), Instance() eseten valamint ha nem ez a 
@@ -194,6 +195,7 @@ namespace Solti.Utils.DI
         /// <param name="instance">The pre-created instance to be registered. It can not be null and must implement the <paramref name="iface"/> interface.</param>
         /// <param name="releaseOnDispose">Whether the system should dispose the instance on container disposal or not.</param>
         /// <returns>The container itself.</returns>
+        [SuppressMessage("Reliability", "CA2000:Dispose objects before losing scope", Justification = "The container is responsible for disposing the entry.")]
         public static IServiceContainer Instance(this IServiceContainer self, Type iface, string name, object instance, bool releaseOnDispose = false)
         {
             if (self == null)
@@ -219,6 +221,7 @@ namespace Solti.Utils.DI
         /// <param name="iface">The service interface to be registered. It can not be null and can be registered only once (with the given <paramref name="name"/>).</param>
         /// <param name="name">The (optional) name of the service.</param>
         /// <returns>The container itself.</returns>
+        [SuppressMessage("Reliability", "CA2000:Dispose objects before losing scope", Justification = "The container is responsible for disposing the entry.")]
         public static IServiceContainer Abstract(this IServiceContainer self, Type iface, string name = null)
         {
             if (self == null)

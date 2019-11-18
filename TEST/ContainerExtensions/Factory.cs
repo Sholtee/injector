@@ -29,7 +29,7 @@ namespace Solti.Utils.DI.Container.Tests
             Container.Factory(typeof(IInterface_3<>), factory);
 
             Assert.That(Container.Count, Is.EqualTo(1));
-            Assert.AreEqual(new TransientServiceEntry(typeof(IInterface_3<int>), null, factory, Container), Container.Get<IInterface_3<int>>(QueryMode.AllowSpecialization));
+            Assert.AreEqual(new TransientServiceEntry(typeof(IInterface_3<int>), null, factory, Container), Container.Get<IInterface_3<int>>(QueryModes.AllowSpecialization));
             Assert.That(Container.Count, Is.EqualTo(2));
         }
 

@@ -72,7 +72,7 @@ namespace Solti.Utils.DI.Container.Tests
             // rogzitette az uj elemet.
             //
 
-            Assert.That(Container.Get<IInterface_3<int>>(QueryMode.ThrowOnError).GetService(() => mockInjector.Object), Is.InstanceOf<DecoratedImplementation_3<int>>());
+            Assert.That(Container.Get<IInterface_3<int>>(QueryModes.ThrowOnError).GetService(() => mockInjector.Object), Is.InstanceOf<DecoratedImplementation_3<int>>());
             mockCallback.Verify(_ => _(It.IsAny<IInjector>(), It.IsAny<IInterface_3<int>>()), Times.Once);
         }
 

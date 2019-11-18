@@ -93,7 +93,7 @@ namespace Solti.Utils.DI.Container.Tests
             var entry = new TransientServiceEntry(typeof(IList<>), null, typeof(MyList<>), container);
             container.Add(entry);
 
-            Assert.That(container.Get(typeof(IList<>), null, QueryMode.ThrowOnError), Is.EqualTo(entry));
+            Assert.That(container.Get(typeof(IList<>), null, QueryModes.ThrowOnError), Is.EqualTo(entry));
         }
 
         [Test]
@@ -108,9 +108,9 @@ namespace Solti.Utils.DI.Container.Tests
             container.Add(new SingletonServiceEntry(typeof(IList<>), null, typeof(MyList<>), container));
 
             Assert.That(container.Count, Is.EqualTo(1));
-            Assert.Throws<ServiceNotFoundException>(() => container.Get(typeof(IList<int>), null, QueryMode.ThrowOnError));
+            Assert.Throws<ServiceNotFoundException>(() => container.Get(typeof(IList<int>), null, QueryModes.ThrowOnError));
             Assert.That(container.Count, Is.EqualTo(1));
-            Assert.That(container.Get(typeof(IList<int>), null, QueryMode.AllowSpecialization | QueryMode.ThrowOnError), Is.EqualTo(new SingletonServiceEntry(typeof(IList<int>), null, typeof(MyList<int>), container)));
+            Assert.That(container.Get(typeof(IList<int>), null, QueryModes.AllowSpecialization | QueryModes.ThrowOnError), Is.EqualTo(new SingletonServiceEntry(typeof(IList<int>), null, typeof(MyList<int>), container)));
             Assert.That(container.Count, Is.EqualTo(2));
         }
 
@@ -123,15 +123,15 @@ namespace Solti.Utils.DI.Container.Tests
             using (IServiceContainer child = container.CreateChild())
             {
                 Assert.That(child.Count, Is.EqualTo(1));
-                Assert.Throws<ServiceNotFoundException>(() => child.Get(typeof(IList<int>), null, QueryMode.ThrowOnError));
+                Assert.Throws<ServiceNotFoundException>(() => child.Get(typeof(IList<int>), null, QueryModes.ThrowOnError));
                 Assert.That(container.Count, Is.EqualTo(1));
                 Assert.That(child.Count, Is.EqualTo(1));
-                Assert.That(child.Get(typeof(IList<int>), null, QueryMode.AllowSpecialization | QueryMode.ThrowOnError), Is.EqualTo(new SingletonServiceEntry(typeof(IList<int>), null, typeof(MyList<int>), container)));
+                Assert.That(child.Get(typeof(IList<int>), null, QueryModes.AllowSpecialization | QueryModes.ThrowOnError), Is.EqualTo(new SingletonServiceEntry(typeof(IList<int>), null, typeof(MyList<int>), container)));
                 Assert.That(container.Count, Is.EqualTo(2));
                 Assert.That(child.Count, Is.EqualTo(2));
             }
 
-            Assert.That(container.Get(typeof(IList<int>), null, QueryMode.ThrowOnError), Is.EqualTo(new SingletonServiceEntry(typeof(IList<int>), null, typeof(MyList<int>), container)));
+            Assert.That(container.Get(typeof(IList<int>), null, QueryModes.ThrowOnError), Is.EqualTo(new SingletonServiceEntry(typeof(IList<int>), null, typeof(MyList<int>), container)));
         }
 
         [Test]
@@ -143,8 +143,8 @@ namespace Solti.Utils.DI.Container.Tests
             );
 
             Assert.IsNull(container.Get(typeof(IList<int>)));
-            Assert.Throws<ServiceNotFoundException>(() => container.Get(typeof(IList<int>), null, QueryMode.ThrowOnError));
-            Assert.That(container.Get(typeof(IList<>), null, QueryMode.ThrowOnError), Is.EqualTo(new SingletonServiceEntry(typeof(IList<>), null, typeof(MyList<>), null)));
+            Assert.Throws<ServiceNotFoundException>(() => container.Get(typeof(IList<int>), null, QueryModes.ThrowOnError));
+            Assert.That(container.Get(typeof(IList<>), null, QueryModes.ThrowOnError), Is.EqualTo(new SingletonServiceEntry(typeof(IList<>), null, typeof(MyList<>), null)));
         }
 
         [Test]
@@ -273,7 +273,7 @@ namespace Solti.Utils.DI.Container.Tests
                 .Service<IInterface_1, Implementation_1_No_Dep>()
                 .CreateChild();
 
-            Assert.That(child.Get<IInterface_1>(QueryMode.ThrowOnError).Implementation, Is.EqualTo(typeof(Implementation_1_No_Dep)));
+            Assert.That(child.Get<IInterface_1>(QueryModes.ThrowOnError).Implementation, Is.EqualTo(typeof(Implementation_1_No_Dep)));
         }
 
         [TestCase(Lifetime.Scoped)]
@@ -288,9 +288,9 @@ namespace Solti.Utils.DI.Container.Tests
 
             IServiceContainer child = Container.CreateChild();
 
-            Assert.AreEqual(GetHashCode(Container.Get<IInterface_1>(QueryMode.ThrowOnError)), GetHashCode(child.Get<IInterface_1>(QueryMode.ThrowOnError)));
-            Assert.AreEqual(GetHashCode(Container.Get<IInterface_2>(QueryMode.ThrowOnError)), GetHashCode(child.Get<IInterface_2>(QueryMode.ThrowOnError)));
-            Assert.AreEqual(GetHashCode(Container.Get<IDisposable>(QueryMode.ThrowOnError)), GetHashCode(child.Get<IDisposable>(QueryMode.ThrowOnError)));
+            Assert.AreEqual(GetHashCode(Container.Get<IInterface_1>(QueryModes.ThrowOnError)), GetHashCode(child.Get<IInterface_1>(QueryModes.ThrowOnError)));
+            Assert.AreEqual(GetHashCode(Container.Get<IInterface_2>(QueryModes.ThrowOnError)), GetHashCode(child.Get<IInterface_2>(QueryModes.ThrowOnError)));
+            Assert.AreEqual(GetHashCode(Container.Get<IDisposable>(QueryModes.ThrowOnError)), GetHashCode(child.Get<IDisposable>(QueryModes.ThrowOnError)));
 
             int GetHashCode(AbstractServiceEntry info) => new
             {
@@ -312,16 +312,16 @@ namespace Solti.Utils.DI.Container.Tests
             Container.Service<IInterface_1, Implementation_1_No_Dep>();
 
             Func<IInjector, Type, object>
-                originalFactory = Container.Get<IInterface_1>(QueryMode.ThrowOnError).Factory,
+                originalFactory = Container.Get<IInterface_1>(QueryModes.ThrowOnError).Factory,
                 proxiedFactory = Container
                     .Proxy<IInterface_1>((me, val) => new DecoratedImplementation_1())
-                    .Get<IInterface_1>(QueryMode.ThrowOnError)
+                    .Get<IInterface_1>(QueryModes.ThrowOnError)
                     .Factory;
 
             Assert.AreNotSame(originalFactory, proxiedFactory);
 
             IServiceContainer child = Container.CreateChild();
-            Assert.AreSame(proxiedFactory, child.Get<IInterface_1>(QueryMode.ThrowOnError).Factory);
+            Assert.AreSame(proxiedFactory, child.Get<IInterface_1>(QueryModes.ThrowOnError).Factory);
         }
 
         [Test]
@@ -331,8 +331,8 @@ namespace Solti.Utils.DI.Container.Tests
                 .CreateChild()
                 .Service<IInterface_1, Implementation_1_No_Dep>();
 
-            Assert.Throws<ServiceNotFoundException>(() => Container.Get<IInterface_1>(QueryMode.ThrowOnError));
-            Assert.DoesNotThrow(() => child.Get<IInterface_1>(QueryMode.ThrowOnError));
+            Assert.Throws<ServiceNotFoundException>(() => Container.Get<IInterface_1>(QueryModes.ThrowOnError));
+            Assert.DoesNotThrow(() => child.Get<IInterface_1>(QueryModes.ThrowOnError));
         }
 
 
@@ -413,8 +413,8 @@ namespace Solti.Utils.DI.Container.Tests
             entry.Lock.Reset();
 
             Task<AbstractServiceEntry>
-                t1 = Task.Run(() => Container.Get(typeof(IList<int>), null, QueryMode.ThrowOnError | QueryMode.AllowSpecialization)),
-                t2 = Task.Run(() => Container.Get(typeof(IList<int>), null, QueryMode.ThrowOnError | QueryMode.AllowSpecialization));
+                t1 = Task.Run(() => Container.Get(typeof(IList<int>), null, QueryModes.ThrowOnError | QueryModes.AllowSpecialization)),
+                t2 = Task.Run(() => Container.Get(typeof(IList<int>), null, QueryModes.ThrowOnError | QueryModes.AllowSpecialization));
            
             Thread.Sleep(10);
 
@@ -474,8 +474,8 @@ namespace Solti.Utils.DI.Container.Tests
                 entry.Lock.Reset();
 
                 Task<AbstractServiceEntry>
-                    t1 = Task.Run(() => child.Get(typeof(IList<int>), null, QueryMode.ThrowOnError | QueryMode.AllowSpecialization)),
-                    t2 = Task.Run(() => child.Get(typeof(IList<int>), null, QueryMode.ThrowOnError | QueryMode.AllowSpecialization));
+                    t1 = Task.Run(() => child.Get(typeof(IList<int>), null, QueryModes.ThrowOnError | QueryModes.AllowSpecialization)),
+                    t2 = Task.Run(() => child.Get(typeof(IList<int>), null, QueryModes.ThrowOnError | QueryModes.AllowSpecialization));
 
                 Thread.Sleep(10);
 

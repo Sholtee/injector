@@ -5,6 +5,7 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -18,13 +19,14 @@ namespace Solti.Utils.DI.Proxy
     /// Provides the mechanism for intercepting interface method calls.
     /// </summary>
     /// <typeparam name="TInterface">The interface to be intercepted.</typeparam>
-    public abstract class InterfaceInterceptor<TInterface>: IHasTarget<TInterface> where TInterface: class
+    public class InterfaceInterceptor<TInterface>: IHasTarget<TInterface> where TInterface: class
     {
         /// <summary>
         /// Signals that the original method should be called.
         /// </summary>
         /// <remarks>Internal, don't use it!</remarks>
-        public static object CALL_TARGET = new object();
+        [SuppressMessage("Design", "CA1051:Do not declare visible instance fields", Justification = "Descendants need direct access to the field")]
+        protected internal readonly object CALL_TARGET = new object();
 
         /// <summary>
         /// Extracts the <see cref="MethodInfo"/> from the given expression.
@@ -32,20 +34,26 @@ namespace Solti.Utils.DI.Proxy
         /// <param name="methodAccess">The expression to be process.</param>
         /// <returns>The extracted <see cref="MethodInfo"/> object.</returns>
         /// <remarks>This is an internal method, don't use it.</remarks>
-        public static MethodInfo MethodAccess(Expression<Action> methodAccess) => ((MethodCallExpression) methodAccess.Body).Method;
+        protected internal static MethodInfo MethodAccess(Expression<Action> methodAccess)
+        {
+            if (methodAccess == null)
+                throw new ArgumentNullException(nameof(methodAccess));
+
+            return ((MethodCallExpression) methodAccess.Body).Method;
+        }
 
         //
         // Ez itt NEM mukodik write-only property-kre
         //
 /*
-        protected static PropertyInfo PropertyAccess<TResult>(Expression<Func<TResult>> propertyAccess) => (PropertyInfo) ((MemberExpression) propertyAccess.Body).Member;
+        protected internal static PropertyInfo PropertyAccess<TResult>(Expression<Func<TResult>> propertyAccess) => (PropertyInfo) ((MemberExpression) propertyAccess.Body).Member;
 */
         //
         // Ez mukodne viszont forditas ideju kifejezesek nem tartalmazhatnak ertekadast (lasd: http://blog.ashmind.com/2007/09/07/expression-tree-limitations-in-c-30/) 
         // tehat pl: "() => i.Prop = 0" hiaba helyes nem fog fordulni.
         //
 /*
-        protected static PropertyInfo PropertyAccess(Expression<Action> propertyAccess) => (PropertyInfo) ((MemberExpression) ((BinaryExpression) propertyAccess.Body).Left).Member;
+        protected internal static PropertyInfo PropertyAccess(Expression<Action> propertyAccess) => (PropertyInfo) ((MemberExpression) ((BinaryExpression) propertyAccess.Body).Left).Member;
 */
         //
         // Szoval marad a mersekelten szep megoldas (esemenyeket pedig amugy sem lehet kitalalni kifejezesek segitsegevel):
@@ -54,13 +62,13 @@ namespace Solti.Utils.DI.Proxy
         /// <summary>
         /// All the <typeparamref name="TInterface"/> properties.
         /// </summary>
-        public static readonly IReadOnlyDictionary<string, PropertyInfo> Properties = typeof(TInterface).ListMembers(System.Reflection.TypeExtensions.GetProperties)
+        protected internal static readonly IReadOnlyDictionary<string, PropertyInfo> Properties = typeof(TInterface).ListMembers(System.Reflection.TypeExtensions.GetProperties)
             .ToDictionary(prop => prop.Name);
 
         /// <summary>
         /// All the <typeparamref name="TInterface"/> events.
         /// </summary>
-        public static readonly IReadOnlyDictionary<string, EventInfo> Events = typeof(TInterface).ListMembers(System.Reflection.TypeExtensions.GetEvents)
+        protected internal static readonly IReadOnlyDictionary<string, EventInfo> Events = typeof(TInterface).ListMembers(System.Reflection.TypeExtensions.GetEvents)
             .ToDictionary(ev => ev.Name);
 
         /// <summary>

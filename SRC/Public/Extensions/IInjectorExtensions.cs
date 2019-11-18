@@ -92,7 +92,7 @@ namespace Solti.Utils.DI
             // meg siman lehet az.
             //
 
-            self.LifetimeOf(iface) == Lifetime.Transient;
+            self != null ? self.LifetimeOf(iface) == Lifetime.Transient : throw new ArgumentNullException(nameof(self));
 
         /// <summary>
         /// Returns true if you should release service(s) with the given <typeparamref name="TInterface"/>, false otherwise.
