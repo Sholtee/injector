@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -38,10 +39,11 @@ namespace Solti.Utils.DI.Internals
         /// Destructor of this class.
         /// </summary>
         ~Disposable() => Dispose(disposeManaged: false);
- 
+
         /// <summary>
         /// Implements the <see cref="IDisposable.Dispose"/> method.
         /// </summary>
+        [SuppressMessage("Design", "CA1063:Implement IDisposable Correctly", Justification = "The method is implemented correctly.")]
         public void Dispose()
         {
             CheckDisposed();

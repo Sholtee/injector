@@ -89,7 +89,7 @@ namespace Solti.Utils.DI.Internals
 
         public static IReadOnlyList<Type> GetOwnGenericArguments(this Type src) => src
             .GetGenericArguments()
-            .Except(src.DeclaringType?.GetGenericArguments() ?? new Type[0], new GenericArgumentComparer())
+            .Except(src.DeclaringType?.GetGenericArguments() ?? Array.Empty<Type>(), new GenericArgumentComparer())
             .ToArray();
 
         //
