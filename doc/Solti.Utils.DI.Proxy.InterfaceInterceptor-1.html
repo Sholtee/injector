@@ -78,7 +78,7 @@
   <h6><strong>Assembly</strong>: Injector.dll</h6>
   <h5 id="Solti_Utils_DI_Proxy_InterfaceInterceptor_1_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract class InterfaceInterceptor&lt;TInterface&gt; : IHasTarget&lt;TInterface&gt; where TInterface : class</code></pre>
+    <pre><code class="lang-csharp hljs">public class InterfaceInterceptor&lt;TInterface&gt; : IHasTarget&lt;TInterface&gt; where TInterface : class</code></pre>
   </div>
   <h5 class="typeParameters">Type Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -133,7 +133,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static object CALL_TARGET</code></pre>
+    <pre><code class="lang-csharp hljs">protected readonly object CALL_TARGET</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -159,7 +159,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static readonly IReadOnlyDictionary&lt;string, EventInfo&gt; Events</code></pre>
+    <pre><code class="lang-csharp hljs">protected static readonly IReadOnlyDictionary&lt;string, EventInfo&gt; Events</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -182,7 +182,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static readonly IReadOnlyDictionary&lt;string, PropertyInfo&gt; Properties</code></pre>
+    <pre><code class="lang-csharp hljs">protected static readonly IReadOnlyDictionary&lt;string, PropertyInfo&gt; Properties</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -292,7 +292,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static MethodInfo MethodAccess(Expression&lt;Action&gt; methodAccess)</code></pre>
+    <pre><code class="lang-csharp hljs">protected static MethodInfo MethodAccess(Expression&lt;Action&gt; methodAccess)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">

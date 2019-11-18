@@ -985,12 +985,12 @@ references:
   isSpec: "True"
   fullName: Solti.Utils.DI.IServiceContainer.Count
   nameWithType: IServiceContainer.Count
-- uid: Solti.Utils.DI.IServiceContainer.Get(System.Type,System.String,Solti.Utils.DI.QueryMode)
-  name: Get(Type, String, QueryMode)
-  href: Solti.Utils.DI.IServiceContainer.html#Solti_Utils_DI_IServiceContainer_Get_System_Type_System_String_Solti_Utils_DI_QueryMode_
-  commentId: M:Solti.Utils.DI.IServiceContainer.Get(System.Type,System.String,Solti.Utils.DI.QueryMode)
-  fullName: Solti.Utils.DI.IServiceContainer.Get(System.Type, System.String, Solti.Utils.DI.QueryMode)
-  nameWithType: IServiceContainer.Get(Type, String, QueryMode)
+- uid: Solti.Utils.DI.IServiceContainer.Get(System.Type,System.String,Solti.Utils.DI.QueryModes)
+  name: Get(Type, String, QueryModes)
+  href: Solti.Utils.DI.IServiceContainer.html#Solti_Utils_DI_IServiceContainer_Get_System_Type_System_String_Solti_Utils_DI_QueryModes_
+  commentId: M:Solti.Utils.DI.IServiceContainer.Get(System.Type,System.String,Solti.Utils.DI.QueryModes)
+  fullName: Solti.Utils.DI.IServiceContainer.Get(System.Type, System.String, Solti.Utils.DI.QueryModes)
+  nameWithType: IServiceContainer.Get(Type, String, QueryModes)
 - uid: Solti.Utils.DI.IServiceContainer.Get*
   name: Get
   href: Solti.Utils.DI.IServiceContainer.html#Solti_Utils_DI_IServiceContainer_Get_
@@ -1089,24 +1089,24 @@ references:
   isSpec: "True"
   fullName: Solti.Utils.DI.IServiceContainerExtensions.Get
   nameWithType: IServiceContainerExtensions.Get
-- uid: Solti.Utils.DI.IServiceContainerExtensions.Get``1(Solti.Utils.DI.IServiceContainer,Solti.Utils.DI.QueryMode)
-  name: Get<TInterface>(IServiceContainer, QueryMode)
-  href: Solti.Utils.DI.IServiceContainerExtensions.html#Solti_Utils_DI_IServiceContainerExtensions_Get__1_Solti_Utils_DI_IServiceContainer_Solti_Utils_DI_QueryMode_
-  commentId: M:Solti.Utils.DI.IServiceContainerExtensions.Get``1(Solti.Utils.DI.IServiceContainer,Solti.Utils.DI.QueryMode)
-  name.vb: Get(Of TInterface)(IServiceContainer, QueryMode)
-  fullName: Solti.Utils.DI.IServiceContainerExtensions.Get<TInterface>(Solti.Utils.DI.IServiceContainer, Solti.Utils.DI.QueryMode)
-  fullName.vb: Solti.Utils.DI.IServiceContainerExtensions.Get(Of TInterface)(Solti.Utils.DI.IServiceContainer, Solti.Utils.DI.QueryMode)
-  nameWithType: IServiceContainerExtensions.Get<TInterface>(IServiceContainer, QueryMode)
-  nameWithType.vb: IServiceContainerExtensions.Get(Of TInterface)(IServiceContainer, QueryMode)
-- uid: Solti.Utils.DI.IServiceContainerExtensions.Get``1(Solti.Utils.DI.IServiceContainer,System.String,Solti.Utils.DI.QueryMode)
-  name: Get<TInterface>(IServiceContainer, String, QueryMode)
-  href: Solti.Utils.DI.IServiceContainerExtensions.html#Solti_Utils_DI_IServiceContainerExtensions_Get__1_Solti_Utils_DI_IServiceContainer_System_String_Solti_Utils_DI_QueryMode_
-  commentId: M:Solti.Utils.DI.IServiceContainerExtensions.Get``1(Solti.Utils.DI.IServiceContainer,System.String,Solti.Utils.DI.QueryMode)
-  name.vb: Get(Of TInterface)(IServiceContainer, String, QueryMode)
-  fullName: Solti.Utils.DI.IServiceContainerExtensions.Get<TInterface>(Solti.Utils.DI.IServiceContainer, System.String, Solti.Utils.DI.QueryMode)
-  fullName.vb: Solti.Utils.DI.IServiceContainerExtensions.Get(Of TInterface)(Solti.Utils.DI.IServiceContainer, System.String, Solti.Utils.DI.QueryMode)
-  nameWithType: IServiceContainerExtensions.Get<TInterface>(IServiceContainer, String, QueryMode)
-  nameWithType.vb: IServiceContainerExtensions.Get(Of TInterface)(IServiceContainer, String, QueryMode)
+- uid: Solti.Utils.DI.IServiceContainerExtensions.Get``1(Solti.Utils.DI.IServiceContainer,Solti.Utils.DI.QueryModes)
+  name: Get<TInterface>(IServiceContainer, QueryModes)
+  href: Solti.Utils.DI.IServiceContainerExtensions.html#Solti_Utils_DI_IServiceContainerExtensions_Get__1_Solti_Utils_DI_IServiceContainer_Solti_Utils_DI_QueryModes_
+  commentId: M:Solti.Utils.DI.IServiceContainerExtensions.Get``1(Solti.Utils.DI.IServiceContainer,Solti.Utils.DI.QueryModes)
+  name.vb: Get(Of TInterface)(IServiceContainer, QueryModes)
+  fullName: Solti.Utils.DI.IServiceContainerExtensions.Get<TInterface>(Solti.Utils.DI.IServiceContainer, Solti.Utils.DI.QueryModes)
+  fullName.vb: Solti.Utils.DI.IServiceContainerExtensions.Get(Of TInterface)(Solti.Utils.DI.IServiceContainer, Solti.Utils.DI.QueryModes)
+  nameWithType: IServiceContainerExtensions.Get<TInterface>(IServiceContainer, QueryModes)
+  nameWithType.vb: IServiceContainerExtensions.Get(Of TInterface)(IServiceContainer, QueryModes)
+- uid: Solti.Utils.DI.IServiceContainerExtensions.Get``1(Solti.Utils.DI.IServiceContainer,System.String,Solti.Utils.DI.QueryModes)
+  name: Get<TInterface>(IServiceContainer, String, QueryModes)
+  href: Solti.Utils.DI.IServiceContainerExtensions.html#Solti_Utils_DI_IServiceContainerExtensions_Get__1_Solti_Utils_DI_IServiceContainer_System_String_Solti_Utils_DI_QueryModes_
+  commentId: M:Solti.Utils.DI.IServiceContainerExtensions.Get``1(Solti.Utils.DI.IServiceContainer,System.String,Solti.Utils.DI.QueryModes)
+  name.vb: Get(Of TInterface)(IServiceContainer, String, QueryModes)
+  fullName: Solti.Utils.DI.IServiceContainerExtensions.Get<TInterface>(Solti.Utils.DI.IServiceContainer, System.String, Solti.Utils.DI.QueryModes)
+  fullName.vb: Solti.Utils.DI.IServiceContainerExtensions.Get(Of TInterface)(Solti.Utils.DI.IServiceContainer, System.String, Solti.Utils.DI.QueryModes)
+  nameWithType: IServiceContainerExtensions.Get<TInterface>(IServiceContainer, String, QueryModes)
+  nameWithType.vb: IServiceContainerExtensions.Get(Of TInterface)(IServiceContainer, String, QueryModes)
 - uid: Solti.Utils.DI.IServiceContainerExtensions.Instance(Solti.Utils.DI.IServiceContainer,System.Type,System.Object,System.Boolean)
   name: Instance(IServiceContainer, Type, Object, Boolean)
   href: Solti.Utils.DI.IServiceContainerExtensions.html#Solti_Utils_DI_IServiceContainerExtensions_Instance_Solti_Utils_DI_IServiceContainer_System_Type_System_Object_System_Boolean_
@@ -1719,30 +1719,30 @@ references:
   fullName.vb: Solti.Utils.DI.Proxy.ProxyUtils.Chain(Of TInterface)(TInterface, System.Func(Of TInterface, TInterface)())
   nameWithType: ProxyUtils.Chain<TInterface>(TInterface, Func<TInterface, TInterface>[])
   nameWithType.vb: ProxyUtils.Chain(Of TInterface)(TInterface, Func(Of TInterface, TInterface)())
-- uid: Solti.Utils.DI.QueryMode
-  name: QueryMode
-  href: Solti.Utils.DI.QueryMode.html
-  commentId: T:Solti.Utils.DI.QueryMode
-  fullName: Solti.Utils.DI.QueryMode
-  nameWithType: QueryMode
-- uid: Solti.Utils.DI.QueryMode.AllowSpecialization
+- uid: Solti.Utils.DI.QueryModes
+  name: QueryModes
+  href: Solti.Utils.DI.QueryModes.html
+  commentId: T:Solti.Utils.DI.QueryModes
+  fullName: Solti.Utils.DI.QueryModes
+  nameWithType: QueryModes
+- uid: Solti.Utils.DI.QueryModes.AllowSpecialization
   name: AllowSpecialization
-  href: Solti.Utils.DI.QueryMode.html#Solti_Utils_DI_QueryMode_AllowSpecialization
-  commentId: F:Solti.Utils.DI.QueryMode.AllowSpecialization
-  fullName: Solti.Utils.DI.QueryMode.AllowSpecialization
-  nameWithType: QueryMode.AllowSpecialization
-- uid: Solti.Utils.DI.QueryMode.Default
+  href: Solti.Utils.DI.QueryModes.html#Solti_Utils_DI_QueryModes_AllowSpecialization
+  commentId: F:Solti.Utils.DI.QueryModes.AllowSpecialization
+  fullName: Solti.Utils.DI.QueryModes.AllowSpecialization
+  nameWithType: QueryModes.AllowSpecialization
+- uid: Solti.Utils.DI.QueryModes.Default
   name: Default
-  href: Solti.Utils.DI.QueryMode.html#Solti_Utils_DI_QueryMode_Default
-  commentId: F:Solti.Utils.DI.QueryMode.Default
-  fullName: Solti.Utils.DI.QueryMode.Default
-  nameWithType: QueryMode.Default
-- uid: Solti.Utils.DI.QueryMode.ThrowOnError
+  href: Solti.Utils.DI.QueryModes.html#Solti_Utils_DI_QueryModes_Default
+  commentId: F:Solti.Utils.DI.QueryModes.Default
+  fullName: Solti.Utils.DI.QueryModes.Default
+  nameWithType: QueryModes.Default
+- uid: Solti.Utils.DI.QueryModes.ThrowOnError
   name: ThrowOnError
-  href: Solti.Utils.DI.QueryMode.html#Solti_Utils_DI_QueryMode_ThrowOnError
-  commentId: F:Solti.Utils.DI.QueryMode.ThrowOnError
-  fullName: Solti.Utils.DI.QueryMode.ThrowOnError
-  nameWithType: QueryMode.ThrowOnError
+  href: Solti.Utils.DI.QueryModes.html#Solti_Utils_DI_QueryModes_ThrowOnError
+  commentId: F:Solti.Utils.DI.QueryModes.ThrowOnError
+  fullName: Solti.Utils.DI.QueryModes.ThrowOnError
+  nameWithType: QueryModes.ThrowOnError
 - uid: Solti.Utils.DI.ServiceAlreadyRegisteredException
   name: ServiceAlreadyRegisteredException
   href: Solti.Utils.DI.ServiceAlreadyRegisteredException.html
@@ -1842,12 +1842,12 @@ references:
   isSpec: "True"
   fullName: Solti.Utils.DI.ServiceContainer.Dispose
   nameWithType: ServiceContainer.Dispose
-- uid: Solti.Utils.DI.ServiceContainer.Get(System.Type,System.String,Solti.Utils.DI.QueryMode)
-  name: Get(Type, String, QueryMode)
-  href: Solti.Utils.DI.ServiceContainer.html#Solti_Utils_DI_ServiceContainer_Get_System_Type_System_String_Solti_Utils_DI_QueryMode_
-  commentId: M:Solti.Utils.DI.ServiceContainer.Get(System.Type,System.String,Solti.Utils.DI.QueryMode)
-  fullName: Solti.Utils.DI.ServiceContainer.Get(System.Type, System.String, Solti.Utils.DI.QueryMode)
-  nameWithType: ServiceContainer.Get(Type, String, QueryMode)
+- uid: Solti.Utils.DI.ServiceContainer.Get(System.Type,System.String,Solti.Utils.DI.QueryModes)
+  name: Get(Type, String, QueryModes)
+  href: Solti.Utils.DI.ServiceContainer.html#Solti_Utils_DI_ServiceContainer_Get_System_Type_System_String_Solti_Utils_DI_QueryModes_
+  commentId: M:Solti.Utils.DI.ServiceContainer.Get(System.Type,System.String,Solti.Utils.DI.QueryModes)
+  fullName: Solti.Utils.DI.ServiceContainer.Get(System.Type, System.String, Solti.Utils.DI.QueryModes)
+  nameWithType: ServiceContainer.Get(Type, String, QueryModes)
 - uid: Solti.Utils.DI.ServiceContainer.Get*
   name: Get
   href: Solti.Utils.DI.ServiceContainer.html#Solti_Utils_DI_ServiceContainer_Get_
