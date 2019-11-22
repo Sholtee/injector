@@ -29,6 +29,17 @@ namespace Solti.Utils.DI.Internals
             CALL_TARGET = nameof(InterfaceInterceptor<TInterface>.CALL_TARGET),
             TARGET      = nameof(InterfaceInterceptor<TInterface>.Target);
 
+        private static IdentifierNameSyntax GenerateFieldName<TMember>(TMember current, Func<Type, BindingFlags, TMember[]> factory) where TMember: MemberInfo
+        {
+            var generator = typeof(TInterface)
+                .ListMembers(factory)
+                .Where(member => member.Name == current.Name)
+                .Select((member, i) => new { Index = i, Value = member })
+                .First(member => member.Value == current);
+
+            return IdentifierName($"F{generator.Value.Name}{generator.Index}");
+        }
+
         #region Internal
         internal static LocalDeclarationStatementSyntax CreateArgumentsArray(MethodInfo method) => DeclareLocal<object[]>("args", CreateArray<object>(method
             .GetParameters()
@@ -254,13 +265,7 @@ namespace Solti.Utils.DI.Internals
             // }
             //
 
-            var nameGenerator = typeof(TInterface)
-                .ListMembers(System.Reflection.TypeExtensions.GetProperties)
-                .Where(prop => prop.Name == ifaceProperty.Name)
-                .Select((prop, i) => new { Index = i, Value = prop })
-                .First(prop => prop.Value == ifaceProperty);
-
-            IdentifierNameSyntax fieldName = IdentifierName($"F{nameGenerator.Value.Name}{nameGenerator.Index}");
+            IdentifierNameSyntax fieldName = GenerateFieldName(ifaceProperty, System.Reflection.TypeExtensions.GetProperties);
 
             yield return DeclareField<PropertyInfo>
             (
@@ -435,13 +440,7 @@ namespace Solti.Utils.DI.Internals
             // }
             //
 
-            var nameGenerator = typeof(TInterface)
-                .ListMembers(System.Reflection.TypeExtensions.GetEvents)
-                .Where(ev => ev.Name == ifaceEvent.Name)
-                .Select((ev, i) => new { Index = i, Value = ev })
-                .First(ev => ev.Value == ifaceEvent);
-
-            IdentifierNameSyntax fieldName = IdentifierName($"F{nameGenerator.Value.Name}{nameGenerator.Index}");
+            IdentifierNameSyntax fieldName = GenerateFieldName(ifaceEvent, System.Reflection.TypeExtensions.GetEvents);
 
             LocalDeclarationStatementSyntax result;
 
