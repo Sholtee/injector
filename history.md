@@ -43,6 +43,6 @@
   - *added:* `Transient` services are freed on injector disposal (if they have not been disposed programmatically)
   - *added:* `ObjectExtensions.Act()` can be called against interfaces
   - *added:* `ProxyGenerator` now supports `in` parameter modifier (introduced in C# 7.2)
-  - *fixed:* Ambiguous naming `ProxyGenerator`
+  - *fixed:* Ambiguous naming in `ProxyGenerator`
   - *renamed:* `QueryOptionsAttribute` to `OptionsAttribute`
   - *renamed:* `QueryMode` to `QueryModes`
