@@ -757,65 +757,83 @@ references:
   fullName: Solti.Utils.DI.Internals.Disposable.Finalize
   nameWithType: Disposable.Finalize
 - uid: Solti.Utils.DI.Internals.DisposableWrapper`1
-  name: DisposableWrapper<T>
+  name: DisposableWrapper<TInterface>
   href: Solti.Utils.DI.Internals.DisposableWrapper-1.html
   commentId: T:Solti.Utils.DI.Internals.DisposableWrapper`1
-  name.vb: DisposableWrapper(Of T)
-  fullName: Solti.Utils.DI.Internals.DisposableWrapper<T>
-  fullName.vb: Solti.Utils.DI.Internals.DisposableWrapper(Of T)
-  nameWithType: DisposableWrapper<T>
-  nameWithType.vb: DisposableWrapper(Of T)
+  name.vb: DisposableWrapper(Of TInterface)
+  fullName: Solti.Utils.DI.Internals.DisposableWrapper<TInterface>
+  fullName.vb: Solti.Utils.DI.Internals.DisposableWrapper(Of TInterface)
+  nameWithType: DisposableWrapper<TInterface>
+  nameWithType.vb: DisposableWrapper(Of TInterface)
 - uid: Solti.Utils.DI.Internals.DisposableWrapper`1.#ctor(`0)
-  name: DisposableWrapper(T)
+  name: DisposableWrapper(TInterface)
   href: Solti.Utils.DI.Internals.DisposableWrapper-1.html#Solti_Utils_DI_Internals_DisposableWrapper_1__ctor__0_
   commentId: M:Solti.Utils.DI.Internals.DisposableWrapper`1.#ctor(`0)
-  fullName: Solti.Utils.DI.Internals.DisposableWrapper<T>.DisposableWrapper(T)
-  fullName.vb: Solti.Utils.DI.Internals.DisposableWrapper(Of T).DisposableWrapper(T)
-  nameWithType: DisposableWrapper<T>.DisposableWrapper(T)
-  nameWithType.vb: DisposableWrapper(Of T).DisposableWrapper(T)
+  fullName: Solti.Utils.DI.Internals.DisposableWrapper<TInterface>.DisposableWrapper(TInterface)
+  fullName.vb: Solti.Utils.DI.Internals.DisposableWrapper(Of TInterface).DisposableWrapper(TInterface)
+  nameWithType: DisposableWrapper<TInterface>.DisposableWrapper(TInterface)
+  nameWithType.vb: DisposableWrapper(Of TInterface).DisposableWrapper(TInterface)
 - uid: Solti.Utils.DI.Internals.DisposableWrapper`1.#ctor*
   name: DisposableWrapper
   href: Solti.Utils.DI.Internals.DisposableWrapper-1.html#Solti_Utils_DI_Internals_DisposableWrapper_1__ctor_
   commentId: Overload:Solti.Utils.DI.Internals.DisposableWrapper`1.#ctor
   isSpec: "True"
-  fullName: Solti.Utils.DI.Internals.DisposableWrapper<T>.DisposableWrapper
-  fullName.vb: Solti.Utils.DI.Internals.DisposableWrapper(Of T).DisposableWrapper
-  nameWithType: DisposableWrapper<T>.DisposableWrapper
-  nameWithType.vb: DisposableWrapper(Of T).DisposableWrapper
-- uid: Solti.Utils.DI.Internals.DisposableWrapper`1.Dispose(System.Boolean)
-  name: Dispose(Boolean)
-  href: Solti.Utils.DI.Internals.DisposableWrapper-1.html#Solti_Utils_DI_Internals_DisposableWrapper_1_Dispose_System_Boolean_
-  commentId: M:Solti.Utils.DI.Internals.DisposableWrapper`1.Dispose(System.Boolean)
-  fullName: Solti.Utils.DI.Internals.DisposableWrapper<T>.Dispose(System.Boolean)
-  fullName.vb: Solti.Utils.DI.Internals.DisposableWrapper(Of T).Dispose(System.Boolean)
-  nameWithType: DisposableWrapper<T>.Dispose(Boolean)
-  nameWithType.vb: DisposableWrapper(Of T).Dispose(Boolean)
+  fullName: Solti.Utils.DI.Internals.DisposableWrapper<TInterface>.DisposableWrapper
+  fullName.vb: Solti.Utils.DI.Internals.DisposableWrapper(Of TInterface).DisposableWrapper
+  nameWithType: DisposableWrapper<TInterface>.DisposableWrapper
+  nameWithType.vb: DisposableWrapper(Of TInterface).DisposableWrapper
+- uid: Solti.Utils.DI.Internals.DisposableWrapper`1.Dispose
+  name: Dispose()
+  href: Solti.Utils.DI.Internals.DisposableWrapper-1.html#Solti_Utils_DI_Internals_DisposableWrapper_1_Dispose
+  commentId: M:Solti.Utils.DI.Internals.DisposableWrapper`1.Dispose
+  fullName: Solti.Utils.DI.Internals.DisposableWrapper<TInterface>.Dispose()
+  fullName.vb: Solti.Utils.DI.Internals.DisposableWrapper(Of TInterface).Dispose()
+  nameWithType: DisposableWrapper<TInterface>.Dispose()
+  nameWithType.vb: DisposableWrapper(Of TInterface).Dispose()
 - uid: Solti.Utils.DI.Internals.DisposableWrapper`1.Dispose*
   name: Dispose
   href: Solti.Utils.DI.Internals.DisposableWrapper-1.html#Solti_Utils_DI_Internals_DisposableWrapper_1_Dispose_
   commentId: Overload:Solti.Utils.DI.Internals.DisposableWrapper`1.Dispose
   isSpec: "True"
-  fullName: Solti.Utils.DI.Internals.DisposableWrapper<T>.Dispose
-  fullName.vb: Solti.Utils.DI.Internals.DisposableWrapper(Of T).Dispose
-  nameWithType: DisposableWrapper<T>.Dispose
-  nameWithType.vb: DisposableWrapper(Of T).Dispose
-- uid: Solti.Utils.DI.Internals.DisposableWrapper`1.Target
-  name: Target
-  href: Solti.Utils.DI.Internals.DisposableWrapper-1.html#Solti_Utils_DI_Internals_DisposableWrapper_1_Target
-  commentId: P:Solti.Utils.DI.Internals.DisposableWrapper`1.Target
-  fullName: Solti.Utils.DI.Internals.DisposableWrapper<T>.Target
-  fullName.vb: Solti.Utils.DI.Internals.DisposableWrapper(Of T).Target
-  nameWithType: DisposableWrapper<T>.Target
-  nameWithType.vb: DisposableWrapper(Of T).Target
-- uid: Solti.Utils.DI.Internals.DisposableWrapper`1.Target*
-  name: Target
-  href: Solti.Utils.DI.Internals.DisposableWrapper-1.html#Solti_Utils_DI_Internals_DisposableWrapper_1_Target_
-  commentId: Overload:Solti.Utils.DI.Internals.DisposableWrapper`1.Target
+  fullName: Solti.Utils.DI.Internals.DisposableWrapper<TInterface>.Dispose
+  fullName.vb: Solti.Utils.DI.Internals.DisposableWrapper(Of TInterface).Dispose
+  nameWithType: DisposableWrapper<TInterface>.Dispose
+  nameWithType.vb: DisposableWrapper(Of TInterface).Dispose
+- uid: Solti.Utils.DI.Internals.DisposableWrapper`1.Disposed
+  name: Disposed
+  href: Solti.Utils.DI.Internals.DisposableWrapper-1.html#Solti_Utils_DI_Internals_DisposableWrapper_1_Disposed
+  commentId: P:Solti.Utils.DI.Internals.DisposableWrapper`1.Disposed
+  fullName: Solti.Utils.DI.Internals.DisposableWrapper<TInterface>.Disposed
+  fullName.vb: Solti.Utils.DI.Internals.DisposableWrapper(Of TInterface).Disposed
+  nameWithType: DisposableWrapper<TInterface>.Disposed
+  nameWithType.vb: DisposableWrapper(Of TInterface).Disposed
+- uid: Solti.Utils.DI.Internals.DisposableWrapper`1.Disposed*
+  name: Disposed
+  href: Solti.Utils.DI.Internals.DisposableWrapper-1.html#Solti_Utils_DI_Internals_DisposableWrapper_1_Disposed_
+  commentId: Overload:Solti.Utils.DI.Internals.DisposableWrapper`1.Disposed
   isSpec: "True"
-  fullName: Solti.Utils.DI.Internals.DisposableWrapper<T>.Target
-  fullName.vb: Solti.Utils.DI.Internals.DisposableWrapper(Of T).Target
-  nameWithType: DisposableWrapper<T>.Target
-  nameWithType.vb: DisposableWrapper(Of T).Target
+  fullName: Solti.Utils.DI.Internals.DisposableWrapper<TInterface>.Disposed
+  fullName.vb: Solti.Utils.DI.Internals.DisposableWrapper(Of TInterface).Disposed
+  nameWithType: DisposableWrapper<TInterface>.Disposed
+  nameWithType.vb: DisposableWrapper(Of TInterface).Disposed
+- uid: Solti.Utils.DI.Internals.DisposableWrapper`1.Invoke(System.Reflection.MethodInfo,System.Object[],System.Reflection.MemberInfo)
+  name: Invoke(MethodInfo, Object[], MemberInfo)
+  href: Solti.Utils.DI.Internals.DisposableWrapper-1.html#Solti_Utils_DI_Internals_DisposableWrapper_1_Invoke_System_Reflection_MethodInfo_System_Object___System_Reflection_MemberInfo_
+  commentId: M:Solti.Utils.DI.Internals.DisposableWrapper`1.Invoke(System.Reflection.MethodInfo,System.Object[],System.Reflection.MemberInfo)
+  name.vb: Invoke(MethodInfo, Object(), MemberInfo)
+  fullName: Solti.Utils.DI.Internals.DisposableWrapper<TInterface>.Invoke(System.Reflection.MethodInfo, System.Object[], System.Reflection.MemberInfo)
+  fullName.vb: Solti.Utils.DI.Internals.DisposableWrapper(Of TInterface).Invoke(System.Reflection.MethodInfo, System.Object(), System.Reflection.MemberInfo)
+  nameWithType: DisposableWrapper<TInterface>.Invoke(MethodInfo, Object[], MemberInfo)
+  nameWithType.vb: DisposableWrapper(Of TInterface).Invoke(MethodInfo, Object(), MemberInfo)
+- uid: Solti.Utils.DI.Internals.DisposableWrapper`1.Invoke*
+  name: Invoke
+  href: Solti.Utils.DI.Internals.DisposableWrapper-1.html#Solti_Utils_DI_Internals_DisposableWrapper_1_Invoke_
+  commentId: Overload:Solti.Utils.DI.Internals.DisposableWrapper`1.Invoke
+  isSpec: "True"
+  fullName: Solti.Utils.DI.Internals.DisposableWrapper<TInterface>.Invoke
+  fullName.vb: Solti.Utils.DI.Internals.DisposableWrapper(Of TInterface).Invoke
+  nameWithType: DisposableWrapper<TInterface>.Invoke
+  nameWithType.vb: DisposableWrapper(Of TInterface).Invoke
 - uid: Solti.Utils.DI.Internals.DuckBase`1
   name: DuckBase<T>
   href: Solti.Utils.DI.Internals.DuckBase-1.html
