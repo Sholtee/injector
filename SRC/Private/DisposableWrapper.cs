@@ -67,6 +67,13 @@ namespace Solti.Utils.DI.Internals
         {
             Debug.Assert(iface.IsInstanceOfType(instance));
 
+            //
+            // Van egyaltalan dolgunk?
+            //
+
+            if (instance is IDisposableEx)
+                return (IDisposableEx) instance;
+
             Type wrapper = Cache<Type, Type>.GetOrAdd
             (
                 iface,
