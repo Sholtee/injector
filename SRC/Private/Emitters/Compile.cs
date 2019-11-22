@@ -5,6 +5,7 @@
 ********************************************************************************/
 using System;
 using System.Globalization;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
@@ -111,13 +112,19 @@ namespace Solti.Utils.DI.Internals
 
                 if (!result.Success)
                 {
-                    Diagnostic[] failures = result
+                    string[] failures = result
                         .Diagnostics
                         .Where(d => d.Severity == DiagnosticSeverity.Error)
+                        .Select(d => d.ToString())
                         .ToArray();
 
                     var ex = new Exception(Resources.COMPILATION_FAILED);
-                    ex.Data.Add(nameof(failures), failures);
+
+                    IDictionary extra = ex.Data;
+
+                    extra.Add(nameof(failures), failures);
+                    extra.Add("src", root.NormalizeWhitespace().ToFullString());
+                    extra.Add(nameof(references), references);
 
                     throw ex;
                 }
