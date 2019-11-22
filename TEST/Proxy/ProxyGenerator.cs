@@ -191,7 +191,7 @@ namespace Solti.Utils.DI.Proxy.Tests
         [Test]
         public void GenerateProxyIndexer_Test()
         {
-            Assert.That(GenerateProxyIndexer(Indexer).NormalizeWhitespace(eol: "\n").ToFullString(), Is.EqualTo(File.ReadAllText(Path.Combine("Proxy", "IndexerSrc.txt"))));
+            Assert.That(GenerateProxyIndexer(Indexer, SyntaxFactory.IdentifierName($"F{Indexer.Name}")).NormalizeWhitespace(eol: "\n").ToFullString(), Is.EqualTo(File.ReadAllText(Path.Combine("Proxy", "IndexerSrc.txt"))));
         }
 
         [Test]

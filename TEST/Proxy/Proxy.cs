@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Collections.Generic;
 using System.Reflection;
 
 using NUnit.Framework;
@@ -113,6 +114,31 @@ namespace Solti.Utils.DI.Proxy.Tests
 
             ex = Assert.Throws<ArgumentException>(() => ProxyFactory.GetGeneratedProxyType(typeof(object), typeof(InterfaceInterceptor<object>)));
             Assert.That(ex.ParamName, Is.EqualTo("iface"));
+        }
+
+        [Test]
+        public void InterfaceProxy_ShouldWorkWithComplexInterfaces()
+        {
+            IList<string> proxy = ProxyFactory.Create<IList<string>, InterfaceInterceptor<IList<string>>>(new List<string>());
+
+            proxy.Add("Cica");
+
+            Assert.That(proxy.Count, Is.EqualTo(1));
+            Assert.That(proxy[0], Is.EqualTo("Cica"));
+        }
+
+        [Test]
+        public void InterfaceProxy_ShouldWorkWithOverloadedProperties() 
+        {
+            //
+            // IEnumerator.Current, IEnumerator<string>.Current
+            //
+
+            using (IEnumerator<string> proxy = ProxyFactory.Create<IEnumerator<string>, InterfaceInterceptor<IEnumerator<string>>>(new List<string> { "cica" }.GetEnumerator()))
+            {
+                Assert.That(proxy.MoveNext);
+                Assert.That(proxy.Current, Is.EqualTo("cica"));
+            }
         }
     }
 }

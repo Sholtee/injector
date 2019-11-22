@@ -235,7 +235,7 @@ namespace Solti.Utils.DI.Internals
         public static IEnumerable<MemberDeclarationSyntax> GenerateProxyProperty(PropertyInfo ifaceProperty)
         {
             //
-            // private static readonly PropertyInfo FProp = Properties["Prop"];
+            // private static readonly PropertyInfo FProp = Properties["IInterface.Prop"];
             //
             // TResult IInterface.Prop
             // {
@@ -254,7 +254,13 @@ namespace Solti.Utils.DI.Internals
             // }
             //
 
-            IdentifierNameSyntax fieldName = IdentifierName($"F{ifaceProperty.Name}");
+            var nameGenerator = typeof(TInterface)
+                .ListMembers(System.Reflection.TypeExtensions.GetProperties)
+                .Where(prop => prop.Name == ifaceProperty.Name)
+                .Select((prop, i) => new { Index = i, Value = prop })
+                .First(prop => prop.Value == ifaceProperty);
+
+            IdentifierNameSyntax fieldName = IdentifierName($"F{nameGenerator.Value.Name}{nameGenerator.Index}");
 
             yield return DeclareField<PropertyInfo>
             (
@@ -269,7 +275,7 @@ namespace Solti.Utils.DI.Internals
                     (
                         arguments: SingletonSeparatedList
                         (
-                            Argument(LiteralExpression(SyntaxKind.StringLiteralExpression, Literal(ifaceProperty.Name)))
+                            Argument(LiteralExpression(SyntaxKind.StringLiteralExpression, Literal(ifaceProperty.GetFullName())))
                         )
                     )
                 ),
@@ -283,7 +289,7 @@ namespace Solti.Utils.DI.Internals
 
             if (ifaceProperty.IsIndexer())
             {
-                yield return GenerateProxyIndexer(ifaceProperty);
+                yield return GenerateProxyIndexer(ifaceProperty, fieldName);
                 yield break;
             }
 
@@ -337,7 +343,7 @@ namespace Solti.Utils.DI.Internals
             );
         }
 
-        public static MemberDeclarationSyntax GenerateProxyIndexer(PropertyInfo ifaceProperty)
+        public static MemberDeclarationSyntax GenerateProxyIndexer(PropertyInfo ifaceProperty, IdentifierNameSyntax fieldName)
         {
             //
             // TResult IInterface.this[TParam1 p1, TPAram2 p2]
@@ -356,8 +362,6 @@ namespace Solti.Utils.DI.Internals
             //     }
             // }
             //
-
-            IdentifierNameSyntax fieldName = IdentifierName($"F{ifaceProperty.Name}");
 
             LocalDeclarationStatementSyntax result;
 
@@ -411,10 +415,10 @@ namespace Solti.Utils.DI.Internals
             );
         }
 
-        public static IEnumerable<MemberDeclarationSyntax> GenerateProxyEvent(EventInfo @event)
+        public static IEnumerable<MemberDeclarationSyntax> GenerateProxyEvent(EventInfo ifaceEvent)
         {
             //
-            // private static readonly EventInfo FEvent = Events("Event");
+            // private static readonly EventInfo FEvent = Events["IInterface.Event"];
             //
             // event EventType IInterface.Event
             // {
@@ -431,7 +435,13 @@ namespace Solti.Utils.DI.Internals
             // }
             //
 
-            IdentifierNameSyntax fieldName = IdentifierName($"F{@event.Name}");
+            var nameGenerator = typeof(TInterface)
+                .ListMembers(System.Reflection.TypeExtensions.GetEvents)
+                .Where(ev => ev.Name == ifaceEvent.Name)
+                .Select((ev, i) => new { Index = i, Value = ev })
+                .First(ev => ev.Value == ifaceEvent);
+
+            IdentifierNameSyntax fieldName = IdentifierName($"F{nameGenerator.Value.Name}{nameGenerator.Index}");
 
             LocalDeclarationStatementSyntax result;
 
@@ -448,7 +458,7 @@ namespace Solti.Utils.DI.Internals
                     (
                         arguments: SingletonSeparatedList
                         (
-                            Argument(LiteralExpression(SyntaxKind.StringLiteralExpression, Literal(@event.Name)))
+                            Argument(LiteralExpression(SyntaxKind.StringLiteralExpression, Literal(ifaceEvent.GetFullName())))
                         )
                     )
                 ),
@@ -462,7 +472,7 @@ namespace Solti.Utils.DI.Internals
 
             yield return DeclareEvent
             (
-                @event: @event,
+                @event: ifaceEvent,
                 addBody: Block
                 (
                     statements: new StatementSyntax[]
@@ -480,7 +490,7 @@ namespace Solti.Utils.DI.Internals
                         ),
                         ShouldCallTarget(result, ifTrue: ExpressionStatement
                         (
-                            expression: RegisterEvent(@event, TARGET, add: true))
+                            expression: RegisterEvent(ifaceEvent, TARGET, add: true))
                         )
                     }
                 ),
@@ -501,7 +511,7 @@ namespace Solti.Utils.DI.Internals
                         ),
                         ShouldCallTarget(result, ifTrue: ExpressionStatement
                         ( 
-                            expression: RegisterEvent(@event, TARGET, add: false))
+                            expression: RegisterEvent(ifaceEvent, TARGET, add: false))
                         )
                     }
                 )
