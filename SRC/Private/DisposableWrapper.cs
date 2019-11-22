@@ -46,7 +46,7 @@ namespace Solti.Utils.DI.Internals
         }
 
         /// <summary>
-        /// See <see cref="IDisposableEx"/>.
+        /// Indicates that the current instance was disposed or not.
         /// </summary>
         public bool Disposed { get; private set; }
 
