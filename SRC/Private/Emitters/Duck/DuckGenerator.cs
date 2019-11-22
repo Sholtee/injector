@@ -25,7 +25,7 @@ namespace Solti.Utils.DI.Internals
 
     internal static class DuckGenerator<TTarget, TInterface>
     {
-        private const string TARGET = nameof(IHasTarget<TTarget>.Target);
+        private const string TARGET = nameof(DuckBase<TTarget>.Target);
 
         internal static MethodDeclarationSyntax GenerateDuckMethod(MethodInfo ifaceMethod)
         {

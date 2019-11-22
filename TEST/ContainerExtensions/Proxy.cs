@@ -181,7 +181,12 @@ namespace Solti.Utils.DI.Container.Tests
         {
             Container
                 .Setup(typeof(ContainerTestsBase<>).Assembly())
-                .Service<IDisposable, Disposable>();
+                //
+                // Ne Transient legyen mert ott a szerviz proxy lesz ha az implementacio
+                // IDisposable leszarmazott.
+                //
+
+                .Service<IDisposable, Disposable>(Lifetime.Scoped);
 
             foreach (AbstractServiceEntry entry in Container.Where(e => typeof(IModule).IsAssignableFrom(e.Interface)))
                 Container.Proxy(entry.Interface, typeof(InterfaceInterceptor<>).MakeGenericType(entry.Interface));
