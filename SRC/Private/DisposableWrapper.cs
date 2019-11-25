@@ -71,8 +71,8 @@ namespace Solti.Utils.DI.Internals
             // Van egyaltalan dolgunk?
             //
 
-            if (instance is IDisposableEx)
-                return (IDisposableEx) instance;
+            if (instance is IDisposableEx ex)
+                return ex;
 
             Type wrapper = Cache<Type, Type>.GetOrAdd
             (
