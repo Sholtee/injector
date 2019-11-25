@@ -55,7 +55,7 @@ namespace Solti.Utils.DI.Internals
             // TResult IInterface.Foo<TGeneric>(T1 para1, ref T2 para2, out T3 para3, TGeneric para4) => Target.Foo(para1, ref para2, out para3, para4);
             //
 
-            return DeclareMethod(ifaceMethod).WithExpressionBody
+            return DeclareMethod(ifaceMethod, forceInlining: true).WithExpressionBody
             (
                 expressionBody: ArrowExpressionClause
                 (
@@ -148,13 +148,15 @@ namespace Solti.Utils.DI.Internals
                 (
                     property: ifaceProperty,
                     getBody: paramz => getBody,
-                    setBody: paramz => setBody
+                    setBody: paramz => setBody,
+                    forceInlining: true
                 )
                 : (MemberDeclarationSyntax) DeclareProperty
                 (
                     property: ifaceProperty,
                     getBody: getBody,
-                    setBody: setBody
+                    setBody: setBody,
+                    forceInlining: true
                 );
         }
 
@@ -178,7 +180,8 @@ namespace Solti.Utils.DI.Internals
                 (
                     expression: RegisterEvent(targetEvent, TARGET, add: true)
                 ),
-                removeBody: ArrowExpressionClause(RegisterEvent(targetEvent, TARGET, add: false))
+                removeBody: ArrowExpressionClause(RegisterEvent(targetEvent, TARGET, add: false)),
+                forceInlining: true
             );
         }
 

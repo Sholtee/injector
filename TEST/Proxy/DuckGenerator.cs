@@ -70,7 +70,7 @@ namespace Solti.Utils.DI.Proxy.Tests
         [Test]
         public void GenerateDuckMethod_ShouldGenerateTheDesiredMethodIfSupported()
         {
-            Assert.That(DuckGenerator<GoodFoo<int>, IFoo<int>>.GenerateDuckMethod(IfaceFoo).NormalizeWhitespace().ToFullString(), Is.EqualTo("System.Int32 Solti.Utils.DI.Proxy.Tests.DuckGeneratorTests.IFoo<System.Int32>.Foo<TT>(System.Int32 a, out System.String b, ref TT c) => Target.Foo(a, out b, ref c);"));
+            Assert.That(DuckGenerator<GoodFoo<int>, IFoo<int>>.GenerateDuckMethod(IfaceFoo).NormalizeWhitespace().ToFullString(), Is.EqualTo("[System.Runtime.CompilerServices.MethodImplAttribute(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]\r\nSystem.Int32 Solti.Utils.DI.Proxy.Tests.DuckGeneratorTests.IFoo<System.Int32>.Foo<TT>(System.Int32 a, out System.String b, ref TT c) => Target.Foo(a, out b, ref c);"));
         }
 
         [Test]
@@ -100,7 +100,7 @@ namespace Solti.Utils.DI.Proxy.Tests
         [Test]
         public void GenerateDuckProperty_ShouldGenerateTheDesiredPropertyIfSupported()
         {
-            Assert.That(DuckGenerator<GoodFoo<int>, IFoo<int>>.GenerateDuckProperty(IfaceProp).NormalizeWhitespace(eol: "\n").ToFullString(), Is.EqualTo("System.Int32 Solti.Utils.DI.Proxy.Tests.DuckGeneratorTests.IFoo<System.Int32>.Prop\n{\n    get => Target.Prop;\n    set => Target.Prop = value;\n}"));
+            Assert.That(DuckGenerator<GoodFoo<int>, IFoo<int>>.GenerateDuckProperty(IfaceProp).NormalizeWhitespace(eol: "\n").ToFullString(), Is.EqualTo("System.Int32 Solti.Utils.DI.Proxy.Tests.DuckGeneratorTests.IFoo<System.Int32>.Prop\n{\n    [System.Runtime.CompilerServices.MethodImplAttribute(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]\n    get => Target.Prop;\n    [System.Runtime.CompilerServices.MethodImplAttribute(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]\n    set => Target.Prop = value;\n}"));
         }
 
         [Test]
@@ -116,7 +116,7 @@ namespace Solti.Utils.DI.Proxy.Tests
         [Test]
         public void GenerateDuckEvent_ShouldGenerateTheDesiredEventIfSupported()
         {
-            Assert.That(DuckGenerator<GoodFoo<int>, IFoo<int>>.GenerateDuckEvent(IfaceEvent).NormalizeWhitespace(eol: "\n").ToFullString(), Is.EqualTo("event Solti.Utils.DI.Proxy.Tests.DuckGeneratorTests.TestDelegate<System.Int32> Solti.Utils.DI.Proxy.Tests.DuckGeneratorTests.IFoo<System.Int32>.Event\n{\n    add => Target.Event += value;\n    remove => Target.Event -= value;\n}"));
+            Assert.That(DuckGenerator<GoodFoo<int>, IFoo<int>>.GenerateDuckEvent(IfaceEvent).NormalizeWhitespace(eol: "\n").ToFullString(), Is.EqualTo("event Solti.Utils.DI.Proxy.Tests.DuckGeneratorTests.TestDelegate<System.Int32> Solti.Utils.DI.Proxy.Tests.DuckGeneratorTests.IFoo<System.Int32>.Event\n{\n    [System.Runtime.CompilerServices.MethodImplAttribute(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]\n    add => Target.Event += value;\n    [System.Runtime.CompilerServices.MethodImplAttribute(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]\n    remove => Target.Event -= value;\n}"));
         }
 
         private class Dummy
