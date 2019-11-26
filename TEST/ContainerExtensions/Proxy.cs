@@ -4,17 +4,14 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
-using System.Linq;
 
 using Moq;
 using NUnit.Framework;
 
 namespace Solti.Utils.DI.Container.Tests
 {
-    using Internals;
     using Properties;
     using Proxy;
-    using Annotations;
     
     public partial class ContainerTestsBase<TContainer>
     {
@@ -177,28 +174,6 @@ namespace Solti.Utils.DI.Container.Tests
         }
 
         [Test]
-        public void Container_Bulked_ProxyingTest() 
-        {
-            Container
-                .Setup(typeof(ContainerTestsBase<>).Assembly())
-                //
-                // Ne Transient legyen mert ott a szerviz proxy lesz ha az implementacio
-                // IDisposable leszarmazott.
-                //
-
-                .Service<IDisposable, Disposable>(Lifetime.Scoped);
-
-            foreach (AbstractServiceEntry entry in Container.Where(e => typeof(IModule).IsAssignableFrom(e.Interface)))
-                Container.Proxy(entry.Interface, typeof(InterfaceInterceptor<>).MakeGenericType(entry.Interface));
-
-            var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
-
-            Assert.That(Container.Get<IDisposable>().GetService(() => mockInjector.Object) is Disposable);
-            Assert.That(Container.Get<IMyModule1>().GetService(() => mockInjector.Object)  is InterfaceInterceptor<IMyModule1>);
-            Assert.That(Container.Get<IMyModule2>().GetService(() => mockInjector.Object)  is InterfaceInterceptor<IMyModule2>);
-        }
-
-        [Test]
         public void Container_Proxy_ShouldHandleNamedServices() 
         {
             Container.Service<IInterface_1, Implementation_1_No_Dep>("cica");
@@ -206,12 +181,4 @@ namespace Solti.Utils.DI.Container.Tests
             Assert.That(Container.Get<IInterface_1>("cica").GetService(() => null), Is.TypeOf<DecoratedImplementation_1>());
         }
     }
-
-    public interface IModule { }
-    public interface IMyModule1 : IModule { }
-    public interface IMyModule2 : IModule { }
-    [Service(typeof(IMyModule1))]
-    public class Module1 : IMyModule1 { }
-    [Service(typeof(IMyModule2))]
-    public class Module2 : IMyModule2 { }
 }
