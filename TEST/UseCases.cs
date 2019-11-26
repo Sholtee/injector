@@ -149,6 +149,7 @@ namespace Solti.Utils.DI.UseCases
             public abstract void Validate(ParameterInfo param, object value);
         }
 
+        [AttributeUsage(AttributeTargets.Parameter, AllowMultiple = false)]
         public class NotNullAttribute : ParameterValidatorAttribute
         {
             public override void Validate(ParameterInfo param, object value)
