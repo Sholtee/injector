@@ -205,7 +205,46 @@ public class ParameterValidatorProxy<TInterface> : InterfaceInterceptor<TInterfa
       Container.Proxy(entry.Interface, typeof(InterfaceInterceptor<>).MakeGenericType(entry.Interface));
   }
   ```
-  
+- You can setup transactions using proxies as well:
+  ```csharp
+  using Solti.Utils.DI;
+  using Solti.Utils.DI.Proxy;
+  ...
+  public class MyModuleUsingDbConnection : IMyModuleUsingDbConnection
+  {
+    public IDbConnection Connection { get; }
+    public MyModuleUsingDbConnection(IDbConnection dbConn)
+    {
+      Connection = dbConn;
+    }
+    void IMyModuleUsingDbConnection.DoSomething() { }
+  }
+  ...
+  public class TransactionManager<TInterface> : InterfaceInterceptor<TInterface> where TInterface : class
+  {
+    public IDbConnection Connection { get; }
+    public TransactionManager(TInterface target, IDbConnection dbConn) : base(target)
+    {
+      Connection = dbConn;
+    }
+    public override object Invoke(MethodInfo method, object[] args, MemberInfo extra)
+    {
+      IDbTransaction transaction = Connection.BeginTransaction();
+      try
+      {
+        object result = base.Invoke(method, args, extra);
+        transaction.Commit();
+        return result;
+      }
+      catch
+      {
+        transaction.Rollback();
+        throw;
+      }
+    }
+  }
+  ```
+
 ### Auto config
 There are some attributes to annotate services for "auto config" e.g.:
 - ```csharp
