@@ -1,5 +1,5 @@
 ﻿/********************************************************************************
-* Practice.cs                                                                   *
+* UseCases.cs                                                                   *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
@@ -11,16 +11,16 @@ using System.Reflection;
 using NUnit.Framework;
 using Moq;
 
-namespace Solti.Utils.DI.Practice
-{
-    using Annotations;
+namespace Solti.Utils.DI.UseCases
+{  
     using Internals;
-    using DI;
+    using DI;   
+    using DI.Tests;
     using Proxy;
-    using Tests;
+    using Annotations;
 
     [TestFixture]
-    public class Practice: TestBase<ServiceContainer>
+    public class Tests: TestBase<ServiceContainer>
     {
         [Test]
         public void TransactionHandlingTest()
@@ -43,7 +43,7 @@ namespace Solti.Utils.DI.Practice
             using (IInjector injector = Container.CreateInjector())
             {
                 IModule module = injector.Get<IModule>();
-                module.DoSomething();
+                module.DoSomething(new object());
             }
 
             mockDbConnection.Verify(conn => conn.BeginTransaction(), Times.Once);
@@ -52,7 +52,7 @@ namespace Solti.Utils.DI.Practice
 
         public interface IModule
         {
-            void DoSomething();
+            void DoSomething([NotNull] object arg);
         }
 
         public class MyModuleUsingDbConnection : IModule
@@ -63,7 +63,7 @@ namespace Solti.Utils.DI.Practice
                 Assert.NotNull(dbConn);
                 Connection = dbConn;
             }
-            public void DoSomething() { }
+            public void DoSomething(object arg) { }
         }
 
         public class TransactionManager<TInterface> : InterfaceInterceptor<TInterface> where TInterface : class
@@ -97,7 +97,7 @@ namespace Solti.Utils.DI.Practice
         public void BulkedProxyingTest()
         {
             Container
-                .Setup(typeof(Practice).Assembly())
+                .Setup(typeof(Tests).Assembly())
                 //
                 // Ne Transient legyen mert ott a szerviz proxy lesz ha az implementacio
                 // IDisposable leszarmazott.
@@ -120,12 +120,67 @@ namespace Solti.Utils.DI.Practice
         [Service(typeof(IMyModule1))]
         public class Module1 : IMyModule1 
         {
-            public void DoSomething() { }
+            public void DoSomething(object arg) { }
         }
         [Service(typeof(IMyModule2))]
         public class Module2 : IMyModule2 
         {
-            public void DoSomething() { }
+            public void DoSomething(object arg) { }
+        }
+
+        [Test]
+        public void ParameterValidationTest()
+        {
+            Container
+                .Factory<IModule>(i => new Mock<IModule>().Object)
+                .Proxy<IModule, ParameterValidator<IModule>>();
+
+            using (IInjector injector = Container.CreateInjector()) 
+            {
+                IModule module = injector.Get<IModule>();
+
+                Assert.DoesNotThrow(() => module.DoSomething(new object()));
+                Assert.Throws<ArgumentNullException>(() => module.DoSomething(null));
+            }
+        }
+
+        public abstract class ParameterValidatorAttribute: Attribute
+        {
+            public abstract void Validate(ParameterInfo param, object value);
+        }
+
+        public class NotNullAttribute : ParameterValidatorAttribute
+        {
+            public override void Validate(ParameterInfo param, object value)
+            {
+                if (value == null) throw new ArgumentNullException(param.Name);
+            }
+        }
+
+        public class ParameterValidator<TInterface> : InterfaceInterceptor<TInterface> where TInterface : class
+        {
+            public ParameterValidator(TInterface target) : base(target)
+            { 
+            }
+
+            public override object Invoke(MethodInfo method, object[] args, MemberInfo extra)
+            {
+                foreach(var ctx in method.GetParameters().Select(
+                    (p, i) => new 
+                    { 
+                        Parameter = p, 
+                        Value = args[i], 
+                        Validators = p.GetCustomAttributes<ParameterValidatorAttribute>() 
+                    }))
+                {
+                    foreach (var validator in ctx.Validators) 
+                    {
+                        validator.Validate(ctx.Parameter, ctx.Value);
+                    }
+                }
+
+                return base.Invoke(method, args, extra);
+            }
         }
     }
 }
