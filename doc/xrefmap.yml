@@ -816,24 +816,6 @@ references:
   fullName.vb: Solti.Utils.DI.Internals.DisposableWrapper(Of TInterface).Disposed
   nameWithType: DisposableWrapper<TInterface>.Disposed
   nameWithType.vb: DisposableWrapper(Of TInterface).Disposed
-- uid: Solti.Utils.DI.Internals.DisposableWrapper`1.Invoke(System.Reflection.MethodInfo,System.Object[],System.Reflection.MemberInfo)
-  name: Invoke(MethodInfo, Object[], MemberInfo)
-  href: Solti.Utils.DI.Internals.DisposableWrapper-1.html#Solti_Utils_DI_Internals_DisposableWrapper_1_Invoke_System_Reflection_MethodInfo_System_Object___System_Reflection_MemberInfo_
-  commentId: M:Solti.Utils.DI.Internals.DisposableWrapper`1.Invoke(System.Reflection.MethodInfo,System.Object[],System.Reflection.MemberInfo)
-  name.vb: Invoke(MethodInfo, Object(), MemberInfo)
-  fullName: Solti.Utils.DI.Internals.DisposableWrapper<TInterface>.Invoke(System.Reflection.MethodInfo, System.Object[], System.Reflection.MemberInfo)
-  fullName.vb: Solti.Utils.DI.Internals.DisposableWrapper(Of TInterface).Invoke(System.Reflection.MethodInfo, System.Object(), System.Reflection.MemberInfo)
-  nameWithType: DisposableWrapper<TInterface>.Invoke(MethodInfo, Object[], MemberInfo)
-  nameWithType.vb: DisposableWrapper(Of TInterface).Invoke(MethodInfo, Object(), MemberInfo)
-- uid: Solti.Utils.DI.Internals.DisposableWrapper`1.Invoke*
-  name: Invoke
-  href: Solti.Utils.DI.Internals.DisposableWrapper-1.html#Solti_Utils_DI_Internals_DisposableWrapper_1_Invoke_
-  commentId: Overload:Solti.Utils.DI.Internals.DisposableWrapper`1.Invoke
-  isSpec: "True"
-  fullName: Solti.Utils.DI.Internals.DisposableWrapper<TInterface>.Invoke
-  fullName.vb: Solti.Utils.DI.Internals.DisposableWrapper(Of TInterface).Invoke
-  nameWithType: DisposableWrapper<TInterface>.Invoke
-  nameWithType.vb: DisposableWrapper(Of TInterface).Invoke
 - uid: Solti.Utils.DI.Internals.DuckBase`1
   name: DuckBase<T>
   href: Solti.Utils.DI.Internals.DuckBase-1.html

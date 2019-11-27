@@ -73,6 +73,9 @@
       <a class="xref" href="Solti.Utils.DI.Proxy.InterfaceInterceptor-1.html#Solti_Utils_DI_Proxy_InterfaceInterceptor_1_Target">InterfaceInterceptor&lt;TInterface&gt;.Target</a>
     </div>
     <div>
+      <a class="xref" href="Solti.Utils.DI.Proxy.InterfaceInterceptor-1.html#Solti_Utils_DI_Proxy_InterfaceInterceptor_1_Invoke_System_Reflection_MethodInfo_System_Object___System_Reflection_MemberInfo_">InterfaceInterceptor&lt;TInterface&gt;.Invoke(MethodInfo, Object[], MemberInfo)</a>
+    </div>
+    <div>
       <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a>
     </div>
     <div>
@@ -98,7 +101,7 @@
   <h6><strong>Assembly</strong>: Injector.dll</h6>
   <h5 id="Solti_Utils_DI_Internals_DisposableWrapper_1_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract class DisposableWrapper&lt;TInterface&gt; : InterfaceInterceptor&lt;TInterface&gt;, IHasTarget&lt;TInterface&gt;, IDisposableEx, IDisposable where TInterface : class</code></pre>
+    <pre><code class="lang-csharp hljs">public abstract class DisposableWrapper&lt;TInterface&gt; : InterfaceInterceptor&lt;TInterface&gt;, IHasTarget&lt;TInterface&gt;, IDisposableEx, IDisposable where TInterface : class, IDisposable</code></pre>
   </div>
   <h5 class="typeParameters">Type Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -182,59 +185,6 @@
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public void Dispose()</code></pre>
   </div>
-  <a id="Solti_Utils_DI_Internals_DisposableWrapper_1_Invoke_" data-uid="Solti.Utils.DI.Internals.DisposableWrapper`1.Invoke*"></a>
-  <h4 id="Solti_Utils_DI_Internals_DisposableWrapper_1_Invoke_System_Reflection_MethodInfo_System_Object___System_Reflection_MemberInfo_" data-uid="Solti.Utils.DI.Internals.DisposableWrapper`1.Invoke(System.Reflection.MethodInfo,System.Object[],System.Reflection.MemberInfo)">Invoke(MethodInfo, Object[], MemberInfo)</h4>
-  <div class="markdown level1 summary"><p>See <a class="xref" href="Solti.Utils.DI.Proxy.InterfaceInterceptor-1.html">InterfaceInterceptor&lt;TInterface&gt;</a>.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override object Invoke(MethodInfo method, object[] args, MemberInfo extra)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.reflection.methodinfo">MethodInfo</a></td>
-        <td><span class="parametername">method</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a>[]</td>
-        <td><span class="parametername">args</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.reflection.memberinfo">MemberInfo</a></td>
-        <td><span class="parametername">extra</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="overrides">Overrides</h5>
-  <div><span class="xref">Solti.Utils.DI.Proxy.InterfaceInterceptor&lt;TInterface&gt;.Invoke(System.Reflection.MethodInfo, System.Object[], System.Reflection.MemberInfo)</span></div>
   <h3 id="implements">Implements</h3>
   <div>
       <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.idisposable">System.IDisposable</a>
