@@ -45,8 +45,7 @@ namespace Solti.Utils.DI.Proxy
             // Kell egyaltalan proxy-t letrhoznunk?
             //
 
-            TInterface possibleResult = Target as TInterface;
-            if (possibleResult != null)
+            if (Target is TInterface possibleResult)
                 return possibleResult;
 
             return (TInterface) GeneratedDuck<TInterface, TTarget>

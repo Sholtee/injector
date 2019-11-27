@@ -2,7 +2,7 @@ System.Int32 Solti.Utils.DI.Proxy.Tests.ProxyGeneratorTests.IFoo<System.Int32>.P
 {
     get
     {
-        System.Object result = Invoke(FProp.GetMethod, new System.Object[0], FProp);
+        System.Object result = Invoke(FProp0.GetMethod, new System.Object[0], FProp0);
         if (result == CALL_TARGET)
             return Target.Prop;
         return (System.Int32)result;
@@ -10,7 +10,7 @@ System.Int32 Solti.Utils.DI.Proxy.Tests.ProxyGeneratorTests.IFoo<System.Int32>.P
 
     set
     {
-        System.Object result = Invoke(FProp.SetMethod, new System.Object[]{value}, FProp);
+        System.Object result = Invoke(FProp0.SetMethod, new System.Object[]{value}, FProp0);
         if (result == CALL_TARGET)
             Target.Prop = value;
     }

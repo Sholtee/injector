@@ -157,18 +157,44 @@ Where the `ParameterValidatorProxy<TInterface>` is an `InterfaceInterceptor<TInt
 ```csharp
 using Solti.Utils.DI.Proxy; 
 ...
-public class ParameterValidatorProxy<TInterface> : InterfaceInterceptor<TInterface>
+// Base class of all the validator attributes
+public abstract class ParameterValidatorAttribute: Attribute
 {
-  public override object Invoke(MethodInfo targetMethod, object[] args, MemberInfo extra)
+  public abstract void Validate(ParameterInfo param, object value);
+}
+// Sample validator
+[AttributeUsage(AttributeTargets.Parameter, AllowMultiple = false)]
+public class NotNullAttribute : ParameterValidatorAttribute
+{
+  public override void Validate(ParameterInfo param, object value)
   {
-    // Do the validation here then call the base to let the original method 
-    // do its work. 
-    return base.Invoke(targetMethod, args, extra);
+    if (value == null) throw new ArgumentNullException(param.Name);
+  }
+}
+...
+public class ParameterValidatorProxy<TInterface> : InterfaceInterceptor<TInterface> where TInterface : class
+{
+  public ParameterValidator(TInterface target) : base(target)
+  { 
   }
 
-  public ParameterValidatorProxy(TInterface target) : base(target)
+  public override object Invoke(MethodInfo method, object[] args, MemberInfo extra)
   {
-    // Do nothing
+    foreach(var ctx in method.GetParameters().Select(
+      (p, i) => new 
+      { 
+        Parameter = p, 
+        Value = args[i], 
+        Validators = p.GetCustomAttributes<ParameterValidatorAttribute>() 
+      }))
+    {
+      foreach (var validator in ctx.Validators) 
+      {
+        validator.Validate(ctx.Parameter, ctx.Value);
+      }
+    }
+
+    return base.Invoke(method, args, extra);
   }
 }
 ```
@@ -205,7 +231,55 @@ public class ParameterValidatorProxy<TInterface> : InterfaceInterceptor<TInterfa
       Container.Proxy(entry.Interface, typeof(InterfaceInterceptor<>).MakeGenericType(entry.Interface));
   }
   ```
-  
+- You can setup transactions using proxies as well:
+  ```csharp
+  using Solti.Utils.DI;
+  using Solti.Utils.DI.Proxy;
+  ...
+  public class MyModuleUsingDbConnection : IMyModuleUsingDbConnection
+  {
+    public IDbConnection Connection { get; }
+	
+    public MyModuleUsingDbConnection(IDbConnection dbConn)
+    {
+      Connection = dbConn;
+    }
+	
+    void IMyModuleUsingDbConnection.DoSomething() { }
+  }
+  ...
+  public class TransactionManager<TInterface> : InterfaceInterceptor<TInterface> where TInterface : class
+  {
+    public IDbConnection Connection { get; }
+	
+    public TransactionManager(TInterface target, IDbConnection dbConn) : base(target)
+    {
+      Connection = dbConn;
+    }
+	
+    public override object Invoke(MethodInfo method, object[] args, MemberInfo extra)
+    {
+      IDbTransaction transaction = Connection.BeginTransaction();
+      try
+      {
+        object result = base.Invoke(method, args, extra);
+        transaction.Commit();
+        return result;
+      }
+      catch
+      {
+        transaction.Rollback();
+        throw;
+      }
+    }
+  }
+  ...
+  Container
+    .Factory<IDbConnection>(i => ..., Lifetime.Scoped)
+    .Service<IMyModuleUsingDbConnection, MyModuleUsingDbConnection>(Lifetime.Scoped)
+    .Proxy<IMyModuleUsingDbConnection, TransactionManager<IMyModuleUsingDbConnection>>();
+  ```
+
 ### Auto config
 There are some attributes to annotate services for "auto config" e.g.:
 - ```csharp

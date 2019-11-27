@@ -5,48 +5,41 @@
 ********************************************************************************/
 using System;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 
 namespace Solti.Utils.DI.Internals
 {
+    using Proxy;
+
     /// <summary>
     /// Defines the base class for wrapping disposable objects.
     /// </summary>
-    /// <typeparam name="T">The target type.</typeparam>
-    public abstract class DisposableWrapper<T> : Disposable, IHasTarget<T>
+    /// <typeparam name="TInterface">The target type.</typeparam>
+    [SuppressMessage("Design", "CA1063:Implement IDisposable Correctly", Justification = "The pattern implemented correctly.")]
+    public class DisposableWrapper<TInterface> : InterfaceInterceptor<TInterface>, IDisposableEx where TInterface : class, IDisposable
     {
         /// <summary>
-        /// Creates a new <see cref="DisposableWrapper{T}"/> instance.
+        /// Creates a new <see cref="DisposableWrapper"/> instace.
         /// </summary>
-        /// <param name="target">The target of this instance.</param>
-        public DisposableWrapper(T target) 
+        /// <param name="target">The target of this instace.</param>
+        public DisposableWrapper(TInterface target) : base(target)
         {
-            //
-            // Ne "T"-n legyen megszigoritas h IDiposable leszarmazott legyen mert T lehet interface ami nem
-            // leszarmazott, viszont az implementacio ettol meg lehet az.
-            //
-
-            Debug.Assert(typeof(IDisposable).IsInstanceOfType(target));
-            Target = target;
         }
 
         /// <summary>
-        /// The target of this instance.
+        /// Indicates that the current instance was disposed or not.
         /// </summary>
-        public T Target { get; private set; }
+        public bool Disposed { get; private set; }
 
         /// <summary>
-        /// See <see cref="Disposable"/>.
+        /// See <see cref="IDisposable"/>.
         /// </summary>
-        protected override void Dispose(bool disposeManaged)
+        public void Dispose()
         {
-            if (disposeManaged)
-            {
-                ((IDisposable) Target).Dispose();
-                Target = default;
-            }
-
-            base.Dispose(disposeManaged);
+            Target.Dispose();
+            GC.SuppressFinalize(this);
+            Disposed = true;
         }
     }
 
@@ -56,10 +49,17 @@ namespace Solti.Utils.DI.Internals
         {
             Debug.Assert(iface.IsInstanceOfType(instance));
 
+            //
+            // Van egyaltalan dolgunk?
+            //
+
+            if (instance is IDisposableEx ex)
+                return ex;
+
             Type wrapper = Cache<Type, Type>.GetOrAdd
             (
                 iface,
-                () => (TypeGenerator) typeof(GeneratedDisposable<>).MakeGenericType(iface).CreateInstance(Array.Empty<Type>())          
+                () => ProxyFactory.GetGeneratedProxyType(iface, typeof(DisposableWrapper<>).MakeGenericType(iface))
             );
 
             return (IDisposableEx) wrapper.CreateInstance(new[] { iface }, instance);

@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -191,7 +192,7 @@ namespace Solti.Utils.DI.Proxy.Tests
         [Test]
         public void GenerateProxyIndexer_Test()
         {
-            Assert.That(GenerateProxyIndexer(Indexer).NormalizeWhitespace(eol: "\n").ToFullString(), Is.EqualTo(File.ReadAllText(Path.Combine("Proxy", "IndexerSrc.txt"))));
+            Assert.That(GenerateProxyIndexer(Indexer, SyntaxFactory.IdentifierName($"F{Indexer.Name}")).NormalizeWhitespace(eol: "\n").ToFullString(), Is.EqualTo(File.ReadAllText(Path.Combine("Proxy", "IndexerSrc.txt"))));
         }
 
         [Test]
@@ -288,6 +289,40 @@ namespace Solti.Utils.DI.Proxy.Tests
         private interface IRefInterfacce 
         {
             void RefMethod(in object a, out object b, ref object c);
+        }
+
+        [Test]
+        public void GeneratedProxy_ShouldSkipAlreadyImplementedInterfaces() 
+        {
+            IList proxy = (IList) GeneratedProxy<IList, InterceptorImplementingIEnumerable>.Type.CreateInstance(new[] { typeof(IList) }, new List<int>());
+            Assert.Throws<NotImplementedException>(() => proxy.GetEnumerator());
+        }
+
+        public class InterceptorImplementingIEnumerable : InterfaceInterceptor<IList>, IEnumerable
+        {
+            public InterceptorImplementingIEnumerable(IList target) : base(target) 
+            {
+            }
+
+            IEnumerator IEnumerable.GetEnumerator() => throw new NotImplementedException();
+        }
+
+        [Test]
+        public void GeneratedProxy_ShouldValidate() 
+        {
+            Assert.Throws<InvalidOperationException>(() => _ = GeneratedProxy<object, InterfaceInterceptor<object>>.Type);
+            Assert.Throws<NotSupportedException>(() => _ = GeneratedProxy<IEnumerable, SealedInterceptor<IEnumerable>>.Type);
+            Assert.Throws<NotSupportedException>(() => _ = GeneratedProxy<IEnumerable, AbstractInterceptor<IEnumerable>>.Type);
+        }
+
+        public sealed class SealedInterceptor<TInterface> : InterfaceInterceptor<TInterface> where TInterface : class
+        {
+            public SealedInterceptor(TInterface target) : base(target) { }
+        }
+
+        public abstract class AbstractInterceptor<TInterface> : InterfaceInterceptor<TInterface> where TInterface: class
+        {
+            public AbstractInterceptor(TInterface target) : base(target) { }
         }
     }
 

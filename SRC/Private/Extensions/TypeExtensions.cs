@@ -148,9 +148,8 @@ namespace Solti.Utils.DI.Internals
                 return factory(src, flags)
                     .Concat
                     (
-                        src.GetInterfaces().SelectMany(iface => ListMembers(iface, factory))
-                    )
-                    .Distinct();
+                        src.GetInterfaces().SelectMany(iface => factory(iface, flags))
+                    );
 
             return factory(src, flags | BindingFlags.FlattenHierarchy);
         }

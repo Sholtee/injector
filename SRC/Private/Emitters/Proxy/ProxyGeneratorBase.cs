@@ -9,6 +9,7 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -25,20 +26,64 @@ namespace Solti.Utils.DI.Internals
             Value = "value",
             GeneratedClassName = "GeneratedProxy";
 
-        private static AccessorDeclarationSyntax DeclareAccessor(SyntaxKind kind, CSharpSyntaxNode body)
+
+        private static SyntaxList<AttributeListSyntax> DeclareMethodImplAttributeToForceInlining() => SingletonList
+        (
+            node: AttributeList
+            (
+                attributes: SingletonSeparatedList
+                (
+                    node: Attribute
+                    (
+                        (NameSyntax)CreateType<MethodImplAttribute>()
+                    )
+                    .WithArgumentList
+                    (
+                        argumentList: AttributeArgumentList
+                        (
+                            arguments: SingletonSeparatedList
+                            (
+                                node: AttributeArgument
+                                (
+                                    expression: MemberAccessExpression
+                                    (
+                                        SyntaxKind.SimpleMemberAccessExpression,
+                                        CreateType<MethodImplOptions>(),
+                                        IdentifierName(nameof(MethodImplOptions.AggressiveInlining))
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        );
+
+        private static AccessorDeclarationSyntax DeclareAccessor(SyntaxKind kind, CSharpSyntaxNode body, bool forceInlining)
         {
             AccessorDeclarationSyntax declaration = AccessorDeclaration(kind);
 
-            if (body is BlockSyntax)
-                return declaration.WithBody((BlockSyntax) body);
+            switch (body)
+            {
+                case BlockSyntax block:
+                    declaration = declaration.WithBody(block);
+                    break;
+                case ArrowExpressionClauseSyntax arrow:
+                    declaration = declaration
+                        .WithExpressionBody(arrow)
+                        .WithSemicolonToken(Token(SyntaxKind.SemicolonToken));
+                    break;
+                default:
+                    Debug.Fail("Unknown node type");
+                    return null;
+            }
 
-            if (body is ArrowExpressionClauseSyntax)
-                return declaration
-                    .WithExpressionBody((ArrowExpressionClauseSyntax) body)
-                    .WithSemicolonToken(Token(SyntaxKind.SemicolonToken));
+            if (forceInlining) declaration = declaration.WithAttributeLists
+            (
+                attributeLists: DeclareMethodImplAttributeToForceInlining()
+            );
 
-            Debug.Fail("Unknown node type");
-            return null;
+            return declaration;
         }
 
         public static LocalDeclarationStatementSyntax DeclareLocal(Type type, string name, ExpressionSyntax initializer = null)
@@ -94,7 +139,7 @@ namespace Solti.Utils.DI.Internals
             )
         );
 
-        public static MethodDeclarationSyntax DeclareMethod(MethodInfo method)
+        public static MethodDeclarationSyntax DeclareMethod(MethodInfo method, bool forceInlining = false)
         {
             Type 
                 declaringType = method.DeclaringType,
@@ -156,10 +201,16 @@ namespace Solti.Utils.DI.Internals
                 )
             );
 
+            if (forceInlining) result = result.WithAttributeLists
+            (
+                attributeLists: DeclareMethodImplAttributeToForceInlining() 
+
+            );
+
             return result;
         }
 
-        public static PropertyDeclarationSyntax DeclareProperty(PropertyInfo property, CSharpSyntaxNode getBody = null, CSharpSyntaxNode setBody = null)
+        public static PropertyDeclarationSyntax DeclareProperty(PropertyInfo property, CSharpSyntaxNode getBody = null, CSharpSyntaxNode setBody = null, bool forceInlining = false)
         {
             Debug.Assert(property.DeclaringType.IsInterface());
 
@@ -176,10 +227,10 @@ namespace Solti.Utils.DI.Internals
             List<AccessorDeclarationSyntax> accessors = new List<AccessorDeclarationSyntax>();
 
             if (property.CanRead && getBody != null)
-                accessors.Add(DeclareAccessor(SyntaxKind.GetAccessorDeclaration, getBody));
+                accessors.Add(DeclareAccessor(SyntaxKind.GetAccessorDeclaration, getBody, forceInlining));
 
             if (property.CanWrite && setBody != null)
-                accessors.Add(DeclareAccessor(SyntaxKind.SetAccessorDeclaration, setBody));
+                accessors.Add(DeclareAccessor(SyntaxKind.SetAccessorDeclaration, setBody, forceInlining));
 
             return !accessors.Any() ? result : result.WithAccessorList
             (
@@ -190,7 +241,7 @@ namespace Solti.Utils.DI.Internals
             );
         }
 
-        public static IndexerDeclarationSyntax DeclareIndexer(PropertyInfo property, Func<IReadOnlyList<ParameterSyntax>, CSharpSyntaxNode> getBody = null, Func<IReadOnlyList<ParameterSyntax>, CSharpSyntaxNode> setBody = null)
+        public static IndexerDeclarationSyntax DeclareIndexer(PropertyInfo property, Func<IReadOnlyList<ParameterSyntax>, CSharpSyntaxNode> getBody = null, Func<IReadOnlyList<ParameterSyntax>, CSharpSyntaxNode> setBody = null, bool forceInlining = false)
         {
             Debug.Assert(property.DeclaringType.IsInterface());
             Debug.Assert(property.IsIndexer());
@@ -226,10 +277,10 @@ namespace Solti.Utils.DI.Internals
             List<AccessorDeclarationSyntax> accessors = new List<AccessorDeclarationSyntax>();
 
             if (property.CanRead && getBody != null)
-                accessors.Add(DeclareAccessor(SyntaxKind.GetAccessorDeclaration, getBody(result.ParameterList.Parameters)));
+                accessors.Add(DeclareAccessor(SyntaxKind.GetAccessorDeclaration, getBody(result.ParameterList.Parameters), forceInlining));
 
             if (property.CanWrite && setBody != null)
-                accessors.Add(DeclareAccessor(SyntaxKind.SetAccessorDeclaration, setBody(result.ParameterList.Parameters)));
+                accessors.Add(DeclareAccessor(SyntaxKind.SetAccessorDeclaration, setBody(result.ParameterList.Parameters), forceInlining));
 
             return !accessors.Any() ? result : result.WithAccessorList
             (
@@ -272,7 +323,7 @@ namespace Solti.Utils.DI.Internals
             );
         }
 
-        public static EventDeclarationSyntax DeclareEvent(EventInfo @event, CSharpSyntaxNode addBody = null, CSharpSyntaxNode removeBody = null)
+        public static EventDeclarationSyntax DeclareEvent(EventInfo @event, CSharpSyntaxNode addBody = null, CSharpSyntaxNode removeBody = null, bool forceInlining = false)
         {
             Debug.Assert(@event.DeclaringType.IsInterface());
 
@@ -289,10 +340,10 @@ namespace Solti.Utils.DI.Internals
             List<AccessorDeclarationSyntax> accessors = new List<AccessorDeclarationSyntax>();
 
             if (@event.AddMethod != null && addBody != null)
-                accessors.Add(DeclareAccessor(SyntaxKind.AddAccessorDeclaration, addBody));
+                accessors.Add(DeclareAccessor(SyntaxKind.AddAccessorDeclaration, addBody, forceInlining));
 
             if (@event.RemoveMethod != null && removeBody != null)
-                accessors.Add(DeclareAccessor(SyntaxKind.RemoveAccessorDeclaration, removeBody));
+                accessors.Add(DeclareAccessor(SyntaxKind.RemoveAccessorDeclaration, removeBody, forceInlining));
 
             return !accessors.Any() ? result : result.WithAccessorList
             (

@@ -29,6 +29,17 @@ namespace Solti.Utils.DI.Internals
             CALL_TARGET = nameof(InterfaceInterceptor<TInterface>.CALL_TARGET),
             TARGET      = nameof(InterfaceInterceptor<TInterface>.Target);
 
+        private static IdentifierNameSyntax GenerateFieldName<TMember>(TMember current, Func<Type, BindingFlags, TMember[]> factory) where TMember: MemberInfo
+        {
+            var generator = typeof(TInterface)
+                .ListMembers(factory)
+                .Where(member => member.Name == current.Name)
+                .Select((member, i) => new { Index = i, Value = member })
+                .First(member => member.Value == current);
+
+            return IdentifierName($"F{generator.Value.Name}{generator.Index}");
+        }
+
         #region Internal
         internal static LocalDeclarationStatementSyntax CreateArgumentsArray(MethodInfo method) => DeclareLocal<object[]>("args", CreateArray<object>(method
             .GetParameters()
@@ -235,7 +246,7 @@ namespace Solti.Utils.DI.Internals
         public static IEnumerable<MemberDeclarationSyntax> GenerateProxyProperty(PropertyInfo ifaceProperty)
         {
             //
-            // private static readonly PropertyInfo FProp = Properties["Prop"];
+            // private static readonly PropertyInfo FProp = Properties["IInterface.Prop"];
             //
             // TResult IInterface.Prop
             // {
@@ -254,7 +265,7 @@ namespace Solti.Utils.DI.Internals
             // }
             //
 
-            IdentifierNameSyntax fieldName = IdentifierName($"F{ifaceProperty.Name}");
+            IdentifierNameSyntax fieldName = GenerateFieldName(ifaceProperty, System.Reflection.TypeExtensions.GetProperties);
 
             yield return DeclareField<PropertyInfo>
             (
@@ -269,7 +280,7 @@ namespace Solti.Utils.DI.Internals
                     (
                         arguments: SingletonSeparatedList
                         (
-                            Argument(LiteralExpression(SyntaxKind.StringLiteralExpression, Literal(ifaceProperty.Name)))
+                            Argument(LiteralExpression(SyntaxKind.StringLiteralExpression, Literal(ifaceProperty.GetFullName())))
                         )
                     )
                 ),
@@ -283,7 +294,7 @@ namespace Solti.Utils.DI.Internals
 
             if (ifaceProperty.IsIndexer())
             {
-                yield return GenerateProxyIndexer(ifaceProperty);
+                yield return GenerateProxyIndexer(ifaceProperty, fieldName);
                 yield break;
             }
 
@@ -337,7 +348,7 @@ namespace Solti.Utils.DI.Internals
             );
         }
 
-        public static MemberDeclarationSyntax GenerateProxyIndexer(PropertyInfo ifaceProperty)
+        public static MemberDeclarationSyntax GenerateProxyIndexer(PropertyInfo ifaceProperty, IdentifierNameSyntax fieldName)
         {
             //
             // TResult IInterface.this[TParam1 p1, TPAram2 p2]
@@ -356,8 +367,6 @@ namespace Solti.Utils.DI.Internals
             //     }
             // }
             //
-
-            IdentifierNameSyntax fieldName = IdentifierName($"F{ifaceProperty.Name}");
 
             LocalDeclarationStatementSyntax result;
 
@@ -411,10 +420,10 @@ namespace Solti.Utils.DI.Internals
             );
         }
 
-        public static IEnumerable<MemberDeclarationSyntax> GenerateProxyEvent(EventInfo @event)
+        public static IEnumerable<MemberDeclarationSyntax> GenerateProxyEvent(EventInfo ifaceEvent)
         {
             //
-            // private static readonly EventInfo FEvent = Events("Event");
+            // private static readonly EventInfo FEvent = Events["IInterface.Event"];
             //
             // event EventType IInterface.Event
             // {
@@ -431,7 +440,7 @@ namespace Solti.Utils.DI.Internals
             // }
             //
 
-            IdentifierNameSyntax fieldName = IdentifierName($"F{@event.Name}");
+            IdentifierNameSyntax fieldName = GenerateFieldName(ifaceEvent, System.Reflection.TypeExtensions.GetEvents);
 
             LocalDeclarationStatementSyntax result;
 
@@ -448,7 +457,7 @@ namespace Solti.Utils.DI.Internals
                     (
                         arguments: SingletonSeparatedList
                         (
-                            Argument(LiteralExpression(SyntaxKind.StringLiteralExpression, Literal(@event.Name)))
+                            Argument(LiteralExpression(SyntaxKind.StringLiteralExpression, Literal(ifaceEvent.GetFullName())))
                         )
                     )
                 ),
@@ -462,7 +471,7 @@ namespace Solti.Utils.DI.Internals
 
             yield return DeclareEvent
             (
-                @event: @event,
+                @event: ifaceEvent,
                 addBody: Block
                 (
                     statements: new StatementSyntax[]
@@ -480,7 +489,7 @@ namespace Solti.Utils.DI.Internals
                         ),
                         ShouldCallTarget(result, ifTrue: ExpressionStatement
                         (
-                            expression: RegisterEvent(@event, TARGET, add: true))
+                            expression: RegisterEvent(ifaceEvent, TARGET, add: true))
                         )
                     }
                 ),
@@ -501,7 +510,7 @@ namespace Solti.Utils.DI.Internals
                         ),
                         ShouldCallTarget(result, ifTrue: ExpressionStatement
                         ( 
-                            expression: RegisterEvent(@event, TARGET, add: false))
+                            expression: RegisterEvent(ifaceEvent, TARGET, add: false))
                         )
                     }
                 )
@@ -539,6 +548,12 @@ namespace Solti.Utils.DI.Internals
                 )
             );
 
+            //
+            // Az interceptor altal mar implementalt interface-ek ne szerepeljenek a proxy deklaracioban.
+            //
+
+            HashSet<Type> implementedInterfaces = new HashSet<Type>(interceptorType.GetInterfaces());
+
             List<MemberDeclarationSyntax> members = new List<MemberDeclarationSyntax>(new MemberDeclarationSyntax[]
             {
                 DeclareCtor(interceptorType.GetApplicableConstructor())
@@ -548,7 +563,7 @@ namespace Solti.Utils.DI.Internals
             (
                 interfaceType
                     .ListMembers(System.Reflection.TypeExtensions.GetMethods)
-                    .Where(m => !m.IsSpecialName)
+                    .Where(m => !implementedInterfaces.Contains(m.DeclaringType) && !m.IsSpecialName)
                     .Select(GenerateProxyMethod)
             );
 
@@ -556,6 +571,7 @@ namespace Solti.Utils.DI.Internals
             (
                 interfaceType
                     .ListMembers(System.Reflection.TypeExtensions.GetProperties)
+                    .Where(p => !implementedInterfaces.Contains(p.DeclaringType))
                     .SelectMany(GenerateProxyProperty)
             );
 
@@ -563,6 +579,7 @@ namespace Solti.Utils.DI.Internals
             (
                 interfaceType
                     .ListMembers(System.Reflection.TypeExtensions.GetEvents)
+                    .Where(e => !implementedInterfaces.Contains(e.DeclaringType))
                     .SelectMany(GenerateProxyEvent)
             );
 
