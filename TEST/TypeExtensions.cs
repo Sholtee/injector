@@ -29,5 +29,30 @@ namespace Solti.Utils.DI.Internals.Tests
             Assert.That(properties.Contains((PropertyInfo) ((MemberExpression) ((Expression<Func<IEnumerator<string>, string>>)(i => i.Current)).Body).Member));
             Assert.That(properties.Contains((PropertyInfo) ((MemberExpression) ((Expression<Func<System.Collections.IEnumerator, object>>)(i => i.Current)).Body).Member));
         }
+
+        [Test]
+        public void ListMembers_ShouldReturnMembersFromTheWholeHierarchy()
+        {
+            MethodInfo[] methods = typeof(IGrandChild).ListMembers(System.Reflection.TypeExtensions.GetMethods).ToArray();
+            Assert.That(methods.Length, Is.EqualTo(3));
+            Assert.That(methods.Contains(((MethodCallExpression) ((Expression<Action<IParent>>)(i => i.Foo())).Body).Method));
+            Assert.That(methods.Contains(((MethodCallExpression) ((Expression<Action<IChild>>)(i => i.Bar())).Body).Method));
+            Assert.That(methods.Contains(((MethodCallExpression) ((Expression<Action<IGrandChild>>)(i => i.Baz())).Body).Method));
+        }
+
+        private interface IParent 
+        {
+            void Foo();
+        }
+
+        private interface IChild : IParent 
+        {
+            void Bar();
+        }
+
+        private interface IGrandChild : IChild 
+        {
+            void Baz();
+        }
     }
 }
