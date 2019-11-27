@@ -54,6 +54,7 @@ namespace Solti.Utils.DI.Internals
             if (!type.IsClass()) throw new InvalidOperationException();
             if (type.ContainsGenericParameters()) throw new NotSupportedException();
             if (type.IsSealed()) throw new NotSupportedException();
+            if (type.IsAbstract()) throw new NotSupportedException();
         }
     }
 }

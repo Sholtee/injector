@@ -17,7 +17,7 @@ namespace Solti.Utils.DI.Internals
     /// </summary>
     /// <typeparam name="TInterface">The target type.</typeparam>
     [SuppressMessage("Design", "CA1063:Implement IDisposable Correctly", Justification = "The pattern implemented correctly.")]
-    public abstract class DisposableWrapper<TInterface> : InterfaceInterceptor<TInterface>, IDisposableEx where TInterface : class, IDisposable
+    public class DisposableWrapper<TInterface> : InterfaceInterceptor<TInterface>, IDisposableEx where TInterface : class, IDisposable
     {
         /// <summary>
         /// Creates a new <see cref="DisposableWrapper"/> instace.

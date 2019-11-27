@@ -306,6 +306,24 @@ namespace Solti.Utils.DI.Proxy.Tests
 
             IEnumerator IEnumerable.GetEnumerator() => throw new NotImplementedException();
         }
+
+        [Test]
+        public void GeneratedProxy_ShouldValidate() 
+        {
+            Assert.Throws<InvalidOperationException>(() => _ = GeneratedProxy<object, InterfaceInterceptor<object>>.Type);
+            Assert.Throws<NotSupportedException>(() => _ = GeneratedProxy<IEnumerable, SealedInterceptor<IEnumerable>>.Type);
+            Assert.Throws<NotSupportedException>(() => _ = GeneratedProxy<IEnumerable, AbstractInterceptor<IEnumerable>>.Type);
+        }
+
+        public sealed class SealedInterceptor<TInterface> : InterfaceInterceptor<TInterface> where TInterface : class
+        {
+            public SealedInterceptor(TInterface target) : base(target) { }
+        }
+
+        public abstract class AbstractInterceptor<TInterface> : InterfaceInterceptor<TInterface> where TInterface: class
+        {
+            public AbstractInterceptor(TInterface target) : base(target) { }
+        }
     }
 
     internal class Cica<T> // NE nested legyen
