@@ -39,8 +39,8 @@
   - *fixed:* Generic service entry having factory could not be specialized
   - *fixed:* `Composite` child could not be disposed in certain cases
   - *fixed:* Singleton service related dependency resolution issue
-- 1.0.0-preview5 (unreleased)
-  - *added:* `Transient` services are freed on injector disposal (if they have not been disposed programmatically)
+- 1.0.0-preview5
+  - *added:* `Transient` services are also released on injector disposal (if they have not been disposed programmatically)
   - *added:* `ObjectExtensions.Act()` can be called against interfaces
   - *added:* `ProxyGenerator` now supports `in` parameter modifier (introduced in C# 7.2)
   - *fixed:* Ambiguous field naming in `ProxyGenerator`
