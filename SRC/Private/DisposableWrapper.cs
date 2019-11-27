@@ -6,7 +6,6 @@
 using System;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq.Expressions;
 using System.Reflection;
 
 namespace Solti.Utils.DI.Internals
@@ -18,7 +17,7 @@ namespace Solti.Utils.DI.Internals
     /// </summary>
     /// <typeparam name="TInterface">The target type.</typeparam>
     [SuppressMessage("Design", "CA1063:Implement IDisposable Correctly", Justification = "The pattern implemented correctly.")]
-    public abstract class DisposableWrapper<TInterface> : InterfaceInterceptor<TInterface>, IDisposableEx where TInterface : class
+    public abstract class DisposableWrapper<TInterface> : InterfaceInterceptor<TInterface>, IDisposableEx where TInterface : class, IDisposable
     {
         /// <summary>
         /// Creates a new <see cref="DisposableWrapper"/> instace.
@@ -26,23 +25,6 @@ namespace Solti.Utils.DI.Internals
         /// <param name="target">The target of this instace.</param>
         public DisposableWrapper(TInterface target) : base(target)
         {
-            Debug.Assert(target is IDisposable);
-        }
-
-        private static readonly MethodInfo IfaceDispose = ((MethodCallExpression) ((Expression<Action<IDisposable>>) (d => d.Dispose())).Body).Method;
-
-        /// <summary>
-        /// See <see cref="InterfaceInterceptor{TInterface}"/>.
-        /// </summary>
-        public override object Invoke(MethodInfo method, object[] args, MemberInfo extra)
-        {
-            if (method == IfaceDispose) 
-            {
-                Dispose();
-                return null;
-            }
-
-            return base.Invoke(method, args, extra);
         }
 
         /// <summary>
@@ -55,7 +37,7 @@ namespace Solti.Utils.DI.Internals
         /// </summary>
         public void Dispose()
         {
-            ((IDisposable) Target).Dispose();
+            Target.Dispose();
             GC.SuppressFinalize(this);
             Disposed = true;
         }

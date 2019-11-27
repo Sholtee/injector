@@ -548,6 +548,12 @@ namespace Solti.Utils.DI.Internals
                 )
             );
 
+            //
+            // Az interceptor altal mar implementalt interface-ek ne szerepeljenek a proxy deklaracioban.
+            //
+
+            HashSet<Type> implementedInterfaces = new HashSet<Type>(interceptorType.GetInterfaces());
+
             List<MemberDeclarationSyntax> members = new List<MemberDeclarationSyntax>(new MemberDeclarationSyntax[]
             {
                 DeclareCtor(interceptorType.GetApplicableConstructor())
@@ -557,7 +563,7 @@ namespace Solti.Utils.DI.Internals
             (
                 interfaceType
                     .ListMembers(System.Reflection.TypeExtensions.GetMethods)
-                    .Where(m => !m.IsSpecialName)
+                    .Where(m => !implementedInterfaces.Contains(m.DeclaringType) && !m.IsSpecialName)
                     .Select(GenerateProxyMethod)
             );
 
@@ -565,6 +571,7 @@ namespace Solti.Utils.DI.Internals
             (
                 interfaceType
                     .ListMembers(System.Reflection.TypeExtensions.GetProperties)
+                    .Where(p => !implementedInterfaces.Contains(p.DeclaringType))
                     .SelectMany(GenerateProxyProperty)
             );
 
@@ -572,6 +579,7 @@ namespace Solti.Utils.DI.Internals
             (
                 interfaceType
                     .ListMembers(System.Reflection.TypeExtensions.GetEvents)
+                    .Where(e => !implementedInterfaces.Contains(e.DeclaringType))
                     .SelectMany(GenerateProxyEvent)
             );
 

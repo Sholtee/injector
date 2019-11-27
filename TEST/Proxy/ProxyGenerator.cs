@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -288,6 +289,22 @@ namespace Solti.Utils.DI.Proxy.Tests
         private interface IRefInterfacce 
         {
             void RefMethod(in object a, out object b, ref object c);
+        }
+
+        [Test]
+        public void GeneratedProxy_ShouldSkipAlreadyImplementedInterfaces() 
+        {
+            IList proxy = (IList) GeneratedProxy<IList, InterceptorImplementingIEnumerable>.Type.CreateInstance(new[] { typeof(IList) }, new List<int>());
+            Assert.Throws<NotImplementedException>(() => proxy.GetEnumerator());
+        }
+
+        public class InterceptorImplementingIEnumerable : InterfaceInterceptor<IList>, IEnumerable
+        {
+            public InterceptorImplementingIEnumerable(IList target) : base(target) 
+            {
+            }
+
+            IEnumerator IEnumerable.GetEnumerator() => throw new NotImplementedException();
         }
     }
 
