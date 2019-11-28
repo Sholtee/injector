@@ -9,7 +9,7 @@ using System.Diagnostics.CodeAnalysis;
 namespace Solti.Utils.DI.Internals
 {
     /// <summary>
-    /// Implements the <see cref="IDisposableEx"/> interface.
+    /// Implements the <see cref="IDisposable"/> interface.
     /// </summary>
     /// <remarks>This is an internal class so it may change from version to version. Don't use it!</remarks>
     public class Disposable: IDisposableEx
