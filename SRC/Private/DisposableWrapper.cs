@@ -27,20 +27,37 @@ namespace Solti.Utils.DI.Internals
         {
         }
 
+        private void Dispose(bool disposeManaged) 
+        {
+            if (disposeManaged) Target.Dispose();
+
+            OnDispose?.Invoke(this, null);
+            Disposed = true;
+        }
+
         /// <summary>
         /// Indicates that the current instance was disposed or not.
         /// </summary>
         public bool Disposed { get; private set; }
 
         /// <summary>
+        /// The event that is fired when the instance is being disposed.
+        /// </summary>
+        public event EventHandler OnDispose;
+
+        /// <summary>
         /// See <see cref="IDisposable"/>.
         /// </summary>
         public void Dispose()
         {
-            Target.Dispose();
+            Dispose(disposeManaged: true);
             GC.SuppressFinalize(this);
-            Disposed = true;
         }
+
+        /// <summary>
+        /// Destructor of this class.
+        /// </summary>
+        ~DisposableWrapper() => Dispose(disposeManaged: false);
     }
 
     internal static class DisposableWrapper 

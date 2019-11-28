@@ -10,5 +10,7 @@ namespace Solti.Utils.DI.Internals
     internal interface IDisposableEx: IDisposable
     {
         bool Disposed { get; }
+
+        event EventHandler OnDispose;
     }
 }

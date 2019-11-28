@@ -3,6 +3,7 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
+using System;
 using System.Threading;
 
 namespace Solti.Utils.DI.Internals
@@ -13,6 +14,23 @@ namespace Solti.Utils.DI.Internals
     public class DisposeByRefObject : Disposable, IReferenceCounted
     {
         private int FRefCount = 1;
+
+        /// <summary>
+        /// See <see cref="Disposable.Dispose(bool)"/>
+        /// </summary>
+        protected override void Dispose(bool disposeManaged)
+        {
+            Interlocked.Exchange(ref FRefCount, 0);
+            base.Dispose(disposeManaged);
+        }
+
+        /// <summary>
+        /// See <see cref="Disposable"/>.
+        /// </summary>
+        protected new void CheckDisposed() 
+        {
+            if (FRefCount == 0) throw new ObjectDisposedException(null);
+        }
 
         /// <summary>
         /// The current reference count.
