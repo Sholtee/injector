@@ -18,7 +18,7 @@ namespace Solti.Utils.DI.Internals
         public int RefCount { get; private set; } = 1;
 
         /// <summary>
-        /// Increments the reference counter.
+        /// Increments the reference counter as an atomic operation.
         /// </summary>
         /// <returns>The current reference count.</returns>
         public int AddRef()
@@ -31,9 +31,8 @@ namespace Solti.Utils.DI.Internals
         }
 
         /// <summary>
-        /// Decrements the reference counter.
+        /// Decrements the reference counter as an atomic operation and disposes the object if the reference count reaches the zero.
         /// </summary>
-        /// <remarks>If reference count reaches the zero the object will be disposed.</remarks>
         /// <returns>The current reference count.</returns>
         public int Release()
         {
