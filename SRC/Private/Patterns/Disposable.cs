@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Solti.Utils.DI.Internals
@@ -23,9 +24,7 @@ namespace Solti.Utils.DI.Internals
         /// Method to be overridden to implement custom disposal logic.
         /// </summary>
         /// <param name="disposeManaged">It is set to true on <see cref="IDisposable.Dispose"/> call.</param>
-        protected virtual void Dispose(bool disposeManaged)
-        {
-        }
+        protected virtual void Dispose(bool disposeManaged) => Debug.WriteLineIf(!disposeManaged, $"{GetType()} is disposed by GC. You may be missing a Dispose() call.");
 
         /// <summary>
         /// Checks whether the object was disposed and throws if yes.
