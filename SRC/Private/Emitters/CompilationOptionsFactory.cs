@@ -57,7 +57,7 @@ namespace Solti.Utils.DI.Internals
                 optimizationLevel: OptimizationLevel.Release
             );
 #if IGNORE_VISIBILITY
-            if (ignoreAccessChecks) TopLevelBinderFlagsProperty.FastSetValue(options, IgnoreAccessibility);
+            TopLevelBinderFlagsProperty.FastSetValue(options, IgnoreAccessibility);
 #endif
             return options;
         }
