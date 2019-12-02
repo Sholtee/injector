@@ -20,18 +20,11 @@ namespace Solti.Utils.DI.Internals
         public bool Disposed { get; private set; }
 
         /// <summary>
-        /// Fired when the target object is being disposed.
-        /// </summary>
-        public event EventHandler OnDispose;
-
-        /// <summary>
         /// Method to be overridden to implement custom disposal logic.
         /// </summary>
         /// <param name="disposeManaged">It is set to true on <see cref="IDisposable.Dispose"/> call.</param>
         protected virtual void Dispose(bool disposeManaged)
         {
-            OnDispose?.Invoke(this, null);
-            Disposed = true;
         }
 
         /// <summary>
@@ -39,7 +32,7 @@ namespace Solti.Utils.DI.Internals
         /// </summary>
         protected void CheckDisposed()
         {
-            if (Disposed) throw new ObjectDisposedException(null);
+            if (Disposed) throw new ObjectDisposedException(GetType().FullName);
         }
 
         /// <summary>
@@ -57,6 +50,8 @@ namespace Solti.Utils.DI.Internals
 
             Dispose(disposeManaged: true);
             GC.SuppressFinalize(this);
+
+            Disposed = true;
         }
     }
 }
