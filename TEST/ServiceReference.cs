@@ -3,8 +3,6 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
-using System;
-
 using NUnit.Framework;
 
 namespace Solti.Utils.DI.Internals.Tests
@@ -18,11 +16,13 @@ namespace Solti.Utils.DI.Internals.Tests
         public void ServiceReference_ShouldManageTheReferenceCounts()
         {
             var target = new Disposable();
-            var reference = new ServiceReference(target, Array.Empty<ServiceReference>());
+            var reference = new ServiceReference { Instance = target };
 
             Assert.That(reference.RefCount, Is.EqualTo(1));
 
-            var svc = new ServiceReference(new object(), new[] { reference });
+            var svc = new ServiceReference { Instance = new object() };
+            svc.Dependencies.Add(reference);
+
             Assert.That(reference.RefCount, Is.EqualTo(2));
             
             svc.Release();

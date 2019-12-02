@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace Solti.Utils.DI.Internals
@@ -11,31 +12,63 @@ namespace Solti.Utils.DI.Internals
     /// <summary>
     /// Encapsulates a service and its dependencies into a reference counted container.
     /// </summary>
-    public class ServiceReference: DisposeByRefObject
+    public sealed class ServiceReference: DisposeByRefObject
     {
+        #region ReferenceList
+        private sealed class ReferenceList : ICollection<ServiceReference>
+        {
+            private readonly List<ServiceReference> FUnderlyingList = new List<ServiceReference>(); 
+
+            public int Count => FUnderlyingList.Count;
+
+            public bool IsReadOnly => false;
+
+            public void Add(ServiceReference item)
+            {
+                FUnderlyingList.Add(item);
+                item.AddRef();
+            }
+
+            public void Clear()
+            {
+                FUnderlyingList.ForEach(@ref => @ref.Release());
+                FUnderlyingList.Clear();
+            }
+
+            public bool Contains(ServiceReference item) => FUnderlyingList.Contains(item);
+
+            public void CopyTo(ServiceReference[] array, int arrayIndex) => throw new NotImplementedException();
+
+            public IEnumerator<ServiceReference> GetEnumerator() => FUnderlyingList.GetEnumerator();
+
+            public bool Remove(ServiceReference item)
+            {
+                if (FUnderlyingList.Remove(item)) 
+                {
+                    item.Release();
+                    return true;
+                }
+                return false;
+            }
+
+            IEnumerator IEnumerable.GetEnumerator() => FUnderlyingList.GetEnumerator();
+        }
+        #endregion
+
         /// <summary>
         /// Creates a new <see cref="ServiceReference"/> instance.
         /// </summary>
-        /// <param name="instance">The instance to make referenced.</param>
-        /// <param name="dependencies">The dependencies of the instance.</param>
-        public ServiceReference(object instance, IReadOnlyCollection<ServiceReference> dependencies) 
-        {
-            Instance = instance ?? throw new ArgumentNullException(nameof(instance));
-            Dependencies = dependencies ?? throw new ArgumentNullException(nameof(dependencies));
-
-            foreach (ServiceReference dependency in dependencies)
-                dependency.AddRef();
-        }
+        public ServiceReference() => Dependencies = new ReferenceList();
 
         /// <summary>
         /// The referenced service instance.
         /// </summary>
-        public object Instance { get; }
+        public object Instance { get; set; }
 
         /// <summary>
         /// The dependencies of this service <see cref="Instance"/>.
         /// </summary>
-        public IReadOnlyCollection<ServiceReference> Dependencies { get; }
+        public ICollection<ServiceReference> Dependencies { get; }
 
         /// <summary>
         /// Disposes the referenced service <see cref="Instance"/> and decrements the reference counter of all the <see cref="Dependencies"/>.
@@ -56,8 +89,7 @@ namespace Solti.Utils.DI.Internals
                 // eseten ertelmezett.
                 //
 
-                foreach (ServiceReference dependency in Dependencies)
-                    dependency.Release();
+                Dependencies.Clear();
             }
 
             base.Dispose(disposeManaged);
