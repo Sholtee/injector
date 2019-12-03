@@ -169,24 +169,30 @@ namespace Solti.Utils.DI.Internals
                             type: CreateType(param.ParameterType)
                         );
 
-                        if (param.IsOut) parameter = parameter.WithModifiers
-                        (
-                            modifiers: TokenList(Token(SyntaxKind.OutKeyword))
-                        );
+                        List<SyntaxKind> modifiers = new List<SyntaxKind>();
 
-                        else if (param.IsIn) parameter = parameter.WithModifiers
-                        (
-                            modifiers: TokenList(Token(SyntaxKind.InKeyword))
-                        );
+                        if (param.IsOut) 
+                            modifiers.Add(SyntaxKind.OutKeyword);
+
+                        else if (param.IsIn) 
+                            modifiers.Add(SyntaxKind.InKeyword);
 
                         //
                         // "ParameterType.IsByRef" param.Is[In|Out] eseten is igazat ad vissza -> a lenti feltetel utoljara szerepeljen.
                         //
 
-                        else if (param.ParameterType.IsByRef) parameter = parameter.WithModifiers
-                        (
-                            modifiers: TokenList(Token(SyntaxKind.RefKeyword))
-                        );
+                        else if (param.ParameterType.IsByRef)
+                            modifiers.Add(SyntaxKind.RefKeyword);
+
+                        //
+                        // "params"
+                        //
+
+                        if (param.GetCustomAttribute<ParamArrayAttribute>() != null) 
+                            modifiers.Add(SyntaxKind.ParamsKeyword);
+
+                        if (modifiers.Any()) 
+                            parameter = parameter.WithModifiers(TokenList(modifiers.Select(Token)));
      
                         return parameter;
                     })

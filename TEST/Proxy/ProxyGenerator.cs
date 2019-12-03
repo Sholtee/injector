@@ -269,6 +269,17 @@ namespace Solti.Utils.DI.Proxy.Tests
         }
 
         [Test]
+        public void DeclareMethod_ShouldHandleParamsModifier() 
+        {
+            Assert.That(DeclareMethod(typeof(IParams).GetMethod(nameof(IParams.Foo))).NormalizeWhitespace().ToString(), Is.EqualTo("void Solti.Utils.DI.Proxy.Tests.ProxyGeneratorTests.IParams.Foo(params System.Int32[] paramz)"));
+        }
+
+        private interface IParams 
+        {
+            void Foo(params int[] paramz);
+        }
+
+        [Test]
         public void GenerateProxyEvent_Test()
         {
             Assert.That(SyntaxFactory.ClassDeclaration("Test").WithMembers(SyntaxFactory.List(GenerateProxyEvent(Event))).NormalizeWhitespace(eol: "\n").ToString(), Is.EqualTo(File.ReadAllText(Path.Combine("Proxy", "EventSrc.txt"))));
