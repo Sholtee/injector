@@ -31,16 +31,5 @@ namespace Solti.Utils.DI
         /// <param name="name">The (optional) name of the service.</param>
         /// <returns>The <see cref="Lifetime"/> of the service if it is producible, null otherwise.</returns>
         Lifetime? LifetimeOf(Type iface, string name = null);
-
-        /// <summary>
-        /// The event fired before a service requested. It's useful when you want to resolve contextual dependencies (e.g. HTTP request) or return service mocks.
-        /// </summary>
-        event InjectorEventHandler<InjectorEventArg> OnServiceRequest;
-
-        /// <summary>
-        /// The event fired after a service requested.
-        /// </summary>
-        /// <remarks>The handler might specifiy a mock service to be returned.</remarks>
-        event InjectorEventHandler<InjectorEventArg> OnServiceRequested;
     }
 }

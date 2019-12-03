@@ -46,3 +46,7 @@
   - *fixed:* Ambiguous field naming in `ProxyGenerator`
   - *renamed:* `QueryOptionsAttribute` to `OptionsAttribute`
   - *renamed:* `QueryMode` to `QueryModes`
+- 1.0.0-preview6 (unreleased)
+  - *added:* `IServiceContainerExtensions.CreateInjector()` support for contextual services 
+  - *removed:* `IInjector` events
+  

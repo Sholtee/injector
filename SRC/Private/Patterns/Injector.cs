@@ -44,14 +44,6 @@ namespace Solti.Utils.DI.Internals
             if (target != null && !target.IsClass())
                 throw new ArgumentException(Resources.NOT_A_CLASS, nameof(target));
 
-            //
-            // Ha az OnServiceRequest esemenyben visszakaptunk szerviz peldanyt akkor visszaadjuk azt.
-            //
-
-            var ev = new InjectorEventArg(iface, name, target);
-            OnServiceRequest?.Invoke(this, ev);
-            if (ev.Service != null) return ev.Service;
-
             (Type Interface, string Name) currentHop = (iface, name);
             FCurrentPath.Push(currentHop);
 
@@ -83,15 +75,7 @@ namespace Solti.Utils.DI.Internals
                 if (!iface.IsInstanceOfType(instance))
                     throw new Exception(string.Format(CultureInfo.CurrentCulture, Resources.INVALID_INSTANCE, iface));
 
-                //
-                // Ha az OnServiceRequested esemenyben felulirjak a szervizt akkor azt
-                // adjuk vissza.
-                //
-
-                ev.Service = instance;
-                OnServiceRequested?.Invoke(this, ev);
-
-                return ev.Service;
+                return instance;
             }
             finally
             {
@@ -116,10 +100,6 @@ namespace Solti.Utils.DI.Internals
 
             return Get(iface, name, QueryModes.Default)?.Lifetime;
         }
-
-        public event InjectorEventHandler<InjectorEventArg> OnServiceRequest;
-
-        public event InjectorEventHandler<InjectorEventArg> OnServiceRequested;
         #endregion
 
         #region Composite
