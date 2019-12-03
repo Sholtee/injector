@@ -178,17 +178,17 @@ namespace Solti.Utils.DI.Internals
                             modifiers.Add(SyntaxKind.InKeyword);
 
                         //
-                        // "ParameterType.IsByRef" param.Is[In|Out] eseten is igazat ad vissza -> a lenti feltetel utoljara szerepeljen.
+                        // "ParameterType.IsByRef" param.Is[In|Out] eseten is igazat ad vissza -> a lenti feltetel In|Out vizsgalat utan szerepeljen.
                         //
 
                         else if (param.ParameterType.IsByRef)
                             modifiers.Add(SyntaxKind.RefKeyword);
 
                         //
-                        // "params"
+                        // "params" es referencia szerinti parameter atadas egymast kizaroak
                         //
 
-                        if (param.GetCustomAttribute<ParamArrayAttribute>() != null) 
+                        else if (param.GetCustomAttribute<ParamArrayAttribute>() != null) 
                             modifiers.Add(SyntaxKind.ParamsKeyword);
 
                         if (modifiers.Any()) 
