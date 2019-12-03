@@ -18,6 +18,8 @@ namespace Solti.Utils.DI.Internals
 
     internal sealed class Injector : ServiceContainer, IInjector
     {
+        private const QueryModes QueryFlags = QueryModes.AllowSpecialization | QueryModes.ThrowOnError;
+
         private readonly Stack<(Type Interface, string Name)> FCurrentPath = new Stack<(Type Interface, string Name)>();
 
         private Injector() => throw new NotSupportedException();
@@ -56,7 +58,7 @@ namespace Solti.Utils.DI.Internals
                 if (FCurrentPath.Count(t => t == currentHop) > 1)
                     throw new CircularReferenceException(FCurrentPath);
 
-                AbstractServiceEntry entry = Get(iface, name, QueryModes.AllowSpecialization | QueryModes.ThrowOnError);
+                AbstractServiceEntry entry = Get(iface, name, QueryFlags);
 
                 //
                 // Lekerdezeshez mindig a deklaralo szervizkollekciobol csinalunk injector-t.
@@ -92,13 +94,7 @@ namespace Solti.Utils.DI.Internals
             if (!iface.IsInterface())
                 throw new ArgumentException(Resources.NOT_AN_INTERFACE, nameof(iface));
 
-            //
-            // Az OnServiceRequest esemenyben visszaadhatunk olyan szervizt is ami nem volt regisztralva.
-            // Ez a tortenet viszont a kliens szamara lathatatlan -> megprobalhatja az elettartamat
-            // lekerdezni, ekkor ne legyen kivetel.
-            //
-
-            return Get(iface, name, QueryModes.Default)?.Lifetime;
+            return Get(iface, name, QueryFlags).Lifetime;
         }
         #endregion
 
