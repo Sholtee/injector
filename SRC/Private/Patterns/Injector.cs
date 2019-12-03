@@ -6,7 +6,6 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 #if NETSTANDARD1_6
@@ -23,22 +22,12 @@ namespace Solti.Utils.DI.Internals
 
         private Injector() => throw new NotSupportedException();
 
-        [SuppressMessage("Reliability", "CA2000:Dispose objects before losing scope", Justification = "The injector is responsible for disposing the entry.")]
-        public Injector(IServiceContainer parent): base(parent)
-        {
+        public Injector(IServiceContainer parent): base(parent) =>
             //
             // Felvesszuk sajat magunkat.
             //
 
-            Add(new InstanceServiceEntry
-            (
-                @interface: typeof(IInjector),
-                name: null,
-                instance: this,
-                releaseOnDispose: false,
-                owner: this
-            ));
-        }
+            this.Instance<IInjector>(this, releaseOnDispose: false);
 
         #region IInjector
         public object Get(Type iface, string name, Type target)

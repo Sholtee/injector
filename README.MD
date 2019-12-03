@@ -322,24 +322,19 @@ Alternatively you can use the `injector.Instantiate()` function that takes a `Ty
 - The instantiated `Type` does not have to be a registered service.
 - You can pass arbitrary arguments to the constructor via the `explicitArgs` parameter (which means the instantiated type may have non-registered/non-interface dependency).
 ### Resolving contextual dependencies
-Sometimes the service being requested is contextual (for instance resolving the `HttpRequest` that triggered the current session). In this case you have two options: deriving a new container for the current session or use the events provided by the injector (recommended):
+Sometimes the service being requested is contextual (for instance resolving the `HttpRequest` that triggered the current session). In this case you have two options: deriving a new container for the current session or pass the contextual services to `CreateInjector()` (recommended):
 ```csharp
 using Solti.Utils.DI;
-using Solti.Utils.DI.Proxy;
 ...
-injector.OnServiceRequest += (sender, arg) =>
+// Note that there was no service registered with IHttpRequest interface
+using (IInjector injector = Container.CreateInjector((typeof(IHttpRequest), null, Request)))
 {
-  // Note that there was no service registered with this interface
-  // so without this the injector.Get() call would throw.
-  if (arg.Interface == typeof(IHttpRequest))
-  {
-    // Define a value to be returned.  
-    arg.Service = ...;
-  }
+  ...
 }
 ``` 
-Note that as we learned the requested service always must be an interface but the `HttpRequest` implements nothing. That's the time when the [duck typing](https://en.wikipedia.org/wiki/Duck_typing ) comes into view:
+As we learned the requested service always must be an interface but the `HttpRequest` implements nothing. That's the time when the [duck typing](https://en.wikipedia.org/wiki/Duck_typing ) comes into view:
 ```csharp
+using Solti.Utils.DI.Proxy;
 ...
 // Custom interface covering the necessary members from the `HttpRequest`
 public interface IHttpRequest
@@ -347,14 +342,9 @@ public interface IHttpRequest
   string this[string key] { get; }
 }
 ...
-injector.OnServiceRequest += (sender, arg) =>
+using (IInjector injector = Container.CreateInjector((typeof(IHttpRequest), null, Request.Act().Like<IHttpRequest>())))
 {
-  if (arg.Interface == typeof(IHttpRequest))
-  {  
-    arg.Service = Request
-      .Act()
-      .Like<IHttpRequest>();
-  }
+  ...
 }
 ``` 
 ## Resources
