@@ -204,17 +204,5 @@ namespace Solti.Utils.DI.Injector.Tests
                 Assert.Throws<ArgumentException>(() => injector.LifetimeOf<object>(), Resources.NOT_AN_INTERFACE);
             }
         }
-
-        [TestCase(Lifetime.Singleton)]
-        [TestCase(Lifetime.Transient)]
-        public void Injector_ShouldRelease_ShouldTakeLifetimeIntoAccount(Lifetime lifetime)
-        {
-            Container.Service<IDisposable, Disposable>(lifetime);
-
-            using (IInjector injector = Container.CreateInjector())
-            {
-                Assert.That(injector.ShouldRelease<IDisposable>(), Is.EqualTo(lifetime == Lifetime.Transient));
-            }
-        }
     }
 }

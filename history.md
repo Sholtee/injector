@@ -49,4 +49,6 @@
 - 1.0.0-preview6 (unreleased)
   - *added:* `IServiceContainerExtensions.CreateInjector()` support for contextual services 
   - *removed:* `IInjector` events
+  - *removed:* Support for manually disposing `Transient` services
+  - *removed:* `IInjectorExtensions.ShouldRelease()`
   

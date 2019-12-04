@@ -26,7 +26,7 @@
 - Every producible service has its own lifetime, which can be:
   * `Singleton`: Instantiated only once (in declaring container) on the first request and released automatically when the container is disposed. Dependency resolution is also done from the declaring container.
   * `Scoped`: Instantiated only once (per injector) on the first request and released automatically when the parent injector is disposed.
-  * `Transient`: Instantiated on every request and released automatically when the parent injector is disposed. Note that the caller may also free the requested service (the system can handle it properly). This is a new behavior since version *1.0.0-preview5*, prior it the caller was responsible for releasing the requested services.
+  * `Transient`: Instantiated on every request and released automatically when the parent injector is disposed.
 ## Workflow of DI
 1. [Creating the root container](#creating-the-root-container)
 2. [Registering services](#registering-services)
@@ -307,7 +307,6 @@ IMyService svc = injector.Get<IMyService>();
 *Remarks:*
 - Requesting an unregistered or an open generic service will cause an exception.
 - Requesting services as a constructor parameter is more convenient than using the `injector.Get()` method.
-- The caller may free the requested service if it is an `IDisposable` and has the `Transient` lifetime. To determine the lifetime call the `injector.LifetimeOf<IMyService>()` method.
 - You may request the closed pair of an open generic service without registering it:
   ```csharp
   container.Service(typeof(IMyGenericService<>));
