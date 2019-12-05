@@ -13,7 +13,7 @@ namespace Solti.Utils.DI.Internals
     /// </summary>
     internal class TransientServiceEntry : ProducibleServiceEntry
     {
-        private List<IDisposableEx> FServicesToDispose;
+        private readonly List<ServiceReference> FServices = new List<ServiceReference>();
 
         private TransientServiceEntry(TransientServiceEntry entry, IServiceContainer owner) : base(entry, owner)
         {
@@ -33,22 +33,14 @@ namespace Solti.Utils.DI.Internals
 
         public override object Value => null;
 
-        public override object GetService(Func<IInjector> injectorFactory)
+        public override ServiceReference GetService(Func<IInjector> injectorFactory, ServiceReference reference)
         {
             CheckProducible();
 
-            object result = Factory(injectorFactory(), Interface);
+            reference.Instance = Factory(injectorFactory(), Interface);
+            FServices.Add(reference);
 
-            if (result is IDisposable)
-            {
-                IDisposableEx disposable = DisposableWrapper.Create(Interface, (IDisposable) result);
-                result = disposable;
-
-                if (FServicesToDispose == null) FServicesToDispose = new List<IDisposableEx>(1);
-                FServicesToDispose.Add(disposable);       
-            }
-
-            return result;
+            return reference;
         }
 
         public override AbstractServiceEntry CopyTo(IServiceContainer target)
@@ -60,16 +52,10 @@ namespace Solti.Utils.DI.Internals
 
         protected override void Dispose(bool disposeManaged)
         {
-            if (FServicesToDispose != null) 
+            if (disposeManaged) 
             {
-                FServicesToDispose.ForEach(svc => 
-                {
-                    if (!svc.Disposed) 
-                    {
-                        svc.Dispose();
-                    }
-                });
-                FServicesToDispose.Clear();
+                FServices.ForEach(svc => svc.Release()); 
+                FServices.Clear();
             }
 
             base.Dispose(disposeManaged);

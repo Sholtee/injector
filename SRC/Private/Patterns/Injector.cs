@@ -20,7 +20,7 @@ namespace Solti.Utils.DI.Internals
     {
         private const QueryModes QueryFlags = QueryModes.AllowSpecialization | QueryModes.ThrowOnError;
 
-        private readonly Stack<(Type Interface, string Name)> FCurrentPath = new Stack<(Type Interface, string Name)>();
+        private readonly Stack<ServiceReferenceHolder> FGraph = new Stack<ServiceReferenceHolder>();
 
         private Injector() => throw new NotSupportedException();
 
@@ -46,8 +46,18 @@ namespace Solti.Utils.DI.Internals
             if (target != null && !target.IsClass())
                 throw new ArgumentException(Resources.NOT_A_CLASS, nameof(target));
 
-            (Type Interface, string Name) currentHop = (iface, name);
-            FCurrentPath.Push(currentHop);
+            var currentNode = new ServiceReferenceHolder
+            {
+                Interface = iface,
+                Name = name,
+                Value = new ServiceReference() // valtozhat
+            };
+
+            //
+            // A grafban egy szinttel lejebb levo elemek mind a mostani szervizunk fuggosegei.
+            //
+
+            FGraph.Push(currentNode);
 
             try
             {
@@ -55,35 +65,57 @@ namespace Solti.Utils.DI.Internals
                 // Ha egynel tobbszor szerepel az aktualis szerviz akkor korkoros referenciank van.
                 //
 
-                if (FCurrentPath.Count(t => t == currentHop) > 1)
-                    throw new CircularReferenceException(FCurrentPath);
+                if (FGraph.Count(node => (node.Interface, node.Name) == (currentNode.Interface, currentNode.Name)) > 1)
+                    throw new CircularReferenceException(FGraph.Select(node => (node.Interface, node.Name)));
 
                 AbstractServiceEntry entry = Get(iface, name, QueryFlags);
 
                 //
-                // Lekerdezeshez mindig a deklaralo szervizkollekciobol csinalunk injector-t.
-                //   - Igy a fuggosegek is a deklaralo kollekciobol lesznek feloldva (mellekhataskent Singleton szerviz peldaul
-                //     hivatkozhat abstract fuggosegre, de az rossz konfiguracio).
-                //   - Ujonan letrehozott injector eseten annak felszabaditasa a deklaralo kollekcio felszabaditasokor tortenik 
+                // - Lekerdezeshez mindig a deklaralo szervizkollekciobol csinalunk injector-t.
+                //   * Igy a fuggosegek is a deklaralo kollekciobol lesznek feloldva
+                //     Mellekhatasok: 
+                //       > Singleton szerviz hivatkozhat abstract fuggosegre (de az rossz konfiguracio).
+                //       > Singleton szerviz Scoped fuggosege is Singletonkent viselkedik (szinten rossz konfiguracio).
+                //   * Ujonan letrehozott injector eseten annak felszabaditasa a deklaralo kollekcio felszabaditasokor tortenik 
                 //     (mivel annak a gyermeke lesz).
                 //
+                // - A szerviz legyartasakor a referencia valtozhat ezert felulirjuk az aktualis csomopontban.
+                //
 
-                object instance = entry.GetService(() => entry.Owner == this ? this : new Injector(entry.Owner));
+                currentNode.Value = entry.GetService(() => entry.Owner == this ? this : new Injector(entry.Owner), currentNode.Value);
+
+                Debug.Assert(currentNode.Value.Instance != null, "Instance was not set");
 
                 //
                 // Peldany tipusat ellenorizzuk mert a Factory(), Lazy() stb visszaadhat vicces dolgokat.
                 //
 
-                if (!iface.IsInstanceOfType(instance))
+                if (!iface.IsInstanceOfType(currentNode.Value.Instance))
                     throw new Exception(string.Format(CultureInfo.CurrentCulture, Resources.INVALID_INSTANCE, iface));
 
-                return instance;
+                //
+                // Ha kivetel volt nem kell semmit sem felszabaditani mert a szerviz bejegyzesek dispose-olasakor
+                // minden legyartott szerviznek is fel kene szabadulnia.
+                //
             }
             finally
             {
-                (Type Interface, string Name) removed = FCurrentPath.Pop();
-                Debug.Assert(removed == currentHop);
+                ServiceReferenceHolder removed = FGraph.Pop();
+                Debug.Assert(removed == currentNode);
             }
+
+            //
+            // Ha az aktualisan lekerdezett szerviz valakinek a fuggosege akkor hozzaadjuk a fuggosegi listahoz.
+            //
+
+            if (FGraph.Any()) 
+                FGraph
+                    .Peek()
+                    .Value
+                    .Dependencies
+                    .Add(currentNode.Value);
+
+            return currentNode.Value.Instance;
         }
 
         public Lifetime? LifetimeOf(Type iface, string name)

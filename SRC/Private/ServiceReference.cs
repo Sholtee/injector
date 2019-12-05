@@ -12,10 +12,10 @@ namespace Solti.Utils.DI.Internals
     /// <summary>
     /// Encapsulates a service and its dependencies into a reference counted container.
     /// </summary>
-    public sealed class ServiceReference: DisposeByRefObject
+    public class ServiceReference: DisposeByRefObject
     {
-        #region ReferenceList
-        private sealed class ReferenceList : ICollection<ServiceReference>
+        #region DependencyCollection
+        private sealed class DependencyCollection : ICollection<ServiceReference>
         {
             private readonly List<ServiceReference> FUnderlyingList = new List<ServiceReference>(); 
 
@@ -58,7 +58,7 @@ namespace Solti.Utils.DI.Internals
         /// <summary>
         /// Creates a new <see cref="ServiceReference"/> instance.
         /// </summary>
-        public ServiceReference() => Dependencies = new ReferenceList();
+        public ServiceReference() => Dependencies = new DependencyCollection();
 
         /// <summary>
         /// The referenced service instance.

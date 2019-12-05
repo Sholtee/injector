@@ -12,7 +12,7 @@ namespace Solti.Utils.DI.Internals
     /// </summary>
     internal class SingletonServiceEntry : ProducibleServiceEntry
     {
-        private object FValue;
+        private ServiceReference FService;
 
         //
         // Lock azert kell mert ez az entitas egyszerre tobb szerviz kollekcioban is szerepelhet
@@ -33,27 +33,27 @@ namespace Solti.Utils.DI.Internals
         {
         }
 
-        public override object Value => FValue;
+        public override object Value => FService?.Instance;
 
-        public override object GetService(Func<IInjector> injectorFactory)
+        public override ServiceReference GetService(Func<IInjector> injectorFactory, ServiceReference reference)
         {
             CheckProducible();
 
-            if (FValue == null)
+            if (FService == null)
                 lock (FLock)
-                    if (FValue == null)
-                        FValue = Factory(injectorFactory(), Interface);
+                    if (FService == null)
+                    {
+                        FService = reference;
+                        FService.Instance = Factory(injectorFactory(), Interface);
+                    }
 
-            return FValue;
+            return FService;
         }
 
         protected override void Dispose(bool disposeManaged)
         {
-            if (disposeManaged)
-            {
-                (FValue as IDisposable)?.Dispose();
-                FValue = null;
-            }
+            if (disposeManaged) FService?.Release();
+
             base.Dispose(disposeManaged);
         }
     }

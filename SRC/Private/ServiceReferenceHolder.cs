@@ -1,5 +1,5 @@
 ﻿/********************************************************************************
-* IServiceFactory.cs                                                            *
+* ServiceReferenceHolder.cs                                                     *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
@@ -7,10 +7,12 @@ using System;
 
 namespace Solti.Utils.DI.Internals
 {
-    internal interface IServiceFactory
+    internal class ServiceReferenceHolder : IServiceID
     {
-        Func<IInjector, Type, object> Factory { get; set; }
+        public Type Interface { get; set; }
 
-        ServiceReference GetService(Func<IInjector> injectorFactory, ServiceReference reference);
+        public string Name { get; set; }
+
+        public ServiceReference Value { get; set; }
     }
 }

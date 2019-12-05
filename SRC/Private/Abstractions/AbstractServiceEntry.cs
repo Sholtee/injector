@@ -93,8 +93,9 @@ namespace Solti.Utils.DI.Internals
         /// Gets the service instance.
         /// </summary>
         /// <param name="injectorFactory">Creates an injector instance from the <see cref="Owner"/> container.</param>
-        /// <returns>The service instance.</returns>
-        public virtual object GetService(Func<IInjector> injectorFactory) => throw new NotImplementedException();
+        /// <param name="serviceReference">The <see cref="ServiceReference"/> of the service being created.</param>
+        /// <returns>The <see cref="ServiceReference"/> of the newly created service.</returns>
+        public virtual ServiceReference GetService(Func<IInjector> injectorFactory, ServiceReference serviceReference) => throw new NotImplementedException();
 
         /// <summary>
         /// Copies this entry to a new collection.

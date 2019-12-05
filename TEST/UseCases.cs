@@ -110,9 +110,9 @@ namespace Solti.Utils.DI.UseCases
 
             var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
 
-            Assert.That(Container.Get<IDisposable>().GetService(() => mockInjector.Object) is Disposable);
-            Assert.That(Container.Get<IMyModule1>().GetService(() => mockInjector.Object) is InterfaceInterceptor<IMyModule1>);
-            Assert.That(Container.Get<IMyModule2>().GetService(() => mockInjector.Object) is InterfaceInterceptor<IMyModule2>);
+            Assert.That(Container.Get<IDisposable>().GetService(() => mockInjector.Object, new ServiceReference()).Instance is Disposable);
+            Assert.That(Container.Get<IMyModule1>().GetService(() => mockInjector.Object, new ServiceReference()).Instance is InterfaceInterceptor<IMyModule1>);
+            Assert.That(Container.Get<IMyModule2>().GetService(() => mockInjector.Object, new ServiceReference()).Instance is InterfaceInterceptor<IMyModule2>);
         }
 
         public interface IMyModule1 : IModule { }
