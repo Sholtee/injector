@@ -273,15 +273,15 @@ references:
   isSpec: "True"
   fullName: Solti.Utils.DI.IInjectorExtensions.LifetimeOf
   nameWithType: IInjectorExtensions.LifetimeOf
-- uid: Solti.Utils.DI.IInjectorExtensions.LifetimeOf``1(Solti.Utils.DI.IInjector)
-  name: LifetimeOf<TInterface>(IInjector)
-  href: Solti.Utils.DI.IInjectorExtensions.html#Solti_Utils_DI_IInjectorExtensions_LifetimeOf__1_Solti_Utils_DI_IInjector_
-  commentId: M:Solti.Utils.DI.IInjectorExtensions.LifetimeOf``1(Solti.Utils.DI.IInjector)
-  name.vb: LifetimeOf(Of TInterface)(IInjector)
-  fullName: Solti.Utils.DI.IInjectorExtensions.LifetimeOf<TInterface>(Solti.Utils.DI.IInjector)
-  fullName.vb: Solti.Utils.DI.IInjectorExtensions.LifetimeOf(Of TInterface)(Solti.Utils.DI.IInjector)
-  nameWithType: IInjectorExtensions.LifetimeOf<TInterface>(IInjector)
-  nameWithType.vb: IInjectorExtensions.LifetimeOf(Of TInterface)(IInjector)
+- uid: Solti.Utils.DI.IInjectorExtensions.LifetimeOf``1(Solti.Utils.DI.IInjector,System.String)
+  name: LifetimeOf<TInterface>(IInjector, String)
+  href: Solti.Utils.DI.IInjectorExtensions.html#Solti_Utils_DI_IInjectorExtensions_LifetimeOf__1_Solti_Utils_DI_IInjector_System_String_
+  commentId: M:Solti.Utils.DI.IInjectorExtensions.LifetimeOf``1(Solti.Utils.DI.IInjector,System.String)
+  name.vb: LifetimeOf(Of TInterface)(IInjector, String)
+  fullName: Solti.Utils.DI.IInjectorExtensions.LifetimeOf<TInterface>(Solti.Utils.DI.IInjector, System.String)
+  fullName.vb: Solti.Utils.DI.IInjectorExtensions.LifetimeOf(Of TInterface)(Solti.Utils.DI.IInjector, System.String)
+  nameWithType: IInjectorExtensions.LifetimeOf<TInterface>(IInjector, String)
+  nameWithType.vb: IInjectorExtensions.LifetimeOf(Of TInterface)(IInjector, String)
 - uid: Solti.Utils.DI.IInjectorExtensions.ShouldRelease(Solti.Utils.DI.IInjector,System.Type)
   name: ShouldRelease(IInjector, Type)
   href: Solti.Utils.DI.IInjectorExtensions.html#Solti_Utils_DI_IInjectorExtensions_ShouldRelease_Solti_Utils_DI_IInjector_System_Type_
