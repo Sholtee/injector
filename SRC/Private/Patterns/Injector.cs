@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 #if NETSTANDARD1_6
@@ -20,7 +21,7 @@ namespace Solti.Utils.DI.Internals
     {
         private const QueryModes QueryFlags = QueryModes.AllowSpecialization | QueryModes.ThrowOnError;
 
-        private readonly Stack<ServiceReferenceHolder> FGraph = new Stack<ServiceReferenceHolder>();
+        private readonly Stack<ServiceReference> FGraph = new Stack<ServiceReference>();
 
         private Injector() => throw new NotSupportedException();
 
@@ -32,7 +33,7 @@ namespace Solti.Utils.DI.Internals
             this.Instance<IInjector>(this, releaseOnDispose: false);
 
         #region IInjector
-        public object Get(Type iface, string name, Type target)
+        public ServiceReference GetReference(Type iface, string name)
         {
             if (iface == null)
                 throw new ArgumentNullException(nameof(iface));
@@ -43,15 +44,7 @@ namespace Solti.Utils.DI.Internals
             if (iface.IsGenericTypeDefinition())
                 throw new ArgumentException(Resources.CANT_INSTANTIATE_GENERICS, nameof(iface));
 
-            if (target != null && !target.IsClass())
-                throw new ArgumentException(Resources.NOT_A_CLASS, nameof(target));
-
-            var currentNode = new ServiceReferenceHolder
-            {
-                Interface = iface,
-                Name = name,
-                Value = new ServiceReference() // valtozhat
-            };
+            var currentNode = new ServiceReference(iface, name);
 
             //
             // A grafban egy szinttel lejebb levo elemek mind a mostani szervizunk fuggosegei.
@@ -79,18 +72,19 @@ namespace Solti.Utils.DI.Internals
                 //   * Ujonan letrehozott injector eseten annak felszabaditasa a deklaralo kollekcio felszabaditasokor tortenik 
                 //     (mivel annak a gyermeke lesz).
                 //
-                // - A szerviz legyartasakor a referencia valtozhat ezert felulirjuk az aktualis csomopontban.
+                // - Visszakaphatunk mar korabban legyartott referenciat is (pl Singleton szerviz eseten) ezert felulirjuk
+                //   a "currentNode" valtozot (a regi valtozo mar nem lesz hasznalva)
                 //
 
-                currentNode.Value = entry.GetService(() => entry.Owner == this ? this : new Injector(entry.Owner), currentNode.Value);
+                currentNode = entry.GetService(() => entry.Owner == this ? this : new Injector(entry.Owner), currentNode);
 
-                Debug.Assert(currentNode.Value.Instance != null, "Instance was not set");
+                Debug.Assert(currentNode.Instance != null, "Instance was not set");
 
                 //
                 // Peldany tipusat ellenorizzuk mert a Factory(), Lazy() stb visszaadhat vicces dolgokat.
                 //
 
-                if (!iface.IsInstanceOfType(currentNode.Value.Instance))
+                if (!iface.IsInstanceOfType(currentNode.Instance))
                     throw new Exception(string.Format(CultureInfo.CurrentCulture, Resources.INVALID_INSTANCE, iface));
 
                 //
@@ -100,8 +94,7 @@ namespace Solti.Utils.DI.Internals
             }
             finally
             {
-                ServiceReferenceHolder removed = FGraph.Pop();
-                Debug.Assert(removed == currentNode);
+                FGraph.Pop();
             }
 
             //
@@ -111,12 +104,14 @@ namespace Solti.Utils.DI.Internals
             if (FGraph.Any()) 
                 FGraph
                     .Peek()
-                    .Value
                     .Dependencies
-                    .Add(currentNode.Value);
+                    .Add(currentNode);
 
-            return currentNode.Value.Instance;
+            return currentNode;
         }
+
+        [SuppressMessage("Reliability", "CA2000:Dispose objects before losing scope", Justification = "The reference is released on container disposal.")]
+        public object Get(Type iface, string name, Type target) => GetReference(iface, name).Instance;
 
         public Lifetime? LifetimeOf(Type iface, string name)
         {

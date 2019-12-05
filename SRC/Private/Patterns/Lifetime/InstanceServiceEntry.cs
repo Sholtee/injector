@@ -19,7 +19,12 @@ namespace Solti.Utils.DI.Internals
         #region InstanceServiceReference
         private sealed class InstanceServiceReference : ServiceReference // hacky
         {
-            public bool ReleaseOnDispose { get; set; }
+            public InstanceServiceReference(Type @interface, string name, bool releaseOnDispose) : base(@interface, name)
+            {
+                ReleaseOnDispose = releaseOnDispose;        
+            }
+
+            public bool ReleaseOnDispose { get; }
 
             protected override void Dispose(bool disposeManaged)
             {
@@ -43,7 +48,7 @@ namespace Solti.Utils.DI.Internals
             if (!@interface.IsInstanceOfType(instance))
                 throw new InvalidOperationException(string.Format(CultureInfo.CurrentCulture, Resources.NOT_ASSIGNABLE, @interface, instance.GetType()));
 
-            FService = new InstanceServiceReference { Instance = instance, ReleaseOnDispose = releaseOnDispose };
+            FService = new InstanceServiceReference(@interface, name, releaseOnDispose) { Instance = instance };
         }
 
         public override Type Implementation => null;

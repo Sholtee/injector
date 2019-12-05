@@ -12,7 +12,7 @@ namespace Solti.Utils.DI.Internals
     /// <summary>
     /// Encapsulates a service and its dependencies into a reference counted container.
     /// </summary>
-    public class ServiceReference: DisposeByRefObject
+    public class ServiceReference: DisposeByRefObject, IServiceID
     {
         #region DependencyCollection
         private sealed class DependencyCollection : ICollection<ServiceReference>
@@ -58,7 +58,21 @@ namespace Solti.Utils.DI.Internals
         /// <summary>
         /// Creates a new <see cref="ServiceReference"/> instance.
         /// </summary>
-        public ServiceReference() => Dependencies = new DependencyCollection();
+        public ServiceReference(Type iface, string name) 
+        {
+            Interface = iface;
+            Name = name;
+        }
+
+        /// <summary>
+        /// The interface of the service.
+        /// </summary>
+        public Type Interface { get; }
+
+        /// <summary>
+        /// The (optional) name of the service.
+        /// </summary>
+        public string Name { get;  }
 
         /// <summary>
         /// The referenced service instance.
@@ -68,7 +82,7 @@ namespace Solti.Utils.DI.Internals
         /// <summary>
         /// The dependencies of this service <see cref="Instance"/>.
         /// </summary>
-        public ICollection<ServiceReference> Dependencies { get; }
+        public ICollection<ServiceReference> Dependencies { get; } = new DependencyCollection();
 
         /// <summary>
         /// Disposes the referenced service <see cref="Instance"/> and decrements the reference counter of all the <see cref="Dependencies"/>.
