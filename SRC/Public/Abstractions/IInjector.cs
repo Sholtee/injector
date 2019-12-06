@@ -20,11 +20,10 @@ namespace Solti.Utils.DI
         /// </summary>
         /// <param name="iface">The "id" of the service to be resolved. It must be a non-generic interface.</param>
         /// <param name="name">The (optional) name of the service.</param>
-        /// <param name="target">The (optional) target who requested the dependency.</param>
         /// <returns>The resolved service.</returns>
         /// <exception cref="ServiceNotFoundException">The service or one or more dependencies could not be found.</exception>
         [SuppressMessage("Naming", "CA1716:Identifiers should not match keywords", Justification = "The identifier won't confuse the users of the API.")]
-        object Get(Type iface, string name = null, Type target = null);
+        object Get(Type iface, string name = null);
 #if DEBUG
         /// <summary>
         /// Gets the <see cref="ServiceReference"/> of the desired service.

@@ -111,7 +111,7 @@ namespace Solti.Utils.DI.Internals
         }
 
         [SuppressMessage("Reliability", "CA2000:Dispose objects before losing scope", Justification = "The reference is released on container disposal.")]
-        public object Get(Type iface, string name, Type target) => GetReference(iface, name).Instance;
+        public object Get(Type iface, string name) => GetReference(iface, name).Instance;
 
         public Lifetime? LifetimeOf(Type iface, string name)
         {
