@@ -22,11 +22,12 @@ namespace Solti.Utils.DI
         /// </summary>
         /// <typeparam name="TInterface">The "id" of the service to be resolved. It must be an interface.</typeparam>
         /// <param name="self">The injector itself.</param>
+        /// <param name="name">The (optional) name of the service.</param>
         /// <param name="target">The (optional) target who requested the dependency.</param>
         /// <returns>The resolved service.</returns>
         /// <remarks>This method is thread safe so you can call it parallelly.</remarks>
         /// <exception cref="ServiceNotFoundException">The service could not be found.</exception>
-        public static TInterface Get<TInterface>(this IInjector self, Type target = null) => self != null ? (TInterface) self.Get(typeof(TInterface), null, target) : throw new ArgumentNullException(nameof(self));
+        public static TInterface Get<TInterface>(this IInjector self, string name = null, Type target = null) => self != null ? (TInterface) self.Get(typeof(TInterface), name, target) : throw new ArgumentNullException(nameof(self));
 
         /// <summary>
         /// Instantiates the given class.
