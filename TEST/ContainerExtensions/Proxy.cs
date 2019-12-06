@@ -147,30 +147,35 @@ namespace Solti.Utils.DI.Container.Tests
                 .Setup(i => i.Get(It.Is<Type>(t => t == typeof(IInterface_1)), null))
                 .Returns(new Implementation_1_No_Dep());
 
+            mockInjector
+                .Setup(i => i.Get(It.Is<Type>(t => t == typeof(IInterface_3<int>)), null))
+                .Returns(new Implementation_3_IInterface_1_Dependant<int>(null));
+
             object instance =  Container.Get<IInterface_2>().GetService(() => mockInjector.Object, new ServiceReference(null, null)).Instance;
 
             Assert.That(instance, Is.InstanceOf<MyProxyWithDependency>());
 
             var implementor = (MyProxyWithDependency) instance;
 
-            Assert.That(implementor.Dependency, Is.InstanceOf<Implementation_1_No_Dep>());
+            Assert.That(implementor.Dependency, Is.InstanceOf<Implementation_3_IInterface_1_Dependant<int>>());
             Assert.That(implementor.Target, Is.InstanceOf<Implementation_2_IInterface_1_Dependant>());
 
             var original = (Implementation_2_IInterface_1_Dependant) implementor.Target;
 
             Assert.That(original.Interface1, Is.InstanceOf<Implementation_1_No_Dep>());
 
-            mockInjector.Verify(i => i.Get(It.Is<Type>(t => t == typeof(IInterface_1)), null), Times.Exactly(2));
+            mockInjector.Verify(i => i.Get(It.Is<Type>(t => t == typeof(IInterface_1)), null), Times.Once);
+            mockInjector.Verify(i => i.Get(It.Is<Type>(t => t == typeof(IInterface_3<int>)), null), Times.Once);
         }
 
         public class MyProxyWithDependency : InterfaceInterceptor<IInterface_2>
         {
-            public MyProxyWithDependency(IInterface_1 dependency, IInterface_2 target) : base(target)
+            public MyProxyWithDependency(IInterface_3<int> dependency, IInterface_2 target) : base(target)
             {
                 Dependency = dependency;
             }
 
-            public IInterface_1 Dependency { get; }
+            public IInterface_3<int> Dependency { get; }
         }
 
         [Test]
