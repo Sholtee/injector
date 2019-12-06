@@ -13,7 +13,7 @@ namespace Solti.Utils.DI.Internals
     /// </summary>
     internal class TransientServiceEntry : ProducibleServiceEntry
     {
-        private readonly List<ServiceReference> FServices = new List<ServiceReference>();
+        private readonly ICollection<ServiceReference> FServices = new ServiceCollection();
 
         private TransientServiceEntry(TransientServiceEntry entry, IServiceContainer owner) : base(entry, owner)
         {
@@ -38,7 +38,9 @@ namespace Solti.Utils.DI.Internals
             CheckProducible();
 
             reference.Instance = Factory(injectorFactory(), Interface);
+
             FServices.Add(reference);
+            reference.Release(); // az FServices kezeli az elettartamat
 
             return reference;
         }
@@ -52,11 +54,7 @@ namespace Solti.Utils.DI.Internals
 
         protected override void Dispose(bool disposeManaged)
         {
-            if (disposeManaged) 
-            {
-                FServices.ForEach(svc => svc.Release()); 
-                FServices.Clear();
-            }
+            if (disposeManaged) FServices.Clear();
 
             base.Dispose(disposeManaged);
         }
