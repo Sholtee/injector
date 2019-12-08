@@ -32,7 +32,6 @@ namespace Solti.Utils.DI.Internals
 
             this.Instance<IInjector>(this, releaseOnDispose: false);
 
-        #region IInjector
         public ServiceReference GetReference(Type iface, string name)
         {
             if (iface == null)
@@ -110,6 +109,7 @@ namespace Solti.Utils.DI.Internals
             return currentNode;
         }
 
+        #region IInjector
         [SuppressMessage("Reliability", "CA2000:Dispose objects before losing scope", Justification = "The reference is released on container disposal.")]
         public object Get(Type iface, string name) => GetReference(iface, name).Instance;
 
