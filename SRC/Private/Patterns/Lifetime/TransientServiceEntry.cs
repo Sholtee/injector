@@ -33,7 +33,7 @@ namespace Solti.Utils.DI.Internals
 
         public override object Value => null;
 
-        public override ServiceReference GetService(Func<IInjector> injectorFactory, ServiceReference reference)
+        public override void GetService(Func<IInjector> injectorFactory, ref ServiceReference reference)
         {
             CheckProducible();
 
@@ -41,8 +41,6 @@ namespace Solti.Utils.DI.Internals
 
             FServices.Add(reference);
             reference.Release(); // az FServices kezeli az elettartamat
-
-            return reference;
         }
 
         public override AbstractServiceEntry CopyTo(IServiceContainer target)

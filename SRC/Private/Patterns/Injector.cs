@@ -71,11 +71,8 @@ namespace Solti.Utils.DI.Internals
                 //   * Ujonan letrehozott injector eseten annak felszabaditasa a deklaralo kollekcio felszabaditasokor tortenik 
                 //     (mivel annak a gyermeke lesz).
                 //
-                // - Visszakaphatunk mar korabban legyartott referenciat is (pl Singleton szerviz eseten) ezert felulirjuk
-                //   a "currentNode" valtozot (a regi valtozo mar nem lesz hasznalva)
-                //
 
-                currentNode = entry.GetService(() => entry.Owner == this ? this : new Injector(entry.Owner), currentNode);
+                entry.GetService(() => entry.Owner == this ? this : new Injector(entry.Owner), ref currentNode);
 
                 Debug.Assert(currentNode.Instance != null, "Instance was not set");
 

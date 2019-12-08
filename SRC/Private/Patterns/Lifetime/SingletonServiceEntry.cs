@@ -35,19 +35,23 @@ namespace Solti.Utils.DI.Internals
 
         public override object Value => FService?.Instance;
 
-        public override ServiceReference GetService(Func<IInjector> injectorFactory, ServiceReference reference)
+        public override void GetService(Func<IInjector> injectorFactory, ref ServiceReference reference)
         {
             CheckProducible();
 
             if (FService == null)
+            {
                 lock (FLock)
+                {
                     if (FService == null)
                     {
                         FService = reference;
                         FService.Instance = Factory(injectorFactory(), Interface);
                     }
+                }
+            }
 
-            return FService;
+            reference = FService; // NE "else" agban legyen
         }
 
         protected override void Dispose(bool disposeManaged)

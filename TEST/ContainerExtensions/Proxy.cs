@@ -43,7 +43,10 @@ namespace Solti.Utils.DI.Container.Tests
                 .Proxy(mockCallback1.Object)
                 .Proxy(mockCallback2.Object);
 
-            Assert.That(Container.Get<IInterface_1>().GetService(() => null, new ServiceReference(null, null)).Instance, Is.InstanceOf<DecoratedImplementation_1>());
+            var svc = new ServiceReference(null, null);
+            Container.Get<IInterface_1>().GetService(() => null, ref svc);
+
+            Assert.That(svc.Instance, Is.InstanceOf<DecoratedImplementation_1>());
             mockCallback1.Verify(_ => _(It.IsAny<IInjector>(), It.IsAny<IInterface_1>()), Times.Once);
             mockCallback2.Verify(_ => _(It.IsAny<IInjector>(), It.IsAny<IInterface_1>()), Times.Once);
         }
@@ -70,7 +73,10 @@ namespace Solti.Utils.DI.Container.Tests
             // rogzitette az uj elemet.
             //
 
-            Assert.That(Container.Get<IInterface_3<int>>(QueryModes.ThrowOnError).GetService(() => mockInjector.Object, new ServiceReference(null, null)).Instance, Is.InstanceOf<DecoratedImplementation_3<int>>());
+            var svc = new ServiceReference(null, null);
+            Container.Get<IInterface_3<int>>(QueryModes.ThrowOnError).GetService(() => mockInjector.Object, ref svc);
+
+            Assert.That(svc.Instance, Is.InstanceOf<DecoratedImplementation_3<int>>());
             mockCallback.Verify(_ => _(It.IsAny<IInjector>(), It.IsAny<IInterface_3<int>>()), Times.Once);
         }
 
@@ -95,7 +101,10 @@ namespace Solti.Utils.DI.Container.Tests
 
             mockResolver.Verify(r => r.Resolve(It.Is<Type>(t => t == typeof(IInterface_1))), Times.Never);
 
-            Assert.That(Container.Get<IInterface_1>().GetService(() => null, new ServiceReference(null, null)).Instance, Is.InstanceOf<DecoratedImplementation_1>());     
+            var svc = new ServiceReference(null, null);
+            Container.Get<IInterface_1>().GetService(() => null, ref svc);
+
+            Assert.That(svc.Instance, Is.InstanceOf<DecoratedImplementation_1>());     
         }
 
         [Test]
@@ -151,11 +160,12 @@ namespace Solti.Utils.DI.Container.Tests
                 .Setup(i => i.Get(It.Is<Type>(t => t == typeof(IInterface_3<int>)), null))
                 .Returns(new Implementation_3_IInterface_1_Dependant<int>(null));
 
-            object instance =  Container.Get<IInterface_2>().GetService(() => mockInjector.Object, new ServiceReference(null, null)).Instance;
+            var svc = new ServiceReference(null, null);
+            Container.Get<IInterface_2>().GetService(() => mockInjector.Object, ref svc);
 
-            Assert.That(instance, Is.InstanceOf<MyProxyWithDependency>());
+            Assert.That(svc.Instance, Is.InstanceOf<MyProxyWithDependency>());
 
-            var implementor = (MyProxyWithDependency) instance;
+            var implementor = (MyProxyWithDependency) svc.Instance;
 
             Assert.That(implementor.Dependency, Is.InstanceOf<Implementation_3_IInterface_1_Dependant<int>>());
             Assert.That(implementor.Target, Is.InstanceOf<Implementation_2_IInterface_1_Dependant>());
@@ -183,7 +193,11 @@ namespace Solti.Utils.DI.Container.Tests
         {
             Container.Service<IInterface_1, Implementation_1_No_Dep>("cica");
             Assert.DoesNotThrow(() => Container.Proxy<IInterface_1>("cica", (injector, svc) => new DecoratedImplementation_1()));
-            Assert.That(Container.Get<IInterface_1>("cica").GetService(() => null, new ServiceReference(null, null)).Instance, Is.TypeOf<DecoratedImplementation_1>());
+
+            var svc = new ServiceReference(null, null);
+            Container.Get<IInterface_1>("cica").GetService(() => null, ref svc);
+
+            Assert.That(svc.Instance, Is.TypeOf<DecoratedImplementation_1>());
         }
     }
 }

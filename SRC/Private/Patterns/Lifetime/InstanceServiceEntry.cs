@@ -66,11 +66,11 @@ namespace Solti.Utils.DI.Internals
 
         public override object Value => FService.Instance;
 
-        public override ServiceReference GetService(Func<IInjector> injectorFactory, ServiceReference reference)
+        public override void GetService(Func<IInjector> injectorFactory, ref ServiceReference reference)
         {
             CheckDisposed();
 
-            return FService;
+            reference = FService;
         }
 
         protected override void Dispose(bool disposeManaged)
