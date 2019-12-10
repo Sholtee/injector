@@ -21,16 +21,22 @@ namespace Solti.Utils.DI.Internals
     {
         private const QueryModes QueryFlags = QueryModes.AllowSpecialization | QueryModes.ThrowOnError;
 
-        private readonly Stack<ServiceReference> FGraph = new Stack<ServiceReference>();
+        private readonly Stack<ServiceReference> FGraph;
 
         private Injector() => throw new NotSupportedException();
 
-        public Injector(IServiceContainer parent): base(parent) =>
+        private Injector(IServiceContainer parent, Stack<ServiceReference> graph) : base(parent) 
+        {
+            FGraph = graph;
+
             //
             // Felvesszuk sajat magunkat.
             //
 
             this.Instance<IInjector>(this, releaseOnDispose: false);
+        }
+
+        public Injector(IServiceContainer parent) : this(parent, new Stack<ServiceReference>()) { }
 
         public ServiceReference GetReference(Type iface, string name)
         {
@@ -72,7 +78,7 @@ namespace Solti.Utils.DI.Internals
                 //     (mivel annak a gyermeke lesz).
                 //
 
-                entry.GetService(() => entry.Owner == this ? this : new Injector(entry.Owner), ref currentNode);
+                entry.GetService(() => entry.Owner == this ? this : new Injector(entry.Owner, FGraph), ref currentNode);
 
                 Debug.Assert(currentNode.Instance != null, "Instance was not set");
 
