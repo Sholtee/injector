@@ -31,7 +31,7 @@ namespace Solti.Utils.DI.Internals
 
         public bool Contains(ServiceReference item) => FUnderlyingList.Contains(item);
 
-        public void CopyTo(ServiceReference[] array, int arrayIndex) => throw new NotImplementedException();
+        public void CopyTo(ServiceReference[] array, int arrayIndex) => throw new NotSupportedException();
 
         public IEnumerator<ServiceReference> GetEnumerator() => FUnderlyingList.GetEnumerator();
 
@@ -45,6 +45,6 @@ namespace Solti.Utils.DI.Internals
             return false;
         }
 
-        IEnumerator IEnumerable.GetEnumerator() => FUnderlyingList.GetEnumerator();
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
     }
 }

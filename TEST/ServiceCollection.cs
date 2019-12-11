@@ -3,6 +3,8 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
+using System;
+
 using NUnit.Framework;
 
 namespace Solti.Utils.DI.Internals.Tests
@@ -46,6 +48,14 @@ namespace Solti.Utils.DI.Internals.Tests
 
             Assert.That(Collection, Is.Empty);
             Assert.That(reference.RefCount, Is.EqualTo(1));
+        }
+
+        [Test]
+        public void CopyTo_ShouldThrow() 
+        {
+            var ar = new ServiceReference[0];
+
+            Assert.Throws<NotSupportedException>(() => Collection.CopyTo(ar, 0));
         }
     }
 }
