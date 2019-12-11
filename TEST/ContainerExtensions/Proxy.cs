@@ -192,7 +192,7 @@ namespace Solti.Utils.DI.Container.Tests
         public void Container_Proxy_ShouldHandleNamedServices() 
         {
             Container.Service<IInterface_1, Implementation_1_No_Dep>("cica");
-            Assert.DoesNotThrow(() => Container.Proxy<IInterface_1>("cica", (injector, svc) => new DecoratedImplementation_1()));
+            Assert.DoesNotThrow(() => Container.Proxy<IInterface_1>("cica", (i, s) => new DecoratedImplementation_1()));
 
             var svc = new ServiceReference(null, null);
             Container.Get<IInterface_1>("cica").GetService(() => null, ref svc);
