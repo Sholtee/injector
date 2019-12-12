@@ -16,7 +16,7 @@ namespace Solti.Utils.DI
     public enum Lifetime
     {
         /// <summary>
-        /// Services having <see cref="Transient"/> lifetime are instantiated on every request and released automatically when the parent <see cref="IInjector"/> is disposed. Note that the caller may also free the requested services (the system can handle it properly).
+        /// Services having <see cref="Transient"/> lifetime are instantiated on every request and released automatically when the parent <see cref="IInjector"/> is disposed.
         /// </summary>
         [RelatedEntryKind(typeof(TransientServiceEntry))]
         Transient = 0,
