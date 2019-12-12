@@ -8,7 +8,7 @@ namespace Solti.Utils.DI.Internals
     /// <summary>
     /// Manages object lifetime by refence counting.
     /// </summary>
-    public class DisposeByRefObject : Disposable, IReferenceCounted
+    public class DisposeByRefObject : Disposable, IDisposeByRef
     {
         private readonly object FLock = new object();
 
