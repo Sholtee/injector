@@ -16,42 +16,71 @@ namespace Solti.Utils.DI.Injector.Graph.Tests
     [TestFixture]
     public class GraphTests
     {
-        [Test]
-        public void ComplexTest() 
-        {
+        private static ServiceReference[] Validate(Injector injector) 
+        { 
             ServiceReference
                 svc1, svc2, svc3, svc4;
 
-            using (IServiceContainer container = new ServiceContainer().Setup(typeof(IInterface_1).Assembly))
-            {
-                var injector = new Injector(container);
+            svc4 = injector.GetReference(typeof(IInterface_4), null);
+            Assert.That(svc4.RefCount, Is.EqualTo(1));
+            Assert.That(svc4.Dependencies.Count(), Is.EqualTo(3));
+            Assert.NotNull(GetDependency(svc4, typeof(IInjector)));
+            Assert.NotNull(GetDependency(svc4, typeof(IInterface_2)));
+            Assert.NotNull(GetDependency(svc4, typeof(IInterface_3)));
 
-                svc4 = injector.GetReference(typeof(IInterface_4), null);
-                Assert.That(svc4.RefCount, Is.EqualTo(1));
-                Assert.That(svc4.Dependencies.Count(), Is.EqualTo(3));
-                Assert.NotNull(GetDependency(svc4, typeof(IInjector)));
-                Assert.NotNull(GetDependency(svc4, typeof(IInterface_2)));
-                Assert.NotNull(GetDependency(svc4, typeof(IInterface_3)));
+            svc3 = GetDependency(svc4, typeof(IInterface_3));
+            Assert.That(svc3.RefCount, Is.EqualTo(2));
+            Assert.That(svc3.Dependencies.Count(), Is.EqualTo(2));
+            Assert.NotNull(GetDependency(svc3, typeof(IInterface_1)));
+            Assert.NotNull(GetDependency(svc3, typeof(IInterface_2)));
 
-                svc3 = GetDependency(svc4, typeof(IInterface_3));
-                Assert.That(svc3.RefCount, Is.EqualTo(2));
-                Assert.That(svc3.Dependencies.Count(), Is.EqualTo(2));
-                Assert.NotNull(GetDependency(svc3, typeof(IInterface_1)));
-                Assert.NotNull(GetDependency(svc3, typeof(IInterface_2)));
+            svc2 = GetDependency(svc4, typeof(IInterface_2));
+            Assert.That(svc2.RefCount, Is.EqualTo(3));
+            Assert.That(svc2.Dependencies.Count(), Is.EqualTo(1));
+            Assert.NotNull(GetDependency(svc2, typeof(IInterface_1)));
 
-                svc2 = GetDependency(svc4, typeof(IInterface_2));
-                Assert.That(svc2.RefCount, Is.EqualTo(3));
-                Assert.That(svc2.Dependencies.Count(), Is.EqualTo(1));
-                Assert.NotNull(GetDependency(svc2, typeof(IInterface_1)));
+            svc1 = GetDependency(svc3, typeof(IInterface_1));
+            Assert.That(svc1.RefCount, Is.EqualTo(2));
+            Assert.That(svc1.Dependencies.Count(), Is.EqualTo(0));
 
-                svc1 = GetDependency(svc3, typeof(IInterface_1));
-                Assert.That(svc1.RefCount, Is.EqualTo(2));
-                Assert.That(svc1.Dependencies.Count(), Is.EqualTo(0));
-            }
-
-            Assert.That(new[] { svc1, svc2, svc3, svc4 }.All(svc => svc.Disposed));
+            return new[] { svc1, svc2, svc3, svc4 };
 
             ServiceReference GetDependency(ServiceReference reference, Type iface) => reference.Dependencies.SingleOrDefault(dep => dep.Interface == iface);
+        }
+
+        [Test]
+        public void ComplexTest()
+        {
+            ServiceReference[] references;
+
+            using (IServiceContainer container = new ServiceContainer().Setup(typeof(IInterface_1).Assembly))
+            {
+                references = Validate(new Injector(container));
+            }
+
+            Assert.That(references.All(reference => reference.Disposed));
+        }
+
+        [Test]
+        public void ComplexTestWithChildContainer()
+        {
+            ServiceReference[] references;
+
+            using (IServiceContainer container = new ServiceContainer())
+            {
+                container
+                    .Service<IInterface_1, Implementation_1>(Lifetime.Transient)
+                    .Service<IInterface_2, Implementation_2>(Lifetime.Singleton);
+
+                IServiceContainer child = container.CreateChild();
+                child
+                    .Service<IInterface_3, Implementation_3>(Lifetime.Transient)
+                    .Service<IInterface_4, Implementation_4>(Lifetime.Scoped);
+
+                references = Validate(new Injector(child));
+            }
+
+            Assert.That(references.All(reference => reference.Disposed));
         }
 
         private interface IInterface_1 { }
