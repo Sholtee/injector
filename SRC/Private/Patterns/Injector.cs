@@ -50,7 +50,8 @@ namespace Solti.Utils.DI.Internals
             //   * Igy a fuggosegek is a deklaralo kollekciobol lesznek feloldva
             //     Mellekhatasok: 
             //       > Singleton szerviz hivatkozhat abstract fuggosegre (de az rossz konfiguracio).
-            //       > Singleton szerviz minden fuggosege is Singletonkent viselkedik.
+            // - A referencia szamlalas miatt Singleton szerviz minden fuggosege is Singletonkent 
+            //   viselkedik.
             //
 
             ServiceReference currentNode;
@@ -60,8 +61,7 @@ namespace Solti.Utils.DI.Internals
                 //
                 // - Nem problema h minden egyes hivasnal uj injectort hozunk letre, az entry.GetService()
                 //   legfeljebb nem fogja hasznalni.
-                // - A referencia szamlalas miatt nem gond ha felszabaditjuk a szulo injectort, a kontener
-                //   felszabadulasaig elni fog a szerviz referencia.
+                // - A referencia szamlalas miatt nem gond ha felszabaditjuk a szulo injectort.
                 //
 
                 using (var ownerInjector = new Injector(entry.Owner))
@@ -74,7 +74,7 @@ namespace Solti.Utils.DI.Internals
                 currentNode = new ServiceReference(iface, name);
 
                 //
-                // A grafban egy szinttel lejebb levo elemek mind a mostani szervizunk fuggosegei.
+                // A grafban egy szinttel lejebb levo elemek mind a mostani szervizunk fuggosegei (lasd metodus lezaras).
                 //
 
                 FGraph.Push(currentNode);
