@@ -309,7 +309,7 @@ IMyService svc = injector.Get<IMyService>();
 - Requesting services as a constructor parameter is more convenient than using the `injector.Get()` method.
 - You may request the closed pair of an open generic service without registering it:
   ```csharp
-  container.Service(typeof(IMyGenericService<>));
+  container.Service(typeof(IMyGenericService<>), ...);
   ...
   using(IInjector injector = container.CreateInjector())
   {  
