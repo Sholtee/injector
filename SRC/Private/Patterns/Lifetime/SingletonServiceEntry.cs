@@ -35,7 +35,7 @@ namespace Solti.Utils.DI.Internals
 
         public override object Value => FService?.Instance;
 
-        public override void GetService(Func<IInjector> injectorFactory, ref ServiceReference reference)
+        public override void GetService(IInjector injector, ref ServiceReference reference)
         {
             CheckProducible();
 
@@ -46,7 +46,7 @@ namespace Solti.Utils.DI.Internals
                     if (FService == null)
                     {
                         FService = reference;
-                        FService.Instance = Factory(injectorFactory(), Interface);
+                        FService.Instance = Factory(injector, Interface);
                     }
                 }
             }

@@ -21,22 +21,16 @@ namespace Solti.Utils.DI.Internals
     {
         private const QueryModes QueryFlags = QueryModes.AllowSpecialization | QueryModes.ThrowOnError;
 
-        private readonly Stack<ServiceReference> FGraph;
+        private readonly Stack<ServiceReference> FGraph = new Stack<ServiceReference>();
 
         private Injector() => throw new NotSupportedException();
 
-        private Injector(IServiceContainer parent, Stack<ServiceReference> graph) : base(parent) 
-        {
-            FGraph = graph;
-
+        public Injector(IServiceContainer parent) : base(parent) =>
             //
             // Felvesszuk sajat magunkat.
             //
 
             this.Instance<IInjector>(this, releaseOnDispose: false);
-        }
-
-        public Injector(IServiceContainer parent) : this(parent, new Stack<ServiceReference>()) { }
 
         public ServiceReference GetReference(Type iface, string name)
         {
@@ -49,54 +43,73 @@ namespace Solti.Utils.DI.Internals
             if (iface.IsGenericTypeDefinition())
                 throw new ArgumentException(Resources.CANT_INSTANTIATE_GENERICS, nameof(iface));
 
-            var currentNode = new ServiceReference(iface, name);
+            AbstractServiceEntry entry = Get(iface, name, QueryFlags);
 
             //
-            // A grafban egy szinttel lejebb levo elemek mind a mostani szervizunk fuggosegei.
+            // - Lekerdezeshez mindig a deklaralo szervizkollekciobol kell injector-t letrehozni.
+            //   * Igy a fuggosegek is a deklaralo kollekciobol lesznek feloldva
+            //     Mellekhatasok: 
+            //       > Singleton szerviz hivatkozhat abstract fuggosegre (de az rossz konfiguracio).
+            //       > Singleton szerviz minden fuggosege is Singletonkent viselkedik.
             //
 
-            FGraph.Push(currentNode);
+            ServiceReference currentNode;
 
-            try
+            if (entry.Owner != this && entry.Owner != this.Parent)
             {
                 //
-                // Ha egynel tobbszor szerepel az aktualis szerviz akkor korkoros referenciank van.
+                // - Nem problema h minden egyes hivasnal uj injectort hozunk letre, az entry.GetService()
+                //   legfeljebb nem fogja hasznalni.
+                // - A referencia szamlalas miatt nem gond ha felszabaditjuk a szulo injectort, a kontener
+                //   felszabadulasaig elni fog a szerviz referencia.
                 //
 
-                if (FGraph.Count(node => (node.Interface, node.Name) == (currentNode.Interface, currentNode.Name)) > 1)
-                    throw new CircularReferenceException(FGraph.Select(node => (node.Interface, node.Name)));
-
-                AbstractServiceEntry entry = Get(iface, name, QueryFlags);
-
-                //
-                // - Lekerdezeshez mindig a deklaralo szervizkollekciobol csinalunk injector-t.
-                //   * Igy a fuggosegek is a deklaralo kollekciobol lesznek feloldva
-                //     Mellekhatasok: 
-                //       > Singleton szerviz hivatkozhat abstract fuggosegre (de az rossz konfiguracio).
-                //       > Singleton szerviz Scoped fuggosege is Singletonkent viselkedik (szinten rossz konfiguracio).
-                //   * Ujonan letrehozott injector eseten annak felszabaditasa a deklaralo kollekcio felszabaditasokor tortenik 
-                //     (mivel annak a gyermeke lesz).
-                //
-
-                entry.GetService(() => entry.Owner == this ? this : new Injector(entry.Owner, FGraph), ref currentNode);
-
-                Debug.Assert(currentNode.Instance != null, "Instance was not set");
+                using (var ownerInjector = new Injector(entry.Owner))
+                {
+                    currentNode = ownerInjector.GetReference(iface, name);
+                }
+            } 
+            else 
+            {  
+                currentNode = new ServiceReference(iface, name);
 
                 //
-                // Peldany tipusat ellenorizzuk mert a Factory(), Lazy() stb visszaadhat vicces dolgokat.
+                // A grafban egy szinttel lejebb levo elemek mind a mostani szervizunk fuggosegei.
                 //
 
-                if (!iface.IsInstanceOfType(currentNode.Instance))
-                    throw new Exception(string.Format(CultureInfo.CurrentCulture, Resources.INVALID_INSTANCE, iface));
+                FGraph.Push(currentNode);
 
-                //
-                // Ha kivetel volt nem kell semmit sem felszabaditani mert a szerviz bejegyzesek dispose-olasakor
-                // minden legyartott szerviznek is fel kene szabadulnia.
-                //
-            }
-            finally
-            {
-                FGraph.Pop();
+                try
+                {
+                    //
+                    // Ha egynel tobbszor szerepel az aktualis szerviz akkor korkoros referenciank van.
+                    //
+
+                    if (FGraph.Count(node => (node.Interface, node.Name) == (currentNode.Interface, currentNode.Name)) > 1)
+                        throw new CircularReferenceException(FGraph.Select(node => (node.Interface, node.Name)));
+
+                    //
+                    // Factory hivasa
+                    //
+
+                    entry.GetService(this, ref currentNode);
+
+                    //
+                    // Peldany tipusat ellenorizzuk mert a Factory(), Lazy() stb visszaadhat vicces dolgokat.
+                    //
+
+                    if (!iface.IsInstanceOfType(currentNode.Instance))
+                        throw new Exception(string.Format(CultureInfo.CurrentCulture, Resources.INVALID_INSTANCE, iface));
+
+                    //
+                    // Ha kivetel volt nem kell semmit sem felszabaditani mert a szerviz bejegyzesek dispose-olasakor
+                    // minden legyartott szerviznek is fel kene szabadulnia.
+                    //
+                }
+                finally
+                {
+                    FGraph.Pop();
+                }
             }
 
             //

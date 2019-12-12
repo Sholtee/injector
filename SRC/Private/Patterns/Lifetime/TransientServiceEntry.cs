@@ -33,11 +33,11 @@ namespace Solti.Utils.DI.Internals
 
         public override object Value => null;
 
-        public override void GetService(Func<IInjector> injectorFactory, ref ServiceReference reference)
+        public override void GetService(IInjector injector, ref ServiceReference reference)
         {
             CheckProducible();
 
-            reference.Instance = Factory(injectorFactory(), Interface);
+            reference.Instance = Factory(injector, Interface);
 
             FServices.Add(reference);
             reference.Release(); // az FServices kezeli az elettartamat

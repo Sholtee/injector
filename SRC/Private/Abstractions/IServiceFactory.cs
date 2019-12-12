@@ -11,6 +11,6 @@ namespace Solti.Utils.DI.Internals
     {
         Func<IInjector, Type, object> Factory { get; set; }
 
-        void GetService(Func<IInjector> injectorFactory, ref ServiceReference reference);
+        void GetService(IInjector injector, ref ServiceReference reference);
     }
 }
