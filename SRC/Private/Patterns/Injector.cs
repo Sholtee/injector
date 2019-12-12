@@ -68,6 +68,8 @@ namespace Solti.Utils.DI.Internals
                 {
                     currentNode = ownerInjector.GetReference(iface, name);
                 }
+
+                Debug.Assert(!currentNode.Disposed, "Node already disposed");
             } 
             else 
             {  
@@ -93,6 +95,8 @@ namespace Solti.Utils.DI.Internals
                     //
 
                     entry.GetService(this, ref currentNode);
+
+                    Debug.Assert(currentNode.Instance != null, "Instance was not set");
 
                     //
                     // Peldany tipusat ellenorizzuk mert a Factory(), Lazy() stb visszaadhat vicces dolgokat.
