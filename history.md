@@ -51,4 +51,4 @@
   - *removed:* `IInjector` events
   - *removed:* Support for manually disposing `Transient` services
   - *removed:* `IInjectorExtensions.ShouldRelease()`
-  
+  - *fixed:* Service never gets disposed till all its dependants are disposed  
