@@ -19,30 +19,23 @@ namespace Solti.Utils.DI.Internals
 
     internal sealed class Injector : ServiceContainer, IInjector
     {
-        private readonly Stack<(Type Interface, string Name)> FCurrentPath = new Stack<(Type Interface, string Name)>();
+        private const QueryModes QueryFlags = QueryModes.AllowSpecialization | QueryModes.ThrowOnError;
+
+        private readonly Stack<ServiceReference> FGraph = new Stack<ServiceReference>();
 
         private Injector() => throw new NotSupportedException();
 
-        [SuppressMessage("Reliability", "CA2000:Dispose objects before losing scope", Justification = "The injector is responsible for disposing the entry.")]
-        public Injector(IServiceContainer parent): base(parent)
-        {
+        public Injector(IServiceContainer parent) : base(parent) =>
             //
             // Felvesszuk sajat magunkat.
             //
 
-            Add(new InstanceServiceEntry
-            (
-                @interface: typeof(IInjector),
-                name: null,
-                instance: this,
-                releaseOnDispose: false,
-                owner: this
-            ));
-        }
+            this.Instance<IInjector>(this, releaseOnDispose: false);
 
-        #region IInjector
-        public object Get(Type iface, string name, Type target)
+        public ServiceReference GetReference(Type iface, string name)
         {
+            CheckDisposed();
+
             if (iface == null)
                 throw new ArgumentNullException(nameof(iface));
 
@@ -52,85 +45,108 @@ namespace Solti.Utils.DI.Internals
             if (iface.IsGenericTypeDefinition())
                 throw new ArgumentException(Resources.CANT_INSTANTIATE_GENERICS, nameof(iface));
 
-            if (target != null && !target.IsClass())
-                throw new ArgumentException(Resources.NOT_A_CLASS, nameof(target));
+            AbstractServiceEntry entry = Get(iface, name, QueryFlags);
 
             //
-            // Ha az OnServiceRequest esemenyben visszakaptunk szerviz peldanyt akkor visszaadjuk azt.
+            // - Lekerdezeshez mindig a deklaralo szervizkollekciobol kell injector-t letrehozni.
+            //   * Igy a fuggosegek is a deklaralo kollekciobol lesznek feloldva
+            //     Mellekhatasok: 
+            //       > Singleton szerviz hivatkozhat abstract fuggosegre (de az rossz konfiguracio).
+            // - A referencia szamlalas miatt Singleton szerviz minden fuggosege is Singletonkent 
+            //   viselkedik.
             //
 
-            var ev = new InjectorEventArg(iface, name, target);
-            OnServiceRequest?.Invoke(this, ev);
-            if (ev.Service != null) return ev.Service;
+            ServiceReference currentNode;
 
-            (Type Interface, string Name) currentHop = (iface, name);
-            FCurrentPath.Push(currentHop);
-
-            try
+            if (entry.Owner != this && entry.Owner != this.Parent)
             {
                 //
-                // Ha egynel tobbszor szerepel az aktualis szerviz akkor korkoros referenciank van.
+                // - Nem problema h minden egyes hivasnal uj injectort hozunk letre, az entry.GetService()
+                //   legfeljebb nem fogja hasznalni.
+                // - A referencia szamlalas miatt nem gond ha felszabaditjuk a szulo injectort.
                 //
 
-                if (FCurrentPath.Count(t => t == currentHop) > 1)
-                    throw new CircularReferenceException(FCurrentPath);
+                using (var ownerInjector = new Injector(entry.Owner))
+                {
+                    currentNode = ownerInjector.GetReference(iface, name);
+                }
 
-                AbstractServiceEntry entry = Get(iface, name, QueryModes.AllowSpecialization | QueryModes.ThrowOnError);
-
-                //
-                // Lekerdezeshez mindig a deklaralo szervizkollekciobol csinalunk injector-t.
-                //   - Igy a fuggosegek is a deklaralo kollekciobol lesznek feloldva (mellekhataskent Singleton szerviz peldaul
-                //     hivatkozhat abstract fuggosegre, de az rossz konfiguracio).
-                //   - Ujonan letrehozott injector eseten annak felszabaditasa a deklaralo kollekcio felszabaditasokor tortenik 
-                //     (mivel annak a gyermeke lesz).
-                //
-
-                object instance = entry.GetService(() => entry.Owner == this ? this : new Injector(entry.Owner));
+                Debug.Assert(!currentNode.Disposed, "Node already disposed");
+            } 
+            else 
+            {  
+                currentNode = new ServiceReference(iface, name);
 
                 //
-                // Peldany tipusat ellenorizzuk mert a Factory(), Lazy() stb visszaadhat vicces dolgokat.
+                // A grafban egy szinttel lejebb levo elemek mind a mostani szervizunk fuggosegei (lasd metodus lezaras).
                 //
 
-                if (!iface.IsInstanceOfType(instance))
-                    throw new Exception(string.Format(CultureInfo.CurrentCulture, Resources.INVALID_INSTANCE, iface));
+                FGraph.Push(currentNode);
 
-                //
-                // Ha az OnServiceRequested esemenyben felulirjak a szervizt akkor azt
-                // adjuk vissza.
-                //
+                try
+                {
+                    //
+                    // Ha egynel tobbszor szerepel az aktualis szerviz akkor korkoros referenciank van.
+                    //
 
-                ev.Service = instance;
-                OnServiceRequested?.Invoke(this, ev);
+                    if (FGraph.Count(node => (node.Interface, node.Name) == (currentNode.Interface, currentNode.Name)) > 1)
+                        throw new CircularReferenceException(FGraph.Select(node => (node.Interface, node.Name)));
 
-                return ev.Service;
+                    //
+                    // Factory hivasa
+                    //
+
+                    entry.GetService(this, ref currentNode);
+
+                    Debug.Assert(currentNode.Instance != null, "Instance was not set");
+
+                    //
+                    // Peldany tipusat ellenorizzuk mert a Factory(), Lazy() stb visszaadhat vicces dolgokat.
+                    //
+
+                    if (!iface.IsInstanceOfType(currentNode.Instance))
+                        throw new Exception(string.Format(CultureInfo.CurrentCulture, Resources.INVALID_INSTANCE, iface));
+
+                    //
+                    // Ha kivetel volt nem kell semmit sem felszabaditani mert a szerviz bejegyzesek dispose-olasakor
+                    // minden legyartott szerviznek is fel kene szabadulnia.
+                    //
+                }
+                finally
+                {
+                    FGraph.Pop();
+                }
             }
-            finally
-            {
-                (Type Interface, string Name) removed = FCurrentPath.Pop();
-                Debug.Assert(removed == currentHop);
-            }
+
+            //
+            // Ha az aktualisan lekerdezett szerviz valakinek a fuggosege akkor hozzaadjuk a fuggosegi listahoz.
+            //
+
+            if (FGraph.Any()) 
+                FGraph
+                    .Peek()
+                    .Dependencies
+                    .Add(currentNode);
+
+            return currentNode;
         }
+
+        #region IInjector
+        [SuppressMessage("Reliability", "CA2000:Dispose objects before losing scope", Justification = "The reference is released on container disposal.")]
+        public object Get(Type iface, string name) => GetReference(iface, name).Instance;
 
         public Lifetime? LifetimeOf(Type iface, string name)
         {
+            CheckDisposed();
+
             if (iface == null)
                 throw new ArgumentNullException(nameof(iface));
 
             if (!iface.IsInterface())
                 throw new ArgumentException(Resources.NOT_AN_INTERFACE, nameof(iface));
 
-            //
-            // Az OnServiceRequest esemenyben visszaadhatunk olyan szervizt is ami nem volt regisztralva.
-            // Ez a tortenet viszont a kliens szamara lathatatlan -> megprobalhatja az elettartamat
-            // lekerdezni, ekkor ne legyen kivetel.
-            //
-
-            return Get(iface, name, QueryModes.Default)?.Lifetime;
+            return Get(iface, name, QueryFlags).Lifetime;
         }
-
-        public event InjectorEventHandler<InjectorEventArg> OnServiceRequest;
-
-        public event InjectorEventHandler<InjectorEventArg> OnServiceRequested;
         #endregion
 
         #region Composite

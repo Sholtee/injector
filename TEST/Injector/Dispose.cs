@@ -3,7 +3,6 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
-using System;
 using System.Collections.Generic;
 
 using Moq;
@@ -32,30 +31,17 @@ namespace Solti.Utils.DI.Injector.Tests
         [Test]
         public void Injector_DisposeShouldFreeTransientEntries() 
         {
-            var obj1 = new Mock<IInterface_1_Disaposable>(MockBehavior.Strict);
-            obj1.Setup(t => t.Dispose());
+            var obj = new Mock<IEnumerator<string>>(MockBehavior.Strict);
+            obj.Setup(t => t.Dispose());
 
-            var obj2 = new Mock<IEnumerator<string>>(MockBehavior.Strict);
-            obj2.Setup(t => t.Dispose());
-
-            Container
-                .Factory(i => obj1.Object, Lifetime.Transient)
-                .Factory(i => obj2.Object, Lifetime.Transient);
-
-            IDisposable
-                disposed,
-                notDisposed;
+            Container.Factory(i => obj.Object, Lifetime.Transient);
 
             using (IInjector injector = Container.CreateInjector()) 
             {
-                disposed = injector.Get<IInterface_1_Disaposable>();
-                disposed.Dispose();
-
-                notDisposed = injector.Get<IEnumerator<string>>();
+                injector.Get<IEnumerator<string>>();
             }
 
-            obj1.Verify(t => t.Dispose(), Times.Once);
-            obj2.Verify(t => t.Dispose(), Times.Once);
+            obj.Verify(t => t.Dispose(), Times.Once);
         }
     }
 }

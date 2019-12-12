@@ -12,7 +12,7 @@ namespace Solti.Utils.DI.Internals
     /// </summary>
     internal class ScopedServiceEntry : ProducibleServiceEntry
     {
-        private object FValue;
+        private ServiceReference FService;
 
         private ScopedServiceEntry(ScopedServiceEntry entry, IServiceContainer owner) : base(entry, owner)
         {
@@ -30,13 +30,18 @@ namespace Solti.Utils.DI.Internals
         {
         }
 
-        public override object Value => FValue;
+        public override object Value => FService?.Instance;
 
-        public override object GetService(Func<IInjector> injectorFactory)
+        public override void GetService(IInjector injector, ref ServiceReference reference)
         {
             CheckProducible();
 
-            return FValue ?? (FValue = Factory(injectorFactory(), Interface));
+            if (FService == null) 
+            {
+                FService = reference;
+                FService.Instance = Factory(injector, Interface);
+            }
+            else reference = FService;
         }
 
         public override AbstractServiceEntry CopyTo(IServiceContainer target)
@@ -48,11 +53,8 @@ namespace Solti.Utils.DI.Internals
 
         protected override void Dispose(bool disposeManaged)
         {
-            if (disposeManaged)
-            {
-                (FValue as IDisposable)?.Dispose();
-                FValue = null;
-            }
+            if (disposeManaged) FService?.Release();
+
             base.Dispose(disposeManaged);
         }
     }

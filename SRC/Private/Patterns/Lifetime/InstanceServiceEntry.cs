@@ -16,8 +16,25 @@ namespace Solti.Utils.DI.Internals
     /// </summary>
     internal class InstanceServiceEntry : AbstractServiceEntry
     {
-        private readonly bool FReleaseOnDispose;
-        private object FInstance;
+        #region InstanceServiceReference
+        private sealed class InstanceServiceReference : ServiceReference // hacky
+        {
+            public InstanceServiceReference(Type @interface, string name, bool releaseOnDispose) : base(@interface, name)
+            {
+                ReleaseOnDispose = releaseOnDispose;        
+            }
+
+            public bool ReleaseOnDispose { get; }
+
+            protected override void Dispose(bool disposeManaged)
+            {
+                if (disposeManaged && !ReleaseOnDispose) Instance = null; 
+                base.Dispose(disposeManaged);
+            }
+        }
+        #endregion
+
+        private readonly ServiceReference FService;
 
         public InstanceServiceEntry(Type @interface, string name, object instance, bool releaseOnDispose, IServiceContainer owner) : base(@interface, name, null, owner)
         {
@@ -31,8 +48,7 @@ namespace Solti.Utils.DI.Internals
             if (!@interface.IsInstanceOfType(instance))
                 throw new InvalidOperationException(string.Format(CultureInfo.CurrentCulture, Resources.NOT_ASSIGNABLE, @interface, instance.GetType()));
 
-            FInstance = instance;
-            FReleaseOnDispose = releaseOnDispose;
+            FService = new InstanceServiceReference(@interface, name, releaseOnDispose) { Instance = instance };
         }
 
         public override Type Implementation => null;
@@ -48,22 +64,18 @@ namespace Solti.Utils.DI.Internals
             set => throw new InvalidOperationException();
         }
 
-        public override object Value => FInstance;
+        public override object Value => FService.Instance;
 
-        public override object GetService(Func<IInjector> injectorFactory)
+        public override void GetService(IInjector injector, ref ServiceReference reference)
         {
             CheckDisposed();
 
-            return Value;
+            reference = FService;
         }
 
         protected override void Dispose(bool disposeManaged)
         {
-            if (disposeManaged && FReleaseOnDispose)
-            {
-                (FInstance as IDisposable)?.Dispose();
-                FInstance = null;
-            }
+            if (disposeManaged) FService.Release();
             base.Dispose(disposeManaged);
         }
     }

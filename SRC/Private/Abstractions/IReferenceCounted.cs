@@ -1,5 +1,5 @@
 ﻿/********************************************************************************
-* IServiceFactory.cs                                                            *
+* IReferenceCounted.cs                                                          *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
@@ -7,10 +7,9 @@ using System;
 
 namespace Solti.Utils.DI.Internals
 {
-    internal interface IServiceFactory
+    internal interface IReferenceCounted: IDisposable
     {
-        Func<IInjector, Type, object> Factory { get; set; }
-
-        void GetService(IInjector injector, ref ServiceReference reference);
+        int AddRef();
+        int Release();
     }
 }

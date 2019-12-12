@@ -185,13 +185,13 @@ namespace Solti.Utils.DI.Injector.Tests
         }
 
         [Test]
-        public void Injector_LifetimeOf_ShouldNotSpecialize()
+        public void Injector_LifetimeOf_ShouldSpecialize()
         {
-            Container.Service(typeof(IInterface_3<>), typeof(Implementation_3_IInterface_1_Dependant<>));
+            Container.Service(typeof(IInterface_3<>), typeof(Implementation_3_IInterface_1_Dependant<>), Lifetime.Transient);
 
             using (IInjector injector = Container.CreateInjector())
             {
-                Assert.Null(injector.LifetimeOf<IInterface_3<int>>());
+                Assert.That(injector.LifetimeOf<IInterface_3<int>>(), Is.EqualTo(Lifetime.Transient));
             }
         }
 
@@ -202,18 +202,6 @@ namespace Solti.Utils.DI.Injector.Tests
             {
                 Assert.Throws<ArgumentNullException>(() => injector.LifetimeOf(null));
                 Assert.Throws<ArgumentException>(() => injector.LifetimeOf<object>(), Resources.NOT_AN_INTERFACE);
-            }
-        }
-
-        [TestCase(Lifetime.Singleton)]
-        [TestCase(Lifetime.Transient)]
-        public void Injector_ShouldRelease_ShouldTakeLifetimeIntoAccount(Lifetime lifetime)
-        {
-            Container.Service<IDisposable, Disposable>(lifetime);
-
-            using (IInjector injector = Container.CreateInjector())
-            {
-                Assert.That(injector.ShouldRelease<IDisposable>(), Is.EqualTo(lifetime == Lifetime.Transient));
             }
         }
     }

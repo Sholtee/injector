@@ -13,7 +13,7 @@ namespace Solti.Utils.DI.Internals
     /// </summary>
     internal class TransientServiceEntry : ProducibleServiceEntry
     {
-        private List<IDisposableEx> FServicesToDispose;
+        private readonly ICollection<ServiceReference> FServices = new ServiceCollection();
 
         private TransientServiceEntry(TransientServiceEntry entry, IServiceContainer owner) : base(entry, owner)
         {
@@ -33,22 +33,14 @@ namespace Solti.Utils.DI.Internals
 
         public override object Value => null;
 
-        public override object GetService(Func<IInjector> injectorFactory)
+        public override void GetService(IInjector injector, ref ServiceReference reference)
         {
             CheckProducible();
 
-            object result = Factory(injectorFactory(), Interface);
+            reference.Instance = Factory(injector, Interface);
 
-            if (result is IDisposable)
-            {
-                IDisposableEx disposable = DisposableWrapper.Create(Interface, (IDisposable) result);
-                result = disposable;
-
-                if (FServicesToDispose == null) FServicesToDispose = new List<IDisposableEx>(1);
-                FServicesToDispose.Add(disposable);       
-            }
-
-            return result;
+            FServices.Add(reference);
+            reference.Release(); // az FServices kezeli az elettartamat
         }
 
         public override AbstractServiceEntry CopyTo(IServiceContainer target)
@@ -60,17 +52,7 @@ namespace Solti.Utils.DI.Internals
 
         protected override void Dispose(bool disposeManaged)
         {
-            if (FServicesToDispose != null) 
-            {
-                FServicesToDispose.ForEach(svc => 
-                {
-                    if (!svc.Disposed) 
-                    {
-                        svc.Dispose();
-                    }
-                });
-                FServicesToDispose.Clear();
-            }
+            if (disposeManaged) FServices.Clear();
 
             base.Dispose(disposeManaged);
         }

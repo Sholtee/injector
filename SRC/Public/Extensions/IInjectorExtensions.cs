@@ -23,11 +23,10 @@ namespace Solti.Utils.DI
         /// <typeparam name="TInterface">The "id" of the service to be resolved. It must be an interface.</typeparam>
         /// <param name="self">The injector itself.</param>
         /// <param name="name">The (optional) name of the service.</param>
-        /// <param name="target">The (optional) target who requested the dependency.</param>
         /// <returns>The resolved service.</returns>
         /// <remarks>This method is thread safe so you can call it parallelly.</remarks>
         /// <exception cref="ServiceNotFoundException">The service could not be found.</exception>
-        public static TInterface Get<TInterface>(this IInjector self, string name = null, Type target = null) => self != null ? (TInterface) self.Get(typeof(TInterface), name, target) : throw new ArgumentNullException(nameof(self));
+        public static TInterface Get<TInterface>(this IInjector self, string name = null) => self != null ? (TInterface) self.Get(typeof(TInterface), name) : throw new ArgumentNullException(nameof(self));
 
         /// <summary>
         /// Instantiates the given class.
@@ -72,45 +71,5 @@ namespace Solti.Utils.DI
         /// <param name="self">The injector itself.</param>
         /// <returns>The <see cref="Lifetime"/> of the service if it is producible, null otherwise.</returns>
         public static Lifetime? LifetimeOf<TInterface>(this IInjector self, string name = null) => self != null ? self.LifetimeOf(typeof(TInterface), name) : throw new ArgumentNullException(nameof(self));
-
-        /// <summary>
-        /// Returns true if you should release service(s) with the given interface, false otherwise.
-        /// </summary>
-        /// <param name="self">The injector itself.</param>
-        /// <param name="iface">The interface to be checked.</param>
-        /// <remarks>
-        /// <list type="bullet">
-        /// <item>
-        /// <description>This method is intended to be called in the Dispose method of an object.</description>
-        /// </item>
-        /// <item>
-        /// <description>Returning true indicates the the service has the <see cref="Lifetime.Transient"/> lifetime.</description>
-        /// </item>
-        /// </list>
-        /// </remarks>
-        public static bool ShouldRelease(this IInjector self, Type iface) => 
-            //
-            // Azt ne ellenorizzuk h az interface IDisposable leszarmazott mert ha az nem is, az implementacio
-            // meg siman lehet az.
-            //
-
-            self != null ? self.LifetimeOf(iface) == Lifetime.Transient : throw new ArgumentNullException(nameof(self));
-
-        /// <summary>
-        /// Returns true if you should release service(s) with the given <typeparamref name="TInterface"/>, false otherwise.
-        /// </summary>
-        /// <typeparam name="TInterface"></typeparam>
-        /// <param name="self">The injector itself.</param>
-        /// <remarks>
-        /// <list type="bullet">
-        /// <item>
-        /// <description>This method is intended to be called in the Dispose method of an object.</description>
-        /// </item>
-        /// <item>
-        /// <description>Returning true indicates the the service has the <see cref="Lifetime.Transient"/> lifetime.</description>
-        /// </item>
-        /// </list>
-        /// </remarks>
-        public static bool ShouldRelease<TInterface>(this IInjector self) => self.ShouldRelease(typeof(TInterface));
     }
 }

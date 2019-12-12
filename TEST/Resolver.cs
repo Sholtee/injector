@@ -70,8 +70,8 @@ namespace Solti.Utils.DI.Internals.Tests
             foreach(Func<IInjector, object> resolver in GetResolvers(typeof(MyClass).GetConstructor(new[] { dep1, dep2 })))
             { 
                 mockInjector
-                    .Setup(i => i.Get(It.IsAny<Type>(), It.IsAny<string>(), It.IsAny<Type>()))
-                    .Returns<Type, string, Type>((type, name, target) =>
+                    .Setup(i => i.Get(It.IsAny<Type>(), It.IsAny<string>()))
+                    .Returns<Type, string>((type, name) =>
                     {
                         if (type == typeof(IDisposable) && name == name1) return mockDisposable.Object;
                         if (type == typeof(IServiceFactory) && name == name2) return mockServiceFactory.Object;
@@ -86,9 +86,9 @@ namespace Solti.Utils.DI.Internals.Tests
                 Assert.That(instance.Dep1, Is.SameAs(mockDisposable.Object));
                 Assert.That(instance.Dep2, Is.SameAs(mockServiceFactory.Object));
             
-                mockInjector.Verify(i => i.Get(It.Is<Type>(t => t == typeof(IDisposable)), It.Is<string>(n => n == name1), It.Is<Type>(t => t == typeof(MyClass))), Times.Once);
-                mockInjector.Verify(i => i.Get(It.Is<Type>(t => t == typeof(IServiceFactory)), It.Is<string>(n => n == name2), It.Is<Type>(t => t == typeof(MyClass))), Times.Once);
-                mockInjector.Verify(i => i.Get(It.IsAny<Type>(), It.IsAny<string>(), It.IsAny<Type>()), Times.Exactly(2));
+                mockInjector.Verify(i => i.Get(It.Is<Type>(t => t == typeof(IDisposable)), It.Is<string>(n => n == name1)), Times.Once);
+                mockInjector.Verify(i => i.Get(It.Is<Type>(t => t == typeof(IServiceFactory)), It.Is<string>(n => n == name2)), Times.Once);
+                mockInjector.Verify(i => i.Get(It.IsAny<Type>(), It.IsAny<string>()), Times.Exactly(2));
 
                 mockInjector.Reset();
             }
@@ -98,7 +98,7 @@ namespace Solti.Utils.DI.Internals.Tests
         public void Resolver_ShouldHandleParameterlessConstructors()
         {
             var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
-            mockInjector.Setup(i => i.Get(It.IsAny<Type>(), It.IsAny<string>(), It.IsAny<Type>()));
+            mockInjector.Setup(i => i.Get(It.IsAny<Type>(), It.IsAny<string>()));
 
             Func<IInjector, Type, object> factory = Resolver
                 .Get(typeof(MyClass).GetConstructor(new Type[0]));
@@ -111,14 +111,14 @@ namespace Solti.Utils.DI.Internals.Tests
             Assert.That(instance.Dep1, Is.Null);
             Assert.That(instance.Dep2, Is.Null);
 
-            mockInjector.Verify(i => i.Get(It.IsAny<Type>(), It.IsAny<string>(), It.IsAny<Type>()), Times.Never);
+            mockInjector.Verify(i => i.Get(It.IsAny<Type>(), It.IsAny<string>()), Times.Never);
         }
 
         [Test]
         public void Resolver_ShouldHandleExplicitArguments()
         {
             var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
-            mockInjector.Setup(i => i.Get(It.IsAny<Type>(), It.IsAny<string>(), It.IsAny<Type>()));
+            mockInjector.Setup(i => i.Get(It.IsAny<Type>(), It.IsAny<string>()));
 
             Func<IInjector, IReadOnlyDictionary<string, object>, object> factory = Resolver
                 .GetExtended(typeof(List<string>).GetConstructor(new[] {typeof(int)}));
@@ -131,7 +131,7 @@ namespace Solti.Utils.DI.Internals.Tests
             Assert.That(lst, Is.InstanceOf<List<string>>());
             Assert.That(((List<string>) lst).Capacity, Is.EqualTo(10));
            
-            mockInjector.Verify(i => i.Get(It.IsAny<Type>(), It.IsAny<string>(), It.IsAny<Type>()), Times.Never);
+            mockInjector.Verify(i => i.Get(It.IsAny<Type>(), It.IsAny<string>()), Times.Never);
         }
 
         [Test]
@@ -143,8 +143,8 @@ namespace Solti.Utils.DI.Internals.Tests
 
             var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
             mockInjector
-                .Setup(i => i.Get(It.IsAny<Type>(), It.IsAny<string>(), It.IsAny<Type>()))
-                .Returns<Type, string, Type>((type, name, target) => null);
+                .Setup(i => i.Get(It.IsAny<Type>(), It.IsAny<string>()))
+                .Returns<Type, string>((type, name) => null);
 
             Assert.Throws<ArgumentException>(() => Resolver.GetExtended(ctor)(mockInjector.Object, new Dictionary<string, object>(0)), Resources.INVALID_CONSTRUCTOR_ARGUMENT);
         }
@@ -154,8 +154,8 @@ namespace Solti.Utils.DI.Internals.Tests
         {
             var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
             mockInjector
-                .Setup(i => i.Get(It.IsAny<Type>(), It.IsAny<string>(), It.IsAny<Type>()))
-                .Returns<Type, string, Type>((type, name, target) => null);
+                .Setup(i => i.Get(It.IsAny<Type>(), It.IsAny<string>()))
+                .Returns<Type, string>((type, name) => null);
 
             Func<IInjector, IReadOnlyDictionary<string, object>, object> factory = Resolver
                 .GetExtended(typeof(MyClass).GetConstructor(new[] {typeof(IDisposable), typeof(IServiceFactory) }));
@@ -167,8 +167,8 @@ namespace Solti.Utils.DI.Internals.Tests
 
             Assert.That(obj, Is.InstanceOf<MyClass>());
 
-            mockInjector.Verify(i => i.Get(It.Is<Type>(t => t == typeof(IDisposable)), null, It.Is<Type>(t => t == typeof(MyClass))), Times.Once);
-            mockInjector.Verify(i => i.Get(It.Is<Type>(t => t == typeof(IServiceFactory)), It.IsAny<string>(), It.Is<Type>(t => t == typeof(MyClass))), Times.Never);
+            mockInjector.Verify(i => i.Get(It.Is<Type>(t => t == typeof(IDisposable)), null), Times.Once);
+            mockInjector.Verify(i => i.Get(It.Is<Type>(t => t == typeof(IServiceFactory)), It.IsAny<string>()), Times.Never);
         }
 
         [Test]
@@ -180,8 +180,8 @@ namespace Solti.Utils.DI.Internals.Tests
 
             var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
             mockInjector
-                .Setup(i => i.Get(It.IsAny<Type>(), It.IsAny<string>(), It.IsAny<Type>()))
-                .Returns<Type, string, Type>((type, name, target) => null);
+                .Setup(i => i.Get(It.IsAny<Type>(), It.IsAny<string>()))
+                .Returns<Type, string>((type, name) => null);
 
             MyClass obj = Resolver.GetExtended(ctor)(mockInjector.Object, new Dictionary<string, object> { { "int", TEN } }) as MyClass;
 
@@ -195,21 +195,21 @@ namespace Solti.Utils.DI.Internals.Tests
         {
             var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
             mockInjector
-                .Setup(i => i.Get(It.IsAny<Type>(), It.IsAny<string>(), It.IsAny<Type>()))
-                .Returns<Type, string, Type>((type, name, target) => new Disposable());
+                .Setup(i => i.Get(It.IsAny<Type>(), It.IsAny<string>()))
+                .Returns<Type, string>((type, name) => new Disposable());
 
-            Func<IInjector, Type, object> factory = Resolver.GetLazyFactory(typeof(IDisposable), svcName);
+            Func<IInjector, object> factory = Resolver.GetLazyFactory(typeof(IDisposable), svcName);
             Assert.That(factory, Is.Not.Null);
 
-            Lazy<IDisposable> lazy = factory(mockInjector.Object, null) as Lazy<IDisposable>;
+            Lazy<IDisposable> lazy = factory(mockInjector.Object) as Lazy<IDisposable>;
             Assert.That(lazy, Is.Not.Null);
 
-            mockInjector.Verify(i => i.Get(It.IsAny<Type>(), It.IsAny<string>(), null), Times.Never);
+            mockInjector.Verify(i => i.Get(It.IsAny<Type>(), It.IsAny<string>()), Times.Never);
 
             IDisposable retval = lazy.Value;
             Assert.That(retval, Is.InstanceOf<Disposable>());
 
-            mockInjector.Verify(i => i.Get(It.Is<Type>(t => t == typeof(IDisposable)), It.Is<string>(s => s == svcName), null), Times.Once);
+            mockInjector.Verify(i => i.Get(It.Is<Type>(t => t == typeof(IDisposable)), It.Is<string>(s => s == svcName)), Times.Once);
         }
 
         [TestCase(null)]
