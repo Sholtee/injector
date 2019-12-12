@@ -9,7 +9,7 @@
   "artifacts": "\\Artifacts",
   "coveragefilter": "+[Injector*]* -[Injector.Tests]*",
   "perftests": "\\PERF\\Injector.Perf.csproj",
-  "perftarget": "netcoreapp3.0",
+  "perftarget": "netcoreapp3.1",
   "docsbranch": "gh-pages",
   "CI": "AppVeyor"
 }
