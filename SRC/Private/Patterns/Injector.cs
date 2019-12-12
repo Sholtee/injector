@@ -34,6 +34,8 @@ namespace Solti.Utils.DI.Internals
 
         public ServiceReference GetReference(Type iface, string name)
         {
+            CheckDisposed();
+
             if (iface == null)
                 throw new ArgumentNullException(nameof(iface));
 
@@ -135,6 +137,8 @@ namespace Solti.Utils.DI.Internals
 
         public Lifetime? LifetimeOf(Type iface, string name)
         {
+            CheckDisposed();
+
             if (iface == null)
                 throw new ArgumentNullException(nameof(iface));
 

@@ -41,6 +41,8 @@ namespace Solti.Utils.DI
         /// </summary>
         public IServiceContainer Add(AbstractServiceEntry entry)
         {
+            CheckDisposed();
+
             if (entry == null)
                 throw new ArgumentNullException(nameof(entry));
 
@@ -80,6 +82,8 @@ namespace Solti.Utils.DI
         /// </summary>
         public AbstractServiceEntry Get(Type serviceInterface, string name, QueryModes mode)
         {
+            CheckDisposed();
+
             if (serviceInterface == null)
                 throw new ArgumentNullException(nameof(serviceInterface));
 
@@ -169,6 +173,8 @@ namespace Solti.Utils.DI
         {
             get
             {
+                CheckDisposed();
+
                 using (FLock.AcquireReaderLock())
                 {
                     return FEntries.Count;
@@ -184,6 +190,8 @@ namespace Solti.Utils.DI
         /// <returns>The newly crated <see cref="IEnumerator{AbstractServiceEntry}"/> instance.</returns>
         public IEnumerator<AbstractServiceEntry> GetEnumerator()
         {
+            CheckDisposed();
+
             using (FLock.AcquireReaderLock())
             {
                 //
@@ -252,7 +260,12 @@ namespace Solti.Utils.DI
         /// Creates a new <see cref="IServiceContainer"/> child.
         /// </summary>
         /// <returns>The newly created child.</returns>
-        public override IServiceContainer CreateChild() => new ServiceContainer(this);
+        public override IServiceContainer CreateChild()
+        {
+            CheckDisposed();
+
+            return new ServiceContainer(this);
+        }
         #endregion
     }
 }
