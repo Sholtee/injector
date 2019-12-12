@@ -46,7 +46,7 @@
   - *fixed:* Ambiguous field naming in `ProxyGenerator`
   - *renamed:* `QueryOptionsAttribute` to `OptionsAttribute`
   - *renamed:* `QueryMode` to `QueryModes`
-- 1.0.0-preview6 (unreleased)
+- 1.0.0-preview6
   - *added:* `ProxyGenerator` supports `params` parameter modifier
   - *removed:* `IInjector` events
   - *removed:* Support for manually disposing `Transient` services
