@@ -234,11 +234,10 @@ namespace Solti.Utils.DI
         /// Creates a new <see cref="IInjector"/> instance from this container.
         /// </summary>
         /// <param name="self">The target <see cref="IServiceContainer"/>.</param>
-        /// <param name="contextual">Contextual services. These services are always instances and exist only in the injector being created.</param>
         /// <returns>The newly created <see cref="IInjector"/> instance.</returns>
         /// <remarks>The lifetime of the returned <see cref="IInjector"/> is controlled by its parent. Despite this you may dispose it manually.</remarks>
         /// <exception cref="InvalidOperationException">There are one or more abstract entries in the collection.</exception>
-        public static IInjector CreateInjector(this IServiceContainer self, params (Type Interface, string Name, object Instance)[] contextual)
+        public static IInjector CreateInjector(this IServiceContainer self)
         {
             if (self == null)
                 throw new ArgumentNullException(nameof(self));
@@ -255,16 +254,7 @@ namespace Solti.Utils.DI
                 throw ioEx;
             }
 
-            var result = new Injector(self);
-
-            //
-            // Kontextualis fuggosegek hozzaadasa (csak szerviz peldany lehet).
-            //
-
-            foreach (var def in contextual)
-                result.Instance(def.Interface, def.Name, def.Instance, releaseOnDispose: false);
-
-            return result;
+            return new Injector(self);
         }
 
         /// <summary>

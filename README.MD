@@ -321,13 +321,18 @@ Alternatively you can use the `injector.Instantiate()` function that takes a `Ty
 - The instantiated `Type` does not have to be a registered service.
 - You can pass arbitrary arguments to the constructor via the `explicitArgs` parameter (which means the instantiated type may have non-registered/non-interface dependency).
 ### Resolving contextual dependencies
-Sometimes the service being requested is contextual (for instance resolving the `HttpRequest` that triggered the current session). In this case you have two options: deriving a new container for the current session or pass the contextual services to `CreateInjector()` (recommended):
+Sometimes the service being requested is contextual (for instance resolving the `HttpRequest` that triggered the current session). In this case you can derive a new container for the session:
 ```csharp
 using Solti.Utils.DI;
 ...
-// Note that there was no service registered with IHttpRequest interface
-using (IInjector injector = Container.CreateInjector((typeof(IHttpRequest), null, Request)))
+// Create a temp container for the session
+using (IServiceContainer tempContainer = Container.CreateChild())
 {
+  // We assume that there was no service registered with IHttpRequest interface
+  tempContainer.Instance<IHttpRequest>(Request);
+
+  // Disposing the temp container releases the injector as well -> no need for "using"
+  IInjector injector = tempContainer.CreateInjector();
   ...
 }
 ``` 
@@ -341,8 +346,9 @@ public interface IHttpRequest
   string this[string key] { get; }
 }
 ...
-using (IInjector injector = Container.CreateInjector((typeof(IHttpRequest), null, Request.Act().Like<IHttpRequest>())))
+using (IServiceContainer tempContainer = Container.CreateChild())
 {
+  tempContainer.Instance<IHttpRequest>(Request.Act().Like<IHttpRequest>());
   ...
 }
 ``` 
