@@ -14,7 +14,7 @@ namespace Solti.Utils.DI
     /// <summary>
     /// Provides the mechanism of <see cref="IServiceContainer"/> "auto-config".
     /// </summary>
-    public static class ConfigFromAssembly
+    public static partial class IServiceContainerExtensions
     {
         /// <summary>
         /// Registers the annotated services from the given <see cref="Assembly"/>.

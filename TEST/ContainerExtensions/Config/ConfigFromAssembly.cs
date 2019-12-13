@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Reflection;
 
 using Moq;
 using NUnit.Framework;
@@ -15,7 +16,14 @@ namespace Solti.Utils.DI.Container.Setup.Tests
 
     [TestFixture]
     public sealed class ConfigFromAssembly
-    {       
+    {
+        [Test]
+        public void Setup_ShouldValidate() 
+        {
+            Assert.Throws<ArgumentNullException>(() => IServiceContainerExtensions.Setup(null, Assembly.GetExecutingAssembly()));
+            Assert.Throws<ArgumentNullException>(() => IServiceContainerExtensions.Setup(new ServiceContainer(), null));
+        }
+
         public interface IGenericService<T>
         {
         }
