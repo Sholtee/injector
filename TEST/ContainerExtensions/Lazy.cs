@@ -15,6 +15,14 @@ namespace Solti.Utils.DI.Container.Tests
     public partial class ContainerTestsBase<TContainer>
     {
         [Test]
+        public void Container_Lazy_ShouldBeNullChecked()
+        {
+            Assert.Throws<ArgumentNullException>(() => IServiceContainerExtensions.Lazy(null, typeof(IDisposable), new LazyTypeResolver<IDisposable>(typeof(Disposable).Assembly.Location, typeof(Disposable).FullName)));
+            Assert.Throws<ArgumentNullException>(() => Container.Lazy(null, new LazyTypeResolver<IDisposable>(typeof(Disposable).Assembly.Location, typeof(Disposable).FullName)));
+            Assert.Throws<ArgumentNullException>(() => Container.Lazy(typeof(IDisposable), null));
+        }
+
+        [Test]
         public void Container_Lazy_ShouldBeAService()
         {
             var mockTypeResolver = new Mock<ITypeResolver>(MockBehavior.Strict);

@@ -15,6 +15,14 @@ namespace Solti.Utils.DI.Container.Tests
     public partial class ContainerTestsBase<TContainer>
     {
         [Test]
+        public void Container_Instance_ShouldBeNullChecked() 
+        {
+            Assert.Throws<ArgumentNullException>(() => IServiceContainerExtensions.Instance(null, typeof(IDisposable), new Disposable()));
+            //Assert.Throws<ArgumentNullException>(() => Container.Instance(null, new Disposable()));
+            Assert.Throws<ArgumentNullException>(() => Container.Instance<IDisposable>(null));
+        }
+
+        [Test]
         public void Container_Instance_ShouldNotBeAServiceOrFactory()
         {
             Container.Instance<IInterface_1>(new Implementation_1_No_Dep());

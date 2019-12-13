@@ -17,6 +17,18 @@ namespace Solti.Utils.DI.Container.Tests
     public partial class ContainerTestsBase<TContainer>
     {
         [Test]
+        public void Container_Proxy_ShouldBeNullChecked()
+        {
+            Assert.Throws<ArgumentNullException>(() => IServiceContainerExtensions.Proxy(null, typeof(IDisposable), null, typeof(InterfaceInterceptor<IDisposable>)));
+            Assert.Throws<ArgumentNullException>(() => Container.Proxy(null, null, typeof(InterfaceInterceptor<IDisposable>)));
+            //Assert.Throws<ArgumentNullException>(() => Container.Proxy(typeof(IDisposable), null, (Type) null));
+
+            Assert.Throws<ArgumentNullException>(() => IServiceContainerExtensions.Proxy(null, typeof(IDisposable), null, (i, t, o) => o));
+            Assert.Throws<ArgumentNullException>(() => Container.Proxy(null, null, (i, t, o) => o));
+            //Assert.Throws<ArgumentNullException>(() => Container.Proxy(typeof(IDisposable), null, (Func<IInjector, Type, object, object>) null));
+        }
+
+        [Test]
         public void Container_Proxy_ShouldThrowOnNonInterfaceKey()
         {
             Assert.Throws<ArgumentException>(() => Container.Proxy<Object>((p1, p2) => null), string.Format(Resources.NOT_AN_INTERFACE, "iface"));

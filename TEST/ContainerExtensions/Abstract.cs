@@ -4,17 +4,20 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
-using System.Collections.Generic;
-using System.Linq;
 
 using NUnit.Framework;
 
 namespace Solti.Utils.DI.Container.Tests
 {
-    using Properties;
-    
     public partial class ContainerTestsBase<TContainer>
     {
+        [Test]
+        public void Container_Abstract_ShouldBeNullChecked() 
+        {
+            Assert.Throws<ArgumentNullException>(() => IServiceContainerExtensions.Abstract(null, typeof(IDisposable)));
+            Assert.Throws<ArgumentNullException>(() => Container.Abstract(null));
+        }
+
         [TestCase(null)]
         [TestCase("cica")]
         public void Container_Abstract_ShouldRegisterAnOverridableService(string name)
@@ -65,18 +68,6 @@ namespace Solti.Utils.DI.Container.Tests
                     Assert.Throws<ServiceAlreadyRegisteredException>(() => child.Service<IInterface_2, Implementation_2_IInterface_1_Dependant>());
                 }             
             }
-        }
-
-        [Test]
-        public void Container_CreateInjector_ShouldThrowOnNotOverrodeAbstractService()
-        {
-            Container
-                .Service<IInterface_1, Implementation_1_No_Dep>()
-                .Abstract<IInterface_2>();
-
-            var ioEx = Assert.Throws<InvalidOperationException>(() => Container.CreateInjector(), Resources.INVALID_INJECTOR_ENTRY);
-            var abstractEntries = (IReadOnlyList<Type>) ioEx.Data["abstractEntries"];
-            Assert.That(abstractEntries.Single(), Is.EqualTo(typeof(IInterface_2)));
         }
     }
 }

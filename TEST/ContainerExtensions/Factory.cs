@@ -15,6 +15,14 @@ namespace Solti.Utils.DI.Container.Tests
     public partial class ContainerTestsBase<TContainer>
     {
         [Test]
+        public void Container_Factory_ShouldBeNullChecked()
+        {
+            Assert.Throws<ArgumentNullException>(() => IServiceContainerExtensions.Factory(null, typeof(IDisposable), (i, t) => new Disposable()));
+            Assert.Throws<ArgumentNullException>(() => Container.Factory(null, (i, t) => new Disposable()));
+            Assert.Throws<ArgumentNullException>(() => Container.Factory(typeof(IDisposable), null));
+        }
+
+        [Test]
         public void Container_Factory_ShouldThrowOnNonInterfaceKey()
         {
             Assert.Throws<ArgumentException>(() => Container.Factory<Object>(p => null), string.Format(Resources.NOT_AN_INTERFACE, "iface"));
