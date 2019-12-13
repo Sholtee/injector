@@ -11,9 +11,6 @@ namespace Solti.Utils.DI
 {
     using Annotations;
 
-    /// <summary>
-    /// Provides the mechanism of <see cref="IServiceContainer"/> "auto-config".
-    /// </summary>
     public static partial class IServiceContainerExtensions
     {
         /// <summary>
