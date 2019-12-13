@@ -120,5 +120,11 @@ namespace Solti.Utils.DI.Proxy.Tests
 
             public bool IsReadOnly => ((IList<int>) this).IsReadOnly;
         }
+
+        [Test]
+        public void Act_ShouldValidate() 
+        {
+            Assert.Throws<ArgumentNullException>(() => ObjectExtensions.Act<object>(null));
+        }
     }
 }
