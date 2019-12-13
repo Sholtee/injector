@@ -90,5 +90,17 @@ namespace Solti.Utils.DI.Injector.Tests
                 Assert.DoesNotThrow(() => injector.Instantiate<Implementation_8_MultiCtor>());
             }          
         }
+
+        [Test]
+        public void Injector_Instantiate_ShouldValidate() 
+        {
+            Assert.Throws<ArgumentNullException>(() => IInjectorExtensions.Instantiate(null, typeof(object)));
+
+            using (IInjector injector = Container.CreateInjector())
+            {
+                Assert.Throws<ArgumentNullException>(() => injector.Instantiate(null));
+                Assert.Throws<ArgumentException>(() => injector.Instantiate(typeof(IInjector)));
+            }
+        }
     }
 }
