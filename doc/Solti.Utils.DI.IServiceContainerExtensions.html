@@ -42,7 +42,7 @@
   
   <h1 id="Solti_Utils_DI_IServiceContainerExtensions" data-uid="Solti.Utils.DI.IServiceContainerExtensions" class="text-break">Class IServiceContainerExtensions
   </h1>
-  <div class="markdown level0 summary"><p>Defines several handy extensions for the <a class="xref" href="Solti.Utils.DI.IServiceContainer.html">IServiceContainer</a> interface.</p>
+  <div class="markdown level0 summary"><p>Provides the mechanism of <a class="xref" href="Solti.Utils.DI.IServiceContainer.html">IServiceContainer</a> &quot;auto-config&quot;.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
@@ -2124,6 +2124,58 @@
       </tr>
     </tbody>
   </table>
+  <a id="Solti_Utils_DI_IServiceContainerExtensions_Setup_" data-uid="Solti.Utils.DI.IServiceContainerExtensions.Setup*"></a>
+  <h4 id="Solti_Utils_DI_IServiceContainerExtensions_Setup_Solti_Utils_DI_IServiceContainer_System_Reflection_Assembly_" data-uid="Solti.Utils.DI.IServiceContainerExtensions.Setup(Solti.Utils.DI.IServiceContainer,System.Reflection.Assembly)">Setup(IServiceContainer, Assembly)</h4>
+  <div class="markdown level1 summary"><p>Registers the annotated services from the given <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.reflection.assembly">Assembly</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IServiceContainer Setup(this IServiceContainer container, Assembly assembly)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.IServiceContainer.html">IServiceContainer</a></td>
+        <td><span class="parametername">container</span></td>
+        <td><p>The target <a class="xref" href="Solti.Utils.DI.IServiceContainer.html">IServiceContainer</a>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.reflection.assembly">Assembly</a></td>
+        <td><span class="parametername">assembly</span></td>
+        <td><p>The source <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.reflection.assembly">Assembly</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.IServiceContainer.html">IServiceContainer</a></td>
+        <td><p>The container itself.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Solti_Utils_DI_IServiceContainerExtensions_Setup_Solti_Utils_DI_IServiceContainer_System_Reflection_Assembly__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>You can annotate services with the <a class="xref" href="Solti.Utils.DI.Annotations.ServiceRegistrationAttribute.html">ServiceRegistrationAttribute</a> descendants.</p>
+</div>
 </article>
           </div>
           
