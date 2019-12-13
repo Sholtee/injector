@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
     <AssemblyName>Injector.Tests</AssemblyName>
@@ -10,11 +10,6 @@
     <ApplicationIcon />
     <OutputType>Library</OutputType>
     <StartupObject />
-  </PropertyGroup>
-
-  <!--OpenCover requires .NET Core 2.2 while Test Explorer needs 3.X-->
-  <PropertyGroup Condition="'$(CI)'==''">
-    <TargetFramework>netcoreapp3.1</TargetFramework>  
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

@@ -5,7 +5,7 @@
   "githubrepo": "sholtee/injector.git",
   "vendor": "\\Vendor",
   "tests": "\\TEST\\Injector.Tests.csproj",
-  "testtarget": "netcoreapp2.2",
+  "testtarget": "netcoreapp3.1",
   "artifacts": "\\Artifacts",
   "coveragefilter": "+[Injector*]* -[Injector.Tests]*",
   "perftests": "\\PERF\\Injector.Perf.csproj",
