@@ -73,7 +73,7 @@ namespace Solti.Utils.DI.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Instantiating open generic types are not allowed..
+        ///   Looks up a localized string similar to Instantiating open generic types is not allowed..
         /// </summary>
         internal static string CANT_INSTANTIATE_GENERICS {
             get {
@@ -145,7 +145,7 @@ namespace Solti.Utils.DI.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to All constructor arguments must be an interface/Lazy&lt;interface&gt;..
+        ///   Looks up a localized string similar to All constructor arguments must be interface/Lazy&lt;interface&gt;..
         /// </summary>
         internal static string INVALID_CONSTRUCTOR {
             get {
@@ -154,7 +154,7 @@ namespace Solti.Utils.DI.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Non interface/Lazy&lt;interface&gt;arguments must be specified as an explicit argument..
+        ///   Looks up a localized string similar to Non interface/Lazy&lt;interface&gt; arguments must be specified as an explicit argument..
         /// </summary>
         internal static string INVALID_CONSTRUCTOR_ARGUMENT {
             get {
@@ -181,7 +181,7 @@ namespace Solti.Utils.DI.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Interceptor must be an InterfaceInterceptor desecndant..
+        ///   Looks up a localized string similar to Interceptor must be an InterfaceInterceptor descendant..
         /// </summary>
         internal static string INVALID_INTERCEPETOR {
             get {
@@ -235,7 +235,7 @@ namespace Solti.Utils.DI.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Child already has parent..
+        ///   Looks up a localized string similar to Child already has a parent..
         /// </summary>
         internal static string NOT_ORPHAN {
             get {

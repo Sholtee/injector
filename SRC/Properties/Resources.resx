@@ -121,7 +121,7 @@
     <value>"{0}" is already registered.</value>
   </data>
   <data name="CANT_INSTANTIATE_GENERICS" xml:space="preserve">
-    <value>Instantiating open generic types are not allowed.</value>
+    <value>Instantiating open generic types is not allowed.</value>
   </data>
   <data name="CANT_PROXY" xml:space="preserve">
     <value>Creating proxy is not allowed here.</value>
@@ -145,10 +145,10 @@
     <value>The resolver does not support the given interface: {0}.</value>
   </data>
   <data name="INVALID_CONSTRUCTOR" xml:space="preserve">
-    <value>All constructor arguments must be an interface/Lazy&lt;interface&gt;.</value>
+    <value>All constructor arguments must be interface/Lazy&lt;interface&gt;.</value>
   </data>
   <data name="INVALID_CONSTRUCTOR_ARGUMENT" xml:space="preserve">
-    <value>Non interface/Lazy&lt;interface&gt;arguments must be specified as an explicit argument.</value>
+    <value>Non interface/Lazy&lt;interface&gt; arguments must be specified as an explicit argument.</value>
   </data>
   <data name="INVALID_INJECTOR_ENTRY" xml:space="preserve">
     <value>Injector must not contain abstract service entries.</value>
@@ -190,9 +190,9 @@
     <value>Target is null.</value>
   </data>
   <data name="INVALID_INTERCEPETOR" xml:space="preserve">
-    <value>Interceptor must be an InterfaceInterceptor desecndant.</value>
+    <value>Interceptor must be an InterfaceInterceptor descendant.</value>
   </data>
   <data name="NOT_ORPHAN" xml:space="preserve">
-    <value>Child already has parent.</value>
+    <value>Child already has a parent.</value>
   </data>
 </root>
