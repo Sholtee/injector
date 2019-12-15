@@ -8,7 +8,6 @@ using System.Collections.Generic;
 
 namespace Solti.Utils.DI
 {
-    using Properties;
     using Internals;
     using Annotations;
 
@@ -43,12 +42,6 @@ namespace Solti.Utils.DI
 
             if (@class == null)
                 throw new ArgumentNullException(nameof(@class));
-
-            if (!@class.IsClass())
-                throw new ArgumentException(Resources.NOT_A_CLASS, nameof(@class));
-
-            if (@class.IsGenericTypeDefinition())
-                throw new ArgumentException(Resources.CANT_INSTANTIATE_GENERICS, nameof(@class));
 
             return Resolver.GetExtended(@class)(self, explicitArgs ?? new Dictionary<string, object>(0));
         }

@@ -144,11 +144,21 @@ namespace Solti.Utils.DI.Internals
             }
         });
 
-        public static Func<IInjector, IReadOnlyDictionary<string, object>, object> GetExtended(Type type) => Cache<Type, Func<IInjector, IReadOnlyDictionary<string, object>, object>>.GetOrAdd(type, () => GetExtended(type.GetApplicableConstructor()));
+        public static Func<IInjector, IReadOnlyDictionary<string, object>, object> GetExtended(Type type) => Cache<Type, Func<IInjector, IReadOnlyDictionary<string, object>, object>>.GetOrAdd(type, () => 
+        {
+            if (!type.IsClass())
+                throw new ArgumentException(Resources.NOT_A_CLASS, nameof(type));
+
+            if (type.IsGenericTypeDefinition())
+                throw new ArgumentException(Resources.CANT_INSTANTIATE_GENERICS, nameof(type));
+
+            return GetExtended(type.GetApplicableConstructor());
+        });
 
         public static Func<IInjector, object> GetLazyFactory(Type iface, string svcName) => Cache<(Type Interface, string Name), Func<IInjector, object>>.GetOrAdd((iface, svcName), () =>
         {
-            Debug.Assert(iface.IsInterface());
+            if (!iface.IsInterface())
+                throw new ArgumentException(Resources.NOT_AN_INTERFACE, nameof(iface));
 
             Type delegateType = typeof(Func<>).MakeGenericType(iface);
 
