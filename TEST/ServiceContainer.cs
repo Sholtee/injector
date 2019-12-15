@@ -467,20 +467,22 @@ namespace Solti.Utils.DI.Container.Tests
             Container.Add(entry);
             Assert.That(Container.Count, Is.EqualTo(1));
 
-            using (IServiceContainer child = Container.CreateChild())
+            using (IServiceContainer child1 = Container.CreateChild())
+            using (IServiceContainer child2 = Container.CreateChild())
             {
-                Assert.That(child.Count, Is.EqualTo(1));
+                Assert.That(child1.Count, Is.EqualTo(1));
+                Assert.That(child2.Count, Is.EqualTo(1));
 
                 entry.Lock.Reset();
 
                 Task<AbstractServiceEntry>
-                    t1 = Task.Run(() => child.Get(typeof(IList<int>), null, QueryModes.ThrowOnError | QueryModes.AllowSpecialization)),
-                    t2 = Task.Run(() => child.Get(typeof(IList<int>), null, QueryModes.ThrowOnError | QueryModes.AllowSpecialization));
+                    t1 = Task.Run(() => child1.Get(typeof(IList<int>), null, QueryModes.ThrowOnError | QueryModes.AllowSpecialization)),
+                    t2 = Task.Run(() => child2.Get(typeof(IList<int>), null, QueryModes.ThrowOnError | QueryModes.AllowSpecialization));
 
                 Thread.Sleep(10);
 
                 //
-                // Mindket szal a lock-nal varakozik.
+                // Mindket szal a get_Factory()-nal varakozik.
                 //
 
                 entry.Lock.Set();
@@ -493,7 +495,9 @@ namespace Solti.Utils.DI.Container.Tests
 
                 Assert.AreSame(t1.Result, t2.Result);
                 Assert.That(t1.Result, Is.EqualTo(new SingletonServiceEntry(typeof(IList<int>), null, typeof(MyList<int>), Container)));
-                Assert.That(child.Count, Is.EqualTo(2));
+
+                Assert.That(child1.Count, Is.EqualTo(2));
+                Assert.That(child2.Count, Is.EqualTo(2));
             }
 
             Assert.That(Container.Count, Is.EqualTo(2));

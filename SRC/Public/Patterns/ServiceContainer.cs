@@ -7,12 +7,13 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 #if NETSTANDARD1_6
 using System.Reflection;
 #endif
 using System.Threading;
+
+using static System.Diagnostics.Debug;
 
 namespace Solti.Utils.DI
 {
@@ -57,7 +58,7 @@ namespace Solti.Utils.DI
                 if (FEntries.TryGetValue(key, out var entryToRemove) && entryToRemove.GetType() == typeof(AbstractServiceEntry))
                 {
                     bool removed = FEntries.Remove(key);
-                    Debug.Assert(removed, "Can't remove entry");
+                    Assert(removed, "Can't remove entry");
                 }
 
                 //
@@ -121,7 +122,7 @@ namespace Solti.Utils.DI
                     return !mode.HasFlag(QueryModes.ThrowOnError) ? (AbstractServiceEntry) null : throw new ServiceNotFoundException((serviceInterface, name));
             }
 
-            Debug.Assert(result.IsGeneric());
+            Assert(result.IsGeneric());
 
             try
             {
@@ -135,7 +136,7 @@ namespace Solti.Utils.DI
 
                 if (result.Owner != this)
                 {
-                    Debug.Assert(result.Owner != null, $"Entry without owner for {serviceInterface}");
+                    Assert(result.Owner != null, $"Entry without owner for {serviceInterface}");
 
                     return result
                         .Owner
@@ -157,12 +158,16 @@ namespace Solti.Utils.DI
             }
             catch (ServiceAlreadyRegisteredException)
             {
+                AbstractServiceEntry registered = Get(serviceInterface, name, QueryModes.ThrowOnError);
+
                 //
-                // Parhuzamos esetben az Add() dobhat ServiceAlreadyRegisteredException-t ekkor 
-                // egyszeruen visszaadjuk a masik szal altal regisztralt peldanyt.
+                // Parhuzamos regisztracio csak nehany esetben elkepzelheto (pl ha Singleton generikus
+                // lezart parjat igenyeljuk parhuzamosan, leszarmazott kontenerekbol).
                 //
 
-                return Get(serviceInterface, name, QueryModes.ThrowOnError);
+                Assert(result.Equals(registered), "Unexpected concurrency");
+                
+                return registered;
             }
         }
 
