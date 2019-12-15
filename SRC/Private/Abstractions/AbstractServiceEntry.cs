@@ -21,7 +21,7 @@ namespace Solti.Utils.DI.Internals
         /// <summary>
         /// Creates a new <see cref="AbstractServiceEntry"/> instance.
         /// </summary>
-        /// <param name="interface">The "id" of the service. Must be an interface.</param>
+        /// <param name="interface">The interface of the service.</param>
         /// <param name="name">The (optional) name of the service.</param>
         /// <exception cref="ArgumentException">The <paramref name="interface"/> is not an interface.</exception>
         public AbstractServiceEntry(Type @interface, string name): this(@interface, name, null, null)
@@ -31,7 +31,7 @@ namespace Solti.Utils.DI.Internals
         /// <summary>
         /// Creates a new <see cref="AbstractServiceEntry"/> instance.
         /// </summary>
-        /// <param name="interface">The "id" of the service. Must be an interface.</param>
+        /// <param name="interface">The interface of the service.</param>
         /// <param name="name">The (optional) name of the service.</param>
         /// <param name="lifetime">The lifetime of the service.</param>
         /// <param name="owner">The owner of this entry.</param>
@@ -52,12 +52,13 @@ namespace Solti.Utils.DI.Internals
 
         #region Immutables
         /// <summary>
-        /// The "id" of the service.
+        /// The interface of the service.
         /// </summary>
+        /// <remarks>The service is identified by its <see cref="Interface"/> and <see cref="Name"/>.</remarks>
         public Type Interface { get; }
 
         /// <summary>
-        /// The lefiteime of the service (if it is present).
+        /// The (optional) lefiteime of the service.
         /// </summary>
         public Lifetime? Lifetime { get; }
 
@@ -67,12 +68,13 @@ namespace Solti.Utils.DI.Internals
         public IServiceContainer Owner { get; }
 
         /// <summary>
-        /// The name of the service (optional).
+        /// The (optional) name of the service.
         /// </summary>
+        /// <remarks>The service is identified by its <see cref="Interface"/> and <see cref="Name"/>.</remarks>
         public string Name { get; }
 
         /// <summary>
-        /// The implementation of the service (if it is present).
+        /// The (optional) implementation of the service.
         /// </summary>
         public virtual Type Implementation => null;
         #endregion
