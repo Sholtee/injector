@@ -110,6 +110,7 @@ namespace Solti.Utils.DI.Internals
                                 (
                                     expression: ParenthesizedLambdaExpression
                                     (
+                                        parameterList: ParameterList(), // Roslyn 3.4.0 felrobban ha nincs parameter lista (3.3.X-nel meg opcionalis volt)
                                         body: InvokeMethod
                                         (
                                             method: method, 
