@@ -54,14 +54,5 @@ namespace Solti.Utils.DI
         /// <returns>The new instance.</returns>
         /// <remarks>The <typeparamref name="TClass"/> you passed must have only one public constructor or you must annotate the appropriate one with the <see cref="ServiceActivatorAttribute"/>. Constructor parameteres that are not present in the <paramref name="explicitArgs"/> are treated as normal dependency.</remarks>
         public static TClass Instantiate<TClass>(this IInjector self, IReadOnlyDictionary<string, object> explicitArgs = null) => self != null ? (TClass) self.Instantiate(typeof(TClass), explicitArgs) : throw new ArgumentNullException(nameof(self));
-
-        /// <summary>
-        /// Gets the <see cref="Lifetime"/> of the given service (type).
-        /// </summary>
-        /// <typeparam name="TInterface">The "id" of the service.</typeparam>
-        /// <param name="name">The (optional) name of the service.</param>
-        /// <param name="self">The injector itself.</param>
-        /// <returns>The <see cref="Lifetime"/> of the service if it is producible, null otherwise.</returns>
-        public static Lifetime? LifetimeOf<TInterface>(this IInjector self, string name = null) => self != null ? self.LifetimeOf(typeof(TInterface), name) : throw new ArgumentNullException(nameof(self));
     }
 }

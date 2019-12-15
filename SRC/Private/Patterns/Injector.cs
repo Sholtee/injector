@@ -135,19 +135,6 @@ namespace Solti.Utils.DI.Internals
         #region IInjector
         [SuppressMessage("Reliability", "CA2000:Dispose objects before losing scope", Justification = "The reference is released on container disposal.")]
         public object Get(Type iface, string name) => GetReference(iface, name).Instance;
-
-        public Lifetime? LifetimeOf(Type iface, string name)
-        {
-            CheckDisposed();
-
-            if (iface == null)
-                throw new ArgumentNullException(nameof(iface));
-
-            if (!iface.IsInterface())
-                throw new ArgumentException(Resources.NOT_AN_INTERFACE, nameof(iface));
-
-            return Get(iface, name, QueryFlags).Lifetime;
-        }
         #endregion
 
         #region Composite

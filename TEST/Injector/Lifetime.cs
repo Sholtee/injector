@@ -9,7 +9,6 @@ using NUnit.Framework;
 
 namespace Solti.Utils.DI.Injector.Tests
 {
-    using Properties;
     using Internals;
 
     public partial class InjectorTestsBase<TContainer>
@@ -165,43 +164,6 @@ namespace Solti.Utils.DI.Injector.Tests
             using (IInjector injector = child.CreateInjector())
             {
                 Assert.DoesNotThrow(() => injector.Get<IInterface_2>());
-            }
-        }
-
-        [Test]
-        public void Injector_LifetimeOf_ShouldReturnTheProperLifetime()
-        {
-            Container
-                .Service<IInterface_1, Implementation_1_No_Dep>(Lifetime.Scoped)
-                .Service<IInterface_2, Implementation_2_IInterface_1_Dependant>(Lifetime.Singleton)
-                .Instance<IDisposable>(new Disposable());
-
-            using (IInjector injector = Container.CreateInjector())
-            {
-                Assert.That(injector.LifetimeOf<IInterface_1>(), Is.EqualTo(Lifetime.Scoped));
-                Assert.That(injector.LifetimeOf<IInterface_2>(), Is.EqualTo(Lifetime.Singleton));
-                Assert.That(injector.LifetimeOf<IDisposable>(),  Is.Null);
-            }
-        }
-
-        [Test]
-        public void Injector_LifetimeOf_ShouldSpecialize()
-        {
-            Container.Service(typeof(IInterface_3<>), typeof(Implementation_3_IInterface_1_Dependant<>), Lifetime.Transient);
-
-            using (IInjector injector = Container.CreateInjector())
-            {
-                Assert.That(injector.LifetimeOf<IInterface_3<int>>(), Is.EqualTo(Lifetime.Transient));
-            }
-        }
-
-        [Test]
-        public void Injector_LifetimeOf_ShouldValidate()
-        {
-            using (IInjector injector = Container.CreateInjector())
-            {
-                Assert.Throws<ArgumentNullException>(() => injector.LifetimeOf(null));
-                Assert.Throws<ArgumentException>(() => injector.LifetimeOf<object>(), Resources.NOT_AN_INTERFACE);
             }
         }
     }
