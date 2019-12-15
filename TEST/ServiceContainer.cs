@@ -467,38 +467,38 @@ namespace Solti.Utils.DI.Container.Tests
             Container.Add(entry);
             Assert.That(Container.Count, Is.EqualTo(1));
 
-            using (IServiceContainer child1 = Container.CreateChild())
-            using (IServiceContainer child2 = Container.CreateChild())
-            {
-                Assert.That(child1.Count, Is.EqualTo(1));
-                Assert.That(child2.Count, Is.EqualTo(1));
+            IServiceContainer
+                child1 = Container.CreateChild(),
+                child2 = Container.CreateChild();
 
-                entry.Lock.Reset();
+            Assert.That(child1.Count, Is.EqualTo(1));
+            Assert.That(child2.Count, Is.EqualTo(1));
 
-                Task<AbstractServiceEntry>
-                    t1 = Task.Run(() => child1.Get(typeof(IList<int>), null, QueryModes.ThrowOnError | QueryModes.AllowSpecialization)),
-                    t2 = Task.Run(() => child2.Get(typeof(IList<int>), null, QueryModes.ThrowOnError | QueryModes.AllowSpecialization));
+            entry.Lock.Reset();
 
-                Thread.Sleep(10);
+            Task<AbstractServiceEntry>
+                t1 = Task.Run(() => child1.Get(typeof(IList<int>), null, QueryModes.ThrowOnError | QueryModes.AllowSpecialization)),
+                t2 = Task.Run(() => child2.Get(typeof(IList<int>), null, QueryModes.ThrowOnError | QueryModes.AllowSpecialization));
 
-                //
-                // Mindket szal a get_Factory()-nal varakozik.
-                //
+            Thread.Sleep(10);
 
-                entry.Lock.Set();
+            //
+            // Mindket szal a get_Factory()-nal varakozik.
+            //
 
-                //
-                // Megvarjuk mig lefutnak.
-                //
+            entry.Lock.Set();
 
-                Task.WaitAll(t1, t2);
+            //
+            // Megvarjuk mig lefutnak.
+            //
 
-                Assert.AreSame(t1.Result, t2.Result);
-                Assert.That(t1.Result, Is.EqualTo(new SingletonServiceEntry(typeof(IList<int>), null, typeof(MyList<int>), Container)));
+            Task.WaitAll(t1, t2);
 
-                Assert.That(child1.Count, Is.EqualTo(2));
-                Assert.That(child2.Count, Is.EqualTo(2));
-            }
+            Assert.AreSame(t1.Result, t2.Result);
+            Assert.That(t1.Result, Is.EqualTo(new SingletonServiceEntry(typeof(IList<int>), null, typeof(MyList<int>), Container)));
+
+            Assert.That(child1.Count, Is.EqualTo(2));
+            Assert.That(child2.Count, Is.EqualTo(2));
 
             Assert.That(Container.Count, Is.EqualTo(2));
         }
