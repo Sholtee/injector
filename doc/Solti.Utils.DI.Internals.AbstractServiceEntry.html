@@ -118,7 +118,7 @@
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.type">Type</a></td>
         <td><span class="parametername">interface</span></td>
-        <td><p>The &quot;id&quot; of the service. Must be an interface.</p>
+        <td><p>The interface of the service.</p>
 </td>
       </tr>
       <tr>
@@ -167,7 +167,7 @@
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.type">Type</a></td>
         <td><span class="parametername">interface</span></td>
-        <td><p>The &quot;id&quot; of the service. Must be an interface.</p>
+        <td><p>The interface of the service.</p>
 </td>
       </tr>
       <tr>
@@ -234,7 +234,7 @@
   </table>
   <a id="Solti_Utils_DI_Internals_AbstractServiceEntry_Implementation_" data-uid="Solti.Utils.DI.Internals.AbstractServiceEntry.Implementation*"></a>
   <h4 id="Solti_Utils_DI_Internals_AbstractServiceEntry_Implementation" data-uid="Solti.Utils.DI.Internals.AbstractServiceEntry.Implementation">Implementation</h4>
-  <div class="markdown level1 summary"><p>The implementation of the service (if it is present).</p>
+  <div class="markdown level1 summary"><p>The (optional) implementation of the service.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -258,7 +258,7 @@
   </table>
   <a id="Solti_Utils_DI_Internals_AbstractServiceEntry_Interface_" data-uid="Solti.Utils.DI.Internals.AbstractServiceEntry.Interface*"></a>
   <h4 id="Solti_Utils_DI_Internals_AbstractServiceEntry_Interface" data-uid="Solti.Utils.DI.Internals.AbstractServiceEntry.Interface">Interface</h4>
-  <div class="markdown level1 summary"><p>The &quot;id&quot; of the service.</p>
+  <div class="markdown level1 summary"><p>The interface of the service.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -280,9 +280,12 @@
       </tr>
     </tbody>
   </table>
+  <h5 id="Solti_Utils_DI_Internals_AbstractServiceEntry_Interface_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>The service is identified by its <a class="xref" href="Solti.Utils.DI.Internals.AbstractServiceEntry.html#Solti_Utils_DI_Internals_AbstractServiceEntry_Interface">Interface</a> and <a class="xref" href="Solti.Utils.DI.Internals.AbstractServiceEntry.html#Solti_Utils_DI_Internals_AbstractServiceEntry_Name">Name</a>.</p>
+</div>
   <a id="Solti_Utils_DI_Internals_AbstractServiceEntry_Lifetime_" data-uid="Solti.Utils.DI.Internals.AbstractServiceEntry.Lifetime*"></a>
   <h4 id="Solti_Utils_DI_Internals_AbstractServiceEntry_Lifetime" data-uid="Solti.Utils.DI.Internals.AbstractServiceEntry.Lifetime">Lifetime</h4>
-  <div class="markdown level1 summary"><p>The lefiteime of the service (if it is present).</p>
+  <div class="markdown level1 summary"><p>The (optional) lefiteime of the service.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -306,7 +309,7 @@
   </table>
   <a id="Solti_Utils_DI_Internals_AbstractServiceEntry_Name_" data-uid="Solti.Utils.DI.Internals.AbstractServiceEntry.Name*"></a>
   <h4 id="Solti_Utils_DI_Internals_AbstractServiceEntry_Name" data-uid="Solti.Utils.DI.Internals.AbstractServiceEntry.Name">Name</h4>
-  <div class="markdown level1 summary"><p>The name of the service (optional).</p>
+  <div class="markdown level1 summary"><p>The (optional) name of the service.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -328,6 +331,9 @@
       </tr>
     </tbody>
   </table>
+  <h5 id="Solti_Utils_DI_Internals_AbstractServiceEntry_Name_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>The service is identified by its <a class="xref" href="Solti.Utils.DI.Internals.AbstractServiceEntry.html#Solti_Utils_DI_Internals_AbstractServiceEntry_Interface">Interface</a> and <a class="xref" href="Solti.Utils.DI.Internals.AbstractServiceEntry.html#Solti_Utils_DI_Internals_AbstractServiceEntry_Name">Name</a>.</p>
+</div>
   <a id="Solti_Utils_DI_Internals_AbstractServiceEntry_Owner_" data-uid="Solti.Utils.DI.Internals.AbstractServiceEntry.Owner*"></a>
   <h4 id="Solti_Utils_DI_Internals_AbstractServiceEntry_Owner" data-uid="Solti.Utils.DI.Internals.AbstractServiceEntry.Owner">Owner</h4>
   <div class="markdown level1 summary"><p>The owner of this entry.</p>
