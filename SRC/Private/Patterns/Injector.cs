@@ -5,13 +5,14 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 #if NETSTANDARD1_6
 using System.Reflection;
 #endif
+
+using static System.Diagnostics.Debug;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -71,7 +72,7 @@ namespace Solti.Utils.DI.Internals
                     currentNode = ownerInjector.GetReference(iface, name);
                 }
 
-                Debug.Assert(!currentNode.Disposed, "Node already disposed");
+                Assert(!currentNode.Disposed, "Node already disposed");
             } 
             else 
             {  
@@ -98,7 +99,7 @@ namespace Solti.Utils.DI.Internals
 
                     entry.GetService(this, ref currentNode);
 
-                    Debug.Assert(currentNode.Instance != null, "Instance was not set");
+                    Assert(currentNode.Instance != null, "Instance was not set");
 
                     //
                     // Peldany tipusat ellenorizzuk mert a Factory(), Lazy() stb visszaadhat vicces dolgokat.
