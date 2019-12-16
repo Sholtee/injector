@@ -29,10 +29,6 @@ branches:
 # prevent MSBuild from running
 build: off
 
-# enable RDP (for 60 mins)
-init:
-  - ps: IEX ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
-
 # clone repo & submodules
 clone_script:
   - cmd: |
@@ -56,7 +52,8 @@ after_test:
 on_finish:
   - ps: |
       Push-Artifact "*.txt"
-      Push-Artifact "BenchmarkDotNet.Artifacts\BenchmarkRun-*.log"    
+      Push-Artifact "BenchmarkDotNet.Artifacts\BenchmarkRun-*.log"
+      $blockRdp = $true; IEX ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))      
 
 # override settings for `master` branch
 for:
