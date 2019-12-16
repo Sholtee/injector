@@ -18,6 +18,8 @@ environment:
     secure: UlwkykISUtzAOpzVe0HdezbxNzE5UAXBpnMGu7rApIgjWbDG3ueXuFC92IOIpmtk
   GITHUB_EMAIL:
     secure: Z6F+xZzdZzc5DMYB/4J0KUhyoTzTlXH75ciGl7hFH9s=
+  APPVEYOR_RDP_PASSWORD:
+    secure: IvxSZoWD+DpqNjUP7mFjPA==
 
 branches:
   # blacklist
@@ -27,11 +29,17 @@ branches:
 # prevent MSBuild from running
 build: off
 
+# enable RDP (for 60 mins)
+init:
+  - ps: IEX ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+
+# clone repo & submodules
 clone_script:
   - cmd: |
       git clone -q --recursive --branch=%APPVEYOR_REPO_BRANCH% https://github.com/%APPVEYOR_REPO_NAME%.git %APPVEYOR_BUILD_FOLDER%
       git checkout -qf %APPVEYOR_REPO_COMMIT%
 
+# load the build scripts
 before_test:
   - ps: |
       Set-Location -path ".\scripts"
