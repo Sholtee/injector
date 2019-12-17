@@ -13,6 +13,8 @@ namespace Solti.Utils.DI.Internals
     /// </summary>
     public class ServiceReference : DisposeByRefObject, IServiceID
     {
+        private readonly ServiceCollection FDependencies = new ServiceCollection();
+
         /// <summary>
         /// Creates a new <see cref="ServiceReference"/> instance.
         /// </summary>
@@ -40,7 +42,7 @@ namespace Solti.Utils.DI.Internals
         /// <summary>
         /// The dependencies of this service <see cref="Instance"/>.
         /// </summary>
-        public ICollection<ServiceReference> Dependencies { get; } = new ServiceCollection();
+        public ICollection<ServiceReference> Dependencies => FDependencies;
 
         /// <summary>
         /// Disposes the referenced service <see cref="Instance"/> and decrements the reference counter of all the <see cref="Dependencies"/>.
@@ -61,7 +63,7 @@ namespace Solti.Utils.DI.Internals
                 // eseten ertelmezett.
                 //
 
-                Dependencies.Clear();
+                FDependencies.Dispose();
             }
 
             base.Dispose(disposeManaged);

@@ -9,7 +9,7 @@ using System.Collections.Generic;
 
 namespace Solti.Utils.DI.Internals
 {
-    internal sealed class ServiceCollection : ICollection<ServiceReference>
+    internal sealed class ServiceCollection : Disposable, ICollection<ServiceReference>
     {
         private readonly List<ServiceReference> FUnderlyingList = new List<ServiceReference>(); 
 
@@ -46,5 +46,12 @@ namespace Solti.Utils.DI.Internals
         }
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
+        protected override void Dispose(bool disposeManaged)
+        {
+            if (disposeManaged) Clear();
+
+            base.Dispose(disposeManaged);
+        }
     }
 }

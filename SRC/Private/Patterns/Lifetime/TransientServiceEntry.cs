@@ -4,7 +4,6 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
-using System.Collections.Generic;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -13,7 +12,7 @@ namespace Solti.Utils.DI.Internals
     /// </summary>
     internal class TransientServiceEntry : ProducibleServiceEntry
     {
-        private readonly ICollection<ServiceReference> FServices = new ServiceCollection();
+        private readonly ServiceCollection FSpawnedServices = new ServiceCollection();
 
         private TransientServiceEntry(TransientServiceEntry entry, IServiceContainer owner) : base(entry, owner)
         {
@@ -39,7 +38,7 @@ namespace Solti.Utils.DI.Internals
 
             reference.Instance = Factory(injector, Interface);
 
-            FServices.Add(reference);
+            FSpawnedServices.Add(reference);
             reference.Release(); // az FServices kezeli az elettartamat
         }
 
@@ -52,7 +51,7 @@ namespace Solti.Utils.DI.Internals
 
         protected override void Dispose(bool disposeManaged)
         {
-            if (disposeManaged) FServices.Clear();
+            if (disposeManaged) FSpawnedServices.Dispose();
 
             base.Dispose(disposeManaged);
         }
