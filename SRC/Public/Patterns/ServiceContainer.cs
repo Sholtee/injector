@@ -35,6 +35,8 @@ namespace Solti.Utils.DI
 
         private readonly ReaderWriterLockSlim FLock = new ReaderWriterLockSlim();
 
+        private bool ShouldDispose(AbstractServiceEntry entry) => entry.Owner == this;
+
         #region IServiceContainer
         /// <summary>
         /// See <see cref="IServiceContainer.Add"/>.
@@ -58,7 +60,9 @@ namespace Solti.Utils.DI
                 {
                     bool removed = FEntries.Remove(key);
                     Assert(removed, "Can't remove entry");
-                    entryToRemove.Dispose();
+
+                    if (ShouldDispose(entryToRemove))
+                        entryToRemove.Dispose();
                 }
 
                 //
@@ -239,7 +243,7 @@ namespace Solti.Utils.DI
                 // (lasd GetEnumerator() implementacio).
                 //
 
-                foreach (IDisposable disposable in FEntries.Values.Where(entry => entry.Owner == this))
+                foreach (IDisposable disposable in FEntries.Values.Where(ShouldDispose))
                 {
                     disposable.Dispose();
                 }

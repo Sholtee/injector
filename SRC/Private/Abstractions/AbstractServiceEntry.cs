@@ -36,7 +36,7 @@ namespace Solti.Utils.DI.Internals
         /// <param name="lifetime">The lifetime of the service.</param>
         /// <param name="owner">The owner of this entry.</param>
         /// <exception cref="ArgumentException">The <paramref name="interface"/> is not an interface.</exception>
-        protected AbstractServiceEntry(Type @interface, string name, Lifetime? lifetime, IServiceContainer owner)
+        internal protected AbstractServiceEntry(Type @interface, string name, Lifetime? lifetime, IServiceContainer owner)
         {
             if (@interface == null)
                 throw new ArgumentNullException(nameof(@interface));
