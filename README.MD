@@ -133,6 +133,8 @@ Remarks:
   ```
   Later you can request them via constructor parameters as well:
   ```csharp
+  using Solti.Utils.DI.Annotations;  
+  ...
   class MyOtherService: IMyOtherService
   {
     public MyOtherService([Options(Name = "svc2")]IMyService dep) {...}
@@ -349,6 +351,7 @@ public interface IHttpRequest
 using (IServiceContainer tempContainer = Container.CreateChild())
 {
   tempContainer.Instance<IHttpRequest>(Request.Act().Like<IHttpRequest>());
+  IInjector injector = tempContainer.CreateInjector();
   ...
 }
 ``` 
