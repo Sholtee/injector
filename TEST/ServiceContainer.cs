@@ -505,6 +505,17 @@ namespace Solti.Utils.DI.Container.Tests
 
         [Test]
         public void IServiceContainer_GetShouldThrowOnNonInterface() => Assert.Throws<ArgumentException>(() => Container.Get(typeof(object)));
+
+        [Test]
+        public void IServiceContainer_AddShouldDisposeAbstractEntryOnOverride()
+        {
+            var entry = new AbstractServiceEntry(typeof(IInterface_1), null);
+
+            Container.Add(entry);
+            Container.Add(new InstanceServiceEntry(typeof(IInterface_1), null, new Implementation_1_No_Dep(), false, Container));
+
+            Assert.That(entry.Disposed);
+        }
     }
 
     [TestFixture]

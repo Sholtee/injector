@@ -20,7 +20,6 @@ namespace Solti.Utils.DI
     using Properties;
     using Internals;
 
-
     /// <summary>
     /// Implements the <see cref="IServiceContainer"/> interface.
     /// </summary>
@@ -59,6 +58,7 @@ namespace Solti.Utils.DI
                 {
                     bool removed = FEntries.Remove(key);
                     Assert(removed, "Can't remove entry");
+                    entryToRemove.Dispose();
                 }
 
                 //
