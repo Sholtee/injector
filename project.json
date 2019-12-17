@@ -6,6 +6,8 @@
   "vendor": "\\Vendor",
   "tests": "\\TEST\\Injector.Tests.csproj",
   "testtarget": "netcoreapp3.1",
+  "testresults": "testresults.xml",
+  "coveragereport": "coverage.xml",
   "artifacts": "\\Artifacts",
   "coveragefilter": "+[Injector*]* -[Injector.Tests]*",
   "perftests": "\\PERF\\Injector.Perf.csproj",
