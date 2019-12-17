@@ -8,6 +8,6 @@ namespace Solti.Utils.DI.Perf
 {
     internal static class Consts
     {
-        public const int OperationsPerInvoke = 5000;
+        public const int OperationsPerInvoke = 500;
     }
 }
