@@ -19,6 +19,7 @@ namespace Solti.Utils.DI.Perf
     [MemoryDiagnoser]
     public class Injector
     {
+        private IServiceContainer FContainer; 
         private IInjector FInjector;
 
         #region Services
@@ -63,18 +64,20 @@ namespace Solti.Utils.DI.Perf
         [GlobalSetup]
         public void Setup()
         {
-            FInjector = new ServiceContainer()
+            FContainer = new ServiceContainer()
                 .Service<IInterface_1, Implementation_1>(LifeTime)
                 .Service(typeof(IInterface_2<>), typeof(Implementation_2<>), LifeTime)
-                .Service<IInterface_3<string>, Implementation_3<string>>(LifeTime)
-                .CreateInjector();
+                .Service<IInterface_3<string>, Implementation_3<string>>(LifeTime);
+
+            FInjector = FContainer.CreateInjector();
         }
 
         [GlobalCleanup]
         public void Cleanup()
         {
-            FInjector.Dispose();
-            FInjector = null;
+            FContainer?.Dispose();
+            FContainer = null;
+            FInjector = null; // nem kell Dispose()-olni
         }
 
         [Benchmark(Baseline = true, OperationsPerInvoke = OperationsPerInvoke)]
@@ -132,16 +135,26 @@ namespace Solti.Utils.DI.Perf
             }
         }
 
+        private IServiceContainer FContainer;
         private IInjector FInjector;
 
         [GlobalSetup]
         public void Setup()
         {
-            FInjector = new ServiceContainer()
+            FContainer = new ServiceContainer()
                 .Service<IDisposable, Disposable>()
                 .Factory(typeof(IList<>), (i, t) => System.Activator.CreateInstance(typeof(List<>).MakeGenericType(t.GetGenericArguments())))
-                .Service<IInterface, Implementation>()
-                .CreateInjector();
+                .Service<IInterface, Implementation>();
+
+            FInjector = FContainer.CreateInjector();
+        }
+
+        [GlobalCleanup]
+        public void Cleanup()
+        {
+            FContainer?.Dispose();
+            FContainer = null;
+            FInjector = null; // nem kell Dispose()-olni
         }
 
         [Benchmark(Baseline = true, OperationsPerInvoke = OperationsPerInvoke)]
