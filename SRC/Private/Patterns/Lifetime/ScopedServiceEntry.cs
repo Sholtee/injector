@@ -36,12 +36,16 @@ namespace Solti.Utils.DI.Internals
         {
             CheckProducible();
 
-            if (FService == null) 
+            if (FService == null)
             {
                 FService = reference;
                 FService.Instance = Factory(injector, Interface);
             }
-            else reference = FService;
+            else
+            {
+                reference.Dispose();
+                reference = FService;
+            }
         }
 
         public override AbstractServiceEntry CopyTo(IServiceContainer target)

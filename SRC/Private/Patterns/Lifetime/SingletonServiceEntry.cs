@@ -47,11 +47,14 @@ namespace Solti.Utils.DI.Internals
                     {
                         FService = reference;
                         FService.Instance = Factory(injector, Interface);
+
+                        return;
                     }
                 }
             }
 
-            reference = FService; // NE "else" agban legyen
+            reference.Dispose();
+            reference = FService;
         }
 
         protected override void Dispose(bool disposeManaged)
