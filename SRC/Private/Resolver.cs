@@ -9,12 +9,12 @@ using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Threading;
 
 namespace Solti.Utils.DI.Internals
 {
     using Annotations;
     using Properties;
-    using System.Threading;
 
     internal static class Resolver
     {
