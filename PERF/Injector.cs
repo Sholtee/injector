@@ -20,7 +20,6 @@ namespace Solti.Utils.DI.Perf
     public class Injector
     {
         private IServiceContainer FContainer; 
-        private IInjector FInjector;
 
         #region Services
         public interface IInterface_1
@@ -62,23 +61,13 @@ namespace Solti.Utils.DI.Perf
         public Lifetime LifeTime { get; set; }
 
         [GlobalSetup]
-        public void Setup()
-        {
-            FContainer = new ServiceContainer()
-                .Service<IInterface_1, Implementation_1>(LifeTime)
-                .Service(typeof(IInterface_2<>), typeof(Implementation_2<>), LifeTime)
-                .Service<IInterface_3<string>, Implementation_3<string>>(LifeTime);
-
-            FInjector = FContainer.CreateInjector();
-        }
-
+        public void Setup() => FContainer = new ServiceContainer()
+            .Service<IInterface_1, Implementation_1>(LifeTime)
+            .Service(typeof(IInterface_2<>), typeof(Implementation_2<>), LifeTime)
+            .Service<IInterface_3<string>, Implementation_3<string>>(LifeTime);
+        
         [GlobalCleanup]
-        public void Cleanup()
-        {
-            FContainer?.Dispose();
-            FContainer = null;
-            FInjector = null; // nem kell Dispose()-olni
-        }
+        public void Cleanup() => FContainer.Dispose();
 
         [Benchmark(Baseline = true, OperationsPerInvoke = OperationsPerInvoke)]
         public void NoInjector()
@@ -93,20 +82,26 @@ namespace Solti.Utils.DI.Perf
         [Benchmark(OperationsPerInvoke = OperationsPerInvoke)]
         public void Injector_Get()
         {
-            for (int i = 0; i < OperationsPerInvoke; i++)
+            using (IInjector injector = FContainer.CreateInjector())
             {
-                IInterface_3<string> instance = FInjector.Get<IInterface_3<string>>();
-                instance.DoSomething();
+                for (int i = 0; i < OperationsPerInvoke; i++)
+                {
+                    IInterface_3<string> instance = injector.Get<IInterface_3<string>>();
+                    instance.DoSomething();
+                }
             }
         }
 
         [Benchmark(OperationsPerInvoke = OperationsPerInvoke)]
         public void Injector_Instantiate()
         {
-            for (int i = 0; i < OperationsPerInvoke; i++)
+            using (IInjector injector = FContainer.CreateInjector())
             {
-                Implementation_3<string> instance = FInjector.Instantiate<Implementation_3<string>>();
-                instance.DoSomething();
+                for (int i = 0; i < OperationsPerInvoke; i++)
+                {
+                    Implementation_3<string> instance = injector.Instantiate<Implementation_3<string>>();
+                    instance.DoSomething();
+                }
             }
         }
     }
@@ -136,44 +131,40 @@ namespace Solti.Utils.DI.Perf
         }
 
         private IServiceContainer FContainer;
-        private IInjector FInjector;
 
         [GlobalSetup]
-        public void Setup()
-        {
-            FContainer = new ServiceContainer()
-                .Service<IDisposable, Disposable>()
-                .Factory(typeof(IList<>), (i, t) => System.Activator.CreateInstance(typeof(List<>).MakeGenericType(t.GetGenericArguments())))
-                .Service<IInterface, Implementation>();
-
-            FInjector = FContainer.CreateInjector();
-        }
+        public void Setup() => FContainer = new ServiceContainer()
+            .Service<IDisposable, Disposable>()
+            .Factory(typeof(IList<>), (i, t) => typeof(List<>).MakeGenericType(t.GetGenericArguments()).CreateInstance(new Type[0]))
+            .Service<IInterface, Implementation>();
 
         [GlobalCleanup]
-        public void Cleanup()
-        {
-            FContainer?.Dispose();
-            FContainer = null;
-            FInjector = null; // nem kell Dispose()-olni
-        }
+        public void Cleanup() => FContainer.Dispose();
 
         [Benchmark(Baseline = true, OperationsPerInvoke = OperationsPerInvoke)]
         public void NoInjector()
         {
-            for (int i = 0; i < OperationsPerInvoke; i++)
+            using (IInjector injector = FContainer.CreateInjector())
             {
-                var instance = new Implementation(FInjector.Get<IDisposable>(), FInjector.Get<IList<int>>());
-                instance.Bar();
+
+                for (int i = 0; i < OperationsPerInvoke; i++)
+                {
+                    var instance = new Implementation(injector.Get<IDisposable>(), injector.Get<IList<int>>());
+                    instance.Bar();
+                }
             }
         }
 
         [Benchmark(OperationsPerInvoke = OperationsPerInvoke)]
         public void Injector_Get()
         {
-            for (int i = 0; i < OperationsPerInvoke; i++)
+            using (IInjector injector = FContainer.CreateInjector())
             {
-                var instance = FInjector.Get<IInterface>();
-                instance.Bar();
+                for (int i = 0; i < OperationsPerInvoke; i++)
+                {
+                    var instance = injector.Get<IInterface>();
+                    instance.Bar();
+                }
             }
         }
     }
