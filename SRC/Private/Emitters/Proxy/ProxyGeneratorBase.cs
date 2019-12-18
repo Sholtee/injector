@@ -213,6 +213,11 @@ namespace Solti.Utils.DI.Internals
 
             );
 
+            //
+            // Interface metodus nem lehet "async" ezert nem kell ellenorizni h rendelkezik
+            // e "AsyncStateMachineAttribute" attributummal.
+            //
+
             return result;
         }
 
