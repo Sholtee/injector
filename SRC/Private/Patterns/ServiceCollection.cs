@@ -11,7 +11,9 @@ namespace Solti.Utils.DI.Internals
 {
     internal sealed class ServiceCollection : Disposable, ICollection<ServiceReference>
     {
-        private readonly List<ServiceReference> FUnderlyingList = new List<ServiceReference>(); 
+        private readonly List<ServiceReference> FUnderlyingList;
+
+        public ServiceCollection(int capacity = 10) => FUnderlyingList = new List<ServiceReference>(capacity);
 
         public int Count => FUnderlyingList.Count;
 
