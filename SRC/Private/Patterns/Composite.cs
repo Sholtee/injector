@@ -78,6 +78,8 @@ namespace Solti.Utils.DI.Internals
         {
             get
             {
+                CheckDisposed();
+
                 using (FLock.AcquireReaderLock())
                 {
                     //
@@ -100,6 +102,8 @@ namespace Solti.Utils.DI.Internals
         /// </summary>
         public virtual void AddChild(TInterface child)
         {
+            CheckDisposed();
+
             if (child == null)
                 throw new ArgumentNullException(nameof(child));
 
@@ -117,6 +121,8 @@ namespace Solti.Utils.DI.Internals
         /// </summary>
         public virtual void RemoveChild(TInterface child)
         {
+            CheckDisposed();
+
             if (child == null)
                 throw new ArgumentNullException(nameof(child));
 
