@@ -26,7 +26,6 @@ namespace Solti.Utils.DI.Internals
             Value = "value",
             GeneratedClassName = "GeneratedProxy";
 
-
         private static SyntaxList<AttributeListSyntax> DeclareMethodImplAttributeToForceInlining() => SingletonList
         (
             node: AttributeList
@@ -209,8 +208,7 @@ namespace Solti.Utils.DI.Internals
 
             if (forceInlining) result = result.WithAttributeLists
             (
-                attributeLists: DeclareMethodImplAttributeToForceInlining() 
-
+                attributeLists: DeclareMethodImplAttributeToForceInlining()
             );
 
             //
