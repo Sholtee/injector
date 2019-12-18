@@ -121,10 +121,6 @@ namespace Solti.Utils.DI.Perf
             {               
             }
 
-            public Implementation(IDisposable disposable, IList<int> lst)
-            {
-            }
-
             public void Bar()
             {
             }
@@ -144,14 +140,10 @@ namespace Solti.Utils.DI.Perf
         [Benchmark(Baseline = true, OperationsPerInvoke = OperationsPerInvoke)]
         public void NoInjector()
         {
-            using (IInjector injector = FContainer.CreateInjector())
+            for (int i = 0; i < OperationsPerInvoke; i++)
             {
-
-                for (int i = 0; i < OperationsPerInvoke; i++)
-                {
-                    var instance = new Implementation(injector.Get<IDisposable>(), injector.Get<IList<int>>());
-                    instance.Bar();
-                }
+                var instance = new Implementation(new Lazy<IDisposable>(), new Lazy<IList<int>>());
+                instance.Bar();
             }
         }
 
