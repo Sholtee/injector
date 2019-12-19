@@ -4,7 +4,6 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
-using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
@@ -23,6 +22,12 @@ namespace Solti.Utils.DI.Internals
     {
         private static bool GrantedFor(CompilationUnitSyntax unitToCheck, string asmName, params Assembly[] references)
         {
+            //
+            // Mivel az "internal" es "protected" kulcsszavak nem leteznek IL szinten ezert reflexioval
+            // nem tudnank megallapitani h a tipus lathato e a kodunk szamara szoval a forditora bizzuk
+            // a dontest.
+            //
+
             Debug.WriteLine(unitToCheck.NormalizeWhitespace().ToFullString());
 
             CSharpCompilation compilation = CSharpCompilation.Create
@@ -43,16 +48,22 @@ namespace Solti.Utils.DI.Internals
                 options: CompilationOptionsFactory.Create()
             );
 
-            ImmutableArray<Diagnostic> diagnostics = compilation.GetDeclarationDiagnostics();
+            Diagnostic[] diagnostics = compilation
+                .GetDeclarationDiagnostics()
+                .Where(diag => diag.Severity == DiagnosticSeverity.Error)
+                .ToArray();
 
-            return !diagnostics.Any(diag => diag.Severity == DiagnosticSeverity.Error);
+            Debug.Assert(diagnostics.Length <= 1, "Too many errors");
+
+            //
+            // https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0122
+            //
+
+            return !diagnostics.Any(diag => diag.Id == "CS0122");
         }
 
         public static bool GrantedFor(Type type, string asmName)
         {
-            //
-            // Mivel az "internal" es "protected" kulcsszavak nem leteznek IL szinten ezert itt reflexioval
-            // nem tudjuk megallapitani h a tipus lathato e a kodunk szamara =(
             //
             // using t = Namespace.Type;
             //
@@ -78,58 +89,18 @@ namespace Solti.Utils.DI.Internals
         public static bool GrantedFor(MemberInfo member, string asmName) 
         {
             //
-            // [assembly: AssemblyTitle(nameof(member))]
+            // public class Cls 
+            // {
+            //    private void Foo() {}
+            //    public void Foo(int i) {}
+            // }
+            //
+            // "nameof(Cls.Foo)" fordulni fog meg ha mi a parameter nelkuli metodust is vizsgalnank.
+            //
+            // Megjegyzendo h "Foo"-val mar nem lehet property szoval azzal nem lenne gond.
             //
 
-            CompilationUnitSyntax unitToCheck = CompilationUnit().WithAttributeLists
-            (
-                attributeLists: SingletonList
-                (
-                    AttributeList
-                    (
-                        attributes: SingletonSeparatedList
-                        (
-                            Attribute
-                            (
-                                name: (NameSyntax) CreateType<AssemblyTitleAttribute>()
-                            )
-                            .WithArgumentList
-                            (
-                                argumentList: AttributeArgumentList
-                                (
-                                    arguments: SingletonSeparatedList
-                                    (
-                                        AttributeArgument
-                                        (
-                                            expression: InvocationExpression(IdentifierName("nameof")).WithArgumentList
-                                            (
-                                                argumentList: ArgumentList
-                                                (
-                                                    SingletonSeparatedList
-                                                    (
-                                                        Argument
-                                                        (
-                                                            expression: MemberAccessExpression
-                                                            (
-                                                                SyntaxKind.SimpleMemberAccessExpression,
-                                                                CreateType(member.DeclaringType),
-                                                                IdentifierName(member.Name)
-                                                            )
-                                                        )
-                                                    )
-                                                )
-                                            )
-                                        )
-                                    )
-                                )
-                            )
-                        )
-                    )
-                    .WithTarget(AttributeTargetSpecifier(Token(SyntaxKind.AssemblyKeyword)))
-                )
-            );
-
-            return GrantedFor(unitToCheck, asmName, member.DeclaringType.Assembly());
+            throw new NotImplementedException();
         }
     }
 }
