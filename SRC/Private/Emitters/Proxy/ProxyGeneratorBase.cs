@@ -34,7 +34,7 @@ namespace Solti.Utils.DI.Internals
                 (
                     node: Attribute
                     (
-                        (NameSyntax)CreateType<MethodImplAttribute>()
+                        (NameSyntax) CreateType<MethodImplAttribute>()
                     )
                     .WithArgumentList
                     (
