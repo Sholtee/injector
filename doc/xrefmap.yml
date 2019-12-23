@@ -530,6 +530,38 @@ references:
   fullName.vb: Solti.Utils.DI.Internals.Composite(Of TInterface).RemoveChild
   nameWithType: Composite<TInterface>.RemoveChild
   nameWithType.vb: Composite(Of TInterface).RemoveChild
+- uid: Solti.Utils.DI.Internals.Config
+  name: Config
+  href: Solti.Utils.DI.Internals.Config.html
+  commentId: T:Solti.Utils.DI.Internals.Config
+  fullName: Solti.Utils.DI.Internals.Config
+  nameWithType: Config
+- uid: Solti.Utils.DI.Internals.Config.MaxSpawnedServices
+  name: MaxSpawnedServices
+  href: Solti.Utils.DI.Internals.Config.html#Solti_Utils_DI_Internals_Config_MaxSpawnedServices
+  commentId: P:Solti.Utils.DI.Internals.Config.MaxSpawnedServices
+  fullName: Solti.Utils.DI.Internals.Config.MaxSpawnedServices
+  nameWithType: Config.MaxSpawnedServices
+- uid: Solti.Utils.DI.Internals.Config.MaxSpawnedServices*
+  name: MaxSpawnedServices
+  href: Solti.Utils.DI.Internals.Config.html#Solti_Utils_DI_Internals_Config_MaxSpawnedServices_
+  commentId: Overload:Solti.Utils.DI.Internals.Config.MaxSpawnedServices
+  isSpec: "True"
+  fullName: Solti.Utils.DI.Internals.Config.MaxSpawnedServices
+  nameWithType: Config.MaxSpawnedServices
+- uid: Solti.Utils.DI.Internals.Config.Value
+  name: Value
+  href: Solti.Utils.DI.Internals.Config.html#Solti_Utils_DI_Internals_Config_Value
+  commentId: P:Solti.Utils.DI.Internals.Config.Value
+  fullName: Solti.Utils.DI.Internals.Config.Value
+  nameWithType: Config.Value
+- uid: Solti.Utils.DI.Internals.Config.Value*
+  name: Value
+  href: Solti.Utils.DI.Internals.Config.html#Solti_Utils_DI_Internals_Config_Value_
+  commentId: Overload:Solti.Utils.DI.Internals.Config.Value
+  isSpec: "True"
+  fullName: Solti.Utils.DI.Internals.Config.Value
+  nameWithType: Config.Value
 - uid: Solti.Utils.DI.Internals.Disposable
   name: Disposable
   href: Solti.Utils.DI.Internals.Disposable.html
