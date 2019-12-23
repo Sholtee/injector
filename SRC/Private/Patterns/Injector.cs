@@ -107,11 +107,6 @@ namespace Solti.Utils.DI.Internals
 
                     if (!iface.IsInstanceOfType(currentNode.Instance))
                         throw new Exception(string.Format(CultureInfo.CurrentCulture, Resources.INVALID_INSTANCE, iface));
-
-                    //
-                    // Ha kivetel volt nem kell semmit sem felszabaditani mert a szerviz bejegyzesek dispose-olasakor
-                    // minden legyartott szerviznek is fel kene szabadulnia.
-                    //
                 }
                 finally
                 {

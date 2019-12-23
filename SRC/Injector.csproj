@@ -35,6 +35,7 @@
 
   <ItemGroup Condition="$(TargetFramework.StartsWith('netstandard2'))">
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="3.*" />
+    <PackageReference Include="System.Text.Json" Version="4.*" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(Configuration)'!='Debug'">
@@ -71,6 +72,13 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Injector.config.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Condition="$(TargetFramework.StartsWith('netstandard1'))" Remove="Injector.config.json" />
   </ItemGroup>
 
   <PropertyGroup>

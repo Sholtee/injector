@@ -7,6 +7,8 @@ using System;
 
 namespace Solti.Utils.DI.Internals
 {
+    using Properties;
+
     /// <summary>
     /// Describes a transient service entry.
     /// </summary>
@@ -36,10 +38,24 @@ namespace Solti.Utils.DI.Internals
         {
             CheckProducible();
 
+            if (FSpawnedServices.Count == Config.Value.MaxSpawnedServices)
+                //
+                // Ha ide jutunk az azt jelenti h jo esellyel a tartalmazo injector ujrahasznositasra kerult
+                // (es igy siman megehetjuk a rendelkezesre allo memoriat ahogy az a teljesitmeny teszteknel
+                // meg is tortent).
+                //
+
+                throw new Exception(string.Format(Resources.INJECTOR_SHOULD_BE_RELEASED, Config.Value.MaxSpawnedServices));
+
             reference.Instance = Factory(injector, Interface);
 
             FSpawnedServices.Add(reference);
-            reference.Release(); // az FServices kezeli az elettartamat
+
+            //
+            // Az FServices kezeli az elettartamot ha mar hozza lett adva.
+            //
+            
+            reference.Release();
         }
 
         public override AbstractServiceEntry CopyTo(IServiceContainer target)
@@ -55,5 +71,13 @@ namespace Solti.Utils.DI.Internals
 
             base.Dispose(disposeManaged);
         }
+    }
+
+    public partial class Config 
+    {
+        /// <summary>
+        /// The maximum number of <see cref="Lifetime.Transient"/> service instances can be held by the <see cref="IInjector"/>.
+        /// </summary>
+        public int MaxSpawnedServices { get; set; } = 512;
     }
 }

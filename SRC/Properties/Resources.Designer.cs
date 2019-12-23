@@ -136,6 +136,15 @@ namespace Solti.Utils.DI.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The injector can not hold more than {0} transient services. It usually indicates that you were recycling the injector..
+        /// </summary>
+        internal static string INJECTOR_SHOULD_BE_RELEASED {
+            get {
+                return ResourceManager.GetString("INJECTOR_SHOULD_BE_RELEASED", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The resolver does not support the given interface: {0}..
         /// </summary>
         internal static string INTERFACE_NOT_SUPPORTED {

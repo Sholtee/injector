@@ -195,4 +195,7 @@
   <data name="NOT_ORPHAN" xml:space="preserve">
     <value>Child already has parent.</value>
   </data>
+  <data name="INJECTOR_SHOULD_BE_RELEASED" xml:space="preserve">
+    <value>The injector can not hold more than {0} transient services. It usually indicates that you were recycling the injector.</value>
+  </data>
 </root>

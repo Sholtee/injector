@@ -9,6 +9,7 @@ using NUnit.Framework;
 
 namespace Solti.Utils.DI.Injector.Tests
 {
+    using Properties;
     using Internals;
 
     public partial class InjectorTestsBase<TContainer>
@@ -21,6 +22,39 @@ namespace Solti.Utils.DI.Injector.Tests
             using (IInjector injector = Container.CreateInjector())
             {
                 Assert.AreNotSame(injector.Get<IInterface_1>(), injector.Get<IInterface_1>());
+            }
+        }
+
+        [Test]
+        public void Lifetime_TransientService_ShouldNotBeInstantietedIfTheInjectorWasNotRecycled() 
+        {
+            Config config = Config.Value;
+
+            int old = config.MaxSpawnedServices;
+            config.MaxSpawnedServices = 1;
+
+            try
+            {
+                Container.Service<IInterface_1, Implementation_1_No_Dep>(Lifetime.Transient);
+
+                using (IInjector injector1 = Container.CreateInjector())
+                {
+                    Assert.DoesNotThrow(() => injector1.Get<IInterface_1>());
+                    Assert.Throws<Exception>(() => injector1.Get<IInterface_1>(), Resources.INJECTOR_SHOULD_BE_RELEASED);
+
+                    //
+                    // Ettol meg masik injector tud peldanyositani.
+                    //
+
+                    using (IInjector injector2 = Container.CreateInjector())
+                    {
+                        Assert.DoesNotThrow(() => injector2.Get<IInterface_1>());
+                    }
+                }
+            }
+            finally
+            {
+                config.MaxSpawnedServices = old;
             }
         }
 
