@@ -15,10 +15,14 @@ using NUnit.Framework;
 namespace Solti.Utils.DI.Container.Tests
 {
     using DI.Tests;
+
     using Internals;
+    using Properties;
 
     public abstract class ServiceContainerTestsBase<TImplementation>: TestBase<TImplementation> where TImplementation : IServiceContainer, new()
     {
+        public abstract int MaxChildCount { get; set; }
+
         internal virtual IServiceContainer CreateContainer(params AbstractServiceEntry[] entries)
         {
             var result = new TImplementation();
@@ -516,11 +520,21 @@ namespace Solti.Utils.DI.Container.Tests
 
             Assert.That(entry.Disposed);
         }
+
+        [Test]
+        public void IServiceContainer_CreateChildShouldThrowIfChildCountReachedTheLimit()
+        {
+            MaxChildCount = 1;
+
+            Assert.DoesNotThrow(() => Container.CreateChild());
+            Assert.Throws<InvalidOperationException>(() => Container.CreateChild(), Resources.TOO_MANY_CHILDREN);
+        }
     }
 
     [TestFixture]
     public class IServiceContainerTests : ServiceContainerTestsBase<ServiceContainer>
     {
+        public override int MaxChildCount { get => ((ServiceContainer) Container).MaxChildCount; set => ((ServiceContainer) Container).MaxChildCount = value; }
     }
 
     //

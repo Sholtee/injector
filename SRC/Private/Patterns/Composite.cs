@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Threading;
 
@@ -24,6 +25,11 @@ namespace Solti.Utils.DI.Internals
         private readonly ReaderWriterLockSlim FLock = new ReaderWriterLockSlim();
 
         private TInterface Self => this as TInterface;
+
+        /// <summary>
+        /// The maxmimum number of children this entity can hold.
+        /// </summary>
+        internal int MaxChildCount { get; set; } = Config.Value.CompositeMaxChildCount; // tesztekhez
 
         #region Protected
         /// <summary>
@@ -111,13 +117,24 @@ namespace Solti.Utils.DI.Internals
                 throw new InvalidOperationException(Resources.NOT_ORPHAN);
 
             using (FLock.AcquireWriterLock())
+            {
+                if (FChildren.Count == MaxChildCount)
+                    //
+                    // Ha ide eljutunk az pl azt jelentheti h egy kontenerbol letrehozott injectorok 
+                    // nincsenek a munkafolyamat vegen felszbaditva (a GC nem tudja felszabaditani 
+                    // oket mivel a szulo kontener gyermekei).
+                    //
+
+                    throw new InvalidOperationException(string.Format(CultureInfo.CurrentCulture, Resources.TOO_MANY_CHILDREN, MaxChildCount));
+
                 FChildren.Add(child);
+            }
 
             child.Parent = Self;
         }
 
         /// <summary>
-        /// Removes a new child from the <see cref="Children"/> list. For more information see the <see cref="IComposite{T}"/> interface.
+        /// Removes a child from the <see cref="Children"/> list. For more information see the <see cref="IComposite{T}"/> interface.
         /// </summary>
         public virtual void RemoveChild(TInterface child)
         {
@@ -135,5 +152,13 @@ namespace Solti.Utils.DI.Internals
             child.Parent = null;
         }
         #endregion
+    }
+
+    public partial class Config 
+    {
+        /// <summary>
+        /// Limits the count of children belong to a <see cref="Composite{TInterface}"/> entity.
+        /// </summary>
+        public int CompositeMaxChildCount { get; set; } = 512;
     }
 }

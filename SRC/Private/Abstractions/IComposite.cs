@@ -39,13 +39,14 @@ namespace Solti.Utils.DI.Internals
         /// </item>
         /// </list>
         /// </remarks>
+        /// <exception cref="InvalidOperationException">The count of <see cref="Children"/> reached the limit that was set in the <see cref="Config"/>.</exception>
         T CreateChild();
 
         /// <summary>
         /// Adds a new child to the <see cref="Children"/> list.
         /// </summary>
         /// <param name="child">The child being added.</param>
-        /// <exception cref="InvalidOperationException">The child has already been added or the parent not matching.</exception>
+        /// <exception cref="InvalidOperationException">The <paramref name="child"/> has already been added, the parent not matching or the count of <see cref="Children"/> reached the limit that was set in the <see cref="Config"/>.</exception>
         void AddChild(T child);
 
         /// <summary>

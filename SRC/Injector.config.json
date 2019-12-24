@@ -1,3 +1,4 @@
 {
-  "MaxSpawnedServices": 512
+  "MaxSpawnedServices": 512,
+  "CompositeMaxChildCount": 512
 }

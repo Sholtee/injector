@@ -289,6 +289,15 @@ namespace Solti.Utils.DI.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to A composite entity can not have more than {0} children..
+        /// </summary>
+        internal static string TOO_MANY_CHILDREN {
+            get {
+                return ResourceManager.GetString("TOO_MANY_CHILDREN", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0} (or its enclosing type) is not visible. The declaring assembly should be annotated with the InternalsVisibleToAttribute..
         /// </summary>
         internal static string TYPE_NOT_VISIBLE {

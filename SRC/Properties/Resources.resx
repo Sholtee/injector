@@ -198,4 +198,7 @@
   <data name="INJECTOR_SHOULD_BE_RELEASED" xml:space="preserve">
     <value>The injector can not hold more than {0} transient services. It usually indicates that you were recycling the injector.</value>
   </data>
+  <data name="TOO_MANY_CHILDREN" xml:space="preserve">
+    <value>A composite entity can not have more than {0} children.</value>
+  </data>
 </root>
