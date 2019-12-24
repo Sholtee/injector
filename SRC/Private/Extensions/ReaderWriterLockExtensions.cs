@@ -30,12 +30,12 @@ namespace Solti.Utils.DI.Internals
         #endregion
 
         /// <summary>
-        /// író lock elkérése.
+        /// Enters the lock in write mode.
         /// </summary>
         public static IDisposable AcquireWriterLock(this ReaderWriterLockSlim src) => new Lock(src.EnterWriteLock, src.ExitWriteLock);
 
         /// <summary>
-        /// Olvasó lock elkérése.
+        /// Enters the lock in read mode.
         /// </summary>
         public static IDisposable AcquireReaderLock(this ReaderWriterLockSlim src) =>new Lock(src.EnterReadLock, src.ExitReadLock);
     }
