@@ -166,7 +166,7 @@
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.invalidoperationexception">InvalidOperationException</a></td>
-        <td><p>The child has already been added or the parent not matching.</p>
+        <td><p>The <code data-dev-comment-type="paramref" class="paramref">child</code> has already been added, the parent not matching or the count of <a class="xref" href="Solti.Utils.DI.Internals.IComposite-1.html#Solti_Utils_DI_Internals_IComposite_1_Children">Children</a> reached the limit that was set in the <a class="xref" href="Solti.Utils.DI.Internals.Config.html">Config</a>.</p>
 </td>
       </tr>
     </tbody>
@@ -199,6 +199,22 @@
   <h5 id="Solti_Utils_DI_Internals_IComposite_1_CreateChild_remarks">Remarks</h5>
   <div class="markdown level1 remarks"><ul><li>The child created by this method should inherit the state of its parent (but modifying the child should not affect it).</li><li>Freeing the created child should cause its removal from the <a class="xref" href="Solti.Utils.DI.Internals.IComposite-1.html#Solti_Utils_DI_Internals_IComposite_1_Children">Children</a> list. Otherwise its parent is responsible for disposing it.</li></ul>
 </div>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.invalidoperationexception">InvalidOperationException</a></td>
+        <td><p>The count of <a class="xref" href="Solti.Utils.DI.Internals.IComposite-1.html#Solti_Utils_DI_Internals_IComposite_1_Children">Children</a> reached the limit that was set in the <a class="xref" href="Solti.Utils.DI.Internals.Config.html">Config</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
   <a id="Solti_Utils_DI_Internals_IComposite_1_RemoveChild_" data-uid="Solti.Utils.DI.Internals.IComposite`1.RemoveChild*"></a>
   <h4 id="Solti_Utils_DI_Internals_IComposite_1_RemoveChild__0_" data-uid="Solti.Utils.DI.Internals.IComposite`1.RemoveChild(`0)">RemoveChild(T)</h4>
   <div class="markdown level1 summary"><p>Removes the given child.</p>

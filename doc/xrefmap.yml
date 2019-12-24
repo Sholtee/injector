@@ -536,6 +536,19 @@ references:
   commentId: T:Solti.Utils.DI.Internals.Config
   fullName: Solti.Utils.DI.Internals.Config
   nameWithType: Config
+- uid: Solti.Utils.DI.Internals.Config.CompositeMaxChildCount
+  name: CompositeMaxChildCount
+  href: Solti.Utils.DI.Internals.Config.html#Solti_Utils_DI_Internals_Config_CompositeMaxChildCount
+  commentId: P:Solti.Utils.DI.Internals.Config.CompositeMaxChildCount
+  fullName: Solti.Utils.DI.Internals.Config.CompositeMaxChildCount
+  nameWithType: Config.CompositeMaxChildCount
+- uid: Solti.Utils.DI.Internals.Config.CompositeMaxChildCount*
+  name: CompositeMaxChildCount
+  href: Solti.Utils.DI.Internals.Config.html#Solti_Utils_DI_Internals_Config_CompositeMaxChildCount_
+  commentId: Overload:Solti.Utils.DI.Internals.Config.CompositeMaxChildCount
+  isSpec: "True"
+  fullName: Solti.Utils.DI.Internals.Config.CompositeMaxChildCount
+  nameWithType: Config.CompositeMaxChildCount
 - uid: Solti.Utils.DI.Internals.Config.MaxSpawnedServices
   name: MaxSpawnedServices
   href: Solti.Utils.DI.Internals.Config.html#Solti_Utils_DI_Internals_Config_MaxSpawnedServices
