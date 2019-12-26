@@ -89,11 +89,15 @@ namespace Solti.Utils.DI.Internals
                     // Ha egynel tobbszor szerepel az aktualis szerviz akkor korkoros referenciank van.
                     //
 
-                    if (FGraph.Count(node => (node.Interface, node.Name) == (currentNode.Interface, currentNode.Name)) > 1)
-                        throw new CircularReferenceException(FGraph.Select(node => (node.Interface, node.Name)));
+                    if (FGraph.LastIndexOf(currentNode, ServiceReferenceComparer.Instance) > 0)
+                    {
+                        currentNode.Release();
+
+                        throw new CircularReferenceException(FGraph);
+                    }
 
                     //
-                    // Factory hivasa
+                    // Factory hivasa, innentol a ServiceEntry felelos a node felszabaditasaert.
                     //
 
                     entry.GetService(this, ref currentNode);
@@ -138,5 +142,12 @@ namespace Solti.Utils.DI.Internals
 
         public override void RemoveChild(IServiceContainer child) => throw new NotSupportedException();
         #endregion
+
+        private sealed class ServiceReferenceComparer : IEqualityComparer<ServiceReference>
+        {
+            public bool Equals(ServiceReference x, ServiceReference y) => x.Interface == y.Interface && x.Name == y.Name;
+            public int GetHashCode(ServiceReference obj) => throw new NotImplementedException();
+            public static ServiceReferenceComparer Instance { get; } = new ServiceReferenceComparer();
+        }
     }
 }
