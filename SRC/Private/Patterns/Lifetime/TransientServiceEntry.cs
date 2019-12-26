@@ -36,10 +36,10 @@ namespace Solti.Utils.DI.Internals
 
         public override void GetService(IInjector injector, ref ServiceReference reference)
         {
+            CheckProducible();
+
             try
             {
-                CheckProducible();
-
                 if (FSpawnedServices.Count == Config.Value.MaxSpawnedServices)
                     //
                     // Ha ide jutunk az azt jelenti h jo esellyel a tartalmazo injector ujrahasznositasra kerult

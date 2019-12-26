@@ -37,30 +37,32 @@ namespace Solti.Utils.DI.Internals
 
         public override void GetService(IInjector injector, ref ServiceReference reference)
         {
-            try
+            CheckProducible();
+
+            if (FService == null)
             {
-                CheckProducible();
-
-                if (FService == null)
+                lock (FLock)
                 {
-                    lock (FLock)
+                    if (FService == null)
                     {
-                        if (FService == null)
+                        try
                         {
-                            reference.Instance = Factory(injector, Interface); // elso helyen szerepeljen h a "finally" jol mukodjon
-                            FService = reference;
-
-                            return;
+                            reference.Instance = Factory(injector, Interface);
                         }
+                        catch 
+                        {
+                            reference.Dispose();
+                            throw;
+                        }
+
+                        FService = reference;
+                        return;
                     }
                 }
+            }
 
-                reference = FService;
-            }
-            finally
-            {
-                if (reference != FService) reference.Dispose();
-            }
+            reference.Dispose();
+            reference = FService;
         }
 
         protected override void Dispose(bool disposeManaged)
