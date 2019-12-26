@@ -34,22 +34,31 @@ namespace Solti.Utils.DI.Internals
 
         public override void GetService(IInjector injector, ref ServiceReference reference)
         {
-            CheckProducible();
+            try
+            {
+                CheckProducible();
 
-            if (FService == null)
-            {
-                FService = reference;
-                FService.Instance = Factory(injector, Interface);
+                //
+                // Ha mar kroabban le lett gyartva akkor visszaadjuk azt.
+                //
+
+                if (FService != null) reference = FService;
+                else
+                {
+                    reference.Instance = Factory(injector, Interface); // elso helyen szerepeljen h a "finally" jol mukodjon
+                    FService = reference;
+                }
             }
-            else
+            finally
             {
-                reference.Dispose();
-                reference = FService;
+                if (FService != reference) reference.Dispose();
             }
         }
 
         public override AbstractServiceEntry CopyTo(IServiceContainer target)
         {
+            CheckDisposed();
+
             var result = new ScopedServiceEntry(this, target);
             target.Add(result);
             return result;

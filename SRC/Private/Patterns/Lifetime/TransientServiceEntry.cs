@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Globalization;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -36,30 +37,38 @@ namespace Solti.Utils.DI.Internals
 
         public override void GetService(IInjector injector, ref ServiceReference reference)
         {
-            CheckProducible();
+            try
+            {
+                CheckProducible();
 
-            if (FSpawnedServices.Count == Config.Value.MaxSpawnedServices)
+                if (FSpawnedServices.Count == Config.Value.MaxSpawnedServices)
+                    //
+                    // Ha ide jutunk az azt jelenti h jo esellyel a tartalmazo injector ujrahasznositasra kerult
+                    // (es igy siman megehetjuk a rendelkezesre allo memoriat ahogy az a teljesitmeny teszteknel
+                    // meg is tortent).
+                    //
+
+                    throw new Exception(string.Format(CultureInfo.InvariantCulture, Resources.INJECTOR_SHOULD_BE_RELEASED, Config.Value.MaxSpawnedServices));
+
+                reference.Instance = Factory(injector, Interface);
+
+                FSpawnedServices.Add(reference); // inkrementalja "reference" referenciaszamlalojat
+            }
+            finally
+            {
                 //
-                // Ha ide jutunk az azt jelenti h jo esellyel a tartalmazo injector ujrahasznositasra kerult
-                // (es igy siman megehetjuk a rendelkezesre allo memoriat ahogy az a teljesitmeny teszteknel
-                // meg is tortent).
+                // Az FSpawnedServices kezeli az elettartamot ha mar hozza lett adva, kivetel eseten pedig
+                // amugy is fel kell szabaditani.
                 //
 
-                throw new Exception(string.Format(Resources.INJECTOR_SHOULD_BE_RELEASED, Config.Value.MaxSpawnedServices));
-
-            reference.Instance = Factory(injector, Interface);
-
-            FSpawnedServices.Add(reference);
-
-            //
-            // Az FServices kezeli az elettartamot ha mar hozza lett adva.
-            //
-            
-            reference.Release();
+                reference.Release();
+            }
         }
 
         public override AbstractServiceEntry CopyTo(IServiceContainer target)
         {
+            CheckDisposed();
+
             var result = new TransientServiceEntry(this, target);
             target.Add(result);
             return result;

@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Diagnostics;
 using System.Globalization;
 using System.Reflection;
 
@@ -68,6 +69,8 @@ namespace Solti.Utils.DI.Internals
 
         public override void GetService(IInjector injector, ref ServiceReference reference)
         {
+            reference.Dispose();
+
             CheckDisposed();
 
             reference = FService;
@@ -75,7 +78,11 @@ namespace Solti.Utils.DI.Internals
 
         protected override void Dispose(bool disposeManaged)
         {
-            if (disposeManaged) FService.Release();
+            if (disposeManaged)
+            {
+                FService.Release();
+                Debug.Assert(FService.Disposed, "More than one reference");
+            }
             base.Dispose(disposeManaged);
         }
     }
