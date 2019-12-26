@@ -4,7 +4,6 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
-using System.Globalization;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -52,7 +51,7 @@ namespace Solti.Utils.DI.Internals
             //
 
             if (!@interface.IsInterfaceOf(implementation))
-                throw new InvalidOperationException(string.Format(CultureInfo.CurrentCulture, Resources.NOT_ASSIGNABLE, @interface, implementation));
+                throw new InvalidOperationException(string.Format(Resources.Culture, Resources.NOT_ASSIGNABLE, @interface, implementation));
 
             if (!@interface.IsGenericTypeDefinition())
                 Factory = Resolver.Get(implementation);
@@ -78,7 +77,7 @@ namespace Solti.Utils.DI.Internals
             //
 
             if (!implementation.Supports(@interface))
-                throw new NotSupportedException(string.Format(CultureInfo.CurrentCulture, Resources.INTERFACE_NOT_SUPPORTED, @interface));
+                throw new NotSupportedException(string.Format(Resources.Culture, Resources.INTERFACE_NOT_SUPPORTED, @interface));
 
             Lazy<Type> lazyImplementation = implementation.AsLazy(@interface);
 

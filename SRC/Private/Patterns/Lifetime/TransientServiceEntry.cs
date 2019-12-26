@@ -4,7 +4,6 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
-using System.Globalization;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -48,7 +47,7 @@ namespace Solti.Utils.DI.Internals
                     // meg is tortent).
                     //
 
-                    throw new Exception(string.Format(CultureInfo.InvariantCulture, Resources.INJECTOR_SHOULD_BE_RELEASED, Config.Value.MaxSpawnedServices));
+                    throw new Exception(string.Format(Resources.Culture, Resources.INJECTOR_SHOULD_BE_RELEASED, Config.Value.MaxSpawnedServices));
 
                 reference.Instance = Factory(injector, Interface);
 

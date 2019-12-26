@@ -6,7 +6,6 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Globalization;
 using System.Linq;
 
 namespace Solti.Utils.DI
@@ -25,7 +24,7 @@ namespace Solti.Utils.DI
         /// </summary>
         /// <param name="path">The current path on which the circular reference was found.</param>
         public CircularReferenceException(IEnumerable<(Type Interface, string Name)> path) : base(string.Format(
-            CultureInfo.CurrentCulture,
+            Resources.Culture,
             Resources.CIRCULAR_REFERENCE,
             string.Join(" -> ", path.Select(cp => cp.FriendlyName())))) 
         {

@@ -5,7 +5,6 @@
 ********************************************************************************/
 using System;
 using System.Diagnostics.CodeAnalysis;
-using System.Globalization;
 
 namespace Solti.Utils.DI
 {
@@ -23,7 +22,7 @@ namespace Solti.Utils.DI
         /// </summary>
         /// <param name="key">The "id" of the service.</param>
         /// <param name="innerException">The inner exception (if it is present).</param>
-        public ServiceAlreadyRegisteredException((Type Interface, string Name) key, Exception innerException = null): base(string.Format(CultureInfo.CurrentCulture, Resources.ALREADY_REGISTERED, key.FriendlyName()), innerException)
+        public ServiceAlreadyRegisteredException((Type Interface, string Name) key, Exception innerException = null): base(string.Format(Resources.Culture, Resources.ALREADY_REGISTERED, key.FriendlyName()), innerException)
         {
             Data.Add(nameof(key), key);
         }

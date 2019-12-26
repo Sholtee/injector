@@ -5,7 +5,6 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Reflection;
 
@@ -33,7 +32,7 @@ namespace Solti.Utils.DI.Internals
         public static ProducibleServiceEntry Create<TParam>(Lifetime? lifetime, Type @interface, string name, TParam param, IServiceContainer owner)
         {
             if (lifetime == null || !ServiceEntryTypes.TryGetValue(lifetime.Value, out var serviceEntryType))
-                throw new ArgumentException(string.Format(CultureInfo.CurrentCulture, Resources.UNKNOWN_LIFETIME, lifetime), nameof(lifetime));                
+                throw new ArgumentException(string.Format(Resources.Culture, Resources.UNKNOWN_LIFETIME, lifetime), nameof(lifetime));                
         
             return (ProducibleServiceEntry) serviceEntryType.CreateInstance
             (

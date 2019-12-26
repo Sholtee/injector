@@ -5,7 +5,6 @@
 ********************************************************************************/
 using System;
 using System.Diagnostics.CodeAnalysis;
-using System.Globalization;
 
 namespace Solti.Utils.DI
 {
@@ -22,7 +21,7 @@ namespace Solti.Utils.DI
         /// Creates a new <see cref="ServiceNotFoundException"/> instance.
         /// </summary>
         /// <param name="key">The "id" of the service that could not be found.</param>
-        public ServiceNotFoundException((Type Interface, string Name) key) : base(string.Format(CultureInfo.CurrentCulture, Resources.SERVICE_NOT_FOUND, key.FriendlyName()))
+        public ServiceNotFoundException((Type Interface, string Name) key) : base(string.Format(Resources.Culture, Resources.SERVICE_NOT_FOUND, key.FriendlyName()))
         {
             Data.Add(nameof(key), key);
         }

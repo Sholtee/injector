@@ -6,7 +6,6 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Globalization;
 using System.Linq;
 using System.Threading;
 
@@ -125,7 +124,7 @@ namespace Solti.Utils.DI.Internals
                     // oket mivel a szulo kontener gyermekei).
                     //
 
-                    throw new InvalidOperationException(string.Format(CultureInfo.CurrentCulture, Resources.TOO_MANY_CHILDREN, MaxChildCount));
+                    throw new InvalidOperationException(string.Format(Resources.Culture, Resources.TOO_MANY_CHILDREN, MaxChildCount));
 
                 FChildren.Add(child);
             }

@@ -4,7 +4,6 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
-using System.Globalization;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -75,7 +74,7 @@ namespace Solti.Utils.DI.Internals
 
             ImmutableArray<Diagnostic> diagnostics = compilation.GetDeclarationDiagnostics();
             if (diagnostics.Any(diag => diag.Severity == DiagnosticSeverity.Error))
-                throw new InvalidOperationException(string.Format(CultureInfo.CurrentCulture, Resources.TYPE_NOT_VISIBLE, type));
+                throw new InvalidOperationException(string.Format(Resources.Culture, Resources.TYPE_NOT_VISIBLE, type));
 #endif
         }
 

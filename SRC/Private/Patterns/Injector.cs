@@ -6,7 +6,6 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Globalization;
 using System.Linq;
 #if NETSTANDARD1_6
 using System.Reflection;
@@ -106,7 +105,7 @@ namespace Solti.Utils.DI.Internals
                     //
 
                     if (!iface.IsInstanceOfType(currentNode.Instance))
-                        throw new Exception(string.Format(CultureInfo.CurrentCulture, Resources.INVALID_INSTANCE, iface));
+                        throw new Exception(string.Format(Resources.Culture, Resources.INVALID_INSTANCE, iface));
                 }
                 finally
                 {
