@@ -140,15 +140,15 @@ references:
   commentId: T:Solti.Utils.DI.CircularReferenceException
   fullName: Solti.Utils.DI.CircularReferenceException
   nameWithType: CircularReferenceException
-- uid: Solti.Utils.DI.CircularReferenceException.#ctor(System.Collections.Generic.IEnumerable{System.ValueTuple{System.Type,System.String}})
-  name: CircularReferenceException(IEnumerable<(Type Interface, String Name)>)
-  href: Solti.Utils.DI.CircularReferenceException.html#Solti_Utils_DI_CircularReferenceException__ctor_System_Collections_Generic_IEnumerable_System_ValueTuple_System_Type_System_String___
-  commentId: M:Solti.Utils.DI.CircularReferenceException.#ctor(System.Collections.Generic.IEnumerable{System.ValueTuple{System.Type,System.String}})
-  name.vb: CircularReferenceException(IEnumerable(Of (Interface As Type, Name As String)))
-  fullName: Solti.Utils.DI.CircularReferenceException.CircularReferenceException(System.Collections.Generic.IEnumerable<System.ValueTuple<System.Type, System.String>>)
-  fullName.vb: Solti.Utils.DI.CircularReferenceException.CircularReferenceException(System.Collections.Generic.IEnumerable(Of System.ValueTuple(Of System.Type, System.String)))
-  nameWithType: CircularReferenceException.CircularReferenceException(IEnumerable<(Type Interface, String Name)>)
-  nameWithType.vb: CircularReferenceException.CircularReferenceException(IEnumerable(Of (Interface As Type, Name As String)))
+- uid: Solti.Utils.DI.CircularReferenceException.#ctor(System.Collections.Generic.IEnumerable{Solti.Utils.DI.Internals.ServiceReference})
+  name: CircularReferenceException(IEnumerable<ServiceReference>)
+  href: Solti.Utils.DI.CircularReferenceException.html#Solti_Utils_DI_CircularReferenceException__ctor_System_Collections_Generic_IEnumerable_Solti_Utils_DI_Internals_ServiceReference__
+  commentId: M:Solti.Utils.DI.CircularReferenceException.#ctor(System.Collections.Generic.IEnumerable{Solti.Utils.DI.Internals.ServiceReference})
+  name.vb: CircularReferenceException(IEnumerable(Of ServiceReference))
+  fullName: Solti.Utils.DI.CircularReferenceException.CircularReferenceException(System.Collections.Generic.IEnumerable<Solti.Utils.DI.Internals.ServiceReference>)
+  fullName.vb: Solti.Utils.DI.CircularReferenceException.CircularReferenceException(System.Collections.Generic.IEnumerable(Of Solti.Utils.DI.Internals.ServiceReference))
+  nameWithType: CircularReferenceException.CircularReferenceException(IEnumerable<ServiceReference>)
+  nameWithType.vb: CircularReferenceException.CircularReferenceException(IEnumerable(Of ServiceReference))
 - uid: Solti.Utils.DI.CircularReferenceException.#ctor*
   name: CircularReferenceException
   href: Solti.Utils.DI.CircularReferenceException.html#Solti_Utils_DI_CircularReferenceException__ctor_
