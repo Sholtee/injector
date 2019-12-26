@@ -53,4 +53,6 @@
   - *removed:* `IInjectorExtensions.ShouldRelease()`
   - *fixed:* Service never gets disposed till all its dependants are disposed
 - 1.0.0 (unreleased)
-  - *removed:* `IInjector.LifetimeOf()` 
+  - *added:* `Injector.config`
+  - *removed:* `IInjector.LifetimeOf()`
+  - *fixed:*  Some missing reference cleanup 
