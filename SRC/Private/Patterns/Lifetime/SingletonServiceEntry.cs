@@ -45,6 +45,10 @@ namespace Solti.Utils.DI.Internals
                 {
                     if (FService == null)
                     {
+                        //
+                        // Ha meg nem lett legyartva akkor elkeszitjuk.
+                        //
+
                         try
                         {
                             reference.Instance = Factory(injector, Interface);
@@ -60,6 +64,10 @@ namespace Solti.Utils.DI.Internals
                     }
                 }
             }
+
+            //
+            // Kulomben visszaadjuk a kroabban legyartott peldanyt.
+            //
 
             reference.Dispose();
             reference = FService;
