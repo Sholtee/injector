@@ -28,33 +28,23 @@ namespace Solti.Utils.DI.Injector.Tests
         [Test]
         public void Lifetime_TransientService_ShouldNotBeInstantietedIfTheInjectorWasNotRecycled() 
         {
-            Config config = Config.Value;
+            Config.Value.MaxSpawnedServices = 1;
 
-            int old = config.MaxSpawnedServices;
-            config.MaxSpawnedServices = 1;
+            Container.Service<IInterface_1, Implementation_1_No_Dep>(Lifetime.Transient);
 
-            try
+            using (IInjector injector1 = Container.CreateInjector())
             {
-                Container.Service<IInterface_1, Implementation_1_No_Dep>(Lifetime.Transient);
+                Assert.DoesNotThrow(() => injector1.Get<IInterface_1>());
+                Assert.Throws<Exception>(() => injector1.Get<IInterface_1>(), Resources.INJECTOR_SHOULD_BE_RELEASED);
 
-                using (IInjector injector1 = Container.CreateInjector())
+                //
+                // Ettol meg masik injector tud peldanyositani.
+                //
+
+                using (IInjector injector2 = Container.CreateInjector())
                 {
-                    Assert.DoesNotThrow(() => injector1.Get<IInterface_1>());
-                    Assert.Throws<Exception>(() => injector1.Get<IInterface_1>(), Resources.INJECTOR_SHOULD_BE_RELEASED);
-
-                    //
-                    // Ettol meg masik injector tud peldanyositani.
-                    //
-
-                    using (IInjector injector2 = Container.CreateInjector())
-                    {
-                        Assert.DoesNotThrow(() => injector2.Get<IInterface_1>());
-                    }
+                    Assert.DoesNotThrow(() => injector2.Get<IInterface_1>());
                 }
-            }
-            finally
-            {
-                config.MaxSpawnedServices = old;
             }
         }
 

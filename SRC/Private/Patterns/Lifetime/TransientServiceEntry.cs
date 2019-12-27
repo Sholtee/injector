@@ -40,14 +40,20 @@ namespace Solti.Utils.DI.Internals
 
             try
             {
-                if (FSpawnedServices.Count == Config.Value.MaxSpawnedServices)
+                //
+                // Ne legyen kiemelve statikusba h tesztekben megvaltoztathato legyen.
+                //
+
+                int maxSpawnedServices = Config.Value.MaxSpawnedServices;
+
+                if (FSpawnedServices.Count == maxSpawnedServices)
                     //
                     // Ha ide jutunk az azt jelenti h jo esellyel a tartalmazo injector ujrahasznositasra kerult
                     // (es igy siman megehetjuk a rendelkezesre allo memoriat ahogy az a teljesitmeny teszteknel
                     // meg is tortent).
                     //
 
-                    throw new Exception(string.Format(Resources.Culture, Resources.INJECTOR_SHOULD_BE_RELEASED, Config.Value.MaxSpawnedServices));
+                    throw new Exception(string.Format(Resources.Culture, Resources.INJECTOR_SHOULD_BE_RELEASED, maxSpawnedServices));
 
                 reference.Instance = Factory(injector, Interface);
 

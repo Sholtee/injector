@@ -25,11 +25,6 @@ namespace Solti.Utils.DI.Internals
 
         private TInterface Self => this as TInterface;
 
-        /// <summary>
-        /// The maxmimum number of children this entity can hold.
-        /// </summary>
-        internal int MaxChildCount { get; set; } = Config.Value.CompositeMaxChildCount; // tesztekhez
-
         #region Protected
         /// <summary>
         /// Creates a new <see cref="Composite{TInterface}"/> instance.
@@ -117,14 +112,20 @@ namespace Solti.Utils.DI.Internals
 
             using (FLock.AcquireWriterLock())
             {
-                if (FChildren.Count == MaxChildCount)
+                //
+                // Ne legyen kiemelve statikusba h tesztekben megvaltoztathato legyen.
+                //
+
+                int maxChildCount = Config.Value.CompositeMaxChildCount;
+
+                if (FChildren.Count == maxChildCount)
                     //
                     // Ha ide eljutunk az pl azt jelentheti h egy kontenerbol letrehozott injectorok 
                     // nincsenek a munkafolyamat vegen felszbaditva (a GC nem tudja felszabaditani 
                     // oket mivel a szulo kontener gyermekei).
                     //
 
-                    throw new InvalidOperationException(string.Format(Resources.Culture, Resources.TOO_MANY_CHILDREN, MaxChildCount));
+                    throw new InvalidOperationException(string.Format(Resources.Culture, Resources.TOO_MANY_CHILDREN, maxChildCount));
 
                 FChildren.Add(child);
             }

@@ -9,6 +9,7 @@ using NUnit.Framework;
 
 namespace Solti.Utils.DI.Tests
 {
+    using Internals;
     using Annotations;
 
     public class TestBase<TContainer> where TContainer: IServiceContainer, new()
@@ -23,6 +24,8 @@ namespace Solti.Utils.DI.Tests
         {
             Container.Dispose();
             Container = null;
+
+            Config.Reset();
         }
 
         public interface IInterface_1

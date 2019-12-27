@@ -11,6 +11,7 @@ using System.IO;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 #endif
+using System.Threading;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -19,9 +20,9 @@ namespace Solti.Utils.DI.Internals
     /// </summary>
     public partial class Config
     {
-        private static readonly object FLock = new object();
+        private static readonly ReaderWriterLockSlim FLock = new ReaderWriterLockSlim();
 
-        private static Config FValue;
+        private static Config FValue = CreateInstance();
 
         private static Config CreateInstance() 
         {
@@ -41,13 +42,21 @@ namespace Solti.Utils.DI.Internals
         {
             get 
             {
-                if (FValue == null)
-                    lock (FLock)
-                        if (FValue == null)
-                            FValue = CreateInstance();
-                return FValue;
+                using (FLock.AcquireReaderLock())
+                {
+                    return FValue;
+                }
             }
         }
+
+        internal static void Reset() // tesztekhez
+        {
+            using (FLock.AcquireWriterLock())
+            {
+                FValue = CreateInstance();
+            }
+        }
+
 #if !NETSTANDARD1_6
         /// <summary>
         /// Custom settings.

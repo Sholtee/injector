@@ -21,8 +21,6 @@ namespace Solti.Utils.DI.Container.Tests
 
     public abstract class ServiceContainerTestsBase<TImplementation>: TestBase<TImplementation> where TImplementation : IServiceContainer, new()
     {
-        public abstract int MaxChildCount { get; set; }
-
         internal virtual IServiceContainer CreateContainer(params AbstractServiceEntry[] entries)
         {
             var result = new TImplementation();
@@ -524,7 +522,7 @@ namespace Solti.Utils.DI.Container.Tests
         [Test]
         public void IServiceContainer_CreateChildShouldThrowIfChildCountReachedTheLimit()
         {
-            MaxChildCount = 1;
+            Config.Value.CompositeMaxChildCount = 1;
 
             Assert.DoesNotThrow(() => Container.CreateChild());
             Assert.Throws<InvalidOperationException>(() => Container.CreateChild(), Resources.TOO_MANY_CHILDREN);
@@ -534,7 +532,6 @@ namespace Solti.Utils.DI.Container.Tests
     [TestFixture]
     public class IServiceContainerTests : ServiceContainerTestsBase<ServiceContainer>
     {
-        public override int MaxChildCount { get => ((ServiceContainer) Container).MaxChildCount; set => ((ServiceContainer) Container).MaxChildCount = value; }
     }
 
     //
