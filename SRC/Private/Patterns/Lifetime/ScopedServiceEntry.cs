@@ -42,7 +42,7 @@ namespace Solti.Utils.DI.Internals
 
             if (FService != null)
             {
-                reference.Dispose();
+                reference.Release();
                 reference = FService;
             }
 
@@ -58,7 +58,7 @@ namespace Solti.Utils.DI.Internals
                 }
                 catch 
                 {
-                    reference.Dispose();
+                    reference.Release();
                     throw;
                 }
 

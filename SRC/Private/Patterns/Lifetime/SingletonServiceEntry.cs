@@ -55,7 +55,7 @@ namespace Solti.Utils.DI.Internals
                         }
                         catch 
                         {
-                            reference.Dispose();
+                            reference.Release();
                             throw;
                         }
 
@@ -69,7 +69,7 @@ namespace Solti.Utils.DI.Internals
             // Kulomben visszaadjuk a kroabban legyartott peldanyt.
             //
 
-            reference.Dispose();
+            reference.Release();
             reference = FService;
         }
 

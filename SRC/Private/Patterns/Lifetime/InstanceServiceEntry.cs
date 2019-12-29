@@ -68,10 +68,9 @@ namespace Solti.Utils.DI.Internals
 
         public override void GetService(IInjector injector, ref ServiceReference reference)
         {
-            reference.Dispose();
-
             CheckDisposed();
 
+            reference.Release();
             reference = FService;
         }
 
