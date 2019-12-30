@@ -59,7 +59,7 @@ namespace Solti.Utils.DI.Internals
             // https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0122
             //
 
-            return !diagnostics.Any(diag => diag.Id == "CS0122");
+            return !diagnostics.Any(diag => diag.Id.Equals("CS0122", StringComparison.OrdinalIgnoreCase));
         }
 
         public static bool GrantedFor(Type type, string asmName)
