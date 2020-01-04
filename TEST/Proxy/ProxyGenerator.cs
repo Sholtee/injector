@@ -202,7 +202,7 @@ namespace Solti.Utils.DI.Proxy.Tests
         }
 
         [Test]
-        public void GeneratedProxy_MethodOverrideTest()
+        public void GeneratedProxy_ShouldCallTheInterceptor()
         {
             IFoo<int> proxy = (IFoo<int>) GeneratedProxy<IFoo<int>, FooInterceptor>.Type.CreateInstance(new []{typeof(IFoo<int>)}, (object) null);
 
