@@ -62,7 +62,7 @@ namespace Solti.Utils.DI.Internals
             return !diagnostics.Any(diag => diag.Id.Equals("CS0122", StringComparison.OrdinalIgnoreCase));
         }
 
-        public static bool GrantedFor(Type type, string asmName)
+        public static bool GrantedFor(Type type, string asmName) // TODO: ez dobja a kivetelt
         {
             //
             // using t = Namespace.Type;
@@ -86,7 +86,7 @@ namespace Solti.Utils.DI.Internals
             return GrantedFor(unitToCheck, asmName, type.GetReferences().ToArray());
         }
 
-        public static bool GrantedFor(MemberInfo member, string asmName) 
+        public static bool GrantedFor(MemberInfo member, string asmName)  // TODO: ez dobja a kivetelt
         {
             //
             // public class Cls 
