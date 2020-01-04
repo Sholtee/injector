@@ -39,7 +39,7 @@ namespace Solti.Utils.DI.Internals
         {
 #if !IGNORE_VISIBILITY
             if (!Visibility.GrantedFor(type, AssemblyName))
-                throw new InvalidOperationException(string.Format(Resources.Culture, Resources.TYPE_NOT_VISIBLE, type));
+                throw new InvalidOperationException(string.Format(Resources.Culture, Resources.TYPE_NOT_VISIBLE, type, AssemblyName));
 #endif
         }
     }
