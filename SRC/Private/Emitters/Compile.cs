@@ -48,8 +48,7 @@ namespace Solti.Utils.DI.Internals
                     .Append(typeof(IgnoresAccessChecksToAttribute).Assembly())
 #endif
                     .Distinct()
-                    .Select(asm => MetadataReference.CreateFromFile(asm.Location))
-                ,
+                    .Select(asm => MetadataReference.CreateFromFile(asm.Location)),
                 options: CompilationOptionsFactory.Create()
             );
 
