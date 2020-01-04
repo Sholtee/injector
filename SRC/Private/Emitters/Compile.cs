@@ -4,7 +4,6 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
-using System.Globalization;
 using System.Collections;
 using System.Diagnostics;
 using System.IO;
@@ -27,14 +26,6 @@ namespace Solti.Utils.DI.Internals
 
     internal static class Compile
     {
-        public static void CheckVisibility(Type type, string asmName)
-        {
-#if !IGNORE_VISIBILITY
-            if (!Visibility.GrantedFor(type, asmName))
-                throw new InvalidOperationException(string.Format(CultureInfo.CurrentCulture, Resources.TYPE_NOT_VISIBLE, type));
-#endif
-        }
-
         public static Assembly ToAssembly(CompilationUnitSyntax root, string asmName, params Assembly[] references)
         {
             Debug.WriteLine(root.NormalizeWhitespace().ToFullString());
