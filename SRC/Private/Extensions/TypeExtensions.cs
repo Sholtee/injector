@@ -136,22 +136,25 @@ namespace Solti.Utils.DI.Internals
             return TypeNameReplacer.Replace(src.IsNested ? src.Name : src.ToString(), string.Empty);
         }
 
-        public static IEnumerable<TMember> ListMembers<TMember>(this Type src, Func<Type, BindingFlags, TMember[]> factory) where TMember : MemberInfo
+        public static IEnumerable<TMember> ListMembers<TMember>(this Type src, Func<Type, BindingFlags, TMember[]> factory, bool includeNonPublic = false) where TMember : MemberInfo
         {
-            const BindingFlags flags = BindingFlags.Public | BindingFlags.Instance;
+            BindingFlags flags = BindingFlags.Public | BindingFlags.Instance;
 
             if (src.IsInterface())
-                //
-                // Az BindingFlags.FlattenHierarchy interface-ekre nem mukodik.
-                //
-
                 return factory(src, flags)
                     .Concat
                     (
                         src.GetInterfaces().SelectMany(iface => factory(iface, flags))
                     );
 
-            return factory(src, flags | BindingFlags.FlattenHierarchy);
+            //
+            // A "BindingFlags.NonPublic" es "BindingFlags.FlattenHierarchy" nem ertelmezett interface-ekre.
+            //
+
+            flags |= BindingFlags.FlattenHierarchy;
+            if (includeNonPublic) flags |= BindingFlags.NonPublic;
+
+            return factory(src, flags);
         }
 
         public static IEnumerable<Assembly> GetReferences(this Type src)
