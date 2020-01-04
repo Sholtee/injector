@@ -19,10 +19,6 @@ namespace Solti.Utils.DI.Internals
     using Properties;
     using static ProxyGeneratorBase;
 
-    //
-    // TODO: Mukodjunk internal lathatosagu tagokra is.
-    //
-
     internal static class DuckGenerator<TTarget, TInterface>
     {
         private const string TARGET = nameof(DuckBase<TTarget>.Target);
@@ -41,8 +37,8 @@ namespace Solti.Utils.DI.Internals
             //
 
             MethodInfo targetMethod = typeof(TTarget)
-                .ListMembers(System.Reflection.TypeExtensions.GetMethods)
-                .SingleOrDefault(m => m.Name.Equals(ifaceMethod.Name, StringComparison.Ordinal) && m.GetParameters().SequenceEqual(paramz, new ParameterComparer()));
+                .ListMembers(System.Reflection.TypeExtensions.GetMethods, includeNonPublic: true)
+                .SingleOrDefault(m => m.Name.Equals(ifaceMethod.Name, StringComparison.Ordinal) && m.GetParameters().SequenceEqual(paramz, ParameterComparer.Instance));
 
             if (targetMethod == null)
             {
@@ -84,12 +80,14 @@ namespace Solti.Utils.DI.Internals
                 //
 
             }.GetHashCode();
+
+            public static ParameterComparer Instance { get; } = new ParameterComparer();
         }
 
         internal static MemberDeclarationSyntax GenerateDuckProperty(PropertyInfo ifaceProperty)
         {
             PropertyInfo targetProperty = typeof(TTarget)
-                .ListMembers(System.Reflection.TypeExtensions.GetProperties)
+                .ListMembers(System.Reflection.TypeExtensions.GetProperties, includeNonPublic: true)
                 .SingleOrDefault(p => 
                     p.Name == ifaceProperty.Name && 
                     p.PropertyType == ifaceProperty.PropertyType &&
@@ -163,7 +161,7 @@ namespace Solti.Utils.DI.Internals
         internal static EventDeclarationSyntax GenerateDuckEvent(EventInfo ifaceEvent)
         {
             EventInfo targetEvent = typeof(TTarget)
-                .ListMembers(System.Reflection.TypeExtensions.GetEvents)
+                .ListMembers(System.Reflection.TypeExtensions.GetEvents, includeNonPublic: true)
                 .SingleOrDefault(ev => ev.Name == ifaceEvent.Name && ev.EventHandlerType == ifaceEvent.EventHandlerType);
 
             if (targetEvent == null)
