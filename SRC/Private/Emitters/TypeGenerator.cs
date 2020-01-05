@@ -33,7 +33,12 @@ namespace Solti.Utils.DI.Internals
             )
             .GetType(GeneratedClassName, throwOnError: true);
 
-        protected void CheckVisibility(Type type) => Compile.CheckVisibility(type, AssemblyName);   
+        protected void CheckVisibility(Type type)
+        {
+#if !IGNORE_VISIBILITY
+            Visibility.Check(type, AssemblyName);
+#endif
+        }
     }
 
     //

@@ -5,8 +5,6 @@
 ********************************************************************************/
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -22,62 +20,12 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Emit;
 
-using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
-
 namespace Solti.Utils.DI.Internals
 {
     using Properties;
 
     internal static class Compile
     {
-        public static void CheckVisibility(Type type, string asmName)
-        {
-#if !IGNORE_VISIBILITY
-            //
-            // Mivel az "internal" es "protected" kulcsszavak nem leteznek IL szinten ezert itt reflexioval
-            // nem tudjuk megallapitani h a tipus lathato e a kodunk szamara =(
-            //
-
-            CompilationUnitSyntax unitToCheck = CompilationUnit().WithUsings
-            (
-                usings: SingletonList
-                (
-                    UsingDirective
-                    (
-                        name: (NameSyntax) ProxyGeneratorBase.CreateType(type)
-                    )
-                    .WithAlias
-                    (
-                        alias: NameEquals(IdentifierName("t"))
-                    )
-                )
-            );
-
-            Debug.WriteLine(unitToCheck.NormalizeWhitespace().ToFullString());
-
-            CSharpCompilation compilation = CSharpCompilation.Create
-            (
-                assemblyName: asmName,
-                syntaxTrees: new[]
-                {
-                    CSharpSyntaxTree.Create
-                    (
-                        root: unitToCheck
-                    )
-                },
-                references: RuntimeAssemblies
-                    .Concat(type.GetReferences())
-                    .Distinct()
-                    .Select(asm => MetadataReference.CreateFromFile(asm.Location)),
-                options: CompilationOptionsFactory.Create()
-            );
-
-            ImmutableArray<Diagnostic> diagnostics = compilation.GetDeclarationDiagnostics();
-            if (diagnostics.Any(diag => diag.Severity == DiagnosticSeverity.Error))
-                throw new InvalidOperationException(string.Format(Resources.Culture, Resources.TYPE_NOT_VISIBLE, type));
-#endif
-        }
-
         public static Assembly ToAssembly(CompilationUnitSyntax root, string asmName, params Assembly[] references)
         {
             Debug.WriteLine(root.NormalizeWhitespace().ToFullString());
@@ -93,13 +41,14 @@ namespace Solti.Utils.DI.Internals
                         root: root
                     )
                 },
-                references: RuntimeAssemblies
+                references: Runtime
+                    .Assemblies
                     .Concat(references)
 #if IGNORE_VISIBILITY
                     .Append(typeof(IgnoresAccessChecksToAttribute).Assembly())
 #endif
-                    .Select(asm => MetadataReference.CreateFromFile(asm.Location))
-                ,
+                    .Distinct()
+                    .Select(asm => MetadataReference.CreateFromFile(asm.Location)),
                 options: CompilationOptionsFactory.Create()
             );
 
@@ -134,26 +83,6 @@ namespace Solti.Utils.DI.Internals
                     .Default
                     .LoadFromStream(stm);
             } 
-        }
-
-        private static readonly Assembly[] RuntimeAssemblies = GetRuntimeAssemblies().ToArray();
-
-        private static IEnumerable<Assembly> GetRuntimeAssemblies()
-        {
-            yield return typeof(Object).Assembly();
-#if NETSTANDARD
-            string[] mandatoryAssemblies = 
-            {
-                "System.Runtime",
-                "netstandard"
-            };
-
-            foreach (string assemblyPath in ((string) AppContext.GetData("TRUSTED_PLATFORM_ASSEMBLIES")).Split(Path.PathSeparator))
-            {
-                if (mandatoryAssemblies.Contains(Path.GetFileNameWithoutExtension(assemblyPath)))
-                    yield return AssemblyLoadContext.Default.LoadFromAssemblyPath(assemblyPath);
-            }
-#endif
         }
     }
 }

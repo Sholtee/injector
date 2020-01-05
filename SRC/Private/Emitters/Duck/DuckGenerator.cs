@@ -19,10 +19,6 @@ namespace Solti.Utils.DI.Internals
     using Properties;
     using static ProxyGeneratorBase;
 
-    //
-    // TODO: Mukodjunk internal lathatosagu tagokra is.
-    //
-
     internal static class DuckGenerator<TTarget, TInterface>
     {
         private const string TARGET = nameof(DuckBase<TTarget>.Target);
@@ -41,8 +37,8 @@ namespace Solti.Utils.DI.Internals
             //
 
             MethodInfo targetMethod = typeof(TTarget)
-                .ListMembers(System.Reflection.TypeExtensions.GetMethods)
-                .SingleOrDefault(m => m.Name.Equals(ifaceMethod.Name, StringComparison.Ordinal) && m.GetParameters().SequenceEqual(paramz, new ParameterComparer()));
+                .ListMembers(System.Reflection.TypeExtensions.GetMethods, includeNonPublic: true)
+                .SingleOrDefault(m => m.Name.Equals(ifaceMethod.Name, StringComparison.Ordinal) && m.GetParameters().SequenceEqual(paramz, ParameterComparer.Instance));
 
             if (targetMethod == null)
             {
@@ -50,6 +46,12 @@ namespace Solti.Utils.DI.Internals
                 mme.Data.Add(nameof(ifaceMethod), ifaceMethod);
                 throw mme;
             }
+
+            //
+            // Ellenorizzuk h a metodus lathato e a legeneralando szerelvenyunk szamara.
+            //
+
+            Visibility.Check(targetMethod, AssemblyName);
 
             //
             // TResult IInterface.Foo<TGeneric>(T1 para1, ref T2 para2, out T3 para3, TGeneric para4) => Target.Foo(para1, ref para2, out para3, para4);
@@ -84,12 +86,14 @@ namespace Solti.Utils.DI.Internals
                 //
 
             }.GetHashCode();
+
+            public static ParameterComparer Instance { get; } = new ParameterComparer();
         }
 
         internal static MemberDeclarationSyntax GenerateDuckProperty(PropertyInfo ifaceProperty)
         {
             PropertyInfo targetProperty = typeof(TTarget)
-                .ListMembers(System.Reflection.TypeExtensions.GetProperties)
+                .ListMembers(System.Reflection.TypeExtensions.GetProperties, includeNonPublic: true)
                 .SingleOrDefault(p => 
                     p.Name == ifaceProperty.Name && 
                     p.PropertyType == ifaceProperty.PropertyType &&
@@ -115,6 +119,12 @@ namespace Solti.Utils.DI.Internals
                 mme.Data.Add(nameof(ifaceProperty), ifaceProperty);
                 throw mme;
             }
+
+            //
+            // Ellenorizzuk h a property lathato e a legeneralando szerelvenyunk szamara.
+            //
+
+            Visibility.Check(targetProperty, AssemblyName, checkGet: ifaceProperty.CanRead, checkSet: ifaceProperty.CanWrite);
 
             //
             // Ne a "targetProperty"-n hivjuk h akkor is jol mukodjunk ha az interface indexerenek
@@ -163,7 +173,7 @@ namespace Solti.Utils.DI.Internals
         internal static EventDeclarationSyntax GenerateDuckEvent(EventInfo ifaceEvent)
         {
             EventInfo targetEvent = typeof(TTarget)
-                .ListMembers(System.Reflection.TypeExtensions.GetEvents)
+                .ListMembers(System.Reflection.TypeExtensions.GetEvents, includeNonPublic: true)
                 .SingleOrDefault(ev => ev.Name == ifaceEvent.Name && ev.EventHandlerType == ifaceEvent.EventHandlerType);
 
             if (targetEvent == null)
@@ -172,6 +182,12 @@ namespace Solti.Utils.DI.Internals
                 mme.Data.Add(nameof(ifaceEvent), ifaceEvent);
                 throw mme;
             }
+
+            //
+            // Ellenorizzuk h az esemeny lathato e a legeneralando szerelvenyunk szamara.
+            //
+
+            Visibility.Check(targetEvent, AssemblyName, checkAdd: ifaceEvent.AddMethod != null, checkRemove: ifaceEvent.RemoveMethod != null);
 
             return DeclareEvent
             (

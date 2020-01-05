@@ -100,7 +100,7 @@ namespace Solti.Utils.DI.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Compilation failed. It might not be your fault..
+        ///   Looks up a localized string similar to Compilation failed. See &quot;Data&quot; for details..
         /// </summary>
         internal static string COMPILATION_FAILED {
             get {
@@ -208,11 +208,29 @@ namespace Solti.Utils.DI.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The method (&quot;{0}&quot;) is internal. The declaring assembly should be annotated with the InternalsVisibleToAttribute(&quot;{1}&quot;)..
+        /// </summary>
+        internal static string IVT_REQUIRED {
+            get {
+                return ResourceManager.GetString("IVT_REQUIRED", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The target does not implement the desired method..
         /// </summary>
         internal static string METHOD_NOT_SUPPORTED {
             get {
                 return ResourceManager.GetString("METHOD_NOT_SUPPORTED", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The method (&quot;{0}&quot;) is not visible..
+        /// </summary>
+        internal static string METHOD_NOT_VISIBLE {
+            get {
+                return ResourceManager.GetString("METHOD_NOT_VISIBLE", resourceCulture);
             }
         }
         
@@ -298,11 +316,20 @@ namespace Solti.Utils.DI.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0} (or its enclosing type) is not visible. The declaring assembly should be annotated with the InternalsVisibleToAttribute..
+        ///   Looks up a localized string similar to {0} (or its enclosing type) is not visible. The declaring assembly should be annotated with the InternalsVisibleToAttribute(&quot;{1}&quot;)..
         /// </summary>
         internal static string TYPE_NOT_VISIBLE {
             get {
                 return ResourceManager.GetString("TYPE_NOT_VISIBLE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Access modifier could not be determined..
+        /// </summary>
+        internal static string UNDETERMINED_ACCESS_MODIFIER {
+            get {
+                return ResourceManager.GetString("UNDETERMINED_ACCESS_MODIFIER", resourceCulture);
             }
         }
         
