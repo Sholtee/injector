@@ -64,19 +64,22 @@ namespace Solti.Utils.DI.Internals.Tests
         [Test]
         public void Check_ShouldThrowIfTheMemberNotVisible()
         {
-            const string assemblyName = "cica";
+            Assert.Throws<Exception>(() => Visibility.Check(typeof(TestClass).GetMethod(nameof(TestClass.InternalMethod), BindingFlags.Instance | BindingFlags.NonPublic), NonAnnotatedAssembly), Resources.IVT_REQUIRED);
+            Assert.DoesNotThrow(() => Visibility.Check(typeof(TestClass).GetMethod(nameof(TestClass.InternalMethod), BindingFlags.Instance | BindingFlags.NonPublic), AnnotatedAssembly));
 
-            Assert.Throws<Exception>(() => Visibility.Check(typeof(TestClass).GetMethod(nameof(TestClass.InternalMethod), BindingFlags.Instance | BindingFlags.NonPublic), assemblyName), Resources.IVT_REQUIRED);
+            Assert.DoesNotThrow(() => Visibility.Check(typeof(TestClass).GetProperty(nameof(TestClass.InternalProtectedProperty)), NonAnnotatedAssembly, checkGet: true, checkSet: false));
+            Assert.Throws<Exception>(() => Visibility.Check(typeof(TestClass).GetProperty(nameof(TestClass.InternalProtectedProperty)), NonAnnotatedAssembly, checkGet: false, checkSet: true), Resources.IVT_REQUIRED);
+            Assert.DoesNotThrow(() => Visibility.Check(typeof(TestClass).GetProperty(nameof(TestClass.InternalProtectedProperty)), AnnotatedAssembly, checkGet: false, checkSet: true));
 
-            Assert.DoesNotThrow(() => Visibility.Check(typeof(TestClass).GetProperty(nameof(TestClass.InternalProtectedProperty)), assemblyName, checkGet: true, checkSet: false));
-            Assert.Throws<Exception>(() => Visibility.Check(typeof(TestClass).GetProperty(nameof(TestClass.InternalProtectedProperty)), assemblyName, checkGet: false, checkSet: true), Resources.IVT_REQUIRED);
+            Assert.DoesNotThrow(() => Visibility.Check(typeof(TestClass).GetEvent(nameof(TestClass.PublicEvent)), NonAnnotatedAssembly, checkAdd: true, checkRemove: true));
 
-            Assert.DoesNotThrow(() => Visibility.Check(typeof(TestClass).GetEvent(nameof(TestClass.PublicEvent)), assemblyName, checkAdd: true, checkRemove: true));
+            Assert.Throws<Exception>(() => Visibility.Check(typeof(TestClass).GetMethod("ProtectedMethod", BindingFlags.Instance | BindingFlags.NonPublic), NonAnnotatedAssembly), Resources.METHOD_NOT_VISIBLE);
+            Assert.Throws<Exception>(() => Visibility.Check(typeof(TestClass).GetMethod("ProtectedMethod", BindingFlags.Instance | BindingFlags.NonPublic), AnnotatedAssembly), Resources.METHOD_NOT_VISIBLE);
 
-            Assert.Throws<Exception>(() => Visibility.Check(typeof(TestClass).GetMethod("ProtectedMethod", BindingFlags.Instance | BindingFlags.NonPublic), assemblyName), Resources.METHOD_NOT_VISIBLE);
-
-            Assert.Throws<Exception>(() => Visibility.Check(typeof(TestClass).GetProperty("PrivateProperty", BindingFlags.Instance | BindingFlags.NonPublic), assemblyName, checkGet: true, checkSet: false), Resources.METHOD_NOT_VISIBLE);
-            Assert.Throws<Exception>(() => Visibility.Check(typeof(TestClass).GetProperty("PrivateProperty", BindingFlags.Instance | BindingFlags.NonPublic), assemblyName, checkGet: false, checkSet: true), Resources.METHOD_NOT_VISIBLE);
+            Assert.Throws<Exception>(() => Visibility.Check(typeof(TestClass).GetProperty("PrivateProperty", BindingFlags.Instance | BindingFlags.NonPublic), NonAnnotatedAssembly, checkGet: true, checkSet: false), Resources.METHOD_NOT_VISIBLE);
+            Assert.Throws<Exception>(() => Visibility.Check(typeof(TestClass).GetProperty("PrivateProperty", BindingFlags.Instance | BindingFlags.NonPublic), NonAnnotatedAssembly, checkGet: false, checkSet: true), Resources.METHOD_NOT_VISIBLE);
+            Assert.Throws<Exception>(() => Visibility.Check(typeof(TestClass).GetProperty("PrivateProperty", BindingFlags.Instance | BindingFlags.NonPublic), AnnotatedAssembly, checkGet: true, checkSet: false), Resources.METHOD_NOT_VISIBLE);
+            Assert.Throws<Exception>(() => Visibility.Check(typeof(TestClass).GetProperty("PrivateProperty", BindingFlags.Instance | BindingFlags.NonPublic), AnnotatedAssembly, checkGet: false, checkSet: true), Resources.METHOD_NOT_VISIBLE);
         }
 
         public class TestClass 

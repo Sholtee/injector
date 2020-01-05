@@ -62,7 +62,7 @@ namespace Solti.Utils.DI.Internals
                         .FirstOrDefault(ivt => ivt.AssemblyName == assemblyName) != null;
                     if (!grantedByAttr)
                         throw new Exception(string.Format(Resources.Culture, Resources.IVT_REQUIRED, method.GetFullName(), assemblyName));
-                    break;
+                    return; // Assert() miatt NE "break" legyen 
                 case AccessModifier.Protected:
                 case AccessModifier.Private:
                     throw new Exception(string.Format(Resources.Culture, Resources.METHOD_NOT_VISIBLE, method.GetFullName()));
