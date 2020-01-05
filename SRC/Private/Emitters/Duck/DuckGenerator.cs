@@ -279,7 +279,7 @@ namespace Solti.Utils.DI.Internals
                 {
                     return selector(arg);
                 }
-                catch (MissingMethodException e)
+                catch (Exception e)
                 {
                     exs.Add(e);
                     return default(TResult);
