@@ -109,50 +109,12 @@ namespace Solti.Utils.DI.Internals
             }
         }
 
-        private static bool GrantedFor(CompilationUnitSyntax unitToCheck, string asmName, params Assembly[] references)
+        public static void Check(Type type, string assemblyName) // TODO: nem kene megszolitani a forditot hozza (meg akkor se ha csak diagnosztikakat kerunk le)
         {
             //
             // Mivel az "internal" es "protected" kulcsszavak nem leteznek IL szinten ezert reflexioval
             // nem tudnank megallapitani h a tipus lathato e a kodunk szamara szoval a forditora bizzuk
-            // a dontest.
-            //
-
-            Debug.WriteLine(unitToCheck.NormalizeWhitespace().ToFullString());
-
-            CSharpCompilation compilation = CSharpCompilation.Create
-            (
-                assemblyName: asmName,
-                syntaxTrees: new[]
-                {
-                    CSharpSyntaxTree.Create
-                    (
-                        root: unitToCheck
-                    )
-                },
-                references: Runtime
-                    .Assemblies
-                    .Concat(references)
-                    .Distinct()
-                    .Select(asm => MetadataReference.CreateFromFile(asm.Location)),
-                options: CompilationOptionsFactory.Create()
-            );
-
-            Diagnostic[] diagnostics = compilation
-                .GetDeclarationDiagnostics()
-                .Where(diag => diag.Severity == DiagnosticSeverity.Error)
-                .ToArray();
-
-            Debug.Assert(diagnostics.Length <= 1, "Too many errors");
-
-            //
-            // https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0122
-            //
-
-            return !diagnostics.Any(diag => diag.Id.Equals("CS0122", StringComparison.OrdinalIgnoreCase));
-        }
-
-        public static bool GrantedFor(Type type, string asmName) // TODO: ez dobja a kivetelt
-        {
+            // a dontest:
             //
             // using t = Namespace.Type;
             //
@@ -163,7 +125,7 @@ namespace Solti.Utils.DI.Internals
                 (
                     UsingDirective
                     (
-                        name: (NameSyntax) CreateType(type)
+                        name: (NameSyntax)CreateType(type)
                     )
                     .WithAlias
                     (
@@ -172,24 +134,46 @@ namespace Solti.Utils.DI.Internals
                 )
             );
 
-            return GrantedFor(unitToCheck, asmName, type.GetReferences().ToArray());
-        }
+            Debug.WriteLine(unitToCheck.NormalizeWhitespace().ToFullString());
 
-        public static bool GrantedFor(MemberInfo member, string asmName)  // TODO: ez dobja a kivetelt
-        {
-            //
-            // public class Cls 
-            // {
-            //    private void Foo() {}
-            //    public void Foo(int i) {}
-            // }
-            //
-            // "nameof(Cls.Foo)" fordulni fog meg ha mi a parameter nelkuli metodust is vizsgalnank.
-            //
-            // Megjegyzendo h "Foo"-val mar nem lehet property szoval azzal nem lenne gond.
-            //
+            CSharpCompilation compilation = CSharpCompilation.Create
+            (
+                assemblyName: assemblyName,
+                syntaxTrees: new[]
+                {
+                    CSharpSyntaxTree.Create
+                    (
+                        root: unitToCheck
+                    )
+                },
+                references: Runtime
+                    .Assemblies
+                    .Concat(type.GetReferences())  // NE "Append(type.Assembly())" legyen mert specializalt tipusnal a generikus argumentumok szerelvenyei is kellenek
+                    .Distinct()
+                    .Select(asm => MetadataReference.CreateFromFile(asm.Location)),
+                options: CompilationOptionsFactory.Create()
+            );
 
-            throw new NotImplementedException();
+            Diagnostic[] diagnostics = compilation
+                .GetDeclarationDiagnostics()
+                .Where(diag => diag.Severity == DiagnosticSeverity.Error)
+                .ToArray();
+
+            if (diagnostics.Length > 0)
+            {
+                //
+                // https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0122
+                //
+
+                Debug.Assert(diagnostics.Single().Id.Equals("CS0122", StringComparison.OrdinalIgnoreCase));
+
+                //
+                // A fordito nem fogja megmondani h mi a tipus lathatosaga csak azt h lathato e v sem,
+                // ezert vmi altalanosabb hibauzenet kell.
+                //
+
+                throw new Exception(string.Format(Resources.Culture, Resources.TYPE_NOT_VISIBLE, type, assemblyName));
+            }
         }
     }
 }

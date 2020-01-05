@@ -23,42 +23,27 @@ namespace Solti.Utils.DI.Internals.Tests
             AnnotatedAssembly = nameof(AnnotatedAssembly);
 
         [Test]
-        public void GrantedFor_ShouldReflectTheVisibilityOfType()
+        public void Check_ShouldThrowIfTheTypeNotVisible()
         {
-            Assert.That(Visibility.GrantedFor(typeof(IInterface), NonAnnotatedAssembly), Is.False);
-            Assert.That(Visibility.GrantedFor(typeof(IInterface), AnnotatedAssembly), Is.True);
-            Assert.That(Visibility.GrantedFor(typeof(PublicClassWithInternalMethodAndNestedType.InternalNestedClass), NonAnnotatedAssembly), Is.False);
-            Assert.That(Visibility.GrantedFor(typeof(PublicClassWithInternalMethodAndNestedType.InternalNestedClass), AnnotatedAssembly), Is.True);
-            Assert.That(Visibility.GrantedFor(typeof(PrivateClass), NonAnnotatedAssembly), Is.False);
-            Assert.That(Visibility.GrantedFor(typeof(PrivateClass), AnnotatedAssembly), Is.False);
+            Assert.Throws<Exception>(() => Visibility.Check(typeof(IInternalInterface), NonAnnotatedAssembly), Resources.TYPE_NOT_VISIBLE);
+            Assert.DoesNotThrow(() => Visibility.Check(typeof(IInternalInterface), AnnotatedAssembly));
+            Assert.Throws<Exception>(() => Visibility.Check(typeof(PublicClassWithInternalMethodAndNestedType.InternalNestedClass), NonAnnotatedAssembly), Resources.TYPE_NOT_VISIBLE);
+            Assert.DoesNotThrow(() => Visibility.Check(typeof(PublicClassWithInternalMethodAndNestedType.InternalNestedClass), AnnotatedAssembly));
+            Assert.Throws<Exception>(() => Visibility.Check(typeof(PrivateClass), NonAnnotatedAssembly), Resources.TYPE_NOT_VISIBLE);
+            Assert.Throws<Exception>(() => Visibility.Check(typeof(PrivateClass), AnnotatedAssembly), Resources.TYPE_NOT_VISIBLE);
         }
 
-        //[Test]
-        public void GrantedFor_ShouldReflectTheVisibilityOfMethod()
-        {
-            Assert.That(Visibility.GrantedFor(typeof(PublicClassWithInternalMethodAndNestedType).GetMethod(nameof(PublicClassWithInternalMethodAndNestedType.Foo), BindingFlags.Instance | BindingFlags.NonPublic), NonAnnotatedAssembly), Is.False);
-            Assert.That(Visibility.GrantedFor(typeof(PublicClassWithInternalMethodAndNestedType).GetMethod(nameof(PublicClassWithInternalMethodAndNestedType.Foo), BindingFlags.Instance | BindingFlags.NonPublic), AnnotatedAssembly), Is.True);
-            Assert.That(Visibility.GrantedFor(typeof(PublicClassWithInternalMethodAndNestedType.InternalNestedClass).GetMethod(nameof(PublicClassWithInternalMethodAndNestedType.InternalNestedClass.Bar), BindingFlags.Instance | BindingFlags.Public), NonAnnotatedAssembly), Is.False);
-            Assert.That(Visibility.GrantedFor(typeof(PublicClassWithInternalMethodAndNestedType.InternalNestedClass).GetMethod(nameof(PublicClassWithInternalMethodAndNestedType.InternalNestedClass.Bar), BindingFlags.Instance | BindingFlags.Public), AnnotatedAssembly), Is.True);
-            Assert.That(Visibility.GrantedFor(typeof(PrivateClass).GetMethod(nameof(PrivateClass.Baz), BindingFlags.Instance | BindingFlags.Public), NonAnnotatedAssembly), Is.False);
-            Assert.That(Visibility.GrantedFor(typeof(PrivateClass).GetMethod(nameof(PrivateClass.Baz), BindingFlags.Instance | BindingFlags.Public), AnnotatedAssembly), Is.False);
-        }
-
-        internal interface IInterface { }
+        internal interface IInternalInterface { }
 
         public class PublicClassWithInternalMethodAndNestedType
         {
-            internal void Foo() { }
-
             internal class InternalNestedClass
             {
-                public void Bar() { }
             }
         }
 
         private class PrivateClass
         {
-            public void Baz() { }
         }
 
         [Test]

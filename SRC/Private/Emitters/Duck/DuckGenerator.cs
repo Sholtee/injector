@@ -48,6 +48,12 @@ namespace Solti.Utils.DI.Internals
             }
 
             //
+            // Ellenorizzuk h a metodus lathato e a legeneralando szerelvenyunk szamara.
+            //
+
+            Visibility.Check(targetMethod, AssemblyName);
+
+            //
             // TResult IInterface.Foo<TGeneric>(T1 para1, ref T2 para2, out T3 para3, TGeneric para4) => Target.Foo(para1, ref para2, out para3, para4);
             //
 
@@ -115,6 +121,12 @@ namespace Solti.Utils.DI.Internals
             }
 
             //
+            // Ellenorizzuk h a property lathato e a legeneralando szerelvenyunk szamara.
+            //
+
+            Visibility.Check(targetProperty, AssemblyName, checkGet: ifaceProperty.CanRead, checkSet: ifaceProperty.CanWrite);
+
+            //
             // Ne a "targetProperty"-n hivjuk h akkor is jol mukodjunk ha az interface indexerenek
             // maskepp vannak elnvezve a parameterei.
             //
@@ -170,6 +182,12 @@ namespace Solti.Utils.DI.Internals
                 mme.Data.Add(nameof(ifaceEvent), ifaceEvent);
                 throw mme;
             }
+
+            //
+            // Ellenorizzuk h az esemeny lathato e a legeneralando szerelvenyunk szamara.
+            //
+
+            Visibility.Check(targetEvent, AssemblyName, checkAdd: ifaceEvent.AddMethod != null, checkRemove: ifaceEvent.RemoveMethod != null);
 
             return DeclareEvent
             (

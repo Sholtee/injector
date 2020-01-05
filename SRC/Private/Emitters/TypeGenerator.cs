@@ -12,8 +12,6 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Solti.Utils.DI.Internals
 {
-    using Properties;
-
     using static ProxyGeneratorBase;
 
     internal abstract class TypeGenerator
@@ -35,11 +33,10 @@ namespace Solti.Utils.DI.Internals
             )
             .GetType(GeneratedClassName, throwOnError: true);
 
-        protected void CheckVisibility(Type type) 
+        protected void CheckVisibility(Type type)
         {
 #if !IGNORE_VISIBILITY
-            if (!Visibility.GrantedFor(type, AssemblyName))
-                throw new InvalidOperationException(string.Format(Resources.Culture, Resources.TYPE_NOT_VISIBLE, type, AssemblyName));
+            Visibility.Check(type, AssemblyName);
 #endif
         }
     }
