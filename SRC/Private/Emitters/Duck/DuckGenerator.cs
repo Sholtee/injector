@@ -196,7 +196,10 @@ namespace Solti.Utils.DI.Internals
                 (
                     expression: RegisterEvent(targetEvent, TARGET, add: true)
                 ),
-                removeBody: ArrowExpressionClause(RegisterEvent(targetEvent, TARGET, add: false)),
+                removeBody: ArrowExpressionClause
+                (
+                    expression: RegisterEvent(targetEvent, TARGET, add: false)
+                ),
                 forceInlining: true
             );
         }
@@ -217,7 +220,11 @@ namespace Solti.Utils.DI.Internals
             (
                 modifiers: TokenList
                 (
-                    Token(SyntaxKind.PublicKeyword),
+                    //
+                    // Az osztaly ne publikus legyen h "internal" lathatosagu tipusokat is hasznalhassunk
+                    //
+
+                    Token(SyntaxKind.InternalKeyword),
                     Token(SyntaxKind.SealedKeyword)
                 )
             )
