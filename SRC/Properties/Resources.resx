@@ -195,4 +195,13 @@
   <data name="NOT_ORPHAN" xml:space="preserve">
     <value>Child already has parent.</value>
   </data>
+  <data name="UNDETERMINED_ACCESS_MODIFIER" xml:space="preserve">
+    <value>Access modifier could not be determined.</value>
+  </data>
+  <data name="IVT_REQUIRED" xml:space="preserve">
+    <value>The method ("{0}") is internal. The declaring assembly should be annotated with the InternalsVisibleToAttribute("{1}").</value>
+  </data>
+  <data name="METHOD_NOT_VISIBLE" xml:space="preserve">
+    <value>The method ("{0}") is not visible.</value>
+  </data>
 </root>

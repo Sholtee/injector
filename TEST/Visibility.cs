@@ -3,6 +3,7 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
+using System;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 
@@ -12,15 +13,17 @@ using NUnit.Framework;
 
 namespace Solti.Utils.DI.Internals.Tests
 {
+    using Properties;
+
     [TestFixture]
     public class VisibilityTests
     {
-        public const string 
+        public const string
             NonAnnotatedAssembly = nameof(NonAnnotatedAssembly),
             AnnotatedAssembly = nameof(AnnotatedAssembly);
 
         [Test]
-        public void GrantedFor_ShouldReflectTheVisibilityOfType() 
+        public void GrantedFor_ShouldReflectTheVisibilityOfType()
         {
             Assert.That(Visibility.GrantedFor(typeof(IInterface), NonAnnotatedAssembly), Is.False);
             Assert.That(Visibility.GrantedFor(typeof(IInterface), AnnotatedAssembly), Is.True);
@@ -31,7 +34,7 @@ namespace Solti.Utils.DI.Internals.Tests
         }
 
         //[Test]
-        public void GrantedFor_ShouldReflectTheVisibilityOfMethod() 
+        public void GrantedFor_ShouldReflectTheVisibilityOfMethod()
         {
             Assert.That(Visibility.GrantedFor(typeof(PublicClassWithInternalMethodAndNestedType).GetMethod(nameof(PublicClassWithInternalMethodAndNestedType.Foo), BindingFlags.Instance | BindingFlags.NonPublic), NonAnnotatedAssembly), Is.False);
             Assert.That(Visibility.GrantedFor(typeof(PublicClassWithInternalMethodAndNestedType).GetMethod(nameof(PublicClassWithInternalMethodAndNestedType.Foo), BindingFlags.Instance | BindingFlags.NonPublic), AnnotatedAssembly), Is.True);
@@ -43,19 +46,46 @@ namespace Solti.Utils.DI.Internals.Tests
 
         internal interface IInterface { }
 
-        public class PublicClassWithInternalMethodAndNestedType 
+        public class PublicClassWithInternalMethodAndNestedType
         {
             internal void Foo() { }
 
-            internal class InternalNestedClass 
+            internal class InternalNestedClass
             {
                 public void Bar() { }
             }
         }
 
-        private class PrivateClass 
+        private class PrivateClass
         {
             public void Baz() { }
+        }
+
+        [Test]
+        public void Check_ShouldThrowIfTheMemberNotVisible()
+        {
+            const string assemblyName = "cica";
+
+            Assert.Throws<Exception>(() => Visibility.Check(typeof(TestClass).GetMethod(nameof(TestClass.InternalMethod), BindingFlags.Instance | BindingFlags.NonPublic), assemblyName), Resources.IVT_REQUIRED);
+
+            Assert.DoesNotThrow(() => Visibility.Check(typeof(TestClass).GetProperty(nameof(TestClass.InternalProtectedProperty)), assemblyName, checkGet: true, checkSet: false));
+            Assert.Throws<Exception>(() => Visibility.Check(typeof(TestClass).GetProperty(nameof(TestClass.InternalProtectedProperty)), assemblyName, checkGet: false, checkSet: true), Resources.IVT_REQUIRED);
+
+            Assert.DoesNotThrow(() => Visibility.Check(typeof(TestClass).GetEvent(nameof(TestClass.PublicEvent)), assemblyName, checkAdd: true, checkRemove: true));
+
+            Assert.Throws<Exception>(() => Visibility.Check(typeof(TestClass).GetMethod("ProtectedMethod", BindingFlags.Instance | BindingFlags.NonPublic), assemblyName), Resources.METHOD_NOT_VISIBLE);
+
+            Assert.Throws<Exception>(() => Visibility.Check(typeof(TestClass).GetProperty("PrivateProperty", BindingFlags.Instance | BindingFlags.NonPublic), assemblyName, checkGet: true, checkSet: false), Resources.METHOD_NOT_VISIBLE);
+            Assert.Throws<Exception>(() => Visibility.Check(typeof(TestClass).GetProperty("PrivateProperty", BindingFlags.Instance | BindingFlags.NonPublic), assemblyName, checkGet: false, checkSet: true), Resources.METHOD_NOT_VISIBLE);
+        }
+
+        public class TestClass 
+        {
+            internal void InternalMethod() { }
+            public int InternalProtectedProperty { get; internal protected set; }
+            public event EventHandler PublicEvent;
+            protected void ProtectedMethod() { }
+            private int PrivateProperty { get; set; }
         }
     }
 }
