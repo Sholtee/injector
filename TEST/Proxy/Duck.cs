@@ -81,7 +81,7 @@ namespace Solti.Utils.DI.Proxy.Tests
             Assert.Throws<InvalidOperationException>(() => this.Act().Like<List>(), Resources.NOT_AN_INTERFACE);
             Assert.Throws<MemberAccessException>(() => this.Act().Like<IPrivateInterface>(), Resources.TYPE_NOT_VISIBLE);
             Assert.Throws<MemberAccessException>(() => new PrivateClass().Act().Like<IDisposable>(), Resources.TYPE_NOT_VISIBLE);
-            Assert.Throws<MissingMethodException>(() => this.Act().Like<IDisposable>());
+            Assert.Throws<MissingMemberException>(() => this.Act().Like<IDisposable>());
 
             IList<int> lst = new List<int>();
             Assert.Throws<ArgumentException>(() => lst.Act().Like<IMyList>(), Resources.NOT_A_CLASS);

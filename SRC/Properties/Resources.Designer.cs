@@ -127,15 +127,6 @@ namespace Solti.Utils.DI.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The target does not implement the desired event..
-        /// </summary>
-        internal static string EVENT_NOT_SUPPORTED {
-            get {
-                return ResourceManager.GetString("EVENT_NOT_SUPPORTED", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to The injector can not hold more than {0} transient services. It usually indicates that you were recycling the injector..
         /// </summary>
         internal static string INJECTOR_SHOULD_BE_RELEASED {
@@ -217,20 +208,20 @@ namespace Solti.Utils.DI.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The target does not implement the desired method..
-        /// </summary>
-        internal static string METHOD_NOT_SUPPORTED {
-            get {
-                return ResourceManager.GetString("METHOD_NOT_SUPPORTED", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to The method (&quot;{0}&quot;) is not visible..
         /// </summary>
         internal static string METHOD_NOT_VISIBLE {
             get {
                 return ResourceManager.GetString("METHOD_NOT_VISIBLE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The target does not implement the member: {0}.
+        /// </summary>
+        internal static string MISSING_IMPLEMENTATION {
+            get {
+                return ResourceManager.GetString("MISSING_IMPLEMENTATION", resourceCulture);
             }
         }
         
@@ -276,15 +267,6 @@ namespace Solti.Utils.DI.Properties {
         internal static string NOT_PRODUCIBLE {
             get {
                 return ResourceManager.GetString("NOT_PRODUCIBLE", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The target does not implement the desired property..
-        /// </summary>
-        internal static string PROPERTY_NOT_SUPPORTED {
-            get {
-                return ResourceManager.GetString("PROPERTY_NOT_SUPPORTED", resourceCulture);
             }
         }
         

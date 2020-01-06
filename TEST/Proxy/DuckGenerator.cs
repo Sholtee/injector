@@ -60,7 +60,7 @@ namespace Solti.Utils.DI.Proxy.Tests
         [Test]
         public void GenerateDuckMethod_ShouldThrowIfTheMethodNotSupported()
         {
-            Assert.Throws<MissingMethodException>
+            Assert.Throws<MissingMemberException>
             (
                 () => DuckGenerator<BadFoo, IFoo<int>>.GenerateDuckMethod(IfaceFoo),
                 Resources.METHOD_NOT_SUPPORTED
@@ -80,7 +80,7 @@ namespace Solti.Utils.DI.Proxy.Tests
             // Nincs setter.
             //
 
-            Assert.Throws<MissingMethodException>
+            Assert.Throws<MissingMemberException>
             (
                 () => DuckGenerator<BadFoo, IFoo<int>>.GenerateDuckProperty(IfaceProp),
                 Resources.PROPERTY_NOT_SUPPORTED
@@ -90,7 +90,7 @@ namespace Solti.Utils.DI.Proxy.Tests
             // Van getter es setter is csak a tipus nem megfelelo.
             //
 
-            Assert.Throws<MissingMethodException>
+            Assert.Throws<MissingMemberException>
             (
                 () => DuckGenerator<GoodFoo<string>, IFoo<int>>.GenerateDuckProperty(IfaceProp),
                 Resources.PROPERTY_NOT_SUPPORTED
@@ -106,7 +106,7 @@ namespace Solti.Utils.DI.Proxy.Tests
         [Test]
         public void GenerateDuckProperty_ShouldThrowIfTheEventNotSupported()
         {
-            Assert.Throws<MissingMethodException>
+            Assert.Throws<MissingMemberException>
             (
                 () => DuckGenerator<BadFoo, IFoo<int>>.GenerateDuckEvent(IfaceEvent),
                 Resources.EVENT_NOT_SUPPORTED

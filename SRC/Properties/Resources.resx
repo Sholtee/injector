@@ -138,9 +138,6 @@
   <data name="CONSTRUCTOR_OVERLOADING_NOT_SUPPORTED" xml:space="preserve">
     <value>"{0}" must have exactly one (annotated) public constructor.</value>
   </data>
-  <data name="EVENT_NOT_SUPPORTED" xml:space="preserve">
-    <value>The target does not implement the desired event.</value>
-  </data>
   <data name="INTERFACE_NOT_SUPPORTED" xml:space="preserve">
     <value>The resolver does not support the given interface: {0}.</value>
   </data>
@@ -156,9 +153,6 @@
   <data name="INVALID_INSTANCE" xml:space="preserve">
     <value>The returned object must be an instance of "{0}".</value>
   </data>
-  <data name="METHOD_NOT_SUPPORTED" xml:space="preserve">
-    <value>The target does not implement the desired method.</value>
-  </data>
   <data name="INVALID_PARENT" xml:space="preserve">
     <value>Child must have the same parent on which the operation was perfomred.</value>
   </data>
@@ -173,9 +167,6 @@
   </data>
   <data name="NOT_PRODUCIBLE" xml:space="preserve">
     <value>The service has no factory function.</value>
-  </data>
-  <data name="PROPERTY_NOT_SUPPORTED" xml:space="preserve">
-    <value>The target does not implement the desired property.</value>
   </data>
   <data name="SERVICE_NOT_FOUND" xml:space="preserve">
     <value>No registered implementation for "{0}".</value>
@@ -209,5 +200,8 @@
   </data>
   <data name="METHOD_NOT_VISIBLE" xml:space="preserve">
     <value>The method ("{0}") is not visible.</value>
+  </data>
+  <data name="MISSING_IMPLEMENTATION" xml:space="preserve">
+    <value>The target does not implement the member: {0}</value>
   </data>
 </root>

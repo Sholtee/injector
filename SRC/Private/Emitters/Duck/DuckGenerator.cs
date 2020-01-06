@@ -6,9 +6,9 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -23,6 +23,13 @@ namespace Solti.Utils.DI.Internals
     internal static class DuckGenerator<TTarget, TInterface>
     {
         private const string TARGET = nameof(DuckBase<TTarget>.Target);
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static void ThrowIfNotFound<TMember>(TMember targetMember, TMember ifaceMember) where TMember: MemberInfo
+        {
+            if (targetMember == null) 
+                throw new MissingMemberException(string.Format(Resources.Culture, Resources.MISSING_IMPLEMENTATION, ifaceMember.GetFullName()));
+        }
 
         internal static MethodDeclarationSyntax GenerateDuckMethod(MethodInfo ifaceMethod)
         {
@@ -41,12 +48,7 @@ namespace Solti.Utils.DI.Internals
                 .ListMembers(System.Reflection.TypeExtensions.GetMethods, includeNonPublic: true)
                 .SingleOrDefault(m => m.Name.Equals(ifaceMethod.Name, StringComparison.Ordinal) && m.GetParameters().SequenceEqual(paramz, ParameterComparer.Instance));
 
-            if (targetMethod == null)
-            {
-                var mme = new MissingMethodException(Resources.METHOD_NOT_SUPPORTED);
-                mme.Data.Add(nameof(ifaceMethod), ifaceMethod);
-                throw mme;
-            }
+            ThrowIfNotFound(targetMethod, ifaceMethod);
 
             //
             // Ellenorizzuk h a metodus lathato e a legeneralando szerelvenyunk szamara.
@@ -114,12 +116,7 @@ namespace Solti.Utils.DI.Internals
 
                     ifaceProperty.GetIndexParameters().Select(ip => ip.ParameterType).SequenceEqual(p.GetIndexParameters().Select(ip => ip.ParameterType)));
 
-            if(targetProperty == null)
-            {
-                var mme = new MissingMethodException(Resources.PROPERTY_NOT_SUPPORTED);
-                mme.Data.Add(nameof(ifaceProperty), ifaceProperty);
-                throw mme;
-            }
+            ThrowIfNotFound(targetProperty, ifaceProperty);
 
             //
             // Ellenorizzuk h a property lathato e a legeneralando szerelvenyunk szamara.
@@ -177,12 +174,7 @@ namespace Solti.Utils.DI.Internals
                 .ListMembers(System.Reflection.TypeExtensions.GetEvents, includeNonPublic: true)
                 .SingleOrDefault(ev => ev.Name == ifaceEvent.Name && ev.EventHandlerType == ifaceEvent.EventHandlerType);
 
-            if (targetEvent == null)
-            {
-                var mme = new MissingMethodException(Resources.EVENT_NOT_SUPPORTED);
-                mme.Data.Add(nameof(ifaceEvent), ifaceEvent);
-                throw mme;
-            }
+            ThrowIfNotFound(targetEvent, ifaceEvent);
 
             //
             // Ellenorizzuk h az esemeny lathato e a legeneralando szerelvenyunk szamara.
@@ -282,7 +274,7 @@ namespace Solti.Utils.DI.Internals
                 }
                 catch (Exception e)
                 {
-                    if (e is MissingMethodException || e is MemberAccessException)
+                    if (e is MissingMemberException || e is MemberAccessException)
                     {
 
                         exceptions.Add(e);
