@@ -61,11 +61,11 @@ namespace Solti.Utils.DI.Internals
                         .GetCustomAttributes<InternalsVisibleToAttribute>()
                         .FirstOrDefault(ivt => ivt.AssemblyName == assemblyName) != null;
                     if (!grantedByAttr)
-                        throw new Exception(string.Format(Resources.Culture, Resources.IVT_REQUIRED, method.GetFullName(), assemblyName));
+                        throw new MemberAccessException(string.Format(Resources.Culture, Resources.IVT_REQUIRED, method.GetFullName(), assemblyName));
                     return; // Assert() miatt NE "break" legyen 
                 case AccessModifier.Protected:
                 case AccessModifier.Private:
-                    throw new Exception(string.Format(Resources.Culture, Resources.METHOD_NOT_VISIBLE, method.GetFullName()));
+                    throw new MemberAccessException(string.Format(Resources.Culture, Resources.METHOD_NOT_VISIBLE, method.GetFullName()));
             }
 
             Debug.Assert(am == AccessModifier.Public, "Unknown AccessModifier");
@@ -125,7 +125,7 @@ namespace Solti.Utils.DI.Internals
                 (
                     UsingDirective
                     (
-                        name: (NameSyntax)CreateType(type)
+                        name: (NameSyntax) CreateType(type)
                     )
                     .WithAlias
                     (
@@ -172,7 +172,7 @@ namespace Solti.Utils.DI.Internals
                 // ezert vmi altalanosabb hibauzenet kell.
                 //
 
-                throw new Exception(string.Format(Resources.Culture, Resources.TYPE_NOT_VISIBLE, type, assemblyName));
+                throw new MemberAccessException(string.Format(Resources.Culture, Resources.TYPE_NOT_VISIBLE, type, assemblyName));
             }
         }
     }

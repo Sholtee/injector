@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 
@@ -248,32 +249,32 @@ namespace Solti.Utils.DI.Internals
                 interfaceType
                     .ListMembers(System.Reflection.TypeExtensions.GetMethods)
                     .Where(m => !m.IsSpecialName)
-                    .Select(m => AggregateException(m, GenerateDuckMethod, exceptions))
+                    .Select(m => AggregateException(m, GenerateDuckMethod))
             );  
             
             members.AddRange
             (
                 interfaceType
                     .ListMembers(System.Reflection.TypeExtensions.GetProperties)
-                    .Select(p => AggregateException(p, GenerateDuckProperty, exceptions))
+                    .Select(p => AggregateException(p, GenerateDuckProperty))
             );
 
             members.AddRange
             (
                 interfaceType
                     .ListMembers(System.Reflection.TypeExtensions.GetEvents)
-                    .Select(e => AggregateException(e, GenerateDuckEvent, exceptions))
+                    .Select(e => AggregateException(e, GenerateDuckEvent))
             );
 
             //
-            // Az osszes hibat visszaadjuk (ha voltak).
+            // Az osszes (generator altal dobott) hibat visszaadjuk (ha voltak).
             //
 
             if (exceptions.Any()) throw exceptions.Count == 1 ? exceptions.Single() : new AggregateException(exceptions);
 
             return cls.WithMembers(List(members));
 
-            TResult AggregateException<T, TResult>(T arg, Func<T, TResult> selector, ICollection<Exception> exs)
+            TResult AggregateException<T, TResult>(T arg, Func<T, TResult> selector)
             {
                 try
                 {
@@ -281,8 +282,13 @@ namespace Solti.Utils.DI.Internals
                 }
                 catch (Exception e)
                 {
-                    exs.Add(e);
-                    return default(TResult);
+                    if (e is MissingMethodException || e is MemberAccessException)
+                    {
+
+                        exceptions.Add(e);
+                        return default(TResult);
+                    }
+                    throw;
                 }
             }
         }

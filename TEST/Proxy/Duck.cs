@@ -79,8 +79,8 @@ namespace Solti.Utils.DI.Proxy.Tests
         public void Like_ShouldValidate()
         {
             Assert.Throws<InvalidOperationException>(() => this.Act().Like<List>(), Resources.NOT_AN_INTERFACE);
-            Assert.Throws<Exception>(() => this.Act().Like<IPrivateInterface>(), Resources.TYPE_NOT_VISIBLE);
-            Assert.Throws<Exception>(() => new PrivateClass().Act().Like<IDisposable>(), Resources.TYPE_NOT_VISIBLE);
+            Assert.Throws<MemberAccessException>(() => this.Act().Like<IPrivateInterface>(), Resources.TYPE_NOT_VISIBLE);
+            Assert.Throws<MemberAccessException>(() => new PrivateClass().Act().Like<IDisposable>(), Resources.TYPE_NOT_VISIBLE);
             Assert.Throws<MissingMethodException>(() => this.Act().Like<IDisposable>());
 
             IList<int> lst = new List<int>();
