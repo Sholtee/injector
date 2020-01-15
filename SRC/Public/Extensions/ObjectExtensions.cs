@@ -5,7 +5,7 @@
 ********************************************************************************/
 using System;
 
-namespace Solti.Utils.DI.Proxy
+namespace Solti.Utils.Proxy
 {
     /// <summary>
     /// Defines the base class for duck typing.

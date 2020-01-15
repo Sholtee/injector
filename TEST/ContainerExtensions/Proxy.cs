@@ -12,7 +12,8 @@ namespace Solti.Utils.DI.Container.Tests
 {
     using Internals;
     using Properties;
-    using Proxy;
+
+    using Utils.Proxy;
     
     public partial class ContainerTestsBase<TContainer>
     {

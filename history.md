@@ -52,7 +52,9 @@
   - *removed:* Support for manually disposing `Transient` services
   - *removed:* `IInjectorExtensions.ShouldRelease()`
   - *fixed:* Service never gets disposed till all its dependants are disposed
-- 1.0.0 (unreleased)
-  - *added:* `Injector.config`
+- 1.0.0-preview7
+  - *added:* `Injector.config` (netstandard2+)
   - *removed:* `IInjector.LifetimeOf()`
-  - *fixed:*  Some missing reference cleanup 
+  - *fixed:*  Some missing reference cleanup
+  - *renamed:* Namespace `Solti.Utils.DI.Proxy` -> `Solti.Utils.Proxy`
+  - *done:* Proxy related logic moved to separate assembly

@@ -5,10 +5,12 @@
 ********************************************************************************/
 using System;
 
-namespace Solti.Utils.DI.Proxy
+namespace Solti.Utils.Proxy
 {
-    using Properties;
-    using Internals;
+    using Generators;
+
+    using DI.Properties;
+    using DI.Internals;
 
     /// <summary>
     /// Generates duck typing proxy objects.
@@ -48,8 +50,8 @@ namespace Solti.Utils.DI.Proxy
             if (Target is TInterface possibleResult)
                 return possibleResult;
 
-            return (TInterface) GeneratedDuck<TInterface, TTarget>
-                .Type
+            return (TInterface) DuckGenerator<TInterface, TTarget>
+                .GeneratedType
                 .CreateInstance(new[] {typeof(TTarget)}, Target);
         }
     }

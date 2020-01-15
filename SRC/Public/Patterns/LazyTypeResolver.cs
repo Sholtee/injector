@@ -12,7 +12,8 @@ using System.Runtime.CompilerServices;
 
 namespace Solti.Utils.DI
 {
-    using Proxy;
+    using Utils.Proxy;
+
     using Properties;
     using Internals;
 

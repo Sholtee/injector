@@ -12,7 +12,8 @@ namespace Solti.Utils.DI
     using Properties;
     using Internals;
     using Annotations;
-    using Proxy;
+
+    using Utils.Proxy;
 
     /// <summary>
     /// Defines several handy extensions for the <see cref="IServiceContainer"/> interface.

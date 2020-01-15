@@ -129,9 +129,6 @@
   <data name="CIRCULAR_REFERENCE" xml:space="preserve">
     <value>Circular reference: {0}.</value>
   </data>
-  <data name="COMPILATION_FAILED" xml:space="preserve">
-    <value>Compilation failed. See "Data" for details.</value>
-  </data>
   <data name="CONSTRUCTOR_NOT_FOUND" xml:space="preserve">
     <value>Public constructor with the given layout can not be found.</value>
   </data>
@@ -177,9 +174,6 @@
   <data name="UNKNOWN_LIFETIME" xml:space="preserve">
     <value>Unknown lifetime: {0}.</value>
   </data>
-  <data name="TARGET_IS_NULL" xml:space="preserve">
-    <value>Target is null.</value>
-  </data>
   <data name="INVALID_INTERCEPETOR" xml:space="preserve">
     <value>Interceptor must be an InterfaceInterceptor desecndant.</value>
   </data>
@@ -191,17 +185,5 @@
   </data>
   <data name="TOO_MANY_CHILDREN" xml:space="preserve">
     <value>A composite entity can not have more than {0} children.</value>
-  </data>
-  <data name="UNDETERMINED_ACCESS_MODIFIER" xml:space="preserve">
-    <value>Access modifier could not be determined.</value>
-  </data>
-  <data name="IVT_REQUIRED" xml:space="preserve">
-    <value>The method ("{0}") is internal. The declaring assembly should be annotated with the InternalsVisibleToAttribute("{1}").</value>
-  </data>
-  <data name="METHOD_NOT_VISIBLE" xml:space="preserve">
-    <value>The method ("{0}") is not visible.</value>
-  </data>
-  <data name="MISSING_IMPLEMENTATION" xml:space="preserve">
-    <value>The target does not implement the member: {0}</value>
   </data>
 </root>

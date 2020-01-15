@@ -146,7 +146,7 @@ Remarks:
 In practice, it's useful to separate common functionality (e.g. parameter validation) from the implementation. In this library this can be achieved by [proxy pattern](https://en.wikipedia.org/wiki/Proxy_pattern ). In a brief example:
 ```csharp
 using Solti.Utils.DI;
-using Solti.Utils.DI.Proxy; 
+using Solti.Utils.Proxy; 
 ...
 container
   .Service<IMyModule, MyModule>()
@@ -157,7 +157,7 @@ container
 ```
 Where the `ParameterValidatorProxy<TInterface>` is an `InterfaceInterceptor<TInterface>` descendant containing the parameter validation logic:
 ```csharp
-using Solti.Utils.DI.Proxy; 
+using Solti.Utils.Proxy; 
 ...
 // Base class of all the validator attributes
 public abstract class ParameterValidatorAttribute: Attribute
@@ -211,7 +211,7 @@ public class ParameterValidatorProxy<TInterface> : InterfaceInterceptor<TInterfa
   ```csharp
   using Solti.Utils.DI;
   using Solti.Utils.DI.Annotations;
-  using Solti.Utils.DI.Proxy;
+  using Solti.Utils.Proxy;
   ...
   public interface IModule {...}
   public interface IMyModule1: IModule {...}
@@ -236,7 +236,7 @@ public class ParameterValidatorProxy<TInterface> : InterfaceInterceptor<TInterfa
 - You can setup transactions using proxies as well:
   ```csharp
   using Solti.Utils.DI;
-  using Solti.Utils.DI.Proxy;
+  using Solti.Utils.Proxy;
   ...
   public class MyModuleUsingDbConnection : IMyModuleUsingDbConnection
   {

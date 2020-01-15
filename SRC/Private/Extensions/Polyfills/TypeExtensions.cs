@@ -21,11 +21,5 @@ namespace Solti.Utils.DI.Internals
         public static bool IsGenericTypeDefinition(this Type type) => type.GetFromTypeInfo(ti => ti.IsGenericTypeDefinition);
 
         public static Assembly Assembly(this Type type) => type.GetFromTypeInfo(ti => ti.Assembly);
-
-        public static bool ContainsGenericParameters(this Type type) => type.GetFromTypeInfo(ti => ti.ContainsGenericParameters);
-
-        public static bool IsSealed(this Type type) => type.GetFromTypeInfo(ti => ti.IsSealed);
-
-        public static bool IsAbstract(this Type type) => type.GetFromTypeInfo(ti => ti.IsAbstract);
     }
 }

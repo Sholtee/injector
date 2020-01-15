@@ -14,10 +14,11 @@ using Moq;
 namespace Solti.Utils.DI.UseCases
 {  
     using Internals;
-    using DI;   
-    using DI.Tests;
-    using Proxy;
     using Annotations;
+
+    using DI.Tests;
+
+    using Utils.Proxy;
 
     [TestFixture]
     public class Tests: TestBase<ServiceContainer>

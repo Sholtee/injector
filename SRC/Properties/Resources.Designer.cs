@@ -100,15 +100,6 @@ namespace Solti.Utils.DI.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Compilation failed. See &quot;Data&quot; for details..
-        /// </summary>
-        internal static string COMPILATION_FAILED {
-            get {
-                return ResourceManager.GetString("COMPILATION_FAILED", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Public constructor with the given layout can not be found..
         /// </summary>
         internal static string CONSTRUCTOR_NOT_FOUND {
@@ -199,33 +190,6 @@ namespace Solti.Utils.DI.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The method (&quot;{0}&quot;) is internal. The declaring assembly should be annotated with the InternalsVisibleToAttribute(&quot;{1}&quot;)..
-        /// </summary>
-        internal static string IVT_REQUIRED {
-            get {
-                return ResourceManager.GetString("IVT_REQUIRED", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The method (&quot;{0}&quot;) is not visible..
-        /// </summary>
-        internal static string METHOD_NOT_VISIBLE {
-            get {
-                return ResourceManager.GetString("METHOD_NOT_VISIBLE", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The target does not implement the member: {0}.
-        /// </summary>
-        internal static string MISSING_IMPLEMENTATION {
-            get {
-                return ResourceManager.GetString("MISSING_IMPLEMENTATION", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Parameter must be a class..
         /// </summary>
         internal static string NOT_A_CLASS {
@@ -280,15 +244,6 @@ namespace Solti.Utils.DI.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Target is null..
-        /// </summary>
-        internal static string TARGET_IS_NULL {
-            get {
-                return ResourceManager.GetString("TARGET_IS_NULL", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to A composite entity can not have more than {0} children..
         /// </summary>
         internal static string TOO_MANY_CHILDREN {
@@ -303,15 +258,6 @@ namespace Solti.Utils.DI.Properties {
         internal static string TYPE_NOT_VISIBLE {
             get {
                 return ResourceManager.GetString("TYPE_NOT_VISIBLE", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Access modifier could not be determined..
-        /// </summary>
-        internal static string UNDETERMINED_ACCESS_MODIFIER {
-            get {
-                return ResourceManager.GetString("UNDETERMINED_ACCESS_MODIFIER", resourceCulture);
             }
         }
         

@@ -7,10 +7,13 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace Solti.Utils.DI.Proxy
+namespace Solti.Utils.Proxy
 {
-    using Properties;
-    using Internals;
+    using Generators;
+
+    using DI;
+    using DI.Properties;
+    using DI.Internals;
 
     /// <summary>
     /// Defines mechanisms to create proxy objects.
@@ -26,7 +29,7 @@ namespace Solti.Utils.DI.Proxy
         /// <param name="args">Arguments to be passed to the constructor of <typeparamref name="TInterceptor"/></param>
         /// <returns>The newly created proxy instance.</returns>
         public static TInterface Create<TInterface, TInterceptor>(Type[] argTypes, params object[] args) where TInterface : class where TInterceptor : InterfaceInterceptor<TInterface> => (TInterface) 
-            GeneratedProxy<TInterface, TInterceptor>.Type.CreateInstance(argTypes, args);
+            ProxyGenerator<TInterface, TInterceptor>.GeneratedType.CreateInstance(argTypes, args);
 
         /// <summary>
         /// Creates a new proxy instance with the given target.
@@ -48,7 +51,7 @@ namespace Solti.Utils.DI.Proxy
         /// <param name="targetParamName">Parameter name of the target (usually "target").</param>
         /// <returns>The newly created proxy instance.</returns>
         public static TInterface Create<TInterface, TInterceptor>(TInterface target, IInjector injector, string targetParamName = "target") where TInterface : class where TInterceptor : InterfaceInterceptor<TInterface> => (TInterface) 
-            injector.Instantiate(GeneratedProxy<TInterface, TInterceptor>.Type, new Dictionary<string, object>
+            injector.Instantiate(ProxyGenerator<TInterface, TInterceptor>.GeneratedType, new Dictionary<string, object>
             {
                 {targetParamName, target}
             });
@@ -61,11 +64,12 @@ namespace Solti.Utils.DI.Proxy
             if (!typeof(InterfaceInterceptor<>).MakeGenericType(iface).IsAssignableFrom(interceptor))
                 throw new ArgumentException(Resources.INVALID_INTERCEPETOR, nameof(interceptor));
 
-            return Cache<(Type Interface, Type Interceptor), Type>.GetOrAdd
-            (
-                (iface, interceptor), 
-                () => (TypeGenerator) typeof(GeneratedProxy<,>).MakeGenericType(iface, interceptor).CreateInstance(Array.Empty<Type>())
-            );
+            return Cache<(Type Interface, Type Interceptor), Type>.GetOrAdd((iface, interceptor), () => (Type) typeof(ProxyGenerator<,>)
+                .MakeGenericType(iface, interceptor)
+                .GetProperty(
+                    nameof(ProxyGenerator<object, InterfaceInterceptor<object>>.GeneratedType), 
+                    BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy)
+                .GetValue(null));
         }
 
         /// <summary>
