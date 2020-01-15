@@ -1383,34 +1383,6 @@ references:
   commentId: F:Solti.Utils.DI.Lifetime.Transient
   fullName: Solti.Utils.DI.Lifetime.Transient
   nameWithType: Lifetime.Transient
-- uid: Solti.Utils.DI.Proxy
-  name: Solti.Utils.DI.Proxy
-  href: Solti.Utils.DI.Proxy.html
-  commentId: N:Solti.Utils.DI.Proxy
-  fullName: Solti.Utils.DI.Proxy
-  nameWithType: Solti.Utils.DI.Proxy
-- uid: Solti.Utils.DI.Proxy.ProxyUtils
-  name: ProxyUtils
-  href: Solti.Utils.DI.Proxy.ProxyUtils.html
-  commentId: T:Solti.Utils.DI.Proxy.ProxyUtils
-  fullName: Solti.Utils.DI.Proxy.ProxyUtils
-  nameWithType: ProxyUtils
-- uid: Solti.Utils.DI.Proxy.ProxyUtils.Chain*
-  name: Chain
-  href: Solti.Utils.DI.Proxy.ProxyUtils.html#Solti_Utils_DI_Proxy_ProxyUtils_Chain_
-  commentId: Overload:Solti.Utils.DI.Proxy.ProxyUtils.Chain
-  isSpec: "True"
-  fullName: Solti.Utils.DI.Proxy.ProxyUtils.Chain
-  nameWithType: ProxyUtils.Chain
-- uid: Solti.Utils.DI.Proxy.ProxyUtils.Chain``1(``0,System.Func{``0,``0}[])
-  name: Chain<TInterface>(TInterface, Func<TInterface, TInterface>[])
-  href: Solti.Utils.DI.Proxy.ProxyUtils.html#Solti_Utils_DI_Proxy_ProxyUtils_Chain__1___0_System_Func___0___0____
-  commentId: M:Solti.Utils.DI.Proxy.ProxyUtils.Chain``1(``0,System.Func{``0,``0}[])
-  name.vb: Chain(Of TInterface)(TInterface, Func(Of TInterface, TInterface)())
-  fullName: Solti.Utils.DI.Proxy.ProxyUtils.Chain<TInterface>(TInterface, System.Func<TInterface, TInterface>[])
-  fullName.vb: Solti.Utils.DI.Proxy.ProxyUtils.Chain(Of TInterface)(TInterface, System.Func(Of TInterface, TInterface)())
-  nameWithType: ProxyUtils.Chain<TInterface>(TInterface, Func<TInterface, TInterface>[])
-  nameWithType.vb: ProxyUtils.Chain(Of TInterface)(TInterface, Func(Of TInterface, TInterface)())
 - uid: Solti.Utils.DI.QueryModes
   name: QueryModes
   href: Solti.Utils.DI.QueryModes.html
@@ -1790,3 +1762,25 @@ references:
   fullName.vb: Solti.Utils.Proxy.ProxyFactory.Create(Of TInterface, TInterceptor)(System.Type(), System.Object())
   nameWithType: ProxyFactory.Create<TInterface, TInterceptor>(Type[], Object[])
   nameWithType.vb: ProxyFactory.Create(Of TInterface, TInterceptor)(Type(), Object())
+- uid: Solti.Utils.Proxy.ProxyUtils
+  name: ProxyUtils
+  href: Solti.Utils.Proxy.ProxyUtils.html
+  commentId: T:Solti.Utils.Proxy.ProxyUtils
+  fullName: Solti.Utils.Proxy.ProxyUtils
+  nameWithType: ProxyUtils
+- uid: Solti.Utils.Proxy.ProxyUtils.Chain*
+  name: Chain
+  href: Solti.Utils.Proxy.ProxyUtils.html#Solti_Utils_Proxy_ProxyUtils_Chain_
+  commentId: Overload:Solti.Utils.Proxy.ProxyUtils.Chain
+  isSpec: "True"
+  fullName: Solti.Utils.Proxy.ProxyUtils.Chain
+  nameWithType: ProxyUtils.Chain
+- uid: Solti.Utils.Proxy.ProxyUtils.Chain``1(``0,System.Func{``0,``0}[])
+  name: Chain<TInterface>(TInterface, Func<TInterface, TInterface>[])
+  href: Solti.Utils.Proxy.ProxyUtils.html#Solti_Utils_Proxy_ProxyUtils_Chain__1___0_System_Func___0___0____
+  commentId: M:Solti.Utils.Proxy.ProxyUtils.Chain``1(``0,System.Func{``0,``0}[])
+  name.vb: Chain(Of TInterface)(TInterface, Func(Of TInterface, TInterface)())
+  fullName: Solti.Utils.Proxy.ProxyUtils.Chain<TInterface>(TInterface, System.Func<TInterface, TInterface>[])
+  fullName.vb: Solti.Utils.Proxy.ProxyUtils.Chain(Of TInterface)(TInterface, System.Func(Of TInterface, TInterface)())
+  nameWithType: ProxyUtils.Chain<TInterface>(TInterface, Func<TInterface, TInterface>[])
+  nameWithType.vb: ProxyUtils.Chain(Of TInterface)(TInterface, Func(Of TInterface, TInterface)())
