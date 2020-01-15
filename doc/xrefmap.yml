@@ -684,49 +684,6 @@ references:
   isSpec: "True"
   fullName: Solti.Utils.DI.Internals.DisposeByRefObject.Release
   nameWithType: DisposeByRefObject.Release
-- uid: Solti.Utils.DI.Internals.DuckBase`1
-  name: DuckBase<T>
-  href: Solti.Utils.DI.Internals.DuckBase-1.html
-  commentId: T:Solti.Utils.DI.Internals.DuckBase`1
-  name.vb: DuckBase(Of T)
-  fullName: Solti.Utils.DI.Internals.DuckBase<T>
-  fullName.vb: Solti.Utils.DI.Internals.DuckBase(Of T)
-  nameWithType: DuckBase<T>
-  nameWithType.vb: DuckBase(Of T)
-- uid: Solti.Utils.DI.Internals.DuckBase`1.#ctor(`0)
-  name: DuckBase(T)
-  href: Solti.Utils.DI.Internals.DuckBase-1.html#Solti_Utils_DI_Internals_DuckBase_1__ctor__0_
-  commentId: M:Solti.Utils.DI.Internals.DuckBase`1.#ctor(`0)
-  fullName: Solti.Utils.DI.Internals.DuckBase<T>.DuckBase(T)
-  fullName.vb: Solti.Utils.DI.Internals.DuckBase(Of T).DuckBase(T)
-  nameWithType: DuckBase<T>.DuckBase(T)
-  nameWithType.vb: DuckBase(Of T).DuckBase(T)
-- uid: Solti.Utils.DI.Internals.DuckBase`1.#ctor*
-  name: DuckBase
-  href: Solti.Utils.DI.Internals.DuckBase-1.html#Solti_Utils_DI_Internals_DuckBase_1__ctor_
-  commentId: Overload:Solti.Utils.DI.Internals.DuckBase`1.#ctor
-  isSpec: "True"
-  fullName: Solti.Utils.DI.Internals.DuckBase<T>.DuckBase
-  fullName.vb: Solti.Utils.DI.Internals.DuckBase(Of T).DuckBase
-  nameWithType: DuckBase<T>.DuckBase
-  nameWithType.vb: DuckBase(Of T).DuckBase
-- uid: Solti.Utils.DI.Internals.DuckBase`1.Target
-  name: Target
-  href: Solti.Utils.DI.Internals.DuckBase-1.html#Solti_Utils_DI_Internals_DuckBase_1_Target
-  commentId: P:Solti.Utils.DI.Internals.DuckBase`1.Target
-  fullName: Solti.Utils.DI.Internals.DuckBase<T>.Target
-  fullName.vb: Solti.Utils.DI.Internals.DuckBase(Of T).Target
-  nameWithType: DuckBase<T>.Target
-  nameWithType.vb: DuckBase(Of T).Target
-- uid: Solti.Utils.DI.Internals.DuckBase`1.Target*
-  name: Target
-  href: Solti.Utils.DI.Internals.DuckBase-1.html#Solti_Utils_DI_Internals_DuckBase_1_Target_
-  commentId: Overload:Solti.Utils.DI.Internals.DuckBase`1.Target
-  isSpec: "True"
-  fullName: Solti.Utils.DI.Internals.DuckBase<T>.Target
-  fullName.vb: Solti.Utils.DI.Internals.DuckBase(Of T).Target
-  nameWithType: DuckBase<T>.Target
-  nameWithType.vb: DuckBase(Of T).Target
 - uid: Solti.Utils.DI.Internals.IComposite`1
   name: IComposite<T>
   href: Solti.Utils.DI.Internals.IComposite-1.html
@@ -1432,236 +1389,6 @@ references:
   commentId: N:Solti.Utils.DI.Proxy
   fullName: Solti.Utils.DI.Proxy
   nameWithType: Solti.Utils.DI.Proxy
-- uid: Solti.Utils.DI.Proxy.DuckFactory`1
-  name: DuckFactory<TTarget>
-  href: Solti.Utils.DI.Proxy.DuckFactory-1.html
-  commentId: T:Solti.Utils.DI.Proxy.DuckFactory`1
-  name.vb: DuckFactory(Of TTarget)
-  fullName: Solti.Utils.DI.Proxy.DuckFactory<TTarget>
-  fullName.vb: Solti.Utils.DI.Proxy.DuckFactory(Of TTarget)
-  nameWithType: DuckFactory<TTarget>
-  nameWithType.vb: DuckFactory(Of TTarget)
-- uid: Solti.Utils.DI.Proxy.DuckFactory`1.#ctor(`0)
-  name: DuckFactory(TTarget)
-  href: Solti.Utils.DI.Proxy.DuckFactory-1.html#Solti_Utils_DI_Proxy_DuckFactory_1__ctor__0_
-  commentId: M:Solti.Utils.DI.Proxy.DuckFactory`1.#ctor(`0)
-  fullName: Solti.Utils.DI.Proxy.DuckFactory<TTarget>.DuckFactory(TTarget)
-  fullName.vb: Solti.Utils.DI.Proxy.DuckFactory(Of TTarget).DuckFactory(TTarget)
-  nameWithType: DuckFactory<TTarget>.DuckFactory(TTarget)
-  nameWithType.vb: DuckFactory(Of TTarget).DuckFactory(TTarget)
-- uid: Solti.Utils.DI.Proxy.DuckFactory`1.#ctor*
-  name: DuckFactory
-  href: Solti.Utils.DI.Proxy.DuckFactory-1.html#Solti_Utils_DI_Proxy_DuckFactory_1__ctor_
-  commentId: Overload:Solti.Utils.DI.Proxy.DuckFactory`1.#ctor
-  isSpec: "True"
-  fullName: Solti.Utils.DI.Proxy.DuckFactory<TTarget>.DuckFactory
-  fullName.vb: Solti.Utils.DI.Proxy.DuckFactory(Of TTarget).DuckFactory
-  nameWithType: DuckFactory<TTarget>.DuckFactory
-  nameWithType.vb: DuckFactory(Of TTarget).DuckFactory
-- uid: Solti.Utils.DI.Proxy.DuckFactory`1.Like*
-  name: Like
-  href: Solti.Utils.DI.Proxy.DuckFactory-1.html#Solti_Utils_DI_Proxy_DuckFactory_1_Like_
-  commentId: Overload:Solti.Utils.DI.Proxy.DuckFactory`1.Like
-  isSpec: "True"
-  fullName: Solti.Utils.DI.Proxy.DuckFactory<TTarget>.Like
-  fullName.vb: Solti.Utils.DI.Proxy.DuckFactory(Of TTarget).Like
-  nameWithType: DuckFactory<TTarget>.Like
-  nameWithType.vb: DuckFactory(Of TTarget).Like
-- uid: Solti.Utils.DI.Proxy.DuckFactory`1.Like``1
-  name: Like<TInterface>()
-  href: Solti.Utils.DI.Proxy.DuckFactory-1.html#Solti_Utils_DI_Proxy_DuckFactory_1_Like__1
-  commentId: M:Solti.Utils.DI.Proxy.DuckFactory`1.Like``1
-  name.vb: Like(Of TInterface)()
-  fullName: Solti.Utils.DI.Proxy.DuckFactory<TTarget>.Like<TInterface>()
-  fullName.vb: Solti.Utils.DI.Proxy.DuckFactory(Of TTarget).Like(Of TInterface)()
-  nameWithType: DuckFactory<TTarget>.Like<TInterface>()
-  nameWithType.vb: DuckFactory(Of TTarget).Like(Of TInterface)()
-- uid: Solti.Utils.DI.Proxy.InterfaceInterceptor`1
-  name: InterfaceInterceptor<TInterface>
-  href: Solti.Utils.DI.Proxy.InterfaceInterceptor-1.html
-  commentId: T:Solti.Utils.DI.Proxy.InterfaceInterceptor`1
-  name.vb: InterfaceInterceptor(Of TInterface)
-  fullName: Solti.Utils.DI.Proxy.InterfaceInterceptor<TInterface>
-  fullName.vb: Solti.Utils.DI.Proxy.InterfaceInterceptor(Of TInterface)
-  nameWithType: InterfaceInterceptor<TInterface>
-  nameWithType.vb: InterfaceInterceptor(Of TInterface)
-- uid: Solti.Utils.DI.Proxy.InterfaceInterceptor`1.#ctor(`0)
-  name: InterfaceInterceptor(TInterface)
-  href: Solti.Utils.DI.Proxy.InterfaceInterceptor-1.html#Solti_Utils_DI_Proxy_InterfaceInterceptor_1__ctor__0_
-  commentId: M:Solti.Utils.DI.Proxy.InterfaceInterceptor`1.#ctor(`0)
-  fullName: Solti.Utils.DI.Proxy.InterfaceInterceptor<TInterface>.InterfaceInterceptor(TInterface)
-  fullName.vb: Solti.Utils.DI.Proxy.InterfaceInterceptor(Of TInterface).InterfaceInterceptor(TInterface)
-  nameWithType: InterfaceInterceptor<TInterface>.InterfaceInterceptor(TInterface)
-  nameWithType.vb: InterfaceInterceptor(Of TInterface).InterfaceInterceptor(TInterface)
-- uid: Solti.Utils.DI.Proxy.InterfaceInterceptor`1.#ctor*
-  name: InterfaceInterceptor
-  href: Solti.Utils.DI.Proxy.InterfaceInterceptor-1.html#Solti_Utils_DI_Proxy_InterfaceInterceptor_1__ctor_
-  commentId: Overload:Solti.Utils.DI.Proxy.InterfaceInterceptor`1.#ctor
-  isSpec: "True"
-  fullName: Solti.Utils.DI.Proxy.InterfaceInterceptor<TInterface>.InterfaceInterceptor
-  fullName.vb: Solti.Utils.DI.Proxy.InterfaceInterceptor(Of TInterface).InterfaceInterceptor
-  nameWithType: InterfaceInterceptor<TInterface>.InterfaceInterceptor
-  nameWithType.vb: InterfaceInterceptor(Of TInterface).InterfaceInterceptor
-- uid: Solti.Utils.DI.Proxy.InterfaceInterceptor`1.CALL_TARGET
-  name: CALL_TARGET
-  href: Solti.Utils.DI.Proxy.InterfaceInterceptor-1.html#Solti_Utils_DI_Proxy_InterfaceInterceptor_1_CALL_TARGET
-  commentId: F:Solti.Utils.DI.Proxy.InterfaceInterceptor`1.CALL_TARGET
-  fullName: Solti.Utils.DI.Proxy.InterfaceInterceptor<TInterface>.CALL_TARGET
-  fullName.vb: Solti.Utils.DI.Proxy.InterfaceInterceptor(Of TInterface).CALL_TARGET
-  nameWithType: InterfaceInterceptor<TInterface>.CALL_TARGET
-  nameWithType.vb: InterfaceInterceptor(Of TInterface).CALL_TARGET
-- uid: Solti.Utils.DI.Proxy.InterfaceInterceptor`1.Events
-  name: Events
-  href: Solti.Utils.DI.Proxy.InterfaceInterceptor-1.html#Solti_Utils_DI_Proxy_InterfaceInterceptor_1_Events
-  commentId: F:Solti.Utils.DI.Proxy.InterfaceInterceptor`1.Events
-  fullName: Solti.Utils.DI.Proxy.InterfaceInterceptor<TInterface>.Events
-  fullName.vb: Solti.Utils.DI.Proxy.InterfaceInterceptor(Of TInterface).Events
-  nameWithType: InterfaceInterceptor<TInterface>.Events
-  nameWithType.vb: InterfaceInterceptor(Of TInterface).Events
-- uid: Solti.Utils.DI.Proxy.InterfaceInterceptor`1.Invoke(System.Reflection.MethodInfo,System.Object[],System.Reflection.MemberInfo)
-  name: Invoke(MethodInfo, Object[], MemberInfo)
-  href: Solti.Utils.DI.Proxy.InterfaceInterceptor-1.html#Solti_Utils_DI_Proxy_InterfaceInterceptor_1_Invoke_System_Reflection_MethodInfo_System_Object___System_Reflection_MemberInfo_
-  commentId: M:Solti.Utils.DI.Proxy.InterfaceInterceptor`1.Invoke(System.Reflection.MethodInfo,System.Object[],System.Reflection.MemberInfo)
-  name.vb: Invoke(MethodInfo, Object(), MemberInfo)
-  fullName: Solti.Utils.DI.Proxy.InterfaceInterceptor<TInterface>.Invoke(System.Reflection.MethodInfo, System.Object[], System.Reflection.MemberInfo)
-  fullName.vb: Solti.Utils.DI.Proxy.InterfaceInterceptor(Of TInterface).Invoke(System.Reflection.MethodInfo, System.Object(), System.Reflection.MemberInfo)
-  nameWithType: InterfaceInterceptor<TInterface>.Invoke(MethodInfo, Object[], MemberInfo)
-  nameWithType.vb: InterfaceInterceptor(Of TInterface).Invoke(MethodInfo, Object(), MemberInfo)
-- uid: Solti.Utils.DI.Proxy.InterfaceInterceptor`1.Invoke*
-  name: Invoke
-  href: Solti.Utils.DI.Proxy.InterfaceInterceptor-1.html#Solti_Utils_DI_Proxy_InterfaceInterceptor_1_Invoke_
-  commentId: Overload:Solti.Utils.DI.Proxy.InterfaceInterceptor`1.Invoke
-  isSpec: "True"
-  fullName: Solti.Utils.DI.Proxy.InterfaceInterceptor<TInterface>.Invoke
-  fullName.vb: Solti.Utils.DI.Proxy.InterfaceInterceptor(Of TInterface).Invoke
-  nameWithType: InterfaceInterceptor<TInterface>.Invoke
-  nameWithType.vb: InterfaceInterceptor(Of TInterface).Invoke
-- uid: Solti.Utils.DI.Proxy.InterfaceInterceptor`1.MethodAccess(System.Linq.Expressions.Expression{System.Action})
-  name: MethodAccess(Expression<Action>)
-  href: Solti.Utils.DI.Proxy.InterfaceInterceptor-1.html#Solti_Utils_DI_Proxy_InterfaceInterceptor_1_MethodAccess_System_Linq_Expressions_Expression_System_Action__
-  commentId: M:Solti.Utils.DI.Proxy.InterfaceInterceptor`1.MethodAccess(System.Linq.Expressions.Expression{System.Action})
-  name.vb: MethodAccess(Expression(Of Action))
-  fullName: Solti.Utils.DI.Proxy.InterfaceInterceptor<TInterface>.MethodAccess(System.Linq.Expressions.Expression<System.Action>)
-  fullName.vb: Solti.Utils.DI.Proxy.InterfaceInterceptor(Of TInterface).MethodAccess(System.Linq.Expressions.Expression(Of System.Action))
-  nameWithType: InterfaceInterceptor<TInterface>.MethodAccess(Expression<Action>)
-  nameWithType.vb: InterfaceInterceptor(Of TInterface).MethodAccess(Expression(Of Action))
-- uid: Solti.Utils.DI.Proxy.InterfaceInterceptor`1.MethodAccess*
-  name: MethodAccess
-  href: Solti.Utils.DI.Proxy.InterfaceInterceptor-1.html#Solti_Utils_DI_Proxy_InterfaceInterceptor_1_MethodAccess_
-  commentId: Overload:Solti.Utils.DI.Proxy.InterfaceInterceptor`1.MethodAccess
-  isSpec: "True"
-  fullName: Solti.Utils.DI.Proxy.InterfaceInterceptor<TInterface>.MethodAccess
-  fullName.vb: Solti.Utils.DI.Proxy.InterfaceInterceptor(Of TInterface).MethodAccess
-  nameWithType: InterfaceInterceptor<TInterface>.MethodAccess
-  nameWithType.vb: InterfaceInterceptor(Of TInterface).MethodAccess
-- uid: Solti.Utils.DI.Proxy.InterfaceInterceptor`1.Properties
-  name: Properties
-  href: Solti.Utils.DI.Proxy.InterfaceInterceptor-1.html#Solti_Utils_DI_Proxy_InterfaceInterceptor_1_Properties
-  commentId: F:Solti.Utils.DI.Proxy.InterfaceInterceptor`1.Properties
-  fullName: Solti.Utils.DI.Proxy.InterfaceInterceptor<TInterface>.Properties
-  fullName.vb: Solti.Utils.DI.Proxy.InterfaceInterceptor(Of TInterface).Properties
-  nameWithType: InterfaceInterceptor<TInterface>.Properties
-  nameWithType.vb: InterfaceInterceptor(Of TInterface).Properties
-- uid: Solti.Utils.DI.Proxy.InterfaceInterceptor`1.Target
-  name: Target
-  href: Solti.Utils.DI.Proxy.InterfaceInterceptor-1.html#Solti_Utils_DI_Proxy_InterfaceInterceptor_1_Target
-  commentId: P:Solti.Utils.DI.Proxy.InterfaceInterceptor`1.Target
-  fullName: Solti.Utils.DI.Proxy.InterfaceInterceptor<TInterface>.Target
-  fullName.vb: Solti.Utils.DI.Proxy.InterfaceInterceptor(Of TInterface).Target
-  nameWithType: InterfaceInterceptor<TInterface>.Target
-  nameWithType.vb: InterfaceInterceptor(Of TInterface).Target
-- uid: Solti.Utils.DI.Proxy.InterfaceInterceptor`1.Target*
-  name: Target
-  href: Solti.Utils.DI.Proxy.InterfaceInterceptor-1.html#Solti_Utils_DI_Proxy_InterfaceInterceptor_1_Target_
-  commentId: Overload:Solti.Utils.DI.Proxy.InterfaceInterceptor`1.Target
-  isSpec: "True"
-  fullName: Solti.Utils.DI.Proxy.InterfaceInterceptor<TInterface>.Target
-  fullName.vb: Solti.Utils.DI.Proxy.InterfaceInterceptor(Of TInterface).Target
-  nameWithType: InterfaceInterceptor<TInterface>.Target
-  nameWithType.vb: InterfaceInterceptor(Of TInterface).Target
-- uid: Solti.Utils.DI.Proxy.ObjectExtensions
-  name: ObjectExtensions
-  href: Solti.Utils.DI.Proxy.ObjectExtensions.html
-  commentId: T:Solti.Utils.DI.Proxy.ObjectExtensions
-  fullName: Solti.Utils.DI.Proxy.ObjectExtensions
-  nameWithType: ObjectExtensions
-- uid: Solti.Utils.DI.Proxy.ObjectExtensions.Act*
-  name: Act
-  href: Solti.Utils.DI.Proxy.ObjectExtensions.html#Solti_Utils_DI_Proxy_ObjectExtensions_Act_
-  commentId: Overload:Solti.Utils.DI.Proxy.ObjectExtensions.Act
-  isSpec: "True"
-  fullName: Solti.Utils.DI.Proxy.ObjectExtensions.Act
-  nameWithType: ObjectExtensions.Act
-- uid: Solti.Utils.DI.Proxy.ObjectExtensions.Act``1(``0)
-  name: Act<TTarget>(TTarget)
-  href: Solti.Utils.DI.Proxy.ObjectExtensions.html#Solti_Utils_DI_Proxy_ObjectExtensions_Act__1___0_
-  commentId: M:Solti.Utils.DI.Proxy.ObjectExtensions.Act``1(``0)
-  name.vb: Act(Of TTarget)(TTarget)
-  fullName: Solti.Utils.DI.Proxy.ObjectExtensions.Act<TTarget>(TTarget)
-  fullName.vb: Solti.Utils.DI.Proxy.ObjectExtensions.Act(Of TTarget)(TTarget)
-  nameWithType: ObjectExtensions.Act<TTarget>(TTarget)
-  nameWithType.vb: ObjectExtensions.Act(Of TTarget)(TTarget)
-- uid: Solti.Utils.DI.Proxy.ProxyFactory
-  name: ProxyFactory
-  href: Solti.Utils.DI.Proxy.ProxyFactory.html
-  commentId: T:Solti.Utils.DI.Proxy.ProxyFactory
-  fullName: Solti.Utils.DI.Proxy.ProxyFactory
-  nameWithType: ProxyFactory
-- uid: Solti.Utils.DI.Proxy.ProxyFactory.Create(System.Type,System.Type,System.Object)
-  name: Create(Type, Type, Object)
-  href: Solti.Utils.DI.Proxy.ProxyFactory.html#Solti_Utils_DI_Proxy_ProxyFactory_Create_System_Type_System_Type_System_Object_
-  commentId: M:Solti.Utils.DI.Proxy.ProxyFactory.Create(System.Type,System.Type,System.Object)
-  fullName: Solti.Utils.DI.Proxy.ProxyFactory.Create(System.Type, System.Type, System.Object)
-  nameWithType: ProxyFactory.Create(Type, Type, Object)
-- uid: Solti.Utils.DI.Proxy.ProxyFactory.Create(System.Type,System.Type,System.Object,Solti.Utils.DI.IInjector,System.String)
-  name: Create(Type, Type, Object, IInjector, String)
-  href: Solti.Utils.DI.Proxy.ProxyFactory.html#Solti_Utils_DI_Proxy_ProxyFactory_Create_System_Type_System_Type_System_Object_Solti_Utils_DI_IInjector_System_String_
-  commentId: M:Solti.Utils.DI.Proxy.ProxyFactory.Create(System.Type,System.Type,System.Object,Solti.Utils.DI.IInjector,System.String)
-  fullName: Solti.Utils.DI.Proxy.ProxyFactory.Create(System.Type, System.Type, System.Object, Solti.Utils.DI.IInjector, System.String)
-  nameWithType: ProxyFactory.Create(Type, Type, Object, IInjector, String)
-- uid: Solti.Utils.DI.Proxy.ProxyFactory.Create(System.Type,System.Type,System.Type[],System.Object[])
-  name: Create(Type, Type, Type[], Object[])
-  href: Solti.Utils.DI.Proxy.ProxyFactory.html#Solti_Utils_DI_Proxy_ProxyFactory_Create_System_Type_System_Type_System_Type___System_Object___
-  commentId: M:Solti.Utils.DI.Proxy.ProxyFactory.Create(System.Type,System.Type,System.Type[],System.Object[])
-  name.vb: Create(Type, Type, Type(), Object())
-  fullName: Solti.Utils.DI.Proxy.ProxyFactory.Create(System.Type, System.Type, System.Type[], System.Object[])
-  fullName.vb: Solti.Utils.DI.Proxy.ProxyFactory.Create(System.Type, System.Type, System.Type(), System.Object())
-  nameWithType: ProxyFactory.Create(Type, Type, Type[], Object[])
-  nameWithType.vb: ProxyFactory.Create(Type, Type, Type(), Object())
-- uid: Solti.Utils.DI.Proxy.ProxyFactory.Create*
-  name: Create
-  href: Solti.Utils.DI.Proxy.ProxyFactory.html#Solti_Utils_DI_Proxy_ProxyFactory_Create_
-  commentId: Overload:Solti.Utils.DI.Proxy.ProxyFactory.Create
-  isSpec: "True"
-  fullName: Solti.Utils.DI.Proxy.ProxyFactory.Create
-  nameWithType: ProxyFactory.Create
-- uid: Solti.Utils.DI.Proxy.ProxyFactory.Create``2(``0)
-  name: Create<TInterface, TInterceptor>(TInterface)
-  href: Solti.Utils.DI.Proxy.ProxyFactory.html#Solti_Utils_DI_Proxy_ProxyFactory_Create__2___0_
-  commentId: M:Solti.Utils.DI.Proxy.ProxyFactory.Create``2(``0)
-  name.vb: Create(Of TInterface, TInterceptor)(TInterface)
-  fullName: Solti.Utils.DI.Proxy.ProxyFactory.Create<TInterface, TInterceptor>(TInterface)
-  fullName.vb: Solti.Utils.DI.Proxy.ProxyFactory.Create(Of TInterface, TInterceptor)(TInterface)
-  nameWithType: ProxyFactory.Create<TInterface, TInterceptor>(TInterface)
-  nameWithType.vb: ProxyFactory.Create(Of TInterface, TInterceptor)(TInterface)
-- uid: Solti.Utils.DI.Proxy.ProxyFactory.Create``2(``0,Solti.Utils.DI.IInjector,System.String)
-  name: Create<TInterface, TInterceptor>(TInterface, IInjector, String)
-  href: Solti.Utils.DI.Proxy.ProxyFactory.html#Solti_Utils_DI_Proxy_ProxyFactory_Create__2___0_Solti_Utils_DI_IInjector_System_String_
-  commentId: M:Solti.Utils.DI.Proxy.ProxyFactory.Create``2(``0,Solti.Utils.DI.IInjector,System.String)
-  name.vb: Create(Of TInterface, TInterceptor)(TInterface, IInjector, String)
-  fullName: Solti.Utils.DI.Proxy.ProxyFactory.Create<TInterface, TInterceptor>(TInterface, Solti.Utils.DI.IInjector, System.String)
-  fullName.vb: Solti.Utils.DI.Proxy.ProxyFactory.Create(Of TInterface, TInterceptor)(TInterface, Solti.Utils.DI.IInjector, System.String)
-  nameWithType: ProxyFactory.Create<TInterface, TInterceptor>(TInterface, IInjector, String)
-  nameWithType.vb: ProxyFactory.Create(Of TInterface, TInterceptor)(TInterface, IInjector, String)
-- uid: Solti.Utils.DI.Proxy.ProxyFactory.Create``2(System.Type[],System.Object[])
-  name: Create<TInterface, TInterceptor>(Type[], Object[])
-  href: Solti.Utils.DI.Proxy.ProxyFactory.html#Solti_Utils_DI_Proxy_ProxyFactory_Create__2_System_Type___System_Object___
-  commentId: M:Solti.Utils.DI.Proxy.ProxyFactory.Create``2(System.Type[],System.Object[])
-  name.vb: Create(Of TInterface, TInterceptor)(Type(), Object())
-  fullName: Solti.Utils.DI.Proxy.ProxyFactory.Create<TInterface, TInterceptor>(System.Type[], System.Object[])
-  fullName.vb: Solti.Utils.DI.Proxy.ProxyFactory.Create(Of TInterface, TInterceptor)(System.Type(), System.Object())
-  nameWithType: ProxyFactory.Create<TInterface, TInterceptor>(Type[], Object[])
-  nameWithType.vb: ProxyFactory.Create(Of TInterface, TInterceptor)(Type(), Object())
 - uid: Solti.Utils.DI.Proxy.ProxyUtils
   name: ProxyUtils
   href: Solti.Utils.DI.Proxy.ProxyUtils.html
@@ -1930,3 +1657,136 @@ references:
   isSpec: "True"
   fullName: Solti.Utils.DI.ServiceNotFoundException.ServiceNotFoundException
   nameWithType: ServiceNotFoundException.ServiceNotFoundException
+- uid: Solti.Utils.Proxy
+  name: Solti.Utils.Proxy
+  href: Solti.Utils.Proxy.html
+  commentId: N:Solti.Utils.Proxy
+  fullName: Solti.Utils.Proxy
+  nameWithType: Solti.Utils.Proxy
+- uid: Solti.Utils.Proxy.DuckFactory`1
+  name: DuckFactory<TTarget>
+  href: Solti.Utils.Proxy.DuckFactory-1.html
+  commentId: T:Solti.Utils.Proxy.DuckFactory`1
+  name.vb: DuckFactory(Of TTarget)
+  fullName: Solti.Utils.Proxy.DuckFactory<TTarget>
+  fullName.vb: Solti.Utils.Proxy.DuckFactory(Of TTarget)
+  nameWithType: DuckFactory<TTarget>
+  nameWithType.vb: DuckFactory(Of TTarget)
+- uid: Solti.Utils.Proxy.DuckFactory`1.#ctor(`0)
+  name: DuckFactory(TTarget)
+  href: Solti.Utils.Proxy.DuckFactory-1.html#Solti_Utils_Proxy_DuckFactory_1__ctor__0_
+  commentId: M:Solti.Utils.Proxy.DuckFactory`1.#ctor(`0)
+  fullName: Solti.Utils.Proxy.DuckFactory<TTarget>.DuckFactory(TTarget)
+  fullName.vb: Solti.Utils.Proxy.DuckFactory(Of TTarget).DuckFactory(TTarget)
+  nameWithType: DuckFactory<TTarget>.DuckFactory(TTarget)
+  nameWithType.vb: DuckFactory(Of TTarget).DuckFactory(TTarget)
+- uid: Solti.Utils.Proxy.DuckFactory`1.#ctor*
+  name: DuckFactory
+  href: Solti.Utils.Proxy.DuckFactory-1.html#Solti_Utils_Proxy_DuckFactory_1__ctor_
+  commentId: Overload:Solti.Utils.Proxy.DuckFactory`1.#ctor
+  isSpec: "True"
+  fullName: Solti.Utils.Proxy.DuckFactory<TTarget>.DuckFactory
+  fullName.vb: Solti.Utils.Proxy.DuckFactory(Of TTarget).DuckFactory
+  nameWithType: DuckFactory<TTarget>.DuckFactory
+  nameWithType.vb: DuckFactory(Of TTarget).DuckFactory
+- uid: Solti.Utils.Proxy.DuckFactory`1.Like*
+  name: Like
+  href: Solti.Utils.Proxy.DuckFactory-1.html#Solti_Utils_Proxy_DuckFactory_1_Like_
+  commentId: Overload:Solti.Utils.Proxy.DuckFactory`1.Like
+  isSpec: "True"
+  fullName: Solti.Utils.Proxy.DuckFactory<TTarget>.Like
+  fullName.vb: Solti.Utils.Proxy.DuckFactory(Of TTarget).Like
+  nameWithType: DuckFactory<TTarget>.Like
+  nameWithType.vb: DuckFactory(Of TTarget).Like
+- uid: Solti.Utils.Proxy.DuckFactory`1.Like``1
+  name: Like<TInterface>()
+  href: Solti.Utils.Proxy.DuckFactory-1.html#Solti_Utils_Proxy_DuckFactory_1_Like__1
+  commentId: M:Solti.Utils.Proxy.DuckFactory`1.Like``1
+  name.vb: Like(Of TInterface)()
+  fullName: Solti.Utils.Proxy.DuckFactory<TTarget>.Like<TInterface>()
+  fullName.vb: Solti.Utils.Proxy.DuckFactory(Of TTarget).Like(Of TInterface)()
+  nameWithType: DuckFactory<TTarget>.Like<TInterface>()
+  nameWithType.vb: DuckFactory(Of TTarget).Like(Of TInterface)()
+- uid: Solti.Utils.Proxy.ObjectExtensions
+  name: ObjectExtensions
+  href: Solti.Utils.Proxy.ObjectExtensions.html
+  commentId: T:Solti.Utils.Proxy.ObjectExtensions
+  fullName: Solti.Utils.Proxy.ObjectExtensions
+  nameWithType: ObjectExtensions
+- uid: Solti.Utils.Proxy.ObjectExtensions.Act*
+  name: Act
+  href: Solti.Utils.Proxy.ObjectExtensions.html#Solti_Utils_Proxy_ObjectExtensions_Act_
+  commentId: Overload:Solti.Utils.Proxy.ObjectExtensions.Act
+  isSpec: "True"
+  fullName: Solti.Utils.Proxy.ObjectExtensions.Act
+  nameWithType: ObjectExtensions.Act
+- uid: Solti.Utils.Proxy.ObjectExtensions.Act``1(``0)
+  name: Act<TTarget>(TTarget)
+  href: Solti.Utils.Proxy.ObjectExtensions.html#Solti_Utils_Proxy_ObjectExtensions_Act__1___0_
+  commentId: M:Solti.Utils.Proxy.ObjectExtensions.Act``1(``0)
+  name.vb: Act(Of TTarget)(TTarget)
+  fullName: Solti.Utils.Proxy.ObjectExtensions.Act<TTarget>(TTarget)
+  fullName.vb: Solti.Utils.Proxy.ObjectExtensions.Act(Of TTarget)(TTarget)
+  nameWithType: ObjectExtensions.Act<TTarget>(TTarget)
+  nameWithType.vb: ObjectExtensions.Act(Of TTarget)(TTarget)
+- uid: Solti.Utils.Proxy.ProxyFactory
+  name: ProxyFactory
+  href: Solti.Utils.Proxy.ProxyFactory.html
+  commentId: T:Solti.Utils.Proxy.ProxyFactory
+  fullName: Solti.Utils.Proxy.ProxyFactory
+  nameWithType: ProxyFactory
+- uid: Solti.Utils.Proxy.ProxyFactory.Create(System.Type,System.Type,System.Object)
+  name: Create(Type, Type, Object)
+  href: Solti.Utils.Proxy.ProxyFactory.html#Solti_Utils_Proxy_ProxyFactory_Create_System_Type_System_Type_System_Object_
+  commentId: M:Solti.Utils.Proxy.ProxyFactory.Create(System.Type,System.Type,System.Object)
+  fullName: Solti.Utils.Proxy.ProxyFactory.Create(System.Type, System.Type, System.Object)
+  nameWithType: ProxyFactory.Create(Type, Type, Object)
+- uid: Solti.Utils.Proxy.ProxyFactory.Create(System.Type,System.Type,System.Object,Solti.Utils.DI.IInjector,System.String)
+  name: Create(Type, Type, Object, IInjector, String)
+  href: Solti.Utils.Proxy.ProxyFactory.html#Solti_Utils_Proxy_ProxyFactory_Create_System_Type_System_Type_System_Object_Solti_Utils_DI_IInjector_System_String_
+  commentId: M:Solti.Utils.Proxy.ProxyFactory.Create(System.Type,System.Type,System.Object,Solti.Utils.DI.IInjector,System.String)
+  fullName: Solti.Utils.Proxy.ProxyFactory.Create(System.Type, System.Type, System.Object, Solti.Utils.DI.IInjector, System.String)
+  nameWithType: ProxyFactory.Create(Type, Type, Object, IInjector, String)
+- uid: Solti.Utils.Proxy.ProxyFactory.Create(System.Type,System.Type,System.Type[],System.Object[])
+  name: Create(Type, Type, Type[], Object[])
+  href: Solti.Utils.Proxy.ProxyFactory.html#Solti_Utils_Proxy_ProxyFactory_Create_System_Type_System_Type_System_Type___System_Object___
+  commentId: M:Solti.Utils.Proxy.ProxyFactory.Create(System.Type,System.Type,System.Type[],System.Object[])
+  name.vb: Create(Type, Type, Type(), Object())
+  fullName: Solti.Utils.Proxy.ProxyFactory.Create(System.Type, System.Type, System.Type[], System.Object[])
+  fullName.vb: Solti.Utils.Proxy.ProxyFactory.Create(System.Type, System.Type, System.Type(), System.Object())
+  nameWithType: ProxyFactory.Create(Type, Type, Type[], Object[])
+  nameWithType.vb: ProxyFactory.Create(Type, Type, Type(), Object())
+- uid: Solti.Utils.Proxy.ProxyFactory.Create*
+  name: Create
+  href: Solti.Utils.Proxy.ProxyFactory.html#Solti_Utils_Proxy_ProxyFactory_Create_
+  commentId: Overload:Solti.Utils.Proxy.ProxyFactory.Create
+  isSpec: "True"
+  fullName: Solti.Utils.Proxy.ProxyFactory.Create
+  nameWithType: ProxyFactory.Create
+- uid: Solti.Utils.Proxy.ProxyFactory.Create``2(``0)
+  name: Create<TInterface, TInterceptor>(TInterface)
+  href: Solti.Utils.Proxy.ProxyFactory.html#Solti_Utils_Proxy_ProxyFactory_Create__2___0_
+  commentId: M:Solti.Utils.Proxy.ProxyFactory.Create``2(``0)
+  name.vb: Create(Of TInterface, TInterceptor)(TInterface)
+  fullName: Solti.Utils.Proxy.ProxyFactory.Create<TInterface, TInterceptor>(TInterface)
+  fullName.vb: Solti.Utils.Proxy.ProxyFactory.Create(Of TInterface, TInterceptor)(TInterface)
+  nameWithType: ProxyFactory.Create<TInterface, TInterceptor>(TInterface)
+  nameWithType.vb: ProxyFactory.Create(Of TInterface, TInterceptor)(TInterface)
+- uid: Solti.Utils.Proxy.ProxyFactory.Create``2(``0,Solti.Utils.DI.IInjector,System.String)
+  name: Create<TInterface, TInterceptor>(TInterface, IInjector, String)
+  href: Solti.Utils.Proxy.ProxyFactory.html#Solti_Utils_Proxy_ProxyFactory_Create__2___0_Solti_Utils_DI_IInjector_System_String_
+  commentId: M:Solti.Utils.Proxy.ProxyFactory.Create``2(``0,Solti.Utils.DI.IInjector,System.String)
+  name.vb: Create(Of TInterface, TInterceptor)(TInterface, IInjector, String)
+  fullName: Solti.Utils.Proxy.ProxyFactory.Create<TInterface, TInterceptor>(TInterface, Solti.Utils.DI.IInjector, System.String)
+  fullName.vb: Solti.Utils.Proxy.ProxyFactory.Create(Of TInterface, TInterceptor)(TInterface, Solti.Utils.DI.IInjector, System.String)
+  nameWithType: ProxyFactory.Create<TInterface, TInterceptor>(TInterface, IInjector, String)
+  nameWithType.vb: ProxyFactory.Create(Of TInterface, TInterceptor)(TInterface, IInjector, String)
+- uid: Solti.Utils.Proxy.ProxyFactory.Create``2(System.Type[],System.Object[])
+  name: Create<TInterface, TInterceptor>(Type[], Object[])
+  href: Solti.Utils.Proxy.ProxyFactory.html#Solti_Utils_Proxy_ProxyFactory_Create__2_System_Type___System_Object___
+  commentId: M:Solti.Utils.Proxy.ProxyFactory.Create``2(System.Type[],System.Object[])
+  name.vb: Create(Of TInterface, TInterceptor)(Type(), Object())
+  fullName: Solti.Utils.Proxy.ProxyFactory.Create<TInterface, TInterceptor>(System.Type[], System.Object[])
+  fullName.vb: Solti.Utils.Proxy.ProxyFactory.Create(Of TInterface, TInterceptor)(System.Type(), System.Object())
+  nameWithType: ProxyFactory.Create<TInterface, TInterceptor>(Type[], Object[])
+  nameWithType.vb: ProxyFactory.Create(Of TInterface, TInterceptor)(Type(), Object())
