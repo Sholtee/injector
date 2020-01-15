@@ -24,7 +24,7 @@ namespace Solti.Utils.Proxy
         /// Creates a new proxy instance with the given arguments.
         /// </summary>
         /// <typeparam name="TInterface">The interface to be intercepted.</typeparam>
-        /// <typeparam name="TInterceptor">The interceptor class.</typeparam>
+        /// <typeparam name="TInterceptor">The interceptor class. It must be an <see cref="InterfaceInterceptor{TInterface}"/> descendant.</typeparam>
         /// <param name="argTypes">Types of arguments passed to the constructor of <typeparamref name="TInterceptor"/></param>
         /// <param name="args">Arguments to be passed to the constructor of <typeparamref name="TInterceptor"/></param>
         /// <returns>The newly created proxy instance.</returns>
@@ -35,7 +35,7 @@ namespace Solti.Utils.Proxy
         /// Creates a new proxy instance with the given target.
         /// </summary>
         /// <typeparam name="TInterface">The interface to be intercepted.</typeparam>
-        /// <typeparam name="TInterceptor">The interceptor class.</typeparam>
+        /// <typeparam name="TInterceptor">The interceptor class. It must be an <see cref="InterfaceInterceptor{TInterface}"/> descendant.</typeparam>
         /// <param name="target">The target of the proxy.</param>
         /// <returns>The newly created proxy instance.</returns>
         public static TInterface Create<TInterface, TInterceptor>(TInterface target) where TInterface : class where TInterceptor : InterfaceInterceptor<TInterface> => 
@@ -45,7 +45,7 @@ namespace Solti.Utils.Proxy
         /// Creates a new proxy instance with the given injector.
         /// </summary>
         /// <typeparam name="TInterface">The interface to be intercepted.</typeparam>
-        /// <typeparam name="TInterceptor">The interceptor class.</typeparam>
+        /// <typeparam name="TInterceptor">The interceptor class. It must be an <see cref="InterfaceInterceptor{TInterface}"/> descendant.</typeparam>
         /// <param name="target">The target of the proxy.</param>
         /// <param name="injector">The injector to resolve the dependencies of the proxy.</param>
         /// <param name="targetParamName">Parameter name of the target (usually "target").</param>
@@ -76,7 +76,7 @@ namespace Solti.Utils.Proxy
         /// Creates a new proxy instance with the given arguments.
         /// </summary>
         /// <param name="iface">The interface to be intercepted.</param>
-        /// <param name="interceptor">The interceptor class.</param>
+        /// <param name="interceptor">The interceptor class. It must be an <see cref="InterfaceInterceptor{TInterface}"/> descendant.</param>
         /// <param name="argTypes">Types of arguments passed to the constructor of <paramref name="iface"/></param>
         /// <param name="args">Arguments to be passed to the constructor of <paramref name="interceptor"/></param>
         /// <returns>The newly created proxy instance.</returns>
@@ -86,7 +86,7 @@ namespace Solti.Utils.Proxy
         /// Creates a new proxy instance with the given target.
         /// </summary>
         /// <param name="iface">The interface to be intercepted.</param>
-        /// <param name="interceptor">The interceptor class.</param>
+        /// <param name="interceptor">The interceptor class. It must be an <see cref="InterfaceInterceptor{TInterface}"/> descendant.</param>
         /// <param name="target">The target of the proxy. Must be an <paramref name="iface"/> instance.</param>
         /// <returns>The newly created proxy instance.</returns>
         public static object Create(Type iface, Type interceptor, object target) => Create(iface, interceptor, new[] { iface }, target);
@@ -95,7 +95,7 @@ namespace Solti.Utils.Proxy
         /// Creates a new proxy instance with the given injector.
         /// </summary>
         /// <param name="iface">The interface to be intercepted.</param>
-        /// <param name="interceptor">The interceptor class.</param>
+        /// <param name="interceptor">The interceptor class. It must be an <see cref="InterfaceInterceptor{TInterface}"/> descendant.</param>
         /// <param name="target">The target of the proxy.</param>
         /// <param name="injector">The injector to resolve the dependencies of the proxy.</param>
         /// <param name="targetParamName">Parameter name of the target (usually "target").</param>
