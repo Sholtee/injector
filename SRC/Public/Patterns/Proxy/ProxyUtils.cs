@@ -6,7 +6,7 @@
 using System;
 using System.Linq;
 
-namespace Solti.Utils.DI.Proxy
+namespace Solti.Utils.Proxy
 {
     /// <summary>
     /// Defines some handy functions related to proxies.

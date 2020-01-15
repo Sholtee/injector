@@ -340,7 +340,7 @@ using (IServiceContainer tempContainer = Container.CreateChild())
 ``` 
 As we learned the requested service always must be an interface but the `HttpRequest` implements nothing. That's the time when the [duck typing](https://en.wikipedia.org/wiki/Duck_typing ) comes into view:
 ```csharp
-using Solti.Utils.DI.Proxy;
+using Solti.Utils.Proxy;
 ...
 // Custom interface covering the necessary members from the `HttpRequest`
 public interface IHttpRequest
