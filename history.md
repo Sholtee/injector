@@ -58,3 +58,5 @@
   - *fixed:*  Some missing reference cleanup
   - *renamed:* Namespace `Solti.Utils.DI.Proxy` -> `Solti.Utils.Proxy`
   - *done:* Proxy related logic moved to separate assembly
+- 1.0.0
+  - *updated:* Dependencies
