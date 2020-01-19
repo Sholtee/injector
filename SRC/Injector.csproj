@@ -50,7 +50,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="ProxyGen.NET" Version="1.0.0" />
+    <PackageReference Include="ProxyGen.NET" Version="1.*" />
     <PackageReference Include="System.Reflection.TypeExtensions" Version="4.*" />
     <PackageReference Include="System.Runtime.Loader" Version="4.*" />
   </ItemGroup>
