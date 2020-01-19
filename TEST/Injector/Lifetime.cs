@@ -26,7 +26,7 @@ namespace Solti.Utils.DI.Injector.Tests
         }
 
         [Test]
-        public void Lifetime_TransientService_ShouldNotBeInstantietedIfTheInjectorWasNotRecycled() 
+        public void Lifetime_TransientService_ShouldNotBeInstantiatedIfTheInjectorWasRecycled() 
         {
             Config.Value.MaxSpawnedServices = 1;
 
@@ -120,37 +120,6 @@ namespace Solti.Utils.DI.Injector.Tests
         }
 
         [Test]
-        public void Lifetime_SingletonService_ShouldUseItsDeclaringContainerForDependecyResolution_Decoration() 
-        {
-            Container
-                .Service<IInterface_1, Implementation_1_No_Dep>(Lifetime.Transient)
-                .Service<IInterface_2, Implementation_2_IInterface_1_Dependant>(Lifetime.Singleton);
-
-            IServiceContainer child = Container.CreateChild();
-            child.Proxy<IInterface_1>((i, curr) => new DecoratedImplementation_1());
-
-            using (IInjector injector = child.CreateInjector()) 
-            {
-                Assert.That(injector.Get<IInterface_2>().Interface1, Is.InstanceOf<Implementation_1_No_Dep>());
-                Assert.That(injector.Get<IInterface_1>(), Is.InstanceOf<DecoratedImplementation_1>());
-            }
-        }
-
-        [Test]
-        public void Lifetime_SingletonService_ShouldUseItsDeclaringContainerForDependecyResolution_Declaration()
-        {
-            Container.Service<IInterface_2, Implementation_2_IInterface_1_Dependant>(Lifetime.Singleton);
-
-            IServiceContainer child = Container.CreateChild();
-            child.Service<IInterface_1, Implementation_1_No_Dep>(Lifetime.Transient);
-
-            using (IInjector injector = child.CreateInjector()) 
-            {
-                Assert.Throws<ServiceNotFoundException>(() => injector.Get<IInterface_2>());         
-            }
-        }
-
-        [Test]
         public void Lifetime_SingletonService_MayHaveScopedDependency()
         {
             Disposable instance;
@@ -178,7 +147,7 @@ namespace Solti.Utils.DI.Injector.Tests
 
         [TestCase(Lifetime.Transient)]
         [TestCase(Lifetime.Scoped)]
-        public void Lifetime_NonSingletonService_ShouldResolveDependencyFromChildContainer(Lifetime lifetime) 
+        public void Lifetime_NonSingletonService_ShouldResolveDependencyFromTheParentContainer(Lifetime lifetime) 
         {
             Container.Service<IInterface_2, Implementation_2_IInterface_1_Dependant>(lifetime);
 
@@ -188,6 +157,37 @@ namespace Solti.Utils.DI.Injector.Tests
             using (IInjector injector = child.CreateInjector())
             {
                 Assert.DoesNotThrow(() => injector.Get<IInterface_2>());
+            }
+        }
+
+        [Test]
+        public void Lifetime_SingletonService_ShouldResolveDependencyFromTheDeclaringContainer_DeclarationTest()
+        {
+            Container.Service<IInterface_2, Implementation_2_IInterface_1_Dependant>(Lifetime.Singleton);
+
+            IServiceContainer child = Container.CreateChild();
+            child.Service<IInterface_1, Implementation_1_No_Dep>(Lifetime.Transient);
+
+            using (IInjector injector = child.CreateInjector())
+            {
+                Assert.Throws<ServiceNotFoundException>(() => injector.Get<IInterface_2>());
+            }
+        }
+
+        [Test]
+        public void Lifetime_SingletonService_ShouldResolveDependencyFromTheDeclaringContainer_DecorationTest()
+        {
+            Container
+                .Service<IInterface_1, Implementation_1_No_Dep>(Lifetime.Transient)
+                .Service<IInterface_2, Implementation_2_IInterface_1_Dependant>(Lifetime.Singleton);
+
+            IServiceContainer child = Container.CreateChild();
+            child.Proxy<IInterface_1>((i, curr) => new DecoratedImplementation_1());
+
+            using (IInjector injector = child.CreateInjector())
+            {
+                Assert.That(injector.Get<IInterface_2>().Interface1, Is.InstanceOf<Implementation_1_No_Dep>());
+                Assert.That(injector.Get<IInterface_1>(), Is.InstanceOf<DecoratedImplementation_1>());
             }
         }
     }
