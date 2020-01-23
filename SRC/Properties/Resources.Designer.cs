@@ -172,7 +172,7 @@ namespace Solti.Utils.DI.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Interceptor must be an InterfaceInterceptor desecndant..
+        ///   Looks up a localized string similar to Interceptor must be an InterfaceInterceptor&lt;{0}&gt; descendant..
         /// </summary>
         internal static string INVALID_INTERCEPETOR {
             get {
