@@ -16,7 +16,7 @@ namespace Solti.Utils.Proxy
     using DI.Internals;
 
     /// <summary>
-    /// Defines mechanisms to create proxy objects.
+    /// Defines a mechanisms to create proxy objects.
     /// </summary>
     public static class ProxyFactory
     {
@@ -25,8 +25,21 @@ namespace Solti.Utils.Proxy
         /// </summary>
         /// <typeparam name="TInterface">The interface to be intercepted.</typeparam>
         /// <typeparam name="TInterceptor">The interceptor class. It must be an <see cref="InterfaceInterceptor{TInterface}"/> descendant.</typeparam>
-        /// <param name="argTypes">Types of arguments passed to the constructor of <typeparamref name="TInterceptor"/></param>
-        /// <param name="args">Arguments to be passed to the constructor of <typeparamref name="TInterceptor"/></param>
+        /// <param name="args">Arguments to be passed to the constructor of the <typeparamref name="TInterceptor"/>.</param>
+        /// <returns>The newly created proxy instance.</returns>
+        public static TInterface Create<TInterface, TInterceptor>(params object[] args) where TInterface : class where TInterceptor : InterfaceInterceptor<TInterface> =>
+            (TInterface) ProxyGenerator<TInterface, TInterceptor>
+                .GeneratedType
+                .GetApplicableConstructor()
+                .Call(args);
+
+        /// <summary>
+        /// Creates a new proxy instance with the given arguments.
+        /// </summary>
+        /// <typeparam name="TInterface">The interface to be intercepted.</typeparam>
+        /// <typeparam name="TInterceptor">The interceptor class. It must be an <see cref="InterfaceInterceptor{TInterface}"/> descendant.</typeparam>
+        /// <param name="argTypes">An array of <see cref="Type"/> objects representing the number, order, and type of the parameters of the desired <typeparamref name="TInterceptor"/> constructor.</param>
+        /// <param name="args">Arguments to be passed to the constructor of the <typeparamref name="TInterceptor"/>.</param>
         /// <returns>The newly created proxy instance.</returns>
         public static TInterface Create<TInterface, TInterceptor>(Type[] argTypes, params object[] args) where TInterface : class where TInterceptor : InterfaceInterceptor<TInterface> => (TInterface) 
             ProxyGenerator<TInterface, TInterceptor>.GeneratedType.CreateInstance(argTypes, args);
@@ -77,8 +90,19 @@ namespace Solti.Utils.Proxy
         /// </summary>
         /// <param name="iface">The interface to be intercepted.</param>
         /// <param name="interceptor">The interceptor class. It must be an <see cref="InterfaceInterceptor{TInterface}"/> descendant.</param>
-        /// <param name="argTypes">Types of arguments passed to the constructor of <paramref name="iface"/></param>
-        /// <param name="args">Arguments to be passed to the constructor of <paramref name="interceptor"/></param>
+        /// <param name="args">Arguments to be passed to the constructor of the <paramref name="interceptor"/>.</param>
+        /// <returns>The newly created proxy instance.</returns>
+        public static object Create(Type iface, Type interceptor, params object[] args) => GetGeneratedProxyType(iface, interceptor)
+            .GetApplicableConstructor()
+            .Call(args);
+
+        /// <summary>
+        /// Creates a new proxy instance with the given arguments.
+        /// </summary>
+        /// <param name="iface">The interface to be intercepted.</param>
+        /// <param name="interceptor">The interceptor class. It must be an <see cref="InterfaceInterceptor{TInterface}"/> descendant.</param>
+        /// <param name="argTypes">An array of <see cref="Type"/> objects representing the number, order, and type of the parameters of the desired <paramref name="interceptor"/> constructor.</param>
+        /// <param name="args">Arguments to be passed to the constructor of the <paramref name="interceptor"/>.</param>
         /// <returns>The newly created proxy instance.</returns>
         public static object Create(Type iface, Type interceptor, Type[] argTypes, params object[] args) => GetGeneratedProxyType(iface, interceptor).CreateInstance(argTypes, args);
 

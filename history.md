@@ -8,7 +8,7 @@
   - *fixed:* Multiple type resolver invocation issue
   - *fixed:* `IInjectorExtensions.Instance()` should not dispose the instance by default
   - *done:* Some code optimization
-- 0.0.3
+- 0.0.3:
   - *added:* `IInjector.Instantiate()` method
 - 1.0.0-preview1:
   - *rewritten:* Core
@@ -39,24 +39,27 @@
   - *fixed:* Generic service entry having factory could not be specialized
   - *fixed:* `Composite` child could not be disposed in certain cases
   - *fixed:* Singleton service related dependency resolution issue
-- 1.0.0-preview5
+- 1.0.0-preview5:
   - *added:* `Transient` services are also released on injector disposal (if they have not been disposed programmatically)
   - *added:* `ObjectExtensions.Act()` can be called against interfaces
   - *added:* `ProxyGenerator` supports `in` parameter modifier (introduced in C# 7.2)
   - *fixed:* Ambiguous field naming in `ProxyGenerator`
   - *renamed:* `QueryOptionsAttribute` to `OptionsAttribute`
   - *renamed:* `QueryMode` to `QueryModes`
-- 1.0.0-preview6
+- 1.0.0-preview6:
   - *added:* `ProxyGenerator` supports `params` parameter modifier
   - *removed:* `IInjector` events
   - *removed:* Support for manually disposing `Transient` services
   - *removed:* `IInjectorExtensions.ShouldRelease()`
   - *fixed:* Service never gets disposed till all its dependants are disposed
-- 1.0.0-preview7
+- 1.0.0-preview7:
   - *added:* `Injector.config` (netstandard2+)
   - *removed:* `IInjector.LifetimeOf()`
   - *fixed:*  Some missing reference cleanup
   - *renamed:* Namespace `Solti.Utils.DI.Proxy` -> `Solti.Utils.Proxy`
   - *done:* Proxy related logic moved to separate assembly
-- 1.0.0
+- 1.0.0:
+  - *updated:* Dependencies
+- 1.1.0:
+  - *added:* `ProxyFactory.Create()` overload
   - *updated:* Dependencies
