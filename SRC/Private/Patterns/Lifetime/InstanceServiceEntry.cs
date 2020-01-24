@@ -70,6 +70,8 @@ namespace Solti.Utils.DI.Internals
         {
             CheckDisposed();
 
+            Debug.Assert(Owner.IsDescendantOf(injector.UnderlyingContainer.Parent));
+
             reference.Release();
             reference = FService;
         }

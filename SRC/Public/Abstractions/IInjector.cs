@@ -22,5 +22,11 @@ namespace Solti.Utils.DI
         /// <exception cref="ServiceNotFoundException">The service or one or more dependencies could not be found.</exception>
         [SuppressMessage("Naming", "CA1716:Identifiers should not match keywords", Justification = "The identifier won't confuse the users of the API.")]
         object Get(Type iface, string name = null);
+
+        /// <summary>
+        /// Gets the <see cref="IServiceContainer"/> associated with this injector.
+        /// </summary>
+        /// <remarks>Every injector has its own service container (which indicates that <see cref="UnderlyingContainer"/> always has a parent).</remarks>
+        IServiceContainer UnderlyingContainer { get; }
     }
 }

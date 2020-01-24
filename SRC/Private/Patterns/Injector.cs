@@ -133,6 +133,8 @@ namespace Solti.Utils.DI.Internals
         #region IInjector
         [SuppressMessage("Reliability", "CA2000:Dispose objects before losing scope", Justification = "The reference is released on container disposal.")]
         public object Get(Type iface, string name) => GetReference(iface, name).Instance;
+
+        public IServiceContainer UnderlyingContainer => this;
         #endregion
 
         #region Composite

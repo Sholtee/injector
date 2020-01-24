@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Diagnostics;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -37,7 +38,13 @@ namespace Solti.Utils.DI.Internals
             CheckProducible();
 
             //
-            // Ha mar kroabban le lett gyartva akkor visszaadjuk azt.
+            // Az injectornak kell lennie a bejegyzes tulajdonosanak.
+            //
+
+            Debug.Assert(injector.UnderlyingContainer == Owner);
+
+            //
+            // Ha mar korabban le lett gyartva akkor visszaadjuk azt.
             //
 
             if (FService != null)

@@ -110,6 +110,9 @@ namespace Solti.Utils.DI.UseCases
                 Container.Proxy(entry.Interface, typeof(InterfaceInterceptor<>).MakeGenericType(entry.Interface));
 
             var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
+            mockInjector
+                .SetupGet(i => i.UnderlyingContainer)
+                .Returns(Container);
 
             Assert.That(GetService<IDisposable>() is Disposable);
             Assert.That(GetService<IMyModule1>() is InterfaceInterceptor<IMyModule1>);

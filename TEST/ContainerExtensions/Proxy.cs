@@ -38,7 +38,6 @@ namespace Solti.Utils.DI.Container.Tests
 
         [TestCase(Lifetime.Transient)]
         [TestCase(Lifetime.Scoped)]
-        [TestCase(Lifetime.Singleton)]
         public void Container_Proxy_ShouldOverwriteTheFactoryFunction(Lifetime lifetime)
         {
             var mockCallback1 = new Mock<Func<IInjector, IInterface_1, IInterface_1>>(MockBehavior.Strict);
@@ -56,8 +55,13 @@ namespace Solti.Utils.DI.Container.Tests
                 .Proxy(mockCallback1.Object)
                 .Proxy(mockCallback2.Object);
 
+            var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
+            mockInjector
+                .SetupGet(i => i.UnderlyingContainer)
+                .Returns(Container);
+
             var svc = new ServiceReference(null, null);
-            Container.Get<IInterface_1>().GetService(null, ref svc);
+            Container.Get<IInterface_1>().GetService(mockInjector.Object, ref svc);
 
             Assert.That(svc.Instance, Is.InstanceOf<DecoratedImplementation_1>());
             mockCallback1.Verify(_ => _(It.IsAny<IInjector>(), It.IsAny<IInterface_1>()), Times.Once);
@@ -80,6 +84,9 @@ namespace Solti.Utils.DI.Container.Tests
             mockInjector
                 .Setup(i => i.Get(It.Is<Type>(t => t == typeof(IInterface_1)), null))
                 .Returns(new Implementation_1_No_Dep());
+            mockInjector
+                .SetupGet(i => i.UnderlyingContainer)
+                .Returns(Container);
 
             //
             // Nem kell QueryMode.AllowSpecialization mert a Proxy() hivas mar
@@ -108,6 +115,11 @@ namespace Solti.Utils.DI.Container.Tests
                 .Lazy<IInterface_1>(mockResolver.Object)
                 .Proxy<IInterface_1>((injector, inst) => new DecoratedImplementation_1());
 
+            var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
+            mockInjector
+                .SetupGet(i => i.UnderlyingContainer)
+                .Returns(Container);
+
             //
             // Az elso Get()-eleskor kell hivja a rendszer a resolver-t
             //
@@ -115,7 +127,7 @@ namespace Solti.Utils.DI.Container.Tests
             mockResolver.Verify(r => r.Resolve(It.Is<Type>(t => t == typeof(IInterface_1))), Times.Never);
 
             var svc = new ServiceReference(null, null);
-            Container.Get<IInterface_1>().GetService(null, ref svc);
+            Container.Get<IInterface_1>().GetService(mockInjector.Object, ref svc);
 
             Assert.That(svc.Instance, Is.InstanceOf<DecoratedImplementation_1>());     
         }
@@ -173,6 +185,10 @@ namespace Solti.Utils.DI.Container.Tests
                 .Setup(i => i.Get(It.Is<Type>(t => t == typeof(IInterface_3<int>)), null))
                 .Returns(new Implementation_3_IInterface_1_Dependant<int>(null));
 
+            mockInjector
+                .SetupGet(i => i.UnderlyingContainer)
+                .Returns(Container);
+
             var svc = new ServiceReference(null, null);
             Container.Get<IInterface_2>().GetService(mockInjector.Object, ref svc);
 
@@ -207,8 +223,13 @@ namespace Solti.Utils.DI.Container.Tests
             Container.Service<IInterface_1, Implementation_1_No_Dep>("cica");
             Assert.DoesNotThrow(() => Container.Proxy<IInterface_1>("cica", (i, s) => new DecoratedImplementation_1()));
 
+            var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
+            mockInjector
+                .SetupGet(i => i.UnderlyingContainer)
+                .Returns(Container);
+
             var svc = new ServiceReference(null, null);
-            Container.Get<IInterface_1>("cica").GetService(null, ref svc);
+            Container.Get<IInterface_1>("cica").GetService(mockInjector.Object, ref svc);
 
             Assert.That(svc.Instance, Is.TypeOf<DecoratedImplementation_1>());
         }
