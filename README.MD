@@ -24,13 +24,13 @@
 - Every service can be requested multiple times but can be registered only once.
 - Producible services are instantiated only when they are requested.
 - Every producible service has its own lifetime, which can be:
-  * `Singleton`: Container controlled lifetime
+  * `Singleton` (container controlled lifetime):
     - Instantiated only once on the first request and released automatically when the declaring container is disposed. 
 	- Dependency resolution is also done from the declaring container.
-  * `Scoped`: Injector controlled lifetime
+  * `Scoped` (injector controlled lifetime):
     - Instantiated only once (per injector) on the first request and released automatically when the parent injector is disposed.
 	- Dependency resolution is done from the parent injector.
-  * `Transient`: Injector controlled lifetime
+  * `Transient` (injector controlled lifetime):
     - Instantiated on every request and released automatically when the parent injector is disposed.
     - Dependency resolution is done from the parent injector.
 	
