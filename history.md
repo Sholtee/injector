@@ -61,5 +61,6 @@
 - 1.0.0:
   - *updated:* Dependencies
 - 1.1.0:
-  - *added:* `ProxyFactory.Create()` overload
+  - *added:* Some `ProxyFactory.Create()` overload
+  - *added:* `IInjector.UnderlyingContainer`
   - *updated:* Dependencies
