@@ -32,7 +32,7 @@ namespace Solti.Utils.DI.Internals.Tests
         }
 
         [Test]
-        public void Composite_Should_DisposeTheChildrenRecursively() 
+        public void Composite_Dispose_ShouldFreeTheChildrenRecursively() 
         {
             IMyComposite 
                 root = new MyComposite(),
@@ -46,7 +46,7 @@ namespace Solti.Utils.DI.Internals.Tests
         }
 
         [Test]
-        public void Composite_Dispose_Should_RemoveTheChildFromTheParentsChildrenList() 
+        public void Composite_Dispose_ShouldRemoveTheChildFromTheParentsChildrenList() 
         {
             IMyComposite
                 root = new MyComposite(),
@@ -70,7 +70,7 @@ namespace Solti.Utils.DI.Internals.Tests
         }
 
         [Test]
-        public void Composite_AddChild_Should_Validate() 
+        public void Composite_AddChild_ShouldValidate() 
         {
             IMyComposite 
                 root = new MyComposite(),
@@ -81,7 +81,7 @@ namespace Solti.Utils.DI.Internals.Tests
         }
 
         [Test]
-        public void Composite_RemoveChild_Should_Validate()
+        public void Composite_RemoveChild_ShouldValidate()
         {
             IMyComposite
                 root = new MyComposite(),
