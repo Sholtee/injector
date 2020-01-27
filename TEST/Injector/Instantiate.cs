@@ -83,7 +83,7 @@ namespace Solti.Utils.DI.Injector.Tests
         }
 
         [Test]
-        public void Injector_Instantiate_ShouldTakeIntoAccountTheServiceActivatorAttribute()
+        public void Injector_Instantiate_ShouldTakeTheServiceActivatorAttributeIntoAccount()
         {
             using (IInjector injector = Container.CreateInjector())
             {

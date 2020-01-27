@@ -59,14 +59,14 @@ namespace Solti.Utils.DI.Internals
 
         public static ConstructorInfo GetApplicableConstructor(this Type src) => Cache<Type, ConstructorInfo>.GetOrAdd(src, () =>
         {
+            IReadOnlyList<ConstructorInfo> constructors = src.GetConstructors();
+
             //
             // Az implementacionak pontosan egy (megjelolt) konstruktoranak kell lennie.
             //
 
             try
             {
-                IReadOnlyList<ConstructorInfo> constructors = src.GetConstructors();
-
                 return constructors.SingleOrDefault(ctor => ctor.GetCustomAttribute<ServiceActivatorAttribute>() != null) ?? constructors.Single();
             }
             catch (InvalidOperationException)

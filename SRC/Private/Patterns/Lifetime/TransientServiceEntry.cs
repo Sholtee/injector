@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Diagnostics;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -37,6 +38,8 @@ namespace Solti.Utils.DI.Internals
         public override void GetService(IInjector injector, ref ServiceReference reference)
         {
             CheckProducible();
+
+            Debug.Assert(injector.UnderlyingContainer == Owner);
 
             try
             {

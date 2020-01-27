@@ -103,7 +103,7 @@ namespace Solti.Utils.DI.Injector.Tests
         }
 
         [Test]
-        public void Injector_Get_ShouldNotInstantiateGenericType()
+        public void Injector_Get_ShouldThrowOnOpenGenericType()
         {
             Container.Service(typeof(IInterface_3<>), typeof(Implementation_3_IInterface_1_Dependant<>));
 

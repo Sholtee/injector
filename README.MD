@@ -24,9 +24,17 @@
 - Every service can be requested multiple times but can be registered only once.
 - Producible services are instantiated only when they are requested.
 - Every producible service has its own lifetime, which can be:
-  * `Singleton`: Instantiated only once (in declaring container) on the first request and released automatically when the container is disposed. Dependency resolution is also done from the declaring container.
-  * `Scoped`: Instantiated only once (per injector) on the first request and released automatically when the parent injector is disposed.
-  * `Transient`: Instantiated on every request and released automatically when the parent injector is disposed.
+  * `Singleton`:
+    - Instantiated only once on the first request and released automatically when the declaring container is disposed (container controlled lifetime). 
+	- Dependency resolution is also done from the declaring container.
+  * `Scoped`:
+    - Instantiated only once (per injector) on the first request and released automatically when the parent injector is disposed (injector controlled lifetime).
+	- Dependency resolution is done from the parent injector.
+  * `Transient`:
+    - Instantiated on every request and released automatically when the parent injector is disposed (injector controlled lifetime).
+    - Dependency resolution is done from the parent injector.
+	
+  As you can see you should never free producible services manually.
 ## Workflow of DI
 1. [Creating the root container](#creating-the-root-container)
 2. [Registering services](#registering-services)

@@ -10,7 +10,7 @@ namespace Solti.Utils.DI.Injector.Tests
     public partial class InjectorTestsBase<TContainer>
     {
         [Test]
-        public void Injector_ChildShouldResolveItself()
+        public void Injector_ShouldResolveItself()
         {
             using (IInjector injector = Container.CreateChild().CreateInjector())
             {
@@ -18,21 +18,25 @@ namespace Solti.Utils.DI.Injector.Tests
             }
         }
 
-        [Test]
-        public void Injector_ChildShouldPassItselfToItsFactories()
+        private interface IInjectorGetter 
         {
-            IInjector injector = null;
+            IInjector Injector { get; }
+        }
 
-            Container.Factory<IInterface_1>(i =>
-            {
-                injector = i;
-                return new Implementation_1_No_Dep();
-            });
+        private class InjectorGetter : IInjectorGetter 
+        {
+            public InjectorGetter(IInjector injector) => Injector = injector;
+            public IInjector Injector { get; }
+        }
+
+        [Test]
+        public void Injector_ShouldPassItselfToItsFactories()
+        {
+            Container.Factory<IInjectorGetter>(i => new InjectorGetter(i));
 
             using (IInjector i = Container.CreateChild().CreateInjector())
             {
-                i.Get<IInterface_1>();
-                Assert.AreSame(i, injector);
+                Assert.AreSame(i, i.Get<IInjectorGetter>().Injector);
             }
         }
     }

@@ -175,7 +175,7 @@
     <value>Unknown lifetime: {0}.</value>
   </data>
   <data name="INVALID_INTERCEPETOR" xml:space="preserve">
-    <value>Interceptor must be an InterfaceInterceptor desecndant.</value>
+    <value>Interceptor must be an InterfaceInterceptor&lt;{0}&gt; descendant.</value>
   </data>
   <data name="NOT_ORPHAN" xml:space="preserve">
     <value>Child already has parent.</value>

@@ -96,7 +96,7 @@ namespace Solti.Utils.DI.Injector.Tests
         }
 
         [Test]
-        public void Lifetime_SingletonService_ShouldBeInstantiatedOnlyOncePerContainer()
+        public void Lifetime_SingletonService_ShouldBeInstantiatedOnlyOncePerDeclaringContainer()
         {
             Container.Service<IInterface_1, Implementation_1_No_Dep>(Lifetime.Singleton);
 
