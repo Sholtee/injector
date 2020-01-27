@@ -16,7 +16,14 @@ namespace Solti.Utils.DI.Internals
     {
         internal object UnderlyingImplementation { get; }
 
-        protected ProducibleServiceEntry(ProducibleServiceEntry entry, IServiceContainer owner): base(entry.Interface, entry.Name, entry.Lifetime, owner)
+        private ProducibleServiceEntry(Type @interface, string name, Lifetime? lifetime, IServiceContainer owner) : base(@interface, name, lifetime ?? throw new ArgumentNullException(nameof(lifetime)), owner ?? throw new ArgumentNullException(nameof(owner))) 
+        {
+            //
+            // Interface-t nem kell ellenorizni (az os megteszi).
+            //
+        }
+
+        protected ProducibleServiceEntry(ProducibleServiceEntry entry, IServiceContainer owner): this(entry.Interface, entry.Name, entry.Lifetime, owner)
         {
             Factory = entry.Factory;
 
@@ -28,16 +35,10 @@ namespace Solti.Utils.DI.Internals
             UnderlyingImplementation = entry.UnderlyingImplementation;
         }
 
-        protected ProducibleServiceEntry(Type @interface, string name, Lifetime lifetime, Func<IInjector, Type, object> factory, IServiceContainer owner) : base(@interface, name, lifetime, owner)
-        {
-            //
-            // Interface-t nem kell ellenorizni (az os megteszi).
-            //
-
+        protected ProducibleServiceEntry(Type @interface, string name, Lifetime lifetime, Func<IInjector, Type, object> factory, IServiceContainer owner) : this(@interface, name, lifetime, owner) =>
             Factory = factory ?? throw new ArgumentNullException(nameof(factory));
-        }
 
-        protected ProducibleServiceEntry(Type @interface, string name, Lifetime lifetime, Type implementation, IServiceContainer owner) : base(@interface, name, lifetime, owner)
+        protected ProducibleServiceEntry(Type @interface, string name, Lifetime lifetime, Type implementation, IServiceContainer owner) : this(@interface, name, lifetime, owner)
         {
             //
             // Interface-t nem kell ellenorizni (az os megteszi).
@@ -66,7 +67,7 @@ namespace Solti.Utils.DI.Internals
             UnderlyingImplementation = implementation;
         }
 
-        protected ProducibleServiceEntry(Type @interface, string name, Lifetime lifetime, ITypeResolver implementation, IServiceContainer owner) : base(@interface, name, lifetime, owner)
+        protected ProducibleServiceEntry(Type @interface, string name, Lifetime lifetime, ITypeResolver implementation, IServiceContainer owner) : this(@interface, name, lifetime, owner)
         {
             if (implementation == null)
                 throw new ArgumentNullException(nameof(implementation));

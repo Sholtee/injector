@@ -139,14 +139,16 @@ namespace Solti.Utils.DI.Container.Tests
         [Test]
         public void IServiceContainer_GetShouldReturnExistingEntriesOnly()
         {
+            var owner = new TImplementation();
+
             IServiceContainer container = CreateContainer
             (
-                new SingletonServiceEntry(typeof(IList<>), null, typeof(MyList<>), null) 
+                new SingletonServiceEntry(typeof(IList<>), null, typeof(MyList<>), owner) 
             );
 
             Assert.IsNull(container.Get(typeof(IList<int>)));
             Assert.Throws<ServiceNotFoundException>(() => container.Get(typeof(IList<int>), null, QueryModes.ThrowOnError));
-            Assert.That(container.Get(typeof(IList<>), null, QueryModes.ThrowOnError), Is.EqualTo(new SingletonServiceEntry(typeof(IList<>), null, typeof(MyList<>), null)));
+            Assert.That(container.Get(typeof(IList<>), null, QueryModes.ThrowOnError), Is.EqualTo(new SingletonServiceEntry(typeof(IList<>), null, typeof(MyList<>), owner)));
         }
 
         [Test]
