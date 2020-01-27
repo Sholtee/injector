@@ -70,7 +70,12 @@ namespace Solti.Utils.DI.Internals
         {
             CheckDisposed();
 
-            Debug.Assert(Owner.IsDescendantOf(injector.UnderlyingContainer.Parent));
+            //
+            // Az injector kontenereben is deklaralhatunk bejegyzeseket (pl az Injector felveszi sajat
+            // magat) -> ne "injector.UnderlyingContainer.Parent.IsDescendantOf(Owner)" legyen.
+            //
+
+            Debug.Assert(injector.UnderlyingContainer.IsDescendantOf(Owner));
 
             reference.Release();
             reference = FService;

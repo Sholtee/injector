@@ -40,7 +40,11 @@ namespace Solti.Utils.DI.Internals
         {
             CheckProducible();
 
-            Debug.Assert(Owner.IsDescendantOf(injector.UnderlyingContainer.Parent));
+            //
+            // Singleton bejegyzeshez mindig sajat injector van letrehozva a deklaralo kontenerbol
+            //
+
+            Debug.Assert(injector.UnderlyingContainer.Parent == Owner);
 
             if (FService == null)
             {
