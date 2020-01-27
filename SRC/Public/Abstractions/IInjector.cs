@@ -24,7 +24,7 @@ namespace Solti.Utils.DI
         object Get(Type iface, string name = null);
 
         /// <summary>
-        /// Gets the <see cref="IServiceContainer"/> associated with this injector.
+        /// Gets the <see cref="IServiceContainer"/> associated with the injector.
         /// </summary>
         /// <remarks>Every injector has its own service container that serves it on service request. This container is a direct descendant of the container from which the injector was created.</remarks>
         IServiceContainer UnderlyingContainer { get; }
