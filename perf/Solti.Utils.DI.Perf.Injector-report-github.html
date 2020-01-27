@@ -38,11 +38,11 @@
             <article class="content wrap" id="_content" data-uid="">
 
 <pre><code class="lang-ini">
-BenchmarkDotNet=v0.12.0, OS=Windows 10.0.17763.864 (1809/October2018Update/Redstone5)
+BenchmarkDotNet=v0.12.0, OS=Windows 10.0.17763.973 (1809/October2018Update/Redstone5)
 Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
-.NET Core SDK=3.1.100
-  [Host]     : .NET Core 3.1.0 (CoreCLR 4.700.19.56402, CoreFX 4.700.19.56404), X64 RyuJIT
-  DefaultJob : .NET Core 3.1.0 (CoreCLR 4.700.19.56402, CoreFX 4.700.19.56404), X64 RyuJIT
+.NET Core SDK=3.1.101
+  [Host]     : .NET Core 3.1.1 (CoreCLR 4.700.19.60701, CoreFX 4.700.19.60801), X64 RyuJIT
+  DefaultJob : .NET Core 3.1.1 (CoreCLR 4.700.19.60701, CoreFX 4.700.19.60801), X64 RyuJIT
 
 </code></pre><table>
 <thead>
@@ -52,7 +52,6 @@ Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 <th style="text-align:right">Mean</th>
 <th style="text-align:right">Error</th>
 <th style="text-align:right">StdDev</th>
-<th style="text-align:right">Median</th>
 <th style="text-align:right">Ratio</th>
 <th style="text-align:right">RatioSD</th>
 <th style="text-align:right">Gen 0</th>
@@ -65,10 +64,9 @@ Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 <tr>
 <td><strong>NoInjector</strong></td>
 <td><strong>Transient</strong></td>
-<td style="text-align:right"><strong>7.587 ns</strong></td>
-<td style="text-align:right"><strong>0.1591 ns</strong></td>
-<td style="text-align:right"><strong>0.3781 ns</strong></td>
-<td style="text-align:right"><strong>7.503 ns</strong></td>
+<td style="text-align:right"><strong>7.681 ns</strong></td>
+<td style="text-align:right"><strong>0.1495 ns</strong></td>
+<td style="text-align:right"><strong>0.1468 ns</strong></td>
 <td style="text-align:right"><strong>1.00</strong></td>
 <td style="text-align:right"><strong>0.00</strong></td>
 <td style="text-align:right"><strong>0.0013</strong></td>
@@ -79,12 +77,11 @@ Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 <tr>
 <td>Injector_Get</td>
 <td>Transient</td>
-<td style="text-align:right">4,536.699 ns</td>
-<td style="text-align:right">71.9548 ns</td>
-<td style="text-align:right">63.7860 ns</td>
-<td style="text-align:right">4,520.636 ns</td>
-<td style="text-align:right">561.53</td>
-<td style="text-align:right">23.21</td>
+<td style="text-align:right">4,862.447 ns</td>
+<td style="text-align:right">75.5681 ns</td>
+<td style="text-align:right">66.9891 ns</td>
+<td style="text-align:right">630.78</td>
+<td style="text-align:right">12.19</td>
 <td style="text-align:right">0.1758</td>
 <td style="text-align:right">0.0098</td>
 <td style="text-align:right">-</td>
@@ -93,12 +90,11 @@ Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 <tr>
 <td>Injector_Instantiate</td>
 <td>Transient</td>
-<td style="text-align:right">4,007.155 ns</td>
-<td style="text-align:right">78.9601 ns</td>
-<td style="text-align:right">157.6918 ns</td>
-<td style="text-align:right">3,999.979 ns</td>
-<td style="text-align:right">527.41</td>
-<td style="text-align:right">41.46</td>
+<td style="text-align:right">4,170.467 ns</td>
+<td style="text-align:right">41.7717 ns</td>
+<td style="text-align:right">34.8812 ns</td>
+<td style="text-align:right">541.31</td>
+<td style="text-align:right">9.26</td>
 <td style="text-align:right">0.1318</td>
 <td style="text-align:right">0.0049</td>
 <td style="text-align:right">-</td>
@@ -116,15 +112,13 @@ Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 <td style="text-align:right"></td>
 <td style="text-align:right"></td>
 <td style="text-align:right"></td>
-<td style="text-align:right"></td>
 </tr>
 <tr>
 <td><strong>NoInjector</strong></td>
 <td><strong>Scoped</strong></td>
-<td style="text-align:right"><strong>7.734 ns</strong></td>
-<td style="text-align:right"><strong>0.1542 ns</strong></td>
-<td style="text-align:right"><strong>0.3114 ns</strong></td>
-<td style="text-align:right"><strong>7.613 ns</strong></td>
+<td style="text-align:right"><strong>7.420 ns</strong></td>
+<td style="text-align:right"><strong>0.1478 ns</strong></td>
+<td style="text-align:right"><strong>0.3053 ns</strong></td>
 <td style="text-align:right"><strong>1.00</strong></td>
 <td style="text-align:right"><strong>0.00</strong></td>
 <td style="text-align:right"><strong>0.0013</strong></td>
@@ -135,12 +129,11 @@ Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 <tr>
 <td>Injector_Get</td>
 <td>Scoped</td>
-<td style="text-align:right">1,379.270 ns</td>
-<td style="text-align:right">27.5418 ns</td>
-<td style="text-align:right">44.4748 ns</td>
-<td style="text-align:right">1,367.738 ns</td>
-<td style="text-align:right">178.94</td>
-<td style="text-align:right">8.50</td>
+<td style="text-align:right">1,347.037 ns</td>
+<td style="text-align:right">18.5429 ns</td>
+<td style="text-align:right">17.3451 ns</td>
+<td style="text-align:right">180.32</td>
+<td style="text-align:right">11.02</td>
 <td style="text-align:right">0.0513</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
@@ -149,12 +142,11 @@ Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 <tr>
 <td>Injector_Instantiate</td>
 <td>Scoped</td>
-<td style="text-align:right">2,214.014 ns</td>
-<td style="text-align:right">42.3583 ns</td>
-<td style="text-align:right">39.6220 ns</td>
-<td style="text-align:right">2,217.684 ns</td>
-<td style="text-align:right">285.28</td>
-<td style="text-align:right">14.10</td>
+<td style="text-align:right">2,226.505 ns</td>
+<td style="text-align:right">12.4878 ns</td>
+<td style="text-align:right">11.0701 ns</td>
+<td style="text-align:right">298.57</td>
+<td style="text-align:right">17.11</td>
 <td style="text-align:right">0.0659</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
@@ -172,15 +164,13 @@ Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 <td style="text-align:right"></td>
 <td style="text-align:right"></td>
 <td style="text-align:right"></td>
-<td style="text-align:right"></td>
 </tr>
 <tr>
 <td><strong>NoInjector</strong></td>
 <td><strong>Singleton</strong></td>
-<td style="text-align:right"><strong>7.769 ns</strong></td>
-<td style="text-align:right"><strong>0.1551 ns</strong></td>
-<td style="text-align:right"><strong>0.3133 ns</strong></td>
-<td style="text-align:right"><strong>7.697 ns</strong></td>
+<td style="text-align:right"><strong>7.502 ns</strong></td>
+<td style="text-align:right"><strong>0.1682 ns</strong></td>
+<td style="text-align:right"><strong>0.4907 ns</strong></td>
 <td style="text-align:right"><strong>1.00</strong></td>
 <td style="text-align:right"><strong>0.00</strong></td>
 <td style="text-align:right"><strong>0.0013</strong></td>
@@ -191,12 +181,11 @@ Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 <tr>
 <td>Injector_Get</td>
 <td>Singleton</td>
-<td style="text-align:right">1,173.510 ns</td>
-<td style="text-align:right">23.2269 ns</td>
-<td style="text-align:right">43.6257 ns</td>
-<td style="text-align:right">1,164.315 ns</td>
-<td style="text-align:right">151.64</td>
-<td style="text-align:right">8.46</td>
+<td style="text-align:right">1,195.697 ns</td>
+<td style="text-align:right">21.2934 ns</td>
+<td style="text-align:right">19.9178 ns</td>
+<td style="text-align:right">165.30</td>
+<td style="text-align:right">12.53</td>
 <td style="text-align:right">0.0488</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
@@ -205,12 +194,11 @@ Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 <tr>
 <td>Injector_Instantiate</td>
 <td>Singleton</td>
-<td style="text-align:right">2,159.436 ns</td>
-<td style="text-align:right">28.4053 ns</td>
-<td style="text-align:right">23.7197 ns</td>
-<td style="text-align:right">2,167.926 ns</td>
-<td style="text-align:right">279.65</td>
-<td style="text-align:right">12.68</td>
+<td style="text-align:right">1,982.198 ns</td>
+<td style="text-align:right">29.0630 ns</td>
+<td style="text-align:right">25.7636 ns</td>
+<td style="text-align:right">274.23</td>
+<td style="text-align:right">16.72</td>
 <td style="text-align:right">0.0635</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
