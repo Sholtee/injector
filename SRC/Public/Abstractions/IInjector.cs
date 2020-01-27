@@ -14,7 +14,7 @@ namespace Solti.Utils.DI
     public interface IInjector: IDisposable
     {
         /// <summary>
-        /// Resolves a dependency.
+        /// Gets the service instance associated with the given interface and (optional) name.
         /// </summary>
         /// <param name="iface">The "id" of the service to be resolved. It must be a non-generic interface.</param>
         /// <param name="name">The (optional) name of the service.</param>

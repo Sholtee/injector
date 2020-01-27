@@ -12,7 +12,7 @@ namespace Solti.Utils.DI
     using Internals;
 
     /// <summary>
-    /// Provides the mechanism of storing services.
+    /// Provides the mechanism of storing service entries.
     /// </summary>
     [SuppressMessage("Naming", "CA1710:Identifiers should have correct suffix", Justification = "The name is meaningful.")]
     public interface IServiceContainer : IComposite<IServiceContainer>, IEnumerable<AbstractServiceEntry>
@@ -26,7 +26,7 @@ namespace Solti.Utils.DI
         IServiceContainer Add(AbstractServiceEntry entry);
 
         /// <summary>
-        /// Gets the service associated with the given interface and name.
+        /// Gets the service entry associated with the given interface and (optional) name.
         /// </summary>
         /// <param name="serviceInterface">The service interface.</param>
         /// <param name="name">The (optional) name of the service.</param>

@@ -21,7 +21,7 @@ namespace Solti.Utils.DI
     public static partial class IServiceContainerExtensions
     {
         /// <summary>
-        /// Gets the service associated with the given interface.
+        /// Gets the service entry associated with the given interface and name.
         /// </summary>
         /// <param name="self">The target <see cref="IServiceContainer"/>.</param>
         /// <param name="name">The (optional) name of the entry.</param>
@@ -37,7 +37,7 @@ namespace Solti.Utils.DI
         }
 
         /// <summary>
-        /// Gets the service associated with the given interface.
+        /// Gets the service entry associated with the given interface.
         /// </summary>
         /// <param name="self">The target <see cref="IServiceContainer"/>.</param>
         /// <param name="mode">Options.</param>

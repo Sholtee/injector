@@ -17,7 +17,7 @@ namespace Solti.Utils.DI
     public static class IInjectorExtensions
     {
         /// <summary>
-        /// Resolves a dependency.
+        /// Gets the service instance associated with the given interface and (optional) name.
         /// </summary>
         /// <typeparam name="TInterface">The "id" of the service to be resolved. It must be an interface.</typeparam>
         /// <param name="self">The injector itself.</param>
