@@ -53,7 +53,7 @@ namespace Solti.Utils.DI.Container.Tests
             Mock<AbstractServiceEntry> entry = new Mock<AbstractServiceEntry>(typeof(IDisposable) /*iface*/, null, Lifetime.Transient, new TImplementation());              
             entry.Setup(e => e.CopyTo(It.IsAny<IServiceContainer>())).Returns<IServiceContainer>(sc => null);
 
-            using (IServiceContainer container = new TImplementation().Add(entry.Object).CreateChild())
+            using (IServiceContainer container = Container.Add(entry.Object).CreateChild())
             {
                 entry.Verify(e => e.CopyTo(It.Is<IServiceContainer>(sc => sc == container)), Times.Once);
             }
@@ -61,87 +61,75 @@ namespace Solti.Utils.DI.Container.Tests
 
         [TestCase(null)]
         [TestCase("cica")]
-        public void IServiceContainer_ShouldContainUniqueEntries(string name)
-        {
-            IServiceContainer container = new TImplementation();
-            container.Add(new InstanceServiceEntry(typeof(IDisposable), name, new Disposable(), false, container));
-
-            Assert.Throws<ServiceAlreadyRegisteredException>(() => container.Add(new InstanceServiceEntry(typeof(IDisposable), name, new Disposable(), false, container)));
-            Assert.Throws<ServiceAlreadyRegisteredException>(() => container.Add(new AbstractServiceEntry(typeof(IDisposable), name)));
-        }
-
-        [Test]
-        public void IServiceContainer_GetShouldReturnOnTypeMatch()
+        public void IServiceContainer_GetShouldReturnOnTypeMatch(string name)
         {          
-            IServiceContainer container = new TImplementation();
-            var entry = new TransientServiceEntry(typeof(IList<>), null, typeof(MyList<>), container);
-            container.Add(entry);
+            var entry = new TransientServiceEntry(typeof(IList<>), name, typeof(MyList<>), Container);
+            Container.Add(entry);
 
-            Assert.That(container.Get(typeof(IList<>), null, QueryModes.ThrowOnError), Is.EqualTo(entry));
+            Assert.That(Container.Get(typeof(IList<>), name, QueryModes.ThrowOnError), Is.EqualTo(entry));
         }
 
-        [Test]
-        public void IServiceContainer_GetShouldReturnTheSpecializedEntry()
+        [TestCase(null)]
+        [TestCase("cica")]
+        public void IServiceContainer_GetShouldReturnTheSpecializedEntry(string name)
         {
-            IServiceContainer container = new TImplementation();
-
             //
             // Azert singleton h az owner kontener ne valtozzon.
             //
-            
-            container.Add(new SingletonServiceEntry(typeof(IList<>), null, typeof(MyList<>), container));
 
-            Assert.That(container.Count, Is.EqualTo(1));
-            Assert.Throws<ServiceNotFoundException>(() => container.Get(typeof(IList<int>), null, QueryModes.ThrowOnError));
-            Assert.That(container.Count, Is.EqualTo(1));
-            Assert.That(container.Get(typeof(IList<int>), null, QueryModes.AllowSpecialization | QueryModes.ThrowOnError), Is.EqualTo(new SingletonServiceEntry(typeof(IList<int>), null, typeof(MyList<int>), container)));
-            Assert.That(container.Count, Is.EqualTo(2));
+            Container.Add(new SingletonServiceEntry(typeof(IList<>), name, typeof(MyList<>), Container));
+
+            Assert.That(Container.Count, Is.EqualTo(1));
+            Assert.Throws<ServiceNotFoundException>(() => Container.Get(typeof(IList<int>), name, QueryModes.ThrowOnError));
+            Assert.That(Container.Count, Is.EqualTo(1));
+            Assert.That(Container.Get(typeof(IList<int>), name, QueryModes.AllowSpecialization | QueryModes.ThrowOnError), Is.EqualTo(new SingletonServiceEntry(typeof(IList<int>), name, typeof(MyList<int>), Container)));
+            Assert.That(Container.Count, Is.EqualTo(2));
         }
 
-        [Test]
-        public void IServiceContainer_GetShouldReturnTheSpecializedInheritedEntry()
+        [TestCase(null)]
+        [TestCase("cica")]
+        public void IServiceContainer_GetShouldReturnTheSpecializedInheritedEntry(string name)
         {
-            IServiceContainer container = new TImplementation();
-            container.Add(new SingletonServiceEntry(typeof(IList<>), null, typeof(MyList<>), container));
+            Container.Add(new SingletonServiceEntry(typeof(IList<>), name, typeof(MyList<>), Container));
 
-            using (IServiceContainer child = container.CreateChild())
+            using (IServiceContainer child = Container.CreateChild())
             {
                 Assert.That(child.Count, Is.EqualTo(1));
-                Assert.Throws<ServiceNotFoundException>(() => child.Get(typeof(IList<int>), null, QueryModes.ThrowOnError));
-                Assert.That(container.Count, Is.EqualTo(1));
+                Assert.Throws<ServiceNotFoundException>(() => child.Get(typeof(IList<int>), name, QueryModes.ThrowOnError));
+                Assert.That(Container.Count, Is.EqualTo(1));
                 Assert.That(child.Count, Is.EqualTo(1));
-                Assert.That(child.Get(typeof(IList<int>), null, QueryModes.AllowSpecialization | QueryModes.ThrowOnError), Is.EqualTo(new SingletonServiceEntry(typeof(IList<int>), null, typeof(MyList<int>), container)));
-                Assert.That(container.Count, Is.EqualTo(2));
+                Assert.That(child.Get(typeof(IList<int>), name, QueryModes.AllowSpecialization | QueryModes.ThrowOnError), Is.EqualTo(new SingletonServiceEntry(typeof(IList<int>), name, typeof(MyList<int>), Container)));
+                Assert.That(Container.Count, Is.EqualTo(2));
                 Assert.That(child.Count, Is.EqualTo(2));
             }
 
-            Assert.That(container.Get(typeof(IList<int>), null, QueryModes.ThrowOnError), Is.EqualTo(new SingletonServiceEntry(typeof(IList<int>), null, typeof(MyList<int>), container)));
+            Assert.That(Container.Get(typeof(IList<int>), name, QueryModes.ThrowOnError), Is.EqualTo(new SingletonServiceEntry(typeof(IList<int>), name, typeof(MyList<int>), Container)));
         }
 
-        [Test]
-        public void IServiceContainer_GetShouldReturnExistingEntriesOnly()
+        [TestCase(null)]
+        [TestCase("cica")]
+        public void IServiceContainer_GetShouldReturnExistingEntriesOnly(string name)
         {
-            IServiceContainer container = new TImplementation();
-            container.Add(new SingletonServiceEntry(typeof(IList<>), null, typeof(MyList<>), container));
+            Container.Add(new SingletonServiceEntry(typeof(IList<>), name, typeof(MyList<>), Container));
 
-            Assert.IsNull(container.Get(typeof(IList<int>)));
-            Assert.Throws<ServiceNotFoundException>(() => container.Get(typeof(IList<int>), null, QueryModes.ThrowOnError));
-            Assert.That(container.Get(typeof(IList<>), null, QueryModes.ThrowOnError), Is.EqualTo(new SingletonServiceEntry(typeof(IList<>), null, typeof(MyList<>), container)));
+            Assert.IsNull(Container.Get(typeof(IList<int>)));
+            Assert.Throws<ServiceNotFoundException>(() => Container.Get(typeof(IList<int>), name, QueryModes.ThrowOnError));
+            Assert.That(Container.Get(typeof(IList<>), name, QueryModes.ThrowOnError), Is.EqualTo(new SingletonServiceEntry(typeof(IList<>), name, typeof(MyList<>), Container)));
         }
 
-        [Test]
-        public void IServiceContainer_ContainsShouldSearchByGetHashCode()
+        [TestCase(null)]
+        [TestCase("cica")]
+        public void IServiceContainer_ContainsShouldSearchByGetHashCode(string name)
         {
             AbstractServiceEntry 
-                entry1 = new AbstractServiceEntry(typeof(IDisposable), null),
-                entry2 = new AbstractServiceEntry(typeof(IDisposable), null);
+                entry1 = new AbstractServiceEntry(typeof(IDisposable), name),
+                entry2 = new AbstractServiceEntry(typeof(IDisposable), name);
 
-            IServiceContainer container = new TImplementation();
-            container.Add(entry1);
+            Container.Add(entry1);
             
             Assert.That(entry1, Is.EqualTo(entry2));
-            Assert.True(container.Contains(entry1));
-            Assert.True(container.Contains(entry2));
+            Assert.True(Container.Contains(entry1));
+            Assert.True(Container.Contains(entry2));
         }
 
 
@@ -150,11 +138,11 @@ namespace Solti.Utils.DI.Container.Tests
         {
             var entry = new AbstractServiceEntry(typeof(IDisposable), null);
 
-            IServiceContainer container = new TImplementation().Add(entry);
+            Container.Add(entry);
 
-            using (IEnumerator<AbstractServiceEntry> enumerator = container.GetEnumerator())
+            using (IEnumerator<AbstractServiceEntry> enumerator = Container.GetEnumerator())
             {
-                container.Add(new AbstractServiceEntry(typeof(IList<>), null));
+                Container.Add(new AbstractServiceEntry(typeof(IList<>), null));
                 Assert.That(enumerator.MoveNext);
                 Assert.AreSame(enumerator.Current, entry);
                 Assert.False(enumerator.MoveNext());
@@ -262,7 +250,7 @@ namespace Solti.Utils.DI.Container.Tests
         [TestCase(Lifetime.Scoped)]
         [TestCase(Lifetime.Transient)]
         [TestCase(Lifetime.Singleton)]
-        public void IServiceContainer_ChildEnriesShouldNotChangeByDefault(Lifetime lifetime)
+        public void IServiceContainer_InheritanceShouldChangeTheOwnerOnly(Lifetime lifetime)
         {
             Container
                 .Service<IInterface_1, Implementation_1_No_Dep>(lifetime)
@@ -341,7 +329,6 @@ namespace Solti.Utils.DI.Container.Tests
         [Test]
         public void IServiceContainer_AddShouldThrowOnNull() => Assert.Throws<ArgumentNullException>(() => Container.Add(null));
 
-        [Test]
         public void IServiceContainer_AddShouldAcceptMoreThanOneNamedService()
         {
             Assert.DoesNotThrow(() => Container.Add(new SingletonServiceEntry(typeof(IDisposable), "cica", typeof(Disposable), Container)));
@@ -350,41 +337,23 @@ namespace Solti.Utils.DI.Container.Tests
             Assert.That(Container.Count, Is.EqualTo(2));
         }
 
-        [Test]
-        public void IServiceContainer_AddShouldThrowOnAlreadyRegisteredService()
+        [TestCase(null)]
+        [TestCase("cica")]
+        public void IServiceContainer_AddShouldThrowOnAlreadyRegisteredService(string name)
         {
-            Container.Add(new SingletonServiceEntry(typeof(IDisposable), null, typeof(Disposable), Container));
-            Container.Add(new SingletonServiceEntry(typeof(IDisposable), "cica", typeof(Disposable), Container));
+            Container.Add(new SingletonServiceEntry(typeof(IDisposable), name, typeof(Disposable), Container));
 
-            Assert.Throws<ServiceAlreadyRegisteredException>(() => Container.Add(new SingletonServiceEntry(typeof(IDisposable), null, typeof(Disposable), Container)));
-            Assert.Throws<ServiceAlreadyRegisteredException>(() => Container.Add(new SingletonServiceEntry(typeof(IDisposable), "cica", typeof(Disposable), Container)));
+            Assert.Throws<ServiceAlreadyRegisteredException>(() => Container.Add(new SingletonServiceEntry(typeof(IDisposable), name, typeof(Disposable), Container)));
         }
 
-        [Test]
-        public void IServiceContainer_AddShouldOverwriteAbstractEntries() 
+        [TestCase(null)]
+        [TestCase("cica")]
+        public void IServiceContainer_AddShouldOverwriteAbstractEntries(string name) 
         {
-            Container.Add(new AbstractServiceEntry(typeof(IDisposable), null));
-            Container.Add(new AbstractServiceEntry(typeof(IDisposable), "cica"));
+            Container.Add(new AbstractServiceEntry(typeof(IDisposable), name));
 
-            Assert.DoesNotThrow(() => Container.Add(new SingletonServiceEntry(typeof(IDisposable), null, typeof(Disposable), Container)));
-            Assert.DoesNotThrow(() => Container.Add(new SingletonServiceEntry(typeof(IDisposable), "cica", typeof(Disposable), Container)));
-
-            Assert.That(Container.Get(typeof(IDisposable)), Is.InstanceOf<SingletonServiceEntry>());
-            Assert.That(Container.Get(typeof(IDisposable), "cica"), Is.InstanceOf<SingletonServiceEntry>());
-        }
-
-        [Test]
-        public void IServiceContainer_GetShouldTakeNameIntoAccount() 
-        {
-            AbstractServiceEntry
-                entryWithoutName = new AbstractServiceEntry(typeof(IDisposable), null),
-                entryWithName    = new AbstractServiceEntry(typeof(IDisposable), "cica");
-
-            Container.Add(entryWithName);
-            Container.Add(entryWithoutName);
-
-            Assert.AreSame(Container.Get(typeof(IDisposable)), entryWithoutName);
-            Assert.AreSame(Container.Get(typeof(IDisposable), "cica"), entryWithName);
+            Assert.DoesNotThrow(() => Container.Add(new SingletonServiceEntry(typeof(IDisposable), name, typeof(Disposable), Container)));
+            Assert.That(Container.Get(typeof(IDisposable), name), Is.InstanceOf<SingletonServiceEntry>());
         }
 
         [Test]
