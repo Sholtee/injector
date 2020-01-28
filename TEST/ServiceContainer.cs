@@ -21,18 +21,6 @@ namespace Solti.Utils.DI.Container.Tests
 
     public abstract class ServiceContainerTestsBase<TImplementation>: TestBase<TImplementation> where TImplementation : IServiceContainer, new()
     {
-        internal virtual IServiceContainer CreateContainer(params AbstractServiceEntry[] entries)
-        {
-            var result = new TImplementation();
-
-            foreach (AbstractServiceEntry entry in entries)
-            {
-                result.Add(entry);
-            }
-
-            return result;
-        }
-
         [Test]
         public void IServiceContainer_DisposeShouldDisposeOwnedEntriesOnly()
         {
@@ -40,10 +28,10 @@ namespace Solti.Utils.DI.Container.Tests
                 owned    = new Disposable(),
                 notOwned = new Disposable();
 
-            IServiceContainer container = CreateContainer();
+            IServiceContainer container = new TImplementation();
 
             container.Add(new InstanceServiceEntry(typeof(IDisposable), null, owned, releaseOnDispose: true, owner: container));
-            container.Add(new InstanceServiceEntry(typeof(IDisposableEx), null, notOwned, releaseOnDispose: true, owner: null));
+            container.Add(new InstanceServiceEntry(typeof(IDisposableEx), null, notOwned, releaseOnDispose: true, owner: new TImplementation()));
 
             Assert.That(container.Count, Is.EqualTo(2));
 
@@ -65,33 +53,27 @@ namespace Solti.Utils.DI.Container.Tests
             Mock<AbstractServiceEntry> entry = new Mock<AbstractServiceEntry>(typeof(IDisposable) /*iface*/, null, Lifetime.Transient, new TImplementation());              
             entry.Setup(e => e.CopyTo(It.IsAny<IServiceContainer>())).Returns<IServiceContainer>(sc => null);
 
-            using (IServiceContainer container = CreateContainer(entry.Object).CreateChild())
+            using (IServiceContainer container = new TImplementation().Add(entry.Object).CreateChild())
             {
                 entry.Verify(e => e.CopyTo(It.Is<IServiceContainer>(sc => sc == container)), Times.Once);
             }
         }
 
-        [Test]
-        public void IServiceContainer_ShouldContainUniqueEntries()
+        [TestCase(null)]
+        [TestCase("cica")]
+        public void IServiceContainer_ShouldContainUniqueEntries(string name)
         {
-            IServiceContainer container = CreateContainer
-            (
-                new InstanceServiceEntry(typeof(IDisposable), null, new Disposable(), false, null)
-            );
+            IServiceContainer container = new TImplementation();
+            container.Add(new InstanceServiceEntry(typeof(IDisposable), name, new Disposable(), false, container));
 
-            Assert.Throws<ServiceAlreadyRegisteredException>(() => container.Add(new InstanceServiceEntry(typeof(IDisposable), null, new Disposable(), false, null)));
-
-            Assert.Throws<ServiceAlreadyRegisteredException>(() => CreateContainer
-            (
-                new InstanceServiceEntry(typeof(IDisposable), null, new Disposable(), false, null),
-                new InstanceServiceEntry(typeof(IDisposable), null, new Disposable(), false, null)
-            ));
+            Assert.Throws<ServiceAlreadyRegisteredException>(() => container.Add(new InstanceServiceEntry(typeof(IDisposable), name, new Disposable(), false, container)));
+            Assert.Throws<ServiceAlreadyRegisteredException>(() => container.Add(new AbstractServiceEntry(typeof(IDisposable), name)));
         }
 
         [Test]
         public void IServiceContainer_GetShouldReturnOnTypeMatch()
         {          
-            IServiceContainer container = CreateContainer();
+            IServiceContainer container = new TImplementation();
             var entry = new TransientServiceEntry(typeof(IList<>), null, typeof(MyList<>), container);
             container.Add(entry);
 
@@ -101,7 +83,7 @@ namespace Solti.Utils.DI.Container.Tests
         [Test]
         public void IServiceContainer_GetShouldReturnTheSpecializedEntry()
         {
-            IServiceContainer container = CreateContainer();
+            IServiceContainer container = new TImplementation();
 
             //
             // Azert singleton h az owner kontener ne valtozzon.
@@ -119,7 +101,7 @@ namespace Solti.Utils.DI.Container.Tests
         [Test]
         public void IServiceContainer_GetShouldReturnTheSpecializedInheritedEntry()
         {
-            IServiceContainer container = CreateContainer();
+            IServiceContainer container = new TImplementation();
             container.Add(new SingletonServiceEntry(typeof(IList<>), null, typeof(MyList<>), container));
 
             using (IServiceContainer child = container.CreateChild())
@@ -139,16 +121,12 @@ namespace Solti.Utils.DI.Container.Tests
         [Test]
         public void IServiceContainer_GetShouldReturnExistingEntriesOnly()
         {
-            var owner = new TImplementation();
-
-            IServiceContainer container = CreateContainer
-            (
-                new SingletonServiceEntry(typeof(IList<>), null, typeof(MyList<>), owner) 
-            );
+            IServiceContainer container = new TImplementation();
+            container.Add(new SingletonServiceEntry(typeof(IList<>), null, typeof(MyList<>), container));
 
             Assert.IsNull(container.Get(typeof(IList<int>)));
             Assert.Throws<ServiceNotFoundException>(() => container.Get(typeof(IList<int>), null, QueryModes.ThrowOnError));
-            Assert.That(container.Get(typeof(IList<>), null, QueryModes.ThrowOnError), Is.EqualTo(new SingletonServiceEntry(typeof(IList<>), null, typeof(MyList<>), owner)));
+            Assert.That(container.Get(typeof(IList<>), null, QueryModes.ThrowOnError), Is.EqualTo(new SingletonServiceEntry(typeof(IList<>), null, typeof(MyList<>), container)));
         }
 
         [Test]
@@ -158,7 +136,8 @@ namespace Solti.Utils.DI.Container.Tests
                 entry1 = new AbstractServiceEntry(typeof(IDisposable), null),
                 entry2 = new AbstractServiceEntry(typeof(IDisposable), null);
 
-            IServiceContainer container = CreateContainer(entry1);
+            IServiceContainer container = new TImplementation();
+            container.Add(entry1);
             
             Assert.That(entry1, Is.EqualTo(entry2));
             Assert.True(container.Contains(entry1));
@@ -171,7 +150,7 @@ namespace Solti.Utils.DI.Container.Tests
         {
             var entry = new AbstractServiceEntry(typeof(IDisposable), null);
 
-            IServiceContainer container = CreateContainer(entry);
+            IServiceContainer container = new TImplementation().Add(entry);
 
             using (IEnumerator<AbstractServiceEntry> enumerator = container.GetEnumerator())
             {

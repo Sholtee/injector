@@ -36,7 +36,7 @@ namespace Solti.Utils.DI.Internals
 
         private readonly ServiceReference FService;
 
-        public InstanceServiceEntry(Type @interface, string name, object instance, bool releaseOnDispose, IServiceContainer owner) : base(@interface, name, null, owner)
+        public InstanceServiceEntry(Type @interface, string name, object instance, bool releaseOnDispose, IServiceContainer owner) : base(@interface, name, null, owner ?? throw new ArgumentNullException(nameof(owner)))
         {
             //
             // Interface-t nem kell ellenorizni (az os megteszi).
