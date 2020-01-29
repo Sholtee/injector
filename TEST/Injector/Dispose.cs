@@ -13,7 +13,7 @@ namespace Solti.Utils.DI.Injector.Tests
     public partial class InjectorTestsBase<TContainer>
     {
         [Test]
-        public void Injector_DisposeShouldFreeScopedEntries()
+        public void Injector_Dispose_ShouldFreeScopedEntries()
         {
             var mockSingleton = new Mock<IInterface_1_Disaposable>(MockBehavior.Strict);
             mockSingleton.Setup(s => s.Dispose());
@@ -29,7 +29,7 @@ namespace Solti.Utils.DI.Injector.Tests
         }
 
         [Test]
-        public void Injector_DisposeShouldFreeTransientEntries() 
+        public void Injector_Dispose_ShouldFreeTransientEntries() 
         {
             var obj = new Mock<IEnumerator<string>>(MockBehavior.Strict);
             obj.Setup(t => t.Dispose());

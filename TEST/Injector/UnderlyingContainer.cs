@@ -10,7 +10,7 @@ namespace Solti.Utils.DI.Injector.Tests
     public partial class InjectorTestsBase<TContainer>
     {
         [Test]
-        public void UnderlyingContainer_ShouldServeTheInjector() 
+        public void Injector_UnderlyingContainer_ShouldServeTheInjector() 
         {
             Container.Service<IInterface_1, Implementation_1_No_Dep>();
 

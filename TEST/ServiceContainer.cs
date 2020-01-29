@@ -22,7 +22,7 @@ namespace Solti.Utils.DI.Container.Tests
     public abstract class ServiceContainerTestsBase<TImplementation>: TestBase<TImplementation> where TImplementation : IServiceContainer, new()
     {
         [Test]
-        public void IServiceContainer_DisposeShouldDisposeOwnedEntriesOnly()
+        public void IServiceContainer_Dispose_ShouldDisposeOwnedEntriesOnly()
         {
             Disposable 
                 owned    = new Disposable(),
@@ -42,7 +42,7 @@ namespace Solti.Utils.DI.Container.Tests
         }
 
         [Test]
-        public void IServiceContainer_CreateChildShouldCopyTheEntriesFromItsParent()
+        public void IServiceContainer_CreateChild_ShouldCopyTheEntriesFromItsParent()
         {
             //
             // MockBehavior ne legyen megadva h mikor a GC felszabaditja a mock entitast
@@ -61,7 +61,7 @@ namespace Solti.Utils.DI.Container.Tests
 
         [TestCase(null)]
         [TestCase("cica")]
-        public void IServiceContainer_GetShouldReturnOnTypeMatch(string name)
+        public void IServiceContainer_Get_ShouldReturnOnTypeMatch(string name)
         {          
             var entry = new TransientServiceEntry(typeof(IList<>), name, typeof(MyList<>), Container);
             Container.Add(entry);
@@ -71,7 +71,7 @@ namespace Solti.Utils.DI.Container.Tests
 
         [TestCase(null)]
         [TestCase("cica")]
-        public void IServiceContainer_GetShouldReturnTheSpecializedEntry(string name)
+        public void IServiceContainer_Get_ShouldReturnTheSpecializedEntry(string name)
         {
             //
             // Azert singleton h az owner kontener ne valtozzon.
@@ -88,7 +88,7 @@ namespace Solti.Utils.DI.Container.Tests
 
         [TestCase(null)]
         [TestCase("cica")]
-        public void IServiceContainer_GetShouldReturnTheSpecializedInheritedEntry(string name)
+        public void IServiceContainer_Get_ShouldReturnTheSpecializedInheritedEntry(string name)
         {
             Container.Add(new SingletonServiceEntry(typeof(IList<>), name, typeof(MyList<>), Container));
 
@@ -108,7 +108,7 @@ namespace Solti.Utils.DI.Container.Tests
 
         [TestCase(null)]
         [TestCase("cica")]
-        public void IServiceContainer_GetShouldReturnExistingEntriesOnly(string name)
+        public void IServiceContainer_Get_ShouldReturnExistingEntriesOnly(string name)
         {
             Container.Add(new SingletonServiceEntry(typeof(IList<>), name, typeof(MyList<>), Container));
 
@@ -119,7 +119,7 @@ namespace Solti.Utils.DI.Container.Tests
 
         [TestCase(null)]
         [TestCase("cica")]
-        public void IServiceContainer_ContainsShouldSearchByGetHashCode(string name)
+        public void IServiceContainer_Contains_ShouldSearchByGetHashCode(string name)
         {
             AbstractServiceEntry 
                 entry1 = new AbstractServiceEntry(typeof(IDisposable), name),
@@ -134,7 +134,7 @@ namespace Solti.Utils.DI.Container.Tests
 
 
         [Test]
-        public void IServiceContainer_EnumeratorShouldBeIndependent()
+        public void IServiceContainer_Enumerator_ShouldBeIndependent()
         {
             var entry = new AbstractServiceEntry(typeof(IDisposable), null);
 
@@ -151,7 +151,7 @@ namespace Solti.Utils.DI.Container.Tests
 
         [TestCase(true)]
         [TestCase(false)]
-        public void IServiceContainer_DisposeShouldFreeInstancesIfReleaseOnDisposeWasSetToTrue(bool releaseOnDispose)
+        public void IServiceContainer_Dispose_ShouldFreeInstancesIfReleaseOnDisposeWasSetToTrue(bool releaseOnDispose)
         {
             var mockInstance = new Mock<IInterface_1_Disaposable>(MockBehavior.Strict);
             mockInstance.Setup(i => i.Dispose());
@@ -185,7 +185,7 @@ namespace Solti.Utils.DI.Container.Tests
         }
 
         [Test]
-        public void IServiceContainer_DisposeShouldDisposeChildContainerAndItsEntries()
+        public void IServiceContainer_Dispose_ShouldDisposeChildContainerAndItsEntries()
         {
             IServiceContainer grandChild;
             IDisposable instance;
@@ -200,7 +200,7 @@ namespace Solti.Utils.DI.Container.Tests
         }
 
         [Test]
-        public void IServiceContainer_DisposeShouldDisposeSpecializedEntries()
+        public void IServiceContainer_Dispose_ShouldDisposeSpecializedEntries()
         {
             Disposable testDisposable;
 
@@ -238,13 +238,13 @@ namespace Solti.Utils.DI.Container.Tests
         }
 
         [Test]
-        public void IServiceContainer_ChildShouldInheritTheParentEntries()
+        public void IServiceContainer_ChildShouldInheritEntriesFromTheParent()
         {
             IServiceContainer child = Container
                 .Service<IInterface_1, Implementation_1_No_Dep>()
                 .CreateChild();
 
-            Assert.That(child.Get<IInterface_1>(QueryModes.ThrowOnError).Implementation, Is.EqualTo(typeof(Implementation_1_No_Dep)));
+            Assert.DoesNotThrow(() => child.Get<IInterface_1>(QueryModes.ThrowOnError));
         }
 
         [TestCase(Lifetime.Scoped)]
@@ -278,7 +278,7 @@ namespace Solti.Utils.DI.Container.Tests
         }
 
         [Test]
-        public void IServiceContainer_ChildShouldInheritTheProxies()
+        public void IServiceContainer_ChildShouldInheritProxies()
         {
             Container.Service<IInterface_1, Implementation_1_No_Dep>();
 
@@ -308,7 +308,7 @@ namespace Solti.Utils.DI.Container.Tests
 
 
         [Test]
-        public void IServiceContainer_CreateChildShouldNotTriggerTheTypeResolver()
+        public void IServiceContainer_CreateChild_ShouldNotTriggerTheTypeResolver()
         {
             var mockTypeResolver = new Mock<ITypeResolver>(MockBehavior.Strict);
             mockTypeResolver.Setup(i => i.Resolve(It.IsAny<Type>())).Returns<Type>(null);
@@ -324,12 +324,12 @@ namespace Solti.Utils.DI.Container.Tests
         }
 
         [Test]
-        public void IServiceContainer_GetShouldThrowOnNull() => Assert.Throws<ArgumentNullException>(() => Container.Get(null));
+        public void IServiceContainer_Get_ShouldThrowOnNull() => Assert.Throws<ArgumentNullException>(() => Container.Get(null));
 
         [Test]
-        public void IServiceContainer_AddShouldThrowOnNull() => Assert.Throws<ArgumentNullException>(() => Container.Add(null));
+        public void IServiceContainer_Add_ShouldThrowOnNull() => Assert.Throws<ArgumentNullException>(() => Container.Add(null));
 
-        public void IServiceContainer_AddShouldAcceptMoreThanOneNamedService()
+        public void IServiceContainer_Add_ShouldAcceptMoreThanOneNamedService()
         {
             Assert.DoesNotThrow(() => Container.Add(new SingletonServiceEntry(typeof(IDisposable), "cica", typeof(Disposable), Container)));
             Assert.DoesNotThrow(() => Container.Add(new SingletonServiceEntry(typeof(IDisposable), "kutya", typeof(Disposable), Container)));
@@ -339,7 +339,7 @@ namespace Solti.Utils.DI.Container.Tests
 
         [TestCase(null)]
         [TestCase("cica")]
-        public void IServiceContainer_AddShouldThrowOnAlreadyRegisteredService(string name)
+        public void IServiceContainer_Add_ShouldThrowOnAlreadyRegisteredService(string name)
         {
             Container.Add(new SingletonServiceEntry(typeof(IDisposable), name, typeof(Disposable), Container));
 
@@ -348,7 +348,7 @@ namespace Solti.Utils.DI.Container.Tests
 
         [TestCase(null)]
         [TestCase("cica")]
-        public void IServiceContainer_AddShouldOverwriteAbstractEntries(string name) 
+        public void IServiceContainer_Add_ShouldOverwriteAbstractEntries(string name) 
         {
             Container.Add(new AbstractServiceEntry(typeof(IDisposable), name));
 
@@ -357,7 +357,7 @@ namespace Solti.Utils.DI.Container.Tests
         }
 
         [Test]
-        public void IServiceContainer_GetShouldReturnTheSpecializedEntryInMultithreadedEnvironment()
+        public void IServiceContainer_Get_ShouldReturnTheSpecializedEntryInMultithreadedEnvironment()
         {
             var entry = new LockableSingletonServiceEntry(typeof(IList<>), typeof(MyList<>), Container);
 
@@ -412,7 +412,7 @@ namespace Solti.Utils.DI.Container.Tests
         }
 
         [Test]
-        public void IServiceContainer_GetShouldReturnTheSpecializedInheritedEntryInMultithreadedEnvironment()
+        public void IServiceContainer_Get_ShouldReturnTheSpecializedInheritedEntryInMultithreadedEnvironment()
         {
             var entry = new LockableSingletonServiceEntry(typeof(IList<>), typeof(MyList<>), Container);
 
@@ -456,10 +456,10 @@ namespace Solti.Utils.DI.Container.Tests
         }
 
         [Test]
-        public void IServiceContainer_GetShouldThrowOnNonInterface() => Assert.Throws<ArgumentException>(() => Container.Get(typeof(object)));
+        public void IServiceContainer_Get_ShouldThrowOnNonInterface() => Assert.Throws<ArgumentException>(() => Container.Get(typeof(object)));
 
         [Test]
-        public void IServiceContainer_AddShouldDisposeAbstractEntryOnOverride()
+        public void IServiceContainer_Add_ShouldDisposeAbstractEntryOnOverride()
         {
             var entry = new AbstractServiceEntry(typeof(IInterface_1), null, null, Container);
 
@@ -470,7 +470,7 @@ namespace Solti.Utils.DI.Container.Tests
         }
 
         [Test]
-        public void IServiceContainer_CreateChildShouldThrowIfChildCountReachedTheLimit()
+        public void IServiceContainer_CreateChild_ShouldThrowIfChildCountReachedTheLimit()
         {
             Config.Value.CompositeMaxChildCount = 1;
 
