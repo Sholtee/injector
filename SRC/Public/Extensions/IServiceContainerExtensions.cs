@@ -110,6 +110,31 @@ namespace Solti.Utils.DI
         public static IServiceContainer Lazy(this IServiceContainer self, Type iface, ITypeResolver implementation, Lifetime lifetime = Lifetime.Transient) => self.Lazy(iface, null, implementation, lifetime);
 
         /// <summary>
+        /// Registers a service where the implementation will be resolved on the first request. It is useful when the implementation is unknown in compile time or you just want to load the containing assembly on the first request. Type resolution is done by the <see cref="LazyTypeResolver"/>.
+        /// </summary>
+        /// <param name="self">The target <see cref="IServiceContainer"/>.</param>
+        /// <param name="iface">The service interface to be registered. It can not be null and can be registered only once (with the given <paramref name="name"/>).</param>
+        /// <param name="name">The (optional) name of the service.</param>
+        /// <param name="asmPath">The absolute path of the containing <see cref="System.Reflection.Assembly"/>.</param>
+        /// <param name="className">The full name of the <see cref="Type"/> that implemenets the <paramref name="iface"/>.</param>
+        /// <param name="lifetime">The <see cref="Lifetime"/> of the service.</param>
+        /// <returns>The container itself.</returns>
+        public static IServiceContainer Lazy(this IServiceContainer self, Type iface, string name, string asmPath, string className, Lifetime lifetime = Lifetime.Transient) => 
+            self.Lazy(iface, name, new LazyTypeResolver(iface, asmPath, className), lifetime);
+
+        /// <summary>
+        /// Registers a service where the implementation will be resolved on the first request. It is useful when the implementation is unknown in compile time or you just want to load the containing assembly on the first request. Type resolution is done by the <see cref="LazyTypeResolver"/>.
+        /// </summary>
+        /// <param name="self">The target <see cref="IServiceContainer"/>.</param>
+        /// <param name="iface">The service interface to be registered. It can not be null and can be registered only once.</param>
+        /// <param name="asmPath">The absolute path of the containing <see cref="System.Reflection.Assembly"/>.</param>
+        /// <param name="className">The full name of the <see cref="Type"/> that implemenets the <paramref name="iface"/>.</param>
+        /// <param name="lifetime">The <see cref="Lifetime"/> of the service.</param>
+        /// <returns>The container itself.</returns>
+        public static IServiceContainer Lazy(this IServiceContainer self, Type iface, string asmPath, string className, Lifetime lifetime = Lifetime.Transient) =>
+            self.Lazy(iface, null, asmPath, className, lifetime);
+
+        /// <summary>
         /// Registers a new service factory with the given type. Factories are also services except that the instantiating process is delegated to the caller. Useful if a service has more than one constructor.
         /// </summary>
         /// <param name="self">The target <see cref="IServiceContainer"/>.</param>
@@ -299,6 +324,31 @@ namespace Solti.Utils.DI
         /// <param name="lifetime">The <see cref="Lifetime"/> of the service.</param>
         /// <returns>The container itself.</returns>
         public static IServiceContainer Lazy<TInterface>(this IServiceContainer self, string name, ITypeResolver implementation, Lifetime lifetime = Lifetime.Transient) => self.Lazy(typeof(TInterface), name, implementation, lifetime);
+
+        /// <summary>
+        /// Registers a service where the implementation will be resolved on the first request. It is useful when the implementation is unknown in compile time or you just want to load the containing assembly on the first request. Type resolution is done by the <see cref="LazyTypeResolver"/>.
+        /// </summary>
+        ///<typeparam name="TInterface">The service interface to be registered. It can be registered only once (with the given <paramref name="name"/>).</typeparam>
+        /// <param name="self">The target <see cref="IServiceContainer"/>.</param>
+        /// <param name="name">The (optional) name of the service.</param>
+        /// <param name="asmPath">The absolute path of the containing <see cref="System.Reflection.Assembly"/>.</param>
+        /// <param name="className">The full name of the <see cref="Type"/> that implemenets the <typeparamref name="TInterface"/>.</param>
+        /// <param name="lifetime">The <see cref="Lifetime"/> of the service.</param>
+        /// <returns>The container itself.</returns>
+        public static IServiceContainer Lazy<TInterface>(this IServiceContainer self, string name, string asmPath, string className, Lifetime lifetime = Lifetime.Transient) =>
+            self.Lazy(typeof(TInterface), name, asmPath, className, lifetime);
+
+        /// <summary>
+        /// Registers a service where the implementation will be resolved on the first request. It is useful when the implementation is unknown in compile time or you just want to load the containing assembly on the first request. Type resolution is done by the <see cref="LazyTypeResolver"/>.
+        /// </summary>
+        /// <typeparam name="TInterface">The service interface to be registered. It can be registered only once.</typeparam>
+        /// <param name="self">The target <see cref="IServiceContainer"/>.</param>
+        /// <param name="asmPath">The absolute path of the containing <see cref="System.Reflection.Assembly"/>.</param>
+        /// <param name="className">The full name of the <see cref="Type"/> that implemenets the <typeparamref name="TInterface"/>.</param>
+        /// <param name="lifetime">The <see cref="Lifetime"/> of the service.</param>
+        /// <returns>The container itself.</returns>
+        public static IServiceContainer Lazy<TInterface>(this IServiceContainer self, string asmPath, string className, Lifetime lifetime = Lifetime.Transient) =>
+            self.Lazy<TInterface>(null, asmPath, className, lifetime);
 
         /// <summary>
         /// Registers a new service factory with the given type. Factories are also services except that the instantiating process is delegated to the caller. Useful if a service has more than one constructor.
