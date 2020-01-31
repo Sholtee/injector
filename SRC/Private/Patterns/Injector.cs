@@ -19,9 +19,9 @@ namespace Solti.Utils.DI.Internals
 
     internal sealed class Injector : ServiceContainer, IInjector
     {
-        private const QueryModes QueryFlags = QueryModes.AllowSpecialization | QueryModes.ThrowOnError;
-
         private readonly Stack<ServiceReference> FGraph = new Stack<ServiceReference>();
+
+        private ServiceReference ParentService => FGraph.Any() ? FGraph.Peek() : null;
 
         private Injector() => throw new NotSupportedException();
 
@@ -45,7 +45,7 @@ namespace Solti.Utils.DI.Internals
             if (iface.IsGenericTypeDefinition())
                 throw new ArgumentException(Resources.CANT_INSTANTIATE_GENERICS, nameof(iface));
 
-            AbstractServiceEntry entry = Get(iface, name, QueryFlags);
+            AbstractServiceEntry entry = Get(iface, name, QueryModes.AllowSpecialization | QueryModes.ThrowOnError);
 
             //
             // - Lekerdezeshez mindig a deklaralo szervizkollekciobol kell injector-t letrehozni.
@@ -75,7 +75,7 @@ namespace Solti.Utils.DI.Internals
             } 
             else 
             {  
-                currentNode = new ServiceReference(iface, name);
+                currentNode = new ServiceReference(entry);
 
                 //
                 // A grafban egy szinttel lejebb levo elemek mind a mostani szervizunk fuggosegei (lasd metodus lezaras).
@@ -121,11 +121,7 @@ namespace Solti.Utils.DI.Internals
             // Ha az aktualisan lekerdezett szerviz valakinek a fuggosege akkor hozzaadjuk a fuggosegi listahoz.
             //
 
-            if (FGraph.Any()) 
-                FGraph
-                    .Peek()
-                    .Dependencies
-                    .Add(currentNode);
+            ParentService?.Dependencies.Add(currentNode);
 
             return currentNode;
         }
@@ -147,7 +143,7 @@ namespace Solti.Utils.DI.Internals
 
         private sealed class ServiceReferenceComparer : IEqualityComparer<ServiceReference>
         {
-            public bool Equals(ServiceReference x, ServiceReference y) => x.Interface == y.Interface && x.Name == y.Name;
+            public bool Equals(ServiceReference x, ServiceReference y) => x.RelatedServiceEntry == y.RelatedServiceEntry;
             public int GetHashCode(ServiceReference obj) => throw new NotImplementedException();
             public static ServiceReferenceComparer Instance { get; } = new ServiceReferenceComparer();
         }

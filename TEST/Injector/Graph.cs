@@ -45,7 +45,7 @@ namespace Solti.Utils.DI.Injector.Graph.Tests
 
             return new[] { svc1, svc2, svc3, svc4 };
 
-            ServiceReference GetDependency(ServiceReference reference, Type iface) => reference.Dependencies.SingleOrDefault(dep => dep.Interface == iface);
+            ServiceReference GetDependency(ServiceReference reference, Type iface) => reference.Dependencies.SingleOrDefault(dep => dep.RelatedServiceEntry.Interface == iface);
         }
 
         [Test]

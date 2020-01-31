@@ -11,28 +11,19 @@ namespace Solti.Utils.DI.Internals
     /// <summary>
     /// Encapsulates a service and its dependencies into a reference counted container.
     /// </summary>
-    public class ServiceReference : DisposeByRefObject, IServiceID
+    public class ServiceReference : DisposeByRefObject
     {
         private readonly ServiceCollection FDependencies = new ServiceCollection();
 
         /// <summary>
         /// Creates a new <see cref="ServiceReference"/> instance.
         /// </summary>
-        public ServiceReference(Type iface, string name) 
-        {
-            Interface = iface;
-            Name = name;
-        }
+        public ServiceReference(AbstractServiceEntry entry) => RelatedServiceEntry = entry;
 
         /// <summary>
-        /// The interface of the service.
+        /// The related service entry.
         /// </summary>
-        public Type Interface { get; }
-
-        /// <summary>
-        /// The (optional) name of the service.
-        /// </summary>
-        public string Name { get;  }
+        public AbstractServiceEntry RelatedServiceEntry { get; }
 
         /// <summary>
         /// The referenced service instance.

@@ -11,13 +11,17 @@ using System.Linq;
 #if NETSTANDARD1_6
 using System.Reflection;
 #endif
+using System.Runtime.CompilerServices;
 using System.Threading;
 
 using static System.Diagnostics.Debug;
 
+[assembly: InternalsVisibleTo("<>f__AnonymousType3<System.Type_System.String>_Solti.Utils.DI.Internals.IServiceID_Duck")]
+
 namespace Solti.Utils.DI
 {
     using Properties;
+    using Proxy;
     using Internals;
 
     /// <summary>
@@ -75,7 +79,7 @@ namespace Solti.Utils.DI
                 }
                 catch (ArgumentException e)
                 {
-                    throw new ServiceAlreadyRegisteredException(key, e);
+                    throw new ServiceAlreadyRegisteredException(entry, e);
                 }
             }
 
@@ -123,7 +127,9 @@ namespace Solti.Utils.DI
                 //
 
                 if (!hasGenericEntry)
-                    return !mode.HasFlag(QueryModes.ThrowOnError) ? (AbstractServiceEntry) null : throw new ServiceNotFoundException((serviceInterface, name));
+                    return !mode.HasFlag(QueryModes.ThrowOnError) 
+                        ? (AbstractServiceEntry) null 
+                        : throw new ServiceNotFoundException(new { Interface = serviceInterface, Name = name }.Act().Like<IServiceID>());
             }
 
             Assert(result.IsGeneric());

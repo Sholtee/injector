@@ -16,11 +16,11 @@ namespace Solti.Utils.DI.Internals.Tests
         public void ServiceReference_ShouldManageTheReferenceCounts()
         {
             var target = new Disposable();
-            var reference = new ServiceReference(null, null) { Instance = target };
+            var reference = new ServiceReference(null) { Instance = target };
 
             Assert.That(reference.RefCount, Is.EqualTo(1));
 
-            var svc = new ServiceReference(null, null) { Instance = new object() };
+            var svc = new ServiceReference(null) { Instance = new object() };
             svc.Dependencies.Add(reference);
 
             Assert.That(reference.RefCount, Is.EqualTo(2));

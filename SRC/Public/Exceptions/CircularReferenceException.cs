@@ -29,7 +29,7 @@ namespace Solti.Utils.DI
             (
                 Resources.Culture,
                 Resources.CIRCULAR_REFERENCE,
-                string.Join(" -> ", path.Select(part => (part.Interface, part.Name).FriendlyName()))
+                string.Join(" -> ", path.Select(part => part.RelatedServiceEntry.FriendlyName()))
             )
         ) 
         {
