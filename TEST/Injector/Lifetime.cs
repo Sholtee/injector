@@ -28,7 +28,7 @@ namespace Solti.Utils.DI.Injector.Tests
         [Test]
         public void Lifetime_TransientService_ShouldNotBeInstantiatedIfTheInjectorWasRecycled() 
         {
-            Config.Value.MaxSpawnedServices = 1;
+            Config.Value.InjectorMaxSpawnedTransientServices = 1;
 
             Container.Service<IInterface_1, Implementation_1_No_Dep>(Lifetime.Transient);
 

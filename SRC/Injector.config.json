@@ -1,4 +1,4 @@
 {
-  "MaxSpawnedServices": 512,
+  "InjectorMaxSpawnedTransientServices": 512,
   "CompositeMaxChildCount": 512
 }
