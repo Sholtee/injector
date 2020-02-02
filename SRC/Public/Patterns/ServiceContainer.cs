@@ -16,7 +16,7 @@ using System.Threading;
 
 using static System.Diagnostics.Debug;
 
-[assembly: InternalsVisibleTo("<>f__AnonymousType3<System.Type_System.String>_Solti.Utils.DI.Internals.IServiceID_Duck")]
+[assembly: InternalsVisibleTo("<>f__AnonymousType2<System.Type_System.String>_Solti.Utils.DI.Internals.IServiceID_Duck")]
 
 namespace Solti.Utils.DI
 {
@@ -30,7 +30,7 @@ namespace Solti.Utils.DI
     [SuppressMessage("Naming", "CA1710:Identifiers should have correct suffix", Justification = "The name provides meaningful information about the implementation")]
     public class ServiceContainer : Composite<IServiceContainer>, IServiceContainer
     {
-        private readonly Dictionary<(Type Interface, string Name), AbstractServiceEntry> FEntries;
+        private readonly Dictionary<IServiceID, AbstractServiceEntry> FEntries;
 
         //
         // Singleton elettartamnal parhuzamosan is modositasra kerulhet a  bejegyzes lista 
@@ -54,15 +54,13 @@ namespace Solti.Utils.DI
 
             using (FLock.AcquireWriterLock())
             {
-                var key = (entry.Interface, entry.Name);
-
                 //
                 // Abstract bejegyzest felul lehet irni (de csak azt).
                 //
 
-                if (FEntries.TryGetValue(key, out var entryToRemove) && entryToRemove.GetType() == typeof(AbstractServiceEntry))
+                if (FEntries.TryGetValue(entry, out var entryToRemove) && entryToRemove.GetType() == typeof(AbstractServiceEntry))
                 {
-                    bool removed = FEntries.Remove(key);
+                    bool removed = FEntries.Remove(entryToRemove);
                     Assert(removed, "Can't remove entry");
 
                     if (ShouldDispose(entryToRemove))
@@ -75,7 +73,7 @@ namespace Solti.Utils.DI
 
                 try
                 {
-                    FEntries.Add(key, entry);
+                    FEntries.Add(entry, entry);
                 }
                 catch (ArgumentException e)
                 {
@@ -99,6 +97,8 @@ namespace Solti.Utils.DI
             if (!serviceInterface.IsInterface())
                 throw new ArgumentException(Resources.NOT_AN_INTERFACE, nameof(serviceInterface));
 
+            IServiceID key = MakeID(serviceInterface);
+
             AbstractServiceEntry result;
 
             using (FLock.AcquireReaderLock())
@@ -107,7 +107,7 @@ namespace Solti.Utils.DI
                 // 1. eset: Vissza tudjuk adni amit kerestunk.
                 //
 
-                if (FEntries.TryGetValue((serviceInterface, name), out result))
+                if (FEntries.TryGetValue(key, out result))
                     return result;
 
                 //
@@ -118,7 +118,7 @@ namespace Solti.Utils.DI
                                        serviceInterface.IsGenericType() &&
                                        FEntries.TryGetValue
                                        (
-                                           (serviceInterface.GetGenericTypeDefinition(), name), 
+                                           MakeID(serviceInterface.GetGenericTypeDefinition()), 
                                            out result
                                        );
 
@@ -129,7 +129,7 @@ namespace Solti.Utils.DI
                 if (!hasGenericEntry)
                     return !mode.HasFlag(QueryModes.ThrowOnError) 
                         ? (AbstractServiceEntry) null 
-                        : throw new ServiceNotFoundException(new { Interface = serviceInterface, Name = name }.Act().Like<IServiceID>());
+                        : throw new ServiceNotFoundException(key);
             }
 
             Assert(result.IsGeneric());
@@ -179,6 +179,12 @@ namespace Solti.Utils.DI
                 
                 return registered;
             }
+
+            IServiceID MakeID(Type iface) => new
+            {
+                Interface = iface,
+                Name = name
+            }.Act().Like<IServiceID>();
         }
 
         /// <summary>
@@ -227,7 +233,7 @@ namespace Solti.Utils.DI
         /// <param name="parent">The parent <see cref="IServiceContainer"/>.</param>
         protected ServiceContainer(IServiceContainer parent) : base(parent)
         {
-            FEntries = new Dictionary<(Type Interface, string Name), AbstractServiceEntry>(parent?.Count ?? 0);
+            FEntries = new Dictionary<IServiceID, AbstractServiceEntry>(parent?.Count ?? 0, ServiceIDComparer.Instance);
             if (parent == null) return;
 
             foreach (AbstractServiceEntry entry in parent)

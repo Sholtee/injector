@@ -140,12 +140,5 @@ namespace Solti.Utils.DI.Internals
 
         public override void RemoveChild(IServiceContainer child) => throw new NotSupportedException();
         #endregion
-
-        private sealed class ServiceReferenceComparer : IEqualityComparer<ServiceReference>
-        {
-            public bool Equals(ServiceReference x, ServiceReference y) => x.RelatedServiceEntry == y.RelatedServiceEntry;
-            public int GetHashCode(ServiceReference obj) => throw new NotImplementedException();
-            public static ServiceReferenceComparer Instance { get; } = new ServiceReferenceComparer();
-        }
     }
 }
