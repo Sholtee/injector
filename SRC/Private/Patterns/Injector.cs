@@ -45,11 +45,21 @@ namespace Solti.Utils.DI.Internals
             if (iface.IsGenericTypeDefinition())
                 throw new ArgumentException(Resources.CANT_INSTANTIATE_GENERICS, nameof(iface));
 
+            //
+            // Ha vkinek a fuggosege vagyunk akkor a fuggo szerviz itt meg nem lehet legyartva.
+            //
+
+            Assert(ParentService?.Instance == null, "Already produced services can not request dependencies");
+
+            //
+            // Bejegyzes lekerdezese
+            //
+
             AbstractServiceEntry entry = Get(iface, name, QueryModes.AllowSpecialization | QueryModes.ThrowOnError);
 
             //
-            // Szerviz fuggosege nem lehet rovidebb elettartamu mint a szerviz maga (pl Scoped
-            // szerviz Transient fuggoseggel).
+            // Ha szigoruak vagyunk akkor a szulonknek nem lehet hosszabb elettartama mint az epp
+            // lekerdezett fuggosegenek.
             //
 
             if (Config.Value.StrictDI && ParentService?.RelatedServiceEntry.Lifetime > entry.Lifetime)
@@ -65,7 +75,7 @@ namespace Solti.Utils.DI.Internals
             //     Mellekhatasok: 
             //       > Singleton szerviz hivatkozhat abstract fuggosegre (de az rossz konfiguracio).
             // - A referencia szamlalas miatt Singleton szerviz minden fuggosege is Singletonkent 
-            //   viselkedik.
+            //   viselkedik (ez ellen van a StrictDI).
             //
 
             AbstractServiceReference currentService;
@@ -83,7 +93,7 @@ namespace Solti.Utils.DI.Internals
                     currentService = ownerInjector.GetReference(iface, name);
                 }
 
-                Assert(!currentService.Disposed, "Node already disposed");
+                Assert(!currentService.Disposed, "Service must not be disposed here");
             } 
             else 
             {  
