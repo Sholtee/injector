@@ -56,7 +56,7 @@ namespace Solti.Utils.DI.Internals
             //   viselkedik.
             //
 
-            ServiceReference currentNode;
+            ServiceReference currentService;
 
             if (entry.Owner != this && entry.Owner != this.Parent)
             {
@@ -68,20 +68,20 @@ namespace Solti.Utils.DI.Internals
 
                 using (var ownerInjector = new Injector(entry.Owner))
                 {
-                    currentNode = ownerInjector.GetReference(iface, name);
+                    currentService = ownerInjector.GetReference(iface, name);
                 }
 
-                Assert(!currentNode.Disposed, "Node already disposed");
+                Assert(!currentService.Disposed, "Node already disposed");
             } 
             else 
             {  
-                currentNode = new ServiceReference(entry);
+                currentService = new ServiceReference(entry);
 
                 //
                 // A grafban egy szinttel lejebb levo elemek mind a mostani szervizunk fuggosegei (lasd metodus lezaras).
                 //
 
-                FGraph.Push(currentNode);
+                FGraph.Push(currentService);
 
                 try
                 {
@@ -89,9 +89,9 @@ namespace Solti.Utils.DI.Internals
                     // Ha egynel tobbszor szerepel az aktualis szerviz akkor korkoros referenciank van.
                     //
 
-                    if (FGraph.LastIndexOf(currentNode, ServiceReferenceComparer.Instance) > 0)
+                    if (FGraph.LastIndexOf(currentService, ServiceReferenceComparer.Instance) > 0)
                     {
-                        currentNode.Release();
+                        currentService.Release();
 
                         throw new CircularReferenceException(FGraph);
                     }
@@ -100,15 +100,15 @@ namespace Solti.Utils.DI.Internals
                     // Factory hivasa, innentol a ServiceEntry felelos a node felszabaditasaert.
                     //
 
-                    entry.GetService(this, ref currentNode);
+                    entry.GetService(this, ref currentService);
 
-                    Assert(currentNode.Instance != null, "Instance was not set");
+                    Assert(currentService.Instance != null, "Instance was not set");
 
                     //
                     // Peldany tipusat ellenorizzuk mert a Factory(), Lazy() stb visszaadhat vicces dolgokat.
                     //
 
-                    if (!iface.IsInstanceOfType(currentNode.Instance))
+                    if (!iface.IsInstanceOfType(currentService.Instance))
                         throw new Exception(string.Format(Resources.Culture, Resources.INVALID_INSTANCE, iface));
                 }
                 finally
@@ -121,9 +121,9 @@ namespace Solti.Utils.DI.Internals
             // Ha az aktualisan lekerdezett szerviz valakinek a fuggosege akkor hozzaadjuk a fuggosegi listahoz.
             //
 
-            ParentService?.Dependencies.Add(currentNode);
+            ParentService?.Dependencies.Add(currentService);
 
-            return currentNode;
+            return currentService;
         }
 
         #region IInjector
