@@ -1,4 +1,5 @@
 {
   "MaxSpawnedServices": 512,
-  "CompositeMaxChildCount": 512
+  "CompositeMaxChildCount": 512,
+  "StrictDI": false
 }

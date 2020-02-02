@@ -118,6 +118,15 @@ namespace Solti.Utils.DI.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The service ({0}) requested a dependency ({1}) that has lower lifetime than the service has. .
+        /// </summary>
+        internal static string INAPPROPRIATE_LIFETIME {
+            get {
+                return ResourceManager.GetString("INAPPROPRIATE_LIFETIME", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The injector can not hold more than {0} transient services. It usually indicates that you were recycling the injector..
         /// </summary>
         internal static string INJECTOR_SHOULD_BE_RELEASED {
@@ -217,7 +226,7 @@ namespace Solti.Utils.DI.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Child already has parent..
+        ///   Looks up a localized string similar to Child already has a parent..
         /// </summary>
         internal static string NOT_ORPHAN {
             get {

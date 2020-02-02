@@ -48,6 +48,18 @@ namespace Solti.Utils.DI.Internals
             AbstractServiceEntry entry = Get(iface, name, QueryModes.AllowSpecialization | QueryModes.ThrowOnError);
 
             //
+            // Szerviz fuggosege nem lehet rovidebb elettartamu mint a szerviz maga (pl Scoped
+            // szerviz Transient fuggoseggel).
+            //
+
+            if (Config.Value.StrictDI && ParentService?.RelatedServiceEntry.Lifetime > entry.Lifetime)
+                throw new InvalidOperationException(string.Format(
+                    Resources.Culture, 
+                    Resources.INAPPROPRIATE_LIFETIME, 
+                    ParentService.RelatedServiceEntry.FriendlyName(),
+                    entry.FriendlyName()));
+
+            //
             // - Lekerdezeshez mindig a deklaralo szervizkollekciobol kell injector-t letrehozni.
             //   * Igy a fuggosegek is a deklaralo kollekciobol lesznek feloldva
             //     Mellekhatasok: 
@@ -140,5 +152,13 @@ namespace Solti.Utils.DI.Internals
 
         public override void RemoveChild(IServiceContainer child) => throw new NotSupportedException();
         #endregion
+    }
+
+    public partial class Config 
+    {
+        /// <summary>
+        /// Instructs the injector to throw if a service being requested has one or more dependencies that have lower <see cref="Lifetime"/> than the service has (e.g.: a <see cref="Lifetime.Singleton"/> service can not have <see cref="Lifetime.Transient"/> dependency).
+        /// </summary>
+        public bool StrictDI { get; set; } = false;
     }
 }
