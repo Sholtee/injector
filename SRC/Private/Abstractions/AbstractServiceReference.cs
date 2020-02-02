@@ -39,6 +39,10 @@ namespace Solti.Utils.DI.Internals
             {
                 CheckDisposed();
 
+                //
+                // Peldany csak egyszer allithato be.
+                //
+
                 if (FInstance != null) 
                     throw new InvalidOperationException(); // TODO: hibauzenet
 
@@ -47,7 +51,7 @@ namespace Solti.Utils.DI.Internals
         }
 
         /// <summary>
-        /// The dependencies of this service <see cref="Instance"/>.
+        /// The dependencies of the service <see cref="Instance"/>.
         /// </summary>
         public abstract ICollection<AbstractServiceReference> Dependencies { get; }
     }

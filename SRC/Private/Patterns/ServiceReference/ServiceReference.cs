@@ -8,21 +8,12 @@ using System.Collections.Generic;
 
 namespace Solti.Utils.DI.Internals
 {
-    /// <summary>
-    /// Encapsulates a service and its dependencies into a reference counted container.
-    /// </summary>
-    public class ServiceReference : AbstractServiceReference
+    internal sealed class ServiceReference : AbstractServiceReference
     {
         private readonly ServiceCollection FDependencies = new ServiceCollection();
 
-        /// <summary>
-        /// Creates a new <see cref="ServiceReference"/> instance.
-        /// </summary>
         public ServiceReference(AbstractServiceEntry entry) : base(entry) { }
 
-        /// <summary>
-        /// See <see cref="AbstractServiceReference.Dependencies"/>.
-        /// </summary>
         public override ICollection<AbstractServiceReference> Dependencies 
         {
             get 
@@ -32,9 +23,6 @@ namespace Solti.Utils.DI.Internals
             }
         }
 
-        /// <summary>
-        /// Disposes the referenced service <see cref="AbstractServiceReference.Instance"/> and decrements the reference counter of all the <see cref="Dependencies"/>.
-        /// </summary>
         protected override void Dispose(bool disposeManaged)
         {
             if (disposeManaged)
