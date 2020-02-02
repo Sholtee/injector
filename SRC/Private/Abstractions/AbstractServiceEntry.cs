@@ -123,15 +123,21 @@ namespace Solti.Utils.DI.Internals
         /// Gets the hash code of this entry.
         /// </summary>
         /// <returns>The hash code of this entry.</returns>
-        public override int GetHashCode() => new // muszaj anonimnak lennie
-        {
-            Owner,
-            Interface,
-            Name,
-            Lifetime,
-            Factory,
-            Value,
-            Implementation
-        }.GetHashCode();
+        public override int GetHashCode() =>
+#if NETSTANDARD1_6 || NETSTANDARD2_0
+            new // muszaj anonimnak lennie
+            {
+                Owner,
+                Interface,
+                Name,
+                Lifetime,
+                Factory,
+                Value,
+                Implementation
+            }.GetHashCode()
+#else
+            HashCode.Combine(Owner, Interface, Name, Lifetime, Factory, Value, Implementation)
+#endif
+            ;
     }
 }
