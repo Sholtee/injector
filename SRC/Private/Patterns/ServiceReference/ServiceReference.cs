@@ -23,7 +23,14 @@ namespace Solti.Utils.DI.Internals
         /// <summary>
         /// See <see cref="AbstractServiceReference.Dependencies"/>.
         /// </summary>
-        public override ICollection<AbstractServiceReference> Dependencies => FDependencies;
+        public override ICollection<AbstractServiceReference> Dependencies 
+        {
+            get 
+            {
+                CheckDisposed();
+                return FDependencies;
+            }
+        }
 
         /// <summary>
         /// Disposes the referenced service <see cref="AbstractServiceReference.Instance"/> and decrements the reference counter of all the <see cref="Dependencies"/>.

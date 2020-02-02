@@ -3,6 +3,7 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
+using System;
 using System.Collections.Generic;
 
 namespace Solti.Utils.DI.Internals
@@ -12,6 +13,8 @@ namespace Solti.Utils.DI.Internals
     /// </summary>
     public abstract class AbstractServiceReference : DisposeByRefObject
     {
+        private object FInstance;
+
         /// <summary>
         /// Creates a new <see cref="AbstractServiceReference"/> instance.
         /// </summary>
@@ -25,7 +28,23 @@ namespace Solti.Utils.DI.Internals
         /// <summary>
         /// The referenced service instance.
         /// </summary>
-        public object Instance { get; set; }
+        public object Instance 
+        {
+            get 
+            {
+                CheckDisposed();
+                return FInstance;
+            }
+            set 
+            {
+                CheckDisposed();
+
+                if (FInstance != null) 
+                    throw new InvalidOperationException(); // TODO: hibauzenet
+
+                FInstance = value;
+            }
+        }
 
         /// <summary>
         /// The dependencies of this service <see cref="Instance"/>.
