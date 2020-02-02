@@ -16,25 +16,7 @@ namespace Solti.Utils.DI.Internals
     /// </summary>
     internal class InstanceServiceEntry : AbstractServiceEntry
     {
-        #region InstanceServiceReference
-        private sealed class InstanceServiceReference : ServiceReference // hacky
-        {
-            public InstanceServiceReference(InstanceServiceEntry entry, bool releaseOnDispose) : base(entry)
-            {
-                ReleaseOnDispose = releaseOnDispose;        
-            }
-
-            public bool ReleaseOnDispose { get; }
-
-            protected override void Dispose(bool disposeManaged)
-            {
-                if (disposeManaged && !ReleaseOnDispose) Instance = null; 
-                base.Dispose(disposeManaged);
-            }
-        }
-        #endregion
-
-        private readonly ServiceReference FService;
+        private readonly AbstractServiceReference FService;
 
         public InstanceServiceEntry(Type @interface, string name, object instance, bool releaseOnDispose, IServiceContainer owner) : base(@interface, name, null, owner ?? throw new ArgumentNullException(nameof(owner)))
         {
@@ -48,7 +30,8 @@ namespace Solti.Utils.DI.Internals
             if (!@interface.IsInstanceOfType(instance))
                 throw new InvalidOperationException(string.Format(Resources.Culture, Resources.NOT_ASSIGNABLE, @interface, instance.GetType()));
 
-            FService = new InstanceServiceReference(this, releaseOnDispose) { Instance = instance };
+            FService = releaseOnDispose ? new ServiceReference(this) : (AbstractServiceReference) new InstanceReference(this);
+            FService.Instance = instance;
         }
 
         public override Type Implementation => null;
@@ -66,7 +49,7 @@ namespace Solti.Utils.DI.Internals
 
         public override object Value => FService.Instance;
 
-        public override void GetService(IInjector injector, ref ServiceReference reference)
+        public override void GetService(IInjector injector, ref AbstractServiceReference reference)
         {
             CheckDisposed();
 

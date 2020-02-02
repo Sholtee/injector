@@ -13,7 +13,7 @@ namespace Solti.Utils.DI.Internals
     /// </summary>
     internal class ScopedServiceEntry : ProducibleServiceEntry
     {
-        private ServiceReference FService;
+        private AbstractServiceReference FService;
 
         private ScopedServiceEntry(ScopedServiceEntry entry, IServiceContainer owner) : base(entry, owner)
         {
@@ -33,7 +33,7 @@ namespace Solti.Utils.DI.Internals
 
         public override object Value => FService?.Instance;
 
-        public override void GetService(IInjector injector, ref ServiceReference reference)
+        public override void GetService(IInjector injector, ref AbstractServiceReference reference)
         {
             CheckProducible();
 

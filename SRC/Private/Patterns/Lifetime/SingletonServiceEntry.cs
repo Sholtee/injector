@@ -13,7 +13,7 @@ namespace Solti.Utils.DI.Internals
     /// </summary>
     internal class SingletonServiceEntry : ProducibleServiceEntry
     {
-        private ServiceReference FService;
+        private AbstractServiceReference FService;
 
         //
         // Lock azert kell mert ez az entitas egyszerre tobb szerviz kollekcioban is szerepelhet
@@ -36,7 +36,7 @@ namespace Solti.Utils.DI.Internals
 
         public override object Value => FService?.Instance;
 
-        public override void GetService(IInjector injector, ref ServiceReference reference)
+        public override void GetService(IInjector injector, ref AbstractServiceReference reference)
         {
             CheckProducible();
 

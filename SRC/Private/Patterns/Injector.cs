@@ -19,9 +19,9 @@ namespace Solti.Utils.DI.Internals
 
     internal sealed class Injector : ServiceContainer, IInjector
     {
-        private readonly Stack<ServiceReference> FGraph = new Stack<ServiceReference>();
+        private readonly Stack<AbstractServiceReference> FGraph = new Stack<AbstractServiceReference>();
 
-        private ServiceReference ParentService => FGraph.Any() ? FGraph.Peek() : null;
+        private AbstractServiceReference ParentService => FGraph.Any() ? FGraph.Peek() : null;
 
         private Injector() => throw new NotSupportedException();
 
@@ -32,7 +32,7 @@ namespace Solti.Utils.DI.Internals
 
             this.Instance<IInjector>(this, releaseOnDispose: false);
 
-        public ServiceReference GetReference(Type iface, string name)
+        public AbstractServiceReference GetReference(Type iface, string name)
         {
             CheckDisposed();
 
@@ -56,7 +56,7 @@ namespace Solti.Utils.DI.Internals
             //   viselkedik.
             //
 
-            ServiceReference currentService;
+            AbstractServiceReference currentService;
 
             if (entry.Owner != this && entry.Owner != this.Parent)
             {

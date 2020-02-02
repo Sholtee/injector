@@ -35,7 +35,7 @@ namespace Solti.Utils.DI.Internals
 
         public override object Value => null;
 
-        public override void GetService(IInjector injector, ref ServiceReference reference)
+        public override void GetService(IInjector injector, ref AbstractServiceReference reference)
         {
             CheckProducible();
 
