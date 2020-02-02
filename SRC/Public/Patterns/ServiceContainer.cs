@@ -11,17 +11,13 @@ using System.Linq;
 #if NETSTANDARD1_6
 using System.Reflection;
 #endif
-using System.Runtime.CompilerServices;
 using System.Threading;
 
 using static System.Diagnostics.Debug;
 
-[assembly: InternalsVisibleTo("<>f__AnonymousType2<System.Type_System.String>_Solti.Utils.DI.Internals.IServiceID_Duck")]
-
 namespace Solti.Utils.DI
 {
     using Properties;
-    using Proxy;
     using Internals;
 
     /// <summary>
@@ -180,11 +176,11 @@ namespace Solti.Utils.DI
                 return registered;
             }
 
-            IServiceID MakeID(Type iface) => new
+            IServiceID MakeID(Type iface) => new ServiceID
             {
                 Interface = iface,
                 Name = name
-            }.Act().Like<IServiceID>();
+            };
         }
 
         /// <summary>
