@@ -5,6 +5,7 @@
 ********************************************************************************/
 using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Text;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -96,7 +97,8 @@ namespace Solti.Utils.DI.Internals
         /// </summary>
         /// <param name="injector">The <see cref="IInjector"/> created from the <see cref="Owner"/> container.</param>
         /// <param name="serviceReference">The <see cref="AbstractServiceReference"/> of the service being created.</param>
-        public virtual void GetService(IInjector injector, ref AbstractServiceReference serviceReference) => throw new NotImplementedException();
+        public virtual void GetService(IInjector injector, ref AbstractServiceReference serviceReference) =>
+            throw new InvalidOperationException(string.Format(Resources.Culture, Resources.CANT_INSTANTIATE_ABSTRACTS, this.FriendlyName()));
 
         /// <summary>
         /// Copies this entry to a new collection.
@@ -139,5 +141,22 @@ namespace Solti.Utils.DI.Internals
             HashCode.Combine(Owner, Interface, Name, Lifetime, Factory, Value, Implementation)
 #endif
             ;
+
+        /// <summary>
+        /// See <see cref="Object.ToString"/>.
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
+        {
+            const string 
+                NAME_PART = " - {0}: {1}",
+                NULL = nameof(NULL);
+
+            return new StringBuilder(this.FriendlyName())
+                .AppendFormat(Resources.Culture, NAME_PART, nameof(Lifetime), Lifetime?.ToString() ?? NULL)
+                .AppendFormat(Resources.Culture, NAME_PART, nameof(Implementation), Implementation?.ToString() ?? NULL)
+                .AppendFormat(Resources.Culture, NAME_PART, nameof(Value), Value?.ToString() ?? NULL)
+                .ToString();
+        }
     }
 }

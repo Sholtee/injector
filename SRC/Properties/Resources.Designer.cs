@@ -73,6 +73,15 @@ namespace Solti.Utils.DI.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Abstract service ({0}) can not be instantiated..
+        /// </summary>
+        internal static string CANT_INSTANTIATE_ABSTRACTS {
+            get {
+                return ResourceManager.GetString("CANT_INSTANTIATE_ABSTRACTS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Instantiating open generic types are not allowed..
         /// </summary>
         internal static string CANT_INSTANTIATE_GENERICS {
