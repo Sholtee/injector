@@ -97,8 +97,12 @@ namespace Solti.Utils.DI.Internals
         /// </summary>
         /// <param name="injector">The <see cref="IInjector"/> created from the <see cref="Owner"/> container.</param>
         /// <param name="serviceReference">The <see cref="AbstractServiceReference"/> of the service being created.</param>
-        public virtual void GetService(IInjector injector, ref AbstractServiceReference serviceReference) =>
+        public virtual void GetService(IInjector injector, ref AbstractServiceReference serviceReference)
+        {
+            serviceReference?.Release();
+
             throw new InvalidOperationException(string.Format(Resources.Culture, Resources.CANT_INSTANTIATE_ABSTRACTS, this.FriendlyName()));
+        }
 
         /// <summary>
         /// Copies this entry to a new collection.

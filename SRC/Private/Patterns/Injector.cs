@@ -58,29 +58,19 @@ namespace Solti.Utils.DI.Internals
             AbstractServiceEntry entry = Get(iface, name, QueryModes.AllowSpecialization | QueryModes.ThrowOnError);
 
             //
-            // Ha szigoruak vagyunk akkor a szulonknek nem lehet hosszabb elettartama mint az epp
-            // lekerdezett fuggosegenek.
-            //
-
-            if (Config.Value.StrictDI && ParentService?.RelatedServiceEntry.Lifetime > entry.Lifetime)
-                throw new InvalidOperationException(string.Format(
-                    Resources.Culture, 
-                    Resources.INAPPROPRIATE_LIFETIME, 
-                    ParentService.RelatedServiceEntry.FriendlyName(),
-                    entry.FriendlyName()));
-
-            //
             // - Lekerdezeshez mindig a deklaralo szervizkollekciobol kell injector-t letrehozni.
             //   * Igy a fuggosegek is a deklaralo kollekciobol lesznek feloldva
             //     Mellekhatasok: 
             //       > Singleton szerviz hivatkozhat abstract fuggosegre (de az rossz konfiguracio).
             // - A referencia szamlalas miatt Singleton szerviz minden fuggosege is Singletonkent 
             //   viselkedik (ez ellen van a StrictDI).
+            // - A lenti feltetel helyes mert injector letrehozasakor mindig uj gyermek kontener 
+            //   hozunk letre (tehat pl Singleton szerviz tulajdonosa sose lesz az aktualis injector).
             //
 
             AbstractServiceReference currentService;
 
-            if (entry.Owner != this && entry.Owner != this.Parent)
+            if (entry.Owner?.IsDescendantOf(this.Parent) == false)
             {
                 //
                 // - Nem problema h minden egyes hivasnal uj injectort hozunk letre, az entry.GetService()
@@ -167,7 +157,7 @@ namespace Solti.Utils.DI.Internals
     public partial class Config 
     {
         /// <summary>
-        /// Instructs the injector to throw if a service being requested has one or more dependencies that have lower <see cref="Lifetime"/> than the service has (e.g.: a <see cref="Lifetime.Singleton"/> service can not have <see cref="Lifetime.Transient"/> dependency).
+        /// Instructs the injector to throw if a service being requested has one or more dependencies that have different owner than the service has (e.g.: a <see cref="Lifetime.Singleton"/> service can not have <see cref="Lifetime.Transient"/> dependency).
         /// </summary>
         public bool StrictDI { get; set; } = false;
     }

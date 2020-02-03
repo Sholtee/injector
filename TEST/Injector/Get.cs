@@ -187,5 +187,16 @@ namespace Solti.Utils.DI.Injector.Tests
                 Assert.Throws<Exception>(() => injector.Get<IInterface_1>(), string.Format(Resources.INVALID_INSTANCE, typeof(IInterface_1)));
             }
         }
+
+        [Test]
+        public void Injector_Get_ShouldThrowOnAbstractService() 
+        {
+            using (IInjector injector = Container.CreateInjector()) 
+            {
+                injector.UnderlyingContainer.Abstract<IInterface_1>();
+
+                Assert.Throws<InvalidOperationException>(() => injector.Get<IInterface_1>(), Resources.CANT_INSTANTIATE_ABSTRACTS);
+            }
+        }
     }
 }
