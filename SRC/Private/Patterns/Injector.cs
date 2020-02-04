@@ -29,7 +29,7 @@ namespace Solti.Utils.DI.Internals
         {
             IServiceContainer
                 parentOwner = ParentService?.RelatedServiceEntry.Owner,
-                entryOwner = entry.Owner;
+                entryOwner  = entry.Owner;
 
             //
             // 1) Ha "parentOwner == null" akkor a lekderdezesi fa tetejen vagyunk
@@ -42,13 +42,8 @@ namespace Solti.Utils.DI.Internals
             // A ket tulajdonosnak ugyanannak a kontenernek kell lennie.
             //
 
-            if (parentOwner == entryOwner) return;
-
-            //
-            // Kulomben a leszarmazott szerviz a szulo szerviz alatti kontenerben van.
-            //
-
-            throw new RequestNotAllowedException(ParentService.RelatedServiceEntry, entry, Resources.STRICT_DI);
+            if (parentOwner != entryOwner)
+                throw new RequestNotAllowedException(ParentService.RelatedServiceEntry, entry, Resources.STRICT_DI);
         }
 
         public Injector(IServiceContainer parent) : base(parent) =>
