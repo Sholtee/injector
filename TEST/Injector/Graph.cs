@@ -18,6 +18,8 @@ namespace Solti.Utils.DI.Injector.Graph.Tests
     {
         private static AbstractServiceReference[] Validate(Injector injector) 
         {
+            Config.Value.StrictDI = false;
+
             AbstractServiceReference
                 svc1, svc2, svc3, svc4;
 

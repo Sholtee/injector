@@ -262,6 +262,15 @@ namespace Solti.Utils.DI.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Attempt to request a dependency that should live shorter than the requestor should..
+        /// </summary>
+        internal static string STRICT_DI {
+            get {
+                return ResourceManager.GetString("STRICT_DI", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to A composite entity can not have more than {0} children..
         /// </summary>
         internal static string TOO_MANY_CHILDREN {

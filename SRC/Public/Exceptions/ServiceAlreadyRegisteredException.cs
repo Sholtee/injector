@@ -15,7 +15,7 @@ namespace Solti.Utils.DI
     /// The exception that is thrown when a service has already been registered.
     /// </summary>
     [SuppressMessage("Design", "CA1032:Implement standard exception constructors", Justification = "Key must be passed.")]
-    public sealed class ServiceAlreadyRegisteredException: ArgumentException
+    public sealed class ServiceAlreadyRegisteredException: Exception
     {
         /// <summary>
         /// Creates a new <see cref="ServiceAlreadyRegisteredException"/> instance.

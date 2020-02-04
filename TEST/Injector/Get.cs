@@ -9,6 +9,7 @@ using NUnit.Framework;
 
 namespace Solti.Utils.DI.Injector.Tests
 {
+    using Internals;
     using Properties;
     
     public partial class InjectorTestsBase<TContainer>
@@ -85,6 +86,8 @@ namespace Solti.Utils.DI.Injector.Tests
         [TestCase(Lifetime.Singleton)]
         public void Injector_Get_ShouldResolveGenericDependencies(Lifetime lifetime)
         {
+            Config.Value.StrictDI = false;
+
             Container
                 .Service<IInterface_1, Implementation_1_No_Dep>() // direkt nincs lifetime
                 .Service(typeof(IInterface_3<>), typeof(Implementation_3_IInterface_1_Dependant<>)) // direkt nincs lifetime

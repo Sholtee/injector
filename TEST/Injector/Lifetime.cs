@@ -117,6 +117,8 @@ namespace Solti.Utils.DI.Injector.Tests
         [Test]
         public void Lifetime_SingletonService_MayHaveScopedDependency()
         {
+            Config.Value.StrictDI = false;
+
             Disposable instance;
 
             using (IServiceContainer child = Container.CreateChild())
@@ -172,6 +174,8 @@ namespace Solti.Utils.DI.Injector.Tests
         [Test]
         public void Lifetime_SingletonService_ShouldResolveDependencyFromTheDeclaringContainer_DecorationTest()
         {
+            Config.Value.StrictDI = false;
+
             Container
                 .Service<IInterface_1, Implementation_1_No_Dep>(Lifetime.Transient)
                 .Service<IInterface_2, Implementation_2_IInterface_1_Dependant>(Lifetime.Singleton);

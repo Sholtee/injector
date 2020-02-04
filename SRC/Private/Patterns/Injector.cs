@@ -25,6 +25,32 @@ namespace Solti.Utils.DI.Internals
 
         private Injector() => throw new NotSupportedException();
 
+        private void ThrowIfTheRuleOfStrictDIIsBroken(AbstractServiceEntry entry) 
+        {
+            IServiceContainer
+                parentOwner = ParentService?.RelatedServiceEntry.Owner,
+                entryOwner = entry.Owner;
+
+            //
+            // 1) Ha "parentOwner == null" akkor a lekderdezesi fa tetejen vagyunk
+            // 2) Ha "entryOwner == null" akkor Instance-t kerdezunk le
+            //
+
+            if (parentOwner == null || entryOwner == null) return;
+
+            //
+            // A ket tulajdonosnak ugyanannak a kontenernek kell lennie.
+            //
+
+            if (parentOwner == entryOwner) return;
+
+            //
+            // Kulomben a leszarmazott szerviz a szulo szerviz alatti kontenerben van.
+            //
+
+            throw new RequestNotAllowedException(ParentService.RelatedServiceEntry, entry, Resources.STRICT_DI);
+        }
+
         public Injector(IServiceContainer parent) : base(parent) =>
             //
             // Felvesszuk sajat magunkat.
@@ -59,19 +85,21 @@ namespace Solti.Utils.DI.Internals
 
             //
             // - Lekerdezeshez mindig a deklaralo szervizkollekciobol kell injector-t letrehozni.
+            //   * Ehhez az "entry.Owner?.IsDescendantOf(Parent)" feltetel helyes mivel injector letrehozasakor 
+            //     mindig uj gyermek kontenert hozunk letre
             //   * Igy a fuggosegek is a deklaralo kollekciobol lesznek feloldva
             //     Mellekhatasok: 
             //       > Singleton szerviz hivatkozhat abstract fuggosegre (de az rossz konfiguracio).
             // - A referencia szamlalas miatt Singleton szerviz minden fuggosege is Singletonkent 
             //   viselkedik (ez ellen van a StrictDI).
-            // - A lenti feltetel helyes mert injector letrehozasakor mindig uj gyermek kontener 
-            //   hozunk letre (tehat pl Singleton szerviz tulajdonosa sose lesz az aktualis injector).
             //
 
             AbstractServiceReference currentService;
 
             if (entry.Owner?.IsDescendantOf(this.Parent) == false)
             {
+                Assert(entry.Owner != null);
+
                 //
                 // - Nem problema h minden egyes hivasnal uj injectort hozunk letre, az entry.GetService()
                 //   legfeljebb nem fogja hasznalni.
@@ -86,7 +114,14 @@ namespace Solti.Utils.DI.Internals
                 Assert(!currentService.Disposed, "Service must not be disposed here");
             } 
             else 
-            {  
+            {
+                //
+                // Itt mar az igenylo es igenyelt szerviznek egy szinten kell lennie.
+                //
+
+                if (Config.Value.StrictDI) 
+                    ThrowIfTheRuleOfStrictDIIsBroken(entry);
+                    
                 currentService = new ServiceReference(entry);
 
                 //
@@ -157,7 +192,7 @@ namespace Solti.Utils.DI.Internals
     public partial class Config 
     {
         /// <summary>
-        /// Instructs the injector to throw if a service being requested has one or more dependencies that have different owner than the service has (e.g.: a <see cref="Lifetime.Singleton"/> service can not have <see cref="Lifetime.Transient"/> dependency).
+        /// Instructs the injector to throw if a service being requested has a dependency that should live shorter than the service should (e.g.: a <see cref="Lifetime.Singleton"/> service can not have <see cref="Lifetime.Transient"/> dependency).
         /// </summary>
         public bool StrictDI { get; set; } = false;
     }
