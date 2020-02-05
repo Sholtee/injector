@@ -14,12 +14,6 @@ namespace Solti.Utils.DI.Injector.Tests
     
     public partial class InjectorTestsBase<TContainer>
     {
-        private sealed class MyClass
-        {
-            public IInjector Injector { get; }
-            public MyClass(IInjector injector) => Injector = injector;
-        }
-
         [Test]
         public void Injector_Instantiate_ShouldUseTheCurrentInjector()
         {
@@ -27,8 +21,8 @@ namespace Solti.Utils.DI.Injector.Tests
             {
                 using (IInjector injector = container.CreateInjector())
                 {
-                    MyClass obj = injector.Instantiate<MyClass>();
-                    Assert.That(obj.Injector, Is.SameAs(injector));
+                    Implementation_7_TInterface_Dependant<IInjector> obj = injector.Instantiate<Implementation_7_TInterface_Dependant<IInjector>>();
+                    Assert.That(obj.Interface, Is.SameAs(injector));
                 }
             });
         }
