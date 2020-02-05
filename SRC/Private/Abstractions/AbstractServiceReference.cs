@@ -5,6 +5,7 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -54,5 +55,15 @@ namespace Solti.Utils.DI.Internals
         /// The dependencies of the service <see cref="Instance"/>.
         /// </summary>
         public abstract ICollection<AbstractServiceReference> Dependencies { get; }
+
+        /// <summary>
+        /// See <see cref="Disposable.Dispose(bool)"/>
+        /// </summary>
+        /// <param name="disposeManaged"></param>
+        protected override void Dispose(bool disposeManaged)
+        {
+            Debug.WriteLineIf(disposeManaged, $"Disposed service: {RelatedServiceEntry.FriendlyName()}");
+            base.Dispose(disposeManaged);
+        }
     }
 }
