@@ -26,21 +26,22 @@ namespace Solti.Utils.DI.Internals
             if (!Config.Value.StrictDI) return false;
 
             IServiceContainer
-                parentOwner = FGraph.Current?.RelatedServiceEntry.Owner,
-                entryOwner  = entry.Owner;
+                requestor = FGraph.Current?.RelatedServiceEntry.Owner,
+                requested = entry.Owner;
 
             //
             // 1) Ha "parentOwner == null" akkor a lekderdezesi fa tetejen vagyunk
             // 2) Ha "entryOwner == null" akkor Instance-t kerdezunk le
             //
 
-            if (parentOwner == null || entryOwner == null) return false;
+            if (requestor == null || requested == null) return false;
 
             //
-            // A ket tulajdonosnak ugyanannak a kontenernek kell lennie.
+            // A kerelmezett szerviz tulajdonosanak egy szinten v feljebb kell lennie mint a kerelmezo tulajdonosa h biztosan legalabb annyi
+            // ideig letezzen mint a kerelmezo maga.
             //
 
-            return parentOwner != entryOwner;
+            return !requestor.IsDescendantOf(requested);
         }
 
         public Injector(IServiceContainer parent) : base(parent) =>
