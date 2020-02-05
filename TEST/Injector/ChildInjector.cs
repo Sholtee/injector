@@ -18,25 +18,14 @@ namespace Solti.Utils.DI.Injector.Tests
             }
         }
 
-        private interface IInjectorGetter 
-        {
-            IInjector Injector { get; }
-        }
-
-        private class InjectorGetter : IInjectorGetter 
-        {
-            public InjectorGetter(IInjector injector) => Injector = injector;
-            public IInjector Injector { get; }
-        }
-
         [Test]
         public void Injector_ShouldPassItselfToItsFactories()
         {
-            Container.Factory<IInjectorGetter>(i => new InjectorGetter(i));
+            Container.Factory<IInterface_7<IInjector>>(i => new Implementation_7_TInterface_Dependant<IInjector>(i));
 
             using (IInjector i = Container.CreateChild().CreateInjector())
             {
-                Assert.AreSame(i, i.Get<IInjectorGetter>().Injector);
+                Assert.AreSame(i, i.Get<IInterface_7<IInjector>>().Interface);
             }
         }
     }
