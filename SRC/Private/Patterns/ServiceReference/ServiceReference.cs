@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Diagnostics;
 using System.Collections.Generic;
 
 namespace Solti.Utils.DI.Internals
@@ -25,6 +26,8 @@ namespace Solti.Utils.DI.Internals
 
         protected override void Dispose(bool disposeManaged)
         {
+            Debug.WriteLine($"Disposed service: {RelatedServiceEntry.Interface.Name}");
+
             if (disposeManaged)
             {
                 //

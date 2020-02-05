@@ -66,11 +66,8 @@ namespace Solti.Utils.DI.Internals
 
         protected override void Dispose(bool disposeManaged)
         {
-            if (disposeManaged)
-            {
-                FService.Release();
-                Debug.Assert(FService.Disposed, "More than one reference");
-            }
+            if (disposeManaged) FService.Release();
+
             base.Dispose(disposeManaged);
         }
     }
