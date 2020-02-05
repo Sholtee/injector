@@ -1,16 +1,13 @@
 ﻿/********************************************************************************
-* IServiceFactory.cs                                                            *
+* ServiceReferenceComparer.cs                                                   *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
-using System;
 
 namespace Solti.Utils.DI.Internals
 {
-    internal interface IServiceFactory
+    internal sealed class ServiceReferenceComparer : ComparerBase<ServiceReferenceComparer, AbstractServiceReference>
     {
-        Func<IInjector, Type, object> Factory { get; set; }
-
-        void GetService(IInjector injector, ref AbstractServiceReference reference);
+        public override int GetHashCode(AbstractServiceReference obj) => obj.RelatedServiceEntry.GetHashCode();
     }
 }

@@ -20,7 +20,7 @@ namespace Solti.Utils.DI.Internals.Tests
         [Test]
         public void Add_ShouldIncrementTheRefCount() 
         {
-            var reference = new ServiceReference(null, null);
+            var reference = new ServiceReference(null);
             Collection.Add(reference);
 
             Assert.That(Collection.Count, Is.EqualTo(1));
@@ -31,7 +31,7 @@ namespace Solti.Utils.DI.Internals.Tests
         [Test]
         public void Remove_ShouldDecrementTheRefCount() 
         {
-            var reference = new ServiceReference(null, null);
+            var reference = new ServiceReference(null);
             Collection.Add(reference);
 
             Assert.That(Collection.Remove(reference));
@@ -42,7 +42,7 @@ namespace Solti.Utils.DI.Internals.Tests
         [Test]
         public void Clear_ShouldDecrementTheRefCount()
         {
-            var reference = new ServiceReference(null, null);
+            var reference = new ServiceReference(null);
             Collection.Add(reference);
             Collection.Clear();
 

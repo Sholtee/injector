@@ -1,16 +1,17 @@
 ﻿/********************************************************************************
-* IServiceFactory.cs                                                            *
+* InstanceReference.cs                                                          *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Collections.Generic;
 
 namespace Solti.Utils.DI.Internals
 {
-    internal interface IServiceFactory
+    internal sealed class InstanceReference : AbstractServiceReference
     {
-        Func<IInjector, Type, object> Factory { get; set; }
+        public InstanceReference(AbstractServiceEntry entry) : base(entry) { }
 
-        void GetService(IInjector injector, ref AbstractServiceReference reference);
+        public override ICollection<AbstractServiceReference> Dependencies => Array.Empty<AbstractServiceReference>();
     }
 }

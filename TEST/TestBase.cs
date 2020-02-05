@@ -25,6 +25,12 @@ namespace Solti.Utils.DI.Tests
             Container.Dispose();
             Container = null;
 
+            //
+            // Lassuk a debug konzolon ha vmit nem szabaditottunk fel.
+            //
+
+            GC.Collect();
+
             Config.Reset();
         }
 

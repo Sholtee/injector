@@ -117,6 +117,8 @@ namespace Solti.Utils.DI.Injector.Tests
         [Test]
         public void Lifetime_SingletonService_MayHaveScopedDependency()
         {
+            Config.Value.StrictDI = false;
+
             Disposable instance;
 
             using (IServiceContainer child = Container.CreateChild())
@@ -172,6 +174,8 @@ namespace Solti.Utils.DI.Injector.Tests
         [Test]
         public void Lifetime_SingletonService_ShouldResolveDependencyFromTheDeclaringContainer_DecorationTest()
         {
+            Config.Value.StrictDI = false;
+
             Container
                 .Service<IInterface_1, Implementation_1_No_Dep>(Lifetime.Transient)
                 .Service<IInterface_2, Implementation_2_IInterface_1_Dependant>(Lifetime.Singleton);
@@ -199,6 +203,92 @@ namespace Solti.Utils.DI.Injector.Tests
 
                 Assert.AreSame(injector1.UnderlyingContainer.Get<IDisposable>(), injector2.UnderlyingContainer.Get<IDisposable>());
                 Assert.AreSame(injector1.Get<IDisposable>(), injector2.Get<IDisposable>());
+            }
+        }
+
+        [Test]
+        public void Lifetime_PermissiveDI_LegalCases([Values(true, false)] bool useChildContainer,
+            [Values(Lifetime.Transient, Lifetime.Scoped, Lifetime.Singleton)] Lifetime dependant,
+            [Values(Lifetime.Transient, Lifetime.Scoped, Lifetime.Singleton, null)] Lifetime? dependency)
+        {
+            Config.Value.StrictDI = false;
+
+            if (dependency != null)
+                Container.Service<IInterface_1, Implementation_1_No_Dep>(dependency.Value);
+            else
+                Container.Instance<IInterface_1>(new Implementation_1_No_Dep());
+
+            IServiceContainer sourceContainer = useChildContainer ? Container.CreateChild() : Container;
+
+            sourceContainer.Service<IInterface_2, Implementation_2_IInterface_1_Dependant>(dependant);
+
+            using (IInjector injector = sourceContainer.CreateInjector())
+            {
+                Assert.DoesNotThrow(() => injector.Get<IInterface_2>());
+            }
+        }
+
+        [Test]
+        public void Lifetime_StrictDI_LegalCases1(
+            [Values(true, false)] bool useChildContainer, 
+            [Values(Lifetime.Transient, Lifetime.Scoped)] Lifetime dependant, 
+            [Values(Lifetime.Transient, Lifetime.Scoped, Lifetime.Singleton, null)] Lifetime? dependency) 
+        {
+            Config.Value.StrictDI = true;
+
+            if (dependency != null)
+                Container.Service<IInterface_1, Implementation_1_No_Dep>(dependency.Value);
+            else
+                Container.Instance<IInterface_1>(new Implementation_1_No_Dep());
+
+            Container.Service<IInterface_2, Implementation_2_IInterface_1_Dependant>(dependant);
+
+            IServiceContainer sourceContainer = useChildContainer ? Container.CreateChild() : Container;
+
+            using (IInjector injector = sourceContainer.CreateInjector()) 
+            {
+                Assert.DoesNotThrow(() => injector.Get<IInterface_2>());
+            }        
+        }
+
+        [Test]
+        public void Lifetime_StrictDI_LegalCases2(
+            [Values(true, false)] bool useChildContainer,
+            [Values(Lifetime.Singleton, null)] Lifetime? dependency)
+        {
+            Config.Value.StrictDI = true;
+
+            if (dependency != null)
+                Container.Service<IInterface_1, Implementation_1_No_Dep>(dependency.Value);
+            else
+                Container.Instance<IInterface_1>(new Implementation_1_No_Dep());
+
+            Container.Service<IInterface_2, Implementation_2_IInterface_1_Dependant>(Lifetime.Singleton);
+
+            IServiceContainer sourceContainer = useChildContainer ? Container.CreateChild() : Container;
+
+            using (IInjector injector = sourceContainer.CreateInjector())
+            {
+                Assert.DoesNotThrow(() => injector.Get<IInterface_2>());
+            }
+        }
+
+        [Test]
+        public void Lifetime_StrictDI_IllegalCases(
+            [Values(true, false)] bool useChildContainer,
+            [Values(Lifetime.Transient, Lifetime.Scoped)] Lifetime dependency) 
+        {
+            Config.Value.StrictDI = true;
+
+            Container
+                .Service<IInterface_1, Implementation_1_No_Dep>(dependency)
+                .Service<IInterface_2, Implementation_2_IInterface_1_Dependant>(Lifetime.Singleton);
+
+            IServiceContainer sourceContainer = useChildContainer ? Container.CreateChild() : Container;
+
+            using (IInjector injector = sourceContainer.CreateInjector())
+            {
+                Assert.Throws<RequestNotAllowedException>(() => injector.Get<IInterface_2>());
             }
         }
     }

@@ -73,6 +73,15 @@ namespace Solti.Utils.DI.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Abstract service ({0}) can not be instantiated..
+        /// </summary>
+        internal static string CANT_INSTANTIATE_ABSTRACTS {
+            get {
+                return ResourceManager.GetString("CANT_INSTANTIATE_ABSTRACTS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Instantiating open generic types are not allowed..
         /// </summary>
         internal static string CANT_INSTANTIATE_GENERICS {
@@ -114,6 +123,15 @@ namespace Solti.Utils.DI.Properties {
         internal static string CONSTRUCTOR_OVERLOADING_NOT_SUPPORTED {
             get {
                 return ResourceManager.GetString("CONSTRUCTOR_OVERLOADING_NOT_SUPPORTED", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The service ({0}) requested a dependency ({1}) that has lower lifetime than the service has. .
+        /// </summary>
+        internal static string INAPPROPRIATE_LIFETIME {
+            get {
+                return ResourceManager.GetString("INAPPROPRIATE_LIFETIME", resourceCulture);
             }
         }
         
@@ -217,7 +235,7 @@ namespace Solti.Utils.DI.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Child already has parent..
+        ///   Looks up a localized string similar to Child already has a parent..
         /// </summary>
         internal static string NOT_ORPHAN {
             get {
@@ -240,6 +258,15 @@ namespace Solti.Utils.DI.Properties {
         internal static string SERVICE_NOT_FOUND {
             get {
                 return ResourceManager.GetString("SERVICE_NOT_FOUND", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Attempt to request a dependency that should live shorter than the requestor should..
+        /// </summary>
+        internal static string STRICT_DI {
+            get {
+                return ResourceManager.GetString("STRICT_DI", resourceCulture);
             }
         }
         

@@ -178,12 +178,21 @@
     <value>Interceptor must be an InterfaceInterceptor&lt;{0}&gt; descendant.</value>
   </data>
   <data name="NOT_ORPHAN" xml:space="preserve">
-    <value>Child already has parent.</value>
+    <value>Child already has a parent.</value>
   </data>
   <data name="INJECTOR_SHOULD_BE_RELEASED" xml:space="preserve">
     <value>The injector can not hold more than {0} transient services. It usually indicates that you were recycling the injector.</value>
   </data>
   <data name="TOO_MANY_CHILDREN" xml:space="preserve">
     <value>A composite entity can not have more than {0} children.</value>
+  </data>
+  <data name="INAPPROPRIATE_LIFETIME" xml:space="preserve">
+    <value>The service ({0}) requested a dependency ({1}) that has lower lifetime than the service has. </value>
+  </data>
+  <data name="CANT_INSTANTIATE_ABSTRACTS" xml:space="preserve">
+    <value>Abstract service ({0}) can not be instantiated.</value>
+  </data>
+  <data name="STRICT_DI" xml:space="preserve">
+    <value>Attempt to request a dependency that should live shorter than the requestor should.</value>
   </data>
 </root>

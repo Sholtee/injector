@@ -5,6 +5,7 @@
 ********************************************************************************/
 using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Text;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -95,8 +96,13 @@ namespace Solti.Utils.DI.Internals
         /// Gets the service instance.
         /// </summary>
         /// <param name="injector">The <see cref="IInjector"/> created from the <see cref="Owner"/> container.</param>
-        /// <param name="serviceReference">The <see cref="ServiceReference"/> of the service being created.</param>
-        public virtual void GetService(IInjector injector, ref ServiceReference serviceReference) => throw new NotImplementedException();
+        /// <param name="serviceReference">The <see cref="AbstractServiceReference"/> of the service being created.</param>
+        public virtual void GetService(IInjector injector, ref AbstractServiceReference serviceReference)
+        {
+            serviceReference?.Release();
+
+            throw new InvalidOperationException(string.Format(Resources.Culture, Resources.CANT_INSTANTIATE_ABSTRACTS, this.FriendlyName()));
+        }
 
         /// <summary>
         /// Copies this entry to a new collection.
@@ -123,15 +129,38 @@ namespace Solti.Utils.DI.Internals
         /// Gets the hash code of this entry.
         /// </summary>
         /// <returns>The hash code of this entry.</returns>
-        public override int GetHashCode() => new // muszaj anonimnak lennie
+        public override int GetHashCode() =>
+#if NETSTANDARD1_6 || NETSTANDARD2_0
+            new // muszaj anonimnak lennie
+            {
+                Owner,
+                Interface,
+                Name,
+                Lifetime,
+                Factory,
+                Value,
+                Implementation
+            }.GetHashCode()
+#else
+            HashCode.Combine(Owner, Interface, Name, Lifetime, Factory, Value, Implementation)
+#endif
+            ;
+
+        /// <summary>
+        /// See <see cref="Object.ToString"/>.
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
         {
-            Owner,
-            Interface,
-            Name,
-            Lifetime,
-            Factory,
-            Value,
-            Implementation
-        }.GetHashCode();
+            const string 
+                NAME_PART = " - {0}: {1}",
+                NULL = nameof(NULL);
+
+            return new StringBuilder(this.FriendlyName())
+                .AppendFormat(Resources.Culture, NAME_PART, nameof(Lifetime), Lifetime?.ToString() ?? NULL)
+                .AppendFormat(Resources.Culture, NAME_PART, nameof(Implementation), Implementation?.ToString() ?? NULL)
+                .AppendFormat(Resources.Culture, NAME_PART, nameof(Value), Value?.ToString() ?? NULL)
+                .ToString();
+        }
     }
 }
