@@ -207,7 +207,8 @@ namespace Solti.Utils.DI.Injector.Tests
         }
 
         [Test]
-        public void Lifetime_PermissiveDI_LegalCases([Values(true, false)] bool useChildContainer,
+        public void Lifetime_PermissiveDI_LegalCases(
+            [Values(true, false)] bool useChildContainer,
             [Values(Lifetime.Transient, Lifetime.Scoped, Lifetime.Singleton)] Lifetime dependant,
             [Values(Lifetime.Transient, Lifetime.Scoped, Lifetime.Singleton, null)] Lifetime? dependency)
         {
@@ -222,9 +223,16 @@ namespace Solti.Utils.DI.Injector.Tests
 
             sourceContainer.Service<IInterface_2, Implementation_2_IInterface_1_Dependant>(dependant);
 
-            using (IInjector injector = sourceContainer.CreateInjector())
+            //
+            // Ket kulonallo injectort hozzunk letre.
+            //
+
+            for (int i = 0; i < 2; i++)
             {
-                Assert.DoesNotThrow(() => injector.Get<IInterface_2>());
+                using (IInjector injector = sourceContainer.CreateInjector())
+                {
+                    Assert.DoesNotThrow(() => injector.Get<IInterface_2>());
+                }
             }
         }
 
@@ -245,10 +253,17 @@ namespace Solti.Utils.DI.Injector.Tests
 
             IServiceContainer sourceContainer = useChildContainer ? Container.CreateChild() : Container;
 
-            using (IInjector injector = sourceContainer.CreateInjector()) 
+            //
+            // Ket kulonallo injectort hozzunk letre.
+            //
+
+            for (int i = 0; i < 2; i++)
             {
-                Assert.DoesNotThrow(() => injector.Get<IInterface_2>());
-            }        
+                using (IInjector injector = sourceContainer.CreateInjector())
+                {
+                    Assert.DoesNotThrow(() => injector.Get<IInterface_2>());
+                }
+            }
         }
 
         [Test]
@@ -267,9 +282,16 @@ namespace Solti.Utils.DI.Injector.Tests
 
             IServiceContainer sourceContainer = useChildContainer ? Container.CreateChild() : Container;
 
-            using (IInjector injector = sourceContainer.CreateInjector())
+            //
+            // Ket kulonallo injectort hozzunk letre.
+            //
+
+            for (int i = 0; i < 2; i++)
             {
-                Assert.DoesNotThrow(() => injector.Get<IInterface_2>());
+                using (IInjector injector = sourceContainer.CreateInjector())
+                {
+                    Assert.DoesNotThrow(() => injector.Get<IInterface_2>());
+                }
             }
         }
 
@@ -286,9 +308,16 @@ namespace Solti.Utils.DI.Injector.Tests
 
             IServiceContainer sourceContainer = useChildContainer ? Container.CreateChild() : Container;
 
-            using (IInjector injector = sourceContainer.CreateInjector())
+            //
+            // Ket kulonallo injectort hozzunk letre.
+            //
+
+            for (int i = 0; i < 2; i++)
             {
-                Assert.Throws<RequestNotAllowedException>(() => injector.Get<IInterface_2>());
+                using (IInjector injector = sourceContainer.CreateInjector())
+                {
+                    Assert.Throws<RequestNotAllowedException>(() => injector.Get<IInterface_2>());
+                }
             }
         }
     }
