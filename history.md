@@ -65,7 +65,7 @@
   - *added:* `IInjector.UnderlyingContainer`
   - *updated:* Dependencies
 - 1.2.0:
-  - *added:* Strict DI support
+  - *added:* Strict DI support (disabled by default, to enable set `StrictDI` to true in `Injector.config.json`)
   - *added:* `IServiceContainerExtensions.Lazy()` overloads
   - *implemented:* `AbstractServiceEntry.ToString()`
   - *renamed:* `MaxSpawnedServices` -> `InjectorMaxSpawnedTransientServices` in `Injector.config.json`
