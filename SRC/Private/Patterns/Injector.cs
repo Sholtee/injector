@@ -108,24 +108,20 @@ namespace Solti.Utils.DI.Internals
             } 
             else 
             {
-                //
-                // Itt mar az igenylo es igenyelt szerviznek egy szinten kell lennie (mivel a lekerdezest
-                // mindig a tulajdonos kollekciobol tortenik).
-                //
-
                 if (BreaksTheRuleOfStrictDI(entry))
                     throw new RequestNotAllowedException(FGraph.Current.RelatedServiceEntry, entry, Resources.STRICT_DI);
-                    
-                currentService = new ServiceReference(entry);
 
                 //
-                // A grafban egy szinttel lejebb lepunk.
+                // Letrehozunk egy ures referenciat h a szerviz legyartasa kozben a rekurziv GetReference()
+                // hivasokban lassak az (epp legyartas alatt levo) szulot.
                 //
+
+                currentService = new ServiceReference(entry);
 
                 using (FGraph.With(currentService))
                 {
                     //
-                    // Ha tudunk.
+                    // Ellenorizzuk h nem volt e korkoros referencia.
                     //
 
                     if (FGraph.CircularReference)
@@ -136,7 +132,7 @@ namespace Solti.Utils.DI.Internals
                     }
 
                     //
-                    // Factory hivasa, innentol a ServiceEntry felelos a node felszabaditasaert.
+                    // Factory hivasa, innentol a ServiceEntry felelos a szerviz peldany felszabaditasaert.
                     //
 
                     entry.GetService(this, ref currentService);
