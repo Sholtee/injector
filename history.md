@@ -64,3 +64,8 @@
   - *added:* Some `ProxyFactory.Create()` overload
   - *added:* `IInjector.UnderlyingContainer`
   - *updated:* Dependencies
+- 1.2.0:
+  - *added:* Strict DI support
+  - *added:* `IServiceContainerExtensions.Lazy()` overloads
+  - *implemented:* `AbstractServiceEntry.ToString()`
+  - *renamed:* `MaxSpawnedServices` -> `InjectorMaxSpawnedTransientServices` in `Injector.config.json`
