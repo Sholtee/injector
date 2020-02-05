@@ -4,9 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 #if NETSTANDARD1_6
 using System.Reflection;
 #endif
@@ -19,16 +17,16 @@ namespace Solti.Utils.DI.Internals
 
     internal sealed class Injector : ServiceContainer, IInjector
     {
-        private readonly Stack<AbstractServiceReference> FGraph = new Stack<AbstractServiceReference>();
-
-        private AbstractServiceReference ParentService => FGraph.Any() ? FGraph.Peek() : null;
+        private readonly ServiceGraph FGraph = new ServiceGraph();
 
         private Injector() => throw new NotSupportedException();
 
-        private void ThrowIfTheRuleOfStrictDIIsBroken(AbstractServiceEntry entry) 
+        private bool BreaksTheRuleOfStrictDI(AbstractServiceEntry entry) 
         {
+            if (!Config.Value.StrictDI) return false;
+
             IServiceContainer
-                parentOwner = ParentService?.RelatedServiceEntry.Owner,
+                parentOwner = FGraph.Current?.RelatedServiceEntry.Owner,
                 entryOwner  = entry.Owner;
 
             //
@@ -36,14 +34,13 @@ namespace Solti.Utils.DI.Internals
             // 2) Ha "entryOwner == null" akkor Instance-t kerdezunk le
             //
 
-            if (parentOwner == null || entryOwner == null) return;
+            if (parentOwner == null || entryOwner == null) return false;
 
             //
             // A ket tulajdonosnak ugyanannak a kontenernek kell lennie.
             //
 
-            if (parentOwner != entryOwner)
-                throw new RequestNotAllowedException(ParentService.RelatedServiceEntry, entry, Resources.STRICT_DI);
+            return parentOwner != entryOwner;
         }
 
         public Injector(IServiceContainer parent) : base(parent) =>
@@ -70,7 +67,7 @@ namespace Solti.Utils.DI.Internals
             // Ha vkinek a fuggosege vagyunk akkor a fuggo szerviz itt meg nem lehet legyartva.
             //
 
-            Assert(ParentService?.Instance == null, "Already produced services can not request dependencies");
+            Assert(FGraph.Current?.Instance == null, "Already produced services can not request dependencies");
 
             //
             // Bejegyzes lekerdezese
@@ -79,7 +76,7 @@ namespace Solti.Utils.DI.Internals
             AbstractServiceEntry entry = Get(iface, name, QueryModes.AllowSpecialization | QueryModes.ThrowOnError);
 
             //
-            // - Lekerdezeshez mindig a deklaralo szervizkollekciobol kell injector-t letrehozni.
+            // - Lekerdezeshez mindig a tulajdonos szervizkollekciobol kell injector-t letrehozni.
             //   * Ehhez az "entry.Owner?.IsDescendantOf(Parent)" feltetel helyes mivel injector letrehozasakor 
             //     mindig uj gyermek kontenert hozunk letre
             //   * Igy a fuggosegek is a deklaralo kollekciobol lesznek feloldva
@@ -111,27 +108,26 @@ namespace Solti.Utils.DI.Internals
             else 
             {
                 //
-                // Itt mar az igenylo es igenyelt szerviznek egy szinten kell lennie.
+                // Itt mar az igenylo es igenyelt szerviznek egy szinten kell lennie (mivel a lekerdezest
+                // mindig a tulajdonos kollekciobol tortenik).
                 //
 
-                if (Config.Value.StrictDI) 
-                    ThrowIfTheRuleOfStrictDIIsBroken(entry);
+                if (BreaksTheRuleOfStrictDI(entry))
+                    throw new RequestNotAllowedException(FGraph.Current.RelatedServiceEntry, entry, Resources.STRICT_DI);
                     
                 currentService = new ServiceReference(entry);
 
                 //
-                // A grafban egy szinttel lejebb levo elemek mind a mostani szervizunk fuggosegei (lasd metodus lezaras).
+                // A grafban egy szinttel lejebb lepunk.
                 //
 
-                FGraph.Push(currentService);
-
-                try
+                using (FGraph.With(currentService))
                 {
                     //
-                    // Ha egynel tobbszor szerepel az aktualis szerviz akkor korkoros referenciank van.
+                    // Ha tudunk.
                     //
 
-                    if (FGraph.LastIndexOf(currentService, ServiceReferenceComparer.Instance) > 0)
+                    if (FGraph.CircularReference)
                     {
                         currentService.Release();
 
@@ -153,17 +149,13 @@ namespace Solti.Utils.DI.Internals
                     if (!iface.IsInstanceOfType(currentService.Instance))
                         throw new Exception(string.Format(Resources.Culture, Resources.INVALID_INSTANCE, iface));
                 }
-                finally
-                {
-                    FGraph.Pop();
-                }
             }
 
             //
             // Ha az aktualisan lekerdezett szerviz valakinek a fuggosege akkor hozzaadjuk a fuggosegi listahoz.
             //
 
-            ParentService?.Dependencies.Add(currentService);
+            FGraph.Add(currentService);
 
             return currentService;
         }
