@@ -60,7 +60,7 @@ namespace Solti.Utils.DI.Container.Tests
                 .SetupGet(i => i.UnderlyingContainer)
                 .Returns(Container);
 
-            AbstractServiceReference svc = new ServiceReference(null);
+            AbstractServiceReference svc = new ServiceReference(new DummyServiceEntry());
 
             Assert.That(Container.Get<IInterface_1>().SetInstance(mockInjector.Object, svc));
             Assert.That(svc.Value, Is.InstanceOf<DecoratedImplementation_1>());
@@ -94,7 +94,7 @@ namespace Solti.Utils.DI.Container.Tests
             // rogzitette az uj elemet.
             //
 
-            AbstractServiceReference svc = new ServiceReference(null);
+            AbstractServiceReference svc = new ServiceReference(new DummyServiceEntry());
 
             Assert.That(Container.Get<IInterface_3<int>>(QueryModes.ThrowOnError).SetInstance(mockInjector.Object, svc));
             Assert.That(svc.Value, Is.InstanceOf<DecoratedImplementation_3<int>>());
@@ -128,7 +128,7 @@ namespace Solti.Utils.DI.Container.Tests
 
             mockResolver.Verify(r => r.Resolve(It.Is<Type>(t => t == typeof(IInterface_1))), Times.Never);
 
-            AbstractServiceReference svc = new ServiceReference(null);
+            AbstractServiceReference svc = new ServiceReference(new DummyServiceEntry());
 
             Assert.That(Container.Get<IInterface_1>().SetInstance(mockInjector.Object, svc));
             Assert.That(svc.Value, Is.InstanceOf<DecoratedImplementation_1>());     
@@ -191,7 +191,7 @@ namespace Solti.Utils.DI.Container.Tests
                 .SetupGet(i => i.UnderlyingContainer)
                 .Returns(Container);
 
-            AbstractServiceReference svc = new ServiceReference(null);
+            AbstractServiceReference svc = new ServiceReference(new DummyServiceEntry());
 
             Assert.That(Container.Get<IInterface_2>().SetInstance(mockInjector.Object, svc));
             Assert.That(svc.Value, Is.InstanceOf<MyProxyWithDependency>());
@@ -230,7 +230,7 @@ namespace Solti.Utils.DI.Container.Tests
                 .SetupGet(i => i.UnderlyingContainer)
                 .Returns(Container);
 
-            AbstractServiceReference svc = new ServiceReference(null);
+            AbstractServiceReference svc = new ServiceReference(new DummyServiceEntry());
 
             Assert.That(Container.Get<IInterface_1>("cica").SetInstance(mockInjector.Object, svc));
             Assert.That(svc.Value, Is.TypeOf<DecoratedImplementation_1>());

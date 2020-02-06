@@ -12,7 +12,7 @@ namespace Solti.Utils.DI.Internals
     {
         private readonly ServiceCollection FDependencies = new ServiceCollection();
 
-        public ServiceReference(AbstractServiceEntry entry) : base(entry) { }
+        public ServiceReference(AbstractServiceEntry entry, IInjector injector = null) : base(entry, injector) { }
 
         public override ICollection<AbstractServiceReference> Dependencies 
         {

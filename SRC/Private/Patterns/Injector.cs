@@ -106,7 +106,17 @@ namespace Solti.Utils.DI.Internals
                     // gyermeke). 
                     //
 
-                    currentService = new Injector(entry.Owner).GetReference(iface, name);
+                    var relatedInjector = new Injector(entry.Owner);
+
+                    currentService = relatedInjector.GetReference(iface, name);
+
+                    if (currentService.RelatedInjector != relatedInjector)
+                        //
+                        // Mivel Singleton peldanyt parhuzamosan megkiserelhet letrehozni tobb szal is ezert elofordulhat
+                        // h a legyartott injector nem is volt hasznalva, ilyenkor felszabaditjuk.
+                        //
+
+                        relatedInjector.Dispose();
                 } 
                 else
                 {
@@ -118,7 +128,7 @@ namespace Solti.Utils.DI.Internals
                     // hivasokban lassak az (epp legyartas alatt levo) szulot.
                     //
 
-                    currentService = new ServiceReference(entry);
+                    currentService = new ServiceReference(entry, this);
 
                     using (FGraph.With(currentService))
                     {

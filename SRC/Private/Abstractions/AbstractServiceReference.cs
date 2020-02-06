@@ -20,12 +20,21 @@ namespace Solti.Utils.DI.Internals
         /// <summary>
         /// Creates a new <see cref="AbstractServiceReference"/> instance.
         /// </summary>
-        public AbstractServiceReference(AbstractServiceEntry entry) => RelatedServiceEntry = entry;
+        public AbstractServiceReference(AbstractServiceEntry entry, IInjector injector)
+        {
+            RelatedServiceEntry = entry ?? throw new ArgumentNullException(nameof(entry));
+            RelatedInjector = injector; // lehet null
+        }
 
         /// <summary>
         /// The related service entry.
         /// </summary>
         public AbstractServiceEntry RelatedServiceEntry { get; }
+
+        /// <summary>
+        /// The (optional) <see cref="IInjector"/> instance who created this reference.
+        /// </summary>
+        public IInjector RelatedInjector { get; }
 
         /// <summary>
         /// The referenced service instance.
@@ -63,12 +72,7 @@ namespace Solti.Utils.DI.Internals
         /// <param name="disposeManaged"></param>
         protected override void Dispose(bool disposeManaged)
         {
-            //
-            // Tesztekben a RelatedServiceEntry nincs mindig hasznalva.
-            //
-
-            if (disposeManaged && RelatedServiceEntry != null)
-                Debug.WriteLine($"Disposed service: {RelatedServiceEntry.FriendlyName()}"); // ne WriteLineIf() legyen
+            Debug.WriteLineIf(disposeManaged, $"Disposed service: {RelatedServiceEntry.FriendlyName()}");
 
             base.Dispose(disposeManaged);
         }

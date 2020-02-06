@@ -120,7 +120,7 @@ namespace Solti.Utils.DI.UseCases
 
             object GetService<TInterface>() 
             {
-                AbstractServiceReference svc = new ServiceReference(null);
+                AbstractServiceReference svc = new ServiceReference(new DummyServiceEntry());
                 Container.Get<TInterface>().SetInstance(mockInjector.Object, svc);
 
                 return svc.Value;
