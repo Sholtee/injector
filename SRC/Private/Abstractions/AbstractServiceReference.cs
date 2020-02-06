@@ -12,6 +12,7 @@ namespace Solti.Utils.DI.Internals
     /// <summary>
     /// Encapsulates a service and its dependencies into a reference counted container.
     /// </summary>
+    /// <remarks>This is an internal class so it may change from version to version. Don't use it!</remarks>
     public abstract class AbstractServiceReference : DisposeByRefObject
     {
         private object FValue;
