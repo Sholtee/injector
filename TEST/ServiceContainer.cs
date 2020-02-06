@@ -272,7 +272,7 @@ namespace Solti.Utils.DI.Container.Tests
                 info.Interface,
                 info.Lifetime,
                 info.Factory,
-                info.Value,
+                info.Instance,
                 info.Implementation
             }.GetHashCode();
         }

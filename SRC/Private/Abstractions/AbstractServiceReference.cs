@@ -14,7 +14,7 @@ namespace Solti.Utils.DI.Internals
     /// </summary>
     public abstract class AbstractServiceReference : DisposeByRefObject
     {
-        private object FInstance;
+        private object FValue;
 
         /// <summary>
         /// Creates a new <see cref="AbstractServiceReference"/> instance.
@@ -29,12 +29,12 @@ namespace Solti.Utils.DI.Internals
         /// <summary>
         /// The referenced service instance.
         /// </summary>
-        public object Instance 
+        public object Value 
         {
             get 
             {
                 CheckDisposed();
-                return FInstance;
+                return FValue;
             }
             set 
             {
@@ -44,15 +44,15 @@ namespace Solti.Utils.DI.Internals
                 // Peldany csak egyszer allithato be.
                 //
 
-                if (FInstance != null) 
+                if (FValue != null) 
                     throw new InvalidOperationException(); // TODO: hibauzenet
 
-                FInstance = value;
+                FValue = value;
             }
         }
 
         /// <summary>
-        /// The dependencies of the service <see cref="Instance"/>.
+        /// The dependencies of the service <see cref="Value"/>.
         /// </summary>
         public abstract ICollection<AbstractServiceReference> Dependencies { get; }
 

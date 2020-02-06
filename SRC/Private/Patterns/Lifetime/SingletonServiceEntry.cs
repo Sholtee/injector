@@ -13,11 +13,11 @@ namespace Solti.Utils.DI.Internals
     /// </summary>
     internal class SingletonServiceEntry : ProducibleServiceEntry
     {
-        private AbstractServiceReference FService;
+        private AbstractServiceReference FInstance;
 
         //
         // Lock azert kell mert ez az entitas egyszerre tobb szerviz kollekcioban is szerepelhet
-        // (GetService() lehet hivva parhuzamosan).
+        // (SetInstance() lehet hivva parhuzamosan).
         //
 
         private readonly object FLock = new object();
@@ -34,9 +34,9 @@ namespace Solti.Utils.DI.Internals
         {
         }
 
-        public override object Value => FService?.Instance;
+        public override AbstractServiceReference Instance => FInstance;
 
-        public override void GetService(IInjector injector, ref AbstractServiceReference reference)
+        public override bool SetInstance(IInjector injector, AbstractServiceReference reference)
         {
             CheckProducible();
 
@@ -46,43 +46,33 @@ namespace Solti.Utils.DI.Internals
 
             Debug.Assert(injector.UnderlyingContainer.Parent == Owner);
 
-            if (FService == null)
+            //
+            // Ha mar le lett gyartva akkor nincs dolgunk, jelezzuk a hivonak h ovlassa ki a korabban 
+            // beallitott erteket.
+            //
+
+            if (FInstance != null) return false;
+
+            lock (FLock)
             {
-                lock (FLock)
-                {
-                    if (FService == null)
-                    {
-                        //
-                        // Ha meg nem lett legyartva akkor elkeszitjuk.
-                        //
+                if (FInstance != null) return false;
 
-                        try
-                        {
-                            reference.Instance = Factory(injector, Interface);
-                        }
-                        catch 
-                        {
-                            reference.Release();
-                            throw;
-                        }
 
-                        FService = reference;
-                        return;
-                    }
-                }
+                //
+                // Kulomben legyartjuk. Elsokent a Factory-t hivjuk es Instance-nak csak sikeres visszateres
+                // eseten adjunk erteket.
+                //
+
+                reference.Value = Factory(injector, Interface);
+                FInstance = reference;
             }
 
-            //
-            // Kulomben visszaadjuk a kroabban legyartott peldanyt.
-            //
-
-            reference.Release();
-            reference = FService;
+            return true;
         }
 
         protected override void Dispose(bool disposeManaged)
         {
-            if (disposeManaged) FService?.Release();
+            if (disposeManaged) FInstance?.Release();
 
             base.Dispose(disposeManaged);
         }

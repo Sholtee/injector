@@ -31,7 +31,7 @@ namespace Solti.Utils.DI.Internals
                 // Elso helyen szerepeljen h a fuggosegeket a Dispose()-ban meg hasznalni tudja a szerviz peldany.
                 //
 
-                (Instance as IDisposable)?.Dispose();
+                (Value as IDisposable)?.Dispose();
 
                 //
                 // Ha a GC-nek kell felszabaditania a ServiceReference peldanyt akkor vmit nagyon elkurtunk

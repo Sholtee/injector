@@ -42,7 +42,7 @@ namespace Solti.Utils.DI.Container.Tests
 
             Container.Instance(instance);
 
-            Assert.AreSame(instance, Container.CreateChild().Get<IInterface_1>(QueryModes.ThrowOnError).Value);
+            Assert.AreSame(instance, Container.CreateChild().Get<IInterface_1>(QueryModes.ThrowOnError).Instance.Value);
         }
 
         [Test]

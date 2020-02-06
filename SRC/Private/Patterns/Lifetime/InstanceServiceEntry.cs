@@ -4,7 +4,6 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
-using System.Diagnostics;
 using System.Reflection;
 
 namespace Solti.Utils.DI.Internals
@@ -16,8 +15,6 @@ namespace Solti.Utils.DI.Internals
     /// </summary>
     internal class InstanceServiceEntry : AbstractServiceEntry
     {
-        private readonly AbstractServiceReference FService;
-
         public InstanceServiceEntry(Type @interface, string name, object instance, bool releaseOnDispose, IServiceContainer owner) : base(@interface, name, null, owner ?? throw new ArgumentNullException(nameof(owner)))
         {
             //
@@ -30,8 +27,8 @@ namespace Solti.Utils.DI.Internals
             if (!@interface.IsInstanceOfType(instance))
                 throw new InvalidOperationException(string.Format(Resources.Culture, Resources.NOT_ASSIGNABLE, @interface, instance.GetType()));
 
-            FService = releaseOnDispose ? new ServiceReference(this) : (AbstractServiceReference) new InstanceReference(this);
-            FService.Instance = instance;
+            Instance = releaseOnDispose ? new ServiceReference(this) : (AbstractServiceReference) new InstanceReference(this);
+            Instance.Value = instance;
         }
 
         public override Type Implementation => null;
@@ -47,26 +44,18 @@ namespace Solti.Utils.DI.Internals
             set => throw new InvalidOperationException();
         }
 
-        public override object Value => FService.Instance;
+        public override AbstractServiceReference Instance { get; }
 
-        public override void GetService(IInjector injector, ref AbstractServiceReference reference)
-        {
-            CheckDisposed();
-
+        public override bool SetInstance(IInjector injector, AbstractServiceReference reference) =>
             //
-            // Az injector kontenereben is deklaralhatunk bejegyzeseket (pl az Injector felveszi sajat
-            // magat) -> ne "injector.UnderlyingContainer.Parent.IsDescendantOf(Owner)" legyen.
+            // Peldany eseten ez a metodus elvileg sose kerulhet meghivasra.
             //
 
-            Debug.Assert(injector.UnderlyingContainer.IsDescendantOf(Owner));
-
-            reference.Release();
-            reference = FService;
-        }
+            throw new NotImplementedException();
 
         protected override void Dispose(bool disposeManaged)
         {
-            if (disposeManaged) FService.Release();
+            if (disposeManaged) Instance.Release();
 
             base.Dispose(disposeManaged);
         }

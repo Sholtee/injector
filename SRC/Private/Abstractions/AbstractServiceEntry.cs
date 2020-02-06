@@ -89,15 +89,16 @@ namespace Solti.Utils.DI.Internals
         /// <summary>
         /// The previously created service instance. Don't use it directly.
         /// </summary>
-        public virtual object Value => null;
+        public virtual AbstractServiceReference Instance => null;
         #endregion
 
         /// <summary>
-        /// Gets the service instance.
+        /// Sets the service instance.
         /// </summary>
         /// <param name="injector">The <see cref="IInjector"/> created from the <see cref="Owner"/> container.</param>
         /// <param name="serviceReference">The <see cref="AbstractServiceReference"/> of the service being created.</param>
-        public virtual void GetService(IInjector injector, ref AbstractServiceReference serviceReference)
+        /// <returns>True on success false if the <see cref="Instance"/> had already been set previously.</returns>
+        public virtual bool SetInstance(IInjector injector, AbstractServiceReference serviceReference)
         {
             serviceReference?.Release();
 
@@ -138,11 +139,11 @@ namespace Solti.Utils.DI.Internals
                 Name,
                 Lifetime,
                 Factory,
-                Value,
+                Instance?.Value,
                 Implementation
             }.GetHashCode()
 #else
-            HashCode.Combine(Owner, Interface, Name, Lifetime, Factory, Value, Implementation)
+            HashCode.Combine(Owner, Interface, Name, Lifetime, Factory, Instance?.Value, Implementation)
 #endif
             ;
 
@@ -159,7 +160,7 @@ namespace Solti.Utils.DI.Internals
             return new StringBuilder(this.FriendlyName())
                 .AppendFormat(Resources.Culture, NAME_PART, nameof(Lifetime), Lifetime?.ToString() ?? NULL)
                 .AppendFormat(Resources.Culture, NAME_PART, nameof(Implementation), Implementation?.ToString() ?? NULL)
-                .AppendFormat(Resources.Culture, NAME_PART, nameof(Value), Value?.ToString() ?? NULL)
+                .AppendFormat(Resources.Culture, NAME_PART, nameof(Instance), Instance?.ToString() ?? NULL)
                 .ToString();
         }
     }

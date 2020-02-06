@@ -13,7 +13,7 @@ namespace Solti.Utils.DI.Injector.Tests
     public partial class InjectorTestsBase<TContainer>
     {
         [Test]
-        public void Injector_Misc_RequestedServiceMayStoreTheDependencies(
+        public void Injector_Misc_RequestedServiceMayStoreTheItsDependencies(
             [Values(true, false)] bool useChildContainer,
             [Values(Lifetime.Transient, Lifetime.Scoped, Lifetime.Singleton)] Lifetime dependant,
             [Values(Lifetime.Transient, Lifetime.Scoped, Lifetime.Singleton, null)] Lifetime? dependency)

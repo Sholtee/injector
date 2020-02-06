@@ -51,6 +51,7 @@ namespace Solti.Utils.DI.Internals
 
             this.Instance<IInjector>(this, releaseOnDispose: false);
 
+        [SuppressMessage("Reliability", "CA2000:Dispose objects before losing scope", Justification = "Lifetime of 'new Injector(...)' is managed by its parent container.")]
         public AbstractServiceReference GetReference(Type iface, string name)
         {
             CheckDisposed();
@@ -68,7 +69,7 @@ namespace Solti.Utils.DI.Internals
             // Ha vkinek a fuggosege vagyunk akkor a fuggo szerviz itt meg nem lehet legyartva.
             //
 
-            Assert(FGraph.Current?.Instance == null, "Already produced services can not request dependencies");
+            Assert(FGraph.Current?.Value == null, "Already produced services can not request dependencies");
 
             //
             // Bejegyzes lekerdezese
@@ -77,74 +78,86 @@ namespace Solti.Utils.DI.Internals
             AbstractServiceEntry entry = Get(iface, name, QueryModes.AllowSpecialization | QueryModes.ThrowOnError);
 
             //
-            // - Lekerdezeshez mindig a tulajdonos szervizkollekciobol kell injector-t letrehozni.
-            //   * Ehhez az "entry.Owner?.IsDescendantOf(Parent)" feltetel helyes mivel injector letrehozasakor 
-            //     mindig uj gyermek kontenert hozunk letre
-            //   * Igy a fuggosegek is a deklaralo kollekciobol lesznek feloldva
-            //     Mellekhatasok: 
-            //       > Singleton szerviz hivatkozhat abstract fuggosegre (de az rossz konfiguracio).
-            // - A referencia szamlalas miatt Singleton szerviz minden fuggosege is Singletonkent 
-            //   viselkedik (ez ellen van a StrictDI).
+            // Ha korabban mar le lett gyartva a szerviz peldany akkor nincs dolgunk.
             //
 
-            AbstractServiceReference currentService;
+            AbstractServiceReference currentService = entry.Instance;
 
-            if (entry.Owner?.IsDescendantOf(this.Parent) == false)
+            if (currentService == null)
             {
-                Assert(entry.Owner != null);
-
                 //
-                // - Nem problema h minden egyes hivasnal uj injectort hozunk letre, az entry.GetService()
-                //   legfeljebb nem fogja hasznalni.
-                // - A referencia szamlalas miatt nem gond ha felszabaditjuk a szulo injectort.
+                // - Lekerdezeshez mindig a tulajdonos szervizkollekciobol kell injector-t letrehozni.
+                //   * Ehhez az "entry.Owner?.IsDescendantOf(Parent)" feltetel helyes mivel injector letrehozasakor 
+                //     mindig uj gyermek kontenert hozunk letre
+                //   * Igy a fuggosegek is a deklaralo kollekciobol lesznek feloldva
+                //     Mellekhatasok: 
+                //       > Singleton szerviz hivatkozhat abstract fuggosegre (de az rossz konfiguracio).
+                // - A referencia szamlalas miatt Singleton szerviz minden fuggosege is Singletonkent 
+                //   viselkedik (ez ellen van a StrictDI).
                 //
 
-                using (var ownerInjector = new Injector(entry.Owner))
+                if (entry.Owner?.IsDescendantOf(this.Parent) == false)
                 {
-                    currentService = ownerInjector.GetReference(iface, name);
-                }
+                    Assert(entry.Owner != null);
+                    Assert(entry.Lifetime >= Lifetime.Singleton);
 
-                Assert(!currentService.Disposed, "Service must not be disposed here");
-            } 
-            else 
-            {
-                if (BreaksTheRuleOfStrictDI(entry))
-                    throw new RequestNotAllowedException(FGraph.Current.RelatedServiceEntry, entry, Resources.STRICT_DI);
-
-                //
-                // Letrehozunk egy ures referenciat h a szerviz legyartasa kozben a rekurziv GetReference()
-                // hivasokban lassak az (epp legyartas alatt levo) szulot.
-                //
-
-                currentService = new ServiceReference(entry);
-
-                using (FGraph.With(currentService))
-                {
                     //
-                    // Ellenorizzuk h nem volt e korkoros referencia.
+                    // Az uj injector elettartama meg fogy egyezni a bejegyzes elettartamaval (mivel "entry.Owner"
+                    // gyermeke). 
                     //
 
-                    if (FGraph.CircularReference)
+                    currentService = new Injector(entry.Owner).GetReference(iface, name);
+                } 
+                else
+                {
+                    if (BreaksTheRuleOfStrictDI(entry))
+                        throw new RequestNotAllowedException(FGraph.Current.RelatedServiceEntry, entry, Resources.STRICT_DI);
+
+                    //
+                    // Letrehozunk egy ures referenciat h a szerviz legyartasa kozben a rekurziv GetReference()
+                    // hivasokban lassak az (epp legyartas alatt levo) szulot.
+                    //
+
+                    currentService = new ServiceReference(entry);
+
+                    using (FGraph.With(currentService))
                     {
-                        currentService.Release();
+                        //
+                        // Ellenorizzuk h nem volt e korkoros referencia.
+                        //
 
-                        throw new CircularReferenceException(FGraph);
+                        if (FGraph.CircularReference)
+                        {
+                            currentService.Release();
+                            throw new CircularReferenceException(FGraph);
+                        }
+
+                        //
+                        // Factory hivasa, innentol a ServiceEntry felelos a szerviz peldany felszabaditasaert.
+                        //
+
+                        if (!entry.SetInstance(this, currentService))
+                        {
+                            //
+                            // - Valaki korabban mar beallitotta (parhuzamos eset Singleton elettartamnal). 
+                            // - Nem gond h With() blokkban vagyunk siman felszabadithato az entitas.
+                            //
+
+                            currentService.Release();
+                            currentService = entry.Instance;
+
+                            Assert(currentService != null);
+                        }
+
+                        Assert(currentService.Value != null, "Instance was not set");
+
+                        //
+                        // Peldany tipusat ellenorizzuk mert a Factory(), Lazy() stb visszaadhat vicces dolgokat.
+                        //
+
+                        if (!iface.IsInstanceOfType(currentService.Value))
+                            throw new Exception(string.Format(Resources.Culture, Resources.INVALID_INSTANCE, iface));
                     }
-
-                    //
-                    // Factory hivasa, innentol a ServiceEntry felelos a szerviz peldany felszabaditasaert.
-                    //
-
-                    entry.GetService(this, ref currentService);
-
-                    Assert(currentService.Instance != null, "Instance was not set");
-
-                    //
-                    // Peldany tipusat ellenorizzuk mert a Factory(), Lazy() stb visszaadhat vicces dolgokat.
-                    //
-
-                    if (!iface.IsInstanceOfType(currentService.Instance))
-                        throw new Exception(string.Format(Resources.Culture, Resources.INVALID_INSTANCE, iface));
                 }
             }
 
@@ -159,7 +172,7 @@ namespace Solti.Utils.DI.Internals
 
         #region IInjector
         [SuppressMessage("Reliability", "CA2000:Dispose objects before losing scope", Justification = "The reference is released on container disposal.")]
-        public object Get(Type iface, string name) => GetReference(iface, name).Instance;
+        public object Get(Type iface, string name) => GetReference(iface, name).Value;
 
         public IServiceContainer UnderlyingContainer => this;
         #endregion
