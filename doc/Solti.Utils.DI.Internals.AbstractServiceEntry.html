@@ -81,9 +81,6 @@
     <div>
       <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
     </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a>
-    </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Solti.Utils.DI.Internals.html">Solti.Utils.DI.Internals</a></h6>
   <h6><strong>Assembly</strong>: Injector.dll</h6>
@@ -256,6 +253,30 @@
       </tr>
     </tbody>
   </table>
+  <a id="Solti_Utils_DI_Internals_AbstractServiceEntry_Instance_" data-uid="Solti.Utils.DI.Internals.AbstractServiceEntry.Instance*"></a>
+  <h4 id="Solti_Utils_DI_Internals_AbstractServiceEntry_Instance" data-uid="Solti.Utils.DI.Internals.AbstractServiceEntry.Instance">Instance</h4>
+  <div class="markdown level1 summary"><p>The previously created service instance. Don&apos;t use it directly.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual AbstractServiceReference Instance { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.Internals.AbstractServiceReference.html">AbstractServiceReference</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   <a id="Solti_Utils_DI_Internals_AbstractServiceEntry_Interface_" data-uid="Solti.Utils.DI.Internals.AbstractServiceEntry.Interface*"></a>
   <h4 id="Solti_Utils_DI_Internals_AbstractServiceEntry_Interface" data-uid="Solti.Utils.DI.Internals.AbstractServiceEntry.Interface">Interface</h4>
   <div class="markdown level1 summary"><p>The interface of the service.</p>
@@ -354,30 +375,6 @@
     <tbody>
       <tr>
         <td><a class="xref" href="Solti.Utils.DI.IServiceContainer.html">IServiceContainer</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <a id="Solti_Utils_DI_Internals_AbstractServiceEntry_Value_" data-uid="Solti.Utils.DI.Internals.AbstractServiceEntry.Value*"></a>
-  <h4 id="Solti_Utils_DI_Internals_AbstractServiceEntry_Value" data-uid="Solti.Utils.DI.Internals.AbstractServiceEntry.Value">Value</h4>
-  <div class="markdown level1 summary"><p>The previously created service instance. Don&apos;t use it directly.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public virtual object Value { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></td>
         <td></td>
       </tr>
     </tbody>
@@ -499,14 +496,14 @@
   </table>
   <h5 class="overrides">Overrides</h5>
   <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a></div>
-  <a id="Solti_Utils_DI_Internals_AbstractServiceEntry_GetService_" data-uid="Solti.Utils.DI.Internals.AbstractServiceEntry.GetService*"></a>
-  <h4 id="Solti_Utils_DI_Internals_AbstractServiceEntry_GetService_Solti_Utils_DI_IInjector_Solti_Utils_DI_Internals_ServiceReference__" data-uid="Solti.Utils.DI.Internals.AbstractServiceEntry.GetService(Solti.Utils.DI.IInjector,Solti.Utils.DI.Internals.ServiceReference@)">GetService(IInjector, ref ServiceReference)</h4>
-  <div class="markdown level1 summary"><p>Gets the service instance.</p>
+  <a id="Solti_Utils_DI_Internals_AbstractServiceEntry_SetInstance_" data-uid="Solti.Utils.DI.Internals.AbstractServiceEntry.SetInstance*"></a>
+  <h4 id="Solti_Utils_DI_Internals_AbstractServiceEntry_SetInstance_Solti_Utils_DI_Internals_AbstractServiceReference_" data-uid="Solti.Utils.DI.Internals.AbstractServiceEntry.SetInstance(Solti.Utils.DI.Internals.AbstractServiceReference)">SetInstance(AbstractServiceReference)</h4>
+  <div class="markdown level1 summary"><p>Sets the service instance.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public virtual void GetService(IInjector injector, ref ServiceReference serviceReference)</code></pre>
+    <pre><code class="lang-csharp hljs">public virtual bool SetInstance(AbstractServiceReference serviceReference)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -519,19 +516,55 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Solti.Utils.DI.IInjector.html">IInjector</a></td>
-        <td><span class="parametername">injector</span></td>
-        <td><p>The <a class="xref" href="Solti.Utils.DI.IInjector.html">IInjector</a> created from the <a class="xref" href="Solti.Utils.DI.Internals.AbstractServiceEntry.html#Solti_Utils_DI_Internals_AbstractServiceEntry_Owner">Owner</a> container.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="Solti.Utils.DI.Internals.ServiceReference.html">ServiceReference</a></td>
+        <td><a class="xref" href="Solti.Utils.DI.Internals.AbstractServiceReference.html">AbstractServiceReference</a></td>
         <td><span class="parametername">serviceReference</span></td>
-        <td><p>The <a class="xref" href="Solti.Utils.DI.Internals.ServiceReference.html">ServiceReference</a> of the service being created.</p>
+        <td><p>The <a class="xref" href="Solti.Utils.DI.Internals.AbstractServiceReference.html">AbstractServiceReference</a> of the service being created.</p>
 </td>
       </tr>
     </tbody>
   </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p>True on success false if the <a class="xref" href="Solti.Utils.DI.Internals.AbstractServiceEntry.html#Solti_Utils_DI_Internals_AbstractServiceEntry_Instance">Instance</a> had already been set previously.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Solti_Utils_DI_Internals_AbstractServiceEntry_ToString_" data-uid="Solti.Utils.DI.Internals.AbstractServiceEntry.ToString*"></a>
+  <h4 id="Solti_Utils_DI_Internals_AbstractServiceEntry_ToString" data-uid="Solti.Utils.DI.Internals.AbstractServiceEntry.ToString">ToString()</h4>
+  <div class="markdown level1 summary"><p>See <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">ToString()</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override string ToString()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a></div>
   <h3 id="implements">Implements</h3>
   <div>
       <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.idisposable">System.IDisposable</a>
