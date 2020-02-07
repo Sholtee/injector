@@ -39,11 +39,11 @@ namespace Solti.Utils.DI.Internals
 
         public override AbstractServiceReference Instance => null;
 
-        public override bool SetInstance(IInjector injector, AbstractServiceReference reference)
+        public override bool SetInstance(AbstractServiceReference reference)
         {
             CheckProducible();
 
-            Debug.Assert(injector.UnderlyingContainer == Owner);
+            Debug.Assert(reference.RelatedInjector.UnderlyingContainer == Owner);
 
             //
             // Ne legyen kiemelve statikusba h tesztekben megvaltoztathato legyen.
@@ -60,7 +60,7 @@ namespace Solti.Utils.DI.Internals
 
                 throw new Exception(string.Format(Resources.Culture, Resources.INJECTOR_SHOULD_BE_RELEASED, maxSpawnedServices));
 
-            reference.Value = Factory(injector, Interface);
+            reference.Value = Factory(reference.RelatedInjector, Interface);
 
             FSpawnedServices.Add(reference); // inkrementalja "reference" referenciaszamlalojat
 

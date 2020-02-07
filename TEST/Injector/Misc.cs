@@ -47,7 +47,7 @@ namespace Solti.Utils.DI.Injector.Tests
         [Test]
         public void Injector_Misc_RequestedServiceMayStoreTheParentInjector(
             [Values(true, false)] bool useChildContainer, 
-            [Values(Lifetime.Transient, Lifetime.Scoped/*, Lifetime.Singleton*/)] Lifetime lifetime) 
+            [Values(Lifetime.Transient, Lifetime.Scoped, Lifetime.Singleton)] Lifetime lifetime) 
         {
             IServiceContainer sourceContainer = useChildContainer ? Container.CreateChild() : Container;
 

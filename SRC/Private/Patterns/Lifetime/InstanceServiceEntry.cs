@@ -46,7 +46,7 @@ namespace Solti.Utils.DI.Internals
 
         public override AbstractServiceReference Instance { get; }
 
-        public override bool SetInstance(IInjector injector, AbstractServiceReference reference) =>
+        public override bool SetInstance(AbstractServiceReference reference) =>
             //
             // Peldany eseten ez a metodus elvileg sose kerulhet meghivasra.
             //

@@ -95,10 +95,9 @@ namespace Solti.Utils.DI.Internals
         /// <summary>
         /// Sets the service instance.
         /// </summary>
-        /// <param name="injector">The <see cref="IInjector"/> created from the <see cref="Owner"/> container.</param>
         /// <param name="serviceReference">The <see cref="AbstractServiceReference"/> of the service being created.</param>
         /// <returns>True on success false if the <see cref="Instance"/> had already been set previously.</returns>
-        public virtual bool SetInstance(IInjector injector, AbstractServiceReference serviceReference)
+        public virtual bool SetInstance(AbstractServiceReference serviceReference)
         {
             serviceReference?.Release();
 

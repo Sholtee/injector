@@ -36,7 +36,7 @@ namespace Solti.Utils.DI.Internals
 
         public override AbstractServiceReference Instance => FInstance;
 
-        public override bool SetInstance(IInjector injector, AbstractServiceReference reference)
+        public override bool SetInstance(AbstractServiceReference reference)
         {
             CheckProducible();
 
@@ -44,7 +44,7 @@ namespace Solti.Utils.DI.Internals
             // Singleton bejegyzeshez mindig sajat injector van letrehozva a deklaralo kontenerbol
             //
 
-            Debug.Assert(injector.UnderlyingContainer.Parent == Owner);
+            Debug.Assert(reference.RelatedInjector.UnderlyingContainer.Parent == Owner);
 
             //
             // Ha mar le lett gyartva akkor nincs dolgunk, jelezzuk a hivonak h ovlassa ki a korabban 
@@ -63,7 +63,7 @@ namespace Solti.Utils.DI.Internals
                 // eseten adjunk erteket.
                 //
 
-                reference.Value = Factory(injector, Interface);
+                reference.Value = Factory(reference.RelatedInjector, Interface);
                 FInstance = reference;
             }
 

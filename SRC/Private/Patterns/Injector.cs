@@ -98,7 +98,6 @@ namespace Solti.Utils.DI.Internals
 
                 if (entry.Owner?.IsDescendantOf(this.Parent) == false)
                 {
-                    Assert(entry.Owner != null);
                     Assert(entry.Lifetime >= Lifetime.Singleton);
 
                     //
@@ -146,7 +145,7 @@ namespace Solti.Utils.DI.Internals
                         // Factory hivasa, innentol a ServiceEntry felelos a szerviz peldany felszabaditasaert.
                         //
 
-                        if (!entry.SetInstance(this, currentService))
+                        if (!entry.SetInstance(currentService))
                         {
                             //
                             // - Valaki korabban mar beallitotta (parhuzamos eset Singleton elettartamnal). 
