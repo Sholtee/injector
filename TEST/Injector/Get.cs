@@ -86,7 +86,7 @@ namespace Solti.Utils.DI.Injector.Tests
         [TestCase(Lifetime.Singleton)]
         public void Injector_Get_ShouldResolveGenericDependencies(Lifetime lifetime)
         {
-            Config.Value.StrictDI = false;
+            Config.Value.Injector.StrictDI = false;
 
             Container
                 .Service<IInterface_1, Implementation_1_No_Dep>() // direkt nincs lifetime

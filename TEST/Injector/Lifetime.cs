@@ -28,7 +28,7 @@ namespace Solti.Utils.DI.Injector.Tests
         [Test]
         public void Lifetime_TransientService_ShouldNotBeInstantiatedIfTheInjectorWasRecycled() 
         {
-            Config.Value.InjectorMaxSpawnedTransientServices = 1;
+            Config.Value.Injector.MaxSpawnedTransientServices = 1;
 
             Container.Service<IInterface_1, Implementation_1_No_Dep>(Lifetime.Transient);
 
@@ -117,7 +117,7 @@ namespace Solti.Utils.DI.Injector.Tests
         [Test]
         public void Lifetime_SingletonService_MayHaveScopedDependency()
         {
-            Config.Value.StrictDI = false;
+            Config.Value.Injector.StrictDI = false;
 
             Disposable instance;
 
@@ -174,7 +174,7 @@ namespace Solti.Utils.DI.Injector.Tests
         [Test]
         public void Lifetime_SingletonService_ShouldResolveDependencyFromTheDeclaringContainer_DecorationTest()
         {
-            Config.Value.StrictDI = false;
+            Config.Value.Injector.StrictDI = false;
 
             Container
                 .Service<IInterface_1, Implementation_1_No_Dep>(Lifetime.Transient)
@@ -212,7 +212,7 @@ namespace Solti.Utils.DI.Injector.Tests
             [Values(Lifetime.Transient, Lifetime.Scoped, Lifetime.Singleton)] Lifetime dependant,
             [Values(Lifetime.Transient, Lifetime.Scoped, Lifetime.Singleton, null)] Lifetime? dependency)
         {
-            Config.Value.StrictDI = false;
+            Config.Value.Injector.StrictDI = false;
 
             if (dependency != null)
                 Container.Service<IInterface_1, Implementation_1_No_Dep>(dependency.Value);
@@ -242,7 +242,7 @@ namespace Solti.Utils.DI.Injector.Tests
             [Values(Lifetime.Transient, Lifetime.Scoped)] Lifetime dependant, 
             [Values(Lifetime.Transient, Lifetime.Scoped, Lifetime.Singleton, null)] Lifetime? dependency) 
         {
-            Config.Value.StrictDI = true;
+            Config.Value.Injector.StrictDI = true;
 
             if (dependency != null)
                 Container.Service<IInterface_1, Implementation_1_No_Dep>(dependency.Value);
@@ -271,7 +271,7 @@ namespace Solti.Utils.DI.Injector.Tests
             [Values(true, false)] bool useChildContainer,
             [Values(Lifetime.Singleton, null)] Lifetime? dependency)
         {
-            Config.Value.StrictDI = true;
+            Config.Value.Injector.StrictDI = true;
 
             if (dependency != null)
                 Container.Service<IInterface_1, Implementation_1_No_Dep>(dependency.Value);
@@ -300,7 +300,7 @@ namespace Solti.Utils.DI.Injector.Tests
             [Values(true, false)] bool useChildContainer,
             [Values(Lifetime.Transient, Lifetime.Scoped)] Lifetime dependency) 
         {
-            Config.Value.StrictDI = true;
+            Config.Value.Injector.StrictDI = true;
 
             Container
                 .Service<IInterface_1, Implementation_1_No_Dep>(dependency)

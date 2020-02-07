@@ -69,4 +69,5 @@
   - *added:* `IServiceContainerExtensions.Lazy()` overloads
   - *fixed:* Wrong injector could be passed to the constructor of Singleton service
   - *implemented:* `AbstractServiceEntry.ToString()`
-  - *renamed:* `MaxSpawnedServices` -> `InjectorMaxSpawnedTransientServices` in `Injector.config.json`
+  - *changed:* `Injector.config.json` layout
+  - *updated:* Dependencies

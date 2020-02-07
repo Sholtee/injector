@@ -1,5 +1,11 @@
 {
-  "InjectorMaxSpawnedTransientServices": 512,
-  "CompositeMaxChildCount": 512,
-  "StrictDI": false
+  "Composite":
+  {
+    "MaxChildCount": 512  
+  },
+  "Injector":
+  {
+    "StrictDI": false,
+    "MaxSpawnedTransientServices": 512
+  }
 }

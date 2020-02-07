@@ -49,7 +49,7 @@ namespace Solti.Utils.DI.Internals
             // Ne legyen kiemelve statikusba h tesztekben megvaltoztathato legyen.
             //
 
-            int maxSpawnedServices = Config.Value.InjectorMaxSpawnedTransientServices;
+            int maxSpawnedServices = Config.Value.Injector.MaxSpawnedTransientServices;
 
             if (FSpawnedServices.Count == maxSpawnedServices)
                 //
@@ -85,13 +85,5 @@ namespace Solti.Utils.DI.Internals
 
             base.Dispose(disposeManaged);
         }
-    }
-
-    public partial class Config 
-    {
-        /// <summary>
-        /// The maximum number of <see cref="Lifetime.Transient"/> service instances can be held by the <see cref="IInjector"/>.
-        /// </summary>
-        public int InjectorMaxSpawnedTransientServices { get; set; } = 512;
     }
 }

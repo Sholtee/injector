@@ -18,7 +18,7 @@ namespace Solti.Utils.DI.Injector.Tests
             [Values(Lifetime.Transient, Lifetime.Scoped, Lifetime.Singleton)] Lifetime dependant,
             [Values(Lifetime.Transient, Lifetime.Scoped, Lifetime.Singleton, null)] Lifetime? dependency)
         {
-            Config.Value.StrictDI = false;
+            Config.Value.Injector.StrictDI = false;
 
             if (dependency != null)
                 Container.Service<IDisposableEx, Disposable>(dependency.Value);

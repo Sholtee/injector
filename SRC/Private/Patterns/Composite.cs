@@ -116,7 +116,7 @@ namespace Solti.Utils.DI.Internals
                 // Ne legyen kiemelve statikusba h tesztekben megvaltoztathato legyen.
                 //
 
-                int maxChildCount = Config.Value.CompositeMaxChildCount;
+                int maxChildCount = Config.Value.Composite.MaxChildCount;
 
                 if (FChildren.Count == maxChildCount)
                     //
@@ -152,13 +152,5 @@ namespace Solti.Utils.DI.Internals
             child.Parent = null;
         }
         #endregion
-    }
-
-    public partial class Config 
-    {
-        /// <summary>
-        /// Limits the count of children belong to a <see cref="Composite{TInterface}"/> entity.
-        /// </summary>
-        public int CompositeMaxChildCount { get; set; } = 512;
     }
 }

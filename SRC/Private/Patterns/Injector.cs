@@ -27,7 +27,7 @@ namespace Solti.Utils.DI.Internals
 
         private bool BreaksTheRuleOfStrictDI(AbstractServiceEntry entry) 
         {
-            if (!Config.Value.StrictDI) return false;
+            if (!Config.Value.Injector.StrictDI) return false;
 
             IServiceContainer
                 requestor = FGraph.Current?.RelatedServiceEntry.Owner,
@@ -198,13 +198,5 @@ namespace Solti.Utils.DI.Internals
 
         public override void RemoveChild(IServiceContainer child) => throw new NotSupportedException();
         #endregion
-    }
-
-    public partial class Config 
-    {
-        /// <summary>
-        /// Instructs the injector to throw if a service being requested has a dependency that should live shorter than the service should (e.g.: a <see cref="Lifetime.Singleton"/> service can not have <see cref="Lifetime.Transient"/> dependency).
-        /// </summary>
-        public bool StrictDI { get; set; } = false;
     }
 }
