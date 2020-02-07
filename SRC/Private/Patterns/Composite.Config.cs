@@ -19,7 +19,7 @@ namespace Solti.Utils.DI.Internals
     public partial class Config 
     {
         /// <summary>
-        /// <see cref="InjectorConfig"/>.
+        /// <see cref="CompositeConfig"/>.
         /// </summary>
         public CompositeConfig Composite { get; set; } = new CompositeConfig();
     }
