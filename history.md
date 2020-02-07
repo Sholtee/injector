@@ -64,7 +64,7 @@
   - *added:* Some `ProxyFactory.Create()` overload
   - *added:* `IInjector.UnderlyingContainer`
   - *updated:* Dependencies
-- 1.2.0:
+- 1.2.0-preview1:
   - *added:* Strict DI support (disabled by default, to enable set `StrictDI` to true in `Injector.config.json`)
   - *added:* `IServiceContainerExtensions.Lazy()` overloads
   - *fixed:* Wrong injector could be passed to the constructor of Singleton service
