@@ -13,7 +13,7 @@ namespace Solti.Utils.DI.Internals
     /// </summary>
     internal class ScopedServiceEntry : ProducibleServiceEntry
     {
-        private ServiceReference FService;
+        private AbstractServiceReference FInstance;
 
         private ScopedServiceEntry(ScopedServiceEntry entry, IServiceContainer owner) : base(entry, owner)
         {
@@ -31,9 +31,9 @@ namespace Solti.Utils.DI.Internals
         {
         }
 
-        public override object Value => FService?.Instance;
+        public override AbstractServiceReference Instance => FInstance;
 
-        public override void GetService(IInjector injector, ref ServiceReference reference)
+        public override bool SetInstance(AbstractServiceReference reference)
         {
             CheckProducible();
 
@@ -41,36 +41,24 @@ namespace Solti.Utils.DI.Internals
             // Az injectornak kell lennie a bejegyzes tulajdonosanak.
             //
 
-            Debug.Assert(injector.UnderlyingContainer == Owner);
+            Debug.Assert(reference.RelatedInjector.UnderlyingContainer == Owner);
 
             //
-            // Ha mar korabban le lett gyartva akkor visszaadjuk azt.
+            // Ha mar le lett gyartva akkor nincs dolgunk, jelezzuk a hivonak h ovlassa ki a korabban 
+            // beallitott erteket.
             //
 
-            if (FService != null)
-            {
-                reference.Release();
-                reference = FService;
-            }
+            if (FInstance != null) return false;
 
             //
-            // Kulomben legyartjuk.
+            // Kulomben legyartjuk. Elsokent a Factory-t hivjuk es Instance-nak csak sikeres visszateres
+            // eseten adjunk erteket.
             //
 
-            else
-            {
-                try
-                {
-                    reference.Instance = Factory(injector, Interface);
-                }
-                catch 
-                {
-                    reference.Release();
-                    throw;
-                }
+            reference.Value = Factory(reference.RelatedInjector, Interface);
+            FInstance = reference;
 
-                FService = reference;
-            }
+            return true;
         }
 
         public override AbstractServiceEntry CopyTo(IServiceContainer target)
@@ -84,7 +72,7 @@ namespace Solti.Utils.DI.Internals
 
         protected override void Dispose(bool disposeManaged)
         {
-            if (disposeManaged) FService?.Release();
+            if (disposeManaged) Instance?.Release();
 
             base.Dispose(disposeManaged);
         }

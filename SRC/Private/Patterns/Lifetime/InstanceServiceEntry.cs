@@ -4,7 +4,6 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
-using System.Diagnostics;
 using System.Reflection;
 
 namespace Solti.Utils.DI.Internals
@@ -16,26 +15,6 @@ namespace Solti.Utils.DI.Internals
     /// </summary>
     internal class InstanceServiceEntry : AbstractServiceEntry
     {
-        #region InstanceServiceReference
-        private sealed class InstanceServiceReference : ServiceReference // hacky
-        {
-            public InstanceServiceReference(Type @interface, string name, bool releaseOnDispose) : base(@interface, name)
-            {
-                ReleaseOnDispose = releaseOnDispose;        
-            }
-
-            public bool ReleaseOnDispose { get; }
-
-            protected override void Dispose(bool disposeManaged)
-            {
-                if (disposeManaged && !ReleaseOnDispose) Instance = null; 
-                base.Dispose(disposeManaged);
-            }
-        }
-        #endregion
-
-        private readonly ServiceReference FService;
-
         public InstanceServiceEntry(Type @interface, string name, object instance, bool releaseOnDispose, IServiceContainer owner) : base(@interface, name, null, owner ?? throw new ArgumentNullException(nameof(owner)))
         {
             //
@@ -48,7 +27,8 @@ namespace Solti.Utils.DI.Internals
             if (!@interface.IsInstanceOfType(instance))
                 throw new InvalidOperationException(string.Format(Resources.Culture, Resources.NOT_ASSIGNABLE, @interface, instance.GetType()));
 
-            FService = new InstanceServiceReference(@interface, name, releaseOnDispose) { Instance = instance };
+            Instance = releaseOnDispose ? new ServiceReference(this) : (AbstractServiceReference) new InstanceReference(this);
+            Instance.Value = instance;
         }
 
         public override Type Implementation => null;
@@ -64,30 +44,19 @@ namespace Solti.Utils.DI.Internals
             set => throw new InvalidOperationException();
         }
 
-        public override object Value => FService.Instance;
+        public override AbstractServiceReference Instance { get; }
 
-        public override void GetService(IInjector injector, ref ServiceReference reference)
-        {
-            CheckDisposed();
-
+        public override bool SetInstance(AbstractServiceReference reference) =>
             //
-            // Az injector kontenereben is deklaralhatunk bejegyzeseket (pl az Injector felveszi sajat
-            // magat) -> ne "injector.UnderlyingContainer.Parent.IsDescendantOf(Owner)" legyen.
+            // Peldany eseten ez a metodus elvileg sose kerulhet meghivasra.
             //
 
-            Debug.Assert(injector.UnderlyingContainer.IsDescendantOf(Owner));
-
-            reference.Release();
-            reference = FService;
-        }
+            throw new NotImplementedException();
 
         protected override void Dispose(bool disposeManaged)
         {
-            if (disposeManaged)
-            {
-                FService.Release();
-                Debug.Assert(FService.Disposed, "More than one reference");
-            }
+            if (disposeManaged) Instance.Release();
+
             base.Dispose(disposeManaged);
         }
     }

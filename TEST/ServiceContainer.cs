@@ -272,7 +272,7 @@ namespace Solti.Utils.DI.Container.Tests
                 info.Interface,
                 info.Lifetime,
                 info.Factory,
-                info.Value,
+                info.Instance,
                 info.Implementation
             }.GetHashCode();
         }
@@ -472,7 +472,7 @@ namespace Solti.Utils.DI.Container.Tests
         [Test]
         public void IServiceContainer_CreateChild_ShouldThrowIfChildCountReachedTheLimit()
         {
-            Config.Value.CompositeMaxChildCount = 1;
+            Config.Value.Composite.MaxChildCount = 1;
 
             Assert.DoesNotThrow(() => Container.CreateChild());
             Assert.Throws<InvalidOperationException>(() => Container.CreateChild(), Resources.TOO_MANY_CHILDREN);

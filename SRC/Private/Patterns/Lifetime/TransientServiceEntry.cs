@@ -33,44 +33,41 @@ namespace Solti.Utils.DI.Internals
         {
         }
 
-        public override object Value => null;
+        //
+        // Minden egyes SetInstance() hivas uj peldanyt hoz letre.
+        //
 
-        public override void GetService(IInjector injector, ref ServiceReference reference)
+        public override AbstractServiceReference Instance => null;
+
+        public override bool SetInstance(AbstractServiceReference reference)
         {
             CheckProducible();
 
-            Debug.Assert(injector.UnderlyingContainer == Owner);
+            Debug.Assert(reference.RelatedInjector.UnderlyingContainer == Owner);
 
-            try
-            {
+            //
+            // Ne legyen kiemelve statikusba h tesztekben megvaltoztathato legyen.
+            //
+
+            int maxSpawnedServices = Config.Value.Injector.MaxSpawnedTransientServices;
+
+            if (FSpawnedServices.Count == maxSpawnedServices)
                 //
-                // Ne legyen kiemelve statikusba h tesztekben megvaltoztathato legyen.
-                //
-
-                int maxSpawnedServices = Config.Value.MaxSpawnedServices;
-
-                if (FSpawnedServices.Count == maxSpawnedServices)
-                    //
-                    // Ha ide jutunk az azt jelenti h jo esellyel a tartalmazo injector ujrahasznositasra kerult
-                    // (es igy siman megehetjuk a rendelkezesre allo memoriat ahogy az a teljesitmeny teszteknel
-                    // meg is tortent).
-                    //
-
-                    throw new Exception(string.Format(Resources.Culture, Resources.INJECTOR_SHOULD_BE_RELEASED, maxSpawnedServices));
-
-                reference.Instance = Factory(injector, Interface);
-
-                FSpawnedServices.Add(reference); // inkrementalja "reference" referenciaszamlalojat
-            }
-            finally
-            {
-                //
-                // Az FSpawnedServices kezeli az elettartamot ha mar hozza lett adva, kivetel eseten pedig
-                // amugy is fel kell szabaditani.
+                // Ha ide jutunk az azt jelenti h jo esellyel a tartalmazo injector ujrahasznositasra kerult
+                // (es igy siman megehetjuk a rendelkezesre allo memoriat ahogy az a teljesitmeny teszteknel
+                // meg is tortent).
                 //
 
-                reference.Release();
-            }
+                throw new Exception(string.Format(Resources.Culture, Resources.INJECTOR_SHOULD_BE_RELEASED, maxSpawnedServices));
+
+            reference.Value = Factory(reference.RelatedInjector, Interface);
+
+            FSpawnedServices.Add(reference); // inkrementalja "reference" referenciaszamlalojat
+
+            reference.Release();
+
+            Debug.Assert(reference.RefCount == 1);
+            return true;
         }
 
         public override AbstractServiceEntry CopyTo(IServiceContainer target)
@@ -88,13 +85,5 @@ namespace Solti.Utils.DI.Internals
 
             base.Dispose(disposeManaged);
         }
-    }
-
-    public partial class Config 
-    {
-        /// <summary>
-        /// The maximum number of <see cref="Lifetime.Transient"/> service instances can be held by the <see cref="IInjector"/>.
-        /// </summary>
-        public int MaxSpawnedServices { get; set; } = 512;
     }
 }

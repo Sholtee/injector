@@ -1,16 +1,18 @@
 ﻿/********************************************************************************
-* IServiceFactory.cs                                                            *
+* DummyServiceEntry.cs                                                          *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
-using System;
-
-namespace Solti.Utils.DI.Internals
+namespace Solti.Utils.DI
 {
-    internal interface IServiceFactory
-    {
-        Func<IInjector, Type, object> Factory { get; set; }
+    using Internals;
 
-        bool SetInstance(AbstractServiceReference reference);
+    public class DummyServiceEntry : AbstractServiceEntry
+    {
+        private interface IDummyService { }
+
+        public DummyServiceEntry() : base(typeof(IDummyService), null)
+        {
+        }
     }
 }

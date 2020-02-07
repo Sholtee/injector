@@ -114,5 +114,16 @@ namespace Solti.Utils.DI.Container.Tests
             Assert.IsNull(Container.Get<IInterface_1>("invalidname"));
             Assert.AreEqual(new TransientServiceEntry(typeof(IInterface_1), "svc1", mockResolver.Object, Container), Container.Get<IInterface_1>("svc1"));
         }
+
+        [Test]
+        public void Container_Lazy_ShouldUseTheDefaultResolver() 
+        {
+            Container.Lazy<IInterface_1>(typeof(Implementation_1_No_Dep).Assembly.Location, typeof(Implementation_1_No_Dep).FullName);
+
+            AbstractServiceEntry entry = Container.Get<IInterface_1>();
+
+            Assert.That(entry.IsLazy());
+            Assert.That(entry.Implementation, Is.EqualTo(typeof(Implementation_1_No_Dep)));
+        }
     }
 }
