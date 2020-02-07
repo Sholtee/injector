@@ -142,6 +142,27 @@ namespace Solti.Utils.DI.Injector.Tests
             Assert.That(instance.Disposed);
         }
 
+        [Test]
+        public void Lifetime_SingletonService_ShouldHaveItsOwnInjector() 
+        {
+            Container
+                .Service<IInterface_7<IInjector>, Implementation_7_TInterface_Dependant<IInjector>>(Lifetime.Singleton)
+                .Service<IInterface_7<IInjector>, Implementation_7_TInterface_Dependant<IInjector>>("named", Lifetime.Singleton);
+
+            using (IInjector injector = Container.CreateInjector()) 
+            {
+                IInterface_7<IInjector> svc = injector.Get<IInterface_7<IInjector>>("named");
+
+                Assert.That(svc.Interface, Is.Not.SameAs(injector));
+                Assert.That(svc.Interface.UnderlyingContainer.Parent, Is.SameAs(Container));
+
+                Assert.That(svc.Interface.Get<IInterface_7<IInjector>>().Interface, Is.Not.SameAs(injector));
+                Assert.That(svc.Interface.Get<IInterface_7<IInjector>>().Interface.UnderlyingContainer.Parent, Is.SameAs(Container));
+
+                Assert.That(svc.Interface.Get<IInterface_7<IInjector>>().Interface, Is.Not.SameAs(svc.Interface));
+            }
+        }
+
         [TestCase(Lifetime.Transient)]
         [TestCase(Lifetime.Scoped)]
         public void Lifetime_NonSingletonService_ShouldResolveDependencyFromTheParentContainer(Lifetime lifetime) 
