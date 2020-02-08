@@ -150,7 +150,7 @@ namespace Solti.Utils.DI.Internals
                         // Factory hivasa, innentol a ServiceEntry felelos a szerviz peldany felszabaditasaert.
                         //
 
-                        if (!entry.SetInstance(currentService))
+                        if (!currentService.SetInstance())
                         {
                             //
                             // - Valaki korabban mar beallitotta (parhuzamos eset Singleton elettartamnal). 

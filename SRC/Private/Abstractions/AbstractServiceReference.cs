@@ -67,6 +67,11 @@ namespace Solti.Utils.DI.Internals
         public abstract ICollection<AbstractServiceReference> Dependencies { get; }
 
         /// <summary>
+        /// Sets the <see cref="Value"/> of this instance.
+        /// </summary>
+        public virtual bool SetInstance() => RelatedServiceEntry.SetInstance(this);
+
+        /// <summary>
         /// See <see cref="Disposable.Dispose(bool)"/>
         /// </summary>
         /// <param name="disposeManaged"></param>

@@ -13,5 +13,7 @@ namespace Solti.Utils.DI.Internals
         public InstanceReference(AbstractServiceEntry entry) : base(entry, null) { }
 
         public override ICollection<AbstractServiceReference> Dependencies => Array.Empty<AbstractServiceReference>();
+
+        public override bool SetInstance() => throw new NotImplementedException();
     }
 }
