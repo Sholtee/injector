@@ -496,6 +496,19 @@ references:
   isSpec: "True"
   fullName: Solti.Utils.DI.Internals.AbstractServiceReference.RelatedServiceEntry
   nameWithType: AbstractServiceReference.RelatedServiceEntry
+- uid: Solti.Utils.DI.Internals.AbstractServiceReference.SetInstance
+  name: SetInstance()
+  href: Solti.Utils.DI.Internals.AbstractServiceReference.html#Solti_Utils_DI_Internals_AbstractServiceReference_SetInstance
+  commentId: M:Solti.Utils.DI.Internals.AbstractServiceReference.SetInstance
+  fullName: Solti.Utils.DI.Internals.AbstractServiceReference.SetInstance()
+  nameWithType: AbstractServiceReference.SetInstance()
+- uid: Solti.Utils.DI.Internals.AbstractServiceReference.SetInstance*
+  name: SetInstance
+  href: Solti.Utils.DI.Internals.AbstractServiceReference.html#Solti_Utils_DI_Internals_AbstractServiceReference_SetInstance_
+  commentId: Overload:Solti.Utils.DI.Internals.AbstractServiceReference.SetInstance
+  isSpec: "True"
+  fullName: Solti.Utils.DI.Internals.AbstractServiceReference.SetInstance
+  nameWithType: AbstractServiceReference.SetInstance
 - uid: Solti.Utils.DI.Internals.AbstractServiceReference.Value
   name: Value
   href: Solti.Utils.DI.Internals.AbstractServiceReference.html#Solti_Utils_DI_Internals_AbstractServiceReference_Value
