@@ -69,12 +69,5 @@ namespace Solti.Utils.DI.Internals
 
             return true;
         }
-
-        protected override void Dispose(bool disposeManaged)
-        {
-            if (disposeManaged) FInstance?.Release();
-
-            base.Dispose(disposeManaged);
-        }
     }
 }

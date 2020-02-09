@@ -52,12 +52,5 @@ namespace Solti.Utils.DI.Internals
             //
 
             throw new NotImplementedException();
-
-        protected override void Dispose(bool disposeManaged)
-        {
-            if (disposeManaged) Instance.Release();
-
-            base.Dispose(disposeManaged);
-        }
     }
 }

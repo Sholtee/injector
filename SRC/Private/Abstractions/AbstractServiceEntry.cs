@@ -162,5 +162,15 @@ namespace Solti.Utils.DI.Internals
                 .AppendFormat(Resources.Culture, NAME_PART, nameof(Instance), Instance?.ToString() ?? NULL)
                 .ToString();
         }
+
+        /// <summary>
+        /// Decrements the reference counter of the service <see cref="Instance"/>.
+        /// </summary>
+        protected override void Dispose(bool disposeManaged)
+        {
+            if (disposeManaged) Instance?.Release();
+
+            base.Dispose(disposeManaged);
+        }
     }
 }
