@@ -22,9 +22,9 @@ namespace Solti.Utils.DI.Internals
 
         private Injector() => throw new NotSupportedException();
 
-        private object Trigger { get; }  // workaround
+        private AbstractServiceEntry BoundEntry { get; }  // workaround
 
-        private Injector(AbstractServiceEntry trigger) : this(trigger.Owner) => Trigger = trigger;
+        private Injector(AbstractServiceEntry boundEntry) : this(boundEntry.Owner) => BoundEntry = boundEntry;
 
         private bool BreaksTheRuleOfStrictDI(AbstractServiceEntry entry) 
         {
@@ -124,7 +124,7 @@ namespace Solti.Utils.DI.Internals
                 //   viselkedik (ez ellen van a StrictDI).
                 //
 
-                if (entry.Owner != null && entry.Owner != this && entry != Trigger)
+                if (entry.Owner != null && entry.Owner != this && entry != BoundEntry)
                 {
                     Assert(entry.Lifetime >= Lifetime.Singleton);
 
@@ -135,7 +135,7 @@ namespace Solti.Utils.DI.Internals
                     //   elettartamat.
                     //
 
-                    var relatedInjector = new Injector(trigger: entry);
+                    var relatedInjector = new Injector(boundEntry: entry);
 
                     try
                     {
