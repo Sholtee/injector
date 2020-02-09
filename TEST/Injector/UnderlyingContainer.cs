@@ -3,6 +3,8 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
+using System;
+
 using NUnit.Framework;
 
 namespace Solti.Utils.DI.Injector.Tests
@@ -21,6 +23,17 @@ namespace Solti.Utils.DI.Injector.Tests
 
                 injector.UnderlyingContainer.Proxy<IInterface_1>((i, c) => new Implementation_1_Non_Interface_Dep(0));
                 Assert.That(injector.Get<IInterface_1>(), Is.TypeOf<Implementation_1_Non_Interface_Dep>());
+            }
+        }
+
+        [Test]
+        public void Injector_UnderlyingContainer_CanNotHaveChildren()
+        {
+            using (IInjector injector = Container.CreateInjector()) 
+            {
+                Assert.Throws<NotSupportedException>(() => injector.UnderlyingContainer.CreateChild());
+                Assert.Throws<NotSupportedException>(() => injector.UnderlyingContainer.AddChild(null));
+                Assert.Throws<NotSupportedException>(() => injector.UnderlyingContainer.RemoveChild(null));
             }
         }
     }

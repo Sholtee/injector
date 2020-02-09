@@ -132,6 +132,15 @@ namespace Solti.Utils.DI.Injector.Tests
         }
 
         [Test]
+        public void Injector_Get_ShouldThrowOnNull()
+        {
+            using (IInjector injector = Container.CreateInjector())
+            {
+                Assert.Throws<ArgumentNullException>(() => injector.Get(null));
+            }
+        }
+
+        [Test]
         public void Injector_GetByService_ShouldThrowOnCircularReference()
         {
             Container
