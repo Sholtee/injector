@@ -175,7 +175,7 @@ namespace Solti.Utils.DI.Internals
 
                         if (FGraph.CircularReference)
                         {
-                            currentService.Release();
+                            currentService.Dispose();
                             throw new CircularReferenceException(FGraph);
                         }
 
@@ -190,7 +190,7 @@ namespace Solti.Utils.DI.Internals
                             // - Nem gond h With() blokkban vagyunk siman felszabadithato az entitas.
                             //
 
-                            currentService.Release();
+                            currentService.Dispose();
                             currentService = entry.Instance;
 
                             Assert(currentService != null);
