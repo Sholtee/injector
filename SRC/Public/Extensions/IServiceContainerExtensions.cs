@@ -4,7 +4,6 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
-using System.Linq;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Solti.Utils.DI
@@ -263,25 +262,7 @@ namespace Solti.Utils.DI
         /// <returns>The newly created <see cref="IInjector"/> instance.</returns>
         /// <remarks>The lifetime of the returned <see cref="IInjector"/> is controlled by its parent. Despite this you may dispose it manually.</remarks>
         /// <exception cref="InvalidOperationException">There are one or more abstract entries in the collection.</exception>
-        public static IInjector CreateInjector(this IServiceContainer self)
-        {
-            if (self == null)
-                throw new ArgumentNullException(nameof(self));
-
-            Type[] abstractEntries = self
-                .Where(entry => entry.GetType() == typeof(AbstractServiceEntry))
-                .Select(entry => entry.Interface)
-                .ToArray();
-
-            if (abstractEntries.Any())
-            {
-                var ioEx = new InvalidOperationException(Resources.INVALID_INJECTOR_ENTRY);
-                ioEx.Data.Add(nameof(abstractEntries), abstractEntries);
-                throw ioEx;
-            }
-
-            return new Injector(self);
-        }
+        public static IInjector CreateInjector(this IServiceContainer self) => new Injector(self ?? throw new ArgumentNullException(nameof(self)));
 
         /// <summary>
         /// Registers a new service.

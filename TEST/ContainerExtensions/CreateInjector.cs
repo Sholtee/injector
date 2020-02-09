@@ -22,7 +22,7 @@ namespace Solti.Utils.DI.Container.Tests
         }
 
         [Test]
-        public void Container_Container_CreateInjector_ShouldThrowOnNotOverrodeAbstractService()
+        public void Container_CreateInjector_ShouldThrowOnNotOverriddenAbstractService()
         {
             Container
                 .Service<IInterface_1, Implementation_1_No_Dep>()

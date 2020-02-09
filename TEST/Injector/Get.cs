@@ -40,12 +40,27 @@ namespace Solti.Utils.DI.Injector.Tests
         }
 
         [Test]
-        public void Injector_Get_ShouldThrowOnNonRegisteredDependency()
+        public void Injector_Get_ShouldThrowOnNonRegisteredDependency1([Values(true, false)] bool useChildContainer)
         {
-            using (IInjector injector = Container.CreateInjector())
+            IServiceContainer container = useChildContainer ? Container.CreateChild() : Container;
+
+            using (IInjector injector = container.CreateInjector())
             {
                 Assert.Throws<ServiceNotFoundException>(() => injector.Get<IInterface_1>());
             }                 
+        }
+
+        [Test]
+        public void Injector_Get_ShouldThrowOnNonRegisteredDependency2([Values(true, false)] bool useChildContainer, [Values(Lifetime.Transient, Lifetime.Scoped, Lifetime.Singleton)] Lifetime lifetime)
+        {
+            Container.Service<IInterface_7<IInterface_1>, Implementation_7_TInterface_Dependant<IInterface_1>>(lifetime);
+
+            IServiceContainer container = useChildContainer ? Container.CreateChild() : Container;
+
+            using (IInjector injector = container.CreateInjector())
+            {
+                Assert.Throws<ServiceNotFoundException>(() => injector.Get<IInterface_7<IInterface_1>>());
+            }
         }
 
         [Test]
@@ -192,13 +207,43 @@ namespace Solti.Utils.DI.Injector.Tests
         }
 
         [Test]
-        public void Injector_Get_ShouldThrowOnAbstractService() 
+        public void Injector_Get_ShouldThrowOnAbstractService1() 
         {
             using (IInjector injector = Container.CreateInjector()) 
             {
+                //
+                // Ez az injector megeroszakolasa u h nagyon nem eletszeru.
+                //
+
                 injector.UnderlyingContainer.Abstract<IInterface_1>();
 
                 Assert.Throws<InvalidOperationException>(() => injector.Get<IInterface_1>(), Resources.CANT_INSTANTIATE_ABSTRACTS);
+            }
+        }
+
+        [Test]
+        public void Injector_Get_ShouldThrowOnAbstractService2()
+        {
+            Container
+                .Abstract<IInterface_1>()
+                .Service<IInterface_7<IInterface_1>, Implementation_7_TInterface_Dependant<IInterface_1>>(Lifetime.Singleton);
+
+            //
+            // Felulirjuk az absztrakt szervizt h letre tudjunk hozni injectort.
+            //
+
+            IServiceContainer child = Container
+                .CreateChild()
+                .Service<IInterface_1, Implementation_1_No_Dep>();
+
+            //
+            // Mivel a singleton szerviz fuggosegei is a deklaralo kontenerbol lesznek feloldva ezert
+            // o meg siman tud hivatkozni absztrakt szervizre.
+            //
+
+            using (IInjector injector = child.CreateInjector())
+            {
+                Assert.Throws<InvalidOperationException>(() => injector.Get<IInterface_7<IInterface_1>>(), Resources.INVALID_INJECTOR_ENTRY);
             }
         }
     }

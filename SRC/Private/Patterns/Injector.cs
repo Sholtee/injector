@@ -5,6 +5,7 @@
 ********************************************************************************/
 using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 #if NETSTANDARD1_6
 using System.Reflection;
 #endif
@@ -48,12 +49,36 @@ namespace Solti.Utils.DI.Internals
             return !requestor.IsDescendantOf(requested);
         }
 
-        public Injector(IServiceContainer parent) : base(parent) =>
+        public Injector(IServiceContainer parent) : base(parent)
+        {
+            //
+            // Injector nem hozhato letre absztrakt bejegyzesekkel.
+            //
+
+            Type[] abstractEntries = parent
+                .Where(entry => entry.GetType() == typeof(AbstractServiceEntry))
+                .Select(entry => entry.Interface)
+                .ToArray();
+
+            if (abstractEntries.Any())
+            {
+                //
+                // "base" hivas miatt mar szukseges dispose-olni.
+                //
+                
+                Dispose();
+
+                var ioEx = new InvalidOperationException(Resources.INVALID_INJECTOR_ENTRY);
+                ioEx.Data.Add(nameof(abstractEntries), abstractEntries);
+                throw ioEx;
+            }
+
             //
             // Felvesszuk sajat magunkat.
             //
 
             this.Instance<IInjector>(this, releaseOnDispose: false);
+        }
 
         [SuppressMessage("Reliability", "CA2000:Dispose objects before losing scope", Justification = "Lifetime of 'new Injector(...)' is managed by its parent container.")]
         public AbstractServiceReference GetReference(Type iface, string name)
@@ -112,15 +137,23 @@ namespace Solti.Utils.DI.Internals
 
                     var relatedInjector = new Injector(trigger: entry);
 
-                    currentService = relatedInjector.GetReference(iface, name);
+                    try
+                    {
+                        currentService = relatedInjector.GetReference(iface, name);
+                    }
+                    finally
+                    {
+                        if (currentService?.RelatedInjector != relatedInjector)
+                            //
+                            // Ket esetben juthatunk ide
+                            //   1) Singleton peldanyt parhuzamosan megkiserelhet letrehozni tobb szal is ezert elofordulhat
+                            //      h a legyartott injector nem is volt hasznalva.
+                            //   2) Vmi gond volt szerviz hivatkozas feloldasa kozben (nem letezo hivatkozas pl.)
+                            // Ilyenkor nincs ertelme megtartani az injectort.
+                            //
 
-                    if (currentService.RelatedInjector != relatedInjector)
-                        //
-                        // Singleton peldanyt parhuzamosan megkiserelhet letrehozni tobb szal is ezert elofordulhat
-                        // h a legyartott injector nem is volt hasznalva, ilyenkor felszabaditjuk.
-                        //
-
-                        relatedInjector.Dispose();
+                            relatedInjector.Dispose();
+                    }
                 } 
                 else
                 {
