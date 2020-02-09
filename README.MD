@@ -379,7 +379,7 @@ using (IInjector injector = container.CreateInjector())
 }
 ```
 Leaving the `using` block the `IMyService` instance requested by `MyOtherServiceDependsOnIMyService` won't be released because the holder service still alives (until the declaring container is disposed). This situation is called "captive dependency". To avoid it you have two options:
-- You can declare your consuming service with a `Lifetime` less than or equal to the `Lifetime` of consumed service
+- You can declare your consuming service with a `Lifetime` less than or equal to the `Lifetime` of consumed service.
 - Starting from version 1.2.0 you can enable *Strict DI* (disabled by default) in `Injector.config.json` which will instruct the injector to throw if a captive dependency can be found.
 ## Resources
 You can browse the [detailed API docs](https://sholtee.github.io/injector ) or the [benchmark results](https://sholtee.github.io/injector/perf/ ).
