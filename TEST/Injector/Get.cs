@@ -246,5 +246,42 @@ namespace Solti.Utils.DI.Injector.Tests
                 Assert.Throws<InvalidOperationException>(() => injector.Get<IInterface_7<IInterface_1>>(), Resources.INVALID_INJECTOR_ENTRY);
             }
         }
+
+        [Test]
+        public void Injector_Get_ShouldDisposeTheUnusedServiceReference() 
+        {
+            var entry = new HackyServiceEntry();
+            Container.Add(entry);
+
+            using (IInjector injector = Container.CreateInjector()) 
+            {
+                injector.Get<IInterface_1>();
+
+                Assert.That(entry.GotReference.Disposed);
+            }
+        }
+
+        private sealed class HackyServiceEntry : AbstractServiceEntry
+        {
+            private AbstractServiceReference FService;
+
+            public AbstractServiceReference GotReference { get; private set; }
+
+            public HackyServiceEntry() : base(typeof(IInterface_1), null)
+            {
+            }
+
+            public override AbstractServiceReference Instance => FService;
+
+            public override bool SetInstance(AbstractServiceReference serviceReference)
+            {
+                GotReference = serviceReference;
+                FService = new ServiceReference(this) 
+                { 
+                    Value = new Implementation_1_No_Dep()
+                };
+                return false;
+            }
+        }
     }
 }
