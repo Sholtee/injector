@@ -282,6 +282,19 @@ references:
   isSpec: "True"
   fullName: Solti.Utils.DI.Internals.AbstractServiceEntry.CopyTo
   nameWithType: AbstractServiceEntry.CopyTo
+- uid: Solti.Utils.DI.Internals.AbstractServiceEntry.Dispose(System.Boolean)
+  name: Dispose(Boolean)
+  href: Solti.Utils.DI.Internals.AbstractServiceEntry.html#Solti_Utils_DI_Internals_AbstractServiceEntry_Dispose_System_Boolean_
+  commentId: M:Solti.Utils.DI.Internals.AbstractServiceEntry.Dispose(System.Boolean)
+  fullName: Solti.Utils.DI.Internals.AbstractServiceEntry.Dispose(System.Boolean)
+  nameWithType: AbstractServiceEntry.Dispose(Boolean)
+- uid: Solti.Utils.DI.Internals.AbstractServiceEntry.Dispose*
+  name: Dispose
+  href: Solti.Utils.DI.Internals.AbstractServiceEntry.html#Solti_Utils_DI_Internals_AbstractServiceEntry_Dispose_
+  commentId: Overload:Solti.Utils.DI.Internals.AbstractServiceEntry.Dispose
+  isSpec: "True"
+  fullName: Solti.Utils.DI.Internals.AbstractServiceEntry.Dispose
+  nameWithType: AbstractServiceEntry.Dispose
 - uid: Solti.Utils.DI.Internals.AbstractServiceEntry.Equals(System.Object)
   name: Equals(Object)
   href: Solti.Utils.DI.Internals.AbstractServiceEntry.html#Solti_Utils_DI_Internals_AbstractServiceEntry_Equals_System_Object_
