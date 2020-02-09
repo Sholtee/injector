@@ -71,3 +71,5 @@
   - *implemented:* `AbstractServiceEntry.ToString()`
   - *changed:* `Injector.config.json` layout
   - *updated:* Dependencies
+- 1.2.0
+  - *fixed:* In some cases, injector could be created with abstract entries
