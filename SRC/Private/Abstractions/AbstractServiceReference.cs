@@ -77,7 +77,7 @@ namespace Solti.Utils.DI.Internals
         /// <param name="disposeManaged"></param>
         protected override void Dispose(bool disposeManaged)
         {
-            Debug.WriteLineIf(disposeManaged, $"Disposed service: {RelatedServiceEntry.FriendlyName()}");
+            Debug.WriteLineIf(disposeManaged, $"Disposed service: {RelatedServiceEntry.FriendlyName()} [value = {Value ?? "NULL"}]");
 
             base.Dispose(disposeManaged);
         }
