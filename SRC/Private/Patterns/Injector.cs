@@ -47,6 +47,19 @@ namespace Solti.Utils.DI.Internals
             return !requestor.IsDescendantOf(requested);
         }
 
+        private AbstractServiceEntry GetEntry(Type iface, string name) 
+        {
+            try
+            {
+                return Get(iface, name, FQueryModes);
+            }
+            catch (ServiceNotFoundException e) 
+            {
+                e.Data.Add("requestor", FGraph.Current?.RelatedServiceEntry.FriendlyName());
+                throw;
+            }
+        }
+
         public Injector(IServiceContainer parent) : this(parent, QueryModes.ThrowOnError) { }
 
         public Injector(IServiceContainer parent, QueryModes queryModes) : base(parent)
@@ -110,7 +123,7 @@ namespace Solti.Utils.DI.Internals
             // Bejegyzes lekerdezese
             //
 
-            AbstractServiceEntry entry = Get(iface, name, FQueryModes);
+            AbstractServiceEntry entry = GetEntry(iface, name);
             if (entry == null) return null;
 
             //

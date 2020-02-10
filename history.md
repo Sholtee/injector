@@ -71,5 +71,7 @@
   - *implemented:* `AbstractServiceEntry.ToString()`
   - *changed:* `Injector.config.json` layout
   - *updated:* Dependencies
-- 1.2.0
+- 1.2.0:
   - *fixed:* In some cases, injector could be created with abstract entries
+- 1.3.0:
+  - *added:* `ServiceNotFoundException.Data` contains the requestor name (if available)

@@ -46,7 +46,9 @@ namespace Solti.Utils.DI.Injector.Tests
 
             using (IInjector injector = container.CreateInjector())
             {
-                Assert.Throws<ServiceNotFoundException>(() => injector.Get<IInterface_1>());
+                var e = Assert.Throws<ServiceNotFoundException>(() => injector.Get<IInterface_1>());
+                Assert.That(e.Data.Contains("requestor"));
+                Assert.That(e.Data["requestor"], Is.Null);
             }                 
         }
 
@@ -59,7 +61,9 @@ namespace Solti.Utils.DI.Injector.Tests
 
             using (IInjector injector = container.CreateInjector())
             {
-                Assert.Throws<ServiceNotFoundException>(() => injector.Get<IInterface_7<IInterface_1>>());
+                var e = Assert.Throws<ServiceNotFoundException>(() => injector.Get<IInterface_7<IInterface_1>>());
+                Assert.That(e.Data.Contains("requestor"));
+                Assert.That(e.Data["requestor"], Is.EqualTo(typeof(IInterface_7<IInterface_1>).ToString()));
             }
         }
 
