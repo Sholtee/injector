@@ -1,11 +1,11 @@
 ﻿/********************************************************************************
-* ServiceIdExtensions.cs                                                        *
+* IServiceIdExtensions.cs                                                       *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 namespace Solti.Utils.DI.Internals
 {
-    internal static class ServiceIdExtensions
+    internal static class IServiceIdExtensions
     {
         public static string FriendlyName(this IServiceID src) 
         {
