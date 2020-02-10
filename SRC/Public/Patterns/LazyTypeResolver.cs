@@ -53,7 +53,11 @@ namespace Solti.Utils.DI
         /// <param name="iface">The service interface.</param>
         /// <param name="asmPath">The absolute path of the containing <see cref="System.Reflection.Assembly"/>. This assembly will be loaded (using <see cref="System.Runtime.Loader.AssemblyLoadContext"/>) on the first <see cref="ITypeResolver.Resolve"/> call.</param>
         /// <param name="className">The full name of the <see cref="Type"/> that implemenets the <paramref name="iface"/>.</param>
-        public LazyTypeResolver(Type iface, string asmPath, string className): this(iface, asmPath, className, System.Runtime.Loader.AssemblyLoadContext.Default.Act().Like<IAssemblyLoadContext>())
+        public LazyTypeResolver(Type iface, string asmPath, string className): this(
+            iface ?? throw new ArgumentNullException(nameof(iface)), 
+            asmPath ?? throw new ArgumentNullException(nameof(asmPath)), 
+            className ?? throw new ArgumentNullException(nameof(className)), 
+            System.Runtime.Loader.AssemblyLoadContext.Default.Act().Like<IAssemblyLoadContext>())
         {
         }
 
