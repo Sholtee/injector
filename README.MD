@@ -35,6 +35,7 @@
     - Dependency resolution is done from the parent injector.
 	
   As you can see you should never free producible services manually.
+- Since `Singleton` services can be accessed parallelly they (and their dependencies) have to be thread safe.
 ## Workflow of DI
 1. [Creating the root container](#creating-the-root-container)
 2. [Registering services](#registering-services)
