@@ -10,6 +10,8 @@ namespace Solti.Utils.DI.Internals
 {
     internal interface IServiceFactory
     {
+        AbstractServiceReference Instance { get; }
+
         Func<IInjector, Type, object> Factory { get; set; }
 
         bool SetInstance(AbstractServiceReference reference, IReadOnlyDictionary<string, object> options);
