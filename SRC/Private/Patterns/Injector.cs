@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 #if NETSTANDARD1_6
@@ -20,9 +21,13 @@ namespace Solti.Utils.DI.Internals
     {
         private readonly ServiceGraph FGraph = new ServiceGraph();
         private readonly AbstractServiceEntry FBoundEntry; // workaround
-        private readonly QueryModes FQueryModes;
 
-        private Injector(AbstractServiceEntry boundEntry, QueryModes queryModes) : this(boundEntry.Owner, queryModes) => FBoundEntry = boundEntry;
+        public QueryModes QueryModes { get; }
+
+        public IReadOnlyDictionary<string, object> FactoryOptions { get; }
+
+        private Injector(AbstractServiceEntry boundEntry, QueryModes queryModes, IReadOnlyDictionary<string, object> factoryOptions) 
+            : this(boundEntry.Owner, queryModes, factoryOptions)  => FBoundEntry = boundEntry;
 
         private bool BreaksTheRuleOfStrictDI(AbstractServiceEntry entry) 
         {
@@ -51,7 +56,7 @@ namespace Solti.Utils.DI.Internals
         {
             try
             {
-                return Get(iface, name, FQueryModes);
+                return Get(iface, name, QueryModes);
             }
             catch (ServiceNotFoundException e) 
             {
@@ -60,9 +65,12 @@ namespace Solti.Utils.DI.Internals
             }
         }
 
-        public Injector(IServiceContainer parent) : this(parent, QueryModes.ThrowOnError) { }
+        public Injector(IServiceContainer parent) : this(parent, QueryModes.ThrowOnError, new Dictionary<string, object> 
+        {
+            { nameof(Config.Value.Injector.MaxSpawnedTransientServices), Config.Value.Injector.MaxSpawnedTransientServices }           
+        }) { }
 
-        public Injector(IServiceContainer parent, QueryModes queryModes) : base(parent)
+        public Injector(IServiceContainer parent, QueryModes queryModes, IReadOnlyDictionary<string, object> factoryOptions) : base(parent)
         {
             //
             // Injector nem hozhato letre absztrakt bejegyzesekkel.
@@ -90,7 +98,9 @@ namespace Solti.Utils.DI.Internals
             // Generikus szervizek specializalasat mindig megengedjuk.
             //
 
-            FQueryModes = queryModes | QueryModes.AllowSpecialization;
+            QueryModes = queryModes | QueryModes.AllowSpecialization;
+
+            FactoryOptions = factoryOptions;
 
             //
             // Felvesszuk sajat magunkat.
@@ -155,7 +165,7 @@ namespace Solti.Utils.DI.Internals
                     //   elettartamat.
                     //
 
-                    var relatedInjector = new Injector(boundEntry: entry, FQueryModes);
+                    var relatedInjector = new Injector(boundEntry: entry, QueryModes, FactoryOptions);
 
                     try
                     {
@@ -203,7 +213,7 @@ namespace Solti.Utils.DI.Internals
                         // Factory hivasa, innentol a ServiceEntry felelos a szerviz peldany felszabaditasaert.
                         //
 
-                        if (!currentService.SetInstance())
+                        if (!currentService.SetInstance(FactoryOptions))
                         {
                             //
                             // - Valaki korabban mar beallitotta (parhuzamos eset Singleton elettartamnal). 

@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Collections.Generic;
 
 using NUnit.Framework;
 
@@ -286,7 +287,7 @@ namespace Solti.Utils.DI.Injector.Tests
 
             public override AbstractServiceReference Instance => FService;
 
-            public override bool SetInstance(AbstractServiceReference serviceReference)
+            public override bool SetInstance(AbstractServiceReference serviceReference, IReadOnlyDictionary<string, object> options)
             {
                 GotReference = serviceReference;
                 FService = new ServiceReference(this) 

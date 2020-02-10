@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Collections.Generic;
 
 using NUnit.Framework;
 
@@ -16,8 +17,17 @@ namespace Solti.Utils.DI.Tests
     {
         protected IServiceContainer Container;
 
+        protected Dictionary<string, object> FactoryOptions;
+
         [SetUp]
-        public void SetupTest() => Container = new TContainer();
+        public void SetupTest()
+        {
+            Container = new TContainer();
+            FactoryOptions = new Dictionary<string, object> 
+            {
+                { nameof(Config.Value.Injector.MaxSpawnedTransientServices), Config.Value.Injector.MaxSpawnedTransientServices }
+            };
+        }
 
         [TearDown]
         public void TearDown()

@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace Solti.Utils.DI.Internals
@@ -39,26 +40,19 @@ namespace Solti.Utils.DI.Internals
 
         public override AbstractServiceReference Instance => null;
 
-        public override bool SetInstance(AbstractServiceReference reference)
+        public override bool SetInstance(AbstractServiceReference reference, IReadOnlyDictionary<string, object> options)
         {
             CheckProducible();
 
             Debug.Assert(reference.RelatedInjector.UnderlyingContainer == Owner);
 
-            //
-            // Ne legyen kiemelve statikusba h tesztekben megvaltoztathato legyen.
-            //
-
-            int maxSpawnedServices = Config.Value.Injector.MaxSpawnedTransientServices;
-
-            if (FSpawnedServices.Count == maxSpawnedServices)
+            if (options.TryGetValue("MaxSpawnedTransientServices", out var val) && val is int threshold && FSpawnedServices.Count >= threshold)
                 //
                 // Ha ide jutunk az azt jelenti h jo esellyel a tartalmazo injector ujrahasznositasra kerult
-                // (es igy siman megehetjuk a rendelkezesre allo memoriat ahogy az a teljesitmeny teszteknel
-                // meg is tortent).
+                // (ahogy az a teljesitmeny teszteknel meg is tortent).
                 //
 
-                throw new Exception(string.Format(Resources.Culture, Resources.INJECTOR_SHOULD_BE_RELEASED, maxSpawnedServices));
+                throw new Exception(string.Format(Resources.Culture, Resources.INJECTOR_SHOULD_BE_RELEASED, threshold));
 
             reference.Value = Factory(reference.RelatedInjector, Interface);
 

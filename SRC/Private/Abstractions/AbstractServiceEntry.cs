@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
 
@@ -96,8 +97,9 @@ namespace Solti.Utils.DI.Internals
         /// Sets the service instance.
         /// </summary>
         /// <param name="serviceReference">The <see cref="AbstractServiceReference"/> of the service being created.</param>
+        /// <param name="options">The options that control the instantiation process.</param>
         /// <returns>True on success false if the <see cref="Instance"/> had already been set previously.</returns>
-        public virtual bool SetInstance(AbstractServiceReference serviceReference)
+        public virtual bool SetInstance(AbstractServiceReference serviceReference, IReadOnlyDictionary<string, object> options)
         {
             serviceReference?.Release();
 

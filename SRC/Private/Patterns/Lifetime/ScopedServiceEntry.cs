@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace Solti.Utils.DI.Internals
@@ -33,7 +34,7 @@ namespace Solti.Utils.DI.Internals
 
         public override AbstractServiceReference Instance => FInstance;
 
-        public override bool SetInstance(AbstractServiceReference reference)
+        public override bool SetInstance(AbstractServiceReference reference, IReadOnlyDictionary<string, object> options)
         {
             CheckProducible();
 

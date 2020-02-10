@@ -69,7 +69,8 @@ namespace Solti.Utils.DI.Internals
         /// <summary>
         /// Sets the <see cref="Value"/> of this instance.
         /// </summary>
-        public virtual bool SetInstance() => RelatedServiceEntry.SetInstance(this);
+        /// <param name="options">The options that control the instantiation process.</param>
+        public virtual bool SetInstance(IReadOnlyDictionary<string, object> options) => RelatedServiceEntry.SetInstance(this, options ?? throw new ArgumentNullException(nameof(options)));
 
         /// <summary>
         /// See <see cref="Disposable.Dispose(bool)"/>

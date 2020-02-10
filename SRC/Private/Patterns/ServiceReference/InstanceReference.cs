@@ -14,6 +14,6 @@ namespace Solti.Utils.DI.Internals
 
         public override ICollection<AbstractServiceReference> Dependencies => Array.Empty<AbstractServiceReference>();
 
-        public override bool SetInstance() => throw new NotImplementedException();
+        public override bool SetInstance(IReadOnlyDictionary<string, object> options) => throw new NotImplementedException();
     }
 }
