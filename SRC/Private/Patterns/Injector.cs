@@ -16,15 +16,13 @@ namespace Solti.Utils.DI.Internals
 {
     using Properties;
 
-    internal sealed class Injector : ServiceContainer, IInjector
+    internal class Injector : ServiceContainer, IInjector
     {
         private readonly ServiceGraph FGraph = new ServiceGraph();
+        private readonly AbstractServiceEntry FBoundEntry; // workaround
+        private readonly QueryModes FQueryModes;
 
-        private Injector() => throw new NotSupportedException();
-
-        private AbstractServiceEntry BoundEntry { get; }  // workaround
-
-        private Injector(AbstractServiceEntry boundEntry) : this(boundEntry.Owner) => BoundEntry = boundEntry;
+        private Injector(AbstractServiceEntry boundEntry, QueryModes queryModes) : this(boundEntry.Owner, queryModes) => FBoundEntry = boundEntry;
 
         private bool BreaksTheRuleOfStrictDI(AbstractServiceEntry entry) 
         {
@@ -49,7 +47,9 @@ namespace Solti.Utils.DI.Internals
             return !requestor.IsDescendantOf(requested);
         }
 
-        public Injector(IServiceContainer parent) : base(parent)
+        public Injector(IServiceContainer parent) : this(parent, QueryModes.ThrowOnError) { }
+
+        public Injector(IServiceContainer parent, QueryModes queryModes) : base(parent)
         {
             //
             // Injector nem hozhato letre absztrakt bejegyzesekkel.
@@ -72,6 +72,12 @@ namespace Solti.Utils.DI.Internals
                 ioEx.Data.Add(nameof(abstractEntries), abstractEntries);
                 throw ioEx;
             }
+
+            //
+            // Generikus szervizek specializalasat mindig megengedjuk.
+            //
+
+            FQueryModes = queryModes | QueryModes.AllowSpecialization;
 
             //
             // Felvesszuk sajat magunkat.
@@ -104,7 +110,8 @@ namespace Solti.Utils.DI.Internals
             // Bejegyzes lekerdezese
             //
 
-            AbstractServiceEntry entry = Get(iface, name, QueryModes.AllowSpecialization | QueryModes.ThrowOnError);
+            AbstractServiceEntry entry = Get(iface, name, FQueryModes);
+            if (entry == null) return null;
 
             //
             // Ha korabban mar le lett gyartva a szerviz peldany akkor nincs dolgunk.
@@ -124,7 +131,7 @@ namespace Solti.Utils.DI.Internals
                 //   viselkedik (ez ellen van a StrictDI).
                 //
 
-                if (entry.Owner != null && entry.Owner != this && entry != BoundEntry)
+                if (entry.Owner != null && entry.Owner != this && entry != FBoundEntry)
                 {
                     Assert(entry.Lifetime >= Lifetime.Singleton);
 
@@ -135,7 +142,7 @@ namespace Solti.Utils.DI.Internals
                     //   elettartamat.
                     //
 
-                    var relatedInjector = new Injector(boundEntry: entry);
+                    var relatedInjector = new Injector(boundEntry: entry, FQueryModes);
 
                     try
                     {
@@ -162,7 +169,7 @@ namespace Solti.Utils.DI.Internals
 
                     //
                     // Letrehozunk egy ures referenciat h a szerviz legyartasa kozben a rekurziv GetReference()
-                    // hivasokban lassak az (epp legyartas alatt levo) szulot.
+                    // hivasokban is lassuk az (epp legyartas alatt levo) szulot.
                     //
 
                     currentService = new ServiceReference(entry, this);
@@ -219,7 +226,7 @@ namespace Solti.Utils.DI.Internals
 
         #region IInjector
         [SuppressMessage("Reliability", "CA2000:Dispose objects before losing scope", Justification = "The reference is released on container disposal.")]
-        public object Get(Type iface, string name) => GetReference(iface, name).Value;
+        public object Get(Type iface, string name) => GetReference(iface, name)?.Value;
 
         public IServiceContainer UnderlyingContainer => this;
         #endregion
