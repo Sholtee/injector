@@ -110,7 +110,7 @@ namespace Solti.Utils.DI.Internals
         }
 
         [SuppressMessage("Reliability", "CA2000:Dispose objects before losing scope", Justification = "Lifetime of 'new Injector(...)' is managed by its parent container.")]
-        public AbstractServiceReference GetReference(Type iface, string name)
+        public ServiceReference GetReference(Type iface, string name)
         {
             CheckDisposed();
 
@@ -140,7 +140,7 @@ namespace Solti.Utils.DI.Internals
             // Ha korabban mar le lett gyartva a szerviz peldany akkor nincs dolgunk.
             //
 
-            AbstractServiceReference currentService = entry.Instance;
+            ServiceReference currentService = entry.Instance;
 
             if (currentService == null)
             {

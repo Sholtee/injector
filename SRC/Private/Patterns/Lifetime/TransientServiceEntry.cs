@@ -16,7 +16,7 @@ namespace Solti.Utils.DI.Internals
     /// </summary>
     internal class TransientServiceEntry : ProducibleServiceEntry
     {
-        private readonly ServiceCollection FSpawnedServices = new ServiceCollection();
+        private readonly ServiceReferenceCollection FSpawnedServices = new ServiceReferenceCollection();
 
         private TransientServiceEntry(TransientServiceEntry entry, IServiceContainer owner) : base(entry, owner)
         {
@@ -34,19 +34,15 @@ namespace Solti.Utils.DI.Internals
         {
         }
 
-        //
-        // Minden egyes SetInstance() hivas uj peldanyt hoz letre.
-        //
-
-        public override AbstractServiceReference Instance => null;
-
-        public override bool SetInstance(AbstractServiceReference reference, IReadOnlyDictionary<string, object> options)
+        public override bool SetInstance(ServiceReference reference, IReadOnlyDictionary<string, object> options)
         {
             CheckProducible();
 
             Debug.Assert(reference.RelatedInjector.UnderlyingContainer == Owner);
+   
+            int? threshold = GetOption<int>("MaxSpawnedTransientServices");
 
-            if (options.TryGetValue("MaxSpawnedTransientServices", out var val) && val is int threshold && FSpawnedServices.Count >= threshold)
+            if (FSpawnedServices.Count >= threshold)
                 //
                 // Ha ide jutunk az azt jelenti h jo esellyel a tartalmazo injector ujrahasznositasra kerult
                 // (ahogy az a teljesitmeny teszteknel meg is tortent).
@@ -62,6 +58,14 @@ namespace Solti.Utils.DI.Internals
 
             Debug.Assert(reference.RefCount == 1);
             return true;
+
+            T? GetOption<T>(string name) where T: struct 
+            {
+                if (options.TryGetValue(name, out var val) && val is T inst)
+                    return inst;
+
+                return null;
+            }
         }
 
         public override AbstractServiceEntry CopyTo(IServiceContainer target)

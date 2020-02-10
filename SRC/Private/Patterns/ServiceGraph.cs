@@ -10,11 +10,11 @@ using System.Linq;
 
 namespace Solti.Utils.DI.Internals
 {
-    internal sealed class ServiceGraph: IEnumerable<AbstractServiceReference>
+    internal sealed class ServiceGraph: IEnumerable<ServiceReference>
     {
-        private readonly Stack<AbstractServiceReference> FGraph = new Stack<AbstractServiceReference>();
+        private readonly Stack<ServiceReference> FGraph = new Stack<ServiceReference>();
 
-        public AbstractServiceReference Current => FGraph.Any() ? FGraph.Peek() : null;
+        public ServiceReference Current => FGraph.Any() ? FGraph.Peek() : null;
 
         public bool CircularReference =>
             //
@@ -23,10 +23,10 @@ namespace Solti.Utils.DI.Internals
 
             Current != null && FGraph.LastIndexOf(Current, ServiceReferenceComparer.Instance) > 0;
 
-        public void Add(AbstractServiceReference svc) =>
+        public void Add(ServiceReference svc) =>
             Current?.Dependencies.Add(svc);
 
-        public IDisposable With(AbstractServiceReference svc) 
+        public IDisposable With(ServiceReference svc) 
         {
             FGraph.Push(svc);
             return new WithScope(FGraph);
@@ -34,9 +34,9 @@ namespace Solti.Utils.DI.Internals
 
         private sealed class WithScope : Disposable 
         {
-            private readonly Stack<AbstractServiceReference> FGraph;
+            private readonly Stack<ServiceReference> FGraph;
 
-            public WithScope(Stack<AbstractServiceReference> graph) => FGraph = graph;
+            public WithScope(Stack<ServiceReference> graph) => FGraph = graph;
 
             protected override void Dispose(bool disposeManaged)
             {
@@ -45,7 +45,7 @@ namespace Solti.Utils.DI.Internals
             }
         }
 
-        IEnumerator<AbstractServiceReference> IEnumerable<AbstractServiceReference>.GetEnumerator() => FGraph.GetEnumerator();
+        IEnumerator<ServiceReference> IEnumerable<ServiceReference>.GetEnumerator() => FGraph.GetEnumerator();
 
         IEnumerator IEnumerable.GetEnumerator() => FGraph.GetEnumerator();
     }

@@ -1,5 +1,5 @@
 ﻿/********************************************************************************
-* ServiceCollection.cs                                                          *
+* ServiceReferenceCollection.cs                                                 *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
@@ -9,17 +9,17 @@ using System.Collections.Generic;
 
 namespace Solti.Utils.DI.Internals
 {
-    internal sealed class ServiceCollection : Disposable, ICollection<AbstractServiceReference>
+    internal sealed class ServiceReferenceCollection : Disposable, ICollection<ServiceReference>
     {
-        private readonly List<AbstractServiceReference> FUnderlyingList;
+        private readonly List<ServiceReference> FUnderlyingList;
 
-        public ServiceCollection(int capacity = 10) => FUnderlyingList = new List<AbstractServiceReference>(capacity);
+        public ServiceReferenceCollection(int capacity = 10) => FUnderlyingList = new List<ServiceReference>(capacity);
 
         public int Count => FUnderlyingList.Count;
 
         public bool IsReadOnly => false;
 
-        public void Add(AbstractServiceReference item)
+        public void Add(ServiceReference item)
         {
             FUnderlyingList.Add(item);
             item.AddRef();
@@ -31,13 +31,13 @@ namespace Solti.Utils.DI.Internals
             FUnderlyingList.Clear();
         }
 
-        public bool Contains(AbstractServiceReference item) => FUnderlyingList.Contains(item);
+        public bool Contains(ServiceReference item) => FUnderlyingList.Contains(item);
 
-        public void CopyTo(AbstractServiceReference[] array, int arrayIndex) => throw new NotSupportedException();
+        public void CopyTo(ServiceReference[] array, int arrayIndex) => throw new NotSupportedException();
 
-        public IEnumerator<AbstractServiceReference> GetEnumerator() => FUnderlyingList.GetEnumerator();
+        public IEnumerator<ServiceReference> GetEnumerator() => FUnderlyingList.GetEnumerator();
 
-        public bool Remove(AbstractServiceReference item)
+        public bool Remove(ServiceReference item)
         {
             if (FUnderlyingList.Remove(item)) 
             {

@@ -277,20 +277,16 @@ namespace Solti.Utils.DI.Injector.Tests
 
         private sealed class HackyServiceEntry : AbstractServiceEntry
         {
-            private AbstractServiceReference FService;
-
-            public AbstractServiceReference GotReference { get; private set; }
+            public ServiceReference GotReference { get; private set; }
 
             public HackyServiceEntry() : base(typeof(IInterface_1), null)
             {
             }
 
-            public override AbstractServiceReference Instance => FService;
-
-            public override bool SetInstance(AbstractServiceReference serviceReference, IReadOnlyDictionary<string, object> options)
+            public override bool SetInstance(ServiceReference serviceReference, IReadOnlyDictionary<string, object> options)
             {
                 GotReference = serviceReference;
-                FService = new ServiceReference(this) 
+                Instance = new ServiceReference(this, null) 
                 { 
                     Value = new Implementation_1_No_Dep()
                 };

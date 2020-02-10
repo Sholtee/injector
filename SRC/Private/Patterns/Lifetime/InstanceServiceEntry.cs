@@ -28,8 +28,12 @@ namespace Solti.Utils.DI.Internals
             if (!@interface.IsInstanceOfType(instance))
                 throw new InvalidOperationException(string.Format(Resources.Culture, Resources.NOT_ASSIGNABLE, @interface, instance.GetType()));
 
-            Instance = releaseOnDispose ? new ServiceReference(this) : (AbstractServiceReference) new InstanceReference(this);
-            Instance.Value = instance;
+            Instance = new ServiceReference(this, null) 
+            { 
+                Value = instance 
+            };
+
+            if (!releaseOnDispose) Instance.SuppressDispose();
         }
 
         public override Type Implementation => null;
@@ -45,9 +49,7 @@ namespace Solti.Utils.DI.Internals
             set => throw new InvalidOperationException();
         }
 
-        public override AbstractServiceReference Instance { get; }
-
-        public override bool SetInstance(AbstractServiceReference reference, IReadOnlyDictionary<string, object> options) =>
+        public override bool SetInstance(ServiceReference reference, IReadOnlyDictionary<string, object> options) =>
             //
             // Peldany eseten ez a metodus elvileg sose kerulhet meghivasra.
             //
