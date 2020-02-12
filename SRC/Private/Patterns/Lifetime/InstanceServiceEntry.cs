@@ -36,8 +36,6 @@ namespace Solti.Utils.DI.Internals
             if (!releaseOnDispose) Instance.SuppressDispose();
         }
 
-        public override Type Implementation => null;
-
         public override Func<IInjector, Type, object> Factory
         {
             //
