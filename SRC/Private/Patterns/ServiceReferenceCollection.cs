@@ -13,7 +13,7 @@ namespace Solti.Utils.DI.Internals
     {
         private readonly List<ServiceReference> FUnderlyingList;
 
-        public ServiceReferenceCollection(int capacity = 10) => FUnderlyingList = new List<ServiceReference>(capacity);
+        public ServiceReferenceCollection(int capacity = 0) => FUnderlyingList = new List<ServiceReference>(capacity);
 
         public int Count => FUnderlyingList.Count;
 
