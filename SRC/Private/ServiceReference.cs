@@ -97,7 +97,7 @@ namespace Solti.Utils.DI.Internals
         }
 
         /// <summary>
-        /// Decrements the reference counter of the bound service and all its dependencies.
+        /// Disposes the bound service then decrements the reference counter of all its dependencies.
         /// </summary>
         protected override void Dispose(bool disposeManaged)
         {
