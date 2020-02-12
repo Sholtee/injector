@@ -40,7 +40,7 @@ namespace Solti.Utils.DI.Internals
 
             Debug.Assert(reference.RelatedInjector.UnderlyingContainer == Owner);
    
-            int? threshold = GetOption<int>("MaxSpawnedTransientServices");
+            int? threshold = options?.GetValueOrDefault<int?>("MaxSpawnedTransientServices");
 
             if (FSpawnedServices.Count >= threshold)
                 //
@@ -52,20 +52,21 @@ namespace Solti.Utils.DI.Internals
 
             reference.Value = Factory(reference.RelatedInjector, Interface);
 
-            FSpawnedServices.Add(reference); // inkrementalja "reference" referenciaszamlalojat
+            //
+            // Mivel "TransientServiceEntry.Instance" mindig NULL ezert ide annyi alkalommal jutunk el
+            // ahanyszor a szervizt igenylik -> A megfelelo elettartam kezeles vegett egy belso listaban
+            // tartjuk szamon az eddig igenyelt peldanyokat.
+            //
+            // Az Add() hivas megnoveli a "reference" referenciaszamlalojat ezert a Release() hivas (h a
+            // szamlalo 1-en alljon).
+            //
 
+            FSpawnedServices.Add(reference);   
             reference.Release();
 
             Debug.Assert(reference.RefCount == 1);
+
             return true;
-
-            T? GetOption<T>(string name) where T: struct 
-            {
-                if (options.TryGetValue(name, out var val) && val is T inst)
-                    return inst;
-
-                return null;
-            }
         }
 
         public override AbstractServiceEntry CopyTo(IServiceContainer target)
