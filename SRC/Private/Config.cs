@@ -16,7 +16,7 @@ using System.Threading;
 namespace Solti.Utils.DI.Internals
 {
     /// <summary>
-    /// Describes the configuration of this libary. You can change settings programmatically or by editing the "Injector.config.json" file.
+    /// Describes the configuration of this library. You can change settings programmatically or by editing the "Injector.config.json" file.
     /// </summary>
     public partial class Config
     {
