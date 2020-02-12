@@ -26,7 +26,7 @@ namespace Solti.Utils.DI
     [SuppressMessage("Naming", "CA1710:Identifiers should have correct suffix", Justification = "The name provides meaningful information about the implementation")]
     public class ServiceContainer : Composite<IServiceContainer>, IServiceContainer
     {
-        private readonly Dictionary<IServiceID, AbstractServiceEntry> FEntries;
+        private readonly Dictionary<IServiceId, AbstractServiceEntry> FEntries;
 
         //
         // Singleton elettartamnal parhuzamosan is modositasra kerulhet a  bejegyzes lista 
@@ -93,7 +93,7 @@ namespace Solti.Utils.DI
             if (!serviceInterface.IsInterface())
                 throw new ArgumentException(Resources.NOT_AN_INTERFACE, nameof(serviceInterface));
 
-            IServiceID key = MakeID(serviceInterface);
+            IServiceId key = MakeID(serviceInterface);
 
             AbstractServiceEntry result;
 
@@ -176,7 +176,7 @@ namespace Solti.Utils.DI
                 return registered;
             }
 
-            IServiceID MakeID(Type iface) => new ServiceID
+            IServiceId MakeID(Type iface) => new ServiceId
             {
                 Interface = iface,
                 Name = name
@@ -229,7 +229,7 @@ namespace Solti.Utils.DI
         /// <param name="parent">The parent <see cref="IServiceContainer"/>.</param>
         protected ServiceContainer(IServiceContainer parent) : base(parent)
         {
-            FEntries = new Dictionary<IServiceID, AbstractServiceEntry>(parent?.Count ?? 0, ServiceIDComparer.Instance);
+            FEntries = new Dictionary<IServiceId, AbstractServiceEntry>(parent?.Count ?? 0, ServiceIdComparer.Instance);
             if (parent == null) return;
 
             foreach (AbstractServiceEntry entry in parent)

@@ -21,7 +21,7 @@ namespace Solti.Utils.DI
         /// Creates a new <see cref="ServiceNotFoundException"/> instance.
         /// </summary>
         /// <param name="key">The "id" of the service that could not be found.</param>
-        internal ServiceNotFoundException(IServiceID key) : base(string.Format(Resources.Culture, Resources.SERVICE_NOT_FOUND, key.FriendlyName()))
+        internal ServiceNotFoundException(IServiceId key) : base(string.Format(Resources.Culture, Resources.SERVICE_NOT_FOUND, key.FriendlyName()))
         {
         }
     }

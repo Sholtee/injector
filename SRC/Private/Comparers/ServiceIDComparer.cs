@@ -1,5 +1,5 @@
 ﻿/********************************************************************************
-* ServiceIDComparer.cs                                                          *
+* ServiceIdComparer.cs                                                          *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
@@ -7,9 +7,9 @@ using System;
 
 namespace Solti.Utils.DI.Internals
 {
-    internal sealed class ServiceIDComparer : ComparerBase<ServiceIDComparer, IServiceID>
+    internal sealed class ServiceIdComparer : ComparerBase<ServiceIdComparer, IServiceId>
     {
-        public override int GetHashCode(IServiceID obj) =>
+        public override int GetHashCode(IServiceId obj) =>
 #if NETSTANDARD1_6 || NETSTANDARD2_0
             new { obj.Interface, obj.Name }.GetHashCode()
 #else

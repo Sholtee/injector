@@ -22,7 +22,7 @@ namespace Solti.Utils.DI
         /// </summary>
         /// <param name="key">The "id" of the service.</param>
         /// <param name="innerException">The inner exception (if it is present).</param>
-        internal ServiceAlreadyRegisteredException(IServiceID key, Exception innerException = null): base(string.Format(Resources.Culture, Resources.ALREADY_REGISTERED, key.FriendlyName()), innerException)
+        internal ServiceAlreadyRegisteredException(IServiceId key, Exception innerException = null): base(string.Format(Resources.Culture, Resources.ALREADY_REGISTERED, key.FriendlyName()), innerException)
         {
         }
     }

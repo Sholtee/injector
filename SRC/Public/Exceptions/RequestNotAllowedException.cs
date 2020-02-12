@@ -16,7 +16,7 @@ namespace Solti.Utils.DI
     [SuppressMessage("Design", "CA1032:Implement standard exception constructors", Justification = "Provided parameters must be present.")]
     public class RequestNotAllowedException: Exception
     {
-        internal RequestNotAllowedException(IServiceID requestor, IServiceID requested, string reason) : base(reason) 
+        internal RequestNotAllowedException(IServiceId requestor, IServiceId requested, string reason) : base(reason) 
         {
             Data.Add(nameof(requestor), requestor.FriendlyName());
             Data.Add(nameof(requested), requested.FriendlyName());
