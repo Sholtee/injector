@@ -16,9 +16,9 @@ namespace Solti.Utils.DI.Internals
     /// <remarks>This is an internal class so it may change from version to version. Don't use it!</remarks>
     public class ServiceReference : DisposeByRefObject
     {
-        private ServiceReferenceCollection FDependencies = new ServiceReferenceCollection();
+        private readonly ServiceReferenceCollection FDependencies = new ServiceReferenceCollection();
 
-        private object FValue;
+        private readonly WriteOnce<object> FValue = new WriteOnce<object>(strict: false);
 
         /// <summary>
         /// Creates a new <see cref="ServiceReference"/> instance.
@@ -63,24 +63,14 @@ namespace Solti.Utils.DI.Internals
             get
             {
                 CheckDisposed();
-                return FValue;
+                return FValue.Value;
             }
             set 
             {
                 CheckDisposed();
-
-                //
-                // Peldany csak egyszer allithato be.
-                //
-
-                if (FValue != null)
-                    throw new InvalidOperationException(); // TODO
-
-                FValue = value;
+                FValue.Value = value;
             }
         }
-
-        public virtual bool SetInstance(IReadOnlyDictionary<string, object> options) => RelatedServiceEntry.SetInstance(this, options);
 
         /// <summary>
         /// Returns true if the bound service will be disposed outside of this library false otherwise.
@@ -108,7 +98,6 @@ namespace Solti.Utils.DI.Internals
             //
 
             FDependencies.Dispose();
-            FDependencies = null;
 
             DisposeSuppressed = true;
         }
@@ -126,11 +115,9 @@ namespace Solti.Utils.DI.Internals
                 // Elso helyen szerepeljen h a fuggosegeket a Dispose()-ban meg hasznalni tudja a szerviz peldany.
                 //
 
-                (FValue as IDisposable)?.Dispose();
-                FValue = null;
+                (Value as IDisposable)?.Dispose();
 
                 FDependencies.Dispose();
-                FDependencies = null;
             }
 
             base.Dispose(disposeManaged);
