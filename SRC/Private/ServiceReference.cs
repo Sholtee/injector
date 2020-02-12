@@ -93,12 +93,6 @@ namespace Solti.Utils.DI.Internals
             if (FDependencies.Any())
                 throw new InvalidOperationException(); // TODO
 
-            //
-            // Kulomben nem is lesznek fuggosegek.
-            //
-
-            FDependencies.Dispose();
-
             DisposeSuppressed = true;
         }
 
@@ -107,15 +101,18 @@ namespace Solti.Utils.DI.Internals
         /// </summary>
         protected override void Dispose(bool disposeManaged)
         {
-            if (disposeManaged && !DisposeSuppressed)
+            if (disposeManaged)
             {
-                Debug.WriteLine($"Disposing service: {RelatedServiceEntry.FriendlyName()} [value = {Value ?? "NULL"}]");
+                if (!DisposeSuppressed)
+                {
+                    Debug.WriteLine($"Disposing service: {RelatedServiceEntry.FriendlyName()} [value = {Value ?? "NULL"}]");
 
-                //
-                // Elso helyen szerepeljen h a fuggosegeket a Dispose()-ban meg hasznalni tudja a szerviz peldany.
-                //
+                    //
+                    // Elso helyen szerepeljen h a fuggosegeket a Dispose()-ban meg hasznalni tudja a szerviz peldany.
+                    //
 
-                (Value as IDisposable)?.Dispose();
+                    (Value as IDisposable)?.Dispose();
+                }
 
                 FDependencies.Dispose();
             }
