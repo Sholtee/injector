@@ -65,12 +65,7 @@ namespace Solti.Utils.DI.Internals
             }
         }
 
-        public Injector(IServiceContainer parent) : this(parent, QueryModes.ThrowOnError, new Dictionary<string, object> 
-        {
-            { nameof(Config.Value.Injector.MaxSpawnedTransientServices), Config.Value.Injector.MaxSpawnedTransientServices }           
-        }) { }
-
-        public Injector(IServiceContainer parent, QueryModes queryModes, IReadOnlyDictionary<string, object> factoryOptions) : base(parent)
+        public Injector(IServiceContainer parent, QueryModes queryModes = QueryModes.ThrowOnError, IReadOnlyDictionary<string, object> factoryOptions = null) : base(parent)
         {
             //
             // Injector nem hozhato letre absztrakt bejegyzesekkel.
@@ -100,7 +95,10 @@ namespace Solti.Utils.DI.Internals
 
             QueryModes = queryModes | QueryModes.AllowSpecialization;
 
-            FactoryOptions = factoryOptions;
+            FactoryOptions = factoryOptions ?? new Dictionary<string, object>
+            {
+                { nameof(Config.Value.Injector.MaxSpawnedTransientServices), Config.Value.Injector.MaxSpawnedTransientServices }
+            };
 
             //
             // Felvesszuk sajat magunkat.
@@ -210,7 +208,7 @@ namespace Solti.Utils.DI.Internals
                         }
 
                         //
-                        // Factory hivasa, innentol a ServiceEntry felelos a szerviz peldany felszabaditasaert.
+                        // Ha a peldany beallitasa sikeres onnantol a ServiceEntry felelos az elettartam kezeleseert.
                         //
 
                         if (!currentService.SetInstance(FactoryOptions))
