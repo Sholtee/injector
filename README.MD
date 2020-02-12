@@ -365,6 +365,12 @@ using (IServiceContainer tempContainer = Container.CreateChild())
   ...
 }
 ```
+### Inline dependencies
+A service can request its owner `IInjector` as a regular dependency (via constructor parameter). Doing this makes it possible to get services anywhere in the implementation (by invoking the `IInjector.Get()` method). This is we call *inline dependencies*.
+
+Notes:
+- The [dependency list](https://sholtee.github.io/injector/doc/Solti.Utils.DI.Internals.AbstractServiceReference.html#Solti_Utils_DI_Internals_AbstractServiceReference_Dependencies ) will not contain services requested outside of the constructor.
+- Disposing inline dependencies is done by the system as well.
 ## Strict DI
 Consider the following registration:
 ```csharp
