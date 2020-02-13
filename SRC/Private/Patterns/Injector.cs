@@ -193,38 +193,23 @@ namespace Solti.Utils.DI.Internals
                     // hivasokban is lassuk az (epp legyartas alatt levo) szulot.
                     //
 
-                    currentService = new ServiceReference(entry, this);
-
-                    using (FGraph.With(currentService))
+                    using (FGraph.With(currentService = new ServiceReference(entry, this)))
                     {
-                        //
-                        // Ellenorizzuk h nem volt e korkoros referencia.
-                        //
-
-                        if (FGraph.CircularReference)
-                        {
-                            currentService.Dispose();
-                            throw new CircularReferenceException(FGraph);
-                        }
+                        FGraph.CheckNotCircular();
 
                         //
-                        // Ha a peldany beallitasa sikeres onnantol a ServiceEntry felelos az elettartam kezeleseert.
+                        // Ha a peldany beallitasa sikeres onnantol a "RelatedServiceEntry" felelos a hivatkozas felszabaditasaert.
                         //
 
-                        if (!currentService.SetInstance(FactoryOptions))
-                        {
-                            //
-                            // - Valaki korabban mar beallitotta (parhuzamos eset Singleton elettartamnal). 
-                            // - Nem gond h With() blokkban vagyunk siman felszabadithato az entitas.
-                            //
+                        if (currentService.SetInstance(FactoryOptions)) 
+                            currentService.AddRef(); // Addref() nelkul a using-ot elhagyva felszabadulna a hivatkozas
 
-                            currentService.Dispose();
+                        //
+                        // Ha nem az csak annyit jelent h valaki korabban mar beallitotta (parhuzamos eset Singleton elettartamnal).
+                        //
+
+                        else 
                             currentService = entry.Instance;
-
-                            Assert(currentService != null);
-                        }
-
-                        Assert(currentService.Value != null, "Instance was not set");
 
                         //
                         // Peldany tipusat ellenorizzuk mert a Factory(), Lazy() stb visszaadhat vicces dolgokat.
@@ -240,7 +225,7 @@ namespace Solti.Utils.DI.Internals
             // Ha az aktualisan lekerdezett szerviz valakinek a fuggosege akkor hozzaadjuk a fuggosegi listahoz.
             //
 
-            FGraph.Add(currentService);
+            FGraph.AddAsDependency(currentService);
 
             return currentService;
         }

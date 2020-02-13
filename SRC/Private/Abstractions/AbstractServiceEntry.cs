@@ -94,17 +94,13 @@ namespace Solti.Utils.DI.Internals
         #endregion
 
         /// <summary>
-        /// Sets the service instance.
+        /// Call the <see cref="Factory"/> to set the service <see cref="Instance"/>.
         /// </summary>
         /// <param name="serviceReference">The <see cref="ServiceReference"/> of the service being created.</param>
         /// <param name="options">The options that control the instantiation process.</param>
         /// <returns>True on success false if the <see cref="Instance"/> had already been set previously.</returns>
-        public virtual bool SetInstance(ServiceReference serviceReference, IReadOnlyDictionary<string, object> options)
-        {
-            serviceReference?.Release();
-
+        public virtual bool SetInstance(ServiceReference serviceReference, IReadOnlyDictionary<string, object> options) =>
             throw new InvalidOperationException(string.Format(Resources.Culture, Resources.CANT_INSTANTIATE_ABSTRACTS, this.FriendlyName()));
-        }
 
         /// <summary>
         /// Copies this entry to a new collection.

@@ -6,6 +6,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace Solti.Utils.DI.Internals
@@ -16,19 +17,28 @@ namespace Solti.Utils.DI.Internals
 
         public ServiceReference Current => FGraph.Any() ? FGraph.Peek() : null;
 
-        public bool CircularReference =>
-            //
-            // Ha egynel tobbszor szerepel az aktualis szerviz akkor korkoros referenciank van.
-            //
-
-            Current != null && FGraph.LastIndexOf(Current, ServiceReferenceComparer.Instance) > 0;
-
-        public void Add(ServiceReference svc) =>
-            Current?.Dependencies.Add(svc);
-
-        public IDisposable With(ServiceReference svc) 
+        public void CheckNotCircular()
         {
-            FGraph.Push(svc);
+            Debug.Assert(Current != null);
+
+            //
+            // Ha egynel tobbszor szerepel az aktualis szerviz az aktualis utvonalon akkor korkoros referenciank van.
+            //
+
+            if (this.LastIndexOf(Current, ServiceReferenceComparer.Instance) > 0)
+                throw new CircularReferenceException(this);
+        }
+
+        public void AddAsDependency(ServiceReference node)
+        {
+            Debug.Assert(Current != node);
+
+            Current?.Dependencies.Add(node);
+        }
+
+        public IDisposable With(ServiceReference node) 
+        {
+            FGraph.Push(node);
             return new WithScope(FGraph);
         }
 
@@ -40,7 +50,7 @@ namespace Solti.Utils.DI.Internals
 
             protected override void Dispose(bool disposeManaged)
             {
-                FGraph.Pop();
+                FGraph.Pop().Release();
                 base.Dispose(disposeManaged);
             }
         }
