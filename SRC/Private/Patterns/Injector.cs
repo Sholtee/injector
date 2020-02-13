@@ -146,8 +146,8 @@ namespace Solti.Utils.DI.Internals
                 // - Lekerdezeshez mindig a tulajdonos szervizkollekciobol kell injector-t letrehozni.
                 //   * Igy a fuggosegek is a deklaralo kollekciobol lesznek feloldva. Mellekhataskent 
                 //     Singleton szerviz hivatkozhat abstract fuggosegre (de az rossz konfiguracio).
-                //   * A Trigger-es csoda egy korbedolgozas mivel Singleton bejegyzes tulajdonosa sose 
-                //     lehet az injector maga.
+                //   * A BoundEntry-s csoda egy korbedolgozas mivel Singleton bejegyzes tulajdonosa 
+                //     sose lehet az injector maga.
                 // - A referencia szamlalas miatt Singleton szerviz minden fuggosege is Singletonkent 
                 //   viselkedik (ez ellen van a StrictDI).
                 //
@@ -205,7 +205,8 @@ namespace Solti.Utils.DI.Internals
                             currentService.AddRef(); // Addref() nelkul a using-ot elhagyva felszabadulna a hivatkozas
 
                         //
-                        // Ha nem az csak annyit jelent h valaki korabban mar beallitotta (parhuzamos eset Singleton elettartamnal).
+                        // Ha a peldany beallitas sikertelen az azt jelenti h valaki korabban mar beallitotta (parhuzamos eset 
+                        // Singleton elettartamnal).
                         //
 
                         else 
