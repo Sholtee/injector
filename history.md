@@ -75,3 +75,4 @@
   - *fixed:* In some cases, injector could be created with abstract entries
 - 1.3.0:
   - *added:* `ServiceNotFoundException.Data` contains the requestor name (if available)
+  - *fixed:* Proper resource cleanup if a service factory throws
