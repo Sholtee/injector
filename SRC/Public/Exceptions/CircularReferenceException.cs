@@ -23,7 +23,7 @@ namespace Solti.Utils.DI
         /// Creates a new <see cref="CircularReferenceException"/> instance.
         /// </summary>
         /// <param name="path">The current path on which the circular reference was found.</param>
-        public CircularReferenceException(IEnumerable<AbstractServiceReference> path) : base
+        public CircularReferenceException(IEnumerable<ServiceReference> path) : base
         (
             string.Format
             (

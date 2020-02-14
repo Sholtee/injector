@@ -4,15 +4,16 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Collections.Generic;
 
 namespace Solti.Utils.DI.Internals
 {
     internal interface IServiceFactory
     {
-        AbstractServiceReference Instance { get; }
+        ServiceReference Instance { get; }
 
         Func<IInjector, Type, object> Factory { get; set; }
 
-        bool SetInstance(AbstractServiceReference reference);
+        bool SetInstance(ServiceReference reference, IReadOnlyDictionary<string, object> options);
     }
 }

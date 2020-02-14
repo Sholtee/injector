@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace Solti.Utils.DI.Internals
@@ -13,8 +14,6 @@ namespace Solti.Utils.DI.Internals
     /// </summary>
     internal class SingletonServiceEntry : ProducibleServiceEntry
     {
-        private AbstractServiceReference FInstance;
-
         //
         // Lock azert kell mert ez az entitas egyszerre tobb szerviz kollekcioban is szerepelhet
         // (SetInstance() lehet hivva parhuzamosan).
@@ -34,9 +33,7 @@ namespace Solti.Utils.DI.Internals
         {
         }
 
-        public override AbstractServiceReference Instance => FInstance;
-
-        public override bool SetInstance(AbstractServiceReference reference)
+        public override bool SetInstance(ServiceReference reference, IReadOnlyDictionary<string, object> options)
         {
             CheckProducible();
 
@@ -51,12 +48,11 @@ namespace Solti.Utils.DI.Internals
             // beallitott erteket.
             //
 
-            if (FInstance != null) return false;
+            if (Instance != null) return false;
 
             lock (FLock)
             {
-                if (FInstance != null) return false;
-
+                if (Instance != null) return false;
 
                 //
                 // Kulomben legyartjuk. Elsokent a Factory-t hivjuk es Instance-nak csak sikeres visszateres
@@ -64,7 +60,7 @@ namespace Solti.Utils.DI.Internals
                 //
 
                 reference.Value = Factory(reference.RelatedInjector, Interface);
-                FInstance = reference;
+                Instance = reference;
             }
 
             return true;

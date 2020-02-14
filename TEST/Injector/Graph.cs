@@ -16,11 +16,11 @@ namespace Solti.Utils.DI.Injector.Graph.Tests
     [TestFixture]
     public class GraphTests
     {
-        private static AbstractServiceReference[] Validate(Injector injector) 
+        private static ServiceReference[] Validate(Injector injector) 
         {
             Config.Value.Injector.StrictDI = false;
 
-            AbstractServiceReference
+            ServiceReference
                 svc1, svc2, svc3, svc4;
 
             svc4 = injector.GetReference(typeof(IInterface_4), null);
@@ -47,13 +47,13 @@ namespace Solti.Utils.DI.Injector.Graph.Tests
 
             return new[] { svc1, svc2, svc3, svc4 };
 
-            AbstractServiceReference GetDependency(AbstractServiceReference reference, Type iface) => reference.Dependencies.SingleOrDefault(dep => dep.RelatedServiceEntry.Interface == iface);
+            ServiceReference GetDependency(ServiceReference reference, Type iface) => reference.Dependencies.SingleOrDefault(dep => dep.RelatedServiceEntry.Interface == iface);
         }
 
         [Test]
         public void ComplexTest()
         {
-            AbstractServiceReference[] references;
+            ServiceReference[] references;
 
             using (IServiceContainer container = new ServiceContainer().Setup(typeof(IInterface_1).Assembly))
             {
@@ -66,7 +66,7 @@ namespace Solti.Utils.DI.Injector.Graph.Tests
         [Test]
         public void ComplexTestWithChildContainer()
         {
-            AbstractServiceReference[] references;
+            ServiceReference[] references;
 
             using (IServiceContainer container = new ServiceContainer())
             {

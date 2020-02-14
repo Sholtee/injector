@@ -3,6 +3,8 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
+using System;
+
 using NUnit.Framework;
 
 namespace Solti.Utils.DI.Internals.Tests
@@ -12,28 +14,72 @@ namespace Solti.Utils.DI.Internals.Tests
     [TestFixture]
     public sealed class ServiceReferenceTests
     {
+        private static readonly DummyServiceEntry DummyServiceEntry = new DummyServiceEntry();
+
         [Test]
-        public void ServiceReference_ShouldManageTheReferenceCounts()
+        public void Value_CanBeSetOnce() 
+        {
+            var svc = new ServiceReference(DummyServiceEntry)
+            {
+                Value = new object()
+            };
+
+            Assert.Throws<InvalidOperationException>(() => svc.Value = new object());
+        }
+
+        [Test]
+        public void Dispose_ShouldDisposeTheValueAndDecrementTheRefCountOfTheDependencies() 
+        {         
+            var dependency = new ServiceReference(DummyServiceEntry) { Value = new object() }; // refcount == 1
+
+            var target = new Disposable();
+            var svc = new ServiceReference(DummyServiceEntry) { Value = target };
+            svc.Dependencies.Add(dependency);
+
+            Assert.That(dependency.RefCount, Is.EqualTo(2));
+
+            svc.Dispose();
+
+            Assert.That(target.Disposed);
+            Assert.That(dependency.RefCount, Is.EqualTo(1));
+        }
+
+        [Test]
+        public void SuppressDispose_ShouldPreventTheValueFromBeingDisposed() 
         {
             var target = new Disposable();
-            var reference = new ServiceReference(new DummyServiceEntry()) { Value = target };
+            var svc = new ServiceReference(DummyServiceEntry) { Value = target };
 
-            Assert.That(reference.RefCount, Is.EqualTo(1));
+            svc.SuppressDispose();
+            svc.Dispose();
 
-            var svc = new ServiceReference(new DummyServiceEntry()) { Value = new object() };
-            svc.Dependencies.Add(reference);
+            Assert.That(target.Disposed, Is.False);
 
-            Assert.That(reference.RefCount, Is.EqualTo(2));
-            
-            svc.Release();
+            target.Dispose();
+        }
 
-            Assert.That(svc.Disposed);
-            Assert.That(reference.RefCount, Is.EqualTo(1));
+        [Test]
+        public void SuppressDispose_ShouldThrowIfTheServiceHasDependencies() 
+        {
+            var svc = new ServiceReference(DummyServiceEntry);
+            var depdendency = new ServiceReference(DummyServiceEntry);
 
-            reference.Release();
+            svc.Dependencies.Add(depdendency);
 
-            Assert.That(reference.Disposed);
-            Assert.That(target.Disposed);
+            Assert.Throws<InvalidOperationException>(svc.SuppressDispose);
+
+            svc.Dependencies.Remove(depdendency);
+
+            Assert.DoesNotThrow(svc.SuppressDispose);
+        }
+
+        [Test]
+        public void Dependencies_ShouldThrowIfDisposeIsSuppressed() 
+        {
+            var svc = new ServiceReference(DummyServiceEntry);
+            svc.SuppressDispose();
+
+            Assert.Throws<InvalidOperationException>(() => _ = svc.Dependencies);
         }
     }
 }

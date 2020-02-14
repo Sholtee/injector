@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Collections.Generic;
 
 using NUnit.Framework;
 
@@ -46,7 +47,9 @@ namespace Solti.Utils.DI.Injector.Tests
 
             using (IInjector injector = container.CreateInjector())
             {
-                Assert.Throws<ServiceNotFoundException>(() => injector.Get<IInterface_1>());
+                var e = Assert.Throws<ServiceNotFoundException>(() => injector.Get<IInterface_1>());
+                Assert.That(e.Data.Contains("requestor"));
+                Assert.That(e.Data["requestor"], Is.Null);
             }                 
         }
 
@@ -59,7 +62,9 @@ namespace Solti.Utils.DI.Injector.Tests
 
             using (IInjector injector = container.CreateInjector())
             {
-                Assert.Throws<ServiceNotFoundException>(() => injector.Get<IInterface_7<IInterface_1>>());
+                var e = Assert.Throws<ServiceNotFoundException>(() => injector.Get<IInterface_7<IInterface_1>>());
+                Assert.That(e.Data.Contains("requestor"));
+                Assert.That(e.Data["requestor"], Is.EqualTo(typeof(IInterface_7<IInterface_1>).ToString()));
             }
         }
 
@@ -259,7 +264,7 @@ namespace Solti.Utils.DI.Injector.Tests
         [Test]
         public void Injector_Get_ShouldDisposeTheUnusedServiceReference() 
         {
-            var entry = new HackyServiceEntry();
+            var entry = new HackyServiceEntry(@throw: false);
             Container.Add(entry);
 
             using (IInjector injector = Container.CreateInjector()) 
@@ -270,25 +275,39 @@ namespace Solti.Utils.DI.Injector.Tests
             }
         }
 
+        [Test]
+        public void Injector_Get_ShouldDisposeTheServiceReferenceOnError()
+        {
+            var entry = new HackyServiceEntry(@throw: true);
+            Container.Add(entry);
+
+            using (IInjector injector = Container.CreateInjector())
+            {
+                Assert.Throws<Exception>(() => injector.Get<IInterface_1>());
+
+                Assert.That(entry.GotReference.Disposed);
+            }
+        }
+
         private sealed class HackyServiceEntry : AbstractServiceEntry
         {
-            private AbstractServiceReference FService;
+            public ServiceReference GotReference { get; private set; }
 
-            public AbstractServiceReference GotReference { get; private set; }
+            private bool Throw { get; }
 
-            public HackyServiceEntry() : base(typeof(IInterface_1), null)
-            {
-            }
+            public HackyServiceEntry(bool @throw) : base(typeof(IInterface_1), null) => Throw = @throw;
 
-            public override AbstractServiceReference Instance => FService;
-
-            public override bool SetInstance(AbstractServiceReference serviceReference)
+            public override bool SetInstance(ServiceReference serviceReference, IReadOnlyDictionary<string, object> options)
             {
                 GotReference = serviceReference;
-                FService = new ServiceReference(this) 
+                
+                if (Throw) throw new Exception();
+
+                Instance = new ServiceReference(this, null) 
                 { 
                     Value = new Implementation_1_No_Dep()
                 };
+
                 return false;
             }
         }

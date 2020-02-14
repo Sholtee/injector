@@ -1,5 +1,5 @@
 ﻿/********************************************************************************
-* ServiceCollection.cs                                                          *
+* ServiceReferenceCollection.cs                                                 *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
@@ -10,12 +10,12 @@ using NUnit.Framework;
 namespace Solti.Utils.DI.Internals.Tests
 {
     [TestFixture]
-    public class ServiceCollectionTests
+    public class ServiceReferenceCollectionTests
     {
-        private ServiceCollection Collection;
+        private ServiceReferenceCollection Collection;
 
         [SetUp]
-        public void Setup() => Collection = new ServiceCollection();
+        public void Setup() => Collection = new ServiceReferenceCollection();
 
         [Test]
         public void Add_ShouldIncrementTheRefCount() 

@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Collections.Generic;
 using System.Reflection;
 
 namespace Solti.Utils.DI.Internals
@@ -27,11 +28,13 @@ namespace Solti.Utils.DI.Internals
             if (!@interface.IsInstanceOfType(instance))
                 throw new InvalidOperationException(string.Format(Resources.Culture, Resources.NOT_ASSIGNABLE, @interface, instance.GetType()));
 
-            Instance = releaseOnDispose ? new ServiceReference(this) : (AbstractServiceReference) new InstanceReference(this);
-            Instance.Value = instance;
-        }
+            Instance = new ServiceReference(this, null) 
+            { 
+                Value = instance 
+            };
 
-        public override Type Implementation => null;
+            if (!releaseOnDispose) Instance.SuppressDispose();
+        }
 
         public override Func<IInjector, Type, object> Factory
         {
@@ -44,9 +47,7 @@ namespace Solti.Utils.DI.Internals
             set => throw new InvalidOperationException();
         }
 
-        public override AbstractServiceReference Instance { get; }
-
-        public override bool SetInstance(AbstractServiceReference reference) =>
+        public override bool SetInstance(ServiceReference reference, IReadOnlyDictionary<string, object> options) =>
             //
             // Peldany eseten ez a metodus elvileg sose kerulhet meghivasra.
             //

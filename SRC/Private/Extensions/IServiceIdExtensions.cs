@@ -1,16 +1,17 @@
 ﻿/********************************************************************************
-* ServiceId.cs                                                                  *
+* IServiceIdExtensions.cs                                                       *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
-using System;
-
 namespace Solti.Utils.DI.Internals
 {
-    internal class ServiceId : IServiceId
+    internal static class IServiceIdExtensions
     {
-        public Type Interface { get; set; }
-
-        public string Name { get; set; }
+        public static string FriendlyName(this IServiceId src) 
+        {
+            string result = src.Interface.ToString();
+            if (src.Name != null) result += $":{src.Name}";
+            return result;
+        }
     }
 }

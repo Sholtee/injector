@@ -29,6 +29,10 @@
     <OutputPath>..\BIN\</OutputPath>
   </PropertyGroup>
 
+  <ItemGroup Condition="$(TargetFramework.StartsWith('netstandard1'))">
+    <PackageReference Include="System.ComponentModel" Version="4.*" />
+  </ItemGroup>
+
   <ItemGroup Condition="$(TargetFramework.StartsWith('netstandard2'))">
     <PackageReference Include="System.Text.Json" Version="4.*" />
   </ItemGroup>

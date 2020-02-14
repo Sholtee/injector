@@ -1,5 +1,5 @@
 ﻿/********************************************************************************
-* ServiceId.cs                                                                  *
+* ServiceProvider.cs                                                            *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
@@ -7,10 +7,11 @@ using System;
 
 namespace Solti.Utils.DI.Internals
 {
-    internal class ServiceId : IServiceId
+    internal class ServiceProvider : Injector, IServiceProvider
     {
-        public Type Interface { get; set; }
+        public ServiceProvider(IServiceContainer parent) : base(parent, QueryModes.Default)
+            => this.Instance<IServiceProvider>(this, releaseOnDispose: false);
 
-        public string Name { get; set; }
+        public object GetService(Type serviceType) => Get(serviceType, null);
     }
 }

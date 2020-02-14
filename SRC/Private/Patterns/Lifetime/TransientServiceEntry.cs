@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace Solti.Utils.DI.Internals
@@ -15,7 +16,7 @@ namespace Solti.Utils.DI.Internals
     /// </summary>
     internal class TransientServiceEntry : ProducibleServiceEntry
     {
-        private readonly ServiceCollection FSpawnedServices = new ServiceCollection();
+        private readonly ServiceReferenceCollection FSpawnedServices = new ServiceReferenceCollection();
 
         private TransientServiceEntry(TransientServiceEntry entry, IServiceContainer owner) : base(entry, owner)
         {
@@ -33,40 +34,38 @@ namespace Solti.Utils.DI.Internals
         {
         }
 
-        //
-        // Minden egyes SetInstance() hivas uj peldanyt hoz letre.
-        //
-
-        public override AbstractServiceReference Instance => null;
-
-        public override bool SetInstance(AbstractServiceReference reference)
+        public override bool SetInstance(ServiceReference reference, IReadOnlyDictionary<string, object> options)
         {
             CheckProducible();
 
             Debug.Assert(reference.RelatedInjector.UnderlyingContainer == Owner);
+   
+            int? threshold = options?.GetValueOrDefault<int?>("MaxSpawnedTransientServices");
 
-            //
-            // Ne legyen kiemelve statikusba h tesztekben megvaltoztathato legyen.
-            //
-
-            int maxSpawnedServices = Config.Value.Injector.MaxSpawnedTransientServices;
-
-            if (FSpawnedServices.Count == maxSpawnedServices)
+            if (FSpawnedServices.Count >= threshold)
                 //
                 // Ha ide jutunk az azt jelenti h jo esellyel a tartalmazo injector ujrahasznositasra kerult
-                // (es igy siman megehetjuk a rendelkezesre allo memoriat ahogy az a teljesitmeny teszteknel
-                // meg is tortent).
+                // (ahogy az a teljesitmeny teszteknel meg is tortent).
                 //
 
-                throw new Exception(string.Format(Resources.Culture, Resources.INJECTOR_SHOULD_BE_RELEASED, maxSpawnedServices));
+                throw new Exception(string.Format(Resources.Culture, Resources.INJECTOR_SHOULD_BE_RELEASED, threshold));
 
             reference.Value = Factory(reference.RelatedInjector, Interface);
 
-            FSpawnedServices.Add(reference); // inkrementalja "reference" referenciaszamlalojat
+            //
+            // Mivel "TransientServiceEntry.Instance" mindig NULL ezert ide annyi alkalommal jutunk el
+            // ahanyszor a szervizt igenylik -> A megfelelo elettartam kezeles vegett egy belso listaban
+            // tartjuk szamon az eddig igenyelt peldanyokat.
+            //
+            // Az Add() hivas megnoveli a "reference" referenciaszamlalojat ezert a Release() hivas (h a
+            // szamlalo 1-en alljon).
+            //
 
+            FSpawnedServices.Add(reference);   
             reference.Release();
 
             Debug.Assert(reference.RefCount == 1);
+
             return true;
         }
 

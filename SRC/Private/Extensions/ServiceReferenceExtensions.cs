@@ -1,16 +1,14 @@
 ﻿/********************************************************************************
-* ServiceId.cs                                                                  *
+* ServiceReferenceExtensions.cs                                                 *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
-using System;
+using System.Collections.Generic;
 
 namespace Solti.Utils.DI.Internals
 {
-    internal class ServiceId : IServiceId
+    internal static class ServiceReferenceExtensions
     {
-        public Type Interface { get; set; }
-
-        public string Name { get; set; }
+        public static bool SetInstance(this ServiceReference svc, IReadOnlyDictionary<string, object> options) => svc.RelatedServiceEntry.SetInstance(svc, options);
     }
 }

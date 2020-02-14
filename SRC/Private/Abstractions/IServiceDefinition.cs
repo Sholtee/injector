@@ -1,17 +1,17 @@
 ﻿/********************************************************************************
-* ServiceIdExtensions.cs                                                        *
+* IServiceDefinition.cs                                                         *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
+using System;
+
 namespace Solti.Utils.DI.Internals
 {
-    internal static class ServiceIdExtensions
+    internal interface IServiceDefinition: IServiceId
     {
-        public static string FriendlyName(this IServiceID src) 
-        {
-            string result = src.Interface.ToString();
-            if (src.Name != null) result += $":{src.Name}";
-            return result;
-        }
+        IServiceContainer Owner { get; }
+        Lifetime? Lifetime { get; }
+        Type Implementation { get; }
+        Func<IInjector, Type, object> Factory { get; }
     }
 }

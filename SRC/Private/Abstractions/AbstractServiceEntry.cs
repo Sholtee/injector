@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
 
@@ -17,7 +18,7 @@ namespace Solti.Utils.DI.Internals
     /// <remarks>This is an internal class so it may change from version to version. Don't use it!</remarks>
 
     [SuppressMessage("Security", "CA2119:Seal methods that satisfy private interfaces", Justification = "No security issues exist if the methods are overridden outside the assembly.")]
-    public class AbstractServiceEntry: Disposable, IServiceFactory, IServiceID
+    public class AbstractServiceEntry: Disposable, IServiceDefinition, IServiceFactory
     {
         /// <summary>
         /// Creates a new <see cref="AbstractServiceEntry"/> instance.
@@ -89,20 +90,17 @@ namespace Solti.Utils.DI.Internals
         /// <summary>
         /// The previously created service instance. Don't use it directly.
         /// </summary>
-        public virtual AbstractServiceReference Instance => null;
+        public ServiceReference Instance { get; protected set; }
         #endregion
 
         /// <summary>
-        /// Sets the service instance.
+        /// Call the <see cref="Factory"/> to set the service <see cref="Instance"/>.
         /// </summary>
-        /// <param name="serviceReference">The <see cref="AbstractServiceReference"/> of the service being created.</param>
+        /// <param name="serviceReference">The <see cref="ServiceReference"/> of the service being created.</param>
+        /// <param name="options">The options that control the instantiation process.</param>
         /// <returns>True on success false if the <see cref="Instance"/> had already been set previously.</returns>
-        public virtual bool SetInstance(AbstractServiceReference serviceReference)
-        {
-            serviceReference?.Release();
-
+        public virtual bool SetInstance(ServiceReference serviceReference, IReadOnlyDictionary<string, object> options) =>
             throw new InvalidOperationException(string.Format(Resources.Culture, Resources.CANT_INSTANTIATE_ABSTRACTS, this.FriendlyName()));
-        }
 
         /// <summary>
         /// Copies this entry to a new collection.
@@ -147,7 +145,7 @@ namespace Solti.Utils.DI.Internals
             ;
 
         /// <summary>
-        /// See <see cref="Object.ToString"/>.
+        /// See <see cref="object.ToString"/>.
         /// </summary>
         /// <returns></returns>
         public override string ToString()
@@ -159,7 +157,7 @@ namespace Solti.Utils.DI.Internals
             return new StringBuilder(this.FriendlyName())
                 .AppendFormat(Resources.Culture, NAME_PART, nameof(Lifetime), Lifetime?.ToString() ?? NULL)
                 .AppendFormat(Resources.Culture, NAME_PART, nameof(Implementation), Implementation?.ToString() ?? NULL)
-                .AppendFormat(Resources.Culture, NAME_PART, nameof(Instance), Instance?.ToString() ?? NULL)
+                .AppendFormat(Resources.Culture, NAME_PART, nameof(Instance), Instance?.Value.ToString() ?? NULL)
                 .ToString();
         }
 

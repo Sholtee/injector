@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 #if NETSTANDARD1_6
@@ -16,15 +17,17 @@ namespace Solti.Utils.DI.Internals
 {
     using Properties;
 
-    internal sealed class Injector : ServiceContainer, IInjector
+    internal class Injector : ServiceContainer, IInjector
     {
         private readonly ServiceGraph FGraph = new ServiceGraph();
+        private readonly AbstractServiceEntry FBoundEntry; // workaround
 
-        private Injector() => throw new NotSupportedException();
+        public QueryModes QueryModes { get; }
 
-        private AbstractServiceEntry BoundEntry { get; }  // workaround
+        public IReadOnlyDictionary<string, object> FactoryOptions { get; }
 
-        private Injector(AbstractServiceEntry boundEntry) : this(boundEntry.Owner) => BoundEntry = boundEntry;
+        private Injector(AbstractServiceEntry boundEntry, QueryModes queryModes, IReadOnlyDictionary<string, object> factoryOptions) 
+            : this(boundEntry.Owner, queryModes, factoryOptions)  => FBoundEntry = boundEntry;
 
         private bool BreaksTheRuleOfStrictDI(AbstractServiceEntry entry) 
         {
@@ -49,7 +52,20 @@ namespace Solti.Utils.DI.Internals
             return !requestor.IsDescendantOf(requested);
         }
 
-        public Injector(IServiceContainer parent) : base(parent)
+        private AbstractServiceEntry GetEntry(Type iface, string name) 
+        {
+            try
+            {
+                return Get(iface, name, QueryModes);
+            }
+            catch (ServiceNotFoundException e) 
+            {
+                e.Data.Add("requestor", FGraph.Current?.RelatedServiceEntry.FriendlyName());
+                throw;
+            }
+        }
+
+        public Injector(IServiceContainer parent, QueryModes queryModes = QueryModes.ThrowOnError, IReadOnlyDictionary<string, object> factoryOptions = null) : base(parent)
         {
             //
             // Injector nem hozhato letre absztrakt bejegyzesekkel.
@@ -74,6 +90,17 @@ namespace Solti.Utils.DI.Internals
             }
 
             //
+            // Generikus szervizek specializalasat mindig megengedjuk.
+            //
+
+            QueryModes = queryModes | QueryModes.AllowSpecialization;
+
+            FactoryOptions = factoryOptions ?? new Dictionary<string, object>
+            {
+                { nameof(Config.Value.Injector.MaxSpawnedTransientServices), Config.Value.Injector.MaxSpawnedTransientServices }
+            };
+
+            //
             // Felvesszuk sajat magunkat.
             //
 
@@ -81,7 +108,7 @@ namespace Solti.Utils.DI.Internals
         }
 
         [SuppressMessage("Reliability", "CA2000:Dispose objects before losing scope", Justification = "Lifetime of 'new Injector(...)' is managed by its parent container.")]
-        public AbstractServiceReference GetReference(Type iface, string name)
+        public ServiceReference GetReference(Type iface, string name)
         {
             CheckDisposed();
 
@@ -104,13 +131,14 @@ namespace Solti.Utils.DI.Internals
             // Bejegyzes lekerdezese
             //
 
-            AbstractServiceEntry entry = Get(iface, name, QueryModes.AllowSpecialization | QueryModes.ThrowOnError);
+            AbstractServiceEntry entry = GetEntry(iface, name);
+            if (entry == null) return null;
 
             //
             // Ha korabban mar le lett gyartva a szerviz peldany akkor nincs dolgunk.
             //
 
-            AbstractServiceReference currentService = entry.Instance;
+            ServiceReference currentService = entry.Instance;
 
             if (currentService == null)
             {
@@ -118,13 +146,13 @@ namespace Solti.Utils.DI.Internals
                 // - Lekerdezeshez mindig a tulajdonos szervizkollekciobol kell injector-t letrehozni.
                 //   * Igy a fuggosegek is a deklaralo kollekciobol lesznek feloldva. Mellekhataskent 
                 //     Singleton szerviz hivatkozhat abstract fuggosegre (de az rossz konfiguracio).
-                //   * A Trigger-es csoda egy korbedolgozas mivel Singleton bejegyzes tulajdonosa sose 
-                //     lehet az injector maga.
+                //   * A BoundEntry-s csoda egy korbedolgozas mivel Singleton bejegyzes tulajdonosa 
+                //     sose lehet az injector maga.
                 // - A referencia szamlalas miatt Singleton szerviz minden fuggosege is Singletonkent 
                 //   viselkedik (ez ellen van a StrictDI).
                 //
 
-                if (entry.Owner != null && entry.Owner != this && entry != BoundEntry)
+                if (entry.Owner != null && entry.Owner != this && entry != FBoundEntry)
                 {
                     Assert(entry.Lifetime >= Lifetime.Singleton);
 
@@ -135,7 +163,7 @@ namespace Solti.Utils.DI.Internals
                     //   elettartamat.
                     //
 
-                    var relatedInjector = new Injector(boundEntry: entry);
+                    var relatedInjector = new Injector(boundEntry: entry, QueryModes, FactoryOptions);
 
                     try
                     {
@@ -162,41 +190,27 @@ namespace Solti.Utils.DI.Internals
 
                     //
                     // Letrehozunk egy ures referenciat h a szerviz legyartasa kozben a rekurziv GetReference()
-                    // hivasokban lassak az (epp legyartas alatt levo) szulot.
+                    // hivasokban is lassuk az (epp legyartas alatt levo) szulot.
                     //
 
-                    currentService = new ServiceReference(entry, this);
-
-                    using (FGraph.With(currentService))
+                    using (FGraph.With(currentService = new ServiceReference(entry, this)))
                     {
-                        //
-                        // Ellenorizzuk h nem volt e korkoros referencia.
-                        //
-
-                        if (FGraph.CircularReference)
-                        {
-                            currentService.Dispose();
-                            throw new CircularReferenceException(FGraph);
-                        }
+                        FGraph.CheckNotCircular();
 
                         //
-                        // Factory hivasa, innentol a ServiceEntry felelos a szerviz peldany felszabaditasaert.
+                        // Ha a peldany beallitasa sikeres onnantol a "RelatedServiceEntry" felelos a hivatkozas felszabaditasaert.
                         //
 
-                        if (!currentService.SetInstance())
-                        {
-                            //
-                            // - Valaki korabban mar beallitotta (parhuzamos eset Singleton elettartamnal). 
-                            // - Nem gond h With() blokkban vagyunk siman felszabadithato az entitas.
-                            //
+                        if (currentService.SetInstance(FactoryOptions)) 
+                            currentService.AddRef(); // Addref() nelkul a using-ot elhagyva felszabadulna a hivatkozas
 
-                            currentService.Dispose();
+                        //
+                        // Ha a peldany beallitas sikertelen az azt jelenti h valaki korabban mar beallitotta (parhuzamos eset 
+                        // Singleton elettartamnal).
+                        //
+
+                        else 
                             currentService = entry.Instance;
-
-                            Assert(currentService != null);
-                        }
-
-                        Assert(currentService.Value != null, "Instance was not set");
 
                         //
                         // Peldany tipusat ellenorizzuk mert a Factory(), Lazy() stb visszaadhat vicces dolgokat.
@@ -212,14 +226,14 @@ namespace Solti.Utils.DI.Internals
             // Ha az aktualisan lekerdezett szerviz valakinek a fuggosege akkor hozzaadjuk a fuggosegi listahoz.
             //
 
-            FGraph.Add(currentService);
+            FGraph.AddAsDependency(currentService);
 
             return currentService;
         }
 
         #region IInjector
         [SuppressMessage("Reliability", "CA2000:Dispose objects before losing scope", Justification = "The reference is released on container disposal.")]
-        public object Get(Type iface, string name) => GetReference(iface, name).Value;
+        public object Get(Type iface, string name) => GetReference(iface, name)?.Value;
 
         public IServiceContainer UnderlyingContainer => this;
         #endregion

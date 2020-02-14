@@ -1,16 +1,16 @@
 ﻿/********************************************************************************
-* ServiceId.cs                                                                  *
+* IReadOnlyDictionaryExtensions.cs                                              *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
-using System;
+using System.Collections.Generic;
 
 namespace Solti.Utils.DI.Internals
 {
-    internal class ServiceId : IServiceId
+    internal static class IReadOnlyDictionaryExtensions
     {
-        public Type Interface { get; set; }
-
-        public string Name { get; set; }
+        public static T GetValueOrDefault<T>(this IReadOnlyDictionary<string, object> src, string key) => src.TryGetValue(key, out var val) && (val is T inst)
+            ? inst
+            : default;
     }
 }
