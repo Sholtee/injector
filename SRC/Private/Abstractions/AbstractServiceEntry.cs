@@ -157,7 +157,7 @@ namespace Solti.Utils.DI.Internals
             return new StringBuilder(this.FriendlyName())
                 .AppendFormat(Resources.Culture, NAME_PART, nameof(Lifetime), Lifetime?.ToString() ?? NULL)
                 .AppendFormat(Resources.Culture, NAME_PART, nameof(Implementation), Implementation?.ToString() ?? NULL)
-                .AppendFormat(Resources.Culture, NAME_PART, nameof(Instance), Instance?.ToString() ?? NULL)
+                .AppendFormat(Resources.Culture, NAME_PART, nameof(Instance), Instance?.Value.ToString() ?? NULL)
                 .ToString();
         }
 

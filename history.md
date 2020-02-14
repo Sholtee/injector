@@ -76,3 +76,4 @@
 - 1.3.0:
   - *added:* `ServiceNotFoundException.Data` contains the requestor name (if available)
   - *fixed:* Proper resource cleanup if a service factory throws
+  - *fixed:* Wrong retval of `AbstractServiceEntry.ToString()`
