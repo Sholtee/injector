@@ -77,3 +77,4 @@
   - *added:* `ServiceNotFoundException.Data` contains the requestor name (if available)
   - *fixed:* Proper resource cleanup if a service factory throws ([details](https://github.com/Sholtee/injector/commit/ec56f8749fb16207f10e7712812f4ef0e605be32 ))
   - *fixed:* Wrong retval of `AbstractServiceEntry.ToString()` ([details](https://github.com/Sholtee/injector/commit/9b6f333f61504d5a79bf25ddb7197d74664acb02 ))
+  - *fixed:* Missing `Dispose()` call in `ServiceContainer.Get()` ([details](https://github.com/Sholtee/injector/commit/cdb76751bcce2547caded2853d5a03fd17844d10 ))
