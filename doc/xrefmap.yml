@@ -140,15 +140,15 @@ references:
   commentId: T:Solti.Utils.DI.CircularReferenceException
   fullName: Solti.Utils.DI.CircularReferenceException
   nameWithType: CircularReferenceException
-- uid: Solti.Utils.DI.CircularReferenceException.#ctor(System.Collections.Generic.IEnumerable{Solti.Utils.DI.Internals.AbstractServiceReference})
-  name: CircularReferenceException(IEnumerable<AbstractServiceReference>)
-  href: Solti.Utils.DI.CircularReferenceException.html#Solti_Utils_DI_CircularReferenceException__ctor_System_Collections_Generic_IEnumerable_Solti_Utils_DI_Internals_AbstractServiceReference__
-  commentId: M:Solti.Utils.DI.CircularReferenceException.#ctor(System.Collections.Generic.IEnumerable{Solti.Utils.DI.Internals.AbstractServiceReference})
-  name.vb: CircularReferenceException(IEnumerable(Of AbstractServiceReference))
-  fullName: Solti.Utils.DI.CircularReferenceException.CircularReferenceException(System.Collections.Generic.IEnumerable<Solti.Utils.DI.Internals.AbstractServiceReference>)
-  fullName.vb: Solti.Utils.DI.CircularReferenceException.CircularReferenceException(System.Collections.Generic.IEnumerable(Of Solti.Utils.DI.Internals.AbstractServiceReference))
-  nameWithType: CircularReferenceException.CircularReferenceException(IEnumerable<AbstractServiceReference>)
-  nameWithType.vb: CircularReferenceException.CircularReferenceException(IEnumerable(Of AbstractServiceReference))
+- uid: Solti.Utils.DI.CircularReferenceException.#ctor(System.Collections.Generic.IEnumerable{Solti.Utils.DI.Internals.ServiceReference})
+  name: CircularReferenceException(IEnumerable<ServiceReference>)
+  href: Solti.Utils.DI.CircularReferenceException.html#Solti_Utils_DI_CircularReferenceException__ctor_System_Collections_Generic_IEnumerable_Solti_Utils_DI_Internals_ServiceReference__
+  commentId: M:Solti.Utils.DI.CircularReferenceException.#ctor(System.Collections.Generic.IEnumerable{Solti.Utils.DI.Internals.ServiceReference})
+  name.vb: CircularReferenceException(IEnumerable(Of ServiceReference))
+  fullName: Solti.Utils.DI.CircularReferenceException.CircularReferenceException(System.Collections.Generic.IEnumerable<Solti.Utils.DI.Internals.ServiceReference>)
+  fullName.vb: Solti.Utils.DI.CircularReferenceException.CircularReferenceException(System.Collections.Generic.IEnumerable(Of Solti.Utils.DI.Internals.ServiceReference))
+  nameWithType: CircularReferenceException.CircularReferenceException(IEnumerable<ServiceReference>)
+  nameWithType.vb: CircularReferenceException.CircularReferenceException(IEnumerable(Of ServiceReference))
 - uid: Solti.Utils.DI.CircularReferenceException.#ctor*
   name: CircularReferenceException
   href: Solti.Utils.DI.CircularReferenceException.html#Solti_Utils_DI_CircularReferenceException__ctor_
@@ -412,12 +412,15 @@ references:
   isSpec: "True"
   fullName: Solti.Utils.DI.Internals.AbstractServiceEntry.Owner
   nameWithType: AbstractServiceEntry.Owner
-- uid: Solti.Utils.DI.Internals.AbstractServiceEntry.SetInstance(Solti.Utils.DI.Internals.AbstractServiceReference)
-  name: SetInstance(AbstractServiceReference)
-  href: Solti.Utils.DI.Internals.AbstractServiceEntry.html#Solti_Utils_DI_Internals_AbstractServiceEntry_SetInstance_Solti_Utils_DI_Internals_AbstractServiceReference_
-  commentId: M:Solti.Utils.DI.Internals.AbstractServiceEntry.SetInstance(Solti.Utils.DI.Internals.AbstractServiceReference)
-  fullName: Solti.Utils.DI.Internals.AbstractServiceEntry.SetInstance(Solti.Utils.DI.Internals.AbstractServiceReference)
-  nameWithType: AbstractServiceEntry.SetInstance(AbstractServiceReference)
+- uid: Solti.Utils.DI.Internals.AbstractServiceEntry.SetInstance(Solti.Utils.DI.Internals.ServiceReference,System.Collections.Generic.IReadOnlyDictionary{System.String,System.Object})
+  name: SetInstance(ServiceReference, IReadOnlyDictionary<String, Object>)
+  href: Solti.Utils.DI.Internals.AbstractServiceEntry.html#Solti_Utils_DI_Internals_AbstractServiceEntry_SetInstance_Solti_Utils_DI_Internals_ServiceReference_System_Collections_Generic_IReadOnlyDictionary_System_String_System_Object__
+  commentId: M:Solti.Utils.DI.Internals.AbstractServiceEntry.SetInstance(Solti.Utils.DI.Internals.ServiceReference,System.Collections.Generic.IReadOnlyDictionary{System.String,System.Object})
+  name.vb: SetInstance(ServiceReference, IReadOnlyDictionary(Of String, Object))
+  fullName: Solti.Utils.DI.Internals.AbstractServiceEntry.SetInstance(Solti.Utils.DI.Internals.ServiceReference, System.Collections.Generic.IReadOnlyDictionary<System.String, System.Object>)
+  fullName.vb: Solti.Utils.DI.Internals.AbstractServiceEntry.SetInstance(Solti.Utils.DI.Internals.ServiceReference, System.Collections.Generic.IReadOnlyDictionary(Of System.String, System.Object))
+  nameWithType: AbstractServiceEntry.SetInstance(ServiceReference, IReadOnlyDictionary<String, Object>)
+  nameWithType.vb: AbstractServiceEntry.SetInstance(ServiceReference, IReadOnlyDictionary(Of String, Object))
 - uid: Solti.Utils.DI.Internals.AbstractServiceEntry.SetInstance*
   name: SetInstance
   href: Solti.Utils.DI.Internals.AbstractServiceEntry.html#Solti_Utils_DI_Internals_AbstractServiceEntry_SetInstance_
@@ -438,103 +441,6 @@ references:
   isSpec: "True"
   fullName: Solti.Utils.DI.Internals.AbstractServiceEntry.ToString
   nameWithType: AbstractServiceEntry.ToString
-- uid: Solti.Utils.DI.Internals.AbstractServiceReference
-  name: AbstractServiceReference
-  href: Solti.Utils.DI.Internals.AbstractServiceReference.html
-  commentId: T:Solti.Utils.DI.Internals.AbstractServiceReference
-  fullName: Solti.Utils.DI.Internals.AbstractServiceReference
-  nameWithType: AbstractServiceReference
-- uid: Solti.Utils.DI.Internals.AbstractServiceReference.#ctor(Solti.Utils.DI.Internals.AbstractServiceEntry,Solti.Utils.DI.IInjector)
-  name: AbstractServiceReference(AbstractServiceEntry, IInjector)
-  href: Solti.Utils.DI.Internals.AbstractServiceReference.html#Solti_Utils_DI_Internals_AbstractServiceReference__ctor_Solti_Utils_DI_Internals_AbstractServiceEntry_Solti_Utils_DI_IInjector_
-  commentId: M:Solti.Utils.DI.Internals.AbstractServiceReference.#ctor(Solti.Utils.DI.Internals.AbstractServiceEntry,Solti.Utils.DI.IInjector)
-  fullName: Solti.Utils.DI.Internals.AbstractServiceReference.AbstractServiceReference(Solti.Utils.DI.Internals.AbstractServiceEntry, Solti.Utils.DI.IInjector)
-  nameWithType: AbstractServiceReference.AbstractServiceReference(AbstractServiceEntry, IInjector)
-- uid: Solti.Utils.DI.Internals.AbstractServiceReference.#ctor*
-  name: AbstractServiceReference
-  href: Solti.Utils.DI.Internals.AbstractServiceReference.html#Solti_Utils_DI_Internals_AbstractServiceReference__ctor_
-  commentId: Overload:Solti.Utils.DI.Internals.AbstractServiceReference.#ctor
-  isSpec: "True"
-  fullName: Solti.Utils.DI.Internals.AbstractServiceReference.AbstractServiceReference
-  nameWithType: AbstractServiceReference.AbstractServiceReference
-- uid: Solti.Utils.DI.Internals.AbstractServiceReference.Dependencies
-  name: Dependencies
-  href: Solti.Utils.DI.Internals.AbstractServiceReference.html#Solti_Utils_DI_Internals_AbstractServiceReference_Dependencies
-  commentId: P:Solti.Utils.DI.Internals.AbstractServiceReference.Dependencies
-  fullName: Solti.Utils.DI.Internals.AbstractServiceReference.Dependencies
-  nameWithType: AbstractServiceReference.Dependencies
-- uid: Solti.Utils.DI.Internals.AbstractServiceReference.Dependencies*
-  name: Dependencies
-  href: Solti.Utils.DI.Internals.AbstractServiceReference.html#Solti_Utils_DI_Internals_AbstractServiceReference_Dependencies_
-  commentId: Overload:Solti.Utils.DI.Internals.AbstractServiceReference.Dependencies
-  isSpec: "True"
-  fullName: Solti.Utils.DI.Internals.AbstractServiceReference.Dependencies
-  nameWithType: AbstractServiceReference.Dependencies
-- uid: Solti.Utils.DI.Internals.AbstractServiceReference.Dispose(System.Boolean)
-  name: Dispose(Boolean)
-  href: Solti.Utils.DI.Internals.AbstractServiceReference.html#Solti_Utils_DI_Internals_AbstractServiceReference_Dispose_System_Boolean_
-  commentId: M:Solti.Utils.DI.Internals.AbstractServiceReference.Dispose(System.Boolean)
-  fullName: Solti.Utils.DI.Internals.AbstractServiceReference.Dispose(System.Boolean)
-  nameWithType: AbstractServiceReference.Dispose(Boolean)
-- uid: Solti.Utils.DI.Internals.AbstractServiceReference.Dispose*
-  name: Dispose
-  href: Solti.Utils.DI.Internals.AbstractServiceReference.html#Solti_Utils_DI_Internals_AbstractServiceReference_Dispose_
-  commentId: Overload:Solti.Utils.DI.Internals.AbstractServiceReference.Dispose
-  isSpec: "True"
-  fullName: Solti.Utils.DI.Internals.AbstractServiceReference.Dispose
-  nameWithType: AbstractServiceReference.Dispose
-- uid: Solti.Utils.DI.Internals.AbstractServiceReference.RelatedInjector
-  name: RelatedInjector
-  href: Solti.Utils.DI.Internals.AbstractServiceReference.html#Solti_Utils_DI_Internals_AbstractServiceReference_RelatedInjector
-  commentId: P:Solti.Utils.DI.Internals.AbstractServiceReference.RelatedInjector
-  fullName: Solti.Utils.DI.Internals.AbstractServiceReference.RelatedInjector
-  nameWithType: AbstractServiceReference.RelatedInjector
-- uid: Solti.Utils.DI.Internals.AbstractServiceReference.RelatedInjector*
-  name: RelatedInjector
-  href: Solti.Utils.DI.Internals.AbstractServiceReference.html#Solti_Utils_DI_Internals_AbstractServiceReference_RelatedInjector_
-  commentId: Overload:Solti.Utils.DI.Internals.AbstractServiceReference.RelatedInjector
-  isSpec: "True"
-  fullName: Solti.Utils.DI.Internals.AbstractServiceReference.RelatedInjector
-  nameWithType: AbstractServiceReference.RelatedInjector
-- uid: Solti.Utils.DI.Internals.AbstractServiceReference.RelatedServiceEntry
-  name: RelatedServiceEntry
-  href: Solti.Utils.DI.Internals.AbstractServiceReference.html#Solti_Utils_DI_Internals_AbstractServiceReference_RelatedServiceEntry
-  commentId: P:Solti.Utils.DI.Internals.AbstractServiceReference.RelatedServiceEntry
-  fullName: Solti.Utils.DI.Internals.AbstractServiceReference.RelatedServiceEntry
-  nameWithType: AbstractServiceReference.RelatedServiceEntry
-- uid: Solti.Utils.DI.Internals.AbstractServiceReference.RelatedServiceEntry*
-  name: RelatedServiceEntry
-  href: Solti.Utils.DI.Internals.AbstractServiceReference.html#Solti_Utils_DI_Internals_AbstractServiceReference_RelatedServiceEntry_
-  commentId: Overload:Solti.Utils.DI.Internals.AbstractServiceReference.RelatedServiceEntry
-  isSpec: "True"
-  fullName: Solti.Utils.DI.Internals.AbstractServiceReference.RelatedServiceEntry
-  nameWithType: AbstractServiceReference.RelatedServiceEntry
-- uid: Solti.Utils.DI.Internals.AbstractServiceReference.SetInstance
-  name: SetInstance()
-  href: Solti.Utils.DI.Internals.AbstractServiceReference.html#Solti_Utils_DI_Internals_AbstractServiceReference_SetInstance
-  commentId: M:Solti.Utils.DI.Internals.AbstractServiceReference.SetInstance
-  fullName: Solti.Utils.DI.Internals.AbstractServiceReference.SetInstance()
-  nameWithType: AbstractServiceReference.SetInstance()
-- uid: Solti.Utils.DI.Internals.AbstractServiceReference.SetInstance*
-  name: SetInstance
-  href: Solti.Utils.DI.Internals.AbstractServiceReference.html#Solti_Utils_DI_Internals_AbstractServiceReference_SetInstance_
-  commentId: Overload:Solti.Utils.DI.Internals.AbstractServiceReference.SetInstance
-  isSpec: "True"
-  fullName: Solti.Utils.DI.Internals.AbstractServiceReference.SetInstance
-  nameWithType: AbstractServiceReference.SetInstance
-- uid: Solti.Utils.DI.Internals.AbstractServiceReference.Value
-  name: Value
-  href: Solti.Utils.DI.Internals.AbstractServiceReference.html#Solti_Utils_DI_Internals_AbstractServiceReference_Value
-  commentId: P:Solti.Utils.DI.Internals.AbstractServiceReference.Value
-  fullName: Solti.Utils.DI.Internals.AbstractServiceReference.Value
-  nameWithType: AbstractServiceReference.Value
-- uid: Solti.Utils.DI.Internals.AbstractServiceReference.Value*
-  name: Value
-  href: Solti.Utils.DI.Internals.AbstractServiceReference.html#Solti_Utils_DI_Internals_AbstractServiceReference_Value_
-  commentId: Overload:Solti.Utils.DI.Internals.AbstractServiceReference.Value
-  isSpec: "True"
-  fullName: Solti.Utils.DI.Internals.AbstractServiceReference.Value
-  nameWithType: AbstractServiceReference.Value
 - uid: Solti.Utils.DI.Internals.Composite`1
   name: Composite<TInterface>
   href: Solti.Utils.DI.Internals.Composite-1.html
@@ -962,6 +868,116 @@ references:
   isSpec: "True"
   fullName: Solti.Utils.DI.Internals.InjectorConfig.StrictDI
   nameWithType: InjectorConfig.StrictDI
+- uid: Solti.Utils.DI.Internals.ServiceReference
+  name: ServiceReference
+  href: Solti.Utils.DI.Internals.ServiceReference.html
+  commentId: T:Solti.Utils.DI.Internals.ServiceReference
+  fullName: Solti.Utils.DI.Internals.ServiceReference
+  nameWithType: ServiceReference
+- uid: Solti.Utils.DI.Internals.ServiceReference.#ctor(Solti.Utils.DI.Internals.AbstractServiceEntry,Solti.Utils.DI.IInjector)
+  name: ServiceReference(AbstractServiceEntry, IInjector)
+  href: Solti.Utils.DI.Internals.ServiceReference.html#Solti_Utils_DI_Internals_ServiceReference__ctor_Solti_Utils_DI_Internals_AbstractServiceEntry_Solti_Utils_DI_IInjector_
+  commentId: M:Solti.Utils.DI.Internals.ServiceReference.#ctor(Solti.Utils.DI.Internals.AbstractServiceEntry,Solti.Utils.DI.IInjector)
+  fullName: Solti.Utils.DI.Internals.ServiceReference.ServiceReference(Solti.Utils.DI.Internals.AbstractServiceEntry, Solti.Utils.DI.IInjector)
+  nameWithType: ServiceReference.ServiceReference(AbstractServiceEntry, IInjector)
+- uid: Solti.Utils.DI.Internals.ServiceReference.#ctor*
+  name: ServiceReference
+  href: Solti.Utils.DI.Internals.ServiceReference.html#Solti_Utils_DI_Internals_ServiceReference__ctor_
+  commentId: Overload:Solti.Utils.DI.Internals.ServiceReference.#ctor
+  isSpec: "True"
+  fullName: Solti.Utils.DI.Internals.ServiceReference.ServiceReference
+  nameWithType: ServiceReference.ServiceReference
+- uid: Solti.Utils.DI.Internals.ServiceReference.Dependencies
+  name: Dependencies
+  href: Solti.Utils.DI.Internals.ServiceReference.html#Solti_Utils_DI_Internals_ServiceReference_Dependencies
+  commentId: P:Solti.Utils.DI.Internals.ServiceReference.Dependencies
+  fullName: Solti.Utils.DI.Internals.ServiceReference.Dependencies
+  nameWithType: ServiceReference.Dependencies
+- uid: Solti.Utils.DI.Internals.ServiceReference.Dependencies*
+  name: Dependencies
+  href: Solti.Utils.DI.Internals.ServiceReference.html#Solti_Utils_DI_Internals_ServiceReference_Dependencies_
+  commentId: Overload:Solti.Utils.DI.Internals.ServiceReference.Dependencies
+  isSpec: "True"
+  fullName: Solti.Utils.DI.Internals.ServiceReference.Dependencies
+  nameWithType: ServiceReference.Dependencies
+- uid: Solti.Utils.DI.Internals.ServiceReference.Dispose(System.Boolean)
+  name: Dispose(Boolean)
+  href: Solti.Utils.DI.Internals.ServiceReference.html#Solti_Utils_DI_Internals_ServiceReference_Dispose_System_Boolean_
+  commentId: M:Solti.Utils.DI.Internals.ServiceReference.Dispose(System.Boolean)
+  fullName: Solti.Utils.DI.Internals.ServiceReference.Dispose(System.Boolean)
+  nameWithType: ServiceReference.Dispose(Boolean)
+- uid: Solti.Utils.DI.Internals.ServiceReference.Dispose*
+  name: Dispose
+  href: Solti.Utils.DI.Internals.ServiceReference.html#Solti_Utils_DI_Internals_ServiceReference_Dispose_
+  commentId: Overload:Solti.Utils.DI.Internals.ServiceReference.Dispose
+  isSpec: "True"
+  fullName: Solti.Utils.DI.Internals.ServiceReference.Dispose
+  nameWithType: ServiceReference.Dispose
+- uid: Solti.Utils.DI.Internals.ServiceReference.DisposeSuppressed
+  name: DisposeSuppressed
+  href: Solti.Utils.DI.Internals.ServiceReference.html#Solti_Utils_DI_Internals_ServiceReference_DisposeSuppressed
+  commentId: P:Solti.Utils.DI.Internals.ServiceReference.DisposeSuppressed
+  fullName: Solti.Utils.DI.Internals.ServiceReference.DisposeSuppressed
+  nameWithType: ServiceReference.DisposeSuppressed
+- uid: Solti.Utils.DI.Internals.ServiceReference.DisposeSuppressed*
+  name: DisposeSuppressed
+  href: Solti.Utils.DI.Internals.ServiceReference.html#Solti_Utils_DI_Internals_ServiceReference_DisposeSuppressed_
+  commentId: Overload:Solti.Utils.DI.Internals.ServiceReference.DisposeSuppressed
+  isSpec: "True"
+  fullName: Solti.Utils.DI.Internals.ServiceReference.DisposeSuppressed
+  nameWithType: ServiceReference.DisposeSuppressed
+- uid: Solti.Utils.DI.Internals.ServiceReference.RelatedInjector
+  name: RelatedInjector
+  href: Solti.Utils.DI.Internals.ServiceReference.html#Solti_Utils_DI_Internals_ServiceReference_RelatedInjector
+  commentId: P:Solti.Utils.DI.Internals.ServiceReference.RelatedInjector
+  fullName: Solti.Utils.DI.Internals.ServiceReference.RelatedInjector
+  nameWithType: ServiceReference.RelatedInjector
+- uid: Solti.Utils.DI.Internals.ServiceReference.RelatedInjector*
+  name: RelatedInjector
+  href: Solti.Utils.DI.Internals.ServiceReference.html#Solti_Utils_DI_Internals_ServiceReference_RelatedInjector_
+  commentId: Overload:Solti.Utils.DI.Internals.ServiceReference.RelatedInjector
+  isSpec: "True"
+  fullName: Solti.Utils.DI.Internals.ServiceReference.RelatedInjector
+  nameWithType: ServiceReference.RelatedInjector
+- uid: Solti.Utils.DI.Internals.ServiceReference.RelatedServiceEntry
+  name: RelatedServiceEntry
+  href: Solti.Utils.DI.Internals.ServiceReference.html#Solti_Utils_DI_Internals_ServiceReference_RelatedServiceEntry
+  commentId: P:Solti.Utils.DI.Internals.ServiceReference.RelatedServiceEntry
+  fullName: Solti.Utils.DI.Internals.ServiceReference.RelatedServiceEntry
+  nameWithType: ServiceReference.RelatedServiceEntry
+- uid: Solti.Utils.DI.Internals.ServiceReference.RelatedServiceEntry*
+  name: RelatedServiceEntry
+  href: Solti.Utils.DI.Internals.ServiceReference.html#Solti_Utils_DI_Internals_ServiceReference_RelatedServiceEntry_
+  commentId: Overload:Solti.Utils.DI.Internals.ServiceReference.RelatedServiceEntry
+  isSpec: "True"
+  fullName: Solti.Utils.DI.Internals.ServiceReference.RelatedServiceEntry
+  nameWithType: ServiceReference.RelatedServiceEntry
+- uid: Solti.Utils.DI.Internals.ServiceReference.SuppressDispose
+  name: SuppressDispose()
+  href: Solti.Utils.DI.Internals.ServiceReference.html#Solti_Utils_DI_Internals_ServiceReference_SuppressDispose
+  commentId: M:Solti.Utils.DI.Internals.ServiceReference.SuppressDispose
+  fullName: Solti.Utils.DI.Internals.ServiceReference.SuppressDispose()
+  nameWithType: ServiceReference.SuppressDispose()
+- uid: Solti.Utils.DI.Internals.ServiceReference.SuppressDispose*
+  name: SuppressDispose
+  href: Solti.Utils.DI.Internals.ServiceReference.html#Solti_Utils_DI_Internals_ServiceReference_SuppressDispose_
+  commentId: Overload:Solti.Utils.DI.Internals.ServiceReference.SuppressDispose
+  isSpec: "True"
+  fullName: Solti.Utils.DI.Internals.ServiceReference.SuppressDispose
+  nameWithType: ServiceReference.SuppressDispose
+- uid: Solti.Utils.DI.Internals.ServiceReference.Value
+  name: Value
+  href: Solti.Utils.DI.Internals.ServiceReference.html#Solti_Utils_DI_Internals_ServiceReference_Value
+  commentId: P:Solti.Utils.DI.Internals.ServiceReference.Value
+  fullName: Solti.Utils.DI.Internals.ServiceReference.Value
+  nameWithType: ServiceReference.Value
+- uid: Solti.Utils.DI.Internals.ServiceReference.Value*
+  name: Value
+  href: Solti.Utils.DI.Internals.ServiceReference.html#Solti_Utils_DI_Internals_ServiceReference_Value_
+  commentId: Overload:Solti.Utils.DI.Internals.ServiceReference.Value
+  isSpec: "True"
+  fullName: Solti.Utils.DI.Internals.ServiceReference.Value
+  nameWithType: ServiceReference.Value
 - uid: Solti.Utils.DI.IServiceContainer
   name: IServiceContainer
   href: Solti.Utils.DI.IServiceContainer.html
@@ -1048,6 +1064,22 @@ references:
   isSpec: "True"
   fullName: Solti.Utils.DI.IServiceContainerExtensions.CreateInjector
   nameWithType: IServiceContainerExtensions.CreateInjector
+- uid: Solti.Utils.DI.IServiceContainerExtensions.CreateProvider(Solti.Utils.DI.IServiceContainer,System.IServiceProvider@)
+  name: CreateProvider(IServiceContainer, out IServiceProvider)
+  href: Solti.Utils.DI.IServiceContainerExtensions.html#Solti_Utils_DI_IServiceContainerExtensions_CreateProvider_Solti_Utils_DI_IServiceContainer_System_IServiceProvider__
+  commentId: M:Solti.Utils.DI.IServiceContainerExtensions.CreateProvider(Solti.Utils.DI.IServiceContainer,System.IServiceProvider@)
+  name.vb: CreateProvider(IServiceContainer, ByRef IServiceProvider)
+  fullName: Solti.Utils.DI.IServiceContainerExtensions.CreateProvider(Solti.Utils.DI.IServiceContainer, out System.IServiceProvider)
+  fullName.vb: Solti.Utils.DI.IServiceContainerExtensions.CreateProvider(Solti.Utils.DI.IServiceContainer, ByRef System.IServiceProvider)
+  nameWithType: IServiceContainerExtensions.CreateProvider(IServiceContainer, out IServiceProvider)
+  nameWithType.vb: IServiceContainerExtensions.CreateProvider(IServiceContainer, ByRef IServiceProvider)
+- uid: Solti.Utils.DI.IServiceContainerExtensions.CreateProvider*
+  name: CreateProvider
+  href: Solti.Utils.DI.IServiceContainerExtensions.html#Solti_Utils_DI_IServiceContainerExtensions_CreateProvider_
+  commentId: Overload:Solti.Utils.DI.IServiceContainerExtensions.CreateProvider
+  isSpec: "True"
+  fullName: Solti.Utils.DI.IServiceContainerExtensions.CreateProvider
+  nameWithType: IServiceContainerExtensions.CreateProvider
 - uid: Solti.Utils.DI.IServiceContainerExtensions.Factory(Solti.Utils.DI.IServiceContainer,System.Type,System.Func{Solti.Utils.DI.IInjector,System.Type,System.Object},Solti.Utils.DI.Lifetime)
   name: Factory(IServiceContainer, Type, Func<IInjector, Type, Object>, Lifetime)
   href: Solti.Utils.DI.IServiceContainerExtensions.html#Solti_Utils_DI_IServiceContainerExtensions_Factory_Solti_Utils_DI_IServiceContainer_System_Type_System_Func_Solti_Utils_DI_IInjector_System_Type_System_Object__Solti_Utils_DI_Lifetime_

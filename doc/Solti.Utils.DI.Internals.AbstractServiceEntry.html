@@ -83,7 +83,7 @@
   <h6><strong>Assembly</strong>: Injector.dll</h6>
   <h5 id="Solti_Utils_DI_Internals_AbstractServiceEntry_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class AbstractServiceEntry : Disposable, IDisposableEx, IDisposable, IServiceFactory, IServiceID</code></pre>
+    <pre><code class="lang-csharp hljs">public class AbstractServiceEntry : Disposable, IDisposableEx, IDisposable, IServiceDefinition, IServiceId, IServiceFactory</code></pre>
   </div>
   <h5 id="Solti_Utils_DI_Internals_AbstractServiceEntry_remarks"><strong>Remarks</strong></h5>
   <div class="markdown level0 remarks"><p>This is an internal class so it may change from version to version. Don&apos;t use it!</p>
@@ -257,7 +257,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public virtual AbstractServiceReference Instance { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public ServiceReference Instance { get; protected set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -269,7 +269,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Solti.Utils.DI.Internals.AbstractServiceReference.html">AbstractServiceReference</a></td>
+        <td><a class="xref" href="Solti.Utils.DI.Internals.ServiceReference.html">ServiceReference</a></td>
         <td></td>
       </tr>
     </tbody>
@@ -522,13 +522,13 @@
   <h5 class="overrides">Overrides</h5>
   <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a></div>
   <a id="Solti_Utils_DI_Internals_AbstractServiceEntry_SetInstance_" data-uid="Solti.Utils.DI.Internals.AbstractServiceEntry.SetInstance*"></a>
-  <h4 id="Solti_Utils_DI_Internals_AbstractServiceEntry_SetInstance_Solti_Utils_DI_Internals_AbstractServiceReference_" data-uid="Solti.Utils.DI.Internals.AbstractServiceEntry.SetInstance(Solti.Utils.DI.Internals.AbstractServiceReference)">SetInstance(AbstractServiceReference)</h4>
-  <div class="markdown level1 summary"><p>Sets the service instance.</p>
+  <h4 id="Solti_Utils_DI_Internals_AbstractServiceEntry_SetInstance_Solti_Utils_DI_Internals_ServiceReference_System_Collections_Generic_IReadOnlyDictionary_System_String_System_Object__" data-uid="Solti.Utils.DI.Internals.AbstractServiceEntry.SetInstance(Solti.Utils.DI.Internals.ServiceReference,System.Collections.Generic.IReadOnlyDictionary{System.String,System.Object})">SetInstance(ServiceReference, IReadOnlyDictionary&lt;String, Object&gt;)</h4>
+  <div class="markdown level1 summary"><p>Call the <a class="xref" href="Solti.Utils.DI.Internals.AbstractServiceEntry.html#Solti_Utils_DI_Internals_AbstractServiceEntry_Factory">Factory</a> to set the service <a class="xref" href="Solti.Utils.DI.Internals.AbstractServiceEntry.html#Solti_Utils_DI_Internals_AbstractServiceEntry_Instance">Instance</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public virtual bool SetInstance(AbstractServiceReference serviceReference)</code></pre>
+    <pre><code class="lang-csharp hljs">public virtual bool SetInstance(ServiceReference serviceReference, IReadOnlyDictionary&lt;string, object&gt; options)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -541,9 +541,15 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Solti.Utils.DI.Internals.AbstractServiceReference.html">AbstractServiceReference</a></td>
+        <td><a class="xref" href="Solti.Utils.DI.Internals.ServiceReference.html">ServiceReference</a></td>
         <td><span class="parametername">serviceReference</span></td>
-        <td><p>The <a class="xref" href="Solti.Utils.DI.Internals.AbstractServiceReference.html">AbstractServiceReference</a> of the service being created.</p>
+        <td><p>The <a class="xref" href="Solti.Utils.DI.Internals.ServiceReference.html">ServiceReference</a> of the service being created.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2">IReadOnlyDictionary</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a>&gt;</td>
+        <td><span class="parametername">options</span></td>
+        <td><p>The options that control the instantiation process.</p>
 </td>
       </tr>
     </tbody>
