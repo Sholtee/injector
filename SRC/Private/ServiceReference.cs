@@ -105,7 +105,7 @@ namespace Solti.Utils.DI.Internals
             {
                 if (!DisposeSuppressed)
                 {
-                    Debug.WriteLine($"Disposing service: {RelatedServiceEntry.FriendlyName()} [value = {Value ?? "NULL"}]");
+                    Debug.WriteLine($"Disposing service: {RelatedServiceEntry}");
 
                     //
                     // Elso helyen szerepeljen h a fuggosegeket a Dispose()-ban meg hasznalni tudja a szerviz peldany.
