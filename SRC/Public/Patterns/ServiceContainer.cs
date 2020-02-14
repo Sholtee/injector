@@ -167,12 +167,15 @@ namespace Solti.Utils.DI
                 AbstractServiceEntry registered = Get(serviceInterface, name, QueryModes.ThrowOnError);
 
                 //
-                // Parhuzamos regisztracio csak nehany esetben elkepzelheto (pl ha Singleton generikus
-                // lezart parjat igenyeljuk parhuzamosan, leszarmazott kontenerekbol).
+                // - Normal mukodes mellett parhuzamos regisztracio csak nehany esetben elkepzelheto (pl ha Singleton 
+                //   generikus lezart parjat igenyeljuk parhuzamosan, leszarmazott kontenerekbol).
+                // - Kulomben az Add() "kivulrol" lett hivva parhuzamosan azonos Interface-Nev parossal.
+                // - NE az AbstractServiceEntry.Equals() overload-jat hivjuk mert az figyelembe veszi a legyartott
+                //   peldanyt is, ami parhuzamos esetben lehet kulombozo (NULL "result"-nal mig !NULL "registered"-nel).
                 //
 
-                Assert(result.Equals(registered), "Unexpected concurrency");
-                
+                Assert(ServiceDefinitionComparer.Instance.Equals(result, registered), "Unexpected concurrency");
+
                 return registered;
             }
 

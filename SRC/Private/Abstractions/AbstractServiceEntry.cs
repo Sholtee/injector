@@ -18,7 +18,7 @@ namespace Solti.Utils.DI.Internals
     /// <remarks>This is an internal class so it may change from version to version. Don't use it!</remarks>
 
     [SuppressMessage("Security", "CA2119:Seal methods that satisfy private interfaces", Justification = "No security issues exist if the methods are overridden outside the assembly.")]
-    public class AbstractServiceEntry: Disposable, IServiceFactory, IServiceId
+    public class AbstractServiceEntry: Disposable, IServiceDefinition, IServiceFactory
     {
         /// <summary>
         /// Creates a new <see cref="AbstractServiceEntry"/> instance.
@@ -145,7 +145,7 @@ namespace Solti.Utils.DI.Internals
             ;
 
         /// <summary>
-        /// See <see cref="Object.ToString"/>.
+        /// See <see cref="object.ToString"/>.
         /// </summary>
         /// <returns></returns>
         public override string ToString()
