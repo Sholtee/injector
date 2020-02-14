@@ -73,7 +73,7 @@
   - *updated:* Dependencies
 - 1.2.0:
   - *fixed:* In some cases, injector could be created with abstract entries
-- 1.3.0:
+- 1.3.0-preview1:
   - *added:* `ServiceNotFoundException.Data` contains the requestor name (if available)
   - *added:* `IServiceContainerExtensions.CreateProvider()` method ([MS](https://docs.microsoft.com/en-us/dotnet/api/system.iserviceprovider?view=netcore-3.1 ) preferred DI)
   - *fixed:* Proper resource cleanup if a service factory throws ([details](https://github.com/Sholtee/injector/commit/ec56f8749fb16207f10e7712812f4ef0e605be32 ))
