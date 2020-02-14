@@ -164,7 +164,13 @@ namespace Solti.Utils.DI
             }
             catch (ServiceAlreadyRegisteredException)
             {
-                AbstractServiceEntry registered = Get(serviceInterface, name, QueryModes.ThrowOnError);
+                //
+                // Ne a QueryModes.ThrowOnError-t hasznaljuk mert a bejegyzesnek itt mar leteznie KELL.
+                //
+
+                AbstractServiceEntry registered = Get(serviceInterface, name, QueryModes.Default);
+
+                Assert(registered != null);
 
                 //
                 // - Normal mukodes mellett parhuzamos regisztracio csak nehany esetben elkepzelheto (pl ha Singleton 
