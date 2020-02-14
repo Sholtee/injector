@@ -176,6 +176,12 @@ namespace Solti.Utils.DI
 
                 Assert(ServiceDefinitionComparer.Instance.Equals(result, registered), "Unexpected concurrency");
 
+                //
+                // A feleslegesen legyartott peldany nem kell
+                //
+
+                result.Dispose();
+
                 return registered;
             }
 
