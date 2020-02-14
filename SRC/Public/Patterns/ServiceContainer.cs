@@ -186,6 +186,8 @@ namespace Solti.Utils.DI
                 // A feleslegesen legyartott peldany nem kell
                 //
 
+                Assert(ShouldDispose(result));
+
                 result.Dispose();
 
                 return registered;
