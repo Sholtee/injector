@@ -75,5 +75,5 @@
   - *fixed:* In some cases, injector could be created with abstract entries
 - 1.3.0:
   - *added:* `ServiceNotFoundException.Data` contains the requestor name (if available)
-  - *fixed:* Proper resource cleanup if a service factory throws
-  - *fixed:* Wrong retval of `AbstractServiceEntry.ToString()`
+  - *fixed:* Proper resource cleanup if a service factory throws ([details](https://github.com/Sholtee/injector/commit/ec56f8749fb16207f10e7712812f4ef0e605be32 ))
+  - *fixed:* Wrong retval of `AbstractServiceEntry.ToString()` ([details](https://github.com/Sholtee/injector/commit/9b6f333f61504d5a79bf25ddb7197d74664acb02 ))
