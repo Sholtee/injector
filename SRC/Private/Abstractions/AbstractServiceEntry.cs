@@ -94,7 +94,7 @@ namespace Solti.Utils.DI.Internals
         #endregion
 
         /// <summary>
-        /// Call the <see cref="Factory"/> to set the service <see cref="Instance"/>.
+        /// Calls the <see cref="Factory"/> to set the service <see cref="Instance"/>.
         /// </summary>
         /// <param name="serviceReference">The <see cref="ServiceReference"/> of the service being created.</param>
         /// <param name="options">The options that control the instantiation process.</param>
