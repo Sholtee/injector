@@ -105,35 +105,6 @@
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public sealed class CircularReferenceException : Exception</code></pre>
   </div>
-  <h3 id="constructors">Constructors
-  </h3>
-  <a id="Solti_Utils_DI_CircularReferenceException__ctor_" data-uid="Solti.Utils.DI.CircularReferenceException.#ctor*"></a>
-  <h4 id="Solti_Utils_DI_CircularReferenceException__ctor_System_Collections_Generic_IEnumerable_Solti_Utils_DI_Internals_ServiceReference__" data-uid="Solti.Utils.DI.CircularReferenceException.#ctor(System.Collections.Generic.IEnumerable{Solti.Utils.DI.Internals.ServiceReference})">CircularReferenceException(IEnumerable&lt;ServiceReference&gt;)</h4>
-  <div class="markdown level1 summary"><p>Creates a new <a class="xref" href="Solti.Utils.DI.CircularReferenceException.html">CircularReferenceException</a> instance.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public CircularReferenceException(IEnumerable&lt;ServiceReference&gt; path)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="Solti.Utils.DI.Internals.ServiceReference.html">ServiceReference</a>&gt;</td>
-        <td><span class="parametername">path</span></td>
-        <td><p>The current path on which the circular reference was found.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
   <h3 id="extensionmethods">Extension Methods</h3>
   <div>
       <a class="xref" href="Solti.Utils.Proxy.ObjectExtensions.html#Solti_Utils_Proxy_ObjectExtensions_Act__1___0_">ObjectExtensions.Act&lt;TTarget&gt;(TTarget)</a>
