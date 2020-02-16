@@ -81,3 +81,4 @@
   - *fixed:* Missing `Dispose()` call in `ServiceContainer.Get()` ([details](https://github.com/Sholtee/injector/commit/cdb76751bcce2547caded2853d5a03fd17844d10 ))
 - 1.3.0:
   - *added:* `IServiceProviderExtensions` class
+  - *added:* `IInjector.TryGet()` method

@@ -15,7 +15,7 @@ namespace Solti.Utils.DI
         /// <summary>
         /// Gets the service instance associated with the given interface.
         /// </summary>
-        public static TInterface GetService<TInterface>(this IServiceProvider self) => self != null 
+        public static TInterface GetService<TInterface>(this IServiceProvider self) where TInterface: class => self != null 
             ? (TInterface) self.GetService(typeof(TInterface)) 
             : throw new ArgumentNullException(nameof(self));
     }

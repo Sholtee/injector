@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -22,12 +23,10 @@ namespace Solti.Utils.DI.Internals
         private readonly ServiceGraph FGraph = new ServiceGraph();
         private readonly AbstractServiceEntry FBoundEntry; // workaround
 
-        public QueryModes QueryModes { get; }
-
         public IReadOnlyDictionary<string, object> FactoryOptions { get; }
 
-        private Injector(AbstractServiceEntry boundEntry, QueryModes queryModes, IReadOnlyDictionary<string, object> factoryOptions) 
-            : this(boundEntry.Owner, queryModes, factoryOptions)  => FBoundEntry = boundEntry;
+        private Injector(AbstractServiceEntry boundEntry, IReadOnlyDictionary<string, object> factoryOptions) 
+            : this(boundEntry.Owner, factoryOptions)  => FBoundEntry = boundEntry;
 
         private bool BreaksTheRuleOfStrictDI(AbstractServiceEntry entry) 
         {
@@ -52,20 +51,7 @@ namespace Solti.Utils.DI.Internals
             return !requestor.IsDescendantOf(requested);
         }
 
-        private AbstractServiceEntry GetEntry(Type iface, string name) 
-        {
-            try
-            {
-                return Get(iface, name, QueryModes);
-            }
-            catch (ServiceNotFoundException e) 
-            {
-                e.Data.Add("requestor", FGraph.Current?.RelatedServiceEntry.FriendlyName());
-                throw;
-            }
-        }
-
-        public Injector(IServiceContainer parent, QueryModes queryModes = QueryModes.ThrowOnError, IReadOnlyDictionary<string, object> factoryOptions = null) : base(parent)
+        public Injector(IServiceContainer parent, IReadOnlyDictionary<string, object> factoryOptions = null) : base(parent)
         {
             //
             // Injector nem hozhato letre absztrakt bejegyzesekkel.
@@ -89,12 +75,6 @@ namespace Solti.Utils.DI.Internals
                 throw ioEx;
             }
 
-            //
-            // Generikus szervizek specializalasat mindig megengedjuk.
-            //
-
-            QueryModes = queryModes | QueryModes.AllowSpecialization;
-
             FactoryOptions = factoryOptions ?? new Dictionary<string, object>
             {
                 { nameof(Config.Value.Injector.MaxSpawnedTransientServices), Config.Value.Injector.MaxSpawnedTransientServices }
@@ -108,7 +88,7 @@ namespace Solti.Utils.DI.Internals
         }
 
         [SuppressMessage("Reliability", "CA2000:Dispose objects before losing scope", Justification = "Lifetime of 'new Injector(...)' is managed by its parent container.")]
-        public ServiceReference GetReference(Type iface, string name)
+        public ServiceReference GetReference(Type iface, string name, QueryModes queryMode)
         {
             CheckDisposed();
 
@@ -128,10 +108,10 @@ namespace Solti.Utils.DI.Internals
             Assert(FGraph.Current?.Value == null, "Already produced services can not request dependencies");
 
             //
-            // Bejegyzes lekerdezese
+            // Bejegyzes lekerdezese, nyilt generikusok lezarasat mindenkepp megengedjuk.
             //
 
-            AbstractServiceEntry entry = GetEntry(iface, name);
+            AbstractServiceEntry entry = Get(iface, name, queryMode | QueryModes.AllowSpecialization);
             if (entry == null) return null;
 
             //
@@ -163,11 +143,17 @@ namespace Solti.Utils.DI.Internals
                     //   elettartamat.
                     //
 
-                    var relatedInjector = new Injector(boundEntry: entry, QueryModes, FactoryOptions);
+                    var relatedInjector = new Injector(boundEntry: entry, FactoryOptions);
 
                     try
                     {
-                        currentService = relatedInjector.GetReference(iface, name);
+                        currentService = relatedInjector.GetReference(iface, name, queryMode);
+
+                        //
+                        // Mivel letezo bejegyzesunk van itt mar semmi kepp sem kaphatunk vissza NULL-t
+                        //
+
+                        Assert(currentService != null);
                     }
                     finally
                     {
@@ -233,7 +219,32 @@ namespace Solti.Utils.DI.Internals
 
         #region IInjector
         [SuppressMessage("Reliability", "CA2000:Dispose objects before losing scope", Justification = "The reference is released on container disposal.")]
-        public object Get(Type iface, string name) => GetReference(iface, name)?.Value;
+        public virtual object Get(Type iface, string name) 
+        {
+            try
+            {
+                return GetReference(iface, name, QueryModes.ThrowOnError).Value;
+            }
+            catch (ServiceNotFoundException e)
+            {
+                IDictionary extra = e.Data;
+                
+                //
+                // "@ -> nagyszulo -> szulo"
+                //
+
+                string 
+                    prev = extra["requestor"] as string,
+                    current = FGraph.Current?.RelatedServiceEntry.FriendlyName() ?? "@";
+
+                extra["requestor"] = prev != null ? $"{current} -> {prev}" : current;
+
+                throw;
+            }
+        }
+
+        [SuppressMessage("Reliability", "CA2000:Dispose objects before losing scope", Justification = "The reference is released on container disposal.")]
+        public virtual object TryGet(Type iface, string name) => GetReference(iface, name, QueryModes.Default)?.Value;
 
         public IServiceContainer UnderlyingContainer => this;
         #endregion

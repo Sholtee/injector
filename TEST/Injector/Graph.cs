@@ -23,7 +23,7 @@ namespace Solti.Utils.DI.Injector.Graph.Tests
             ServiceReference
                 svc1, svc2, svc3, svc4;
 
-            svc4 = injector.GetReference(typeof(IInterface_4), null);
+            svc4 = injector.GetReference(typeof(IInterface_4), null, QueryModes.Default);
             Assert.That(svc4.RefCount, Is.EqualTo(1));
             Assert.That(svc4.Dependencies.Count(), Is.EqualTo(3));
             Assert.NotNull(GetDependency(svc4, typeof(IInjector)));
