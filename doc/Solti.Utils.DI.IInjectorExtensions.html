@@ -89,7 +89,8 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static TInterface Get&lt;TInterface&gt;(this IInjector self, string name = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public static TInterface Get&lt;TInterface&gt;(this IInjector self, string name = null)
+    where TInterface : class</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -244,7 +245,8 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static TClass Instantiate&lt;TClass&gt;(this IInjector self, IReadOnlyDictionary&lt;string, object&gt; explicitArgs = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public static TClass Instantiate&lt;TClass&gt;(this IInjector self, IReadOnlyDictionary&lt;string, object&gt; explicitArgs = null)
+    where TClass : class</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -305,6 +307,72 @@
   <h5 id="Solti_Utils_DI_IInjectorExtensions_Instantiate__1_Solti_Utils_DI_IInjector_System_Collections_Generic_IReadOnlyDictionary_System_String_System_Object___remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>The <code data-dev-comment-type="typeparamref" class="typeparamref">TClass</code> you passed must have only one public constructor or you must annotate the appropriate one with the <a class="xref" href="Solti.Utils.DI.Annotations.ServiceActivatorAttribute.html">ServiceActivatorAttribute</a>. Constructor parameteres that are not present in the <code data-dev-comment-type="paramref" class="paramref">explicitArgs</code> are treated as normal dependency.</p>
 </div>
+  <a id="Solti_Utils_DI_IInjectorExtensions_TryGet_" data-uid="Solti.Utils.DI.IInjectorExtensions.TryGet*"></a>
+  <h4 id="Solti_Utils_DI_IInjectorExtensions_TryGet__1_Solti_Utils_DI_IInjector_System_String_" data-uid="Solti.Utils.DI.IInjectorExtensions.TryGet``1(Solti.Utils.DI.IInjector,System.String)">TryGet&lt;TInterface&gt;(IInjector, String)</h4>
+  <div class="markdown level1 summary"><p>Tries to get the service instance associated with the given interface and (optional) name.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static TInterface TryGet&lt;TInterface&gt;(this IInjector self, string name = null)
+    where TInterface : class</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.IInjector.html">IInjector</a></td>
+        <td><span class="parametername">self</span></td>
+        <td><p>The injector itself.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">name</span></td>
+        <td><p>The (optional) name of the service.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TInterface</span></td>
+        <td><p>The requested service instance if the resolution was successful, null otherwise.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TInterface</span></td>
+        <td><p>The &quot;id&quot; of the service to be resolved. It must be an interface.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
 </article>
           </div>
           

@@ -159,6 +159,19 @@ references:
   isSpec: "True"
   fullName: Solti.Utils.DI.IInjector.Get
   nameWithType: IInjector.Get
+- uid: Solti.Utils.DI.IInjector.TryGet(System.Type,System.String)
+  name: TryGet(Type, String)
+  href: Solti.Utils.DI.IInjector.html#Solti_Utils_DI_IInjector_TryGet_System_Type_System_String_
+  commentId: M:Solti.Utils.DI.IInjector.TryGet(System.Type,System.String)
+  fullName: Solti.Utils.DI.IInjector.TryGet(System.Type, System.String)
+  nameWithType: IInjector.TryGet(Type, String)
+- uid: Solti.Utils.DI.IInjector.TryGet*
+  name: TryGet
+  href: Solti.Utils.DI.IInjector.html#Solti_Utils_DI_IInjector_TryGet_
+  commentId: Overload:Solti.Utils.DI.IInjector.TryGet
+  isSpec: "True"
+  fullName: Solti.Utils.DI.IInjector.TryGet
+  nameWithType: IInjector.TryGet
 - uid: Solti.Utils.DI.IInjector.UnderlyingContainer
   name: UnderlyingContainer
   href: Solti.Utils.DI.IInjector.html#Solti_Utils_DI_IInjector_UnderlyingContainer
@@ -219,6 +232,22 @@ references:
   fullName.vb: Solti.Utils.DI.IInjectorExtensions.Instantiate(Of TClass)(Solti.Utils.DI.IInjector, System.Collections.Generic.IReadOnlyDictionary(Of System.String, System.Object))
   nameWithType: IInjectorExtensions.Instantiate<TClass>(IInjector, IReadOnlyDictionary<String, Object>)
   nameWithType.vb: IInjectorExtensions.Instantiate(Of TClass)(IInjector, IReadOnlyDictionary(Of String, Object))
+- uid: Solti.Utils.DI.IInjectorExtensions.TryGet*
+  name: TryGet
+  href: Solti.Utils.DI.IInjectorExtensions.html#Solti_Utils_DI_IInjectorExtensions_TryGet_
+  commentId: Overload:Solti.Utils.DI.IInjectorExtensions.TryGet
+  isSpec: "True"
+  fullName: Solti.Utils.DI.IInjectorExtensions.TryGet
+  nameWithType: IInjectorExtensions.TryGet
+- uid: Solti.Utils.DI.IInjectorExtensions.TryGet``1(Solti.Utils.DI.IInjector,System.String)
+  name: TryGet<TInterface>(IInjector, String)
+  href: Solti.Utils.DI.IInjectorExtensions.html#Solti_Utils_DI_IInjectorExtensions_TryGet__1_Solti_Utils_DI_IInjector_System_String_
+  commentId: M:Solti.Utils.DI.IInjectorExtensions.TryGet``1(Solti.Utils.DI.IInjector,System.String)
+  name.vb: TryGet(Of TInterface)(IInjector, String)
+  fullName: Solti.Utils.DI.IInjectorExtensions.TryGet<TInterface>(Solti.Utils.DI.IInjector, System.String)
+  fullName.vb: Solti.Utils.DI.IInjectorExtensions.TryGet(Of TInterface)(Solti.Utils.DI.IInjector, System.String)
+  nameWithType: IInjectorExtensions.TryGet<TInterface>(IInjector, String)
+  nameWithType.vb: IInjectorExtensions.TryGet(Of TInterface)(IInjector, String)
 - uid: Solti.Utils.DI.Internals
   name: Solti.Utils.DI.Internals
   href: Solti.Utils.DI.Internals.html
