@@ -26,7 +26,7 @@ namespace Solti.Utils.DI.Internals
             //
 
             if (this.LastIndexOf(Current, ServiceReferenceComparer.Instance) > 0)
-                throw new CircularReferenceException(this);
+                throw new CircularReferenceException(this.Select(sr => sr.RelatedServiceEntry));
         }
 
         public void AddAsDependency(ServiceReference node)
