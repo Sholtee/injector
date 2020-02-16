@@ -12,6 +12,8 @@ namespace Solti.Utils.DI.Internals.Tests
     [TestFixture]
     public class ServiceReferenceCollectionTests
     {
+        public interface IDummyService { }
+
         private ServiceReferenceCollection Collection;
 
         [SetUp]
@@ -20,7 +22,7 @@ namespace Solti.Utils.DI.Internals.Tests
         [Test]
         public void Add_ShouldIncrementTheRefCount() 
         {
-            var reference = new ServiceReference(new DummyServiceEntry());
+            var reference = new ServiceReference(new AbstractServiceEntry(typeof(IDummyService), null));
             Collection.Add(reference);
 
             Assert.That(Collection.Count, Is.EqualTo(1));
@@ -31,7 +33,7 @@ namespace Solti.Utils.DI.Internals.Tests
         [Test]
         public void Remove_ShouldDecrementTheRefCount() 
         {
-            var reference = new ServiceReference(new DummyServiceEntry());
+            var reference = new ServiceReference(new AbstractServiceEntry(typeof(IDummyService), null));
             Collection.Add(reference);
 
             Assert.That(Collection.Remove(reference));
@@ -42,7 +44,7 @@ namespace Solti.Utils.DI.Internals.Tests
         [Test]
         public void Clear_ShouldDecrementTheRefCount()
         {
-            var reference = new ServiceReference(new DummyServiceEntry());
+            var reference = new ServiceReference(new AbstractServiceEntry(typeof(IDummyService), null));
             Collection.Add(reference);
             Collection.Clear();
 

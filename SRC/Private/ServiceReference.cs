@@ -7,9 +7,12 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 
 namespace Solti.Utils.DI.Internals
 {
+    using Properties;
+
     /// <summary>
     /// Encapsulates a service and its dependencies into a reference counted container.
     /// </summary>
@@ -68,6 +71,14 @@ namespace Solti.Utils.DI.Internals
             set 
             {
                 CheckDisposed();
+
+                //
+                // Peldany tipusat ellenorizzuk mert a Factory(), Lazy() stb visszaadhat vicces dolgokat.
+                //
+
+                if (value == null || !RelatedServiceEntry.Interface.IsInstanceOfType(value))
+                    throw new Exception(string.Format(Resources.Culture, Resources.INVALID_INSTANCE, RelatedServiceEntry.Interface));
+
                 FValue.Value = value;
             }
         }

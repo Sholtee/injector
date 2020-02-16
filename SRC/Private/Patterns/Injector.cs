@@ -8,9 +8,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-#if NETSTANDARD1_6
-using System.Reflection;
-#endif
 
 using static System.Diagnostics.Debug;
 
@@ -147,7 +144,7 @@ namespace Solti.Utils.DI.Internals
 
                     try
                     {
-                        currentService = relatedInjector.GetReference(iface, name, queryMode);
+                        currentService = relatedInjector.GetReference(iface, name, QueryModes.Default);
 
                         //
                         // Mivel letezo bejegyzesunk van itt mar semmi kepp sem kaphatunk vissza NULL-t
@@ -188,7 +185,7 @@ namespace Solti.Utils.DI.Internals
                         //
 
                         if (currentService.SetInstance(FactoryOptions)) 
-                            currentService.AddRef(); // Addref() nelkul a using-ot elhagyva felszabadulna a hivatkozas
+                            currentService.AddRef(); // AddRef() nelkul a using-ot elhagyva felszabadulna a hivatkozas
 
                         //
                         // Ha a peldany beallitas sikertelen az azt jelenti h valaki korabban mar beallitotta (parhuzamos eset 
@@ -197,13 +194,6 @@ namespace Solti.Utils.DI.Internals
 
                         else 
                             currentService = entry.Instance;
-
-                        //
-                        // Peldany tipusat ellenorizzuk mert a Factory(), Lazy() stb visszaadhat vicces dolgokat.
-                        //
-
-                        if (!iface.IsInstanceOfType(currentService.Value))
-                            throw new Exception(string.Format(Resources.Culture, Resources.INVALID_INSTANCE, iface));
                     }
                 }
             }
