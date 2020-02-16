@@ -1366,6 +1366,28 @@ references:
   isSpec: "True"
   fullName: Solti.Utils.DI.IServiceContainerExtensions.Setup
   nameWithType: IServiceContainerExtensions.Setup
+- uid: Solti.Utils.DI.IServiceProviderExtensions
+  name: IServiceProviderExtensions
+  href: Solti.Utils.DI.IServiceProviderExtensions.html
+  commentId: T:Solti.Utils.DI.IServiceProviderExtensions
+  fullName: Solti.Utils.DI.IServiceProviderExtensions
+  nameWithType: IServiceProviderExtensions
+- uid: Solti.Utils.DI.IServiceProviderExtensions.GetService*
+  name: GetService
+  href: Solti.Utils.DI.IServiceProviderExtensions.html#Solti_Utils_DI_IServiceProviderExtensions_GetService_
+  commentId: Overload:Solti.Utils.DI.IServiceProviderExtensions.GetService
+  isSpec: "True"
+  fullName: Solti.Utils.DI.IServiceProviderExtensions.GetService
+  nameWithType: IServiceProviderExtensions.GetService
+- uid: Solti.Utils.DI.IServiceProviderExtensions.GetService``1(System.IServiceProvider)
+  name: GetService<TInterface>(IServiceProvider)
+  href: Solti.Utils.DI.IServiceProviderExtensions.html#Solti_Utils_DI_IServiceProviderExtensions_GetService__1_System_IServiceProvider_
+  commentId: M:Solti.Utils.DI.IServiceProviderExtensions.GetService``1(System.IServiceProvider)
+  name.vb: GetService(Of TInterface)(IServiceProvider)
+  fullName: Solti.Utils.DI.IServiceProviderExtensions.GetService<TInterface>(System.IServiceProvider)
+  fullName.vb: Solti.Utils.DI.IServiceProviderExtensions.GetService(Of TInterface)(System.IServiceProvider)
+  nameWithType: IServiceProviderExtensions.GetService<TInterface>(IServiceProvider)
+  nameWithType.vb: IServiceProviderExtensions.GetService(Of TInterface)(IServiceProvider)
 - uid: Solti.Utils.DI.ITypeResolver
   name: ITypeResolver
   href: Solti.Utils.DI.ITypeResolver.html
