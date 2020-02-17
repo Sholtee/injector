@@ -216,7 +216,7 @@ namespace Solti.Utils.DI.Injector.Tests
 
             using (IInjector injector = Container.CreateInjector()) 
             {
-                Assert.Throws<Exception>(() => injector.Get<IInterface_1>(), string.Format(Resources.INVALID_INSTANCE, typeof(IInterface_1)));
+                Assert.Throws<InvalidOperationException>(() => injector.Get<IInterface_1>(), string.Format(Resources.INVALID_INSTANCE, typeof(IInterface_1)));
             }
         }
 

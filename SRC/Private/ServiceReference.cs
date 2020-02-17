@@ -77,7 +77,7 @@ namespace Solti.Utils.DI.Internals
                 //
 
                 if (value == null || !RelatedServiceEntry.Interface.IsInstanceOfType(value))
-                    throw new Exception(string.Format(Resources.Culture, Resources.INVALID_INSTANCE, RelatedServiceEntry.Interface));
+                    throw new InvalidOperationException(string.Format(Resources.Culture, Resources.INVALID_INSTANCE, RelatedServiceEntry.Interface));
 
                 FValue.Value = value;
             }

@@ -5,12 +5,9 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
-using System.Reflection;
 
 namespace Solti.Utils.DI.Internals
 {
-    using Properties;
-
     /// <summary>
     /// Describes an instance service entry.
     /// </summary>
@@ -19,18 +16,12 @@ namespace Solti.Utils.DI.Internals
         public InstanceServiceEntry(Type @interface, string name, object instance, bool releaseOnDispose, IServiceContainer owner) : base(@interface, name, null, owner ?? throw new ArgumentNullException(nameof(owner)))
         {
             //
-            // Interface-t nem kell ellenorizni (az os megteszi).
+            // Nem kell kulon ellenorizni a peldanyt mert a ServiceReference.SetValue() validal.
             //
-
-            if (instance == null)
-                throw new ArgumentNullException(nameof(instance));
-
-            if (!@interface.IsInstanceOfType(instance))
-                throw new InvalidOperationException(string.Format(Resources.Culture, Resources.NOT_ASSIGNABLE, @interface, instance.GetType()));
 
             Instance = new ServiceReference(this, null) 
             { 
-                Value = instance 
+                Value = instance ?? throw new ArgumentNullException(nameof(instance))
             };
 
             if (!releaseOnDispose) Instance.SuppressDispose();
