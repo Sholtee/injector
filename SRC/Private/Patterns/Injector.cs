@@ -4,7 +4,6 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -85,7 +84,7 @@ namespace Solti.Utils.DI.Internals
         }
 
         [SuppressMessage("Reliability", "CA2000:Dispose objects before losing scope", Justification = "Lifetime of 'new Injector(...)' is managed by its parent container.")]
-        public ServiceReference GetReference(Type iface, string name, QueryModes queryMode)
+        public ServiceReference GetReference(Type iface, string name)
         {
             CheckDisposed();
 
@@ -105,11 +104,10 @@ namespace Solti.Utils.DI.Internals
             Assert(FGraph.Current?.Value == null, "Already produced services can not request dependencies");
 
             //
-            // Bejegyzes lekerdezese, nyilt generikusok lezarasat mindenkepp megengedjuk.
+            // Bejegyzes lekerdezese.
             //
 
-            AbstractServiceEntry entry = Get(iface, name, queryMode | QueryModes.AllowSpecialization);
-            if (entry == null) return null;
+            AbstractServiceEntry entry = Get(iface, name, QueryModes.AllowSpecialization | QueryModes.ThrowOnError);
 
             //
             // Ha korabban mar le lett gyartva a szerviz peldany akkor nincs dolgunk.
@@ -144,13 +142,7 @@ namespace Solti.Utils.DI.Internals
 
                     try
                     {
-                        currentService = relatedInjector.GetReference(iface, name, QueryModes.Default);
-
-                        //
-                        // Mivel letezo bejegyzesunk van itt mar semmi kepp sem kaphatunk vissza NULL-t
-                        //
-
-                        Assert(currentService != null);
+                        currentService = relatedInjector.GetReference(iface, name);
                     }
                     finally
                     {
@@ -213,28 +205,33 @@ namespace Solti.Utils.DI.Internals
         {
             try
             {
-                return GetReference(iface, name, QueryModes.ThrowOnError).Value;
+                return GetReference(iface, name).Value;
             }
-            catch (ServiceNotFoundException e)
+            
+            //
+            // Ez a metodus rekurzivan is hivva lehet ezert a "when" blokkal megelozzuk a tobbszoros
+            // igenylo beallitast.
+            //
+
+            catch (ServiceNotFoundException e) when (!e.Data.Contains("requestor"))
             {
-                IDictionary extra = e.Data;
-                
-                //
-                // "@ -> nagyszulo -> szulo"
-                //
-
-                string 
-                    prev = extra["requestor"] as string,
-                    current = FGraph.Current?.RelatedServiceEntry.FriendlyName() ?? "@";
-
-                extra["requestor"] = prev != null ? $"{current} -> {prev}" : current;
-
+                e.Data["requestor"] = string.Join(" -> ", new[] { "@" }.Concat(FGraph.Select(s => s.RelatedServiceEntry.FriendlyName())));
                 throw;
             }
         }
 
         [SuppressMessage("Reliability", "CA2000:Dispose objects before losing scope", Justification = "The reference is released on container disposal.")]
-        public virtual object TryGet(Type iface, string name) => GetReference(iface, name, QueryModes.Default)?.Value;
+        public virtual object TryGet(Type iface, string name) 
+        {
+            try
+            {
+                return GetReference(iface, name).Value;
+            }
+            catch(ServiceNotFoundException) 
+            {
+                return null;
+            }
+        }
 
         public IServiceContainer UnderlyingContainer => this;
         #endregion
