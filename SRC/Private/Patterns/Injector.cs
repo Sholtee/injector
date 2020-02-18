@@ -16,13 +16,15 @@ namespace Solti.Utils.DI.Internals
 
     internal class Injector : ServiceContainer, IInjector
     {
-        private readonly ServiceGraph FGraph = new ServiceGraph();
+        private readonly ServiceGraph FGraph;
         private readonly AbstractServiceEntry FBoundEntry; // workaround
 
         public IReadOnlyDictionary<string, object> FactoryOptions { get; }
 
-        private Injector(AbstractServiceEntry boundEntry, IReadOnlyDictionary<string, object> factoryOptions) 
-            : this(boundEntry.Owner, factoryOptions)  => FBoundEntry = boundEntry;
+        private Injector(AbstractServiceEntry boundEntry, Injector creator) : this(boundEntry.Owner, creator.FactoryOptions, creator.FGraph)
+        {
+            FBoundEntry = boundEntry;
+        }
 
         private bool BreaksTheRuleOfStrictDI(AbstractServiceEntry entry) 
         {
@@ -33,8 +35,8 @@ namespace Solti.Utils.DI.Internals
                 requested = entry.Owner;
 
             //
-            // 1) Ha "parentOwner == null" akkor a lekderdezesi fa tetejen vagyunk
-            // 2) Ha "entryOwner == null" akkor Instance-t kerdezunk le
+            // 1) Ha "requestor == null" akkor a lekderdezesi fa tetejen vagyunk
+            // 2) Ha "requested == null" akkor Instance-t kerdezunk le
             //
 
             if (requestor == null || requested == null) return false;
@@ -47,7 +49,7 @@ namespace Solti.Utils.DI.Internals
             return !requestor.IsDescendantOf(requested);
         }
 
-        public Injector(IServiceContainer parent, IReadOnlyDictionary<string, object> factoryOptions = null) : base(parent)
+        private Injector(IServiceContainer parent, IReadOnlyDictionary<string, object> factoryOptions, ServiceGraph graph) : base(parent)
         {
             //
             // Injector nem hozhato letre absztrakt bejegyzesekkel.
@@ -76,12 +78,16 @@ namespace Solti.Utils.DI.Internals
                 { nameof(Config.Value.Injector.MaxSpawnedTransientServices), Config.Value.Injector.MaxSpawnedTransientServices }
             };
 
+            FGraph = graph?.CreateSubgraph() ?? new ServiceGraph();
+
             //
             // Felvesszuk sajat magunkat.
             //
 
             this.Instance<IInjector>(this, releaseOnDispose: false);
         }
+
+        public Injector(IServiceContainer parent, IReadOnlyDictionary<string, object> factoryOptions = null) : this(parent, factoryOptions, null) { }
 
         [SuppressMessage("Reliability", "CA2000:Dispose objects before losing scope", Justification = "Lifetime of 'new Injector(...)' is managed by its parent container.")]
         public ServiceReference GetReference(Type iface, string name)
@@ -110,88 +116,112 @@ namespace Solti.Utils.DI.Internals
             AbstractServiceEntry entry = Get(iface, name, QueryModes.AllowSpecialization | QueryModes.ThrowOnError);
 
             //
-            // Ha korabban mar le lett gyartva a szerviz peldany akkor nincs dolgunk.
+            // 1. ESET: Korabban mar le lett gyartva a szerviz.
+            //
+            // Felvesszuk az uj fuggoseget es viszlat.
             //
 
             ServiceReference currentService = entry.Instance;
 
-            if (currentService == null)
+            if (currentService != null) 
             {
-                //
-                // - Lekerdezeshez mindig a tulajdonos szervizkollekciobol kell injector-t letrehozni.
-                //   * Igy a fuggosegek is a deklaralo kollekciobol lesznek feloldva. Mellekhataskent 
-                //     Singleton szerviz hivatkozhat abstract fuggosegre (de az rossz konfiguracio).
-                //   * A BoundEntry-s csoda egy korbedolgozas mivel Singleton bejegyzes tulajdonosa 
-                //     sose lehet az injector maga.
-                // - A referencia szamlalas miatt Singleton szerviz minden fuggosege is Singletonkent 
-                //   viselkedik (ez ellen van a StrictDI).
-                //
-
-                if (entry.Owner != null && entry.Owner != this && entry != FBoundEntry)
-                {
-                    Assert(entry.Lifetime >= Lifetime.Singleton);
-
-                    //
-                    // - Az uj injector elettartama meg fogy egyezni a bejegyzes elettartamaval (mivel "entry.Owner"
-                    //   gyermeke).
-                    // - Az eredeti (felhasznalo altal hivott) injector felszabaditasa nem befolyasolja a szerviz 
-                    //   elettartamat.
-                    //
-
-                    var relatedInjector = new Injector(boundEntry: entry, FactoryOptions);
-
-                    try
-                    {
-                        currentService = relatedInjector.GetReference(iface, name);
-                    }
-                    finally
-                    {
-                        if (currentService?.RelatedInjector != relatedInjector)
-                            //
-                            // Ket esetben juthatunk ide
-                            //   1) Singleton peldanyt parhuzamosan megkiserelhet letrehozni tobb szal is ezert elofordulhat
-                            //      h a legyartott injector nem is volt hasznalva.
-                            //   2) Vmi gond volt szerviz hivatkozas feloldasa kozben (nem letezo hivatkozas pl.)
-                            // Ilyenkor nincs ertelme megtartani az injectort.
-                            //
-
-                            relatedInjector.Dispose();
-                    }
-                } 
-                else
-                {
-                    if (BreaksTheRuleOfStrictDI(entry))
-                        throw new RequestNotAllowedException(FGraph.Current.RelatedServiceEntry, entry, Resources.STRICT_DI);
-
-                    //
-                    // Letrehozunk egy ures referenciat h a szerviz legyartasa kozben a rekurziv GetReference()
-                    // hivasokban is lassuk az (epp legyartas alatt levo) szulot.
-                    //
-
-                    using (FGraph.With(currentService = new ServiceReference(entry, this)))
-                    {
-                        FGraph.CheckNotCircular();
-
-                        //
-                        // Ha a peldany beallitasa sikeres onnantol a "RelatedServiceEntry" felelos a hivatkozas felszabaditasaert.
-                        //
-
-                        if (currentService.SetInstance(FactoryOptions)) 
-                            currentService.AddRef(); // AddRef() nelkul a using-ot elhagyva felszabadulna a hivatkozas
-
-                        //
-                        // Ha a peldany beallitas sikertelen az azt jelenti h valaki korabban mar beallitotta (parhuzamos eset 
-                        // Singleton elettartamnal).
-                        //
-
-                        else 
-                            currentService = entry.Instance;
-                    }
-                }
+                FGraph.AddAsDependency(currentService);
+                return currentService;
             }
 
             //
-            // Ha az aktualisan lekerdezett szerviz valakinek a fuggosege akkor hozzaadjuk a fuggosegi listahoz.
+            // 2. ESET: Nem az injector a tulajdonos.
+            //
+            // - Lekerdezeshez mindig a tulajdonos szervizkollekciobol kell injector-t letrehozni.
+            //   * Igy a fuggosegek is a deklaralo kollekciobol lesznek feloldva. Mellekhataskent 
+            //     Singleton szerviz hivatkozhat abstract fuggosegre (de az rossz konfiguracio).
+            //   * A BoundEntry-s csoda egy korbedolgozas mivel Singleton bejegyzes tulajdonosa 
+            //     sose lehet az injector maga.
+            // - A referencia szamlalas miatt Singleton szerviz minden fuggosege is Singletonkent 
+            //   viselkedik (ez ellen van a StrictDI).
+            //
+
+            if (entry.Owner != null && entry.Owner != this && entry != FBoundEntry)
+            {
+                Assert(entry.Lifetime >= Lifetime.Singleton);
+
+                //
+                // - Az uj injector elettartama meg fogy egyezni a bejegyzes elettartamaval (mivel "entry.Owner"
+                //   gyermeke).
+                // - Az eredeti (felhasznalo altal hivott) injector felszabaditasa nem befolyasolja a szerviz 
+                //   elettartamat.
+                //
+
+                var relatedInjector = new Injector(boundEntry: entry, this);
+
+                try
+                {
+                    currentService = relatedInjector.GetReference(iface, name);
+                }
+                catch
+                {
+                    relatedInjector.Dispose();
+                    throw;
+                }
+
+                //
+                // Ha vki megelozott minket es mar legyartota a szervizt (pl Singleton peldanyt parhuzamos
+                // esetben) akkor az 1. ESET lep eletbe. Ilyenkor az uj injector peldanyra mar nincs szuksegunk.
+                //
+
+                if (currentService.RelatedInjector != relatedInjector) 
+                {
+                    relatedInjector.Dispose();
+
+                    FGraph.AddAsDependency(currentService);
+                }
+
+                //
+                // Kulomben a fuggosegi grafot nem kell boviteni mert a "relatedInjector" mar megtette.
+                //
+
+                return currentService;
+            }
+
+            //
+            // 3. ESET: Az injector a tulajdonos, o peldanyosit.
+            //
+
+            //
+            // Ellenorizzuk h nem ejtenenk e fogsagba az ujonan letrehozott szervizt
+            //
+
+            if (BreaksTheRuleOfStrictDI(entry))
+                throw new RequestNotAllowedException(FGraph.Current.RelatedServiceEntry, entry, Resources.STRICT_DI);
+
+            //
+            // Letrehozunk egy ures referenciat h a szerviz legyartasa kozben a rekurziv GetReference()
+            // hivasokban is lassuk az (epp legyartas alatt levo) szulot.
+            //
+
+            using (FGraph.With(currentService = new ServiceReference(entry, this)))
+            {
+                FGraph.CheckNotCircular();
+
+                //
+                // Ha a peldany beallitasa sikeres onnantol a "RelatedServiceEntry" felelos a hivatkozas felszabaditasaert.
+                //
+
+                if (currentService.SetInstance(FactoryOptions)) 
+                    currentService.AddRef(); // AddRef() nelkul a using-ot elhagyva felszabadulna a hivatkozas
+
+                //
+                // Ha a peldany beallitas sikertelen az azt jelenti h valaki korabban mar beallitotta (parhuzamos eset 
+                // Singleton elettartamnal).
+                //
+
+                else 
+                    currentService = entry.Instance;
+            }
+
+            //
+            // - Ha az aktualisan lekerdezett szerviz valakinek a fuggosege akkor hozzaadjuk a fuggosegi listahoz. 
+            // - Implicit injector ("if" blokk) orokli a grafot ezert a fuggoseg felvetelt csak itt kell megtenni.
             //
 
             FGraph.AddAsDependency(currentService);
