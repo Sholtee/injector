@@ -220,8 +220,7 @@ namespace Solti.Utils.DI.Internals
             }
 
             //
-            // - Ha az aktualisan lekerdezett szerviz valakinek a fuggosege akkor hozzaadjuk a fuggosegi listahoz. 
-            // - Implicit injector ("if" blokk) orokli a grafot ezert a fuggoseg felvetelt csak itt kell megtenni.
+            // Ha az aktualisan lekerdezett szerviz valakinek a fuggosege akkor hozzaadjuk a fuggosegi listahoz.
             //
 
             FGraph.AddAsDependency(currentService);
