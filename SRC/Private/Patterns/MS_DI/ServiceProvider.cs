@@ -7,13 +7,13 @@ using System;
 
 namespace Solti.Utils.DI.Internals
 {
-    internal class ServiceProvider : Injector, IServiceProvider
+    internal class ServiceProvider : Injector, IServiceProvider, IInjector
     {
         public ServiceProvider(IServiceContainer parent) : base(parent)
             => this.Instance<IServiceProvider>(this, releaseOnDispose: false);
 
-        public override object Get(Type iface, string name) => TryGet(iface, name);
+        object IInjector.Get(Type iface, string name) => TryGet(iface, null);
 
-        public object GetService(Type serviceType) => Get(serviceType, null);
+        object IServiceProvider.GetService(Type serviceType) => TryGet(serviceType, null);
     }
 }
