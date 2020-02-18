@@ -83,3 +83,4 @@
   - *added:* `IServiceProviderExtensions` class
   - *added:* `IInjector.TryGet()` method
   - *added:* `ServiceNotFoundException.Data` contains the request chain (if available)
+  - *fixed:* Circular references could not be found (in certain circumstances) ([details](https://github.com/Sholtee/injector/commit/0c7a388850269c16aaab1e3c72f64e1fddcc7728 ))
