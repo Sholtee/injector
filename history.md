@@ -82,3 +82,4 @@
 - 1.3.0:
   - *added:* `IServiceProviderExtensions` class
   - *added:* `IInjector.TryGet()` method
+  - *added:* `ServiceNotFoundException.Data` contains the request chain (if available)

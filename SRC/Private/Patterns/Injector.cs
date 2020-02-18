@@ -207,25 +207,29 @@ namespace Solti.Utils.DI.Internals
             {
                 return GetReference(iface, name).Value;
             }
-            
-            //
-            // Ez a metodus rekurzivan is hivva lehet ezert a "when" blokkal megelozzuk a tobbszoros
-            // igenylo beallitast.
-            //
-
-            catch (ServiceNotFoundException e) when (!e.Data.Contains("requestor"))
+            catch (ServiceNotFoundException e)
             {
-                e.Data["requestor"] = string.Join(" -> ", new[] { "@" }.Concat(FGraph.Select(s => s.RelatedServiceEntry.FriendlyName())));
+                const string path = nameof(path);
+
+                //
+                // "nagyszulo -> szulo -> gyerek"
+                //
+
+                string
+                    prev = e.Data[path] as string,
+                    current = new ServiceId { Interface = iface, Name = name }.FriendlyName();
+
+                e.Data[path] = prev != null ? $"{current} -> {prev}" : current;
+
                 throw;
             }
         }
 
-        [SuppressMessage("Reliability", "CA2000:Dispose objects before losing scope", Justification = "The reference is released on container disposal.")]
         public virtual object TryGet(Type iface, string name) 
         {
             try
             {
-                return GetReference(iface, name).Value;
+                return Get(iface, name);
             }
             catch(ServiceNotFoundException) 
             {

@@ -41,20 +41,7 @@ namespace Solti.Utils.DI.Injector.Tests
         }
 
         [Test]
-        public void Injector_Get_ShouldThrowOnNonRegisteredDependency1([Values(true, false)] bool useChildContainer)
-        {
-            IServiceContainer container = useChildContainer ? Container.CreateChild() : Container;
-
-            using (IInjector injector = container.CreateInjector())
-            {
-                var e = Assert.Throws<ServiceNotFoundException>(() => injector.Get<IInterface_1>());
-                Assert.That(e.Data.Contains("requestor"));
-                Assert.That(e.Data["requestor"], Is.EqualTo("@"));
-            }                 
-        }
-
-        [Test]
-        public void Injector_Get_ShouldThrowOnNonRegisteredDependency2([Values(true, false)] bool useChildContainer, [Values(Lifetime.Transient, Lifetime.Scoped, Lifetime.Singleton)] Lifetime lifetime)
+        public void Injector_Get_ShouldThrowOnNonRegisteredDependency([Values(true, false)] bool useChildContainer, [Values(Lifetime.Transient, Lifetime.Scoped, Lifetime.Singleton)] Lifetime lifetime)
         {
             Container.Service<IInterface_7<IInterface_1>, Implementation_7_TInterface_Dependant<IInterface_1>>(lifetime);
 
@@ -63,8 +50,8 @@ namespace Solti.Utils.DI.Injector.Tests
             using (IInjector injector = container.CreateInjector())
             {
                 var e = Assert.Throws<ServiceNotFoundException>(() => injector.Get<IInterface_7<IInterface_1>>());
-                Assert.That(e.Data.Contains("requestor"));
-                Assert.That(e.Data["requestor"], Is.EqualTo($"@ -> {typeof(IInterface_7<IInterface_1>).ToString()}"));
+                Assert.That(e.Data.Contains("path"));
+                Assert.That(e.Data["path"], Is.EqualTo(string.Join(" -> ", typeof(IInterface_7<IInterface_1>), typeof(IInterface_1))));
             }
         }
 
