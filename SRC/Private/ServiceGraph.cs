@@ -18,11 +18,7 @@ namespace Solti.Utils.DI.Internals
 
         private ServiceGraph(ServiceGraph parent)
         {
-            //
-            // Verem elemek felsorolasa forditva tortenik -> Reverse()
-            //
-
-            FGraph = new Stack<ServiceReference>(parent.Reverse());
+            FGraph = new Stack<ServiceReference>(parent);
             
             Assert(Current == parent.Current);
         }
@@ -36,28 +32,19 @@ namespace Solti.Utils.DI.Internals
             Assert(Current != null);
 
             //
-            // - Ha egynel tobbszor szerepel az aktualis szerviz az aktualis utvonalon akkor korkoros referenciank van.
-            // - Mivel a verem elemek felsorolasa visszafele tortenik az utoljara hozzaadott elem indexe 0 lesz.
+            // Ha egynel tobbszor szerepel az aktualis szerviz az aktualis utvonalon akkor korkoros referenciank van.
             //
 
-            int lastIndex = this.LastIndexOf(Current, ServiceReferenceComparer.Instance);
+            int firstIndex = this.FirstIndexOf(Current, ServiceReferenceComparer.Instance);
 
-            if (lastIndex > 0)
+            if (firstIndex < FGraph.Count - 1)
                 throw new CircularReferenceException(this
                     //
                     // Csak magat a kort adjuk vissza.
                     //
 
-                    .Take(lastIndex + 1)
-                    .Reverse()
+                    .Skip(firstIndex)
                     .Select(sr => sr.RelatedServiceEntry));
-        }
-
-        public void AddAsDependency(ServiceReference node)
-        {
-            Assert(Current != node);
-
-            Current?.Dependencies.Add(node);
         }
 
         public IDisposable With(ServiceReference node) 
@@ -76,13 +63,18 @@ namespace Solti.Utils.DI.Internals
 
             protected override void Dispose(bool disposeManaged)
             {
-                FGraph.Pop().Release();
+                FGraph.Pop();
                 base.Dispose(disposeManaged);
             }
         }
 
-        IEnumerator<ServiceReference> IEnumerable<ServiceReference>.GetEnumerator() => FGraph.GetEnumerator();
+        public IEnumerator<ServiceReference> GetEnumerator() =>
+            //
+            // Verem elemek felsorolasa forditva tortenik -> Reverse()
+            //
 
-        IEnumerator IEnumerable.GetEnumerator() => FGraph.GetEnumerator();
+            FGraph.Reverse().GetEnumerator();
+
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
     }
 }
