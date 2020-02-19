@@ -92,7 +92,7 @@ namespace Solti.Utils.DI.Internals
             }
         }
 
-        public Injector(IServiceContainer owner, Injector creator) : this(owner, creator.FactoryOptions, creator.FGraph)
+        public Injector(IServiceContainer parent, Injector state /*TODO: sajat interface*/) : this(parent, state.FactoryOptions, state.FGraph)
         {
         }
 
@@ -139,7 +139,7 @@ namespace Solti.Utils.DI.Internals
             return this.GetInstantiationStrategy(entry).Invoke(FGraph.Current);
         }
 
-        #region IInjector    
+        #region IInjector
         public object Get(Type iface, string name) 
         {
             try
