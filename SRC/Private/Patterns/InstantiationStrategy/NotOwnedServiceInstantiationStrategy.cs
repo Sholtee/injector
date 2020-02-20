@@ -9,10 +9,10 @@ namespace Solti.Utils.DI.Internals
 {
     internal class NotOwnedServiceInstantiationStrategy: OwnedServiceInstantiationStrategy
     {
-        public override bool ShouldUse(Injector injector, AbstractServiceEntry requested) => injector.IsDescendantOf(requested.Owner);
+        public override bool ShouldUse(IInjector injector, AbstractServiceEntry requested) => injector.UnderlyingContainer.IsDescendantOf(requested.Owner);
 
         [SuppressMessage("Reliability", "CA2000:Dispose objects before losing scope", Justification = "The lifetime of newly created injector is maintained by its owner.")]
-        public override ServiceReference Exec(Injector injector, ServiceReference requestor, AbstractServiceEntry requested)
+        public override ServiceReference Exec(IStatefulInjector injector, ServiceReference requestor, AbstractServiceEntry requested)
         {
             //
             // ServiceEntry-t zaroljuk h a lock injectorok kozt is ertelmezve legyen.

@@ -7,9 +7,9 @@ namespace Solti.Utils.DI.Internals
 {
     internal class OwnedServiceInstantiationStrategy: IServiceInstantiationStrategy
     {
-        public virtual bool ShouldUse(Injector injector, AbstractServiceEntry requested) => requested.Owner == injector;
+        public virtual bool ShouldUse(IInjector injector, AbstractServiceEntry requested) => requested.Owner == injector.UnderlyingContainer;
 
-        public virtual ServiceReference Exec(Injector injector, ServiceReference requestor, AbstractServiceEntry requested) 
+        public virtual ServiceReference Exec(IStatefulInjector injector, ServiceReference requestor, AbstractServiceEntry requested) 
         {
             ServiceReference result = requested.Instance;
 

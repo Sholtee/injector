@@ -13,11 +13,9 @@ namespace Solti.Utils.DI.Internals
 {
     using Properties;
 
-    internal class Injector : ServiceContainer, IInjector
+    internal class Injector : ServiceContainer, IStatefulInjector
     {
         private readonly ServiceGraph FGraph;
-
-        public IReadOnlyDictionary<string, object> FactoryOptions { get; }
 
         private bool BreaksTheRuleOfStrictDI(AbstractServiceEntry entry) 
         {
@@ -80,19 +78,7 @@ namespace Solti.Utils.DI.Internals
             this.Instance<IInjector>(this, releaseOnDispose: false);
         }
 
-        internal void Instantiate(ServiceReference referece) 
-        {
-            Assert(referece?.RelatedInjector == this);
-
-            using (FGraph.With(referece)) 
-            {
-                FGraph.CheckNotCircular();
-
-                referece.SetInstance(FactoryOptions);
-            }
-        }
-
-        public Injector(IServiceContainer parent, Injector state /*TODO: sajat interface*/) : this(parent, state.FactoryOptions, state.FGraph)
+        public Injector(IServiceContainer parent, IStatefulInjector injector) : this(parent, injector.FactoryOptions, injector.Graph)
         {
         }
 
@@ -139,7 +125,7 @@ namespace Solti.Utils.DI.Internals
             return this.GetInstantiationStrategy(entry).Invoke(FGraph.Current);
         }
 
-        #region IInjector
+        #region IStatefulInjector
         public object Get(Type iface, string name) 
         {
             try
@@ -179,6 +165,22 @@ namespace Solti.Utils.DI.Internals
         }
 
         public IServiceContainer UnderlyingContainer => this;
+
+        void IStatefulInjector.Instantiate(ServiceReference referece)
+        {
+            Assert(referece?.RelatedInjector == this);
+
+            using (FGraph.With(referece))
+            {
+                FGraph.CheckNotCircular();
+
+                referece.SetInstance(FactoryOptions);
+            }
+        }
+
+        ServiceGraph IStatefulInjector.Graph => FGraph;
+
+        public IReadOnlyDictionary<string, object> FactoryOptions { get; }
         #endregion
 
         #region Composite

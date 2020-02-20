@@ -7,8 +7,8 @@ namespace Solti.Utils.DI.Internals
 {
     internal class InstanceStrategy: IServiceInstantiationStrategy
     {
-        public bool ShouldUse(Injector injector, AbstractServiceEntry requested) => requested.Instance != null;
-        public ServiceReference Exec(Injector injector, ServiceReference requestor, AbstractServiceEntry requested)
+        public bool ShouldUse(IInjector injector, AbstractServiceEntry requested) => requested.Instance != null;
+        public ServiceReference Exec(IStatefulInjector injector, ServiceReference requestor, AbstractServiceEntry requested)
         {
             ServiceReference existing = requested.Instance;
 

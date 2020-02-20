@@ -1,14 +1,16 @@
 ﻿/********************************************************************************
-* IServiceInstantiationStrategy.cs                                              *
+* IStatefulInjector.cs                                                          *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
+using System.Collections.Generic;
 
 namespace Solti.Utils.DI.Internals
 {
-    internal interface IServiceInstantiationStrategy
+    internal interface IStatefulInjector: IInjector
     {
-        bool ShouldUse(IInjector injector, AbstractServiceEntry requested);
-        ServiceReference Exec(IStatefulInjector injector, ServiceReference requestor, AbstractServiceEntry requested);
+        IReadOnlyDictionary<string, object> FactoryOptions { get; }
+        ServiceGraph Graph { get; }
+        void Instantiate(ServiceReference reference);
     }
 }
