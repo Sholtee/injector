@@ -1,5 +1,5 @@
 ﻿/********************************************************************************
-* ServiceInstantiationStrategyDecision.cs                                       *
+* ServiceInstantiationStrategySelector.cs                                       *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
@@ -9,7 +9,7 @@ namespace Solti.Utils.DI.Internals
 {
     using Properties;
 
-    internal static class ServiceInstantiationStrategyDecision
+    internal sealed class ServiceInstantiationStrategySelector
     {
         //
         // Szalbiztosak
@@ -20,15 +20,19 @@ namespace Solti.Utils.DI.Internals
             OwnedServiceInstantiationStrategy = new OwnedServiceInstantiationStrategy(),
             NotOwnedServiceInstantiationStrategy = new NotOwnedServiceInstantiationStrategy();
 
-        public static Func<ServiceReference, ServiceReference> GetInstantiationStrategy(this Injector injector, AbstractServiceEntry requested) 
+        public IStatefulInjector RelatedInjector { get; }
+
+        public ServiceInstantiationStrategySelector(IStatefulInjector relatedInjector) => RelatedInjector = relatedInjector;
+
+        public Func<ServiceReference> GetStrategyFor(AbstractServiceEntry requested) 
         {
             //
             // Sorrend szamit.
             //
 
             foreach (IServiceInstantiationStrategy strategy in new[] { InstanceStrategy, OwnedServiceInstantiationStrategy, NotOwnedServiceInstantiationStrategy })
-                if (strategy.ShouldUse(injector, requested))
-                    return requestor => strategy.Exec(injector, requestor, requested);
+                if (strategy.ShouldUse(RelatedInjector, requested))
+                    return () => strategy.Exec(RelatedInjector, RelatedInjector.Graph.Current, requested);
 
             throw new InvalidOperationException(Resources.NO_STRATEGY);
         }

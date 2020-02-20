@@ -17,6 +17,8 @@ namespace Solti.Utils.DI.Internals
     {
         private readonly ServiceGraph FGraph;
 
+        private readonly ServiceInstantiationStrategySelector FStrategySelector;
+
         private bool BreaksTheRuleOfStrictDI(AbstractServiceEntry entry) 
         {
             if (!Config.Value.Injector.StrictDI) return false;
@@ -71,6 +73,8 @@ namespace Solti.Utils.DI.Internals
 
             FGraph = graph?.CreateSubgraph() ?? new ServiceGraph();
 
+            FStrategySelector = new ServiceInstantiationStrategySelector(this);
+
             //
             // Felvesszuk sajat magunkat.
             //
@@ -122,7 +126,7 @@ namespace Solti.Utils.DI.Internals
             // Szerviz peldany letrehozasa.
             //
 
-            return this.GetInstantiationStrategy(entry).Invoke(FGraph.Current);
+            return FStrategySelector.GetStrategyFor(entry).Invoke();
         }
 
         #region IStatefulInjector

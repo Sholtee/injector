@@ -14,6 +14,7 @@ using NUnit.Framework;
 namespace Solti.Utils.DI.Injector.Tests
 {
     using Internals;
+    using Properties;
 
     public partial class InjectorTestsBase<TContainer>
     {
@@ -114,8 +115,6 @@ namespace Solti.Utils.DI.Injector.Tests
             Assert.That(Monitor.IsEntered(Container.Get<IInterface_1>()), Is.False);
         }
 
-
-
         [Test]
         public void NotOwnedServiceInstantiationStrategy_ShouldInstantiateWithANewInjector()
         {
@@ -135,5 +134,12 @@ namespace Solti.Utils.DI.Injector.Tests
                 Assert.That(entry.Instance.RelatedInjector.UnderlyingContainer.Parent, Is.EqualTo(entry.Owner));
             }
         }
+
+        [Test]
+        public void StrategySelector_ShouldThrowIfThereIsNoCompatibleStrategy() =>
+            Assert.Throws<InvalidOperationException>(
+                () => new ServiceInstantiationStrategySelector(new Injector(Container))
+                    .GetStrategyFor(new AbstractServiceEntry(typeof(IInterface_1), null)), 
+                Resources.NO_STRATEGY);
     }
 }
