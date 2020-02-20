@@ -10,7 +10,7 @@ namespace Solti.Utils.DI.Internals
 {
     internal static class IEnumerableExtensions
     {
-        public static int LastIndexOf<T>(this IEnumerable<T> src, T value, IEqualityComparer<T> comparer) => src
+        public static int FirstIndexOf<T>(this IEnumerable<T> src, T value, IEqualityComparer<T> comparer) => src
             .Select((item, i) => new 
             { 
                 Item = item, 
@@ -18,6 +18,6 @@ namespace Solti.Utils.DI.Internals
             })
             .Where(x => comparer.Equals(x.Item, value))
             .Select(x => x.Index)
-            .LastOrDefault() ?? -1;
+            .FirstOrDefault() ?? -1;
     }
 }

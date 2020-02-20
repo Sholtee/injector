@@ -208,6 +208,15 @@ namespace Solti.Utils.DI.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The matching strategy could not be determined..
+        /// </summary>
+        internal static string NO_STRATEGY {
+            get {
+                return ResourceManager.GetString("NO_STRATEGY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Parameter must be a class..
         /// </summary>
         internal static string NOT_A_CLASS {

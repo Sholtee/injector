@@ -263,23 +263,9 @@ namespace Solti.Utils.DI.Injector.Tests
         }
 
         [Test]
-        public void Injector_Get_ShouldDisposeTheUnusedServiceReference() 
-        {
-            var entry = new HackyServiceEntry(@throw: false);
-            Container.Add(entry);
-
-            using (IInjector injector = Container.CreateInjector()) 
-            {
-                injector.Get<IInterface_1>();
-
-                Assert.That(entry.GotReference.Disposed);
-            }
-        }
-
-        [Test]
         public void Injector_Get_ShouldDisposeTheServiceReferenceOnError()
         {
-            var entry = new HackyServiceEntry(@throw: true);
+            var entry = new HackyServiceEntry(Container);
             Container.Add(entry);
 
             using (IInjector injector = Container.CreateInjector())
@@ -294,22 +280,13 @@ namespace Solti.Utils.DI.Injector.Tests
         {
             public ServiceReference GotReference { get; private set; }
 
-            private bool Throw { get; }
-
-            public HackyServiceEntry(bool @throw) : base(typeof(IInterface_1), null) => Throw = @throw;
+            public HackyServiceEntry(IServiceContainer owner) : base(typeof(IInterface_1), null, null, owner) { }
 
             public override bool SetInstance(ServiceReference serviceReference, IReadOnlyDictionary<string, object> options)
             {
                 GotReference = serviceReference;
                 
-                if (Throw) throw new Exception();
-
-                Instance = new ServiceReference(this, null) 
-                { 
-                    Value = new Implementation_1_No_Dep()
-                };
-
-                return false;
+                throw new Exception();
             }
         }
     }

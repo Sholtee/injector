@@ -15,8 +15,9 @@ namespace Solti.Utils.DI.Internals
     internal class SingletonServiceEntry : ProducibleServiceEntry
     {
         //
-        // Lock azert kell mert ez az entitas egyszerre tobb szerviz kollekcioban is szerepelhet
-        // (SetInstance() lehet hivva parhuzamosan).
+        // Lock azert kell mert ez az entitas egyszerre tobb szerviz kollekcioban is szerepelhet ->
+        // SetInstance() elmeletileg lehet hivva parhuzamosan (gyakorlatilag nem de biztos ami tuti
+        // marad).
         //
 
         private readonly object FLock = new object();
