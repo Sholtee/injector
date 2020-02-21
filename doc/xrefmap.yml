@@ -32,6 +32,19 @@ references:
   isSpec: "True"
   fullName: Solti.Utils.DI.Annotations.OptionsAttribute.Name
   nameWithType: OptionsAttribute.Name
+- uid: Solti.Utils.DI.Annotations.OptionsAttribute.Optional
+  name: Optional
+  href: Solti.Utils.DI.Annotations.OptionsAttribute.html#Solti_Utils_DI_Annotations_OptionsAttribute_Optional
+  commentId: P:Solti.Utils.DI.Annotations.OptionsAttribute.Optional
+  fullName: Solti.Utils.DI.Annotations.OptionsAttribute.Optional
+  nameWithType: OptionsAttribute.Optional
+- uid: Solti.Utils.DI.Annotations.OptionsAttribute.Optional*
+  name: Optional
+  href: Solti.Utils.DI.Annotations.OptionsAttribute.html#Solti_Utils_DI_Annotations_OptionsAttribute_Optional_
+  commentId: Overload:Solti.Utils.DI.Annotations.OptionsAttribute.Optional
+  isSpec: "True"
+  fullName: Solti.Utils.DI.Annotations.OptionsAttribute.Optional
+  nameWithType: OptionsAttribute.Optional
 - uid: Solti.Utils.DI.Annotations.ServiceActivatorAttribute
   name: ServiceActivatorAttribute
   href: Solti.Utils.DI.Annotations.ServiceActivatorAttribute.html
