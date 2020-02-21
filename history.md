@@ -79,9 +79,10 @@
   - *fixed:* Proper resource cleanup if a service factory throws ([details](https://github.com/Sholtee/injector/commit/ec56f8749fb16207f10e7712812f4ef0e605be32 ))
   - *fixed:* Wrong retval of `AbstractServiceEntry.ToString()` ([details](https://github.com/Sholtee/injector/commit/9b6f333f61504d5a79bf25ddb7197d74664acb02 ))
   - *fixed:* Missing `Dispose()` call in `ServiceContainer.Get()` ([details](https://github.com/Sholtee/injector/commit/cdb76751bcce2547caded2853d5a03fd17844d10 ))
-- 1.3.0:
+- 1.3.0-preview2:
   - *added:* `IServiceProviderExtensions` class
   - *added:* `IInjector.TryGet()` method
   - *added:* `OptionsAttribute.Optional` property
   - *changed:* Requestor name was replaced with the request chain in `ServiceNotFoundException.Data`
-  - *fixed:* Circular references could not be found (in certain circumstances) ([details](https://github.com/Sholtee/injector/commit/0c7a388850269c16aaab1e3c72f64e1fddcc7728 ))
+  - *done:* Modularized `Injector` (that's why we are still in preview)
+  - *fixed:* Circular references could not be found (in certain circumstances)
