@@ -137,8 +137,7 @@ Remarks:
 - You may also register more service with the same interface by naming them:
   ```csharp
   container.Service<IMyService, MyServiceImeplementation_1>("svc1", Lifetime.Transient);
-  //container.Service<IMyService, MyServiceImeplementation_2>("svc1", Lifetime.Singleton);  // would throw
-  container.Service<IMyService, MyServiceImeplementation_2>("svc2", Lifetime.Singleton);
+  container.Factory<IMyService>("svc2", i => ..., Lifetime.Singleton);
   ...
   ```
   Later you can request them via constructor parameters as well:
