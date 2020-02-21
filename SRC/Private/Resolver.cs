@@ -48,7 +48,7 @@ namespace Solti.Utils.DI.Internals
             return null;
         }
 
-        public static Func<IInjector, Type, object> Get(ConstructorInfo constructor) => Cache<ConstructorInfo, Func<IInjector, Type, object>>.GetOrAdd(constructor, () =>
+        public static Func<IInjector, Type, object> Get(ConstructorInfo constructor) => Cache.GetOrAdd(constructor, () =>
         {
             //
             // (injector, iface)  => new Service(IDependency_1 | Lazy<IDependency_1>, IDependency_2 | Lazy<IDependency_2>,...)
@@ -88,14 +88,14 @@ namespace Solti.Utils.DI.Internals
             ).Compile();
         });
 
-        public static Func<IInjector, Type, object> Get(Type type) => Cache<Type, Func<IInjector, Type, object>>.GetOrAdd(type, () => Get(type.GetApplicableConstructor()));
+        public static Func<IInjector, Type, object> Get(Type type) => Cache.GetOrAdd(type, () => Get(type.GetApplicableConstructor()));
 
         //
         // Igaz itt nincs idoigenyes operacio ami miatt gyorsitotarazni kene viszont a ServiceEntry-k
         // egyezossegenek vizsgalatahoz kell.
         //
 
-        public static Func<IInjector, Type, object> Get(Lazy<Type> type) => Cache<Lazy<Type>, Func<IInjector, Type, object>>.GetOrAdd(type, () =>
+        public static Func<IInjector, Type, object> Get(Lazy<Type> type) => Cache.GetOrAdd(type, new Func<Func<IInjector, Type, object>>(() =>
         {    
             //
             // A Lazy<> csak azert kell h minden egyes factory hivasnal ne forduljunk a 
@@ -105,9 +105,9 @@ namespace Solti.Utils.DI.Internals
             var factory = new Lazy<Func<IInjector, Type, object>>(() => Get(type.Value), LazyThreadSafetyMode.ExecutionAndPublication);
 
             return (injector, iface) => factory.Value(injector, iface);
-        });
+        }));
 
-        public static Func<IInjector, IReadOnlyDictionary<string, object>, object> GetExtended(ConstructorInfo constructor) => Cache<ConstructorInfo, Func<IInjector, IReadOnlyDictionary<string, object>, object>>.GetOrAdd(constructor, () =>
+        public static Func<IInjector, IReadOnlyDictionary<string, object>, object> GetExtended(ConstructorInfo constructor) => Cache.GetOrAdd(constructor, () =>
         {
             //
             // (injector, explicitParamz) => new Service((IDependency_1) (explicitParamz[paramName] ||  injector.Get(typeof(IDependency_1))), ...)
@@ -142,7 +142,7 @@ namespace Solti.Utils.DI.Internals
                     // Lazy<IInterface>(() => (IInterface) injector.Get(typeof(IInterface), svcName))
                     //
 
-                    ? GetLazyFactory(parameterType, options)(injectorInst)
+                    ? GetLazyFactory(parameterType, options).Invoke(injectorInst)
 
                     //
                     // injector.Get(typeof(IInterface), svcName)
@@ -152,7 +152,7 @@ namespace Solti.Utils.DI.Internals
             }
         });
 
-        public static Func<IInjector, IReadOnlyDictionary<string, object>, object> GetExtended(Type type) => Cache<Type, Func<IInjector, IReadOnlyDictionary<string, object>, object>>.GetOrAdd(type, () => 
+        public static Func<IInjector, IReadOnlyDictionary<string, object>, object> GetExtended(Type type) => Cache.GetOrAdd(type, () => 
         {
             if (!type.IsClass())
                 throw new ArgumentException(Resources.NOT_A_CLASS, nameof(type));
@@ -163,7 +163,7 @@ namespace Solti.Utils.DI.Internals
             return GetExtended(type.GetApplicableConstructor());
         });
 
-        public static Func<IInjector, object> GetLazyFactory(Type iface, OptionsAttribute options) => Cache<(Type Interface, string Name), Func<IInjector, object>>.GetOrAdd((iface, options?.Name), () =>
+        public static Func<IInjector, object> GetLazyFactory(Type iface, OptionsAttribute options) => Cache.GetOrAdd((iface, options?.Name, options?.Optional), new Func<Func<IInjector, object>>(() =>
         {
             if (!iface.IsInterface())
                 throw new ArgumentException(Resources.NOT_AN_INTERFACE, nameof(iface));
@@ -207,6 +207,6 @@ namespace Solti.Utils.DI.Internals
             Debug.Assert(ctor != null);
 
             return i => ctor.Call(createValueFactory(i));
-        });
+        }));
     }
 }

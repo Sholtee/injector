@@ -26,7 +26,7 @@ namespace Solti.Utils.DI.Internals
             parameters
         );
 
-        public static Func<object[], object> ToDelegate(this ConstructorInfo ctor) => Cache<ConstructorInfo, Func<object[], object>>.GetOrAdd(ctor, () =>
+        public static Func<object[], object> ToDelegate(this ConstructorInfo ctor) => Cache.GetOrAdd(ctor, () =>
         {
             ParameterExpression paramz = Expression.Parameter(typeof(object[]), nameof(paramz));
 
