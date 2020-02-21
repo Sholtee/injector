@@ -10,9 +10,10 @@ using NUnit.Framework;
 
 namespace Solti.Utils.DI.Injector.Tests
 {
+    using Annotations;
     using Internals;
     using Properties;
-    
+
     public partial class InjectorTestsBase<TContainer>
     {
         [Test]
@@ -287,6 +288,65 @@ namespace Solti.Utils.DI.Injector.Tests
                 GotReference = serviceReference;
                 
                 throw new Exception();
+            }
+        }
+
+        [Test]
+        public void Injector_Get_ShouldNotThrowIfAMissingDependencyIsOptional() 
+        {
+            Container.Service<IInterface_7<IInterface_1>, Implementation_7_UsingOptionalDependency>();
+
+            using (IInjector injector = Container.CreateInjector()) 
+            {
+                IInterface_7<IInterface_1> svc = null;
+                
+                Assert.DoesNotThrow(() => svc = injector.Get<IInterface_7<IInterface_1>>());
+                Assert.That(svc, Is.Not.Null);
+                Assert.That(svc.Interface, Is.Null);
+            }
+
+            Container.Service<IInterface_1, Implementation_1_No_Dep>();
+
+            using (IInjector injector = Container.CreateInjector())
+            {
+                Assert.That(injector.Get<IInterface_7<IInterface_1>>().Interface, Is.Not.Null);
+            }
+        }
+
+        private sealed class Implementation_7_UsingOptionalDependency : Implementation_7_TInterface_Dependant<IInterface_1>
+        {
+            public Implementation_7_UsingOptionalDependency([Options(Optional = true)] IInterface_1 dep) : base(dep)
+            {
+            }
+        }
+
+        [Test]
+        public void Injector_Get_ShouldNotThrowIfAMissingLazyDependencyIsOptional()
+        {
+            Container.Service<IInterface_7<Lazy<IInterface_1>>, Implementation_7_UsingOptionalLazyDependency>();
+
+            using (IInjector injector = Container.CreateInjector())
+            {
+                IInterface_7<Lazy<IInterface_1>> svc = null;
+
+                Assert.DoesNotThrow(() => svc = injector.Get<IInterface_7<Lazy<IInterface_1>>>());
+                Assert.That(svc, Is.Not.Null);
+                Assert.That(svc.Interface, Is.Not.Null);
+                Assert.That(svc.Interface.Value, Is.Null);
+            }
+
+            Container.Service<IInterface_1, Implementation_1_No_Dep>();
+
+            using (IInjector injector = Container.CreateInjector())
+            {
+                Assert.That(injector.Get<IInterface_7<Lazy<IInterface_1>>>().Interface.Value, Is.Not.Null);
+            }
+        }
+
+        private sealed class Implementation_7_UsingOptionalLazyDependency : Implementation_7_TInterface_Dependant<Lazy<IInterface_1>>
+        {
+            public Implementation_7_UsingOptionalLazyDependency([Options(Optional = true)] Lazy<IInterface_1> dep) : base(dep)
+            {
             }
         }
     }
