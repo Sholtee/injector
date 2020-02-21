@@ -29,12 +29,8 @@ namespace Solti.Utils.DI
         private readonly Dictionary<IServiceId, AbstractServiceEntry> FEntries;
 
         //
-        // Singleton elettartamnal elmeletileg parhuzamosan is modositasra kerulhet 
-        // a bejegyzes lista (generikus bejegyzes lezarasakor) ezert szalbiztosnak 
-        // kell h legyen.
-        //
-        // Gyakorlatban sosem lesz parhuzamosan hivva de biztos ami tuti egyenlore 
-        // marad.
+        // Singleton elettartamnal parhuzamosan is modositasra kerulhet a  bejegyzes lista 
+        // (generikus bejegyzes lezarasakor) ezert szalbiztosnak kell h legyen.
         //
 
         private readonly ReaderWriterLockSlim FLock = new ReaderWriterLockSlim();
