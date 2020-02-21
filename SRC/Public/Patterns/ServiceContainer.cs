@@ -93,7 +93,7 @@ namespace Solti.Utils.DI
             if (!serviceInterface.IsInterface())
                 throw new ArgumentException(Resources.NOT_AN_INTERFACE, nameof(serviceInterface));
 
-            IServiceId key = MakeID(serviceInterface);
+            IServiceId key = MakeId(serviceInterface);
 
             AbstractServiceEntry result;
 
@@ -114,7 +114,7 @@ namespace Solti.Utils.DI
                                        serviceInterface.IsGenericType() &&
                                        FEntries.TryGetValue
                                        (
-                                           MakeID(serviceInterface.GetGenericTypeDefinition()), 
+                                           MakeId(serviceInterface.GetGenericTypeDefinition()), 
                                            out result
                                        );
 
@@ -193,7 +193,7 @@ namespace Solti.Utils.DI
                 return registered;
             }
 
-            IServiceId MakeID(Type iface) => new ServiceId
+            IServiceId MakeId(Type iface) => new ServiceId
             {
                 Interface = iface,
                 Name = name
