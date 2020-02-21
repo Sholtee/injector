@@ -3,6 +3,7 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
+using System;
 using System.Collections.Generic;
 
 using Moq;
@@ -10,6 +11,8 @@ using NUnit.Framework;
 
 namespace Solti.Utils.DI.Injector.Tests
 {
+    using Internals;
+
     public partial class InjectorTestsBase<TContainer>
     {
         [Test]
@@ -42,6 +45,32 @@ namespace Solti.Utils.DI.Injector.Tests
             }
 
             obj.Verify(t => t.Dispose(), Times.Once);
+        }
+
+        [Test]
+        public void Injector_Dispose_ShouldFreeUsedLazyEntries([Values(Lifetime.Transient, Lifetime.Scoped)] Lifetime lifetime) 
+        {
+            var disposable = new Disposable();
+
+            Container
+                .Factory<IDisposableEx>(i => disposable, lifetime)
+                .Service<IInterface_7<Lazy<IDisposableEx>>, Implementation_7_TInterface_Dependant<Lazy<IDisposableEx>>>(lifetime);
+
+            using (IInjector injector = Container.CreateInjector()) 
+            {
+                var svc = injector.Get<IInterface_7<Lazy<IDisposableEx>>>();
+                Assert.That(svc.Interface, Is.Not.Null);              
+            }
+
+            Assert.That(disposable.Disposed, Is.False);
+
+            using (IInjector injector = Container.CreateInjector())
+            {
+                var svc = injector.Get<IInterface_7<Lazy<IDisposableEx>>>();
+                Assert.That(svc.Interface.Value, Is.Not.Null);
+            }
+
+            Assert.That(disposable.Disposed);
         }
     }
 }
