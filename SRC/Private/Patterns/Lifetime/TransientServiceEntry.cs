@@ -5,7 +5,8 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
+
+using static System.Diagnostics.Debug;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -38,7 +39,8 @@ namespace Solti.Utils.DI.Internals
         {
             CheckProducible();
 
-            Debug.Assert(reference.RelatedInjector.UnderlyingContainer == Owner);
+            Assert(reference.RelatedServiceEntry == this);
+            Assert(reference.RelatedInjector.UnderlyingContainer == Owner);
    
             int? threshold = options?.GetValueOrDefault<int?>("MaxSpawnedTransientServices");
 
@@ -64,7 +66,7 @@ namespace Solti.Utils.DI.Internals
             FSpawnedServices.Add(reference);   
             reference.Release();
 
-            Debug.Assert(reference.RefCount == 1);
+            Assert(reference.RefCount == 1);
 
             return true;
         }

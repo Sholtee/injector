@@ -5,7 +5,8 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
+
+using static System.Diagnostics.Debug;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -34,11 +35,13 @@ namespace Solti.Utils.DI.Internals
         {
             CheckProducible();
 
+            Assert(reference.RelatedServiceEntry == this);
+
             //
             // Az injectornak kell lennie a bejegyzes tulajdonosanak.
             //
 
-            Debug.Assert(reference.RelatedInjector.UnderlyingContainer == Owner);
+            Assert(reference.RelatedInjector.UnderlyingContainer == Owner);
 
             //
             // Ha mar le lett gyartva akkor nincs dolgunk, jelezzuk a hivonak h ovlassa ki a korabban 

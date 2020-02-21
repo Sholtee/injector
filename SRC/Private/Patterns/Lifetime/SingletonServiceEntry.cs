@@ -5,7 +5,8 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
+
+using static System.Diagnostics.Debug;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -38,11 +39,13 @@ namespace Solti.Utils.DI.Internals
         {
             CheckProducible();
 
+            Assert(reference.RelatedServiceEntry == this);
+
             //
             // Singleton bejegyzeshez mindig sajat injector van letrehozva a deklaralo kontenerbol
             //
 
-            Debug.Assert(reference.RelatedInjector.UnderlyingContainer.Parent == Owner);
+            Assert(reference.RelatedInjector.UnderlyingContainer.Parent == Owner);
 
             //
             // Ha mar le lett gyartva akkor nincs dolgunk, jelezzuk a hivonak h ovlassa ki a korabban 
