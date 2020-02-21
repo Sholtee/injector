@@ -82,11 +82,11 @@ namespace Solti.Utils.DI.Internals
             this.Instance<IInjector>(this, releaseOnDispose: false);
         }
 
-        public Injector(IServiceContainer parent, IStatefulInjector injector) : this(parent, injector.FactoryOptions, injector.Graph)
+        public Injector(IServiceContainer parent, IStatefulInjector injector) : this(parent ?? throw new ArgumentNullException(nameof(parent)), injector?.FactoryOptions, injector?.Graph)
         {
         }
 
-        public Injector(IServiceContainer parent, IReadOnlyDictionary<string, object> factoryOptions = null) : this(parent, factoryOptions, null)
+        public Injector(IServiceContainer parent, IReadOnlyDictionary<string, object> factoryOptions = null) : this(parent ?? throw new ArgumentNullException(nameof(parent)), factoryOptions, null)
         {
         }
 
