@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Collections.Generic;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -15,10 +16,12 @@ namespace Solti.Utils.DI.Internals
         // Szalbiztosak
         //
 
-        private static readonly IServiceInstantiationStrategy
-            InstanceStrategy = new InstanceStrategy(),
-            OwnedServiceInstantiationStrategy = new OwnedServiceInstantiationStrategy(),
-            NotOwnedServiceInstantiationStrategy = new NotOwnedServiceInstantiationStrategy();
+        private static readonly IReadOnlyCollection<IServiceInstantiationStrategy> Strategies = new IServiceInstantiationStrategy[]
+        {
+            new InstanceStrategy(),
+            new OwnedServiceInstantiationStrategy(),
+            new NotOwnedServiceInstantiationStrategy()
+        };
 
         public IStatefulInjector RelatedInjector { get; }
 
@@ -30,7 +33,7 @@ namespace Solti.Utils.DI.Internals
             // Sorrend szamit.
             //
 
-            foreach (IServiceInstantiationStrategy strategy in new[] { InstanceStrategy, OwnedServiceInstantiationStrategy, NotOwnedServiceInstantiationStrategy })
+            foreach (IServiceInstantiationStrategy strategy in Strategies)
                 if (strategy.ShouldUse(RelatedInjector, requested))
                     return () => strategy.Exec(RelatedInjector, RelatedInjector.Graph.Current, requested);
 
