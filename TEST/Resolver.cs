@@ -198,7 +198,7 @@ namespace Solti.Utils.DI.Internals.Tests
                 .Setup(i => i.Get(It.IsAny<Type>(), It.IsAny<string>()))
                 .Returns<Type, string>((type, name) => new Disposable());
 
-            Func<IInjector, object> factory = Resolver.GetLazyFactory(typeof(IDisposable), svcName);
+            Func<IInjector, object> factory = Resolver.GetLazyFactory(typeof(IDisposable), new OptionsAttribute { Name = svcName });
             Assert.That(factory, Is.Not.Null);
 
             Lazy<IDisposable> lazy = factory(mockInjector.Object) as Lazy<IDisposable>;
@@ -216,7 +216,7 @@ namespace Solti.Utils.DI.Internals.Tests
         [TestCase("cica")]
         public void Resolver_GetLazyFactory_ShouldCache(string svcName)
         {
-            Assert.AreSame(Resolver.GetLazyFactory(typeof(IDisposable), svcName), Resolver.GetLazyFactory(typeof(IDisposable), svcName));
+            Assert.AreSame(Resolver.GetLazyFactory(typeof(IDisposable), new OptionsAttribute { Name = svcName }), Resolver.GetLazyFactory(typeof(IDisposable), new OptionsAttribute { Name = svcName }));
         }
 
         [Test]
