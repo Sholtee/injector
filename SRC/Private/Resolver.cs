@@ -95,7 +95,7 @@ namespace Solti.Utils.DI.Internals
         // egyezossegenek vizsgalatahoz kell.
         //
 
-        public static Func<IInjector, Type, object> Get(Lazy<Type> type) => Cache.GetOrAdd(type, new Func<Func<IInjector, Type, object>>(() =>
+        public static Func<IInjector, Type, object> Get(Lazy<Type> type) => Cache.GetOrAdd(type, () =>
         {    
             //
             // A Lazy<> csak azert kell h minden egyes factory hivasnal ne forduljunk a 
@@ -104,8 +104,8 @@ namespace Solti.Utils.DI.Internals
 
             var factory = new Lazy<Func<IInjector, Type, object>>(() => Get(type.Value), LazyThreadSafetyMode.ExecutionAndPublication);
 
-            return (injector, iface) => factory.Value(injector, iface);
-        }));
+            return new Func<IInjector, Type, object>((injector, iface) => factory.Value(injector, iface));
+        });
 
         public static Func<IInjector, IReadOnlyDictionary<string, object>, object> GetExtended(ConstructorInfo constructor) => Cache.GetOrAdd(constructor, () =>
         {
@@ -163,7 +163,7 @@ namespace Solti.Utils.DI.Internals
             return GetExtended(type.GetApplicableConstructor());
         });
 
-        public static Func<IInjector, object> GetLazyFactory(Type iface, OptionsAttribute options) => Cache.GetOrAdd((iface, options?.Name, options?.Optional), new Func<Func<IInjector, object>>(() =>
+        public static Func<IInjector, object> GetLazyFactory(Type iface, OptionsAttribute options) => Cache.GetOrAdd((iface, options?.Name, options?.Optional), () =>
         {
             if (!iface.IsInterface())
                 throw new ArgumentException(Resources.NOT_AN_INTERFACE, nameof(iface));
@@ -206,7 +206,7 @@ namespace Solti.Utils.DI.Internals
 
             Debug.Assert(ctor != null);
 
-            return i => ctor.Call(createValueFactory(i));
-        }));
+            return new Func<IInjector, object>(i => ctor.Call(createValueFactory(i)));
+        });
     }
 }
