@@ -9,10 +9,14 @@ using System.Runtime.CompilerServices;
 
 namespace Solti.Utils.DI.Internals
 {
-    internal static class Cache<TKey, TValue>
+    internal static class Cache 
     {
-        private static readonly ConcurrentDictionary<(TKey Key, string Scope), TValue> FCache = new ConcurrentDictionary<(TKey Key, string Scope), TValue>();
+        private static class Backend<TKey, TValue> 
+        {
+            public static ConcurrentDictionary<(TKey Key, string Scope), TValue> Value { get; } = new ConcurrentDictionary<(TKey Key, string Scope), TValue>();     
+        }
 
-        public static TValue GetOrAdd(TKey key, Func<TValue> factory, [CallerMemberName] string scope = "") => FCache.GetOrAdd((key, scope), @void => factory());
+        public static TValue GetOrAdd<TKey, TValue>(TKey key, Func<TValue> factory, [CallerMemberName] string scope = "") => 
+            Backend<TKey, TValue>.Value.GetOrAdd((key, scope), @void => factory());
     }
 }

@@ -57,7 +57,7 @@ namespace Solti.Utils.DI.Internals
             return false;
         }
 
-        public static ConstructorInfo GetApplicableConstructor(this Type src) => Cache<Type, ConstructorInfo>.GetOrAdd(src, () =>
+        public static ConstructorInfo GetApplicableConstructor(this Type src) => Cache.GetOrAdd(src, () =>
         {
             IReadOnlyList<ConstructorInfo> constructors = src.GetConstructors();
 
