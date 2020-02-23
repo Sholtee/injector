@@ -56,7 +56,7 @@ namespace Solti.Utils.DI.Injector.Tests
         {
             var requested = new TransientServiceEntry(typeof(IInterface_1), null, typeof(Implementation_1_No_Dep), Container);
 
-            var mockInjector = new Mock<IStatefulInjector>(MockBehavior.Strict);
+            var mockInjector = new Mock<IInjectorEx>(MockBehavior.Strict);
             mockInjector.Setup(i => i.Instantiate(It.Is<ServiceReference>(sr => sr.RelatedInjector == mockInjector.Object && sr.RelatedServiceEntry == requested)));
 
             IServiceInstantiationStrategy strategy = new OwnedServiceInstantiationStrategy();
@@ -82,7 +82,7 @@ namespace Solti.Utils.DI.Injector.Tests
             var instance = new Implementation_1_No_Dep();
             var requested = new InstanceServiceEntry(typeof(IInterface_1), null, instance, false, Container);
 
-            var mockInjector = new Mock<IStatefulInjector>(MockBehavior.Strict);
+            var mockInjector = new Mock<IInjectorEx>(MockBehavior.Strict);
             mockInjector.Setup(i => i.Instantiate(It.IsAny<ServiceReference>()));
 
             var requestor = new ServiceReference(new AbstractServiceEntry(typeof(IInterface_2), null));

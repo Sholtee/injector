@@ -23,11 +23,11 @@ namespace Solti.Utils.DI.Internals
             new NotOwnedServiceInstantiationStrategy()
         };
 
-        public IStatefulInjector RelatedInjector { get; }
+        public IInjectorEx RelatedInjector { get; }
 
-        public ServiceInstantiationStrategySelector(IStatefulInjector relatedInjector) => RelatedInjector = relatedInjector;
+        public ServiceInstantiationStrategySelector(IInjectorEx relatedInjector) => RelatedInjector = relatedInjector;
 
-        public Func<ServiceReference> GetStrategyFor(AbstractServiceEntry requested) 
+        public Func<ServiceReference, ServiceReference> GetStrategyFor(AbstractServiceEntry requested) 
         {
             //
             // Sorrend szamit.
@@ -35,7 +35,7 @@ namespace Solti.Utils.DI.Internals
 
             foreach (IServiceInstantiationStrategy strategy in Strategies)
                 if (strategy.ShouldUse(RelatedInjector, requested))
-                    return () => strategy.Exec(RelatedInjector, RelatedInjector.Graph.Current, requested);
+                    return requestor => strategy.Exec(RelatedInjector, requestor, requested);
 
             throw new InvalidOperationException(Resources.NO_STRATEGY);
         }

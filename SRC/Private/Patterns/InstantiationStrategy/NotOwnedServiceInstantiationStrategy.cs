@@ -12,7 +12,7 @@ namespace Solti.Utils.DI.Internals
         public override bool ShouldUse(IInjector injector, AbstractServiceEntry requested) => injector.UnderlyingContainer.IsDescendantOf(requested.Owner);
 
         [SuppressMessage("Reliability", "CA2000:Dispose objects before losing scope", Justification = "The lifetime of newly created injector is maintained by its owner.")]
-        public override ServiceReference Exec(IStatefulInjector injector, ServiceReference requestor, AbstractServiceEntry requested)
+        public override ServiceReference Exec(IInjectorEx injector, ServiceReference requestor, AbstractServiceEntry requested)
         {
             //
             // ServiceEntry-t zaroljuk h a lock injectorok kozt is ertelmezve legyen.
@@ -43,7 +43,7 @@ namespace Solti.Utils.DI.Internals
                 //   elettartamat.
                 //
 
-                injector = new Injector(requested.Owner, injector);
+                injector = injector.CreateSibling(requested.Owner);
 
                 try
                 {

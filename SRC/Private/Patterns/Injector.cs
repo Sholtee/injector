@@ -13,33 +13,27 @@ namespace Solti.Utils.DI.Internals
 {
     using Properties;
 
-    internal class Injector : ServiceContainer, IStatefulInjector
+    internal class Injector : ServiceContainer, IInjectorEx
     {
         private readonly ServiceGraph FGraph;
 
         private readonly ServiceInstantiationStrategySelector FStrategySelector;
 
-        private bool BreaksTheRuleOfStrictDI(AbstractServiceEntry entry) 
+        private void CheckBreakTheRuleOfStrictDI(ServiceReference requestedRef) 
         {
-            if (!Config.Value.Injector.StrictDI) return false;
+            if (!Config.Value.Injector.StrictDI) return;
 
-            IServiceContainer
-                requestor = FGraph.Current?.RelatedServiceEntry.Owner,
-                requested = entry.Owner;
-
-            //
-            // 1) Ha "requestor == null" akkor a lekderdezesi fa tetejen vagyunk
-            // 2) Ha "requested == null" akkor Instance-t kerdezunk le
-            //
-
-            if (requestor == null || requested == null) return false;
+            AbstractServiceEntry
+                requestor = FGraph.Current?.RelatedServiceEntry, // lehet NULL
+                requested = requestedRef.RelatedServiceEntry;
 
             //
-            // A kerelmezett szerviz tulajdonosanak egy szinten v feljebb kell lennie mint a kerelmezo tulajdonosa h biztosan legalabb annyi
-            // ideig letezzen mint a kerelmezo maga.
+            // A kerelmezett szerviz tulajdonosanak egy szinten v feljebb kell lennie mint a kerelmezo 
+            // tulajdonosa h biztosan legalabb annyi ideig letezzen mint a kerelmezo maga.
             //
 
-            return !requestor.IsDescendantOf(requested);
+            if (requestor?.Owner.IsDescendantOf(requested.Owner) == false) 
+                throw new RequestNotAllowedException(requestor, requested, Resources.STRICT_DI);
         }
 
         private Injector(IServiceContainer parent, IReadOnlyDictionary<string, object> factoryOptions, ServiceGraph graph) : base(parent)
@@ -66,13 +60,8 @@ namespace Solti.Utils.DI.Internals
                 throw ioEx;
             }
 
-            FactoryOptions = factoryOptions ?? new Dictionary<string, object>
-            {
-                { nameof(Config.Value.Injector.MaxSpawnedTransientServices), Config.Value.Injector.MaxSpawnedTransientServices }
-            };
-
-            FGraph = graph?.CreateSubgraph() ?? new ServiceGraph();
-
+            FactoryOptions = factoryOptions;
+            FGraph = graph;
             FStrategySelector = new ServiceInstantiationStrategySelector(this);
 
             //
@@ -82,13 +71,15 @@ namespace Solti.Utils.DI.Internals
             this.Instance<IInjector>(this, releaseOnDispose: false);
         }
 
-        public Injector(IServiceContainer parent, IStatefulInjector injector) : this(parent ?? throw new ArgumentNullException(nameof(parent)), injector?.FactoryOptions, injector?.Graph)
-        {
-        }
-
-        public Injector(IServiceContainer parent, IReadOnlyDictionary<string, object> factoryOptions = null) : this(parent ?? throw new ArgumentNullException(nameof(parent)), factoryOptions, null)
-        {
-        }
+        public Injector(IServiceContainer parent, IReadOnlyDictionary<string, object> factoryOptions = null) : this
+        (
+            parent ?? throw new ArgumentNullException(nameof(parent)), 
+            factoryOptions ?? new Dictionary<string, object>
+            {
+                { nameof(Config.Value.Injector.MaxSpawnedTransientServices), Config.Value.Injector.MaxSpawnedTransientServices }
+            }, 
+            new ServiceGraph()
+        ) { }
 
         public ServiceReference GetReference(Type iface, string name)
         {
@@ -116,20 +107,15 @@ namespace Solti.Utils.DI.Internals
             AbstractServiceEntry entry = Get(iface, name, QueryModes.AllowSpecialization | QueryModes.ThrowOnError);
 
             //
-            // Ellenorizzuk h nem ejtenenk e fogsagba az ujonan letrehozott szervizt
-            //
-
-            if (BreaksTheRuleOfStrictDI(entry))
-                throw new RequestNotAllowedException(FGraph.Current.RelatedServiceEntry, entry, Resources.STRICT_DI);
-
-            //
             // Szerviz peldany letrehozasa.
             //
 
-            return FStrategySelector.GetStrategyFor(entry).Invoke();
+            return FStrategySelector.GetStrategyFor(entry).Invoke(FGraph.Current /*requestor*/);
         }
 
-        #region IStatefulInjector
+        public IReadOnlyDictionary<string, object> FactoryOptions { get; }
+
+        #region IInjectorEx
         public object Get(Type iface, string name) 
         {
             try
@@ -170,21 +156,26 @@ namespace Solti.Utils.DI.Internals
 
         public IServiceContainer UnderlyingContainer => this;
 
-        void IStatefulInjector.Instantiate(ServiceReference referece)
+        void IInjectorEx.Instantiate(ServiceReference requested)
         {
-            Assert(referece?.RelatedInjector == this);
+            Assert(requested?.RelatedInjector == this);
 
-            using (FGraph.With(referece))
+            CheckDisposed();
+
+            CheckBreakTheRuleOfStrictDI(requested);
+
+            using (FGraph.With(requested))
             {
                 FGraph.CheckNotCircular();
 
-                referece.SetInstance(FactoryOptions);
+                requested.SetInstance(FactoryOptions);
             }
         }
 
-        ServiceGraph IStatefulInjector.Graph => FGraph;
-
-        public IReadOnlyDictionary<string, object> FactoryOptions { get; }
+        IInjectorEx IInjectorEx.CreateSibling(IServiceContainer parent) => new Injector(
+            parent ?? throw new ArgumentNullException(nameof(parent)),
+            FactoryOptions,
+            FGraph.CreateSubgraph());
         #endregion
 
         #region Composite
