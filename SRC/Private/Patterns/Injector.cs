@@ -172,10 +172,17 @@ namespace Solti.Utils.DI.Internals
             }
         }
 
-        IInjectorEx IInjectorEx.CreateSibling(IServiceContainer parent) => new Injector(
-            parent ?? throw new ArgumentNullException(nameof(parent)),
-            FactoryOptions,
-            FGraph.CreateSubgraph());
+        IInjectorEx IInjectorEx.CreateSibling(IServiceContainer parent)
+        {
+            CheckDisposed();
+
+            return new Injector
+            (
+                parent ?? throw new ArgumentNullException(nameof(parent)),
+                FactoryOptions,
+                FGraph.CreateSubgraph()
+            );
+        }
         #endregion
 
         #region Composite
