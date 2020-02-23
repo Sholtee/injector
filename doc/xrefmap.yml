@@ -862,6 +862,25 @@ references:
   fullName.vb: Solti.Utils.DI.Internals.IComposite(Of T).RemoveChild
   nameWithType: IComposite<T>.RemoveChild
   nameWithType.vb: IComposite(Of T).RemoveChild
+- uid: Solti.Utils.DI.Internals.IHasUnderlyingImplementation
+  name: IHasUnderlyingImplementation
+  href: Solti.Utils.DI.Internals.IHasUnderlyingImplementation.html
+  commentId: T:Solti.Utils.DI.Internals.IHasUnderlyingImplementation
+  fullName: Solti.Utils.DI.Internals.IHasUnderlyingImplementation
+  nameWithType: IHasUnderlyingImplementation
+- uid: Solti.Utils.DI.Internals.IHasUnderlyingImplementation.UnderlyingImplementation
+  name: UnderlyingImplementation
+  href: Solti.Utils.DI.Internals.IHasUnderlyingImplementation.html#Solti_Utils_DI_Internals_IHasUnderlyingImplementation_UnderlyingImplementation
+  commentId: P:Solti.Utils.DI.Internals.IHasUnderlyingImplementation.UnderlyingImplementation
+  fullName: Solti.Utils.DI.Internals.IHasUnderlyingImplementation.UnderlyingImplementation
+  nameWithType: IHasUnderlyingImplementation.UnderlyingImplementation
+- uid: Solti.Utils.DI.Internals.IHasUnderlyingImplementation.UnderlyingImplementation*
+  name: UnderlyingImplementation
+  href: Solti.Utils.DI.Internals.IHasUnderlyingImplementation.html#Solti_Utils_DI_Internals_IHasUnderlyingImplementation_UnderlyingImplementation_
+  commentId: Overload:Solti.Utils.DI.Internals.IHasUnderlyingImplementation.UnderlyingImplementation
+  isSpec: "True"
+  fullName: Solti.Utils.DI.Internals.IHasUnderlyingImplementation.UnderlyingImplementation
+  nameWithType: IHasUnderlyingImplementation.UnderlyingImplementation
 - uid: Solti.Utils.DI.Internals.InjectorConfig
   name: InjectorConfig
   href: Solti.Utils.DI.Internals.InjectorConfig.html
