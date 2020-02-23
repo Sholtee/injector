@@ -913,6 +913,28 @@ references:
   isSpec: "True"
   fullName: Solti.Utils.DI.Internals.ISupportsProxying.Factory
   nameWithType: ISupportsProxying.Factory
+- uid: Solti.Utils.DI.Internals.ISupportsSpecialization
+  name: ISupportsSpecialization
+  href: Solti.Utils.DI.Internals.ISupportsSpecialization.html
+  commentId: T:Solti.Utils.DI.Internals.ISupportsSpecialization
+  fullName: Solti.Utils.DI.Internals.ISupportsSpecialization
+  nameWithType: ISupportsSpecialization
+- uid: Solti.Utils.DI.Internals.ISupportsSpecialization.Specialize(System.Type[])
+  name: Specialize(Type[])
+  href: Solti.Utils.DI.Internals.ISupportsSpecialization.html#Solti_Utils_DI_Internals_ISupportsSpecialization_Specialize_System_Type___
+  commentId: M:Solti.Utils.DI.Internals.ISupportsSpecialization.Specialize(System.Type[])
+  name.vb: Specialize(Type())
+  fullName: Solti.Utils.DI.Internals.ISupportsSpecialization.Specialize(System.Type[])
+  fullName.vb: Solti.Utils.DI.Internals.ISupportsSpecialization.Specialize(System.Type())
+  nameWithType: ISupportsSpecialization.Specialize(Type[])
+  nameWithType.vb: ISupportsSpecialization.Specialize(Type())
+- uid: Solti.Utils.DI.Internals.ISupportsSpecialization.Specialize*
+  name: Specialize
+  href: Solti.Utils.DI.Internals.ISupportsSpecialization.html#Solti_Utils_DI_Internals_ISupportsSpecialization_Specialize_
+  commentId: Overload:Solti.Utils.DI.Internals.ISupportsSpecialization.Specialize
+  isSpec: "True"
+  fullName: Solti.Utils.DI.Internals.ISupportsSpecialization.Specialize
+  nameWithType: ISupportsSpecialization.Specialize
 - uid: Solti.Utils.DI.Internals.ServiceReference
   name: ServiceReference
   href: Solti.Utils.DI.Internals.ServiceReference.html
