@@ -12,7 +12,7 @@ namespace Solti.Utils.DI.Internals
     /// <summary>
     /// Describes a producible service entry.
     /// </summary>
-    internal abstract partial class ProducibleServiceEntry : AbstractServiceEntry
+    internal abstract partial class ProducibleServiceEntry : AbstractServiceEntry, ISupportsProxying
     {
         internal object UnderlyingImplementation { get; }
 
@@ -105,6 +105,7 @@ namespace Solti.Utils.DI.Internals
         }
 
         public sealed override Type Implementation => (UnderlyingImplementation as Lazy<Type>)?.Value ?? (Type) UnderlyingImplementation;
-        public sealed override Func<IInjector, Type, object> Factory { get; set; }
+
+        Func<IInjector, Type, object> ISupportsProxying.Factory { get => Factory; set => Factory = value; }
     }
 }

@@ -386,28 +386,24 @@ namespace Solti.Utils.DI.Container.Tests
             Assert.That(t1.Result, Is.EqualTo(new SingletonServiceEntry(typeof(IList<int>), null, typeof(MyList<int>), Container)));
         }
 
-        //
-        // TODO: FIXME: Ez igy elegge az implementaciora tamaszkodik (arra alapozunk h a factory-t ugy is specializalas elott keri el a kontener)
-        //
-
         private sealed class LockableSingletonServiceEntry : AbstractServiceEntry
         {
+            private readonly Type FImplementation;
+
             public readonly ManualResetEventSlim Lock = new ManualResetEventSlim(true);
 
             public LockableSingletonServiceEntry(Type @interface, Type implementation, IServiceContainer owner) : base(@interface, null, DI.Lifetime.Singleton, owner)
             {
-                Implementation = implementation;
+                FImplementation = implementation;
             }
 
-            public override Type Implementation { get; }
-
-            public override Func<IInjector, Type, object> Factory
+            public override Type Implementation 
             {
-                get
+                get 
                 {
                     Lock.Wait();
-                    return null;   
-                }
+                    return FImplementation;
+                } 
             }
         }
 

@@ -1,19 +1,20 @@
 ﻿/********************************************************************************
-* IServiceFactory.cs                                                            *
+* ISupportsProxying.cs                                                          *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
-using System.Collections.Generic;
 
 namespace Solti.Utils.DI.Internals
 {
-    internal interface IServiceFactory
+    /// <summary>
+    /// Provides the mechanism for overriding the factory function. 
+    /// </summary>
+    public interface  ISupportsProxying
     {
-        ServiceReference Instance { get; }
-
-        Func<IInjector, Type, object> Factory { get; }
-
-        bool SetInstance(ServiceReference reference, IReadOnlyDictionary<string, object> options);
+        /// <summary>
+        /// The factory function that can be overridden.
+        /// </summary>
+        Func<IInjector, Type, object> Factory { get;  set; }
     }
 }

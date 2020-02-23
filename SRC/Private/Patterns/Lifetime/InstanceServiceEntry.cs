@@ -27,17 +27,6 @@ namespace Solti.Utils.DI.Internals
             if (!releaseOnDispose) Instance.SuppressDispose();
         }
 
-        public override Func<IInjector, Type, object> Factory
-        {
-            //
-            // Nem kell lekerdezeskor kivetelt dobni (Proxy() hivaskor ha a Factory null ugy is
-            // hiba van).
-            //
-
-            get => null;
-            set => throw new InvalidOperationException();
-        }
-
         public override bool SetInstance(ServiceReference reference, IReadOnlyDictionary<string, object> options) =>
             //
             // Peldany eseten ez a metodus elvileg sose kerulhet meghivasra.

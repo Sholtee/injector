@@ -85,7 +85,7 @@ namespace Solti.Utils.DI.Internals
         /// <summary>
         /// The concrete factory. Don't use it directly.
         /// </summary>
-        public virtual Func<IInjector, Type, object> Factory { get => null; set => throw new NotImplementedException(); }
+        public Func<IInjector, Type, object> Factory { get; protected set; }
 
         /// <summary>
         /// The previously created service instance. Don't use it directly.
