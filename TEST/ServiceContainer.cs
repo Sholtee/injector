@@ -92,18 +92,18 @@ namespace Solti.Utils.DI.Container.Tests
         {
             Container.Add(new SingletonServiceEntry(typeof(IList<>), name, typeof(MyList<>), Container));
 
-            using (IServiceContainer child = Container.CreateChild())
+            foreach(IServiceContainer child in new[] { Container.CreateChild(), Container.CreateChild() }) // ketszer hyereket hozzunk letre
             {
                 Assert.That(child.Count, Is.EqualTo(1));
                 Assert.Throws<ServiceNotFoundException>(() => child.Get(typeof(IList<int>), name, QueryModes.ThrowOnError));
-                Assert.That(Container.Count, Is.EqualTo(1));
                 Assert.That(child.Count, Is.EqualTo(1));
-                Assert.That(child.Get(typeof(IList<int>), name, QueryModes.AllowSpecialization | QueryModes.ThrowOnError), Is.EqualTo(new SingletonServiceEntry(typeof(IList<int>), name, typeof(MyList<int>), Container)));
-                Assert.That(Container.Count, Is.EqualTo(2));
+                Assert.That(child.Get(typeof(IList<int>), name, QueryModes.AllowSpecialization | QueryModes.ThrowOnError), Is.EqualTo(new SingletonServiceEntry(typeof(IList<int>), name, typeof(MyList<int>), Container)));        
                 Assert.That(child.Count, Is.EqualTo(2));
             }
 
+            Assert.That(Container.Count, Is.EqualTo(2));
             Assert.That(Container.Get(typeof(IList<int>), name, QueryModes.ThrowOnError), Is.EqualTo(new SingletonServiceEntry(typeof(IList<int>), name, typeof(MyList<int>), Container)));
+            Assert.That(Container.CreateChild().Count, Is.EqualTo(2));
         }
 
         [TestCase(null)]
@@ -386,7 +386,7 @@ namespace Solti.Utils.DI.Container.Tests
             Assert.That(t1.Result, Is.EqualTo(new SingletonServiceEntry(typeof(IList<int>), null, typeof(MyList<int>), Container)));
         }
 
-        private sealed class LockableSingletonServiceEntry : AbstractServiceEntry
+        private sealed class LockableSingletonServiceEntry : ProducibleServiceEntry
         {
             private readonly Type FImplementation;
 

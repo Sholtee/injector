@@ -12,11 +12,11 @@ namespace Solti.Utils.DI.Internals
     /// <summary>
     /// Describes a producible service entry.
     /// </summary>
-    internal abstract partial class ProducibleServiceEntry : AbstractServiceEntry, ISupportsProxying
+    internal abstract partial class ProducibleServiceEntry : AbstractServiceEntry, ISupportsProxying, ISupportsSpecialization
     {
         internal object UnderlyingImplementation { get; }
 
-        private ProducibleServiceEntry(Type @interface, string name, Lifetime? lifetime, IServiceContainer owner) : base(@interface, name, lifetime ?? throw new ArgumentNullException(nameof(lifetime)), owner ?? throw new ArgumentNullException(nameof(owner))) 
+        internal ProducibleServiceEntry(Type @interface, string name, Lifetime? lifetime, IServiceContainer owner) : base(@interface, name, lifetime ?? throw new ArgumentNullException(nameof(lifetime)), owner ?? throw new ArgumentNullException(nameof(owner))) 
         {
             //
             // Interface-t nem kell ellenorizni (az os megteszi).
@@ -104,8 +104,41 @@ namespace Solti.Utils.DI.Internals
                 throw new InvalidOperationException(Resources.NOT_PRODUCIBLE);
         }
 
-        public sealed override Type Implementation => (UnderlyingImplementation as Lazy<Type>)?.Value ?? (Type) UnderlyingImplementation;
+        public override Type Implementation => (UnderlyingImplementation as Lazy<Type>)?.Value ?? (Type) UnderlyingImplementation;
 
         Func<IInjector, Type, object> ISupportsProxying.Factory { get => Factory; set => Factory = value; }
+
+        AbstractServiceEntry ISupportsSpecialization.Specialize(params Type[] genericArguments) 
+        {
+            //
+            // "Service(typeof(IGeneric<>), ...)" eseten az implementaciot konkretizaljuk.
+            //
+
+            if (Implementation != null) return SpecializeBy
+            (
+                Implementation.MakeGenericType(genericArguments)
+            );
+
+            //
+            // "Factory(typeof(IGeneric<>), ...)" eseten az eredeti factory lesz hivva a 
+            // konkretizalt interface-re.
+            //
+
+            if (Factory != null) return SpecializeBy
+            (
+                Factory
+            );
+
+            throw new NotSupportedException();
+
+            AbstractServiceEntry SpecializeBy<TParam>(TParam param) => ProducibleServiceEntry.Create
+            (
+                Lifetime,
+                Interface.MakeGenericType(genericArguments),
+                Name,
+                param,
+                Owner
+            );
+        }
     }
 }
