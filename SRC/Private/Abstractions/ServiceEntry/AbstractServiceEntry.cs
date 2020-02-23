@@ -56,8 +56,14 @@ namespace Solti.Utils.DI.Internals
         /// <summary>
         /// The interface of the service.
         /// </summary>
-        /// <remarks>The service is identified by its <see cref="Interface"/> and <see cref="Name"/>.</remarks>
+        /// <remarks>A service is identified by its <see cref="Interface"/> and <see cref="Name"/>.</remarks>
         public Type Interface { get; }
+
+        /// <summary>
+        /// The (optional) name of the service.
+        /// </summary>
+        /// <remarks>A service is identified by its <see cref="Interface"/> and <see cref="Name"/>.</remarks>
+        public string Name { get; }
 
         /// <summary>
         /// The (optional) lefiteime of the service.
@@ -70,15 +76,9 @@ namespace Solti.Utils.DI.Internals
         public IServiceContainer Owner { get; }
 
         /// <summary>
-        /// The (optional) name of the service.
-        /// </summary>
-        /// <remarks>The service is identified by its <see cref="Interface"/> and <see cref="Name"/>.</remarks>
-        public string Name { get; }
-
-        /// <summary>
         /// The (optional) implementation of the service.
         /// </summary>
-        public virtual Type Implementation => null;
+        public virtual Type Implementation { get; }
         #endregion
 
         #region Mutables
