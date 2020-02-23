@@ -73,7 +73,7 @@ namespace Solti.Utils.DI.Internals
                 CheckDisposed();
 
                 //
-                // Peldany tipusat ellenorizzuk mert a Factory(), Lazy() stb visszaadhat vicces dolgokat.
+                // Peldany tipusat ellenorizzuk mert a Factory(), Proxy() stb visszaadhat vicces dolgokat.
                 //
 
                 if (value == null || !RelatedServiceEntry.Interface.IsInstanceOfType(value))

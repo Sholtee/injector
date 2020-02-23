@@ -73,8 +73,8 @@ namespace Solti.Utils.DI.Internals
                 throw new ArgumentNullException(nameof(implementation));
 
             //
-            // A konstruktort validalni fogja a Resolver.Get() hivas az elso peldanyositaskor, igy
-            // itt nekunk csak azt kell ellenoriznunk, h az interface tamogatott e.
+            // - Az implementacio az elso hivatkozaskor lesz validalva (lasd AsLazy() implementacio).
+            // - A konstruktor pedig az elso peldanyositaskor (lasd Resolver.Get() implementacio).
             //
 
             if (!implementation.Supports(@interface))
