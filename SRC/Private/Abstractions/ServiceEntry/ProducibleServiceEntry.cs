@@ -12,9 +12,9 @@ namespace Solti.Utils.DI.Internals
     /// <summary>
     /// Describes a producible service entry.
     /// </summary>
-    internal abstract partial class ProducibleServiceEntry : AbstractServiceEntry, ISupportsProxying, ISupportsSpecialization
+    internal abstract partial class ProducibleServiceEntry : AbstractServiceEntry, ISupportsProxying, ISupportsSpecialization, IHasUnderlyingImplementation
     {
-        internal object UnderlyingImplementation { get; }
+        public object UnderlyingImplementation { get; }
 
         internal ProducibleServiceEntry(Type @interface, string name, Lifetime? lifetime, IServiceContainer owner) : base(@interface, name, lifetime ?? throw new ArgumentNullException(nameof(lifetime)), owner ?? throw new ArgumentNullException(nameof(owner))) 
         {

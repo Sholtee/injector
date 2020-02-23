@@ -25,7 +25,7 @@ namespace Solti.Utils.DI
         /// The service was registered via <see cref="IServiceContainerExtensions.Lazy(IServiceContainer, Type, string, ITypeResolver, Lifetime)"/> call.
         /// </summary>
         public static bool IsLazy(this AbstractServiceEntry self) => self != null
-            ? (self as ProducibleServiceEntry)?.UnderlyingImplementation as Lazy<Type> != null
+            ? (self is IHasUnderlyingImplementation def) && def.UnderlyingImplementation is Lazy<Type>
             : throw new ArgumentNullException(nameof(self));
 
         /// <summary>
