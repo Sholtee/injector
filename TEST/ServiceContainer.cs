@@ -92,7 +92,7 @@ namespace Solti.Utils.DI.Container.Tests
         {
             Container.Add(new SingletonServiceEntry(typeof(IList<>), name, typeof(MyList<>), Container));
 
-            foreach(IServiceContainer child in new[] { Container.CreateChild(), Container.CreateChild() }) // ketszer hyereket hozzunk letre
+            foreach(IServiceContainer child in new[] { Container.CreateChild(), Container.CreateChild() }) // ket gyereket hozzunk letre
             {
                 Assert.That(child.Count, Is.EqualTo(1));
                 Assert.Throws<ServiceNotFoundException>(() => child.Get(typeof(IList<int>), name, QueryModes.ThrowOnError));
