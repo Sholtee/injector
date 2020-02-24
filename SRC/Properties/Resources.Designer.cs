@@ -9,9 +9,10 @@
 //------------------------------------------------------------------------------
 
 namespace Solti.Utils.DI.Properties {
+    using System;
     using System.Reflection;
-    using Internals;
-
+    
+    
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>
@@ -22,9 +23,6 @@ namespace Solti.Utils.DI.Properties {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-#if DEBUG
-    [ExcludeFromCoverage]
-#endif
     internal class Resources {
         
         private static global::System.Resources.ResourceManager resourceMan;
@@ -96,6 +94,15 @@ namespace Solti.Utils.DI.Properties {
         internal static string CANT_PROXY {
             get {
                 return ResourceManager.GetString("CANT_PROXY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Can not remove child that is not owned..
+        /// </summary>
+        internal static string CANT_REMOVE_CHILD {
+            get {
+                return ResourceManager.GetString("CANT_REMOVE_CHILD", resourceCulture);
             }
         }
         
@@ -199,6 +206,15 @@ namespace Solti.Utils.DI.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The value of &quot;{0}&quot; can not be null..
+        /// </summary>
+        internal static string IS_NULL {
+            get {
+                return ResourceManager.GetString("IS_NULL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The matching strategy could not be determined..
         /// </summary>
         internal static string NO_STRATEGY {
@@ -244,7 +260,7 @@ namespace Solti.Utils.DI.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The given value is not null..
+        ///   Looks up a localized string similar to The value of &quot;{0}&quot; should be null..
         /// </summary>
         internal static string NOT_NULL {
             get {

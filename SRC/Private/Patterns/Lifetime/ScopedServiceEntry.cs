@@ -36,7 +36,7 @@ namespace Solti.Utils.DI.Internals
             Ensure.Parameter.IsNotNull(reference, nameof(reference));
             Ensure.AreEqual(reference.RelatedServiceEntry, this);
             Ensure.AreEqual(reference.RelatedInjector.UnderlyingContainer, Owner);
-            Ensure.IsNull(reference.Value);
+            Ensure.IsNull(reference.Value, $"{nameof(reference)}.{nameof(reference.Value)}");
 
             //
             // Ha mar le lett gyartva akkor nincs dolgunk, jelezzuk a hivonak h ovlassa ki a korabban 

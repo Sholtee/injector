@@ -39,7 +39,7 @@ namespace Solti.Utils.DI.Internals
 
             Ensure.Parameter.IsNotNull(reference, nameof(reference));
             Ensure.AreEqual(reference.RelatedServiceEntry, this);
-            Ensure.IsNull(reference.Value);
+            Ensure.IsNull(reference.Value, $"{nameof(reference)}.{nameof(reference.Value)}");
 
             //
             // Singleton bejegyzeshez mindig sajat injector van letrehozva a deklaralo kontenerbol

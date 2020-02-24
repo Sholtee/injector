@@ -41,7 +41,7 @@ namespace Solti.Utils.DI.Internals
             Ensure.Parameter.IsNotNull(reference, nameof(reference));
             Ensure.AreEqual(reference.RelatedServiceEntry, this);
             Ensure.AreEqual(reference.RelatedInjector.UnderlyingContainer, Owner);
-            Ensure.IsNull(reference.Value);
+            Ensure.IsNull(reference.Value, $"{nameof(reference)}.{nameof(reference.Value)}");
 
             int? threshold = options?.GetValueOrDefault<int?>("MaxSpawnedTransientServices");
 

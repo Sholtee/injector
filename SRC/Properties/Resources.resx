@@ -193,6 +193,12 @@
     <value>The given values are not equal.</value>
   </data>
   <data name="NOT_NULL" xml:space="preserve">
-    <value>The given value is not null.</value>
+    <value>The value of "{0}" should be null.</value>
+  </data>
+  <data name="IS_NULL" xml:space="preserve">
+    <value>The value of "{0}" can not be null.</value>
+  </data>
+  <data name="CANT_REMOVE_CHILD" xml:space="preserve">
+    <value>Can not remove child that is not owned.</value>
   </data>
 </root>

@@ -45,8 +45,7 @@ namespace Solti.Utils.DI
         {
             CheckDisposed();
 
-            if (entry == null)
-                throw new ArgumentNullException(nameof(entry));
+            Ensure.Parameter.IsNotNull(entry, nameof(entry));
 
             using (FLock.AcquireWriterLock())
             {
@@ -87,11 +86,8 @@ namespace Solti.Utils.DI
         {
             CheckDisposed();
 
-            if (serviceInterface == null)
-                throw new ArgumentNullException(nameof(serviceInterface));
-
-            if (!serviceInterface.IsInterface())
-                throw new ArgumentException(Resources.NOT_AN_INTERFACE, nameof(serviceInterface));
+            Ensure.Parameter.IsNotNull(serviceInterface, nameof(serviceInterface));
+            Ensure.Parameter.IsInterface(serviceInterface, nameof(serviceInterface));
 
             IServiceId key = MakeId(serviceInterface);
 

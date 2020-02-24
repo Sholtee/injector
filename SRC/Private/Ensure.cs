@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -19,25 +20,29 @@ namespace Solti.Utils.DI.Internals
     {
         public static class Parameter
         {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public static T IsNotNull<T>(T argument, string name) where T : class =>
                 argument ?? throw new ArgumentNullException(name);
 
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public static T? IsNotNull<T>(T? argument, string name) where T : struct =>
                 argument ?? throw new ArgumentNullException(name);
 
-
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public static void IsNotGenericDefinition(Type t, string name) 
             {
                 if (t.IsGenericTypeDefinition())
                     throw new ArgumentException(Resources.CANT_INSTANTIATE_GENERICS, name);
             }
 
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public static void IsInterface(Type argument, string name) 
             {
                 if (!argument.IsInterface())
                     throw new ArgumentException(Resources.NOT_AN_INTERFACE, name);
             }
 
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public static void IsInstanceOf(object argument, Type type, string name) 
             {
                 if (!type.IsInstanceOfType(argument)) 
@@ -45,34 +50,39 @@ namespace Solti.Utils.DI.Internals
             }
         }
 
-        public static void IsNotNull(object value) 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void IsNull(object value, string member)
         {
-            if (value == null)
-                throw new NullReferenceException();       
+            if (value != null)
+                throw new Exception(string.Format(Resources.Culture, Resources.NOT_NULL, member));
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void IsNotNull(object value, string member) 
+        {
+            if (value == null)
+                throw new Exception(string.Format(Resources.Culture, Resources.IS_NULL, member));       
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void AreEqual<T>(T a, T b, string message = null, IEqualityComparer<T> comparer = null)
+        {
+            if (!(comparer ?? EqualityComparer<T>.Default).Equals(a, b))
+                throw new Exception(message ?? Resources.NOT_EQUAL);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void IsAssignable(Type @interface, Type implementation)
         {
             if (!@interface.IsInterfaceOf(implementation))
                 throw new InvalidOperationException(string.Format(Resources.Culture, Resources.NOT_ASSIGNABLE, @interface, implementation));
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void ResolverSupports(ITypeResolver resolver, Type @interface) 
         {
             if (!resolver.Supports(@interface))
                 throw new NotSupportedException(string.Format(Resources.Culture, Resources.INTERFACE_NOT_SUPPORTED, @interface));
-        }
-
-        public static void AreEqual<T>(T a, T b, IEqualityComparer<T> comparer = null) 
-        {
-            if (!(comparer ?? EqualityComparer<T>.Default).Equals(a, b))
-                throw new Exception(Resources.NOT_EQUAL);
-        }
-
-        public static void IsNull<T>(T value) where T : class 
-        {
-            if (value != null)
-                throw new Exception(Resources.NOT_NULL);
-        }       
+        }  
     }
 }

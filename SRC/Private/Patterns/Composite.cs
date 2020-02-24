@@ -105,7 +105,7 @@ namespace Solti.Utils.DI.Internals
             CheckDisposed();
 
             Ensure.Parameter.IsNotNull(child, nameof(child));
-            Ensure.IsNull(child.Parent);
+            Ensure.IsNull(child.Parent, $"{nameof(child)}.{nameof(child.Parent)}");
 
             using (FLock.AcquireWriterLock())
             {
@@ -138,7 +138,7 @@ namespace Solti.Utils.DI.Internals
             CheckDisposed();
 
             Ensure.Parameter.IsNotNull(child, nameof(child));
-            Ensure.AreEqual(child.Parent, Self);
+            Ensure.AreEqual(child.Parent, Self, Resources.CANT_REMOVE_CHILD);
 
             using (FLock.AcquireWriterLock())
             {

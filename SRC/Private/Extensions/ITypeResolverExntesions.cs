@@ -22,7 +22,7 @@ namespace Solti.Utils.DI.Internals
             {
                 Type implementation = resolver.Resolve(iface);
 
-                Ensure.IsNotNull(implementation);
+                Ensure.IsNotNull(implementation, nameof(implementation));
                 Ensure.IsAssignable(iface, implementation);
 
                 return implementation;
