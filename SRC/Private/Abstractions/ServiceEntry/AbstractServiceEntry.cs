@@ -40,11 +40,8 @@ namespace Solti.Utils.DI.Internals
         /// <exception cref="ArgumentException">The <paramref name="interface"/> is not an interface.</exception>
         internal protected AbstractServiceEntry(Type @interface, string name, Lifetime? lifetime, IServiceContainer owner)
         {
-            if (@interface == null)
-                throw new ArgumentNullException(nameof(@interface));
-
-            if (!@interface.IsInterface())
-                throw new ArgumentException(Resources.NOT_AN_INTERFACE, nameof(@interface));
+            Ensure.Parameter.IsNotNull(@interface, nameof(@interface));
+            Ensure.Parameter.IsInterface(@interface, nameof(@interface));
 
             Interface = @interface;
             Name      = name;
@@ -110,8 +107,7 @@ namespace Solti.Utils.DI.Internals
         {
             CheckDisposed();
 
-            if (target == null)
-                throw new ArgumentNullException(nameof(target));
+            Ensure.Parameter.IsNotNull(target, nameof(target));
 
             target.Add(this);
             return this;

@@ -48,7 +48,7 @@ namespace Solti.Utils.DI.Container.Tests
         [Test]
         public void Container_Instance_ShouldBeTypeChecked()
         {
-            Assert.Throws<InvalidOperationException>(() => Container.Instance(typeof(IInterface_1), new object()), string.Format(Resources.NOT_ASSIGNABLE, typeof(IInterface_1), typeof(object)));
+            Assert.Throws<ArgumentException>(() => Container.Instance(typeof(IInterface_1), new object()), string.Format(Resources.NOT_ASSIGNABLE, typeof(IInterface_1), typeof(object)));
         }
 
         [Test]

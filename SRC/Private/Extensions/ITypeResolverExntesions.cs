@@ -8,8 +8,6 @@ using System.Threading;
 
 namespace Solti.Utils.DI.Internals
 {
-    using Properties;
-
     internal static class ITypeResolverExntesions
     {
         public static Lazy<Type> AsLazy(this ITypeResolver resolver, Type iface)
@@ -24,11 +22,8 @@ namespace Solti.Utils.DI.Internals
             {
                 Type implementation = resolver.Resolve(iface);
 
-                if (implementation == null)
-                    throw new InvalidOperationException(); // TODO: error message
-
-                if (!iface.IsInterfaceOf(implementation))
-                    throw new InvalidOperationException(string.Format(Resources.Culture, Resources.NOT_ASSIGNABLE, iface, implementation));
+                Ensure.IsNotNull(implementation);
+                Ensure.IsAssignable(iface, implementation);
 
                 return implementation;
             }        
