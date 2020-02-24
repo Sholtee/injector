@@ -150,9 +150,6 @@
   <data name="INVALID_INSTANCE" xml:space="preserve">
     <value>The returned object must be an instance of "{0}".</value>
   </data>
-  <data name="INVALID_PARENT" xml:space="preserve">
-    <value>Child must have the same parent on which the operation was perfomred.</value>
-  </data>
   <data name="NOT_AN_INTERFACE" xml:space="preserve">
     <value>Parameter must be an interface.</value>
   </data>
@@ -174,9 +171,6 @@
   <data name="INVALID_INTERCEPETOR" xml:space="preserve">
     <value>Interceptor must be an InterfaceInterceptor&lt;{0}&gt; descendant.</value>
   </data>
-  <data name="NOT_ORPHAN" xml:space="preserve">
-    <value>Child already has a parent.</value>
-  </data>
   <data name="INJECTOR_SHOULD_BE_RELEASED" xml:space="preserve">
     <value>The injector can not hold more than {0} transient services. It usually indicates that you were recycling the injector.</value>
   </data>
@@ -194,5 +188,11 @@
   </data>
   <data name="NO_STRATEGY" xml:space="preserve">
     <value>The matching strategy could not be determined.</value>
+  </data>
+  <data name="NOT_EQUAL" xml:space="preserve">
+    <value>The given values are not equal.</value>
+  </data>
+  <data name="NOT_NULL" xml:space="preserve">
+    <value>The given value is not null.</value>
   </data>
 </root>

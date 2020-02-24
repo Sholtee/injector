@@ -13,7 +13,11 @@ namespace Solti.Utils.DI.Internals
     /// </summary>
     internal class InstanceServiceEntry : AbstractServiceEntry
     {
-        public InstanceServiceEntry(Type @interface, string name, object instance, bool releaseOnDispose, IServiceContainer owner) : base(@interface, name, null, owner ?? throw new ArgumentNullException(nameof(owner)))
+        public InstanceServiceEntry(Type @interface, string name, object instance, bool releaseOnDispose, IServiceContainer owner) : base(
+            @interface, 
+            name, 
+            lifetime: null, 
+            Ensure.Parameter.IsNotNull(owner, nameof(owner)))
         {
             //
             // Nem kell kulon ellenorizni a peldanyt mert a ServiceReference.SetValue() validal.
@@ -21,7 +25,7 @@ namespace Solti.Utils.DI.Internals
 
             Instance = new ServiceReference(this, null) 
             { 
-                Value = instance ?? throw new ArgumentNullException(nameof(instance))
+                Value = Ensure.Parameter.IsNotNull(instance, nameof(instance))
             };
 
             if (!releaseOnDispose) Instance.SuppressDispose();

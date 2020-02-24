@@ -199,15 +199,6 @@ namespace Solti.Utils.DI.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Child must have the same parent on which the operation was perfomred..
-        /// </summary>
-        internal static string INVALID_PARENT {
-            get {
-                return ResourceManager.GetString("INVALID_PARENT", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to The matching strategy could not be determined..
         /// </summary>
         internal static string NO_STRATEGY {
@@ -244,11 +235,20 @@ namespace Solti.Utils.DI.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Child already has a parent..
+        ///   Looks up a localized string similar to The given values are not equal..
         /// </summary>
-        internal static string NOT_ORPHAN {
+        internal static string NOT_EQUAL {
             get {
-                return ResourceManager.GetString("NOT_ORPHAN", resourceCulture);
+                return ResourceManager.GetString("NOT_EQUAL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The given value is not null..
+        /// </summary>
+        internal static string NOT_NULL {
+            get {
+                return ResourceManager.GetString("NOT_NULL", resourceCulture);
             }
         }
         

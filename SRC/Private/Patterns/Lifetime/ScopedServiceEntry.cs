@@ -6,8 +6,6 @@
 using System;
 using System.Collections.Generic;
 
-using static System.Diagnostics.Debug;
-
 namespace Solti.Utils.DI.Internals
 {
     /// <summary>
@@ -35,13 +33,10 @@ namespace Solti.Utils.DI.Internals
         {
             CheckProducible();
 
-            Assert(reference.RelatedServiceEntry == this);
-
-            //
-            // Az injectornak kell lennie a bejegyzes tulajdonosanak.
-            //
-
-            Assert(reference.RelatedInjector.UnderlyingContainer == Owner);
+            Ensure.Parameter.IsNotNull(reference, nameof(reference));
+            Ensure.AreEqual(reference.RelatedServiceEntry, this);
+            Ensure.AreEqual(reference.RelatedInjector.UnderlyingContainer, Owner);
+            Ensure.IsNull(reference.Value);
 
             //
             // Ha mar le lett gyartva akkor nincs dolgunk, jelezzuk a hivonak h ovlassa ki a korabban 

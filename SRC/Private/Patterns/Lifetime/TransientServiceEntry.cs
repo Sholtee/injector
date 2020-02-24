@@ -5,8 +5,7 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
-
-using static System.Diagnostics.Debug;
+using System.Diagnostics;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -39,9 +38,11 @@ namespace Solti.Utils.DI.Internals
         {
             CheckProducible();
 
-            Assert(reference.RelatedServiceEntry == this);
-            Assert(reference.RelatedInjector.UnderlyingContainer == Owner);
-   
+            Ensure.Parameter.IsNotNull(reference, nameof(reference));
+            Ensure.AreEqual(reference.RelatedServiceEntry, this);
+            Ensure.AreEqual(reference.RelatedInjector.UnderlyingContainer, Owner);
+            Ensure.IsNull(reference.Value);
+
             int? threshold = options?.GetValueOrDefault<int?>("MaxSpawnedTransientServices");
 
             if (FSpawnedServices.Count >= threshold)
@@ -60,13 +61,13 @@ namespace Solti.Utils.DI.Internals
             // tartjuk szamon az eddig igenyelt peldanyokat.
             //
             // Az Add() hivas megnoveli a "reference" referenciaszamlalojat ezert a Release() hivas (h a
-            // szamlalo 1-en alljon).
+            // szamlalo az eredeti erteken alljon).
             //
 
             FSpawnedServices.Add(reference);   
             reference.Release();
 
-            Assert(reference.RefCount == 1);
+            Debug.Assert(!reference.Disposed);
 
             return true;
         }

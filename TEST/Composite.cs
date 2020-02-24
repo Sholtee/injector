@@ -77,7 +77,7 @@ namespace Solti.Utils.DI.Internals.Tests
                 child = root.CreateChild();
 
             Assert.Throws<ArgumentNullException>(() => root.AddChild(null));
-            Assert.Throws<InvalidOperationException>(() => root.AddChild(child), Resources.NOT_ORPHAN);
+            Assert.Throws<Exception>(() => root.AddChild(child), Resources.NOT_NULL);
         }
 
         [Test]
@@ -88,7 +88,7 @@ namespace Solti.Utils.DI.Internals.Tests
                 child = root.CreateChild();
 
             Assert.Throws<ArgumentNullException>(() => root.RemoveChild(null));
-            Assert.Throws<InvalidOperationException>(() => root.RemoveChild(new MyComposite()), Resources.INVALID_PARENT);
+            Assert.Throws<Exception>(() => root.RemoveChild(new MyComposite()), Resources.NOT_EQUAL);
             Assert.DoesNotThrow(() => root.RemoveChild(child));
             Assert.IsNull(child.Parent);
 

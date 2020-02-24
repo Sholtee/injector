@@ -73,7 +73,7 @@ namespace Solti.Utils.DI.Internals
 
         public Injector(IServiceContainer parent, IReadOnlyDictionary<string, object> factoryOptions = null) : this
         (
-            parent ?? throw new ArgumentNullException(nameof(parent)), 
+            Ensure.Parameter.IsNotNull(parent, nameof(parent)), 
             factoryOptions ?? new Dictionary<string, object>
             {
                 { nameof(Config.Value.Injector.MaxSpawnedTransientServices), Config.Value.Injector.MaxSpawnedTransientServices }
@@ -85,14 +85,9 @@ namespace Solti.Utils.DI.Internals
         {
             CheckDisposed();
 
-            if (iface == null)
-                throw new ArgumentNullException(nameof(iface));
-
-            if (!iface.IsInterface())
-                throw new ArgumentException(Resources.NOT_AN_INTERFACE, nameof(iface));
-
-            if (iface.IsGenericTypeDefinition())
-                throw new ArgumentException(Resources.CANT_INSTANTIATE_GENERICS, nameof(iface));
+            Ensure.Parameter.IsNotNull(iface, nameof(iface));
+            Ensure.Parameter.IsInterface(iface, nameof(iface));
+            Ensure.Parameter.IsNotGenericDefinition(iface, nameof(iface));
 
             //
             // Ha vkinek a fuggosege vagyunk akkor a fuggo szerviz itt meg nem lehet legyartva.
@@ -164,6 +159,11 @@ namespace Solti.Utils.DI.Internals
 
             CheckBreakTheRuleOfStrictDI(requested);
 
+            //
+            // Az epp letrehozas alatt levo szerviz kerul az ut legvegere igy a fuggosegei
+            // feloldasakor o lesz a szulo (FGraph.Current).
+            //
+
             using (FGraph.With(requested))
             {
                 FGraph.CheckNotCircular();
@@ -178,7 +178,7 @@ namespace Solti.Utils.DI.Internals
 
             return new Injector
             (
-                parent ?? throw new ArgumentNullException(nameof(parent)),
+                parent,
                 FactoryOptions,
                 FGraph.CreateSubgraph()
             );

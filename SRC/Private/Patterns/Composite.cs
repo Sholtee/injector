@@ -104,11 +104,8 @@ namespace Solti.Utils.DI.Internals
         {
             CheckDisposed();
 
-            if (child == null)
-                throw new ArgumentNullException(nameof(child));
-
-            if (child.Parent != null)
-                throw new InvalidOperationException(Resources.NOT_ORPHAN);
+            Ensure.Parameter.IsNotNull(child, nameof(child));
+            Ensure.IsNull(child.Parent);
 
             using (FLock.AcquireWriterLock())
             {
@@ -140,14 +137,13 @@ namespace Solti.Utils.DI.Internals
         {
             CheckDisposed();
 
-            if (child == null)
-                throw new ArgumentNullException(nameof(child));
-
-            if (child.Parent != this)
-                throw new InvalidOperationException(Resources.INVALID_PARENT);
+            Ensure.Parameter.IsNotNull(child, nameof(child));
+            Ensure.AreEqual(child.Parent, Self);
 
             using (FLock.AcquireWriterLock())
+            {
                 FChildren.Remove(child);
+            }
 
             child.Parent = null;
         }

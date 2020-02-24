@@ -4,12 +4,17 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Collections.Generic;
 using System.Reflection;
 
 namespace Solti.Utils.DI.Internals
 {
     using Properties;
 
+    /// <summary>
+    /// Every method that can be accessed publicly or use one or more parameters that were passed outside of the library 
+    /// should use this class for basic validations to ensure consistent validation errors.
+    /// </summary>
     internal static class Ensure
     {
         public static class Parameter
@@ -19,6 +24,13 @@ namespace Solti.Utils.DI.Internals
 
             public static T? IsNotNull<T>(T? argument, string name) where T : struct =>
                 argument ?? throw new ArgumentNullException(name);
+
+
+            public static void IsNotGenericDefinition(Type t, string name) 
+            {
+                if (t.IsGenericTypeDefinition())
+                    throw new ArgumentException(Resources.CANT_INSTANTIATE_GENERICS, name);
+            }
 
             public static void IsInterface(Type argument, string name) 
             {
@@ -50,5 +62,17 @@ namespace Solti.Utils.DI.Internals
             if (!resolver.Supports(@interface))
                 throw new NotSupportedException(string.Format(Resources.Culture, Resources.INTERFACE_NOT_SUPPORTED, @interface));
         }
+
+        public static void AreEqual<T>(T a, T b, IEqualityComparer<T> comparer = null) 
+        {
+            if (!(comparer ?? EqualityComparer<T>.Default).Equals(a, b))
+                throw new Exception(Resources.NOT_EQUAL);
+        }
+
+        public static void IsNull<T>(T value) where T : class 
+        {
+            if (value != null)
+                throw new Exception(Resources.NOT_NULL);
+        }       
     }
 }

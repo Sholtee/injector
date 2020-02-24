@@ -7,6 +7,8 @@ using System;
 
 namespace Solti.Utils.DI.Annotations
 {
+    using Internals;
+
     /// <summary>
     /// Indicates that a class is being used as a service.
     /// </summary>
@@ -35,6 +37,8 @@ namespace Solti.Utils.DI.Annotations
         /// <param name="lifetime">The <see cref="Lifetime"/> of the service.</param>
         public ServiceAttribute(Type @interface, Lifetime lifetime = Lifetime.Transient)
         {
+            Ensure.Parameter.IsNotNull(@interface, nameof(@interface));
+
             Interface = @interface;
             Lifetime = lifetime;
         }
@@ -55,6 +59,9 @@ namespace Solti.Utils.DI.Annotations
         /// </summary>
         public override void Register(IServiceContainer container, Type target)
         {
+            Ensure.Parameter.IsNotNull(container, nameof(container));
+            Ensure.Parameter.IsNotNull(target, nameof(target));
+
             container.Service(Interface, Name, target, Lifetime);
         }
     }

@@ -6,8 +6,6 @@
 using System;
 using System.Collections.Generic;
 
-using static System.Diagnostics.Debug;
-
 namespace Solti.Utils.DI.Internals
 {
     /// <summary>
@@ -39,13 +37,15 @@ namespace Solti.Utils.DI.Internals
         {
             CheckProducible();
 
-            Assert(reference.RelatedServiceEntry == this);
+            Ensure.Parameter.IsNotNull(reference, nameof(reference));
+            Ensure.AreEqual(reference.RelatedServiceEntry, this);
+            Ensure.IsNull(reference.Value);
 
             //
             // Singleton bejegyzeshez mindig sajat injector van letrehozva a deklaralo kontenerbol
             //
 
-            Assert(reference.RelatedInjector.UnderlyingContainer.Parent == Owner);
+            Ensure.AreEqual(reference.RelatedInjector.UnderlyingContainer.Parent, Owner);
 
             //
             // Ha mar le lett gyartva akkor nincs dolgunk, jelezzuk a hivonak h ovlassa ki a korabban 
