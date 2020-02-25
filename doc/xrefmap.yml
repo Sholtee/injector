@@ -665,19 +665,6 @@ references:
   commentId: T:Solti.Utils.DI.Internals.Disposable
   fullName: Solti.Utils.DI.Internals.Disposable
   nameWithType: Disposable
-- uid: Solti.Utils.DI.Internals.Disposable.CheckDisposed
-  name: CheckDisposed()
-  href: Solti.Utils.DI.Internals.Disposable.html#Solti_Utils_DI_Internals_Disposable_CheckDisposed
-  commentId: M:Solti.Utils.DI.Internals.Disposable.CheckDisposed
-  fullName: Solti.Utils.DI.Internals.Disposable.CheckDisposed()
-  nameWithType: Disposable.CheckDisposed()
-- uid: Solti.Utils.DI.Internals.Disposable.CheckDisposed*
-  name: CheckDisposed
-  href: Solti.Utils.DI.Internals.Disposable.html#Solti_Utils_DI_Internals_Disposable_CheckDisposed_
-  commentId: Overload:Solti.Utils.DI.Internals.Disposable.CheckDisposed
-  isSpec: "True"
-  fullName: Solti.Utils.DI.Internals.Disposable.CheckDisposed
-  nameWithType: Disposable.CheckDisposed
 - uid: Solti.Utils.DI.Internals.Disposable.Dispose
   name: Dispose()
   href: Solti.Utils.DI.Internals.Disposable.html#Solti_Utils_DI_Internals_Disposable_Dispose
