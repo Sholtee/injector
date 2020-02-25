@@ -165,9 +165,6 @@
   <data name="UNKNOWN_LIFETIME" xml:space="preserve">
     <value>Unknown lifetime: {0}.</value>
   </data>
-  <data name="INVALID_INTERCEPETOR" xml:space="preserve">
-    <value>Interceptor must be an InterfaceInterceptor&lt;{0}&gt; descendant.</value>
-  </data>
   <data name="INJECTOR_SHOULD_BE_RELEASED" xml:space="preserve">
     <value>The injector can not hold more than {0} transient services. It usually indicates that you were recycling the injector.</value>
   </data>
@@ -200,5 +197,8 @@
   </data>
   <data name="NOT_BELONGING_REFERENCE" xml:space="preserve">
     <value>The servicereference belongs to an another entry.</value>
+  </data>
+  <data name="NOT_ASSIGNABLE" xml:space="preserve">
+    <value>"{0}" should be assignable from "{1}".</value>
   </data>
 </root>

@@ -12,7 +12,6 @@ namespace Solti.Utils.Proxy
     using Generators;
 
     using DI;
-    using DI.Properties;
     using DI.Internals;
 
     /// <summary>
@@ -71,11 +70,9 @@ namespace Solti.Utils.Proxy
 
         internal static Type GetGeneratedProxyType(Type iface, Type interceptor)
         {
-            if (!iface.IsInterface())
-                throw new ArgumentException(Resources.NOT_AN_INTERFACE, nameof(iface));
-
-            if (!typeof(InterfaceInterceptor<>).MakeGenericType(iface).IsAssignableFrom(interceptor))
-                throw new ArgumentException(string.Format(Resources.Culture, Resources.INVALID_INTERCEPETOR, iface), nameof(interceptor));
+            Ensure.Parameter.IsNotNull(iface, nameof(iface));
+            Ensure.Parameter.IsInterface(iface, nameof(iface));
+            Ensure.Assignable(typeof(InterfaceInterceptor<>).MakeGenericType(iface), interceptor);
 
             return Cache.GetOrAdd((iface, interceptor), () => (Type) typeof(ProxyGenerator<,>)
                 .MakeGenericType(iface, interceptor)

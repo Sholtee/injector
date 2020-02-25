@@ -18,6 +18,19 @@ namespace Solti.Utils.DI.Internals
     {
         private readonly ServiceReferenceCollection FSpawnedServices = new ServiceReferenceCollection();
 
+        private void CheckNotFull(IReadOnlyDictionary<string, object> options) 
+        {
+            int? threshold = options?.GetValueOrDefault<int?>("MaxSpawnedTransientServices");
+
+            if (FSpawnedServices.Count >= threshold)
+                //
+                // Ha ide jutunk az azt jelenti h jo esellyel a tartalmazo injector ujrahasznositasra kerult
+                // (ahogy az a teljesitmeny teszteknel meg is tortent).
+                //
+
+                throw new Exception(string.Format(Resources.Culture, Resources.INJECTOR_SHOULD_BE_RELEASED, threshold));
+        }
+
         private TransientServiceEntry(TransientServiceEntry entry, IServiceContainer owner) : base(entry, owner)
         {
         }
@@ -43,15 +56,7 @@ namespace Solti.Utils.DI.Internals
             Ensure.AreEqual(reference.RelatedInjector.UnderlyingContainer, Owner, Resources.INAPPROPRIATE_OWNERSHIP);
             Ensure.IsNull(reference.Value, $"{nameof(reference)}.{nameof(reference.Value)}");
 
-            int? threshold = options?.GetValueOrDefault<int?>("MaxSpawnedTransientServices");
-
-            if (FSpawnedServices.Count >= threshold)
-                //
-                // Ha ide jutunk az azt jelenti h jo esellyel a tartalmazo injector ujrahasznositasra kerult
-                // (ahogy az a teljesitmeny teszteknel meg is tortent).
-                //
-
-                throw new Exception(string.Format(Resources.Culture, Resources.INJECTOR_SHOULD_BE_RELEASED, threshold));
+            CheckNotFull(options);
 
             reference.Value = Factory(reference.RelatedInjector, Interface);
 

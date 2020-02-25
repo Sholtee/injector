@@ -17,7 +17,6 @@ using static System.Diagnostics.Debug;
 
 namespace Solti.Utils.DI
 {
-    using Properties;
     using Internals;
 
     /// <summary>

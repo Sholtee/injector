@@ -3,20 +3,17 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
-using System;
-
 namespace Solti.Utils.Proxy
 {
     using Generators;
 
-    using DI.Properties;
     using DI.Internals;
 
     /// <summary>
     /// Generates duck typing proxy objects.
     /// </summary>
     /// <typeparam name="TTarget">The class of the target.</typeparam>
-    public class DuckFactory<TTarget>
+    public class DuckFactory<TTarget> where TTarget: class
     {
         internal TTarget Target { get; }
 
@@ -24,17 +21,8 @@ namespace Solti.Utils.Proxy
         /// Creates a new <see cref="DuckFactory{TTarget}"/> instance against the given <paramref name="target"/>.
         /// </summary>
         /// <param name="target">The target of this factory.</param>
-        /// <exception cref="ArgumentException"><typeparamref name="TTarget"/> is not a class.</exception>
-        public DuckFactory(TTarget target)
-        {
-            if (target == null)
-                throw new ArgumentNullException(nameof(target));
-
-            if (!typeof(TTarget).IsClass())
-                throw new ArgumentException(Resources.NOT_A_CLASS);
-
-            Target = target;
-        }
+        public DuckFactory(TTarget target) =>
+            Target = Ensure.Parameter.IsNotNull(target, nameof(target));
 
         /// <summary>
         /// Generates a proxy object to let the target behave like a <typeparamref name="TInterface"/> instance.

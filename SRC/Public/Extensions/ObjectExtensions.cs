@@ -3,10 +3,10 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
-using System;
-
 namespace Solti.Utils.Proxy
 {
+    using DI.Internals;
+
     /// <summary>
     /// Defines the base class for duck typing.
     /// </summary>
@@ -18,10 +18,9 @@ namespace Solti.Utils.Proxy
         /// <typeparam name="TTarget">The type of the target.</typeparam>
         /// <param name="target">The target instance to which the proxy will be generated.</param>
         /// <returns>The <see cref="DuckFactory{TTarget}"/> instance for the <paramref name="target"/>.</returns>
-        public static DuckFactory<TTarget> Act<TTarget>(this TTarget target)
+        public static DuckFactory<TTarget> Act<TTarget>(this TTarget target) where TTarget: class
         {
-            if (target == null)
-                throw new ArgumentNullException(nameof(target));
+            Ensure.Parameter.IsNotNull(target, nameof(target));
 
             return new DuckFactory<TTarget>(target);
         }

@@ -82,7 +82,14 @@ namespace Solti.Utils.DI.Internals
         public static void Supports(ITypeResolver resolver, Type @interface) 
         {
             if (!resolver.Supports(@interface))
-                throw new NotSupportedException(string.Format(Resources.Culture, Resources.INTERFACE_NOT_SUPPORTED, @interface));
-        }  
+                throw new InvalidOperationException(string.Format(Resources.Culture, Resources.INTERFACE_NOT_SUPPORTED, @interface));
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void Assignable(Type @base, Type descendant) 
+        {
+            if (!@base.IsAssignableFrom(descendant))
+                throw new InvalidOperationException(string.Format(Resources.Culture, Resources.NOT_ASSIGNABLE, @base, descendant));
+        }
     }
 }

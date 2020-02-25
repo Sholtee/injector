@@ -9,9 +9,10 @@
 //------------------------------------------------------------------------------
 
 namespace Solti.Utils.DI.Properties {
+    using System;
     using System.Reflection;
-    using Internals;
-
+    
+    
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>
@@ -22,9 +23,6 @@ namespace Solti.Utils.DI.Properties {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-#if DEBUG
-    [ExcludeFromCoverage]
-#endif
     internal class Resources {
         
         private static global::System.Resources.ResourceManager resourceMan;
@@ -199,15 +197,6 @@ namespace Solti.Utils.DI.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Interceptor must be an InterfaceInterceptor&lt;{0}&gt; descendant..
-        /// </summary>
-        internal static string INVALID_INTERCEPETOR {
-            get {
-                return ResourceManager.GetString("INVALID_INTERCEPETOR", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to The value of &quot;{0}&quot; can not be null..
         /// </summary>
         internal static string IS_NULL {
@@ -240,6 +229,15 @@ namespace Solti.Utils.DI.Properties {
         internal static string NOT_AN_INTERFACE {
             get {
                 return ResourceManager.GetString("NOT_AN_INTERFACE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &quot;{0}&quot; should be assignable from &quot;{1}&quot;..
+        /// </summary>
+        internal static string NOT_ASSIGNABLE {
+            get {
+                return ResourceManager.GetString("NOT_ASSIGNABLE", resourceCulture);
             }
         }
         
