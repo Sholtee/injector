@@ -49,13 +49,12 @@ namespace Solti.Utils.DI.Internals
 
         public override bool SetInstance(ServiceReference reference, IReadOnlyDictionary<string, object> options)
         {
-            CheckProducible();
-
             Ensure.Parameter.IsNotNull(reference, nameof(reference));
             Ensure.AreEqual(reference.RelatedServiceEntry, this, Resources.NOT_BELONGING_REFERENCE);
             Ensure.AreEqual(reference.RelatedInjector.UnderlyingContainer, Owner, Resources.INAPPROPRIATE_OWNERSHIP);
             Ensure.IsNull(reference.Value, $"{nameof(reference)}.{nameof(reference.Value)}");
 
+            CheckProducible();
             CheckNotFull(options);
 
             reference.Value = Factory(reference.RelatedInjector, Interface);
