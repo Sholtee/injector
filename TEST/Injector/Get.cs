@@ -349,5 +349,19 @@ namespace Solti.Utils.DI.Injector.Tests
             {
             }
         }
+
+        [Test]
+        public void Injector_Get_ShouldThrowIfTheServiceIsNotProducible([Values(Lifetime.Transient, Lifetime.Scoped, Lifetime.Singleton)] Lifetime lifetime) 
+        {
+            Container.Service<IInterface_1, Implementation_1_No_Dep>(lifetime);
+
+            using (IInjector injector = Container.CreateInjector()) 
+            {
+                var setter = (ISupportsProxying) injector.UnderlyingContainer.Get<IInterface_1>();
+                setter.Factory = null;
+
+                Assert.Throws<InvalidOperationException>(() => injector.Get<IInterface_1>(), Resources.NOT_PRODUCIBLE);
+            }
+        }
     }
 }
