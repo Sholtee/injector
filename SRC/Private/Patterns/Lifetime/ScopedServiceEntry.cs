@@ -8,6 +8,8 @@ using System.Collections.Generic;
 
 namespace Solti.Utils.DI.Internals
 {
+    using Properties;
+
     /// <summary>
     /// Describes a scoped service entry.
     /// </summary>
@@ -34,8 +36,8 @@ namespace Solti.Utils.DI.Internals
             CheckProducible();
 
             Ensure.Parameter.IsNotNull(reference, nameof(reference));
-            Ensure.AreEqual(reference.RelatedServiceEntry, this);
-            Ensure.AreEqual(reference.RelatedInjector.UnderlyingContainer, Owner);
+            Ensure.AreEqual(reference.RelatedServiceEntry, this, Resources.NOT_BELONGING_REFERENCE);
+            Ensure.AreEqual(reference.RelatedInjector.UnderlyingContainer, Owner, Resources.INAPPROPRIATE_OWNERSHIP);
             Ensure.IsNull(reference.Value, $"{nameof(reference)}.{nameof(reference.Value)}");
 
             //
@@ -59,6 +61,8 @@ namespace Solti.Utils.DI.Internals
         public override AbstractServiceEntry CopyTo(IServiceContainer target)
         {
             CheckDisposed();
+
+            Ensure.Parameter.IsNotNull(target, nameof(target));
 
             var result = new ScopedServiceEntry(this, target);
             target.Add(result);

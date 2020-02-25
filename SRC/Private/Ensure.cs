@@ -72,14 +72,14 @@ namespace Solti.Utils.DI.Internals
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void IsAssignable(Type @interface, Type implementation)
+        public static void Supports(Type implementation, Type @interface)
         {
             if (!@interface.IsInterfaceOf(implementation))
-                throw new InvalidOperationException(string.Format(Resources.Culture, Resources.NOT_ASSIGNABLE, @interface, implementation));
+                throw new InvalidOperationException(string.Format(Resources.Culture, Resources.INTERFACE_NOT_SUPPORTED, @interface));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void ResolverSupports(ITypeResolver resolver, Type @interface) 
+        public static void Supports(ITypeResolver resolver, Type @interface) 
         {
             if (!resolver.Supports(@interface))
                 throw new NotSupportedException(string.Format(Resources.Culture, Resources.INTERFACE_NOT_SUPPORTED, @interface));

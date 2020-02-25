@@ -47,7 +47,7 @@ namespace Solti.Utils.DI.Internals
             //
 
             Ensure.Parameter.IsNotNull(implementation, nameof(implementation));
-            Ensure.IsAssignable(@interface, implementation);
+            Ensure.Supports(implementation, @interface);
 
             if (!@interface.IsGenericTypeDefinition())
                 Factory = Resolver.Get(implementation);
@@ -75,7 +75,7 @@ namespace Solti.Utils.DI.Internals
             // - A konstruktor pedig az elso peldanyositaskor (lasd Resolver.Get() implementacio).
             //
 
-            Ensure.ResolverSupports(implementation, @interface);
+            Ensure.Supports(implementation, @interface);
 
             Lazy<Type> lazyImplementation = implementation.AsLazy(@interface);
 

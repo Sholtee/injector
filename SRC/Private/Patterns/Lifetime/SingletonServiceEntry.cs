@@ -8,6 +8,8 @@ using System.Collections.Generic;
 
 namespace Solti.Utils.DI.Internals
 {
+    using Properties;
+
     /// <summary>
     /// Describes a singleton service entry.
     /// </summary>
@@ -38,14 +40,14 @@ namespace Solti.Utils.DI.Internals
             CheckProducible();
 
             Ensure.Parameter.IsNotNull(reference, nameof(reference));
-            Ensure.AreEqual(reference.RelatedServiceEntry, this);
-            Ensure.IsNull(reference.Value, $"{nameof(reference)}.{nameof(reference.Value)}");
+            Ensure.AreEqual(reference.RelatedServiceEntry, this, Resources.NOT_BELONGING_REFERENCE);
 
             //
             // Singleton bejegyzeshez mindig sajat injector van letrehozva a deklaralo kontenerbol
             //
 
-            Ensure.AreEqual(reference.RelatedInjector.UnderlyingContainer.Parent, Owner);
+            Ensure.AreEqual(reference.RelatedInjector.UnderlyingContainer.Parent, Owner, Resources.INAPPROPRIATE_OWNERSHIP);
+            Ensure.IsNull(reference.Value, $"{nameof(reference)}.{nameof(reference.Value)}");
 
             //
             // Ha mar le lett gyartva akkor nincs dolgunk, jelezzuk a hivonak h ovlassa ki a korabban 

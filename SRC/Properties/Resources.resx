@@ -136,7 +136,7 @@
     <value>"{0}" must have exactly one (annotated) public constructor.</value>
   </data>
   <data name="INTERFACE_NOT_SUPPORTED" xml:space="preserve">
-    <value>The resolver does not support the given interface: {0}.</value>
+    <value>The implementation does not support the given interface (interface name: {0}).</value>
   </data>
   <data name="INVALID_CONSTRUCTOR" xml:space="preserve">
     <value>All constructor arguments must be an interface/Lazy&lt;interface&gt;.</value>
@@ -152,9 +152,6 @@
   </data>
   <data name="NOT_AN_INTERFACE" xml:space="preserve">
     <value>Parameter must be an interface.</value>
-  </data>
-  <data name="NOT_ASSIGNABLE" xml:space="preserve">
-    <value>The given interface ({0}) is not assignable from the implementation ({1}).</value>
   </data>
   <data name="NOT_A_CLASS" xml:space="preserve">
     <value>Parameter must be a class.</value>
@@ -177,9 +174,6 @@
   <data name="TOO_MANY_CHILDREN" xml:space="preserve">
     <value>A composite entity can not have more than {0} children.</value>
   </data>
-  <data name="INAPPROPRIATE_LIFETIME" xml:space="preserve">
-    <value>The service ({0}) requested a dependency ({1}) that has lower lifetime than the service has. </value>
-  </data>
   <data name="CANT_INSTANTIATE_ABSTRACTS" xml:space="preserve">
     <value>Abstract service ({0}) can not be instantiated.</value>
   </data>
@@ -200,5 +194,11 @@
   </data>
   <data name="CANT_REMOVE_CHILD" xml:space="preserve">
     <value>Can not remove child that is not owned.</value>
+  </data>
+  <data name="INAPPROPRIATE_OWNERSHIP" xml:space="preserve">
+    <value>Inappropriate ownership.</value>
+  </data>
+  <data name="NOT_BELONGING_REFERENCE" xml:space="preserve">
+    <value>The servicereference belongs to an another entry.</value>
   </data>
 </root>
