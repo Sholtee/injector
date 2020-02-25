@@ -105,9 +105,8 @@ namespace Solti.Utils.DI.Internals
         /// <param name="target">The target <see cref="IServiceContainer"/> to which we want to copy this entry.</param>
         public virtual AbstractServiceEntry CopyTo(IServiceContainer target)
         {
-            CheckDisposed();
-
             Ensure.Parameter.IsNotNull(target, nameof(target));
+            Ensure.NotDisposed(this);
 
             target.Add(this);
             return this;

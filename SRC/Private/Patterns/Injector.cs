@@ -5,9 +5,8 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
-
-using static System.Diagnostics.Debug;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -83,17 +82,16 @@ namespace Solti.Utils.DI.Internals
 
         public ServiceReference GetReference(Type iface, string name)
         {
-            CheckDisposed();
-
             Ensure.Parameter.IsNotNull(iface, nameof(iface));
             Ensure.Parameter.IsInterface(iface, nameof(iface));
             Ensure.Parameter.IsNotGenericDefinition(iface, nameof(iface));
+            Ensure.NotDisposed(this);
 
             //
             // Ha vkinek a fuggosege vagyunk akkor a fuggo szerviz itt meg nem lehet legyartva.
             //
 
-            Assert(FGraph.Current?.Value == null, "Already produced services can not request dependencies");
+            Debug.Assert(FGraph.Current?.Value == null, "Already produced services can not request dependencies");
 
             //
             // Bejegyzes lekerdezese.
@@ -153,9 +151,8 @@ namespace Solti.Utils.DI.Internals
 
         void IInjectorEx.Instantiate(ServiceReference requested)
         {
-            Assert(requested?.RelatedInjector == this);
-
-            CheckDisposed();
+            Ensure.NotDisposed(this);
+            Ensure.AreEqual(requested?.RelatedInjector, this);        
 
             CheckBreakTheRuleOfStrictDI(requested);
 
@@ -174,7 +171,7 @@ namespace Solti.Utils.DI.Internals
 
         IInjectorEx IInjectorEx.CreateSibling(IServiceContainer parent)
         {
-            CheckDisposed();
+            Ensure.NotDisposed(this);
 
             return new Injector
             (

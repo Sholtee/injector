@@ -23,7 +23,7 @@ namespace Solti.Utils.DI.Internals
                 Type implementation = resolver.Resolve(@interface);
 
                 Ensure.IsNotNull(implementation, nameof(implementation));
-                Ensure.Supports(implementation, @interface);
+                Ensure.Type.Supports(implementation, @interface);
 
                 return implementation;
             }        

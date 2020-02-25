@@ -84,7 +84,7 @@ namespace Solti.Utils.DI.Internals
         {
             get
             {
-                CheckDisposed();
+                Ensure.NotDisposed(this);
 
                 using (FLock.AcquireReaderLock())
                 {
@@ -108,10 +108,9 @@ namespace Solti.Utils.DI.Internals
         /// </summary>
         public virtual void AddChild(TInterface child)
         {
-            CheckDisposed();
-
             Ensure.Parameter.IsNotNull(child, nameof(child));
             Ensure.IsNull(child.Parent, $"{nameof(child)}.{nameof(child.Parent)}");
+            Ensure.NotDisposed(this);
 
             using (FLock.AcquireWriterLock())
             {
@@ -141,10 +140,9 @@ namespace Solti.Utils.DI.Internals
         /// </summary>
         public virtual void RemoveChild(TInterface child)
         {
-            CheckDisposed();
-
             Ensure.Parameter.IsNotNull(child, nameof(child));
             Ensure.AreEqual(child.Parent, Self, Resources.CANT_REMOVE_CHILD);
+            Ensure.NotDisposed(this);
 
             using (FLock.AcquireWriterLock())
             {

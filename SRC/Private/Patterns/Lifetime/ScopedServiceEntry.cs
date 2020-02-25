@@ -33,12 +33,12 @@ namespace Solti.Utils.DI.Internals
 
         public override bool SetInstance(ServiceReference reference, IReadOnlyDictionary<string, object> options)
         {
-            CheckProducible();
-
             Ensure.Parameter.IsNotNull(reference, nameof(reference));
             Ensure.AreEqual(reference.RelatedServiceEntry, this, Resources.NOT_BELONGING_REFERENCE);
             Ensure.AreEqual(reference.RelatedInjector.UnderlyingContainer, Owner, Resources.INAPPROPRIATE_OWNERSHIP);
             Ensure.IsNull(reference.Value, $"{nameof(reference)}.{nameof(reference.Value)}");
+
+            CheckProducible(); // hivja az "Ensure.NotDisposed(this)"-t
 
             //
             // Ha mar le lett gyartva akkor nincs dolgunk, jelezzuk a hivonak h ovlassa ki a korabban 
@@ -60,9 +60,8 @@ namespace Solti.Utils.DI.Internals
 
         public override AbstractServiceEntry CopyTo(IServiceContainer target)
         {
-            CheckDisposed();
-
             Ensure.Parameter.IsNotNull(target, nameof(target));
+            Ensure.NotDisposed(this);
 
             var result = new ScopedServiceEntry(this, target);
             target.Add(result);

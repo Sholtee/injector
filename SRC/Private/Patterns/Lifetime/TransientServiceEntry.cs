@@ -79,9 +79,8 @@ namespace Solti.Utils.DI.Internals
 
         public override AbstractServiceEntry CopyTo(IServiceContainer target)
         {
-            CheckDisposed();
-
             Ensure.Parameter.IsNotNull(target, nameof(target));
+            Ensure.NotDisposed(this);
 
             var result = new TransientServiceEntry(this, target);
             target.Add(result);

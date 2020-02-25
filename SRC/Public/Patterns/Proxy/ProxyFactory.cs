@@ -72,7 +72,7 @@ namespace Solti.Utils.Proxy
         {
             Ensure.Parameter.IsNotNull(iface, nameof(iface));
             Ensure.Parameter.IsInterface(iface, nameof(iface));
-            Ensure.Assignable(typeof(InterfaceInterceptor<>).MakeGenericType(iface), interceptor);
+            Ensure.Type.IsAssignable(typeof(InterfaceInterceptor<>).MakeGenericType(iface), interceptor);
 
             return Cache.GetOrAdd((iface, interceptor), () => (Type) typeof(ProxyGenerator<,>)
                 .MakeGenericType(iface, interceptor)

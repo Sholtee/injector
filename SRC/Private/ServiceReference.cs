@@ -46,8 +46,8 @@ namespace Solti.Utils.DI.Internals
         {
             get 
             {
-                CheckDisposed();
-                
+                Ensure.NotDisposed(this);
+
                 if (DisposeSuppressed)
                     throw new InvalidOperationException(); // TODO
 
@@ -62,19 +62,18 @@ namespace Solti.Utils.DI.Internals
         {
             get
             {
-                CheckDisposed();
+                Ensure.NotDisposed(this);
                 return FValue.Value;
             }
             set 
             {
-                CheckDisposed();
-
                 //
                 // Peldany tipusat ellenorizzuk mert a Factory(), Proxy() stb visszaadhat vicces dolgokat.
                 //
 
                 Ensure.Parameter.IsNotNull(value, nameof(value));
                 Ensure.Parameter.IsInstanceOf(value, RelatedServiceEntry.Interface, nameof(value));
+                Ensure.NotDisposed(this);
 
                 FValue.Value = value;
             }
@@ -90,7 +89,7 @@ namespace Solti.Utils.DI.Internals
         /// </summary>
         public void SuppressDispose() 
         {
-            CheckDisposed();
+            Ensure.NotDisposed(this);
 
             if (DisposeSuppressed) return;
 

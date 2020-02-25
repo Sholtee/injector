@@ -47,7 +47,7 @@ namespace Solti.Utils.DI.Internals
             //
 
             Ensure.Parameter.IsNotNull(implementation, nameof(implementation));
-            Ensure.Supports(implementation, @interface);
+            Ensure.Type.Supports(implementation, @interface);
 
             if (!@interface.IsGenericTypeDefinition())
                 Factory = Resolver.Get(implementation);
@@ -75,7 +75,7 @@ namespace Solti.Utils.DI.Internals
             // - A konstruktor pedig az elso peldanyositaskor (lasd Resolver.Get() implementacio).
             //
 
-            Ensure.Supports(implementation, @interface);
+            Ensure.Type.Supports(implementation, @interface);
 
             Lazy<Type> lazyImplementation = implementation.AsLazy(@interface);
 
@@ -91,7 +91,7 @@ namespace Solti.Utils.DI.Internals
 
         protected void CheckProducible()
         {
-            CheckDisposed();
+            Ensure.NotDisposed(this);
 
             //
             // Ha nincs factory akkor amugy sem lehet peldanyositani a szervizt tok mind1 mi az.

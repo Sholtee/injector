@@ -29,24 +29,48 @@ namespace Solti.Utils.DI.Internals
                 argument ?? throw new ArgumentNullException(name);
 
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            public static void IsNotGenericDefinition(Type t, string name) 
+            public static void IsNotGenericDefinition(System.Type t, string name) 
             {
                 if (t.IsGenericTypeDefinition())
                     throw new ArgumentException(Resources.CANT_INSTANTIATE_GENERICS, name);
             }
 
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            public static void IsInterface(Type argument, string name) 
+            public static void IsInterface(System.Type argument, string name) 
             {
                 if (!argument.IsInterface())
                     throw new ArgumentException(Resources.NOT_AN_INTERFACE, name);
             }
 
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            public static void IsInstanceOf(object argument, Type type, string name) 
+            public static void IsInstanceOf(object argument, System.Type type, string name) 
             {
                 if (!type.IsInstanceOfType(argument)) 
                     throw new ArgumentException(string.Format(Resources.Culture, Resources.INVALID_INSTANCE, type), name);
+            }
+        }
+
+        public static class Type 
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public static void Supports(System.Type implementation, System.Type @interface)
+            {
+                if (!@interface.IsInterfaceOf(implementation))
+                    throw new InvalidOperationException(string.Format(Resources.Culture, Resources.INTERFACE_NOT_SUPPORTED, @interface));
+            }
+
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public static void Supports(ITypeResolver resolver, System.Type @interface)
+            {
+                if (!resolver.Supports(@interface))
+                    throw new InvalidOperationException(string.Format(Resources.Culture, Resources.INTERFACE_NOT_SUPPORTED, @interface));
+            }
+
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public static void IsAssignable(System.Type @base, System.Type descendant)
+            {
+                if (!@base.IsAssignableFrom(descendant))
+                    throw new InvalidOperationException(string.Format(Resources.Culture, Resources.NOT_ASSIGNABLE, @base, descendant));
             }
         }
 
@@ -72,24 +96,10 @@ namespace Solti.Utils.DI.Internals
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void Supports(Type implementation, Type @interface)
+        public static void NotDisposed(IDisposableEx obj) 
         {
-            if (!@interface.IsInterfaceOf(implementation))
-                throw new InvalidOperationException(string.Format(Resources.Culture, Resources.INTERFACE_NOT_SUPPORTED, @interface));
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void Supports(ITypeResolver resolver, Type @interface) 
-        {
-            if (!resolver.Supports(@interface))
-                throw new InvalidOperationException(string.Format(Resources.Culture, Resources.INTERFACE_NOT_SUPPORTED, @interface));
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void Assignable(Type @base, Type descendant) 
-        {
-            if (!@base.IsAssignableFrom(descendant))
-                throw new InvalidOperationException(string.Format(Resources.Culture, Resources.NOT_ASSIGNABLE, @base, descendant));
+            if (obj.Disposed)
+                throw new ObjectDisposedException(null);
         }
     }
 }
