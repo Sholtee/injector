@@ -5,8 +5,7 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
-
-using static System.Diagnostics.Debug;
+using System.Diagnostics;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -18,6 +17,19 @@ namespace Solti.Utils.DI.Internals
     internal class TransientServiceEntry : ProducibleServiceEntry
     {
         private readonly ServiceReferenceCollection FSpawnedServices = new ServiceReferenceCollection();
+
+        private void CheckNotFull(IReadOnlyDictionary<string, object> options) 
+        {
+            int? threshold = options?.GetValueOrDefault<int?>("MaxSpawnedTransientServices");
+
+            if (FSpawnedServices.Count >= threshold)
+                //
+                // Ha ide jutunk az azt jelenti h jo esellyel a tartalmazo injector ujrahasznositasra kerult
+                // (ahogy az a teljesitmeny teszteknel meg is tortent).
+                //
+
+                throw new Exception(string.Format(Resources.Culture, Resources.INJECTOR_SHOULD_BE_RELEASED, threshold));
+        }
 
         private TransientServiceEntry(TransientServiceEntry entry, IServiceContainer owner) : base(entry, owner)
         {
@@ -39,18 +51,12 @@ namespace Solti.Utils.DI.Internals
         {
             CheckProducible();
 
-            Assert(reference.RelatedServiceEntry == this);
-            Assert(reference.RelatedInjector.UnderlyingContainer == Owner);
-   
-            int? threshold = options?.GetValueOrDefault<int?>("MaxSpawnedTransientServices");
+            Ensure.Parameter.IsNotNull(reference, nameof(reference));
+            Ensure.AreEqual(reference.RelatedServiceEntry, this, Resources.NOT_BELONGING_REFERENCE);
+            Ensure.AreEqual(reference.RelatedInjector.UnderlyingContainer, Owner, Resources.INAPPROPRIATE_OWNERSHIP);
+            Ensure.IsNull(reference.Value, $"{nameof(reference)}.{nameof(reference.Value)}");
 
-            if (FSpawnedServices.Count >= threshold)
-                //
-                // Ha ide jutunk az azt jelenti h jo esellyel a tartalmazo injector ujrahasznositasra kerult
-                // (ahogy az a teljesitmeny teszteknel meg is tortent).
-                //
-
-                throw new Exception(string.Format(Resources.Culture, Resources.INJECTOR_SHOULD_BE_RELEASED, threshold));
+            CheckNotFull(options);
 
             reference.Value = Factory(reference.RelatedInjector, Interface);
 
@@ -60,20 +66,21 @@ namespace Solti.Utils.DI.Internals
             // tartjuk szamon az eddig igenyelt peldanyokat.
             //
             // Az Add() hivas megnoveli a "reference" referenciaszamlalojat ezert a Release() hivas (h a
-            // szamlalo 1-en alljon).
+            // szamlalo az eredeti erteken alljon).
             //
 
             FSpawnedServices.Add(reference);   
             reference.Release();
 
-            Assert(reference.RefCount == 1);
+            Debug.Assert(!reference.Disposed);
 
             return true;
         }
 
         public override AbstractServiceEntry CopyTo(IServiceContainer target)
         {
-            CheckDisposed();
+            Ensure.Parameter.IsNotNull(target, nameof(target));
+            Ensure.NotDisposed(this);
 
             var result = new TransientServiceEntry(this, target);
             target.Add(result);

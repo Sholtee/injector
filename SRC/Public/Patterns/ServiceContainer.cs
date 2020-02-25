@@ -17,7 +17,6 @@ using static System.Diagnostics.Debug;
 
 namespace Solti.Utils.DI
 {
-    using Properties;
     using Internals;
 
     /// <summary>
@@ -43,10 +42,8 @@ namespace Solti.Utils.DI
         /// </summary>
         public IServiceContainer Add(AbstractServiceEntry entry)
         {
-            CheckDisposed();
-
-            if (entry == null)
-                throw new ArgumentNullException(nameof(entry));
+            Ensure.Parameter.IsNotNull(entry, nameof(entry));
+            Ensure.NotDisposed(this);
 
             using (FLock.AcquireWriterLock())
             {
@@ -85,13 +82,9 @@ namespace Solti.Utils.DI
         /// </summary>
         public AbstractServiceEntry Get(Type serviceInterface, string name, QueryModes mode)
         {
-            CheckDisposed();
-
-            if (serviceInterface == null)
-                throw new ArgumentNullException(nameof(serviceInterface));
-
-            if (!serviceInterface.IsInterface())
-                throw new ArgumentException(Resources.NOT_AN_INTERFACE, nameof(serviceInterface));
+            Ensure.Parameter.IsNotNull(serviceInterface, nameof(serviceInterface));
+            Ensure.Parameter.IsInterface(serviceInterface, nameof(serviceInterface));
+            Ensure.NotDisposed(this);
 
             IServiceId key = MakeId(serviceInterface);
 
@@ -207,7 +200,7 @@ namespace Solti.Utils.DI
         {
             get
             {
-                CheckDisposed();
+                Ensure.NotDisposed(this);
 
                 using (FLock.AcquireReaderLock())
                 {
@@ -224,7 +217,7 @@ namespace Solti.Utils.DI
         /// <returns>The newly crated <see cref="IEnumerator{AbstractServiceEntry}"/> instance.</returns>
         public IEnumerator<AbstractServiceEntry> GetEnumerator()
         {
-            CheckDisposed();
+            Ensure.NotDisposed(this);
 
             using (FLock.AcquireReaderLock())
             {
@@ -296,7 +289,7 @@ namespace Solti.Utils.DI
         /// <returns>The newly created child.</returns>
         public override IServiceContainer CreateChild()
         {
-            CheckDisposed();
+            Ensure.NotDisposed(this);
 
             return new ServiceContainer(this);
         }

@@ -14,9 +14,11 @@ namespace Solti.Utils.DI.Internals
     /// </summary>
     internal abstract partial class ProducibleServiceEntry : AbstractServiceEntry, ISupportsProxying, ISupportsSpecialization, IHasUnderlyingImplementation
     {
-        public object UnderlyingImplementation { get; }
-
-        internal ProducibleServiceEntry(Type @interface, string name, Lifetime? lifetime, IServiceContainer owner) : base(@interface, name, lifetime ?? throw new ArgumentNullException(nameof(lifetime)), owner ?? throw new ArgumentNullException(nameof(owner))) 
+        internal ProducibleServiceEntry(Type @interface, string name, Lifetime? lifetime, IServiceContainer owner) : base(
+            @interface, 
+            name, 
+            Ensure.Parameter.IsNotNull(lifetime, nameof(lifetime)), 
+            Ensure.Parameter.IsNotNull(owner, nameof(owner))) 
         {
             //
             // Interface-t nem kell ellenorizni (az os megteszi).
@@ -36,7 +38,7 @@ namespace Solti.Utils.DI.Internals
         }
 
         protected ProducibleServiceEntry(Type @interface, string name, Lifetime lifetime, Func<IInjector, Type, object> factory, IServiceContainer owner) : this(@interface, name, lifetime, owner) =>
-            Factory = factory ?? throw new ArgumentNullException(nameof(factory));
+            Factory = Ensure.Parameter.IsNotNull(factory, nameof(factory));
 
         protected ProducibleServiceEntry(Type @interface, string name, Lifetime lifetime, Type implementation, IServiceContainer owner) : this(@interface, name, lifetime, owner)
         {
@@ -44,15 +46,8 @@ namespace Solti.Utils.DI.Internals
             // Interface-t nem kell ellenorizni (az os megteszi).
             //
 
-            if (implementation == null)
-                throw new ArgumentNullException(nameof(implementation));
-
-            //
-            // Implementacio validalas (mukodik generikusokra is).
-            //
-
-            if (!@interface.IsInterfaceOf(implementation))
-                throw new InvalidOperationException(string.Format(Resources.Culture, Resources.NOT_ASSIGNABLE, @interface, implementation));
+            Ensure.Parameter.IsNotNull(implementation, nameof(implementation));
+            Ensure.Type.Supports(implementation, @interface);
 
             if (!@interface.IsGenericTypeDefinition())
                 Factory = Resolver.Get(implementation);
@@ -69,16 +64,18 @@ namespace Solti.Utils.DI.Internals
 
         protected ProducibleServiceEntry(Type @interface, string name, Lifetime lifetime, ITypeResolver implementation, IServiceContainer owner) : this(@interface, name, lifetime, owner)
         {
-            if (implementation == null)
-                throw new ArgumentNullException(nameof(implementation));
+            //
+            // Interface-t nem kell ellenorizni (az os megteszi).
+            //
+
+            Ensure.Parameter.IsNotNull(implementation, nameof(implementation));
 
             //
-            // - Az implementacio az elso hivatkozaskor lesz validalva (lasd AsLazy() implementacio).
+            // - A tenyleges implementacio az elso hivatkozaskor lesz validalva (lasd AsLazy() implementacio).
             // - A konstruktor pedig az elso peldanyositaskor (lasd Resolver.Get() implementacio).
             //
 
-            if (!implementation.Supports(@interface))
-                throw new NotSupportedException(string.Format(Resources.Culture, Resources.INTERFACE_NOT_SUPPORTED, @interface));
+            Ensure.Type.Supports(implementation, @interface);
 
             Lazy<Type> lazyImplementation = implementation.AsLazy(@interface);
 
@@ -94,7 +91,7 @@ namespace Solti.Utils.DI.Internals
 
         protected void CheckProducible()
         {
-            CheckDisposed();
+            Ensure.NotDisposed(this);
 
             //
             // Ha nincs factory akkor amugy sem lehet peldanyositani a szervizt tok mind1 mi az.
@@ -103,6 +100,8 @@ namespace Solti.Utils.DI.Internals
             if (Factory == null)
                 throw new InvalidOperationException(Resources.NOT_PRODUCIBLE);
         }
+
+        public object UnderlyingImplementation { get; }
 
         public override Type Implementation => (UnderlyingImplementation as Lazy<Type>)?.Value ?? (Type) UnderlyingImplementation;
 

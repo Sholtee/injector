@@ -7,12 +7,9 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Reflection;
 
 namespace Solti.Utils.DI.Internals
 {
-    using Properties;
-
     /// <summary>
     /// Encapsulates a service and its dependencies into a reference counted container.
     /// </summary>
@@ -28,7 +25,7 @@ namespace Solti.Utils.DI.Internals
         /// </summary>
         public ServiceReference(AbstractServiceEntry entry, IInjector injector = null)
         {
-            RelatedServiceEntry = entry ?? throw new ArgumentNullException(nameof(entry));
+            RelatedServiceEntry = Ensure.Parameter.IsNotNull(entry, nameof(entry));
             RelatedInjector = injector; // lehet null
         }
 
@@ -49,8 +46,8 @@ namespace Solti.Utils.DI.Internals
         {
             get 
             {
-                CheckDisposed();
-                
+                Ensure.NotDisposed(this);
+
                 if (DisposeSuppressed)
                     throw new InvalidOperationException(); // TODO
 
@@ -65,19 +62,18 @@ namespace Solti.Utils.DI.Internals
         {
             get
             {
-                CheckDisposed();
+                Ensure.NotDisposed(this);
                 return FValue.Value;
             }
             set 
             {
-                CheckDisposed();
-
                 //
                 // Peldany tipusat ellenorizzuk mert a Factory(), Proxy() stb visszaadhat vicces dolgokat.
                 //
 
-                if (value == null || !RelatedServiceEntry.Interface.IsInstanceOfType(value))
-                    throw new InvalidOperationException(string.Format(Resources.Culture, Resources.INVALID_INSTANCE, RelatedServiceEntry.Interface));
+                Ensure.Parameter.IsNotNull(value, nameof(value));
+                Ensure.Parameter.IsInstanceOf(value, RelatedServiceEntry.Interface, nameof(value));
+                Ensure.NotDisposed(this);
 
                 FValue.Value = value;
             }
@@ -93,7 +89,7 @@ namespace Solti.Utils.DI.Internals
         /// </summary>
         public void SuppressDispose() 
         {
-            CheckDisposed();
+            Ensure.NotDisposed(this);
 
             if (DisposeSuppressed) return;
 

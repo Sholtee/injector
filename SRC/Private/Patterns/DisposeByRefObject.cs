@@ -25,7 +25,7 @@ namespace Solti.Utils.DI.Internals
         {
             lock (FLock)
             {
-                CheckDisposed();
+                Ensure.NotDisposed(this);
                 return ++RefCount;
             }
         }
@@ -38,7 +38,7 @@ namespace Solti.Utils.DI.Internals
         {
             lock (FLock)
             {
-                CheckDisposed();
+                Ensure.NotDisposed(this);
                 if (--RefCount == 0) Dispose();
                 return RefCount;
             }

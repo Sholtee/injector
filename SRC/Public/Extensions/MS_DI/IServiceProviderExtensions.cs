@@ -7,6 +7,8 @@ using System;
 
 namespace Solti.Utils.DI
 {
+    using Internals;
+
     /// <summary>
     /// Defines several handy extensions for the <see cref="IServiceProvider"/> interface.
     /// </summary>
@@ -15,8 +17,11 @@ namespace Solti.Utils.DI
         /// <summary>
         /// Gets the service instance associated with the given interface.
         /// </summary>
-        public static TInterface GetService<TInterface>(this IServiceProvider self) where TInterface: class => self != null 
-            ? (TInterface) self.GetService(typeof(TInterface)) 
-            : throw new ArgumentNullException(nameof(self));
+        public static TInterface GetService<TInterface>(this IServiceProvider self) where TInterface : class
+        {
+            Ensure.Parameter.IsNotNull(self, nameof(self));
+
+            return (TInterface) self.GetService(typeof(TInterface));
+        }
     }
 }

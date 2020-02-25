@@ -3,13 +3,13 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
-using System;
 using System.Linq;
 using System.Reflection;
 
 namespace Solti.Utils.DI
 {
     using Annotations;
+    using Internals;
 
     public static partial class IServiceContainerExtensions
     {
@@ -22,11 +22,8 @@ namespace Solti.Utils.DI
         /// <remarks>You can annotate services with the <see cref="ServiceRegistrationAttribute"/> descendants.</remarks>
         public static IServiceContainer Setup(this IServiceContainer container, Assembly assembly)
         {
-            if (container == null)
-                throw new ArgumentNullException(nameof(container));
-
-            if (assembly == null)
-                throw new ArgumentNullException(nameof(assembly));
+            Ensure.Parameter.IsNotNull(container, nameof(container));
+            Ensure.Parameter.IsNotNull(assembly, nameof(assembly));
 
             foreach (TypeInfo ti in assembly.DefinedTypes.Where(t => t.IsClass || t.IsInterface))
                 foreach (ServiceRegistrationAttribute attr in ti.GetCustomAttributes<ServiceRegistrationAttribute>())

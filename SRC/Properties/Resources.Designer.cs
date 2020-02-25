@@ -9,9 +9,10 @@
 //------------------------------------------------------------------------------
 
 namespace Solti.Utils.DI.Properties {
+    using System;
     using System.Reflection;
-    using Internals;
-
+    
+    
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>
@@ -22,9 +23,6 @@ namespace Solti.Utils.DI.Properties {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-#if DEBUG
-    [ExcludeFromCoverage]
-#endif
     internal class Resources {
         
         private static global::System.Resources.ResourceManager resourceMan;
@@ -100,6 +98,15 @@ namespace Solti.Utils.DI.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Can not remove child that is not owned..
+        /// </summary>
+        internal static string CANT_REMOVE_CHILD {
+            get {
+                return ResourceManager.GetString("CANT_REMOVE_CHILD", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Circular reference: {0}..
         /// </summary>
         internal static string CIRCULAR_REFERENCE {
@@ -127,11 +134,11 @@ namespace Solti.Utils.DI.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The service ({0}) requested a dependency ({1}) that has lower lifetime than the service has. .
+        ///   Looks up a localized string similar to Inappropriate ownership..
         /// </summary>
-        internal static string INAPPROPRIATE_LIFETIME {
+        internal static string INAPPROPRIATE_OWNERSHIP {
             get {
-                return ResourceManager.GetString("INAPPROPRIATE_LIFETIME", resourceCulture);
+                return ResourceManager.GetString("INAPPROPRIATE_OWNERSHIP", resourceCulture);
             }
         }
         
@@ -145,7 +152,7 @@ namespace Solti.Utils.DI.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The resolver does not support the given interface: {0}..
+        ///   Looks up a localized string similar to The implementation does not support the given interface (interface name: {0})..
         /// </summary>
         internal static string INTERFACE_NOT_SUPPORTED {
             get {
@@ -190,20 +197,11 @@ namespace Solti.Utils.DI.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Interceptor must be an InterfaceInterceptor&lt;{0}&gt; descendant..
+        ///   Looks up a localized string similar to The value of &quot;{0}&quot; can not be null..
         /// </summary>
-        internal static string INVALID_INTERCEPETOR {
+        internal static string IS_NULL {
             get {
-                return ResourceManager.GetString("INVALID_INTERCEPETOR", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Child must have the same parent on which the operation was perfomred..
-        /// </summary>
-        internal static string INVALID_PARENT {
-            get {
-                return ResourceManager.GetString("INVALID_PARENT", resourceCulture);
+                return ResourceManager.GetString("IS_NULL", resourceCulture);
             }
         }
         
@@ -235,7 +233,7 @@ namespace Solti.Utils.DI.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The given interface ({0}) is not assignable from the implementation ({1})..
+        ///   Looks up a localized string similar to &quot;{0}&quot; should be assignable from &quot;{1}&quot;..
         /// </summary>
         internal static string NOT_ASSIGNABLE {
             get {
@@ -244,11 +242,29 @@ namespace Solti.Utils.DI.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Child already has a parent..
+        ///   Looks up a localized string similar to The servicereference belongs to an another entry..
         /// </summary>
-        internal static string NOT_ORPHAN {
+        internal static string NOT_BELONGING_REFERENCE {
             get {
-                return ResourceManager.GetString("NOT_ORPHAN", resourceCulture);
+                return ResourceManager.GetString("NOT_BELONGING_REFERENCE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The given values are not equal..
+        /// </summary>
+        internal static string NOT_EQUAL {
+            get {
+                return ResourceManager.GetString("NOT_EQUAL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The value of &quot;{0}&quot; should be null..
+        /// </summary>
+        internal static string NOT_NULL {
+            get {
+                return ResourceManager.GetString("NOT_NULL", resourceCulture);
             }
         }
         

@@ -27,14 +27,6 @@ namespace Solti.Utils.DI.Internals
         protected virtual void Dispose(bool disposeManaged) => Debug.WriteLineIf(!disposeManaged, $"{GetType()} is disposed by GC. You may be missing a Dispose() call.");
 
         /// <summary>
-        /// Checks whether the object was disposed and throws if yes.
-        /// </summary>
-        protected void CheckDisposed()
-        {
-            if (Disposed) throw new ObjectDisposedException(GetType().FullName);
-        }
-
-        /// <summary>
         /// Destructor of this class.
         /// </summary>
         ~Disposable() => Dispose(disposeManaged: false);
@@ -45,7 +37,7 @@ namespace Solti.Utils.DI.Internals
         [SuppressMessage("Design", "CA1063:Implement IDisposable Correctly", Justification = "The method is implemented correctly.")]
         public void Dispose()
         {
-            CheckDisposed();
+            Ensure.NotDisposed(this);
 
             Dispose(disposeManaged: true);
             GC.SuppressFinalize(this);

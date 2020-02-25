@@ -5,9 +5,10 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading;
+
+using static System.Diagnostics.Debug;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -23,15 +24,20 @@ namespace Solti.Utils.DI.Internals
         private readonly HashSet<TInterface> FChildren = new HashSet<TInterface>();
         private readonly ReaderWriterLockSlim FLock = new ReaderWriterLockSlim();
 
-        private TInterface Self => this as TInterface;
+        private TInterface Self { get; }
 
         #region Protected
         /// <summary>
         /// Creates a new <see cref="Composite{TInterface}"/> instance.
         /// </summary>
         /// <param name="parent">The parent entity. It can be null.</param>
-        protected Composite(TInterface parent) => parent?.AddChild(Self);
+        protected Composite(TInterface parent)
+        {
+            Self = this as TInterface;
+            Assert(Self != null);
 
+            parent?.AddChild(Self);
+        }
         /// <summary>
         /// Disposal logic related to this class.
         /// </summary>
@@ -56,7 +62,7 @@ namespace Solti.Utils.DI.Internals
                     child.Dispose();            
                 }
                 
-                Debug.Assert(!Children.Any());
+                Assert(!Children.Any());
 
                 FLock.Dispose();
             }
@@ -78,7 +84,7 @@ namespace Solti.Utils.DI.Internals
         {
             get
             {
-                CheckDisposed();
+                Ensure.NotDisposed(this);
 
                 using (FLock.AcquireReaderLock())
                 {
@@ -102,13 +108,9 @@ namespace Solti.Utils.DI.Internals
         /// </summary>
         public virtual void AddChild(TInterface child)
         {
-            CheckDisposed();
-
-            if (child == null)
-                throw new ArgumentNullException(nameof(child));
-
-            if (child.Parent != null)
-                throw new InvalidOperationException(Resources.NOT_ORPHAN);
+            Ensure.Parameter.IsNotNull(child, nameof(child));
+            Ensure.IsNull(child.Parent, $"{nameof(child)}.{nameof(child.Parent)}");
+            Ensure.NotDisposed(this);
 
             using (FLock.AcquireWriterLock())
             {
@@ -138,16 +140,14 @@ namespace Solti.Utils.DI.Internals
         /// </summary>
         public virtual void RemoveChild(TInterface child)
         {
-            CheckDisposed();
-
-            if (child == null)
-                throw new ArgumentNullException(nameof(child));
-
-            if (child.Parent != this)
-                throw new InvalidOperationException(Resources.INVALID_PARENT);
+            Ensure.Parameter.IsNotNull(child, nameof(child));
+            Ensure.AreEqual(child.Parent, Self, Resources.CANT_REMOVE_CHILD);
+            Ensure.NotDisposed(this);
 
             using (FLock.AcquireWriterLock())
+            {
                 FChildren.Remove(child);
+            }
 
             child.Parent = null;
         }

@@ -18,6 +18,14 @@ namespace Solti.Utils.DI
         /// <param name="provider">The newly created <see cref="IServiceProvider"/> instance.</param>
         /// <returns>The scope of the newly created provider.</returns>
         /// <exception cref="InvalidOperationException">There are one or more abstract entries in the collection.</exception>
-        public static IDisposable CreateProvider(this IServiceContainer self, out IServiceProvider provider) => (IDisposable) (provider = new ServiceProvider(self ?? throw new ArgumentNullException(nameof(self))));
+        public static IDisposable CreateProvider(this IServiceContainer self, out IServiceProvider provider)
+        {
+            Ensure.Parameter.IsNotNull(self, nameof(self));
+
+            var result = new ServiceProvider(self);
+
+            provider = result;
+            return result;
+        }
     }
 }

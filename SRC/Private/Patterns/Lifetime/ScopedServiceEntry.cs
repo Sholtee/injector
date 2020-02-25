@@ -6,10 +6,10 @@
 using System;
 using System.Collections.Generic;
 
-using static System.Diagnostics.Debug;
-
 namespace Solti.Utils.DI.Internals
 {
+    using Properties;
+
     /// <summary>
     /// Describes a scoped service entry.
     /// </summary>
@@ -33,15 +33,12 @@ namespace Solti.Utils.DI.Internals
 
         public override bool SetInstance(ServiceReference reference, IReadOnlyDictionary<string, object> options)
         {
-            CheckProducible();
+            Ensure.Parameter.IsNotNull(reference, nameof(reference));
+            Ensure.AreEqual(reference.RelatedServiceEntry, this, Resources.NOT_BELONGING_REFERENCE);
+            Ensure.AreEqual(reference.RelatedInjector.UnderlyingContainer, Owner, Resources.INAPPROPRIATE_OWNERSHIP);
+            Ensure.IsNull(reference.Value, $"{nameof(reference)}.{nameof(reference.Value)}");
 
-            Assert(reference.RelatedServiceEntry == this);
-
-            //
-            // Az injectornak kell lennie a bejegyzes tulajdonosanak.
-            //
-
-            Assert(reference.RelatedInjector.UnderlyingContainer == Owner);
+            CheckProducible(); // hivja az "Ensure.NotDisposed(this)"-t
 
             //
             // Ha mar le lett gyartva akkor nincs dolgunk, jelezzuk a hivonak h ovlassa ki a korabban 
@@ -63,7 +60,8 @@ namespace Solti.Utils.DI.Internals
 
         public override AbstractServiceEntry CopyTo(IServiceContainer target)
         {
-            CheckDisposed();
+            Ensure.Parameter.IsNotNull(target, nameof(target));
+            Ensure.NotDisposed(this);
 
             var result = new ScopedServiceEntry(this, target);
             target.Add(result);
