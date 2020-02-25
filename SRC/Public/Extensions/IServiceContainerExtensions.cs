@@ -29,8 +29,7 @@ namespace Solti.Utils.DI
         /// <exception cref="ServiceNotFoundException">If the service could not be found.</exception>
         public static AbstractServiceEntry Get<TInterface>(this IServiceContainer self, string name, QueryModes mode = QueryModes.Default)
         {
-            if (self == null)
-                throw new ArgumentNullException(nameof(self));
+            Ensure.Parameter.IsNotNull(self, nameof(self));
 
             return self.Get(typeof(TInterface), name, mode);
         }
@@ -56,8 +55,11 @@ namespace Solti.Utils.DI
         /// <remarks>You may register generic services (where both the interface and the implementation are open generic types). The system will specialize the implementation if you request the concrete service.</remarks> 
         public static IServiceContainer Service(this IServiceContainer self, Type iface, string name, Type implementation, Lifetime lifetime = Lifetime.Transient)
         {
-            if (self == null)
-                throw new ArgumentNullException(nameof(self));
+            Ensure.Parameter.IsNotNull(self, nameof(self));
+
+            //
+            // Tobbi parametert az xXxServiceEntry konstruktora fogja ellenorizni.
+            //
 
             return self.Add
             (
@@ -88,8 +90,11 @@ namespace Solti.Utils.DI
         /// <remarks>You may register generic services (where the <paramref name="iface"/> parameter is an open generic <see cref="Type"/>). In this case the resolver must return an open generic implementation.</remarks>
         public static IServiceContainer Lazy(this IServiceContainer self, Type iface, string name, ITypeResolver implementation, Lifetime lifetime = Lifetime.Transient)
         {
-            if (self == null)
-                throw new ArgumentNullException(nameof(self));
+            Ensure.Parameter.IsNotNull(self, nameof(self));
+
+            //
+            // Tobbi parametert az xXxServiceEntry konstruktora fogja ellenorizni.
+            //
 
             return self.Add
             (
@@ -145,10 +150,16 @@ namespace Solti.Utils.DI
         /// <remarks>You can register generic services (where the <paramref name="iface"/> parameter is an open generic type).</remarks>
         public static IServiceContainer Factory(this IServiceContainer self, Type iface, string name, Func<IInjector, Type, object> factory, Lifetime lifetime = Lifetime.Transient)
         {
-            if (self == null)
-                throw new ArgumentNullException(nameof(self));
+            Ensure.Parameter.IsNotNull(self, nameof(self));
 
-            return self.Add(ProducibleServiceEntry.Create(lifetime, iface, name, factory, self));
+            //
+            // Tobbi parametert az xXxServiceEntry konstruktora fogja ellenorizni.
+            //
+
+            return self.Add
+            (
+                ProducibleServiceEntry.Create(lifetime, iface, name, factory, self)
+            );
         }
 
         /// <summary>
@@ -174,11 +185,8 @@ namespace Solti.Utils.DI
         /// <exception cref="InvalidOperationException">When proxying not allowed (see above).</exception>
         public static IServiceContainer Proxy(this IServiceContainer self, Type iface, string name, Func<IInjector, Type, object, object> decorator)
         {
-            if (self == null)
-                throw new ArgumentNullException(nameof(self));
-
-            if (decorator == null)
-                throw new ArgumentNullException(nameof(decorator));
+            Ensure.Parameter.IsNotNull(self, nameof(self));
+            Ensure.Parameter.IsNotNull(decorator, nameof(decorator));
 
             AbstractServiceEntry entry = self.Get(iface, name, QueryModes.AllowSpecialization | QueryModes.ThrowOnError);
 
@@ -225,8 +233,11 @@ namespace Solti.Utils.DI
         [SuppressMessage("Reliability", "CA2000:Dispose objects before losing scope", Justification = "The container is responsible for disposing the entry.")]
         public static IServiceContainer Instance(this IServiceContainer self, Type iface, string name, object instance, bool releaseOnDispose = false)
         {
-            if (self == null)
-                throw new ArgumentNullException(nameof(self));
+            Ensure.Parameter.IsNotNull(self, nameof(self));
+
+            //
+            // Tobbi parametert az InstanceServiceEntry konstruktora fogja ellenorizni.
+            //
 
             return self.Add(new InstanceServiceEntry(iface, name, instance, releaseOnDispose, self));
         }
@@ -251,8 +262,7 @@ namespace Solti.Utils.DI
         [SuppressMessage("Reliability", "CA2000:Dispose objects before losing scope", Justification = "The container is responsible for disposing the entry.")]
         public static IServiceContainer Abstract(this IServiceContainer self, Type iface, string name = null)
         {
-            if (self == null)
-                throw new ArgumentNullException(nameof(self));
+            Ensure.Parameter.IsNotNull(self, nameof(self));
 
             return self.Add(new AbstractServiceEntry(iface, name));
         }
