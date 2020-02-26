@@ -190,6 +190,7 @@ namespace Solti.Utils.DI.Internals
         public static Func<IInjector, object> GetLazyFactory(Type iface, OptionsAttribute options) => Cache.GetOrAdd((iface, options?.Name, options?.Optional), () =>
         {
             Ensure.Parameter.IsInterface(iface, nameof(iface));
+            Ensure.Parameter.IsNotGenericDefinition(iface, nameof(iface));
 
             Type delegateType = typeof(Func<>).MakeGenericType(iface);
 
