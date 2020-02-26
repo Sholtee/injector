@@ -48,18 +48,9 @@ namespace Solti.Utils.DI.Internals.Tests
             }
         }
 
-        private static IEnumerable<Func<IInjector, object>> GetResolvers(ConstructorInfo ctor) 
-        {
-            Func<IInjector, Type, object> factory = Resolver.Get(ctor);
-            yield return injector => factory(injector, null);
-
-            Func<IInjector, IReadOnlyDictionary<string, object>, object> factoryEx = Resolver.GetExtended(ctor);
-            yield return injector => factoryEx(injector, new Dictionary<string, object>(0));
-        }
-
         [TestCase(typeof(IDisposable), null, typeof(IServiceFactory), "cica")]
         [TestCase(typeof(Lazy<IDisposable>), "cica", typeof(Lazy<IServiceFactory>), null)]
-        public void Resolver_ShouldResolveDependencies(Type dep1, string name1, Type dep2, string name2)
+        public void Factory_ShouldResolveDependencies(Type dep1, string name1, Type dep2, string name2)
         {
             var mockDisposable = new Mock<IDisposable>();
 
@@ -92,10 +83,19 @@ namespace Solti.Utils.DI.Internals.Tests
 
                 mockInjector.Reset();
             }
+
+            IEnumerable<Func<IInjector, object>> GetResolvers(ConstructorInfo ctor)
+            {
+                Func<IInjector, Type, object> factory = Resolver.Get(ctor);
+                yield return injector => factory(injector, null);
+
+                Func<IInjector, IReadOnlyDictionary<string, object>, object> factoryEx = Resolver.GetExtended(ctor);
+                yield return injector => factoryEx(injector, new Dictionary<string, object>(0));
+            }
         }
 
         [Test]
-        public void Resolver_ShouldHandleParameterlessConstructors()
+        public void Get_ShouldHandleParameterlessConstructors()
         {
             var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
             mockInjector.Setup(i => i.Get(It.IsAny<Type>(), It.IsAny<string>()));
@@ -115,7 +115,7 @@ namespace Solti.Utils.DI.Internals.Tests
         }
 
         [Test]
-        public void Resolver_ShouldHandleExplicitArguments()
+        public void ExtendedFactory_ShouldHandleExplicitArguments()
         {
             var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
             mockInjector.Setup(i => i.Get(It.IsAny<Type>(), It.IsAny<string>()));
@@ -135,9 +135,13 @@ namespace Solti.Utils.DI.Internals.Tests
         }
 
         [Test]
-        public void Resolver_ShouldThrowOnNonInterfaceArguments()
+        public void ExtendedFactory_ShouldThrowOnNonInterfaceArguments()
         {
             ConstructorInfo ctor = typeof(MyClass).GetConstructor(new[] { typeof(IDisposable), typeof(IServiceFactory), typeof(int) });
+
+            //
+            // Sima Get() hivas nem fog mukodni (nem interface parameter).
+            //
 
             Assert.Throws<ArgumentException>(() => Resolver.Get(ctor), Resources.INVALID_CONSTRUCTOR);
 
@@ -146,11 +150,33 @@ namespace Solti.Utils.DI.Internals.Tests
                 .Setup(i => i.Get(It.IsAny<Type>(), It.IsAny<string>()))
                 .Returns<Type, string>((type, name) => null);
 
-            Assert.Throws<ArgumentException>(() => Resolver.GetExtended(ctor)(mockInjector.Object, new Dictionary<string, object>(0)), Resources.INVALID_CONSTRUCTOR_ARGUMENT);
+            //
+            // Ez mukodne viszont nem adtunk meg a nem  interface parametert.
+            //
+
+            Assert.Throws<ArgumentException>(() => Resolver.GetExtended(ctor).Invoke(mockInjector.Object, new Dictionary<string, object>(0)), Resources.INVALID_CONSTRUCTOR_ARGUMENT);
         }
 
         [Test]
-        public void Resolver_ExplicitArgumentsShouldSuppressTheInjectorInvocation()
+        public void Get_ShouldValidate() 
+        {
+            Assert.Throws<ArgumentException>(() => Resolver.Get(typeof(IDisposable)), Resources.PARAMETER_NOT_A_CLASS);
+            Assert.Throws<ArgumentException>(() => Resolver.Get(typeof(IList<>)), Resources.PARAMETER_IS_GENERIC);
+            Assert.Throws<ArgumentException>(() => Resolver.Get(typeof(AbstractClass)), Resources.PARAMETER_IS_ABSTRACT);
+        }
+
+        [Test]
+        public void GetExtended_ShouldValidate()
+        {
+            Assert.Throws<ArgumentException>(() => Resolver.GetExtended(typeof(IDisposable)), Resources.PARAMETER_NOT_A_CLASS);
+            Assert.Throws<ArgumentException>(() => Resolver.GetExtended(typeof(IList<>)), Resources.PARAMETER_IS_GENERIC);
+            Assert.Throws<ArgumentException>(() => Resolver.GetExtended(typeof(AbstractClass)), Resources.PARAMETER_IS_ABSTRACT);
+        }
+
+        private abstract class AbstractClass { }
+
+        [Test]
+        public void ExtendedFactory_ExplicitArgumentsShouldSuppressTheInjectorInvocation()
         {
             var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
             mockInjector
@@ -172,7 +198,7 @@ namespace Solti.Utils.DI.Internals.Tests
         }
 
         [Test]
-        public void Resolver_ExplicitArgumentsCanBeNonInterfaceValues()
+        public void ExtendedFactory_ExplicitArgumentsCanBeNonInterfaceValues()
         {
             const int TEN = 10;
 
@@ -191,7 +217,7 @@ namespace Solti.Utils.DI.Internals.Tests
 
         [TestCase(null)]
         [TestCase("cica")]
-        public void Resolver_GetLazyFactory_ShouldReturnProperFactory(string svcName)
+        public void GetLazyFactory_ShouldReturnProperFactory(string svcName)
         {
             var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
             mockInjector
@@ -214,13 +240,13 @@ namespace Solti.Utils.DI.Internals.Tests
 
         [TestCase(null)]
         [TestCase("cica")]
-        public void Resolver_GetLazyFactory_ShouldCache(string svcName)
+        public void GetLazyFactory_ShouldCache(string svcName)
         {
             Assert.AreSame(Resolver.GetLazyFactory(typeof(IDisposable), new OptionsAttribute { Name = svcName }), Resolver.GetLazyFactory(typeof(IDisposable), new OptionsAttribute { Name = svcName }));
         }
 
         [Test]
-        public void Resolver_Get_ShouldCache()
+        public void Get_ShouldCache()
         {
             Assert.AreSame(Resolver.Get(typeof(Disposable)), Resolver.Get(typeof(Disposable)));
             Assert.AreSame(Resolver.Get(typeof(Disposable).GetApplicableConstructor()), Resolver.Get(typeof(Disposable).GetApplicableConstructor()));
@@ -230,7 +256,7 @@ namespace Solti.Utils.DI.Internals.Tests
         }
 
         [Test]
-        public void Resolver_GetExtended_ShouldCache()
+        public void GetExtended_ShouldCache()
         {
             Assert.AreSame(Resolver.GetExtended(typeof(Disposable)), Resolver.GetExtended(typeof(Disposable)));
             Assert.AreSame(Resolver.GetExtended(typeof(Disposable).GetApplicableConstructor()), Resolver.GetExtended(typeof(Disposable).GetApplicableConstructor()));
