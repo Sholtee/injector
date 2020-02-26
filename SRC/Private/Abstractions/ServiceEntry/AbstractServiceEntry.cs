@@ -97,7 +97,7 @@ namespace Solti.Utils.DI.Internals
         /// <param name="options">The options that control the instantiation process.</param>
         /// <returns>True on success false if the <see cref="Instance"/> had already been set previously.</returns>
         public virtual bool SetInstance(ServiceReference serviceReference, IReadOnlyDictionary<string, object> options) =>
-            throw new InvalidOperationException(string.Format(Resources.Culture, Resources.CANT_INSTANTIATE_ABSTRACTS, this.FriendlyName()));
+            throw new InvalidOperationException(Resources.CANT_INSTANTIATE_ABSTRACTS);
 
         /// <summary>
         /// Copies this entry to a new collection.

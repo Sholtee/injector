@@ -34,8 +34,8 @@ namespace Solti.Utils.DI.Internals.Tests
         {
             var reference = new ServiceReference(new AbstractServiceEntry(typeof(IDisposable), null));
 
-            Assert.Throws<ArgumentNullException>(() => reference.Value = null, Resources.INVALID_INSTANCE);
-            Assert.Throws<ArgumentException>(() => reference.Value = new object(), Resources.INVALID_INSTANCE);
+            Assert.Throws<ArgumentNullException>(() => reference.Value = null);
+            Assert.Throws<InvalidOperationException>(() => reference.Value = new object(), Resources.INVALID_INSTANCE);
             Assert.DoesNotThrow(() => reference.Value = new Disposable());
         }
 

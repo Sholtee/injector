@@ -71,20 +71,11 @@ namespace Solti.Utils.DI.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Abstract service ({0}) can not be instantiated..
+        ///   Looks up a localized string similar to Instantiating abstract services are not allowed..
         /// </summary>
         internal static string CANT_INSTANTIATE_ABSTRACTS {
             get {
                 return ResourceManager.GetString("CANT_INSTANTIATE_ABSTRACTS", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Instantiating open generic types are not allowed..
-        /// </summary>
-        internal static string CANT_INSTANTIATE_GENERICS {
-            get {
-                return ResourceManager.GetString("CANT_INSTANTIATE_GENERICS", resourceCulture);
             }
         }
         
@@ -188,7 +179,7 @@ namespace Solti.Utils.DI.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The returned object must be an instance of &quot;{0}&quot;..
+        ///   Looks up a localized string similar to The object must be an instance of &quot;{0}&quot;..
         /// </summary>
         internal static string INVALID_INSTANCE {
             get {
@@ -211,24 +202,6 @@ namespace Solti.Utils.DI.Properties {
         internal static string NO_STRATEGY {
             get {
                 return ResourceManager.GetString("NO_STRATEGY", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Parameter must be a class..
-        /// </summary>
-        internal static string NOT_A_CLASS {
-            get {
-                return ResourceManager.GetString("NOT_A_CLASS", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Parameter must be an interface..
-        /// </summary>
-        internal static string NOT_AN_INTERFACE {
-            get {
-                return ResourceManager.GetString("NOT_AN_INTERFACE", resourceCulture);
             }
         }
         
@@ -274,6 +247,42 @@ namespace Solti.Utils.DI.Properties {
         internal static string NOT_PRODUCIBLE {
             get {
                 return ResourceManager.GetString("NOT_PRODUCIBLE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Parameter should not be abstract..
+        /// </summary>
+        internal static string PARAMETER_IS_ABSTRACT {
+            get {
+                return ResourceManager.GetString("PARAMETER_IS_ABSTRACT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Parameter should not be generic..
+        /// </summary>
+        internal static string PARAMETER_IS_GENERIC {
+            get {
+                return ResourceManager.GetString("PARAMETER_IS_GENERIC", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Parameter must be a class..
+        /// </summary>
+        internal static string PARAMETER_NOT_A_CLASS {
+            get {
+                return ResourceManager.GetString("PARAMETER_NOT_A_CLASS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Parameter must be an interface..
+        /// </summary>
+        internal static string PARAMETER_NOT_AN_INTERFACE {
+            get {
+                return ResourceManager.GetString("PARAMETER_NOT_AN_INTERFACE", resourceCulture);
             }
         }
         

@@ -72,7 +72,7 @@ namespace Solti.Utils.DI.Internals
                 //
 
                 Ensure.Parameter.IsNotNull(value, nameof(value));
-                Ensure.Parameter.IsInstanceOf(value, RelatedServiceEntry.Interface, nameof(value));
+                Ensure.Type.IsTypeOf(RelatedServiceEntry.Interface, value);
                 Ensure.NotDisposed(this);
 
                 FValue.Value = value;

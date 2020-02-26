@@ -32,21 +32,28 @@ namespace Solti.Utils.DI.Internals
             public static void IsNotGenericDefinition(System.Type t, string name) 
             {
                 if (t.IsGenericTypeDefinition())
-                    throw new ArgumentException(Resources.CANT_INSTANTIATE_GENERICS, name);
+                    throw new ArgumentException(Resources.PARAMETER_IS_GENERIC, name);
             }
 
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public static void IsInterface(System.Type argument, string name) 
             {
                 if (!argument.IsInterface())
-                    throw new ArgumentException(Resources.NOT_AN_INTERFACE, name);
+                    throw new ArgumentException(Resources.PARAMETER_NOT_AN_INTERFACE, name);
             }
 
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            public static void IsInstanceOf(object argument, System.Type type, string name) 
+            public static void IsClass(System.Type argument, string name)
             {
-                if (!type.IsInstanceOfType(argument)) 
-                    throw new ArgumentException(string.Format(Resources.Culture, Resources.INVALID_INSTANCE, type), name);
+                if (!argument.IsClass())
+                    throw new ArgumentException(Resources.PARAMETER_NOT_A_CLASS, name);
+            }
+
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public static void IsNotAbstract(System.Type argument, string name) 
+            {
+                if (argument.IsAbstract())
+                    throw new ArgumentException(Resources.PARAMETER_IS_ABSTRACT, name);
             }
         }
 
@@ -71,6 +78,13 @@ namespace Solti.Utils.DI.Internals
             {
                 if (!@base.IsAssignableFrom(descendant))
                     throw new InvalidOperationException(string.Format(Resources.Culture, Resources.NOT_ASSIGNABLE, @base, descendant));
+            }
+
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public static void IsTypeOf(System.Type type, object instance)
+            {
+                if (!type.IsInstanceOfType(instance))
+                    throw new InvalidOperationException(string.Format(Resources.Culture, Resources.INVALID_INSTANCE, type));
             }
         }
 

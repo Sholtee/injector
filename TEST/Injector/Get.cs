@@ -21,8 +21,8 @@ namespace Solti.Utils.DI.Injector.Tests
         {
             using (IInjector injector = Container.CreateInjector())
             {
-                Assert.Throws<ArgumentException>(() => injector.Get<Object>(), string.Format(Resources.NOT_AN_INTERFACE, "iface"));
-                Assert.Throws<ArgumentException>(() => injector.Get(typeof(Object)), string.Format(Resources.NOT_AN_INTERFACE, "iface"));
+                Assert.Throws<ArgumentException>(() => injector.Get<Object>(), string.Format(Resources.PARAMETER_NOT_AN_INTERFACE, "iface"));
+                Assert.Throws<ArgumentException>(() => injector.Get(typeof(Object)), string.Format(Resources.PARAMETER_NOT_AN_INTERFACE, "iface"));
             }
         }
 
@@ -120,7 +120,7 @@ namespace Solti.Utils.DI.Injector.Tests
 
             using (IInjector injector = Container.CreateInjector())
             {
-                Assert.Throws<ArgumentException>(() => injector.Get(typeof(IInterface_3<>)), Resources.CANT_INSTANTIATE_GENERICS);
+                Assert.Throws<ArgumentException>(() => injector.Get(typeof(IInterface_3<>)), Resources.PARAMETER_IS_GENERIC);
             }          
         }
 
@@ -218,7 +218,7 @@ namespace Solti.Utils.DI.Injector.Tests
 
             using (IInjector injector = Container.CreateInjector()) 
             {
-                Assert.Throws<ArgumentException>(() => injector.Get<IInterface_1>(), string.Format(Resources.INVALID_INSTANCE, typeof(IInterface_1)));
+                Assert.Throws<InvalidOperationException>(() => injector.Get<IInterface_1>(), string.Format(Resources.INVALID_INSTANCE, typeof(IInterface_1)));
             }
         }
 

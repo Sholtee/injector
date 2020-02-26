@@ -120,8 +120,8 @@
   <data name="ALREADY_REGISTERED" xml:space="preserve">
     <value>"{0}" is already registered.</value>
   </data>
-  <data name="CANT_INSTANTIATE_GENERICS" xml:space="preserve">
-    <value>Instantiating open generic types are not allowed.</value>
+  <data name="PARAMETER_IS_GENERIC" xml:space="preserve">
+    <value>Parameter should not be generic.</value>
   </data>
   <data name="CANT_PROXY" xml:space="preserve">
     <value>Creating proxy is not allowed here.</value>
@@ -148,12 +148,12 @@
     <value>Injector must not contain abstract service entries.</value>
   </data>
   <data name="INVALID_INSTANCE" xml:space="preserve">
-    <value>The returned object must be an instance of "{0}".</value>
+    <value>The object must be an instance of "{0}".</value>
   </data>
-  <data name="NOT_AN_INTERFACE" xml:space="preserve">
+  <data name="PARAMETER_NOT_AN_INTERFACE" xml:space="preserve">
     <value>Parameter must be an interface.</value>
   </data>
-  <data name="NOT_A_CLASS" xml:space="preserve">
+  <data name="PARAMETER_NOT_A_CLASS" xml:space="preserve">
     <value>Parameter must be a class.</value>
   </data>
   <data name="NOT_PRODUCIBLE" xml:space="preserve">
@@ -172,7 +172,7 @@
     <value>A composite entity can not have more than {0} children.</value>
   </data>
   <data name="CANT_INSTANTIATE_ABSTRACTS" xml:space="preserve">
-    <value>Abstract service ({0}) can not be instantiated.</value>
+    <value>Instantiating abstract services are not allowed.</value>
   </data>
   <data name="STRICT_DI" xml:space="preserve">
     <value>Attempt to request a dependency that should live shorter than the requestor should.</value>
@@ -200,5 +200,8 @@
   </data>
   <data name="NOT_ASSIGNABLE" xml:space="preserve">
     <value>"{0}" should be assignable from "{1}".</value>
+  </data>
+  <data name="PARAMETER_IS_ABSTRACT" xml:space="preserve">
+    <value>Parameter should not be abstract.</value>
   </data>
 </root>

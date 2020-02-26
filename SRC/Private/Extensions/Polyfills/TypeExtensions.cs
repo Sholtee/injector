@@ -14,6 +14,8 @@ namespace Solti.Utils.DI.Internals
 
         public static bool IsClass(this Type type) => type.GetFromTypeInfo(ti => ti.IsClass);
 
+        public static bool IsAbstract(this Type type) => type.GetFromTypeInfo(ti => ti.IsAbstract);
+
         public static bool IsInterface(this Type type) => type.GetFromTypeInfo(ti => ti.IsInterface);
 
         public static bool IsGenericType(this Type type) => type.GetFromTypeInfo(ti => ti.IsGenericType);

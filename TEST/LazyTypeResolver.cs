@@ -24,7 +24,7 @@ namespace Solti.Utils.DI.TypeResolver.Tests
         [Test]
         public void Constructor_ShouldThrowOnNonInterfaceTarget()
         {
-            Assert.Throws<ArgumentException>(() => new LazyTypeResolver<object>(AsmPath, TypeName), Resources.NOT_AN_INTERFACE);
+            Assert.Throws<ArgumentException>(() => new LazyTypeResolver<object>(AsmPath, TypeName), Resources.PARAMETER_NOT_AN_INTERFACE);
         }
 
         [Test]

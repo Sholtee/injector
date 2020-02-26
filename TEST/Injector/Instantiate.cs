@@ -60,7 +60,7 @@ namespace Solti.Utils.DI.Injector.Tests
         {
             using (IInjector injector = Container.CreateInjector())
             {
-                Assert.Throws<ArgumentException>(() => injector.Instantiate(typeof(Implementation_3_IInterface_1_Dependant<>)), Resources.CANT_INSTANTIATE_GENERICS);
+                Assert.Throws<ArgumentException>(() => injector.Instantiate(typeof(Implementation_3_IInterface_1_Dependant<>)), Resources.PARAMETER_IS_GENERIC);
             }           
         }
 

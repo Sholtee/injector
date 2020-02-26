@@ -48,14 +48,14 @@ namespace Solti.Utils.DI.Container.Tests
         [Test]
         public void Container_Instance_ShouldBeTypeChecked()
         {
-            Assert.Throws<ArgumentException>(() => Container.Instance(typeof(IInterface_1), new object()), string.Format(Resources.INTERFACE_NOT_SUPPORTED, typeof(IInterface_1)));
+            Assert.Throws<InvalidOperationException>(() => Container.Instance(typeof(IInterface_1), new object()), string.Format(Resources.INTERFACE_NOT_SUPPORTED, typeof(IInterface_1)));
         }
 
         [Test]
         public void Container_Instance_ShouldThrowOnNonInterfaceKey()
         {
-            Assert.Throws<ArgumentException>(() => Container.Instance<Object>(new object()), string.Format(Resources.NOT_AN_INTERFACE, "iface"));
-            Assert.Throws<ArgumentException>(() => Container.Instance(typeof(Object), new object()), string.Format(Resources.NOT_AN_INTERFACE, "iface"));
+            Assert.Throws<ArgumentException>(() => Container.Instance<Object>(new object()), string.Format(Resources.PARAMETER_NOT_AN_INTERFACE, "iface"));
+            Assert.Throws<ArgumentException>(() => Container.Instance(typeof(Object), new object()), string.Format(Resources.PARAMETER_NOT_AN_INTERFACE, "iface"));
         }
 
         [Test]

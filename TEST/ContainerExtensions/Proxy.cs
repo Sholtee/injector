@@ -32,8 +32,8 @@ namespace Solti.Utils.DI.Container.Tests
         [Test]
         public void Container_Proxy_ShouldThrowOnNonInterfaceKey()
         {
-            Assert.Throws<ArgumentException>(() => Container.Proxy<Object>((p1, p2) => null), string.Format(Resources.NOT_AN_INTERFACE, "iface"));
-            Assert.Throws<ArgumentException>(() => Container.Proxy(typeof(Object), (p1, p2, p3) => null), string.Format(Resources.NOT_AN_INTERFACE, "iface"));
+            Assert.Throws<ArgumentException>(() => Container.Proxy<Object>((p1, p2) => null), string.Format(Resources.PARAMETER_NOT_AN_INTERFACE, "iface"));
+            Assert.Throws<ArgumentException>(() => Container.Proxy(typeof(Object), (p1, p2, p3) => null), string.Format(Resources.PARAMETER_NOT_AN_INTERFACE, "iface"));
         }
 
         [TestCase(Lifetime.Transient)]

@@ -48,6 +48,13 @@ namespace Solti.Utils.DI.Internals
             return null;
         }
 
+        private static void EnsureCanBeInstantiated(Type type) 
+        {
+            Ensure.Parameter.IsClass(type, nameof(type));
+            Ensure.Parameter.IsNotAbstract(type, nameof(type));
+            Ensure.Parameter.IsNotGenericDefinition(type, nameof(type));
+        }
+
         public static Func<IInjector, Type, object> Get(ConstructorInfo constructor) => Cache.GetOrAdd(constructor, () =>
         {
             //
@@ -88,7 +95,16 @@ namespace Solti.Utils.DI.Internals
             ).Compile();
         });
 
-        public static Func<IInjector, Type, object> Get(Type type) => Cache.GetOrAdd(type, () => Get(type.GetApplicableConstructor()));
+        public static Func<IInjector, Type, object> Get(Type type)
+        {
+            //
+            // Itt validaljunk ne a hivo oldalon (kodduplikalas elkerulese vegett).
+            //
+
+            EnsureCanBeInstantiated(type);
+
+            return Cache.GetOrAdd(type, () => Get(type.GetApplicableConstructor()));
+        }
 
         //
         // Igaz itt nincs idoigenyes operacio ami miatt gyorsitotarazni kene viszont a ServiceEntry-k
@@ -102,7 +118,15 @@ namespace Solti.Utils.DI.Internals
             // gyorsitotarhoz.
             //
 
-            var factory = new Lazy<Func<IInjector, Type, object>>(() => Get(type.Value), LazyThreadSafetyMode.ExecutionAndPublication);
+            var factory = new Lazy<Func<IInjector, Type, object>>
+            (
+                //
+                // "type.Value" erteke validalva lesz a Get() hivasban.
+                //
+
+                () => Get(type.Value), 
+                LazyThreadSafetyMode.ExecutionAndPublication
+            );
 
             return new Func<IInjector, Type, object>((injector, iface) => factory.Value(injector, iface));
         });
@@ -154,19 +178,18 @@ namespace Solti.Utils.DI.Internals
 
         public static Func<IInjector, IReadOnlyDictionary<string, object>, object> GetExtended(Type type) => Cache.GetOrAdd(type, () => 
         {
-            if (!type.IsClass())
-                throw new ArgumentException(Resources.NOT_A_CLASS, nameof(type));
+            //
+            // Itt validaljunk ne a hivo oldalon (kodduplikalas elkerulese vegett).
+            //
 
-            if (type.IsGenericTypeDefinition())
-                throw new ArgumentException(Resources.CANT_INSTANTIATE_GENERICS, nameof(type));
+            EnsureCanBeInstantiated(type);
 
             return GetExtended(type.GetApplicableConstructor());
         });
 
         public static Func<IInjector, object> GetLazyFactory(Type iface, OptionsAttribute options) => Cache.GetOrAdd((iface, options?.Name, options?.Optional), () =>
         {
-            if (!iface.IsInterface())
-                throw new ArgumentException(Resources.NOT_AN_INTERFACE, nameof(iface));
+            Ensure.Parameter.IsInterface(iface, nameof(iface));
 
             Type delegateType = typeof(Func<>).MakeGenericType(iface);
 

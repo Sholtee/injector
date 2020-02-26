@@ -27,8 +27,8 @@ namespace Solti.Utils.DI.Container.Tests
         [Test]
         public void Container_Service_ShouldThrowOnNonInterfaceKey()
         {
-            Assert.Throws<ArgumentException>(() => Container.Service<Object, Object>(), string.Format(Resources.NOT_AN_INTERFACE, "iface"));
-            Assert.Throws<ArgumentException>(() => Container.Service(typeof(Object), typeof(Object)), string.Format(Resources.NOT_AN_INTERFACE, "iface"));
+            Assert.Throws<ArgumentException>(() => Container.Service<Object, Object>(), string.Format(Resources.PARAMETER_NOT_AN_INTERFACE, "iface"));
+            Assert.Throws<ArgumentException>(() => Container.Service(typeof(Object), typeof(Object)), string.Format(Resources.PARAMETER_NOT_AN_INTERFACE, "iface"));
         }
 
         [TestCase(Lifetime.Transient)]
