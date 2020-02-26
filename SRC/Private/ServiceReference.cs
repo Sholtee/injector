@@ -121,6 +121,11 @@ namespace Solti.Utils.DI.Internals
                     (Value as IDisposable)?.Dispose();
                 }
 
+                //
+                // Mivel ez a DisposeSuppressed erteketol fuggetlenul letre van hozva (max ures) ezert mindenkepp
+                // felszabaditjuk.
+                //
+
                 FDependencies.Dispose();
             }
 
