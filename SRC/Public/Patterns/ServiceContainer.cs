@@ -68,7 +68,7 @@ namespace Solti.Utils.DI
                 {
                     FEntries.Add(entry, entry);
                 }
-                catch (ArgumentException e)
+                catch (ArgumentException e) when (FEntries.ContainsKey(entry))
                 {
                     throw new ServiceAlreadyRegisteredException(entry, e);
                 }
