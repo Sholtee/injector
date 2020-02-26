@@ -11,6 +11,7 @@ using NUnit.Framework;
 namespace Solti.Utils.DI.Container.Tests
 {
     using Internals;
+    using Properties;
     
     public partial class ContainerTestsBase<TContainer>
     {
@@ -124,6 +125,26 @@ namespace Solti.Utils.DI.Container.Tests
 
             Assert.That(entry.IsLazy());
             Assert.That(entry.Implementation, Is.EqualTo(typeof(Implementation_1_No_Dep)));
+        }
+
+        [Test]
+        public void Container_Lazy_ShouldValidate() 
+        {
+            Assert.Throws<InvalidOperationException>(() => Container.Lazy<IInterface_1>(new BadResolver(supportsEverything: false)));
+
+            Container.Lazy<IInterface_1>(new BadResolver(supportsEverything: true));
+            Assert.Throws<Exception>(() => _ = Container.Get<IInterface_1>().Implementation , Resources.IS_NULL);
+        }
+
+        private class BadResolver : ITypeResolver
+        {
+            private bool FSupportsEverything;
+
+            public BadResolver(bool supportsEverything) => FSupportsEverything = supportsEverything;
+
+            public Type Resolve(Type iface) => null;
+
+            public bool Supports(Type iface) => FSupportsEverything;
         }
     }
 }
