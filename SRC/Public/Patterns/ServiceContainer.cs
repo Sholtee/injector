@@ -32,7 +32,7 @@ namespace Solti.Utils.DI
         // (generikus bejegyzes lezarasakor) ezert szalbiztosnak kell h legyen.
         //
 
-        private readonly ReaderWriterLockSlim FLock = new ReaderWriterLockSlim();
+        private readonly ReaderWriterLockSlim FLock = new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
 
         private bool ShouldDispose(AbstractServiceEntry entry) => entry.Owner == this;
 
@@ -47,31 +47,23 @@ namespace Solti.Utils.DI
 
             using (FLock.AcquireWriterLock())
             {
-                //
-                // Abstract bejegyzest felul lehet irni (de csak azt).
-                //
-
-                if (FEntries.TryGetValue(entry, out AbstractServiceEntry entryToRemove) && entryToRemove.GetType() == typeof(AbstractServiceEntry))
+                if (FEntries.TryGetValue(entry, out AbstractServiceEntry existing))
                 {
-                    bool removed = FEntries.Remove(entryToRemove);
+                    //
+                    // Abstract bejegyzest felul lehet irni (de csak azt).
+                    //
+
+                    if (existing.GetType() != typeof(AbstractServiceEntry)) 
+                        throw new ServiceAlreadyRegisteredException(existing);
+
+                    bool removed = FEntries.Remove(existing);
                     Assert(removed, "Can't remove entry");
 
-                    if (ShouldDispose(entryToRemove))
-                        entryToRemove.Dispose();
+                    if (ShouldDispose(existing))
+                        existing.Dispose();
                 }
 
-                //
-                // Uj elem felvetele.
-                //
-
-                try
-                {
-                    FEntries.Add(entry, entry);
-                }
-                catch (ArgumentException e) when (FEntries.ContainsKey(entry))
-                {
-                    throw new ServiceAlreadyRegisteredException(entry, e);
-                }
+                FEntries.Add(entry, entry);
             }
 
             return this;
@@ -88,7 +80,7 @@ namespace Solti.Utils.DI
 
             IServiceId key = MakeId(serviceInterface);
 
-            AbstractServiceEntry result;
+            AbstractServiceEntry existing;
 
             using (FLock.AcquireReaderLock())
             {
@@ -96,8 +88,8 @@ namespace Solti.Utils.DI
                 // 1. eset: Vissza tudjuk adni amit kerestunk.
                 //
 
-                if (FEntries.TryGetValue(key, out result))
-                    return result;
+                if (FEntries.TryGetValue(key, out existing))
+                    return existing;
 
                 //
                 // 2. eset: A bejegyzes generikus parjat kell majd feldolgozni.
@@ -108,7 +100,7 @@ namespace Solti.Utils.DI
                                        FEntries.TryGetValue
                                        (
                                            MakeId(serviceInterface.GetGenericTypeDefinition()), 
-                                           out result
+                                           out existing
                                        );
 
                 //
@@ -121,10 +113,17 @@ namespace Solti.Utils.DI
                         : throw new ServiceNotFoundException(key);
             }
 
-            Assert(result.IsGeneric());
+            Assert(existing.IsGeneric());
 
-            try
+            using (FLock.AcquireWriterLock())
             {
+                //
+                // Kozben vki berakta mar?
+                //
+
+                if (FEntries.TryGetValue(key, out AbstractServiceEntry specialized))
+                    return specialized;
+
                 //
                 // Ha nem mi vagyunk a tulajdonosok akkor ertesitjuk a tulajdonost h tipizalja o a bejegyzest
                 // majd masoljuk az uj elemet sajat magunkhoz (epp ugy mint ha "orokoltuk" vna).
@@ -133,16 +132,16 @@ namespace Solti.Utils.DI
                 // deklaralo kollekcio gondoskodjon.
                 //
 
-                if (result.Owner != this)
+                if (existing.Owner != this)
                 {
-                    Assert(result.Owner != null, $"Entry without owner for {serviceInterface}");
+                    Assert(existing.Owner != null, $"Entry without owner for {serviceInterface}");
 
-                    return result
+                    return existing
                         .Owner
                         .Get(serviceInterface, name, QueryModes.AllowSpecialization)
 
                         //
-                        // A CopyTo() belsoleg a this.Add()-et fogja hivni, reszleteket lasd a kivetel kezeloben.
+                        // A CopyTo() is a this.Add()-et fogja belsoleg hivni.
                         //
 
                         .CopyTo(this);
@@ -152,38 +151,8 @@ namespace Solti.Utils.DI
                 // Ha mi vagyunk a tulajdonosok akkor nekunk kell tipizalni majd felvenni a bejegyzest.
                 //
 
-                Add(result = result.Specialize(serviceInterface.GetGenericArguments()));
-                return result;
-            }
-            catch (ServiceAlreadyRegisteredException)
-            {
-                //
-                // Ne a QueryModes.ThrowOnError-t hasznaljuk mert a bejegyzesnek itt mar leteznie KELL.
-                //
-
-                AbstractServiceEntry registered = Get(serviceInterface, name, QueryModes.Default);
-
-                Assert(registered != null);
-
-                //
-                // - Normal mukodes mellett parhuzamos regisztracio csak nehany esetben elkepzelheto (pl ha Singleton 
-                //   generikus lezart parjat igenyeljuk parhuzamosan, leszarmazott kontenerekbol).
-                // - Kulomben az Add() "kivulrol" lett hivva parhuzamosan azonos Interface-Nev parossal.
-                // - NE az AbstractServiceEntry.Equals() overload-jat hivjuk mert az figyelembe veszi a legyartott
-                //   peldanyt is, ami parhuzamos esetben lehet kulombozo (NULL "result"-nal mig !NULL "registered"-nel).
-                //
-
-                Assert(ServiceDefinitionComparer.Instance.Equals(result, registered), "Unexpected concurrency");
-
-                //
-                // A feleslegesen legyartott peldany nem kell
-                //
-
-                Assert(ShouldDispose(result));
-
-                result.Dispose();
-
-                return registered;
+                Add(specialized = existing.Specialize(serviceInterface.GetGenericArguments()));
+                return specialized;
             }
 
             IServiceId MakeId(Type iface) => new ServiceId

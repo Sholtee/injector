@@ -86,3 +86,6 @@
   - *changed:* Requestor name was replaced with the request chain in `ServiceNotFoundException.Data`
   - *done:* Modularized `Injector` (that's why we are still in preview)
   - *fixed:* Circular references could not be found (in certain circumstances)
+- 1.3.0:
+  - *done:* Rewritten `ServiceContainer.[Add|Get]` with performance in mind
+  - *reviewed:* Validations
