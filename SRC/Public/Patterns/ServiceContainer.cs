@@ -134,7 +134,11 @@ namespace Solti.Utils.DI
 
                 if (existing.Owner != this)
                 {
-                    Assert(existing.Owner != null, $"Entry without owner for {serviceInterface}");
+                    //
+                    // Bejegyzesek "kivulrol" jonnek -> ne Assert() hivas legyen.
+                    //
+
+                    Ensure.IsNotNull(existing.Owner, $"{nameof(existing)}.{nameof(existing.Owner)}");
 
                     return existing
                         .Owner
