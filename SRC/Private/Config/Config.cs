@@ -11,7 +11,6 @@ using System.IO;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 #endif
-using System.Threading;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -20,11 +19,7 @@ namespace Solti.Utils.DI.Internals
     /// </summary>
     public partial class Config
     {
-        private static readonly ReaderWriterLockSlim FLock = new ReaderWriterLockSlim();
-
-        private static Config FValue = CreateInstance();
-
-        private static Config CreateInstance() 
+        private static Config CreateInstance()
         {
 #if !NETSTANDARD1_6
             string configFile = Path.ChangeExtension(typeof(Config).Assembly().Location, "config.json");
@@ -32,30 +27,21 @@ namespace Solti.Utils.DI.Internals
             if (File.Exists(configFile))
                 return JsonSerializer.Deserialize<Config>(File.ReadAllText(configFile));
 #endif
-            return new Config();         
+            return new Config();
         }
 
         /// <summary>
         /// The <see cref="Config"/> instance.
         /// </summary>
-        public static Config Value 
-        {
-            get 
-            {
-                using (FLock.AcquireReaderLock())
-                {
-                    return FValue;
-                }
-            }
-        }
+        public static Config Value { get; private set; } = CreateInstance();
 
-        internal static void Reset() // tesztekhez
-        {
-            using (FLock.AcquireWriterLock())
-            {
-                FValue = CreateInstance();
-            }
-        }
+        internal static void Reset() =>
+            //
+            // Mivel a referenciak irasa atomi muvelet ezert nem kell lock a Reset() miatt
+            // (ami amugy is csak tesztekben van hasznalva).
+            //
+
+            Value = CreateInstance();
 
 #if !NETSTANDARD1_6
         /// <summary>
