@@ -394,6 +394,13 @@ using (IInjector injector = container.CreateInjector())
 Leaving the `using` block the `IMyService` instance requested by `MyOtherServiceDependsOnIMyService` won't be released because the holder service still alives (until the declaring container is disposed). This situation is called "captive dependency". To avoid it you have two options:
 - You can declare your consuming service with a `Lifetime` less than or equal to the `Lifetime` of consumed service.
 - Starting from version 1.2.0 you can enable *Strict DI* (disabled by default) in `Injector.config.json` which will instruct the injector to throw if a captive dependency can be found.
+## MS preferred DI
+Microsoft also defines its own [interface](https://docs.microsoft.com/en-us/dotnet/api/system.iserviceprovider?view=netcore-3.1 ) for dependency resolution. Starting from version 1.3.0 this library has built in support for it (see [CreateProvider](https://sholtee.github.io/injector/doc/Solti.Utils.DI.IServiceContainerExtensions.html#Solti_Utils_DI_IServiceContainerExtensions_CreateProvider_Solti_Utils_DI_IServiceContainer_System_IServiceProvider__ ) method).
+
+Differences compared to `IInjector`:
+- Every requested service is optional (`IServiceProvider.GetService()` does not throw if a service can not be found). This rule applies for services requested via constructor parameters as well.
+- You can request named services only by using `OptionsAttribute` (`IServiceProvider.GetService()` has no name parameter).
+- Since the `IServiceProvider` interface is not an `IDisposable` descendant you should release the disposable returned by the `CreateProvider()` to end the scope lifetime.
 ## Resources
 You can browse the [detailed API docs](https://sholtee.github.io/injector ) or the [benchmark results](https://sholtee.github.io/injector/perf/ ).
 ## Supported frameworks
