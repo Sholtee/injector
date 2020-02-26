@@ -13,6 +13,7 @@ namespace Solti.Utils.Proxy.Tests
 {
     using DI;
     using DI.Internals;
+    using DI.Properties;
 
     [TestFixture]
     public class ProxyFactoryTests
@@ -58,6 +59,13 @@ namespace Solti.Utils.Proxy.Tests
             Assert.DoesNotThrow(() => ProxyFactory.Create(typeof(IList<object>), typeof(InterceptorHavingDependency), target: new List<object>(), injector: mockInjector.Object));
 
             mockInjector.Verify(i => i.Get(typeof(IDisposable), null), Times.Once);
+        }
+
+        [Test]
+        public void Create_ShouldValidate() 
+        {
+            Assert.Throws<ArgumentException>(() => ProxyFactory.Create(typeof(object), typeof(InterfaceInterceptor<object>)), Resources.PARAMETER_NOT_AN_INTERFACE);
+            Assert.Throws<InvalidOperationException>(() => ProxyFactory.Create(typeof(IList<object>), typeof(InterfaceInterceptor<IList<int>>), null), Resources.NOT_ASSIGNABLE);
         }
     }
 }

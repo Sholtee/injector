@@ -68,10 +68,10 @@ namespace Solti.Utils.Proxy
                 {targetParamName, target}
             });
 
-        internal static Type GetGeneratedProxyType(Type iface, Type interceptor)
+        private static Type GetGeneratedProxyType(Type iface, Type interceptor)
         {
             Ensure.Parameter.IsNotNull(iface, nameof(iface));
-            Ensure.Parameter.IsInterface(iface, nameof(iface));
+            Ensure.Parameter.IsInterface(iface, nameof(iface)); // TODO: FIXME: ProxyGenerator ervenytelen muveletet dob ha az "iface" parameter nem interface
             Ensure.Type.IsAssignable(typeof(InterfaceInterceptor<>).MakeGenericType(iface), interceptor);
 
             return Cache.GetOrAdd((iface, interceptor), () => (Type) typeof(ProxyGenerator<,>)
