@@ -7,13 +7,12 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 #if NETSTANDARD1_6
 using System.Reflection;
 #endif
 using System.Threading;
-
-using static System.Diagnostics.Debug;
 
 namespace Solti.Utils.DI
 {
@@ -56,14 +55,15 @@ namespace Solti.Utils.DI
                     if (existing.GetType() != typeof(AbstractServiceEntry)) 
                         throw new ServiceAlreadyRegisteredException(existing);
 
-                    bool removed = FEntries.Remove(existing);
-                    Assert(removed, "Can't remove entry");
-
                     if (ShouldDispose(existing))
                         existing.Dispose();
                 }
 
-                FEntries.Add(entry, entry);
+                //
+                // Ha volt mar bejegyzes adott kulccsal akkor felulijra kulomben hozzaadja.
+                //
+
+                FEntries[entry] = entry;
             }
 
             return this;
@@ -113,7 +113,7 @@ namespace Solti.Utils.DI
                         : throw new ServiceNotFoundException(key);
             }
 
-            Assert(existing.IsGeneric());
+            Debug.Assert(existing.IsGeneric());
 
             using (FLock.AcquireWriterLock())
             {
