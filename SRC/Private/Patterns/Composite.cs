@@ -98,12 +98,6 @@ namespace Solti.Utils.DI.Internals
         }
 
         /// <summary>
-        /// Creates a new child. For more information see the <see cref="IComposite{T}"/> interface.
-        /// </summary>
-        /// <returns>The newly created child.</returns>
-        public abstract TInterface CreateChild();
-
-        /// <summary>
         /// Adds a new child to the <see cref="Children"/> list. For more information see the <see cref="IComposite{T}"/> interface.
         /// </summary>
         public virtual void AddChild(TInterface child)

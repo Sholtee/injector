@@ -268,13 +268,35 @@ namespace Solti.Utils.DI
         }
 
         /// <summary>
+        /// Creates a new child container.
+        /// </summary>
+        /// <returns>The newly created child container.</returns>
+        /// <remarks>
+        /// <list type="bullet">
+        /// <item>
+        /// <description>The container created by this method inherits the state of its parent.</description>
+        /// </item>
+        /// <item>
+        /// <description>Lifetime of the created child is managed by its parent.</description>
+        /// </item>
+        /// </list>
+        /// </remarks>
+        /// <exception cref="InvalidOperationException">The count of <see cref="IComposite{IServiceContainer}.Children"/> reached the limit that was set in the <see cref="Config"/>.</exception>
+        public static IServiceContainer CreateChild(this IServiceContainer self)
+        {
+            Ensure.Parameter.IsNotNull(self, nameof(self));
+
+            return new ServiceContainer(self);
+        }
+
+        /// <summary>
         /// Creates a new <see cref="IInjector"/> instance from this container.
         /// </summary>
         /// <param name="self">The target <see cref="IServiceContainer"/>.</param>
         /// <returns>The newly created <see cref="IInjector"/> instance.</returns>
         /// <remarks><see cref="IInjector"/> represents also a scope.</remarks>
         /// <exception cref="InvalidOperationException">There are one or more abstract entries in the collection.</exception>
-        public static IInjector CreateInjector(this IServiceContainer self) => new Injector(self ?? throw new ArgumentNullException(nameof(self)));
+        public static IInjector CreateInjector(this IServiceContainer self) => new Injector(Ensure.Parameter.IsNotNull(self, nameof(self)));
 
         /// <summary>
         /// Registers a new service.

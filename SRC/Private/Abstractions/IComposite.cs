@@ -26,27 +26,10 @@ namespace Solti.Utils.DI.Internals
         IReadOnlyCollection<T> Children { get; }
 
         /// <summary>
-        /// Creates a new child entity and puts it into the <see cref="Children"/> list.
-        /// </summary>
-        /// <returns>The newly created child.</returns>
-        /// <remarks>
-        /// <list type="bullet">
-        /// <item>
-        /// <description>The child created by this method should inherit the state of its parent (but modifying the child should not affect it).</description>
-        /// </item>
-        /// <item>
-        /// <description>Freeing the created child should cause its removal from the <see cref="Children"/> list. Otherwise its parent is responsible for disposing it.</description>
-        /// </item>
-        /// </list>
-        /// </remarks>
-        /// <exception cref="InvalidOperationException">The count of <see cref="Children"/> reached the limit that was set in the <see cref="Config"/>.</exception>
-        T CreateChild();
-
-        /// <summary>
         /// Adds a new child to the <see cref="Children"/> list.
         /// </summary>
         /// <param name="child">The child being added.</param>
-        /// <exception cref="InvalidOperationException">The <paramref name="child"/> has already been added, the parent not matching or the count of <see cref="Children"/> reached the limit that was set in the <see cref="Config"/>.</exception>
+        /// <exception cref="InvalidOperationException">The <paramref name="child"/> has already been added, the parent not matching or the count of <see cref="Children"/> reached the limit that was defined in the <see cref="Config"/>.</exception>
         void AddChild(T child);
 
         /// <summary>

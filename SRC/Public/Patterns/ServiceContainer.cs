@@ -205,12 +205,11 @@ namespace Solti.Utils.DI
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
         #endregion
 
-        #region Protected
         /// <summary>
         /// Creates a new <see cref="ServiceContainer"/> instance copying the entries from the <paramref name="parent"/>.
         /// </summary>
         /// <param name="parent">The parent <see cref="IServiceContainer"/>.</param>
-        protected ServiceContainer(IServiceContainer parent) : base(parent)
+        internal ServiceContainer(IServiceContainer parent) : base(parent)
         {
             FEntries = new Dictionary<IServiceId, AbstractServiceEntry>(parent?.Count ?? 0, ServiceIdComparer.Instance);
             if (parent == null) return;
@@ -246,26 +245,12 @@ namespace Solti.Utils.DI
 
             base.Dispose(disposeManaged);
         }   
-        #endregion
 
-        #region Public
         /// <summary>
         /// Creates a new <see cref="ServiceContainer"/> instance.
         /// </summary>
         public ServiceContainer() : this(null)
         {
         }
-
-        /// <summary>
-        /// Creates a new <see cref="IServiceContainer"/> child.
-        /// </summary>
-        /// <returns>The newly created child.</returns>
-        public override IServiceContainer CreateChild()
-        {
-            Ensure.NotDisposed(this);
-
-            return new ServiceContainer(this);
-        }
-        #endregion
     }
 }

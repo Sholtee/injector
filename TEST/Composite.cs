@@ -14,21 +14,19 @@ namespace Solti.Utils.DI.Internals.Tests
     [TestFixture]
     public sealed class CompositeTests
     {
-        private interface IMyComposite : IComposite<IMyComposite> 
-        { 
+        private interface IMyComposite : IComposite<IMyComposite>
+        {
         }
 
         private class MyComposite : Composite<IMyComposite>, IMyComposite
         {
-            protected MyComposite(IMyComposite parent): base(parent)
-            { 
+            public MyComposite(IMyComposite parent) : base(parent)
+            {
             }
 
-            public MyComposite() : this(null) 
-            { 
+            public MyComposite() : this(null)
+            {
             }
-
-            public override IMyComposite CreateChild() => new MyComposite(this);
         }
 
         [Test]
@@ -36,8 +34,8 @@ namespace Solti.Utils.DI.Internals.Tests
         {
             IMyComposite 
                 root = new MyComposite(),
-                child = root.CreateChild(),
-                grandChild = child.CreateChild();
+                child = new MyComposite(root),
+                grandChild = new MyComposite(child);
 
             root.Dispose();
 
@@ -50,9 +48,9 @@ namespace Solti.Utils.DI.Internals.Tests
         {
             IMyComposite
                 root = new MyComposite(),
-                child = root.CreateChild();
+                child = new MyComposite(root);
 
-            root.CreateChild(); // harmadik
+            new MyComposite(root); // harmadik
 
             Assert.That(root.Children.Count, Is.EqualTo(2));
             child.Dispose();
@@ -64,7 +62,7 @@ namespace Solti.Utils.DI.Internals.Tests
         {
             IMyComposite root = new MyComposite();
 
-            root.CreateChild();
+            new MyComposite(root);
 
             Assert.AreNotSame(root.Children, root.Children);
         }
@@ -74,7 +72,7 @@ namespace Solti.Utils.DI.Internals.Tests
         {
             IMyComposite 
                 root = new MyComposite(),
-                child = root.CreateChild();
+                child = new MyComposite(root);
 
             Assert.Throws<ArgumentNullException>(() => root.AddChild(null));
             Assert.Throws<Exception>(() => root.AddChild(child), Resources.NOT_NULL);
@@ -85,7 +83,7 @@ namespace Solti.Utils.DI.Internals.Tests
         {
             IMyComposite
                 root = new MyComposite(),
-                child = root.CreateChild();
+                child = new MyComposite(root);
 
             Assert.Throws<ArgumentNullException>(() => root.RemoveChild(null));
             Assert.Throws<Exception>(() => root.RemoveChild(new MyComposite()), Resources.NOT_EQUAL);
