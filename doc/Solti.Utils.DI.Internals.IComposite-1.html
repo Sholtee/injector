@@ -166,51 +166,7 @@
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.invalidoperationexception">InvalidOperationException</a></td>
-        <td><p>The <code data-dev-comment-type="paramref" class="paramref">child</code> has already been added, the parent not matching or the count of <a class="xref" href="Solti.Utils.DI.Internals.IComposite-1.html#Solti_Utils_DI_Internals_IComposite_1_Children">Children</a> reached the limit that was set in the <a class="xref" href="Solti.Utils.DI.Internals.Config.html">Config</a>.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <a id="Solti_Utils_DI_Internals_IComposite_1_CreateChild_" data-uid="Solti.Utils.DI.Internals.IComposite`1.CreateChild*"></a>
-  <h4 id="Solti_Utils_DI_Internals_IComposite_1_CreateChild" data-uid="Solti.Utils.DI.Internals.IComposite`1.CreateChild">CreateChild()</h4>
-  <div class="markdown level1 summary"><p>Creates a new child entity and puts it into the <a class="xref" href="Solti.Utils.DI.Internals.IComposite-1.html#Solti_Utils_DI_Internals_IComposite_1_Children">Children</a> list.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">T CreateChild()</code></pre>
-  </div>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">T</span></td>
-        <td><p>The newly created child.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Solti_Utils_DI_Internals_IComposite_1_CreateChild_remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><ul><li>The child created by this method should inherit the state of its parent (but modifying the child should not affect it).</li><li>Freeing the created child should cause its removal from the <a class="xref" href="Solti.Utils.DI.Internals.IComposite-1.html#Solti_Utils_DI_Internals_IComposite_1_Children">Children</a> list. Otherwise its parent is responsible for disposing it.</li></ul>
-</div>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.invalidoperationexception">InvalidOperationException</a></td>
-        <td><p>The count of <a class="xref" href="Solti.Utils.DI.Internals.IComposite-1.html#Solti_Utils_DI_Internals_IComposite_1_Children">Children</a> reached the limit that was set in the <a class="xref" href="Solti.Utils.DI.Internals.Config.html">Config</a>.</p>
+        <td><p>The <code data-dev-comment-type="paramref" class="paramref">child</code> has already been added, the parent not matching or the count of <a class="xref" href="Solti.Utils.DI.Internals.IComposite-1.html#Solti_Utils_DI_Internals_IComposite_1_Children">Children</a> reached the limit that was defined in the <a class="xref" href="Solti.Utils.DI.Internals.Config.html">Config</a>.</p>
 </td>
       </tr>
     </tbody>

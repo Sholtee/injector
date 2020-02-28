@@ -527,23 +527,6 @@ references:
   fullName.vb: Solti.Utils.DI.Internals.Composite(Of TInterface).Children
   nameWithType: Composite<TInterface>.Children
   nameWithType.vb: Composite(Of TInterface).Children
-- uid: Solti.Utils.DI.Internals.Composite`1.CreateChild
-  name: CreateChild()
-  href: Solti.Utils.DI.Internals.Composite-1.html#Solti_Utils_DI_Internals_Composite_1_CreateChild
-  commentId: M:Solti.Utils.DI.Internals.Composite`1.CreateChild
-  fullName: Solti.Utils.DI.Internals.Composite<TInterface>.CreateChild()
-  fullName.vb: Solti.Utils.DI.Internals.Composite(Of TInterface).CreateChild()
-  nameWithType: Composite<TInterface>.CreateChild()
-  nameWithType.vb: Composite(Of TInterface).CreateChild()
-- uid: Solti.Utils.DI.Internals.Composite`1.CreateChild*
-  name: CreateChild
-  href: Solti.Utils.DI.Internals.Composite-1.html#Solti_Utils_DI_Internals_Composite_1_CreateChild_
-  commentId: Overload:Solti.Utils.DI.Internals.Composite`1.CreateChild
-  isSpec: "True"
-  fullName: Solti.Utils.DI.Internals.Composite<TInterface>.CreateChild
-  fullName.vb: Solti.Utils.DI.Internals.Composite(Of TInterface).CreateChild
-  nameWithType: Composite<TInterface>.CreateChild
-  nameWithType.vb: Composite(Of TInterface).CreateChild
 - uid: Solti.Utils.DI.Internals.Composite`1.Dispose(System.Boolean)
   name: Dispose(Boolean)
   href: Solti.Utils.DI.Internals.Composite-1.html#Solti_Utils_DI_Internals_Composite_1_Dispose_System_Boolean_
@@ -798,23 +781,6 @@ references:
   fullName.vb: Solti.Utils.DI.Internals.IComposite(Of T).Children
   nameWithType: IComposite<T>.Children
   nameWithType.vb: IComposite(Of T).Children
-- uid: Solti.Utils.DI.Internals.IComposite`1.CreateChild
-  name: CreateChild()
-  href: Solti.Utils.DI.Internals.IComposite-1.html#Solti_Utils_DI_Internals_IComposite_1_CreateChild
-  commentId: M:Solti.Utils.DI.Internals.IComposite`1.CreateChild
-  fullName: Solti.Utils.DI.Internals.IComposite<T>.CreateChild()
-  fullName.vb: Solti.Utils.DI.Internals.IComposite(Of T).CreateChild()
-  nameWithType: IComposite<T>.CreateChild()
-  nameWithType.vb: IComposite(Of T).CreateChild()
-- uid: Solti.Utils.DI.Internals.IComposite`1.CreateChild*
-  name: CreateChild
-  href: Solti.Utils.DI.Internals.IComposite-1.html#Solti_Utils_DI_Internals_IComposite_1_CreateChild_
-  commentId: Overload:Solti.Utils.DI.Internals.IComposite`1.CreateChild
-  isSpec: "True"
-  fullName: Solti.Utils.DI.Internals.IComposite<T>.CreateChild
-  fullName.vb: Solti.Utils.DI.Internals.IComposite(Of T).CreateChild
-  nameWithType: IComposite<T>.CreateChild
-  nameWithType.vb: IComposite(Of T).CreateChild
 - uid: Solti.Utils.DI.Internals.IComposite`1.Parent
   name: Parent
   href: Solti.Utils.DI.Internals.IComposite-1.html#Solti_Utils_DI_Internals_IComposite_1_Parent
@@ -1124,6 +1090,19 @@ references:
   fullName.vb: Solti.Utils.DI.IServiceContainerExtensions.Abstract(Of TInterface)(Solti.Utils.DI.IServiceContainer, System.String)
   nameWithType: IServiceContainerExtensions.Abstract<TInterface>(IServiceContainer, String)
   nameWithType.vb: IServiceContainerExtensions.Abstract(Of TInterface)(IServiceContainer, String)
+- uid: Solti.Utils.DI.IServiceContainerExtensions.CreateChild(Solti.Utils.DI.IServiceContainer)
+  name: CreateChild(IServiceContainer)
+  href: Solti.Utils.DI.IServiceContainerExtensions.html#Solti_Utils_DI_IServiceContainerExtensions_CreateChild_Solti_Utils_DI_IServiceContainer_
+  commentId: M:Solti.Utils.DI.IServiceContainerExtensions.CreateChild(Solti.Utils.DI.IServiceContainer)
+  fullName: Solti.Utils.DI.IServiceContainerExtensions.CreateChild(Solti.Utils.DI.IServiceContainer)
+  nameWithType: IServiceContainerExtensions.CreateChild(IServiceContainer)
+- uid: Solti.Utils.DI.IServiceContainerExtensions.CreateChild*
+  name: CreateChild
+  href: Solti.Utils.DI.IServiceContainerExtensions.html#Solti_Utils_DI_IServiceContainerExtensions_CreateChild_
+  commentId: Overload:Solti.Utils.DI.IServiceContainerExtensions.CreateChild
+  isSpec: "True"
+  fullName: Solti.Utils.DI.IServiceContainerExtensions.CreateChild
+  nameWithType: IServiceContainerExtensions.CreateChild
 - uid: Solti.Utils.DI.IServiceContainerExtensions.CreateInjector(Solti.Utils.DI.IServiceContainer)
   name: CreateInjector(IServiceContainer)
   href: Solti.Utils.DI.IServiceContainerExtensions.html#Solti_Utils_DI_IServiceContainerExtensions_CreateInjector_Solti_Utils_DI_IServiceContainer_
@@ -1688,12 +1667,6 @@ references:
   commentId: M:Solti.Utils.DI.ServiceContainer.#ctor
   fullName: Solti.Utils.DI.ServiceContainer.ServiceContainer()
   nameWithType: ServiceContainer.ServiceContainer()
-- uid: Solti.Utils.DI.ServiceContainer.#ctor(Solti.Utils.DI.IServiceContainer)
-  name: ServiceContainer(IServiceContainer)
-  href: Solti.Utils.DI.ServiceContainer.html#Solti_Utils_DI_ServiceContainer__ctor_Solti_Utils_DI_IServiceContainer_
-  commentId: M:Solti.Utils.DI.ServiceContainer.#ctor(Solti.Utils.DI.IServiceContainer)
-  fullName: Solti.Utils.DI.ServiceContainer.ServiceContainer(Solti.Utils.DI.IServiceContainer)
-  nameWithType: ServiceContainer.ServiceContainer(IServiceContainer)
 - uid: Solti.Utils.DI.ServiceContainer.#ctor*
   name: ServiceContainer
   href: Solti.Utils.DI.ServiceContainer.html#Solti_Utils_DI_ServiceContainer__ctor_
@@ -1727,19 +1700,6 @@ references:
   isSpec: "True"
   fullName: Solti.Utils.DI.ServiceContainer.Count
   nameWithType: ServiceContainer.Count
-- uid: Solti.Utils.DI.ServiceContainer.CreateChild
-  name: CreateChild()
-  href: Solti.Utils.DI.ServiceContainer.html#Solti_Utils_DI_ServiceContainer_CreateChild
-  commentId: M:Solti.Utils.DI.ServiceContainer.CreateChild
-  fullName: Solti.Utils.DI.ServiceContainer.CreateChild()
-  nameWithType: ServiceContainer.CreateChild()
-- uid: Solti.Utils.DI.ServiceContainer.CreateChild*
-  name: CreateChild
-  href: Solti.Utils.DI.ServiceContainer.html#Solti_Utils_DI_ServiceContainer_CreateChild_
-  commentId: Overload:Solti.Utils.DI.ServiceContainer.CreateChild
-  isSpec: "True"
-  fullName: Solti.Utils.DI.ServiceContainer.CreateChild
-  nameWithType: ServiceContainer.CreateChild
 - uid: Solti.Utils.DI.ServiceContainer.Dispose(System.Boolean)
   name: Dispose(Boolean)
   href: Solti.Utils.DI.ServiceContainer.html#Solti_Utils_DI_ServiceContainer_Dispose_System_Boolean_

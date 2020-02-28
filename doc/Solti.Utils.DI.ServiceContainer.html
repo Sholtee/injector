@@ -119,33 +119,6 @@
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public ServiceContainer()</code></pre>
   </div>
-  <a id="Solti_Utils_DI_ServiceContainer__ctor_" data-uid="Solti.Utils.DI.ServiceContainer.#ctor*"></a>
-  <h4 id="Solti_Utils_DI_ServiceContainer__ctor_Solti_Utils_DI_IServiceContainer_" data-uid="Solti.Utils.DI.ServiceContainer.#ctor(Solti.Utils.DI.IServiceContainer)">ServiceContainer(IServiceContainer)</h4>
-  <div class="markdown level1 summary"><p>Creates a new <a class="xref" href="Solti.Utils.DI.ServiceContainer.html">ServiceContainer</a> instance copying the entries from the <code data-dev-comment-type="paramref" class="paramref">parent</code>.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected ServiceContainer(IServiceContainer parent)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Solti.Utils.DI.IServiceContainer.html">IServiceContainer</a></td>
-        <td><span class="parametername">parent</span></td>
-        <td><p>The parent <a class="xref" href="Solti.Utils.DI.IServiceContainer.html">IServiceContainer</a>.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
   <h3 id="properties">Properties
   </h3>
   <a id="Solti_Utils_DI_ServiceContainer_Count_" data-uid="Solti.Utils.DI.ServiceContainer.Count*"></a>
@@ -215,33 +188,6 @@
       </tr>
     </tbody>
   </table>
-  <a id="Solti_Utils_DI_ServiceContainer_CreateChild_" data-uid="Solti.Utils.DI.ServiceContainer.CreateChild*"></a>
-  <h4 id="Solti_Utils_DI_ServiceContainer_CreateChild" data-uid="Solti.Utils.DI.ServiceContainer.CreateChild">CreateChild()</h4>
-  <div class="markdown level1 summary"><p>Creates a new <a class="xref" href="Solti.Utils.DI.IServiceContainer.html">IServiceContainer</a> child.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override IServiceContainer CreateChild()</code></pre>
-  </div>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Solti.Utils.DI.IServiceContainer.html">IServiceContainer</a></td>
-        <td><p>The newly created child.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="overrides">Overrides</h5>
-  <div><span class="xref">Solti.Utils.DI.Internals.Composite&lt;Solti.Utils.DI.IServiceContainer&gt;.CreateChild()</span></div>
   <a id="Solti_Utils_DI_ServiceContainer_Dispose_" data-uid="Solti.Utils.DI.ServiceContainer.Dispose*"></a>
   <h4 id="Solti_Utils_DI_ServiceContainer_Dispose_System_Boolean_" data-uid="Solti.Utils.DI.ServiceContainer.Dispose(System.Boolean)">Dispose(Boolean)</h4>
   <div class="markdown level1 summary"><p>Disposes this instance freeing all the owned entries.</p>
@@ -436,6 +382,9 @@
   </div>
   <div>
       <a class="xref" href="Solti.Utils.DI.IServiceContainerExtensions.html#Solti_Utils_DI_IServiceContainerExtensions_Abstract_Solti_Utils_DI_IServiceContainer_System_Type_System_String_">IServiceContainerExtensions.Abstract(IServiceContainer, Type, String)</a>
+  </div>
+  <div>
+      <a class="xref" href="Solti.Utils.DI.IServiceContainerExtensions.html#Solti_Utils_DI_IServiceContainerExtensions_CreateChild_Solti_Utils_DI_IServiceContainer_">IServiceContainerExtensions.CreateChild(IServiceContainer)</a>
   </div>
   <div>
       <a class="xref" href="Solti.Utils.DI.IServiceContainerExtensions.html#Solti_Utils_DI_IServiceContainerExtensions_CreateInjector_Solti_Utils_DI_IServiceContainer_">IServiceContainerExtensions.CreateInjector(IServiceContainer)</a>
