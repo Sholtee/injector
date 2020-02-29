@@ -43,14 +43,15 @@ namespace Solti.Utils.DI.Injector.Tests
         }
 
         [Test]
-        public void ServiceProvider_GetService_ShouldReturnNullOnMissingService2()
+        public void ServiceProvider_GetService_ShouldReturnNullOnMissingService2([Values(Lifetime.Transient, Lifetime.Scoped, Lifetime.Singleton)] Lifetime lifetime)
         {
-            Container.Service<IInterface_7<IInterface_1>, Implementation_7_TInterface_Dependant<IInterface_1>>();
+            Container.Service<IInterface_7<IInterface_1>, Implementation_7_TInterface_Dependant<IInterface_1>>(lifetime);
 
             using (Container.CreateProvider(out var provider))
             {
                 var svc = provider.GetService<IInterface_7<IInterface_1>>();
 
+                Assert.That(svc, Is.Not.Null);
                 Assert.That(svc.Interface, Is.Null);
             }
         }

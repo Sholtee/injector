@@ -18,7 +18,7 @@ namespace Solti.Utils.DI.Internals
 
         private readonly ServiceInstantiationStrategySelector FStrategySelector;
 
-        private void CheckBreakTheRuleOfStrictDI(ServiceReference requestedRef) 
+        private void CheckBreaksTheRuleOfStrictDI(ServiceReference requestedRef) 
         {
             if (!Config.Value.Injector.StrictDI) return;
 
@@ -35,7 +35,7 @@ namespace Solti.Utils.DI.Internals
                 throw new RequestNotAllowedException(requestor, requested, Resources.STRICT_DI);
         }
 
-        private Injector(IServiceContainer parent, IReadOnlyDictionary<string, object> factoryOptions, ServiceGraph graph) : base(parent)
+        protected Injector(IServiceContainer parent, IReadOnlyDictionary<string, object> factoryOptions, ServiceGraph graph) : base(parent)
         {
             //
             // Injector nem hozhato letre absztrakt bejegyzesekkel.
@@ -69,6 +69,10 @@ namespace Solti.Utils.DI.Internals
 
             this.Instance<IInjector>(this, releaseOnDispose: false);
         }
+
+        // TODO: meaningful name
+        protected virtual Injector Create(IServiceContainer parent, IReadOnlyDictionary<string, object> factoryOptions, ServiceGraph graph) =>
+            new Injector(parent, factoryOptions, graph);
 
         public Injector(IServiceContainer parent, IReadOnlyDictionary<string, object> factoryOptions = null) : this
         (
@@ -154,7 +158,7 @@ namespace Solti.Utils.DI.Internals
             Ensure.NotDisposed(this);
             Ensure.AreEqual(requested?.RelatedInjector, this);        
 
-            CheckBreakTheRuleOfStrictDI(requested);
+            CheckBreaksTheRuleOfStrictDI(requested);
 
             //
             // Az epp letrehozas alatt levo szerviz kerul az ut legvegere igy a fuggosegei
@@ -173,7 +177,7 @@ namespace Solti.Utils.DI.Internals
         {
             Ensure.NotDisposed(this);
 
-            return new Injector
+            return Create
             (
                 parent,
                 FactoryOptions,
