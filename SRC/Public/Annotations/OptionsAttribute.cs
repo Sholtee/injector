@@ -1,5 +1,5 @@
 ﻿/********************************************************************************
-* QueryOptionsAttribute.cs                                                      *
+* OptionsAttribute.cs                                                           *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
@@ -16,7 +16,6 @@ namespace Solti.Utils.DI.Annotations
         /// <summary>
         /// The name of the service.
         /// </summary>
-        /// <remarks>This option is ignored if you are using the MS preferred DI (<see cref="IServiceProvider"/>).</remarks>
         public string Name { get; set; }
 
         /// <summary>
