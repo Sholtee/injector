@@ -89,3 +89,6 @@
 - 1.3.0:
   - *done:* Rewritten `ServiceContainer.[Add|Get]` with performance in mind
   - *reviewed:* Validations
+- 1.4.0:
+  - *fixed:* `IServiceProvider.GetService()`: Singleton service could not be instantiated if it had a missing dependency ([details](https://github.com/Sholtee/injector/commit/8a9fbe8ac3704972a2f0b4300425f27dd35c3f45 ))
+  - *done*: `IServiceContainer.CreateChild()` is an extension from now
