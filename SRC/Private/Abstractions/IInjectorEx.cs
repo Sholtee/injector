@@ -7,7 +7,7 @@ namespace Solti.Utils.DI.Internals
 {
     internal interface IInjectorEx: IInjector
     {
-        IInjectorEx CreateSibling(IServiceContainer parent);
+        IInjectorEx Spawn(IServiceContainer parent);
         void Instantiate(ServiceReference requested);
     }
 }

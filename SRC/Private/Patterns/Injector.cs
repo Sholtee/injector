@@ -70,8 +70,7 @@ namespace Solti.Utils.DI.Internals
             this.Instance<IInjector>(this, releaseOnDispose: false);
         }
 
-        // TODO: meaningful name
-        protected virtual Injector Create(IServiceContainer parent, IReadOnlyDictionary<string, object> factoryOptions, ServiceGraph graph) =>
+        protected virtual Injector Spawn(IServiceContainer parent, IReadOnlyDictionary<string, object> factoryOptions, ServiceGraph graph) =>
             new Injector(parent, factoryOptions, graph);
 
         public Injector(IServiceContainer parent, IReadOnlyDictionary<string, object> factoryOptions = null) : this
@@ -173,11 +172,11 @@ namespace Solti.Utils.DI.Internals
             }
         }
 
-        IInjectorEx IInjectorEx.CreateSibling(IServiceContainer parent)
+        IInjectorEx IInjectorEx.Spawn(IServiceContainer parent)
         {
             Ensure.NotDisposed(this);
 
-            return Create
+            return Spawn
             (
                 parent,
                 FactoryOptions,
