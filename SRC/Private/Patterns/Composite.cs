@@ -22,7 +22,14 @@ namespace Solti.Utils.DI.Internals
     public abstract class Composite<TInterface>: Disposable, IComposite<TInterface> where TInterface: class, IComposite<TInterface>
     {
         private readonly HashSet<TInterface> FChildren = new HashSet<TInterface>();
+
+        //
+        // Az AddChild() lehet hivva parhuzamosan (Injector-ok letrehozasakor) ezert szalbiztosnak
+        // kell legyunk.
+        //
+
         private readonly ReaderWriterLockSlim FLock = new ReaderWriterLockSlim();
+        private TInterface FParent;
 
         private TInterface Self { get; }
 
@@ -54,7 +61,7 @@ namespace Solti.Utils.DI.Internals
 
                 //
                 // Osszes gyereket Dispose()-oljuk. Mivel a Children amugy is masolatot ad vissza ezert
-                // iteracio kozben is kivehessunk elemet a listabol.
+                // iteracio kozben is kivehetunk elemet a listabol.
                 //
 
                 foreach (TInterface child in Children)
