@@ -23,7 +23,7 @@ namespace Solti.Utils.DI.Container.Tests
             Container
                 .Service<IInterface_1, Implementation_1_No_Dep>(lifetime)
                 .Factory<IInterface_2>(i => new Implementation_2_IInterface_1_Dependant(i.Get<IInterface_1>()), lifetime)
-                .Instance<IDisposable>(new Disposable());
+                .Instance((IDisposable)new Disposable());
 
             IServiceContainer child = Container.CreateChild();
 
@@ -127,5 +127,22 @@ namespace Solti.Utils.DI.Container.Tests
             mockTypeResolver.Verify(i => i.Resolve(It.IsAny<Type>()), Times.Never);
         }
 
+        [Test]
+        public void Container_CreateChild_ShouldNotAddTheChildIfSomethingWentWrong() 
+        {
+            Container.Add(new BadServiceEntry(typeof(IInterface_1), null));
+
+            Assert.Throws<Exception>(() => Container.CreateChild());
+            Assert.That(Container.Children.Count, Is.EqualTo(0));
+        }
+
+        private sealed class BadServiceEntry : AbstractServiceEntry
+        {
+            public BadServiceEntry(Type @interface, string name) : base(@interface, name)
+            {
+            }
+
+            public override AbstractServiceEntry CopyTo(IServiceContainer target) => throw new Exception();
+        }
     }
 }

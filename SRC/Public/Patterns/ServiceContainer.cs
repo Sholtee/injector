@@ -214,9 +214,21 @@ namespace Solti.Utils.DI
             FEntries = new Dictionary<IServiceId, AbstractServiceEntry>(parent?.Count ?? 0, ServiceIdComparer.Instance);
             if (parent == null) return;
 
-            foreach (AbstractServiceEntry entry in parent)
+            try
             {
-                entry.CopyTo(this);
+                foreach (AbstractServiceEntry entry in parent)
+                {
+                    entry.CopyTo(this);
+                }
+            }
+            catch 
+            {
+                //
+                // "base()" hivas miatt mar muszaly dispose-olni.
+                //
+
+                Dispose();
+                throw;
             }
         }
 
