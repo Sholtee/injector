@@ -132,7 +132,7 @@ namespace Solti.Utils.DI.Container.Tests
         {
             Container.Add(new BadServiceEntry(typeof(IInterface_1), null));
 
-            Assert.Throws<Exception>(() => Container.CreateChild());
+            Assert.Throws<InvalidOperationException>(() => Container.CreateChild());
             Assert.That(Container.Children.Count, Is.EqualTo(0));
         }
 
@@ -142,7 +142,7 @@ namespace Solti.Utils.DI.Container.Tests
             {
             }
 
-            public override AbstractServiceEntry CopyTo(IServiceContainer target) => throw new Exception();
+            public override AbstractServiceEntry CopyTo(IServiceContainer target) => throw new InvalidOperationException();
         }
     }
 }
