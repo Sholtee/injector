@@ -29,7 +29,6 @@ namespace Solti.Utils.DI.Internals
         //
 
         private readonly ReaderWriterLockSlim FLock = new ReaderWriterLockSlim();
-        private TInterface FParent;
 
         private TInterface Self { get; }
 
@@ -45,6 +44,7 @@ namespace Solti.Utils.DI.Internals
 
             parent?.AddChild(Self);
         }
+
         /// <summary>
         /// Disposal logic related to this class.
         /// </summary>
