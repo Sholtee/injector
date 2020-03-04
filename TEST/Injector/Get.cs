@@ -203,6 +203,17 @@ namespace Solti.Utils.DI.Injector.Tests
         }
 
         [Test]
+        public void Injector_Get_ShouldThrowOnRecursiveReference([Values(Lifetime.Transient, Lifetime.Scoped, Lifetime.Singleton)] Lifetime lifetime) 
+        {
+            Container.Service<IInterface_1, Implementation_10_RecursiveCDep>(lifetime);
+
+            using (IInjector injector = Container.CreateInjector())
+            {
+                Assert.Throws<CircularReferenceException>(() => injector.Get<IInterface_1>(), string.Join(" -> ", typeof(IInterface_1), typeof(IInterface_1)));
+            }
+        }
+
+        [Test]
         public void Injector_Get_ShouldResolveItself()
         {
             using (IInjector injector = Container.CreateInjector())

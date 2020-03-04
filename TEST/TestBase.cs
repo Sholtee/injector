@@ -202,6 +202,11 @@ namespace Solti.Utils.DI.Tests
             public TInterface Interface { get; }
         }
 
+        public class Implementation_10_RecursiveCDep : IInterface_1 
+        {
+            public Implementation_10_RecursiveCDep(IInterface_1 dep) { }
+        }
+
         public interface IInterface_1_Disaposable : IInterface_1, IDisposable
         {
         }

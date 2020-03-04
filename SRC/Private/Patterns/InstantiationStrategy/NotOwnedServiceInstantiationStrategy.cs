@@ -15,8 +15,10 @@ namespace Solti.Utils.DI.Internals
         public override ServiceReference Exec(IInjectorEx injector, ServiceReference requestor, AbstractServiceEntry requested)
         {
             //
-            // ServiceEntry-t zaroljuk h a lock injectorok kozt is ertelmezve legyen.
-            //
+            // - ServiceEntry-t zaroljuk h a lock injectorok kozt is ertelmezve legyen.
+            // - Ha Singleton szerviz hivatkozik sajat magara itt akkor sincs dead-lock mivel a hivatkozas
+            //   ugyanabban a szalban fog tortenni.
+            // 
 
             lock (requested)
             {
