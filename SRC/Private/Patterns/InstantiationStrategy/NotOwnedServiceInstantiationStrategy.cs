@@ -39,7 +39,7 @@ namespace Solti.Utils.DI.Internals
                 }
 
                 //
-                // - Az uj injector elettartama meg fogy egyezni a bejegyzes elettartamaval (mivel "entry.Owner"
+                // - Az uj injector elettartama meg fogy egyezni a bejegyzes elettartamaval (mivel "requested.Owner"
                 //   gyermeke).
                 // - Az eredeti (felhasznalo altal hivott) injector felszabaditasa nem befolyasolja a szerviz 
                 //   elettartamat.
