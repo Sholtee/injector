@@ -15,6 +15,8 @@ namespace Solti.Utils.DI.Injector.Tests
     [TestFixture]
     public partial class InjectorTestsBase<TContainer>
     {
+        private const int TASK_COUNT = 10;
+
         private static readonly IReadOnlyList<Type> SystemTypes = typeof(List)
             .Assembly
             .GetTypes()
@@ -37,7 +39,7 @@ namespace Solti.Utils.DI.Injector.Tests
 
             Assert.DoesNotThrow(() => Task.WaitAll
             (
-                Enumerable.Repeat(0, 3).Select(_ => Task.Run(Worker)).ToArray()
+                Enumerable.Repeat(0, TASK_COUNT).Select(_ => Task.Run(Worker)).ToArray()
             ));
 
             void Worker() 
@@ -61,7 +63,7 @@ namespace Solti.Utils.DI.Injector.Tests
 
             Assert.DoesNotThrow(() => Task.WaitAll
             (
-                Enumerable.Repeat(0, 3).Select(_ => Task.Run(Worker)).ToArray()
+                Enumerable.Repeat(0, TASK_COUNT).Select(_ => Task.Run(Worker)).ToArray()
             ));
 
             void Worker()
