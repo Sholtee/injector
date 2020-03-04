@@ -11,11 +11,11 @@ namespace Solti.Utils.DI.Internals
     internal static class ReaderWriterLockExtensions
     {
         #region Helpers
-        private sealed class Lock : Disposable
+        private sealed class LockScope : Disposable
         {
             private readonly Action FReleaseAction;
 
-            public Lock(Action acquireAction, Action releaseAction)
+            public LockScope(Action acquireAction, Action releaseAction)
             {
                 acquireAction();
                 FReleaseAction = releaseAction;
@@ -23,7 +23,7 @@ namespace Solti.Utils.DI.Internals
 
             protected override void Dispose(bool disposeManaged)
             {
-                if (disposeManaged) FReleaseAction();
+                FReleaseAction();
                 base.Dispose(disposeManaged);
             }
         }
@@ -32,11 +32,11 @@ namespace Solti.Utils.DI.Internals
         /// <summary>
         /// Enters the lock in write mode.
         /// </summary>
-        public static IDisposable AcquireWriterLock(this ReaderWriterLockSlim src) => new Lock(src.EnterWriteLock, src.ExitWriteLock);
+        public static IDisposable AcquireWriterLock(this ReaderWriterLockSlim src) => new LockScope(src.EnterWriteLock, src.ExitWriteLock);
 
         /// <summary>
         /// Enters the lock in read mode.
         /// </summary>
-        public static IDisposable AcquireReaderLock(this ReaderWriterLockSlim src) =>new Lock(src.EnterReadLock, src.ExitReadLock);
+        public static IDisposable AcquireReaderLock(this ReaderWriterLockSlim src) =>new LockScope(src.EnterReadLock, src.ExitReadLock);
     }
 }
