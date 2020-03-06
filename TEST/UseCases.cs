@@ -195,5 +195,43 @@ namespace Solti.Utils.DI.UseCases
                 return base.Invoke(method, args, extra);
             }
         }
+
+        [Test]
+        public void ContextualDependencyTest() 
+        {
+            Container.Service<IModule, ModuleHavingContextualDep>(Lifetime.Scoped);
+
+            using (IInjector injector = Container.CreateInjector()) 
+            {
+                injector
+                    .UnderlyingContainer
+                    .Instance(new FakeHttpRequest().Act().Like<IHttpRequest>());
+
+                Assert.DoesNotThrow(() => injector.Get<IModule>());
+            }
+        }
+
+        public interface IHttpRequest  // publikusnak kell lennie
+        {
+            string this[string key] { get; }
+        }
+
+        public sealed class FakeHttpRequest // publikusnak kell lennie
+        {
+            public string this[string key] { get => key; }
+        }
+
+        private sealed class ModuleHavingContextualDep : IModule
+        {
+            public ModuleHavingContextualDep(IHttpRequest httpRequest) 
+            {
+                Assert.That(httpRequest, Is.Not.Null);
+                Assert.That(httpRequest["cica"], Is.EqualTo("cica"));
+            }
+
+            public void DoSomething(object arg)
+            {
+            }
+        }
     }
 }

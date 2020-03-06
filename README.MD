@@ -339,23 +339,21 @@ Alternatively you can use the `injector.Instantiate()` function that takes a `Ty
 - The instantiated `Type` does not have to be a registered service.
 - You can pass arbitrary arguments to the constructor via the `explicitArgs` parameter (which means the instantiated type may have non-registered/non-interface dependency).
 ### Resolving contextual dependencies
-Sometimes the service being requested is contextual (for instance resolving the `HttpRequest` that triggered the current session). In this case you can derive a new container for the session:
+Sometimes the service being requested is contextual (for instance the `HttpRequest` that triggered the current session). To solve this issue we can extend the `UnderlyingContainer` that serves the current injector:
 ```csharp
 using Solti.Utils.DI;
 ...
-// Create a temp container for the session
-using (IServiceContainer tempContainer = Container.CreateChild())
+using (IInjector injector = Container.CreateInjector()) 
 {
-  // We assume that there was no service registered with IHttpRequest interface
-  tempContainer.Instance<IHttpRequest>(Request);
-
-  // Disposing the temp container releases the injector as well -> no need for "using"
-  IInjector injector = tempContainer.CreateInjector();
+  injector
+    .UnderlyingContainer
+    .Instance(HttpRequest); // will throw if `HttpRequest` is not an interface 
   ...
 }
 ``` 
-As we learned the requested service always must be an interface but the `HttpRequest` implements nothing. That's the time when the [duck typing](https://en.wikipedia.org/wiki/Duck_typing ) comes into view:
+As we learned the requested service always must be an interface but the [HttpRequest](https://docs.microsoft.com/en-us/dotnet/api/system.web.httprequest?view=netframework-4.8&viewFallbackFrom=netcore-3.1 ) implements nothing. That's the time when the [duck typing](https://en.wikipedia.org/wiki/Duck_typing ) comes into view:
 ```csharp
+using Solti.Utils.DI;
 using Solti.Utils.Proxy;
 ...
 // Custom interface covering the necessary members from the `HttpRequest`
@@ -364,10 +362,11 @@ public interface IHttpRequest
   string this[string key] { get; }
 }
 ...
-using (IServiceContainer tempContainer = Container.CreateChild())
+using (IInjector injector = Container.CreateInjector()) 
 {
-  tempContainer.Instance<IHttpRequest>(Request.Act().Like<IHttpRequest>());
-  IInjector injector = tempContainer.CreateInjector();
+  injector
+    .UnderlyingContainer
+    .Instance(HttpRequest.Act().Like<IHttpRequest>());
   ...
 }
 ```
