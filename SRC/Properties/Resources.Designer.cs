@@ -89,7 +89,7 @@ namespace Solti.Utils.DI.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Can not remove child that is not owned..
+        ///   Looks up a localized string similar to To remove a child call the Dispose method on it..
         /// </summary>
         internal static string CANT_REMOVE_CHILD {
             get {
@@ -319,6 +319,15 @@ namespace Solti.Utils.DI.Properties {
         internal static string UNKNOWN_LIFETIME {
             get {
                 return ResourceManager.GetString("UNKNOWN_LIFETIME", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The value has already been set..
+        /// </summary>
+        internal static string VALUE_ALREADY_SET {
+            get {
+                return ResourceManager.GetString("VALUE_ALREADY_SET", resourceCulture);
             }
         }
     }

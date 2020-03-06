@@ -87,14 +87,14 @@ namespace Solti.Utils.DI.Internals.Tests
 
             Assert.Throws<ArgumentNullException>(() => root.RemoveChild(null));
             Assert.Throws<Exception>(() => root.RemoveChild(new MyComposite()), Resources.NOT_EQUAL);
-            Assert.DoesNotThrow(() => root.RemoveChild(child));
-            Assert.IsNull(child.Parent);
+            Assert.Throws<InvalidOperationException>(() => root.RemoveChild(child), Resources.CANT_REMOVE_CHILD);
 
             //
             // Nem lett felszabaditva.
             //
 
             Assert.DoesNotThrow(child.Dispose);
+            Assert.That(root.Children.Count, Is.EqualTo(0));
         }
     }
 }

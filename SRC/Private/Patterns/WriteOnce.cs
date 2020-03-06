@@ -7,6 +7,8 @@ using System;
 
 namespace Solti.Utils.DI.Internals
 {
+    using Properties;
+
     internal sealed class WriteOnce<T>
     {
         private T FValue;
@@ -21,12 +23,12 @@ namespace Solti.Utils.DI.Internals
         {
             get
             {
-                if (!HasValue && Strict) throw new InvalidOperationException();
+                if (!HasValue && Strict) throw new InvalidOperationException(); // TODO
                 return FValue;
             }
             set
             {
-                if (HasValue) throw new InvalidOperationException();
+                if (HasValue) throw new InvalidOperationException(Resources.VALUE_ALREADY_SET);
                 FValue = value;
                 HasValue = true;
             }

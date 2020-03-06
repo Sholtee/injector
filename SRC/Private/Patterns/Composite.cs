@@ -19,7 +19,7 @@ namespace Solti.Utils.DI.Internals
     /// </summary>
     /// <typeparam name="TInterface">The interface on which we want to apply the composite pattern.</typeparam>
     /// <remarks>This is an internal class so it may change from version to version. Don't use it!</remarks>
-    public abstract class Composite<TInterface>: Disposable, IComposite<TInterface> where TInterface: class, IComposite<TInterface>
+    public abstract class Composite<TInterface> : Disposable, IComposite<TInterface> where TInterface : class, IComposite<TInterface>
     {
         private readonly HashSet<TInterface> FChildren = new HashSet<TInterface>();
 
@@ -29,6 +29,10 @@ namespace Solti.Utils.DI.Internals
         //
 
         private readonly ReaderWriterLockSlim FLock = new ReaderWriterLockSlim();
+
+        private readonly WriteOnce<TInterface> FParent = new WriteOnce<TInterface>(strict: false);
+
+        private bool FDisposing;
 
         private TInterface Self { get; }
 
@@ -42,7 +46,14 @@ namespace Solti.Utils.DI.Internals
             Self = this as TInterface;
             Assert(Self != null);
 
-            parent?.AddChild(Self);
+            if (parent == null)
+                //
+                // Ha nincs szulo akkor kesobbiekben mar nem is lehet beallitani.
+                //
+
+                Parent = parent;
+            else
+                parent.AddChild(Self);
         }
 
         /// <summary>
@@ -53,6 +64,8 @@ namespace Solti.Utils.DI.Internals
         {
             if (disposeManaged)
             {
+                FDisposing = true;
+
                 //
                 // Kivesszuk magunkat a szulo gyerekei kozul (kiveve ha gyoker elemunk van, ott nincs szulo).
                 //
@@ -66,9 +79,9 @@ namespace Solti.Utils.DI.Internals
 
                 foreach (TInterface child in Children)
                 {
-                    child.Dispose();            
+                    child.Dispose();
                 }
-                
+
                 Assert(!Children.Any());
 
                 FLock.Dispose();
@@ -82,7 +95,15 @@ namespace Solti.Utils.DI.Internals
         /// <summary>
         /// The parent of this entity. Can be null.
         /// </summary>
-        public TInterface Parent { get; set; }
+        public TInterface Parent
+        {
+            get => FParent;
+            set
+            {
+                if (!FDisposing)
+                    FParent.Value = value;
+            }
+        }
 
         /// <summary>
         /// The children of this entity.
@@ -130,7 +151,8 @@ namespace Solti.Utils.DI.Internals
 
                     throw new InvalidOperationException(string.Format(Resources.Culture, Resources.TOO_MANY_CHILDREN, maxChildCount));
 
-                FChildren.Add(child);
+                bool succeeded = FChildren.Add(child);
+                Assert(succeeded, $"Child (${child}) already contained");
             }
 
             child.Parent = Self;
@@ -142,15 +164,27 @@ namespace Solti.Utils.DI.Internals
         public virtual void RemoveChild(TInterface child)
         {
             Ensure.Parameter.IsNotNull(child, nameof(child));
-            Ensure.AreEqual(child.Parent, Self, Resources.CANT_REMOVE_CHILD);
+            Ensure.AreEqual(child.Parent, Self, Resources.INAPPROPRIATE_OWNERSHIP);
             Ensure.NotDisposed(this);
+
+            //
+            // Composite leszarmazott gyereket csak Dispose() hivassal lehet eltavolitani.
+            //
+
+            try
+            {
+                child.Parent = null;
+            }
+            catch (InvalidOperationException e) when (e.Message == Resources.VALUE_ALREADY_SET) 
+            {
+                throw new InvalidOperationException(Resources.CANT_REMOVE_CHILD, e);
+            }
 
             using (FLock.AcquireWriterLock())
             {
-                FChildren.Remove(child);
+                bool succeeded = FChildren.Remove(child);
+                Assert(succeeded, $"Child (${child}) already removed");
             }
-
-            child.Parent = null;
         }
         #endregion
     }
