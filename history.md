@@ -94,4 +94,4 @@
   - *done*: `IServiceContainer.CreateChild()` is an extension from now
 - 1.3.2:
   - *fixed:* `ServiceContainer.Ctor()`: Proper cleanup on error ([details](https://github.com/Sholtee/injector/commit/e41e90a64063b77c9cebe0403b552ef729bdb6e3 ))
-  
+  - *done:* Strict Composite behavior  
