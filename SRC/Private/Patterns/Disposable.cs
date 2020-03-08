@@ -6,6 +6,7 @@
 using System;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Solti.Utils.DI.Internals
@@ -54,16 +55,23 @@ namespace Solti.Utils.DI.Internals
             Disposed = true;
         }
 #if !NETSTANDARD1_6
+        private int FDisposing;
+
         /// <summary>
         /// Implements the <see cref="IAsyncDisposable.DisposeAsync"/> method.
         /// </summary>
+        [SuppressMessage("Usage", "CA1816:Dispose methods should call SuppressFinalize", Justification = "The method implements the dispose pattern.")]
         async ValueTask IAsyncDisposable.DisposeAsync()
         {
             //
             // MSDN szerint itt nem dobhatunk ObjectDisposedException kivetelt.
             //
 
+            if (Interlocked.Exchange(ref FDisposing, 1) == 1) return;
+
             await DisposeAsync();
+
+            GC.SuppressFinalize(this);
             Disposed = true;
         }
 #endif
