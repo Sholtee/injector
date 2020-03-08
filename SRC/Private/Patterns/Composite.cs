@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 
 using static System.Diagnostics.Debug;
 
@@ -24,8 +25,7 @@ namespace Solti.Utils.DI.Internals
         private readonly HashSet<TInterface> FChildren = new HashSet<TInterface>();
 
         //
-        // Az AddChild() lehet hivva parhuzamosan (Injector-ok letrehozasakor) ezert szalbiztosnak
-        // kell legyunk.
+        // Az [Add|Remove]Child() lehet hivva parhuzamosan ezert szalbiztosnak kell legyunk.
         //
 
         private readonly ReaderWriterLockSlim FLock = new ReaderWriterLockSlim();
@@ -77,18 +77,36 @@ namespace Solti.Utils.DI.Internals
                 // iteracio kozben is kivehetunk elemet a listabol.
                 //
 
-                foreach (TInterface child in Children)
+                foreach (IDisposable child in Children)
                 {
                     child.Dispose();
                 }
 
-                Assert(!Children.Any());
+                Assert(!FChildren.Any());
 
                 FLock.Dispose();
             }
 
             base.Dispose(disposeManaged);
         }
+#if !NETSTANDARD1_6
+        /// <summary>
+        /// Disposal logic related to this class.
+        /// </summary>
+        protected override async ValueTask DisposeAsync()
+        {
+            FDisposing = true;
+
+            Parent?.RemoveChild(Self);
+
+            foreach (IAsyncDisposable child in Children)
+                await child.DisposeAsync();
+
+            Assert(!FChildren.Any());
+
+            FLock.Dispose();
+        }
+#endif
         #endregion
 
         #region IComposite
