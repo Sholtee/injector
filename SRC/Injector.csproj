@@ -31,6 +31,7 @@
 
   <ItemGroup Condition="$(TargetFramework.StartsWith('netstandard1'))">
     <PackageReference Include="System.ComponentModel" Version="4.*" />
+    <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.*" />   
   </ItemGroup>
 
   <ItemGroup Condition="$(TargetFramework.StartsWith('netstandard2'))">

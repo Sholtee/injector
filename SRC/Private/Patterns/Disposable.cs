@@ -6,6 +6,7 @@
 using System;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using System.Threading.Tasks;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -13,7 +14,10 @@ namespace Solti.Utils.DI.Internals
     /// Implements the <see cref="IDisposable"/> interface.
     /// </summary>
     /// <remarks>This is an internal class so it may change from version to version. Don't use it!</remarks>
-    public class Disposable: IDisposableEx
+    public class Disposable : IDisposableEx
+#if !NETSTANDARD1_6
+        , IAsyncDisposable
+#endif
     {
         /// <summary>
         /// Indicates whether the object was disposed or not.
@@ -25,6 +29,11 @@ namespace Solti.Utils.DI.Internals
         /// </summary>
         /// <param name="disposeManaged">It is set to true on <see cref="IDisposable.Dispose"/> call.</param>
         protected virtual void Dispose(bool disposeManaged) => Debug.WriteLineIf(!disposeManaged, $"{GetType()} is disposed by GC. You may be missing a Dispose() call.");
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting resources asynchronously
+        /// </summary>
+        protected virtual ValueTask DisposeAsync() => default;
 
         /// <summary>
         /// Destructor of this class.
@@ -44,5 +53,19 @@ namespace Solti.Utils.DI.Internals
 
             Disposed = true;
         }
+#if !NETSTANDARD1_6
+        /// <summary>
+        /// Implements the <see cref="IAsyncDisposable.DisposeAsync"/> method.
+        /// </summary>
+        async ValueTask IAsyncDisposable.DisposeAsync()
+        {
+            //
+            // MSDN szerint itt nem dobhatunk ObjectDisposedException kivetelt.
+            //
+
+            await DisposeAsync();
+            Disposed = true;
+        }
+#endif
     }
 }
