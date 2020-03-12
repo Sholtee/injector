@@ -13,6 +13,7 @@ using System.Linq;
 using System.Reflection;
 #endif
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace Solti.Utils.DI
 {
@@ -233,7 +234,7 @@ namespace Solti.Utils.DI
         }
 
         /// <summary>
-        /// Disposes this instance freeing all the owned entries.
+        /// Disposes this instance by freeing all the owned entries.
         /// </summary>
         /// <param name="disposeManaged">See <see cref="Disposable.Dispose(bool)"/>.</param>
         protected override void Dispose(bool disposeManaged)
@@ -256,7 +257,26 @@ namespace Solti.Utils.DI
             }
 
             base.Dispose(disposeManaged);
-        }   
+        }
+
+        /// <summary>
+        /// Asynchronously disposes this instance by freeing all the owned entries.
+        /// </summary>
+        protected async override ValueTask AsyncDispose()
+        {
+            foreach (Disposable disposable in FEntries.Values.Where(ShouldDispose))
+            {
+                await disposable.DisposeAsync();
+            }
+
+            FEntries.Clear();
+
+            FLock.Dispose();
+
+            //
+            // Nem kell "base" hivas mert az a standard Dispose()-t hivna.
+            //
+        }
 
         /// <summary>
         /// Creates a new <see cref="ServiceContainer"/> instance.
