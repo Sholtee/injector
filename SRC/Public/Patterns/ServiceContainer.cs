@@ -57,6 +57,12 @@ namespace Solti.Utils.DI
                         throw new ServiceAlreadyRegisteredException(existing);
 
                     if (ShouldDispose(existing))
+                        //
+                        // "AbstractServiceEntry"-nel nincs tenyleges Dispose() logika csak azert van hivva 
+                        // h ne legyen figyelmeztetes a debug kimeneten -> DisposeAsync() hivasnak se lenne 
+                        // ertelme.
+                        //
+
                         existing.Dispose();
                 }
 
