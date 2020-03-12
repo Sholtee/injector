@@ -3,6 +3,9 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
+using System.Threading;
+using System.Threading.Tasks;
+
 namespace Solti.Utils.DI.Internals
 {
     /// <summary>
@@ -10,7 +13,33 @@ namespace Solti.Utils.DI.Internals
     /// </summary>
     public class DisposeByRefObject : Disposable, IDisposeByRef
     {
-        private readonly object FLock = new object();
+        //
+        // Nem lehet "await" "lock" blokkon belul -> Semaphore
+        //
+
+        private readonly SemaphoreSlim FLock = new SemaphoreSlim(1, 1);
+
+        /// <summary>
+        /// Disposes this <see cref="DisposeByRefObject"/> instance.
+        /// </summary>
+        protected override void Dispose(bool disposeManaged)
+        {
+            if (disposeManaged) FLock.Dispose();
+            base.Dispose(disposeManaged);
+        }
+
+        /// <summary>
+        /// Disposes this <see cref="DisposeByRefObject"/> instance asynchronously.
+        /// </summary>
+        protected override ValueTask AsyncDispose()
+        {
+            FLock.Dispose();
+            return default;
+
+            //
+            // Ne elgyen "base" hivas mert az a "Dispose"-t hivna
+            //
+        }
 
         /// <summary>
         /// The current reference count.
@@ -23,10 +52,20 @@ namespace Solti.Utils.DI.Internals
         /// <returns>The current reference count.</returns>
         public int AddRef()
         {
-            lock (FLock)
+            Ensure.NotDisposed(this);
+
+            //
+            // Ha vki itt varakozik mikor a Semaphore felszabaditasra kerul akkor ObjectDisposedException-t kap
+            //
+
+            FLock.Wait();
+            try
             {
-                Ensure.NotDisposed(this);
                 return ++RefCount;
+            }
+            finally
+            {
+                FLock.Release();
             }
         }
 
@@ -36,11 +75,45 @@ namespace Solti.Utils.DI.Internals
         /// <returns>The current reference count.</returns>
         public int Release()
         {
-            lock (FLock)
+            Ensure.NotDisposed(this);
+
+            FLock.Wait();
+            try
             {
-                Ensure.NotDisposed(this);
                 if (--RefCount == 0) Dispose();
                 return RefCount;
+            }
+            finally 
+            {
+                //
+                // Dispose() hivas felszabaditja a Semaphore-t is
+                //
+
+                if (!Disposed) FLock.Release();
+            }
+        }
+
+        /// <summary>
+        /// Decrements the reference counter as an atomic operation and disposes the object asynchronously if the reference count reaches the zero.
+        /// </summary>
+        /// <returns>The current reference count.</returns>
+        public async Task<int> ReleaseAsync() 
+        {
+            Ensure.NotDisposed(this);
+
+            await FLock.WaitAsync().ConfigureAwait(false);
+            try
+            {
+                if (--RefCount == 0) await DisposeAsync();
+                return RefCount;
+            }
+            finally
+            {
+                //
+                // Dispose() hivas felszabaditja a Semaphore-t is
+                //
+
+                if (!Disposed) FLock.Release();
             }
         }
     }

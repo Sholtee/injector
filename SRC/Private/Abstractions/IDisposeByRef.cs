@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Threading.Tasks;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -11,5 +12,6 @@ namespace Solti.Utils.DI.Internals
     {
         int AddRef();
         int Release();
+        Task<int> ReleaseAsync();
     }
 }

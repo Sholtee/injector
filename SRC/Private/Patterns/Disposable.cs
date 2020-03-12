@@ -34,7 +34,7 @@ namespace Solti.Utils.DI.Internals
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting resources asynchronously
         /// </summary>
-        protected virtual async ValueTask DisposeAsync() => await Task.Run(() => Dispose(true)).ConfigureAwait(false);
+        protected virtual async ValueTask AsyncDispose() => await Task.Run(() => Dispose(true)).ConfigureAwait(false);
 
         /// <summary>
         /// Destructor of this class.
@@ -54,14 +54,14 @@ namespace Solti.Utils.DI.Internals
 
             Disposed = true;
         }
-#if !NETSTANDARD1_6
+
         private int FDisposing;
 
         /// <summary>
-        /// Implements the <see cref="IAsyncDisposable.DisposeAsync"/> method.
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources asynchronously.
         /// </summary>
         [SuppressMessage("Usage", "CA1816:Dispose methods should call SuppressFinalize", Justification = "The method implements the dispose pattern.")]
-        async ValueTask IAsyncDisposable.DisposeAsync()
+        public async ValueTask DisposeAsync()
         {
             //
             // MSDN szerint itt nem dobhatunk ObjectDisposedException kivetelt.
@@ -69,11 +69,10 @@ namespace Solti.Utils.DI.Internals
 
             if (Interlocked.Exchange(ref FDisposing, 1) == 1) return;
 
-            await DisposeAsync();
+            await AsyncDispose();
 
             GC.SuppressFinalize(this);
             Disposed = true;
         }
-#endif
     }
 }

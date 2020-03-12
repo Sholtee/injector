@@ -93,7 +93,7 @@ namespace Solti.Utils.DI.Internals
         /// <summary>
         /// Disposal logic related to this class.
         /// </summary>
-        protected override async ValueTask DisposeAsync()
+        protected override async ValueTask AsyncDispose()
         {
             FDisposing = true;
 
