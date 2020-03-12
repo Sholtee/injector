@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -165,5 +166,15 @@ namespace Solti.Utils.DI.Internals
 
             base.Dispose(disposeManaged);
         }
+
+        /// <summary>
+        /// Decrements the reference counter of the service <see cref="Instance"/>.
+        /// </summary>
+        protected override async ValueTask AsyncDispose() =>
+            await (Instance?.ReleaseAsync()).ConfigureAwait(false);
+
+            //
+            // Nem kell "base" hivas mert az a Dispose()-t hivna.
+            //
     }
 }
