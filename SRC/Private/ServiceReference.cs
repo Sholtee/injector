@@ -142,11 +142,18 @@ namespace Solti.Utils.DI.Internals
             {
                 Debug.WriteLine($"Disposing service: {RelatedServiceEntry}");
 
-                if (Value is IAsyncDisposable disposable)
-                    await disposable.DisposeAsync();
+                if (Value is IAsyncDisposable asyncDisposable)
+                    await asyncDisposable.DisposeAsync();
+
+                //
+                // Ha aszinkron nem lehet megprobaljuk szinkron is felszabaditani.
+                //
+
+                else if (Value is IDisposable disposable)
+                    disposable.Dispose();
             }
 
-            FDependencies.Dispose();
+            await FDependencies.DisposeAsync();
 
             //
             // Nem kell "base" hivas mert az a standard Dispose()-t hivna.
