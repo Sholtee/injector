@@ -170,11 +170,18 @@ namespace Solti.Utils.DI.Internals
         /// <summary>
         /// Decrements the reference counter of the service <see cref="Instance"/>.
         /// </summary>
-        protected override async ValueTask AsyncDispose() =>
-            await (Instance?.ReleaseAsync()).ConfigureAwait(false);
+        protected override async ValueTask AsyncDispose()
+        {
+            //
+            // NE "(Instance?.ReleaseAsync()).ConfigureAwait(false)" legyen mert az null referenciaval elszall
+            //
+
+            if (Instance != null)
+                await Instance.ReleaseAsync().ConfigureAwait(false);
 
             //
             // Nem kell "base" hivas mert az a Dispose()-t hivna.
             //
+        }
     }
 }

@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Threading.Tasks;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -92,5 +93,12 @@ namespace Solti.Utils.DI.Internals
 
             base.Dispose(disposeManaged);
         }
+
+        protected async override ValueTask AsyncDispose() =>
+            await FSpawnedServices.DisposeAsync();
+
+            //
+            // Nem kell "base" hivas mert az a standard Dispose()-t hivna.
+            //
     }
 }
