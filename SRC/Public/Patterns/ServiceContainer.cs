@@ -279,9 +279,7 @@ namespace Solti.Utils.DI
 
             FLock.Dispose();
 
-            //
-            // Nem kell "base" hivas mert az a standard Dispose()-t hivna.
-            //
+            await base.AsyncDispose();
         }
 
         /// <summary>
