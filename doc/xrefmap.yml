@@ -919,6 +919,12 @@ references:
   commentId: M:Solti.Utils.DI.Internals.ServiceReference.#ctor(Solti.Utils.DI.Internals.AbstractServiceEntry,Solti.Utils.DI.IInjector)
   fullName: Solti.Utils.DI.Internals.ServiceReference.ServiceReference(Solti.Utils.DI.Internals.AbstractServiceEntry, Solti.Utils.DI.IInjector)
   nameWithType: ServiceReference.ServiceReference(AbstractServiceEntry, IInjector)
+- uid: Solti.Utils.DI.Internals.ServiceReference.#ctor(Solti.Utils.DI.Internals.AbstractServiceEntry,System.Object,System.Boolean)
+  name: ServiceReference(AbstractServiceEntry, Object, Boolean)
+  href: Solti.Utils.DI.Internals.ServiceReference.html#Solti_Utils_DI_Internals_ServiceReference__ctor_Solti_Utils_DI_Internals_AbstractServiceEntry_System_Object_System_Boolean_
+  commentId: M:Solti.Utils.DI.Internals.ServiceReference.#ctor(Solti.Utils.DI.Internals.AbstractServiceEntry,System.Object,System.Boolean)
+  fullName: Solti.Utils.DI.Internals.ServiceReference.ServiceReference(Solti.Utils.DI.Internals.AbstractServiceEntry, System.Object, System.Boolean)
+  nameWithType: ServiceReference.ServiceReference(AbstractServiceEntry, Object, Boolean)
 - uid: Solti.Utils.DI.Internals.ServiceReference.#ctor*
   name: ServiceReference
   href: Solti.Utils.DI.Internals.ServiceReference.html#Solti_Utils_DI_Internals_ServiceReference__ctor_
@@ -952,19 +958,19 @@ references:
   isSpec: "True"
   fullName: Solti.Utils.DI.Internals.ServiceReference.Dispose
   nameWithType: ServiceReference.Dispose
-- uid: Solti.Utils.DI.Internals.ServiceReference.DisposeSuppressed
-  name: DisposeSuppressed
-  href: Solti.Utils.DI.Internals.ServiceReference.html#Solti_Utils_DI_Internals_ServiceReference_DisposeSuppressed
-  commentId: P:Solti.Utils.DI.Internals.ServiceReference.DisposeSuppressed
-  fullName: Solti.Utils.DI.Internals.ServiceReference.DisposeSuppressed
-  nameWithType: ServiceReference.DisposeSuppressed
-- uid: Solti.Utils.DI.Internals.ServiceReference.DisposeSuppressed*
-  name: DisposeSuppressed
-  href: Solti.Utils.DI.Internals.ServiceReference.html#Solti_Utils_DI_Internals_ServiceReference_DisposeSuppressed_
-  commentId: Overload:Solti.Utils.DI.Internals.ServiceReference.DisposeSuppressed
+- uid: Solti.Utils.DI.Internals.ServiceReference.ExternallyOwned
+  name: ExternallyOwned
+  href: Solti.Utils.DI.Internals.ServiceReference.html#Solti_Utils_DI_Internals_ServiceReference_ExternallyOwned
+  commentId: P:Solti.Utils.DI.Internals.ServiceReference.ExternallyOwned
+  fullName: Solti.Utils.DI.Internals.ServiceReference.ExternallyOwned
+  nameWithType: ServiceReference.ExternallyOwned
+- uid: Solti.Utils.DI.Internals.ServiceReference.ExternallyOwned*
+  name: ExternallyOwned
+  href: Solti.Utils.DI.Internals.ServiceReference.html#Solti_Utils_DI_Internals_ServiceReference_ExternallyOwned_
+  commentId: Overload:Solti.Utils.DI.Internals.ServiceReference.ExternallyOwned
   isSpec: "True"
-  fullName: Solti.Utils.DI.Internals.ServiceReference.DisposeSuppressed
-  nameWithType: ServiceReference.DisposeSuppressed
+  fullName: Solti.Utils.DI.Internals.ServiceReference.ExternallyOwned
+  nameWithType: ServiceReference.ExternallyOwned
 - uid: Solti.Utils.DI.Internals.ServiceReference.RelatedInjector
   name: RelatedInjector
   href: Solti.Utils.DI.Internals.ServiceReference.html#Solti_Utils_DI_Internals_ServiceReference_RelatedInjector
@@ -991,19 +997,6 @@ references:
   isSpec: "True"
   fullName: Solti.Utils.DI.Internals.ServiceReference.RelatedServiceEntry
   nameWithType: ServiceReference.RelatedServiceEntry
-- uid: Solti.Utils.DI.Internals.ServiceReference.SuppressDispose
-  name: SuppressDispose()
-  href: Solti.Utils.DI.Internals.ServiceReference.html#Solti_Utils_DI_Internals_ServiceReference_SuppressDispose
-  commentId: M:Solti.Utils.DI.Internals.ServiceReference.SuppressDispose
-  fullName: Solti.Utils.DI.Internals.ServiceReference.SuppressDispose()
-  nameWithType: ServiceReference.SuppressDispose()
-- uid: Solti.Utils.DI.Internals.ServiceReference.SuppressDispose*
-  name: SuppressDispose
-  href: Solti.Utils.DI.Internals.ServiceReference.html#Solti_Utils_DI_Internals_ServiceReference_SuppressDispose_
-  commentId: Overload:Solti.Utils.DI.Internals.ServiceReference.SuppressDispose
-  isSpec: "True"
-  fullName: Solti.Utils.DI.Internals.ServiceReference.SuppressDispose
-  nameWithType: ServiceReference.SuppressDispose
 - uid: Solti.Utils.DI.Internals.ServiceReference.Value
   name: Value
   href: Solti.Utils.DI.Internals.ServiceReference.html#Solti_Utils_DI_Internals_ServiceReference_Value

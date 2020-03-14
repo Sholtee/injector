@@ -113,7 +113,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public ServiceReference(AbstractServiceEntry entry, IInjector injector = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public ServiceReference(AbstractServiceEntry entry, IInjector injector)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -137,11 +137,47 @@
       </tr>
     </tbody>
   </table>
+  <a id="Solti_Utils_DI_Internals_ServiceReference__ctor_" data-uid="Solti.Utils.DI.Internals.ServiceReference.#ctor*"></a>
+  <h4 id="Solti_Utils_DI_Internals_ServiceReference__ctor_Solti_Utils_DI_Internals_AbstractServiceEntry_System_Object_System_Boolean_" data-uid="Solti.Utils.DI.Internals.ServiceReference.#ctor(Solti.Utils.DI.Internals.AbstractServiceEntry,System.Object,System.Boolean)">ServiceReference(AbstractServiceEntry, Object, Boolean)</h4>
+  <div class="markdown level1 summary"><p>Creates a new <a class="xref" href="Solti.Utils.DI.Internals.ServiceReference.html">ServiceReference</a> instance with the given <code data-dev-comment-type="paramref" class="paramref">value</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ServiceReference(AbstractServiceEntry entry, object value, bool externallyOwned)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.Internals.AbstractServiceEntry.html">AbstractServiceEntry</a></td>
+        <td><span class="parametername">entry</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></td>
+        <td><span class="parametername">value</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">externallyOwned</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   <h3 id="properties">Properties
   </h3>
   <a id="Solti_Utils_DI_Internals_ServiceReference_Dependencies_" data-uid="Solti.Utils.DI.Internals.ServiceReference.Dependencies*"></a>
   <h4 id="Solti_Utils_DI_Internals_ServiceReference_Dependencies" data-uid="Solti.Utils.DI.Internals.ServiceReference.Dependencies">Dependencies</h4>
-  <div class="markdown level1 summary"><p>The dependencies of the bound service. It can be used only if the <a class="xref" href="Solti.Utils.DI.Internals.ServiceReference.html#Solti_Utils_DI_Internals_ServiceReference_DisposeSuppressed">DisposeSuppressed</a> is false.</p>
+  <div class="markdown level1 summary"><p>The dependencies of the bound service. It can be used only if the <a class="xref" href="Solti.Utils.DI.Internals.ServiceReference.html#Solti_Utils_DI_Internals_ServiceReference_ExternallyOwned">ExternallyOwned</a> is false.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -163,14 +199,14 @@
       </tr>
     </tbody>
   </table>
-  <a id="Solti_Utils_DI_Internals_ServiceReference_DisposeSuppressed_" data-uid="Solti.Utils.DI.Internals.ServiceReference.DisposeSuppressed*"></a>
-  <h4 id="Solti_Utils_DI_Internals_ServiceReference_DisposeSuppressed" data-uid="Solti.Utils.DI.Internals.ServiceReference.DisposeSuppressed">DisposeSuppressed</h4>
+  <a id="Solti_Utils_DI_Internals_ServiceReference_ExternallyOwned_" data-uid="Solti.Utils.DI.Internals.ServiceReference.ExternallyOwned*"></a>
+  <h4 id="Solti_Utils_DI_Internals_ServiceReference_ExternallyOwned" data-uid="Solti.Utils.DI.Internals.ServiceReference.ExternallyOwned">ExternallyOwned</h4>
   <div class="markdown level1 summary"><p>Returns true if the bound service will be disposed outside of this library false otherwise.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool DisposeSuppressed { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public bool ExternallyOwned { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -289,15 +325,6 @@
   </table>
   <h5 class="overrides">Overrides</h5>
   <div><a class="xref" href="Solti.Utils.DI.Internals.Disposable.html#Solti_Utils_DI_Internals_Disposable_Dispose_System_Boolean_">Disposable.Dispose(Boolean)</a></div>
-  <a id="Solti_Utils_DI_Internals_ServiceReference_SuppressDispose_" data-uid="Solti.Utils.DI.Internals.ServiceReference.SuppressDispose*"></a>
-  <h4 id="Solti_Utils_DI_Internals_ServiceReference_SuppressDispose" data-uid="Solti.Utils.DI.Internals.ServiceReference.SuppressDispose">SuppressDispose()</h4>
-  <div class="markdown level1 summary"><p>Marks the bound service to be disposed outside of this library.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void SuppressDispose()</code></pre>
-  </div>
   <h3 id="implements">Implements</h3>
   <div>
       <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.idisposable">System.IDisposable</a>
