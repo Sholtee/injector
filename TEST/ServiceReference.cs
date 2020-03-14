@@ -21,7 +21,7 @@ namespace Solti.Utils.DI.Internals.Tests
         [Test]
         public void Value_CanBeSetOnce() 
         {
-            var svc = new ServiceReference(new AbstractServiceEntry(typeof(IDummyService), null))
+            var svc = new ServiceReference(new AbstractServiceEntry(typeof(IDummyService), null), new Mock<IInjector>().Object)
             {
                 Value = new Mock<IDummyService>().Object
             };
@@ -32,7 +32,7 @@ namespace Solti.Utils.DI.Internals.Tests
         [Test]
         public void SetValue_ShouldValidate() 
         {
-            var reference = new ServiceReference(new AbstractServiceEntry(typeof(IDisposable), null));
+            var reference = new ServiceReference(new AbstractServiceEntry(typeof(IDisposable), null), new Mock<IInjector>().Object);
 
             Assert.Throws<ArgumentNullException>(() => reference.Value = null);
             Assert.Throws<InvalidOperationException>(() => reference.Value = new object(), Resources.INVALID_INSTANCE);
@@ -42,10 +42,10 @@ namespace Solti.Utils.DI.Internals.Tests
         [Test]
         public void Dispose_ShouldDisposeTheValueAndDecrementTheRefCountOfTheDependencies() 
         {         
-            var dependency = new ServiceReference(new AbstractServiceEntry(typeof(IDummyService), null)) { Value = new Mock<IDummyService>().Object }; // refcount == 1
+            var dependency = new ServiceReference(new AbstractServiceEntry(typeof(IDummyService), null), new Mock<IInjector>().Object) { Value = new Mock<IDummyService>().Object }; // refcount == 1
 
             var target = new Disposable();
-            var svc = new ServiceReference(new AbstractServiceEntry(typeof(IDisposable), null)) { Value = target };
+            var svc = new ServiceReference(new AbstractServiceEntry(typeof(IDisposable), null), new Mock<IInjector>().Object) { Value = target };
             svc.Dependencies.Add(dependency);
 
             Assert.That(dependency.RefCount, Is.EqualTo(2));
@@ -57,12 +57,11 @@ namespace Solti.Utils.DI.Internals.Tests
         }
 
         [Test]
-        public void SuppressDispose_ShouldPreventTheValueFromBeingDisposed() 
+        public void ExternallyOwned_ShouldPreventTheValueFromBeingDisposed() 
         {
             var target = new Disposable();
-            var svc = new ServiceReference(new AbstractServiceEntry(typeof(IDisposable), null)) { Value = target };
+            var svc = new ServiceReference(new AbstractServiceEntry(typeof(IDisposable), null), target, externallyOwned: true);
 
-            svc.SuppressDispose();
             svc.Dispose();
 
             Assert.That(target.Disposed, Is.False);
@@ -71,27 +70,11 @@ namespace Solti.Utils.DI.Internals.Tests
         }
 
         [Test]
-        public void SuppressDispose_ShouldThrowIfTheServiceHasDependencies() 
+        public void Dependencies_ShouldThrowOnExternallyOwnedService() 
         {
-            var svc = new ServiceReference(new AbstractServiceEntry(typeof(IDummyService), null));
-            var depdendency = new ServiceReference(new AbstractServiceEntry(typeof(IDummyService), null));
+            var svc = new ServiceReference(new AbstractServiceEntry(typeof(IDummyService), null), value: new Mock<IDummyService>().Object, false);
 
-            svc.Dependencies.Add(depdendency);
-
-            Assert.Throws<InvalidOperationException>(svc.SuppressDispose);
-
-            svc.Dependencies.Remove(depdendency);
-
-            Assert.DoesNotThrow(svc.SuppressDispose);
-        }
-
-        [Test]
-        public void Dependencies_ShouldThrowIfDisposeIsSuppressed() 
-        {
-            var svc = new ServiceReference(new AbstractServiceEntry(typeof(IDummyService), null));
-            svc.SuppressDispose();
-
-            Assert.Throws<InvalidOperationException>(() => _ = svc.Dependencies);
+            Assert.Throws<NotSupportedException>(() => svc.Dependencies.Add(new ServiceReference(new AbstractServiceEntry(typeof(IDisposable), null), value: new Disposable(), false)));
         }
     }
 }

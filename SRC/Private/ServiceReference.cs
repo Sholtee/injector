@@ -6,7 +6,6 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -16,17 +15,33 @@ namespace Solti.Utils.DI.Internals
     /// <remarks>This is an internal class so it may change from version to version. Don't use it!</remarks>
     public class ServiceReference : DisposeByRefObject
     {
-        private readonly ServiceReferenceCollection FDependencies = new ServiceReferenceCollection();
+        private readonly ServiceReferenceCollection FDependencies;
 
         private readonly WriteOnce<object> FValue = new WriteOnce<object>(strict: false);
 
         /// <summary>
         /// Creates a new <see cref="ServiceReference"/> instance.
         /// </summary>
-        public ServiceReference(AbstractServiceEntry entry, IInjector injector = null)
+        public ServiceReference(AbstractServiceEntry entry, IInjector injector)
         {
             RelatedServiceEntry = Ensure.Parameter.IsNotNull(entry, nameof(entry));
-            RelatedInjector = injector; // lehet null
+            RelatedInjector = Ensure.Parameter.IsNotNull(injector, nameof(injector));
+
+            FDependencies = new ServiceReferenceCollection();
+        }
+
+        /// <summary>
+        /// Creates a new <see cref="ServiceReference"/> instance with the given <paramref name="value"/>.
+        /// </summary>
+        public ServiceReference(AbstractServiceEntry entry, object value, bool externallyOwned)
+        {
+            RelatedServiceEntry = Ensure.Parameter.IsNotNull(entry, nameof(entry));
+            Value = Ensure.Parameter.IsNotNull(value, nameof(value));
+            ExternallyOwned = externallyOwned;
+
+            //
+            // Elore definialt szerviz peldanynak nem lehet fuggosege.
+            //
         }
 
         /// <summary>
@@ -40,7 +55,7 @@ namespace Solti.Utils.DI.Internals
         public IInjector RelatedInjector { get; }
 
         /// <summary>
-        /// The dependencies of the bound service. It can be used only if the <see cref="DisposeSuppressed"/> is false.
+        /// The dependencies of the bound service. It can be used only if the <see cref="ExternallyOwned"/> is false.
         /// </summary>
         public ICollection<ServiceReference> Dependencies 
         {
@@ -48,10 +63,7 @@ namespace Solti.Utils.DI.Internals
             {
                 Ensure.NotDisposed(this);
 
-                if (DisposeSuppressed)
-                    throw new InvalidOperationException(); // TODO
-
-                return FDependencies;
+                return (ICollection<ServiceReference>) FDependencies ?? Array.Empty<ServiceReference>();
             }
         }
 
@@ -82,26 +94,7 @@ namespace Solti.Utils.DI.Internals
         /// <summary>
         /// Returns true if the bound service will be disposed outside of this library false otherwise.
         /// </summary>
-        public bool DisposeSuppressed { get; private set; }
-
-        /// <summary>
-        /// Marks the bound service to be disposed outside of this library.
-        /// </summary>
-        public void SuppressDispose() 
-        {
-            Ensure.NotDisposed(this);
-
-            if (DisposeSuppressed) return;
-
-            //
-            // Ha mar vannak felvett fuggosegek akkor a metodus nem ertelmezett.
-            //
-
-            if (FDependencies.Any())
-                throw new InvalidOperationException(); // TODO
-
-            DisposeSuppressed = true;
-        }
+        public bool ExternallyOwned { get; }
 
         /// <summary>
         /// Disposes the bound service then decrements the reference counter of all its dependencies.
@@ -110,7 +103,7 @@ namespace Solti.Utils.DI.Internals
         {
             if (disposeManaged)
             {
-                if (!DisposeSuppressed)
+                if (!ExternallyOwned)
                 {
                     Debug.WriteLine($"Disposing service: {RelatedServiceEntry}");
 
@@ -121,12 +114,7 @@ namespace Solti.Utils.DI.Internals
                     (Value as IDisposable)?.Dispose();
                 }
 
-                //
-                // Mivel ez a DisposeSuppressed erteketol fuggetlenul letre van hozva (max ures) ezert mindenkepp
-                // felszabaditjuk.
-                //
-
-                FDependencies.Dispose();
+                FDependencies?.Dispose();
             }
 
             base.Dispose(disposeManaged);

@@ -5,6 +5,7 @@
 ********************************************************************************/
 using System;
 
+using Moq;
 using NUnit.Framework;
 
 namespace Solti.Utils.DI.Internals.Tests
@@ -22,7 +23,7 @@ namespace Solti.Utils.DI.Internals.Tests
         [Test]
         public void Add_ShouldIncrementTheRefCount() 
         {
-            var reference = new ServiceReference(new AbstractServiceEntry(typeof(IDummyService), null));
+            var reference = new ServiceReference(new AbstractServiceEntry(typeof(IDummyService), null), new Mock<IInjector>().Object);
             Collection.Add(reference);
 
             Assert.That(Collection.Count, Is.EqualTo(1));
@@ -33,7 +34,7 @@ namespace Solti.Utils.DI.Internals.Tests
         [Test]
         public void Remove_ShouldDecrementTheRefCount() 
         {
-            var reference = new ServiceReference(new AbstractServiceEntry(typeof(IDummyService), null));
+            var reference = new ServiceReference(new AbstractServiceEntry(typeof(IDummyService), null), new Mock<IInjector>().Object);
             Collection.Add(reference);
 
             Assert.That(Collection.Remove(reference));
@@ -44,7 +45,7 @@ namespace Solti.Utils.DI.Internals.Tests
         [Test]
         public void Clear_ShouldDecrementTheRefCount()
         {
-            var reference = new ServiceReference(new AbstractServiceEntry(typeof(IDummyService), null));
+            var reference = new ServiceReference(new AbstractServiceEntry(typeof(IDummyService), null), new Mock<IInjector>().Object);
             Collection.Add(reference);
             Collection.Clear();
 

@@ -85,7 +85,7 @@ namespace Solti.Utils.DI.Injector.Tests
             var mockInjector = new Mock<IInjectorEx>(MockBehavior.Strict);
             mockInjector.Setup(i => i.Instantiate(It.IsAny<ServiceReference>()));
 
-            var requestor = new ServiceReference(new AbstractServiceEntry(typeof(IInterface_2), null));
+            var requestor = new ServiceReference(new AbstractServiceEntry(typeof(IInterface_2), null), new Mock<IInjector>().Object);
 
             IServiceInstantiationStrategy strategy = (IServiceInstantiationStrategy) para;
 
@@ -105,7 +105,7 @@ namespace Solti.Utils.DI.Injector.Tests
                 return new Implementation_1_No_Dep();
             }, Lifetime.Singleton);
 
-            var requestor = new ServiceReference(new AbstractServiceEntry(typeof(IInterface_2), null));
+            var requestor = new ServiceReference(new AbstractServiceEntry(typeof(IInterface_2), null), new Mock<IInjector>().Object);
 
             IServiceInstantiationStrategy strategy = new NotOwnedServiceInstantiationStrategy();
 
@@ -120,7 +120,7 @@ namespace Solti.Utils.DI.Injector.Tests
         {
             Container.Service<IInterface_1, Implementation_1_No_Dep>(Lifetime.Singleton);
 
-            var requestor = new ServiceReference(new AbstractServiceEntry(typeof(IInterface_2), null));
+            var requestor = new ServiceReference(new AbstractServiceEntry(typeof(IInterface_2), null), new Mock<IInjector>().Object);
 
             IServiceInstantiationStrategy strategy = new NotOwnedServiceInstantiationStrategy();
 

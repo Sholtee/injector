@@ -23,12 +23,7 @@ namespace Solti.Utils.DI.Internals
             // Nem kell kulon ellenorizni a peldanyt mert a ServiceReference.SetValue() validal.
             //
 
-            Instance = new ServiceReference(this, null) 
-            { 
-                Value = Ensure.Parameter.IsNotNull(instance, nameof(instance))
-            };
-
-            if (!releaseOnDispose) Instance.SuppressDispose();
+            Instance = new ServiceReference(this, instance, externallyOwned: !releaseOnDispose);
         }
 
         public override bool SetInstance(ServiceReference reference, IReadOnlyDictionary<string, object> options) =>
