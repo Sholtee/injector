@@ -36,7 +36,7 @@ namespace Solti.Utils.DI.Internals
         public ServiceReference(AbstractServiceEntry entry, object value, bool externallyOwned)
         {
             RelatedServiceEntry = Ensure.Parameter.IsNotNull(entry, nameof(entry));
-            Value = Ensure.Parameter.IsNotNull(value, nameof(value));
+            Value = value; // set_Value() validal
             ExternallyOwned = externallyOwned;
 
             //
