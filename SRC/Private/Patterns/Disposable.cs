@@ -64,10 +64,17 @@ namespace Solti.Utils.DI.Internals
         public async ValueTask DisposeAsync()
         {
             //
-            // MSDN szerint itt nem dobhatunk ObjectDisposedException kivetelt.
+            // MSDN szerint nem dobhatunk ObjectDisposedException kivetelt ha a metodus egynel tobbszor
+            // volt meghivva.
             //
 
             if (Interlocked.Exchange(ref FDisposing, 1) == 1) return;
+
+            //
+            // Viszont ha a szinkron Dispose() mar hivva volt akkor az mas kerdes.
+            //
+
+            Ensure.NotDisposed(this);
 
             await AsyncDispose();
 
