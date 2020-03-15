@@ -188,7 +188,7 @@ namespace Solti.Utils.DI
         /// Returns a new <see cref="IEnumerator{AbstractServiceEntry}"/> instance that enumerates on this instance.
         /// </summary>
         /// <returns>The newly crated <see cref="IEnumerator{AbstractServiceEntry}"/> instance.</returns>
-        /// <remarks>You must dispose the returned enumerator (which is automatically done on foreach loops).</remarks>
+        /// <remarks>You must dispose the returned enumerator (which is automatically done in foreach loops).</remarks>
         public IEnumerator<AbstractServiceEntry> GetEnumerator()
         {
             Ensure.NotDisposed(this);
