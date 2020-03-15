@@ -112,23 +112,6 @@ namespace Solti.Utils.DI.Container.Tests
             Assert.True(Container.Contains(entry2));
         }
 
-
-        [Test]
-        public void IServiceContainer_Enumerator_ShouldBeIndependent()
-        {
-            var entry = new AbstractServiceEntry(typeof(IDisposable), null);
-
-            Container.Add(entry);
-
-            using (IEnumerator<AbstractServiceEntry> enumerator = Container.GetEnumerator())
-            {
-                Container.Add(new AbstractServiceEntry(typeof(IList<>), null));
-                Assert.That(enumerator.MoveNext);
-                Assert.AreSame(enumerator.Current, entry);
-                Assert.False(enumerator.MoveNext());
-            }
-        }
-
         [TestCase(true)]
         [TestCase(false)]
         public void IServiceContainer_Dispose_ShouldFreeInstancesIfReleaseOnDisposeWasSetToTrue(bool releaseOnDispose)

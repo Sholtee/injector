@@ -185,21 +185,19 @@ namespace Solti.Utils.DI
 
         #region IEnumerable
         /// <summary>
-        /// Returns a new <see cref="IEnumerator{AbstractServiceEntry}"/> instance that enumerates on the shallow copy of this instance.
+        /// Returns a new <see cref="IEnumerator{AbstractServiceEntry}"/> instance that enumerates on this instance.
         /// </summary>
         /// <returns>The newly crated <see cref="IEnumerator{AbstractServiceEntry}"/> instance.</returns>
+        /// <remarks>You must dispose the returned enumerator (which is automatically done on foreach loops).</remarks>
         public IEnumerator<AbstractServiceEntry> GetEnumerator()
         {
             Ensure.NotDisposed(this);
 
-            using (FLock.AcquireReaderLock())
-            {
-                //
-                // Masolatot adjunk vissza.
-                //
+            //
+            // A "Values" nem masolat
+            //
 
-                return ((IEnumerable<AbstractServiceEntry>) FEntries.Values.ToArray()).GetEnumerator();
-            }
+            return new SafeEnumerator<AbstractServiceEntry>(FEntries.Values, FLock);
         }
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
