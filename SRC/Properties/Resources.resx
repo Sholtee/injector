@@ -189,9 +189,6 @@
   <data name="IS_NULL" xml:space="preserve">
     <value>The value of "{0}" can not be null.</value>
   </data>
-  <data name="CANT_REMOVE_CHILD" xml:space="preserve">
-    <value>To remove a child call the Dispose method on it.</value>
-  </data>
   <data name="INAPPROPRIATE_OWNERSHIP" xml:space="preserve">
     <value>Inappropriate ownership.</value>
   </data>
@@ -206,5 +203,8 @@
   </data>
   <data name="VALUE_ALREADY_SET" xml:space="preserve">
     <value>The value has already been set.</value>
+  </data>
+  <data name="CANT_SET_PARENT" xml:space="preserve">
+    <value>Parent cannot be set directly.</value>
   </data>
 </root>

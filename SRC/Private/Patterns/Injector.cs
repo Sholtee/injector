@@ -186,9 +186,7 @@ namespace Solti.Utils.DI.Internals
         #endregion
 
         #region Composite
-        public override void AddChild(IServiceContainer child) => throw new NotSupportedException();
-
-        public override void RemoveChild(IServiceContainer child) => throw new NotSupportedException();
+        public override ICollection<IServiceContainer> Children { get; } = Array.Empty<IServiceContainer>();
         #endregion
     }
 }

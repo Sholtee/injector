@@ -58,24 +58,14 @@ namespace Solti.Utils.DI.Internals.Tests
         }
 
         [Test]
-        public void Composite_ChildrenList_ShouldBeACopy() 
-        {
-            IMyComposite root = new MyComposite();
-
-            new MyComposite(root);
-
-            Assert.AreNotSame(root.Children, root.Children);
-        }
-
-        [Test]
         public void Composite_AddChild_ShouldValidate() 
         {
             IMyComposite 
                 root = new MyComposite(),
                 child = new MyComposite(root);
 
-            Assert.Throws<ArgumentNullException>(() => root.AddChild(null));
-            Assert.Throws<Exception>(() => root.AddChild(child), Resources.NOT_NULL);
+            Assert.Throws<ArgumentNullException>(() => root.Children.Add(null));
+            Assert.Throws<Exception>(() => root.Children.Add(child), Resources.NOT_NULL);
         }
 
         [Test]
@@ -85,9 +75,8 @@ namespace Solti.Utils.DI.Internals.Tests
                 root = new MyComposite(),
                 child = new MyComposite(root);
 
-            Assert.Throws<ArgumentNullException>(() => root.RemoveChild(null));
-            Assert.Throws<Exception>(() => root.RemoveChild(new MyComposite()), Resources.NOT_EQUAL);
-            Assert.Throws<InvalidOperationException>(() => root.RemoveChild(child), Resources.CANT_REMOVE_CHILD);
+            Assert.Throws<ArgumentNullException>(() => root.Children.Remove(null));
+            Assert.That(() => root.Children.Remove(new MyComposite()), Is.False);
 
             //
             // Nem lett felszabaditva.

@@ -4,8 +4,12 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -20,7 +24,9 @@ namespace Solti.Utils.DI.Internals
     /// </summary>
     /// <typeparam name="TInterface">The interface on which we want to apply the composite pattern.</typeparam>
     /// <remarks>This is an internal class so it may change from version to version. Don't use it!</remarks>
-    public abstract class Composite<TInterface> : Disposable, IComposite<TInterface> where TInterface : class, IComposite<TInterface>
+    [SuppressMessage("Naming", "CA1710:Identifiers should have correct suffix")]
+    [SuppressMessage("Design", "CA1033:Interface methods should be callable by child types", Justification = "Derived types can access these methods via the Children property")]
+    public abstract class Composite<TInterface> : Disposable, ICollection<TInterface>, IComposite<TInterface> where TInterface : class, IComposite<TInterface>
     {
         private readonly HashSet<TInterface> FChildren = new HashSet<TInterface>();
 
@@ -30,9 +36,7 @@ namespace Solti.Utils.DI.Internals
 
         private readonly ReaderWriterLockSlim FLock = new ReaderWriterLockSlim();
 
-        private readonly WriteOnce<TInterface> FParent = new WriteOnce<TInterface>(strict: false);
-
-        private bool FDisposing;
+        private TInterface FParent;
 
         private TInterface Self { get; }
 
@@ -46,14 +50,7 @@ namespace Solti.Utils.DI.Internals
             Self = this as TInterface;
             Assert(Self != null);
 
-            if (parent == null)
-                //
-                // Ha nincs szulo akkor kesobbiekben mar nem is lehet beallitani.
-                //
-
-                Parent = parent;
-            else
-                parent.AddChild(Self);
+            parent?.Children.Add(Self);
         }
 
         /// <summary>
@@ -64,20 +61,19 @@ namespace Solti.Utils.DI.Internals
         {
             if (disposeManaged)
             {
-                FDisposing = true;
-
                 //
                 // Kivesszuk magunkat a szulo gyerekei kozul (kiveve ha gyoker elemunk van, ott nincs szulo).
                 //
 
-                Parent?.RemoveChild(Self);
+                Parent?.Children.Remove(Self);
 
                 //
-                // Osszes gyereket Dispose()-oljuk. Mivel a Children amugy is masolatot ad vissza ezert
-                // iteracio kozben is kivehetunk elemet a listabol.
+                // ToArray() azert kell h iteracio kozben is eltavolithassunk elemet a listabol. 
+                // A gyermek listanak elmeletileg itt mar nem szabadna sok elemet tartalmaznia 
+                // (ha minden injector megfeleloen fel volt szabaditva).
                 //
 
-                foreach (IDisposable child in Children)
+                foreach (IDisposable child in FChildren.ToArray())
                 {
                     child.Dispose();
                 }
@@ -95,11 +91,9 @@ namespace Solti.Utils.DI.Internals
         /// </summary>
         protected override async ValueTask AsyncDispose()
         {
-            FDisposing = true;
+            Parent?.Children.Remove(Self);
 
-            Parent?.RemoveChild(Self);
-
-            foreach (IAsyncDisposable child in Children)
+            foreach (IAsyncDisposable child in FChildren.ToArray())
                 await child.DisposeAsync();
 
             Assert(!FChildren.Any());
@@ -115,37 +109,53 @@ namespace Solti.Utils.DI.Internals
         public TInterface Parent
         {
             get => FParent;
+
+            [MethodImpl(MethodImplOptions.NoInlining)]
             set
             {
-                if (!FDisposing)
-                    FParent.Value = value;
+                var st = new StackTrace();
+                if (st.GetFrame(1).GetMethod().ReflectedType.IsAssignableFrom(GetType()))
+                    throw new InvalidOperationException(Resources.CANT_SET_PARENT);
+
+                FParent = value;
             }
         }
 
         /// <summary>
         /// The children of this entity.
         /// </summary>
-        public virtual IReadOnlyCollection<TInterface> Children
+        public virtual ICollection<TInterface> Children
         {
             get
             {
                 Ensure.NotDisposed(this);
 
-                using (FLock.AcquireReaderLock())
-                {
-                    //
-                    // Masolatot adjunk vissza.
-                    //
+                return this;
+            }
+        }
+        #endregion
 
-                    return FChildren.ToArray();
+        #region ICollection
+        //
+        // Csak a lenti tagoknak kell szalbiztosnak lenniuk.
+        //
+
+        int ICollection<TInterface>.Count 
+        {
+            get 
+            {
+                Ensure.NotDisposed(this);
+
+                using (FLock.AcquireReaderLock()) 
+                {
+                    return FChildren.Count;
                 }
             }
         }
 
-        /// <summary>
-        /// Adds a new child to the <see cref="Children"/> list. For more information see the <see cref="IComposite{T}"/> interface.
-        /// </summary>
-        public virtual void AddChild(TInterface child)
+        bool ICollection<TInterface>.IsReadOnly { get; }
+      
+        void ICollection<TInterface>.Add(TInterface child)
         {
             Ensure.Parameter.IsNotNull(child, nameof(child));
             Ensure.IsNull(child.Parent, $"{nameof(child)}.{nameof(child.Parent)}");
@@ -169,40 +179,49 @@ namespace Solti.Utils.DI.Internals
                     throw new InvalidOperationException(string.Format(Resources.Culture, Resources.TOO_MANY_CHILDREN, maxChildCount));
 
                 bool succeeded = FChildren.Add(child);
-                Assert(succeeded, $"Child (${child}) already contained");
+                Assert(succeeded, "Child already contained");
             }
 
             child.Parent = Self;
         }
 
-        /// <summary>
-        /// Removes a child from the <see cref="Children"/> list. For more information see the <see cref="IComposite{T}"/> interface.
-        /// </summary>
-        public virtual void RemoveChild(TInterface child)
+        bool ICollection<TInterface>.Remove(TInterface child)
         {
             Ensure.Parameter.IsNotNull(child, nameof(child));
-            Ensure.AreEqual(child.Parent, Self, Resources.INAPPROPRIATE_OWNERSHIP);
             Ensure.NotDisposed(this);
 
-            //
-            // Composite leszarmazott gyereket csak Dispose() hivassal lehet eltavolitani.
-            //
-
-            try
-            {
-                child.Parent = null;
-            }
-            catch (InvalidOperationException e) when (e.Message == Resources.VALUE_ALREADY_SET) 
-            {
-                throw new InvalidOperationException(Resources.CANT_REMOVE_CHILD, e);
-            }
+            if (child.Parent != Self) return false;
 
             using (FLock.AcquireWriterLock())
             {
                 bool succeeded = FChildren.Remove(child);
-                Assert(succeeded, $"Child (${child}) already removed");
+                Assert(succeeded, "Child already removed");
             }
+
+            child.Parent = null;
+
+            return true;
         }
+
+        bool ICollection<TInterface>.Contains(TInterface child) 
+        {
+            Ensure.Parameter.IsNotNull(child, nameof(child));
+            Ensure.NotDisposed(this);
+
+            return child.Parent == Self;
+        }
+
+        void ICollection<TInterface>.Clear() => throw new NotSupportedException();
+
+        void ICollection<TInterface>.CopyTo(TInterface[] array, int arrayIndex) => throw new NotSupportedException();
+
+        IEnumerator<TInterface> IEnumerable<TInterface>.GetEnumerator()
+        {
+            Ensure.NotDisposed(this);
+
+            return new SafeEnumerator<TInterface>(FChildren, FLock);
+        }
+        IEnumerator IEnumerable.GetEnumerator() => Children.GetEnumerator();
         #endregion
     }
 }

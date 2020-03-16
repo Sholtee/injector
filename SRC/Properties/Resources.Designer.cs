@@ -10,7 +10,6 @@
 
 namespace Solti.Utils.DI.Properties {
     using System;
-    using System.Reflection;
     
     
     /// <summary>
@@ -40,7 +39,7 @@ namespace Solti.Utils.DI.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Solti.Utils.DI.Properties.Resources", typeof(Resources).GetTypeInfo().Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Solti.Utils.DI.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -89,11 +88,11 @@ namespace Solti.Utils.DI.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to To remove a child call the Dispose method on it..
+        ///   Looks up a localized string similar to Parent cannot be set directly..
         /// </summary>
-        internal static string CANT_REMOVE_CHILD {
+        internal static string CANT_SET_PARENT {
             get {
-                return ResourceManager.GetString("CANT_REMOVE_CHILD", resourceCulture);
+                return ResourceManager.GetString("CANT_SET_PARENT", resourceCulture);
             }
         }
         

@@ -32,8 +32,8 @@ namespace Solti.Utils.DI.Injector.Tests
             using (IInjector injector = Container.CreateInjector()) 
             {
                 Assert.Throws<NotSupportedException>(() => injector.UnderlyingContainer.CreateChild());
-                Assert.Throws<NotSupportedException>(() => injector.UnderlyingContainer.AddChild(null));
-                Assert.Throws<NotSupportedException>(() => injector.UnderlyingContainer.RemoveChild(null));
+                Assert.Throws<NotSupportedException>(() => injector.UnderlyingContainer.Children.Add(null));
+                Assert.Throws<NotSupportedException>(() => injector.UnderlyingContainer.Children.Remove(null));
             }
         }
     }
