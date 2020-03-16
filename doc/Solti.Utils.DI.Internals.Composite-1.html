@@ -54,6 +54,7 @@
   </div>
   <div classs="implements">
     <h5>Implements</h5>
+    <div><span class="xref">ICollection</span>&lt;TInterface&gt;</div>
     <div><a class="xref" href="Solti.Utils.DI.Internals.IComposite-1.html">IComposite</a>&lt;TInterface&gt;</div>
     <div><span class="xref">IDisposable</span></div>
     <div><span class="xref">IAsyncDisposable</span></div>
@@ -74,7 +75,7 @@
   <h6><strong>Assembly</strong>: Injector.dll</h6>
   <h5 id="Solti_Utils_DI_Internals_Composite_1_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract class Composite&lt;TInterface&gt; : Disposable, IDisposableEx, IComposite&lt;TInterface&gt;, IDisposable, IAsyncDisposable where TInterface : class, IComposite&lt;TInterface&gt;</code></pre>
+    <pre><code class="lang-csharp hljs">public abstract class Composite&lt;TInterface&gt; : Disposable, IDisposableEx, ICollection&lt;TInterface&gt;, IComposite&lt;TInterface&gt;, IDisposable, IAsyncDisposable where TInterface : class, IComposite&lt;TInterface&gt;</code></pre>
   </div>
   <h5 class="typeParameters">Type Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -133,7 +134,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public virtual IReadOnlyCollection&lt;TInterface&gt; Children { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public virtual ICollection&lt;TInterface&gt; Children { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -145,7 +146,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">IReadOnlyCollection</span>&lt;TInterface&gt;</td>
+        <td><span class="xref">ICollection</span>&lt;TInterface&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -176,32 +177,6 @@
   </table>
   <h3 id="methods">Methods
   </h3>
-  <a id="Solti_Utils_DI_Internals_Composite_1_AddChild_" data-uid="Solti.Utils.DI.Internals.Composite`1.AddChild*"></a>
-  <h4 id="Solti_Utils_DI_Internals_Composite_1_AddChild__0_" data-uid="Solti.Utils.DI.Internals.Composite`1.AddChild(`0)">AddChild(TInterface)</h4>
-  <div class="markdown level1 summary"><p>Adds a new child to the <a class="xref" href="Solti.Utils.DI.Internals.Composite-1.html#Solti_Utils_DI_Internals_Composite_1_Children">Children</a> list. For more information see the <a class="xref" href="Solti.Utils.DI.Internals.IComposite-1.html">IComposite&lt;T&gt;</a> interface.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public virtual void AddChild(TInterface child)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">TInterface</span></td>
-        <td><span class="parametername">child</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
   <a id="Solti_Utils_DI_Internals_Composite_1_AsyncDispose_" data-uid="Solti.Utils.DI.Internals.Composite`1.AsyncDispose*"></a>
   <h4 id="Solti_Utils_DI_Internals_Composite_1_AsyncDispose" data-uid="Solti.Utils.DI.Internals.Composite`1.AsyncDispose">AsyncDispose()</h4>
   <div class="markdown level1 summary"><p>Disposal logic related to this class.</p>
@@ -257,33 +232,10 @@
   </table>
   <h5 class="overrides">Overrides</h5>
   <div><a class="xref" href="Solti.Utils.DI.Internals.Disposable.html#Solti_Utils_DI_Internals_Disposable_Dispose_System_Boolean_">Disposable.Dispose(Boolean)</a></div>
-  <a id="Solti_Utils_DI_Internals_Composite_1_RemoveChild_" data-uid="Solti.Utils.DI.Internals.Composite`1.RemoveChild*"></a>
-  <h4 id="Solti_Utils_DI_Internals_Composite_1_RemoveChild__0_" data-uid="Solti.Utils.DI.Internals.Composite`1.RemoveChild(`0)">RemoveChild(TInterface)</h4>
-  <div class="markdown level1 summary"><p>Removes a child from the <a class="xref" href="Solti.Utils.DI.Internals.Composite-1.html#Solti_Utils_DI_Internals_Composite_1_Children">Children</a> list. For more information see the <a class="xref" href="Solti.Utils.DI.Internals.IComposite-1.html">IComposite&lt;T&gt;</a> interface.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public virtual void RemoveChild(TInterface child)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">TInterface</span></td>
-        <td><span class="parametername">child</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
   <h3 id="implements">Implements</h3>
+  <div>
+      <span class="xref">ICollection&lt;&gt;</span>
+  </div>
   <div>
       <a class="xref" href="Solti.Utils.DI.Internals.IComposite-1.html">IComposite&lt;T&gt;</a>
   </div>

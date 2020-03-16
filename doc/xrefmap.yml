@@ -506,23 +506,6 @@ references:
   fullName.vb: Solti.Utils.DI.Internals.Composite(Of TInterface).Composite
   nameWithType: Composite<TInterface>.Composite
   nameWithType.vb: Composite(Of TInterface).Composite
-- uid: Solti.Utils.DI.Internals.Composite`1.AddChild(`0)
-  name: AddChild(TInterface)
-  href: Solti.Utils.DI.Internals.Composite-1.html#Solti_Utils_DI_Internals_Composite_1_AddChild__0_
-  commentId: M:Solti.Utils.DI.Internals.Composite`1.AddChild(`0)
-  fullName: Solti.Utils.DI.Internals.Composite<TInterface>.AddChild(TInterface)
-  fullName.vb: Solti.Utils.DI.Internals.Composite(Of TInterface).AddChild(TInterface)
-  nameWithType: Composite<TInterface>.AddChild(TInterface)
-  nameWithType.vb: Composite(Of TInterface).AddChild(TInterface)
-- uid: Solti.Utils.DI.Internals.Composite`1.AddChild*
-  name: AddChild
-  href: Solti.Utils.DI.Internals.Composite-1.html#Solti_Utils_DI_Internals_Composite_1_AddChild_
-  commentId: Overload:Solti.Utils.DI.Internals.Composite`1.AddChild
-  isSpec: "True"
-  fullName: Solti.Utils.DI.Internals.Composite<TInterface>.AddChild
-  fullName.vb: Solti.Utils.DI.Internals.Composite(Of TInterface).AddChild
-  nameWithType: Composite<TInterface>.AddChild
-  nameWithType.vb: Composite(Of TInterface).AddChild
 - uid: Solti.Utils.DI.Internals.Composite`1.AsyncDispose
   name: AsyncDispose()
   href: Solti.Utils.DI.Internals.Composite-1.html#Solti_Utils_DI_Internals_Composite_1_AsyncDispose
@@ -591,23 +574,6 @@ references:
   fullName.vb: Solti.Utils.DI.Internals.Composite(Of TInterface).Parent
   nameWithType: Composite<TInterface>.Parent
   nameWithType.vb: Composite(Of TInterface).Parent
-- uid: Solti.Utils.DI.Internals.Composite`1.RemoveChild(`0)
-  name: RemoveChild(TInterface)
-  href: Solti.Utils.DI.Internals.Composite-1.html#Solti_Utils_DI_Internals_Composite_1_RemoveChild__0_
-  commentId: M:Solti.Utils.DI.Internals.Composite`1.RemoveChild(`0)
-  fullName: Solti.Utils.DI.Internals.Composite<TInterface>.RemoveChild(TInterface)
-  fullName.vb: Solti.Utils.DI.Internals.Composite(Of TInterface).RemoveChild(TInterface)
-  nameWithType: Composite<TInterface>.RemoveChild(TInterface)
-  nameWithType.vb: Composite(Of TInterface).RemoveChild(TInterface)
-- uid: Solti.Utils.DI.Internals.Composite`1.RemoveChild*
-  name: RemoveChild
-  href: Solti.Utils.DI.Internals.Composite-1.html#Solti_Utils_DI_Internals_Composite_1_RemoveChild_
-  commentId: Overload:Solti.Utils.DI.Internals.Composite`1.RemoveChild
-  isSpec: "True"
-  fullName: Solti.Utils.DI.Internals.Composite<TInterface>.RemoveChild
-  fullName.vb: Solti.Utils.DI.Internals.Composite(Of TInterface).RemoveChild
-  nameWithType: Composite<TInterface>.RemoveChild
-  nameWithType.vb: Composite(Of TInterface).RemoveChild
 - uid: Solti.Utils.DI.Internals.CompositeConfig
   name: CompositeConfig
   href: Solti.Utils.DI.Internals.CompositeConfig.html
@@ -855,23 +821,6 @@ references:
   fullName.vb: Solti.Utils.DI.Internals.IComposite(Of T)
   nameWithType: IComposite<T>
   nameWithType.vb: IComposite(Of T)
-- uid: Solti.Utils.DI.Internals.IComposite`1.AddChild(`0)
-  name: AddChild(T)
-  href: Solti.Utils.DI.Internals.IComposite-1.html#Solti_Utils_DI_Internals_IComposite_1_AddChild__0_
-  commentId: M:Solti.Utils.DI.Internals.IComposite`1.AddChild(`0)
-  fullName: Solti.Utils.DI.Internals.IComposite<T>.AddChild(T)
-  fullName.vb: Solti.Utils.DI.Internals.IComposite(Of T).AddChild(T)
-  nameWithType: IComposite<T>.AddChild(T)
-  nameWithType.vb: IComposite(Of T).AddChild(T)
-- uid: Solti.Utils.DI.Internals.IComposite`1.AddChild*
-  name: AddChild
-  href: Solti.Utils.DI.Internals.IComposite-1.html#Solti_Utils_DI_Internals_IComposite_1_AddChild_
-  commentId: Overload:Solti.Utils.DI.Internals.IComposite`1.AddChild
-  isSpec: "True"
-  fullName: Solti.Utils.DI.Internals.IComposite<T>.AddChild
-  fullName.vb: Solti.Utils.DI.Internals.IComposite(Of T).AddChild
-  nameWithType: IComposite<T>.AddChild
-  nameWithType.vb: IComposite(Of T).AddChild
 - uid: Solti.Utils.DI.Internals.IComposite`1.Children
   name: Children
   href: Solti.Utils.DI.Internals.IComposite-1.html#Solti_Utils_DI_Internals_IComposite_1_Children
@@ -906,23 +855,6 @@ references:
   fullName.vb: Solti.Utils.DI.Internals.IComposite(Of T).Parent
   nameWithType: IComposite<T>.Parent
   nameWithType.vb: IComposite(Of T).Parent
-- uid: Solti.Utils.DI.Internals.IComposite`1.RemoveChild(`0)
-  name: RemoveChild(T)
-  href: Solti.Utils.DI.Internals.IComposite-1.html#Solti_Utils_DI_Internals_IComposite_1_RemoveChild__0_
-  commentId: M:Solti.Utils.DI.Internals.IComposite`1.RemoveChild(`0)
-  fullName: Solti.Utils.DI.Internals.IComposite<T>.RemoveChild(T)
-  fullName.vb: Solti.Utils.DI.Internals.IComposite(Of T).RemoveChild(T)
-  nameWithType: IComposite<T>.RemoveChild(T)
-  nameWithType.vb: IComposite(Of T).RemoveChild(T)
-- uid: Solti.Utils.DI.Internals.IComposite`1.RemoveChild*
-  name: RemoveChild
-  href: Solti.Utils.DI.Internals.IComposite-1.html#Solti_Utils_DI_Internals_IComposite_1_RemoveChild_
-  commentId: Overload:Solti.Utils.DI.Internals.IComposite`1.RemoveChild
-  isSpec: "True"
-  fullName: Solti.Utils.DI.Internals.IComposite<T>.RemoveChild
-  fullName.vb: Solti.Utils.DI.Internals.IComposite(Of T).RemoveChild
-  nameWithType: IComposite<T>.RemoveChild
-  nameWithType.vb: IComposite(Of T).RemoveChild
 - uid: Solti.Utils.DI.Internals.IHasUnderlyingImplementation
   name: IHasUnderlyingImplementation
   href: Solti.Utils.DI.Internals.IHasUnderlyingImplementation.html
