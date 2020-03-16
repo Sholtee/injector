@@ -15,7 +15,7 @@ namespace Solti.Utils.DI
     /// Provides the mechanism of storing service entries.
     /// </summary>
     [SuppressMessage("Naming", "CA1710:Identifiers should have correct suffix", Justification = "The name is meaningful.")]
-    public interface IServiceContainer : IComposite<IServiceContainer>, IEnumerable<AbstractServiceEntry>
+    public interface IServiceContainer : IComposite<IServiceContainer>, IEnumerable<AbstractServiceEntry>, IDisposable, IAsyncDisposable
     {
         /// <summary>
         /// Adds a new entry to the container overwriting the existing value (if it was abstract).

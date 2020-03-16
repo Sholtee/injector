@@ -13,7 +13,7 @@ namespace Solti.Utils.DI.Internals
     /// </summary>
     /// <typeparam name="T">The type on which we want to apply the pattern.</typeparam>
     /// <remarks>This is an internal interface so it may change from version to version. Don't use it!</remarks>
-    public interface IComposite<T>: IDisposable where T : IComposite<T>
+    public interface IComposite<T>: IDisposable, IAsyncDisposable where T : IComposite<T>
     {
         /// <summary>
         /// The parent of this entity.
