@@ -6,6 +6,8 @@
 using System;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -13,7 +15,10 @@ namespace Solti.Utils.DI.Internals
     /// Implements the <see cref="IDisposable"/> interface.
     /// </summary>
     /// <remarks>This is an internal class so it may change from version to version. Don't use it!</remarks>
-    public class Disposable: IDisposableEx
+    public class Disposable : IDisposableEx
+#if !NETSTANDARD1_6
+        , IAsyncDisposable
+#endif
     {
         /// <summary>
         /// Indicates whether the object was disposed or not.
@@ -25,6 +30,11 @@ namespace Solti.Utils.DI.Internals
         /// </summary>
         /// <param name="disposeManaged">It is set to true on <see cref="IDisposable.Dispose"/> call.</param>
         protected virtual void Dispose(bool disposeManaged) => Debug.WriteLineIf(!disposeManaged, $"{GetType()} is disposed by GC. You may be missing a Dispose() call.");
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting resources asynchronously
+        /// </summary>
+        protected virtual async ValueTask AsyncDispose() => await Task.Run(() => Dispose(true)).ConfigureAwait(false);
 
         /// <summary>
         /// Destructor of this class.
@@ -42,6 +52,33 @@ namespace Solti.Utils.DI.Internals
             Dispose(disposeManaged: true);
             GC.SuppressFinalize(this);
 
+            Disposed = true;
+        }
+
+        private int FDisposing;
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources asynchronously.
+        /// </summary>
+        [SuppressMessage("Usage", "CA1816:Dispose methods should call SuppressFinalize", Justification = "The method implements the dispose pattern.")]
+        public async ValueTask DisposeAsync()
+        {
+            //
+            // MSDN szerint nem dobhatunk ObjectDisposedException kivetelt ha a metodus egynel tobbszor
+            // volt meghivva.
+            //
+
+            if (Interlocked.Exchange(ref FDisposing, 1) == 1) return;
+
+            //
+            // Viszont ha a szinkron Dispose() mar hivva volt akkor az mas kerdes.
+            //
+
+            Ensure.NotDisposed(this);
+
+            await AsyncDispose();
+
+            GC.SuppressFinalize(this);
             Disposed = true;
         }
     }

@@ -6,6 +6,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -54,6 +55,18 @@ namespace Solti.Utils.DI.Internals
             if (disposeManaged) Clear();
 
             base.Dispose(disposeManaged);
+        }
+
+        protected async override ValueTask AsyncDispose()
+        {
+            foreach (ServiceReference @ref in FUnderlyingList)
+                await @ref.ReleaseAsync().ConfigureAwait(false);
+
+            FUnderlyingList.Clear();
+
+            //
+            // Nem kell "base" hivas mert az a standard Dispose()-t hivna.
+            //
         }
     }
 }

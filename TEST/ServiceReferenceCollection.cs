@@ -54,6 +54,28 @@ namespace Solti.Utils.DI.Internals.Tests
         }
 
         [Test]
+        public void Dispose_ShouldDecrementTheRefCount()
+        {
+            var reference = new ServiceReference(new AbstractServiceEntry(typeof(IDummyService), null), new Mock<IInjector>().Object);
+            Collection.Add(reference);
+            Collection.Dispose();
+
+            Assert.That(Collection, Is.Empty);
+            Assert.That(reference.RefCount, Is.EqualTo(1));
+        }
+
+        [Test]
+        public void DisposeAsync_ShouldDecrementTheRefCount()
+        {
+            var reference = new ServiceReference(new AbstractServiceEntry(typeof(IDummyService), null), new Mock<IInjector>().Object);
+            Collection.Add(reference);
+            Collection.DisposeAsync().AsTask().Wait();
+
+            Assert.That(Collection, Is.Empty);
+            Assert.That(reference.RefCount, Is.EqualTo(1));
+        }
+
+        [Test]
         public void CopyTo_ShouldThrow() 
         {
             var ar = new ServiceReference[0];

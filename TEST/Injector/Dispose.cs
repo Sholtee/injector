@@ -4,7 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
-using System.Collections.Generic;
+using System.Threading.Tasks;
 
 using Moq;
 using NUnit.Framework;
@@ -16,12 +16,12 @@ namespace Solti.Utils.DI.Injector.Tests
     public partial class InjectorTestsBase<TContainer>
     {
         [Test]
-        public void Injector_Dispose_ShouldFreeScopedEntries()
+        public void Injector_Dispose_ShouldFreeOwnedEntries([Values(Lifetime.Scoped, Lifetime.Transient)] Lifetime lifetime)
         {
             var mockSingleton = new Mock<IInterface_1_Disaposable>(MockBehavior.Strict);
             mockSingleton.Setup(s => s.Dispose());
 
-            Container.Factory(inj => mockSingleton.Object, Lifetime.Scoped);
+            Container.Factory(inj => mockSingleton.Object, lifetime);
 
             using (IInjector injector = Container.CreateInjector())
             {
@@ -32,19 +32,20 @@ namespace Solti.Utils.DI.Injector.Tests
         }
 
         [Test]
-        public void Injector_Dispose_ShouldFreeTransientEntries() 
+        public void Injector_DisposeAsync_ShouldFreeOwnedEntriesAsynchronously([Values(Lifetime.Scoped, Lifetime.Transient)] Lifetime lifetime)
         {
-            var obj = new Mock<IEnumerator<string>>(MockBehavior.Strict);
-            obj.Setup(t => t.Dispose());
+            var mockSingleton = new Mock<IAsyncDisposable>(MockBehavior.Strict);
+            mockSingleton
+                .Setup(s => s.DisposeAsync())
+                .Returns(default(ValueTask));
 
-            Container.Factory(i => obj.Object, Lifetime.Transient);
+            Container.Factory(inj => mockSingleton.Object, lifetime);
 
-            using (IInjector injector = Container.CreateInjector()) 
-            {
-                injector.Get<IEnumerator<string>>();
-            }
+            IInjector injector = Container.CreateInjector();
+            injector.Get<IAsyncDisposable>();
+            injector.DisposeAsync().AsTask().Wait();
 
-            obj.Verify(t => t.Dispose(), Times.Once);
+            mockSingleton.Verify(s => s.DisposeAsync(), Times.Once);
         }
 
         [Test]

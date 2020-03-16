@@ -98,3 +98,4 @@
 - 2.0.0-preview1:
   - *breaking:* removed `ServiceReference.DisposeSupressed` property
   - *breaking:* `ServiceContainer.GetEnumerator()` no longer clones the container (enumerating is still thread safe)
+  - *added:* `IAsyncDisposable` support

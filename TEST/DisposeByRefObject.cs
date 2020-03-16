@@ -40,5 +40,16 @@ namespace Solti.Utils.DI.Internals.Tests
             Assert.That(obj.Release(), Is.EqualTo(0));
             Assert.That(obj.Disposed);
         }
+
+        [Test]
+        public void ReleaseAsync_ShouldDisposeTheObjectIfRefCountReachesTheZero()
+        {
+            var obj = new DisposeByRefObject();
+            obj.AddRef();
+            Assert.That(obj.ReleaseAsync().Result, Is.EqualTo(1));
+            Assert.That(obj.Disposed, Is.False);
+            Assert.That(obj.ReleaseAsync().Result, Is.EqualTo(0));
+            Assert.That(obj.Disposed);
+        }
     }
 }

@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Threading.Tasks;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -119,5 +120,34 @@ namespace Solti.Utils.DI.Internals
 
             base.Dispose(disposeManaged);
         }
+#if !NETSTANDARD1_6
+        /// <summary>
+        /// Asynchronously disposes the bound service then decrements the reference counter of all its dependencies.
+        /// </summary>
+        protected async override ValueTask AsyncDispose()
+        {
+            if (!ExternallyOwned)
+            {
+                Debug.WriteLine($"Disposing service: {RelatedServiceEntry}");
+
+                if (Value is IAsyncDisposable asyncDisposable)
+                    await asyncDisposable.DisposeAsync();
+
+                //
+                // Ha aszinkron nem lehet megprobaljuk szinkron is felszabaditani.
+                //
+
+                else if (Value is IDisposable disposable)
+                    disposable.Dispose();
+            }
+
+            if (FDependencies != null)
+                await FDependencies.DisposeAsync();
+
+            //
+            // Nem kell "base" hivas mert az a standard Dispose()-t hivna.
+            //
+        }
+#endif
     }
 }
