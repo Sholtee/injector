@@ -295,6 +295,19 @@ references:
   isSpec: "True"
   fullName: Solti.Utils.DI.Internals.AbstractServiceEntry.AbstractServiceEntry
   nameWithType: AbstractServiceEntry.AbstractServiceEntry
+- uid: Solti.Utils.DI.Internals.AbstractServiceEntry.AsyncDispose
+  name: AsyncDispose()
+  href: Solti.Utils.DI.Internals.AbstractServiceEntry.html#Solti_Utils_DI_Internals_AbstractServiceEntry_AsyncDispose
+  commentId: M:Solti.Utils.DI.Internals.AbstractServiceEntry.AsyncDispose
+  fullName: Solti.Utils.DI.Internals.AbstractServiceEntry.AsyncDispose()
+  nameWithType: AbstractServiceEntry.AsyncDispose()
+- uid: Solti.Utils.DI.Internals.AbstractServiceEntry.AsyncDispose*
+  name: AsyncDispose
+  href: Solti.Utils.DI.Internals.AbstractServiceEntry.html#Solti_Utils_DI_Internals_AbstractServiceEntry_AsyncDispose_
+  commentId: Overload:Solti.Utils.DI.Internals.AbstractServiceEntry.AsyncDispose
+  isSpec: "True"
+  fullName: Solti.Utils.DI.Internals.AbstractServiceEntry.AsyncDispose
+  nameWithType: AbstractServiceEntry.AsyncDispose
 - uid: Solti.Utils.DI.Internals.AbstractServiceEntry.CopyTo(Solti.Utils.DI.IServiceContainer)
   name: CopyTo(IServiceContainer)
   href: Solti.Utils.DI.Internals.AbstractServiceEntry.html#Solti_Utils_DI_Internals_AbstractServiceEntry_CopyTo_Solti_Utils_DI_IServiceContainer_
@@ -648,6 +661,19 @@ references:
   commentId: T:Solti.Utils.DI.Internals.Disposable
   fullName: Solti.Utils.DI.Internals.Disposable
   nameWithType: Disposable
+- uid: Solti.Utils.DI.Internals.Disposable.AsyncDispose
+  name: AsyncDispose()
+  href: Solti.Utils.DI.Internals.Disposable.html#Solti_Utils_DI_Internals_Disposable_AsyncDispose
+  commentId: M:Solti.Utils.DI.Internals.Disposable.AsyncDispose
+  fullName: Solti.Utils.DI.Internals.Disposable.AsyncDispose()
+  nameWithType: Disposable.AsyncDispose()
+- uid: Solti.Utils.DI.Internals.Disposable.AsyncDispose*
+  name: AsyncDispose
+  href: Solti.Utils.DI.Internals.Disposable.html#Solti_Utils_DI_Internals_Disposable_AsyncDispose_
+  commentId: Overload:Solti.Utils.DI.Internals.Disposable.AsyncDispose
+  isSpec: "True"
+  fullName: Solti.Utils.DI.Internals.Disposable.AsyncDispose
+  nameWithType: Disposable.AsyncDispose
 - uid: Solti.Utils.DI.Internals.Disposable.Dispose
   name: Dispose()
   href: Solti.Utils.DI.Internals.Disposable.html#Solti_Utils_DI_Internals_Disposable_Dispose
@@ -667,6 +693,19 @@ references:
   isSpec: "True"
   fullName: Solti.Utils.DI.Internals.Disposable.Dispose
   nameWithType: Disposable.Dispose
+- uid: Solti.Utils.DI.Internals.Disposable.DisposeAsync
+  name: DisposeAsync()
+  href: Solti.Utils.DI.Internals.Disposable.html#Solti_Utils_DI_Internals_Disposable_DisposeAsync
+  commentId: M:Solti.Utils.DI.Internals.Disposable.DisposeAsync
+  fullName: Solti.Utils.DI.Internals.Disposable.DisposeAsync()
+  nameWithType: Disposable.DisposeAsync()
+- uid: Solti.Utils.DI.Internals.Disposable.DisposeAsync*
+  name: DisposeAsync
+  href: Solti.Utils.DI.Internals.Disposable.html#Solti_Utils_DI_Internals_Disposable_DisposeAsync_
+  commentId: Overload:Solti.Utils.DI.Internals.Disposable.DisposeAsync
+  isSpec: "True"
+  fullName: Solti.Utils.DI.Internals.Disposable.DisposeAsync
+  nameWithType: Disposable.DisposeAsync
 - uid: Solti.Utils.DI.Internals.Disposable.Disposed
   name: Disposed
   href: Solti.Utils.DI.Internals.Disposable.html#Solti_Utils_DI_Internals_Disposable_Disposed
@@ -712,6 +751,32 @@ references:
   isSpec: "True"
   fullName: Solti.Utils.DI.Internals.DisposeByRefObject.AddRef
   nameWithType: DisposeByRefObject.AddRef
+- uid: Solti.Utils.DI.Internals.DisposeByRefObject.AsyncDispose
+  name: AsyncDispose()
+  href: Solti.Utils.DI.Internals.DisposeByRefObject.html#Solti_Utils_DI_Internals_DisposeByRefObject_AsyncDispose
+  commentId: M:Solti.Utils.DI.Internals.DisposeByRefObject.AsyncDispose
+  fullName: Solti.Utils.DI.Internals.DisposeByRefObject.AsyncDispose()
+  nameWithType: DisposeByRefObject.AsyncDispose()
+- uid: Solti.Utils.DI.Internals.DisposeByRefObject.AsyncDispose*
+  name: AsyncDispose
+  href: Solti.Utils.DI.Internals.DisposeByRefObject.html#Solti_Utils_DI_Internals_DisposeByRefObject_AsyncDispose_
+  commentId: Overload:Solti.Utils.DI.Internals.DisposeByRefObject.AsyncDispose
+  isSpec: "True"
+  fullName: Solti.Utils.DI.Internals.DisposeByRefObject.AsyncDispose
+  nameWithType: DisposeByRefObject.AsyncDispose
+- uid: Solti.Utils.DI.Internals.DisposeByRefObject.Dispose(System.Boolean)
+  name: Dispose(Boolean)
+  href: Solti.Utils.DI.Internals.DisposeByRefObject.html#Solti_Utils_DI_Internals_DisposeByRefObject_Dispose_System_Boolean_
+  commentId: M:Solti.Utils.DI.Internals.DisposeByRefObject.Dispose(System.Boolean)
+  fullName: Solti.Utils.DI.Internals.DisposeByRefObject.Dispose(System.Boolean)
+  nameWithType: DisposeByRefObject.Dispose(Boolean)
+- uid: Solti.Utils.DI.Internals.DisposeByRefObject.Dispose*
+  name: Dispose
+  href: Solti.Utils.DI.Internals.DisposeByRefObject.html#Solti_Utils_DI_Internals_DisposeByRefObject_Dispose_
+  commentId: Overload:Solti.Utils.DI.Internals.DisposeByRefObject.Dispose
+  isSpec: "True"
+  fullName: Solti.Utils.DI.Internals.DisposeByRefObject.Dispose
+  nameWithType: DisposeByRefObject.Dispose
 - uid: Solti.Utils.DI.Internals.DisposeByRefObject.RefCount
   name: RefCount
   href: Solti.Utils.DI.Internals.DisposeByRefObject.html#Solti_Utils_DI_Internals_DisposeByRefObject_RefCount
@@ -738,6 +803,19 @@ references:
   isSpec: "True"
   fullName: Solti.Utils.DI.Internals.DisposeByRefObject.Release
   nameWithType: DisposeByRefObject.Release
+- uid: Solti.Utils.DI.Internals.DisposeByRefObject.ReleaseAsync
+  name: ReleaseAsync()
+  href: Solti.Utils.DI.Internals.DisposeByRefObject.html#Solti_Utils_DI_Internals_DisposeByRefObject_ReleaseAsync
+  commentId: M:Solti.Utils.DI.Internals.DisposeByRefObject.ReleaseAsync
+  fullName: Solti.Utils.DI.Internals.DisposeByRefObject.ReleaseAsync()
+  nameWithType: DisposeByRefObject.ReleaseAsync()
+- uid: Solti.Utils.DI.Internals.DisposeByRefObject.ReleaseAsync*
+  name: ReleaseAsync
+  href: Solti.Utils.DI.Internals.DisposeByRefObject.html#Solti_Utils_DI_Internals_DisposeByRefObject_ReleaseAsync_
+  commentId: Overload:Solti.Utils.DI.Internals.DisposeByRefObject.ReleaseAsync
+  isSpec: "True"
+  fullName: Solti.Utils.DI.Internals.DisposeByRefObject.ReleaseAsync
+  nameWithType: DisposeByRefObject.ReleaseAsync
 - uid: Solti.Utils.DI.Internals.IComposite`1
   name: IComposite<T>
   href: Solti.Utils.DI.Internals.IComposite-1.html
@@ -1680,6 +1758,19 @@ references:
   isSpec: "True"
   fullName: Solti.Utils.DI.ServiceContainer.Add
   nameWithType: ServiceContainer.Add
+- uid: Solti.Utils.DI.ServiceContainer.AsyncDispose
+  name: AsyncDispose()
+  href: Solti.Utils.DI.ServiceContainer.html#Solti_Utils_DI_ServiceContainer_AsyncDispose
+  commentId: M:Solti.Utils.DI.ServiceContainer.AsyncDispose
+  fullName: Solti.Utils.DI.ServiceContainer.AsyncDispose()
+  nameWithType: ServiceContainer.AsyncDispose()
+- uid: Solti.Utils.DI.ServiceContainer.AsyncDispose*
+  name: AsyncDispose
+  href: Solti.Utils.DI.ServiceContainer.html#Solti_Utils_DI_ServiceContainer_AsyncDispose_
+  commentId: Overload:Solti.Utils.DI.ServiceContainer.AsyncDispose
+  isSpec: "True"
+  fullName: Solti.Utils.DI.ServiceContainer.AsyncDispose
+  nameWithType: ServiceContainer.AsyncDispose
 - uid: Solti.Utils.DI.ServiceContainer.Count
   name: Count
   href: Solti.Utils.DI.ServiceContainer.html#Solti_Utils_DI_ServiceContainer_Count

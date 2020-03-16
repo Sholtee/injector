@@ -118,6 +118,30 @@
   </table>
   <h3 id="methods">Methods
   </h3>
+  <a id="Solti_Utils_DI_Internals_Disposable_AsyncDispose_" data-uid="Solti.Utils.DI.Internals.Disposable.AsyncDispose*"></a>
+  <h4 id="Solti_Utils_DI_Internals_Disposable_AsyncDispose" data-uid="Solti.Utils.DI.Internals.Disposable.AsyncDispose">AsyncDispose()</h4>
+  <div class="markdown level1 summary"><p>Performs application-defined tasks associated with freeing, releasing, or resetting resources asynchronously</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual ValueTask AsyncDispose()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.tasks.valuetask">ValueTask</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   <a id="Solti_Utils_DI_Internals_Disposable_Dispose_" data-uid="Solti.Utils.DI.Internals.Disposable.Dispose*"></a>
   <h4 id="Solti_Utils_DI_Internals_Disposable_Dispose" data-uid="Solti.Utils.DI.Internals.Disposable.Dispose">Dispose()</h4>
   <div class="markdown level1 summary"><p>Implements the <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.idisposable.dispose#System_IDisposable_Dispose">Dispose()</a> method.</p>
@@ -151,6 +175,30 @@
         <td><span class="parametername">disposeManaged</span></td>
         <td><p>It is set to true on <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.idisposable.dispose#System_IDisposable_Dispose">Dispose()</a> call.</p>
 </td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Solti_Utils_DI_Internals_Disposable_DisposeAsync_" data-uid="Solti.Utils.DI.Internals.Disposable.DisposeAsync*"></a>
+  <h4 id="Solti_Utils_DI_Internals_Disposable_DisposeAsync" data-uid="Solti.Utils.DI.Internals.Disposable.DisposeAsync">DisposeAsync()</h4>
+  <div class="markdown level1 summary"><p>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources asynchronously.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ValueTask DisposeAsync()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.tasks.valuetask">ValueTask</a></td>
+        <td></td>
       </tr>
     </tbody>
   </table>
