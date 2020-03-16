@@ -120,7 +120,7 @@ namespace Solti.Utils.DI.Internals
 
             base.Dispose(disposeManaged);
         }
-#if !NETSTANDARD1_6
+
         /// <summary>
         /// Asynchronously disposes the bound service then decrements the reference counter of all its dependencies.
         /// </summary>
@@ -148,6 +148,5 @@ namespace Solti.Utils.DI.Internals
             // Nem kell "base" hivas mert az a standard Dispose()-t hivna.
             //
         }
-#endif
     }
 }

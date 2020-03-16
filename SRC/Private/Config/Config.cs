@@ -3,14 +3,11 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
-#if !NETSTANDARD1_6
 using System.Diagnostics.CodeAnalysis;
 using System.Collections.Generic;
 using System.IO;
-
 using System.Text.Json;
 using System.Text.Json.Serialization;
-#endif
 
 namespace Solti.Utils.DI.Internals
 {
@@ -21,12 +18,11 @@ namespace Solti.Utils.DI.Internals
     {
         private static Config CreateInstance()
         {
-#if !NETSTANDARD1_6
             string configFile = Path.ChangeExtension(typeof(Config).Assembly().Location, "config.json");
 
             if (File.Exists(configFile))
                 return JsonSerializer.Deserialize<Config>(File.ReadAllText(configFile));
-#endif
+
             return new Config();
         }
 
@@ -43,13 +39,11 @@ namespace Solti.Utils.DI.Internals
 
             Value = CreateInstance();
 
-#if !NETSTANDARD1_6
         /// <summary>
         /// Custom settings.
         /// </summary>
         [JsonExtensionData]
         [SuppressMessage("Usage", "CA2227:Collection properties should be read only", Justification = "Writable property is required by JsonSerializer.")]
         public Dictionary<string, object> CustomSettings { get; set; }
-#endif
     }
 }

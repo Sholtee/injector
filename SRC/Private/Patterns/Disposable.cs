@@ -12,13 +12,10 @@ using System.Threading.Tasks;
 namespace Solti.Utils.DI.Internals
 {
     /// <summary>
-    /// Implements the <see cref="IDisposable"/> interface.
+    /// Implements the <see cref="IDisposable"/> and <see cref="IAsyncDisposable"/> interfaces.
     /// </summary>
     /// <remarks>This is an internal class so it may change from version to version. Don't use it!</remarks>
-    public class Disposable : IDisposableEx
-#if !NETSTANDARD1_6
-        , IAsyncDisposable
-#endif
+    public class Disposable : IDisposableEx, IAsyncDisposable
     {
         /// <summary>
         /// Indicates whether the object was disposed or not.
@@ -58,7 +55,7 @@ namespace Solti.Utils.DI.Internals
         private int FDisposing;
 
         /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources asynchronously.
+        /// Implements the <see cref="IAsyncDisposable.DisposeAsync"/> method.
         /// </summary>
         [SuppressMessage("Usage", "CA1816:Dispose methods should call SuppressFinalize", Justification = "The method implements the dispose pattern.")]
         public async ValueTask DisposeAsync()

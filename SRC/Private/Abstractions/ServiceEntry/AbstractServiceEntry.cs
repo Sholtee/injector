@@ -124,7 +124,7 @@ namespace Solti.Utils.DI.Internals
         /// </summary>
         /// <returns>The hash code of this entry.</returns>
         public override int GetHashCode() =>
-#if NETSTANDARD1_6 || NETSTANDARD2_0
+#if NETSTANDARD2_0
             new // muszaj anonimnak lennie
             {
                 Owner,

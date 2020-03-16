@@ -11,10 +11,7 @@ namespace Solti.Utils.DI
     /// <summary>
     /// Provides the mechanism for injecting resources.
     /// </summary>
-    public interface IInjector: IDisposable
-#if !NETSTANDARD1_6
-        , IAsyncDisposable
-#endif
+    public interface IInjector: IDisposable, IAsyncDisposable
     {
         /// <summary>
         /// Gets the service instance associated with the given interface and (optional) name.

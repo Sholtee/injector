@@ -89,7 +89,7 @@ namespace Solti.Utils.DI.Internals
 
             base.Dispose(disposeManaged);
         }
-#if !NETSTANDARD1_6
+
         /// <summary>
         /// Disposal logic related to this class.
         /// </summary>
@@ -106,7 +106,6 @@ namespace Solti.Utils.DI.Internals
 
             FLock.Dispose();
         }
-#endif
         #endregion
 
         #region IComposite
