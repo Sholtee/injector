@@ -53,7 +53,8 @@
   </div>
   <div classs="implements">
     <h5>Implements</h5>
-    <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.idisposable">IDisposable</a></div>
+    <div><span class="xref">IDisposable</span></div>
+    <div><span class="xref">IAsyncDisposable</span></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
@@ -66,24 +67,12 @@
     <div>
       <a class="xref" href="Solti.Utils.DI.Internals.Disposable.html#Solti_Utils_DI_Internals_Disposable_DisposeAsync">Disposable.DisposeAsync()</a>
     </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
-    </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Solti.Utils.DI.Internals.html">Solti.Utils.DI.Internals</a></h6>
   <h6><strong>Assembly</strong>: Injector.dll</h6>
   <h5 id="Solti_Utils_DI_Internals_AbstractServiceEntry_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class AbstractServiceEntry : Disposable, IDisposableEx, IDisposable, IServiceDefinition, IServiceId, IServiceFactory</code></pre>
+    <pre><code class="lang-csharp hljs">public class AbstractServiceEntry : Disposable, IDisposableEx, IDisposable, IAsyncDisposable, IServiceDefinition, IServiceId, IServiceFactory</code></pre>
   </div>
   <h5 id="Solti_Utils_DI_Internals_AbstractServiceEntry_remarks"><strong>Remarks</strong></h5>
   <div class="markdown level0 remarks"><p>This is an internal class so it may change from version to version. Don&apos;t use it!</p>
@@ -91,7 +80,7 @@
   <h3 id="constructors">Constructors
   </h3>
   <a id="Solti_Utils_DI_Internals_AbstractServiceEntry__ctor_" data-uid="Solti.Utils.DI.Internals.AbstractServiceEntry.#ctor*"></a>
-  <h4 id="Solti_Utils_DI_Internals_AbstractServiceEntry__ctor_System_Type_System_String_" data-uid="Solti.Utils.DI.Internals.AbstractServiceEntry.#ctor(System.Type,System.String)">AbstractServiceEntry(Type, String)</h4>
+  <h4 id="Solti_Utils_DI_Internals_AbstractServiceEntry__ctor_Type_System_String_" data-uid="Solti.Utils.DI.Internals.AbstractServiceEntry.#ctor(Type,System.String)">AbstractServiceEntry(Type, String)</h4>
   <div class="markdown level1 summary"><p>Creates a new <a class="xref" href="Solti.Utils.DI.Internals.AbstractServiceEntry.html">AbstractServiceEntry</a> instance.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -110,7 +99,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.type">Type</a></td>
+        <td><span class="xref">Type</span></td>
         <td><span class="parametername">interface</span></td>
         <td><p>The interface of the service.</p>
 </td>
@@ -123,24 +112,8 @@
       </tr>
     </tbody>
   </table>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></td>
-        <td><p>The <code data-dev-comment-type="paramref" class="paramref">interface</code> is not an interface.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
   <a id="Solti_Utils_DI_Internals_AbstractServiceEntry__ctor_" data-uid="Solti.Utils.DI.Internals.AbstractServiceEntry.#ctor*"></a>
-  <h4 id="Solti_Utils_DI_Internals_AbstractServiceEntry__ctor_System_Type_System_String_System_Nullable_Solti_Utils_DI_Lifetime__Solti_Utils_DI_IServiceContainer_" data-uid="Solti.Utils.DI.Internals.AbstractServiceEntry.#ctor(System.Type,System.String,System.Nullable{Solti.Utils.DI.Lifetime},Solti.Utils.DI.IServiceContainer)">AbstractServiceEntry(Type, String, Nullable&lt;Lifetime&gt;, IServiceContainer)</h4>
+  <h4 id="Solti_Utils_DI_Internals_AbstractServiceEntry__ctor_Type_System_String_System_Nullable_Solti_Utils_DI_Lifetime__Solti_Utils_DI_IServiceContainer_" data-uid="Solti.Utils.DI.Internals.AbstractServiceEntry.#ctor(Type,System.String,System.Nullable{Solti.Utils.DI.Lifetime},Solti.Utils.DI.IServiceContainer)">AbstractServiceEntry(Type, String, Nullable&lt;Lifetime&gt;, IServiceContainer)</h4>
   <div class="markdown level1 summary"><p>Creates a new <a class="xref" href="Solti.Utils.DI.Internals.AbstractServiceEntry.html">AbstractServiceEntry</a> instance.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -159,7 +132,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.type">Type</a></td>
+        <td><span class="xref">Type</span></td>
         <td><span class="parametername">interface</span></td>
         <td><p>The interface of the service.</p>
 </td>
@@ -180,22 +153,6 @@
         <td><a class="xref" href="Solti.Utils.DI.IServiceContainer.html">IServiceContainer</a></td>
         <td><span class="parametername">owner</span></td>
         <td><p>The owner of this entry.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></td>
-        <td><p>The <code data-dev-comment-type="paramref" class="paramref">interface</code> is not an interface.</p>
 </td>
       </tr>
     </tbody>
@@ -221,7 +178,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.func-3">Func</a>&lt;<a class="xref" href="Solti.Utils.DI.IInjector.html">IInjector</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.type">Type</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a>&gt;</td>
+        <td><span class="xref">Func</span>&lt;<a class="xref" href="Solti.Utils.DI.IInjector.html">IInjector</a>, <span class="xref">Type</span>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -245,7 +202,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.type">Type</a></td>
+        <td><span class="xref">Type</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -293,7 +250,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.type">Type</a></td>
+        <td><span class="xref">Type</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -397,7 +354,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.tasks.valuetask">ValueTask</a></td>
+        <td><span class="xref">ValueTask</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -515,8 +472,6 @@
       </tr>
     </tbody>
   </table>
-  <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a></div>
   <h5 id="Solti_Utils_DI_Internals_AbstractServiceEntry_Equals_System_Object__remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>Entries having the same property values are considered equivalent.</p>
 </div>
@@ -545,10 +500,8 @@
       </tr>
     </tbody>
   </table>
-  <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a></div>
   <a id="Solti_Utils_DI_Internals_AbstractServiceEntry_SetInstance_" data-uid="Solti.Utils.DI.Internals.AbstractServiceEntry.SetInstance*"></a>
-  <h4 id="Solti_Utils_DI_Internals_AbstractServiceEntry_SetInstance_Solti_Utils_DI_Internals_ServiceReference_System_Collections_Generic_IReadOnlyDictionary_System_String_System_Object__" data-uid="Solti.Utils.DI.Internals.AbstractServiceEntry.SetInstance(Solti.Utils.DI.Internals.ServiceReference,System.Collections.Generic.IReadOnlyDictionary{System.String,System.Object})">SetInstance(ServiceReference, IReadOnlyDictionary&lt;String, Object&gt;)</h4>
+  <h4 id="Solti_Utils_DI_Internals_AbstractServiceEntry_SetInstance_Solti_Utils_DI_Internals_ServiceReference_IReadOnlyDictionary_System_String_System_Object__" data-uid="Solti.Utils.DI.Internals.AbstractServiceEntry.SetInstance(Solti.Utils.DI.Internals.ServiceReference,IReadOnlyDictionary{System.String,System.Object})">SetInstance(ServiceReference, IReadOnlyDictionary&lt;String, Object&gt;)</h4>
   <div class="markdown level1 summary"><p>Calls the <a class="xref" href="Solti.Utils.DI.Internals.AbstractServiceEntry.html#Solti_Utils_DI_Internals_AbstractServiceEntry_Factory">Factory</a> to set the service <a class="xref" href="Solti.Utils.DI.Internals.AbstractServiceEntry.html#Solti_Utils_DI_Internals_AbstractServiceEntry_Instance">Instance</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -573,7 +526,7 @@
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2">IReadOnlyDictionary</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a>&gt;</td>
+        <td><span class="xref">IReadOnlyDictionary</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a>&gt;</td>
         <td><span class="parametername">options</span></td>
         <td><p>The options that control the instantiation process.</p>
 </td>
@@ -598,7 +551,7 @@
   </table>
   <a id="Solti_Utils_DI_Internals_AbstractServiceEntry_ToString_" data-uid="Solti.Utils.DI.Internals.AbstractServiceEntry.ToString*"></a>
   <h4 id="Solti_Utils_DI_Internals_AbstractServiceEntry_ToString" data-uid="Solti.Utils.DI.Internals.AbstractServiceEntry.ToString">ToString()</h4>
-  <div class="markdown level1 summary"><p>See <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">ToString()</a>.</p>
+  <div class="markdown level1 summary"><p>See <see cref="!:object.ToString"></see>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -620,11 +573,12 @@
       </tr>
     </tbody>
   </table>
-  <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a></div>
   <h3 id="implements">Implements</h3>
   <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.idisposable">System.IDisposable</a>
+      <span class="xref">IDisposable</span>
+  </div>
+  <div>
+      <span class="xref">IAsyncDisposable</span>
   </div>
   <h3 id="extensionmethods">Extension Methods</h3>
   <div>

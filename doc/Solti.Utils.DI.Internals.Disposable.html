@@ -42,7 +42,7 @@
   
   <h1 id="Solti_Utils_DI_Internals_Disposable" data-uid="Solti.Utils.DI.Internals.Disposable" class="text-break">Class Disposable
   </h1>
-  <div class="markdown level0 summary"><p>Implements the <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.idisposable">IDisposable</a> interface.</p>
+  <div class="markdown level0 summary"><p>Implements the <see cref="!:IDisposable"></see> and <see cref="!:IAsyncDisposable"></see> interfaces.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
@@ -55,37 +55,14 @@
   </div>
   <div classs="implements">
     <h5>Implements</h5>
-    <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.idisposable">IDisposable</a></div>
-  </div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a>
-    </div>
+    <div><span class="xref">IDisposable</span></div>
+    <div><span class="xref">IAsyncDisposable</span></div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Solti.Utils.DI.Internals.html">Solti.Utils.DI.Internals</a></h6>
   <h6><strong>Assembly</strong>: Injector.dll</h6>
   <h5 id="Solti_Utils_DI_Internals_Disposable_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class Disposable : IDisposableEx, IDisposable</code></pre>
+    <pre><code class="lang-csharp hljs">public class Disposable : object, IDisposableEx, IDisposable, IAsyncDisposable</code></pre>
   </div>
   <h5 id="Solti_Utils_DI_Internals_Disposable_remarks"><strong>Remarks</strong></h5>
   <div class="markdown level0 remarks"><p>This is an internal class so it may change from version to version. Don&apos;t use it!</p>
@@ -137,14 +114,14 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.tasks.valuetask">ValueTask</a></td>
+        <td><span class="xref">ValueTask</span></td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <a id="Solti_Utils_DI_Internals_Disposable_Dispose_" data-uid="Solti.Utils.DI.Internals.Disposable.Dispose*"></a>
   <h4 id="Solti_Utils_DI_Internals_Disposable_Dispose" data-uid="Solti.Utils.DI.Internals.Disposable.Dispose">Dispose()</h4>
-  <div class="markdown level1 summary"><p>Implements the <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.idisposable.dispose#System_IDisposable_Dispose">Dispose()</a> method.</p>
+  <div class="markdown level1 summary"><p>Implements the <see cref="!:IDisposable.Dispose"></see> method.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -173,14 +150,14 @@
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
         <td><span class="parametername">disposeManaged</span></td>
-        <td><p>It is set to true on <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.idisposable.dispose#System_IDisposable_Dispose">Dispose()</a> call.</p>
+        <td><p>It is set to true on <see cref="!:IDisposable.Dispose"></see> call.</p>
 </td>
       </tr>
     </tbody>
   </table>
   <a id="Solti_Utils_DI_Internals_Disposable_DisposeAsync_" data-uid="Solti.Utils.DI.Internals.Disposable.DisposeAsync*"></a>
   <h4 id="Solti_Utils_DI_Internals_Disposable_DisposeAsync" data-uid="Solti.Utils.DI.Internals.Disposable.DisposeAsync">DisposeAsync()</h4>
-  <div class="markdown level1 summary"><p>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources asynchronously.</p>
+  <div class="markdown level1 summary"><p>Implements the <see cref="!:IAsyncDisposable.DisposeAsync"></see> method.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -197,7 +174,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.tasks.valuetask">ValueTask</a></td>
+        <td><span class="xref">ValueTask</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -213,7 +190,10 @@
   </div>
   <h3 id="implements">Implements</h3>
   <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.idisposable">System.IDisposable</a>
+      <span class="xref">IDisposable</span>
+  </div>
+  <div>
+      <span class="xref">IAsyncDisposable</span>
   </div>
   <h3 id="extensionmethods">Extension Methods</h3>
   <div>

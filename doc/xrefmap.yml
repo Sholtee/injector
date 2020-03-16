@@ -57,17 +57,17 @@ references:
   commentId: T:Solti.Utils.DI.Annotations.ServiceAttribute
   fullName: Solti.Utils.DI.Annotations.ServiceAttribute
   nameWithType: ServiceAttribute
-- uid: Solti.Utils.DI.Annotations.ServiceAttribute.#ctor(System.Type,Solti.Utils.DI.Lifetime)
+- uid: Solti.Utils.DI.Annotations.ServiceAttribute.#ctor(Type,Solti.Utils.DI.Lifetime)
   name: ServiceAttribute(Type, Lifetime)
-  href: Solti.Utils.DI.Annotations.ServiceAttribute.html#Solti_Utils_DI_Annotations_ServiceAttribute__ctor_System_Type_Solti_Utils_DI_Lifetime_
-  commentId: M:Solti.Utils.DI.Annotations.ServiceAttribute.#ctor(System.Type,Solti.Utils.DI.Lifetime)
-  fullName: Solti.Utils.DI.Annotations.ServiceAttribute.ServiceAttribute(System.Type, Solti.Utils.DI.Lifetime)
+  href: Solti.Utils.DI.Annotations.ServiceAttribute.html#Solti_Utils_DI_Annotations_ServiceAttribute__ctor_Type_Solti_Utils_DI_Lifetime_
+  commentId: M:Solti.Utils.DI.Annotations.ServiceAttribute.#ctor(Type,Solti.Utils.DI.Lifetime)
+  fullName: Solti.Utils.DI.Annotations.ServiceAttribute.ServiceAttribute(Type, Solti.Utils.DI.Lifetime)
   nameWithType: ServiceAttribute.ServiceAttribute(Type, Lifetime)
-- uid: Solti.Utils.DI.Annotations.ServiceAttribute.#ctor(System.Type,System.String,Solti.Utils.DI.Lifetime)
+- uid: Solti.Utils.DI.Annotations.ServiceAttribute.#ctor(Type,System.String,Solti.Utils.DI.Lifetime)
   name: ServiceAttribute(Type, String, Lifetime)
-  href: Solti.Utils.DI.Annotations.ServiceAttribute.html#Solti_Utils_DI_Annotations_ServiceAttribute__ctor_System_Type_System_String_Solti_Utils_DI_Lifetime_
-  commentId: M:Solti.Utils.DI.Annotations.ServiceAttribute.#ctor(System.Type,System.String,Solti.Utils.DI.Lifetime)
-  fullName: Solti.Utils.DI.Annotations.ServiceAttribute.ServiceAttribute(System.Type, System.String, Solti.Utils.DI.Lifetime)
+  href: Solti.Utils.DI.Annotations.ServiceAttribute.html#Solti_Utils_DI_Annotations_ServiceAttribute__ctor_Type_System_String_Solti_Utils_DI_Lifetime_
+  commentId: M:Solti.Utils.DI.Annotations.ServiceAttribute.#ctor(Type,System.String,Solti.Utils.DI.Lifetime)
+  fullName: Solti.Utils.DI.Annotations.ServiceAttribute.ServiceAttribute(Type, System.String, Solti.Utils.DI.Lifetime)
   nameWithType: ServiceAttribute.ServiceAttribute(Type, String, Lifetime)
 - uid: Solti.Utils.DI.Annotations.ServiceAttribute.#ctor*
   name: ServiceAttribute
@@ -115,11 +115,11 @@ references:
   isSpec: "True"
   fullName: Solti.Utils.DI.Annotations.ServiceAttribute.Name
   nameWithType: ServiceAttribute.Name
-- uid: Solti.Utils.DI.Annotations.ServiceAttribute.Register(Solti.Utils.DI.IServiceContainer,System.Type)
+- uid: Solti.Utils.DI.Annotations.ServiceAttribute.Register(Solti.Utils.DI.IServiceContainer,Type)
   name: Register(IServiceContainer, Type)
-  href: Solti.Utils.DI.Annotations.ServiceAttribute.html#Solti_Utils_DI_Annotations_ServiceAttribute_Register_Solti_Utils_DI_IServiceContainer_System_Type_
-  commentId: M:Solti.Utils.DI.Annotations.ServiceAttribute.Register(Solti.Utils.DI.IServiceContainer,System.Type)
-  fullName: Solti.Utils.DI.Annotations.ServiceAttribute.Register(Solti.Utils.DI.IServiceContainer, System.Type)
+  href: Solti.Utils.DI.Annotations.ServiceAttribute.html#Solti_Utils_DI_Annotations_ServiceAttribute_Register_Solti_Utils_DI_IServiceContainer_Type_
+  commentId: M:Solti.Utils.DI.Annotations.ServiceAttribute.Register(Solti.Utils.DI.IServiceContainer,Type)
+  fullName: Solti.Utils.DI.Annotations.ServiceAttribute.Register(Solti.Utils.DI.IServiceContainer, Type)
   nameWithType: ServiceAttribute.Register(IServiceContainer, Type)
 - uid: Solti.Utils.DI.Annotations.ServiceAttribute.Register*
   name: Register
@@ -134,11 +134,11 @@ references:
   commentId: T:Solti.Utils.DI.Annotations.ServiceRegistrationAttribute
   fullName: Solti.Utils.DI.Annotations.ServiceRegistrationAttribute
   nameWithType: ServiceRegistrationAttribute
-- uid: Solti.Utils.DI.Annotations.ServiceRegistrationAttribute.Register(Solti.Utils.DI.IServiceContainer,System.Type)
+- uid: Solti.Utils.DI.Annotations.ServiceRegistrationAttribute.Register(Solti.Utils.DI.IServiceContainer,Type)
   name: Register(IServiceContainer, Type)
-  href: Solti.Utils.DI.Annotations.ServiceRegistrationAttribute.html#Solti_Utils_DI_Annotations_ServiceRegistrationAttribute_Register_Solti_Utils_DI_IServiceContainer_System_Type_
-  commentId: M:Solti.Utils.DI.Annotations.ServiceRegistrationAttribute.Register(Solti.Utils.DI.IServiceContainer,System.Type)
-  fullName: Solti.Utils.DI.Annotations.ServiceRegistrationAttribute.Register(Solti.Utils.DI.IServiceContainer, System.Type)
+  href: Solti.Utils.DI.Annotations.ServiceRegistrationAttribute.html#Solti_Utils_DI_Annotations_ServiceRegistrationAttribute_Register_Solti_Utils_DI_IServiceContainer_Type_
+  commentId: M:Solti.Utils.DI.Annotations.ServiceRegistrationAttribute.Register(Solti.Utils.DI.IServiceContainer,Type)
+  fullName: Solti.Utils.DI.Annotations.ServiceRegistrationAttribute.Register(Solti.Utils.DI.IServiceContainer, Type)
   nameWithType: ServiceRegistrationAttribute.Register(IServiceContainer, Type)
 - uid: Solti.Utils.DI.Annotations.ServiceRegistrationAttribute.Register*
   name: Register
@@ -159,11 +159,11 @@ references:
   commentId: T:Solti.Utils.DI.IInjector
   fullName: Solti.Utils.DI.IInjector
   nameWithType: IInjector
-- uid: Solti.Utils.DI.IInjector.Get(System.Type,System.String)
+- uid: Solti.Utils.DI.IInjector.Get(Type,System.String)
   name: Get(Type, String)
-  href: Solti.Utils.DI.IInjector.html#Solti_Utils_DI_IInjector_Get_System_Type_System_String_
-  commentId: M:Solti.Utils.DI.IInjector.Get(System.Type,System.String)
-  fullName: Solti.Utils.DI.IInjector.Get(System.Type, System.String)
+  href: Solti.Utils.DI.IInjector.html#Solti_Utils_DI_IInjector_Get_Type_System_String_
+  commentId: M:Solti.Utils.DI.IInjector.Get(Type,System.String)
+  fullName: Solti.Utils.DI.IInjector.Get(Type, System.String)
   nameWithType: IInjector.Get(Type, String)
 - uid: Solti.Utils.DI.IInjector.Get*
   name: Get
@@ -172,11 +172,11 @@ references:
   isSpec: "True"
   fullName: Solti.Utils.DI.IInjector.Get
   nameWithType: IInjector.Get
-- uid: Solti.Utils.DI.IInjector.TryGet(System.Type,System.String)
+- uid: Solti.Utils.DI.IInjector.TryGet(Type,System.String)
   name: TryGet(Type, String)
-  href: Solti.Utils.DI.IInjector.html#Solti_Utils_DI_IInjector_TryGet_System_Type_System_String_
-  commentId: M:Solti.Utils.DI.IInjector.TryGet(System.Type,System.String)
-  fullName: Solti.Utils.DI.IInjector.TryGet(System.Type, System.String)
+  href: Solti.Utils.DI.IInjector.html#Solti_Utils_DI_IInjector_TryGet_Type_System_String_
+  commentId: M:Solti.Utils.DI.IInjector.TryGet(Type,System.String)
+  fullName: Solti.Utils.DI.IInjector.TryGet(Type, System.String)
   nameWithType: IInjector.TryGet(Type, String)
 - uid: Solti.Utils.DI.IInjector.TryGet*
   name: TryGet
@@ -220,13 +220,13 @@ references:
   fullName.vb: Solti.Utils.DI.IInjectorExtensions.Get(Of TInterface)(Solti.Utils.DI.IInjector, System.String)
   nameWithType: IInjectorExtensions.Get<TInterface>(IInjector, String)
   nameWithType.vb: IInjectorExtensions.Get(Of TInterface)(IInjector, String)
-- uid: Solti.Utils.DI.IInjectorExtensions.Instantiate(Solti.Utils.DI.IInjector,System.Type,System.Collections.Generic.IReadOnlyDictionary{System.String,System.Object})
+- uid: Solti.Utils.DI.IInjectorExtensions.Instantiate(Solti.Utils.DI.IInjector,Type,IReadOnlyDictionary{System.String,System.Object})
   name: Instantiate(IInjector, Type, IReadOnlyDictionary<String, Object>)
-  href: Solti.Utils.DI.IInjectorExtensions.html#Solti_Utils_DI_IInjectorExtensions_Instantiate_Solti_Utils_DI_IInjector_System_Type_System_Collections_Generic_IReadOnlyDictionary_System_String_System_Object__
-  commentId: M:Solti.Utils.DI.IInjectorExtensions.Instantiate(Solti.Utils.DI.IInjector,System.Type,System.Collections.Generic.IReadOnlyDictionary{System.String,System.Object})
+  href: Solti.Utils.DI.IInjectorExtensions.html#Solti_Utils_DI_IInjectorExtensions_Instantiate_Solti_Utils_DI_IInjector_Type_IReadOnlyDictionary_System_String_System_Object__
+  commentId: M:Solti.Utils.DI.IInjectorExtensions.Instantiate(Solti.Utils.DI.IInjector,Type,IReadOnlyDictionary{System.String,System.Object})
   name.vb: Instantiate(IInjector, Type, IReadOnlyDictionary(Of String, Object))
-  fullName: Solti.Utils.DI.IInjectorExtensions.Instantiate(Solti.Utils.DI.IInjector, System.Type, System.Collections.Generic.IReadOnlyDictionary<System.String, System.Object>)
-  fullName.vb: Solti.Utils.DI.IInjectorExtensions.Instantiate(Solti.Utils.DI.IInjector, System.Type, System.Collections.Generic.IReadOnlyDictionary(Of System.String, System.Object))
+  fullName: Solti.Utils.DI.IInjectorExtensions.Instantiate(Solti.Utils.DI.IInjector, Type, IReadOnlyDictionary<System.String, System.Object>)
+  fullName.vb: Solti.Utils.DI.IInjectorExtensions.Instantiate(Solti.Utils.DI.IInjector, Type, IReadOnlyDictionary(Of System.String, System.Object))
   nameWithType: IInjectorExtensions.Instantiate(IInjector, Type, IReadOnlyDictionary<String, Object>)
   nameWithType.vb: IInjectorExtensions.Instantiate(IInjector, Type, IReadOnlyDictionary(Of String, Object))
 - uid: Solti.Utils.DI.IInjectorExtensions.Instantiate*
@@ -236,13 +236,13 @@ references:
   isSpec: "True"
   fullName: Solti.Utils.DI.IInjectorExtensions.Instantiate
   nameWithType: IInjectorExtensions.Instantiate
-- uid: Solti.Utils.DI.IInjectorExtensions.Instantiate``1(Solti.Utils.DI.IInjector,System.Collections.Generic.IReadOnlyDictionary{System.String,System.Object})
+- uid: Solti.Utils.DI.IInjectorExtensions.Instantiate``1(Solti.Utils.DI.IInjector,IReadOnlyDictionary{System.String,System.Object})
   name: Instantiate<TClass>(IInjector, IReadOnlyDictionary<String, Object>)
-  href: Solti.Utils.DI.IInjectorExtensions.html#Solti_Utils_DI_IInjectorExtensions_Instantiate__1_Solti_Utils_DI_IInjector_System_Collections_Generic_IReadOnlyDictionary_System_String_System_Object__
-  commentId: M:Solti.Utils.DI.IInjectorExtensions.Instantiate``1(Solti.Utils.DI.IInjector,System.Collections.Generic.IReadOnlyDictionary{System.String,System.Object})
+  href: Solti.Utils.DI.IInjectorExtensions.html#Solti_Utils_DI_IInjectorExtensions_Instantiate__1_Solti_Utils_DI_IInjector_IReadOnlyDictionary_System_String_System_Object__
+  commentId: M:Solti.Utils.DI.IInjectorExtensions.Instantiate``1(Solti.Utils.DI.IInjector,IReadOnlyDictionary{System.String,System.Object})
   name.vb: Instantiate(Of TClass)(IInjector, IReadOnlyDictionary(Of String, Object))
-  fullName: Solti.Utils.DI.IInjectorExtensions.Instantiate<TClass>(Solti.Utils.DI.IInjector, System.Collections.Generic.IReadOnlyDictionary<System.String, System.Object>)
-  fullName.vb: Solti.Utils.DI.IInjectorExtensions.Instantiate(Of TClass)(Solti.Utils.DI.IInjector, System.Collections.Generic.IReadOnlyDictionary(Of System.String, System.Object))
+  fullName: Solti.Utils.DI.IInjectorExtensions.Instantiate<TClass>(Solti.Utils.DI.IInjector, IReadOnlyDictionary<System.String, System.Object>)
+  fullName.vb: Solti.Utils.DI.IInjectorExtensions.Instantiate(Of TClass)(Solti.Utils.DI.IInjector, IReadOnlyDictionary(Of System.String, System.Object))
   nameWithType: IInjectorExtensions.Instantiate<TClass>(IInjector, IReadOnlyDictionary<String, Object>)
   nameWithType.vb: IInjectorExtensions.Instantiate(Of TClass)(IInjector, IReadOnlyDictionary(Of String, Object))
 - uid: Solti.Utils.DI.IInjectorExtensions.TryGet*
@@ -273,19 +273,19 @@ references:
   commentId: T:Solti.Utils.DI.Internals.AbstractServiceEntry
   fullName: Solti.Utils.DI.Internals.AbstractServiceEntry
   nameWithType: AbstractServiceEntry
-- uid: Solti.Utils.DI.Internals.AbstractServiceEntry.#ctor(System.Type,System.String)
+- uid: Solti.Utils.DI.Internals.AbstractServiceEntry.#ctor(Type,System.String)
   name: AbstractServiceEntry(Type, String)
-  href: Solti.Utils.DI.Internals.AbstractServiceEntry.html#Solti_Utils_DI_Internals_AbstractServiceEntry__ctor_System_Type_System_String_
-  commentId: M:Solti.Utils.DI.Internals.AbstractServiceEntry.#ctor(System.Type,System.String)
-  fullName: Solti.Utils.DI.Internals.AbstractServiceEntry.AbstractServiceEntry(System.Type, System.String)
+  href: Solti.Utils.DI.Internals.AbstractServiceEntry.html#Solti_Utils_DI_Internals_AbstractServiceEntry__ctor_Type_System_String_
+  commentId: M:Solti.Utils.DI.Internals.AbstractServiceEntry.#ctor(Type,System.String)
+  fullName: Solti.Utils.DI.Internals.AbstractServiceEntry.AbstractServiceEntry(Type, System.String)
   nameWithType: AbstractServiceEntry.AbstractServiceEntry(Type, String)
-- uid: Solti.Utils.DI.Internals.AbstractServiceEntry.#ctor(System.Type,System.String,System.Nullable{Solti.Utils.DI.Lifetime},Solti.Utils.DI.IServiceContainer)
+- uid: Solti.Utils.DI.Internals.AbstractServiceEntry.#ctor(Type,System.String,System.Nullable{Solti.Utils.DI.Lifetime},Solti.Utils.DI.IServiceContainer)
   name: AbstractServiceEntry(Type, String, Nullable<Lifetime>, IServiceContainer)
-  href: Solti.Utils.DI.Internals.AbstractServiceEntry.html#Solti_Utils_DI_Internals_AbstractServiceEntry__ctor_System_Type_System_String_System_Nullable_Solti_Utils_DI_Lifetime__Solti_Utils_DI_IServiceContainer_
-  commentId: M:Solti.Utils.DI.Internals.AbstractServiceEntry.#ctor(System.Type,System.String,System.Nullable{Solti.Utils.DI.Lifetime},Solti.Utils.DI.IServiceContainer)
+  href: Solti.Utils.DI.Internals.AbstractServiceEntry.html#Solti_Utils_DI_Internals_AbstractServiceEntry__ctor_Type_System_String_System_Nullable_Solti_Utils_DI_Lifetime__Solti_Utils_DI_IServiceContainer_
+  commentId: M:Solti.Utils.DI.Internals.AbstractServiceEntry.#ctor(Type,System.String,System.Nullable{Solti.Utils.DI.Lifetime},Solti.Utils.DI.IServiceContainer)
   name.vb: AbstractServiceEntry(Type, String, Nullable(Of Lifetime), IServiceContainer)
-  fullName: Solti.Utils.DI.Internals.AbstractServiceEntry.AbstractServiceEntry(System.Type, System.String, System.Nullable<Solti.Utils.DI.Lifetime>, Solti.Utils.DI.IServiceContainer)
-  fullName.vb: Solti.Utils.DI.Internals.AbstractServiceEntry.AbstractServiceEntry(System.Type, System.String, System.Nullable(Of Solti.Utils.DI.Lifetime), Solti.Utils.DI.IServiceContainer)
+  fullName: Solti.Utils.DI.Internals.AbstractServiceEntry.AbstractServiceEntry(Type, System.String, System.Nullable<Solti.Utils.DI.Lifetime>, Solti.Utils.DI.IServiceContainer)
+  fullName.vb: Solti.Utils.DI.Internals.AbstractServiceEntry.AbstractServiceEntry(Type, System.String, System.Nullable(Of Solti.Utils.DI.Lifetime), Solti.Utils.DI.IServiceContainer)
   nameWithType: AbstractServiceEntry.AbstractServiceEntry(Type, String, Nullable<Lifetime>, IServiceContainer)
   nameWithType.vb: AbstractServiceEntry.AbstractServiceEntry(Type, String, Nullable(Of Lifetime), IServiceContainer)
 - uid: Solti.Utils.DI.Internals.AbstractServiceEntry.#ctor*
@@ -451,13 +451,13 @@ references:
   isSpec: "True"
   fullName: Solti.Utils.DI.Internals.AbstractServiceEntry.Owner
   nameWithType: AbstractServiceEntry.Owner
-- uid: Solti.Utils.DI.Internals.AbstractServiceEntry.SetInstance(Solti.Utils.DI.Internals.ServiceReference,System.Collections.Generic.IReadOnlyDictionary{System.String,System.Object})
+- uid: Solti.Utils.DI.Internals.AbstractServiceEntry.SetInstance(Solti.Utils.DI.Internals.ServiceReference,IReadOnlyDictionary{System.String,System.Object})
   name: SetInstance(ServiceReference, IReadOnlyDictionary<String, Object>)
-  href: Solti.Utils.DI.Internals.AbstractServiceEntry.html#Solti_Utils_DI_Internals_AbstractServiceEntry_SetInstance_Solti_Utils_DI_Internals_ServiceReference_System_Collections_Generic_IReadOnlyDictionary_System_String_System_Object__
-  commentId: M:Solti.Utils.DI.Internals.AbstractServiceEntry.SetInstance(Solti.Utils.DI.Internals.ServiceReference,System.Collections.Generic.IReadOnlyDictionary{System.String,System.Object})
+  href: Solti.Utils.DI.Internals.AbstractServiceEntry.html#Solti_Utils_DI_Internals_AbstractServiceEntry_SetInstance_Solti_Utils_DI_Internals_ServiceReference_IReadOnlyDictionary_System_String_System_Object__
+  commentId: M:Solti.Utils.DI.Internals.AbstractServiceEntry.SetInstance(Solti.Utils.DI.Internals.ServiceReference,IReadOnlyDictionary{System.String,System.Object})
   name.vb: SetInstance(ServiceReference, IReadOnlyDictionary(Of String, Object))
-  fullName: Solti.Utils.DI.Internals.AbstractServiceEntry.SetInstance(Solti.Utils.DI.Internals.ServiceReference, System.Collections.Generic.IReadOnlyDictionary<System.String, System.Object>)
-  fullName.vb: Solti.Utils.DI.Internals.AbstractServiceEntry.SetInstance(Solti.Utils.DI.Internals.ServiceReference, System.Collections.Generic.IReadOnlyDictionary(Of System.String, System.Object))
+  fullName: Solti.Utils.DI.Internals.AbstractServiceEntry.SetInstance(Solti.Utils.DI.Internals.ServiceReference, IReadOnlyDictionary<System.String, System.Object>)
+  fullName.vb: Solti.Utils.DI.Internals.AbstractServiceEntry.SetInstance(Solti.Utils.DI.Internals.ServiceReference, IReadOnlyDictionary(Of System.String, System.Object))
   nameWithType: AbstractServiceEntry.SetInstance(ServiceReference, IReadOnlyDictionary<String, Object>)
   nameWithType.vb: AbstractServiceEntry.SetInstance(ServiceReference, IReadOnlyDictionary(Of String, Object))
 - uid: Solti.Utils.DI.Internals.AbstractServiceEntry.SetInstance*
@@ -523,6 +523,23 @@ references:
   fullName.vb: Solti.Utils.DI.Internals.Composite(Of TInterface).AddChild
   nameWithType: Composite<TInterface>.AddChild
   nameWithType.vb: Composite(Of TInterface).AddChild
+- uid: Solti.Utils.DI.Internals.Composite`1.AsyncDispose
+  name: AsyncDispose()
+  href: Solti.Utils.DI.Internals.Composite-1.html#Solti_Utils_DI_Internals_Composite_1_AsyncDispose
+  commentId: M:Solti.Utils.DI.Internals.Composite`1.AsyncDispose
+  fullName: Solti.Utils.DI.Internals.Composite<TInterface>.AsyncDispose()
+  fullName.vb: Solti.Utils.DI.Internals.Composite(Of TInterface).AsyncDispose()
+  nameWithType: Composite<TInterface>.AsyncDispose()
+  nameWithType.vb: Composite(Of TInterface).AsyncDispose()
+- uid: Solti.Utils.DI.Internals.Composite`1.AsyncDispose*
+  name: AsyncDispose
+  href: Solti.Utils.DI.Internals.Composite-1.html#Solti_Utils_DI_Internals_Composite_1_AsyncDispose_
+  commentId: Overload:Solti.Utils.DI.Internals.Composite`1.AsyncDispose
+  isSpec: "True"
+  fullName: Solti.Utils.DI.Internals.Composite<TInterface>.AsyncDispose
+  fullName.vb: Solti.Utils.DI.Internals.Composite(Of TInterface).AsyncDispose
+  nameWithType: Composite<TInterface>.AsyncDispose
+  nameWithType.vb: Composite(Of TInterface).AsyncDispose
 - uid: Solti.Utils.DI.Internals.Composite`1.Children
   name: Children
   href: Solti.Utils.DI.Internals.Composite-1.html#Solti_Utils_DI_Internals_Composite_1_Children
@@ -629,6 +646,19 @@ references:
   isSpec: "True"
   fullName: Solti.Utils.DI.Internals.Config.Composite
   nameWithType: Config.Composite
+- uid: Solti.Utils.DI.Internals.Config.CustomSettings
+  name: CustomSettings
+  href: Solti.Utils.DI.Internals.Config.html#Solti_Utils_DI_Internals_Config_CustomSettings
+  commentId: P:Solti.Utils.DI.Internals.Config.CustomSettings
+  fullName: Solti.Utils.DI.Internals.Config.CustomSettings
+  nameWithType: Config.CustomSettings
+- uid: Solti.Utils.DI.Internals.Config.CustomSettings*
+  name: CustomSettings
+  href: Solti.Utils.DI.Internals.Config.html#Solti_Utils_DI_Internals_Config_CustomSettings_
+  commentId: Overload:Solti.Utils.DI.Internals.Config.CustomSettings
+  isSpec: "True"
+  fullName: Solti.Utils.DI.Internals.Config.CustomSettings
+  nameWithType: Config.CustomSettings
 - uid: Solti.Utils.DI.Internals.Config.Injector
   name: Injector
   href: Solti.Utils.DI.Internals.Config.html#Solti_Utils_DI_Internals_Config_Injector
@@ -969,13 +999,13 @@ references:
   commentId: T:Solti.Utils.DI.Internals.ISupportsSpecialization
   fullName: Solti.Utils.DI.Internals.ISupportsSpecialization
   nameWithType: ISupportsSpecialization
-- uid: Solti.Utils.DI.Internals.ISupportsSpecialization.Specialize(System.Type[])
+- uid: Solti.Utils.DI.Internals.ISupportsSpecialization.Specialize(Type[])
   name: Specialize(Type[])
-  href: Solti.Utils.DI.Internals.ISupportsSpecialization.html#Solti_Utils_DI_Internals_ISupportsSpecialization_Specialize_System_Type___
-  commentId: M:Solti.Utils.DI.Internals.ISupportsSpecialization.Specialize(System.Type[])
+  href: Solti.Utils.DI.Internals.ISupportsSpecialization.html#Solti_Utils_DI_Internals_ISupportsSpecialization_Specialize_Type___
+  commentId: M:Solti.Utils.DI.Internals.ISupportsSpecialization.Specialize(Type[])
   name.vb: Specialize(Type())
-  fullName: Solti.Utils.DI.Internals.ISupportsSpecialization.Specialize(System.Type[])
-  fullName.vb: Solti.Utils.DI.Internals.ISupportsSpecialization.Specialize(System.Type())
+  fullName: Solti.Utils.DI.Internals.ISupportsSpecialization.Specialize(Type[])
+  fullName.vb: Solti.Utils.DI.Internals.ISupportsSpecialization.Specialize(Type())
   nameWithType: ISupportsSpecialization.Specialize(Type[])
   nameWithType.vb: ISupportsSpecialization.Specialize(Type())
 - uid: Solti.Utils.DI.Internals.ISupportsSpecialization.Specialize*
@@ -1010,6 +1040,19 @@ references:
   isSpec: "True"
   fullName: Solti.Utils.DI.Internals.ServiceReference.ServiceReference
   nameWithType: ServiceReference.ServiceReference
+- uid: Solti.Utils.DI.Internals.ServiceReference.AsyncDispose
+  name: AsyncDispose()
+  href: Solti.Utils.DI.Internals.ServiceReference.html#Solti_Utils_DI_Internals_ServiceReference_AsyncDispose
+  commentId: M:Solti.Utils.DI.Internals.ServiceReference.AsyncDispose
+  fullName: Solti.Utils.DI.Internals.ServiceReference.AsyncDispose()
+  nameWithType: ServiceReference.AsyncDispose()
+- uid: Solti.Utils.DI.Internals.ServiceReference.AsyncDispose*
+  name: AsyncDispose
+  href: Solti.Utils.DI.Internals.ServiceReference.html#Solti_Utils_DI_Internals_ServiceReference_AsyncDispose_
+  commentId: Overload:Solti.Utils.DI.Internals.ServiceReference.AsyncDispose
+  isSpec: "True"
+  fullName: Solti.Utils.DI.Internals.ServiceReference.AsyncDispose
+  nameWithType: ServiceReference.AsyncDispose
 - uid: Solti.Utils.DI.Internals.ServiceReference.Dependencies
   name: Dependencies
   href: Solti.Utils.DI.Internals.ServiceReference.html#Solti_Utils_DI_Internals_ServiceReference_Dependencies
@@ -1120,11 +1163,11 @@ references:
   isSpec: "True"
   fullName: Solti.Utils.DI.IServiceContainer.Count
   nameWithType: IServiceContainer.Count
-- uid: Solti.Utils.DI.IServiceContainer.Get(System.Type,System.String,Solti.Utils.DI.QueryModes)
+- uid: Solti.Utils.DI.IServiceContainer.Get(Type,System.String,Solti.Utils.DI.QueryModes)
   name: Get(Type, String, QueryModes)
-  href: Solti.Utils.DI.IServiceContainer.html#Solti_Utils_DI_IServiceContainer_Get_System_Type_System_String_Solti_Utils_DI_QueryModes_
-  commentId: M:Solti.Utils.DI.IServiceContainer.Get(System.Type,System.String,Solti.Utils.DI.QueryModes)
-  fullName: Solti.Utils.DI.IServiceContainer.Get(System.Type, System.String, Solti.Utils.DI.QueryModes)
+  href: Solti.Utils.DI.IServiceContainer.html#Solti_Utils_DI_IServiceContainer_Get_Type_System_String_Solti_Utils_DI_QueryModes_
+  commentId: M:Solti.Utils.DI.IServiceContainer.Get(Type,System.String,Solti.Utils.DI.QueryModes)
+  fullName: Solti.Utils.DI.IServiceContainer.Get(Type, System.String, Solti.Utils.DI.QueryModes)
   nameWithType: IServiceContainer.Get(Type, String, QueryModes)
 - uid: Solti.Utils.DI.IServiceContainer.Get*
   name: Get
@@ -1139,11 +1182,11 @@ references:
   commentId: T:Solti.Utils.DI.IServiceContainerExtensions
   fullName: Solti.Utils.DI.IServiceContainerExtensions
   nameWithType: IServiceContainerExtensions
-- uid: Solti.Utils.DI.IServiceContainerExtensions.Abstract(Solti.Utils.DI.IServiceContainer,System.Type,System.String)
+- uid: Solti.Utils.DI.IServiceContainerExtensions.Abstract(Solti.Utils.DI.IServiceContainer,Type,System.String)
   name: Abstract(IServiceContainer, Type, String)
-  href: Solti.Utils.DI.IServiceContainerExtensions.html#Solti_Utils_DI_IServiceContainerExtensions_Abstract_Solti_Utils_DI_IServiceContainer_System_Type_System_String_
-  commentId: M:Solti.Utils.DI.IServiceContainerExtensions.Abstract(Solti.Utils.DI.IServiceContainer,System.Type,System.String)
-  fullName: Solti.Utils.DI.IServiceContainerExtensions.Abstract(Solti.Utils.DI.IServiceContainer, System.Type, System.String)
+  href: Solti.Utils.DI.IServiceContainerExtensions.html#Solti_Utils_DI_IServiceContainerExtensions_Abstract_Solti_Utils_DI_IServiceContainer_Type_System_String_
+  commentId: M:Solti.Utils.DI.IServiceContainerExtensions.Abstract(Solti.Utils.DI.IServiceContainer,Type,System.String)
+  fullName: Solti.Utils.DI.IServiceContainerExtensions.Abstract(Solti.Utils.DI.IServiceContainer, Type, System.String)
   nameWithType: IServiceContainerExtensions.Abstract(IServiceContainer, Type, String)
 - uid: Solti.Utils.DI.IServiceContainerExtensions.Abstract*
   name: Abstract
@@ -1187,13 +1230,13 @@ references:
   isSpec: "True"
   fullName: Solti.Utils.DI.IServiceContainerExtensions.CreateInjector
   nameWithType: IServiceContainerExtensions.CreateInjector
-- uid: Solti.Utils.DI.IServiceContainerExtensions.CreateProvider(Solti.Utils.DI.IServiceContainer,System.IServiceProvider@)
+- uid: Solti.Utils.DI.IServiceContainerExtensions.CreateProvider(Solti.Utils.DI.IServiceContainer,IServiceProvider@)
   name: CreateProvider(IServiceContainer, out IServiceProvider)
-  href: Solti.Utils.DI.IServiceContainerExtensions.html#Solti_Utils_DI_IServiceContainerExtensions_CreateProvider_Solti_Utils_DI_IServiceContainer_System_IServiceProvider__
-  commentId: M:Solti.Utils.DI.IServiceContainerExtensions.CreateProvider(Solti.Utils.DI.IServiceContainer,System.IServiceProvider@)
+  href: Solti.Utils.DI.IServiceContainerExtensions.html#Solti_Utils_DI_IServiceContainerExtensions_CreateProvider_Solti_Utils_DI_IServiceContainer_IServiceProvider__
+  commentId: M:Solti.Utils.DI.IServiceContainerExtensions.CreateProvider(Solti.Utils.DI.IServiceContainer,IServiceProvider@)
   name.vb: CreateProvider(IServiceContainer, ByRef IServiceProvider)
-  fullName: Solti.Utils.DI.IServiceContainerExtensions.CreateProvider(Solti.Utils.DI.IServiceContainer, out System.IServiceProvider)
-  fullName.vb: Solti.Utils.DI.IServiceContainerExtensions.CreateProvider(Solti.Utils.DI.IServiceContainer, ByRef System.IServiceProvider)
+  fullName: Solti.Utils.DI.IServiceContainerExtensions.CreateProvider(Solti.Utils.DI.IServiceContainer, out IServiceProvider)
+  fullName.vb: Solti.Utils.DI.IServiceContainerExtensions.CreateProvider(Solti.Utils.DI.IServiceContainer, ByRef IServiceProvider)
   nameWithType: IServiceContainerExtensions.CreateProvider(IServiceContainer, out IServiceProvider)
   nameWithType.vb: IServiceContainerExtensions.CreateProvider(IServiceContainer, ByRef IServiceProvider)
 - uid: Solti.Utils.DI.IServiceContainerExtensions.CreateProvider*
@@ -1203,22 +1246,22 @@ references:
   isSpec: "True"
   fullName: Solti.Utils.DI.IServiceContainerExtensions.CreateProvider
   nameWithType: IServiceContainerExtensions.CreateProvider
-- uid: Solti.Utils.DI.IServiceContainerExtensions.Factory(Solti.Utils.DI.IServiceContainer,System.Type,System.Func{Solti.Utils.DI.IInjector,System.Type,System.Object},Solti.Utils.DI.Lifetime)
+- uid: Solti.Utils.DI.IServiceContainerExtensions.Factory(Solti.Utils.DI.IServiceContainer,Type,Func{Solti.Utils.DI.IInjector,Type,System.Object},Solti.Utils.DI.Lifetime)
   name: Factory(IServiceContainer, Type, Func<IInjector, Type, Object>, Lifetime)
-  href: Solti.Utils.DI.IServiceContainerExtensions.html#Solti_Utils_DI_IServiceContainerExtensions_Factory_Solti_Utils_DI_IServiceContainer_System_Type_System_Func_Solti_Utils_DI_IInjector_System_Type_System_Object__Solti_Utils_DI_Lifetime_
-  commentId: M:Solti.Utils.DI.IServiceContainerExtensions.Factory(Solti.Utils.DI.IServiceContainer,System.Type,System.Func{Solti.Utils.DI.IInjector,System.Type,System.Object},Solti.Utils.DI.Lifetime)
+  href: Solti.Utils.DI.IServiceContainerExtensions.html#Solti_Utils_DI_IServiceContainerExtensions_Factory_Solti_Utils_DI_IServiceContainer_Type_Func_Solti_Utils_DI_IInjector_Type_System_Object__Solti_Utils_DI_Lifetime_
+  commentId: M:Solti.Utils.DI.IServiceContainerExtensions.Factory(Solti.Utils.DI.IServiceContainer,Type,Func{Solti.Utils.DI.IInjector,Type,System.Object},Solti.Utils.DI.Lifetime)
   name.vb: Factory(IServiceContainer, Type, Func(Of IInjector, Type, Object), Lifetime)
-  fullName: Solti.Utils.DI.IServiceContainerExtensions.Factory(Solti.Utils.DI.IServiceContainer, System.Type, System.Func<Solti.Utils.DI.IInjector, System.Type, System.Object>, Solti.Utils.DI.Lifetime)
-  fullName.vb: Solti.Utils.DI.IServiceContainerExtensions.Factory(Solti.Utils.DI.IServiceContainer, System.Type, System.Func(Of Solti.Utils.DI.IInjector, System.Type, System.Object), Solti.Utils.DI.Lifetime)
+  fullName: Solti.Utils.DI.IServiceContainerExtensions.Factory(Solti.Utils.DI.IServiceContainer, Type, Func<Solti.Utils.DI.IInjector, Type, System.Object>, Solti.Utils.DI.Lifetime)
+  fullName.vb: Solti.Utils.DI.IServiceContainerExtensions.Factory(Solti.Utils.DI.IServiceContainer, Type, Func(Of Solti.Utils.DI.IInjector, Type, System.Object), Solti.Utils.DI.Lifetime)
   nameWithType: IServiceContainerExtensions.Factory(IServiceContainer, Type, Func<IInjector, Type, Object>, Lifetime)
   nameWithType.vb: IServiceContainerExtensions.Factory(IServiceContainer, Type, Func(Of IInjector, Type, Object), Lifetime)
-- uid: Solti.Utils.DI.IServiceContainerExtensions.Factory(Solti.Utils.DI.IServiceContainer,System.Type,System.String,System.Func{Solti.Utils.DI.IInjector,System.Type,System.Object},Solti.Utils.DI.Lifetime)
+- uid: Solti.Utils.DI.IServiceContainerExtensions.Factory(Solti.Utils.DI.IServiceContainer,Type,System.String,Func{Solti.Utils.DI.IInjector,Type,System.Object},Solti.Utils.DI.Lifetime)
   name: Factory(IServiceContainer, Type, String, Func<IInjector, Type, Object>, Lifetime)
-  href: Solti.Utils.DI.IServiceContainerExtensions.html#Solti_Utils_DI_IServiceContainerExtensions_Factory_Solti_Utils_DI_IServiceContainer_System_Type_System_String_System_Func_Solti_Utils_DI_IInjector_System_Type_System_Object__Solti_Utils_DI_Lifetime_
-  commentId: M:Solti.Utils.DI.IServiceContainerExtensions.Factory(Solti.Utils.DI.IServiceContainer,System.Type,System.String,System.Func{Solti.Utils.DI.IInjector,System.Type,System.Object},Solti.Utils.DI.Lifetime)
+  href: Solti.Utils.DI.IServiceContainerExtensions.html#Solti_Utils_DI_IServiceContainerExtensions_Factory_Solti_Utils_DI_IServiceContainer_Type_System_String_Func_Solti_Utils_DI_IInjector_Type_System_Object__Solti_Utils_DI_Lifetime_
+  commentId: M:Solti.Utils.DI.IServiceContainerExtensions.Factory(Solti.Utils.DI.IServiceContainer,Type,System.String,Func{Solti.Utils.DI.IInjector,Type,System.Object},Solti.Utils.DI.Lifetime)
   name.vb: Factory(IServiceContainer, Type, String, Func(Of IInjector, Type, Object), Lifetime)
-  fullName: Solti.Utils.DI.IServiceContainerExtensions.Factory(Solti.Utils.DI.IServiceContainer, System.Type, System.String, System.Func<Solti.Utils.DI.IInjector, System.Type, System.Object>, Solti.Utils.DI.Lifetime)
-  fullName.vb: Solti.Utils.DI.IServiceContainerExtensions.Factory(Solti.Utils.DI.IServiceContainer, System.Type, System.String, System.Func(Of Solti.Utils.DI.IInjector, System.Type, System.Object), Solti.Utils.DI.Lifetime)
+  fullName: Solti.Utils.DI.IServiceContainerExtensions.Factory(Solti.Utils.DI.IServiceContainer, Type, System.String, Func<Solti.Utils.DI.IInjector, Type, System.Object>, Solti.Utils.DI.Lifetime)
+  fullName.vb: Solti.Utils.DI.IServiceContainerExtensions.Factory(Solti.Utils.DI.IServiceContainer, Type, System.String, Func(Of Solti.Utils.DI.IInjector, Type, System.Object), Solti.Utils.DI.Lifetime)
   nameWithType: IServiceContainerExtensions.Factory(IServiceContainer, Type, String, Func<IInjector, Type, Object>, Lifetime)
   nameWithType.vb: IServiceContainerExtensions.Factory(IServiceContainer, Type, String, Func(Of IInjector, Type, Object), Lifetime)
 - uid: Solti.Utils.DI.IServiceContainerExtensions.Factory*
@@ -1228,22 +1271,22 @@ references:
   isSpec: "True"
   fullName: Solti.Utils.DI.IServiceContainerExtensions.Factory
   nameWithType: IServiceContainerExtensions.Factory
-- uid: Solti.Utils.DI.IServiceContainerExtensions.Factory``1(Solti.Utils.DI.IServiceContainer,System.Func{Solti.Utils.DI.IInjector,``0},Solti.Utils.DI.Lifetime)
+- uid: Solti.Utils.DI.IServiceContainerExtensions.Factory``1(Solti.Utils.DI.IServiceContainer,Func{Solti.Utils.DI.IInjector,``0},Solti.Utils.DI.Lifetime)
   name: Factory<TInterface>(IServiceContainer, Func<IInjector, TInterface>, Lifetime)
-  href: Solti.Utils.DI.IServiceContainerExtensions.html#Solti_Utils_DI_IServiceContainerExtensions_Factory__1_Solti_Utils_DI_IServiceContainer_System_Func_Solti_Utils_DI_IInjector___0__Solti_Utils_DI_Lifetime_
-  commentId: M:Solti.Utils.DI.IServiceContainerExtensions.Factory``1(Solti.Utils.DI.IServiceContainer,System.Func{Solti.Utils.DI.IInjector,``0},Solti.Utils.DI.Lifetime)
+  href: Solti.Utils.DI.IServiceContainerExtensions.html#Solti_Utils_DI_IServiceContainerExtensions_Factory__1_Solti_Utils_DI_IServiceContainer_Func_Solti_Utils_DI_IInjector___0__Solti_Utils_DI_Lifetime_
+  commentId: M:Solti.Utils.DI.IServiceContainerExtensions.Factory``1(Solti.Utils.DI.IServiceContainer,Func{Solti.Utils.DI.IInjector,``0},Solti.Utils.DI.Lifetime)
   name.vb: Factory(Of TInterface)(IServiceContainer, Func(Of IInjector, TInterface), Lifetime)
-  fullName: Solti.Utils.DI.IServiceContainerExtensions.Factory<TInterface>(Solti.Utils.DI.IServiceContainer, System.Func<Solti.Utils.DI.IInjector, TInterface>, Solti.Utils.DI.Lifetime)
-  fullName.vb: Solti.Utils.DI.IServiceContainerExtensions.Factory(Of TInterface)(Solti.Utils.DI.IServiceContainer, System.Func(Of Solti.Utils.DI.IInjector, TInterface), Solti.Utils.DI.Lifetime)
+  fullName: Solti.Utils.DI.IServiceContainerExtensions.Factory<TInterface>(Solti.Utils.DI.IServiceContainer, Func<Solti.Utils.DI.IInjector, TInterface>, Solti.Utils.DI.Lifetime)
+  fullName.vb: Solti.Utils.DI.IServiceContainerExtensions.Factory(Of TInterface)(Solti.Utils.DI.IServiceContainer, Func(Of Solti.Utils.DI.IInjector, TInterface), Solti.Utils.DI.Lifetime)
   nameWithType: IServiceContainerExtensions.Factory<TInterface>(IServiceContainer, Func<IInjector, TInterface>, Lifetime)
   nameWithType.vb: IServiceContainerExtensions.Factory(Of TInterface)(IServiceContainer, Func(Of IInjector, TInterface), Lifetime)
-- uid: Solti.Utils.DI.IServiceContainerExtensions.Factory``1(Solti.Utils.DI.IServiceContainer,System.String,System.Func{Solti.Utils.DI.IInjector,``0},Solti.Utils.DI.Lifetime)
+- uid: Solti.Utils.DI.IServiceContainerExtensions.Factory``1(Solti.Utils.DI.IServiceContainer,System.String,Func{Solti.Utils.DI.IInjector,``0},Solti.Utils.DI.Lifetime)
   name: Factory<TInterface>(IServiceContainer, String, Func<IInjector, TInterface>, Lifetime)
-  href: Solti.Utils.DI.IServiceContainerExtensions.html#Solti_Utils_DI_IServiceContainerExtensions_Factory__1_Solti_Utils_DI_IServiceContainer_System_String_System_Func_Solti_Utils_DI_IInjector___0__Solti_Utils_DI_Lifetime_
-  commentId: M:Solti.Utils.DI.IServiceContainerExtensions.Factory``1(Solti.Utils.DI.IServiceContainer,System.String,System.Func{Solti.Utils.DI.IInjector,``0},Solti.Utils.DI.Lifetime)
+  href: Solti.Utils.DI.IServiceContainerExtensions.html#Solti_Utils_DI_IServiceContainerExtensions_Factory__1_Solti_Utils_DI_IServiceContainer_System_String_Func_Solti_Utils_DI_IInjector___0__Solti_Utils_DI_Lifetime_
+  commentId: M:Solti.Utils.DI.IServiceContainerExtensions.Factory``1(Solti.Utils.DI.IServiceContainer,System.String,Func{Solti.Utils.DI.IInjector,``0},Solti.Utils.DI.Lifetime)
   name.vb: Factory(Of TInterface)(IServiceContainer, String, Func(Of IInjector, TInterface), Lifetime)
-  fullName: Solti.Utils.DI.IServiceContainerExtensions.Factory<TInterface>(Solti.Utils.DI.IServiceContainer, System.String, System.Func<Solti.Utils.DI.IInjector, TInterface>, Solti.Utils.DI.Lifetime)
-  fullName.vb: Solti.Utils.DI.IServiceContainerExtensions.Factory(Of TInterface)(Solti.Utils.DI.IServiceContainer, System.String, System.Func(Of Solti.Utils.DI.IInjector, TInterface), Solti.Utils.DI.Lifetime)
+  fullName: Solti.Utils.DI.IServiceContainerExtensions.Factory<TInterface>(Solti.Utils.DI.IServiceContainer, System.String, Func<Solti.Utils.DI.IInjector, TInterface>, Solti.Utils.DI.Lifetime)
+  fullName.vb: Solti.Utils.DI.IServiceContainerExtensions.Factory(Of TInterface)(Solti.Utils.DI.IServiceContainer, System.String, Func(Of Solti.Utils.DI.IInjector, TInterface), Solti.Utils.DI.Lifetime)
   nameWithType: IServiceContainerExtensions.Factory<TInterface>(IServiceContainer, String, Func<IInjector, TInterface>, Lifetime)
   nameWithType.vb: IServiceContainerExtensions.Factory(Of TInterface)(IServiceContainer, String, Func(Of IInjector, TInterface), Lifetime)
 - uid: Solti.Utils.DI.IServiceContainerExtensions.Get*
@@ -1271,17 +1314,17 @@ references:
   fullName.vb: Solti.Utils.DI.IServiceContainerExtensions.Get(Of TInterface)(Solti.Utils.DI.IServiceContainer, System.String, Solti.Utils.DI.QueryModes)
   nameWithType: IServiceContainerExtensions.Get<TInterface>(IServiceContainer, String, QueryModes)
   nameWithType.vb: IServiceContainerExtensions.Get(Of TInterface)(IServiceContainer, String, QueryModes)
-- uid: Solti.Utils.DI.IServiceContainerExtensions.Instance(Solti.Utils.DI.IServiceContainer,System.Type,System.Object,System.Boolean)
+- uid: Solti.Utils.DI.IServiceContainerExtensions.Instance(Solti.Utils.DI.IServiceContainer,Type,System.Object,System.Boolean)
   name: Instance(IServiceContainer, Type, Object, Boolean)
-  href: Solti.Utils.DI.IServiceContainerExtensions.html#Solti_Utils_DI_IServiceContainerExtensions_Instance_Solti_Utils_DI_IServiceContainer_System_Type_System_Object_System_Boolean_
-  commentId: M:Solti.Utils.DI.IServiceContainerExtensions.Instance(Solti.Utils.DI.IServiceContainer,System.Type,System.Object,System.Boolean)
-  fullName: Solti.Utils.DI.IServiceContainerExtensions.Instance(Solti.Utils.DI.IServiceContainer, System.Type, System.Object, System.Boolean)
+  href: Solti.Utils.DI.IServiceContainerExtensions.html#Solti_Utils_DI_IServiceContainerExtensions_Instance_Solti_Utils_DI_IServiceContainer_Type_System_Object_System_Boolean_
+  commentId: M:Solti.Utils.DI.IServiceContainerExtensions.Instance(Solti.Utils.DI.IServiceContainer,Type,System.Object,System.Boolean)
+  fullName: Solti.Utils.DI.IServiceContainerExtensions.Instance(Solti.Utils.DI.IServiceContainer, Type, System.Object, System.Boolean)
   nameWithType: IServiceContainerExtensions.Instance(IServiceContainer, Type, Object, Boolean)
-- uid: Solti.Utils.DI.IServiceContainerExtensions.Instance(Solti.Utils.DI.IServiceContainer,System.Type,System.String,System.Object,System.Boolean)
+- uid: Solti.Utils.DI.IServiceContainerExtensions.Instance(Solti.Utils.DI.IServiceContainer,Type,System.String,System.Object,System.Boolean)
   name: Instance(IServiceContainer, Type, String, Object, Boolean)
-  href: Solti.Utils.DI.IServiceContainerExtensions.html#Solti_Utils_DI_IServiceContainerExtensions_Instance_Solti_Utils_DI_IServiceContainer_System_Type_System_String_System_Object_System_Boolean_
-  commentId: M:Solti.Utils.DI.IServiceContainerExtensions.Instance(Solti.Utils.DI.IServiceContainer,System.Type,System.String,System.Object,System.Boolean)
-  fullName: Solti.Utils.DI.IServiceContainerExtensions.Instance(Solti.Utils.DI.IServiceContainer, System.Type, System.String, System.Object, System.Boolean)
+  href: Solti.Utils.DI.IServiceContainerExtensions.html#Solti_Utils_DI_IServiceContainerExtensions_Instance_Solti_Utils_DI_IServiceContainer_Type_System_String_System_Object_System_Boolean_
+  commentId: M:Solti.Utils.DI.IServiceContainerExtensions.Instance(Solti.Utils.DI.IServiceContainer,Type,System.String,System.Object,System.Boolean)
+  fullName: Solti.Utils.DI.IServiceContainerExtensions.Instance(Solti.Utils.DI.IServiceContainer, Type, System.String, System.Object, System.Boolean)
   nameWithType: IServiceContainerExtensions.Instance(IServiceContainer, Type, String, Object, Boolean)
 - uid: Solti.Utils.DI.IServiceContainerExtensions.Instance*
   name: Instance
@@ -1308,29 +1351,29 @@ references:
   fullName.vb: Solti.Utils.DI.IServiceContainerExtensions.Instance(Of TInterface)(Solti.Utils.DI.IServiceContainer, System.String, TInterface, System.Boolean)
   nameWithType: IServiceContainerExtensions.Instance<TInterface>(IServiceContainer, String, TInterface, Boolean)
   nameWithType.vb: IServiceContainerExtensions.Instance(Of TInterface)(IServiceContainer, String, TInterface, Boolean)
-- uid: Solti.Utils.DI.IServiceContainerExtensions.Lazy(Solti.Utils.DI.IServiceContainer,System.Type,Solti.Utils.DI.ITypeResolver,Solti.Utils.DI.Lifetime)
+- uid: Solti.Utils.DI.IServiceContainerExtensions.Lazy(Solti.Utils.DI.IServiceContainer,Type,Solti.Utils.DI.ITypeResolver,Solti.Utils.DI.Lifetime)
   name: Lazy(IServiceContainer, Type, ITypeResolver, Lifetime)
-  href: Solti.Utils.DI.IServiceContainerExtensions.html#Solti_Utils_DI_IServiceContainerExtensions_Lazy_Solti_Utils_DI_IServiceContainer_System_Type_Solti_Utils_DI_ITypeResolver_Solti_Utils_DI_Lifetime_
-  commentId: M:Solti.Utils.DI.IServiceContainerExtensions.Lazy(Solti.Utils.DI.IServiceContainer,System.Type,Solti.Utils.DI.ITypeResolver,Solti.Utils.DI.Lifetime)
-  fullName: Solti.Utils.DI.IServiceContainerExtensions.Lazy(Solti.Utils.DI.IServiceContainer, System.Type, Solti.Utils.DI.ITypeResolver, Solti.Utils.DI.Lifetime)
+  href: Solti.Utils.DI.IServiceContainerExtensions.html#Solti_Utils_DI_IServiceContainerExtensions_Lazy_Solti_Utils_DI_IServiceContainer_Type_Solti_Utils_DI_ITypeResolver_Solti_Utils_DI_Lifetime_
+  commentId: M:Solti.Utils.DI.IServiceContainerExtensions.Lazy(Solti.Utils.DI.IServiceContainer,Type,Solti.Utils.DI.ITypeResolver,Solti.Utils.DI.Lifetime)
+  fullName: Solti.Utils.DI.IServiceContainerExtensions.Lazy(Solti.Utils.DI.IServiceContainer, Type, Solti.Utils.DI.ITypeResolver, Solti.Utils.DI.Lifetime)
   nameWithType: IServiceContainerExtensions.Lazy(IServiceContainer, Type, ITypeResolver, Lifetime)
-- uid: Solti.Utils.DI.IServiceContainerExtensions.Lazy(Solti.Utils.DI.IServiceContainer,System.Type,System.String,Solti.Utils.DI.ITypeResolver,Solti.Utils.DI.Lifetime)
+- uid: Solti.Utils.DI.IServiceContainerExtensions.Lazy(Solti.Utils.DI.IServiceContainer,Type,System.String,Solti.Utils.DI.ITypeResolver,Solti.Utils.DI.Lifetime)
   name: Lazy(IServiceContainer, Type, String, ITypeResolver, Lifetime)
-  href: Solti.Utils.DI.IServiceContainerExtensions.html#Solti_Utils_DI_IServiceContainerExtensions_Lazy_Solti_Utils_DI_IServiceContainer_System_Type_System_String_Solti_Utils_DI_ITypeResolver_Solti_Utils_DI_Lifetime_
-  commentId: M:Solti.Utils.DI.IServiceContainerExtensions.Lazy(Solti.Utils.DI.IServiceContainer,System.Type,System.String,Solti.Utils.DI.ITypeResolver,Solti.Utils.DI.Lifetime)
-  fullName: Solti.Utils.DI.IServiceContainerExtensions.Lazy(Solti.Utils.DI.IServiceContainer, System.Type, System.String, Solti.Utils.DI.ITypeResolver, Solti.Utils.DI.Lifetime)
+  href: Solti.Utils.DI.IServiceContainerExtensions.html#Solti_Utils_DI_IServiceContainerExtensions_Lazy_Solti_Utils_DI_IServiceContainer_Type_System_String_Solti_Utils_DI_ITypeResolver_Solti_Utils_DI_Lifetime_
+  commentId: M:Solti.Utils.DI.IServiceContainerExtensions.Lazy(Solti.Utils.DI.IServiceContainer,Type,System.String,Solti.Utils.DI.ITypeResolver,Solti.Utils.DI.Lifetime)
+  fullName: Solti.Utils.DI.IServiceContainerExtensions.Lazy(Solti.Utils.DI.IServiceContainer, Type, System.String, Solti.Utils.DI.ITypeResolver, Solti.Utils.DI.Lifetime)
   nameWithType: IServiceContainerExtensions.Lazy(IServiceContainer, Type, String, ITypeResolver, Lifetime)
-- uid: Solti.Utils.DI.IServiceContainerExtensions.Lazy(Solti.Utils.DI.IServiceContainer,System.Type,System.String,System.String,Solti.Utils.DI.Lifetime)
+- uid: Solti.Utils.DI.IServiceContainerExtensions.Lazy(Solti.Utils.DI.IServiceContainer,Type,System.String,System.String,Solti.Utils.DI.Lifetime)
   name: Lazy(IServiceContainer, Type, String, String, Lifetime)
-  href: Solti.Utils.DI.IServiceContainerExtensions.html#Solti_Utils_DI_IServiceContainerExtensions_Lazy_Solti_Utils_DI_IServiceContainer_System_Type_System_String_System_String_Solti_Utils_DI_Lifetime_
-  commentId: M:Solti.Utils.DI.IServiceContainerExtensions.Lazy(Solti.Utils.DI.IServiceContainer,System.Type,System.String,System.String,Solti.Utils.DI.Lifetime)
-  fullName: Solti.Utils.DI.IServiceContainerExtensions.Lazy(Solti.Utils.DI.IServiceContainer, System.Type, System.String, System.String, Solti.Utils.DI.Lifetime)
+  href: Solti.Utils.DI.IServiceContainerExtensions.html#Solti_Utils_DI_IServiceContainerExtensions_Lazy_Solti_Utils_DI_IServiceContainer_Type_System_String_System_String_Solti_Utils_DI_Lifetime_
+  commentId: M:Solti.Utils.DI.IServiceContainerExtensions.Lazy(Solti.Utils.DI.IServiceContainer,Type,System.String,System.String,Solti.Utils.DI.Lifetime)
+  fullName: Solti.Utils.DI.IServiceContainerExtensions.Lazy(Solti.Utils.DI.IServiceContainer, Type, System.String, System.String, Solti.Utils.DI.Lifetime)
   nameWithType: IServiceContainerExtensions.Lazy(IServiceContainer, Type, String, String, Lifetime)
-- uid: Solti.Utils.DI.IServiceContainerExtensions.Lazy(Solti.Utils.DI.IServiceContainer,System.Type,System.String,System.String,System.String,Solti.Utils.DI.Lifetime)
+- uid: Solti.Utils.DI.IServiceContainerExtensions.Lazy(Solti.Utils.DI.IServiceContainer,Type,System.String,System.String,System.String,Solti.Utils.DI.Lifetime)
   name: Lazy(IServiceContainer, Type, String, String, String, Lifetime)
-  href: Solti.Utils.DI.IServiceContainerExtensions.html#Solti_Utils_DI_IServiceContainerExtensions_Lazy_Solti_Utils_DI_IServiceContainer_System_Type_System_String_System_String_System_String_Solti_Utils_DI_Lifetime_
-  commentId: M:Solti.Utils.DI.IServiceContainerExtensions.Lazy(Solti.Utils.DI.IServiceContainer,System.Type,System.String,System.String,System.String,Solti.Utils.DI.Lifetime)
-  fullName: Solti.Utils.DI.IServiceContainerExtensions.Lazy(Solti.Utils.DI.IServiceContainer, System.Type, System.String, System.String, System.String, Solti.Utils.DI.Lifetime)
+  href: Solti.Utils.DI.IServiceContainerExtensions.html#Solti_Utils_DI_IServiceContainerExtensions_Lazy_Solti_Utils_DI_IServiceContainer_Type_System_String_System_String_System_String_Solti_Utils_DI_Lifetime_
+  commentId: M:Solti.Utils.DI.IServiceContainerExtensions.Lazy(Solti.Utils.DI.IServiceContainer,Type,System.String,System.String,System.String,Solti.Utils.DI.Lifetime)
+  fullName: Solti.Utils.DI.IServiceContainerExtensions.Lazy(Solti.Utils.DI.IServiceContainer, Type, System.String, System.String, System.String, Solti.Utils.DI.Lifetime)
   nameWithType: IServiceContainerExtensions.Lazy(IServiceContainer, Type, String, String, String, Lifetime)
 - uid: Solti.Utils.DI.IServiceContainerExtensions.Lazy*
   name: Lazy
@@ -1375,35 +1418,35 @@ references:
   fullName.vb: Solti.Utils.DI.IServiceContainerExtensions.Lazy(Of TInterface)(Solti.Utils.DI.IServiceContainer, System.String, System.String, System.String, Solti.Utils.DI.Lifetime)
   nameWithType: IServiceContainerExtensions.Lazy<TInterface>(IServiceContainer, String, String, String, Lifetime)
   nameWithType.vb: IServiceContainerExtensions.Lazy(Of TInterface)(IServiceContainer, String, String, String, Lifetime)
-- uid: Solti.Utils.DI.IServiceContainerExtensions.Proxy(Solti.Utils.DI.IServiceContainer,System.Type,System.Func{Solti.Utils.DI.IInjector,System.Type,System.Object,System.Object})
+- uid: Solti.Utils.DI.IServiceContainerExtensions.Proxy(Solti.Utils.DI.IServiceContainer,Type,Func{Solti.Utils.DI.IInjector,Type,System.Object,System.Object})
   name: Proxy(IServiceContainer, Type, Func<IInjector, Type, Object, Object>)
-  href: Solti.Utils.DI.IServiceContainerExtensions.html#Solti_Utils_DI_IServiceContainerExtensions_Proxy_Solti_Utils_DI_IServiceContainer_System_Type_System_Func_Solti_Utils_DI_IInjector_System_Type_System_Object_System_Object__
-  commentId: M:Solti.Utils.DI.IServiceContainerExtensions.Proxy(Solti.Utils.DI.IServiceContainer,System.Type,System.Func{Solti.Utils.DI.IInjector,System.Type,System.Object,System.Object})
+  href: Solti.Utils.DI.IServiceContainerExtensions.html#Solti_Utils_DI_IServiceContainerExtensions_Proxy_Solti_Utils_DI_IServiceContainer_Type_Func_Solti_Utils_DI_IInjector_Type_System_Object_System_Object__
+  commentId: M:Solti.Utils.DI.IServiceContainerExtensions.Proxy(Solti.Utils.DI.IServiceContainer,Type,Func{Solti.Utils.DI.IInjector,Type,System.Object,System.Object})
   name.vb: Proxy(IServiceContainer, Type, Func(Of IInjector, Type, Object, Object))
-  fullName: Solti.Utils.DI.IServiceContainerExtensions.Proxy(Solti.Utils.DI.IServiceContainer, System.Type, System.Func<Solti.Utils.DI.IInjector, System.Type, System.Object, System.Object>)
-  fullName.vb: Solti.Utils.DI.IServiceContainerExtensions.Proxy(Solti.Utils.DI.IServiceContainer, System.Type, System.Func(Of Solti.Utils.DI.IInjector, System.Type, System.Object, System.Object))
+  fullName: Solti.Utils.DI.IServiceContainerExtensions.Proxy(Solti.Utils.DI.IServiceContainer, Type, Func<Solti.Utils.DI.IInjector, Type, System.Object, System.Object>)
+  fullName.vb: Solti.Utils.DI.IServiceContainerExtensions.Proxy(Solti.Utils.DI.IServiceContainer, Type, Func(Of Solti.Utils.DI.IInjector, Type, System.Object, System.Object))
   nameWithType: IServiceContainerExtensions.Proxy(IServiceContainer, Type, Func<IInjector, Type, Object, Object>)
   nameWithType.vb: IServiceContainerExtensions.Proxy(IServiceContainer, Type, Func(Of IInjector, Type, Object, Object))
-- uid: Solti.Utils.DI.IServiceContainerExtensions.Proxy(Solti.Utils.DI.IServiceContainer,System.Type,System.String,System.Func{Solti.Utils.DI.IInjector,System.Type,System.Object,System.Object})
+- uid: Solti.Utils.DI.IServiceContainerExtensions.Proxy(Solti.Utils.DI.IServiceContainer,Type,System.String,Func{Solti.Utils.DI.IInjector,Type,System.Object,System.Object})
   name: Proxy(IServiceContainer, Type, String, Func<IInjector, Type, Object, Object>)
-  href: Solti.Utils.DI.IServiceContainerExtensions.html#Solti_Utils_DI_IServiceContainerExtensions_Proxy_Solti_Utils_DI_IServiceContainer_System_Type_System_String_System_Func_Solti_Utils_DI_IInjector_System_Type_System_Object_System_Object__
-  commentId: M:Solti.Utils.DI.IServiceContainerExtensions.Proxy(Solti.Utils.DI.IServiceContainer,System.Type,System.String,System.Func{Solti.Utils.DI.IInjector,System.Type,System.Object,System.Object})
+  href: Solti.Utils.DI.IServiceContainerExtensions.html#Solti_Utils_DI_IServiceContainerExtensions_Proxy_Solti_Utils_DI_IServiceContainer_Type_System_String_Func_Solti_Utils_DI_IInjector_Type_System_Object_System_Object__
+  commentId: M:Solti.Utils.DI.IServiceContainerExtensions.Proxy(Solti.Utils.DI.IServiceContainer,Type,System.String,Func{Solti.Utils.DI.IInjector,Type,System.Object,System.Object})
   name.vb: Proxy(IServiceContainer, Type, String, Func(Of IInjector, Type, Object, Object))
-  fullName: Solti.Utils.DI.IServiceContainerExtensions.Proxy(Solti.Utils.DI.IServiceContainer, System.Type, System.String, System.Func<Solti.Utils.DI.IInjector, System.Type, System.Object, System.Object>)
-  fullName.vb: Solti.Utils.DI.IServiceContainerExtensions.Proxy(Solti.Utils.DI.IServiceContainer, System.Type, System.String, System.Func(Of Solti.Utils.DI.IInjector, System.Type, System.Object, System.Object))
+  fullName: Solti.Utils.DI.IServiceContainerExtensions.Proxy(Solti.Utils.DI.IServiceContainer, Type, System.String, Func<Solti.Utils.DI.IInjector, Type, System.Object, System.Object>)
+  fullName.vb: Solti.Utils.DI.IServiceContainerExtensions.Proxy(Solti.Utils.DI.IServiceContainer, Type, System.String, Func(Of Solti.Utils.DI.IInjector, Type, System.Object, System.Object))
   nameWithType: IServiceContainerExtensions.Proxy(IServiceContainer, Type, String, Func<IInjector, Type, Object, Object>)
   nameWithType.vb: IServiceContainerExtensions.Proxy(IServiceContainer, Type, String, Func(Of IInjector, Type, Object, Object))
-- uid: Solti.Utils.DI.IServiceContainerExtensions.Proxy(Solti.Utils.DI.IServiceContainer,System.Type,System.String,System.Type)
+- uid: Solti.Utils.DI.IServiceContainerExtensions.Proxy(Solti.Utils.DI.IServiceContainer,Type,System.String,Type)
   name: Proxy(IServiceContainer, Type, String, Type)
-  href: Solti.Utils.DI.IServiceContainerExtensions.html#Solti_Utils_DI_IServiceContainerExtensions_Proxy_Solti_Utils_DI_IServiceContainer_System_Type_System_String_System_Type_
-  commentId: M:Solti.Utils.DI.IServiceContainerExtensions.Proxy(Solti.Utils.DI.IServiceContainer,System.Type,System.String,System.Type)
-  fullName: Solti.Utils.DI.IServiceContainerExtensions.Proxy(Solti.Utils.DI.IServiceContainer, System.Type, System.String, System.Type)
+  href: Solti.Utils.DI.IServiceContainerExtensions.html#Solti_Utils_DI_IServiceContainerExtensions_Proxy_Solti_Utils_DI_IServiceContainer_Type_System_String_Type_
+  commentId: M:Solti.Utils.DI.IServiceContainerExtensions.Proxy(Solti.Utils.DI.IServiceContainer,Type,System.String,Type)
+  fullName: Solti.Utils.DI.IServiceContainerExtensions.Proxy(Solti.Utils.DI.IServiceContainer, Type, System.String, Type)
   nameWithType: IServiceContainerExtensions.Proxy(IServiceContainer, Type, String, Type)
-- uid: Solti.Utils.DI.IServiceContainerExtensions.Proxy(Solti.Utils.DI.IServiceContainer,System.Type,System.Type)
+- uid: Solti.Utils.DI.IServiceContainerExtensions.Proxy(Solti.Utils.DI.IServiceContainer,Type,Type)
   name: Proxy(IServiceContainer, Type, Type)
-  href: Solti.Utils.DI.IServiceContainerExtensions.html#Solti_Utils_DI_IServiceContainerExtensions_Proxy_Solti_Utils_DI_IServiceContainer_System_Type_System_Type_
-  commentId: M:Solti.Utils.DI.IServiceContainerExtensions.Proxy(Solti.Utils.DI.IServiceContainer,System.Type,System.Type)
-  fullName: Solti.Utils.DI.IServiceContainerExtensions.Proxy(Solti.Utils.DI.IServiceContainer, System.Type, System.Type)
+  href: Solti.Utils.DI.IServiceContainerExtensions.html#Solti_Utils_DI_IServiceContainerExtensions_Proxy_Solti_Utils_DI_IServiceContainer_Type_Type_
+  commentId: M:Solti.Utils.DI.IServiceContainerExtensions.Proxy(Solti.Utils.DI.IServiceContainer,Type,Type)
+  fullName: Solti.Utils.DI.IServiceContainerExtensions.Proxy(Solti.Utils.DI.IServiceContainer, Type, Type)
   nameWithType: IServiceContainerExtensions.Proxy(IServiceContainer, Type, Type)
 - uid: Solti.Utils.DI.IServiceContainerExtensions.Proxy*
   name: Proxy
@@ -1412,22 +1455,22 @@ references:
   isSpec: "True"
   fullName: Solti.Utils.DI.IServiceContainerExtensions.Proxy
   nameWithType: IServiceContainerExtensions.Proxy
-- uid: Solti.Utils.DI.IServiceContainerExtensions.Proxy``1(Solti.Utils.DI.IServiceContainer,System.Func{Solti.Utils.DI.IInjector,``0,``0})
+- uid: Solti.Utils.DI.IServiceContainerExtensions.Proxy``1(Solti.Utils.DI.IServiceContainer,Func{Solti.Utils.DI.IInjector,``0,``0})
   name: Proxy<TInterface>(IServiceContainer, Func<IInjector, TInterface, TInterface>)
-  href: Solti.Utils.DI.IServiceContainerExtensions.html#Solti_Utils_DI_IServiceContainerExtensions_Proxy__1_Solti_Utils_DI_IServiceContainer_System_Func_Solti_Utils_DI_IInjector___0___0__
-  commentId: M:Solti.Utils.DI.IServiceContainerExtensions.Proxy``1(Solti.Utils.DI.IServiceContainer,System.Func{Solti.Utils.DI.IInjector,``0,``0})
+  href: Solti.Utils.DI.IServiceContainerExtensions.html#Solti_Utils_DI_IServiceContainerExtensions_Proxy__1_Solti_Utils_DI_IServiceContainer_Func_Solti_Utils_DI_IInjector___0___0__
+  commentId: M:Solti.Utils.DI.IServiceContainerExtensions.Proxy``1(Solti.Utils.DI.IServiceContainer,Func{Solti.Utils.DI.IInjector,``0,``0})
   name.vb: Proxy(Of TInterface)(IServiceContainer, Func(Of IInjector, TInterface, TInterface))
-  fullName: Solti.Utils.DI.IServiceContainerExtensions.Proxy<TInterface>(Solti.Utils.DI.IServiceContainer, System.Func<Solti.Utils.DI.IInjector, TInterface, TInterface>)
-  fullName.vb: Solti.Utils.DI.IServiceContainerExtensions.Proxy(Of TInterface)(Solti.Utils.DI.IServiceContainer, System.Func(Of Solti.Utils.DI.IInjector, TInterface, TInterface))
+  fullName: Solti.Utils.DI.IServiceContainerExtensions.Proxy<TInterface>(Solti.Utils.DI.IServiceContainer, Func<Solti.Utils.DI.IInjector, TInterface, TInterface>)
+  fullName.vb: Solti.Utils.DI.IServiceContainerExtensions.Proxy(Of TInterface)(Solti.Utils.DI.IServiceContainer, Func(Of Solti.Utils.DI.IInjector, TInterface, TInterface))
   nameWithType: IServiceContainerExtensions.Proxy<TInterface>(IServiceContainer, Func<IInjector, TInterface, TInterface>)
   nameWithType.vb: IServiceContainerExtensions.Proxy(Of TInterface)(IServiceContainer, Func(Of IInjector, TInterface, TInterface))
-- uid: Solti.Utils.DI.IServiceContainerExtensions.Proxy``1(Solti.Utils.DI.IServiceContainer,System.String,System.Func{Solti.Utils.DI.IInjector,``0,``0})
+- uid: Solti.Utils.DI.IServiceContainerExtensions.Proxy``1(Solti.Utils.DI.IServiceContainer,System.String,Func{Solti.Utils.DI.IInjector,``0,``0})
   name: Proxy<TInterface>(IServiceContainer, String, Func<IInjector, TInterface, TInterface>)
-  href: Solti.Utils.DI.IServiceContainerExtensions.html#Solti_Utils_DI_IServiceContainerExtensions_Proxy__1_Solti_Utils_DI_IServiceContainer_System_String_System_Func_Solti_Utils_DI_IInjector___0___0__
-  commentId: M:Solti.Utils.DI.IServiceContainerExtensions.Proxy``1(Solti.Utils.DI.IServiceContainer,System.String,System.Func{Solti.Utils.DI.IInjector,``0,``0})
+  href: Solti.Utils.DI.IServiceContainerExtensions.html#Solti_Utils_DI_IServiceContainerExtensions_Proxy__1_Solti_Utils_DI_IServiceContainer_System_String_Func_Solti_Utils_DI_IInjector___0___0__
+  commentId: M:Solti.Utils.DI.IServiceContainerExtensions.Proxy``1(Solti.Utils.DI.IServiceContainer,System.String,Func{Solti.Utils.DI.IInjector,``0,``0})
   name.vb: Proxy(Of TInterface)(IServiceContainer, String, Func(Of IInjector, TInterface, TInterface))
-  fullName: Solti.Utils.DI.IServiceContainerExtensions.Proxy<TInterface>(Solti.Utils.DI.IServiceContainer, System.String, System.Func<Solti.Utils.DI.IInjector, TInterface, TInterface>)
-  fullName.vb: Solti.Utils.DI.IServiceContainerExtensions.Proxy(Of TInterface)(Solti.Utils.DI.IServiceContainer, System.String, System.Func(Of Solti.Utils.DI.IInjector, TInterface, TInterface))
+  fullName: Solti.Utils.DI.IServiceContainerExtensions.Proxy<TInterface>(Solti.Utils.DI.IServiceContainer, System.String, Func<Solti.Utils.DI.IInjector, TInterface, TInterface>)
+  fullName.vb: Solti.Utils.DI.IServiceContainerExtensions.Proxy(Of TInterface)(Solti.Utils.DI.IServiceContainer, System.String, Func(Of Solti.Utils.DI.IInjector, TInterface, TInterface))
   nameWithType: IServiceContainerExtensions.Proxy<TInterface>(IServiceContainer, String, Func<IInjector, TInterface, TInterface>)
   nameWithType.vb: IServiceContainerExtensions.Proxy(Of TInterface)(IServiceContainer, String, Func(Of IInjector, TInterface, TInterface))
 - uid: Solti.Utils.DI.IServiceContainerExtensions.Proxy``2(Solti.Utils.DI.IServiceContainer,System.String)
@@ -1439,17 +1482,17 @@ references:
   fullName.vb: Solti.Utils.DI.IServiceContainerExtensions.Proxy(Of TInterface, TInterceptor)(Solti.Utils.DI.IServiceContainer, System.String)
   nameWithType: IServiceContainerExtensions.Proxy<TInterface, TInterceptor>(IServiceContainer, String)
   nameWithType.vb: IServiceContainerExtensions.Proxy(Of TInterface, TInterceptor)(IServiceContainer, String)
-- uid: Solti.Utils.DI.IServiceContainerExtensions.Service(Solti.Utils.DI.IServiceContainer,System.Type,System.String,System.Type,Solti.Utils.DI.Lifetime)
+- uid: Solti.Utils.DI.IServiceContainerExtensions.Service(Solti.Utils.DI.IServiceContainer,Type,System.String,Type,Solti.Utils.DI.Lifetime)
   name: Service(IServiceContainer, Type, String, Type, Lifetime)
-  href: Solti.Utils.DI.IServiceContainerExtensions.html#Solti_Utils_DI_IServiceContainerExtensions_Service_Solti_Utils_DI_IServiceContainer_System_Type_System_String_System_Type_Solti_Utils_DI_Lifetime_
-  commentId: M:Solti.Utils.DI.IServiceContainerExtensions.Service(Solti.Utils.DI.IServiceContainer,System.Type,System.String,System.Type,Solti.Utils.DI.Lifetime)
-  fullName: Solti.Utils.DI.IServiceContainerExtensions.Service(Solti.Utils.DI.IServiceContainer, System.Type, System.String, System.Type, Solti.Utils.DI.Lifetime)
+  href: Solti.Utils.DI.IServiceContainerExtensions.html#Solti_Utils_DI_IServiceContainerExtensions_Service_Solti_Utils_DI_IServiceContainer_Type_System_String_Type_Solti_Utils_DI_Lifetime_
+  commentId: M:Solti.Utils.DI.IServiceContainerExtensions.Service(Solti.Utils.DI.IServiceContainer,Type,System.String,Type,Solti.Utils.DI.Lifetime)
+  fullName: Solti.Utils.DI.IServiceContainerExtensions.Service(Solti.Utils.DI.IServiceContainer, Type, System.String, Type, Solti.Utils.DI.Lifetime)
   nameWithType: IServiceContainerExtensions.Service(IServiceContainer, Type, String, Type, Lifetime)
-- uid: Solti.Utils.DI.IServiceContainerExtensions.Service(Solti.Utils.DI.IServiceContainer,System.Type,System.Type,Solti.Utils.DI.Lifetime)
+- uid: Solti.Utils.DI.IServiceContainerExtensions.Service(Solti.Utils.DI.IServiceContainer,Type,Type,Solti.Utils.DI.Lifetime)
   name: Service(IServiceContainer, Type, Type, Lifetime)
-  href: Solti.Utils.DI.IServiceContainerExtensions.html#Solti_Utils_DI_IServiceContainerExtensions_Service_Solti_Utils_DI_IServiceContainer_System_Type_System_Type_Solti_Utils_DI_Lifetime_
-  commentId: M:Solti.Utils.DI.IServiceContainerExtensions.Service(Solti.Utils.DI.IServiceContainer,System.Type,System.Type,Solti.Utils.DI.Lifetime)
-  fullName: Solti.Utils.DI.IServiceContainerExtensions.Service(Solti.Utils.DI.IServiceContainer, System.Type, System.Type, Solti.Utils.DI.Lifetime)
+  href: Solti.Utils.DI.IServiceContainerExtensions.html#Solti_Utils_DI_IServiceContainerExtensions_Service_Solti_Utils_DI_IServiceContainer_Type_Type_Solti_Utils_DI_Lifetime_
+  commentId: M:Solti.Utils.DI.IServiceContainerExtensions.Service(Solti.Utils.DI.IServiceContainer,Type,Type,Solti.Utils.DI.Lifetime)
+  fullName: Solti.Utils.DI.IServiceContainerExtensions.Service(Solti.Utils.DI.IServiceContainer, Type, Type, Solti.Utils.DI.Lifetime)
   nameWithType: IServiceContainerExtensions.Service(IServiceContainer, Type, Type, Lifetime)
 - uid: Solti.Utils.DI.IServiceContainerExtensions.Service*
   name: Service
@@ -1476,11 +1519,11 @@ references:
   fullName.vb: Solti.Utils.DI.IServiceContainerExtensions.Service(Of TInterface, TImplementation)(Solti.Utils.DI.IServiceContainer, System.String, Solti.Utils.DI.Lifetime)
   nameWithType: IServiceContainerExtensions.Service<TInterface, TImplementation>(IServiceContainer, String, Lifetime)
   nameWithType.vb: IServiceContainerExtensions.Service(Of TInterface, TImplementation)(IServiceContainer, String, Lifetime)
-- uid: Solti.Utils.DI.IServiceContainerExtensions.Setup(Solti.Utils.DI.IServiceContainer,System.Reflection.Assembly)
+- uid: Solti.Utils.DI.IServiceContainerExtensions.Setup(Solti.Utils.DI.IServiceContainer,Assembly)
   name: Setup(IServiceContainer, Assembly)
-  href: Solti.Utils.DI.IServiceContainerExtensions.html#Solti_Utils_DI_IServiceContainerExtensions_Setup_Solti_Utils_DI_IServiceContainer_System_Reflection_Assembly_
-  commentId: M:Solti.Utils.DI.IServiceContainerExtensions.Setup(Solti.Utils.DI.IServiceContainer,System.Reflection.Assembly)
-  fullName: Solti.Utils.DI.IServiceContainerExtensions.Setup(Solti.Utils.DI.IServiceContainer, System.Reflection.Assembly)
+  href: Solti.Utils.DI.IServiceContainerExtensions.html#Solti_Utils_DI_IServiceContainerExtensions_Setup_Solti_Utils_DI_IServiceContainer_Assembly_
+  commentId: M:Solti.Utils.DI.IServiceContainerExtensions.Setup(Solti.Utils.DI.IServiceContainer,Assembly)
+  fullName: Solti.Utils.DI.IServiceContainerExtensions.Setup(Solti.Utils.DI.IServiceContainer, Assembly)
   nameWithType: IServiceContainerExtensions.Setup(IServiceContainer, Assembly)
 - uid: Solti.Utils.DI.IServiceContainerExtensions.Setup*
   name: Setup
@@ -1502,13 +1545,13 @@ references:
   isSpec: "True"
   fullName: Solti.Utils.DI.IServiceProviderExtensions.GetService
   nameWithType: IServiceProviderExtensions.GetService
-- uid: Solti.Utils.DI.IServiceProviderExtensions.GetService``1(System.IServiceProvider)
+- uid: Solti.Utils.DI.IServiceProviderExtensions.GetService``1(IServiceProvider)
   name: GetService<TInterface>(IServiceProvider)
-  href: Solti.Utils.DI.IServiceProviderExtensions.html#Solti_Utils_DI_IServiceProviderExtensions_GetService__1_System_IServiceProvider_
-  commentId: M:Solti.Utils.DI.IServiceProviderExtensions.GetService``1(System.IServiceProvider)
+  href: Solti.Utils.DI.IServiceProviderExtensions.html#Solti_Utils_DI_IServiceProviderExtensions_GetService__1_IServiceProvider_
+  commentId: M:Solti.Utils.DI.IServiceProviderExtensions.GetService``1(IServiceProvider)
   name.vb: GetService(Of TInterface)(IServiceProvider)
-  fullName: Solti.Utils.DI.IServiceProviderExtensions.GetService<TInterface>(System.IServiceProvider)
-  fullName.vb: Solti.Utils.DI.IServiceProviderExtensions.GetService(Of TInterface)(System.IServiceProvider)
+  fullName: Solti.Utils.DI.IServiceProviderExtensions.GetService<TInterface>(IServiceProvider)
+  fullName.vb: Solti.Utils.DI.IServiceProviderExtensions.GetService(Of TInterface)(IServiceProvider)
   nameWithType: IServiceProviderExtensions.GetService<TInterface>(IServiceProvider)
   nameWithType.vb: IServiceProviderExtensions.GetService(Of TInterface)(IServiceProvider)
 - uid: Solti.Utils.DI.ITypeResolver
@@ -1517,11 +1560,11 @@ references:
   commentId: T:Solti.Utils.DI.ITypeResolver
   fullName: Solti.Utils.DI.ITypeResolver
   nameWithType: ITypeResolver
-- uid: Solti.Utils.DI.ITypeResolver.Resolve(System.Type)
+- uid: Solti.Utils.DI.ITypeResolver.Resolve(Type)
   name: Resolve(Type)
-  href: Solti.Utils.DI.ITypeResolver.html#Solti_Utils_DI_ITypeResolver_Resolve_System_Type_
-  commentId: M:Solti.Utils.DI.ITypeResolver.Resolve(System.Type)
-  fullName: Solti.Utils.DI.ITypeResolver.Resolve(System.Type)
+  href: Solti.Utils.DI.ITypeResolver.html#Solti_Utils_DI_ITypeResolver_Resolve_Type_
+  commentId: M:Solti.Utils.DI.ITypeResolver.Resolve(Type)
+  fullName: Solti.Utils.DI.ITypeResolver.Resolve(Type)
   nameWithType: ITypeResolver.Resolve(Type)
 - uid: Solti.Utils.DI.ITypeResolver.Resolve*
   name: Resolve
@@ -1530,11 +1573,11 @@ references:
   isSpec: "True"
   fullName: Solti.Utils.DI.ITypeResolver.Resolve
   nameWithType: ITypeResolver.Resolve
-- uid: Solti.Utils.DI.ITypeResolver.Supports(System.Type)
+- uid: Solti.Utils.DI.ITypeResolver.Supports(Type)
   name: Supports(Type)
-  href: Solti.Utils.DI.ITypeResolver.html#Solti_Utils_DI_ITypeResolver_Supports_System_Type_
-  commentId: M:Solti.Utils.DI.ITypeResolver.Supports(System.Type)
-  fullName: Solti.Utils.DI.ITypeResolver.Supports(System.Type)
+  href: Solti.Utils.DI.ITypeResolver.html#Solti_Utils_DI_ITypeResolver_Supports_Type_
+  commentId: M:Solti.Utils.DI.ITypeResolver.Supports(Type)
+  fullName: Solti.Utils.DI.ITypeResolver.Supports(Type)
   nameWithType: ITypeResolver.Supports(Type)
 - uid: Solti.Utils.DI.ITypeResolver.Supports*
   name: Supports
@@ -1549,11 +1592,11 @@ references:
   commentId: T:Solti.Utils.DI.LazyTypeResolver
   fullName: Solti.Utils.DI.LazyTypeResolver
   nameWithType: LazyTypeResolver
-- uid: Solti.Utils.DI.LazyTypeResolver.#ctor(System.Type,System.String,System.String)
+- uid: Solti.Utils.DI.LazyTypeResolver.#ctor(Type,System.String,System.String)
   name: LazyTypeResolver(Type, String, String)
-  href: Solti.Utils.DI.LazyTypeResolver.html#Solti_Utils_DI_LazyTypeResolver__ctor_System_Type_System_String_System_String_
-  commentId: M:Solti.Utils.DI.LazyTypeResolver.#ctor(System.Type,System.String,System.String)
-  fullName: Solti.Utils.DI.LazyTypeResolver.LazyTypeResolver(System.Type, System.String, System.String)
+  href: Solti.Utils.DI.LazyTypeResolver.html#Solti_Utils_DI_LazyTypeResolver__ctor_Type_System_String_System_String_
+  commentId: M:Solti.Utils.DI.LazyTypeResolver.#ctor(Type,System.String,System.String)
+  fullName: Solti.Utils.DI.LazyTypeResolver.LazyTypeResolver(Type, System.String, System.String)
   nameWithType: LazyTypeResolver.LazyTypeResolver(Type, String, String)
 - uid: Solti.Utils.DI.LazyTypeResolver.#ctor*
   name: LazyTypeResolver
@@ -1614,11 +1657,11 @@ references:
   isSpec: "True"
   fullName: Solti.Utils.DI.LazyTypeResolver.Interface
   nameWithType: LazyTypeResolver.Interface
-- uid: Solti.Utils.DI.LazyTypeResolver.Resolve(System.Type)
+- uid: Solti.Utils.DI.LazyTypeResolver.Resolve(Type)
   name: Resolve(Type)
-  href: Solti.Utils.DI.LazyTypeResolver.html#Solti_Utils_DI_LazyTypeResolver_Resolve_System_Type_
-  commentId: M:Solti.Utils.DI.LazyTypeResolver.Resolve(System.Type)
-  fullName: Solti.Utils.DI.LazyTypeResolver.Resolve(System.Type)
+  href: Solti.Utils.DI.LazyTypeResolver.html#Solti_Utils_DI_LazyTypeResolver_Resolve_Type_
+  commentId: M:Solti.Utils.DI.LazyTypeResolver.Resolve(Type)
+  fullName: Solti.Utils.DI.LazyTypeResolver.Resolve(Type)
   nameWithType: LazyTypeResolver.Resolve(Type)
 - uid: Solti.Utils.DI.LazyTypeResolver.Resolve*
   name: Resolve
@@ -1627,11 +1670,11 @@ references:
   isSpec: "True"
   fullName: Solti.Utils.DI.LazyTypeResolver.Resolve
   nameWithType: LazyTypeResolver.Resolve
-- uid: Solti.Utils.DI.LazyTypeResolver.Supports(System.Type)
+- uid: Solti.Utils.DI.LazyTypeResolver.Supports(Type)
   name: Supports(Type)
-  href: Solti.Utils.DI.LazyTypeResolver.html#Solti_Utils_DI_LazyTypeResolver_Supports_System_Type_
-  commentId: M:Solti.Utils.DI.LazyTypeResolver.Supports(System.Type)
-  fullName: Solti.Utils.DI.LazyTypeResolver.Supports(System.Type)
+  href: Solti.Utils.DI.LazyTypeResolver.html#Solti_Utils_DI_LazyTypeResolver_Supports_Type_
+  commentId: M:Solti.Utils.DI.LazyTypeResolver.Supports(Type)
+  fullName: Solti.Utils.DI.LazyTypeResolver.Supports(Type)
   nameWithType: LazyTypeResolver.Supports(Type)
 - uid: Solti.Utils.DI.LazyTypeResolver.Supports*
   name: Supports
@@ -1797,11 +1840,11 @@ references:
   isSpec: "True"
   fullName: Solti.Utils.DI.ServiceContainer.Dispose
   nameWithType: ServiceContainer.Dispose
-- uid: Solti.Utils.DI.ServiceContainer.Get(System.Type,System.String,Solti.Utils.DI.QueryModes)
+- uid: Solti.Utils.DI.ServiceContainer.Get(Type,System.String,Solti.Utils.DI.QueryModes)
   name: Get(Type, String, QueryModes)
-  href: Solti.Utils.DI.ServiceContainer.html#Solti_Utils_DI_ServiceContainer_Get_System_Type_System_String_Solti_Utils_DI_QueryModes_
-  commentId: M:Solti.Utils.DI.ServiceContainer.Get(System.Type,System.String,Solti.Utils.DI.QueryModes)
-  fullName: Solti.Utils.DI.ServiceContainer.Get(System.Type, System.String, Solti.Utils.DI.QueryModes)
+  href: Solti.Utils.DI.ServiceContainer.html#Solti_Utils_DI_ServiceContainer_Get_Type_System_String_Solti_Utils_DI_QueryModes_
+  commentId: M:Solti.Utils.DI.ServiceContainer.Get(Type,System.String,Solti.Utils.DI.QueryModes)
+  fullName: Solti.Utils.DI.ServiceContainer.Get(Type, System.String, Solti.Utils.DI.QueryModes)
   nameWithType: ServiceContainer.Get(Type, String, QueryModes)
 - uid: Solti.Utils.DI.ServiceContainer.Get*
   name: Get
@@ -1823,23 +1866,6 @@ references:
   isSpec: "True"
   fullName: Solti.Utils.DI.ServiceContainer.GetEnumerator
   nameWithType: ServiceContainer.GetEnumerator
-- uid: Solti.Utils.DI.ServiceContainer.System#Collections#IEnumerable#GetEnumerator
-  name: IEnumerable.GetEnumerator()
-  href: Solti.Utils.DI.ServiceContainer.html#Solti_Utils_DI_ServiceContainer_System_Collections_IEnumerable_GetEnumerator
-  commentId: M:Solti.Utils.DI.ServiceContainer.System#Collections#IEnumerable#GetEnumerator
-  name.vb: System.Collections.IEnumerable.GetEnumerator()
-  fullName: Solti.Utils.DI.ServiceContainer.System.Collections.IEnumerable.GetEnumerator()
-  nameWithType: ServiceContainer.IEnumerable.GetEnumerator()
-  nameWithType.vb: ServiceContainer.System.Collections.IEnumerable.GetEnumerator()
-- uid: Solti.Utils.DI.ServiceContainer.System#Collections#IEnumerable#GetEnumerator*
-  name: IEnumerable.GetEnumerator
-  href: Solti.Utils.DI.ServiceContainer.html#Solti_Utils_DI_ServiceContainer_System_Collections_IEnumerable_GetEnumerator_
-  commentId: Overload:Solti.Utils.DI.ServiceContainer.System#Collections#IEnumerable#GetEnumerator
-  isSpec: "True"
-  name.vb: System.Collections.IEnumerable.GetEnumerator
-  fullName: Solti.Utils.DI.ServiceContainer.System.Collections.IEnumerable.GetEnumerator
-  nameWithType: ServiceContainer.IEnumerable.GetEnumerator
-  nameWithType.vb: ServiceContainer.System.Collections.IEnumerable.GetEnumerator
 - uid: Solti.Utils.DI.ServiceEntryExtensions
   name: ServiceEntryExtensions
   href: Solti.Utils.DI.ServiceEntryExtensions.html
@@ -1982,34 +2008,34 @@ references:
   commentId: T:Solti.Utils.Proxy.ProxyFactory
   fullName: Solti.Utils.Proxy.ProxyFactory
   nameWithType: ProxyFactory
-- uid: Solti.Utils.Proxy.ProxyFactory.Create(System.Type,System.Type,System.Object)
+- uid: Solti.Utils.Proxy.ProxyFactory.Create(Type,Type,System.Object)
   name: Create(Type, Type, Object)
-  href: Solti.Utils.Proxy.ProxyFactory.html#Solti_Utils_Proxy_ProxyFactory_Create_System_Type_System_Type_System_Object_
-  commentId: M:Solti.Utils.Proxy.ProxyFactory.Create(System.Type,System.Type,System.Object)
-  fullName: Solti.Utils.Proxy.ProxyFactory.Create(System.Type, System.Type, System.Object)
+  href: Solti.Utils.Proxy.ProxyFactory.html#Solti_Utils_Proxy_ProxyFactory_Create_Type_Type_System_Object_
+  commentId: M:Solti.Utils.Proxy.ProxyFactory.Create(Type,Type,System.Object)
+  fullName: Solti.Utils.Proxy.ProxyFactory.Create(Type, Type, System.Object)
   nameWithType: ProxyFactory.Create(Type, Type, Object)
-- uid: Solti.Utils.Proxy.ProxyFactory.Create(System.Type,System.Type,System.Object,Solti.Utils.DI.IInjector,System.String)
+- uid: Solti.Utils.Proxy.ProxyFactory.Create(Type,Type,System.Object,Solti.Utils.DI.IInjector,System.String)
   name: Create(Type, Type, Object, IInjector, String)
-  href: Solti.Utils.Proxy.ProxyFactory.html#Solti_Utils_Proxy_ProxyFactory_Create_System_Type_System_Type_System_Object_Solti_Utils_DI_IInjector_System_String_
-  commentId: M:Solti.Utils.Proxy.ProxyFactory.Create(System.Type,System.Type,System.Object,Solti.Utils.DI.IInjector,System.String)
-  fullName: Solti.Utils.Proxy.ProxyFactory.Create(System.Type, System.Type, System.Object, Solti.Utils.DI.IInjector, System.String)
+  href: Solti.Utils.Proxy.ProxyFactory.html#Solti_Utils_Proxy_ProxyFactory_Create_Type_Type_System_Object_Solti_Utils_DI_IInjector_System_String_
+  commentId: M:Solti.Utils.Proxy.ProxyFactory.Create(Type,Type,System.Object,Solti.Utils.DI.IInjector,System.String)
+  fullName: Solti.Utils.Proxy.ProxyFactory.Create(Type, Type, System.Object, Solti.Utils.DI.IInjector, System.String)
   nameWithType: ProxyFactory.Create(Type, Type, Object, IInjector, String)
-- uid: Solti.Utils.Proxy.ProxyFactory.Create(System.Type,System.Type,System.Object[])
+- uid: Solti.Utils.Proxy.ProxyFactory.Create(Type,Type,System.Object[])
   name: Create(Type, Type, Object[])
-  href: Solti.Utils.Proxy.ProxyFactory.html#Solti_Utils_Proxy_ProxyFactory_Create_System_Type_System_Type_System_Object___
-  commentId: M:Solti.Utils.Proxy.ProxyFactory.Create(System.Type,System.Type,System.Object[])
+  href: Solti.Utils.Proxy.ProxyFactory.html#Solti_Utils_Proxy_ProxyFactory_Create_Type_Type_System_Object___
+  commentId: M:Solti.Utils.Proxy.ProxyFactory.Create(Type,Type,System.Object[])
   name.vb: Create(Type, Type, Object())
-  fullName: Solti.Utils.Proxy.ProxyFactory.Create(System.Type, System.Type, System.Object[])
-  fullName.vb: Solti.Utils.Proxy.ProxyFactory.Create(System.Type, System.Type, System.Object())
+  fullName: Solti.Utils.Proxy.ProxyFactory.Create(Type, Type, System.Object[])
+  fullName.vb: Solti.Utils.Proxy.ProxyFactory.Create(Type, Type, System.Object())
   nameWithType: ProxyFactory.Create(Type, Type, Object[])
   nameWithType.vb: ProxyFactory.Create(Type, Type, Object())
-- uid: Solti.Utils.Proxy.ProxyFactory.Create(System.Type,System.Type,System.Type[],System.Object[])
+- uid: Solti.Utils.Proxy.ProxyFactory.Create(Type,Type,Type[],System.Object[])
   name: Create(Type, Type, Type[], Object[])
-  href: Solti.Utils.Proxy.ProxyFactory.html#Solti_Utils_Proxy_ProxyFactory_Create_System_Type_System_Type_System_Type___System_Object___
-  commentId: M:Solti.Utils.Proxy.ProxyFactory.Create(System.Type,System.Type,System.Type[],System.Object[])
+  href: Solti.Utils.Proxy.ProxyFactory.html#Solti_Utils_Proxy_ProxyFactory_Create_Type_Type_Type___System_Object___
+  commentId: M:Solti.Utils.Proxy.ProxyFactory.Create(Type,Type,Type[],System.Object[])
   name.vb: Create(Type, Type, Type(), Object())
-  fullName: Solti.Utils.Proxy.ProxyFactory.Create(System.Type, System.Type, System.Type[], System.Object[])
-  fullName.vb: Solti.Utils.Proxy.ProxyFactory.Create(System.Type, System.Type, System.Type(), System.Object())
+  fullName: Solti.Utils.Proxy.ProxyFactory.Create(Type, Type, Type[], System.Object[])
+  fullName.vb: Solti.Utils.Proxy.ProxyFactory.Create(Type, Type, Type(), System.Object())
   nameWithType: ProxyFactory.Create(Type, Type, Type[], Object[])
   nameWithType.vb: ProxyFactory.Create(Type, Type, Type(), Object())
 - uid: Solti.Utils.Proxy.ProxyFactory.Create*
@@ -2046,13 +2072,13 @@ references:
   fullName.vb: Solti.Utils.Proxy.ProxyFactory.Create(Of TInterface, TInterceptor)(System.Object())
   nameWithType: ProxyFactory.Create<TInterface, TInterceptor>(Object[])
   nameWithType.vb: ProxyFactory.Create(Of TInterface, TInterceptor)(Object())
-- uid: Solti.Utils.Proxy.ProxyFactory.Create``2(System.Type[],System.Object[])
+- uid: Solti.Utils.Proxy.ProxyFactory.Create``2(Type[],System.Object[])
   name: Create<TInterface, TInterceptor>(Type[], Object[])
-  href: Solti.Utils.Proxy.ProxyFactory.html#Solti_Utils_Proxy_ProxyFactory_Create__2_System_Type___System_Object___
-  commentId: M:Solti.Utils.Proxy.ProxyFactory.Create``2(System.Type[],System.Object[])
+  href: Solti.Utils.Proxy.ProxyFactory.html#Solti_Utils_Proxy_ProxyFactory_Create__2_Type___System_Object___
+  commentId: M:Solti.Utils.Proxy.ProxyFactory.Create``2(Type[],System.Object[])
   name.vb: Create(Of TInterface, TInterceptor)(Type(), Object())
-  fullName: Solti.Utils.Proxy.ProxyFactory.Create<TInterface, TInterceptor>(System.Type[], System.Object[])
-  fullName.vb: Solti.Utils.Proxy.ProxyFactory.Create(Of TInterface, TInterceptor)(System.Type(), System.Object())
+  fullName: Solti.Utils.Proxy.ProxyFactory.Create<TInterface, TInterceptor>(Type[], System.Object[])
+  fullName.vb: Solti.Utils.Proxy.ProxyFactory.Create(Of TInterface, TInterceptor)(Type(), System.Object())
   nameWithType: ProxyFactory.Create<TInterface, TInterceptor>(Type[], Object[])
   nameWithType.vb: ProxyFactory.Create(Of TInterface, TInterceptor)(Type(), Object())
 - uid: Solti.Utils.Proxy.ProxyUtils
@@ -2068,12 +2094,12 @@ references:
   isSpec: "True"
   fullName: Solti.Utils.Proxy.ProxyUtils.Chain
   nameWithType: ProxyUtils.Chain
-- uid: Solti.Utils.Proxy.ProxyUtils.Chain``1(``0,System.Func{``0,``0}[])
+- uid: Solti.Utils.Proxy.ProxyUtils.Chain``1(``0,Func{``0,``0}[])
   name: Chain<TInterface>(TInterface, Func<TInterface, TInterface>[])
-  href: Solti.Utils.Proxy.ProxyUtils.html#Solti_Utils_Proxy_ProxyUtils_Chain__1___0_System_Func___0___0____
-  commentId: M:Solti.Utils.Proxy.ProxyUtils.Chain``1(``0,System.Func{``0,``0}[])
+  href: Solti.Utils.Proxy.ProxyUtils.html#Solti_Utils_Proxy_ProxyUtils_Chain__1___0_Func___0___0____
+  commentId: M:Solti.Utils.Proxy.ProxyUtils.Chain``1(``0,Func{``0,``0}[])
   name.vb: Chain(Of TInterface)(TInterface, Func(Of TInterface, TInterface)())
-  fullName: Solti.Utils.Proxy.ProxyUtils.Chain<TInterface>(TInterface, System.Func<TInterface, TInterface>[])
-  fullName.vb: Solti.Utils.Proxy.ProxyUtils.Chain(Of TInterface)(TInterface, System.Func(Of TInterface, TInterface)())
+  fullName: Solti.Utils.Proxy.ProxyUtils.Chain<TInterface>(TInterface, Func<TInterface, TInterface>[])
+  fullName.vb: Solti.Utils.Proxy.ProxyUtils.Chain(Of TInterface)(TInterface, Func(Of TInterface, TInterface)())
   nameWithType: ProxyUtils.Chain<TInterface>(TInterface, Func<TInterface, TInterface>[])
   nameWithType.vb: ProxyUtils.Chain(Of TInterface)(TInterface, Func(Of TInterface, TInterface)())

@@ -54,8 +54,9 @@
   </div>
   <div classs="implements">
     <h5>Implements</h5>
+    <div><span class="xref">IAsyncDisposable</span></div>
     <div><a class="xref" href="Solti.Utils.DI.Internals.IComposite-1.html">IComposite</a>&lt;TInterface&gt;</div>
-    <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.idisposable">IDisposable</a></div>
+    <div><span class="xref">IDisposable</span></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
@@ -63,41 +64,17 @@
       <a class="xref" href="Solti.Utils.DI.Internals.Disposable.html#Solti_Utils_DI_Internals_Disposable_Disposed">Disposable.Disposed</a>
     </div>
     <div>
-      <a class="xref" href="Solti.Utils.DI.Internals.Disposable.html#Solti_Utils_DI_Internals_Disposable_AsyncDispose">Disposable.AsyncDispose()</a>
-    </div>
-    <div>
       <a class="xref" href="Solti.Utils.DI.Internals.Disposable.html#Solti_Utils_DI_Internals_Disposable_Dispose">Disposable.Dispose()</a>
     </div>
     <div>
       <a class="xref" href="Solti.Utils.DI.Internals.Disposable.html#Solti_Utils_DI_Internals_Disposable_DisposeAsync">Disposable.DisposeAsync()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a>
     </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Solti.Utils.DI.Internals.html">Solti.Utils.DI.Internals</a></h6>
   <h6><strong>Assembly</strong>: Injector.dll</h6>
   <h5 id="Solti_Utils_DI_Internals_Composite_1_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract class Composite&lt;TInterface&gt; : Disposable, IDisposableEx, IComposite&lt;TInterface&gt;, IDisposable where TInterface : class, IComposite&lt;TInterface&gt;</code></pre>
+    <pre><code class="lang-csharp hljs">public abstract class Composite&lt;TInterface&gt; : Disposable, IDisposableEx, IAsyncDisposable, IComposite&lt;TInterface&gt;, IDisposable where TInterface : class, IComposite&lt;TInterface&gt;</code></pre>
   </div>
   <h5 class="typeParameters">Type Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -168,7 +145,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ireadonlycollection-1">IReadOnlyCollection</a>&lt;TInterface&gt;</td>
+        <td><span class="xref">IReadOnlyCollection</span>&lt;TInterface&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -225,6 +202,32 @@
       </tr>
     </tbody>
   </table>
+  <a id="Solti_Utils_DI_Internals_Composite_1_AsyncDispose_" data-uid="Solti.Utils.DI.Internals.Composite`1.AsyncDispose*"></a>
+  <h4 id="Solti_Utils_DI_Internals_Composite_1_AsyncDispose" data-uid="Solti.Utils.DI.Internals.Composite`1.AsyncDispose">AsyncDispose()</h4>
+  <div class="markdown level1 summary"><p>Disposal logic related to this class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override ValueTask AsyncDispose()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">ValueTask</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Solti.Utils.DI.Internals.Disposable.html#Solti_Utils_DI_Internals_Disposable_AsyncDispose">Disposable.AsyncDispose()</a></div>
   <a id="Solti_Utils_DI_Internals_Composite_1_Dispose_" data-uid="Solti.Utils.DI.Internals.Composite`1.Dispose*"></a>
   <h4 id="Solti_Utils_DI_Internals_Composite_1_Dispose_System_Boolean_" data-uid="Solti.Utils.DI.Internals.Composite`1.Dispose(System.Boolean)">Dispose(Boolean)</h4>
   <div class="markdown level1 summary"><p>Disposal logic related to this class.</p>
@@ -282,10 +285,13 @@
   </table>
   <h3 id="implements">Implements</h3>
   <div>
+      <span class="xref">IAsyncDisposable</span>
+  </div>
+  <div>
       <a class="xref" href="Solti.Utils.DI.Internals.IComposite-1.html">IComposite&lt;T&gt;</a>
   </div>
   <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.idisposable">System.IDisposable</a>
+      <span class="xref">IDisposable</span>
   </div>
   <h3 id="extensionmethods">Extension Methods</h3>
   <div>
