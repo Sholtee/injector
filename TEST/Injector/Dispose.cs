@@ -32,7 +32,7 @@ namespace Solti.Utils.DI.Injector.Tests
         }
 
         [Test]
-        public void Injector_DisposeAsync_ShouldFreeOwnedEntriesAsynchronously([Values(Lifetime.Scoped, Lifetime.Transient)] Lifetime lifetime)
+        public async Task Injector_DisposeAsync_ShouldFreeOwnedEntriesAsynchronously([Values(Lifetime.Scoped, Lifetime.Transient)] Lifetime lifetime)
         {
             var mockSingleton = new Mock<IAsyncDisposable>(MockBehavior.Strict);
             mockSingleton
@@ -41,9 +41,10 @@ namespace Solti.Utils.DI.Injector.Tests
 
             Container.Factory(inj => mockSingleton.Object, lifetime);
 
-            IInjector injector = Container.CreateInjector();
-            injector.Get<IAsyncDisposable>();
-            injector.DisposeAsync().AsTask().Wait();
+            await using (IInjector injector = Container.CreateInjector())
+            {
+                injector.Get<IAsyncDisposable>();
+            }
 
             mockSingleton.Verify(s => s.DisposeAsync(), Times.Once);
         }

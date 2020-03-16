@@ -22,21 +22,47 @@ namespace Solti.Utils.DI.Container.Tests
         [Test]
         public void IServiceContainer_Dispose_ShouldDisposeOwnedEntriesOnly()
         {
-            Disposable 
-                owned    = new Disposable(),
-                notOwned = new Disposable();
+            var mockOwned = new Mock<IDisposable>(MockBehavior.Strict);
+            mockOwned.Setup(d => d.Dispose());
 
-            IServiceContainer container = new TImplementation();
+            var mockNotOwned = new Mock<IDisposable>(MockBehavior.Strict);
+            mockNotOwned.Setup(d => d.Dispose());
 
-            container.Add(new InstanceServiceEntry(typeof(IDisposable), null, owned, releaseOnDispose: true, owner: container));
-            container.Add(new InstanceServiceEntry(typeof(IDisposableEx), null, notOwned, releaseOnDispose: true, owner: new TImplementation()));
+            using (IServiceContainer container = new TImplementation())
+            {
+                container.Add(new InstanceServiceEntry(typeof(IDisposable), "owned", mockOwned.Object, releaseOnDispose: true, owner: container));
+                container.Add(new InstanceServiceEntry(typeof(IDisposable), "notOwned", mockNotOwned.Object, releaseOnDispose: true, owner: new TImplementation()));
 
-            Assert.That(container.Count, Is.EqualTo(2));
+                Assert.That(container.Count, Is.EqualTo(2));
+            }
 
-            container.Dispose();
-            
-            Assert.That(owned.Disposed);
-            Assert.That(notOwned.Disposed, Is.False);
+            mockNotOwned.Verify(d => d.Dispose(), Times.Never);
+            mockOwned.Verify(d => d.Dispose(), Times.Once);
+        }
+
+        [Test]
+        public async Task IServiceContainer_DisposeAsync_ShouldDisposeOwnedEntriesOnly()
+        {
+            var mockOwned = new Mock<IAsyncDisposable>(MockBehavior.Strict);
+            mockOwned
+                .Setup(d => d.DisposeAsync())
+                .Returns(default(ValueTask));
+
+            var mockNotOwned = new Mock<IAsyncDisposable>(MockBehavior.Strict);
+            mockNotOwned
+                .Setup(d => d.DisposeAsync())
+                .Returns(default(ValueTask));
+
+            await using (IServiceContainer container = new TImplementation())
+            {
+                container.Add(new InstanceServiceEntry(typeof(IAsyncDisposable), "owned", mockOwned.Object, releaseOnDispose: true, owner: container));
+                container.Add(new InstanceServiceEntry(typeof(IAsyncDisposable), "notOwned", mockNotOwned.Object, releaseOnDispose: true, owner: new TImplementation()));
+
+                Assert.That(container.Count, Is.EqualTo(2));
+            }
+
+            mockNotOwned.Verify(d => d.DisposeAsync(), Times.Never);
+            mockOwned.Verify(d => d.DisposeAsync(), Times.Once);
         }
 
         [TestCase(null)]
