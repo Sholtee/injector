@@ -54,9 +54,9 @@
   </div>
   <div classs="implements">
     <h5>Implements</h5>
-    <div><span class="xref">IAsyncDisposable</span></div>
     <div><a class="xref" href="Solti.Utils.DI.Internals.IComposite-1.html">IComposite</a>&lt;TInterface&gt;</div>
     <div><span class="xref">IDisposable</span></div>
+    <div><span class="xref">IAsyncDisposable</span></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
@@ -74,7 +74,7 @@
   <h6><strong>Assembly</strong>: Injector.dll</h6>
   <h5 id="Solti_Utils_DI_Internals_Composite_1_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract class Composite&lt;TInterface&gt; : Disposable, IDisposableEx, IAsyncDisposable, IComposite&lt;TInterface&gt;, IDisposable where TInterface : class, IComposite&lt;TInterface&gt;</code></pre>
+    <pre><code class="lang-csharp hljs">public abstract class Composite&lt;TInterface&gt; : Disposable, IDisposableEx, IComposite&lt;TInterface&gt;, IDisposable, IAsyncDisposable where TInterface : class, IComposite&lt;TInterface&gt;</code></pre>
   </div>
   <h5 class="typeParameters">Type Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -285,13 +285,13 @@
   </table>
   <h3 id="implements">Implements</h3>
   <div>
-      <span class="xref">IAsyncDisposable</span>
-  </div>
-  <div>
       <a class="xref" href="Solti.Utils.DI.Internals.IComposite-1.html">IComposite&lt;T&gt;</a>
   </div>
   <div>
       <span class="xref">IDisposable</span>
+  </div>
+  <div>
+      <span class="xref">IAsyncDisposable</span>
   </div>
   <h3 id="extensionmethods">Extension Methods</h3>
   <div>
