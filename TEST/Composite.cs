@@ -128,5 +128,19 @@ namespace Solti.Utils.DI.Internals.Tests
             root.Children.Remove(child);
             Assert.That(child.Parent, Is.Null);
         }
+
+        [Test]
+        public void Composite_ContainsChild_ShouldDoWhatItsNameSuggests() 
+        {
+            IMyComposite
+                root = new MyComposite(),
+                child = new MyComposite();
+
+
+            Assert.That(root.Children.Contains(child), Is.False);
+
+            root.Children.Add(child);
+            Assert.That(root.Children.Contains(child));
+        }
     }
 }
