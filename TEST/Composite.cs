@@ -85,5 +85,19 @@ namespace Solti.Utils.DI.Internals.Tests
             Assert.DoesNotThrow(child.Dispose);
             Assert.That(root.Children.Count, Is.EqualTo(0));
         }
+
+        [Test]
+        public void Composite_Parent_ShouldNotBeSetDirectly() 
+        {
+            IMyComposite
+                root = new MyComposite(),
+                child = new MyComposite(root);
+
+            Assert.That(child.Parent, Is.EqualTo(root));
+            Assert.Throws<InvalidOperationException>(() => child.Parent = null, Resources.CANT_SET_PARENT);
+            
+            root.Children.Remove(child);
+            Assert.That(child.Parent, Is.Null);
+        }
     }
 }

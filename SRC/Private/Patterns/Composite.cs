@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
@@ -114,7 +115,7 @@ namespace Solti.Utils.DI.Internals
             set
             {
                 var st = new StackTrace();
-                if (st.GetFrame(1).GetMethod().ReflectedType.IsAssignableFrom(GetType()))
+                if (st.GetFrame(1).GetMethod().GetCustomAttribute<CanSetParentAttribute>() == null)
                     throw new InvalidOperationException(Resources.CANT_SET_PARENT);
 
                 FParent = value;
@@ -155,6 +156,7 @@ namespace Solti.Utils.DI.Internals
 
         bool ICollection<TInterface>.IsReadOnly { get; }
       
+        [CanSetParent]
         void ICollection<TInterface>.Add(TInterface child)
         {
             Ensure.Parameter.IsNotNull(child, nameof(child));
@@ -185,6 +187,7 @@ namespace Solti.Utils.DI.Internals
             child.Parent = Self;
         }
 
+        [CanSetParent]
         bool ICollection<TInterface>.Remove(TInterface child)
         {
             Ensure.Parameter.IsNotNull(child, nameof(child));
