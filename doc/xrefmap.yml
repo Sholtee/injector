@@ -7,6 +7,219 @@ references:
   commentId: N:Solti.Utils.DI
   fullName: Solti.Utils.DI
   nameWithType: Solti.Utils.DI
+- uid: Solti.Utils.DI.AbstractServiceEntry
+  name: AbstractServiceEntry
+  href: Solti.Utils.DI.AbstractServiceEntry.html
+  commentId: T:Solti.Utils.DI.AbstractServiceEntry
+  fullName: Solti.Utils.DI.AbstractServiceEntry
+  nameWithType: AbstractServiceEntry
+- uid: Solti.Utils.DI.AbstractServiceEntry.#ctor(Type,System.String)
+  name: AbstractServiceEntry(Type, String)
+  href: Solti.Utils.DI.AbstractServiceEntry.html#Solti_Utils_DI_AbstractServiceEntry__ctor_Type_System_String_
+  commentId: M:Solti.Utils.DI.AbstractServiceEntry.#ctor(Type,System.String)
+  fullName: Solti.Utils.DI.AbstractServiceEntry.AbstractServiceEntry(Type, System.String)
+  nameWithType: AbstractServiceEntry.AbstractServiceEntry(Type, String)
+- uid: Solti.Utils.DI.AbstractServiceEntry.#ctor(Type,System.String,System.Nullable{Solti.Utils.DI.Lifetime},Solti.Utils.DI.IServiceContainer)
+  name: AbstractServiceEntry(Type, String, Nullable<Lifetime>, IServiceContainer)
+  href: Solti.Utils.DI.AbstractServiceEntry.html#Solti_Utils_DI_AbstractServiceEntry__ctor_Type_System_String_System_Nullable_Solti_Utils_DI_Lifetime__Solti_Utils_DI_IServiceContainer_
+  commentId: M:Solti.Utils.DI.AbstractServiceEntry.#ctor(Type,System.String,System.Nullable{Solti.Utils.DI.Lifetime},Solti.Utils.DI.IServiceContainer)
+  name.vb: AbstractServiceEntry(Type, String, Nullable(Of Lifetime), IServiceContainer)
+  fullName: Solti.Utils.DI.AbstractServiceEntry.AbstractServiceEntry(Type, System.String, System.Nullable<Solti.Utils.DI.Lifetime>, Solti.Utils.DI.IServiceContainer)
+  fullName.vb: Solti.Utils.DI.AbstractServiceEntry.AbstractServiceEntry(Type, System.String, System.Nullable(Of Solti.Utils.DI.Lifetime), Solti.Utils.DI.IServiceContainer)
+  nameWithType: AbstractServiceEntry.AbstractServiceEntry(Type, String, Nullable<Lifetime>, IServiceContainer)
+  nameWithType.vb: AbstractServiceEntry.AbstractServiceEntry(Type, String, Nullable(Of Lifetime), IServiceContainer)
+- uid: Solti.Utils.DI.AbstractServiceEntry.#ctor*
+  name: AbstractServiceEntry
+  href: Solti.Utils.DI.AbstractServiceEntry.html#Solti_Utils_DI_AbstractServiceEntry__ctor_
+  commentId: Overload:Solti.Utils.DI.AbstractServiceEntry.#ctor
+  isSpec: "True"
+  fullName: Solti.Utils.DI.AbstractServiceEntry.AbstractServiceEntry
+  nameWithType: AbstractServiceEntry.AbstractServiceEntry
+- uid: Solti.Utils.DI.AbstractServiceEntry.AsyncDispose
+  name: AsyncDispose()
+  href: Solti.Utils.DI.AbstractServiceEntry.html#Solti_Utils_DI_AbstractServiceEntry_AsyncDispose
+  commentId: M:Solti.Utils.DI.AbstractServiceEntry.AsyncDispose
+  fullName: Solti.Utils.DI.AbstractServiceEntry.AsyncDispose()
+  nameWithType: AbstractServiceEntry.AsyncDispose()
+- uid: Solti.Utils.DI.AbstractServiceEntry.AsyncDispose*
+  name: AsyncDispose
+  href: Solti.Utils.DI.AbstractServiceEntry.html#Solti_Utils_DI_AbstractServiceEntry_AsyncDispose_
+  commentId: Overload:Solti.Utils.DI.AbstractServiceEntry.AsyncDispose
+  isSpec: "True"
+  fullName: Solti.Utils.DI.AbstractServiceEntry.AsyncDispose
+  nameWithType: AbstractServiceEntry.AsyncDispose
+- uid: Solti.Utils.DI.AbstractServiceEntry.CopyTo(Solti.Utils.DI.IServiceContainer)
+  name: CopyTo(IServiceContainer)
+  href: Solti.Utils.DI.AbstractServiceEntry.html#Solti_Utils_DI_AbstractServiceEntry_CopyTo_Solti_Utils_DI_IServiceContainer_
+  commentId: M:Solti.Utils.DI.AbstractServiceEntry.CopyTo(Solti.Utils.DI.IServiceContainer)
+  fullName: Solti.Utils.DI.AbstractServiceEntry.CopyTo(Solti.Utils.DI.IServiceContainer)
+  nameWithType: AbstractServiceEntry.CopyTo(IServiceContainer)
+- uid: Solti.Utils.DI.AbstractServiceEntry.CopyTo*
+  name: CopyTo
+  href: Solti.Utils.DI.AbstractServiceEntry.html#Solti_Utils_DI_AbstractServiceEntry_CopyTo_
+  commentId: Overload:Solti.Utils.DI.AbstractServiceEntry.CopyTo
+  isSpec: "True"
+  fullName: Solti.Utils.DI.AbstractServiceEntry.CopyTo
+  nameWithType: AbstractServiceEntry.CopyTo
+- uid: Solti.Utils.DI.AbstractServiceEntry.Dispose(System.Boolean)
+  name: Dispose(Boolean)
+  href: Solti.Utils.DI.AbstractServiceEntry.html#Solti_Utils_DI_AbstractServiceEntry_Dispose_System_Boolean_
+  commentId: M:Solti.Utils.DI.AbstractServiceEntry.Dispose(System.Boolean)
+  fullName: Solti.Utils.DI.AbstractServiceEntry.Dispose(System.Boolean)
+  nameWithType: AbstractServiceEntry.Dispose(Boolean)
+- uid: Solti.Utils.DI.AbstractServiceEntry.Dispose*
+  name: Dispose
+  href: Solti.Utils.DI.AbstractServiceEntry.html#Solti_Utils_DI_AbstractServiceEntry_Dispose_
+  commentId: Overload:Solti.Utils.DI.AbstractServiceEntry.Dispose
+  isSpec: "True"
+  fullName: Solti.Utils.DI.AbstractServiceEntry.Dispose
+  nameWithType: AbstractServiceEntry.Dispose
+- uid: Solti.Utils.DI.AbstractServiceEntry.Equals(System.Object)
+  name: Equals(Object)
+  href: Solti.Utils.DI.AbstractServiceEntry.html#Solti_Utils_DI_AbstractServiceEntry_Equals_System_Object_
+  commentId: M:Solti.Utils.DI.AbstractServiceEntry.Equals(System.Object)
+  fullName: Solti.Utils.DI.AbstractServiceEntry.Equals(System.Object)
+  nameWithType: AbstractServiceEntry.Equals(Object)
+- uid: Solti.Utils.DI.AbstractServiceEntry.Equals*
+  name: Equals
+  href: Solti.Utils.DI.AbstractServiceEntry.html#Solti_Utils_DI_AbstractServiceEntry_Equals_
+  commentId: Overload:Solti.Utils.DI.AbstractServiceEntry.Equals
+  isSpec: "True"
+  fullName: Solti.Utils.DI.AbstractServiceEntry.Equals
+  nameWithType: AbstractServiceEntry.Equals
+- uid: Solti.Utils.DI.AbstractServiceEntry.Factory
+  name: Factory
+  href: Solti.Utils.DI.AbstractServiceEntry.html#Solti_Utils_DI_AbstractServiceEntry_Factory
+  commentId: P:Solti.Utils.DI.AbstractServiceEntry.Factory
+  fullName: Solti.Utils.DI.AbstractServiceEntry.Factory
+  nameWithType: AbstractServiceEntry.Factory
+- uid: Solti.Utils.DI.AbstractServiceEntry.Factory*
+  name: Factory
+  href: Solti.Utils.DI.AbstractServiceEntry.html#Solti_Utils_DI_AbstractServiceEntry_Factory_
+  commentId: Overload:Solti.Utils.DI.AbstractServiceEntry.Factory
+  isSpec: "True"
+  fullName: Solti.Utils.DI.AbstractServiceEntry.Factory
+  nameWithType: AbstractServiceEntry.Factory
+- uid: Solti.Utils.DI.AbstractServiceEntry.GetHashCode
+  name: GetHashCode()
+  href: Solti.Utils.DI.AbstractServiceEntry.html#Solti_Utils_DI_AbstractServiceEntry_GetHashCode
+  commentId: M:Solti.Utils.DI.AbstractServiceEntry.GetHashCode
+  fullName: Solti.Utils.DI.AbstractServiceEntry.GetHashCode()
+  nameWithType: AbstractServiceEntry.GetHashCode()
+- uid: Solti.Utils.DI.AbstractServiceEntry.GetHashCode*
+  name: GetHashCode
+  href: Solti.Utils.DI.AbstractServiceEntry.html#Solti_Utils_DI_AbstractServiceEntry_GetHashCode_
+  commentId: Overload:Solti.Utils.DI.AbstractServiceEntry.GetHashCode
+  isSpec: "True"
+  fullName: Solti.Utils.DI.AbstractServiceEntry.GetHashCode
+  nameWithType: AbstractServiceEntry.GetHashCode
+- uid: Solti.Utils.DI.AbstractServiceEntry.Implementation
+  name: Implementation
+  href: Solti.Utils.DI.AbstractServiceEntry.html#Solti_Utils_DI_AbstractServiceEntry_Implementation
+  commentId: P:Solti.Utils.DI.AbstractServiceEntry.Implementation
+  fullName: Solti.Utils.DI.AbstractServiceEntry.Implementation
+  nameWithType: AbstractServiceEntry.Implementation
+- uid: Solti.Utils.DI.AbstractServiceEntry.Implementation*
+  name: Implementation
+  href: Solti.Utils.DI.AbstractServiceEntry.html#Solti_Utils_DI_AbstractServiceEntry_Implementation_
+  commentId: Overload:Solti.Utils.DI.AbstractServiceEntry.Implementation
+  isSpec: "True"
+  fullName: Solti.Utils.DI.AbstractServiceEntry.Implementation
+  nameWithType: AbstractServiceEntry.Implementation
+- uid: Solti.Utils.DI.AbstractServiceEntry.Instance
+  name: Instance
+  href: Solti.Utils.DI.AbstractServiceEntry.html#Solti_Utils_DI_AbstractServiceEntry_Instance
+  commentId: P:Solti.Utils.DI.AbstractServiceEntry.Instance
+  fullName: Solti.Utils.DI.AbstractServiceEntry.Instance
+  nameWithType: AbstractServiceEntry.Instance
+- uid: Solti.Utils.DI.AbstractServiceEntry.Instance*
+  name: Instance
+  href: Solti.Utils.DI.AbstractServiceEntry.html#Solti_Utils_DI_AbstractServiceEntry_Instance_
+  commentId: Overload:Solti.Utils.DI.AbstractServiceEntry.Instance
+  isSpec: "True"
+  fullName: Solti.Utils.DI.AbstractServiceEntry.Instance
+  nameWithType: AbstractServiceEntry.Instance
+- uid: Solti.Utils.DI.AbstractServiceEntry.Interface
+  name: Interface
+  href: Solti.Utils.DI.AbstractServiceEntry.html#Solti_Utils_DI_AbstractServiceEntry_Interface
+  commentId: P:Solti.Utils.DI.AbstractServiceEntry.Interface
+  fullName: Solti.Utils.DI.AbstractServiceEntry.Interface
+  nameWithType: AbstractServiceEntry.Interface
+- uid: Solti.Utils.DI.AbstractServiceEntry.Interface*
+  name: Interface
+  href: Solti.Utils.DI.AbstractServiceEntry.html#Solti_Utils_DI_AbstractServiceEntry_Interface_
+  commentId: Overload:Solti.Utils.DI.AbstractServiceEntry.Interface
+  isSpec: "True"
+  fullName: Solti.Utils.DI.AbstractServiceEntry.Interface
+  nameWithType: AbstractServiceEntry.Interface
+- uid: Solti.Utils.DI.AbstractServiceEntry.Lifetime
+  name: Lifetime
+  href: Solti.Utils.DI.AbstractServiceEntry.html#Solti_Utils_DI_AbstractServiceEntry_Lifetime
+  commentId: P:Solti.Utils.DI.AbstractServiceEntry.Lifetime
+  fullName: Solti.Utils.DI.AbstractServiceEntry.Lifetime
+  nameWithType: AbstractServiceEntry.Lifetime
+- uid: Solti.Utils.DI.AbstractServiceEntry.Lifetime*
+  name: Lifetime
+  href: Solti.Utils.DI.AbstractServiceEntry.html#Solti_Utils_DI_AbstractServiceEntry_Lifetime_
+  commentId: Overload:Solti.Utils.DI.AbstractServiceEntry.Lifetime
+  isSpec: "True"
+  fullName: Solti.Utils.DI.AbstractServiceEntry.Lifetime
+  nameWithType: AbstractServiceEntry.Lifetime
+- uid: Solti.Utils.DI.AbstractServiceEntry.Name
+  name: Name
+  href: Solti.Utils.DI.AbstractServiceEntry.html#Solti_Utils_DI_AbstractServiceEntry_Name
+  commentId: P:Solti.Utils.DI.AbstractServiceEntry.Name
+  fullName: Solti.Utils.DI.AbstractServiceEntry.Name
+  nameWithType: AbstractServiceEntry.Name
+- uid: Solti.Utils.DI.AbstractServiceEntry.Name*
+  name: Name
+  href: Solti.Utils.DI.AbstractServiceEntry.html#Solti_Utils_DI_AbstractServiceEntry_Name_
+  commentId: Overload:Solti.Utils.DI.AbstractServiceEntry.Name
+  isSpec: "True"
+  fullName: Solti.Utils.DI.AbstractServiceEntry.Name
+  nameWithType: AbstractServiceEntry.Name
+- uid: Solti.Utils.DI.AbstractServiceEntry.Owner
+  name: Owner
+  href: Solti.Utils.DI.AbstractServiceEntry.html#Solti_Utils_DI_AbstractServiceEntry_Owner
+  commentId: P:Solti.Utils.DI.AbstractServiceEntry.Owner
+  fullName: Solti.Utils.DI.AbstractServiceEntry.Owner
+  nameWithType: AbstractServiceEntry.Owner
+- uid: Solti.Utils.DI.AbstractServiceEntry.Owner*
+  name: Owner
+  href: Solti.Utils.DI.AbstractServiceEntry.html#Solti_Utils_DI_AbstractServiceEntry_Owner_
+  commentId: Overload:Solti.Utils.DI.AbstractServiceEntry.Owner
+  isSpec: "True"
+  fullName: Solti.Utils.DI.AbstractServiceEntry.Owner
+  nameWithType: AbstractServiceEntry.Owner
+- uid: Solti.Utils.DI.AbstractServiceEntry.SetInstance(Solti.Utils.DI.Internals.ServiceReference,IReadOnlyDictionary{System.String,System.Object})
+  name: SetInstance(ServiceReference, IReadOnlyDictionary<String, Object>)
+  href: Solti.Utils.DI.AbstractServiceEntry.html#Solti_Utils_DI_AbstractServiceEntry_SetInstance_Solti_Utils_DI_Internals_ServiceReference_IReadOnlyDictionary_System_String_System_Object__
+  commentId: M:Solti.Utils.DI.AbstractServiceEntry.SetInstance(Solti.Utils.DI.Internals.ServiceReference,IReadOnlyDictionary{System.String,System.Object})
+  name.vb: SetInstance(ServiceReference, IReadOnlyDictionary(Of String, Object))
+  fullName: Solti.Utils.DI.AbstractServiceEntry.SetInstance(Solti.Utils.DI.Internals.ServiceReference, IReadOnlyDictionary<System.String, System.Object>)
+  fullName.vb: Solti.Utils.DI.AbstractServiceEntry.SetInstance(Solti.Utils.DI.Internals.ServiceReference, IReadOnlyDictionary(Of System.String, System.Object))
+  nameWithType: AbstractServiceEntry.SetInstance(ServiceReference, IReadOnlyDictionary<String, Object>)
+  nameWithType.vb: AbstractServiceEntry.SetInstance(ServiceReference, IReadOnlyDictionary(Of String, Object))
+- uid: Solti.Utils.DI.AbstractServiceEntry.SetInstance*
+  name: SetInstance
+  href: Solti.Utils.DI.AbstractServiceEntry.html#Solti_Utils_DI_AbstractServiceEntry_SetInstance_
+  commentId: Overload:Solti.Utils.DI.AbstractServiceEntry.SetInstance
+  isSpec: "True"
+  fullName: Solti.Utils.DI.AbstractServiceEntry.SetInstance
+  nameWithType: AbstractServiceEntry.SetInstance
+- uid: Solti.Utils.DI.AbstractServiceEntry.ToString
+  name: ToString()
+  href: Solti.Utils.DI.AbstractServiceEntry.html#Solti_Utils_DI_AbstractServiceEntry_ToString
+  commentId: M:Solti.Utils.DI.AbstractServiceEntry.ToString
+  fullName: Solti.Utils.DI.AbstractServiceEntry.ToString()
+  nameWithType: AbstractServiceEntry.ToString()
+- uid: Solti.Utils.DI.AbstractServiceEntry.ToString*
+  name: ToString
+  href: Solti.Utils.DI.AbstractServiceEntry.html#Solti_Utils_DI_AbstractServiceEntry_ToString_
+  commentId: Overload:Solti.Utils.DI.AbstractServiceEntry.ToString
+  isSpec: "True"
+  fullName: Solti.Utils.DI.AbstractServiceEntry.ToString
+  nameWithType: AbstractServiceEntry.ToString
 - uid: Solti.Utils.DI.Annotations
   name: Solti.Utils.DI.Annotations
   href: Solti.Utils.DI.Annotations.html
@@ -267,219 +480,6 @@ references:
   commentId: N:Solti.Utils.DI.Internals
   fullName: Solti.Utils.DI.Internals
   nameWithType: Solti.Utils.DI.Internals
-- uid: Solti.Utils.DI.Internals.AbstractServiceEntry
-  name: AbstractServiceEntry
-  href: Solti.Utils.DI.Internals.AbstractServiceEntry.html
-  commentId: T:Solti.Utils.DI.Internals.AbstractServiceEntry
-  fullName: Solti.Utils.DI.Internals.AbstractServiceEntry
-  nameWithType: AbstractServiceEntry
-- uid: Solti.Utils.DI.Internals.AbstractServiceEntry.#ctor(Type,System.String)
-  name: AbstractServiceEntry(Type, String)
-  href: Solti.Utils.DI.Internals.AbstractServiceEntry.html#Solti_Utils_DI_Internals_AbstractServiceEntry__ctor_Type_System_String_
-  commentId: M:Solti.Utils.DI.Internals.AbstractServiceEntry.#ctor(Type,System.String)
-  fullName: Solti.Utils.DI.Internals.AbstractServiceEntry.AbstractServiceEntry(Type, System.String)
-  nameWithType: AbstractServiceEntry.AbstractServiceEntry(Type, String)
-- uid: Solti.Utils.DI.Internals.AbstractServiceEntry.#ctor(Type,System.String,System.Nullable{Solti.Utils.DI.Lifetime},Solti.Utils.DI.IServiceContainer)
-  name: AbstractServiceEntry(Type, String, Nullable<Lifetime>, IServiceContainer)
-  href: Solti.Utils.DI.Internals.AbstractServiceEntry.html#Solti_Utils_DI_Internals_AbstractServiceEntry__ctor_Type_System_String_System_Nullable_Solti_Utils_DI_Lifetime__Solti_Utils_DI_IServiceContainer_
-  commentId: M:Solti.Utils.DI.Internals.AbstractServiceEntry.#ctor(Type,System.String,System.Nullable{Solti.Utils.DI.Lifetime},Solti.Utils.DI.IServiceContainer)
-  name.vb: AbstractServiceEntry(Type, String, Nullable(Of Lifetime), IServiceContainer)
-  fullName: Solti.Utils.DI.Internals.AbstractServiceEntry.AbstractServiceEntry(Type, System.String, System.Nullable<Solti.Utils.DI.Lifetime>, Solti.Utils.DI.IServiceContainer)
-  fullName.vb: Solti.Utils.DI.Internals.AbstractServiceEntry.AbstractServiceEntry(Type, System.String, System.Nullable(Of Solti.Utils.DI.Lifetime), Solti.Utils.DI.IServiceContainer)
-  nameWithType: AbstractServiceEntry.AbstractServiceEntry(Type, String, Nullable<Lifetime>, IServiceContainer)
-  nameWithType.vb: AbstractServiceEntry.AbstractServiceEntry(Type, String, Nullable(Of Lifetime), IServiceContainer)
-- uid: Solti.Utils.DI.Internals.AbstractServiceEntry.#ctor*
-  name: AbstractServiceEntry
-  href: Solti.Utils.DI.Internals.AbstractServiceEntry.html#Solti_Utils_DI_Internals_AbstractServiceEntry__ctor_
-  commentId: Overload:Solti.Utils.DI.Internals.AbstractServiceEntry.#ctor
-  isSpec: "True"
-  fullName: Solti.Utils.DI.Internals.AbstractServiceEntry.AbstractServiceEntry
-  nameWithType: AbstractServiceEntry.AbstractServiceEntry
-- uid: Solti.Utils.DI.Internals.AbstractServiceEntry.AsyncDispose
-  name: AsyncDispose()
-  href: Solti.Utils.DI.Internals.AbstractServiceEntry.html#Solti_Utils_DI_Internals_AbstractServiceEntry_AsyncDispose
-  commentId: M:Solti.Utils.DI.Internals.AbstractServiceEntry.AsyncDispose
-  fullName: Solti.Utils.DI.Internals.AbstractServiceEntry.AsyncDispose()
-  nameWithType: AbstractServiceEntry.AsyncDispose()
-- uid: Solti.Utils.DI.Internals.AbstractServiceEntry.AsyncDispose*
-  name: AsyncDispose
-  href: Solti.Utils.DI.Internals.AbstractServiceEntry.html#Solti_Utils_DI_Internals_AbstractServiceEntry_AsyncDispose_
-  commentId: Overload:Solti.Utils.DI.Internals.AbstractServiceEntry.AsyncDispose
-  isSpec: "True"
-  fullName: Solti.Utils.DI.Internals.AbstractServiceEntry.AsyncDispose
-  nameWithType: AbstractServiceEntry.AsyncDispose
-- uid: Solti.Utils.DI.Internals.AbstractServiceEntry.CopyTo(Solti.Utils.DI.IServiceContainer)
-  name: CopyTo(IServiceContainer)
-  href: Solti.Utils.DI.Internals.AbstractServiceEntry.html#Solti_Utils_DI_Internals_AbstractServiceEntry_CopyTo_Solti_Utils_DI_IServiceContainer_
-  commentId: M:Solti.Utils.DI.Internals.AbstractServiceEntry.CopyTo(Solti.Utils.DI.IServiceContainer)
-  fullName: Solti.Utils.DI.Internals.AbstractServiceEntry.CopyTo(Solti.Utils.DI.IServiceContainer)
-  nameWithType: AbstractServiceEntry.CopyTo(IServiceContainer)
-- uid: Solti.Utils.DI.Internals.AbstractServiceEntry.CopyTo*
-  name: CopyTo
-  href: Solti.Utils.DI.Internals.AbstractServiceEntry.html#Solti_Utils_DI_Internals_AbstractServiceEntry_CopyTo_
-  commentId: Overload:Solti.Utils.DI.Internals.AbstractServiceEntry.CopyTo
-  isSpec: "True"
-  fullName: Solti.Utils.DI.Internals.AbstractServiceEntry.CopyTo
-  nameWithType: AbstractServiceEntry.CopyTo
-- uid: Solti.Utils.DI.Internals.AbstractServiceEntry.Dispose(System.Boolean)
-  name: Dispose(Boolean)
-  href: Solti.Utils.DI.Internals.AbstractServiceEntry.html#Solti_Utils_DI_Internals_AbstractServiceEntry_Dispose_System_Boolean_
-  commentId: M:Solti.Utils.DI.Internals.AbstractServiceEntry.Dispose(System.Boolean)
-  fullName: Solti.Utils.DI.Internals.AbstractServiceEntry.Dispose(System.Boolean)
-  nameWithType: AbstractServiceEntry.Dispose(Boolean)
-- uid: Solti.Utils.DI.Internals.AbstractServiceEntry.Dispose*
-  name: Dispose
-  href: Solti.Utils.DI.Internals.AbstractServiceEntry.html#Solti_Utils_DI_Internals_AbstractServiceEntry_Dispose_
-  commentId: Overload:Solti.Utils.DI.Internals.AbstractServiceEntry.Dispose
-  isSpec: "True"
-  fullName: Solti.Utils.DI.Internals.AbstractServiceEntry.Dispose
-  nameWithType: AbstractServiceEntry.Dispose
-- uid: Solti.Utils.DI.Internals.AbstractServiceEntry.Equals(System.Object)
-  name: Equals(Object)
-  href: Solti.Utils.DI.Internals.AbstractServiceEntry.html#Solti_Utils_DI_Internals_AbstractServiceEntry_Equals_System_Object_
-  commentId: M:Solti.Utils.DI.Internals.AbstractServiceEntry.Equals(System.Object)
-  fullName: Solti.Utils.DI.Internals.AbstractServiceEntry.Equals(System.Object)
-  nameWithType: AbstractServiceEntry.Equals(Object)
-- uid: Solti.Utils.DI.Internals.AbstractServiceEntry.Equals*
-  name: Equals
-  href: Solti.Utils.DI.Internals.AbstractServiceEntry.html#Solti_Utils_DI_Internals_AbstractServiceEntry_Equals_
-  commentId: Overload:Solti.Utils.DI.Internals.AbstractServiceEntry.Equals
-  isSpec: "True"
-  fullName: Solti.Utils.DI.Internals.AbstractServiceEntry.Equals
-  nameWithType: AbstractServiceEntry.Equals
-- uid: Solti.Utils.DI.Internals.AbstractServiceEntry.Factory
-  name: Factory
-  href: Solti.Utils.DI.Internals.AbstractServiceEntry.html#Solti_Utils_DI_Internals_AbstractServiceEntry_Factory
-  commentId: P:Solti.Utils.DI.Internals.AbstractServiceEntry.Factory
-  fullName: Solti.Utils.DI.Internals.AbstractServiceEntry.Factory
-  nameWithType: AbstractServiceEntry.Factory
-- uid: Solti.Utils.DI.Internals.AbstractServiceEntry.Factory*
-  name: Factory
-  href: Solti.Utils.DI.Internals.AbstractServiceEntry.html#Solti_Utils_DI_Internals_AbstractServiceEntry_Factory_
-  commentId: Overload:Solti.Utils.DI.Internals.AbstractServiceEntry.Factory
-  isSpec: "True"
-  fullName: Solti.Utils.DI.Internals.AbstractServiceEntry.Factory
-  nameWithType: AbstractServiceEntry.Factory
-- uid: Solti.Utils.DI.Internals.AbstractServiceEntry.GetHashCode
-  name: GetHashCode()
-  href: Solti.Utils.DI.Internals.AbstractServiceEntry.html#Solti_Utils_DI_Internals_AbstractServiceEntry_GetHashCode
-  commentId: M:Solti.Utils.DI.Internals.AbstractServiceEntry.GetHashCode
-  fullName: Solti.Utils.DI.Internals.AbstractServiceEntry.GetHashCode()
-  nameWithType: AbstractServiceEntry.GetHashCode()
-- uid: Solti.Utils.DI.Internals.AbstractServiceEntry.GetHashCode*
-  name: GetHashCode
-  href: Solti.Utils.DI.Internals.AbstractServiceEntry.html#Solti_Utils_DI_Internals_AbstractServiceEntry_GetHashCode_
-  commentId: Overload:Solti.Utils.DI.Internals.AbstractServiceEntry.GetHashCode
-  isSpec: "True"
-  fullName: Solti.Utils.DI.Internals.AbstractServiceEntry.GetHashCode
-  nameWithType: AbstractServiceEntry.GetHashCode
-- uid: Solti.Utils.DI.Internals.AbstractServiceEntry.Implementation
-  name: Implementation
-  href: Solti.Utils.DI.Internals.AbstractServiceEntry.html#Solti_Utils_DI_Internals_AbstractServiceEntry_Implementation
-  commentId: P:Solti.Utils.DI.Internals.AbstractServiceEntry.Implementation
-  fullName: Solti.Utils.DI.Internals.AbstractServiceEntry.Implementation
-  nameWithType: AbstractServiceEntry.Implementation
-- uid: Solti.Utils.DI.Internals.AbstractServiceEntry.Implementation*
-  name: Implementation
-  href: Solti.Utils.DI.Internals.AbstractServiceEntry.html#Solti_Utils_DI_Internals_AbstractServiceEntry_Implementation_
-  commentId: Overload:Solti.Utils.DI.Internals.AbstractServiceEntry.Implementation
-  isSpec: "True"
-  fullName: Solti.Utils.DI.Internals.AbstractServiceEntry.Implementation
-  nameWithType: AbstractServiceEntry.Implementation
-- uid: Solti.Utils.DI.Internals.AbstractServiceEntry.Instance
-  name: Instance
-  href: Solti.Utils.DI.Internals.AbstractServiceEntry.html#Solti_Utils_DI_Internals_AbstractServiceEntry_Instance
-  commentId: P:Solti.Utils.DI.Internals.AbstractServiceEntry.Instance
-  fullName: Solti.Utils.DI.Internals.AbstractServiceEntry.Instance
-  nameWithType: AbstractServiceEntry.Instance
-- uid: Solti.Utils.DI.Internals.AbstractServiceEntry.Instance*
-  name: Instance
-  href: Solti.Utils.DI.Internals.AbstractServiceEntry.html#Solti_Utils_DI_Internals_AbstractServiceEntry_Instance_
-  commentId: Overload:Solti.Utils.DI.Internals.AbstractServiceEntry.Instance
-  isSpec: "True"
-  fullName: Solti.Utils.DI.Internals.AbstractServiceEntry.Instance
-  nameWithType: AbstractServiceEntry.Instance
-- uid: Solti.Utils.DI.Internals.AbstractServiceEntry.Interface
-  name: Interface
-  href: Solti.Utils.DI.Internals.AbstractServiceEntry.html#Solti_Utils_DI_Internals_AbstractServiceEntry_Interface
-  commentId: P:Solti.Utils.DI.Internals.AbstractServiceEntry.Interface
-  fullName: Solti.Utils.DI.Internals.AbstractServiceEntry.Interface
-  nameWithType: AbstractServiceEntry.Interface
-- uid: Solti.Utils.DI.Internals.AbstractServiceEntry.Interface*
-  name: Interface
-  href: Solti.Utils.DI.Internals.AbstractServiceEntry.html#Solti_Utils_DI_Internals_AbstractServiceEntry_Interface_
-  commentId: Overload:Solti.Utils.DI.Internals.AbstractServiceEntry.Interface
-  isSpec: "True"
-  fullName: Solti.Utils.DI.Internals.AbstractServiceEntry.Interface
-  nameWithType: AbstractServiceEntry.Interface
-- uid: Solti.Utils.DI.Internals.AbstractServiceEntry.Lifetime
-  name: Lifetime
-  href: Solti.Utils.DI.Internals.AbstractServiceEntry.html#Solti_Utils_DI_Internals_AbstractServiceEntry_Lifetime
-  commentId: P:Solti.Utils.DI.Internals.AbstractServiceEntry.Lifetime
-  fullName: Solti.Utils.DI.Internals.AbstractServiceEntry.Lifetime
-  nameWithType: AbstractServiceEntry.Lifetime
-- uid: Solti.Utils.DI.Internals.AbstractServiceEntry.Lifetime*
-  name: Lifetime
-  href: Solti.Utils.DI.Internals.AbstractServiceEntry.html#Solti_Utils_DI_Internals_AbstractServiceEntry_Lifetime_
-  commentId: Overload:Solti.Utils.DI.Internals.AbstractServiceEntry.Lifetime
-  isSpec: "True"
-  fullName: Solti.Utils.DI.Internals.AbstractServiceEntry.Lifetime
-  nameWithType: AbstractServiceEntry.Lifetime
-- uid: Solti.Utils.DI.Internals.AbstractServiceEntry.Name
-  name: Name
-  href: Solti.Utils.DI.Internals.AbstractServiceEntry.html#Solti_Utils_DI_Internals_AbstractServiceEntry_Name
-  commentId: P:Solti.Utils.DI.Internals.AbstractServiceEntry.Name
-  fullName: Solti.Utils.DI.Internals.AbstractServiceEntry.Name
-  nameWithType: AbstractServiceEntry.Name
-- uid: Solti.Utils.DI.Internals.AbstractServiceEntry.Name*
-  name: Name
-  href: Solti.Utils.DI.Internals.AbstractServiceEntry.html#Solti_Utils_DI_Internals_AbstractServiceEntry_Name_
-  commentId: Overload:Solti.Utils.DI.Internals.AbstractServiceEntry.Name
-  isSpec: "True"
-  fullName: Solti.Utils.DI.Internals.AbstractServiceEntry.Name
-  nameWithType: AbstractServiceEntry.Name
-- uid: Solti.Utils.DI.Internals.AbstractServiceEntry.Owner
-  name: Owner
-  href: Solti.Utils.DI.Internals.AbstractServiceEntry.html#Solti_Utils_DI_Internals_AbstractServiceEntry_Owner
-  commentId: P:Solti.Utils.DI.Internals.AbstractServiceEntry.Owner
-  fullName: Solti.Utils.DI.Internals.AbstractServiceEntry.Owner
-  nameWithType: AbstractServiceEntry.Owner
-- uid: Solti.Utils.DI.Internals.AbstractServiceEntry.Owner*
-  name: Owner
-  href: Solti.Utils.DI.Internals.AbstractServiceEntry.html#Solti_Utils_DI_Internals_AbstractServiceEntry_Owner_
-  commentId: Overload:Solti.Utils.DI.Internals.AbstractServiceEntry.Owner
-  isSpec: "True"
-  fullName: Solti.Utils.DI.Internals.AbstractServiceEntry.Owner
-  nameWithType: AbstractServiceEntry.Owner
-- uid: Solti.Utils.DI.Internals.AbstractServiceEntry.SetInstance(Solti.Utils.DI.Internals.ServiceReference,IReadOnlyDictionary{System.String,System.Object})
-  name: SetInstance(ServiceReference, IReadOnlyDictionary<String, Object>)
-  href: Solti.Utils.DI.Internals.AbstractServiceEntry.html#Solti_Utils_DI_Internals_AbstractServiceEntry_SetInstance_Solti_Utils_DI_Internals_ServiceReference_IReadOnlyDictionary_System_String_System_Object__
-  commentId: M:Solti.Utils.DI.Internals.AbstractServiceEntry.SetInstance(Solti.Utils.DI.Internals.ServiceReference,IReadOnlyDictionary{System.String,System.Object})
-  name.vb: SetInstance(ServiceReference, IReadOnlyDictionary(Of String, Object))
-  fullName: Solti.Utils.DI.Internals.AbstractServiceEntry.SetInstance(Solti.Utils.DI.Internals.ServiceReference, IReadOnlyDictionary<System.String, System.Object>)
-  fullName.vb: Solti.Utils.DI.Internals.AbstractServiceEntry.SetInstance(Solti.Utils.DI.Internals.ServiceReference, IReadOnlyDictionary(Of System.String, System.Object))
-  nameWithType: AbstractServiceEntry.SetInstance(ServiceReference, IReadOnlyDictionary<String, Object>)
-  nameWithType.vb: AbstractServiceEntry.SetInstance(ServiceReference, IReadOnlyDictionary(Of String, Object))
-- uid: Solti.Utils.DI.Internals.AbstractServiceEntry.SetInstance*
-  name: SetInstance
-  href: Solti.Utils.DI.Internals.AbstractServiceEntry.html#Solti_Utils_DI_Internals_AbstractServiceEntry_SetInstance_
-  commentId: Overload:Solti.Utils.DI.Internals.AbstractServiceEntry.SetInstance
-  isSpec: "True"
-  fullName: Solti.Utils.DI.Internals.AbstractServiceEntry.SetInstance
-  nameWithType: AbstractServiceEntry.SetInstance
-- uid: Solti.Utils.DI.Internals.AbstractServiceEntry.ToString
-  name: ToString()
-  href: Solti.Utils.DI.Internals.AbstractServiceEntry.html#Solti_Utils_DI_Internals_AbstractServiceEntry_ToString
-  commentId: M:Solti.Utils.DI.Internals.AbstractServiceEntry.ToString
-  fullName: Solti.Utils.DI.Internals.AbstractServiceEntry.ToString()
-  nameWithType: AbstractServiceEntry.ToString()
-- uid: Solti.Utils.DI.Internals.AbstractServiceEntry.ToString*
-  name: ToString
-  href: Solti.Utils.DI.Internals.AbstractServiceEntry.html#Solti_Utils_DI_Internals_AbstractServiceEntry_ToString_
-  commentId: Overload:Solti.Utils.DI.Internals.AbstractServiceEntry.ToString
-  isSpec: "True"
-  fullName: Solti.Utils.DI.Internals.AbstractServiceEntry.ToString
-  nameWithType: AbstractServiceEntry.ToString
 - uid: Solti.Utils.DI.Internals.Composite`1
   name: Composite<TInterface>
   href: Solti.Utils.DI.Internals.Composite-1.html
@@ -953,17 +953,17 @@ references:
   commentId: T:Solti.Utils.DI.Internals.ServiceReference
   fullName: Solti.Utils.DI.Internals.ServiceReference
   nameWithType: ServiceReference
-- uid: Solti.Utils.DI.Internals.ServiceReference.#ctor(Solti.Utils.DI.Internals.AbstractServiceEntry,Solti.Utils.DI.IInjector)
+- uid: Solti.Utils.DI.Internals.ServiceReference.#ctor(Solti.Utils.DI.AbstractServiceEntry,Solti.Utils.DI.IInjector)
   name: ServiceReference(AbstractServiceEntry, IInjector)
-  href: Solti.Utils.DI.Internals.ServiceReference.html#Solti_Utils_DI_Internals_ServiceReference__ctor_Solti_Utils_DI_Internals_AbstractServiceEntry_Solti_Utils_DI_IInjector_
-  commentId: M:Solti.Utils.DI.Internals.ServiceReference.#ctor(Solti.Utils.DI.Internals.AbstractServiceEntry,Solti.Utils.DI.IInjector)
-  fullName: Solti.Utils.DI.Internals.ServiceReference.ServiceReference(Solti.Utils.DI.Internals.AbstractServiceEntry, Solti.Utils.DI.IInjector)
+  href: Solti.Utils.DI.Internals.ServiceReference.html#Solti_Utils_DI_Internals_ServiceReference__ctor_Solti_Utils_DI_AbstractServiceEntry_Solti_Utils_DI_IInjector_
+  commentId: M:Solti.Utils.DI.Internals.ServiceReference.#ctor(Solti.Utils.DI.AbstractServiceEntry,Solti.Utils.DI.IInjector)
+  fullName: Solti.Utils.DI.Internals.ServiceReference.ServiceReference(Solti.Utils.DI.AbstractServiceEntry, Solti.Utils.DI.IInjector)
   nameWithType: ServiceReference.ServiceReference(AbstractServiceEntry, IInjector)
-- uid: Solti.Utils.DI.Internals.ServiceReference.#ctor(Solti.Utils.DI.Internals.AbstractServiceEntry,System.Object,System.Boolean)
+- uid: Solti.Utils.DI.Internals.ServiceReference.#ctor(Solti.Utils.DI.AbstractServiceEntry,System.Object,System.Boolean)
   name: ServiceReference(AbstractServiceEntry, Object, Boolean)
-  href: Solti.Utils.DI.Internals.ServiceReference.html#Solti_Utils_DI_Internals_ServiceReference__ctor_Solti_Utils_DI_Internals_AbstractServiceEntry_System_Object_System_Boolean_
-  commentId: M:Solti.Utils.DI.Internals.ServiceReference.#ctor(Solti.Utils.DI.Internals.AbstractServiceEntry,System.Object,System.Boolean)
-  fullName: Solti.Utils.DI.Internals.ServiceReference.ServiceReference(Solti.Utils.DI.Internals.AbstractServiceEntry, System.Object, System.Boolean)
+  href: Solti.Utils.DI.Internals.ServiceReference.html#Solti_Utils_DI_Internals_ServiceReference__ctor_Solti_Utils_DI_AbstractServiceEntry_System_Object_System_Boolean_
+  commentId: M:Solti.Utils.DI.Internals.ServiceReference.#ctor(Solti.Utils.DI.AbstractServiceEntry,System.Object,System.Boolean)
+  fullName: Solti.Utils.DI.Internals.ServiceReference.ServiceReference(Solti.Utils.DI.AbstractServiceEntry, System.Object, System.Boolean)
   nameWithType: ServiceReference.ServiceReference(AbstractServiceEntry, Object, Boolean)
 - uid: Solti.Utils.DI.Internals.ServiceReference.#ctor*
   name: ServiceReference
@@ -1069,11 +1069,11 @@ references:
   commentId: T:Solti.Utils.DI.IServiceContainer
   fullName: Solti.Utils.DI.IServiceContainer
   nameWithType: IServiceContainer
-- uid: Solti.Utils.DI.IServiceContainer.Add(Solti.Utils.DI.Internals.AbstractServiceEntry)
+- uid: Solti.Utils.DI.IServiceContainer.Add(Solti.Utils.DI.AbstractServiceEntry)
   name: Add(AbstractServiceEntry)
-  href: Solti.Utils.DI.IServiceContainer.html#Solti_Utils_DI_IServiceContainer_Add_Solti_Utils_DI_Internals_AbstractServiceEntry_
-  commentId: M:Solti.Utils.DI.IServiceContainer.Add(Solti.Utils.DI.Internals.AbstractServiceEntry)
-  fullName: Solti.Utils.DI.IServiceContainer.Add(Solti.Utils.DI.Internals.AbstractServiceEntry)
+  href: Solti.Utils.DI.IServiceContainer.html#Solti_Utils_DI_IServiceContainer_Add_Solti_Utils_DI_AbstractServiceEntry_
+  commentId: M:Solti.Utils.DI.IServiceContainer.Add(Solti.Utils.DI.AbstractServiceEntry)
+  fullName: Solti.Utils.DI.IServiceContainer.Add(Solti.Utils.DI.AbstractServiceEntry)
   nameWithType: IServiceContainer.Add(AbstractServiceEntry)
 - uid: Solti.Utils.DI.IServiceContainer.Add*
   name: Add
@@ -1720,11 +1720,11 @@ references:
   isSpec: "True"
   fullName: Solti.Utils.DI.ServiceContainer.ServiceContainer
   nameWithType: ServiceContainer.ServiceContainer
-- uid: Solti.Utils.DI.ServiceContainer.Add(Solti.Utils.DI.Internals.AbstractServiceEntry)
+- uid: Solti.Utils.DI.ServiceContainer.Add(Solti.Utils.DI.AbstractServiceEntry)
   name: Add(AbstractServiceEntry)
-  href: Solti.Utils.DI.ServiceContainer.html#Solti_Utils_DI_ServiceContainer_Add_Solti_Utils_DI_Internals_AbstractServiceEntry_
-  commentId: M:Solti.Utils.DI.ServiceContainer.Add(Solti.Utils.DI.Internals.AbstractServiceEntry)
-  fullName: Solti.Utils.DI.ServiceContainer.Add(Solti.Utils.DI.Internals.AbstractServiceEntry)
+  href: Solti.Utils.DI.ServiceContainer.html#Solti_Utils_DI_ServiceContainer_Add_Solti_Utils_DI_AbstractServiceEntry_
+  commentId: M:Solti.Utils.DI.ServiceContainer.Add(Solti.Utils.DI.AbstractServiceEntry)
+  fullName: Solti.Utils.DI.ServiceContainer.Add(Solti.Utils.DI.AbstractServiceEntry)
   nameWithType: ServiceContainer.Add(AbstractServiceEntry)
 - uid: Solti.Utils.DI.ServiceContainer.Add*
   name: Add
@@ -1804,11 +1804,11 @@ references:
   commentId: T:Solti.Utils.DI.ServiceEntryExtensions
   fullName: Solti.Utils.DI.ServiceEntryExtensions
   nameWithType: ServiceEntryExtensions
-- uid: Solti.Utils.DI.ServiceEntryExtensions.IsFactory(Solti.Utils.DI.Internals.AbstractServiceEntry)
+- uid: Solti.Utils.DI.ServiceEntryExtensions.IsFactory(Solti.Utils.DI.AbstractServiceEntry)
   name: IsFactory(AbstractServiceEntry)
-  href: Solti.Utils.DI.ServiceEntryExtensions.html#Solti_Utils_DI_ServiceEntryExtensions_IsFactory_Solti_Utils_DI_Internals_AbstractServiceEntry_
-  commentId: M:Solti.Utils.DI.ServiceEntryExtensions.IsFactory(Solti.Utils.DI.Internals.AbstractServiceEntry)
-  fullName: Solti.Utils.DI.ServiceEntryExtensions.IsFactory(Solti.Utils.DI.Internals.AbstractServiceEntry)
+  href: Solti.Utils.DI.ServiceEntryExtensions.html#Solti_Utils_DI_ServiceEntryExtensions_IsFactory_Solti_Utils_DI_AbstractServiceEntry_
+  commentId: M:Solti.Utils.DI.ServiceEntryExtensions.IsFactory(Solti.Utils.DI.AbstractServiceEntry)
+  fullName: Solti.Utils.DI.ServiceEntryExtensions.IsFactory(Solti.Utils.DI.AbstractServiceEntry)
   nameWithType: ServiceEntryExtensions.IsFactory(AbstractServiceEntry)
 - uid: Solti.Utils.DI.ServiceEntryExtensions.IsFactory*
   name: IsFactory
@@ -1817,11 +1817,11 @@ references:
   isSpec: "True"
   fullName: Solti.Utils.DI.ServiceEntryExtensions.IsFactory
   nameWithType: ServiceEntryExtensions.IsFactory
-- uid: Solti.Utils.DI.ServiceEntryExtensions.IsInstance(Solti.Utils.DI.Internals.AbstractServiceEntry)
+- uid: Solti.Utils.DI.ServiceEntryExtensions.IsInstance(Solti.Utils.DI.AbstractServiceEntry)
   name: IsInstance(AbstractServiceEntry)
-  href: Solti.Utils.DI.ServiceEntryExtensions.html#Solti_Utils_DI_ServiceEntryExtensions_IsInstance_Solti_Utils_DI_Internals_AbstractServiceEntry_
-  commentId: M:Solti.Utils.DI.ServiceEntryExtensions.IsInstance(Solti.Utils.DI.Internals.AbstractServiceEntry)
-  fullName: Solti.Utils.DI.ServiceEntryExtensions.IsInstance(Solti.Utils.DI.Internals.AbstractServiceEntry)
+  href: Solti.Utils.DI.ServiceEntryExtensions.html#Solti_Utils_DI_ServiceEntryExtensions_IsInstance_Solti_Utils_DI_AbstractServiceEntry_
+  commentId: M:Solti.Utils.DI.ServiceEntryExtensions.IsInstance(Solti.Utils.DI.AbstractServiceEntry)
+  fullName: Solti.Utils.DI.ServiceEntryExtensions.IsInstance(Solti.Utils.DI.AbstractServiceEntry)
   nameWithType: ServiceEntryExtensions.IsInstance(AbstractServiceEntry)
 - uid: Solti.Utils.DI.ServiceEntryExtensions.IsInstance*
   name: IsInstance
@@ -1830,11 +1830,11 @@ references:
   isSpec: "True"
   fullName: Solti.Utils.DI.ServiceEntryExtensions.IsInstance
   nameWithType: ServiceEntryExtensions.IsInstance
-- uid: Solti.Utils.DI.ServiceEntryExtensions.IsLazy(Solti.Utils.DI.Internals.AbstractServiceEntry)
+- uid: Solti.Utils.DI.ServiceEntryExtensions.IsLazy(Solti.Utils.DI.AbstractServiceEntry)
   name: IsLazy(AbstractServiceEntry)
-  href: Solti.Utils.DI.ServiceEntryExtensions.html#Solti_Utils_DI_ServiceEntryExtensions_IsLazy_Solti_Utils_DI_Internals_AbstractServiceEntry_
-  commentId: M:Solti.Utils.DI.ServiceEntryExtensions.IsLazy(Solti.Utils.DI.Internals.AbstractServiceEntry)
-  fullName: Solti.Utils.DI.ServiceEntryExtensions.IsLazy(Solti.Utils.DI.Internals.AbstractServiceEntry)
+  href: Solti.Utils.DI.ServiceEntryExtensions.html#Solti_Utils_DI_ServiceEntryExtensions_IsLazy_Solti_Utils_DI_AbstractServiceEntry_
+  commentId: M:Solti.Utils.DI.ServiceEntryExtensions.IsLazy(Solti.Utils.DI.AbstractServiceEntry)
+  fullName: Solti.Utils.DI.ServiceEntryExtensions.IsLazy(Solti.Utils.DI.AbstractServiceEntry)
   nameWithType: ServiceEntryExtensions.IsLazy(AbstractServiceEntry)
 - uid: Solti.Utils.DI.ServiceEntryExtensions.IsLazy*
   name: IsLazy
@@ -1843,11 +1843,11 @@ references:
   isSpec: "True"
   fullName: Solti.Utils.DI.ServiceEntryExtensions.IsLazy
   nameWithType: ServiceEntryExtensions.IsLazy
-- uid: Solti.Utils.DI.ServiceEntryExtensions.IsService(Solti.Utils.DI.Internals.AbstractServiceEntry)
+- uid: Solti.Utils.DI.ServiceEntryExtensions.IsService(Solti.Utils.DI.AbstractServiceEntry)
   name: IsService(AbstractServiceEntry)
-  href: Solti.Utils.DI.ServiceEntryExtensions.html#Solti_Utils_DI_ServiceEntryExtensions_IsService_Solti_Utils_DI_Internals_AbstractServiceEntry_
-  commentId: M:Solti.Utils.DI.ServiceEntryExtensions.IsService(Solti.Utils.DI.Internals.AbstractServiceEntry)
-  fullName: Solti.Utils.DI.ServiceEntryExtensions.IsService(Solti.Utils.DI.Internals.AbstractServiceEntry)
+  href: Solti.Utils.DI.ServiceEntryExtensions.html#Solti_Utils_DI_ServiceEntryExtensions_IsService_Solti_Utils_DI_AbstractServiceEntry_
+  commentId: M:Solti.Utils.DI.ServiceEntryExtensions.IsService(Solti.Utils.DI.AbstractServiceEntry)
+  fullName: Solti.Utils.DI.ServiceEntryExtensions.IsService(Solti.Utils.DI.AbstractServiceEntry)
   nameWithType: ServiceEntryExtensions.IsService(AbstractServiceEntry)
 - uid: Solti.Utils.DI.ServiceEntryExtensions.IsService*
   name: IsService
