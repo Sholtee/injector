@@ -101,6 +101,8 @@ Registering a service can be done via several patterns (I name them recipes):
       ```
     - Starting from version 1.3.0, you can mark the requested dependency as optional. In this case the system won't throw if the dependency can not be found:
       ```csharp 
+      using Solti.Utils.DI.Annotations
+      ...
       public class MyService: IMyService
       {
         public MyService(IService_1 dep1, [Options(Optional = true)]IService_2 dep2) {...}
