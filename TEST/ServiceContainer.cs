@@ -52,15 +52,21 @@ namespace Solti.Utils.DI.Container.Tests
             mockNotOwned
                 .Setup(d => d.DisposeAsync())
                 .Returns(default(ValueTask));
-
+#if LANG_VERSION_8
             await using (IServiceContainer container = new TImplementation())
+#else
+            IServiceContainer container = new TImplementation();
+            try
+#endif
             {
                 container.Add(new InstanceServiceEntry(typeof(IAsyncDisposable), "owned", mockOwned.Object, releaseOnDispose: true, owner: container));
                 container.Add(new InstanceServiceEntry(typeof(IAsyncDisposable), "notOwned", mockNotOwned.Object, releaseOnDispose: true, owner: new TImplementation()));
 
                 Assert.That(container.Count, Is.EqualTo(2));
             }
-
+#if !LANG_VERSION_8
+            finally { await container.DisposeAsync(); }
+#endif
             mockNotOwned.Verify(d => d.DisposeAsync(), Times.Never);
             mockOwned.Verify(d => d.DisposeAsync(), Times.Once);
         }

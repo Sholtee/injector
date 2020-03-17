@@ -40,12 +40,18 @@ namespace Solti.Utils.DI.Injector.Tests
                 .Returns(default(ValueTask));
 
             Container.Factory(inj => mockSingleton.Object, lifetime);
-
+#if LANG_VERSION_8
             await using (IInjector injector = Container.CreateInjector())
+#else
+            IInjector injector = Container.CreateInjector();
+            try
+#endif
             {
                 injector.Get<IAsyncDisposable>();
             }
-
+#if !LANG_VERSION_8
+            finally { await injector.DisposeAsync(); }
+#endif
             mockSingleton.Verify(s => s.DisposeAsync(), Times.Once);
         }
 

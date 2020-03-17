@@ -14,7 +14,8 @@
 
   <!--OpenCover requires .NET Core 2.2 while Test Explorer needs 3.X-->
   <PropertyGroup Condition="'$(CI)'==''">
-    <TargetFramework>netcoreapp3.1</TargetFramework>  
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <DefineConstants>LANG_VERSION_8</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
