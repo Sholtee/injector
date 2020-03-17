@@ -224,6 +224,7 @@ namespace Solti.Utils.DI.Internals
 
             return new SafeEnumerator<TInterface>(FChildren, FLock);
         }
+
         IEnumerator IEnumerable.GetEnumerator() => Children.GetEnumerator();
         #endregion
     }

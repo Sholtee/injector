@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Threading.Tasks;
 
 using NUnit.Framework;
 
@@ -44,6 +45,20 @@ namespace Solti.Utils.DI.Internals.Tests
         }
 
         [Test]
+        public async Task Composite_DisposeAsync_ShouldFreeTheChildrenRecursively()
+        {
+            IMyComposite
+                root = new MyComposite(),
+                child = new MyComposite(root),
+                grandChild = new MyComposite(child);
+
+            await root.DisposeAsync();
+
+            Assert.Throws<ObjectDisposedException>(grandChild.Dispose);
+            Assert.Throws<ObjectDisposedException>(child.Dispose);
+        }
+
+        [Test]
         public void Composite_Dispose_ShouldRemoveTheChildFromTheParentsChildrenList() 
         {
             IMyComposite
@@ -54,6 +69,20 @@ namespace Solti.Utils.DI.Internals.Tests
 
             Assert.That(root.Children.Count, Is.EqualTo(2));
             child.Dispose();
+            Assert.That(root.Children.Count, Is.EqualTo(1));
+        }
+
+        [Test]
+        public async Task Composite_DisposeAsync_ShouldRemoveTheChildFromTheParentsChildrenList()
+        {
+            IMyComposite
+                root = new MyComposite(),
+                child = new MyComposite(root);
+
+            new MyComposite(root); // harmadik
+
+            Assert.That(root.Children.Count, Is.EqualTo(2));
+            await child.DisposeAsync();
             Assert.That(root.Children.Count, Is.EqualTo(1));
         }
 
