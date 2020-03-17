@@ -96,7 +96,7 @@
   - *fixed:* `ServiceContainer.Ctor()`: Proper cleanup on error ([details](https://github.com/Sholtee/injector/commit/e41e90a64063b77c9cebe0403b552ef729bdb6e3 ))
   - *done:* Strict Composite behavior  
 - 2.0.0-preview1:
-  - *breaking:* removed `ServiceReference.DisposeSupressed` property
+  - *breaking:* removed `ServiceReference.SupressDispose()` method & `ServiceReference.DisposeSupressed` property
   - *breaking:* `ServiceContainer.GetEnumerator()` no longer clones the container (enumerating is still thread safe)
   - *breaking:* dropped `netstandard1.6` support
   - *breaking:* new `IComposite` layout
