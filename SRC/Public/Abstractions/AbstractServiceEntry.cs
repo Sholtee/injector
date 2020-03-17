@@ -9,15 +9,14 @@ using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Solti.Utils.DI.Internals
+namespace Solti.Utils.DI
 {
+    using Internals;
     using Properties;
 
     /// <summary>
     /// Describes an abstract service definition.
     /// </summary>
-    /// <remarks>This is an internal class so it may change from version to version. Don't use it!</remarks>
-
     [SuppressMessage("Security", "CA2119:Seal methods that satisfy private interfaces", Justification = "No security issues exist if the methods are overridden outside the assembly.")]
     public class AbstractServiceEntry: Disposable, IServiceDefinition, IServiceFactory
     {

@@ -100,4 +100,5 @@
   - *breaking:* `ServiceContainer.GetEnumerator()` no longer clones the container (enumerating is still thread safe)
   - *breaking:* dropped `netstandard1.6` support
   - *breaking:* new `IComposite` layout
+  - *breaking:* `AbstractServiceEntry` moved to public API
   - *added:* `IAsyncDisposable` support
