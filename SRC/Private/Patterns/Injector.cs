@@ -142,11 +142,7 @@ namespace Solti.Utils.DI.Internals
             {
                 e.Data["path"] = string.Join(" -> ", FGraph
                     .Select(node => (IServiceId) node.RelatedServiceEntry)
-                    .Append(new ServiceId
-                    {
-                        Interface = iface,
-                        Name = name
-                    })
+                    .Append(new ServiceId(iface, name))
                     .Select(IServiceIdExtensions.FriendlyName));
 
                 throw;

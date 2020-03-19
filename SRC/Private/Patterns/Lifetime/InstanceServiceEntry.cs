@@ -13,7 +13,7 @@ namespace Solti.Utils.DI.Internals
     /// </summary>
     internal class InstanceServiceEntry : AbstractServiceEntry
     {
-        public InstanceServiceEntry(Type @interface, string name, object instance, bool releaseOnDispose, IServiceContainer owner) : base(
+        public InstanceServiceEntry(Type @interface, string? name, object instance, bool releaseOnDispose, IServiceContainer owner) : base(
             @interface, 
             name, 
             lifetime: null, 

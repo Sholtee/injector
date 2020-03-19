@@ -27,7 +27,7 @@ namespace Solti.Utils.DI
         /// <param name="mode">Options.</param>
         /// <returns>The requested service entry.</returns>
         /// <exception cref="ServiceNotFoundException">If the service could not be found.</exception>
-        public static AbstractServiceEntry Get<TInterface>(this IServiceContainer self, string name, QueryModes mode = QueryModes.Default)
+        public static AbstractServiceEntry? Get<TInterface>(this IServiceContainer self, string? name, QueryModes mode = QueryModes.Default)
         {
             Ensure.Parameter.IsNotNull(self, nameof(self));
 
@@ -41,7 +41,7 @@ namespace Solti.Utils.DI
         /// <param name="mode">Options.</param>
         /// <returns>The requested service entry.</returns>
         /// <exception cref="ServiceNotFoundException">If the service could not be found.</exception>
-        public static AbstractServiceEntry Get<TInterface>(this IServiceContainer self, QueryModes mode = QueryModes.Default) => self.Get<TInterface>(null, mode);
+        public static AbstractServiceEntry? Get<TInterface>(this IServiceContainer self, QueryModes mode = QueryModes.Default) => self.Get<TInterface>(null, mode);
 
         /// <summary>
         /// Registers a new service with the given implementation.
@@ -53,7 +53,7 @@ namespace Solti.Utils.DI
         /// <param name="lifetime">The <see cref="Lifetime"/> of the service.</param>
         /// <returns>The container itself.</returns>
         /// <remarks>You may register generic services (where both the interface and the implementation are open generic types). The system will specialize the implementation if you request the concrete service.</remarks> 
-        public static IServiceContainer Service(this IServiceContainer self, Type iface, string name, Type implementation, Lifetime lifetime = Lifetime.Transient)
+        public static IServiceContainer Service(this IServiceContainer self, Type iface, string? name, Type implementation, Lifetime lifetime = Lifetime.Transient)
         {
             Ensure.Parameter.IsNotNull(self, nameof(self));
 
@@ -76,7 +76,8 @@ namespace Solti.Utils.DI
         /// <param name="lifetime">The <see cref="Lifetime"/> of the service.</param>
         /// <returns>The container itself.</returns>
         /// <remarks>You may register generic services (where both the interface and the implementation are open generic types). The system will specialize the implementation if you request the concrete service.</remarks> 
-        public static IServiceContainer Service(this IServiceContainer self, Type iface, Type implementation, Lifetime lifetime = Lifetime.Transient) => self.Service(iface, null, implementation, lifetime);
+        public static IServiceContainer Service(this IServiceContainer self, Type iface, Type implementation, Lifetime lifetime = Lifetime.Transient) 
+            => self.Service(iface, null, implementation, lifetime);
 
         /// <summary>
         /// Registers a service where the implementation will be resolved on the first request. It is useful when the implementation is unknown in compile time or you just want to load the containing assembly on the first request.
@@ -88,7 +89,7 @@ namespace Solti.Utils.DI
         /// <param name="lifetime">The <see cref="Lifetime"/> of the service.</param>
         /// <returns>The container itself.</returns>
         /// <remarks>You may register generic services (where the <paramref name="iface"/> parameter is an open generic <see cref="Type"/>). In this case the resolver must return an open generic implementation.</remarks>
-        public static IServiceContainer Lazy(this IServiceContainer self, Type iface, string name, ITypeResolver implementation, Lifetime lifetime = Lifetime.Transient)
+        public static IServiceContainer Lazy(this IServiceContainer self, Type iface, string? name, ITypeResolver implementation, Lifetime lifetime = Lifetime.Transient)
         {
             Ensure.Parameter.IsNotNull(self, nameof(self));
 
@@ -111,7 +112,8 @@ namespace Solti.Utils.DI
         /// <param name="lifetime">The <see cref="Lifetime"/> of the service.</param>
         /// <returns>The container itself.</returns>
         /// <remarks>You may register generic services (where the <paramref name="iface"/> parameter is an open generic <see cref="Type"/>). In this case the resolver must return an open generic implementation.</remarks>
-        public static IServiceContainer Lazy(this IServiceContainer self, Type iface, ITypeResolver implementation, Lifetime lifetime = Lifetime.Transient) => self.Lazy(iface, null, implementation, lifetime);
+        public static IServiceContainer Lazy(this IServiceContainer self, Type iface, ITypeResolver implementation, Lifetime lifetime = Lifetime.Transient) 
+            => self.Lazy(iface, null, implementation, lifetime);
 
         /// <summary>
         /// Registers a service where the implementation will be resolved on the first request. It is useful when the implementation is unknown in compile time or you just want to load the containing assembly on the first request. Type resolution is done by the <see cref="LazyTypeResolver"/>.
@@ -123,8 +125,8 @@ namespace Solti.Utils.DI
         /// <param name="className">The full name of the <see cref="Type"/> that implemenets the <paramref name="iface"/>.</param>
         /// <param name="lifetime">The <see cref="Lifetime"/> of the service.</param>
         /// <returns>The container itself.</returns>
-        public static IServiceContainer Lazy(this IServiceContainer self, Type iface, string name, string asmPath, string className, Lifetime lifetime = Lifetime.Transient) => 
-            self.Lazy(iface, name, new LazyTypeResolver(iface, asmPath, className), lifetime);
+        public static IServiceContainer Lazy(this IServiceContainer self, Type iface, string? name, string asmPath, string className, Lifetime lifetime = Lifetime.Transient)
+            => self.Lazy(iface, name, new LazyTypeResolver(iface, asmPath, className), lifetime);
 
         /// <summary>
         /// Registers a service where the implementation will be resolved on the first request. It is useful when the implementation is unknown in compile time or you just want to load the containing assembly on the first request. Type resolution is done by the <see cref="LazyTypeResolver"/>.
@@ -135,8 +137,8 @@ namespace Solti.Utils.DI
         /// <param name="className">The full name of the <see cref="Type"/> that implemenets the <paramref name="iface"/>.</param>
         /// <param name="lifetime">The <see cref="Lifetime"/> of the service.</param>
         /// <returns>The container itself.</returns>
-        public static IServiceContainer Lazy(this IServiceContainer self, Type iface, string asmPath, string className, Lifetime lifetime = Lifetime.Transient) =>
-            self.Lazy(iface, null, asmPath, className, lifetime);
+        public static IServiceContainer Lazy(this IServiceContainer self, Type iface, string asmPath, string className, Lifetime lifetime = Lifetime.Transient) 
+            => self.Lazy(iface, null, asmPath, className, lifetime);
 
         /// <summary>
         /// Registers a new service factory with the given type. Factories are also services except that the instantiating process is delegated to the caller. Useful if a service has more than one constructor.
@@ -148,7 +150,7 @@ namespace Solti.Utils.DI
         /// <param name="lifetime">The <see cref="Lifetime"/> of the service.</param>
         /// <returns>The container itself.</returns>
         /// <remarks>You can register generic services (where the <paramref name="iface"/> parameter is an open generic type).</remarks>
-        public static IServiceContainer Factory(this IServiceContainer self, Type iface, string name, Func<IInjector, Type, object> factory, Lifetime lifetime = Lifetime.Transient)
+        public static IServiceContainer Factory(this IServiceContainer self, Type iface, string? name, Func<IInjector, Type, object> factory, Lifetime lifetime = Lifetime.Transient)
         {
             Ensure.Parameter.IsNotNull(self, nameof(self));
 
@@ -171,7 +173,8 @@ namespace Solti.Utils.DI
         /// <param name="lifetime">The <see cref="Lifetime"/> of the service.</param>
         /// <returns>The container itself.</returns>
         /// <remarks>You can register generic services (where the <paramref name="iface"/> parameter is an open generic type).</remarks>
-        public static IServiceContainer Factory(this IServiceContainer self, Type iface, Func<IInjector, Type, object> factory, Lifetime lifetime = Lifetime.Transient) => self.Factory(iface, null, factory, lifetime);
+        public static IServiceContainer Factory(this IServiceContainer self, Type iface, Func<IInjector, Type, object> factory, Lifetime lifetime = Lifetime.Transient) 
+            => self.Factory(iface, null, factory, lifetime);
 
         /// <summary>
         /// Hooks into the instantiating process to let you decorate the original service. Useful when you want to add additional functionality (e.g. parameter validation). The easiest way to decorate an instance is using the <see cref="InterfaceInterceptor{TInterface}"/> class.
@@ -183,14 +186,22 @@ namespace Solti.Utils.DI
         /// <returns>The container itself.</returns>
         /// <remarks>You can't create proxies against generic, instance or not owned entries. A service can be decorated multiple times.</remarks>
         /// <exception cref="InvalidOperationException">When proxying not allowed (see above).</exception>
-        public static IServiceContainer Proxy(this IServiceContainer self, Type iface, string name, Func<IInjector, Type, object, object> decorator)
+        public static IServiceContainer Proxy(this IServiceContainer self, Type iface, string? name, Func<IInjector, Type, object, object> decorator)
         {
             Ensure.Parameter.IsNotNull(self, nameof(self));
             Ensure.Parameter.IsNotNull(decorator, nameof(decorator));
 
-            AbstractServiceEntry entry = self.Get(iface, name, QueryModes.AllowSpecialization | QueryModes.ThrowOnError);
+            //
+            // Ensure hivas nem kene csak h ne dumaljon a fordito.
+            //
 
-            if (entry.Owner == self && entry.Factory != null && entry is ISupportsProxying setter)
+            AbstractServiceEntry entry = Ensure.IsNotNull
+            (
+                self.Get(iface, name, QueryModes.AllowSpecialization | QueryModes.ThrowOnError),
+                nameof(entry)
+            );
+
+            if (entry.Owner == self && entry is ISupportsProxying setter && setter.Factory != null)
             {
                 //
                 // Bovitjuk a hivasi lancot a decorator-al.
@@ -231,7 +242,7 @@ namespace Solti.Utils.DI
         /// <param name="releaseOnDispose">Whether the system should dispose the instance on container disposal or not.</param>
         /// <returns>The container itself.</returns>
         [SuppressMessage("Reliability", "CA2000:Dispose objects before losing scope", Justification = "The container is responsible for disposing the entry.")]
-        public static IServiceContainer Instance(this IServiceContainer self, Type iface, string name, object instance, bool releaseOnDispose = false)
+        public static IServiceContainer Instance(this IServiceContainer self, Type iface, string? name, object instance, bool releaseOnDispose = false)
         {
             Ensure.Parameter.IsNotNull(self, nameof(self));
 
@@ -260,7 +271,7 @@ namespace Solti.Utils.DI
         /// <param name="name">The (optional) name of the service.</param>
         /// <returns>The container itself.</returns>
         [SuppressMessage("Reliability", "CA2000:Dispose objects before losing scope", Justification = "The container is responsible for disposing the entry.")]
-        public static IServiceContainer Abstract(this IServiceContainer self, Type iface, string name = null)
+        public static IServiceContainer Abstract(this IServiceContainer self, Type iface, string? name = null)
         {
             Ensure.Parameter.IsNotNull(self, nameof(self));
 
@@ -306,7 +317,8 @@ namespace Solti.Utils.DI
         /// <param name="self">The target <see cref="IServiceContainer"/>.</param>
         /// <param name="lifetime">The <see cref="Lifetime"/> of the service.</param>
         /// <returns>The container itself.</returns>
-        public static IServiceContainer Service<TInterface, TImplementation>(this IServiceContainer self, Lifetime lifetime = Lifetime.Transient) where TImplementation: TInterface => self.Service(typeof(TInterface), typeof(TImplementation), lifetime);
+        public static IServiceContainer Service<TInterface, TImplementation>(this IServiceContainer self, Lifetime lifetime = Lifetime.Transient) where TInterface : class where TImplementation: TInterface 
+            => self.Service(typeof(TInterface), typeof(TImplementation), lifetime);
 
         /// <summary>
         /// Registers a new service.
@@ -317,7 +329,8 @@ namespace Solti.Utils.DI
         /// <param name="name">The (optional) name of the service.</param>
         /// <param name="lifetime">The <see cref="Lifetime"/> of the service.</param>
         /// <returns>The container itself.</returns>
-        public static IServiceContainer Service<TInterface, TImplementation>(this IServiceContainer self, string name, Lifetime lifetime = Lifetime.Transient) where TImplementation : TInterface => self.Service(typeof(TInterface), name, typeof(TImplementation), lifetime);
+        public static IServiceContainer Service<TInterface, TImplementation>(this IServiceContainer self, string name, Lifetime lifetime = Lifetime.Transient) where TInterface : class where TImplementation : TInterface 
+            => self.Service(typeof(TInterface), name, typeof(TImplementation), lifetime);
 
         /// <summary>
         /// Registers a service where the implementation will be resolved on the first request. It is useful when the implementation is unknown in compile time or you just want to load the containing assembly on the first request.
@@ -327,7 +340,8 @@ namespace Solti.Utils.DI
         /// <param name="implementation">The <see cref="ITypeResolver"/> is responsible for resolving the implementation. The resolved <see cref="Type"/> can not be null and must implement the <typeparamref name="TInterface"/> interface. Additionally it must have only null or one constructor (that may request another dependecies). The resolver is called only once (on the first request) regardless the value of the <paramref name="lifetime"/> parameter. For an implementation see the <see cref="LazyTypeResolver{TInterface}"/> class.</param>
         /// <param name="lifetime">The <see cref="Lifetime"/> of the service.</param>
         /// <returns>The container itself.</returns>
-        public static IServiceContainer Lazy<TInterface>(this IServiceContainer self, ITypeResolver implementation, Lifetime lifetime = Lifetime.Transient) => self.Lazy<TInterface>(null, implementation, lifetime);
+        public static IServiceContainer Lazy<TInterface>(this IServiceContainer self, ITypeResolver implementation, Lifetime lifetime = Lifetime.Transient) where TInterface : class
+            => self.Lazy<TInterface>(null, implementation, lifetime);
 
         /// <summary>
         /// Registers a service where the implementation will be resolved on the first request. It is useful when the implementation is unknown in compile time or you just want to load the containing assembly on the first request.
@@ -338,7 +352,8 @@ namespace Solti.Utils.DI
         /// <param name="implementation">The <see cref="ITypeResolver"/> is responsible for resolving the implementation. The resolved <see cref="Type"/> can not be null and must implement the <typeparamref name="TInterface"/> interface. Additionally it must have only null or one constructor (that may request another dependecies). The resolver is called only once (on the first request) regardless the value of the <paramref name="lifetime"/> parameter. For an implementation see the <see cref="LazyTypeResolver{TInterface}"/> class.</param>
         /// <param name="lifetime">The <see cref="Lifetime"/> of the service.</param>
         /// <returns>The container itself.</returns>
-        public static IServiceContainer Lazy<TInterface>(this IServiceContainer self, string name, ITypeResolver implementation, Lifetime lifetime = Lifetime.Transient) => self.Lazy(typeof(TInterface), name, implementation, lifetime);
+        public static IServiceContainer Lazy<TInterface>(this IServiceContainer self, string? name, ITypeResolver implementation, Lifetime lifetime = Lifetime.Transient) where TInterface : class
+            => self.Lazy(typeof(TInterface), name, implementation, lifetime);
 
         /// <summary>
         /// Registers a service where the implementation will be resolved on the first request. It is useful when the implementation is unknown in compile time or you just want to load the containing assembly on the first request. Type resolution is done by the <see cref="LazyTypeResolver"/>.
@@ -350,8 +365,8 @@ namespace Solti.Utils.DI
         /// <param name="className">The full name of the <see cref="Type"/> that implemenets the <typeparamref name="TInterface"/>.</param>
         /// <param name="lifetime">The <see cref="Lifetime"/> of the service.</param>
         /// <returns>The container itself.</returns>
-        public static IServiceContainer Lazy<TInterface>(this IServiceContainer self, string name, string asmPath, string className, Lifetime lifetime = Lifetime.Transient) =>
-            self.Lazy(typeof(TInterface), name, asmPath, className, lifetime);
+        public static IServiceContainer Lazy<TInterface>(this IServiceContainer self, string? name, string asmPath, string className, Lifetime lifetime = Lifetime.Transient) where TInterface : class
+            => self.Lazy(typeof(TInterface), name, asmPath, className, lifetime);
 
         /// <summary>
         /// Registers a service where the implementation will be resolved on the first request. It is useful when the implementation is unknown in compile time or you just want to load the containing assembly on the first request. Type resolution is done by the <see cref="LazyTypeResolver"/>.
@@ -362,8 +377,8 @@ namespace Solti.Utils.DI
         /// <param name="className">The full name of the <see cref="Type"/> that implemenets the <typeparamref name="TInterface"/>.</param>
         /// <param name="lifetime">The <see cref="Lifetime"/> of the service.</param>
         /// <returns>The container itself.</returns>
-        public static IServiceContainer Lazy<TInterface>(this IServiceContainer self, string asmPath, string className, Lifetime lifetime = Lifetime.Transient) =>
-            self.Lazy<TInterface>(null, asmPath, className, lifetime);
+        public static IServiceContainer Lazy<TInterface>(this IServiceContainer self, string asmPath, string className, Lifetime lifetime = Lifetime.Transient) where TInterface : class
+            => self.Lazy<TInterface>(null, asmPath, className, lifetime);
 
         /// <summary>
         /// Registers a new service factory with the given type. Factories are also services except that the instantiating process is delegated to the caller. Useful if a service has more than one constructor.
@@ -374,7 +389,8 @@ namespace Solti.Utils.DI
         /// <param name="factory">The factory function that is responsible for the instantiation. Its call count depends on the value of the <paramref name="lifetime"/> parameter.</param>
         /// <param name="lifetime">The <see cref="Lifetime"/> of the service.</param>
         /// <returns>The container itself.</returns>
-        public static IServiceContainer Factory<TInterface>(this IServiceContainer self, string name, Func<IInjector, TInterface> factory, Lifetime lifetime = Lifetime.Transient) => self.Factory(typeof(TInterface), name, (injector, type) => factory(injector), lifetime);
+        public static IServiceContainer Factory<TInterface>(this IServiceContainer self, string? name, Func<IInjector, TInterface> factory, Lifetime lifetime = Lifetime.Transient) where TInterface : class
+            => self.Factory(typeof(TInterface), name, (injector, type) => factory(injector), lifetime);
 
         /// <summary>
         /// Registers a new service factory with the given type. Factories are also services except that the instantiating process is delegated to the caller. Useful if a service has more than one constructor.
@@ -384,7 +400,8 @@ namespace Solti.Utils.DI
         /// <param name="factory">The factory function that is responsible for the instantiation. Its call count depends on the value of the <paramref name="lifetime"/> parameter.</param>
         /// <param name="lifetime">The <see cref="Lifetime"/> of the service.</param>
         /// <returns>The container itself.</returns>
-        public static IServiceContainer Factory<TInterface>(this IServiceContainer self, Func<IInjector, TInterface> factory, Lifetime lifetime = Lifetime.Transient) => self.Factory(null, injector => factory(injector), lifetime);
+        public static IServiceContainer Factory<TInterface>(this IServiceContainer self, Func<IInjector, TInterface> factory, Lifetime lifetime = Lifetime.Transient) where TInterface : class
+            => self.Factory(null, injector => factory(injector), lifetime);
 
         /// <summary>
         /// Hooks into the instantiating process to let you decorate the original service. Useful when you want to add additional functionality (e.g. parameter validation). The easiest way to decorate an instance is using the <see cref="InterfaceInterceptor{TInterface}"/> class.
@@ -396,7 +413,8 @@ namespace Solti.Utils.DI
         /// <returns>The container itself.</returns>
         /// <remarks>You can't create proxies against instances or not owned entries. A service can be decorated multiple times.</remarks>
         /// <exception cref="InvalidOperationException">When proxying is not allowed (see above).</exception>
-        public static IServiceContainer Proxy<TInterface>(this IServiceContainer self, string name, Func<IInjector, TInterface, TInterface> decorator) => self.Proxy(typeof(TInterface), name, (injector, type, instance) => decorator(injector, (TInterface) instance));
+        public static IServiceContainer Proxy<TInterface>(this IServiceContainer self, string? name, Func<IInjector, TInterface, TInterface> decorator) where TInterface : class
+            => self.Proxy(typeof(TInterface), name, (injector, type, instance) => decorator(injector, (TInterface) instance));
 
         /// <summary>
         /// Hooks into the instantiating process to let you decorate the original service. Useful when you want to add additional functionality (e.g. parameter validation). The easiest way to decorate an instance is using the <see cref="InterfaceInterceptor{TInterface}"/> class.
@@ -407,7 +425,8 @@ namespace Solti.Utils.DI
         /// <returns>The container itself.</returns>
         /// <remarks>You can't create proxies against instances or not owned entries. A service can be decorated multiple times.</remarks>
         /// <exception cref="InvalidOperationException">When proxying is not allowed (see above).</exception>
-        public static IServiceContainer Proxy<TInterface>(this IServiceContainer self, Func<IInjector, TInterface, TInterface> decorator) => self.Proxy(typeof(TInterface), null, (injector, type, instance) => decorator(injector, (TInterface)instance));
+        public static IServiceContainer Proxy<TInterface>(this IServiceContainer self, Func<IInjector, TInterface, TInterface> decorator) where TInterface : class
+            => self.Proxy(typeof(TInterface), null, (injector, type, instance) => decorator(injector, (TInterface)instance));
 
         /// <summary>
         /// Hooks into the instantiating process to let you decorate the original service. Useful when you want to add additional functionality (e.g. parameter validation). The easiest way to decorate an instance is using the <see cref="InterfaceInterceptor{TInterface}"/> class.
@@ -419,7 +438,8 @@ namespace Solti.Utils.DI
         /// <returns>The container itself.</returns>
         /// <remarks>You can't create proxies against instances or not owned entries. A service can be decorated multiple times.</remarks>
         /// <exception cref="InvalidOperationException">When proxying is not allowed (see remarks).</exception>
-        public static IServiceContainer Proxy<TInterface, TInterceptor>(this IServiceContainer self, string name = null) where TInterface: class where TInterceptor: InterfaceInterceptor<TInterface> => self.Proxy<TInterface>(name, (injector, instance) => ProxyFactory.Create<TInterface, TInterceptor>(instance, injector));
+        public static IServiceContainer Proxy<TInterface, TInterceptor>(this IServiceContainer self, string? name = null) where TInterface: class where TInterceptor: InterfaceInterceptor<TInterface> => self.Proxy<TInterface>(name, (injector, instance) 
+            => ProxyFactory.Create<TInterface, TInterceptor>(instance, injector));
 
         /// <summary>
         /// Hooks into the instantiating process to let you decorate the original service. Useful when you want to add additional functionality (e.g. parameter validation). The easiest way to decorate an instance is using the <see cref="InterfaceInterceptor{TInterface}"/> class.
@@ -431,7 +451,8 @@ namespace Solti.Utils.DI
         /// <returns>The container itself.</returns>
         /// <remarks>You can't create proxies against instances or not owned entries. A service can be decorated multiple times.</remarks>
         /// <exception cref="InvalidOperationException">When proxying is not allowed (see remarks).</exception>
-        public static IServiceContainer Proxy(this IServiceContainer self, Type iface, string name, Type interceptor) => self.Proxy(iface, name, (injector, type, instance) => ProxyFactory.Create(iface, interceptor, instance, injector));
+        public static IServiceContainer Proxy(this IServiceContainer self, Type iface, string? name, Type interceptor) 
+            => self.Proxy(iface, name, (injector, type, instance) => ProxyFactory.Create(iface, interceptor, instance, injector));
 
         /// <summary>
         /// Hooks into the instantiating process to let you decorate the original service. Useful when you want to add additional functionality (e.g. parameter validation). The easiest way to decorate an instance is using the <see cref="InterfaceInterceptor{TInterface}"/> class.
@@ -453,7 +474,8 @@ namespace Solti.Utils.DI
         /// <param name="instance">The pre-created instance to be registered.</param>
         /// <param name="releaseOnDispose">Whether the system should dispose the instance on container disposal or not.</param>
         /// <returns>The container itself.</returns>
-        public static IServiceContainer Instance<TInterface>(this IServiceContainer self, string name, TInterface instance, bool releaseOnDispose = false) => self.Instance(typeof(TInterface), name, instance, releaseOnDispose);
+        public static IServiceContainer Instance<TInterface>(this IServiceContainer self, string? name, TInterface instance, bool releaseOnDispose = false) where TInterface: class 
+            => self.Instance(typeof(TInterface), name, instance, releaseOnDispose);
 
         /// <summary>
         /// Registers a pre-created instance. Useful when creating "constant" values (e.g. from command-line arguments).
@@ -463,7 +485,8 @@ namespace Solti.Utils.DI
         /// <param name="instance">The pre-created instance to be registered.</param>
         /// <param name="releaseOnDispose">Whether the system should dispose the instance on container disposal or not.</param>
         /// <returns>The container itself.</returns>
-        public static IServiceContainer Instance<TInterface>(this IServiceContainer self, TInterface instance, bool releaseOnDispose = false) => self.Instance(null, instance, releaseOnDispose);
+        public static IServiceContainer Instance<TInterface>(this IServiceContainer self, TInterface instance, bool releaseOnDispose = false) where TInterface: class
+            => self.Instance(null, instance, releaseOnDispose);
 
         /// <summary>
         /// Registers an abstract service. It must be overridden in the child container(s).
@@ -472,6 +495,7 @@ namespace Solti.Utils.DI
         /// <param name="self">The target <see cref="IServiceContainer"/>.</param>
         /// <param name="name">The (optional) name of the service.</param>
         /// <returns>The container itself.</returns>
-        public static IServiceContainer Abstract<TInterface>(this IServiceContainer self, string name = null) => self.Abstract(typeof(TInterface), name);
+        public static IServiceContainer Abstract<TInterface>(this IServiceContainer self, string? name = null) where TInterface: class
+            => self.Abstract(typeof(TInterface), name);
     }
 }

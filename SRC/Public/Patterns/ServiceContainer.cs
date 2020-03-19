@@ -157,11 +157,7 @@ namespace Solti.Utils.DI
                 return specialized;
             }
 
-            IServiceId MakeId(Type iface) => new ServiceId
-            {
-                Interface = iface,
-                Name = name
-            };
+            IServiceId MakeId(Type iface) => new ServiceId(iface, name);
         }
 
         /// <summary>
