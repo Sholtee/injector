@@ -37,10 +37,10 @@
       <div role="main" class="container body-content hide-when-search">
         <div class="article row grid">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="Solti.Utils.DI.Internals.ServiceReference">
+            <article class="content wrap" id="_content" data-uid="Solti.Utils.DI.ServiceReference">
   
   
-  <h1 id="Solti_Utils_DI_Internals_ServiceReference" data-uid="Solti.Utils.DI.Internals.ServiceReference" class="text-break">Class ServiceReference
+  <h1 id="Solti_Utils_DI_ServiceReference" data-uid="Solti.Utils.DI.ServiceReference" class="text-break">Class ServiceReference
   </h1>
   <div class="markdown level0 summary"><p>Encapsulates a service and its dependencies into a reference counted container.</p>
 </div>
@@ -81,20 +81,17 @@
       <a class="xref" href="Solti.Utils.DI.Internals.Disposable.html#Solti_Utils_DI_Internals_Disposable_DisposeAsync">Disposable.DisposeAsync()</a>
     </div>
   </div>
-  <h6><strong>Namespace</strong>: <a class="xref" href="Solti.Utils.DI.Internals.html">Solti.Utils.DI.Internals</a></h6>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Solti.Utils.DI.html">Solti.Utils.DI</a></h6>
   <h6><strong>Assembly</strong>: Injector.dll</h6>
-  <h5 id="Solti_Utils_DI_Internals_ServiceReference_syntax">Syntax</h5>
+  <h5 id="Solti_Utils_DI_ServiceReference_syntax">Syntax</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public class ServiceReference : DisposeByRefObject, IDisposableEx, IAsyncDisposable, IDisposeByRef, IDisposable</code></pre>
   </div>
-  <h5 id="Solti_Utils_DI_Internals_ServiceReference_remarks"><strong>Remarks</strong></h5>
-  <div class="markdown level0 remarks"><p>This is an internal class so it may change from version to version. Don&apos;t use it!</p>
-</div>
   <h3 id="constructors">Constructors
   </h3>
-  <a id="Solti_Utils_DI_Internals_ServiceReference__ctor_" data-uid="Solti.Utils.DI.Internals.ServiceReference.#ctor*"></a>
-  <h4 id="Solti_Utils_DI_Internals_ServiceReference__ctor_Solti_Utils_DI_AbstractServiceEntry_Solti_Utils_DI_IInjector_" data-uid="Solti.Utils.DI.Internals.ServiceReference.#ctor(Solti.Utils.DI.AbstractServiceEntry,Solti.Utils.DI.IInjector)">ServiceReference(AbstractServiceEntry, IInjector)</h4>
-  <div class="markdown level1 summary"><p>Creates a new <a class="xref" href="Solti.Utils.DI.Internals.ServiceReference.html">ServiceReference</a> instance.</p>
+  <a id="Solti_Utils_DI_ServiceReference__ctor_" data-uid="Solti.Utils.DI.ServiceReference.#ctor*"></a>
+  <h4 id="Solti_Utils_DI_ServiceReference__ctor_Solti_Utils_DI_AbstractServiceEntry_Solti_Utils_DI_IInjector_" data-uid="Solti.Utils.DI.ServiceReference.#ctor(Solti.Utils.DI.AbstractServiceEntry,Solti.Utils.DI.IInjector)">ServiceReference(AbstractServiceEntry, IInjector)</h4>
+  <div class="markdown level1 summary"><p>Creates a new <a class="xref" href="Solti.Utils.DI.ServiceReference.html">ServiceReference</a> instance.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -123,9 +120,9 @@
       </tr>
     </tbody>
   </table>
-  <a id="Solti_Utils_DI_Internals_ServiceReference__ctor_" data-uid="Solti.Utils.DI.Internals.ServiceReference.#ctor*"></a>
-  <h4 id="Solti_Utils_DI_Internals_ServiceReference__ctor_Solti_Utils_DI_AbstractServiceEntry_System_Object_System_Boolean_" data-uid="Solti.Utils.DI.Internals.ServiceReference.#ctor(Solti.Utils.DI.AbstractServiceEntry,System.Object,System.Boolean)">ServiceReference(AbstractServiceEntry, Object, Boolean)</h4>
-  <div class="markdown level1 summary"><p>Creates a new <a class="xref" href="Solti.Utils.DI.Internals.ServiceReference.html">ServiceReference</a> instance with the given <code data-dev-comment-type="paramref" class="paramref">value</code>.</p>
+  <a id="Solti_Utils_DI_ServiceReference__ctor_" data-uid="Solti.Utils.DI.ServiceReference.#ctor*"></a>
+  <h4 id="Solti_Utils_DI_ServiceReference__ctor_Solti_Utils_DI_AbstractServiceEntry_System_Object_System_Boolean_" data-uid="Solti.Utils.DI.ServiceReference.#ctor(Solti.Utils.DI.AbstractServiceEntry,System.Object,System.Boolean)">ServiceReference(AbstractServiceEntry, Object, Boolean)</h4>
+  <div class="markdown level1 summary"><p>Creates a new <a class="xref" href="Solti.Utils.DI.ServiceReference.html">ServiceReference</a> instance with the given <code data-dev-comment-type="paramref" class="paramref">value</code>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -161,9 +158,9 @@
   </table>
   <h3 id="properties">Properties
   </h3>
-  <a id="Solti_Utils_DI_Internals_ServiceReference_Dependencies_" data-uid="Solti.Utils.DI.Internals.ServiceReference.Dependencies*"></a>
-  <h4 id="Solti_Utils_DI_Internals_ServiceReference_Dependencies" data-uid="Solti.Utils.DI.Internals.ServiceReference.Dependencies">Dependencies</h4>
-  <div class="markdown level1 summary"><p>The dependencies of the bound service. It can be used only if the <a class="xref" href="Solti.Utils.DI.Internals.ServiceReference.html#Solti_Utils_DI_Internals_ServiceReference_ExternallyOwned">ExternallyOwned</a> is false.</p>
+  <a id="Solti_Utils_DI_ServiceReference_Dependencies_" data-uid="Solti.Utils.DI.ServiceReference.Dependencies*"></a>
+  <h4 id="Solti_Utils_DI_ServiceReference_Dependencies" data-uid="Solti.Utils.DI.ServiceReference.Dependencies">Dependencies</h4>
+  <div class="markdown level1 summary"><p>The dependencies of the bound service. It can be used only if the <a class="xref" href="Solti.Utils.DI.ServiceReference.html#Solti_Utils_DI_ServiceReference_ExternallyOwned">ExternallyOwned</a> is false.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -180,13 +177,13 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">ICollection</span>&lt;<a class="xref" href="Solti.Utils.DI.Internals.ServiceReference.html">ServiceReference</a>&gt;</td>
+        <td><span class="xref">ICollection</span>&lt;<a class="xref" href="Solti.Utils.DI.ServiceReference.html">ServiceReference</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
   </table>
-  <a id="Solti_Utils_DI_Internals_ServiceReference_ExternallyOwned_" data-uid="Solti.Utils.DI.Internals.ServiceReference.ExternallyOwned*"></a>
-  <h4 id="Solti_Utils_DI_Internals_ServiceReference_ExternallyOwned" data-uid="Solti.Utils.DI.Internals.ServiceReference.ExternallyOwned">ExternallyOwned</h4>
+  <a id="Solti_Utils_DI_ServiceReference_ExternallyOwned_" data-uid="Solti.Utils.DI.ServiceReference.ExternallyOwned*"></a>
+  <h4 id="Solti_Utils_DI_ServiceReference_ExternallyOwned" data-uid="Solti.Utils.DI.ServiceReference.ExternallyOwned">ExternallyOwned</h4>
   <div class="markdown level1 summary"><p>Returns true if the bound service will be disposed outside of this library false otherwise.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -209,8 +206,8 @@
       </tr>
     </tbody>
   </table>
-  <a id="Solti_Utils_DI_Internals_ServiceReference_RelatedInjector_" data-uid="Solti.Utils.DI.Internals.ServiceReference.RelatedInjector*"></a>
-  <h4 id="Solti_Utils_DI_Internals_ServiceReference_RelatedInjector" data-uid="Solti.Utils.DI.Internals.ServiceReference.RelatedInjector">RelatedInjector</h4>
+  <a id="Solti_Utils_DI_ServiceReference_RelatedInjector_" data-uid="Solti.Utils.DI.ServiceReference.RelatedInjector*"></a>
+  <h4 id="Solti_Utils_DI_ServiceReference_RelatedInjector" data-uid="Solti.Utils.DI.ServiceReference.RelatedInjector">RelatedInjector</h4>
   <div class="markdown level1 summary"><p>The (optional) <a class="xref" href="Solti.Utils.DI.IInjector.html">IInjector</a> instance who created this reference.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -233,8 +230,8 @@
       </tr>
     </tbody>
   </table>
-  <a id="Solti_Utils_DI_Internals_ServiceReference_RelatedServiceEntry_" data-uid="Solti.Utils.DI.Internals.ServiceReference.RelatedServiceEntry*"></a>
-  <h4 id="Solti_Utils_DI_Internals_ServiceReference_RelatedServiceEntry" data-uid="Solti.Utils.DI.Internals.ServiceReference.RelatedServiceEntry">RelatedServiceEntry</h4>
+  <a id="Solti_Utils_DI_ServiceReference_RelatedServiceEntry_" data-uid="Solti.Utils.DI.ServiceReference.RelatedServiceEntry*"></a>
+  <h4 id="Solti_Utils_DI_ServiceReference_RelatedServiceEntry" data-uid="Solti.Utils.DI.ServiceReference.RelatedServiceEntry">RelatedServiceEntry</h4>
   <div class="markdown level1 summary"><p>The related service entry.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -257,8 +254,8 @@
       </tr>
     </tbody>
   </table>
-  <a id="Solti_Utils_DI_Internals_ServiceReference_Value_" data-uid="Solti.Utils.DI.Internals.ServiceReference.Value*"></a>
-  <h4 id="Solti_Utils_DI_Internals_ServiceReference_Value" data-uid="Solti.Utils.DI.Internals.ServiceReference.Value">Value</h4>
+  <a id="Solti_Utils_DI_ServiceReference_Value_" data-uid="Solti.Utils.DI.ServiceReference.Value*"></a>
+  <h4 id="Solti_Utils_DI_ServiceReference_Value" data-uid="Solti.Utils.DI.ServiceReference.Value">Value</h4>
   <div class="markdown level1 summary"><p>The bound service instance.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -283,8 +280,8 @@
   </table>
   <h3 id="methods">Methods
   </h3>
-  <a id="Solti_Utils_DI_Internals_ServiceReference_AsyncDispose_" data-uid="Solti.Utils.DI.Internals.ServiceReference.AsyncDispose*"></a>
-  <h4 id="Solti_Utils_DI_Internals_ServiceReference_AsyncDispose" data-uid="Solti.Utils.DI.Internals.ServiceReference.AsyncDispose">AsyncDispose()</h4>
+  <a id="Solti_Utils_DI_ServiceReference_AsyncDispose_" data-uid="Solti.Utils.DI.ServiceReference.AsyncDispose*"></a>
+  <h4 id="Solti_Utils_DI_ServiceReference_AsyncDispose" data-uid="Solti.Utils.DI.ServiceReference.AsyncDispose">AsyncDispose()</h4>
   <div class="markdown level1 summary"><p>Asynchronously disposes the bound service then decrements the reference counter of all its dependencies.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -309,8 +306,8 @@
   </table>
   <h5 class="overrides">Overrides</h5>
   <div><a class="xref" href="Solti.Utils.DI.Internals.DisposeByRefObject.html#Solti_Utils_DI_Internals_DisposeByRefObject_AsyncDispose">DisposeByRefObject.AsyncDispose()</a></div>
-  <a id="Solti_Utils_DI_Internals_ServiceReference_Dispose_" data-uid="Solti.Utils.DI.Internals.ServiceReference.Dispose*"></a>
-  <h4 id="Solti_Utils_DI_Internals_ServiceReference_Dispose_System_Boolean_" data-uid="Solti.Utils.DI.Internals.ServiceReference.Dispose(System.Boolean)">Dispose(Boolean)</h4>
+  <a id="Solti_Utils_DI_ServiceReference_Dispose_" data-uid="Solti.Utils.DI.ServiceReference.Dispose*"></a>
+  <h4 id="Solti_Utils_DI_ServiceReference_Dispose_System_Boolean_" data-uid="Solti.Utils.DI.ServiceReference.Dispose(System.Boolean)">Dispose(Boolean)</h4>
   <div class="markdown level1 summary"><p>Disposes the bound service then decrements the reference counter of all its dependencies.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
