@@ -9,9 +9,9 @@ namespace Solti.Utils.DI.Internals
 {
     internal interface IServiceDefinition: IServiceId
     {
-        IServiceContainer Owner { get; }
+        IServiceContainer? Owner { get; }
         Lifetime? Lifetime { get; }
-        Type Implementation { get; }
-        Func<IInjector, Type, object> Factory { get; }
+        Type? Implementation { get; }
+        Func<IInjector, Type, object>? Factory { get; }
     }
 }

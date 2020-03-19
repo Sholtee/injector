@@ -23,7 +23,7 @@ namespace Solti.Utils.DI.Annotations
         /// <summary>
         /// The (optional) name of the service.
         /// </summary>
-        public string Name { get; }
+        public string? Name { get; }
 
         /// <summary>
         /// The <see cref="Lifetime"/> of the service being registered.

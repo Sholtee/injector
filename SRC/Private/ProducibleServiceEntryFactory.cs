@@ -20,16 +20,15 @@ namespace Solti.Utils.DI.Internals
             .Select(lt => new
             {
                 Lifetime = lt,
-                typeof(Lifetime)
+                RelatedEntryKind = typeof(Lifetime)
                     .GetMember(lt.ToString())
                     .Single()
-                    .GetCustomAttribute<RelatedEntryKindAttribute>()?
-                    .ServiceEntry
+                    .GetCustomAttribute<RelatedEntryKindAttribute>()
             })
-            .Where(lt => lt.ServiceEntry != null)
-            .ToDictionary(lt => lt.Lifetime, lt => lt.ServiceEntry);
+            .Where(lt => lt.RelatedEntryKind != null)
+            .ToDictionary(lt => lt.Lifetime, lt => lt.RelatedEntryKind.ServiceEntry);
 
-        public static ProducibleServiceEntry Create<TParam>(Lifetime? lifetime, Type @interface, string name, TParam param, IServiceContainer owner)
+        public static ProducibleServiceEntry Create<TParam>(Lifetime? lifetime, Type @interface, string? name, TParam param, IServiceContainer owner)
         {
             if (lifetime == null || !ServiceEntryTypes.TryGetValue(lifetime.Value, out var serviceEntryType))
                 throw new ArgumentException(string.Format(Resources.Culture, Resources.UNKNOWN_LIFETIME, lifetime ?? (object) "NULL"), nameof(lifetime));                

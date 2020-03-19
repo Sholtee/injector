@@ -9,9 +9,9 @@ namespace Solti.Utils.DI.Internals
     {
         public virtual bool ShouldUse(IInjector injector, AbstractServiceEntry requested) => requested.Owner == injector.UnderlyingContainer;
 
-        public virtual ServiceReference Exec(IInjectorEx injector, ServiceReference requestor, AbstractServiceEntry requested) 
+        public virtual ServiceReference Exec(IInjectorEx injector, ServiceReference? requestor, AbstractServiceEntry requested) 
         {
-            ServiceReference result = requested.Instance;
+            ServiceReference? result = requested.Instance;
 
             if (result == null)
             {

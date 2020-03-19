@@ -14,7 +14,7 @@ namespace Solti.Utils.DI.Internals
     /// </summary>
     internal abstract partial class ProducibleServiceEntry : AbstractServiceEntry, ISupportsProxying, ISupportsSpecialization, IHasUnderlyingImplementation
     {
-        internal ProducibleServiceEntry(Type @interface, string name, Lifetime? lifetime, IServiceContainer owner) : base(
+        internal ProducibleServiceEntry(Type @interface, string? name, Lifetime? lifetime, IServiceContainer owner) : base(
             @interface, 
             name, 
             Ensure.Parameter.IsNotNull(lifetime, nameof(lifetime)), 
@@ -101,11 +101,11 @@ namespace Solti.Utils.DI.Internals
                 throw new InvalidOperationException(Resources.NOT_PRODUCIBLE);
         }
 
-        public object UnderlyingImplementation { get; }
+        public object? UnderlyingImplementation { get; }
 
-        public override Type Implementation => (UnderlyingImplementation as Lazy<Type>)?.Value ?? (Type) UnderlyingImplementation;
+        public override Type? Implementation => (UnderlyingImplementation as Lazy<Type>)?.Value ??  (Type?) UnderlyingImplementation;
 
-        Func<IInjector, Type, object> ISupportsProxying.Factory { get => Factory; set => Factory = value; }
+        Func<IInjector, Type, object>? ISupportsProxying.Factory { get => Factory; set => Factory = value; }
 
         AbstractServiceEntry ISupportsSpecialization.Specialize(params Type[] genericArguments) 
         {
@@ -136,7 +136,12 @@ namespace Solti.Utils.DI.Internals
                 Interface.MakeGenericType(genericArguments),
                 Name,
                 param,
-                Owner
+                
+                //
+                // Legyarthato entitasnak mindig kell legyen szuloje
+                //
+
+                Ensure.IsNotNull(Owner, nameof(Owner))
             );
         }
     }

@@ -9,8 +9,14 @@ namespace Solti.Utils.DI.Internals
 {
     internal class ServiceId : IServiceId
     {
-        public Type Interface { get; set; }
+        public ServiceId(Type @interface, string? name) 
+        {
+            Interface = @interface;
+            Name = name;
+        }
 
-        public string Name { get; set; }
+        public Type Interface { get; }
+
+        public string? Name { get; }
     }
 }

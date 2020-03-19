@@ -6,9 +6,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
-
-using static System.Diagnostics.Debug;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -20,22 +19,20 @@ namespace Solti.Utils.DI.Internals
         {
             FGraph = new Stack<ServiceReference>(parent);
             
-            Assert(Current == parent.Current);
+            Debug.Assert(Current == parent.Current);
         }
 
         public ServiceGraph() => FGraph = new Stack<ServiceReference>();
 
-        public ServiceReference Current => FGraph.Any() ? FGraph.Peek() : null;
+        public ServiceReference? Current => FGraph.Any() ? FGraph.Peek() : null;
 
         public void CheckNotCircular()
         {
-            Assert(Current != null);
-
             //
             // Ha egynel tobbszor szerepel az aktualis szerviz az aktualis utvonalon akkor korkoros referenciank van.
             //
 
-            int firstIndex = this.FirstIndexOf(Current, ServiceReferenceComparer.Instance);
+            int firstIndex = this.FirstIndexOf(Ensure.IsNotNull(Current, nameof(Current)), ServiceReferenceComparer.Instance);
 
             if (firstIndex < FGraph.Count - 1)
                 throw new CircularReferenceException(this

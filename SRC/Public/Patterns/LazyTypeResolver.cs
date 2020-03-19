@@ -32,7 +32,7 @@ namespace Solti.Utils.DI
     /// </summary>
     public class LazyTypeResolver: ITypeResolver
     {
-        private Assembly FAssembly;
+        private Assembly? FAssembly;
 
         internal IAssemblyLoadContext AssemblyLoadContext { get; }
 

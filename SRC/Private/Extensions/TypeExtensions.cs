@@ -75,7 +75,7 @@ namespace Solti.Utils.DI.Internals
             }
         });
 
-        public static object CreateInstance(this Type src, Type[] argTypes, params object[] args)
+        public static object CreateInstance(this Type src, Type[] argTypes, params object?[] args)
         {
             ConstructorInfo ctor = src.GetConstructor(argTypes);
             if (ctor == null)

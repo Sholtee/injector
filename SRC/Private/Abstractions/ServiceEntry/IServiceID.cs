@@ -10,6 +10,6 @@ namespace Solti.Utils.DI.Internals
     internal interface IServiceId
     {
         Type Interface { get; }
-        string Name { get; }
+        string? Name { get; }
     }
 }

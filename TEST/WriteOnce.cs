@@ -15,7 +15,7 @@ namespace Solti.Utils.DI.Internals.Tests
         [Test]
         public void GetValue_ShouldThrowIfTheValueIsNotSet() 
         {
-            var wo = new WriteOnce<object>();
+            var wo = new WriteOnce();
 
             object val;
             Assert.Throws<InvalidOperationException>(() => val = wo.Value);
@@ -27,7 +27,7 @@ namespace Solti.Utils.DI.Internals.Tests
         [Test]
         public void SetValue_ShouldThrowIfTheValueIsAlreadySet() 
         {
-            var wo = new WriteOnce<object>();
+            var wo = new WriteOnce();
 
             Assert.DoesNotThrow(() => wo.Value = new object());
             Assert.Throws<InvalidOperationException>(() => wo.Value = new object());

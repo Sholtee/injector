@@ -22,16 +22,22 @@ namespace Solti.Utils.DI.Internals
         {
             if (!Config.Value.Injector.StrictDI) return;
 
-            AbstractServiceEntry
+            AbstractServiceEntry?
                 requestor = FGraph.Current?.RelatedServiceEntry, // lehet NULL
                 requested = requestedRef.RelatedServiceEntry;
+
+            //
+            // Ha vmelyik szulo hianyzik akkor a metodus nem ertelmezett
+            //
+
+            if (requestor?.Owner == null || requested.Owner == null) return;
 
             //
             // A kerelmezett szerviz tulajdonosanak egy szinten v feljebb kell lennie mint a kerelmezo 
             // tulajdonosa h biztosan legalabb annyi ideig letezzen mint a kerelmezo maga.
             //
 
-            if (requestor?.Owner.IsDescendantOf(requested.Owner) == false) 
+            if (!requestor.Owner.IsDescendantOf(requested.Owner)) 
                 throw new RequestNotAllowedException(requestor, requested, Resources.STRICT_DI);
         }
 
@@ -73,7 +79,7 @@ namespace Solti.Utils.DI.Internals
         protected virtual Injector Spawn(IServiceContainer parent, IReadOnlyDictionary<string, object> factoryOptions, ServiceGraph graph) =>
             new Injector(parent, factoryOptions, graph);
 
-        public Injector(IServiceContainer parent, IReadOnlyDictionary<string, object> factoryOptions = null) : this
+        public Injector(IServiceContainer parent, IReadOnlyDictionary<string, object>? factoryOptions = null) : this
         (
             Ensure.Parameter.IsNotNull(parent, nameof(parent)), 
             factoryOptions ?? new Dictionary<string, object>
@@ -83,7 +89,7 @@ namespace Solti.Utils.DI.Internals
             new ServiceGraph()
         ) { }
 
-        public ServiceReference GetReference(Type iface, string name)
+        public ServiceReference GetReference(Type iface, string? name)
         {
             Ensure.Parameter.IsNotNull(iface, nameof(iface));
             Ensure.Parameter.IsInterface(iface, nameof(iface));
@@ -97,10 +103,15 @@ namespace Solti.Utils.DI.Internals
             Debug.Assert(FGraph.Current?.Value == null, "Already produced services can not request dependencies");
 
             //
-            // Bejegyzes lekerdezese.
+            // Bejegyzes lekerdezese. A QueryModes.ThrowOnError miatt tuti nem NULL viszont h ne dumaljon a fordito
+            // ellenorizzuk.
             //
 
-            AbstractServiceEntry entry = Get(iface, name, QueryModes.AllowSpecialization | QueryModes.ThrowOnError);
+            AbstractServiceEntry entry = Ensure.IsNotNull
+            (
+                Get(iface, name, QueryModes.AllowSpecialization | QueryModes.ThrowOnError), 
+                nameof(entry)
+            );
 
             //
             // Szerviz peldany letrehozasa.
@@ -112,11 +123,15 @@ namespace Solti.Utils.DI.Internals
         public IReadOnlyDictionary<string, object> FactoryOptions { get; }
 
         #region IInjectorEx
-        public object Get(Type iface, string name) 
+        public object Get(Type iface, string? name) 
         {
             try
             {
-                return GetReference(iface, name).Value;
+                return Ensure.IsNotNull
+                (
+                    GetReference(iface, name).Value,
+                    nameof(ServiceReference.Value)
+                );
             }
 
             //
@@ -127,18 +142,14 @@ namespace Solti.Utils.DI.Internals
             {
                 e.Data["path"] = string.Join(" -> ", FGraph
                     .Select(node => (IServiceId) node.RelatedServiceEntry)
-                    .Append(new ServiceId
-                    {
-                        Interface = iface,
-                        Name = name
-                    })
+                    .Append(new ServiceId(iface, name))
                     .Select(IServiceIdExtensions.FriendlyName));
 
                 throw;
             }
         }
 
-        public object TryGet(Type iface, string name) 
+        public object? TryGet(Type iface, string? name) 
         {
             try
             {
@@ -154,8 +165,9 @@ namespace Solti.Utils.DI.Internals
 
         void IInjectorEx.Instantiate(ServiceReference requested)
         {
+            Ensure.Parameter.IsNotNull(requested, nameof(requested));
             Ensure.NotDisposed(this);
-            Ensure.AreEqual(requested?.RelatedInjector, this);        
+            Ensure.AreEqual(requested.RelatedInjector, this);        
 
             CheckBreaksTheRuleOfStrictDI(requested);
 

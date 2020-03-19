@@ -27,7 +27,7 @@ namespace Solti.Utils.DI.Internals
 
         public ServiceInstantiationStrategySelector(IInjectorEx relatedInjector) => RelatedInjector = relatedInjector;
 
-        public Func<ServiceReference, ServiceReference> GetStrategyFor(AbstractServiceEntry requested) 
+        public Func<ServiceReference?, ServiceReference> GetStrategyFor(AbstractServiceEntry requested) 
         {
             //
             // Sorrend szamit.

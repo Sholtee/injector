@@ -3,8 +3,6 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
-using System;
-
 namespace Solti.Utils.DI.Internals
 {
     /// <summary>
@@ -15,6 +13,6 @@ namespace Solti.Utils.DI.Internals
         /// <summary>
         /// The underlying implementation of the service.
         /// </summary>
-        object UnderlyingImplementation { get; }
+        object? UnderlyingImplementation { get; }
     }
 }

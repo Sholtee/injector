@@ -16,7 +16,7 @@ namespace Solti.Utils.DI.Annotations
         /// <summary>
         /// The name of the service.
         /// </summary>
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
         /// <summary>
         /// Indicates whether the service is optional or not.

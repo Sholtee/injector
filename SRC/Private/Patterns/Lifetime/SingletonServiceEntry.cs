@@ -44,7 +44,9 @@ namespace Solti.Utils.DI.Internals
             // Singleton bejegyzeshez mindig sajat injector van letrehozva a deklaralo kontenerbol
             //
 
-            Ensure.AreEqual(reference.RelatedInjector.UnderlyingContainer.Parent, Owner, Resources.INAPPROPRIATE_OWNERSHIP);
+            IInjector relatedInjector = Ensure.IsNotNull(reference.RelatedInjector, $"{nameof(reference)}.{nameof(reference.RelatedInjector)}");
+
+            Ensure.AreEqual(relatedInjector.UnderlyingContainer.Parent, Owner, Resources.INAPPROPRIATE_OWNERSHIP);
             Ensure.IsNull(reference.Value, $"{nameof(reference)}.{nameof(reference.Value)}");
 
             CheckProducible();
@@ -65,7 +67,10 @@ namespace Solti.Utils.DI.Internals
                 // eseten adjunk erteket.
                 //
 
-                reference.Value = Factory(reference.RelatedInjector, Interface);
+                #pragma warning disable CS8602 // CheckProducible() ellenorzi h Factory letezik e
+                reference.Value = Factory(relatedInjector, Interface);
+                #pragma warning restore CS8602
+
                 Instance = reference;
             }
 

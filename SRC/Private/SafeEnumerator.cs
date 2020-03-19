@@ -24,7 +24,7 @@ namespace Solti.Utils.DI.Internals
 
         public T Current => FUnderlyingEnumerator.Current;
 
-        object IEnumerator.Current => FUnderlyingEnumerator.Current;
+        object? IEnumerator.Current => FUnderlyingEnumerator.Current;
 
         protected override void Dispose(bool disposeManaged)
         {

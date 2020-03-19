@@ -52,13 +52,18 @@ namespace Solti.Utils.DI.Internals
         {
             Ensure.Parameter.IsNotNull(reference, nameof(reference));
             Ensure.AreEqual(reference.RelatedServiceEntry, this, Resources.NOT_BELONGING_REFERENCE);
-            Ensure.AreEqual(reference.RelatedInjector.UnderlyingContainer, Owner, Resources.INAPPROPRIATE_OWNERSHIP);
+
+            IInjector relatedInjector = Ensure.IsNotNull(reference.RelatedInjector, $"{nameof(reference)}.{nameof(reference.RelatedInjector)}");
+
+            Ensure.AreEqual(relatedInjector.UnderlyingContainer, Owner, Resources.INAPPROPRIATE_OWNERSHIP);
             Ensure.IsNull(reference.Value, $"{nameof(reference)}.{nameof(reference.Value)}");
 
             CheckProducible();
             CheckNotFull(options);
 
-            reference.Value = Factory(reference.RelatedInjector, Interface);
+            #pragma warning disable CS8602 // CheckProducible() ellenorzi h Factory letezik e
+            reference.Value = Factory(relatedInjector, Interface);
+            #pragma warning restore CS8602
 
             //
             // Mivel "TransientServiceEntry.Instance" mindig NULL ezert ide annyi alkalommal jutunk el
