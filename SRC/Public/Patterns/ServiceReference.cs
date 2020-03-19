@@ -8,12 +8,13 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
 
-namespace Solti.Utils.DI.Internals
+namespace Solti.Utils.DI
 {
+    using Internals;
+
     /// <summary>
     /// Encapsulates a service and its dependencies into a reference counted container.
     /// </summary>
-    /// <remarks>This is an internal class so it may change from version to version. Don't use it!</remarks>
     public class ServiceReference : DisposeByRefObject
     {
         private readonly ServiceReferenceCollection? FDependencies;
