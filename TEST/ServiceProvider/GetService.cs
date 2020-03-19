@@ -9,6 +9,8 @@ using NUnit.Framework;
 
 namespace Solti.Utils.DI.Injector.Tests
 {
+    using Annotations;
+
     public partial class InjectorTestsBase<TContainer>
     {
         [Test]
@@ -53,6 +55,45 @@ namespace Solti.Utils.DI.Injector.Tests
 
                 Assert.That(svc, Is.Not.Null);
                 Assert.That(svc.Interface, Is.Null);
+            }
+        }
+
+        private sealed class MyServiceUsingNamedDependency : IInterface_7<IInterface_1>
+        {
+            public MyServiceUsingNamedDependency([Options(Name = "cica")]IInterface_1 dep) => Interface = dep;
+
+            public IInterface_1 Interface { get; }
+        }
+
+        [Test]
+        public void ServiceProvider_GetService_ShouldResolveNamedDependencies() 
+        {
+            Container
+                .Service<IInterface_1, Implementation_1_No_Dep>("cica")
+                .Service<IInterface_7<IInterface_1>, MyServiceUsingNamedDependency>();
+
+            using (Container.CreateProvider(out var provider))
+            {
+                var svc = provider.GetService<IInterface_7<IInterface_1>>();
+
+                Assert.That(svc, Is.Not.Null);
+                Assert.That(svc.Interface, Is.InstanceOf<Implementation_1_No_Dep>());
+            }
+        }
+
+        [Test]
+        public void ServiceProvider_GetService_ShouldResolveDependencies()
+        {
+            Container
+                .Service<IInterface_1, Implementation_1_No_Dep>()
+                .Service<IInterface_7<IInterface_1>, Implementation_7_TInterface_Dependant<IInterface_1>>();
+
+            using (Container.CreateProvider(out var provider))
+            {
+                var svc = provider.GetService<IInterface_7<IInterface_1>>();
+
+                Assert.That(svc, Is.Not.Null);
+                Assert.That(svc.Interface, Is.InstanceOf<Implementation_1_No_Dep>());
             }
         }
     }
