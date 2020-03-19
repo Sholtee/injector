@@ -76,7 +76,7 @@ namespace Solti.Utils.DI
         /// <summary>
         /// See <see cref="IServiceContainer.Get"/>.
         /// </summary>
-        public AbstractServiceEntry Get(Type serviceInterface, string name, QueryModes mode)
+        public AbstractServiceEntry? Get(Type serviceInterface, string? name, QueryModes mode)
         {
             Ensure.Parameter.IsNotNull(serviceInterface, nameof(serviceInterface));
             Ensure.Parameter.IsInterface(serviceInterface, nameof(serviceInterface));
@@ -113,7 +113,7 @@ namespace Solti.Utils.DI
 
                 if (!hasGenericEntry)
                     return !mode.HasFlag(QueryModes.ThrowOnError) 
-                        ? (AbstractServiceEntry) null 
+                        ? (AbstractServiceEntry?) null 
                         : throw new ServiceNotFoundException(key);
             }
 
@@ -142,17 +142,11 @@ namespace Solti.Utils.DI
                     // Bejegyzesek "kivulrol" jonnek -> ne Assert() hivas legyen.
                     //
 
-                    Ensure.IsNotNull(existing.Owner, $"{nameof(existing)}.{nameof(existing.Owner)}");
+                    IServiceContainer owner = Ensure.IsNotNull(existing.Owner, $"{nameof(existing)}.{nameof(existing.Owner)}");
 
-                    return existing
-                        .Owner
-                        .Get(serviceInterface, name, QueryModes.AllowSpecialization)
+                    specialized = Ensure.IsNotNull(owner.Get(serviceInterface, name, QueryModes.AllowSpecialization), nameof(specialized));
 
-                        //
-                        // A CopyTo() is a this.Add()-et fogja belsoleg hivni.
-                        //
-
-                        .CopyTo(this);
+                    return specialized.CopyTo(this);
                 }
 
                 //
@@ -211,7 +205,7 @@ namespace Solti.Utils.DI
         /// Creates a new <see cref="ServiceContainer"/> instance copying the entries from the <paramref name="parent"/>.
         /// </summary>
         /// <param name="parent">The parent <see cref="IServiceContainer"/>.</param>
-        internal ServiceContainer(IServiceContainer parent) : base(parent)
+        internal ServiceContainer(IServiceContainer? parent) : base(parent)
         {
             FEntries = new Dictionary<IServiceId, AbstractServiceEntry>(parent?.Count ?? 0, ServiceIdComparer.Instance);
             if (parent == null) return;

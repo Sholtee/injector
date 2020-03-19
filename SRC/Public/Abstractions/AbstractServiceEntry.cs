@@ -26,7 +26,7 @@ namespace Solti.Utils.DI
         /// <param name="interface">The interface of the service.</param>
         /// <param name="name">The (optional) name of the service.</param>
         /// <exception cref="ArgumentException">The <paramref name="interface"/> is not an interface.</exception>
-        public AbstractServiceEntry(Type @interface, string name): this(@interface, name, null, null)
+        public AbstractServiceEntry(Type @interface, string? name): this(@interface, name, null, null)
         { 
         }
 
@@ -35,10 +35,10 @@ namespace Solti.Utils.DI
         /// </summary>
         /// <param name="interface">The interface of the service.</param>
         /// <param name="name">The (optional) name of the service.</param>
-        /// <param name="lifetime">The lifetime of the service.</param>
-        /// <param name="owner">The owner of this entry.</param>
+        /// <param name="lifetime">The (optional) lifetime of the service.</param>
+        /// <param name="owner">The (optional) owner of this entry.</param>
         /// <exception cref="ArgumentException">The <paramref name="interface"/> is not an interface.</exception>
-        internal protected AbstractServiceEntry(Type @interface, string name, Lifetime? lifetime, IServiceContainer owner)
+        internal protected AbstractServiceEntry(Type @interface, string? name, Lifetime? lifetime, IServiceContainer? owner)
         {
             Ensure.Parameter.IsNotNull(@interface, nameof(@interface));
             Ensure.Parameter.IsInterface(@interface, nameof(@interface));
@@ -60,7 +60,7 @@ namespace Solti.Utils.DI
         /// The (optional) name of the service.
         /// </summary>
         /// <remarks>A service is identified by its <see cref="Interface"/> and <see cref="Name"/>.</remarks>
-        public string Name { get; }
+        public string? Name { get; }
 
         /// <summary>
         /// The (optional) lefiteime of the service.
@@ -68,26 +68,26 @@ namespace Solti.Utils.DI
         public Lifetime? Lifetime { get; }
 
         /// <summary>
-        /// The owner of this entry.
+        /// The (optional) owner of this entry.
         /// </summary>
-        public IServiceContainer Owner { get; }
+        public IServiceContainer? Owner { get; }
 
         /// <summary>
         /// The (optional) implementation of the service.
         /// </summary>
-        public virtual Type Implementation { get; }
+        public virtual Type? Implementation { get; }
         #endregion
 
         #region Mutables
         /// <summary>
         /// The concrete factory. Don't use it directly.
         /// </summary>
-        public Func<IInjector, Type, object> Factory { get; protected set; }
+        public Func<IInjector, Type, object>? Factory { get; protected set; }
 
         /// <summary>
         /// The previously created service instance. Don't use it directly.
         /// </summary>
-        public ServiceReference Instance { get; protected set; }
+        public ServiceReference? Instance { get; protected set; }
         #endregion
 
         /// <summary>

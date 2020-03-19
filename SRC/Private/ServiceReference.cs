@@ -16,7 +16,7 @@ namespace Solti.Utils.DI.Internals
     /// <remarks>This is an internal class so it may change from version to version. Don't use it!</remarks>
     public class ServiceReference : DisposeByRefObject
     {
-        private readonly ServiceReferenceCollection FDependencies;
+        private readonly ServiceReferenceCollection? FDependencies;
 
         private readonly WriteOnce<object> FValue = new WriteOnce<object>(strict: false);
 
@@ -53,7 +53,7 @@ namespace Solti.Utils.DI.Internals
         /// <summary>
         /// The (optional) <see cref="IInjector"/> instance who created this reference.
         /// </summary>
-        public IInjector RelatedInjector { get; }
+        public IInjector? RelatedInjector { get; }
 
         /// <summary>
         /// The dependencies of the bound service. It can be used only if the <see cref="ExternallyOwned"/> is false.
@@ -64,14 +64,14 @@ namespace Solti.Utils.DI.Internals
             {
                 Ensure.NotDisposed(this);
 
-                return (ICollection<ServiceReference>) FDependencies ?? Array.Empty<ServiceReference>();
+                return (ICollection<ServiceReference>?) FDependencies ?? Array.Empty<ServiceReference>();
             }
         }
 
         /// <summary>
         /// The bound service instance.
         /// </summary>
-        public object Value
+        public object? Value
         {
             get
             {
@@ -84,7 +84,7 @@ namespace Solti.Utils.DI.Internals
                 // Peldany tipusat ellenorizzuk mert a Factory(), Proxy() stb visszaadhat vicces dolgokat.
                 //
 
-                Ensure.Parameter.IsNotNull(value, nameof(value));
+                value = Ensure.Parameter.IsNotNull(value, nameof(value));
                 Ensure.Type.IsTypeOf(RelatedServiceEntry.Interface, value);
                 Ensure.NotDisposed(this);
 

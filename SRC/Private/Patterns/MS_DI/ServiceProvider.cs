@@ -18,8 +18,8 @@ namespace Solti.Utils.DI.Internals
         protected override Injector Spawn(IServiceContainer parent, IReadOnlyDictionary<string, object> factoryOptions, ServiceGraph graph) =>
             new ServiceProvider(parent, factoryOptions, graph);
 
-        object IInjector.Get(Type iface, string name) => TryGet(iface, name);
+        object IInjector.Get(Type iface, string? name) => TryGet(iface, name);
 
-        object IServiceProvider.GetService(Type serviceType) => TryGet(serviceType, null);
+        object? IServiceProvider.GetService(Type serviceType) => TryGet(serviceType, null);
     }
 }

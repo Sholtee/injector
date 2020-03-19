@@ -37,7 +37,7 @@ namespace Solti.Utils.DI.Internals
 
         private readonly ReaderWriterLockSlim FLock = new ReaderWriterLockSlim();
 
-        private TInterface FParent;
+        private TInterface? FParent;
 
         private TInterface Self { get; }
 
@@ -45,11 +45,10 @@ namespace Solti.Utils.DI.Internals
         /// <summary>
         /// Creates a new <see cref="Composite{TInterface}"/> instance.
         /// </summary>
-        /// <param name="parent">The parent entity. It can be null.</param>
-        protected Composite(TInterface parent)
+        /// <param name="parent">The (optional) parent entity. It can be null.</param>
+        protected Composite(TInterface? parent)
         {
-            Self = this as TInterface;
-            Assert(Self != null);
+            Self = this as TInterface ?? throw new Exception(string.Format(Resources.Culture, Resources.INTERFACE_NOT_SUPPORTED, typeof(TInterface)));
 
             parent?.Children.Add(Self);
         }
@@ -107,7 +106,7 @@ namespace Solti.Utils.DI.Internals
         /// <summary>
         /// The parent of this entity. Can be null.
         /// </summary>
-        public TInterface Parent
+        public TInterface? Parent
         {
             get => FParent;
 

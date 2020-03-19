@@ -21,7 +21,7 @@ namespace Solti.Utils.DI
         /// <returns>The resolved service.</returns>
         /// <exception cref="ServiceNotFoundException">The service or one or more dependencies could not be found.</exception>
         [SuppressMessage("Naming", "CA1716:Identifiers should not match keywords", Justification = "The identifier won't confuse the users of the API.")]
-        object Get(Type iface, string name = null);
+        object Get(Type iface, string? name = null);
 
         /// <summary>
         /// Tries to get the service instance associated with the given interface and (optional) name.
@@ -29,7 +29,7 @@ namespace Solti.Utils.DI
         /// <param name="iface">The "id" of the service to be resolved. It must be a (non open generic) interface.</param>
         /// <param name="name">The (optional) name of the service.</param>
         /// <returns>The requested service instance if the resolution was successful, null otherwise.</returns>
-        object TryGet(Type iface, string name = null);
+        object? TryGet(Type iface, string? name = null);
 
         /// <summary>
         /// Gets the <see cref="IServiceContainer"/> associated with the injector.

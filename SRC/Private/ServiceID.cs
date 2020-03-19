@@ -11,6 +11,6 @@ namespace Solti.Utils.DI.Internals
     {
         public Type Interface { get; set; }
 
-        public string Name { get; set; }
+        public string? Name { get; set; }
     }
 }

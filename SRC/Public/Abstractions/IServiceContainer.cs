@@ -34,7 +34,7 @@ namespace Solti.Utils.DI
         /// <returns>The requested service entry.</returns>
         /// <exception cref="ServiceNotFoundException">If the service could not be found.</exception>
         [SuppressMessage("Naming", "CA1716:Identifiers should not match keywords", Justification = "The identifier won't confuse the users of the API.")]
-        AbstractServiceEntry Get(Type serviceInterface, string name = null, QueryModes mode = QueryModes.Default);
+        AbstractServiceEntry? Get(Type serviceInterface, string? name = null, QueryModes mode = QueryModes.Default);
 
         /// <summary>
         /// The number of entries in this container.

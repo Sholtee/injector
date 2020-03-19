@@ -15,6 +15,6 @@ namespace Solti.Utils.DI.Internals
         /// <summary>
         /// The factory function that can be overridden.
         /// </summary>
-        Func<IInjector, Type, object> Factory { get;  set; }
+        Func<IInjector, Type, object>? Factory { get;  set; }
     }
 }

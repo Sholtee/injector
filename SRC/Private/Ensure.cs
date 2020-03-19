@@ -21,7 +21,7 @@ namespace Solti.Utils.DI.Internals
         public static class Parameter
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            public static T IsNotNull<T>(T argument, string name) where T : class =>
+            public static T IsNotNull<T>(T? argument, string name) where T : class =>
                 argument ?? throw new ArgumentNullException(name);
 
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -89,21 +89,18 @@ namespace Solti.Utils.DI.Internals
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void IsNull(object value, string member)
+        public static void IsNull(object? value, string member)
         {
             if (value != null)
                 throw new Exception(string.Format(Resources.Culture, Resources.NOT_NULL, member));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void IsNotNull(object value, string member) 
-        {
-            if (value == null)
-                throw new Exception(string.Format(Resources.Culture, Resources.IS_NULL, member));       
-        }
+        public static T IsNotNull<T>(T? value, string member) where T: class =>
+            value ?? throw new Exception(string.Format(Resources.Culture, Resources.IS_NULL, member));       
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void AreEqual<T>(T a, T b, string message = null, IEqualityComparer<T> comparer = null)
+        public static void AreEqual<T>(T a, T b, string? message = null, IEqualityComparer<T>? comparer = null)
         {
             if (!(comparer ?? EqualityComparer<T>.Default).Equals(a, b))
                 throw new Exception(message ?? Resources.NOT_EQUAL);

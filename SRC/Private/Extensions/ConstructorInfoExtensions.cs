@@ -26,17 +26,17 @@ namespace Solti.Utils.DI.Internals
             parameters
         );
 
-        public static Func<object[], object> ToDelegate(this ConstructorInfo ctor) => Cache.GetOrAdd(ctor, () =>
+        public static Func<object?[], object> ToDelegate(this ConstructorInfo ctor) => Cache.GetOrAdd(ctor, () =>
         {
             ParameterExpression paramz = Expression.Parameter(typeof(object[]), nameof(paramz));
 
-            return ctor.ToLambda<Func<object[], object>>
+            return ctor.ToLambda<Func<object?[], object>>
             (
                 (param, i) => Expression.ArrayAccess(paramz, Expression.Constant(i)),
                 paramz
             ).Compile();
         });
 
-        public static object Call(this ConstructorInfo ctor, params object[] args) => ctor.ToDelegate()(args);
+        public static object Call(this ConstructorInfo ctor, params object?[] args) => ctor.ToDelegate().Invoke(args);
     }
 }

@@ -44,6 +44,6 @@ namespace Solti.Utils.DI.Internals
         /// </summary>
         [JsonExtensionData]
         [SuppressMessage("Usage", "CA2227:Collection properties should be read only", Justification = "Writable property is required by JsonSerializer.")]
-        public Dictionary<string, object> CustomSettings { get; set; }
+        public Dictionary<string, object>? CustomSettings { get; set; }
     }
 }
