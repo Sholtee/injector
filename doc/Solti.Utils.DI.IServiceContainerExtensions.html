@@ -59,13 +59,13 @@
   <h3 id="methods">Methods
   </h3>
   <a id="Solti_Utils_DI_IServiceContainerExtensions_Abstract_" data-uid="Solti.Utils.DI.IServiceContainerExtensions.Abstract*"></a>
-  <h4 id="Solti_Utils_DI_IServiceContainerExtensions_Abstract_Solti_Utils_DI_IServiceContainer_Type_System_String_" data-uid="Solti.Utils.DI.IServiceContainerExtensions.Abstract(Solti.Utils.DI.IServiceContainer,Type,System.String)">Abstract(IServiceContainer, Type, String)</h4>
+  <h4 id="Solti_Utils_DI_IServiceContainerExtensions_Abstract_Solti_Utils_DI_IServiceContainer_Type_System_Nullable_System_String__" data-uid="Solti.Utils.DI.IServiceContainerExtensions.Abstract(Solti.Utils.DI.IServiceContainer,Type,System.Nullable{System.String})">Abstract(IServiceContainer, Type, Nullable&lt;String&gt;)</h4>
   <div class="markdown level1 summary"><p>Registers an abstract service. It must be overridden in the child container(s).</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static IServiceContainer Abstract(this IServiceContainer self, Type iface, string name = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public static IServiceContainer Abstract(this IServiceContainer self, Type iface, string? name = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -90,7 +90,7 @@
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
         <td><span class="parametername">name</span></td>
         <td><p>The (optional) name of the service.</p>
 </td>
@@ -114,13 +114,14 @@
     </tbody>
   </table>
   <a id="Solti_Utils_DI_IServiceContainerExtensions_Abstract_" data-uid="Solti.Utils.DI.IServiceContainerExtensions.Abstract*"></a>
-  <h4 id="Solti_Utils_DI_IServiceContainerExtensions_Abstract__1_Solti_Utils_DI_IServiceContainer_System_String_" data-uid="Solti.Utils.DI.IServiceContainerExtensions.Abstract``1(Solti.Utils.DI.IServiceContainer,System.String)">Abstract&lt;TInterface&gt;(IServiceContainer, String)</h4>
+  <h4 id="Solti_Utils_DI_IServiceContainerExtensions_Abstract__1_Solti_Utils_DI_IServiceContainer_System_Nullable_System_String__" data-uid="Solti.Utils.DI.IServiceContainerExtensions.Abstract``1(Solti.Utils.DI.IServiceContainer,System.Nullable{System.String})">Abstract&lt;TInterface&gt;(IServiceContainer, Nullable&lt;String&gt;)</h4>
   <div class="markdown level1 summary"><p>Registers an abstract service. It must be overridden in the child container(s).</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static IServiceContainer Abstract&lt;TInterface&gt;(this IServiceContainer self, string name = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public static IServiceContainer Abstract&lt;TInterface&gt;(this IServiceContainer self, string? name = null)
+    where TInterface : class</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -139,7 +140,7 @@
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
         <td><span class="parametername">name</span></td>
         <td><p>The (optional) name of the service.</p>
 </td>
@@ -383,13 +384,13 @@
   <div class="markdown level1 remarks"><p>You can register generic services (where the <code data-dev-comment-type="paramref" class="paramref">iface</code> parameter is an open generic type).</p>
 </div>
   <a id="Solti_Utils_DI_IServiceContainerExtensions_Factory_" data-uid="Solti.Utils.DI.IServiceContainerExtensions.Factory*"></a>
-  <h4 id="Solti_Utils_DI_IServiceContainerExtensions_Factory_Solti_Utils_DI_IServiceContainer_Type_System_String_Func_Solti_Utils_DI_IInjector_Type_System_Object__Solti_Utils_DI_Lifetime_" data-uid="Solti.Utils.DI.IServiceContainerExtensions.Factory(Solti.Utils.DI.IServiceContainer,Type,System.String,Func{Solti.Utils.DI.IInjector,Type,System.Object},Solti.Utils.DI.Lifetime)">Factory(IServiceContainer, Type, String, Func&lt;IInjector, Type, Object&gt;, Lifetime)</h4>
+  <h4 id="Solti_Utils_DI_IServiceContainerExtensions_Factory_Solti_Utils_DI_IServiceContainer_Type_System_Nullable_System_String__Func_Solti_Utils_DI_IInjector_Type_System_Object__Solti_Utils_DI_Lifetime_" data-uid="Solti.Utils.DI.IServiceContainerExtensions.Factory(Solti.Utils.DI.IServiceContainer,Type,System.Nullable{System.String},Func{Solti.Utils.DI.IInjector,Type,System.Object},Solti.Utils.DI.Lifetime)">Factory(IServiceContainer, Type, Nullable&lt;String&gt;, Func&lt;IInjector, Type, Object&gt;, Lifetime)</h4>
   <div class="markdown level1 summary"><p>Registers a new service factory with the given type. Factories are also services except that the instantiating process is delegated to the caller. Useful if a service has more than one constructor.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static IServiceContainer Factory(this IServiceContainer self, Type iface, string name, Func&lt;IInjector, Type, object&gt; factory, Lifetime lifetime = default(Lifetime))</code></pre>
+    <pre><code class="lang-csharp hljs">public static IServiceContainer Factory(this IServiceContainer self, Type iface, string? name, Func&lt;IInjector, Type, object&gt; factory, Lifetime lifetime = default(Lifetime))</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -414,7 +415,7 @@
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
         <td><span class="parametername">name</span></td>
         <td><p>The (optional) name  of the service.</p>
 </td>
@@ -449,7 +450,7 @@
       </tr>
     </tbody>
   </table>
-  <h5 id="Solti_Utils_DI_IServiceContainerExtensions_Factory_Solti_Utils_DI_IServiceContainer_Type_System_String_Func_Solti_Utils_DI_IInjector_Type_System_Object__Solti_Utils_DI_Lifetime__remarks">Remarks</h5>
+  <h5 id="Solti_Utils_DI_IServiceContainerExtensions_Factory_Solti_Utils_DI_IServiceContainer_Type_System_Nullable_System_String__Func_Solti_Utils_DI_IInjector_Type_System_Object__Solti_Utils_DI_Lifetime__remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>You can register generic services (where the <code data-dev-comment-type="paramref" class="paramref">iface</code> parameter is an open generic type).</p>
 </div>
   <a id="Solti_Utils_DI_IServiceContainerExtensions_Factory_" data-uid="Solti.Utils.DI.IServiceContainerExtensions.Factory*"></a>
@@ -459,7 +460,8 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static IServiceContainer Factory&lt;TInterface&gt;(this IServiceContainer self, Func&lt;IInjector, TInterface&gt; factory, Lifetime lifetime = default(Lifetime))</code></pre>
+    <pre><code class="lang-csharp hljs">public static IServiceContainer Factory&lt;TInterface&gt;(this IServiceContainer self, Func&lt;IInjector, TInterface&gt; factory, Lifetime lifetime = default(Lifetime))
+    where TInterface : class</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -524,13 +526,14 @@
     </tbody>
   </table>
   <a id="Solti_Utils_DI_IServiceContainerExtensions_Factory_" data-uid="Solti.Utils.DI.IServiceContainerExtensions.Factory*"></a>
-  <h4 id="Solti_Utils_DI_IServiceContainerExtensions_Factory__1_Solti_Utils_DI_IServiceContainer_System_String_Func_Solti_Utils_DI_IInjector___0__Solti_Utils_DI_Lifetime_" data-uid="Solti.Utils.DI.IServiceContainerExtensions.Factory``1(Solti.Utils.DI.IServiceContainer,System.String,Func{Solti.Utils.DI.IInjector,``0},Solti.Utils.DI.Lifetime)">Factory&lt;TInterface&gt;(IServiceContainer, String, Func&lt;IInjector, TInterface&gt;, Lifetime)</h4>
+  <h4 id="Solti_Utils_DI_IServiceContainerExtensions_Factory__1_Solti_Utils_DI_IServiceContainer_System_Nullable_System_String__Func_Solti_Utils_DI_IInjector___0__Solti_Utils_DI_Lifetime_" data-uid="Solti.Utils.DI.IServiceContainerExtensions.Factory``1(Solti.Utils.DI.IServiceContainer,System.Nullable{System.String},Func{Solti.Utils.DI.IInjector,``0},Solti.Utils.DI.Lifetime)">Factory&lt;TInterface&gt;(IServiceContainer, Nullable&lt;String&gt;, Func&lt;IInjector, TInterface&gt;, Lifetime)</h4>
   <div class="markdown level1 summary"><p>Registers a new service factory with the given type. Factories are also services except that the instantiating process is delegated to the caller. Useful if a service has more than one constructor.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static IServiceContainer Factory&lt;TInterface&gt;(this IServiceContainer self, string name, Func&lt;IInjector, TInterface&gt; factory, Lifetime lifetime = default(Lifetime))</code></pre>
+    <pre><code class="lang-csharp hljs">public static IServiceContainer Factory&lt;TInterface&gt;(this IServiceContainer self, string? name, Func&lt;IInjector, TInterface&gt; factory, Lifetime lifetime = default(Lifetime))
+    where TInterface : class</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -549,7 +552,7 @@
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
         <td><span class="parametername">name</span></td>
         <td><p>The (optional) name of the service.</p>
 </td>
@@ -681,13 +684,13 @@
     </tbody>
   </table>
   <a id="Solti_Utils_DI_IServiceContainerExtensions_Get_" data-uid="Solti.Utils.DI.IServiceContainerExtensions.Get*"></a>
-  <h4 id="Solti_Utils_DI_IServiceContainerExtensions_Get__1_Solti_Utils_DI_IServiceContainer_System_String_Solti_Utils_DI_QueryModes_" data-uid="Solti.Utils.DI.IServiceContainerExtensions.Get``1(Solti.Utils.DI.IServiceContainer,System.String,Solti.Utils.DI.QueryModes)">Get&lt;TInterface&gt;(IServiceContainer, String, QueryModes)</h4>
+  <h4 id="Solti_Utils_DI_IServiceContainerExtensions_Get__1_Solti_Utils_DI_IServiceContainer_System_Nullable_System_String__Solti_Utils_DI_QueryModes_" data-uid="Solti.Utils.DI.IServiceContainerExtensions.Get``1(Solti.Utils.DI.IServiceContainer,System.Nullable{System.String},Solti.Utils.DI.QueryModes)">Get&lt;TInterface&gt;(IServiceContainer, Nullable&lt;String&gt;, QueryModes)</h4>
   <div class="markdown level1 summary"><p>Gets the service entry associated with the given interface and name.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static AbstractServiceEntry Get&lt;TInterface&gt;(this IServiceContainer self, string name, QueryModes mode = default(QueryModes))</code></pre>
+    <pre><code class="lang-csharp hljs">public static AbstractServiceEntry Get&lt;TInterface&gt;(this IServiceContainer self, string? name, QueryModes mode = default(QueryModes))</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -706,7 +709,7 @@
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
         <td><span class="parametername">name</span></td>
         <td><p>The (optional) name of the entry.</p>
 </td>
@@ -762,6 +765,73 @@
       <tr>
         <td><a class="xref" href="Solti.Utils.DI.ServiceNotFoundException.html">ServiceNotFoundException</a></td>
         <td><p>If the service could not be found.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Solti_Utils_DI_IServiceContainerExtensions_Instance_" data-uid="Solti.Utils.DI.IServiceContainerExtensions.Instance*"></a>
+  <h4 id="Solti_Utils_DI_IServiceContainerExtensions_Instance_Solti_Utils_DI_IServiceContainer_Type_System_Nullable_System_String__System_Object_System_Boolean_" data-uid="Solti.Utils.DI.IServiceContainerExtensions.Instance(Solti.Utils.DI.IServiceContainer,Type,System.Nullable{System.String},System.Object,System.Boolean)">Instance(IServiceContainer, Type, Nullable&lt;String&gt;, Object, Boolean)</h4>
+  <div class="markdown level1 summary"><p>Registers a pre-created instance. Useful to creating &quot;constant&quot; values (e.g. command-line arguments).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IServiceContainer Instance(this IServiceContainer self, Type iface, string? name, object instance, bool releaseOnDispose = false)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.IServiceContainer.html">IServiceContainer</a></td>
+        <td><span class="parametername">self</span></td>
+        <td><p>The target <a class="xref" href="Solti.Utils.DI.IServiceContainer.html">IServiceContainer</a>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">Type</span></td>
+        <td><span class="parametername">iface</span></td>
+        <td><p>The service interface to be registered. It can not be null and can be registered only once (with the given <code data-dev-comment-type="paramref" class="paramref">name</code>).</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
+        <td><span class="parametername">name</span></td>
+        <td><p>The (optional) name of the service.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></td>
+        <td><span class="parametername">instance</span></td>
+        <td><p>The pre-created instance to be registered. It can not be null and must implement the <code data-dev-comment-type="paramref" class="paramref">iface</code> interface.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">releaseOnDispose</span></td>
+        <td><p>Whether the system should dispose the instance on container disposal or not.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.IServiceContainer.html">IServiceContainer</a></td>
+        <td><p>The container itself.</p>
 </td>
       </tr>
     </tbody>
@@ -828,80 +898,14 @@
     </tbody>
   </table>
   <a id="Solti_Utils_DI_IServiceContainerExtensions_Instance_" data-uid="Solti.Utils.DI.IServiceContainerExtensions.Instance*"></a>
-  <h4 id="Solti_Utils_DI_IServiceContainerExtensions_Instance_Solti_Utils_DI_IServiceContainer_Type_System_String_System_Object_System_Boolean_" data-uid="Solti.Utils.DI.IServiceContainerExtensions.Instance(Solti.Utils.DI.IServiceContainer,Type,System.String,System.Object,System.Boolean)">Instance(IServiceContainer, Type, String, Object, Boolean)</h4>
-  <div class="markdown level1 summary"><p>Registers a pre-created instance. Useful to creating &quot;constant&quot; values (e.g. command-line arguments).</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static IServiceContainer Instance(this IServiceContainer self, Type iface, string name, object instance, bool releaseOnDispose = false)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Solti.Utils.DI.IServiceContainer.html">IServiceContainer</a></td>
-        <td><span class="parametername">self</span></td>
-        <td><p>The target <a class="xref" href="Solti.Utils.DI.IServiceContainer.html">IServiceContainer</a>.</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">Type</span></td>
-        <td><span class="parametername">iface</span></td>
-        <td><p>The service interface to be registered. It can not be null and can be registered only once (with the given <code data-dev-comment-type="paramref" class="paramref">name</code>).</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">name</span></td>
-        <td><p>The (optional) name of the service.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></td>
-        <td><span class="parametername">instance</span></td>
-        <td><p>The pre-created instance to be registered. It can not be null and must implement the <code data-dev-comment-type="paramref" class="paramref">iface</code> interface.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td><span class="parametername">releaseOnDispose</span></td>
-        <td><p>Whether the system should dispose the instance on container disposal or not.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Solti.Utils.DI.IServiceContainer.html">IServiceContainer</a></td>
-        <td><p>The container itself.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <a id="Solti_Utils_DI_IServiceContainerExtensions_Instance_" data-uid="Solti.Utils.DI.IServiceContainerExtensions.Instance*"></a>
   <h4 id="Solti_Utils_DI_IServiceContainerExtensions_Instance__1_Solti_Utils_DI_IServiceContainer___0_System_Boolean_" data-uid="Solti.Utils.DI.IServiceContainerExtensions.Instance``1(Solti.Utils.DI.IServiceContainer,``0,System.Boolean)">Instance&lt;TInterface&gt;(IServiceContainer, TInterface, Boolean)</h4>
   <div class="markdown level1 summary"><p>Registers a pre-created instance. Useful when creating &quot;constant&quot; values (e.g. from command-line arguments).</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static IServiceContainer Instance&lt;TInterface&gt;(this IServiceContainer self, TInterface instance, bool releaseOnDispose = false)</code></pre>
+    <pre><code class="lang-csharp hljs">public static IServiceContainer Instance&lt;TInterface&gt;(this IServiceContainer self, TInterface instance, bool releaseOnDispose = false)
+    where TInterface : class</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -966,13 +970,14 @@
     </tbody>
   </table>
   <a id="Solti_Utils_DI_IServiceContainerExtensions_Instance_" data-uid="Solti.Utils.DI.IServiceContainerExtensions.Instance*"></a>
-  <h4 id="Solti_Utils_DI_IServiceContainerExtensions_Instance__1_Solti_Utils_DI_IServiceContainer_System_String___0_System_Boolean_" data-uid="Solti.Utils.DI.IServiceContainerExtensions.Instance``1(Solti.Utils.DI.IServiceContainer,System.String,``0,System.Boolean)">Instance&lt;TInterface&gt;(IServiceContainer, String, TInterface, Boolean)</h4>
+  <h4 id="Solti_Utils_DI_IServiceContainerExtensions_Instance__1_Solti_Utils_DI_IServiceContainer_System_Nullable_System_String____0_System_Boolean_" data-uid="Solti.Utils.DI.IServiceContainerExtensions.Instance``1(Solti.Utils.DI.IServiceContainer,System.Nullable{System.String},``0,System.Boolean)">Instance&lt;TInterface&gt;(IServiceContainer, Nullable&lt;String&gt;, TInterface, Boolean)</h4>
   <div class="markdown level1 summary"><p>Registers a pre-created instance. Useful when creating &quot;constant&quot; values (e.g. from command-line arguments).</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static IServiceContainer Instance&lt;TInterface&gt;(this IServiceContainer self, string name, TInterface instance, bool releaseOnDispose = false)</code></pre>
+    <pre><code class="lang-csharp hljs">public static IServiceContainer Instance&lt;TInterface&gt;(this IServiceContainer self, string? name, TInterface instance, bool releaseOnDispose = false)
+    where TInterface : class</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -991,7 +996,7 @@
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
         <td><span class="parametername">name</span></td>
         <td><p>The (optional) name of the service.</p>
 </td>
@@ -1107,13 +1112,13 @@
   <div class="markdown level1 remarks"><p>You may register generic services (where the <code data-dev-comment-type="paramref" class="paramref">iface</code> parameter is an open generic <see cref="!:Type"></see>). In this case the resolver must return an open generic implementation.</p>
 </div>
   <a id="Solti_Utils_DI_IServiceContainerExtensions_Lazy_" data-uid="Solti.Utils.DI.IServiceContainerExtensions.Lazy*"></a>
-  <h4 id="Solti_Utils_DI_IServiceContainerExtensions_Lazy_Solti_Utils_DI_IServiceContainer_Type_System_String_Solti_Utils_DI_ITypeResolver_Solti_Utils_DI_Lifetime_" data-uid="Solti.Utils.DI.IServiceContainerExtensions.Lazy(Solti.Utils.DI.IServiceContainer,Type,System.String,Solti.Utils.DI.ITypeResolver,Solti.Utils.DI.Lifetime)">Lazy(IServiceContainer, Type, String, ITypeResolver, Lifetime)</h4>
+  <h4 id="Solti_Utils_DI_IServiceContainerExtensions_Lazy_Solti_Utils_DI_IServiceContainer_Type_System_Nullable_System_String__Solti_Utils_DI_ITypeResolver_Solti_Utils_DI_Lifetime_" data-uid="Solti.Utils.DI.IServiceContainerExtensions.Lazy(Solti.Utils.DI.IServiceContainer,Type,System.Nullable{System.String},Solti.Utils.DI.ITypeResolver,Solti.Utils.DI.Lifetime)">Lazy(IServiceContainer, Type, Nullable&lt;String&gt;, ITypeResolver, Lifetime)</h4>
   <div class="markdown level1 summary"><p>Registers a service where the implementation will be resolved on the first request. It is useful when the implementation is unknown in compile time or you just want to load the containing assembly on the first request.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static IServiceContainer Lazy(this IServiceContainer self, Type iface, string name, ITypeResolver implementation, Lifetime lifetime = default(Lifetime))</code></pre>
+    <pre><code class="lang-csharp hljs">public static IServiceContainer Lazy(this IServiceContainer self, Type iface, string? name, ITypeResolver implementation, Lifetime lifetime = default(Lifetime))</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1138,7 +1143,7 @@
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
         <td><span class="parametername">name</span></td>
         <td><p>The (optional) name of the service.</p>
 </td>
@@ -1173,9 +1178,82 @@
       </tr>
     </tbody>
   </table>
-  <h5 id="Solti_Utils_DI_IServiceContainerExtensions_Lazy_Solti_Utils_DI_IServiceContainer_Type_System_String_Solti_Utils_DI_ITypeResolver_Solti_Utils_DI_Lifetime__remarks">Remarks</h5>
+  <h5 id="Solti_Utils_DI_IServiceContainerExtensions_Lazy_Solti_Utils_DI_IServiceContainer_Type_System_Nullable_System_String__Solti_Utils_DI_ITypeResolver_Solti_Utils_DI_Lifetime__remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>You may register generic services (where the <code data-dev-comment-type="paramref" class="paramref">iface</code> parameter is an open generic <see cref="!:Type"></see>). In this case the resolver must return an open generic implementation.</p>
 </div>
+  <a id="Solti_Utils_DI_IServiceContainerExtensions_Lazy_" data-uid="Solti.Utils.DI.IServiceContainerExtensions.Lazy*"></a>
+  <h4 id="Solti_Utils_DI_IServiceContainerExtensions_Lazy_Solti_Utils_DI_IServiceContainer_Type_System_Nullable_System_String__System_String_System_String_Solti_Utils_DI_Lifetime_" data-uid="Solti.Utils.DI.IServiceContainerExtensions.Lazy(Solti.Utils.DI.IServiceContainer,Type,System.Nullable{System.String},System.String,System.String,Solti.Utils.DI.Lifetime)">Lazy(IServiceContainer, Type, Nullable&lt;String&gt;, String, String, Lifetime)</h4>
+  <div class="markdown level1 summary"><p>Registers a service where the implementation will be resolved on the first request. It is useful when the implementation is unknown in compile time or you just want to load the containing assembly on the first request. Type resolution is done by the <a class="xref" href="Solti.Utils.DI.LazyTypeResolver.html">LazyTypeResolver</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IServiceContainer Lazy(this IServiceContainer self, Type iface, string? name, string asmPath, string className, Lifetime lifetime = default(Lifetime))</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.IServiceContainer.html">IServiceContainer</a></td>
+        <td><span class="parametername">self</span></td>
+        <td><p>The target <a class="xref" href="Solti.Utils.DI.IServiceContainer.html">IServiceContainer</a>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">Type</span></td>
+        <td><span class="parametername">iface</span></td>
+        <td><p>The service interface to be registered. It can not be null and can be registered only once (with the given <code data-dev-comment-type="paramref" class="paramref">name</code>).</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
+        <td><span class="parametername">name</span></td>
+        <td><p>The (optional) name of the service.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">asmPath</span></td>
+        <td><p>The absolute path of the containing <see cref="!:System.Reflection.Assembly"></see>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">className</span></td>
+        <td><p>The full name of the <see cref="!:Type"></see> that implemenets the <code data-dev-comment-type="paramref" class="paramref">iface</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.Lifetime.html">Lifetime</a></td>
+        <td><span class="parametername">lifetime</span></td>
+        <td><p>The <a class="xref" href="Solti.Utils.DI.Lifetime.html">Lifetime</a> of the service.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.IServiceContainer.html">IServiceContainer</a></td>
+        <td><p>The container itself.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
   <a id="Solti_Utils_DI_IServiceContainerExtensions_Lazy_" data-uid="Solti.Utils.DI.IServiceContainerExtensions.Lazy*"></a>
   <h4 id="Solti_Utils_DI_IServiceContainerExtensions_Lazy_Solti_Utils_DI_IServiceContainer_Type_System_String_System_String_Solti_Utils_DI_Lifetime_" data-uid="Solti.Utils.DI.IServiceContainerExtensions.Lazy(Solti.Utils.DI.IServiceContainer,Type,System.String,System.String,Solti.Utils.DI.Lifetime)">Lazy(IServiceContainer, Type, String, String, Lifetime)</h4>
   <div class="markdown level1 summary"><p>Registers a service where the implementation will be resolved on the first request. It is useful when the implementation is unknown in compile time or you just want to load the containing assembly on the first request. Type resolution is done by the <a class="xref" href="Solti.Utils.DI.LazyTypeResolver.html">LazyTypeResolver</a>.</p>
@@ -1244,86 +1322,14 @@
     </tbody>
   </table>
   <a id="Solti_Utils_DI_IServiceContainerExtensions_Lazy_" data-uid="Solti.Utils.DI.IServiceContainerExtensions.Lazy*"></a>
-  <h4 id="Solti_Utils_DI_IServiceContainerExtensions_Lazy_Solti_Utils_DI_IServiceContainer_Type_System_String_System_String_System_String_Solti_Utils_DI_Lifetime_" data-uid="Solti.Utils.DI.IServiceContainerExtensions.Lazy(Solti.Utils.DI.IServiceContainer,Type,System.String,System.String,System.String,Solti.Utils.DI.Lifetime)">Lazy(IServiceContainer, Type, String, String, String, Lifetime)</h4>
-  <div class="markdown level1 summary"><p>Registers a service where the implementation will be resolved on the first request. It is useful when the implementation is unknown in compile time or you just want to load the containing assembly on the first request. Type resolution is done by the <a class="xref" href="Solti.Utils.DI.LazyTypeResolver.html">LazyTypeResolver</a>.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static IServiceContainer Lazy(this IServiceContainer self, Type iface, string name, string asmPath, string className, Lifetime lifetime = default(Lifetime))</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Solti.Utils.DI.IServiceContainer.html">IServiceContainer</a></td>
-        <td><span class="parametername">self</span></td>
-        <td><p>The target <a class="xref" href="Solti.Utils.DI.IServiceContainer.html">IServiceContainer</a>.</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">Type</span></td>
-        <td><span class="parametername">iface</span></td>
-        <td><p>The service interface to be registered. It can not be null and can be registered only once (with the given <code data-dev-comment-type="paramref" class="paramref">name</code>).</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">name</span></td>
-        <td><p>The (optional) name of the service.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">asmPath</span></td>
-        <td><p>The absolute path of the containing <see cref="!:System.Reflection.Assembly"></see>.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">className</span></td>
-        <td><p>The full name of the <see cref="!:Type"></see> that implemenets the <code data-dev-comment-type="paramref" class="paramref">iface</code>.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="Solti.Utils.DI.Lifetime.html">Lifetime</a></td>
-        <td><span class="parametername">lifetime</span></td>
-        <td><p>The <a class="xref" href="Solti.Utils.DI.Lifetime.html">Lifetime</a> of the service.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Solti.Utils.DI.IServiceContainer.html">IServiceContainer</a></td>
-        <td><p>The container itself.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <a id="Solti_Utils_DI_IServiceContainerExtensions_Lazy_" data-uid="Solti.Utils.DI.IServiceContainerExtensions.Lazy*"></a>
   <h4 id="Solti_Utils_DI_IServiceContainerExtensions_Lazy__1_Solti_Utils_DI_IServiceContainer_Solti_Utils_DI_ITypeResolver_Solti_Utils_DI_Lifetime_" data-uid="Solti.Utils.DI.IServiceContainerExtensions.Lazy``1(Solti.Utils.DI.IServiceContainer,Solti.Utils.DI.ITypeResolver,Solti.Utils.DI.Lifetime)">Lazy&lt;TInterface&gt;(IServiceContainer, ITypeResolver, Lifetime)</h4>
   <div class="markdown level1 summary"><p>Registers a service where the implementation will be resolved on the first request. It is useful when the implementation is unknown in compile time or you just want to load the containing assembly on the first request.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static IServiceContainer Lazy&lt;TInterface&gt;(this IServiceContainer self, ITypeResolver implementation, Lifetime lifetime = default(Lifetime))</code></pre>
+    <pre><code class="lang-csharp hljs">public static IServiceContainer Lazy&lt;TInterface&gt;(this IServiceContainer self, ITypeResolver implementation, Lifetime lifetime = default(Lifetime))
+    where TInterface : class</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1388,13 +1394,14 @@
     </tbody>
   </table>
   <a id="Solti_Utils_DI_IServiceContainerExtensions_Lazy_" data-uid="Solti.Utils.DI.IServiceContainerExtensions.Lazy*"></a>
-  <h4 id="Solti_Utils_DI_IServiceContainerExtensions_Lazy__1_Solti_Utils_DI_IServiceContainer_System_String_Solti_Utils_DI_ITypeResolver_Solti_Utils_DI_Lifetime_" data-uid="Solti.Utils.DI.IServiceContainerExtensions.Lazy``1(Solti.Utils.DI.IServiceContainer,System.String,Solti.Utils.DI.ITypeResolver,Solti.Utils.DI.Lifetime)">Lazy&lt;TInterface&gt;(IServiceContainer, String, ITypeResolver, Lifetime)</h4>
+  <h4 id="Solti_Utils_DI_IServiceContainerExtensions_Lazy__1_Solti_Utils_DI_IServiceContainer_System_Nullable_System_String__Solti_Utils_DI_ITypeResolver_Solti_Utils_DI_Lifetime_" data-uid="Solti.Utils.DI.IServiceContainerExtensions.Lazy``1(Solti.Utils.DI.IServiceContainer,System.Nullable{System.String},Solti.Utils.DI.ITypeResolver,Solti.Utils.DI.Lifetime)">Lazy&lt;TInterface&gt;(IServiceContainer, Nullable&lt;String&gt;, ITypeResolver, Lifetime)</h4>
   <div class="markdown level1 summary"><p>Registers a service where the implementation will be resolved on the first request. It is useful when the implementation is unknown in compile time or you just want to load the containing assembly on the first request.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static IServiceContainer Lazy&lt;TInterface&gt;(this IServiceContainer self, string name, ITypeResolver implementation, Lifetime lifetime = default(Lifetime))</code></pre>
+    <pre><code class="lang-csharp hljs">public static IServiceContainer Lazy&lt;TInterface&gt;(this IServiceContainer self, string? name, ITypeResolver implementation, Lifetime lifetime = default(Lifetime))
+    where TInterface : class</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1413,7 +1420,7 @@
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
         <td><span class="parametername">name</span></td>
         <td><p>The (optional) name of the service.</p>
 </td>
@@ -1422,6 +1429,90 @@
         <td><a class="xref" href="Solti.Utils.DI.ITypeResolver.html">ITypeResolver</a></td>
         <td><span class="parametername">implementation</span></td>
         <td><p>The <a class="xref" href="Solti.Utils.DI.ITypeResolver.html">ITypeResolver</a> is responsible for resolving the implementation. The resolved <see cref="!:Type"></see> can not be null and must implement the <code data-dev-comment-type="typeparamref" class="typeparamref">TInterface</code> interface. Additionally it must have only null or one constructor (that may request another dependecies). The resolver is called only once (on the first request) regardless the value of the <code data-dev-comment-type="paramref" class="paramref">lifetime</code> parameter. For an implementation see the <a class="xref" href="Solti.Utils.DI.LazyTypeResolver-1.html">LazyTypeResolver&lt;TInterface&gt;</a> class.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.Lifetime.html">Lifetime</a></td>
+        <td><span class="parametername">lifetime</span></td>
+        <td><p>The <a class="xref" href="Solti.Utils.DI.Lifetime.html">Lifetime</a> of the service.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.IServiceContainer.html">IServiceContainer</a></td>
+        <td><p>The container itself.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TInterface</span></td>
+        <td><p>The service interface to be registered. It can be registered only once (with the given <code data-dev-comment-type="paramref" class="paramref">name</code>).</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Solti_Utils_DI_IServiceContainerExtensions_Lazy_" data-uid="Solti.Utils.DI.IServiceContainerExtensions.Lazy*"></a>
+  <h4 id="Solti_Utils_DI_IServiceContainerExtensions_Lazy__1_Solti_Utils_DI_IServiceContainer_System_Nullable_System_String__System_String_System_String_Solti_Utils_DI_Lifetime_" data-uid="Solti.Utils.DI.IServiceContainerExtensions.Lazy``1(Solti.Utils.DI.IServiceContainer,System.Nullable{System.String},System.String,System.String,Solti.Utils.DI.Lifetime)">Lazy&lt;TInterface&gt;(IServiceContainer, Nullable&lt;String&gt;, String, String, Lifetime)</h4>
+  <div class="markdown level1 summary"><p>Registers a service where the implementation will be resolved on the first request. It is useful when the implementation is unknown in compile time or you just want to load the containing assembly on the first request. Type resolution is done by the <a class="xref" href="Solti.Utils.DI.LazyTypeResolver.html">LazyTypeResolver</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IServiceContainer Lazy&lt;TInterface&gt;(this IServiceContainer self, string? name, string asmPath, string className, Lifetime lifetime = default(Lifetime))
+    where TInterface : class</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.IServiceContainer.html">IServiceContainer</a></td>
+        <td><span class="parametername">self</span></td>
+        <td><p>The target <a class="xref" href="Solti.Utils.DI.IServiceContainer.html">IServiceContainer</a>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
+        <td><span class="parametername">name</span></td>
+        <td><p>The (optional) name of the service.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">asmPath</span></td>
+        <td><p>The absolute path of the containing <see cref="!:System.Reflection.Assembly"></see>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">className</span></td>
+        <td><p>The full name of the <see cref="!:Type"></see> that implemenets the <code data-dev-comment-type="typeparamref" class="typeparamref">TInterface</code>.</p>
 </td>
       </tr>
       <tr>
@@ -1471,7 +1562,8 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static IServiceContainer Lazy&lt;TInterface&gt;(this IServiceContainer self, string asmPath, string className, Lifetime lifetime = default(Lifetime))</code></pre>
+    <pre><code class="lang-csharp hljs">public static IServiceContainer Lazy&lt;TInterface&gt;(this IServiceContainer self, string asmPath, string className, Lifetime lifetime = default(Lifetime))
+    where TInterface : class</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1537,89 +1629,6 @@
       <tr>
         <td><span class="parametername">TInterface</span></td>
         <td><p>The service interface to be registered. It can be registered only once.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <a id="Solti_Utils_DI_IServiceContainerExtensions_Lazy_" data-uid="Solti.Utils.DI.IServiceContainerExtensions.Lazy*"></a>
-  <h4 id="Solti_Utils_DI_IServiceContainerExtensions_Lazy__1_Solti_Utils_DI_IServiceContainer_System_String_System_String_System_String_Solti_Utils_DI_Lifetime_" data-uid="Solti.Utils.DI.IServiceContainerExtensions.Lazy``1(Solti.Utils.DI.IServiceContainer,System.String,System.String,System.String,Solti.Utils.DI.Lifetime)">Lazy&lt;TInterface&gt;(IServiceContainer, String, String, String, Lifetime)</h4>
-  <div class="markdown level1 summary"><p>Registers a service where the implementation will be resolved on the first request. It is useful when the implementation is unknown in compile time or you just want to load the containing assembly on the first request. Type resolution is done by the <a class="xref" href="Solti.Utils.DI.LazyTypeResolver.html">LazyTypeResolver</a>.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static IServiceContainer Lazy&lt;TInterface&gt;(this IServiceContainer self, string name, string asmPath, string className, Lifetime lifetime = default(Lifetime))</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Solti.Utils.DI.IServiceContainer.html">IServiceContainer</a></td>
-        <td><span class="parametername">self</span></td>
-        <td><p>The target <a class="xref" href="Solti.Utils.DI.IServiceContainer.html">IServiceContainer</a>.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">name</span></td>
-        <td><p>The (optional) name of the service.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">asmPath</span></td>
-        <td><p>The absolute path of the containing <see cref="!:System.Reflection.Assembly"></see>.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">className</span></td>
-        <td><p>The full name of the <see cref="!:Type"></see> that implemenets the <code data-dev-comment-type="typeparamref" class="typeparamref">TInterface</code>.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="Solti.Utils.DI.Lifetime.html">Lifetime</a></td>
-        <td><span class="parametername">lifetime</span></td>
-        <td><p>The <a class="xref" href="Solti.Utils.DI.Lifetime.html">Lifetime</a> of the service.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Solti.Utils.DI.IServiceContainer.html">IServiceContainer</a></td>
-        <td><p>The container itself.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="typeParameters">Type Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="parametername">TInterface</span></td>
-        <td><p>The service interface to be registered. It can be registered only once (with the given <code data-dev-comment-type="paramref" class="paramref">name</code>).</p>
 </td>
       </tr>
     </tbody>
@@ -1683,13 +1692,13 @@
   <div class="markdown level1 remarks"><p>You can&apos;t create proxies against generic, instance or not owned entries. A service can be decorated multiple times.</p>
 </div>
   <a id="Solti_Utils_DI_IServiceContainerExtensions_Proxy_" data-uid="Solti.Utils.DI.IServiceContainerExtensions.Proxy*"></a>
-  <h4 id="Solti_Utils_DI_IServiceContainerExtensions_Proxy_Solti_Utils_DI_IServiceContainer_Type_System_String_Func_Solti_Utils_DI_IInjector_Type_System_Object_System_Object__" data-uid="Solti.Utils.DI.IServiceContainerExtensions.Proxy(Solti.Utils.DI.IServiceContainer,Type,System.String,Func{Solti.Utils.DI.IInjector,Type,System.Object,System.Object})">Proxy(IServiceContainer, Type, String, Func&lt;IInjector, Type, Object, Object&gt;)</h4>
+  <h4 id="Solti_Utils_DI_IServiceContainerExtensions_Proxy_Solti_Utils_DI_IServiceContainer_Type_System_Nullable_System_String__Func_Solti_Utils_DI_IInjector_Type_System_Object_System_Object__" data-uid="Solti.Utils.DI.IServiceContainerExtensions.Proxy(Solti.Utils.DI.IServiceContainer,Type,System.Nullable{System.String},Func{Solti.Utils.DI.IInjector,Type,System.Object,System.Object})">Proxy(IServiceContainer, Type, Nullable&lt;String&gt;, Func&lt;IInjector, Type, Object, Object&gt;)</h4>
   <div class="markdown level1 summary"><p>Hooks into the instantiating process to let you decorate the original service. Useful when you want to add additional functionality (e.g. parameter validation). The easiest way to decorate an instance is using the <see cref="!:InterfaceInterceptor&lt;TInterface>"></see> class.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static IServiceContainer Proxy(this IServiceContainer self, Type iface, string name, Func&lt;IInjector, Type, object, object&gt; decorator)</code></pre>
+    <pre><code class="lang-csharp hljs">public static IServiceContainer Proxy(this IServiceContainer self, Type iface, string? name, Func&lt;IInjector, Type, object, object&gt; decorator)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1714,7 +1723,7 @@
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
         <td><span class="parametername">name</span></td>
         <td><p>The (optional) name of the service.</p>
 </td>
@@ -1743,17 +1752,17 @@
       </tr>
     </tbody>
   </table>
-  <h5 id="Solti_Utils_DI_IServiceContainerExtensions_Proxy_Solti_Utils_DI_IServiceContainer_Type_System_String_Func_Solti_Utils_DI_IInjector_Type_System_Object_System_Object___remarks">Remarks</h5>
+  <h5 id="Solti_Utils_DI_IServiceContainerExtensions_Proxy_Solti_Utils_DI_IServiceContainer_Type_System_Nullable_System_String__Func_Solti_Utils_DI_IInjector_Type_System_Object_System_Object___remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>You can&apos;t create proxies against generic, instance or not owned entries. A service can be decorated multiple times.</p>
 </div>
   <a id="Solti_Utils_DI_IServiceContainerExtensions_Proxy_" data-uid="Solti.Utils.DI.IServiceContainerExtensions.Proxy*"></a>
-  <h4 id="Solti_Utils_DI_IServiceContainerExtensions_Proxy_Solti_Utils_DI_IServiceContainer_Type_System_String_Type_" data-uid="Solti.Utils.DI.IServiceContainerExtensions.Proxy(Solti.Utils.DI.IServiceContainer,Type,System.String,Type)">Proxy(IServiceContainer, Type, String, Type)</h4>
+  <h4 id="Solti_Utils_DI_IServiceContainerExtensions_Proxy_Solti_Utils_DI_IServiceContainer_Type_System_Nullable_System_String__Type_" data-uid="Solti.Utils.DI.IServiceContainerExtensions.Proxy(Solti.Utils.DI.IServiceContainer,Type,System.Nullable{System.String},Type)">Proxy(IServiceContainer, Type, Nullable&lt;String&gt;, Type)</h4>
   <div class="markdown level1 summary"><p>Hooks into the instantiating process to let you decorate the original service. Useful when you want to add additional functionality (e.g. parameter validation). The easiest way to decorate an instance is using the <see cref="!:InterfaceInterceptor&lt;TInterface>"></see> class.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static IServiceContainer Proxy(this IServiceContainer self, Type iface, string name, Type interceptor)</code></pre>
+    <pre><code class="lang-csharp hljs">public static IServiceContainer Proxy(this IServiceContainer self, Type iface, string? name, Type interceptor)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1778,7 +1787,7 @@
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
         <td><span class="parametername">name</span></td>
         <td><p>The (optional) name of the service.</p>
 </td>
@@ -1807,7 +1816,7 @@
       </tr>
     </tbody>
   </table>
-  <h5 id="Solti_Utils_DI_IServiceContainerExtensions_Proxy_Solti_Utils_DI_IServiceContainer_Type_System_String_Type__remarks">Remarks</h5>
+  <h5 id="Solti_Utils_DI_IServiceContainerExtensions_Proxy_Solti_Utils_DI_IServiceContainer_Type_System_Nullable_System_String__Type__remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>You can&apos;t create proxies against instances or not owned entries. A service can be decorated multiple times.</p>
 </div>
   <a id="Solti_Utils_DI_IServiceContainerExtensions_Proxy_" data-uid="Solti.Utils.DI.IServiceContainerExtensions.Proxy*"></a>
@@ -1875,7 +1884,8 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static IServiceContainer Proxy&lt;TInterface&gt;(this IServiceContainer self, Func&lt;IInjector, TInterface, TInterface&gt; decorator)</code></pre>
+    <pre><code class="lang-csharp hljs">public static IServiceContainer Proxy&lt;TInterface&gt;(this IServiceContainer self, Func&lt;IInjector, TInterface, TInterface&gt; decorator)
+    where TInterface : class</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1937,13 +1947,14 @@
   <div class="markdown level1 remarks"><p>You can&apos;t create proxies against instances or not owned entries. A service can be decorated multiple times.</p>
 </div>
   <a id="Solti_Utils_DI_IServiceContainerExtensions_Proxy_" data-uid="Solti.Utils.DI.IServiceContainerExtensions.Proxy*"></a>
-  <h4 id="Solti_Utils_DI_IServiceContainerExtensions_Proxy__1_Solti_Utils_DI_IServiceContainer_System_String_Func_Solti_Utils_DI_IInjector___0___0__" data-uid="Solti.Utils.DI.IServiceContainerExtensions.Proxy``1(Solti.Utils.DI.IServiceContainer,System.String,Func{Solti.Utils.DI.IInjector,``0,``0})">Proxy&lt;TInterface&gt;(IServiceContainer, String, Func&lt;IInjector, TInterface, TInterface&gt;)</h4>
+  <h4 id="Solti_Utils_DI_IServiceContainerExtensions_Proxy__1_Solti_Utils_DI_IServiceContainer_System_Nullable_System_String__Func_Solti_Utils_DI_IInjector___0___0__" data-uid="Solti.Utils.DI.IServiceContainerExtensions.Proxy``1(Solti.Utils.DI.IServiceContainer,System.Nullable{System.String},Func{Solti.Utils.DI.IInjector,``0,``0})">Proxy&lt;TInterface&gt;(IServiceContainer, Nullable&lt;String&gt;, Func&lt;IInjector, TInterface, TInterface&gt;)</h4>
   <div class="markdown level1 summary"><p>Hooks into the instantiating process to let you decorate the original service. Useful when you want to add additional functionality (e.g. parameter validation). The easiest way to decorate an instance is using the <see cref="!:InterfaceInterceptor&lt;TInterface>"></see> class.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static IServiceContainer Proxy&lt;TInterface&gt;(this IServiceContainer self, string name, Func&lt;IInjector, TInterface, TInterface&gt; decorator)</code></pre>
+    <pre><code class="lang-csharp hljs">public static IServiceContainer Proxy&lt;TInterface&gt;(this IServiceContainer self, string? name, Func&lt;IInjector, TInterface, TInterface&gt; decorator)
+    where TInterface : class</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1962,7 +1973,7 @@
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
         <td><span class="parametername">name</span></td>
         <td><p>The (optional) name of the service.</p>
 </td>
@@ -2007,17 +2018,17 @@
       </tr>
     </tbody>
   </table>
-  <h5 id="Solti_Utils_DI_IServiceContainerExtensions_Proxy__1_Solti_Utils_DI_IServiceContainer_System_String_Func_Solti_Utils_DI_IInjector___0___0___remarks">Remarks</h5>
+  <h5 id="Solti_Utils_DI_IServiceContainerExtensions_Proxy__1_Solti_Utils_DI_IServiceContainer_System_Nullable_System_String__Func_Solti_Utils_DI_IInjector___0___0___remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>You can&apos;t create proxies against instances or not owned entries. A service can be decorated multiple times.</p>
 </div>
   <a id="Solti_Utils_DI_IServiceContainerExtensions_Proxy_" data-uid="Solti.Utils.DI.IServiceContainerExtensions.Proxy*"></a>
-  <h4 id="Solti_Utils_DI_IServiceContainerExtensions_Proxy__2_Solti_Utils_DI_IServiceContainer_System_String_" data-uid="Solti.Utils.DI.IServiceContainerExtensions.Proxy``2(Solti.Utils.DI.IServiceContainer,System.String)">Proxy&lt;TInterface, TInterceptor&gt;(IServiceContainer, String)</h4>
+  <h4 id="Solti_Utils_DI_IServiceContainerExtensions_Proxy__2_Solti_Utils_DI_IServiceContainer_System_Nullable_System_String__" data-uid="Solti.Utils.DI.IServiceContainerExtensions.Proxy``2(Solti.Utils.DI.IServiceContainer,System.Nullable{System.String})">Proxy&lt;TInterface, TInterceptor&gt;(IServiceContainer, Nullable&lt;String&gt;)</h4>
   <div class="markdown level1 summary"><p>Hooks into the instantiating process to let you decorate the original service. Useful when you want to add additional functionality (e.g. parameter validation). The easiest way to decorate an instance is using the <see cref="!:InterfaceInterceptor&lt;TInterface>"></see> class.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static IServiceContainer Proxy&lt;TInterface, TInterceptor&gt;(this IServiceContainer self, string name = null)
+    <pre><code class="lang-csharp hljs">public static IServiceContainer Proxy&lt;TInterface, TInterceptor&gt;(this IServiceContainer self, string? name = null)
     where TInterface : class where TInterceptor : InterfaceInterceptor&lt;TInterface&gt;</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
@@ -2037,7 +2048,7 @@
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
         <td><span class="parametername">name</span></td>
         <td><p>The (optional) name of the service.</p>
 </td>
@@ -2081,17 +2092,17 @@
       </tr>
     </tbody>
   </table>
-  <h5 id="Solti_Utils_DI_IServiceContainerExtensions_Proxy__2_Solti_Utils_DI_IServiceContainer_System_String__remarks">Remarks</h5>
+  <h5 id="Solti_Utils_DI_IServiceContainerExtensions_Proxy__2_Solti_Utils_DI_IServiceContainer_System_Nullable_System_String___remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>You can&apos;t create proxies against instances or not owned entries. A service can be decorated multiple times.</p>
 </div>
   <a id="Solti_Utils_DI_IServiceContainerExtensions_Service_" data-uid="Solti.Utils.DI.IServiceContainerExtensions.Service*"></a>
-  <h4 id="Solti_Utils_DI_IServiceContainerExtensions_Service_Solti_Utils_DI_IServiceContainer_Type_System_String_Type_Solti_Utils_DI_Lifetime_" data-uid="Solti.Utils.DI.IServiceContainerExtensions.Service(Solti.Utils.DI.IServiceContainer,Type,System.String,Type,Solti.Utils.DI.Lifetime)">Service(IServiceContainer, Type, String, Type, Lifetime)</h4>
+  <h4 id="Solti_Utils_DI_IServiceContainerExtensions_Service_Solti_Utils_DI_IServiceContainer_Type_System_Nullable_System_String__Type_Solti_Utils_DI_Lifetime_" data-uid="Solti.Utils.DI.IServiceContainerExtensions.Service(Solti.Utils.DI.IServiceContainer,Type,System.Nullable{System.String},Type,Solti.Utils.DI.Lifetime)">Service(IServiceContainer, Type, Nullable&lt;String&gt;, Type, Lifetime)</h4>
   <div class="markdown level1 summary"><p>Registers a new service with the given implementation.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static IServiceContainer Service(this IServiceContainer self, Type iface, string name, Type implementation, Lifetime lifetime = default(Lifetime))</code></pre>
+    <pre><code class="lang-csharp hljs">public static IServiceContainer Service(this IServiceContainer self, Type iface, string? name, Type implementation, Lifetime lifetime = default(Lifetime))</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -2116,7 +2127,7 @@
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
         <td><span class="parametername">name</span></td>
         <td><p>The (optional) name of the service.</p>
 </td>
@@ -2151,7 +2162,7 @@
       </tr>
     </tbody>
   </table>
-  <h5 id="Solti_Utils_DI_IServiceContainerExtensions_Service_Solti_Utils_DI_IServiceContainer_Type_System_String_Type_Solti_Utils_DI_Lifetime__remarks">Remarks</h5>
+  <h5 id="Solti_Utils_DI_IServiceContainerExtensions_Service_Solti_Utils_DI_IServiceContainer_Type_System_Nullable_System_String__Type_Solti_Utils_DI_Lifetime__remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>You may register generic services (where both the interface and the implementation are open generic types). The system will specialize the implementation if you request the concrete service.</p>
 </div>
   <a id="Solti_Utils_DI_IServiceContainerExtensions_Service_" data-uid="Solti.Utils.DI.IServiceContainerExtensions.Service*"></a>
@@ -2226,7 +2237,7 @@
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public static IServiceContainer Service&lt;TInterface, TImplementation&gt;(this IServiceContainer self, Lifetime lifetime = default(Lifetime))
-    where TImplementation : TInterface</code></pre>
+    where TInterface : class where TImplementation : TInterface</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -2297,7 +2308,7 @@
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public static IServiceContainer Service&lt;TInterface, TImplementation&gt;(this IServiceContainer self, string name, Lifetime lifetime = default(Lifetime))
-    where TImplementation : TInterface</code></pre>
+    where TInterface : class where TImplementation : TInterface</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
