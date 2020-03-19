@@ -102,3 +102,4 @@
   - *breaking:* new `IComposite` layout
   - *breaking:* `AbstractServiceEntry` moved to public API
   - *added:* `IAsyncDisposable` support
+  - *fixed:* named services can not be queried via `ServiceProvider` ([details](https://github.com/Sholtee/injector/commit/bd97a0caf2763b3a28d4c511b2ee02006b072b3b ))
