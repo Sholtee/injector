@@ -18,7 +18,7 @@ namespace Solti.Utils.DI.Internals
     {
         private readonly ServiceReferenceCollection? FDependencies;
 
-        private readonly WriteOnce<object> FValue = new WriteOnce<object>(strict: false);
+        private readonly WriteOnce FValue = new WriteOnce(strict: false);
 
         /// <summary>
         /// Creates a new <see cref="ServiceReference"/> instance.

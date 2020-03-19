@@ -136,7 +136,12 @@ namespace Solti.Utils.DI.Internals
                 Interface.MakeGenericType(genericArguments),
                 Name,
                 param,
-                Owner
+                
+                //
+                // Legyarthato entitasnak mindig kell legyen szuloje
+                //
+
+                Ensure.IsNotNull(Owner, nameof(Owner))
             );
         }
     }

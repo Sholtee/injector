@@ -9,9 +9,9 @@ namespace Solti.Utils.DI.Internals
 {
     using Properties;
 
-    internal sealed class WriteOnce<T>
+    internal sealed class WriteOnce
     {
-        private T FValue;
+        private object? FValue;
 
         public WriteOnce(bool strict = true) => Strict = strict;
 
@@ -19,7 +19,7 @@ namespace Solti.Utils.DI.Internals
 
         public bool HasValue { get; private set; }
 
-        public T Value
+        public object? Value
         {
             get
             {
@@ -32,8 +32,6 @@ namespace Solti.Utils.DI.Internals
                 FValue = value;
                 HasValue = true;
             }
-        }
-
-        public static implicit operator T(WriteOnce<T> value) => value.Value;
+        }        
     }
 }

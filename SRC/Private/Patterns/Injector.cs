@@ -27,11 +27,17 @@ namespace Solti.Utils.DI.Internals
                 requested = requestedRef.RelatedServiceEntry;
 
             //
+            // Ha vmelyik szulo hianyzik akkor a metodus nem ertelmezett
+            //
+
+            if (requestor?.Owner == null || requested.Owner == null) return;
+
+            //
             // A kerelmezett szerviz tulajdonosanak egy szinten v feljebb kell lennie mint a kerelmezo 
             // tulajdonosa h biztosan legalabb annyi ideig letezzen mint a kerelmezo maga.
             //
 
-            if (requestor?.Owner?.IsDescendantOf(requested.Owner) == false) 
+            if (!requestor.Owner.IsDescendantOf(requested.Owner)) 
                 throw new RequestNotAllowedException(requestor, requested, Resources.STRICT_DI);
         }
 

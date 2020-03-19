@@ -5,7 +5,6 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -18,13 +17,15 @@ namespace Solti.Utils.DI.Internals
 
     internal static class Resolver
     {
-        private static readonly MethodInfo 
+        private static readonly MethodInfo
+            #pragma warning disable CS8625 // Csak kifejezesek, nem tenyleges metodus hivas
             InjectorGet = ExtractIInjectorMethod(i => i.Get(null, null)),
             InjectorTryGet = ExtractIInjectorMethod(i => i.TryGet(null, null));
+            #pragma warning restore CS8625
 
         private static MethodInfo ExtractIInjectorMethod(Expression<Action<IInjector>> expr) => ((MethodCallExpression) expr.Body).Method;
 
-        private static Type GetParameterType(ParameterInfo param, out bool isLazy)
+        private static Type? GetParameterType(ParameterInfo param, out bool isLazy)
         {
             Type parameterType = param.ParameterType;
 
@@ -148,7 +149,7 @@ namespace Solti.Utils.DI.Internals
                 explicitArgs
             ).Compile();
 
-            object GetArg(ParameterInfo param, IInjector injectorInst, IReadOnlyDictionary<string, object> explicitArgsInst)
+            static object GetArg(ParameterInfo param, IInjector injectorInst, IReadOnlyDictionary<string, object> explicitArgsInst)
             {
                 if (explicitArgsInst.TryGetValue(param.Name, out var value)) return value;
 
@@ -227,8 +228,6 @@ namespace Solti.Utils.DI.Internals
             ConstructorInfo ctor = typeof(Lazy<>)
                 .MakeGenericType(iface)
                 .GetConstructor(new []{ delegateType });
-
-            Debug.Assert(ctor != null);
 
             return new Func<IInjector, object>(i => ctor.Call(createValueFactory(i)));
         });
