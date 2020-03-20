@@ -156,6 +156,7 @@ namespace Solti.Utils.DI.Internals
         bool ICollection<TInterface>.IsReadOnly { get; }
       
         [CanSetParent]
+        [MethodImpl(MethodImplOptions.NoInlining)]
         void ICollection<TInterface>.Add(TInterface child)
         {
             Ensure.Parameter.IsNotNull(child, nameof(child));
@@ -187,6 +188,7 @@ namespace Solti.Utils.DI.Internals
         }
 
         [CanSetParent]
+        [MethodImpl(MethodImplOptions.NoInlining)]
         bool ICollection<TInterface>.Remove(TInterface child)
         {
             Ensure.Parameter.IsNotNull(child, nameof(child));
