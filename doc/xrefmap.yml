@@ -223,146 +223,6 @@ references:
   isSpec: "True"
   fullName: Solti.Utils.DI.AbstractServiceEntry.ToString
   nameWithType: AbstractServiceEntry.ToString
-- uid: Solti.Utils.DI.Annotations
-  name: Solti.Utils.DI.Annotations
-  href: Solti.Utils.DI.Annotations.html
-  commentId: N:Solti.Utils.DI.Annotations
-  fullName: Solti.Utils.DI.Annotations
-  nameWithType: Solti.Utils.DI.Annotations
-- uid: Solti.Utils.DI.Annotations.OptionsAttribute
-  name: OptionsAttribute
-  href: Solti.Utils.DI.Annotations.OptionsAttribute.html
-  commentId: T:Solti.Utils.DI.Annotations.OptionsAttribute
-  fullName: Solti.Utils.DI.Annotations.OptionsAttribute
-  nameWithType: OptionsAttribute
-- uid: Solti.Utils.DI.Annotations.OptionsAttribute.Name
-  name: Name
-  href: Solti.Utils.DI.Annotations.OptionsAttribute.html#Solti_Utils_DI_Annotations_OptionsAttribute_Name
-  commentId: P:Solti.Utils.DI.Annotations.OptionsAttribute.Name
-  fullName: Solti.Utils.DI.Annotations.OptionsAttribute.Name
-  nameWithType: OptionsAttribute.Name
-- uid: Solti.Utils.DI.Annotations.OptionsAttribute.Name*
-  name: Name
-  href: Solti.Utils.DI.Annotations.OptionsAttribute.html#Solti_Utils_DI_Annotations_OptionsAttribute_Name_
-  commentId: Overload:Solti.Utils.DI.Annotations.OptionsAttribute.Name
-  isSpec: "True"
-  fullName: Solti.Utils.DI.Annotations.OptionsAttribute.Name
-  nameWithType: OptionsAttribute.Name
-- uid: Solti.Utils.DI.Annotations.OptionsAttribute.Optional
-  name: Optional
-  href: Solti.Utils.DI.Annotations.OptionsAttribute.html#Solti_Utils_DI_Annotations_OptionsAttribute_Optional
-  commentId: P:Solti.Utils.DI.Annotations.OptionsAttribute.Optional
-  fullName: Solti.Utils.DI.Annotations.OptionsAttribute.Optional
-  nameWithType: OptionsAttribute.Optional
-- uid: Solti.Utils.DI.Annotations.OptionsAttribute.Optional*
-  name: Optional
-  href: Solti.Utils.DI.Annotations.OptionsAttribute.html#Solti_Utils_DI_Annotations_OptionsAttribute_Optional_
-  commentId: Overload:Solti.Utils.DI.Annotations.OptionsAttribute.Optional
-  isSpec: "True"
-  fullName: Solti.Utils.DI.Annotations.OptionsAttribute.Optional
-  nameWithType: OptionsAttribute.Optional
-- uid: Solti.Utils.DI.Annotations.ServiceActivatorAttribute
-  name: ServiceActivatorAttribute
-  href: Solti.Utils.DI.Annotations.ServiceActivatorAttribute.html
-  commentId: T:Solti.Utils.DI.Annotations.ServiceActivatorAttribute
-  fullName: Solti.Utils.DI.Annotations.ServiceActivatorAttribute
-  nameWithType: ServiceActivatorAttribute
-- uid: Solti.Utils.DI.Annotations.ServiceAttribute
-  name: ServiceAttribute
-  href: Solti.Utils.DI.Annotations.ServiceAttribute.html
-  commentId: T:Solti.Utils.DI.Annotations.ServiceAttribute
-  fullName: Solti.Utils.DI.Annotations.ServiceAttribute
-  nameWithType: ServiceAttribute
-- uid: Solti.Utils.DI.Annotations.ServiceAttribute.#ctor(Type,Solti.Utils.DI.Lifetime)
-  name: ServiceAttribute(Type, Lifetime)
-  href: Solti.Utils.DI.Annotations.ServiceAttribute.html#Solti_Utils_DI_Annotations_ServiceAttribute__ctor_Type_Solti_Utils_DI_Lifetime_
-  commentId: M:Solti.Utils.DI.Annotations.ServiceAttribute.#ctor(Type,Solti.Utils.DI.Lifetime)
-  fullName: Solti.Utils.DI.Annotations.ServiceAttribute.ServiceAttribute(Type, Solti.Utils.DI.Lifetime)
-  nameWithType: ServiceAttribute.ServiceAttribute(Type, Lifetime)
-- uid: Solti.Utils.DI.Annotations.ServiceAttribute.#ctor(Type,System.String,Solti.Utils.DI.Lifetime)
-  name: ServiceAttribute(Type, String, Lifetime)
-  href: Solti.Utils.DI.Annotations.ServiceAttribute.html#Solti_Utils_DI_Annotations_ServiceAttribute__ctor_Type_System_String_Solti_Utils_DI_Lifetime_
-  commentId: M:Solti.Utils.DI.Annotations.ServiceAttribute.#ctor(Type,System.String,Solti.Utils.DI.Lifetime)
-  fullName: Solti.Utils.DI.Annotations.ServiceAttribute.ServiceAttribute(Type, System.String, Solti.Utils.DI.Lifetime)
-  nameWithType: ServiceAttribute.ServiceAttribute(Type, String, Lifetime)
-- uid: Solti.Utils.DI.Annotations.ServiceAttribute.#ctor*
-  name: ServiceAttribute
-  href: Solti.Utils.DI.Annotations.ServiceAttribute.html#Solti_Utils_DI_Annotations_ServiceAttribute__ctor_
-  commentId: Overload:Solti.Utils.DI.Annotations.ServiceAttribute.#ctor
-  isSpec: "True"
-  fullName: Solti.Utils.DI.Annotations.ServiceAttribute.ServiceAttribute
-  nameWithType: ServiceAttribute.ServiceAttribute
-- uid: Solti.Utils.DI.Annotations.ServiceAttribute.Interface
-  name: Interface
-  href: Solti.Utils.DI.Annotations.ServiceAttribute.html#Solti_Utils_DI_Annotations_ServiceAttribute_Interface
-  commentId: P:Solti.Utils.DI.Annotations.ServiceAttribute.Interface
-  fullName: Solti.Utils.DI.Annotations.ServiceAttribute.Interface
-  nameWithType: ServiceAttribute.Interface
-- uid: Solti.Utils.DI.Annotations.ServiceAttribute.Interface*
-  name: Interface
-  href: Solti.Utils.DI.Annotations.ServiceAttribute.html#Solti_Utils_DI_Annotations_ServiceAttribute_Interface_
-  commentId: Overload:Solti.Utils.DI.Annotations.ServiceAttribute.Interface
-  isSpec: "True"
-  fullName: Solti.Utils.DI.Annotations.ServiceAttribute.Interface
-  nameWithType: ServiceAttribute.Interface
-- uid: Solti.Utils.DI.Annotations.ServiceAttribute.Lifetime
-  name: Lifetime
-  href: Solti.Utils.DI.Annotations.ServiceAttribute.html#Solti_Utils_DI_Annotations_ServiceAttribute_Lifetime
-  commentId: P:Solti.Utils.DI.Annotations.ServiceAttribute.Lifetime
-  fullName: Solti.Utils.DI.Annotations.ServiceAttribute.Lifetime
-  nameWithType: ServiceAttribute.Lifetime
-- uid: Solti.Utils.DI.Annotations.ServiceAttribute.Lifetime*
-  name: Lifetime
-  href: Solti.Utils.DI.Annotations.ServiceAttribute.html#Solti_Utils_DI_Annotations_ServiceAttribute_Lifetime_
-  commentId: Overload:Solti.Utils.DI.Annotations.ServiceAttribute.Lifetime
-  isSpec: "True"
-  fullName: Solti.Utils.DI.Annotations.ServiceAttribute.Lifetime
-  nameWithType: ServiceAttribute.Lifetime
-- uid: Solti.Utils.DI.Annotations.ServiceAttribute.Name
-  name: Name
-  href: Solti.Utils.DI.Annotations.ServiceAttribute.html#Solti_Utils_DI_Annotations_ServiceAttribute_Name
-  commentId: P:Solti.Utils.DI.Annotations.ServiceAttribute.Name
-  fullName: Solti.Utils.DI.Annotations.ServiceAttribute.Name
-  nameWithType: ServiceAttribute.Name
-- uid: Solti.Utils.DI.Annotations.ServiceAttribute.Name*
-  name: Name
-  href: Solti.Utils.DI.Annotations.ServiceAttribute.html#Solti_Utils_DI_Annotations_ServiceAttribute_Name_
-  commentId: Overload:Solti.Utils.DI.Annotations.ServiceAttribute.Name
-  isSpec: "True"
-  fullName: Solti.Utils.DI.Annotations.ServiceAttribute.Name
-  nameWithType: ServiceAttribute.Name
-- uid: Solti.Utils.DI.Annotations.ServiceAttribute.Register(Solti.Utils.DI.IServiceContainer,Type)
-  name: Register(IServiceContainer, Type)
-  href: Solti.Utils.DI.Annotations.ServiceAttribute.html#Solti_Utils_DI_Annotations_ServiceAttribute_Register_Solti_Utils_DI_IServiceContainer_Type_
-  commentId: M:Solti.Utils.DI.Annotations.ServiceAttribute.Register(Solti.Utils.DI.IServiceContainer,Type)
-  fullName: Solti.Utils.DI.Annotations.ServiceAttribute.Register(Solti.Utils.DI.IServiceContainer, Type)
-  nameWithType: ServiceAttribute.Register(IServiceContainer, Type)
-- uid: Solti.Utils.DI.Annotations.ServiceAttribute.Register*
-  name: Register
-  href: Solti.Utils.DI.Annotations.ServiceAttribute.html#Solti_Utils_DI_Annotations_ServiceAttribute_Register_
-  commentId: Overload:Solti.Utils.DI.Annotations.ServiceAttribute.Register
-  isSpec: "True"
-  fullName: Solti.Utils.DI.Annotations.ServiceAttribute.Register
-  nameWithType: ServiceAttribute.Register
-- uid: Solti.Utils.DI.Annotations.ServiceRegistrationAttribute
-  name: ServiceRegistrationAttribute
-  href: Solti.Utils.DI.Annotations.ServiceRegistrationAttribute.html
-  commentId: T:Solti.Utils.DI.Annotations.ServiceRegistrationAttribute
-  fullName: Solti.Utils.DI.Annotations.ServiceRegistrationAttribute
-  nameWithType: ServiceRegistrationAttribute
-- uid: Solti.Utils.DI.Annotations.ServiceRegistrationAttribute.Register(Solti.Utils.DI.IServiceContainer,Type)
-  name: Register(IServiceContainer, Type)
-  href: Solti.Utils.DI.Annotations.ServiceRegistrationAttribute.html#Solti_Utils_DI_Annotations_ServiceRegistrationAttribute_Register_Solti_Utils_DI_IServiceContainer_Type_
-  commentId: M:Solti.Utils.DI.Annotations.ServiceRegistrationAttribute.Register(Solti.Utils.DI.IServiceContainer,Type)
-  fullName: Solti.Utils.DI.Annotations.ServiceRegistrationAttribute.Register(Solti.Utils.DI.IServiceContainer, Type)
-  nameWithType: ServiceRegistrationAttribute.Register(IServiceContainer, Type)
-- uid: Solti.Utils.DI.Annotations.ServiceRegistrationAttribute.Register*
-  name: Register
-  href: Solti.Utils.DI.Annotations.ServiceRegistrationAttribute.html#Solti_Utils_DI_Annotations_ServiceRegistrationAttribute_Register_
-  commentId: Overload:Solti.Utils.DI.Annotations.ServiceRegistrationAttribute.Register
-  isSpec: "True"
-  fullName: Solti.Utils.DI.Annotations.ServiceRegistrationAttribute.Register
-  nameWithType: ServiceRegistrationAttribute.Register
 - uid: Solti.Utils.DI.CircularReferenceException
   name: CircularReferenceException
   href: Solti.Utils.DI.CircularReferenceException.html
@@ -1579,6 +1439,38 @@ references:
   commentId: F:Solti.Utils.DI.Lifetime.Transient
   fullName: Solti.Utils.DI.Lifetime.Transient
   nameWithType: Lifetime.Transient
+- uid: Solti.Utils.DI.OptionsAttribute
+  name: OptionsAttribute
+  href: Solti.Utils.DI.OptionsAttribute.html
+  commentId: T:Solti.Utils.DI.OptionsAttribute
+  fullName: Solti.Utils.DI.OptionsAttribute
+  nameWithType: OptionsAttribute
+- uid: Solti.Utils.DI.OptionsAttribute.Name
+  name: Name
+  href: Solti.Utils.DI.OptionsAttribute.html#Solti_Utils_DI_OptionsAttribute_Name
+  commentId: P:Solti.Utils.DI.OptionsAttribute.Name
+  fullName: Solti.Utils.DI.OptionsAttribute.Name
+  nameWithType: OptionsAttribute.Name
+- uid: Solti.Utils.DI.OptionsAttribute.Name*
+  name: Name
+  href: Solti.Utils.DI.OptionsAttribute.html#Solti_Utils_DI_OptionsAttribute_Name_
+  commentId: Overload:Solti.Utils.DI.OptionsAttribute.Name
+  isSpec: "True"
+  fullName: Solti.Utils.DI.OptionsAttribute.Name
+  nameWithType: OptionsAttribute.Name
+- uid: Solti.Utils.DI.OptionsAttribute.Optional
+  name: Optional
+  href: Solti.Utils.DI.OptionsAttribute.html#Solti_Utils_DI_OptionsAttribute_Optional
+  commentId: P:Solti.Utils.DI.OptionsAttribute.Optional
+  fullName: Solti.Utils.DI.OptionsAttribute.Optional
+  nameWithType: OptionsAttribute.Optional
+- uid: Solti.Utils.DI.OptionsAttribute.Optional*
+  name: Optional
+  href: Solti.Utils.DI.OptionsAttribute.html#Solti_Utils_DI_OptionsAttribute_Optional_
+  commentId: Overload:Solti.Utils.DI.OptionsAttribute.Optional
+  isSpec: "True"
+  fullName: Solti.Utils.DI.OptionsAttribute.Optional
+  nameWithType: OptionsAttribute.Optional
 - uid: Solti.Utils.DI.QueryModes
   name: QueryModes
   href: Solti.Utils.DI.QueryModes.html
@@ -1609,12 +1501,95 @@ references:
   commentId: T:Solti.Utils.DI.RequestNotAllowedException
   fullName: Solti.Utils.DI.RequestNotAllowedException
   nameWithType: RequestNotAllowedException
+- uid: Solti.Utils.DI.ServiceActivatorAttribute
+  name: ServiceActivatorAttribute
+  href: Solti.Utils.DI.ServiceActivatorAttribute.html
+  commentId: T:Solti.Utils.DI.ServiceActivatorAttribute
+  fullName: Solti.Utils.DI.ServiceActivatorAttribute
+  nameWithType: ServiceActivatorAttribute
 - uid: Solti.Utils.DI.ServiceAlreadyRegisteredException
   name: ServiceAlreadyRegisteredException
   href: Solti.Utils.DI.ServiceAlreadyRegisteredException.html
   commentId: T:Solti.Utils.DI.ServiceAlreadyRegisteredException
   fullName: Solti.Utils.DI.ServiceAlreadyRegisteredException
   nameWithType: ServiceAlreadyRegisteredException
+- uid: Solti.Utils.DI.ServiceAttribute
+  name: ServiceAttribute
+  href: Solti.Utils.DI.ServiceAttribute.html
+  commentId: T:Solti.Utils.DI.ServiceAttribute
+  fullName: Solti.Utils.DI.ServiceAttribute
+  nameWithType: ServiceAttribute
+- uid: Solti.Utils.DI.ServiceAttribute.#ctor(Type,Solti.Utils.DI.Lifetime)
+  name: ServiceAttribute(Type, Lifetime)
+  href: Solti.Utils.DI.ServiceAttribute.html#Solti_Utils_DI_ServiceAttribute__ctor_Type_Solti_Utils_DI_Lifetime_
+  commentId: M:Solti.Utils.DI.ServiceAttribute.#ctor(Type,Solti.Utils.DI.Lifetime)
+  fullName: Solti.Utils.DI.ServiceAttribute.ServiceAttribute(Type, Solti.Utils.DI.Lifetime)
+  nameWithType: ServiceAttribute.ServiceAttribute(Type, Lifetime)
+- uid: Solti.Utils.DI.ServiceAttribute.#ctor(Type,System.String,Solti.Utils.DI.Lifetime)
+  name: ServiceAttribute(Type, String, Lifetime)
+  href: Solti.Utils.DI.ServiceAttribute.html#Solti_Utils_DI_ServiceAttribute__ctor_Type_System_String_Solti_Utils_DI_Lifetime_
+  commentId: M:Solti.Utils.DI.ServiceAttribute.#ctor(Type,System.String,Solti.Utils.DI.Lifetime)
+  fullName: Solti.Utils.DI.ServiceAttribute.ServiceAttribute(Type, System.String, Solti.Utils.DI.Lifetime)
+  nameWithType: ServiceAttribute.ServiceAttribute(Type, String, Lifetime)
+- uid: Solti.Utils.DI.ServiceAttribute.#ctor*
+  name: ServiceAttribute
+  href: Solti.Utils.DI.ServiceAttribute.html#Solti_Utils_DI_ServiceAttribute__ctor_
+  commentId: Overload:Solti.Utils.DI.ServiceAttribute.#ctor
+  isSpec: "True"
+  fullName: Solti.Utils.DI.ServiceAttribute.ServiceAttribute
+  nameWithType: ServiceAttribute.ServiceAttribute
+- uid: Solti.Utils.DI.ServiceAttribute.Interface
+  name: Interface
+  href: Solti.Utils.DI.ServiceAttribute.html#Solti_Utils_DI_ServiceAttribute_Interface
+  commentId: P:Solti.Utils.DI.ServiceAttribute.Interface
+  fullName: Solti.Utils.DI.ServiceAttribute.Interface
+  nameWithType: ServiceAttribute.Interface
+- uid: Solti.Utils.DI.ServiceAttribute.Interface*
+  name: Interface
+  href: Solti.Utils.DI.ServiceAttribute.html#Solti_Utils_DI_ServiceAttribute_Interface_
+  commentId: Overload:Solti.Utils.DI.ServiceAttribute.Interface
+  isSpec: "True"
+  fullName: Solti.Utils.DI.ServiceAttribute.Interface
+  nameWithType: ServiceAttribute.Interface
+- uid: Solti.Utils.DI.ServiceAttribute.Lifetime
+  name: Lifetime
+  href: Solti.Utils.DI.ServiceAttribute.html#Solti_Utils_DI_ServiceAttribute_Lifetime
+  commentId: P:Solti.Utils.DI.ServiceAttribute.Lifetime
+  fullName: Solti.Utils.DI.ServiceAttribute.Lifetime
+  nameWithType: ServiceAttribute.Lifetime
+- uid: Solti.Utils.DI.ServiceAttribute.Lifetime*
+  name: Lifetime
+  href: Solti.Utils.DI.ServiceAttribute.html#Solti_Utils_DI_ServiceAttribute_Lifetime_
+  commentId: Overload:Solti.Utils.DI.ServiceAttribute.Lifetime
+  isSpec: "True"
+  fullName: Solti.Utils.DI.ServiceAttribute.Lifetime
+  nameWithType: ServiceAttribute.Lifetime
+- uid: Solti.Utils.DI.ServiceAttribute.Name
+  name: Name
+  href: Solti.Utils.DI.ServiceAttribute.html#Solti_Utils_DI_ServiceAttribute_Name
+  commentId: P:Solti.Utils.DI.ServiceAttribute.Name
+  fullName: Solti.Utils.DI.ServiceAttribute.Name
+  nameWithType: ServiceAttribute.Name
+- uid: Solti.Utils.DI.ServiceAttribute.Name*
+  name: Name
+  href: Solti.Utils.DI.ServiceAttribute.html#Solti_Utils_DI_ServiceAttribute_Name_
+  commentId: Overload:Solti.Utils.DI.ServiceAttribute.Name
+  isSpec: "True"
+  fullName: Solti.Utils.DI.ServiceAttribute.Name
+  nameWithType: ServiceAttribute.Name
+- uid: Solti.Utils.DI.ServiceAttribute.Register(Solti.Utils.DI.IServiceContainer,Type)
+  name: Register(IServiceContainer, Type)
+  href: Solti.Utils.DI.ServiceAttribute.html#Solti_Utils_DI_ServiceAttribute_Register_Solti_Utils_DI_IServiceContainer_Type_
+  commentId: M:Solti.Utils.DI.ServiceAttribute.Register(Solti.Utils.DI.IServiceContainer,Type)
+  fullName: Solti.Utils.DI.ServiceAttribute.Register(Solti.Utils.DI.IServiceContainer, Type)
+  nameWithType: ServiceAttribute.Register(IServiceContainer, Type)
+- uid: Solti.Utils.DI.ServiceAttribute.Register*
+  name: Register
+  href: Solti.Utils.DI.ServiceAttribute.html#Solti_Utils_DI_ServiceAttribute_Register_
+  commentId: Overload:Solti.Utils.DI.ServiceAttribute.Register
+  isSpec: "True"
+  fullName: Solti.Utils.DI.ServiceAttribute.Register
+  nameWithType: ServiceAttribute.Register
 - uid: Solti.Utils.DI.ServiceContainer
   name: ServiceContainer
   href: Solti.Utils.DI.ServiceContainer.html
@@ -1895,6 +1870,25 @@ references:
   isSpec: "True"
   fullName: Solti.Utils.DI.ServiceReference.Value
   nameWithType: ServiceReference.Value
+- uid: Solti.Utils.DI.ServiceRegistrationAttribute
+  name: ServiceRegistrationAttribute
+  href: Solti.Utils.DI.ServiceRegistrationAttribute.html
+  commentId: T:Solti.Utils.DI.ServiceRegistrationAttribute
+  fullName: Solti.Utils.DI.ServiceRegistrationAttribute
+  nameWithType: ServiceRegistrationAttribute
+- uid: Solti.Utils.DI.ServiceRegistrationAttribute.Register(Solti.Utils.DI.IServiceContainer,Type)
+  name: Register(IServiceContainer, Type)
+  href: Solti.Utils.DI.ServiceRegistrationAttribute.html#Solti_Utils_DI_ServiceRegistrationAttribute_Register_Solti_Utils_DI_IServiceContainer_Type_
+  commentId: M:Solti.Utils.DI.ServiceRegistrationAttribute.Register(Solti.Utils.DI.IServiceContainer,Type)
+  fullName: Solti.Utils.DI.ServiceRegistrationAttribute.Register(Solti.Utils.DI.IServiceContainer, Type)
+  nameWithType: ServiceRegistrationAttribute.Register(IServiceContainer, Type)
+- uid: Solti.Utils.DI.ServiceRegistrationAttribute.Register*
+  name: Register
+  href: Solti.Utils.DI.ServiceRegistrationAttribute.html#Solti_Utils_DI_ServiceRegistrationAttribute_Register_
+  commentId: Overload:Solti.Utils.DI.ServiceRegistrationAttribute.Register
+  isSpec: "True"
+  fullName: Solti.Utils.DI.ServiceRegistrationAttribute.Register
+  nameWithType: ServiceRegistrationAttribute.Register
 - uid: Solti.Utils.Proxy
   name: Solti.Utils.Proxy
   href: Solti.Utils.Proxy.html
