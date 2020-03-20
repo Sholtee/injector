@@ -12,7 +12,6 @@ using NUnit.Framework;
 
 namespace Solti.Utils.DI.Internals.Tests
 {
-    using Annotations;
     using Properties;
 
     [TestFixture]

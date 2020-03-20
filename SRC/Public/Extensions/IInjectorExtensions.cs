@@ -9,7 +9,6 @@ using System.Collections.Generic;
 namespace Solti.Utils.DI
 {
     using Internals;
-    using Annotations;
 
     /// <summary>
     /// Defines several handy extensions for the <see cref="IInjector"/> interface.

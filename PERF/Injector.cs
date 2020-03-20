@@ -11,7 +11,6 @@ using BenchmarkDotNet.Attributes;
 
 namespace Solti.Utils.DI.Perf
 {
-    using Annotations;
     using Internals;
 
     using static Consts;

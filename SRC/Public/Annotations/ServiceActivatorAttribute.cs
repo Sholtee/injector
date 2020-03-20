@@ -5,7 +5,7 @@
 ********************************************************************************/
 using System;
 
-namespace Solti.Utils.DI.Annotations
+namespace Solti.Utils.DI
 {
     /// <summary>
     /// Marks a constructor to be used by the injector. Useful in case of multiple constructors.

@@ -8,7 +8,6 @@ using System.Reflection;
 
 namespace Solti.Utils.DI
 {
-    using Annotations;
     using Internals;
 
     public static partial class IServiceContainerExtensions

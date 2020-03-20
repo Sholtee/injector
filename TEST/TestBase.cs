@@ -11,7 +11,6 @@ using NUnit.Framework;
 namespace Solti.Utils.DI.Tests
 {
     using Internals;
-    using Annotations;
 
     public class TestBase<TContainer> where TContainer: IServiceContainer, new()
     {

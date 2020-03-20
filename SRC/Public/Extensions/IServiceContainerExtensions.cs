@@ -8,9 +8,8 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace Solti.Utils.DI
 {
-    using Properties;
     using Internals;
-    using Annotations;
+    using Properties;   
 
     using Utils.Proxy;
 

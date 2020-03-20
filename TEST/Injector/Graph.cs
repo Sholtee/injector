@@ -11,7 +11,6 @@ using NUnit.Framework;
 namespace Solti.Utils.DI.Injector.Graph.Tests
 {
     using Internals;
-    using Annotations;
 
     [TestFixture]
     public class GraphTests

@@ -11,7 +11,6 @@ using System.Reflection;
 namespace Solti.Utils.DI.Internals
 {
     using Properties;
-    using Annotations;
 
     internal static partial class TypeExtensions
     {

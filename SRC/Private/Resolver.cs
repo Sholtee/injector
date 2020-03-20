@@ -12,7 +12,6 @@ using System.Threading;
 
 namespace Solti.Utils.DI.Internals
 {
-    using Annotations;
     using Properties;
 
     internal static class Resolver

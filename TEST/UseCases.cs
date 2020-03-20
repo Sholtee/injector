@@ -14,7 +14,6 @@ using Moq;
 namespace Solti.Utils.DI.UseCases
 {  
     using Internals;
-    using Annotations;
 
     using DI.Tests;
 

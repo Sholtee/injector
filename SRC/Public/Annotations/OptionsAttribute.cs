@@ -5,7 +5,7 @@
 ********************************************************************************/
 using System;
 
-namespace Solti.Utils.DI.Annotations
+namespace Solti.Utils.DI
 {
     /// <summary>
     /// Controls the <see cref="IInjector"/> during the dependency resolution.

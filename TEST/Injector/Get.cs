@@ -10,7 +10,6 @@ using NUnit.Framework;
 
 namespace Solti.Utils.DI.Injector.Tests
 {
-    using Annotations;
     using Internals;
     using Properties;
 

@@ -101,8 +101,6 @@ Registering a service can be done via several patterns (I name them recipes):
       ```
     - Starting from version 1.3.0, you can mark the requested dependency as optional. In this case the system won't throw if the dependency can not be found:
       ```csharp 
-      using Solti.Utils.DI.Annotations
-      ...
       public class MyService: IMyService
       {
         public MyService(IService_1 dep1, [Options(Optional = true)]IService_2 dep2) {...}
@@ -151,8 +149,6 @@ Remarks:
   ```
   Later you can request them via constructor parameters as well:
   ```csharp
-  using Solti.Utils.DI.Annotations;  
-  ...
   class MyOtherService: IMyOtherService
   {
     public MyOtherService([Options(Name = "svc2")]IMyService dep) {...}
@@ -228,7 +224,6 @@ public class ParameterValidatorProxy<TInterface> : InterfaceInterceptor<TInterfa
 - Bulked decoration also possible:
   ```csharp
   using Solti.Utils.DI;
-  using Solti.Utils.DI.Annotations;
   using Solti.Utils.Proxy;
   ...
   public interface IModule {...}
@@ -303,8 +298,6 @@ public class ParameterValidatorProxy<TInterface> : InterfaceInterceptor<TInterfa
 ### Auto config
 There are some attributes to annotate services for "auto config" e.g.:
 - ```csharp
-  using Solti.Utils.DI.Annotations
-  ...
   [Service(typeof(IMyService), Lifetime.Scoped)] // It will use the "service recipe"
   public MyService: IMyService {...}
   ```
