@@ -19,7 +19,7 @@ namespace Solti.Utils.DI.Internals
     {
         private readonly ServiceReferenceCollection FSpawnedServices = new ServiceReferenceCollection();
 
-        private void CheckNotFull(IReadOnlyDictionary<string, object> options) 
+        private void EnsureNotFull(IReadOnlyDictionary<string, object> options) 
         {
             int? threshold = options?.GetValueOrDefault<int?>("MaxSpawnedTransientServices");
 
@@ -50,16 +50,12 @@ namespace Solti.Utils.DI.Internals
 
         public override bool SetInstance(ServiceReference reference, IReadOnlyDictionary<string, object> options)
         {
-            Ensure.Parameter.IsNotNull(reference, nameof(reference));
-            Ensure.AreEqual(reference.RelatedServiceEntry, this, Resources.NOT_BELONGING_REFERENCE);
+            EnsureEmptyReference(reference);
+            EnsureProducible();
+            EnsureNotFull(options);
 
             IInjector relatedInjector = Ensure.IsNotNull(reference.RelatedInjector, $"{nameof(reference)}.{nameof(reference.RelatedInjector)}");
-
             Ensure.AreEqual(relatedInjector.UnderlyingContainer, Owner, Resources.INAPPROPRIATE_OWNERSHIP);
-            Ensure.IsNull(reference.Value, $"{nameof(reference)}.{nameof(reference.Value)}");
-
-            CheckProducible();
-            CheckNotFull(options);
 
             #pragma warning disable CS8602 // CheckProducible() ellenorzi h Factory letezik e
             reference.Value = Factory(relatedInjector, Interface);

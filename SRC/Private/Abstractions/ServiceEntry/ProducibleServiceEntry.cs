@@ -89,7 +89,14 @@ namespace Solti.Utils.DI.Internals
             UnderlyingImplementation = lazyImplementation;
         }
 
-        protected void CheckProducible()
+        protected void EnsureEmptyReference(ServiceReference reference)
+        {
+            Ensure.Parameter.IsNotNull(reference, nameof(reference));
+            Ensure.AreEqual(reference.RelatedServiceEntry, this, Resources.NOT_BELONGING_REFERENCE);
+            Ensure.IsNull(reference.Value, $"{nameof(reference)}.{nameof(reference.Value)}");
+        }
+
+        protected void EnsureProducible()
         {
             Ensure.NotDisposed(this);
 

@@ -33,15 +33,11 @@ namespace Solti.Utils.DI.Internals
 
         public override bool SetInstance(ServiceReference reference, IReadOnlyDictionary<string, object> options)
         {
-            Ensure.Parameter.IsNotNull(reference, nameof(reference));
-            Ensure.AreEqual(reference.RelatedServiceEntry, this, Resources.NOT_BELONGING_REFERENCE);
+            EnsureEmptyReference(reference);
+            EnsureProducible();
 
             IInjector relatedInjector = Ensure.IsNotNull(reference.RelatedInjector, $"{nameof(reference)}.{nameof(reference.RelatedInjector)}");
-
             Ensure.AreEqual(relatedInjector.UnderlyingContainer, Owner, Resources.INAPPROPRIATE_OWNERSHIP);
-            Ensure.IsNull(reference.Value, $"{nameof(reference)}.{nameof(reference.Value)}");
-
-            CheckProducible(); // hivja az "Ensure.NotDisposed(this)"-t
 
             //
             // Ha mar le lett gyartva akkor nincs dolgunk, jelezzuk a hivonak h ovlassa ki a korabban 
