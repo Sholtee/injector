@@ -57,7 +57,7 @@ namespace Solti.Utils.DI.Internals
             IInjector relatedInjector = Ensure.IsNotNull(reference.RelatedInjector, $"{nameof(reference)}.{nameof(reference.RelatedInjector)}");
             Ensure.AreEqual(relatedInjector.UnderlyingContainer, Owner, Resources.INAPPROPRIATE_OWNERSHIP);
 
-            #pragma warning disable CS8602 // CheckProducible() ellenorzi h Factory letezik e
+            #pragma warning disable CS8602 // EnsureProducible() ellenorzi h Factory letezik e
             reference.Value = Factory(relatedInjector, Interface);
             #pragma warning restore CS8602
 

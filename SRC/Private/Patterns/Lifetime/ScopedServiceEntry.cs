@@ -51,7 +51,7 @@ namespace Solti.Utils.DI.Internals
             // eseten adjunk erteket.
             //
 
-            #pragma warning disable CS8602 // CheckProducible() ellenorzi h Factory letezik e
+            #pragma warning disable CS8602 // EnsureProducible() ellenorzi h Factory letezik e
             reference.Value = Factory(relatedInjector, Interface);
             #pragma warning restore CS8602
 
