@@ -5,6 +5,7 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -15,14 +16,6 @@ namespace Solti.Utils.DI.Internals
     /// </summary>
     internal class SingletonServiceEntry : ProducibleServiceEntry
     {
-        //
-        // Lock azert kell mert ez az entitas egyszerre tobb szerviz kollekcioban is szerepelhet ->
-        // SetInstance() elmeletileg lehet hivva parhuzamosan (gyakorlatilag nem de biztos ami tuti
-        // marad).
-        //
-
-        private readonly object FLock = new object();
-
         public SingletonServiceEntry(Type @interface, string name, Func<IInjector, Type, object> factory, IServiceContainer owner) : base(@interface, name, DI.Lifetime.Singleton, factory, owner)
         {
         }
@@ -35,6 +28,7 @@ namespace Solti.Utils.DI.Internals
         {
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public override bool SetInstance(ServiceReference reference, IReadOnlyDictionary<string, object> options)
         {
             Ensure.Parameter.IsNotNull(reference, nameof(reference));
@@ -58,21 +52,16 @@ namespace Solti.Utils.DI.Internals
 
             if (Instance != null) return false;
 
-            lock (FLock)
-            {
-                if (Instance != null) return false;
+            //
+            // Kulomben legyartjuk. Elsokent a Factory-t hivjuk es Instance-nak csak sikeres visszateres
+            // eseten adjunk erteket.
+            //
 
-                //
-                // Kulomben legyartjuk. Elsokent a Factory-t hivjuk es Instance-nak csak sikeres visszateres
-                // eseten adjunk erteket.
-                //
+            #pragma warning disable CS8602 // CheckProducible() ellenorzi h Factory letezik e
+            reference.Value = Factory(relatedInjector, Interface);
+            #pragma warning restore CS8602
 
-                #pragma warning disable CS8602 // CheckProducible() ellenorzi h Factory letezik e
-                reference.Value = Factory(relatedInjector, Interface);
-                #pragma warning restore CS8602
-
-                Instance = reference;
-            }
+            Instance = reference;
 
             return true;
         }
