@@ -21,12 +21,10 @@ namespace Solti.Utils.DI.Internals
         //
         // IInjector.Get() elvileg sose adhatna vissza NULL-t viszont h biztositsuk 
         // h a ServiceProvider konstruktor parameterek feloldasakor se dobjon kivetelt
-        // ezert itt megengedjuk -> disable CS8603
+        // ezert itt megengedjuk.
         //
 
-        #pragma warning disable CS8603
-        object IInjector.Get(Type iface, string? name) => TryGet(iface, name);
-        #pragma warning restore CS8603
+        object IInjector.Get(Type iface, string? name) => TryGet(iface, name)!;
 
         object? IServiceProvider.GetService(Type serviceType) => TryGet(serviceType, null);
     }

@@ -49,13 +49,12 @@ namespace Solti.Utils.DI.Internals
             if (Instance != null) return false;
 
             //
-            // Kulomben legyartjuk. Elsokent a Factory-t hivjuk es Instance-nak csak sikeres visszateres
-            // eseten adjunk erteket.
+            // Kulomben legyartjuk: 
+            // - Elsokent a Factory-t hivjuk es Instance-nak csak sikeres visszateres eseten adjunk erteket.
+            // - "Factory" biztosan nem NULL [lasd EnsureProducible()].
             //
 
-            #pragma warning disable CS8602 // EnsureProducible() ellenorzi h Factory letezik e
-            reference.Value = Factory(relatedInjector, Interface);
-            #pragma warning restore CS8602
+            reference.Value = Factory!(relatedInjector, Interface);
 
             Instance = reference;
 

@@ -144,7 +144,7 @@ namespace Solti.Utils.DI
 
                     IServiceContainer owner = Ensure.IsNotNull(existing.Owner, $"{nameof(existing)}.{nameof(existing.Owner)}");
 
-                    specialized = Ensure.IsNotNull(owner.Get(serviceInterface, name, QueryModes.AllowSpecialization), nameof(specialized));
+                    specialized = owner.Get(serviceInterface, name, QueryModes.AllowSpecialization | QueryModes.ThrowOnError)!;
 
                     return specialized.CopyTo(this);
                 }

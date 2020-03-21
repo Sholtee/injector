@@ -103,24 +103,18 @@ namespace Solti.Utils.DI.Internals
             Debug.Assert(FGraph.Current?.Value == null, "Already produced services can not request dependencies");
 
             //
-            // Bejegyzes lekerdezese, generikus bejegyzes tipizalasat megengedjuk.
+            // Bejegyzes lekerdezese, generikus bejegyzes tipizalasat megengedjuk. A "QueryModes.ThrowOnError" 
+            // miatt "entry" tuti nem NULL.
             //
 
-            AbstractServiceEntry? entry = Get(iface, name, QueryModes.AllowSpecialization | QueryModes.ThrowOnError);
+            AbstractServiceEntry entry = Get(iface, name, QueryModes.AllowSpecialization | QueryModes.ThrowOnError)!;
 
             //
             // Szerviz peldany letrehozasa. 
             //
 
             return FStrategySelector
-                .GetStrategyFor
-                (
-                    //    
-                    // A QueryModes.ThrowOnError miatt "entry" tuti nem NULL viszont h ne dumaljon a fordito ellenorizzuk.
-                    //
-
-                    Ensure.IsNotNull(entry, nameof(entry))
-                )
+                .GetStrategyFor(entry)
                 .Invoke(FGraph.Current /*requestor*/);
         }
 
@@ -133,7 +127,7 @@ namespace Solti.Utils.DI.Internals
             {
                 ServiceReference reference = GetReference(iface, name);
 
-                return Ensure.IsNotNull(reference.Value, nameof(reference.Value));
+                return reference.Value!;
             }
 
             //

@@ -85,8 +85,8 @@ namespace Solti.Utils.DI
                 // Peldany tipusat ellenorizzuk mert a Factory(), Proxy() stb visszaadhat vicces dolgokat.
                 //
 
-                value = Ensure.Parameter.IsNotNull(value, nameof(value));
-                Ensure.Type.IsTypeOf(RelatedServiceEntry.Interface, value);
+                Ensure.Parameter.IsNotNull(value, nameof(value));
+                Ensure.Type.IsTypeOf(RelatedServiceEntry.Interface, value!);
                 Ensure.NotDisposed(this);
 
                 FValue.Value = value;

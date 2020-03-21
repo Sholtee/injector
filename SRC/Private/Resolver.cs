@@ -17,10 +17,12 @@ namespace Solti.Utils.DI.Internals
     internal static class Resolver
     {
         private static readonly MethodInfo
-            #pragma warning disable CS8625 // Csak kifejezesek, nem tenyleges metodus hivas
-            InjectorGet = ExtractIInjectorMethod(i => i.Get(null, null)),
-            InjectorTryGet = ExtractIInjectorMethod(i => i.TryGet(null, null));
-            #pragma warning restore CS8625
+            //
+            // Csak kifejezesek, nem tenyleges metodus hivas
+            //
+
+            InjectorGet = ExtractIInjectorMethod(i => i.Get(null!, null)),
+            InjectorTryGet = ExtractIInjectorMethod(i => i.TryGet(null!, null));
 
         private static MethodInfo ExtractIInjectorMethod(Expression<Action<IInjector>> expr) => ((MethodCallExpression) expr.Body).Method;
 

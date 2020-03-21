@@ -191,14 +191,10 @@ namespace Solti.Utils.DI
             Ensure.Parameter.IsNotNull(decorator, nameof(decorator));
 
             //
-            // Ensure hivas nem kene csak h ne dumaljon a fordito.
+            // "QueryModes.ThrowOnError" miatt "entry" sose NULL
             //
 
-            AbstractServiceEntry entry = Ensure.IsNotNull
-            (
-                self.Get(iface, name, QueryModes.AllowSpecialization | QueryModes.ThrowOnError),
-                nameof(entry)
-            );
+            AbstractServiceEntry entry = self.Get(iface, name, QueryModes.AllowSpecialization | QueryModes.ThrowOnError)!;
 
             if (entry.Owner == self && entry is ISupportsProxying setter && setter.Factory != null)
             {
