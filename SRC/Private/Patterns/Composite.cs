@@ -65,7 +65,7 @@ namespace Solti.Utils.DI.Internals
                 // Kivesszuk magunkat a szulo gyerekei kozul (kiveve ha gyoker elemunk van, ott nincs szulo).
                 //
 
-                Parent?.Children.Remove(Self);
+                FParent?.Children.Remove(Self);
 
                 //
                 // ToArray() azert kell h iteracio kozben is eltavolithassunk elemet a listabol. 
@@ -91,7 +91,7 @@ namespace Solti.Utils.DI.Internals
         /// </summary>
         protected override async ValueTask AsyncDispose()
         {
-            Parent?.Children.Remove(Self);
+            FParent?.Children.Remove(Self);
 
             foreach (IAsyncDisposable child in FChildren.ToArray())
                 await child.DisposeAsync();
