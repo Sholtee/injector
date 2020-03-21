@@ -103,21 +103,25 @@ namespace Solti.Utils.DI.Internals
             Debug.Assert(FGraph.Current?.Value == null, "Already produced services can not request dependencies");
 
             //
-            // Bejegyzes lekerdezese. A QueryModes.ThrowOnError miatt tuti nem NULL viszont h ne dumaljon a fordito
-            // ellenorizzuk.
+            // Bejegyzes lekerdezese, generikus bejegyzes tipizalasat megengedjuk.
             //
 
-            AbstractServiceEntry entry = Ensure.IsNotNull
-            (
-                Get(iface, name, QueryModes.AllowSpecialization | QueryModes.ThrowOnError), 
-                nameof(entry)
-            );
+            AbstractServiceEntry? entry = Get(iface, name, QueryModes.AllowSpecialization | QueryModes.ThrowOnError);
 
             //
-            // Szerviz peldany letrehozasa.
+            // Szerviz peldany letrehozasa. 
             //
 
-            return FStrategySelector.GetStrategyFor(entry).Invoke(FGraph.Current /*requestor*/);
+            return FStrategySelector
+                .GetStrategyFor
+                (
+                    //    
+                    // A QueryModes.ThrowOnError miatt "entry" tuti nem NULL viszont h ne dumaljon a fordito ellenorizzuk.
+                    //
+
+                    Ensure.IsNotNull(entry, nameof(entry))
+                )
+                .Invoke(FGraph.Current /*requestor*/);
         }
 
         public IReadOnlyDictionary<string, object> FactoryOptions { get; }
@@ -127,11 +131,9 @@ namespace Solti.Utils.DI.Internals
         {
             try
             {
-                return Ensure.IsNotNull
-                (
-                    GetReference(iface, name).Value,
-                    nameof(ServiceReference.Value)
-                );
+                ServiceReference reference = GetReference(iface, name);
+
+                return Ensure.IsNotNull(reference.Value, nameof(reference.Value));
             }
 
             //
@@ -186,6 +188,7 @@ namespace Solti.Utils.DI.Internals
 
         IInjectorEx IInjectorEx.Spawn(IServiceContainer parent)
         {
+            Ensure.Parameter.IsNotNull(parent, nameof(parent));
             Ensure.NotDisposed(this);
 
             return Spawn
