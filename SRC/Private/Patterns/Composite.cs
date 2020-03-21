@@ -113,8 +113,8 @@ namespace Solti.Utils.DI.Internals
             [MethodImpl(MethodImplOptions.NoInlining)]
             set
             {
-                var st = new StackTrace();
-                if (st.GetFrame(1).GetMethod().GetCustomAttribute<CanSetParentAttribute>() == null)
+                var sf = new StackFrame(skipFrames: 1, fNeedFileInfo: false);
+                if (sf.GetMethod().GetCustomAttribute<CanSetParentAttribute>() == null)
                     throw new InvalidOperationException(Resources.CANT_SET_PARENT);
 
                 FParent = value;
