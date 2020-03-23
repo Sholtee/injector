@@ -148,7 +148,7 @@ namespace Solti.Utils.DI.Internals
                 (param, i) => Expression.Invoke(Expression.Constant((Func<ParameterInfo, IInjector, IReadOnlyDictionary<string, object>, object>) GetArg), Expression.Constant(param), injector, explicitArgs),
                 injector,
                 explicitArgs
-            ).Compile();
+            ).Compile()!;
 
             static object GetArg(ParameterInfo param, IInjector injectorInst, IReadOnlyDictionary<string, object> explicitArgsInst)
             {
