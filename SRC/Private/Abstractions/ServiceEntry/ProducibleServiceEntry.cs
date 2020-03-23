@@ -15,17 +15,17 @@ namespace Solti.Utils.DI.Internals
     internal abstract partial class ProducibleServiceEntry : AbstractServiceEntry, ISupportsProxying, ISupportsSpecialization, IHasUnderlyingImplementation
     {
         internal ProducibleServiceEntry(Type @interface, string? name, Lifetime? lifetime, IServiceContainer owner) : base(
-            @interface, 
-            name, 
-            Ensure.Parameter.IsNotNull(lifetime, nameof(lifetime)), 
-            Ensure.Parameter.IsNotNull(owner, nameof(owner))) 
+            @interface,
+            name,
+            Ensure.Parameter.IsNotNull(lifetime, nameof(lifetime)),
+            Ensure.Parameter.IsNotNull(owner, nameof(owner)))
         {
             //
             // Interface-t nem kell ellenorizni (az os megteszi).
             //
         }
 
-        protected ProducibleServiceEntry(ProducibleServiceEntry entry, IServiceContainer owner): this(entry.Interface, entry.Name, entry.Lifetime, owner)
+        protected ProducibleServiceEntry(ProducibleServiceEntry entry, IServiceContainer owner) : this(entry.Interface, entry.Name, entry.Lifetime, owner)
         {
             Factory = entry.Factory;
 
@@ -108,7 +108,13 @@ namespace Solti.Utils.DI.Internals
                 throw new InvalidOperationException(Resources.NOT_PRODUCIBLE);
         }
 
-        public override Type? Implementation => (FUnderlyingImplementation as Lazy<Type>)?.Value ??  (Type?) FUnderlyingImplementation;
+        public override Type? Implementation => FUnderlyingImplementation switch
+        {
+            Lazy<Type> lazy => lazy.Value,
+            Type type => type,
+            null => null,
+            _ => throw new NotSupportedException() // TODO
+        };
 
         #region 
         private readonly object? FUnderlyingImplementation;
