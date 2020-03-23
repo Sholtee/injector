@@ -11,6 +11,6 @@ namespace Solti.Utils.DI.Internals
     {
         public static T GetValueOrDefault<T>(this IReadOnlyDictionary<string, object> src, string key) => src.TryGetValue(key, out var val) && (val is T inst)
             ? inst
-            : default;
+            : default!;
     }
 }
