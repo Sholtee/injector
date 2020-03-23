@@ -116,7 +116,7 @@ namespace Solti.Utils.DI.Internals
             _ => throw new NotSupportedException() // TODO
         };
 
-        #region 
+        #region Features
         private readonly object? FUnderlyingImplementation;
 
         object? IHasUnderlyingImplementation.UnderlyingImplementation => FUnderlyingImplementation;
