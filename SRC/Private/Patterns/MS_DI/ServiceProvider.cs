@@ -5,6 +5,7 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -15,6 +16,7 @@ namespace Solti.Utils.DI.Internals
         public ServiceProvider(IServiceContainer parent) : base(parent)
             => this.Instance<IServiceProvider>(this, releaseOnDispose: false);
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         protected override Injector Spawn(IServiceContainer parent, IReadOnlyDictionary<string, object> factoryOptions, ServiceGraph graph) =>
             new ServiceProvider(parent, factoryOptions, graph);
 

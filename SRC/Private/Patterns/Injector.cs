@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.CompilerServices;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -76,6 +77,7 @@ namespace Solti.Utils.DI.Internals
             this.Instance<IInjector>(this, releaseOnDispose: false);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         protected virtual Injector Spawn(IServiceContainer parent, IReadOnlyDictionary<string, object> factoryOptions, ServiceGraph graph) =>
             new Injector(parent, factoryOptions, graph);
 
