@@ -6,28 +6,17 @@
     <IsTestProject>true</IsTestProject>
     <AssemblyName>Injector.Tests</AssemblyName>
     <RootNamespace>Solti.Utils.DI.Tests</RootNamespace>
-    <Configurations>Debug;Release;Perf</Configurations>
+    <Configurations>Debug</Configurations>
     <ApplicationIcon />
     <OutputType>Library</OutputType>
     <StartupObject />
+    <OutputPath>..\BIN\$(Configuration)\</OutputPath>
   </PropertyGroup>
 
   <!--OpenCover requires .NET Core 2.2 while Test Explorer needs 3.X-->
   <PropertyGroup Condition="'$(CI)'==''">
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <DefineConstants>LANG_VERSION_8</DefineConstants>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <OutputPath>..\BIN\</OutputPath>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <OutputPath>..\BIN\</OutputPath>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Perf|AnyCPU'">
-    <OutputPath>..\BIN\</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>

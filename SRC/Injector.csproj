@@ -11,6 +11,7 @@
     <LangVersion>8</LangVersion>
     <Nullable>enable</Nullable>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <OutputPath>..\BIN\$(Configuration)\</OutputPath>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -19,17 +20,11 @@
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <Optimize>false</Optimize>
-    <OutputPath>..\BIN\</OutputPath>
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <OutputPath>..\BIN\</OutputPath>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Perf|AnyCPU'">
+  <PropertyGroup Condition="'$(Configuration)'!='Debug'">
     <Optimize>true</Optimize>
-    <OutputPath>..\BIN\</OutputPath>
   </PropertyGroup>
 
   <ItemGroup Condition="'$(Configuration)'!='Debug'">
