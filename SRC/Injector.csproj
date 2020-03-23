@@ -10,6 +10,7 @@
     <Configurations>Debug;Release;Perf</Configurations>
     <LangVersion>8</LangVersion>
     <Nullable>enable</Nullable>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
 
   <PropertyGroup>
