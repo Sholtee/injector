@@ -34,7 +34,7 @@ namespace Solti.Utils.DI.Internals
             // meg nem volt hivva.
             //
 
-            UnderlyingImplementation = entry.UnderlyingImplementation;
+            FUnderlyingImplementation = entry.FUnderlyingImplementation;
         }
 
         protected ProducibleServiceEntry(Type @interface, string name, Lifetime lifetime, Func<IInjector, Type, object> factory, IServiceContainer owner) : this(@interface, name, lifetime, owner) =>
@@ -59,7 +59,7 @@ namespace Solti.Utils.DI.Internals
 
                 implementation.GetApplicableConstructor();
 
-            UnderlyingImplementation = implementation;
+            FUnderlyingImplementation = implementation;
         }
 
         protected ProducibleServiceEntry(Type @interface, string name, Lifetime lifetime, ITypeResolver implementation, IServiceContainer owner) : this(@interface, name, lifetime, owner)
@@ -86,7 +86,7 @@ namespace Solti.Utils.DI.Internals
 
                 Factory = Resolver.Get(lazyImplementation);
 
-            UnderlyingImplementation = lazyImplementation;
+            FUnderlyingImplementation = lazyImplementation;
         }
 
         protected void EnsureEmptyReference(ServiceReference reference)
@@ -108,9 +108,12 @@ namespace Solti.Utils.DI.Internals
                 throw new InvalidOperationException(Resources.NOT_PRODUCIBLE);
         }
 
-        public object? UnderlyingImplementation { get; }
+        public override Type? Implementation => (FUnderlyingImplementation as Lazy<Type>)?.Value ??  (Type?) FUnderlyingImplementation;
 
-        public override Type? Implementation => (UnderlyingImplementation as Lazy<Type>)?.Value ??  (Type?) UnderlyingImplementation;
+        #region 
+        private readonly object? FUnderlyingImplementation;
+
+        object? IHasUnderlyingImplementation.UnderlyingImplementation => FUnderlyingImplementation;
 
         Func<IInjector, Type, object>? ISupportsProxying.Factory { get => Factory; set => Factory = value; }
 
@@ -151,5 +154,6 @@ namespace Solti.Utils.DI.Internals
                 Ensure.IsNotNull(Owner, nameof(Owner))
             );
         }
+        #endregion
     }
 }
