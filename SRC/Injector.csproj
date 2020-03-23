@@ -84,7 +84,7 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageIconUrl>https://github.com/Sholtee/injector/raw/master/icon.png</PackageIconUrl>
     <PackageTags>IOC;DI;Dependency-Injector;Dependency-Injection;Injector;Proxy;Proxy-Generator;Duck-Typing</PackageTags>
-    <PackageReleaseNotes>See homepage.</PackageReleaseNotes>
+    <PackageReleaseNotes>See https://github.com/Sholtee/injector/blob/master/history.md</PackageReleaseNotes>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/sholtee/injector</RepositoryUrl>
     <RepositoryBranch>$(CurrentBranch)</RepositoryBranch>
