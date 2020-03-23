@@ -188,7 +188,7 @@ namespace Solti.Utils.DI
             Ensure.NotDisposed(this);
 
             //
-            // A "Values" nem masolat
+            // A "FEntries.Values" nem masolat
             //
 
             return new SafeEnumerator<AbstractServiceEntry>(FEntries.Values, FLock);
@@ -233,8 +233,7 @@ namespace Solti.Utils.DI
             if (disposeManaged)
             {
                 //
-                // Itt ne "this.Where()"-t hivjunk mert az felesleges hivna egy ToArray()-t is
-                // (lasd GetEnumerator() implementacio).
+                // Itt ne "this.Where()"-t hivjunk mert az feleslegesen lock-olna.
                 //
 
                 foreach (IDisposable disposable in FEntries.Values.Where(ShouldDispose))
