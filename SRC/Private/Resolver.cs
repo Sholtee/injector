@@ -176,7 +176,7 @@ namespace Solti.Utils.DI.Internals
 
                     : injectorInst.Get(parameterType, options?.Name);
             }
-        })!;
+        })!; // Enelkul a CI elszall CS8619-el (helyben nem tudtam reprodukalni)
 
         public static Func<IInjector, IReadOnlyDictionary<string, object>, object> GetExtended(Type type) => Cache.GetOrAdd(type, () => 
         {
