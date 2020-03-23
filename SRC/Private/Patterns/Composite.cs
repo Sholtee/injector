@@ -32,7 +32,7 @@ namespace Solti.Utils.DI.Internals
         private readonly HashSet<TInterface> FChildren = new HashSet<TInterface>();
 
         //
-        // Az [Add|Remove]Child() lehet hivva parhuzamosan ezert szalbiztosnak kell legyunk.
+        // A gyermekekkel kapcsolatos metodusok (lasd "Children" property) lehetnek hivva parhuzamosan.
         //
 
         private readonly ReaderWriterLockSlim FLock = new ReaderWriterLockSlim();
@@ -94,7 +94,9 @@ namespace Solti.Utils.DI.Internals
             FParent?.Children.Remove(Self);
 
             foreach (IAsyncDisposable child in FChildren.ToArray())
+            {
                 await child.DisposeAsync();
+            }
 
             Assert(!FChildren.Any());
 
