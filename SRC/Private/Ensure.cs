@@ -62,14 +62,14 @@ namespace Solti.Utils.DI.Internals
             public static void Supports(System.Type implementation, System.Type @interface)
             {
                 if (!@interface.IsInterfaceOf(implementation))
-                    throw new InvalidOperationException(string.Format(Resources.Culture, Resources.INTERFACE_NOT_SUPPORTED, @interface));
+                    throw new NotSupportedException(string.Format(Resources.Culture, Resources.INTERFACE_NOT_SUPPORTED, @interface));
             }
 
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public static void Supports(ITypeResolver resolver, System.Type @interface)
             {
                 if (!resolver.Supports(@interface))
-                    throw new InvalidOperationException(string.Format(Resources.Culture, Resources.INTERFACE_NOT_SUPPORTED, @interface));
+                    throw new NotSupportedException(string.Format(Resources.Culture, Resources.INTERFACE_NOT_SUPPORTED, @interface));
             }
 
             [MethodImpl(MethodImplOptions.AggressiveInlining)]

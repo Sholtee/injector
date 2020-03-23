@@ -106,11 +106,11 @@ namespace Solti.Utils.DI.Container.Tests
         [Test]
         public void Container_Service_ShouldThrowIfTheInterfaceIsNotAssignableFromTheImplementation()
         {
-            Assert.Throws<InvalidOperationException>(() => Container.Service(typeof(IInterface_2), typeof(Implementation_1_No_Dep)), string.Format(Resources.INTERFACE_NOT_SUPPORTED, typeof(IInterface_2)));
-            Assert.Throws<InvalidOperationException>(() => Container.Service(typeof(IList<>), typeof(Implementation_1_No_Dep)), string.Format(Resources.INTERFACE_NOT_SUPPORTED, typeof(IList<>)));
-            Assert.Throws<InvalidOperationException>(() => Container.Service(typeof(IList<int>), typeof(List<string>)), string.Format(Resources.INTERFACE_NOT_SUPPORTED, typeof(IList<int>)));
-            Assert.Throws<InvalidOperationException>(() => Container.Service(typeof(IList<int>), typeof(List<>)), string.Format(Resources.INTERFACE_NOT_SUPPORTED, typeof(IList<int>)));
-            Assert.Throws<InvalidOperationException>(() => Container.Service(typeof(IList<>), typeof(List<string>)), string.Format(Resources.INTERFACE_NOT_SUPPORTED, typeof(IList<>)));
+            Assert.Throws<NotSupportedException>(() => Container.Service(typeof(IInterface_2), typeof(Implementation_1_No_Dep)), string.Format(Resources.INTERFACE_NOT_SUPPORTED, typeof(IInterface_2)));
+            Assert.Throws<NotSupportedException>(() => Container.Service(typeof(IList<>), typeof(Implementation_1_No_Dep)), string.Format(Resources.INTERFACE_NOT_SUPPORTED, typeof(IList<>)));
+            Assert.Throws<NotSupportedException>(() => Container.Service(typeof(IList<int>), typeof(List<string>)), string.Format(Resources.INTERFACE_NOT_SUPPORTED, typeof(IList<int>)));
+            Assert.Throws<NotSupportedException>(() => Container.Service(typeof(IList<int>), typeof(List<>)), string.Format(Resources.INTERFACE_NOT_SUPPORTED, typeof(IList<int>)));
+            Assert.Throws<NotSupportedException>(() => Container.Service(typeof(IList<>), typeof(List<string>)), string.Format(Resources.INTERFACE_NOT_SUPPORTED, typeof(IList<>)));
         }
 
         [Test]

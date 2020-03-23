@@ -13,8 +13,6 @@ using System.Runtime.CompilerServices;
 namespace Solti.Utils.DI
 {
     using Utils.Proxy;
-
-    using Properties;
     using Internals;
 
     //
@@ -100,15 +98,12 @@ namespace Solti.Utils.DI
         {
             Ensure.Parameter.IsNotNull(iface, nameof(iface));
             Ensure.Parameter.IsInterface(iface, nameof(iface));
+            Ensure.Type.Supports(this, iface);
+  
+            Type result = Assembly.GetType(ClassName, throwOnError: true);
+            Ensure.Type.Supports(result, iface);
 
-            if (Supports(iface))
-            {
-                Type result = Assembly.GetType(ClassName, throwOnError: true);
-
-                if (iface.IsAssignableFrom(result))
-                    return result;
-            }
-            throw new NotSupportedException(string.Format(Resources.Culture, Resources.INTERFACE_NOT_SUPPORTED, iface));
+            return result;
         }
     }
 

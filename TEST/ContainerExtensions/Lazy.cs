@@ -130,7 +130,7 @@ namespace Solti.Utils.DI.Container.Tests
         [Test]
         public void Container_Lazy_ShouldValidate() 
         {
-            Assert.Throws<InvalidOperationException>(() => Container.Lazy<IInterface_1>(new BadResolver(supportsEverything: false)));
+            Assert.Throws<NotSupportedException>(() => Container.Lazy<IInterface_1>(new BadResolver(supportsEverything: false)));
 
             Container.Lazy<IInterface_1>(new BadResolver(supportsEverything: true));
             Assert.Throws<Exception>(() => _ = Container.Get<IInterface_1>().Implementation , Resources.IS_NULL);
