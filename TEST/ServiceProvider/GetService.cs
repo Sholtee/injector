@@ -14,7 +14,7 @@ namespace Solti.Utils.DI.Injector.Tests
         [Test]
         public void ServiceProvider_GetService_ShouldResolveItself1() 
         {
-            using (Container.CreateProvider(out var provider)) 
+            using (Container.CreateProvider(out IServiceProvider provider)) 
             {
                 Assert.That(provider.GetService<IServiceProvider>(), Is.EqualTo(provider));            
             }
@@ -25,7 +25,7 @@ namespace Solti.Utils.DI.Injector.Tests
         {
             Container.Service<IInterface_7<IServiceProvider>, Implementation_7_TInterface_Dependant<IServiceProvider>>();
 
-            using (Container.CreateProvider(out var provider))
+            using (Container.CreateProvider(out IServiceProvider provider))
             {
                 var svc = provider.GetService<IInterface_7<IServiceProvider>>();
 
@@ -36,7 +36,7 @@ namespace Solti.Utils.DI.Injector.Tests
         [Test]
         public void ServiceProvider_GetService_ShouldReturnNullOnMissingService1() 
         {
-            using (Container.CreateProvider(out var provider))
+            using (Container.CreateProvider(out IServiceProvider provider))
             {
                 Assert.That(provider.GetService<IInterface_1>(), Is.Null);
             }
@@ -47,7 +47,7 @@ namespace Solti.Utils.DI.Injector.Tests
         {
             Container.Service<IInterface_7<IInterface_1>, Implementation_7_TInterface_Dependant<IInterface_1>>(lifetime);
 
-            using (Container.CreateProvider(out var provider))
+            using (Container.CreateProvider(out IServiceProvider provider))
             {
                 var svc = provider.GetService<IInterface_7<IInterface_1>>();
 
@@ -70,7 +70,7 @@ namespace Solti.Utils.DI.Injector.Tests
                 .Service<IInterface_1, Implementation_1_No_Dep>("cica")
                 .Service<IInterface_7<IInterface_1>, MyServiceUsingNamedDependency>();
 
-            using (Container.CreateProvider(out var provider))
+            using (Container.CreateProvider(out IServiceProvider provider))
             {
                 var svc = provider.GetService<IInterface_7<IInterface_1>>();
 
@@ -86,7 +86,7 @@ namespace Solti.Utils.DI.Injector.Tests
                 .Service<IInterface_1, Implementation_1_No_Dep>()
                 .Service<IInterface_7<IInterface_1>, Implementation_7_TInterface_Dependant<IInterface_1>>();
 
-            using (Container.CreateProvider(out var provider))
+            using (Container.CreateProvider(out IServiceProvider provider))
             {
                 var svc = provider.GetService<IInterface_7<IInterface_1>>();
 

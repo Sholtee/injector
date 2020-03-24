@@ -397,8 +397,22 @@ Leaving the `using` block the `IMyService` instance requested by `MyOtherService
 - You can declare your consuming service with a `Lifetime` less than or equal to the `Lifetime` of consumed service.
 - Starting from version 1.2.0 you can enable *Strict DI* (disabled by default) in `Injector.config.json` which will instruct the injector to throw if a captive dependency can be found.
 ## MS preferred DI
-Microsoft also defines its own [interface](https://docs.microsoft.com/en-us/dotnet/api/system.iserviceprovider?view=netcore-3.1 ) for dependency resolution. Starting from version 1.3.0 this library has built in support for it (see [CreateProvider](https://sholtee.github.io/injector/doc/Solti.Utils.DI.IServiceContainerExtensions.html#Solti_Utils_DI_IServiceContainerExtensions_CreateProvider_Solti_Utils_DI_IServiceContainer_System_IServiceProvider__ ) method).
-
+Microsoft also defines its own [interface](https://docs.microsoft.com/en-us/dotnet/api/system.iserviceprovider?view=netcore-3.1 ) for dependency resolution. Starting from version 1.3.0 this library has built in support for it:
+```csharp
+using System;
+...
+using (Container.CreateProvider(out IServiceProvider provider))
+{
+  var svc = provider.GetService<IMyService>();
+}
+```
+or (starting from version 2.0)
+```csharp
+await using (Container.CreateProvider(out IServiceProvider provider))
+{
+  ...
+}
+```
 Differences compared to `IInjector`:
 - Every requested service is optional (`IServiceProvider.GetService()` does not throw if a service can not be found). This rule applies for services requested via constructor parameters as well.
 - You can request named services only by using `OptionsAttribute` (`IServiceProvider.GetService()` has no name parameter).
