@@ -1602,6 +1602,12 @@ references:
   commentId: M:Solti.Utils.DI.ServiceContainer.#ctor
   fullName: Solti.Utils.DI.ServiceContainer.ServiceContainer()
   nameWithType: ServiceContainer.ServiceContainer()
+- uid: Solti.Utils.DI.ServiceContainer.#ctor(Solti.Utils.DI.IServiceContainer)
+  name: ServiceContainer(IServiceContainer)
+  href: Solti.Utils.DI.ServiceContainer.html#Solti_Utils_DI_ServiceContainer__ctor_Solti_Utils_DI_IServiceContainer_
+  commentId: M:Solti.Utils.DI.ServiceContainer.#ctor(Solti.Utils.DI.IServiceContainer)
+  fullName: Solti.Utils.DI.ServiceContainer.ServiceContainer(Solti.Utils.DI.IServiceContainer)
+  nameWithType: ServiceContainer.ServiceContainer(IServiceContainer)
 - uid: Solti.Utils.DI.ServiceContainer.#ctor*
   name: ServiceContainer
   href: Solti.Utils.DI.ServiceContainer.html#Solti_Utils_DI_ServiceContainer__ctor_
@@ -1690,6 +1696,19 @@ references:
   isSpec: "True"
   fullName: Solti.Utils.DI.ServiceContainer.GetEnumerator
   nameWithType: ServiceContainer.GetEnumerator
+- uid: Solti.Utils.DI.ServiceContainer.Inherit(Solti.Utils.DI.AbstractServiceEntry)
+  name: Inherit(AbstractServiceEntry)
+  href: Solti.Utils.DI.ServiceContainer.html#Solti_Utils_DI_ServiceContainer_Inherit_Solti_Utils_DI_AbstractServiceEntry_
+  commentId: M:Solti.Utils.DI.ServiceContainer.Inherit(Solti.Utils.DI.AbstractServiceEntry)
+  fullName: Solti.Utils.DI.ServiceContainer.Inherit(Solti.Utils.DI.AbstractServiceEntry)
+  nameWithType: ServiceContainer.Inherit(AbstractServiceEntry)
+- uid: Solti.Utils.DI.ServiceContainer.Inherit*
+  name: Inherit
+  href: Solti.Utils.DI.ServiceContainer.html#Solti_Utils_DI_ServiceContainer_Inherit_
+  commentId: Overload:Solti.Utils.DI.ServiceContainer.Inherit
+  isSpec: "True"
+  fullName: Solti.Utils.DI.ServiceContainer.Inherit
+  nameWithType: ServiceContainer.Inherit
 - uid: Solti.Utils.DI.ServiceEntryExtensions
   name: ServiceEntryExtensions
   href: Solti.Utils.DI.ServiceEntryExtensions.html
