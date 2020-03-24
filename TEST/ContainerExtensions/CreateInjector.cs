@@ -5,13 +5,11 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 using NUnit.Framework;
 
 namespace Solti.Utils.DI.Container.Tests
 {
-    using Internals;
     using Properties;
 
     public partial class ContainerTestsBase<TContainer>
@@ -30,8 +28,8 @@ namespace Solti.Utils.DI.Container.Tests
                 .Abstract<IInterface_2>();
 
             var ioEx = Assert.Throws<InvalidOperationException>(() => Container.CreateInjector(), Resources.INVALID_INJECTOR_ENTRY);
-            var abstractEntries = (IReadOnlyList<Type>) ioEx.Data["abstractEntries"];
-            Assert.That(abstractEntries.Single(), Is.EqualTo(typeof(IInterface_2)));
+
+            Assert.That(ioEx.Data["entry"], Is.EqualTo(Container.Get<IInterface_2>()));
         }
 
         public static IEnumerable<AbstractServiceEntry> BadEntries 

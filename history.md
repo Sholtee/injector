@@ -108,3 +108,4 @@
   - *fixed:* named services could not be queried via `ServiceProvider` ([details](https://github.com/Sholtee/injector/commit/bd97a0caf2763b3a28d4c511b2ee02006b072b3b ))
 - 2.0.0:
   - *breaking:* In case of not supported interface a `NotSupportedException` is thrown (instead of `InvalidOperationException`)
+  - *improved:* `Injector` creation performance

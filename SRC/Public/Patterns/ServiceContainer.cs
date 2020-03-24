@@ -197,11 +197,13 @@ namespace Solti.Utils.DI
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
         #endregion
 
+        #region Protected
         /// <summary>
         /// Creates a new <see cref="ServiceContainer"/> instance copying the entries from the <paramref name="parent"/>.
         /// </summary>
         /// <param name="parent">The parent <see cref="IServiceContainer"/>.</param>
-        internal ServiceContainer(IServiceContainer? parent) : base(parent)
+        [SuppressMessage("Usage", "CA2214:Do not call overridable methods in constructors", Justification = "This is intended to make inheritance logic extensible.")]
+        protected internal ServiceContainer(IServiceContainer? parent) : base(parent)
         {
             FEntries = new Dictionary<IServiceId, AbstractServiceEntry>(parent?.Count ?? 0, ServiceIdComparer.Instance);
             if (parent == null) return;
@@ -210,7 +212,7 @@ namespace Solti.Utils.DI
             {
                 foreach (AbstractServiceEntry entry in parent)
                 {
-                    entry.CopyTo(this);
+                    Inherit(entry);
                 }
             }
             catch 
@@ -222,6 +224,17 @@ namespace Solti.Utils.DI
                 Dispose();
                 throw;
             }
+        }
+
+        /// <summary>
+        /// Implements the entry inheritance.
+        /// </summary>
+        /// <param name="entry">The <see cref="AbstractServiceEntry"/> to be inherited.</param>
+        /// <remarks>This method is intended to be used only in the constructor of this class so the method body must not refer any fields/properties.</remarks>
+        protected virtual void Inherit(AbstractServiceEntry entry) 
+        {
+            Ensure.Parameter.IsNotNull(entry, nameof(entry));
+            entry.CopyTo(this);
         }
 
         /// <summary>
@@ -265,6 +278,7 @@ namespace Solti.Utils.DI
 
             await base.AsyncDispose();
         }
+        #endregion
 
         /// <summary>
         /// Creates a new <see cref="ServiceContainer"/> instance.

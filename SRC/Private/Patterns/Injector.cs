@@ -44,28 +44,6 @@ namespace Solti.Utils.DI.Internals
 
         protected Injector(IServiceContainer parent, IReadOnlyDictionary<string, object> factoryOptions, ServiceGraph graph) : base(parent)
         {
-            //
-            // Injector nem hozhato letre absztrakt bejegyzesekkel.
-            //
-
-            Type[] abstractEntries = parent
-                .Where(entry => entry.GetType() == typeof(AbstractServiceEntry))
-                .Select(entry => entry.Interface)
-                .ToArray();
-
-            if (abstractEntries.Any())
-            {
-                //
-                // "base" hivas miatt mar szukseges dispose-olni.
-                //
-                
-                Dispose();
-
-                var ioEx = new InvalidOperationException(Resources.INVALID_INJECTOR_ENTRY);
-                ioEx.Data.Add(nameof(abstractEntries), abstractEntries);
-                throw ioEx;
-            }
-
             FactoryOptions = factoryOptions;
             FGraph = graph;
             FStrategySelector = new ServiceInstantiationStrategySelector(this);
@@ -75,6 +53,25 @@ namespace Solti.Utils.DI.Internals
             //
 
             this.Instance<IInjector>(this, releaseOnDispose: false);
+        }
+
+        protected override void Inherit(AbstractServiceEntry entry)
+        {
+            Ensure.Parameter.IsNotNull(entry, nameof(entry));
+
+            //
+            // Injector nem hozhato letre absztrakt bejegyzesekkel.
+            //
+
+            if (entry.GetType() == typeof(AbstractServiceEntry))
+            {
+                var ioex = new InvalidOperationException(Resources.INVALID_INJECTOR_ENTRY);
+                ioex.Data[nameof(entry)] = entry;
+
+                throw ioex;
+            }
+
+            base.Inherit(entry);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
