@@ -21,10 +21,8 @@ namespace Solti.Utils.DI.Internals
             // Csak kifejezesek, nem tenyleges metodus hivas
             //
 
-            InjectorGet = ExtractIInjectorMethod(i => i.Get(null!, null)),
-            InjectorTryGet = ExtractIInjectorMethod(i => i.TryGet(null!, null));
-
-        private static MethodInfo ExtractIInjectorMethod(Expression<Action<IInjector>> expr) => ((MethodCallExpression) expr.Body).Method;
+            InjectorGet = MethodInfoExtractor.Extract<IInjector>(i => i.Get(null!, null)),
+            InjectorTryGet = MethodInfoExtractor.Extract<IInjector>(i => i.TryGet(null!, null));
 
         private static Type? GetParameterType(ParameterInfo param, out bool isLazy)
         {
