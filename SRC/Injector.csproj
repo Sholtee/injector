@@ -12,6 +12,7 @@
     <Nullable>enable</Nullable>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <OutputPath>..\BIN\$(Configuration)\</OutputPath>
+    <DocumentationFile>..\BIN\Injector.xml</DocumentationFile>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -71,9 +72,8 @@
   </ItemGroup>
 
   <PropertyGroup>
-    <DocumentationFile>..\BIN\Injector.xml</DocumentationFile>
     <Product>Injector.NET</Product>  
-    <Description>A featherweight dependency injector &amp; proxy generator.</Description>
+    <Description>A featherweight dependency injector.</Description>
     <PackageId>Injector.NET</PackageId>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageIconUrl>https://github.com/Sholtee/injector/raw/master/icon.png</PackageIconUrl>
