@@ -48,11 +48,8 @@ namespace Solti.Utils.DI.Internals
             FGraph = graph;
             FStrategySelector = new ServiceInstantiationStrategySelector(this);
 
-            //
-            // Felvesszuk sajat magunkat.
-            //
-
-            this.Instance<IInjector>(this, releaseOnDispose: false);
+            this.RegisterSelf();
+            this.RegisterServiceEnumerator();
         }
 
         protected override void Inherit(AbstractServiceEntry entry)
