@@ -4,6 +4,8 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 using Moq;
@@ -79,6 +81,21 @@ namespace Solti.Utils.DI.Injector.Tests
             }
 
             Assert.That(disposable.Disposed);
+        }
+
+        [Test]
+        public void Injector_Dispose_ShouldFreeEnumeratedServices([Values(Lifetime.Transient, Lifetime.Scoped)] Lifetime lifetime)
+        {
+            Container.Service<IDisposableEx, Disposable>(lifetime);
+
+            IDisposableEx svc;
+            
+            using (IInjector injector = Container.CreateInjector()) 
+            {
+                svc = injector.Get<IEnumerable<IDisposableEx>>().Single();
+            }
+
+            Assert.That(svc.Disposed);
         }
     }
 }
