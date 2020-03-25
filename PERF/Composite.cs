@@ -32,9 +32,14 @@ namespace Solti.Utils.DI.Perf
         [Benchmark(OperationsPerInvoke = OperationsPerInvoke)]
         public void Add_Remove() 
         {
-            var child = new MyComposite(); // direkt nincs a Dispose() hivva
-            FRoot.Children.Add(child);
-            FRoot.Children.Remove(child);
+            using (var child = new MyComposite())
+            {
+                for (int i = 0; i < OperationsPerInvoke; i++)
+                {
+                    FRoot.Children.Add(child);
+                    FRoot.Children.Remove(child);
+                }
+            }
         }
     }
 }
