@@ -324,7 +324,11 @@ await using (IInjector injector = container.CreateInjector())
 After finishing the configuration you can request services via the `Get()` method:
 ```csharp
 IMyService svc = injector.Get<IMyService>();
-``` 
+```
+or
+```csharp
+IMyService svc = injector.Get<IMyService>("servicename");
+```
 *Remarks:*
 - Requesting an unregistered or an open generic service will cause an exception.
 - Requesting services as a constructor parameter is more convenient than using the `injector.Get()` method.
@@ -337,10 +341,35 @@ IMyService svc = injector.Get<IMyService>();
     IMyGenericService<string> scv = injector.Get<IMyGenericService<string>>();
   }
   ```
+- To access all services with the given interface we can use the magic `IEnumerable<>` service (starting from version 2.0):
+  ```csharp
+  // Return all the IMyService instances regardless their names.
+  IEnumerable<IMyService> svcs = injector.Get<IEnumerable<IMyService>>();
+  ```
+  Note that instantiation is done during enumeration.
 
-Alternatively you can use the `injector.Instantiate()` function that takes a `Type` (non-abstract class) you want to instantate, resolves its dependencies (via constructor parameters) and creates a new instance from it. There are two major differences compared to `injector.Get()`:
+Alternatively you can use the `injector.Instantiate()` function that takes a `Type` (non-abstract class) you want to instantate, resolves its dependencies (via constructor parameters) and creates a new instance from it: 
+```csharp
+container.Service<IMyService, MyService>();
+...
+public class OuterService
+{
+  // Parameter names must not be obfuscated.
+  public OuterService(IMyService dep, int num){...}
+}
+...
+using(IInjector injector = container.CreateInjector())
+{  
+  OuterService instance = injector.Instantiate<OuterService>(new Dictionary<string, object>
+  {
+    {"num", 10}
+  });
+} // Since dependencies may be disposed here invoking the instantiated object is safe in the using block only
+```
+As you can see there are three major differences compared to `injector.Get()`:
 - The instantiated `Type` does not have to be a registered service.
 - You can pass arbitrary arguments to the constructor via the `explicitArgs` parameter (which means the instantiated type may have non-registered/non-interface dependency).
+- The caller is responsible for freeing the returned object (that must be done before the injector disposal).
 ### Resolving contextual dependencies
 Sometimes the service being requested is contextual (for instance the `HttpRequest` that triggered the current session). To solve this issue we can extend the `UnderlyingContainer` that serves the current injector:
 ```csharp
@@ -401,14 +430,14 @@ Microsoft also defines its own [interface](https://docs.microsoft.com/en-us/dotn
 ```csharp
 using System;
 ...
-using (Container.CreateProvider(out IServiceProvider provider))
+using (container.CreateProvider(out IServiceProvider provider))
 {
   var svc = provider.GetService<IMyService>();
 }
 ```
 or (starting from version 2.0)
 ```csharp
-await using (Container.CreateProvider(out IServiceProvider provider))
+await using (container.CreateProvider(out IServiceProvider provider))
 {
   ...
 }
