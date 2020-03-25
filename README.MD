@@ -1,5 +1,5 @@
 # Injector.NET [![Build status](https://ci.appveyor.com/api/projects/status/2fej57bdmyij4v08?svg=true)](https://ci.appveyor.com/project/Sholtee/injector) ![AppVeyor tests](https://img.shields.io/appveyor/tests/sholtee/injector) [![Coverage Status](https://coveralls.io/repos/github/Sholtee/injector/badge.svg?branch=master)](https://coveralls.io/github/Sholtee/injector?branch=master) [![NuGet Badge](https://buildstats.info/nuget/injector.net)](https://www.nuget.org/packages/injector.net/)
-> A featherweight dependency injector & proxy generator written in C#.
+> A featherweight dependency injector written in C#.
 
 **This documentation refers the version 2.X of the library**
 ## Overview
