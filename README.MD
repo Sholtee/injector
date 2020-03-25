@@ -406,7 +406,7 @@ using (IInjector injector = Container.CreateInjector())
 A service can request its owner `IInjector` as a regular dependency (via constructor parameter). Doing this makes it possible to get services anywhere in the implementation (by invoking the `IInjector.Get()` method). This is we call *inline dependencies*.
 
 Notes:
-- The [dependency list](https://sholtee.github.io/injector/doc/Solti.Utils.DI.Internals.ServiceReference.html#Solti_Utils_DI_Internals_ServiceReference_Dependencies ) will not contain services requested outside of the constructor.
+- The [dependency list](https://sholtee.github.io/injector/doc/Solti.Utils.DI.ServiceReference.html#Solti_Utils_DI_ServiceReference_Dependencies ) will not contain services requested outside of the constructor.
 - Disposing inline dependencies is done by the system as well.
 ## Strict DI
 Consider the following registration:
