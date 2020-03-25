@@ -5,6 +5,7 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 using NUnit.Framework;
 
@@ -40,6 +41,22 @@ namespace Solti.Utils.DI.Injector.Tests
             }
         }
 
+        [TestCase(Lifetime.Transient)]
+        [TestCase(Lifetime.Scoped)]
+        [TestCase(Lifetime.Singleton)]
+        public void Injector_Get_ShouldInstantiateEnumerables(Lifetime lifetime)
+        {
+            Container.Service<IInterface_1, Implementation_1_No_Dep>(lifetime);
+
+            using (IInjector injector = Container.CreateInjector())
+            {
+                var enumerable = injector.Get<IEnumerable<IInterface_1>>();
+
+                Assert.That(enumerable.Count(), Is.EqualTo(1));
+                Assert.That(enumerable.Single(), Is.InstanceOf<Implementation_1_No_Dep>());
+            }
+        }
+
         [Test]
         public void Injector_Get_ShouldThrowOnNonRegisteredDependency([Values(true, false)] bool useChildContainer, [Values(Lifetime.Transient, Lifetime.Scoped, Lifetime.Singleton)] Lifetime lifetime)
         {
@@ -52,6 +69,17 @@ namespace Solti.Utils.DI.Injector.Tests
                 var e = Assert.Throws<ServiceNotFoundException>(() => injector.Get<IInterface_7<IInterface_1>>());
                 Assert.That(e.Data.Contains("path"));
                 Assert.That(e.Data["path"], Is.EqualTo(string.Join(" -> ", typeof(IInterface_7<IInterface_1>), typeof(IInterface_1))));
+            }
+        }
+
+        [Test]
+        public void Injector_Get_ShouldNotThrowOnNonRegisteredDependencyInCaseOfEnumerables()
+        {
+            using (IInjector injector = Container.CreateInjector())
+            {
+                var enumerable = injector.Get<IEnumerable<IInterface_1>>();
+
+                Assert.That(enumerable.Any(), Is.False);
             }
         }
 

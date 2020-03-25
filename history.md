@@ -106,7 +106,8 @@
   - *added:* `IAsyncDisposable` support
   - *done:* using nullable reference types
   - *fixed:* named services could not be queried via `ServiceProvider` ([details](https://github.com/Sholtee/injector/commit/bd97a0caf2763b3a28d4c511b2ee02006b072b3b ))
-- 2.0.0:
+- 2.0.0-preview2:
   - *breaking:* In case of not supported interface a `NotSupportedException` is thrown (instead of `InvalidOperationException`)
   - *breaking:* To support async scope disposal `IServiceContainerExtensions.CreateProvider()` returns `Disposable` (which implements `IDisposable` and `IAsyncDisposable`)
+  - *added:* Service enumeration support 
   - *improved:* `Injector` creation performance
