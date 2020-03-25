@@ -100,7 +100,7 @@ namespace Solti.Utils.DI
                 //
 
                 bool hasGenericEntry = mode.HasFlag(QueryModes.AllowSpecialization) &&
-                                       serviceInterface.IsGenericType() &&
+                                       serviceInterface.IsGenericType &&
                                        FEntries.TryGetValue
                                        (
                                            MakeId(serviceInterface.GetGenericTypeDefinition()), 

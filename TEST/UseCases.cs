@@ -97,7 +97,7 @@ namespace Solti.Utils.DI.UseCases
         public void BulkedProxyingTest()
         {
             Container
-                .Setup(typeof(Tests).Assembly())
+                .Setup(typeof(Tests).Assembly)
                 //
                 // Ne Transient legyen mert ott a szerviz proxy lesz ha az implementacio
                 // IDisposable leszarmazott.

@@ -13,6 +13,6 @@ namespace Solti.Utils.DI.Internals
             ? generic.Specialize(genericArguments)
             : throw new NotSupportedException();
 
-        public static bool IsGeneric(this AbstractServiceEntry entry) => entry.Interface.IsGenericTypeDefinition();
+        public static bool IsGeneric(this AbstractServiceEntry entry) => entry.Interface.IsGenericTypeDefinition;
     }
 }

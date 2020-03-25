@@ -40,7 +40,7 @@ namespace Solti.Utils.DI.Container.Setup.Tests
                 .Setup(i => i.Add(It.IsAny<AbstractServiceEntry>()))
                 .Returns(mockContainer.Object);
 
-            mockContainer.Object.Setup(typeof(GenericService<>).Assembly());
+            mockContainer.Object.Setup(typeof(GenericService<>).Assembly);
 
             mockContainer.Verify(i => i.Add(It.Is<ScopedServiceEntry>(se => se.Equals(new ScopedServiceEntry(typeof(IGenericService<>), null, typeof(GenericService<>), mockContainer.Object)))), Times.Once);
         }
@@ -69,7 +69,7 @@ namespace Solti.Utils.DI.Container.Setup.Tests
                 .Setup(i => i.Add(It.IsAny<AbstractServiceEntry>()))
                 .Returns(mockContainer.Object);
 
-            mockContainer.Object.Setup(typeof(GenericService<>).Assembly());
+            mockContainer.Object.Setup(typeof(GenericService<>).Assembly);
 
             mockContainer.Verify(i => i.Add(It.Is<TransientServiceEntry>(se => se.Equals(new TransientServiceEntry(typeof(IDisposable), "svc1", typeof(MyDisposable_1), mockContainer.Object)))), Times.Once);
             mockContainer.Verify(i => i.Add(It.Is<TransientServiceEntry>(se => se.Equals(new TransientServiceEntry(typeof(IDisposable), "svc2", typeof(MyDisposable_2), mockContainer.Object)))), Times.Once);

@@ -49,7 +49,7 @@ namespace Solti.Utils.DI.Internals
             Ensure.Parameter.IsNotNull(implementation, nameof(implementation));
             Ensure.Type.Supports(implementation, @interface);
 
-            if (!@interface.IsGenericTypeDefinition())
+            if (!@interface.IsGenericTypeDefinition)
                 Factory = Resolver.Get(implementation);
             else
                 //
@@ -79,7 +79,7 @@ namespace Solti.Utils.DI.Internals
 
             Lazy<Type> lazyImplementation = implementation.AsLazy(@interface);
 
-            if (!@interface.IsGenericTypeDefinition())
+            if (!@interface.IsGenericTypeDefinition)
                 //
                 // Mivel van factory ezert lusta bejegyzesek is Proxy-zhatok.
                 //
