@@ -15,14 +15,16 @@ namespace Solti.Utils.DI.Internals
     {
         public static Expression<TLambda> ToLambda<TLambda>(this MethodBase methodBase, Func<ParameterInfo, int, Expression> getArgument, params ParameterExpression[] parameters)
         {
+            Expression call = methodBase switch
+            {
+                ConstructorInfo ctor => Expression.New(ctor, GetArguments()),
+                MethodInfo method => Expression.Call(method, GetArguments()),
+                _ => throw new NotSupportedException() // TODO
+            };
+
             return Expression.Lambda<TLambda>
             (
-                methodBase switch
-                {
-                    ConstructorInfo ctor => Expression.New(ctor, GetArguments()),
-                    MethodInfo method => Expression.Call(method, GetArguments()),
-                    _ => throw new NotSupportedException() // TODO
-                },
+                Expression.Convert(call, typeof(object)),
                 parameters
             );
 
