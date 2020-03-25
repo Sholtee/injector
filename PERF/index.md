@@ -4,3 +4,4 @@
 - [Composite](https://sholtee.github.io/injector/perf/Solti.Utils.DI.Perf.Composite-report-github.html )
 - [Injector](https://sholtee.github.io/injector/perf/Solti.Utils.DI.Perf.Injector-report-github.html )
 - [Lazy Injector](https://sholtee.github.io/injector/perf/Solti.Utils.DI.Perf.LazyInjector-report-github.html )
+- [ServiceContainer](https://sholtee.github.io/injector/perf/Solti.Utils.DI.Perf.ServiceContainer-report-github.html )
