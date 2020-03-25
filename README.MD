@@ -341,12 +341,12 @@ IMyService svc = injector.Get<IMyService>("servicename");
     IMyGenericService<string> scv = injector.Get<IMyGenericService<string>>();
   }
   ```
-- To access all services with the given interface we can use the magic `IEnumerable<>` service (starting from version 2.0):
+- To access all services with the given interface you can use the magic `IEnumerable<>` service (starting from version 2.0):
   ```csharp
-  // Return all the IMyService instances regardless their names.
+  // Return all the IMyService instances regardless their names
   IEnumerable<IMyService> svcs = injector.Get<IEnumerable<IMyService>>();
+  // Service instantiation is done during enumeration
   ```
-  Note that instantiation is done during enumeration.
 
 Alternatively you can use the `injector.Instantiate()` function that takes a `Type` (non-abstract class) you want to instantate, resolves its dependencies (via constructor parameters) and creates a new instance from it: 
 ```csharp
