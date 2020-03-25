@@ -17,7 +17,7 @@ namespace Solti.Utils.DI.Injector.Tests
     {
         private const int TASK_COUNT = 10;
 
-        private static readonly IReadOnlyList<Type> SystemTypes = typeof(List)
+        private static readonly IReadOnlyList<Type> RandomTypes = typeof(System.Xml.NameTable)
             .Assembly
             .GetTypes()
             .Where(t => t.IsPublic && !t.IsGenericTypeDefinition)
@@ -70,7 +70,7 @@ namespace Solti.Utils.DI.Injector.Tests
             {
                 using (IInjector injector = container.CreateInjector())
                 {
-                    foreach (Type type in SystemTypes)
+                    foreach (Type type in RandomTypes)
                         injector.Get(typeof(IList<>).MakeGenericType(type));
                 }
             }
