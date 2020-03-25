@@ -58,8 +58,8 @@ namespace Solti.Utils.DI.Internals
             IServiceContainer underlyingContainer = injector.UnderlyingContainer;
 
             //
-            // 1) Generikus interface eseten [pl.: Service(typeof(IList<>), typeof(MyList<>))] legyartjuk az osszes szervizt 
-            //    ami a nyilt generikus interface-hez tartozik (ha van ilyen).
+            // 1) Generikus interface eseten [pl.: Service(typeof(IList<>), typeof(MyList<>))] minden egyes bejegyzest
+            //    konkretizalunk majd legyartjuk beloluk a szerviz peldanyt.
             //
 
             if (serviceInterface.IsGenericType)
@@ -67,9 +67,8 @@ namespace Solti.Utils.DI.Internals
                 Type genericIface = serviceInterface.GetGenericTypeDefinition();
 
                 //
-                // - Tudnunk kell az elemet szamat [ToArray()]
-                // - Mivel a GetEnumerator() lock-ol, viszont generikus szerviz lezarasahoz kellhet irni az "UnderlyingContainer"-t 
-                //   ezert h ne keruljunk dead lock-ba eloszor lekerdezzuk a teljes listat [ToArray()].
+                // Mivel a GetEnumerator() lock-ol, viszont generikus szerviz lezarasahoz kellhet irni az "UnderlyingContainer"-t 
+                // ezert h ne keruljunk dead lock-ba eloszor lekerdezzuk a teljes listat [ToArray()].
                 //
 
                 AbstractServiceEntry[] genericEntries = underlyingContainer
@@ -95,7 +94,7 @@ namespace Solti.Utils.DI.Internals
 
             //
             // 2) Lezart [pl.: Service<IList<int>, MyList>()] vagy nem generikus [pl.: Service<IService, MyService>()] szerviz
-            //    eseten egyszeruen visszaadjuk az osszes legyarthato szervizt.
+            //    eseten egyszeruen peldanyositjuk az egyes szervizeket.
             //
 
             foreach (AbstractServiceEntry entry in underlyingContainer.Where(e => e.Interface == serviceInterface))
