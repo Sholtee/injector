@@ -9,13 +9,13 @@ using BenchmarkDotNet.Attributes;
 
 namespace Solti.Utils.DI.Perf
 {
+    using static Consts;
+
     using Internals;
 
     [MemoryDiagnoser]
     public class Activator
     {
-        private const int OperationsPerInvoke = 50000;
-
         [Benchmark(Baseline = true, OperationsPerInvoke = OperationsPerInvoke)]
         public void NoActivator()
         {
