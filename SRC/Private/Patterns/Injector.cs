@@ -7,15 +7,14 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Runtime.CompilerServices;
 
 namespace Solti.Utils.DI.Internals
 {
     using Properties;
 
-    internal class Injector : ServiceContainer, IInjectorEx
+    internal class Injector : ServiceContainer, IInjector
     {
-        private readonly ServiceGraph FGraph;
+        protected readonly ServiceGraph FGraph;
 
         private readonly ServiceInstantiationStrategySelector FStrategySelector;
 
@@ -44,8 +43,9 @@ namespace Solti.Utils.DI.Internals
 
         protected Injector(IServiceContainer parent, IReadOnlyDictionary<string, object> factoryOptions, ServiceGraph graph) : base(parent)
         {
-            FactoryOptions = factoryOptions;
-            FGraph = graph;
+            FactoryOptions = Ensure.Parameter.IsNotNull(factoryOptions, nameof(factoryOptions));
+            FGraph = Ensure.Parameter.IsNotNull(graph, nameof(graph));
+
             FStrategySelector = new ServiceInstantiationStrategySelector(this);
 
             this.RegisterSelf();
@@ -71,9 +71,34 @@ namespace Solti.Utils.DI.Internals
             base.Inherit(entry);
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        protected virtual Injector Spawn(IServiceContainer parent, IReadOnlyDictionary<string, object> factoryOptions, ServiceGraph graph) =>
-            new Injector(parent, factoryOptions, graph);
+        internal virtual void Instantiate(ServiceReference requested) // [jelenleg] csak a tesztek miatt kell virtualis legyen
+        {
+            Ensure.Parameter.IsNotNull(requested, nameof(requested));
+            Ensure.NotDisposed(this);
+            Ensure.AreEqual(requested.RelatedInjector, this);
+
+            CheckBreaksTheRuleOfStrictDI(requested);
+
+            //
+            // Az epp letrehozas alatt levo szerviz kerul az ut legvegere igy a fuggosegei
+            // feloldasakor o lesz a szulo (FGraph.Current).
+            //
+
+            using (FGraph.With(requested))
+            {
+                FGraph.CheckNotCircular();
+
+                requested.SetInstance(FactoryOptions);
+            }
+        }
+
+        internal virtual Injector Spawn(IServiceContainer parent)
+        {
+            Ensure.Parameter.IsNotNull(parent, nameof(parent));
+            Ensure.NotDisposed(this);
+
+            return new Injector(parent, FactoryOptions, FGraph.CreateSubgraph());
+        }
 
         public Injector(IServiceContainer parent, IReadOnlyDictionary<string, object>? factoryOptions = null) : this
         (
@@ -116,7 +141,7 @@ namespace Solti.Utils.DI.Internals
 
         public IReadOnlyDictionary<string, object> FactoryOptions { get; }
 
-        #region IInjectorEx
+        #region IInjector
         public object Get(Type iface, string? name) 
         {
             try
@@ -154,40 +179,6 @@ namespace Solti.Utils.DI.Internals
         }
 
         public IServiceContainer UnderlyingContainer => this;
-
-        void IInjectorEx.Instantiate(ServiceReference requested)
-        {
-            Ensure.Parameter.IsNotNull(requested, nameof(requested));
-            Ensure.NotDisposed(this);
-            Ensure.AreEqual(requested.RelatedInjector, this);        
-
-            CheckBreaksTheRuleOfStrictDI(requested);
-
-            //
-            // Az epp letrehozas alatt levo szerviz kerul az ut legvegere igy a fuggosegei
-            // feloldasakor o lesz a szulo (FGraph.Current).
-            //
-
-            using (FGraph.With(requested))
-            {
-                FGraph.CheckNotCircular();
-
-                requested.SetInstance(FactoryOptions);
-            }
-        }
-
-        IInjectorEx IInjectorEx.Spawn(IServiceContainer parent)
-        {
-            Ensure.Parameter.IsNotNull(parent, nameof(parent));
-            Ensure.NotDisposed(this);
-
-            return Spawn
-            (
-                parent,
-                FactoryOptions,
-                FGraph.CreateSubgraph()
-            );
-        }
         #endregion
 
         #region Composite

@@ -8,7 +8,7 @@ namespace Solti.Utils.DI.Internals
 {
     internal interface IServiceInstantiationStrategy
     {
-        bool ShouldUse(IInjector injector, AbstractServiceEntry requested);
-        ServiceReference Exec(IInjectorEx injector, ServiceReference? requestor, AbstractServiceEntry requested);
+        bool ShouldUse(Injector injector, AbstractServiceEntry requested);
+        ServiceReference Exec(Injector injector, ServiceReference? requestor, AbstractServiceEntry requested);
     }
 }

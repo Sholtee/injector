@@ -23,9 +23,9 @@ namespace Solti.Utils.DI.Internals
             new NotOwnedServiceInstantiationStrategy()
         };
 
-        public IInjectorEx RelatedInjector { get; }
+        public Injector RelatedInjector { get; }
 
-        public ServiceInstantiationStrategySelector(IInjectorEx relatedInjector) => RelatedInjector = relatedInjector;
+        public ServiceInstantiationStrategySelector(Injector relatedInjector) => RelatedInjector = relatedInjector;
 
         public Func<ServiceReference?, ServiceReference> GetStrategyFor(AbstractServiceEntry requested) 
         {
