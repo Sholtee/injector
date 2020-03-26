@@ -17,19 +17,47 @@ namespace Solti.Utils.DI.Perf
     [MemoryDiagnoser]
     public class ServiceContainer
     {
+        private DI.ServiceContainer FContainer;
+
+        [GlobalCleanup]
+        public void Cleanup()
+        {
+            FContainer?.Dispose();
+            FContainer = null;
+        }
+
+        [GlobalSetup(Target = nameof(Add))]
+        public void SetupAdd() => FContainer = new DI.ServiceContainer();
+
+        private static readonly IReadOnlyList<Type> RandomInterfaces = typeof(object)
+            .Assembly
+            .GetTypes()
+            .Where(t => t.IsInterface)
+            .ToArray();
+
+        //
+        // FContainer.Count lekerdezese idoigenyes
+        //
+
+        private int OverallCount { get; set; }
+
         [Benchmark(OperationsPerInvoke = OperationsPerInvoke)]
         public void Add() 
         {
-            using (var container = new DI.ServiceContainer())
+            for (int i = 0; i < OperationsPerInvoke; i++, OverallCount++)
             {
-                for (int i = 0; i < OperationsPerInvoke; i++)
-                {
-                    container.Factory<IDisposable>(i.ToString(), injector => null);
-                }
-            }
-        }
+                //
+                // Absztrakt bejegyzesnek nincs tulaja aki felszabaditsa (megjegyzem nem is kell felszabaditani).
+                //
 
-        private IServiceContainer FContainer;
+                var entry = new AbstractServiceEntry(RandomInterfaces[OverallCount % RandomInterfaces.Count], (OverallCount / RandomInterfaces.Count).ToString());
+                GC.SuppressFinalize(entry);
+
+                FContainer.Add(entry);
+            }
+
+            FContainer.UnsafeClear(); // enelkul siman lehet hash utkozest 
+        }
 
         [GlobalSetup(Target = nameof(Get))]
         public void SetupGet() 
@@ -38,19 +66,12 @@ namespace Solti.Utils.DI.Perf
             FContainer.Factory<IList>(injector => Array.Empty<int>());
         }
 
-        [GlobalCleanup]
-        public void Cleanup() 
-        {
-            FContainer?.Dispose();
-            FContainer = null;
-        }
-
         [Benchmark(OperationsPerInvoke = OperationsPerInvoke)]
         public void Get()
         {
             for (int i = 0; i < OperationsPerInvoke; i++)
             {
-                FContainer.Get<IList>();
+                FContainer.Get<IList>(QueryModes.ThrowOnError);
             }
         }
 
@@ -63,7 +84,7 @@ namespace Solti.Utils.DI.Perf
 
         private sealed class MyList<T> : List<T> { } // csak egy konstruktor legyen
 
-        private static readonly IReadOnlyList<Type> RandomTypes = typeof(System.Xml.NameTable)
+        private static readonly IReadOnlyList<Type> RandomLists = typeof(System.Xml.NameTable)
             .Assembly
             .GetTypes()
             .Where(t => t.IsPublic && !t.IsGenericTypeDefinition)
@@ -75,7 +96,7 @@ namespace Solti.Utils.DI.Perf
         {
             for (int i = 0; i < OperationsPerInvoke; i++)
             {
-                FContainer.Get(RandomTypes[Math.Min(i, RandomTypes.Count - 1)]);
+                FContainer.Get(RandomLists[Math.Min(i, RandomLists.Count - 1)], null, QueryModes.AllowSpecialization | QueryModes.ThrowOnError);
             }
         }
     }
