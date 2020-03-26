@@ -3,6 +3,8 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 
 using NUnit.Framework;
@@ -82,23 +84,41 @@ namespace Solti.Utils.DI.Injector.Tests
         }
 
         [Test]
-        public void Injector_Select_EnumerableCanBeEnumeratedMultipleTimes() 
+        public void Injector_Select_EnumerableMayBeEnumeratedMultipleTimes() 
         {
             Container
                 .Service<IInterface_1, Implementation_1>();
 
             using (IInjector injector = Container.CreateInjector())
             {
+                IEnumerable svcs = injector.Select(typeof(IInterface_1));
+
                 for (int i = 0; i < 3; i++)
                 {
-                    IInterface_1[] svcs = injector
-                        .Select(typeof(IInterface_1))
-                        .Cast<IInterface_1>()
-                        .ToArray();
-
-                    Assert.That(svcs.Length, Is.EqualTo(1));
-                    Assert.That(svcs[0], Is.InstanceOf<Implementation_1>());
+                    Assert.DoesNotThrow(() => svcs.Cast<IInterface_1>().ToArray());
                 }
+            }
+        }
+
+        [Test]
+        public void Injector_Select_ShouldHandleOpenAndClosedGenericsTogether()
+        {
+            Container
+                .Service<IInterface_1, Implementation_1>()
+                .Service(typeof(IInterface_3<>), 1.ToString(), typeof(GenericImplementation_1<>))
+                .Service(typeof(IInterface_3<>), 2.ToString(), typeof(GenericImplementation_2<>))
+                .Service<IInterface_3<int>, GenericImplementation_3<int>>();
+
+            using (IInjector injector = Container.CreateInjector())
+            {
+                IEnumerable<IInterface_3<int>> svcs = injector
+                    .Select(typeof(IInterface_3<int>))
+                    .Cast<IInterface_3<int>>();
+
+                Assert.That(svcs.Count(), Is.EqualTo(3));
+                Assert.That(svcs.Any(svc => svc is GenericImplementation_1<int>));
+                Assert.That(svcs.Any(svc => svc is GenericImplementation_2<int>));
+                Assert.That(svcs.Any(svc => svc is GenericImplementation_3<int>));
             }
         }
     }

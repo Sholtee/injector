@@ -403,7 +403,7 @@ namespace Solti.Utils.DI.Injector.Tests
         }
 
         [Test]
-        public void Injector_Get_ClosedGenericsHaveThePriorityOverTheOpenOnes()
+        public void Injector_Get_ClosedGenericsShouldHaveThePriorityOverTheOpenOnes()
         {
             Container
                 .Service<IInterface_1, Implementation_1_No_Dep>()

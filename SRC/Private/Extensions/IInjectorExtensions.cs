@@ -58,8 +58,8 @@ namespace Solti.Utils.DI.Internals
             IServiceContainer underlyingContainer = injector.UnderlyingContainer;
 
             //
-            // 1) Generikus interface eseten [pl.: Service(typeof(IList<>), typeof(MyList<>))] minden egyes bejegyzest
-            //    konkretizalunk majd legyartjuk beloluk a szerviz peldanyt.
+            // Generikus interface eseten (ha kell) specializaljuk az osszes kompatibilis bejegyzest
+            // az adott tipusra.
             //
 
             if (serviceInterface.IsGenericType)
@@ -67,7 +67,7 @@ namespace Solti.Utils.DI.Internals
                 Type genericIface = serviceInterface.GetGenericTypeDefinition();
 
                 //
-                // Mivel a GetEnumerator() lock-ol, viszont generikus szerviz lezarasahoz kellhet irni az "UnderlyingContainer"-t 
+                // Mivel a GetEnumerator() lock-ol, viszont generikus bejegyzes lezarasahoz irni kell a kontenert
                 // ezert h ne keruljunk dead lock-ba eloszor lekerdezzuk a teljes listat [ToArray()].
                 //
 
@@ -75,26 +75,20 @@ namespace Solti.Utils.DI.Internals
                     .Where(e => e.Interface == genericIface)
                     .ToArray();
 
-                if (genericEntries.Any())
+                foreach (AbstractServiceEntry entry in genericEntries)
                 {
-                    foreach (AbstractServiceEntry entry in genericEntries)
-                    {
-                        Assert(entry.IsGeneric());
+                    Assert(entry.IsGeneric());
 
-                        //
-                        // Minden egyes bejegyzeshez tipizalunk egy peldanyt.
-                        //
+                    //
+                    // Specializalas (ha mar le volt zarva akkor nem csinal semmit).
+                    //
 
-                        yield return injector.Get(serviceInterface, entry.Name);
-                    }
-
-                    yield break;
+                    underlyingContainer.Get(serviceInterface, entry.Name, QueryModes.AllowSpecialization);
                 }
             }
 
             //
-            // 2) Lezart [pl.: Service<IList<int>, MyList>()] vagy nem generikus [pl.: Service<IService, MyService>()] szerviz
-            //    eseten egyszeruen peldanyositjuk az egyes szervizeket.
+            // Most mar biztosan minden kompatibilis bejegyzest vissza tudunk adni.
             //
 
             foreach (AbstractServiceEntry entry in underlyingContainer.Where(e => e.Interface == serviceInterface))
