@@ -401,5 +401,26 @@ namespace Solti.Utils.DI.Injector.Tests
                 Assert.Throws<InvalidOperationException>(() => injector.Get<IInterface_1>(), Resources.NOT_PRODUCIBLE);
             }
         }
+
+        [Test]
+        public void Injector_Get_ClosedGenericsHaveThePriorityOverTheOpenOnes()
+        {
+            Container
+                .Service<IInterface_1, Implementation_1_No_Dep>()
+                .Service(typeof(IInterface_3<>), typeof(NotUsedImplementation<>))
+                .Service<IInterface_3<int>, Implementation_3_IInterface_1_Dependant<int>>();
+
+            using (IInjector injector = Container.CreateInjector())
+            {
+                IInterface_3<int> svc = injector.Get<IInterface_3<int>>();
+
+                Assert.That(svc, Is.InstanceOf<Implementation_3_IInterface_1_Dependant<int>>());
+            }
+        }
+
+        private sealed class NotUsedImplementation<T> : IInterface_3<T>
+        {
+            public IInterface_1 Interface1 => throw new NotImplementedException();
+        }
     }
 }
