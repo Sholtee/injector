@@ -217,7 +217,22 @@ namespace Solti.Utils.DI.Internals
             return child.Parent == Self;
         }
 
-        void ICollection<TInterface>.Clear() => throw new NotSupportedException();
+        [CanSetParent]
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        void ICollection<TInterface>.Clear()
+        {
+            Ensure.NotDisposed(this);
+
+            using (FLock.AcquireWriterLock())
+            {
+                foreach (TInterface child in FChildren)
+                {
+                    child.Parent = null;
+                }
+
+                FChildren.Clear();
+            }
+        }
 
         void ICollection<TInterface>.CopyTo(TInterface[] array, int arrayIndex) => throw new NotSupportedException();
 

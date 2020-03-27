@@ -31,7 +31,7 @@ namespace Solti.Utils.DI.Internals.Tests
         }
 
         [Test]
-        public void Composite_Dispose_ShouldFreeTheChildrenRecursively() 
+        public void Dispose_ShouldFreeTheChildrenRecursively() 
         {
             IMyComposite 
                 root = new MyComposite(),
@@ -45,7 +45,7 @@ namespace Solti.Utils.DI.Internals.Tests
         }
 
         [Test]
-        public async Task Composite_DisposeAsync_ShouldFreeTheChildrenRecursively()
+        public async Task DisposeAsync_ShouldFreeTheChildrenRecursively()
         {
             IMyComposite
                 root = new MyComposite(),
@@ -59,7 +59,7 @@ namespace Solti.Utils.DI.Internals.Tests
         }
 
         [Test]
-        public void Composite_Dispose_ShouldRemoveTheChildFromTheParentsChildrenList() 
+        public void Dispose_ShouldRemoveTheChildFromTheParentsChildrenList() 
         {
             IMyComposite
                 root = new MyComposite(),
@@ -73,7 +73,7 @@ namespace Solti.Utils.DI.Internals.Tests
         }
 
         [Test]
-        public async Task Composite_DisposeAsync_ShouldRemoveTheChildFromTheParentsChildrenList()
+        public async Task DisposeAsync_ShouldRemoveTheChildFromTheParentsChildrenList()
         {
             IMyComposite
                 root = new MyComposite(),
@@ -87,7 +87,7 @@ namespace Solti.Utils.DI.Internals.Tests
         }
 
         [Test]
-        public void Composite_AddChild_ShouldValidate() 
+        public void AddChild_ShouldValidate() 
         {
             IMyComposite 
                 root = new MyComposite(),
@@ -98,7 +98,7 @@ namespace Solti.Utils.DI.Internals.Tests
         }
 
         [Test]
-        public void Composite_RemoveChild_ShouldValidate()
+        public void RemoveChild_ShouldValidate()
         {
             IMyComposite
                 root = new MyComposite(),
@@ -116,7 +116,26 @@ namespace Solti.Utils.DI.Internals.Tests
         }
 
         [Test]
-        public void Composite_Parent_ShouldNotBeSetDirectly() 
+        public void Clear_ShouldNotDisposeTheChildren()
+        {
+            IMyComposite
+                root = new MyComposite(),
+                child = new MyComposite(root);
+
+            Assert.That(root.Children.Count, Is.EqualTo(1));
+            root.Children.Clear();
+
+            //
+            // Nem lett felszabaditva.
+            //
+
+            Assert.That(child.Parent, Is.Null);
+            Assert.DoesNotThrow(child.Dispose);
+            Assert.That(root.Children.Count, Is.EqualTo(0));
+        }
+
+        [Test]
+        public void Parent_ShouldNotBeSetDirectly() 
         {
             IMyComposite
                 root = new MyComposite(),
@@ -130,7 +149,7 @@ namespace Solti.Utils.DI.Internals.Tests
         }
 
         [Test]
-        public void Composite_ContainsChild_ShouldDoWhatItsNameSuggests() 
+        public void ContainsChild_ShouldDoWhatItsNameSuggests() 
         {
             IMyComposite
                 root = new MyComposite(),
