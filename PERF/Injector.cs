@@ -4,15 +4,11 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 
 using BenchmarkDotNet.Attributes;
 
 namespace Solti.Utils.DI.Perf
 {
-    using Internals;
-
     using static Consts;
 
     [MemoryDiagnoser]
@@ -31,28 +27,26 @@ namespace Solti.Utils.DI.Perf
 
         public interface IInterface_2<T>
         {
+            IInterface_1 Dep { get; }
         }
 
         public class Implementation_2<T> : IInterface_2<T>
         {
-            public Implementation_2(IInterface_1 dep)
-            {
-            }
+            public Implementation_2(IInterface_1 dep) => Dep = dep;
+
+            public IInterface_1 Dep { get; }
         }
 
-        public interface IInterface_3<T>
+        public interface IInterface_3_LazyDep
         {
-            int DoSomething();
+            Lazy<IInterface_1> LazyDep { get; }
         }
 
-        public class Implementation_3<T> : IInterface_3<T>
+        public class Implementation_3_LazyDep : IInterface_3_LazyDep
         {
-            public Implementation_3(IInterface_2<T> dep)
-            {
-            }
+            public Implementation_3_LazyDep(Lazy<IInterface_1> dep) => LazyDep = dep;
 
-            [MethodImpl(MethodImplOptions.NoInlining)]
-            public int DoSomething() => 0;
+            public Lazy<IInterface_1> LazyDep { get; }
         }
         #endregion
 
@@ -63,7 +57,7 @@ namespace Solti.Utils.DI.Perf
         public void Setup() => FContainer = new DI.ServiceContainer()
             .Service<IInterface_1, Implementation_1>(LifeTime)
             .Service(typeof(IInterface_2<>), typeof(Implementation_2<>), LifeTime)
-            .Service<IInterface_3<string>, Implementation_3<string>>(LifeTime);
+            .Service<IInterface_3_LazyDep, Implementation_3_LazyDep>(LifeTime);
 
         [GlobalCleanup]
         public void Cleanup() => FContainer.Dispose();
@@ -75,7 +69,7 @@ namespace Solti.Utils.DI.Perf
             {
                 for (int i = 0; i < OperationsPerInvoke; i++)
                 {
-                    injector.Get<IInterface_3<string>>(null);
+                    injector.Get<IInterface_2<string>>(null);
                 }
                 injector.UnsafeClear();
             }
@@ -88,52 +82,20 @@ namespace Solti.Utils.DI.Perf
             {
                 for (int i = 0; i < OperationsPerInvoke; i++)
                 {
-                    injector.Instantiate<Implementation_3<string>>();
+                    injector.Instantiate<Implementation_2<string>>();
                 }
                 injector.UnsafeClear();
             }
         }
-    }
-
-    [MemoryDiagnoser]
-    public class LazyInjector
-    {
-        public interface IInterface
-        {
-            void Bar();
-        }
-
-        public class Implementation : IInterface
-        {            
-            [ServiceActivator]
-            public Implementation(Lazy<IDisposable> disposable, Lazy<IList<int>> lst)
-            {               
-            }
-
-            public void Bar()
-            {
-            }
-        }
-
-        private IServiceContainer FContainer;
-
-        [GlobalSetup]
-        public void Setup() => FContainer = new DI.ServiceContainer()
-            .Service<IDisposable, Disposable>()
-            .Factory(typeof(IList<>), (i, t) => typeof(List<>).MakeGenericType(t.GetGenericArguments()).CreateInstance(new Type[0]))
-            .Service<IInterface, Implementation>();
-
-        [GlobalCleanup]
-        public void Cleanup() => FContainer.Dispose();
 
         [Benchmark(OperationsPerInvoke = OperationsPerInvoke)]
-        public void Injector_Get()
+        public void Get_Lazy()
         {
             using (var injector = new DI.Internals.Injector(FContainer))
             {
                 for (int i = 0; i < OperationsPerInvoke; i++)
                 {
-                    injector.Get<IInterface>(null);
+                    injector.Get<IInterface_3_LazyDep>(null);
                 }
                 injector.UnsafeClear();
             }
