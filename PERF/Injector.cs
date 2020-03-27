@@ -18,7 +18,7 @@ namespace Solti.Utils.DI.Perf
     [MemoryDiagnoser]
     public class Injector
     {
-        private IServiceContainer FContainer; 
+        private IServiceContainer FContainer;
 
         #region Services
         public interface IInterface_1
@@ -64,43 +64,33 @@ namespace Solti.Utils.DI.Perf
             .Service<IInterface_1, Implementation_1>(LifeTime)
             .Service(typeof(IInterface_2<>), typeof(Implementation_2<>), LifeTime)
             .Service<IInterface_3<string>, Implementation_3<string>>(LifeTime);
-        
+
         [GlobalCleanup]
         public void Cleanup() => FContainer.Dispose();
 
-        [Benchmark(Baseline = true, OperationsPerInvoke = OperationsPerInvoke)]
-        public void NoInjector()
+        [Benchmark(OperationsPerInvoke = OperationsPerInvoke)]
+        public void Get()
         {
-            for (int i = 0; i < OperationsPerInvoke; i++)
+            using (var injector = new DI.Internals.Injector(FContainer))
             {
-                IInterface_3<string> instance = new Implementation_3<string>(new Implementation_2<string>(new Implementation_1()));
-                instance.DoSomething();
+                for (int i = 0; i < OperationsPerInvoke; i++)
+                {
+                    injector.Get<IInterface_3<string>>(null);
+                }
+                injector.UnsafeClear();
             }
         }
 
         [Benchmark(OperationsPerInvoke = OperationsPerInvoke)]
-        public void Injector_Get()
+        public void Instantiate()
         {
-            using (IInjector injector = FContainer.CreateInjector())
+            using (var injector = new DI.Internals.Injector(FContainer))
             {
                 for (int i = 0; i < OperationsPerInvoke; i++)
                 {
-                    IInterface_3<string> instance = injector.Get<IInterface_3<string>>();
-                    instance.DoSomething();
+                    injector.Instantiate<Implementation_3<string>>();
                 }
-            }
-        }
-
-        [Benchmark(OperationsPerInvoke = OperationsPerInvoke)]
-        public void Injector_Instantiate()
-        {
-            using (IInjector injector = FContainer.CreateInjector())
-            {
-                for (int i = 0; i < OperationsPerInvoke; i++)
-                {
-                    Implementation_3<string> instance = injector.Instantiate<Implementation_3<string>>();
-                    instance.DoSomething();
-                }
+                injector.UnsafeClear();
             }
         }
     }
@@ -136,26 +126,16 @@ namespace Solti.Utils.DI.Perf
         [GlobalCleanup]
         public void Cleanup() => FContainer.Dispose();
 
-        [Benchmark(Baseline = true, OperationsPerInvoke = OperationsPerInvoke)]
-        public void NoInjector()
-        {
-            for (int i = 0; i < OperationsPerInvoke; i++)
-            {
-                var instance = new Implementation(new Lazy<IDisposable>(), new Lazy<IList<int>>());
-                instance.Bar();
-            }
-        }
-
         [Benchmark(OperationsPerInvoke = OperationsPerInvoke)]
         public void Injector_Get()
         {
-            using (IInjector injector = FContainer.CreateInjector())
+            using (var injector = new DI.Internals.Injector(FContainer))
             {
                 for (int i = 0; i < OperationsPerInvoke; i++)
                 {
-                    var instance = injector.Get<IInterface>();
-                    instance.Bar();
+                    injector.Get<IInterface>(null);
                 }
+                injector.UnsafeClear();
             }
         }
     }
