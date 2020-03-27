@@ -18,6 +18,10 @@ namespace Solti.Utils.DI.Internals
 
         private static readonly IReadOnlyCollection<IServiceInstantiationStrategy> Strategies = new IServiceInstantiationStrategy[]
         {
+            //
+            // Sorrend szamit.
+            //
+
             new InstanceStrategy(),
             new OwnedServiceInstantiationStrategy(),
             new NotOwnedServiceInstantiationStrategy()
@@ -29,10 +33,6 @@ namespace Solti.Utils.DI.Internals
 
         public Func<ServiceReference?, ServiceReference> GetStrategyFor(AbstractServiceEntry requested) 
         {
-            //
-            // Sorrend szamit.
-            //
-
             foreach (IServiceInstantiationStrategy strategy in Strategies)
                 if (strategy.ShouldUse(RelatedInjector, requested))
                     return requestor => strategy.Exec(RelatedInjector, requestor, requested);
