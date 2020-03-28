@@ -50,7 +50,7 @@ namespace Solti.Utils.DI.Internals
 
         public override bool SetInstance(ServiceReference reference, IReadOnlyDictionary<string, object> options)
         {
-            EnsureEmptyReference(reference);
+            EnsureAppropriateReference(reference);
             EnsureProducible();
             EnsureNotFull(options);
 

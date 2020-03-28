@@ -31,7 +31,7 @@ namespace Solti.Utils.DI.Internals
         [MethodImpl(MethodImplOptions.Synchronized)]
         public override bool SetInstance(ServiceReference reference, IReadOnlyDictionary<string, object> options)
         {
-            EnsureEmptyReference(reference);
+            EnsureAppropriateReference(reference);
             EnsureProducible();
 
             //

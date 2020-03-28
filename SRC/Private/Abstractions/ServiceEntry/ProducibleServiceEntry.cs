@@ -89,7 +89,7 @@ namespace Solti.Utils.DI.Internals
             FUnderlyingImplementation = lazyImplementation;
         }
 
-        protected void EnsureEmptyReference(ServiceReference reference)
+        protected void EnsureAppropriateReference(ServiceReference reference)
         {
             Ensure.Parameter.IsNotNull(reference, nameof(reference));
             Ensure.AreEqual(reference.RelatedServiceEntry, this, Resources.NOT_BELONGING_REFERENCE);
