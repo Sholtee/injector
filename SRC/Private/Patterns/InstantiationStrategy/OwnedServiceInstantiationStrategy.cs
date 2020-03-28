@@ -23,7 +23,7 @@ namespace Solti.Utils.DI.Internals
                 }
                 catch 
                 {
-                    result.Dispose();
+                    result.Release();
                     throw;
                 }
             }

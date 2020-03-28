@@ -51,7 +51,7 @@ namespace Solti.Utils.DI.Internals.Tests
 
             Assert.That(dependency.RefCount, Is.EqualTo(2));
 
-            svc.Dispose();
+            svc.Release();
 
             Assert.That(target.Disposed);
             Assert.That(dependency.RefCount, Is.EqualTo(1));
@@ -120,7 +120,7 @@ namespace Solti.Utils.DI.Internals.Tests
             var target = new Disposable();
             var svc = new ServiceReference(new AbstractServiceEntry(typeof(IDisposable), null), target, externallyOwned: true);
 
-            svc.Dispose();
+            svc.Release();
 
             Assert.That(target.Disposed, Is.False);
 
