@@ -70,6 +70,15 @@ namespace Solti.Utils.DI.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to DisposeByRef objects should not be disposed directly..
+        /// </summary>
+        internal static string ARBITRARY_RELEASE {
+            get {
+                return ResourceManager.GetString("ARBITRARY_RELEASE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Instantiating abstract services are not allowed..
         /// </summary>
         internal static string CANT_INSTANTIATE_ABSTRACTS {

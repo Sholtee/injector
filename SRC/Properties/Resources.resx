@@ -207,4 +207,7 @@
   <data name="CANT_SET_PARENT" xml:space="preserve">
     <value>Parent cannot be set directly.</value>
   </data>
+  <data name="ARBITRARY_RELEASE" xml:space="preserve">
+    <value>DisposeByRef objects should not be disposed directly.</value>
+  </data>
 </root>

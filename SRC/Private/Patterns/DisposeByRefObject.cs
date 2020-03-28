@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 
 namespace Solti.Utils.DI.Internals
 {
+    using Properties;
+
     /// <summary>
     /// Manages object lifetime by refence counting.
     /// </summary>
@@ -21,6 +23,31 @@ namespace Solti.Utils.DI.Internals
         {
             if (RefCount == 0)
                 throw new ObjectDisposedException(null);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private void EnsureDisposeAllowed() 
+        {
+            if (RefCount != 0)
+                throw new InvalidOperationException(Resources.ARBITRARY_RELEASE);
+        }
+
+        /// <summary>
+        /// See <see cref="Disposable"/> class.
+        /// </summary>
+        protected override void Dispose(bool disposeManaged)
+        {
+            if (disposeManaged) EnsureDisposeAllowed();
+            base.Dispose(disposeManaged);
+        }
+
+        /// <summary>
+        /// See <see cref="Disposable"/> class.
+        /// </summary>
+        protected override ValueTask AsyncDispose()
+        {
+            EnsureDisposeAllowed();
+            return base.AsyncDispose();
         }
 
         /// <summary>

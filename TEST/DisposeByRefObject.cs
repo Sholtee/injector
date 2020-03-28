@@ -11,6 +11,7 @@ using NUnit.Framework;
 namespace Solti.Utils.DI.Internals.Tests
 {
     using Internals;
+    using Properties;
 
     [TestFixture]
     public sealed class DisposeByRefObjectTests
@@ -77,6 +78,20 @@ namespace Solti.Utils.DI.Internals.Tests
             var obj = new DisposeByRefObject();
             Assert.That(obj.Release(), Is.EqualTo(0));
             Assert.ThrowsAsync<ObjectDisposedException>(async () => await obj.ReleaseAsync());
+        }
+
+        [Test]
+        public void Dispose_ShouldNotBeCalledDirectly() 
+        {
+            var obj = new DisposeByRefObject();
+            Assert.Throws<InvalidOperationException>(obj.Dispose, Resources.ARBITRARY_RELEASE);
+        }
+
+        [Test]
+        public void DisposeAsync_ShouldNotBeCalledDirectly()
+        {
+            var obj = new DisposeByRefObject();
+            Assert.ThrowsAsync<InvalidOperationException>(async () => await obj.DisposeAsync(), Resources.ARBITRARY_RELEASE);
         }
     }
 }
