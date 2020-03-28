@@ -69,7 +69,7 @@ namespace Solti.Utils.DI.Internals
         }
 
         /// <summary>
-        /// Decrements the reference counter as an atomic operation and disposes the object if the reference count reaches the zero.
+        /// Decrements the reference counter as an atomic operation and disposes the object if the reference count reached the zero.
         /// </summary>
         /// <returns>The current reference count.</returns>
         public int Release()
