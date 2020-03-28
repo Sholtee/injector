@@ -31,7 +31,11 @@ namespace Solti.Utils.DI.Internals
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting resources asynchronously
         /// </summary>
-        protected virtual async ValueTask AsyncDispose() => await Task.Run(() => Dispose(true)).ConfigureAwait(false);
+        protected virtual ValueTask AsyncDispose() 
+        {
+            Dispose(true);
+            return default;
+        }
 
         /// <summary>
         /// Destructor of this class.
