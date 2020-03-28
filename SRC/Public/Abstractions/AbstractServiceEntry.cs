@@ -18,7 +18,7 @@ namespace Solti.Utils.DI
     /// Describes an abstract service definition.
     /// </summary>
     [SuppressMessage("Security", "CA2119:Seal methods that satisfy private interfaces", Justification = "No security issues exist if the methods are overridden outside the assembly.")]
-    public class AbstractServiceEntry: Disposable, IServiceDefinition, IServiceFactory
+    public class AbstractServiceEntry: Disposable, IServiceDefinition
     {
         /// <summary>
         /// Creates a new <see cref="AbstractServiceEntry"/> instance.

@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 
@@ -20,23 +21,23 @@ namespace Solti.Utils.DI.Internals.Tests
         private class MyClass
         {
             public IDisposable Dep1 { get; }
-            public IServiceFactory Dep2 { get; }
+            public IList Dep2 { get; }
             public int Int { get; }
 
-            public MyClass(IDisposable dep1, [Options(Name = "cica")] IServiceFactory dep2)
+            public MyClass(IDisposable dep1, [Options(Name = "cica")] IList dep2)
             {
                 Dep1 = dep1;
                 Dep2 = dep2;
             }
 
-            public MyClass(IDisposable dep1, IServiceFactory dep2, int @int)
+            public MyClass(IDisposable dep1, IList dep2, int @int)
             {
                 Dep1 = dep1;
                 Dep2 = dep2;
                 Int  = @int;
             }
 
-            public MyClass([Options(Name = "cica")] Lazy<IDisposable> dep1, Lazy<IServiceFactory> dep2)
+            public MyClass([Options(Name = "cica")] Lazy<IDisposable> dep1, Lazy<IList> dep2)
             {
                 Dep1 = dep1.Value;
                 Dep2 = dep2.Value;
@@ -47,13 +48,13 @@ namespace Solti.Utils.DI.Internals.Tests
             }
         }
 
-        [TestCase(typeof(IDisposable), null, typeof(IServiceFactory), "cica")]
-        [TestCase(typeof(Lazy<IDisposable>), "cica", typeof(Lazy<IServiceFactory>), null)]
+        [TestCase(typeof(IDisposable), null, typeof(IList), "cica")]
+        [TestCase(typeof(Lazy<IDisposable>), "cica", typeof(Lazy<IList>), null)]
         public void Factory_ShouldResolveDependencies(Type dep1, string name1, Type dep2, string name2)
         {
             var mockDisposable = new Mock<IDisposable>();
 
-            var mockServiceFactory = new Mock<IServiceFactory>();
+            var mockServiceFactory = new Mock<IList>();
 
             var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
 
@@ -64,20 +65,20 @@ namespace Solti.Utils.DI.Internals.Tests
                     .Returns<Type, string>((type, name) =>
                     {
                         if (type == typeof(IDisposable) && name == name1) return mockDisposable.Object;
-                        if (type == typeof(IServiceFactory) && name == name2) return mockServiceFactory.Object;
+                        if (type == typeof(IList) && name == name2) return mockServiceFactory.Object;
 
                         Assert.Fail("Unknown type");
                         return null;
                     });
                    
-                MyClass instance = (MyClass)resolver(mockInjector.Object);
+                MyClass instance = (MyClass) resolver(mockInjector.Object);
 
                 Assert.That(instance, Is.Not.Null);
                 Assert.That(instance.Dep1, Is.SameAs(mockDisposable.Object));
                 Assert.That(instance.Dep2, Is.SameAs(mockServiceFactory.Object));
             
                 mockInjector.Verify(i => i.Get(It.Is<Type>(t => t == typeof(IDisposable)), It.Is<string>(n => n == name1)), Times.Once);
-                mockInjector.Verify(i => i.Get(It.Is<Type>(t => t == typeof(IServiceFactory)), It.Is<string>(n => n == name2)), Times.Once);
+                mockInjector.Verify(i => i.Get(It.Is<Type>(t => t == typeof(IList)), It.Is<string>(n => n == name2)), Times.Once);
                 mockInjector.Verify(i => i.Get(It.IsAny<Type>(), It.IsAny<string>()), Times.Exactly(2));
 
                 mockInjector.Reset();
@@ -136,7 +137,7 @@ namespace Solti.Utils.DI.Internals.Tests
         [Test]
         public void ExtendedFactory_ShouldThrowOnNonInterfaceArguments()
         {
-            ConstructorInfo ctor = typeof(MyClass).GetConstructor(new[] { typeof(IDisposable), typeof(IServiceFactory), typeof(int) });
+            ConstructorInfo ctor = typeof(MyClass).GetConstructor(new[] { typeof(IDisposable), typeof(IList), typeof(int) });
 
             //
             // Sima Get() hivas nem fog mukodni (nem interface parameter).
@@ -183,7 +184,7 @@ namespace Solti.Utils.DI.Internals.Tests
                 .Returns<Type, string>((type, name) => null);
 
             Func<IInjector, IReadOnlyDictionary<string, object>, object> factory = Resolver
-                .GetExtended(typeof(MyClass).GetConstructor(new[] {typeof(IDisposable), typeof(IServiceFactory) }));
+                .GetExtended(typeof(MyClass).GetConstructor(new[] {typeof(IDisposable), typeof(IList) }));
 
             object obj = factory(mockInjector.Object, new Dictionary<string, object>
             {
@@ -193,7 +194,7 @@ namespace Solti.Utils.DI.Internals.Tests
             Assert.That(obj, Is.InstanceOf<MyClass>());
 
             mockInjector.Verify(i => i.Get(It.Is<Type>(t => t == typeof(IDisposable)), null), Times.Once);
-            mockInjector.Verify(i => i.Get(It.Is<Type>(t => t == typeof(IServiceFactory)), It.IsAny<string>()), Times.Never);
+            mockInjector.Verify(i => i.Get(It.Is<Type>(t => t == typeof(IList)), It.IsAny<string>()), Times.Never);
         }
 
         [Test]
@@ -201,14 +202,14 @@ namespace Solti.Utils.DI.Internals.Tests
         {
             const int TEN = 10;
 
-            ConstructorInfo ctor = typeof(MyClass).GetConstructor(new[] { typeof(IDisposable), typeof(IServiceFactory), typeof(int) });
+            ConstructorInfo ctor = typeof(MyClass).GetConstructor(new[] { typeof(IDisposable), typeof(IList), typeof(int) });
 
             var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
             mockInjector
                 .Setup(i => i.Get(It.IsAny<Type>(), It.IsAny<string>()))
                 .Returns<Type, string>((type, name) => null);
 
-            MyClass obj = Resolver.GetExtended(ctor)(mockInjector.Object, new Dictionary<string, object> { { "int", TEN } }) as MyClass;
+            MyClass obj = Resolver.GetExtended(ctor).Invoke(mockInjector.Object, new Dictionary<string, object> { { "int", TEN } }) as MyClass;
 
             Assert.That(obj, Is.Not.Null);
             Assert.That(obj.Int, Is.EqualTo(TEN));
