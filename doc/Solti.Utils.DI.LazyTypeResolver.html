@@ -104,33 +104,9 @@
   </table>
   <h3 id="properties">Properties
   </h3>
-  <a id="Solti_Utils_DI_LazyTypeResolver_AssamblyPath_" data-uid="Solti.Utils.DI.LazyTypeResolver.AssamblyPath*"></a>
-  <h4 id="Solti_Utils_DI_LazyTypeResolver_AssamblyPath" data-uid="Solti.Utils.DI.LazyTypeResolver.AssamblyPath">AssamblyPath</h4>
-  <div class="markdown level1 summary"><p>The absolute path of the containing <see cref="!:System.Reflection.Assembly"></see>.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public string AssamblyPath { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
   <a id="Solti_Utils_DI_LazyTypeResolver_Assembly_" data-uid="Solti.Utils.DI.LazyTypeResolver.Assembly*"></a>
   <h4 id="Solti_Utils_DI_LazyTypeResolver_Assembly" data-uid="Solti.Utils.DI.LazyTypeResolver.Assembly">Assembly</h4>
-  <div class="markdown level1 summary"><p>The lazily loaded <see cref="!:System.Reflection.Assembly"></see>.</p>
+  <div class="markdown level1 summary"><p>The lazily loaded <see cref="!:System.Reflection.Assembly"></see>. Reading this property for the first time will load the assembly on path specified in the constructor.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -200,16 +176,15 @@
       </tr>
     </tbody>
   </table>
-  <h3 id="methods">Methods
+  <h3 id="eii">Explicit Interface Implementations
   </h3>
-  <a id="Solti_Utils_DI_LazyTypeResolver_Resolve_" data-uid="Solti.Utils.DI.LazyTypeResolver.Resolve*"></a>
-  <h4 id="Solti_Utils_DI_LazyTypeResolver_Resolve_Type_" data-uid="Solti.Utils.DI.LazyTypeResolver.Resolve(Type)">Resolve(Type)</h4>
-  <div class="markdown level1 summary"><p>See <a class="xref" href="Solti.Utils.DI.ITypeResolver.html#Solti_Utils_DI_ITypeResolver_Resolve_Type_">Resolve(Type)</a>.</p>
-</div>
+  <a id="Solti_Utils_DI_LazyTypeResolver_Solti_Utils_DI_ITypeResolver_Resolve_" data-uid="Solti.Utils.DI.LazyTypeResolver.Solti#Utils#DI#ITypeResolver#Resolve*"></a>
+  <h4 id="Solti_Utils_DI_LazyTypeResolver_Solti_Utils_DI_ITypeResolver_Resolve_Type_" data-uid="Solti.Utils.DI.LazyTypeResolver.Solti#Utils#DI#ITypeResolver#Resolve(Type)">ITypeResolver.Resolve(Type)</h4>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public virtual Type Resolve(Type iface)</code></pre>
+    <pre><code class="lang-csharp hljs">Type ITypeResolver.Resolve(Type iface)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -243,14 +218,13 @@
       </tr>
     </tbody>
   </table>
-  <a id="Solti_Utils_DI_LazyTypeResolver_Supports_" data-uid="Solti.Utils.DI.LazyTypeResolver.Supports*"></a>
-  <h4 id="Solti_Utils_DI_LazyTypeResolver_Supports_Type_" data-uid="Solti.Utils.DI.LazyTypeResolver.Supports(Type)">Supports(Type)</h4>
-  <div class="markdown level1 summary"><p>See <a class="xref" href="Solti.Utils.DI.ITypeResolver.html#Solti_Utils_DI_ITypeResolver_Supports_Type_">Supports(Type)</a>.</p>
-</div>
+  <a id="Solti_Utils_DI_LazyTypeResolver_Solti_Utils_DI_ITypeResolver_Supports_" data-uid="Solti.Utils.DI.LazyTypeResolver.Solti#Utils#DI#ITypeResolver#Supports*"></a>
+  <h4 id="Solti_Utils_DI_LazyTypeResolver_Solti_Utils_DI_ITypeResolver_Supports_Type_" data-uid="Solti.Utils.DI.LazyTypeResolver.Solti#Utils#DI#ITypeResolver#Supports(Type)">ITypeResolver.Supports(Type)</h4>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public virtual bool Supports(Type iface)</code></pre>
+    <pre><code class="lang-csharp hljs">bool ITypeResolver.Supports(Type iface)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">

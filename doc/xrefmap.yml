@@ -1311,19 +1311,6 @@ references:
   isSpec: "True"
   fullName: Solti.Utils.DI.LazyTypeResolver.LazyTypeResolver
   nameWithType: LazyTypeResolver.LazyTypeResolver
-- uid: Solti.Utils.DI.LazyTypeResolver.AssamblyPath
-  name: AssamblyPath
-  href: Solti.Utils.DI.LazyTypeResolver.html#Solti_Utils_DI_LazyTypeResolver_AssamblyPath
-  commentId: P:Solti.Utils.DI.LazyTypeResolver.AssamblyPath
-  fullName: Solti.Utils.DI.LazyTypeResolver.AssamblyPath
-  nameWithType: LazyTypeResolver.AssamblyPath
-- uid: Solti.Utils.DI.LazyTypeResolver.AssamblyPath*
-  name: AssamblyPath
-  href: Solti.Utils.DI.LazyTypeResolver.html#Solti_Utils_DI_LazyTypeResolver_AssamblyPath_
-  commentId: Overload:Solti.Utils.DI.LazyTypeResolver.AssamblyPath
-  isSpec: "True"
-  fullName: Solti.Utils.DI.LazyTypeResolver.AssamblyPath
-  nameWithType: LazyTypeResolver.AssamblyPath
 - uid: Solti.Utils.DI.LazyTypeResolver.Assembly
   name: Assembly
   href: Solti.Utils.DI.LazyTypeResolver.html#Solti_Utils_DI_LazyTypeResolver_Assembly
@@ -1363,32 +1350,40 @@ references:
   isSpec: "True"
   fullName: Solti.Utils.DI.LazyTypeResolver.Interface
   nameWithType: LazyTypeResolver.Interface
-- uid: Solti.Utils.DI.LazyTypeResolver.Resolve(Type)
-  name: Resolve(Type)
-  href: Solti.Utils.DI.LazyTypeResolver.html#Solti_Utils_DI_LazyTypeResolver_Resolve_Type_
-  commentId: M:Solti.Utils.DI.LazyTypeResolver.Resolve(Type)
-  fullName: Solti.Utils.DI.LazyTypeResolver.Resolve(Type)
-  nameWithType: LazyTypeResolver.Resolve(Type)
-- uid: Solti.Utils.DI.LazyTypeResolver.Resolve*
-  name: Resolve
-  href: Solti.Utils.DI.LazyTypeResolver.html#Solti_Utils_DI_LazyTypeResolver_Resolve_
-  commentId: Overload:Solti.Utils.DI.LazyTypeResolver.Resolve
+- uid: Solti.Utils.DI.LazyTypeResolver.Solti#Utils#DI#ITypeResolver#Resolve(Type)
+  name: ITypeResolver.Resolve(Type)
+  href: Solti.Utils.DI.LazyTypeResolver.html#Solti_Utils_DI_LazyTypeResolver_Solti_Utils_DI_ITypeResolver_Resolve_Type_
+  commentId: M:Solti.Utils.DI.LazyTypeResolver.Solti#Utils#DI#ITypeResolver#Resolve(Type)
+  name.vb: Solti.Utils.DI.ITypeResolver.Resolve(Type)
+  fullName: Solti.Utils.DI.LazyTypeResolver.Solti.Utils.DI.ITypeResolver.Resolve(Type)
+  nameWithType: LazyTypeResolver.ITypeResolver.Resolve(Type)
+  nameWithType.vb: LazyTypeResolver.Solti.Utils.DI.ITypeResolver.Resolve(Type)
+- uid: Solti.Utils.DI.LazyTypeResolver.Solti#Utils#DI#ITypeResolver#Resolve*
+  name: ITypeResolver.Resolve
+  href: Solti.Utils.DI.LazyTypeResolver.html#Solti_Utils_DI_LazyTypeResolver_Solti_Utils_DI_ITypeResolver_Resolve_
+  commentId: Overload:Solti.Utils.DI.LazyTypeResolver.Solti#Utils#DI#ITypeResolver#Resolve
   isSpec: "True"
-  fullName: Solti.Utils.DI.LazyTypeResolver.Resolve
-  nameWithType: LazyTypeResolver.Resolve
-- uid: Solti.Utils.DI.LazyTypeResolver.Supports(Type)
-  name: Supports(Type)
-  href: Solti.Utils.DI.LazyTypeResolver.html#Solti_Utils_DI_LazyTypeResolver_Supports_Type_
-  commentId: M:Solti.Utils.DI.LazyTypeResolver.Supports(Type)
-  fullName: Solti.Utils.DI.LazyTypeResolver.Supports(Type)
-  nameWithType: LazyTypeResolver.Supports(Type)
-- uid: Solti.Utils.DI.LazyTypeResolver.Supports*
-  name: Supports
-  href: Solti.Utils.DI.LazyTypeResolver.html#Solti_Utils_DI_LazyTypeResolver_Supports_
-  commentId: Overload:Solti.Utils.DI.LazyTypeResolver.Supports
+  name.vb: Solti.Utils.DI.ITypeResolver.Resolve
+  fullName: Solti.Utils.DI.LazyTypeResolver.Solti.Utils.DI.ITypeResolver.Resolve
+  nameWithType: LazyTypeResolver.ITypeResolver.Resolve
+  nameWithType.vb: LazyTypeResolver.Solti.Utils.DI.ITypeResolver.Resolve
+- uid: Solti.Utils.DI.LazyTypeResolver.Solti#Utils#DI#ITypeResolver#Supports(Type)
+  name: ITypeResolver.Supports(Type)
+  href: Solti.Utils.DI.LazyTypeResolver.html#Solti_Utils_DI_LazyTypeResolver_Solti_Utils_DI_ITypeResolver_Supports_Type_
+  commentId: M:Solti.Utils.DI.LazyTypeResolver.Solti#Utils#DI#ITypeResolver#Supports(Type)
+  name.vb: Solti.Utils.DI.ITypeResolver.Supports(Type)
+  fullName: Solti.Utils.DI.LazyTypeResolver.Solti.Utils.DI.ITypeResolver.Supports(Type)
+  nameWithType: LazyTypeResolver.ITypeResolver.Supports(Type)
+  nameWithType.vb: LazyTypeResolver.Solti.Utils.DI.ITypeResolver.Supports(Type)
+- uid: Solti.Utils.DI.LazyTypeResolver.Solti#Utils#DI#ITypeResolver#Supports*
+  name: ITypeResolver.Supports
+  href: Solti.Utils.DI.LazyTypeResolver.html#Solti_Utils_DI_LazyTypeResolver_Solti_Utils_DI_ITypeResolver_Supports_
+  commentId: Overload:Solti.Utils.DI.LazyTypeResolver.Solti#Utils#DI#ITypeResolver#Supports
   isSpec: "True"
-  fullName: Solti.Utils.DI.LazyTypeResolver.Supports
-  nameWithType: LazyTypeResolver.Supports
+  name.vb: Solti.Utils.DI.ITypeResolver.Supports
+  fullName: Solti.Utils.DI.LazyTypeResolver.Solti.Utils.DI.ITypeResolver.Supports
+  nameWithType: LazyTypeResolver.ITypeResolver.Supports
+  nameWithType.vb: LazyTypeResolver.Solti.Utils.DI.ITypeResolver.Supports
 - uid: Solti.Utils.DI.LazyTypeResolver`1
   name: LazyTypeResolver<TInterface>
   href: Solti.Utils.DI.LazyTypeResolver-1.html
