@@ -3,6 +3,9 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
+using System;
+using System.Threading.Tasks;
+
 using NUnit.Framework;
 
 namespace Solti.Utils.DI.Internals.Tests
@@ -19,6 +22,14 @@ namespace Solti.Utils.DI.Internals.Tests
             Assert.That(obj.RefCount, Is.EqualTo(1));
             Assert.That(obj.AddRef(), Is.EqualTo(2));
             Assert.That(obj.RefCount, Is.EqualTo(2));
+        }
+
+        [Test]
+        public void AddRef_ShouldThrowIfTheObjectWasDisposed()
+        {
+            var obj = new DisposeByRefObject();
+            Assert.That(obj.Release(), Is.EqualTo(0));
+            Assert.Throws<ObjectDisposedException>(() => obj.AddRef());
         }
 
         [Test]
@@ -42,14 +53,30 @@ namespace Solti.Utils.DI.Internals.Tests
         }
 
         [Test]
-        public void ReleaseAsync_ShouldDisposeTheObjectIfRefCountReachesTheZero()
+        public void Release_ShouldThrowIfTheObjectWasDisposed()
+        {
+            var obj = new DisposeByRefObject();
+            Assert.That(obj.Release(), Is.EqualTo(0));
+            Assert.Throws<ObjectDisposedException>(() => obj.Release());
+        }
+
+        [Test]
+        public async Task ReleaseAsync_ShouldDisposeTheObjectIfRefCountReachesTheZero()
         {
             var obj = new DisposeByRefObject();
             obj.AddRef();
             Assert.That(obj.ReleaseAsync().Result, Is.EqualTo(1));
             Assert.That(obj.Disposed, Is.False);
-            Assert.That(obj.ReleaseAsync().Result, Is.EqualTo(0));
+            Assert.That(await obj.ReleaseAsync(), Is.EqualTo(0));
             Assert.That(obj.Disposed);
+        }
+
+        [Test]
+        public void ReleaseAsync_ShouldThrowIfTheObjectWasDisposed() 
+        {
+            var obj = new DisposeByRefObject();
+            Assert.That(obj.Release(), Is.EqualTo(0));
+            Assert.ThrowsAsync<ObjectDisposedException>(async () => await obj.ReleaseAsync());
         }
     }
 }

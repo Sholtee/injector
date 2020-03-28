@@ -3,7 +3,8 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
-using System.Threading;
+using System;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
 namespace Solti.Utils.DI.Internals
@@ -13,32 +14,13 @@ namespace Solti.Utils.DI.Internals
     /// </summary>
     public class DisposeByRefObject : Disposable, IDisposeByRef
     {
-        //
-        // Nem lehet "await" "lock" blokkon belul -> Semaphore
-        //
+        private readonly object FLock = new object();
 
-        private readonly SemaphoreSlim FLock = new SemaphoreSlim(1, 1);
-
-        /// <summary>
-        /// Disposes this <see cref="DisposeByRefObject"/> instance.
-        /// </summary>
-        protected override void Dispose(bool disposeManaged)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private void EnsureNotDisposed() 
         {
-            if (disposeManaged) FLock.Dispose();
-            base.Dispose(disposeManaged);
-        }
-
-        /// <summary>
-        /// Disposes this <see cref="DisposeByRefObject"/> instance asynchronously.
-        /// </summary>
-        protected override ValueTask AsyncDispose()
-        {
-            FLock.Dispose();
-            return default;
-
-            //
-            // Ne elgyen "base" hivas mert az a "Dispose"-t hivna
-            //
+            if (RefCount == 0)
+                throw new ObjectDisposedException(null);
         }
 
         /// <summary>
@@ -52,20 +34,10 @@ namespace Solti.Utils.DI.Internals
         /// <returns>The current reference count.</returns>
         public int AddRef()
         {
-            Ensure.NotDisposed(this);
-
-            //
-            // Ha vki itt varakozik mikor a Semaphore felszabaditasra kerul akkor ObjectDisposedException-t kap
-            //
-
-            FLock.Wait();
-            try
+            lock (FLock)
             {
+                EnsureNotDisposed();
                 return ++RefCount;
-            }
-            finally
-            {
-                FLock.Release();
             }
         }
 
@@ -75,46 +47,30 @@ namespace Solti.Utils.DI.Internals
         /// <returns>The current reference count.</returns>
         public int Release()
         {
-            Ensure.NotDisposed(this);
-
-            FLock.Wait();
-            try
+            lock (FLock) 
             {
-                if (--RefCount == 0) Dispose();
-                return RefCount;
+                EnsureNotDisposed();
+                if (--RefCount > 0) return RefCount;
             }
-            finally 
-            {
-                //
-                // Dispose() hivas felszabaditja a Semaphore-t is
-                //
 
-                if (!Disposed) FLock.Release();
-            }
+            Dispose();
+            return 0;
         }
 
         /// <summary>
-        /// Decrements the reference counter as an atomic operation and disposes the object asynchronously if the reference count reaches the zero.
+        /// Decrements the reference counter as an atomic operation and disposes the object asynchronously if the reference count reached the zero.
         /// </summary>
         /// <returns>The current reference count.</returns>
         public async Task<int> ReleaseAsync() 
         {
-            Ensure.NotDisposed(this);
-
-            await FLock.WaitAsync().ConfigureAwait(false);
-            try
+            lock (FLock) 
             {
-                if (--RefCount == 0) await DisposeAsync();
-                return RefCount;
+                EnsureNotDisposed();
+                if (--RefCount > 0) return RefCount;
             }
-            finally
-            {
-                //
-                // DisposeAsync() hivas felszabaditja a Semaphore-t is
-                //
 
-                if (!Disposed) FLock.Release();
-            }
+            await DisposeAsync();
+            return 0;
         }
     }
 }
