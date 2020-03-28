@@ -17,11 +17,15 @@ namespace Solti.Utils.DI.Internals
 
         public static LazyType Create(Type iface, ITypeResolver resolver)
         {
-            //
-            // "HashCode.Combine()" csak netstandard2.1-tol van ezert az anonim objektum.
-            //
-
-            return new LazyType(Resolve, new { iface, resolver }.GetHashCode());
+            return new LazyType
+            (
+                Resolve,
+#if NETSTANDARD2_0
+                new { iface, resolver }.GetHashCode()
+#else
+                HashCode.Combine(iface, resolver)
+#endif
+            );
    
             Type Resolve()
             {
