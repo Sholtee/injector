@@ -22,10 +22,8 @@ namespace Solti.Utils.DI.TypeResolver.Tests
             TypeName = "Solti.Utils.DI.Internals.Disposable";
 
         [Test]
-        public void Constructor_ShouldThrowOnNonInterfaceTarget()
-        {
+        public void Constructor_ShouldThrowOnNonInterfaceTarget() =>
             Assert.Throws<ArgumentException>(() => new LazyTypeResolver<object>(AsmPath, TypeName), Resources.PARAMETER_NOT_AN_INTERFACE);
-        }
 
         [Test]
         public void Resolve_ShouldLoadTheContainingAssemblyOnlyOnce()
@@ -35,7 +33,7 @@ namespace Solti.Utils.DI.TypeResolver.Tests
                 .Setup(l => l.LoadFromAssemblyPath(It.IsAny<string>()))
                 .Returns<string>(AssemblyLoadContext.Default.LoadFromAssemblyPath);
             
-            var resolver = new LazyTypeResolver(typeof(IDisposable), AsmPath, TypeName, mockLoadCtx.Object);
+            ITypeResolver resolver = new LazyTypeResolver(typeof(IDisposable), AsmPath, TypeName, mockLoadCtx.Object);
 
             mockLoadCtx.Verify(l => l.LoadFromAssemblyPath(It.IsAny<string>()), Times.Never);
 
@@ -48,14 +46,12 @@ namespace Solti.Utils.DI.TypeResolver.Tests
         [Test]
         public void Resolve_ShouldReturnTheSameTypeForTheSameInterface()
         {
-            var resolver = new LazyTypeResolver<IDisposable>(AsmPath, TypeName);
+            ITypeResolver resolver = new LazyTypeResolver<IDisposable>(AsmPath, TypeName);
             Assert.AreSame(resolver.Resolve(typeof(IDisposable)), resolver.Resolve(typeof(IDisposable)));
         }
 
         [Test]
-        public void Resolve_ShouldThrowOnUnsupportedType()
-        {
-            Assert.Throws<NotSupportedException>(() => new LazyTypeResolver<IDisposable>(AsmPath, TypeName).Resolve(typeof(IInjector)));
-        }
+        public void Resolve_ShouldThrowOnUnsupportedType() =>
+            Assert.Throws<NotSupportedException>(() => ((ITypeResolver) new LazyTypeResolver<IDisposable>(AsmPath, TypeName)).Resolve(typeof(IInjector)));
     }
 }

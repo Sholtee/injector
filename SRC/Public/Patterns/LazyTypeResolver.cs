@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -28,18 +29,22 @@ namespace Solti.Utils.DI
     /// <summary>
     /// Implements a resolver that postpones the <see cref="System.Reflection.Assembly"/> and <see cref="Type"/> resolution until the first request.
     /// </summary>
+    [SuppressMessage("Design", "CA1033:Interface methods should be callable by child types", Justification = "Child types should not call interface methods")]
     public class LazyTypeResolver: ITypeResolver
     {
         private Assembly? FAssembly;
+
+        private readonly string FAssemblyPath;
 
         internal IAssemblyLoadContext AssemblyLoadContext { get; }
 
         internal LazyTypeResolver(Type iface, string asmPath, string className, IAssemblyLoadContext assemblyLoadContext) // tesztekhez
         {
             Ensure.Parameter.IsInterface(iface, nameof(iface));
- 
+
+            FAssemblyPath = Path.GetFullPath(asmPath);
+
             Interface = iface;
-            AssamblyPath = Path.GetFullPath(asmPath);
             ClassName = className;
             AssemblyLoadContext = assemblyLoadContext;
         }
@@ -59,11 +64,6 @@ namespace Solti.Utils.DI
         }
 
         /// <summary>
-        /// The absolute path of the containing <see cref="System.Reflection.Assembly"/>.
-        /// </summary>
-        public string AssamblyPath { get; }
-
-        /// <summary>
         /// The full name of the <see cref="Type"/> that implemenets the <see cref="Interface"/>.
         /// </summary>
         public string ClassName { get; }
@@ -74,27 +74,26 @@ namespace Solti.Utils.DI
         public Type Interface { get; }
 
         /// <summary>
-        /// The lazily loaded <see cref="System.Reflection.Assembly"/>.
+        /// The lazily loaded <see cref="System.Reflection.Assembly"/>. Reading this property for the first time will load the assembly on path specified in the constructor.
         /// </summary>
         public Assembly Assembly
         {
             get
             {
                 if (FAssembly == null)
-                    FAssembly = AssemblyLoadContext.LoadFromAssemblyPath(AssamblyPath);
+                    FAssembly = AssemblyLoadContext.LoadFromAssemblyPath(FAssemblyPath);
                 return FAssembly;
             }
         }
+     
+        bool ITypeResolver.Supports(Type iface)
+        {
+            Ensure.Parameter.IsNotNull(iface, nameof(iface));
 
-        /// <summary>
-        /// See <see cref="ITypeResolver.Supports"/>.
-        /// </summary>
-        public virtual bool Supports(Type iface) => iface == Interface;
+            return iface == Interface;
+        }
 
-        /// <summary>
-        /// See <see cref="ITypeResolver.Resolve"/>.
-        /// </summary>
-        public virtual Type Resolve(Type iface)
+        Type ITypeResolver.Resolve(Type iface)
         {
             Ensure.Parameter.IsNotNull(iface, nameof(iface));
             Ensure.Parameter.IsInterface(iface, nameof(iface));
