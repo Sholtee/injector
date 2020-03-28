@@ -116,7 +116,7 @@ namespace Solti.Utils.DI
         /// Compares this entry with another one.
         /// </summary>
         /// <remarks>Entries having the same property values are considered equivalent.</remarks>
-        public override bool Equals(object obj) => obj != null && (ReferenceEquals(this, obj) || obj.GetHashCode() == GetHashCode());
+        public override bool Equals(object obj) => ReferenceEquals(this, obj) || (obj is AbstractServiceEntry && obj.GetHashCode() == GetHashCode());
 
         /// <summary>
         /// Gets the hash code of this entry.
@@ -171,10 +171,6 @@ namespace Solti.Utils.DI
         /// </summary>
         protected override async ValueTask AsyncDispose()
         {
-            //
-            // NE "(Instance?.ReleaseAsync()).ConfigureAwait(false)" legyen mert az null referenciaval elszall
-            //
-
             if (Instance != null)
                 await Instance.ReleaseAsync().ConfigureAwait(false);
 
