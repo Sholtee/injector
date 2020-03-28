@@ -50,6 +50,7 @@ namespace Solti.Utils.DI.Internals
 
         private static void EnsureCanBeInstantiated(Type type) 
         {
+            Ensure.Parameter.IsNotNull(type, nameof(type));
             Ensure.Parameter.IsClass(type, nameof(type));
             Ensure.Parameter.IsNotAbstract(type, nameof(type));
             Ensure.Parameter.IsNotGenericDefinition(type, nameof(type));
@@ -111,8 +112,8 @@ namespace Solti.Utils.DI.Internals
         // egyezossegenek vizsgalatahoz kell.
         //
 
-        public static Func<IInjector, Type, object> Get(Lazy<Type> type) => Cache.GetOrAdd(type, () =>
-        {    
+        public static Func<IInjector, Type, object> Get(LazyType type) => Cache.GetOrAdd(type, () =>
+        {
             //
             // A Lazy<> csak azert kell h minden egyes factory hivasnal ne forduljunk a 
             // gyorsitotarhoz.
@@ -124,7 +125,7 @@ namespace Solti.Utils.DI.Internals
                 // "type.Value" erteke validalva lesz a Get() hivasban.
                 //
 
-                () => Get(type.Value), 
+                () => Get(type.Value),
                 LazyThreadSafetyMode.ExecutionAndPublication
             );
 

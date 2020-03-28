@@ -77,7 +77,7 @@ namespace Solti.Utils.DI.Internals
 
             Ensure.Type.Supports(implementation, @interface);
 
-            Lazy<Type> lazyImplementation = implementation.AsLazy(@interface);
+            LazyType lazyImplementation = LazyType.Create(@interface, implementation);
 
             if (!@interface.IsGenericTypeDefinition)
                 //
@@ -110,7 +110,13 @@ namespace Solti.Utils.DI.Internals
 
         public override Type? Implementation => FUnderlyingImplementation switch
         {
-            Lazy<Type> lazy => lazy.Value,
+            //
+            // Ne magat a resolver-t szolitsuk meg mert az nem feltetlen szalbiztos valamint a visszameno
+            // kompatibilitas vegett a Resolve() adott interface-el bejegyzesenkent csak egyszer kerulhet
+            // meghivasra.
+            //
+
+            LazyType lazyType => lazyType.Value,
             Type type => type,
             null => null,
             _ => throw new NotSupportedException() // TODO

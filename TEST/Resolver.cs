@@ -250,8 +250,8 @@ namespace Solti.Utils.DI.Internals.Tests
             Assert.AreSame(Resolver.Get(typeof(Disposable)), Resolver.Get(typeof(Disposable)));
             Assert.AreSame(Resolver.Get(typeof(Disposable).GetApplicableConstructor()), Resolver.Get(typeof(Disposable).GetApplicableConstructor()));
 
-            Lazy<Type> type = new LazyTypeResolver<IDisposable>(typeof(Disposable).Assembly.Location, typeof(Disposable).FullName).AsLazy(typeof(IDisposable));
-            Assert.AreSame(Resolver.Get(type), Resolver.Get(type));
+            var resolver = new LazyTypeResolver<IDisposable>(typeof(Disposable).Assembly.Location, typeof(Disposable).FullName);
+            Assert.AreSame(Resolver.Get(LazyType.Create(typeof(IDisposable), resolver)), Resolver.Get(LazyType.Create(typeof(IDisposable), resolver)));
         }
 
         [Test]

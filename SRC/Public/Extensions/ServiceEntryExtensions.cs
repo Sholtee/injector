@@ -31,7 +31,7 @@ namespace Solti.Utils.DI
         {
             Ensure.Parameter.IsNotNull(self, nameof(self));
 
-            return (self is IHasUnderlyingImplementation def) && def.UnderlyingImplementation is Lazy<Type>;
+            return (self is IHasUnderlyingImplementation def) && def.UnderlyingImplementation is LazyType;
         }
 
         /// <summary>
