@@ -63,12 +63,6 @@
       <a class="xref" href="Solti.Utils.DI.Internals.Disposable.html#Solti_Utils_DI_Internals_Disposable_Disposed">Disposable.Disposed</a>
     </div>
     <div>
-      <a class="xref" href="Solti.Utils.DI.Internals.Disposable.html#Solti_Utils_DI_Internals_Disposable_Dispose_System_Boolean_">Disposable.Dispose(Boolean)</a>
-    </div>
-    <div>
-      <a class="xref" href="Solti.Utils.DI.Internals.Disposable.html#Solti_Utils_DI_Internals_Disposable_AsyncDispose">Disposable.AsyncDispose()</a>
-    </div>
-    <div>
       <a class="xref" href="Solti.Utils.DI.Internals.Disposable.html#Solti_Utils_DI_Internals_Disposable_Dispose">Disposable.Dispose()</a>
     </div>
     <div>
@@ -134,6 +128,60 @@
       </tr>
     </tbody>
   </table>
+  <a id="Solti_Utils_DI_Internals_DisposeByRefObject_AsyncDispose_" data-uid="Solti.Utils.DI.Internals.DisposeByRefObject.AsyncDispose*"></a>
+  <h4 id="Solti_Utils_DI_Internals_DisposeByRefObject_AsyncDispose" data-uid="Solti.Utils.DI.Internals.DisposeByRefObject.AsyncDispose">AsyncDispose()</h4>
+  <div class="markdown level1 summary"><p>See <a class="xref" href="Solti.Utils.DI.Internals.Disposable.html">Disposable</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override ValueTask AsyncDispose()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">ValueTask</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Solti.Utils.DI.Internals.Disposable.html#Solti_Utils_DI_Internals_Disposable_AsyncDispose">Disposable.AsyncDispose()</a></div>
+  <a id="Solti_Utils_DI_Internals_DisposeByRefObject_Dispose_" data-uid="Solti.Utils.DI.Internals.DisposeByRefObject.Dispose*"></a>
+  <h4 id="Solti_Utils_DI_Internals_DisposeByRefObject_Dispose_System_Boolean_" data-uid="Solti.Utils.DI.Internals.DisposeByRefObject.Dispose(System.Boolean)">Dispose(Boolean)</h4>
+  <div class="markdown level1 summary"><p>See <a class="xref" href="Solti.Utils.DI.Internals.Disposable.html">Disposable</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override void Dispose(bool disposeManaged)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">disposeManaged</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Solti.Utils.DI.Internals.Disposable.html#Solti_Utils_DI_Internals_Disposable_Dispose_System_Boolean_">Disposable.Dispose(Boolean)</a></div>
   <a id="Solti_Utils_DI_Internals_DisposeByRefObject_Release_" data-uid="Solti.Utils.DI.Internals.DisposeByRefObject.Release*"></a>
   <h4 id="Solti_Utils_DI_Internals_DisposeByRefObject_Release" data-uid="Solti.Utils.DI.Internals.DisposeByRefObject.Release">Release()</h4>
   <div class="markdown level1 summary"><p>Decrements the reference counter as an atomic operation and disposes the object if the reference count reaches the zero.</p>

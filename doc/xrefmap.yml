@@ -616,6 +616,32 @@ references:
   isSpec: "True"
   fullName: Solti.Utils.DI.Internals.DisposeByRefObject.AddRef
   nameWithType: DisposeByRefObject.AddRef
+- uid: Solti.Utils.DI.Internals.DisposeByRefObject.AsyncDispose
+  name: AsyncDispose()
+  href: Solti.Utils.DI.Internals.DisposeByRefObject.html#Solti_Utils_DI_Internals_DisposeByRefObject_AsyncDispose
+  commentId: M:Solti.Utils.DI.Internals.DisposeByRefObject.AsyncDispose
+  fullName: Solti.Utils.DI.Internals.DisposeByRefObject.AsyncDispose()
+  nameWithType: DisposeByRefObject.AsyncDispose()
+- uid: Solti.Utils.DI.Internals.DisposeByRefObject.AsyncDispose*
+  name: AsyncDispose
+  href: Solti.Utils.DI.Internals.DisposeByRefObject.html#Solti_Utils_DI_Internals_DisposeByRefObject_AsyncDispose_
+  commentId: Overload:Solti.Utils.DI.Internals.DisposeByRefObject.AsyncDispose
+  isSpec: "True"
+  fullName: Solti.Utils.DI.Internals.DisposeByRefObject.AsyncDispose
+  nameWithType: DisposeByRefObject.AsyncDispose
+- uid: Solti.Utils.DI.Internals.DisposeByRefObject.Dispose(System.Boolean)
+  name: Dispose(Boolean)
+  href: Solti.Utils.DI.Internals.DisposeByRefObject.html#Solti_Utils_DI_Internals_DisposeByRefObject_Dispose_System_Boolean_
+  commentId: M:Solti.Utils.DI.Internals.DisposeByRefObject.Dispose(System.Boolean)
+  fullName: Solti.Utils.DI.Internals.DisposeByRefObject.Dispose(System.Boolean)
+  nameWithType: DisposeByRefObject.Dispose(Boolean)
+- uid: Solti.Utils.DI.Internals.DisposeByRefObject.Dispose*
+  name: Dispose
+  href: Solti.Utils.DI.Internals.DisposeByRefObject.html#Solti_Utils_DI_Internals_DisposeByRefObject_Dispose_
+  commentId: Overload:Solti.Utils.DI.Internals.DisposeByRefObject.Dispose
+  isSpec: "True"
+  fullName: Solti.Utils.DI.Internals.DisposeByRefObject.Dispose
+  nameWithType: DisposeByRefObject.Dispose
 - uid: Solti.Utils.DI.Internals.DisposeByRefObject.RefCount
   name: RefCount
   href: Solti.Utils.DI.Internals.DisposeByRefObject.html#Solti_Utils_DI_Internals_DisposeByRefObject_RefCount
