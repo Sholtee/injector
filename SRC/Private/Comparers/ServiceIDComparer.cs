@@ -3,6 +3,8 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
+using System;
+
 namespace Solti.Utils.DI.Internals
 {
     internal sealed class ServiceIdComparer : ComparerBase<ServiceIdComparer, IServiceId>
@@ -11,7 +13,7 @@ namespace Solti.Utils.DI.Internals
 #if NETSTANDARD2_0
             new { obj.Interface, obj.Name }.GetHashCode()
 #else
-            System.HashCode.Combine(obj.Interface, obj.Name)
+            HashCode.Combine(obj.Interface, obj.Name)
 #endif
             ;
     }
