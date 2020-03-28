@@ -71,7 +71,7 @@ namespace Solti.Utils.DI.Internals
             Ensure.Parameter.IsNotNull(implementation, nameof(implementation));
 
             //
-            // - A tenyleges implementacio az elso hivatkozaskor lesz validalva (lasd AsLazy() implementacio).
+            // - A tenyleges implementacio az elso hivatkozaskor lesz validalva (lasd LazyType implementacio).
             // - A konstruktor pedig az elso peldanyositaskor (lasd Resolver.Get() implementacio).
             //
 
