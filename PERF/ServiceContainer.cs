@@ -39,18 +39,18 @@ namespace Solti.Utils.DI.Perf
         // FContainer.Count lekerdezese idoigenyes
         //
 
-        private int OverallCount { get; set; }
+        private int OverallAddInvocations { get; set; }
 
         [Benchmark(OperationsPerInvoke = OperationsPerInvoke)]
         public void Add() 
         {
-            for (int i = 0; i < OperationsPerInvoke; i++, OverallCount++)
+            for (int i = 0; i < OperationsPerInvoke; i++, OverallAddInvocations++)
             {
                 //
                 // Absztrakt bejegyzesnek nincs tulaja aki felszabaditsa (megjegyzem nem is kell felszabaditani).
                 //
 
-                var entry = new AbstractServiceEntry(RandomInterfaces[OverallCount % RandomInterfaces.Count], (OverallCount / RandomInterfaces.Count).ToString());
+                var entry = new AbstractServiceEntry(RandomInterfaces[OverallAddInvocations % RandomInterfaces.Count], (OverallAddInvocations / RandomInterfaces.Count).ToString());
                 GC.SuppressFinalize(entry);
 
                 FContainer.Add(entry);
@@ -79,24 +79,18 @@ namespace Solti.Utils.DI.Perf
         public void SetupSpecialize()
         {
             FContainer = new DI.ServiceContainer();
-            FContainer.Service(typeof(IList<>), typeof(MyList<>));
+            for (int i = 0; i < OperationsPerInvoke; i++)
+                FContainer.Service(typeof(IList<>), i.ToString(), typeof(MyList<>));
         }
 
         private sealed class MyList<T> : List<T> { } // csak egy konstruktor legyen
-
-        private static readonly IReadOnlyList<Type> RandomLists = typeof(System.Xml.NameTable)
-            .Assembly
-            .GetTypes()
-            .Where(t => t.IsPublic && !t.IsGenericTypeDefinition)
-            .Select(t => typeof(IList<>).MakeGenericType(t))
-            .ToArray();
 
         [Benchmark(OperationsPerInvoke = OperationsPerInvoke)]
         public void Specialize() 
         {
             for (int i = 0; i < OperationsPerInvoke; i++)
             {
-                FContainer.Get(RandomLists[Math.Min(i, RandomLists.Count - 1)], null, QueryModes.AllowSpecialization | QueryModes.ThrowOnError);
+                FContainer.Get<IList<object>>(i.ToString(), QueryModes.AllowSpecialization | QueryModes.ThrowOnError);
             }
         }
     }
