@@ -4,14 +4,15 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Reflection;
 
 using BenchmarkDotNet.Attributes;
-using Moq;
 
 namespace Solti.Utils.DI.Perf
 {
     using static Consts;
     using Internals;
+    using Proxy;
 
     [MemoryDiagnoser]
     public class ServiceEntry
@@ -21,8 +22,16 @@ namespace Solti.Utils.DI.Perf
 
         private IServiceContainer Owner;
 
+        public class DummyContainer : InterfaceInterceptor<IServiceContainer>
+        {
+            public DummyContainer() : base(null) {}
+
+            public override object Invoke(MethodInfo method, object[] args, MemberInfo extra)
+                => throw new InvalidOperationException("Owner methods should not be invoked.");
+        }
+
         [GlobalSetup]
-        public void Setup() => Owner = new Mock<IServiceContainer>(MockBehavior.Strict).Object;
+        public void Setup() => Owner = ProxyFactory.Create<IServiceContainer, DummyContainer>();
 
         [Benchmark(OperationsPerInvoke = OperationsPerInvoke)]
         public void Service()
