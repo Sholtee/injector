@@ -55,7 +55,7 @@ namespace Solti.Utils.DI.UseCases
         {
             [Transactional]
             void DoSomething([NotNull] object arg);
-            public void DoSomethingElse();
+            void DoSomethingElse();
         }
 
         public class MyModuleUsingDbConnection : IModule
