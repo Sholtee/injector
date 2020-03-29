@@ -17,13 +17,21 @@ namespace Solti.Utils.DI.Internals
     /// </summary>
     internal class TransientServiceEntry : ProducibleServiceEntry
     {
-        private readonly ServiceReferenceCollection FSpawnedServices = new ServiceReferenceCollection();
+        private ServiceReferenceCollection? FSpawnedServices;
+
+        //
+        // A legyartott szervizek listajat az elso hasznalat elott hozzuk letre. Ennek foleg a teljestimenyteszteknel 
+        // van ertelme ahol a szervizbejegyzesek nem biztos h fel vannak szabaditva (felszabaditas ideje ne szamitson 
+        // bele a tesztbe). Igy levehetunk nemi terhet a GC vallarol.
+        //
+
+        internal ServiceReferenceCollection SpawnedServices => FSpawnedServices ??= new ServiceReferenceCollection(); 
 
         private void EnsureNotFull(IReadOnlyDictionary<string, object> options) 
         {
             int? threshold = options?.GetValueOrDefault<int?>("MaxSpawnedTransientServices");
 
-            if (FSpawnedServices.Count >= threshold)
+            if (SpawnedServices.Count >= threshold)
                 //
                 // Ha ide jutunk az azt jelenti h jo esellyel a tartalmazo injector ujrahasznositasra kerult
                 // (ahogy az a teljesitmeny teszteknel meg is tortent).
@@ -72,7 +80,7 @@ namespace Solti.Utils.DI.Internals
             // szamlalo az eredeti erteken alljon).
             //
 
-            FSpawnedServices.Add(reference);   
+            SpawnedServices.Add(reference);   
             reference.Release();
 
             Debug.Assert(!reference.Disposed);
@@ -92,16 +100,19 @@ namespace Solti.Utils.DI.Internals
 
         protected override void Dispose(bool disposeManaged)
         {
-            if (disposeManaged) FSpawnedServices.Dispose();
+            if (disposeManaged) FSpawnedServices?.Dispose();
 
             base.Dispose(disposeManaged);
         }
 
-        protected async override ValueTask AsyncDispose() =>
-            await FSpawnedServices.DisposeAsync();
+        protected async override ValueTask AsyncDispose()
+        {
+            if (FSpawnedServices != null)
+                await FSpawnedServices.DisposeAsync();
 
             //
             // Nem kell "base" hivas mert az a standard Dispose()-t hivna.
             //
+        }
     }
 }
