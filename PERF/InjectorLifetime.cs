@@ -27,6 +27,23 @@ namespace Solti.Utils.DI.Perf
 
         private IServiceContainer FContainer;
 
+        private class UnsafeInjector : Internals.Injector, IServiceContainer
+        {
+            public UnsafeInjector(IServiceContainer owner) : base(owner) { }
+
+            IServiceContainer IServiceContainer.Add(AbstractServiceEntry entry) 
+            {
+                if (entry.Owner == this)
+                {
+                    GC.SuppressFinalize(entry);
+                    if (entry.IsInstance())
+                        GC.SuppressFinalize(entry.Instance);
+                }
+
+                return Add(entry);
+            }
+        }
+
         [GlobalSetup]
         public void Setup() 
         {
@@ -40,12 +57,14 @@ namespace Solti.Utils.DI.Perf
         public void Cleanup() => FContainer.Dispose();
 
         [Benchmark(OperationsPerInvoke = OperationsPerInvoke)]
-        public void CreateThenDispose() 
+        public void CreateInjector() 
         {
             for (int i = 0; i < OperationsPerInvoke; i++)
             {
-                using (FContainer.CreateInjector()) { }
+                var injector = new UnsafeInjector(FContainer);
+                GC.SuppressFinalize(injector);
             }
+            FContainer.Children.Clear();
         }
     }
 }
