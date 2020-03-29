@@ -44,6 +44,7 @@ namespace Solti.Utils.DI.UseCases
             {
                 IModule module = injector.Get<IModule>();
                 module.DoSomething(new object());
+                module.DoSomethingElse();
             }
 
             mockDbConnection.Verify(conn => conn.BeginTransaction(), Times.Once);
@@ -52,32 +53,46 @@ namespace Solti.Utils.DI.UseCases
 
         public interface IModule
         {
+            [Transactional]
             void DoSomething([NotNull] object arg);
+            public void DoSomethingElse();
         }
 
         public class MyModuleUsingDbConnection : IModule
         {
-            public IDbConnection Connection { get; }
-            public MyModuleUsingDbConnection(IDbConnection dbConn)
+            private readonly Lazy<IDbConnection> FConnection;
+            public IDbConnection Connection => FConnection.Value;
+
+            public MyModuleUsingDbConnection(Lazy<IDbConnection> dbConn)
             {
                 Assert.NotNull(dbConn);
-                Connection = dbConn;
+                FConnection = dbConn;
             }
             public void DoSomething(object arg) { }
+
+            public void DoSomethingElse() { }
         }
+
+        [AttributeUsage(AttributeTargets.Method)]
+        public class TransactionalAttribute : Attribute { }
 
         public class TransactionManager<TInterface> : InterfaceInterceptor<TInterface> where TInterface : class
         {
-            public IDbConnection Connection { get; }
+            private readonly Lazy<IDbConnection> FConnection;
 
-            public TransactionManager(TInterface target, IDbConnection dbConn) : base(target)
+            public IDbConnection Connection => FConnection.Value;
+
+            public TransactionManager(TInterface target, Lazy<IDbConnection> dbConn) : base(target)
             {
                 Assert.NotNull(dbConn);
-                Connection = dbConn;
+                FConnection = dbConn;
             }
 
             public override object Invoke(MethodInfo method, object[] args, MemberInfo extra)
             {
+                if (method.GetCustomAttribute<TransactionalAttribute>() == null) 
+                    return base.Invoke(method, args, extra);
+
                 IDbTransaction transaction = Connection.BeginTransaction();
                 try
                 {
@@ -132,11 +147,13 @@ namespace Solti.Utils.DI.UseCases
         public class Module1 : IMyModule1 
         {
             public void DoSomething(object arg) { }
+            public void DoSomethingElse() { }
         }
         [Service(typeof(IMyModule2))]
         public class Module2 : IMyModule2 
         {
             public void DoSomething(object arg) { }
+            public void DoSomethingElse() { }
         }
 
         [Test]
@@ -228,9 +245,9 @@ namespace Solti.Utils.DI.UseCases
                 Assert.That(httpRequest["cica"], Is.EqualTo("cica"));
             }
 
-            public void DoSomething(object arg)
-            {
-            }
+            public void DoSomething(object arg) {}
+
+            public void DoSomethingElse() {}
         }
     }
 }

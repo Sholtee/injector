@@ -253,27 +253,34 @@ public class ParameterValidatorProxy<TInterface> : InterfaceInterceptor<TInterfa
   ...
   public class MyModuleUsingDbConnection : IMyModuleUsingDbConnection
   {
-    public IDbConnection Connection { get; }
+    // Connection is not necessarily used -> Lazy
+    private readonly Lazy<IDbConnection> FConnection;
+    public IDbConnection Connection => FConnection.Value;
 	
-    public MyModuleUsingDbConnection(IDbConnection dbConn)
+    public MyModuleUsingDbConnection(Lazy<IDbConnection> dbConn)
     {
       Connection = dbConn;
     }
 	
-    void IMyModuleUsingDbConnection.DoSomething() { }
+    void IMyModuleUsingDbConnection.DoSomething() {...}
   }
   ...
   public class TransactionManager<TInterface> : InterfaceInterceptor<TInterface> where TInterface : class
   {
-    public IDbConnection Connection { get; }
+    private readonly Lazy<IDbConnection> FConnection;
+    public IDbConnection Connection => FConnection.Value;
 	
-    public TransactionManager(TInterface target, IDbConnection dbConn) : base(target)
+    public TransactionManager(TInterface target, Lazy<IDbConnection> dbConn) : base(target)
     {
       Connection = dbConn;
     }
 	
     public override object Invoke(MethodInfo method, object[] args, MemberInfo extra)
     {
+      // Create transactions only if needed
+      if (method.GetCustomAttribute<TransactionalAttribute>() == null) 
+        return base.Invoke(method, args, extra);
+		
       IDbTransaction transaction = Connection.BeginTransaction();
       try
       {
@@ -294,7 +301,7 @@ public class ParameterValidatorProxy<TInterface> : InterfaceInterceptor<TInterfa
     .Service<IMyModuleUsingDbConnection, MyModuleUsingDbConnection>(Lifetime.Scoped)
     .Proxy<IMyModuleUsingDbConnection, TransactionManager<IMyModuleUsingDbConnection>>();
   ```
-
+- The full version of the above examples can be found [here](https://github.com/Sholtee/injector/blob/master/TEST/UseCases.cs ).
 ### Auto config
 There are some attributes to annotate services for "auto config" e.g.:
 - ```csharp
