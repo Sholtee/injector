@@ -5,7 +5,6 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 using BenchmarkDotNet.Attributes;
 
@@ -22,28 +21,7 @@ namespace Solti.Utils.DI.Perf
         #region UnsafeInjector
         private class UnsafeInjector : Internals.Injector
         {
-            private void SupressOwnedEntryFinalization() 
-            {
-                foreach (AbstractServiceEntry entry in UnderlyingContainer.Where(e => e.Owner == this))
-                {
-                    GC.SuppressFinalize(entry);
-
-                    switch (entry)
-                    {
-                        /*
-                        case TransientServiceEntry transient: // IEnumerable<T>
-                            GC.SuppressFinalize(transient.SpawnedServices);
-                            break;
-                        */
-                        case InstanceServiceEntry instance: // IInjector
-                            GC.SuppressFinalize(instance.Instance);
-                            break;
-                    }          
-                }
-            }
-
-            private UnsafeInjector(IServiceContainer parent, IReadOnlyDictionary<string, object> factoryOptions, ServiceGraph graph) : base(parent, factoryOptions, graph) 
-                => SupressOwnedEntryFinalization();
+            private UnsafeInjector(IServiceContainer parent, IReadOnlyDictionary<string, object> factoryOptions, ServiceGraph graph) : base(parent, factoryOptions, graph) { }
 
             protected override void Dispose(bool disposeManaged)
             {
@@ -51,7 +29,27 @@ namespace Solti.Utils.DI.Perf
                 base.Dispose(disposeManaged);
             }
 
-            internal UnsafeInjector(IServiceContainer owner) : base(owner) => SupressOwnedEntryFinalization();
+            public override IServiceContainer Add(AbstractServiceEntry entry)
+            {
+                if (entry.Owner == this)
+                {
+                    switch (entry)
+                    {
+                        case TransientServiceEntry transient:
+                            GC.SuppressFinalize(transient.SpawnedServices);
+                            break;
+                        case InstanceServiceEntry instance:
+                            GC.SuppressFinalize(instance.Instance);
+                            break;
+                    }
+
+                    GC.SuppressFinalize(entry);
+                }
+
+                return base.Add(entry);
+            }
+
+            internal UnsafeInjector(IServiceContainer owner) : base(owner) { }
 
             internal override Internals.Injector Spawn(IServiceContainer parent)
             {
@@ -64,10 +62,6 @@ namespace Solti.Utils.DI.Perf
             {
                 GC.SuppressFinalize(requested);
                 GC.SuppressFinalize(requested.Dependencies);
-
-                GC.SuppressFinalize(requested.RelatedServiceEntry); // Genrikus lezarasakor bekerulhet uj bejegyzes ami konstruktorba meg nem volt
-                if (requested.RelatedServiceEntry is TransientServiceEntry transient)
-                    GC.SuppressFinalize(transient.SpawnedServices);
 
                 base.Instantiate(requested);
             }

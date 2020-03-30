@@ -38,7 +38,7 @@ namespace Solti.Utils.DI
         /// <summary>
         /// See <see cref="IServiceContainer.Add"/>.
         /// </summary>
-        public IServiceContainer Add(AbstractServiceEntry entry)
+        public virtual IServiceContainer Add(AbstractServiceEntry entry)
         {
             Ensure.Parameter.IsNotNull(entry, nameof(entry));
             Ensure.NotDisposed(this);
@@ -77,7 +77,8 @@ namespace Solti.Utils.DI
         /// <summary>
         /// See <see cref="IServiceContainer.Get"/>.
         /// </summary>
-        public AbstractServiceEntry? Get(Type serviceInterface, string? name, QueryModes mode)
+        [SuppressMessage("Naming", "CA1716:Identifiers should not match keywords", Justification = "The identifier won't confuse the users of the API.")]
+        public virtual AbstractServiceEntry? Get(Type serviceInterface, string? name, QueryModes mode)
         {
             Ensure.Parameter.IsNotNull(serviceInterface, nameof(serviceInterface));
             Ensure.Parameter.IsInterface(serviceInterface, nameof(serviceInterface));
@@ -147,7 +148,7 @@ namespace Solti.Utils.DI
 
                     specialized = owner.Get(serviceInterface, name, QueryModes.AllowSpecialization | QueryModes.ThrowOnError)!;
 
-                    return Inherit(specialized);
+                    return specialized.CopyTo(this);
                 }
 
                 //
@@ -217,7 +218,7 @@ namespace Solti.Utils.DI
             {
                 foreach (AbstractServiceEntry entry in parent)
                 {
-                    Inherit(entry);
+                    entry.CopyTo(this);
                 }
             }
             catch 
@@ -229,17 +230,6 @@ namespace Solti.Utils.DI
                 Dispose();
                 throw;
             }
-        }
-
-        /// <summary>
-        /// Implements the entry inheritance.
-        /// </summary>
-        /// <param name="entry">The <see cref="AbstractServiceEntry"/> to be inherited.</param>
-        /// <remarks>This method is intended to be used only in the constructor of this class so the method body must not refer any fields/properties.</remarks>
-        protected virtual AbstractServiceEntry Inherit(AbstractServiceEntry entry) 
-        {
-            Ensure.Parameter.IsNotNull(entry, nameof(entry));
-            return entry.CopyTo(this);
         }
 
         /// <summary>

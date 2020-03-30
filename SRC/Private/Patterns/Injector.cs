@@ -54,25 +54,6 @@ namespace Solti.Utils.DI.Internals
             this.RegisterSelf();
             this.RegisterServiceEnumerator();
         }
-
-        protected override AbstractServiceEntry Inherit(AbstractServiceEntry entry)
-        {
-            Ensure.Parameter.IsNotNull(entry, nameof(entry));
-
-            //
-            // Injector nem hozhato letre absztrakt bejegyzesekkel.
-            //
-
-            if (entry.GetType() == typeof(AbstractServiceEntry))
-            {
-                var ioex = new InvalidOperationException(Resources.INVALID_INJECTOR_ENTRY);
-                ioex.Data[nameof(entry)] = entry;
-
-                throw ioex;
-            }
-
-            return base.Inherit(entry);
-        }
         #endregion
 
         #region Internals
@@ -146,6 +127,25 @@ namespace Solti.Utils.DI.Internals
         ){ }
 
         public IReadOnlyDictionary<string, object> FactoryOptions { get; }
+
+        public override IServiceContainer Add(AbstractServiceEntry entry)
+        {
+            Ensure.Parameter.IsNotNull(entry, nameof(entry));
+
+            //
+            // Injector nem hasznalhato absztrakt bejegyzesekkel.
+            //
+
+            if (entry.GetType() == typeof(AbstractServiceEntry))
+            {
+                var ioex = new InvalidOperationException(Resources.INVALID_INJECTOR_ENTRY);
+                ioex.Data[nameof(entry)] = entry;
+
+                throw ioex;
+            }
+
+            return base.Add(entry);
+        }
 
         #region IInjector
         public object Get(Type iface, string? name) 

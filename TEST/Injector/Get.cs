@@ -261,22 +261,7 @@ namespace Solti.Utils.DI.Injector.Tests
         }
 
         [Test]
-        public void Injector_Get_ShouldThrowOnAbstractService1() 
-        {
-            using (IInjector injector = Container.CreateInjector()) 
-            {
-                //
-                // Ez az injector megeroszakolasa u h nagyon nem eletszeru.
-                //
-
-                injector.UnderlyingContainer.Abstract<IInterface_1>();
-
-                Assert.Throws<InvalidOperationException>(() => injector.Get<IInterface_1>(), Resources.CANT_INSTANTIATE_ABSTRACTS);
-            }
-        }
-
-        [Test]
-        public void Injector_Get_ShouldThrowOnAbstractService2()
+        public void Injector_Get_ShouldThrowOnAbstractService()
         {
             Container
                 .Abstract<IInterface_1>()

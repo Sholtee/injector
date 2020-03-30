@@ -113,3 +113,4 @@
   - *improved:* `Injector` creation performance
 - 2.0.0
   - *breaking:* New `LazyTypeResolver` layout (`ITypeResolver` implemented explicitly, removed misspelled `AssamblyPath` property)
+  - *breaking:* `ServiceContainer.[Add|Get]` became virtual, removed `ServiceContainer.Inherit()` method
