@@ -4,100 +4,215 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 using BenchmarkDotNet.Attributes;
 
 namespace Solti.Utils.DI.Perf
 {
     using static Consts;
+    using Internals;
 
     [MemoryDiagnoser]
     public class Injector
     {
         private IServiceContainer FContainer;
 
+        #region UnsafeInjector
+        private class UnsafeInjector : Internals.Injector
+        {
+            private void SupressOwnedEntryFinalization() 
+            {
+                foreach (AbstractServiceEntry entry in UnderlyingContainer.Where(e => e.Owner == this))
+                {
+                    GC.SuppressFinalize(entry);
+
+                    switch (entry)
+                    {
+                        /*
+                        case TransientServiceEntry transient: // IEnumerable<T>
+                            GC.SuppressFinalize(transient.SpawnedServices);
+                            break;
+                        */
+                        case InstanceServiceEntry instance: // IInjector
+                            GC.SuppressFinalize(instance.Instance);
+                            break;
+                    }          
+                }
+            }
+
+            private UnsafeInjector(IServiceContainer parent, IReadOnlyDictionary<string, object> factoryOptions, ServiceGraph graph) : base(parent, factoryOptions, graph) 
+                => SupressOwnedEntryFinalization();
+
+            protected override void Dispose(bool disposeManaged)
+            {
+                UnsafeClear();
+                base.Dispose(disposeManaged);
+            }
+
+            internal UnsafeInjector(IServiceContainer owner) : base(owner) => SupressOwnedEntryFinalization();
+
+            internal override Internals.Injector Spawn(IServiceContainer parent)
+            {
+                var result = new UnsafeInjector(parent, FactoryOptions, FGraph.CreateSubgraph());
+                GC.SuppressFinalize(result);
+                return result;
+            }
+
+            internal override void Instantiate(ServiceReference requested)
+            {
+                GC.SuppressFinalize(requested);
+                GC.SuppressFinalize(requested.Dependencies);
+
+                GC.SuppressFinalize(requested.RelatedServiceEntry); // Genrikus lezarasakor bekerulhet uj bejegyzes ami konstruktorba meg nem volt
+                if (requested.RelatedServiceEntry is TransientServiceEntry transient)
+                    GC.SuppressFinalize(transient.SpawnedServices);
+
+                base.Instantiate(requested);
+            }
+        }
+        #endregion
+
         #region Services
-        public interface IInterface_1
+        public interface IDependency
         {
         }
 
-        public class Implementation_1 : IInterface_1
+        public class Dependency : IDependency
         {
         }
 
-        public interface IInterface_2<T>
+        public interface IDependant 
         {
-            IInterface_1 Dep { get; }
+            IDependency Dependency { get; }
         }
 
-        public class Implementation_2<T> : IInterface_2<T>
+        public class Dependant : IDependant
         {
-            public Implementation_2(IInterface_1 dep) => Dep = dep;
-
-            public IInterface_1 Dep { get; }
+            public Dependant(IDependency dependency) => Dependency = dependency;
+            public IDependency Dependency { get; }
         }
 
-        public interface IInterface_3_LazyDep
+        public interface IDependant<T>
         {
-            Lazy<IInterface_1> LazyDep { get; }
+            IDependency Dependency { get; }
         }
 
-        public class Implementation_3_LazyDep : IInterface_3_LazyDep
+        public class Dependant<T> : IDependant<T>
         {
-            public Implementation_3_LazyDep(Lazy<IInterface_1> dep) => LazyDep = dep;
+            public Dependant(IDependency dependency) => Dependency = dependency;
+            public IDependency Dependency { get; }
+        }
 
-            public Lazy<IInterface_1> LazyDep { get; }
+        public interface IDependantLazy
+        {
+            Lazy<IDependency> LazyDependency { get; }
+        }
+
+        public class DependantLazy : IDependantLazy
+        {
+            public DependantLazy(Lazy<IDependency> dependency) => LazyDependency = dependency;
+            public Lazy<IDependency> LazyDependency { get; }
+        }
+
+        public class Outer
+        {
+            public Outer(IDependency dependency, int num) => Dependency = dependency;
+            public IDependency Dependency { get; }
         }
         #endregion
 
         [Params(Lifetime.Transient, Lifetime.Scoped, Lifetime.Singleton)]
-        public Lifetime Lifetime { get; set; }
+        public Lifetime DependencyLifetime { get; set; }
 
-        [GlobalSetup]
-        public void Setup() => FContainer = new DI.ServiceContainer()
-            .Service<IInterface_1, Implementation_1>(Lifetime)
-            .Service(typeof(IInterface_2<>), typeof(Implementation_2<>), Lifetime)
-            .Service<IInterface_3_LazyDep, Implementation_3_LazyDep>(Lifetime);
+        [Params(Lifetime.Transient, Lifetime.Scoped, Lifetime.Singleton)]
+        public Lifetime DependantLifetime { get; set; }
 
-        [GlobalCleanup]
-        public void Cleanup() => FContainer.Dispose();
+        [GlobalSetup(Target = nameof(Get))]
+        public void SetupGet() => FContainer = new DI.ServiceContainer()
+            .Service<IDependency, Dependency>(DependencyLifetime)
+            .Service<IDependant, Dependant>(DependantLifetime);
+
+        [GlobalCleanup(Target = nameof(Get))]
+        public void CleanupGet() => FContainer.Dispose();
 
         [Benchmark(OperationsPerInvoke = OperationsPerInvoke)]
         public void Get()
         {
-            using (var injector = new DI.Internals.Injector(FContainer))
+            //
+            // "using" kell mindenkepp h a szulo kontenerunket ne arasszuk el nem hasznalt peldanyokkal
+            // viszont az "UnsafeInjector.UnsafeClear()" hivas miatt nem tart sokaig.
+            //
+
+            using (var injector = new UnsafeInjector(FContainer))
             {
                 for (int i = 0; i < OperationsPerInvoke; i++)
                 {
-                    injector.Get<IInterface_2<string>>(null);
+                    injector.Get<IDependant>(name: null);
                 }
-                injector.UnsafeClear();
             }
         }
 
+        [GlobalSetup(Target = nameof(Get_Generic))]
+        public void SetupGeneric() => FContainer = new DI.ServiceContainer()
+            .Service<IDependency, Dependency>(DependencyLifetime)
+            .Service(typeof(IDependant<>), typeof(Dependant<>), DependantLifetime);
+
+        [GlobalCleanup(Target = nameof(Get_Generic))]
+        public void CleanupGeneric() => FContainer.Dispose();
+
         [Benchmark(OperationsPerInvoke = OperationsPerInvoke)]
-        public void Instantiate()
+        public void Get_Generic()
         {
-            using (var injector = new DI.Internals.Injector(FContainer))
+            using (var injector = new UnsafeInjector(FContainer))
             {
                 for (int i = 0; i < OperationsPerInvoke; i++)
                 {
-                    injector.Instantiate<Implementation_2<string>>();
+                    injector.Get<IDependant<string>>(name: null);
                 }
-                injector.UnsafeClear();
             }
         }
+
+        [GlobalSetup(Target = nameof(Get_Lazy))]
+        public void SetupLazy() => FContainer = new DI.ServiceContainer()
+            .Service<IDependency, Dependency>(DependencyLifetime)
+            .Service<IDependantLazy, DependantLazy>(DependantLifetime);
+
+        [GlobalCleanup(Target = nameof(Get_Lazy))]
+        public void CleanupLazy() => FContainer.Dispose();
 
         [Benchmark(OperationsPerInvoke = OperationsPerInvoke)]
         public void Get_Lazy()
         {
-            using (var injector = new DI.Internals.Injector(FContainer))
+            using (var injector = new UnsafeInjector(FContainer))
             {
                 for (int i = 0; i < OperationsPerInvoke; i++)
                 {
-                    injector.Get<IInterface_3_LazyDep>(null);
+                    injector.Get<IDependantLazy>(name: null);
                 }
-                injector.UnsafeClear();
+            }
+        }
+
+        [GlobalSetup(Target = nameof(Instantiate))]
+        public void SetupInstantiate() => FContainer = new DI.ServiceContainer()
+            .Service<IDependency, Dependency>(DependencyLifetime);
+
+        [GlobalCleanup(Target = nameof(Instantiate))]
+        public void CleanupInstantiate() => FContainer.Dispose();
+
+        [Benchmark(OperationsPerInvoke = OperationsPerInvoke)]
+        public void Instantiate()
+        {
+            using (var injector = new UnsafeInjector(FContainer))
+            {
+                for (int i = 0; i < OperationsPerInvoke; i++)
+                {
+                    injector.Instantiate<Outer>(new Dictionary<string, object>
+                    {
+                        { "num", 10 }
+                    });
+                }
             }
         }
     }
