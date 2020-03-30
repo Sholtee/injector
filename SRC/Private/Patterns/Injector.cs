@@ -17,6 +17,8 @@ namespace Solti.Utils.DI.Internals
         #region Private
         private readonly ServiceInstantiationStrategySelector FStrategySelector;
 
+        private readonly ServiceGraph FGraph;
+
         private void CheckBreaksTheRuleOfStrictDI(ServiceReference requestedRef) 
         {
             if (!Config.Value.Injector.StrictDI) return;
@@ -42,7 +44,7 @@ namespace Solti.Utils.DI.Internals
         #endregion
 
         #region Protected
-        protected readonly ServiceGraph FGraph;
+        protected ServiceGraph CreateSubgraph() => FGraph.CreateSubgraph();
 
         protected Injector(IServiceContainer parent, IReadOnlyDictionary<string, object> factoryOptions, ServiceGraph graph) : base(parent)
         {
@@ -83,7 +85,7 @@ namespace Solti.Utils.DI.Internals
             Ensure.Parameter.IsNotNull(parent, nameof(parent));
             Ensure.NotDisposed(this);
 
-            return new Injector(parent, FactoryOptions, FGraph.CreateSubgraph());
+            return new Injector(parent, FactoryOptions, CreateSubgraph());
         }
 
         internal virtual ServiceReference GetReference(Type iface, string? name)

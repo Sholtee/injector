@@ -15,7 +15,7 @@ namespace Solti.Utils.DI.Internals
         public ServiceProvider(IServiceContainer parent) : base(parent)
             => this.Instance<IServiceProvider>(this, releaseOnDispose: false);
 
-        internal override Injector Spawn(IServiceContainer parent) => new ServiceProvider(parent, FactoryOptions, FGraph.CreateSubgraph());
+        internal override Injector Spawn(IServiceContainer parent) => new ServiceProvider(parent, FactoryOptions, CreateSubgraph());
 
         //
         // IInjector.Get() elvileg sose adhatna vissza NULL-t viszont h biztositsuk 

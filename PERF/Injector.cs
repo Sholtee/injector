@@ -53,7 +53,7 @@ namespace Solti.Utils.DI.Perf
 
             internal override Internals.Injector Spawn(IServiceContainer parent)
             {
-                var result = new UnsafeInjector(parent, FactoryOptions, FGraph.CreateSubgraph());
+                var result = new UnsafeInjector(parent, FactoryOptions, CreateSubgraph());
                 GC.SuppressFinalize(result);
                 return result;
             }
