@@ -7,11 +7,10 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-
-using static System.Diagnostics.Debug;
 
 namespace Solti.Utils.DI
 {
@@ -119,7 +118,7 @@ namespace Solti.Utils.DI
                         : throw new ServiceNotFoundException(key);
             }
 
-            Assert(existing.IsGeneric());
+            Debug.Assert(existing.IsGeneric());
 
             using (FLock.AcquireWriterLock())
             {
@@ -153,13 +152,11 @@ namespace Solti.Utils.DI
 
                 //
                 // Ha mi vagyunk a tulajdonosok akkor nekunk kell tipizalni majd felvenni a bejegyzest.
+                // Ehhez ne az "FEntries.Add(specialized, specialized)"-ot hivjuk mivel a "this.Add()" 
+                // virtualis.
                 //
 
-                specialized = existing.Specialize(serviceInterface.GetGenericArguments());
-                Assert(ServiceIdComparer.Instance.Equals(key, specialized));
-
-                FEntries.Add(key, specialized);
-
+                Add(specialized = existing.Specialize(serviceInterface.GetGenericArguments()));
                 return specialized;
             }
 
