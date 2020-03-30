@@ -147,7 +147,7 @@ namespace Solti.Utils.DI
 
                     specialized = owner.Get(serviceInterface, name, QueryModes.AllowSpecialization | QueryModes.ThrowOnError)!;
 
-                    return specialized.CopyTo(this);
+                    return Inherit(specialized);
                 }
 
                 //
@@ -236,10 +236,10 @@ namespace Solti.Utils.DI
         /// </summary>
         /// <param name="entry">The <see cref="AbstractServiceEntry"/> to be inherited.</param>
         /// <remarks>This method is intended to be used only in the constructor of this class so the method body must not refer any fields/properties.</remarks>
-        protected virtual void Inherit(AbstractServiceEntry entry) 
+        protected virtual AbstractServiceEntry Inherit(AbstractServiceEntry entry) 
         {
             Ensure.Parameter.IsNotNull(entry, nameof(entry));
-            entry.CopyTo(this);
+            return entry.CopyTo(this);
         }
 
         /// <summary>

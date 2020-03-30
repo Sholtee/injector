@@ -52,7 +52,7 @@ namespace Solti.Utils.DI.Internals
             this.RegisterServiceEnumerator();
         }
 
-        protected override void Inherit(AbstractServiceEntry entry)
+        protected override AbstractServiceEntry Inherit(AbstractServiceEntry entry)
         {
             Ensure.Parameter.IsNotNull(entry, nameof(entry));
 
@@ -68,7 +68,7 @@ namespace Solti.Utils.DI.Internals
                 throw ioex;
             }
 
-            base.Inherit(entry);
+            return base.Inherit(entry);
         }
 
         #region Internals
