@@ -123,13 +123,13 @@ namespace Solti.Utils.DI.Perf
         [Params(Lifetime.Transient, Lifetime.Scoped, Lifetime.Singleton)]
         public Lifetime DependantLifetime { get; set; }
 
+        [GlobalCleanup]
+        public void Cleanup() => FContainer.Dispose();
+
         [GlobalSetup(Target = nameof(Get))]
         public void SetupGet() => FContainer = new DI.ServiceContainer()
             .Service<IDependency, Dependency>(DependencyLifetime)
             .Service<IDependant, Dependant>(DependantLifetime);
-
-        [GlobalCleanup(Target = nameof(Get))]
-        public void CleanupGet() => FContainer.Dispose();
 
         [Benchmark(OperationsPerInvoke = OperationsPerInvoke)]
         public void Get()
@@ -153,9 +153,6 @@ namespace Solti.Utils.DI.Perf
             .Service<IDependency, Dependency>(DependencyLifetime)
             .Service(typeof(IDependant<>), typeof(Dependant<>), DependantLifetime);
 
-        [GlobalCleanup(Target = nameof(Get_Generic))]
-        public void CleanupGeneric() => FContainer.Dispose();
-
         [Benchmark(OperationsPerInvoke = OperationsPerInvoke)]
         public void Get_Generic()
         {
@@ -173,9 +170,6 @@ namespace Solti.Utils.DI.Perf
             .Service<IDependency, Dependency>(DependencyLifetime)
             .Service<IDependantLazy, DependantLazy>(DependantLifetime);
 
-        [GlobalCleanup(Target = nameof(Get_Lazy))]
-        public void CleanupLazy() => FContainer.Dispose();
-
         [Benchmark(OperationsPerInvoke = OperationsPerInvoke)]
         public void Get_Lazy()
         {
@@ -191,9 +185,6 @@ namespace Solti.Utils.DI.Perf
         [GlobalSetup(Target = nameof(Instantiate))]
         public void SetupInstantiate() => FContainer = new DI.ServiceContainer()
             .Service<IDependency, Dependency>(DependencyLifetime);
-
-        [GlobalCleanup(Target = nameof(Instantiate))]
-        public void CleanupInstantiate() => FContainer.Dispose();
 
         [Benchmark(OperationsPerInvoke = OperationsPerInvoke)]
         public void Instantiate()

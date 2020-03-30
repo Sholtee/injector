@@ -80,7 +80,9 @@ namespace Solti.Utils.DI.Perf
         {
             FContainer = new DI.ServiceContainer();
             for (int i = 0; i < OperationsPerInvoke; i++)
+            {
                 FContainer.Service(typeof(IList<>), i.ToString(), typeof(MyList<>));
+            }
         }
 
         private sealed class MyList<T> : List<T> { } // csak egy konstruktor legyen
