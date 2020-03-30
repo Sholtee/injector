@@ -14,8 +14,7 @@ namespace Solti.Utils.DI.Internals
 
     internal class Injector : ServiceContainer, IInjector
     {
-        protected readonly ServiceGraph FGraph;
-
+        #region Private
         private readonly ServiceInstantiationStrategySelector FStrategySelector;
 
         private void CheckBreaksTheRuleOfStrictDI(ServiceReference requestedRef) 
@@ -40,6 +39,10 @@ namespace Solti.Utils.DI.Internals
             if (!requestor.Owner.IsDescendantOf(requested.Owner)) 
                 throw new RequestNotAllowedException(requestor, requested, Resources.STRICT_DI);
         }
+        #endregion
+
+        #region Protected
+        protected readonly ServiceGraph FGraph;
 
         protected Injector(IServiceContainer parent, IReadOnlyDictionary<string, object> factoryOptions, ServiceGraph graph) : base(parent)
         {
@@ -70,6 +73,7 @@ namespace Solti.Utils.DI.Internals
 
             return base.Inherit(entry);
         }
+        #endregion
 
         #region Internals
         internal virtual void Instantiate(ServiceReference requested) // [jelenleg] csak a tesztek miatt kell virtualis legyen
