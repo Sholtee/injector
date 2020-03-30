@@ -71,6 +71,7 @@ namespace Solti.Utils.DI.Internals
             base.Inherit(entry);
         }
 
+        #region Internals
         internal virtual void Instantiate(ServiceReference requested) // [jelenleg] csak a tesztek miatt kell virtualis legyen
         {
             Ensure.Parameter.IsNotNull(requested, nameof(requested));
@@ -100,17 +101,7 @@ namespace Solti.Utils.DI.Internals
             return new Injector(parent, FactoryOptions, FGraph.CreateSubgraph());
         }
 
-        public Injector(IServiceContainer parent, IReadOnlyDictionary<string, object>? factoryOptions = null) : this
-        (
-            Ensure.Parameter.IsNotNull(parent, nameof(parent)), 
-            factoryOptions ?? new Dictionary<string, object>
-            {
-                { nameof(Config.Value.Injector.MaxSpawnedTransientServices), Config.Value.Injector.MaxSpawnedTransientServices }
-            }, 
-            new ServiceGraph()
-        ) { }
-
-        public ServiceReference GetReference(Type iface, string? name)
+        internal virtual ServiceReference GetReference(Type iface, string? name)
         {
             Ensure.Parameter.IsNotNull(iface, nameof(iface));
             Ensure.Parameter.IsInterface(iface, nameof(iface));
@@ -138,6 +129,17 @@ namespace Solti.Utils.DI.Internals
                 .GetStrategyFor(entry)
                 .Invoke(FGraph.Current /*requestor*/);
         }
+        #endregion
+
+        public Injector(IServiceContainer parent, IReadOnlyDictionary<string, object>? factoryOptions = null) : this
+        (
+            Ensure.Parameter.IsNotNull(parent, nameof(parent)),
+            factoryOptions ?? new Dictionary<string, object>
+            {
+                { nameof(Config.Value.Injector.MaxSpawnedTransientServices), Config.Value.Injector.MaxSpawnedTransientServices }
+            },
+            new ServiceGraph()
+        ){ }
 
         public IReadOnlyDictionary<string, object> FactoryOptions { get; }
 
