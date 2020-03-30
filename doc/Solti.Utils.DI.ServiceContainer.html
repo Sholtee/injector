@@ -158,7 +158,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IServiceContainer Add(AbstractServiceEntry entry)</code></pre>
+    <pre><code class="lang-csharp hljs">public virtual IServiceContainer Add(AbstractServiceEntry entry)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -254,7 +254,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public AbstractServiceEntry Get(Type serviceInterface, string? name, QueryModes mode)</code></pre>
+    <pre><code class="lang-csharp hljs">public virtual AbstractServiceEntry Get(Type serviceInterface, string? name, QueryModes mode)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -325,51 +325,6 @@
   </table>
   <h5 id="Solti_Utils_DI_ServiceContainer_GetEnumerator_remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>You must dispose the returned enumerator (which is automatically done in foreach loops).</p>
-</div>
-  <a id="Solti_Utils_DI_ServiceContainer_Inherit_" data-uid="Solti.Utils.DI.ServiceContainer.Inherit*"></a>
-  <h4 id="Solti_Utils_DI_ServiceContainer_Inherit_Solti_Utils_DI_AbstractServiceEntry_" data-uid="Solti.Utils.DI.ServiceContainer.Inherit(Solti.Utils.DI.AbstractServiceEntry)">Inherit(AbstractServiceEntry)</h4>
-  <div class="markdown level1 summary"><p>Implements the entry inheritance.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected virtual AbstractServiceEntry Inherit(AbstractServiceEntry entry)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Solti.Utils.DI.AbstractServiceEntry.html">AbstractServiceEntry</a></td>
-        <td><span class="parametername">entry</span></td>
-        <td><p>The <a class="xref" href="Solti.Utils.DI.AbstractServiceEntry.html">AbstractServiceEntry</a> to be inherited.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Solti.Utils.DI.AbstractServiceEntry.html">AbstractServiceEntry</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Solti_Utils_DI_ServiceContainer_Inherit_Solti_Utils_DI_AbstractServiceEntry__remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>This method is intended to be used only in the constructor of this class so the method body must not refer any fields/properties.</p>
 </div>
   <h3 id="implements">Implements</h3>
   <div>
