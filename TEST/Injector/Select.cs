@@ -121,5 +121,29 @@ namespace Solti.Utils.DI.Injector.Tests
                 Assert.That(svcs.Any(svc => svc is GenericImplementation_3<int>));
             }
         }
+
+        [Test]
+        public void Injector_Select_TransientServicesShouldBeUniqueInEachEnumeration() 
+        {
+            Container.Service<IInterface_1, Implementation_1>(Lifetime.Transient);
+
+            using (IInjector injector = Container.CreateInjector()) 
+            {
+                IEnumerable<IInterface_1> svcs = injector.Get<IEnumerable<IInterface_1>>();
+                Assert.AreNotSame(svcs.Single(), svcs.Single());
+            }
+        }
+
+        [Test]
+        public void Injector_Select_NotTransientServicesShouldBeTheSameInEachEnumeration([Values(Lifetime.Scoped, Lifetime.Singleton)] Lifetime lifetime)
+        {
+            Container.Service<IInterface_1, Implementation_1>(lifetime);
+
+            using (IInjector injector = Container.CreateInjector())
+            {
+                IEnumerable<IInterface_1> svcs = injector.Get<IEnumerable<IInterface_1>>();
+                Assert.AreSame(svcs.Single(), svcs.Single());
+            }
+        }
     }
 }
