@@ -111,6 +111,6 @@
   - *breaking:* To support async scope disposal `IServiceContainerExtensions.CreateProvider()` returns `Disposable` (which implements `IDisposable` and `IAsyncDisposable`)
   - *added:* Service enumeration support 
   - *improved:* `Injector` creation performance
-- 2.0.0
+- 2.0.0-preview3:
   - *breaking:* New `LazyTypeResolver` layout (`ITypeResolver` implemented explicitly, removed misspelled `AssamblyPath` property)
   - *breaking:* `ServiceContainer.[Add|Get]` became virtual, removed `ServiceContainer.Inherit()` method
