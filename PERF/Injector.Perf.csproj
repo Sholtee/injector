@@ -17,10 +17,11 @@
 
   <ItemGroup>
     <PackageReference Include="BenchmarkDotNet" Version="0.12.0" />
+    <PackageReference Condition="'$(LibVersion)' != ''" Include="Injector.NET" Version="$(LibVersion)"></PackageReference>
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SRC\Injector.csproj" />
+    <ProjectReference Condition="'$(LibVersion)' == ''" Include="..\SRC\Injector.csproj" />
   </ItemGroup>
 
 </Project>
