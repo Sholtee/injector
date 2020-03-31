@@ -180,7 +180,7 @@ namespace Solti.Utils.DI.Perf
         [Benchmark(OperationsPerInvoke = OperationsPerInvoke)]
         public void Lazy()
         {
-            using (IInjector injector = CreateInjector()
+            using (IInjector injector = CreateInjector())
             {
                 for (int i = 0; i < OperationsPerInvoke; i++)
                 {
