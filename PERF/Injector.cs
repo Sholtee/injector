@@ -13,8 +13,7 @@ namespace Solti.Utils.DI.Perf
     using static Consts;
     using Internals;
 
-    [MemoryDiagnoser]
-    public class Injector
+    public class InjectorTestsBase
     {
         private IServiceContainer FContainer;
 
@@ -117,29 +116,37 @@ namespace Solti.Utils.DI.Perf
         }
         #endregion
 
+        protected IServiceContainer CreateContainer() => FContainer = new DI.ServiceContainer();
+
+        protected IInjector CreateInjector() => new UnsafeInjector(FContainer);
+
+        [GlobalCleanup]
+        public void Cleanup() => FContainer.Dispose();
+    }
+
+    [MemoryDiagnoser]
+    public class InjectorGet: InjectorTestsBase
+    {
         [Params(Lifetime.Transient, Lifetime.Scoped, Lifetime.Singleton)]
         public Lifetime DependencyLifetime { get; set; }
 
         [Params(Lifetime.Transient, Lifetime.Scoped, Lifetime.Singleton)]
         public Lifetime DependantLifetime { get; set; }
 
-        [GlobalCleanup]
-        public void Cleanup() => FContainer.Dispose();
-
-        [GlobalSetup(Target = nameof(Get))]
-        public void SetupGet() => FContainer = new DI.ServiceContainer()
+        [GlobalSetup(Target = nameof(NonGeneric))]
+        public void SetupNonGeneric() => CreateContainer()
             .Service<IDependency, Dependency>(DependencyLifetime)
             .Service<IDependant, Dependant>(DependantLifetime);
 
         [Benchmark(OperationsPerInvoke = OperationsPerInvoke)]
-        public void Get()
+        public void NonGeneric()
         {
             //
             // "using" kell mindenkepp h a szulo kontenerunket ne arasszuk el nem hasznalt peldanyokkal
             // viszont az "UnsafeInjector.UnsafeClear()" hivas miatt nem tart sokaig.
             //
 
-            using (var injector = new UnsafeInjector(FContainer))
+            using (IInjector injector = CreateInjector())
             {
                 for (int i = 0; i < OperationsPerInvoke; i++)
                 {
@@ -148,15 +155,15 @@ namespace Solti.Utils.DI.Perf
             }
         }
 
-        [GlobalSetup(Target = nameof(Get_Generic))]
-        public void SetupGeneric() => FContainer = new DI.ServiceContainer()
+        [GlobalSetup(Target = nameof(Generic))]
+        public void SetupGeneric() => CreateContainer()
             .Service<IDependency, Dependency>(DependencyLifetime)
             .Service(typeof(IDependant<>), typeof(Dependant<>), DependantLifetime);
 
         [Benchmark(OperationsPerInvoke = OperationsPerInvoke)]
-        public void Get_Generic()
+        public void Generic()
         {
-            using (var injector = new UnsafeInjector(FContainer))
+            using (IInjector injector = CreateInjector())
             {
                 for (int i = 0; i < OperationsPerInvoke; i++)
                 {
@@ -165,15 +172,15 @@ namespace Solti.Utils.DI.Perf
             }
         }
 
-        [GlobalSetup(Target = nameof(Get_Lazy))]
-        public void SetupLazy() => FContainer = new DI.ServiceContainer()
+        [GlobalSetup(Target = nameof(Lazy))]
+        public void SetupLazy() => CreateContainer()
             .Service<IDependency, Dependency>(DependencyLifetime)
             .Service<IDependantLazy, DependantLazy>(DependantLifetime);
 
         [Benchmark(OperationsPerInvoke = OperationsPerInvoke)]
-        public void Get_Lazy()
+        public void Lazy()
         {
-            using (var injector = new UnsafeInjector(FContainer))
+            using (IInjector injector = CreateInjector()
             {
                 for (int i = 0; i < OperationsPerInvoke; i++)
                 {
@@ -182,14 +189,39 @@ namespace Solti.Utils.DI.Perf
             }
         }
 
+        [GlobalSetup(Target = nameof(Enumerable))]
+        public void SetupEnumerable() => CreateContainer()
+            .Service<IDependency, Dependency>(DependencyLifetime)
+            .Service<IDependant, Dependant>(1.ToString(), DependantLifetime)
+            .Service<IDependant, Dependant>(2.ToString(), DependantLifetime);
+
+        [Benchmark(OperationsPerInvoke = OperationsPerInvoke)]
+        public void Enumerable()
+        {
+            using (IInjector injector = CreateInjector())
+            {
+                for (int i = 0; i < OperationsPerInvoke; i++)
+                {
+                    injector.Get<IEnumerable<IDependant>>(name: null);
+                }
+            }
+        }
+    }
+
+    [MemoryDiagnoser]
+    public class InjectorInstantiate : InjectorTestsBase 
+    {
+        [Params(Lifetime.Transient, Lifetime.Scoped, Lifetime.Singleton)]
+        public Lifetime DependencyLifetime { get; set; }
+
         [GlobalSetup(Target = nameof(Instantiate))]
-        public void SetupInstantiate() => FContainer = new DI.ServiceContainer()
+        public void SetupInstantiate() => CreateContainer()
             .Service<IDependency, Dependency>(DependencyLifetime);
 
         [Benchmark(OperationsPerInvoke = OperationsPerInvoke)]
         public void Instantiate()
         {
-            using (var injector = new UnsafeInjector(FContainer))
+            using (IInjector injector = CreateInjector())
             {
                 for (int i = 0; i < OperationsPerInvoke; i++)
                 {
@@ -197,24 +229,6 @@ namespace Solti.Utils.DI.Perf
                     {
                         { "num", 10 }
                     });
-                }
-            }
-        }
-
-        [GlobalSetup(Target = nameof(Select))]
-        public void SetupSelect() => FContainer = new DI.ServiceContainer()
-            .Service<IDependency, Dependency>(DependencyLifetime)
-            .Service<IDependant, Dependant>(1.ToString(), DependantLifetime)
-            .Service<IDependant, Dependant>(2.ToString(), DependantLifetime);
-
-        [Benchmark(OperationsPerInvoke = OperationsPerInvoke)]
-        public void Select()
-        {
-            using (var injector = new UnsafeInjector(FContainer))
-            {
-                for (int i = 0; i < OperationsPerInvoke; i++)
-                {
-                    injector.Get<IEnumerable<IDependant>>(name: null);
                 }
             }
         }
