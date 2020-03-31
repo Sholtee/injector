@@ -27,11 +27,11 @@ namespace Solti.Utils.DI.Perf
 
         private IServiceContainer FContainer;
 
-        private class UnsafeInjector : Internals.Injector, IServiceContainer
+        private class UnsafeInjector : Internals.Injector
         {
             public UnsafeInjector(IServiceContainer owner) : base(owner) { }
 
-            IServiceContainer IServiceContainer.Add(AbstractServiceEntry entry) 
+            public override IServiceContainer Add(AbstractServiceEntry entry)
             {
                 if (entry.Owner == this)
                 {
@@ -40,7 +40,7 @@ namespace Solti.Utils.DI.Perf
                         GC.SuppressFinalize(entry.Instance);
                 }
 
-                return Add(entry);
+                return base.Add(entry);
             }
         }
 
