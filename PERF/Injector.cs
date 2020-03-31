@@ -200,5 +200,23 @@ namespace Solti.Utils.DI.Perf
                 }
             }
         }
+
+        [GlobalSetup(Target = nameof(Select))]
+        public void SetupSelect() => FContainer = new DI.ServiceContainer()
+            .Service<IDependency, Dependency>(DependencyLifetime)
+            .Service<IDependant, Dependant>(1.ToString(), DependantLifetime)
+            .Service<IDependant, Dependant>(2.ToString(), DependantLifetime);
+
+        [Benchmark(OperationsPerInvoke = OperationsPerInvoke)]
+        public void Select()
+        {
+            using (var injector = new UnsafeInjector(FContainer))
+            {
+                for (int i = 0; i < OperationsPerInvoke; i++)
+                {
+                    injector.Get<IEnumerable<IDependant>>(name: null);
+                }
+            }
+        }
     }
 }
