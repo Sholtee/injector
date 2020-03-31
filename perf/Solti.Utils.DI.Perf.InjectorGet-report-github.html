@@ -53,7 +53,6 @@ Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 <th style="text-align:right">Mean</th>
 <th style="text-align:right">Error</th>
 <th style="text-align:right">StdDev</th>
-<th style="text-align:right">Median</th>
 <th style="text-align:right">Gen 0</th>
 <th style="text-align:right">Gen 1</th>
 <th style="text-align:right">Gen 2</th>
@@ -62,472 +61,436 @@ Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 </thead>
 <tbody>
 <tr>
-<td><strong>Get</strong></td>
+<td><strong>NonGeneric</strong></td>
 <td><strong>Transient</strong></td>
 <td><strong>Transient</strong></td>
-<td style="text-align:right"><strong>4,348.9 ns</strong></td>
-<td style="text-align:right"><strong>85.66 ns</strong></td>
-<td style="text-align:right"><strong>128.22 ns</strong></td>
-<td style="text-align:right"><strong>4,299.3 ns</strong></td>
+<td style="text-align:right"><strong>4,772.8 ns</strong></td>
+<td style="text-align:right"><strong>94.93 ns</strong></td>
+<td style="text-align:right"><strong>241.62 ns</strong></td>
 <td style="text-align:right"><strong>0.1328</strong></td>
 <td style="text-align:right"><strong>0.0469</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>2511 B</strong></td>
 </tr>
 <tr>
-<td>Get_Generic</td>
+<td>Generic</td>
 <td>Transient</td>
 <td>Transient</td>
-<td style="text-align:right">4,690.0 ns</td>
-<td style="text-align:right">93.70 ns</td>
-<td style="text-align:right">236.79 ns</td>
-<td style="text-align:right">4,690.4 ns</td>
+<td style="text-align:right">4,468.2 ns</td>
+<td style="text-align:right">88.60 ns</td>
+<td style="text-align:right">178.97 ns</td>
 <td style="text-align:right">0.1328</td>
 <td style="text-align:right">0.0547</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">2514 B</td>
 </tr>
 <tr>
-<td>Get_Lazy</td>
+<td>Lazy</td>
 <td>Transient</td>
 <td>Transient</td>
-<td style="text-align:right">4,216.6 ns</td>
-<td style="text-align:right">83.81 ns</td>
-<td style="text-align:right">240.47 ns</td>
-<td style="text-align:right">4,228.8 ns</td>
+<td style="text-align:right">3,912.2 ns</td>
+<td style="text-align:right">87.05 ns</td>
+<td style="text-align:right">252.55 ns</td>
 <td style="text-align:right">0.0898</td>
 <td style="text-align:right">0.0273</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">1654 B</td>
 </tr>
 <tr>
-<td>Instantiate</td>
+<td>Enumerable</td>
 <td>Transient</td>
 <td>Transient</td>
-<td style="text-align:right">3,482.3 ns</td>
-<td style="text-align:right">69.00 ns</td>
-<td style="text-align:right">145.54 ns</td>
-<td style="text-align:right">3,476.9 ns</td>
-<td style="text-align:right">0.0898</td>
-<td style="text-align:right">0.0195</td>
+<td style="text-align:right">721.8 ns</td>
+<td style="text-align:right">15.18 ns</td>
+<td style="text-align:right">44.03 ns</td>
+<td style="text-align:right">0.0225</td>
 <td style="text-align:right">-</td>
-<td style="text-align:right">1653 B</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">419 B</td>
 </tr>
 <tr>
-<td><strong>Get</strong></td>
+<td><strong>NonGeneric</strong></td>
 <td><strong>Transient</strong></td>
 <td><strong>Scoped</strong></td>
-<td style="text-align:right"><strong>650.7 ns</strong></td>
-<td style="text-align:right"><strong>14.33 ns</strong></td>
-<td style="text-align:right"><strong>41.59 ns</strong></td>
-<td style="text-align:right"><strong>651.0 ns</strong></td>
+<td style="text-align:right"><strong>641.5 ns</strong></td>
+<td style="text-align:right"><strong>13.84 ns</strong></td>
+<td style="text-align:right"><strong>38.81 ns</strong></td>
 <td style="text-align:right"><strong>0.0225</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>418 B</strong></td>
 </tr>
 <tr>
-<td>Get_Generic</td>
+<td>Generic</td>
 <td>Transient</td>
 <td>Scoped</td>
-<td style="text-align:right">689.6 ns</td>
-<td style="text-align:right">18.10 ns</td>
-<td style="text-align:right">53.37 ns</td>
-<td style="text-align:right">684.6 ns</td>
+<td style="text-align:right">652.0 ns</td>
+<td style="text-align:right">13.03 ns</td>
+<td style="text-align:right">37.38 ns</td>
 <td style="text-align:right">0.0225</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">420 B</td>
 </tr>
 <tr>
-<td>Get_Lazy</td>
+<td>Lazy</td>
 <td>Transient</td>
 <td>Scoped</td>
-<td style="text-align:right">642.2 ns</td>
-<td style="text-align:right">12.82 ns</td>
-<td style="text-align:right">23.11 ns</td>
-<td style="text-align:right">649.1 ns</td>
+<td style="text-align:right">664.4 ns</td>
+<td style="text-align:right">15.29 ns</td>
+<td style="text-align:right">44.85 ns</td>
 <td style="text-align:right">0.0225</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">416 B</td>
 </tr>
 <tr>
-<td>Instantiate</td>
+<td>Enumerable</td>
 <td>Transient</td>
 <td>Scoped</td>
-<td style="text-align:right">3,627.5 ns</td>
-<td style="text-align:right">96.35 ns</td>
-<td style="text-align:right">284.08 ns</td>
-<td style="text-align:right">3,653.6 ns</td>
-<td style="text-align:right">0.0898</td>
-<td style="text-align:right">0.0195</td>
+<td style="text-align:right">718.6 ns</td>
+<td style="text-align:right">14.75 ns</td>
+<td style="text-align:right">43.49 ns</td>
+<td style="text-align:right">0.0225</td>
 <td style="text-align:right">-</td>
-<td style="text-align:right">1653 B</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">419 B</td>
 </tr>
 <tr>
-<td><strong>Get</strong></td>
+<td><strong>NonGeneric</strong></td>
 <td><strong>Transient</strong></td>
 <td><strong>Singleton</strong></td>
-<td style="text-align:right"><strong>647.6 ns</strong></td>
-<td style="text-align:right"><strong>16.04 ns</strong></td>
-<td style="text-align:right"><strong>47.05 ns</strong></td>
-<td style="text-align:right"><strong>641.8 ns</strong></td>
+<td style="text-align:right"><strong>582.8 ns</strong></td>
+<td style="text-align:right"><strong>11.61 ns</strong></td>
+<td style="text-align:right"><strong>24.75 ns</strong></td>
 <td style="text-align:right"><strong>0.0225</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>413 B</strong></td>
 </tr>
 <tr>
-<td>Get_Generic</td>
+<td>Generic</td>
 <td>Transient</td>
 <td>Singleton</td>
-<td style="text-align:right">679.7 ns</td>
-<td style="text-align:right">13.56 ns</td>
-<td style="text-align:right">37.36 ns</td>
-<td style="text-align:right">682.0 ns</td>
+<td style="text-align:right">596.1 ns</td>
+<td style="text-align:right">11.65 ns</td>
+<td style="text-align:right">21.31 ns</td>
 <td style="text-align:right">0.0225</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">413 B</td>
 </tr>
 <tr>
-<td>Get_Lazy</td>
+<td>Lazy</td>
 <td>Transient</td>
 <td>Singleton</td>
-<td style="text-align:right">678.1 ns</td>
-<td style="text-align:right">13.44 ns</td>
-<td style="text-align:right">37.91 ns</td>
-<td style="text-align:right">675.1 ns</td>
+<td style="text-align:right">555.3 ns</td>
+<td style="text-align:right">7.66 ns</td>
+<td style="text-align:right">6.40 ns</td>
 <td style="text-align:right">0.0225</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">413 B</td>
 </tr>
 <tr>
-<td>Instantiate</td>
+<td>Enumerable</td>
 <td>Transient</td>
 <td>Singleton</td>
-<td style="text-align:right">3,803.2 ns</td>
-<td style="text-align:right">75.93 ns</td>
-<td style="text-align:right">189.09 ns</td>
-<td style="text-align:right">3,835.9 ns</td>
-<td style="text-align:right">0.0898</td>
-<td style="text-align:right">0.0195</td>
+<td style="text-align:right">741.0 ns</td>
+<td style="text-align:right">18.17 ns</td>
+<td style="text-align:right">53.30 ns</td>
+<td style="text-align:right">0.0225</td>
 <td style="text-align:right">-</td>
-<td style="text-align:right">1653 B</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">419 B</td>
 </tr>
 <tr>
-<td><strong>Get</strong></td>
+<td><strong>NonGeneric</strong></td>
 <td><strong>Scoped</strong></td>
 <td><strong>Transient</strong></td>
-<td style="text-align:right"><strong>3,139.7 ns</strong></td>
-<td style="text-align:right"><strong>63.38 ns</strong></td>
-<td style="text-align:right"><strong>186.87 ns</strong></td>
-<td style="text-align:right"><strong>3,149.6 ns</strong></td>
+<td style="text-align:right"><strong>3,337.0 ns</strong></td>
+<td style="text-align:right"><strong>66.36 ns</strong></td>
+<td style="text-align:right"><strong>152.46 ns</strong></td>
 <td style="text-align:right"><strong>0.0898</strong></td>
 <td style="text-align:right"><strong>0.0195</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>1672 B</strong></td>
 </tr>
 <tr>
-<td>Get_Generic</td>
+<td>Generic</td>
 <td>Scoped</td>
 <td>Transient</td>
-<td style="text-align:right">2,927.0 ns</td>
-<td style="text-align:right">57.04 ns</td>
-<td style="text-align:right">104.29 ns</td>
-<td style="text-align:right">2,937.7 ns</td>
+<td style="text-align:right">3,073.4 ns</td>
+<td style="text-align:right">64.86 ns</td>
+<td style="text-align:right">189.20 ns</td>
 <td style="text-align:right">0.0898</td>
 <td style="text-align:right">0.0234</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">1675 B</td>
 </tr>
 <tr>
-<td>Get_Lazy</td>
+<td>Lazy</td>
 <td>Scoped</td>
 <td>Transient</td>
-<td style="text-align:right">4,237.5 ns</td>
-<td style="text-align:right">84.08 ns</td>
-<td style="text-align:right">241.25 ns</td>
-<td style="text-align:right">4,221.5 ns</td>
+<td style="text-align:right">3,766.9 ns</td>
+<td style="text-align:right">75.00 ns</td>
+<td style="text-align:right">182.55 ns</td>
 <td style="text-align:right">0.0859</td>
 <td style="text-align:right">0.0234</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">1654 B</td>
 </tr>
 <tr>
-<td>Instantiate</td>
+<td>Enumerable</td>
 <td>Scoped</td>
 <td>Transient</td>
-<td style="text-align:right">1,581.2 ns</td>
-<td style="text-align:right">35.69 ns</td>
-<td style="text-align:right">71.28 ns</td>
-<td style="text-align:right">1,581.5 ns</td>
-<td style="text-align:right">0.0449</td>
+<td style="text-align:right">693.5 ns</td>
+<td style="text-align:right">13.71 ns</td>
+<td style="text-align:right">29.81 ns</td>
+<td style="text-align:right">0.0225</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
-<td style="text-align:right">846 B</td>
+<td style="text-align:right">419 B</td>
 </tr>
 <tr>
-<td><strong>Get</strong></td>
+<td><strong>NonGeneric</strong></td>
 <td><strong>Scoped</strong></td>
 <td><strong>Scoped</strong></td>
-<td style="text-align:right"><strong>663.4 ns</strong></td>
-<td style="text-align:right"><strong>13.24 ns</strong></td>
-<td style="text-align:right"><strong>32.72 ns</strong></td>
-<td style="text-align:right"><strong>663.2 ns</strong></td>
+<td style="text-align:right"><strong>636.9 ns</strong></td>
+<td style="text-align:right"><strong>12.35 ns</strong></td>
+<td style="text-align:right"><strong>36.02 ns</strong></td>
 <td style="text-align:right"><strong>0.0225</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>417 B</strong></td>
 </tr>
 <tr>
-<td>Get_Generic</td>
+<td>Generic</td>
 <td>Scoped</td>
 <td>Scoped</td>
-<td style="text-align:right">699.2 ns</td>
-<td style="text-align:right">13.90 ns</td>
-<td style="text-align:right">39.19 ns</td>
-<td style="text-align:right">700.1 ns</td>
+<td style="text-align:right">652.8 ns</td>
+<td style="text-align:right">12.86 ns</td>
+<td style="text-align:right">28.76 ns</td>
 <td style="text-align:right">0.0225</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">420 B</td>
 </tr>
 <tr>
-<td>Get_Lazy</td>
+<td>Lazy</td>
 <td>Scoped</td>
 <td>Scoped</td>
-<td style="text-align:right">689.1 ns</td>
-<td style="text-align:right">13.67 ns</td>
-<td style="text-align:right">34.55 ns</td>
-<td style="text-align:right">686.7 ns</td>
+<td style="text-align:right">597.4 ns</td>
+<td style="text-align:right">11.78 ns</td>
+<td style="text-align:right">15.31 ns</td>
 <td style="text-align:right">0.0225</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">416 B</td>
 </tr>
 <tr>
-<td>Instantiate</td>
+<td>Enumerable</td>
 <td>Scoped</td>
 <td>Scoped</td>
-<td style="text-align:right">1,650.6 ns</td>
-<td style="text-align:right">43.52 ns</td>
-<td style="text-align:right">128.32 ns</td>
-<td style="text-align:right">1,633.0 ns</td>
-<td style="text-align:right">0.0430</td>
+<td style="text-align:right">666.6 ns</td>
+<td style="text-align:right">13.14 ns</td>
+<td style="text-align:right">20.84 ns</td>
+<td style="text-align:right">0.0225</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
-<td style="text-align:right">846 B</td>
+<td style="text-align:right">419 B</td>
 </tr>
 <tr>
-<td><strong>Get</strong></td>
+<td><strong>NonGeneric</strong></td>
 <td><strong>Scoped</strong></td>
 <td><strong>Singleton</strong></td>
-<td style="text-align:right"><strong>572.9 ns</strong></td>
-<td style="text-align:right"><strong>11.44 ns</strong></td>
-<td style="text-align:right"><strong>20.63 ns</strong></td>
-<td style="text-align:right"><strong>571.4 ns</strong></td>
+<td style="text-align:right"><strong>576.7 ns</strong></td>
+<td style="text-align:right"><strong>11.38 ns</strong></td>
+<td style="text-align:right"><strong>27.71 ns</strong></td>
 <td style="text-align:right"><strong>0.0225</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>413 B</strong></td>
 </tr>
 <tr>
-<td>Get_Generic</td>
+<td>Generic</td>
 <td>Scoped</td>
 <td>Singleton</td>
-<td style="text-align:right">608.1 ns</td>
-<td style="text-align:right">12.09 ns</td>
-<td style="text-align:right">30.33 ns</td>
-<td style="text-align:right">606.1 ns</td>
+<td style="text-align:right">586.1 ns</td>
+<td style="text-align:right">11.03 ns</td>
+<td style="text-align:right">10.83 ns</td>
 <td style="text-align:right">0.0225</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">413 B</td>
 </tr>
 <tr>
-<td>Get_Lazy</td>
+<td>Lazy</td>
 <td>Scoped</td>
 <td>Singleton</td>
-<td style="text-align:right">585.9 ns</td>
-<td style="text-align:right">11.48 ns</td>
-<td style="text-align:right">19.49 ns</td>
-<td style="text-align:right">589.2 ns</td>
+<td style="text-align:right">573.3 ns</td>
+<td style="text-align:right">11.33 ns</td>
+<td style="text-align:right">11.13 ns</td>
 <td style="text-align:right">0.0225</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">413 B</td>
 </tr>
 <tr>
-<td>Instantiate</td>
+<td>Enumerable</td>
 <td>Scoped</td>
 <td>Singleton</td>
-<td style="text-align:right">1,544.3 ns</td>
-<td style="text-align:right">30.49 ns</td>
-<td style="text-align:right">67.56 ns</td>
-<td style="text-align:right">1,542.7 ns</td>
-<td style="text-align:right">0.0449</td>
+<td style="text-align:right">653.3 ns</td>
+<td style="text-align:right">12.30 ns</td>
+<td style="text-align:right">13.16 ns</td>
+<td style="text-align:right">0.0225</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
-<td style="text-align:right">846 B</td>
+<td style="text-align:right">419 B</td>
 </tr>
 <tr>
-<td><strong>Get</strong></td>
+<td><strong>NonGeneric</strong></td>
 <td><strong>Singleton</strong></td>
 <td><strong>Transient</strong></td>
-<td style="text-align:right"><strong>2,902.2 ns</strong></td>
-<td style="text-align:right"><strong>63.55 ns</strong></td>
-<td style="text-align:right"><strong>187.36 ns</strong></td>
-<td style="text-align:right"><strong>2,883.1 ns</strong></td>
+<td style="text-align:right"><strong>2,785.7 ns</strong></td>
+<td style="text-align:right"><strong>54.98 ns</strong></td>
+<td style="text-align:right"><strong>94.84 ns</strong></td>
 <td style="text-align:right"><strong>0.0898</strong></td>
 <td style="text-align:right"><strong>0.0195</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>1670 B</strong></td>
 </tr>
 <tr>
-<td>Get_Generic</td>
+<td>Generic</td>
 <td>Singleton</td>
 <td>Transient</td>
-<td style="text-align:right">3,152.4 ns</td>
-<td style="text-align:right">62.89 ns</td>
-<td style="text-align:right">165.69 ns</td>
-<td style="text-align:right">3,139.8 ns</td>
+<td style="text-align:right">2,957.9 ns</td>
+<td style="text-align:right">59.12 ns</td>
+<td style="text-align:right">159.83 ns</td>
 <td style="text-align:right">0.0898</td>
 <td style="text-align:right">0.0195</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">1673 B</td>
 </tr>
 <tr>
-<td>Get_Lazy</td>
+<td>Lazy</td>
 <td>Singleton</td>
 <td>Transient</td>
-<td style="text-align:right">4,057.9 ns</td>
-<td style="text-align:right">81.09 ns</td>
-<td style="text-align:right">184.69 ns</td>
-<td style="text-align:right">4,057.8 ns</td>
-<td style="text-align:right">0.0898</td>
-<td style="text-align:right">0.0273</td>
+<td style="text-align:right">4,043.2 ns</td>
+<td style="text-align:right">85.71 ns</td>
+<td style="text-align:right">252.73 ns</td>
+<td style="text-align:right">0.0859</td>
+<td style="text-align:right">0.0234</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">1654 B</td>
 </tr>
 <tr>
-<td>Instantiate</td>
+<td>Enumerable</td>
 <td>Singleton</td>
 <td>Transient</td>
-<td style="text-align:right">1,619.2 ns</td>
-<td style="text-align:right">37.15 ns</td>
-<td style="text-align:right">109.53 ns</td>
-<td style="text-align:right">1,610.6 ns</td>
-<td style="text-align:right">0.0449</td>
+<td style="text-align:right">730.8 ns</td>
+<td style="text-align:right">14.40 ns</td>
+<td style="text-align:right">20.18 ns</td>
+<td style="text-align:right">0.0225</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
-<td style="text-align:right">844 B</td>
+<td style="text-align:right">419 B</td>
 </tr>
 <tr>
-<td><strong>Get</strong></td>
+<td><strong>NonGeneric</strong></td>
 <td><strong>Singleton</strong></td>
 <td><strong>Scoped</strong></td>
-<td style="text-align:right"><strong>696.4 ns</strong></td>
-<td style="text-align:right"><strong>13.89 ns</strong></td>
-<td style="text-align:right"><strong>32.20 ns</strong></td>
-<td style="text-align:right"><strong>700.5 ns</strong></td>
+<td style="text-align:right"><strong>667.8 ns</strong></td>
+<td style="text-align:right"><strong>13.23 ns</strong></td>
+<td style="text-align:right"><strong>32.71 ns</strong></td>
 <td style="text-align:right"><strong>0.0225</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>415 B</strong></td>
 </tr>
 <tr>
-<td>Get_Generic</td>
+<td>Generic</td>
 <td>Singleton</td>
 <td>Scoped</td>
-<td style="text-align:right">745.5 ns</td>
-<td style="text-align:right">14.77 ns</td>
-<td style="text-align:right">37.33 ns</td>
-<td style="text-align:right">741.7 ns</td>
+<td style="text-align:right">713.6 ns</td>
+<td style="text-align:right">14.66 ns</td>
+<td style="text-align:right">43.23 ns</td>
 <td style="text-align:right">0.0225</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">418 B</td>
 </tr>
 <tr>
-<td>Get_Lazy</td>
+<td>Lazy</td>
 <td>Singleton</td>
 <td>Scoped</td>
-<td style="text-align:right">705.5 ns</td>
-<td style="text-align:right">14.03 ns</td>
-<td style="text-align:right">40.26 ns</td>
-<td style="text-align:right">711.4 ns</td>
+<td style="text-align:right">611.5 ns</td>
+<td style="text-align:right">12.11 ns</td>
+<td style="text-align:right">33.95 ns</td>
 <td style="text-align:right">0.0225</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">415 B</td>
 </tr>
 <tr>
-<td>Instantiate</td>
+<td>Enumerable</td>
 <td>Singleton</td>
 <td>Scoped</td>
-<td style="text-align:right">1,686.0 ns</td>
-<td style="text-align:right">34.95 ns</td>
-<td style="text-align:right">103.05 ns</td>
-<td style="text-align:right">1,681.0 ns</td>
-<td style="text-align:right">0.0449</td>
+<td style="text-align:right">652.8 ns</td>
+<td style="text-align:right">12.99 ns</td>
+<td style="text-align:right">24.08 ns</td>
+<td style="text-align:right">0.0225</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
-<td style="text-align:right">844 B</td>
+<td style="text-align:right">419 B</td>
 </tr>
 <tr>
-<td><strong>Get</strong></td>
+<td><strong>NonGeneric</strong></td>
 <td><strong>Singleton</strong></td>
 <td><strong>Singleton</strong></td>
-<td style="text-align:right"><strong>677.5 ns</strong></td>
-<td style="text-align:right"><strong>16.90 ns</strong></td>
-<td style="text-align:right"><strong>47.68 ns</strong></td>
-<td style="text-align:right"><strong>682.9 ns</strong></td>
+<td style="text-align:right"><strong>592.7 ns</strong></td>
+<td style="text-align:right"><strong>11.76 ns</strong></td>
+<td style="text-align:right"><strong>27.49 ns</strong></td>
 <td style="text-align:right"><strong>0.0225</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>413 B</strong></td>
 </tr>
 <tr>
-<td>Get_Generic</td>
+<td>Generic</td>
 <td>Singleton</td>
 <td>Singleton</td>
-<td style="text-align:right">607.2 ns</td>
-<td style="text-align:right">12.40 ns</td>
-<td style="text-align:right">26.43 ns</td>
-<td style="text-align:right">597.4 ns</td>
+<td style="text-align:right">582.3 ns</td>
+<td style="text-align:right">11.52 ns</td>
+<td style="text-align:right">27.83 ns</td>
 <td style="text-align:right">0.0225</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">413 B</td>
 </tr>
 <tr>
-<td>Get_Lazy</td>
+<td>Lazy</td>
 <td>Singleton</td>
 <td>Singleton</td>
-<td style="text-align:right">563.6 ns</td>
-<td style="text-align:right">12.29 ns</td>
-<td style="text-align:right">11.50 ns</td>
-<td style="text-align:right">561.5 ns</td>
+<td style="text-align:right">604.5 ns</td>
+<td style="text-align:right">12.07 ns</td>
+<td style="text-align:right">31.15 ns</td>
 <td style="text-align:right">0.0225</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">413 B</td>
 </tr>
 <tr>
-<td>Instantiate</td>
+<td>Enumerable</td>
 <td>Singleton</td>
 <td>Singleton</td>
-<td style="text-align:right">1,448.6 ns</td>
-<td style="text-align:right">24.50 ns</td>
-<td style="text-align:right">22.92 ns</td>
-<td style="text-align:right">1,442.9 ns</td>
-<td style="text-align:right">0.0449</td>
+<td style="text-align:right">647.0 ns</td>
+<td style="text-align:right">12.45 ns</td>
+<td style="text-align:right">13.32 ns</td>
+<td style="text-align:right">0.0225</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
-<td style="text-align:right">844 B</td>
+<td style="text-align:right">418 B</td>
 </tr>
 </tbody>
 </table>

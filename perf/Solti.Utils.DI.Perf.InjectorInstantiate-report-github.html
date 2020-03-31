@@ -48,7 +48,7 @@ Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 <thead>
 <tr>
 <th>Method</th>
-<th>ServiceCount</th>
+<th>DependencyLifetime</th>
 <th style="text-align:right">Mean</th>
 <th style="text-align:right">Error</th>
 <th style="text-align:right">StdDev</th>
@@ -60,37 +60,37 @@ Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 </thead>
 <tbody>
 <tr>
-<td><strong>CreateInjector</strong></td>
-<td><strong>0</strong></td>
-<td style="text-align:right"><strong>44.37 us</strong></td>
-<td style="text-align:right"><strong>0.998 us</strong></td>
-<td style="text-align:right"><strong>2.913 us</strong></td>
-<td style="text-align:right"><strong>0.4375</strong></td>
-<td style="text-align:right"><strong>0.1250</strong></td>
+<td><strong>Instantiate</strong></td>
+<td><strong>Transient</strong></td>
+<td style="text-align:right"><strong>3.502 us</strong></td>
+<td style="text-align:right"><strong>0.0693 us</strong></td>
+<td style="text-align:right"><strong>0.1550 us</strong></td>
+<td style="text-align:right"><strong>0.0898</strong></td>
+<td style="text-align:right"><strong>0.0195</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
-<td style="text-align:right"><strong>8.79 KB</strong></td>
+<td style="text-align:right"><strong>1653 B</strong></td>
 </tr>
 <tr>
-<td><strong>CreateInjector</strong></td>
-<td><strong>10</strong></td>
-<td style="text-align:right"><strong>51.87 us</strong></td>
-<td style="text-align:right"><strong>1.035 us</strong></td>
-<td style="text-align:right"><strong>2.745 us</strong></td>
-<td style="text-align:right"><strong>0.6250</strong></td>
-<td style="text-align:right"><strong>0.1875</strong></td>
+<td><strong>Instantiate</strong></td>
+<td><strong>Scoped</strong></td>
+<td style="text-align:right"><strong>1.647 us</strong></td>
+<td style="text-align:right"><strong>0.0326 us</strong></td>
+<td style="text-align:right"><strong>0.0702 us</strong></td>
+<td style="text-align:right"><strong>0.0449</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
-<td style="text-align:right"><strong>12.15 KB</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>846 B</strong></td>
 </tr>
 <tr>
-<td><strong>CreateInjector</strong></td>
-<td><strong>100</strong></td>
-<td style="text-align:right"><strong>155.38 us</strong></td>
-<td style="text-align:right"><strong>3.633 us</strong></td>
-<td style="text-align:right"><strong>10.482 us</strong></td>
-<td style="text-align:right"><strong>2.0000</strong></td>
-<td style="text-align:right"><strong>0.8571</strong></td>
+<td><strong>Instantiate</strong></td>
+<td><strong>Singleton</strong></td>
+<td style="text-align:right"><strong>1.609 us</strong></td>
+<td style="text-align:right"><strong>0.0327 us</strong></td>
+<td style="text-align:right"><strong>0.0928 us</strong></td>
+<td style="text-align:right"><strong>0.0449</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
-<td style="text-align:right"><strong>36.25 KB</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>844 B</strong></td>
 </tr>
 </tbody>
 </table>
