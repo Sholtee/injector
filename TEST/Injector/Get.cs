@@ -189,8 +189,12 @@ namespace Solti.Utils.DI.Injector.Tests
         }
 
         [Test]
-        public void Injector_GetByInjector_ShouldThrowOnCircularReference()
+        public void Injector_GetByCtor_ShouldThrowOnCircularReference()
         {
+            //
+            // IInjector.Get() hivasok a konstruktorban vannak
+            //
+
             Container
                 .Service<IInterface_1, Implementation_7_CDep>()
                 .Service<IInterface_4, Implementation_4_CDep>()
