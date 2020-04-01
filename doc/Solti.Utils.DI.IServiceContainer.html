@@ -60,6 +60,9 @@
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public interface IServiceContainer : IComposite&lt;IServiceContainer&gt;, IEnumerable&lt;AbstractServiceEntry&gt;, IDisposable, IAsyncDisposable</code></pre>
   </div>
+  <h5 id="Solti_Utils_DI_IServiceContainer_remarks"><strong>Remarks</strong></h5>
+  <div class="markdown level0 remarks"><p>The implementations have to be thread safe.</p>
+</div>
   <h3 id="properties">Properties
   </h3>
   <a id="Solti_Utils_DI_IServiceContainer_Count_" data-uid="Solti.Utils.DI.IServiceContainer.Count*"></a>
@@ -213,7 +216,7 @@
     <tbody>
       <tr>
         <td><a class="xref" href="Solti.Utils.DI.ServiceNotFoundException.html">ServiceNotFoundException</a></td>
-        <td><p>If the service could not be found.</p>
+        <td><p>If the <a class="xref" href="Solti.Utils.DI.QueryModes.html#Solti_Utils_DI_QueryModes_ThrowOnError">ThrowOnError</a> flag was set and the service could not be found.</p>
 </td>
       </tr>
     </tbody>
