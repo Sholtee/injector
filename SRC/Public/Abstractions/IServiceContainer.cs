@@ -14,6 +14,7 @@ namespace Solti.Utils.DI
     /// <summary>
     /// Provides the mechanism of storing service entries.
     /// </summary>
+    /// <remarks>The implementations have to be thread safe.</remarks>
     [SuppressMessage("Naming", "CA1710:Identifiers should have correct suffix", Justification = "The name is meaningful.")]
     public interface IServiceContainer : IComposite<IServiceContainer>, IEnumerable<AbstractServiceEntry>, IDisposable, IAsyncDisposable
     {
@@ -32,7 +33,8 @@ namespace Solti.Utils.DI
         /// <param name="name">The (optional) name of the service.</param>
         /// <param name="mode">Options</param>
         /// <returns>The requested service entry.</returns>
-        /// <exception cref="ServiceNotFoundException">If the service could not be found.</exception>
+        /// <exception cref="ServiceNotFoundException">If the <see cref="QueryModes.ThrowOnError"/> flag was set and the service could not be found.</exception>
+        /// <exception cref="NotSupportedException">If the <see cref="QueryModes.ThrowOnError"/> flag was set and the service could not be specialized.</exception>
         [SuppressMessage("Naming", "CA1716:Identifiers should not match keywords", Justification = "The identifier won't confuse the users of the API.")]
         AbstractServiceEntry? Get(Type serviceInterface, string? name = null, QueryModes mode = QueryModes.Default);
 
