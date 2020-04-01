@@ -4,13 +4,14 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+
+using static System.Diagnostics.Debug;
 
 namespace Solti.Utils.DI
 {
@@ -119,7 +120,7 @@ namespace Solti.Utils.DI
                         : throw new ServiceNotFoundException(key);
             }
 
-            Debug.Assert(existing.IsGeneric());
+            Assert(existing.IsGeneric());
 
             using (FLock.AcquireWriterLock())
             {
@@ -127,7 +128,7 @@ namespace Solti.Utils.DI
                 // Kozben vki berakta mar?
                 //
 
-                if (FEntries.TryGetValue(key, out AbstractServiceEntry specialized))
+                if (FEntries.TryGetValue(key, out AbstractServiceEntry? specialized))
                     return specialized;
 
                 //
@@ -140,15 +141,22 @@ namespace Solti.Utils.DI
 
                 if (existing.Owner != this)
                 {
+                    Assert(mode.HasFlag(QueryModes.AllowSpecialization));
+
                     //
                     // Bejegyzesek "kivulrol" jonnek -> ne Assert() hivas legyen.
                     //
 
                     IServiceContainer owner = Ensure.IsNotNull(existing.Owner, $"{nameof(existing)}.{nameof(existing.Owner)}");
 
-                    specialized = owner.Get(serviceInterface, name, QueryModes.AllowSpecialization | QueryModes.ThrowOnError)!;
+                    specialized = owner.Get(serviceInterface, name, mode);
 
-                    return specialized.CopyTo(this);
+                    //
+                    // "specialized" lehet NULL ha a "QueryModes.ThrowOnError" nem volt beallitva es "existing"
+                    // nem valositja meg a "ISupportsSpecialization" interface-t.
+                    //
+
+                    return specialized?.CopyTo(this);
                 }
 
                 //

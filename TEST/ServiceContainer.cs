@@ -100,19 +100,23 @@ namespace Solti.Utils.DI.Container.Tests
         }
 
         [Test]
-        public void IServiceContainer_Get_ShouldThrowIfEntryCanNotBeSpecialized() 
+        public void IServiceContainer_Get_ShouldThrowIfEntryCanNotBeSpecialized([Values(true, false)] bool useChild) 
         {
             Container.Add(new AbstractServiceEntry(typeof(IList<>), null, null, Container));
 
-            Assert.Throws<NotSupportedException>(() => Container.Get(typeof(IList<int>), null, QueryModes.AllowSpecialization | QueryModes.ThrowOnError), Resources.ENTRY_CANNOT_BE_SPECIALIZED);
+            IServiceContainer container = useChild ? Container.CreateChild() : Container;
+
+            Assert.Throws<NotSupportedException>(() => container.Get(typeof(IList<int>), null, QueryModes.AllowSpecialization | QueryModes.ThrowOnError), Resources.ENTRY_CANNOT_BE_SPECIALIZED);
         }
 
         [Test]
-        public void IServiceContainer_Get_ShouldReturnNullIfEntryCanNotBeSpecialized()
+        public void IServiceContainer_Get_ShouldReturnNullIfEntryCanNotBeSpecialized([Values(true, false)] bool useChild)
         {
             Container.Add(new AbstractServiceEntry(typeof(IList<>), null, null, Container));
 
-            Assert.IsNull(Container.Get(typeof(IList<int>), null, QueryModes.AllowSpecialization));
+            IServiceContainer container = useChild ? Container.CreateChild() : Container;
+
+            Assert.IsNull(container.Get(typeof(IList<int>), null, QueryModes.AllowSpecialization));
         }
 
 
