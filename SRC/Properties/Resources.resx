@@ -210,4 +210,7 @@
   <data name="ARBITRARY_RELEASE" xml:space="preserve">
     <value>DisposeByRef objects should not be disposed directly.</value>
   </data>
+  <data name="ENTRY_CANNOT_BE_SPECIALIZED" xml:space="preserve">
+    <value>Entry can not be specialized.</value>
+  </data>
 </root>

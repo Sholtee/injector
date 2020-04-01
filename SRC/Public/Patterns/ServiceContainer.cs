@@ -15,6 +15,7 @@ using System.Threading.Tasks;
 namespace Solti.Utils.DI
 {
     using Internals;
+    using Properties;
 
     /// <summary>
     /// Implements the <see cref="IServiceContainer"/> interface.
@@ -152,12 +153,21 @@ namespace Solti.Utils.DI
 
                 //
                 // Ha mi vagyunk a tulajdonosok akkor nekunk kell tipizalni majd felvenni a bejegyzest.
-                // Ehhez ne az "FEntries.Add(specialized, specialized)"-ot hivjuk mivel a "this.Add()" 
-                // virtualis.
                 //
 
-                Add(specialized = existing.Specialize(serviceInterface.GetGenericArguments()));
-                return specialized;
+                if (existing is ISupportsSpecialization generic) 
+                {
+                    //
+                    // Ne az "FEntries.Add(specialized, specialized)"-ot hivjuk mert a "this.Add()" virtualis.
+                    //
+
+                    Add(specialized = generic.Specialize(serviceInterface.GetGenericArguments()));
+                    return specialized;
+                }
+
+                return !mode.HasFlag(QueryModes.ThrowOnError)
+                    ? (AbstractServiceEntry?) null
+                    : throw new NotSupportedException(Resources.ENTRY_CANNOT_BE_SPECIALIZED);
             }
 
             IServiceId MakeId(Type iface) => new ServiceId(iface, name);

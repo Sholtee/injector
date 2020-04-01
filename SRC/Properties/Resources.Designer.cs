@@ -133,6 +133,15 @@ namespace Solti.Utils.DI.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Entry can not be specialized..
+        /// </summary>
+        internal static string ENTRY_CANNOT_BE_SPECIALIZED {
+            get {
+                return ResourceManager.GetString("ENTRY_CANNOT_BE_SPECIALIZED", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Inappropriate ownership..
         /// </summary>
         internal static string INAPPROPRIATE_OWNERSHIP {

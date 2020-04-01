@@ -16,6 +16,7 @@ namespace Solti.Utils.DI.Container.Tests
 {
     using DI.Tests;
     using Internals;
+    using Properties;
 
     public abstract class ServiceContainerTestsBase<TImplementation>: TestBase<TImplementation> where TImplementation : IServiceContainer, new()
     {
@@ -97,6 +98,23 @@ namespace Solti.Utils.DI.Container.Tests
             Assert.That(Container.Get(typeof(IList<int>), name, QueryModes.AllowSpecialization | QueryModes.ThrowOnError), Is.EqualTo(new SingletonServiceEntry(typeof(IList<int>), name, typeof(MyList<int>), Container)));
             Assert.That(Container.Count, Is.EqualTo(2));
         }
+
+        [Test]
+        public void IServiceContainer_Get_ShouldThrowIfEntryCanNotBeSpecialized() 
+        {
+            Container.Add(new AbstractServiceEntry(typeof(IList<>), null, null, Container));
+
+            Assert.Throws<NotSupportedException>(() => Container.Get(typeof(IList<int>), null, QueryModes.AllowSpecialization | QueryModes.ThrowOnError), Resources.ENTRY_CANNOT_BE_SPECIALIZED);
+        }
+
+        [Test]
+        public void IServiceContainer_Get_ShouldReturnNullIfEntryCanNotBeSpecialized()
+        {
+            Container.Add(new AbstractServiceEntry(typeof(IList<>), null, null, Container));
+
+            Assert.IsNull(Container.Get(typeof(IList<int>), null, QueryModes.AllowSpecialization));
+        }
+
 
         [TestCase(null)]
         [TestCase("cica")]
