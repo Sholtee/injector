@@ -14,12 +14,12 @@ namespace Solti.Utils.DI
     public enum QueryModes
     {
         /// <summary>
-        /// Allows returning NULL if the desired service could not be found.
+        /// Allows returning NULL if the desired service could not be queried.
         /// </summary>
         Default = 0,
 
         /// <summary>
-        /// Instructs the <see cref="IServiceContainer.Get"/> to throw if the desired service could not be found.
+        /// Instructs the <see cref="IServiceContainer.Get"/> to throw if the desired service could not be queried.
         /// </summary>
         ThrowOnError,
 
