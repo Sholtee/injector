@@ -216,11 +216,13 @@ namespace Solti.Utils.DI.Injector.Tests
         }
 
         [Test]
-        public void Injector_Get_ShouldThrowOnCircularReferenceEvenIfTheServicesHaveDifferentLifetime([Values(Lifetime.Transient, Lifetime.Scoped, Lifetime.Singleton)] Lifetime lifetime) 
+        public void Injector_Get_ShouldThrowOnCircularReference(
+            [Values(Lifetime.Transient, Lifetime.Scoped, Lifetime.Singleton)] Lifetime lifetime1, 
+            [Values(Lifetime.Transient, Lifetime.Scoped, Lifetime.Singleton)] Lifetime lifetime2) 
         {
             Container
-                .Service<IInterface_4, Implementation_4_CDep>(lifetime)
-                .Service<IInterface_5, Implementation_5_CDep>(Lifetime.Singleton); // mindig kulon injectort kap
+                .Service<IInterface_4, Implementation_4_CDep>(lifetime1)
+                .Service<IInterface_5, Implementation_5_CDep>(lifetime2);
 
             using (IInjector injector = Container.CreateInjector())
             {

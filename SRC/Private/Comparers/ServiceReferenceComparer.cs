@@ -8,6 +8,6 @@ namespace Solti.Utils.DI.Internals
 {
     internal sealed class ServiceReferenceComparer : ComparerBase<ServiceReferenceComparer, ServiceReference>
     {
-        public override int GetHashCode(ServiceReference obj) => obj.RelatedServiceEntry.GetHashCode();
+        public override int GetHashCode(ServiceReference obj) => ServiceIdComparer.Instance.GetHashCode(obj.RelatedServiceEntry);
     }
 }
