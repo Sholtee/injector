@@ -36,9 +36,7 @@ namespace Solti.Utils.DI.Container.Setup.Tests
         public void Setup_ShouldHandleGenericTypes()
         {
             var mockContainer = new Mock<IServiceContainer>(MockBehavior.Strict);
-            mockContainer
-                .Setup(i => i.Add(It.IsAny<AbstractServiceEntry>()))
-                .Returns(mockContainer.Object);
+            mockContainer.Setup(i => i.Add(It.IsAny<AbstractServiceEntry>()));
 
             mockContainer.Object.Setup(typeof(GenericService<>).Assembly);
 
@@ -65,9 +63,7 @@ namespace Solti.Utils.DI.Container.Setup.Tests
         public void Setup_ShouldHandleNamedServices() 
         {
             var mockContainer = new Mock<IServiceContainer>(MockBehavior.Strict);
-            mockContainer
-                .Setup(i => i.Add(It.IsAny<AbstractServiceEntry>()))
-                .Returns(mockContainer.Object);
+            mockContainer.Setup(i => i.Add(It.IsAny<AbstractServiceEntry>()));
 
             mockContainer.Object.Setup(typeof(GenericService<>).Assembly);
 

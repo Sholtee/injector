@@ -130,7 +130,7 @@ namespace Solti.Utils.DI.Internals
 
         public IReadOnlyDictionary<string, object> FactoryOptions { get; }
 
-        public override IServiceContainer Add(AbstractServiceEntry entry)
+        public override void Add(AbstractServiceEntry entry)
         {
             Ensure.Parameter.IsNotNull(entry, nameof(entry));
 
@@ -146,7 +146,7 @@ namespace Solti.Utils.DI.Internals
                 throw ioex;
             }
 
-            return base.Add(entry);
+            base.Add(entry);
         }
 
         #region IInjector

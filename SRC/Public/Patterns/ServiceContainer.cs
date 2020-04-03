@@ -39,7 +39,7 @@ namespace Solti.Utils.DI
         /// <summary>
         /// See <see cref="IServiceContainer.Add"/>.
         /// </summary>
-        public virtual IServiceContainer Add(AbstractServiceEntry entry)
+        public virtual void Add(AbstractServiceEntry entry)
         {
             Ensure.Parameter.IsNotNull(entry, nameof(entry));
             Ensure.NotDisposed(this);
@@ -71,8 +71,6 @@ namespace Solti.Utils.DI
 
                 FEntries[entry] = entry;
             }
-
-            return this;
         }
 
         /// <summary>

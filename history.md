@@ -114,3 +114,5 @@
 - 2.0.0-preview3:
   - *breaking:* New `LazyTypeResolver` layout (`ITypeResolver` implemented explicitly, removed misspelled `AssamblyPath` property)
   - *breaking:* `ServiceContainer.[Add|Get]` became virtual, removed `ServiceContainer.Inherit()` method
+- 2.0.0:
+  - *breaking:* `IServiceContainer.Add()` returns void

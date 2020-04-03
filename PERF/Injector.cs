@@ -28,7 +28,7 @@ namespace Solti.Utils.DI.Perf
                 base.Dispose(disposeManaged);
             }
 
-            public override IServiceContainer Add(AbstractServiceEntry entry)
+            public override void Add(AbstractServiceEntry entry)
             {
                 if (entry.Owner == this)
                 {
@@ -45,7 +45,7 @@ namespace Solti.Utils.DI.Perf
                     GC.SuppressFinalize(entry);
                 }
 
-                return base.Add(entry);
+                base.Add(entry);
             }
 
             internal UnsafeInjector(IServiceContainer owner) : base(owner) { }

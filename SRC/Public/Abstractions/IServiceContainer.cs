@@ -22,9 +22,8 @@ namespace Solti.Utils.DI
         /// Adds a new entry to the container overwriting the existing value (if it was abstract).
         /// </summary>
         /// <param name="entry">The entry to be added.</param>
-        /// <returns>The container itself.</returns>
         /// <exception cref="ServiceAlreadyRegisteredException">A service has already been registered with the given interface.</exception>
-        IServiceContainer Add(AbstractServiceEntry entry);
+        void Add(AbstractServiceEntry entry);
 
         /// <summary>
         /// Gets the service entry associated with the given interface and (optional) name.

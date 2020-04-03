@@ -31,7 +31,7 @@ namespace Solti.Utils.DI.Perf
         {
             public UnsafeInjector(IServiceContainer owner) : base(owner) { }
 
-            public override IServiceContainer Add(AbstractServiceEntry entry)
+            public override void Add(AbstractServiceEntry entry)
             {
                 if (entry.Owner == this)
                 {
@@ -40,7 +40,7 @@ namespace Solti.Utils.DI.Perf
                         GC.SuppressFinalize(entry.Instance);
                 }
 
-                return base.Add(entry);
+                base.Add(entry);
             }
         }
 

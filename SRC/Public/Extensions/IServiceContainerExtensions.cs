@@ -60,10 +60,8 @@ namespace Solti.Utils.DI
             // Tobbi parametert az xXxServiceEntry konstruktora fogja ellenorizni.
             //
 
-            return self.Add
-            (
-                ProducibleServiceEntry.Create(lifetime, iface, name, implementation, self)
-            );           
+            self.Add(ProducibleServiceEntry.Create(lifetime, iface, name, implementation, self));
+            return self;
         }
 
         /// <summary>
@@ -96,10 +94,8 @@ namespace Solti.Utils.DI
             // Tobbi parametert az xXxServiceEntry konstruktora fogja ellenorizni.
             //
 
-            return self.Add
-            (
-                ProducibleServiceEntry.Create(lifetime, iface, name, implementation, self)
-            );
+            self.Add(ProducibleServiceEntry.Create(lifetime, iface, name, implementation, self));
+            return self;
         }
 
         /// <summary>
@@ -157,10 +153,8 @@ namespace Solti.Utils.DI
             // Tobbi parametert az xXxServiceEntry konstruktora fogja ellenorizni.
             //
 
-            return self.Add
-            (
-                ProducibleServiceEntry.Create(lifetime, iface, name, factory, self)
-            );
+            self.Add(ProducibleServiceEntry.Create(lifetime, iface, name, factory, self));
+            return self;
         }
 
         /// <summary>
@@ -245,7 +239,8 @@ namespace Solti.Utils.DI
             // Tobbi parametert az InstanceServiceEntry konstruktora fogja ellenorizni.
             //
 
-            return self.Add(new InstanceServiceEntry(iface, name, instance, releaseOnDispose, self));
+            self.Add(new InstanceServiceEntry(iface, name, instance, releaseOnDispose, self));
+            return self;
         }
 
         /// <summary>
@@ -270,7 +265,8 @@ namespace Solti.Utils.DI
         {
             Ensure.Parameter.IsNotNull(self, nameof(self));
 
-            return self.Add(new AbstractServiceEntry(iface, name));
+            self.Add(new AbstractServiceEntry(iface, name));
+            return self;
         }
 
         /// <summary>

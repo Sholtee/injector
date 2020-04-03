@@ -105,7 +105,9 @@ namespace Solti.Utils.DI.Container.Tests
             Mock<AbstractServiceEntry> entry = new Mock<AbstractServiceEntry>(typeof(IDisposable) /*iface*/, null, Lifetime.Transient, null);
             entry.Setup(e => e.CopyTo(It.IsAny<IServiceContainer>())).Returns<IServiceContainer>(sc => null);
 
-            using (IServiceContainer container = Container.Add(entry.Object).CreateChild())
+            Container.Add(entry.Object);
+
+            using (IServiceContainer container = Container.CreateChild())
             {
                 entry.Verify(e => e.CopyTo(It.Is<IServiceContainer>(sc => sc == container)), Times.Once);
             }
