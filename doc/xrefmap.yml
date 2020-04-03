@@ -13,15 +13,15 @@ references:
   commentId: T:Solti.Utils.DI.AbstractServiceEntry
   fullName: Solti.Utils.DI.AbstractServiceEntry
   nameWithType: AbstractServiceEntry
-- uid: Solti.Utils.DI.AbstractServiceEntry.#ctor(Type,System.Nullable{System.String})
-  name: AbstractServiceEntry(Type, Nullable<String>)
-  href: Solti.Utils.DI.AbstractServiceEntry.html#Solti_Utils_DI_AbstractServiceEntry__ctor_Type_System_Nullable_System_String__
-  commentId: M:Solti.Utils.DI.AbstractServiceEntry.#ctor(Type,System.Nullable{System.String})
-  name.vb: AbstractServiceEntry(Type, Nullable(Of String))
-  fullName: Solti.Utils.DI.AbstractServiceEntry.AbstractServiceEntry(Type, System.Nullable<System.String>)
-  fullName.vb: Solti.Utils.DI.AbstractServiceEntry.AbstractServiceEntry(Type, System.Nullable(Of System.String))
-  nameWithType: AbstractServiceEntry.AbstractServiceEntry(Type, Nullable<String>)
-  nameWithType.vb: AbstractServiceEntry.AbstractServiceEntry(Type, Nullable(Of String))
+- uid: Solti.Utils.DI.AbstractServiceEntry.#ctor(Type,System.Nullable{System.String},Solti.Utils.DI.IServiceContainer)
+  name: AbstractServiceEntry(Type, Nullable<String>, IServiceContainer)
+  href: Solti.Utils.DI.AbstractServiceEntry.html#Solti_Utils_DI_AbstractServiceEntry__ctor_Type_System_Nullable_System_String__Solti_Utils_DI_IServiceContainer_
+  commentId: M:Solti.Utils.DI.AbstractServiceEntry.#ctor(Type,System.Nullable{System.String},Solti.Utils.DI.IServiceContainer)
+  name.vb: AbstractServiceEntry(Type, Nullable(Of String), IServiceContainer)
+  fullName: Solti.Utils.DI.AbstractServiceEntry.AbstractServiceEntry(Type, System.Nullable<System.String>, Solti.Utils.DI.IServiceContainer)
+  fullName.vb: Solti.Utils.DI.AbstractServiceEntry.AbstractServiceEntry(Type, System.Nullable(Of System.String), Solti.Utils.DI.IServiceContainer)
+  nameWithType: AbstractServiceEntry.AbstractServiceEntry(Type, Nullable<String>, IServiceContainer)
+  nameWithType.vb: AbstractServiceEntry.AbstractServiceEntry(Type, Nullable(Of String), IServiceContainer)
 - uid: Solti.Utils.DI.AbstractServiceEntry.#ctor(Type,System.Nullable{System.String},System.Nullable{Solti.Utils.DI.Lifetime},Solti.Utils.DI.IServiceContainer)
   name: AbstractServiceEntry(Type, Nullable<String>, Nullable<Lifetime>, IServiceContainer)
   href: Solti.Utils.DI.AbstractServiceEntry.html#Solti_Utils_DI_AbstractServiceEntry__ctor_Type_System_Nullable_System_String__System_Nullable_Solti_Utils_DI_Lifetime__Solti_Utils_DI_IServiceContainer_
