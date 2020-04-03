@@ -28,7 +28,7 @@ namespace Solti.Utils.DI.Internals
                 requested = requestedRef.RelatedServiceEntry;
 
             //
-            // Ha a fuggosege fa gyokerenel vagyunk akkor a metodus nem ertelmezett.
+            // Ha a fuggosegi fa gyokerenel vagyunk akkor a metodus nem ertelmezett.
             //
 
             if (requestor == null) return;
