@@ -15,14 +15,16 @@ namespace Solti.Utils.DI.Internals.Tests
     public class ServiceEntryTests
     {
         [Test]
-        public void Equals_ShouldDoWhatItsNameSuggests() 
+        public void Equals_ShouldDoWhatItsNameSuggests()
         {
-            using (var entry = new AbstractServiceEntry(typeof(IDisposable), null))
+            var dummyContainer = new Mock<IServiceContainer>(MockBehavior.Strict).Object;
+            using (var entry = new AbstractServiceEntry(typeof(IDisposable), null, dummyContainer))
             {
                 Assert.That(entry.Equals(entry));
-                Assert.That(entry.Equals(new AbstractServiceEntry(typeof(IDisposable), null)));
+                Assert.That(entry.Equals(new AbstractServiceEntry(typeof(IDisposable), null, dummyContainer)));
                 Assert.That(entry.Equals(null), Is.False);
-                Assert.That(entry.Equals(new AbstractServiceEntry(typeof(IDisposable), "cica")), Is.False);
+                Assert.That(entry.Equals(new AbstractServiceEntry(typeof(IDisposable), "cica", dummyContainer)), Is.False);
+                Assert.That(entry.Equals(new AbstractServiceEntry(typeof(IDisposable), null, new Mock<IServiceContainer>(MockBehavior.Strict).Object)), Is.False);
             }
         }
 
@@ -48,7 +50,7 @@ namespace Solti.Utils.DI.Internals.Tests
 
         private class MyServiceEntry : AbstractServiceEntry 
         {
-            public MyServiceEntry(Type iface) : base(iface, null) 
+            public MyServiceEntry(Type iface) : base(iface, null, new Mock<IServiceContainer>(MockBehavior.Strict).Object) 
             {
                 Instance = new ServiceReference(this, new Mock<IInjector>().Object);
             }

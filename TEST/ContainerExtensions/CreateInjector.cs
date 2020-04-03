@@ -32,19 +32,19 @@ namespace Solti.Utils.DI.Container.Tests
             Assert.That(ioEx.Data["entry"], Is.EqualTo(Container.Get<IInterface_2>()));
         }
 
-        public static IEnumerable<AbstractServiceEntry> BadEntries 
+        public static IEnumerable<Func<IServiceContainer, AbstractServiceEntry>> BadEntries // statikusnak kell lennie
         {
             get 
             {
-                yield return new BadServiceEntry(typeof(IInterface_1), null);
-                yield return new AbstractServiceEntry(typeof(IInterface_1), null);
+                yield return container => new BadServiceEntry(typeof(IInterface_1), null, container);
+                yield return container => new AbstractServiceEntry(typeof(IInterface_1), null, container);
             }
         }
 
         [TestCaseSource(nameof(BadEntries))]
-        public void Container_CreateInjector_ShouldNotAddTheChildIfSomethingWentWrong(AbstractServiceEntry badEntry)
+        public void Container_CreateInjector_ShouldNotAddTheChildIfSomethingWentWrong(Func<IServiceContainer, AbstractServiceEntry> factory)
         {
-            Container.Add(badEntry);
+            Container.Add(factory(Container));
 
             Assert.Throws<InvalidOperationException>(() => Container.CreateInjector());
             Assert.That(Container.Children.Count, Is.EqualTo(0));

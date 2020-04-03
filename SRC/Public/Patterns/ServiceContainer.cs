@@ -141,13 +141,9 @@ namespace Solti.Utils.DI
                 {
                     Assert(mode.HasFlag(QueryModes.AllowSpecialization));
 
-                    //
-                    // Bejegyzesek "kivulrol" jonnek -> ne Assert() hivas legyen.
-                    //
-
-                    IServiceContainer owner = Ensure.IsNotNull(existing.Owner, $"{nameof(existing)}.{nameof(existing.Owner)}");
-
-                    specialized = owner.Get(serviceInterface, name, mode);
+                    specialized = existing
+                        .Owner
+                        .Get(serviceInterface, name, mode);
 
                     //
                     // "specialized" lehet NULL ha a "QueryModes.ThrowOnError" nem volt beallitva es "existing"

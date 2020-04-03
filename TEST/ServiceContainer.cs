@@ -102,7 +102,7 @@ namespace Solti.Utils.DI.Container.Tests
         [Test]
         public void IServiceContainer_Get_ShouldThrowIfEntryCanNotBeSpecialized([Values(true, false)] bool useChild) 
         {
-            Container.Add(new AbstractServiceEntry(typeof(IList<>), null, null, Container));
+            Container.Add(new AbstractServiceEntry(typeof(IList<>), null, Container));
 
             IServiceContainer container = useChild ? Container.CreateChild() : Container;
 
@@ -112,7 +112,7 @@ namespace Solti.Utils.DI.Container.Tests
         [Test]
         public void IServiceContainer_Get_ShouldReturnNullIfEntryCanNotBeSpecialized([Values(true, false)] bool useChild)
         {
-            Container.Add(new AbstractServiceEntry(typeof(IList<>), null, null, Container));
+            Container.Add(new AbstractServiceEntry(typeof(IList<>), null, Container));
 
             IServiceContainer container = useChild ? Container.CreateChild() : Container;
 
@@ -156,14 +156,13 @@ namespace Solti.Utils.DI.Container.Tests
         public void IServiceContainer_Contains_ShouldSearchByGetHashCode(string name)
         {
             AbstractServiceEntry 
-                entry1 = new AbstractServiceEntry(typeof(IDisposable), name),
-                entry2 = new AbstractServiceEntry(typeof(IDisposable), name);
+                entry1 = new AbstractServiceEntry(typeof(IDisposable), name, Container),
+                entry2 = new AbstractServiceEntry(typeof(IDisposable), name, Container);
 
             Container.Add(entry1);
             
-            Assert.That(entry1, Is.EqualTo(entry2));
-            Assert.True(Container.Contains(entry1));
-            Assert.True(Container.Contains(entry2));
+            Assert.That(Container.Contains(entry1));
+            Assert.That(Container.Contains(entry2));
         }
 
         [TestCase(true)]
@@ -184,7 +183,7 @@ namespace Solti.Utils.DI.Container.Tests
                 mockInstance.Verify(i => i.Dispose(), Times.Never);
             }
 
-            mockInstance.Verify(i => i.Dispose(), releaseOnDispose ? Times.Once : (Func<Times>)Times.Never);
+            mockInstance.Verify(i => i.Dispose(), releaseOnDispose ? Times.Once : (Func<Times>) Times.Never);
         }
 
         [Test]
@@ -281,7 +280,7 @@ namespace Solti.Utils.DI.Container.Tests
         [TestCase("cica")]
         public void IServiceContainer_Add_ShouldOverwriteAbstractEntries(string name) 
         {
-            Container.Add(new AbstractServiceEntry(typeof(IDisposable), name));
+            Container.Add(new AbstractServiceEntry(typeof(IDisposable), name, Container));
 
             Assert.DoesNotThrow(() => Container.Add(new SingletonServiceEntry(typeof(IDisposable), name, typeof(Disposable), Container)));
             Assert.That(Container.Get(typeof(IDisposable), name), Is.InstanceOf<SingletonServiceEntry>());
@@ -388,7 +387,7 @@ namespace Solti.Utils.DI.Container.Tests
         [Test]
         public void IServiceContainer_Add_ShouldDisposeAbstractEntryOnOverride()
         {
-            var entry = new AbstractServiceEntry(typeof(IInterface_1), null, null, Container);
+            var entry = new AbstractServiceEntry(typeof(IInterface_1), null, Container);
 
             Container.Add(entry);
             Container.Add(new InstanceServiceEntry(typeof(IInterface_1), null, new Implementation_1_No_Dep(), false, Container));

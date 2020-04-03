@@ -116,3 +116,4 @@
   - *breaking:* `ServiceContainer.[Add|Get]` became virtual, removed `ServiceContainer.Inherit()` method
 - 2.0.0:
   - *breaking:* `IServiceContainer.Add()` returns void
+  - *breaking:* Service entries must have owner

@@ -265,7 +265,7 @@ namespace Solti.Utils.DI
         {
             Ensure.Parameter.IsNotNull(self, nameof(self));
 
-            self.Add(new AbstractServiceEntry(iface, name));
+            self.Add(new AbstractServiceEntry(iface, name, self));
             return self;
         }
 

@@ -28,10 +28,10 @@ namespace Solti.Utils.DI.Internals
                 requested = requestedRef.RelatedServiceEntry;
 
             //
-            // Ha vmelyik szulo hianyzik akkor a metodus nem ertelmezett
+            // Ha a fuggosege fa gyokerenel vagyunk akkor a metodus nem ertelmezett.
             //
 
-            if (requestor?.Owner == null || requested.Owner == null) return;
+            if (requestor == null) return;
 
             //
             // A kerelmezett szerviz tulajdonosanak egy szinten v feljebb kell lennie mint a kerelmezo 

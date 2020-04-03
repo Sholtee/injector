@@ -9,7 +9,7 @@ namespace Solti.Utils.DI.Internals
 {
     internal class NotOwnedServiceInstantiationStrategy: OwnedServiceInstantiationStrategy
     {
-        public override bool ShouldUse(Injector injector, AbstractServiceEntry requested) => requested.Owner != null && injector.UnderlyingContainer.IsDescendantOf(requested.Owner);
+        public override bool ShouldUse(Injector injector, AbstractServiceEntry requested) => injector.UnderlyingContainer.IsDescendantOf(requested.Owner);
 
         [SuppressMessage("Reliability", "CA2000:Dispose objects before losing scope", Justification = "The lifetime of newly created injector is maintained by its owner.")]
         public override ServiceReference Exec(Injector injector, ServiceReference? requestor, AbstractServiceEntry requested)
@@ -45,10 +45,7 @@ namespace Solti.Utils.DI.Internals
                 //   elettartamat.
                 //
 
-                injector = injector.Spawn
-                (
-                    Ensure.IsNotNull(requested.Owner, $"{nameof(requested)}.{nameof(requested.Owner)}")
-                );
+                injector = injector.Spawn(requested.Owner);
 
                 try
                 {

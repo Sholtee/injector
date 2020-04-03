@@ -98,7 +98,7 @@ namespace Solti.Utils.DI.Internals.Tests
 
                 var mockInjector = new Mock<Injector>(() => new Injector(container, null));
 
-                var requestor = new ServiceReference(new AbstractServiceEntry(typeof(IService_2), null), new Injector(container));
+                var requestor = new ServiceReference(new AbstractServiceEntry(typeof(IService_2), null, new Mock<IServiceContainer>(MockBehavior.Strict).Object), new Injector(container));
 
                 IServiceInstantiationStrategy strategy = (IServiceInstantiationStrategy) para;
 
@@ -123,7 +123,7 @@ namespace Solti.Utils.DI.Internals.Tests
                     return new Service();
                 }, Lifetime.Singleton);
 
-                var requestor = new ServiceReference(new AbstractServiceEntry(typeof(IService_2), null), new Injector(container));
+                var requestor = new ServiceReference(new AbstractServiceEntry(typeof(IService_2), null, new Mock<IServiceContainer>(MockBehavior.Strict).Object), new Injector(container));
 
                 IServiceInstantiationStrategy strategy = new NotOwnedServiceInstantiationStrategy();
 
@@ -141,7 +141,7 @@ namespace Solti.Utils.DI.Internals.Tests
             {
                 container.Service<IService, Service>(Lifetime.Singleton);
 
-                var requestor = new ServiceReference(new AbstractServiceEntry(typeof(IService_2), null), new Injector(container));
+                var requestor = new ServiceReference(new AbstractServiceEntry(typeof(IService_2), null, new Mock<IServiceContainer>(MockBehavior.Strict).Object), new Injector(container));
 
                 IServiceInstantiationStrategy strategy = new NotOwnedServiceInstantiationStrategy();
 
@@ -161,8 +161,12 @@ namespace Solti.Utils.DI.Internals.Tests
         {
             using (IServiceContainer container = new ServiceContainer())
             {
-                Assert.Throws<InvalidOperationException>(() 
-                    => new ServiceInstantiationStrategySelector(new Injector(container)).GetStrategyFor(new AbstractServiceEntry(typeof(IService), null)),
+                Assert.Throws<InvalidOperationException>(()
+                    //
+                    // Ne "new Mock<IServiceContainer>(MockBehavior.Strict).Object" et hasznaljunk
+                    //
+
+                    => new ServiceInstantiationStrategySelector(new Injector(container)).GetStrategyFor(new AbstractServiceEntry(typeof(IService), null, new ServiceContainer())),
                 Resources.NO_STRATEGY);
             }
         }

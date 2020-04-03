@@ -102,7 +102,7 @@ namespace Solti.Utils.DI.Container.Tests
             // tag) nem volt hivva a Setup().
             //
 
-            Mock<AbstractServiceEntry> entry = new Mock<AbstractServiceEntry>(typeof(IDisposable) /*iface*/, null, Lifetime.Transient, null);
+            Mock<AbstractServiceEntry> entry = new Mock<AbstractServiceEntry>(typeof(IDisposable) /*iface*/, null, Lifetime.Transient, Container);
             entry.Setup(e => e.CopyTo(It.IsAny<IServiceContainer>())).Returns<IServiceContainer>(sc => null);
 
             Container.Add(entry.Object);
@@ -132,7 +132,7 @@ namespace Solti.Utils.DI.Container.Tests
         [Test]
         public void Container_CreateChild_ShouldNotAddTheChildIfSomethingWentWrong() 
         {
-            Container.Add(new BadServiceEntry(typeof(IInterface_1), null));
+            Container.Add(new BadServiceEntry(typeof(IInterface_1), null, Container));
 
             Assert.Throws<InvalidOperationException>(() => Container.CreateChild());
             Assert.That(Container.Children.Count, Is.EqualTo(0));
@@ -140,7 +140,7 @@ namespace Solti.Utils.DI.Container.Tests
 
         private sealed class BadServiceEntry : AbstractServiceEntry
         {
-            public BadServiceEntry(Type @interface, string name) : base(@interface, name)
+            public BadServiceEntry(Type @interface, string name, IServiceContainer owner) : base(@interface, name, owner)
             {
             }
 
