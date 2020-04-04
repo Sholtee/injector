@@ -113,7 +113,11 @@ Registering a service can be done via several patterns (I name them recipes):
   Remarks:
   - The containing assembly will be loaded on the first request.
   - You may also register generic lazy services by the same way.
-  - You can use your own type resolver by implementing the `ITypeResolver` interface.
+  - You can use your own type resolver by implementing the `ITypeResolver` interface:
+    ```csharp
+	// This does the same as the code above. Note that the "LazyTypeResolver" class is a builtin resolver.
+	container.Lazy<IMyService>(new LazyTypeResolver<IMyService>("Absolute.Path.To.Assembly", "Implementation.Fullname"), Lifetime.Transient);
+	```
 - **Factory recipe**: As the name suggests services registered by this way have a factory function: 
   ```csharp
   container.Factory<IMyService>(injector => new MyService(), Lifetime.Singleton);
