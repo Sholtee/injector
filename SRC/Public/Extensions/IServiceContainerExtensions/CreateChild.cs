@@ -26,11 +26,9 @@ namespace Solti.Utils.DI
         /// </list>
         /// </remarks>
         /// <exception cref="InvalidOperationException">The count of <see cref="IComposite{IServiceContainer}.Children"/> reached the limit that was set in the <see cref="Config"/>.</exception>
-        public static IServiceContainer CreateChild(this IServiceContainer self)
-        {
-            Ensure.Parameter.IsNotNull(self, nameof(self));
-
-            return new ServiceContainer(self);
-        }
+        public static IServiceContainer CreateChild(this IServiceContainer self) => new ServiceContainer
+        (
+            Ensure.Parameter.IsNotNull(self, nameof(self))
+        );
     }
 }
