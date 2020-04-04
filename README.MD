@@ -92,7 +92,7 @@ Registering a service can be done via several patterns (I name them recipes):
         public MyService(IInjector injector, IService_1 dep1, IService_2 dep2) {...}
       }
       ```
-    - Lazy initialization also possible:
+    - Deferred resolution also possible:
 	  ```csharp 
       public class MyService: IMyService
       {
