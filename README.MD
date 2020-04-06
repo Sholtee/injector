@@ -175,6 +175,7 @@ Registering a service can be done via several patterns (I name them recipes):
   Advantages over factory recipe:   
   - Providers have well defined dependencies.
   - They can be configurable (via static members).
+  
   Note that this feature was introduced in version 2.0 of the library.
 - **Instance recipe**: Instances are "predefined values" that can act as a service: 
   ```csharp
