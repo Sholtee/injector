@@ -131,6 +131,51 @@ Registering a service can be done via several patterns (I name them recipes):
     ...  
   });
   ```
+- **Provider recipe**: Providers are services that are responsbile for creating other services.
+  ```csharp
+  using System;
+  using System.Data;
+  ...
+  public class DbConnectionProvider: IServiceProvider
+  {
+    private class DbOptions
+    {
+      public string ConnectionString {get; set;}
+      public string Provider {get; set;} 
+    }
+
+    private DbOptions Options {get;} = new DbOptions();
+
+    public DbConnectionProvider(IConfiguration config) =>
+      config.GetSection($"DbBackends:{Backend}").Bind(Options);
+
+    object IServiceProvider.GetService(Type serviceType)
+    {
+      if (serviceType != typeof(IDbConnection))
+        throw new NotSupportedException();
+
+      IDbConnection connection = Options.Provider switch
+      {
+        "SqlServer" => new SqlConnection(Options.ConnectionString),
+        _ => throw new NotSupportedException("Provider not supported");
+      };
+      connection.Open();
+
+      return connection;	  
+    }
+
+    public static string Backend {get; set;} = "test"; // or "dev" or "live"
+  }
+  ...
+  container
+    .Service<IConfiguration, ...>(Lifetime.Singleton)
+    .Provider<IDbConnection, DbConnectionProvider>(Lifetime.Scoped)
+    ...
+  ```
+  Advantages over factory recipe:   
+  - Providers have well defined dependencies.
+  - They can be configurable (via static members).
+  Note that this feature was introduced in version 2.0 of the library.
 - **Instance recipe**: Instances are "predefined values" that can act as a service: 
   ```csharp
   container.Instance<IMyService>(service, releaseOnDispose: true);
