@@ -14,20 +14,71 @@ namespace Solti.Utils.DI
         /// <summary>
         /// 
         /// </summary>
+        /// <param name="self"></param>
+        /// <param name="iface"></param>
+        /// <param name="name"></param>
+        /// <param name="provider"></param>
+        /// <param name="lifetime"></param>
         /// <returns></returns>
-        public static IServiceContainer Provider<TInterface, TProvider>(this IServiceContainer self, string? name, Lifetime lifetime) where TProvider: class, IServiceProvider where TInterface: class
+        public static IServiceContainer Provider(this IServiceContainer self, Type iface, string? name, Type provider, Lifetime lifetime)
         {
             Ensure.Parameter.IsNotNull(self, nameof(self));
+            Ensure.Parameter.IsNotNull(iface, nameof(iface));
+            Ensure.Parameter.IsInterface(iface, nameof(iface));
+            Ensure.Parameter.IsNotNull(provider, nameof(provider));
+            Ensure.Type.Supports(provider, typeof(IServiceProvider));
 
-            Func<IInjector, Type, object> providerFactory = Resolver.Get(typeof(TProvider));
+            //
+            // A "Resolver.Get()" hivas validal is
+            //
 
-            return self.Factory(name, GetService, lifetime);
+            Func<IInjector, Type, object> providerFactory = Resolver.Get(provider);
 
-            TInterface GetService(IInjector injector) 
+            return self.Factory(iface, name, GetService, lifetime);
+
+            object GetService(IInjector injector, Type _)
             {
                 IServiceProvider provider = (IServiceProvider) providerFactory.Invoke(injector, typeof(IServiceProvider));
-                return (TInterface) provider.GetService(typeof(TInterface));
+
+                //
+                // Nem gond ha NULL-t v rossz tipusu peldanyt ad vissza mert az injector validalni fogja.
+                //
+
+                return provider.GetService(iface);
             }
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="self"></param>
+        /// <param name="iface"></param>
+        /// <param name="provider"></param>
+        /// <param name="lifetime"></param>
+        /// <returns></returns>
+        public static IServiceContainer Provider(this IServiceContainer self, Type iface, Type provider, Lifetime lifetime) => self.Provider(iface, null, provider, lifetime);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="TInterface"></typeparam>
+        /// <typeparam name="TProvider"></typeparam>
+        /// <param name="self"></param>
+        /// <param name="name"></param>
+        /// <param name="lifetime"></param>
+        /// <returns></returns>
+        public static IServiceContainer Provider<TInterface, TProvider>(this IServiceContainer self, string? name, Lifetime lifetime) where TProvider : class, IServiceProvider where TInterface : class
+            => self.Provider(typeof(TInterface), name, typeof(TProvider), lifetime);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="TInterface"></typeparam>
+        /// <typeparam name="TProvider"></typeparam>
+        /// <param name="self"></param>
+        /// <param name="lifetime"></param>
+        /// <returns></returns>
+        public static IServiceContainer Provider<TInterface, TProvider>(this IServiceContainer self, Lifetime lifetime) where TProvider : class, IServiceProvider where TInterface : class
+            => self.Provider<TInterface, TProvider>(null, lifetime);
     }
 }
