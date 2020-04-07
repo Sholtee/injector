@@ -135,6 +135,7 @@ Registering a service can be done via several patterns (I name them recipes):
   ```csharp
   using System;
   using System.Data;
+  using Microsoft.Extensions.Configuration;
   ...
   public class DbConnectionProvider: IServiceProvider
   {
@@ -147,7 +148,7 @@ Registering a service can be done via several patterns (I name them recipes):
     private DbOptions Options {get;} = new DbOptions();
 
     public DbConnectionProvider(IConfiguration config) =>
-      config.GetSection($"DbBackends:{Backend}").Bind(Options);
+      config.GetSection("Database").Bind(Options);
 
     object IServiceProvider.GetService(Type serviceType)
     {
@@ -163,18 +164,22 @@ Registering a service can be done via several patterns (I name them recipes):
 
       return connection;	  
     }
-
-    public static string Backend {get; set;} = "test"; // or "dev" or "live"
   }
   ...
   container
-    .Service<IConfiguration, ...>(Lifetime.Singleton)
-    .Provider<IDbConnection, DbConnectionProvider>(Lifetime.Scoped)
-    ...
+    .Factory<IConfiguration>(
+		_ => new ConfigurationBuilder().AddJsonFile(
+  #if DEV
+          "config.dev.json"
+  #else
+          "config.live.json"
+  #endif
+		).Build(),
+		Lifetime.Singleton)
+    .Provider<IDbConnection, DbConnectionProvider>(Lifetime.Scoped);
   ```
   Advantages over factory recipe:   
   - Providers have well defined dependencies.
-  - They can be configurable (via static members).
   
   Note that this feature was introduced in version 2.0 of the library.
 - **Instance recipe**: Instances are "predefined values" that can act as a service: 
