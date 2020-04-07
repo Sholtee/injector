@@ -10,13 +10,13 @@ namespace Solti.Utils.DI
     using Internals;
 
     /// <summary>
-    /// Indicates that a class is being used as a service.
+    /// Indicates that a class is being used as a provider.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
-    public sealed class ServiceAttribute: ServiceRegistrationAttribute
+    public sealed class ProviderAttribute : ServiceRegistrationAttribute
     {
         /// <summary>
-        /// The service interface implemented by the marked class.
+        /// The service interface implemented.
         /// </summary>
         public Type Interface { get; }
 
@@ -31,11 +31,11 @@ namespace Solti.Utils.DI
         public Lifetime Lifetime { get; }
 
         /// <summary>
-        /// Registers a service by calling the <see cref="IServiceContainerExtensions.Service(IServiceContainer, Type, Type, Lifetime)"/> method.
+        /// Registers a provider by calling the <see cref="IServiceContainerExtensions.Provider(IServiceContainer, Type, Type, Lifetime)"/> method.
         /// </summary>
-        /// <param name="interface">The service interface implemented by the marked class.</param>
+        /// <param name="interface">The service interface.</param>
         /// <param name="lifetime">The <see cref="Lifetime"/> of the service.</param>
-        public ServiceAttribute(Type @interface, Lifetime lifetime = Lifetime.Transient)
+        public ProviderAttribute(Type @interface, Lifetime lifetime = Lifetime.Transient)
         {
             Ensure.Parameter.IsNotNull(@interface, nameof(@interface));
 
@@ -44,12 +44,12 @@ namespace Solti.Utils.DI
         }
 
         /// <summary>
-        /// Registers a service by calling the <see cref="IServiceContainerExtensions.Service(IServiceContainer, Type, string, Type, Lifetime)"/> method.
+        /// Registers a provider by calling the <see cref="IServiceContainerExtensions.Provider(IServiceContainer, Type, string?, Type, Lifetime)"/> method.
         /// </summary>
-        /// <param name="interface">The service interface implemented by the marked class.</param>
+        /// <param name="interface">The service interface.</param>
         /// <param name="name">The (optional) name of the service.</param>
         /// <param name="lifetime">The <see cref="Lifetime"/> of the service.</param>
-        public ServiceAttribute(Type @interface, string name, Lifetime lifetime = Lifetime.Transient): this(@interface, lifetime)
+        public ProviderAttribute(Type @interface, string name, Lifetime lifetime = Lifetime.Transient): this(@interface, lifetime)
         {
             Name = name;
         }
@@ -62,7 +62,7 @@ namespace Solti.Utils.DI
             Ensure.Parameter.IsNotNull(container, nameof(container));
             Ensure.Parameter.IsNotNull(target, nameof(target));
 
-            container.Service(Interface, Name, target, Lifetime);
+            container.Provider(Interface, Name, target, Lifetime);
         }
     }
 }
