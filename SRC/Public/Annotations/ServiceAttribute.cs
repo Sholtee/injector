@@ -31,7 +31,7 @@ namespace Solti.Utils.DI
         public Lifetime Lifetime { get; }
 
         /// <summary>
-        /// Registers a service calling the <see cref="IServiceContainerExtensions.Service(IServiceContainer, Type, Type, Lifetime)"/> method.
+        /// Registers a service by calling the <see cref="IServiceContainerExtensions.Service(IServiceContainer, Type, Type, Lifetime)"/> method.
         /// </summary>
         /// <param name="interface">The service interface implemented by the marked class.</param>
         /// <param name="lifetime">The <see cref="Lifetime"/> of the service.</param>
@@ -44,7 +44,7 @@ namespace Solti.Utils.DI
         }
 
         /// <summary>
-        /// Registers a service calling the <see cref="IServiceContainerExtensions.Service(IServiceContainer, Type, string, Type, Lifetime)"/> method.
+        /// Registers a service by calling the <see cref="IServiceContainerExtensions.Service(IServiceContainer, Type, string, Type, Lifetime)"/> method.
         /// </summary>
         /// <param name="interface">The service interface implemented by the marked class.</param>
         /// <param name="name">The (optional) name of the service.</param>
