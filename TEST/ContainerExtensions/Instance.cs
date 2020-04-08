@@ -30,7 +30,6 @@ namespace Solti.Utils.DI.Container.Tests
             AbstractServiceEntry entry = Container.Get<IInterface_1>(QueryModes.ThrowOnError);
 
             Assert.That(entry.IsInstance());
-            Assert.False(entry.IsLazy());
             Assert.False(entry.IsService());
             Assert.False(entry.IsFactory());
         }

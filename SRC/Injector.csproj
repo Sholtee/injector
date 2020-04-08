@@ -46,7 +46,6 @@
 
   <ItemGroup>
     <PackageReference Include="ProxyGen.NET" Version="2.*" />
-    <PackageReference Include="System.Runtime.Loader" Version="4.*" />
     <PackageReference Include="System.Text.Json" Version="4.*" />
   </ItemGroup>
 

@@ -103,38 +103,6 @@ namespace Solti.Utils.DI.Container.Tests
         }
 
         [Test]
-        public void Container_Proxy_ShouldWorkWithLazyServices()
-        {
-            var mockResolver = new Mock<ITypeResolver>(MockBehavior.Strict);
-            mockResolver
-                .Setup(r => r.Resolve(It.Is<Type>(t => t == typeof(IInterface_1))))
-                .Returns(typeof(Implementation_1_No_Dep));
-            mockResolver
-                .Setup(r => r.Supports(It.Is<Type>(t => t == typeof(IInterface_1))))
-                .Returns(true);
-
-            Container
-                .Lazy<IInterface_1>(mockResolver.Object)
-                .Proxy<IInterface_1>((injector, inst) => new DecoratedImplementation_1());
-
-            var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
-            mockInjector
-                .SetupGet(i => i.UnderlyingContainer)
-                .Returns(Container);
-
-            //
-            // Az elso Get()-eleskor kell hivja a rendszer a resolver-t
-            //
-
-            mockResolver.Verify(r => r.Resolve(It.Is<Type>(t => t == typeof(IInterface_1))), Times.Never);
-
-            ServiceReference svc = new ServiceReference(Container.Get<IInterface_1>(), mockInjector.Object);
-
-            Assert.That(Container.Get<IInterface_1>().SetInstance(svc, FactoryOptions));
-            Assert.That(svc.Value, Is.InstanceOf<DecoratedImplementation_1>());     
-        }
-
-        [Test]
         public void Container_Proxy_ShouldThrowOnOpenGenericParameter()
         {
             Container.Service(typeof(IInterface_3<>), typeof(Implementation_3_IInterface_1_Dependant<>));

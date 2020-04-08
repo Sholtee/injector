@@ -310,7 +310,7 @@ namespace Solti.Utils.DI.Injector.Tests
         {
             public ServiceReference GotReference { get; private set; }
 
-            public HackyServiceEntry(IServiceContainer owner) : base(typeof(IInterface_1), null, null, owner) { }
+            public HackyServiceEntry(IServiceContainer owner) : base(typeof(IInterface_1), null, owner) { }
 
             public override bool SetInstance(ServiceReference serviceReference, IReadOnlyDictionary<string, object> options)
             {

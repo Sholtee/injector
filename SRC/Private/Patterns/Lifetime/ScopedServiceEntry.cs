@@ -27,10 +27,6 @@ namespace Solti.Utils.DI.Internals
         {
         }
 
-        public ScopedServiceEntry(Type @interface, string name, ITypeResolver implementation, IServiceContainer owner) : base(@interface, name, DI.Lifetime.Scoped, implementation, owner)
-        {
-        }
-
         public override bool SetInstance(ServiceReference reference, IReadOnlyDictionary<string, object> options)
         {
             EnsureAppropriateReference(reference);

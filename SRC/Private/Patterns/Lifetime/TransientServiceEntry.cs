@@ -52,10 +52,6 @@ namespace Solti.Utils.DI.Internals
         {
         }
 
-        public TransientServiceEntry(Type @interface, string name, ITypeResolver implementation, IServiceContainer owner) : base(@interface, name, DI.Lifetime.Transient, implementation, owner)
-        {
-        }
-
         public override bool SetInstance(ServiceReference reference, IReadOnlyDictionary<string, object> options)
         {
             EnsureAppropriateReference(reference);

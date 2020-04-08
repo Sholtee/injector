@@ -12,38 +12,30 @@ namespace Solti.Utils.DI.Internals
     /// <summary>
     /// Describes a producible service entry.
     /// </summary>
-    internal abstract partial class ProducibleServiceEntry : AbstractServiceEntry, ISupportsProxying, ISupportsSpecialization, IHasUnderlyingImplementation
+    internal abstract partial class ProducibleServiceEntry : AbstractServiceEntry, ISupportsProxying, ISupportsSpecialization
     {
-        internal ProducibleServiceEntry(Type @interface, string? name, Lifetime? lifetime, IServiceContainer owner) : base(
+        internal ProducibleServiceEntry(Type @interface, string? name, Lifetime lifetime, IServiceContainer owner) : base(
             @interface,
             name,
-            Ensure.Parameter.IsNotNull(lifetime, nameof(lifetime)),
-            Ensure.Parameter.IsNotNull(owner, nameof(owner)))
+            lifetime,
+            null,
+            owner)
         {
             //
-            // Interface-t nem kell ellenorizni (az os megteszi).
+            // Os ellenorzi az interface-t es a tulajdonost.
             //
         }
 
-        protected ProducibleServiceEntry(ProducibleServiceEntry entry, IServiceContainer owner) : this(entry.Interface, entry.Name, entry.Lifetime, owner)
-        {
+        protected ProducibleServiceEntry(ProducibleServiceEntry entry, IServiceContainer owner) : base(entry.Interface, entry.Name, entry.Lifetime, entry.Implementation, owner) =>
             Factory = entry.Factory;
 
-            //
-            // Ne az Implementation-t magat adjuk at h a resolver ne triggerelodjon ha 
-            // meg nem volt hivva.
-            //
-
-            FUnderlyingImplementation = entry.FUnderlyingImplementation;
-        }
-
-        protected ProducibleServiceEntry(Type @interface, string name, Lifetime lifetime, Func<IInjector, Type, object> factory, IServiceContainer owner) : this(@interface, name, lifetime, owner) =>
+        protected ProducibleServiceEntry(Type @interface, string? name, Lifetime lifetime, Func<IInjector, Type, object> factory, IServiceContainer owner) : this(@interface, name, lifetime, owner) =>
             Factory = Ensure.Parameter.IsNotNull(factory, nameof(factory));
 
-        protected ProducibleServiceEntry(Type @interface, string name, Lifetime lifetime, Type implementation, IServiceContainer owner) : this(@interface, name, lifetime, owner)
+        protected ProducibleServiceEntry(Type @interface, string? name, Lifetime lifetime, Type implementation, IServiceContainer owner) : base(@interface, name, lifetime, implementation, owner)
         {
             //
-            // Interface-t nem kell ellenorizni (az os megteszi).
+            // Os ellenorzi az interface-t es a tulajdonost.
             //
 
             Ensure.Parameter.IsNotNull(implementation, nameof(implementation));
@@ -58,35 +50,6 @@ namespace Solti.Utils.DI.Internals
                 // 
 
                 implementation.GetApplicableConstructor();
-
-            FUnderlyingImplementation = implementation;
-        }
-
-        protected ProducibleServiceEntry(Type @interface, string name, Lifetime lifetime, ITypeResolver implementation, IServiceContainer owner) : this(@interface, name, lifetime, owner)
-        {
-            //
-            // Interface-t nem kell ellenorizni (az os megteszi).
-            //
-
-            Ensure.Parameter.IsNotNull(implementation, nameof(implementation));
-
-            //
-            // - A tenyleges implementacio az elso hivatkozaskor lesz validalva (lasd LazyType implementacio).
-            // - A konstruktor pedig az elso peldanyositaskor (lasd Resolver.Get() implementacio).
-            //
-
-            Ensure.Type.Supports(implementation, @interface);
-
-            LazyType lazyImplementation = LazyType.Create(@interface, implementation);
-
-            if (!@interface.IsGenericTypeDefinition)
-                //
-                // Mivel van factory ezert lusta bejegyzesek is Proxy-zhatok.
-                //
-
-                Factory = Resolver.Get(lazyImplementation);
-
-            FUnderlyingImplementation = lazyImplementation;
         }
 
         protected void EnsureAppropriateReference(ServiceReference reference)
@@ -108,25 +71,7 @@ namespace Solti.Utils.DI.Internals
                 throw new InvalidOperationException(Resources.NOT_PRODUCIBLE);
         }
 
-        public override Type? Implementation => FUnderlyingImplementation switch
-        {
-            //
-            // Ne magat a resolver-t szolitsuk meg mert az nem feltetlen szalbiztos valamint a visszameno
-            // kompatibilitas vegett a Resolve() adott interface-el bejegyzesenkent csak egyszer kerulhet
-            // meghivasra.
-            //
-
-            LazyType lazyType => lazyType.Value,
-            Type type => type,
-            null => null,
-            _ => throw new NotSupportedException() // TODO
-        };
-
         #region Features
-        private readonly object? FUnderlyingImplementation;
-
-        object? IHasUnderlyingImplementation.UnderlyingImplementation => FUnderlyingImplementation;
-
         Func<IInjector, Type, object>? ISupportsProxying.Factory { get => Factory; set => Factory = value; }
 
         AbstractServiceEntry ISupportsSpecialization.Specialize(params Type[] genericArguments) 
