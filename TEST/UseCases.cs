@@ -262,7 +262,7 @@ namespace Solti.Utils.DI.UseCases
                         new MemoryStream
                         (
                             Encoding.ASCII.GetBytes
-                            (@$"
+                            ($@"
                                 {{
                                     ""Database"":
                                     {{
