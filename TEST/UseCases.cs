@@ -262,13 +262,16 @@ namespace Solti.Utils.DI.UseCases
                         new MemoryStream
                         (
                             Encoding.ASCII.GetBytes
-                            (
-                                "{"+
-                                "  \"Database\": {"+
-                                $" \"ConnectionString\": \"{connString}\"," +
-                                "  \"Provider\": \"SqlServer\"}" +
-                                "}"
-                            )
+                            ($@"
+                                {{
+                                    ""Database"":
+                                    {{
+                                        ""ConnectionString"": ""{connString}"",
+                                        ""Provider"": ""SqlServer""
+                                    }}
+                                }}
+
+                            ")
                         )
                     ).Build(), 
                     Lifetime.Singleton);
@@ -299,12 +302,23 @@ namespace Solti.Utils.DI.UseCases
             {
                 if (serviceType != typeof(IDbConnection))
                     throw new NotSupportedException();
-
+#if !LANG_VERSION_8
+                IDbConnection connection;
+                switch (Options.Provider) 
+                {
+                    case "SqlServer":
+                        connection = new SqlConnection(Options.ConnectionString);
+                        break;
+                    default:
+                        throw new NotSupportedException("Provider not supported");
+                }
+#else
                 IDbConnection connection = Options.Provider switch
                 {
                     "SqlServer" => new SqlConnection(Options.ConnectionString),
                     _ => throw new NotSupportedException("Provider not supported")
                 };
+#endif
                 //connection.Open();
 
                 return connection;
