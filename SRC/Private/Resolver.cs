@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Threading;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -106,31 +105,6 @@ namespace Solti.Utils.DI.Internals
 
             return Cache.GetOrAdd(type, () => Get(type.GetApplicableConstructor()));
         }
-
-        //
-        // Igaz itt nincs idoigenyes operacio ami miatt gyorsitotarazni kene viszont a ServiceEntry-k
-        // egyezossegenek vizsgalatahoz kell.
-        //
-
-        public static Func<IInjector, Type, object> Get(LazyType type) => Cache.GetOrAdd(type, () =>
-        {
-            //
-            // A Lazy<> csak azert kell h minden egyes factory hivasnal ne forduljunk a 
-            // gyorsitotarhoz.
-            //
-
-            var factory = new Lazy<Func<IInjector, Type, object>>
-            (
-                //
-                // "type.Value" erteke validalva lesz a Get() hivasban.
-                //
-
-                () => Get(type.Value),
-                LazyThreadSafetyMode.ExecutionAndPublication
-            );
-
-            return new Func<IInjector, Type, object>((injector, iface) => factory.Value(injector, iface));
-        });
 
         public static Func<IInjector, IReadOnlyDictionary<string, object>, object> GetExtended(ConstructorInfo constructor) => Cache.GetOrAdd(constructor, () =>
         {

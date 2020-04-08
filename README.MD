@@ -106,18 +106,6 @@ Registering a service can be done via several patterns (I name them recipes):
         public MyService(IService_1 dep1, [Options(Optional = true)]IService_2 dep2) {...}
       }
       ```   
-- **Lazy recipe**: Similar to the service recipe except that the implementation is unknown in build time (e.g. the service implementation is placed in a module we want to load on service request). So instead of using the implementation itself we pass its assembly and type name:
-  ```csharp
-  container.Lazy<IMyService>("Absolute.Path.To.Assembly", "Implementation.Fullname", Lifetime.Transient);
-  ```
-  Remarks:
-  - The containing assembly will be loaded on the first request.
-  - You may also register generic lazy services by the same way.
-  - You can use your own type resolver by implementing the `ITypeResolver` interface:
-    ```csharp
-	// This does the same as the code above. Note that the "LazyTypeResolver" class is a builtin resolver.
-	container.Lazy<IMyService>(new LazyTypeResolver<IMyService>("Absolute.Path.To.Assembly", "Implementation.Fullname"), Lifetime.Transient);
-	```
 - **Factory recipe**: As the name suggests services registered by this way have a factory function: 
   ```csharp
   container.Factory<IMyService>(injector => new MyService(), Lifetime.Singleton);

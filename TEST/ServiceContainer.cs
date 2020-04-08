@@ -289,22 +289,25 @@ namespace Solti.Utils.DI.Container.Tests
         [Test]
         public void IServiceContainer_Get_ShouldReturnTheSpecializedEntryInMultithreadedEnvironment()
         {
-            var entry = new LockableSingletonServiceEntry(typeof(IList<>), typeof(MyList<>), Container);
+            Container.Add(new SingletonServiceEntry(typeof(IList<>), null, typeof(MyList<>), Container));
 
-            Container.Add(entry);
-            entry.Lock.Reset();
+            var @lock = new ManualResetEventSlim(true);
 
             Task<AbstractServiceEntry>
-                t1 = Task.Run(() => Container.Get(typeof(IList<int>), null, QueryModes.ThrowOnError | QueryModes.AllowSpecialization)),
-                t2 = Task.Run(() => Container.Get(typeof(IList<int>), null, QueryModes.ThrowOnError | QueryModes.AllowSpecialization));
+                t1 = Task.Run(() => 
+                {
+                    @lock.Wait();
+                    return Container.Get(typeof(IList<int>), null, QueryModes.ThrowOnError | QueryModes.AllowSpecialization);
+                }),
+                t2 = Task.Run(() => 
+                {
+                    @lock.Wait();
+                    return Container.Get(typeof(IList<int>), null, QueryModes.ThrowOnError | QueryModes.AllowSpecialization);
+                });
            
             Thread.Sleep(10);
 
-            //
-            // Mindket szal a lock-nal varakozik.
-            //
-
-            entry.Lock.Set();
+            @lock.Set();
 
             //
             // Megvarjuk mig lefutnak.
@@ -316,33 +319,10 @@ namespace Solti.Utils.DI.Container.Tests
             Assert.That(t1.Result, Is.EqualTo(new SingletonServiceEntry(typeof(IList<int>), null, typeof(MyList<int>), Container)));
         }
 
-        private sealed class LockableSingletonServiceEntry : ProducibleServiceEntry
-        {
-            private readonly Type FImplementation;
-
-            public readonly ManualResetEventSlim Lock = new ManualResetEventSlim(true);
-
-            public LockableSingletonServiceEntry(Type @interface, Type implementation, IServiceContainer owner) : base(@interface, null, DI.Lifetime.Singleton, owner)
-            {
-                FImplementation = implementation;
-            }
-
-            public override Type Implementation 
-            {
-                get 
-                {
-                    Lock.Wait();
-                    return FImplementation;
-                } 
-            }
-        }
-
         [Test]
         public void IServiceContainer_Get_ShouldReturnTheSpecializedInheritedEntryInMultithreadedEnvironment()
         {
-            var entry = new LockableSingletonServiceEntry(typeof(IList<>), typeof(MyList<>), Container);
-
-            Container.Add(entry);
+            Container.Add(new SingletonServiceEntry(typeof(IList<>), null, typeof(MyList<>), Container));
             Assert.That(Container.Count, Is.EqualTo(1));
 
             IServiceContainer
@@ -352,19 +332,23 @@ namespace Solti.Utils.DI.Container.Tests
             Assert.That(child1.Count, Is.EqualTo(1));
             Assert.That(child2.Count, Is.EqualTo(1));
 
-            entry.Lock.Reset();
+            var @lock = new ManualResetEventSlim(true);
 
             Task<AbstractServiceEntry>
-                t1 = Task.Run(() => child1.Get(typeof(IList<int>), null, QueryModes.ThrowOnError | QueryModes.AllowSpecialization)),
-                t2 = Task.Run(() => child2.Get(typeof(IList<int>), null, QueryModes.ThrowOnError | QueryModes.AllowSpecialization));
+                t1 = Task.Run(() =>
+                {
+                    @lock.Wait();
+                    return child1.Get(typeof(IList<int>), null, QueryModes.ThrowOnError | QueryModes.AllowSpecialization);
+                }),
+                t2 = Task.Run(() =>
+                {
+                    @lock.Wait();
+                    return child2.Get(typeof(IList<int>), null, QueryModes.ThrowOnError | QueryModes.AllowSpecialization);
+                });
 
             Thread.Sleep(10);
 
-            //
-            // Mindket szal a get_Factory()-nal varakozik.
-            //
-
-            entry.Lock.Set();
+            @lock.Set();
 
             //
             // Megvarjuk mig lefutnak.

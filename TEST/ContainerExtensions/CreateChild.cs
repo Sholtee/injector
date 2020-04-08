@@ -102,7 +102,7 @@ namespace Solti.Utils.DI.Container.Tests
             // tag) nem volt hivva a Setup().
             //
 
-            Mock<AbstractServiceEntry> entry = new Mock<AbstractServiceEntry>(typeof(IDisposable) /*iface*/, null, Lifetime.Transient, Container);
+            Mock<AbstractServiceEntry> entry = new Mock<AbstractServiceEntry>(typeof(IDisposable) /*iface*/, null, Container);
             entry.Setup(e => e.CopyTo(It.IsAny<IServiceContainer>())).Returns<IServiceContainer>(sc => null);
 
             Container.Add(entry.Object);
@@ -111,22 +111,6 @@ namespace Solti.Utils.DI.Container.Tests
             {
                 entry.Verify(e => e.CopyTo(It.Is<IServiceContainer>(sc => sc == container)), Times.Once);
             }
-        }
-
-        [Test]
-        public void Container_CreateChild_ShouldNotTriggerTheTypeResolver()
-        {
-            var mockTypeResolver = new Mock<ITypeResolver>(MockBehavior.Strict);
-            mockTypeResolver.Setup(i => i.Resolve(It.IsAny<Type>())).Returns<Type>(null);
-            mockTypeResolver.Setup(i => i.Supports(It.IsAny<Type>())).Returns(true);
-
-            Container.Lazy<IInterface_1>(mockTypeResolver.Object);
-
-            using (Container.CreateChild())
-            {
-            }
-
-            mockTypeResolver.Verify(i => i.Resolve(It.IsAny<Type>()), Times.Never);
         }
 
         [Test]

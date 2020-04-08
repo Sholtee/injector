@@ -15,23 +15,13 @@ namespace Solti.Utils.DI
     public static class ServiceEntryExtensions
     {
         /// <summary>
-        /// The service was registered via <see cref="IServiceContainerExtensions.Service(IServiceContainer, Type, string, Type, Lifetime)"/> or <see cref="IServiceContainerExtensions.Lazy(IServiceContainer, Type, string, ITypeResolver, Lifetime)"/> call.
+        /// The service was registered via <see cref="IServiceContainerExtensions.Service(IServiceContainer, Type, string, Type, Lifetime)"/> call.
         /// </summary>
         public static bool IsService(this AbstractServiceEntry self)
         {
             Ensure.Parameter.IsNotNull(self, nameof(self));
 
-            return self.IsLazy() /*nem triggereli a resolvert*/ || self.Implementation != null;
-        }
-
-        /// <summary>
-        /// The service was registered via <see cref="IServiceContainerExtensions.Lazy(IServiceContainer, Type, string, ITypeResolver, Lifetime)"/> call.
-        /// </summary>
-        public static bool IsLazy(this AbstractServiceEntry self)
-        {
-            Ensure.Parameter.IsNotNull(self, nameof(self));
-
-            return (self is IHasUnderlyingImplementation def) && def.UnderlyingImplementation is LazyType;
+            return self.Implementation != null;
         }
 
         /// <summary>

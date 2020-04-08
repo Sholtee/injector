@@ -117,3 +117,4 @@
 - 2.0.0:
   - *breaking:* `IServiceContainer.Add()` returns void
   - *breaking:* Service entries must have owner
+  - *breaking:* dropped `IServiceContainerExtensions.Lazy()` support

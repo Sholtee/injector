@@ -16,8 +16,7 @@ namespace Solti.Utils.DI.Internals
         public InstanceServiceEntry(Type @interface, string? name, object instance, bool releaseOnDispose, IServiceContainer owner) : base(
             @interface, 
             name, 
-            lifetime: null, 
-            Ensure.Parameter.IsNotNull(owner, nameof(owner)))
+            owner)
         {
             //
             // Nem kell kulon ellenorizni a peldanyt mert a ServiceReference.SetValue() validal.

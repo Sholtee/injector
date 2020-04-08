@@ -27,8 +27,8 @@ namespace Solti.Utils.DI
         /// <param name="name">The (optional) name of the service.</param>
         /// <param name="owner">The owner of this entry.</param>
         /// <exception cref="ArgumentException">The <paramref name="interface"/> is not an interface.</exception>
-        public AbstractServiceEntry(Type @interface, string? name, IServiceContainer owner): this(@interface, name, null, owner)
-        { 
+        public AbstractServiceEntry(Type @interface, string? name, IServiceContainer owner): this(@interface, name, null, null, owner)
+        {
         }
 
         /// <summary>
@@ -37,18 +37,28 @@ namespace Solti.Utils.DI
         /// <param name="interface">The interface of the service.</param>
         /// <param name="name">The (optional) name of the service.</param>
         /// <param name="lifetime">The (optional) lifetime of the service.</param>
+        /// <param name="implementation">The (optional) implementation of the service.</param>
         /// <param name="owner">The owner of this entry.</param>
         /// <exception cref="ArgumentException">The <paramref name="interface"/> is not an interface.</exception>
-        protected AbstractServiceEntry(Type @interface, string? name, Lifetime? lifetime, IServiceContainer owner)
+        /// <exception cref="NotSupportedException">The <paramref name="implementation"/> does not support the <paramref name="interface"/>.</exception>
+        protected AbstractServiceEntry(Type @interface, string? name, Lifetime? lifetime, Type? implementation, IServiceContainer owner)
         {
             Ensure.Parameter.IsNotNull(@interface, nameof(@interface));
             Ensure.Parameter.IsInterface(@interface, nameof(@interface));
             Ensure.Parameter.IsNotNull(owner, nameof(owner));
 
-            Interface = @interface;
-            Name      = name;
-            Lifetime  = lifetime;
-            Owner     = owner;
+            if (implementation != null)
+                //
+                // Mukodik generikusokra is.
+                //
+
+                Ensure.Type.Supports(implementation, @interface);
+
+            Interface      = @interface;
+            Name           = name;
+            Lifetime       = lifetime;
+            Implementation = implementation;
+            Owner          = owner;
         }
 
         #region Immutables
@@ -77,7 +87,7 @@ namespace Solti.Utils.DI
         /// <summary>
         /// The (optional) implementation of the service.
         /// </summary>
-        public virtual Type? Implementation { get; }
+        public Type? Implementation { get; }
         #endregion
 
         #region Mutables
