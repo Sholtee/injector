@@ -10,7 +10,6 @@ using NUnit.Framework;
 
 namespace Solti.Utils.DI.Container.Tests
 {
-    using Internals;
     using Properties;
 
     using Utils.Proxy;
