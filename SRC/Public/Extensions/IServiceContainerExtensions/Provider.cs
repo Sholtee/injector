@@ -20,7 +20,7 @@ namespace Solti.Utils.DI
         /// <param name="provider"></param>
         /// <param name="lifetime"></param>
         /// <returns></returns>
-        public static IServiceContainer Provider(this IServiceContainer self, Type iface, string? name, Type provider, Lifetime lifetime)
+        public static IServiceContainer Provider(this IServiceContainer self, Type iface, string? name, Type provider, Lifetime lifetime = Lifetime.Transient)
         {
             Ensure.Parameter.IsNotNull(self, nameof(self));
             Ensure.Parameter.IsNotNull(iface, nameof(iface));
@@ -56,7 +56,7 @@ namespace Solti.Utils.DI
         /// <param name="provider"></param>
         /// <param name="lifetime"></param>
         /// <returns></returns>
-        public static IServiceContainer Provider(this IServiceContainer self, Type iface, Type provider, Lifetime lifetime) => self.Provider(iface, null, provider, lifetime);
+        public static IServiceContainer Provider(this IServiceContainer self, Type iface, Type provider, Lifetime lifetime = Lifetime.Transient) => self.Provider(iface, null, provider, lifetime);
 
         /// <summary>
         /// 
@@ -67,7 +67,7 @@ namespace Solti.Utils.DI
         /// <param name="name"></param>
         /// <param name="lifetime"></param>
         /// <returns></returns>
-        public static IServiceContainer Provider<TInterface, TProvider>(this IServiceContainer self, string? name, Lifetime lifetime) where TProvider : class, IServiceProvider where TInterface : class
+        public static IServiceContainer Provider<TInterface, TProvider>(this IServiceContainer self, string? name, Lifetime lifetime = Lifetime.Transient) where TProvider : class, IServiceProvider where TInterface : class
             => self.Provider(typeof(TInterface), name, typeof(TProvider), lifetime);
 
         /// <summary>
@@ -78,7 +78,7 @@ namespace Solti.Utils.DI
         /// <param name="self"></param>
         /// <param name="lifetime"></param>
         /// <returns></returns>
-        public static IServiceContainer Provider<TInterface, TProvider>(this IServiceContainer self, Lifetime lifetime) where TProvider : class, IServiceProvider where TInterface : class
+        public static IServiceContainer Provider<TInterface, TProvider>(this IServiceContainer self, Lifetime lifetime = Lifetime.Transient) where TProvider : class, IServiceProvider where TInterface : class
             => self.Provider<TInterface, TProvider>(null, lifetime);
     }
 }
