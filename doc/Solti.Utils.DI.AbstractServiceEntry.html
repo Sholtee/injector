@@ -116,13 +116,13 @@
     </tbody>
   </table>
   <a id="Solti_Utils_DI_AbstractServiceEntry__ctor_" data-uid="Solti.Utils.DI.AbstractServiceEntry.#ctor*"></a>
-  <h4 id="Solti_Utils_DI_AbstractServiceEntry__ctor_Type_System_Nullable_System_String__System_Nullable_Solti_Utils_DI_Lifetime__Solti_Utils_DI_IServiceContainer_" data-uid="Solti.Utils.DI.AbstractServiceEntry.#ctor(Type,System.Nullable{System.String},System.Nullable{Solti.Utils.DI.Lifetime},Solti.Utils.DI.IServiceContainer)">AbstractServiceEntry(Type, Nullable&lt;String&gt;, Nullable&lt;Lifetime&gt;, IServiceContainer)</h4>
+  <h4 id="Solti_Utils_DI_AbstractServiceEntry__ctor_Type_System_Nullable_System_String__System_Nullable_Solti_Utils_DI_Lifetime__System_Nullable_Type__Solti_Utils_DI_IServiceContainer_" data-uid="Solti.Utils.DI.AbstractServiceEntry.#ctor(Type,System.Nullable{System.String},System.Nullable{Solti.Utils.DI.Lifetime},System.Nullable{Type},Solti.Utils.DI.IServiceContainer)">AbstractServiceEntry(Type, Nullable&lt;String&gt;, Nullable&lt;Lifetime&gt;, Nullable&lt;Type&gt;, IServiceContainer)</h4>
   <div class="markdown level1 summary"><p>Creates a new <a class="xref" href="Solti.Utils.DI.AbstractServiceEntry.html">AbstractServiceEntry</a> instance.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected AbstractServiceEntry(Type interface, string? name, Lifetime? lifetime, IServiceContainer owner)</code></pre>
+    <pre><code class="lang-csharp hljs">protected AbstractServiceEntry(Type interface, string? name, Lifetime? lifetime, Type? implementation, IServiceContainer owner)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -150,6 +150,12 @@
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="Solti.Utils.DI.Lifetime.html">Lifetime</a>&gt;</td>
         <td><span class="parametername">lifetime</span></td>
         <td><p>The (optional) lifetime of the service.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<span class="xref">Type</span>&gt;</td>
+        <td><span class="parametername">implementation</span></td>
+        <td><p>The (optional) implementation of the service.</p>
 </td>
       </tr>
       <tr>
@@ -193,7 +199,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public virtual Type? Implementation { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public Type? Implementation { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -586,9 +592,6 @@
   <h3 id="extensionmethods">Extension Methods</h3>
   <div>
       <a class="xref" href="Solti.Utils.DI.ServiceEntryExtensions.html#Solti_Utils_DI_ServiceEntryExtensions_IsService_Solti_Utils_DI_AbstractServiceEntry_">ServiceEntryExtensions.IsService(AbstractServiceEntry)</a>
-  </div>
-  <div>
-      <a class="xref" href="Solti.Utils.DI.ServiceEntryExtensions.html#Solti_Utils_DI_ServiceEntryExtensions_IsLazy_Solti_Utils_DI_AbstractServiceEntry_">ServiceEntryExtensions.IsLazy(AbstractServiceEntry)</a>
   </div>
   <div>
       <a class="xref" href="Solti.Utils.DI.ServiceEntryExtensions.html#Solti_Utils_DI_ServiceEntryExtensions_IsFactory_Solti_Utils_DI_AbstractServiceEntry_">ServiceEntryExtensions.IsFactory(AbstractServiceEntry)</a>

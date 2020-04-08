@@ -22,15 +22,15 @@ references:
   fullName.vb: Solti.Utils.DI.AbstractServiceEntry.AbstractServiceEntry(Type, System.Nullable(Of System.String), Solti.Utils.DI.IServiceContainer)
   nameWithType: AbstractServiceEntry.AbstractServiceEntry(Type, Nullable<String>, IServiceContainer)
   nameWithType.vb: AbstractServiceEntry.AbstractServiceEntry(Type, Nullable(Of String), IServiceContainer)
-- uid: Solti.Utils.DI.AbstractServiceEntry.#ctor(Type,System.Nullable{System.String},System.Nullable{Solti.Utils.DI.Lifetime},Solti.Utils.DI.IServiceContainer)
-  name: AbstractServiceEntry(Type, Nullable<String>, Nullable<Lifetime>, IServiceContainer)
-  href: Solti.Utils.DI.AbstractServiceEntry.html#Solti_Utils_DI_AbstractServiceEntry__ctor_Type_System_Nullable_System_String__System_Nullable_Solti_Utils_DI_Lifetime__Solti_Utils_DI_IServiceContainer_
-  commentId: M:Solti.Utils.DI.AbstractServiceEntry.#ctor(Type,System.Nullable{System.String},System.Nullable{Solti.Utils.DI.Lifetime},Solti.Utils.DI.IServiceContainer)
-  name.vb: AbstractServiceEntry(Type, Nullable(Of String), Nullable(Of Lifetime), IServiceContainer)
-  fullName: Solti.Utils.DI.AbstractServiceEntry.AbstractServiceEntry(Type, System.Nullable<System.String>, System.Nullable<Solti.Utils.DI.Lifetime>, Solti.Utils.DI.IServiceContainer)
-  fullName.vb: Solti.Utils.DI.AbstractServiceEntry.AbstractServiceEntry(Type, System.Nullable(Of System.String), System.Nullable(Of Solti.Utils.DI.Lifetime), Solti.Utils.DI.IServiceContainer)
-  nameWithType: AbstractServiceEntry.AbstractServiceEntry(Type, Nullable<String>, Nullable<Lifetime>, IServiceContainer)
-  nameWithType.vb: AbstractServiceEntry.AbstractServiceEntry(Type, Nullable(Of String), Nullable(Of Lifetime), IServiceContainer)
+- uid: Solti.Utils.DI.AbstractServiceEntry.#ctor(Type,System.Nullable{System.String},System.Nullable{Solti.Utils.DI.Lifetime},System.Nullable{Type},Solti.Utils.DI.IServiceContainer)
+  name: AbstractServiceEntry(Type, Nullable<String>, Nullable<Lifetime>, Nullable<Type>, IServiceContainer)
+  href: Solti.Utils.DI.AbstractServiceEntry.html#Solti_Utils_DI_AbstractServiceEntry__ctor_Type_System_Nullable_System_String__System_Nullable_Solti_Utils_DI_Lifetime__System_Nullable_Type__Solti_Utils_DI_IServiceContainer_
+  commentId: M:Solti.Utils.DI.AbstractServiceEntry.#ctor(Type,System.Nullable{System.String},System.Nullable{Solti.Utils.DI.Lifetime},System.Nullable{Type},Solti.Utils.DI.IServiceContainer)
+  name.vb: AbstractServiceEntry(Type, Nullable(Of String), Nullable(Of Lifetime), Nullable(Of Type), IServiceContainer)
+  fullName: Solti.Utils.DI.AbstractServiceEntry.AbstractServiceEntry(Type, System.Nullable<System.String>, System.Nullable<Solti.Utils.DI.Lifetime>, System.Nullable<Type>, Solti.Utils.DI.IServiceContainer)
+  fullName.vb: Solti.Utils.DI.AbstractServiceEntry.AbstractServiceEntry(Type, System.Nullable(Of System.String), System.Nullable(Of Solti.Utils.DI.Lifetime), System.Nullable(Of Type), Solti.Utils.DI.IServiceContainer)
+  nameWithType: AbstractServiceEntry.AbstractServiceEntry(Type, Nullable<String>, Nullable<Lifetime>, Nullable<Type>, IServiceContainer)
+  nameWithType.vb: AbstractServiceEntry.AbstractServiceEntry(Type, Nullable(Of String), Nullable(Of Lifetime), Nullable(Of Type), IServiceContainer)
 - uid: Solti.Utils.DI.AbstractServiceEntry.#ctor*
   name: AbstractServiceEntry
   href: Solti.Utils.DI.AbstractServiceEntry.html#Solti_Utils_DI_AbstractServiceEntry__ctor_
@@ -724,25 +724,6 @@ references:
   fullName.vb: Solti.Utils.DI.Internals.IComposite(Of T).Parent
   nameWithType: IComposite<T>.Parent
   nameWithType.vb: IComposite(Of T).Parent
-- uid: Solti.Utils.DI.Internals.IHasUnderlyingImplementation
-  name: IHasUnderlyingImplementation
-  href: Solti.Utils.DI.Internals.IHasUnderlyingImplementation.html
-  commentId: T:Solti.Utils.DI.Internals.IHasUnderlyingImplementation
-  fullName: Solti.Utils.DI.Internals.IHasUnderlyingImplementation
-  nameWithType: IHasUnderlyingImplementation
-- uid: Solti.Utils.DI.Internals.IHasUnderlyingImplementation.UnderlyingImplementation
-  name: UnderlyingImplementation
-  href: Solti.Utils.DI.Internals.IHasUnderlyingImplementation.html#Solti_Utils_DI_Internals_IHasUnderlyingImplementation_UnderlyingImplementation
-  commentId: P:Solti.Utils.DI.Internals.IHasUnderlyingImplementation.UnderlyingImplementation
-  fullName: Solti.Utils.DI.Internals.IHasUnderlyingImplementation.UnderlyingImplementation
-  nameWithType: IHasUnderlyingImplementation.UnderlyingImplementation
-- uid: Solti.Utils.DI.Internals.IHasUnderlyingImplementation.UnderlyingImplementation*
-  name: UnderlyingImplementation
-  href: Solti.Utils.DI.Internals.IHasUnderlyingImplementation.html#Solti_Utils_DI_Internals_IHasUnderlyingImplementation_UnderlyingImplementation_
-  commentId: Overload:Solti.Utils.DI.Internals.IHasUnderlyingImplementation.UnderlyingImplementation
-  isSpec: "True"
-  fullName: Solti.Utils.DI.Internals.IHasUnderlyingImplementation.UnderlyingImplementation
-  nameWithType: IHasUnderlyingImplementation.UnderlyingImplementation
 - uid: Solti.Utils.DI.Internals.InjectorConfig
   name: InjectorConfig
   href: Solti.Utils.DI.Internals.InjectorConfig.html
@@ -1045,79 +1026,6 @@ references:
   fullName.vb: Solti.Utils.DI.IServiceContainerExtensions.Instance(Of TInterface)(Solti.Utils.DI.IServiceContainer, System.Nullable(Of System.String), TInterface, System.Boolean)
   nameWithType: IServiceContainerExtensions.Instance<TInterface>(IServiceContainer, Nullable<String>, TInterface, Boolean)
   nameWithType.vb: IServiceContainerExtensions.Instance(Of TInterface)(IServiceContainer, Nullable(Of String), TInterface, Boolean)
-- uid: Solti.Utils.DI.IServiceContainerExtensions.Lazy(Solti.Utils.DI.IServiceContainer,Type,Solti.Utils.DI.ITypeResolver,Solti.Utils.DI.Lifetime)
-  name: Lazy(IServiceContainer, Type, ITypeResolver, Lifetime)
-  href: Solti.Utils.DI.IServiceContainerExtensions.html#Solti_Utils_DI_IServiceContainerExtensions_Lazy_Solti_Utils_DI_IServiceContainer_Type_Solti_Utils_DI_ITypeResolver_Solti_Utils_DI_Lifetime_
-  commentId: M:Solti.Utils.DI.IServiceContainerExtensions.Lazy(Solti.Utils.DI.IServiceContainer,Type,Solti.Utils.DI.ITypeResolver,Solti.Utils.DI.Lifetime)
-  fullName: Solti.Utils.DI.IServiceContainerExtensions.Lazy(Solti.Utils.DI.IServiceContainer, Type, Solti.Utils.DI.ITypeResolver, Solti.Utils.DI.Lifetime)
-  nameWithType: IServiceContainerExtensions.Lazy(IServiceContainer, Type, ITypeResolver, Lifetime)
-- uid: Solti.Utils.DI.IServiceContainerExtensions.Lazy(Solti.Utils.DI.IServiceContainer,Type,System.Nullable{System.String},Solti.Utils.DI.ITypeResolver,Solti.Utils.DI.Lifetime)
-  name: Lazy(IServiceContainer, Type, Nullable<String>, ITypeResolver, Lifetime)
-  href: Solti.Utils.DI.IServiceContainerExtensions.html#Solti_Utils_DI_IServiceContainerExtensions_Lazy_Solti_Utils_DI_IServiceContainer_Type_System_Nullable_System_String__Solti_Utils_DI_ITypeResolver_Solti_Utils_DI_Lifetime_
-  commentId: M:Solti.Utils.DI.IServiceContainerExtensions.Lazy(Solti.Utils.DI.IServiceContainer,Type,System.Nullable{System.String},Solti.Utils.DI.ITypeResolver,Solti.Utils.DI.Lifetime)
-  name.vb: Lazy(IServiceContainer, Type, Nullable(Of String), ITypeResolver, Lifetime)
-  fullName: Solti.Utils.DI.IServiceContainerExtensions.Lazy(Solti.Utils.DI.IServiceContainer, Type, System.Nullable<System.String>, Solti.Utils.DI.ITypeResolver, Solti.Utils.DI.Lifetime)
-  fullName.vb: Solti.Utils.DI.IServiceContainerExtensions.Lazy(Solti.Utils.DI.IServiceContainer, Type, System.Nullable(Of System.String), Solti.Utils.DI.ITypeResolver, Solti.Utils.DI.Lifetime)
-  nameWithType: IServiceContainerExtensions.Lazy(IServiceContainer, Type, Nullable<String>, ITypeResolver, Lifetime)
-  nameWithType.vb: IServiceContainerExtensions.Lazy(IServiceContainer, Type, Nullable(Of String), ITypeResolver, Lifetime)
-- uid: Solti.Utils.DI.IServiceContainerExtensions.Lazy(Solti.Utils.DI.IServiceContainer,Type,System.Nullable{System.String},System.String,System.String,Solti.Utils.DI.Lifetime)
-  name: Lazy(IServiceContainer, Type, Nullable<String>, String, String, Lifetime)
-  href: Solti.Utils.DI.IServiceContainerExtensions.html#Solti_Utils_DI_IServiceContainerExtensions_Lazy_Solti_Utils_DI_IServiceContainer_Type_System_Nullable_System_String__System_String_System_String_Solti_Utils_DI_Lifetime_
-  commentId: M:Solti.Utils.DI.IServiceContainerExtensions.Lazy(Solti.Utils.DI.IServiceContainer,Type,System.Nullable{System.String},System.String,System.String,Solti.Utils.DI.Lifetime)
-  name.vb: Lazy(IServiceContainer, Type, Nullable(Of String), String, String, Lifetime)
-  fullName: Solti.Utils.DI.IServiceContainerExtensions.Lazy(Solti.Utils.DI.IServiceContainer, Type, System.Nullable<System.String>, System.String, System.String, Solti.Utils.DI.Lifetime)
-  fullName.vb: Solti.Utils.DI.IServiceContainerExtensions.Lazy(Solti.Utils.DI.IServiceContainer, Type, System.Nullable(Of System.String), System.String, System.String, Solti.Utils.DI.Lifetime)
-  nameWithType: IServiceContainerExtensions.Lazy(IServiceContainer, Type, Nullable<String>, String, String, Lifetime)
-  nameWithType.vb: IServiceContainerExtensions.Lazy(IServiceContainer, Type, Nullable(Of String), String, String, Lifetime)
-- uid: Solti.Utils.DI.IServiceContainerExtensions.Lazy(Solti.Utils.DI.IServiceContainer,Type,System.String,System.String,Solti.Utils.DI.Lifetime)
-  name: Lazy(IServiceContainer, Type, String, String, Lifetime)
-  href: Solti.Utils.DI.IServiceContainerExtensions.html#Solti_Utils_DI_IServiceContainerExtensions_Lazy_Solti_Utils_DI_IServiceContainer_Type_System_String_System_String_Solti_Utils_DI_Lifetime_
-  commentId: M:Solti.Utils.DI.IServiceContainerExtensions.Lazy(Solti.Utils.DI.IServiceContainer,Type,System.String,System.String,Solti.Utils.DI.Lifetime)
-  fullName: Solti.Utils.DI.IServiceContainerExtensions.Lazy(Solti.Utils.DI.IServiceContainer, Type, System.String, System.String, Solti.Utils.DI.Lifetime)
-  nameWithType: IServiceContainerExtensions.Lazy(IServiceContainer, Type, String, String, Lifetime)
-- uid: Solti.Utils.DI.IServiceContainerExtensions.Lazy*
-  name: Lazy
-  href: Solti.Utils.DI.IServiceContainerExtensions.html#Solti_Utils_DI_IServiceContainerExtensions_Lazy_
-  commentId: Overload:Solti.Utils.DI.IServiceContainerExtensions.Lazy
-  isSpec: "True"
-  fullName: Solti.Utils.DI.IServiceContainerExtensions.Lazy
-  nameWithType: IServiceContainerExtensions.Lazy
-- uid: Solti.Utils.DI.IServiceContainerExtensions.Lazy``1(Solti.Utils.DI.IServiceContainer,Solti.Utils.DI.ITypeResolver,Solti.Utils.DI.Lifetime)
-  name: Lazy<TInterface>(IServiceContainer, ITypeResolver, Lifetime)
-  href: Solti.Utils.DI.IServiceContainerExtensions.html#Solti_Utils_DI_IServiceContainerExtensions_Lazy__1_Solti_Utils_DI_IServiceContainer_Solti_Utils_DI_ITypeResolver_Solti_Utils_DI_Lifetime_
-  commentId: M:Solti.Utils.DI.IServiceContainerExtensions.Lazy``1(Solti.Utils.DI.IServiceContainer,Solti.Utils.DI.ITypeResolver,Solti.Utils.DI.Lifetime)
-  name.vb: Lazy(Of TInterface)(IServiceContainer, ITypeResolver, Lifetime)
-  fullName: Solti.Utils.DI.IServiceContainerExtensions.Lazy<TInterface>(Solti.Utils.DI.IServiceContainer, Solti.Utils.DI.ITypeResolver, Solti.Utils.DI.Lifetime)
-  fullName.vb: Solti.Utils.DI.IServiceContainerExtensions.Lazy(Of TInterface)(Solti.Utils.DI.IServiceContainer, Solti.Utils.DI.ITypeResolver, Solti.Utils.DI.Lifetime)
-  nameWithType: IServiceContainerExtensions.Lazy<TInterface>(IServiceContainer, ITypeResolver, Lifetime)
-  nameWithType.vb: IServiceContainerExtensions.Lazy(Of TInterface)(IServiceContainer, ITypeResolver, Lifetime)
-- uid: Solti.Utils.DI.IServiceContainerExtensions.Lazy``1(Solti.Utils.DI.IServiceContainer,System.Nullable{System.String},Solti.Utils.DI.ITypeResolver,Solti.Utils.DI.Lifetime)
-  name: Lazy<TInterface>(IServiceContainer, Nullable<String>, ITypeResolver, Lifetime)
-  href: Solti.Utils.DI.IServiceContainerExtensions.html#Solti_Utils_DI_IServiceContainerExtensions_Lazy__1_Solti_Utils_DI_IServiceContainer_System_Nullable_System_String__Solti_Utils_DI_ITypeResolver_Solti_Utils_DI_Lifetime_
-  commentId: M:Solti.Utils.DI.IServiceContainerExtensions.Lazy``1(Solti.Utils.DI.IServiceContainer,System.Nullable{System.String},Solti.Utils.DI.ITypeResolver,Solti.Utils.DI.Lifetime)
-  name.vb: Lazy(Of TInterface)(IServiceContainer, Nullable(Of String), ITypeResolver, Lifetime)
-  fullName: Solti.Utils.DI.IServiceContainerExtensions.Lazy<TInterface>(Solti.Utils.DI.IServiceContainer, System.Nullable<System.String>, Solti.Utils.DI.ITypeResolver, Solti.Utils.DI.Lifetime)
-  fullName.vb: Solti.Utils.DI.IServiceContainerExtensions.Lazy(Of TInterface)(Solti.Utils.DI.IServiceContainer, System.Nullable(Of System.String), Solti.Utils.DI.ITypeResolver, Solti.Utils.DI.Lifetime)
-  nameWithType: IServiceContainerExtensions.Lazy<TInterface>(IServiceContainer, Nullable<String>, ITypeResolver, Lifetime)
-  nameWithType.vb: IServiceContainerExtensions.Lazy(Of TInterface)(IServiceContainer, Nullable(Of String), ITypeResolver, Lifetime)
-- uid: Solti.Utils.DI.IServiceContainerExtensions.Lazy``1(Solti.Utils.DI.IServiceContainer,System.Nullable{System.String},System.String,System.String,Solti.Utils.DI.Lifetime)
-  name: Lazy<TInterface>(IServiceContainer, Nullable<String>, String, String, Lifetime)
-  href: Solti.Utils.DI.IServiceContainerExtensions.html#Solti_Utils_DI_IServiceContainerExtensions_Lazy__1_Solti_Utils_DI_IServiceContainer_System_Nullable_System_String__System_String_System_String_Solti_Utils_DI_Lifetime_
-  commentId: M:Solti.Utils.DI.IServiceContainerExtensions.Lazy``1(Solti.Utils.DI.IServiceContainer,System.Nullable{System.String},System.String,System.String,Solti.Utils.DI.Lifetime)
-  name.vb: Lazy(Of TInterface)(IServiceContainer, Nullable(Of String), String, String, Lifetime)
-  fullName: Solti.Utils.DI.IServiceContainerExtensions.Lazy<TInterface>(Solti.Utils.DI.IServiceContainer, System.Nullable<System.String>, System.String, System.String, Solti.Utils.DI.Lifetime)
-  fullName.vb: Solti.Utils.DI.IServiceContainerExtensions.Lazy(Of TInterface)(Solti.Utils.DI.IServiceContainer, System.Nullable(Of System.String), System.String, System.String, Solti.Utils.DI.Lifetime)
-  nameWithType: IServiceContainerExtensions.Lazy<TInterface>(IServiceContainer, Nullable<String>, String, String, Lifetime)
-  nameWithType.vb: IServiceContainerExtensions.Lazy(Of TInterface)(IServiceContainer, Nullable(Of String), String, String, Lifetime)
-- uid: Solti.Utils.DI.IServiceContainerExtensions.Lazy``1(Solti.Utils.DI.IServiceContainer,System.String,System.String,Solti.Utils.DI.Lifetime)
-  name: Lazy<TInterface>(IServiceContainer, String, String, Lifetime)
-  href: Solti.Utils.DI.IServiceContainerExtensions.html#Solti_Utils_DI_IServiceContainerExtensions_Lazy__1_Solti_Utils_DI_IServiceContainer_System_String_System_String_Solti_Utils_DI_Lifetime_
-  commentId: M:Solti.Utils.DI.IServiceContainerExtensions.Lazy``1(Solti.Utils.DI.IServiceContainer,System.String,System.String,Solti.Utils.DI.Lifetime)
-  name.vb: Lazy(Of TInterface)(IServiceContainer, String, String, Lifetime)
-  fullName: Solti.Utils.DI.IServiceContainerExtensions.Lazy<TInterface>(Solti.Utils.DI.IServiceContainer, System.String, System.String, Solti.Utils.DI.Lifetime)
-  fullName.vb: Solti.Utils.DI.IServiceContainerExtensions.Lazy(Of TInterface)(Solti.Utils.DI.IServiceContainer, System.String, System.String, Solti.Utils.DI.Lifetime)
-  nameWithType: IServiceContainerExtensions.Lazy<TInterface>(IServiceContainer, String, String, Lifetime)
-  nameWithType.vb: IServiceContainerExtensions.Lazy(Of TInterface)(IServiceContainer, String, String, Lifetime)
 - uid: Solti.Utils.DI.IServiceContainerExtensions.Proxy(Solti.Utils.DI.IServiceContainer,Type,Func{Solti.Utils.DI.IInjector,Type,System.Object,System.Object})
   name: Proxy(IServiceContainer, Type, Func<IInjector, Type, Object, Object>)
   href: Solti.Utils.DI.IServiceContainerExtensions.html#Solti_Utils_DI_IServiceContainerExtensions_Proxy_Solti_Utils_DI_IServiceContainer_Type_Func_Solti_Utils_DI_IInjector_Type_System_Object_System_Object__
@@ -1260,156 +1168,6 @@ references:
   fullName.vb: Solti.Utils.DI.IServiceProviderExtensions.GetService(Of TInterface)(IServiceProvider)
   nameWithType: IServiceProviderExtensions.GetService<TInterface>(IServiceProvider)
   nameWithType.vb: IServiceProviderExtensions.GetService(Of TInterface)(IServiceProvider)
-- uid: Solti.Utils.DI.ITypeResolver
-  name: ITypeResolver
-  href: Solti.Utils.DI.ITypeResolver.html
-  commentId: T:Solti.Utils.DI.ITypeResolver
-  fullName: Solti.Utils.DI.ITypeResolver
-  nameWithType: ITypeResolver
-- uid: Solti.Utils.DI.ITypeResolver.Resolve(Type)
-  name: Resolve(Type)
-  href: Solti.Utils.DI.ITypeResolver.html#Solti_Utils_DI_ITypeResolver_Resolve_Type_
-  commentId: M:Solti.Utils.DI.ITypeResolver.Resolve(Type)
-  fullName: Solti.Utils.DI.ITypeResolver.Resolve(Type)
-  nameWithType: ITypeResolver.Resolve(Type)
-- uid: Solti.Utils.DI.ITypeResolver.Resolve*
-  name: Resolve
-  href: Solti.Utils.DI.ITypeResolver.html#Solti_Utils_DI_ITypeResolver_Resolve_
-  commentId: Overload:Solti.Utils.DI.ITypeResolver.Resolve
-  isSpec: "True"
-  fullName: Solti.Utils.DI.ITypeResolver.Resolve
-  nameWithType: ITypeResolver.Resolve
-- uid: Solti.Utils.DI.ITypeResolver.Supports(Type)
-  name: Supports(Type)
-  href: Solti.Utils.DI.ITypeResolver.html#Solti_Utils_DI_ITypeResolver_Supports_Type_
-  commentId: M:Solti.Utils.DI.ITypeResolver.Supports(Type)
-  fullName: Solti.Utils.DI.ITypeResolver.Supports(Type)
-  nameWithType: ITypeResolver.Supports(Type)
-- uid: Solti.Utils.DI.ITypeResolver.Supports*
-  name: Supports
-  href: Solti.Utils.DI.ITypeResolver.html#Solti_Utils_DI_ITypeResolver_Supports_
-  commentId: Overload:Solti.Utils.DI.ITypeResolver.Supports
-  isSpec: "True"
-  fullName: Solti.Utils.DI.ITypeResolver.Supports
-  nameWithType: ITypeResolver.Supports
-- uid: Solti.Utils.DI.LazyTypeResolver
-  name: LazyTypeResolver
-  href: Solti.Utils.DI.LazyTypeResolver.html
-  commentId: T:Solti.Utils.DI.LazyTypeResolver
-  fullName: Solti.Utils.DI.LazyTypeResolver
-  nameWithType: LazyTypeResolver
-- uid: Solti.Utils.DI.LazyTypeResolver.#ctor(Type,System.String,System.String)
-  name: LazyTypeResolver(Type, String, String)
-  href: Solti.Utils.DI.LazyTypeResolver.html#Solti_Utils_DI_LazyTypeResolver__ctor_Type_System_String_System_String_
-  commentId: M:Solti.Utils.DI.LazyTypeResolver.#ctor(Type,System.String,System.String)
-  fullName: Solti.Utils.DI.LazyTypeResolver.LazyTypeResolver(Type, System.String, System.String)
-  nameWithType: LazyTypeResolver.LazyTypeResolver(Type, String, String)
-- uid: Solti.Utils.DI.LazyTypeResolver.#ctor*
-  name: LazyTypeResolver
-  href: Solti.Utils.DI.LazyTypeResolver.html#Solti_Utils_DI_LazyTypeResolver__ctor_
-  commentId: Overload:Solti.Utils.DI.LazyTypeResolver.#ctor
-  isSpec: "True"
-  fullName: Solti.Utils.DI.LazyTypeResolver.LazyTypeResolver
-  nameWithType: LazyTypeResolver.LazyTypeResolver
-- uid: Solti.Utils.DI.LazyTypeResolver.Assembly
-  name: Assembly
-  href: Solti.Utils.DI.LazyTypeResolver.html#Solti_Utils_DI_LazyTypeResolver_Assembly
-  commentId: P:Solti.Utils.DI.LazyTypeResolver.Assembly
-  fullName: Solti.Utils.DI.LazyTypeResolver.Assembly
-  nameWithType: LazyTypeResolver.Assembly
-- uid: Solti.Utils.DI.LazyTypeResolver.Assembly*
-  name: Assembly
-  href: Solti.Utils.DI.LazyTypeResolver.html#Solti_Utils_DI_LazyTypeResolver_Assembly_
-  commentId: Overload:Solti.Utils.DI.LazyTypeResolver.Assembly
-  isSpec: "True"
-  fullName: Solti.Utils.DI.LazyTypeResolver.Assembly
-  nameWithType: LazyTypeResolver.Assembly
-- uid: Solti.Utils.DI.LazyTypeResolver.ClassName
-  name: ClassName
-  href: Solti.Utils.DI.LazyTypeResolver.html#Solti_Utils_DI_LazyTypeResolver_ClassName
-  commentId: P:Solti.Utils.DI.LazyTypeResolver.ClassName
-  fullName: Solti.Utils.DI.LazyTypeResolver.ClassName
-  nameWithType: LazyTypeResolver.ClassName
-- uid: Solti.Utils.DI.LazyTypeResolver.ClassName*
-  name: ClassName
-  href: Solti.Utils.DI.LazyTypeResolver.html#Solti_Utils_DI_LazyTypeResolver_ClassName_
-  commentId: Overload:Solti.Utils.DI.LazyTypeResolver.ClassName
-  isSpec: "True"
-  fullName: Solti.Utils.DI.LazyTypeResolver.ClassName
-  nameWithType: LazyTypeResolver.ClassName
-- uid: Solti.Utils.DI.LazyTypeResolver.Interface
-  name: Interface
-  href: Solti.Utils.DI.LazyTypeResolver.html#Solti_Utils_DI_LazyTypeResolver_Interface
-  commentId: P:Solti.Utils.DI.LazyTypeResolver.Interface
-  fullName: Solti.Utils.DI.LazyTypeResolver.Interface
-  nameWithType: LazyTypeResolver.Interface
-- uid: Solti.Utils.DI.LazyTypeResolver.Interface*
-  name: Interface
-  href: Solti.Utils.DI.LazyTypeResolver.html#Solti_Utils_DI_LazyTypeResolver_Interface_
-  commentId: Overload:Solti.Utils.DI.LazyTypeResolver.Interface
-  isSpec: "True"
-  fullName: Solti.Utils.DI.LazyTypeResolver.Interface
-  nameWithType: LazyTypeResolver.Interface
-- uid: Solti.Utils.DI.LazyTypeResolver.Solti#Utils#DI#ITypeResolver#Resolve(Type)
-  name: ITypeResolver.Resolve(Type)
-  href: Solti.Utils.DI.LazyTypeResolver.html#Solti_Utils_DI_LazyTypeResolver_Solti_Utils_DI_ITypeResolver_Resolve_Type_
-  commentId: M:Solti.Utils.DI.LazyTypeResolver.Solti#Utils#DI#ITypeResolver#Resolve(Type)
-  name.vb: Solti.Utils.DI.ITypeResolver.Resolve(Type)
-  fullName: Solti.Utils.DI.LazyTypeResolver.Solti.Utils.DI.ITypeResolver.Resolve(Type)
-  nameWithType: LazyTypeResolver.ITypeResolver.Resolve(Type)
-  nameWithType.vb: LazyTypeResolver.Solti.Utils.DI.ITypeResolver.Resolve(Type)
-- uid: Solti.Utils.DI.LazyTypeResolver.Solti#Utils#DI#ITypeResolver#Resolve*
-  name: ITypeResolver.Resolve
-  href: Solti.Utils.DI.LazyTypeResolver.html#Solti_Utils_DI_LazyTypeResolver_Solti_Utils_DI_ITypeResolver_Resolve_
-  commentId: Overload:Solti.Utils.DI.LazyTypeResolver.Solti#Utils#DI#ITypeResolver#Resolve
-  isSpec: "True"
-  name.vb: Solti.Utils.DI.ITypeResolver.Resolve
-  fullName: Solti.Utils.DI.LazyTypeResolver.Solti.Utils.DI.ITypeResolver.Resolve
-  nameWithType: LazyTypeResolver.ITypeResolver.Resolve
-  nameWithType.vb: LazyTypeResolver.Solti.Utils.DI.ITypeResolver.Resolve
-- uid: Solti.Utils.DI.LazyTypeResolver.Solti#Utils#DI#ITypeResolver#Supports(Type)
-  name: ITypeResolver.Supports(Type)
-  href: Solti.Utils.DI.LazyTypeResolver.html#Solti_Utils_DI_LazyTypeResolver_Solti_Utils_DI_ITypeResolver_Supports_Type_
-  commentId: M:Solti.Utils.DI.LazyTypeResolver.Solti#Utils#DI#ITypeResolver#Supports(Type)
-  name.vb: Solti.Utils.DI.ITypeResolver.Supports(Type)
-  fullName: Solti.Utils.DI.LazyTypeResolver.Solti.Utils.DI.ITypeResolver.Supports(Type)
-  nameWithType: LazyTypeResolver.ITypeResolver.Supports(Type)
-  nameWithType.vb: LazyTypeResolver.Solti.Utils.DI.ITypeResolver.Supports(Type)
-- uid: Solti.Utils.DI.LazyTypeResolver.Solti#Utils#DI#ITypeResolver#Supports*
-  name: ITypeResolver.Supports
-  href: Solti.Utils.DI.LazyTypeResolver.html#Solti_Utils_DI_LazyTypeResolver_Solti_Utils_DI_ITypeResolver_Supports_
-  commentId: Overload:Solti.Utils.DI.LazyTypeResolver.Solti#Utils#DI#ITypeResolver#Supports
-  isSpec: "True"
-  name.vb: Solti.Utils.DI.ITypeResolver.Supports
-  fullName: Solti.Utils.DI.LazyTypeResolver.Solti.Utils.DI.ITypeResolver.Supports
-  nameWithType: LazyTypeResolver.ITypeResolver.Supports
-  nameWithType.vb: LazyTypeResolver.Solti.Utils.DI.ITypeResolver.Supports
-- uid: Solti.Utils.DI.LazyTypeResolver`1
-  name: LazyTypeResolver<TInterface>
-  href: Solti.Utils.DI.LazyTypeResolver-1.html
-  commentId: T:Solti.Utils.DI.LazyTypeResolver`1
-  name.vb: LazyTypeResolver(Of TInterface)
-  fullName: Solti.Utils.DI.LazyTypeResolver<TInterface>
-  fullName.vb: Solti.Utils.DI.LazyTypeResolver(Of TInterface)
-  nameWithType: LazyTypeResolver<TInterface>
-  nameWithType.vb: LazyTypeResolver(Of TInterface)
-- uid: Solti.Utils.DI.LazyTypeResolver`1.#ctor(System.String,System.String)
-  name: LazyTypeResolver(String, String)
-  href: Solti.Utils.DI.LazyTypeResolver-1.html#Solti_Utils_DI_LazyTypeResolver_1__ctor_System_String_System_String_
-  commentId: M:Solti.Utils.DI.LazyTypeResolver`1.#ctor(System.String,System.String)
-  fullName: Solti.Utils.DI.LazyTypeResolver<TInterface>.LazyTypeResolver(System.String, System.String)
-  fullName.vb: Solti.Utils.DI.LazyTypeResolver(Of TInterface).LazyTypeResolver(System.String, System.String)
-  nameWithType: LazyTypeResolver<TInterface>.LazyTypeResolver(String, String)
-  nameWithType.vb: LazyTypeResolver(Of TInterface).LazyTypeResolver(String, String)
-- uid: Solti.Utils.DI.LazyTypeResolver`1.#ctor*
-  name: LazyTypeResolver
-  href: Solti.Utils.DI.LazyTypeResolver-1.html#Solti_Utils_DI_LazyTypeResolver_1__ctor_
-  commentId: Overload:Solti.Utils.DI.LazyTypeResolver`1.#ctor
-  isSpec: "True"
-  fullName: Solti.Utils.DI.LazyTypeResolver<TInterface>.LazyTypeResolver
-  fullName.vb: Solti.Utils.DI.LazyTypeResolver(Of TInterface).LazyTypeResolver
-  nameWithType: LazyTypeResolver<TInterface>.LazyTypeResolver
-  nameWithType.vb: LazyTypeResolver(Of TInterface).LazyTypeResolver
 - uid: Solti.Utils.DI.Lifetime
   name: Lifetime
   href: Solti.Utils.DI.Lifetime.html
@@ -1723,19 +1481,6 @@ references:
   isSpec: "True"
   fullName: Solti.Utils.DI.ServiceEntryExtensions.IsInstance
   nameWithType: ServiceEntryExtensions.IsInstance
-- uid: Solti.Utils.DI.ServiceEntryExtensions.IsLazy(Solti.Utils.DI.AbstractServiceEntry)
-  name: IsLazy(AbstractServiceEntry)
-  href: Solti.Utils.DI.ServiceEntryExtensions.html#Solti_Utils_DI_ServiceEntryExtensions_IsLazy_Solti_Utils_DI_AbstractServiceEntry_
-  commentId: M:Solti.Utils.DI.ServiceEntryExtensions.IsLazy(Solti.Utils.DI.AbstractServiceEntry)
-  fullName: Solti.Utils.DI.ServiceEntryExtensions.IsLazy(Solti.Utils.DI.AbstractServiceEntry)
-  nameWithType: ServiceEntryExtensions.IsLazy(AbstractServiceEntry)
-- uid: Solti.Utils.DI.ServiceEntryExtensions.IsLazy*
-  name: IsLazy
-  href: Solti.Utils.DI.ServiceEntryExtensions.html#Solti_Utils_DI_ServiceEntryExtensions_IsLazy_
-  commentId: Overload:Solti.Utils.DI.ServiceEntryExtensions.IsLazy
-  isSpec: "True"
-  fullName: Solti.Utils.DI.ServiceEntryExtensions.IsLazy
-  nameWithType: ServiceEntryExtensions.IsLazy
 - uid: Solti.Utils.DI.ServiceEntryExtensions.IsService(Solti.Utils.DI.AbstractServiceEntry)
   name: IsService(AbstractServiceEntry)
   href: Solti.Utils.DI.ServiceEntryExtensions.html#Solti_Utils_DI_ServiceEntryExtensions_IsService_Solti_Utils_DI_AbstractServiceEntry_
