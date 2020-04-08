@@ -131,7 +131,7 @@ Registering a service can be done via several patterns (I name them recipes):
     ...  
   });
   ```
-- **Provider recipe**: Providers are services that are responsbile for creating other services.
+- **Provider recipe**: Providers are factory services (implementing [IServiceProvider](https://docs.microsoft.com/en-us/dotnet/api/system.iserviceprovider?view=netcore-3.1 ) interface) with well defined dependecies:
   ```csharp
   using System;
   using System.Data;
@@ -178,10 +178,7 @@ Registering a service can be done via several patterns (I name them recipes):
 		Lifetime.Singleton)
     .Provider<IDbConnection, DbConnectionProvider>(Lifetime.Scoped);
   ```
-  Advantages over factory recipe:   
-  - Providers have well defined dependencies.
-  
-  Note that this feature was introduced in version 2.0 of the library.
+  This feature was introduced in version 2.0 of the library.
 - **Instance recipe**: Instances are "predefined values" that can act as a service: 
   ```csharp
   container.Instance<IMyService>(service, releaseOnDispose: true);
