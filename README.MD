@@ -146,7 +146,7 @@ Registering a service can be done via several patterns (I name them recipes):
       IDbConnection connection = Options.Provider switch
       {
         "SqlServer" => new SqlConnection(Options.ConnectionString),
-        _ => throw new NotSupportedException("Provider not supported");
+        _ => throw new NotSupportedException("Provider not supported")
       };
       connection.Open();
 
