@@ -262,18 +262,14 @@ namespace Solti.Utils.DI.UseCases
                         new MemoryStream
                         (
                             Encoding.ASCII.GetBytes
-                            ($@"
-                                {{
-                                    ""Database"":
-                                    {{
-                                        ""ConnectionString"": ""{connString}"",
-                                        ""Provider"": ""SqlServer""
-                                    }}
-                                }}
-
-                            ")
+                            (
+                                "{"+
+                                "  \"Database\": {"+
+                                $" \"ConnectionString\": \"{connString}\"," +
+                                "  \"Provider\": \"SqlServer\"}" +
+                                "}"
+                            )
                         )
-
                     ).Build(), 
                     Lifetime.Singleton);
 
