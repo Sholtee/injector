@@ -131,7 +131,7 @@ Registering a service can be done via several patterns (I name them recipes):
     ...  
   });
   ```
-- **Provider recipe**: Providers are factory services (implementing [IServiceProvider](https://docs.microsoft.com/en-us/dotnet/api/system.iserviceprovider?view=netcore-3.1 ) interface) with well defined dependecies:
+- **Provider recipe**: Providers are factory services with well defined layout (see the [IServiceProvider](https://docs.microsoft.com/en-us/dotnet/api/system.iserviceprovider?view=netcore-3.1 ) interface) and dependecies:
   ```csharp
   using System;
   using System.Data;
