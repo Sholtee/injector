@@ -36,7 +36,7 @@ namespace Solti.Utils.DI
 
             return self.Factory(iface, name, GetService, lifetime);
 
-            object GetService(IInjector injector, Type _)
+            object GetService(IInjector injector, Type iface)
             {
                 IServiceProvider provider = (IServiceProvider) providerFactory.Invoke(injector, typeof(IServiceProvider));
 

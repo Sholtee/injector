@@ -123,6 +123,7 @@ Registering a service can be done via several patterns (I name them recipes):
   ```csharp
   using System;
   using System.Data;
+  using System.Data.SqlClient;
   using Microsoft.Extensions.Configuration;
   ...
   public class DbConnectionProvider: IServiceProvider
