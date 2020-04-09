@@ -23,10 +23,17 @@ namespace Solti.Utils.DI
         public static IServiceContainer Provider(this IServiceContainer self, Type iface, string? name, Type provider, Lifetime lifetime = Lifetime.Transient)
         {
             Ensure.Parameter.IsNotNull(self, nameof(self));
-            Ensure.Parameter.IsNotNull(iface, nameof(iface));
-            Ensure.Parameter.IsInterface(iface, nameof(iface));
+
             Ensure.Parameter.IsNotNull(provider, nameof(provider));
             Ensure.Type.Supports(provider, typeof(IServiceProvider));
+
+            //
+            // Ezeket a Factory() hivas ellenorizne, itt csak azert van h ne legyen
+            // felesleges Resolver.Get() hivas.
+            //
+
+            Ensure.Parameter.IsNotNull(iface, nameof(iface));
+            Ensure.Parameter.IsInterface(iface, nameof(iface));
 
             //
             // A "Resolver.Get()" hivas validal is
