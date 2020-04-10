@@ -27,10 +27,11 @@ namespace Solti.Utils.DI.Internals
 
             foreach (AspectAttribute aspect in entry.Interface.GetCustomAttributes<AspectAttribute>(inherit: true))
             {
-                Type interceptor = aspect.GetInterceptor(entry.Interface);
-                
-                Ensure.IsNotNull(interceptor, nameof(interceptor));
-                Ensure.Type.IsAssignable(typeof(InterfaceInterceptor<>).MakeGenericType(entry.Interface), interceptor);
+                //
+                // Proxy tipus letrehozasa (GetGeneratedProxyType() validal is).
+                //
+
+                Type proxyType = ProxyFactory.GetGeneratedProxyType(entry.Interface, aspect.GetInterceptor(entry.Interface));
 
                 //
                 // Bovitjuk a hivasi lancot a decorator-al.
@@ -44,7 +45,7 @@ namespace Solti.Utils.DI.Internals
                 {
                     object instance = oldFactory(injector, iface);
 
-                    return injector.Instantiate(ProxyFactory.GetGeneratedProxyType(iface, interceptor), new Dictionary<string, object>
+                    return injector.Instantiate(proxyType, new Dictionary<string, object>
                     {
                         {"target", instance}
                     });
