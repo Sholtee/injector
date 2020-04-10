@@ -167,6 +167,25 @@ namespace Solti.Utils.DI.UseCases
             }
         }
 
+        [Test]
+        public void ParameterValidationAspectTest() 
+        {
+            Container.Factory<IModuleWithAspects>(i => new Mock<IModuleWithAspects>().Object);
+
+            using (IInjector injector = Container.CreateInjector())
+            {
+                IModule module = injector.Get<IModuleWithAspects>();
+
+                Assert.DoesNotThrow(() => module.DoSomething(new object()));
+                Assert.Throws<ArgumentNullException>(() => module.DoSomething(null));
+            }
+        }
+
+        [ParameterValidatorAspect]
+        public interface IModuleWithAspects : IModule 
+        { 
+        }
+
         public abstract class ParameterValidatorAttribute: Attribute
         {
             public abstract void Validate(ParameterInfo param, object value);
@@ -205,6 +224,11 @@ namespace Solti.Utils.DI.UseCases
 
                 return base.Invoke(method, args, extra);
             }
+        }
+
+        public sealed class ParameterValidatorAspect : AspectAttribute
+        {
+            public override Type GetInterceptor(Type iface) => typeof(ParameterValidator<>).MakeGenericType(iface);
         }
 
         [Test]
