@@ -20,8 +20,7 @@ namespace Solti.Utils.DI.Internals
         {
             if (!(entry is ISupportsProxying setter) || setter.Factory == null)
                 //
-                // Generikus szerviz, Abstract(), Instance() eseten valamint ha nem ez a 
-                // tarolo birtokolja az adott bejegyzest a metodus nem ertelmezett.
+                // Generikus szerviz, Abstract(), Instance() eseten a metodus nem ertelmezett.
                 //
 
                 throw new InvalidOperationException(Resources.CANT_PROXY);
