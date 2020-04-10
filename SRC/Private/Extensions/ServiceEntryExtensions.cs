@@ -28,6 +28,9 @@ namespace Solti.Utils.DI.Internals
             foreach (AspectAttribute aspect in entry.Interface.GetCustomAttributes<AspectAttribute>(inherit: true))
             {
                 Type interceptor = aspect.GetInterceptor(entry.Interface);
+                
+                Ensure.IsNotNull(interceptor, nameof(interceptor));
+                Ensure.Type.IsAssignable(typeof(InterfaceInterceptor<>).MakeGenericType(entry.Interface), interceptor);
 
                 //
                 // Bovitjuk a hivasi lancot a decorator-al.
