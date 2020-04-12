@@ -110,7 +110,7 @@ namespace Solti.Utils.DI.Container.Tests
 
     public class MyGenericService<T> : IMyGenericService<T> { }
 
-    [AttributeUsage(AttributeTargets.Interface)]
+    [AttributeUsage(AttributeTargets.Interface, AllowMultiple = false)]
     public class DummyAspectAttribute : AspectAttribute
     {
         public override Type GetInterceptor(Type iface) => typeof(InterfaceInterceptor<>).MakeGenericType(iface);
@@ -121,7 +121,7 @@ namespace Solti.Utils.DI.Container.Tests
         public MyInterceptorHavingDependency(IDisposable dep, TInterface target) : base(target) { }
     }
 
-    [AttributeUsage(AttributeTargets.Interface)]
+    [AttributeUsage(AttributeTargets.Interface, AllowMultiple = false)]
     public class DummyAspectHavingDependencyAttribute : AspectAttribute
     {
         public override Type GetInterceptor(Type iface) => typeof(MyInterceptorHavingDependency<>).MakeGenericType(iface);

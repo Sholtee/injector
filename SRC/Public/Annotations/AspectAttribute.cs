@@ -12,7 +12,7 @@ namespace Solti.Utils.DI
     /// <summary>
     /// Defines an abstract aspect that can be applied on a service interface.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Interface, AllowMultiple = true)]
+    [AttributeUsage(AttributeTargets.Interface)]
     public abstract class AspectAttribute: Attribute
     {
         /// <summary>

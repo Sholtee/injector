@@ -226,7 +226,7 @@ namespace Solti.Utils.DI.UseCases
             }
         }
 
-        [AttributeUsage(AttributeTargets.Interface, AllowMultiple = true)]
+        [AttributeUsage(AttributeTargets.Interface, AllowMultiple = false)]
         public sealed class ParameterValidatorAspect : AspectAttribute
         {
             public override Type GetInterceptor(Type iface) => typeof(ParameterValidator<>).MakeGenericType(iface);

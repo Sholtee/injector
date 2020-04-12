@@ -274,7 +274,7 @@ Decorating services can be done via attributes as well. In this case we declare 
 ```csharp
 ...
 // Define an aspect for ParameterValidatorProxy (see above)
-[AttributeUsage(AttributeTargets.Interface, AllowMultiple = true)]
+[AttributeUsage(AttributeTargets.Interface, AllowMultiple = false)]
 public sealed class ParameterValidatorAspect : AspectAttribute
 {
   public override Type GetInterceptor(Type iface) => typeof(ParameterValidatorProxy<>).MakeGenericType(iface);
@@ -287,7 +287,7 @@ public interface IService
   void DoSomething([NotNull] object arg); 
 }
 ```
-As you can see there is no need for registering the `ParameterValidatorProxy<>` manually. 
+As you can see there is no need for registering the `ParameterValidatorProxy<>` manually. Note that this feature is available since version 2.0.0 of the library.
 ### Auto config
 There are some attributes to annotate services for "auto config" e.g.:
 - ```csharp
