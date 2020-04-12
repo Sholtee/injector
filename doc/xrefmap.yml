@@ -223,6 +223,25 @@ references:
   isSpec: "True"
   fullName: Solti.Utils.DI.AbstractServiceEntry.ToString
   nameWithType: AbstractServiceEntry.ToString
+- uid: Solti.Utils.DI.AspectAttribute
+  name: AspectAttribute
+  href: Solti.Utils.DI.AspectAttribute.html
+  commentId: T:Solti.Utils.DI.AspectAttribute
+  fullName: Solti.Utils.DI.AspectAttribute
+  nameWithType: AspectAttribute
+- uid: Solti.Utils.DI.AspectAttribute.GetInterceptor(Type)
+  name: GetInterceptor(Type)
+  href: Solti.Utils.DI.AspectAttribute.html#Solti_Utils_DI_AspectAttribute_GetInterceptor_Type_
+  commentId: M:Solti.Utils.DI.AspectAttribute.GetInterceptor(Type)
+  fullName: Solti.Utils.DI.AspectAttribute.GetInterceptor(Type)
+  nameWithType: AspectAttribute.GetInterceptor(Type)
+- uid: Solti.Utils.DI.AspectAttribute.GetInterceptor*
+  name: GetInterceptor
+  href: Solti.Utils.DI.AspectAttribute.html#Solti_Utils_DI_AspectAttribute_GetInterceptor_
+  commentId: Overload:Solti.Utils.DI.AspectAttribute.GetInterceptor
+  isSpec: "True"
+  fullName: Solti.Utils.DI.AspectAttribute.GetInterceptor
+  nameWithType: AspectAttribute.GetInterceptor
 - uid: Solti.Utils.DI.CircularReferenceException
   name: CircularReferenceException
   href: Solti.Utils.DI.CircularReferenceException.html
