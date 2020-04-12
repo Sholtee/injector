@@ -23,6 +23,13 @@ namespace Solti.Utils.DI.Internals
             //
 
             Instance = new ServiceReference(this, instance, externallyOwned: !releaseOnDispose);
+
+            //
+            // Ez kivetelt fog dobni ha "@interface"-en akar csak egy aspektus is van (peldanynak nincs
+            // factory-ja -> nem lehet proxy-zni).
+            //
+
+            this.ApplyAspects();
         }
 
         public override bool SetInstance(ServiceReference reference, IReadOnlyDictionary<string, object> options) =>
