@@ -280,7 +280,7 @@ public sealed class ParameterValidatorAspect : AspectAttribute
   public override Type GetInterceptor(Type iface) => typeof(ParameterValidatorProxy<>).MakeGenericType(iface);
 }
 ...
-// Than annotate the desired interface(s):
+// Then annotate the desired interface(s):
 [ParameterValidatorAspect]
 public interface IService
 {
