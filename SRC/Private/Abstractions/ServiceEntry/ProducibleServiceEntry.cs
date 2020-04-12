@@ -26,11 +26,21 @@ namespace Solti.Utils.DI.Internals
             //
         }
 
-        protected ProducibleServiceEntry(ProducibleServiceEntry entry, IServiceContainer owner) : base(entry.Interface, entry.Name, entry.Lifetime, entry.Implementation, owner) =>
+        protected ProducibleServiceEntry(ProducibleServiceEntry entry, IServiceContainer owner) : base(entry.Interface, entry.Name, entry.Lifetime, entry.Implementation, owner)
+        {
             Factory = entry.Factory;
 
-        protected ProducibleServiceEntry(Type @interface, string? name, Lifetime lifetime, Func<IInjector, Type, object> factory, IServiceContainer owner) : this(@interface, name, lifetime, owner) =>
+            //
+            // Itt nem kell "this.ApplyAspects()" hivas mert a forras bejegyzesen mar
+            // hivva volt.
+            //
+        }
+
+        protected ProducibleServiceEntry(Type @interface, string? name, Lifetime lifetime, Func<IInjector, Type, object> factory, IServiceContainer owner) : this(@interface, name, lifetime, owner)
+        {
             Factory = Ensure.Parameter.IsNotNull(factory, nameof(factory));
+            this.ApplyAspects();
+        }
 
         protected ProducibleServiceEntry(Type @interface, string? name, Lifetime lifetime, Type implementation, IServiceContainer owner) : base(@interface, name, lifetime, implementation, owner)
         {
@@ -42,7 +52,10 @@ namespace Solti.Utils.DI.Internals
             Ensure.Type.Supports(implementation, @interface);
 
             if (!@interface.IsGenericTypeDefinition)
+            {
                 Factory = Resolver.Get(implementation);
+                this.ApplyAspects();
+            }
             else
                 //
                 // Konstruktor validalas csak generikus esetben kell (mert ilyenkor nincs Resolver.Get()
@@ -50,6 +63,10 @@ namespace Solti.Utils.DI.Internals
                 // 
 
                 implementation.GetApplicableConstructor();
+
+                //
+                // Generikus esetben az aspektusok a bejegyzes tipizalasakor lesznek alkalmazva.
+                //
         }
 
         protected void EnsureAppropriateReference(ServiceReference reference)

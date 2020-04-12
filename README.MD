@@ -213,31 +213,6 @@ public class ParameterValidatorProxy<TInterface> : InterfaceInterceptor<TInterfa
 - Decorating an inherited service WILL NOT affect the parent.
 - `ProxyFactory` is an individual component so you can use it anywhere in your code.
 - Proxies may also have dependencies (`ProxyFactory` supports this scenario).
-- Bulked decoration also possible:
-  ```csharp
-  using Solti.Utils.DI;
-  using Solti.Utils.Proxy;
-  ...
-  public interface IModule {...}
-  public interface IMyModule1: IModule {...}
-  public interface IMyModule2 : IModule {...}
-  
-  [Service(typeof(IMyModule1))]
-  public class Module1 : IMyModule1 {...}
-  
-  [Service(typeof(IMyModule2))]
-  public class Module2 : IMyModule2 {...}
-  ...
-  void Setup()
-  {
-    Container
-      .Setup(Assembly.GetExecutingAssembly()) // see "auto-config"
-      .Service<IMyOtherService, MyOtherService>();
-
-    foreach (AbstractServiceEntry entry in Container.Where(e => typeof(IModule).IsAssignableFrom(e.Interface)))
-      Container.Proxy(entry.Interface, typeof(InterfaceInterceptor<>).MakeGenericType(entry.Interface));
-  }
-  ```
 - You can setup transactions using proxies as well:
   ```csharp
   using Solti.Utils.DI;
@@ -294,6 +269,25 @@ public class ParameterValidatorProxy<TInterface> : InterfaceInterceptor<TInterfa
     .Proxy<IMyModuleUsingDbConnection, TransactionManager<IMyModuleUsingDbConnection>>();
   ```
 - The full version of the above examples can be found [here](https://github.com/Sholtee/injector/blob/master/TEST/UseCases.cs ).
+### Aspects
+Decorating services can be done via attributes as well. In this case we declare an attribute (derived from `AspectAttribute`) that tells the injector which interceptors should be used. Doing this we introduce the [AOP](https://en.wikipedia.org/wiki/Aspect-oriented_programming ) in our code:
+```csharp
+...
+// Define an aspect for ParameterValidatorProxy (see above)
+[AttributeUsage(AttributeTargets.Interface, AllowMultiple = true)]
+public sealed class ParameterValidatorAspect : AspectAttribute
+{
+  public override Type GetInterceptor(Type iface) => typeof(ParameterValidatorProxy<>).MakeGenericType(iface);
+}
+...
+// Than annotate the desired interface(s):
+[ParameterValidatorAspect]
+public interface IService
+{
+  void DoSomething([NotNull] object arg); 
+}
+```
+As you can see there is no need for registering the `ParameterValidatorProxy<>` manually. 
 ### Auto config
 There are some attributes to annotate services for "auto config" e.g.:
 - ```csharp

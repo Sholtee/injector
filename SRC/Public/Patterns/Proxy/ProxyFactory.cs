@@ -68,7 +68,7 @@ namespace Solti.Utils.Proxy
                 {targetParamName, target}
             });
 
-        private static Type GetGeneratedProxyType(Type iface, Type interceptor)
+        internal static Type GetGeneratedProxyType(Type iface, Type interceptor)
         {
             Ensure.Parameter.IsNotNull(iface, nameof(iface));
             Ensure.Parameter.IsInterface(iface, nameof(iface)); // TODO: FIXME: ProxyGenerator ervenytelen muveletet dob ha az "iface" parameter nem interface
