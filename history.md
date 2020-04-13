@@ -114,8 +114,9 @@
 - 2.0.0-preview3:
   - *breaking:* New `LazyTypeResolver` layout (`ITypeResolver` implemented explicitly, removed misspelled `AssamblyPath` property)
   - *breaking:* `ServiceContainer.[Add|Get]` became virtual, removed `ServiceContainer.Inherit()` method
-- 2.0.0:
+- 2.0.0-preview4:
   - *breaking:* `IServiceContainer.Add()` returns void
   - *breaking:* Service entries must have owner
   - *breaking:* dropped `IServiceContainerExtensions.Lazy()` support
   - *added:* [AOP](https://en.wikipedia.org/wiki/Aspect-oriented_programming ) support
+  - *upgraded:* `ProxyGen.NET` to version 2.0.0
