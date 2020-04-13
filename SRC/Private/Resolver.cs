@@ -5,6 +5,7 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -203,7 +204,9 @@ namespace Solti.Utils.DI.Internals
                 .MakeGenericType(iface)
                 .GetConstructor(new []{ delegateType });
 
-            return new Func<IInjector, object>(i => ctor.Call(createValueFactory(i)));
+            Debug.Assert(ctor != null);
+
+            return new Func<IInjector, object>(i => ctor!.Call(createValueFactory(i)));
         });
     }
 }
