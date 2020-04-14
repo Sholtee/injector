@@ -5,19 +5,23 @@
 ********************************************************************************/
 using System;
 using System.Data;
+using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 
-using NUnit.Framework;
+using Microsoft.Extensions.Configuration;
+
 using Moq;
+using NUnit.Framework;
 
 namespace Solti.Utils.DI.UseCases
 {  
     using Internals;
+    using Proxy;
 
     using DI.Tests;
-
-    using Utils.Proxy;
 
     [TestFixture]
     public class Tests: TestBase<ServiceContainer>
@@ -268,6 +272,82 @@ namespace Solti.Utils.DI.UseCases
             public void DoSomething(object arg) {}
 
             public void DoSomethingElse() {}
+        }
+
+        [Test]
+        public void DbConnectionProviderTest() 
+        {
+            const string connString = "Data Source=MSSQL1;Initial Catalog=MyCatalog;Integrated Security=true;";
+
+            Container
+                .Provider<IDbConnection, DbConnectionProvider>(Lifetime.Scoped)
+                .Factory<IConfiguration>(
+                    _ => new ConfigurationBuilder().AddJsonStream
+                    (
+                        new MemoryStream
+                        (
+                            Encoding.ASCII.GetBytes
+                            ($@"
+                                {{
+                                    ""Database"":
+                                    {{
+                                        ""ConnectionString"": ""{connString}"",
+                                        ""Provider"": ""SqlServer""
+                                    }}
+                                }}
+
+                            ")
+                        )
+                    ).Build(), 
+                    Lifetime.Singleton);
+
+            using (IInjector injector = Container.CreateInjector()) 
+            {
+                IDbConnection conn = injector.Get<IDbConnection>();
+
+                Assert.That(conn, Is.InstanceOf<SqlConnection>());
+                Assert.That(conn.ConnectionString, Is.EqualTo(connString));
+            }
+        }
+
+        public class DbConnectionProvider : IServiceProvider
+        {
+            private class DbOptions
+            {
+                public string ConnectionString { get; set; }
+                public string Provider { get; set; }
+            }
+
+            private DbOptions Options { get; } = new DbOptions();
+
+            public DbConnectionProvider(IConfiguration config) =>
+                config.GetSection("Database").Bind(Options);
+
+            object IServiceProvider.GetService(Type serviceType)
+            {
+                if (serviceType != typeof(IDbConnection))
+                    throw new NotSupportedException();
+#if !LANG_VERSION_8
+                IDbConnection connection;
+                switch (Options.Provider) 
+                {
+                    case "SqlServer":
+                        connection = new SqlConnection(Options.ConnectionString);
+                        break;
+                    default:
+                        throw new NotSupportedException("Provider not supported");
+                }
+#else
+                IDbConnection connection = Options.Provider switch
+                {
+                    "SqlServer" => new SqlConnection(Options.ConnectionString),
+                    _ => throw new NotSupportedException("Provider not supported")
+                };
+#endif
+                //connection.Open();
+
+                return connection;
+            }
         }
     }
 }

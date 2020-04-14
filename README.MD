@@ -119,6 +119,55 @@ Registering a service can be done via several patterns (I name them recipes):
     ...  
   });
   ```
+- **Provider recipe**: Providers are factory services with well defined layout (see the [IServiceProvider](https://docs.microsoft.com/en-us/dotnet/api/system.iserviceprovider?view=netcore-3.1 ) interface) and dependecies:
+  ```csharp
+  using System;
+  using System.Data;
+  using System.Data.SqlClient;
+  using Microsoft.Extensions.Configuration;
+  ...
+  public class DbConnectionProvider: IServiceProvider
+  {
+    private class DbOptions
+    {
+      public string ConnectionString {get; set;}
+      public string Provider {get; set;} 
+    }
+
+    private DbOptions Options {get;} = new DbOptions();
+
+    public DbConnectionProvider(IConfiguration config) =>
+      config.GetSection("Database").Bind(Options);
+
+    object IServiceProvider.GetService(Type serviceType)
+    {
+      if (serviceType != typeof(IDbConnection))
+        throw new NotSupportedException();
+
+      IDbConnection connection = Options.Provider switch
+      {
+        "SqlServer" => new SqlConnection(Options.ConnectionString),
+        _ => throw new NotSupportedException("Provider not supported")
+      };
+      connection.Open();
+
+      return connection;	  
+    }
+  }
+  ...
+  container
+    .Factory<IConfiguration>(
+		_ => new ConfigurationBuilder().AddJsonFile(
+  #if DEV
+          "config.dev.json"
+  #else
+          "config.live.json"
+  #endif
+		).Build(),
+		Lifetime.Singleton)
+    .Provider<IDbConnection, DbConnectionProvider>(Lifetime.Scoped);
+  ```
+  This feature was introduced in version 2.0 of the library.
 - **Instance recipe**: Instances are "predefined values" that can act as a service: 
   ```csharp
   container.Instance<IMyService>(service, releaseOnDispose: true);
@@ -264,7 +313,7 @@ public class ParameterValidatorProxy<TInterface> : InterfaceInterceptor<TInterfa
   }
   ...
   Container
-    .Factory<IDbConnection>(i => ..., Lifetime.Scoped)
+    .Provider<IDbConnection, DbConnectionProvider>(Lifetime.Scoped)
     .Service<IMyModuleUsingDbConnection, MyModuleUsingDbConnection>(Lifetime.Scoped)
     .Proxy<IMyModuleUsingDbConnection, TransactionManager<IMyModuleUsingDbConnection>>();
   ```
