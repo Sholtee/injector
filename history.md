@@ -118,3 +118,4 @@
   - *breaking:* `IServiceContainer.Add()` returns void
   - *breaking:* Service entries must have owner
   - *breaking:* dropped `IServiceContainerExtensions.Lazy()` support
+  - *added:* Provider recipe

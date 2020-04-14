@@ -338,7 +338,7 @@ public class ParameterValidatorProxy<TInterface> : InterfaceInterceptor<TInterfa
   }
   ...
   Container
-    .Factory<IDbConnection>(i => ..., Lifetime.Scoped)
+    .Provider<IDbConnection, DbConnectionProvider>(Lifetime.Scoped)
     .Service<IMyModuleUsingDbConnection, MyModuleUsingDbConnection>(Lifetime.Scoped)
     .Proxy<IMyModuleUsingDbConnection, TransactionManager<IMyModuleUsingDbConnection>>();
   ```
