@@ -161,6 +161,26 @@ namespace Solti.Utils.DI.Injector.Tests
         }
 
         [Test]
+        public void Injector_GetByProvider_ShouldThrowOnCircularReference()
+        {
+            Container
+                .Service<IInterface_4, Implementation_4_CDep>()
+                .Service<IInterface_5, Implementation_5_CDep>()
+                .Provider<IInterface_1, CdepProvider>();
+
+            using (IInjector injector = Container.CreateInjector())
+            {
+                Assert.Throws<CircularReferenceException>(() => injector.Get<IInterface_1>(), string.Join(" -> ", typeof(IInterface_4), typeof(IInterface_5), typeof(IInterface_4)));
+            }
+        }
+
+        private sealed class CdepProvider : IServiceProvider 
+        {
+            public CdepProvider(IInterface_4 dep) { }
+            public object GetService(Type serviceType) => throw new NotImplementedException();
+        }
+
+        [Test]
         public void Injector_GetByService_ShouldThrowOnCircularReference()
         {
             Container
