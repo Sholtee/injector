@@ -43,30 +43,6 @@ namespace Solti.Utils.DI.Perf
             }
         }
 
-        private ITypeResolver Resolver;
-
-        [GlobalSetup(Target = nameof(Lazy))]
-        public void SetupLazy()
-        {
-            Setup();
-
-            Resolver = new LazyTypeResolver<IDisposable>
-            (
-                typeof(Disposable).Assembly.Location,
-                typeof(Disposable).FullName
-            );
-        }
-
-        [Benchmark(OperationsPerInvoke = OperationsPerInvoke)]
-        public void Lazy()
-        {
-            for (int i = 0; i < OperationsPerInvoke; i++)
-            {
-                var entry = ProducibleServiceEntry.Create(Lifetime, typeof(IDisposable), i.ToString(), Resolver, Owner);
-                GC.SuppressFinalize(entry);
-            }
-        }
-
         [Benchmark(OperationsPerInvoke = OperationsPerInvoke)]
         public void Factory()
         {

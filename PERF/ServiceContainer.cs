@@ -46,11 +46,7 @@ namespace Solti.Utils.DI.Perf
         {
             for (int i = 0; i < OperationsPerInvoke; i++, OverallAddInvocations++)
             {
-                //
-                // Absztrakt bejegyzesnek nincs tulaja aki felszabaditsa (megjegyzem nem is kell felszabaditani).
-                //
-
-                var entry = new AbstractServiceEntry(RandomInterfaces[OverallAddInvocations % RandomInterfaces.Count], (OverallAddInvocations / RandomInterfaces.Count).ToString());
+                var entry = new AbstractServiceEntry(RandomInterfaces[OverallAddInvocations % RandomInterfaces.Count], (OverallAddInvocations / RandomInterfaces.Count).ToString(), FContainer);
                 GC.SuppressFinalize(entry);
 
                 FContainer.Add(entry);
