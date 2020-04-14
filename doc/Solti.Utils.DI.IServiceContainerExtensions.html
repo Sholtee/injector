@@ -2068,13 +2068,13 @@
     </tbody>
   </table>
   <a id="Solti_Utils_DI_IServiceContainerExtensions_Setup_" data-uid="Solti.Utils.DI.IServiceContainerExtensions.Setup*"></a>
-  <h4 id="Solti_Utils_DI_IServiceContainerExtensions_Setup_Solti_Utils_DI_IServiceContainer_Assembly_" data-uid="Solti.Utils.DI.IServiceContainerExtensions.Setup(Solti.Utils.DI.IServiceContainer,Assembly)">Setup(IServiceContainer, Assembly)</h4>
+  <h4 id="Solti_Utils_DI_IServiceContainerExtensions_Setup_Solti_Utils_DI_IServiceContainer_Assembly_System_String_" data-uid="Solti.Utils.DI.IServiceContainerExtensions.Setup(Solti.Utils.DI.IServiceContainer,Assembly,System.String)">Setup(IServiceContainer, Assembly, String)</h4>
   <div class="markdown level1 summary"><p>Registers the annotated services from the given <see cref="!:Assembly"></see>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static IServiceContainer Setup(this IServiceContainer container, Assembly assembly)</code></pre>
+    <pre><code class="lang-csharp hljs">public static IServiceContainer Setup(this IServiceContainer container, Assembly assembly, string namespace = &quot;*&quot;)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -2098,6 +2098,12 @@
         <td><p>The source <see cref="!:Assembly"></see>.</p>
 </td>
       </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">namespace</span></td>
+        <td><p>The namespace in which the search will take place.</p>
+</td>
+      </tr>
     </tbody>
   </table>
   <h5 class="returns">Returns</h5>
@@ -2116,7 +2122,7 @@
       </tr>
     </tbody>
   </table>
-  <h5 id="Solti_Utils_DI_IServiceContainerExtensions_Setup_Solti_Utils_DI_IServiceContainer_Assembly__remarks">Remarks</h5>
+  <h5 id="Solti_Utils_DI_IServiceContainerExtensions_Setup_Solti_Utils_DI_IServiceContainer_Assembly_System_String__remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>You can annotate services with the <a class="xref" href="Solti.Utils.DI.ServiceRegistrationAttribute.html">ServiceRegistrationAttribute</a> descendants.</p>
 </div>
 </article>

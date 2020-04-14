@@ -1192,12 +1192,12 @@ references:
   fullName.vb: Solti.Utils.DI.IServiceContainerExtensions.Service(Of TInterface, TImplementation)(Solti.Utils.DI.IServiceContainer, System.String, Solti.Utils.DI.Lifetime)
   nameWithType: IServiceContainerExtensions.Service<TInterface, TImplementation>(IServiceContainer, String, Lifetime)
   nameWithType.vb: IServiceContainerExtensions.Service(Of TInterface, TImplementation)(IServiceContainer, String, Lifetime)
-- uid: Solti.Utils.DI.IServiceContainerExtensions.Setup(Solti.Utils.DI.IServiceContainer,Assembly)
-  name: Setup(IServiceContainer, Assembly)
-  href: Solti.Utils.DI.IServiceContainerExtensions.html#Solti_Utils_DI_IServiceContainerExtensions_Setup_Solti_Utils_DI_IServiceContainer_Assembly_
-  commentId: M:Solti.Utils.DI.IServiceContainerExtensions.Setup(Solti.Utils.DI.IServiceContainer,Assembly)
-  fullName: Solti.Utils.DI.IServiceContainerExtensions.Setup(Solti.Utils.DI.IServiceContainer, Assembly)
-  nameWithType: IServiceContainerExtensions.Setup(IServiceContainer, Assembly)
+- uid: Solti.Utils.DI.IServiceContainerExtensions.Setup(Solti.Utils.DI.IServiceContainer,Assembly,System.String)
+  name: Setup(IServiceContainer, Assembly, String)
+  href: Solti.Utils.DI.IServiceContainerExtensions.html#Solti_Utils_DI_IServiceContainerExtensions_Setup_Solti_Utils_DI_IServiceContainer_Assembly_System_String_
+  commentId: M:Solti.Utils.DI.IServiceContainerExtensions.Setup(Solti.Utils.DI.IServiceContainer,Assembly,System.String)
+  fullName: Solti.Utils.DI.IServiceContainerExtensions.Setup(Solti.Utils.DI.IServiceContainer, Assembly, System.String)
+  nameWithType: IServiceContainerExtensions.Setup(IServiceContainer, Assembly, String)
 - uid: Solti.Utils.DI.IServiceContainerExtensions.Setup*
   name: Setup
   href: Solti.Utils.DI.IServiceContainerExtensions.html#Solti_Utils_DI_IServiceContainerExtensions_Setup_
