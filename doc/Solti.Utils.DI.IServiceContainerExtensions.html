@@ -1047,6 +1047,282 @@
       </tr>
     </tbody>
   </table>
+  <a id="Solti_Utils_DI_IServiceContainerExtensions_Provider_" data-uid="Solti.Utils.DI.IServiceContainerExtensions.Provider*"></a>
+  <h4 id="Solti_Utils_DI_IServiceContainerExtensions_Provider_Solti_Utils_DI_IServiceContainer_Type_System_Nullable_System_String__Type_Solti_Utils_DI_Lifetime_" data-uid="Solti.Utils.DI.IServiceContainerExtensions.Provider(Solti.Utils.DI.IServiceContainer,Type,System.Nullable{System.String},Type,Solti.Utils.DI.Lifetime)">Provider(IServiceContainer, Type, Nullable&lt;String&gt;, Type, Lifetime)</h4>
+  <div class="markdown level1 summary"><p>Registers a new provider. Providers are &quot;factory services&quot; responsible for creating the concrete service.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IServiceContainer Provider(this IServiceContainer self, Type iface, string? name, Type provider, Lifetime lifetime = default(Lifetime))</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.IServiceContainer.html">IServiceContainer</a></td>
+        <td><span class="parametername">self</span></td>
+        <td><p>The target <a class="xref" href="Solti.Utils.DI.IServiceContainer.html">IServiceContainer</a>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">Type</span></td>
+        <td><span class="parametername">iface</span></td>
+        <td><p>The interface of the service. It will be forwarded to the provider.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
+        <td><span class="parametername">name</span></td>
+        <td><p>The (optional) name of the service.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">Type</span></td>
+        <td><span class="parametername">provider</span></td>
+        <td><p>The type of the provider. It may have dependencies and must implement the <see cref="!:IServiceProvider"></see> interface.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.Lifetime.html">Lifetime</a></td>
+        <td><span class="parametername">lifetime</span></td>
+        <td><p>The <a class="xref" href="Solti.Utils.DI.Lifetime.html">Lifetime</a> of the service.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.IServiceContainer.html">IServiceContainer</a></td>
+        <td><p>The container itself.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Solti_Utils_DI_IServiceContainerExtensions_Provider_" data-uid="Solti.Utils.DI.IServiceContainerExtensions.Provider*"></a>
+  <h4 id="Solti_Utils_DI_IServiceContainerExtensions_Provider_Solti_Utils_DI_IServiceContainer_Type_Type_Solti_Utils_DI_Lifetime_" data-uid="Solti.Utils.DI.IServiceContainerExtensions.Provider(Solti.Utils.DI.IServiceContainer,Type,Type,Solti.Utils.DI.Lifetime)">Provider(IServiceContainer, Type, Type, Lifetime)</h4>
+  <div class="markdown level1 summary"><p>Registers a new provider. Providers are &quot;factory services&quot; responsible for creating the concrete service.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IServiceContainer Provider(this IServiceContainer self, Type iface, Type provider, Lifetime lifetime = default(Lifetime))</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.IServiceContainer.html">IServiceContainer</a></td>
+        <td><span class="parametername">self</span></td>
+        <td><p>The target <a class="xref" href="Solti.Utils.DI.IServiceContainer.html">IServiceContainer</a>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">Type</span></td>
+        <td><span class="parametername">iface</span></td>
+        <td><p>The interface of the service. It will be forwarded to the provider.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">Type</span></td>
+        <td><span class="parametername">provider</span></td>
+        <td><p>The type of the provider. It may have dependencies and must implement the <see cref="!:IServiceProvider"></see> interface.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.Lifetime.html">Lifetime</a></td>
+        <td><span class="parametername">lifetime</span></td>
+        <td><p>The <a class="xref" href="Solti.Utils.DI.Lifetime.html">Lifetime</a> of the service.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.IServiceContainer.html">IServiceContainer</a></td>
+        <td><p>The container itself.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Solti_Utils_DI_IServiceContainerExtensions_Provider_" data-uid="Solti.Utils.DI.IServiceContainerExtensions.Provider*"></a>
+  <h4 id="Solti_Utils_DI_IServiceContainerExtensions_Provider__2_Solti_Utils_DI_IServiceContainer_Solti_Utils_DI_Lifetime_" data-uid="Solti.Utils.DI.IServiceContainerExtensions.Provider``2(Solti.Utils.DI.IServiceContainer,Solti.Utils.DI.Lifetime)">Provider&lt;TInterface, TProvider&gt;(IServiceContainer, Lifetime)</h4>
+  <div class="markdown level1 summary"><p>Registers a new provider. Providers are &quot;factory services&quot; responsible for creating the concrete service.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IServiceContainer Provider&lt;TInterface, TProvider&gt;(this IServiceContainer self, Lifetime lifetime = default(Lifetime))
+    where TInterface : class where TProvider : class, IServiceProvider</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.IServiceContainer.html">IServiceContainer</a></td>
+        <td><span class="parametername">self</span></td>
+        <td><p>The target <a class="xref" href="Solti.Utils.DI.IServiceContainer.html">IServiceContainer</a>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.Lifetime.html">Lifetime</a></td>
+        <td><span class="parametername">lifetime</span></td>
+        <td><p>The <a class="xref" href="Solti.Utils.DI.Lifetime.html">Lifetime</a> of the service.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.IServiceContainer.html">IServiceContainer</a></td>
+        <td><p>The container itself.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TInterface</span></td>
+        <td><p>The interface of the service. It will be forwarded to the provider.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">TProvider</span></td>
+        <td><p>The type of the provider. It may have dependencies and must implement the <see cref="!:IServiceProvider"></see> interface.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Solti_Utils_DI_IServiceContainerExtensions_Provider_" data-uid="Solti.Utils.DI.IServiceContainerExtensions.Provider*"></a>
+  <h4 id="Solti_Utils_DI_IServiceContainerExtensions_Provider__2_Solti_Utils_DI_IServiceContainer_System_Nullable_System_String__Solti_Utils_DI_Lifetime_" data-uid="Solti.Utils.DI.IServiceContainerExtensions.Provider``2(Solti.Utils.DI.IServiceContainer,System.Nullable{System.String},Solti.Utils.DI.Lifetime)">Provider&lt;TInterface, TProvider&gt;(IServiceContainer, Nullable&lt;String&gt;, Lifetime)</h4>
+  <div class="markdown level1 summary"><p>Registers a new provider. Providers are &quot;factory services&quot; responsible for creating the concrete service.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IServiceContainer Provider&lt;TInterface, TProvider&gt;(this IServiceContainer self, string? name, Lifetime lifetime = default(Lifetime))
+    where TInterface : class where TProvider : class, IServiceProvider</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.IServiceContainer.html">IServiceContainer</a></td>
+        <td><span class="parametername">self</span></td>
+        <td><p>The target <a class="xref" href="Solti.Utils.DI.IServiceContainer.html">IServiceContainer</a>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
+        <td><span class="parametername">name</span></td>
+        <td><p>The (optional) name of the service.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.Lifetime.html">Lifetime</a></td>
+        <td><span class="parametername">lifetime</span></td>
+        <td><p>The <a class="xref" href="Solti.Utils.DI.Lifetime.html">Lifetime</a> of the service.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.IServiceContainer.html">IServiceContainer</a></td>
+        <td><p>The container itself.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TInterface</span></td>
+        <td><p>The interface of the service. It will be forwarded to the provider.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">TProvider</span></td>
+        <td><p>The type of the provider. It may have dependencies and must implement the <see cref="!:IServiceProvider"></see> interface.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
   <a id="Solti_Utils_DI_IServiceContainerExtensions_Proxy_" data-uid="Solti.Utils.DI.IServiceContainerExtensions.Proxy*"></a>
   <h4 id="Solti_Utils_DI_IServiceContainerExtensions_Proxy_Solti_Utils_DI_IServiceContainer_Type_Func_Solti_Utils_DI_IInjector_Type_System_Object_System_Object__" data-uid="Solti.Utils.DI.IServiceContainerExtensions.Proxy(Solti.Utils.DI.IServiceContainer,Type,Func{Solti.Utils.DI.IInjector,Type,System.Object,System.Object})">Proxy(IServiceContainer, Type, Func&lt;IInjector, Type, Object, Object&gt;)</h4>
   <div class="markdown level1 summary"><p>Hooks into the instantiating process to let you decorate the original service. Useful when you want to add additional functionality (e.g. parameter validation). The easiest way to decorate an instance is using the <see cref="!:InterfaceInterceptor&lt;TInterface>"></see> class.</p>

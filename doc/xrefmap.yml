@@ -1045,6 +1045,46 @@ references:
   fullName.vb: Solti.Utils.DI.IServiceContainerExtensions.Instance(Of TInterface)(Solti.Utils.DI.IServiceContainer, System.Nullable(Of System.String), TInterface, System.Boolean)
   nameWithType: IServiceContainerExtensions.Instance<TInterface>(IServiceContainer, Nullable<String>, TInterface, Boolean)
   nameWithType.vb: IServiceContainerExtensions.Instance(Of TInterface)(IServiceContainer, Nullable(Of String), TInterface, Boolean)
+- uid: Solti.Utils.DI.IServiceContainerExtensions.Provider(Solti.Utils.DI.IServiceContainer,Type,System.Nullable{System.String},Type,Solti.Utils.DI.Lifetime)
+  name: Provider(IServiceContainer, Type, Nullable<String>, Type, Lifetime)
+  href: Solti.Utils.DI.IServiceContainerExtensions.html#Solti_Utils_DI_IServiceContainerExtensions_Provider_Solti_Utils_DI_IServiceContainer_Type_System_Nullable_System_String__Type_Solti_Utils_DI_Lifetime_
+  commentId: M:Solti.Utils.DI.IServiceContainerExtensions.Provider(Solti.Utils.DI.IServiceContainer,Type,System.Nullable{System.String},Type,Solti.Utils.DI.Lifetime)
+  name.vb: Provider(IServiceContainer, Type, Nullable(Of String), Type, Lifetime)
+  fullName: Solti.Utils.DI.IServiceContainerExtensions.Provider(Solti.Utils.DI.IServiceContainer, Type, System.Nullable<System.String>, Type, Solti.Utils.DI.Lifetime)
+  fullName.vb: Solti.Utils.DI.IServiceContainerExtensions.Provider(Solti.Utils.DI.IServiceContainer, Type, System.Nullable(Of System.String), Type, Solti.Utils.DI.Lifetime)
+  nameWithType: IServiceContainerExtensions.Provider(IServiceContainer, Type, Nullable<String>, Type, Lifetime)
+  nameWithType.vb: IServiceContainerExtensions.Provider(IServiceContainer, Type, Nullable(Of String), Type, Lifetime)
+- uid: Solti.Utils.DI.IServiceContainerExtensions.Provider(Solti.Utils.DI.IServiceContainer,Type,Type,Solti.Utils.DI.Lifetime)
+  name: Provider(IServiceContainer, Type, Type, Lifetime)
+  href: Solti.Utils.DI.IServiceContainerExtensions.html#Solti_Utils_DI_IServiceContainerExtensions_Provider_Solti_Utils_DI_IServiceContainer_Type_Type_Solti_Utils_DI_Lifetime_
+  commentId: M:Solti.Utils.DI.IServiceContainerExtensions.Provider(Solti.Utils.DI.IServiceContainer,Type,Type,Solti.Utils.DI.Lifetime)
+  fullName: Solti.Utils.DI.IServiceContainerExtensions.Provider(Solti.Utils.DI.IServiceContainer, Type, Type, Solti.Utils.DI.Lifetime)
+  nameWithType: IServiceContainerExtensions.Provider(IServiceContainer, Type, Type, Lifetime)
+- uid: Solti.Utils.DI.IServiceContainerExtensions.Provider*
+  name: Provider
+  href: Solti.Utils.DI.IServiceContainerExtensions.html#Solti_Utils_DI_IServiceContainerExtensions_Provider_
+  commentId: Overload:Solti.Utils.DI.IServiceContainerExtensions.Provider
+  isSpec: "True"
+  fullName: Solti.Utils.DI.IServiceContainerExtensions.Provider
+  nameWithType: IServiceContainerExtensions.Provider
+- uid: Solti.Utils.DI.IServiceContainerExtensions.Provider``2(Solti.Utils.DI.IServiceContainer,Solti.Utils.DI.Lifetime)
+  name: Provider<TInterface, TProvider>(IServiceContainer, Lifetime)
+  href: Solti.Utils.DI.IServiceContainerExtensions.html#Solti_Utils_DI_IServiceContainerExtensions_Provider__2_Solti_Utils_DI_IServiceContainer_Solti_Utils_DI_Lifetime_
+  commentId: M:Solti.Utils.DI.IServiceContainerExtensions.Provider``2(Solti.Utils.DI.IServiceContainer,Solti.Utils.DI.Lifetime)
+  name.vb: Provider(Of TInterface, TProvider)(IServiceContainer, Lifetime)
+  fullName: Solti.Utils.DI.IServiceContainerExtensions.Provider<TInterface, TProvider>(Solti.Utils.DI.IServiceContainer, Solti.Utils.DI.Lifetime)
+  fullName.vb: Solti.Utils.DI.IServiceContainerExtensions.Provider(Of TInterface, TProvider)(Solti.Utils.DI.IServiceContainer, Solti.Utils.DI.Lifetime)
+  nameWithType: IServiceContainerExtensions.Provider<TInterface, TProvider>(IServiceContainer, Lifetime)
+  nameWithType.vb: IServiceContainerExtensions.Provider(Of TInterface, TProvider)(IServiceContainer, Lifetime)
+- uid: Solti.Utils.DI.IServiceContainerExtensions.Provider``2(Solti.Utils.DI.IServiceContainer,System.Nullable{System.String},Solti.Utils.DI.Lifetime)
+  name: Provider<TInterface, TProvider>(IServiceContainer, Nullable<String>, Lifetime)
+  href: Solti.Utils.DI.IServiceContainerExtensions.html#Solti_Utils_DI_IServiceContainerExtensions_Provider__2_Solti_Utils_DI_IServiceContainer_System_Nullable_System_String__Solti_Utils_DI_Lifetime_
+  commentId: M:Solti.Utils.DI.IServiceContainerExtensions.Provider``2(Solti.Utils.DI.IServiceContainer,System.Nullable{System.String},Solti.Utils.DI.Lifetime)
+  name.vb: Provider(Of TInterface, TProvider)(IServiceContainer, Nullable(Of String), Lifetime)
+  fullName: Solti.Utils.DI.IServiceContainerExtensions.Provider<TInterface, TProvider>(Solti.Utils.DI.IServiceContainer, System.Nullable<System.String>, Solti.Utils.DI.Lifetime)
+  fullName.vb: Solti.Utils.DI.IServiceContainerExtensions.Provider(Of TInterface, TProvider)(Solti.Utils.DI.IServiceContainer, System.Nullable(Of System.String), Solti.Utils.DI.Lifetime)
+  nameWithType: IServiceContainerExtensions.Provider<TInterface, TProvider>(IServiceContainer, Nullable<String>, Lifetime)
+  nameWithType.vb: IServiceContainerExtensions.Provider(Of TInterface, TProvider)(IServiceContainer, Nullable(Of String), Lifetime)
 - uid: Solti.Utils.DI.IServiceContainerExtensions.Proxy(Solti.Utils.DI.IServiceContainer,Type,Func{Solti.Utils.DI.IInjector,Type,System.Object,System.Object})
   name: Proxy(IServiceContainer, Type, Func<IInjector, Type, Object, Object>)
   href: Solti.Utils.DI.IServiceContainerExtensions.html#Solti_Utils_DI_IServiceContainerExtensions_Proxy_Solti_Utils_DI_IServiceContainer_Type_Func_Solti_Utils_DI_IInjector_Type_System_Object_System_Object__
@@ -1243,6 +1283,83 @@ references:
   isSpec: "True"
   fullName: Solti.Utils.DI.OptionsAttribute.Optional
   nameWithType: OptionsAttribute.Optional
+- uid: Solti.Utils.DI.ProviderAttribute
+  name: ProviderAttribute
+  href: Solti.Utils.DI.ProviderAttribute.html
+  commentId: T:Solti.Utils.DI.ProviderAttribute
+  fullName: Solti.Utils.DI.ProviderAttribute
+  nameWithType: ProviderAttribute
+- uid: Solti.Utils.DI.ProviderAttribute.#ctor(Type,Solti.Utils.DI.Lifetime)
+  name: ProviderAttribute(Type, Lifetime)
+  href: Solti.Utils.DI.ProviderAttribute.html#Solti_Utils_DI_ProviderAttribute__ctor_Type_Solti_Utils_DI_Lifetime_
+  commentId: M:Solti.Utils.DI.ProviderAttribute.#ctor(Type,Solti.Utils.DI.Lifetime)
+  fullName: Solti.Utils.DI.ProviderAttribute.ProviderAttribute(Type, Solti.Utils.DI.Lifetime)
+  nameWithType: ProviderAttribute.ProviderAttribute(Type, Lifetime)
+- uid: Solti.Utils.DI.ProviderAttribute.#ctor(Type,System.String,Solti.Utils.DI.Lifetime)
+  name: ProviderAttribute(Type, String, Lifetime)
+  href: Solti.Utils.DI.ProviderAttribute.html#Solti_Utils_DI_ProviderAttribute__ctor_Type_System_String_Solti_Utils_DI_Lifetime_
+  commentId: M:Solti.Utils.DI.ProviderAttribute.#ctor(Type,System.String,Solti.Utils.DI.Lifetime)
+  fullName: Solti.Utils.DI.ProviderAttribute.ProviderAttribute(Type, System.String, Solti.Utils.DI.Lifetime)
+  nameWithType: ProviderAttribute.ProviderAttribute(Type, String, Lifetime)
+- uid: Solti.Utils.DI.ProviderAttribute.#ctor*
+  name: ProviderAttribute
+  href: Solti.Utils.DI.ProviderAttribute.html#Solti_Utils_DI_ProviderAttribute__ctor_
+  commentId: Overload:Solti.Utils.DI.ProviderAttribute.#ctor
+  isSpec: "True"
+  fullName: Solti.Utils.DI.ProviderAttribute.ProviderAttribute
+  nameWithType: ProviderAttribute.ProviderAttribute
+- uid: Solti.Utils.DI.ProviderAttribute.Interface
+  name: Interface
+  href: Solti.Utils.DI.ProviderAttribute.html#Solti_Utils_DI_ProviderAttribute_Interface
+  commentId: P:Solti.Utils.DI.ProviderAttribute.Interface
+  fullName: Solti.Utils.DI.ProviderAttribute.Interface
+  nameWithType: ProviderAttribute.Interface
+- uid: Solti.Utils.DI.ProviderAttribute.Interface*
+  name: Interface
+  href: Solti.Utils.DI.ProviderAttribute.html#Solti_Utils_DI_ProviderAttribute_Interface_
+  commentId: Overload:Solti.Utils.DI.ProviderAttribute.Interface
+  isSpec: "True"
+  fullName: Solti.Utils.DI.ProviderAttribute.Interface
+  nameWithType: ProviderAttribute.Interface
+- uid: Solti.Utils.DI.ProviderAttribute.Lifetime
+  name: Lifetime
+  href: Solti.Utils.DI.ProviderAttribute.html#Solti_Utils_DI_ProviderAttribute_Lifetime
+  commentId: P:Solti.Utils.DI.ProviderAttribute.Lifetime
+  fullName: Solti.Utils.DI.ProviderAttribute.Lifetime
+  nameWithType: ProviderAttribute.Lifetime
+- uid: Solti.Utils.DI.ProviderAttribute.Lifetime*
+  name: Lifetime
+  href: Solti.Utils.DI.ProviderAttribute.html#Solti_Utils_DI_ProviderAttribute_Lifetime_
+  commentId: Overload:Solti.Utils.DI.ProviderAttribute.Lifetime
+  isSpec: "True"
+  fullName: Solti.Utils.DI.ProviderAttribute.Lifetime
+  nameWithType: ProviderAttribute.Lifetime
+- uid: Solti.Utils.DI.ProviderAttribute.Name
+  name: Name
+  href: Solti.Utils.DI.ProviderAttribute.html#Solti_Utils_DI_ProviderAttribute_Name
+  commentId: P:Solti.Utils.DI.ProviderAttribute.Name
+  fullName: Solti.Utils.DI.ProviderAttribute.Name
+  nameWithType: ProviderAttribute.Name
+- uid: Solti.Utils.DI.ProviderAttribute.Name*
+  name: Name
+  href: Solti.Utils.DI.ProviderAttribute.html#Solti_Utils_DI_ProviderAttribute_Name_
+  commentId: Overload:Solti.Utils.DI.ProviderAttribute.Name
+  isSpec: "True"
+  fullName: Solti.Utils.DI.ProviderAttribute.Name
+  nameWithType: ProviderAttribute.Name
+- uid: Solti.Utils.DI.ProviderAttribute.Register(Solti.Utils.DI.IServiceContainer,Type)
+  name: Register(IServiceContainer, Type)
+  href: Solti.Utils.DI.ProviderAttribute.html#Solti_Utils_DI_ProviderAttribute_Register_Solti_Utils_DI_IServiceContainer_Type_
+  commentId: M:Solti.Utils.DI.ProviderAttribute.Register(Solti.Utils.DI.IServiceContainer,Type)
+  fullName: Solti.Utils.DI.ProviderAttribute.Register(Solti.Utils.DI.IServiceContainer, Type)
+  nameWithType: ProviderAttribute.Register(IServiceContainer, Type)
+- uid: Solti.Utils.DI.ProviderAttribute.Register*
+  name: Register
+  href: Solti.Utils.DI.ProviderAttribute.html#Solti_Utils_DI_ProviderAttribute_Register_
+  commentId: Overload:Solti.Utils.DI.ProviderAttribute.Register
+  isSpec: "True"
+  fullName: Solti.Utils.DI.ProviderAttribute.Register
+  nameWithType: ProviderAttribute.Register
 - uid: Solti.Utils.DI.QueryModes
   name: QueryModes
   href: Solti.Utils.DI.QueryModes.html
