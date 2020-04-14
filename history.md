@@ -118,5 +118,5 @@
   - *breaking:* `IServiceContainer.Add()` returns void
   - *breaking:* Service entries must have owner
   - *breaking:* dropped `IServiceContainerExtensions.Lazy()` support
-  - *added:* [AOP](https://en.wikipedia.org/wiki/Aspect-oriented_programming ) support
+  - *added:* [AOP](https://en.wikipedia.org/wiki/Aspect-oriented_programming ) support ([details](https://github.com/Sholtee/injector#aspects ))
   - *upgraded:* `ProxyGen.NET` to version 2.0.0
