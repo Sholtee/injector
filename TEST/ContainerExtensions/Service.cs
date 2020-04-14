@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 
+using Moq;
 using NUnit.Framework;
 
 namespace Solti.Utils.DI.Container.Tests
@@ -120,5 +121,21 @@ namespace Solti.Utils.DI.Container.Tests
 
             Assert.Throws<ServiceAlreadyRegisteredException>(() => Container.Service<IInterface_1, Implementation_1_No_Dep>());
         }
+
+
+        [Test]
+        public void Container_Service_CanBeRegisteredViaAttribute()
+        {
+            Container.Setup(typeof(ConcreteService).Assembly, "Solti.Utils.DI.Container.Tests");
+
+            AbstractServiceEntry entry = Container.Get<IList<int>>();
+
+            Assert.IsNotNull(entry);
+            Assert.That(entry.Lifetime, Is.EqualTo(Lifetime.Singleton));
+            Assert.That(entry.Factory(new Mock<IInjector>(MockBehavior.Strict).Object, typeof(IDisposable)), Is.InstanceOf<ConcreteService>());
+        }
     }
+
+    [Service(typeof(IList<int>), Lifetime.Singleton)]
+    public class ConcreteService : List<int> { } // ne nested legyen mert akkor generikusnak minosul (ContainerTestsBase<TContainer>.ConcreteService)
 }

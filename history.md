@@ -121,3 +121,5 @@
   - *added:* [AOP](https://en.wikipedia.org/wiki/Aspect-oriented_programming ) support ([details](https://github.com/Sholtee/injector#aspects ))
   - *added:* Provider recipe
   - *upgraded:* `ProxyGen.NET` to version 2.0.0
+- 2.0.0:
+  - *added:* `IServiceContainerExtensions.Setup()` lookup can be restricted (with patterns)

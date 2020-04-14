@@ -54,7 +54,7 @@ namespace Solti.Utils.DI.Injector.Graph.Tests
         {
             ServiceReference[] references;
 
-            using (IServiceContainer container = new ServiceContainer().Setup(typeof(IInterface_1).Assembly))
+            using (IServiceContainer container = new ServiceContainer().Setup(typeof(IInterface_1).Assembly, "Solti.Utils.DI.Injector.Graph.Tests"))
             {
                 references = Validate(new Injector(container));
             }

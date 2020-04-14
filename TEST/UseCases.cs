@@ -116,7 +116,7 @@ namespace Solti.Utils.DI.UseCases
         public void BulkedProxyingTest()
         {
             Container
-                .Setup(typeof(Tests).Assembly)
+                .Setup(typeof(Tests).Assembly, "Solti.Utils.DI.UseCases")
                 .Service<IDisposable, Disposable>();
 
             foreach (AbstractServiceEntry entry in Container.Where(e => typeof(IModule).IsAssignableFrom(e.Interface)))
