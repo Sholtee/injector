@@ -6,10 +6,12 @@
 using System;
 using System.Collections.Generic;
 
+using Moq;
 using NUnit.Framework;
 
 namespace Solti.Utils.DI.Container.Tests
 {
+    using Internals;
     using Properties;
     
     public partial class ContainerTestsBase<TContainer>
@@ -59,6 +61,26 @@ namespace Solti.Utils.DI.Container.Tests
             Assert.That(entry.Factory(null, entry.Interface), Is.EqualTo(typeof(IList<int>)));
         }
 
+        [Test]
+        public void Container_Provider_ShouldThrowOnMultipleRegistration()
+        {
+            Container.Provider<IInterface_1, DummyProvider>();
+
+            Assert.Throws<ServiceAlreadyRegisteredException>(() => Container.Provider<IInterface_1, DummyProvider>());
+        }
+
+        [Test]
+        public void Container_Provider_CanBeRegisteredViaAttribute() 
+        {
+            Container.Setup(typeof(ConcreteProvider).Assembly, "Solti.Utils.DI.Container.Tests");
+
+            AbstractServiceEntry entry = Container.Get<IDisposableEx>();
+
+            Assert.IsNotNull(entry);
+            Assert.That(entry.Lifetime, Is.EqualTo(Lifetime.Singleton));
+            Assert.That(entry.Factory(new Mock<IInjector>(MockBehavior.Strict).Object, typeof(IDisposable)), Is.InstanceOf<Disposable>());
+        }
+
         private class DummyProvider : IServiceProvider
         {
             public virtual object GetService(Type serviceType)
@@ -92,6 +114,15 @@ namespace Solti.Utils.DI.Container.Tests
         private class TypeReturningProvider : DummyProvider
         {
             public override object GetService(Type serviceType) => serviceType;
+        }
+    }
+
+    [Provider(typeof(IDisposableEx), Lifetime.Singleton)]
+    public class ConcreteProvider : IServiceProvider // ne nested legyen mert akkor generikusnak minosul (ContainerTestsBase<TContainer>.ConcreteProvider)
+    {
+        public object GetService(Type serviceType)
+        {
+            return new Disposable();
         }
     }
 }
