@@ -3,7 +3,6 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
-using System;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
@@ -19,7 +18,7 @@ namespace Solti.Utils.DI
         /// </summary>
         /// <param name="container">The target <see cref="IServiceContainer"/>.</param>
         /// <param name="assembly">The source <see cref="Assembly"/>.</param>
-        /// <param name="namespace">The namespace in which the search will take place.</param>
+        /// <param name="namespace">The namespace in which the search will take place. Note that wildcards (*) are supported.</param>
         /// <returns>The container itself.</returns>
         /// <remarks>You can annotate services with the <see cref="ServiceRegistrationAttribute"/> descendants.</remarks>
         public static IServiceContainer Setup(this IServiceContainer container, Assembly assembly, string @namespace = "*")
@@ -28,12 +27,12 @@ namespace Solti.Utils.DI
             Ensure.Parameter.IsNotNull(assembly, nameof(assembly));
             Ensure.Parameter.IsNotNull(@namespace, nameof(@namespace));
 
-            string pattern = Regex.Replace(@namespace, "\\.|\\*", match => match.Value switch
+            string pattern = string.Concat(@namespace.Select(chr => chr switch
             {
-                "." => "\\.",
-                "*" => "[\\w\\W.]*",
-                _ => throw new NotSupportedException()
-            });
+                '*' => ".*",
+                '.' => "\\.",
+                _ => $"{chr}"
+            }));
 
             var matcher = new Regex($"^{pattern}$");
 
