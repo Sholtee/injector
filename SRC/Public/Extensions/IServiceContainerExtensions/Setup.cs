@@ -3,6 +3,7 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
@@ -13,6 +14,8 @@ namespace Solti.Utils.DI
 
     public static partial class IServiceContainerExtensions
     {
+        private static readonly HashSet<char> ReservedChars = new HashSet<char> {'\\', '^', '$', '.', '|', '?', '*', '+', '(', ')', '[', '{'};
+
         /// <summary>
         /// Registers the annotated services from the given <see cref="Assembly"/>.
         /// </summary>
@@ -27,11 +30,11 @@ namespace Solti.Utils.DI
             Ensure.Parameter.IsNotNull(assembly, nameof(assembly));
             Ensure.Parameter.IsNotNull(@namespace, nameof(@namespace));
 
-            string pattern = string.Concat(@namespace.Select(chr => chr switch
+            string pattern = string.Concat(@namespace.Select(chr => 
             {
-                '*' => ".*",
-                '.' => "\\.",
-                _ => $"{chr}"
+                if (chr == '*') return ".*";
+                if (ReservedChars.Contains(chr)) return $"\\{chr}";
+                return $"{chr}"; // NE chr.ToString() legyen h ne dumaljon a fordito
             }));
 
             var matcher = new Regex($"^{pattern}$");
