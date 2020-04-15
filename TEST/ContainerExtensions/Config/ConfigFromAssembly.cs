@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Linq;
 using System.Reflection;
 
 using Moq;
@@ -69,6 +70,19 @@ namespace Solti.Utils.DI.Container.Setup.Tests
 
             mockContainer.Verify(i => i.Add(It.Is<TransientServiceEntry>(se => se.Equals(new TransientServiceEntry(typeof(IDisposable), "svc1", typeof(MyDisposable_1), mockContainer.Object)))), Times.Once);
             mockContainer.Verify(i => i.Add(It.Is<TransientServiceEntry>(se => se.Equals(new TransientServiceEntry(typeof(IDisposable), "svc2", typeof(MyDisposable_2), mockContainer.Object)))), Times.Once);
+        }
+
+        [Test]
+        public void Setup_ShouldHandleWildcards() 
+        {
+            IServiceContainer 
+                c1 = new ServiceContainer(),
+                c2 = new ServiceContainer();
+
+            c1.Setup(typeof(GenericService<>).Assembly, "Solti.Utils.DI.Container.Setup.Tests");
+            c2.Setup(typeof(GenericService<>).Assembly, "Solti.Utils.DI.Container.Setup.*");
+
+            Assert.That(c1.SequenceEqual(c2, ServiceIdComparer.Instance));
         }
     }
 }
