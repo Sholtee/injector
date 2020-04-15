@@ -48,5 +48,16 @@ namespace Solti.Utils.DI.Injector.Tests
                 Assert.That(injector.TryGet(registrations.Last().Interface), Is.Null);
             }
         }
+
+        [Test]
+        public void Injector_TryGet_ShouldSupportNamedServices([Values(null, "cica")] string name) 
+        {
+            Container.Service<IInterface_1, Implementation_1>(name);
+
+            using (IInjector injector = Container.CreateInjector())
+            {
+                Assert.That(injector.TryGet<IInterface_1>(name), Is.InstanceOf<Implementation_1>());
+            }
+        }
     }
 }
