@@ -80,7 +80,7 @@ namespace Solti.Utils.DI.Internals
             }
         }
 
-        internal virtual Injector Spawn(IServiceContainer parent)
+        internal virtual Injector Adopt(IServiceContainer parent)
         {
             Ensure.Parameter.IsNotNull(parent, nameof(parent));
             Ensure.NotDisposed(this);
