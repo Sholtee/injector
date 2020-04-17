@@ -18,7 +18,7 @@ namespace Solti.Utils.DI.Perf
         private IServiceContainer FContainer;
 
         #region UnsafeInjector
-        private class UnsafeInjector : Internals.Injector
+        private class UnsafeInjector : Injector
         {
             private UnsafeInjector(IServiceContainer parent, IReadOnlyDictionary<string, object> factoryOptions, ServiceGraph graph) : base(parent, factoryOptions, graph) { }
 
@@ -50,7 +50,7 @@ namespace Solti.Utils.DI.Perf
 
             internal UnsafeInjector(IServiceContainer owner) : base(owner) { }
 
-            internal override Internals.Injector Spawn(IServiceContainer parent)
+            internal override Injector Adopt(IServiceContainer parent)
             {
                 var result = new UnsafeInjector(parent, FactoryOptions, CreateSubgraph());
                 GC.SuppressFinalize(result);
