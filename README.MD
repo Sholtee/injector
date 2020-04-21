@@ -7,8 +7,7 @@
 ## Key features
 - Dependency injection via [constructor parameters](https://en.wikipedia.org/wiki/Dependency_injection#Constructor_injection )
 - [Lazy dependency resolution](https://www.quickdevnotes.com/lazy-initialization/ )
-- Dynamic [proxy](https://en.wikipedia.org/wiki/Proxy_pattern ) generator
-- Custom service decoration (using proxies)
+- Custom service decoration (using [AOP](https://en.wikipedia.org/wiki/Aspect-oriented_programming ) or proxies)
 - [Duck typing](https://en.wikipedia.org/wiki/Duck_typing ) (using proxies)
 - Generic service support
 - Container inheritance
@@ -38,8 +37,8 @@
 - Since `Singleton` services can be accessed parallelly they (and their dependencies) have to be thread safe.
 ## Workflow of DI
 1. [Creating the root container](#creating-the-root-container)
-2. [Registering services](#registering-services)                      <--+
-3. [Decorating services](#decorating-services) (optional)                |
+2. [Registering services](#registering-services)                 <--+
+3. [Decorating services](#decorating-services) (optional)       |
 4. [Deriving child containers](#deriving-child-containers) (optional) ---+
 5. [Creating an injector](#creating-an-injector) It's often referred as "creating a scope"
 6. [Requesting service instances](#requesting-services)
