@@ -38,9 +38,9 @@
 - Since `Singleton` services can be accessed parallelly they (and their dependencies) have to be thread safe.
 ## Workflow of DI
 1. [Creating the root container](#creating-the-root-container)
-2. [Registering services](#registering-services                       <--+
-3. [Decorating services](#decorating-services) (optional)                |
-4. [Deriving child containers](#deriving-child-containers) (optional) ---+
+2. [Registering services](#registering-services)                      <--+
+3. [Decorating services](#decorating-services) (optional)                |
+4. [Deriving child containers](#deriving-child-containers) (optional) ---+
 5. [Creating an injector](#creating-an-injector) It's often referred as "creating a scope"
 6. [Requesting service instances](#requesting-services)
 7. Destroying the injector
