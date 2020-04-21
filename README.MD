@@ -20,7 +20,8 @@
 - They are interfaces.
 - They are hosted in containers.
 - They are provided by injectors.
-- Every service can be requested multiple times but can be registered only once.
+- Requested services should be registered.
+- Every service can be requested multiple times.
 - Producible services are instantiated only when they are requested.
 - Every producible service has its own lifetime, which can be:
   * `Singleton`:
@@ -37,10 +38,13 @@
 - Since `Singleton` services can be accessed parallelly they (and their dependencies) have to be thread safe.
 ## Workflow of DI
 1. [Creating the root container](#creating-the-root-container)
-2. [Registering services](#registering-services)                 <--+
-3. [Decorating services](#decorating-services) (optional)       |
-4. [Deriving child containers](#deriving-child-containers) (optional) ---+
-5. [Creating an injector](#creating-an-injector) It's often referred as "creating a scope"
+2. [Registering services](#registering-services)
+3. [Decorating services](#decorating-services) (optional)
+4. [Deriving child containers](#deriving-child-containers) (optional)
+   1. Overriding abstract services or registering new ones
+   2. Decorating services
+   3. Deriving child containers
+5. [Creating injector](#creating-an-injector) from a container. It's often referred as "creating a scope"
 6. [Requesting service instances](#requesting-services)
 7. Destroying the injector
 8. Destroying the root container
