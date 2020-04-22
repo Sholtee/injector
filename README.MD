@@ -495,5 +495,10 @@ Differences compared to `IInjector`:
 You can browse the [detailed API docs](https://sholtee.github.io/injector ) or the [benchmark results](https://sholtee.github.io/injector/perf/ ).
 ## Supported frameworks
 This project currently targets *.NET Standard* 2.0 and 2.1.
+## Migrating from version 1.X
+- All the attributes have been moved to the `Solti.Utils.DI` namespace so you just have to remove the `Solti.Utils.DI.Annotations` usings.
+- `Lazy` recipe has completely been removed. To preserve this functionality you can implement your own deferring logic in a `Factory` function.
+- *.NET Standard* 1.6 support has been dropped. Since modern .NET projects should not target the v1.X branch you might not be affected by this.
+- Other breaking changes were done on API's you should not call in everyday use.
 ## Version history
 Can be found [here](https://github.com/Sholtee/injector/blob/master/history.md )
