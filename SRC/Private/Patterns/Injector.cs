@@ -152,6 +152,8 @@ namespace Solti.Utils.DI.Internals
         #region IInjector
         public object Get(Type iface, string? name) 
         {
+            const string path = nameof(path);
+
             try
             {
                 ServiceReference reference = GetReference(iface, name);
@@ -163,9 +165,9 @@ namespace Solti.Utils.DI.Internals
             // Csak ott bovitjuk a kivetelt ahol az dobva volt (ez a metodus lehet rekurzivan hivva).
             //
 
-            catch (ServiceNotFoundException e) when (e.Data["path"] == null)
+            catch (ServiceNotFoundException e) when (e.Data[path] == null)
             {
-                e.Data["path"] = string.Join(" -> ", FGraph
+                e.Data[path] = string.Join(" -> ", FGraph
                     .Select(node => (IServiceId) node.RelatedServiceEntry)
                     .Append(new ServiceId(iface, name))
                     .Select(IServiceIdExtensions.FriendlyName));
