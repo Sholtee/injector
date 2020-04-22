@@ -376,7 +376,7 @@ or
 IMyService svc = injector.Get<IMyService>("servicename");
 ```
 *Remarks:*
-- Requesting an unregistered or an open generic service will cause an exception.
+- Requesting an unregistered or an open generic service will cause an exception. If your dependency is optional you can use the `injector.TryGet()` method.
 - Requesting services as a constructor parameter is more convenient than using the `injector.Get()` method.
 - You may request the closed pair of an open generic service without registering it:
   ```csharp
