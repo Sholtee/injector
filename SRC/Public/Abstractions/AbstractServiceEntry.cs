@@ -75,7 +75,7 @@ namespace Solti.Utils.DI
         public string? Name { get; }
 
         /// <summary>
-        /// The (optional) lefiteime of the service.
+        /// The (optional) lifetime of the service.
         /// </summary>
         public Lifetime? Lifetime { get; }
 
