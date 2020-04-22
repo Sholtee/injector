@@ -200,6 +200,7 @@ Remarks:
   }  
   ```
 - You should not register the injector itself it is done by the system automatically.
+- A container should be treated as "sealed" if the `CreateChild()` or `CreateInjector()` method was called on it.
 ### Decorating services
 In practice, it's useful to separate common functionality (e.g. parameter validation) from the implementation. In this library this can be achieved by [proxy pattern](https://en.wikipedia.org/wiki/Proxy_pattern ). In a brief example:
 ```csharp
