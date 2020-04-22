@@ -102,7 +102,7 @@ Registering a service can be done via several patterns (I name them recipes):
         public MyService(Lazy<IService_1> dep1, Lazy<IService_2> dep2) {...}
       }
       ```
-    - Starting from version 1.3.0, you can mark the requested dependency as optional. In this case the system won't throw if the dependency can not be found:
+    - You can mark the requested dependency as optional. In this case the system won't throw if the dependency can not be found:
       ```csharp 
       public class MyService: IMyService
       {
@@ -170,7 +170,6 @@ Registering a service can be done via several patterns (I name them recipes):
 		Lifetime.Singleton)
     .Provider<IDbConnection, DbConnectionProvider>(Lifetime.Scoped);
   ```
-  This feature was introduced in version 2.0 of the library.
 - **Instance recipe**: Instances are "predefined values" that can act as a service: 
   ```csharp
   container.Instance<IMyService>(service, releaseOnDispose: true);
@@ -340,7 +339,7 @@ public interface IService
   void DoSomething([NotNull] object arg); 
 }
 ```
-As you can see there is no need for registering the `ParameterValidatorProxy<>` manually. Note that this feature is available since version 2.0.0 of the library.
+As you can see there is no need for registering the `ParameterValidatorProxy<>` manually.
 ### Auto config
 There are some attributes to annotate services for "auto config" e.g.:
 - ```csharp
@@ -356,7 +355,7 @@ using (IInjector injector = container.CreateInjector())
   ...
 }
 ```
-or (starting from version 2.0)
+or
 ```csharp
 await using (IInjector injector = container.CreateInjector())
 {
@@ -387,7 +386,7 @@ IMyService svc = injector.Get<IMyService>("servicename");
     IMyGenericService<string> scv = injector.Get<IMyGenericService<string>>();
   }
   ```
-- To access all services with the given interface you can use the magic `IEnumerable<>` service (starting from version 2.0):
+- To access all services with the given interface you can use the magic `IEnumerable<>` service:
   ```csharp
   // Return all the IMyService instances regardless their names
   IEnumerable<IMyService> svcs = injector.Get<IEnumerable<IMyService>>();
@@ -470,9 +469,9 @@ using (IInjector injector = container.CreateInjector())
 ```
 Leaving the `using` block the `IMyService` instance requested by `MyOtherServiceDependsOnIMyService` won't be released because the holder service still alives (until the declaring container is disposed). This situation is called "captive dependency". To avoid it you have two options:
 - You can declare your consuming service with a `Lifetime` less than or equal to the `Lifetime` of consumed service.
-- Starting from version 1.2.0 you can enable *Strict DI* (disabled by default) in `Injector.config.json` which will instruct the injector to throw if a captive dependency can be found.
+- You can enable *Strict DI* (disabled by default) in `Injector.config.json` which will instruct the injector to throw if a captive dependency can be found.
 ## MS preferred DI
-Microsoft also defines its own [interface](https://docs.microsoft.com/en-us/dotnet/api/system.iserviceprovider?view=netcore-3.1 ) for dependency resolution. Starting from version 1.3.0 this library has built in support for it:
+Microsoft also defines its own [interface](https://docs.microsoft.com/en-us/dotnet/api/system.iserviceprovider?view=netcore-3.1 ) for dependency resolution. This library has built in support for it:
 ```csharp
 using System;
 ...
@@ -481,7 +480,7 @@ using (container.CreateProvider(out IServiceProvider provider))
   var svc = provider.GetService<IMyService>();
 }
 ```
-or (starting from version 2.0)
+or
 ```csharp
 await using (container.CreateProvider(out IServiceProvider provider))
 {
