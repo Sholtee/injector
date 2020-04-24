@@ -14,18 +14,6 @@ namespace Solti.Utils.DI.Internals
     /// </summary>
     internal abstract partial class ProducibleServiceEntry : AbstractServiceEntry, ISupportsProxying, ISupportsSpecialization
     {
-        internal ProducibleServiceEntry(Type @interface, string? name, Lifetime lifetime, IServiceContainer owner) : base(
-            @interface,
-            name,
-            lifetime,
-            null,
-            owner)
-        {
-            //
-            // Os ellenorzi az interface-t es a tulajdonost.
-            //
-        }
-
         protected ProducibleServiceEntry(ProducibleServiceEntry entry, IServiceContainer owner) : base(entry.Interface, entry.Name, entry.Lifetime, entry.Implementation, owner)
         {
             Factory = entry.Factory;
@@ -36,8 +24,12 @@ namespace Solti.Utils.DI.Internals
             //
         }
 
-        protected ProducibleServiceEntry(Type @interface, string? name, Lifetime lifetime, Func<IInjector, Type, object> factory, IServiceContainer owner) : this(@interface, name, lifetime, owner)
+        protected ProducibleServiceEntry(Type @interface, string? name, Lifetime lifetime, Func<IInjector, Type, object> factory, IServiceContainer owner) : base(@interface, name, lifetime, null, owner)
         {
+            //
+            // Os ellenorzi az interface-t es a tulajdonost.
+            //
+
             Factory = Ensure.Parameter.IsNotNull(factory, nameof(factory));
             this.ApplyAspects();
         }
