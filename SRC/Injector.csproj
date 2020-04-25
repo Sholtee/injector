@@ -33,6 +33,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="createconfig.ps1" />
     <None Remove="docfx.json" />
     <None Remove="index.md" />
   </ItemGroup>
