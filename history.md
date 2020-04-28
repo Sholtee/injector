@@ -123,3 +123,5 @@
   - *upgraded:* `ProxyGen.NET` to version 2.0.0
 - 2.0.0:
   - *added:* `IServiceContainerExtensions.Setup()` lookup can be restricted (with patterns)
+- 2.0.1:
+  - *done:* Small optimizations under the hood
