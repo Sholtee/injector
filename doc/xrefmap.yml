@@ -248,6 +248,31 @@ references:
   commentId: T:Solti.Utils.DI.CircularReferenceException
   fullName: Solti.Utils.DI.CircularReferenceException
   nameWithType: CircularReferenceException
+- uid: Solti.Utils.DI.CircularReferenceException.#ctor
+  name: CircularReferenceException()
+  href: Solti.Utils.DI.CircularReferenceException.html#Solti_Utils_DI_CircularReferenceException__ctor
+  commentId: M:Solti.Utils.DI.CircularReferenceException.#ctor
+  fullName: Solti.Utils.DI.CircularReferenceException.CircularReferenceException()
+  nameWithType: CircularReferenceException.CircularReferenceException()
+- uid: Solti.Utils.DI.CircularReferenceException.#ctor(System.String)
+  name: CircularReferenceException(String)
+  href: Solti.Utils.DI.CircularReferenceException.html#Solti_Utils_DI_CircularReferenceException__ctor_System_String_
+  commentId: M:Solti.Utils.DI.CircularReferenceException.#ctor(System.String)
+  fullName: Solti.Utils.DI.CircularReferenceException.CircularReferenceException(System.String)
+  nameWithType: CircularReferenceException.CircularReferenceException(String)
+- uid: Solti.Utils.DI.CircularReferenceException.#ctor(System.String,Exception)
+  name: CircularReferenceException(String, Exception)
+  href: Solti.Utils.DI.CircularReferenceException.html#Solti_Utils_DI_CircularReferenceException__ctor_System_String_Exception_
+  commentId: M:Solti.Utils.DI.CircularReferenceException.#ctor(System.String,Exception)
+  fullName: Solti.Utils.DI.CircularReferenceException.CircularReferenceException(System.String, Exception)
+  nameWithType: CircularReferenceException.CircularReferenceException(String, Exception)
+- uid: Solti.Utils.DI.CircularReferenceException.#ctor*
+  name: CircularReferenceException
+  href: Solti.Utils.DI.CircularReferenceException.html#Solti_Utils_DI_CircularReferenceException__ctor_
+  commentId: Overload:Solti.Utils.DI.CircularReferenceException.#ctor
+  isSpec: "True"
+  fullName: Solti.Utils.DI.CircularReferenceException.CircularReferenceException
+  nameWithType: CircularReferenceException.CircularReferenceException
 - uid: Solti.Utils.DI.IInjector
   name: IInjector
   href: Solti.Utils.DI.IInjector.html
@@ -1390,6 +1415,31 @@ references:
   commentId: T:Solti.Utils.DI.RequestNotAllowedException
   fullName: Solti.Utils.DI.RequestNotAllowedException
   nameWithType: RequestNotAllowedException
+- uid: Solti.Utils.DI.RequestNotAllowedException.#ctor
+  name: RequestNotAllowedException()
+  href: Solti.Utils.DI.RequestNotAllowedException.html#Solti_Utils_DI_RequestNotAllowedException__ctor
+  commentId: M:Solti.Utils.DI.RequestNotAllowedException.#ctor
+  fullName: Solti.Utils.DI.RequestNotAllowedException.RequestNotAllowedException()
+  nameWithType: RequestNotAllowedException.RequestNotAllowedException()
+- uid: Solti.Utils.DI.RequestNotAllowedException.#ctor(System.String)
+  name: RequestNotAllowedException(String)
+  href: Solti.Utils.DI.RequestNotAllowedException.html#Solti_Utils_DI_RequestNotAllowedException__ctor_System_String_
+  commentId: M:Solti.Utils.DI.RequestNotAllowedException.#ctor(System.String)
+  fullName: Solti.Utils.DI.RequestNotAllowedException.RequestNotAllowedException(System.String)
+  nameWithType: RequestNotAllowedException.RequestNotAllowedException(String)
+- uid: Solti.Utils.DI.RequestNotAllowedException.#ctor(System.String,Exception)
+  name: RequestNotAllowedException(String, Exception)
+  href: Solti.Utils.DI.RequestNotAllowedException.html#Solti_Utils_DI_RequestNotAllowedException__ctor_System_String_Exception_
+  commentId: M:Solti.Utils.DI.RequestNotAllowedException.#ctor(System.String,Exception)
+  fullName: Solti.Utils.DI.RequestNotAllowedException.RequestNotAllowedException(System.String, Exception)
+  nameWithType: RequestNotAllowedException.RequestNotAllowedException(String, Exception)
+- uid: Solti.Utils.DI.RequestNotAllowedException.#ctor*
+  name: RequestNotAllowedException
+  href: Solti.Utils.DI.RequestNotAllowedException.html#Solti_Utils_DI_RequestNotAllowedException__ctor_
+  commentId: Overload:Solti.Utils.DI.RequestNotAllowedException.#ctor
+  isSpec: "True"
+  fullName: Solti.Utils.DI.RequestNotAllowedException.RequestNotAllowedException
+  nameWithType: RequestNotAllowedException.RequestNotAllowedException
 - uid: Solti.Utils.DI.ServiceActivatorAttribute
   name: ServiceActivatorAttribute
   href: Solti.Utils.DI.ServiceActivatorAttribute.html
@@ -1402,6 +1452,31 @@ references:
   commentId: T:Solti.Utils.DI.ServiceAlreadyRegisteredException
   fullName: Solti.Utils.DI.ServiceAlreadyRegisteredException
   nameWithType: ServiceAlreadyRegisteredException
+- uid: Solti.Utils.DI.ServiceAlreadyRegisteredException.#ctor
+  name: ServiceAlreadyRegisteredException()
+  href: Solti.Utils.DI.ServiceAlreadyRegisteredException.html#Solti_Utils_DI_ServiceAlreadyRegisteredException__ctor
+  commentId: M:Solti.Utils.DI.ServiceAlreadyRegisteredException.#ctor
+  fullName: Solti.Utils.DI.ServiceAlreadyRegisteredException.ServiceAlreadyRegisteredException()
+  nameWithType: ServiceAlreadyRegisteredException.ServiceAlreadyRegisteredException()
+- uid: Solti.Utils.DI.ServiceAlreadyRegisteredException.#ctor(System.String)
+  name: ServiceAlreadyRegisteredException(String)
+  href: Solti.Utils.DI.ServiceAlreadyRegisteredException.html#Solti_Utils_DI_ServiceAlreadyRegisteredException__ctor_System_String_
+  commentId: M:Solti.Utils.DI.ServiceAlreadyRegisteredException.#ctor(System.String)
+  fullName: Solti.Utils.DI.ServiceAlreadyRegisteredException.ServiceAlreadyRegisteredException(System.String)
+  nameWithType: ServiceAlreadyRegisteredException.ServiceAlreadyRegisteredException(String)
+- uid: Solti.Utils.DI.ServiceAlreadyRegisteredException.#ctor(System.String,Exception)
+  name: ServiceAlreadyRegisteredException(String, Exception)
+  href: Solti.Utils.DI.ServiceAlreadyRegisteredException.html#Solti_Utils_DI_ServiceAlreadyRegisteredException__ctor_System_String_Exception_
+  commentId: M:Solti.Utils.DI.ServiceAlreadyRegisteredException.#ctor(System.String,Exception)
+  fullName: Solti.Utils.DI.ServiceAlreadyRegisteredException.ServiceAlreadyRegisteredException(System.String, Exception)
+  nameWithType: ServiceAlreadyRegisteredException.ServiceAlreadyRegisteredException(String, Exception)
+- uid: Solti.Utils.DI.ServiceAlreadyRegisteredException.#ctor*
+  name: ServiceAlreadyRegisteredException
+  href: Solti.Utils.DI.ServiceAlreadyRegisteredException.html#Solti_Utils_DI_ServiceAlreadyRegisteredException__ctor_
+  commentId: Overload:Solti.Utils.DI.ServiceAlreadyRegisteredException.#ctor
+  isSpec: "True"
+  fullName: Solti.Utils.DI.ServiceAlreadyRegisteredException.ServiceAlreadyRegisteredException
+  nameWithType: ServiceAlreadyRegisteredException.ServiceAlreadyRegisteredException
 - uid: Solti.Utils.DI.ServiceAttribute
   name: ServiceAttribute
   href: Solti.Utils.DI.ServiceAttribute.html
@@ -1636,6 +1711,31 @@ references:
   commentId: T:Solti.Utils.DI.ServiceNotFoundException
   fullName: Solti.Utils.DI.ServiceNotFoundException
   nameWithType: ServiceNotFoundException
+- uid: Solti.Utils.DI.ServiceNotFoundException.#ctor
+  name: ServiceNotFoundException()
+  href: Solti.Utils.DI.ServiceNotFoundException.html#Solti_Utils_DI_ServiceNotFoundException__ctor
+  commentId: M:Solti.Utils.DI.ServiceNotFoundException.#ctor
+  fullName: Solti.Utils.DI.ServiceNotFoundException.ServiceNotFoundException()
+  nameWithType: ServiceNotFoundException.ServiceNotFoundException()
+- uid: Solti.Utils.DI.ServiceNotFoundException.#ctor(System.String)
+  name: ServiceNotFoundException(String)
+  href: Solti.Utils.DI.ServiceNotFoundException.html#Solti_Utils_DI_ServiceNotFoundException__ctor_System_String_
+  commentId: M:Solti.Utils.DI.ServiceNotFoundException.#ctor(System.String)
+  fullName: Solti.Utils.DI.ServiceNotFoundException.ServiceNotFoundException(System.String)
+  nameWithType: ServiceNotFoundException.ServiceNotFoundException(String)
+- uid: Solti.Utils.DI.ServiceNotFoundException.#ctor(System.String,Exception)
+  name: ServiceNotFoundException(String, Exception)
+  href: Solti.Utils.DI.ServiceNotFoundException.html#Solti_Utils_DI_ServiceNotFoundException__ctor_System_String_Exception_
+  commentId: M:Solti.Utils.DI.ServiceNotFoundException.#ctor(System.String,Exception)
+  fullName: Solti.Utils.DI.ServiceNotFoundException.ServiceNotFoundException(System.String, Exception)
+  nameWithType: ServiceNotFoundException.ServiceNotFoundException(String, Exception)
+- uid: Solti.Utils.DI.ServiceNotFoundException.#ctor*
+  name: ServiceNotFoundException
+  href: Solti.Utils.DI.ServiceNotFoundException.html#Solti_Utils_DI_ServiceNotFoundException__ctor_
+  commentId: Overload:Solti.Utils.DI.ServiceNotFoundException.#ctor
+  isSpec: "True"
+  fullName: Solti.Utils.DI.ServiceNotFoundException.ServiceNotFoundException
+  nameWithType: ServiceNotFoundException.ServiceNotFoundException
 - uid: Solti.Utils.DI.ServiceReference
   name: ServiceReference
   href: Solti.Utils.DI.ServiceReference.html
