@@ -4,7 +4,6 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
-using System.Diagnostics.CodeAnalysis;
 
 namespace Solti.Utils.DI
 {
@@ -14,14 +13,34 @@ namespace Solti.Utils.DI
     /// <summary>
     /// The exception that is thrown when a service has already been registered.
     /// </summary>
-    [SuppressMessage("Design", "CA1032:Implement standard exception constructors", Justification = "Key must be passed.")]
     public sealed class ServiceAlreadyRegisteredException: Exception
     {
         /// <summary>
         /// Creates a new <see cref="ServiceAlreadyRegisteredException"/> instance.
         /// </summary>
         /// <param name="key">The "id" of the service.</param>
-        internal ServiceAlreadyRegisteredException(IServiceId key): base(string.Format(Resources.Culture, Resources.ALREADY_REGISTERED, key.FriendlyName()))
+        internal ServiceAlreadyRegisteredException(IServiceId key): this(string.Format(Resources.Culture, Resources.ALREADY_REGISTERED, key.FriendlyName()))
+        {
+        }
+
+        /// <summary>
+        /// Creates a new <see cref="ServiceAlreadyRegisteredException"/> instance.
+        /// </summary>
+        public ServiceAlreadyRegisteredException()
+        {
+        }
+
+        /// <summary>
+        /// Creates a new <see cref="ServiceAlreadyRegisteredException"/> instance.
+        /// </summary>
+        public ServiceAlreadyRegisteredException(string message) : this(message, null!)
+        {
+        }
+
+        /// <summary>
+        /// Creates a new <see cref="ServiceAlreadyRegisteredException"/> instance.
+        /// </summary>
+        public ServiceAlreadyRegisteredException(string message, Exception innerException) : base(message, innerException)
         {
         }
     }
