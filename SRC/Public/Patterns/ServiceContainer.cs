@@ -119,6 +119,7 @@ namespace Solti.Utils.DI
             }
 
             Assert(existing.IsGeneric());
+            Assert(mode.HasFlag(QueryModes.AllowSpecialization));
 
             using (FLock.AcquireWriterLock())
             {
@@ -139,8 +140,6 @@ namespace Solti.Utils.DI
 
                 if (existing.Owner != this)
                 {
-                    Assert(mode.HasFlag(QueryModes.AllowSpecialization));
-
                     specialized = existing
                         .Owner
                         .Get(serviceInterface, name, mode);
