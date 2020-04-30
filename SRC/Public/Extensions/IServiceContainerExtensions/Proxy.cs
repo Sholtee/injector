@@ -35,24 +35,12 @@ namespace Solti.Utils.DI
 
             AbstractServiceEntry entry = self.Get(iface, name, QueryModes.AllowSpecialization | QueryModes.ThrowOnError)!;
 
-            if (entry.Owner == self && entry is ISupportsProxying setter && setter.Factory != null)
-            {
-                //
-                // Bovitjuk a hivasi lancot a decorator-al.
-                //
+            if (entry.Owner != self)
+                throw new InvalidOperationException(Resources.CANT_PROXY);
 
-                Func<IInjector, Type, object> oldFactory = setter.Factory;
-                setter.Factory = (injector, type) => decorator(injector, type, oldFactory(injector, type));
+            entry.ApplyProxy(decorator);
 
-                return self;        
-            }
-
-            //
-            // Generikus szerviz, Abstract(), Instance() eseten valamint ha nem ez a 
-            // tarolo birtokolja az adott bejegyzest a metodus nem ertelmezett.
-            //
-
-            throw new InvalidOperationException(Resources.CANT_PROXY);
+            return self;
         }
 
         /// <summary>
