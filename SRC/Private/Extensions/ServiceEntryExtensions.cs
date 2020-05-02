@@ -48,19 +48,24 @@ namespace Solti.Utils.DI.Internals
             }));
         }
 
+        internal static void ApplyAspect(this AbstractServiceEntry entry, AspectAttribute aspect)
+        {
+            switch (aspect.Kind) 
+            {
+                case AspectKind.Service:
+                    entry.ApplyProxy(aspect.GetInterceptor(entry.Interface));
+                    break;
+                case AspectKind.Factory:
+                    entry.ApplyProxy(aspect.GetInterceptor);
+                    break;
+            }                
+        }
+
         public static void ApplyAspects(this AbstractServiceEntry entry) 
         {
             foreach (AspectAttribute aspect in entry.Interface.GetCustomAttributes<AspectAttribute>(inherit: true))
             {
-                switch (aspect.Kind) 
-                {
-                    case AspectKind.Service:
-                        entry.ApplyProxy(aspect.GetInterceptor(entry.Interface));
-                        break;
-                    case AspectKind.Factory:
-                        entry.ApplyProxy(aspect.GetInterceptor);
-                        break;
-                }                
+                entry.ApplyAspect(aspect);
             }
         }
     }
