@@ -5,7 +5,6 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 
 namespace Solti.Utils.DI.Internals
@@ -17,18 +16,8 @@ namespace Solti.Utils.DI.Internals
     {
         public static bool IsGeneric(this AbstractServiceEntry entry) => entry.Interface.IsGenericTypeDefinition;
 
-        public static void ApplyAspects(this AbstractServiceEntry entry) 
+        public static void ApplyProxy(this AbstractServiceEntry entry, Func<IInjector, Type, object, object> decorator) 
         {
-            //
-            // Csak akkor megyunk tovabb ha vannak aspektusok melyeket hasznalni kene.
-            //
-
-            AspectAttribute[] aspects = entry
-                .Interface
-                .GetCustomAttributes<AspectAttribute>(inherit: true)
-                .ToArray();
-            if (!aspects.Any()) return;
-
             if (!(entry is ISupportsProxying setter) || setter.Factory == null)
                 //
                 // Generikus szerviz, Abstract(), Instance() eseten a metodus nem ertelmezett.
@@ -36,31 +25,47 @@ namespace Solti.Utils.DI.Internals
 
                 throw new InvalidOperationException(Resources.CANT_PROXY);
 
-            foreach (AspectAttribute aspect in aspects)
+            //
+            // Bovitjuk a hivasi lancot a decorator-al.
+            //
+
+            Func<IInjector, Type, object> oldFactory = setter.Factory;
+
+            setter.Factory = (injector, type) => decorator(injector, type, oldFactory(injector, type));
+        }
+
+        public static void ApplyProxy(this AbstractServiceEntry entry, Type proxyType)
+        {
+            //
+            // Proxy tipus letrehozasa (GetGeneratedProxyType() validal is).
+            //
+
+            proxyType = ProxyFactory.GetGeneratedProxyType(entry.Interface, proxyType);
+
+            entry.ApplyProxy((injector, iface, instance) => injector.Instantiate(proxyType, new Dictionary<string, object>
             {
-                //
-                // Proxy tipus letrehozasa (GetGeneratedProxyType() validal is).
-                //
+                {"target", instance}
+            }));
+        }
 
-                Type proxyType = ProxyFactory.GetGeneratedProxyType(entry.Interface, aspect.GetInterceptor(entry.Interface));
+        internal static void ApplyAspect(this AbstractServiceEntry entry, AspectAttribute aspect)
+        {
+            switch (aspect.Kind) 
+            {
+                case AspectKind.Service:
+                    entry.ApplyProxy(aspect.GetInterceptor(entry.Interface));
+                    break;
+                case AspectKind.Factory:
+                    entry.ApplyProxy(aspect.GetInterceptor);
+                    break;
+            }                
+        }
 
-                //
-                // Bovitjuk a hivasi lancot a decorator-al.
-                //
-
-                Func<IInjector, Type, object> oldFactory = setter.Factory;
-
-                setter.Factory = Decorator;
-
-                object Decorator(IInjector injector, Type iface) 
-                {
-                    object instance = oldFactory(injector, iface);
-
-                    return injector.Instantiate(proxyType, new Dictionary<string, object>
-                    {
-                        {"target", instance}
-                    });
-                }
+        public static void ApplyAspects(this AbstractServiceEntry entry) 
+        {
+            foreach (AspectAttribute aspect in entry.Interface.GetCustomAttributes<AspectAttribute>(inherit: true))
+            {
+                entry.ApplyAspect(aspect);
             }
         }
     }

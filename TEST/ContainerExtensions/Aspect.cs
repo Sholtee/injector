@@ -93,6 +93,54 @@ namespace Solti.Utils.DI.Container.Tests
         [Test]
         public void Aspects_ShouldThrowOnInstances() =>
             Assert.Throws<InvalidOperationException>(() => Container.Instance<IMyService>(new MyService()), Resources.CANT_PROXY);
+
+        [Test]
+        public void Aspects_AspectAttributeMustBeOverridden() 
+        {
+            var attr = new AspectWithoutImplementation();
+            Assert.Throws<NotImplementedException>(() => attr.GetInterceptor(null));
+            Assert.Throws<NotImplementedException>(() => attr.GetInterceptor(null, null, null));
+        }
+
+        [Test]
+        public void Aspects_ApplyAspectShouldBeControlledByAttributeKind([Values(AspectKind.Service, AspectKind.Factory)] AspectKind kind) 
+        {
+            Container.Factory<IMyService>(i => new MyService());
+
+            AbstractServiceEntry entry = Container.Get<IMyService>();
+
+            var mockAspect = new Mock<AspectWithoutImplementation>(MockBehavior.Strict, kind);
+
+            switch (kind)
+            {
+                case AspectKind.Service:
+                    mockAspect
+                        .Setup(aspect => aspect.GetInterceptor(It.Is<Type>(t => t == typeof(IMyService))))
+                        .Returns(typeof(InterfaceInterceptor<IMyService>));
+                    entry.ApplyAspect(mockAspect.Object);
+
+                    mockAspect.Verify(aspect => aspect.GetInterceptor(It.Is<Type>(t => t == typeof(IMyService))), Times.Once);
+                    Assert.That(entry.Factory.Invoke(new Mock<IInjector>(MockBehavior.Strict).Object, entry.Interface), Is.InstanceOf<InterfaceInterceptor<IMyService>>());
+
+                    break;
+                case AspectKind.Factory:
+                    var decorated = new MyService();
+                    mockAspect
+                        .Setup(aspect => aspect.GetInterceptor(It.IsAny<IInjector>(), It.Is<Type>(t => t == typeof(IMyService)), It.IsAny<IMyService>()))
+                        .Returns(decorated);
+                    entry.ApplyAspect(mockAspect.Object);
+                  
+                    Assert.That(entry.Factory.Invoke(new Mock<IInjector>(MockBehavior.Strict).Object, entry.Interface), Is.SameAs(decorated));
+                    mockAspect.Verify(aspect => aspect.GetInterceptor(It.IsAny<IInjector>(), It.Is<Type>(t => t == typeof(IMyService)), It.IsAny<IMyService>()), Times.Once);
+
+                    break;
+            }
+        }
+    }
+
+    public class AspectWithoutImplementation : AspectAttribute 
+    {
+        public AspectWithoutImplementation(AspectKind kind = AspectKind.Service) => Kind = kind;
     }
 
     [DummyAspect]
