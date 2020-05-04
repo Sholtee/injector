@@ -229,6 +229,12 @@ references:
   commentId: T:Solti.Utils.DI.AspectAttribute
   fullName: Solti.Utils.DI.AspectAttribute
   nameWithType: AspectAttribute
+- uid: Solti.Utils.DI.AspectAttribute.GetInterceptor(Solti.Utils.DI.IInjector,Type,System.Object)
+  name: GetInterceptor(IInjector, Type, Object)
+  href: Solti.Utils.DI.AspectAttribute.html#Solti_Utils_DI_AspectAttribute_GetInterceptor_Solti_Utils_DI_IInjector_Type_System_Object_
+  commentId: M:Solti.Utils.DI.AspectAttribute.GetInterceptor(Solti.Utils.DI.IInjector,Type,System.Object)
+  fullName: Solti.Utils.DI.AspectAttribute.GetInterceptor(Solti.Utils.DI.IInjector, Type, System.Object)
+  nameWithType: AspectAttribute.GetInterceptor(IInjector, Type, Object)
 - uid: Solti.Utils.DI.AspectAttribute.GetInterceptor(Type)
   name: GetInterceptor(Type)
   href: Solti.Utils.DI.AspectAttribute.html#Solti_Utils_DI_AspectAttribute_GetInterceptor_Type_
@@ -242,6 +248,37 @@ references:
   isSpec: "True"
   fullName: Solti.Utils.DI.AspectAttribute.GetInterceptor
   nameWithType: AspectAttribute.GetInterceptor
+- uid: Solti.Utils.DI.AspectAttribute.Kind
+  name: Kind
+  href: Solti.Utils.DI.AspectAttribute.html#Solti_Utils_DI_AspectAttribute_Kind
+  commentId: P:Solti.Utils.DI.AspectAttribute.Kind
+  fullName: Solti.Utils.DI.AspectAttribute.Kind
+  nameWithType: AspectAttribute.Kind
+- uid: Solti.Utils.DI.AspectAttribute.Kind*
+  name: Kind
+  href: Solti.Utils.DI.AspectAttribute.html#Solti_Utils_DI_AspectAttribute_Kind_
+  commentId: Overload:Solti.Utils.DI.AspectAttribute.Kind
+  isSpec: "True"
+  fullName: Solti.Utils.DI.AspectAttribute.Kind
+  nameWithType: AspectAttribute.Kind
+- uid: Solti.Utils.DI.AspectKind
+  name: AspectKind
+  href: Solti.Utils.DI.AspectKind.html
+  commentId: T:Solti.Utils.DI.AspectKind
+  fullName: Solti.Utils.DI.AspectKind
+  nameWithType: AspectKind
+- uid: Solti.Utils.DI.AspectKind.Factory
+  name: Factory
+  href: Solti.Utils.DI.AspectKind.html#Solti_Utils_DI_AspectKind_Factory
+  commentId: F:Solti.Utils.DI.AspectKind.Factory
+  fullName: Solti.Utils.DI.AspectKind.Factory
+  nameWithType: AspectKind.Factory
+- uid: Solti.Utils.DI.AspectKind.Service
+  name: Service
+  href: Solti.Utils.DI.AspectKind.html#Solti_Utils_DI_AspectKind_Service
+  commentId: F:Solti.Utils.DI.AspectKind.Service
+  fullName: Solti.Utils.DI.AspectKind.Service
+  nameWithType: AspectKind.Service
 - uid: Solti.Utils.DI.CircularReferenceException
   name: CircularReferenceException
   href: Solti.Utils.DI.CircularReferenceException.html

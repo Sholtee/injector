@@ -56,16 +56,97 @@
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public abstract class AspectAttribute : Attribute</code></pre>
   </div>
-  <h3 id="methods">Methods
+  <h3 id="properties">Properties
   </h3>
-  <a id="Solti_Utils_DI_AspectAttribute_GetInterceptor_" data-uid="Solti.Utils.DI.AspectAttribute.GetInterceptor*"></a>
-  <h4 id="Solti_Utils_DI_AspectAttribute_GetInterceptor_Type_" data-uid="Solti.Utils.DI.AspectAttribute.GetInterceptor(Type)">GetInterceptor(Type)</h4>
-  <div class="markdown level1 summary"><p>Returns the <see cref="!:InterfaceInterceptor&lt;TInterface>"></see> to the specified interface.</p>
+  <a id="Solti_Utils_DI_AspectAttribute_Kind_" data-uid="Solti.Utils.DI.AspectAttribute.Kind*"></a>
+  <h4 id="Solti_Utils_DI_AspectAttribute_Kind" data-uid="Solti.Utils.DI.AspectAttribute.Kind">Kind</h4>
+  <div class="markdown level1 summary"><p>The kind of this aspect.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract Type GetInterceptor(Type iface)</code></pre>
+    <pre><code class="lang-csharp hljs">public AspectKind Kind { get; protected set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.AspectKind.html">AspectKind</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  <a id="Solti_Utils_DI_AspectAttribute_GetInterceptor_" data-uid="Solti.Utils.DI.AspectAttribute.GetInterceptor*"></a>
+  <h4 id="Solti_Utils_DI_AspectAttribute_GetInterceptor_Solti_Utils_DI_IInjector_Type_System_Object_" data-uid="Solti.Utils.DI.AspectAttribute.GetInterceptor(Solti.Utils.DI.IInjector,Type,System.Object)">GetInterceptor(IInjector, Type, Object)</h4>
+  <div class="markdown level1 summary"><p>Decorates the given service instance. </p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual object GetInterceptor(IInjector injector, Type iface, object instance)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.IInjector.html">IInjector</a></td>
+        <td><span class="parametername">injector</span></td>
+        <td><p>The injector on which the service request was initiated.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">Type</span></td>
+        <td><span class="parametername">iface</span></td>
+        <td><p>The service type.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></td>
+        <td><span class="parametername">instance</span></td>
+        <td><p>The service instance to be decorated.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></td>
+        <td><p>The decorated service instance.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Solti_Utils_DI_AspectAttribute_GetInterceptor_" data-uid="Solti.Utils.DI.AspectAttribute.GetInterceptor*"></a>
+  <h4 id="Solti_Utils_DI_AspectAttribute_GetInterceptor_Type_" data-uid="Solti.Utils.DI.AspectAttribute.GetInterceptor(Type)">GetInterceptor(Type)</h4>
+  <div class="markdown level1 summary"><p>Returns a <see cref="!:InterfaceInterceptor&lt;TInterface>"></see> descendant to the specified interface.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual Type GetInterceptor(Type iface)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -100,6 +181,9 @@
       </tr>
     </tbody>
   </table>
+  <h5 id="Solti_Utils_DI_AspectAttribute_GetInterceptor_Type__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>The returned type will be instantiated using the <a class="xref" href="Solti.Utils.DI.IInjectorExtensions.html#Solti_Utils_DI_IInjectorExtensions_Instantiate_Solti_Utils_DI_IInjector_Type_System_Nullable_IReadOnlyDictionary_System_String_System_Object___">Instantiate(IInjector, Type, Nullable&lt;IReadOnlyDictionary&lt;String, Object&gt;&gt;)</a> method.</p>
+</div>
   <h3 id="extensionmethods">Extension Methods</h3>
   <div>
       <a class="xref" href="Solti.Utils.Proxy.ObjectExtensions.html#Solti_Utils_Proxy_ObjectExtensions_Act__1___0_">ObjectExtensions.Act&lt;TTarget&gt;(TTarget)</a>
