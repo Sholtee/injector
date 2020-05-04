@@ -125,3 +125,5 @@
   - *added:* `IServiceContainerExtensions.Setup()` lookup can be restricted (with patterns)
 - 2.0.1:
   - *done:* Small optimizations under the hood
+- 2.1.0:
+  - *done:* Extended AOP support (interceptors can be created by factory function)
