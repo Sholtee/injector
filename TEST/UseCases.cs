@@ -185,7 +185,7 @@ namespace Solti.Utils.DI.UseCases
         }
 
         [ParameterValidatorAspect]
-        [LoggerAspect(typeof(MyLogger))]
+        [MethodInvocationLoggerAspect(typeof(MyLogger))]
         public interface IModuleWithAspects : IModule 
         { 
         }
@@ -374,11 +374,11 @@ namespace Solti.Utils.DI.UseCases
             public void Write(string msg) => LastMessage = msg;
         }
 
-        public class LoggerInterceptor<TInterface> : InterfaceInterceptor<TInterface> where TInterface : class 
+        public class MethodInvocationLoggerInterceptor<TInterface> : InterfaceInterceptor<TInterface> where TInterface : class 
         {
             private ILogger[] Loggers { get; }
 
-            public LoggerInterceptor(TInterface target, ILogger[] loggers): base(target) => Loggers = loggers;
+            public MethodInvocationLoggerInterceptor(TInterface target, ILogger[] loggers): base(target) => Loggers = loggers;
 
             public override object Invoke(MethodInfo method, object[] args, MemberInfo extra)
             {
@@ -392,11 +392,11 @@ namespace Solti.Utils.DI.UseCases
         }
 
         [AttributeUsage(AttributeTargets.Interface, AllowMultiple = false)]
-        public sealed class LoggerAspect : AspectAttribute
+        public sealed class MethodInvocationLoggerAspect : AspectAttribute
         {
             public Type[] Loggers { get; }
             
-            public LoggerAspect(params Type[] loggers) 
+            public MethodInvocationLoggerAspect(params Type[] loggers) 
             {
                 Kind = AspectKind.Factory;
                 Loggers = loggers;
@@ -404,7 +404,7 @@ namespace Solti.Utils.DI.UseCases
 
             public override object GetInterceptor(IInjector injector, Type iface, object instance) => ProxyFactory.Create(
                 iface, 
-                typeof(LoggerInterceptor<>).MakeGenericType(iface), 
+                typeof(MethodInvocationLoggerInterceptor<>).MakeGenericType(iface), 
                 new[] 
                 { 
                     iface, 

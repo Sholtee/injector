@@ -339,7 +339,70 @@ public interface IService
   void DoSomething([NotNull] object arg); 
 }
 ```
-As you can see there is no need for registering the `ParameterValidatorProxy<>` manually.
+As you can see there is no need for registering the `ParameterValidatorProxy<>` manually. You can create parameterized aspects as well:
+```csharp
+// Define the abstract logger
+public interface ILogger 
+{
+  void Write(string msg);
+}
+
+// Define a concrete logger
+public class ConsoleLogger : ILogger
+{
+  public void Write(string msg) => Console.WriteLine(msg);
+}
+
+// Define the interceptor
+public class MethodInvocationLoggerInterceptor<TInterface> : InterfaceInterceptor<TInterface> where TInterface : class 
+{
+  public ILogger[] Loggers { get; }
+
+  public LoggerInterceptor(TInterface target, ILogger[] loggers): base(target) => Loggers = loggers;
+
+  public override object Invoke(MethodInfo method, object[] args, MemberInfo extra)
+  {
+    foreach (ILogger logger in Loggers)
+    {
+	  logger.Write($"{method.Name}({string.Join(", ", args.Select(arg => arg?.ToString() ?? "null"))})");
+    }
+
+    return base.Invoke(method, args, extra);
+  }
+}
+
+// Define the aspect
+[AttributeUsage(AttributeTargets.Interface, AllowMultiple = false)]
+public sealed class MethodInvocationLoggerAspect : AspectAttribute
+{
+  public Type[] Loggers { get; }
+
+  public MethodInvocationLoggerAspect(params Type[] loggers) 
+  {
+    // A factory function will be used (see GetInterceptor() override)
+    Kind = AspectKind.Factory;
+    Loggers = loggers;
+  }
+
+  public override object GetInterceptor(IInjector injector, Type iface, object instance) => ProxyFactory.Create(
+    iface, 
+    typeof(MethodInvocationLoggerInterceptor<>).MakeGenericType(iface), 
+    new[] 
+    { 
+      iface, 
+      typeof(ILogger[])
+    }, 
+    instance, 
+    Loggers.Select(Activator.CreateInstance).Cast<ILogger>().ToArray());
+}
+...
+// Use the aspect
+[MethodInvocationLoggerAspect(typeof(MyLogger))]
+public interface IService
+{
+  ...
+}
+```
 ### Auto config
 There are some attributes to annotate services for "auto config" e.g.:
 - ```csharp
