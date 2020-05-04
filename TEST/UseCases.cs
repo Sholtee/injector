@@ -364,7 +364,7 @@ namespace Solti.Utils.DI.UseCases
 
         public interface ILogger 
         {
-            public void Write(string msg);
+            void Write(string msg);
         }
 
         public class MyLogger : ILogger
