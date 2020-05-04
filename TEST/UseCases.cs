@@ -20,7 +20,6 @@ namespace Solti.Utils.DI.UseCases
 {  
     using Internals;
     using Proxy;
-
     using DI.Tests;
 
     [TestFixture]
@@ -40,7 +39,7 @@ namespace Solti.Utils.DI.UseCases
                 .Setup(conn => conn.Dispose());
 
             Container
-                .Factory<IDbConnection>(i => mockDbConnection.Object, Lifetime.Scoped)
+                .Factory(i => mockDbConnection.Object, Lifetime.Scoped)
                 .Service<IModule, MyModuleUsingDbConnection>(Lifetime.Scoped)
                 .Proxy<IModule, TransactionManager<IModule>>();
 
@@ -159,7 +158,7 @@ namespace Solti.Utils.DI.UseCases
         public void ParameterValidationTest()
         {
             Container
-                .Factory<IModule>(i => new Mock<IModule>().Object)
+                .Factory(i => new Mock<IModule>().Object)
                 .Proxy<IModule, ParameterValidator<IModule>>();
 
             using (IInjector injector = Container.CreateInjector()) 
@@ -174,7 +173,7 @@ namespace Solti.Utils.DI.UseCases
         [Test]
         public void ParameterValidationAspectTest() 
         {
-            Container.Factory<IModuleWithAspects>(i => new Mock<IModuleWithAspects>().Object);
+            Container.Factory(i => new Mock<IModuleWithAspects>().Object);
 
             using (IInjector injector = Container.CreateInjector())
             {
@@ -186,6 +185,7 @@ namespace Solti.Utils.DI.UseCases
         }
 
         [ParameterValidatorAspect]
+        [LoggerAspect(typeof(MyLogger))]
         public interface IModuleWithAspects : IModule 
         { 
         }
@@ -281,25 +281,23 @@ namespace Solti.Utils.DI.UseCases
 
             Container
                 .Provider<IDbConnection, DbConnectionProvider>(Lifetime.Scoped)
-                .Factory<IConfiguration>(
-                    _ => new ConfigurationBuilder().AddJsonStream
+                .Factory<IConfiguration>(_ => new ConfigurationBuilder().AddJsonStream
+                (
+                    new MemoryStream
                     (
-                        new MemoryStream
-                        (
-                            Encoding.ASCII.GetBytes
-                            ($@"
+                        Encoding.ASCII.GetBytes
+                        ($@"
+                            {{
+                                ""Database"":
                                 {{
-                                    ""Database"":
-                                    {{
-                                        ""ConnectionString"": ""{connString}"",
-                                        ""Provider"": ""SqlServer""
-                                    }}
+                                    ""ConnectionString"": ""{connString}"",
+                                    ""Provider"": ""SqlServer""
                                 }}
-
-                            ")
-                        )
-                    ).Build(), 
-                    Lifetime.Singleton);
+                            }}
+                        ")
+                    )
+                ).Build(),
+                Lifetime.Singleton);
 
             using (IInjector injector = Container.CreateInjector()) 
             {
@@ -348,6 +346,72 @@ namespace Solti.Utils.DI.UseCases
 
                 return connection;
             }
+        }
+
+        [Test]
+        public void LoggerAspectTest()
+        {
+            Container.Factory(i => new Mock<IModuleWithAspects>().Object);
+
+            using (IInjector injector = Container.CreateInjector())
+            {
+                IModule module = injector.Get<IModuleWithAspects>();
+
+                Assert.DoesNotThrow(() => module.DoSomething("cica"));
+                Assert.That(MyLogger.LastMessage, Is.EqualTo("DoSomething(cica)"));
+            }
+        }
+
+        public interface ILogger 
+        {
+            public void Write(string msg);
+        }
+
+        public class MyLogger : ILogger
+        {
+            public static string LastMessage { get; private set; }
+
+            public void Write(string msg) => LastMessage = msg;
+        }
+
+        public class LoggerInterceptor<TInterface> : InterfaceInterceptor<TInterface> where TInterface : class 
+        {
+            private ILogger[] Loggers { get; }
+
+            public LoggerInterceptor(TInterface target, ILogger[] loggers): base(target) => Loggers = loggers;
+
+            public override object Invoke(MethodInfo method, object[] args, MemberInfo extra)
+            {
+                foreach (ILogger logger in Loggers)
+                {
+                    logger.Write($"{method.Name}({string.Join(", ", args.Select(arg => arg?.ToString() ?? "null"))})");
+                }
+
+                return base.Invoke(method, args, extra);
+            }
+        }
+
+        [AttributeUsage(AttributeTargets.Interface, AllowMultiple = false)]
+        public sealed class LoggerAspect : AspectAttribute
+        {
+            public Type[] Loggers { get; }
+            
+            public LoggerAspect(params Type[] loggers) 
+            {
+                Kind = AspectKind.Factory;
+                Loggers = loggers;
+            }
+
+            public override object GetInterceptor(IInjector injector, Type iface, object instance) => ProxyFactory.Create(
+                iface, 
+                typeof(LoggerInterceptor<>).MakeGenericType(iface), 
+                new[] 
+                { 
+                    iface, 
+                    typeof(ILogger[])
+                }, 
+                instance, 
+                Loggers.Select(Activator.CreateInstance).Cast<ILogger>().ToArray());
         }
     }
 }
