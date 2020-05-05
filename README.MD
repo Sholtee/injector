@@ -11,7 +11,7 @@
 - [Duck typing](https://en.wikipedia.org/wiki/Duck_typing ) (using proxies)
 - Generic service support
 - Container inheritance
-- All common service lifecycles are supported: `Singleton`, `Transient`, `Scoped`, `Instance`
+- All well known service lifecycles are supported: `Singleton`, `Transient`, `Scoped`, `Instance`
 - Configurable constructor selection (using attributes)
 - "Auto" service registration (using attributes)
 - Extensible
@@ -410,7 +410,7 @@ There are some attributes to annotate services for "auto config" e.g.:
   public MyService: IMyService {...}
   ```
 
-After annotating the desired types you just have to simply call the `container.Setup(sourceAssembly)` (extension) method which instructs the system to seek and register all the annotated services from the `sourceAssembly`.
+After annotating the desired types you just have to simply call the [container.Setup(sourceAssembly)](https://sholtee.github.io/injector/doc/Solti.Utils.DI.IServiceContainerExtensions.html#Solti_Utils_DI_IServiceContainerExtensions_Setup_Solti_Utils_DI_IServiceContainer_Assembly_System_String_ ) (extension) method which instructs the system to seek and register all the annotated services from the `sourceAssembly`.
 ### Creating an injector
 ```csharp
 using (IInjector injector = container.CreateInjector())
