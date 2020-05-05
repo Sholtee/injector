@@ -40,9 +40,9 @@
 <pre><code class="lang-ini">
 BenchmarkDotNet=v0.12.0, OS=Windows 10.0.17763.1098 (1809/October2018Update/Redstone5)
 Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
-.NET Core SDK=3.1.200
-  [Host]     : .NET Core 3.1.2 (CoreCLR 4.700.20.6602, CoreFX 4.700.20.6702), X64 RyuJIT
-  DefaultJob : .NET Core 3.1.2 (CoreCLR 4.700.20.6602, CoreFX 4.700.20.6702), X64 RyuJIT
+.NET Core SDK=3.1.201
+  [Host]     : .NET Core 3.1.3 (CoreCLR 4.700.20.11803, CoreFX 4.700.20.12001), X64 RyuJIT
+  DefaultJob : .NET Core 3.1.3 (CoreCLR 4.700.20.11803, CoreFX 4.700.20.12001), X64 RyuJIT
 
 </code></pre><table>
 <thead>
@@ -64,9 +64,9 @@ Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 <td><strong>NonGeneric</strong></td>
 <td><strong>Transient</strong></td>
 <td><strong>Transient</strong></td>
-<td style="text-align:right"><strong>4,093.9 ns</strong></td>
-<td style="text-align:right"><strong>52.79 ns</strong></td>
-<td style="text-align:right"><strong>49.38 ns</strong></td>
+<td style="text-align:right"><strong>4,250.3 ns</strong></td>
+<td style="text-align:right"><strong>92.17 ns</strong></td>
+<td style="text-align:right"><strong>119.85 ns</strong></td>
 <td style="text-align:right"><strong>0.1328</strong></td>
 <td style="text-align:right"><strong>0.0469</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
@@ -76,9 +76,9 @@ Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 <td>Generic</td>
 <td>Transient</td>
 <td>Transient</td>
-<td style="text-align:right">4,069.2 ns</td>
-<td style="text-align:right">35.78 ns</td>
-<td style="text-align:right">33.47 ns</td>
+<td style="text-align:right">4,372.5 ns</td>
+<td style="text-align:right">87.27 ns</td>
+<td style="text-align:right">122.34 ns</td>
 <td style="text-align:right">0.1328</td>
 <td style="text-align:right">0.0547</td>
 <td style="text-align:right">-</td>
@@ -88,11 +88,11 @@ Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 <td>Lazy</td>
 <td>Transient</td>
 <td>Transient</td>
-<td style="text-align:right">3,505.9 ns</td>
-<td style="text-align:right">63.02 ns</td>
-<td style="text-align:right">52.63 ns</td>
-<td style="text-align:right">0.0898</td>
-<td style="text-align:right">0.0273</td>
+<td style="text-align:right">3,862.4 ns</td>
+<td style="text-align:right">74.28 ns</td>
+<td style="text-align:right">79.48 ns</td>
+<td style="text-align:right">0.0859</td>
+<td style="text-align:right">0.0234</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">1654 B</td>
 </tr>
@@ -100,9 +100,9 @@ Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 <td>Enumerable</td>
 <td>Transient</td>
 <td>Transient</td>
-<td style="text-align:right">615.4 ns</td>
-<td style="text-align:right">5.44 ns</td>
-<td style="text-align:right">5.09 ns</td>
+<td style="text-align:right">627.2 ns</td>
+<td style="text-align:right">11.72 ns</td>
+<td style="text-align:right">12.04 ns</td>
 <td style="text-align:right">0.0225</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
@@ -112,9 +112,9 @@ Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 <td><strong>NonGeneric</strong></td>
 <td><strong>Transient</strong></td>
 <td><strong>Scoped</strong></td>
-<td style="text-align:right"><strong>551.8 ns</strong></td>
-<td style="text-align:right"><strong>6.41 ns</strong></td>
-<td style="text-align:right"><strong>6.00 ns</strong></td>
+<td style="text-align:right"><strong>559.4 ns</strong></td>
+<td style="text-align:right"><strong>9.84 ns</strong></td>
+<td style="text-align:right"><strong>9.20 ns</strong></td>
 <td style="text-align:right"><strong>0.0225</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
@@ -124,9 +124,9 @@ Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 <td>Generic</td>
 <td>Transient</td>
 <td>Scoped</td>
-<td style="text-align:right">583.1 ns</td>
-<td style="text-align:right">10.17 ns</td>
-<td style="text-align:right">9.51 ns</td>
+<td style="text-align:right">581.2 ns</td>
+<td style="text-align:right">9.94 ns</td>
+<td style="text-align:right">9.29 ns</td>
 <td style="text-align:right">0.0225</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
@@ -136,9 +136,9 @@ Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 <td>Lazy</td>
 <td>Transient</td>
 <td>Scoped</td>
-<td style="text-align:right">555.7 ns</td>
-<td style="text-align:right">6.99 ns</td>
-<td style="text-align:right">6.20 ns</td>
+<td style="text-align:right">575.6 ns</td>
+<td style="text-align:right">11.34 ns</td>
+<td style="text-align:right">17.98 ns</td>
 <td style="text-align:right">0.0225</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
@@ -148,9 +148,9 @@ Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 <td>Enumerable</td>
 <td>Transient</td>
 <td>Scoped</td>
-<td style="text-align:right">619.4 ns</td>
-<td style="text-align:right">7.26 ns</td>
-<td style="text-align:right">6.43 ns</td>
+<td style="text-align:right">613.5 ns</td>
+<td style="text-align:right">8.68 ns</td>
+<td style="text-align:right">8.12 ns</td>
 <td style="text-align:right">0.0225</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
@@ -160,9 +160,9 @@ Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 <td><strong>NonGeneric</strong></td>
 <td><strong>Transient</strong></td>
 <td><strong>Singleton</strong></td>
-<td style="text-align:right"><strong>545.9 ns</strong></td>
-<td style="text-align:right"><strong>7.86 ns</strong></td>
-<td style="text-align:right"><strong>7.36 ns</strong></td>
+<td style="text-align:right"><strong>529.2 ns</strong></td>
+<td style="text-align:right"><strong>9.40 ns</strong></td>
+<td style="text-align:right"><strong>8.79 ns</strong></td>
 <td style="text-align:right"><strong>0.0225</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
@@ -172,9 +172,9 @@ Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 <td>Generic</td>
 <td>Transient</td>
 <td>Singleton</td>
-<td style="text-align:right">539.0 ns</td>
-<td style="text-align:right">4.74 ns</td>
-<td style="text-align:right">4.43 ns</td>
+<td style="text-align:right">528.3 ns</td>
+<td style="text-align:right">8.76 ns</td>
+<td style="text-align:right">7.77 ns</td>
 <td style="text-align:right">0.0225</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
@@ -184,9 +184,9 @@ Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 <td>Lazy</td>
 <td>Transient</td>
 <td>Singleton</td>
-<td style="text-align:right">541.0 ns</td>
-<td style="text-align:right">3.36 ns</td>
-<td style="text-align:right">2.98 ns</td>
+<td style="text-align:right">543.0 ns</td>
+<td style="text-align:right">7.16 ns</td>
+<td style="text-align:right">6.70 ns</td>
 <td style="text-align:right">0.0225</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
@@ -196,9 +196,9 @@ Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 <td>Enumerable</td>
 <td>Transient</td>
 <td>Singleton</td>
-<td style="text-align:right">611.7 ns</td>
-<td style="text-align:right">4.96 ns</td>
-<td style="text-align:right">4.14 ns</td>
+<td style="text-align:right">609.2 ns</td>
+<td style="text-align:right">5.68 ns</td>
+<td style="text-align:right">4.43 ns</td>
 <td style="text-align:right">0.0225</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
@@ -208,9 +208,9 @@ Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 <td><strong>NonGeneric</strong></td>
 <td><strong>Scoped</strong></td>
 <td><strong>Transient</strong></td>
-<td style="text-align:right"><strong>2,599.0 ns</strong></td>
-<td style="text-align:right"><strong>22.78 ns</strong></td>
-<td style="text-align:right"><strong>21.31 ns</strong></td>
+<td style="text-align:right"><strong>2,483.7 ns</strong></td>
+<td style="text-align:right"><strong>44.78 ns</strong></td>
+<td style="text-align:right"><strong>41.88 ns</strong></td>
 <td style="text-align:right"><strong>0.0898</strong></td>
 <td style="text-align:right"><strong>0.0234</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
@@ -220,9 +220,9 @@ Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 <td>Generic</td>
 <td>Scoped</td>
 <td>Transient</td>
-<td style="text-align:right">2,591.7 ns</td>
-<td style="text-align:right">23.24 ns</td>
-<td style="text-align:right">20.60 ns</td>
+<td style="text-align:right">2,553.4 ns</td>
+<td style="text-align:right">49.24 ns</td>
+<td style="text-align:right">52.69 ns</td>
 <td style="text-align:right">0.0898</td>
 <td style="text-align:right">0.0234</td>
 <td style="text-align:right">-</td>
@@ -232,9 +232,9 @@ Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 <td>Lazy</td>
 <td>Scoped</td>
 <td>Transient</td>
-<td style="text-align:right">3,411.9 ns</td>
-<td style="text-align:right">24.41 ns</td>
-<td style="text-align:right">22.83 ns</td>
+<td style="text-align:right">3,438.8 ns</td>
+<td style="text-align:right">66.22 ns</td>
+<td style="text-align:right">70.86 ns</td>
 <td style="text-align:right">0.0898</td>
 <td style="text-align:right">0.0273</td>
 <td style="text-align:right">-</td>
@@ -244,9 +244,9 @@ Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 <td>Enumerable</td>
 <td>Scoped</td>
 <td>Transient</td>
-<td style="text-align:right">618.6 ns</td>
-<td style="text-align:right">12.15 ns</td>
-<td style="text-align:right">13.50 ns</td>
+<td style="text-align:right">638.3 ns</td>
+<td style="text-align:right">12.25 ns</td>
+<td style="text-align:right">16.76 ns</td>
 <td style="text-align:right">0.0225</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
@@ -256,9 +256,9 @@ Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 <td><strong>NonGeneric</strong></td>
 <td><strong>Scoped</strong></td>
 <td><strong>Scoped</strong></td>
-<td style="text-align:right"><strong>566.0 ns</strong></td>
-<td style="text-align:right"><strong>10.68 ns</strong></td>
-<td style="text-align:right"><strong>9.47 ns</strong></td>
+<td style="text-align:right"><strong>573.4 ns</strong></td>
+<td style="text-align:right"><strong>11.27 ns</strong></td>
+<td style="text-align:right"><strong>13.41 ns</strong></td>
 <td style="text-align:right"><strong>0.0225</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
@@ -268,9 +268,9 @@ Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 <td>Generic</td>
 <td>Scoped</td>
 <td>Scoped</td>
-<td style="text-align:right">572.5 ns</td>
-<td style="text-align:right">9.36 ns</td>
-<td style="text-align:right">8.30 ns</td>
+<td style="text-align:right">592.3 ns</td>
+<td style="text-align:right">7.06 ns</td>
+<td style="text-align:right">6.60 ns</td>
 <td style="text-align:right">0.0225</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
@@ -280,9 +280,9 @@ Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 <td>Lazy</td>
 <td>Scoped</td>
 <td>Scoped</td>
-<td style="text-align:right">568.3 ns</td>
-<td style="text-align:right">7.85 ns</td>
-<td style="text-align:right">7.35 ns</td>
+<td style="text-align:right">578.6 ns</td>
+<td style="text-align:right">11.45 ns</td>
+<td style="text-align:right">12.25 ns</td>
 <td style="text-align:right">0.0225</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
@@ -292,9 +292,9 @@ Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 <td>Enumerable</td>
 <td>Scoped</td>
 <td>Scoped</td>
-<td style="text-align:right">614.6 ns</td>
-<td style="text-align:right">7.75 ns</td>
-<td style="text-align:right">7.25 ns</td>
+<td style="text-align:right">626.9 ns</td>
+<td style="text-align:right">8.81 ns</td>
+<td style="text-align:right">7.81 ns</td>
 <td style="text-align:right">0.0225</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
@@ -304,9 +304,9 @@ Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 <td><strong>NonGeneric</strong></td>
 <td><strong>Scoped</strong></td>
 <td><strong>Singleton</strong></td>
-<td style="text-align:right"><strong>549.8 ns</strong></td>
-<td style="text-align:right"><strong>10.64 ns</strong></td>
-<td style="text-align:right"><strong>10.45 ns</strong></td>
+<td style="text-align:right"><strong>542.3 ns</strong></td>
+<td style="text-align:right"><strong>6.35 ns</strong></td>
+<td style="text-align:right"><strong>5.30 ns</strong></td>
 <td style="text-align:right"><strong>0.0225</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
@@ -316,9 +316,9 @@ Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 <td>Generic</td>
 <td>Scoped</td>
 <td>Singleton</td>
-<td style="text-align:right">553.0 ns</td>
-<td style="text-align:right">12.27 ns</td>
-<td style="text-align:right">12.60 ns</td>
+<td style="text-align:right">554.9 ns</td>
+<td style="text-align:right">10.11 ns</td>
+<td style="text-align:right">9.46 ns</td>
 <td style="text-align:right">0.0225</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
@@ -328,9 +328,9 @@ Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 <td>Lazy</td>
 <td>Scoped</td>
 <td>Singleton</td>
-<td style="text-align:right">539.2 ns</td>
-<td style="text-align:right">10.21 ns</td>
-<td style="text-align:right">10.03 ns</td>
+<td style="text-align:right">549.1 ns</td>
+<td style="text-align:right">10.66 ns</td>
+<td style="text-align:right">9.97 ns</td>
 <td style="text-align:right">0.0225</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
@@ -340,9 +340,9 @@ Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 <td>Enumerable</td>
 <td>Scoped</td>
 <td>Singleton</td>
-<td style="text-align:right">629.2 ns</td>
-<td style="text-align:right">11.77 ns</td>
-<td style="text-align:right">11.56 ns</td>
+<td style="text-align:right">622.5 ns</td>
+<td style="text-align:right">12.14 ns</td>
+<td style="text-align:right">14.91 ns</td>
 <td style="text-align:right">0.0225</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
@@ -352,11 +352,11 @@ Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 <td><strong>NonGeneric</strong></td>
 <td><strong>Singleton</strong></td>
 <td><strong>Transient</strong></td>
-<td style="text-align:right"><strong>2,499.4 ns</strong></td>
-<td style="text-align:right"><strong>36.93 ns</strong></td>
-<td style="text-align:right"><strong>34.54 ns</strong></td>
+<td style="text-align:right"><strong>2,661.9 ns</strong></td>
+<td style="text-align:right"><strong>70.29 ns</strong></td>
+<td style="text-align:right"><strong>62.31 ns</strong></td>
 <td style="text-align:right"><strong>0.0898</strong></td>
-<td style="text-align:right"><strong>0.0234</strong></td>
+<td style="text-align:right"><strong>0.0195</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>1670 B</strong></td>
 </tr>
@@ -364,9 +364,9 @@ Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 <td>Generic</td>
 <td>Singleton</td>
 <td>Transient</td>
-<td style="text-align:right">2,535.7 ns</td>
-<td style="text-align:right">31.42 ns</td>
-<td style="text-align:right">27.86 ns</td>
+<td style="text-align:right">2,696.9 ns</td>
+<td style="text-align:right">41.45 ns</td>
+<td style="text-align:right">38.78 ns</td>
 <td style="text-align:right">0.0898</td>
 <td style="text-align:right">0.0195</td>
 <td style="text-align:right">-</td>
@@ -376,9 +376,9 @@ Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 <td>Lazy</td>
 <td>Singleton</td>
 <td>Transient</td>
-<td style="text-align:right">3,353.2 ns</td>
-<td style="text-align:right">49.49 ns</td>
-<td style="text-align:right">46.29 ns</td>
+<td style="text-align:right">3,789.1 ns</td>
+<td style="text-align:right">72.30 ns</td>
+<td style="text-align:right">77.36 ns</td>
 <td style="text-align:right">0.0898</td>
 <td style="text-align:right">0.0273</td>
 <td style="text-align:right">-</td>
@@ -388,9 +388,9 @@ Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 <td>Enumerable</td>
 <td>Singleton</td>
 <td>Transient</td>
-<td style="text-align:right">617.5 ns</td>
-<td style="text-align:right">5.62 ns</td>
-<td style="text-align:right">4.98 ns</td>
+<td style="text-align:right">620.4 ns</td>
+<td style="text-align:right">6.82 ns</td>
+<td style="text-align:right">6.04 ns</td>
 <td style="text-align:right">0.0225</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
@@ -400,9 +400,9 @@ Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 <td><strong>NonGeneric</strong></td>
 <td><strong>Singleton</strong></td>
 <td><strong>Scoped</strong></td>
-<td style="text-align:right"><strong>553.0 ns</strong></td>
-<td style="text-align:right"><strong>9.62 ns</strong></td>
-<td style="text-align:right"><strong>9.00 ns</strong></td>
+<td style="text-align:right"><strong>550.9 ns</strong></td>
+<td style="text-align:right"><strong>10.72 ns</strong></td>
+<td style="text-align:right"><strong>13.56 ns</strong></td>
 <td style="text-align:right"><strong>0.0225</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
@@ -412,9 +412,9 @@ Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 <td>Generic</td>
 <td>Singleton</td>
 <td>Scoped</td>
-<td style="text-align:right">572.8 ns</td>
-<td style="text-align:right">10.70 ns</td>
-<td style="text-align:right">10.01 ns</td>
+<td style="text-align:right">561.0 ns</td>
+<td style="text-align:right">10.62 ns</td>
+<td style="text-align:right">10.91 ns</td>
 <td style="text-align:right">0.0225</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
@@ -424,9 +424,9 @@ Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 <td>Lazy</td>
 <td>Singleton</td>
 <td>Scoped</td>
-<td style="text-align:right">559.5 ns</td>
-<td style="text-align:right">5.95 ns</td>
-<td style="text-align:right">5.56 ns</td>
+<td style="text-align:right">564.7 ns</td>
+<td style="text-align:right">11.11 ns</td>
+<td style="text-align:right">10.91 ns</td>
 <td style="text-align:right">0.0225</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
@@ -436,9 +436,9 @@ Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 <td>Enumerable</td>
 <td>Singleton</td>
 <td>Scoped</td>
-<td style="text-align:right">616.9 ns</td>
-<td style="text-align:right">8.80 ns</td>
-<td style="text-align:right">7.80 ns</td>
+<td style="text-align:right">612.2 ns</td>
+<td style="text-align:right">11.39 ns</td>
+<td style="text-align:right">10.65 ns</td>
 <td style="text-align:right">0.0225</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
@@ -448,9 +448,9 @@ Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 <td><strong>NonGeneric</strong></td>
 <td><strong>Singleton</strong></td>
 <td><strong>Singleton</strong></td>
-<td style="text-align:right"><strong>530.6 ns</strong></td>
-<td style="text-align:right"><strong>8.90 ns</strong></td>
-<td style="text-align:right"><strong>7.89 ns</strong></td>
+<td style="text-align:right"><strong>535.4 ns</strong></td>
+<td style="text-align:right"><strong>8.78 ns</strong></td>
+<td style="text-align:right"><strong>7.78 ns</strong></td>
 <td style="text-align:right"><strong>0.0225</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
@@ -460,9 +460,9 @@ Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 <td>Generic</td>
 <td>Singleton</td>
 <td>Singleton</td>
-<td style="text-align:right">531.2 ns</td>
-<td style="text-align:right">7.95 ns</td>
-<td style="text-align:right">7.44 ns</td>
+<td style="text-align:right">533.6 ns</td>
+<td style="text-align:right">9.52 ns</td>
+<td style="text-align:right">8.90 ns</td>
 <td style="text-align:right">0.0225</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
@@ -472,9 +472,9 @@ Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 <td>Lazy</td>
 <td>Singleton</td>
 <td>Singleton</td>
-<td style="text-align:right">542.8 ns</td>
-<td style="text-align:right">12.74 ns</td>
-<td style="text-align:right">16.56 ns</td>
+<td style="text-align:right">531.9 ns</td>
+<td style="text-align:right">7.38 ns</td>
+<td style="text-align:right">6.90 ns</td>
 <td style="text-align:right">0.0225</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
@@ -484,9 +484,9 @@ Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 <td>Enumerable</td>
 <td>Singleton</td>
 <td>Singleton</td>
-<td style="text-align:right">621.3 ns</td>
-<td style="text-align:right">2.96 ns</td>
-<td style="text-align:right">2.47 ns</td>
+<td style="text-align:right">621.8 ns</td>
+<td style="text-align:right">12.36 ns</td>
+<td style="text-align:right">11.56 ns</td>
 <td style="text-align:right">0.0225</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
