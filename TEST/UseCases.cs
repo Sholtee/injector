@@ -376,30 +376,27 @@ namespace Solti.Utils.DI.UseCases
 
         public class MethodInvocationLoggerInterceptor<TInterface> : InterfaceInterceptor<TInterface> where TInterface : class 
         {
-            private ILogger[] Loggers { get; }
+            private ILogger Logger { get; }
 
-            public MethodInvocationLoggerInterceptor(TInterface target, ILogger[] loggers): base(target) => Loggers = loggers;
+            public MethodInvocationLoggerInterceptor(TInterface target, ILogger logger): base(target) => Logger = logger;
 
             public override object Invoke(MethodInfo method, object[] args, MemberInfo extra)
             {
-                foreach (ILogger logger in Loggers)
-                {
-                    logger.Write($"{method.Name}({string.Join(", ", args.Select(arg => arg?.ToString() ?? "null"))})");
-                }
+                Logger.Write($"{method.Name}({string.Join(", ", args.Select(arg => arg?.ToString() ?? "null"))})");
 
                 return base.Invoke(method, args, extra);
             }
         }
 
-        [AttributeUsage(AttributeTargets.Interface, AllowMultiple = false)]
+        [AttributeUsage(AttributeTargets.Interface, AllowMultiple = true)]
         public sealed class MethodInvocationLoggerAspect : AspectAttribute
         {
-            public Type[] Loggers { get; }
+            public Type Logger { get; }
             
-            public MethodInvocationLoggerAspect(params Type[] loggers) 
+            public MethodInvocationLoggerAspect(Type logger) 
             {
                 Kind = AspectKind.Factory;
-                Loggers = loggers;
+                Logger = logger;
             }
 
             public override object GetInterceptor(IInjector injector, Type iface, object instance) => ProxyFactory.Create(
@@ -408,10 +405,10 @@ namespace Solti.Utils.DI.UseCases
                 new[] 
                 { 
                     iface, 
-                    typeof(ILogger[])
+                    typeof(ILogger)
                 }, 
                 instance, 
-                Loggers.Select(Activator.CreateInstance).Cast<ILogger>().ToArray());
+                Activator.CreateInstance(Logger));
         }
     }
 }

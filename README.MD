@@ -356,32 +356,27 @@ public class ConsoleLogger : ILogger
 // Define the interceptor
 public class MethodInvocationLoggerInterceptor<TInterface> : InterfaceInterceptor<TInterface> where TInterface : class 
 {
-  public ILogger[] Loggers { get; }
+  public ILogger Logger { get; }
 
-  public LoggerInterceptor(TInterface target, ILogger[] loggers): base(target) => Loggers = loggers;
+  public MethodInvocationLoggerInterceptor(TInterface target, ILogger logger): base(target) => Logger = logger;
 
   public override object Invoke(MethodInfo method, object[] args, MemberInfo extra)
   {
-    foreach (ILogger logger in Loggers)
-    {
-	  logger.Write($"{method.Name}({string.Join(", ", args.Select(arg => arg?.ToString() ?? "null"))})");
-    }
-
+    Logger.Write($"{method.Name}({string.Join(", ", args.Select(arg => arg?.ToString() ?? "null"))})");
     return base.Invoke(method, args, extra);
   }
 }
 
 // Define the aspect
-[AttributeUsage(AttributeTargets.Interface, AllowMultiple = false)]
+[AttributeUsage(AttributeTargets.Interface, AllowMultiple = true)]
 public sealed class MethodInvocationLoggerAspect : AspectAttribute
 {
-  public Type[] Loggers { get; }
+  public Type Logger { get; }
 
-  public MethodInvocationLoggerAspect(params Type[] loggers) 
+  public MethodInvocationLoggerAspect(Type logger) 
   {
-    // A factory function will be used (see GetInterceptor() override)
     Kind = AspectKind.Factory;
-    Loggers = loggers;
+    Logger = logger;
   }
 
   public override object GetInterceptor(IInjector injector, Type iface, object instance) => ProxyFactory.Create(
@@ -390,10 +385,10 @@ public sealed class MethodInvocationLoggerAspect : AspectAttribute
     new[] 
     { 
       iface, 
-      typeof(ILogger[])
+      typeof(ILogger)
     }, 
     instance, 
-    Loggers.Select(Activator.CreateInstance).Cast<ILogger>().ToArray());
+    Activator.CreateInstance(Logger));
 }
 ...
 // Use the aspect
