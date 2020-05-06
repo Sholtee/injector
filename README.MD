@@ -397,7 +397,7 @@ public sealed class MethodInvocationLoggerAspect : AspectAttribute
 }
 ...
 // Use the aspect
-[MethodInvocationLoggerAspect(typeof(MyLogger))]
+[MethodInvocationLoggerAspect(typeof(ConsoleLogger))]
 public interface IService
 {
   ...
