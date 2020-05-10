@@ -64,9 +64,12 @@
     </EmbeddedResource>
   </ItemGroup>
 
+  <Import Project="Injector.targets" />
+  
   <ItemGroup>
-    <None Update="Injector.config.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    <None Include="Injector.config.json;Injector.targets">
+      <Pack>true</Pack>
+      <PackagePath>build</PackagePath>
     </None>
   </ItemGroup>
 
