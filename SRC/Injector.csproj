@@ -64,10 +64,10 @@
     </EmbeddedResource>
   </ItemGroup>
 
-  <Import Project="Injector.targets" />
+  <Import Project="Injector.NET.targets" />
   
   <ItemGroup>
-    <None Include="Injector.config.json;Injector.targets">
+    <None Include="Injector.config.json;Injector.NET.targets">
       <Pack>true</Pack>
       <PackagePath>build</PackagePath>
     </None>
