@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Condition="'$(LibVersion)' == ''" Include="..\SRC\Injector.csproj" />
+    <ProjectReference Condition="'$(LibVersion)' == ''" Include="..\SRC\Injector\Injector.csproj" />
   </ItemGroup>
 
 </Project>

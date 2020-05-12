@@ -11,8 +11,8 @@
     <LangVersion>8</LangVersion>
     <Nullable>enable</Nullable>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <OutputPath>..\BIN\$(Configuration)\</OutputPath>
-    <DocumentationFile>..\BIN\Injector.xml</DocumentationFile>
+    <OutputPath>..\..\BIN\$(Configuration)\</OutputPath>
+    <DocumentationFile>..\..\BIN\Injector.xml</DocumentationFile>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -49,6 +49,10 @@
     <PackageReference Include="System.Text.Json" Version="4.*" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Interfaces\Injector.Interfaces.csproj" />
+  </ItemGroup>
+    
   <ItemGroup>
     <Compile Update="Properties\Resources.Designer.cs">
       <DesignTime>True</DesignTime>
