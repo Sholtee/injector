@@ -35,6 +35,8 @@ namespace Solti.Utils.DI.Internals
 
             FUnderlyingEnumerator?.Dispose();
             FLock.ExitReadLock();
+
+            base.Dispose(disposeManaged);
         }
 
         public bool MoveNext() => FUnderlyingEnumerator.MoveNext();
