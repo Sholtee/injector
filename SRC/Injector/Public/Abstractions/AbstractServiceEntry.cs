@@ -184,7 +184,7 @@ namespace Solti.Utils.DI
         protected override async ValueTask AsyncDispose()
         {
             if (Instance != null)
-                await Instance.ReleaseAsync().ConfigureAwait(false);
+                await Instance.ReleaseAsync();
 
             //
             // Nem kell "base" hivas mert az a Dispose()-t hivna.

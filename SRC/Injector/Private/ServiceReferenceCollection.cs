@@ -60,7 +60,7 @@ namespace Solti.Utils.DI.Internals
         protected async override ValueTask AsyncDispose()
         {
             foreach (ServiceReference @ref in FUnderlyingList)
-                await @ref.ReleaseAsync().ConfigureAwait(false);
+                await @ref.ReleaseAsync();
 
             FUnderlyingList.Clear();
 

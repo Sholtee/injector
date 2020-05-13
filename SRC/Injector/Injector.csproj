@@ -11,6 +11,7 @@
     <LangVersion>8</LangVersion>
     <Nullable>enable</Nullable>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <NoWarn>CA2007</NoWarn>
     <OutputPath>..\..\BIN\$(Configuration)\</OutputPath>
     <DocumentationFile>..\..\BIN\Injector.xml</DocumentationFile>
   </PropertyGroup>
@@ -38,7 +39,7 @@
   </ItemGroup>
 
   <ItemGroup Condition="'$(CI)' == ''">
-    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.*">
+    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="3.*">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
