@@ -6,7 +6,7 @@
     <Authors>Denes Solti</Authors>
     <Version>2.1.0</Version>
     <AssemblyName>Injector.Interfaces</AssemblyName>
-    <RootNamespace>Solti.Utils.DI</RootNamespace>
+    <RootNamespace>Solti.Utils.DI.Interfaces</RootNamespace>
     <Configurations>Debug;Release;Perf</Configurations>
     <LangVersion>8</LangVersion>
     <Nullable>enable</Nullable>
@@ -20,6 +20,10 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="1.*" />
   </ItemGroup>
   
   <PropertyGroup>
