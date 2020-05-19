@@ -14,6 +14,8 @@ namespace Solti.Utils.Proxy
     using DI;
     using DI.Internals;
 
+    using Primitives;
+
     /// <summary>
     /// Defines a mechanisms to create proxy objects.
     /// </summary>

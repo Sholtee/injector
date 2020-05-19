@@ -11,8 +11,8 @@ using NUnit.Framework;
 
 namespace Solti.Utils.DI.Internals.Tests
 {
+    using Primitives.Patterns;
     using Properties;
-    using Internals;
 
     [TestFixture]
     public sealed class ServiceReferenceTests

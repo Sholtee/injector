@@ -7,6 +7,8 @@ using System;
 
 namespace Solti.Utils.DI.Internals
 {
+    using Primitives;
+
     internal sealed class ServiceIdComparer : ComparerBase<ServiceIdComparer, IServiceId>
     {
         public override int GetHashCode(IServiceId obj) =>

@@ -11,6 +11,8 @@ using System.Linq;
 
 namespace Solti.Utils.DI.Internals
 {
+    using Primitives.Patterns;
+
     internal sealed class ServiceGraph: IEnumerable<ServiceReference>
     {
         private readonly Stack<ServiceReference> FGraph;

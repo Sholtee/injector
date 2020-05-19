@@ -12,6 +12,7 @@ using System.Reflection;
 
 namespace Solti.Utils.DI.Internals
 {
+    using Primitives;
     using Properties;
 
     internal static class Resolver

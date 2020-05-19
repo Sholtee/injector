@@ -8,6 +8,7 @@ using System;
 namespace Solti.Utils.DI
 {
     using Internals;
+    using Primitives.Patterns;
 
     public static partial class IServiceContainerExtensions
     {

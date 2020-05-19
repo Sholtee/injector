@@ -70,15 +70,6 @@ namespace Solti.Utils.DI.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to DisposeByRef objects should not be disposed directly..
-        /// </summary>
-        internal static string ARBITRARY_RELEASE {
-            get {
-                return ResourceManager.GetString("ARBITRARY_RELEASE", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Instantiating abstract services are not allowed..
         /// </summary>
         internal static string CANT_INSTANTIATE_ABSTRACTS {
@@ -93,15 +84,6 @@ namespace Solti.Utils.DI.Properties {
         internal static string CANT_PROXY {
             get {
                 return ResourceManager.GetString("CANT_PROXY", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Parent cannot be set directly..
-        /// </summary>
-        internal static string CANT_SET_PARENT {
-            get {
-                return ResourceManager.GetString("CANT_SET_PARENT", resourceCulture);
             }
         }
         
@@ -322,29 +304,11 @@ namespace Solti.Utils.DI.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to A composite entity can not have more than {0} children..
-        /// </summary>
-        internal static string TOO_MANY_CHILDREN {
-            get {
-                return ResourceManager.GetString("TOO_MANY_CHILDREN", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Unknown lifetime: {0}..
         /// </summary>
         internal static string UNKNOWN_LIFETIME {
             get {
                 return ResourceManager.GetString("UNKNOWN_LIFETIME", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The value has already been set..
-        /// </summary>
-        internal static string VALUE_ALREADY_SET {
-            get {
-                return ResourceManager.GetString("VALUE_ALREADY_SET", resourceCulture);
             }
         }
     }

@@ -8,6 +8,7 @@ using NUnit.Framework;
 namespace Solti.Utils.DI.Injector.Tests
 {
     using Internals;
+    using Primitives.Patterns;
 
     [TestFixture]
     public partial class InjectorTestsBase<TContainer>

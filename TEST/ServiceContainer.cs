@@ -16,6 +16,7 @@ namespace Solti.Utils.DI.Container.Tests
 {
     using DI.Tests;
     using Internals;
+    using Primitives.Patterns;
     using Properties;
 
     public abstract class ServiceContainerTestsBase<TImplementation>: TestBase<TImplementation> where TImplementation : IServiceContainer, new()

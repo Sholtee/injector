@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 namespace Solti.Utils.DI
 {
     using Internals;
+    using Primitives.Patterns;
     using Properties;
 
     /// <summary>

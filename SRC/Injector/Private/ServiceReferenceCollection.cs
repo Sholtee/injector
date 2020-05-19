@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 
 namespace Solti.Utils.DI.Internals
 {
+    using Primitives.Patterns;
+
     internal sealed class ServiceReferenceCollection : Disposable, ICollection<ServiceReference>
     {
         private readonly List<ServiceReference> FUnderlyingList;

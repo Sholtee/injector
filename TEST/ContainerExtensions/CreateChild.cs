@@ -11,6 +11,7 @@ using NUnit.Framework;
 namespace Solti.Utils.DI.Container.Tests
 {
     using Internals;
+    using Primitives.Patterns;
     using Properties;
 
     public partial class ContainerTestsBase<TContainer>
@@ -50,8 +51,15 @@ namespace Solti.Utils.DI.Container.Tests
         {
             Config.Value.Composite.MaxChildCount = 1;
 
-            Assert.DoesNotThrow(() => Container.CreateChild());
-            Assert.Throws<InvalidOperationException>(() => Container.CreateChild(), Resources.TOO_MANY_CHILDREN);
+            //
+            // this.Container-re mar nem lesz alkalmazva a MaxChildCount
+            //
+
+            using (var container = new ServiceContainer())
+            {
+                Assert.DoesNotThrow(() => container.CreateChild());
+                Assert.Throws<InvalidOperationException>(() => container.CreateChild());
+            }
         }
 
         [Test]

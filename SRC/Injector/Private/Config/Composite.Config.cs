@@ -5,6 +5,8 @@
 ********************************************************************************/
 namespace Solti.Utils.DI.Internals
 {
+    using Primitives.Patterns;
+
     /// <summary>
     /// Defines several options to control the behavior of the <see cref="IComposite{T}"/> objects.
     /// </summary>
