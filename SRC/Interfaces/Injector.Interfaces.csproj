@@ -24,6 +24,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="1.*" />
+    <PackageReference Include="Solti.Utils.Primitives" Version="1.*" />
   </ItemGroup>
   
   <PropertyGroup>
