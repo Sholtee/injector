@@ -48,37 +48,41 @@
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
-    <div class="level1"><a class="xref" href="Solti.Utils.DI.Internals.Disposable.html">Disposable</a></div>
-    <div class="level2"><a class="xref" href="Solti.Utils.DI.Internals.DisposeByRefObject.html">DisposeByRefObject</a></div>
+    <div class="level1"><span class="xref">Solti.Utils.Primitives.Patterns.Disposable</span></div>
+    <div class="level2"><span class="xref">Solti.Utils.Primitives.Patterns.DisposeByRefObject</span></div>
     <div class="level3"><span class="xref">ServiceReference</span></div>
   </div>
   <div classs="implements">
     <h5>Implements</h5>
-    <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.iasyncdisposable">IAsyncDisposable</a></div>
+    <div><span class="xref">Solti.Utils.Primitives.Patterns.IDisposableEx</span></div>
     <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.idisposable">IDisposable</a></div>
+    <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.iasyncdisposable">IAsyncDisposable</a></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
-      <a class="xref" href="Solti.Utils.DI.Internals.DisposeByRefObject.html#Solti_Utils_DI_Internals_DisposeByRefObject_RefCount">DisposeByRefObject.RefCount</a>
+      <span class="xref">Solti.Utils.Primitives.Patterns.DisposeByRefObject.AddRef()</span>
     </div>
     <div>
-      <a class="xref" href="Solti.Utils.DI.Internals.DisposeByRefObject.html#Solti_Utils_DI_Internals_DisposeByRefObject_AddRef">DisposeByRefObject.AddRef()</a>
+      <span class="xref">Solti.Utils.Primitives.Patterns.DisposeByRefObject.Release()</span>
     </div>
     <div>
-      <a class="xref" href="Solti.Utils.DI.Internals.DisposeByRefObject.html#Solti_Utils_DI_Internals_DisposeByRefObject_Release">DisposeByRefObject.Release()</a>
+      <span class="xref">Solti.Utils.Primitives.Patterns.DisposeByRefObject.ReleaseAsync()</span>
     </div>
     <div>
-      <a class="xref" href="Solti.Utils.DI.Internals.DisposeByRefObject.html#Solti_Utils_DI_Internals_DisposeByRefObject_ReleaseAsync">DisposeByRefObject.ReleaseAsync()</a>
+      <span class="xref">Solti.Utils.Primitives.Patterns.DisposeByRefObject.RefCount</span>
     </div>
     <div>
-      <a class="xref" href="Solti.Utils.DI.Internals.Disposable.html#Solti_Utils_DI_Internals_Disposable_Disposed">Disposable.Disposed</a>
+      <span class="xref">Solti.Utils.Primitives.Patterns.Disposable.CheckNotDisposed()</span>
     </div>
     <div>
-      <a class="xref" href="Solti.Utils.DI.Internals.Disposable.html#Solti_Utils_DI_Internals_Disposable_Dispose">Disposable.Dispose()</a>
+      <span class="xref">Solti.Utils.Primitives.Patterns.Disposable.Dispose()</span>
     </div>
     <div>
-      <a class="xref" href="Solti.Utils.DI.Internals.Disposable.html#Solti_Utils_DI_Internals_Disposable_DisposeAsync">Disposable.DisposeAsync()</a>
+      <span class="xref">Solti.Utils.Primitives.Patterns.Disposable.DisposeAsync()</span>
+    </div>
+    <div>
+      <span class="xref">Solti.Utils.Primitives.Patterns.Disposable.Disposed</span>
     </div>
     <div>
       <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a>
@@ -106,7 +110,7 @@
   <h6><strong>Assembly</strong>: Injector.dll</h6>
   <h5 id="Solti_Utils_DI_ServiceReference_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class ServiceReference : DisposeByRefObject, IDisposableEx, IAsyncDisposable, IDisposeByRef, IDisposable</code></pre>
+    <pre><code class="lang-csharp hljs">public class ServiceReference : DisposeByRefObject, IDisposableEx, IDisposable, IAsyncDisposable</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
@@ -326,7 +330,7 @@
     </tbody>
   </table>
   <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="Solti.Utils.DI.Internals.DisposeByRefObject.html#Solti_Utils_DI_Internals_DisposeByRefObject_AsyncDispose">DisposeByRefObject.AsyncDispose()</a></div>
+  <div><span class="xref">Solti.Utils.Primitives.Patterns.DisposeByRefObject.AsyncDispose()</span></div>
   <a id="Solti_Utils_DI_ServiceReference_Dispose_" data-uid="Solti.Utils.DI.ServiceReference.Dispose*"></a>
   <h4 id="Solti_Utils_DI_ServiceReference_Dispose_System_Boolean_" data-uid="Solti.Utils.DI.ServiceReference.Dispose(System.Boolean)">Dispose(Boolean)</h4>
   <div class="markdown level1 summary"><p>Disposes the bound service then decrements the reference counter of all its dependencies.</p>
@@ -354,13 +358,16 @@
     </tbody>
   </table>
   <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="Solti.Utils.DI.Internals.DisposeByRefObject.html#Solti_Utils_DI_Internals_DisposeByRefObject_Dispose_System_Boolean_">DisposeByRefObject.Dispose(Boolean)</a></div>
+  <div><span class="xref">Solti.Utils.Primitives.Patterns.DisposeByRefObject.Dispose(System.Boolean)</span></div>
   <h3 id="implements">Implements</h3>
   <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.iasyncdisposable">System.IAsyncDisposable</a>
+      <span class="xref">Solti.Utils.Primitives.Patterns.IDisposableEx</span>
   </div>
   <div>
       <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.idisposable">System.IDisposable</a>
+  </div>
+  <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.iasyncdisposable">System.IAsyncDisposable</a>
   </div>
   <h3 id="extensionmethods">Extension Methods</h3>
   <div>

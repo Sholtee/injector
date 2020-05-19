@@ -48,13 +48,16 @@
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
-      <a class="xref" href="Solti.Utils.DI.Internals.IComposite-1.html#Solti_Utils_DI_Internals_IComposite_1_Parent">IComposite&lt;IServiceContainer&gt;.Parent</a>
+      <span class="xref">Solti.Utils.Primitives.Patterns.IComposite&lt;Solti.Utils.DI.IServiceContainer&gt;.Parent</span>
     </div>
     <div>
-      <a class="xref" href="Solti.Utils.DI.Internals.IComposite-1.html#Solti_Utils_DI_Internals_IComposite_1_Children">IComposite&lt;IServiceContainer&gt;.Children</a>
+      <span class="xref">Solti.Utils.Primitives.Patterns.IComposite&lt;Solti.Utils.DI.IServiceContainer&gt;.Children</span>
     </div>
     <div>
       <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1.getenumerator#System_Collections_Generic_IEnumerable_1_GetEnumerator">IEnumerable&lt;AbstractServiceEntry&gt;.GetEnumerator()</a>
+    </div>
+    <div>
+      <span class="xref">Solti.Utils.Primitives.Patterns.IDisposableEx.Disposed</span>
     </div>
     <div>
       <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.idisposable.dispose#System_IDisposable_Dispose">IDisposable.Dispose()</a>
@@ -67,7 +70,7 @@
   <h6><strong>Assembly</strong>: Injector.dll</h6>
   <h5 id="Solti_Utils_DI_IServiceContainer_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public interface IServiceContainer : IComposite&lt;IServiceContainer&gt;, IEnumerable&lt;AbstractServiceEntry&gt;, IEnumerable, IDisposable, IAsyncDisposable</code></pre>
+    <pre><code class="lang-csharp hljs">public interface IServiceContainer : IComposite&lt;IServiceContainer&gt;, IEnumerable&lt;AbstractServiceEntry&gt;, IEnumerable, IDisposableEx, IDisposable, IAsyncDisposable</code></pre>
   </div>
   <h5 id="Solti_Utils_DI_IServiceContainer_remarks"><strong>Remarks</strong></h5>
   <div class="markdown level0 remarks"><p>The implementations have to be thread safe.</p>
