@@ -13,6 +13,8 @@ using static System.Diagnostics.Debug;
 
 namespace Solti.Utils.DI.Internals
 {
+    using Primitives;
+
     internal static class IInjectorExtensions
     {
         private static readonly MethodInfo GenericCast = MethodInfoExtractor

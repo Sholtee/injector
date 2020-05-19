@@ -12,8 +12,8 @@ using NUnit.Framework;
 namespace Solti.Utils.Proxy.Tests
 {
     using DI;
-    using DI.Internals;
     using DI.Properties;
+    using Primitives.Patterns;
 
     [TestFixture]
     public class ProxyFactoryTests

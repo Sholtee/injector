@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 namespace Solti.Utils.DI
 {
     using Internals;
+    using Primitives.Patterns;
 
     /// <summary>
     /// Encapsulates a service and its dependencies into a reference counted container.

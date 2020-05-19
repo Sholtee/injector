@@ -11,6 +11,8 @@ using System.Reflection;
 
 namespace Solti.Utils.DI.Internals
 {
+    using Primitives;
+
     internal static class MethodBaseExtensions
     {
         public static Expression<TLambda> ToLambda<TLambda>(this MethodBase methodBase, Func<ParameterInfo, int, Expression> getArgument, params ParameterExpression[] parameters)

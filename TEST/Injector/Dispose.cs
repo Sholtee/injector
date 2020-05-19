@@ -13,7 +13,7 @@ using NUnit.Framework;
 
 namespace Solti.Utils.DI.Injector.Tests
 {
-    using Internals;
+    using Primitives.Patterns;
 
     public partial class InjectorTestsBase<TContainer>
     {

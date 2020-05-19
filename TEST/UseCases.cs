@@ -19,6 +19,7 @@ using NUnit.Framework;
 namespace Solti.Utils.DI.UseCases
 {  
     using Internals;
+    using Primitives.Patterns;
     using Proxy;
     using DI.Tests;
 

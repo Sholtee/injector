@@ -14,6 +14,7 @@ using NUnit.Framework;
 namespace Solti.Utils.DI.Internals.Tests
 {
     using Internals;
+    using Primitives.Patterns;
     using Properties;
 
     public class ServiceInstantiationStrategyTests

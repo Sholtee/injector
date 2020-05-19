@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Runtime.CompilerServices;
 
 using Moq;
 using NUnit.Framework;
