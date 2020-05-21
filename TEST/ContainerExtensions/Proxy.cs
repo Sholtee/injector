@@ -4,13 +4,13 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
-using System.Runtime.CompilerServices;
 
 using Moq;
 using NUnit.Framework;
 
 namespace Solti.Utils.DI.Container.Tests
 {
+    using Interfaces;
     using Properties;
 
     using Utils.Proxy;

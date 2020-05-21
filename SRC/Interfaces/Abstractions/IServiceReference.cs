@@ -48,5 +48,11 @@ namespace Solti.Utils.DI.Interfaces
         /// Decrements the reference counter of this instance and disposes the <see cref="Value"/> asynchronously if it reaches the zero.
         /// </summary>
         Task<int> ReleaseAsync();
+#if DEBUG
+        /// <summary>
+        /// The current reference count of this object.
+        /// </summary>
+        int RefCount { get; }
+#endif
     }
 }

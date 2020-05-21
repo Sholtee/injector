@@ -11,22 +11,24 @@ using System.Linq;
 
 namespace Solti.Utils.DI.Internals
 {
+    using Interfaces;
     using Primitives.Patterns;
+    using Properties;
 
-    internal sealed class ServiceGraph: IEnumerable<ServiceReference>
+    internal sealed class ServiceGraph: IEnumerable<IServiceReference>
     {
-        private readonly Stack<ServiceReference> FGraph;
+        private readonly Stack<IServiceReference> FGraph;
 
         private ServiceGraph(ServiceGraph parent)
         {
-            FGraph = new Stack<ServiceReference>(parent);
+            FGraph = new Stack<IServiceReference>(parent);
             
             Debug.Assert(Current == parent.Current);
         }
 
-        public ServiceGraph() => FGraph = new Stack<ServiceReference>();
+        public ServiceGraph() => FGraph = new Stack<IServiceReference>();
 
-        public ServiceReference? Current => FGraph.Any() ? FGraph.Peek() : null;
+        public IServiceReference? Current => FGraph.Any() ? FGraph.Peek() : null;
 
         public void CheckNotCircular()
         {
@@ -37,16 +39,23 @@ namespace Solti.Utils.DI.Internals
             int firstIndex = this.FirstIndexOf(Ensure.IsNotNull(Current, nameof(Current)), ServiceReferenceComparer.Instance);
 
             if (firstIndex < FGraph.Count - 1)
-                throw new CircularReferenceException(this
-                    //
-                    // Csak magat a kort adjuk vissza.
-                    //
+            {
+                //
+                // Csak magat a kort adjuk vissza.
+                //
 
-                    .Skip(firstIndex)
-                    .Select(sr => sr.RelatedServiceEntry));
+                string path = string.Join(" -> ", this.Skip(firstIndex).Select(sr => sr.RelatedServiceEntry).Select(IServiceIdExtensions.FriendlyName));
+
+                throw new CircularReferenceException(string.Format
+                (
+                    Resources.Culture,
+                    Resources.CIRCULAR_REFERENCE,
+                    path 
+                ));
+            }
         }
 
-        public IDisposable With(ServiceReference node) 
+        public IDisposable With(IServiceReference node) 
         {
             FGraph.Push(node);
             return new WithScope(FGraph);
@@ -56,9 +65,9 @@ namespace Solti.Utils.DI.Internals
 
         private sealed class WithScope : Disposable 
         {
-            private readonly Stack<ServiceReference> FGraph;
+            private readonly Stack<IServiceReference> FGraph;
 
-            public WithScope(Stack<ServiceReference> graph) => FGraph = graph;
+            public WithScope(Stack<IServiceReference> graph) => FGraph = graph;
 
             protected override void Dispose(bool disposeManaged)
             {
@@ -67,7 +76,7 @@ namespace Solti.Utils.DI.Internals
             }
         }
 
-        public IEnumerator<ServiceReference> GetEnumerator() =>
+        public IEnumerator<IServiceReference> GetEnumerator() =>
             //
             // Verem elemek felsorolasa forditva tortenik -> Reverse()
             //

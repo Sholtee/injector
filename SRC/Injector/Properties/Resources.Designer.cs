@@ -70,15 +70,6 @@ namespace Solti.Utils.DI.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Instantiating abstract services are not allowed..
-        /// </summary>
-        internal static string CANT_INSTANTIATE_ABSTRACTS {
-            get {
-                return ResourceManager.GetString("CANT_INSTANTIATE_ABSTRACTS", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Creating proxy is not allowed here..
         /// </summary>
         internal static string CANT_PROXY {

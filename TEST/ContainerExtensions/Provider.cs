@@ -11,6 +11,7 @@ using NUnit.Framework;
 
 namespace Solti.Utils.DI.Container.Tests
 {
+    using Interfaces;
     using Primitives.Patterns;
     using Properties;
     

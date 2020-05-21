@@ -13,6 +13,7 @@ using static System.Diagnostics.Debug;
 
 namespace Solti.Utils.DI.Internals
 {
+    using Interfaces;
     using Primitives;
 
     internal static class IInjectorExtensions

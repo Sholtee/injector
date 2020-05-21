@@ -8,6 +8,8 @@ using System.Collections.Generic;
 
 namespace Solti.Utils.DI.Internals
 {
+    using Interfaces;
+
     internal class ServiceProvider : Injector, IServiceProvider, IInjector
     {
         protected ServiceProvider(IServiceContainer parent, IReadOnlyDictionary<string, object> factoryOptions, ServiceGraph graph) : base(parent, factoryOptions, graph) { }

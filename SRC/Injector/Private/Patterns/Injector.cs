@@ -10,6 +10,7 @@ using System.Linq;
 
 namespace Solti.Utils.DI.Internals
 {
+    using Interfaces;
     using Properties;
 
     internal class Injector : ServiceContainer, IInjector
@@ -19,7 +20,7 @@ namespace Solti.Utils.DI.Internals
 
         private readonly ServiceGraph FGraph;
 
-        private void CheckBreaksTheRuleOfStrictDI(ServiceReference requestedRef) 
+        private void CheckBreaksTheRuleOfStrictDI(IServiceReference requestedRef) 
         {
             if (!Config.Value.Injector.StrictDI) return;
 
@@ -38,8 +39,14 @@ namespace Solti.Utils.DI.Internals
             // tulajdonosa h biztosan legalabb annyi ideig letezzen mint a kerelmezo maga.
             //
 
-            if (!requestor.Owner.IsDescendantOf(requested.Owner)) 
-                throw new RequestNotAllowedException(requestor, requested, Resources.STRICT_DI);
+            if (!requestor.Owner.IsDescendantOf(requested.Owner))
+            {
+                var ex = new RequestNotAllowedException(Resources.STRICT_DI);
+                ex.Data[nameof(requestor)] = requestor;
+                ex.Data[nameof(requested)] = requested;
+
+                throw ex;
+            }
         }
         #endregion
 
@@ -59,10 +66,9 @@ namespace Solti.Utils.DI.Internals
         #endregion
 
         #region Internals
-        internal virtual void Instantiate(ServiceReference requested) // [jelenleg] csak a tesztek miatt kell virtualis legyen
+        internal virtual void Instantiate(IServiceReference requested) // [jelenleg] csak a tesztek miatt kell virtualis legyen
         {
             Ensure.Parameter.IsNotNull(requested, nameof(requested));
-            Ensure.NotDisposed(this);
             Ensure.AreEqual(requested.RelatedInjector, this);
 
             CheckBreaksTheRuleOfStrictDI(requested);
@@ -83,12 +89,10 @@ namespace Solti.Utils.DI.Internals
         internal virtual Injector Adopt(IServiceContainer parent)
         {
             Ensure.Parameter.IsNotNull(parent, nameof(parent));
-            Ensure.NotDisposed(this);
-
             return new Injector(parent, FactoryOptions, CreateSubgraph());
         }
 
-        internal virtual ServiceReference GetReference(Type iface, string? name)
+        internal virtual IServiceReference GetReference(Type iface, string? name)
         {
             Ensure.Parameter.IsNotNull(iface, nameof(iface));
             Ensure.Parameter.IsInterface(iface, nameof(iface));
@@ -152,11 +156,13 @@ namespace Solti.Utils.DI.Internals
         #region IInjector
         public object Get(Type iface, string? name) 
         {
+            CheckNotDisposed();
+
             const string path = nameof(path);
 
             try
             {
-                ServiceReference reference = GetReference(iface, name);
+                IServiceReference reference = GetReference(iface, name);
 
                 return reference.Value!;
             }
@@ -178,6 +184,8 @@ namespace Solti.Utils.DI.Internals
 
         public object? TryGet(Type iface, string? name) 
         {
+            CheckNotDisposed();
+
             try
             {
                 return Get(iface, name);
@@ -188,7 +196,14 @@ namespace Solti.Utils.DI.Internals
             }
         }
 
-        public IServiceContainer UnderlyingContainer => this;
+        public IServiceContainer UnderlyingContainer 
+        {
+            get
+            {
+                CheckNotDisposed();
+                return this;
+            }
+        }
         #endregion
 
         #region Composite

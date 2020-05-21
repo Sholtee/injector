@@ -10,19 +10,20 @@ using System.Threading.Tasks;
 
 namespace Solti.Utils.DI.Internals
 {
+    using Interfaces;
     using Primitives.Patterns;
 
-    internal sealed class ServiceReferenceCollection : Disposable, ICollection<ServiceReference>
+    internal sealed class ServiceReferenceCollection : Disposable, ICollection<IServiceReference>
     {
-        private readonly List<ServiceReference> FUnderlyingList;
+        private readonly List<IServiceReference> FUnderlyingList;
 
-        public ServiceReferenceCollection(int capacity = 0) => FUnderlyingList = new List<ServiceReference>(capacity);
+        public ServiceReferenceCollection(int capacity = 0) => FUnderlyingList = new List<IServiceReference>(capacity);
 
         public int Count => FUnderlyingList.Count;
 
         public bool IsReadOnly => false;
 
-        public void Add(ServiceReference item)
+        public void Add(IServiceReference item)
         {
             FUnderlyingList.Add(item);
             item.AddRef();
@@ -34,13 +35,13 @@ namespace Solti.Utils.DI.Internals
             FUnderlyingList.Clear();
         }
 
-        public bool Contains(ServiceReference item) => FUnderlyingList.Contains(item);
+        public bool Contains(IServiceReference item) => FUnderlyingList.Contains(item);
 
-        public void CopyTo(ServiceReference[] array, int arrayIndex) => throw new NotSupportedException();
+        public void CopyTo(IServiceReference[] array, int arrayIndex) => throw new NotSupportedException();
 
-        public IEnumerator<ServiceReference> GetEnumerator() => FUnderlyingList.GetEnumerator();
+        public IEnumerator<IServiceReference> GetEnumerator() => FUnderlyingList.GetEnumerator();
 
-        public bool Remove(ServiceReference item)
+        public bool Remove(IServiceReference item)
         {
             if (FUnderlyingList.Remove(item)) 
             {

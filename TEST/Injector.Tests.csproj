@@ -4,7 +4,7 @@
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
-    <AssemblyName>Injector.Tests</AssemblyName>
+    <AssemblyName>Solti.Utils.DI.Tests</AssemblyName>
     <RootNamespace>Solti.Utils.DI.Tests</RootNamespace>
     <Configurations>Debug</Configurations>
     <ApplicationIcon />
@@ -30,7 +30,6 @@
     </PackageReference>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.5.0" />
     <PackageReference Include="NunitXml.TestLogger" Version="2.1.41" />
-    <PackageReference Include="Solti.Utils.Primitives" Version="1.*" />
     <PackageReference Include="System.Data.SqlClient" Version="4.8.1" />
   </ItemGroup>
 

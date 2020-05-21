@@ -5,7 +5,7 @@
     <Company></Company>
     <Authors>Denes Solti</Authors>
     <Version>2.1.0</Version>
-    <AssemblyName>Injector</AssemblyName>
+    <AssemblyName>Solti.Utils.DI</AssemblyName>
     <RootNamespace>Solti.Utils.DI</RootNamespace>
     <Configurations>Debug;Release;Perf</Configurations>
     <LangVersion>8</LangVersion>
@@ -73,6 +73,10 @@
       <Pack>true</Pack>
       <PackagePath>build</PackagePath>
     </None>
+  </ItemGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\Interfaces\Injector.Interfaces.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

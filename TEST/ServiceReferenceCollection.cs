@@ -10,6 +10,8 @@ using NUnit.Framework;
 
 namespace Solti.Utils.DI.Internals.Tests
 {
+    using Interfaces;
+
     [TestFixture]
     public class ServiceReferenceCollectionTests
     {

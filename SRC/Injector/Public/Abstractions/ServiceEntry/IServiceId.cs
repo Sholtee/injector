@@ -3,13 +3,7 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
-using System;
+using Solti.Utils.DI.Interfaces;
+using System.Runtime.CompilerServices;
 
-namespace Solti.Utils.DI.Internals
-{
-    internal interface IServiceId
-    {
-        Type Interface { get; }
-        string? Name { get; }
-    }
-}
+[assembly: TypeForwardedTo(typeof(IServiceId))]

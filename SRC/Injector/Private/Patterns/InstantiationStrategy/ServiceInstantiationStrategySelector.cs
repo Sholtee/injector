@@ -8,6 +8,7 @@ using System.Collections.Generic;
 
 namespace Solti.Utils.DI.Internals
 {
+    using Interfaces;
     using Properties;
 
     internal sealed class ServiceInstantiationStrategySelector
@@ -31,7 +32,7 @@ namespace Solti.Utils.DI.Internals
 
         public ServiceInstantiationStrategySelector(Injector relatedInjector) => RelatedInjector = relatedInjector;
 
-        public Func<ServiceReference?, ServiceReference> GetStrategyFor(AbstractServiceEntry requested) 
+        public Func<IServiceReference?, IServiceReference> GetStrategyFor(AbstractServiceEntry requested) 
         {
             foreach (IServiceInstantiationStrategy strategy in Strategies)
                 if (strategy.ShouldUse(RelatedInjector, requested))

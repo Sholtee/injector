@@ -10,9 +10,9 @@ using NUnit.Framework;
 
 namespace Solti.Utils.DI.Container.Tests
 {
+    using Interfaces;
     using Internals;
     using Primitives.Patterns;
-    using Properties;
 
     public partial class ContainerTestsBase<TContainer>
     {

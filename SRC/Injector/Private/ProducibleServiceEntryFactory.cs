@@ -5,28 +5,20 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
 
 namespace Solti.Utils.DI.Internals
 {
+    using Interfaces;
     using Properties;
 
     internal partial class ProducibleServiceEntry
     {
-        private static readonly IReadOnlyDictionary<Lifetime, Type> ServiceEntryTypes = Enum
-            .GetValues(typeof(Lifetime))
-            .Cast<Lifetime>()
-            .Select(lt => new
-            {
-                Lifetime = lt,
-                RelatedEntryKind = typeof(Lifetime)
-                    .GetMember(lt.ToString())
-                    .Single()
-                    .GetCustomAttribute<RelatedEntryKindAttribute>()
-            })
-            .Where(lt => lt.RelatedEntryKind != null)
-            .ToDictionary(lt => lt.Lifetime, lt => lt.RelatedEntryKind.ServiceEntry);
+        private static readonly IReadOnlyDictionary<Lifetime, Type> ServiceEntryTypes = new Dictionary<Lifetime, Type> 
+        {
+            {Interfaces.Lifetime.Transient, typeof(TransientServiceEntry)},
+            {Interfaces.Lifetime.Scoped, typeof(ScopedServiceEntry)},
+            {Interfaces.Lifetime.Singleton, typeof(SingletonServiceEntry)}
+        };
 
         public static ProducibleServiceEntry Create<TParam>(Lifetime? lifetime, Type @interface, string? name, TParam param, IServiceContainer owner)
         {

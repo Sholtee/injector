@@ -7,6 +7,7 @@ using System;
 
 namespace Solti.Utils.DI
 {
+    using Interfaces;
     using Internals;
 
     public static partial class IServiceContainerExtensions

@@ -5,6 +5,8 @@
 ********************************************************************************/
 namespace Solti.Utils.DI.Internals
 {
+    using Interfaces;
+
     /// <summary>
     /// Defines several options to control the behavior of the <see cref="IInjector"/> objects.
     /// </summary>

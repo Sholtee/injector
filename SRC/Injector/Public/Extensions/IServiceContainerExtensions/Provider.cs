@@ -7,6 +7,7 @@ using System;
 
 namespace Solti.Utils.DI
 {
+    using Interfaces;
     using Internals;
 
     public static partial class IServiceContainerExtensions
@@ -23,9 +24,10 @@ namespace Solti.Utils.DI
         public static IServiceContainer Provider(this IServiceContainer self, Type iface, string? name, Type provider, Lifetime lifetime = Lifetime.Transient)
         {
             Ensure.Parameter.IsNotNull(self, nameof(self));
-
             Ensure.Parameter.IsNotNull(provider, nameof(provider));
-            Ensure.Type.Supports(provider, typeof(IServiceProvider));
+
+            if (!IsProvider(provider))
+                throw new ArgumentException("", nameof(provider));
 
             //
             // Ezeket a Factory() hivas ellenorizne, itt csak azert van h ne legyen
@@ -52,6 +54,16 @@ namespace Solti.Utils.DI
                 //
 
                 return provider.GetService(iface);
+            }
+
+            static bool IsProvider(Type type)
+            {
+                foreach (Type iface in type.GetInterfaces())
+                {
+                    if (iface == typeof(IServiceProvider) || IsProvider(iface))
+                        return true;
+                }
+                return false;
             }
         }
 

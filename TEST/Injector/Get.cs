@@ -11,6 +11,7 @@ using NUnit.Framework;
 
 namespace Solti.Utils.DI.Injector.Tests
 {
+    using Interfaces;
     using Internals;
     using Properties;
 
@@ -322,17 +323,17 @@ namespace Solti.Utils.DI.Injector.Tests
             {
                 Assert.Throws<Exception>(() => injector.Get<IInterface_1>());
 
-                Assert.That(entry.GotReference.Disposed);
+                Assert.That(entry.GotReference.RefCount == 0);
             }
         }
 
         private sealed class HackyServiceEntry : AbstractServiceEntry
         {
-            public ServiceReference GotReference { get; private set; }
+            public IServiceReference GotReference { get; private set; }
 
             public HackyServiceEntry(IServiceContainer owner) : base(typeof(IInterface_1), null, owner) { }
 
-            public override bool SetInstance(ServiceReference serviceReference, IReadOnlyDictionary<string, object> options)
+            public override bool SetInstance(IServiceReference serviceReference, IReadOnlyDictionary<string, object> options)
             {
                 GotReference = serviceReference;
                 

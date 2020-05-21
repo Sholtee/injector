@@ -12,6 +12,7 @@ using NUnit.Framework;
 
 namespace Solti.Utils.DI.Container.Setup.Tests
 {
+    using Interfaces;
     using Internals;
 
     [TestFixture]

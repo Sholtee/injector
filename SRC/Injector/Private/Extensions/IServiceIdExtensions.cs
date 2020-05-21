@@ -5,13 +5,10 @@
 ********************************************************************************/
 namespace Solti.Utils.DI.Internals
 {
+    using Interfaces;
+
     internal static class IServiceIdExtensions
     {
-        public static string FriendlyName(this IServiceId src) 
-        {
-            string result = src.Interface.ToString();
-            if (src.Name != null) result += $":{src.Name}";
-            return result;
-        }
+        public static string FriendlyName(this IServiceId src) => $"[{src.Name ?? "NULL"}] {src.Interface}";
     }
 }

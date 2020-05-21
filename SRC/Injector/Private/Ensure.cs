@@ -60,13 +60,6 @@ namespace Solti.Utils.DI.Internals
         public static class Type 
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            public static void Supports(System.Type implementation, System.Type @interface)
-            {
-                if (!@interface.IsInterfaceOf(implementation))
-                    throw new NotSupportedException(string.Format(Resources.Culture, Resources.INTERFACE_NOT_SUPPORTED, @interface));
-            }
-
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public static void IsAssignable(System.Type @base, System.Type descendant)
             {
                 if (!@base.IsAssignableFrom(descendant))

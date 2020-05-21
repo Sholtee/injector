@@ -7,6 +7,8 @@ using System;
 
 namespace Solti.Utils.DI
 {
+    using Interfaces;
+
     /// <summary>
     /// Base class of "auto config" attributes.
     /// </summary>

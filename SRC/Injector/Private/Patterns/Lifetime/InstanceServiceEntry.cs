@@ -8,6 +8,8 @@ using System.Collections.Generic;
 
 namespace Solti.Utils.DI.Internals
 {
+    using Interfaces;
+
     /// <summary>
     /// Describes an instance service entry.
     /// </summary>
@@ -32,7 +34,7 @@ namespace Solti.Utils.DI.Internals
             this.ApplyAspects();
         }
 
-        public override bool SetInstance(ServiceReference reference, IReadOnlyDictionary<string, object> options) =>
+        public override bool SetInstance(IServiceReference reference, IReadOnlyDictionary<string, object> options) =>
             //
             // Peldany eseten ez a metodus elvileg sose kerulhet meghivasra.
             //

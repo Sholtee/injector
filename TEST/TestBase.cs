@@ -10,6 +10,7 @@ using NUnit.Framework;
 
 namespace Solti.Utils.DI.Tests
 {
+    using Interfaces;
     using Internals;
 
     public class TestBase<TContainer> where TContainer: IServiceContainer, new()

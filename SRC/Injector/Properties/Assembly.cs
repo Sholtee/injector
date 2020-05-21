@@ -10,8 +10,8 @@ using System.Runtime.CompilerServices;
 assembly:
     NeutralResourcesLanguage("en"),
 #if DEBUG
-    InternalsVisibleTo("Injector.Tests"),
+    InternalsVisibleTo("Solti.Utils.DI.Tests"),
     InternalsVisibleTo("DynamicProxyGenAssembly2"), // Moq
 #endif
-    InternalsVisibleTo("Injector.Perf")
+    InternalsVisibleTo("Solti.Utils.DI.Perf")
 ]

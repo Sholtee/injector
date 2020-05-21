@@ -3,18 +3,7 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
-using System;
+using Solti.Utils.DI.Interfaces;
+using System.Runtime.CompilerServices;
 
-namespace Solti.Utils.DI.Internals
-{
-    /// <summary>
-    /// Provides the mechanism for overriding the factory function. 
-    /// </summary>
-    public interface  ISupportsProxying
-    {
-        /// <summary>
-        /// The factory function that can be overridden.
-        /// </summary>
-        Func<IInjector, Type, object>? Factory { get;  set; }
-    }
-}
+[assembly: TypeForwardedTo(typeof(ISupportsProxying))]
