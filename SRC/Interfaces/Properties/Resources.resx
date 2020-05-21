@@ -120,4 +120,7 @@
   <data name="INTERFACE_NOT_SUPPORTED" xml:space="preserve">
     <value>The implementation does not support the service interface.</value>
   </data>
+  <data name="NOT_AN_INTERFACE" xml:space="preserve">
+    <value>Parameter must be an interface.</value>
+  </data>
 </root>

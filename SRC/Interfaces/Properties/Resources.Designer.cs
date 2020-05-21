@@ -68,5 +68,14 @@ namespace Solti.Utils.DI.Interfaces.Properties {
                 return ResourceManager.GetString("INTERFACE_NOT_SUPPORTED", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Parameter must be an interface..
+        /// </summary>
+        internal static string NOT_AN_INTERFACE {
+            get {
+                return ResourceManager.GetString("NOT_AN_INTERFACE", resourceCulture);
+            }
+        }
     }
 }

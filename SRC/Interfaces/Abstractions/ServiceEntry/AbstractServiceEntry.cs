@@ -47,6 +47,9 @@ namespace Solti.Utils.DI.Interfaces
             Lifetime       = lifetime;
             Implementation = implementation;
 
+            if (!@interface.IsInterface)
+                throw new ArgumentException(Resources.NOT_AN_INTERFACE, nameof(@interface));
+
             if (implementation != null && !InterfaceSupportedBy(implementation))
                 throw new ArgumentException(Resources.INTERFACE_NOT_SUPPORTED, nameof(implementation));
 
