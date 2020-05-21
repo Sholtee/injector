@@ -52,9 +52,17 @@ namespace Solti.Utils.DI.Interfaces
 
             bool InterfaceSupportedBy(Type type) 
             {
+                if (type.IsGenericTypeDefinition != @interface.IsGenericTypeDefinition) return false;
+
                 foreach (Type iface in type.GetInterfaces())
                 {
-                    if (iface == @interface || InterfaceSupportedBy(iface))
+                    //
+                    // List<T>: IList<T> eseten a GetInterfaces() altal visszadobott IList<T> nem lesz azonos typeof(IList<>)-el
+                    //
+
+                    Type current = @interface.IsGenericTypeDefinition && iface.IsGenericType ? iface.GetGenericTypeDefinition() : iface;
+
+                    if (@interface == current || InterfaceSupportedBy(current))
                         return true;
                 }
                 return false;
