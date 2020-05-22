@@ -172,7 +172,7 @@ namespace Solti.Utils.DI.Interfaces
                 NAME_PART = " - {0}: {1}",
                 NULL = nameof(NULL);
 
-            return new StringBuilder($"[{Name ?? NULL}] {Interface}")
+            return new StringBuilder(this.FriendlyName())
                 .AppendFormat(Resources.Culture, NAME_PART, nameof(Lifetime), Lifetime?.ToString() ?? NULL)
                 .AppendFormat(Resources.Culture, NAME_PART, nameof(Implementation), Implementation?.ToString() ?? NULL)
                 .AppendFormat(Resources.Culture, NAME_PART, nameof(Instance), Instance?.Value?.ToString() ?? NULL)
