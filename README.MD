@@ -1,7 +1,7 @@
 # Injector.NET [![Build status](https://ci.appveyor.com/api/projects/status/2fej57bdmyij4v08?svg=true)](https://ci.appveyor.com/project/Sholtee/injector) ![AppVeyor tests](https://img.shields.io/appveyor/tests/sholtee/injector) [![Coverage Status](https://coveralls.io/repos/github/Sholtee/injector/badge.svg?branch=master)](https://coveralls.io/github/Sholtee/injector?branch=master) [![NuGet Badge](https://buildstats.info/nuget/injector.net)](https://www.nuget.org/packages/injector.net/)
 > A featherweight dependency injector written in C#.
 
-**This documentation refers the version 2.X of the library**
+**This documentation refers the version 3.X of the library**
 ## Overview
 [Dependency Injection](https://en.wikipedia.org/wiki/Dependency_injection ) is a design pattern that helps you separate the dependencies of your code from its behavior. Additionaly it makes the code easy to test by let you [mock](https://en.wikipedia.org/wiki/Mock_object ) the dependencies in your unit tests. This library provides several mechanisms to register, acquire and inherit services.
 ## Key features
@@ -53,6 +53,7 @@ Points from 1 to 4 are done in initialization time (typically at application sta
 ### Creating the root container
 The first step before we'd start is creating a *root* container:
 ```csharp
+using Solti.Utils.DI.Interfaces;
 using Solti.Utils.DI;
 
 using(IServiceContainer container = new ServiceContainer()){...}
@@ -203,6 +204,7 @@ Remarks:
 ### Decorating services
 In practice, it's useful to separate common functionality (e.g. parameter validation) from the implementation. In this library this can be achieved by [proxy pattern](https://en.wikipedia.org/wiki/Proxy_pattern ). In a brief example:
 ```csharp
+using Solti.Utils.DI.Interfaces;
 using Solti.Utils.DI;
 using Solti.Utils.Proxy; 
 ...
@@ -267,6 +269,7 @@ public class ParameterValidatorProxy<TInterface> : InterfaceInterceptor<TInterfa
 - Proxies may also have dependencies (`ProxyFactory` supports this scenario).
 - You can setup transactions using proxies as well:
   ```csharp
+  Solti.Utils.DI.Interfaces;
   using Solti.Utils.DI;
   using Solti.Utils.Proxy;
   ...
@@ -476,6 +479,7 @@ As you can see there are three major differences compared to `injector.Get()`:
 ### Resolving contextual dependencies
 Sometimes the service being requested is contextual (for instance the `HttpRequest` that triggered the current session). To solve this issue we can extend the `UnderlyingContainer` that serves the current injector:
 ```csharp
+using Solti.Utils.DI.Interfaces;
 using Solti.Utils.DI;
 ...
 using (IInjector injector = Container.CreateInjector()) 
@@ -488,6 +492,7 @@ using (IInjector injector = Container.CreateInjector())
 ``` 
 As we learned the requested service always must be an interface but the [HttpRequest](https://docs.microsoft.com/en-us/dotnet/api/system.web.httprequest?view=netframework-4.8&viewFallbackFrom=netcore-3.1 ) implements nothing. That's the time when the [duck typing](https://en.wikipedia.org/wiki/Duck_typing ) comes into view:
 ```csharp
+using Solti.Utils.DI.Interfaces;
 using Solti.Utils.DI;
 using Solti.Utils.Proxy;
 ...
@@ -558,5 +563,8 @@ This project currently targets *.NET Standard* 2.0 and 2.1.
 - `Lazy` recipe has completely been removed. To preserve this functionality you can implement your own deferring logic in a `Factory` function.
 - *.NET Standard* 1.6 support has been dropped. Since modern .NET projects should not target the v1.X branch you might not be affected by this.
 - Other breaking changes were done on API's you should not call in everyday use.
+## Migrating from version 2.X
+- You should add +1 using (`Solti.Utils.DI.Interfaces`) in files where you use the general interfaces (e.g. `IServiceContainer`, `IInjector`, `AspectAttribute`, etc).
+- There is NO need for referencing the `Solti.Utils.DI.Interfaces` assembly directly.
 ## Version history
 Can be found [here](https://github.com/Sholtee/injector/blob/master/history.md )
