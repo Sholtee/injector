@@ -4,7 +4,7 @@
     <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
     <Company></Company>
     <Authors>Denes Solti</Authors>
-    <Version>2.1.0</Version>
+    <Version>3.0.0-preview1</Version>
     <AssemblyName>Solti.Utils.DI</AssemblyName>
     <RootNamespace>Solti.Utils.DI</RootNamespace>
     <Configurations>Debug;Release;Perf</Configurations>
