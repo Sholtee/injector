@@ -69,7 +69,7 @@
   <Import Project="Injector.NET.targets" />
   
   <ItemGroup>
-    <None Include="Injector.NET.targets">
+    <None Include="Injector.NET.targets;Solti.Utils.DI.config.json">
       <Pack>true</Pack>
       <PackagePath>build</PackagePath>
     </None>
