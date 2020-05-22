@@ -134,3 +134,5 @@
   - *breaking:* All general interfaces have been moved to `Solti.Utils.DI.Interfaces` namespace
   - *done:* Renamed assembly
   - *added:* Separate assmebly for general interfaces
+- 3.0.0-preview2:
+ - *fixed:* Missing configuration file (again)
