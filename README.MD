@@ -564,7 +564,7 @@ This project currently targets *.NET Standard* 2.0 and 2.1.
 - *.NET Standard* 1.6 support has been dropped. Since modern .NET projects should not target the v1.X branch you might not be affected by this.
 - Other breaking changes were done on API's you should not call in everyday use.
 ## Migrating from version 2.X
-- You should add +1 using (`Solti.Utils.DI.Interfaces`) in files where you use the general interfaces (e.g. `IServiceContainer`, `IInjector`, `AspectAttribute`, etc).
+- You should add +1 using (`Solti.Utils.DI.Interfaces`) in files where you use the [general interfaces](https://sholtee.github.io/injector/doc/Solti.Utils.DI.Interfaces.html ).
 - There is NO need for referencing the `Solti.Utils.DI.Interfaces` assembly directly.
 ## Version history
 Can be found [here](https://github.com/Sholtee/injector/blob/master/history.md )
