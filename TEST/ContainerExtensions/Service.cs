@@ -106,15 +106,21 @@ namespace Solti.Utils.DI.Container.Tests
             Assert.Throws<ArgumentException>(() => Container.Service<IInterface_1, Implementation_1_Non_Interface_Dep>());
         }
 
-        [Test]
-        public void Container_Service_ShouldThrowIfTheInterfaceIsNotAssignableFromTheImplementation()
+        public static IEnumerable<(Type Interface, Type Implementation)> BadRegistrations // sima TestCase-el nem fog mukodni
         {
-            Assert.Throws<NotSupportedException>(() => Container.Service(typeof(IInterface_2), typeof(Implementation_1_No_Dep)), string.Format(Resources.INTERFACE_NOT_SUPPORTED, typeof(IInterface_2)));
-            Assert.Throws<NotSupportedException>(() => Container.Service(typeof(IList<>), typeof(Implementation_1_No_Dep)), string.Format(Resources.INTERFACE_NOT_SUPPORTED, typeof(IList<>)));
-            Assert.Throws<NotSupportedException>(() => Container.Service(typeof(IList<int>), typeof(List<string>)), string.Format(Resources.INTERFACE_NOT_SUPPORTED, typeof(IList<int>)));
-            Assert.Throws<NotSupportedException>(() => Container.Service(typeof(IList<int>), typeof(List<>)), string.Format(Resources.INTERFACE_NOT_SUPPORTED, typeof(IList<int>)));
-            Assert.Throws<NotSupportedException>(() => Container.Service(typeof(IList<>), typeof(List<string>)), string.Format(Resources.INTERFACE_NOT_SUPPORTED, typeof(IList<>)));
+            get 
+            {
+                yield return (typeof(IInterface_2), typeof(Implementation_1_No_Dep));
+                yield return (typeof(IList<>), typeof(Implementation_1_No_Dep));
+                yield return (typeof(IList<int>), typeof(List<string>));
+                yield return (typeof(IList<int>), typeof(List<>));
+                yield return (typeof(IList<>), typeof(List<string>));
+            }
         }
+
+        [TestCaseSource(nameof(BadRegistrations))]
+        public void Container_Service_ShouldThrowIfTheInterfaceIsNotAssignableFromTheImplementation((Type Interface, Type Implementation) para) =>
+            Assert.Throws<ArgumentException>(() => Container.Service(para.Interface, para.Implementation), string.Format(Interfaces.Properties.Resources.INTERFACE_NOT_SUPPORTED, para.Interface));
 
         [Test]
         public void Container_Service_ShouldThrowOnMultipleRegistration()

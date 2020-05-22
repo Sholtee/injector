@@ -135,9 +135,6 @@
   <data name="CONSTRUCTOR_OVERLOADING_NOT_SUPPORTED" xml:space="preserve">
     <value>"{0}" must have exactly one (annotated) public constructor.</value>
   </data>
-  <data name="INTERFACE_NOT_SUPPORTED" xml:space="preserve">
-    <value>The implementation does not support the given interface (interface name: {0}).</value>
-  </data>
   <data name="INVALID_CONSTRUCTOR" xml:space="preserve">
     <value>All constructor arguments must be an interface/Lazy&lt;interface&gt;.</value>
   </data>

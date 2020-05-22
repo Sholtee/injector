@@ -28,7 +28,7 @@ namespace Solti.Utils.DI
             Ensure.Parameter.IsNotNull(provider, nameof(provider));
 
             if (!IsProvider(provider))
-                throw new ArgumentException(string.Format(Resources.Culture, Resources.INTERFACE_NOT_SUPPORTED, typeof(IServiceProvider)), nameof(provider));
+                throw new ArgumentException(string.Format(Resources.Culture, Interfaces.Properties.Resources.INTERFACE_NOT_SUPPORTED, typeof(IServiceProvider)), nameof(provider));
 
             //
             // Ezeket a Factory() hivas ellenorizne, itt csak azert van h ne legyen
