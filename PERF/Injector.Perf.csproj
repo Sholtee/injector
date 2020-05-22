@@ -4,7 +4,8 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <Configurations>Debug;Perf</Configurations>
-    <AssemblyName>Solti.Utils.DI.Perf</AssemblyName>
+    <!--BenchmarkDotNet requires the exe and csproj name to be equal-->
+    <AssemblyName>Injector.Perf</AssemblyName>
     <RootNamespace>Solti.Utils.DI.Perf</RootNamespace>
     <OutputPath>..\BIN\$(Configuration)\</OutputPath>
     <Optimize>true</Optimize>

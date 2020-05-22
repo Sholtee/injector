@@ -18,7 +18,7 @@ namespace Solti.Utils.DI.Internals
     {
         private static Config CreateInstance()
         {
-            string configFile = Path.ChangeExtension(typeof(Config).Assembly.Location, "config.json");
+            string configFile = Path.ChangeExtension(typeof(Config).Assembly.Location, "Solti.Utils.DI.config.json");
 
             if (File.Exists(configFile))
                 return JsonSerializer.Deserialize<Config>(File.ReadAllText(configFile));

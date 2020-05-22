@@ -13,7 +13,7 @@
     <NoWarn>CA2007</NoWarn>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <OutputPath>..\..\BIN\$(Configuration)\</OutputPath>
-    <DocumentationFile>..\..\BIN\Injector.Interfaces.xml</DocumentationFile>
+    <DocumentationFile>..\..\BIN\Solti.Utils.DI.Interfaces.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup Condition="'$(CI)' == ''">
