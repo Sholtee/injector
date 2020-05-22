@@ -8,9 +8,11 @@ using System.Diagnostics;
 
 namespace Solti.Utils.DI.Internals
 {
+    using Interfaces;
+
     internal static class ServiceReferenceExtensions
     {
-        public static void SetInstance(this ServiceReference svc, IReadOnlyDictionary<string, object> options)
+        public static void SetInstance(this IServiceReference svc, IReadOnlyDictionary<string, object> options)
         {
             bool succeeded = svc.RelatedServiceEntry.SetInstance(svc, options);
 

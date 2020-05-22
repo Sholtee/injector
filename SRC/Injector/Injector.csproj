@@ -4,8 +4,8 @@
     <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
     <Company></Company>
     <Authors>Denes Solti</Authors>
-    <Version>2.1.0</Version>
-    <AssemblyName>Injector</AssemblyName>
+    <Version>3.0.0-preview1</Version>
+    <AssemblyName>Solti.Utils.DI</AssemblyName>
     <RootNamespace>Solti.Utils.DI</RootNamespace>
     <Configurations>Debug;Release;Perf</Configurations>
     <LangVersion>8</LangVersion>
@@ -13,7 +13,7 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <NoWarn>CA2007</NoWarn>
     <OutputPath>..\..\BIN\$(Configuration)\</OutputPath>
-    <DocumentationFile>..\..\BIN\Injector.xml</DocumentationFile>
+    <DocumentationFile>..\..\BIN\Solti.Utils.DI.xml</DocumentationFile>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -52,10 +52,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Interfaces\Injector.Interfaces.csproj" />
-  </ItemGroup>
-    
-  <ItemGroup>
     <Compile Update="Properties\Resources.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -73,10 +69,14 @@
   <Import Project="Injector.NET.targets" />
   
   <ItemGroup>
-    <None Include="Injector.config.json;Injector.NET.targets">
+    <None Include="Injector.NET.targets">
       <Pack>true</Pack>
       <PackagePath>build</PackagePath>
     </None>
+  </ItemGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\Interfaces\Injector.Interfaces.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

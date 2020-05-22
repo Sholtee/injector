@@ -17,7 +17,8 @@ using Moq;
 using NUnit.Framework;
 
 namespace Solti.Utils.DI.UseCases
-{  
+{
+    using Interfaces;
     using Internals;
     using Primitives.Patterns;
     using Proxy;

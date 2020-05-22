@@ -127,3 +127,10 @@
   - *done:* Small optimizations under the hood
 - 2.1.0:
   - *done:* Extended AOP support (interceptors can be created by factory function)
+- 3.0.0-preview1:
+  - *fixed:* Missing configuration file
+  - *breaking:* Changed type of `AbstractServiceEntry.Instance` (`ServiceReference` -> `IServiceReference`)
+  - *breaking:* Changed `ServiceRegistrationAttribute` layout (removed `Register()` method)
+  - *breaking:* All general interfaces have been moved to `Solti.Utils.DI.Interfaces` namespace
+  - *done:* Renamed assembly
+  - *added:* Separate assmebly for general interfaces

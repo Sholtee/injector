@@ -13,6 +13,7 @@ using NUnit.Framework;
 
 namespace Solti.Utils.DI.Internals.Tests
 {
+    using Interfaces;
     using Internals;
     using Primitives.Patterns;
     using Properties;
@@ -103,7 +104,7 @@ namespace Solti.Utils.DI.Internals.Tests
 
                 IServiceInstantiationStrategy strategy = (IServiceInstantiationStrategy) para;
 
-                ServiceReference dep = strategy.Exec(mockInjector.Object, requestor, requested);
+                IServiceReference dep = strategy.Exec(mockInjector.Object, requestor, requested);
 
                 Assert.That(dep.Value, Is.EqualTo(instance));
                 mockInjector.Verify(i => i.Instantiate(It.IsAny<ServiceReference>()), Times.Never);

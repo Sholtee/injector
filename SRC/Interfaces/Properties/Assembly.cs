@@ -1,15 +1,13 @@
 ﻿/********************************************************************************
-* IServiceId.cs                                                                 *
+* Assembly.cs                                                                   *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
-using System;
+using System.Resources;
+using System.Runtime.CompilerServices;
 
-namespace Solti.Utils.DI.Internals
-{
-    internal interface IServiceId
-    {
-        Type Interface { get; }
-        string? Name { get; }
-    }
-}
+[assembly: NeutralResourcesLanguage("en"), InternalsVisibleTo("Solti.Utils.DI"),
+#if DEBUG
+    InternalsVisibleTo("Solti.Utils.DI.Tests")
+#endif
+]

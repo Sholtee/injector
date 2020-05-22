@@ -3,6 +3,7 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -10,6 +11,7 @@ using System.Text.RegularExpressions;
 
 namespace Solti.Utils.DI
 {
+    using Interfaces;
     using Internals;
 
     public static partial class IServiceContainerExtensions
@@ -41,7 +43,14 @@ namespace Solti.Utils.DI
 
             foreach (TypeInfo ti in assembly.DefinedTypes.Where(t => (t.IsClass || t.IsInterface) && matcher.IsMatch(t.Namespace ?? string.Empty)))
                 foreach (ServiceRegistrationAttribute attr in ti.GetCustomAttributes<ServiceRegistrationAttribute>())
-                    attr.Register(container, ti.AsType());
+                {
+                    IServiceRegistration registration = (IServiceRegistration) typeof(IServiceContainerExtensions)
+                        .Assembly
+                        .GetType(attr.Implementation, throwOnError: true)
+                        .CreateInstance(Array.Empty<Type>());
+
+                    registration.Invoke(container, attr, ti.AsType());
+                }
 
             return container;
         }

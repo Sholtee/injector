@@ -13,6 +13,7 @@ namespace Solti.Utils.Proxy
 
     using DI;
     using DI.Internals;
+    using DI.Interfaces;
 
     using Primitives;
 

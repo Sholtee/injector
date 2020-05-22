@@ -8,6 +8,7 @@ using System.Collections.Generic;
 
 namespace Solti.Utils.DI
 {
+    using Interfaces;
     using Internals;
 
     /// <summary>

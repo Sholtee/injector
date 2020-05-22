@@ -5,20 +5,17 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Solti.Utils.DI
+namespace Solti.Utils.DI.Interfaces
 {
-    using Internals;
     using Primitives.Patterns;
     using Properties;
 
     /// <summary>
     /// Describes an abstract service definition.
     /// </summary>
-    [SuppressMessage("Security", "CA2119:Seal methods that satisfy private interfaces", Justification = "No security issues exist if the methods are overridden outside the assembly.")]
     public class AbstractServiceEntry: Disposable, IServiceDefinition
     {
         /// <summary>
@@ -44,22 +41,35 @@ namespace Solti.Utils.DI
         /// <exception cref="NotSupportedException">The <paramref name="implementation"/> does not support the <paramref name="interface"/>.</exception>
         protected AbstractServiceEntry(Type @interface, string? name, Lifetime? lifetime, Type? implementation, IServiceContainer owner)
         {
-            Ensure.Parameter.IsNotNull(@interface, nameof(@interface));
-            Ensure.Parameter.IsInterface(@interface, nameof(@interface));
-            Ensure.Parameter.IsNotNull(owner, nameof(owner));
-
-            if (implementation != null)
-                //
-                // Mukodik generikusokra is.
-                //
-
-                Ensure.Type.Supports(implementation, @interface);
-
-            Interface      = @interface;
+            Interface      = @interface ?? throw new ArgumentNullException(nameof(@interface));
+            Owner          = owner ?? throw new ArgumentNullException(nameof(owner));
             Name           = name;
             Lifetime       = lifetime;
             Implementation = implementation;
-            Owner          = owner;
+
+            if (!@interface.IsInterface)
+                throw new ArgumentException(Resources.NOT_AN_INTERFACE, nameof(@interface));
+
+            if (implementation != null && !InterfaceSupportedBy(implementation))
+                throw new ArgumentException(Resources.INTERFACE_NOT_SUPPORTED, nameof(implementation));
+
+            bool InterfaceSupportedBy(Type type) 
+            {
+                if (type.IsGenericTypeDefinition != @interface.IsGenericTypeDefinition) return false;
+
+                foreach (Type iface in type.GetInterfaces())
+                {
+                    //
+                    // List<T>: IList<T> eseten a GetInterfaces() altal visszadobott IList<T> nem lesz azonos typeof(IList<>)-el
+                    //
+
+                    Type current = @interface.IsGenericTypeDefinition && iface.IsGenericType ? iface.GetGenericTypeDefinition() : iface;
+
+                    if (@interface == current || InterfaceSupportedBy(current))
+                        return true;
+                }
+                return false;
+            }
         }
 
         #region Immutables
@@ -100,17 +110,17 @@ namespace Solti.Utils.DI
         /// <summary>
         /// The previously created service instance. Don't use it directly.
         /// </summary>
-        public ServiceReference? Instance { get; protected set; }
+        public IServiceReference? Instance { get; protected set; }
         #endregion
 
         /// <summary>
         /// Calls the <see cref="Factory"/> to set the service <see cref="Instance"/>.
         /// </summary>
-        /// <param name="serviceReference">The <see cref="ServiceReference"/> of the service being created.</param>
+        /// <param name="serviceReference">The <see cref="IServiceReference"/> of the service being created.</param>
         /// <param name="options">The options that control the instantiation process.</param>
         /// <returns>True on success false if the <see cref="Instance"/> had already been set previously.</returns>
-        public virtual bool SetInstance(ServiceReference serviceReference, IReadOnlyDictionary<string, object> options) =>
-            throw new InvalidOperationException(Resources.CANT_INSTANTIATE_ABSTRACTS);
+        public virtual bool SetInstance(IServiceReference serviceReference, IReadOnlyDictionary<string, object> options) =>
+            throw new NotImplementedException();
 
         /// <summary>
         /// Copies this entry to a new collection.
@@ -118,8 +128,8 @@ namespace Solti.Utils.DI
         /// <param name="target">The target <see cref="IServiceContainer"/> to which we want to copy this entry.</param>
         public virtual AbstractServiceEntry CopyTo(IServiceContainer target)
         {
-            Ensure.Parameter.IsNotNull(target, nameof(target));
-            Ensure.NotDisposed(this);
+            if (target == null) throw new ArgumentNullException(nameof(target));
+            CheckNotDisposed();
 
             target.Add(this);
             return this;

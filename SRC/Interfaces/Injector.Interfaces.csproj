@@ -1,18 +1,19 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
     <Company></Company>
     <Authors>Denes Solti</Authors>
-    <Version>2.1.0</Version>
-    <AssemblyName>Injector.Interfaces</AssemblyName>
-    <RootNamespace>Solti.Utils.DI</RootNamespace>
+    <Version>3.0.0-preview1</Version>
+    <AssemblyName>Solti.Utils.DI.Interfaces</AssemblyName>
+    <RootNamespace>Solti.Utils.DI.Interfaces</RootNamespace>
     <Configurations>Debug;Release;Perf</Configurations>
     <LangVersion>8</LangVersion>
     <Nullable>enable</Nullable>
+    <NoWarn>CA2007</NoWarn>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <OutputPath>..\..\BIN\$(Configuration)\</OutputPath>
-    <DocumentationFile>..\..\BIN\Injector.Interfaces.xml</DocumentationFile>
+    <DocumentationFile>..\..\BIN\Solti.Utils.DI.Interfaces.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup Condition="'$(CI)' == ''">
@@ -21,10 +22,29 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
   </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Solti.Utils.Primitives" Version="1.*" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
   
   <PropertyGroup>
     <Product>Injector.NET</Product>
-    <Description>Abstractions for Injector.NET.</Description>
+    <Description>Abstractions for Injector.NET</Description>
     <PackageId>Injector.NET.Interfaces</PackageId>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageIconUrl>https://github.com/Sholtee/injector/raw/master/icon.png</PackageIconUrl>

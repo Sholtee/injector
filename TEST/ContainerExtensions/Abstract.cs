@@ -9,6 +9,8 @@ using NUnit.Framework;
 
 namespace Solti.Utils.DI.Container.Tests
 {
+    using Interfaces;
+
     public partial class ContainerTestsBase<TContainer>
     {
         [Test]

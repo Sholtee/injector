@@ -10,16 +10,17 @@ using NUnit.Framework;
 
 namespace Solti.Utils.DI.Injector.Graph.Tests
 {
+    using Interfaces;
     using Internals;
 
     [TestFixture]
     public class GraphTests
     {
-        private static ServiceReference[] Validate(Injector injector) 
+        private static IServiceReference[] Validate(Injector injector) 
         {
             Config.Value.Injector.StrictDI = false;
 
-            ServiceReference
+            IServiceReference
                 svc1, svc2, svc3, svc4;
 
             svc4 = injector.GetReference(typeof(IInterface_4), null);
@@ -46,26 +47,26 @@ namespace Solti.Utils.DI.Injector.Graph.Tests
 
             return new[] { svc1, svc2, svc3, svc4 };
 
-            ServiceReference GetDependency(ServiceReference reference, Type iface) => reference.Dependencies.SingleOrDefault(dep => dep.RelatedServiceEntry.Interface == iface);
+            IServiceReference GetDependency(IServiceReference reference, Type iface) => reference.Dependencies.SingleOrDefault(dep => dep.RelatedServiceEntry.Interface == iface);
         }
 
         [Test]
         public void ComplexTest()
         {
-            ServiceReference[] references;
+            IServiceReference[] references;
 
             using (IServiceContainer container = new ServiceContainer().Setup(typeof(IInterface_1).Assembly, "Solti.Utils.DI.Injector.Graph.Tests"))
             {
                 references = Validate(new Injector(container));
             }
 
-            Assert.That(references.All(reference => reference.Disposed));
+            Assert.That(references.All(reference => reference.RefCount == 0));
         }
 
         [Test]
         public void ComplexTestWithChildContainer()
         {
-            ServiceReference[] references;
+            IServiceReference[] references;
 
             using (IServiceContainer container = new ServiceContainer())
             {
@@ -81,7 +82,7 @@ namespace Solti.Utils.DI.Injector.Graph.Tests
                 references = Validate(new Injector(child));
             }
 
-            Assert.That(references.All(reference => reference.Disposed));
+            Assert.That(references.All(reference => reference.RefCount == 0));
         }
 
         private interface IInterface_1 { }

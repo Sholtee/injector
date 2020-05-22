@@ -7,12 +7,14 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace Solti.Utils.DI.Internals
 {
+    using Interfaces;
+
     internal class NotOwnedServiceInstantiationStrategy: OwnedServiceInstantiationStrategy
     {
         public override bool ShouldUse(Injector injector, AbstractServiceEntry requested) => injector.UnderlyingContainer.IsDescendantOf(requested.Owner);
 
         [SuppressMessage("Reliability", "CA2000:Dispose objects before losing scope", Justification = "The lifetime of newly created injector is maintained by its owner.")]
-        public override ServiceReference Exec(Injector injector, ServiceReference? requestor, AbstractServiceEntry requested)
+        public override IServiceReference Exec(Injector injector, IServiceReference? requestor, AbstractServiceEntry requested)
         {
             //
             // - ServiceEntry-t zaroljuk h a lock injectorok kozt is ertelmezve legyen.
@@ -26,7 +28,7 @@ namespace Solti.Utils.DI.Internals
                 // Valaki kozben beallitotta?
                 //
 
-                ServiceReference? existing = requested.Instance;
+                IServiceReference? existing = requested.Instance;
 
                 if (existing != null)
                 {

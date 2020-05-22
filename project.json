@@ -9,7 +9,7 @@
   "testresults": "testresults.xml",
   "coveragereport": "coverage.xml",
   "artifacts": "\\Artifacts",
-  "coveragefilter": "+[Injector*]* -[Injector.Tests]*",
+  "coveragefilter": "+[Solti.Utils.DI*]* -[Solti.Utils.DI.Tests]*",
   "perftests": "\\PERF\\Injector.Perf.csproj",
   "perftarget": "netcoreapp3.1",
   "docsbranch": "gh-pages",

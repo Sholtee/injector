@@ -13,6 +13,7 @@ namespace Solti.Utils.Proxy.Tests
 {
     using DI;
     using DI.Properties;
+    using DI.Interfaces;
     using Primitives.Patterns;
 
     [TestFixture]

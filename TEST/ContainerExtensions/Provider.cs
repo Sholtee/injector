@@ -11,6 +11,7 @@ using NUnit.Framework;
 
 namespace Solti.Utils.DI.Container.Tests
 {
+    using Interfaces;
     using Primitives.Patterns;
     using Properties;
     
@@ -22,7 +23,7 @@ namespace Solti.Utils.DI.Container.Tests
 
         [Test]
         public void Container_Provider_ShouldThrowIfTheProviderDoesNotImplementTheIServiceProvider() =>
-            Assert.Throws<NotSupportedException>(() => Container.Provider(typeof(IInterface_1), typeof(object)));
+            Assert.Throws<ArgumentException>(() => Container.Provider(typeof(IInterface_1), typeof(object)));
 
         [Test]
         public void Container_Provider_ShouldThrowIfTheProviderHasNonInterfaceDependency() =>

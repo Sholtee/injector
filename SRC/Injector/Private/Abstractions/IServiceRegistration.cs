@@ -1,5 +1,5 @@
 ﻿/********************************************************************************
-* ISupportsProxying.cs                                                          *
+* IServiceRegistration.cs                                                       *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
@@ -7,14 +7,10 @@ using System;
 
 namespace Solti.Utils.DI.Internals
 {
-    /// <summary>
-    /// Provides the mechanism for overriding the factory function. 
-    /// </summary>
-    public interface  ISupportsProxying
+    using Interfaces;
+    
+    internal interface IServiceRegistration
     {
-        /// <summary>
-        /// The factory function that can be overridden.
-        /// </summary>
-        Func<IInjector, Type, object>? Factory { get;  set; }
+        void Invoke(IServiceContainer container, ServiceRegistrationAttribute registration, Type referencedType);
     }
 }

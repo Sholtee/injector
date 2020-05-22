@@ -15,6 +15,7 @@ using static System.Diagnostics.Debug;
 
 namespace Solti.Utils.DI
 {
+    using Interfaces;
     using Internals;
     using Primitives.Patterns;
     using Primitives.Threading;
@@ -43,8 +44,8 @@ namespace Solti.Utils.DI
         /// </summary>
         public virtual void Add(AbstractServiceEntry entry)
         {
+            CheckNotDisposed();
             Ensure.Parameter.IsNotNull(entry, nameof(entry));
-            Ensure.NotDisposed(this);
 
             using (FLock.AcquireWriterLock())
             {
@@ -55,7 +56,7 @@ namespace Solti.Utils.DI
                     //
 
                     if (existing.GetType() != typeof(AbstractServiceEntry)) 
-                        throw new ServiceAlreadyRegisteredException(existing);
+                        throw new ServiceAlreadyRegisteredException(string.Format(Resources.Culture, Resources.ALREADY_REGISTERED, existing.FriendlyName()));
 
                     if (ShouldDispose(existing))
                         //
@@ -81,9 +82,9 @@ namespace Solti.Utils.DI
         [SuppressMessage("Naming", "CA1716:Identifiers should not match keywords", Justification = "The identifier won't confuse the users of the API.")]
         public virtual AbstractServiceEntry? Get(Type serviceInterface, string? name, QueryModes mode)
         {
+            CheckNotDisposed();
             Ensure.Parameter.IsNotNull(serviceInterface, nameof(serviceInterface));
             Ensure.Parameter.IsInterface(serviceInterface, nameof(serviceInterface));
-            Ensure.NotDisposed(this);
 
             IServiceId key = MakeId(serviceInterface);
 
@@ -117,7 +118,7 @@ namespace Solti.Utils.DI
                 if (!hasGenericEntry)
                     return !mode.HasFlag(QueryModes.ThrowOnError) 
                         ? (AbstractServiceEntry?) null 
-                        : throw new ServiceNotFoundException(key);
+                        : throw new ServiceNotFoundException(string.Format(Resources.Culture, Resources.SERVICE_NOT_FOUND, key.FriendlyName()));
             }
 
             Assert(existing.IsGeneric());
@@ -183,7 +184,7 @@ namespace Solti.Utils.DI
         {
             get
             {
-                Ensure.NotDisposed(this);
+                CheckNotDisposed();
 
                 using (FLock.AcquireReaderLock())
                 {
@@ -201,7 +202,7 @@ namespace Solti.Utils.DI
         /// <remarks>You must dispose the returned enumerator (which is automatically done in foreach loops).</remarks>
         public IEnumerator<AbstractServiceEntry> GetEnumerator()
         {
-            Ensure.NotDisposed(this);
+            CheckNotDisposed();
 
             //
             // A "FEntries.Values" nem masolat

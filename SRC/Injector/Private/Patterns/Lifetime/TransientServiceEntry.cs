@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace Solti.Utils.DI.Internals
 {
+    using Interfaces;
     using Properties;
 
     /// <summary>
@@ -44,15 +45,15 @@ namespace Solti.Utils.DI.Internals
         {
         }
 
-        public TransientServiceEntry(Type @interface, string name, Func<IInjector, Type, object> factory, IServiceContainer owner) : base(@interface, name, DI.Lifetime.Transient, factory, owner)
+        public TransientServiceEntry(Type @interface, string name, Func<IInjector, Type, object> factory, IServiceContainer owner) : base(@interface, name, Interfaces.Lifetime.Transient, factory, owner)
         {
         }
 
-        public TransientServiceEntry(Type @interface, string name, Type implementation, IServiceContainer owner) : base(@interface, name, DI.Lifetime.Transient, implementation, owner)
+        public TransientServiceEntry(Type @interface, string name, Type implementation, IServiceContainer owner) : base(@interface, name, Interfaces.Lifetime.Transient, implementation, owner)
         {
         }
 
-        public override bool SetInstance(ServiceReference reference, IReadOnlyDictionary<string, object> options)
+        public override bool SetInstance(IServiceReference reference, IReadOnlyDictionary<string, object> options)
         {
             EnsureAppropriateReference(reference);
             EnsureProducible();
@@ -77,9 +78,9 @@ namespace Solti.Utils.DI.Internals
             //
 
             SpawnedServices.Add(reference);   
-            reference.Release();
+            int refcount = reference.Release();
 
-            Debug.Assert(!reference.Disposed);
+            Debug.Assert(refcount > 0);
 
             return true;
         }

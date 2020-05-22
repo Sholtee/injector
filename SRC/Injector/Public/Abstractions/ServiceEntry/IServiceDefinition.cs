@@ -3,15 +3,7 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
-using System;
+using Solti.Utils.DI.Interfaces;
+using System.Runtime.CompilerServices;
 
-namespace Solti.Utils.DI.Internals
-{
-    internal interface IServiceDefinition: IServiceId
-    {
-        IServiceContainer Owner { get; }
-        Lifetime? Lifetime { get; }
-        Type? Implementation { get; }
-        Func<IInjector, Type, object>? Factory { get; }
-    }
-}
+[assembly: TypeForwardedTo(typeof(IServiceDefinition))]

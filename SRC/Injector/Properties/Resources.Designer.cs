@@ -70,15 +70,6 @@ namespace Solti.Utils.DI.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Instantiating abstract services are not allowed..
-        /// </summary>
-        internal static string CANT_INSTANTIATE_ABSTRACTS {
-            get {
-                return ResourceManager.GetString("CANT_INSTANTIATE_ABSTRACTS", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Creating proxy is not allowed here..
         /// </summary>
         internal static string CANT_PROXY {
@@ -138,15 +129,6 @@ namespace Solti.Utils.DI.Properties {
         internal static string INJECTOR_SHOULD_BE_RELEASED {
             get {
                 return ResourceManager.GetString("INJECTOR_SHOULD_BE_RELEASED", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The implementation does not support the given interface (interface name: {0})..
-        /// </summary>
-        internal static string INTERFACE_NOT_SUPPORTED {
-            get {
-                return ResourceManager.GetString("INTERFACE_NOT_SUPPORTED", resourceCulture);
             }
         }
         

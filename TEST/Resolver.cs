@@ -13,6 +13,7 @@ using NUnit.Framework;
 
 namespace Solti.Utils.DI.Internals.Tests
 {
+    using Interfaces;
     using Primitives.Patterns;
     using Properties;
 

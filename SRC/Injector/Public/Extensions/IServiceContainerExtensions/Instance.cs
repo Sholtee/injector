@@ -8,6 +8,7 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace Solti.Utils.DI
 {
+    using Interfaces;
     using Internals;
 
     public static partial class IServiceContainerExtensions

@@ -7,6 +7,8 @@ using System;
 
 namespace Solti.Utils.DI.Internals
 {
+    using Interfaces;
+
     internal class ServiceId : IServiceId
     {
         public ServiceId(Type @interface, string? name) 

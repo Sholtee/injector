@@ -7,6 +7,7 @@ using System;
 
 namespace Solti.Utils.DI.Internals
 {
+    using Interfaces;
     using Properties;
 
     /// <summary>
@@ -37,11 +38,10 @@ namespace Solti.Utils.DI.Internals
         protected ProducibleServiceEntry(Type @interface, string? name, Lifetime lifetime, Type implementation, IServiceContainer owner) : base(@interface, name, lifetime, implementation, owner)
         {
             //
-            // Os ellenorzi az interface-t es a tulajdonost.
+            // Os ellenorzi a tobbit.
             //
 
             Ensure.Parameter.IsNotNull(implementation, nameof(implementation));
-            Ensure.Type.Supports(implementation, @interface);
 
             if (!@interface.IsGenericTypeDefinition)
             {
@@ -61,7 +61,7 @@ namespace Solti.Utils.DI.Internals
                 //
         }
 
-        protected void EnsureAppropriateReference(ServiceReference reference)
+        protected void EnsureAppropriateReference(IServiceReference reference)
         {
             Ensure.Parameter.IsNotNull(reference, nameof(reference));
             Ensure.AreEqual(reference.RelatedServiceEntry, this, Resources.NOT_BELONGING_REFERENCE);

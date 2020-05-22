@@ -7,6 +7,8 @@ using NUnit.Framework;
 
 namespace Solti.Utils.DI.Injector.Tests
 {
+    using Interfaces;
+
     public partial class InjectorTestsBase<TContainer>
     {
         [Test]

@@ -5,6 +5,8 @@
 ********************************************************************************/
 namespace Solti.Utils.DI
 {
+    using Interfaces;
+
     /// <summary>
     /// Defines several handy extensions for the <see cref="IServiceContainer"/> interface.
     /// </summary>

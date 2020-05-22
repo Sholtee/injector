@@ -8,6 +8,7 @@ using System.Collections.Generic;
 
 namespace Solti.Utils.DI.Internals
 {
+    using Interfaces;
     using Properties;
 
     /// <summary>
@@ -19,15 +20,15 @@ namespace Solti.Utils.DI.Internals
         {
         }
 
-        public ScopedServiceEntry(Type @interface, string name, Func<IInjector, Type, object> factory, IServiceContainer owner) : base(@interface, name, DI.Lifetime.Scoped, factory, owner)
+        public ScopedServiceEntry(Type @interface, string name, Func<IInjector, Type, object> factory, IServiceContainer owner) : base(@interface, name, Interfaces.Lifetime.Scoped, factory, owner)
         {
         }
 
-        public ScopedServiceEntry(Type @interface, string name, Type implementation, IServiceContainer owner) : base(@interface, name, DI.Lifetime.Scoped, implementation, owner)
+        public ScopedServiceEntry(Type @interface, string name, Type implementation, IServiceContainer owner) : base(@interface, name, Interfaces.Lifetime.Scoped, implementation, owner)
         {
         }
 
-        public override bool SetInstance(ServiceReference reference, IReadOnlyDictionary<string, object> options)
+        public override bool SetInstance(IServiceReference reference, IReadOnlyDictionary<string, object> options)
         {
             EnsureAppropriateReference(reference);
             EnsureProducible();
@@ -57,8 +58,8 @@ namespace Solti.Utils.DI.Internals
 
         public override AbstractServiceEntry CopyTo(IServiceContainer target)
         {
+            CheckNotDisposed();
             Ensure.Parameter.IsNotNull(target, nameof(target));
-            Ensure.NotDisposed(this);
 
             var result = new ScopedServiceEntry(this, target);
             target.Add(result);

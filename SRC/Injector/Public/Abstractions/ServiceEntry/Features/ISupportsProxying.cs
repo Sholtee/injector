@@ -1,14 +1,9 @@
 ﻿/********************************************************************************
-* CanSetParentAttribute.cs                                                      *
+* ISupportsProxying.cs                                                          *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
-using System;
+using Solti.Utils.DI.Interfaces;
+using System.Runtime.CompilerServices;
 
-namespace Solti.Utils.DI.Internals
-{
-    [AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
-    internal sealed class CanSetParentAttribute: Attribute
-    {
-    }
-}
+[assembly: TypeForwardedTo(typeof(ISupportsProxying))]

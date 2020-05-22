@@ -9,6 +9,7 @@ using NUnit.Framework;
 
 namespace Solti.Utils.DI.Container.Tests
 {
+    using Interfaces;
     using Internals;
     using Primitives.Patterns;
     using Properties;
@@ -48,7 +49,7 @@ namespace Solti.Utils.DI.Container.Tests
         [Test]
         public void Container_Instance_ShouldBeTypeChecked()
         {
-            Assert.Throws<InvalidOperationException>(() => Container.Instance(typeof(IInterface_1), new object()), string.Format(Resources.INTERFACE_NOT_SUPPORTED, typeof(IInterface_1)));
+            Assert.Throws<InvalidOperationException>(() => Container.Instance(typeof(IInterface_1), new object()), string.Format(Interfaces.Properties.Resources.INTERFACE_NOT_SUPPORTED, typeof(IInterface_1)));
         }
 
         [Test]

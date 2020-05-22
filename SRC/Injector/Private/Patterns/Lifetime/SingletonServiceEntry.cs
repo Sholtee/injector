@@ -9,6 +9,7 @@ using System.Runtime.CompilerServices;
 
 namespace Solti.Utils.DI.Internals
 {
+    using Interfaces;
     using Properties;
 
     /// <summary>
@@ -16,16 +17,16 @@ namespace Solti.Utils.DI.Internals
     /// </summary>
     internal class SingletonServiceEntry : ProducibleServiceEntry
     {
-        public SingletonServiceEntry(Type @interface, string name, Func<IInjector, Type, object> factory, IServiceContainer owner) : base(@interface, name, DI.Lifetime.Singleton, factory, owner)
+        public SingletonServiceEntry(Type @interface, string name, Func<IInjector, Type, object> factory, IServiceContainer owner) : base(@interface, name, Interfaces.Lifetime.Singleton, factory, owner)
         {
         }
 
-        public SingletonServiceEntry(Type @interface, string name, Type implementation, IServiceContainer owner) : base(@interface, name, DI.Lifetime.Singleton, implementation, owner)
+        public SingletonServiceEntry(Type @interface, string name, Type implementation, IServiceContainer owner) : base(@interface, name, Interfaces.Lifetime.Singleton, implementation, owner)
         {
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public override bool SetInstance(ServiceReference reference, IReadOnlyDictionary<string, object> options)
+        public override bool SetInstance(IServiceReference reference, IReadOnlyDictionary<string, object> options)
         {
             EnsureAppropriateReference(reference);
             EnsureProducible();

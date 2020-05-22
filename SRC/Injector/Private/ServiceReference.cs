@@ -10,13 +10,11 @@ using System.Threading.Tasks;
 
 namespace Solti.Utils.DI
 {
+    using Interfaces;
     using Internals;
     using Primitives.Patterns;
 
-    /// <summary>
-    /// Encapsulates a service and its dependencies into a reference counted container.
-    /// </summary>
-    public class ServiceReference : DisposeByRefObject
+    internal class ServiceReference : DisposeByRefObject, IServiceReference
     {
         private readonly ServiceReferenceCollection? FDependencies;
 
@@ -60,13 +58,12 @@ namespace Solti.Utils.DI
         /// <summary>
         /// The dependencies of the bound service. It can be used only if the <see cref="ExternallyOwned"/> is false.
         /// </summary>
-        public ICollection<ServiceReference> Dependencies 
+        public ICollection<IServiceReference> Dependencies 
         {
             get 
             {
-                Ensure.NotDisposed(this);
-
-                return (ICollection<ServiceReference>?) FDependencies ?? Array.Empty<ServiceReference>();
+                CheckNotDisposed();
+                return (ICollection<IServiceReference>?) FDependencies ?? Array.Empty<IServiceReference>();
             }
         }
 
@@ -77,18 +74,19 @@ namespace Solti.Utils.DI
         {
             get
             {
-                Ensure.NotDisposed(this);
+                CheckNotDisposed();
                 return FValue.Value;
             }
             set 
             {
+                CheckNotDisposed();
+
                 //
                 // Peldany tipusat ellenorizzuk mert a Factory(), Proxy() stb visszaadhat vicces dolgokat.
                 //
 
                 Ensure.Parameter.IsNotNull(value, nameof(value));
                 Ensure.Type.IsTypeOf(RelatedServiceEntry.Interface, value!);
-                Ensure.NotDisposed(this);
 
                 FValue.Value = value;
             }

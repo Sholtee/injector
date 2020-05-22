@@ -3,20 +3,7 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
-using System;
+using Solti.Utils.DI.Interfaces;
+using System.Runtime.CompilerServices;
 
-namespace Solti.Utils.DI
-{
-    /// <summary>
-    /// Base class of "auto config" attributes.
-    /// </summary>
-    public abstract class ServiceRegistrationAttribute: Attribute
-    {
-        /// <summary>
-        /// The registration logic.
-        /// </summary>
-        /// <param name="container">The target <see cref="IServiceContainer"/>.</param>
-        /// <param name="target">The target <see cref="Type"/> on which the attribute was applied.</param>
-        public abstract void Register(IServiceContainer container, Type target);
-    }
-}
+[assembly: TypeForwardedTo(typeof(ServiceRegistrationAttribute))]
