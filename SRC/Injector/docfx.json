@@ -1,7 +1,8 @@
 {
 	"metadata": [{
 		"src": [{
-			"files": ["Injector.csproj", "../Interfaces/Injector.Interfaces.csproj"],
+		    "src": "../",
+			"files": ["*/*.csproj"],
 			"exclude": ["**/bin/**", "**/obj/**"]
 		}],
 		"dest": "../../BIN/DOC",
