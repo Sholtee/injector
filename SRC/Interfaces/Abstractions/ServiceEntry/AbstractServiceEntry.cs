@@ -50,6 +50,11 @@ namespace Solti.Utils.DI.Interfaces
             if (!@interface.IsInterface)
                 throw new ArgumentException(Resources.NOT_AN_INTERFACE, nameof(@interface));
 
+            //
+            // Implementacio validalasa a leszarmazott feladata, itt csak azt ellenorizzuk h az adott
+            // interface-t megvalositja e.
+            //
+
             if (implementation != null && !InterfaceSupportedBy(implementation))
                 throw new ArgumentException(Resources.INTERFACE_NOT_SUPPORTED, nameof(implementation));
 
