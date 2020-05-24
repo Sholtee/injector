@@ -38,7 +38,7 @@ namespace Solti.Utils.DI.Interfaces
         /// <param name="implementation">The (optional) implementation of the service.</param>
         /// <param name="owner">The owner of this entry.</param>
         /// <exception cref="ArgumentException">The <paramref name="interface"/> is not an interface.</exception>
-        /// <exception cref="NotSupportedException">The <paramref name="implementation"/> does not support the <paramref name="interface"/>.</exception>
+        /// <exception cref="ArgumentException">The <paramref name="implementation"/> does not support the <paramref name="interface"/>.</exception>
         protected AbstractServiceEntry(Type @interface, string? name, Lifetime? lifetime, Type? implementation, IServiceContainer owner)
         {
             Interface      = @interface ?? throw new ArgumentNullException(nameof(@interface));
