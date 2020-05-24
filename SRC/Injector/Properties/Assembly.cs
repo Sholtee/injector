@@ -13,5 +13,5 @@ assembly:
     InternalsVisibleTo("Solti.Utils.DI.Tests"),
     InternalsVisibleTo("DynamicProxyGenAssembly2"), // Moq
 #endif
-    InternalsVisibleTo("Solti.Utils.DI.Perf")
+    InternalsVisibleTo("Injector.Perf")
 ]

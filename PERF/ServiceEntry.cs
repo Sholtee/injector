@@ -11,8 +11,10 @@ using BenchmarkDotNet.Attributes;
 namespace Solti.Utils.DI.Perf
 {
     using static Consts;
+    using Interfaces;
     using Internals;
-    using Proxy;
+    using Primitives.Patterns;
+    using Proxy;   
 
     [MemoryDiagnoser]
     public class ServiceEntry

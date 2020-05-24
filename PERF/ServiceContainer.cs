@@ -13,6 +13,7 @@ using BenchmarkDotNet.Attributes;
 namespace Solti.Utils.DI.Perf
 {
     using static Consts;
+    using Interfaces;
 
     [MemoryDiagnoser]
     public class ServiceContainer

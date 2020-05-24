@@ -12,6 +12,7 @@ namespace Solti.Utils.DI.Perf
 {
     using static Consts;
     using Internals;
+    using Interfaces;
 
     public class InjectorTestsBase
     {
@@ -57,7 +58,7 @@ namespace Solti.Utils.DI.Perf
                 return result;
             }
 
-            internal override void Instantiate(ServiceReference requested)
+            internal override void Instantiate(IServiceReference requested)
             {
                 GC.SuppressFinalize(requested);
                 GC.SuppressFinalize(requested.Dependencies);
