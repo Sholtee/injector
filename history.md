@@ -138,3 +138,5 @@
   - *fixed:* Missing configuration file (again)
 - 3.0.0:
   - *fixed:* Some build related issues
+- 3.0.1:
+  - *fixed:* Broken performance test
