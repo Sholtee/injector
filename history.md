@@ -135,4 +135,6 @@
   - *done:* Renamed assembly
   - *added:* Separate assmebly for general interfaces
 - 3.0.0-preview2:
- - *fixed:* Missing configuration file (again)
+  - *fixed:* Missing configuration file (again)
+- 3.0.0:
+  - *fixed:* Some build related issues
