@@ -41,8 +41,7 @@
 BenchmarkDotNet=v0.12.0, OS=Windows 10.0.17763.1098 (1809/October2018Update/Redstone5)
 Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 .NET Core SDK=3.1.201
-  [Host]     : .NET Core 3.1.3 (CoreCLR 4.700.20.11803, CoreFX 4.700.20.12001), X64 RyuJIT
-  DefaultJob : .NET Core 3.1.3 (CoreCLR 4.700.20.11803, CoreFX 4.700.20.12001), X64 RyuJIT
+  [Host] : .NET Core 3.1.3 (CoreCLR 4.700.20.11803, CoreFX 4.700.20.12001), X64 RyuJIT
 
 </code></pre><table>
 <thead>
@@ -51,82 +50,54 @@ Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 <th>Lifetime</th>
 <th style="text-align:right">Mean</th>
 <th style="text-align:right">Error</th>
-<th style="text-align:right">StdDev</th>
-<th style="text-align:right">Gen 0</th>
-<th style="text-align:right">Gen 1</th>
-<th style="text-align:right">Gen 2</th>
-<th style="text-align:right">Allocated</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><strong>Service</strong></td>
 <td><strong>Transient</strong></td>
-<td style="text-align:right"><strong>1.901 us</strong></td>
-<td style="text-align:right"><strong>0.0218 us</strong></td>
-<td style="text-align:right"><strong>0.0193 us</strong></td>
-<td style="text-align:right"><strong>0.0430</strong></td>
-<td style="text-align:right"><strong>-</strong></td>
-<td style="text-align:right"><strong>-</strong></td>
-<td style="text-align:right"><strong>815 B</strong></td>
+<td style="text-align:right"><strong>NA</strong></td>
+<td style="text-align:right"><strong>NA</strong></td>
 </tr>
 <tr>
 <td>Factory</td>
 <td>Transient</td>
-<td style="text-align:right">1.429 us</td>
-<td style="text-align:right">0.0264 us</td>
-<td style="text-align:right">0.0247 us</td>
-<td style="text-align:right">0.0313</td>
-<td style="text-align:right">-</td>
-<td style="text-align:right">-</td>
-<td style="text-align:right">591 B</td>
+<td style="text-align:right">NA</td>
+<td style="text-align:right">NA</td>
 </tr>
 <tr>
 <td><strong>Service</strong></td>
 <td><strong>Scoped</strong></td>
-<td style="text-align:right"><strong>1.979 us</strong></td>
-<td style="text-align:right"><strong>0.0384 us</strong></td>
-<td style="text-align:right"><strong>0.0499 us</strong></td>
-<td style="text-align:right"><strong>0.0430</strong></td>
-<td style="text-align:right"><strong>-</strong></td>
-<td style="text-align:right"><strong>-</strong></td>
-<td style="text-align:right"><strong>807 B</strong></td>
+<td style="text-align:right"><strong>NA</strong></td>
+<td style="text-align:right"><strong>NA</strong></td>
 </tr>
 <tr>
 <td>Factory</td>
 <td>Scoped</td>
-<td style="text-align:right">1.497 us</td>
-<td style="text-align:right">0.0251 us</td>
-<td style="text-align:right">0.0235 us</td>
-<td style="text-align:right">0.0313</td>
-<td style="text-align:right">-</td>
-<td style="text-align:right">-</td>
-<td style="text-align:right">583 B</td>
+<td style="text-align:right">NA</td>
+<td style="text-align:right">NA</td>
 </tr>
 <tr>
 <td><strong>Service</strong></td>
 <td><strong>Singleton</strong></td>
-<td style="text-align:right"><strong>1.868 us</strong></td>
-<td style="text-align:right"><strong>0.0188 us</strong></td>
-<td style="text-align:right"><strong>0.0176 us</strong></td>
-<td style="text-align:right"><strong>0.0391</strong></td>
-<td style="text-align:right"><strong>-</strong></td>
-<td style="text-align:right"><strong>-</strong></td>
-<td style="text-align:right"><strong>759 B</strong></td>
+<td style="text-align:right"><strong>NA</strong></td>
+<td style="text-align:right"><strong>NA</strong></td>
 </tr>
 <tr>
 <td>Factory</td>
 <td>Singleton</td>
-<td style="text-align:right">1.406 us</td>
-<td style="text-align:right">0.0192 us</td>
-<td style="text-align:right">0.0180 us</td>
-<td style="text-align:right">0.0273</td>
-<td style="text-align:right">-</td>
-<td style="text-align:right">-</td>
-<td style="text-align:right">535 B</td>
+<td style="text-align:right">NA</td>
+<td style="text-align:right">NA</td>
 </tr>
 </tbody>
 </table>
+<p>Benchmarks with issues:
+  ServiceEntry.Service: DefaultJob [Lifetime=Transient]
+  ServiceEntry.Factory: DefaultJob [Lifetime=Transient]
+  ServiceEntry.Service: DefaultJob [Lifetime=Scoped]
+  ServiceEntry.Factory: DefaultJob [Lifetime=Scoped]
+  ServiceEntry.Service: DefaultJob [Lifetime=Singleton]
+  ServiceEntry.Factory: DefaultJob [Lifetime=Singleton]</p>
 </article>
           </div>
           
