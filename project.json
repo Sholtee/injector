@@ -1,8 +1,8 @@
 {
   "bin": "\\BIN\\Release",
   "solution": "\\Injector.sln",
+  "commonprops": "\\SRC\\Common.targets",
   "app": "\\SRC\\Injector\\Injector.csproj",
-  "githubrepo": "sholtee/injector.git",
   "vendor": "\\Vendor",
   "tests": "\\TEST\\Injector.Tests.csproj",
   "testtarget": "netcoreapp2.2",
