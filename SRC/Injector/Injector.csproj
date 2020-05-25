@@ -1,20 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
-    <Company></Company>
-    <Authors>Denes Solti</Authors>
-    <Version>3.0.0-preview2</Version>
     <AssemblyName>Solti.Utils.DI</AssemblyName>
     <RootNamespace>Solti.Utils.DI</RootNamespace>
-    <Configurations>Debug;Release;Perf</Configurations>
-    <LangVersion>8</LangVersion>
-    <Nullable>enable</Nullable>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <NoWarn>CA2007</NoWarn>
-    <OutputPath>..\..\BIN\$(Configuration)\</OutputPath>
-    <DocumentationFile>..\..\BIN\Solti.Utils.DI.xml</DocumentationFile>
   </PropertyGroup>
+
+  <Import Project="Injector.NET.targets" />
+  <Import Project="../Common.targets" />
 
   <PropertyGroup>
     <DefineConstants>BACKWARD_COMPATIBILITY</DefineConstants>
@@ -38,13 +30,6 @@
     <None Remove="index.md" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(CI)' == ''">
-    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="3.*">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-  </ItemGroup>
-
   <ItemGroup>
     <PackageReference Include="ProxyGen.NET" Version="2.*" />
     <PackageReference Include="Solti.Utils.Primitives" Version="1.*" />
@@ -66,8 +51,6 @@
     </EmbeddedResource>
   </ItemGroup>
 
-  <Import Project="Injector.NET.targets" />
-  
   <ItemGroup>
     <None Include="Injector.NET.targets;Solti.Utils.DI.config.json">
       <Pack>true</Pack>
@@ -80,16 +63,8 @@
   </ItemGroup>
 
   <PropertyGroup>
-    <Product>Injector.NET</Product>  
     <Description>A featherweight dependency injector.</Description>
     <PackageId>Injector.NET</PackageId>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageIconUrl>https://github.com/Sholtee/injector/raw/master/icon.png</PackageIconUrl>
-    <PackageTags>IoC;DI;DependencyInjection;Injector;AOP</PackageTags>
-    <PackageReleaseNotes>See https://github.com/Sholtee/injector/blob/master/history.md </PackageReleaseNotes>
-    <RepositoryType>git</RepositoryType>
-    <RepositoryUrl>https://github.com/sholtee/injector</RepositoryUrl>
-    <RepositoryBranch>$(CurrentBranch)</RepositoryBranch>
   </PropertyGroup>
 
 </Project>

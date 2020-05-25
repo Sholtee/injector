@@ -1,27 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
-    <Company></Company>
-    <Authors>Denes Solti</Authors>
-    <Version>3.0.0-preview2</Version>
     <AssemblyName>Solti.Utils.DI.Interfaces</AssemblyName>
     <RootNamespace>Solti.Utils.DI.Interfaces</RootNamespace>
-    <Configurations>Debug;Release;Perf</Configurations>
-    <LangVersion>8</LangVersion>
-    <Nullable>enable</Nullable>
-    <NoWarn>CA2007</NoWarn>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <OutputPath>..\..\BIN\$(Configuration)\</OutputPath>
-    <DocumentationFile>..\..\BIN\Solti.Utils.DI.Interfaces.xml</DocumentationFile>
   </PropertyGroup>
 
-  <ItemGroup Condition="'$(CI)' == ''">
-    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="3.*">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-  </ItemGroup>
+  <Import Project="../Common.targets" />
 
   <ItemGroup>
     <PackageReference Include="Solti.Utils.Primitives" Version="1.*" />
@@ -43,15 +27,7 @@
   </ItemGroup>
   
   <PropertyGroup>
-    <Product>Injector.NET</Product>
     <Description>Abstractions for Injector.NET</Description>
     <PackageId>Injector.NET.Interfaces</PackageId>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageIconUrl>https://github.com/Sholtee/injector/raw/master/icon.png</PackageIconUrl>
-    <PackageTags>IoC;DI;DependencyInjection;Injector;AOP</PackageTags>
-    <PackageReleaseNotes>See https://github.com/Sholtee/injector/blob/master/history.md </PackageReleaseNotes>
-    <RepositoryType>git</RepositoryType>
-    <RepositoryUrl>https://github.com/sholtee/injector</RepositoryUrl>
-    <RepositoryBranch>$(CurrentBranch)</RepositoryBranch>
   </PropertyGroup>
 </Project>
