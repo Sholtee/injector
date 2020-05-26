@@ -13,7 +13,7 @@ namespace Solti.Utils.DI.Interfaces
     public static class IServiceIdExtensions
     {
         /// <summary>
-        /// Gets the friendly name if the <see cref="IServiceId"/> instance.
+        /// Gets the friendly name of the <see cref="IServiceId"/> instance.
         /// </summary>
         public static string FriendlyName(this IServiceId src) 
         {
