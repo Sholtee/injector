@@ -158,11 +158,6 @@ namespace Solti.Utils.DI.UseCases
         { 
         }
 
-        public abstract class ParameterValidatorAttribute: Attribute
-        {
-            public abstract void Validate(ParameterInfo param, object value);
-        }
-
         [AttributeUsage(AttributeTargets.Parameter, AllowMultiple = false)]
         public class NotNullAttribute : ParameterValidatorAttribute
         {
@@ -170,38 +165,6 @@ namespace Solti.Utils.DI.UseCases
             {
                 if (value == null) throw new ArgumentNullException(param.Name);
             }
-        }
-
-        public class ParameterValidator<TInterface> : InterfaceInterceptor<TInterface> where TInterface : class
-        {
-            public ParameterValidator(TInterface target) : base(target)
-            { 
-            }
-
-            public override object Invoke(MethodInfo method, object[] args, MemberInfo extra)
-            {
-                foreach(var ctx in method.GetParameters().Select(
-                    (p, i) => new 
-                    { 
-                        Parameter = p, 
-                        Value = args[i], 
-                        Validators = p.GetCustomAttributes<ParameterValidatorAttribute>() 
-                    }))
-                {
-                    foreach (var validator in ctx.Validators) 
-                    {
-                        validator.Validate(ctx.Parameter, ctx.Value);
-                    }
-                }
-
-                return base.Invoke(method, args, extra);
-            }
-        }
-
-        [AttributeUsage(AttributeTargets.Interface, AllowMultiple = false)]
-        public sealed class ParameterValidatorAspect : AspectAttribute
-        {
-            public override Type GetInterceptor(Type iface) => typeof(ParameterValidator<>).MakeGenericType(iface);
         }
 
         [Test]
