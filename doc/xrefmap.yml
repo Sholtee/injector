@@ -7,6 +7,112 @@ references:
   commentId: N:Solti.Utils.DI
   fullName: Solti.Utils.DI
   nameWithType: Solti.Utils.DI
+- uid: Solti.Utils.DI.Extensions.Aspects
+  name: Solti.Utils.DI.Extensions.Aspects
+  href: Solti.Utils.DI.Extensions.Aspects.html
+  commentId: N:Solti.Utils.DI.Extensions.Aspects
+  fullName: Solti.Utils.DI.Extensions.Aspects
+  nameWithType: Solti.Utils.DI.Extensions.Aspects
+- uid: Solti.Utils.DI.Extensions.Aspects.TransactionalAspect
+  name: TransactionalAspect
+  href: Solti.Utils.DI.Extensions.Aspects.TransactionalAspect.html
+  commentId: T:Solti.Utils.DI.Extensions.Aspects.TransactionalAspect
+  fullName: Solti.Utils.DI.Extensions.Aspects.TransactionalAspect
+  nameWithType: TransactionalAspect
+- uid: Solti.Utils.DI.Extensions.Aspects.TransactionalAspect.GetInterceptor(System.Type)
+  name: GetInterceptor(Type)
+  href: Solti.Utils.DI.Extensions.Aspects.TransactionalAspect.html#Solti_Utils_DI_Extensions_Aspects_TransactionalAspect_GetInterceptor_System_Type_
+  commentId: M:Solti.Utils.DI.Extensions.Aspects.TransactionalAspect.GetInterceptor(System.Type)
+  fullName: Solti.Utils.DI.Extensions.Aspects.TransactionalAspect.GetInterceptor(System.Type)
+  nameWithType: TransactionalAspect.GetInterceptor(Type)
+- uid: Solti.Utils.DI.Extensions.Aspects.TransactionalAspect.GetInterceptor*
+  name: GetInterceptor
+  href: Solti.Utils.DI.Extensions.Aspects.TransactionalAspect.html#Solti_Utils_DI_Extensions_Aspects_TransactionalAspect_GetInterceptor_
+  commentId: Overload:Solti.Utils.DI.Extensions.Aspects.TransactionalAspect.GetInterceptor
+  isSpec: "True"
+  fullName: Solti.Utils.DI.Extensions.Aspects.TransactionalAspect.GetInterceptor
+  nameWithType: TransactionalAspect.GetInterceptor
+- uid: Solti.Utils.DI.Extensions.Aspects.TransactionalAttribute
+  name: TransactionalAttribute
+  href: Solti.Utils.DI.Extensions.Aspects.TransactionalAttribute.html
+  commentId: T:Solti.Utils.DI.Extensions.Aspects.TransactionalAttribute
+  fullName: Solti.Utils.DI.Extensions.Aspects.TransactionalAttribute
+  nameWithType: TransactionalAttribute
+- uid: Solti.Utils.DI.Extensions.Aspects.TransactionalAttribute.IsolationLevel
+  name: IsolationLevel
+  href: Solti.Utils.DI.Extensions.Aspects.TransactionalAttribute.html#Solti_Utils_DI_Extensions_Aspects_TransactionalAttribute_IsolationLevel
+  commentId: P:Solti.Utils.DI.Extensions.Aspects.TransactionalAttribute.IsolationLevel
+  fullName: Solti.Utils.DI.Extensions.Aspects.TransactionalAttribute.IsolationLevel
+  nameWithType: TransactionalAttribute.IsolationLevel
+- uid: Solti.Utils.DI.Extensions.Aspects.TransactionalAttribute.IsolationLevel*
+  name: IsolationLevel
+  href: Solti.Utils.DI.Extensions.Aspects.TransactionalAttribute.html#Solti_Utils_DI_Extensions_Aspects_TransactionalAttribute_IsolationLevel_
+  commentId: Overload:Solti.Utils.DI.Extensions.Aspects.TransactionalAttribute.IsolationLevel
+  isSpec: "True"
+  fullName: Solti.Utils.DI.Extensions.Aspects.TransactionalAttribute.IsolationLevel
+  nameWithType: TransactionalAttribute.IsolationLevel
+- uid: Solti.Utils.DI.Extensions.Aspects.TransactionManager`1
+  name: TransactionManager<TInterface>
+  href: Solti.Utils.DI.Extensions.Aspects.TransactionManager-1.html
+  commentId: T:Solti.Utils.DI.Extensions.Aspects.TransactionManager`1
+  name.vb: TransactionManager(Of TInterface)
+  fullName: Solti.Utils.DI.Extensions.Aspects.TransactionManager<TInterface>
+  fullName.vb: Solti.Utils.DI.Extensions.Aspects.TransactionManager(Of TInterface)
+  nameWithType: TransactionManager<TInterface>
+  nameWithType.vb: TransactionManager(Of TInterface)
+- uid: Solti.Utils.DI.Extensions.Aspects.TransactionManager`1.#ctor(`0,System.Lazy{System.Data.IDbConnection})
+  name: TransactionManager(TInterface, Lazy<IDbConnection>)
+  href: Solti.Utils.DI.Extensions.Aspects.TransactionManager-1.html#Solti_Utils_DI_Extensions_Aspects_TransactionManager_1__ctor__0_System_Lazy_System_Data_IDbConnection__
+  commentId: M:Solti.Utils.DI.Extensions.Aspects.TransactionManager`1.#ctor(`0,System.Lazy{System.Data.IDbConnection})
+  name.vb: TransactionManager(TInterface, Lazy(Of IDbConnection))
+  fullName: Solti.Utils.DI.Extensions.Aspects.TransactionManager<TInterface>.TransactionManager(TInterface, System.Lazy<System.Data.IDbConnection>)
+  fullName.vb: Solti.Utils.DI.Extensions.Aspects.TransactionManager(Of TInterface).TransactionManager(TInterface, System.Lazy(Of System.Data.IDbConnection))
+  nameWithType: TransactionManager<TInterface>.TransactionManager(TInterface, Lazy<IDbConnection>)
+  nameWithType.vb: TransactionManager(Of TInterface).TransactionManager(TInterface, Lazy(Of IDbConnection))
+- uid: Solti.Utils.DI.Extensions.Aspects.TransactionManager`1.#ctor*
+  name: TransactionManager
+  href: Solti.Utils.DI.Extensions.Aspects.TransactionManager-1.html#Solti_Utils_DI_Extensions_Aspects_TransactionManager_1__ctor_
+  commentId: Overload:Solti.Utils.DI.Extensions.Aspects.TransactionManager`1.#ctor
+  isSpec: "True"
+  fullName: Solti.Utils.DI.Extensions.Aspects.TransactionManager<TInterface>.TransactionManager
+  fullName.vb: Solti.Utils.DI.Extensions.Aspects.TransactionManager(Of TInterface).TransactionManager
+  nameWithType: TransactionManager<TInterface>.TransactionManager
+  nameWithType.vb: TransactionManager(Of TInterface).TransactionManager
+- uid: Solti.Utils.DI.Extensions.Aspects.TransactionManager`1.Connection
+  name: Connection
+  href: Solti.Utils.DI.Extensions.Aspects.TransactionManager-1.html#Solti_Utils_DI_Extensions_Aspects_TransactionManager_1_Connection
+  commentId: P:Solti.Utils.DI.Extensions.Aspects.TransactionManager`1.Connection
+  fullName: Solti.Utils.DI.Extensions.Aspects.TransactionManager<TInterface>.Connection
+  fullName.vb: Solti.Utils.DI.Extensions.Aspects.TransactionManager(Of TInterface).Connection
+  nameWithType: TransactionManager<TInterface>.Connection
+  nameWithType.vb: TransactionManager(Of TInterface).Connection
+- uid: Solti.Utils.DI.Extensions.Aspects.TransactionManager`1.Connection*
+  name: Connection
+  href: Solti.Utils.DI.Extensions.Aspects.TransactionManager-1.html#Solti_Utils_DI_Extensions_Aspects_TransactionManager_1_Connection_
+  commentId: Overload:Solti.Utils.DI.Extensions.Aspects.TransactionManager`1.Connection
+  isSpec: "True"
+  fullName: Solti.Utils.DI.Extensions.Aspects.TransactionManager<TInterface>.Connection
+  fullName.vb: Solti.Utils.DI.Extensions.Aspects.TransactionManager(Of TInterface).Connection
+  nameWithType: TransactionManager<TInterface>.Connection
+  nameWithType.vb: TransactionManager(Of TInterface).Connection
+- uid: Solti.Utils.DI.Extensions.Aspects.TransactionManager`1.Invoke(System.Reflection.MethodInfo,System.Object[],System.Reflection.MemberInfo)
+  name: Invoke(MethodInfo, Object[], MemberInfo)
+  href: Solti.Utils.DI.Extensions.Aspects.TransactionManager-1.html#Solti_Utils_DI_Extensions_Aspects_TransactionManager_1_Invoke_System_Reflection_MethodInfo_System_Object___System_Reflection_MemberInfo_
+  commentId: M:Solti.Utils.DI.Extensions.Aspects.TransactionManager`1.Invoke(System.Reflection.MethodInfo,System.Object[],System.Reflection.MemberInfo)
+  name.vb: Invoke(MethodInfo, Object(), MemberInfo)
+  fullName: Solti.Utils.DI.Extensions.Aspects.TransactionManager<TInterface>.Invoke(System.Reflection.MethodInfo, System.Object[], System.Reflection.MemberInfo)
+  fullName.vb: Solti.Utils.DI.Extensions.Aspects.TransactionManager(Of TInterface).Invoke(System.Reflection.MethodInfo, System.Object(), System.Reflection.MemberInfo)
+  nameWithType: TransactionManager<TInterface>.Invoke(MethodInfo, Object[], MemberInfo)
+  nameWithType.vb: TransactionManager(Of TInterface).Invoke(MethodInfo, Object(), MemberInfo)
+- uid: Solti.Utils.DI.Extensions.Aspects.TransactionManager`1.Invoke*
+  name: Invoke
+  href: Solti.Utils.DI.Extensions.Aspects.TransactionManager-1.html#Solti_Utils_DI_Extensions_Aspects_TransactionManager_1_Invoke_
+  commentId: Overload:Solti.Utils.DI.Extensions.Aspects.TransactionManager`1.Invoke
+  isSpec: "True"
+  fullName: Solti.Utils.DI.Extensions.Aspects.TransactionManager<TInterface>.Invoke
+  fullName.vb: Solti.Utils.DI.Extensions.Aspects.TransactionManager(Of TInterface).Invoke
+  nameWithType: TransactionManager<TInterface>.Invoke
+  nameWithType.vb: TransactionManager(Of TInterface).Invoke
 - uid: Solti.Utils.DI.IInjectorExtensions
   name: IInjectorExtensions
   href: Solti.Utils.DI.IInjectorExtensions.html
