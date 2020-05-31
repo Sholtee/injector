@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  
+  <PropertyGroup>
+    <AssemblyName>Solti.Utils.DI.Extensions</AssemblyName>
+    <RootNamespace>Solti.Utils.DI.Extensions</RootNamespace>
+  </PropertyGroup>
+
+  <Import Project="../Common.targets" />
+  
+  <PropertyGroup>
+    <Description>Extensions for Injector.NET</Description>
+    <PackageId>Injector.NET.Extensions</PackageId>
+  </PropertyGroup>
+</Project>
