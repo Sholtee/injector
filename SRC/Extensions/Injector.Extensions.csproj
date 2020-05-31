@@ -11,4 +11,8 @@
     <Description>Extensions for Injector.NET</Description>
     <PackageId>Injector.NET.Extensions</PackageId>
   </PropertyGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\Injector\Injector.csproj" />
+  </ItemGroup>
 </Project>

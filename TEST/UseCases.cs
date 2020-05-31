@@ -20,6 +20,7 @@ namespace Solti.Utils.DI.UseCases
 {
     using Interfaces;
     using Internals;
+    using Extensions.Aspects;
     using Primitives.Patterns;
     using Proxy;
     using DI.Tests;
@@ -35,7 +36,7 @@ namespace Solti.Utils.DI.UseCases
 
             var mockDbConnection = new Mock<IDbConnection>(MockBehavior.Strict);
             mockDbConnection
-                .Setup(conn => conn.BeginTransaction())
+                .Setup(conn => conn.BeginTransaction(IsolationLevel.Unspecified))
                 .Returns(mockTransaction.Object);
             mockDbConnection
                 .Setup(conn => conn.Dispose());
@@ -52,7 +53,7 @@ namespace Solti.Utils.DI.UseCases
                 module.DoSomethingElse();
             }
 
-            mockDbConnection.Verify(conn => conn.BeginTransaction(), Times.Once);
+            mockDbConnection.Verify(conn => conn.BeginTransaction(IsolationLevel.Unspecified), Times.Once);
             mockTransaction.Verify(tr => tr.Commit(), Times.Once);
         }
 
@@ -76,41 +77,6 @@ namespace Solti.Utils.DI.UseCases
             public void DoSomething(object arg) { }
 
             public void DoSomethingElse() { }
-        }
-
-        [AttributeUsage(AttributeTargets.Method)]
-        public class TransactionalAttribute : Attribute { }
-
-        public class TransactionManager<TInterface> : InterfaceInterceptor<TInterface> where TInterface : class
-        {
-            private readonly Lazy<IDbConnection> FConnection;
-
-            public IDbConnection Connection => FConnection.Value;
-
-            public TransactionManager(TInterface target, Lazy<IDbConnection> dbConn) : base(target)
-            {
-                Assert.NotNull(dbConn);
-                FConnection = dbConn;
-            }
-
-            public override object Invoke(MethodInfo method, object[] args, MemberInfo extra)
-            {
-                if (method.GetCustomAttribute<TransactionalAttribute>() == null) 
-                    return base.Invoke(method, args, extra);
-
-                IDbTransaction transaction = Connection.BeginTransaction();
-                try
-                {
-                    object result = base.Invoke(method, args, extra);
-                    transaction.Commit();
-                    return result;
-                }
-                catch
-                {
-                    transaction.Rollback();
-                    throw;
-                }
-            }
         }
 
         [Test]
