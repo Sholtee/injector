@@ -342,7 +342,11 @@ public interface IService
   void DoSomething([NotNull] object arg); 
 }
 ```
-As you can see there is no need for registering the `ParameterValidatorProxy<>` manually. You can create parameterized aspects as well:
+Notes:
+- As you can see there is no need for registering the `ParameterValidatorProxy<>` manually. 
+- You can find this aspect in the [Injector.NET.Extensions](https://sholtee.github.io/injector/doc/Solti.Utils.DI.Extensions.Aspects.html ) package.
+
+You can create parameterized aspects as well:
 ```csharp
 // Define the abstract logger
 public interface ILogger 
