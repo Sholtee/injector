@@ -269,7 +269,7 @@ public class ParameterValidatorProxy<TInterface> : InterfaceInterceptor<TInterfa
 - Proxies may also have dependencies (`ProxyFactory` supports this scenario).
 - You can setup transactions using proxies as well:
   ```csharp
-  Solti.Utils.DI.Interfaces;
+  using Solti.Utils.DI.Interfaces;
   using Solti.Utils.DI;
   using Solti.Utils.Proxy;
   ...
