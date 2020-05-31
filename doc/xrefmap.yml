@@ -13,6 +13,88 @@ references:
   commentId: N:Solti.Utils.DI.Extensions.Aspects
   fullName: Solti.Utils.DI.Extensions.Aspects
   nameWithType: Solti.Utils.DI.Extensions.Aspects
+- uid: Solti.Utils.DI.Extensions.Aspects.ParameterValidator`1
+  name: ParameterValidator<TInterface>
+  href: Solti.Utils.DI.Extensions.Aspects.ParameterValidator-1.html
+  commentId: T:Solti.Utils.DI.Extensions.Aspects.ParameterValidator`1
+  name.vb: ParameterValidator(Of TInterface)
+  fullName: Solti.Utils.DI.Extensions.Aspects.ParameterValidator<TInterface>
+  fullName.vb: Solti.Utils.DI.Extensions.Aspects.ParameterValidator(Of TInterface)
+  nameWithType: ParameterValidator<TInterface>
+  nameWithType.vb: ParameterValidator(Of TInterface)
+- uid: Solti.Utils.DI.Extensions.Aspects.ParameterValidator`1.#ctor(`0)
+  name: ParameterValidator(TInterface)
+  href: Solti.Utils.DI.Extensions.Aspects.ParameterValidator-1.html#Solti_Utils_DI_Extensions_Aspects_ParameterValidator_1__ctor__0_
+  commentId: M:Solti.Utils.DI.Extensions.Aspects.ParameterValidator`1.#ctor(`0)
+  fullName: Solti.Utils.DI.Extensions.Aspects.ParameterValidator<TInterface>.ParameterValidator(TInterface)
+  fullName.vb: Solti.Utils.DI.Extensions.Aspects.ParameterValidator(Of TInterface).ParameterValidator(TInterface)
+  nameWithType: ParameterValidator<TInterface>.ParameterValidator(TInterface)
+  nameWithType.vb: ParameterValidator(Of TInterface).ParameterValidator(TInterface)
+- uid: Solti.Utils.DI.Extensions.Aspects.ParameterValidator`1.#ctor*
+  name: ParameterValidator
+  href: Solti.Utils.DI.Extensions.Aspects.ParameterValidator-1.html#Solti_Utils_DI_Extensions_Aspects_ParameterValidator_1__ctor_
+  commentId: Overload:Solti.Utils.DI.Extensions.Aspects.ParameterValidator`1.#ctor
+  isSpec: "True"
+  fullName: Solti.Utils.DI.Extensions.Aspects.ParameterValidator<TInterface>.ParameterValidator
+  fullName.vb: Solti.Utils.DI.Extensions.Aspects.ParameterValidator(Of TInterface).ParameterValidator
+  nameWithType: ParameterValidator<TInterface>.ParameterValidator
+  nameWithType.vb: ParameterValidator(Of TInterface).ParameterValidator
+- uid: Solti.Utils.DI.Extensions.Aspects.ParameterValidator`1.Invoke(System.Reflection.MethodInfo,System.Object[],System.Reflection.MemberInfo)
+  name: Invoke(MethodInfo, Object[], MemberInfo)
+  href: Solti.Utils.DI.Extensions.Aspects.ParameterValidator-1.html#Solti_Utils_DI_Extensions_Aspects_ParameterValidator_1_Invoke_System_Reflection_MethodInfo_System_Object___System_Reflection_MemberInfo_
+  commentId: M:Solti.Utils.DI.Extensions.Aspects.ParameterValidator`1.Invoke(System.Reflection.MethodInfo,System.Object[],System.Reflection.MemberInfo)
+  name.vb: Invoke(MethodInfo, Object(), MemberInfo)
+  fullName: Solti.Utils.DI.Extensions.Aspects.ParameterValidator<TInterface>.Invoke(System.Reflection.MethodInfo, System.Object[], System.Reflection.MemberInfo)
+  fullName.vb: Solti.Utils.DI.Extensions.Aspects.ParameterValidator(Of TInterface).Invoke(System.Reflection.MethodInfo, System.Object(), System.Reflection.MemberInfo)
+  nameWithType: ParameterValidator<TInterface>.Invoke(MethodInfo, Object[], MemberInfo)
+  nameWithType.vb: ParameterValidator(Of TInterface).Invoke(MethodInfo, Object(), MemberInfo)
+- uid: Solti.Utils.DI.Extensions.Aspects.ParameterValidator`1.Invoke*
+  name: Invoke
+  href: Solti.Utils.DI.Extensions.Aspects.ParameterValidator-1.html#Solti_Utils_DI_Extensions_Aspects_ParameterValidator_1_Invoke_
+  commentId: Overload:Solti.Utils.DI.Extensions.Aspects.ParameterValidator`1.Invoke
+  isSpec: "True"
+  fullName: Solti.Utils.DI.Extensions.Aspects.ParameterValidator<TInterface>.Invoke
+  fullName.vb: Solti.Utils.DI.Extensions.Aspects.ParameterValidator(Of TInterface).Invoke
+  nameWithType: ParameterValidator<TInterface>.Invoke
+  nameWithType.vb: ParameterValidator(Of TInterface).Invoke
+- uid: Solti.Utils.DI.Extensions.Aspects.ParameterValidatorAspect
+  name: ParameterValidatorAspect
+  href: Solti.Utils.DI.Extensions.Aspects.ParameterValidatorAspect.html
+  commentId: T:Solti.Utils.DI.Extensions.Aspects.ParameterValidatorAspect
+  fullName: Solti.Utils.DI.Extensions.Aspects.ParameterValidatorAspect
+  nameWithType: ParameterValidatorAspect
+- uid: Solti.Utils.DI.Extensions.Aspects.ParameterValidatorAspect.GetInterceptor(System.Type)
+  name: GetInterceptor(Type)
+  href: Solti.Utils.DI.Extensions.Aspects.ParameterValidatorAspect.html#Solti_Utils_DI_Extensions_Aspects_ParameterValidatorAspect_GetInterceptor_System_Type_
+  commentId: M:Solti.Utils.DI.Extensions.Aspects.ParameterValidatorAspect.GetInterceptor(System.Type)
+  fullName: Solti.Utils.DI.Extensions.Aspects.ParameterValidatorAspect.GetInterceptor(System.Type)
+  nameWithType: ParameterValidatorAspect.GetInterceptor(Type)
+- uid: Solti.Utils.DI.Extensions.Aspects.ParameterValidatorAspect.GetInterceptor*
+  name: GetInterceptor
+  href: Solti.Utils.DI.Extensions.Aspects.ParameterValidatorAspect.html#Solti_Utils_DI_Extensions_Aspects_ParameterValidatorAspect_GetInterceptor_
+  commentId: Overload:Solti.Utils.DI.Extensions.Aspects.ParameterValidatorAspect.GetInterceptor
+  isSpec: "True"
+  fullName: Solti.Utils.DI.Extensions.Aspects.ParameterValidatorAspect.GetInterceptor
+  nameWithType: ParameterValidatorAspect.GetInterceptor
+- uid: Solti.Utils.DI.Extensions.Aspects.ParameterValidatorAttribute
+  name: ParameterValidatorAttribute
+  href: Solti.Utils.DI.Extensions.Aspects.ParameterValidatorAttribute.html
+  commentId: T:Solti.Utils.DI.Extensions.Aspects.ParameterValidatorAttribute
+  fullName: Solti.Utils.DI.Extensions.Aspects.ParameterValidatorAttribute
+  nameWithType: ParameterValidatorAttribute
+- uid: Solti.Utils.DI.Extensions.Aspects.ParameterValidatorAttribute.Validate(System.Reflection.ParameterInfo,System.Object)
+  name: Validate(ParameterInfo, Object)
+  href: Solti.Utils.DI.Extensions.Aspects.ParameterValidatorAttribute.html#Solti_Utils_DI_Extensions_Aspects_ParameterValidatorAttribute_Validate_System_Reflection_ParameterInfo_System_Object_
+  commentId: M:Solti.Utils.DI.Extensions.Aspects.ParameterValidatorAttribute.Validate(System.Reflection.ParameterInfo,System.Object)
+  fullName: Solti.Utils.DI.Extensions.Aspects.ParameterValidatorAttribute.Validate(System.Reflection.ParameterInfo, System.Object)
+  nameWithType: ParameterValidatorAttribute.Validate(ParameterInfo, Object)
+- uid: Solti.Utils.DI.Extensions.Aspects.ParameterValidatorAttribute.Validate*
+  name: Validate
+  href: Solti.Utils.DI.Extensions.Aspects.ParameterValidatorAttribute.html#Solti_Utils_DI_Extensions_Aspects_ParameterValidatorAttribute_Validate_
+  commentId: Overload:Solti.Utils.DI.Extensions.Aspects.ParameterValidatorAttribute.Validate
+  isSpec: "True"
+  fullName: Solti.Utils.DI.Extensions.Aspects.ParameterValidatorAttribute.Validate
+  nameWithType: ParameterValidatorAttribute.Validate
 - uid: Solti.Utils.DI.Extensions.Aspects.TransactionalAspect
   name: TransactionalAspect
   href: Solti.Utils.DI.Extensions.Aspects.TransactionalAspect.html
