@@ -8,10 +8,12 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace Solti.Utils.DI.Interfaces
 {
+    using Primitives.Patterns;
+
     /// <summary>
     /// Provides the mechanism for injecting resources.
     /// </summary>
-    public interface IInjector: IDisposable, IAsyncDisposable
+    public interface IInjector: IDisposableEx
     {
         /// <summary>
         /// Gets the service instance associated with the given interface and (optional) name.
