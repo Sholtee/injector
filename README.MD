@@ -536,7 +536,7 @@ using (IInjector injector = container.CreateInjector())
 ```
 Leaving the `using` block the `IMyService` instance requested by `MyOtherServiceDependsOnIMyService` won't be released because the holder service still alives (until the declaring container is disposed). This situation is called "captive dependency". To avoid it you have two options:
 - You can declare your consuming service with a `Lifetime` less than or equal to the `Lifetime` of consumed service.
-- You can enable *Strict DI* (disabled by default) in `Injector.config.json` which will instruct the injector to throw if a captive dependency can be found.
+- You can enable *Strict DI* (disabled by default) in `Solti.Utils.DI.config.json` which will instruct the injector to throw if a captive dependency can be found.
 ## MS preferred DI
 Microsoft also defines its own [interface](https://docs.microsoft.com/en-us/dotnet/api/system.iserviceprovider?view=netcore-3.1 ) for dependency resolution. This library has built in support for it:
 ```csharp
