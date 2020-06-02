@@ -186,9 +186,6 @@
   <data name="NOT_BELONGING_REFERENCE" xml:space="preserve">
     <value>The servicereference belongs to an another entry.</value>
   </data>
-  <data name="NOT_ASSIGNABLE" xml:space="preserve">
-    <value>"{0}" should be assignable from "{1}".</value>
-  </data>
   <data name="PARAMETER_IS_ABSTRACT" xml:space="preserve">
     <value>Parameter should not be abstract.</value>
   </data>

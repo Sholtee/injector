@@ -60,13 +60,6 @@ namespace Solti.Utils.DI.Internals
         public static class Type 
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            public static void IsAssignable(System.Type @base, System.Type descendant)
-            {
-                if (!@base.IsAssignableFrom(descendant))
-                    throw new InvalidOperationException(string.Format(Resources.Culture, Resources.NOT_ASSIGNABLE, @base, descendant));
-            }
-
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public static void IsTypeOf(System.Type type, object instance)
             {
                 if (!type.IsInstanceOfType(instance))

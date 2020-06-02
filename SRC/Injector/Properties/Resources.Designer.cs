@@ -187,15 +187,6 @@ namespace Solti.Utils.DI.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &quot;{0}&quot; should be assignable from &quot;{1}&quot;..
-        /// </summary>
-        internal static string NOT_ASSIGNABLE {
-            get {
-                return ResourceManager.GetString("NOT_ASSIGNABLE", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to The servicereference belongs to an another entry..
         /// </summary>
         internal static string NOT_BELONGING_REFERENCE {

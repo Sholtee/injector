@@ -41,7 +41,7 @@ namespace Solti.Utils.DI.Internals
             // Proxy tipus letrehozasa (GetGeneratedProxyType() validal is).
             //
 
-            proxyType = ProxyFactory.GetGeneratedProxyType(entry.Interface, proxyType);
+            proxyType = ProxyFactory.GenerateProxyType(entry.Interface, proxyType);
 
             entry.ApplyProxy((injector, iface, instance) => injector.Instantiate(proxyType, new Dictionary<string, object>
             {
