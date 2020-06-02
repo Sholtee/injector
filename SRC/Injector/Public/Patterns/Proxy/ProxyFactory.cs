@@ -1,5 +1,5 @@
 ﻿/********************************************************************************
-* ProxyFactory.cs                                                              *
+* ProxyFactory.cs                                                               *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
@@ -9,6 +9,7 @@ using System.Reflection;
 
 namespace Solti.Utils.Proxy
 {
+    using Abstractions;
     using Generators;
 
     using DI;
@@ -16,12 +17,12 @@ namespace Solti.Utils.Proxy
     using DI.Interfaces;
 
     /// <summary>
-    /// Defines a mechanisms to create proxy objects.
+    /// Defines mechanisms to create proxy objects.
     /// </summary>
     public static class ProxyFactory
     {
         /// <summary>
-        /// 
+        /// Gets or sets the <see cref="TypeGenerator{TDescendant}.CacheDirectory"/> associated with the <see cref="ProxyFactory"/>
         /// </summary>
         public static string? AssemblyCacheDirectory { get; set; }
 
