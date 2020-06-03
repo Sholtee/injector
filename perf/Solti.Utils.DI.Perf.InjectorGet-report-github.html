@@ -40,9 +40,9 @@
 <pre><code class="lang-ini">
 BenchmarkDotNet=v0.12.0, OS=Windows 10.0.17763.1098 (1809/October2018Update/Redstone5)
 Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
-.NET Core SDK=3.1.201
-  [Host]     : .NET Core 3.1.3 (CoreCLR 4.700.20.11803, CoreFX 4.700.20.12001), X64 RyuJIT
-  DefaultJob : .NET Core 3.1.3 (CoreCLR 4.700.20.11803, CoreFX 4.700.20.12001), X64 RyuJIT
+.NET Core SDK=3.1.202
+  [Host]     : .NET Core 3.1.4 (CoreCLR 4.700.20.20201, CoreFX 4.700.20.22101), X64 RyuJIT
+  DefaultJob : .NET Core 3.1.4 (CoreCLR 4.700.20.20201, CoreFX 4.700.20.22101), X64 RyuJIT
 
 </code></pre><table>
 <thead>
@@ -64,9 +64,9 @@ Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 <td><strong>NonGeneric</strong></td>
 <td><strong>Transient</strong></td>
 <td><strong>Transient</strong></td>
-<td style="text-align:right"><strong>6.748 us</strong></td>
-<td style="text-align:right"><strong>0.1320 us</strong></td>
-<td style="text-align:right"><strong>0.1521 us</strong></td>
+<td style="text-align:right"><strong>6.398 us</strong></td>
+<td style="text-align:right"><strong>0.1049 us</strong></td>
+<td style="text-align:right"><strong>0.0982 us</strong></td>
 <td style="text-align:right"><strong>0.1875</strong></td>
 <td style="text-align:right"><strong>0.0625</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
@@ -76,9 +76,9 @@ Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 <td>Generic</td>
 <td>Transient</td>
 <td>Transient</td>
-<td style="text-align:right">6.737 us</td>
-<td style="text-align:right">0.0932 us</td>
-<td style="text-align:right">0.0872 us</td>
+<td style="text-align:right">6.377 us</td>
+<td style="text-align:right">0.1259 us</td>
+<td style="text-align:right">0.1347 us</td>
 <td style="text-align:right">0.1875</td>
 <td style="text-align:right">0.0781</td>
 <td style="text-align:right">-</td>
@@ -88,9 +88,9 @@ Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 <td>Lazy</td>
 <td>Transient</td>
 <td>Transient</td>
-<td style="text-align:right">4.693 us</td>
-<td style="text-align:right">0.0556 us</td>
-<td style="text-align:right">0.0520 us</td>
+<td style="text-align:right">4.724 us</td>
+<td style="text-align:right">0.0970 us</td>
+<td style="text-align:right">0.1566 us</td>
 <td style="text-align:right">0.1172</td>
 <td style="text-align:right">0.0391</td>
 <td style="text-align:right">-</td>
@@ -100,21 +100,21 @@ Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 <td>Enumerable</td>
 <td>Transient</td>
 <td>Transient</td>
-<td style="text-align:right">1.241 us</td>
-<td style="text-align:right">0.0246 us</td>
-<td style="text-align:right">0.0230 us</td>
+<td style="text-align:right">1.227 us</td>
+<td style="text-align:right">0.0237 us</td>
+<td style="text-align:right">0.0244 us</td>
 <td style="text-align:right">0.0391</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
-<td style="text-align:right">732 B</td>
+<td style="text-align:right">731 B</td>
 </tr>
 <tr>
 <td><strong>NonGeneric</strong></td>
 <td><strong>Transient</strong></td>
 <td><strong>Scoped</strong></td>
-<td style="text-align:right"><strong>1.126 us</strong></td>
-<td style="text-align:right"><strong>0.0160 us</strong></td>
-<td style="text-align:right"><strong>0.0150 us</strong></td>
+<td style="text-align:right"><strong>1.143 us</strong></td>
+<td style="text-align:right"><strong>0.0195 us</strong></td>
+<td style="text-align:right"><strong>0.0163 us</strong></td>
 <td style="text-align:right"><strong>0.0391</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
@@ -124,9 +124,9 @@ Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 <td>Generic</td>
 <td>Transient</td>
 <td>Scoped</td>
-<td style="text-align:right">1.231 us</td>
-<td style="text-align:right">0.0251 us</td>
-<td style="text-align:right">0.0235 us</td>
+<td style="text-align:right">1.198 us</td>
+<td style="text-align:right">0.0215 us</td>
+<td style="text-align:right">0.0191 us</td>
 <td style="text-align:right">0.0391</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
@@ -136,9 +136,9 @@ Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 <td>Lazy</td>
 <td>Transient</td>
 <td>Scoped</td>
-<td style="text-align:right">1.220 us</td>
-<td style="text-align:right">0.0226 us</td>
-<td style="text-align:right">0.0201 us</td>
+<td style="text-align:right">1.153 us</td>
+<td style="text-align:right">0.0198 us</td>
+<td style="text-align:right">0.0185 us</td>
 <td style="text-align:right">0.0391</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
@@ -149,8 +149,8 @@ Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 <td>Transient</td>
 <td>Scoped</td>
 <td style="text-align:right">1.281 us</td>
-<td style="text-align:right">0.0202 us</td>
-<td style="text-align:right">0.0179 us</td>
+<td style="text-align:right">0.0725 us</td>
+<td style="text-align:right">0.1085 us</td>
 <td style="text-align:right">0.0391</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
@@ -160,9 +160,9 @@ Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 <td><strong>NonGeneric</strong></td>
 <td><strong>Transient</strong></td>
 <td><strong>Singleton</strong></td>
-<td style="text-align:right"><strong>1.089 us</strong></td>
-<td style="text-align:right"><strong>0.0115 us</strong></td>
-<td style="text-align:right"><strong>0.0108 us</strong></td>
+<td style="text-align:right"><strong>1.143 us</strong></td>
+<td style="text-align:right"><strong>0.0199 us</strong></td>
+<td style="text-align:right"><strong>0.0186 us</strong></td>
 <td style="text-align:right"><strong>0.0391</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
@@ -172,9 +172,9 @@ Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 <td>Generic</td>
 <td>Transient</td>
 <td>Singleton</td>
-<td style="text-align:right">1.102 us</td>
-<td style="text-align:right">0.0127 us</td>
-<td style="text-align:right">0.0113 us</td>
+<td style="text-align:right">1.136 us</td>
+<td style="text-align:right">0.0205 us</td>
+<td style="text-align:right">0.0181 us</td>
 <td style="text-align:right">0.0391</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
@@ -184,9 +184,9 @@ Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 <td>Lazy</td>
 <td>Transient</td>
 <td>Singleton</td>
-<td style="text-align:right">1.173 us</td>
-<td style="text-align:right">0.0133 us</td>
-<td style="text-align:right">0.0124 us</td>
+<td style="text-align:right">1.076 us</td>
+<td style="text-align:right">0.0122 us</td>
+<td style="text-align:right">0.0108 us</td>
 <td style="text-align:right">0.0391</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
@@ -196,9 +196,9 @@ Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 <td>Enumerable</td>
 <td>Transient</td>
 <td>Singleton</td>
-<td style="text-align:right">1.206 us</td>
-<td style="text-align:right">0.0233 us</td>
-<td style="text-align:right">0.0240 us</td>
+<td style="text-align:right">1.239 us</td>
+<td style="text-align:right">0.0211 us</td>
+<td style="text-align:right">0.0197 us</td>
 <td style="text-align:right">0.0391</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
@@ -208,9 +208,9 @@ Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 <td><strong>NonGeneric</strong></td>
 <td><strong>Scoped</strong></td>
 <td><strong>Transient</strong></td>
-<td style="text-align:right"><strong>4.389 us</strong></td>
-<td style="text-align:right"><strong>0.0406 us</strong></td>
-<td style="text-align:right"><strong>0.0379 us</strong></td>
+<td style="text-align:right"><strong>4.205 us</strong></td>
+<td style="text-align:right"><strong>0.0843 us</strong></td>
+<td style="text-align:right"><strong>0.0789 us</strong></td>
 <td style="text-align:right"><strong>0.1328</strong></td>
 <td style="text-align:right"><strong>0.0313</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
@@ -220,9 +220,9 @@ Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 <td>Generic</td>
 <td>Scoped</td>
 <td>Transient</td>
-<td style="text-align:right">4.256 us</td>
-<td style="text-align:right">0.0530 us</td>
-<td style="text-align:right">0.0495 us</td>
+<td style="text-align:right">4.250 us</td>
+<td style="text-align:right">0.0834 us</td>
+<td style="text-align:right">0.0993 us</td>
 <td style="text-align:right">0.1328</td>
 <td style="text-align:right">0.0313</td>
 <td style="text-align:right">-</td>
@@ -232,9 +232,9 @@ Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 <td>Lazy</td>
 <td>Scoped</td>
 <td>Transient</td>
-<td style="text-align:right">4.700 us</td>
-<td style="text-align:right">0.0430 us</td>
-<td style="text-align:right">0.0359 us</td>
+<td style="text-align:right">4.563 us</td>
+<td style="text-align:right">0.0967 us</td>
+<td style="text-align:right">0.1448 us</td>
 <td style="text-align:right">0.1172</td>
 <td style="text-align:right">0.0391</td>
 <td style="text-align:right">-</td>
@@ -244,9 +244,9 @@ Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 <td>Enumerable</td>
 <td>Scoped</td>
 <td>Transient</td>
-<td style="text-align:right">1.200 us</td>
-<td style="text-align:right">0.0273 us</td>
-<td style="text-align:right">0.0365 us</td>
+<td style="text-align:right">1.210 us</td>
+<td style="text-align:right">0.0230 us</td>
+<td style="text-align:right">0.0192 us</td>
 <td style="text-align:right">0.0391</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
@@ -256,9 +256,9 @@ Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 <td><strong>NonGeneric</strong></td>
 <td><strong>Scoped</strong></td>
 <td><strong>Scoped</strong></td>
-<td style="text-align:right"><strong>1.112 us</strong></td>
-<td style="text-align:right"><strong>0.0129 us</strong></td>
-<td style="text-align:right"><strong>0.0121 us</strong></td>
+<td style="text-align:right"><strong>1.084 us</strong></td>
+<td style="text-align:right"><strong>0.0097 us</strong></td>
+<td style="text-align:right"><strong>0.0091 us</strong></td>
 <td style="text-align:right"><strong>0.0391</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
@@ -268,9 +268,9 @@ Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 <td>Generic</td>
 <td>Scoped</td>
 <td>Scoped</td>
-<td style="text-align:right">1.166 us</td>
-<td style="text-align:right">0.0177 us</td>
-<td style="text-align:right">0.0165 us</td>
+<td style="text-align:right">1.120 us</td>
+<td style="text-align:right">0.0217 us</td>
+<td style="text-align:right">0.0203 us</td>
 <td style="text-align:right">0.0391</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
@@ -280,9 +280,9 @@ Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 <td>Lazy</td>
 <td>Scoped</td>
 <td>Scoped</td>
-<td style="text-align:right">1.111 us</td>
-<td style="text-align:right">0.0178 us</td>
-<td style="text-align:right">0.0167 us</td>
+<td style="text-align:right">1.167 us</td>
+<td style="text-align:right">0.0232 us</td>
+<td style="text-align:right">0.0294 us</td>
 <td style="text-align:right">0.0391</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
@@ -292,9 +292,9 @@ Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 <td>Enumerable</td>
 <td>Scoped</td>
 <td>Scoped</td>
-<td style="text-align:right">1.237 us</td>
-<td style="text-align:right">0.0099 us</td>
-<td style="text-align:right">0.0083 us</td>
+<td style="text-align:right">1.206 us</td>
+<td style="text-align:right">0.0223 us</td>
+<td style="text-align:right">0.0198 us</td>
 <td style="text-align:right">0.0391</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
@@ -304,9 +304,9 @@ Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 <td><strong>NonGeneric</strong></td>
 <td><strong>Scoped</strong></td>
 <td><strong>Singleton</strong></td>
-<td style="text-align:right"><strong>1.090 us</strong></td>
-<td style="text-align:right"><strong>0.0077 us</strong></td>
-<td style="text-align:right"><strong>0.0069 us</strong></td>
+<td style="text-align:right"><strong>1.155 us</strong></td>
+<td style="text-align:right"><strong>0.0225 us</strong></td>
+<td style="text-align:right"><strong>0.0268 us</strong></td>
 <td style="text-align:right"><strong>0.0391</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
@@ -316,9 +316,9 @@ Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 <td>Generic</td>
 <td>Scoped</td>
 <td>Singleton</td>
-<td style="text-align:right">1.060 us</td>
-<td style="text-align:right">0.0075 us</td>
-<td style="text-align:right">0.0063 us</td>
+<td style="text-align:right">1.140 us</td>
+<td style="text-align:right">0.0228 us</td>
+<td style="text-align:right">0.0355 us</td>
 <td style="text-align:right">0.0391</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
@@ -328,9 +328,9 @@ Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 <td>Lazy</td>
 <td>Scoped</td>
 <td>Singleton</td>
-<td style="text-align:right">1.112 us</td>
-<td style="text-align:right">0.0158 us</td>
-<td style="text-align:right">0.0132 us</td>
+<td style="text-align:right">1.114 us</td>
+<td style="text-align:right">0.0218 us</td>
+<td style="text-align:right">0.0276 us</td>
 <td style="text-align:right">0.0391</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
@@ -340,55 +340,7 @@ Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 <td>Enumerable</td>
 <td>Scoped</td>
 <td>Singleton</td>
-<td style="text-align:right">1.274 us</td>
-<td style="text-align:right">0.0216 us</td>
-<td style="text-align:right">0.0202 us</td>
-<td style="text-align:right">0.0391</td>
-<td style="text-align:right">-</td>
-<td style="text-align:right">-</td>
-<td style="text-align:right">731 B</td>
-</tr>
-<tr>
-<td><strong>NonGeneric</strong></td>
-<td><strong>Singleton</strong></td>
-<td><strong>Transient</strong></td>
-<td style="text-align:right"><strong>4.434 us</strong></td>
-<td style="text-align:right"><strong>0.0831 us</strong></td>
-<td style="text-align:right"><strong>0.0737 us</strong></td>
-<td style="text-align:right"><strong>0.1328</strong></td>
-<td style="text-align:right"><strong>0.0313</strong></td>
-<td style="text-align:right"><strong>-</strong></td>
-<td style="text-align:right"><strong>2484 B</strong></td>
-</tr>
-<tr>
-<td>Generic</td>
-<td>Singleton</td>
-<td>Transient</td>
-<td style="text-align:right">4.067 us</td>
-<td style="text-align:right">0.0689 us</td>
-<td style="text-align:right">0.0611 us</td>
-<td style="text-align:right">0.1328</td>
-<td style="text-align:right">0.0313</td>
-<td style="text-align:right">-</td>
-<td style="text-align:right">2488 B</td>
-</tr>
-<tr>
-<td>Lazy</td>
-<td>Singleton</td>
-<td>Transient</td>
-<td style="text-align:right">4.767 us</td>
-<td style="text-align:right">0.0528 us</td>
-<td style="text-align:right">0.0494 us</td>
-<td style="text-align:right">0.1172</td>
-<td style="text-align:right">0.0391</td>
-<td style="text-align:right">-</td>
-<td style="text-align:right">2196 B</td>
-</tr>
-<tr>
-<td>Enumerable</td>
-<td>Singleton</td>
-<td>Transient</td>
-<td style="text-align:right">1.270 us</td>
+<td style="text-align:right">1.190 us</td>
 <td style="text-align:right">0.0225 us</td>
 <td style="text-align:right">0.0199 us</td>
 <td style="text-align:right">0.0391</td>
@@ -399,10 +351,58 @@ Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 <tr>
 <td><strong>NonGeneric</strong></td>
 <td><strong>Singleton</strong></td>
+<td><strong>Transient</strong></td>
+<td style="text-align:right"><strong>4.159 us</strong></td>
+<td style="text-align:right"><strong>0.0829 us</strong></td>
+<td style="text-align:right"><strong>0.1135 us</strong></td>
+<td style="text-align:right"><strong>0.1328</strong></td>
+<td style="text-align:right"><strong>0.0313</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>2484 B</strong></td>
+</tr>
+<tr>
+<td>Generic</td>
+<td>Singleton</td>
+<td>Transient</td>
+<td style="text-align:right">4.312 us</td>
+<td style="text-align:right">0.0785 us</td>
+<td style="text-align:right">0.0735 us</td>
+<td style="text-align:right">0.1328</td>
+<td style="text-align:right">0.0313</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">2488 B</td>
+</tr>
+<tr>
+<td>Lazy</td>
+<td>Singleton</td>
+<td>Transient</td>
+<td style="text-align:right">4.611 us</td>
+<td style="text-align:right">0.0893 us</td>
+<td style="text-align:right">0.0955 us</td>
+<td style="text-align:right">0.1172</td>
+<td style="text-align:right">0.0391</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">2196 B</td>
+</tr>
+<tr>
+<td>Enumerable</td>
+<td>Singleton</td>
+<td>Transient</td>
+<td style="text-align:right">1.232 us</td>
+<td style="text-align:right">0.0245 us</td>
+<td style="text-align:right">0.0373 us</td>
+<td style="text-align:right">0.0391</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">731 B</td>
+</tr>
+<tr>
+<td><strong>NonGeneric</strong></td>
+<td><strong>Singleton</strong></td>
 <td><strong>Scoped</strong></td>
-<td style="text-align:right"><strong>1.133 us</strong></td>
-<td style="text-align:right"><strong>0.0211 us</strong></td>
-<td style="text-align:right"><strong>0.0176 us</strong></td>
+<td style="text-align:right"><strong>1.137 us</strong></td>
+<td style="text-align:right"><strong>0.0209 us</strong></td>
+<td style="text-align:right"><strong>0.0196 us</strong></td>
 <td style="text-align:right"><strong>0.0391</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
@@ -412,9 +412,9 @@ Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 <td>Generic</td>
 <td>Singleton</td>
 <td>Scoped</td>
-<td style="text-align:right">1.178 us</td>
-<td style="text-align:right">0.0231 us</td>
-<td style="text-align:right">0.0275 us</td>
+<td style="text-align:right">1.151 us</td>
+<td style="text-align:right">0.0237 us</td>
+<td style="text-align:right">0.0300 us</td>
 <td style="text-align:right">0.0391</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
@@ -424,9 +424,9 @@ Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 <td>Lazy</td>
 <td>Singleton</td>
 <td>Scoped</td>
-<td style="text-align:right">1.205 us</td>
-<td style="text-align:right">0.0143 us</td>
-<td style="text-align:right">0.0126 us</td>
+<td style="text-align:right">1.186 us</td>
+<td style="text-align:right">0.0235 us</td>
+<td style="text-align:right">0.0322 us</td>
 <td style="text-align:right">0.0391</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
@@ -436,9 +436,9 @@ Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 <td>Enumerable</td>
 <td>Singleton</td>
 <td>Scoped</td>
-<td style="text-align:right">1.247 us</td>
-<td style="text-align:right">0.0074 us</td>
-<td style="text-align:right">0.0062 us</td>
+<td style="text-align:right">1.231 us</td>
+<td style="text-align:right">0.0242 us</td>
+<td style="text-align:right">0.0238 us</td>
 <td style="text-align:right">0.0391</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
@@ -448,9 +448,9 @@ Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 <td><strong>NonGeneric</strong></td>
 <td><strong>Singleton</strong></td>
 <td><strong>Singleton</strong></td>
-<td style="text-align:right"><strong>1.075 us</strong></td>
-<td style="text-align:right"><strong>0.0142 us</strong></td>
-<td style="text-align:right"><strong>0.0126 us</strong></td>
+<td style="text-align:right"><strong>1.108 us</strong></td>
+<td style="text-align:right"><strong>0.0219 us</strong></td>
+<td style="text-align:right"><strong>0.0284 us</strong></td>
 <td style="text-align:right"><strong>0.0391</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
@@ -460,9 +460,9 @@ Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 <td>Generic</td>
 <td>Singleton</td>
 <td>Singleton</td>
-<td style="text-align:right">1.180 us</td>
-<td style="text-align:right">0.0228 us</td>
-<td style="text-align:right">0.0319 us</td>
+<td style="text-align:right">1.135 us</td>
+<td style="text-align:right">0.0222 us</td>
+<td style="text-align:right">0.0289 us</td>
 <td style="text-align:right">0.0391</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
@@ -472,9 +472,9 @@ Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 <td>Lazy</td>
 <td>Singleton</td>
 <td>Singleton</td>
-<td style="text-align:right">1.164 us</td>
-<td style="text-align:right">0.0117 us</td>
-<td style="text-align:right">0.0103 us</td>
+<td style="text-align:right">1.128 us</td>
+<td style="text-align:right">0.0206 us</td>
+<td style="text-align:right">0.0192 us</td>
 <td style="text-align:right">0.0391</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
@@ -484,9 +484,9 @@ Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 <td>Enumerable</td>
 <td>Singleton</td>
 <td>Singleton</td>
-<td style="text-align:right">1.238 us</td>
-<td style="text-align:right">0.0172 us</td>
-<td style="text-align:right">0.0161 us</td>
+<td style="text-align:right">1.232 us</td>
+<td style="text-align:right">0.0166 us</td>
+<td style="text-align:right">0.0147 us</td>
 <td style="text-align:right">0.0391</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
