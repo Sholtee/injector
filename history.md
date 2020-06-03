@@ -140,3 +140,6 @@
   - *fixed:* Some build related issues
 - 3.0.1:
   - *fixed:* Broken performance test
+- 3.1.0:
+  - *added:* `[Proxy|Duck]Factory.AssemblyCacheDirectory` property
+  - *done:* `IInjector` gets descendant of `IDisposableEx`
