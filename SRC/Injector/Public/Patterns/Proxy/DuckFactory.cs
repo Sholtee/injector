@@ -3,44 +3,63 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
+using System.Diagnostics.CodeAnalysis;
+
 namespace Solti.Utils.Proxy
 {
+    using Abstractions;
     using Generators;
 
     using DI.Internals;
 
     /// <summary>
-    /// Generates duck typing proxy objects.
+    /// Generates duck-typing proxy objects.
     /// </summary>
-    /// <typeparam name="TTarget">The class of the target.</typeparam>
-    public class DuckFactory<TTarget> where TTarget: class
+    public abstract class DuckFactory 
     {
-        internal TTarget Target { get; }
-
         /// <summary>
-        /// Creates a new <see cref="DuckFactory{TTarget}"/> instance against the given <paramref name="target"/>.
+        /// Gets or sets the <see cref="TypeGenerator{TDescendant}.CacheDirectory"/> associated with the <see cref="DuckFactory"/>.
         /// </summary>
-        /// <param name="target">The target of this factory.</param>
-        public DuckFactory(TTarget target) =>
-            Target = Ensure.Parameter.IsNotNull(target, nameof(target));
+        public static string? AssemblyCacheDirectory { get; set; }
 
         /// <summary>
         /// Generates a proxy object to let the target behave like a <typeparamref name="TInterface"/> instance.
         /// </summary>
-        /// <remarks><typeparamref name="TTarget"/> must declare all the <typeparamref name="TInterface"/> members publicly.</remarks>
+        /// <remarks>The target must declare all the <typeparamref name="TInterface"/> members publicly.</remarks>
         /// <returns>The newly created proxy object.</returns>
-        public TInterface Like<TInterface>() where TInterface : class
+        [SuppressMessage("Naming", "CA1716:Identifiers should not match keywords")]
+        public abstract TInterface Like<TInterface>() where TInterface : class;
+
+        /// <summary>
+        /// Creates a new typed <see cref="DuckFactory"/> instance.
+        /// </summary>
+        /// <typeparam name="TTarget">The class of the target.</typeparam>
+        public static DuckFactory Create<TTarget>(TTarget target) where TTarget : class => new TypedDuckFactoryy<TTarget>
+        (
+            Ensure.Parameter.IsNotNull(target, nameof(target))
+        );
+
+        private sealed class TypedDuckFactoryy<TTarget> : DuckFactory where TTarget : class
         {
-            //
-            // Kell egyaltalan proxy-t letrhoznunk?
-            //
+            public TTarget Target { get; }
 
-            if (Target is TInterface possibleResult)
-                return possibleResult;
+            public TypedDuckFactoryy(TTarget target) => Target = target;
 
-            return (TInterface) DuckGenerator<TInterface, TTarget>
-                .GeneratedType
-                .CreateInstance(new[] {typeof(TTarget)}, Target);
+            public override TInterface Like<TInterface>() where TInterface : class
+            {
+                //
+                // Kell egyaltalan proxy-t letrhoznunk?
+                //
+
+                if (Target is TInterface possibleResult)
+                    return possibleResult;
+
+                DuckGenerator<TInterface, TTarget>.CacheDirectory = AssemblyCacheDirectory;
+
+                return (TInterface) DuckGenerator<TInterface, TTarget>
+                    .GeneratedType
+                    .CreateInstance(new[] { typeof(TTarget) }, Target);
+            }
         }
     }
 }

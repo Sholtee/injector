@@ -17,12 +17,10 @@ namespace Solti.Utils.Proxy
         /// </summary>
         /// <typeparam name="TTarget">The type of the target.</typeparam>
         /// <param name="target">The target instance to which the proxy will be generated.</param>
-        /// <returns>The <see cref="DuckFactory{TTarget}"/> instance for the <paramref name="target"/>.</returns>
-        public static DuckFactory<TTarget> Act<TTarget>(this TTarget target) where TTarget: class
-        {
-            Ensure.Parameter.IsNotNull(target, nameof(target));
-
-            return new DuckFactory<TTarget>(target);
-        }
+        /// <returns>The <see cref="DuckFactory"/> instance for the <paramref name="target"/>.</returns>
+        public static DuckFactory Act<TTarget>(this TTarget target) where TTarget : class => DuckFactory.Create
+        (
+            Ensure.Parameter.IsNotNull(target, nameof(target))
+        );
     }
 }

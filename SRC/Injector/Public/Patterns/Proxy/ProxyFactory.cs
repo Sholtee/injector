@@ -22,7 +22,7 @@ namespace Solti.Utils.Proxy
     public static class ProxyFactory
     {
         /// <summary>
-        /// Gets or sets the <see cref="TypeGenerator{TDescendant}.CacheDirectory"/> associated with the <see cref="ProxyFactory"/>
+        /// Gets or sets the <see cref="TypeGenerator{TDescendant}.CacheDirectory"/> associated with the <see cref="ProxyFactory"/>.
         /// </summary>
         public static string? AssemblyCacheDirectory { get; set; }
 
