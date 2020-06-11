@@ -5,7 +5,6 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -58,44 +57,70 @@ namespace Solti.Utils.DI.Internals
             Ensure.Parameter.IsNotGenericDefinition(type, nameof(type));
         }
 
+        private static TDelegate CreateResolver<TDelegate>(ConstructorInfo constructor, Func<ParameterInfo, Expression> argumentResolver, params ParameterExpression[] parameters) => Expression.Lambda<TDelegate>
+        (
+            Expression.Convert
+            (
+                Expression.New
+                (
+                    constructor,
+                    constructor.GetParameters().Select
+                    (
+                        param => Expression.Convert(argumentResolver(param), param.ParameterType)
+                    )
+                ),
+                typeof(object)
+            ),
+            parameters
+        ).Compile();
+
         public static Func<IInjector, Type, object> Get(ConstructorInfo constructor) => Cache.GetOrAdd(constructor, () =>
         {
             //
-            // (injector, iface)  => new Service(IDependency_1 | Lazy<IDependency_1>, IDependency_2 | Lazy<IDependency_2>,...)
+            // (injector, iface)  => (object) new Service(IDependency_1 | Lazy<IDependency_1>, IDependency_2 | Lazy<IDependency_2>,...)
             //
 
             ParameterExpression 
                 injector = Expression.Parameter(typeof(IInjector), nameof(injector)),
                 iface    = Expression.Parameter(typeof(Type),      nameof(iface));
 
-            return constructor.ToLambda<Func<IInjector, Type, object>>
+            return CreateResolver<Func<IInjector, Type, object>>
             (
-                (param, i) =>
-                {
-                    Type parameterType = GetParameterType(param, out var isLazy) ?? throw new ArgumentException(Resources.INVALID_CONSTRUCTOR, nameof(constructor));
-
-                    OptionsAttribute? options = param.GetCustomAttribute<OptionsAttribute>();
-
-                    return isLazy
-                        //
-                        // Lazy<IInterface>(() => (IInterface) injector.[Try]Get(typeof(IInterface), svcName))
-                        //
-
-                        ? (Expression) Expression.Invoke(Expression.Constant(GetLazyFactory(parameterType, options)), injector)
-
-                        //
-                        // injector.[Try]Get(typeof(IInterface), svcName)
-                        //
-
-                        : (Expression) Expression.Call(
-                            injector,
-                            options?.Optional == true ? InjectorTryGet : InjectorGet, 
-                            Expression.Constant(parameterType), 
-                            Expression.Constant(options?.Name, typeof(string)));
-                },
-                injector,
+                constructor, 
+                ResolveArgument, 
+                injector, 
                 iface
-            ).Compile();
+            );
+
+            Expression ResolveArgument(ParameterInfo param) 
+            {
+                Type parameterType = GetParameterType(param, out bool isLazy) ?? throw new ArgumentException(Resources.INVALID_CONSTRUCTOR, nameof(constructor));
+
+                OptionsAttribute? options = param.GetCustomAttribute<OptionsAttribute>();
+
+                if (isLazy)
+                    //
+                    // Lazy<IInterface>(() => (IInterface) injector.[Try]Get(typeof(IInterface), svcName))
+                    //
+
+                    return Expression.Invoke
+                    (
+                        Expression.Constant(GetLazyFactory(parameterType, options)),
+                        injector
+                    )!;
+
+                //
+                // injector.[Try]Get(typeof(IInterface), svcName)
+                //
+
+                return Expression.Call
+                (
+                    injector,
+                    options?.Optional == true ? InjectorTryGet : InjectorGet,
+                    Expression.Constant(parameterType),
+                    Expression.Constant(options?.Name, typeof(string))
+                )!;
+            }
         });
 
         public static Func<IInjector, Type, object> Get(Type type)
@@ -119,38 +144,52 @@ namespace Solti.Utils.DI.Internals
                 injector     = Expression.Parameter(typeof(IInjector), nameof(injector)),
                 explicitArgs = Expression.Parameter(typeof(IReadOnlyDictionary<string, object>), nameof(explicitArgs));
 
-            return constructor.ToLambda<Func<IInjector, IReadOnlyDictionary<string, object>, object>>
+            return CreateResolver<Func<IInjector, IReadOnlyDictionary<string, object>, object>>
             (
-                (param, i) => Expression.Invoke(Expression.Constant((Func<ParameterInfo, IInjector, IReadOnlyDictionary<string, object>, object>) GetArg), Expression.Constant(param), injector, explicitArgs),
+                constructor,
+                ResolveArgument,
                 injector,
                 explicitArgs
-            ).Compile();
+            );
 
-            static object GetArg(ParameterInfo param, IInjector injectorInst, IReadOnlyDictionary<string, object> explicitArgsInst)
+            Expression ResolveArgument(ParameterInfo param)
             {
-                if (explicitArgsInst.TryGetValue(param.Name, out var value)) return value;
+                return Expression.Invoke
+                (
+                    Expression.Constant
+                    (
+                        (Func<IInjector, IReadOnlyDictionary<string, object>, object>) Implementation
+                    ),
+                    injector,
+                    explicitArgs
+                );
 
-                //
-                // Parameter tipust itt KELL validalni h az "explicitArgs"-ban tetszoleges tipusu argumentum
-                // megadhato legyen.
-                //
+                object Implementation(IInjector injectorInst, IReadOnlyDictionary<string, object> explicitArgsInst)
+                {
+                    if (explicitArgsInst.TryGetValue(param.Name, out var value)) return value;
 
-                Type parameterType = GetParameterType(param, out var isLazy) ?? throw new ArgumentException(Resources.INVALID_CONSTRUCTOR_ARGUMENT);
+                    //
+                    // Parameter tipust itt KELL validalni h az "explicitArgs"-ban tetszoleges tipusu argumentum
+                    // megadhato legyen.
+                    //
 
-                OptionsAttribute? options = param.GetCustomAttribute<OptionsAttribute>();
+                    Type parameterType = GetParameterType(param, out var isLazy) ?? throw new ArgumentException(Resources.INVALID_CONSTRUCTOR_ARGUMENT);
 
-                return isLazy
+                    OptionsAttribute? options = param.GetCustomAttribute<OptionsAttribute>();
+
                     //
                     // Lazy<IInterface>(() => (IInterface) injector.Get(typeof(IInterface), svcName))
                     //
 
-                    ? GetLazyFactory(parameterType, options).Invoke(injectorInst)
+                    if (isLazy) return GetLazyFactory(parameterType, options)
+                        .Invoke(injectorInst);
 
                     //
                     // injector.Get(typeof(IInterface), svcName)
                     //
 
-                    : injectorInst.Get(parameterType, options?.Name);
+                    return injectorInst.Get(parameterType, options?.Name);
+                }
             }
         })!; // Enelkul a CI elszall CS8619-el (helyben nem tudtam reprodukalni)
 
@@ -202,13 +241,12 @@ namespace Solti.Utils.DI.Internals
             // injector => new Lazy<iface>(Func<iface>)
             //
 
-            ConstructorInfo ctor = typeof(Lazy<>)
+            Func<object[], object> lazyFactory = typeof(Lazy<>)
                 .MakeGenericType(iface)
-                .GetConstructor(new []{ delegateType });
+                .GetConstructor(new[] { delegateType })
+                .ToStaticDelegate();
 
-            Debug.Assert(ctor != null);
-
-            return new Func<IInjector, object>(i => ctor!.Call(createValueFactory(i)));
+            return new Func<IInjector, object>(i => lazyFactory.Invoke(new object[] { createValueFactory(i) }));
         });
     }
 }

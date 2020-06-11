@@ -40,7 +40,7 @@ namespace Solti.Utils.DI.Internals
             if (ctor == null)
                 throw new ArgumentException(Resources.CONSTRUCTOR_NOT_FOUND, nameof(argTypes));
 
-            return ctor.Call(args);
+            return ctor.ToStaticDelegate().Invoke(args);
         }
     }
 }

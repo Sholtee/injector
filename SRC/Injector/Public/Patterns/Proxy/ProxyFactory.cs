@@ -11,6 +11,7 @@ namespace Solti.Utils.Proxy
 {
     using Abstractions;
     using Generators;
+    using Primitives;
 
     using DI;
     using DI.Internals;
@@ -46,7 +47,8 @@ namespace Solti.Utils.Proxy
         public static TInterface Create<TInterface, TInterceptor>(params object[] args) where TInterface : class where TInterceptor : InterfaceInterceptor<TInterface> => (TInterface) 
             GenerateProxyType<TInterface, TInterceptor>()
                 .GetApplicableConstructor()
-                .Call(args);
+                .ToStaticDelegate()
+                .Invoke(args);
 
         /// <summary>
         /// Creates a new proxy instance with the given arguments.
@@ -98,7 +100,7 @@ namespace Solti.Utils.Proxy
             // A tobbit a ProxyGenerator<> ellenorzi.
             //
 
-            return (Type) FGenericGenerateProxyType.MakeGenericMethod(iface, interceptor).Call();
+            return (Type) FGenericGenerateProxyType.MakeGenericMethod(iface, interceptor).ToStaticDelegate().Invoke(Array.Empty<object>());
         }
 
         /// <summary>
@@ -110,7 +112,8 @@ namespace Solti.Utils.Proxy
         /// <returns>The newly created proxy instance.</returns>
         public static object Create(Type iface, Type interceptor, params object[] args) => GenerateProxyType(iface, interceptor)
             .GetApplicableConstructor()
-            .Call(args);
+            .ToStaticDelegate()
+            .Invoke(args);
 
         /// <summary>
         /// Creates a new proxy instance with the given arguments.

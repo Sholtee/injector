@@ -50,7 +50,8 @@ namespace Solti.Utils.DI.Internals
 
                 return (IEnumerable) Cache
                     .GetOrAdd(iface, () => GenericCast.MakeGenericMethod(iface))
-                    .Call(services);
+                    .ToStaticDelegate()
+                    .Invoke(new object[] { services });
             }
         }
 
