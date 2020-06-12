@@ -18,7 +18,7 @@ namespace Solti.Utils.DI.Extensions
     /// Adds a new alias to a member.
     /// </summary>
     [AttributeUsage(AttributeTargets.Interface | AttributeTargets.Method)]
-    public class AliasAttribute: Attribute
+    public sealed class AliasAttribute: Attribute
     {
         /// <summary>
         /// The new name.
@@ -49,19 +49,23 @@ namespace Solti.Utils.DI.Extensions
         #region Private
         private static MethodInfo InjectorGet = ((MethodCallExpression) ((Expression<Action<IInjector>>) (i => i.Get(null!, null))).Body).Method;
 
-        private static UnaryExpression Throw<TException>(Type[] argTypes, params Expression[] args) where TException: Exception
-        {
-            ConstructorInfo ctor = typeof(TException).GetConstructor(argTypes) ?? throw new MissingMethodException(typeof(TException).Name, "Ctor");
+        //
+        // {throw new Exception(...); return null;}
+        //
 
-            return Expression.Throw
+        private static Expression Throw<TException>(Type[] argTypes, params Expression[] args) where TException: Exception => Expression.Block
+        (
+            typeof(object),
+            Expression.Throw
             (
                 Expression.New
                 (
-                    ctor,
+                    typeof(TException).GetConstructor(argTypes) ?? throw new MissingMethodException(typeof(TException).Name, "Ctor"),
                     args
                 )
-            );
-        }
+            ),
+            Expression.Default(typeof(object))
+        );
 
         private Expression CreateSwitch(ParameterExpression parameter, IEnumerable<(MemberInfo Member, Expression Body)> cases, Expression defaultBody) => Expression.Switch
         (
@@ -73,7 +77,7 @@ namespace Solti.Utils.DI.Extensions
                 @case => Expression.SwitchCase
                 (
                     @case.Body,
-                    Expression.Constant(GetMemberName(@case.Member))
+                    Expression.Constant(GetMemberId(@case.Member))
                 )
             )
         );
@@ -137,14 +141,14 @@ namespace Solti.Utils.DI.Extensions
                 args
             );
 
-            //
-            // (object) ((TInterface) injector.Get(typeof(TInterface), null)).Method((T0) arg[0], ..., (TN) argN)
-            //
 
-            Expression InvokeInjector(Type iface, MethodInfo method) => Expression.Convert
-            (
+            Expression InvokeInjector(Type iface, MethodInfo method)
+            {
+                //
+                // ((TInterface) injector.Get(typeof(TInterface), null)).Method((T0) arg[0], ..., (TN) argN)
+                //
 
-                Expression.Call
+                Expression call = Expression.Call
                 (
                     //
                     // (TInterface) injector.Get(typeof(TInterface), null)
@@ -175,9 +179,23 @@ namespace Solti.Utils.DI.Extensions
                             para.ParameterType
                         )
                     )
-                ),
-                typeof(object)
-            );
+                );
+
+                return method.ReturnType != typeof(void)
+                    //
+                    // return (object) ((TInterface) injector.Get(typeof(TInterface), null)).Method((T0) arg[0], ..., (TN) argN)
+                    //
+
+                    ? (Expression) Expression.Convert(call, typeof(object))
+
+                    //
+                    // ((TInterface) injector.Get(typeof(TInterface), null)).Method((T0) arg[0], ..., (TN) argN);
+                    // return null;
+                    //
+
+                    : Expression.Block(typeof(object), call, Expression.Default(typeof(object)));
+            }
+
         }
         #endregion
 
@@ -185,7 +203,7 @@ namespace Solti.Utils.DI.Extensions
         /// Gets the member name to be used in the execution process.
         /// </summary>
         [SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "'member' is never null")]
-        protected virtual string GetMemberName(MemberInfo member) => member.GetCustomAttribute<AliasAttribute>(inherit: false)?.Name ?? member.Name;
+        protected virtual string GetMemberId(MemberInfo member) => member.GetCustomAttribute<AliasAttribute>(inherit: false)?.Name ?? member.Name;
 
         /// <summary>
         /// Builds a <see cref="ModuleInvocation"/> instance belongs to the specified <paramref name="interfaces"/>.
