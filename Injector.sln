@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29911.84
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Injector.Tests", "TEST\Injector.Tests.csproj", "{E8413DF4-2216-4118-A864-862BF560158C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Injector.Tests", "TEST\Injector.Tests\Injector.Tests.csproj", "{E8413DF4-2216-4118-A864-862BF560158C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Injector.Perf", "PERF\Injector.Perf.csproj", "{C062341B-E4CC-40F2-8F13-CCA79C516F90}"
 EndProject
