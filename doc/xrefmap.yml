@@ -261,19 +261,19 @@ references:
   isSpec: "True"
   fullName: Solti.Utils.DI.Extensions.ModuleInvocationBuilder.Build
   nameWithType: ModuleInvocationBuilder.Build
-- uid: Solti.Utils.DI.Extensions.ModuleInvocationBuilder.GetMemberName(System.Reflection.MemberInfo)
-  name: GetMemberName(MemberInfo)
-  href: Solti.Utils.DI.Extensions.ModuleInvocationBuilder.html#Solti_Utils_DI_Extensions_ModuleInvocationBuilder_GetMemberName_System_Reflection_MemberInfo_
-  commentId: M:Solti.Utils.DI.Extensions.ModuleInvocationBuilder.GetMemberName(System.Reflection.MemberInfo)
-  fullName: Solti.Utils.DI.Extensions.ModuleInvocationBuilder.GetMemberName(System.Reflection.MemberInfo)
-  nameWithType: ModuleInvocationBuilder.GetMemberName(MemberInfo)
-- uid: Solti.Utils.DI.Extensions.ModuleInvocationBuilder.GetMemberName*
-  name: GetMemberName
-  href: Solti.Utils.DI.Extensions.ModuleInvocationBuilder.html#Solti_Utils_DI_Extensions_ModuleInvocationBuilder_GetMemberName_
-  commentId: Overload:Solti.Utils.DI.Extensions.ModuleInvocationBuilder.GetMemberName
+- uid: Solti.Utils.DI.Extensions.ModuleInvocationBuilder.GetMemberId(System.Reflection.MemberInfo)
+  name: GetMemberId(MemberInfo)
+  href: Solti.Utils.DI.Extensions.ModuleInvocationBuilder.html#Solti_Utils_DI_Extensions_ModuleInvocationBuilder_GetMemberId_System_Reflection_MemberInfo_
+  commentId: M:Solti.Utils.DI.Extensions.ModuleInvocationBuilder.GetMemberId(System.Reflection.MemberInfo)
+  fullName: Solti.Utils.DI.Extensions.ModuleInvocationBuilder.GetMemberId(System.Reflection.MemberInfo)
+  nameWithType: ModuleInvocationBuilder.GetMemberId(MemberInfo)
+- uid: Solti.Utils.DI.Extensions.ModuleInvocationBuilder.GetMemberId*
+  name: GetMemberId
+  href: Solti.Utils.DI.Extensions.ModuleInvocationBuilder.html#Solti_Utils_DI_Extensions_ModuleInvocationBuilder_GetMemberId_
+  commentId: Overload:Solti.Utils.DI.Extensions.ModuleInvocationBuilder.GetMemberId
   isSpec: "True"
-  fullName: Solti.Utils.DI.Extensions.ModuleInvocationBuilder.GetMemberName
-  nameWithType: ModuleInvocationBuilder.GetMemberName
+  fullName: Solti.Utils.DI.Extensions.ModuleInvocationBuilder.GetMemberId
+  nameWithType: ModuleInvocationBuilder.GetMemberId
 - uid: Solti.Utils.DI.IInjectorExtensions
   name: IInjectorExtensions
   href: Solti.Utils.DI.IInjectorExtensions.html
