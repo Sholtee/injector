@@ -4,7 +4,7 @@
   "commonprops": "\\SRC\\Common.targets",
   "app": "\\SRC\\Injector\\Injector.csproj",
   "vendor": "\\Vendor",
-  "tests": "\\TEST\\Injector.Tests.csproj",
+  "tests": "\\Injector.sln",
   "testtarget": "netcoreapp2.2",
   "testresults": "testresults.xml",
   "coveragereport": "coverage.xml",
