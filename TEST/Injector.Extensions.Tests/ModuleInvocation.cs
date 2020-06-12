@@ -19,6 +19,8 @@ namespace Solti.Utils.DI.Extensions.Tests
         {
             int Add(int a, int b);
             void Void();
+            [Alias("Cica")]
+            void Bar();
         }
 
         [Test]
@@ -110,6 +112,24 @@ namespace Solti.Utils.DI.Extensions.Tests
 
             invocation.Invoke(mockInjector.Object, nameof(IService), nameof(IService.Void));
             mockService.Verify(svc => svc.Void(), Times.Once);
+        }
+
+        [Test]
+        public void ModuleInvocation_ShouldHandleMethodAlias()
+        {
+            var mockService = new Mock<IService>(MockBehavior.Strict);
+            mockService
+                .Setup(svc => svc.Bar());
+
+            var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
+            mockInjector
+                .Setup(i => i.Get(typeof(IService), null))
+                .Returns(mockService.Object);
+
+            ModuleInvocation invocation = new ModuleInvocationBuilder().Build(typeof(IService));
+
+            Assert.Throws<MissingMethodException>(() => invocation.Invoke(mockInjector.Object, nameof(IService), nameof(IService.Bar)));
+            Assert.DoesNotThrow(() => invocation.Invoke(mockInjector.Object, nameof(IService), "Cica"));
         }
     }
 }
