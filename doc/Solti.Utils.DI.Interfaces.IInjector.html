@@ -45,11 +45,23 @@
   <div class="markdown level0 summary"><p>Provides the mechanism for injecting resources.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <span class="xref">Solti.Utils.Primitives.Patterns.IDisposableEx.Disposed</span>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.idisposable.dispose#System_IDisposable_Dispose">IDisposable.Dispose()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.iasyncdisposable.disposeasync#System_IAsyncDisposable_DisposeAsync">IAsyncDisposable.DisposeAsync()</a>
+    </div>
+  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Solti.Utils.DI.Interfaces.html">Solti.Utils.DI.Interfaces</a></h6>
   <h6><strong>Assembly</strong>: Solti.Utils.DI.Interfaces.dll</h6>
   <h5 id="Solti_Utils_DI_Interfaces_IInjector_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public interface IInjector : IDisposableEx</code></pre>
+    <pre><code class="lang-csharp hljs">public interface IInjector : IDisposableEx, IDisposable, IAsyncDisposable</code></pre>
   </div>
   <h3 id="properties">Properties
   </h3>
@@ -83,13 +95,13 @@
   <h3 id="methods">Methods
   </h3>
   <a id="Solti_Utils_DI_Interfaces_IInjector_Get_" data-uid="Solti.Utils.DI.Interfaces.IInjector.Get*"></a>
-  <h4 id="Solti_Utils_DI_Interfaces_IInjector_Get_Type_System_Nullable_System_String__" data-uid="Solti.Utils.DI.Interfaces.IInjector.Get(Type,System.Nullable{System.String})">Get(Type, Nullable&lt;String&gt;)</h4>
+  <h4 id="Solti_Utils_DI_Interfaces_IInjector_Get_System_Type_System_String_" data-uid="Solti.Utils.DI.Interfaces.IInjector.Get(System.Type,System.String)">Get(Type, String)</h4>
   <div class="markdown level1 summary"><p>Gets the service instance associated with the given interface and (optional) name.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">object Get(Type iface, string? name = null)</code></pre>
+    <pre><code class="lang-csharp hljs">object Get(Type iface, string name = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -102,13 +114,13 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">Type</span></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.type">Type</a></td>
         <td><span class="parametername">iface</span></td>
         <td><p>The &quot;id&quot; of the service to be resolved. It must be a (non open generic) interface.</p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
         <td><span class="parametername">name</span></td>
         <td><p>The (optional) name of the service.</p>
 </td>
@@ -148,13 +160,13 @@
     </tbody>
   </table>
   <a id="Solti_Utils_DI_Interfaces_IInjector_TryGet_" data-uid="Solti.Utils.DI.Interfaces.IInjector.TryGet*"></a>
-  <h4 id="Solti_Utils_DI_Interfaces_IInjector_TryGet_Type_System_Nullable_System_String__" data-uid="Solti.Utils.DI.Interfaces.IInjector.TryGet(Type,System.Nullable{System.String})">TryGet(Type, Nullable&lt;String&gt;)</h4>
+  <h4 id="Solti_Utils_DI_Interfaces_IInjector_TryGet_System_Type_System_String_" data-uid="Solti.Utils.DI.Interfaces.IInjector.TryGet(System.Type,System.String)">TryGet(Type, String)</h4>
   <div class="markdown level1 summary"><p>Tries to get the service instance associated with the given interface and (optional) name.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">object? TryGet(Type iface, string? name = null)</code></pre>
+    <pre><code class="lang-csharp hljs">object TryGet(Type iface, string name = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -167,13 +179,13 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">Type</span></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.type">Type</a></td>
         <td><span class="parametername">iface</span></td>
         <td><p>The &quot;id&quot; of the service to be resolved. It must be a (non open generic) interface.</p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
         <td><span class="parametername">name</span></td>
         <td><p>The (optional) name of the service.</p>
 </td>
@@ -190,7 +202,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a>&gt;</td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></td>
         <td><p>The requested service instance if the resolution was successful, null otherwise.</p>
 </td>
       </tr>
@@ -198,16 +210,16 @@
   </table>
   <h3 id="extensionmethods">Extension Methods</h3>
   <div>
-      <a class="xref" href="Solti.Utils.DI.IInjectorExtensions.html#Solti_Utils_DI_IInjectorExtensions_Get__1_Solti_Utils_DI_Interfaces_IInjector_System_Nullable_System_String__">IInjectorExtensions.Get&lt;TInterface&gt;(IInjector, Nullable&lt;String&gt;)</a>
+      <a class="xref" href="Solti.Utils.DI.IInjectorExtensions.html#Solti_Utils_DI_IInjectorExtensions_Get__1_Solti_Utils_DI_Interfaces_IInjector_System_String_">IInjectorExtensions.Get&lt;TInterface&gt;(IInjector, String)</a>
   </div>
   <div>
-      <a class="xref" href="Solti.Utils.DI.IInjectorExtensions.html#Solti_Utils_DI_IInjectorExtensions_TryGet__1_Solti_Utils_DI_Interfaces_IInjector_System_Nullable_System_String__">IInjectorExtensions.TryGet&lt;TInterface&gt;(IInjector, Nullable&lt;String&gt;)</a>
+      <a class="xref" href="Solti.Utils.DI.IInjectorExtensions.html#Solti_Utils_DI_IInjectorExtensions_TryGet__1_Solti_Utils_DI_Interfaces_IInjector_System_String_">IInjectorExtensions.TryGet&lt;TInterface&gt;(IInjector, String)</a>
   </div>
   <div>
-      <a class="xref" href="Solti.Utils.DI.IInjectorExtensions.html#Solti_Utils_DI_IInjectorExtensions_Instantiate_Solti_Utils_DI_Interfaces_IInjector_Type_System_Nullable_IReadOnlyDictionary_System_String_System_Object___">IInjectorExtensions.Instantiate(IInjector, Type, Nullable&lt;IReadOnlyDictionary&lt;String, Object&gt;&gt;)</a>
+      <a class="xref" href="Solti.Utils.DI.IInjectorExtensions.html#Solti_Utils_DI_IInjectorExtensions_Instantiate_Solti_Utils_DI_Interfaces_IInjector_System_Type_System_Collections_Generic_IReadOnlyDictionary_System_String_System_Object__">IInjectorExtensions.Instantiate(IInjector, Type, IReadOnlyDictionary&lt;String, Object&gt;)</a>
   </div>
   <div>
-      <a class="xref" href="Solti.Utils.DI.IInjectorExtensions.html#Solti_Utils_DI_IInjectorExtensions_Instantiate__1_Solti_Utils_DI_Interfaces_IInjector_System_Nullable_IReadOnlyDictionary_System_String_System_Object___">IInjectorExtensions.Instantiate&lt;TClass&gt;(IInjector, Nullable&lt;IReadOnlyDictionary&lt;String, Object&gt;&gt;)</a>
+      <a class="xref" href="Solti.Utils.DI.IInjectorExtensions.html#Solti_Utils_DI_IInjectorExtensions_Instantiate__1_Solti_Utils_DI_Interfaces_IInjector_System_Collections_Generic_IReadOnlyDictionary_System_String_System_Object__">IInjectorExtensions.Instantiate&lt;TClass&gt;(IInjector, IReadOnlyDictionary&lt;String, Object&gt;)</a>
   </div>
   <div>
       <a class="xref" href="Solti.Utils.Proxy.ObjectExtensions.html#Solti_Utils_Proxy_ObjectExtensions_Act__1___0_">ObjectExtensions.Act&lt;TTarget&gt;(TTarget)</a>

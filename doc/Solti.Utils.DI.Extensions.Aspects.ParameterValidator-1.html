@@ -48,13 +48,53 @@
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
-    <div class="level1"><span class="xref">ParameterValidator&lt;TInterface&gt;</span></div>
+    <div class="level1"><a class="xref" href="https://sholtee.github.io/proxygen/doc/Solti.Utils.Proxy.InterfaceInterceptor-1.html">InterfaceInterceptor</a>&lt;TInterface&gt;</div>
+    <div class="level2"><span class="xref">ParameterValidator&lt;TInterface&gt;</span></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="https://sholtee.github.io/proxygen/doc/Solti.Utils.Proxy.InterfaceInterceptor-1.html#Solti_Utils_Proxy_InterfaceInterceptor_1_CALL_TARGET">InterfaceInterceptor&lt;TInterface&gt;.CALL_TARGET</a>
+    </div>
+    <div>
+      <a class="xref" href="https://sholtee.github.io/proxygen/doc/Solti.Utils.Proxy.InterfaceInterceptor-1.html#Solti_Utils_Proxy_InterfaceInterceptor_1_Properties">InterfaceInterceptor&lt;TInterface&gt;.Properties</a>
+    </div>
+    <div>
+      <a class="xref" href="https://sholtee.github.io/proxygen/doc/Solti.Utils.Proxy.InterfaceInterceptor-1.html#Solti_Utils_Proxy_InterfaceInterceptor_1_Events">InterfaceInterceptor&lt;TInterface&gt;.Events</a>
+    </div>
+    <div>
+      <a class="xref" href="https://sholtee.github.io/proxygen/doc/Solti.Utils.Proxy.InterfaceInterceptor-1.html#Solti_Utils_Proxy_InterfaceInterceptor_1_MethodAccess_System_Linq_Expressions_Expression_System_Action__">InterfaceInterceptor&lt;TInterface&gt;.MethodAccess(Expression&lt;Action&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://sholtee.github.io/proxygen/doc/Solti.Utils.Proxy.InterfaceInterceptor-1.html#Solti_Utils_Proxy_InterfaceInterceptor_1_Target">InterfaceInterceptor&lt;TInterface&gt;.Target</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a>
+    </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Solti.Utils.DI.Extensions.Aspects.html">Solti.Utils.DI.Extensions.Aspects</a></h6>
   <h6><strong>Assembly</strong>: Solti.Utils.DI.Extensions.dll</h6>
   <h5 id="Solti_Utils_DI_Extensions_Aspects_ParameterValidator_1_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class ParameterValidator&lt;TInterface&gt; : InterfaceInterceptor&lt;TInterface&gt; where TInterface : class</code></pre>
+    <pre><code class="lang-csharp hljs">public class ParameterValidator&lt;TInterface&gt; : InterfaceInterceptor&lt;TInterface&gt;, IHasTarget&lt;TInterface&gt; where TInterface : class</code></pre>
   </div>
   <h5 class="typeParameters">Type Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -105,8 +145,8 @@
   <h3 id="methods">Methods
   </h3>
   <a id="Solti_Utils_DI_Extensions_Aspects_ParameterValidator_1_Invoke_" data-uid="Solti.Utils.DI.Extensions.Aspects.ParameterValidator`1.Invoke*"></a>
-  <h4 id="Solti_Utils_DI_Extensions_Aspects_ParameterValidator_1_Invoke_MethodInfo_System_Object___MemberInfo_" data-uid="Solti.Utils.DI.Extensions.Aspects.ParameterValidator`1.Invoke(MethodInfo,System.Object[],MemberInfo)">Invoke(MethodInfo, Object[], MemberInfo)</h4>
-  <div class="markdown level1 summary"><p>See <see cref="!:InterfaceInterceptor&lt;TInterface>.Invoke(MethodInfo, object[], MemberInfo)"></see>.</p>
+  <h4 id="Solti_Utils_DI_Extensions_Aspects_ParameterValidator_1_Invoke_System_Reflection_MethodInfo_System_Object___System_Reflection_MemberInfo_" data-uid="Solti.Utils.DI.Extensions.Aspects.ParameterValidator`1.Invoke(System.Reflection.MethodInfo,System.Object[],System.Reflection.MemberInfo)">Invoke(MethodInfo, Object[], MemberInfo)</h4>
+  <div class="markdown level1 summary"><p>See <a class="xref" href="https://sholtee.github.io/proxygen/doc/Solti.Utils.Proxy.InterfaceInterceptor-1.html#Solti_Utils_Proxy_InterfaceInterceptor_1_Invoke_System_Reflection_MethodInfo_System_Object___System_Reflection_MemberInfo_">Invoke(MethodInfo, Object[], MemberInfo)</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -124,7 +164,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">MethodInfo</span></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.reflection.methodinfo">MethodInfo</a></td>
         <td><span class="parametername">method</span></td>
         <td></td>
       </tr>
@@ -134,7 +174,7 @@
         <td></td>
       </tr>
       <tr>
-        <td><span class="xref">MemberInfo</span></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.reflection.memberinfo">MemberInfo</a></td>
         <td><span class="parametername">extra</span></td>
         <td></td>
       </tr>
@@ -155,6 +195,8 @@
       </tr>
     </tbody>
   </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">Solti.Utils.Proxy.InterfaceInterceptor&lt;TInterface&gt;.Invoke(System.Reflection.MethodInfo, System.Object[], System.Reflection.MemberInfo)</span></div>
   <h3 id="extensionmethods">Extension Methods</h3>
   <div>
       <a class="xref" href="Solti.Utils.Proxy.ObjectExtensions.html#Solti_Utils_Proxy_ObjectExtensions_Act__1___0_">ObjectExtensions.Act&lt;TTarget&gt;(TTarget)</a>
