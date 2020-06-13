@@ -5,6 +5,7 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 
 using Moq;
@@ -14,11 +15,10 @@ namespace Solti.Utils.DI.Container.Tests
 {
     using Interfaces;
     using Internals;
+    using Primitives;
     using Primitives.Patterns;
     using Properties;
-    using Proxy;
-    using Solti.Utils.Primitives;
-    using System.Linq;
+    using Proxy; 
 
     public partial class ContainerTestsBase<TContainer>
     {
