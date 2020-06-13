@@ -10,6 +10,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\SRC\Extensions\Injector.Extensions.csproj" />
     <ProjectReference Include="..\..\SRC\Interfaces\Injector.Interfaces.csproj" />
+    <ProjectReference Include="..\Injector.Tests\Injector.Tests.csproj" />
   </ItemGroup>
 
 </Project>

@@ -110,7 +110,7 @@ namespace Solti.Utils.DI.Extensions.Tests
 
             ModuleInvocation invocation = new ModuleInvocationBuilder().Build(typeof(IService));
 
-            invocation.Invoke(mockInjector.Object, nameof(IService), nameof(IService.Void));
+            Assert.IsNull(invocation.Invoke(mockInjector.Object, nameof(IService), nameof(IService.Void)));
             mockService.Verify(svc => svc.Void(), Times.Once);
         }
 

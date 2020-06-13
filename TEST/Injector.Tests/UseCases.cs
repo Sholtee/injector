@@ -20,7 +20,6 @@ namespace Solti.Utils.DI.UseCases
 {
     using Interfaces;
     using Internals;
-    using Extensions.Aspects;
     using Primitives.Patterns;
     using Proxy;
     using DI.Tests;
@@ -28,57 +27,6 @@ namespace Solti.Utils.DI.UseCases
     [TestFixture]
     public class Tests: TestBase<ServiceContainer>
     {
-        [Test]
-        public void TransactionHandlingTest()
-        {
-            var mockTransaction = new Mock<IDbTransaction>(MockBehavior.Strict);
-            mockTransaction.Setup(tr => tr.Commit());
-
-            var mockDbConnection = new Mock<IDbConnection>(MockBehavior.Strict);
-            mockDbConnection
-                .Setup(conn => conn.BeginTransaction(IsolationLevel.Unspecified))
-                .Returns(mockTransaction.Object);
-            mockDbConnection
-                .Setup(conn => conn.Dispose());
-
-            Container
-                .Factory(i => mockDbConnection.Object, Lifetime.Scoped)
-                .Service<IModule, MyModuleUsingDbConnection>(Lifetime.Scoped)
-                .Proxy<IModule, TransactionManager<IModule>>();
-
-            using (IInjector injector = Container.CreateInjector())
-            {
-                IModule module = injector.Get<IModule>();
-                module.DoSomething(new object());
-                module.DoSomethingElse();
-            }
-
-            mockDbConnection.Verify(conn => conn.BeginTransaction(IsolationLevel.Unspecified), Times.Once);
-            mockTransaction.Verify(tr => tr.Commit(), Times.Once);
-        }
-
-        public interface IModule
-        {
-            [Transactional]
-            void DoSomething([NotNull] object arg);
-            void DoSomethingElse();
-        }
-
-        public class MyModuleUsingDbConnection : IModule
-        {
-            private readonly Lazy<IDbConnection> FConnection;
-            public IDbConnection Connection => FConnection.Value;
-
-            public MyModuleUsingDbConnection(Lazy<IDbConnection> dbConn)
-            {
-                Assert.NotNull(dbConn);
-                FConnection = dbConn;
-            }
-            public void DoSomething(object arg) { }
-
-            public void DoSomethingElse() { }
-        }
-
         [Test]
         public void BulkedProxyingTest()
         {
@@ -107,6 +55,12 @@ namespace Solti.Utils.DI.UseCases
             }
         }
 
+        public interface IModule
+        {
+            void DoSomething(object arg);
+            void DoSomethingElse();
+        }
+
         public interface IMyModule1 : IModule { }
         public interface IMyModule2 : IModule { }
         [Service(typeof(IMyModule1))]
@@ -122,49 +76,9 @@ namespace Solti.Utils.DI.UseCases
             public void DoSomethingElse() { }
         }
 
-        [Test]
-        public void ParameterValidationTest()
-        {
-            Container
-                .Factory(i => new Mock<IModule>().Object)
-                .Proxy<IModule, ParameterValidator<IModule>>();
-
-            using (IInjector injector = Container.CreateInjector()) 
-            {
-                IModule module = injector.Get<IModule>();
-
-                Assert.DoesNotThrow(() => module.DoSomething(new object()));
-                Assert.Throws<ArgumentNullException>(() => module.DoSomething(null));
-            }
-        }
-
-        [Test]
-        public void ParameterValidationAspectTest() 
-        {
-            Container.Factory(i => new Mock<IModuleWithAspects>().Object);
-
-            using (IInjector injector = Container.CreateInjector())
-            {
-                IModule module = injector.Get<IModuleWithAspects>();
-
-                Assert.DoesNotThrow(() => module.DoSomething(new object()));
-                Assert.Throws<ArgumentNullException>(() => module.DoSomething(null));
-            }
-        }
-
-        [ParameterValidatorAspect]
         [MethodInvocationLoggerAspect(typeof(MyLogger))]
         public interface IModuleWithAspects : IModule 
         { 
-        }
-
-        [AttributeUsage(AttributeTargets.Parameter, AllowMultiple = false)]
-        public class NotNullAttribute : ParameterValidatorAttribute
-        {
-            public override void Validate(ParameterInfo param, object value)
-            {
-                if (value == null) throw new ArgumentNullException(param.Name);
-            }
         }
 
         [Test]
