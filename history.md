@@ -145,3 +145,4 @@
   - *done:* `IInjector` gets descendant of `IDisposableEx`
 - 3.2.0:
   - *added:* `ModuleInvocationBuilder` (extension) class
+  - *upgraded:* Dependencies

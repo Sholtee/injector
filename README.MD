@@ -323,7 +323,7 @@ public class ParameterValidatorProxy<TInterface> : InterfaceInterceptor<TInterfa
     .Service<IMyModuleUsingDbConnection, MyModuleUsingDbConnection>(Lifetime.Scoped)
     .Proxy<IMyModuleUsingDbConnection, TransactionManager<IMyModuleUsingDbConnection>>();
   ```
-- The full version of the above examples can be found [here](https://github.com/Sholtee/injector/blob/master/TEST/UseCases.cs ).
+- The `TransactionManager` proxy is available in  the [Injector.NET.Extensions](https://www.nuget.org/packages/Injector.NET.Extensions/ ) package.
 ### Aspects
 Decorating services can be done via attributes as well. In this case we declare an attribute (derived from `AspectAttribute`) that tells the injector which interceptors should be used. Doing this we introduce the [AOP](https://en.wikipedia.org/wiki/Aspect-oriented_programming ) in our code:
 ```csharp
@@ -344,7 +344,7 @@ public interface IService
 ```
 Notes:
 - As you can see there is no need for registering the `ParameterValidatorProxy<>` manually. 
-- You can find this aspect in the [Injector.NET.Extensions](https://sholtee.github.io/injector/doc/Solti.Utils.DI.Extensions.Aspects.html ) package.
+- Among other aspects you can find this one in the [Injector.NET.Extensions](https://www.nuget.org/packages/Injector.NET.Extensions/ ) package.
 
 You can create parameterized aspects as well:
 ```csharp
