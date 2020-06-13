@@ -323,7 +323,7 @@ public class ParameterValidatorProxy<TInterface> : InterfaceInterceptor<TInterfa
     .Service<IMyModuleUsingDbConnection, MyModuleUsingDbConnection>(Lifetime.Scoped)
     .Proxy<IMyModuleUsingDbConnection, TransactionManager<IMyModuleUsingDbConnection>>();
   ```
-- The `TransactionManager` proxy is available in  the [Injector.NET.Extensions](https://www.nuget.org/packages/Injector.NET.Extensions/ ) package.
+- The `TransactionManager` and `ParameterValidatorProxy` proxy is available as an extension in the [Injector.NET.Extensions](https://www.nuget.org/packages/Injector.NET.Extensions/ ) package.
 ### Aspects
 Decorating services can be done via attributes as well. In this case we declare an attribute (derived from `AspectAttribute`) that tells the injector which interceptors should be used. Doing this we introduce the [AOP](https://en.wikipedia.org/wiki/Aspect-oriented_programming ) in our code:
 ```csharp
