@@ -148,7 +148,7 @@ namespace Solti.Utils.DI.Container.Tests
         {
             var mockService = new Mock<IOrderInspectingService>(MockBehavior.Strict);
             mockService
-                .Setup(svc => svc.GetAspectsOrder())
+                .Setup(x => x.GetAspectsOrder())
                 .Returns(Array.Empty<string>());
 
             Container.Factory(i => mockService.Object);
