@@ -248,6 +248,6 @@ namespace Solti.Utils.DI.Container.Tests
     [OrderInspectingAspect3]
     public interface IOrderInspectingService
     {
-        public IEnumerable<string> GetAspectsOrder();
+        IEnumerable<string> GetAspectsOrder();
     }
 }
