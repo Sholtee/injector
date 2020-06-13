@@ -4,6 +4,8 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Collections.Generic;
+using System.Reflection;
 
 using Moq;
 using NUnit.Framework;
@@ -15,6 +17,8 @@ namespace Solti.Utils.DI.Container.Tests
     using Primitives.Patterns;
     using Properties;
     using Proxy;
+    using Solti.Utils.Primitives;
+    using System.Linq;
 
     public partial class ContainerTestsBase<TContainer>
     {
@@ -138,9 +142,26 @@ namespace Solti.Utils.DI.Container.Tests
                     break;
             }
         }
+
+        [Test]
+        public void Aspects_ApplyingAspectsShouldBeSequential() 
+        {
+            var mockService = new Mock<IOrderInspectingService>(MockBehavior.Strict);
+            mockService
+                .Setup(svc => svc.GetAspectsOrder())
+                .Returns(Array.Empty<string>());
+
+            Container.Factory(i => mockService.Object);
+
+            var svc = (IOrderInspectingService) Container
+                .Get<IOrderInspectingService>()
+                .Factory(new Mock<IInjector>(MockBehavior.Strict).Object, typeof(IOrderInspectingService));
+
+            Assert.That(svc.GetAspectsOrder().SequenceEqual(new[] { nameof(OrderInspectingAspect1Attribute), nameof(OrderInspectingAspect2Attribute), nameof(OrderInspectingAspect3Attribute) }));
+        }
     }
 
-    public class AspectWithoutImplementation : AspectAttribute 
+    public class AspectWithoutImplementation : AspectAttribute
     {
         public AspectWithoutImplementation(AspectKind kind = AspectKind.Service) => Kind = kind;
     }
@@ -175,5 +196,58 @@ namespace Solti.Utils.DI.Container.Tests
     public class DummyAspectHavingDependencyAttribute : AspectAttribute
     {
         public override Type GetInterceptor(Type iface) => typeof(MyInterceptorHavingDependency<>).MakeGenericType(iface);
+    }
+
+    public abstract class OrderInspectingProxyBase<TInterface> : InterfaceInterceptor<TInterface> where TInterface : class
+    {
+        public string Name { get; }
+
+        public OrderInspectingProxyBase(TInterface target, string name) : base(target) => Name = name;
+
+        public override object Invoke(MethodInfo method, object[] args, MemberInfo extra)
+        {
+            IEnumerable<string> result = (IEnumerable<string>) method.ToInstanceDelegate().Invoke(Target, Array.Empty<object>());
+
+            return result.Append(Name);
+        }
+    }
+
+    public class OrderInspectingAspect1Attribute : AspectAttribute
+    {
+        public class OrderInspectingProxy<TInterface> : OrderInspectingProxyBase<TInterface> where TInterface : class
+        {
+            public OrderInspectingProxy(TInterface target) : base(target, nameof(OrderInspectingAspect1Attribute)) { }
+        }
+
+        public override Type GetInterceptor(Type iface) => typeof(OrderInspectingProxy<>).MakeGenericType(iface);
+    }
+
+    public class OrderInspectingAspect2Attribute : AspectAttribute
+    {
+        public class OrderInspectingProxy<TInterface> : OrderInspectingProxyBase<TInterface> where TInterface : class
+        {
+            public OrderInspectingProxy(TInterface target) : base(target, nameof(OrderInspectingAspect2Attribute)) { }
+        }
+
+        public override Type GetInterceptor(Type iface) => typeof(OrderInspectingProxy<>).MakeGenericType(iface);
+    }
+
+    public class OrderInspectingAspect3Attribute : AspectAttribute
+    {
+        public class OrderInspectingProxy<TInterface> : OrderInspectingProxyBase<TInterface> where TInterface : class
+        {
+            public OrderInspectingProxy(TInterface target) : base(target, nameof(OrderInspectingAspect3Attribute)) { }
+        }
+
+        public override Type GetInterceptor(Type iface) => typeof(OrderInspectingProxy<>).MakeGenericType(iface);
+    }
+
+
+    [OrderInspectingAspect1]
+    [OrderInspectingAspect2]
+    [OrderInspectingAspect3]
+    public interface IOrderInspectingService
+    {
+        public IEnumerable<string> GetAspectsOrder();
     }
 }
