@@ -143,3 +143,5 @@
 - 3.1.0:
   - *added:* `[Proxy|Duck]Factory.AssemblyCacheDirectory` property
   - *done:* `IInjector` gets descendant of `IDisposableEx`
+- 3.2.0:
+  - *added:* `ModuleInvocationBuilder` (extension) class
