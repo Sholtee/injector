@@ -17,12 +17,17 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="BenchmarkDotNet" Version="0.12.0" />
-    <PackageReference Condition="'$(LibVersion)' != ''" Include="Injector.NET" Version="$(LibVersion)"></PackageReference>
+    <PackageReference Include="BenchmarkDotNet" Version="0.*" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Condition="'$(LibVersion)' == ''" Include="..\SRC\Injector\Injector.csproj" />
+  <ItemGroup Condition="'$(LibVersion)' != ''" >
+    <PackageReference Include="Injector.NET" Version="$(LibVersion)"></PackageReference>
+    <PackageReference Include="Injector.NET.Extensions" Version="$(LibVersion)"></PackageReference>
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(LibVersion)' == ''">
+    <ProjectReference Include="..\SRC\Extensions\Injector.Extensions.csproj" />
+    <ProjectReference Include="..\SRC\Injector\Injector.csproj" />
   </ItemGroup>
 
 </Project>
