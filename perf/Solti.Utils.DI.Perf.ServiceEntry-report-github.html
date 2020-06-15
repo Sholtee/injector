@@ -1,0 +1,161 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title> | Benchmark Results </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content=" | Benchmark Results ">
+    <meta name="generator" content="docfx 2.46.0.0">
+    
+    <link rel="shortcut icon" href="icon.png">
+    <link rel="stylesheet" href="styles/docfx.vendor.css">
+    <link rel="stylesheet" href="styles/docfx.css">
+    <link rel="stylesheet" href="styles/main.css">
+    <meta property="docfx:navrel" content="">
+    <meta property="docfx:tocrel" content="">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        <div class="article row grid">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+
+<pre><code class="lang-ini">
+BenchmarkDotNet=v0.12.1, OS=Windows 10.0.17763.1098 (1809/October2018Update/Redstone5)
+Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
+.NET Core SDK=3.1.202
+  [Host]     : .NET Core 3.1.4 (CoreCLR 4.700.20.20201, CoreFX 4.700.20.22101), X64 RyuJIT
+  DefaultJob : .NET Core 3.1.4 (CoreCLR 4.700.20.20201, CoreFX 4.700.20.22101), X64 RyuJIT
+
+</code></pre><table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Lifetime</th>
+<th style="text-align:right">Mean</th>
+<th style="text-align:right">Error</th>
+<th style="text-align:right">StdDev</th>
+<th style="text-align:right">Gen 0</th>
+<th style="text-align:right">Gen 1</th>
+<th style="text-align:right">Gen 2</th>
+<th style="text-align:right">Allocated</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Service</strong></td>
+<td><strong>Transient</strong></td>
+<td style="text-align:right"><strong>1.842 μs</strong></td>
+<td style="text-align:right"><strong>0.0322 μs</strong></td>
+<td style="text-align:right"><strong>0.0301 μs</strong></td>
+<td style="text-align:right"><strong>0.0449</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>855 B</strong></td>
+</tr>
+<tr>
+<td>Factory</td>
+<td>Transient</td>
+<td style="text-align:right">1.475 μs</td>
+<td style="text-align:right">0.0290 μs</td>
+<td style="text-align:right">0.0356 μs</td>
+<td style="text-align:right">0.0313</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">591 B</td>
+</tr>
+<tr>
+<td><strong>Service</strong></td>
+<td><strong>Scoped</strong></td>
+<td style="text-align:right"><strong>1.833 μs</strong></td>
+<td style="text-align:right"><strong>0.0262 μs</strong></td>
+<td style="text-align:right"><strong>0.0232 μs</strong></td>
+<td style="text-align:right"><strong>0.0449</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>847 B</strong></td>
+</tr>
+<tr>
+<td>Factory</td>
+<td>Scoped</td>
+<td style="text-align:right">1.443 μs</td>
+<td style="text-align:right">0.0215 μs</td>
+<td style="text-align:right">0.0191 μs</td>
+<td style="text-align:right">0.0313</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">583 B</td>
+</tr>
+<tr>
+<td><strong>Service</strong></td>
+<td><strong>Singleton</strong></td>
+<td style="text-align:right"><strong>1.753 μs</strong></td>
+<td style="text-align:right"><strong>0.0249 μs</strong></td>
+<td style="text-align:right"><strong>0.0233 μs</strong></td>
+<td style="text-align:right"><strong>0.0430</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>799 B</strong></td>
+</tr>
+<tr>
+<td>Factory</td>
+<td>Singleton</td>
+<td style="text-align:right">1.418 μs</td>
+<td style="text-align:right">0.0272 μs</td>
+<td style="text-align:right">0.0323 μs</td>
+<td style="text-align:right">0.0273</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">535 B</td>
+</tr>
+</tbody>
+</table>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="styles/docfx.js"></script>
+    <script type="text/javascript" src="styles/main.js"></script>
+  </body>
+</html>
