@@ -206,7 +206,7 @@ namespace Solti.Utils.DI.Container.Tests
 
         public override object Invoke(MethodInfo method, object[] args, MemberInfo extra)
         {
-            IEnumerable<string> result = (IEnumerable<string>) method.ToInstanceDelegate().Invoke(Target, Array.Empty<object>());
+            IEnumerable<string> result = (IEnumerable<string>) base.Invoke(method, args, extra);
 
             return result.Append(Name);
         }
