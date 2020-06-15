@@ -243,9 +243,7 @@ namespace Solti.Utils.DI.Container.Tests
     }
 
 
-    [OrderInspectingAspect1]
-    [OrderInspectingAspect2]
-    [OrderInspectingAspect3]
+    [OrderInspectingAspect1, OrderInspectingAspect2, OrderInspectingAspect3]
     public interface IOrderInspectingService
     {
         IEnumerable<string> GetAspectsOrder();

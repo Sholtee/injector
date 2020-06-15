@@ -343,7 +343,13 @@ public interface IService
 }
 ```
 Notes:
-- As you can see there is no need for registering the `ParameterValidatorProxy<>` manually. 
+- As you can see there is no need for registering the `ParameterValidatorProxy<>` manually.
+- Applying aspects is done in the order you use them:
+  ```csharp
+  // On service invocations the system first validates the user then the method parameters.
+  [UserValidatorAspect, ParameterValidatorAspect]
+  public interface IMyService {...}
+  ```
 - Among other aspects you can find this one in the [Injector.NET.Extensions](https://www.nuget.org/packages/Injector.NET.Extensions/ ) package.
 
 You can create parameterized aspects as well:
