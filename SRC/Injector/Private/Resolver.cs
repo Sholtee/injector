@@ -173,7 +173,15 @@ namespace Solti.Utils.DI.Internals
                     // megadhato legyen.
                     //
 
-                    Type parameterType = GetParameterType(param, out var isLazy) ?? throw new ArgumentException(Resources.INVALID_CONSTRUCTOR_ARGUMENT);
+                    Type? parameterType = GetParameterType(param, out var isLazy);
+                    
+                    if (parameterType == null)
+                    {
+                        var ex = new ArgumentException(Resources.INVALID_CONSTRUCTOR_ARGUMENT);
+                        ex.Data["parameter"] = param.Name;
+
+                        throw ex;
+                    }
 
                     OptionsAttribute? options = param.GetCustomAttribute<OptionsAttribute>();
 
