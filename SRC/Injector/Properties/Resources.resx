@@ -139,7 +139,7 @@
     <value>All constructor arguments must be an interface/Lazy&lt;interface&gt;.</value>
   </data>
   <data name="INVALID_CONSTRUCTOR_ARGUMENT" xml:space="preserve">
-    <value>Non interface/Lazy&lt;interface&gt;arguments must be specified as an explicit argument.</value>
+    <value>Non interface/Lazy&lt;interface&gt; arguments must be specified as an explicit argument.</value>
   </data>
   <data name="INVALID_INJECTOR_ENTRY" xml:space="preserve">
     <value>Injector must not contain abstract service entries.</value>
