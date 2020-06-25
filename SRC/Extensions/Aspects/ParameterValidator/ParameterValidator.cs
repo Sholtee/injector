@@ -10,6 +10,7 @@ using System.Reflection;
 
 namespace Solti.Utils.DI.Extensions.Aspects
 {
+    using Interfaces;
     using Proxy;
 
     /// <summary>
@@ -26,7 +27,8 @@ namespace Solti.Utils.DI.Extensions.Aspects
         /// <summary>
         /// Creates a new <see cref="ParameterValidator{TInterface}"/> instance.
         /// </summary>
-        public ParameterValidator(TInterface target) : this(target, false) { } // TODO FIXME: mukodjon ez is ServiceActivatorAttribute-al
+        [ServiceActivator]
+        public ParameterValidator(TInterface target) : this(target, false) { }
 
         /// <summary>
         /// Creates a new <see cref="ParameterValidator{TInterface}"/> instance.

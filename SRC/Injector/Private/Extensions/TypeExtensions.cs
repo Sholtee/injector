@@ -5,6 +5,7 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 
@@ -18,6 +19,28 @@ namespace Solti.Utils.DI.Internals
     {
         public static ConstructorInfo GetApplicableConstructor(this Type src) => Cache.GetOrAdd(src, () =>
         {
+            //
+            // Specialis eset amikor proxy-t hozunk letre majd probaljuk aktivalni. Itt a ServiceActivatorAttribute nem lesz lathato mivel
+            // az aktualis proxy tipus osenek konstruktoran van (ha van).
+            //
+
+            if (src.FullName == "GeneratedProxy")
+            {
+                Type @base = src.BaseType;
+                Debug.Assert(@base != null);
+
+                ConstructorInfo baseCtor = @base!.GetApplicableConstructor();
+
+                //
+                // Mivel a generalt proxy "orokolte" ose osszes konstruktorat ezert parameter egyeztetessel megtalalhatjuk
+                //
+
+                return src.GetConstructor
+                (
+                    baseCtor.GetParameters().Select(p => p.ParameterType).ToArray()
+                );
+            }
+
             IReadOnlyList<ConstructorInfo> constructors = src.GetConstructors();
 
             //

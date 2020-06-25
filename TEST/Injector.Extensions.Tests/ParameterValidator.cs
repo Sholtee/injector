@@ -50,7 +50,7 @@ namespace Solti.Utils.DI.Extensions.Tests
         {
             Container
                 .Factory(i => new Mock<IModule>().Object)
-                .Proxy(typeof(IModule), (_, __, instance) => ProxyFactory.Create(typeof(IModule), typeof(ParameterValidator<IModule>), instance));
+                .Proxy<IModule, ParameterValidator<IModule>>();
 
             using (IInjector injector = Container.CreateInjector())
             {
