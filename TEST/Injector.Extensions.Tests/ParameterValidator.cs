@@ -14,7 +14,6 @@ namespace Solti.Utils.DI.Extensions.Tests
     using Aspects;
     using DI.Tests;
     using Interfaces;
-    using Proxy;
 
     [TestFixture]
     public class ParameterValidatorTests: TestBase<ServiceContainer>
