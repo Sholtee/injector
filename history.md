@@ -145,4 +145,8 @@
   - *done:* `IInjector` gets descendant of `IDisposableEx`
 - 3.2.0:
   - *added:* `ModuleInvocationBuilder` (extension) class
-  - *upgraded:* `ProxyGen.NET` to version 3.0.0 (among others it fixes the misbehaving `TransactionManager` proxy) 
+  - *upgraded:* `ProxyGen.NET` to version 3.0.0 (among others it fixes the misbehaving `TransactionManager` proxy)
+- 3.3.0:
+  - *fixed:* Typo in Resources.resx
+  - *fixed:* `ServiceActivatorAttribute` can be placed on proxy constructors
+  - *added:* `ParameterValidator.Aggregate` property
