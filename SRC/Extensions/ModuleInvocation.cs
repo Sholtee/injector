@@ -17,6 +17,7 @@ namespace Solti.Utils.DI.Extensions
     /// <summary>
     /// Adds a new alias to a member.
     /// </summary>
+    [Obsolete("This logic is planned to be moved to the AppHost project")]
     [AttributeUsage(AttributeTargets.Interface | AttributeTargets.Method)]
     public sealed class AliasAttribute: Attribute
     {
@@ -39,11 +40,13 @@ namespace Solti.Utils.DI.Extensions
     /// <param name="methodId">The name of the interface emthod to be invoked.</param>
     /// <param name="args">The method arguments.</param>
     /// <remarks>This class is intended to be used in RPC servers where the invocation is represented by strings (e.g. comes from HTTP POST).</remarks>
+    [Obsolete("This logic is planned to be moved to the AppHost project")]
     public delegate object ModuleInvocation(IInjector injector, string ifaceId, string methodId, params object[] args);
 
     /// <summary>
     /// Builds <see cref="ModuleInvocation"/>s.
     /// </summary>
+    [Obsolete("This logic is planned to be moved to the AppHost project")]
     public class ModuleInvocationBuilder
     {
         #region Private
