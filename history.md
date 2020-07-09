@@ -150,3 +150,6 @@
   - *fixed:* Typo in Resources.resx
   - *fixed:* `ServiceActivatorAttribute` can be placed on proxy constructors
   - *added:* `ParameterValidator.Aggregate` property
+- 3.3.1:
+  - *obsolete:* `ModuleInvocationBuilder`
+  - *upgraded:* `ProxyGen.NET` to version 3.0.2
