@@ -33,7 +33,7 @@ namespace Solti.Utils.DI.Extensions.Aspects
         /// <summary>
         /// See the <see cref="InterfaceInterceptor{TInterface}.Invoke(MethodInfo, object[], MemberInfo)"/> method.
         /// </summary>
-        public override object Invoke(MethodInfo method, object[] args, MemberInfo extra)
+        public override object? Invoke(MethodInfo method, object[] args, MemberInfo extra)
         {
             if (method == null)
                 throw new ArgumentNullException(nameof(method));
@@ -45,7 +45,7 @@ namespace Solti.Utils.DI.Extensions.Aspects
             IDbTransaction transaction = Connection.BeginTransaction(ta.IsolationLevel);
             try
             {
-                object result = base.Invoke(method, args, extra);
+                object? result = base.Invoke(method, args, extra);
                 transaction.Commit();
                 return result;
             }
