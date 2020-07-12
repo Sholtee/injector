@@ -6,6 +6,7 @@
 |**Injector.NET**|[![Nuget (with prereleases)](https://img.shields.io/nuget/vpre/injector.net)](https://www.nuget.org/packages/injector.net )|
 |**Injector.NET.Interfaces**|[![Nuget (with prereleases)](https://img.shields.io/nuget/vpre/injector.net.interfaces)](https://www.nuget.org/packages/injector.net.interfaces )|
 |**Injector.NET.Extensions**|[![Nuget (with prereleases)](https://img.shields.io/nuget/vpre/injector.net.extensions)](https://www.nuget.org/packages/injector.net.extensions )|
+
 **This documentation refers the version 3.X of the library**
 ## Overview
 [Dependency Injection](https://en.wikipedia.org/wiki/Dependency_injection ) is a design pattern that helps you separate the dependencies of your code from its behavior. Additionaly it makes the code easy to test by let you [mock](https://en.wikipedia.org/wiki/Mock_object ) the dependencies in your unit tests. This library provides several mechanisms to register, acquire and inherit services.
