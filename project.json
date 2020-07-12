@@ -1,15 +1,13 @@
 {
-  "bin": "\\BIN\\Release",
+  "bin": "\\BIN",
   "solution": "\\Injector.sln",
   "commonprops": "\\SRC\\Common.targets",
   "app": "\\SRC\\Injector\\Injector.csproj",
   "vendor": "\\Vendor",
   "tests": "\\Test\\*\\*.Tests.csproj",
-  "testtarget": "netcoreapp2.2",
   "artifacts": "\\Artifacts",
   "coveragefilter": "+[Solti.Utils.DI*]* -[Solti.Utils.DI.Tests]*",
   "perftests": "\\PERF\\Injector.Perf.csproj",
-  "perftarget": "netcoreapp3.1",
   "docsbranch": "gh-pages",
   "CI": "AppVeyor"
 }
