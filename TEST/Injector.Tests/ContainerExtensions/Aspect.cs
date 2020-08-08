@@ -13,9 +13,9 @@ using NUnit.Framework;
 
 namespace Solti.Utils.DI.Container.Tests
 {
+    using Extensions.Aspects;
     using Interfaces;
     using Internals;
-    using Primitives;
     using Primitives.Patterns;
     using Properties;
     using Proxy; 
@@ -159,6 +159,20 @@ namespace Solti.Utils.DI.Container.Tests
 
             Assert.That(svc.GetAspectsOrder().SequenceEqual(new[] { nameof(OrderInspectingAspect1Attribute), nameof(OrderInspectingAspect2Attribute), nameof(OrderInspectingAspect3Attribute) }));
         }
+
+        [Test]
+        public void Aspects_AspectCanBeNaked()
+        {
+            var mockService = new Mock<IServiceUsingNakedInterceptor>(MockBehavior.Strict);
+
+            Container.Factory(i => mockService.Object);
+
+            var svc = (IServiceUsingNakedInterceptor) Container
+                .Get<IServiceUsingNakedInterceptor>()
+                .Factory(new Mock<IInjector>(MockBehavior.Strict).Object, typeof(IServiceUsingNakedInterceptor));
+
+            Assert.Throws<ArgumentNullException>(() => svc.Foo(null));
+        }
     }
 
     public class AspectWithoutImplementation : AspectAttribute
@@ -212,6 +226,7 @@ namespace Solti.Utils.DI.Container.Tests
         }
     }
 
+    [AttributeUsage(AttributeTargets.Interface, AllowMultiple = false)]
     public class OrderInspectingAspect1Attribute : AspectAttribute
     {
         public class OrderInspectingProxy<TInterface> : OrderInspectingProxyBase<TInterface> where TInterface : class
@@ -222,6 +237,7 @@ namespace Solti.Utils.DI.Container.Tests
         public override Type GetInterceptor(Type iface) => typeof(OrderInspectingProxy<>).MakeGenericType(iface);
     }
 
+    [AttributeUsage(AttributeTargets.Interface, AllowMultiple = false)]
     public class OrderInspectingAspect2Attribute : AspectAttribute
     {
         public class OrderInspectingProxy<TInterface> : OrderInspectingProxyBase<TInterface> where TInterface : class
@@ -232,6 +248,7 @@ namespace Solti.Utils.DI.Container.Tests
         public override Type GetInterceptor(Type iface) => typeof(OrderInspectingProxy<>).MakeGenericType(iface);
     }
 
+    [AttributeUsage(AttributeTargets.Interface, AllowMultiple = false)]
     public class OrderInspectingAspect3Attribute : AspectAttribute
     {
         public class OrderInspectingProxy<TInterface> : OrderInspectingProxyBase<TInterface> where TInterface : class
@@ -242,10 +259,35 @@ namespace Solti.Utils.DI.Container.Tests
         public override Type GetInterceptor(Type iface) => typeof(OrderInspectingProxy<>).MakeGenericType(iface);
     }
 
-
     [OrderInspectingAspect1, OrderInspectingAspect2, OrderInspectingAspect3]
     public interface IOrderInspectingService
     {
         IEnumerable<string> GetAspectsOrder();
+    }
+
+    [AttributeUsage(AttributeTargets.Interface, AllowMultiple = false)]
+    public class NakedValidatorAspectAttribute: AspectAttribute 
+    {
+        public override Type GetInterceptor(Type iface)
+        {
+            Type interceptor = Type.GetType("Solti.Utils.DI.Extensions.Aspects.ParameterValidator`1, Solti.Utils.DI.Extensions, Version=3.3.1.0, Culture=neutral, PublicKeyToken=null", throwOnError: true);
+
+            return interceptor.MakeGenericType(iface);
+        }
+    }
+
+    [AttributeUsage(AttributeTargets.Parameter, AllowMultiple = false)]
+    public class NotNullAttribute : ParameterValidatorAttribute
+    {
+        public override void Validate(ParameterInfo param, object value)
+        {
+            if (value == null) throw new ArgumentNullException(param.Name);
+        }
+    }
+
+    [NakedValidatorAspect]
+    public interface IServiceUsingNakedInterceptor 
+    {
+        void Foo([NotNull] string val);
     }
 }

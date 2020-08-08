@@ -417,6 +417,20 @@ public interface IService
   ...
 }
 ```
+### Naked aspects
+An aspect is naked when it references its interceptor by name (and the interceptor is placed in a spearate assembly). This practice ensures the separation of concerns (the project containing the service interface won't reference logic related assemblies implicitly).
+```csharp
+...
+[AttributeUsage(AttributeTargets.Interface, AllowMultiple = false)]
+public class NakedValidatorAspectAttribute: AspectAttribute 
+{
+  public override Type GetInterceptor(Type iface)
+  {
+    Type interceptor = Type.GetType("Solti.Utils.DI.Extensions.Aspects.ParameterValidator`1, Solti.Utils.DI.Extensions, Version=3.3.1.0, Culture=neutral, PublicKeyToken=null", throwOnError: true);
+    return interceptor.MakeGenericType(iface);
+  }
+}
+```
 ### Auto config
 There are some attributes to annotate services for "auto config" e.g.:
 - ```csharp
