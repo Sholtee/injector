@@ -15,7 +15,7 @@ namespace Solti.Utils.DI.Internals
         /// <summary>
         /// Instructs the injector to throw if a service being requested has a dependency that should live shorter than the service should (e.g.: a <see cref="Lifetime.Singleton"/> service can not have <see cref="Lifetime.Transient"/> dependency).
         /// </summary>
-        public bool StrictDI { get; set; } = false;
+        public bool StrictDI { get; set; }
 
         /// <summary>
         /// The maximum number of <see cref="Lifetime.Transient"/> service instances can be held by the <see cref="IInjector"/>.
