@@ -7,44 +7,6 @@ references:
   commentId: N:Solti.Utils.DI
   fullName: Solti.Utils.DI
   nameWithType: Solti.Utils.DI
-- uid: Solti.Utils.DI.Extensions
-  name: Solti.Utils.DI.Extensions
-  href: Solti.Utils.DI.Extensions.html
-  commentId: N:Solti.Utils.DI.Extensions
-  fullName: Solti.Utils.DI.Extensions
-  nameWithType: Solti.Utils.DI.Extensions
-- uid: Solti.Utils.DI.Extensions.AliasAttribute
-  name: AliasAttribute
-  href: Solti.Utils.DI.Extensions.AliasAttribute.html
-  commentId: T:Solti.Utils.DI.Extensions.AliasAttribute
-  fullName: Solti.Utils.DI.Extensions.AliasAttribute
-  nameWithType: AliasAttribute
-- uid: Solti.Utils.DI.Extensions.AliasAttribute.#ctor(System.String)
-  name: AliasAttribute(String)
-  href: Solti.Utils.DI.Extensions.AliasAttribute.html#Solti_Utils_DI_Extensions_AliasAttribute__ctor_System_String_
-  commentId: M:Solti.Utils.DI.Extensions.AliasAttribute.#ctor(System.String)
-  fullName: Solti.Utils.DI.Extensions.AliasAttribute.AliasAttribute(System.String)
-  nameWithType: AliasAttribute.AliasAttribute(String)
-- uid: Solti.Utils.DI.Extensions.AliasAttribute.#ctor*
-  name: AliasAttribute
-  href: Solti.Utils.DI.Extensions.AliasAttribute.html#Solti_Utils_DI_Extensions_AliasAttribute__ctor_
-  commentId: Overload:Solti.Utils.DI.Extensions.AliasAttribute.#ctor
-  isSpec: "True"
-  fullName: Solti.Utils.DI.Extensions.AliasAttribute.AliasAttribute
-  nameWithType: AliasAttribute.AliasAttribute
-- uid: Solti.Utils.DI.Extensions.AliasAttribute.Name
-  name: Name
-  href: Solti.Utils.DI.Extensions.AliasAttribute.html#Solti_Utils_DI_Extensions_AliasAttribute_Name
-  commentId: P:Solti.Utils.DI.Extensions.AliasAttribute.Name
-  fullName: Solti.Utils.DI.Extensions.AliasAttribute.Name
-  nameWithType: AliasAttribute.Name
-- uid: Solti.Utils.DI.Extensions.AliasAttribute.Name*
-  name: Name
-  href: Solti.Utils.DI.Extensions.AliasAttribute.html#Solti_Utils_DI_Extensions_AliasAttribute_Name_
-  commentId: Overload:Solti.Utils.DI.Extensions.AliasAttribute.Name
-  isSpec: "True"
-  fullName: Solti.Utils.DI.Extensions.AliasAttribute.Name
-  nameWithType: AliasAttribute.Name
 - uid: Solti.Utils.DI.Extensions.Aspects
   name: Solti.Utils.DI.Extensions.Aspects
   href: Solti.Utils.DI.Extensions.Aspects.html
@@ -284,47 +246,6 @@ references:
   fullName.vb: Solti.Utils.DI.Extensions.Aspects.TransactionManager(Of TInterface).Invoke
   nameWithType: TransactionManager<TInterface>.Invoke
   nameWithType.vb: TransactionManager(Of TInterface).Invoke
-- uid: Solti.Utils.DI.Extensions.ModuleInvocation
-  name: ModuleInvocation
-  href: Solti.Utils.DI.Extensions.ModuleInvocation.html
-  commentId: T:Solti.Utils.DI.Extensions.ModuleInvocation
-  fullName: Solti.Utils.DI.Extensions.ModuleInvocation
-  nameWithType: ModuleInvocation
-- uid: Solti.Utils.DI.Extensions.ModuleInvocationBuilder
-  name: ModuleInvocationBuilder
-  href: Solti.Utils.DI.Extensions.ModuleInvocationBuilder.html
-  commentId: T:Solti.Utils.DI.Extensions.ModuleInvocationBuilder
-  fullName: Solti.Utils.DI.Extensions.ModuleInvocationBuilder
-  nameWithType: ModuleInvocationBuilder
-- uid: Solti.Utils.DI.Extensions.ModuleInvocationBuilder.Build(System.Type[])
-  name: Build(Type[])
-  href: Solti.Utils.DI.Extensions.ModuleInvocationBuilder.html#Solti_Utils_DI_Extensions_ModuleInvocationBuilder_Build_System_Type___
-  commentId: M:Solti.Utils.DI.Extensions.ModuleInvocationBuilder.Build(System.Type[])
-  name.vb: Build(Type())
-  fullName: Solti.Utils.DI.Extensions.ModuleInvocationBuilder.Build(System.Type[])
-  fullName.vb: Solti.Utils.DI.Extensions.ModuleInvocationBuilder.Build(System.Type())
-  nameWithType: ModuleInvocationBuilder.Build(Type[])
-  nameWithType.vb: ModuleInvocationBuilder.Build(Type())
-- uid: Solti.Utils.DI.Extensions.ModuleInvocationBuilder.Build*
-  name: Build
-  href: Solti.Utils.DI.Extensions.ModuleInvocationBuilder.html#Solti_Utils_DI_Extensions_ModuleInvocationBuilder_Build_
-  commentId: Overload:Solti.Utils.DI.Extensions.ModuleInvocationBuilder.Build
-  isSpec: "True"
-  fullName: Solti.Utils.DI.Extensions.ModuleInvocationBuilder.Build
-  nameWithType: ModuleInvocationBuilder.Build
-- uid: Solti.Utils.DI.Extensions.ModuleInvocationBuilder.GetMemberId(System.Reflection.MemberInfo)
-  name: GetMemberId(MemberInfo)
-  href: Solti.Utils.DI.Extensions.ModuleInvocationBuilder.html#Solti_Utils_DI_Extensions_ModuleInvocationBuilder_GetMemberId_System_Reflection_MemberInfo_
-  commentId: M:Solti.Utils.DI.Extensions.ModuleInvocationBuilder.GetMemberId(System.Reflection.MemberInfo)
-  fullName: Solti.Utils.DI.Extensions.ModuleInvocationBuilder.GetMemberId(System.Reflection.MemberInfo)
-  nameWithType: ModuleInvocationBuilder.GetMemberId(MemberInfo)
-- uid: Solti.Utils.DI.Extensions.ModuleInvocationBuilder.GetMemberId*
-  name: GetMemberId
-  href: Solti.Utils.DI.Extensions.ModuleInvocationBuilder.html#Solti_Utils_DI_Extensions_ModuleInvocationBuilder_GetMemberId_
-  commentId: Overload:Solti.Utils.DI.Extensions.ModuleInvocationBuilder.GetMemberId
-  isSpec: "True"
-  fullName: Solti.Utils.DI.Extensions.ModuleInvocationBuilder.GetMemberId
-  nameWithType: ModuleInvocationBuilder.GetMemberId
 - uid: Solti.Utils.DI.IInjectorExtensions
   name: IInjectorExtensions
   href: Solti.Utils.DI.IInjectorExtensions.html
