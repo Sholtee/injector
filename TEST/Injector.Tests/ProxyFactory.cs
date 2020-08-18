@@ -17,9 +17,11 @@ using NUnit.Framework;
 namespace Solti.Utils.Proxy.Tests
 {
     using DI.Interfaces;
+    using DI.Internals;
 
-    using Primitives;
     using Primitives.Patterns;
+
+    using Proxy.Generators;
 
     [TestFixture]
     public class ProxyFactoryTests
@@ -79,7 +81,7 @@ namespace Solti.Utils.Proxy.Tests
         [Test]
         public void Create_ShouldCacheTheGeneratedAssembly() 
         {
-            string cacheDir = Path.Combine(Path.GetTempPath(), ".proxyfactory", GetVersion(typeof(ProxyFactory)), typeof(IList<MyEntity>).GetFriendlyName(), GetVersion(typeof(IList<MyEntity>)));
+            string cacheDir = TypeGeneratorExtensions.GetCacheDirectory<IList<MyEntity>, ProxyGenerator<IList<MyEntity>, InterfaceInterceptor<IList<MyEntity>>>>();
             Assert.That(!Directory.Exists(cacheDir));
 
             bool oldVal = ProxyFactory.PreserveProxyAssemblies;
@@ -98,7 +100,5 @@ namespace Solti.Utils.Proxy.Tests
                     Directory.Delete(cacheDir, true);
             }
         }
-
-        private static string GetVersion(Type t) => t.Assembly.GetName().Version.ToString();
     }
 }

@@ -3,6 +3,7 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
+using System;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Solti.Utils.Proxy
@@ -17,10 +18,23 @@ namespace Solti.Utils.Proxy
     /// </summary>
     public abstract class DuckFactory 
     {
+        private const string AssemblyCacheDirectoryDeprecated = "AssemblyCacheDirectory is deprecated, use PreserveProxyAssemblies instead";
+
         /// <summary>
         /// Gets or sets the <see cref="TypeGenerator{TDescendant}.CacheDirectory"/> associated with the <see cref="DuckFactory"/>.
         /// </summary>
-        public static string? AssemblyCacheDirectory { get; set; }
+        [Obsolete(AssemblyCacheDirectoryDeprecated)]
+        public static string? AssemblyCacheDirectory
+        {
+            get => throw new NotSupportedException(AssemblyCacheDirectoryDeprecated);
+            set => throw new NotSupportedException(AssemblyCacheDirectoryDeprecated);
+        }
+
+        /// <summary>
+        /// Specifies whether the system should cache the generated proxy assemblies or not.
+        /// </summary>
+        /// <remarks>This property should be true in production builds.</remarks>
+        public static bool PreserveProxyAssemblies { get; set; }
 
         /// <summary>
         /// Generates a proxy object to let the target behave like a <typeparamref name="TInterface"/> instance.
@@ -54,7 +68,8 @@ namespace Solti.Utils.Proxy
                 if (Target is TInterface possibleResult)
                     return possibleResult;
 
-                DuckGenerator<TInterface, TTarget>.CacheDirectory = AssemblyCacheDirectory;
+                if (PreserveProxyAssemblies)
+                    TypeGeneratorExtensions.SetCacheDirectory<TInterface, DuckGenerator<TInterface, TTarget>>();
 
                 return (TInterface) DuckGenerator<TInterface, TTarget>
                     .GeneratedType

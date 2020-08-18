@@ -5,8 +5,6 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
 using System.Reflection;
 
 namespace Solti.Utils.Proxy
@@ -45,21 +43,13 @@ namespace Solti.Utils.Proxy
         private static Type GenerateProxyType<TInterface, TInterceptor>() where TInterface : class where TInterceptor : InterfaceInterceptor<TInterface>
         {
             if (PreserveProxyAssemblies)
-            {
-                string cacheDir = Path.Combine(Path.GetTempPath(), ".proxyfactory", GetVersion(typeof(ProxyFactory)), typeof(TInterface).GetFriendlyName(), GetVersion(typeof(TInterface)));
-                Debug.WriteLine($"Cache directory for {typeof(TInterface)} is set to '{cacheDir}'");
-
-                Directory.CreateDirectory(cacheDir);
-                ProxyGenerator<TInterface, TInterceptor>.CacheDirectory = cacheDir;
-            }
+                TypeGeneratorExtensions.SetCacheDirectory<TInterface, ProxyGenerator<TInterface, TInterceptor>>();
 
             //
             // Generikus parameterek validalasat a ProxyGenerator<> vegzi.
             //
 
             return ProxyGenerator<TInterface, TInterceptor>.GeneratedType;
-
-            static string GetVersion(Type t) => t.Assembly.GetName().Version.ToString();
         }
 
         /// <summary>
