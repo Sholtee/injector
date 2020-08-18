@@ -12,6 +12,10 @@
     <PackageId>Injector.NET.Extensions</PackageId>
   </PropertyGroup>
   
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Perf|AnyCPU'">
+    <Optimize>true</Optimize>
+  </PropertyGroup>
+  
   <ItemGroup>
     <ProjectReference Include="..\Injector\Injector.csproj" />
   </ItemGroup>

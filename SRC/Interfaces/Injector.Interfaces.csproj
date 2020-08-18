@@ -30,4 +30,8 @@
     <Description>Abstractions for Injector.NET</Description>
     <PackageId>Injector.NET.Interfaces</PackageId>
   </PropertyGroup>
+  
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Perf|AnyCPU'">
+    <Optimize>true</Optimize>
+  </PropertyGroup>
 </Project>
