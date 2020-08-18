@@ -2041,6 +2041,19 @@ references:
   fullName.vb: Solti.Utils.Proxy.ProxyFactory.Create(Of TInterface, TInterceptor)(System.Type(), System.Object())
   nameWithType: ProxyFactory.Create<TInterface, TInterceptor>(Type[], Object[])
   nameWithType.vb: ProxyFactory.Create(Of TInterface, TInterceptor)(Type(), Object())
+- uid: Solti.Utils.Proxy.ProxyFactory.PreserveProxyAssemblies
+  name: PreserveProxyAssemblies
+  href: Solti.Utils.Proxy.ProxyFactory.html#Solti_Utils_Proxy_ProxyFactory_PreserveProxyAssemblies
+  commentId: P:Solti.Utils.Proxy.ProxyFactory.PreserveProxyAssemblies
+  fullName: Solti.Utils.Proxy.ProxyFactory.PreserveProxyAssemblies
+  nameWithType: ProxyFactory.PreserveProxyAssemblies
+- uid: Solti.Utils.Proxy.ProxyFactory.PreserveProxyAssemblies*
+  name: PreserveProxyAssemblies
+  href: Solti.Utils.Proxy.ProxyFactory.html#Solti_Utils_Proxy_ProxyFactory_PreserveProxyAssemblies_
+  commentId: Overload:Solti.Utils.Proxy.ProxyFactory.PreserveProxyAssemblies
+  isSpec: "True"
+  fullName: Solti.Utils.Proxy.ProxyFactory.PreserveProxyAssemblies
+  nameWithType: ProxyFactory.PreserveProxyAssemblies
 - uid: Solti.Utils.Proxy.ProxyUtils
   name: ProxyUtils
   href: Solti.Utils.Proxy.ProxyUtils.html
