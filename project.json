@@ -6,7 +6,7 @@
   "vendor": "\\Vendor",
   "tests": "\\Test\\*\\*.Tests.csproj",
   "artifacts": "\\Artifacts",
-  "coveragefilter": "+[Solti.Utils.DI*]* -[Solti.Utils.DI.Tests]* -[*]*.Properties.*",
+  "coveragefilter": "+[Solti.Utils.DI*]* -[Solti.Utils.DI*Tests]* -[*]*.Properties.*",
   "perftests": "\\PERF\\Injector.Perf.csproj",
   "docsbranch": "gh-pages",
   "CI": "AppVeyor"
