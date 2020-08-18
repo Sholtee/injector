@@ -23,11 +23,9 @@
 
   <ItemGroup Condition="'$(LibVersion)' != ''" >
     <PackageReference Include="Injector.NET" Version="$(LibVersion)"></PackageReference>
-    <PackageReference Include="Injector.NET.Extensions" Version="$(LibVersion)"></PackageReference>
   </ItemGroup>
 
   <ItemGroup Condition="'$(LibVersion)' == ''">
-    <ProjectReference Include="..\SRC\Extensions\Injector.Extensions.csproj" />
     <ProjectReference Include="..\SRC\Injector\Injector.csproj" />
   </ItemGroup>
 
