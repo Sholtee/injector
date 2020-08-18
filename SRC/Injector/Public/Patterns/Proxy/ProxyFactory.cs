@@ -5,6 +5,7 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Reflection;
 
 namespace Solti.Utils.Proxy
@@ -22,18 +23,40 @@ namespace Solti.Utils.Proxy
     /// </summary>
     public static class ProxyFactory
     {
+        private const string AssemblyCacheDirectoryDeprecated = "AssemblyCacheDirectory is deprecated, use PreserveProxyAssemblies instead";
+
         /// <summary>
         /// Gets or sets the <see cref="TypeGenerator{TDescendant}.CacheDirectory"/> associated with the <see cref="ProxyFactory"/>.
         /// </summary>
-        public static string? AssemblyCacheDirectory { get; set; }
+        [Obsolete(AssemblyCacheDirectoryDeprecated)]
+        public static string? AssemblyCacheDirectory 
+        { 
+            get => throw new NotSupportedException(AssemblyCacheDirectoryDeprecated); 
+            set => throw new NotSupportedException(AssemblyCacheDirectoryDeprecated); 
+        }
+
+        /// <summary>
+        /// Specifies whether the system should cache the generated proxy assemblies or not.
+        /// </summary>
+        /// <remarks>This property should be true in production builds.</remarks>
+        public static bool PreserveProxyAssemblies { get; set; }
 
         private static Type GenerateProxyType<TInterface, TInterceptor>() where TInterface : class where TInterceptor : InterfaceInterceptor<TInterface>
         {
+            if (PreserveProxyAssemblies)
+            {
+                string cacheDir = Path.Combine(Path.GetTempPath(), $".proxyfactory", GetVersion(typeof(ProxyFactory)), typeof(TInterface).Name, GetVersion(typeof(TInterface)));
+                Directory.CreateDirectory(cacheDir);
+
+                ProxyGenerator<TInterface, TInterceptor>.CacheDirectory = cacheDir;
+
+                static string GetVersion(Type t) => t.Assembly.GetName().Version.ToString();
+            }
+
             //
             // Generikus parameterek validalasat a ProxyGenerator<> vegzi.
             //
 
-            ProxyGenerator<TInterface, TInterceptor>.CacheDirectory = AssemblyCacheDirectory;
             return ProxyGenerator<TInterface, TInterceptor>.GeneratedType;
         }
 
