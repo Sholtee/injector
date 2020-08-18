@@ -97,8 +97,8 @@ namespace Solti.Utils.Proxy.Tests
                 if (Directory.Exists(cacheDir))
                     Directory.Delete(cacheDir, true);
             }
-
-            static string GetVersion(Type t) => t.Assembly.GetName().Version.ToString();
         }
+
+        private static string GetVersion(Type t) => t.Assembly.GetName().Version.ToString();
     }
 }
