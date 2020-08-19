@@ -117,7 +117,7 @@
 - 2.0.0-preview4:
   - *breaking:* `IServiceContainer.Add()` returns void
   - *breaking:* Service entries must have owner
-  - *breaking:* dropped `IServiceContainerExtensions.Lazy()` support
+  - *breaking:* Dropped `IServiceContainerExtensions.Lazy()` support
   - *added:* [AOP](https://en.wikipedia.org/wiki/Aspect-oriented_programming ) support ([details](https://github.com/Sholtee/injector#aspects ))
   - *added:* Provider recipe
   - *upgraded:* `ProxyGen.NET` to version 2.0.0
@@ -153,3 +153,6 @@
 - 3.3.1:
   - *obsolete:* `ModuleInvocationBuilder`
   - *upgraded:* `ProxyGen.NET` to version 3.0.2
+- 3.4.0:
+  - *removed:* Obsolete `ModuleInvocationBuilder` class. You can find its successor in [RPC.NET](https://sholtee.github.io/rpc/doc/Solti.Utils.Rpc.Internals.ModuleInvocationBuilder.html ) package
+  - *obsolete:* `[Proxy|Duck]Factory.AssemblyCacheDirectory` property. It is replaced by the `PreserveProxyAssemblies` property.
