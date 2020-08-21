@@ -1889,19 +1889,6 @@ references:
   commentId: T:Solti.Utils.Proxy.DuckFactory
   fullName: Solti.Utils.Proxy.DuckFactory
   nameWithType: DuckFactory
-- uid: Solti.Utils.Proxy.DuckFactory.AssemblyCacheDirectory
-  name: AssemblyCacheDirectory
-  href: Solti.Utils.Proxy.DuckFactory.html#Solti_Utils_Proxy_DuckFactory_AssemblyCacheDirectory
-  commentId: P:Solti.Utils.Proxy.DuckFactory.AssemblyCacheDirectory
-  fullName: Solti.Utils.Proxy.DuckFactory.AssemblyCacheDirectory
-  nameWithType: DuckFactory.AssemblyCacheDirectory
-- uid: Solti.Utils.Proxy.DuckFactory.AssemblyCacheDirectory*
-  name: AssemblyCacheDirectory
-  href: Solti.Utils.Proxy.DuckFactory.html#Solti_Utils_Proxy_DuckFactory_AssemblyCacheDirectory_
-  commentId: Overload:Solti.Utils.Proxy.DuckFactory.AssemblyCacheDirectory
-  isSpec: "True"
-  fullName: Solti.Utils.Proxy.DuckFactory.AssemblyCacheDirectory
-  nameWithType: DuckFactory.AssemblyCacheDirectory
 - uid: Solti.Utils.Proxy.DuckFactory.Create*
   name: Create
   href: Solti.Utils.Proxy.DuckFactory.html#Solti_Utils_Proxy_DuckFactory_Create_
@@ -1975,19 +1962,6 @@ references:
   commentId: T:Solti.Utils.Proxy.ProxyFactory
   fullName: Solti.Utils.Proxy.ProxyFactory
   nameWithType: ProxyFactory
-- uid: Solti.Utils.Proxy.ProxyFactory.AssemblyCacheDirectory
-  name: AssemblyCacheDirectory
-  href: Solti.Utils.Proxy.ProxyFactory.html#Solti_Utils_Proxy_ProxyFactory_AssemblyCacheDirectory
-  commentId: P:Solti.Utils.Proxy.ProxyFactory.AssemblyCacheDirectory
-  fullName: Solti.Utils.Proxy.ProxyFactory.AssemblyCacheDirectory
-  nameWithType: ProxyFactory.AssemblyCacheDirectory
-- uid: Solti.Utils.Proxy.ProxyFactory.AssemblyCacheDirectory*
-  name: AssemblyCacheDirectory
-  href: Solti.Utils.Proxy.ProxyFactory.html#Solti_Utils_Proxy_ProxyFactory_AssemblyCacheDirectory_
-  commentId: Overload:Solti.Utils.Proxy.ProxyFactory.AssemblyCacheDirectory
-  isSpec: "True"
-  fullName: Solti.Utils.Proxy.ProxyFactory.AssemblyCacheDirectory
-  nameWithType: ProxyFactory.AssemblyCacheDirectory
 - uid: Solti.Utils.Proxy.ProxyFactory.Create(System.Type,System.Type,System.Object)
   name: Create(Type, Type, Object)
   href: Solti.Utils.Proxy.ProxyFactory.html#Solti_Utils_Proxy_ProxyFactory_Create_System_Type_System_Type_System_Object_
