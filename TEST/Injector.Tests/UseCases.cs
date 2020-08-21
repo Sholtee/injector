@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.IO;
@@ -37,17 +38,20 @@ namespace Solti.Utils.DI.UseCases
             foreach (AbstractServiceEntry entry in Container.Where(e => typeof(IModule).IsAssignableFrom(e.Interface)))
                 Container.Proxy(entry.Interface, typeof(InterfaceInterceptor<>).MakeGenericType(entry.Interface));
 
-            var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
-            mockInjector
-                .SetupGet(i => i.UnderlyingContainer)
-                .Returns(Container);
-
             Assert.That(GetService<IDisposable>() is Disposable);
             Assert.That(GetService<IMyModule1>() is InterfaceInterceptor<IMyModule1>);
             Assert.That(GetService<IMyModule2>() is InterfaceInterceptor<IMyModule2>);
 
-            object GetService<TInterface>() 
+            object GetService<TInterface>() where TInterface: class
             {
+                var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
+                mockInjector
+                    .SetupGet(i => i.UnderlyingContainer)
+                    .Returns(Container);
+                mockInjector
+                    .Setup(i => i.Instantiate(It.Is<Type>(t => typeof(InterfaceInterceptor<TInterface>).IsAssignableFrom(t)), It.Is<Dictionary<string, object>>(d => d.ContainsKey("target"))))
+                    .Returns<Type, Dictionary<string, object>>((t, args) => Resolver.GetExtended(t).Invoke(null, args));
+
                 ServiceReference svc = new ServiceReference(Container.Get<TInterface>(), mockInjector.Object);
                 Container.Get<TInterface>().SetInstance(svc, FactoryOptions);
 
