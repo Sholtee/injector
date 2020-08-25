@@ -35,10 +35,15 @@ namespace Solti.Utils.DI.Container.Tests
         {
             Container.Service<IMyService, MyService>(lifetime);
 
+            var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
+            mockInjector
+                .Setup(i => i.Instantiate(It.Is<Type>(t => typeof(InterfaceInterceptor<IMyService>).IsAssignableFrom(t)), It.Is<Dictionary<string, object>>(d => d.ContainsKey("target"))))
+                .Returns<Type, Dictionary<string, object>>((t, args) => Resolver.GetExtended(t).Invoke(null, args));
+
             IMyService instance = (IMyService) Container
                 .Get<IMyService>()
                 .Factory
-                .Invoke(new Mock<IInjector>(MockBehavior.Strict).Object, typeof(IMyService));
+                .Invoke(mockInjector.Object, typeof(IMyService));
 
             Assert.That(instance, Is.Not.Null);
             Assert.That(instance, Is.InstanceOf<InterfaceInterceptor<IMyService>>());
@@ -55,6 +60,9 @@ namespace Solti.Utils.DI.Container.Tests
             mockInjector
                 .Setup(i => i.Get(It.Is<Type>(t => t == typeof(IDisposable)), null))
                 .Returns(new Disposable());
+            mockInjector
+                .Setup(i => i.Instantiate(It.Is<Type>(t => typeof(InterfaceInterceptor<IMyDependantService>).IsAssignableFrom(t)), It.Is<Dictionary<string, object>>(d => d.ContainsKey("target"))))
+                .Returns<Type, Dictionary<string, object>>((t, args) => Resolver.GetExtended(t).Invoke(mockInjector.Object, args));
 
             Container.Service<IMyDependantService, MyService>();
 
@@ -83,10 +91,15 @@ namespace Solti.Utils.DI.Container.Tests
 
             Assert.That(Container.Get(typeof(IMyGenericService<>)).Factory, Is.Null);
 
+            var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
+            mockInjector
+                .Setup(i => i.Instantiate(It.Is<Type>(t => typeof(InterfaceInterceptor<IMyGenericService<int>>).IsAssignableFrom(t)), It.Is<Dictionary<string, object>>(d => d.ContainsKey("target"))))
+                .Returns<Type, Dictionary<string, object>>((t, args) => Resolver.GetExtended(t).Invoke(null, args));
+
             IMyGenericService<int> instance = (IMyGenericService<int>) Container
                 .Get<IMyGenericService<int>>(QueryModes.AllowSpecialization)
                 .Factory
-                .Invoke(new Mock<IInjector>(MockBehavior.Strict).Object, typeof(IMyService));
+                .Invoke(mockInjector.Object, typeof(IMyService));
 
             Assert.That(instance, Is.Not.Null);
             Assert.That(instance, Is.InstanceOf<InterfaceInterceptor<IMyGenericService<int>>>());
@@ -115,6 +128,11 @@ namespace Solti.Utils.DI.Container.Tests
 
             AbstractServiceEntry entry = Container.Get<IMyService>();
 
+            var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
+            mockInjector
+                .Setup(i => i.Instantiate(It.Is<Type>(t => typeof(InterfaceInterceptor<IMyService>).IsAssignableFrom(t)), It.Is<Dictionary<string, object>>(d => d.ContainsKey("target"))))
+                .Returns<Type, Dictionary<string, object>>((t, args) => Resolver.GetExtended(t).Invoke(null, args));
+
             var mockAspect = new Mock<AspectWithoutImplementation>(MockBehavior.Strict, kind);
 
             switch (kind)
@@ -126,7 +144,7 @@ namespace Solti.Utils.DI.Container.Tests
                     entry.ApplyAspect(mockAspect.Object);
 
                     mockAspect.Verify(aspect => aspect.GetInterceptor(It.Is<Type>(t => t == typeof(IMyService))), Times.Once);
-                    Assert.That(entry.Factory.Invoke(new Mock<IInjector>(MockBehavior.Strict).Object, entry.Interface), Is.InstanceOf<InterfaceInterceptor<IMyService>>());
+                    Assert.That(entry.Factory.Invoke(mockInjector.Object, entry.Interface), Is.InstanceOf<InterfaceInterceptor<IMyService>>());
 
                     break;
                 case AspectKind.Factory:
@@ -136,7 +154,7 @@ namespace Solti.Utils.DI.Container.Tests
                         .Returns(decorated);
                     entry.ApplyAspect(mockAspect.Object);
                   
-                    Assert.That(entry.Factory.Invoke(new Mock<IInjector>(MockBehavior.Strict).Object, entry.Interface), Is.SameAs(decorated));
+                    Assert.That(entry.Factory.Invoke(mockInjector.Object, entry.Interface), Is.SameAs(decorated));
                     mockAspect.Verify(aspect => aspect.GetInterceptor(It.IsAny<IInjector>(), It.Is<Type>(t => t == typeof(IMyService)), It.IsAny<IMyService>()), Times.Once);
 
                     break;
@@ -153,9 +171,14 @@ namespace Solti.Utils.DI.Container.Tests
 
             Container.Factory(i => mockService.Object);
 
+            var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
+            mockInjector
+                .Setup(i => i.Instantiate(It.Is<Type>(t => typeof(InterfaceInterceptor<IOrderInspectingService>).IsAssignableFrom(t)), It.Is<Dictionary<string, object>>(d => d.ContainsKey("target"))))
+                .Returns<Type, Dictionary<string, object>>((t, args) => Resolver.GetExtended(t).Invoke(null, args));
+
             var svc = (IOrderInspectingService) Container
                 .Get<IOrderInspectingService>()
-                .Factory(new Mock<IInjector>(MockBehavior.Strict).Object, typeof(IOrderInspectingService));
+                .Factory(mockInjector.Object, typeof(IOrderInspectingService));
 
             Assert.That(svc.GetAspectsOrder().SequenceEqual(new[] { nameof(OrderInspectingAspect1Attribute), nameof(OrderInspectingAspect2Attribute), nameof(OrderInspectingAspect3Attribute) }));
         }
@@ -167,9 +190,14 @@ namespace Solti.Utils.DI.Container.Tests
 
             Container.Factory(i => mockService.Object);
 
+            var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
+            mockInjector
+                .Setup(i => i.Instantiate(It.Is<Type>(t => typeof(InterfaceInterceptor<IServiceUsingNakedInterceptor>).IsAssignableFrom(t)), It.Is<Dictionary<string, object>>(d => d.ContainsKey("target"))))
+                .Returns<Type, Dictionary<string, object>>((t, args) => Resolver.GetExtended(t).Invoke(null, args));
+
             var svc = (IServiceUsingNakedInterceptor) Container
                 .Get<IServiceUsingNakedInterceptor>()
-                .Factory(new Mock<IInjector>(MockBehavior.Strict).Object, typeof(IServiceUsingNakedInterceptor));
+                .Factory(mockInjector.Object, typeof(IServiceUsingNakedInterceptor));
 
             Assert.Throws<ArgumentNullException>(() => svc.Foo(null));
         }
