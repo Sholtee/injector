@@ -38,9 +38,6 @@ namespace Solti.Utils.Proxy.Tests
             mockInjector
                 .Setup(i => i.Get(typeof(IDisposable), null))
                 .Returns(new Disposable());
-            mockInjector
-                .Setup(i => i.Instantiate(It.Is<Type>(t => typeof(InterfaceInterceptor<IList<object>>).IsAssignableFrom(t)), It.Is<Dictionary<string, object>>(d => d.ContainsKey("target"))))
-                .Returns<Type, Dictionary<string, object>>((t, args) => Resolver.GetExtended(t).Invoke(mockInjector.Object, args));
 
             Assert.DoesNotThrow(() => ProxyFactory.Create<IList<object>, InterceptorHavingDependency>(target: new List<object>(), injector: mockInjector.Object));
 
@@ -66,9 +63,6 @@ namespace Solti.Utils.Proxy.Tests
             mockInjector
                 .Setup(i => i.Get(typeof(IDisposable), null))
                 .Returns(new Disposable());
-            mockInjector
-                .Setup(i => i.Instantiate(It.Is<Type>(t => typeof(InterfaceInterceptor<IList<object>>).IsAssignableFrom(t)), It.Is<Dictionary<string, object>>(d => d.ContainsKey("target"))))
-                .Returns<Type, Dictionary<string, object>>((t, args) => Resolver.GetExtended(t).Invoke(mockInjector.Object, args));
 
             Assert.DoesNotThrow(() => ProxyFactory.Create(typeof(IList<object>), typeof(InterceptorHavingDependency), target: new List<object>(), injector: mockInjector.Object));
 

@@ -4,7 +4,6 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
-using System.Collections.Generic;
 
 using Moq;
 using NUnit.Framework;
@@ -12,7 +11,6 @@ using NUnit.Framework;
 namespace Solti.Utils.DI.Container.Tests
 {
     using Interfaces;
-    using Internals;
     using Properties;
 
     using Utils.Proxy;
@@ -160,10 +158,6 @@ namespace Solti.Utils.DI.Container.Tests
             mockInjector
                 .SetupGet(i => i.UnderlyingContainer)
                 .Returns(Container);
-
-            mockInjector
-                .Setup(i => i.Instantiate(It.Is<Type>(t => typeof(MyProxyWithDependency).IsAssignableFrom(t)), It.Is<Dictionary<string, object>>(d => d.ContainsKey("target"))))
-                .Returns<Type, Dictionary<string, object>>((t, args) => Resolver.GetExtended(t).Invoke(mockInjector.Object, args));
 
             ServiceReference svc = new ServiceReference(Container.Get<IInterface_2>(), mockInjector.Object);
 

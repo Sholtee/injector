@@ -89,6 +89,8 @@ namespace Solti.Utils.DI.Injector.Tests
         [Test]
         public void Injector_Instantiate_ShouldValidate() 
         {
+            Assert.Throws<ArgumentNullException>(() => IInjectorExtensions.Instantiate(null, typeof(object)));
+
             using (IInjector injector = Container.CreateInjector())
             {
                 Assert.Throws<ArgumentNullException>(() => injector.Instantiate(null));

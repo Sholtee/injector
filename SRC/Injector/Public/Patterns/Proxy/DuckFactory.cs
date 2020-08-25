@@ -3,10 +3,12 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
+using System;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Solti.Utils.Proxy
 {
+    using Abstractions;
     using Generators;
 
     using DI.Internals;
@@ -16,6 +18,18 @@ namespace Solti.Utils.Proxy
     /// </summary>
     public abstract class DuckFactory 
     {
+        private const string AssemblyCacheDirectoryDeprecated = "AssemblyCacheDirectory is deprecated, use PreserveProxyAssemblies instead";
+
+        /// <summary>
+        /// Gets or sets the <see cref="TypeGenerator{TDescendant}.CacheDirectory"/> associated with the <see cref="DuckFactory"/>.
+        /// </summary>
+        [Obsolete(AssemblyCacheDirectoryDeprecated)]
+        public static string? AssemblyCacheDirectory
+        {
+            get => throw new NotSupportedException(AssemblyCacheDirectoryDeprecated);
+            set => throw new NotSupportedException(AssemblyCacheDirectoryDeprecated);
+        }
+
         /// <summary>
         /// Specifies whether the system should cache the generated proxy assemblies or not.
         /// </summary>

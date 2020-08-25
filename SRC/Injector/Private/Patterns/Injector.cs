@@ -196,17 +196,6 @@ namespace Solti.Utils.DI.Internals
             }
         }
 
-        public object Instantiate(Type @class, IReadOnlyDictionary<string, object>? explicitArgs) 
-        {
-            CheckNotDisposed();
-
-            Ensure.Parameter.IsNotNull(@class, nameof(@class));
-
-            return Resolver
-                .GetExtended(@class)
-                .Invoke(this, explicitArgs ?? new Dictionary<string, object>(0));
-        }
-
         public IServiceContainer UnderlyingContainer 
         {
             get
