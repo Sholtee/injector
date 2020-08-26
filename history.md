@@ -156,3 +156,5 @@
 - 3.4.0:
   - *removed:* Obsolete `ModuleInvocationBuilder` class. You can find its successor in [RPC.NET](https://sholtee.github.io/rpc/doc/Solti.Utils.Rpc.Internals.ModuleInvocationBuilder.html ) package
   - *obsolete:* `[Proxy|Duck]Factory.AssemblyCacheDirectory` property. It is replaced by the `PreserveProxyAssemblies` property.
+- 3.4.1:
+  - *fixed:* Config reading issue
