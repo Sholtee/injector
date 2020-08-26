@@ -10,7 +10,7 @@ namespace Solti.Utils.DI.Interfaces
     /// <summary>
     /// Defines basic extensions for the <see cref="IServiceContainer"/> interface.
     /// </summary>
-    public static partial class IServiceContainerBasicExtensions
+    public static class IServiceContainerBasicExtensions
     {
         /// <summary>
         /// Gets the service entry associated with the given interface and name.
