@@ -12,6 +12,7 @@ namespace Solti.Utils.Proxy
     using Generators;
     using Primitives;
 
+    using DI;
     using DI.Internals;
     using DI.Interfaces;
 
@@ -82,15 +83,11 @@ namespace Solti.Utils.Proxy
         /// <param name="injector">The injector to resolve the dependencies of the proxy.</param>
         /// <param name="targetParamName">Parameter name of the target (usually "target").</param>
         /// <returns>The newly created proxy instance.</returns>
-        public static TInterface Create<TInterface, TInterceptor>(TInterface target, IInjector injector, string targetParamName = "target") where TInterface : class where TInterceptor : InterfaceInterceptor<TInterface>
-        {
-            Ensure.Parameter.IsNotNull(injector, nameof(injector));
-
-            return (TInterface) injector.Instantiate(GenerateProxyType<TInterface, TInterceptor>(), new Dictionary<string, object>
+        public static TInterface Create<TInterface, TInterceptor>(TInterface target, IInjector injector, string targetParamName = "target") where TInterface : class where TInterceptor : InterfaceInterceptor<TInterface> => (TInterface) 
+            injector.Instantiate(GenerateProxyType<TInterface, TInterceptor>(), new Dictionary<string, object>
             {
                 {targetParamName, target}
             });
-        }
 
         private static readonly MethodInfo FGenericGenerateProxyType = MethodInfoExtractor
             .Extract(() => GenerateProxyType<object, InterfaceInterceptor<object>>())
@@ -148,14 +145,10 @@ namespace Solti.Utils.Proxy
         /// <param name="injector">The injector to resolve the dependencies of the proxy.</param>
         /// <param name="targetParamName">Parameter name of the target (usually "target").</param>
         /// <returns>The newly created proxy instance.</returns>
-        public static object Create(Type iface, Type interceptor, object target, IInjector injector, string targetParamName = "target")
-        {
-            Ensure.Parameter.IsNotNull(injector, nameof(injector));
-
-            return injector.Instantiate(GenerateProxyType(iface, interceptor), new Dictionary<string, object>
+        public static object Create(Type iface, Type interceptor, object target, IInjector injector, string targetParamName = "target") => 
+            injector.Instantiate(GenerateProxyType(iface, interceptor), new Dictionary<string, object>
             {
                 {targetParamName, target}
             });
-        }
     }
 }
