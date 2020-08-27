@@ -16,6 +16,6 @@ namespace Solti.Utils.DI.Extensions.Aspects
         /// <summary>
         /// The method containing the validation logic.
         /// </summary>
-        public abstract void Validate(ParameterInfo param, object value);
+        public abstract void Validate(ParameterInfo param, object? value);
     }
 }
