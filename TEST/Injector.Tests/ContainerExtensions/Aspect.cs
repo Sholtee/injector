@@ -104,7 +104,7 @@ namespace Solti.Utils.DI.Container.Tests
         public void Aspects_AspectAttributeMustBeOverridden() 
         {
             var attr = new AspectWithoutImplementation();
-            Assert.Throws<NotImplementedException>(() => attr.GetInterceptor(null));
+            Assert.Throws<NotImplementedException>(() => attr.GetInterceptorType(null));
             Assert.Throws<NotImplementedException>(() => attr.GetInterceptor(null, null, null));
         }
 
@@ -121,11 +121,11 @@ namespace Solti.Utils.DI.Container.Tests
             {
                 case AspectKind.Service:
                     mockAspect
-                        .Setup(aspect => aspect.GetInterceptor(It.Is<Type>(t => t == typeof(IMyService))))
+                        .Setup(aspect => aspect.GetInterceptorType(It.Is<Type>(t => t == typeof(IMyService))))
                         .Returns(typeof(InterfaceInterceptor<IMyService>));
                     entry.ApplyAspect(mockAspect.Object);
 
-                    mockAspect.Verify(aspect => aspect.GetInterceptor(It.Is<Type>(t => t == typeof(IMyService))), Times.Once);
+                    mockAspect.Verify(aspect => aspect.GetInterceptorType(It.Is<Type>(t => t == typeof(IMyService))), Times.Once);
                     Assert.That(entry.Factory.Invoke(new Mock<IInjector>(MockBehavior.Strict).Object, entry.Interface), Is.InstanceOf<InterfaceInterceptor<IMyService>>());
 
                     break;
@@ -198,7 +198,7 @@ namespace Solti.Utils.DI.Container.Tests
     [AttributeUsage(AttributeTargets.Interface, AllowMultiple = false)]
     public class DummyAspectAttribute : AspectAttribute
     {
-        public override Type GetInterceptor(Type iface) => typeof(InterfaceInterceptor<>).MakeGenericType(iface);
+        public override Type GetInterceptorType(Type iface) => typeof(InterfaceInterceptor<>).MakeGenericType(iface);
     }
 
     public class MyInterceptorHavingDependency<TInterface> : InterfaceInterceptor<TInterface> where TInterface : class
@@ -209,7 +209,7 @@ namespace Solti.Utils.DI.Container.Tests
     [AttributeUsage(AttributeTargets.Interface, AllowMultiple = false)]
     public class DummyAspectHavingDependencyAttribute : AspectAttribute
     {
-        public override Type GetInterceptor(Type iface) => typeof(MyInterceptorHavingDependency<>).MakeGenericType(iface);
+        public override Type GetInterceptorType(Type iface) => typeof(MyInterceptorHavingDependency<>).MakeGenericType(iface);
     }
 
     public abstract class OrderInspectingProxyBase<TInterface> : InterfaceInterceptor<TInterface> where TInterface : class
@@ -234,7 +234,7 @@ namespace Solti.Utils.DI.Container.Tests
             public OrderInspectingProxy(TInterface target) : base(target, nameof(OrderInspectingAspect1Attribute)) { }
         }
 
-        public override Type GetInterceptor(Type iface) => typeof(OrderInspectingProxy<>).MakeGenericType(iface);
+        public override Type GetInterceptorType(Type iface) => typeof(OrderInspectingProxy<>).MakeGenericType(iface);
     }
 
     [AttributeUsage(AttributeTargets.Interface, AllowMultiple = false)]
@@ -245,7 +245,7 @@ namespace Solti.Utils.DI.Container.Tests
             public OrderInspectingProxy(TInterface target) : base(target, nameof(OrderInspectingAspect2Attribute)) { }
         }
 
-        public override Type GetInterceptor(Type iface) => typeof(OrderInspectingProxy<>).MakeGenericType(iface);
+        public override Type GetInterceptorType(Type iface) => typeof(OrderInspectingProxy<>).MakeGenericType(iface);
     }
 
     [AttributeUsage(AttributeTargets.Interface, AllowMultiple = false)]
@@ -256,7 +256,7 @@ namespace Solti.Utils.DI.Container.Tests
             public OrderInspectingProxy(TInterface target) : base(target, nameof(OrderInspectingAspect3Attribute)) { }
         }
 
-        public override Type GetInterceptor(Type iface) => typeof(OrderInspectingProxy<>).MakeGenericType(iface);
+        public override Type GetInterceptorType(Type iface) => typeof(OrderInspectingProxy<>).MakeGenericType(iface);
     }
 
     [OrderInspectingAspect1, OrderInspectingAspect2, OrderInspectingAspect3]
@@ -268,7 +268,7 @@ namespace Solti.Utils.DI.Container.Tests
     [AttributeUsage(AttributeTargets.Interface, AllowMultiple = false)]
     public class NakedValidatorAspectAttribute: AspectAttribute 
     {
-        public override Type GetInterceptor(Type iface)
+        public override Type GetInterceptorType(Type iface)
         {
             Type interceptor = Type.GetType("Solti.Utils.DI.Extensions.Aspects.ParameterValidator`1, Solti.Utils.DI.Extensions, Version=3.3.1.0, Culture=neutral, PublicKeyToken=null", throwOnError: true);
 

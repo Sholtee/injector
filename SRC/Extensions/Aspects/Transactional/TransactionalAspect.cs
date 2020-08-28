@@ -16,8 +16,8 @@ namespace Solti.Utils.DI.Extensions.Aspects
     public sealed class TransactionalAspect : AspectAttribute
     {
         /// <summary>
-        /// See <see cref="AspectAttribute.GetInterceptor(Type)"/>.
+        /// See <see cref="AspectAttribute.GetInterceptorType(Type)"/>.
         /// </summary>
-        public override Type GetInterceptor(Type iface) => typeof(TransactionManager<>).MakeGenericType(iface ?? throw new ArgumentNullException(nameof(iface)));
+        public override Type GetInterceptorType(Type iface) => typeof(TransactionManager<>).MakeGenericType(iface ?? throw new ArgumentNullException(nameof(iface)));
     }
 }

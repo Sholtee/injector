@@ -22,7 +22,7 @@ namespace Solti.Utils.DI.Container.Tests
         [Test]
         public void Container_Service_ShouldBeNullChecked()
         {
-            Assert.Throws<ArgumentNullException>(() => IServiceContainerExtensions.Service(null, typeof(IDisposable), typeof(Disposable)));
+            Assert.Throws<ArgumentNullException>(() => IServiceContainerAdvancedExtensions.Service(null, typeof(IDisposable), typeof(Disposable)));
             Assert.Throws<ArgumentNullException>(() => Container.Service(null, typeof(Disposable)));
             Assert.Throws<ArgumentNullException>(() => Container.Service(typeof(IDisposable), null));
         }

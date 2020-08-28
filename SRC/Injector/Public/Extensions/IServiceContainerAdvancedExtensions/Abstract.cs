@@ -11,7 +11,7 @@ namespace Solti.Utils.DI
     using Interfaces;
     using Internals;
 
-    public static partial class IServiceContainerExtensions
+    public static partial class IServiceContainerAdvancedExtensions
     {
         /// <summary>
         /// Registers an abstract service. It must be overridden in the child container(s).

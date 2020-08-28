@@ -16,7 +16,7 @@ namespace Solti.Utils.DI
     public static class ServiceEntryExtensions
     {
         /// <summary>
-        /// The service was registered via <see cref="IServiceContainerExtensions.Service(IServiceContainer, Type, string, Type, Lifetime)"/> call.
+        /// The service was registered via <see cref="IServiceContainerAdvancedExtensions.Service(IServiceContainer, Type, string, Type, Lifetime)"/> call.
         /// </summary>
         public static bool IsService(this AbstractServiceEntry self)
         {
@@ -26,7 +26,7 @@ namespace Solti.Utils.DI
         }
 
         /// <summary>
-        /// The service was registered via <see cref="IServiceContainerExtensions.Factory(IServiceContainer, Type, string, Func{IInjector, Type, object}, Lifetime)"/> call.
+        /// The service was registered via <see cref="IServiceContainerAdvancedExtensions.Factory(IServiceContainer, Type, string, Func{IInjector, Type, object}, Lifetime)"/> call.
         /// </summary>
         public static bool IsFactory(this AbstractServiceEntry self)
         {
@@ -36,7 +36,7 @@ namespace Solti.Utils.DI
         }
 
         /// <summary>
-        /// The service was registered via <see cref="IServiceContainerExtensions.Instance(IServiceContainer, Type, string, object, bool)"/> call.
+        /// The service was registered via <see cref="IServiceContainerAdvancedExtensions.Instance(IServiceContainer, Type, string, object, bool)"/> call.
         /// </summary>
         public static bool IsInstance(this AbstractServiceEntry self)
         {

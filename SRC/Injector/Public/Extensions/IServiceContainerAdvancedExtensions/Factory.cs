@@ -10,7 +10,7 @@ namespace Solti.Utils.DI
     using Interfaces;
     using Internals;
 
-    public static partial class IServiceContainerExtensions
+    public static partial class IServiceContainerAdvancedExtensions
     {
         /// <summary>
         /// Registers a new service factory with the given type. Factories are also services except that the instantiating process is delegated to the caller. Useful if a service has more than one constructor.

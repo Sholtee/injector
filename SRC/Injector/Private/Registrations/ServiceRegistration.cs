@@ -1,5 +1,5 @@
 ﻿/********************************************************************************
-* ProviderRegistration.cs                                                       *
+* ServiceRegistration.cs                                                        *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
@@ -9,9 +9,12 @@ namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
 
-    internal sealed class ProviderRegistration : IServiceRegistration
+    /// <summary>
+    /// Used by <see cref="ServiceAttribute.Implementation"/>
+    /// </summary>
+    internal sealed class ServiceRegistration : IServiceRegistration
     {
-        public void Invoke(IServiceContainer container, ServiceRegistrationAttribute registration, Type referencedType) => container.Provider(
+        public void Invoke(IServiceContainer container, ServiceRegistrationAttribute registration, Type referencedType) => container.Service(
             registration.Interface, 
             registration.Name, 
             referencedType, 

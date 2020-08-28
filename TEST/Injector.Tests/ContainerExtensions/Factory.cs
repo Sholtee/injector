@@ -19,7 +19,7 @@ namespace Solti.Utils.DI.Container.Tests
         [Test]
         public void Container_Factory_ShouldBeNullChecked()
         {
-            Assert.Throws<ArgumentNullException>(() => IServiceContainerExtensions.Factory(null, typeof(IDisposable), (i, t) => new Disposable()));
+            Assert.Throws<ArgumentNullException>(() => IServiceContainerAdvancedExtensions.Factory(null, typeof(IDisposable), (i, t) => new Disposable()));
             Assert.Throws<ArgumentNullException>(() => Container.Factory(null, (i, t) => new Disposable()));
             Assert.Throws<ArgumentNullException>(() => Container.Factory(typeof(IDisposable), null));
         }

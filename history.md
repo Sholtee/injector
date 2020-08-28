@@ -158,3 +158,7 @@
   - *obsolete:* `[Proxy|Duck]Factory.AssemblyCacheDirectory` property. It is replaced by the `PreserveProxyAssemblies` property.
 - 3.4.1:
   - *fixed:* Config reading issue
+- 4.0.0-preview1:
+  - *breaking:* Basic extensions has been moved to the interfaces project
+  - *breaking:* Renamed `AspectAttribute.GetInterceptor()` -> `AspectAttribute.GetInterceptorType()`
+  - *breaking:* Renamed (extension related) classes

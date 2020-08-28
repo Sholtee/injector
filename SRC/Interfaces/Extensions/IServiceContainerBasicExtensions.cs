@@ -1,14 +1,16 @@
 /********************************************************************************
-* Get.cs                                                                        *
+* IServiceContainerBasicExtensions.cs                                           *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
-namespace Solti.Utils.DI
-{
-    using Interfaces;
-    using Internals;
+using System;
 
-    public static partial class IServiceContainerExtensions
+namespace Solti.Utils.DI.Interfaces
+{
+    /// <summary>
+    /// Defines basic extensions for the <see cref="IServiceContainer"/> interface.
+    /// </summary>
+    public static class IServiceContainerBasicExtensions
     {
         /// <summary>
         /// Gets the service entry associated with the given interface and name.
@@ -20,7 +22,8 @@ namespace Solti.Utils.DI
         /// <exception cref="ServiceNotFoundException">If the service could not be found.</exception>
         public static AbstractServiceEntry? Get<TInterface>(this IServiceContainer self, string? name, QueryModes mode = QueryModes.Default)
         {
-            Ensure.Parameter.IsNotNull(self, nameof(self));
+            if (self == null)
+                throw new ArgumentNullException(nameof(self));
 
             return self.Get(typeof(TInterface), name, mode);
         }

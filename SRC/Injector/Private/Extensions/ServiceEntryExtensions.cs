@@ -54,7 +54,7 @@ namespace Solti.Utils.DI.Internals
             switch (aspect.Kind) 
             {
                 case AspectKind.Service:
-                    entry.ApplyProxy(aspect.GetInterceptor(entry.Interface));
+                    entry.ApplyProxy(aspect.GetInterceptorType(entry.Interface));
                     break;
                 case AspectKind.Factory:
                     entry.ApplyProxy(aspect.GetInterceptor);

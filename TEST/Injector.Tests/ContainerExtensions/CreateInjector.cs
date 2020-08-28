@@ -18,7 +18,7 @@ namespace Solti.Utils.DI.Container.Tests
         [Test]
         public void Container_CreateInjector_ShouldBeNullChecked() 
         {
-            Assert.Throws<ArgumentNullException>(() => IServiceContainerExtensions.CreateInjector(null));
+            Assert.Throws<ArgumentNullException>(() => IServiceContainerAdvancedExtensions.CreateInjector(null));
         }
 
         [Test]
