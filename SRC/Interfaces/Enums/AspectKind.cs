@@ -13,7 +13,7 @@ namespace Solti.Utils.DI.Interfaces
     public enum AspectKind 
     {
         /// <summary>
-        /// The proxy is created from its type returned by the <see cref="AspectAttribute.GetInterceptor(Type)"/> method.
+        /// The proxy is created from its type returned by the <see cref="AspectAttribute.GetInterceptorType(Type)"/> method.
         /// </summary>
         /// <remarks>
         /// <list type="bullet">

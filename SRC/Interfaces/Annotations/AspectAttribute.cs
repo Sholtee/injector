@@ -22,7 +22,7 @@ namespace Solti.Utils.DI.Interfaces
         /// Returns a InterfaceInterceptor descendant to the specified interface.
         /// </summary>
         /// <param name="iface">The interface on which this attribute was applied.</param>
-        public virtual Type GetInterceptor(Type iface) => throw new NotImplementedException(); // TODO: Should be named "GetInterceptorType"
+        public virtual Type GetInterceptorType(Type iface) => throw new NotImplementedException();
 
         /// <summary>
         /// Decorates the given service instance. 

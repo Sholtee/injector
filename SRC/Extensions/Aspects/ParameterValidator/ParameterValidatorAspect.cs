@@ -31,7 +31,7 @@ namespace Solti.Utils.DI.Extensions.Aspects
         }
 
         /// <summary>
-        /// See <see cref="AspectAttribute.GetInterceptor(Type)"/>.
+        /// See <see cref="AspectAttribute.GetInterceptorType(Type)"/>.
         /// </summary>
         public override object GetInterceptor(IInjector injector, Type iface, object instance) => ProxyFactory.Create
         (

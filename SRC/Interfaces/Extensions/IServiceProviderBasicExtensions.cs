@@ -20,7 +20,7 @@ namespace Solti.Utils.DI.Interfaces
             if (self == null)
                 throw new ArgumentNullException(nameof(self));
 
-            return (TInterface)self.GetService(typeof(TInterface));
+            return (TInterface?) self.GetService(typeof(TInterface));
         }
     }
 }
