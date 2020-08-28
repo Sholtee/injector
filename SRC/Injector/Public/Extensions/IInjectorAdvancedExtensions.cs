@@ -1,5 +1,5 @@
 /********************************************************************************
-* IInjectorExtensions.cs                                                        *
+* IInjectorAdvancedExtensions.cs                                                *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
@@ -14,7 +14,7 @@ namespace Solti.Utils.DI
     /// <summary>
     /// Defines advanced extensions for the <see cref="IInjector"/> interface.
     /// </summary>
-    public static class IInjectorExtensions
+    public static class IInjectorAdvancedExtensions
     {
         /// <summary>
         /// Instantiates the given class.
