@@ -14,7 +14,7 @@ namespace Solti.Utils.DI
     using Interfaces;
     using Internals;
 
-    public static partial class IServiceContainerExtensions
+    public static partial class IServiceContainerAdvancedExtensions
     {
         private static readonly HashSet<char> ReservedChars = new HashSet<char> {'\\', '^', '$', '.', '|', '?', '*', '+', '(', ')', '[', '{'};
 
@@ -44,7 +44,7 @@ namespace Solti.Utils.DI
             foreach (TypeInfo ti in assembly.DefinedTypes.Where(t => (t.IsClass || t.IsInterface) && matcher.IsMatch(t.Namespace ?? string.Empty)))
                 foreach (ServiceRegistrationAttribute attr in ti.GetCustomAttributes<ServiceRegistrationAttribute>())
                 {
-                    IServiceRegistration registration = (IServiceRegistration) typeof(IServiceContainerExtensions)
+                    IServiceRegistration registration = (IServiceRegistration) typeof(IServiceContainerAdvancedExtensions)
                         .Assembly
                         .GetType(attr.Implementation, throwOnError: true)
                         .CreateInstance(Array.Empty<Type>());

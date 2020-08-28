@@ -13,7 +13,7 @@ namespace Solti.Utils.DI
 
     using Utils.Proxy;
 
-    public static partial class IServiceContainerExtensions
+    public static partial class IServiceContainerAdvancedExtensions
     {
         /// <summary>
         /// Hooks into the instantiating process to let you decorate the original service. Useful when you want to add additional functionality (e.g. parameter validation). The easiest way to decorate an instance is using the <see cref="InterfaceInterceptor{TInterface}"/> class.

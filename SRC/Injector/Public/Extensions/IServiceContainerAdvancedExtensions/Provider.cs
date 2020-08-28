@@ -11,7 +11,7 @@ namespace Solti.Utils.DI
     using Internals;
     using Properties;
 
-    public static partial class IServiceContainerExtensions
+    public static partial class IServiceContainerAdvancedExtensions
     {
         /// <summary>
         /// Registers a new provider. Providers are "factory services" responsible for creating the concrete service.

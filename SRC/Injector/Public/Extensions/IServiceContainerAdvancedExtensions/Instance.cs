@@ -11,7 +11,7 @@ namespace Solti.Utils.DI
     using Interfaces;
     using Internals;
 
-    public static partial class IServiceContainerExtensions
+    public static partial class IServiceContainerAdvancedExtensions
     {
         /// <summary>
         /// Registers a pre-created instance. Useful to creating "constant" values (e.g. command-line arguments).

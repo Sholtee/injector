@@ -21,8 +21,8 @@ namespace Solti.Utils.DI.Container.Setup.Tests
         [Test]
         public void Setup_ShouldValidate() 
         {
-            Assert.Throws<ArgumentNullException>(() => IServiceContainerExtensions.Setup(null, Assembly.GetExecutingAssembly()));
-            Assert.Throws<ArgumentNullException>(() => IServiceContainerExtensions.Setup(new ServiceContainer(), null));
+            Assert.Throws<ArgumentNullException>(() => IServiceContainerAdvancedExtensions.Setup(null, Assembly.GetExecutingAssembly()));
+            Assert.Throws<ArgumentNullException>(() => IServiceContainerAdvancedExtensions.Setup(new ServiceContainer(), null));
         }
 
         public interface IGenericService<T>

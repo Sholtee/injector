@@ -20,11 +20,11 @@ namespace Solti.Utils.DI.Container.Tests
         [Test]
         public void Container_Proxy_ShouldBeNullChecked()
         {
-            Assert.Throws<ArgumentNullException>(() => IServiceContainerExtensions.Proxy(null, typeof(IDisposable), null, typeof(InterfaceInterceptor<IDisposable>)));
+            Assert.Throws<ArgumentNullException>(() => IServiceContainerAdvancedExtensions.Proxy(null, typeof(IDisposable), null, typeof(InterfaceInterceptor<IDisposable>)));
             Assert.Throws<ArgumentNullException>(() => Container.Proxy(null, null, typeof(InterfaceInterceptor<IDisposable>)));
             //Assert.Throws<ArgumentNullException>(() => Container.Proxy(typeof(IDisposable), null, (Type) null));
 
-            Assert.Throws<ArgumentNullException>(() => IServiceContainerExtensions.Proxy(null, typeof(IDisposable), null, (i, t, o) => o));
+            Assert.Throws<ArgumentNullException>(() => IServiceContainerAdvancedExtensions.Proxy(null, typeof(IDisposable), null, (i, t, o) => o));
             Assert.Throws<ArgumentNullException>(() => Container.Proxy(null, null, (i, t, o) => o));
             //Assert.Throws<ArgumentNullException>(() => Container.Proxy(typeof(IDisposable), null, (Func<IInjector, Type, object, object>) null));
         }

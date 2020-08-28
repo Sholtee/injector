@@ -11,7 +11,7 @@ namespace Solti.Utils.DI
     using Internals;
     using Primitives.Patterns;
 
-    public static partial class IServiceContainerExtensions
+    public static partial class IServiceContainerAdvancedExtensions
     {
         /// <summary>
         /// Creates a new child container.

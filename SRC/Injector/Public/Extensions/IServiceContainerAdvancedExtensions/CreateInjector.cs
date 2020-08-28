@@ -10,7 +10,7 @@ namespace Solti.Utils.DI
     using Interfaces;
     using Internals;
 
-    public static partial class IServiceContainerExtensions
+    public static partial class IServiceContainerAdvancedExtensions
     {
         /// <summary>
         /// Creates a new <see cref="IInjector"/> instance from this container.
