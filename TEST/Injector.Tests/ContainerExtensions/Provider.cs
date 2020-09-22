@@ -6,40 +6,38 @@
 using System;
 using System.Collections.Generic;
 
-using Moq;
 using NUnit.Framework;
 
 namespace Solti.Utils.DI.Container.Tests
 {
     using Interfaces;
-    using Primitives.Patterns;
     using Properties;
     
     public partial class ContainerTestsBase<TContainer>
     {
-        [Test]
-        public void Container_Provider_ShouldThrowOnNonInterfaceKey() =>
-            Assert.Throws<ArgumentException>(() => Container.Provider(typeof(object), typeof(DummyProvider)));
+        [TestCaseSource(nameof(Lifetimes))]
+        public void Container_Provider_ShouldThrowOnNonInterfaceKey(Lifetime lifetime) =>
+            Assert.Throws<ArgumentException>(() => Container.Provider(typeof(object), typeof(DummyProvider), lifetime));
 
-        [Test]
-        public void Container_Provider_ShouldThrowIfTheProviderDoesNotImplementTheIServiceProvider() =>
-            Assert.Throws<ArgumentException>(() => Container.Provider(typeof(IInterface_1), typeof(object)));
+        [TestCaseSource(nameof(Lifetimes))]
+        public void Container_Provider_ShouldThrowIfTheProviderDoesNotImplementTheIServiceProvider(Lifetime lifetime) =>
+            Assert.Throws<ArgumentException>(() => Container.Provider(typeof(IInterface_1), typeof(object), lifetime));
 
-        [Test]
-        public void Container_Provider_ShouldThrowIfTheProviderHasNonInterfaceDependency() =>
-            Assert.Throws<ArgumentException>(() => Container.Provider<IInterface_1, ProviderHavingNonInterfaceDependency>(), Resources.INVALID_CONSTRUCTOR);
+        [TestCaseSource(nameof(Lifetimes))]
+        public void Container_Provider_ShouldThrowIfTheProviderHasNonInterfaceDependency(Lifetime lifetime) =>
+            Assert.Throws<ArgumentException>(() => Container.Provider<IInterface_1, ProviderHavingNonInterfaceDependency>(lifetime), Resources.INVALID_CONSTRUCTOR);
 
-        [Test]
-        public void Container_Provider_ShouldSupportServiceActivatorAttribute() =>
-            Assert.DoesNotThrow(() => Container.Provider<IInterface_1, ProviderHavingOverloadedCtor>());
+        [TestCaseSource(nameof(Lifetimes))]
+        public void Container_Provider_ShouldSupportServiceActivatorAttribute(Lifetime lifetime) =>
+            Assert.DoesNotThrow(() => Container.Provider<IInterface_1, ProviderHavingOverloadedCtor>(lifetime));
 
-        [Test]
-        public void Container_Provider_ShouldBeAFactory() =>
-            Assert.That(Container.Provider<IInterface_1, ProviderHavingOverloadedCtor>().Get<IInterface_1>().IsFactory());
+        [TestCaseSource(nameof(Lifetimes))]
+        public void Container_Provider_ShouldBeAFactory(Lifetime lifetime) =>
+            Assert.That(Container.Provider<IInterface_1, ProviderHavingOverloadedCtor>(lifetime).Get<IInterface_1>().IsFactory());
 
-        [Test]
-        public void Container_Provider_MayHaveDeferredDependency() =>
-            Assert.DoesNotThrow(() => Container.Provider<IInterface_1, ProviderHavingDeferredDependency>());
+        [TestCaseSource(nameof(Lifetimes))]
+        public void Container_Provider_MayHaveDeferredDependency(Lifetime lifetime) =>
+            Assert.DoesNotThrow(() => Container.Provider<IInterface_1, ProviderHavingDeferredDependency>(lifetime));
 
         [Test]
         public void Container_Provider_ShouldCreateAProviderInstanceForEachService() 
@@ -52,34 +50,22 @@ namespace Solti.Utils.DI.Container.Tests
             Assert.AreNotSame(entry.Factory(null, entry.Interface), entry.Factory(null, entry.Interface));
         }
 
-        [Test]
-        public void Container_Provider_ShouldSupportGenericServices() 
+        [TestCaseSource(nameof(Lifetimes))]
+        public void Container_Provider_ShouldSupportGenericServices(Lifetime lifetime) 
         {
             AbstractServiceEntry entry = Container
-                .Provider(typeof(IList<>), typeof(TypeReturningProvider))
+                .Provider(typeof(IList<>), typeof(TypeReturningProvider), lifetime)
                 .Get<IList<int>>(QueryModes.AllowSpecialization);
 
             Assert.That(entry.Factory(null, entry.Interface), Is.EqualTo(typeof(IList<int>)));
         }
 
-        [Test]
-        public void Container_Provider_ShouldThrowOnMultipleRegistration()
+        [TestCaseSource(nameof(Lifetimes))]
+        public void Container_Provider_ShouldThrowOnMultipleRegistration(Lifetime lifetime)
         {
-            Container.Provider<IInterface_1, DummyProvider>();
+            Container.Provider<IInterface_1, DummyProvider>(lifetime);
 
-            Assert.Throws<ServiceAlreadyRegisteredException>(() => Container.Provider<IInterface_1, DummyProvider>());
-        }
-
-        [Test]
-        public void Container_Provider_CanBeRegisteredViaAttribute() 
-        {
-            Container.Setup(typeof(ConcreteProvider).Assembly, "Solti.Utils.DI.Container.Tests");
-
-            AbstractServiceEntry entry = Container.Get<IDisposableEx>();
-
-            Assert.IsNotNull(entry);
-            Assert.That(entry.Lifetime, Is.EqualTo(Lifetime.Singleton));
-            Assert.That(entry.Factory(new Mock<IInjector>(MockBehavior.Strict).Object, typeof(IDisposable)), Is.InstanceOf<Disposable>());
+            Assert.Throws<ServiceAlreadyRegisteredException>(() => Container.Provider<IInterface_1, DummyProvider>(lifetime));
         }
 
         private class DummyProvider : IServiceProvider
@@ -115,15 +101,6 @@ namespace Solti.Utils.DI.Container.Tests
         private class TypeReturningProvider : DummyProvider
         {
             public override object GetService(Type serviceType) => serviceType;
-        }
-    }
-
-    [Provider(typeof(IDisposableEx), Lifetime.Singleton)]
-    public class ConcreteProvider : IServiceProvider // ne nested legyen mert akkor generikusnak minosul (ContainerTestsBase<TContainer>.ConcreteProvider)
-    {
-        public object GetService(Type serviceType)
-        {
-            return new Disposable();
         }
     }
 }

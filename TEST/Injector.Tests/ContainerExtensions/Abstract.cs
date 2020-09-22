@@ -16,16 +16,15 @@ namespace Solti.Utils.DI.Container.Tests
         [Test]
         public void Container_Abstract_ShouldBeNullChecked() 
         {
-            Assert.Throws<ArgumentNullException>(() => IServiceContainerAdvancedExtensions.Abstract(null, typeof(IDisposable)));
+            Assert.Throws<ArgumentNullException>(() => IServiceContainerBasicExtensions.Abstract(null, typeof(IDisposable)));
             Assert.Throws<ArgumentNullException>(() => Container.Abstract(null));
         }
 
-        [TestCase(null)]
-        [TestCase("cica")]
-        public void Container_Abstract_ShouldRegisterAnOverridableService(string name)
+        [Test]
+        public void Container_Abstract_ShouldRegisterAnOverridableService([Values(null, "cica")] string name, [ValueSource(nameof(Lifetimes))] Lifetime lifetime)
         {
             Container
-                .Service<IInterface_1, Implementation_1_No_Dep>()
+                .Service<IInterface_1, Implementation_1_No_Dep>(Lifetime.Transient)
                 .Abstract<IInterface_2>(name);
 
             Assert.That(Container.Count, Is.EqualTo(2));
@@ -36,38 +35,38 @@ namespace Solti.Utils.DI.Container.Tests
                 // Meglevo nem absztrakt szervizeket nem irhatjuk felul.
                 //
 
-                Assert.Throws<ServiceAlreadyRegisteredException>(() => child.Service<IInterface_1, Implementation_1_No_Dep>());
+                Assert.Throws<ServiceAlreadyRegisteredException>(() => child.Service<IInterface_1, Implementation_1_No_Dep>(Lifetime.Transient));
                 Assert.Throws<ServiceAlreadyRegisteredException>(() => child.Abstract<IInterface_1>());
 
                 //
                 // Es az absztraktot is csak egyszer lehet felulirni.
                 //
 
-                Assert.DoesNotThrow(() => child.Service<IInterface_2, Implementation_2_IInterface_1_Dependant>(name));
-                Assert.Throws<ServiceAlreadyRegisteredException>(() => child.Service<IInterface_2, Implementation_2_IInterface_1_Dependant>(name));
+                Assert.DoesNotThrow(() => child.Service<IInterface_2, Implementation_2_IInterface_1_Dependant>(name, lifetime));
+                Assert.Throws<ServiceAlreadyRegisteredException>(() => child.Service<IInterface_2, Implementation_2_IInterface_1_Dependant>(name, Lifetime.Transient));
             }
         }
 
         [Test]
-        public void Container_Abstract_InheritanceTest()
+        public void Container_Abstract_InheritanceTest([ValueSource(nameof(Lifetimes))] Lifetime lifetime)
         {
             Container
-                .Service<IInterface_1, Implementation_1_No_Dep>()
+                .Service<IInterface_1, Implementation_1_No_Dep>(Lifetime.Transient)
                 .Abstract<IInterface_2>();
 
             using (IServiceContainer child = Container.CreateChild())
             {
                 using (IServiceContainer grandChild = child.CreateChild())
                 {
-                    Assert.DoesNotThrow(() => grandChild.Service<IInterface_2, Implementation_2_IInterface_1_Dependant>());
-                    Assert.Throws<ServiceAlreadyRegisteredException>(() => grandChild.Service<IInterface_2, Implementation_2_IInterface_1_Dependant>());
+                    Assert.DoesNotThrow(() => grandChild.Service<IInterface_2, Implementation_2_IInterface_1_Dependant>(lifetime));
+                    Assert.Throws<ServiceAlreadyRegisteredException>(() => grandChild.Service<IInterface_2, Implementation_2_IInterface_1_Dependant>(Lifetime.Transient));
 
                     //
                     // Az h a gyerekben felulirtuk nem szabad h hatassal legyen a szulore.
                     //
 
-                    Assert.DoesNotThrow(() => child.Service<IInterface_2, Implementation_2_IInterface_1_Dependant>());
-                    Assert.Throws<ServiceAlreadyRegisteredException>(() => child.Service<IInterface_2, Implementation_2_IInterface_1_Dependant>());
+                    Assert.DoesNotThrow(() => child.Service<IInterface_2, Implementation_2_IInterface_1_Dependant>(lifetime));
+                    Assert.Throws<ServiceAlreadyRegisteredException>(() => child.Service<IInterface_2, Implementation_2_IInterface_1_Dependant>(Lifetime.Transient));
                 }             
             }
         }

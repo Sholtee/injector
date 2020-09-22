@@ -48,7 +48,7 @@ namespace Solti.Utils.DI.Extensions.Tests
         public void ParameterValidationTest()
         {
             Container
-                .Factory(i => new Mock<IModule>().Object)
+                .Factory(i => new Mock<IModule>().Object, Lifetime.Transient)
                 .Proxy<IModule, ParameterValidator<IModule>>();
 
             using (IInjector injector = Container.CreateInjector())
@@ -66,7 +66,7 @@ namespace Solti.Utils.DI.Extensions.Tests
         [Test]
         public void ParameterValidationAspectTest()
         {
-            Container.Factory(i => new Mock<IModuleWithAspect>().Object);
+            Container.Factory(i => new Mock<IModuleWithAspect>().Object, Lifetime.Transient);
 
             using (IInjector injector = Container.CreateInjector())
             {

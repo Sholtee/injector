@@ -23,7 +23,7 @@ namespace Solti.Utils.DI.Injector.Tests
         [Test]
         public void Injector_ShouldPassItselfToItsFactories()
         {
-            Container.Factory<IInterface_7<IInjector>>(i => new Implementation_7_TInterface_Dependant<IInjector>(i));
+            Container.Factory<IInterface_7<IInjector>>(i => new Implementation_7_TInterface_Dependant<IInjector>(i), Lifetime.Transient);
 
             using (IInjector i = Container.CreateChild().CreateInjector())
             {

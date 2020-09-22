@@ -23,7 +23,7 @@ namespace Solti.Utils.DI.Injector.Tests
                 .Service<IInterface_1, Implementation_1>(Lifetime.Transient)
                 .Service<IInterface_1, Implementation_2>(1.ToString(), Lifetime.Scoped)
                 .Service<IInterface_1, Implementation_3>(2.ToString(), Lifetime.Singleton)
-                .Service<IInterface_2, Implementation_2_IInterface_1_Dependant>();
+                .Service<IInterface_2, Implementation_2_IInterface_1_Dependant>(Lifetime.Transient);
 
             using (IInjector injector = Container.CreateInjector()) 
             {
@@ -85,10 +85,9 @@ namespace Solti.Utils.DI.Injector.Tests
         }
 
         [Test]
-        public void Injector_Select_EnumerableMayBeEnumeratedMultipleTimes() 
+        public void Injector_Select_EnumerableCanBeEnumeratedMultipleTimes() 
         {
-            Container
-                .Service<IInterface_1, Implementation_1>();
+            Container.Service<IInterface_1, Implementation_1>(Lifetime.Transient);
 
             using (IInjector injector = Container.CreateInjector())
             {
@@ -105,10 +104,10 @@ namespace Solti.Utils.DI.Injector.Tests
         public void Injector_Select_ShouldHandleOpenAndClosedGenericsTogether()
         {
             Container
-                .Service<IInterface_1, Implementation_1>()
-                .Service(typeof(IInterface_3<>), 1.ToString(), typeof(GenericImplementation_1<>))
-                .Service(typeof(IInterface_3<>), 2.ToString(), typeof(GenericImplementation_2<>))
-                .Service<IInterface_3<int>, GenericImplementation_3<int>>();
+                .Service<IInterface_1, Implementation_1>(Lifetime.Transient)
+                .Service(typeof(IInterface_3<>), 1.ToString(), typeof(GenericImplementation_1<>), Lifetime.Transient)
+                .Service(typeof(IInterface_3<>), 2.ToString(), typeof(GenericImplementation_2<>), Lifetime.Transient)
+                .Service<IInterface_3<int>, GenericImplementation_3<int>>(Lifetime.Transient);
 
             using (IInjector injector = Container.CreateInjector())
             {
@@ -135,8 +134,17 @@ namespace Solti.Utils.DI.Injector.Tests
             }
         }
 
+        public static IEnumerable<Lifetime> NonTransientLifetimes
+        {
+            get
+            {
+                yield return Lifetime.Singleton;
+                yield return Lifetime.Scoped;
+            }
+        }
+
         [Test]
-        public void Injector_Select_NotTransientServicesShouldBeTheSameInEachEnumeration([Values(Lifetime.Scoped, Lifetime.Singleton)] Lifetime lifetime)
+        public void Injector_Select_NotTransientServicesShouldBeTheSameInEachEnumeration([ValueSource(nameof(NonTransientLifetimes))] Lifetime lifetime)
         {
             Container.Service<IInterface_1, Implementation_1>(lifetime);
 

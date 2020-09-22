@@ -1,5 +1,5 @@
 /********************************************************************************
-* IServiceContainerBasicExtensions.cs                                           *
+* Get.cs                                                                        *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
@@ -7,10 +7,7 @@ using System;
 
 namespace Solti.Utils.DI.Interfaces
 {
-    /// <summary>
-    /// Defines basic extensions for the <see cref="IServiceContainer"/> interface.
-    /// </summary>
-    public static class IServiceContainerBasicExtensions
+    public static partial class IServiceContainerBasicExtensions
     {
         /// <summary>
         /// Gets the service entry associated with the given interface and name.

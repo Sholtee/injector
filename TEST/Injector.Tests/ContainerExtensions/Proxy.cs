@@ -36,8 +36,7 @@ namespace Solti.Utils.DI.Container.Tests
             Assert.Throws<ArgumentException>(() => Container.Proxy(typeof(Object), (p1, p2, p3) => null), string.Format(Resources.PARAMETER_NOT_AN_INTERFACE, "iface"));
         }
 
-        [TestCase(Lifetime.Transient)]
-        [TestCase(Lifetime.Scoped)]
+        [TestCaseSource(nameof(InjectorControlledLifetimes))]
         public void Container_Proxy_ShouldOverwriteTheFactoryFunction(Lifetime lifetime)
         {
             var mockCallback1 = new Mock<Func<IInjector, IInterface_1, IInterface_1>>(MockBehavior.Strict);
@@ -69,8 +68,8 @@ namespace Solti.Utils.DI.Container.Tests
             mockCallback2.Verify(_ => _(It.IsAny<IInjector>(), It.IsAny<IInterface_1>()), Times.Once);
         }
 
-        [Test]
-        public void Container_Proxy_ShouldWorkWithGenericServices()
+        [TestCaseSource(nameof(InjectorControlledLifetimes))]
+        public void Container_Proxy_ShouldWorkWithGenericServices(Lifetime lifetime)
         {
             var mockCallback = new Mock<Func<IInjector, IInterface_3<int>, IInterface_3<int>>>(MockBehavior.Strict);
             mockCallback
@@ -78,7 +77,7 @@ namespace Solti.Utils.DI.Container.Tests
                 .Returns(new DecoratedImplementation_3<int>());
 
             Container
-                .Service(typeof(IInterface_3<>), typeof(Implementation_3_IInterface_1_Dependant<>))
+                .Service(typeof(IInterface_3<>), typeof(Implementation_3_IInterface_1_Dependant<>), lifetime)
                 .Proxy(mockCallback.Object);
 
             var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
@@ -102,10 +101,10 @@ namespace Solti.Utils.DI.Container.Tests
             mockCallback.Verify(_ => _(It.IsAny<IInjector>(), It.IsAny<IInterface_3<int>>()), Times.Once);
         }
 
-        [Test]
-        public void Container_Proxy_ShouldThrowOnOpenGenericParameter()
+        [TestCaseSource(nameof(Lifetimes))]
+        public void Container_Proxy_ShouldThrowOnOpenGenericParameter(Lifetime lifetime)
         {
-            Container.Service(typeof(IInterface_3<>), typeof(Implementation_3_IInterface_1_Dependant<>));
+            Container.Service(typeof(IInterface_3<>), typeof(Implementation_3_IInterface_1_Dependant<>), lifetime);
 
             Assert.Throws<InvalidOperationException>(() => Container.Proxy(typeof(IInterface_3<>), (injector, type, inst) => inst), Resources.CANT_PROXY);
         }
@@ -138,11 +137,11 @@ namespace Solti.Utils.DI.Container.Tests
             Assert.Throws<InvalidOperationException>(() => Container.Proxy<IInterface_1>((p1, p2) => default), Resources.CANT_PROXY);
         }
 
-        [Test]
-        public void Container_Proxy_MayHaveDependency()
+        [TestCaseSource(nameof(InjectorControlledLifetimes))]
+        public void Container_Proxy_MayHaveDependency(Lifetime lifetime)
         {
             Container
-                .Service<IInterface_2, Implementation_2_IInterface_1_Dependant>()
+                .Service<IInterface_2, Implementation_2_IInterface_1_Dependant>(lifetime)
                 .Proxy<IInterface_2, MyProxyWithDependency>();
 
             var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
@@ -187,10 +186,10 @@ namespace Solti.Utils.DI.Container.Tests
             public IInterface_3<int> Dependency { get; }
         }
 
-        [Test]
-        public void Container_Proxy_ShouldHandleNamedServices() 
+        [TestCaseSource(nameof(InjectorControlledLifetimes))]
+        public void Container_Proxy_ShouldHandleNamedServices(Lifetime lifetime) 
         {
-            Container.Service<IInterface_1, Implementation_1_No_Dep>("cica");
+            Container.Service<IInterface_1, Implementation_1_No_Dep>("cica", lifetime);
             Assert.DoesNotThrow(() => Container.Proxy<IInterface_1>("cica", (i, s) => new DecoratedImplementation_1()));
 
             var mockInjector = new Mock<IInjector>(MockBehavior.Strict);

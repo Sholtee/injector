@@ -31,8 +31,9 @@ namespace Solti.Utils.DI.UseCases
         public void BulkedProxyingTest()
         {
             Container
-                .Setup(typeof(Tests).Assembly, "Solti.Utils.DI.UseCases")
-                .Service<IDisposable, Disposable>();
+                .Service<IMyModule1, Module1>(Lifetime.Transient)
+                .Service<IMyModule2, Module2>(Lifetime.Transient)
+                .Service<IDisposable, Disposable>(Lifetime.Transient);
 
             foreach (AbstractServiceEntry entry in Container.Where(e => typeof(IModule).IsAssignableFrom(e.Interface)))
                 Container.Proxy(entry.Interface, typeof(InterfaceInterceptor<>).MakeGenericType(entry.Interface));
@@ -63,13 +64,13 @@ namespace Solti.Utils.DI.UseCases
 
         public interface IMyModule1 : IModule { }
         public interface IMyModule2 : IModule { }
-        [Service(typeof(IMyModule1))]
+
         public class Module1 : IMyModule1 
         {
             public void DoSomething(object arg) { }
             public void DoSomethingElse() { }
         }
-        [Service(typeof(IMyModule2))]
+
         public class Module2 : IMyModule2 
         {
             public void DoSomething(object arg) { }
@@ -196,7 +197,7 @@ namespace Solti.Utils.DI.UseCases
         [Test]
         public void LoggerAspectTest()
         {
-            Container.Factory(i => new Mock<IModuleWithAspects>().Object);
+            Container.Factory(i => new Mock<IModuleWithAspects>().Object, Lifetime.Transient);
 
             using (IInjector injector = Container.CreateInjector())
             {

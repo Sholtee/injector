@@ -25,7 +25,7 @@ namespace Solti.Utils.DI.Interfaces
         /// <param name="name">The (optional) name of the service.</param>
         /// <param name="owner">The owner of this entry.</param>
         /// <exception cref="ArgumentException">The <paramref name="interface"/> is not an interface.</exception>
-        public AbstractServiceEntry(Type @interface, string? name, IServiceContainer owner): this(@interface, name, null, null, owner)
+        public AbstractServiceEntry(Type @interface, string? name, IServiceContainer owner): this(@interface, name, null, owner)
         {
         }
 
@@ -34,17 +34,15 @@ namespace Solti.Utils.DI.Interfaces
         /// </summary>
         /// <param name="interface">The interface of the service.</param>
         /// <param name="name">The (optional) name of the service.</param>
-        /// <param name="lifetime">The (optional) lifetime of the service.</param>
         /// <param name="implementation">The (optional) implementation of the service.</param>
         /// <param name="owner">The owner of this entry.</param>
         /// <exception cref="ArgumentException">The <paramref name="interface"/> is not an interface.</exception>
         /// <exception cref="ArgumentException">The <paramref name="implementation"/> does not support the <paramref name="interface"/>.</exception>
-        protected AbstractServiceEntry(Type @interface, string? name, Lifetime? lifetime, Type? implementation, IServiceContainer owner)
+        protected AbstractServiceEntry(Type @interface, string? name, Type? implementation, IServiceContainer owner)
         {
             Interface      = @interface ?? throw new ArgumentNullException(nameof(@interface));
             Owner          = owner ?? throw new ArgumentNullException(nameof(owner));
             Name           = name;
-            Lifetime       = lifetime;
             Implementation = implementation;
 
             if (!@interface.IsInterface)
@@ -89,11 +87,6 @@ namespace Solti.Utils.DI.Interfaces
         /// </summary>
         /// <remarks>A service is identified by its <see cref="Interface"/> and <see cref="Name"/>.</remarks>
         public string? Name { get; }
-
-        /// <summary>
-        /// The (optional) lifetime of the service.
-        /// </summary>
-        public Lifetime? Lifetime { get; }
 
         /// <summary>
         /// The owner of this entry.
@@ -157,13 +150,12 @@ namespace Solti.Utils.DI.Interfaces
                 Owner,
                 Interface,
                 Name,
-                Lifetime,
                 Factory,
                 Instance?.Value,
                 Implementation
             }.GetHashCode()
 #else
-            HashCode.Combine(Owner, Interface, Name, Lifetime, Factory, Instance?.Value, Implementation)
+            HashCode.Combine(Owner, Interface, Name, Factory, Instance?.Value, Implementation)
 #endif
             ;
 
@@ -178,7 +170,6 @@ namespace Solti.Utils.DI.Interfaces
                 NULL = nameof(NULL);
 
             return new StringBuilder(this.FriendlyName())
-                .AppendFormat(Resources.Culture, NAME_PART, nameof(Lifetime), Lifetime?.ToString() ?? NULL)
                 .AppendFormat(Resources.Culture, NAME_PART, nameof(Implementation), Implementation?.ToString() ?? NULL)
                 .AppendFormat(Resources.Culture, NAME_PART, nameof(Instance), Instance?.Value?.ToString() ?? NULL)
                 .ToString();

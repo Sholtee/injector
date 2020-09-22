@@ -16,7 +16,7 @@ namespace Solti.Utils.DI.Injector.Tests
         [Test]
         public void Injector_UnderlyingContainer_ShouldServeTheInjector() 
         {
-            Container.Service<IInterface_1, Implementation_1_No_Dep>();
+            Container.Service<IInterface_1, Implementation_1_No_Dep>(Lifetime.Transient);
 
             using (IInjector injector = Container.CreateInjector()) 
             {

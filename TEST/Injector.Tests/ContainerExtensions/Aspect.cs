@@ -30,8 +30,8 @@ namespace Solti.Utils.DI.Container.Tests
             Assert.That(Container.Get<IMyService>().Factory, Is.Null);
         }
 
-        [Test]
-        public void Aspects_ProxyInstallationShouldBeDoneOnServiceRegistration([Values(Lifetime.Transient, Lifetime.Scoped, Lifetime.Singleton)] Lifetime lifetime) 
+        [TestCaseSource(nameof(Lifetimes))]
+        public void Aspects_ProxyInstallationShouldBeDoneOnServiceRegistration(Lifetime lifetime) 
         {
             Container.Service<IMyService, MyService>(lifetime);
 
@@ -48,15 +48,15 @@ namespace Solti.Utils.DI.Container.Tests
             Assert.That(instance, Is.InstanceOf<MyService>());
         }
 
-        [Test]
-        public void Aspects_ProxyMayHaveDependency() 
+        [TestCaseSource(nameof(Lifetimes))]
+        public void Aspects_ProxyMayHaveDependency(Lifetime lifetime) 
         {
             var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
             mockInjector
                 .Setup(i => i.Get(It.Is<Type>(t => t == typeof(IDisposable)), null))
                 .Returns(new Disposable());
 
-            Container.Service<IMyDependantService, MyService>();
+            Container.Service<IMyDependantService, MyService>(lifetime);
 
             Container
                 .Get<IMyDependantService>()
@@ -66,8 +66,8 @@ namespace Solti.Utils.DI.Container.Tests
             mockInjector.Verify(i => i.Get(It.Is<Type>(t => t == typeof(IDisposable)), null), Times.Once);
         }
 
-        [Test]
-        public void Aspects_ServiceInheritanceShouldNotTriggerTheProxyRegistration([Values(Lifetime.Transient, Lifetime.Scoped, Lifetime.Singleton)] Lifetime lifetime) 
+        [TestCaseSource(nameof(Lifetimes))]
+        public void Aspects_ServiceInheritanceShouldNotTriggerTheProxyRegistration(Lifetime lifetime) 
         {
             Container.Service<IMyService, MyService>(lifetime);
 
@@ -76,10 +76,10 @@ namespace Solti.Utils.DI.Container.Tests
             Assert.AreSame(child.Get<IMyService>().Factory, Container.Get<IMyService>().Factory);
         }
 
-        [Test]
-        public void Aspects_ShouldWorkWithGenericServices() 
+        [TestCaseSource(nameof(Lifetimes))]
+        public void Aspects_ShouldWorkWithGenericServices(Lifetime lifetime) 
         {
-            Container.Service(typeof(IMyGenericService<>), typeof(MyGenericService<>));
+            Container.Service(typeof(IMyGenericService<>), typeof(MyGenericService<>), lifetime);
 
             Assert.That(Container.Get(typeof(IMyGenericService<>)).Factory, Is.Null);
 
@@ -109,9 +109,9 @@ namespace Solti.Utils.DI.Container.Tests
         }
 
         [Test]
-        public void Aspects_ApplyAspectShouldBeControlledByAttributeKind([Values(AspectKind.Service, AspectKind.Factory)] AspectKind kind) 
+        public void Aspects_ApplyAspectShouldBeControlledByAttributeKind([Values(AspectKind.Service, AspectKind.Factory)] AspectKind kind, [ValueSource(nameof(Lifetimes))] Lifetime lifetime) 
         {
-            Container.Factory<IMyService>(i => new MyService());
+            Container.Factory<IMyService>(i => new MyService(), lifetime);
 
             AbstractServiceEntry entry = Container.Get<IMyService>();
 
@@ -143,15 +143,15 @@ namespace Solti.Utils.DI.Container.Tests
             }
         }
 
-        [Test]
-        public void Aspects_ApplyingAspectsShouldBeSequential() 
+        [TestCaseSource(nameof(Lifetimes))]
+        public void Aspects_ApplyingAspectsShouldBeSequential(Lifetime lifetime) 
         {
             var mockService = new Mock<IOrderInspectingService>(MockBehavior.Strict);
             mockService
                 .Setup(x => x.GetAspectsOrder())
                 .Returns(Array.Empty<string>());
 
-            Container.Factory(i => mockService.Object);
+            Container.Factory(i => mockService.Object, lifetime);
 
             var svc = (IOrderInspectingService) Container
                 .Get<IOrderInspectingService>()
@@ -160,12 +160,12 @@ namespace Solti.Utils.DI.Container.Tests
             Assert.That(svc.GetAspectsOrder().SequenceEqual(new[] { nameof(OrderInspectingAspect1Attribute), nameof(OrderInspectingAspect2Attribute), nameof(OrderInspectingAspect3Attribute) }));
         }
 
-        [Test]
-        public void Aspects_AspectCanBeNaked()
+        [TestCaseSource(nameof(Lifetimes))]
+        public void Aspects_AspectCanBeNaked(Lifetime lifetime)
         {
             var mockService = new Mock<IServiceUsingNakedInterceptor>(MockBehavior.Strict);
 
-            Container.Factory(i => mockService.Object);
+            Container.Factory(i => mockService.Object, lifetime);
 
             var svc = (IServiceUsingNakedInterceptor) Container
                 .Get<IServiceUsingNakedInterceptor>()

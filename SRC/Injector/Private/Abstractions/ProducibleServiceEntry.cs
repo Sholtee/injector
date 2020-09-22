@@ -13,9 +13,9 @@ namespace Solti.Utils.DI.Internals
     /// <summary>
     /// Describes a producible service entry.
     /// </summary>
-    internal abstract partial class ProducibleServiceEntry : AbstractServiceEntry, ISupportsProxying, ISupportsSpecialization
+    internal abstract class ProducibleServiceEntry : AbstractServiceEntry, ISupportsProxying, ISupportsSpecialization
     {
-        protected ProducibleServiceEntry(ProducibleServiceEntry entry, IServiceContainer owner) : base(entry.Interface, entry.Name, entry.Lifetime, entry.Implementation, owner)
+        protected ProducibleServiceEntry(ProducibleServiceEntry entry, IServiceContainer owner) : base(entry.Interface, entry.Name, entry.Implementation, owner)
         {
             Factory = entry.Factory;
 
@@ -25,7 +25,7 @@ namespace Solti.Utils.DI.Internals
             //
         }
 
-        protected ProducibleServiceEntry(Type @interface, string? name, Lifetime lifetime, Func<IInjector, Type, object> factory, IServiceContainer owner) : base(@interface, name, lifetime, null, owner)
+        protected ProducibleServiceEntry(Type @interface, string? name, Func<IInjector, Type, object> factory, IServiceContainer owner) : base(@interface, name, null, owner)
         {
             //
             // Os ellenorzi az interface-t es a tulajdonost.
@@ -35,7 +35,7 @@ namespace Solti.Utils.DI.Internals
             this.ApplyAspects();
         }
 
-        protected ProducibleServiceEntry(Type @interface, string? name, Lifetime lifetime, Type implementation, IServiceContainer owner) : base(@interface, name, lifetime, implementation, owner)
+        protected ProducibleServiceEntry(Type @interface, string? name, Type implementation, IServiceContainer owner) : base(@interface, name, implementation, owner)
         {
             //
             // Os ellenorzi a tobbit.
@@ -80,6 +80,8 @@ namespace Solti.Utils.DI.Internals
                 throw new InvalidOperationException(Resources.NOT_PRODUCIBLE);
         }
 
+        public abstract IServiceEntryFactory Lifetime { get; }
+
         #region Features
         Func<IInjector, Type, object>? ISupportsProxying.Factory { get => Factory; set => Factory = value; }
 
@@ -89,9 +91,12 @@ namespace Solti.Utils.DI.Internals
             // "Service(typeof(IGeneric<>), ...)" eseten az implementaciot konkretizaljuk.
             //
 
-            if (Implementation != null) return SpecializeBy
+            if (Implementation != null) return Lifetime.CreateFrom
             (
-                Implementation.MakeGenericType(genericArguments)
+                Interface.MakeGenericType(genericArguments),
+                Name,
+                Implementation.MakeGenericType(genericArguments),
+                Owner
             );
 
             //
@@ -99,21 +104,15 @@ namespace Solti.Utils.DI.Internals
             // konkretizalt interface-re.
             //
 
-            if (Factory != null) return SpecializeBy
+            if (Factory != null) return Lifetime.CreateFrom
             (
-                Factory
+                Interface.MakeGenericType(genericArguments),
+                Name,
+                Factory,
+                Owner
             );
 
             throw new NotSupportedException();
-
-            AbstractServiceEntry SpecializeBy<TParam>(TParam param) => ProducibleServiceEntry.Create
-            (
-                Lifetime,
-                Interface.MakeGenericType(genericArguments),
-                Name,
-                param,
-                Owner
-            );
         }
         #endregion
     }

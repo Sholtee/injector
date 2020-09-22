@@ -18,8 +18,8 @@ namespace Solti.Utils.DI.Injector.Tests
 
     public partial class InjectorTestsBase<TContainer>
     {
-        [Test]
-        public void Injector_Dispose_ShouldFreeOwnedEntries([Values(Lifetime.Scoped, Lifetime.Transient)] Lifetime lifetime)
+        [TestCaseSource(nameof(InjectorControlledLifetimes))]
+        public void Injector_Dispose_ShouldFreeOwnedEntries(Lifetime lifetime)
         {
             var mockSingleton = new Mock<IInterface_1_Disaposable>(MockBehavior.Strict);
             mockSingleton.Setup(s => s.Dispose());
@@ -34,8 +34,8 @@ namespace Solti.Utils.DI.Injector.Tests
             mockSingleton.Verify(s => s.Dispose(), Times.Once);
         }
 
-        [Test]
-        public async Task Injector_DisposeAsync_ShouldFreeOwnedEntriesAsynchronously([Values(Lifetime.Scoped, Lifetime.Transient)] Lifetime lifetime)
+        [TestCaseSource(nameof(InjectorControlledLifetimes))]
+        public async Task Injector_DisposeAsync_ShouldFreeOwnedEntriesAsynchronously(Lifetime lifetime)
         {
             var mockSingleton = new Mock<IAsyncDisposable>(MockBehavior.Strict);
             mockSingleton
@@ -58,8 +58,8 @@ namespace Solti.Utils.DI.Injector.Tests
             mockSingleton.Verify(s => s.DisposeAsync(), Times.Once);
         }
 
-        [Test]
-        public void Injector_Dispose_ShouldFreeUsedLazyEntries([Values(Lifetime.Transient, Lifetime.Scoped)] Lifetime lifetime) 
+        [TestCaseSource(nameof(InjectorControlledLifetimes))]
+        public void Injector_Dispose_ShouldFreeUsedLazyEntries(Lifetime lifetime) 
         {
             var disposable = new Disposable();
 
@@ -84,8 +84,8 @@ namespace Solti.Utils.DI.Injector.Tests
             Assert.That(disposable.Disposed);
         }
 
-        [Test]
-        public void Injector_Dispose_ShouldFreeEnumeratedServices([Values(Lifetime.Transient, Lifetime.Scoped)] Lifetime lifetime)
+        [TestCaseSource(nameof(InjectorControlledLifetimes))]
+        public void Injector_Dispose_ShouldFreeEnumeratedServices(Lifetime lifetime)
         {
             Container.Service<IDisposableEx, Disposable>(lifetime);
 

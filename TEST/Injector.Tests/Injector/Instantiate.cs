@@ -44,10 +44,10 @@ namespace Solti.Utils.DI.Injector.Tests
             }
         }
 
-        [Test]
-        public void Injector_Instantiate_ShouldResolveDependencies()
+        [TestCaseSource(nameof(Lifetimes))]
+        public void Injector_Instantiate_ShouldResolveDependencies(Lifetime lifetime)
         {
-            Container.Service<IInterface_1, Implementation_1_No_Dep>();
+            Container.Service<IInterface_1, Implementation_1_No_Dep>(lifetime);
 
             using (IInjector injector = Container.CreateInjector())
             {
@@ -65,10 +65,10 @@ namespace Solti.Utils.DI.Injector.Tests
             }           
         }
 
-        [Test]
-        public void Injector_Instantiate_ShouldWorkWithClosedGenericTypes()
+        [TestCaseSource(nameof(Lifetimes))]
+        public void Injector_Instantiate_ShouldWorkWithClosedGenericTypes(Lifetime lifetime)
         {
-            Container.Service<IInterface_1, Implementation_1_No_Dep>();
+            Container.Service<IInterface_1, Implementation_1_No_Dep>(lifetime);
 
             using (IInjector injector = Container.CreateInjector())
             {

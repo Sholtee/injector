@@ -45,11 +45,11 @@ namespace Solti.Utils.DI.Internals
         {
         }
 
-        public TransientServiceEntry(Type @interface, string name, Func<IInjector, Type, object> factory, IServiceContainer owner) : base(@interface, name, Interfaces.Lifetime.Transient, factory, owner)
+        public TransientServiceEntry(Type @interface, string? name, Func<IInjector, Type, object> factory, IServiceContainer owner) : base(@interface, name, factory, owner)
         {
         }
 
-        public TransientServiceEntry(Type @interface, string name, Type implementation, IServiceContainer owner) : base(@interface, name, Interfaces.Lifetime.Transient, implementation, owner)
+        public TransientServiceEntry(Type @interface, string? name, Type implementation, IServiceContainer owner) : base(@interface, name, implementation, owner)
         {
         }
 
@@ -111,5 +111,7 @@ namespace Solti.Utils.DI.Internals
             // Nem kell "base" hivas mert az a standard Dispose()-t hivna.
             //
         }
+
+        public override IServiceEntryFactory Lifetime => DI.Lifetime.Transient;
     }
 }

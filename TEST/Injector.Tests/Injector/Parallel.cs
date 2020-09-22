@@ -27,9 +27,9 @@ namespace Solti.Utils.DI.Injector.Tests
 
         [Test]
         public void Parallelism_DependencyResolutionTest(
-            [Values(Lifetime.Transient, Lifetime.Scoped, Lifetime.Singleton)] Lifetime l1,
-            [Values(Lifetime.Transient, Lifetime.Scoped, Lifetime.Singleton)] Lifetime l2,
-            [Values(Lifetime.Transient, Lifetime.Scoped, Lifetime.Singleton)] Lifetime l3,
+            [ValueSource(nameof(Lifetimes))] Lifetime l1,
+            [ValueSource(nameof(Lifetimes))] Lifetime l2,
+            [ValueSource(nameof(Lifetimes))] Lifetime l3,
             [Values(true, false)] bool createChildContainer) 
         {
             Container
@@ -56,7 +56,7 @@ namespace Solti.Utils.DI.Injector.Tests
 
         [Test]
         public void Parallelism_SpecializationTest(
-            [Values(Lifetime.Transient, Lifetime.Scoped, Lifetime.Singleton)] Lifetime lifetime,
+            [ValueSource(nameof(Lifetimes))] Lifetime lifetime,
             [Values(true, false)] bool createChildContainer)
         {
             Container.Service(typeof(IList<>), typeof(MyList<>), lifetime);

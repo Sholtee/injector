@@ -16,9 +16,7 @@ namespace Solti.Utils.DI.Container.Tests
 
     public partial class ContainerTestsBase<TContainer>
     {
-        [TestCase(Lifetime.Scoped)]
-        [TestCase(Lifetime.Transient)]
-        [TestCase(Lifetime.Singleton)]
+        [TestCaseSource(nameof(Lifetimes))]
         public void IServiceContainer_InheritanceShouldChangeTheOwnerOnly(Lifetime lifetime)
         {
             Container
@@ -39,7 +37,6 @@ namespace Solti.Utils.DI.Container.Tests
                 //
 
                 info.Interface,
-                info.Lifetime,
                 info.Factory,
                 info.Instance,
                 info.Implementation
@@ -62,20 +59,20 @@ namespace Solti.Utils.DI.Container.Tests
             }
         }
 
-        [Test]
-        public void Container_ChildShouldInheritEntriesFromTheParent()
+        [TestCaseSource(nameof(Lifetimes))]
+        public void Container_ChildShouldInheritEntriesFromTheParent(Lifetime lifetime)
         {
             IServiceContainer child = Container
-                .Service<IInterface_1, Implementation_1_No_Dep>()
+                .Service<IInterface_1, Implementation_1_No_Dep>(lifetime)
                 .CreateChild();
 
             Assert.DoesNotThrow(() => child.Get<IInterface_1>(QueryModes.ThrowOnError));
         }
 
-        [Test]
-        public void Container_ChildShouldInheritProxies()
+        [TestCaseSource(nameof(Lifetimes))]
+        public void Container_ChildShouldInheritProxies(Lifetime lifetime)
         {
-            Container.Service<IInterface_1, Implementation_1_No_Dep>();
+            Container.Service<IInterface_1, Implementation_1_No_Dep>(lifetime);
 
             Func<IInjector, Type, object>
                 originalFactory = Container.Get<IInterface_1>(QueryModes.ThrowOnError).Factory,
@@ -90,12 +87,12 @@ namespace Solti.Utils.DI.Container.Tests
             Assert.AreSame(proxiedFactory, child.Get<IInterface_1>(QueryModes.ThrowOnError).Factory);
         }
 
-        [Test]
-        public void Container_ChildShouldBeIndependentFromTheParent()
+        [TestCaseSource(nameof(Lifetimes))]
+        public void Container_ChildShouldBeIndependentFromTheParent(Lifetime lifetime)
         {
             IServiceContainer child = Container
                 .CreateChild()
-                .Service<IInterface_1, Implementation_1_No_Dep>();
+                .Service<IInterface_1, Implementation_1_No_Dep>(lifetime);
 
             Assert.Throws<ServiceNotFoundException>(() => Container.Get<IInterface_1>(QueryModes.ThrowOnError));
             Assert.DoesNotThrow(() => child.Get<IInterface_1>(QueryModes.ThrowOnError));

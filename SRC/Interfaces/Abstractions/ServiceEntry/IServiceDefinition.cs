@@ -18,11 +18,6 @@ namespace Solti.Utils.DI.Interfaces
         IServiceContainer Owner { get; }
 
         /// <summary>
-        /// The lifetime of the service.
-        /// </summary>
-        Lifetime? Lifetime { get; }
-
-        /// <summary>
         /// The related (optional) implementation. 
         /// </summary>
         Type? Implementation { get; }

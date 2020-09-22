@@ -225,7 +225,7 @@ namespace Solti.Utils.DI.Container.Tests
             using (IServiceContainer child = Container.CreateChild())
             {
                 child
-                    .Service<IInterface_1, Implementation_1_No_Dep>()
+                    .Service<IInterface_1, Implementation_1_No_Dep>(Lifetime.Transient)
                     .Service(typeof(IGenericDisposable<>), typeof(GenericDisposable<>), Lifetime.Singleton);
 
                 Assert.That(child.Count, Is.EqualTo(2));

@@ -6,12 +6,9 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 
-namespace Solti.Utils.DI
+namespace Solti.Utils.DI.Interfaces
 {
-    using Interfaces;
-    using Internals;
-
-    public static partial class IServiceContainerAdvancedExtensions
+    public static partial class IServiceContainerBasicExtensions
     {
         /// <summary>
         /// Registers an abstract service. It must be overridden in the child container(s).
@@ -23,7 +20,8 @@ namespace Solti.Utils.DI
         [SuppressMessage("Reliability", "CA2000:Dispose objects before losing scope", Justification = "The container is responsible for disposing the entry.")]
         public static IServiceContainer Abstract(this IServiceContainer self, Type iface, string? name = null)
         {
-            Ensure.Parameter.IsNotNull(self, nameof(self));
+            if (self == null)
+                throw new ArgumentNullException(nameof(self));
 
             self.Add(new AbstractServiceEntry(iface, name, self));
             return self;

@@ -17,11 +17,11 @@ namespace Solti.Utils.DI.Internals
     /// </summary>
     internal class SingletonServiceEntry : ProducibleServiceEntry
     {
-        public SingletonServiceEntry(Type @interface, string name, Func<IInjector, Type, object> factory, IServiceContainer owner) : base(@interface, name, Interfaces.Lifetime.Singleton, factory, owner)
+        public SingletonServiceEntry(Type @interface, string? name, Func<IInjector, Type, object> factory, IServiceContainer owner) : base(@interface, name, factory, owner)
         {
         }
 
-        public SingletonServiceEntry(Type @interface, string name, Type implementation, IServiceContainer owner) : base(@interface, name, Interfaces.Lifetime.Singleton, implementation, owner)
+        public SingletonServiceEntry(Type @interface, string? name, Type implementation, IServiceContainer owner) : base(@interface, name, implementation, owner)
         {
         }
 
@@ -57,5 +57,7 @@ namespace Solti.Utils.DI.Internals
 
             return true;
         }
+
+        public override IServiceEntryFactory Lifetime => DI.Lifetime.Singleton;
     }
 }

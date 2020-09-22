@@ -71,8 +71,10 @@ namespace Solti.Utils.Proxy
                 if (PreserveProxyAssemblies)
                     TypeGeneratorExtensions.SetCacheDirectory<TInterface, DuckGenerator<TInterface, TTarget>>();
 
+                #pragma warning disable CS0618 // Type or member is obsolete
                 return (TInterface) DuckGenerator<TInterface, TTarget>
                     .GeneratedType
+                #pragma warning restore CS0618
                     .CreateInstance(new[] { typeof(TTarget) }, Target);
             }
         }

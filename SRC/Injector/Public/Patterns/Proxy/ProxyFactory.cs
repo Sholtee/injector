@@ -49,7 +49,9 @@ namespace Solti.Utils.Proxy
             // Generikus parameterek validalasat a ProxyGenerator<> vegzi.
             //
 
+            #pragma warning disable CS0618 // Type or member is obsolete
             return ProxyGenerator<TInterface, TInterceptor>.GeneratedType;
+            #pragma warning restore CS0618
         }
 
         /// <summary>

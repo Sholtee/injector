@@ -55,8 +55,14 @@ namespace Solti.Utils.DI.Injector.Graph.Tests
         {
             IServiceReference[] references;
 
-            using (IServiceContainer container = new ServiceContainer().Setup(typeof(IInterface_1).Assembly, "Solti.Utils.DI.Injector.Graph.Tests"))
+            using (IServiceContainer container = new ServiceContainer())
             {
+                container
+                    .Service<IInterface_1, Implementation_1>(Lifetime.Transient)
+                    .Service<IInterface_2, Implementation_2>(Lifetime.Singleton)
+                    .Service<IInterface_3, Implementation_3>(Lifetime.Transient)
+                    .Service<IInterface_4, Implementation_4>(Lifetime.Scoped);
+
                 references = Validate(new Injector(container));
             }
 
@@ -90,22 +96,18 @@ namespace Solti.Utils.DI.Injector.Graph.Tests
         private interface IInterface_3 { }
         private interface IInterface_4 { }
 
-        [Service(typeof(IInterface_1), Lifetime.Transient)]
         private class Implementation_1 : IInterface_1 { }
 
-        [Service(typeof(IInterface_2), Lifetime.Singleton)]
         private class Implementation_2 : IInterface_2 
         {
             public Implementation_2(IInterface_1 dep) { }
         }
 
-        [Service(typeof(IInterface_3), Lifetime.Transient)]
         private class Implementation_3 : IInterface_3 
         {
             public Implementation_3(IInterface_1 dep1, IInterface_2 dep2) { }
         }
 
-        [Service(typeof(IInterface_4), Lifetime.Scoped)]
         private class Implementation_4 : IInterface_4 
         {
             public Implementation_4(IInjector injector) 

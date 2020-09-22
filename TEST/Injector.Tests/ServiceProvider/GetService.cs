@@ -25,7 +25,7 @@ namespace Solti.Utils.DI.Injector.Tests
         [Test]
         public void ServiceProvider_GetService_ShouldResolveItself2()
         {
-            Container.Service<IInterface_7<IServiceProvider>, Implementation_7_TInterface_Dependant<IServiceProvider>>();
+            Container.Service<IInterface_7<IServiceProvider>, Implementation_7_TInterface_Dependant<IServiceProvider>>(Lifetime.Transient);
 
             using (Container.CreateProvider(out IServiceProvider provider))
             {
@@ -45,7 +45,7 @@ namespace Solti.Utils.DI.Injector.Tests
         }
 
         [Test]
-        public void ServiceProvider_GetService_ShouldReturnNullOnMissingService2([Values(Lifetime.Transient, Lifetime.Scoped, Lifetime.Singleton)] Lifetime lifetime)
+        public void ServiceProvider_GetService_ShouldReturnNullOnMissingService2([ValueSource(nameof(Lifetimes))] Lifetime lifetime)
         {
             Container.Service<IInterface_7<IInterface_1>, Implementation_7_TInterface_Dependant<IInterface_1>>(lifetime);
 
@@ -66,11 +66,11 @@ namespace Solti.Utils.DI.Injector.Tests
         }
 
         [Test]
-        public void ServiceProvider_GetService_ShouldResolveNamedDependencies() 
+        public void ServiceProvider_GetService_ShouldResolveNamedDependencies([ValueSource(nameof(Lifetimes))] Lifetime lifetime1, [ValueSource(nameof(Lifetimes))] Lifetime lifetime2) 
         {
             Container
-                .Service<IInterface_1, Implementation_1_No_Dep>("cica")
-                .Service<IInterface_7<IInterface_1>, MyServiceUsingNamedDependency>();
+                .Service<IInterface_1, Implementation_1_No_Dep>("cica", lifetime1)
+                .Service<IInterface_7<IInterface_1>, MyServiceUsingNamedDependency>(lifetime2);
 
             using (Container.CreateProvider(out IServiceProvider provider))
             {
@@ -82,11 +82,11 @@ namespace Solti.Utils.DI.Injector.Tests
         }
 
         [Test]
-        public void ServiceProvider_GetService_ShouldResolveDependencies()
+        public void ServiceProvider_GetService_ShouldResolveDependencies([ValueSource(nameof(Lifetimes))] Lifetime lifetime1, [ValueSource(nameof(Lifetimes))] Lifetime lifetime2)
         {
             Container
-                .Service<IInterface_1, Implementation_1_No_Dep>()
-                .Service<IInterface_7<IInterface_1>, Implementation_7_TInterface_Dependant<IInterface_1>>();
+                .Service<IInterface_1, Implementation_1_No_Dep>(lifetime1)
+                .Service<IInterface_7<IInterface_1>, Implementation_7_TInterface_Dependant<IInterface_1>>(lifetime2);
 
             using (Container.CreateProvider(out IServiceProvider provider))
             {

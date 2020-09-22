@@ -20,11 +20,11 @@ namespace Solti.Utils.DI.Internals
         {
         }
 
-        public ScopedServiceEntry(Type @interface, string name, Func<IInjector, Type, object> factory, IServiceContainer owner) : base(@interface, name, Interfaces.Lifetime.Scoped, factory, owner)
+        public ScopedServiceEntry(Type @interface, string? name, Func<IInjector, Type, object> factory, IServiceContainer owner) : base(@interface, name, factory, owner)
         {
         }
 
-        public ScopedServiceEntry(Type @interface, string name, Type implementation, IServiceContainer owner) : base(@interface, name, Interfaces.Lifetime.Scoped, implementation, owner)
+        public ScopedServiceEntry(Type @interface, string? name, Type implementation, IServiceContainer owner) : base(@interface, name, implementation, owner)
         {
         }
 
@@ -65,5 +65,7 @@ namespace Solti.Utils.DI.Internals
             target.Add(result);
             return result;
         }
+
+        public override IServiceEntryFactory Lifetime => DI.Lifetime.Scoped;
     }
 }

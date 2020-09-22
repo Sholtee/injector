@@ -15,17 +15,42 @@ namespace Solti.Utils.DI.Injector.Tests
     public partial class InjectorTestsBase<TContainer>
     {
         [Test]
-        public void Injector_Misc_RequestedServiceMayStoreTheItsDependencies(
+        public void Injector_Misc_RequestedServiceMayStoreItsDependencies(
             [Values(true, false)] bool useChildContainer,
-            [Values(Lifetime.Transient, Lifetime.Scoped, Lifetime.Singleton)] Lifetime dependant,
-            [Values(Lifetime.Transient, Lifetime.Scoped, Lifetime.Singleton, null)] Lifetime? dependency)
+            [ValueSource(nameof(Lifetimes))] Lifetime dependant,
+            [ValueSource(nameof(Lifetimes))] Lifetime dependency)
         {
             Config.Value.Injector.StrictDI = false;
 
-            if (dependency != null)
-                Container.Service<IDisposableEx, Disposable>(dependency.Value);
-            else
-                Container.Instance<IDisposableEx>(new Disposable());
+            Container.Service<IDisposableEx, Disposable>(dependency);
+
+            IServiceContainer sourceContainer = useChildContainer ? Container.CreateChild() : Container;
+
+            sourceContainer.Service<IInterface_7<IDisposableEx>, Implementation_7_TInterface_Dependant<IDisposableEx>>(dependant);
+
+            //
+            // Ket kulonallo injectort hozzunk letre.
+            //
+
+            for (int i = 0; i < 2; i++)
+            {
+                using (IInjector injector = sourceContainer.CreateInjector())
+                {
+                    IInterface_7<IDisposableEx> svc = injector.Get<IInterface_7<IDisposableEx>>();
+
+                    Assert.That(svc.Interface.Disposed, Is.False);
+                }
+            }
+        }
+
+        [Test]
+        public void Injector_Misc_RequestedServiceMayStoreItsDependencies(
+            [Values(true, false)] bool useChildContainer,
+            [ValueSource(nameof(Lifetimes))] Lifetime dependant)
+        {
+            Config.Value.Injector.StrictDI = false;
+
+            Container.Instance<IDisposableEx>(new Disposable());
 
             IServiceContainer sourceContainer = useChildContainer ? Container.CreateChild() : Container;
 
@@ -49,7 +74,7 @@ namespace Solti.Utils.DI.Injector.Tests
         [Test]
         public void Injector_Misc_RequestedServiceMayStoreTheParentInjector(
             [Values(true, false)] bool useChildContainer, 
-            [Values(Lifetime.Transient, Lifetime.Scoped, Lifetime.Singleton)] Lifetime lifetime) 
+            [ValueSource(nameof(Lifetimes))] Lifetime lifetime) 
         {
             IServiceContainer sourceContainer = useChildContainer ? Container.CreateChild() : Container;
 

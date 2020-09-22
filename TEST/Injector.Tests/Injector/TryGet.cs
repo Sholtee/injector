@@ -43,7 +43,7 @@ namespace Solti.Utils.DI.Injector.Tests
         public void Injector_TryGet_ShouldReturnNullIfTheServiceCouldNotBeResolved(List<(Type Interface, Type Implementation)> registrations)
         {
             foreach ((Type Interface, Type Implementation) reg in registrations)
-                if (reg.Implementation != null) Container.Service(reg.Interface, reg.Implementation);
+                if (reg.Implementation != null) Container.Service(reg.Interface, reg.Implementation, Lifetime.Transient);
 
             using (IInjector injector = Container.CreateInjector())
             {
@@ -52,9 +52,9 @@ namespace Solti.Utils.DI.Injector.Tests
         }
 
         [Test]
-        public void Injector_TryGet_ShouldSupportNamedServices([Values(null, "cica")] string name) 
+        public void Injector_TryGet_ShouldSupportNamedServices([Values(null, "cica")] string name, [ValueSource(nameof(Lifetimes))] Lifetime lifetime) 
         {
-            Container.Service<IInterface_1, Implementation_1>(name);
+            Container.Service<IInterface_1, Implementation_1>(name, lifetime);
 
             using (IInjector injector = Container.CreateInjector())
             {

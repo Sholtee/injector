@@ -25,7 +25,7 @@ namespace Solti.Utils.DI.Container.Tests
         public void Container_CreateInjector_ShouldThrowOnNotOverriddenAbstractService()
         {
             Container
-                .Service<IInterface_1, Implementation_1_No_Dep>()
+                .Service<IInterface_1, Implementation_1_No_Dep>(Lifetime.Transient)
                 .Abstract<IInterface_2>();
 
             var ioEx = Assert.Throws<InvalidOperationException>(() => Container.CreateInjector(), Resources.INVALID_INJECTOR_ENTRY);

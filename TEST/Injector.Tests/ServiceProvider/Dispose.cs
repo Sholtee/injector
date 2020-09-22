@@ -16,7 +16,7 @@ namespace Solti.Utils.DI.Injector.Tests
     public partial class InjectorTestsBase<TContainer>
     {
         [Test]
-        public void ServiceProvider_Dispose_ShouldFreeOwnedEntries([Values(Lifetime.Scoped, Lifetime.Transient)] Lifetime lifetime)
+        public void ServiceProvider_Dispose_ShouldFreeOwnedEntries([ValueSource(nameof(InjectorControlledLifetimes))] Lifetime lifetime)
         {
             var mockSingleton = new Mock<IInterface_1_Disaposable>(MockBehavior.Strict);
             mockSingleton.Setup(s => s.Dispose());
@@ -32,7 +32,7 @@ namespace Solti.Utils.DI.Injector.Tests
         }
 
         [Test]
-        public async Task ServiceProvider_DisposeAsync_ShouldFreeOwnedEntriesAsynchronously([Values(Lifetime.Scoped, Lifetime.Transient)] Lifetime lifetime)
+        public async Task ServiceProvider_DisposeAsync_ShouldFreeOwnedEntriesAsynchronously([ValueSource(nameof(InjectorControlledLifetimes))] Lifetime lifetime)
         {
             var mockSingleton = new Mock<IAsyncDisposable>(MockBehavior.Strict);
             mockSingleton
