@@ -49,7 +49,7 @@ namespace Solti.Utils.DI.Internals
             }));
         }
 
-        internal static void ApplyAspect(this AbstractServiceEntry entry, AspectAttribute aspect)
+        public static void ApplyAspect(this AbstractServiceEntry entry, AspectAttribute aspect)
         {
             switch (aspect.Kind) 
             {
