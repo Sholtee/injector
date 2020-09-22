@@ -128,10 +128,20 @@ namespace Solti.Utils.DI.Perf
     [MemoryDiagnoser]
     public class InjectorGet: InjectorTestsBase
     {
-        [Params(Lifetime.Transient, Lifetime.Scoped, Lifetime.Singleton)]
+        public IEnumerable<Lifetime> Lifetimes 
+        {
+            get 
+            {
+                yield return Lifetime.Transient;
+                yield return Lifetime.Scoped;
+                yield return Lifetime.Singleton;
+            }
+        }
+
+        [ParamsSource(nameof(Lifetimes))]
         public Lifetime DependencyLifetime { get; set; }
 
-        [Params(Lifetime.Transient, Lifetime.Scoped, Lifetime.Singleton)]
+        [ParamsSource(nameof(Lifetimes))]
         public Lifetime DependantLifetime { get; set; }
 
         [GlobalSetup(Target = nameof(NonGeneric))]
@@ -212,7 +222,17 @@ namespace Solti.Utils.DI.Perf
     [MemoryDiagnoser]
     public class InjectorInstantiate : InjectorTestsBase 
     {
-        [Params(Lifetime.Transient, Lifetime.Scoped, Lifetime.Singleton)]
+        public IEnumerable<Lifetime> Lifetimes
+        {
+            get
+            {
+                yield return Lifetime.Transient;
+                yield return Lifetime.Scoped;
+                yield return Lifetime.Singleton;
+            }
+        }
+
+        [ParamsSource(nameof(Lifetimes))]
         public Lifetime DependencyLifetime { get; set; }
 
         [GlobalSetup(Target = nameof(Instantiate))]

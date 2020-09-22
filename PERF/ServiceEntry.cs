@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Collections.Generic;
 using System.Reflection;
 
 using BenchmarkDotNet.Attributes;
@@ -11,15 +12,25 @@ using BenchmarkDotNet.Attributes;
 namespace Solti.Utils.DI.Perf
 {
     using static Consts;
+
     using Interfaces;
-    using Internals;
     using Primitives.Patterns;
     using Proxy;   
 
     [MemoryDiagnoser]
     public class ServiceEntry
     {
-        [Params(Lifetime.Transient, Lifetime.Scoped, Lifetime.Singleton)]
+        public IEnumerable<Lifetime> Lifetimes
+        {
+            get
+            {
+                yield return Lifetime.Transient;
+                yield return Lifetime.Scoped;
+                yield return Lifetime.Singleton;
+            }
+        }
+
+        [ParamsSource(nameof(Lifetimes))]
         public Lifetime Lifetime { get; set; }
 
         private IServiceContainer Owner;
@@ -40,7 +51,7 @@ namespace Solti.Utils.DI.Perf
         {
             for (int i = 0; i < OperationsPerInvoke; i++)
             {
-                var entry = ProducibleServiceEntry.Create(Lifetime, typeof(IDisposable), i.ToString(), typeof(Disposable), Owner);
+                AbstractServiceEntry entry = Lifetime.CreateFrom(typeof(IDisposable), i.ToString(), typeof(Disposable), Owner);
                 GC.SuppressFinalize(entry);
             }
         }
@@ -50,7 +61,7 @@ namespace Solti.Utils.DI.Perf
         {
             for (int i = 0; i < OperationsPerInvoke; i++)
             {
-                var entry = ProducibleServiceEntry.Create(Lifetime, typeof(IDisposable), i.ToString(), new Func<IInjector, Type, object>((i, t) => new Disposable()), Owner);
+                AbstractServiceEntry entry = Lifetime.CreateFrom(typeof(IDisposable), i.ToString(), new Func<IInjector, Type, object>((i, t) => new Disposable()), Owner);
                 GC.SuppressFinalize(entry);
             }
         }

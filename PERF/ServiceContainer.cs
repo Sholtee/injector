@@ -60,7 +60,7 @@ namespace Solti.Utils.DI.Perf
         public void SetupGet() 
         {
             FContainer = new DI.ServiceContainer();
-            FContainer.Factory<IList>(injector => Array.Empty<int>());
+            FContainer.Factory<IList>(injector => Array.Empty<int>(), Lifetime.Transient);
         }
 
         [Benchmark(OperationsPerInvoke = OperationsPerInvoke)]
@@ -78,7 +78,7 @@ namespace Solti.Utils.DI.Perf
             FContainer = new DI.ServiceContainer();
             for (int i = 0; i < OperationsPerInvoke; i++)
             {
-                FContainer.Service(typeof(IList<>), i.ToString(), typeof(MyList<>));
+                FContainer.Service(typeof(IList<>), i.ToString(), typeof(MyList<>), Lifetime.Transient);
             }
         }
 
