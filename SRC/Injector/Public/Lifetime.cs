@@ -39,6 +39,8 @@ namespace Solti.Utils.DI
             public override AbstractServiceEntry CreateFrom(Type iface, string? name, Func<IInjector, Type, object> factory, IServiceContainer owner) => new SingletonServiceEntry(iface, name, factory, owner);
 
             public override bool IsCompatible(AbstractServiceEntry entry) => entry is SingletonServiceEntry;
+
+            public override string ToString() => nameof(Singleton);
         }
 
         /// <summary>
@@ -53,6 +55,8 @@ namespace Solti.Utils.DI
             public override AbstractServiceEntry CreateFrom(Type iface, string? name, Func<IInjector, Type, object> factory, IServiceContainer owner) => new ScopedServiceEntry(iface, name, factory, owner);
 
             public override bool IsCompatible(AbstractServiceEntry entry) => entry is ScopedServiceEntry;
+
+            public override string ToString() => nameof(Scoped);
         }
 
         /// <summary>
@@ -67,6 +71,8 @@ namespace Solti.Utils.DI
             public override AbstractServiceEntry CreateFrom(Type iface, string? name, Func<IInjector, Type, object> factory, IServiceContainer owner) => new TransientServiceEntry(iface, name, factory, owner);
 
             public override bool IsCompatible(AbstractServiceEntry entry) => entry is TransientServiceEntry;
+
+            public override string ToString() => nameof(Transient);
         }
 
         /// <summary>
