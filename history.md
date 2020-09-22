@@ -162,3 +162,5 @@
   - *breaking:* Basic extensions has been moved to the interfaces project
   - *breaking:* Renamed `AspectAttribute.GetInterceptor()` -> `AspectAttribute.GetInterceptorType()`
   - *breaking:* Renamed (extension related) classes
+- 4.0.0-preview2
+  - *added:* Custom `Lifetime` support
