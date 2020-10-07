@@ -3,25 +3,42 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
+using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Collections.Generic;
-using System.IO;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace Solti.Utils.DI.Internals
 {
     /// <summary>
-    /// Describes the configuration of this library. You can change settings programmatically or by editing the "Injector.config.json" file.
+    /// Describes the configuration of this library. You can change settings programmatically or by editing the "runtimeconfig.template.json" file.
     /// </summary>
+    /// <example>
+    /// <code>
+    /// {
+    ///   "configProperties": {
+    ///     "DI": {
+    ///       "Composite": {
+    ///         "MaxChildCount": 512
+    ///       },
+    ///       "Injector": {
+    ///         "StrictDI": false,
+    ///         "MaxSpawnedTransientServices": 512
+    ///       }
+    ///     }
+    ///   }
+    /// }
+    /// </code>
+    /// </example>
     public partial class Config
     {
         private static Config CreateInstance()
         {
-            string configFile = Path.Combine(Path.GetDirectoryName(typeof(Config).Assembly.Location), $"{typeof(Config).Assembly.GetName().Name}.config.json");
+            object? data = AppContext.GetData("DI");
 
-            if (File.Exists(configFile))
-                return JsonSerializer.Deserialize<Config>(File.ReadAllText(configFile));
+            if (data != null)
+                return JsonSerializer.Deserialize<Config>((string) data);
 
             return new Config();
         }

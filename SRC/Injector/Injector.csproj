@@ -5,7 +5,6 @@
     <RootNamespace>Solti.Utils.DI</RootNamespace>
   </PropertyGroup>
 
-  <Import Project="Injector.NET.targets" />
   <Import Project="../Common.targets" />
 
   <PropertyGroup>
@@ -51,13 +50,6 @@
     </EmbeddedResource>
   </ItemGroup>
 
-  <ItemGroup>
-    <None Include="Injector.NET.targets;Solti.Utils.DI.config.json">
-      <Pack>true</Pack>
-      <PackagePath>build</PackagePath>
-    </None>
-  </ItemGroup>
-  
   <ItemGroup>
     <ProjectReference Include="..\Interfaces\Injector.Interfaces.csproj" />
   </ItemGroup>

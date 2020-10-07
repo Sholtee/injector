@@ -1,0 +1,13 @@
+﻿{
+  "configProperties": {
+    "DI": {
+      "Composite": {
+        "MaxChildCount": 512
+      },
+      "Injector": {
+        "StrictDI": false,
+        "MaxSpawnedTransientServices": 512
+      }
+    }
+  }
+}
