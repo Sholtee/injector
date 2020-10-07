@@ -159,8 +159,12 @@
 - 3.4.1:
   - *fixed:* Config reading issue
 - 4.0.0-preview1:
-  - *breaking:* Basic extensions has been moved to the interfaces project
+  - *breaking:* `Factory()`, `Service()` recipe has been moved to the interfaces project
   - *breaking:* Renamed `AspectAttribute.GetInterceptor()` -> `AspectAttribute.GetInterceptorType()`
   - *breaking:* Renamed (extension related) classes
-- 4.0.0-preview2
+- 4.0.0-preview2:
   - *added:* Custom `Lifetime` support
+- 4.0.0-preview3:
+  - *breaking:* `Provider()`, `Proxy()` recipe has been moved to the interfaces project
+  - *breaking:* Configuration moved to `runtimeconfig.json`
+  - *breaking:* Removed obsolete [Duck|Proxy]Factory.AssemblyCacheDirectory property
