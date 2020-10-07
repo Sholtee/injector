@@ -20,6 +20,9 @@ namespace Solti.Utils.DI.Internals
             name, 
             owner)
         {
+            Ensure.Parameter.IsNotNull(instance, nameof(instance));
+            Ensure.Type.IsTypeOf(@interface, instance);
+
             //
             // Nem kell kulon ellenorizni a peldanyt mert a ServiceReference.SetValue() validal.
             //

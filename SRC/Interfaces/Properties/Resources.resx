@@ -120,11 +120,14 @@
   <data name="INAPROPRIATE_OWNERSHIP" xml:space="preserve">
     <value>Not owned entry can not be proxied.</value>
   </data>
-  <data name="INTERFACE_NOT_SUPPORTED" xml:space="preserve">
-    <value>The implementation does not support the service interface.</value>
-  </data>
   <data name="NOT_AN_INTERFACE" xml:space="preserve">
     <value>Parameter must be an interface.</value>
+  </data>
+  <data name="NOT_A_CLASS" xml:space="preserve">
+    <value>Parameter must be a class.</value>
+  </data>
+  <data name="NOT_IMPLEMENTED" xml:space="preserve">
+    <value>The type must implement the "{0}" interface.</value>
   </data>
   <data name="PROXYING_NOT_SUPPORTED" xml:space="preserve">
     <value>The entry does not support proxying.</value>

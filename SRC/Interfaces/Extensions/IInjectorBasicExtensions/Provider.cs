@@ -4,14 +4,13 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Linq;
 
-namespace Solti.Utils.DI
+namespace Solti.Utils.DI.Interfaces
 {
-    using Interfaces;
-    using Internals;
     using Properties;
 
-    public static partial class IServiceContainerAdvancedExtensions
+    public static partial class IServiceContainerBasicExtensions
     {
         /// <summary>
         /// Registers a new provider. Providers are "factory services" responsible for creating the concrete service.
@@ -24,48 +23,25 @@ namespace Solti.Utils.DI
         /// <returns>The container itself.</returns>
         public static IServiceContainer Provider(this IServiceContainer self, Type iface, string? name, Type provider, IServiceEntryFactory entryFactory)
         {
-            Ensure.Parameter.IsNotNull(self, nameof(self));
-            Ensure.Parameter.IsNotNull(provider, nameof(provider));
+            if (self == null)
+                throw new ArgumentNullException(nameof(self));
 
-            if (!IsProvider(provider))
-                throw new ArgumentException(string.Format(Resources.Culture, Interfaces.Properties.Resources.INTERFACE_NOT_SUPPORTED, typeof(IServiceProvider)), nameof(provider));
+            if (provider == null)
+                throw new ArgumentNullException(nameof(self));
 
-            //
-            // Ezeket a Factory() hivas ellenorizne, itt csak azert van h ne legyen
-            // felesleges Resolver.Get() hivas.
-            //
-
-            Ensure.Parameter.IsNotNull(iface, nameof(iface));
-            Ensure.Parameter.IsInterface(iface, nameof(iface));
+            if (entryFactory == null)
+                throw new ArgumentNullException(nameof(entryFactory));
 
             //
-            // A "Resolver.Get()" hivas validal is
+            // Tovabbi validaciot az xXxServiceEntry vegzi.
             //
 
-            Func<IInjector, Type, object> providerFactory = Resolver.Get(provider);
+            if (!provider.GetInterfaces().Any(iface => iface == typeof(IServiceProvider)))
+                throw new ArgumentException(string.Format(Resources.Culture, Resources.NOT_IMPLEMENTED, typeof(IServiceProvider)), nameof(provider));
 
-            return self.Factory(iface, name, GetService, entryFactory);
-
-            object GetService(IInjector injector, Type iface)
-            {
-                IServiceProvider provider = (IServiceProvider) providerFactory.Invoke(injector, typeof(IServiceProvider));
-
-                //
-                // Nem gond ha NULL-t v rossz tipusu peldanyt ad vissza mert az injector validalni fogja.
-                //
-
-                return provider.GetService(iface);
-            }
-
-            static bool IsProvider(Type type)
-            {
-                foreach (Type iface in type.GetInterfaces())
-                {
-                    if (iface == typeof(IServiceProvider) || IsProvider(iface))
-                        return true;
-                }
-                return false;
-            }
+            return self
+                .Service(iface, name, provider, entryFactory)
+                .Proxy(iface, name, (injector, iface, instance) => ((IServiceProvider) instance).GetService(iface));
         }
 
         /// <summary>

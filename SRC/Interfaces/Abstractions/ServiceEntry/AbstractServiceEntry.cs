@@ -49,30 +49,14 @@ namespace Solti.Utils.DI.Interfaces
                 throw new ArgumentException(Resources.NOT_AN_INTERFACE, nameof(@interface));
 
             //
-            // Implementacio validalasa a leszarmazott feladata, itt csak azt ellenorizzuk h az adott
-            // interface-t megvalositja e.
+            // Ha van implementacio akkor nem kell ellenorizni h megvalositja e az interface-t mivel:
+            //   1) Ha meg is valositja, Proxy()-val ugy is el lehet rontani
+            //   2) Epp ezert az Injector ellenorizni fogja a Factory hivas visszatereset
+            //   3) Pl a Provider() hivas is "rossz" tipus regisztral
             //
 
-            if (implementation != null && !InterfaceSupportedBy(implementation))
-                throw new ArgumentException(Resources.INTERFACE_NOT_SUPPORTED, nameof(implementation));
-
-            bool InterfaceSupportedBy(Type type) 
-            {
-                if (type.IsGenericTypeDefinition != @interface.IsGenericTypeDefinition) return false;
-
-                foreach (Type iface in type.GetInterfaces())
-                {
-                    //
-                    // List<T>: IList<T> eseten a GetInterfaces() altal visszadobott IList<T> nem lesz azonos typeof(IList<>)-el
-                    //
-
-                    Type current = @interface.IsGenericTypeDefinition && iface.IsGenericType ? iface.GetGenericTypeDefinition() : iface;
-
-                    if (@interface == current || InterfaceSupportedBy(current))
-                        return true;
-                }
-                return false;
-            }
+            if (implementation != null && !implementation.IsClass)
+                throw new ArgumentException(Resources.NOT_A_CLASS, nameof(implementation));
         }
 
         #region Immutables

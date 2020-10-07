@@ -70,11 +70,11 @@ namespace Solti.Utils.DI.Interfaces.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The implementation does not support the service interface..
+        ///   Looks up a localized string similar to Parameter must be a class..
         /// </summary>
-        internal static string INTERFACE_NOT_SUPPORTED {
+        internal static string NOT_A_CLASS {
             get {
-                return ResourceManager.GetString("INTERFACE_NOT_SUPPORTED", resourceCulture);
+                return ResourceManager.GetString("NOT_A_CLASS", resourceCulture);
             }
         }
         
@@ -84,6 +84,15 @@ namespace Solti.Utils.DI.Interfaces.Properties {
         internal static string NOT_AN_INTERFACE {
             get {
                 return ResourceManager.GetString("NOT_AN_INTERFACE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The type must implement the &quot;{0}&quot; interface..
+        /// </summary>
+        internal static string NOT_IMPLEMENTED {
+            get {
+                return ResourceManager.GetString("NOT_IMPLEMENTED", resourceCulture);
             }
         }
         

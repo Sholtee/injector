@@ -104,21 +104,6 @@ namespace Solti.Utils.DI.Container.Tests
             Assert.Throws<ArgumentException>(() => Container.Service<IInterface_1, Implementation_1_Non_Interface_Dep>(lifetime));
         }
 
-        public static IEnumerable<(Type Interface, Type Implementation)> BadRegistrations // sima TestCase-el nem fog mukodni
-        {
-            get 
-            {
-                yield return (typeof(IInterface_2), typeof(Implementation_1_No_Dep));
-                yield return (typeof(IList<>), typeof(Implementation_1_No_Dep));
-                yield return (typeof(IList<int>), typeof(List<string>));
-                yield return (typeof(IList<int>), typeof(List<>));
-                yield return (typeof(IList<>), typeof(List<string>));
-            }
-        }
-
-        public void Container_Service_ShouldThrowIfTheInterfaceIsNotAssignableFromTheImplementation([ValueSource(nameof(BadRegistrations))] (Type Interface, Type Implementation) para, [ValueSource(nameof(Lifetimes))] Lifetime lifetime) =>
-            Assert.Throws<ArgumentException>(() => Container.Service(para.Interface, para.Implementation, lifetime), string.Format(Interfaces.Properties.Resources.INTERFACE_NOT_SUPPORTED, para.Interface));
-
         public void Container_Service_ShouldThrowOnMultipleRegistration([ValueSource(nameof(Lifetimes))] Lifetime lifetime1, [ValueSource(nameof(Lifetimes))] Lifetime lifetime2)
         {
             Container.Service<IInterface_1, Implementation_1_No_Dep>(lifetime1);
