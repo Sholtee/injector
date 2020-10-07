@@ -24,7 +24,7 @@ namespace Solti.Utils.DI.Container.Tests
             Assert.Throws<ArgumentNullException>(() => Container.Proxy(null, null, typeof(InterfaceInterceptor<IDisposable>)));
             //Assert.Throws<ArgumentNullException>(() => Container.Proxy(typeof(IDisposable), null, (Type) null));
 
-            Assert.Throws<ArgumentNullException>(() => IServiceContainerAdvancedExtensions.Proxy(null, typeof(IDisposable), null, (i, t, o) => o));
+            Assert.Throws<ArgumentNullException>(() => IServiceContainerBasicExtensions.Proxy(null, typeof(IDisposable), null, (i, t, o) => o));
             Assert.Throws<ArgumentNullException>(() => Container.Proxy(null, null, (i, t, o) => o));
             //Assert.Throws<ArgumentNullException>(() => Container.Proxy(typeof(IDisposable), null, (Func<IInjector, Type, object, object>) null));
         }

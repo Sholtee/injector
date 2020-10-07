@@ -61,6 +61,15 @@ namespace Solti.Utils.DI.Interfaces.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Not owned entry can not be proxied..
+        /// </summary>
+        internal static string INAPROPRIATE_OWNERSHIP {
+            get {
+                return ResourceManager.GetString("INAPROPRIATE_OWNERSHIP", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The implementation does not support the service interface..
         /// </summary>
         internal static string INTERFACE_NOT_SUPPORTED {
@@ -75,6 +84,15 @@ namespace Solti.Utils.DI.Interfaces.Properties {
         internal static string NOT_AN_INTERFACE {
             get {
                 return ResourceManager.GetString("NOT_AN_INTERFACE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The entry does not support proxying..
+        /// </summary>
+        internal static string PROXYING_NOT_SUPPORTED {
+            get {
+                return ResourceManager.GetString("PROXYING_NOT_SUPPORTED", resourceCulture);
             }
         }
     }
