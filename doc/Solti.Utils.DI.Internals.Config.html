@@ -42,7 +42,7 @@
   
   <h1 id="Solti_Utils_DI_Internals_Config" data-uid="Solti.Utils.DI.Internals.Config" class="text-break">Class Config
   </h1>
-  <div class="markdown level0 summary"><p>Describes the configuration of this library. You can change settings programmatically or by editing the &quot;Injector.config.json&quot; file.</p>
+  <div class="markdown level0 summary"><p>Describes the configuration of this library. You can change settings programmatically or by editing the &quot;runtimeconfig.template.json&quot; file.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
@@ -80,6 +80,21 @@
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public class Config</code></pre>
   </div>
+  <h5 id="Solti_Utils_DI_Internals_Config_examples"><strong>Examples</strong></h5>
+  <pre><code>{
+  &quot;configProperties&quot;: {
+    &quot;DI&quot;: {
+      &quot;Composite&quot;: {
+        &quot;MaxChildCount&quot;: 512
+      },
+      &quot;Injector&quot;: {
+        &quot;StrictDI&quot;: false,
+        &quot;MaxSpawnedTransientServices&quot;: 512
+      }
+    }
+  }
+}</code></pre>
+
   <h3 id="properties">Properties
   </h3>
   <a id="Solti_Utils_DI_Internals_Config_Composite_" data-uid="Solti.Utils.DI.Internals.Config.Composite*"></a>
