@@ -4,6 +4,9 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Collections.Concurrent;
+using System.Linq;
+using System.Threading.Tasks;
 
 using NUnit.Framework;
 
@@ -79,6 +82,30 @@ namespace Solti.Utils.DI.Injector.Tests
         }
 
         [Test]
+        public async Task Lifetime_ScopedService_ShouldBeInstantiatedOnlyOncePerInjector_ParallelTest()
+        {
+            //
+            // Ne mindig csak a ket Get() hivas eredmenyet hasonlitsuk ossze
+            //
+
+            var store = new ConcurrentDictionary<IInterface_1, bool>();
+
+            Container.Service<IInterface_1, Implementation_1_No_Dep>(Lifetime.Scoped);
+
+            await Task.WhenAll
+            (
+                Enumerable.Repeat(0, 100).Select(_ => Task.Factory.StartNew(() =>
+                {
+                    using (IInjector injector = Container.CreateInjector())
+                    {
+                        Assert.That(store.TryAdd(injector.Get<IInterface_1>(), true));
+                        Assert.False(store.TryAdd(injector.Get<IInterface_1>(), true));
+                    }
+                }))
+            );
+        }
+
+        [Test]
         public void Lifetime_InheritedScopedService_ShouldBeInstantiatedOnlyOncePerInjector()
         {
             IServiceContainer childContainer = Container // nem muszaj dispose-olni Container felszabaditasakor ugy is dispose-olva lesz
@@ -114,6 +141,31 @@ namespace Solti.Utils.DI.Injector.Tests
                     }
                 }
             }
+        }
+
+        [Test]
+        public async Task Lifetime_SingletonService_ShouldBeInstantiatedOnlyOncePerDeclaringContainer_ParallelTest()
+        {
+            //
+            // Ne mindig csak a ket Get() hivas eredmenyet hasonlitsuk ossze
+            //
+
+            var store = new ConcurrentDictionary<IInterface_1, bool>();
+
+            Container.Service<IInterface_1, Implementation_1_No_Dep>(Lifetime.Singleton);
+
+            await Task.WhenAll
+            (
+                Enumerable.Repeat(0, 100).Select(_ => Task.Factory.StartNew(() =>
+                {
+                    using (IInjector injector = Container.CreateInjector())
+                    {
+                        store.TryAdd(injector.Get<IInterface_1>(), true);
+                    }
+                }))
+            );
+
+            Assert.That(store.Count, Is.EqualTo(1));
         }
 
         [Test]
