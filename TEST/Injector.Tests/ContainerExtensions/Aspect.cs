@@ -13,7 +13,6 @@ using NUnit.Framework;
 
 namespace Solti.Utils.DI.Container.Tests
 {
-    using Extensions.Aspects;
     using Interfaces;
     using Internals;
     using Primitives.Patterns;
@@ -159,20 +158,6 @@ namespace Solti.Utils.DI.Container.Tests
 
             Assert.That(svc.GetAspectsOrder().SequenceEqual(new[] { nameof(OrderInspectingAspect1Attribute), nameof(OrderInspectingAspect2Attribute), nameof(OrderInspectingAspect3Attribute) }));
         }
-
-        [TestCaseSource(nameof(Lifetimes))]
-        public void Aspects_AspectCanBeNaked(Lifetime lifetime)
-        {
-            var mockService = new Mock<IServiceUsingNakedInterceptor>(MockBehavior.Strict);
-
-            Container.Factory(i => mockService.Object, lifetime);
-
-            var svc = (IServiceUsingNakedInterceptor) Container
-                .Get<IServiceUsingNakedInterceptor>()
-                .Factory(new Mock<IInjector>(MockBehavior.Strict).Object, typeof(IServiceUsingNakedInterceptor));
-
-            Assert.Throws<ArgumentNullException>(() => svc.Foo(null));
-        }
     }
 
     public class AspectWithoutImplementation : AspectAttribute
@@ -263,31 +248,5 @@ namespace Solti.Utils.DI.Container.Tests
     public interface IOrderInspectingService
     {
         IEnumerable<string> GetAspectsOrder();
-    }
-
-    [AttributeUsage(AttributeTargets.Interface, AllowMultiple = false)]
-    public class NakedValidatorAspectAttribute: AspectAttribute 
-    {
-        public override Type GetInterceptorType(Type iface)
-        {
-            Type interceptor = Type.GetType("Solti.Utils.DI.Extensions.Aspects.ParameterValidator`1, Solti.Utils.DI.Extensions, Version=3.3.1.0, Culture=neutral, PublicKeyToken=null", throwOnError: true);
-
-            return interceptor.MakeGenericType(iface);
-        }
-    }
-
-    [AttributeUsage(AttributeTargets.Parameter, AllowMultiple = false)]
-    public class NotNullAttribute : ParameterValidatorAttribute
-    {
-        public override void Validate(ParameterInfo param, object value)
-        {
-            if (value == null) throw new ArgumentNullException(param.Name);
-        }
-    }
-
-    [NakedValidatorAspect]
-    public interface IServiceUsingNakedInterceptor 
-    {
-        void Foo([NotNull] string val);
     }
 }
