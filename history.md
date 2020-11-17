@@ -168,3 +168,6 @@
   - *breaking:* `Provider()`, `Proxy()` recipe has been moved to the interfaces project
   - *breaking:* Configuration moved to `runtimeconfig.json`
   - *breaking:* Removed obsolete [Duck|Proxy]Factory.AssemblyCacheDirectory property
+- 4.0.0-preview4:
+  - *breaking:* Dropped *Injector.NET.Extensions* project
+  - *upgraded:* `ProxyGen.NET` to version 4.0.0-preview
