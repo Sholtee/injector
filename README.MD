@@ -5,7 +5,6 @@
 |:--:|:--:|
 |**Injector.NET**|[![Nuget (with prereleases)](https://img.shields.io/nuget/vpre/injector.net)](https://www.nuget.org/packages/injector.net )|
 |**Injector.NET.Interfaces**|[![Nuget (with prereleases)](https://img.shields.io/nuget/vpre/injector.net.interfaces)](https://www.nuget.org/packages/injector.net.interfaces )|
-|**Injector.NET.Extensions**|[![Nuget (with prereleases)](https://img.shields.io/nuget/vpre/injector.net.extensions)](https://www.nuget.org/packages/injector.net.extensions )|
 
 **This documentation refers the version 3.X of the library**
 ## Overview
