@@ -1645,19 +1645,6 @@ references:
   fullName.vb: Solti.Utils.Proxy.DuckFactory.Like(Of TInterface)()
   nameWithType: DuckFactory.Like<TInterface>()
   nameWithType.vb: DuckFactory.Like(Of TInterface)()
-- uid: Solti.Utils.Proxy.DuckFactory.PreserveProxyAssemblies
-  name: PreserveProxyAssemblies
-  href: Solti.Utils.Proxy.DuckFactory.html#Solti_Utils_Proxy_DuckFactory_PreserveProxyAssemblies
-  commentId: P:Solti.Utils.Proxy.DuckFactory.PreserveProxyAssemblies
-  fullName: Solti.Utils.Proxy.DuckFactory.PreserveProxyAssemblies
-  nameWithType: DuckFactory.PreserveProxyAssemblies
-- uid: Solti.Utils.Proxy.DuckFactory.PreserveProxyAssemblies*
-  name: PreserveProxyAssemblies
-  href: Solti.Utils.Proxy.DuckFactory.html#Solti_Utils_Proxy_DuckFactory_PreserveProxyAssemblies_
-  commentId: Overload:Solti.Utils.Proxy.DuckFactory.PreserveProxyAssemblies
-  isSpec: "True"
-  fullName: Solti.Utils.Proxy.DuckFactory.PreserveProxyAssemblies
-  nameWithType: DuckFactory.PreserveProxyAssemblies
 - uid: Solti.Utils.Proxy.ObjectExtensions
   name: ObjectExtensions
   href: Solti.Utils.Proxy.ObjectExtensions.html
@@ -1759,19 +1746,6 @@ references:
   fullName.vb: Solti.Utils.Proxy.ProxyFactory.Create(Of TInterface, TInterceptor)(System.Type(), System.Object())
   nameWithType: ProxyFactory.Create<TInterface, TInterceptor>(Type[], Object[])
   nameWithType.vb: ProxyFactory.Create(Of TInterface, TInterceptor)(Type(), Object())
-- uid: Solti.Utils.Proxy.ProxyFactory.PreserveProxyAssemblies
-  name: PreserveProxyAssemblies
-  href: Solti.Utils.Proxy.ProxyFactory.html#Solti_Utils_Proxy_ProxyFactory_PreserveProxyAssemblies
-  commentId: P:Solti.Utils.Proxy.ProxyFactory.PreserveProxyAssemblies
-  fullName: Solti.Utils.Proxy.ProxyFactory.PreserveProxyAssemblies
-  nameWithType: ProxyFactory.PreserveProxyAssemblies
-- uid: Solti.Utils.Proxy.ProxyFactory.PreserveProxyAssemblies*
-  name: PreserveProxyAssemblies
-  href: Solti.Utils.Proxy.ProxyFactory.html#Solti_Utils_Proxy_ProxyFactory_PreserveProxyAssemblies_
-  commentId: Overload:Solti.Utils.Proxy.ProxyFactory.PreserveProxyAssemblies
-  isSpec: "True"
-  fullName: Solti.Utils.Proxy.ProxyFactory.PreserveProxyAssemblies
-  nameWithType: ProxyFactory.PreserveProxyAssemblies
 - uid: Solti.Utils.Proxy.ProxyUtils
   name: ProxyUtils
   href: Solti.Utils.Proxy.ProxyUtils.html
