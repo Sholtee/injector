@@ -4,7 +4,7 @@
     <Authors>Denes Solti</Authors>
     <Version>4.0.0-preview4</Version>
     <Configurations>Debug;Release;Perf</Configurations>
-    <LangVersion>8</LangVersion>
+    <LangVersion>9</LangVersion>
     <Nullable>enable</Nullable>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <NoWarn>CA2007</NoWarn>
@@ -24,8 +24,8 @@
     <None Include="..\..\icon.png" Pack="true" PackagePath=""/>
   </ItemGroup>
 
-  <ItemGroup Condition="'$(CI)' == ''">
-    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="3.*">
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="5.*">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>

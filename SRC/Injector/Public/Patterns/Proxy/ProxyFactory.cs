@@ -21,25 +21,8 @@ namespace Solti.Utils.Proxy
     /// </summary>
     public static class ProxyFactory
     {
-        /// <summary>
-        /// Specifies whether the system should cache the generated proxy assemblies or not.
-        /// </summary>
-        /// <remarks>This property should be true in production builds.</remarks>
-        public static bool PreserveProxyAssemblies { get; set; }
-
-        private static Type GenerateProxyType<TInterface, TInterceptor>() where TInterface : class where TInterceptor : InterfaceInterceptor<TInterface>
-        {
-            if (PreserveProxyAssemblies)
-                TypeGeneratorExtensions.SetCacheDirectory<TInterface, ProxyGenerator<TInterface, TInterceptor>>();
-
-            //
-            // Generikus parameterek validalasat a ProxyGenerator<> vegzi.
-            //
-
-            #pragma warning disable CS0618 // Type or member is obsolete
-            return ProxyGenerator<TInterface, TInterceptor>.GeneratedType;
-            #pragma warning restore CS0618
-        }
+        private static Type GenerateProxyType<TInterface, TInterceptor>() where TInterface : class where TInterceptor : InterfaceInterceptor<TInterface> => 
+            ProxyGenerator<TInterface, TInterceptor>.GetGeneratedType();
 
         /// <summary>
         /// Creates a new proxy instance with the given arguments.
