@@ -171,3 +171,5 @@
 - 4.0.0-preview4:
   - *breaking:* Dropped *Injector.NET.Extensions* project
   - *upgraded:* `ProxyGen.NET` to version 4.0.0-preview
+- 4.0.0-preview5:
+  - *breaking:* Dropped `[Proxy|Duck]Factory.PreserveProxyAssemblies` property (you can tweak assembly caching in your [app config](https://github.com/Sholtee/proxygen#caching-the-generated-assembly ) )
