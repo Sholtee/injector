@@ -24,7 +24,7 @@ namespace Solti.Utils.DI.Internals
             // az aktualis proxy tipus osenek konstruktoran van (ha van).
             //
 
-            if (src.FullName == "GeneratedProxy")
+            if (src.FullName.StartsWith("GeneratedClass_"))
             {
                 Type @base = src.BaseType;
                 Debug.Assert(@base != null);

@@ -68,7 +68,7 @@ namespace Solti.Utils.Proxy.Tests
         [Test]
         public void Create_ShouldValidate() 
         {
-            Assert.Throws<InvalidOperationException>(() => ProxyFactory.Create(typeof(object), typeof(InterfaceInterceptor<object>)));
+            Assert.Throws<ArgumentException>(() => ProxyFactory.Create(typeof(object), typeof(InterfaceInterceptor<object>)));
             Assert.Throws<ArgumentException>(() => ProxyFactory.Create(typeof(IList<object>), typeof(InterfaceInterceptor<IList<int>>), null));
         }
     }

@@ -8,6 +8,8 @@
         "StrictDI": false,
         "MaxSpawnedTransientServices": 512
       }
-    }
+    },
+    "ProxyGen.SourceDump": "..\\Logs",
+    "ProxyGen.LogDump": "..\\Logs"
   }
 }
