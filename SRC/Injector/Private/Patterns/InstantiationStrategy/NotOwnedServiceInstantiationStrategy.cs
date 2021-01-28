@@ -47,7 +47,7 @@ namespace Solti.Utils.DI.Internals
                 //   elettartamat.
                 //
 
-                injector = injector.Adopt(requested.Owner);
+                injector = injector.Fork(requested.Owner);
 
                 try
                 {

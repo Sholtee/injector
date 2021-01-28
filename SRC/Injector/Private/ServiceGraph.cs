@@ -61,7 +61,7 @@ namespace Solti.Utils.DI.Internals
             return new WithScope(FGraph);
         }
 
-        public ServiceGraph CreateSubgraph() => new ServiceGraph(this);
+        public ServiceGraph CreateNode() => new ServiceGraph(this);
 
         private sealed class WithScope : Disposable 
         {

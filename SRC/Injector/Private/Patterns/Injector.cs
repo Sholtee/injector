@@ -48,21 +48,27 @@ namespace Solti.Utils.DI.Internals
                 throw ex;
             }
         }
-        #endregion
-
-        #region Protected
-        protected ServiceGraph CreateSubgraph() => FGraph.CreateSubgraph();
-
-        protected Injector(IServiceContainer parent, IReadOnlyDictionary<string, object> factoryOptions, ServiceGraph graph) : base(parent)
+            
+        private Injector(IServiceContainer parent, IReadOnlyDictionary<string, object> factoryOptions, ServiceGraph graph) : base(parent)
         {
-            FactoryOptions = Ensure.Parameter.IsNotNull(factoryOptions, nameof(factoryOptions));
-            FGraph = Ensure.Parameter.IsNotNull(graph, nameof(graph));
+            FactoryOptions = factoryOptions;
+            FGraph = graph;
 
             FStrategySelector = new ServiceInstantiationStrategySelector(this);
 
             this.RegisterSelf();
             this.RegisterServiceEnumerator();
         }
+        #endregion
+
+        #region Protected
+        // "private protected" csak azert kell h a Moq ne fossa ossze magat
+        private protected Injector(IServiceContainer parent, Injector forkFrom) : this
+        (
+            parent, 
+            forkFrom.FactoryOptions, 
+            forkFrom.FGraph.CreateNode()
+        ) { }
         #endregion
 
         #region Internals
@@ -86,11 +92,7 @@ namespace Solti.Utils.DI.Internals
             }
         }
 
-        internal virtual Injector Adopt(IServiceContainer parent)
-        {
-            Ensure.Parameter.IsNotNull(parent, nameof(parent));
-            return new Injector(parent, FactoryOptions, CreateSubgraph());
-        }
+        internal virtual Injector Fork(IServiceContainer parent) => new Injector(parent, this);
 
         internal virtual IServiceReference GetReference(Type iface, string? name)
         {

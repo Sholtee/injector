@@ -4,7 +4,6 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
-using System.Collections.Generic;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -12,12 +11,12 @@ namespace Solti.Utils.DI.Internals
 
     internal class ServiceProvider : Injector, IServiceProvider, IInjector
     {
-        protected ServiceProvider(IServiceContainer parent, IReadOnlyDictionary<string, object> factoryOptions, ServiceGraph graph) : base(parent, factoryOptions, graph) { }
+        protected ServiceProvider(IServiceContainer parent, ServiceProvider forkFrom) : base(parent, forkFrom) { }
 
         public ServiceProvider(IServiceContainer parent) : base(parent)
             => this.Instance<IServiceProvider>(this, releaseOnDispose: false);
 
-        internal override Injector Adopt(IServiceContainer parent) => new ServiceProvider(parent, FactoryOptions, CreateSubgraph());
+        internal override Injector Fork(IServiceContainer parent) => new ServiceProvider(parent, this);
 
         //
         // IInjector.Get() elvileg sose adhatna vissza NULL-t viszont h biztositsuk 
