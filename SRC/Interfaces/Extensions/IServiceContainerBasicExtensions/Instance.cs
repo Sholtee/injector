@@ -6,12 +6,9 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 
-namespace Solti.Utils.DI
+namespace Solti.Utils.DI.Interfaces
 {
-    using Interfaces;
-    using Internals;
-
-    public static partial class IServiceContainerAdvancedExtensions
+    public static partial class IServiceContainerBasicExtensions
     {
         /// <summary>
         /// Registers a pre-created instance. Useful to creating "constant" values (e.g. command-line arguments).
@@ -25,13 +22,18 @@ namespace Solti.Utils.DI
         [SuppressMessage("Reliability", "CA2000:Dispose objects before losing scope", Justification = "The container is responsible for disposing the entry.")]
         public static IServiceContainer Instance(this IServiceContainer self, Type iface, string? name, object instance, bool releaseOnDispose = false)
         {
-            Ensure.Parameter.IsNotNull(self, nameof(self));
+            if (self == null)
+                throw new ArgumentNullException(nameof(self));
 
             //
             // Tobbi parametert az InstanceServiceEntry konstruktora fogja ellenorizni.
             //
 
-            self.Add(new InstanceServiceEntry(iface, name, instance, releaseOnDispose, self));
+            self.Add
+            (
+                Lifetime.Instance.CreateFrom(iface, name, instance, !releaseOnDispose, self)
+            );
+
             return self;
         }
 

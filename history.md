@@ -174,3 +174,5 @@
 - 4.0.0-preview5:
   - *breaking:* Dropped `[Proxy|Duck]Factory.PreserveProxyAssemblies` property (you can tweak assembly caching in your [app config](https://github.com/Sholtee/proxygen#caching-the-generated-assembly ) )
   - *breaking:* New `runtimeconfig.json` layout
+  - *breaking:* `Lifetime` class moved to interfaces project
+  - *breaking:* `Instance` related logic moved to interfaces project

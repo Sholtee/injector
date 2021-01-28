@@ -36,7 +36,7 @@ namespace Solti.Utils.DI
         }
 
         /// <summary>
-        /// The service was registered via <see cref="IServiceContainerAdvancedExtensions.Instance(IServiceContainer, Type, string, object, bool)"/> call.
+        /// The service was registered via <see cref="IServiceContainerBasicExtensions.Instance(IServiceContainer, Type, string, object, bool)"/> call.
         /// </summary>
         public static bool IsInstance(this AbstractServiceEntry self)
         {

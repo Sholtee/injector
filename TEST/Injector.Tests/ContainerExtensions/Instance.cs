@@ -19,7 +19,7 @@ namespace Solti.Utils.DI.Container.Tests
         [Test]
         public void Container_Instance_ShouldBeNullChecked() 
         {
-            Assert.Throws<ArgumentNullException>(() => IServiceContainerAdvancedExtensions.Instance(null, typeof(IDisposable), new Disposable()));
+            Assert.Throws<ArgumentNullException>(() => IServiceContainerBasicExtensions.Instance(null, typeof(IDisposable), new Disposable()));
             //Assert.Throws<ArgumentNullException>(() => Container.Instance(null, new Disposable()));
             Assert.Throws<ArgumentNullException>(() => Container.Instance<IDisposable>(null));
         }

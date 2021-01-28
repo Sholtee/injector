@@ -15,7 +15,7 @@ namespace Solti.Utils.DI.Internals
     /// </summary>
     internal class InstanceServiceEntry : AbstractServiceEntry
     {
-        public InstanceServiceEntry(Type @interface, string? name, object instance, bool releaseOnDispose, IServiceContainer owner) : base(
+        public InstanceServiceEntry(Type @interface, string? name, object instance, bool externallyOwned, IServiceContainer owner) : base(
             @interface, 
             name, 
             owner)
@@ -27,7 +27,7 @@ namespace Solti.Utils.DI.Internals
             // Nem kell kulon ellenorizni a peldanyt mert a ServiceReference.SetValue() validal.
             //
 
-            Instance = new ServiceReference(this, instance, externallyOwned: !releaseOnDispose);
+            Instance = new ServiceReference(this, instance, externallyOwned);
 
             //
             // Ez kivetelt fog dobni ha "@interface"-en akar csak egy aspektus is van (peldanynak nincs

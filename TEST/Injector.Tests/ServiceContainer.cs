@@ -33,8 +33,8 @@ namespace Solti.Utils.DI.Container.Tests
 
             using (IServiceContainer container = new TImplementation())
             {
-                container.Add(new InstanceServiceEntry(typeof(IDisposable), "owned", mockOwned.Object, releaseOnDispose: true, owner: container));
-                container.Add(new InstanceServiceEntry(typeof(IDisposable), "notOwned", mockNotOwned.Object, releaseOnDispose: true, owner: new TImplementation()));
+                container.Add(new InstanceServiceEntry(typeof(IDisposable), "owned", mockOwned.Object, externallyOwned: false, owner: container));
+                container.Add(new InstanceServiceEntry(typeof(IDisposable), "notOwned", mockNotOwned.Object, externallyOwned: false, owner: new TImplementation()));
 
                 Assert.That(container.Count, Is.EqualTo(2));
             }
@@ -62,8 +62,8 @@ namespace Solti.Utils.DI.Container.Tests
             try
 #endif
             {
-                container.Add(new InstanceServiceEntry(typeof(IAsyncDisposable), "owned", mockOwned.Object, releaseOnDispose: true, owner: container));
-                container.Add(new InstanceServiceEntry(typeof(IAsyncDisposable), "notOwned", mockNotOwned.Object, releaseOnDispose: true, owner: new TImplementation()));
+                container.Add(new InstanceServiceEntry(typeof(IAsyncDisposable), "owned", mockOwned.Object, externallyOwned: false, owner: container));
+                container.Add(new InstanceServiceEntry(typeof(IAsyncDisposable), "notOwned", mockNotOwned.Object, externallyOwned: false, owner: new TImplementation()));
 
                 Assert.That(container.Count, Is.EqualTo(2));
             }
