@@ -46,7 +46,7 @@ namespace Solti.Utils.DI.Container.Tests
         [Test]
         public void Container_CreateChild_ShouldThrowIfChildCountReachedTheLimit()
         {
-            Config.Value.Composite.MaxChildCount = 1;
+            Config.Value.ServiceContainer.MaxChildCount = 1;
 
             //
             // this.Container-re mar nem lesz alkalmazva a MaxChildCount

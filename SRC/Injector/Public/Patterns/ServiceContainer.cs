@@ -220,7 +220,7 @@ namespace Solti.Utils.DI
         /// </summary>
         /// <param name="parent">The parent <see cref="IServiceContainer"/>.</param>
         [SuppressMessage("Usage", "CA2214:Do not call overridable methods in constructors", Justification = "This is intended to make inheritance logic extensible.")]
-        protected internal ServiceContainer(IServiceContainer? parent) : base(parent, Config.Value.Composite.MaxChildCount)
+        protected internal ServiceContainer(IServiceContainer? parent) : base(parent, Config.Value.ServiceContainer.MaxChildCount)
         {
             FEntries = new Dictionary<IServiceId, AbstractServiceEntry>(parent?.Count ?? 0, ServiceIdComparer.Instance);
             if (parent == null) return;

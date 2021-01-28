@@ -1,14 +1,8 @@
 ﻿{
   "configProperties": {
-    "DI": {
-      "Composite": {
-        "MaxChildCount": 512
-      },
-      "Injector": {
-        "StrictDI": false,
-        "MaxSpawnedTransientServices": 512
-      }
-    },
+    "ServiceContainer.MaxChildCount": 512,
+    "Injector.StrictDI": false,
+    "Injector.MaxSpawnedTransientServices": 512,
     "ProxyGen.SourceDump": "..\\Logs",
     "ProxyGen.LogDump": "..\\Logs"
   }

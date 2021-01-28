@@ -32,7 +32,6 @@
   <ItemGroup>
     <PackageReference Include="ProxyGen.NET" Version="4.0-preview*" />
     <PackageReference Include="Solti.Utils.Primitives" Version="1.*" />
-    <PackageReference Include="System.Text.Json" Version="4.*" />
   </ItemGroup>
 
   <ItemGroup>

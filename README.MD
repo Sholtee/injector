@@ -6,7 +6,7 @@
 |**Injector.NET**|[![Nuget (with prereleases)](https://img.shields.io/nuget/vpre/injector.net)](https://www.nuget.org/packages/injector.net )|
 |**Injector.NET.Interfaces**|[![Nuget (with prereleases)](https://img.shields.io/nuget/vpre/injector.net.interfaces)](https://www.nuget.org/packages/injector.net.interfaces )|
 
-**This documentation refers the version 3.X of the library**
+**This documentation refers the version 4.X of the library**
 ## Overview
 [Dependency Injection](https://en.wikipedia.org/wiki/Dependency_injection ) is a design pattern that helps you separate the dependencies of your code from its behavior. Additionaly it makes the code easy to test by let you [mock](https://en.wikipedia.org/wiki/Mock_object ) the dependencies in your unit tests. This library provides several mechanisms to register, acquire and inherit services.
 ## Key features
@@ -428,14 +428,6 @@ public class NakedValidatorAspectAttribute: AspectAttribute
   }
 }
 ```
-### Auto config
-There are some attributes to annotate services for "auto config" e.g.:
-- ```csharp
-  [Service(typeof(IMyService), Lifetime.Scoped)] // It will use the "service recipe"
-  public MyService: IMyService {...}
-  ```
-
-After annotating the desired types you just have to simply call the [container.Setup(sourceAssembly)](https://sholtee.github.io/injector/doc/Solti.Utils.DI.IServiceContainerExtensions.html#Solti_Utils_DI_IServiceContainerExtensions_Setup_Solti_Utils_DI_IServiceContainer_Assembly_System_String_ ) (extension) method which instructs the system to seek and register all the annotated services from the `sourceAssembly`.
 ### Creating an injector
 ```csharp
 using (IInjector injector = container.CreateInjector())

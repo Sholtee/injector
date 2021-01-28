@@ -4,10 +4,6 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
-using System.Diagnostics.CodeAnalysis;
-using System.Collections.Generic;
-using System.Text.Json;
-using System.Text.Json.Serialization;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -18,49 +14,29 @@ namespace Solti.Utils.DI.Internals
     /// <code>
     /// {
     ///   "configProperties": {
-    ///     "DI": {
-    ///       "Composite": {
-    ///         "MaxChildCount": 512
-    ///       },
-    ///       "Injector": {
-    ///         "StrictDI": false,
-    ///         "MaxSpawnedTransientServices": 512
-    ///       }
-    ///     }
+    ///     "ServiceContainer.MaxChildCount": 512,
+    ///     "Injector.StrictDI": false,
+    ///     "Injector.MaxSpawnedTransientServices": 512
     ///   }
     /// }
     /// </code>
     /// </example>
     public partial class Config
     {
-        private static Config CreateInstance()
-        {
-            object? data = AppContext.GetData("DI");
-
-            if (data != null)
-                return JsonSerializer.Deserialize<Config>((string) data);
-
-            return new Config();
-        }
+        private static T GetValue<T>(string name) => AppContext.GetData(name) is T result ? result : default!;
 
         /// <summary>
         /// The <see cref="Config"/> instance.
         /// </summary>
-        public static Config Value { get; private set; } = CreateInstance();
-
+        public static Config Value { get; private set; } = new Config();
+#if DEBUG
         internal static void Reset() =>
             //
             // Mivel a referenciak irasa atomi muvelet ezert nem kell lock a Reset() miatt
             // (ami amugy is csak tesztekben van hasznalva).
             //
 
-            Value = CreateInstance();
-
-        /// <summary>
-        /// Custom settings.
-        /// </summary>
-        [JsonExtensionData]
-        [SuppressMessage("Usage", "CA2227:Collection properties should be read only", Justification = "Writable property is required by JsonSerializer.")]
-        public Dictionary<string, object>? CustomSettings { get; set; }
+            Value = new Config();
+#endif
     }
 }
