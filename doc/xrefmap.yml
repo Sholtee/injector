@@ -1134,57 +1134,12 @@ references:
   commentId: N:Solti.Utils.DI.Internals
   fullName: Solti.Utils.DI.Internals
   nameWithType: Solti.Utils.DI.Internals
-- uid: Solti.Utils.DI.Internals.CompositeConfig
-  name: CompositeConfig
-  href: Solti.Utils.DI.Internals.CompositeConfig.html
-  commentId: T:Solti.Utils.DI.Internals.CompositeConfig
-  fullName: Solti.Utils.DI.Internals.CompositeConfig
-  nameWithType: CompositeConfig
-- uid: Solti.Utils.DI.Internals.CompositeConfig.MaxChildCount
-  name: MaxChildCount
-  href: Solti.Utils.DI.Internals.CompositeConfig.html#Solti_Utils_DI_Internals_CompositeConfig_MaxChildCount
-  commentId: P:Solti.Utils.DI.Internals.CompositeConfig.MaxChildCount
-  fullName: Solti.Utils.DI.Internals.CompositeConfig.MaxChildCount
-  nameWithType: CompositeConfig.MaxChildCount
-- uid: Solti.Utils.DI.Internals.CompositeConfig.MaxChildCount*
-  name: MaxChildCount
-  href: Solti.Utils.DI.Internals.CompositeConfig.html#Solti_Utils_DI_Internals_CompositeConfig_MaxChildCount_
-  commentId: Overload:Solti.Utils.DI.Internals.CompositeConfig.MaxChildCount
-  isSpec: "True"
-  fullName: Solti.Utils.DI.Internals.CompositeConfig.MaxChildCount
-  nameWithType: CompositeConfig.MaxChildCount
 - uid: Solti.Utils.DI.Internals.Config
   name: Config
   href: Solti.Utils.DI.Internals.Config.html
   commentId: T:Solti.Utils.DI.Internals.Config
   fullName: Solti.Utils.DI.Internals.Config
   nameWithType: Config
-- uid: Solti.Utils.DI.Internals.Config.Composite
-  name: Composite
-  href: Solti.Utils.DI.Internals.Config.html#Solti_Utils_DI_Internals_Config_Composite
-  commentId: P:Solti.Utils.DI.Internals.Config.Composite
-  fullName: Solti.Utils.DI.Internals.Config.Composite
-  nameWithType: Config.Composite
-- uid: Solti.Utils.DI.Internals.Config.Composite*
-  name: Composite
-  href: Solti.Utils.DI.Internals.Config.html#Solti_Utils_DI_Internals_Config_Composite_
-  commentId: Overload:Solti.Utils.DI.Internals.Config.Composite
-  isSpec: "True"
-  fullName: Solti.Utils.DI.Internals.Config.Composite
-  nameWithType: Config.Composite
-- uid: Solti.Utils.DI.Internals.Config.CustomSettings
-  name: CustomSettings
-  href: Solti.Utils.DI.Internals.Config.html#Solti_Utils_DI_Internals_Config_CustomSettings
-  commentId: P:Solti.Utils.DI.Internals.Config.CustomSettings
-  fullName: Solti.Utils.DI.Internals.Config.CustomSettings
-  nameWithType: Config.CustomSettings
-- uid: Solti.Utils.DI.Internals.Config.CustomSettings*
-  name: CustomSettings
-  href: Solti.Utils.DI.Internals.Config.html#Solti_Utils_DI_Internals_Config_CustomSettings_
-  commentId: Overload:Solti.Utils.DI.Internals.Config.CustomSettings
-  isSpec: "True"
-  fullName: Solti.Utils.DI.Internals.Config.CustomSettings
-  nameWithType: Config.CustomSettings
 - uid: Solti.Utils.DI.Internals.Config.Injector
   name: Injector
   href: Solti.Utils.DI.Internals.Config.html#Solti_Utils_DI_Internals_Config_Injector
@@ -1198,6 +1153,70 @@ references:
   isSpec: "True"
   fullName: Solti.Utils.DI.Internals.Config.Injector
   nameWithType: Config.Injector
+- uid: Solti.Utils.DI.Internals.Config.InjectorConfig
+  name: Config.InjectorConfig
+  href: Solti.Utils.DI.Internals.Config.InjectorConfig.html
+  commentId: T:Solti.Utils.DI.Internals.Config.InjectorConfig
+  fullName: Solti.Utils.DI.Internals.Config.InjectorConfig
+  nameWithType: Config.InjectorConfig
+- uid: Solti.Utils.DI.Internals.Config.InjectorConfig.MaxSpawnedTransientServices
+  name: MaxSpawnedTransientServices
+  href: Solti.Utils.DI.Internals.Config.InjectorConfig.html#Solti_Utils_DI_Internals_Config_InjectorConfig_MaxSpawnedTransientServices
+  commentId: P:Solti.Utils.DI.Internals.Config.InjectorConfig.MaxSpawnedTransientServices
+  fullName: Solti.Utils.DI.Internals.Config.InjectorConfig.MaxSpawnedTransientServices
+  nameWithType: Config.InjectorConfig.MaxSpawnedTransientServices
+- uid: Solti.Utils.DI.Internals.Config.InjectorConfig.MaxSpawnedTransientServices*
+  name: MaxSpawnedTransientServices
+  href: Solti.Utils.DI.Internals.Config.InjectorConfig.html#Solti_Utils_DI_Internals_Config_InjectorConfig_MaxSpawnedTransientServices_
+  commentId: Overload:Solti.Utils.DI.Internals.Config.InjectorConfig.MaxSpawnedTransientServices
+  isSpec: "True"
+  fullName: Solti.Utils.DI.Internals.Config.InjectorConfig.MaxSpawnedTransientServices
+  nameWithType: Config.InjectorConfig.MaxSpawnedTransientServices
+- uid: Solti.Utils.DI.Internals.Config.InjectorConfig.StrictDI
+  name: StrictDI
+  href: Solti.Utils.DI.Internals.Config.InjectorConfig.html#Solti_Utils_DI_Internals_Config_InjectorConfig_StrictDI
+  commentId: P:Solti.Utils.DI.Internals.Config.InjectorConfig.StrictDI
+  fullName: Solti.Utils.DI.Internals.Config.InjectorConfig.StrictDI
+  nameWithType: Config.InjectorConfig.StrictDI
+- uid: Solti.Utils.DI.Internals.Config.InjectorConfig.StrictDI*
+  name: StrictDI
+  href: Solti.Utils.DI.Internals.Config.InjectorConfig.html#Solti_Utils_DI_Internals_Config_InjectorConfig_StrictDI_
+  commentId: Overload:Solti.Utils.DI.Internals.Config.InjectorConfig.StrictDI
+  isSpec: "True"
+  fullName: Solti.Utils.DI.Internals.Config.InjectorConfig.StrictDI
+  nameWithType: Config.InjectorConfig.StrictDI
+- uid: Solti.Utils.DI.Internals.Config.ServiceContainer
+  name: ServiceContainer
+  href: Solti.Utils.DI.Internals.Config.html#Solti_Utils_DI_Internals_Config_ServiceContainer
+  commentId: P:Solti.Utils.DI.Internals.Config.ServiceContainer
+  fullName: Solti.Utils.DI.Internals.Config.ServiceContainer
+  nameWithType: Config.ServiceContainer
+- uid: Solti.Utils.DI.Internals.Config.ServiceContainer*
+  name: ServiceContainer
+  href: Solti.Utils.DI.Internals.Config.html#Solti_Utils_DI_Internals_Config_ServiceContainer_
+  commentId: Overload:Solti.Utils.DI.Internals.Config.ServiceContainer
+  isSpec: "True"
+  fullName: Solti.Utils.DI.Internals.Config.ServiceContainer
+  nameWithType: Config.ServiceContainer
+- uid: Solti.Utils.DI.Internals.Config.ServiceContainerConfig
+  name: Config.ServiceContainerConfig
+  href: Solti.Utils.DI.Internals.Config.ServiceContainerConfig.html
+  commentId: T:Solti.Utils.DI.Internals.Config.ServiceContainerConfig
+  fullName: Solti.Utils.DI.Internals.Config.ServiceContainerConfig
+  nameWithType: Config.ServiceContainerConfig
+- uid: Solti.Utils.DI.Internals.Config.ServiceContainerConfig.MaxChildCount
+  name: MaxChildCount
+  href: Solti.Utils.DI.Internals.Config.ServiceContainerConfig.html#Solti_Utils_DI_Internals_Config_ServiceContainerConfig_MaxChildCount
+  commentId: P:Solti.Utils.DI.Internals.Config.ServiceContainerConfig.MaxChildCount
+  fullName: Solti.Utils.DI.Internals.Config.ServiceContainerConfig.MaxChildCount
+  nameWithType: Config.ServiceContainerConfig.MaxChildCount
+- uid: Solti.Utils.DI.Internals.Config.ServiceContainerConfig.MaxChildCount*
+  name: MaxChildCount
+  href: Solti.Utils.DI.Internals.Config.ServiceContainerConfig.html#Solti_Utils_DI_Internals_Config_ServiceContainerConfig_MaxChildCount_
+  commentId: Overload:Solti.Utils.DI.Internals.Config.ServiceContainerConfig.MaxChildCount
+  isSpec: "True"
+  fullName: Solti.Utils.DI.Internals.Config.ServiceContainerConfig.MaxChildCount
+  nameWithType: Config.ServiceContainerConfig.MaxChildCount
 - uid: Solti.Utils.DI.Internals.Config.Value
   name: Value
   href: Solti.Utils.DI.Internals.Config.html#Solti_Utils_DI_Internals_Config_Value
@@ -1211,38 +1230,6 @@ references:
   isSpec: "True"
   fullName: Solti.Utils.DI.Internals.Config.Value
   nameWithType: Config.Value
-- uid: Solti.Utils.DI.Internals.InjectorConfig
-  name: InjectorConfig
-  href: Solti.Utils.DI.Internals.InjectorConfig.html
-  commentId: T:Solti.Utils.DI.Internals.InjectorConfig
-  fullName: Solti.Utils.DI.Internals.InjectorConfig
-  nameWithType: InjectorConfig
-- uid: Solti.Utils.DI.Internals.InjectorConfig.MaxSpawnedTransientServices
-  name: MaxSpawnedTransientServices
-  href: Solti.Utils.DI.Internals.InjectorConfig.html#Solti_Utils_DI_Internals_InjectorConfig_MaxSpawnedTransientServices
-  commentId: P:Solti.Utils.DI.Internals.InjectorConfig.MaxSpawnedTransientServices
-  fullName: Solti.Utils.DI.Internals.InjectorConfig.MaxSpawnedTransientServices
-  nameWithType: InjectorConfig.MaxSpawnedTransientServices
-- uid: Solti.Utils.DI.Internals.InjectorConfig.MaxSpawnedTransientServices*
-  name: MaxSpawnedTransientServices
-  href: Solti.Utils.DI.Internals.InjectorConfig.html#Solti_Utils_DI_Internals_InjectorConfig_MaxSpawnedTransientServices_
-  commentId: Overload:Solti.Utils.DI.Internals.InjectorConfig.MaxSpawnedTransientServices
-  isSpec: "True"
-  fullName: Solti.Utils.DI.Internals.InjectorConfig.MaxSpawnedTransientServices
-  nameWithType: InjectorConfig.MaxSpawnedTransientServices
-- uid: Solti.Utils.DI.Internals.InjectorConfig.StrictDI
-  name: StrictDI
-  href: Solti.Utils.DI.Internals.InjectorConfig.html#Solti_Utils_DI_Internals_InjectorConfig_StrictDI
-  commentId: P:Solti.Utils.DI.Internals.InjectorConfig.StrictDI
-  fullName: Solti.Utils.DI.Internals.InjectorConfig.StrictDI
-  nameWithType: InjectorConfig.StrictDI
-- uid: Solti.Utils.DI.Internals.InjectorConfig.StrictDI*
-  name: StrictDI
-  href: Solti.Utils.DI.Internals.InjectorConfig.html#Solti_Utils_DI_Internals_InjectorConfig_StrictDI_
-  commentId: Overload:Solti.Utils.DI.Internals.InjectorConfig.StrictDI
-  isSpec: "True"
-  fullName: Solti.Utils.DI.Internals.InjectorConfig.StrictDI
-  nameWithType: InjectorConfig.StrictDI
 - uid: Solti.Utils.DI.IServiceContainerAdvancedExtensions
   name: IServiceContainerAdvancedExtensions
   href: Solti.Utils.DI.IServiceContainerAdvancedExtensions.html

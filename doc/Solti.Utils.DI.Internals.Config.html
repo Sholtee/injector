@@ -83,77 +83,22 @@
   <h5 id="Solti_Utils_DI_Internals_Config_examples"><strong>Examples</strong></h5>
   <pre><code>{
   &quot;configProperties&quot;: {
-    &quot;DI&quot;: {
-      &quot;Composite&quot;: {
-        &quot;MaxChildCount&quot;: 512
-      },
-      &quot;Injector&quot;: {
-        &quot;StrictDI&quot;: false,
-        &quot;MaxSpawnedTransientServices&quot;: 512
-      }
-    }
+    &quot;ServiceContainer.MaxChildCount&quot;: 512,
+    &quot;Injector.StrictDI&quot;: false,
+    &quot;Injector.MaxSpawnedTransientServices&quot;: 512
   }
 }</code></pre>
 
   <h3 id="properties">Properties
   </h3>
-  <a id="Solti_Utils_DI_Internals_Config_Composite_" data-uid="Solti.Utils.DI.Internals.Config.Composite*"></a>
-  <h4 id="Solti_Utils_DI_Internals_Config_Composite" data-uid="Solti.Utils.DI.Internals.Config.Composite">Composite</h4>
-  <div class="markdown level1 summary"><p><a class="xref" href="Solti.Utils.DI.Internals.CompositeConfig.html">CompositeConfig</a>.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public CompositeConfig Composite { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Solti.Utils.DI.Internals.CompositeConfig.html">CompositeConfig</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <a id="Solti_Utils_DI_Internals_Config_CustomSettings_" data-uid="Solti.Utils.DI.Internals.Config.CustomSettings*"></a>
-  <h4 id="Solti_Utils_DI_Internals_Config_CustomSettings" data-uid="Solti.Utils.DI.Internals.Config.CustomSettings">CustomSettings</h4>
-  <div class="markdown level1 summary"><p>Custom settings.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[JsonExtensionData]
-public Dictionary&lt;string, object&gt; CustomSettings { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.dictionary-2">Dictionary</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a>&gt;</td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
   <a id="Solti_Utils_DI_Internals_Config_Injector_" data-uid="Solti.Utils.DI.Internals.Config.Injector*"></a>
   <h4 id="Solti_Utils_DI_Internals_Config_Injector" data-uid="Solti.Utils.DI.Internals.Config.Injector">Injector</h4>
-  <div class="markdown level1 summary"><p><a class="xref" href="Solti.Utils.DI.Internals.InjectorConfig.html">InjectorConfig</a>.</p>
+  <div class="markdown level1 summary"><p><a class="xref" href="Solti.Utils.DI.Internals.Config.InjectorConfig.html">Config.InjectorConfig</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public InjectorConfig Injector { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public Config.InjectorConfig Injector { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -165,7 +110,31 @@ public Dictionary&lt;string, object&gt; CustomSettings { get; set; }</code></pre
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Solti.Utils.DI.Internals.InjectorConfig.html">InjectorConfig</a></td>
+        <td><a class="xref" href="Solti.Utils.DI.Internals.Config.InjectorConfig.html">Config.InjectorConfig</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Solti_Utils_DI_Internals_Config_ServiceContainer_" data-uid="Solti.Utils.DI.Internals.Config.ServiceContainer*"></a>
+  <h4 id="Solti_Utils_DI_Internals_Config_ServiceContainer" data-uid="Solti.Utils.DI.Internals.Config.ServiceContainer">ServiceContainer</h4>
+  <div class="markdown level1 summary"><p><a class="xref" href="Solti.Utils.DI.Internals.Config.ServiceContainerConfig.html">Config.ServiceContainerConfig</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Config.ServiceContainerConfig ServiceContainer { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.Internals.Config.ServiceContainerConfig.html">Config.ServiceContainerConfig</a></td>
         <td></td>
       </tr>
     </tbody>
