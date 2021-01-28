@@ -559,6 +559,43 @@ references:
   fullName.vb: Solti.Utils.DI.Interfaces.IServiceContainerBasicExtensions.Get(Of TInterface)(Solti.Utils.DI.Interfaces.IServiceContainer, System.String, Solti.Utils.DI.Interfaces.QueryModes)
   nameWithType: IServiceContainerBasicExtensions.Get<TInterface>(IServiceContainer, String, QueryModes)
   nameWithType.vb: IServiceContainerBasicExtensions.Get(Of TInterface)(IServiceContainer, String, QueryModes)
+- uid: Solti.Utils.DI.Interfaces.IServiceContainerBasicExtensions.Instance(Solti.Utils.DI.Interfaces.IServiceContainer,System.Type,System.Object,System.Boolean)
+  name: Instance(IServiceContainer, Type, Object, Boolean)
+  href: Solti.Utils.DI.Interfaces.IServiceContainerBasicExtensions.html#Solti_Utils_DI_Interfaces_IServiceContainerBasicExtensions_Instance_Solti_Utils_DI_Interfaces_IServiceContainer_System_Type_System_Object_System_Boolean_
+  commentId: M:Solti.Utils.DI.Interfaces.IServiceContainerBasicExtensions.Instance(Solti.Utils.DI.Interfaces.IServiceContainer,System.Type,System.Object,System.Boolean)
+  fullName: Solti.Utils.DI.Interfaces.IServiceContainerBasicExtensions.Instance(Solti.Utils.DI.Interfaces.IServiceContainer, System.Type, System.Object, System.Boolean)
+  nameWithType: IServiceContainerBasicExtensions.Instance(IServiceContainer, Type, Object, Boolean)
+- uid: Solti.Utils.DI.Interfaces.IServiceContainerBasicExtensions.Instance(Solti.Utils.DI.Interfaces.IServiceContainer,System.Type,System.String,System.Object,System.Boolean)
+  name: Instance(IServiceContainer, Type, String, Object, Boolean)
+  href: Solti.Utils.DI.Interfaces.IServiceContainerBasicExtensions.html#Solti_Utils_DI_Interfaces_IServiceContainerBasicExtensions_Instance_Solti_Utils_DI_Interfaces_IServiceContainer_System_Type_System_String_System_Object_System_Boolean_
+  commentId: M:Solti.Utils.DI.Interfaces.IServiceContainerBasicExtensions.Instance(Solti.Utils.DI.Interfaces.IServiceContainer,System.Type,System.String,System.Object,System.Boolean)
+  fullName: Solti.Utils.DI.Interfaces.IServiceContainerBasicExtensions.Instance(Solti.Utils.DI.Interfaces.IServiceContainer, System.Type, System.String, System.Object, System.Boolean)
+  nameWithType: IServiceContainerBasicExtensions.Instance(IServiceContainer, Type, String, Object, Boolean)
+- uid: Solti.Utils.DI.Interfaces.IServiceContainerBasicExtensions.Instance*
+  name: Instance
+  href: Solti.Utils.DI.Interfaces.IServiceContainerBasicExtensions.html#Solti_Utils_DI_Interfaces_IServiceContainerBasicExtensions_Instance_
+  commentId: Overload:Solti.Utils.DI.Interfaces.IServiceContainerBasicExtensions.Instance
+  isSpec: "True"
+  fullName: Solti.Utils.DI.Interfaces.IServiceContainerBasicExtensions.Instance
+  nameWithType: IServiceContainerBasicExtensions.Instance
+- uid: Solti.Utils.DI.Interfaces.IServiceContainerBasicExtensions.Instance``1(Solti.Utils.DI.Interfaces.IServiceContainer,``0,System.Boolean)
+  name: Instance<TInterface>(IServiceContainer, TInterface, Boolean)
+  href: Solti.Utils.DI.Interfaces.IServiceContainerBasicExtensions.html#Solti_Utils_DI_Interfaces_IServiceContainerBasicExtensions_Instance__1_Solti_Utils_DI_Interfaces_IServiceContainer___0_System_Boolean_
+  commentId: M:Solti.Utils.DI.Interfaces.IServiceContainerBasicExtensions.Instance``1(Solti.Utils.DI.Interfaces.IServiceContainer,``0,System.Boolean)
+  name.vb: Instance(Of TInterface)(IServiceContainer, TInterface, Boolean)
+  fullName: Solti.Utils.DI.Interfaces.IServiceContainerBasicExtensions.Instance<TInterface>(Solti.Utils.DI.Interfaces.IServiceContainer, TInterface, System.Boolean)
+  fullName.vb: Solti.Utils.DI.Interfaces.IServiceContainerBasicExtensions.Instance(Of TInterface)(Solti.Utils.DI.Interfaces.IServiceContainer, TInterface, System.Boolean)
+  nameWithType: IServiceContainerBasicExtensions.Instance<TInterface>(IServiceContainer, TInterface, Boolean)
+  nameWithType.vb: IServiceContainerBasicExtensions.Instance(Of TInterface)(IServiceContainer, TInterface, Boolean)
+- uid: Solti.Utils.DI.Interfaces.IServiceContainerBasicExtensions.Instance``1(Solti.Utils.DI.Interfaces.IServiceContainer,System.String,``0,System.Boolean)
+  name: Instance<TInterface>(IServiceContainer, String, TInterface, Boolean)
+  href: Solti.Utils.DI.Interfaces.IServiceContainerBasicExtensions.html#Solti_Utils_DI_Interfaces_IServiceContainerBasicExtensions_Instance__1_Solti_Utils_DI_Interfaces_IServiceContainer_System_String___0_System_Boolean_
+  commentId: M:Solti.Utils.DI.Interfaces.IServiceContainerBasicExtensions.Instance``1(Solti.Utils.DI.Interfaces.IServiceContainer,System.String,``0,System.Boolean)
+  name.vb: Instance(Of TInterface)(IServiceContainer, String, TInterface, Boolean)
+  fullName: Solti.Utils.DI.Interfaces.IServiceContainerBasicExtensions.Instance<TInterface>(Solti.Utils.DI.Interfaces.IServiceContainer, System.String, TInterface, System.Boolean)
+  fullName.vb: Solti.Utils.DI.Interfaces.IServiceContainerBasicExtensions.Instance(Of TInterface)(Solti.Utils.DI.Interfaces.IServiceContainer, System.String, TInterface, System.Boolean)
+  nameWithType: IServiceContainerBasicExtensions.Instance<TInterface>(IServiceContainer, String, TInterface, Boolean)
+  nameWithType.vb: IServiceContainerBasicExtensions.Instance(Of TInterface)(IServiceContainer, String, TInterface, Boolean)
 - uid: Solti.Utils.DI.Interfaces.IServiceContainerBasicExtensions.Provider(Solti.Utils.DI.Interfaces.IServiceContainer,System.Type,System.String,System.Type,Solti.Utils.DI.Interfaces.Lifetime)
   name: Provider(IServiceContainer, Type, String, Type, Lifetime)
   href: Solti.Utils.DI.Interfaces.IServiceContainerBasicExtensions.html#Solti_Utils_DI_Interfaces_IServiceContainerBasicExtensions_Provider_Solti_Utils_DI_Interfaces_IServiceContainer_System_Type_System_String_System_Type_Solti_Utils_DI_Interfaces_Lifetime_
@@ -1336,43 +1373,6 @@ references:
   isSpec: "True"
   fullName: Solti.Utils.DI.IServiceContainerAdvancedExtensions.CreateProvider
   nameWithType: IServiceContainerAdvancedExtensions.CreateProvider
-- uid: Solti.Utils.DI.IServiceContainerAdvancedExtensions.Instance(Solti.Utils.DI.Interfaces.IServiceContainer,System.Type,System.Object,System.Boolean)
-  name: Instance(IServiceContainer, Type, Object, Boolean)
-  href: Solti.Utils.DI.IServiceContainerAdvancedExtensions.html#Solti_Utils_DI_IServiceContainerAdvancedExtensions_Instance_Solti_Utils_DI_Interfaces_IServiceContainer_System_Type_System_Object_System_Boolean_
-  commentId: M:Solti.Utils.DI.IServiceContainerAdvancedExtensions.Instance(Solti.Utils.DI.Interfaces.IServiceContainer,System.Type,System.Object,System.Boolean)
-  fullName: Solti.Utils.DI.IServiceContainerAdvancedExtensions.Instance(Solti.Utils.DI.Interfaces.IServiceContainer, System.Type, System.Object, System.Boolean)
-  nameWithType: IServiceContainerAdvancedExtensions.Instance(IServiceContainer, Type, Object, Boolean)
-- uid: Solti.Utils.DI.IServiceContainerAdvancedExtensions.Instance(Solti.Utils.DI.Interfaces.IServiceContainer,System.Type,System.String,System.Object,System.Boolean)
-  name: Instance(IServiceContainer, Type, String, Object, Boolean)
-  href: Solti.Utils.DI.IServiceContainerAdvancedExtensions.html#Solti_Utils_DI_IServiceContainerAdvancedExtensions_Instance_Solti_Utils_DI_Interfaces_IServiceContainer_System_Type_System_String_System_Object_System_Boolean_
-  commentId: M:Solti.Utils.DI.IServiceContainerAdvancedExtensions.Instance(Solti.Utils.DI.Interfaces.IServiceContainer,System.Type,System.String,System.Object,System.Boolean)
-  fullName: Solti.Utils.DI.IServiceContainerAdvancedExtensions.Instance(Solti.Utils.DI.Interfaces.IServiceContainer, System.Type, System.String, System.Object, System.Boolean)
-  nameWithType: IServiceContainerAdvancedExtensions.Instance(IServiceContainer, Type, String, Object, Boolean)
-- uid: Solti.Utils.DI.IServiceContainerAdvancedExtensions.Instance*
-  name: Instance
-  href: Solti.Utils.DI.IServiceContainerAdvancedExtensions.html#Solti_Utils_DI_IServiceContainerAdvancedExtensions_Instance_
-  commentId: Overload:Solti.Utils.DI.IServiceContainerAdvancedExtensions.Instance
-  isSpec: "True"
-  fullName: Solti.Utils.DI.IServiceContainerAdvancedExtensions.Instance
-  nameWithType: IServiceContainerAdvancedExtensions.Instance
-- uid: Solti.Utils.DI.IServiceContainerAdvancedExtensions.Instance``1(Solti.Utils.DI.Interfaces.IServiceContainer,``0,System.Boolean)
-  name: Instance<TInterface>(IServiceContainer, TInterface, Boolean)
-  href: Solti.Utils.DI.IServiceContainerAdvancedExtensions.html#Solti_Utils_DI_IServiceContainerAdvancedExtensions_Instance__1_Solti_Utils_DI_Interfaces_IServiceContainer___0_System_Boolean_
-  commentId: M:Solti.Utils.DI.IServiceContainerAdvancedExtensions.Instance``1(Solti.Utils.DI.Interfaces.IServiceContainer,``0,System.Boolean)
-  name.vb: Instance(Of TInterface)(IServiceContainer, TInterface, Boolean)
-  fullName: Solti.Utils.DI.IServiceContainerAdvancedExtensions.Instance<TInterface>(Solti.Utils.DI.Interfaces.IServiceContainer, TInterface, System.Boolean)
-  fullName.vb: Solti.Utils.DI.IServiceContainerAdvancedExtensions.Instance(Of TInterface)(Solti.Utils.DI.Interfaces.IServiceContainer, TInterface, System.Boolean)
-  nameWithType: IServiceContainerAdvancedExtensions.Instance<TInterface>(IServiceContainer, TInterface, Boolean)
-  nameWithType.vb: IServiceContainerAdvancedExtensions.Instance(Of TInterface)(IServiceContainer, TInterface, Boolean)
-- uid: Solti.Utils.DI.IServiceContainerAdvancedExtensions.Instance``1(Solti.Utils.DI.Interfaces.IServiceContainer,System.String,``0,System.Boolean)
-  name: Instance<TInterface>(IServiceContainer, String, TInterface, Boolean)
-  href: Solti.Utils.DI.IServiceContainerAdvancedExtensions.html#Solti_Utils_DI_IServiceContainerAdvancedExtensions_Instance__1_Solti_Utils_DI_Interfaces_IServiceContainer_System_String___0_System_Boolean_
-  commentId: M:Solti.Utils.DI.IServiceContainerAdvancedExtensions.Instance``1(Solti.Utils.DI.Interfaces.IServiceContainer,System.String,``0,System.Boolean)
-  name.vb: Instance(Of TInterface)(IServiceContainer, String, TInterface, Boolean)
-  fullName: Solti.Utils.DI.IServiceContainerAdvancedExtensions.Instance<TInterface>(Solti.Utils.DI.Interfaces.IServiceContainer, System.String, TInterface, System.Boolean)
-  fullName.vb: Solti.Utils.DI.IServiceContainerAdvancedExtensions.Instance(Of TInterface)(Solti.Utils.DI.Interfaces.IServiceContainer, System.String, TInterface, System.Boolean)
-  nameWithType: IServiceContainerAdvancedExtensions.Instance<TInterface>(IServiceContainer, String, TInterface, Boolean)
-  nameWithType.vb: IServiceContainerAdvancedExtensions.Instance(Of TInterface)(IServiceContainer, String, TInterface, Boolean)
 - uid: Solti.Utils.DI.IServiceContainerAdvancedExtensions.Proxy(Solti.Utils.DI.Interfaces.IServiceContainer,System.Type,System.String,System.Type)
   name: Proxy(IServiceContainer, Type, String, Type)
   href: Solti.Utils.DI.IServiceContainerAdvancedExtensions.html#Solti_Utils_DI_IServiceContainerAdvancedExtensions_Proxy_Solti_Utils_DI_Interfaces_IServiceContainer_System_Type_System_String_System_Type_
