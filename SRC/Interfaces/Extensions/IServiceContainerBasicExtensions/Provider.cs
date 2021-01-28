@@ -4,7 +4,6 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
-using System.Linq;
 
 namespace Solti.Utils.DI.Interfaces
 {
@@ -36,7 +35,7 @@ namespace Solti.Utils.DI.Interfaces
             // Tovabbi validaciot az xXxServiceEntry vegzi.
             //
 
-            if (!provider.GetInterfaces().Any(iface => iface == typeof(IServiceProvider)))
+            if (!typeof(IServiceProvider).IsAssignableFrom(provider))
                 throw new ArgumentException(string.Format(Resources.Culture, Resources.NOT_IMPLEMENTED, typeof(IServiceProvider)), nameof(provider));
 
             return self
