@@ -66,6 +66,6 @@ namespace Solti.Utils.DI.Internals
             return result;
         }
 
-        public override IServiceEntryFactory Lifetime => DI.Lifetime.Scoped;
+        public override Lifetime Lifetime => Lifetime.Scoped;
     }
 }

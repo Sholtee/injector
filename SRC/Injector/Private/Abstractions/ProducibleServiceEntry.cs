@@ -80,7 +80,7 @@ namespace Solti.Utils.DI.Internals
                 throw new InvalidOperationException(Resources.NOT_PRODUCIBLE);
         }
 
-        public abstract IServiceEntryFactory Lifetime { get; }
+        public abstract Lifetime Lifetime { get; }
 
         #region Features
         Func<IInjector, Type, object>? ISupportsProxying.Factory { get => Factory; set => Factory = value; }

@@ -112,6 +112,6 @@ namespace Solti.Utils.DI.Internals
             //
         }
 
-        public override IServiceEntryFactory Lifetime => DI.Lifetime.Transient;
+        public override Lifetime Lifetime => Lifetime.Transient;
     }
 }

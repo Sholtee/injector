@@ -58,6 +58,6 @@ namespace Solti.Utils.DI.Internals
             return true;
         }
 
-        public override IServiceEntryFactory Lifetime => DI.Lifetime.Singleton;
+        public override Lifetime Lifetime => Lifetime.Singleton;
     }
 }

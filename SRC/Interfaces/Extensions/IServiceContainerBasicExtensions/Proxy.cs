@@ -39,7 +39,7 @@ namespace Solti.Utils.DI.Interfaces
             if (entry.Owner != self)
                 throw new InvalidOperationException(Resources.INAPROPRIATE_OWNERSHIP);
 
-            if (!(entry is ISupportsProxying setter) || setter.Factory == null)
+            if (entry is not ISupportsProxying setter || setter.Factory == null)
                 //
                 // Generikus szerviz, Abstract(), Instance() eseten a metodus nem ertelmezett.
                 //
