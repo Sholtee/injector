@@ -217,6 +217,30 @@
   </table>
   <h3 id="properties">Properties
   </h3>
+  <a id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_Built_" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.Built*"></a>
+  <h4 id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_Built" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.Built">Built</h4>
+  <div class="markdown level1 summary"><p>Returns true if this entry is already provided a service isntance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool Built { get; protected set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   <a id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_Factory_" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.Factory*"></a>
   <h4 id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_Factory" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.Factory">Factory</h4>
   <div class="markdown level1 summary"><p>The concrete factory. Don&apos;t use it directly.</p>
@@ -265,14 +289,14 @@
       </tr>
     </tbody>
   </table>
-  <a id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_Instance_" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.Instance*"></a>
-  <h4 id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_Instance" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.Instance">Instance</h4>
-  <div class="markdown level1 summary"><p>The previously created service instance. Don&apos;t use it directly.</p>
+  <a id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_Instances_" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.Instances*"></a>
+  <h4 id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_Instances" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.Instances">Instances</h4>
+  <div class="markdown level1 summary"><p>The previously created service instance(s) related to this entry. Don&apos;t use it directly.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IServiceReference Instance { get; protected set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public IReadOnlyCollection&lt;IServiceReference&gt; Instances { get; protected set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -284,7 +308,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Solti.Utils.DI.Interfaces.IServiceReference.html">IServiceReference</a></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ireadonlycollection-1">IReadOnlyCollection</a>&lt;<a class="xref" href="Solti.Utils.DI.Interfaces.IServiceReference.html">IServiceReference</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -369,9 +393,18 @@
   </table>
   <h3 id="methods">Methods
   </h3>
+  <a id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_AfterConstruction_" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.AfterConstruction*"></a>
+  <h4 id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_AfterConstruction" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.AfterConstruction">AfterConstruction()</h4>
+  <div class="markdown level1 summary"><p>Invoked when the current entry is about to be initialized after its creation.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void AfterConstruction()</code></pre>
+  </div>
   <a id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_AsyncDispose_" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.AsyncDispose*"></a>
   <h4 id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_AsyncDispose" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.AsyncDispose">AsyncDispose()</h4>
-  <div class="markdown level1 summary"><p>Decrements the reference counter of the service <a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_Instance">Instance</a>.</p>
+  <div class="markdown level1 summary"><p>Decrements the reference counter of the service <a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_Instances">Instances</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -439,7 +472,7 @@
   </table>
   <a id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_Dispose_" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.Dispose*"></a>
   <h4 id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_Dispose_System_Boolean_" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.Dispose(System.Boolean)">Dispose(Boolean)</h4>
-  <div class="markdown level1 summary"><p>Decrements the reference counter of the service <a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_Instance">Instance</a>.</p>
+  <div class="markdown level1 summary"><p>Decrements the reference counter of the service <a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_Instances">Instances</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -540,7 +573,7 @@
   <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a></div>
   <a id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_SetInstance_" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.SetInstance*"></a>
   <h4 id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_SetInstance_Solti_Utils_DI_Interfaces_IServiceReference_System_Collections_Generic_IReadOnlyDictionary_System_String_System_Object__" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.SetInstance(Solti.Utils.DI.Interfaces.IServiceReference,System.Collections.Generic.IReadOnlyDictionary{System.String,System.Object})">SetInstance(IServiceReference, IReadOnlyDictionary&lt;String, Object&gt;)</h4>
-  <div class="markdown level1 summary"><p>Calls the <a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_Factory">Factory</a> to set the service <a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_Instance">Instance</a>.</p>
+  <div class="markdown level1 summary"><p>Calls the <a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_Factory">Factory</a> to set an instance in the <a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_Instances">Instances</a> list.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -582,7 +615,7 @@
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td><p>True on success false if the <a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_Instance">Instance</a> had already been set previously.</p>
+        <td><p>Returns false if the entry was already <a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_Built">Built</a>.</p>
 </td>
       </tr>
     </tbody>
