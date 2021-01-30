@@ -212,6 +212,19 @@ references:
   isSpec: "True"
   fullName: Solti.Utils.DI.Interfaces.AbstractServiceEntry.Interface
   nameWithType: AbstractServiceEntry.Interface
+- uid: Solti.Utils.DI.Interfaces.AbstractServiceEntry.Lifetime
+  name: Lifetime
+  href: Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_Lifetime
+  commentId: P:Solti.Utils.DI.Interfaces.AbstractServiceEntry.Lifetime
+  fullName: Solti.Utils.DI.Interfaces.AbstractServiceEntry.Lifetime
+  nameWithType: AbstractServiceEntry.Lifetime
+- uid: Solti.Utils.DI.Interfaces.AbstractServiceEntry.Lifetime*
+  name: Lifetime
+  href: Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_Lifetime_
+  commentId: Overload:Solti.Utils.DI.Interfaces.AbstractServiceEntry.Lifetime
+  isSpec: "True"
+  fullName: Solti.Utils.DI.Interfaces.AbstractServiceEntry.Lifetime
+  nameWithType: AbstractServiceEntry.Lifetime
 - uid: Solti.Utils.DI.Interfaces.AbstractServiceEntry.Name
   name: Name
   href: Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_Name
