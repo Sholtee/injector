@@ -46,6 +46,8 @@ namespace Solti.Utils.DI.Internals
             Built = true;
         }
 
+        public override Lifetime? Lifetime { get; } = Lifetime.Instance;
+
         public override bool SetInstance(IServiceReference reference, IReadOnlyDictionary<string, object> options) =>
             //
             // Peldany eseten ez a metodus elvileg sose kerulhet meghivasra.

@@ -80,8 +80,6 @@ namespace Solti.Utils.DI.Internals
                 throw new InvalidOperationException(Resources.NOT_PRODUCIBLE);
         }
 
-        public abstract Lifetime Lifetime { get; }
-
         #region Features
         Func<IInjector, Type, object>? ISupportsProxying.Factory { get => Factory; set => Factory = value; }
 
@@ -91,7 +89,7 @@ namespace Solti.Utils.DI.Internals
             // "Service(typeof(IGeneric<>), ...)" eseten az implementaciot konkretizaljuk.
             //
 
-            if (Implementation != null) return Lifetime.CreateFrom
+            if (Implementation != null) return Lifetime!.CreateFrom
             (
                 Interface.MakeGenericType(genericArguments),
                 Name,
@@ -104,7 +102,7 @@ namespace Solti.Utils.DI.Internals
             // konkretizalt interface-re.
             //
 
-            if (Factory != null) return Lifetime.CreateFrom
+            if (Factory != null) return Lifetime!.CreateFrom
             (
                 Interface.MakeGenericType(genericArguments),
                 Name,

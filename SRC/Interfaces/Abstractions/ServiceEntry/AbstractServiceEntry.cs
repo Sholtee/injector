@@ -89,6 +89,11 @@ namespace Solti.Utils.DI.Interfaces
         /// The (optional) implementation of the service.
         /// </summary>
         public Type? Implementation { get; }
+
+        /// <summary>
+        /// The related <see cref="Lifetime"/>.
+        /// </summary>
+        public virtual Lifetime? Lifetime { get; }
         #endregion
 
         #region Mutables
@@ -185,8 +190,9 @@ namespace Solti.Utils.DI.Interfaces
             const string NAME_PART = " - {0}: {1}";
 
             return new StringBuilder(this.FriendlyName())
+                .AppendFormat(Resources.Culture, NAME_PART, nameof(Lifetime), Lifetime?.ToString() ?? "NULL")
                 .AppendFormat(Resources.Culture, NAME_PART, nameof(Implementation), Implementation?.ToString() ?? "NULL")
-                .AppendFormat(Resources.Culture, NAME_PART, nameof(Instances), Instances.Any() ? string.Join(", ", Instances.Select(instance => instance.Value)) : "EMPTY")
+                .AppendFormat(Resources.Culture, NAME_PART, nameof(Instances), Instances.Any() ? string.Join(", ", Instances.Select(instance => instance.Value)) : "EMPTY")             
                 .ToString();
         }
 
