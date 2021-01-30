@@ -176,3 +176,4 @@
   - *breaking:* New `runtimeconfig.json` layout
   - *breaking:* `Lifetime` class moved to interfaces project
   - *breaking:* `Instance` related logic moved to interfaces project
+  - *breaking:* `AbstractServiceEntry.Instance` property has been replaced with `Instances`
