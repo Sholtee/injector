@@ -51,12 +51,11 @@ namespace Solti.Utils.DI.Internals.Tests
 
             var target = new Disposable();
 
-            var svc = new ServiceReference(new AbstractServiceEntry(typeof(IDisposable), null, new Mock<IServiceContainer>(MockBehavior.Strict).Object), new Mock<IInjector>(MockBehavior.Strict).Object) 
-            { 
-                Value = target 
-            };
+            var svc = new ServiceReference(new AbstractServiceEntry(typeof(IDisposable), null, new Mock<IServiceContainer>(MockBehavior.Strict).Object), new Mock<IInjector>(MockBehavior.Strict).Object);
 
-            svc.Dependencies.Add(dependency);
+            svc.AddDependency(dependency);
+            svc.Value = target;
+
 
             Assert.That(dependency.RefCount, Is.EqualTo(2));
 
@@ -78,12 +77,10 @@ namespace Solti.Utils.DI.Internals.Tests
 
             target.Setup(d => d.Dispose());
 
-            var svc = new ServiceReference(new AbstractServiceEntry(typeof(IDisposable), null, new Mock<IServiceContainer>(MockBehavior.Strict).Object), new Mock<IInjector>(MockBehavior.Strict).Object) 
-            { 
-                Value = target.Object 
-            };
+            var svc = new ServiceReference(new AbstractServiceEntry(typeof(IDisposable), null, new Mock<IServiceContainer>(MockBehavior.Strict).Object), new Mock<IInjector>(MockBehavior.Strict).Object);
 
-            svc.Dependencies.Add(dependency);
+            svc.AddDependency(dependency);
+            svc.Value = target.Object;
 
             Assert.That(dependency.RefCount, Is.EqualTo(2));
 
@@ -106,12 +103,10 @@ namespace Solti.Utils.DI.Internals.Tests
                 .Setup(d => d.DisposeAsync())
                 .Returns(default(ValueTask));
 
-            var svc = new ServiceReference(new AbstractServiceEntry(typeof(IAsyncDisposable), null, new Mock<IServiceContainer>(MockBehavior.Strict).Object), new Mock<IInjector>(MockBehavior.Strict).Object) 
-            { 
-                Value = target.Object 
-            };
+            var svc = new ServiceReference(new AbstractServiceEntry(typeof(IAsyncDisposable), null, new Mock<IServiceContainer>(MockBehavior.Strict).Object), new Mock<IInjector>(MockBehavior.Strict).Object);
 
-            svc.Dependencies.Add(dependency);
+            svc.AddDependency(dependency);
+            svc.Value = target.Object;
 
             Assert.That(dependency.RefCount, Is.EqualTo(2));
 
@@ -160,7 +155,7 @@ namespace Solti.Utils.DI.Internals.Tests
         {
             var svc = new ServiceReference(new AbstractServiceEntry(typeof(IDummyService), null, new Mock<IServiceContainer>(MockBehavior.Strict).Object), value: new Mock<IDummyService>().Object, false);
 
-            Assert.Throws<NotSupportedException>(() => svc.Dependencies.Add(new ServiceReference(new AbstractServiceEntry(typeof(IDisposable), null, new Mock<IServiceContainer>(MockBehavior.Strict).Object), value: new Disposable(), false)));
+            Assert.Throws<InvalidOperationException>(() => svc.AddDependency(new ServiceReference(new AbstractServiceEntry(typeof(IDisposable), null, new Mock<IServiceContainer>(MockBehavior.Strict).Object), value: new Disposable(), false)));
         }
     }
 }

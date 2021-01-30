@@ -33,16 +33,7 @@ namespace Solti.Utils.DI.Perf
             {
                 if (entry.Owner == this)
                 {
-                    switch (entry)
-                    {
-                        case TransientServiceEntry transient:
-                            GC.SuppressFinalize(transient.SpawnedServices);
-                            break;
-                        case InstanceServiceEntry instance:
-                            GC.SuppressFinalize(instance.Instance);
-                            break;
-                    }
-
+                    GC.SuppressFinalize(entry.Instances);
                     GC.SuppressFinalize(entry);
                 }
 

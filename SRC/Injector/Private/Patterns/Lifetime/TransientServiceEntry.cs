@@ -5,8 +5,6 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Threading.Tasks;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -18,21 +16,13 @@ namespace Solti.Utils.DI.Internals
     /// </summary>
     internal class TransientServiceEntry : ProducibleServiceEntry
     {
-        private ServiceReferenceCollection? FSpawnedServices;
-
-        //
-        // A legyartott szervizek listajat az elso hasznalat elott hozzuk letre. Ennek foleg a teljestimenyteszteknel 
-        // van ertelme ahol a szervizbejegyzesek nem biztos h fel vannak szabaditva (felszabaditas ideje ne szamitson 
-        // bele a tesztbe). Igy levehetunk nemi terhet a GC vallarol.
-        //
-
-        internal ServiceReferenceCollection SpawnedServices => FSpawnedServices ??= new ServiceReferenceCollection(); 
+        private readonly List<IServiceReference> FInstances = new List<IServiceReference>();
 
         private void EnsureNotFull(IReadOnlyDictionary<string, object> options) 
         {
             int? threshold = options?.GetValueOrDefault<int?>("MaxSpawnedTransientServices");
 
-            if (SpawnedServices.Count >= threshold)
+            if (FInstances.Count >= threshold)
                 //
                 // Ha ide jutunk az azt jelenti h jo esellyel a tartalmazo injector ujrahasznositasra kerult
                 // (ahogy az a teljesitmeny teszteknel meg is tortent).
@@ -41,17 +31,14 @@ namespace Solti.Utils.DI.Internals
                 throw new Exception(string.Format(Resources.Culture, Resources.INJECTOR_SHOULD_BE_RELEASED, threshold));
         }
 
-        private TransientServiceEntry(TransientServiceEntry entry, IServiceContainer owner) : base(entry, owner)
-        {
-        }
+        protected override void AfterConstruction() =>
+            Instances = FInstances;
 
-        public TransientServiceEntry(Type @interface, string? name, Func<IInjector, Type, object> factory, IServiceContainer owner) : base(@interface, name, factory, owner)
-        {
-        }
+        private TransientServiceEntry(TransientServiceEntry entry, IServiceContainer owner) : base(entry, owner) { }
 
-        public TransientServiceEntry(Type @interface, string? name, Type implementation, IServiceContainer owner) : base(@interface, name, implementation, owner)
-        {
-        }
+        public TransientServiceEntry(Type @interface, string? name, Func<IInjector, Type, object> factory, IServiceContainer owner) : base(@interface, name, factory, owner) { }
+
+        public TransientServiceEntry(Type @interface, string? name, Type implementation, IServiceContainer owner) : base(@interface, name, implementation, owner) { }
 
         public override bool SetInstance(IServiceReference reference, IReadOnlyDictionary<string, object> options)
         {
@@ -67,20 +54,11 @@ namespace Solti.Utils.DI.Internals
             //
 
             reference.Value = Factory!(relatedInjector, Interface);
+            FInstances.Add(reference);
 
             //
-            // Mivel "TransientServiceEntry.Instance" mindig NULL ezert ide annyi alkalommal jutunk el
-            // ahanyszor a szervizt igenylik -> A megfelelo elettartam kezeles vegett egy belso listaban
-            // tartjuk szamon az eddig igenyelt peldanyokat.
+            // "Built" property erteket FALSE-on hagyjuk -> a SetInstance() legkozelebb is meghivasra kerul)
             //
-            // Az Add() hivas megnoveli a "reference" referenciaszamlalojat ezert a Release() hivas (h a
-            // szamlalo az eredeti erteken alljon).
-            //
-
-            SpawnedServices.Add(reference);   
-            int refcount = reference.Release();
-
-            Debug.Assert(refcount > 0);
 
             return true;
         }
@@ -95,23 +73,6 @@ namespace Solti.Utils.DI.Internals
             return result;
         }
 
-        protected override void Dispose(bool disposeManaged)
-        {
-            if (disposeManaged) FSpawnedServices?.Dispose();
-
-            base.Dispose(disposeManaged);
-        }
-
-        protected async override ValueTask AsyncDispose()
-        {
-            if (FSpawnedServices != null)
-                await FSpawnedServices.DisposeAsync();
-
-            //
-            // Nem kell "base" hivas mert az a standard Dispose()-t hivna.
-            //
-        }
-
-        public override Lifetime Lifetime => Lifetime.Transient;
+        public override Lifetime Lifetime { get; } = Lifetime.Transient;
     }
 }

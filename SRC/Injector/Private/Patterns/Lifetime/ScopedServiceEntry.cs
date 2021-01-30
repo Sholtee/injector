@@ -41,7 +41,7 @@ namespace Solti.Utils.DI.Internals
             // beallitott erteket.
             //
 
-            if (Instance != null) return false;
+            if (Built) return false;
 
             //
             // Kulomben legyartjuk: 
@@ -51,9 +51,9 @@ namespace Solti.Utils.DI.Internals
 
             reference.Value = Factory!(relatedInjector, Interface);
 
-            Instance = reference;
+            Instances = new[] { reference };
 
-            return true;
+            return Built = true;
         }
 
         public override AbstractServiceEntry CopyTo(IServiceContainer target)
@@ -66,6 +66,6 @@ namespace Solti.Utils.DI.Internals
             return result;
         }
 
-        public override Lifetime Lifetime => Lifetime.Scoped;
+        public override Lifetime Lifetime { get; } = Lifetime.Scoped;
     }
 }

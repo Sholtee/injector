@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Linq;
 
 using NUnit.Framework;
 
@@ -43,7 +44,7 @@ namespace Solti.Utils.DI.Container.Tests
 
             Container.Instance(instance);
 
-            Assert.AreSame(instance, Container.CreateChild().Get<IInterface_1>(QueryModes.ThrowOnError).Instance.Value);
+            Assert.AreSame(instance, Container.CreateChild().Get<IInterface_1>(QueryModes.ThrowOnError).Instances.Single().Value);
         }
 
         [Test]

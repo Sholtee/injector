@@ -32,11 +32,30 @@ namespace Solti.Utils.DI.Internals
 
         public ServiceInstantiationStrategySelector(Injector relatedInjector) => RelatedInjector = relatedInjector;
 
-        public Func<IServiceReference?, IServiceReference> GetStrategyFor(AbstractServiceEntry requested) 
+        internal Func<IServiceReference?, IServiceReference> GetStrategyInvocation(IServiceInstantiationStrategy strategy, AbstractServiceEntry entry)
+        {
+            return InvokeStrategy;
+
+            IServiceReference InvokeStrategy(IServiceReference? requestor)
+            {
+                IServiceReference requested = strategy.Exec(RelatedInjector, requestor, entry);
+
+                //
+                // Ha az aktualisan lekerdezett szerviz valakinek a fuggosege akkor hozzaadjuk a fuggosegi listahoz.
+                //
+
+                requestor?.AddDependency(requested);
+                return requested;
+            }
+        }
+
+        public Func<IServiceReference?, IServiceReference> GetStrategyFor(AbstractServiceEntry requestedEntry) 
         {
             foreach (IServiceInstantiationStrategy strategy in Strategies)
-                if (strategy.ShouldUse(RelatedInjector, requested))
-                    return requestor => strategy.Exec(RelatedInjector, requestor, requested);
+            {
+                if (strategy.ShouldUse(RelatedInjector, requestedEntry))
+                    return GetStrategyInvocation(strategy, requestedEntry);
+            }
 
             throw new InvalidOperationException(Resources.NO_STRATEGY);
         }

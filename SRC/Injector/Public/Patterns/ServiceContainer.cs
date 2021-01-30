@@ -273,10 +273,13 @@ namespace Solti.Utils.DI
         /// </summary>
         protected async override ValueTask AsyncDispose()
         {
-            foreach (Disposable disposable in FEntries.Values.Where(ShouldDispose))
-            {
-                await disposable.DisposeAsync();
-            }
+            await Task.WhenAll
+            (
+                FEntries
+                    .Values
+                    .Where(ShouldDispose)
+                    .Select(disposable => disposable.DisposeAsync().AsTask())
+            );
 
             FEntries.Clear();
 

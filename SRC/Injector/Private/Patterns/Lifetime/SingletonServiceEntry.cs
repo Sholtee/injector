@@ -43,21 +43,21 @@ namespace Solti.Utils.DI.Internals
             // beallitott erteket.
             //
 
-            if (Instance != null) return false;
+            if (Built) return false;
 
             //
-            // Kulomben legyartjuk: 
+            // Kulonben legyartjuk: 
             // - Elsokent a Factory-t hivjuk es Instance-nak csak sikeres visszateres eseten adjunk erteket.
             // - "Factory" biztosan nem NULL [lasd EnsureProducible()].
             //
 
             reference.Value = Factory!(relatedInjector, Interface);
 
-            Instance = reference;
+            Instances = new[] { reference };
 
-            return true;
+            return Built = true;
         }
 
-        public override Lifetime Lifetime => Lifetime.Singleton;
+        public override Lifetime Lifetime { get; } = Lifetime.Singleton;
     }
 }

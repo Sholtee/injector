@@ -27,7 +27,10 @@ namespace Solti.Utils.DI.Internals
             // Nem kell kulon ellenorizni a peldanyt mert a ServiceReference.SetValue() validal.
             //
 
-            Instance = new ServiceReference(this, instance, externallyOwned);
+            Instances = new[] 
+            { 
+                new ServiceReference(this, instance, externallyOwned)
+            };
 
             //
             // Ez kivetelt fog dobni ha "@interface"-en akar csak egy aspektus is van (peldanynak nincs
@@ -35,6 +38,12 @@ namespace Solti.Utils.DI.Internals
             //
 
             this.ApplyAspects();
+
+            //
+            // SetInstance() ne legyen hivva.
+            //
+
+            Built = true;
         }
 
         public override bool SetInstance(IServiceReference reference, IReadOnlyDictionary<string, object> options) =>

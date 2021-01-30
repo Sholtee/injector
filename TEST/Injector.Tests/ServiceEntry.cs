@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 using Moq;
@@ -35,9 +36,9 @@ namespace Solti.Utils.DI.Internals.Tests
         {
             var entry = new MyServiceEntry(typeof(IDisposable));
 
-            Assert.That(entry.Instance.RefCount, Is.EqualTo(1));
+            Assert.That(entry.Instances.Single().RefCount, Is.EqualTo(1));
             entry.Dispose();
-            Assert.That(entry.Instance.RefCount, Is.EqualTo(0));  
+            Assert.That(entry.Instances.Single().RefCount, Is.EqualTo(0));  
         }
 
         [Test]
@@ -45,16 +46,16 @@ namespace Solti.Utils.DI.Internals.Tests
         {
             var entry = new MyServiceEntry(typeof(IDisposable));
 
-            Assert.That(entry.Instance.RefCount, Is.EqualTo(1));
+            Assert.That(entry.Instances.Single().RefCount, Is.EqualTo(1));
             await entry.DisposeAsync();
-            Assert.That(entry.Instance.RefCount, Is.EqualTo(0));
+            Assert.That(entry.Instances.Single().RefCount, Is.EqualTo(0));
         }
 
         private class MyServiceEntry : AbstractServiceEntry 
         {
             public MyServiceEntry(Type iface) : base(iface, null, new Mock<IServiceContainer>(MockBehavior.Strict).Object) 
             {
-                Instance = new ServiceReference(this, new Mock<IInjector>().Object);
+                Instances = new[] { new ServiceReference(this, new Mock<IInjector>().Object) };
             }
         }
     }

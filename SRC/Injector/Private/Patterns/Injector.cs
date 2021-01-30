@@ -112,15 +112,17 @@ namespace Solti.Utils.DI.Internals
             // miatt "entry" tuti nem NULL.
             //
 
-            AbstractServiceEntry entry = Get(iface, name, QueryModes.AllowSpecialization | QueryModes.ThrowOnError)!;
+            AbstractServiceEntry requestorEntry = Get(iface, name, QueryModes.AllowSpecialization | QueryModes.ThrowOnError)!;
 
             //
             // Szerviz peldany letrehozasa. 
             //
 
-            return FStrategySelector
-                .GetStrategyFor(entry)
-                .Invoke(FGraph.Current /*requestor*/);
+            IServiceReference?
+                requestor = FGraph.Current,
+                requested = FStrategySelector.GetStrategyFor(requestorEntry).Invoke(requestor);
+
+            return requested;
         }
         #endregion
 

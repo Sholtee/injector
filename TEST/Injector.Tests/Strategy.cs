@@ -91,7 +91,7 @@ namespace Solti.Utils.DI.Internals.Tests
         }
 
         [TestCaseSource(nameof(Strategies))]
-        public void ServiceInstantiationStrategy_ShouldSetTheReturnedInstanceAsDependency(object para)
+        public void ServiceInstantiationStrategy_ShouldSetTheReturnedInstanceAsADependency(object para)
         {
             using (IServiceContainer container = new ServiceContainer())
             {
@@ -102,9 +102,7 @@ namespace Solti.Utils.DI.Internals.Tests
 
                 var requestor = new ServiceReference(new AbstractServiceEntry(typeof(IService_2), null, new Mock<IServiceContainer>(MockBehavior.Strict).Object), new Injector(container));
 
-                IServiceInstantiationStrategy strategy = (IServiceInstantiationStrategy) para;
-
-                IServiceReference dep = strategy.Exec(mockInjector.Object, requestor, requested);
+                IServiceReference dep = new ServiceInstantiationStrategySelector(mockInjector.Object).GetStrategyInvocation((IServiceInstantiationStrategy) para, requested).Invoke(requestor);
 
                 Assert.That(dep.Value, Is.EqualTo(instance));
                 mockInjector.Verify(i => i.Instantiate(It.IsAny<ServiceReference>()), Times.Never);
@@ -131,7 +129,7 @@ namespace Solti.Utils.DI.Internals.Tests
 
                 strategy.Exec(new Injector(container), requestor, container.Get<IService>());
 
-                Assert.That(container.Get<IService>().Instance, Is.Not.Null); // factory hivva volt
+                Assert.That(container.Get<IService>().Instances, Is.Not.Null); // factory hivva volt
                 Assert.That(Monitor.IsEntered(container.Get<IService>()), Is.False);
             }
         }
@@ -153,8 +151,8 @@ namespace Solti.Utils.DI.Internals.Tests
 
                 AbstractServiceEntry entry = container.Get<IService>();
 
-                Assert.That(entry.Instance.RelatedInjector, Is.Not.EqualTo(injector));
-                Assert.That(entry.Instance.RelatedInjector.UnderlyingContainer.Parent, Is.EqualTo(entry.Owner));
+                Assert.That(entry.Instances.Single().RelatedInjector, Is.Not.EqualTo(injector));
+                Assert.That(entry.Instances.Single().RelatedInjector.UnderlyingContainer.Parent, Is.EqualTo(entry.Owner));
             }
         }
 

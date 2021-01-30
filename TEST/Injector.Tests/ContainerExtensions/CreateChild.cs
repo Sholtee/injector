@@ -33,12 +33,11 @@ namespace Solti.Utils.DI.Container.Tests
             int GetHashCode(AbstractServiceEntry info) => new
             {
                 //
-                // Owner NE szerepeljen
+                // Owner NE szerepeljen, peldanyok meg nincsenek
                 //
 
                 info.Interface,
                 info.Factory,
-                info.Instance,
                 info.Implementation
             }.GetHashCode();
         }

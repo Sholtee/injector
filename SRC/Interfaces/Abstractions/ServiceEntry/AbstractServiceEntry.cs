@@ -5,6 +5,7 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -57,7 +58,14 @@ namespace Solti.Utils.DI.Interfaces
 
             if (implementation != null && !implementation.IsClass)
                 throw new ArgumentException(Resources.NOT_A_CLASS, nameof(implementation));
+
+            AfterConstruction();
         }
+
+        /// <summary>
+        /// Invoked when the current entry is about to be initialized after its creation.
+        /// </summary>
+        protected virtual void AfterConstruction() { }
 
         #region Immutables
         /// <summary>
@@ -90,17 +98,22 @@ namespace Solti.Utils.DI.Interfaces
         public Func<IInjector, Type, object>? Factory { get; protected set; }
 
         /// <summary>
-        /// The previously created service instance. Don't use it directly.
+        /// The previously created service instance(s) related to this entry. Don't use it directly.
         /// </summary>
-        public IServiceReference? Instance { get; protected set; }
+        public IReadOnlyCollection<IServiceReference> Instances { get; protected set; } = Array.Empty<IServiceReference>();
+
+        /// <summary>
+        /// Returns true if this entry is already provided a service isntance.
+        /// </summary>
+        public bool Built { get; protected set; }
         #endregion
 
         /// <summary>
-        /// Calls the <see cref="Factory"/> to set the service <see cref="Instance"/>.
+        /// Calls the <see cref="Factory"/> to set an instance in the <see cref="Instances"/> list.
         /// </summary>
         /// <param name="serviceReference">The <see cref="IServiceReference"/> of the service being created.</param>
         /// <param name="options">The options that control the instantiation process.</param>
-        /// <returns>True on success false if the <see cref="Instance"/> had already been set previously.</returns>
+        /// <returns>Returns false if the entry was already <see cref="Built"/>.</returns>
         public virtual bool SetInstance(IServiceReference serviceReference, IReadOnlyDictionary<string, object> options) =>
             throw new NotImplementedException();
 
@@ -127,21 +140,41 @@ namespace Solti.Utils.DI.Interfaces
         /// Gets the hash code of this entry.
         /// </summary>
         /// <returns>The hash code of this entry.</returns>
-        public override int GetHashCode() =>
-#if NETSTANDARD2_0
-            new // muszaj anonimnak lennie
+        public override int GetHashCode()
+        {
+#if !NETSTANDARD2_0
+            var hashCode = new HashCode();
+
+            hashCode.Add(Owner);
+            hashCode.Add(Interface);
+            hashCode.Add(Name);
+            hashCode.Add(Factory);
+            hashCode.Add(Implementation);
+
+            foreach (IServiceReference instance in Instances)
+                hashCode.Add(instance.Value);
+
+            return hashCode.ToHashCode();
+#else
+            object current = new
             {
                 Owner,
                 Interface,
                 Name,
                 Factory,
-                Instance?.Value,
                 Implementation
-            }.GetHashCode()
-#else
-            HashCode.Combine(Owner, Interface, Name, Factory, Instance?.Value, Implementation)
+            };
+
+            foreach (IServiceReference instance in Instances)
+                current = new
+                {
+                    Previous = current,
+                    Instance = instance
+                };
+
+            return current.GetHashCode();
 #endif
-            ;
+        }
 
         /// <summary>
         /// See <see cref="object.ToString"/>.
@@ -149,33 +182,35 @@ namespace Solti.Utils.DI.Interfaces
         /// <returns></returns>
         public override string ToString()
         {
-            const string 
-                NAME_PART = " - {0}: {1}",
-                NULL = nameof(NULL);
+            const string NAME_PART = " - {0}: {1}";
 
             return new StringBuilder(this.FriendlyName())
-                .AppendFormat(Resources.Culture, NAME_PART, nameof(Implementation), Implementation?.ToString() ?? NULL)
-                .AppendFormat(Resources.Culture, NAME_PART, nameof(Instance), Instance?.Value?.ToString() ?? NULL)
+                .AppendFormat(Resources.Culture, NAME_PART, nameof(Implementation), Implementation?.ToString() ?? "NULL")
+                .AppendFormat(Resources.Culture, NAME_PART, nameof(Instances), Instances.Any() ? string.Join(", ", Instances.Select(instance => instance.Value)) : "EMPTY")
                 .ToString();
         }
 
         /// <summary>
-        /// Decrements the reference counter of the service <see cref="Instance"/>.
+        /// Decrements the reference counter of the service <see cref="Instances"/>.
         /// </summary>
         protected override void Dispose(bool disposeManaged)
         {
-            if (disposeManaged) Instance?.Release();
+            if (disposeManaged)
+                foreach (IServiceReference instance in Instances)
+                    instance.Release();
 
             base.Dispose(disposeManaged);
         }
 
         /// <summary>
-        /// Decrements the reference counter of the service <see cref="Instance"/>.
+        /// Decrements the reference counter of the service <see cref="Instances"/>.
         /// </summary>
         protected override async ValueTask AsyncDispose()
         {
-            if (Instance != null)
-                await Instance.ReleaseAsync();
+            await Task.WhenAll
+            (
+                Instances.Select(instance => instance.ReleaseAsync())
+            );
 
             //
             // Nem kell "base" hivas mert az a Dispose()-t hivna.

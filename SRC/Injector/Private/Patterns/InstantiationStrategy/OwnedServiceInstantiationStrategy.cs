@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -13,33 +14,30 @@ namespace Solti.Utils.DI.Internals
     {
         public virtual bool ShouldUse(Injector injector, AbstractServiceEntry requested) => requested.Owner == injector.UnderlyingContainer;
 
-        [SuppressMessage("Reliability", "CA2000: Dispose objects before losing scope", Justification = "Calling the Release() method disposes the object")]
-        public virtual IServiceReference Exec(Injector injector, IServiceReference? requestor, AbstractServiceEntry requested) 
+        protected static IServiceReference ExecInternal(Injector injector, IServiceReference? requestor, AbstractServiceEntry requested)
         {
-            IServiceReference? result = requested.Instance;
+            IServiceReference result = new ServiceReference(requested, injector);
 
-            if (result == null)
+            try
             {
-                result = new ServiceReference(requested, injector);
-
-                try
-                {
-                    injector.Instantiate(result);
-                }
-                catch 
-                {
-                    result.Release();
-                    throw;
-                }
+                injector.Instantiate(result);
+            }
+            catch
+            {
+                result.Release();
+                throw;
             }
 
-            //
-            // Ha az aktualisan lekerdezett szerviz valakinek a fuggosege akkor hozzaadjuk a fuggosegi listahoz.
-            //
-
-            requestor?.Dependencies.Add(result);
-
             return result;
+        }
+
+        [SuppressMessage("Reliability", "CA2000: Dispose objects before losing scope", Justification = "Calling the Release() method disposes the object")]
+        IServiceReference IServiceInstantiationStrategy.Exec(Injector injector, IServiceReference? requestor, AbstractServiceEntry requested) 
+        {
+            if (requested.Built)
+                return requested.Instances.Single();
+
+            return ExecInternal(injector, requestor, requested);
         }
     }
 }

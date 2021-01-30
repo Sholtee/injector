@@ -5,7 +5,7 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Solti.Utils.DI
@@ -14,26 +14,18 @@ namespace Solti.Utils.DI
     using Internals;
     using Primitives.Patterns;
 
-    internal class ServiceReference : DisposeByRefObject, IServiceReference
+    internal sealed class ServiceReference : DisposeByRefObject, IServiceReference
     {
-        private readonly ServiceReferenceCollection? FDependencies;
+        private readonly List<IServiceReference> FDependencies = new List<IServiceReference>();
 
         private readonly WriteOnce FValue = new WriteOnce(strict: false);
 
-        /// <summary>
-        /// Creates a new <see cref="ServiceReference"/> instance.
-        /// </summary>
         public ServiceReference(AbstractServiceEntry entry, IInjector injector)
         {
             RelatedServiceEntry = Ensure.Parameter.IsNotNull(entry, nameof(entry));
             RelatedInjector = Ensure.Parameter.IsNotNull(injector, nameof(injector));
-
-            FDependencies = new ServiceReferenceCollection();
         }
 
-        /// <summary>
-        /// Creates a new <see cref="ServiceReference"/> instance with the given <paramref name="value"/>.
-        /// </summary>
         public ServiceReference(AbstractServiceEntry entry, object value, bool externallyOwned)
         {
             RelatedServiceEntry = Ensure.Parameter.IsNotNull(entry, nameof(entry));
@@ -45,31 +37,44 @@ namespace Solti.Utils.DI
             //
         }
 
-        /// <summary>
-        /// The related service entry.
-        /// </summary>
         public AbstractServiceEntry RelatedServiceEntry { get; }
 
-        /// <summary>
-        /// The (optional) <see cref="IInjector"/> instance who created this reference.
-        /// </summary>
         public IInjector? RelatedInjector { get; }
 
-        /// <summary>
-        /// The dependencies of the bound service. It can be used only if the <see cref="ExternallyOwned"/> is false.
-        /// </summary>
-        public ICollection<IServiceReference> Dependencies 
+        public IReadOnlyCollection<IServiceReference> Dependencies 
         {
             get 
             {
                 CheckNotDisposed();
-                return (ICollection<IServiceReference>?) FDependencies ?? Array.Empty<IServiceReference>();
+                return FDependencies;
             }
         }
 
-        /// <summary>
-        /// The bound service instance.
-        /// </summary>
+        public void AddDependency(IServiceReference dependency) 
+        {
+            CheckNotDisposed();
+
+            Ensure.Parameter.IsNotNull(dependency, nameof(dependency));
+
+            //
+            // Ha mar letre lett hozva a szervizpeldany akkor utolag nem vehetunk fel fuggoseget hozza.
+            //
+
+            if (Value is not null)
+                throw new InvalidOperationException();
+
+            dependency.AddRef();
+
+            try
+            {
+                FDependencies.Add(dependency);
+            }
+            catch 
+            {
+                dependency.Release();
+            }
+        }
+
         public object? Value
         {
             get
@@ -92,57 +97,50 @@ namespace Solti.Utils.DI
             }
         }
 
-        /// <summary>
-        /// Returns true if the bound service will be disposed outside of this library false otherwise.
-        /// </summary>
         public bool ExternallyOwned { get; }
 
-        /// <summary>
-        /// Disposes the bound service then decrements the reference counter of all its dependencies.
-        /// </summary>
         protected override void Dispose(bool disposeManaged)
         {
-            if (disposeManaged)
+            if (disposeManaged && !ExternallyOwned)
             {
-                if (!ExternallyOwned)
-                {
-                    Debug.WriteLine($"Disposing service: {RelatedServiceEntry}");
+                //
+                // Elso helyen szerepeljen h a fuggosegeket a Dispose()-ban meg hasznalni tudja a szerviz peldany.
+                //
 
-                    //
-                    // Elso helyen szerepeljen h a fuggosegeket a Dispose()-ban meg hasznalni tudja a szerviz peldany.
-                    //
+                if (Value is IDisposable disposable)
+                    disposable.Dispose();
 
-                    (Value as IDisposable)?.Dispose();
-                }
-
-                FDependencies?.Dispose();
+                foreach (IServiceReference dep in Dependencies)
+                    dep.Release();          
             }
 
             base.Dispose(disposeManaged);
         }
 
-        /// <summary>
-        /// Asynchronously disposes the bound service then decrements the reference counter of all its dependencies.
-        /// </summary>
         protected async override ValueTask AsyncDispose()
         {
             if (!ExternallyOwned)
             {
-                Debug.WriteLine($"Disposing service: {RelatedServiceEntry}");
+                switch (Value)
+                {
+                    case IAsyncDisposable asyncDisposable:
+                        await asyncDisposable.DisposeAsync();
+                        break;
 
-                if (Value is IAsyncDisposable asyncDisposable)
-                    await asyncDisposable.DisposeAsync();
+                    //
+                    // Ha aszinkron nem lehet megprobaljuk szinkron is felszabaditani.
+                    //
 
-                //
-                // Ha aszinkron nem lehet megprobaljuk szinkron is felszabaditani.
-                //
+                    case IDisposable disposable:
+                        disposable.Dispose();
+                        break;
+                }
 
-                else if (Value is IDisposable disposable)
-                    disposable.Dispose();
+                await Task.WhenAll
+                (
+                    Dependencies.Select(dep => dep.ReleaseAsync())
+                );
             }
-
-            if (FDependencies != null)
-                await FDependencies.DisposeAsync();
 
             //
             // Nem kell "base" hivas mert az a standard Dispose()-t hivna.

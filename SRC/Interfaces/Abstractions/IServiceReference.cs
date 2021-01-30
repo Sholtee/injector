@@ -26,7 +26,12 @@ namespace Solti.Utils.DI.Interfaces
         /// <summary>
         /// The dependencies of the bound service.
         /// </summary>
-        ICollection<IServiceReference> Dependencies { get; }
+        IReadOnlyCollection<IServiceReference> Dependencies { get; }
+
+        /// <summary>
+        /// Registers a new dependency is the <see cref="Dependencies"/> list.
+        /// </summary>
+        void AddDependency(IServiceReference dependency);
 
         /// <summary>
         /// The bound service instance. The value can be set once.
