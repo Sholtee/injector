@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 using NUnit.Framework;
@@ -262,6 +263,45 @@ namespace Solti.Utils.DI.Injector.Tests
                 Assert.That(injector.Get<IInterface_2>().Interface1, Is.InstanceOf<Implementation_1_No_Dep>());
                 Assert.That(injector.Get<IInterface_1>(), Is.InstanceOf<DecoratedImplementation_1>());
             }
+        }
+
+        [Test]
+        public void Lifetime_PooledService_ShouldBeInstantiatedUpToNTimesPerDeclaringContainer([Values(1, 2, 3)] int times)
+        {
+            Container.Service<IInterface_1, Implementation_1_No_Dep>(Lifetime.Pooled.WithCapacity(times));
+
+            IInjector[] injectors = Enumerable.Repeat(0, times).Select(_ => 
+            {
+                IInjector injector = Container.CreateInjector();
+                Assert.AreSame(injector.Get<IInterface_1>(), injector.Get<IInterface_1>());
+                return injector;
+            }).ToArray();
+
+            Thread.Sleep(50);
+
+            Assert.False
+            (
+                Task.Run(() =>
+                {
+                    using (IInjector injector = Container.CreateInjector())
+                    {
+                        injector.Get<IInterface_1>();
+                    }
+                }).Wait(10)
+            );
+
+            injectors.Last().Dispose();
+
+            Assert.True
+            (
+                Task.Run(() =>
+                {
+                    using (IInjector injector = Container.CreateInjector())
+                    {
+                        injector.Get<IInterface_1>();
+                    }
+                }).Wait(10)
+            );
         }
 
         [Test]

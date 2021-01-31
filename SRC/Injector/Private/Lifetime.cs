@@ -55,18 +55,26 @@ namespace Solti.Utils.DI.Internals
             public override string ToString() => nameof(Transient);
         }
 
-        private sealed class PooledLifetime : Lifetime
+        private sealed class PooledLifetime : Lifetime, IHasCapacity
         {
-            public override AbstractServiceEntry CreateFrom(Type iface, string? name, Type implementation, IServiceContainer owner) => new PooledServiceEntry(iface, name, implementation, owner);
+            public override AbstractServiceEntry CreateFrom(Type iface, string? name, Type implementation, IServiceContainer owner) => new PooledServiceEntry(iface, name, implementation, owner)
+            {
+                Capacity = Capacity
+            };
 
-            public override AbstractServiceEntry CreateFrom(Type iface, string? name, Func<IInjector, Type, object> factory, IServiceContainer owner) => new PooledServiceEntry(iface, name, factory, owner);
+            public override AbstractServiceEntry CreateFrom(Type iface, string? name, Func<IInjector, Type, object> factory, IServiceContainer owner) => new PooledServiceEntry(iface, name, factory, owner)
+            {
+                Capacity = Capacity
+            };
 
             public override bool IsCompatible(AbstractServiceEntry entry) => entry is PooledServiceEntry;
 
             public override string ToString() => nameof(Pooled);
+
+            public int Capacity { get; set; } = Environment.ProcessorCount;
         }
 
-        private sealed class InstanceLifetime : Lifetime 
+        private sealed class InstanceLifetime : Lifetime
         {
             public override AbstractServiceEntry CreateFrom(Type iface, string? name, object value, bool externallyOwned, IServiceContainer owner) => new InstanceServiceEntry(iface, name, value, externallyOwned, owner);
 

@@ -35,37 +35,49 @@ namespace Solti.Utils.DI.Internals
 
         private static int LUID;
 
-        private string PoolName { get; } = $"__Pool_{Interlocked.Increment(ref LUID)}";
+        private string PoolName { get; set; }
 
-        private PooledServiceEntry(PooledServiceEntry entry, IServiceContainer owner) : base(entry, owner) =>
+        private PooledServiceEntry(PooledServiceEntry entry, IServiceContainer owner) : base(entry, owner)
+        {
             //
-            // Leszarmazott kontenerben mar nem baszogathatjuk a factory-t.
+            // Leszarmazott kontenerben mar nem baszogathatjuk a factory-t es a pool is mar regisztralva van
             //
 
             Factory = null;
-        #endregion
+            PoolName = entry.PoolName;
+        }
 
-        public PooledServiceEntry(Type @interface, string? name, Func<IInjector, Type, object> factory, IServiceContainer owner) : base(@interface, name, factory, owner) => owner.Add
-        (
-            //
-            // Letrehozunk egy dedikaltan ehhez a bejegyzeshez tartozo pool-szervizt.
-            //
-
-            new SingletonServiceEntry
-            (
-                typeof(IPool), 
-                PoolName, 
-                (injector, iface) => new UnderlyingPool(Capacity, () => Factory!.Invoke(injector, iface)), 
-                owner
-            )
-        );
-
-        public PooledServiceEntry(Type @interface, string? name, Type implementation, IServiceContainer owner) : base(@interface, name, implementation, owner)
+        protected void RegisterPool()
         {
             //
-            // Itt nem kell letrehozni semmit, mert lehet generikus szervizt regisztralunk
+            // Letrehozunk egy dedikaltan ehhez a bejegyzeshez tartozo pool-szervizt (ha nem generikusunk van).
             //
+
+            if (Factory is not null)
+            {
+                PoolName = $"__Pool_{Interlocked.Increment(ref LUID)}";
+
+                Owner.Add
+                (
+                     new SingletonServiceEntry
+                     (
+                         typeof(IPool),
+                         PoolName,
+                         (injector, iface) => new UnderlyingPool(Capacity, () => Factory.Invoke(injector, iface)),
+                         Owner
+                     )
+                 );
+            }
         }
+        #endregion
+
+        #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
+        public PooledServiceEntry(Type @interface, string? name, Func<IInjector, Type, object> factory, IServiceContainer owner) : base(@interface, name, factory, owner) =>
+            RegisterPool();
+
+        public PooledServiceEntry(Type @interface, string? name, Type implementation, IServiceContainer owner) : base(@interface, name, implementation, owner) =>
+            RegisterPool();
+        #pragma warning restore CS8618
 
         public int Capacity { get; set; } = Environment.ProcessorCount;
 

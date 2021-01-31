@@ -58,15 +58,7 @@ namespace Solti.Utils.DI.Interfaces
 
             if (implementation != null && !implementation.IsClass)
                 throw new ArgumentException(Resources.NOT_A_CLASS, nameof(implementation));
-
-            AfterConstruction();
         }
-
-        /// <summary>
-        /// Invoked when the current entry is about to be initialized after its creation.
-        /// </summary>
-        protected virtual void AfterConstruction() { }
-
         #region Immutables
         /// <summary>
         /// The interface of the service.

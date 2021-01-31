@@ -1,5 +1,5 @@
 ﻿/********************************************************************************
-* ServiceEntryExtensions.cs                                                     *
+* LifetimeExtensions.cs                                                         *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
@@ -8,14 +8,14 @@ using System;
 namespace Solti.Utils.DI.Interfaces
 {
     /// <summary>
-    /// Defines several handy extensions for the <see cref="AbstractServiceEntry"/> class.
+    /// Defines several handy extensions for the <see cref="Lifetime"/> class.
     /// </summary>
-    public static class ServiceEntryExtensions
+    public static class LifetimeExtensions
     {
         /// <summary>
-        /// Sets the capacity of the given entry. 
+        /// Sets the capacity. 
         /// </summary>
-        public static AbstractServiceEntry WithCapacity(this AbstractServiceEntry self, int capacity)
+        public static Lifetime WithCapacity(this Lifetime self, int capacity)
         {
             if (self is null)
                 throw new ArgumentNullException(nameof(self));
