@@ -16,7 +16,7 @@
 - [Duck typing](https://en.wikipedia.org/wiki/Duck_typing ) (using proxies)
 - Generic service support
 - Container inheritance
-- All well known service lifecycles are supported: `Singleton`, `Transient`, `Scoped`, `Instance`
+- All well known service lifecycles are supported: `Singleton`, `Transient`, `Scoped`, `Pooled`, `Instance`
 - Configurable constructor selection (using attributes)
 - "Auto" service registration (using attributes)
 - Extensible
@@ -38,6 +38,9 @@
   * `Transient`:
     - Instantiated on every request and released automatically when the parent injector is disposed (injector controlled lifetime).
     - Dependency resolution is done from the parent injector.
+  * `Pooled`:
+    - Instantiated in a separate [pool](https://en.wikipedia.org/wiki/Object_pool_pattern ) (if necessary) and released automatically when the declaring container is disposed (container controlled lifetime)
+	- Dependency resolution is done from the declaring container.
 	
   As you can see you should never free producible services manually.
 - Since `Singleton` services can be accessed parallelly they (and their dependencies) have to be thread safe.
