@@ -18,6 +18,7 @@ namespace Solti.Utils.DI.Internals
             Singleton = new SingletonLifetime();
             Scoped    = new ScopedLifetime();
             Transient = new TransientLifetime();
+            Pooled    = new PooledLifetime();
             Instance  = new InstanceLifetime();
         }
 
@@ -52,6 +53,17 @@ namespace Solti.Utils.DI.Internals
             public override bool IsCompatible(AbstractServiceEntry entry) => entry is TransientServiceEntry;
 
             public override string ToString() => nameof(Transient);
+        }
+
+        private sealed class PooledLifetime : Lifetime
+        {
+            public override AbstractServiceEntry CreateFrom(Type iface, string? name, Type implementation, IServiceContainer owner) => new PooledServiceEntry(iface, name, implementation, owner);
+
+            public override AbstractServiceEntry CreateFrom(Type iface, string? name, Func<IInjector, Type, object> factory, IServiceContainer owner) => new PooledServiceEntry(iface, name, factory, owner);
+
+            public override bool IsCompatible(AbstractServiceEntry entry) => entry is PooledServiceEntry;
+
+            public override string ToString() => nameof(Pooled);
         }
 
         private sealed class InstanceLifetime : Lifetime 

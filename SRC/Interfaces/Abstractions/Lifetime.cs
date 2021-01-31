@@ -7,6 +7,8 @@ using System;
 
 namespace Solti.Utils.DI.Interfaces
 {
+    using Primitives.Patterns;
+
     /// <summary>
     /// Describes the lifetime of a service.
     /// </summary>
@@ -16,6 +18,7 @@ namespace Solti.Utils.DI.Interfaces
             FSingleton,
             FScoped,
             FTransient,
+            FPooled,
             FInstance;
 
         /// <summary>
@@ -32,6 +35,12 @@ namespace Solti.Utils.DI.Interfaces
         /// Services having transient lifetime are instantiated on every request and released automatically when the parent <see cref="IInjector"/> is disposed.
         /// </summary>
         public static Lifetime Transient { get => FTransient ?? throw new NotSupportedException(); protected set => FTransient = value; }
+
+        /// <summary>
+        /// Services having pooled lifetime are instantiated in a separate <see href="https://en.wikipedia.org/wiki/Object_pool_pattern">pool</see>. Every <see cref="IInjector"/> may request a service instance from the pool which is automatically resetted and returned when the parent <see cref="IInjector"/> is disposed.
+        /// </summary>
+        /// <remarks>Pooled services should implement the <see cref="IResettable"/> interface.</remarks>
+        public static Lifetime Pooled { get => FPooled ?? throw new NotSupportedException(); protected set => FPooled = value; }
 
         /// <summary>
         /// Services having instance lifetime behave like a constant value.

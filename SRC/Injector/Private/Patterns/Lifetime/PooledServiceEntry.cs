@@ -99,6 +99,6 @@ namespace Solti.Utils.DI.Internals
             return result;
         }
 
-        public override Lifetime Lifetime { get; } = Lifetime.Singleton;
+        public override Lifetime Lifetime { get; } = Lifetime.Pooled;
     }
 }
