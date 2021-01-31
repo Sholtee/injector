@@ -5,6 +5,7 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 
 namespace Solti.Utils.DI.Internals
@@ -49,6 +50,14 @@ namespace Solti.Utils.DI.Internals
 
         private void RegisterPool()
         {
+            //
+            // PoolItem<object> altal megvalositott interface-eket nem regisztralhatjuk (h
+            // a konkret oljektum helyett ne a PoolItem-et adja vissza az injector).
+            //
+
+            if (typeof(PoolItem<object>).GetInterfaces().Contains(Interface))
+                throw new NotSupportedException();
+
             //
             // Letrehozunk egy dedikaltan ehhez a bejegyzeshez tartozo pool-szervizt (ha nem generikusunk van).
             //

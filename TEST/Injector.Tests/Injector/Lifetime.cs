@@ -277,8 +277,6 @@ namespace Solti.Utils.DI.Injector.Tests
                 return injector;
             }).ToArray();
 
-            Thread.Sleep(50);
-
             Assert.False
             (
                 Task.Run(() =>
@@ -302,6 +300,115 @@ namespace Solti.Utils.DI.Injector.Tests
                     }
                 }).Wait(10)
             );
+        }
+
+        [Test]
+        public void Lifetime_PooledService_ShouldHaveItsOwnInjector()
+        {
+            Assert.Ignore();
+
+            Container
+                .Service<IInterface_7<IInjector>, Implementation_7_TInterface_Dependant<IInjector>>(Lifetime.Pooled)
+                .Service<IInterface_7<IInjector>, Implementation_7_TInterface_Dependant<IInjector>>("named", Lifetime.Pooled);
+
+            using (IInjector injector = Container.CreateInjector())
+            {
+                IInterface_7<IInjector> svc = injector.Get<IInterface_7<IInjector>>("named");
+
+                Assert.That(svc.Interface, Is.Not.SameAs(injector));
+                Assert.That(svc.Interface.UnderlyingContainer.Parent, Is.SameAs(Container));
+
+                Assert.That(svc.Interface.Get<IInterface_7<IInjector>>().Interface, Is.Not.SameAs(injector));
+                Assert.That(svc.Interface.Get<IInterface_7<IInjector>>().Interface.UnderlyingContainer.Parent, Is.SameAs(Container));
+
+                Assert.That(svc.Interface.Get<IInterface_7<IInjector>>().Interface, Is.Not.SameAs(svc.Interface));
+            }
+        }
+
+        private interface IDisposableService : IDisposableEx { }
+
+        private class DisposableService : Disposable, IDisposableService { }
+
+        [Test]
+        public void Lifetime_PooledService_ShouldBeDisposedOnContainerDisposal()
+        {
+            IDisposableEx disposable;
+
+            using (IServiceContainer container = Container.CreateChild())
+            {
+                container.Service<IDisposableService, DisposableService>(Lifetime.Pooled);
+
+                using (IInjector injector = container.CreateInjector())
+                {
+                    disposable = injector.Get<IDisposableService>();
+                }
+
+                Assert.False(disposable.Disposed);
+            }
+
+            Assert.That(disposable.Disposed);
+        }
+
+        [Test]
+        public void Lifetime_PooledService_MayHavePooledDependency()
+        {
+            Container
+                .Service<IInterface_1, Implementation_1>(Lifetime.Pooled)
+                .Service<IInterface_7<IInterface_1>, Implementation_7_TInterface_Dependant<IInterface_1>>(Lifetime.Pooled);
+
+            using (IInjector injector = Container.CreateInjector())
+            {
+                IInterface_7<IInterface_1> svc = injector.Get<IInterface_7<IInterface_1>>();
+
+                Assert.That(svc.Interface, Is.Not.Null);
+            }
+        }
+
+        [Test]
+        public void Lifetime_PooledService_MayHaveRegularDependency()
+        {
+            Container
+                .Service<IInterface_1, Implementation_1>(Lifetime.Transient)
+                .Service<IInterface_7<IInterface_1>, Implementation_7_TInterface_Dependant<IInterface_1>>(Lifetime.Pooled);
+
+            using (IInjector injector = Container.CreateInjector())
+            {
+                IInterface_7<IInterface_1> svc = injector.Get<IInterface_7<IInterface_1>>();
+
+                Assert.That(svc.Interface, Is.Not.Null);
+            }
+        }
+
+        private class DisposableServiceHavingDisposableDependency : Disposable, IDisposableService 
+        {
+            public IDisposableEx DisposableDep { get; }
+
+            public DisposableServiceHavingDisposableDependency(IDisposableEx disposableDep) => DisposableDep = disposableDep;
+
+            protected override void Dispose(bool disposeManaged)
+            {
+                Assert.False(DisposableDep.Disposed);
+            }
+        }
+
+        [Test]
+        public void Lifetime_PooledService_CanAccessItsDependencyOnDispose([ValueSource(nameof(Lifetimes))] Lifetime lifetime)
+        {
+            IDisposableService svc;
+
+            using (IServiceContainer container = Container.CreateChild())
+            {
+                container
+                    .Service<IDisposableEx, Disposable>(lifetime)
+                    .Service<IDisposableService, DisposableServiceHavingDisposableDependency>(Lifetime.Pooled);
+
+                using (IInjector injector = container.CreateInjector())
+                {
+                    svc = injector.Get<IDisposableService>();
+                }
+            }
+
+            Assert.That(svc.Disposed);
         }
 
         [Test]
