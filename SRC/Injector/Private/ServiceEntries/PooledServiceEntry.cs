@@ -16,7 +16,7 @@ namespace Solti.Utils.DI.Internals
     /// <summary>
     /// Describes a pooled service entry.
     /// </summary>
-    internal class PooledServiceEntry : ProducibleServiceEntry
+    internal class PooledServiceEntry : ProducibleServiceEntry, IHasCapacity
     {
         #region Private
         private interface IPool 
