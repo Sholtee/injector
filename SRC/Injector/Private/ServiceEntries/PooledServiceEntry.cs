@@ -47,7 +47,7 @@ namespace Solti.Utils.DI.Internals
             PoolName = entry.PoolName;
         }
 
-        protected void RegisterPool()
+        private void RegisterPool()
         {
             //
             // Letrehozunk egy dedikaltan ehhez a bejegyzeshez tartozo pool-szervizt (ha nem generikusunk van).
