@@ -13,7 +13,6 @@ namespace Solti.Utils.DI.Internals.Tests
 {
     using Interfaces;
     using Primitives.Patterns;
-    using Properties;
 
     [TestFixture]
     public sealed class ServiceReferenceTests
@@ -29,16 +28,6 @@ namespace Solti.Utils.DI.Internals.Tests
             };
 
             Assert.Throws<InvalidOperationException>(() => svc.Value = new Mock<IDummyService>().Object);
-        }
-
-        [Test]
-        public void SetValue_ShouldValidate() 
-        {
-            var reference = new ServiceReference(new AbstractServiceEntry(typeof(IDisposable), null, new Mock<IServiceContainer>(MockBehavior.Strict).Object), new Mock<IInjector>(MockBehavior.Strict).Object);
-
-            Assert.Throws<ArgumentNullException>(() => reference.Value = null);
-            Assert.Throws<InvalidOperationException>(() => reference.Value = new object(), Resources.INVALID_INSTANCE);
-            Assert.DoesNotThrow(() => reference.Value = new Disposable());
         }
 
         [Test]

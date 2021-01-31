@@ -21,10 +21,9 @@ namespace Solti.Utils.DI.Internals
             owner)
         {
             Ensure.Parameter.IsNotNull(instance, nameof(instance));
-            Ensure.Type.IsTypeOf(@interface, instance);
 
             //
-            // Nem kell kulon ellenorizni a peldanyt mert a ServiceReference.SetValue() validal.
+            // Nem kell kulon ellenorizni a peldanyt mert az injector ugy is validal.
             //
 
             Instances = new[] 

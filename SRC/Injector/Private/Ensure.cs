@@ -57,16 +57,6 @@ namespace Solti.Utils.DI.Internals
             }
         }
 
-        public static class Type 
-        {
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            public static void IsTypeOf(System.Type type, object instance)
-            {
-                if (!type.IsInstanceOfType(instance))
-                    throw new InvalidOperationException(string.Format(Resources.Culture, Resources.INVALID_INSTANCE, type));
-            }
-        }
-
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void IsNull(object? value, string member)
         {

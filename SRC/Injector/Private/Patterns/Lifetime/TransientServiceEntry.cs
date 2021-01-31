@@ -31,8 +31,7 @@ namespace Solti.Utils.DI.Internals
                 throw new Exception(string.Format(Resources.Culture, Resources.INJECTOR_SHOULD_BE_RELEASED, threshold));
         }
 
-        protected override void AfterConstruction() =>
-            Instances = FInstances;
+        protected override void AfterConstruction() => Instances = FInstances;
 
         private TransientServiceEntry(TransientServiceEntry entry, IServiceContainer owner) : base(entry, owner) { }
 

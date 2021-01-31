@@ -145,7 +145,7 @@
     <value>Injector must not contain abstract service entries.</value>
   </data>
   <data name="INVALID_INSTANCE" xml:space="preserve">
-    <value>The object must be an instance of "{0}".</value>
+    <value>The service instance must implement the interface: "{0}".</value>
   </data>
   <data name="PARAMETER_NOT_AN_INTERFACE" xml:space="preserve">
     <value>Parameter must be an interface.</value>

@@ -86,12 +86,7 @@ namespace Solti.Utils.DI
             {
                 CheckNotDisposed();
 
-                //
-                // Peldany tipusat ellenorizzuk mert a Factory(), Proxy() stb visszaadhat vicces dolgokat.
-                //
-
                 Ensure.Parameter.IsNotNull(value, nameof(value));
-                Ensure.Type.IsTypeOf(RelatedServiceEntry.Interface, value!);
 
                 FValue.Value = value;
             }

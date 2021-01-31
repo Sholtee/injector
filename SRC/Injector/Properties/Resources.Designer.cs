@@ -160,7 +160,7 @@ namespace Solti.Utils.DI.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The object must be an instance of &quot;{0}&quot;..
+        ///   Looks up a localized string similar to The service instance must implement the interface: &quot;{0}&quot;..
         /// </summary>
         internal static string INVALID_INSTANCE {
             get {

@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.InteropServices;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -169,9 +170,23 @@ namespace Solti.Utils.DI.Internals
 
             try
             {
-                IServiceReference reference = GetReference(iface, name);
+                object instance = GetReference(iface, name).Value!;
 
-                return reference.Value!;
+                for(; !iface.IsInstanceOfType(instance); )
+                {
+                    //
+                    // Meg lehet adapter
+                    //
+
+                    #pragma warning disable 0618
+                    if (instance is not ICustomAdapter adapter)
+                    #pragma warning restore 0618
+                        throw new InvalidCastException(string.Format(Resources.Culture, Resources.INVALID_INSTANCE, iface));
+
+                    instance = adapter.GetUnderlyingObject();
+                }
+
+                return instance;
             }
 
             //

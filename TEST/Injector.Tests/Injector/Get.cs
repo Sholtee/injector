@@ -6,7 +6,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 
+using Moq;
 using NUnit.Framework;
 
 namespace Solti.Utils.DI.Injector.Tests
@@ -261,7 +263,7 @@ namespace Solti.Utils.DI.Injector.Tests
 
             using (IInjector injector = Container.CreateInjector()) 
             {
-                Assert.Throws<InvalidOperationException>(() => injector.Get<IInterface_1>(), string.Format(Resources.INVALID_INSTANCE, typeof(IInterface_1)));
+                Assert.Throws<InvalidCastException>(() => injector.Get<IInterface_1>(), string.Format(Resources.INVALID_INSTANCE, typeof(IInterface_1)));
             }
         }
 
@@ -411,6 +413,26 @@ namespace Solti.Utils.DI.Injector.Tests
         private sealed class NotUsedImplementation<T> : IInterface_3<T>
         {
             public IInterface_1 Interface1 => throw new NotImplementedException();
+        }
+
+        [Test]
+        public void Injector_Get_ShouldSupportCustomAdapters() 
+        {
+            #pragma warning disable CS0618 // Type or member is obsolete
+            var mockAdapter = new Mock<ICustomAdapter>(MockBehavior.Strict);
+            #pragma warning restore CS0618
+            mockAdapter
+                .Setup(a => a.GetUnderlyingObject())
+                .Returns(new Implementation_1());
+
+            Container.Factory(typeof(IInterface_1), (i, t) => mockAdapter.Object, Lifetime.Transient);
+
+            using (IInjector injector = Container.CreateInjector())
+            {
+                Assert.DoesNotThrow(() => injector.Get<IInterface_1>());
+            }
+
+            mockAdapter.Verify(a => a.GetUnderlyingObject(), Times.Once);
         }
     }
 }
