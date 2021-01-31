@@ -72,6 +72,12 @@ namespace Solti.Utils.DI.Internals
                      (
                          typeof(IPool),
                          PoolName,
+
+                         //
+                         // TODO: FIXME: Ez itt inline dependency-t general -> nem lesz benn a szerviz fuggosegi
+                         //              listajaban -> felszabaditas is el van baszva
+                         //
+
                          (injector, iface) => new UnderlyingPool(Capacity, () => Factory.Invoke(injector, iface)),
                          Owner
                      )
