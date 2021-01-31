@@ -72,9 +72,9 @@ namespace Solti.Utils.DI.Internals.Tests
 
                 IServiceInstantiationStrategy strategy = new OwnedServiceInstantiationStrategy();
 
-                Assert.DoesNotThrow(() => strategy.Exec(mockInjector.Object, null, requested));
+                Assert.DoesNotThrow(() => strategy.Exec(mockInjector.Object, requested));
 
-                mockInjector.Verify(i => i.Instantiate(It.Is<ServiceReference>(sr => sr.RelatedInjector == mockInjector.Object && sr.RelatedServiceEntry == requested)), Times.Once);
+                mockInjector.Verify(i => i.Instantiate(requested), Times.Once);
 
                 container.Children.Remove(mockInjector.Object); // hack
             }
@@ -102,10 +102,10 @@ namespace Solti.Utils.DI.Internals.Tests
 
                 var requestor = new ServiceReference(new AbstractServiceEntry(typeof(IService_2), null, new Mock<IServiceContainer>(MockBehavior.Strict).Object), new Injector(container));
 
-                IServiceReference dep = new ServiceInstantiationStrategySelector(mockInjector.Object).GetStrategyInvocation((IServiceInstantiationStrategy) para, requested).Invoke(requestor);
+                IServiceReference dep = ServiceInstantiationStrategySelector.GetStrategyInvocation((IServiceInstantiationStrategy) para, mockInjector.Object, requested).Invoke(requestor);
 
                 Assert.That(dep.Value, Is.EqualTo(instance));
-                mockInjector.Verify(i => i.Instantiate(It.IsAny<ServiceReference>()), Times.Never);
+                mockInjector.Verify(i => i.Instantiate(It.IsAny<AbstractServiceEntry>()), Times.Never);
                 Assert.That(requestor.Dependencies.Single(), Is.EqualTo(dep));
 
                 container.Children.Remove(mockInjector.Object); // hack
@@ -123,11 +123,9 @@ namespace Solti.Utils.DI.Internals.Tests
                     return new Service();
                 }, Lifetime.Singleton);
 
-                var requestor = new ServiceReference(new AbstractServiceEntry(typeof(IService_2), null, new Mock<IServiceContainer>(MockBehavior.Strict).Object), new Injector(container));
-
                 IServiceInstantiationStrategy strategy = new NotOwnedServiceInstantiationStrategy();
 
-                strategy.Exec(new Injector(container), requestor, container.Get<IService>());
+                strategy.Exec(new Injector(container), container.Get<IService>());
 
                 Assert.That(container.Get<IService>().Instances, Is.Not.Null); // factory hivva volt
                 Assert.That(Monitor.IsEntered(container.Get<IService>()), Is.False);
@@ -141,13 +139,11 @@ namespace Solti.Utils.DI.Internals.Tests
             {
                 container.Service<IService, Service>(Lifetime.Singleton);
 
-                var requestor = new ServiceReference(new AbstractServiceEntry(typeof(IService_2), null, new Mock<IServiceContainer>(MockBehavior.Strict).Object), new Injector(container));
-
                 IServiceInstantiationStrategy strategy = new NotOwnedServiceInstantiationStrategy();
 
                 var injector = new Injector(container);
 
-                strategy.Exec(injector, requestor, container.Get<IService>());
+                strategy.Exec(injector, container.Get<IService>());
 
                 AbstractServiceEntry entry = container.Get<IService>();
 
@@ -166,7 +162,7 @@ namespace Solti.Utils.DI.Internals.Tests
                     // Ne "new Mock<IServiceContainer>(MockBehavior.Strict).Object" et hasznaljunk
                     //
 
-                    => new ServiceInstantiationStrategySelector(new Injector(container)).GetStrategyFor(new AbstractServiceEntry(typeof(IService), null, new ServiceContainer())),
+                    => ServiceInstantiationStrategySelector.GetStrategyFor(new Injector(container), new AbstractServiceEntry(typeof(IService), null, new ServiceContainer())),
                 Resources.NO_STRATEGY);
             }
         }

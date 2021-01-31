@@ -16,17 +16,13 @@ namespace Solti.Utils.DI.Internals
     internal class Injector : ServiceContainer, IInjector
     {
         #region Private
-        private readonly ServiceInstantiationStrategySelector FStrategySelector;
-
         private readonly ServiceGraph FGraph;
 
-        private void CheckBreaksTheRuleOfStrictDI(IServiceReference requestedRef) 
+        private void CheckBreaksTheRuleOfStrictDI(AbstractServiceEntry requested) 
         {
             if (!Config.Value.Injector.StrictDI) return;
 
-            AbstractServiceEntry?
-                requestor = FGraph.Current?.RelatedServiceEntry, // lehet NULL
-                requested = requestedRef.RelatedServiceEntry;
+            AbstractServiceEntry? requestor = FGraph.Current?.RelatedServiceEntry; // lehet NULL
 
             //
             // Ha a fuggosegi fa gyokerenel vagyunk akkor a metodus nem ertelmezett.
@@ -54,8 +50,6 @@ namespace Solti.Utils.DI.Internals
             FactoryOptions = factoryOptions;
             FGraph = graph;
 
-            FStrategySelector = new ServiceInstantiationStrategySelector(this);
-
             this.RegisterSelf();
             this.RegisterServiceEnumerator();
         }
@@ -72,23 +66,32 @@ namespace Solti.Utils.DI.Internals
         #endregion
 
         #region Internals
-        internal virtual void Instantiate(IServiceReference requested) // [jelenleg] csak a tesztek miatt kell virtualis legyen
+        internal virtual IServiceReference Instantiate(AbstractServiceEntry requested)
         {
-            Ensure.Parameter.IsNotNull(requested, nameof(requested));
-            Ensure.AreEqual(requested.RelatedInjector, this);
-
             CheckBreaksTheRuleOfStrictDI(requested);
 
-            //
-            // Az epp letrehozas alatt levo szerviz kerul az ut legvegere igy a fuggosegei
-            // feloldasakor o lesz a szulo (FGraph.Current).
-            //
+            IServiceReference result = new ServiceReference(requested, this);
 
-            using (FGraph.With(requested))
+            try
             {
-                FGraph.CheckNotCircular();
+                //
+                // Az epp letrehozas alatt levo szerviz kerul az ut legvegere igy a fuggosegei
+                // feloldasakor o lesz a szulo (FGraph.Current).
+                //
 
-                requested.SetInstance(FactoryOptions);
+                using (FGraph.With(result))
+                {
+                    FGraph.CheckNotCircular();
+
+                    result.SetInstance(FactoryOptions);
+                }
+
+                return result;
+            }
+            catch
+            {
+                result.Release();
+                throw;
             }
         }
 
@@ -120,7 +123,7 @@ namespace Solti.Utils.DI.Internals
 
             IServiceReference?
                 requestor = FGraph.Current,
-                requested = FStrategySelector.GetStrategyFor(requestorEntry).Invoke(requestor);
+                requested = ServiceInstantiationStrategySelector.GetStrategyFor(this, requestorEntry).Invoke(requestor);
 
             return requested;
         }

@@ -13,7 +13,7 @@ namespace Solti.Utils.DI.Internals
     {
         public bool ShouldUse(Injector injector, AbstractServiceEntry requested) => requested.Built;
 
-        public IServiceReference Exec(Injector injector, IServiceReference? requestor, AbstractServiceEntry requested) =>
+        public IServiceReference Exec(Injector injector, AbstractServiceEntry requested) =>
             requested.Instances.Single();
     }
 }

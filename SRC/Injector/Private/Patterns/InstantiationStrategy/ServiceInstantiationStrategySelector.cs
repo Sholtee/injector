@@ -11,7 +11,7 @@ namespace Solti.Utils.DI.Internals
     using Interfaces;
     using Properties;
 
-    internal sealed class ServiceInstantiationStrategySelector
+    internal static class ServiceInstantiationStrategySelector
     {
         //
         // Szalbiztosak
@@ -28,17 +28,13 @@ namespace Solti.Utils.DI.Internals
             new NotOwnedServiceInstantiationStrategy()
         };
 
-        public Injector RelatedInjector { get; }
-
-        public ServiceInstantiationStrategySelector(Injector relatedInjector) => RelatedInjector = relatedInjector;
-
-        internal Func<IServiceReference?, IServiceReference> GetStrategyInvocation(IServiceInstantiationStrategy strategy, AbstractServiceEntry entry)
+        internal static Func<IServiceReference?, IServiceReference> GetStrategyInvocation(IServiceInstantiationStrategy strategy, Injector injector, AbstractServiceEntry entry)
         {
             return InvokeStrategy;
 
             IServiceReference InvokeStrategy(IServiceReference? requestor)
             {
-                IServiceReference requested = strategy.Exec(RelatedInjector, requestor, entry);
+                IServiceReference requested = strategy.Exec(injector, entry);
 
                 //
                 // Ha az aktualisan lekerdezett szerviz valakinek a fuggosege akkor hozzaadjuk a fuggosegi listahoz.
@@ -49,12 +45,12 @@ namespace Solti.Utils.DI.Internals
             }
         }
 
-        public Func<IServiceReference?, IServiceReference> GetStrategyFor(AbstractServiceEntry requestedEntry) 
+        public static Func<IServiceReference?, IServiceReference> GetStrategyFor(Injector injector, AbstractServiceEntry requestedEntry) 
         {
             foreach (IServiceInstantiationStrategy strategy in Strategies)
             {
-                if (strategy.ShouldUse(RelatedInjector, requestedEntry))
-                    return GetStrategyInvocation(strategy, requestedEntry);
+                if (strategy.ShouldUse(injector, requestedEntry))
+                    return GetStrategyInvocation(strategy, injector, requestedEntry);
             }
 
             throw new InvalidOperationException(Resources.NO_STRATEGY);

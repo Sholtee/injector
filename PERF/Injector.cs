@@ -49,12 +49,14 @@ namespace Solti.Utils.DI.Perf
                 return result;
             }
 
-            internal override void Instantiate(IServiceReference requested)
+            internal override IServiceReference Instantiate(AbstractServiceEntry requested)
             {
-                GC.SuppressFinalize(requested);
-                GC.SuppressFinalize(requested.Dependencies);
+                IServiceReference result = base.Instantiate(requested);
 
-                base.Instantiate(requested);
+                GC.SuppressFinalize(result);
+                GC.SuppressFinalize(result.Dependencies);
+
+                return result;
             }
         }
         #endregion
