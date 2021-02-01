@@ -305,8 +305,6 @@ namespace Solti.Utils.DI.Injector.Tests
         [Test]
         public void Lifetime_PooledService_ShouldHaveItsOwnInjector()
         {
-            Assert.Ignore();
-
             Container
                 .Service<IInterface_7<IInjector>, Implementation_7_TInterface_Dependant<IInjector>>(Lifetime.Pooled)
                 .Service<IInterface_7<IInjector>, Implementation_7_TInterface_Dependant<IInjector>>("named", Lifetime.Pooled);
