@@ -157,6 +157,36 @@ namespace Solti.Utils.DI.Injector.Tests
             }
         }
 
+        private interface IMyService 
+        {
+            void DoSomething();
+        }
+
+        private class ImplementationHavingInlineDep : IMyService
+        {
+            public IInjector Injector { get; }
+
+            public ImplementationHavingInlineDep(IInjector injector) => Injector = injector;
+
+            public void DoSomething() => Injector.Get<IInterface_1>();
+        }
+
+        [Test]
+        public void Injector_Get_ShouldWorkInline([ValueSource(nameof(Lifetimes))] Lifetime requestorLifetime, [ValueSource(nameof(Lifetimes))] Lifetime depLifetime) 
+        {
+            Container
+                .Service<IInterface_1, Implementation_1>(depLifetime)
+                .Service<IMyService, ImplementationHavingInlineDep>(requestorLifetime)
+                .Service<IInterface_7<IMyService>, Implementation_7_TInterface_Dependant<IMyService>>(Lifetime.Transient);
+
+            using (IInjector injector = Container.CreateInjector())
+            {
+                IMyService svc = injector.Get<IInterface_7<IMyService>>().Interface;
+
+                Assert.DoesNotThrow(svc.DoSomething);
+            }
+        }
+
         [Test]
         public void Injector_GetByProvider_ShouldThrowOnCircularReference()
         {
