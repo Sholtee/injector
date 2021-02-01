@@ -98,6 +98,8 @@ namespace Solti.Utils.DI.Internals
 
         internal virtual Injector Fork(IServiceContainer parent) => new Injector(parent, this);
 
+        internal void ClearGraph() => FGraph.Clear();
+
         internal virtual IServiceReference GetReference(Type iface, string? name)
         {
             Ensure.Parameter.IsNotNull(iface, nameof(iface));

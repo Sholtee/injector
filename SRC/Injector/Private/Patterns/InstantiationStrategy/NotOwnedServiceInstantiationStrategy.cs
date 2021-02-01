@@ -43,7 +43,14 @@ namespace Solti.Utils.DI.Internals
 
                 try
                 {
-                    return injector.Instantiate(requested);
+                    IServiceReference result = injector.Instantiate(requested);
+
+                    //
+                    // A Fork() hivas miatt a graf itt nem feltetlen ures
+                    //
+
+                    injector.ClearGraph();
+                    return result;
                 }
                 catch
                 {
