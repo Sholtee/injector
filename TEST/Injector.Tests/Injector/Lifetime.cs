@@ -383,18 +383,18 @@ namespace Solti.Utils.DI.Injector.Tests
         {
             public IDisposableEx DisposableDep { get; }
 
+            public bool DependencyDisposed { get; private set; }
+
             public DisposableServiceHavingDisposableDependency(IDisposableEx disposableDep) => DisposableDep = disposableDep;
 
-            protected override void Dispose(bool disposeManaged)
-            {
-                Assert.False(DisposableDep.Disposed);
-            }
+            protected override void Dispose(bool disposeManaged) =>
+                DependencyDisposed = DisposableDep.Disposed;
         }
 
         [Test]
         public void Lifetime_PooledService_CanAccessItsDependencyOnDispose([ValueSource(nameof(Lifetimes))] Lifetime lifetime)
         {
-            IDisposableService svc;
+            DisposableServiceHavingDisposableDependency svc;
 
             using (IServiceContainer container = Container.CreateChild())
             {
@@ -404,11 +404,16 @@ namespace Solti.Utils.DI.Injector.Tests
 
                 using (IInjector injector = container.CreateInjector())
                 {
-                    svc = injector.Get<IDisposableService>();
+                    svc = (DisposableServiceHavingDisposableDependency) injector.Get<IDisposableService>();
                 }
+
+                Assert.That(svc.Disposed, Is.False);
+                Assert.That(svc.DisposableDep.Disposed, Is.False);
             }
 
             Assert.That(svc.Disposed);
+            Assert.That(svc.DisposableDep.Disposed);
+            Assert.That(svc.DependencyDisposed, Is.False);
         }
 
         [Test]

@@ -57,15 +57,9 @@ namespace Solti.Utils.DI.Internals
 
         private sealed class PooledLifetime : Lifetime, IHasCapacity
         {
-            public override AbstractServiceEntry CreateFrom(Type iface, string? name, Type implementation, IServiceContainer owner) => new PooledServiceEntry(iface, name, implementation, owner)
-            {
-                Capacity = Capacity
-            };
+            public override AbstractServiceEntry CreateFrom(Type iface, string? name, Type implementation, IServiceContainer owner) => new PooledServiceEntry(iface, name, implementation, owner, Capacity);
 
-            public override AbstractServiceEntry CreateFrom(Type iface, string? name, Func<IInjector, Type, object> factory, IServiceContainer owner) => new PooledServiceEntry(iface, name, factory, owner)
-            {
-                Capacity = Capacity
-            };
+            public override AbstractServiceEntry CreateFrom(Type iface, string? name, Func<IInjector, Type, object> factory, IServiceContainer owner) => new PooledServiceEntry(iface, name, factory, owner, Capacity);
 
             public override bool IsCompatible(AbstractServiceEntry entry) => entry is PooledServiceEntry;
 

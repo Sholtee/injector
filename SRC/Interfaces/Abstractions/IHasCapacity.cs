@@ -11,7 +11,7 @@ namespace Solti.Utils.DI.Interfaces
     public interface IHasCapacity
     {
         /// <summary>
-        /// The capacity of the entry.
+        /// The capacity.
         /// </summary>
         int Capacity { get; set; }
     }
