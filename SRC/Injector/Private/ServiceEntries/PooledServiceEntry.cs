@@ -66,29 +66,41 @@ namespace Solti.Utils.DI.Internals
             {
                 PoolName = $"__Pool_{Interlocked.Increment(ref LUID)}";
 
+                string factoryName = $"{PoolName}_Factory";
+
+                Owner.Add
+                (
+                    //
+                    // Ez minden egyes pool bejegyzeshez sajat scope-ot hoz letre
+                    //
+
+                    new PermanentServiceEntry
+                    (
+                        Interface,
+                        factoryName,
+                        (injector, _) => Factory.Invoke(injector, Interface),
+                        Owner
+                    )
+                );
+
                 Owner.Add
                 (
                     new SingletonServiceEntry
                     (
                         typeof(IPool),
                         PoolName,
-
-                        //
-                        // TODO: FIXME: Ez itt inline dependency-t general -> nem lesz benn a szerviz fuggosegi
-                        //              listajaban -> felszabaditas is el van baszva
-                        //
-
-                        (injector, iface) => new UnderlyingPool(capacity, () =>
+                        (injector, _) => new UnderlyingPool(capacity, () =>
                         {
                             //
-                            // Ez a metodus lehet hivva parhuzamosan, viszont az injector by design nem
-                            // szal biztos -> lock. Mivel ez a metodus maximum "capacity"-szer lesz csak
-                            // hivva ezert nem fog a lock erezheto teljesitmeny csokkenest okozni.
+                            // Ez itt trukkos mert:
+                            // 1) "injector" by design nem szalbiztos viszont ez a metodus lehet hivva paralell
+                            // 2) Minden egyes legyartott elemnek sajat scope kell (h ok maguk szalbiztosak legyenek)
+                            // 3) Letrehozaskor a mar meglevo grafot boviteni kell 
                             //
 
-                            lock (injector)
+                            lock (injector) // maximum csak "capacity"-szer lesz hivva -> a lock erdemben nem befolyasolja a teljesitmenyt
                             {
-                                return Factory.Invoke(injector, iface);
+                                return injector.Get(Interface, factoryName);
                             }
                         }),
                         Owner

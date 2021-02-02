@@ -305,21 +305,24 @@ namespace Solti.Utils.DI.Injector.Tests
         [Test]
         public void Lifetime_PooledService_ShouldHaveItsOwnInjector()
         {
-            Container
-                .Service<IInterface_7<IInjector>, Implementation_7_TInterface_Dependant<IInjector>>(Lifetime.Pooled)
-                .Service<IInterface_7<IInjector>, Implementation_7_TInterface_Dependant<IInjector>>("named", Lifetime.Pooled);
+            Container.Service<IInterface_7<IInjector>, Implementation_7_TInterface_Dependant<IInjector>>(Lifetime.Pooled);
 
-            using (IInjector injector = Container.CreateInjector())
+            using (IInjector injector1 = Container.CreateInjector())
             {
-                IInterface_7<IInjector> svc = injector.Get<IInterface_7<IInjector>>("named");
+                IInterface_7<IInjector> svc1 = injector1.Get<IInterface_7<IInjector>>();
 
-                Assert.That(svc.Interface, Is.Not.SameAs(injector));
-                Assert.That(svc.Interface.UnderlyingContainer.Parent, Is.SameAs(Container));
+                Assert.That(svc1.Interface, Is.Not.SameAs(injector1));
+                Assert.That(svc1.Interface.UnderlyingContainer.Parent, Is.SameAs(Container));
 
-                Assert.That(svc.Interface.Get<IInterface_7<IInjector>>().Interface, Is.Not.SameAs(injector));
-                Assert.That(svc.Interface.Get<IInterface_7<IInjector>>().Interface.UnderlyingContainer.Parent, Is.SameAs(Container));
+                using (IInjector injector2 = Container.CreateInjector())
+                {
+                    IInterface_7<IInjector> svc2 = injector2.Get<IInterface_7<IInjector>>();
 
-                Assert.That(svc.Interface.Get<IInterface_7<IInjector>>().Interface, Is.Not.SameAs(svc.Interface));
+                    Assert.That(svc2.Interface, Is.Not.SameAs(injector2));
+                    Assert.That(svc2.Interface.UnderlyingContainer.Parent, Is.SameAs(Container));
+
+                    Assert.AreNotSame(svc1.Interface, svc2.Interface);
+                }
             }
         }
 
