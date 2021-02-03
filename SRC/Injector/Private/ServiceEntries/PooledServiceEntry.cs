@@ -5,8 +5,6 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -19,25 +17,6 @@ namespace Solti.Utils.DI.Internals
     /// </summary>
     internal class PooledServiceEntry : ProducibleServiceEntry
     {
-        #region Private
-        private interface IPool 
-        {
-            PoolItem<object> Get(CheckoutPolicy checkoutPolicy);
-        }
-
-        private sealed class UnderlyingPool : ObjectPool<object>, IPool
-        {
-            public UnderlyingPool(int maxPoolSize, Func<object> factory) : base(maxPoolSize, factory)
-            {
-            }
-
-            public PoolItem<object> Get(CheckoutPolicy checkoutPolicy) => Get(checkoutPolicy, default);
-        }
-
-        private static int LUID;
-
-        private string PoolName { get; set; }
-
         private PooledServiceEntry(PooledServiceEntry entry, IServiceContainer owner) : base(entry, owner)
         {
             //
@@ -45,78 +24,11 @@ namespace Solti.Utils.DI.Internals
             //
 
             Factory = null;
-            PoolName = entry.PoolName;
         }
 
-        private void RegisterPool(int capacity)
-        {
-            //
-            // PoolItem<object> altal megvalositott interface-eket nem regisztralhatjuk (h
-            // a konkret oljektum helyett ne a PoolItem-et adja vissza az injector).
-            //
+        public PooledServiceEntry(Type @interface, string? name, Func<IInjector, Type, object> factory, IServiceContainer owner) : base(@interface, name, factory, owner) {}
 
-            if (typeof(PoolItem<object>).GetInterfaces().Contains(Interface))
-                throw new NotSupportedException();
-
-            //
-            // Letrehozunk egy dedikaltan ehhez a bejegyzeshez tartozo pool-szervizt (ha nem generikusunk van).
-            //
-
-            if (Factory is not null)
-            {
-                PoolName = $"__Pool_{Interlocked.Increment(ref LUID)}";
-
-                string factoryName = $"{PoolName}_Factory";
-
-                Owner.Add
-                (
-                    //
-                    // Ez minden egyes pool bejegyzeshez sajat scope-ot hoz letre
-                    //
-
-                    new PermanentServiceEntry
-                    (
-                        Interface,
-                        factoryName,
-                        (injector, _) => Factory.Invoke(injector, Interface),
-                        Owner
-                    )
-                );
-
-                Owner.Add
-                (
-                    new SingletonServiceEntry
-                    (
-                        typeof(IPool),
-                        PoolName,
-                        (injector, _) => new UnderlyingPool(capacity, () =>
-                        {
-                            //
-                            // Ez itt trukkos mert:
-                            // 1) "injector" by design nem szalbiztos viszont ez a metodus lehet hivva paralell
-                            // 2) Minden egyes legyartott elemnek sajat scope kell (h ok maguk szalbiztosak legyenek)
-                            // 3) Letrehozaskor a mar meglevo grafot boviteni kell 
-                            //
-
-                            lock (injector) // maximum csak "capacity"-szer lesz hivva -> a lock erdemben nem befolyasolja a teljesitmenyt
-                            {
-                                return injector.Get(Interface, factoryName);
-                            }
-                        }),
-                        Owner
-                    )
-                );
-            }
-        }
-        #endregion
-
-        #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
-        public PooledServiceEntry(Type @interface, string? name, Func<IInjector, Type, object> factory, IServiceContainer owner, int capacity) : base(@interface, name, factory, owner) =>
-            RegisterPool(capacity);
-
-        public PooledServiceEntry(Type @interface, string? name, Type implementation, IServiceContainer owner, int capacity) : base(@interface, name, implementation, owner) =>
-            RegisterPool(capacity);
-        #pragma warning restore CS8618
+        public PooledServiceEntry(Type @interface, string? name, Type implementation, IServiceContainer owner) : base(@interface, name, implementation, owner) {}
 
         public override bool SetInstance(IServiceReference reference, IReadOnlyDictionary<string, object> options)
         {
@@ -125,7 +37,11 @@ namespace Solti.Utils.DI.Internals
             IInjector relatedInjector = Ensure.IsNotNull(reference.RelatedInjector, $"{nameof(reference)}.{nameof(reference.RelatedInjector)}");
             Ensure.AreEqual(relatedInjector.UnderlyingContainer, Owner, Resources.INAPPROPRIATE_OWNERSHIP);
 
-            IPool relatedPool = relatedInjector.Get<IPool>(PoolName);
+            //
+            // A szervizhet tartozo pool lekerdezese
+            //
+
+            IPool relatedPool = (IPool) relatedInjector.Get(typeof(IPool<>).MakeGenericType(Interface), Name);
 
             //
             // Nem gond h PoolItem-et adunk a referencia ertekeul, mivel az implementalja ICustomAdapter-t
