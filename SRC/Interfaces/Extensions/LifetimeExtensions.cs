@@ -20,6 +20,8 @@ namespace Solti.Utils.DI.Interfaces
             if (self is null)
                 throw new ArgumentNullException(nameof(self));
 
+            self = (Lifetime) self.Clone();
+
             if (self is not IHasCapacity hasCapacity)
                 throw new NotSupportedException();
 

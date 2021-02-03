@@ -24,11 +24,22 @@ namespace Solti.Utils.DI.Internals
             //
 
             Factory = null;
+            Lifetime = entry.Lifetime;
         }
 
-        public PooledServiceEntry(Type @interface, string? name, Func<IInjector, Type, object> factory, IServiceContainer owner) : base(@interface, name, factory, owner) {}
+        //
+        // Lifetime-ot at csak azert adjuk at h lekerdezhessuk a kapacitast
+        //
 
-        public PooledServiceEntry(Type @interface, string? name, Type implementation, IServiceContainer owner) : base(@interface, name, implementation, owner) {}
+        public PooledServiceEntry(Type @interface, string? name, Func<IInjector, Type, object> factory, IServiceContainer owner, PooledLifetime lifetime) : base(@interface, name, factory, owner) 
+        {
+            Lifetime = lifetime;
+        }
+
+        public PooledServiceEntry(Type @interface, string? name, Type implementation, IServiceContainer owner, PooledLifetime lifetime) : base(@interface, name, implementation, owner) 
+        {
+            Lifetime = lifetime;
+        }
 
         public override bool SetInstance(IServiceReference reference, IReadOnlyDictionary<string, object> options)
         {
@@ -65,6 +76,6 @@ namespace Solti.Utils.DI.Internals
             return result;
         }
 
-        public override Lifetime Lifetime { get; } = Lifetime.Pooled;
+        public override Lifetime Lifetime { get; }
     }
 }

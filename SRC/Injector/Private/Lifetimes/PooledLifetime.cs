@@ -76,7 +76,7 @@ namespace Solti.Utils.DI.Internals
 
         public override AbstractServiceEntry CreateFrom(Type iface, string? name, Type implementation, IServiceContainer owner)
         {
-            var result = new PooledServiceEntry(iface, name, implementation, owner);
+            var result = new PooledServiceEntry(iface, name, implementation, owner, this);
             RegisterPool(owner, result);
             return result;
 
@@ -84,7 +84,7 @@ namespace Solti.Utils.DI.Internals
 
         public override AbstractServiceEntry CreateFrom(Type iface, string? name, Func<IInjector, Type, object> factory, IServiceContainer owner)
         {
-            var result = new PooledServiceEntry(iface, name, factory, owner);
+            var result = new PooledServiceEntry(iface, name, factory, owner, this);
             RegisterPool(owner, result);
             return result;
         }
@@ -92,6 +92,11 @@ namespace Solti.Utils.DI.Internals
         public override bool IsCompatible(AbstractServiceEntry entry) => entry is PooledServiceEntry;
 
         public override string ToString() => nameof(Pooled);
+
+        public override object Clone() => new PooledLifetime
+        {
+            Capacity = Capacity
+        };
 
         public int Capacity { get; set; } = Environment.ProcessorCount;
     }

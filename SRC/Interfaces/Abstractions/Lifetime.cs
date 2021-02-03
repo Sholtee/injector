@@ -12,7 +12,7 @@ namespace Solti.Utils.DI.Interfaces
     /// <summary>
     /// Describes the lifetime of a service.
     /// </summary>
-    public abstract class Lifetime
+    public abstract class Lifetime: ICloneable
     {
         private static Lifetime? 
             FSingleton,
@@ -46,6 +46,11 @@ namespace Solti.Utils.DI.Interfaces
         /// Services having instance lifetime behave like a constant value.
         /// </summary>
         public static Lifetime Instance { get => FInstance ?? throw new NotSupportedException(); protected set => FInstance = value; }
+
+        /// <summary>
+        /// See <see cref="ICloneable.Clone"/>
+        /// </summary>
+        public virtual object Clone() => throw new NotImplementedException(); 
 
         /// <summary>
         /// Creates a service entry from the given <paramref name="implementation"/>.
