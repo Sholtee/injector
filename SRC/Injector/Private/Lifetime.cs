@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
 namespace Solti.Utils.DI.Internals
@@ -24,6 +25,8 @@ namespace Solti.Utils.DI.Internals
         private sealed class SingletonLifetime : Lifetime
         {
             public override AbstractServiceEntry CreateFrom(Type iface, string? name, Type implementation, IServiceContainer owner) => new SingletonServiceEntry(iface, name, implementation, owner);
+            
+            public override AbstractServiceEntry CreateFrom(Type iface, string? name, Type implementation, IReadOnlyDictionary<string, object?> explicitArgs, IServiceContainer owner) => new SingletonServiceEntry(iface, name, implementation, explicitArgs, owner);
 
             public override AbstractServiceEntry CreateFrom(Type iface, string? name, Func<IInjector, Type, object> factory, IServiceContainer owner) => new SingletonServiceEntry(iface, name, factory, owner);
 
@@ -36,6 +39,8 @@ namespace Solti.Utils.DI.Internals
         {
             public override AbstractServiceEntry CreateFrom(Type iface, string? name, Type implementation, IServiceContainer owner) => new ScopedServiceEntry(iface, name, implementation, owner);
 
+            public override AbstractServiceEntry CreateFrom(Type iface, string? name, Type implementation, IReadOnlyDictionary<string, object?> explicitArgs, IServiceContainer owner) => new ScopedServiceEntry(iface, name, implementation, explicitArgs, owner);
+
             public override AbstractServiceEntry CreateFrom(Type iface, string? name, Func<IInjector, Type, object> factory, IServiceContainer owner) => new ScopedServiceEntry(iface, name, factory, owner);
 
             public override bool IsCompatible(AbstractServiceEntry entry) => entry is ScopedServiceEntry;
@@ -46,6 +51,8 @@ namespace Solti.Utils.DI.Internals
         private sealed class TransientLifetime : Lifetime
         {
             public override AbstractServiceEntry CreateFrom(Type iface, string? name, Type implementation, IServiceContainer owner) => new TransientServiceEntry(iface, name, implementation, owner);
+
+            public override AbstractServiceEntry CreateFrom(Type iface, string? name, Type implementation, IReadOnlyDictionary<string, object?> explicitArgs, IServiceContainer owner) => new TransientServiceEntry(iface, name, implementation, explicitArgs, owner);
 
             public override AbstractServiceEntry CreateFrom(Type iface, string? name, Func<IInjector, Type, object> factory, IServiceContainer owner) => new TransientServiceEntry(iface, name, factory, owner);
 

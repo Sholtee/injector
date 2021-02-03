@@ -25,6 +25,10 @@ namespace Solti.Utils.DI.Internals
         {
         }
 
+        public SingletonServiceEntry(Type @interface, string? name, Type implementation, IReadOnlyDictionary<string, object?> explicitArgs, IServiceContainer owner) : base(@interface, name, implementation, explicitArgs, owner)
+        {
+        }
+
         [MethodImpl(MethodImplOptions.Synchronized)]
         public override bool SetInstance(IServiceReference reference, IReadOnlyDictionary<string, object> options)
         {

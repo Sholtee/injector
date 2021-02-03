@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Collections.Generic;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -15,9 +16,11 @@ namespace Solti.Utils.DI.Internals
     /// </summary>
     internal abstract class ProducibleServiceEntry : AbstractServiceEntry, ISupportsProxying, ISupportsSpecialization
     {
+        #region Protected
         protected ProducibleServiceEntry(ProducibleServiceEntry entry, IServiceContainer owner) : base(entry.Interface, entry.Name, entry.Implementation, owner)
         {
             Factory = entry.Factory;
+            ExplicitArgs = entry.ExplicitArgs;
 
             //
             // Itt nem kell "this.ApplyAspects()" hivas mert a forras bejegyzesen mar
@@ -61,6 +64,28 @@ namespace Solti.Utils.DI.Internals
                 //
         }
 
+        protected ProducibleServiceEntry(Type @interface, string? name, Type implementation, IReadOnlyDictionary<string, object?> explicitArgs, IServiceContainer owner) : base(@interface, name, implementation, owner)
+        {
+            //
+            // Os ellenorzi a tobbit.
+            //
+
+            Ensure.Parameter.IsNotNull(implementation, nameof(implementation));
+            Ensure.Parameter.IsNotNull(explicitArgs, nameof(explicitArgs));
+
+            if (!@interface.IsGenericTypeDefinition)
+            {
+                Func<IInjector, IReadOnlyDictionary<string, object?>, object> factoryEx = Resolver.GetExtended(implementation);
+
+                Factory = (injector, _) => factoryEx(injector, explicitArgs!);
+                this.ApplyAspects();
+            }
+            else
+                implementation.GetApplicableConstructor();
+
+            ExplicitArgs = explicitArgs;
+        }
+
         protected void EnsureAppropriateReference(IServiceReference reference)
         {
             Ensure.Parameter.IsNotNull(reference, nameof(reference));
@@ -79,36 +104,37 @@ namespace Solti.Utils.DI.Internals
             if (Factory == null)
                 throw new InvalidOperationException(Resources.NOT_PRODUCIBLE);
         }
+        #endregion
+
+        public IReadOnlyDictionary<string, object?>? ExplicitArgs { get; }
 
         #region Features
         Func<IInjector, Type, object>? ISupportsProxying.Factory { get => Factory; set => Factory = value; }
 
         AbstractServiceEntry ISupportsSpecialization.Specialize(params Type[] genericArguments) 
         {
+            Type closedIface = Interface.MakeGenericType(genericArguments);
+
             //
             // "Service(typeof(IGeneric<>), ...)" eseten az implementaciot konkretizaljuk.
             //
 
-            if (Implementation != null) return Lifetime!.CreateFrom
-            (
-                Interface.MakeGenericType(genericArguments),
-                Name,
-                Implementation.MakeGenericType(genericArguments),
-                Owner
-            );
+            if (Implementation is not null)
+            {
+                Type closedImpl = Implementation.MakeGenericType(genericArguments);
+
+                return ExplicitArgs is not null
+                    ? Lifetime!.CreateFrom(closedIface, Name, closedImpl, ExplicitArgs, Owner)
+                    : Lifetime!.CreateFrom(closedIface, Name, closedImpl, Owner);
+            }
 
             //
             // "Factory(typeof(IGeneric<>), ...)" eseten az eredeti factory lesz hivva a 
             // konkretizalt interface-re.
             //
 
-            if (Factory != null) return Lifetime!.CreateFrom
-            (
-                Interface.MakeGenericType(genericArguments),
-                Name,
-                Factory,
-                Owner
-            );
+            if (Factory is not null) 
+                return Lifetime!.CreateFrom(closedIface, Name, Factory, Owner);
 
             throw new NotSupportedException();
         }

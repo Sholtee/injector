@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Collections.Generic;
 
 namespace Solti.Utils.DI.Interfaces
 {
@@ -42,6 +43,11 @@ namespace Solti.Utils.DI.Interfaces
         /// Creates a service entry from the given <paramref name="implementation"/>.
         /// </summary>
         public virtual AbstractServiceEntry CreateFrom(Type iface, string? name, Type implementation, IServiceContainer owner) => throw new NotSupportedException();
+
+        /// <summary>
+        /// Creates a service entry from the given <paramref name="implementation"/>.
+        /// </summary>
+        public virtual AbstractServiceEntry CreateFrom(Type iface, string? name, Type implementation, IReadOnlyDictionary<string, object?> explicitArgs, IServiceContainer owner) => throw new NotSupportedException();
 
         /// <summary>
         /// Creates a service entry from the given <paramref name="factory"/>.
