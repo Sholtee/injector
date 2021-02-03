@@ -31,43 +31,37 @@ namespace Solti.Utils.DI.Internals
 
             string factoryName = $"__factory_{entry.FriendlyName()}";
 
-            container.Add
+            //
+            // Ez minden egyes pool bejegyzeshez sajat scope-ot hoz letre.
+            //
+
+            if (entry.Implementation is not null)
+                container.Service(entry.Interface, factoryName, entry.Implementation, new PermanentLifetime());
+            else if (entry.Factory is not null)
+                container.Factory(entry.Interface, factoryName, entry.Factory, new PermanentLifetime());
+            else
+                throw new NotSupportedException();
+
+            //
+            // Ez magat a pool szervizt hozza letre amit kesobbb a PooledServiceEntry.SetInstance() metodusaban
+            // szolitunk meg.
+            //
+
+            container.Factory(typeof(IPool<>).MakeGenericType(entry.Interface), entry.Name, PoolFactory, new SingletonLifetime());
+
+            object PoolFactory(IInjector injector, Type iface) => injector.Instantiate
             (
-                //
-                // Ez minden egyes pool bejegyzeshez sajat scope-ot hoz letre
-                //
+                typeof(PoolService<>).MakeGenericType(entry.Interface),
+                new Dictionary<string, object>
+                {
+                    //
+                    // Az argumentum nevek meg kell egyezzenek a PoolService.ctor() parameter neveivel.
+                    // Kesobb majd lehet szebben is megoldhato lesz: https://github.com/dotnet/csharplang/issues/373
+                    //
 
-                new PermanentServiceEntry
-                (
-                    entry.Interface,
-                    factoryName,
-                    entry.Factory!,
-                    container
-                )
-            );
-
-            container.Add
-            (
-                new SingletonServiceEntry
-                (
-                    typeof(IPool<>).MakeGenericType(entry.Interface),
-                    entry.Name,
-                    (injector, _) => injector.Instantiate
-                    (
-                        typeof(PoolService<>).MakeGenericType(entry.Interface),
-                        new Dictionary<string, object> 
-                        {
-                            //
-                            // Az argumentum nevek meg kell egyezzenek a PoolService.ctor() parameter neveivel.
-                            // Kesobb majd lehet szebben is megoldhato lesz: https://github.com/dotnet/csharplang/issues/373
-                            //
-
-                            { "capacity", Capacity },
-                            { "factoryName", factoryName }
-                        }
-                    ),
-                    container
-                )
+                    { "capacity", Capacity },
+                    { "factoryName", factoryName }
+                }
             );
         }
 

@@ -28,7 +28,7 @@ namespace Solti.Utils.DI.Internals
         }
 
         //
-        // Lifetime-ot at csak azert adjuk at h lekerdezhessuk a kapacitast
+        // Lifetime-ot csak azert adjuk at h lekerdezhessuk a kapacitast
         //
 
         public PooledServiceEntry(Type @interface, string? name, Func<IInjector, Type, object> factory, IServiceContainer owner, PooledLifetime lifetime) : base(@interface, name, factory, owner) 

@@ -49,6 +49,6 @@ namespace Solti.Utils.DI.Internals
             return true;
         }
 
-        public override Lifetime Lifetime => throw new NotImplementedException();
+        public override Lifetime Lifetime { get; } = new PermanentLifetime();
     }
 }
