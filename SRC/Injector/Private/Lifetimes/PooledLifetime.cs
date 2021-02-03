@@ -52,7 +52,7 @@ namespace Solti.Utils.DI.Internals
             object PoolFactory(IInjector injector, Type iface) => injector.Instantiate
             (
                 typeof(PoolService<>).MakeGenericType(entry.Interface),
-                new Dictionary<string, object>
+                new Dictionary<string, object?>
                 {
                     //
                     // Az argumentum nevek meg kell egyezzenek a PoolService.ctor() parameter neveivel.
@@ -73,7 +73,13 @@ namespace Solti.Utils.DI.Internals
             var result = new PooledServiceEntry(iface, name, implementation, owner, this);
             RegisterPool(owner, result);
             return result;
+        }
 
+        public override AbstractServiceEntry CreateFrom(Type iface, string? name, Type implementation, IReadOnlyDictionary<string, object?> explicitArgs, IServiceContainer owner)
+        {
+            var result = new PooledServiceEntry(iface, name, implementation, explicitArgs, owner, this);
+            RegisterPool(owner, result);
+            return result;
         }
 
         public override AbstractServiceEntry CreateFrom(Type iface, string? name, Func<IInjector, Type, object> factory, IServiceContainer owner)

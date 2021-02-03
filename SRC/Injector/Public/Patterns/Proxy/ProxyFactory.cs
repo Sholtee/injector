@@ -69,7 +69,7 @@ namespace Solti.Utils.Proxy
         /// <param name="targetParamName">Parameter name of the target (usually "target").</param>
         /// <returns>The newly created proxy instance.</returns>
         public static TInterface Create<TInterface, TInterceptor>(TInterface target, IInjector injector, string targetParamName = "target") where TInterface : class where TInterceptor : InterfaceInterceptor<TInterface> => (TInterface) 
-            injector.Instantiate(GenerateProxyType<TInterface, TInterceptor>(), new Dictionary<string, object>
+            injector.Instantiate(GenerateProxyType<TInterface, TInterceptor>(), new Dictionary<string, object?>
             {
                 {targetParamName, target}
             });
@@ -131,7 +131,7 @@ namespace Solti.Utils.Proxy
         /// <param name="targetParamName">Parameter name of the target (usually "target").</param>
         /// <returns>The newly created proxy instance.</returns>
         public static object Create(Type iface, Type interceptor, object target, IInjector injector, string targetParamName = "target") => 
-            injector.Instantiate(GenerateProxyType(iface, interceptor), new Dictionary<string, object>
+            injector.Instantiate(GenerateProxyType(iface, interceptor), new Dictionary<string, object?>
             {
                 {targetParamName, target}
             });

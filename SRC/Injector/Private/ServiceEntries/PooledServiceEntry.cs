@@ -41,6 +41,11 @@ namespace Solti.Utils.DI.Internals
             Lifetime = lifetime;
         }
 
+        public PooledServiceEntry(Type @interface, string? name, Type implementation, IReadOnlyDictionary<string, object?> explicitArgs, IServiceContainer owner, PooledLifetime lifetime) : base(@interface, name, implementation, explicitArgs, owner)
+        {
+            Lifetime = lifetime;
+        }
+
         public override bool SetInstance(IServiceReference reference, IReadOnlyDictionary<string, object> options)
         {
             EnsureAppropriateReference(reference);

@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Collections.Generic;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -16,6 +17,8 @@ namespace Solti.Utils.DI.Internals
     internal sealed partial class PermanentLifetime : Lifetime
     {
         public override AbstractServiceEntry CreateFrom(Type iface, string? name, Type implementation, IServiceContainer owner) => new PermanentServiceEntry(iface, name, implementation, owner);
+
+        public override AbstractServiceEntry CreateFrom(Type iface, string? name, Type implementation, IReadOnlyDictionary<string, object?> explicitArgs, IServiceContainer owner) => new PermanentServiceEntry(iface, name, implementation, explicitArgs, owner);
 
         public override AbstractServiceEntry CreateFrom(Type iface, string? name, Func<IInjector, Type, object> factory, IServiceContainer owner) => new PermanentServiceEntry(iface, name, factory, owner);
 

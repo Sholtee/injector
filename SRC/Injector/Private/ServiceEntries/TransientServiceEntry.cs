@@ -36,10 +36,13 @@ namespace Solti.Utils.DI.Internals
         private TransientServiceEntry(TransientServiceEntry entry, IServiceContainer owner) : base(entry, owner) => 
             AfterConstruction();
 
-        public TransientServiceEntry(Type @interface, string? name, Func<IInjector, Type, object> factory, IServiceContainer owner) : base(@interface, name, factory, owner) => 
+        public TransientServiceEntry(Type @interface, string? name, Func<IInjector, Type, object> factory, IServiceContainer owner) : base(@interface, name, factory, owner) =>
             AfterConstruction();
 
         public TransientServiceEntry(Type @interface, string? name, Type implementation, IServiceContainer owner) : base(@interface, name, implementation, owner) =>
+            AfterConstruction();
+
+        public TransientServiceEntry(Type @interface, string? name, Type implementation, IReadOnlyDictionary<string, object?> explicitArgs, IServiceContainer owner) : base(@interface, name, implementation, explicitArgs, owner) =>
             AfterConstruction();
 
         public override bool SetInstance(IServiceReference reference, IReadOnlyDictionary<string, object> options)
