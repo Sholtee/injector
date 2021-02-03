@@ -31,12 +31,12 @@ namespace Solti.Utils.DI
         /// </list>
         /// </remarks>        
         /// <exception cref="ServiceNotFoundException">One or more dependecies could not be found.</exception>
-        public static object Instantiate(this IInjector self, Type @class, IReadOnlyDictionary<string, object>? explicitArgs = null)
+        public static object Instantiate(this IInjector self, Type @class, IReadOnlyDictionary<string, object?>? explicitArgs = null)
         {
             Ensure.Parameter.IsNotNull(self, nameof(self));
             Ensure.Parameter.IsNotNull(@class, nameof(@class));
 
-            return Resolver.GetExtended(@class).Invoke(self, explicitArgs ?? new Dictionary<string, object>(0));
+            return Resolver.GetExtended(@class).Invoke(self, explicitArgs ?? new Dictionary<string, object?>(0));
         }
 
         /// <summary>
@@ -54,7 +54,7 @@ namespace Solti.Utils.DI
         /// </list>
         /// </remarks>
         /// <exception cref="ServiceNotFoundException">One or more dependecies could not be found.</exception>
-        public static TClass Instantiate<TClass>(this IInjector self, IReadOnlyDictionary<string, object>? explicitArgs = null) where TClass : class
+        public static TClass Instantiate<TClass>(this IInjector self, IReadOnlyDictionary<string, object?>? explicitArgs = null) where TClass : class
         {
             Ensure.Parameter.IsNotNull(self, nameof(self));
 

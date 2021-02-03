@@ -43,7 +43,7 @@ namespace Solti.Utils.DI.Internals
 
             proxyType = ProxyFactory.GenerateProxyType(entry.Interface, proxyType);
 
-            entry.ApplyProxy((injector, iface, instance) => injector.Instantiate(proxyType, new Dictionary<string, object>
+            entry.ApplyProxy((injector, iface, instance) => injector.Instantiate(proxyType, new Dictionary<string, object?>
             {
                 {"target", instance}
             }));

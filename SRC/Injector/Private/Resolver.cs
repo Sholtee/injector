@@ -134,7 +134,7 @@ namespace Solti.Utils.DI.Internals
             return Cache.GetOrAdd(type, () => Get(type.GetApplicableConstructor()));
         }
 
-        public static Func<IInjector, IReadOnlyDictionary<string, object>, object> GetExtended(ConstructorInfo constructor) => Cache.GetOrAdd(constructor, () =>
+        public static Func<IInjector, IReadOnlyDictionary<string, object?>, object> GetExtended(ConstructorInfo constructor) => Cache.GetOrAdd(constructor, () =>
         {
             //
             // (injector, explicitParamz) => new Service((IDependency_1) (explicitParamz[paramName] ||  injector.Get(typeof(IDependency_1))), ...)
@@ -142,9 +142,9 @@ namespace Solti.Utils.DI.Internals
 
             ParameterExpression
                 injector     = Expression.Parameter(typeof(IInjector), nameof(injector)),
-                explicitArgs = Expression.Parameter(typeof(IReadOnlyDictionary<string, object>), nameof(explicitArgs));
+                explicitArgs = Expression.Parameter(typeof(IReadOnlyDictionary<string, object?>), nameof(explicitArgs));
 
-            return CreateResolver<Func<IInjector, IReadOnlyDictionary<string, object>, object>>
+            return CreateResolver<Func<IInjector, IReadOnlyDictionary<string, object?>, object>>
             (
                 constructor,
                 ResolveArgument,
@@ -158,22 +158,23 @@ namespace Solti.Utils.DI.Internals
                 (
                     Expression.Constant
                     (
-                        (Func<IInjector, IReadOnlyDictionary<string, object>, object>) Implementation
+                        (Func<IInjector, IReadOnlyDictionary<string, object?>, object?>) Implementation
                     ),
                     injector,
                     explicitArgs
                 );
 
-                object Implementation(IInjector injectorInst, IReadOnlyDictionary<string, object> explicitArgsInst)
+                object? Implementation(IInjector injectorInst, IReadOnlyDictionary<string, object?> explicitArgsInst)
                 {
-                    if (explicitArgsInst.TryGetValue(param.Name, out var value)) return value;
+                    if (explicitArgsInst.TryGetValue(param.Name, out object? value)) 
+                        return value;
 
                     //
                     // Parameter tipust itt KELL validalni h az "explicitArgs"-ban tetszoleges tipusu argumentum
                     // megadhato legyen.
                     //
 
-                    Type? parameterType = GetParameterType(param, out var isLazy);
+                    Type? parameterType = GetParameterType(param, out bool isLazy);
                     
                     if (parameterType == null)
                     {
@@ -201,7 +202,7 @@ namespace Solti.Utils.DI.Internals
             }
         })!; // Enelkul a CI elszall CS8619-el (helyben nem tudtam reprodukalni)
 
-        public static Func<IInjector, IReadOnlyDictionary<string, object>, object> GetExtended(Type type) => Cache.GetOrAdd(type, () => 
+        public static Func<IInjector, IReadOnlyDictionary<string, object?>, object> GetExtended(Type type) => Cache.GetOrAdd(type, () => 
         {
             //
             // Itt validaljunk ne a hivo oldalon (kodduplikalas elkerulese vegett).
