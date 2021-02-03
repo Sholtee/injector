@@ -91,8 +91,8 @@ namespace Solti.Utils.DI.Interfaces
         /// <summary>
         /// Returns custom converters related to this entry.
         /// </summary>
-        /// <remarks>Converters are used to access the actual service object.</remarks>
-        public virtual IReadOnlyList<Func<object, object>> CustomConverters { get; } = Array.Empty<Func<object, object>>();
+        /// <remarks>Converters describe how to extract the actual service object from the <see cref="IServiceReference"/>.</remarks>
+        public virtual IReadOnlyCollection<Func<object, object>> CustomConverters { get; } = Array.Empty<Func<object, object>>();
         #endregion
 
         #region Mutables

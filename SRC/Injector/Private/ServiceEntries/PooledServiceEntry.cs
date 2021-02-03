@@ -85,7 +85,7 @@ namespace Solti.Utils.DI.Internals
 
         public override IReadOnlyCollection<IServiceReference> Instances => FInstances;
 
-        public override IReadOnlyList<Func<object, object>> CustomConverters { get; } = new Func<object, object>[]
+        public override IReadOnlyCollection<Func<object, object>> CustomConverters { get; } = new Func<object, object>[]
         {
             #pragma warning disable 0618
             poolItem => ((ICustomAdapter) poolItem).GetUnderlyingObject()
