@@ -16,6 +16,8 @@ namespace Solti.Utils.DI.Internals
     /// </summary>
     internal class ScopedServiceEntry : ProducibleServiceEntry
     {
+        private readonly List<IServiceReference> FInstances = new List<IServiceReference>(1); // max egy eleme lehet
+
         private ScopedServiceEntry(ScopedServiceEntry entry, IServiceContainer owner) : base(entry, owner)
         {
         }
@@ -54,8 +56,7 @@ namespace Solti.Utils.DI.Internals
             //
 
             reference.Value = Factory!(relatedInjector, Interface);
-
-            Instances = new[] { reference };
+            FInstances.Add(reference);
 
             return Built = true;
         }
@@ -69,6 +70,8 @@ namespace Solti.Utils.DI.Internals
             target.Add(result);
             return result;
         }
+
+        public override IReadOnlyCollection<IServiceReference> Instances => FInstances;
 
         public override Lifetime Lifetime { get; } = Lifetime.Scoped;
     }

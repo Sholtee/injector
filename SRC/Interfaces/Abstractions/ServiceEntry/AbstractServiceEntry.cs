@@ -59,6 +59,7 @@ namespace Solti.Utils.DI.Interfaces
             if (implementation != null && !implementation.IsClass)
                 throw new ArgumentException(Resources.NOT_A_CLASS, nameof(implementation));
         }
+
         #region Immutables
         /// <summary>
         /// The interface of the service.
@@ -97,7 +98,7 @@ namespace Solti.Utils.DI.Interfaces
         /// <summary>
         /// The previously created service instance(s) related to this entry. Don't use it directly.
         /// </summary>
-        public IReadOnlyCollection<IServiceReference> Instances { get; protected set; } = Array.Empty<IServiceReference>();
+        public virtual IReadOnlyCollection<IServiceReference> Instances { get; } = Array.Empty<IServiceReference>();
 
         /// <summary>
         /// Returns true if this entry is already provided a service isntance.

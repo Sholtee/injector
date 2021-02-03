@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
@@ -17,6 +18,8 @@ namespace Solti.Utils.DI.Internals
     /// </summary>
     internal class SingletonServiceEntry : ProducibleServiceEntry
     {
+        private readonly ConcurrentBag<IServiceReference> FInstances = new ConcurrentBag<IServiceReference>();
+
         public SingletonServiceEntry(Type @interface, string? name, Func<IInjector, Type, object> factory, IServiceContainer owner) : base(@interface, name, factory, owner)
         {
         }
@@ -29,7 +32,7 @@ namespace Solti.Utils.DI.Internals
         {
         }
 
-        [MethodImpl(MethodImplOptions.Synchronized)]
+        [MethodImpl(MethodImplOptions.Synchronized)] // nem kene, csak kis paranoia
         public override bool SetInstance(IServiceReference reference, IReadOnlyDictionary<string, object> options)
         {
             EnsureAppropriateReference(reference);
@@ -56,11 +59,12 @@ namespace Solti.Utils.DI.Internals
             //
 
             reference.Value = Factory!(relatedInjector, Interface);
-
-            Instances = new[] { reference };
+            FInstances.Add(reference);
 
             return Built = true;
         }
+
+        public override IReadOnlyCollection<IServiceReference> Instances => FInstances;
 
         public override Lifetime Lifetime { get; } = Lifetime.Singleton;
     }
