@@ -721,12 +721,30 @@ references:
   commentId: M:Solti.Utils.DI.Interfaces.IServiceContainerBasicExtensions.Service(Solti.Utils.DI.Interfaces.IServiceContainer,System.Type,System.String,System.Type,Solti.Utils.DI.Interfaces.Lifetime)
   fullName: Solti.Utils.DI.Interfaces.IServiceContainerBasicExtensions.Service(Solti.Utils.DI.Interfaces.IServiceContainer, System.Type, System.String, System.Type, Solti.Utils.DI.Interfaces.Lifetime)
   nameWithType: IServiceContainerBasicExtensions.Service(IServiceContainer, Type, String, Type, Lifetime)
+- uid: Solti.Utils.DI.Interfaces.IServiceContainerBasicExtensions.Service(Solti.Utils.DI.Interfaces.IServiceContainer,System.Type,System.String,System.Type,System.Collections.Generic.IReadOnlyDictionary{System.String,System.Object},Solti.Utils.DI.Interfaces.Lifetime)
+  name: Service(IServiceContainer, Type, String, Type, IReadOnlyDictionary<String, Object>, Lifetime)
+  href: Solti.Utils.DI.Interfaces.IServiceContainerBasicExtensions.html#Solti_Utils_DI_Interfaces_IServiceContainerBasicExtensions_Service_Solti_Utils_DI_Interfaces_IServiceContainer_System_Type_System_String_System_Type_System_Collections_Generic_IReadOnlyDictionary_System_String_System_Object__Solti_Utils_DI_Interfaces_Lifetime_
+  commentId: M:Solti.Utils.DI.Interfaces.IServiceContainerBasicExtensions.Service(Solti.Utils.DI.Interfaces.IServiceContainer,System.Type,System.String,System.Type,System.Collections.Generic.IReadOnlyDictionary{System.String,System.Object},Solti.Utils.DI.Interfaces.Lifetime)
+  name.vb: Service(IServiceContainer, Type, String, Type, IReadOnlyDictionary(Of String, Object), Lifetime)
+  fullName: Solti.Utils.DI.Interfaces.IServiceContainerBasicExtensions.Service(Solti.Utils.DI.Interfaces.IServiceContainer, System.Type, System.String, System.Type, System.Collections.Generic.IReadOnlyDictionary<System.String, System.Object>, Solti.Utils.DI.Interfaces.Lifetime)
+  fullName.vb: Solti.Utils.DI.Interfaces.IServiceContainerBasicExtensions.Service(Solti.Utils.DI.Interfaces.IServiceContainer, System.Type, System.String, System.Type, System.Collections.Generic.IReadOnlyDictionary(Of System.String, System.Object), Solti.Utils.DI.Interfaces.Lifetime)
+  nameWithType: IServiceContainerBasicExtensions.Service(IServiceContainer, Type, String, Type, IReadOnlyDictionary<String, Object>, Lifetime)
+  nameWithType.vb: IServiceContainerBasicExtensions.Service(IServiceContainer, Type, String, Type, IReadOnlyDictionary(Of String, Object), Lifetime)
 - uid: Solti.Utils.DI.Interfaces.IServiceContainerBasicExtensions.Service(Solti.Utils.DI.Interfaces.IServiceContainer,System.Type,System.Type,Solti.Utils.DI.Interfaces.Lifetime)
   name: Service(IServiceContainer, Type, Type, Lifetime)
   href: Solti.Utils.DI.Interfaces.IServiceContainerBasicExtensions.html#Solti_Utils_DI_Interfaces_IServiceContainerBasicExtensions_Service_Solti_Utils_DI_Interfaces_IServiceContainer_System_Type_System_Type_Solti_Utils_DI_Interfaces_Lifetime_
   commentId: M:Solti.Utils.DI.Interfaces.IServiceContainerBasicExtensions.Service(Solti.Utils.DI.Interfaces.IServiceContainer,System.Type,System.Type,Solti.Utils.DI.Interfaces.Lifetime)
   fullName: Solti.Utils.DI.Interfaces.IServiceContainerBasicExtensions.Service(Solti.Utils.DI.Interfaces.IServiceContainer, System.Type, System.Type, Solti.Utils.DI.Interfaces.Lifetime)
   nameWithType: IServiceContainerBasicExtensions.Service(IServiceContainer, Type, Type, Lifetime)
+- uid: Solti.Utils.DI.Interfaces.IServiceContainerBasicExtensions.Service(Solti.Utils.DI.Interfaces.IServiceContainer,System.Type,System.Type,System.Collections.Generic.IReadOnlyDictionary{System.String,System.Object},Solti.Utils.DI.Interfaces.Lifetime)
+  name: Service(IServiceContainer, Type, Type, IReadOnlyDictionary<String, Object>, Lifetime)
+  href: Solti.Utils.DI.Interfaces.IServiceContainerBasicExtensions.html#Solti_Utils_DI_Interfaces_IServiceContainerBasicExtensions_Service_Solti_Utils_DI_Interfaces_IServiceContainer_System_Type_System_Type_System_Collections_Generic_IReadOnlyDictionary_System_String_System_Object__Solti_Utils_DI_Interfaces_Lifetime_
+  commentId: M:Solti.Utils.DI.Interfaces.IServiceContainerBasicExtensions.Service(Solti.Utils.DI.Interfaces.IServiceContainer,System.Type,System.Type,System.Collections.Generic.IReadOnlyDictionary{System.String,System.Object},Solti.Utils.DI.Interfaces.Lifetime)
+  name.vb: Service(IServiceContainer, Type, Type, IReadOnlyDictionary(Of String, Object), Lifetime)
+  fullName: Solti.Utils.DI.Interfaces.IServiceContainerBasicExtensions.Service(Solti.Utils.DI.Interfaces.IServiceContainer, System.Type, System.Type, System.Collections.Generic.IReadOnlyDictionary<System.String, System.Object>, Solti.Utils.DI.Interfaces.Lifetime)
+  fullName.vb: Solti.Utils.DI.Interfaces.IServiceContainerBasicExtensions.Service(Solti.Utils.DI.Interfaces.IServiceContainer, System.Type, System.Type, System.Collections.Generic.IReadOnlyDictionary(Of System.String, System.Object), Solti.Utils.DI.Interfaces.Lifetime)
+  nameWithType: IServiceContainerBasicExtensions.Service(IServiceContainer, Type, Type, IReadOnlyDictionary<String, Object>, Lifetime)
+  nameWithType.vb: IServiceContainerBasicExtensions.Service(IServiceContainer, Type, Type, IReadOnlyDictionary(Of String, Object), Lifetime)
 - uid: Solti.Utils.DI.Interfaces.IServiceContainerBasicExtensions.Service*
   name: Service
   href: Solti.Utils.DI.Interfaces.IServiceContainerBasicExtensions.html#Solti_Utils_DI_Interfaces_IServiceContainerBasicExtensions_Service_
@@ -743,6 +761,15 @@ references:
   fullName.vb: Solti.Utils.DI.Interfaces.IServiceContainerBasicExtensions.Service(Of TInterface, TImplementation)(Solti.Utils.DI.Interfaces.IServiceContainer, Solti.Utils.DI.Interfaces.Lifetime)
   nameWithType: IServiceContainerBasicExtensions.Service<TInterface, TImplementation>(IServiceContainer, Lifetime)
   nameWithType.vb: IServiceContainerBasicExtensions.Service(Of TInterface, TImplementation)(IServiceContainer, Lifetime)
+- uid: Solti.Utils.DI.Interfaces.IServiceContainerBasicExtensions.Service``2(Solti.Utils.DI.Interfaces.IServiceContainer,System.Collections.Generic.IReadOnlyDictionary{System.String,System.Object},Solti.Utils.DI.Interfaces.Lifetime)
+  name: Service<TInterface, TImplementation>(IServiceContainer, IReadOnlyDictionary<String, Object>, Lifetime)
+  href: Solti.Utils.DI.Interfaces.IServiceContainerBasicExtensions.html#Solti_Utils_DI_Interfaces_IServiceContainerBasicExtensions_Service__2_Solti_Utils_DI_Interfaces_IServiceContainer_System_Collections_Generic_IReadOnlyDictionary_System_String_System_Object__Solti_Utils_DI_Interfaces_Lifetime_
+  commentId: M:Solti.Utils.DI.Interfaces.IServiceContainerBasicExtensions.Service``2(Solti.Utils.DI.Interfaces.IServiceContainer,System.Collections.Generic.IReadOnlyDictionary{System.String,System.Object},Solti.Utils.DI.Interfaces.Lifetime)
+  name.vb: Service(Of TInterface, TImplementation)(IServiceContainer, IReadOnlyDictionary(Of String, Object), Lifetime)
+  fullName: Solti.Utils.DI.Interfaces.IServiceContainerBasicExtensions.Service<TInterface, TImplementation>(Solti.Utils.DI.Interfaces.IServiceContainer, System.Collections.Generic.IReadOnlyDictionary<System.String, System.Object>, Solti.Utils.DI.Interfaces.Lifetime)
+  fullName.vb: Solti.Utils.DI.Interfaces.IServiceContainerBasicExtensions.Service(Of TInterface, TImplementation)(Solti.Utils.DI.Interfaces.IServiceContainer, System.Collections.Generic.IReadOnlyDictionary(Of System.String, System.Object), Solti.Utils.DI.Interfaces.Lifetime)
+  nameWithType: IServiceContainerBasicExtensions.Service<TInterface, TImplementation>(IServiceContainer, IReadOnlyDictionary<String, Object>, Lifetime)
+  nameWithType.vb: IServiceContainerBasicExtensions.Service(Of TInterface, TImplementation)(IServiceContainer, IReadOnlyDictionary(Of String, Object), Lifetime)
 - uid: Solti.Utils.DI.Interfaces.IServiceContainerBasicExtensions.Service``2(Solti.Utils.DI.Interfaces.IServiceContainer,System.String,Solti.Utils.DI.Interfaces.Lifetime)
   name: Service<TInterface, TImplementation>(IServiceContainer, String, Lifetime)
   href: Solti.Utils.DI.Interfaces.IServiceContainerBasicExtensions.html#Solti_Utils_DI_Interfaces_IServiceContainerBasicExtensions_Service__2_Solti_Utils_DI_Interfaces_IServiceContainer_System_String_Solti_Utils_DI_Interfaces_Lifetime_
@@ -752,6 +779,15 @@ references:
   fullName.vb: Solti.Utils.DI.Interfaces.IServiceContainerBasicExtensions.Service(Of TInterface, TImplementation)(Solti.Utils.DI.Interfaces.IServiceContainer, System.String, Solti.Utils.DI.Interfaces.Lifetime)
   nameWithType: IServiceContainerBasicExtensions.Service<TInterface, TImplementation>(IServiceContainer, String, Lifetime)
   nameWithType.vb: IServiceContainerBasicExtensions.Service(Of TInterface, TImplementation)(IServiceContainer, String, Lifetime)
+- uid: Solti.Utils.DI.Interfaces.IServiceContainerBasicExtensions.Service``2(Solti.Utils.DI.Interfaces.IServiceContainer,System.String,System.Collections.Generic.IReadOnlyDictionary{System.String,System.Object},Solti.Utils.DI.Interfaces.Lifetime)
+  name: Service<TInterface, TImplementation>(IServiceContainer, String, IReadOnlyDictionary<String, Object>, Lifetime)
+  href: Solti.Utils.DI.Interfaces.IServiceContainerBasicExtensions.html#Solti_Utils_DI_Interfaces_IServiceContainerBasicExtensions_Service__2_Solti_Utils_DI_Interfaces_IServiceContainer_System_String_System_Collections_Generic_IReadOnlyDictionary_System_String_System_Object__Solti_Utils_DI_Interfaces_Lifetime_
+  commentId: M:Solti.Utils.DI.Interfaces.IServiceContainerBasicExtensions.Service``2(Solti.Utils.DI.Interfaces.IServiceContainer,System.String,System.Collections.Generic.IReadOnlyDictionary{System.String,System.Object},Solti.Utils.DI.Interfaces.Lifetime)
+  name.vb: Service(Of TInterface, TImplementation)(IServiceContainer, String, IReadOnlyDictionary(Of String, Object), Lifetime)
+  fullName: Solti.Utils.DI.Interfaces.IServiceContainerBasicExtensions.Service<TInterface, TImplementation>(Solti.Utils.DI.Interfaces.IServiceContainer, System.String, System.Collections.Generic.IReadOnlyDictionary<System.String, System.Object>, Solti.Utils.DI.Interfaces.Lifetime)
+  fullName.vb: Solti.Utils.DI.Interfaces.IServiceContainerBasicExtensions.Service(Of TInterface, TImplementation)(Solti.Utils.DI.Interfaces.IServiceContainer, System.String, System.Collections.Generic.IReadOnlyDictionary(Of System.String, System.Object), Solti.Utils.DI.Interfaces.Lifetime)
+  nameWithType: IServiceContainerBasicExtensions.Service<TInterface, TImplementation>(IServiceContainer, String, IReadOnlyDictionary<String, Object>, Lifetime)
+  nameWithType.vb: IServiceContainerBasicExtensions.Service(Of TInterface, TImplementation)(IServiceContainer, String, IReadOnlyDictionary(Of String, Object), Lifetime)
 - uid: Solti.Utils.DI.Interfaces.IServiceDefinition
   name: IServiceDefinition
   href: Solti.Utils.DI.Interfaces.IServiceDefinition.html
@@ -1048,6 +1084,15 @@ references:
   commentId: M:Solti.Utils.DI.Interfaces.Lifetime.CreateFrom(System.Type,System.String,System.Type,Solti.Utils.DI.Interfaces.IServiceContainer)
   fullName: Solti.Utils.DI.Interfaces.Lifetime.CreateFrom(System.Type, System.String, System.Type, Solti.Utils.DI.Interfaces.IServiceContainer)
   nameWithType: Lifetime.CreateFrom(Type, String, Type, IServiceContainer)
+- uid: Solti.Utils.DI.Interfaces.Lifetime.CreateFrom(System.Type,System.String,System.Type,System.Collections.Generic.IReadOnlyDictionary{System.String,System.Object},Solti.Utils.DI.Interfaces.IServiceContainer)
+  name: CreateFrom(Type, String, Type, IReadOnlyDictionary<String, Object>, IServiceContainer)
+  href: Solti.Utils.DI.Interfaces.Lifetime.html#Solti_Utils_DI_Interfaces_Lifetime_CreateFrom_System_Type_System_String_System_Type_System_Collections_Generic_IReadOnlyDictionary_System_String_System_Object__Solti_Utils_DI_Interfaces_IServiceContainer_
+  commentId: M:Solti.Utils.DI.Interfaces.Lifetime.CreateFrom(System.Type,System.String,System.Type,System.Collections.Generic.IReadOnlyDictionary{System.String,System.Object},Solti.Utils.DI.Interfaces.IServiceContainer)
+  name.vb: CreateFrom(Type, String, Type, IReadOnlyDictionary(Of String, Object), IServiceContainer)
+  fullName: Solti.Utils.DI.Interfaces.Lifetime.CreateFrom(System.Type, System.String, System.Type, System.Collections.Generic.IReadOnlyDictionary<System.String, System.Object>, Solti.Utils.DI.Interfaces.IServiceContainer)
+  fullName.vb: Solti.Utils.DI.Interfaces.Lifetime.CreateFrom(System.Type, System.String, System.Type, System.Collections.Generic.IReadOnlyDictionary(Of System.String, System.Object), Solti.Utils.DI.Interfaces.IServiceContainer)
+  nameWithType: Lifetime.CreateFrom(Type, String, Type, IReadOnlyDictionary<String, Object>, IServiceContainer)
+  nameWithType.vb: Lifetime.CreateFrom(Type, String, Type, IReadOnlyDictionary(Of String, Object), IServiceContainer)
 - uid: Solti.Utils.DI.Interfaces.Lifetime.CreateFrom*
   name: CreateFrom
   href: Solti.Utils.DI.Interfaces.Lifetime.html#Solti_Utils_DI_Interfaces_Lifetime_CreateFrom_
