@@ -47,10 +47,10 @@ namespace Solti.Utils.DI.Internals
             // szolitunk meg.
             //
 
-            container.Factory(typeof(IPool<>).MakeGenericType(entry.Interface), entry.Name, PoolFactory, new SingletonLifetime());
-
-            object PoolFactory(IInjector injector, Type iface) => injector.Instantiate
+            container.Service
             (
+                typeof(IPool<>).MakeGenericType(entry.Interface),
+                entry.Name,
                 typeof(PoolService<>).MakeGenericType(entry.Interface),
                 new Dictionary<string, object?>
                 {
@@ -61,7 +61,8 @@ namespace Solti.Utils.DI.Internals
 
                     { "capacity", Capacity },
                     { "factoryName", factoryName }
-                }
+                },
+                new SingletonLifetime()
             );
         }
 
