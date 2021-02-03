@@ -5,6 +5,7 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -83,6 +84,13 @@ namespace Solti.Utils.DI.Internals
         }
 
         public override IReadOnlyCollection<IServiceReference> Instances => FInstances;
+
+        public override IReadOnlyList<Func<object, object>> CustomConverters { get; } = new Func<object, object>[]
+        {
+            #pragma warning disable 0618
+            poolItem => ((ICustomAdapter) poolItem).GetUnderlyingObject()
+            #pragma warning restore 0618
+        };
 
         public override Lifetime Lifetime { get; }
     }

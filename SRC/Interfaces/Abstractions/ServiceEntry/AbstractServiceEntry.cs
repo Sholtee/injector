@@ -87,6 +87,12 @@ namespace Solti.Utils.DI.Interfaces
         /// The related <see cref="Lifetime"/>.
         /// </summary>
         public virtual Lifetime? Lifetime { get; }
+
+        /// <summary>
+        /// Returns custom converters related to this entry.
+        /// </summary>
+        /// <remarks>Converters are used to access the actual service object.</remarks>
+        public virtual IReadOnlyList<Func<object, object>> CustomConverters { get; } = Array.Empty<Func<object, object>>();
         #endregion
 
         #region Mutables
