@@ -8,7 +8,7 @@ using System;
 namespace Solti.Utils.DI.Interfaces
 {
     /// <summary>
-    /// Defines several handy extensions to the <see cref="IServiceId"/> interface.
+    /// Defines some extensions to the <see cref="IServiceId"/> interface.
     /// </summary>
     public static class IServiceIdExtensions
     {

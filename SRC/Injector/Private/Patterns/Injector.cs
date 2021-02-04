@@ -171,12 +171,7 @@ namespace Solti.Utils.DI.Internals
 
             try
             {
-                IServiceReference reference = GetReference(iface, name);
-
-                object instance = reference
-                    .RelatedServiceEntry
-                    .CustomConverters
-                    .Aggregate(reference.Value!, (current, converter) => converter(current));
+                object instance = GetReference(iface, name).GetEffectiveValue();
 
                 if (!iface.IsInstanceOfType(instance))
                     throw new InvalidCastException(string.Format(Resources.Culture, Resources.INVALID_INSTANCE, iface));
