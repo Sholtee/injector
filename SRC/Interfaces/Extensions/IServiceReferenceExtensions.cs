@@ -26,10 +26,11 @@ namespace Solti.Utils.DI.Interfaces
             if (src.Value is null)
                 throw new InvalidOperationException();
 
-            return src
-                .RelatedServiceEntry
+            AbstractServiceEntry relatedEntry = src.RelatedServiceEntry;
+
+            return relatedEntry
                 .CustomConverters
-                .Aggregate(src.Value, (current, converter) => converter(current));
+                .Aggregate(src.Value, (current, converter) => converter(current, relatedEntry.Interface));
         }
     }
 }

@@ -35,15 +35,15 @@ namespace Solti.Utils.DI.Internals
         {
         }
 
-        public TransientServiceEntry(Type @interface, string? name, Func<IInjector, Type, object> factory, IServiceContainer owner, params Func<object, object>[] customConverters) : base(@interface, name, factory, owner, customConverters)
+        public TransientServiceEntry(Type @interface, string? name, Func<IInjector, Type, object> factory, IServiceContainer owner, params Func<object, Type, object>[] customConverters) : base(@interface, name, factory, owner, customConverters)
         {
         }
 
-        public TransientServiceEntry(Type @interface, string? name, Type implementation, IServiceContainer owner, params Func<object, object>[] customConverters) : base(@interface, name, implementation, owner, customConverters)
+        public TransientServiceEntry(Type @interface, string? name, Type implementation, IServiceContainer owner, params Func<object, Type, object>[] customConverters) : base(@interface, name, implementation, owner, customConverters)
         {
         }
 
-        public TransientServiceEntry(Type @interface, string? name, Type implementation, IReadOnlyDictionary<string, object?> explicitArgs, IServiceContainer owner, params Func<object, object>[] customConverters) : base(@interface, name, implementation, explicitArgs, owner, customConverters)
+        public TransientServiceEntry(Type @interface, string? name, Type implementation, IReadOnlyDictionary<string, object?> explicitArgs, IServiceContainer owner, params Func<object, Type, object>[] customConverters) : base(@interface, name, implementation, explicitArgs, owner, customConverters)
         {
         }
 

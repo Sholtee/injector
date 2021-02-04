@@ -27,7 +27,7 @@ namespace Solti.Utils.DI.Interfaces
         /// <param name="owner">The owner of this entry.</param>
         /// <param name="customConverters">Custom converters related to this entry.</param>
         /// <exception cref="ArgumentException">The <paramref name="interface"/> is not an interface.</exception>
-        public AbstractServiceEntry(Type @interface, string? name, IServiceContainer owner, params Func<object, object>[] customConverters) : this(@interface, name, null, owner, customConverters)
+        public AbstractServiceEntry(Type @interface, string? name, IServiceContainer owner, params Func<object, Type, object>[] customConverters) : this(@interface, name, null, owner, customConverters)
         {
         }
 
@@ -41,7 +41,7 @@ namespace Solti.Utils.DI.Interfaces
         /// <param name="customConverters">Custom converters related to this entry.</param>
         /// <exception cref="ArgumentException">The <paramref name="interface"/> is not an interface.</exception>
         /// <exception cref="ArgumentException">The <paramref name="implementation"/> does not support the <paramref name="interface"/>.</exception>
-        protected AbstractServiceEntry(Type @interface, string? name, Type? implementation, IServiceContainer owner, params Func<object, object>[] customConverters)
+        protected AbstractServiceEntry(Type @interface, string? name, Type? implementation, IServiceContainer owner, params Func<object, Type, object>[] customConverters)
         {
             Interface        = @interface ?? throw new ArgumentNullException(nameof(@interface));
             Owner            = owner ?? throw new ArgumentNullException(nameof(owner));
@@ -95,7 +95,7 @@ namespace Solti.Utils.DI.Interfaces
         /// Returns custom converters related to this entry.
         /// </summary>
         /// <remarks>Converters describe how to extract the actual service object from the value stored in a <see cref="IServiceReference"/>.</remarks>
-        public IReadOnlyCollection<Func<object, object>> CustomConverters { get; }
+        public IReadOnlyCollection<Func<object, Type, object>> CustomConverters { get; }
         #endregion
 
         #region Mutables

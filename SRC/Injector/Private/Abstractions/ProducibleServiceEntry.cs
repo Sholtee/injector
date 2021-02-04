@@ -29,7 +29,7 @@ namespace Solti.Utils.DI.Internals
             //
         }
 
-        protected ProducibleServiceEntry(Type @interface, string? name, Func<IInjector, Type, object> factory, IServiceContainer owner, params Func<object, object>[] customConverters) : base(@interface, name, null, owner, customConverters)
+        protected ProducibleServiceEntry(Type @interface, string? name, Func<IInjector, Type, object> factory, IServiceContainer owner, params Func<object, Type, object>[] customConverters) : base(@interface, name, null, owner, customConverters)
         {
             //
             // Os ellenorzi az interface-t es a tulajdonost.
@@ -39,7 +39,7 @@ namespace Solti.Utils.DI.Internals
             this.ApplyAspects();
         }
 
-        protected ProducibleServiceEntry(Type @interface, string? name, Type implementation, IServiceContainer owner, params Func<object, object>[] customConverters) : base(@interface, name, implementation, owner, customConverters)
+        protected ProducibleServiceEntry(Type @interface, string? name, Type implementation, IServiceContainer owner, params Func<object, Type, object>[] customConverters) : base(@interface, name, implementation, owner, customConverters)
         {
             //
             // Os ellenorzi a tobbit.
@@ -65,7 +65,7 @@ namespace Solti.Utils.DI.Internals
             //
         }
 
-        protected ProducibleServiceEntry(Type @interface, string? name, Type implementation, IReadOnlyDictionary<string, object?> explicitArgs, IServiceContainer owner, params Func<object, object>[] customConverters) : base(@interface, name, implementation, owner, customConverters)
+        protected ProducibleServiceEntry(Type @interface, string? name, Type implementation, IReadOnlyDictionary<string, object?> explicitArgs, IServiceContainer owner, params Func<object, Type, object>[] customConverters) : base(@interface, name, implementation, owner, customConverters)
         {
             //
             // Os ellenorzi a tobbit.
@@ -111,33 +111,29 @@ namespace Solti.Utils.DI.Internals
         #region Features
         Func<IInjector, Type, object>? ISupportsProxying.Factory { get => Factory; set => Factory = value; }
 
-        AbstractServiceEntry ISupportsSpecialization.Specialize(params Type[] genericArguments) 
-        {
-            Type closedIface = Interface.MakeGenericType(genericArguments);
-
-            //
-            // "Service(typeof(IGeneric<>), ...)" eseten az implementaciot konkretizaljuk.
-            //
-
-            if (Implementation is not null)
+        AbstractServiceEntry ISupportsSpecialization.Specialize(params Type[] genericArguments) => 
+        (
+            this switch
             {
-                Type closedImpl = Implementation.MakeGenericType(genericArguments);
+                //
+                // "Service(typeof(IGeneric<>), ...)" eseten az implementaciot konkretizaljuk.
+                //
 
-                return ExplicitArgs is not null
-                    ? Lifetime!.CreateFrom(closedIface, Name, closedImpl, ExplicitArgs, Owner).Single()
-                    : Lifetime!.CreateFrom(closedIface, Name, closedImpl, Owner).Single();
+                _ when Implementation is not null && ExplicitArgs is null =>
+                    Lifetime!.CreateFrom(Interface.MakeGenericType(genericArguments), Name, Implementation.MakeGenericType(genericArguments), Owner, CustomConverters.ToArray()),
+                _ when Implementation is not null && ExplicitArgs is not null =>
+                    Lifetime!.CreateFrom(Interface.MakeGenericType(genericArguments), Name, Implementation.MakeGenericType(genericArguments), ExplicitArgs, Owner, CustomConverters.ToArray()),
+
+                //
+                // "Factory(typeof(IGeneric<>), ...)" eseten az eredeti factory lesz hivva a 
+                // konkretizalt interface-re.
+                //
+
+                _ when Factory is not null =>
+                    Lifetime!.CreateFrom(Interface.MakeGenericType(genericArguments), Name, Factory, Owner, CustomConverters.ToArray()),
+                _ => throw new NotSupportedException()
             }
-
-            //
-            // "Factory(typeof(IGeneric<>), ...)" eseten az eredeti factory lesz hivva a 
-            // konkretizalt interface-re.
-            //
-
-            if (Factory is not null) 
-                return Lifetime!.CreateFrom(closedIface, Name, Factory, Owner).Single();
-
-            throw new NotSupportedException();
-        }
+        ).Single();
         #endregion
     }
 }

@@ -16,19 +16,19 @@ namespace Solti.Utils.DI.Internals
         [ModuleInitializer]
         public static void Setup() => Scoped = new ScopedLifetime();
 
-        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Type implementation, IServiceContainer owner)
+        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Type implementation, IServiceContainer owner, params Func<object, Type, object>[] customConverters)
         {
-            yield return new ScopedServiceEntry(iface, name, implementation, owner);
+            yield return new ScopedServiceEntry(iface, name, implementation, owner, customConverters);
         }
 
-        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Type implementation, IReadOnlyDictionary<string, object?> explicitArgs, IServiceContainer owner)
+        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Type implementation, IReadOnlyDictionary<string, object?> explicitArgs, IServiceContainer owner, params Func<object, Type, object>[] customConverters)
         {
-            yield return new ScopedServiceEntry(iface, name, implementation, explicitArgs, owner);
+            yield return new ScopedServiceEntry(iface, name, implementation, explicitArgs, owner, customConverters);
         }
 
-        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Func<IInjector, Type, object> factory, IServiceContainer owner)
+        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Func<IInjector, Type, object> factory, IServiceContainer owner, params Func<object, Type, object>[] customConverters)
         {
-            yield return new ScopedServiceEntry(iface, name, factory, owner);
+            yield return new ScopedServiceEntry(iface, name, factory, owner, customConverters);
         }
 
         public override bool IsCompatible(AbstractServiceEntry entry) => entry is ScopedServiceEntry;

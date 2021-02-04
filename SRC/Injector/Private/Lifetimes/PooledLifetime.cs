@@ -5,6 +5,7 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -16,29 +17,39 @@ namespace Solti.Utils.DI.Internals
 
     internal sealed partial class PooledLifetime : Lifetime, IHasCapacity
     {
-        private IEnumerable<AbstractServiceEntry> CreateEntries(Type iface, string? name, object implOrFactory, IReadOnlyDictionary<string, object>? explicitArgs, IServiceContainer owner)
+        private IEnumerable<AbstractServiceEntry> CreateEntries(Type iface, string? name, object implOrFactory, IReadOnlyDictionary<string, object>? explicitArgs, IServiceContainer owner, params Func<object, Type, object>[] customConverters)
         {
+            //
+            // Type.GUID lezart es nyilt generikusnal is azonos
+            //
+
+            string
+                poolName = $"__pool_{iface.GUID}_{name}",
+                factoryName = $"__factory_{iface.GUID}_{name}";
+
             //
             // Pool megszolitasat vegzo szerviz.
             //
 
             ScopedServiceEntry accessor = new 
             (
-                iface, 
+                iface, // meg lehet generikus
                 name, 
-                GetFromPool, 
+                GetFromPool,
                 owner,
-                GetFromPoolItem
+                new Func<object, Type, object>[] { GetFromPoolItem }.Concat(customConverters).ToArray()
             );
             yield return accessor;
 
-            object GetFromPool(IInjector injector, Type iface) 
+            object GetFromPool(IInjector injector, Type concreteIface) 
             {
                 //
-                // A szervizhet tartozo pool lekerdezese
+                // A szervizhet tartozo pool lekerdezese. Generikus esetben "iface" itt mar biztosan lezart.
                 //
 
-                IPool relatedPool = (IPool) injector.Get(typeof(IPool<>).MakeGenericType(iface), name);
+                Debug.Assert(!concreteIface.IsGenericTypeDefinition);
+
+                IPool relatedPool = (IPool) injector.Get(typeof(IPool<>).MakeGenericType(concreteIface), poolName);
 
                 //
                 // Nem gond h PoolItem-et adunk a vissza, ezt a CustomCoverter lekezeli.
@@ -47,8 +58,6 @@ namespace Solti.Utils.DI.Internals
                 return relatedPool.Get(CheckoutPolicy.Block);
             }
 
-            string factoryName = $"__factory_{accessor.FriendlyName()}";
-
             //
             // Pool elemek legyartasat vegzo szerviz (minden egyes legyartott bejegyzes sajat scope-al rendelkezik,
             // elettartamukat "owner" kezeli).
@@ -56,21 +65,26 @@ namespace Solti.Utils.DI.Internals
 
             yield return implOrFactory switch
             {
-                Type implementation when explicitArgs is null => new PermanentServiceEntry(iface, factoryName, implementation, owner),
-                Type implementation when explicitArgs is not null => new PermanentServiceEntry(iface, factoryName, implementation, explicitArgs!, owner),
-                Func<IInjector, Type, object> factory => new PermanentServiceEntry(iface, factoryName, factory, owner),
-                _ => throw new NotSupportedException()
+                Type implementation when explicitArgs is null => 
+                    new PermanentServiceEntry(iface, factoryName, implementation, owner),
+                Type implementation when explicitArgs is not null => 
+                    new PermanentServiceEntry(iface, factoryName, implementation, explicitArgs!, owner),
+                Func<IInjector, Type, object> factory => 
+                    new PermanentServiceEntry(iface, factoryName, factory, owner),
+                _ => 
+                    throw new NotSupportedException()
             };
 
             //
-            // Pool szerviz maga.
+            // Pool szerviz maga. Hogy generikus szervizekkel is mukodjunk itt meg nem specializaljuk
+            // a szervizt.
             //
 
             yield return new SingletonServiceEntry
             (
-                typeof(IPool<>).MakeGenericType(iface),
-                name,
-                typeof(PoolService<>).MakeGenericType(iface),
+                typeof(IPool<>),
+                poolName,
+                typeof(PoolService<>),
                 new Dictionary<string, object?>
                 {
                     //
@@ -78,14 +92,14 @@ namespace Solti.Utils.DI.Internals
                     // Kesobb majd lehet szebben is megoldhato lesz: https://github.com/dotnet/csharplang/issues/373
                     //
 
-                    { "capacity", Capacity },
-                    { "factoryName", factoryName }
+                    ["capacity"] = Capacity,
+                    ["factoryName"] = factoryName
                 },
                 owner
             );
         }
 
-        private static object GetFromPoolItem(object poolItem) =>
+        private static object GetFromPoolItem(object poolItem, Type iface) =>
             #pragma warning disable 0618
             ((ICustomAdapter) poolItem).GetUnderlyingObject();
             #pragma warning restore 0618
@@ -93,14 +107,14 @@ namespace Solti.Utils.DI.Internals
         [ModuleInitializer]
         public static void Setup() => Pooled = new PooledLifetime();
 
-        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Type implementation, IServiceContainer owner) => 
-            CreateEntries(iface, name, implementation, null, owner);
+        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Type implementation, IServiceContainer owner, params Func<object, Type, object>[] customConverters) => 
+            CreateEntries(iface, name, implementation, null, owner, customConverters);
 
-        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Type implementation, IReadOnlyDictionary<string, object?> explicitArgs, IServiceContainer owner) =>
-            CreateEntries(iface, name, implementation, explicitArgs!, owner);
+        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Type implementation, IReadOnlyDictionary<string, object?> explicitArgs, IServiceContainer owner, params Func<object, Type, object>[] customConverters) =>
+            CreateEntries(iface, name, implementation, explicitArgs!, owner, customConverters);
 
-        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Func<IInjector, Type, object> factory, IServiceContainer owner) =>
-            CreateEntries(iface, name, factory, null, owner);
+        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Func<IInjector, Type, object> factory, IServiceContainer owner, params Func<object, Type, object>[] customConverters) =>
+            CreateEntries(iface, name, factory, null, owner, customConverters);
 
         public override bool IsCompatible(AbstractServiceEntry entry) => entry.CustomConverters.Contains(GetFromPoolItem);
 

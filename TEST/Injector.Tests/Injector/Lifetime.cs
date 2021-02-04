@@ -305,7 +305,7 @@ namespace Solti.Utils.DI.Injector.Tests
         [Test]
         public void Lifetime_PooledService_ShouldHaveItsOwnInjector()
         {
-            Container.Service<IInterface_7<IInjector>, Implementation_7_TInterface_Dependant<IInjector>>(Lifetime.Pooled);
+            Container.Service<IInterface_7<IInjector>, Implementation_7_TInterface_Dependant<IInjector>>(Lifetime.Pooled.WithCapacity(2));
 
             using (IInjector injector1 = Container.CreateInjector())
             {
@@ -415,6 +415,29 @@ namespace Solti.Utils.DI.Injector.Tests
             Assert.That(svc.Disposed);
             Assert.That(svc.DisposableDep.Disposed);
             Assert.That(svc.DependencyDisposed, Is.False);
+        }
+
+        [Test]
+        public void Lifetime_PooledService_MayBeGeneric([Values(null, "cica")] string name, [ValueSource(nameof(Lifetimes))] Lifetime depLifetime)
+        {
+            Container
+                .Service<IInterface_1, Implementation_1>(depLifetime)
+                .Service(typeof(IInterface_3<>), name, typeof(GenericImplementation_1<>), Lifetime.Pooled.WithCapacity(2));
+
+            using (IInjector injector1 = Container.CreateInjector())
+            {
+                Assert.AreSame(injector1.Get<IInterface_3<int>>(name), injector1.Get<IInterface_3<int>>(name));
+                Assert.AreSame(injector1.Get<IInterface_3<string>>(name), injector1.Get<IInterface_3<string>>(name));
+
+                using (IInjector injector2 = Container.CreateInjector())
+                {
+                    Assert.AreSame(injector2.Get<IInterface_3<int>>(name), injector2.Get<IInterface_3<int>>(name));
+                    Assert.AreSame(injector2.Get<IInterface_3<string>>(name), injector2.Get<IInterface_3<string>>(name));
+
+                    Assert.AreNotSame(injector1.Get<IInterface_3<int>>(name), injector2.Get<IInterface_3<int>>(name));
+                    Assert.AreNotSame(injector1.Get<IInterface_3<string>>(name), injector2.Get<IInterface_3<string>>(name));
+                }
+            }
         }
 
         [Test]
