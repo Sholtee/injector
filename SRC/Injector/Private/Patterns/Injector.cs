@@ -117,7 +117,7 @@ namespace Solti.Utils.DI.Internals
             // miatt "entry" tuti nem NULL.
             //
 
-            AbstractServiceEntry requestorEntry = Get(iface, name, QueryModes.AllowSpecialization | QueryModes.ThrowOnError)!;
+            AbstractServiceEntry requestedEntry = Get(iface, name, QueryModes.AllowSpecialization | QueryModes.ThrowOnError)!;
 
             //
             // Szerviz peldany letrehozasa. 
@@ -125,7 +125,7 @@ namespace Solti.Utils.DI.Internals
 
             IServiceReference?
                 requestor = FGraph.Current,
-                requested = ServiceInstantiationStrategySelector.GetStrategyFor(this, requestorEntry).Invoke(requestor);
+                requested = ServiceInstantiationStrategySelector.GetStrategyFor(this, requestedEntry).Invoke(requestor);
 
             return requested;
         }
