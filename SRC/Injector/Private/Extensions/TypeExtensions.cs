@@ -14,6 +14,7 @@ namespace Solti.Utils.DI.Internals
     using Interfaces;
     using Primitives;
     using Properties;
+    using Proxy.Internals;
 
     internal static class TypeExtensions
     {
@@ -24,7 +25,7 @@ namespace Solti.Utils.DI.Internals
             // az aktualis proxy tipus osenek konstruktoran van (ha van).
             //
 
-            if (src.FullName.StartsWith("GeneratedClass_"))
+            if (src.GetCustomAttribute<RelatedGeneratorAttribute>() is not null)
             {
                 Type @base = src.BaseType;
                 Debug.Assert(@base != null);
