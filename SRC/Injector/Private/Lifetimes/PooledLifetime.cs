@@ -24,8 +24,8 @@ namespace Solti.Utils.DI.Internals
             //
 
             string
-                poolName = $"__pool_{iface.GUID}_{name}",
-                factoryName = $"__factory_{iface.GUID}_{name}";
+                poolName = $"{ServiceContainer.INTERNAL_SERVICE_NAME_PREFIX}pool_{iface.GUID}_{name}",
+                factoryName = $"{ServiceContainer.INTERNAL_SERVICE_NAME_PREFIX}factory_{iface.GUID}_{name}";
 
             //
             // Pool megszolitasat vegzo szerviz.
@@ -44,7 +44,7 @@ namespace Solti.Utils.DI.Internals
             object GetFromPool(IInjector injector, Type concreteIface) 
             {
                 //
-                // A szervizhet tartozo pool lekerdezese. Generikus esetben "iface" itt mar biztosan lezart.
+                // A szervizhet tartozo pool lekerdezese. Generikus esetben "concreteIface" itt mar biztosan lezart.
                 //
 
                 Debug.Assert(!concreteIface.IsGenericTypeDefinition);

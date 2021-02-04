@@ -108,6 +108,7 @@ namespace Solti.Utils.DI.Internals
         #endregion
 
         public IReadOnlyDictionary<string, object?>? ExplicitArgs { get; }
+
         #region Features
         Func<IInjector, Type, object>? ISupportsProxying.Factory { get => Factory; set => Factory = value; }
 

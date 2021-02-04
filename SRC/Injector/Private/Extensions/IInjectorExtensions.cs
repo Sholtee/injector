@@ -59,45 +59,35 @@ namespace Solti.Utils.DI.Internals
         {
             Ensure.Parameter.IsInterface(serviceInterface, nameof(serviceInterface));
 
-            IServiceContainer underlyingContainer = injector.UnderlyingContainer;
-
-            //
-            // Generikus interface eseten (ha kell) specializaljuk az osszes kompatibilis bejegyzest
-            // az adott tipusra.
-            //
-
-            if (serviceInterface.IsGenericType)
+            foreach (string? svcName in GetNames())
             {
-                Type genericIface = serviceInterface.GetGenericTypeDefinition();
-
-                //
-                // Mivel a GetEnumerator() lock-ol, viszont generikus bejegyzes lezarasahoz irni kell a kontenert
-                // ezert h ne keruljunk dead lock-ba eloszor lekerdezzuk a teljes listat [ToArray()].
-                //
-
-                AbstractServiceEntry[] genericEntries = underlyingContainer
-                    .Where(e => e.Interface == genericIface)
-                    .ToArray();
-
-                foreach (AbstractServiceEntry entry in genericEntries)
-                {
-                    Assert(entry.IsGeneric());
-
-                    //
-                    // Specializalas (ha mar le volt zarva akkor nem csinal semmit).
-                    //
-
-                    underlyingContainer.Get(serviceInterface, entry.Name, QueryModes.AllowSpecialization);
-                }
+                yield return injector.Get(serviceInterface, svcName);
             }
 
-            //
-            // Most mar biztosan minden kompatibilis bejegyzest vissza tudunk adni.
-            //
-
-            foreach (AbstractServiceEntry entry in underlyingContainer.Where(e => e.Interface == serviceInterface))
+            string?[] GetNames() 
             {
-                yield return injector.Get(serviceInterface, entry.Name);
+                Func<AbstractServiceEntry, bool> filter = entry => !entry.IsInternal();
+
+                if (serviceInterface.IsGenericType)
+                {
+                    Type genericIface = serviceInterface.GetGenericTypeDefinition();
+                    filter = filter.And(entry => entry.Interface == serviceInterface || entry.Interface == genericIface);
+                }
+                else 
+                    filter = filter.And(entry => entry.Interface == serviceInterface);
+
+                return injector
+                    .UnderlyingContainer
+                    .Where(filter)
+                    .Select(entry => entry.Name)
+                    .Distinct() // lezart generikus mellett szerepelhet annak nyitott parja is
+
+                    //
+                    // Mivel a GetEnumerator() lock-ol, viszont generikus bejegyzes lezarasahoz irni kell a kontenert
+                    // ezert h ne keruljunk dead lock-ba eloszor lekerdezzuk a teljes listat [ToArray()].
+                    //
+
+                    .ToArray();
             }
         }
     }
