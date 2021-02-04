@@ -15,8 +15,10 @@ namespace Solti.Utils.DI.Internals
 
     internal sealed partial class PooledLifetime : Lifetime, IHasCapacity
     {
-        private void RegisterPool(IServiceContainer container, PooledServiceEntry entry)
+        private IEnumerable<AbstractServiceEntry> Register(PooledServiceEntry entry)
         {
+            yield return entry;
+
             //
             // PoolItem<object> altal megvalositott interface-eket nem regisztralhatjuk (h
             // a konkret oljektum helyett ne a PoolItem-et adja vissza az injector).
@@ -36,9 +38,9 @@ namespace Solti.Utils.DI.Internals
             //
 
             if (entry.Implementation is not null)
-                container.Service(entry.Interface, factoryName, entry.Implementation, new PermanentLifetime());
+                yield return new PermanentServiceEntry(entry.Interface, factoryName, entry.Implementation, entry.Owner);
             else if (entry.Factory is not null)
-                container.Factory(entry.Interface, factoryName, entry.Factory, new PermanentLifetime());
+                yield return new PermanentServiceEntry(entry.Interface, factoryName, entry.Factory, entry.Owner);
             else
                 throw new NotSupportedException();
 
@@ -47,7 +49,7 @@ namespace Solti.Utils.DI.Internals
             // szolitunk meg.
             //
 
-            container.Service
+            yield return new SingletonServiceEntry
             (
                 typeof(IPool<>).MakeGenericType(entry.Interface),
                 entry.Name,
@@ -62,33 +64,27 @@ namespace Solti.Utils.DI.Internals
                     { "capacity", Capacity },
                     { "factoryName", factoryName }
                 },
-                new SingletonLifetime()
+                entry.Owner
             );
         }
 
         [ModuleInitializer]
         public static void Setup() => Pooled = new PooledLifetime();
 
-        public override AbstractServiceEntry CreateFrom(Type iface, string? name, Type implementation, IServiceContainer owner)
-        {
-            var result = new PooledServiceEntry(iface, name, implementation, owner, this);
-            RegisterPool(owner, result);
-            return result;
-        }
+        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Type implementation, IServiceContainer owner) => Register
+        (
+             new PooledServiceEntry(iface, name, implementation, owner, this)
+        );
 
-        public override AbstractServiceEntry CreateFrom(Type iface, string? name, Type implementation, IReadOnlyDictionary<string, object?> explicitArgs, IServiceContainer owner)
-        {
-            var result = new PooledServiceEntry(iface, name, implementation, explicitArgs, owner, this);
-            RegisterPool(owner, result);
-            return result;
-        }
+        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Type implementation, IReadOnlyDictionary<string, object?> explicitArgs, IServiceContainer owner) => Register
+        (
+            new PooledServiceEntry(iface, name, implementation, explicitArgs, owner, this)
+        );
 
-        public override AbstractServiceEntry CreateFrom(Type iface, string? name, Func<IInjector, Type, object> factory, IServiceContainer owner)
-        {
-            var result = new PooledServiceEntry(iface, name, factory, owner, this);
-            RegisterPool(owner, result);
-            return result;
-        }
+        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Func<IInjector, Type, object> factory, IServiceContainer owner) => Register
+        (
+            new PooledServiceEntry(iface, name, factory, owner, this)
+        );
 
         public override bool IsCompatible(AbstractServiceEntry entry) => entry is PooledServiceEntry;
 

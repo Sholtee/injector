@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
 namespace Solti.Utils.DI.Internals
@@ -15,7 +16,10 @@ namespace Solti.Utils.DI.Internals
         [ModuleInitializer]
         public static void Setup() => Instance = new InstanceLifetime();
 
-        public override AbstractServiceEntry CreateFrom(Type iface, string? name, object value, bool externallyOwned, IServiceContainer owner) => new InstanceServiceEntry(iface, name, value, externallyOwned, owner);
+        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, object value, bool externallyOwned, IServiceContainer owner)
+        {
+            yield return new InstanceServiceEntry(iface, name, value, externallyOwned, owner);
+        }
 
         public override bool IsCompatible(AbstractServiceEntry entry) => entry is InstanceServiceEntry;
 

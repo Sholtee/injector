@@ -3,7 +3,7 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
-using System;
+using System.Collections.Generic;
 
 namespace Solti.Utils.DI.Interfaces
 {
@@ -12,5 +12,13 @@ namespace Solti.Utils.DI.Interfaces
     /// </summary>
     public static partial class IServiceContainerBasicExtensions
     {
+        private static IServiceContainer Add(this IServiceContainer src, IEnumerable<AbstractServiceEntry> entries)
+        {
+            foreach (AbstractServiceEntry entry in entries)
+            {
+                src.Add(entry);
+            }
+            return src;
+        }
     }
 }

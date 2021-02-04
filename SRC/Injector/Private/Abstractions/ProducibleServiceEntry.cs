@@ -5,6 +5,7 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -124,8 +125,8 @@ namespace Solti.Utils.DI.Internals
                 Type closedImpl = Implementation.MakeGenericType(genericArguments);
 
                 return ExplicitArgs is not null
-                    ? Lifetime!.CreateFrom(closedIface, Name, closedImpl, ExplicitArgs, Owner)
-                    : Lifetime!.CreateFrom(closedIface, Name, closedImpl, Owner);
+                    ? Lifetime!.CreateFrom(closedIface, Name, closedImpl, ExplicitArgs, Owner).Single()
+                    : Lifetime!.CreateFrom(closedIface, Name, closedImpl, Owner).Single();
             }
 
             //
@@ -134,7 +135,7 @@ namespace Solti.Utils.DI.Internals
             //
 
             if (Factory is not null) 
-                return Lifetime!.CreateFrom(closedIface, Name, Factory, Owner);
+                return Lifetime!.CreateFrom(closedIface, Name, Factory, Owner).Single();
 
             throw new NotSupportedException();
         }
