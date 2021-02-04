@@ -18,7 +18,7 @@ namespace Solti.Utils.DI.Internals
     internal abstract class ProducibleServiceEntry : AbstractServiceEntry, ISupportsProxying, ISupportsSpecialization
     {
         #region Protected
-        protected ProducibleServiceEntry(ProducibleServiceEntry entry, IServiceContainer owner) : base(entry.Interface, entry.Name, entry.Implementation, owner)
+        protected ProducibleServiceEntry(ProducibleServiceEntry entry, IServiceContainer owner) : base(entry.Interface, entry.Name, entry.Implementation, owner, entry.CustomConverters.ToArray())
         {
             Factory = entry.Factory;
             ExplicitArgs = entry.ExplicitArgs;
@@ -29,7 +29,7 @@ namespace Solti.Utils.DI.Internals
             //
         }
 
-        protected ProducibleServiceEntry(Type @interface, string? name, Func<IInjector, Type, object> factory, IServiceContainer owner) : base(@interface, name, null, owner)
+        protected ProducibleServiceEntry(Type @interface, string? name, Func<IInjector, Type, object> factory, IServiceContainer owner, params Func<object, object>[] customConverters) : base(@interface, name, null, owner, customConverters)
         {
             //
             // Os ellenorzi az interface-t es a tulajdonost.
@@ -39,7 +39,7 @@ namespace Solti.Utils.DI.Internals
             this.ApplyAspects();
         }
 
-        protected ProducibleServiceEntry(Type @interface, string? name, Type implementation, IServiceContainer owner) : base(@interface, name, implementation, owner)
+        protected ProducibleServiceEntry(Type @interface, string? name, Type implementation, IServiceContainer owner, params Func<object, object>[] customConverters) : base(@interface, name, implementation, owner, customConverters)
         {
             //
             // Os ellenorzi a tobbit.
@@ -60,12 +60,12 @@ namespace Solti.Utils.DI.Internals
 
                 implementation.GetApplicableConstructor();
 
-                //
-                // Generikus esetben az aspektusok a bejegyzes tipizalasakor lesznek alkalmazva.
-                //
+            //
+            // Generikus esetben az aspektusok a bejegyzes tipizalasakor lesznek alkalmazva.
+            //
         }
 
-        protected ProducibleServiceEntry(Type @interface, string? name, Type implementation, IReadOnlyDictionary<string, object?> explicitArgs, IServiceContainer owner) : base(@interface, name, implementation, owner)
+        protected ProducibleServiceEntry(Type @interface, string? name, Type implementation, IReadOnlyDictionary<string, object?> explicitArgs, IServiceContainer owner, params Func<object, object>[] customConverters) : base(@interface, name, implementation, owner, customConverters)
         {
             //
             // Os ellenorzi a tobbit.
@@ -108,7 +108,6 @@ namespace Solti.Utils.DI.Internals
         #endregion
 
         public IReadOnlyDictionary<string, object?>? ExplicitArgs { get; }
-
         #region Features
         Func<IInjector, Type, object>? ISupportsProxying.Factory { get => Factory; set => Factory = value; }
 

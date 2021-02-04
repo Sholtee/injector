@@ -22,15 +22,15 @@ namespace Solti.Utils.DI.Internals
         {
         }
 
-        public ScopedServiceEntry(Type @interface, string? name, Func<IInjector, Type, object> factory, IServiceContainer owner) : base(@interface, name, factory, owner)
+        public ScopedServiceEntry(Type @interface, string? name, Func<IInjector, Type, object> factory, IServiceContainer owner, params Func<object, object>[] customConverters) : base(@interface, name, factory, owner, customConverters)
         {
         }
 
-        public ScopedServiceEntry(Type @interface, string? name, Type implementation, IServiceContainer owner) : base(@interface, name, implementation, owner)
+        public ScopedServiceEntry(Type @interface, string? name, Type implementation, IServiceContainer owner, params Func<object, object>[] customConverters) : base(@interface, name, implementation, owner, customConverters)
         {
         }
 
-        public ScopedServiceEntry(Type @interface, string? name, Type implementation, IReadOnlyDictionary<string, object?> explicitArgs, IServiceContainer owner) : base(@interface, name, implementation, explicitArgs, owner)
+        public ScopedServiceEntry(Type @interface, string? name, Type implementation, IReadOnlyDictionary<string, object?> explicitArgs, IServiceContainer owner, params Func<object, object>[] customConverters) : base(@interface, name, implementation, explicitArgs, owner, customConverters)
         {
         }
 

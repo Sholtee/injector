@@ -25,8 +25,9 @@ namespace Solti.Utils.DI.Interfaces
         /// <param name="interface">The interface of the service.</param>
         /// <param name="name">The (optional) name of the service.</param>
         /// <param name="owner">The owner of this entry.</param>
+        /// <param name="customConverters">Custom converters related to this entry.</param>
         /// <exception cref="ArgumentException">The <paramref name="interface"/> is not an interface.</exception>
-        public AbstractServiceEntry(Type @interface, string? name, IServiceContainer owner): this(@interface, name, null, owner)
+        public AbstractServiceEntry(Type @interface, string? name, IServiceContainer owner, params Func<object, object>[] customConverters) : this(@interface, name, null, owner, customConverters)
         {
         }
 
@@ -37,14 +38,16 @@ namespace Solti.Utils.DI.Interfaces
         /// <param name="name">The (optional) name of the service.</param>
         /// <param name="implementation">The (optional) implementation of the service.</param>
         /// <param name="owner">The owner of this entry.</param>
+        /// <param name="customConverters">Custom converters related to this entry.</param>
         /// <exception cref="ArgumentException">The <paramref name="interface"/> is not an interface.</exception>
         /// <exception cref="ArgumentException">The <paramref name="implementation"/> does not support the <paramref name="interface"/>.</exception>
-        protected AbstractServiceEntry(Type @interface, string? name, Type? implementation, IServiceContainer owner)
+        protected AbstractServiceEntry(Type @interface, string? name, Type? implementation, IServiceContainer owner, params Func<object, object>[] customConverters)
         {
-            Interface      = @interface ?? throw new ArgumentNullException(nameof(@interface));
-            Owner          = owner ?? throw new ArgumentNullException(nameof(owner));
-            Name           = name;
-            Implementation = implementation;
+            Interface        = @interface ?? throw new ArgumentNullException(nameof(@interface));
+            Owner            = owner ?? throw new ArgumentNullException(nameof(owner));
+            CustomConverters = customConverters ?? throw new ArgumentNullException(nameof(customConverters));
+            Name             = name;
+            Implementation   = implementation;
 
             if (!@interface.IsInterface)
                 throw new ArgumentException(Resources.NOT_AN_INTERFACE, nameof(@interface));
@@ -91,8 +94,8 @@ namespace Solti.Utils.DI.Interfaces
         /// <summary>
         /// Returns custom converters related to this entry.
         /// </summary>
-        /// <remarks>Converters describe how to extract the actual service object from the <see cref="IServiceReference"/>.</remarks>
-        public virtual IReadOnlyCollection<Func<object, object>> CustomConverters { get; } = Array.Empty<Func<object, object>>();
+        /// <remarks>Converters describe how to extract the actual service object from the value stored in a <see cref="IServiceReference"/>.</remarks>
+        public IReadOnlyCollection<Func<object, object>> CustomConverters { get; }
         #endregion
 
         #region Mutables

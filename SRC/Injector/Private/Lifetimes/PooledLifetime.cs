@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -15,45 +16,61 @@ namespace Solti.Utils.DI.Internals
 
     internal sealed partial class PooledLifetime : Lifetime, IHasCapacity
     {
-        private IEnumerable<AbstractServiceEntry> Register(PooledServiceEntry entry)
+        private IEnumerable<AbstractServiceEntry> CreateEntries(Type iface, string? name, object implOrFactory, IReadOnlyDictionary<string, object>? explicitArgs, IServiceContainer owner)
         {
-            yield return entry;
-
             //
-            // PoolItem<object> altal megvalositott interface-eket nem regisztralhatjuk (h
-            // a konkret oljektum helyett ne a PoolItem-et adja vissza az injector).
+            // Pool megszolitasat vegzo szerviz.
             //
 
-            if (typeof(PoolItem<>).MakeGenericType(entry.Interface).GetInterfaces().Contains(entry.Interface))
-                throw new NotSupportedException();
+            ScopedServiceEntry accessor = new 
+            (
+                iface, 
+                name, 
+                GetFromPool, 
+                owner,
+                GetFromPoolItem
+            );
+            yield return accessor;
+
+            object GetFromPool(IInjector injector, Type iface) 
+            {
+                //
+                // A szervizhet tartozo pool lekerdezese
+                //
+
+                IPool relatedPool = (IPool) injector.Get(typeof(IPool<>).MakeGenericType(iface), name);
+
+                //
+                // Nem gond h PoolItem-et adunk a vissza, ezt a CustomCoverter lekezeli.
+                //
+
+                return relatedPool.Get(CheckoutPolicy.Block);
+            }
+
+            string factoryName = $"__factory_{accessor.FriendlyName()}";
 
             //
-            // Letrehozunk egy dedikaltan ehhez a bejegyzeshez tartozo pool-szervizt (ha nem generikusunk van).
+            // Pool elemek legyartasat vegzo szerviz (minden egyes legyartott bejegyzes sajat scope-al rendelkezik,
+            // elettartamukat "owner" kezeli).
             //
 
-            string factoryName = $"__factory_{entry.FriendlyName()}";
+            yield return implOrFactory switch
+            {
+                Type implementation when explicitArgs is null => new PermanentServiceEntry(iface, factoryName, implementation, owner),
+                Type implementation when explicitArgs is not null => new PermanentServiceEntry(iface, factoryName, implementation, explicitArgs!, owner),
+                Func<IInjector, Type, object> factory => new PermanentServiceEntry(iface, factoryName, factory, owner),
+                _ => throw new NotSupportedException()
+            };
 
             //
-            // Ez minden egyes pool bejegyzeshez sajat scope-ot hoz letre.
-            //
-
-            if (entry.Implementation is not null)
-                yield return new PermanentServiceEntry(entry.Interface, factoryName, entry.Implementation, entry.Owner);
-            else if (entry.Factory is not null)
-                yield return new PermanentServiceEntry(entry.Interface, factoryName, entry.Factory, entry.Owner);
-            else
-                throw new NotSupportedException();
-
-            //
-            // Ez magat a pool szervizt hozza letre amit kesobbb a PooledServiceEntry.SetInstance() metodusaban
-            // szolitunk meg.
+            // Pool szerviz maga.
             //
 
             yield return new SingletonServiceEntry
             (
-                typeof(IPool<>).MakeGenericType(entry.Interface),
-                entry.Name,
-                typeof(PoolService<>).MakeGenericType(entry.Interface),
+                typeof(IPool<>).MakeGenericType(iface),
+                name,
+                typeof(PoolService<>).MakeGenericType(iface),
                 new Dictionary<string, object?>
                 {
                     //
@@ -64,29 +81,28 @@ namespace Solti.Utils.DI.Internals
                     { "capacity", Capacity },
                     { "factoryName", factoryName }
                 },
-                entry.Owner
+                owner
             );
         }
+
+        private static object GetFromPoolItem(object poolItem) =>
+            #pragma warning disable 0618
+            ((ICustomAdapter) poolItem).GetUnderlyingObject();
+            #pragma warning restore 0618
 
         [ModuleInitializer]
         public static void Setup() => Pooled = new PooledLifetime();
 
-        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Type implementation, IServiceContainer owner) => Register
-        (
-             new PooledServiceEntry(iface, name, implementation, owner, this)
-        );
+        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Type implementation, IServiceContainer owner) => 
+            CreateEntries(iface, name, implementation, null, owner);
 
-        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Type implementation, IReadOnlyDictionary<string, object?> explicitArgs, IServiceContainer owner) => Register
-        (
-            new PooledServiceEntry(iface, name, implementation, explicitArgs, owner, this)
-        );
+        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Type implementation, IReadOnlyDictionary<string, object?> explicitArgs, IServiceContainer owner) =>
+            CreateEntries(iface, name, implementation, explicitArgs!, owner);
 
-        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Func<IInjector, Type, object> factory, IServiceContainer owner) => Register
-        (
-            new PooledServiceEntry(iface, name, factory, owner, this)
-        );
+        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Func<IInjector, Type, object> factory, IServiceContainer owner) =>
+            CreateEntries(iface, name, factory, null, owner);
 
-        public override bool IsCompatible(AbstractServiceEntry entry) => entry is PooledServiceEntry;
+        public override bool IsCompatible(AbstractServiceEntry entry) => entry.CustomConverters.Contains(GetFromPoolItem);
 
         public override string ToString() => nameof(Pooled);
 

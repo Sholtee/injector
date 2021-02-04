@@ -21,15 +21,15 @@ namespace Solti.Utils.DI.Internals
     {
         private readonly ConcurrentBag<IServiceReference> FInstances = new ConcurrentBag<IServiceReference>();
 
-        public PermanentServiceEntry(Type @interface, string? name, Func<IInjector, Type, object> factory, IServiceContainer owner) : base(@interface, name, factory, owner)
+        public PermanentServiceEntry(Type @interface, string? name, Func<IInjector, Type, object> factory, IServiceContainer owner, params Func<object, object>[] customConverters) : base(@interface, name, factory, owner, customConverters)
         {
         }
 
-        public PermanentServiceEntry(Type @interface, string? name, Type implementation, IServiceContainer owner) : base(@interface, name, implementation, owner)
+        public PermanentServiceEntry(Type @interface, string? name, Type implementation, IServiceContainer owner, params Func<object, object>[] customConverters) : base(@interface, name, implementation, owner, customConverters)
         {
         }
 
-        public PermanentServiceEntry(Type @interface, string? name, Type implementation, IReadOnlyDictionary<string, object?> explicitArgs, IServiceContainer owner) : base(@interface, name, implementation, explicitArgs, owner)
+        public PermanentServiceEntry(Type @interface, string? name, Type implementation, IReadOnlyDictionary<string, object?> explicitArgs, IServiceContainer owner, params Func<object, object>[] customConverters) : base(@interface, name, implementation, explicitArgs, owner, customConverters)
         {
         }
 
