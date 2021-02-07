@@ -26,6 +26,10 @@ namespace Solti.Utils.DI.Internals
             .UnderlyingContainer
             .Instance(injector, releaseOnDispose: false);
 
+        public static void RegisterParent(this IInjector injector) => injector
+            .UnderlyingContainer
+            .Instance(injector.UnderlyingContainer.Parent!, releaseOnDispose: false);
+
         public static void RegisterServiceEnumerator(this IInjector injector)
         {
             injector

@@ -51,6 +51,7 @@ namespace Solti.Utils.DI.Internals
             FGraph = graph;
 
             this.RegisterSelf();
+            this.RegisterParent();
             this.RegisterServiceEnumerator();
         }
         #endregion
