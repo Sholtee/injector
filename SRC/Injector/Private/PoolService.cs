@@ -3,6 +3,8 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
+using System;
+
 namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
@@ -10,6 +12,9 @@ namespace Solti.Utils.DI.Internals
 
     internal sealed class PoolService<TInterface> : ObjectPool<TInterface>, IPool<TInterface>, IPool where TInterface: class
     {
+        [ThreadStatic]
+        private static IInjector? CurrentInjector;
+
         public PoolService(IServiceContainer declaringContainer, int capacity, string factoryName) : base
         (
             capacity,
@@ -21,9 +26,26 @@ namespace Solti.Utils.DI.Internals
             //   3) Letrehozaskor a mar meglevo grafot boviteni kell 
             //
 
-            () => declaringContainer
-                .CreateInjector() // a letrehozott injector elettartamat "declaringContainer" kezeli
-                .Get<TInterface>(factoryName)
+            () =>
+            {
+                //
+                // A CurrentInjector-os varazslas azert kell mert ez a callback nem factory/constructor
+                // hivasban kerul megszolitasra -> E nelkul korkoros referencia eseten itt mindig uj
+                // fuggosegi grafot hoznank letre -> dead lock
+                //
+
+                CurrentInjector ??= declaringContainer.CreateInjector(); // a letrehozott injector elettartamat "declaringContainer" kezeli
+                try
+                {
+                    return CurrentInjector.Get<TInterface>(factoryName);
+                }
+                finally
+                {
+                    CurrentInjector = null;
+                }                 
+            },
+
+            suppressItemDispose: true
         ) {}
 
         public PoolItem<TInterface> Get(CheckoutPolicy checkoutPolicy) => Get(checkoutPolicy, default);
