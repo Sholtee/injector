@@ -31,7 +31,7 @@ namespace Solti.Utils.DI.Internals
             // Pool megszolitasat vegzo szerviz.
             //
 
-            ScopedServiceEntry accessor = new 
+            yield return new ScopedServiceEntry 
             (
                 iface, // meg lehet generikus
                 name, 
@@ -39,7 +39,6 @@ namespace Solti.Utils.DI.Internals
                 owner,
                 new Func<object, Type, object>[] { GetFromPoolItem }.Concat(customConverters).ToArray()
             );
-            yield return accessor;
 
             object GetFromPool(IInjector injector, Type concreteIface) 
             {
@@ -66,11 +65,11 @@ namespace Solti.Utils.DI.Internals
             yield return implOrFactory switch
             {
                 Type implementation when explicitArgs is null => 
-                    new PermanentServiceEntry(iface, factoryName, implementation, owner),
+                    new ScopedServiceEntry(iface, factoryName, implementation, owner),
                 Type implementation when explicitArgs is not null => 
-                    new PermanentServiceEntry(iface, factoryName, implementation, explicitArgs!, owner),
+                    new ScopedServiceEntry(iface, factoryName, implementation, explicitArgs!, owner),
                 Func<IInjector, Type, object> factory => 
-                    new PermanentServiceEntry(iface, factoryName, factory, owner),
+                    new ScopedServiceEntry(iface, factoryName, factory, owner),
                 _ => 
                     throw new NotSupportedException()
             };

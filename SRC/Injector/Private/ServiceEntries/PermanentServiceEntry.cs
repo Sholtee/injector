@@ -3,6 +3,7 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
+#if false
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -63,3 +64,4 @@ namespace Solti.Utils.DI.Internals
         public override Lifetime Lifetime { get; } = new PermanentLifetime();
     }
 }
+#endif

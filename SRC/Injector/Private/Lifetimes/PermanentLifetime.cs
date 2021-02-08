@@ -3,6 +3,7 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
+#if false
 using System;
 using System.Collections.Generic;
 
@@ -36,3 +37,4 @@ namespace Solti.Utils.DI.Internals
         public override string ToString() => "Permanent";
     }
 }
+#endif

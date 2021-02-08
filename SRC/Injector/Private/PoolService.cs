@@ -21,7 +21,9 @@ namespace Solti.Utils.DI.Internals
             //   3) Letrehozaskor a mar meglevo grafot boviteni kell 
             //
 
-            () => declaringContainer.CreateInjector().Get<TInterface>(factoryName) // a letrehozott injector elettartamat "declaringContainer" kezeli
+            () => declaringContainer
+                .CreateInjector() // a letrehozott injector elettartamat "declaringContainer" kezeli
+                .Get<TInterface>(factoryName)
         ) {}
 
         public PoolItem<TInterface> Get(CheckoutPolicy checkoutPolicy) => Get(checkoutPolicy, default);
