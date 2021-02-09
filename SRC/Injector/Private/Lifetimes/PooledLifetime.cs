@@ -43,7 +43,7 @@ namespace Solti.Utils.DI.Internals
             object GetFromPool(IInjector injector, Type concreteIface) 
             {
                 //
-                // A szervizhet tartozo pool lekerdezese. Generikus esetben "concreteIface" itt mar biztosan lezart.
+                // A szervizhez tartozo pool lekerdezese. Generikus esetben "concreteIface" itt mar biztosan lezart.
                 //
 
                 Debug.Assert(!concreteIface.IsGenericTypeDefinition);
@@ -75,15 +75,18 @@ namespace Solti.Utils.DI.Internals
             };
 
             //
-            // Pool szerviz maga. Hogy generikus szervizekkel is mukodjunk itt meg nem specializaljuk
-            // a szervizt.
+            // Pool szerviz maga.
             //
 
             yield return new SingletonServiceEntry
             (
-                typeof(IPool<>),
+                iface.IsGenericTypeDefinition
+                    ? typeof(IPool<>) 
+                    : typeof(IPool<>).MakeGenericType(iface),
                 poolName,
-                typeof(PoolService<>),
+                iface.IsGenericTypeDefinition 
+                    ? typeof(PoolService<>) 
+                    : typeof(PoolService<>).MakeGenericType(iface),
                 new Dictionary<string, object?>
                 {
                     //
