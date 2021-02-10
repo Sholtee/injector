@@ -417,6 +417,30 @@ namespace Solti.Utils.DI.Injector.Tests
         }
 
         [Test]
+        public void Lifetime_PooledService_PooledDependencyShouldBeAccessibleOnDispose([ValueSource(nameof(Lifetimes))] Lifetime lifetime)
+        {
+            DisposableServiceHavingDisposableDependency svc;
+
+            using (IServiceContainer container = Container.CreateChild())
+            {
+                container
+                    .Service<IDisposableEx, Disposable>(Lifetime.Pooled)
+                    .Service<IDisposableService, DisposableServiceHavingDisposableDependency>(lifetime);
+
+                using (IInjector injector = container.CreateInjector())
+                {
+                    svc = (DisposableServiceHavingDisposableDependency) injector.Get<IDisposableService>();
+                }
+
+                Assert.That(svc.DisposableDep.Disposed, Is.False);
+            }
+
+            Assert.That(svc.Disposed);
+            Assert.That(svc.DisposableDep.Disposed);
+            Assert.That(svc.DependencyDisposed, Is.False);
+        }
+
+        [Test]
         public void Lifetime_PooledService_MayBeGeneric([Values(null, "cica")] string name, [ValueSource(nameof(Lifetimes))] Lifetime depLifetime)
         {
             Container
