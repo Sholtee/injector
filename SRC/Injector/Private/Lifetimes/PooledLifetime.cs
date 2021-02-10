@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -50,11 +49,22 @@ namespace Solti.Utils.DI.Internals
 
                 IPool relatedPool = (IPool) injector.Get(typeof(IPool<>).MakeGenericType(concreteIface), poolName);
 
+                PoolItem<IServiceReference> poolItem = relatedPool.Get(CheckoutPolicy.Block);
+
                 //
-                // Nem gond h PoolItem-et adunk a vissza, ezt a CustomCoverter lekezeli.
+                // Mivel a pool elem scope-ja kulonbozik "injector" scope-jatol (egymastol fuggetlenul 
+                // felszabaditasra kerulhetnek) ezert felvesszuk az elemet fuggosegkent is h biztosan
+                // ne legyen gond az elettartammal.
                 //
 
-                return relatedPool.Get(CheckoutPolicy.Block);
+                injector.Get<IServiceGraph>().Requestor?.AddDependency(poolItem.Value);
+
+                //
+                // Nem gond h a poolItem-et adjuk vissza, igy nem annak tartalma kerul felszabaditasra a 
+                // scope lezarasakor.
+                //
+
+                return poolItem;
             }
 
             //
@@ -101,10 +111,7 @@ namespace Solti.Utils.DI.Internals
             );
         }
 
-        private static object GetFromPoolItem(object poolItem, Type iface) =>
-            #pragma warning disable 0618
-            ((ICustomAdapter) poolItem).GetUnderlyingObject();
-            #pragma warning restore 0618
+        private static object GetFromPoolItem(object poolItem, Type iface) => ((PoolItem<IServiceReference>) poolItem).Value.Value!;
 
         [ModuleInitializer]
         public static void Setup() => Pooled = new PooledLifetime();

@@ -22,7 +22,7 @@ namespace Solti.Utils.DI.Internals
         {
             if (!Config.Value.Injector.StrictDI) return;
 
-            AbstractServiceEntry? requestor = FGraph.Current?.RelatedServiceEntry; // lehet NULL
+            AbstractServiceEntry? requestor = FGraph.Requestor?.RelatedServiceEntry; // lehet NULL
 
             //
             // Ha a fuggosegi fa gyokerenel vagyunk akkor a metodus nem ertelmezett.
@@ -147,7 +147,7 @@ namespace Solti.Utils.DI.Internals
             // Ha vkinek a fuggosege vagyunk akkor a fuggo szerviz itt meg nem lehet legyartva.
             //
 
-            Debug.Assert(FGraph.Current?.Value == null, "Already produced services can not request dependencies");
+            Debug.Assert(FGraph.Requestor?.Value == null, "Already produced services can not request dependencies");
 
             const string path = nameof(path);
 
@@ -161,7 +161,7 @@ namespace Solti.Utils.DI.Internals
                 AbstractServiceEntry requestedEntry = Get(iface, name, QueryModes.AllowSpecialization | QueryModes.ThrowOnError)!;
 
                 IServiceReference? 
-                    requestor = FGraph.Current,
+                    requestor = FGraph.Requestor,
                     requested = ServiceInstantiationStrategySelector.GetStrategyFor(this, requestedEntry).Invoke(requestor);
 
                 return requested;

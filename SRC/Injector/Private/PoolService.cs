@@ -10,7 +10,7 @@ namespace Solti.Utils.DI.Internals
     using Interfaces;
     using Primitives.Patterns;
 
-    internal sealed class PoolService<TInterface> : ObjectPool<TInterface>, IPool<TInterface>, IPool where TInterface: class
+    internal sealed class PoolService<TInterface> : ObjectPool<IServiceReference>, IPool<TInterface> where TInterface: class
     {
         [ThreadStatic]
         private static IInjector? CurrentInjector;
@@ -39,7 +39,12 @@ namespace Solti.Utils.DI.Internals
                 CurrentInjector ??= declaringContainer.CreateInjector(); // a letrehozott injector elettartamat "declaringContainer" kezeli
                 try
                 {
-                    return CurrentInjector.Get<TInterface>(factoryName);
+                    //
+                    // A referenciat magat adjuk vissza, hogy azt fuggosegkent menteni lehessen a
+                    // hivo scope-jaban.
+                    //
+
+                    return CurrentInjector.GetReference(typeof(TInterface), factoryName);
                 }
                 finally
                 {
@@ -50,8 +55,6 @@ namespace Solti.Utils.DI.Internals
             suppressItemDispose: true
         ) {}
 
-        public PoolItem<TInterface> Get(CheckoutPolicy checkoutPolicy) => Get(checkoutPolicy, default);
-
-        object IPool.Get(CheckoutPolicy checkoutPolicy) => Get(checkoutPolicy);
+        public PoolItem<IServiceReference> Get(CheckoutPolicy checkoutPolicy) => Get(checkoutPolicy, default);
     }
 }

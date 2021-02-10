@@ -5,15 +5,15 @@
 ********************************************************************************/
 namespace Solti.Utils.DI.Internals
 {
+    using Interfaces;
     using Primitives.Patterns;
 
     internal interface IPool
     {
-        object Get(CheckoutPolicy checkoutPolicy);
+        PoolItem<IServiceReference> Get(CheckoutPolicy checkoutPolicy);
     }
 
-    internal interface IPool<TInterface> where TInterface: class
+    internal interface IPool<TInterface>: IPool where TInterface: class
     {
-        PoolItem<TInterface> Get(CheckoutPolicy checkoutPolicy);
     }
 }
