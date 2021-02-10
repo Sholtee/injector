@@ -15,7 +15,7 @@ namespace Solti.Utils.DI.Internals
     using Primitives.Patterns;
     using Properties;
 
-    internal sealed class ServiceGraph: IEnumerable<IServiceReference>
+    internal sealed class ServiceGraph: IServiceGraph
     {
         private readonly Stack<IServiceReference> FGraph;
 

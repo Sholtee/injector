@@ -50,8 +50,10 @@ namespace Solti.Utils.DI.Internals
             FactoryOptions = factoryOptions;
             FGraph = graph;
 
-            this.RegisterSelf();
-            this.RegisterParent();
+            UnderlyingContainer.Instance<IServiceGraph>(graph);   
+            UnderlyingContainer.Instance<IInjector>(this);
+            UnderlyingContainer.Instance(parent);
+
             this.RegisterServiceEnumerator();
         }
         #endregion

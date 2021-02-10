@@ -22,14 +22,6 @@ namespace Solti.Utils.DI.Internals
             .Extract<IEnumerable>(e => e.Cast<object>())
             .GetGenericMethodDefinition();
 
-        public static void RegisterSelf(this IInjector injector) => injector
-            .UnderlyingContainer
-            .Instance(injector, releaseOnDispose: false);
-
-        public static void RegisterParent(this IInjector injector) => injector
-            .UnderlyingContainer
-            .Instance(injector.UnderlyingContainer.Parent!, releaseOnDispose: false);
-
         public static void RegisterServiceEnumerator(this IInjector injector)
         {
             injector
