@@ -5,11 +5,16 @@
 ********************************************************************************/
 using System.Collections.Generic;
 
-namespace Solti.Utils.DI.Internals
+namespace Solti.Utils.DI.Interfaces
 {
-    using Interfaces;
-
-    internal interface IServiceGraph: IEnumerable<IServiceReference>
+    /// <summary>
+    /// Gets the current service graph in which the request takes place.
+    /// </summary>
+    public interface IServiceGraph: IEnumerable<IServiceReference>
     {
+        /// <summary>
+        /// The requestor of this service.
+        /// </summary>
+        IServiceReference? Requestor { get; }
     }
 }
