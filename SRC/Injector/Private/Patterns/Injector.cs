@@ -101,37 +101,6 @@ namespace Solti.Utils.DI.Internals
         internal virtual Injector Fork(IServiceContainer parent) => new Injector(parent, this);
 
         internal void ClearGraph() => FGraph.Clear();
-
-        internal virtual IServiceReference GetReference(Type iface, string? name)
-        {
-            Ensure.Parameter.IsNotNull(iface, nameof(iface));
-            Ensure.Parameter.IsInterface(iface, nameof(iface));
-            Ensure.Parameter.IsNotGenericDefinition(iface, nameof(iface));
-            Ensure.NotDisposed(this);
-
-            //
-            // Ha vkinek a fuggosege vagyunk akkor a fuggo szerviz itt meg nem lehet legyartva.
-            //
-
-            Debug.Assert(FGraph.Current?.Value == null, "Already produced services can not request dependencies");
-
-            //
-            // Bejegyzes lekerdezese, generikus bejegyzes tipizalasat megengedjuk. A "QueryModes.ThrowOnError" 
-            // miatt "entry" tuti nem NULL.
-            //
-
-            AbstractServiceEntry requestedEntry = Get(iface, name, QueryModes.AllowSpecialization | QueryModes.ThrowOnError)!;
-
-            //
-            // Szerviz peldany letrehozasa. 
-            //
-
-            IServiceReference?
-                requestor = FGraph.Current,
-                requested = ServiceInstantiationStrategySelector.GetStrategyFor(this, requestedEntry).Invoke(requestor);
-
-            return requested;
-        }
         #endregion
 
         public Injector(IServiceContainer parent, IReadOnlyDictionary<string, object>? factoryOptions = null) : this
@@ -166,20 +135,36 @@ namespace Solti.Utils.DI.Internals
         }
 
         #region IInjector
-        public object Get(Type iface, string? name) 
+        public IServiceReference GetReference(Type iface, string? name)
         {
             CheckNotDisposed();
+
+            Ensure.Parameter.IsNotNull(iface, nameof(iface));
+            Ensure.Parameter.IsInterface(iface, nameof(iface));
+            Ensure.Parameter.IsNotGenericDefinition(iface, nameof(iface));
+
+            //
+            // Ha vkinek a fuggosege vagyunk akkor a fuggo szerviz itt meg nem lehet legyartva.
+            //
+
+            Debug.Assert(FGraph.Current?.Value == null, "Already produced services can not request dependencies");
 
             const string path = nameof(path);
 
             try
             {
-                object instance = GetReference(iface, name).GetEffectiveValue();
+                //
+                // Bejegyzes lekerdezese, generikus bejegyzes tipizalasat megengedjuk. A "QueryModes.ThrowOnError" 
+                // miatt "entry" tuti nem NULL.
+                //
 
-                if (!iface.IsInstanceOfType(instance))
-                    throw new InvalidCastException(string.Format(Resources.Culture, Resources.INVALID_INSTANCE, iface));
+                AbstractServiceEntry requestedEntry = Get(iface, name, QueryModes.AllowSpecialization | QueryModes.ThrowOnError)!;
 
-                return instance;
+                IServiceReference? 
+                    requestor = FGraph.Current,
+                    requested = ServiceInstantiationStrategySelector.GetStrategyFor(this, requestedEntry).Invoke(requestor);
+
+                return requested;
             }
 
             //
@@ -189,12 +174,24 @@ namespace Solti.Utils.DI.Internals
             catch (ServiceNotFoundException e) when (e.Data[path] == null)
             {
                 e.Data[path] = string.Join(" -> ", FGraph
-                    .Select(node => (IServiceId) node.RelatedServiceEntry)
+                    .Select(node => (IServiceId)node.RelatedServiceEntry)
                     .Append(new ServiceId(iface, name))
                     .Select(IServiceIdExtensions.FriendlyName));
 
                 throw;
             }
+        }
+
+        public object Get(Type iface, string? name) 
+        {
+            CheckNotDisposed();
+
+            object instance = GetReference(iface, name).GetEffectiveValue();
+
+            if (!iface.IsInstanceOfType(instance))
+                throw new InvalidCastException(string.Format(Resources.Culture, Resources.INVALID_INSTANCE, iface));
+
+            return instance;
         }
 
         public object? TryGet(Type iface, string? name) 
