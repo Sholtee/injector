@@ -178,3 +178,4 @@
   - *breaking:* `Instance` related logic moved to interfaces project
   - *breaking:* `AbstractServiceEntry.Instance` property has been replaced with `Instances`
   - *introduced:* `Service()` recipe explicit args support
+  - *introduced:* `IServiceGraph` (built in) service
