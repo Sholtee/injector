@@ -33,6 +33,8 @@ namespace Solti.Utils.DI.Internals
                 // hivasban kerul megszolitasra -> E nelkul korkoros referencia eseten itt mindig uj
                 // fuggosegi grafot hoznank letre -> dead lock
                 //
+                // TODO: Eldonteni h Injector-t v Provider-t kell letrehozni
+                //
 
                 CurrentInjector ??= declaringContainer.CreateInjector(); // a letrehozott injector elettartamat "declaringContainer" kezeli
                 try
