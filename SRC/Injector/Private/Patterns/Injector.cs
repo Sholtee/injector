@@ -106,10 +106,7 @@ namespace Solti.Utils.DI.Internals
         public Injector(IServiceContainer parent, IReadOnlyDictionary<string, object>? factoryOptions = null) : this
         (
             Ensure.Parameter.IsNotNull(parent, nameof(parent)),
-            factoryOptions ?? new Dictionary<string, object>
-            {
-                { nameof(Config.Value.Injector.MaxSpawnedTransientServices), Config.Value.Injector.MaxSpawnedTransientServices }
-            },
+            (factoryOptions ?? new Dictionary<string, object>()).Extend(nameof(Config.Value.Injector.MaxSpawnedTransientServices), Config.Value.Injector.MaxSpawnedTransientServices),
             new ServiceGraph()
         ){ }
 
@@ -174,7 +171,7 @@ namespace Solti.Utils.DI.Internals
             catch (ServiceNotFoundException e) when (e.Data[path] == null)
             {
                 e.Data[path] = string.Join(" -> ", FGraph
-                    .Select(node => (IServiceId)node.RelatedServiceEntry)
+                    .Select(node => (IServiceId) node.RelatedServiceEntry)
                     .Append(new ServiceId(iface, name))
                     .Select(IServiceIdExtensions.FriendlyName));
 
