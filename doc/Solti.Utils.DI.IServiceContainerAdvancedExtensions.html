@@ -144,13 +144,13 @@
     </tbody>
   </table>
   <a id="Solti_Utils_DI_IServiceContainerAdvancedExtensions_CreateInjector_" data-uid="Solti.Utils.DI.IServiceContainerAdvancedExtensions.CreateInjector*"></a>
-  <h4 id="Solti_Utils_DI_IServiceContainerAdvancedExtensions_CreateInjector_Solti_Utils_DI_Interfaces_IServiceContainer_" data-uid="Solti.Utils.DI.IServiceContainerAdvancedExtensions.CreateInjector(Solti.Utils.DI.Interfaces.IServiceContainer)">CreateInjector(IServiceContainer)</h4>
+  <h4 id="Solti_Utils_DI_IServiceContainerAdvancedExtensions_CreateInjector_Solti_Utils_DI_Interfaces_IServiceContainer_System_Collections_Generic_IReadOnlyDictionary_System_String_System_Object__" data-uid="Solti.Utils.DI.IServiceContainerAdvancedExtensions.CreateInjector(Solti.Utils.DI.Interfaces.IServiceContainer,System.Collections.Generic.IReadOnlyDictionary{System.String,System.Object})">CreateInjector(IServiceContainer, IReadOnlyDictionary&lt;String, Object&gt;)</h4>
   <div class="markdown level1 summary"><p>Creates a new <a class="xref" href="Solti.Utils.DI.Interfaces.IInjector.html">IInjector</a> instance from this container.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static IInjector CreateInjector(this IServiceContainer self)</code></pre>
+    <pre><code class="lang-csharp hljs">public static IInjector CreateInjector(this IServiceContainer self, IReadOnlyDictionary&lt;string, object&gt; options = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -166,6 +166,12 @@
         <td><a class="xref" href="Solti.Utils.DI.Interfaces.IServiceContainer.html">IServiceContainer</a></td>
         <td><span class="parametername">self</span></td>
         <td><p>The target <a class="xref" href="Solti.Utils.DI.Interfaces.IServiceContainer.html">IServiceContainer</a>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2">IReadOnlyDictionary</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a>&gt;</td>
+        <td><span class="parametername">options</span></td>
+        <td><p>Custom options to be passed to <a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_SetInstance_Solti_Utils_DI_Interfaces_IServiceReference_System_Collections_Generic_IReadOnlyDictionary_System_String_System_Object__">SetInstance(IServiceReference, IReadOnlyDictionary&lt;String, Object&gt;)</a>.</p>
 </td>
       </tr>
     </tbody>
@@ -186,7 +192,7 @@
       </tr>
     </tbody>
   </table>
-  <h5 id="Solti_Utils_DI_IServiceContainerAdvancedExtensions_CreateInjector_Solti_Utils_DI_Interfaces_IServiceContainer__remarks">Remarks</h5>
+  <h5 id="Solti_Utils_DI_IServiceContainerAdvancedExtensions_CreateInjector_Solti_Utils_DI_Interfaces_IServiceContainer_System_Collections_Generic_IReadOnlyDictionary_System_String_System_Object___remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p><a class="xref" href="Solti.Utils.DI.Interfaces.IInjector.html">IInjector</a> represents also a scope.</p>
 </div>
   <h5 class="exceptions">Exceptions</h5>
@@ -206,13 +212,13 @@
     </tbody>
   </table>
   <a id="Solti_Utils_DI_IServiceContainerAdvancedExtensions_CreateProvider_" data-uid="Solti.Utils.DI.IServiceContainerAdvancedExtensions.CreateProvider*"></a>
-  <h4 id="Solti_Utils_DI_IServiceContainerAdvancedExtensions_CreateProvider_Solti_Utils_DI_Interfaces_IServiceContainer_System_IServiceProvider__" data-uid="Solti.Utils.DI.IServiceContainerAdvancedExtensions.CreateProvider(Solti.Utils.DI.Interfaces.IServiceContainer,System.IServiceProvider@)">CreateProvider(IServiceContainer, out IServiceProvider)</h4>
+  <h4 id="Solti_Utils_DI_IServiceContainerAdvancedExtensions_CreateProvider_Solti_Utils_DI_Interfaces_IServiceContainer_System_IServiceProvider__System_Collections_Generic_IReadOnlyDictionary_System_String_System_Object__" data-uid="Solti.Utils.DI.IServiceContainerAdvancedExtensions.CreateProvider(Solti.Utils.DI.Interfaces.IServiceContainer,System.IServiceProvider@,System.Collections.Generic.IReadOnlyDictionary{System.String,System.Object})">CreateProvider(IServiceContainer, out IServiceProvider, IReadOnlyDictionary&lt;String, Object&gt;)</h4>
   <div class="markdown level1 summary"><p>Creates a new <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.iserviceprovider">IServiceProvider</a> instance from this container.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Disposable CreateProvider(this IServiceContainer self, out IServiceProvider provider)</code></pre>
+    <pre><code class="lang-csharp hljs">public static Disposable CreateProvider(this IServiceContainer self, out IServiceProvider provider, IReadOnlyDictionary&lt;string, object&gt; options = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -234,6 +240,12 @@
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.iserviceprovider">IServiceProvider</a></td>
         <td><span class="parametername">provider</span></td>
         <td><p>The newly created <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.iserviceprovider">IServiceProvider</a> instance.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2">IReadOnlyDictionary</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a>&gt;</td>
+        <td><span class="parametername">options</span></td>
+        <td><p>Custom options to be passed to <a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_SetInstance_Solti_Utils_DI_Interfaces_IServiceReference_System_Collections_Generic_IReadOnlyDictionary_System_String_System_Object__">SetInstance(IServiceReference, IReadOnlyDictionary&lt;String, Object&gt;)</a>.</p>
 </td>
       </tr>
     </tbody>

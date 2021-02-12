@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Class IServiceIdExtensions
+    <title>Class IServiceReferenceExtensions
    | Injector </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Class IServiceIdExtensions
+    <meta name="title" content="Class IServiceReferenceExtensions
    | Injector ">
     <meta name="generator" content="docfx 2.46.0.0">
     
@@ -37,18 +37,18 @@
       <div role="main" class="container body-content hide-when-search">
         <div class="article row grid">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="Solti.Utils.DI.Interfaces.IServiceIdExtensions">
+            <article class="content wrap" id="_content" data-uid="Solti.Utils.DI.Interfaces.IServiceReferenceExtensions">
   
   
-  <h1 id="Solti_Utils_DI_Interfaces_IServiceIdExtensions" data-uid="Solti.Utils.DI.Interfaces.IServiceIdExtensions" class="text-break">Class IServiceIdExtensions
+  <h1 id="Solti_Utils_DI_Interfaces_IServiceReferenceExtensions" data-uid="Solti.Utils.DI.Interfaces.IServiceReferenceExtensions" class="text-break">Class IServiceReferenceExtensions
   </h1>
-  <div class="markdown level0 summary"><p>Defines some extensions to the <a class="xref" href="Solti.Utils.DI.Interfaces.IServiceId.html">IServiceId</a> interface.</p>
+  <div class="markdown level0 summary"><p>Defines some extensions to the <a class="xref" href="Solti.Utils.DI.Interfaces.IServiceReference.html">IServiceReference</a> interface.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
-    <div class="level1"><span class="xref">IServiceIdExtensions</span></div>
+    <div class="level1"><span class="xref">IServiceReferenceExtensions</span></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
@@ -76,20 +76,20 @@
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Solti.Utils.DI.Interfaces.html">Solti.Utils.DI.Interfaces</a></h6>
   <h6><strong>Assembly</strong>: Solti.Utils.DI.Interfaces.dll</h6>
-  <h5 id="Solti_Utils_DI_Interfaces_IServiceIdExtensions_syntax">Syntax</h5>
+  <h5 id="Solti_Utils_DI_Interfaces_IServiceReferenceExtensions_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static class IServiceIdExtensions</code></pre>
+    <pre><code class="lang-csharp hljs">public static class IServiceReferenceExtensions</code></pre>
   </div>
   <h3 id="methods">Methods
   </h3>
-  <a id="Solti_Utils_DI_Interfaces_IServiceIdExtensions_FriendlyName_" data-uid="Solti.Utils.DI.Interfaces.IServiceIdExtensions.FriendlyName*"></a>
-  <h4 id="Solti_Utils_DI_Interfaces_IServiceIdExtensions_FriendlyName_Solti_Utils_DI_Interfaces_IServiceId_" data-uid="Solti.Utils.DI.Interfaces.IServiceIdExtensions.FriendlyName(Solti.Utils.DI.Interfaces.IServiceId)">FriendlyName(IServiceId)</h4>
-  <div class="markdown level1 summary"><p>Gets the friendly name of the <a class="xref" href="Solti.Utils.DI.Interfaces.IServiceId.html">IServiceId</a> instance.</p>
+  <a id="Solti_Utils_DI_Interfaces_IServiceReferenceExtensions_GetEffectiveValue_" data-uid="Solti.Utils.DI.Interfaces.IServiceReferenceExtensions.GetEffectiveValue*"></a>
+  <h4 id="Solti_Utils_DI_Interfaces_IServiceReferenceExtensions_GetEffectiveValue_Solti_Utils_DI_Interfaces_IServiceReference_" data-uid="Solti.Utils.DI.Interfaces.IServiceReferenceExtensions.GetEffectiveValue(Solti.Utils.DI.Interfaces.IServiceReference)">GetEffectiveValue(IServiceReference)</h4>
+  <div class="markdown level1 summary"><p>Gets the concrete value by applying the <a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_CustomConverters">CustomConverters</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static string FriendlyName(this IServiceId src)</code></pre>
+    <pre><code class="lang-csharp hljs">public static object GetEffectiveValue(this IServiceReference src)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -102,7 +102,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Solti.Utils.DI.Interfaces.IServiceId.html">IServiceId</a></td>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.IServiceReference.html">IServiceReference</a></td>
         <td><span class="parametername">src</span></td>
         <td></td>
       </tr>
@@ -118,7 +118,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></td>
         <td></td>
       </tr>
     </tbody>

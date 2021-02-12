@@ -95,13 +95,13 @@
   <h3 id="constructors">Constructors
   </h3>
   <a id="Solti_Utils_DI_Interfaces_AbstractServiceEntry__ctor_" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.#ctor*"></a>
-  <h4 id="Solti_Utils_DI_Interfaces_AbstractServiceEntry__ctor_System_Type_System_String_Solti_Utils_DI_Interfaces_IServiceContainer_" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.#ctor(System.Type,System.String,Solti.Utils.DI.Interfaces.IServiceContainer)">AbstractServiceEntry(Type, String, IServiceContainer)</h4>
+  <h4 id="Solti_Utils_DI_Interfaces_AbstractServiceEntry__ctor_System_Type_System_String_Solti_Utils_DI_Interfaces_IServiceContainer_System_Func_System_Object_System_Type_System_Object____" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.#ctor(System.Type,System.String,Solti.Utils.DI.Interfaces.IServiceContainer,System.Func{System.Object,System.Type,System.Object}[])">AbstractServiceEntry(Type, String, IServiceContainer, Func&lt;Object, Type, Object&gt;[])</h4>
   <div class="markdown level1 summary"><p>Creates a new <a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html">AbstractServiceEntry</a> instance.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public AbstractServiceEntry(Type interface, string name, IServiceContainer owner)</code></pre>
+    <pre><code class="lang-csharp hljs">public AbstractServiceEntry(Type interface, string name, IServiceContainer owner, params Func&lt;object, Type, object&gt;[] customConverters)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -131,6 +131,12 @@
         <td><p>The owner of this entry.</p>
 </td>
       </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.func-3">Func</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.type">Type</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a>&gt;[]</td>
+        <td><span class="parametername">customConverters</span></td>
+        <td><p>Custom converters related to this entry.</p>
+</td>
+      </tr>
     </tbody>
   </table>
   <h5 class="exceptions">Exceptions</h5>
@@ -150,13 +156,13 @@
     </tbody>
   </table>
   <a id="Solti_Utils_DI_Interfaces_AbstractServiceEntry__ctor_" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.#ctor*"></a>
-  <h4 id="Solti_Utils_DI_Interfaces_AbstractServiceEntry__ctor_System_Type_System_String_System_Type_Solti_Utils_DI_Interfaces_IServiceContainer_" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.#ctor(System.Type,System.String,System.Type,Solti.Utils.DI.Interfaces.IServiceContainer)">AbstractServiceEntry(Type, String, Type, IServiceContainer)</h4>
+  <h4 id="Solti_Utils_DI_Interfaces_AbstractServiceEntry__ctor_System_Type_System_String_System_Type_Solti_Utils_DI_Interfaces_IServiceContainer_System_Func_System_Object_System_Type_System_Object____" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.#ctor(System.Type,System.String,System.Type,Solti.Utils.DI.Interfaces.IServiceContainer,System.Func{System.Object,System.Type,System.Object}[])">AbstractServiceEntry(Type, String, Type, IServiceContainer, Func&lt;Object, Type, Object&gt;[])</h4>
   <div class="markdown level1 summary"><p>Creates a new <a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html">AbstractServiceEntry</a> instance.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected AbstractServiceEntry(Type interface, string name, Type implementation, IServiceContainer owner)</code></pre>
+    <pre><code class="lang-csharp hljs">protected AbstractServiceEntry(Type interface, string name, Type implementation, IServiceContainer owner, params Func&lt;object, Type, object&gt;[] customConverters)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -190,6 +196,12 @@
         <td><a class="xref" href="Solti.Utils.DI.Interfaces.IServiceContainer.html">IServiceContainer</a></td>
         <td><span class="parametername">owner</span></td>
         <td><p>The owner of this entry.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.func-3">Func</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.type">Type</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a>&gt;[]</td>
+        <td><span class="parametername">customConverters</span></td>
+        <td><p>Custom converters related to this entry.</p>
 </td>
       </tr>
     </tbody>
@@ -241,6 +253,33 @@
       </tr>
     </tbody>
   </table>
+  <a id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_CustomConverters_" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.CustomConverters*"></a>
+  <h4 id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_CustomConverters" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.CustomConverters">CustomConverters</h4>
+  <div class="markdown level1 summary"><p>Returns custom converters related to this entry.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IReadOnlyCollection&lt;Func&lt;object, Type, object&gt;&gt; CustomConverters { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ireadonlycollection-1">IReadOnlyCollection</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.func-3">Func</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.type">Type</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a>&gt;&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_CustomConverters_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Converters describe how to extract the actual service object from the value stored in a <a class="xref" href="Solti.Utils.DI.Interfaces.IServiceReference.html">IServiceReference</a>.</p>
+</div>
   <a id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_Factory_" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.Factory*"></a>
   <h4 id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_Factory" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.Factory">Factory</h4>
   <div class="markdown level1 summary"><p>The concrete factory. Don&apos;t use it directly.</p>
@@ -296,7 +335,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IReadOnlyCollection&lt;IServiceReference&gt; Instances { get; protected set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public virtual IReadOnlyCollection&lt;IServiceReference&gt; Instances { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -417,15 +456,6 @@
   </table>
   <h3 id="methods">Methods
   </h3>
-  <a id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_AfterConstruction_" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.AfterConstruction*"></a>
-  <h4 id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_AfterConstruction" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.AfterConstruction">AfterConstruction()</h4>
-  <div class="markdown level1 summary"><p>Invoked when the current entry is about to be initialized after its creation.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected virtual void AfterConstruction()</code></pre>
-  </div>
   <a id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_AsyncDispose_" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.AsyncDispose*"></a>
   <h4 id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_AsyncDispose" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.AsyncDispose">AsyncDispose()</h4>
   <div class="markdown level1 summary"><p>Decrements the reference counter of the service <a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_Instances">Instances</a>.</p>
@@ -695,6 +725,9 @@
   </div>
   <div>
       <a class="xref" href="Solti.Utils.DI.ServiceEntryExtensions.html#Solti_Utils_DI_ServiceEntryExtensions_IsInstance_Solti_Utils_DI_Interfaces_AbstractServiceEntry_">ServiceEntryExtensions.IsInstance(AbstractServiceEntry)</a>
+  </div>
+  <div>
+      <a class="xref" href="Solti.Utils.DI.ServiceEntryExtensions.html#Solti_Utils_DI_ServiceEntryExtensions_IsInternal_Solti_Utils_DI_Interfaces_AbstractServiceEntry_">ServiceEntryExtensions.IsInternal(AbstractServiceEntry)</a>
   </div>
   <div>
       <a class="xref" href="Solti.Utils.Proxy.ObjectExtensions.html#Solti_Utils_Proxy_ObjectExtensions_Act__1___0_">ObjectExtensions.Act&lt;TTarget&gt;(TTarget)</a>
