@@ -29,7 +29,7 @@ namespace Solti.Utils.DI.Interfaces
         IReadOnlyCollection<IServiceReference> Dependencies { get; }
 
         /// <summary>
-        /// Registers a new dependency is the <see cref="Dependencies"/> list.
+        /// Registers a new dependency in the <see cref="Dependencies"/> list.
         /// </summary>
         void AddDependency(IServiceReference dependency);
 
@@ -39,7 +39,7 @@ namespace Solti.Utils.DI.Interfaces
         object? Value { get; set; }
 
         /// <summary>
-        /// increments the reference counter of this instance.
+        /// Increments the reference counter of this instance.
         /// </summary>
         /// <returns></returns>
         int AddRef();

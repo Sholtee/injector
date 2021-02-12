@@ -27,6 +27,11 @@ namespace Solti.Utils.DI
     [SuppressMessage("Naming", "CA1710:Identifiers should have correct suffix", Justification = "The name provides meaningful information about the implementation")]
     public class ServiceContainer : Composite<IServiceContainer>, IServiceContainer
     {
+        /// <summary>
+        /// Indicates that the entry exists for internal use.
+        /// </summary>
+        public const string INTERNAL_SERVICE_NAME_PREFIX = "__";
+
         private readonly Dictionary<IServiceId, AbstractServiceEntry> FEntries;
 
         //

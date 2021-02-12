@@ -125,7 +125,7 @@ namespace Solti.Utils.DI.Injector.Tests
                 .Service(typeof(IInterface_3<>), typeof(Implementation_3_IInterface_1_Dependant<>), Lifetime.Transient)
                 .Service(typeof(IInterface_6<>), typeof(Implementation_6_IInterface_3_Dependant<>), lifetime);
 
-            Assert.That(Container.Count, Is.EqualTo(3));
+            Assert.That(Container.Where(entry => entry.Name?.StartsWith(ServiceContainer.INTERNAL_SERVICE_NAME_PREFIX) != true).Count, Is.EqualTo(3));
 
             using (IInjector injector = Container.CreateInjector())
             {         
@@ -415,11 +415,11 @@ namespace Solti.Utils.DI.Injector.Tests
         {
             Container.Service<IInterface_1, Implementation_1_No_Dep>(lifetime);
 
+            var setter = (ISupportsProxying) Container.Get<IInterface_1>();
+            setter.Factory = null;
+
             using (IInjector injector = Container.CreateInjector()) 
             {
-                var setter = (ISupportsProxying) injector.UnderlyingContainer.Get<IInterface_1>();
-                setter.Factory = null;
-
                 Assert.Throws<InvalidOperationException>(() => injector.Get<IInterface_1>(), Resources.NOT_PRODUCIBLE);
             }
         }
@@ -443,26 +443,6 @@ namespace Solti.Utils.DI.Injector.Tests
         private sealed class NotUsedImplementation<T> : IInterface_3<T>
         {
             public IInterface_1 Interface1 => throw new NotImplementedException();
-        }
-
-        [Test]
-        public void Injector_Get_ShouldSupportCustomAdapters() 
-        {
-            #pragma warning disable CS0618 // Type or member is obsolete
-            var mockAdapter = new Mock<ICustomAdapter>(MockBehavior.Strict);
-            #pragma warning restore CS0618
-            mockAdapter
-                .Setup(a => a.GetUnderlyingObject())
-                .Returns(new Implementation_1());
-
-            Container.Factory(typeof(IInterface_1), (i, t) => mockAdapter.Object, Lifetime.Transient);
-
-            using (IInjector injector = Container.CreateInjector())
-            {
-                Assert.DoesNotThrow(() => injector.Get<IInterface_1>());
-            }
-
-            mockAdapter.Verify(a => a.GetUnderlyingObject(), Times.Once);
         }
     }
 }

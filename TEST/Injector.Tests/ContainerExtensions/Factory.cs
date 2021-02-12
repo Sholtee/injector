@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Linq;
 
 using NUnit.Framework;
 
@@ -56,8 +57,8 @@ namespace Solti.Utils.DI.Container.Tests
             Assert.IsNull(Container.Get<IInterface_1>());
             Assert.IsNull(Container.Get<IInterface_1>("invalidname"));
 
-            Assert.AreEqual(lifetime.CreateFrom(typeof(IInterface_1), "svc1", factory, Container), Container.Get<IInterface_1>("svc1"));
-            Assert.AreEqual(lifetime.CreateFrom(typeof(IInterface_1), "svc2", factory, Container), Container.Get<IInterface_1>("svc2"));
+            Assert.AreEqual(lifetime.CreateFrom(typeof(IInterface_1), "svc1", factory, Container).Single(), Container.Get<IInterface_1>("svc1"));
+            Assert.AreEqual(lifetime.CreateFrom(typeof(IInterface_1), "svc2", factory, Container).Single(), Container.Get<IInterface_1>("svc2"));
         }
     }
 }

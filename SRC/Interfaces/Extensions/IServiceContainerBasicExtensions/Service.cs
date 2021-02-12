@@ -22,10 +22,10 @@ namespace Solti.Utils.DI.Interfaces
         /// <remarks>You may register generic services (where both the interface and the implementation are open generic types). The system will specialize the implementation if you request the concrete service.</remarks> 
         public static IServiceContainer Service(this IServiceContainer self, Type iface, string? name, Type implementation, Lifetime lifetime)
         {
-            if (self == null)
+            if (self is null)
                 throw new ArgumentNullException(nameof(self));
 
-            if (lifetime == null)
+            if (lifetime is null)
                 throw new ArgumentNullException(nameof(lifetime));
 
             //
@@ -49,11 +49,14 @@ namespace Solti.Utils.DI.Interfaces
         /// <remarks>You may register generic services (where both the interface and the implementation are open generic types). The system will specialize the implementation if you request the concrete service.</remarks> 
         public static IServiceContainer Service(this IServiceContainer self, Type iface, string? name, Type implementation, IReadOnlyDictionary<string, object?> explicitArgs, Lifetime lifetime)
         {
-            if (self == null)
+            if (self is null)
                 throw new ArgumentNullException(nameof(self));
 
-            if (lifetime == null)
+            if (lifetime is null)
                 throw new ArgumentNullException(nameof(lifetime));
+
+            if (explicitArgs is null)
+                throw new ArgumentNullException(nameof(explicitArgs));
 
             //
             // Tobbi parametert az xXxServiceEntry konstruktora fogja ellenorizni.

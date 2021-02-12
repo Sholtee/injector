@@ -16,9 +16,18 @@ namespace Solti.Utils.DI.Interfaces
     public interface IInjector: IDisposableEx
     {
         /// <summary>
+        /// Gets the <see cref="IServiceReference"/> associated with the given interface and (optional) name.
+        /// </summary>
+        /// <param name="iface">The "id" of the service to be resolved. It must be an interface.</param>
+        /// <param name="name">The (optional) name of the service.</param>
+        /// <returns>The resolved service.</returns>
+        /// <exception cref="ServiceNotFoundException">The service or one or more dependencies could not be found.</exception>
+        IServiceReference GetReference(Type iface, string? name);
+
+        /// <summary>
         /// Gets the service instance associated with the given interface and (optional) name.
         /// </summary>
-        /// <param name="iface">The "id" of the service to be resolved. It must be a (non open generic) interface.</param>
+        /// <param name="iface">The "id" of the service to be resolved. It must be an interface.</param>
         /// <param name="name">The (optional) name of the service.</param>
         /// <returns>The resolved service.</returns>
         /// <exception cref="ServiceNotFoundException">The service or one or more dependencies could not be found.</exception>
@@ -28,7 +37,7 @@ namespace Solti.Utils.DI.Interfaces
         /// <summary>
         /// Tries to get the service instance associated with the given interface and (optional) name.
         /// </summary>
-        /// <param name="iface">The "id" of the service to be resolved. It must be a (non open generic) interface.</param>
+        /// <param name="iface">The "id" of the service to be resolved. It must be an interface.</param>
         /// <param name="name">The (optional) name of the service.</param>
         /// <returns>The requested service instance if the resolution was successful, null otherwise.</returns>
         object? TryGet(Type iface, string? name = null);

@@ -72,7 +72,7 @@ namespace Solti.Utils.DI.Injector.Tests
             {
                 using (IInjector injector = container.CreateInjector())
                 {
-                    foreach (Type type in RandomTypes)
+                    foreach (Type type in RandomTypes.Take(20))
                         injector.Get(typeof(IList<>).MakeGenericType(type));
                 }
             }

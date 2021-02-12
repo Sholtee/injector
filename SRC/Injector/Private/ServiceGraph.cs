@@ -15,7 +15,7 @@ namespace Solti.Utils.DI.Internals
     using Primitives.Patterns;
     using Properties;
 
-    internal sealed class ServiceGraph: IEnumerable<IServiceReference>
+    internal sealed class ServiceGraph: IServiceGraph
     {
         private readonly Stack<IServiceReference> FGraph;
 
@@ -23,12 +23,12 @@ namespace Solti.Utils.DI.Internals
         {
             FGraph = new Stack<IServiceReference>(parent);
             
-            Debug.Assert(Current == parent.Current);
+            Debug.Assert(Requestor == parent.Requestor);
         }
 
         public ServiceGraph() => FGraph = new Stack<IServiceReference>();
 
-        public IServiceReference? Current => FGraph.Any() ? FGraph.Peek() : null;
+        public IServiceReference? Requestor => FGraph.Any() ? FGraph.Peek() : null;
 
         public void CheckNotCircular()
         {
@@ -36,7 +36,7 @@ namespace Solti.Utils.DI.Internals
             // Ha egynel tobbszor szerepel az aktualis szerviz az aktualis utvonalon akkor korkoros referenciank van.
             //
 
-            int firstIndex = this.FirstIndexOf(Ensure.IsNotNull(Current, nameof(Current)), ServiceReferenceComparer.Instance);
+            int firstIndex = this.FirstIndexOf(Ensure.IsNotNull(Requestor, nameof(Requestor)), ServiceReferenceComparer.Instance);
 
             if (firstIndex < FGraph.Count - 1)
             {

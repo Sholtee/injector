@@ -44,5 +44,15 @@ namespace Solti.Utils.DI
 
             return self is InstanceServiceEntry;
         }
+
+        /// <summary>
+        /// Returns true if the entry is intended to internal use.
+        /// </summary>
+        public static bool IsInternal(this AbstractServiceEntry self)
+        {
+            Ensure.Parameter.IsNotNull(self, nameof(self));
+
+            return self.Name?.StartsWith(ServiceContainer.INTERNAL_SERVICE_NAME_PREFIX) == true;
+        }
     }
 }

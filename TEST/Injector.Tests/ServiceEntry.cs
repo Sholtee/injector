@@ -13,6 +13,7 @@ using NUnit.Framework;
 namespace Solti.Utils.DI.Internals.Tests
 {
     using Interfaces;
+    using System.Collections.Generic;
 
     [TestFixture]
     public class ServiceEntryTests
@@ -57,6 +58,8 @@ namespace Solti.Utils.DI.Internals.Tests
             {
                 Instances = new[] { new ServiceReference(this, new Mock<IInjector>().Object) };
             }
+
+            public override IReadOnlyCollection<IServiceReference> Instances { get; }
         }
     }
 }

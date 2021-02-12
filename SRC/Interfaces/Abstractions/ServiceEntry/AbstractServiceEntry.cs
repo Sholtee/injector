@@ -25,8 +25,9 @@ namespace Solti.Utils.DI.Interfaces
         /// <param name="interface">The interface of the service.</param>
         /// <param name="name">The (optional) name of the service.</param>
         /// <param name="owner">The owner of this entry.</param>
+        /// <param name="customConverters">Custom converters related to this entry.</param>
         /// <exception cref="ArgumentException">The <paramref name="interface"/> is not an interface.</exception>
-        public AbstractServiceEntry(Type @interface, string? name, IServiceContainer owner): this(@interface, name, null, owner)
+        public AbstractServiceEntry(Type @interface, string? name, IServiceContainer owner, params Func<object, Type, object>[] customConverters) : this(@interface, name, null, owner, customConverters)
         {
         }
 
@@ -37,14 +38,16 @@ namespace Solti.Utils.DI.Interfaces
         /// <param name="name">The (optional) name of the service.</param>
         /// <param name="implementation">The (optional) implementation of the service.</param>
         /// <param name="owner">The owner of this entry.</param>
+        /// <param name="customConverters">Custom converters related to this entry.</param>
         /// <exception cref="ArgumentException">The <paramref name="interface"/> is not an interface.</exception>
         /// <exception cref="ArgumentException">The <paramref name="implementation"/> does not support the <paramref name="interface"/>.</exception>
-        protected AbstractServiceEntry(Type @interface, string? name, Type? implementation, IServiceContainer owner)
+        protected AbstractServiceEntry(Type @interface, string? name, Type? implementation, IServiceContainer owner, params Func<object, Type, object>[] customConverters)
         {
-            Interface      = @interface ?? throw new ArgumentNullException(nameof(@interface));
-            Owner          = owner ?? throw new ArgumentNullException(nameof(owner));
-            Name           = name;
-            Implementation = implementation;
+            Interface        = @interface ?? throw new ArgumentNullException(nameof(@interface));
+            Owner            = owner ?? throw new ArgumentNullException(nameof(owner));
+            CustomConverters = customConverters ?? throw new ArgumentNullException(nameof(customConverters));
+            Name             = name;
+            Implementation   = implementation;
 
             if (!@interface.IsInterface)
                 throw new ArgumentException(Resources.NOT_AN_INTERFACE, nameof(@interface));
@@ -58,14 +61,7 @@ namespace Solti.Utils.DI.Interfaces
 
             if (implementation != null && !implementation.IsClass)
                 throw new ArgumentException(Resources.NOT_A_CLASS, nameof(implementation));
-
-            AfterConstruction();
         }
-
-        /// <summary>
-        /// Invoked when the current entry is about to be initialized after its creation.
-        /// </summary>
-        protected virtual void AfterConstruction() { }
 
         #region Immutables
         /// <summary>
@@ -94,6 +90,12 @@ namespace Solti.Utils.DI.Interfaces
         /// The related <see cref="Lifetime"/>.
         /// </summary>
         public virtual Lifetime? Lifetime { get; }
+
+        /// <summary>
+        /// Returns custom converters related to this entry.
+        /// </summary>
+        /// <remarks>Converters describe how to extract the actual service object from the value stored in a <see cref="IServiceReference"/>.</remarks>
+        public IReadOnlyCollection<Func<object, Type, object>> CustomConverters { get; }
         #endregion
 
         #region Mutables
@@ -105,7 +107,7 @@ namespace Solti.Utils.DI.Interfaces
         /// <summary>
         /// The previously created service instance(s) related to this entry. Don't use it directly.
         /// </summary>
-        public IReadOnlyCollection<IServiceReference> Instances { get; protected set; } = Array.Empty<IServiceReference>();
+        public virtual IReadOnlyCollection<IServiceReference> Instances { get; } = Array.Empty<IServiceReference>();
 
         /// <summary>
         /// Returns true if this entry is already provided a service isntance.
@@ -157,7 +159,7 @@ namespace Solti.Utils.DI.Interfaces
             hashCode.Add(Implementation);
 
             foreach (IServiceReference instance in Instances)
-                hashCode.Add(instance.Value);
+                hashCode.Add(instance.GetEffectiveValue());
 
             return hashCode.ToHashCode();
 #else
@@ -174,7 +176,7 @@ namespace Solti.Utils.DI.Interfaces
                 current = new
                 {
                     Previous = current,
-                    Instance = instance
+                    Instance = instance.GetEffectiveValue()
                 };
 
             return current.GetHashCode();
@@ -192,7 +194,7 @@ namespace Solti.Utils.DI.Interfaces
             return new StringBuilder(this.FriendlyName())
                 .AppendFormat(Resources.Culture, NAME_PART, nameof(Lifetime), Lifetime?.ToString() ?? "NULL")
                 .AppendFormat(Resources.Culture, NAME_PART, nameof(Implementation), Implementation?.ToString() ?? "NULL")
-                .AppendFormat(Resources.Culture, NAME_PART, nameof(Instances), Instances.Any() ? string.Join(", ", Instances.Select(instance => instance.Value)) : "EMPTY")             
+                .AppendFormat(Resources.Culture, NAME_PART, nameof(Instances), Instances.Any() ? string.Join(", ", Instances.Select(instance => instance.GetEffectiveValue())) : "EMPTY")             
                 .ToString();
         }
 

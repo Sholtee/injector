@@ -15,10 +15,13 @@ namespace Solti.Utils.DI.Internals
     /// </summary>
     internal class InstanceServiceEntry : AbstractServiceEntry
     {
-        public InstanceServiceEntry(Type @interface, string? name, object instance, bool externallyOwned, IServiceContainer owner) : base(
+        private readonly IReadOnlyCollection<ServiceReference> FInstances;
+
+        public InstanceServiceEntry(Type @interface, string? name, object instance, bool externallyOwned, IServiceContainer owner, params Func<object, Type, object>[] customConverters) : base(
             @interface, 
             name, 
-            owner)
+            owner,
+            customConverters)
         {
             Ensure.Parameter.IsNotNull(instance, nameof(instance));
 
@@ -26,7 +29,7 @@ namespace Solti.Utils.DI.Internals
             // Nem kell kulon ellenorizni a peldanyt mert az injector ugy is validal.
             //
 
-            Instances = new[] 
+            FInstances = new[] 
             { 
                 new ServiceReference(this, instance, externallyOwned)
             };
@@ -46,6 +49,8 @@ namespace Solti.Utils.DI.Internals
         }
 
         public override Lifetime? Lifetime { get; } = Lifetime.Instance;
+
+        public override IReadOnlyCollection<IServiceReference> Instances => FInstances;
 
         public override bool SetInstance(IServiceReference reference, IReadOnlyDictionary<string, object> options) =>
             //

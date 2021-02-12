@@ -31,19 +31,19 @@ namespace Solti.Utils.DI.Internals
                 throw new Exception(string.Format(Resources.Culture, Resources.INJECTOR_SHOULD_BE_RELEASED, threshold));
         }
 
-        protected override void AfterConstruction() => Instances = FInstances;
-
-        private TransientServiceEntry(TransientServiceEntry entry, IServiceContainer owner) : base(entry, owner) { }
-
-        public TransientServiceEntry(Type @interface, string? name, Func<IInjector, Type, object> factory, IServiceContainer owner) : base(@interface, name, factory, owner) 
+        private TransientServiceEntry(TransientServiceEntry entry, IServiceContainer owner) : base(entry, owner) 
         {
         }
 
-        public TransientServiceEntry(Type @interface, string? name, Type implementation, IServiceContainer owner) : base(@interface, name, implementation, owner) 
+        public TransientServiceEntry(Type @interface, string? name, Func<IInjector, Type, object> factory, IServiceContainer owner, params Func<object, Type, object>[] customConverters) : base(@interface, name, factory, owner, customConverters)
         {
         }
 
-        public TransientServiceEntry(Type @interface, string? name, Type implementation, IReadOnlyDictionary<string, object?> explicitArgs, IServiceContainer owner) : base(@interface, name, implementation, explicitArgs, owner)
+        public TransientServiceEntry(Type @interface, string? name, Type implementation, IServiceContainer owner, params Func<object, Type, object>[] customConverters) : base(@interface, name, implementation, owner, customConverters)
+        {
+        }
+
+        public TransientServiceEntry(Type @interface, string? name, Type implementation, IReadOnlyDictionary<string, object?> explicitArgs, IServiceContainer owner, params Func<object, Type, object>[] customConverters) : base(@interface, name, implementation, explicitArgs, owner, customConverters)
         {
         }
 
@@ -79,6 +79,8 @@ namespace Solti.Utils.DI.Internals
             target.Add(result);
             return result;
         }
+
+        public override IReadOnlyCollection<IServiceReference> Instances => FInstances;
 
         public override Lifetime Lifetime { get; } = Lifetime.Transient;
     }

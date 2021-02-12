@@ -7,14 +7,13 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Runtime.InteropServices;
 
 namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
     using Properties;
 
-    internal class Injector : ServiceContainer, IInjector
+    internal class Injector : ServiceContainer, IInjector, IScopeFactory
     {
         #region Private
         private readonly ServiceGraph FGraph;
@@ -23,7 +22,7 @@ namespace Solti.Utils.DI.Internals
         {
             if (!Config.Value.Injector.StrictDI) return;
 
-            AbstractServiceEntry? requestor = FGraph.Current?.RelatedServiceEntry; // lehet NULL
+            AbstractServiceEntry? requestor = FGraph.Requestor?.RelatedServiceEntry; // lehet NULL
 
             //
             // Ha a fuggosegi fa gyokerenel vagyunk akkor a metodus nem ertelmezett.
@@ -51,7 +50,11 @@ namespace Solti.Utils.DI.Internals
             FactoryOptions = factoryOptions;
             FGraph = graph;
 
-            this.RegisterSelf();
+            UnderlyingContainer.Instance<IServiceGraph>(graph);   
+            UnderlyingContainer.Instance<IInjector>(this);
+            UnderlyingContainer.Instance<IScopeFactory>(this);
+            UnderlyingContainer.Instance(parent);
+
             this.RegisterServiceEnumerator();
         }
         #endregion
@@ -99,46 +102,12 @@ namespace Solti.Utils.DI.Internals
         internal virtual Injector Fork(IServiceContainer parent) => new Injector(parent, this);
 
         internal void ClearGraph() => FGraph.Clear();
-
-        internal virtual IServiceReference GetReference(Type iface, string? name)
-        {
-            Ensure.Parameter.IsNotNull(iface, nameof(iface));
-            Ensure.Parameter.IsInterface(iface, nameof(iface));
-            Ensure.Parameter.IsNotGenericDefinition(iface, nameof(iface));
-            Ensure.NotDisposed(this);
-
-            //
-            // Ha vkinek a fuggosege vagyunk akkor a fuggo szerviz itt meg nem lehet legyartva.
-            //
-
-            Debug.Assert(FGraph.Current?.Value == null, "Already produced services can not request dependencies");
-
-            //
-            // Bejegyzes lekerdezese, generikus bejegyzes tipizalasat megengedjuk. A "QueryModes.ThrowOnError" 
-            // miatt "entry" tuti nem NULL.
-            //
-
-            AbstractServiceEntry requestorEntry = Get(iface, name, QueryModes.AllowSpecialization | QueryModes.ThrowOnError)!;
-
-            //
-            // Szerviz peldany letrehozasa. 
-            //
-
-            IServiceReference?
-                requestor = FGraph.Current,
-                requested = ServiceInstantiationStrategySelector.GetStrategyFor(this, requestorEntry).Invoke(requestor);
-
-            return requested;
-        }
         #endregion
 
         public Injector(IServiceContainer parent, IReadOnlyDictionary<string, object>? factoryOptions = null) : this
         (
             Ensure.Parameter.IsNotNull(parent, nameof(parent)),
-            factoryOptions ?? new Dictionary<string, object>
-            {
-                { nameof(Config.Value.Injector.MaxSpawnedTransientServices), Config.Value.Injector.MaxSpawnedTransientServices }
-            },
+            (factoryOptions ?? new Dictionary<string, object>()).Extend(nameof(Config.Value.Injector.MaxSpawnedTransientServices), Config.Value.Injector.MaxSpawnedTransientServices),
             new ServiceGraph()
         ){ }
 
@@ -164,31 +133,36 @@ namespace Solti.Utils.DI.Internals
         }
 
         #region IInjector
-        public object Get(Type iface, string? name) 
+        public IServiceReference GetReference(Type iface, string? name)
         {
             CheckNotDisposed();
+
+            Ensure.Parameter.IsNotNull(iface, nameof(iface));
+            Ensure.Parameter.IsInterface(iface, nameof(iface));
+            Ensure.Parameter.IsNotGenericDefinition(iface, nameof(iface));
+
+            //
+            // Ha vkinek a fuggosege vagyunk akkor a fuggo szerviz itt meg nem lehet legyartva.
+            //
+
+            Debug.Assert(FGraph.Requestor?.Value == null, "Already produced services can not request dependencies");
 
             const string path = nameof(path);
 
             try
             {
-                object instance = GetReference(iface, name).Value!;
+                //
+                // Bejegyzes lekerdezese, generikus bejegyzes tipizalasat megengedjuk. A "QueryModes.ThrowOnError" 
+                // miatt "entry" tuti nem NULL.
+                //
 
-                for(; !iface.IsInstanceOfType(instance); )
-                {
-                    //
-                    // Meg lehet adapter
-                    //
+                AbstractServiceEntry requestedEntry = Get(iface, name, QueryModes.AllowSpecialization | QueryModes.ThrowOnError)!;
 
-                    #pragma warning disable 0618
-                    if (instance is not ICustomAdapter adapter)
-                    #pragma warning restore 0618
-                        throw new InvalidCastException(string.Format(Resources.Culture, Resources.INVALID_INSTANCE, iface));
+                IServiceReference? 
+                    requestor = FGraph.Requestor,
+                    requested = ServiceInstantiationStrategySelector.GetStrategyFor(this, requestedEntry).Invoke(requestor);
 
-                    instance = adapter.GetUnderlyingObject();
-                }
-
-                return instance;
+                return requested;
             }
 
             //
@@ -204,6 +178,18 @@ namespace Solti.Utils.DI.Internals
 
                 throw;
             }
+        }
+
+        public object Get(Type iface, string? name) 
+        {
+            CheckNotDisposed();
+
+            object instance = GetReference(iface, name).GetEffectiveValue();
+
+            if (!iface.IsInstanceOfType(instance))
+                throw new InvalidCastException(string.Format(Resources.Culture, Resources.INVALID_INSTANCE, iface));
+
+            return instance;
         }
 
         public object? TryGet(Type iface, string? name) 
@@ -228,6 +214,10 @@ namespace Solti.Utils.DI.Internals
                 return this;
             }
         }
+        #endregion
+
+        #region IScopeFactory
+        public virtual IInjector CreateScope(IReadOnlyDictionary<string, object>? options) => new Injector(Parent!, options);
         #endregion
 
         #region Composite
