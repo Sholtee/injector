@@ -19,6 +19,8 @@ namespace Solti.Utils.DI.Internals
 
         internal override Injector Fork(IServiceContainer parent) => new ServiceProvider(parent, this);
 
+        public override IInjector CreateScope(IReadOnlyDictionary<string, object>? options) => new ServiceProvider(Parent!, options);
+
         //
         // IInjector.Get() elvileg sose adhatna vissza NULL-t viszont h biztositsuk 
         // h a ServiceProvider konstruktor parameterek feloldasakor se dobjon kivetelt

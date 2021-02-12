@@ -12,7 +12,7 @@ namespace Solti.Utils.DI.Internals
 
     internal sealed class PoolService<TInterface> : ObjectPool<IServiceReference>, IPool<TInterface> where TInterface: class
     {
-        public PoolService(IServiceContainer declaringContainer, int capacity, string? name) : base
+        public PoolService(IScopeFactory scopeFactory, int capacity, string? name) : base
         (
             capacity,
 
@@ -23,14 +23,12 @@ namespace Solti.Utils.DI.Internals
             //   3) Letrehozaskor a mar meglevo grafot boviteni kell 
             //
 
-            () => declaringContainer
+            () => scopeFactory
                 //
-                // A letrehozott injector elettartamat "declaringContainer" kezeli
-                //
-                // TODO: Eldonteni h Injector-t v Provider-t kell letrehozni
+                // A letrehozott injector elettartamat PoolService deklaralo kontenere kezeli
                 //
 
-                .CreateInjector(new Dictionary<string, object> { [PooledLifetime.POOL_SCOPE] = true })
+                .CreateScope(new Dictionary<string, object> { [PooledLifetime.POOL_SCOPE] = true })
 
                 //
                 // A referenciat magat adjuk vissza, hogy azt fuggosegkent menteni lehessen a

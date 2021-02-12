@@ -13,7 +13,7 @@ namespace Solti.Utils.DI.Internals
     using Interfaces;
     using Properties;
 
-    internal class Injector : ServiceContainer, IInjector
+    internal class Injector : ServiceContainer, IInjector, IScopeFactory
     {
         #region Private
         private readonly ServiceGraph FGraph;
@@ -52,6 +52,7 @@ namespace Solti.Utils.DI.Internals
 
             UnderlyingContainer.Instance<IServiceGraph>(graph);   
             UnderlyingContainer.Instance<IInjector>(this);
+            UnderlyingContainer.Instance<IScopeFactory>(this);
             UnderlyingContainer.Instance(parent);
 
             this.RegisterServiceEnumerator();
@@ -213,6 +214,10 @@ namespace Solti.Utils.DI.Internals
                 return this;
             }
         }
+        #endregion
+
+        #region IScopeFactory
+        public virtual IInjector CreateScope(IReadOnlyDictionary<string, object>? options) => new Injector(Parent!, options);
         #endregion
 
         #region Composite
