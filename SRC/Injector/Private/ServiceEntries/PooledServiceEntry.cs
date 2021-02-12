@@ -66,9 +66,9 @@ namespace Solti.Utils.DI.Internals
                 PoolItem<IServiceReference> poolItem = relatedPool.Get(CheckoutPolicy.Block);
 
                 //
-                // Mivel a pool elem scope-ja kulonbozik "injector" scope-jatol (egymastol fuggetlenul 
-                // felszabaditasra kerulhetnek) ezert felvesszuk az elemet fuggosegkent is h biztosan
-                // ne legyen gond az elettartammal.
+                // Mivel a pool elem scope-ja kulonbozik "relatedInjector" scope-jatol (egymastol fuggetlenul 
+                // felszabaditasra kerulhetnek) ezert felvesszuk az elemet fuggosegkent is h biztosan ne
+                // legyen gond az elettartammal.
                 //
 
                 relatedInjector.Get<IServiceGraph>().Requestor?.AddDependency(poolItem.Value);
