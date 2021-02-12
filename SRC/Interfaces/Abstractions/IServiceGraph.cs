@@ -13,7 +13,7 @@ namespace Solti.Utils.DI.Interfaces
     public interface IServiceGraph: IEnumerable<IServiceReference>
     {
         /// <summary>
-        /// The requestor of this service.
+        /// The requestor of the service.
         /// </summary>
         IServiceReference? Requestor { get; }
     }
