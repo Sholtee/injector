@@ -45,8 +45,9 @@ namespace Solti.Utils.DI.Internals
             Ensure.AreEqual(relatedInjector.UnderlyingContainer, Owner, Resources.INAPPROPRIATE_OWNERSHIP);
 
             //
-            // Ha mar le lett gyartva akkor nincs dolgunk, jelezzuk a hivonak h ovlassa ki a korabban 
-            // beallitott erteket.
+            // Ha mar le lett gyartva akkor nincs dolgunk, jelezzuk a hivonak h ovlassa ki a
+            // korabban beallitott erteket -> Kovetkezes kepp egy scope MINDIG csak egy 
+            // elemet vehet ki a pool-bol
             //
 
             if (Built) return false;
@@ -59,6 +60,11 @@ namespace Solti.Utils.DI.Internals
             {
                 reference.Value = Factory!(relatedInjector, Interface);
             }
+
+            //
+            // Kulonben megszolitjuk a bejegyzeshez tartozo PoolService-t
+            //
+
             else
             {
                 IPool relatedPool = (IPool) relatedInjector.Get(typeof(IPool<>).MakeGenericType(Interface), PooledLifetime.GetPoolName(Interface, Name));
