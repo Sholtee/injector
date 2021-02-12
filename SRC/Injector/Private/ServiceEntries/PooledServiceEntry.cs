@@ -20,23 +20,19 @@ namespace Solti.Utils.DI.Internals
     {
         private readonly List<IServiceReference> FInstances = new List<IServiceReference>(1); // max egy eleme lehet
 
-        private static object GetEffectiveInstance(object value, Type iface) => value is PoolItem<IServiceReference> poolItem
-            ? poolItem.Value.Value!
-            : value;
-
         protected PooledServiceEntry(PooledServiceEntry entry, IServiceContainer owner) : base(entry, owner)
         {
         }
 
-        public PooledServiceEntry(Type @interface, string? name, Func<IInjector, Type, object> factory, IServiceContainer owner, params Func<object, Type, object>[] customConverters) : base(@interface, name, factory, owner, new Func<object, Type, object>[] { GetEffectiveInstance }.Concat(customConverters).ToArray())
+        public PooledServiceEntry(Type @interface, string? name, Func<IInjector, Type, object> factory, IServiceContainer owner, params Func<object, Type, object>[] customConverters) : base(@interface, name, factory, owner, customConverters)
         {
         }
 
-        public PooledServiceEntry(Type @interface, string? name, Type implementation, IServiceContainer owner, params Func<object, Type, object>[] customConverters) : base(@interface, name, implementation, owner, new Func<object, Type, object>[] { GetEffectiveInstance }.Concat(customConverters).ToArray())
+        public PooledServiceEntry(Type @interface, string? name, Type implementation, IServiceContainer owner, params Func<object, Type, object>[] customConverters) : base(@interface, name, implementation, owner, customConverters)
         {
         }
 
-        public PooledServiceEntry(Type @interface, string? name, Type implementation, IReadOnlyDictionary<string, object?> explicitArgs, IServiceContainer owner, params Func<object, Type, object>[] customConverters) : base(@interface, name, implementation, explicitArgs, owner, new Func<object, Type, object>[] { GetEffectiveInstance }.Concat(customConverters).ToArray())
+        public PooledServiceEntry(Type @interface, string? name, Type implementation, IReadOnlyDictionary<string, object?> explicitArgs, IServiceContainer owner, params Func<object, Type, object>[] customConverters) : base(@interface, name, implementation, explicitArgs, owner, customConverters)
         {
         }
 

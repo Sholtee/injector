@@ -5,6 +5,7 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.CompilerServices;
 
 namespace Solti.Utils.DI.Internals
@@ -22,6 +23,17 @@ namespace Solti.Utils.DI.Internals
             //
 
             $"{ServiceContainer.INTERNAL_SERVICE_NAME_PREFIX}pool_{iface.GUID}_{name}";
+
+        //
+        // - A bejegyzesben tarolt peldany valojaban PoolItem<IServiceReference>, ezert abbol meg elo kell
+        //   varazsolni a tenyleges szervizt.
+        // - Itt adjuk hozza ne a PooledServiceEntry konstruktoraban h generikus lezarasakor ne keruljon 
+        //   duplan felvetelre
+        //
+
+        private static object GetEffectiveValue(object value, Type iface) => value is PoolItem<IServiceReference> poolItem
+            ? poolItem.Value.Value!
+            : value;
 
         private AbstractServiceEntry GetPoolEntry(Type iface, string? name, IServiceContainer owner) => new SingletonServiceEntry
         (
@@ -51,19 +63,19 @@ namespace Solti.Utils.DI.Internals
         public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Type implementation, IServiceContainer owner, params Func<object, Type, object>[] customConverters)
         {
             yield return GetPoolEntry(iface, name, owner);
-            yield return new PooledServiceEntrySupportsProxying(iface, name, implementation, owner, customConverters);
+            yield return new PooledServiceEntrySupportsProxying(iface, name, implementation, owner, new Func<object, Type, object>[]{ GetEffectiveValue }.Concat(customConverters).ToArray());
         }
 
         public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Type implementation, IReadOnlyDictionary<string, object?> explicitArgs, IServiceContainer owner, params Func<object, Type, object>[] customConverters)
         {
             yield return GetPoolEntry(iface, name, owner);
-            yield return new PooledServiceEntrySupportsProxying(iface, name, implementation, explicitArgs, owner, customConverters);
+            yield return new PooledServiceEntrySupportsProxying(iface, name, implementation, explicitArgs, owner, new Func<object, Type, object>[] { GetEffectiveValue }.Concat(customConverters).ToArray());
         }
 
         public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Func<IInjector, Type, object> factory, IServiceContainer owner, params Func<object, Type, object>[] customConverters)
         {
             yield return GetPoolEntry(iface, name, owner);
-            yield return new PooledServiceEntrySupportsProxying(iface, name, factory, owner, customConverters);
+            yield return new PooledServiceEntrySupportsProxying(iface, name, factory, owner, new Func<object, Type, object>[] { GetEffectiveValue }.Concat(customConverters).ToArray());
         }
 
         public override bool IsCompatible(AbstractServiceEntry entry) => entry is PooledServiceEntry; // TODO: Pool bejegyzessel mi legyen?
