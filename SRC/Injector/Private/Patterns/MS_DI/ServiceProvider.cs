@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Collections.Generic;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -13,8 +14,8 @@ namespace Solti.Utils.DI.Internals
     {
         protected ServiceProvider(IServiceContainer parent, ServiceProvider forkFrom) : base(parent, forkFrom) { }
 
-        public ServiceProvider(IServiceContainer parent) : base(parent)
-            => this.Instance<IServiceProvider>(this, releaseOnDispose: false);
+        public ServiceProvider(IServiceContainer parent, IReadOnlyDictionary<string, object>? factoryOptions = null) : base(parent, factoryOptions)
+            => this.Instance<IServiceProvider>(this);
 
         internal override Injector Fork(IServiceContainer parent) => new ServiceProvider(parent, this);
 
