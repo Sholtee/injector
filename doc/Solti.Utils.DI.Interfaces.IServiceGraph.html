@@ -42,7 +42,7 @@
   
   <h1 id="Solti_Utils_DI_Interfaces_IServiceGraph" data-uid="Solti.Utils.DI.Interfaces.IServiceGraph" class="text-break">Interface IServiceGraph
   </h1>
-  <div class="markdown level0 summary"><p>Gets the current service graph in which the request takes place.</p>
+  <div class="markdown level0 summary"><p>Describes the service graph in which the current request takes place.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritedMembers">
@@ -79,6 +79,115 @@
     <tbody>
       <tr>
         <td><a class="xref" href="Solti.Utils.DI.Interfaces.IServiceReference.html">IServiceReference</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  <a id="Solti_Utils_DI_Interfaces_IServiceGraph_CheckNotCircular_" data-uid="Solti.Utils.DI.Interfaces.IServiceGraph.CheckNotCircular*"></a>
+  <h4 id="Solti_Utils_DI_Interfaces_IServiceGraph_CheckNotCircular" data-uid="Solti.Utils.DI.Interfaces.IServiceGraph.CheckNotCircular">CheckNotCircular()</h4>
+  <div class="markdown level1 summary"><p>Throws if the graph is circular.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">void CheckNotCircular()</code></pre>
+  </div>
+  <a id="Solti_Utils_DI_Interfaces_IServiceGraph_Clear_" data-uid="Solti.Utils.DI.Interfaces.IServiceGraph.Clear*"></a>
+  <h4 id="Solti_Utils_DI_Interfaces_IServiceGraph_Clear" data-uid="Solti.Utils.DI.Interfaces.IServiceGraph.Clear">Clear()</h4>
+  <div class="markdown level1 summary"><p>Clears the graph.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">void Clear()</code></pre>
+  </div>
+  <a id="Solti_Utils_DI_Interfaces_IServiceGraph_CreateNode_" data-uid="Solti.Utils.DI.Interfaces.IServiceGraph.CreateNode*"></a>
+  <h4 id="Solti_Utils_DI_Interfaces_IServiceGraph_CreateNode" data-uid="Solti.Utils.DI.Interfaces.IServiceGraph.CreateNode">CreateNode()</h4>
+  <div class="markdown level1 summary"><p>Creates a new node.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IServiceGraph CreateNode()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.IServiceGraph.html">IServiceGraph</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Solti_Utils_DI_Interfaces_IServiceGraph_CreateRoot_" data-uid="Solti.Utils.DI.Interfaces.IServiceGraph.CreateRoot*"></a>
+  <h4 id="Solti_Utils_DI_Interfaces_IServiceGraph_CreateRoot" data-uid="Solti.Utils.DI.Interfaces.IServiceGraph.CreateRoot">CreateRoot()</h4>
+  <div class="markdown level1 summary"><p>Creates a root node.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IServiceGraph CreateRoot()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.IServiceGraph.html">IServiceGraph</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Solti_Utils_DI_Interfaces_IServiceGraph_With_" data-uid="Solti.Utils.DI.Interfaces.IServiceGraph.With*"></a>
+  <h4 id="Solti_Utils_DI_Interfaces_IServiceGraph_With_Solti_Utils_DI_Interfaces_IServiceReference_" data-uid="Solti.Utils.DI.Interfaces.IServiceGraph.With(Solti.Utils.DI.Interfaces.IServiceReference)">With(IServiceReference)</h4>
+  <div class="markdown level1 summary"><p>Appends the graph with the given <a class="xref" href="Solti.Utils.DI.Interfaces.IServiceReference.html">IServiceReference</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IDisposable With(IServiceReference reference)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.IServiceReference.html">IServiceReference</a></td>
+        <td><span class="parametername">reference</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.idisposable">IDisposable</a></td>
         <td></td>
       </tr>
     </tbody>
