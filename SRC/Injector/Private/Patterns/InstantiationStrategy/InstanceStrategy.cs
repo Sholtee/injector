@@ -11,9 +11,9 @@ namespace Solti.Utils.DI.Internals
 
     internal class InstanceStrategy: IServiceInstantiationStrategy
     {
-        public bool ShouldUse(Injector injector, AbstractServiceEntry requested) => requested.Built;
+        public bool ShouldUse(IInjector injector, AbstractServiceEntry requested) => requested.Built;
 
-        public IServiceReference Exec(Injector injector, AbstractServiceEntry requested) =>
+        public IServiceReference Exec(IInjector injector, AbstractServiceEntry requested) =>
             requested.Instances.Single();
     }
 }

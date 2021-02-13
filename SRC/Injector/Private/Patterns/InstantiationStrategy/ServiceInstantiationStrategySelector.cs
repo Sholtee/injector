@@ -28,7 +28,7 @@ namespace Solti.Utils.DI.Internals
             new NotOwnedServiceInstantiationStrategy()
         };
 
-        internal static Func<IServiceReference?, IServiceReference> GetStrategyInvocation(IServiceInstantiationStrategy strategy, Injector injector, AbstractServiceEntry entry)
+        internal static Func<IServiceReference?, IServiceReference> GetStrategyInvocation(IServiceInstantiationStrategy strategy, IInjector injector, AbstractServiceEntry entry)
         {
             return InvokeStrategy;
 
@@ -45,7 +45,7 @@ namespace Solti.Utils.DI.Internals
             }
         }
 
-        public static Func<IServiceReference?, IServiceReference> GetStrategyFor(Injector injector, AbstractServiceEntry requestedEntry) 
+        public static Func<IServiceReference?, IServiceReference> GetStrategyFor(IInjector injector, AbstractServiceEntry requestedEntry) 
         {
             foreach (IServiceInstantiationStrategy strategy in Strategies)
             {

@@ -15,94 +15,20 @@ namespace Solti.Utils.DI.Internals
 
     internal class Injector : ServiceContainer, IInjector, IScopeFactory
     {
-        #region Private
-        private readonly ServiceGraph FGraph;
-
-        private void CheckBreaksTheRuleOfStrictDI(AbstractServiceEntry requested) 
-        {
-            if (!Config.Value.Injector.StrictDI) return;
-
-            AbstractServiceEntry? requestor = FGraph.Requestor?.RelatedServiceEntry; // lehet NULL
-
-            //
-            // Ha a fuggosegi fa gyokerenel vagyunk akkor a metodus nem ertelmezett.
-            //
-
-            if (requestor == null) return;
-
-            //
-            // A kerelmezett szerviz tulajdonosanak egy szinten v feljebb kell lennie mint a kerelmezo 
-            // tulajdonosa h biztosan legalabb annyi ideig letezzen mint a kerelmezo maga.
-            //
-
-            if (!requestor.Owner.IsDescendantOf(requested.Owner))
-            {
-                var ex = new RequestNotAllowedException(Resources.STRICT_DI);
-                ex.Data[nameof(requestor)] = requestor;
-                ex.Data[nameof(requested)] = requested;
-
-                throw ex;
-            }
-        }
+        private readonly IServiceGraph FGraph;
             
-        private Injector(IServiceContainer parent, IReadOnlyDictionary<string, object> factoryOptions, ServiceGraph graph) : base(parent)
+        public Injector(IServiceContainer parent, IReadOnlyDictionary<string, object> factoryOptions, IServiceGraph graph) : base(parent)
         {
-            FactoryOptions = factoryOptions;
+            Options = factoryOptions;
             FGraph = graph;
-
-            UnderlyingContainer.Instance<IServiceGraph>(graph);   
+            
             UnderlyingContainer.Instance<IInjector>(this);
             UnderlyingContainer.Instance<IScopeFactory>(this);
+            UnderlyingContainer.Instance(graph);
             UnderlyingContainer.Instance(parent);
 
             this.RegisterServiceEnumerator();
         }
-        #endregion
-
-        #region Protected
-        // "private protected" csak azert kell h a Moq ne fossa ossze magat
-        private protected Injector(IServiceContainer parent, Injector forkFrom) : this
-        (
-            parent, 
-            forkFrom.FactoryOptions, 
-            forkFrom.FGraph.CreateNode()
-        ) { }
-        #endregion
-
-        #region Internals
-        internal virtual IServiceReference Instantiate(AbstractServiceEntry requested)
-        {
-            CheckBreaksTheRuleOfStrictDI(requested);
-
-            IServiceReference result = new ServiceReference(requested, this);
-
-            try
-            {
-                //
-                // Az epp letrehozas alatt levo szerviz kerul az ut legvegere igy a fuggosegei
-                // feloldasakor o lesz a szulo (FGraph.Current).
-                //
-
-                using (FGraph.With(result))
-                {
-                    FGraph.CheckNotCircular();
-
-                    result.SetInstance(FactoryOptions);
-                }
-
-                return result;
-            }
-            catch
-            {
-                result.Release();
-                throw;
-            }
-        }
-
-        internal virtual Injector Fork(IServiceContainer parent) => new Injector(parent, this);
-
-        internal void ClearGraph() => FGraph.Clear();
-        #endregion
 
         public Injector(IServiceContainer parent, IReadOnlyDictionary<string, object>? factoryOptions = null) : this
         (
@@ -110,8 +36,6 @@ namespace Solti.Utils.DI.Internals
             (factoryOptions ?? new Dictionary<string, object>()).Extend(nameof(Config.Value.Injector.MaxSpawnedTransientServices), Config.Value.Injector.MaxSpawnedTransientServices),
             new ServiceGraph()
         ){ }
-
-        public IReadOnlyDictionary<string, object> FactoryOptions { get; }
 
         public override void Add(AbstractServiceEntry entry)
         {
@@ -214,10 +138,19 @@ namespace Solti.Utils.DI.Internals
                 return this;
             }
         }
+
+        public IReadOnlyDictionary<string, object> Options { get; }
         #endregion
 
         #region IScopeFactory
-        public virtual IInjector CreateScope(IReadOnlyDictionary<string, object>? options) => new Injector(Parent!, options);
+        IInjector IScopeFactory.CreateScope(IReadOnlyDictionary<string, object>? options) => new Injector(Parent!, options);
+
+        IInjector IScopeFactory.CreateScope(IServiceContainer parent, IServiceGraph node, IReadOnlyDictionary<string, object>? options) => new Injector
+        (
+            Ensure.Parameter.IsNotNull(parent, nameof(parent)), 
+            options ?? new Dictionary<string, object>(0), 
+            Ensure.Parameter.IsNotNull(node, nameof(node))
+        );
         #endregion
 
         #region Composite

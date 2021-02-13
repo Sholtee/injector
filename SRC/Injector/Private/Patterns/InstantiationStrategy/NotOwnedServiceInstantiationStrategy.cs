@@ -10,12 +10,12 @@ namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
 
-    internal class NotOwnedServiceInstantiationStrategy: IServiceInstantiationStrategy
+    internal class NotOwnedServiceInstantiationStrategy: ServiceInstantiationStrategyBase, IServiceInstantiationStrategy
     {
-        public bool ShouldUse(Injector injector, AbstractServiceEntry requested) => injector.UnderlyingContainer.IsDescendantOf(requested.Owner);
+        public bool ShouldUse(IInjector injector, AbstractServiceEntry requested) => injector.UnderlyingContainer.IsDescendantOf(requested.Owner);
 
         [SuppressMessage("Reliability", "CA2000:Dispose objects before losing scope", Justification = "The lifetime of newly created injector is maintained by its owner.")]
-        IServiceReference IServiceInstantiationStrategy.Exec(Injector injector, AbstractServiceEntry requested)
+        IServiceReference IServiceInstantiationStrategy.Exec(IInjector injector, AbstractServiceEntry requested)
         {
             //
             // - ServiceEntry-t zaroljuk h a lock injectorok kozt is ertelmezve legyen.
@@ -39,17 +39,22 @@ namespace Solti.Utils.DI.Internals
                 //   elettartamat.
                 //
 
-                injector = injector.Fork(requested.Owner);
+                injector = injector.Get<IScopeFactory>().CreateScope
+                (
+                    requested.Owner,
+                    injector.Get<IServiceGraph>().CreateNode(),
+                    injector.Options
+                );
 
                 try
                 {
-                    IServiceReference result = injector.Instantiate(requested);
+                    IServiceReference result = Instantiate(injector, requested);
 
                     //
-                    // A Fork() hivas miatt a graf itt nem feltetlen ures
+                    // CreateNode() miatt itt meg lehetnek a grafban elemek
                     //
 
-                    injector.ClearGraph();
+                    injector.Get<IServiceGraph>().Clear();
                     return result;
                 }
                 catch

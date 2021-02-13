@@ -10,13 +10,13 @@ namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
 
-    internal class OwnedServiceInstantiationStrategy: IServiceInstantiationStrategy
+    internal class OwnedServiceInstantiationStrategy: ServiceInstantiationStrategyBase, IServiceInstantiationStrategy
     {
-        public bool ShouldUse(Injector injector, AbstractServiceEntry requested) => requested.Owner == injector.UnderlyingContainer;
+        public bool ShouldUse(IInjector injector, AbstractServiceEntry requested) => requested.Owner == injector.UnderlyingContainer;
 
         [SuppressMessage("Reliability", "CA2000: Dispose objects before losing scope", Justification = "Calling the Release() method disposes the object")]
-        IServiceReference IServiceInstantiationStrategy.Exec(Injector injector, AbstractServiceEntry requested) => requested.Built
+        IServiceReference IServiceInstantiationStrategy.Exec(IInjector injector, AbstractServiceEntry requested) => requested.Built
             ? requested.Instances.Single()
-            : injector.Instantiate(requested);
+            : Instantiate(injector, requested);
     }
 }

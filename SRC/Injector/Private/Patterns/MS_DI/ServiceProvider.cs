@@ -10,16 +10,22 @@ namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
 
-    internal class ServiceProvider : Injector, IServiceProvider, IInjector
+    internal class ServiceProvider : Injector, IServiceProvider, IInjector, IScopeFactory
     {
-        protected ServiceProvider(IServiceContainer parent, ServiceProvider forkFrom) : base(parent, forkFrom) { }
+        public ServiceProvider(IServiceContainer parent, IReadOnlyDictionary<string, object> factoryOptions, IServiceGraph graph) : base(parent, factoryOptions, graph)
+            => this.Instance<IServiceProvider>(this);
 
         public ServiceProvider(IServiceContainer parent, IReadOnlyDictionary<string, object>? factoryOptions = null) : base(parent, factoryOptions)
             => this.Instance<IServiceProvider>(this);
 
-        internal override Injector Fork(IServiceContainer parent) => new ServiceProvider(parent, this);
+        IInjector IScopeFactory.CreateScope(IReadOnlyDictionary<string, object>? options) => new ServiceProvider(Parent!, options);
 
-        public override IInjector CreateScope(IReadOnlyDictionary<string, object>? options) => new ServiceProvider(Parent!, options);
+        IInjector IScopeFactory.CreateScope(IServiceContainer parent, IServiceGraph node, IReadOnlyDictionary<string, object>? options) => new ServiceProvider
+        (
+            Ensure.Parameter.IsNotNull(parent, nameof(parent)),
+            options ?? new Dictionary<string, object>(0),
+            Ensure.Parameter.IsNotNull(node, nameof(node))
+        );
 
         //
         // IInjector.Get() elvileg sose adhatna vissza NULL-t viszont h biztositsuk 

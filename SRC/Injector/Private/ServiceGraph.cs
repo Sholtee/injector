@@ -63,7 +63,9 @@ namespace Solti.Utils.DI.Internals
 
         public void Clear() => FGraph.Clear();
 
-        public ServiceGraph CreateNode() => new ServiceGraph(this);
+        public IServiceGraph CreateNode() => new ServiceGraph(this);
+
+        public IServiceGraph CreateRoot() => new ServiceGraph();
 
         private sealed class WithScope : Disposable 
         {

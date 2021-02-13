@@ -22,6 +22,7 @@ namespace Solti.Utils.DI.Internals.Tests
     {
         private interface IService { }
         private class Service : IService { }
+
         private interface IService_2 { }
 
         [Test]
@@ -66,17 +67,15 @@ namespace Solti.Utils.DI.Internals.Tests
         {
             using (IServiceContainer container = new ServiceContainer())
             {
-                var requested = new TransientServiceEntry(typeof(IService), null, typeof(Service), container);
-
-                var mockInjector = new Mock<Injector>(() => new Injector(container, null));
+                var requested = new SingletonServiceEntry(typeof(IService), null, typeof(Service), container);
 
                 IServiceInstantiationStrategy strategy = new OwnedServiceInstantiationStrategy();
 
-                Assert.DoesNotThrow(() => strategy.Exec(mockInjector.Object, requested));
+                IServiceReference @ref = null;
 
-                mockInjector.Verify(i => i.Instantiate(requested), Times.Once);
-
-                container.Children.Remove(mockInjector.Object); // hack
+                Assert.DoesNotThrow(() => @ref = strategy.Exec(new Injector(container, null), requested));
+                Assert.That(@ref.Value, Is.InstanceOf<Service>());
+                Assert.That(@ref.RefCount, Is.EqualTo(1));
             }
         }
 
@@ -105,7 +104,6 @@ namespace Solti.Utils.DI.Internals.Tests
                 IServiceReference dep = ServiceInstantiationStrategySelector.GetStrategyInvocation((IServiceInstantiationStrategy) para, mockInjector.Object, requested).Invoke(requestor);
 
                 Assert.That(dep.Value, Is.EqualTo(instance));
-                mockInjector.Verify(i => i.Instantiate(It.IsAny<AbstractServiceEntry>()), Times.Never);
                 Assert.That(requestor.Dependencies.Single(), Is.EqualTo(dep));
 
                 container.Children.Remove(mockInjector.Object); // hack
