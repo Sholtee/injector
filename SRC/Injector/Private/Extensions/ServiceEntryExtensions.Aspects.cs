@@ -38,7 +38,8 @@ namespace Solti.Utils.DI.Internals
         internal static async Task<Func<IInjector, Type, object, object>[]> GenerateProxyDelegates(Type iface, IEnumerable<AspectAttribute> aspects)
         {
             //
-            // Sorrend szamit
+            // A visszaadott dekoratorok sorrendje megegyezik az aspektusok sorrendjevel:
+            // https://docs.microsoft.com/en-us/dotnet/api/system.threading.tasks.task.whenall?view=net-5.0#System_Threading_Tasks_Task_WhenAll_System_Threading_Tasks_Task
             //
 
             return await Task.WhenAll(aspects.Select(AspectToDelegate));
