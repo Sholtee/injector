@@ -97,7 +97,13 @@ namespace Solti.Utils.DI.Internals
             );
           
             entry.ApplyProxy((IInjector injector, Type iface, object current) => realDelegates
-                .Result // blokkolodik ha meg nincsenek kesz, egybol visszater kulonben
+
+                //
+                // - Blokkolodik ha meg nincsenek kesz, egybol visszater kulonben
+                // - Lehet olvasva parhuzamosan (https://docs.microsoft.com/en-us/dotnet/api/system.threading.tasks.task-1?view=net-5.0#thread-safety)
+                //
+
+                .Result
                 .Aggregate(
                     current, 
                     (object current, Func<IInjector, Type, object, object> decorator) => decorator(injector, iface, current)));
