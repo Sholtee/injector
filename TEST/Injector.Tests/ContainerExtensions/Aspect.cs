@@ -108,7 +108,7 @@ namespace Solti.Utils.DI.Container.Tests
         }
 
         [Test]
-        public void Aspects_ApplyAspectShouldBeControlledByAttributeKind([Values(AspectKind.Service, AspectKind.Factory)] AspectKind kind, [ValueSource(nameof(Lifetimes))] Lifetime lifetime) 
+        public void Aspects_ShouldBeControlledByAspectKind([Values(AspectKind.Service, AspectKind.Factory)] AspectKind kind, [ValueSource(nameof(Lifetimes))] Lifetime lifetime) 
         {
             Container.Factory<IMyService>(i => new MyService(), lifetime);
 
@@ -116,16 +116,19 @@ namespace Solti.Utils.DI.Container.Tests
 
             var mockAspect = new Mock<AspectWithoutImplementation>(MockBehavior.Strict, kind);
 
+            Func<IInjector, Type, object, object>[] delegates = null;
+
             switch (kind)
             {
                 case AspectKind.Service:
                     mockAspect
                         .Setup(aspect => aspect.GetInterceptorType(It.Is<Type>(t => t == typeof(IMyService))))
                         .Returns(typeof(InterfaceInterceptor<IMyService>));
-                    entry.ApplyAspect(mockAspect.Object);
+                    
+                    Assert.DoesNotThrowAsync(async () => delegates = await ServiceEntryExtensions.GenerateProxyDelegates(typeof(IMyService), new[] { mockAspect.Object }));
 
                     mockAspect.Verify(aspect => aspect.GetInterceptorType(It.Is<Type>(t => t == typeof(IMyService))), Times.Once);
-                    Assert.That(entry.Factory.Invoke(new Mock<IInjector>(MockBehavior.Strict).Object, entry.Interface), Is.InstanceOf<InterfaceInterceptor<IMyService>>());
+                    Assert.That(delegates.Length, Is.EqualTo(1));
 
                     break;
                 case AspectKind.Factory:
@@ -133,10 +136,9 @@ namespace Solti.Utils.DI.Container.Tests
                     mockAspect
                         .Setup(aspect => aspect.GetInterceptor(It.IsAny<IInjector>(), It.Is<Type>(t => t == typeof(IMyService)), It.IsAny<IMyService>()))
                         .Returns(decorated);
-                    entry.ApplyAspect(mockAspect.Object);
-                  
-                    Assert.That(entry.Factory.Invoke(new Mock<IInjector>(MockBehavior.Strict).Object, entry.Interface), Is.SameAs(decorated));
-                    mockAspect.Verify(aspect => aspect.GetInterceptor(It.IsAny<IInjector>(), It.Is<Type>(t => t == typeof(IMyService)), It.IsAny<IMyService>()), Times.Once);
+
+                    Assert.DoesNotThrowAsync(async () => delegates = await ServiceEntryExtensions.GenerateProxyDelegates(typeof(IMyService), new[] { mockAspect.Object }));
+                    Assert.That(delegates.Single(), Is.EqualTo((Func<IInjector, Type, object, object>) mockAspect.Object.GetInterceptor));
 
                     break;
             }

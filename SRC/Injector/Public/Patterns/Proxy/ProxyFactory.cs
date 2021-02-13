@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Threading.Tasks;
 
 namespace Solti.Utils.Proxy
 {
@@ -23,6 +24,9 @@ namespace Solti.Utils.Proxy
     {
         private static Type GenerateProxyType<TInterface, TInterceptor>() where TInterface : class where TInterceptor : InterfaceInterceptor<TInterface> => 
             ProxyGenerator<TInterface, TInterceptor>.GetGeneratedType();
+
+        private static Task<Type> GenerateProxyTypeAsync<TInterface, TInterceptor>() where TInterface : class where TInterceptor : InterfaceInterceptor<TInterface> =>
+            ProxyGenerator<TInterface, TInterceptor>.GetGeneratedTypeAsync();
 
         /// <summary>
         /// Creates a new proxy instance with the given arguments.
@@ -88,6 +92,22 @@ namespace Solti.Utils.Proxy
             //
 
             return (Type) FGenericGenerateProxyType.MakeGenericMethod(iface, interceptor).ToStaticDelegate().Invoke(Array.Empty<object>());
+        }
+
+        private static readonly MethodInfo FGenericGenerateProxyTypeAsync = MethodInfoExtractor
+            .Extract(() => GenerateProxyTypeAsync<object, InterfaceInterceptor<object>>())
+            .GetGenericMethodDefinition();
+
+        internal static Task<Type> GenerateProxyTypeAsync(Type iface, Type interceptor)
+        {
+            Ensure.Parameter.IsNotNull(iface, nameof(iface));
+            Ensure.Parameter.IsNotNull(interceptor, nameof(interceptor));
+
+            //
+            // A tobbit a ProxyGenerator<> ellenorzi.
+            //
+
+            return (Task<Type>) FGenericGenerateProxyTypeAsync.MakeGenericMethod(iface, interceptor).ToStaticDelegate().Invoke(Array.Empty<object>());
         }
 
         /// <summary>

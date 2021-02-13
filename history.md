@@ -182,3 +182,4 @@
   - *introduced:* `IServiceGraph` (built in) service
   - *introduced:* `IScopeFactory` (built in) service
   - *done:* Declaring `IServiceContainer` can be requested as a regular service
+  - *imporved:* Aspect processing performance
