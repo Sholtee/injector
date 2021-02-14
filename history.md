@@ -177,9 +177,9 @@
   - *breaking:* `Lifetime` class moved to interfaces project
   - *breaking:* `Instance` related logic moved to interfaces project
   - *breaking:* `AbstractServiceEntry.Instance` property has been replaced with `Instances`
+  - *breaking:* Changed `AbstractServiceEntry.SetInstance()` layout
   - *introduced:* *Pooled* lifetime
   - *introduced:* `Service()` recipe explicit args support
   - *introduced:* `IServiceGraph` (built in) service
   - *introduced:* `IScopeFactory` (built in) service
-  - *done:* Declaring `IServiceContainer` can be requested as a regular service
   - *imporved:* Aspect processing performance
