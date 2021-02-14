@@ -13,29 +13,23 @@ namespace Solti.Utils.DI.Internals
     using Interfaces;
     using Properties;
 
-    internal class Injector : ServiceContainer, IInjector, IScopeFactory
+    internal partial class Injector : ServiceContainer, IInjector, IScopeFactory
     {
-        private readonly IServiceGraph FGraph;
-            
-        public Injector(IServiceContainer parent, IReadOnlyDictionary<string, object> factoryOptions, IServiceGraph graph) : base(parent)
+        private readonly IServiceGraph FGraph = new ServiceGraph();
+        private readonly IReadOnlyDictionary<string, object> FOptions;
+
+        public Injector(IServiceContainer parent, IReadOnlyDictionary<string, object>? options) : base(Ensure.Parameter.IsNotNull(parent, nameof(parent)))
         {
-            Options = factoryOptions;
-            FGraph = graph;
+            FOptions = (options ?? new Dictionary<string, object>()).Extend(nameof(Config.Value.Injector.MaxSpawnedTransientServices), Config.Value.Injector.MaxSpawnedTransientServices);
             
-            UnderlyingContainer.Instance<IInjector>(this);
-            UnderlyingContainer.Instance<IScopeFactory>(this);
-            UnderlyingContainer.Instance(graph);
-            UnderlyingContainer.Instance(parent);
+            UnderlyingContainer
+                .Instance<IInjector>(this)
+                .Instance<IScopeFactory>(this)
+                .Instance(FGraph)
+                .Instance("options", FOptions);
 
             this.RegisterServiceEnumerator();
         }
-
-        public Injector(IServiceContainer parent, IReadOnlyDictionary<string, object>? factoryOptions = null) : this
-        (
-            Ensure.Parameter.IsNotNull(parent, nameof(parent)),
-            (factoryOptions ?? new Dictionary<string, object>()).Extend(nameof(Config.Value.Injector.MaxSpawnedTransientServices), Config.Value.Injector.MaxSpawnedTransientServices),
-            new ServiceGraph()
-        ){ }
 
         public override void Add(AbstractServiceEntry entry)
         {
@@ -82,9 +76,13 @@ namespace Solti.Utils.DI.Internals
 
                 AbstractServiceEntry requestedEntry = Get(iface, name, QueryModes.AllowSpecialization | QueryModes.ThrowOnError)!;
 
-                IServiceReference? 
-                    requestor = FGraph.Requestor,
-                    requested = ServiceInstantiationStrategySelector.GetStrategyFor(this, requestedEntry).Invoke(requestor);
+                IServiceReference requested = Instantiate(requestedEntry);
+
+                //
+                // Az igenylo (ha van) fuggosegei koze felvesszuk az ujonan letrehozott szervizt
+                //
+
+                FGraph.Requestor?.AddDependency(requested);
 
                 return requested;
             }
@@ -138,19 +136,16 @@ namespace Solti.Utils.DI.Internals
                 return this;
             }
         }
-
-        public IReadOnlyDictionary<string, object> Options { get; }
         #endregion
 
         #region IScopeFactory
-        IInjector IScopeFactory.CreateScope(IReadOnlyDictionary<string, object>? options) => new Injector(Parent!, options);
+        public virtual Injector CreateScope(IReadOnlyDictionary<string, object>? options) => new Injector(Parent!, options);
 
-        IInjector IScopeFactory.CreateScope(IServiceContainer parent, IServiceGraph node, IReadOnlyDictionary<string, object>? options) => new Injector
-        (
-            Ensure.Parameter.IsNotNull(parent, nameof(parent)), 
-            options ?? new Dictionary<string, object>(0), 
-            Ensure.Parameter.IsNotNull(node, nameof(node))
-        );
+        public virtual Injector CreateScope(IServiceContainer parent, IReadOnlyDictionary<string, object>? options) => new Injector(parent, options);
+
+        IInjector IScopeFactory.CreateScope(IReadOnlyDictionary<string, object>? options) => CreateScope(options);
+
+        IInjector IScopeFactory.CreateScope(IServiceContainer parent, IReadOnlyDictionary<string, object>? options) => CreateScope(parent, options);
         #endregion
 
         #region Composite

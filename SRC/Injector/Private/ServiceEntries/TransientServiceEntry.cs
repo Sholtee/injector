@@ -18,19 +18,6 @@ namespace Solti.Utils.DI.Internals
     {
         private readonly List<IServiceReference> FInstances = new List<IServiceReference>();
 
-        private void EnsureNotFull(IReadOnlyDictionary<string, object> options) 
-        {
-            int? threshold = options?.GetValueOrDefault<int?>("MaxSpawnedTransientServices");
-
-            if (FInstances.Count >= threshold)
-                //
-                // Ha ide jutunk az azt jelenti h jo esellyel a tartalmazo injector ujrahasznositasra kerult
-                // (ahogy az a teljesitmeny teszteknel meg is tortent).
-                //
-
-                throw new Exception(string.Format(Resources.Culture, Resources.INJECTOR_SHOULD_BE_RELEASED, threshold));
-        }
-
         private TransientServiceEntry(TransientServiceEntry entry, IServiceContainer owner) : base(entry, owner) 
         {
         }
@@ -47,14 +34,25 @@ namespace Solti.Utils.DI.Internals
         {
         }
 
-        public override bool SetInstance(IServiceReference reference, IReadOnlyDictionary<string, object> options)
+        public override bool SetInstance(IServiceReference reference)
         {
             EnsureAppropriateReference(reference);
             EnsureProducible();
-            EnsureNotFull(options);
-
+            
             IInjector relatedInjector = Ensure.IsNotNull(reference.RelatedInjector, $"{nameof(reference)}.{nameof(reference.RelatedInjector)}");
             Ensure.AreEqual(relatedInjector.UnderlyingContainer, Owner, Resources.INAPPROPRIATE_OWNERSHIP);
+
+            int? threshold = relatedInjector
+                .Get<IReadOnlyDictionary<string, object>>("options")
+                .GetValueOrDefault<int?>("MaxSpawnedTransientServices");
+
+            if (FInstances.Count >= threshold)
+                //
+                // Ha ide jutunk az azt jelenti h jo esellyel a tartalmazo injector ujrahasznositasra kerult
+                // (ahogy az a teljesitmeny teszteknel meg is tortent).
+                //
+
+                throw new Exception(string.Format(Resources.Culture, Resources.INJECTOR_SHOULD_BE_RELEASED, threshold));
 
             //
             // "Factory" biztos nem NULL [lasd EnsureProducible()]

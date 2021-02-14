@@ -34,7 +34,7 @@ namespace Solti.Utils.DI.Internals
         {
         }
 
-        public override bool SetInstance(IServiceReference reference, IReadOnlyDictionary<string, object> options)
+        public override bool SetInstance(IServiceReference reference)
         {
             EnsureAppropriateReference(reference);
             EnsureProducible();

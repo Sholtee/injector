@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Collections.Generic;
 
 using Moq;
 using NUnit.Framework;
@@ -58,11 +59,16 @@ namespace Solti.Utils.DI.Container.Tests
             mockInjector
                 .SetupGet(i => i.UnderlyingContainer)
                 .Returns(Container);
+            mockInjector
+                .Setup(i => i.Get(typeof(IReadOnlyDictionary<string, object>), "options"))
+                .Returns(new Dictionary<string, object>());
 
             ServiceReference svc = new ServiceReference(Container.Get<IInterface_1>(), mockInjector.Object);
 
-            Assert.That(Container.Get<IInterface_1>().SetInstance(svc, FactoryOptions));
+            Assert.That(Container.Get<IInterface_1>().SetInstance(svc));
             Assert.That(svc.Value, Is.InstanceOf<DecoratedImplementation_1>());
+
+            mockInjector.Verify(i => i.Get(typeof(IReadOnlyDictionary<string, object>), "options"), Times.AtMostOnce);
 
             mockCallback1.Verify(_ => _(It.IsAny<IInjector>(), It.IsAny<IInterface_1>()), Times.Once);
             mockCallback2.Verify(_ => _(It.IsAny<IInjector>(), It.IsAny<IInterface_1>()), Times.Once);
@@ -85,6 +91,9 @@ namespace Solti.Utils.DI.Container.Tests
                 .Setup(i => i.Get(It.Is<Type>(t => t == typeof(IInterface_1)), null))
                 .Returns(new Implementation_1_No_Dep());
             mockInjector
+                .Setup(i => i.Get(typeof(IReadOnlyDictionary<string, object>), "options"))
+                .Returns(new Dictionary<string, object>());
+            mockInjector
                 .SetupGet(i => i.UnderlyingContainer)
                 .Returns(Container);
 
@@ -95,9 +104,10 @@ namespace Solti.Utils.DI.Container.Tests
 
             ServiceReference svc = new ServiceReference(Container.Get<IInterface_3<int>>(), mockInjector.Object);
 
-            Assert.That(Container.Get<IInterface_3<int>>().SetInstance(svc, FactoryOptions));
+            Assert.That(Container.Get<IInterface_3<int>>().SetInstance(svc));
             Assert.That(svc.Value, Is.InstanceOf<DecoratedImplementation_3<int>>());
 
+            mockInjector.Verify(i => i.Get(typeof(IReadOnlyDictionary<string, object>), "options"), Times.AtMostOnce);
             mockCallback.Verify(_ => _(It.IsAny<IInjector>(), It.IsAny<IInterface_3<int>>()), Times.Once);
         }
 
@@ -147,12 +157,16 @@ namespace Solti.Utils.DI.Container.Tests
             var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
 
             mockInjector
-                .Setup(i => i.Get(It.Is<Type>(t => t == typeof(IInterface_1)), null))
+                .Setup(i => i.Get(typeof(IInterface_1), null))
                 .Returns(new Implementation_1_No_Dep());
 
             mockInjector
-                .Setup(i => i.Get(It.Is<Type>(t => t == typeof(IInterface_3<int>)), null))
+                .Setup(i => i.Get(typeof(IInterface_3<int>), null))
                 .Returns(new Implementation_3_IInterface_1_Dependant<int>(null));
+
+            mockInjector
+                .Setup(i => i.Get(typeof(IReadOnlyDictionary<string, object>), "options"))
+                .Returns(new Dictionary<string, object>());
 
             mockInjector
                 .SetupGet(i => i.UnderlyingContainer)
@@ -160,7 +174,7 @@ namespace Solti.Utils.DI.Container.Tests
 
             ServiceReference svc = new ServiceReference(Container.Get<IInterface_2>(), mockInjector.Object);
 
-            Assert.That(Container.Get<IInterface_2>().SetInstance(svc, FactoryOptions));
+            Assert.That(Container.Get<IInterface_2>().SetInstance(svc));
             Assert.That(svc.Value, Is.InstanceOf<MyProxyWithDependency>());
 
             var implementor = (MyProxyWithDependency) svc.Value;
@@ -172,8 +186,9 @@ namespace Solti.Utils.DI.Container.Tests
 
             Assert.That(original.Interface1, Is.InstanceOf<Implementation_1_No_Dep>());
 
-            mockInjector.Verify(i => i.Get(It.Is<Type>(t => t == typeof(IInterface_1)), null), Times.Once);
-            mockInjector.Verify(i => i.Get(It.Is<Type>(t => t == typeof(IInterface_3<int>)), null), Times.Once);
+            mockInjector.Verify(i => i.Get(typeof(IInterface_1), null), Times.Once);
+            mockInjector.Verify(i => i.Get(typeof(IInterface_3<int>), null), Times.Once);
+            mockInjector.Verify(i => i.Get(typeof(IReadOnlyDictionary<string, object>), "options"), Times.AtMostOnce);
         }
 
         public class MyProxyWithDependency : InterfaceInterceptor<IInterface_2>
@@ -196,11 +211,16 @@ namespace Solti.Utils.DI.Container.Tests
             mockInjector
                 .SetupGet(i => i.UnderlyingContainer)
                 .Returns(Container);
+            mockInjector
+                .Setup(i => i.Get(typeof(IReadOnlyDictionary<string, object>), "options"))
+                .Returns(new Dictionary<string, object>());
 
             ServiceReference svc = new ServiceReference(Container.Get<IInterface_1>("cica"), mockInjector.Object);
 
-            Assert.That(Container.Get<IInterface_1>("cica").SetInstance(svc, FactoryOptions));
+            Assert.That(Container.Get<IInterface_1>("cica").SetInstance(svc));
             Assert.That(svc.Value, Is.TypeOf<DecoratedImplementation_1>());
+
+            mockInjector.Verify(i => i.Get(typeof(IReadOnlyDictionary<string, object>), "options"), Times.AtMostOnce);
         }
     }
 }

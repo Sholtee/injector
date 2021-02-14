@@ -11,7 +11,7 @@ namespace Solti.Utils.DI.Internals
     {
         internal static bool IsDescendantOf<T>(this IComposite<T> src, IComposite<T> parent) where T : class, IComposite<T>
         {
-            for (IComposite<T>? current = src; current != null; current = current.Parent)
+            for (IComposite<T>? current = src.Parent; current != null; current = current.Parent)
                 if (current == parent) return true;
             return false;
         } 

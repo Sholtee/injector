@@ -10,7 +10,6 @@ namespace Solti.Utils.DI.Interfaces
     /// <summary>
     /// Provides a thread safe way to create new scopes.
     /// </summary>
-    [SystemService]
     public interface IScopeFactory
     {
         /// <summary>
@@ -21,6 +20,6 @@ namespace Solti.Utils.DI.Interfaces
         /// <summary>
         /// Creates an independent new scope
         /// </summary>
-        IInjector CreateScope(IServiceContainer parent, IServiceGraph node, IReadOnlyDictionary<string, object>? options);
+        IInjector CreateScope(IServiceContainer parent, IReadOnlyDictionary<string, object>? options);
     }
 }

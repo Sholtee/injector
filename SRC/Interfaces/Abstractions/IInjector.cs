@@ -4,7 +4,6 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Solti.Utils.DI.Interfaces
@@ -14,7 +13,6 @@ namespace Solti.Utils.DI.Interfaces
     /// <summary>
     /// Provides the mechanism for injecting resources.
     /// </summary>
-    [SystemService]
     public interface IInjector: IDisposableEx
     {
         /// <summary>
@@ -49,10 +47,5 @@ namespace Solti.Utils.DI.Interfaces
         /// </summary>
         /// <remarks>Every injector has its own service container that serves it on service request. This container is a direct descendant of the container from which the injector was created.</remarks>
         IServiceContainer UnderlyingContainer { get; }
-
-        /// <summary>
-        /// Gets the custom options passed to this instance.
-        /// </summary>
-        IReadOnlyDictionary<string, object> Options { get; }
     }
 }

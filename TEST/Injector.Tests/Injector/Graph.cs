@@ -6,7 +6,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 
 using NUnit.Framework;
 
@@ -18,7 +17,7 @@ namespace Solti.Utils.DI.Injector.Graph.Tests
     [TestFixture]
     public class GraphTests
     {
-        private static IServiceReference[] Validate(Injector injector) 
+        private static IServiceReference[] Validate(IInjector injector) 
         {
             Config.Value.Injector.StrictDI = false;
 
@@ -27,30 +26,31 @@ namespace Solti.Utils.DI.Injector.Graph.Tests
 
             svc4 = injector.GetReference(typeof(IInterface_4), null);
             Assert.That(svc4.RefCount, Is.EqualTo(1));
-            Assert.That(GetExplicitDeps(svc4.Dependencies).Count(), Is.EqualTo(2));
+            Assert.That(svc4.Dependencies.Count, Is.EqualTo(3));
+            Assert.NotNull(GetDependency(svc4, typeof(IInjector)));
             Assert.NotNull(GetDependency(svc4, typeof(IInterface_2)));
             Assert.NotNull(GetDependency(svc4, typeof(IInterface_3)));
 
             svc3 = GetDependency(svc4, typeof(IInterface_3));
             Assert.That(svc3.RefCount, Is.EqualTo(2));
-            Assert.That(GetExplicitDeps(svc3.Dependencies).Count(), Is.EqualTo(2));
+            Assert.That(svc3.Dependencies.Count, Is.EqualTo(3));
             Assert.NotNull(GetDependency(svc3, typeof(IInterface_1)));
             Assert.NotNull(GetDependency(svc3, typeof(IInterface_2)));
+            Assert.NotNull(GetDependency(svc3, typeof(IReadOnlyDictionary<string, object>), "options")); // implicit fuggoseg
 
             svc2 = GetDependency(svc4, typeof(IInterface_2));
             Assert.That(svc2.RefCount, Is.EqualTo(3));
-            Assert.That(GetExplicitDeps(svc2.Dependencies).Count(), Is.EqualTo(1));
+            Assert.That(svc2.Dependencies.Count, Is.EqualTo(1));
             Assert.NotNull(GetDependency(svc2, typeof(IInterface_1)));
 
             svc1 = GetDependency(svc3, typeof(IInterface_1));
             Assert.That(svc1.RefCount, Is.EqualTo(2));
-            Assert.That(GetExplicitDeps(svc1.Dependencies).Count(), Is.EqualTo(0));
+            Assert.That(svc1.Dependencies.Count, Is.EqualTo(1));
+            Assert.NotNull(GetDependency(svc1, typeof(IReadOnlyDictionary<string, object>), "options")); // implicit fuggoseg
 
             return new[] { svc1, svc2, svc3, svc4 };
 
-            IServiceReference GetDependency(IServiceReference reference, Type iface) => reference.Dependencies.SingleOrDefault(dep => dep.RelatedServiceEntry.Interface == iface);
-
-            IEnumerable<IServiceReference> GetExplicitDeps(IEnumerable<IServiceReference> src) => src.Where(dep => dep.RelatedServiceEntry.Interface.GetCustomAttribute<SystemServiceAttribute>() == null);
+            IServiceReference GetDependency(IServiceReference reference, Type iface, string name = null) => reference.Dependencies.SingleOrDefault(dep => dep.RelatedServiceEntry.Interface == iface && dep.RelatedServiceEntry.Name == name);
         }
 
         [Test]
@@ -66,7 +66,7 @@ namespace Solti.Utils.DI.Injector.Graph.Tests
                     .Service<IInterface_3, Implementation_3>(Lifetime.Transient)
                     .Service<IInterface_4, Implementation_4>(Lifetime.Scoped);
 
-                references = Validate(new Injector(container));
+                references = Validate(new Injector(container, null));
             }
 
             Assert.That(references.All(reference => reference.RefCount == 0));
@@ -88,7 +88,7 @@ namespace Solti.Utils.DI.Injector.Graph.Tests
                     .Service<IInterface_3, Implementation_3>(Lifetime.Transient)
                     .Service<IInterface_4, Implementation_4>(Lifetime.Scoped);
 
-                references = Validate(new Injector(child));
+                references = Validate(new Injector(child, null));
             }
 
             Assert.That(references.All(reference => reference.RefCount == 0));

@@ -119,9 +119,8 @@ namespace Solti.Utils.DI.Interfaces
         /// Calls the <see cref="Factory"/> to set an instance in the <see cref="Instances"/> list.
         /// </summary>
         /// <param name="serviceReference">The <see cref="IServiceReference"/> of the service being created.</param>
-        /// <param name="options">The options that control the instantiation process.</param>
         /// <returns>Returns false if the entry was already <see cref="Built"/>.</returns>
-        public virtual bool SetInstance(IServiceReference serviceReference, IReadOnlyDictionary<string, object> options) =>
+        public virtual bool SetInstance(IServiceReference serviceReference) =>
             throw new NotImplementedException();
 
         /// <summary>

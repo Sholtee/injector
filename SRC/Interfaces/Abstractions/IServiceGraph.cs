@@ -11,7 +11,6 @@ namespace Solti.Utils.DI.Interfaces
     /// <summary>
     /// Describes the service graph in which the current request takes place.
     /// </summary>
-    [SystemService]
     public interface IServiceGraph: IEnumerable<IServiceReference>
     {
         /// <summary>
@@ -28,20 +27,5 @@ namespace Solti.Utils.DI.Interfaces
         /// Throws if the graph is circular.
         /// </summary>
         void CheckNotCircular();
-
-        /// <summary>
-        /// Creates a new node.
-        /// </summary>
-        IServiceGraph CreateNode();
-
-        /// <summary>
-        /// Clears the graph.
-        /// </summary>
-        void Clear();
-
-        /// <summary>
-        /// Creates a root node.
-        /// </summary>
-        IServiceGraph CreateRoot();
     }
 }

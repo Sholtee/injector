@@ -36,7 +36,7 @@ namespace Solti.Utils.DI.Internals
         {
         }
 
-        public override bool SetInstance(IServiceReference reference, IReadOnlyDictionary<string, object> options)
+        public override bool SetInstance(IServiceReference reference)
         {       
             EnsureAppropriateReference(reference);
             EnsureProducible();
@@ -56,7 +56,7 @@ namespace Solti.Utils.DI.Internals
             // Pool-ban az eredeti factory-t hivjuk
             //
 
-            if (options.TryGetValue(PooledLifetime.POOL_SCOPE, out object _))
+            if (relatedInjector.Get<IReadOnlyDictionary<string, object>>("options").GetValueOrDefault<bool>(PooledLifetime.POOL_SCOPE))
             {
                 reference.Value = Factory!(relatedInjector, Interface);
             }

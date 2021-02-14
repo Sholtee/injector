@@ -52,7 +52,7 @@ namespace Solti.Utils.DI.Internals
 
         public override IReadOnlyCollection<IServiceReference> Instances => FInstances;
 
-        public override bool SetInstance(IServiceReference reference, IReadOnlyDictionary<string, object> options) =>
+        public override bool SetInstance(IServiceReference reference) =>
             //
             // Peldany eseten ez a metodus elvileg sose kerulhet meghivasra.
             //

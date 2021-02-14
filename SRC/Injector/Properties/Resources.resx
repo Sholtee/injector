@@ -168,9 +168,6 @@
   <data name="STRICT_DI" xml:space="preserve">
     <value>Attempt to request a dependency that should live shorter than the requestor should.</value>
   </data>
-  <data name="NO_STRATEGY" xml:space="preserve">
-    <value>The matching strategy could not be determined.</value>
-  </data>
   <data name="NOT_EQUAL" xml:space="preserve">
     <value>The given values are not equal.</value>
   </data>

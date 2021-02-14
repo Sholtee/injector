@@ -3,7 +3,6 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
-using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace Solti.Utils.DI.Internals
@@ -12,9 +11,9 @@ namespace Solti.Utils.DI.Internals
 
     internal static class ServiceReferenceExtensions
     {
-        public static void SetInstance(this IServiceReference svc, IReadOnlyDictionary<string, object> options)
+        public static void SetInstance(this IServiceReference svc)
         {
-            bool succeeded = svc.RelatedServiceEntry.SetInstance(svc, options);
+            bool succeeded = svc.RelatedServiceEntry.SetInstance(svc);
 
             //
             // Elmeletileg a SetInstance() csak akkor lehet hivva ha szukseges is letrehozni a

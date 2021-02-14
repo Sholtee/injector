@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.IO;
@@ -42,6 +43,9 @@ namespace Solti.Utils.DI.UseCases
             mockInjector
                 .SetupGet(i => i.UnderlyingContainer)
                 .Returns(Container);
+            mockInjector
+                .Setup(i => i.Get(typeof(IReadOnlyDictionary<string, object>), "options"))
+                .Returns(new Dictionary<string, object>());
 
             Assert.That(GetService<IDisposable>() is Disposable);
             Assert.That(GetService<IMyModule1>() is InterfaceInterceptor<IMyModule1>);
@@ -50,7 +54,7 @@ namespace Solti.Utils.DI.UseCases
             object GetService<TInterface>() 
             {
                 ServiceReference svc = new ServiceReference(Container.Get<TInterface>(), mockInjector.Object);
-                Container.Get<TInterface>().SetInstance(svc, FactoryOptions);
+                Container.Get<TInterface>().SetInstance(svc);
 
                 return svc.Value;
             }

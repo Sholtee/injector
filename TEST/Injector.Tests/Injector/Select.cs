@@ -3,6 +3,7 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -152,6 +153,15 @@ namespace Solti.Utils.DI.Injector.Tests
             {
                 IEnumerable<IInterface_1> svcs = injector.Get<IEnumerable<IInterface_1>>();
                 Assert.AreSame(svcs.Single(), svcs.Single());
+            }
+        }
+
+        [Test]
+        public void Injector_Select_ShouldWorkWithBuiltInServices([Values(typeof(IInjector), typeof(IServiceGraph), typeof(IScopeFactory), typeof(IReadOnlyDictionary<string, object>))] Type svc)
+        {
+            using (IInjector injector = Container.CreateInjector())
+            {
+                Assert.That(((IEnumerable) injector.Get(typeof(IEnumerable<>).MakeGenericType(svc))).Cast<object>().Count(), Is.EqualTo(1));
             }
         }
     }

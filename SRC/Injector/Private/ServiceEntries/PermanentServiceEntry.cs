@@ -35,7 +35,7 @@ namespace Solti.Utils.DI.Internals
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)] // nem kene, csak kis paranoia
-        public override bool SetInstance(IServiceReference reference, IReadOnlyDictionary<string, object> options)
+        public override bool SetInstance(IServiceReference reference)
         {
             EnsureAppropriateReference(reference);
             EnsureProducible();
