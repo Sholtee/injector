@@ -257,15 +257,12 @@ references:
   isSpec: "True"
   fullName: Solti.Utils.DI.Interfaces.AbstractServiceEntry.Owner
   nameWithType: AbstractServiceEntry.Owner
-- uid: Solti.Utils.DI.Interfaces.AbstractServiceEntry.SetInstance(Solti.Utils.DI.Interfaces.IServiceReference,System.Collections.Generic.IReadOnlyDictionary{System.String,System.Object})
-  name: SetInstance(IServiceReference, IReadOnlyDictionary<String, Object>)
-  href: Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_SetInstance_Solti_Utils_DI_Interfaces_IServiceReference_System_Collections_Generic_IReadOnlyDictionary_System_String_System_Object__
-  commentId: M:Solti.Utils.DI.Interfaces.AbstractServiceEntry.SetInstance(Solti.Utils.DI.Interfaces.IServiceReference,System.Collections.Generic.IReadOnlyDictionary{System.String,System.Object})
-  name.vb: SetInstance(IServiceReference, IReadOnlyDictionary(Of String, Object))
-  fullName: Solti.Utils.DI.Interfaces.AbstractServiceEntry.SetInstance(Solti.Utils.DI.Interfaces.IServiceReference, System.Collections.Generic.IReadOnlyDictionary<System.String, System.Object>)
-  fullName.vb: Solti.Utils.DI.Interfaces.AbstractServiceEntry.SetInstance(Solti.Utils.DI.Interfaces.IServiceReference, System.Collections.Generic.IReadOnlyDictionary(Of System.String, System.Object))
-  nameWithType: AbstractServiceEntry.SetInstance(IServiceReference, IReadOnlyDictionary<String, Object>)
-  nameWithType.vb: AbstractServiceEntry.SetInstance(IServiceReference, IReadOnlyDictionary(Of String, Object))
+- uid: Solti.Utils.DI.Interfaces.AbstractServiceEntry.SetInstance(Solti.Utils.DI.Interfaces.IServiceReference)
+  name: SetInstance(IServiceReference)
+  href: Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_SetInstance_Solti_Utils_DI_Interfaces_IServiceReference_
+  commentId: M:Solti.Utils.DI.Interfaces.AbstractServiceEntry.SetInstance(Solti.Utils.DI.Interfaces.IServiceReference)
+  fullName: Solti.Utils.DI.Interfaces.AbstractServiceEntry.SetInstance(Solti.Utils.DI.Interfaces.IServiceReference)
+  nameWithType: AbstractServiceEntry.SetInstance(IServiceReference)
 - uid: Solti.Utils.DI.Interfaces.AbstractServiceEntry.SetInstance*
   name: SetInstance
   href: Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_SetInstance_
@@ -431,19 +428,6 @@ references:
   isSpec: "True"
   fullName: Solti.Utils.DI.Interfaces.IInjector.GetReference
   nameWithType: IInjector.GetReference
-- uid: Solti.Utils.DI.Interfaces.IInjector.Options
-  name: Options
-  href: Solti.Utils.DI.Interfaces.IInjector.html#Solti_Utils_DI_Interfaces_IInjector_Options
-  commentId: P:Solti.Utils.DI.Interfaces.IInjector.Options
-  fullName: Solti.Utils.DI.Interfaces.IInjector.Options
-  nameWithType: IInjector.Options
-- uid: Solti.Utils.DI.Interfaces.IInjector.Options*
-  name: Options
-  href: Solti.Utils.DI.Interfaces.IInjector.html#Solti_Utils_DI_Interfaces_IInjector_Options_
-  commentId: Overload:Solti.Utils.DI.Interfaces.IInjector.Options
-  isSpec: "True"
-  fullName: Solti.Utils.DI.Interfaces.IInjector.Options
-  nameWithType: IInjector.Options
 - uid: Solti.Utils.DI.Interfaces.IInjector.TryGet(System.Type,System.String)
   name: TryGet(Type, String)
   href: Solti.Utils.DI.Interfaces.IInjector.html#Solti_Utils_DI_Interfaces_IInjector_TryGet_System_Type_System_String_
@@ -514,15 +498,15 @@ references:
   commentId: T:Solti.Utils.DI.Interfaces.IScopeFactory
   fullName: Solti.Utils.DI.Interfaces.IScopeFactory
   nameWithType: IScopeFactory
-- uid: Solti.Utils.DI.Interfaces.IScopeFactory.CreateScope(Solti.Utils.DI.Interfaces.IServiceContainer,Solti.Utils.DI.Interfaces.IServiceGraph,System.Collections.Generic.IReadOnlyDictionary{System.String,System.Object})
-  name: CreateScope(IServiceContainer, IServiceGraph, IReadOnlyDictionary<String, Object>)
-  href: Solti.Utils.DI.Interfaces.IScopeFactory.html#Solti_Utils_DI_Interfaces_IScopeFactory_CreateScope_Solti_Utils_DI_Interfaces_IServiceContainer_Solti_Utils_DI_Interfaces_IServiceGraph_System_Collections_Generic_IReadOnlyDictionary_System_String_System_Object__
-  commentId: M:Solti.Utils.DI.Interfaces.IScopeFactory.CreateScope(Solti.Utils.DI.Interfaces.IServiceContainer,Solti.Utils.DI.Interfaces.IServiceGraph,System.Collections.Generic.IReadOnlyDictionary{System.String,System.Object})
-  name.vb: CreateScope(IServiceContainer, IServiceGraph, IReadOnlyDictionary(Of String, Object))
-  fullName: Solti.Utils.DI.Interfaces.IScopeFactory.CreateScope(Solti.Utils.DI.Interfaces.IServiceContainer, Solti.Utils.DI.Interfaces.IServiceGraph, System.Collections.Generic.IReadOnlyDictionary<System.String, System.Object>)
-  fullName.vb: Solti.Utils.DI.Interfaces.IScopeFactory.CreateScope(Solti.Utils.DI.Interfaces.IServiceContainer, Solti.Utils.DI.Interfaces.IServiceGraph, System.Collections.Generic.IReadOnlyDictionary(Of System.String, System.Object))
-  nameWithType: IScopeFactory.CreateScope(IServiceContainer, IServiceGraph, IReadOnlyDictionary<String, Object>)
-  nameWithType.vb: IScopeFactory.CreateScope(IServiceContainer, IServiceGraph, IReadOnlyDictionary(Of String, Object))
+- uid: Solti.Utils.DI.Interfaces.IScopeFactory.CreateScope(Solti.Utils.DI.Interfaces.IServiceContainer,System.Collections.Generic.IReadOnlyDictionary{System.String,System.Object})
+  name: CreateScope(IServiceContainer, IReadOnlyDictionary<String, Object>)
+  href: Solti.Utils.DI.Interfaces.IScopeFactory.html#Solti_Utils_DI_Interfaces_IScopeFactory_CreateScope_Solti_Utils_DI_Interfaces_IServiceContainer_System_Collections_Generic_IReadOnlyDictionary_System_String_System_Object__
+  commentId: M:Solti.Utils.DI.Interfaces.IScopeFactory.CreateScope(Solti.Utils.DI.Interfaces.IServiceContainer,System.Collections.Generic.IReadOnlyDictionary{System.String,System.Object})
+  name.vb: CreateScope(IServiceContainer, IReadOnlyDictionary(Of String, Object))
+  fullName: Solti.Utils.DI.Interfaces.IScopeFactory.CreateScope(Solti.Utils.DI.Interfaces.IServiceContainer, System.Collections.Generic.IReadOnlyDictionary<System.String, System.Object>)
+  fullName.vb: Solti.Utils.DI.Interfaces.IScopeFactory.CreateScope(Solti.Utils.DI.Interfaces.IServiceContainer, System.Collections.Generic.IReadOnlyDictionary(Of System.String, System.Object))
+  nameWithType: IScopeFactory.CreateScope(IServiceContainer, IReadOnlyDictionary<String, Object>)
+  nameWithType.vb: IScopeFactory.CreateScope(IServiceContainer, IReadOnlyDictionary(Of String, Object))
 - uid: Solti.Utils.DI.Interfaces.IScopeFactory.CreateScope(System.Collections.Generic.IReadOnlyDictionary{System.String,System.Object})
   name: CreateScope(IReadOnlyDictionary<String, Object>)
   href: Solti.Utils.DI.Interfaces.IScopeFactory.html#Solti_Utils_DI_Interfaces_IScopeFactory_CreateScope_System_Collections_Generic_IReadOnlyDictionary_System_String_System_Object__
@@ -934,45 +918,6 @@ references:
   isSpec: "True"
   fullName: Solti.Utils.DI.Interfaces.IServiceGraph.CheckNotCircular
   nameWithType: IServiceGraph.CheckNotCircular
-- uid: Solti.Utils.DI.Interfaces.IServiceGraph.Clear
-  name: Clear()
-  href: Solti.Utils.DI.Interfaces.IServiceGraph.html#Solti_Utils_DI_Interfaces_IServiceGraph_Clear
-  commentId: M:Solti.Utils.DI.Interfaces.IServiceGraph.Clear
-  fullName: Solti.Utils.DI.Interfaces.IServiceGraph.Clear()
-  nameWithType: IServiceGraph.Clear()
-- uid: Solti.Utils.DI.Interfaces.IServiceGraph.Clear*
-  name: Clear
-  href: Solti.Utils.DI.Interfaces.IServiceGraph.html#Solti_Utils_DI_Interfaces_IServiceGraph_Clear_
-  commentId: Overload:Solti.Utils.DI.Interfaces.IServiceGraph.Clear
-  isSpec: "True"
-  fullName: Solti.Utils.DI.Interfaces.IServiceGraph.Clear
-  nameWithType: IServiceGraph.Clear
-- uid: Solti.Utils.DI.Interfaces.IServiceGraph.CreateNode
-  name: CreateNode()
-  href: Solti.Utils.DI.Interfaces.IServiceGraph.html#Solti_Utils_DI_Interfaces_IServiceGraph_CreateNode
-  commentId: M:Solti.Utils.DI.Interfaces.IServiceGraph.CreateNode
-  fullName: Solti.Utils.DI.Interfaces.IServiceGraph.CreateNode()
-  nameWithType: IServiceGraph.CreateNode()
-- uid: Solti.Utils.DI.Interfaces.IServiceGraph.CreateNode*
-  name: CreateNode
-  href: Solti.Utils.DI.Interfaces.IServiceGraph.html#Solti_Utils_DI_Interfaces_IServiceGraph_CreateNode_
-  commentId: Overload:Solti.Utils.DI.Interfaces.IServiceGraph.CreateNode
-  isSpec: "True"
-  fullName: Solti.Utils.DI.Interfaces.IServiceGraph.CreateNode
-  nameWithType: IServiceGraph.CreateNode
-- uid: Solti.Utils.DI.Interfaces.IServiceGraph.CreateRoot
-  name: CreateRoot()
-  href: Solti.Utils.DI.Interfaces.IServiceGraph.html#Solti_Utils_DI_Interfaces_IServiceGraph_CreateRoot
-  commentId: M:Solti.Utils.DI.Interfaces.IServiceGraph.CreateRoot
-  fullName: Solti.Utils.DI.Interfaces.IServiceGraph.CreateRoot()
-  nameWithType: IServiceGraph.CreateRoot()
-- uid: Solti.Utils.DI.Interfaces.IServiceGraph.CreateRoot*
-  name: CreateRoot
-  href: Solti.Utils.DI.Interfaces.IServiceGraph.html#Solti_Utils_DI_Interfaces_IServiceGraph_CreateRoot_
-  commentId: Overload:Solti.Utils.DI.Interfaces.IServiceGraph.CreateRoot
-  isSpec: "True"
-  fullName: Solti.Utils.DI.Interfaces.IServiceGraph.CreateRoot
-  nameWithType: IServiceGraph.CreateRoot
 - uid: Solti.Utils.DI.Interfaces.IServiceGraph.Requestor
   name: Requestor
   href: Solti.Utils.DI.Interfaces.IServiceGraph.html#Solti_Utils_DI_Interfaces_IServiceGraph_Requestor
