@@ -20,7 +20,7 @@ namespace Solti.Utils.DI.Internals
             //          akkor visszaadjuk azt.
             //
 
-            if (requested.Built)
+            if (requested.State.HasFlag(ServiceEntryStates.Built))
                 return requested.Instances.Single();
 
             //
@@ -45,7 +45,7 @@ namespace Solti.Utils.DI.Internals
                     // A lock miatt lehet h kozben vki mar beallitotta.
                     //
 
-                    if (requested.Built)
+                    if (requested.State.HasFlag(ServiceEntryStates.Built))
                         return requested.Instances.Single();
 
                     //

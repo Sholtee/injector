@@ -182,4 +182,5 @@
   - *introduced:* `Service()` recipe explicit args support
   - *introduced:* `IServiceGraph` (built in) service
   - *introduced:* `IScopeFactory` (built in) service
+  - *introduced:* `AbstractServiceEntry.State` property
   - *imporved:* Aspect processing performance

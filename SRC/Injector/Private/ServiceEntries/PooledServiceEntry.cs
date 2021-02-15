@@ -50,7 +50,7 @@ namespace Solti.Utils.DI.Internals
             // elemet vehet ki a pool-bol
             //
 
-            if (Built) return false;
+            if (State.HasFlag(ServiceEntryStates.Built)) return false;
 
             //
             // Pool-ban az eredeti factory-t hivjuk
@@ -88,7 +88,9 @@ namespace Solti.Utils.DI.Internals
             }
 
             FInstances.Add(reference);
-            return Built = true;
+            State |= ServiceEntryStates.Built;
+
+            return true;
         }
 
         public sealed override AbstractServiceEntry CopyTo(IServiceContainer target)

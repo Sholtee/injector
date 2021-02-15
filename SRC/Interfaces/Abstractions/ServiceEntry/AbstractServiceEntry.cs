@@ -110,16 +110,16 @@ namespace Solti.Utils.DI.Interfaces
         public virtual IReadOnlyCollection<IServiceReference> Instances { get; } = Array.Empty<IServiceReference>();
 
         /// <summary>
-        /// Returns true if this entry is already provided a service isntance.
+        /// Describes the actual state of this entry.
         /// </summary>
-        public bool Built { get; protected set; }
+        public ServiceEntryStates State { get; protected set; }
         #endregion
 
         /// <summary>
         /// Calls the <see cref="Factory"/> to set an instance in the <see cref="Instances"/> list.
         /// </summary>
         /// <param name="serviceReference">The <see cref="IServiceReference"/> of the service being created.</param>
-        /// <returns>Returns false if the entry was already <see cref="Built"/>.</returns>
+        /// <returns>Returns false if the entry was already built.</returns>
         public virtual bool SetInstance(IServiceReference serviceReference) =>
             throw new NotImplementedException();
 
@@ -203,8 +203,12 @@ namespace Solti.Utils.DI.Interfaces
         protected override void Dispose(bool disposeManaged)
         {
             if (disposeManaged)
+            {
                 foreach (IServiceReference instance in Instances)
                     instance.Release();
+
+                State |= ServiceEntryStates.Disposed;
+            }
 
             base.Dispose(disposeManaged);
         }
@@ -218,6 +222,8 @@ namespace Solti.Utils.DI.Interfaces
             (
                 Instances.Select(instance => instance.ReleaseAsync())
             );
+
+            State |= ServiceEntryStates.Disposed;
 
             //
             // Nem kell "base" hivas mert az a Dispose()-t hivna.

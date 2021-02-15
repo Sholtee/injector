@@ -44,10 +44,10 @@ namespace Solti.Utils.DI.Internals
 
             //
             // Ha mar le lett gyartva akkor nincs dolgunk, jelezzuk a hivonak h ovlassa ki a korabban 
-            // beallitott erteket.
+            // beallitott erteket -> Minden egyes scope maximum egy sajat peldannyal rendelkezhet.
             //
 
-            if (Built) return false;
+            if (State.HasFlag(ServiceEntryStates.Built)) return false;
 
             //
             // Kulomben legyartjuk: 
@@ -56,9 +56,11 @@ namespace Solti.Utils.DI.Internals
             //
 
             reference.Value = Factory!(relatedInjector, Interface);
-            FInstances.Add(reference);
 
-            return Built = true;
+            FInstances.Add(reference);
+            State |= ServiceEntryStates.Built;
+
+            return true;
         }
 
         public override AbstractServiceEntry CopyTo(IServiceContainer target)

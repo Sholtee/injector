@@ -50,7 +50,7 @@ namespace Solti.Utils.DI.Internals
             // beallitott erteket.
             //
 
-            if (Built) return false;
+            if (State.HasFlag(ServiceEntryStates.Built)) return false;
 
             //
             // Kulonben legyartjuk: 
@@ -59,9 +59,11 @@ namespace Solti.Utils.DI.Internals
             //
 
             reference.Value = Factory!(relatedInjector, Interface);
+            
             FInstances.Add(reference);
+            State |= ServiceEntryStates.Built;
 
-            return Built = true;
+            return true;
         }
 
         public override IReadOnlyCollection<IServiceReference> Instances => FInstances;

@@ -59,11 +59,9 @@ namespace Solti.Utils.DI.Internals
             //
 
             reference.Value = Factory!(relatedInjector, Interface);
-            FInstances.Add(reference);
 
-            //
-            // "Built" property erteket FALSE-on hagyjuk -> a SetInstance() legkozelebb is meghivasra kerul)
-            //
+            FInstances.Add(reference);
+            State |= ServiceEntryStates.Instantiated;
 
             return true;
         }

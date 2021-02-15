@@ -55,6 +55,7 @@ namespace Solti.Utils.DI.Internals
             reference.Value = Factory!(relatedInjector, Interface);
 
             FInstances.Add(reference);
+            State |= ServiceEntryStates.Instantiated;
 
             return true;
         }
