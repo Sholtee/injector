@@ -60,7 +60,7 @@ namespace Solti.Utils.DI.Container.Tests
                 .SetupGet(i => i.UnderlyingContainer)
                 .Returns(Container);
             mockInjector
-                .Setup(i => i.Get(typeof(IReadOnlyDictionary<string, object>), "options"))
+                .Setup(i => i.Get(typeof(IReadOnlyDictionary<string, object>), $"{ServiceContainer.INTERNAL_SERVICE_NAME_PREFIX}options"))
                 .Returns(new Dictionary<string, object>());
 
             ServiceReference svc = new ServiceReference(Container.Get<IInterface_1>(), mockInjector.Object);
@@ -68,7 +68,7 @@ namespace Solti.Utils.DI.Container.Tests
             Assert.That(Container.Get<IInterface_1>().SetInstance(svc));
             Assert.That(svc.Value, Is.InstanceOf<DecoratedImplementation_1>());
 
-            mockInjector.Verify(i => i.Get(typeof(IReadOnlyDictionary<string, object>), "options"), Times.AtMostOnce);
+            mockInjector.Verify(i => i.Get(typeof(IReadOnlyDictionary<string, object>), $"{ServiceContainer.INTERNAL_SERVICE_NAME_PREFIX}options"), Times.AtMostOnce);
 
             mockCallback1.Verify(_ => _(It.IsAny<IInjector>(), It.IsAny<IInterface_1>()), Times.Once);
             mockCallback2.Verify(_ => _(It.IsAny<IInjector>(), It.IsAny<IInterface_1>()), Times.Once);
@@ -91,7 +91,7 @@ namespace Solti.Utils.DI.Container.Tests
                 .Setup(i => i.Get(It.Is<Type>(t => t == typeof(IInterface_1)), null))
                 .Returns(new Implementation_1_No_Dep());
             mockInjector
-                .Setup(i => i.Get(typeof(IReadOnlyDictionary<string, object>), "options"))
+                .Setup(i => i.Get(typeof(IReadOnlyDictionary<string, object>), $"{ServiceContainer.INTERNAL_SERVICE_NAME_PREFIX}options"))
                 .Returns(new Dictionary<string, object>());
             mockInjector
                 .SetupGet(i => i.UnderlyingContainer)
@@ -165,7 +165,7 @@ namespace Solti.Utils.DI.Container.Tests
                 .Returns(new Implementation_3_IInterface_1_Dependant<int>(null));
 
             mockInjector
-                .Setup(i => i.Get(typeof(IReadOnlyDictionary<string, object>), "options"))
+                .Setup(i => i.Get(typeof(IReadOnlyDictionary<string, object>), $"{ServiceContainer.INTERNAL_SERVICE_NAME_PREFIX}options"))
                 .Returns(new Dictionary<string, object>());
 
             mockInjector
@@ -212,7 +212,7 @@ namespace Solti.Utils.DI.Container.Tests
                 .SetupGet(i => i.UnderlyingContainer)
                 .Returns(Container);
             mockInjector
-                .Setup(i => i.Get(typeof(IReadOnlyDictionary<string, object>), "options"))
+                .Setup(i => i.Get(typeof(IReadOnlyDictionary<string, object>), $"{ServiceContainer.INTERNAL_SERVICE_NAME_PREFIX}options"))
                 .Returns(new Dictionary<string, object>());
 
             ServiceReference svc = new ServiceReference(Container.Get<IInterface_1>("cica"), mockInjector.Object);
@@ -220,7 +220,7 @@ namespace Solti.Utils.DI.Container.Tests
             Assert.That(Container.Get<IInterface_1>("cica").SetInstance(svc));
             Assert.That(svc.Value, Is.TypeOf<DecoratedImplementation_1>());
 
-            mockInjector.Verify(i => i.Get(typeof(IReadOnlyDictionary<string, object>), "options"), Times.AtMostOnce);
+            mockInjector.Verify(i => i.Get(typeof(IReadOnlyDictionary<string, object>), $"{ServiceContainer.INTERNAL_SERVICE_NAME_PREFIX}options"), Times.AtMostOnce);
         }
     }
 }

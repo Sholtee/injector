@@ -36,7 +36,7 @@ namespace Solti.Utils.DI.Injector.Graph.Tests
             Assert.That(svc3.Dependencies.Count, Is.EqualTo(3));
             Assert.NotNull(GetDependency(svc3, typeof(IInterface_1)));
             Assert.NotNull(GetDependency(svc3, typeof(IInterface_2)));
-            Assert.NotNull(GetDependency(svc3, typeof(IReadOnlyDictionary<string, object>), "options")); // implicit fuggoseg
+            Assert.NotNull(GetDependency(svc3, typeof(IReadOnlyDictionary<string, object>), $"{ServiceContainer.INTERNAL_SERVICE_NAME_PREFIX}options")); // implicit fuggoseg
 
             svc2 = GetDependency(svc4, typeof(IInterface_2));
             Assert.That(svc2.RefCount, Is.EqualTo(3));
@@ -46,7 +46,7 @@ namespace Solti.Utils.DI.Injector.Graph.Tests
             svc1 = GetDependency(svc3, typeof(IInterface_1));
             Assert.That(svc1.RefCount, Is.EqualTo(2));
             Assert.That(svc1.Dependencies.Count, Is.EqualTo(1));
-            Assert.NotNull(GetDependency(svc1, typeof(IReadOnlyDictionary<string, object>), "options")); // implicit fuggoseg
+            Assert.NotNull(GetDependency(svc1, typeof(IReadOnlyDictionary<string, object>), $"{ServiceContainer.INTERNAL_SERVICE_NAME_PREFIX}options")); // implicit fuggoseg
 
             return new[] { svc1, svc2, svc3, svc4 };
 

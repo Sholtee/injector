@@ -54,7 +54,7 @@ namespace Solti.Utils.DI.Internals
                 .Instance<IInjector>(this)
                 .Instance<IScopeFactory>(this)
                 .Instance(FGraph)
-                .Instance("options", FOptions);
+                .Instance($"{INTERNAL_SERVICE_NAME_PREFIX}options", FOptions);
 
             this.RegisterServiceEnumerator();
         }

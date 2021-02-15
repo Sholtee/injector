@@ -44,7 +44,7 @@ namespace Solti.Utils.DI.UseCases
                 .SetupGet(i => i.UnderlyingContainer)
                 .Returns(Container);
             mockInjector
-                .Setup(i => i.Get(typeof(IReadOnlyDictionary<string, object>), "options"))
+                .Setup(i => i.Get(typeof(IReadOnlyDictionary<string, object>), $"{ServiceContainer.INTERNAL_SERVICE_NAME_PREFIX}options"))
                 .Returns(new Dictionary<string, object>());
 
             Assert.That(GetService<IDisposable>() is Disposable);

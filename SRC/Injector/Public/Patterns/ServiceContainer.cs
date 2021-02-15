@@ -30,7 +30,7 @@ namespace Solti.Utils.DI
         /// <summary>
         /// Indicates that the entry exists for internal use.
         /// </summary>
-        public const string INTERNAL_SERVICE_NAME_PREFIX = "__";
+        public const string INTERNAL_SERVICE_NAME_PREFIX = "$";
 
         private readonly Dictionary<IServiceId, AbstractServiceEntry> FEntries;
 

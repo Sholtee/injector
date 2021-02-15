@@ -6,10 +6,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-
-using static System.Diagnostics.Debug;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -30,7 +29,7 @@ namespace Solti.Utils.DI.Internals
 
             static IEnumerable EnumeratorFactory(IInjector injector, Type iface)
             {
-                Assert(iface.IsGenericType && iface.GetGenericTypeDefinition() == typeof(IEnumerable<>));
+                Debug.Assert(iface.IsGenericType && iface.GetGenericTypeDefinition() == typeof(IEnumerable<>));
 
                 //
                 // Tenyleges szervizinterface megszerzese (IEnumerable<IService>-bol kell kicsomagolni).
@@ -62,21 +61,24 @@ namespace Solti.Utils.DI.Internals
 
             string?[] GetNames() 
             {
-                Func<AbstractServiceEntry, bool> filter = entry => !entry.IsInternal();
+                Func<AbstractServiceEntry, bool> filter = entry => entry.Interface == serviceInterface;
 
                 if (serviceInterface.IsGenericType)
                 {
                     Type genericIface = serviceInterface.GetGenericTypeDefinition();
-                    filter = filter.And(entry => entry.Interface == serviceInterface || entry.Interface == genericIface);
+                    filter = filter.Or(entry => entry.Interface == genericIface);
                 }
-                else 
-                    filter = filter.And(entry => entry.Interface == serviceInterface);
 
                 return injector
                     .UnderlyingContainer
                     .Where(filter)
                     .Select(entry => entry.Name)
-                    .Distinct() // lezart generikus mellett szerepelhet annak nyitott parja is
+
+                    //
+                    // Lezart generikus mellett szerepelhet annak nyitott parja is
+                    //
+
+                    .Distinct()
 
                     //
                     // Mivel a GetEnumerator() lock-ol, viszont generikus bejegyzes lezarasahoz irni kell a kontenert

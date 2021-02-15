@@ -56,7 +56,7 @@ namespace Solti.Utils.DI.Internals
             // Pool-ban az eredeti factory-t hivjuk
             //
 
-            if (relatedInjector.Get<IReadOnlyDictionary<string, object>>("options").GetValueOrDefault<bool>(PooledLifetime.POOL_SCOPE))
+            if (relatedInjector.Get<IReadOnlyDictionary<string, object>>($"{ServiceContainer.INTERNAL_SERVICE_NAME_PREFIX}options").GetValueOrDefault<bool>(PooledLifetime.POOL_SCOPE))
             {
                 reference.Value = Factory!(relatedInjector, Interface);
             }

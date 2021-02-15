@@ -43,7 +43,7 @@ namespace Solti.Utils.DI.Internals
             Ensure.AreEqual(relatedInjector.UnderlyingContainer, Owner, Resources.INAPPROPRIATE_OWNERSHIP);
 
             int? threshold = relatedInjector
-                .Get<IReadOnlyDictionary<string, object>>("options")
+                .Get<IReadOnlyDictionary<string, object>>($"{ServiceContainer.INTERNAL_SERVICE_NAME_PREFIX}options")
                 .GetValueOrDefault<int?>("MaxSpawnedTransientServices");
 
             if (FInstances.Count >= threshold)
