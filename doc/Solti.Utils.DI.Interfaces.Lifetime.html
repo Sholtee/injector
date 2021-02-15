@@ -53,6 +53,7 @@
   <div classs="implements">
     <h5>Implements</h5>
     <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.icloneable">ICloneable</a></div>
+    <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.icomparable-1">IComparable</a>&lt;<a class="xref" href="Solti.Utils.DI.Interfaces.Lifetime.html">Lifetime</a>&gt;</div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
@@ -82,7 +83,7 @@
   <h6><strong>Assembly</strong>: Solti.Utils.DI.Interfaces.dll</h6>
   <h5 id="Solti_Utils_DI_Interfaces_Lifetime_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract class Lifetime : ICloneable</code></pre>
+    <pre><code class="lang-csharp hljs">public abstract class Lifetime : ICloneable, IComparable&lt;Lifetime&gt;</code></pre>
   </div>
   <h3 id="properties">Properties
   </h3>
@@ -231,6 +232,47 @@
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Solti_Utils_DI_Interfaces_Lifetime_CompareTo_" data-uid="Solti.Utils.DI.Interfaces.Lifetime.CompareTo*"></a>
+  <h4 id="Solti_Utils_DI_Interfaces_Lifetime_CompareTo_Solti_Utils_DI_Interfaces_Lifetime_" data-uid="Solti.Utils.DI.Interfaces.Lifetime.CompareTo(Solti.Utils.DI.Interfaces.Lifetime)">CompareTo(Lifetime)</h4>
+  <div class="markdown level1 summary"><p>See <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.icomparable-1.compareto#System_IComparable_1_CompareTo__0_">CompareTo(T)</a></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract int CompareTo(Lifetime other)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.Lifetime.html">Lifetime</a></td>
+        <td><span class="parametername">other</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
         <td></td>
       </tr>
     </tbody>
@@ -489,50 +531,12 @@
       </tr>
     </tbody>
   </table>
-  <a id="Solti_Utils_DI_Interfaces_Lifetime_IsCompatible_" data-uid="Solti.Utils.DI.Interfaces.Lifetime.IsCompatible*"></a>
-  <h4 id="Solti_Utils_DI_Interfaces_Lifetime_IsCompatible_Solti_Utils_DI_Interfaces_AbstractServiceEntry_" data-uid="Solti.Utils.DI.Interfaces.Lifetime.IsCompatible(Solti.Utils.DI.Interfaces.AbstractServiceEntry)">IsCompatible(AbstractServiceEntry)</h4>
-  <div class="markdown level1 summary"><p>Returns true if the <code data-dev-comment-type="paramref" class="paramref">entry</code> was created by this factory.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract bool IsCompatible(AbstractServiceEntry entry)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html">AbstractServiceEntry</a></td>
-        <td><span class="parametername">entry</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
   <h3 id="implements">Implements</h3>
   <div>
       <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.icloneable">System.ICloneable</a>
+  </div>
+  <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.icomparable-1">System.IComparable&lt;T&gt;</a>
   </div>
   <h3 id="extensionmethods">Extension Methods</h3>
   <div>
