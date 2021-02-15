@@ -16,7 +16,35 @@ namespace Solti.Utils.DI.Internals
     internal partial class Injector : ServiceContainer, IInjector, IScopeFactory
     {
         private readonly IServiceGraph FGraph = new ServiceGraph();
+
         private readonly IReadOnlyDictionary<string, object> FOptions;
+
+        private void CheckBreaksTheRuleOfStrictDI(AbstractServiceEntry requested)
+        {
+            if (!Config.Value.Injector.StrictDI) return;
+
+            AbstractServiceEntry? requestor = FGraph.Requestor?.RelatedServiceEntry; // lehet NULL
+
+            //
+            // Ha a fuggosegi fa gyokerenel vagyunk akkor a metodus nem ertelmezett.
+            //
+
+            if (requestor == null) return;
+
+            //
+            // A kerelmezett szerviz tulajdonosanak egy szinten v feljebb kell lennie mint a kerelmezo 
+            // tulajdonosa h biztosan legalabb annyi ideig letezzen mint a kerelmezo maga.
+            //
+
+            if (!requestor.Owner.IsDescendantOf(requested.Owner))
+            {
+                var ex = new RequestNotAllowedException(Resources.STRICT_DI);
+                ex.Data[nameof(requestor)] = requestor;
+                ex.Data[nameof(requested)] = requested;
+
+                throw ex;
+            }
+        }
 
         public Injector(IServiceContainer parent, IReadOnlyDictionary<string, object>? options) : base(Ensure.Parameter.IsNotNull(parent, nameof(parent)))
         {
@@ -75,6 +103,8 @@ namespace Solti.Utils.DI.Internals
                 //
 
                 AbstractServiceEntry requestedEntry = Get(iface, name, QueryModes.AllowSpecialization | QueryModes.ThrowOnError)!;
+
+                CheckBreaksTheRuleOfStrictDI(requestedEntry);
 
                 IServiceReference requested = Instantiate(requestedEntry);
 

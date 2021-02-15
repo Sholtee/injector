@@ -10,50 +10,27 @@ using System.Threading;
 namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
-    using Properties;
 
     internal partial class Injector
     {
-        private void CheckBreaksTheRuleOfStrictDI(AbstractServiceEntry requested)
-        {
-            if (!Config.Value.Injector.StrictDI) return;
-
-            AbstractServiceEntry? requestor = FGraph.Requestor?.RelatedServiceEntry; // lehet NULL
-
-            //
-            // Ha a fuggosegi fa gyokerenel vagyunk akkor a metodus nem ertelmezett.
-            //
-
-            if (requestor == null) return;
-
-            //
-            // A kerelmezett szerviz tulajdonosanak egy szinten v feljebb kell lennie mint a kerelmezo 
-            // tulajdonosa h biztosan legalabb annyi ideig letezzen mint a kerelmezo maga.
-            //
-
-            if (!requestor.Owner.IsDescendantOf(requested.Owner))
-            {
-                var ex = new RequestNotAllowedException(Resources.STRICT_DI);
-                ex.Data[nameof(requestor)] = requestor;
-                ex.Data[nameof(requested)] = requested;
-
-                throw ex;
-            }
-        }
-
         private IServiceReference Instantiate(AbstractServiceEntry requested)
         {
             //
-            // Kell egyaltalan peldanyositani?
+            // 1. eset: Csak egy peldanyt kell letrehozni (Built == true) amit vki korabban mar megtett,
+            //          akkor visszaadjuk azt.
             //
 
             if (requested.Built)
                 return requested.Instances.Single();
 
             //
-            // Ha nem mi vagyunk a tulajdonosok akkor egy injector-ok kozt ertelmezett bejegyzessel
-            // van dolgunk -> minden muveletnek exkluzivnak kell lennie
-            // A Monitor.IsEntered() azert kell mert pl Singleton eseten a tulaj sosem lehet injector
+            // 2. eset: Uj peldanyt kell letrehozni de nem mi vagyunk a bejegyzes tulajdonosai
+            //          ezert letre kell hozni egy dedikalt injector-t.
+            //          Megjegyzesek:
+            //            - A nem birtokolt bejegyzesek injector peldanyok kozt ertelmezettek ezert
+            //              minden muveletnek exkluzivnak kell lennie.
+            //            - Monitor.IsEntered() azert kell mert ha kontener kezelt elettartamrol van 
+            //              szo akkor az injector (ez az osztaly) sose lehet tulajdonos.
             //
 
             if (UnderlyingContainer.IsDescendantOf(requested.Owner) && !Monitor.IsEntered(requested))
@@ -65,22 +42,26 @@ namespace Solti.Utils.DI.Internals
                 lock (requested)
                 {
                     //
-                    // Singleton szerviz lehet hivva parhuzamosan szoval lehet kozben vki mar beallitotta.
+                    // A lock miatt lehet h kozben vki mar beallitotta.
                     //
 
                     if (requested.Built)
                         return requested.Instances.Single();
 
                     //
-                    // - Az uj injector elettartama meg fogy egyezni a bejegyzes elettartamaval (mivel "requested.Owner"
-                    //   gyermeke).
-                    // - Ennek az injector peldanynak a felszabaditasa nem befolyasolja a szerviz elettartamat.
+                    // Letrehozunk egy dedikalt injector-t aminek a felszabaditasa "requested.Owner" feladata lesz
+                    //   -> Elettartama meg fog egyezni a bejegyzes elettartamaval (container controlled lifetime)
+                    //   -> Ennek az injector peldanynak a felszabaditasa nem befolyasolja a szerviz elettartamat.
                     //
 
                     Injector dedicatedInjector = CreateScope(requested.Owner, FOptions);
 
                     try
                     {
+                        //
+                        // Ugrunk a 3. esetre
+                        //
+
                         return dedicatedInjector.Instantiate(requested);
                     }
                     catch
@@ -91,9 +72,11 @@ namespace Solti.Utils.DI.Internals
                 }
             }
 
-            Debug.Assert(UnderlyingContainer == requested.Owner || UnderlyingContainer.Parent == requested.Owner, "Foreign entry");
+            //
+            // 3. eset: Uj peldanyt kell letrehozni es ez az injector peldany ezt megteheti
+            //
 
-            CheckBreaksTheRuleOfStrictDI(requested);
+            Debug.Assert(UnderlyingContainer == requested.Owner || UnderlyingContainer.Parent == requested.Owner, "Foreign entry");
 
             IServiceReference result = new ServiceReference(requested, this);
 
