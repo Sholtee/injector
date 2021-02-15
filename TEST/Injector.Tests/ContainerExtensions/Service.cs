@@ -47,7 +47,6 @@ namespace Solti.Utils.DI.Container.Tests
             Assert.That(entry, Is.Not.Null);
             Assert.That(entry.Interface, Is.EqualTo(typeof(IInterface_3<int>)));
             Assert.That(entry.Implementation, Is.EqualTo(typeof(Implementation_3_IInterface_1_Dependant<int>)));
-            Assert.That(lifetime.IsCompatible(entry));
         }
 
         [TestCaseSource(nameof(Lifetimes))]

@@ -13,9 +13,14 @@ namespace Solti.Utils.DI.Internals
     using Interfaces;
     using Primitives.Patterns;
 
-    internal sealed partial class PooledLifetime : Lifetime, IHasCapacity
+    internal sealed partial class PooledLifetime : InjectorDotNetLifetime<PooledLifetime>, IHasCapacity
     {
         public static readonly string POOL_SCOPE = $"_{nameof(POOL_SCOPE)}";
+
+        public PooledLifetime() : base(bindTo: () => Pooled, precedence: 20) { }
+
+        [ModuleInitializer]
+        public static void Setup() => Bind();
 
         public static string GetPoolName(Type iface, string? name) =>
             //
@@ -57,9 +62,6 @@ namespace Solti.Utils.DI.Internals
             owner
         );
 
-        [ModuleInitializer]
-        public static void Setup() => Pooled = new PooledLifetime();
-
         public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Type implementation, IServiceContainer owner, params Func<object, Type, object>[] customConverters)
         {
             yield return GetPoolEntry(iface, name, owner);
@@ -78,9 +80,15 @@ namespace Solti.Utils.DI.Internals
             yield return new PooledServiceEntrySupportsProxying(iface, name, factory, owner, new Func<object, Type, object>[] { GetEffectiveValue }.Concat(customConverters).ToArray());
         }
 
-        public override bool IsCompatible(AbstractServiceEntry entry) => entry is PooledServiceEntry; // TODO: Pool bejegyzessel mi legyen?
+        public override int CompareTo(Lifetime other) => other is PooledLifetime
+            //
+            // Ez itt bar megtori a szabalyt amikent az IComparable-t implementalni kene meg is szukseges
+            // mivel pooled szerviznek nem lehet pooled fuggosege (a fuggoseg sosem kerulne vissza a szulo
+            // pool-ba)
+            //
 
-        public override string ToString() => nameof(Pooled);
+            ? -1
+            : base.CompareTo(other);
 
         public override object Clone() => new PooledLifetime
         {

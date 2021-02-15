@@ -11,10 +11,12 @@ namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
 
-    internal sealed class SingletonLifetime : Lifetime
+    internal sealed class SingletonLifetime : InjectorDotNetLifetime<SingletonLifetime>
     {
+        public SingletonLifetime() : base(bindTo: () => Singleton, precedence: 30) { }
+
         [ModuleInitializer]
-        public static void Setup() => Singleton = new SingletonLifetime();
+        public static void Setup() => Bind();
 
         public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Type implementation, IServiceContainer owner, params Func<object, Type, object>[] customConverters)
         {
@@ -30,9 +32,5 @@ namespace Solti.Utils.DI.Internals
         {
             yield return new SingletonServiceEntry(iface, name, factory, owner, customConverters);
         }
-
-        public override bool IsCompatible(AbstractServiceEntry entry) => entry is SingletonServiceEntry;
-
-        public override string ToString() => nameof(Singleton);
     }
 }

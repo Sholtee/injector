@@ -33,6 +33,15 @@ namespace Solti.Utils.DI.Injector.Tests
                 yield return Lifetime.Scoped;
             }
         }
+
+        public static IEnumerable<Lifetime> ContainerControlledLifetimes
+        {
+            get
+            {
+                yield return Lifetime.Pooled;
+                yield return Lifetime.Singleton;
+            }
+        }
     }
 
     [TestFixture]

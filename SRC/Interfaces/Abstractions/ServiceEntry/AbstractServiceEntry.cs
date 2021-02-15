@@ -87,7 +87,7 @@ namespace Solti.Utils.DI.Interfaces
         public Type? Implementation { get; }
 
         /// <summary>
-        /// The related <see cref="Lifetime"/>.
+        /// The related <see cref="Interfaces.Lifetime"/>.
         /// </summary>
         public virtual Lifetime? Lifetime { get; }
 

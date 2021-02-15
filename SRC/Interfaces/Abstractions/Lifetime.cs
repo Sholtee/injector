@@ -13,7 +13,7 @@ namespace Solti.Utils.DI.Interfaces
     /// <summary>
     /// Describes the lifetime of a service.
     /// </summary>
-    public abstract class Lifetime: ICloneable
+    public abstract class Lifetime: ICloneable, IComparable<Lifetime>
     {
         private static Lifetime? 
             FSingleton,
@@ -51,7 +51,12 @@ namespace Solti.Utils.DI.Interfaces
         /// <summary>
         /// See <see cref="ICloneable.Clone"/>
         /// </summary>
-        public virtual object Clone() => throw new NotImplementedException(); 
+        public virtual object Clone() => throw new NotImplementedException();
+
+        /// <summary>
+        /// See <see cref="IComparable{Lifetime}.CompareTo(Lifetime)"/>
+        /// </summary>
+        public abstract int CompareTo(Lifetime other);
 
         /// <summary>
         /// Creates a service entry from the given <paramref name="implementation"/>.
@@ -72,10 +77,5 @@ namespace Solti.Utils.DI.Interfaces
         /// Creates a service entry from the given <paramref name="value"/>.
         /// </summary>
         public virtual IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, object value, bool externallyOwned, IServiceContainer owner, params Func<object, Type, object>[] customConverters) => throw new NotSupportedException();
-
-        /// <summary>
-        /// Returns true if the <paramref name="entry"/> was created by this factory.
-        /// </summary>
-        public abstract bool IsCompatible(AbstractServiceEntry entry);
     }
 }

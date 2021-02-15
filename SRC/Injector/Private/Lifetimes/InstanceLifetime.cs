@@ -11,18 +11,16 @@ namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
 
-    internal sealed class InstanceLifetime : Lifetime
+    internal sealed class InstanceLifetime : InjectorDotNetLifetime<InstanceLifetime>
     {
+        public InstanceLifetime(): base(bindTo: () => Instance, precedence: 40) {}
+
         [ModuleInitializer]
-        public static void Setup() => Instance = new InstanceLifetime();
+        public static void Setup() => Bind();
 
         public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, object value, bool externallyOwned, IServiceContainer owner, params Func<object, Type, object>[] customConverters)
         {
             yield return new InstanceServiceEntry(iface, name, value, externallyOwned, owner, customConverters);
         }
-
-        public override bool IsCompatible(AbstractServiceEntry entry) => entry is InstanceServiceEntry;
-
-        public override string ToString() => nameof(Instance);
     }
 }

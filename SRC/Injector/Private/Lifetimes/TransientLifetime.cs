@@ -11,10 +11,12 @@ namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
 
-    internal sealed class TransientLifetime : Lifetime
+    internal sealed class TransientLifetime : InjectorDotNetLifetime<TransientLifetime>
     {
+        public TransientLifetime() : base(bindTo: () => Transient, precedence: 10) { }
+
         [ModuleInitializer]
-        public static void Setup() => Transient = new TransientLifetime();
+        public static void Setup() => Bind();
 
         public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Type implementation, IServiceContainer owner, params Func<object, Type, object>[] customConverters)
         {
@@ -30,9 +32,5 @@ namespace Solti.Utils.DI.Internals
         {
             yield return new TransientServiceEntry(iface, name, factory, owner, customConverters);
         }
-
-        public override bool IsCompatible(AbstractServiceEntry entry) => entry is TransientServiceEntry;
-
-        public override string ToString() => nameof(Transient);
     }
 }

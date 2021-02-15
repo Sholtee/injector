@@ -32,11 +32,10 @@ namespace Solti.Utils.DI.Internals
             if (requestor == null) return;
 
             //
-            // A kerelmezett szerviz tulajdonosanak egy szinten v feljebb kell lennie mint a kerelmezo 
-            // tulajdonosa h biztosan legalabb annyi ideig letezzen mint a kerelmezo maga.
+            // A kerelmezett szerviznek legalabb addig kell leteznie mint a kerelmezo szerviznek.
             //
 
-            if (!requestor.Owner.IsDescendantOf(requested.Owner))
+            if (requested.Lifetime!.CompareTo(requestor.Lifetime!) < 0)
             {
                 var ex = new RequestNotAllowedException(Resources.STRICT_DI);
                 ex.Data[nameof(requestor)] = requestor;

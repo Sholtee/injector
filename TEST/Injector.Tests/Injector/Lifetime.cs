@@ -560,7 +560,7 @@ namespace Solti.Utils.DI.Injector.Tests
         }
 
         [Test]
-        public void Lifetime_StrictDI_LegalCases1(
+        public void Lifetime_StrictDI_LegalCases2(
             [Values(true, false)] bool useChildContainer,
             [ValueSource(nameof(InjectorControlledLifetimes))] Lifetime dependant)
         {
@@ -586,7 +586,7 @@ namespace Solti.Utils.DI.Injector.Tests
         }
 
         [Test]
-        public void Lifetime_StrictDI_LegalCases2([Values(true, false)] bool useChildContainer)
+        public void Lifetime_StrictDI_LegalCases3([Values(true, false)] bool useChildContainer)
         {
             Config.Value.Injector.StrictDI = true;
 
@@ -610,15 +610,17 @@ namespace Solti.Utils.DI.Injector.Tests
         }
 
         [Test]
-        public void Lifetime_StrictDI_IllegalCases(
+        public void Lifetime_StrictDI_IllegalCases1(
             [Values(true, false)] bool useChildContainer,
-            [ValueSource(nameof(InjectorControlledLifetimes))] Lifetime dependency) 
+            [ValueSource(nameof(InjectorControlledLifetimes))] Lifetime dependency,
+            [ValueSource(nameof(ContainerControlledLifetimes))] Lifetime requestor,
+            [Values(true, false)] bool strictDI) 
         {
-            Config.Value.Injector.StrictDI = true;
+            Config.Value.Injector.StrictDI = strictDI;
 
             Container
                 .Service<IInterface_1, Implementation_1_No_Dep>(dependency)
-                .Service<IInterface_2, Implementation_2_IInterface_1_Dependant>(Lifetime.Singleton);
+                .Service<IInterface_2, Implementation_2_IInterface_1_Dependant>(requestor);
 
             IServiceContainer sourceContainer = useChildContainer ? Container.CreateChild() : Container;
 
@@ -630,7 +632,41 @@ namespace Solti.Utils.DI.Injector.Tests
             {
                 using (IInjector injector = sourceContainer.CreateInjector())
                 {
-                    Assert.Throws<RequestNotAllowedException>(() => injector.Get<IInterface_2>());
+                    TestDelegate cb = () => injector.Get<IInterface_2>();
+
+                    if (strictDI)
+                        Assert.Throws<RequestNotAllowedException>(cb);
+                    else
+                        Assert.DoesNotThrow(cb);
+                }
+            }
+        }
+
+        [Test]
+        public void Lifetime_StrictDI_IllegalCases2([Values(true, false)] bool useChildContainer, [Values(true, false)] bool strictDI)
+        {
+            Config.Value.Injector.StrictDI = strictDI;
+
+            Container
+                .Service<IInterface_1, Implementation_1_No_Dep>(Lifetime.Pooled)
+                .Service<IInterface_2, Implementation_2_IInterface_1_Dependant>(Lifetime.Pooled);
+
+            IServiceContainer sourceContainer = useChildContainer ? Container.CreateChild() : Container;
+
+            //
+            // Ket kulonallo injectort hozzunk letre.
+            //
+
+            for (int i = 0; i < 2; i++)
+            {
+                using (IInjector injector = sourceContainer.CreateInjector())
+                {
+                    TestDelegate cb = () => injector.Get<IInterface_2>();
+
+                    if (strictDI)
+                        Assert.Throws<RequestNotAllowedException>(cb);
+                    else
+                        Assert.DoesNotThrow(cb);
                 }
             }
         }
