@@ -14,12 +14,26 @@ namespace Solti.Utils.DI.Perf
     using static Consts;
 
     using Interfaces;
+    using Internals;
     using Primitives.Patterns;
     using Proxy;   
 
     [MemoryDiagnoser]
     public class ServiceEntry
     {
+        static ServiceEntry()
+        {
+            //
+            // Ugy tunik a modul inicializalok nem futnak ha a kodunkat a BenchmarkDotNet forditja
+            //
+
+            InstanceLifetime.Setup();
+            SingletonLifetime.Setup();
+            TransientLifetime.Setup();
+            ScopedLifetime.Setup();
+            PooledLifetime.Setup();
+        }
+
         public IEnumerable<Lifetime> Lifetimes
         {
             get
