@@ -35,7 +35,15 @@ namespace Solti.Utils.DI.Internals
             interceptor = await ProxyFactory.GenerateProxyTypeAsync(iface, interceptor);
 
             ConstructorInfo ctor = interceptor.GetApplicableConstructor();
-            string targetName = ctor.GetParameters().SingleOrDefault(para => para.ParameterType == iface)?.Name ?? "target";
+
+            ParameterInfo[] compatibleParamz = ctor
+                .GetParameters()
+                .Where(para => para.ParameterType == iface)
+                .ToArray();
+
+            string targetName = compatibleParamz.Length == 1
+                ? compatibleParamz[0].Name
+                : "target";
 
             Func<IInjector, IReadOnlyDictionary<string, object?>, object> factory = Resolver.GetExtended(ctor);
 
