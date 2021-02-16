@@ -30,6 +30,22 @@ namespace Solti.Utils.DI.Internals
             setter.Factory = (injector, type) => decorator(injector, type, oldFactory(injector, type));
         }
 
+        private static async Task<Func<IInjector, Type, object, object>> BuildDelegate(Type iface, Type interceptor)
+        {
+            interceptor = await ProxyFactory.GenerateProxyTypeAsync(iface, interceptor);
+
+            Func<IInjector, IReadOnlyDictionary<string, object?>, object> factory = Resolver.GetExtended(interceptor);
+
+            return (IInjector injector, Type iface, object instance) => factory(injector, new Dictionary<string, object?>
+            {
+                //
+                // TODO: Es mi van ha nem "target" a parameter neve???
+                //
+
+                {"target", instance}
+            });
+        }
+
         //
         // Tudom h az "iface"-rol lekerdezhetnem az aspektusokat, viszont akkor sokkal
         // nehezebb lenne tesztelni.
@@ -48,22 +64,10 @@ namespace Solti.Utils.DI.Internals
             {
                 return aspect.Kind switch
                 {
-                    AspectKind.Service => await BuildDelegate(aspect.GetInterceptorType(iface)),
+                    AspectKind.Service => await BuildDelegate(iface, aspect.GetInterceptorType(iface)),
                     AspectKind.Factory => aspect.GetInterceptor,
                     _ => throw new NotSupportedException()
                 };
-            }
-
-            async Task<Func<IInjector, Type, object, object>> BuildDelegate(Type interceptor) 
-            {
-                interceptor = await ProxyFactory.GenerateProxyTypeAsync(iface, interceptor);
-
-                Func<IInjector, IReadOnlyDictionary<string, object?>, object> factory = Resolver.GetExtended(interceptor);
-
-                return (IInjector injector, Type iface, object instance) => factory(injector, new Dictionary<string, object?>
-                {
-                    {"target", instance}
-                });
             }
         }
 
@@ -79,6 +83,7 @@ namespace Solti.Utils.DI.Internals
 
             //
             // Ha van az interface-en aspektus de a bejegyzes nem teszi lehetove a hasznalatat akkor kivetel
+            // (megjegyzes: nyilt generikusoknak, peldany bejegyzeseknek biztosan nincs Factory-ja).
             //
 
             if (entry is not ISupportsProxying || entry.Factory == null)
@@ -107,6 +112,20 @@ namespace Solti.Utils.DI.Internals
                 .Aggregate(
                     current, 
                     (object current, Func<IInjector, Type, object, object> decorator) => decorator(injector, iface, current)));
+        }
+
+        public static void ApplyInterceptor(this AbstractServiceEntry entry, Type interceptor)
+        {
+            if (entry is not ISupportsProxying || entry.Factory == null)
+                throw new InvalidOperationException(Resources.CANT_PROXY);
+
+            Task<Func<IInjector, Type, object, object>> realDelegate = BuildDelegate
+            (
+                entry.Interface,
+                interceptor
+            );
+
+            entry.ApplyProxy((IInjector injector, Type iface, object current) => realDelegate.Result.Invoke(injector, iface, current));
         }
     }
 }
