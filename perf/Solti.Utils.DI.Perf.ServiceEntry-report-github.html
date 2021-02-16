@@ -41,7 +41,8 @@
 BenchmarkDotNet=v0.12.1, OS=Windows 10.0.17763.1098 (1809/October2018Update/Redstone5)
 Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 .NET Core SDK=5.0.103
-  [Host] : .NET Core 3.1.12 (CoreCLR 4.700.21.6504, CoreFX 4.700.21.6905), X64 RyuJIT
+  [Host]     : .NET Core 3.1.12 (CoreCLR 4.700.21.6504, CoreFX 4.700.21.6905), X64 RyuJIT
+  DefaultJob : .NET Core 3.1.12 (CoreCLR 4.700.21.6504, CoreFX 4.700.21.6905), X64 RyuJIT
 
 </code></pre><table>
 <thead>
@@ -50,68 +51,104 @@ Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 <th>Lifetime</th>
 <th style="text-align:right">Mean</th>
 <th style="text-align:right">Error</th>
+<th style="text-align:right">StdDev</th>
+<th style="text-align:right">Gen 0</th>
+<th style="text-align:right">Gen 1</th>
+<th style="text-align:right">Gen 2</th>
+<th style="text-align:right">Allocated</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><strong>Service</strong></td>
 <td><strong>Pooled</strong></td>
-<td style="text-align:right"><strong>NA</strong></td>
-<td style="text-align:right"><strong>NA</strong></td>
+<td style="text-align:right"><strong>5,367.0 ns</strong></td>
+<td style="text-align:right"><strong>79.32 ns</strong></td>
+<td style="text-align:right"><strong>70.32 ns</strong></td>
+<td style="text-align:right"><strong>0.1094</strong></td>
+<td style="text-align:right"><strong>0.0547</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>2022 B</strong></td>
 </tr>
 <tr>
 <td>Factory</td>
 <td>Pooled</td>
-<td style="text-align:right">NA</td>
-<td style="text-align:right">NA</td>
+<td style="text-align:right">5,295.8 ns</td>
+<td style="text-align:right">53.00 ns</td>
+<td style="text-align:right">49.57 ns</td>
+<td style="text-align:right">0.0938</td>
+<td style="text-align:right">0.0469</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">1846 B</td>
 </tr>
 <tr>
 <td><strong>Service</strong></td>
 <td><strong>Scoped</strong></td>
-<td style="text-align:right"><strong>NA</strong></td>
-<td style="text-align:right"><strong>NA</strong></td>
+<td style="text-align:right"><strong>1,110.2 ns</strong></td>
+<td style="text-align:right"><strong>14.42 ns</strong></td>
+<td style="text-align:right"><strong>13.49 ns</strong></td>
+<td style="text-align:right"><strong>0.0273</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>527 B</strong></td>
 </tr>
 <tr>
 <td>Factory</td>
 <td>Scoped</td>
-<td style="text-align:right">NA</td>
-<td style="text-align:right">NA</td>
+<td style="text-align:right">814.6 ns</td>
+<td style="text-align:right">8.59 ns</td>
+<td style="text-align:right">7.61 ns</td>
+<td style="text-align:right">0.0186</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">351 B</td>
 </tr>
 <tr>
 <td><strong>Service</strong></td>
 <td><strong>Singleton</strong></td>
-<td style="text-align:right"><strong>NA</strong></td>
-<td style="text-align:right"><strong>NA</strong></td>
+<td style="text-align:right"><strong>1,865.8 ns</strong></td>
+<td style="text-align:right"><strong>37.28 ns</strong></td>
+<td style="text-align:right"><strong>56.93 ns</strong></td>
+<td style="text-align:right"><strong>0.0313</strong></td>
+<td style="text-align:right"><strong>0.0156</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>591 B</strong></td>
 </tr>
 <tr>
 <td>Factory</td>
 <td>Singleton</td>
-<td style="text-align:right">NA</td>
-<td style="text-align:right">NA</td>
+<td style="text-align:right">1,499.8 ns</td>
+<td style="text-align:right">29.10 ns</td>
+<td style="text-align:right">42.65 ns</td>
+<td style="text-align:right">0.0215</td>
+<td style="text-align:right">0.0098</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">415 B</td>
 </tr>
 <tr>
 <td><strong>Service</strong></td>
 <td><strong>Transient</strong></td>
-<td style="text-align:right"><strong>NA</strong></td>
-<td style="text-align:right"><strong>NA</strong></td>
+<td style="text-align:right"><strong>1,120.2 ns</strong></td>
+<td style="text-align:right"><strong>15.11 ns</strong></td>
+<td style="text-align:right"><strong>14.13 ns</strong></td>
+<td style="text-align:right"><strong>0.0254</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>495 B</strong></td>
 </tr>
 <tr>
 <td>Factory</td>
 <td>Transient</td>
-<td style="text-align:right">NA</td>
-<td style="text-align:right">NA</td>
+<td style="text-align:right">801.4 ns</td>
+<td style="text-align:right">4.42 ns</td>
+<td style="text-align:right">3.45 ns</td>
+<td style="text-align:right">0.0166</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">319 B</td>
 </tr>
 </tbody>
 </table>
-<p>Benchmarks with issues:
-  ServiceEntry.Service: DefaultJob [Lifetime=Pooled]
-  ServiceEntry.Factory: DefaultJob [Lifetime=Pooled]
-  ServiceEntry.Service: DefaultJob [Lifetime=Scoped]
-  ServiceEntry.Factory: DefaultJob [Lifetime=Scoped]
-  ServiceEntry.Service: DefaultJob [Lifetime=Singleton]
-  ServiceEntry.Factory: DefaultJob [Lifetime=Singleton]
-  ServiceEntry.Service: DefaultJob [Lifetime=Transient]
-  ServiceEntry.Factory: DefaultJob [Lifetime=Transient]</p>
 </article>
           </div>
           
