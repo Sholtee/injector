@@ -34,15 +34,14 @@ namespace Solti.Utils.DI.Internals
         {
             interceptor = await ProxyFactory.GenerateProxyTypeAsync(iface, interceptor);
 
-            Func<IInjector, IReadOnlyDictionary<string, object?>, object> factory = Resolver.GetExtended(interceptor);
+            ConstructorInfo ctor = interceptor.GetApplicableConstructor();
+            string targetName = ctor.GetParameters().SingleOrDefault(para => para.ParameterType == iface)?.Name ?? "target";
+
+            Func<IInjector, IReadOnlyDictionary<string, object?>, object> factory = Resolver.GetExtended(ctor);
 
             return (IInjector injector, Type iface, object instance) => factory(injector, new Dictionary<string, object?>
             {
-                //
-                // TODO: Es mi van ha nem "target" a parameter neve???
-                //
-
-                {"target", instance}
+                {targetName, instance}
             });
         }
 
