@@ -102,11 +102,6 @@ namespace Solti.Utils.DI.Perf
         [Benchmark(OperationsPerInvoke = OperationsPerInvoke)]
         public void NonGeneric()
         {
-            //
-            // "using" kell mindenkepp h a szulo kontenerunket ne arasszuk el nem hasznalt peldanyokkal
-            // viszont az "UnsafeInjector.UnsafeClear()" hivas miatt nem tart sokaig.
-            //
-
             using (IInjector injector = CreateInjector())
             {
                 for (int i = 0; i < OperationsPerInvoke; i++)
