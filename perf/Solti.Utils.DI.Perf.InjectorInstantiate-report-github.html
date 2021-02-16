@@ -41,7 +41,8 @@
 BenchmarkDotNet=v0.12.1, OS=Windows 10.0.17763.1098 (1809/October2018Update/Redstone5)
 Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 .NET Core SDK=5.0.103
-  [Host] : .NET Core 3.1.12 (CoreCLR 4.700.21.6504, CoreFX 4.700.21.6905), X64 RyuJIT
+  [Host]     : .NET Core 3.1.12 (CoreCLR 4.700.21.6504, CoreFX 4.700.21.6905), X64 RyuJIT
+  DefaultJob : .NET Core 3.1.12 (CoreCLR 4.700.21.6504, CoreFX 4.700.21.6905), X64 RyuJIT
 
 </code></pre><table>
 <thead>
@@ -50,40 +51,60 @@ Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 <th>DependencyLifetime</th>
 <th style="text-align:right">Mean</th>
 <th style="text-align:right">Error</th>
+<th style="text-align:right">StdDev</th>
+<th style="text-align:right">Gen 0</th>
+<th style="text-align:right">Gen 1</th>
+<th style="text-align:right">Gen 2</th>
+<th style="text-align:right">Allocated</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><strong>Instantiate</strong></td>
 <td><strong>Pooled</strong></td>
-<td style="text-align:right"><strong>NA</strong></td>
-<td style="text-align:right"><strong>NA</strong></td>
+<td style="text-align:right"><strong>2.144 μs</strong></td>
+<td style="text-align:right"><strong>0.0297 μs</strong></td>
+<td style="text-align:right"><strong>0.0278 μs</strong></td>
+<td style="text-align:right"><strong>0.0586</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>1.1 KB</strong></td>
 </tr>
 <tr>
 <td><strong>Instantiate</strong></td>
 <td><strong>Scoped</strong></td>
-<td style="text-align:right"><strong>NA</strong></td>
-<td style="text-align:right"><strong>NA</strong></td>
+<td style="text-align:right"><strong>2.143 μs</strong></td>
+<td style="text-align:right"><strong>0.0299 μs</strong></td>
+<td style="text-align:right"><strong>0.0265 μs</strong></td>
+<td style="text-align:right"><strong>0.0586</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>1.07 KB</strong></td>
 </tr>
 <tr>
 <td><strong>Instantiate</strong></td>
 <td><strong>Singleton</strong></td>
-<td style="text-align:right"><strong>NA</strong></td>
-<td style="text-align:right"><strong>NA</strong></td>
+<td style="text-align:right"><strong>2.134 μs</strong></td>
+<td style="text-align:right"><strong>0.0309 μs</strong></td>
+<td style="text-align:right"><strong>0.0274 μs</strong></td>
+<td style="text-align:right"><strong>0.0625</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>1.13 KB</strong></td>
 </tr>
 <tr>
 <td><strong>Instantiate</strong></td>
 <td><strong>Transient</strong></td>
-<td style="text-align:right"><strong>NA</strong></td>
-<td style="text-align:right"><strong>NA</strong></td>
+<td style="text-align:right"><strong>6.045 μs</strong></td>
+<td style="text-align:right"><strong>0.0936 μs</strong></td>
+<td style="text-align:right"><strong>0.0875 μs</strong></td>
+<td style="text-align:right"><strong>0.1563</strong></td>
+<td style="text-align:right"><strong>0.0391</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>2.89 KB</strong></td>
 </tr>
 </tbody>
 </table>
-<p>Benchmarks with issues:
-  InjectorInstantiate.Instantiate: DefaultJob [DependencyLifetime=Pooled]
-  InjectorInstantiate.Instantiate: DefaultJob [DependencyLifetime=Scoped]
-  InjectorInstantiate.Instantiate: DefaultJob [DependencyLifetime=Singleton]
-  InjectorInstantiate.Instantiate: DefaultJob [DependencyLifetime=Transient]</p>
 </article>
           </div>
           

@@ -41,7 +41,8 @@
 BenchmarkDotNet=v0.12.1, OS=Windows 10.0.17763.1098 (1809/October2018Update/Redstone5)
 Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 .NET Core SDK=5.0.103
-  [Host] : .NET Core 3.1.12 (CoreCLR 4.700.21.6504, CoreFX 4.700.21.6905), X64 RyuJIT
+  [Host]     : .NET Core 3.1.12 (CoreCLR 4.700.21.6504, CoreFX 4.700.21.6905), X64 RyuJIT
+  DefaultJob : .NET Core 3.1.12 (CoreCLR 4.700.21.6504, CoreFX 4.700.21.6905), X64 RyuJIT
 
 </code></pre><table>
 <thead>
@@ -51,6 +52,11 @@ Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 <th>DependantLifetime</th>
 <th style="text-align:right">Mean</th>
 <th style="text-align:right">Error</th>
+<th style="text-align:right">StdDev</th>
+<th style="text-align:right">Gen 0</th>
+<th style="text-align:right">Gen 1</th>
+<th style="text-align:right">Gen 2</th>
+<th style="text-align:right">Allocated</th>
 </tr>
 </thead>
 <tbody>
@@ -58,517 +64,772 @@ Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 <td><strong>NonGeneric</strong></td>
 <td><strong>Pooled</strong></td>
 <td><strong>Pooled</strong></td>
-<td style="text-align:right"><strong>NA</strong></td>
-<td style="text-align:right"><strong>NA</strong></td>
+<td style="text-align:right"><strong>1.234 μs</strong></td>
+<td style="text-align:right"><strong>0.0215 μs</strong></td>
+<td style="text-align:right"><strong>0.0230 μs</strong></td>
+<td style="text-align:right"><strong>0.0371</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>703 B</strong></td>
 </tr>
 <tr>
 <td>Generic</td>
 <td>Pooled</td>
 <td>Pooled</td>
-<td style="text-align:right">NA</td>
-<td style="text-align:right">NA</td>
+<td style="text-align:right">1.262 μs</td>
+<td style="text-align:right">0.0250 μs</td>
+<td style="text-align:right">0.0288 μs</td>
+<td style="text-align:right">0.0371</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">707 B</td>
 </tr>
 <tr>
 <td>Lazy</td>
 <td>Pooled</td>
 <td>Pooled</td>
-<td style="text-align:right">NA</td>
-<td style="text-align:right">NA</td>
+<td style="text-align:right">1.258 μs</td>
+<td style="text-align:right">0.0147 μs</td>
+<td style="text-align:right">0.0130 μs</td>
+<td style="text-align:right">0.0371</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">703 B</td>
 </tr>
 <tr>
 <td>Enumerable</td>
 <td>Pooled</td>
 <td>Pooled</td>
-<td style="text-align:right">NA</td>
-<td style="text-align:right">NA</td>
+<td style="text-align:right">1.369 μs</td>
+<td style="text-align:right">0.0248 μs</td>
+<td style="text-align:right">0.0314 μs</td>
+<td style="text-align:right">0.0352</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">673 B</td>
 </tr>
 <tr>
 <td><strong>NonGeneric</strong></td>
 <td><strong>Pooled</strong></td>
 <td><strong>Scoped</strong></td>
-<td style="text-align:right"><strong>NA</strong></td>
-<td style="text-align:right"><strong>NA</strong></td>
+<td style="text-align:right"><strong>1.250 μs</strong></td>
+<td style="text-align:right"><strong>0.0240 μs</strong></td>
+<td style="text-align:right"><strong>0.0224 μs</strong></td>
+<td style="text-align:right"><strong>0.0352</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>674 B</strong></td>
 </tr>
 <tr>
 <td>Generic</td>
 <td>Pooled</td>
 <td>Scoped</td>
-<td style="text-align:right">NA</td>
-<td style="text-align:right">NA</td>
+<td style="text-align:right">1.281 μs</td>
+<td style="text-align:right">0.0190 μs</td>
+<td style="text-align:right">0.0177 μs</td>
+<td style="text-align:right">0.0352</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">678 B</td>
 </tr>
 <tr>
 <td>Lazy</td>
 <td>Pooled</td>
 <td>Scoped</td>
-<td style="text-align:right">NA</td>
-<td style="text-align:right">NA</td>
+<td style="text-align:right">1.242 μs</td>
+<td style="text-align:right">0.0149 μs</td>
+<td style="text-align:right">0.0140 μs</td>
+<td style="text-align:right">0.0352</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">665 B</td>
 </tr>
 <tr>
 <td>Enumerable</td>
 <td>Pooled</td>
 <td>Scoped</td>
-<td style="text-align:right">NA</td>
-<td style="text-align:right">NA</td>
+<td style="text-align:right">1.280 μs</td>
+<td style="text-align:right">0.0111 μs</td>
+<td style="text-align:right">0.0103 μs</td>
+<td style="text-align:right">0.0352</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">671 B</td>
 </tr>
 <tr>
 <td><strong>NonGeneric</strong></td>
 <td><strong>Pooled</strong></td>
 <td><strong>Singleton</strong></td>
-<td style="text-align:right"><strong>NA</strong></td>
-<td style="text-align:right"><strong>NA</strong></td>
+<td style="text-align:right"><strong>1.278 μs</strong></td>
+<td style="text-align:right"><strong>0.0105 μs</strong></td>
+<td style="text-align:right"><strong>0.0098 μs</strong></td>
+<td style="text-align:right"><strong>0.0391</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>734 B</strong></td>
 </tr>
 <tr>
 <td>Generic</td>
 <td>Pooled</td>
 <td>Singleton</td>
-<td style="text-align:right">NA</td>
-<td style="text-align:right">NA</td>
+<td style="text-align:right">1.218 μs</td>
+<td style="text-align:right">0.0175 μs</td>
+<td style="text-align:right">0.0155 μs</td>
+<td style="text-align:right">0.0391</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">734 B</td>
 </tr>
 <tr>
 <td>Lazy</td>
 <td>Pooled</td>
 <td>Singleton</td>
-<td style="text-align:right">NA</td>
-<td style="text-align:right">NA</td>
+<td style="text-align:right">1.301 μs</td>
+<td style="text-align:right">0.0127 μs</td>
+<td style="text-align:right">0.0113 μs</td>
+<td style="text-align:right">0.0391</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">734 B</td>
 </tr>
 <tr>
 <td>Enumerable</td>
 <td>Pooled</td>
 <td>Singleton</td>
-<td style="text-align:right">NA</td>
-<td style="text-align:right">NA</td>
+<td style="text-align:right">1.324 μs</td>
+<td style="text-align:right">0.0146 μs</td>
+<td style="text-align:right">0.0136 μs</td>
+<td style="text-align:right">0.0352</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">669 B</td>
 </tr>
 <tr>
 <td><strong>NonGeneric</strong></td>
 <td><strong>Pooled</strong></td>
 <td><strong>Transient</strong></td>
-<td style="text-align:right"><strong>NA</strong></td>
-<td style="text-align:right"><strong>NA</strong></td>
+<td style="text-align:right"><strong>5.909 μs</strong></td>
+<td style="text-align:right"><strong>0.0452 μs</strong></td>
+<td style="text-align:right"><strong>0.0401 μs</strong></td>
+<td style="text-align:right"><strong>0.1719</strong></td>
+<td style="text-align:right"><strong>0.0547</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>3159 B</strong></td>
 </tr>
 <tr>
 <td>Generic</td>
 <td>Pooled</td>
 <td>Transient</td>
-<td style="text-align:right">NA</td>
-<td style="text-align:right">NA</td>
+<td style="text-align:right">5.995 μs</td>
+<td style="text-align:right">0.0721 μs</td>
+<td style="text-align:right">0.0675 μs</td>
+<td style="text-align:right">0.1719</td>
+<td style="text-align:right">0.0469</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">3163 B</td>
 </tr>
 <tr>
 <td>Lazy</td>
 <td>Pooled</td>
 <td>Transient</td>
-<td style="text-align:right">NA</td>
-<td style="text-align:right">NA</td>
+<td style="text-align:right">5.501 μs</td>
+<td style="text-align:right">0.0380 μs</td>
+<td style="text-align:right">0.0318 μs</td>
+<td style="text-align:right">0.1484</td>
+<td style="text-align:right">0.0625</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">2784 B</td>
 </tr>
 <tr>
 <td>Enumerable</td>
 <td>Pooled</td>
 <td>Transient</td>
-<td style="text-align:right">NA</td>
-<td style="text-align:right">NA</td>
+<td style="text-align:right">1.345 μs</td>
+<td style="text-align:right">0.0129 μs</td>
+<td style="text-align:right">0.0107 μs</td>
+<td style="text-align:right">0.0352</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">671 B</td>
 </tr>
 <tr>
 <td><strong>NonGeneric</strong></td>
 <td><strong>Scoped</strong></td>
 <td><strong>Pooled</strong></td>
-<td style="text-align:right"><strong>NA</strong></td>
-<td style="text-align:right"><strong>NA</strong></td>
+<td style="text-align:right"><strong>1.183 μs</strong></td>
+<td style="text-align:right"><strong>0.0100 μs</strong></td>
+<td style="text-align:right"><strong>0.0094 μs</strong></td>
+<td style="text-align:right"><strong>0.0371</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>702 B</strong></td>
 </tr>
 <tr>
 <td>Generic</td>
 <td>Scoped</td>
 <td>Pooled</td>
-<td style="text-align:right">NA</td>
-<td style="text-align:right">NA</td>
+<td style="text-align:right">1.222 μs</td>
+<td style="text-align:right">0.0085 μs</td>
+<td style="text-align:right">0.0071 μs</td>
+<td style="text-align:right">0.0371</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">706 B</td>
 </tr>
 <tr>
 <td>Lazy</td>
 <td>Scoped</td>
 <td>Pooled</td>
-<td style="text-align:right">NA</td>
-<td style="text-align:right">NA</td>
+<td style="text-align:right">1.171 μs</td>
+<td style="text-align:right">0.0115 μs</td>
+<td style="text-align:right">0.0102 μs</td>
+<td style="text-align:right">0.0371</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">702 B</td>
 </tr>
 <tr>
 <td>Enumerable</td>
 <td>Scoped</td>
 <td>Pooled</td>
-<td style="text-align:right">NA</td>
-<td style="text-align:right">NA</td>
+<td style="text-align:right">1.361 μs</td>
+<td style="text-align:right">0.0124 μs</td>
+<td style="text-align:right">0.0110 μs</td>
+<td style="text-align:right">0.0352</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">672 B</td>
 </tr>
 <tr>
 <td><strong>NonGeneric</strong></td>
 <td><strong>Scoped</strong></td>
 <td><strong>Scoped</strong></td>
-<td style="text-align:right"><strong>NA</strong></td>
-<td style="text-align:right"><strong>NA</strong></td>
+<td style="text-align:right"><strong>1.164 μs</strong></td>
+<td style="text-align:right"><strong>0.0100 μs</strong></td>
+<td style="text-align:right"><strong>0.0093 μs</strong></td>
+<td style="text-align:right"><strong>0.0352</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>667 B</strong></td>
 </tr>
 <tr>
 <td>Generic</td>
 <td>Scoped</td>
 <td>Scoped</td>
-<td style="text-align:right">NA</td>
-<td style="text-align:right">NA</td>
+<td style="text-align:right">1.159 μs</td>
+<td style="text-align:right">0.0109 μs</td>
+<td style="text-align:right">0.0102 μs</td>
+<td style="text-align:right">0.0352</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">672 B</td>
 </tr>
 <tr>
 <td>Lazy</td>
 <td>Scoped</td>
 <td>Scoped</td>
-<td style="text-align:right">NA</td>
-<td style="text-align:right">NA</td>
+<td style="text-align:right">1.260 μs</td>
+<td style="text-align:right">0.0112 μs</td>
+<td style="text-align:right">0.0105 μs</td>
+<td style="text-align:right">0.0352</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">663 B</td>
 </tr>
 <tr>
 <td>Enumerable</td>
 <td>Scoped</td>
 <td>Scoped</td>
-<td style="text-align:right">NA</td>
-<td style="text-align:right">NA</td>
+<td style="text-align:right">1.264 μs</td>
+<td style="text-align:right">0.0125 μs</td>
+<td style="text-align:right">0.0117 μs</td>
+<td style="text-align:right">0.0352</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">671 B</td>
 </tr>
 <tr>
 <td><strong>NonGeneric</strong></td>
 <td><strong>Scoped</strong></td>
 <td><strong>Singleton</strong></td>
-<td style="text-align:right"><strong>NA</strong></td>
-<td style="text-align:right"><strong>NA</strong></td>
+<td style="text-align:right"><strong>1.294 μs</strong></td>
+<td style="text-align:right"><strong>0.0107 μs</strong></td>
+<td style="text-align:right"><strong>0.0095 μs</strong></td>
+<td style="text-align:right"><strong>0.0391</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>732 B</strong></td>
 </tr>
 <tr>
 <td>Generic</td>
 <td>Scoped</td>
 <td>Singleton</td>
-<td style="text-align:right">NA</td>
-<td style="text-align:right">NA</td>
+<td style="text-align:right">1.208 μs</td>
+<td style="text-align:right">0.0116 μs</td>
+<td style="text-align:right">0.0103 μs</td>
+<td style="text-align:right">0.0391</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">733 B</td>
 </tr>
 <tr>
 <td>Lazy</td>
 <td>Scoped</td>
 <td>Singleton</td>
-<td style="text-align:right">NA</td>
-<td style="text-align:right">NA</td>
+<td style="text-align:right">1.303 μs</td>
+<td style="text-align:right">0.0223 μs</td>
+<td style="text-align:right">0.0239 μs</td>
+<td style="text-align:right">0.0391</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">732 B</td>
 </tr>
 <tr>
 <td>Enumerable</td>
 <td>Scoped</td>
 <td>Singleton</td>
-<td style="text-align:right">NA</td>
-<td style="text-align:right">NA</td>
+<td style="text-align:right">1.342 μs</td>
+<td style="text-align:right">0.0180 μs</td>
+<td style="text-align:right">0.0168 μs</td>
+<td style="text-align:right">0.0352</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">669 B</td>
 </tr>
 <tr>
 <td><strong>NonGeneric</strong></td>
 <td><strong>Scoped</strong></td>
 <td><strong>Transient</strong></td>
-<td style="text-align:right"><strong>NA</strong></td>
-<td style="text-align:right"><strong>NA</strong></td>
+<td style="text-align:right"><strong>5.563 μs</strong></td>
+<td style="text-align:right"><strong>0.0375 μs</strong></td>
+<td style="text-align:right"><strong>0.0351 μs</strong></td>
+<td style="text-align:right"><strong>0.1641</strong></td>
+<td style="text-align:right"><strong>0.0391</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>3120 B</strong></td>
 </tr>
 <tr>
 <td>Generic</td>
 <td>Scoped</td>
 <td>Transient</td>
-<td style="text-align:right">NA</td>
-<td style="text-align:right">NA</td>
+<td style="text-align:right">5.568 μs</td>
+<td style="text-align:right">0.0566 μs</td>
+<td style="text-align:right">0.0502 μs</td>
+<td style="text-align:right">0.1641</td>
+<td style="text-align:right">0.0391</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">3125 B</td>
 </tr>
 <tr>
 <td>Lazy</td>
 <td>Scoped</td>
 <td>Transient</td>
-<td style="text-align:right">NA</td>
-<td style="text-align:right">NA</td>
+<td style="text-align:right">6.167 μs</td>
+<td style="text-align:right">0.0568 μs</td>
+<td style="text-align:right">0.0531 μs</td>
+<td style="text-align:right">0.1484</td>
+<td style="text-align:right">0.0625</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">2782 B</td>
 </tr>
 <tr>
 <td>Enumerable</td>
 <td>Scoped</td>
 <td>Transient</td>
-<td style="text-align:right">NA</td>
-<td style="text-align:right">NA</td>
+<td style="text-align:right">1.339 μs</td>
+<td style="text-align:right">0.0140 μs</td>
+<td style="text-align:right">0.0131 μs</td>
+<td style="text-align:right">0.0352</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">671 B</td>
 </tr>
 <tr>
 <td><strong>NonGeneric</strong></td>
 <td><strong>Singleton</strong></td>
 <td><strong>Pooled</strong></td>
-<td style="text-align:right"><strong>NA</strong></td>
-<td style="text-align:right"><strong>NA</strong></td>
+<td style="text-align:right"><strong>1.191 μs</strong></td>
+<td style="text-align:right"><strong>0.0095 μs</strong></td>
+<td style="text-align:right"><strong>0.0074 μs</strong></td>
+<td style="text-align:right"><strong>0.0371</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>701 B</strong></td>
 </tr>
 <tr>
 <td>Generic</td>
 <td>Singleton</td>
 <td>Pooled</td>
-<td style="text-align:right">NA</td>
-<td style="text-align:right">NA</td>
+<td style="text-align:right">1.306 μs</td>
+<td style="text-align:right">0.0231 μs</td>
+<td style="text-align:right">0.0216 μs</td>
+<td style="text-align:right">0.0371</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">706 B</td>
 </tr>
 <tr>
 <td>Lazy</td>
 <td>Singleton</td>
 <td>Pooled</td>
-<td style="text-align:right">NA</td>
-<td style="text-align:right">NA</td>
+<td style="text-align:right">1.323 μs</td>
+<td style="text-align:right">0.0242 μs</td>
+<td style="text-align:right">0.0226 μs</td>
+<td style="text-align:right">0.0371</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">701 B</td>
 </tr>
 <tr>
 <td>Enumerable</td>
 <td>Singleton</td>
 <td>Pooled</td>
-<td style="text-align:right">NA</td>
-<td style="text-align:right">NA</td>
+<td style="text-align:right">1.248 μs</td>
+<td style="text-align:right">0.0133 μs</td>
+<td style="text-align:right">0.0124 μs</td>
+<td style="text-align:right">0.0352</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">671 B</td>
 </tr>
 <tr>
 <td><strong>NonGeneric</strong></td>
 <td><strong>Singleton</strong></td>
 <td><strong>Scoped</strong></td>
-<td style="text-align:right"><strong>NA</strong></td>
-<td style="text-align:right"><strong>NA</strong></td>
+<td style="text-align:right"><strong>1.226 μs</strong></td>
+<td style="text-align:right"><strong>0.0214 μs</strong></td>
+<td style="text-align:right"><strong>0.0200 μs</strong></td>
+<td style="text-align:right"><strong>0.0352</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>664 B</strong></td>
 </tr>
 <tr>
 <td>Generic</td>
 <td>Singleton</td>
 <td>Scoped</td>
-<td style="text-align:right">NA</td>
-<td style="text-align:right">NA</td>
+<td style="text-align:right">1.226 μs</td>
+<td style="text-align:right">0.0103 μs</td>
+<td style="text-align:right">0.0092 μs</td>
+<td style="text-align:right">0.0352</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">668 B</td>
 </tr>
 <tr>
 <td>Lazy</td>
 <td>Singleton</td>
 <td>Scoped</td>
-<td style="text-align:right">NA</td>
-<td style="text-align:right">NA</td>
+<td style="text-align:right">1.211 μs</td>
+<td style="text-align:right">0.0240 μs</td>
+<td style="text-align:right">0.0225 μs</td>
+<td style="text-align:right">0.0352</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">663 B</td>
 </tr>
 <tr>
 <td>Enumerable</td>
 <td>Singleton</td>
 <td>Scoped</td>
-<td style="text-align:right">NA</td>
-<td style="text-align:right">NA</td>
+<td style="text-align:right">1.349 μs</td>
+<td style="text-align:right">0.0228 μs</td>
+<td style="text-align:right">0.0213 μs</td>
+<td style="text-align:right">0.0352</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">670 B</td>
 </tr>
 <tr>
 <td><strong>NonGeneric</strong></td>
 <td><strong>Singleton</strong></td>
 <td><strong>Singleton</strong></td>
-<td style="text-align:right"><strong>NA</strong></td>
-<td style="text-align:right"><strong>NA</strong></td>
+<td style="text-align:right"><strong>1.204 μs</strong></td>
+<td style="text-align:right"><strong>0.0116 μs</strong></td>
+<td style="text-align:right"><strong>0.0103 μs</strong></td>
+<td style="text-align:right"><strong>0.0391</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>731 B</strong></td>
 </tr>
 <tr>
 <td>Generic</td>
 <td>Singleton</td>
 <td>Singleton</td>
-<td style="text-align:right">NA</td>
-<td style="text-align:right">NA</td>
+<td style="text-align:right">1.209 μs</td>
+<td style="text-align:right">0.0132 μs</td>
+<td style="text-align:right">0.0117 μs</td>
+<td style="text-align:right">0.0391</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">733 B</td>
 </tr>
 <tr>
 <td>Lazy</td>
 <td>Singleton</td>
 <td>Singleton</td>
-<td style="text-align:right">NA</td>
-<td style="text-align:right">NA</td>
+<td style="text-align:right">1.369 μs</td>
+<td style="text-align:right">0.0260 μs</td>
+<td style="text-align:right">0.0278 μs</td>
+<td style="text-align:right">0.0391</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">731 B</td>
 </tr>
 <tr>
 <td>Enumerable</td>
 <td>Singleton</td>
 <td>Singleton</td>
-<td style="text-align:right">NA</td>
-<td style="text-align:right">NA</td>
+<td style="text-align:right">1.347 μs</td>
+<td style="text-align:right">0.0260 μs</td>
+<td style="text-align:right">0.0267 μs</td>
+<td style="text-align:right">0.0352</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">668 B</td>
 </tr>
 <tr>
 <td><strong>NonGeneric</strong></td>
 <td><strong>Singleton</strong></td>
 <td><strong>Transient</strong></td>
-<td style="text-align:right"><strong>NA</strong></td>
-<td style="text-align:right"><strong>NA</strong></td>
+<td style="text-align:right"><strong>6.181 μs</strong></td>
+<td style="text-align:right"><strong>0.0963 μs</strong></td>
+<td style="text-align:right"><strong>0.0854 μs</strong></td>
+<td style="text-align:right"><strong>0.1719</strong></td>
+<td style="text-align:right"><strong>0.0391</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>3189 B</strong></td>
 </tr>
 <tr>
 <td>Generic</td>
 <td>Singleton</td>
 <td>Transient</td>
-<td style="text-align:right">NA</td>
-<td style="text-align:right">NA</td>
+<td style="text-align:right">5.774 μs</td>
+<td style="text-align:right">0.0821 μs</td>
+<td style="text-align:right">0.0768 μs</td>
+<td style="text-align:right">0.1719</td>
+<td style="text-align:right">0.0391</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">3194 B</td>
 </tr>
 <tr>
 <td>Lazy</td>
 <td>Singleton</td>
 <td>Transient</td>
-<td style="text-align:right">NA</td>
-<td style="text-align:right">NA</td>
+<td style="text-align:right">5.971 μs</td>
+<td style="text-align:right">0.0516 μs</td>
+<td style="text-align:right">0.0431 μs</td>
+<td style="text-align:right">0.1484</td>
+<td style="text-align:right">0.0703</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">2781 B</td>
 </tr>
 <tr>
 <td>Enumerable</td>
 <td>Singleton</td>
 <td>Transient</td>
-<td style="text-align:right">NA</td>
-<td style="text-align:right">NA</td>
+<td style="text-align:right">1.311 μs</td>
+<td style="text-align:right">0.0102 μs</td>
+<td style="text-align:right">0.0085 μs</td>
+<td style="text-align:right">0.0352</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">670 B</td>
 </tr>
 <tr>
 <td><strong>NonGeneric</strong></td>
 <td><strong>Transient</strong></td>
 <td><strong>Pooled</strong></td>
-<td style="text-align:right"><strong>NA</strong></td>
-<td style="text-align:right"><strong>NA</strong></td>
+<td style="text-align:right"><strong>1.239 μs</strong></td>
+<td style="text-align:right"><strong>0.0244 μs</strong></td>
+<td style="text-align:right"><strong>0.0290 μs</strong></td>
+<td style="text-align:right"><strong>0.0371</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>702 B</strong></td>
 </tr>
 <tr>
 <td>Generic</td>
 <td>Transient</td>
 <td>Pooled</td>
-<td style="text-align:right">NA</td>
-<td style="text-align:right">NA</td>
+<td style="text-align:right">1.217 μs</td>
+<td style="text-align:right">0.0158 μs</td>
+<td style="text-align:right">0.0148 μs</td>
+<td style="text-align:right">0.0371</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">706 B</td>
 </tr>
 <tr>
 <td>Lazy</td>
 <td>Transient</td>
 <td>Pooled</td>
-<td style="text-align:right">NA</td>
-<td style="text-align:right">NA</td>
+<td style="text-align:right">1.189 μs</td>
+<td style="text-align:right">0.0201 μs</td>
+<td style="text-align:right">0.0223 μs</td>
+<td style="text-align:right">0.0371</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">702 B</td>
 </tr>
 <tr>
 <td>Enumerable</td>
 <td>Transient</td>
 <td>Pooled</td>
-<td style="text-align:right">NA</td>
-<td style="text-align:right">NA</td>
+<td style="text-align:right">1.286 μs</td>
+<td style="text-align:right">0.0136 μs</td>
+<td style="text-align:right">0.0127 μs</td>
+<td style="text-align:right">0.0352</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">672 B</td>
 </tr>
 <tr>
 <td><strong>NonGeneric</strong></td>
 <td><strong>Transient</strong></td>
 <td><strong>Scoped</strong></td>
-<td style="text-align:right"><strong>NA</strong></td>
-<td style="text-align:right"><strong>NA</strong></td>
+<td style="text-align:right"><strong>1.227 μs</strong></td>
+<td style="text-align:right"><strong>0.0111 μs</strong></td>
+<td style="text-align:right"><strong>0.0087 μs</strong></td>
+<td style="text-align:right"><strong>0.0352</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>668 B</strong></td>
 </tr>
 <tr>
 <td>Generic</td>
 <td>Transient</td>
 <td>Scoped</td>
-<td style="text-align:right">NA</td>
-<td style="text-align:right">NA</td>
+<td style="text-align:right">1.253 μs</td>
+<td style="text-align:right">0.0178 μs</td>
+<td style="text-align:right">0.0166 μs</td>
+<td style="text-align:right">0.0352</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">673 B</td>
 </tr>
 <tr>
 <td>Lazy</td>
 <td>Transient</td>
 <td>Scoped</td>
-<td style="text-align:right">NA</td>
-<td style="text-align:right">NA</td>
+<td style="text-align:right">1.312 μs</td>
+<td style="text-align:right">0.0260 μs</td>
+<td style="text-align:right">0.0278 μs</td>
+<td style="text-align:right">0.0352</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">663 B</td>
 </tr>
 <tr>
 <td>Enumerable</td>
 <td>Transient</td>
 <td>Scoped</td>
-<td style="text-align:right">NA</td>
-<td style="text-align:right">NA</td>
+<td style="text-align:right">1.265 μs</td>
+<td style="text-align:right">0.0189 μs</td>
+<td style="text-align:right">0.0176 μs</td>
+<td style="text-align:right">0.0352</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">671 B</td>
 </tr>
 <tr>
 <td><strong>NonGeneric</strong></td>
 <td><strong>Transient</strong></td>
 <td><strong>Singleton</strong></td>
-<td style="text-align:right"><strong>NA</strong></td>
-<td style="text-align:right"><strong>NA</strong></td>
+<td style="text-align:right"><strong>1.280 μs</strong></td>
+<td style="text-align:right"><strong>0.0093 μs</strong></td>
+<td style="text-align:right"><strong>0.0077 μs</strong></td>
+<td style="text-align:right"><strong>0.0391</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>732 B</strong></td>
 </tr>
 <tr>
 <td>Generic</td>
 <td>Transient</td>
 <td>Singleton</td>
-<td style="text-align:right">NA</td>
-<td style="text-align:right">NA</td>
+<td style="text-align:right">1.232 μs</td>
+<td style="text-align:right">0.0133 μs</td>
+<td style="text-align:right">0.0124 μs</td>
+<td style="text-align:right">0.0391</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">733 B</td>
 </tr>
 <tr>
 <td>Lazy</td>
 <td>Transient</td>
 <td>Singleton</td>
-<td style="text-align:right">NA</td>
-<td style="text-align:right">NA</td>
+<td style="text-align:right">1.259 μs</td>
+<td style="text-align:right">0.0171 μs</td>
+<td style="text-align:right">0.0152 μs</td>
+<td style="text-align:right">0.0391</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">732 B</td>
 </tr>
 <tr>
 <td>Enumerable</td>
 <td>Transient</td>
 <td>Singleton</td>
-<td style="text-align:right">NA</td>
-<td style="text-align:right">NA</td>
+<td style="text-align:right">1.275 μs</td>
+<td style="text-align:right">0.0186 μs</td>
+<td style="text-align:right">0.0155 μs</td>
+<td style="text-align:right">0.0352</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">669 B</td>
 </tr>
 <tr>
 <td><strong>NonGeneric</strong></td>
 <td><strong>Transient</strong></td>
 <td><strong>Transient</strong></td>
-<td style="text-align:right"><strong>NA</strong></td>
-<td style="text-align:right"><strong>NA</strong></td>
+<td style="text-align:right"><strong>9.812 μs</strong></td>
+<td style="text-align:right"><strong>0.0672 μs</strong></td>
+<td style="text-align:right"><strong>0.0629 μs</strong></td>
+<td style="text-align:right"><strong>0.2656</strong></td>
+<td style="text-align:right"><strong>0.0938</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>5015 B</strong></td>
 </tr>
 <tr>
 <td>Generic</td>
 <td>Transient</td>
 <td>Transient</td>
-<td style="text-align:right">NA</td>
-<td style="text-align:right">NA</td>
+<td style="text-align:right">9.842 μs</td>
+<td style="text-align:right">0.1949 μs</td>
+<td style="text-align:right">0.2085 μs</td>
+<td style="text-align:right">0.2656</td>
+<td style="text-align:right">0.0938</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">5020 B</td>
 </tr>
 <tr>
 <td>Lazy</td>
 <td>Transient</td>
 <td>Transient</td>
-<td style="text-align:right">NA</td>
-<td style="text-align:right">NA</td>
+<td style="text-align:right">6.185 μs</td>
+<td style="text-align:right">0.0930 μs</td>
+<td style="text-align:right">0.0870 μs</td>
+<td style="text-align:right">0.1484</td>
+<td style="text-align:right">0.0703</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">2782 B</td>
 </tr>
 <tr>
 <td>Enumerable</td>
 <td>Transient</td>
 <td>Transient</td>
-<td style="text-align:right">NA</td>
-<td style="text-align:right">NA</td>
+<td style="text-align:right">1.349 μs</td>
+<td style="text-align:right">0.0138 μs</td>
+<td style="text-align:right">0.0115 μs</td>
+<td style="text-align:right">0.0352</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">670 B</td>
 </tr>
 </tbody>
 </table>
-<p>Benchmarks with issues:
-  InjectorGet.NonGeneric: DefaultJob [DependencyLifetime=Pooled, DependantLifetime=Pooled]
-  InjectorGet.Generic: DefaultJob [DependencyLifetime=Pooled, DependantLifetime=Pooled]
-  InjectorGet.Lazy: DefaultJob [DependencyLifetime=Pooled, DependantLifetime=Pooled]
-  InjectorGet.Enumerable: DefaultJob [DependencyLifetime=Pooled, DependantLifetime=Pooled]
-  InjectorGet.NonGeneric: DefaultJob [DependencyLifetime=Pooled, DependantLifetime=Scoped]
-  InjectorGet.Generic: DefaultJob [DependencyLifetime=Pooled, DependantLifetime=Scoped]
-  InjectorGet.Lazy: DefaultJob [DependencyLifetime=Pooled, DependantLifetime=Scoped]
-  InjectorGet.Enumerable: DefaultJob [DependencyLifetime=Pooled, DependantLifetime=Scoped]
-  InjectorGet.NonGeneric: DefaultJob [DependencyLifetime=Pooled, DependantLifetime=Singleton]
-  InjectorGet.Generic: DefaultJob [DependencyLifetime=Pooled, DependantLifetime=Singleton]
-  InjectorGet.Lazy: DefaultJob [DependencyLifetime=Pooled, DependantLifetime=Singleton]
-  InjectorGet.Enumerable: DefaultJob [DependencyLifetime=Pooled, DependantLifetime=Singleton]
-  InjectorGet.NonGeneric: DefaultJob [DependencyLifetime=Pooled, DependantLifetime=Transient]
-  InjectorGet.Generic: DefaultJob [DependencyLifetime=Pooled, DependantLifetime=Transient]
-  InjectorGet.Lazy: DefaultJob [DependencyLifetime=Pooled, DependantLifetime=Transient]
-  InjectorGet.Enumerable: DefaultJob [DependencyLifetime=Pooled, DependantLifetime=Transient]
-  InjectorGet.NonGeneric: DefaultJob [DependencyLifetime=Scoped, DependantLifetime=Pooled]
-  InjectorGet.Generic: DefaultJob [DependencyLifetime=Scoped, DependantLifetime=Pooled]
-  InjectorGet.Lazy: DefaultJob [DependencyLifetime=Scoped, DependantLifetime=Pooled]
-  InjectorGet.Enumerable: DefaultJob [DependencyLifetime=Scoped, DependantLifetime=Pooled]
-  InjectorGet.NonGeneric: DefaultJob [DependencyLifetime=Scoped, DependantLifetime=Scoped]
-  InjectorGet.Generic: DefaultJob [DependencyLifetime=Scoped, DependantLifetime=Scoped]
-  InjectorGet.Lazy: DefaultJob [DependencyLifetime=Scoped, DependantLifetime=Scoped]
-  InjectorGet.Enumerable: DefaultJob [DependencyLifetime=Scoped, DependantLifetime=Scoped]
-  InjectorGet.NonGeneric: DefaultJob [DependencyLifetime=Scoped, DependantLifetime=Singleton]
-  InjectorGet.Generic: DefaultJob [DependencyLifetime=Scoped, DependantLifetime=Singleton]
-  InjectorGet.Lazy: DefaultJob [DependencyLifetime=Scoped, DependantLifetime=Singleton]
-  InjectorGet.Enumerable: DefaultJob [DependencyLifetime=Scoped, DependantLifetime=Singleton]
-  InjectorGet.NonGeneric: DefaultJob [DependencyLifetime=Scoped, DependantLifetime=Transient]
-  InjectorGet.Generic: DefaultJob [DependencyLifetime=Scoped, DependantLifetime=Transient]
-  InjectorGet.Lazy: DefaultJob [DependencyLifetime=Scoped, DependantLifetime=Transient]
-  InjectorGet.Enumerable: DefaultJob [DependencyLifetime=Scoped, DependantLifetime=Transient]
-  InjectorGet.NonGeneric: DefaultJob [DependencyLifetime=Singleton, DependantLifetime=Pooled]
-  InjectorGet.Generic: DefaultJob [DependencyLifetime=Singleton, DependantLifetime=Pooled]
-  InjectorGet.Lazy: DefaultJob [DependencyLifetime=Singleton, DependantLifetime=Pooled]
-  InjectorGet.Enumerable: DefaultJob [DependencyLifetime=Singleton, DependantLifetime=Pooled]
-  InjectorGet.NonGeneric: DefaultJob [DependencyLifetime=Singleton, DependantLifetime=Scoped]
-  InjectorGet.Generic: DefaultJob [DependencyLifetime=Singleton, DependantLifetime=Scoped]
-  InjectorGet.Lazy: DefaultJob [DependencyLifetime=Singleton, DependantLifetime=Scoped]
-  InjectorGet.Enumerable: DefaultJob [DependencyLifetime=Singleton, DependantLifetime=Scoped]
-  InjectorGet.NonGeneric: DefaultJob [DependencyLifetime=Singleton, DependantLifetime=Singleton]
-  InjectorGet.Generic: DefaultJob [DependencyLifetime=Singleton, DependantLifetime=Singleton]
-  InjectorGet.Lazy: DefaultJob [DependencyLifetime=Singleton, DependantLifetime=Singleton]
-  InjectorGet.Enumerable: DefaultJob [DependencyLifetime=Singleton, DependantLifetime=Singleton]
-  InjectorGet.NonGeneric: DefaultJob [DependencyLifetime=Singleton, DependantLifetime=Transient]
-  InjectorGet.Generic: DefaultJob [DependencyLifetime=Singleton, DependantLifetime=Transient]
-  InjectorGet.Lazy: DefaultJob [DependencyLifetime=Singleton, DependantLifetime=Transient]
-  InjectorGet.Enumerable: DefaultJob [DependencyLifetime=Singleton, DependantLifetime=Transient]
-  InjectorGet.NonGeneric: DefaultJob [DependencyLifetime=Transient, DependantLifetime=Pooled]
-  InjectorGet.Generic: DefaultJob [DependencyLifetime=Transient, DependantLifetime=Pooled]
-  InjectorGet.Lazy: DefaultJob [DependencyLifetime=Transient, DependantLifetime=Pooled]
-  InjectorGet.Enumerable: DefaultJob [DependencyLifetime=Transient, DependantLifetime=Pooled]
-  InjectorGet.NonGeneric: DefaultJob [DependencyLifetime=Transient, DependantLifetime=Scoped]
-  InjectorGet.Generic: DefaultJob [DependencyLifetime=Transient, DependantLifetime=Scoped]
-  InjectorGet.Lazy: DefaultJob [DependencyLifetime=Transient, DependantLifetime=Scoped]
-  InjectorGet.Enumerable: DefaultJob [DependencyLifetime=Transient, DependantLifetime=Scoped]
-  InjectorGet.NonGeneric: DefaultJob [DependencyLifetime=Transient, DependantLifetime=Singleton]
-  InjectorGet.Generic: DefaultJob [DependencyLifetime=Transient, DependantLifetime=Singleton]
-  InjectorGet.Lazy: DefaultJob [DependencyLifetime=Transient, DependantLifetime=Singleton]
-  InjectorGet.Enumerable: DefaultJob [DependencyLifetime=Transient, DependantLifetime=Singleton]
-  InjectorGet.NonGeneric: DefaultJob [DependencyLifetime=Transient, DependantLifetime=Transient]
-  InjectorGet.Generic: DefaultJob [DependencyLifetime=Transient, DependantLifetime=Transient]
-  InjectorGet.Lazy: DefaultJob [DependencyLifetime=Transient, DependantLifetime=Transient]
-  InjectorGet.Enumerable: DefaultJob [DependencyLifetime=Transient, DependantLifetime=Transient]</p>
 </article>
           </div>
           
