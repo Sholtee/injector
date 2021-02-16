@@ -18,14 +18,12 @@
 - Container inheritance
 - All well known service lifecycles are supported: `Singleton`, `Transient`, `Scoped`, `Pooled`, `Instance`
 - Configurable constructor selection (using attributes)
-- "Auto" service registration (using attributes)
 - Extensible
 - and many more...
 ## About services in general
 - They are interfaces.
 - They are hosted in containers.
 - They are provided by injectors.
-- Requested services should be registered.
 - Every service can be requested multiple times.
 - Producible services are instantiated only when they are requested.
 - Every producible service has its own lifetime, which can be:
@@ -117,7 +115,11 @@ Registering a service can be done via several patterns (I name them recipes):
       {
         public MyService(IService_1 dep1, [Options(Optional = true)]IService_2 dep2) {...}
       }
-      ```   
+      ```
+  - By default services must not have non-interface dependency. To work around this limitation you can specify custom constructor arguments on service registration:
+    ```csharp
+    container.Service<IMyService, MyService>(new Dictionary<string, object?>{["paramName"] = someValue}, Lifetime.Transient);
+    ```
 - **Factory recipe**: As the name suggests services registered by this way have a factory function: 
   ```csharp
   container.Factory<IMyService>(injector => new MyService(), Lifetime.Singleton);
@@ -190,7 +192,7 @@ Registering a service can be done via several patterns (I name them recipes):
   ```
   Remarks: 
   - You can override an abstract entry by using any of the recepies described above.
-  - You can not create injector from a container having abstract entries.
+  - You can NOT create injector from a container having abstract entries.
  
 Remarks: 
 - You may also register more service with the same interface by naming them:
