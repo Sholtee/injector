@@ -27,6 +27,7 @@ namespace Solti.Utils.DI.Perf
                 yield return Lifetime.Transient;
                 yield return Lifetime.Scoped;
                 yield return Lifetime.Singleton;
+                yield return Lifetime.Pooled.WithCapacity(4);
             }
         }
 
@@ -51,8 +52,8 @@ namespace Solti.Utils.DI.Perf
         {
             for (int i = 0; i < OperationsPerInvoke; i++)
             {
-                AbstractServiceEntry entry = Lifetime.CreateFrom(typeof(IDisposable), i.ToString(), typeof(Disposable), Owner);
-                GC.SuppressFinalize(entry);
+                foreach(AbstractServiceEntry entry in Lifetime.CreateFrom(typeof(IDisposable), i.ToString(), typeof(Disposable), Owner))
+                    GC.SuppressFinalize(entry);
             }
         }
 
@@ -61,8 +62,8 @@ namespace Solti.Utils.DI.Perf
         {
             for (int i = 0; i < OperationsPerInvoke; i++)
             {
-                AbstractServiceEntry entry = Lifetime.CreateFrom(typeof(IDisposable), i.ToString(), new Func<IInjector, Type, object>((i, t) => new Disposable()), Owner);
-                GC.SuppressFinalize(entry);
+                foreach(AbstractServiceEntry entry in Lifetime.CreateFrom(typeof(IDisposable), i.ToString(), new Func<IInjector, Type, object>((i, t) => new Disposable()), Owner))
+                    GC.SuppressFinalize(entry);
             }
         }
     }

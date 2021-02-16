@@ -11,55 +11,11 @@ using BenchmarkDotNet.Attributes;
 namespace Solti.Utils.DI.Perf
 {
     using static Consts;
-    using Internals;
     using Interfaces;
 
     public class InjectorTestsBase
     {
         private IServiceContainer FContainer;
-
-        #region UnsafeInjector
-        private class UnsafeInjector : Injector
-        {
-            private UnsafeInjector(IServiceContainer parent, UnsafeInjector forkFrom) : base(parent, forkFrom) { }
-
-            protected override void Dispose(bool disposeManaged)
-            {
-                UnsafeClear();
-                base.Dispose(disposeManaged);
-            }
-
-            public override void Add(AbstractServiceEntry entry)
-            {
-                if (entry.Owner == this)
-                {
-                    GC.SuppressFinalize(entry.Instances);
-                    GC.SuppressFinalize(entry);
-                }
-
-                base.Add(entry);
-            }
-
-            internal UnsafeInjector(IServiceContainer owner) : base(owner) { }
-
-            internal override Injector Fork(IServiceContainer parent)
-            {
-                var result = new UnsafeInjector(parent, this);
-                GC.SuppressFinalize(result);
-                return result;
-            }
-
-            internal override IServiceReference Instantiate(AbstractServiceEntry requested)
-            {
-                IServiceReference result = base.Instantiate(requested);
-
-                GC.SuppressFinalize(result);
-                GC.SuppressFinalize(result.Dependencies);
-
-                return result;
-            }
-        }
-        #endregion
 
         #region Services
         public interface IDependency
@@ -112,7 +68,7 @@ namespace Solti.Utils.DI.Perf
 
         protected IServiceContainer CreateContainer() => FContainer = new DI.ServiceContainer();
 
-        protected IInjector CreateInjector() => new UnsafeInjector(FContainer);
+        protected IInjector CreateInjector() => FContainer.CreateInjector();
 
         [GlobalCleanup]
         public void Cleanup() => FContainer.Dispose();
@@ -128,6 +84,7 @@ namespace Solti.Utils.DI.Perf
                 yield return Lifetime.Transient;
                 yield return Lifetime.Scoped;
                 yield return Lifetime.Singleton;
+                yield return Lifetime.Pooled.WithCapacity(4);
             }
         }
 
@@ -222,6 +179,7 @@ namespace Solti.Utils.DI.Perf
                 yield return Lifetime.Transient;
                 yield return Lifetime.Scoped;
                 yield return Lifetime.Singleton;
+                yield return Lifetime.Pooled.WithCapacity(4);
             }
         }
 

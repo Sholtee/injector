@@ -27,9 +27,6 @@ namespace Solti.Utils.DI.Perf
             FContainer = null;
         }
 
-        [GlobalSetup(Target = nameof(Add))]
-        public void SetupAdd() => FContainer = new DI.ServiceContainer();
-
         private static readonly IReadOnlyList<Type> RandomInterfaces = typeof(object)
             .Assembly
             .GetTypes()
@@ -45,15 +42,21 @@ namespace Solti.Utils.DI.Perf
         [Benchmark(OperationsPerInvoke = OperationsPerInvoke)]
         public void Add() 
         {
-            for (int i = 0; i < OperationsPerInvoke; i++, OverallAddInvocations++)
+            using (IServiceContainer container = new DI.ServiceContainer())
             {
-                var entry = new AbstractServiceEntry(RandomInterfaces[OverallAddInvocations % RandomInterfaces.Count], (OverallAddInvocations / RandomInterfaces.Count).ToString(), FContainer);
-                GC.SuppressFinalize(entry);
-
-                FContainer.Add(entry);
+                for (int i = 0; i < OperationsPerInvoke; i++, OverallAddInvocations++)
+                {
+                    container.Add
+                    (
+                        new AbstractServiceEntry
+                        (
+                            RandomInterfaces[OverallAddInvocations % RandomInterfaces.Count],
+                            (OverallAddInvocations / RandomInterfaces.Count).ToString(),
+                            container
+                        )
+                    );
+                }
             }
-
-            FContainer.UnsafeClear(); // enelkul siman lehet hash utkozest 
         }
 
         [GlobalSetup(Target = nameof(Get))]

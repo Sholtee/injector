@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Injector.Perf": {
+      "commandName": "Project",
+      "commandLineArgs": "-f *"
+    }
+  }
+}

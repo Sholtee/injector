@@ -294,14 +294,6 @@ namespace Solti.Utils.DI
         }
         #endregion
 
-        internal void UnsafeClear() // CSAK is teljesitmenytesztekhez
-        {
-            using (FLock.AcquireWriterLock()) 
-            {
-                FEntries.Clear();
-            }
-        }
-
         /// <summary>
         /// Creates a new <see cref="ServiceContainer"/> instance.
         /// </summary>
