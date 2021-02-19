@@ -250,6 +250,15 @@ namespace Solti.Utils.DI.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The pool item you requested already held by the current thread..
+        /// </summary>
+        internal static string POOL_ITEM_ALREADY_TAKEN {
+            get {
+                return ResourceManager.GetString("POOL_ITEM_ALREADY_TAKEN", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No registered implementation for &quot;{0}&quot;..
         /// </summary>
         internal static string SERVICE_NOT_FOUND {
@@ -264,15 +273,6 @@ namespace Solti.Utils.DI.Properties {
         internal static string STRICT_DI {
             get {
                 return ResourceManager.GetString("STRICT_DI", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Unknown lifetime: {0}..
-        /// </summary>
-        internal static string UNKNOWN_LIFETIME {
-            get {
-                return ResourceManager.GetString("UNKNOWN_LIFETIME", resourceCulture);
             }
         }
     }

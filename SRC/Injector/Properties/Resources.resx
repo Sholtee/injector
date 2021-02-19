@@ -159,9 +159,6 @@
   <data name="SERVICE_NOT_FOUND" xml:space="preserve">
     <value>No registered implementation for "{0}".</value>
   </data>
-  <data name="UNKNOWN_LIFETIME" xml:space="preserve">
-    <value>Unknown lifetime: {0}.</value>
-  </data>
   <data name="INJECTOR_SHOULD_BE_RELEASED" xml:space="preserve">
     <value>The injector can not hold more than {0} transient services. It usually indicates that you were recycling the injector.</value>
   </data>
@@ -188,5 +185,8 @@
   </data>
   <data name="ENTRY_CANNOT_BE_SPECIALIZED" xml:space="preserve">
     <value>Entry can not be specialized.</value>
+  </data>
+  <data name="POOL_ITEM_ALREADY_TAKEN" xml:space="preserve">
+    <value>The pool item you requested already held by the current thread.</value>
   </data>
 </root>

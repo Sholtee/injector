@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 using NUnit.Framework;
@@ -269,12 +270,18 @@ namespace Solti.Utils.DI.Injector.Tests
         {
             Container.Service<IInterface_1, Implementation_1_No_Dep>(Lifetime.Pooled.WithCapacity(times));
 
-            IInjector[] injectors = Enumerable.Repeat(0, times).Select(_ => 
+            ManualResetEventSlim stop = new ManualResetEventSlim();
+
+            Task[] holders = Enumerable.Repeat(0, times).Select(_ => Task.Run(() =>
             {
-                IInjector injector = Container.CreateInjector();
-                Assert.AreSame(injector.Get<IInterface_1>(), injector.Get<IInterface_1>());
-                return injector;
-            }).ToArray();
+                using (IInjector injector = Container.CreateInjector())
+                {
+                    Assert.AreSame(injector.Get<IInterface_1>(), injector.Get<IInterface_1>());
+                    stop.Wait();
+                }
+            })).ToArray();
+
+            Thread.Sleep(100);
 
             Assert.False
             (
@@ -287,7 +294,8 @@ namespace Solti.Utils.DI.Injector.Tests
                 }).Wait(10)
             );
 
-            injectors.Last().Dispose();
+            stop.Set();
+            Task.WaitAll(holders);
 
             Assert.True
             (
@@ -302,7 +310,7 @@ namespace Solti.Utils.DI.Injector.Tests
         }
 
         [Test]
-        public void Lifetime_PooledService_ShouldHaveItsOwnInjector()
+        public async Task Lifetime_PooledService_ShouldHaveItsOwnInjector()
         {
             Container.Service<IInterface_7<IInjector>, Implementation_7_TInterface_Dependant<IInjector>>(Lifetime.Pooled.WithCapacity(2));
 
@@ -313,15 +321,18 @@ namespace Solti.Utils.DI.Injector.Tests
                 Assert.That(svc1.Interface, Is.Not.SameAs(injector1));
                 Assert.That(svc1.Interface.UnderlyingContainer.Parent, Is.SameAs(Container));
 
-                using (IInjector injector2 = Container.CreateInjector())
+                await Task.Run(() =>
                 {
-                    IInterface_7<IInjector> svc2 = injector2.Get<IInterface_7<IInjector>>();
+                    using (IInjector injector2 = Container.CreateInjector())
+                    {
+                        IInterface_7<IInjector> svc2 = injector2.Get<IInterface_7<IInjector>>();
 
-                    Assert.That(svc2.Interface, Is.Not.SameAs(injector2));
-                    Assert.That(svc2.Interface.UnderlyingContainer.Parent, Is.SameAs(Container));
+                        Assert.That(svc2.Interface, Is.Not.SameAs(injector2));
+                        Assert.That(svc2.Interface.UnderlyingContainer.Parent, Is.SameAs(Container));
 
-                    Assert.AreNotSame(svc1.Interface, svc2.Interface);
-                }
+                        Assert.AreNotSame(svc1.Interface, svc2.Interface);
+                    }
+                });
             }
         }
 
@@ -441,7 +452,7 @@ namespace Solti.Utils.DI.Injector.Tests
         }
 
         [Test]
-        public void Lifetime_PooledService_MayBeGeneric([Values(null, "cica")] string name, [ValueSource(nameof(Lifetimes))] Lifetime depLifetime)
+        public async Task Lifetime_PooledService_MayBeGeneric([Values(null, "cica")] string name, [ValueSource(nameof(Lifetimes))] Lifetime depLifetime)
         {
             Container
                 .Service<IInterface_1, Implementation_1>(depLifetime)
@@ -452,14 +463,17 @@ namespace Solti.Utils.DI.Injector.Tests
                 Assert.AreSame(injector1.Get<IInterface_3<int>>(name), injector1.Get<IInterface_3<int>>(name));
                 Assert.AreSame(injector1.Get<IInterface_3<string>>(name), injector1.Get<IInterface_3<string>>(name));
 
-                using (IInjector injector2 = Container.CreateInjector())
+                await Task.Run(() =>
                 {
-                    Assert.AreSame(injector2.Get<IInterface_3<int>>(name), injector2.Get<IInterface_3<int>>(name));
-                    Assert.AreSame(injector2.Get<IInterface_3<string>>(name), injector2.Get<IInterface_3<string>>(name));
+                    using (IInjector injector2 = Container.CreateInjector())
+                    {
+                        Assert.AreSame(injector2.Get<IInterface_3<int>>(name), injector2.Get<IInterface_3<int>>(name));
+                        Assert.AreSame(injector2.Get<IInterface_3<string>>(name), injector2.Get<IInterface_3<string>>(name));
 
-                    Assert.AreNotSame(injector1.Get<IInterface_3<int>>(name), injector2.Get<IInterface_3<int>>(name));
-                    Assert.AreNotSame(injector1.Get<IInterface_3<string>>(name), injector2.Get<IInterface_3<string>>(name));
-                }
+                        Assert.AreNotSame(injector1.Get<IInterface_3<int>>(name), injector2.Get<IInterface_3<int>>(name));
+                        Assert.AreNotSame(injector1.Get<IInterface_3<string>>(name), injector2.Get<IInterface_3<string>>(name));
+                    }
+                });
             }
         }
 

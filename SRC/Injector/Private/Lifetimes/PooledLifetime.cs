@@ -11,7 +11,7 @@ using System.Runtime.CompilerServices;
 namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
-    using Primitives.Patterns;
+    using Primitives.Threading;
 
     internal sealed partial class PooledLifetime : InjectorDotNetLifetime<PooledLifetime>, IHasCapacity
     {

@@ -8,7 +8,7 @@ using System.Collections.Generic;
 namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
-    using Primitives.Patterns;
+    using Primitives.Threading;
 
     internal sealed class PoolService<TInterface> : ObjectPool<IServiceReference>, IPool<TInterface> where TInterface: class
     {
@@ -40,6 +40,6 @@ namespace Solti.Utils.DI.Internals
             suppressItemDispose: true
         ) {}
 
-        public PoolItem<IServiceReference> Get(CheckoutPolicy checkoutPolicy) => Get(checkoutPolicy, default);
+        public PoolItem<IServiceReference>? Get(CheckoutPolicy checkoutPolicy) => GetItem(checkoutPolicy, default);
     }
 }

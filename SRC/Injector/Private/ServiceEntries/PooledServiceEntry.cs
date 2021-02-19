@@ -6,11 +6,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 
 namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
-    using Primitives.Patterns;
+    using Primitives.Threading;
     using Properties;
 
     /// <summary>
@@ -69,7 +70,16 @@ namespace Solti.Utils.DI.Internals
             {
                 IPool relatedPool = (IPool) relatedInjector.Get(typeof(IPool<>).MakeGenericType(Interface), PooledLifetime.GetPoolName(Interface, Name));
 
-                PoolItem<IServiceReference> poolItem = relatedPool.Get(CheckoutPolicy.Block);
+                //
+                // Mivel a mogottes ObjectPool<>.Get() ugyanazt az entitast adja vissza ha ugyanabbol a szalbol tobbszor
+                // hivjuk (es a szerviz maga hiaba Scoped ez siman lehetseges ha tobb injector-t hozunk letre ugyanabban
+                // a szalban). Ezert h a felszabaditassal ne legyen kavarodas ilyen esetben kivetelt dobunk.
+                //
+
+                if (relatedPool.Any(item => item.OwnerThread == Thread.CurrentThread.ManagedThreadId))
+                    throw new RequestNotAllowedException(Resources.POOL_ITEM_ALREADY_TAKEN);
+
+                PoolItem<IServiceReference> poolItem = relatedPool.Get(CheckoutPolicy.Block)!; // CheckoutPolicy.Block miatt sose NULL
 
                 //
                 // Mivel a pool elem scope-ja kulonbozik "relatedInjector" scope-jatol (egymastol fuggetlenul 
