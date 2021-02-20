@@ -11,11 +11,14 @@ using System.Linq;
 namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
+    using Primitives.Threading;
     using Properties;
 
     internal partial class Injector : ServiceContainer, IInjector, IScopeFactory
     {
         private readonly IServiceGraph FGraph = new ServiceGraph();
+
+        private readonly ExclusiveBlock FExclusiveBlock = new ExclusiveBlock();
 
         private readonly IReadOnlyDictionary<string, object> FOptions;
 
@@ -43,6 +46,14 @@ namespace Solti.Utils.DI.Internals
 
                 throw ex;
             }
+        }
+
+        protected override void Dispose(bool disposeManaged)
+        {
+            if (disposeManaged)
+                FExclusiveBlock.Dispose();
+
+            base.Dispose(disposeManaged);
         }
 
         public Injector(IServiceContainer parent, IReadOnlyDictionary<string, object>? options) : base(Ensure.Parameter.IsNotNull(parent, nameof(parent)))
@@ -86,48 +97,52 @@ namespace Solti.Utils.DI.Internals
             Ensure.Parameter.IsInterface(iface, nameof(iface));
             Ensure.Parameter.IsNotGenericDefinition(iface, nameof(iface));
 
-            //
-            // Ha vkinek a fuggosege vagyunk akkor a fuggo szerviz itt meg nem lehet legyartva.
-            //
-
-            Debug.Assert(FGraph.Requestor?.Value == null, "Already produced services can not request dependencies");
-
-            const string path = nameof(path);
-
-            try
+            using (FExclusiveBlock.Enter())
             {
-                //
-                // Bejegyzes lekerdezese, generikus bejegyzes tipizalasat megengedjuk. A "QueryModes.ThrowOnError" 
-                // miatt "entry" tuti nem NULL.
-                //
-
-                AbstractServiceEntry requestedEntry = Get(iface, name, QueryModes.AllowSpecialization | QueryModes.ThrowOnError)!;
-
-                CheckBreaksTheRuleOfStrictDI(requestedEntry);
-
-                IServiceReference requested = Instantiate(requestedEntry);
 
                 //
-                // Az igenylo (ha van) fuggosegei koze felvesszuk az ujonan letrehozott szervizt
+                // Ha vkinek a fuggosege vagyunk akkor a fuggo szerviz itt meg nem lehet legyartva.
                 //
 
-                FGraph.Requestor?.AddDependency(requested);
+                Debug.Assert(FGraph.Requestor?.Value == null, "Already produced services can not request dependencies");
 
-                return requested;
-            }
+                const string path = nameof(path);
 
-            //
-            // Csak ott bovitjuk a kivetelt ahol az dobva volt (ez a metodus lehet rekurzivan hivva).
-            //
+                try
+                {
+                    //
+                    // Bejegyzes lekerdezese, generikus bejegyzes tipizalasat megengedjuk. A "QueryModes.ThrowOnError" 
+                    // miatt "entry" tuti nem NULL.
+                    //
 
-            catch (ServiceNotFoundException e) when (e.Data[path] == null)
-            {
-                e.Data[path] = string.Join(" -> ", FGraph
-                    .Select(node => (IServiceId) node.RelatedServiceEntry)
-                    .Append(new ServiceId(iface, name))
-                    .Select(IServiceIdExtensions.FriendlyName));
+                    AbstractServiceEntry requestedEntry = Get(iface, name, QueryModes.AllowSpecialization | QueryModes.ThrowOnError)!;
 
-                throw;
+                    CheckBreaksTheRuleOfStrictDI(requestedEntry);
+
+                    IServiceReference requested = Instantiate(requestedEntry);
+
+                    //
+                    // Az igenylo (ha van) fuggosegei koze felvesszuk az ujonan letrehozott szervizt
+                    //
+
+                    FGraph.Requestor?.AddDependency(requested);
+
+                    return requested;
+                }
+
+                //
+                // Csak ott bovitjuk a kivetelt ahol az dobva volt (ez a metodus lehet rekurzivan hivva).
+                //
+
+                catch (ServiceNotFoundException e) when (e.Data[path] == null)
+                {
+                    e.Data[path] = string.Join(" -> ", FGraph
+                        .Select(node => (IServiceId)node.RelatedServiceEntry)
+                        .Append(new ServiceId(iface, name))
+                        .Select(IServiceIdExtensions.FriendlyName));
+
+                    throw;
+                }
             }
         }
 
