@@ -24,6 +24,7 @@ namespace Solti.Utils.DI
     /// <summary>
     /// Implements the <see cref="IServiceContainer"/> interface.
     /// </summary>
+    /// <remarks>All public members of this class are thread safe.</remarks>
     [SuppressMessage("Naming", "CA1710:Identifiers should have correct suffix", Justification = "The name provides meaningful information about the implementation")]
     public class ServiceContainer : Composite<IServiceContainer>, IServiceContainer
     {
