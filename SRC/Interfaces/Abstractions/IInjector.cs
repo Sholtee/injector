@@ -13,6 +13,7 @@ namespace Solti.Utils.DI.Interfaces
     /// <summary>
     /// Provides the mechanism for injecting resources.
     /// </summary>
+    /// <remarks>The implementation of this interface should not be thread safe.</remarks>
     public interface IInjector: IDisposableEx
     {
         /// <summary>
