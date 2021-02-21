@@ -589,5 +589,6 @@ This project currently targets *.NET Standard* 2.0 and 2.1.
 - There is NO need for referencing the `Solti.Utils.DI.Interfaces` assembly directly.
 ## Migrating from version 3.X
 - Auto service registration has been removed, so you are should register all the services manually
+- Configuration has been moved to `runtimeconfig.json` (and got a new layout). See [this](https://github.com/Sholtee/injector/blob/master/TEST/Injector.Tests/runtimeconfig.template.json ) as a reference
 ## Version history
 Can be found [here](https://github.com/Sholtee/injector/blob/master/history.md )
