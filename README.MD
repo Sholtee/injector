@@ -41,7 +41,7 @@
 	- Dependency resolution is done from the declaring container.
 	
   As you can see you should never free producible services manually.
-- Since `Singleton` services can be accessed parallelly they (and their dependencies) have to be thread safe.
+- Since `Singleton` and `Instance` services may be accessed parallelly they (and their dependencies) have to be thread safe.
 ## Workflow of DI
 1. [Creating the root container](#creating-the-root-container)
 2. [Registering services](#registering-services)
@@ -220,10 +220,7 @@ using Solti.Utils.Proxy;
 ...
 container
   .Service<IMyModule, MyModule>()
-  .Proxy<IMyModule>((injector, serviceInstance) => ProxyFactory.Create<IMyModule, ParameterValidatorProxy<IMyModule>>(target: serviceInstance));
-  
-// There is a shortcut to the line above:
-// container.Proxy<IMyModule, ParameterValidatorProxy<IMyModule>>();
+  .Proxy<IMyModule, ParameterValidatorProxy<IMyModule>>();
 ```
 Where the `ParameterValidatorProxy<TInterface>` is an `InterfaceInterceptor<TInterface>` descendant containing the parameter validation logic:
 ```csharp
@@ -575,7 +572,7 @@ await using (container.CreateProvider(out IServiceProvider provider))
 }
 ```
 Differences compared to `IInjector`:
-- Every requested service is optional (`IServiceProvider.GetService()` does not throw if a service can not be found). This rule applies for services requested via constructor parameters as well.
+- Every requested service is optional (so `IServiceProvider.GetService()` does not throw if a service can not be found). This rule applies to services requested via constructor parameters too.
 - You can request named services only by using `OptionsAttribute` (`IServiceProvider.GetService()` has no name parameter).
 - Since the `IServiceProvider` interface is not an `IDisposable` descendant you should release the disposable returned by the `CreateProvider()` to end the scope lifetime.
 ## Resources
@@ -590,5 +587,7 @@ This project currently targets *.NET Standard* 2.0 and 2.1.
 ## Migrating from version 2.X
 - You should add +1 using (`Solti.Utils.DI.Interfaces`) in files where you use the [general interfaces](https://sholtee.github.io/injector/doc/Solti.Utils.DI.Interfaces.html ).
 - There is NO need for referencing the `Solti.Utils.DI.Interfaces` assembly directly.
+## Migrating from version 3.X
+- Auto service registration has been removed, so you are should register all the services manually
 ## Version history
 Can be found [here](https://github.com/Sholtee/injector/blob/master/history.md )
