@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -54,6 +55,12 @@ namespace Solti.Utils.DI.Internals
                 FExclusiveBlock.Dispose();
 
             base.Dispose(disposeManaged);
+        }
+
+        protected override async ValueTask AsyncDispose()
+        {
+            await base.AsyncDispose();
+            await FExclusiveBlock.DisposeAsync();    
         }
 
         public Injector(IServiceContainer parent, IReadOnlyDictionary<string, object>? options) : base(Ensure.Parameter.IsNotNull(parent, nameof(parent)))
