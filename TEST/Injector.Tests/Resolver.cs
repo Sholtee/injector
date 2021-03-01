@@ -16,6 +16,8 @@ namespace Solti.Utils.DI.Internals.Tests
     using Interfaces;
     using Primitives.Patterns;
     using Properties;
+    using Proxy;
+    using Proxy.Generators;
 
     [TestFixture]
     public sealed class ResolverTests
@@ -259,6 +261,33 @@ namespace Solti.Utils.DI.Internals.Tests
         {
             Assert.AreSame(Resolver.GetExtended(typeof(Disposable)), Resolver.GetExtended(typeof(Disposable)));
             Assert.AreSame(Resolver.GetExtended(typeof(Disposable).GetApplicableConstructor()), Resolver.GetExtended(typeof(Disposable).GetApplicableConstructor()));
+        }
+
+        public class MyInterceptor : InterfaceInterceptor<IList<IDictionary>> 
+        {
+            public MyInterceptor(IList<IDictionary> target, [Options(Optional = true)] IDisposable _) : base(target)
+            {
+            }
+        }
+
+        [Test]
+        public void Get_ShouldSupportProxyTypes() 
+        {
+            Type proxy = ProxyGenerator<IList<IDictionary>, MyInterceptor>.GetGeneratedType();
+
+            Func<IInjector, Type, object> factory = Resolver.Get(proxy);
+
+            var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
+            mockInjector
+                .Setup(i => i.Get(typeof(IList<IDictionary>), null))
+                .Returns(new List<IDictionary>());
+            mockInjector
+                .Setup(i => i.TryGet(typeof(IDisposable), null))
+                .Returns(null);
+
+            Assert.DoesNotThrow(() => factory.Invoke(mockInjector.Object, typeof(IList<IDictionary>)));
+
+            mockInjector.Verify(i => i.TryGet(typeof(IDisposable), null), Times.Once);
         }
     }
 }

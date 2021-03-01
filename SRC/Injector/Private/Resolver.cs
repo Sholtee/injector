@@ -5,6 +5,7 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -14,6 +15,7 @@ namespace Solti.Utils.DI.Internals
     using Interfaces;
     using Primitives;
     using Properties;
+    using Proxy.Internals;
 
     internal static class Resolver
     {
@@ -57,23 +59,48 @@ namespace Solti.Utils.DI.Internals
             Ensure.Parameter.IsNotGenericDefinition(type, nameof(type));
         }
 
-        private static TDelegate CreateResolver<TDelegate>(ConstructorInfo constructor, Func<ParameterInfo, Expression> argumentResolver, params ParameterExpression[] parameters) => Expression.Lambda<TDelegate>
-        (
-            Expression.Convert
-            (
-                Expression.New
-                (
-                    constructor,
-                    constructor.GetParameters().Select
-                    (
-                        param => Expression.Convert(argumentResolver(param), param.ParameterType)
-                    )
-                ),
-                typeof(object)
-            ),
-            parameters
-        ).Compile();
+        private static TDelegate CreateResolver<TDelegate>(ConstructorInfo constructor, Func<ParameterInfo, Expression> argumentResolver, params ParameterExpression[] parameters)
+        {
+            IReadOnlyCollection<ParameterInfo>? ctorParamz = null;        
 
+            if (constructor.DeclaringType.GetCustomAttribute<RelatedGeneratorAttribute>() is not null)
+            {
+                //
+                // Specialis eset amikor proxy-t hozunk letre majd probaljuk aktivalni. Itt a parametereken levo attributumok nem lennenek 
+                // lathatok ezert a varazslas.
+                //
+
+                Type @base = constructor.DeclaringType.BaseType;
+                Debug.Assert(@base is not null);
+
+                ConstructorInfo? baseCtor = @base!.GetConstructor(constructor
+                    .GetParameters()
+                    .Select(param => param.ParameterType)
+                    .ToArray());
+
+                if (baseCtor is not null)
+                    ctorParamz = baseCtor.GetParameters();
+            }
+
+            ctorParamz ??= constructor.GetParameters();
+
+            return Expression.Lambda<TDelegate>
+            (
+                Expression.Convert
+                (
+                    Expression.New
+                    (
+                        constructor,
+                        ctorParamz.Select
+                        (
+                            param => Expression.Convert(argumentResolver(param), param.ParameterType)
+                        )
+                    ),
+                    typeof(object)
+                ),
+                parameters
+            ).Compile();
+        }
         public static Func<IInjector, Type, object> Get(ConstructorInfo constructor) => Cache.GetOrAdd(constructor, () =>
         {
             //
