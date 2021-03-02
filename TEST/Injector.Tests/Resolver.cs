@@ -139,6 +139,26 @@ namespace Solti.Utils.DI.Internals.Tests
         }
 
         [Test]
+        public void ExtendedFactory_ShouldHandleOptionalArguments() 
+        {
+            var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
+            mockInjector
+                .Setup(i => i.Get(typeof(IList<IDictionary>), null))
+                .Returns(new List<IDictionary>());
+            mockInjector
+                .Setup(i => i.TryGet(typeof(IDisposable), null))
+                .Returns(null);
+
+            Func<IInjector, IReadOnlyDictionary<string, object>, object> factory = Resolver
+                .GetExtended(typeof(MyInterceptor));
+
+            Assert.DoesNotThrow(() => factory.Invoke(mockInjector.Object, new Dictionary<string, object>()));
+
+            mockInjector.Verify(i => i.Get(typeof(IList<IDictionary>), null), Times.Once);
+            mockInjector.Verify(i => i.TryGet(typeof(IDisposable), null), Times.Once);
+        }
+
+        [Test]
         public void ExtendedFactory_ShouldThrowOnNonInterfaceArguments()
         {
             ConstructorInfo ctor = typeof(MyClass).GetConstructor(new[] { typeof(IDisposable), typeof(IList), typeof(int) });
@@ -287,6 +307,28 @@ namespace Solti.Utils.DI.Internals.Tests
 
             Assert.DoesNotThrow(() => factory.Invoke(mockInjector.Object, typeof(IList<IDictionary>)));
 
+            mockInjector.Verify(i => i.Get(typeof(IList<IDictionary>), null), Times.Once);
+            mockInjector.Verify(i => i.TryGet(typeof(IDisposable), null), Times.Once);
+        }
+
+        [Test]
+        public void GetExtended_ShouldSupportProxyTypes()
+        {
+            Type proxy = ProxyGenerator<IList<IDictionary>, MyInterceptor>.GetGeneratedType();
+
+            Func<IInjector, IReadOnlyDictionary<string, object>, object> factory = Resolver.GetExtended(proxy);
+
+            var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
+            mockInjector
+                .Setup(i => i.Get(typeof(IList<IDictionary>), null))
+                .Returns(new List<IDictionary>());
+            mockInjector
+                .Setup(i => i.TryGet(typeof(IDisposable), null))
+                .Returns(null);
+
+            Assert.DoesNotThrow(() => factory.Invoke(mockInjector.Object, new Dictionary<string, object>()));
+
+            mockInjector.Verify(i => i.Get(typeof(IList<IDictionary>), null), Times.Once);
             mockInjector.Verify(i => i.TryGet(typeof(IDisposable), null), Times.Once);
         }
     }

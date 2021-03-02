@@ -27,23 +27,21 @@ namespace Solti.Utils.DI.Internals
             InjectorGet = MethodInfoExtractor.Extract<IInjector>(i => i.Get(null!, null)),
             InjectorTryGet = MethodInfoExtractor.Extract<IInjector>(i => i.TryGet(null!, null));
 
-        private static Type? GetParameterType(ParameterInfo param, out bool isLazy)
+        private static Type? GetParameterType(Type paramType, out bool isLazy)
         {
-            Type parameterType = param.ParameterType;
-
-            if (parameterType.IsInterface)
+            if (paramType.IsInterface)
             {
                 isLazy = false;
-                return parameterType;
+                return paramType;
             }
 
-            if (parameterType.IsGenericType && parameterType.GetGenericTypeDefinition() == typeof(Lazy<>))
+            if (paramType.IsGenericType && paramType.GetGenericTypeDefinition() == typeof(Lazy<>))
             {
-                parameterType = parameterType.GetGenericArguments().Single();
-                if (parameterType.IsInterface)
+                paramType = paramType.GetGenericArguments().Single();
+                if (paramType.IsInterface)
                 {
                     isLazy = true;
-                    return parameterType;
+                    return paramType;
                 }
             }
 
@@ -59,7 +57,7 @@ namespace Solti.Utils.DI.Internals
             Ensure.Parameter.IsNotGenericDefinition(type, nameof(type));
         }
 
-        private static TDelegate CreateResolver<TDelegate>(ConstructorInfo constructor, Func<ParameterInfo, Expression> argumentResolver, params ParameterExpression[] parameters)
+        private static TDelegate CreateResolver<TDelegate>(ConstructorInfo constructor, Func<(Type Type, string Name, OptionsAttribute? Options), Expression> argumentResolver, params ParameterExpression[] parameters)
         {
             IReadOnlyCollection<ParameterInfo>? ctorParamz = null;        
 
@@ -93,7 +91,11 @@ namespace Solti.Utils.DI.Internals
                         constructor,
                         ctorParamz.Select
                         (
-                            param => Expression.Convert(argumentResolver(param), param.ParameterType)
+                            param => Expression.Convert
+                            (
+                                argumentResolver((param.ParameterType, param.Name, param.GetCustomAttribute<OptionsAttribute>())),
+                                param.ParameterType
+                            )
                         )
                     ),
                     typeof(object)
@@ -119,11 +121,9 @@ namespace Solti.Utils.DI.Internals
                 iface
             );
 
-            Expression ResolveArgument(ParameterInfo param) 
+            Expression ResolveArgument((Type Type, string _, OptionsAttribute? Options) param) 
             {
-                Type parameterType = GetParameterType(param, out bool isLazy) ?? throw new ArgumentException(Resources.INVALID_CONSTRUCTOR, nameof(constructor));
-
-                OptionsAttribute? options = param.GetCustomAttribute<OptionsAttribute>();
+                Type parameterType = GetParameterType(param.Type, out bool isLazy) ?? throw new ArgumentException(Resources.INVALID_CONSTRUCTOR, nameof(constructor));
 
                 if (isLazy)
                     //
@@ -132,7 +132,7 @@ namespace Solti.Utils.DI.Internals
 
                     return Expression.Invoke
                     (
-                        Expression.Constant(GetLazyFactory(parameterType, options)),
+                        Expression.Constant(GetLazyFactory(parameterType, param.Options)),
                         injector
                     )!;
 
@@ -143,9 +143,9 @@ namespace Solti.Utils.DI.Internals
                 return Expression.Call
                 (
                     injector,
-                    options?.Optional == true ? InjectorTryGet : InjectorGet,
+                    param.Options?.Optional == true ? InjectorTryGet : InjectorGet,
                     Expression.Constant(parameterType),
-                    Expression.Constant(options?.Name, typeof(string))
+                    Expression.Constant(param.Options?.Name, typeof(string))
                 )!;
             }
         });
@@ -179,7 +179,7 @@ namespace Solti.Utils.DI.Internals
                 explicitArgs
             );
 
-            Expression ResolveArgument(ParameterInfo param)
+            Expression ResolveArgument((Type Type, string Name, OptionsAttribute? Options) param)
             {
                 return Expression.Invoke
                 (
@@ -201,9 +201,9 @@ namespace Solti.Utils.DI.Internals
                     // megadhato legyen.
                     //
 
-                    Type? parameterType = GetParameterType(param, out bool isLazy);
+                    Type? parameterType = GetParameterType(param.Type, out bool isLazy);
                     
-                    if (parameterType == null)
+                    if (parameterType is null)
                     {
                         var ex = new ArgumentException(Resources.INVALID_CONSTRUCTOR_ARGUMENT);
                         ex.Data["parameter"] = param.Name;
@@ -211,20 +211,20 @@ namespace Solti.Utils.DI.Internals
                         throw ex;
                     }
 
-                    OptionsAttribute? options = param.GetCustomAttribute<OptionsAttribute>();
-
                     //
                     // Lazy<IInterface>(() => (IInterface) injector.Get(typeof(IInterface), svcName))
                     //
 
-                    if (isLazy) return GetLazyFactory(parameterType, options)
+                    if (isLazy) return GetLazyFactory(parameterType, param.Options)
                         .Invoke(injectorInst);
 
                     //
                     // injector.Get(typeof(IInterface), svcName)
                     //
 
-                    return injectorInst.Get(parameterType, options?.Name);
+                    return param.Options?.Optional == true
+                        ? injectorInst.TryGet(parameterType, param.Options?.Name)
+                        : injectorInst.Get(parameterType, param.Options?.Name);
                 }
             }
         })!; // Enelkul a CI elszall CS8619-el (helyben nem tudtam reprodukalni)
