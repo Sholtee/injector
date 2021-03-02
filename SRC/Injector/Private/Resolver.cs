@@ -27,7 +27,7 @@ namespace Solti.Utils.DI.Internals
             InjectorGet = MethodInfoExtractor.Extract<IInjector>(i => i.Get(null!, null)),
             InjectorTryGet = MethodInfoExtractor.Extract<IInjector>(i => i.TryGet(null!, null));
 
-        private static Type? GetParameterType(Type paramType, out bool isLazy)
+        private static Type? GetEffectiveParameterType(Type paramType, out bool isLazy)
         {
             if (paramType.IsInterface)
             {
@@ -123,7 +123,7 @@ namespace Solti.Utils.DI.Internals
 
             Expression ResolveArgument((Type Type, string _, OptionsAttribute? Options) param) 
             {
-                Type parameterType = GetParameterType(param.Type, out bool isLazy) ?? throw new ArgumentException(Resources.INVALID_CONSTRUCTOR, nameof(constructor));
+                Type parameterType = GetEffectiveParameterType(param.Type, out bool isLazy) ?? throw new ArgumentException(Resources.INVALID_CONSTRUCTOR, nameof(constructor));
 
                 if (isLazy)
                     //
@@ -201,7 +201,7 @@ namespace Solti.Utils.DI.Internals
                     // megadhato legyen.
                     //
 
-                    Type? parameterType = GetParameterType(param.Type, out bool isLazy);
+                    Type? parameterType = GetEffectiveParameterType(param.Type, out bool isLazy);
                     
                     if (parameterType is null)
                     {
