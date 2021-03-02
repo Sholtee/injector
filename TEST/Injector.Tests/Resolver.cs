@@ -169,16 +169,23 @@ namespace Solti.Utils.DI.Internals.Tests
 
             Assert.Throws<ArgumentException>(() => Resolver.Get(ctor), Resources.INVALID_CONSTRUCTOR);
 
-            var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
-            mockInjector
-                .Setup(i => i.Get(It.IsAny<Type>(), It.IsAny<string>()))
-                .Returns<Type, string>((type, name) => null);
-
             //
-            // Ez mukodne viszont nem adtunk meg a nem  interface parametert.
+            // Ne mock-oljuk az injector-t h a megfelelo kiveteleket kapjuk
             //
 
-            Assert.Throws<ArgumentException>(() => Resolver.GetExtended(ctor).Invoke(mockInjector.Object, new Dictionary<string, object>(0)), Resources.INVALID_CONSTRUCTOR_ARGUMENT);
+            using (IServiceContainer container = new ServiceContainer())
+            {
+                IInjector injector = container
+                    .Factory<IDisposable>(i => new Disposable(), Lifetime.Scoped)
+                    .Factory<IList>(i => new List<object>(), Lifetime.Scoped)
+                    .CreateInjector();
+
+                //
+                // Ez mukodne viszont nem adtuk meg a nem interface parametert.
+                //
+
+                Assert.Throws<ArgumentException>(() => Resolver.GetExtended(ctor).Invoke(injector, new Dictionary<string, object>(0)), Resources.PARAMETER_NOT_AN_INTERFACE);
+            }
         }
 
         [Test]
@@ -222,7 +229,7 @@ namespace Solti.Utils.DI.Internals.Tests
         }
 
         [Test]
-        public void ExtendedFactory_ExplicitArgumentsCanBeNonInterfaceValues()
+        public void ExtendedFactory_ExplicitArgumentsMayContainNonInterfaceValues()
         {
             const int TEN = 10;
 

@@ -19,13 +19,16 @@ namespace Solti.Utils.DI.Internals
 
     internal static class Resolver
     {
+        private static object? voidVal;
+
         private static readonly MethodInfo
             //
             // Csak kifejezesek, nem tenyleges metodus hivas
             //
 
-            InjectorGet = MethodInfoExtractor.Extract<IInjector>(i => i.Get(null!, null)),
-            InjectorTryGet = MethodInfoExtractor.Extract<IInjector>(i => i.TryGet(null!, null));
+            InjectorGet     = MethodInfoExtractor.Extract<IInjector>(i => i.Get(null!, null)),
+            InjectorTryGet  = MethodInfoExtractor.Extract<IInjector>(i => i.TryGet(null!, null)),
+            DictTryGetValue = MethodInfoExtractor.Extract<IReadOnlyDictionary<string, object?>>(dict => dict.TryGetValue(default!, out voidVal));
 
         private static Type? GetEffectiveParameterType(Type paramType, out bool isLazy)
         {
@@ -57,7 +60,7 @@ namespace Solti.Utils.DI.Internals
             Ensure.Parameter.IsNotGenericDefinition(type, nameof(type));
         }
 
-        private static TDelegate CreateResolver<TDelegate>(ConstructorInfo constructor, Func<(Type Type, string Name, OptionsAttribute? Options), Expression> argumentResolver, params ParameterExpression[] parameters)
+        private static TDelegate CreateResolver<TDelegate>(ConstructorInfo constructor, Func<(Type Type, string Name, OptionsAttribute? Options), Expression> argumentResolver, ParameterExpression[] variables, ParameterExpression[] parameters)
         {
             IReadOnlyCollection<ParameterInfo>? ctorParamz = null;        
 
@@ -84,25 +87,30 @@ namespace Solti.Utils.DI.Internals
 
             return Expression.Lambda<TDelegate>
             (
-                Expression.Convert
+                Expression.Block
                 (
-                    Expression.New
+                    variables,
+                    Expression.Convert
                     (
-                        constructor,
-                        ctorParamz.Select
+                        Expression.New
                         (
-                            param => Expression.Convert
+                            constructor,
+                            ctorParamz.Select
                             (
-                                argumentResolver((param.ParameterType, param.Name, param.GetCustomAttribute<OptionsAttribute>())),
-                                param.ParameterType
+                                param => Expression.Convert
+                                (
+                                    argumentResolver((param.ParameterType, param.Name, param.GetCustomAttribute<OptionsAttribute>())),
+                                    param.ParameterType
+                                )
                             )
-                        )
-                    ),
-                    typeof(object)
+                        ),
+                        typeof(object)
+                    )
                 ),
                 parameters
             ).Compile();
         }
+
         public static Func<IInjector, Type, object> Get(ConstructorInfo constructor) => Cache.GetOrAdd(constructor, () =>
         {
             //
@@ -116,9 +124,13 @@ namespace Solti.Utils.DI.Internals
             return CreateResolver<Func<IInjector, Type, object>>
             (
                 constructor, 
-                ResolveArgument, 
-                injector, 
-                iface
+                ResolveArgument,
+                Array.Empty<ParameterExpression>(),
+                new[]
+                {
+                    injector,
+                    iface
+                }
             );
 
             Expression ResolveArgument((Type Type, string _, OptionsAttribute? Options) param) 
@@ -164,70 +176,83 @@ namespace Solti.Utils.DI.Internals
         public static Func<IInjector, IReadOnlyDictionary<string, object?>, object> GetExtended(ConstructorInfo constructor) => Cache.GetOrAdd(constructor, () =>
         {
             //
-            // (injector, explicitParamz) => new Service((IDependency_1) (explicitParamz[paramName] ||  injector.Get(typeof(IDependency_1))), ...)
+            // (injector, explicitParamz) =>
+            // {
+            //    object explicitArg;
+            //    return new Service(explicitArgs.TryGetValue(paramName, out explicitArg) ? explicitArg : Lazy<IDependency_1>) | injector.[Try]Get(typeof(IDependency_1)), ...);
+            // }
             //
 
             ParameterExpression
                 injector     = Expression.Parameter(typeof(IInjector), nameof(injector)),
-                explicitArgs = Expression.Parameter(typeof(IReadOnlyDictionary<string, object?>), nameof(explicitArgs));
+                explicitArgs = Expression.Parameter(typeof(IReadOnlyDictionary<string, object?>), nameof(explicitArgs)),
+                explicitArg  = Expression.Variable(typeof(object), nameof(explicitArg));
 
             return CreateResolver<Func<IInjector, IReadOnlyDictionary<string, object?>, object>>
             (
                 constructor,
                 ResolveArgument,
-                injector,
-                explicitArgs
+                new[] { explicitArg },
+                new[]
+                {
+                    injector,
+                    explicitArgs
+                }
             );
 
             Expression ResolveArgument((Type Type, string Name, OptionsAttribute? Options) param)
             {
-                return Expression.Invoke
+                //
+                // Nem gond ha ez vegul nem interface tipus lesz, az injector.Get() ugy is szol
+                // majd miatta.
+                //
+
+                Type parameterType = GetEffectiveParameterType(param.Type, out bool isLazy) ?? param.Type;
+
+                //
+                // explicitArgs.TryGetValue(paramName, out explicitArg)
+                //   ? explicitArg 
+                //   : Lazy<IDependency_1>) | injector.[Try]Get(typeof(IDependency_1))
+                //
+
+                return Expression.Condition
                 (
-                    Expression.Constant
+                    test: Expression.Call
                     (
-                        (Func<IInjector, IReadOnlyDictionary<string, object?>, object?>) Implementation
+                        explicitArgs, 
+                        DictTryGetValue, 
+                        Expression.Constant(param.Name), 
+                        explicitArg
                     ),
-                    injector,
-                    explicitArgs
+                    ifTrue: explicitArg,
+                    ifFalse: isLazy
+                        //
+                        // Lazy<IInterface>(() => (IInterface) injector.[Try]Get(typeof(IInterface), svcName))
+                        //
+
+                        ? Expression.Invoke
+                        (
+                            Expression.Constant
+                            (
+                                GetLazyFactory(parameterType, param.Options)
+                            ),
+                            injector
+                        )
+
+                        //
+                        // injector.[Try]Get(typeof(IInterface), svcName)
+                        //
+
+                        : Expression.Call
+                        (
+                            injector,
+                            param.Options?.Optional == true ? InjectorTryGet : InjectorGet,
+                            Expression.Constant(parameterType),
+                            Expression.Constant(param.Options?.Name, typeof(string))
+                        )
                 );
-
-                object? Implementation(IInjector injectorInst, IReadOnlyDictionary<string, object?> explicitArgsInst)
-                {
-                    if (explicitArgsInst.TryGetValue(param.Name, out object? value)) 
-                        return value;
-
-                    //
-                    // Parameter tipust itt KELL validalni h az "explicitArgs"-ban tetszoleges tipusu argumentum
-                    // megadhato legyen.
-                    //
-
-                    Type? parameterType = GetEffectiveParameterType(param.Type, out bool isLazy);
-                    
-                    if (parameterType is null)
-                    {
-                        var ex = new ArgumentException(Resources.INVALID_CONSTRUCTOR_ARGUMENT);
-                        ex.Data["parameter"] = param.Name;
-
-                        throw ex;
-                    }
-
-                    //
-                    // Lazy<IInterface>(() => (IInterface) injector.Get(typeof(IInterface), svcName))
-                    //
-
-                    if (isLazy) return GetLazyFactory(parameterType, param.Options)
-                        .Invoke(injectorInst);
-
-                    //
-                    // injector.Get(typeof(IInterface), svcName)
-                    //
-
-                    return param.Options?.Optional == true
-                        ? injectorInst.TryGet(parameterType, param.Options?.Name)
-                        : injectorInst.Get(parameterType, param.Options?.Name);
-                }
             }
-        })!; // Enelkul a CI elszall CS8619-el (helyben nem tudtam reprodukalni)
+        });
 
         public static Func<IInjector, IReadOnlyDictionary<string, object?>, object> GetExtended(Type type) => Cache.GetOrAdd(type, () => 
         {
