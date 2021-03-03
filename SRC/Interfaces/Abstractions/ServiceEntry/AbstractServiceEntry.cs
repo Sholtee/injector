@@ -94,7 +94,7 @@ namespace Solti.Utils.DI.Interfaces
         /// <summary>
         /// Returns custom converters related to this entry.
         /// </summary>
-        /// <remarks>Converters describe how to extract the actual service object from the value stored in a <see cref="IServiceReference"/>.</remarks>
+        /// <remarks>Converters describe how to extract the actual service object from the value stored in the <see cref="IServiceReference"/>.</remarks>
         public IReadOnlyCollection<Func<object, Type, object>> CustomConverters { get; }
         #endregion
 
