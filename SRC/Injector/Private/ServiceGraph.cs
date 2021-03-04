@@ -6,7 +6,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 
 namespace Solti.Utils.DI.Internals
@@ -17,16 +16,7 @@ namespace Solti.Utils.DI.Internals
 
     internal sealed class ServiceGraph: IServiceGraph
     {
-        private readonly Stack<IServiceReference> FGraph;
-
-        private ServiceGraph(ServiceGraph parent)
-        {
-            FGraph = new Stack<IServiceReference>(parent);
-            
-            Debug.Assert(Requestor == parent.Requestor);
-        }
-
-        public ServiceGraph() => FGraph = new Stack<IServiceReference>();
+        private readonly Stack<IServiceReference> FGraph = new();
 
         public IServiceReference? Requestor => FGraph.Any() ? FGraph.Peek() : null;
 
