@@ -142,15 +142,6 @@ namespace Solti.Utils.DI.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Non interface/Lazy&lt;interface&gt; arguments must be specified as an explicit argument..
-        /// </summary>
-        internal static string INVALID_CONSTRUCTOR_ARGUMENT {
-            get {
-                return ResourceManager.GetString("INVALID_CONSTRUCTOR_ARGUMENT", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Injector must not contain abstract service entries..
         /// </summary>
         internal static string INVALID_INJECTOR_ENTRY {
