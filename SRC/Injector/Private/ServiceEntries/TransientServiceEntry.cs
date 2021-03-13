@@ -52,11 +52,13 @@ namespace Solti.Utils.DI.Internals
                 // (ahogy az a teljesitmeny teszteknel meg is tortent).
                 //
 
+                #pragma warning disable CA2201 // Do not change the exception type to preserve backward compatibility
                 throw new Exception(string.Format(Resources.Culture, Resources.INJECTOR_SHOULD_BE_RELEASED, threshold));
+                #pragma warning restore CA2201
 
-            //
-            // "Factory" biztos nem NULL [lasd EnsureProducible()]
-            //
+                //
+                // "Factory" biztos nem NULL [lasd EnsureProducible()]
+                //
 
             reference.Value = Factory!(relatedInjector, Interface);
 

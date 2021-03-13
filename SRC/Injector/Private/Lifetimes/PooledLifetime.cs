@@ -5,6 +5,7 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
 
@@ -15,6 +16,7 @@ namespace Solti.Utils.DI.Internals
 
     internal sealed partial class PooledLifetime : InjectorDotNetLifetime<PooledLifetime>, IHasCapacity
     {
+        [SuppressMessage("Performance", "CA1802:Use literals where appropriate", Justification = "Due to interpolation it cannot be const.")]
         public static readonly string POOL_SCOPE = $"_{nameof(POOL_SCOPE)}";
 
         public PooledLifetime() : base(bindTo: () => Pooled, precedence: 20) { }

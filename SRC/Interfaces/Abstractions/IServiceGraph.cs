@@ -5,6 +5,7 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Solti.Utils.DI.Interfaces
 {
@@ -21,6 +22,7 @@ namespace Solti.Utils.DI.Interfaces
         /// <summary>
         /// Appends the graph with the given <see cref="IServiceReference"/>.
         /// </summary>
+        [SuppressMessage("Naming", "CA1716:Identifiers should not match keywords")]
         IDisposable With(IServiceReference reference);
 
         /// <summary>

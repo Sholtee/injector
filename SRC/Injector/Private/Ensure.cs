@@ -5,6 +5,7 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 
 namespace Solti.Utils.DI.Internals
@@ -16,6 +17,7 @@ namespace Solti.Utils.DI.Internals
     /// Every method that can be accessed publicly or use one or more parameters that were passed outside of the library 
     /// should use this class for basic validations to ensure consistent validation errors.
     /// </summary>
+    [SuppressMessage("Usage", "CA2201:Do not raise reserved exception types")]
     internal static class Ensure
     {
         public static class Parameter

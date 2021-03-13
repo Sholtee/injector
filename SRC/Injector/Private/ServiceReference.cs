@@ -72,6 +72,7 @@ namespace Solti.Utils.DI
             catch 
             {
                 dependency.Release();
+                throw;
             }
         }
 

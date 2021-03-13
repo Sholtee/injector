@@ -52,7 +52,7 @@ namespace Solti.Utils.DI
         {
             Ensure.Parameter.IsNotNull(self, nameof(self));
 
-            return self.Name?.StartsWith(ServiceContainer.INTERNAL_SERVICE_NAME_PREFIX) == true;
+            return self.Name?.StartsWith(ServiceContainer.INTERNAL_SERVICE_NAME_PREFIX, StringComparison.Ordinal) == true;
         }
     }
 }

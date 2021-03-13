@@ -23,7 +23,7 @@ namespace Solti.Utils.DI.Internals
     /// </example>
     public partial class Config
     {
-        private static T GetValue<T>(string name) => AppContext.GetData(name) is T result ? result : default!;
+        internal static T GetValue<T>(string name) => AppContext.GetData(name) is T result ? result : default!;
 
         /// <summary>
         /// The <see cref="Config"/> instance.

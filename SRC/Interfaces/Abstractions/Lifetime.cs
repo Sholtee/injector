@@ -5,6 +5,7 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Solti.Utils.DI.Interfaces
 {
@@ -13,6 +14,8 @@ namespace Solti.Utils.DI.Interfaces
     /// <summary>
     /// Describes the lifetime of a service.
     /// </summary>
+    [SuppressMessage("Design", "CA1724:Type names should not match namespaces")]
+    [SuppressMessage("Design", "CA1036:Override methods on comparable types")]
     public abstract class Lifetime: ICloneable, IComparable<Lifetime>
     {
         private static Lifetime? 

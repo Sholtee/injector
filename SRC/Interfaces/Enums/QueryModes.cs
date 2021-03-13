@@ -16,7 +16,9 @@ namespace Solti.Utils.DI.Interfaces
         /// <summary>
         /// Allows returning NULL if the desired service could not be queried.
         /// </summary>
+        #pragma warning disable CA1008 // "Default" is the zero value
         Default = 0,
+        #pragma warning restore CA1008
 
         /// <summary>
         /// Instructs the <see cref="IServiceContainer.Get"/> to throw if the desired service could not be queried.
