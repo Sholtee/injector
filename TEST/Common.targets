@@ -10,9 +10,9 @@
     <OutputPath>..\..\BIN\$(Configuration)\</OutputPath>
   </PropertyGroup>
 
-  <!--OpenCover requires .NET Core 2.2 while Test Explorer needs 3.X-->
+  <!--OpenCover requires .NET Core 2.x-->
   <PropertyGroup Condition="'$(CI)'==''">
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
     <DefineConstants>LANG_VERSION_8</DefineConstants>
   </PropertyGroup>
 
