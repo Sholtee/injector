@@ -1,6 +1,6 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
     <Configurations>Debug</Configurations>
@@ -8,12 +8,6 @@
     <OutputType>Library</OutputType>
     <StartupObject />
     <OutputPath>..\..\BIN\$(Configuration)\</OutputPath>
-  </PropertyGroup>
-
-  <!--OpenCover requires .NET Core 2.x-->
-  <PropertyGroup Condition="'$(CI)'==''">
-    <TargetFramework>net5.0</TargetFramework>
-    <DefineConstants>LANG_VERSION_8</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
