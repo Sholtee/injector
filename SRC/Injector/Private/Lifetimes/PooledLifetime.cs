@@ -12,6 +12,7 @@ using System.Runtime.CompilerServices;
 namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
+    using Interfaces.Properties;
     using Primitives.Threading;
 
     internal sealed partial class PooledLifetime : InjectorDotNetLifetime<PooledLifetime>, IHasCapacity
@@ -42,27 +43,39 @@ namespace Solti.Utils.DI.Internals
             ? poolItem.Value.Value!
             : value;
 
-        private AbstractServiceEntry GetPoolEntry(Type iface, string? name, IServiceContainer owner) => new SingletonServiceEntry
-        (
-            iface.IsGenericTypeDefinition
-                ? typeof(IPool<>)
-                : typeof(IPool<>).MakeGenericType(iface),
-            GetPoolName(iface, name),
-            iface.IsGenericTypeDefinition
-                ? typeof(PoolService<>)
-                : typeof(PoolService<>).MakeGenericType(iface),
-            new Dictionary<string, object?>
-            {
-                //
-                // Az argumentum nevek meg kell egyezzenek a PoolService.ctor() parameter neveivel.
-                // Kesobb majd lehet szebben is megoldhato lesz: https://github.com/dotnet/csharplang/issues/373
-                //
+        private AbstractServiceEntry GetPoolEntry(Type iface, string? name, IServiceContainer owner)
+        {
+            if (iface is null)
+                throw new ArgumentNullException(nameof(iface));
 
-                ["capacity"] = Capacity,
-                ["name"] = name
-            },
-            owner
-        );
+            if (!iface.IsInterface)
+                throw new ArgumentException(Resources.NOT_AN_INTERFACE, nameof(iface));
+
+            if (owner is null)
+                throw new ArgumentNullException(nameof(owner));
+
+            return new SingletonServiceEntry
+            (
+                iface.IsGenericTypeDefinition
+                    ? typeof(IPool<>)
+                    : typeof(IPool<>).MakeGenericType(iface),
+                GetPoolName(iface, name),
+                iface.IsGenericTypeDefinition
+                    ? typeof(PoolService<>)
+                    : typeof(PoolService<>).MakeGenericType(iface),
+                new Dictionary<string, object?>
+                {
+                    //
+                    // Az argumentum nevek meg kell egyezzenek a PoolService.ctor() parameter neveivel.
+                    // Kesobb majd lehet szebben is megoldhato lesz: https://github.com/dotnet/csharplang/issues/373
+                    //
+
+                    ["capacity"] = Capacity,
+                    ["name"] = name
+                },
+                owner
+            );
+        }
 
         public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Type implementation, IServiceContainer owner, params Func<object, Type, object>[] customConverters)
         {
