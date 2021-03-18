@@ -21,6 +21,7 @@ namespace Solti.Utils.DI.Container.Tests
                 yield return Lifetime.Transient;
                 yield return Lifetime.Scoped;
                 yield return Lifetime.Singleton;
+                yield return Lifetime.Pooled;
             }
         }
 

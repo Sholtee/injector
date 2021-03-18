@@ -59,8 +59,8 @@ namespace Solti.Utils.DI.Container.Tests
             Assert.IsNull(Container.Get<IInterface_1>());
             Assert.IsNull(Container.Get<IInterface_1>("invalidname"));
 
-            Assert.AreEqual(lifetime.CreateFrom(typeof(IInterface_1), "svc1", typeof(Implementation_1_No_Dep), Container).Single(), Container.Get<IInterface_1>("svc1"));
-            Assert.AreEqual(lifetime.CreateFrom(typeof(IInterface_1), "svc2", typeof(DecoratedImplementation_1), Container).Single(), Container.Get<IInterface_1>("svc2"));
+            Assert.AreEqual(lifetime.CreateFrom(typeof(IInterface_1), "svc1", typeof(Implementation_1_No_Dep), Container).Where(entry => !entry.IsInternal()).Single(), Container.Get<IInterface_1>("svc1"));
+            Assert.AreEqual(lifetime.CreateFrom(typeof(IInterface_1), "svc2", typeof(DecoratedImplementation_1), Container).Where(entry => !entry.IsInternal()).Single(), Container.Get<IInterface_1>("svc2"));
         }
 
         private interface IServiceHavingNonInterfaceCtorArg

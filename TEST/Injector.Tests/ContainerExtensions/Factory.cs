@@ -32,9 +32,9 @@ namespace Solti.Utils.DI.Container.Tests
 
             Container.Factory(typeof(IInterface_3<>), factory, lifetime);
 
-            Assert.That(Container.Count, Is.EqualTo(1));
+            Assert.That(Container.Where(entry => !entry.IsInternal()).Count(), Is.EqualTo(1));
             Assert.AreEqual(new TransientServiceEntry(typeof(IInterface_3<int>), null, factory, Container), Container.Get<IInterface_3<int>>(QueryModes.AllowSpecialization));
-            Assert.That(Container.Count, Is.EqualTo(2));
+            Assert.That(Container.Where(entry => !entry.IsInternal()).Count(), Is.EqualTo(2));
         }
 
         [TestCase(null)]
@@ -57,8 +57,8 @@ namespace Solti.Utils.DI.Container.Tests
             Assert.IsNull(Container.Get<IInterface_1>());
             Assert.IsNull(Container.Get<IInterface_1>("invalidname"));
 
-            Assert.AreEqual(lifetime.CreateFrom(typeof(IInterface_1), "svc1", factory, Container).Single(), Container.Get<IInterface_1>("svc1"));
-            Assert.AreEqual(lifetime.CreateFrom(typeof(IInterface_1), "svc2", factory, Container).Single(), Container.Get<IInterface_1>("svc2"));
+            Assert.AreEqual(lifetime.CreateFrom(typeof(IInterface_1), "svc1", factory, Container).Where(entry => !entry.IsInternal()).Single(), Container.Get<IInterface_1>("svc1"));
+            Assert.AreEqual(lifetime.CreateFrom(typeof(IInterface_1), "svc2", factory, Container).Where(entry => !entry.IsInternal()).Single(), Container.Get<IInterface_1>("svc2"));
         }
     }
 }
