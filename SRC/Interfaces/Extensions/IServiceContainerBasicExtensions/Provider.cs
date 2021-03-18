@@ -22,14 +22,17 @@ namespace Solti.Utils.DI.Interfaces
         /// <returns>The container itself.</returns>
         public static IServiceContainer Provider(this IServiceContainer self, Type iface, string? name, Type provider, Lifetime lifetime)
         {
-            if (self == null)
+            if (self is null)
                 throw new ArgumentNullException(nameof(self));
 
-            if (provider == null)
+            if (provider is null)
                 throw new ArgumentNullException(nameof(self));
 
-            if (lifetime == null)
+            if (lifetime is null)
                 throw new ArgumentNullException(nameof(lifetime));
+
+            if (iface is null)
+                throw new ArgumentNullException(nameof(iface));
 
             //
             // Tovabbi validaciot az xXxServiceEntry vegzi.
@@ -38,9 +41,15 @@ namespace Solti.Utils.DI.Interfaces
             if (!typeof(IServiceProvider).IsAssignableFrom(provider))
                 throw new ArgumentException(string.Format(Resources.Culture, Resources.NOT_IMPLEMENTED, typeof(IServiceProvider)), nameof(provider));
 
+            //
+            // Ez jol kezeli azt az esetet is ha eloszor generikus majd pedig annak lezart parjat regisztraljuk
+            //
+
+            string providerName = $"${iface.FullName}_provider_{name}"; // TODO: INTERNAL_SERVICE_NAME_PREFIX hasznalata
+
             return self
-                .Service(iface, name, provider, lifetime)
-                .Proxy(iface, name, (injector, iface, instance) => ((IServiceProvider) instance).GetService(iface));
+                .Service(typeof(IServiceProvider), providerName, provider, lifetime)
+                .Factory(iface, name, (injector, iface) => injector.Get<IServiceProvider>(providerName).GetService(iface), lifetime);
         }
 
         /// <summary>

@@ -5,7 +5,9 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
+using Moq;
 using NUnit.Framework;
 
 namespace Solti.Utils.DI.Container.Tests
@@ -32,8 +34,8 @@ namespace Solti.Utils.DI.Container.Tests
             Assert.DoesNotThrow(() => Container.Provider<IInterface_1, ProviderHavingOverloadedCtor>(lifetime));
 
         [TestCaseSource(nameof(Lifetimes))]
-        public void Container_Provider_ShouldBeAService(Lifetime lifetime) =>
-            Assert.That(Container.Provider<IInterface_1, ProviderHavingOverloadedCtor>(lifetime).Get<IInterface_1>().IsService());
+        public void Container_Provider_ShouldBeAFactory(Lifetime lifetime) =>
+            Assert.That(Container.Provider<IInterface_1, ProviderHavingOverloadedCtor>(lifetime).Get<IInterface_1>().IsFactory());
 
         [TestCaseSource(nameof(Lifetimes))]
         public void Container_Provider_MayHaveDeferredDependency(Lifetime lifetime) =>
@@ -46,18 +48,48 @@ namespace Solti.Utils.DI.Container.Tests
                 .Provider<IServiceProvider, SelfReturningProvider>(Lifetime.Transient)
                 .Get<IServiceProvider>();
 
-            Assert.That(entry.Factory(null, null), Is.InstanceOf<SelfReturningProvider>());
-            Assert.AreNotSame(entry.Factory(null, entry.Interface), entry.Factory(null, entry.Interface));
+            var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
+            mockInjector
+                .Setup(i => i.Get(typeof(IServiceProvider), $"{ServiceContainer.INTERNAL_SERVICE_NAME_PREFIX}{typeof(IServiceProvider).FullName}_provider_"))
+                .Returns<Type, string>((t, n) => Container.Get(t, n).Factory(null, t));
+
+            Assert.That(entry.Factory(mockInjector.Object, entry.Interface), Is.InstanceOf<SelfReturningProvider>());
+            Assert.AreNotSame(entry.Factory(mockInjector.Object, entry.Interface), entry.Factory(mockInjector.Object, entry.Interface));
         }
 
-        [TestCaseSource(nameof(Lifetimes)), Ignore("TODO")]
+        [TestCaseSource(nameof(Lifetimes))]
         public void Container_Provider_ShouldSupportGenericServices(Lifetime lifetime) 
         {
             AbstractServiceEntry entry = Container
-                .Provider(typeof(IList<>), typeof(TypeReturningProvider), lifetime)
+                .Provider(typeof(IList<>), typeof(ListProvider), lifetime)
                 .Get<IList<int>>(QueryModes.AllowSpecialization);
 
-            Assert.That(entry.Factory(null, entry.Interface), Is.EqualTo(typeof(IList<int>)));
+            var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
+            mockInjector
+                .Setup(i => i.Get(typeof(IServiceProvider), $"{ServiceContainer.INTERNAL_SERVICE_NAME_PREFIX}{typeof(IList<>).FullName}_provider_"))
+                .Returns<Type, string>((t, n) => Container.Get(t, n).Factory(null, t));
+
+            Assert.That(entry.Factory(mockInjector.Object, typeof(IList<int>)), Is.InstanceOf<IList<int>>());
+
+            mockInjector.Verify(i => i.Get(It.IsAny<Type>(), It.IsAny<string>()), Times.Once);
+        }
+
+        [TestCaseSource(nameof(Lifetimes))]
+        public void Container_Provider_ShouldSupportSpecializedServices(Lifetime lifetime)
+        {
+            AbstractServiceEntry entry = Container
+                .Provider(typeof(IList<>), typeof(FaultyProvider), lifetime)
+                .Provider<IList<int>, ListProvider>(lifetime)
+                .Get<IList<int>>(QueryModes.AllowSpecialization);
+
+            var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
+            mockInjector
+                .Setup(i => i.Get(typeof(IServiceProvider), It.IsAny<string>()))
+                .Returns<Type, string>((t, n) => Container.Get(t, n).Factory(null, t));
+
+            Assert.That(entry.Factory(mockInjector.Object, typeof(IList<int>)), Is.InstanceOf<IList<int>>());
+
+            mockInjector.Verify(i => i.Get(It.IsAny<Type>(), It.IsAny<string>()), Times.Once);
         }
 
         [TestCaseSource(nameof(Lifetimes))]
@@ -101,6 +133,20 @@ namespace Solti.Utils.DI.Container.Tests
         private class TypeReturningProvider : DummyProvider
         {
             public override object GetService(Type serviceType) => serviceType;
+        }
+
+        private class FaultyProvider : IServiceProvider
+        {
+            public object GetService(Type serviceType) => throw new NotImplementedException();
+        }
+
+        private class ListProvider : IServiceProvider
+        {
+            public object GetService(Type serviceType) => Activator.CreateInstance
+            (
+                typeof(List<>).MakeGenericType(serviceType.GetGenericArguments().Single()),
+                Type.EmptyTypes
+            );
         }
     }
 }
