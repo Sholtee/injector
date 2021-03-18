@@ -48,7 +48,12 @@ namespace Solti.Utils.DI.Interfaces
             string providerName = $"${iface.FullName}_provider_{name}"; // TODO: INTERNAL_SERVICE_NAME_PREFIX hasznalata
 
             return self
-                .Service(typeof(IServiceProvider), providerName, provider, lifetime)
+                //
+                // A legyartott szerviz elettartama nem feltetlen kell megegyezzen a mogottes provider elettartamaval
+                // (hogy peldaul Lifetime.Pooled eseten ne legyen egy felesleges pool peldany is).
+                //
+
+                .Service(typeof(IServiceProvider), providerName, provider, lifetime.CompareTo(Lifetime.Singleton) < 0 ? Lifetime.Transient : lifetime)
                 .Factory(iface, name, (injector, iface) => injector.Get<IServiceProvider>(providerName).GetService(iface), lifetime);
         }
 

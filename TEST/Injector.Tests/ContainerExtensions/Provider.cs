@@ -37,6 +37,26 @@ namespace Solti.Utils.DI.Container.Tests
         public void Container_Provider_ShouldBeAFactory(Lifetime lifetime) =>
             Assert.That(Container.Provider<IInterface_1, ProviderHavingOverloadedCtor>(lifetime).Get<IInterface_1>().IsFactory());
 
+        public static IEnumerable<(Lifetime Actual, Lifetime Underlying)> UnderlyingLifetimes 
+        {
+            get 
+            {
+                yield return (Lifetime.Transient, Lifetime.Transient);
+                yield return (Lifetime.Scoped, Lifetime.Transient);
+                yield return (Lifetime.Pooled, Lifetime.Transient);
+                yield return (Lifetime.Singleton, Lifetime.Singleton); // StrictDI tamogatas
+            }
+        }
+
+        [Test]
+        public void Container_Provider_UnderlyingProviderShouldHaveTheProperLifetime([ValueSource(nameof(UnderlyingLifetimes))] (Lifetime Actual, Lifetime Underlying) para) 
+        {
+            Container.Provider<IList<int>, ListProvider>(para.Actual);
+
+            Assert.That(Container.Get<IList<int>>().Lifetime, Is.EqualTo(para.Actual));
+            Assert.That(Container.Get<IServiceProvider>($"{ServiceContainer.INTERNAL_SERVICE_NAME_PREFIX}{typeof(IList<int>).FullName}_provider_").Lifetime, Is.EqualTo(para.Underlying));
+        }
+
         [TestCaseSource(nameof(Lifetimes))]
         public void Container_Provider_MayHaveDeferredDependency(Lifetime lifetime) =>
             Assert.DoesNotThrow(() => Container.Provider<IInterface_1, ProviderHavingDeferredDependency>(lifetime));
