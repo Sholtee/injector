@@ -45,7 +45,7 @@ namespace Solti.Utils.DI.Interfaces
             // Ez jol kezeli azt az esetet is ha eloszor generikus majd pedig annak lezart parjat regisztraljuk
             //
 
-            string providerName = $"${iface.FullName}_provider_{name}"; // TODO: INTERNAL_SERVICE_NAME_PREFIX hasznalata
+            string providerName = $"{Consts.INTERNAL_SERVICE_NAME_PREFIX}{iface.FullName}_provider_{name}";
 
             return self
                 //

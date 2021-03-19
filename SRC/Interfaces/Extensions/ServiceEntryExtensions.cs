@@ -53,7 +53,7 @@ namespace Solti.Utils.DI.Interfaces
             if (self is null)
                 throw new ArgumentNullException(nameof(self));
 
-            return self.Name?.StartsWith("$", StringComparison.Ordinal) == true; // TODO: INTERNAL_SERVICE_NAME_PREFIX hasznalata
+            return self.Name?.StartsWith(Consts.INTERNAL_SERVICE_NAME_PREFIX, StringComparison.Ordinal) == true;
         }
     }
 }

@@ -32,7 +32,7 @@ namespace Solti.Utils.DI
         /// Indicates that the entry exists for internal use.
         /// </summary>
         [SuppressMessage("Naming", "CA1707:Identifiers should not contain underscores", Justification = "Do not change the name to preserve backward compatibility.")]
-        public const string INTERNAL_SERVICE_NAME_PREFIX = "$";
+        public const string INTERNAL_SERVICE_NAME_PREFIX = Consts.INTERNAL_SERVICE_NAME_PREFIX;
 
         private readonly Dictionary<IServiceId, AbstractServiceEntry> FEntries;
 
