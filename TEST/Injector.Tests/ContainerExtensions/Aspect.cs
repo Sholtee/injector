@@ -14,7 +14,6 @@ using NUnit.Framework;
 namespace Solti.Utils.DI.Container.Tests
 {
     using Interfaces;
-    using Internals;
     using Primitives.Patterns;
     using Properties;
     using Proxy; 
@@ -125,7 +124,7 @@ namespace Solti.Utils.DI.Container.Tests
                         .Setup(aspect => aspect.GetInterceptorType(It.Is<Type>(t => t == typeof(IMyService))))
                         .Returns(typeof(InterfaceInterceptor<IMyService>));
                     
-                    Assert.DoesNotThrowAsync(async () => delegates = await ServiceEntryExtensions.GenerateProxyDelegates(typeof(IMyService), new[] { mockAspect.Object }));
+                    Assert.DoesNotThrowAsync(async () => delegates = await Internals.ServiceEntryExtensions.GenerateProxyDelegates(typeof(IMyService), new[] { mockAspect.Object }));
 
                     mockAspect.Verify(aspect => aspect.GetInterceptorType(It.Is<Type>(t => t == typeof(IMyService))), Times.Once);
                     Assert.That(delegates.Length, Is.EqualTo(1));
@@ -137,7 +136,7 @@ namespace Solti.Utils.DI.Container.Tests
                         .Setup(aspect => aspect.GetInterceptor(It.IsAny<IInjector>(), It.Is<Type>(t => t == typeof(IMyService)), It.IsAny<IMyService>()))
                         .Returns(decorated);
 
-                    Assert.DoesNotThrowAsync(async () => delegates = await ServiceEntryExtensions.GenerateProxyDelegates(typeof(IMyService), new[] { mockAspect.Object }));
+                    Assert.DoesNotThrowAsync(async () => delegates = await Internals.ServiceEntryExtensions.GenerateProxyDelegates(typeof(IMyService), new[] { mockAspect.Object }));
                     Assert.That(delegates.Single(), Is.EqualTo((Func<IInjector, Type, object, object>) mockAspect.Object.GetInterceptor));
 
                     break;
