@@ -192,3 +192,9 @@
 - 4.0.0-preview8:
   - *improved:* `Resolver` performance
   - *done:* Some code cleanup
+- 4.0.0:
+  - *upgraded:* `ProxyGen.NET` to version 4.0.0
+- 4.0.1:
+  - *fixed:* Moved `ServiceEntryExtensions` to interfaces project (i consider it as a fix since it was declared accidentally in a wrong place)
+  - *fixed:* `IServiceContainerBasicExtensions.Provider()` failed on generic service registration
+  - *fixed:* Missing validation in `PooledLifetime`
