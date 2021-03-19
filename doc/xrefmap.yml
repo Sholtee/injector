@@ -377,6 +377,18 @@ references:
   isSpec: "True"
   fullName: Solti.Utils.DI.Interfaces.CircularReferenceException.CircularReferenceException
   nameWithType: CircularReferenceException.CircularReferenceException
+- uid: Solti.Utils.DI.Interfaces.Consts
+  name: Consts
+  href: Solti.Utils.DI.Interfaces.Consts.html
+  commentId: T:Solti.Utils.DI.Interfaces.Consts
+  fullName: Solti.Utils.DI.Interfaces.Consts
+  nameWithType: Consts
+- uid: Solti.Utils.DI.Interfaces.Consts.INTERNAL_SERVICE_NAME_PREFIX
+  name: INTERNAL_SERVICE_NAME_PREFIX
+  href: Solti.Utils.DI.Interfaces.Consts.html#Solti_Utils_DI_Interfaces_Consts_INTERNAL_SERVICE_NAME_PREFIX
+  commentId: F:Solti.Utils.DI.Interfaces.Consts.INTERNAL_SERVICE_NAME_PREFIX
+  fullName: Solti.Utils.DI.Interfaces.Consts.INTERNAL_SERVICE_NAME_PREFIX
+  nameWithType: Consts.INTERNAL_SERVICE_NAME_PREFIX
 - uid: Solti.Utils.DI.Interfaces.IHasCapacity
   name: IHasCapacity
   href: Solti.Utils.DI.Interfaces.IHasCapacity.html
@@ -1470,6 +1482,64 @@ references:
   isSpec: "True"
   fullName: Solti.Utils.DI.Interfaces.ServiceAlreadyRegisteredException.ServiceAlreadyRegisteredException
   nameWithType: ServiceAlreadyRegisteredException.ServiceAlreadyRegisteredException
+- uid: Solti.Utils.DI.Interfaces.ServiceEntryExtensions
+  name: ServiceEntryExtensions
+  href: Solti.Utils.DI.Interfaces.ServiceEntryExtensions.html
+  commentId: T:Solti.Utils.DI.Interfaces.ServiceEntryExtensions
+  fullName: Solti.Utils.DI.Interfaces.ServiceEntryExtensions
+  nameWithType: ServiceEntryExtensions
+- uid: Solti.Utils.DI.Interfaces.ServiceEntryExtensions.IsFactory(Solti.Utils.DI.Interfaces.AbstractServiceEntry)
+  name: IsFactory(AbstractServiceEntry)
+  href: Solti.Utils.DI.Interfaces.ServiceEntryExtensions.html#Solti_Utils_DI_Interfaces_ServiceEntryExtensions_IsFactory_Solti_Utils_DI_Interfaces_AbstractServiceEntry_
+  commentId: M:Solti.Utils.DI.Interfaces.ServiceEntryExtensions.IsFactory(Solti.Utils.DI.Interfaces.AbstractServiceEntry)
+  fullName: Solti.Utils.DI.Interfaces.ServiceEntryExtensions.IsFactory(Solti.Utils.DI.Interfaces.AbstractServiceEntry)
+  nameWithType: ServiceEntryExtensions.IsFactory(AbstractServiceEntry)
+- uid: Solti.Utils.DI.Interfaces.ServiceEntryExtensions.IsFactory*
+  name: IsFactory
+  href: Solti.Utils.DI.Interfaces.ServiceEntryExtensions.html#Solti_Utils_DI_Interfaces_ServiceEntryExtensions_IsFactory_
+  commentId: Overload:Solti.Utils.DI.Interfaces.ServiceEntryExtensions.IsFactory
+  isSpec: "True"
+  fullName: Solti.Utils.DI.Interfaces.ServiceEntryExtensions.IsFactory
+  nameWithType: ServiceEntryExtensions.IsFactory
+- uid: Solti.Utils.DI.Interfaces.ServiceEntryExtensions.IsInstance(Solti.Utils.DI.Interfaces.AbstractServiceEntry)
+  name: IsInstance(AbstractServiceEntry)
+  href: Solti.Utils.DI.Interfaces.ServiceEntryExtensions.html#Solti_Utils_DI_Interfaces_ServiceEntryExtensions_IsInstance_Solti_Utils_DI_Interfaces_AbstractServiceEntry_
+  commentId: M:Solti.Utils.DI.Interfaces.ServiceEntryExtensions.IsInstance(Solti.Utils.DI.Interfaces.AbstractServiceEntry)
+  fullName: Solti.Utils.DI.Interfaces.ServiceEntryExtensions.IsInstance(Solti.Utils.DI.Interfaces.AbstractServiceEntry)
+  nameWithType: ServiceEntryExtensions.IsInstance(AbstractServiceEntry)
+- uid: Solti.Utils.DI.Interfaces.ServiceEntryExtensions.IsInstance*
+  name: IsInstance
+  href: Solti.Utils.DI.Interfaces.ServiceEntryExtensions.html#Solti_Utils_DI_Interfaces_ServiceEntryExtensions_IsInstance_
+  commentId: Overload:Solti.Utils.DI.Interfaces.ServiceEntryExtensions.IsInstance
+  isSpec: "True"
+  fullName: Solti.Utils.DI.Interfaces.ServiceEntryExtensions.IsInstance
+  nameWithType: ServiceEntryExtensions.IsInstance
+- uid: Solti.Utils.DI.Interfaces.ServiceEntryExtensions.IsInternal(Solti.Utils.DI.Interfaces.AbstractServiceEntry)
+  name: IsInternal(AbstractServiceEntry)
+  href: Solti.Utils.DI.Interfaces.ServiceEntryExtensions.html#Solti_Utils_DI_Interfaces_ServiceEntryExtensions_IsInternal_Solti_Utils_DI_Interfaces_AbstractServiceEntry_
+  commentId: M:Solti.Utils.DI.Interfaces.ServiceEntryExtensions.IsInternal(Solti.Utils.DI.Interfaces.AbstractServiceEntry)
+  fullName: Solti.Utils.DI.Interfaces.ServiceEntryExtensions.IsInternal(Solti.Utils.DI.Interfaces.AbstractServiceEntry)
+  nameWithType: ServiceEntryExtensions.IsInternal(AbstractServiceEntry)
+- uid: Solti.Utils.DI.Interfaces.ServiceEntryExtensions.IsInternal*
+  name: IsInternal
+  href: Solti.Utils.DI.Interfaces.ServiceEntryExtensions.html#Solti_Utils_DI_Interfaces_ServiceEntryExtensions_IsInternal_
+  commentId: Overload:Solti.Utils.DI.Interfaces.ServiceEntryExtensions.IsInternal
+  isSpec: "True"
+  fullName: Solti.Utils.DI.Interfaces.ServiceEntryExtensions.IsInternal
+  nameWithType: ServiceEntryExtensions.IsInternal
+- uid: Solti.Utils.DI.Interfaces.ServiceEntryExtensions.IsService(Solti.Utils.DI.Interfaces.AbstractServiceEntry)
+  name: IsService(AbstractServiceEntry)
+  href: Solti.Utils.DI.Interfaces.ServiceEntryExtensions.html#Solti_Utils_DI_Interfaces_ServiceEntryExtensions_IsService_Solti_Utils_DI_Interfaces_AbstractServiceEntry_
+  commentId: M:Solti.Utils.DI.Interfaces.ServiceEntryExtensions.IsService(Solti.Utils.DI.Interfaces.AbstractServiceEntry)
+  fullName: Solti.Utils.DI.Interfaces.ServiceEntryExtensions.IsService(Solti.Utils.DI.Interfaces.AbstractServiceEntry)
+  nameWithType: ServiceEntryExtensions.IsService(AbstractServiceEntry)
+- uid: Solti.Utils.DI.Interfaces.ServiceEntryExtensions.IsService*
+  name: IsService
+  href: Solti.Utils.DI.Interfaces.ServiceEntryExtensions.html#Solti_Utils_DI_Interfaces_ServiceEntryExtensions_IsService_
+  commentId: Overload:Solti.Utils.DI.Interfaces.ServiceEntryExtensions.IsService
+  isSpec: "True"
+  fullName: Solti.Utils.DI.Interfaces.ServiceEntryExtensions.IsService
+  nameWithType: ServiceEntryExtensions.IsService
 - uid: Solti.Utils.DI.Interfaces.ServiceEntryStates
   name: ServiceEntryStates
   href: Solti.Utils.DI.Interfaces.ServiceEntryStates.html
@@ -1838,64 +1908,6 @@ references:
   fullName: Solti.Utils.DI.ServiceContainer.System.Collections.IEnumerable.GetEnumerator
   nameWithType: ServiceContainer.IEnumerable.GetEnumerator
   nameWithType.vb: ServiceContainer.System.Collections.IEnumerable.GetEnumerator
-- uid: Solti.Utils.DI.ServiceEntryExtensions
-  name: ServiceEntryExtensions
-  href: Solti.Utils.DI.ServiceEntryExtensions.html
-  commentId: T:Solti.Utils.DI.ServiceEntryExtensions
-  fullName: Solti.Utils.DI.ServiceEntryExtensions
-  nameWithType: ServiceEntryExtensions
-- uid: Solti.Utils.DI.ServiceEntryExtensions.IsFactory(Solti.Utils.DI.Interfaces.AbstractServiceEntry)
-  name: IsFactory(AbstractServiceEntry)
-  href: Solti.Utils.DI.ServiceEntryExtensions.html#Solti_Utils_DI_ServiceEntryExtensions_IsFactory_Solti_Utils_DI_Interfaces_AbstractServiceEntry_
-  commentId: M:Solti.Utils.DI.ServiceEntryExtensions.IsFactory(Solti.Utils.DI.Interfaces.AbstractServiceEntry)
-  fullName: Solti.Utils.DI.ServiceEntryExtensions.IsFactory(Solti.Utils.DI.Interfaces.AbstractServiceEntry)
-  nameWithType: ServiceEntryExtensions.IsFactory(AbstractServiceEntry)
-- uid: Solti.Utils.DI.ServiceEntryExtensions.IsFactory*
-  name: IsFactory
-  href: Solti.Utils.DI.ServiceEntryExtensions.html#Solti_Utils_DI_ServiceEntryExtensions_IsFactory_
-  commentId: Overload:Solti.Utils.DI.ServiceEntryExtensions.IsFactory
-  isSpec: "True"
-  fullName: Solti.Utils.DI.ServiceEntryExtensions.IsFactory
-  nameWithType: ServiceEntryExtensions.IsFactory
-- uid: Solti.Utils.DI.ServiceEntryExtensions.IsInstance(Solti.Utils.DI.Interfaces.AbstractServiceEntry)
-  name: IsInstance(AbstractServiceEntry)
-  href: Solti.Utils.DI.ServiceEntryExtensions.html#Solti_Utils_DI_ServiceEntryExtensions_IsInstance_Solti_Utils_DI_Interfaces_AbstractServiceEntry_
-  commentId: M:Solti.Utils.DI.ServiceEntryExtensions.IsInstance(Solti.Utils.DI.Interfaces.AbstractServiceEntry)
-  fullName: Solti.Utils.DI.ServiceEntryExtensions.IsInstance(Solti.Utils.DI.Interfaces.AbstractServiceEntry)
-  nameWithType: ServiceEntryExtensions.IsInstance(AbstractServiceEntry)
-- uid: Solti.Utils.DI.ServiceEntryExtensions.IsInstance*
-  name: IsInstance
-  href: Solti.Utils.DI.ServiceEntryExtensions.html#Solti_Utils_DI_ServiceEntryExtensions_IsInstance_
-  commentId: Overload:Solti.Utils.DI.ServiceEntryExtensions.IsInstance
-  isSpec: "True"
-  fullName: Solti.Utils.DI.ServiceEntryExtensions.IsInstance
-  nameWithType: ServiceEntryExtensions.IsInstance
-- uid: Solti.Utils.DI.ServiceEntryExtensions.IsInternal(Solti.Utils.DI.Interfaces.AbstractServiceEntry)
-  name: IsInternal(AbstractServiceEntry)
-  href: Solti.Utils.DI.ServiceEntryExtensions.html#Solti_Utils_DI_ServiceEntryExtensions_IsInternal_Solti_Utils_DI_Interfaces_AbstractServiceEntry_
-  commentId: M:Solti.Utils.DI.ServiceEntryExtensions.IsInternal(Solti.Utils.DI.Interfaces.AbstractServiceEntry)
-  fullName: Solti.Utils.DI.ServiceEntryExtensions.IsInternal(Solti.Utils.DI.Interfaces.AbstractServiceEntry)
-  nameWithType: ServiceEntryExtensions.IsInternal(AbstractServiceEntry)
-- uid: Solti.Utils.DI.ServiceEntryExtensions.IsInternal*
-  name: IsInternal
-  href: Solti.Utils.DI.ServiceEntryExtensions.html#Solti_Utils_DI_ServiceEntryExtensions_IsInternal_
-  commentId: Overload:Solti.Utils.DI.ServiceEntryExtensions.IsInternal
-  isSpec: "True"
-  fullName: Solti.Utils.DI.ServiceEntryExtensions.IsInternal
-  nameWithType: ServiceEntryExtensions.IsInternal
-- uid: Solti.Utils.DI.ServiceEntryExtensions.IsService(Solti.Utils.DI.Interfaces.AbstractServiceEntry)
-  name: IsService(AbstractServiceEntry)
-  href: Solti.Utils.DI.ServiceEntryExtensions.html#Solti_Utils_DI_ServiceEntryExtensions_IsService_Solti_Utils_DI_Interfaces_AbstractServiceEntry_
-  commentId: M:Solti.Utils.DI.ServiceEntryExtensions.IsService(Solti.Utils.DI.Interfaces.AbstractServiceEntry)
-  fullName: Solti.Utils.DI.ServiceEntryExtensions.IsService(Solti.Utils.DI.Interfaces.AbstractServiceEntry)
-  nameWithType: ServiceEntryExtensions.IsService(AbstractServiceEntry)
-- uid: Solti.Utils.DI.ServiceEntryExtensions.IsService*
-  name: IsService
-  href: Solti.Utils.DI.ServiceEntryExtensions.html#Solti_Utils_DI_ServiceEntryExtensions_IsService_
-  commentId: Overload:Solti.Utils.DI.ServiceEntryExtensions.IsService
-  isSpec: "True"
-  fullName: Solti.Utils.DI.ServiceEntryExtensions.IsService
-  nameWithType: ServiceEntryExtensions.IsService
 - uid: Solti.Utils.Proxy
   name: Solti.Utils.Proxy
   href: Solti.Utils.Proxy.html
