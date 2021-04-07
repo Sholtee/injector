@@ -40,9 +40,9 @@
 <pre><code class="lang-ini">
 BenchmarkDotNet=v0.12.1, OS=Windows 10.0.17763.1098 (1809/October2018Update/Redstone5)
 Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
-.NET Core SDK=5.0.103
-  [Host]     : .NET Core 3.1.12 (CoreCLR 4.700.21.6504, CoreFX 4.700.21.6905), X64 RyuJIT
-  DefaultJob : .NET Core 3.1.12 (CoreCLR 4.700.21.6504, CoreFX 4.700.21.6905), X64 RyuJIT
+.NET Core SDK=5.0.201
+  [Host]     : .NET Core 5.0.4 (CoreCLR 5.0.421.11614, CoreFX 5.0.421.11614), X64 RyuJIT
+  DefaultJob : .NET Core 5.0.4 (CoreCLR 5.0.421.11614, CoreFX 5.0.421.11614), X64 RyuJIT
 
 </code></pre><table>
 <thead>
@@ -64,769 +64,769 @@ Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 <td><strong>NonGeneric</strong></td>
 <td><strong>Pooled</strong></td>
 <td><strong>Pooled</strong></td>
-<td style="text-align:right"><strong>1.615 μs</strong></td>
-<td style="text-align:right"><strong>0.0317 μs</strong></td>
-<td style="text-align:right"><strong>0.0572 μs</strong></td>
-<td style="text-align:right"><strong>0.0508</strong></td>
-<td style="text-align:right"><strong>-</strong></td>
-<td style="text-align:right"><strong>-</strong></td>
-<td style="text-align:right"><strong>948 B</strong></td>
-</tr>
-<tr>
-<td>Generic</td>
-<td>Pooled</td>
-<td>Pooled</td>
-<td style="text-align:right">1.532 μs</td>
-<td style="text-align:right">0.0155 μs</td>
-<td style="text-align:right">0.0130 μs</td>
-<td style="text-align:right">0.0508</td>
-<td style="text-align:right">-</td>
-<td style="text-align:right">-</td>
-<td style="text-align:right">952 B</td>
-</tr>
-<tr>
-<td>Lazy</td>
-<td>Pooled</td>
-<td>Pooled</td>
-<td style="text-align:right">1.341 μs</td>
-<td style="text-align:right">0.0086 μs</td>
-<td style="text-align:right">0.0072 μs</td>
-<td style="text-align:right">0.0508</td>
-<td style="text-align:right">-</td>
-<td style="text-align:right">-</td>
-<td style="text-align:right">948 B</td>
-</tr>
-<tr>
-<td>Enumerable</td>
-<td>Pooled</td>
-<td>Pooled</td>
-<td style="text-align:right">1.454 μs</td>
-<td style="text-align:right">0.0283 μs</td>
-<td style="text-align:right">0.0358 μs</td>
-<td style="text-align:right">0.0488</td>
-<td style="text-align:right">-</td>
-<td style="text-align:right">-</td>
-<td style="text-align:right">916 B</td>
-</tr>
-<tr>
-<td><strong>NonGeneric</strong></td>
-<td><strong>Pooled</strong></td>
-<td><strong>Scoped</strong></td>
-<td style="text-align:right"><strong>1.390 μs</strong></td>
-<td style="text-align:right"><strong>0.0277 μs</strong></td>
-<td style="text-align:right"><strong>0.0370 μs</strong></td>
+<td style="text-align:right"><strong>1.475 μs</strong></td>
+<td style="text-align:right"><strong>0.0275 μs</strong></td>
+<td style="text-align:right"><strong>0.0474 μs</strong></td>
 <td style="text-align:right"><strong>0.0488</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
-<td style="text-align:right"><strong>919 B</strong></td>
+<td style="text-align:right"><strong>904 B</strong></td>
 </tr>
 <tr>
 <td>Generic</td>
 <td>Pooled</td>
-<td>Scoped</td>
-<td style="text-align:right">1.537 μs</td>
-<td style="text-align:right">0.0303 μs</td>
-<td style="text-align:right">0.0462 μs</td>
-<td style="text-align:right">0.0488</td>
-<td style="text-align:right">-</td>
-<td style="text-align:right">-</td>
-<td style="text-align:right">923 B</td>
-</tr>
-<tr>
-<td>Lazy</td>
 <td>Pooled</td>
-<td>Scoped</td>
-<td style="text-align:right">1.410 μs</td>
-<td style="text-align:right">0.0133 μs</td>
-<td style="text-align:right">0.0104 μs</td>
+<td style="text-align:right">1.433 μs</td>
+<td style="text-align:right">0.0204 μs</td>
+<td style="text-align:right">0.0181 μs</td>
 <td style="text-align:right">0.0488</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">909 B</td>
 </tr>
 <tr>
-<td>Enumerable</td>
+<td>Lazy</td>
 <td>Pooled</td>
-<td>Scoped</td>
-<td style="text-align:right">1.665 μs</td>
-<td style="text-align:right">0.0141 μs</td>
-<td style="text-align:right">0.0125 μs</td>
+<td>Pooled</td>
+<td style="text-align:right">1.434 μs</td>
+<td style="text-align:right">0.0286 μs</td>
+<td style="text-align:right">0.0351 μs</td>
 <td style="text-align:right">0.0488</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
-<td style="text-align:right">914 B</td>
+<td style="text-align:right">904 B</td>
+</tr>
+<tr>
+<td>Enumerable</td>
+<td>Pooled</td>
+<td>Pooled</td>
+<td style="text-align:right">1.389 μs</td>
+<td style="text-align:right">0.0273 μs</td>
+<td style="text-align:right">0.0242 μs</td>
+<td style="text-align:right">0.0469</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">873 B</td>
+</tr>
+<tr>
+<td><strong>NonGeneric</strong></td>
+<td><strong>Pooled</strong></td>
+<td><strong>Scoped</strong></td>
+<td style="text-align:right"><strong>1.438 μs</strong></td>
+<td style="text-align:right"><strong>0.0258 μs</strong></td>
+<td style="text-align:right"><strong>0.0229 μs</strong></td>
+<td style="text-align:right"><strong>0.0469</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>876 B</strong></td>
+</tr>
+<tr>
+<td>Generic</td>
+<td>Pooled</td>
+<td>Scoped</td>
+<td style="text-align:right">1.415 μs</td>
+<td style="text-align:right">0.0282 μs</td>
+<td style="text-align:right">0.0314 μs</td>
+<td style="text-align:right">0.0469</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">879 B</td>
+</tr>
+<tr>
+<td>Lazy</td>
+<td>Pooled</td>
+<td>Scoped</td>
+<td style="text-align:right">1.375 μs</td>
+<td style="text-align:right">0.0185 μs</td>
+<td style="text-align:right">0.0155 μs</td>
+<td style="text-align:right">0.0469</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">865 B</td>
+</tr>
+<tr>
+<td>Enumerable</td>
+<td>Pooled</td>
+<td>Scoped</td>
+<td style="text-align:right">1.363 μs</td>
+<td style="text-align:right">0.0268 μs</td>
+<td style="text-align:right">0.0263 μs</td>
+<td style="text-align:right">0.0469</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">871 B</td>
 </tr>
 <tr>
 <td><strong>NonGeneric</strong></td>
 <td><strong>Pooled</strong></td>
 <td><strong>Singleton</strong></td>
-<td style="text-align:right"><strong>1.450 μs</strong></td>
-<td style="text-align:right"><strong>0.0139 μs</strong></td>
-<td style="text-align:right"><strong>0.0130 μs</strong></td>
-<td style="text-align:right"><strong>0.0527</strong></td>
+<td style="text-align:right"><strong>1.431 μs</strong></td>
+<td style="text-align:right"><strong>0.0182 μs</strong></td>
+<td style="text-align:right"><strong>0.0161 μs</strong></td>
+<td style="text-align:right"><strong>0.0508</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
-<td style="text-align:right"><strong>977 B</strong></td>
+<td style="text-align:right"><strong>933 B</strong></td>
 </tr>
 <tr>
 <td>Generic</td>
 <td>Pooled</td>
 <td>Singleton</td>
-<td style="text-align:right">1.590 μs</td>
-<td style="text-align:right">0.0139 μs</td>
-<td style="text-align:right">0.0123 μs</td>
-<td style="text-align:right">0.0527</td>
+<td style="text-align:right">1.431 μs</td>
+<td style="text-align:right">0.0093 μs</td>
+<td style="text-align:right">0.0082 μs</td>
+<td style="text-align:right">0.0508</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
-<td style="text-align:right">977 B</td>
+<td style="text-align:right">934 B</td>
 </tr>
 <tr>
 <td>Lazy</td>
 <td>Pooled</td>
 <td>Singleton</td>
-<td style="text-align:right">1.604 μs</td>
-<td style="text-align:right">0.0209 μs</td>
-<td style="text-align:right">0.0185 μs</td>
-<td style="text-align:right">0.0527</td>
+<td style="text-align:right">1.469 μs</td>
+<td style="text-align:right">0.0289 μs</td>
+<td style="text-align:right">0.0550 μs</td>
+<td style="text-align:right">0.0508</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
-<td style="text-align:right">977 B</td>
+<td style="text-align:right">933 B</td>
 </tr>
 <tr>
 <td>Enumerable</td>
 <td>Pooled</td>
 <td>Singleton</td>
-<td style="text-align:right">1.653 μs</td>
-<td style="text-align:right">0.0151 μs</td>
-<td style="text-align:right">0.0134 μs</td>
-<td style="text-align:right">0.0488</td>
+<td style="text-align:right">1.382 μs</td>
+<td style="text-align:right">0.0264 μs</td>
+<td style="text-align:right">0.0304 μs</td>
+<td style="text-align:right">0.0469</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
-<td style="text-align:right">913 B</td>
+<td style="text-align:right">869 B</td>
 </tr>
 <tr>
 <td><strong>NonGeneric</strong></td>
 <td><strong>Pooled</strong></td>
 <td><strong>Transient</strong></td>
-<td style="text-align:right"><strong>6.254 μs</strong></td>
-<td style="text-align:right"><strong>0.0514 μs</strong></td>
-<td style="text-align:right"><strong>0.0456 μs</strong></td>
-<td style="text-align:right"><strong>0.2109</strong></td>
-<td style="text-align:right"><strong>0.0625</strong></td>
+<td style="text-align:right"><strong>6.084 μs</strong></td>
+<td style="text-align:right"><strong>0.1128 μs</strong></td>
+<td style="text-align:right"><strong>0.1055 μs</strong></td>
+<td style="text-align:right"><strong>0.2031</strong></td>
+<td style="text-align:right"><strong>0.0469</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
-<td style="text-align:right"><strong>3917 B</strong></td>
+<td style="text-align:right"><strong>3753 B</strong></td>
 </tr>
 <tr>
 <td>Generic</td>
 <td>Pooled</td>
 <td>Transient</td>
-<td style="text-align:right">6.948 μs</td>
-<td style="text-align:right">0.1386 μs</td>
-<td style="text-align:right">0.1483 μs</td>
-<td style="text-align:right">0.2109</td>
+<td style="text-align:right">6.393 μs</td>
+<td style="text-align:right">0.1226 μs</td>
+<td style="text-align:right">0.1594 μs</td>
+<td style="text-align:right">0.2031</td>
 <td style="text-align:right">0.0469</td>
 <td style="text-align:right">-</td>
-<td style="text-align:right">3920 B</td>
+<td style="text-align:right">3757 B</td>
 </tr>
 <tr>
 <td>Lazy</td>
 <td>Pooled</td>
 <td>Transient</td>
-<td style="text-align:right">6.451 μs</td>
-<td style="text-align:right">0.0594 μs</td>
-<td style="text-align:right">0.0527 μs</td>
-<td style="text-align:right">0.1719</td>
-<td style="text-align:right">0.0703</td>
+<td style="text-align:right">5.978 μs</td>
+<td style="text-align:right">0.1076 μs</td>
+<td style="text-align:right">0.0954 μs</td>
+<td style="text-align:right">0.1641</td>
+<td style="text-align:right">0.0547</td>
 <td style="text-align:right">-</td>
-<td style="text-align:right">3267 B</td>
+<td style="text-align:right">3144 B</td>
 </tr>
 <tr>
 <td>Enumerable</td>
 <td>Pooled</td>
 <td>Transient</td>
-<td style="text-align:right">1.533 μs</td>
-<td style="text-align:right">0.0305 μs</td>
-<td style="text-align:right">0.0285 μs</td>
-<td style="text-align:right">0.0488</td>
+<td style="text-align:right">1.350 μs</td>
+<td style="text-align:right">0.0130 μs</td>
+<td style="text-align:right">0.0115 μs</td>
+<td style="text-align:right">0.0469</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
-<td style="text-align:right">914 B</td>
+<td style="text-align:right">871 B</td>
 </tr>
 <tr>
 <td><strong>NonGeneric</strong></td>
 <td><strong>Scoped</strong></td>
 <td><strong>Pooled</strong></td>
-<td style="text-align:right"><strong>1.448 μs</strong></td>
-<td style="text-align:right"><strong>0.0172 μs</strong></td>
-<td style="text-align:right"><strong>0.0161 μs</strong></td>
-<td style="text-align:right"><strong>0.0508</strong></td>
+<td style="text-align:right"><strong>1.434 μs</strong></td>
+<td style="text-align:right"><strong>0.0198 μs</strong></td>
+<td style="text-align:right"><strong>0.0251 μs</strong></td>
+<td style="text-align:right"><strong>0.0488</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
-<td style="text-align:right"><strong>947 B</strong></td>
+<td style="text-align:right"><strong>903 B</strong></td>
 </tr>
 <tr>
 <td>Generic</td>
 <td>Scoped</td>
 <td>Pooled</td>
-<td style="text-align:right">1.563 μs</td>
-<td style="text-align:right">0.0274 μs</td>
-<td style="text-align:right">0.0229 μs</td>
-<td style="text-align:right">0.0508</td>
+<td style="text-align:right">1.449 μs</td>
+<td style="text-align:right">0.0276 μs</td>
+<td style="text-align:right">0.0339 μs</td>
+<td style="text-align:right">0.0488</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
-<td style="text-align:right">951 B</td>
+<td style="text-align:right">908 B</td>
 </tr>
 <tr>
 <td>Lazy</td>
 <td>Scoped</td>
 <td>Pooled</td>
-<td style="text-align:right">1.439 μs</td>
-<td style="text-align:right">0.0202 μs</td>
-<td style="text-align:right">0.0189 μs</td>
-<td style="text-align:right">0.0508</td>
+<td style="text-align:right">1.404 μs</td>
+<td style="text-align:right">0.0278 μs</td>
+<td style="text-align:right">0.0341 μs</td>
+<td style="text-align:right">0.0488</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
-<td style="text-align:right">947 B</td>
+<td style="text-align:right">903 B</td>
 </tr>
 <tr>
 <td>Enumerable</td>
 <td>Scoped</td>
 <td>Pooled</td>
-<td style="text-align:right">1.633 μs</td>
-<td style="text-align:right">0.0157 μs</td>
-<td style="text-align:right">0.0147 μs</td>
-<td style="text-align:right">0.0488</td>
+<td style="text-align:right">1.394 μs</td>
+<td style="text-align:right">0.0277 μs</td>
+<td style="text-align:right">0.0360 μs</td>
+<td style="text-align:right">0.0469</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
-<td style="text-align:right">915 B</td>
+<td style="text-align:right">872 B</td>
 </tr>
 <tr>
 <td><strong>NonGeneric</strong></td>
 <td><strong>Scoped</strong></td>
 <td><strong>Scoped</strong></td>
-<td style="text-align:right"><strong>1.520 μs</strong></td>
-<td style="text-align:right"><strong>0.0186 μs</strong></td>
-<td style="text-align:right"><strong>0.0164 μs</strong></td>
-<td style="text-align:right"><strong>0.0488</strong></td>
+<td style="text-align:right"><strong>1.379 μs</strong></td>
+<td style="text-align:right"><strong>0.0260 μs</strong></td>
+<td style="text-align:right"><strong>0.0278 μs</strong></td>
+<td style="text-align:right"><strong>0.0469</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
-<td style="text-align:right"><strong>910 B</strong></td>
+<td style="text-align:right"><strong>867 B</strong></td>
 </tr>
 <tr>
 <td>Generic</td>
 <td>Scoped</td>
 <td>Scoped</td>
 <td style="text-align:right">1.396 μs</td>
-<td style="text-align:right">0.0263 μs</td>
-<td style="text-align:right">0.0352 μs</td>
-<td style="text-align:right">0.0488</td>
-<td style="text-align:right">-</td>
-<td style="text-align:right">-</td>
-<td style="text-align:right">915 B</td>
-</tr>
-<tr>
-<td>Lazy</td>
-<td>Scoped</td>
-<td>Scoped</td>
-<td style="text-align:right">1.389 μs</td>
-<td style="text-align:right">0.0174 μs</td>
-<td style="text-align:right">0.0163 μs</td>
-<td style="text-align:right">0.0488</td>
-<td style="text-align:right">-</td>
-<td style="text-align:right">-</td>
-<td style="text-align:right">907 B</td>
-</tr>
-<tr>
-<td>Enumerable</td>
-<td>Scoped</td>
-<td>Scoped</td>
-<td style="text-align:right">1.499 μs</td>
-<td style="text-align:right">0.0194 μs</td>
-<td style="text-align:right">0.0182 μs</td>
-<td style="text-align:right">0.0488</td>
-<td style="text-align:right">-</td>
-<td style="text-align:right">-</td>
-<td style="text-align:right">914 B</td>
-</tr>
-<tr>
-<td><strong>NonGeneric</strong></td>
-<td><strong>Scoped</strong></td>
-<td><strong>Singleton</strong></td>
-<td style="text-align:right"><strong>1.668 μs</strong></td>
-<td style="text-align:right"><strong>0.0113 μs</strong></td>
-<td style="text-align:right"><strong>0.0106 μs</strong></td>
-<td style="text-align:right"><strong>0.0527</strong></td>
-<td style="text-align:right"><strong>-</strong></td>
-<td style="text-align:right"><strong>-</strong></td>
-<td style="text-align:right"><strong>975 B</strong></td>
-</tr>
-<tr>
-<td>Generic</td>
-<td>Scoped</td>
-<td>Singleton</td>
-<td style="text-align:right">1.545 μs</td>
-<td style="text-align:right">0.0129 μs</td>
-<td style="text-align:right">0.0120 μs</td>
-<td style="text-align:right">0.0527</td>
-<td style="text-align:right">-</td>
-<td style="text-align:right">-</td>
-<td style="text-align:right">977 B</td>
-</tr>
-<tr>
-<td>Lazy</td>
-<td>Scoped</td>
-<td>Singleton</td>
-<td style="text-align:right">1.578 μs</td>
-<td style="text-align:right">0.0159 μs</td>
-<td style="text-align:right">0.0149 μs</td>
-<td style="text-align:right">0.0527</td>
-<td style="text-align:right">-</td>
-<td style="text-align:right">-</td>
-<td style="text-align:right">975 B</td>
-</tr>
-<tr>
-<td>Enumerable</td>
-<td>Scoped</td>
-<td>Singleton</td>
-<td style="text-align:right">1.496 μs</td>
-<td style="text-align:right">0.0244 μs</td>
-<td style="text-align:right">0.0229 μs</td>
-<td style="text-align:right">0.0488</td>
-<td style="text-align:right">-</td>
-<td style="text-align:right">-</td>
-<td style="text-align:right">912 B</td>
-</tr>
-<tr>
-<td><strong>NonGeneric</strong></td>
-<td><strong>Scoped</strong></td>
-<td><strong>Transient</strong></td>
-<td style="text-align:right"><strong>6.277 μs</strong></td>
-<td style="text-align:right"><strong>0.0838 μs</strong></td>
-<td style="text-align:right"><strong>0.0743 μs</strong></td>
-<td style="text-align:right"><strong>0.2109</strong></td>
-<td style="text-align:right"><strong>0.0469</strong></td>
-<td style="text-align:right"><strong>-</strong></td>
-<td style="text-align:right"><strong>3875 B</strong></td>
-</tr>
-<tr>
-<td>Generic</td>
-<td>Scoped</td>
-<td>Transient</td>
-<td style="text-align:right">6.152 μs</td>
-<td style="text-align:right">0.0996 μs</td>
-<td style="text-align:right">0.0931 μs</td>
-<td style="text-align:right">0.2109</td>
+<td style="text-align:right">0.0278 μs</td>
+<td style="text-align:right">0.0398 μs</td>
 <td style="text-align:right">0.0469</td>
 <td style="text-align:right">-</td>
-<td style="text-align:right">3880 B</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">872 B</td>
 </tr>
 <tr>
 <td>Lazy</td>
 <td>Scoped</td>
-<td>Transient</td>
-<td style="text-align:right">6.318 μs</td>
-<td style="text-align:right">0.0969 μs</td>
-<td style="text-align:right">0.0907 μs</td>
-<td style="text-align:right">0.1719</td>
-<td style="text-align:right">0.0703</td>
+<td>Scoped</td>
+<td style="text-align:right">1.432 μs</td>
+<td style="text-align:right">0.0283 μs</td>
+<td style="text-align:right">0.0621 μs</td>
+<td style="text-align:right">0.0469</td>
 <td style="text-align:right">-</td>
-<td style="text-align:right">3265 B</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">863 B</td>
 </tr>
 <tr>
 <td>Enumerable</td>
 <td>Scoped</td>
-<td>Transient</td>
-<td style="text-align:right">1.756 μs</td>
-<td style="text-align:right">0.0136 μs</td>
-<td style="text-align:right">0.0127 μs</td>
-<td style="text-align:right">0.0488</td>
+<td>Scoped</td>
+<td style="text-align:right">1.410 μs</td>
+<td style="text-align:right">0.0276 μs</td>
+<td style="text-align:right">0.0296 μs</td>
+<td style="text-align:right">0.0469</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
-<td style="text-align:right">914 B</td>
+<td style="text-align:right">870 B</td>
 </tr>
 <tr>
 <td><strong>NonGeneric</strong></td>
+<td><strong>Scoped</strong></td>
 <td><strong>Singleton</strong></td>
-<td><strong>Pooled</strong></td>
-<td style="text-align:right"><strong>1.583 μs</strong></td>
-<td style="text-align:right"><strong>0.0203 μs</strong></td>
-<td style="text-align:right"><strong>0.0190 μs</strong></td>
+<td style="text-align:right"><strong>1.526 μs</strong></td>
+<td style="text-align:right"><strong>0.0304 μs</strong></td>
+<td style="text-align:right"><strong>0.0482 μs</strong></td>
 <td style="text-align:right"><strong>0.0508</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
-<td style="text-align:right"><strong>946 B</strong></td>
+<td style="text-align:right"><strong>931 B</strong></td>
 </tr>
 <tr>
 <td>Generic</td>
-<td>Singleton</td>
-<td>Pooled</td>
-<td style="text-align:right">1.579 μs</td>
-<td style="text-align:right">0.0185 μs</td>
-<td style="text-align:right">0.0164 μs</td>
-<td style="text-align:right">0.0508</td>
-<td style="text-align:right">-</td>
-<td style="text-align:right">-</td>
-<td style="text-align:right">951 B</td>
-</tr>
-<tr>
-<td>Lazy</td>
-<td>Singleton</td>
-<td>Pooled</td>
-<td style="text-align:right">1.437 μs</td>
-<td style="text-align:right">0.0156 μs</td>
-<td style="text-align:right">0.0138 μs</td>
-<td style="text-align:right">0.0508</td>
-<td style="text-align:right">-</td>
-<td style="text-align:right">-</td>
-<td style="text-align:right">946 B</td>
-</tr>
-<tr>
-<td>Enumerable</td>
-<td>Singleton</td>
-<td>Pooled</td>
-<td style="text-align:right">1.637 μs</td>
-<td style="text-align:right">0.0130 μs</td>
-<td style="text-align:right">0.0122 μs</td>
-<td style="text-align:right">0.0488</td>
-<td style="text-align:right">-</td>
-<td style="text-align:right">-</td>
-<td style="text-align:right">914 B</td>
-</tr>
-<tr>
-<td><strong>NonGeneric</strong></td>
-<td><strong>Singleton</strong></td>
-<td><strong>Scoped</strong></td>
-<td style="text-align:right"><strong>1.493 μs</strong></td>
-<td style="text-align:right"><strong>0.0275 μs</strong></td>
-<td style="text-align:right"><strong>0.0428 μs</strong></td>
-<td style="text-align:right"><strong>0.0488</strong></td>
-<td style="text-align:right"><strong>-</strong></td>
-<td style="text-align:right"><strong>-</strong></td>
-<td style="text-align:right"><strong>907 B</strong></td>
-</tr>
-<tr>
-<td>Generic</td>
-<td>Singleton</td>
 <td>Scoped</td>
-<td style="text-align:right">1.615 μs</td>
-<td style="text-align:right">0.0202 μs</td>
-<td style="text-align:right">0.0189 μs</td>
-<td style="text-align:right">0.0488</td>
-<td style="text-align:right">-</td>
-<td style="text-align:right">-</td>
-<td style="text-align:right">912 B</td>
-</tr>
-<tr>
-<td>Lazy</td>
-<td>Singleton</td>
-<td>Scoped</td>
-<td style="text-align:right">1.348 μs</td>
-<td style="text-align:right">0.0174 μs</td>
-<td style="text-align:right">0.0155 μs</td>
-<td style="text-align:right">0.0488</td>
-<td style="text-align:right">-</td>
-<td style="text-align:right">-</td>
-<td style="text-align:right">906 B</td>
-</tr>
-<tr>
-<td>Enumerable</td>
-<td>Singleton</td>
-<td>Scoped</td>
-<td style="text-align:right">1.578 μs</td>
-<td style="text-align:right">0.0305 μs</td>
-<td style="text-align:right">0.0351 μs</td>
-<td style="text-align:right">0.0488</td>
-<td style="text-align:right">-</td>
-<td style="text-align:right">-</td>
-<td style="text-align:right">913 B</td>
-</tr>
-<tr>
-<td><strong>NonGeneric</strong></td>
-<td><strong>Singleton</strong></td>
-<td><strong>Singleton</strong></td>
-<td style="text-align:right"><strong>1.481 μs</strong></td>
-<td style="text-align:right"><strong>0.0295 μs</strong></td>
-<td style="text-align:right"><strong>0.0403 μs</strong></td>
-<td style="text-align:right"><strong>0.0527</strong></td>
-<td style="text-align:right"><strong>-</strong></td>
-<td style="text-align:right"><strong>-</strong></td>
-<td style="text-align:right"><strong>974 B</strong></td>
-</tr>
-<tr>
-<td>Generic</td>
-<td>Singleton</td>
 <td>Singleton</td>
 <td style="text-align:right">1.512 μs</td>
-<td style="text-align:right">0.0252 μs</td>
-<td style="text-align:right">0.0236 μs</td>
-<td style="text-align:right">0.0527</td>
+<td style="text-align:right">0.0302 μs</td>
+<td style="text-align:right">0.0479 μs</td>
+<td style="text-align:right">0.0508</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
-<td style="text-align:right">976 B</td>
+<td style="text-align:right">933 B</td>
 </tr>
 <tr>
 <td>Lazy</td>
+<td>Scoped</td>
 <td>Singleton</td>
-<td>Singleton</td>
-<td style="text-align:right">1.468 μs</td>
-<td style="text-align:right">0.0292 μs</td>
-<td style="text-align:right">0.0273 μs</td>
-<td style="text-align:right">0.0527</td>
+<td style="text-align:right">1.521 μs</td>
+<td style="text-align:right">0.0301 μs</td>
+<td style="text-align:right">0.0607 μs</td>
+<td style="text-align:right">0.0508</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
-<td style="text-align:right">974 B</td>
+<td style="text-align:right">931 B</td>
 </tr>
 <tr>
 <td>Enumerable</td>
+<td>Scoped</td>
 <td>Singleton</td>
-<td>Singleton</td>
-<td style="text-align:right">1.716 μs</td>
-<td style="text-align:right">0.0336 μs</td>
-<td style="text-align:right">0.0523 μs</td>
-<td style="text-align:right">0.0488</td>
+<td style="text-align:right">1.420 μs</td>
+<td style="text-align:right">0.0276 μs</td>
+<td style="text-align:right">0.0318 μs</td>
+<td style="text-align:right">0.0469</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
-<td style="text-align:right">911 B</td>
+<td style="text-align:right">868 B</td>
+</tr>
+<tr>
+<td><strong>NonGeneric</strong></td>
+<td><strong>Scoped</strong></td>
+<td><strong>Transient</strong></td>
+<td style="text-align:right"><strong>6.135 μs</strong></td>
+<td style="text-align:right"><strong>0.1223 μs</strong></td>
+<td style="text-align:right"><strong>0.1456 μs</strong></td>
+<td style="text-align:right"><strong>0.1953</strong></td>
+<td style="text-align:right"><strong>0.0469</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>3712 B</strong></td>
+</tr>
+<tr>
+<td>Generic</td>
+<td>Scoped</td>
+<td>Transient</td>
+<td style="text-align:right">6.000 μs</td>
+<td style="text-align:right">0.0695 μs</td>
+<td style="text-align:right">0.0616 μs</td>
+<td style="text-align:right">0.2031</td>
+<td style="text-align:right">0.0547</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">3717 B</td>
+</tr>
+<tr>
+<td>Lazy</td>
+<td>Scoped</td>
+<td>Transient</td>
+<td style="text-align:right">5.840 μs</td>
+<td style="text-align:right">0.1138 μs</td>
+<td style="text-align:right">0.1558 μs</td>
+<td style="text-align:right">0.1641</td>
+<td style="text-align:right">0.0547</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">3142 B</td>
+</tr>
+<tr>
+<td>Enumerable</td>
+<td>Scoped</td>
+<td>Transient</td>
+<td style="text-align:right">1.367 μs</td>
+<td style="text-align:right">0.0199 μs</td>
+<td style="text-align:right">0.0186 μs</td>
+<td style="text-align:right">0.0469</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">870 B</td>
 </tr>
 <tr>
 <td><strong>NonGeneric</strong></td>
 <td><strong>Singleton</strong></td>
-<td><strong>Transient</strong></td>
-<td style="text-align:right"><strong>8.417 μs</strong></td>
-<td style="text-align:right"><strong>0.1611 μs</strong></td>
-<td style="text-align:right"><strong>0.1724 μs</strong></td>
-<td style="text-align:right"><strong>0.2031</strong></td>
-<td style="text-align:right"><strong>0.0469</strong></td>
-<td style="text-align:right"><strong>-</strong></td>
-<td style="text-align:right"><strong>3944 B</strong></td>
-</tr>
-<tr>
-<td>Generic</td>
-<td>Singleton</td>
-<td>Transient</td>
-<td style="text-align:right">8.228 μs</td>
-<td style="text-align:right">0.1617 μs</td>
-<td style="text-align:right">0.2045 μs</td>
-<td style="text-align:right">0.2031</td>
-<td style="text-align:right">0.0469</td>
-<td style="text-align:right">-</td>
-<td style="text-align:right">3949 B</td>
-</tr>
-<tr>
-<td>Lazy</td>
-<td>Singleton</td>
-<td>Transient</td>
-<td style="text-align:right">6.449 μs</td>
-<td style="text-align:right">0.1099 μs</td>
-<td style="text-align:right">0.0975 μs</td>
-<td style="text-align:right">0.1719</td>
-<td style="text-align:right">0.0703</td>
-<td style="text-align:right">-</td>
-<td style="text-align:right">3264 B</td>
-</tr>
-<tr>
-<td>Enumerable</td>
-<td>Singleton</td>
-<td>Transient</td>
-<td style="text-align:right">1.647 μs</td>
-<td style="text-align:right">0.0326 μs</td>
-<td style="text-align:right">0.0335 μs</td>
-<td style="text-align:right">0.0488</td>
-<td style="text-align:right">-</td>
-<td style="text-align:right">-</td>
-<td style="text-align:right">913 B</td>
-</tr>
-<tr>
-<td><strong>NonGeneric</strong></td>
-<td><strong>Transient</strong></td>
 <td><strong>Pooled</strong></td>
-<td style="text-align:right"><strong>1.618 μs</strong></td>
-<td style="text-align:right"><strong>0.0320 μs</strong></td>
-<td style="text-align:right"><strong>0.0544 μs</strong></td>
-<td style="text-align:right"><strong>0.0508</strong></td>
-<td style="text-align:right"><strong>-</strong></td>
-<td style="text-align:right"><strong>-</strong></td>
-<td style="text-align:right"><strong>947 B</strong></td>
-</tr>
-<tr>
-<td>Generic</td>
-<td>Transient</td>
-<td>Pooled</td>
-<td style="text-align:right">1.804 μs</td>
-<td style="text-align:right">0.0349 μs</td>
-<td style="text-align:right">0.0373 μs</td>
-<td style="text-align:right">0.0508</td>
-<td style="text-align:right">-</td>
-<td style="text-align:right">-</td>
-<td style="text-align:right">951 B</td>
-</tr>
-<tr>
-<td>Lazy</td>
-<td>Transient</td>
-<td>Pooled</td>
-<td style="text-align:right">1.541 μs</td>
-<td style="text-align:right">0.0279 μs</td>
-<td style="text-align:right">0.0261 μs</td>
-<td style="text-align:right">0.0508</td>
-<td style="text-align:right">-</td>
-<td style="text-align:right">-</td>
-<td style="text-align:right">947 B</td>
-</tr>
-<tr>
-<td>Enumerable</td>
-<td>Transient</td>
-<td>Pooled</td>
-<td style="text-align:right">1.601 μs</td>
-<td style="text-align:right">0.0189 μs</td>
-<td style="text-align:right">0.0177 μs</td>
-<td style="text-align:right">0.0488</td>
-<td style="text-align:right">-</td>
-<td style="text-align:right">-</td>
-<td style="text-align:right">915 B</td>
-</tr>
-<tr>
-<td><strong>NonGeneric</strong></td>
-<td><strong>Transient</strong></td>
-<td><strong>Scoped</strong></td>
-<td style="text-align:right"><strong>1.607 μs</strong></td>
-<td style="text-align:right"><strong>0.0317 μs</strong></td>
-<td style="text-align:right"><strong>0.0445 μs</strong></td>
+<td style="text-align:right"><strong>1.429 μs</strong></td>
+<td style="text-align:right"><strong>0.0278 μs</strong></td>
+<td style="text-align:right"><strong>0.0260 μs</strong></td>
 <td style="text-align:right"><strong>0.0488</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
-<td style="text-align:right"><strong>912 B</strong></td>
+<td style="text-align:right"><strong>903 B</strong></td>
 </tr>
 <tr>
 <td>Generic</td>
-<td>Transient</td>
-<td>Scoped</td>
-<td style="text-align:right">1.515 μs</td>
-<td style="text-align:right">0.0300 μs</td>
-<td style="text-align:right">0.0280 μs</td>
-<td style="text-align:right">0.0488</td>
-<td style="text-align:right">-</td>
-<td style="text-align:right">-</td>
-<td style="text-align:right">917 B</td>
-</tr>
-<tr>
-<td>Lazy</td>
-<td>Transient</td>
-<td>Scoped</td>
-<td style="text-align:right">1.552 μs</td>
-<td style="text-align:right">0.0197 μs</td>
-<td style="text-align:right">0.0184 μs</td>
+<td>Singleton</td>
+<td>Pooled</td>
+<td style="text-align:right">1.430 μs</td>
+<td style="text-align:right">0.0230 μs</td>
+<td style="text-align:right">0.0215 μs</td>
 <td style="text-align:right">0.0488</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">907 B</td>
 </tr>
 <tr>
-<td>Enumerable</td>
-<td>Transient</td>
-<td>Scoped</td>
-<td style="text-align:right">1.742 μs</td>
-<td style="text-align:right">0.0190 μs</td>
-<td style="text-align:right">0.0178 μs</td>
+<td>Lazy</td>
+<td>Singleton</td>
+<td>Pooled</td>
+<td style="text-align:right">1.459 μs</td>
+<td style="text-align:right">0.0290 μs</td>
+<td style="text-align:right">0.0334 μs</td>
 <td style="text-align:right">0.0488</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
-<td style="text-align:right">914 B</td>
+<td style="text-align:right">903 B</td>
+</tr>
+<tr>
+<td>Enumerable</td>
+<td>Singleton</td>
+<td>Pooled</td>
+<td style="text-align:right">1.374 μs</td>
+<td style="text-align:right">0.0136 μs</td>
+<td style="text-align:right">0.0120 μs</td>
+<td style="text-align:right">0.0469</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">871 B</td>
+</tr>
+<tr>
+<td><strong>NonGeneric</strong></td>
+<td><strong>Singleton</strong></td>
+<td><strong>Scoped</strong></td>
+<td style="text-align:right"><strong>1.357 μs</strong></td>
+<td style="text-align:right"><strong>0.0260 μs</strong></td>
+<td style="text-align:right"><strong>0.0278 μs</strong></td>
+<td style="text-align:right"><strong>0.0469</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>864 B</strong></td>
+</tr>
+<tr>
+<td>Generic</td>
+<td>Singleton</td>
+<td>Scoped</td>
+<td style="text-align:right">1.353 μs</td>
+<td style="text-align:right">0.0217 μs</td>
+<td style="text-align:right">0.0203 μs</td>
+<td style="text-align:right">0.0469</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">869 B</td>
+</tr>
+<tr>
+<td>Lazy</td>
+<td>Singleton</td>
+<td>Scoped</td>
+<td style="text-align:right">1.380 μs</td>
+<td style="text-align:right">0.0217 μs</td>
+<td style="text-align:right">0.0203 μs</td>
+<td style="text-align:right">0.0469</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">862 B</td>
+</tr>
+<tr>
+<td>Enumerable</td>
+<td>Singleton</td>
+<td>Scoped</td>
+<td style="text-align:right">1.364 μs</td>
+<td style="text-align:right">0.0208 μs</td>
+<td style="text-align:right">0.0174 μs</td>
+<td style="text-align:right">0.0469</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">869 B</td>
+</tr>
+<tr>
+<td><strong>NonGeneric</strong></td>
+<td><strong>Singleton</strong></td>
+<td><strong>Singleton</strong></td>
+<td style="text-align:right"><strong>1.431 μs</strong></td>
+<td style="text-align:right"><strong>0.0162 μs</strong></td>
+<td style="text-align:right"><strong>0.0144 μs</strong></td>
+<td style="text-align:right"><strong>0.0508</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>930 B</strong></td>
+</tr>
+<tr>
+<td>Generic</td>
+<td>Singleton</td>
+<td>Singleton</td>
+<td style="text-align:right">1.457 μs</td>
+<td style="text-align:right">0.0288 μs</td>
+<td style="text-align:right">0.0270 μs</td>
+<td style="text-align:right">0.0508</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">932 B</td>
+</tr>
+<tr>
+<td>Lazy</td>
+<td>Singleton</td>
+<td>Singleton</td>
+<td style="text-align:right">1.391 μs</td>
+<td style="text-align:right">0.0184 μs</td>
+<td style="text-align:right">0.0173 μs</td>
+<td style="text-align:right">0.0508</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">930 B</td>
+</tr>
+<tr>
+<td>Enumerable</td>
+<td>Singleton</td>
+<td>Singleton</td>
+<td style="text-align:right">1.391 μs</td>
+<td style="text-align:right">0.0276 μs</td>
+<td style="text-align:right">0.0258 μs</td>
+<td style="text-align:right">0.0469</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">868 B</td>
+</tr>
+<tr>
+<td><strong>NonGeneric</strong></td>
+<td><strong>Singleton</strong></td>
+<td><strong>Transient</strong></td>
+<td style="text-align:right"><strong>5.995 μs</strong></td>
+<td style="text-align:right"><strong>0.1032 μs</strong></td>
+<td style="text-align:right"><strong>0.0965 μs</strong></td>
+<td style="text-align:right"><strong>0.2031</strong></td>
+<td style="text-align:right"><strong>0.0625</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>3781 B</strong></td>
+</tr>
+<tr>
+<td>Generic</td>
+<td>Singleton</td>
+<td>Transient</td>
+<td style="text-align:right">5.983 μs</td>
+<td style="text-align:right">0.0608 μs</td>
+<td style="text-align:right">0.0539 μs</td>
+<td style="text-align:right">0.2031</td>
+<td style="text-align:right">0.0625</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">3786 B</td>
+</tr>
+<tr>
+<td>Lazy</td>
+<td>Singleton</td>
+<td>Transient</td>
+<td style="text-align:right">5.775 μs</td>
+<td style="text-align:right">0.0632 μs</td>
+<td style="text-align:right">0.0528 μs</td>
+<td style="text-align:right">0.1641</td>
+<td style="text-align:right">0.0547</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">3141 B</td>
+</tr>
+<tr>
+<td>Enumerable</td>
+<td>Singleton</td>
+<td>Transient</td>
+<td style="text-align:right">1.373 μs</td>
+<td style="text-align:right">0.0242 μs</td>
+<td style="text-align:right">0.0248 μs</td>
+<td style="text-align:right">0.0469</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">869 B</td>
+</tr>
+<tr>
+<td><strong>NonGeneric</strong></td>
+<td><strong>Transient</strong></td>
+<td><strong>Pooled</strong></td>
+<td style="text-align:right"><strong>1.428 μs</strong></td>
+<td style="text-align:right"><strong>0.0104 μs</strong></td>
+<td style="text-align:right"><strong>0.0092 μs</strong></td>
+<td style="text-align:right"><strong>0.0488</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>903 B</strong></td>
+</tr>
+<tr>
+<td>Generic</td>
+<td>Transient</td>
+<td>Pooled</td>
+<td style="text-align:right">1.403 μs</td>
+<td style="text-align:right">0.0124 μs</td>
+<td style="text-align:right">0.0116 μs</td>
+<td style="text-align:right">0.0488</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">908 B</td>
+</tr>
+<tr>
+<td>Lazy</td>
+<td>Transient</td>
+<td>Pooled</td>
+<td style="text-align:right">1.419 μs</td>
+<td style="text-align:right">0.0243 μs</td>
+<td style="text-align:right">0.0227 μs</td>
+<td style="text-align:right">0.0488</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">903 B</td>
+</tr>
+<tr>
+<td>Enumerable</td>
+<td>Transient</td>
+<td>Pooled</td>
+<td style="text-align:right">1.400 μs</td>
+<td style="text-align:right">0.0152 μs</td>
+<td style="text-align:right">0.0142 μs</td>
+<td style="text-align:right">0.0469</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">872 B</td>
+</tr>
+<tr>
+<td><strong>NonGeneric</strong></td>
+<td><strong>Transient</strong></td>
+<td><strong>Scoped</strong></td>
+<td style="text-align:right"><strong>1.331 μs</strong></td>
+<td style="text-align:right"><strong>0.0080 μs</strong></td>
+<td style="text-align:right"><strong>0.0071 μs</strong></td>
+<td style="text-align:right"><strong>0.0469</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>869 B</strong></td>
+</tr>
+<tr>
+<td>Generic</td>
+<td>Transient</td>
+<td>Scoped</td>
+<td style="text-align:right">1.349 μs</td>
+<td style="text-align:right">0.0095 μs</td>
+<td style="text-align:right">0.0084 μs</td>
+<td style="text-align:right">0.0469</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">873 B</td>
+</tr>
+<tr>
+<td>Lazy</td>
+<td>Transient</td>
+<td>Scoped</td>
+<td style="text-align:right">1.347 μs</td>
+<td style="text-align:right">0.0118 μs</td>
+<td style="text-align:right">0.0099 μs</td>
+<td style="text-align:right">0.0469</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">863 B</td>
+</tr>
+<tr>
+<td>Enumerable</td>
+<td>Transient</td>
+<td>Scoped</td>
+<td style="text-align:right">1.340 μs</td>
+<td style="text-align:right">0.0106 μs</td>
+<td style="text-align:right">0.0089 μs</td>
+<td style="text-align:right">0.0469</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">870 B</td>
 </tr>
 <tr>
 <td><strong>NonGeneric</strong></td>
 <td><strong>Transient</strong></td>
 <td><strong>Singleton</strong></td>
-<td style="text-align:right"><strong>1.553 μs</strong></td>
-<td style="text-align:right"><strong>0.0306 μs</strong></td>
-<td style="text-align:right"><strong>0.0365 μs</strong></td>
-<td style="text-align:right"><strong>0.0527</strong></td>
+<td style="text-align:right"><strong>1.458 μs</strong></td>
+<td style="text-align:right"><strong>0.0207 μs</strong></td>
+<td style="text-align:right"><strong>0.0194 μs</strong></td>
+<td style="text-align:right"><strong>0.0508</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
-<td style="text-align:right"><strong>975 B</strong></td>
+<td style="text-align:right"><strong>931 B</strong></td>
 </tr>
 <tr>
 <td>Generic</td>
 <td>Transient</td>
 <td>Singleton</td>
-<td style="text-align:right">1.645 μs</td>
-<td style="text-align:right">0.0187 μs</td>
-<td style="text-align:right">0.0175 μs</td>
-<td style="text-align:right">0.0527</td>
+<td style="text-align:right">1.420 μs</td>
+<td style="text-align:right">0.0196 μs</td>
+<td style="text-align:right">0.0184 μs</td>
+<td style="text-align:right">0.0508</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
-<td style="text-align:right">977 B</td>
+<td style="text-align:right">933 B</td>
 </tr>
 <tr>
 <td>Lazy</td>
 <td>Transient</td>
 <td>Singleton</td>
-<td style="text-align:right">1.751 μs</td>
-<td style="text-align:right">0.0340 μs</td>
-<td style="text-align:right">0.0302 μs</td>
-<td style="text-align:right">0.0527</td>
+<td style="text-align:right">1.410 μs</td>
+<td style="text-align:right">0.0127 μs</td>
+<td style="text-align:right">0.0119 μs</td>
+<td style="text-align:right">0.0508</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
-<td style="text-align:right">975 B</td>
+<td style="text-align:right">931 B</td>
 </tr>
 <tr>
 <td>Enumerable</td>
 <td>Transient</td>
 <td>Singleton</td>
-<td style="text-align:right">1.587 μs</td>
-<td style="text-align:right">0.0210 μs</td>
-<td style="text-align:right">0.0197 μs</td>
-<td style="text-align:right">0.0488</td>
+<td style="text-align:right">1.339 μs</td>
+<td style="text-align:right">0.0140 μs</td>
+<td style="text-align:right">0.0125 μs</td>
+<td style="text-align:right">0.0469</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
-<td style="text-align:right">912 B</td>
+<td style="text-align:right">868 B</td>
 </tr>
 <tr>
 <td><strong>NonGeneric</strong></td>
 <td><strong>Transient</strong></td>
 <td><strong>Transient</strong></td>
-<td style="text-align:right"><strong>10.907 μs</strong></td>
-<td style="text-align:right"><strong>0.2074 μs</strong></td>
-<td style="text-align:right"><strong>0.2547 μs</strong></td>
-<td style="text-align:right"><strong>0.3281</strong></td>
+<td style="text-align:right"><strong>9.747 μs</strong></td>
+<td style="text-align:right"><strong>0.1933 μs</strong></td>
+<td style="text-align:right"><strong>0.1985 μs</strong></td>
+<td style="text-align:right"><strong>0.3125</strong></td>
 <td style="text-align:right"><strong>0.1094</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
-<td style="text-align:right"><strong>6010 B</strong></td>
+<td style="text-align:right"><strong>5767 B</strong></td>
 </tr>
 <tr>
 <td>Generic</td>
 <td>Transient</td>
 <td>Transient</td>
-<td style="text-align:right">11.721 μs</td>
-<td style="text-align:right">0.2246 μs</td>
-<td style="text-align:right">0.2101 μs</td>
-<td style="text-align:right">0.3281</td>
+<td style="text-align:right">9.433 μs</td>
+<td style="text-align:right">0.1247 μs</td>
+<td style="text-align:right">0.1106 μs</td>
+<td style="text-align:right">0.3125</td>
 <td style="text-align:right">0.1094</td>
 <td style="text-align:right">-</td>
-<td style="text-align:right">6015 B</td>
+<td style="text-align:right">5772 B</td>
 </tr>
 <tr>
 <td>Lazy</td>
 <td>Transient</td>
 <td>Transient</td>
-<td style="text-align:right">7.253 μs</td>
-<td style="text-align:right">0.0748 μs</td>
-<td style="text-align:right">0.0625 μs</td>
-<td style="text-align:right">0.1719</td>
-<td style="text-align:right">0.0625</td>
+<td style="text-align:right">5.844 μs</td>
+<td style="text-align:right">0.0678 μs</td>
+<td style="text-align:right">0.0566 μs</td>
+<td style="text-align:right">0.1641</td>
+<td style="text-align:right">0.0547</td>
 <td style="text-align:right">-</td>
-<td style="text-align:right">3265 B</td>
+<td style="text-align:right">3142 B</td>
 </tr>
 <tr>
 <td>Enumerable</td>
 <td>Transient</td>
 <td>Transient</td>
-<td style="text-align:right">1.601 μs</td>
-<td style="text-align:right">0.0150 μs</td>
-<td style="text-align:right">0.0133 μs</td>
-<td style="text-align:right">0.0488</td>
+<td style="text-align:right">1.386 μs</td>
+<td style="text-align:right">0.0275 μs</td>
+<td style="text-align:right">0.0316 μs</td>
+<td style="text-align:right">0.0469</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
-<td style="text-align:right">914 B</td>
+<td style="text-align:right">870 B</td>
 </tr>
 </tbody>
 </table>

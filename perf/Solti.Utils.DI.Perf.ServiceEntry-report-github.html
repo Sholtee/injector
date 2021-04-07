@@ -40,9 +40,9 @@
 <pre><code class="lang-ini">
 BenchmarkDotNet=v0.12.1, OS=Windows 10.0.17763.1098 (1809/October2018Update/Redstone5)
 Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
-.NET Core SDK=5.0.103
-  [Host]     : .NET Core 3.1.12 (CoreCLR 4.700.21.6504, CoreFX 4.700.21.6905), X64 RyuJIT
-  DefaultJob : .NET Core 3.1.12 (CoreCLR 4.700.21.6504, CoreFX 4.700.21.6905), X64 RyuJIT
+.NET Core SDK=5.0.201
+  [Host]     : .NET Core 5.0.4 (CoreCLR 5.0.421.11614, CoreFX 5.0.421.11614), X64 RyuJIT
+  DefaultJob : .NET Core 5.0.4 (CoreCLR 5.0.421.11614, CoreFX 5.0.421.11614), X64 RyuJIT
 
 </code></pre><table>
 <thead>
@@ -62,32 +62,32 @@ Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 <tr>
 <td><strong>Service</strong></td>
 <td><strong>Pooled</strong></td>
-<td style="text-align:right"><strong>4,590.9 ns</strong></td>
-<td style="text-align:right"><strong>91.40 ns</strong></td>
-<td style="text-align:right"><strong>160.08 ns</strong></td>
+<td style="text-align:right"><strong>5,913.7 ns</strong></td>
+<td style="text-align:right"><strong>112.03 ns</strong></td>
+<td style="text-align:right"><strong>99.31 ns</strong></td>
 <td style="text-align:right"><strong>0.1094</strong></td>
 <td style="text-align:right"><strong>0.0547</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
-<td style="text-align:right"><strong>2022 B</strong></td>
+<td style="text-align:right"><strong>2030 B</strong></td>
 </tr>
 <tr>
 <td>Factory</td>
 <td>Pooled</td>
-<td style="text-align:right">4,149.3 ns</td>
-<td style="text-align:right">59.94 ns</td>
-<td style="text-align:right">56.07 ns</td>
+<td style="text-align:right">5,661.8 ns</td>
+<td style="text-align:right">94.70 ns</td>
+<td style="text-align:right">88.58 ns</td>
 <td style="text-align:right">0.0938</td>
 <td style="text-align:right">0.0469</td>
 <td style="text-align:right">-</td>
-<td style="text-align:right">1846 B</td>
+<td style="text-align:right">1854 B</td>
 </tr>
 <tr>
 <td><strong>Service</strong></td>
 <td><strong>Scoped</strong></td>
-<td style="text-align:right"><strong>1,034.9 ns</strong></td>
-<td style="text-align:right"><strong>19.88 ns</strong></td>
-<td style="text-align:right"><strong>20.42 ns</strong></td>
-<td style="text-align:right"><strong>0.0273</strong></td>
+<td style="text-align:right"><strong>974.0 ns</strong></td>
+<td style="text-align:right"><strong>14.46 ns</strong></td>
+<td style="text-align:right"><strong>13.53 ns</strong></td>
+<td style="text-align:right"><strong>0.0283</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>527 B</strong></td>
@@ -95,9 +95,9 @@ Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 <tr>
 <td>Factory</td>
 <td>Scoped</td>
-<td style="text-align:right">747.1 ns</td>
-<td style="text-align:right">14.30 ns</td>
-<td style="text-align:right">15.89 ns</td>
+<td style="text-align:right">737.7 ns</td>
+<td style="text-align:right">7.51 ns</td>
+<td style="text-align:right">7.03 ns</td>
 <td style="text-align:right">0.0186</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
@@ -106,9 +106,9 @@ Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 <tr>
 <td><strong>Service</strong></td>
 <td><strong>Singleton</strong></td>
-<td style="text-align:right"><strong>1,506.5 ns</strong></td>
-<td style="text-align:right"><strong>29.13 ns</strong></td>
-<td style="text-align:right"><strong>32.38 ns</strong></td>
+<td style="text-align:right"><strong>1,557.3 ns</strong></td>
+<td style="text-align:right"><strong>29.96 ns</strong></td>
+<td style="text-align:right"><strong>37.89 ns</strong></td>
 <td style="text-align:right"><strong>0.0313</strong></td>
 <td style="text-align:right"><strong>0.0156</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
@@ -117,9 +117,9 @@ Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 <tr>
 <td>Factory</td>
 <td>Singleton</td>
-<td style="text-align:right">1,204.4 ns</td>
-<td style="text-align:right">23.89 ns</td>
-<td style="text-align:right">21.18 ns</td>
+<td style="text-align:right">1,354.4 ns</td>
+<td style="text-align:right">26.19 ns</td>
+<td style="text-align:right">49.19 ns</td>
 <td style="text-align:right">0.0215</td>
 <td style="text-align:right">0.0098</td>
 <td style="text-align:right">-</td>
@@ -128,10 +128,10 @@ Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 <tr>
 <td><strong>Service</strong></td>
 <td><strong>Transient</strong></td>
-<td style="text-align:right"><strong>995.1 ns</strong></td>
-<td style="text-align:right"><strong>9.30 ns</strong></td>
-<td style="text-align:right"><strong>8.70 ns</strong></td>
-<td style="text-align:right"><strong>0.0254</strong></td>
+<td style="text-align:right"><strong>962.8 ns</strong></td>
+<td style="text-align:right"><strong>14.52 ns</strong></td>
+<td style="text-align:right"><strong>17.84 ns</strong></td>
+<td style="text-align:right"><strong>0.0264</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>495 B</strong></td>
@@ -139,9 +139,9 @@ Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 <tr>
 <td>Factory</td>
 <td>Transient</td>
-<td style="text-align:right">723.0 ns</td>
-<td style="text-align:right">6.52 ns</td>
-<td style="text-align:right">6.10 ns</td>
+<td style="text-align:right">736.3 ns</td>
+<td style="text-align:right">14.21 ns</td>
+<td style="text-align:right">20.83 ns</td>
 <td style="text-align:right">0.0166</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
