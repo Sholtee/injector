@@ -1,4 +1,4 @@
-# Injector.NET [![Build status](https://ci.appveyor.com/api/projects/status/2fej57bdmyij4v08?svg=true)](https://ci.appveyor.com/project/Sholtee/injector/branch/master) ![AppVeyor tests](https://img.shields.io/appveyor/tests/sholtee/injector/master) [![Coverage Status](https://coveralls.io/repos/github/Sholtee/injector/badge.svg?branch=master)](https://coveralls.io/github/Sholtee/injector?branch=master)
+# Injector.NET [![Build status](https://ci.appveyor.com/api/projects/status/2fej57bdmyij4v08?svg=true)](https://ci.appveyor.com/project/Sholtee/injector/branch/master) ![AppVeyor tests](https://img.shields.io/appveyor/tests/sholtee/injector/master) [![Coverage Status](https://coveralls.io/repos/github/Sholtee/injector/badge.svg?branch=master)](https://coveralls.io/github/Sholtee/injector?branch=master) ![GitHub last commit (branch)](https://img.shields.io/github/last-commit/sholtee/injector/master)
 > A featherweight dependency injector written in C#.
 
 |Package name|NuGet link|
