@@ -9,7 +9,6 @@
     <AssemblyName>Injector.Perf</AssemblyName>
     <RootNamespace>Solti.Utils.DI.Perf</RootNamespace>
     <OutputPath>..\BIN\$(Configuration)\</OutputPath>
-    <Optimize>true</Optimize>
   </PropertyGroup>
 
   <ItemGroup>
