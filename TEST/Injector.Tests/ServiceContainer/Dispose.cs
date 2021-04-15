@@ -137,6 +137,27 @@ namespace Solti.Utils.DI.Container.Tests
             Assert.That(testDisposable.Disposed, Is.True);
         }
 
+        [TestCase(true)]
+        [TestCase(false)]
+        public void IServiceContainer_Dispose_ShouldFreeInstancesIfReleaseOnDisposeWasSetToTrue(bool releaseOnDispose)
+        {
+            var mockInstance = new Mock<IInterface_1_Disaposable>(MockBehavior.Strict);
+            mockInstance.Setup(i => i.Dispose());
+
+            using (IServiceContainer child = Container.CreateChild())
+            {
+                child.Instance(mockInstance.Object, releaseOnDispose);
+
+                using (child.CreateChild())
+                {
+                }
+
+                mockInstance.Verify(i => i.Dispose(), Times.Never);
+            }
+
+            mockInstance.Verify(i => i.Dispose(), releaseOnDispose ? Times.Once : (Func<Times>)Times.Never);
+        }
+
         public interface IGenericDisposable<T> : IDisposable
         {
         }
