@@ -588,7 +588,7 @@ This project currently targets *.NET Standard* 2.0 and 2.1.
 - You should add +1 using (`Solti.Utils.DI.Interfaces`) in files where you use the [general interfaces](https://sholtee.github.io/injector/doc/Solti.Utils.DI.Interfaces.html ).
 - There is NO need for referencing the `Solti.Utils.DI.Interfaces` assembly directly.
 ## Migrating from version 3.X
-- Auto service registration has been removed, so you are should register all the services manually
+- Auto service registration has been removed, so you should register all the services manually
 - Configuration has been moved to `runtimeconfig.json` (and got a new layout). See [this](https://github.com/Sholtee/injector/blob/master/TEST/Injector.Tests/runtimeconfig.template.json ) as a reference
 ## Version history
 Can be found [here](https://github.com/Sholtee/injector/blob/master/history.md )
