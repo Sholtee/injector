@@ -86,6 +86,7 @@ namespace Solti.Utils.DI
         /// <summary>
         /// See <see cref="IServiceContainer.Get"/>.
         /// </summary>
+        /// <remarks>This method is thread safe.</remarks>
         [SuppressMessage("Naming", "CA1716:Identifiers should not match keywords", Justification = "The identifier won't confuse the users of the API.")]
         public virtual AbstractServiceEntry? Get(Type serviceInterface, string? name, QueryModes mode)
         {
