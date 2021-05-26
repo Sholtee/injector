@@ -5,6 +5,7 @@
 ********************************************************************************/
 using System.Diagnostics;
 using System.Linq;
+using System.Threading;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -12,7 +13,7 @@ namespace Solti.Utils.DI.Internals
 
     internal partial class Injector
     {
-        private IServiceReference Instantiate(AbstractServiceEntry requested, bool forceUsingCurrentScope = false)
+        private IServiceReference Instantiate(AbstractServiceEntry requested)
         {
             //
             // 1. eset: Csak egy peldanyt kell letrehozni (Built == true) amit vki korabban mar megtett,
@@ -26,13 +27,14 @@ namespace Solti.Utils.DI.Internals
             // 2. eset: Uj peldanyt kell letrehozni de nem mi vagyunk a bejegyzes tulajdonosai
             //          ezert letre kell hozni egy dedikalt injector-t.
             //          Megjegyzesek:
-            //            - A nem birtokolt bejegyzesek injector peldanyok kozt ertelmezettek ezert
-            //              minden muveletnek exkluzivnak kell lennie.
-            //            - "forceUsingCurrentScope" azert kell mert ha kontener kezelt elettartamrol van 
-            //              szo akkor az injector (ez az osztaly) sose lehet tulajdonos.
+            //            - A nem birtokolt bejegyzesek injector peldanyok kozt ertelmezettek ezert minden muveletnek exkluzivnak kell
+            //              lennie.
+            //            - A Monitor.IsEntered() vizsgalat azert kell h lassuk ha az aktualis szal korabban mar elkezdte feldolgozni a
+            //              szerviz igenylest (nem mellesleg a lock(...) rekurzio eseten nem blokkolodna, igy ez a megoldas jol kezeli
+            //              azt az esetet is ha kontener altal kezelt elettartamu bejegyzes hivatkozik sajat magara -> nem lesz S.O.E.).
             //
 
-            if (UnderlyingContainer.IsDescendantOf(requested.Owner) && !forceUsingCurrentScope)
+            if (UnderlyingContainer.IsDescendantOf(requested.Owner) && !Monitor.IsEntered(requested))
             {
                 //
                 // ServiceEntry-t zaroljuk h a lock injectorok kozt is ertelmezve legyen.
@@ -61,7 +63,7 @@ namespace Solti.Utils.DI.Internals
                         // Ugrunk a 3. esetre
                         //
 
-                        return dedicatedInjector.Instantiate(requested, forceUsingCurrentScope: true);
+                        return dedicatedInjector.Instantiate(requested);
                     }
                     catch
                     {
