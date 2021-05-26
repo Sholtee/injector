@@ -16,7 +16,7 @@ namespace Solti.Utils.DI.Internals
     /// </summary>
     internal class ScopedServiceEntry : ProducibleServiceEntry
     {
-        private readonly List<IServiceReference> FInstances = new List<IServiceReference>(1); // max egy eleme lehet
+        private readonly List<IServiceReference> FInstances = new(1); // max egy eleme lehet
 
         private ScopedServiceEntry(ScopedServiceEntry entry, IServiceContainer owner) : base(entry, owner)
         {

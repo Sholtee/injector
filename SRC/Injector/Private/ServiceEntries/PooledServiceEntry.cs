@@ -19,7 +19,7 @@ namespace Solti.Utils.DI.Internals
     /// </summary>
     internal class PooledServiceEntry : ProducibleServiceEntryBase, ISupportsSpecialization
     {
-        private readonly List<IServiceReference> FInstances = new List<IServiceReference>(1); // max egy eleme lehet
+        private readonly List<IServiceReference> FInstances = new(1); // max egy eleme lehet
 
         protected PooledServiceEntry(PooledServiceEntry entry, IServiceContainer owner) : base(entry, owner)
         {
