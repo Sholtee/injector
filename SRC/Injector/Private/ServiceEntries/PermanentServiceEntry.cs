@@ -7,6 +7,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -23,6 +24,20 @@ namespace Solti.Utils.DI.Internals
         private readonly ConcurrentBag<IServiceReference> FInstances = new();
 
         private readonly ExclusiveBlock FExclusiveBlock = new();
+
+        protected override void Dispose(bool disposeManaged)
+        {
+            if (disposeManaged)
+                FExclusiveBlock.Dispose();
+
+            base.Dispose(disposeManaged);
+        }
+
+        protected override async ValueTask AsyncDispose()
+        {
+            await FExclusiveBlock.DisposeAsync();
+            await base.AsyncDispose();
+        }
 
         public PermanentServiceEntry(Type @interface, string? name, Func<IInjector, Type, object> factory, IServiceContainer owner, params Func<object, Type, object>[] customConverters) : base(@interface, name, factory, owner, customConverters)
         {
