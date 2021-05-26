@@ -7,11 +7,11 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 
 namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
+    using Primitives.Threading;
     using Properties;
 
     //
@@ -20,7 +20,9 @@ namespace Solti.Utils.DI.Internals
 
     internal class PermanentServiceEntry : ProducibleServiceEntry
     {
-        private readonly ConcurrentBag<IServiceReference> FInstances = new ConcurrentBag<IServiceReference>();
+        private readonly ConcurrentBag<IServiceReference> FInstances = new();
+
+        private readonly ExclusiveBlock FExclusiveBlock = new();
 
         public PermanentServiceEntry(Type @interface, string? name, Func<IInjector, Type, object> factory, IServiceContainer owner, params Func<object, Type, object>[] customConverters) : base(@interface, name, factory, owner, customConverters)
         {
@@ -34,30 +36,32 @@ namespace Solti.Utils.DI.Internals
         {
         }
 
-        [MethodImpl(MethodImplOptions.Synchronized)] // nem kene, csak kis paranoia
         public override bool SetInstance(IServiceReference reference)
         {
-            EnsureAppropriateReference(reference);
-            EnsureProducible();
+            using (FExclusiveBlock.Enter())
+            {
+                EnsureAppropriateReference(reference);
+                EnsureProducible();
 
-            //
-            // A bejegyzeshez mindig sajat injector van letrehozva a deklaralo kontenerbol
-            //
+                //
+                // A bejegyzeshez mindig sajat injector van letrehozva a deklaralo kontenerbol
+                //
 
-            IInjector relatedInjector = Ensure.IsNotNull(reference.RelatedInjector, $"{nameof(reference)}.{nameof(reference.RelatedInjector)}");
-            Ensure.AreEqual(relatedInjector.UnderlyingContainer.Parent, Owner, Resources.INAPPROPRIATE_OWNERSHIP);         
+                IInjector relatedInjector = Ensure.IsNotNull(reference.RelatedInjector, $"{nameof(reference)}.{nameof(reference.RelatedInjector)}");
+                Ensure.AreEqual(relatedInjector.UnderlyingContainer.Parent, Owner, Resources.INAPPROPRIATE_OWNERSHIP);
 
-            //
-            // Elsokent a Factory-t hivjuk es Instance-nak csak sikeres visszateres eseten adjunk erteket.
-            // "Factory" biztosan nem NULL [lasd EnsureProducible()].
-            //
+                //
+                // Elsokent a Factory-t hivjuk es Instance-nak csak sikeres visszateres eseten adjunk erteket.
+                // "Factory" biztosan nem NULL [lasd EnsureProducible()].
+                //
 
-            reference.Value = Factory!(relatedInjector, Interface);
+                reference.Value = Factory!(relatedInjector, Interface);
 
-            FInstances.Add(reference);
-            State |= ServiceEntryStates.Instantiated;
+                FInstances.Add(reference);
+                State |= ServiceEntryStates.Instantiated;
 
-            return true;
+                return true;
+            }
         }
 
         public override IReadOnlyCollection<IServiceReference> Instances => FInstances;
