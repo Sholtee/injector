@@ -5,7 +5,6 @@
 ********************************************************************************/
 using System.Diagnostics;
 using System.Linq;
-using System.Threading;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -13,7 +12,7 @@ namespace Solti.Utils.DI.Internals
 
     internal partial class Injector
     {
-        private IServiceReference Instantiate(AbstractServiceEntry requested)
+        private IServiceReference Instantiate(AbstractServiceEntry requested, bool forceUsingCurrentScope = false)
         {
             //
             // 1. eset: Csak egy peldanyt kell letrehozni (Built == true) amit vki korabban mar megtett,
@@ -29,11 +28,11 @@ namespace Solti.Utils.DI.Internals
             //          Megjegyzesek:
             //            - A nem birtokolt bejegyzesek injector peldanyok kozt ertelmezettek ezert
             //              minden muveletnek exkluzivnak kell lennie.
-            //            - Monitor.IsEntered() azert kell mert ha kontener kezelt elettartamrol van 
+            //            - "forceUsingCurrentScope" azert kell mert ha kontener kezelt elettartamrol van 
             //              szo akkor az injector (ez az osztaly) sose lehet tulajdonos.
             //
 
-            if (UnderlyingContainer.IsDescendantOf(requested.Owner) && !Monitor.IsEntered(requested))
+            if (UnderlyingContainer.IsDescendantOf(requested.Owner) && !forceUsingCurrentScope)
             {
                 //
                 // ServiceEntry-t zaroljuk h a lock injectorok kozt is ertelmezve legyen.
@@ -62,7 +61,7 @@ namespace Solti.Utils.DI.Internals
                         // Ugrunk a 3. esetre
                         //
 
-                        return dedicatedInjector.Instantiate(requested);
+                        return dedicatedInjector.Instantiate(requested, forceUsingCurrentScope: true);
                     }
                     catch
                     {
