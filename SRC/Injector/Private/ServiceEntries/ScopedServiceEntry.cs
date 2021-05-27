@@ -11,9 +11,6 @@ namespace Solti.Utils.DI.Internals
     using Interfaces;
     using Properties;
 
-    /// <summary>
-    /// Describes a scoped service entry.
-    /// </summary>
     internal class ScopedServiceEntry : ProducibleServiceEntry
     {
         private readonly List<IServiceReference> FInstances = new(1); // max egy eleme lehet

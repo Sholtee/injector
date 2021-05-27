@@ -11,9 +11,6 @@ namespace Solti.Utils.DI.Internals
     using Interfaces;
     using Properties;
 
-    /// <summary>
-    /// Describes a transient service entry.
-    /// </summary>
     internal class TransientServiceEntry : ProducibleServiceEntry
     {
         private readonly List<IServiceReference> FInstances = new();
