@@ -4,33 +4,40 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
-using System.Linq;
 
 namespace Solti.Utils.DI.Interfaces
 {
     /// <summary>
-    /// Defines some extensions to the <see cref="IServiceReference"/> interface.
+    /// Defines some extensions for the <see cref="IServiceReference"/> interface.
     /// </summary>
     public static class IServiceReferenceExtensions
     {
         /// <summary>
-        /// Gets the concrete value by applying the <see cref="AbstractServiceEntry.CustomConverters"/>.
+        /// Shortcut for setting a new service instance.
         /// </summary>
-        /// <param name="src"></param>
-        /// <returns></returns>
-        public static object GetEffectiveValue(this IServiceReference src) 
+        public static void SetInstance(this IServiceReference svc)
         {
-            if (src is null)
-                throw new ArgumentNullException(nameof(src));
+            if (svc is null)
+                throw new ArgumentNullException(nameof(svc));
 
-            if (src.Value is null)
-                throw new InvalidOperationException();
+            //
+            // Elmeletileg a SetInstance() csak akkor lehet hivva ha szukseges is letrehozni a
+            // szervizpeldanyt.
+            //
 
-            AbstractServiceEntry relatedEntry = src.RelatedServiceEntry;
+            if (!svc.RelatedServiceEntry.SetInstance(svc))
+                throw new InvalidOperationException(); // TODO: error message
+        }
 
-            return relatedEntry
-                .CustomConverters
-                .Aggregate(src.Value, (current, converter) => converter(current, relatedEntry.Interface));
+        /// <summary>
+        /// Shortcut for getting a nervice instance.
+        /// </summary>
+        public static object GetInstance(this IServiceReference svc)
+        {
+            if (svc is null)
+                throw new ArgumentNullException(nameof(svc));
+
+            return svc.RelatedServiceEntry.GetInstance(svc);
         }
     }
 }

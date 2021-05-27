@@ -93,9 +93,8 @@ namespace Solti.Utils.DI.Internals
                     FGraph.CheckNotCircular();
 
                     result.SetInstance();
+                    return result;
                 }
-
-                return result;
             }
             catch
             {

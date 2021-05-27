@@ -18,19 +18,19 @@ namespace Solti.Utils.DI.Internals
         [ModuleInitializer]
         public static void Setup() => Bind();
 
-        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Type implementation, IServiceContainer owner, params Func<object, Type, object>[] customConverters)
+        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Type implementation, IServiceContainer owner)
         {
-            yield return new TransientServiceEntry(iface, name, implementation, owner, customConverters);
+            yield return new TransientServiceEntry(iface, name, implementation, owner);
         }
 
-        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Type implementation, IReadOnlyDictionary<string, object?> explicitArgs, IServiceContainer owner, params Func<object, Type, object>[] customConverters)
+        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Type implementation, IReadOnlyDictionary<string, object?> explicitArgs, IServiceContainer owner)
         {
-             yield return new TransientServiceEntry(iface, name, implementation, explicitArgs, owner, customConverters);
+             yield return new TransientServiceEntry(iface, name, implementation, explicitArgs, owner);
         }
 
-        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Func<IInjector, Type, object> factory, IServiceContainer owner, params Func<object, Type, object>[] customConverters)
+        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Func<IInjector, Type, object> factory, IServiceContainer owner)
         {
-            yield return new TransientServiceEntry(iface, name, factory, owner, customConverters);
+            yield return new TransientServiceEntry(iface, name, factory, owner);
         }
     }
 }

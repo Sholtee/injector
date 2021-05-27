@@ -129,10 +129,10 @@ namespace Solti.Utils.DI.Internals
                     IServiceReference requested = Instantiate(requestedEntry);
 
                     //
-                    // Az igenylo (ha van) fuggosegei koze felvesszuk az ujonan letrehozott szervizt
+                    // Ha a szervizt egy masik szerviz igenyelte akkor annak fuggosegei koze felvesszuk az ujonan letrehozott peldanyt.
                     //
 
-                    FGraph.Requestor?.AddDependency(requested);
+                    FGraph.Requestor?.AddDependency(requested); // TODO: Ezt atmozgatni a Instantiate()-be
 
                     return requested;
                 }
@@ -157,7 +157,9 @@ namespace Solti.Utils.DI.Internals
         {
             CheckNotDisposed();
 
-            object instance = GetReference(iface, name).GetEffectiveValue();
+            IServiceReference reference = GetReference(iface, name);
+
+            object instance = reference.GetInstance();
 
             if (!iface.IsInstanceOfType(instance))
                 throw new InvalidCastException(string.Format(Resources.Culture, Resources.INVALID_INSTANCE, iface));

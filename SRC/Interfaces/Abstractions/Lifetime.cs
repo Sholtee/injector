@@ -64,21 +64,21 @@ namespace Solti.Utils.DI.Interfaces
         /// <summary>
         /// Creates a service entry from the given <paramref name="implementation"/>.
         /// </summary>
-        public virtual IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Type implementation, IServiceContainer owner, params Func<object, Type, object>[] customConverters) => throw new NotSupportedException();
+        public virtual IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Type implementation, IServiceContainer owner) => throw new NotSupportedException();
 
         /// <summary>
         /// Creates a service entry from the given <paramref name="implementation"/>.
         /// </summary>
-        public virtual IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Type implementation, IReadOnlyDictionary<string, object?> explicitArgs, IServiceContainer owner, params Func<object, Type, object>[] customConverters) => throw new NotSupportedException();
+        public virtual IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Type implementation, IReadOnlyDictionary<string, object?> explicitArgs, IServiceContainer owner) => throw new NotSupportedException();
 
         /// <summary>
         /// Creates a service entry from the given <paramref name="factory"/>.
         /// </summary>
-        public virtual IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Func<IInjector, Type, object> factory, IServiceContainer owner, params Func<object, Type, object>[] customConverters) => throw new NotSupportedException();
+        public virtual IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Func<IInjector, Type, object> factory, IServiceContainer owner) => throw new NotSupportedException();
 
         /// <summary>
         /// Creates a service entry from the given <paramref name="value"/>.
         /// </summary>
-        public virtual IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, object value, bool externallyOwned, IServiceContainer owner, params Func<object, Type, object>[] customConverters) => throw new NotSupportedException();
+        public virtual IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, object value, bool externallyOwned, IServiceContainer owner) => throw new NotSupportedException();
     }
 }

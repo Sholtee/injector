@@ -5,7 +5,6 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -15,7 +14,7 @@ namespace Solti.Utils.DI.Internals
     internal abstract class ProducibleServiceEntryBase : AbstractServiceEntry
     {
         #region Protected
-        protected ProducibleServiceEntryBase(ProducibleServiceEntryBase entry, IServiceContainer owner) : base(entry.Interface, entry.Name, entry.Implementation, owner, entry.CustomConverters.ToArray())
+        protected ProducibleServiceEntryBase(ProducibleServiceEntryBase entry, IServiceContainer owner) : base(entry.Interface, entry.Name, entry.Implementation, owner)
         {
             Factory = entry.Factory;
             ExplicitArgs = entry.ExplicitArgs;
@@ -26,7 +25,7 @@ namespace Solti.Utils.DI.Internals
             //
         }
 
-        protected ProducibleServiceEntryBase(Type @interface, string? name, Func<IInjector, Type, object> factory, IServiceContainer owner, params Func<object, Type, object>[] customConverters) : base(@interface, name, null, owner, customConverters)
+        protected ProducibleServiceEntryBase(Type @interface, string? name, Func<IInjector, Type, object> factory, IServiceContainer owner) : base(@interface, name, null, owner)
         {
             //
             // Os ellenorzi az interface-t es a tulajdonost.
@@ -36,7 +35,7 @@ namespace Solti.Utils.DI.Internals
             this.ApplyAspects();
         }
 
-        protected ProducibleServiceEntryBase(Type @interface, string? name, Type implementation, IServiceContainer owner, params Func<object, Type, object>[] customConverters) : base(@interface, name, implementation, owner, customConverters)
+        protected ProducibleServiceEntryBase(Type @interface, string? name, Type implementation, IServiceContainer owner) : base(@interface, name, implementation, owner)
         {
             //
             // Os ellenorzi a tobbit.
@@ -62,7 +61,7 @@ namespace Solti.Utils.DI.Internals
             //
         }
 
-        protected ProducibleServiceEntryBase(Type @interface, string? name, Type implementation, IReadOnlyDictionary<string, object?> explicitArgs, IServiceContainer owner, params Func<object, Type, object>[] customConverters) : base(@interface, name, implementation, owner, customConverters)
+        protected ProducibleServiceEntryBase(Type @interface, string? name, Type implementation, IReadOnlyDictionary<string, object?> explicitArgs, IServiceContainer owner) : base(@interface, name, implementation, owner)
         {
             //
             // Os ellenorzi a tobbit.

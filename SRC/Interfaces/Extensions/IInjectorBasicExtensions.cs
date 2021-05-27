@@ -22,7 +22,7 @@ namespace Solti.Utils.DI.Interfaces
         /// <exception cref="ServiceNotFoundException">The service could not be found.</exception>
         public static TInterface Get<TInterface>(this IInjector self, string? name = null) where TInterface : class
         {
-            if (self == null)
+            if (self is null)
                 throw new ArgumentNullException(nameof(self));
 
             return (TInterface) self.Get(typeof(TInterface), name);
@@ -37,7 +37,7 @@ namespace Solti.Utils.DI.Interfaces
         /// <returns>The requested service instance if the resolution was successful, null otherwise.</returns>
         public static TInterface? TryGet<TInterface>(this IInjector self, string? name = null) where TInterface : class
         {
-            if (self == null)
+            if (self is null)
                 throw new ArgumentNullException(nameof(self));
 
             return (TInterface?) self.TryGet(typeof(TInterface), name);

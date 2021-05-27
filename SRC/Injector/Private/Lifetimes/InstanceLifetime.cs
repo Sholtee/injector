@@ -18,9 +18,9 @@ namespace Solti.Utils.DI.Internals
         [ModuleInitializer]
         public static void Setup() => Bind();
 
-        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, object value, bool externallyOwned, IServiceContainer owner, params Func<object, Type, object>[] customConverters)
+        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, object value, bool externallyOwned, IServiceContainer owner)
         {
-            yield return new InstanceServiceEntry(iface, name, value, externallyOwned, owner, customConverters);
+            yield return new InstanceServiceEntry(iface, name, value, externallyOwned, owner);
         }
     }
 }

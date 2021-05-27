@@ -5,7 +5,6 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -13,15 +12,15 @@ namespace Solti.Utils.DI.Internals
 
     internal class PooledServiceEntrySupportsProxying : PooledServiceEntry, ISupportsProxying, ISupportsSpecialization
     {
-        public PooledServiceEntrySupportsProxying(Type @interface, string? name, Func<IInjector, Type, object> factory, IServiceContainer owner, params Func<object, Type, object>[] customConverters) : base(@interface, name, factory, owner, customConverters)
+        public PooledServiceEntrySupportsProxying(Type @interface, string? name, Func<IInjector, Type, object> factory, IServiceContainer owner) : base(@interface, name, factory, owner)
         {
         }
 
-        public PooledServiceEntrySupportsProxying(Type @interface, string? name, Type implementation, IServiceContainer owner, params Func<object, Type, object>[] customConverters) : base(@interface, name, implementation, owner, customConverters)
+        public PooledServiceEntrySupportsProxying(Type @interface, string? name, Type implementation, IServiceContainer owner) : base(@interface, name, implementation, owner)
         {
         }
 
-        public PooledServiceEntrySupportsProxying(Type @interface, string? name, Type implementation, IReadOnlyDictionary<string, object?> explicitArgs, IServiceContainer owner, params Func<object, Type, object>[] customConverters) : base(@interface, name, implementation, explicitArgs, owner, customConverters)
+        public PooledServiceEntrySupportsProxying(Type @interface, string? name, Type implementation, IReadOnlyDictionary<string, object?> explicitArgs, IServiceContainer owner) : base(@interface, name, implementation, explicitArgs, owner)
         {
         }
 
@@ -38,8 +37,7 @@ namespace Solti.Utils.DI.Internals
                 Interface.MakeGenericType(genericArguments),
                 Name,
                 Implementation.MakeGenericType(genericArguments),
-                Owner,
-                CustomConverters.ToArray()
+                Owner
             ),
             _ when Implementation is not null && ExplicitArgs is not null => new PooledServiceEntrySupportsProxying
             (
@@ -47,16 +45,14 @@ namespace Solti.Utils.DI.Internals
                 Name,
                 Implementation.MakeGenericType(genericArguments),
                 ExplicitArgs,
-                Owner,
-                CustomConverters.ToArray()
+                Owner
             ),
             _ when Factory is not null => new PooledServiceEntrySupportsProxying
             (
                 Interface.MakeGenericType(genericArguments),
                 Name,
                 Factory,
-                Owner,
-                CustomConverters.ToArray()
+                Owner
             ),
             _ => throw new NotSupportedException()
         };

@@ -17,11 +17,10 @@ namespace Solti.Utils.DI.Internals
     {
         private readonly IReadOnlyCollection<ServiceReference> FInstances;
 
-        public InstanceServiceEntry(Type @interface, string? name, object instance, bool externallyOwned, IServiceContainer owner, params Func<object, Type, object>[] customConverters) : base(
+        public InstanceServiceEntry(Type @interface, string? name, object instance, bool externallyOwned, IServiceContainer owner) : base(
             @interface, 
             name, 
-            owner,
-            customConverters)
+            owner)
         {
             Ensure.Parameter.IsNotNull(instance, nameof(instance));
 
