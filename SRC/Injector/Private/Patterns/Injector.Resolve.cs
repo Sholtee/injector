@@ -1,5 +1,5 @@
 ﻿/********************************************************************************
-* Injector.Instantiation.cs                                                     *
+* Injector.Resolve.cs                                                           *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
@@ -13,7 +13,7 @@ namespace Solti.Utils.DI.Internals
 
     internal partial class Injector
     {
-        private IServiceReference Instantiate(AbstractServiceEntry requested)
+        private IServiceReference Resolve(AbstractServiceEntry requested)
         {
             //
             // 1. eset: Csak egy peldanyt kell letrehozni (Built == true) amit vki korabban mar megtett,
@@ -63,7 +63,7 @@ namespace Solti.Utils.DI.Internals
                         // Ugrunk a 3. esetre
                         //
 
-                        return dedicatedInjector.Instantiate(requested);
+                        return dedicatedInjector.Resolve(requested);
                     }
                     catch
                     {
@@ -88,9 +88,9 @@ namespace Solti.Utils.DI.Internals
                 // feloldasakor o lesz a szulo (FGraph.Requestor).
                 //
 
-                using (FGraph.With(result))
+                using (FPath.With(result))
                 {
-                    FGraph.CheckNotCircular();
+                    FPath.CheckNotCircular();
 
                     result.SetInstance();
                     return result;

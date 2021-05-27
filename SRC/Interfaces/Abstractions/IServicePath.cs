@@ -1,5 +1,5 @@
 ﻿/********************************************************************************
-* IServiceGraph.cs                                                              *
+* IServicePath.cs                                                               *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
@@ -10,23 +10,23 @@ using System.Diagnostics.CodeAnalysis;
 namespace Solti.Utils.DI.Interfaces
 {
     /// <summary>
-    /// Describes the service graph in which the current request takes place.
+    /// Describes the path in which the current request takes place.
     /// </summary>
-    public interface IServiceGraph: IEnumerable<IServiceReference>
+    public interface IServicePath: IEnumerable<IServiceReference>
     {
         /// <summary>
-        /// The requestor of the service.
+        /// The last pushed service.
         /// </summary>
         IServiceReference? Requestor { get; }
 
         /// <summary>
-        /// Appends the graph with the given <see cref="IServiceReference"/>.
+        /// Appends the path with the given <see cref="IServiceReference"/>.
         /// </summary>
         [SuppressMessage("Naming", "CA1716:Identifiers should not match keywords")]
         IDisposable With(IServiceReference reference);
 
         /// <summary>
-        /// Throws if the graph is circular.
+        /// Throws if the path is circular.
         /// </summary>
         void CheckNotCircular();
     }

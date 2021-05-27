@@ -103,7 +103,7 @@ namespace Solti.Utils.DI.Internals
                     // legyen gond az elettartammal.
                     //
 
-                    relatedInjector.Get<IServiceGraph>().Requestor?.AddDependency(poolItem.Value);
+                    relatedInjector.Get<IServicePath>().Requestor?.AddDependency(poolItem.Value);
 
                     //
                     // Nem gond h a poolItem-et adjuk vissza, igy NEM annak tartalma kerul felszabaditasra a 

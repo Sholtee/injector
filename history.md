@@ -200,3 +200,4 @@
   - *fixed:* Missing validation in `PooledLifetime`
 - 5.0.0:
   - *breaking:* Dropped "custom converter"s
+  - *breaking:* Renamed `IServiceGraph` -> `IServicePath`

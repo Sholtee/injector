@@ -1,5 +1,5 @@
 ﻿/********************************************************************************
-* ServiceGraph.cs                                                               *
+* ServicePath.cs                                                                *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
@@ -14,7 +14,7 @@ namespace Solti.Utils.DI.Internals
     using Primitives.Patterns;
     using Properties;
 
-    internal sealed class ServiceGraph: IServiceGraph
+    internal sealed class ServicePath: IServicePath
     {
         private readonly Stack<IServiceReference> FGraph = new();
 
@@ -29,20 +29,20 @@ namespace Solti.Utils.DI.Internals
             int firstIndex = this.FirstIndexOf(Ensure.IsNotNull(Requestor, nameof(Requestor)), ServiceReferenceComparer.Instance);
 
             if (firstIndex < FGraph.Count - 1)
-            {
-                //
-                // Csak magat a kort adjuk vissza.
-                //
-
-                string path = string.Join(" -> ", this.Skip(firstIndex).Select(sr => sr.RelatedServiceEntry).Select(IServiceIdExtensions.FriendlyName));
-
                 throw new CircularReferenceException(string.Format
                 (
                     Resources.Culture,
                     Resources.CIRCULAR_REFERENCE,
-                    path 
+
+                    //
+                    // Csak magat a kort adjuk vissza.
+                    //
+
+                    Format
+                    (
+                        this.Skip(firstIndex)
+                    )
                 ));
-            }
         }
 
         public IDisposable With(IServiceReference node) 
@@ -63,6 +63,10 @@ namespace Solti.Utils.DI.Internals
                 base.Dispose(disposeManaged);
             }
         }
+
+        public static string Format(IEnumerable<IServiceReference> path) => Format(path.Select(svc => svc.RelatedServiceEntry));
+
+        public static string Format(IEnumerable<IServiceId> path) => string.Join(" -> ", path.Select(IServiceIdExtensions.FriendlyName));
 
         public IEnumerator<IServiceReference> GetEnumerator() =>
             //

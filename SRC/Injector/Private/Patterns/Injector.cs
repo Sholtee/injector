@@ -17,7 +17,7 @@ namespace Solti.Utils.DI.Internals
 
     internal partial class Injector : ServiceContainer, IInjector, IScopeFactory
     {
-        private readonly IServiceGraph FGraph = new ServiceGraph();
+        private readonly IServicePath FPath = new ServicePath();
 
         private readonly ExclusiveBlock FExclusiveBlock = new ExclusiveBlock();
 
@@ -27,7 +27,7 @@ namespace Solti.Utils.DI.Internals
         {
             if (!Config.Value.Injector.StrictDI) return;
 
-            AbstractServiceEntry? requestor = FGraph.Requestor?.RelatedServiceEntry; // lehet NULL
+            AbstractServiceEntry? requestor = FPath.Requestor?.RelatedServiceEntry; // lehet NULL
 
             //
             // Ha a fuggosegi fa gyokerenel vagyunk akkor a metodus nem ertelmezett.
@@ -70,7 +70,7 @@ namespace Solti.Utils.DI.Internals
             UnderlyingContainer
                 .Instance<IInjector>(this)
                 .Instance<IScopeFactory>(this)
-                .Instance(FGraph)
+                .Instance(FPath)
                 .Instance($"{INTERNAL_SERVICE_NAME_PREFIX}options", FOptions);
 
             this.RegisterServiceEnumerator();
@@ -111,7 +111,7 @@ namespace Solti.Utils.DI.Internals
                 // Ha vkinek a fuggosege vagyunk akkor a fuggo szerviz itt meg nem lehet legyartva.
                 //
 
-                Debug.Assert(FGraph.Requestor?.Value == null, "Already produced services can not request dependencies");
+                Debug.Assert(FPath.Requestor?.Value == null, "Already produced services can not request dependencies");
 
                 const string path = nameof(path);
 
@@ -126,13 +126,13 @@ namespace Solti.Utils.DI.Internals
 
                     CheckBreaksTheRuleOfStrictDI(requestedEntry);
 
-                    IServiceReference requested = Instantiate(requestedEntry);
+                    IServiceReference requested = Resolve(requestedEntry);
 
                     //
                     // Ha a szervizt egy masik szerviz igenyelte akkor annak fuggosegei koze felvesszuk az ujonan letrehozott peldanyt.
                     //
 
-                    FGraph.Requestor?.AddDependency(requested); // TODO: Ezt atmozgatni a Instantiate()-be
+                    FPath.Requestor?.AddDependency(requested); // TODO: Ezt atmozgatni a Instantiate()-be
 
                     return requested;
                 }
@@ -141,13 +141,14 @@ namespace Solti.Utils.DI.Internals
                 // Csak ott bovitjuk a kivetelt ahol az dobva volt (ez a metodus lehet rekurzivan hivva).
                 //
 
-                catch (ServiceNotFoundException e) when (e.Data[path] == null)
+                catch (ServiceNotFoundException e) when (e.Data[path] is null)
                 {
-                    e.Data[path] = string.Join(" -> ", FGraph
-                        .Select(node => (IServiceId)node.RelatedServiceEntry)
-                        .Append(new ServiceId(iface, name))
-                        .Select(IServiceIdExtensions.FriendlyName));
-
+                    e.Data[path] = ServicePath.Format
+                    (
+                        FPath
+                            .Select(node => (IServiceId) node.RelatedServiceEntry)
+                            .Append(new ServiceId(iface, name))
+                    );
                     throw;
                 }
             }
