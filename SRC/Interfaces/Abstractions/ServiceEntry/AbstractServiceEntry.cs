@@ -165,7 +165,7 @@ namespace Solti.Utils.DI.Interfaces
             hashCode.Add(Implementation);
 
             foreach (IServiceReference reference in Instances)
-                hashCode.Add(reference.GetInstance());
+                hashCode.Add(GetInstance(reference));
 
             return hashCode.ToHashCode();
 #else
@@ -182,7 +182,7 @@ namespace Solti.Utils.DI.Interfaces
                 current = new
                 {
                     Previous = current,
-                    Instance = reference.GetInstance()
+                    Instance = GetInstance(reference)
                 };
 
             return current.GetHashCode();
@@ -200,7 +200,7 @@ namespace Solti.Utils.DI.Interfaces
             return new StringBuilder(this.FriendlyName())
                 .AppendFormat(Resources.Culture, NAME_PART, nameof(Lifetime), Lifetime?.ToString() ?? "NULL")
                 .AppendFormat(Resources.Culture, NAME_PART, nameof(Implementation), Implementation?.ToString() ?? "NULL")
-                .AppendFormat(Resources.Culture, NAME_PART, nameof(Instances), Instances.Any() ? string.Join(", ", Instances.Select(IServiceReferenceExtensions.GetInstance)) : "EMPTY")             
+                .AppendFormat(Resources.Culture, NAME_PART, nameof(Instances), Instances.Any() ? string.Join(", ", Instances.Select(GetInstance)) : "EMPTY")             
                 .ToString();
         }
 

@@ -5,16 +5,12 @@
 ********************************************************************************/
 using System;
 
-namespace Solti.Utils.DI.Interfaces
+namespace Solti.Utils.DI.Internals
 {
-    /// <summary>
-    /// Defines some extensions for the <see cref="IServiceReference"/> interface.
-    /// </summary>
-    public static class IServiceReferenceExtensions
+    using Interfaces;
+
+    internal static class IServiceReferenceExtensions
     {
-        /// <summary>
-        /// Shortcut for setting a new service instance.
-        /// </summary>
         public static void SetInstance(this IServiceReference svc)
         {
             if (svc is null)
@@ -29,9 +25,6 @@ namespace Solti.Utils.DI.Interfaces
                 throw new InvalidOperationException(); // TODO: error message
         }
 
-        /// <summary>
-        /// Shortcut for getting a nervice instance.
-        /// </summary>
         public static object GetInstance(this IServiceReference svc)
         {
             if (svc is null)
