@@ -24,7 +24,7 @@ namespace Solti.Utils.DI.Internals
                 return requested.Instances.Single();
 
             //
-            // 2. eset: Uj peldanyt kell letrehozni de nem mi vagyunk a bejegyzes tulajdonosai
+            // 2. eset: Uj peldanyt kell letrehozni de nem mi vagyunk a bejegyzes tulajdonosai (megosztott bejegyzes)
             //          ezert letre kell hozni egy dedikalt injector-t.
             //          Megjegyzesek:
             //            - A nem birtokolt bejegyzesek injector peldanyok kozt ertelmezettek ezert minden muveletnek exkluzivnak kell
@@ -34,7 +34,7 @@ namespace Solti.Utils.DI.Internals
             //              azt az esetet is ha kontener altal kezelt elettartamu bejegyzes hivatkozik sajat magara -> nem lesz S.O.E.).
             //
 
-            if (UnderlyingContainer.IsDescendantOf(requested.Owner) && !Monitor.IsEntered(requested))
+            if (requested.IsShared && !Monitor.IsEntered(requested))
             {
                 //
                 // ServiceEntry-t zaroljuk h a lock injectorok kozt is ertelmezve legyen.

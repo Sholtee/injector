@@ -82,6 +82,8 @@ namespace Solti.Utils.DI.Internals
         public override IReadOnlyCollection<IServiceReference> Instances => FInstances;
 
         public override Lifetime Lifetime { get; } = new PermanentLifetime();
+
+        public override bool IsShared => true;
     }
 }
 #endif

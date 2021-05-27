@@ -15,9 +15,6 @@ namespace Solti.Utils.DI.Internals
     using Primitives.Threading;
     using Properties;
 
-    /// <summary>
-    /// Describes a pooled service entry.
-    /// </summary>
     internal class PooledServiceEntry : ProducibleServiceEntryBase, ISupportsSpecialization
     {
         private readonly List<IServiceReference> FInstances = new(1); // max egy eleme lehet

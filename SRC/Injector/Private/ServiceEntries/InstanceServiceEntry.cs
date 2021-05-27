@@ -10,9 +10,6 @@ namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
 
-    /// <summary>
-    /// Describes an instance service entry.
-    /// </summary>
     internal class InstanceServiceEntry : AbstractServiceEntry
     {
         private readonly IReadOnlyCollection<ServiceReference> FInstances;
@@ -57,5 +54,7 @@ namespace Solti.Utils.DI.Internals
             //
 
             throw new NotImplementedException();
+
+        public override bool IsShared => true;
     }
 }

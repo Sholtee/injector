@@ -87,6 +87,11 @@ namespace Solti.Utils.DI.Interfaces
         /// The related <see cref="Interfaces.Lifetime"/>.
         /// </summary>
         public virtual Lifetime? Lifetime { get; }
+
+        /// <summary>
+        /// Indicates whether this entry can be shared across injectors.
+        /// </summary>
+        public virtual bool IsShared { get; }
         #endregion
 
         #region Mutables

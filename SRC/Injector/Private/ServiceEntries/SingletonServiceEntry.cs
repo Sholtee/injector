@@ -14,9 +14,6 @@ namespace Solti.Utils.DI.Internals
     using Primitives.Threading;
     using Properties;
 
-    /// <summary>
-    /// Describes a singleton service entry.
-    /// </summary>
     internal class SingletonServiceEntry : ProducibleServiceEntry
     {
         private readonly ConcurrentBag<IServiceReference> FInstances = new();
@@ -88,5 +85,7 @@ namespace Solti.Utils.DI.Internals
         public override IReadOnlyCollection<IServiceReference> Instances => FInstances;
 
         public override Lifetime Lifetime { get; } = Lifetime.Singleton;
+
+        public override bool IsShared => true;
     }
 }
