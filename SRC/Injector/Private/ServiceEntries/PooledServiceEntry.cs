@@ -171,27 +171,27 @@ namespace Solti.Utils.DI.Internals
 
         public override IReadOnlyCollection<IServiceReference> Instances => FInstances;
 
-        //
-        // A bejegyzesben tarolt peldany valojaban PoolItem<IServiceReference>, ezert abbol meg elo kell
-        // varazsolni a tenyleges szervizt.
-        //
-
         public override object GetInstance(IServiceReference reference)
         {
             object instance = base.GetInstance(reference);
 
-            return instance is PoolItem<IServiceReference> poolItem
+            if (!reference.RelatedInjector!.GetOption<bool>(PooledLifetime.POOL_SCOPE))
+            {
                 //
                 // Ha fogyaszto oldalon vagyunk akkor PoolItem-et kapunk vissza, abbol kell elovarazsolni az erteket
                 //
 
-                ? poolItem.Value.GetInstance()
+                var poolItem = (PoolItem<IServiceReference>) instance;
+                return poolItem
+                    .Value
+                    .GetInstance();
+            }
 
-                //
-                // Pool scope-ban nincs dolgunk
-                //
+            //
+            // Pool scope-ban nincs dolgunk
+            //
 
-                : instance;
+            return instance;
         }
 
         public override Lifetime Lifetime { get; } = Lifetime.Pooled;
