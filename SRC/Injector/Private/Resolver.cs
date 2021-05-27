@@ -85,7 +85,7 @@ namespace Solti.Utils.DI.Internals
 
             ctorParamz ??= constructor.GetParameters();
 
-            return Expression.Lambda<TDelegate>
+            Expression<TDelegate> resolver = Expression.Lambda<TDelegate>
             (
                 Expression.Block
                 (
@@ -108,7 +108,11 @@ namespace Solti.Utils.DI.Internals
                     )
                 ),
                 parameters
-            ).Compile();
+            );
+
+            Debug.WriteLine($"Created resolver:{Environment.NewLine}{resolver.GetDebugView()}");
+
+            return resolver.Compile();
         }
 
         public static Func<IInjector, Type, object> Get(ConstructorInfo constructor) => Cache.GetOrAdd(constructor, () =>
@@ -273,41 +277,46 @@ namespace Solti.Utils.DI.Internals
             Type delegateType = typeof(Func<>).MakeGenericType(iface);
 
             //
-            // injector => () => (iface) injector.[Try]Get(iface, svcName)
+            // () => (iface) injector.[Try]Get(iface, svcName)
             //
 
             ParameterExpression injector = Expression.Parameter(typeof(IInjector), nameof(injector));
 
-            Func<IInjector, Delegate> createValueFactory = Expression.Lambda<Func<IInjector, Delegate>>
+            LambdaExpression valueFactory = Expression.Lambda
             (
-                Expression.Lambda
+                delegateType,
+                Expression.Convert
                 (
-                    delegateType,
-                    Expression.Convert
+                    Expression.Call
                     (
-                        Expression.Call
-                        (
-                            injector,
-                            options?.Optional == true ? InjectorTryGet : InjectorGet,
-                            Expression.Constant(iface),
-                            Expression.Constant(options?.Name, typeof(string))
-                        ),
-                        iface
-                    )
+                        injector,
+                        options?.Optional == true ? InjectorTryGet : InjectorGet,
+                        Expression.Constant(iface),
+                        Expression.Constant(options?.Name, typeof(string))
+                    ),
+                    iface
+                )
+            );
+
+            //
+            // injector => new Lazy<iface>(() => (iface) injector.[Try]Get(iface, svcName))
+            //
+
+            Type lazyType = typeof(Lazy<>).MakeGenericType(iface);
+
+            Expression<Func<IInjector, object>> lazyFactory = Expression.Lambda<Func<IInjector, object>>
+            (
+                Expression.New
+                (
+                    lazyType.GetConstructor(new[] { delegateType }) ?? throw new MissingMethodException(lazyType.Name, "Ctor"),
+                    valueFactory
                 ),
                 injector
-            ).Compile();
+            );
 
-            //
-            // injector => new Lazy<iface>(Func<iface>)
-            //
+            Debug.WriteLine($"Created Lazy<> factory:{Environment.NewLine}{lazyFactory.GetDebugView()}");
 
-            Func<object[], object> lazyFactory = typeof(Lazy<>)
-                .MakeGenericType(iface)
-                .GetConstructor(new[] { delegateType })
-                .ToStaticDelegate();
-
-            return new Func<IInjector, object>(i => lazyFactory.Invoke(new object[] { createValueFactory(i) }));
+            return lazyFactory.Compile();
         });
     }
 }
