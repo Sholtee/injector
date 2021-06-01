@@ -6,7 +6,6 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Solti.Utils.DI.Internals
@@ -19,35 +18,9 @@ namespace Solti.Utils.DI.Internals
     {
         private readonly IServicePath FPath = new ServicePath();
 
-        private readonly ExclusiveBlock FExclusiveBlock = new ExclusiveBlock();
+        private readonly ExclusiveBlock FExclusiveBlock = new();
 
         private readonly IReadOnlyDictionary<string, object> FOptions;
-
-        private void CheckBreaksTheRuleOfStrictDI(AbstractServiceEntry requested)
-        {
-            if (!Config.Value.Injector.StrictDI) return;
-
-            AbstractServiceEntry? requestor = FPath.Requestor?.RelatedServiceEntry; // lehet NULL
-
-            //
-            // Ha a fuggosegi fa gyokerenel vagyunk akkor a metodus nem ertelmezett.
-            //
-
-            if (requestor == null) return;
-
-            //
-            // A kerelmezett szerviznek legalabb addig kell leteznie mint a kerelmezo szerviznek.
-            //
-
-            if (requested.Lifetime!.CompareTo(requestor.Lifetime!) < 0)
-            {
-                var ex = new RequestNotAllowedException(Resources.STRICT_DI);
-                ex.Data[nameof(requestor)] = requestor;
-                ex.Data[nameof(requested)] = requested;
-
-                throw ex;
-            }
-        }
 
         protected override void Dispose(bool disposeManaged)
         {
@@ -106,51 +79,13 @@ namespace Solti.Utils.DI.Internals
 
             using (FExclusiveBlock.Enter())
             {
-
                 //
                 // Ha vkinek a fuggosege vagyunk akkor a fuggo szerviz itt meg nem lehet legyartva.
                 //
 
-                Debug.Assert(FPath.Requestor?.Value == null, "Already produced services can not request dependencies");
+                Debug.Assert(FPath.Requestor?.Value is null, "Already produced services can not request dependencies");
 
-                const string path = nameof(path);
-
-                try
-                {
-                    //
-                    // Bejegyzes lekerdezese, generikus bejegyzes tipizalasat megengedjuk. A "QueryModes.ThrowOnError" 
-                    // miatt "entry" tuti nem NULL.
-                    //
-
-                    AbstractServiceEntry requestedEntry = Get(iface, name, QueryModes.AllowSpecialization | QueryModes.ThrowOnError)!;
-
-                    CheckBreaksTheRuleOfStrictDI(requestedEntry);
-
-                    IServiceReference requested = Resolve(requestedEntry);
-
-                    //
-                    // Ha a szervizt egy masik szerviz igenyelte akkor annak fuggosegei koze felvesszuk az ujonan letrehozott peldanyt.
-                    //
-
-                    FPath.Requestor?.AddDependency(requested); // TODO: Ezt atmozgatni a Instantiate()-be
-
-                    return requested;
-                }
-
-                //
-                // Csak ott bovitjuk a kivetelt ahol az dobva volt (ez a metodus lehet rekurzivan hivva).
-                //
-
-                catch (ServiceNotFoundException e) when (e.Data[path] is null)
-                {
-                    e.Data[path] = ServicePath.Format
-                    (
-                        FPath
-                            .Select(node => (IServiceId) node.RelatedServiceEntry)
-                            .Append(new ServiceId(iface, name))
-                    );
-                    throw;
-                }
+                return Resolve(iface, name);
             }
         }
 

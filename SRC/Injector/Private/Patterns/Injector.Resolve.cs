@@ -3,6 +3,7 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
+using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
@@ -10,14 +11,15 @@ using System.Threading;
 namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
+    using Properties;
 
     internal partial class Injector
     {
         private IServiceReference Resolve(AbstractServiceEntry requested)
         {
             //
-            // 1. eset: Csak egy peldanyt kell letrehozni (Built == true) amit vki korabban mar megtett,
-            //          akkor visszaadjuk azt.
+            // 1. eset: Csak egy peldanyt kell letrehozni amit vki korabban mar megtett [HasFlag(Built)],
+            //          visszaadjuk azt.
             //
 
             if (requested.State.HasFlag(ServiceEntryStates.Built))
@@ -74,10 +76,14 @@ namespace Solti.Utils.DI.Internals
             }
 
             //
-            // 3. eset: Uj peldanyt kell letrehozni es ez az injector peldany ezt megteheti
+            // 3. eset: Uj peldanyt kell letrehozni es ezt az injector peldany ezt megteheti
             //
 
             Debug.Assert(UnderlyingContainer == requested.Owner || UnderlyingContainer.Parent == requested.Owner, "Foreign entry");
+
+            //
+            // A result.Value itt meg ures, a SetInstance() allitja be
+            //
 
             IServiceReference result = new ServiceReference(requested, this);
 
@@ -99,6 +105,68 @@ namespace Solti.Utils.DI.Internals
             catch
             {
                 result.Release();
+                throw;
+            }
+        }
+
+        private IServiceReference Resolve(Type iface, string? name)
+        {
+            try
+            {
+                //
+                // Bejegyzes lekerdezese, generikus bejegyzes tipizalasat megengedjuk. A "QueryModes.ThrowOnError" 
+                // miatt "relatedEntry" tuti nem NULL.
+                //
+
+                AbstractServiceEntry requested = Get(iface, name, QueryModes.AllowSpecialization | QueryModes.ThrowOnError)!;
+
+                if (Config.Value.Injector.StrictDI)
+                {
+                    AbstractServiceEntry? requestor = FPath.Requestor?.RelatedServiceEntry;
+
+                    //
+                    // - Ha a fuggosegi fa gyokerenel vagyunk akkor a metodus nem ertelmezett.
+                    // - A kerelmezett szerviznek legalabb addig kell leteznie mint a kerelmezo szerviznek.
+                    //
+
+                    if (requestor is not null && requested.Lifetime!.CompareTo(requestor.Lifetime!) < 0)
+                    {
+                        var ex = new RequestNotAllowedException(Resources.STRICT_DI);
+                        ex.Data["requestor"] = requestor;
+                        ex.Data["requested"] = requested;
+
+                        throw ex;
+                    }
+                }
+
+                //
+                // Fuggosegek feloldasa es peldanyositas (ez a metodus rekurzivan ismet meghivasra kerulhet)
+                //
+
+                IServiceReference resolved = Resolve(requested);
+
+                //
+                // Minden fuggoseget megtalaltunk, a szerviz sikeresen peldanyositasra kerult.
+                // Ha a szervizt egy masik szerviz fuggosege akkor felvesszuk annak fuggosegi listajaba.
+                //
+
+                FPath.Requestor?.AddDependency(resolved);
+                return resolved;
+            }
+
+            //
+            // Ha a rekurzio alatt a Get() nem talal egy fuggoseget akkor vissza adjuk a teljes fuggosegi utat (FPath mar
+            // tartalmazhat elemeket epp ezert az utvonalat csak a hivasi sor legvegen kell megadni -> Data[path] == null).
+            //
+
+            catch (ServiceNotFoundException e) when (e.Data["path"] is null)
+            {
+                e.Data["path"] = ServicePath.Format
+                (
+                    FPath
+                        .Select(svc => (IServiceId) svc.RelatedServiceEntry)
+                        .Append(new ServiceId(iface, name))
+                );
                 throw;
             }
         }
