@@ -36,7 +36,7 @@ namespace Solti.Utils.DI
             Ensure.Parameter.IsNotNull(self, nameof(self));
             Ensure.Parameter.IsNotNull(@class, nameof(@class));
 
-            return Resolver.GetExtended(@class).Invoke(self, explicitArgs ?? new Dictionary<string, object?>(0));
+            return ServiceActivator.GetExtended(@class).Invoke(self, explicitArgs ?? new Dictionary<string, object?>(0));
         }
 
         /// <summary>

@@ -160,11 +160,11 @@ namespace Solti.Utils.DI.Container.Tests
 
             ConstructorInfo ctor = typeof(Implementation_8_MultiCtor).GetConstructor(new Type[0]);
 
-            Assert.That(Container.Get<IInterface_1>().Factory, Is.EqualTo(Resolver.Get(ctor)));
+            Assert.That(Container.Get<IInterface_1>().Factory, Is.EqualTo(ServiceActivator.Get(ctor)));
 
             ctor = typeof(Implementation_9_MultiCtor<int>).GetConstructor(new Type[] { typeof(IInterface_1) });
 
-            Assert.That(Container.Get<IInterface_3<int>>(QueryModes.AllowSpecialization).Factory, Is.EqualTo(Resolver.Get(ctor)));
+            Assert.That(Container.Get<IInterface_3<int>>(QueryModes.AllowSpecialization).Factory, Is.EqualTo(ServiceActivator.Get(ctor)));
         }
 
         [TestCaseSource(nameof(Lifetimes))]

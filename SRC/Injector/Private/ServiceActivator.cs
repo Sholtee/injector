@@ -1,5 +1,5 @@
 ﻿/********************************************************************************
-* Resolver.cs                                                                   *
+* ServiceActivator.cs                                                           *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
@@ -17,7 +17,7 @@ namespace Solti.Utils.DI.Internals
     using Properties;
     using Proxy.Internals;
 
-    internal static class Resolver
+    internal static class ServiceActivator
     {
         private static object? voidVal;
 
@@ -60,7 +60,7 @@ namespace Solti.Utils.DI.Internals
             Ensure.Parameter.IsNotGenericDefinition(type, nameof(type));
         }
 
-        private static TDelegate CreateResolver<TDelegate>(ConstructorInfo constructor, Func<(Type Type, string Name, OptionsAttribute? Options), Expression> argumentResolver, ParameterExpression[] variables, ParameterExpression[] parameters)
+        private static TDelegate CreateActivator<TDelegate>(ConstructorInfo constructor, Func<(Type Type, string Name, OptionsAttribute? Options), Expression> argumentResolver, ParameterExpression[] variables, ParameterExpression[] parameters)
         {
             IReadOnlyCollection<ParameterInfo>? ctorParamz = null;        
 
@@ -110,7 +110,7 @@ namespace Solti.Utils.DI.Internals
                 parameters
             );
 
-            Debug.WriteLine($"Created resolver:{Environment.NewLine}{resolver.GetDebugView()}");
+            Debug.WriteLine($"Created activator:{Environment.NewLine}{resolver.GetDebugView()}");
 
             return resolver.Compile();
         }
@@ -125,7 +125,7 @@ namespace Solti.Utils.DI.Internals
                 injector = Expression.Parameter(typeof(IInjector), nameof(injector)),
                 iface    = Expression.Parameter(typeof(Type),      nameof(iface));
 
-            return CreateResolver<Func<IInjector, Type, object>>
+            return CreateActivator<Func<IInjector, Type, object>>
             (
                 constructor, 
                 ResolveArgument,
@@ -192,7 +192,7 @@ namespace Solti.Utils.DI.Internals
                 explicitArgs = Expression.Parameter(typeof(IReadOnlyDictionary<string, object?>), nameof(explicitArgs)),
                 explicitArg  = Expression.Variable(typeof(object), nameof(explicitArg));
 
-            return CreateResolver<Func<IInjector, IReadOnlyDictionary<string, object?>, object>>
+            return CreateActivator<Func<IInjector, IReadOnlyDictionary<string, object?>, object>>
             (
                 constructor,
                 ResolveArgument,

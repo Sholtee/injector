@@ -45,7 +45,7 @@ namespace Solti.Utils.DI.Internals
 
             if (!@interface.IsGenericTypeDefinition)
             {
-                Factory = Resolver.Get(implementation);
+                Factory = ServiceActivator.Get(implementation);
                 this.ApplyAspects();
             }
             else
@@ -72,7 +72,7 @@ namespace Solti.Utils.DI.Internals
 
             if (!@interface.IsGenericTypeDefinition)
             {
-                Func<IInjector, IReadOnlyDictionary<string, object?>, object> factoryEx = Resolver.GetExtended(implementation);
+                Func<IInjector, IReadOnlyDictionary<string, object?>, object> factoryEx = ServiceActivator.GetExtended(implementation);
 
                 Factory = (injector, _) => factoryEx(injector, explicitArgs!);
                 this.ApplyAspects();
