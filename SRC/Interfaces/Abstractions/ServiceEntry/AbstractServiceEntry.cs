@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 
 namespace Solti.Utils.DI.Interfaces
 {
+    using Primitives;
     using Primitives.Patterns;
     using Properties;
 
@@ -204,7 +205,7 @@ namespace Solti.Utils.DI.Interfaces
 
             return new StringBuilder(this.FriendlyName())
                 .AppendFormat(Resources.Culture, NAME_PART, nameof(Lifetime), Lifetime?.ToString() ?? "NULL")
-                .AppendFormat(Resources.Culture, NAME_PART, nameof(Implementation), Implementation?.ToString() ?? "NULL")
+                .AppendFormat(Resources.Culture, NAME_PART, nameof(Implementation), Implementation?.GetFriendlyName() ?? "NULL")
                 .AppendFormat(Resources.Culture, NAME_PART, nameof(Instances), Instances.Any() ? string.Join(", ", Instances.Select(GetInstance)) : "EMPTY")             
                 .ToString();
         }
