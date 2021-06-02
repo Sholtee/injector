@@ -4,9 +4,10 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading;
+
+using static System.Diagnostics.Debug;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -79,7 +80,7 @@ namespace Solti.Utils.DI.Internals
             // 3. eset: Uj peldanyt kell letrehozni es ezt az injector peldany ezt megteheti
             //
 
-            Debug.Assert(UnderlyingContainer == requested.Owner || UnderlyingContainer.Parent == requested.Owner, "Foreign entry");
+            Assert(UnderlyingContainer == requested.Owner || UnderlyingContainer.Parent == requested.Owner, "Foreign entry");
 
             //
             // A result.Value itt meg ures, a SetInstance() allitja be
@@ -111,6 +112,12 @@ namespace Solti.Utils.DI.Internals
 
         private IServiceReference Resolve(Type iface, string? name)
         {
+            //
+            // Ha vkinek a fuggosege vagyunk akkor a fuggo szerviz itt meg nem lehet legyartva.
+            //
+
+            Assert(FPath.Requestor?.Value is null, "Already produced services can not request dependencies");
+
             try
             {
                 //

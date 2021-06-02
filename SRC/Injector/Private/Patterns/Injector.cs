@@ -5,7 +5,6 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Threading.Tasks;
 
 namespace Solti.Utils.DI.Internals
@@ -79,12 +78,6 @@ namespace Solti.Utils.DI.Internals
 
             using (FExclusiveBlock.Enter())
             {
-                //
-                // Ha vkinek a fuggosege vagyunk akkor a fuggo szerviz itt meg nem lehet legyartva.
-                //
-
-                Debug.Assert(FPath.Requestor?.Value is null, "Already produced services can not request dependencies");
-
                 return Resolve(iface, name);
             }
         }
