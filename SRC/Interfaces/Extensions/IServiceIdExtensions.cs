@@ -7,6 +7,8 @@ using System;
 
 namespace Solti.Utils.DI.Interfaces
 {
+    using Primitives;
+
     /// <summary>
     /// Defines some extensions to the <see cref="IServiceId"/> interface.
     /// </summary>
@@ -20,8 +22,8 @@ namespace Solti.Utils.DI.Interfaces
             if (src == null)
                 throw new ArgumentNullException(nameof(src));
 
-            string result = src.Interface.ToString();
-            if (src.Name != null) result += $":{src.Name}";
+            string result = src.Interface.GetFriendlyName();
+            if (src.Name is not null) result += $":{src.Name}";
             return result;
         }
     }
