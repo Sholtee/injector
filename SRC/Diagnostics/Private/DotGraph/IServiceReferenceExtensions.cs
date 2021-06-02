@@ -51,7 +51,7 @@ namespace Solti.Utils.DI.Internals
                     //
 
                     if (graph.Edges.Contains(edge))
-                        return;
+                        continue;
 
                     graph.Nodes.Add(to);
                     graph.Edges.Add(edge);
