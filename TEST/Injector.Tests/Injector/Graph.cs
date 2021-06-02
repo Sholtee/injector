@@ -11,6 +11,7 @@ using NUnit.Framework;
 
 namespace Solti.Utils.DI.Injector.Graph.Tests
 {
+    using Diagnostics;
     using Interfaces;
     using Internals;
 
@@ -66,7 +67,7 @@ namespace Solti.Utils.DI.Injector.Graph.Tests
                     .Service<IInterface_3, Implementation_3>(Lifetime.Transient)
                     .Service<IInterface_4, Implementation_4>(Lifetime.Scoped);
 
-                references = Validate(new Injector(container, null));
+                references = Validate(container.CreateInjector());
             }
 
             Assert.That(references.All(reference => reference.RefCount == 0));
@@ -88,10 +89,27 @@ namespace Solti.Utils.DI.Injector.Graph.Tests
                     .Service<IInterface_3, Implementation_3>(Lifetime.Transient)
                     .Service<IInterface_4, Implementation_4>(Lifetime.Scoped);
 
-                references = Validate(new Injector(child, null));
+                references = Validate(child.CreateInjector());
             }
 
             Assert.That(references.All(reference => reference.RefCount == 0));
+        }
+
+        [Test]
+        public void DotGraphTest()
+        {
+            using (IServiceContainer container = new ServiceContainer())
+            {
+                container
+                    .Service<IInterface_1, Implementation_1>(Lifetime.Transient)
+                    .Service<IInterface_2, Implementation_2>(Lifetime.Singleton)
+                    .Service<IInterface_3, Implementation_3>(Lifetime.Transient)
+                    .Service<IInterface_4, Implementation_4>(Lifetime.Scoped);
+
+                using IInjector injector = container.CreateInjector();
+
+                string dotGraph = injector.GetDependencyGraph<IInterface_4>();
+            }
         }
 
         private interface IInterface_1 { }

@@ -16,4 +16,12 @@
     <Optimize>true</Optimize>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Interfaces\Injector.Interfaces.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Solti.Utils.Primitives" Version="2.*" />
+  </ItemGroup>
+
 </Project>
