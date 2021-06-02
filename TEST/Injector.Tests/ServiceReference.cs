@@ -13,6 +13,7 @@ namespace Solti.Utils.DI.Internals.Tests
 {
     using Interfaces;
     using Primitives.Patterns;
+    using Properties;
 
     [TestFixture]
     public sealed class ServiceReferenceTests
@@ -140,11 +141,22 @@ namespace Solti.Utils.DI.Internals.Tests
         }
 
         [Test]
-        public void Dependencies_ShouldThrowOnExternallyOwnedService() 
+        public void AddDependency_ShouldThrowOnExternallyOwnedService() 
         {
             var svc = new ServiceReference(new AbstractServiceEntry(typeof(IDummyService), null, new Mock<IServiceContainer>(MockBehavior.Strict).Object), value: new Mock<IDummyService>().Object, false);
 
-            Assert.Throws<InvalidOperationException>(() => svc.AddDependency(new ServiceReference(new AbstractServiceEntry(typeof(IDisposable), null, new Mock<IServiceContainer>(MockBehavior.Strict).Object), value: new Disposable(), false)));
+            Assert.Throws<InvalidOperationException>(() => svc.AddDependency(new ServiceReference(new AbstractServiceEntry(typeof(IDisposable), null, new Mock<IServiceContainer>(MockBehavior.Strict).Object), value: new Disposable(), false)), Resources.FOREIGN_DEPENDENCY);
+        }
+
+        [Test]
+        public void AddDependency_ShouldThrowIfTheServiceInstanceIsSet()
+        {
+            var svc = new ServiceReference(new AbstractServiceEntry(typeof(IDummyService), null, new Mock<IServiceContainer>(MockBehavior.Strict).Object), injector: new Mock<IInjector>(MockBehavior.Strict).Object);
+
+            Assert.DoesNotThrow(() => svc.AddDependency(new ServiceReference(new AbstractServiceEntry(typeof(IDisposable), null, new Mock<IServiceContainer>(MockBehavior.Strict).Object), value: new Disposable(), false)));
+            svc.Value = new Mock<IDummyService>().Object;
+
+            Assert.Throws<InvalidOperationException>(() => svc.AddDependency(new ServiceReference(new AbstractServiceEntry(typeof(IDisposable), null, new Mock<IServiceContainer>(MockBehavior.Strict).Object), value: new Disposable(), false)), Resources.FOREIGN_DEPENDENCY);
         }
     }
 }

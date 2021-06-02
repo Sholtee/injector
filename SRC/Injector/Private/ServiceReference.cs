@@ -13,12 +13,13 @@ namespace Solti.Utils.DI
     using Interfaces;
     using Internals;
     using Primitives.Patterns;
+    using Properties;
 
     internal sealed class ServiceReference : DisposeByRefObject, IServiceReference
     {
-        private readonly List<IServiceReference> FDependencies = new List<IServiceReference>();
+        private readonly List<IServiceReference> FDependencies = new();
 
-        private readonly WriteOnce FValue = new WriteOnce(strict: false);
+        private readonly WriteOnce<object> FValue = new(strict: false);
 
         public ServiceReference(AbstractServiceEntry entry, IInjector injector)
         {
@@ -61,7 +62,7 @@ namespace Solti.Utils.DI
             //
 
             if (Value is not null)
-                throw new InvalidOperationException();
+                throw new InvalidOperationException(Resources.FOREIGN_DEPENDENCY);
 
             dependency.AddRef();
 
