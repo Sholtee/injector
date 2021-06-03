@@ -25,7 +25,7 @@ namespace Solti.Utils.DI.Internals
                 )
             )
             {
-                Label = $"<b>{friendlyName}</b><br/><i>{serviceReference.RelatedServiceEntry.Lifetime}</i>"
+                Label = $"<u>{friendlyName}</u><br/><br/><i>{serviceReference.RelatedServiceEntry.Lifetime}</i>"
             };
         }
 
