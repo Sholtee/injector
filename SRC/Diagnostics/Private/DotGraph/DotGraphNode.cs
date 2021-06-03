@@ -7,7 +7,7 @@ using System.Globalization;
 
 namespace Solti.Utils.DI.Internals
 {
-    internal class DotGraphNode : DotGraphElement
+    internal record DotGraphNode : DotGraphElement
     {
         private readonly int FId;
 
@@ -29,14 +29,10 @@ namespace Solti.Utils.DI.Internals
         /// </summary>
         public string Label 
         {
-            get => (string) Attributes["label"];
+            get => Attributes["label"];
             set => Attributes["label"] = $"<{value}>";
         }
 
-        public override int GetHashCode() => FId;
-
-        public override bool Equals(object obj) => obj is DotGraphNode node && node.FId == FId;
-    
         public override string ToString() => Id + base.ToString();
     }
 }
