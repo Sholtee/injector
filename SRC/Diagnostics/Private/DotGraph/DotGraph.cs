@@ -13,15 +13,13 @@ namespace Solti.Utils.DI.Internals
     /// </summary>
     internal class DotGraph
     {
-        private readonly HashSet<DotGraphNode> FNodes = new();
-        public ICollection<DotGraphNode> Nodes => FNodes;
+        public ICollection<DotGraphNode> Nodes { get; } = new HashSet<DotGraphNode>();
 
-        private readonly HashSet<DotGraphEdge> FEdges = new();
-        public ICollection<DotGraphEdge> Edges => FEdges;
+        public ICollection<DotGraphEdge> Edges { get; } = new HashSet<DotGraphEdge>();
 
         public override string ToString()
         {
-            var sb = new StringBuilder();
+            StringBuilder sb = new();
             sb.AppendLine("digraph G {");
 
             foreach (DotGraphNode node in Nodes)
