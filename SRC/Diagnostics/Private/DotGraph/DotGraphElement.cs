@@ -5,7 +5,6 @@
 ********************************************************************************/
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -19,15 +18,8 @@ namespace Solti.Utils.DI.Internals
         /// </summary>
         protected IDictionary<string, object> Attributes { get; } = new Dictionary<string, object>();
 
-        /// <summary>
-        /// Builds this element.
-        /// </summary>
-        public virtual void Build(StringBuilder stringBuilder)
-        {
-            if (Attributes.Count > 0)
-                stringBuilder.Append($" [{string.Join(",", Attributes.Select(attr => $"{attr.Key}={attr.Value}"))}]");
-
-            stringBuilder.AppendLine(";");
-        }
+        public override string ToString() => Attributes.Count > 0
+            ? $" [{string.Join(",", Attributes.Select(attr => $"{attr.Key}={attr.Value}"))}];"
+            : ";";
     }
 }

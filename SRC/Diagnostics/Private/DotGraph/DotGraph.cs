@@ -26,14 +26,14 @@ namespace Solti.Utils.DI.Internals
 
             foreach (DotGraphNode node in Nodes)
             {
-                node.Build(sb);
+                sb.AppendLine($"  {node}");
             }
 
             sb.AppendLine();
 
             foreach (DotGraphEdge edge in Edges)
             {
-                edge.Build(sb);
+                sb.AppendLine($"  {edge}");
             }
 
             sb.Append('}');

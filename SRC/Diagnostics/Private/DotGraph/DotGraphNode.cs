@@ -3,19 +3,25 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
-using System.Diagnostics.CodeAnalysis;
-using System.Text;
+using System.Globalization;
 
 namespace Solti.Utils.DI.Internals
 {
     internal class DotGraphNode : DotGraphElement
     {
-        public int Id { get; }
+        private readonly int FId;
+
+        //
+        // Node azonositonak betuvel kell kezdodnie es egyedinek kell lennie.
+        // 
+
+        public string Id => $"N_{FId.ToString("X8", CultureInfo.InvariantCulture)}";
 
         public DotGraphNode(int id)
         {
-            Id = id;
+            FId = id;
             Attributes["shape"] = "box";
+            Attributes["margin"] = ".1";
         }
 
         /// <summary>
@@ -27,19 +33,10 @@ namespace Solti.Utils.DI.Internals
             set => Attributes["label"] = $"<{value}>";
         }
 
-        public override void Build(StringBuilder stringBuilder)
-        {
-            stringBuilder.Append($"  {this}");
+        public override int GetHashCode() => FId;
 
-            base.Build(stringBuilder);
-        }
-
-        public override int GetHashCode() => Id;
-
-        public override bool Equals(object obj) => obj is DotGraphNode node && node.Id == Id;
-
-
-        [SuppressMessage("Globalization", "CA1305:Specify IFormatProvider")]
-        public override string ToString() => Id.ToString("x8");
+        public override bool Equals(object obj) => obj is DotGraphNode node && node.FId == FId;
+    
+        public override string ToString() => Id + base.ToString();
     }
 }
