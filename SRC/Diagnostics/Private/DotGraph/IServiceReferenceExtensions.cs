@@ -3,8 +3,6 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
-using System;
-
 namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
@@ -20,7 +18,7 @@ namespace Solti.Utils.DI.Internals
                 friendlyName.GetHashCode
                 (
 #if !NETSTANDARD2_0
-                    StringComparison.OrdinalIgnoreCase
+                    System.StringComparison.OrdinalIgnoreCase
 #endif
                 )
             )
