@@ -48,11 +48,10 @@ namespace Solti.Utils.DI.Internals
                     // Korkoros referencia eseten ne legyen S.O.E.
                     //
 
-                    if (graph.Edges.Contains(edge))
+                    if (!graph.Edges.Add(edge))
                         continue;
 
                     graph.Nodes.Add(to);
-                    graph.Edges.Add(edge);
 
                     Process(dep);
                 }

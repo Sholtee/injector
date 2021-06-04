@@ -13,9 +13,9 @@ namespace Solti.Utils.DI.Internals
     /// </summary>
     internal class DotGraph
     {
-        public ICollection<DotGraphNode> Nodes { get; } = new HashSet<DotGraphNode>();
+        public ISet<DotGraphNode> Nodes { get; } = new HashSet<DotGraphNode>();
 
-        public ICollection<DotGraphEdge> Edges { get; } = new HashSet<DotGraphEdge>();
+        public ISet<DotGraphEdge> Edges { get; } = new HashSet<DotGraphEdge>();
 
         public override string ToString()
         {
