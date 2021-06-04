@@ -8,7 +8,7 @@
   <Import Project="../Common.targets" />
 
   <PropertyGroup>
-    <Description>Diagnostics for Injector.NET</Description>
+    <Description>Contains diagnostics related features (such as dependency visualization) for Injector.NET</Description>
     <PackageId>Injector.NET.Diagnostics</PackageId>
   </PropertyGroup>
 
