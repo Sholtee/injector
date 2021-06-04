@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 using NUnit.Framework;
 
@@ -98,17 +99,48 @@ namespace Solti.Utils.DI.Injector.Graph.Tests
         [Test]
         public void DotGraphTest()
         {
-            using (IServiceContainer container = new ServiceContainer())
+            using IServiceContainer container = new ServiceContainer();
+
+            container
+                .Service<IInterface_1, Implementation_1>(Lifetime.Transient)
+                .Service<IInterface_2, Implementation_2>(Lifetime.Singleton)
+                .Service<IInterface_3, Implementation_3>(Lifetime.Transient)
+                .Service<IInterface_4, Implementation_4>(Lifetime.Scoped);
+
+            using IInjector injector = container.CreateInjector();
+
+            string 
+                dotGraph = injector.GetDependencyGraph<IInterface_4>(),             
+                id1 = ContainsNode("<<u>Solti.Utils.DI.Injector.Graph.Tests.GraphTests.IInterface_4</u><br/><br/><i>Scoped</i>>"),
+                id2 = ContainsNode("<<u>Solti.Utils.DI.Interfaces.IInjector</u><br/><br/><i>Instance</i>>"),
+                id3 = ContainsNode("<<u>Solti.Utils.DI.Injector.Graph.Tests.GraphTests.IInterface_2</u><br/><br/><i>Singleton</i>>"),
+                id4 = ContainsNode("<<u>Solti.Utils.DI.Injector.Graph.Tests.GraphTests.IInterface_1</u><br/><br/><i>Transient</i>>"),
+                id5 = ContainsNode("<<u>System.Collections.Generic.IReadOnlyDictionary{string, object}:$options</u><br/><br/><i>Instance</i>>"),
+                id6 = ContainsNode("<<u>Solti.Utils.DI.Injector.Graph.Tests.GraphTests.IInterface_3</u><br/><br/><i>Transient</i>>");
+
+            ContainsEdge(id1, id2);
+            ContainsEdge(id1, id3);
+            ContainsEdge(id3, id4);
+            ContainsEdge(id4, id5);
+            ContainsEdge(id1, id6);
+            ContainsEdge(id6, id5);
+            ContainsEdge(id6, id4);
+            ContainsEdge(id6, id3);
+
+            string ContainsNode(string str)
             {
-                container
-                    .Service<IInterface_1, Implementation_1>(Lifetime.Transient)
-                    .Service<IInterface_2, Implementation_2>(Lifetime.Singleton)
-                    .Service<IInterface_3, Implementation_3>(Lifetime.Transient)
-                    .Service<IInterface_4, Implementation_4>(Lifetime.Scoped);
+                str = Regex.Replace(str, "\\.|\\/|\\$", match => $"\\{match.Value}");
 
-                using IInjector injector = container.CreateInjector();
+                Match match = Regex.Match(dotGraph, $"  (?<id>N_[0-9A-F]{{8}}) \\[shape=box,margin=\\.1,label={str}\\];", RegexOptions.Multiline);
 
-                string dotGraph = injector.GetDependencyGraph<IInterface_4>();
+                Assert.That(match.Captures, Has.Count.EqualTo(1));
+
+                return match.Groups["id"].Value;
+            }
+
+            void ContainsEdge(string id1, string id2)
+            {
+                Assert.That(Regex.Match(dotGraph, $"{id1} -> {id2}", RegexOptions.Multiline).Captures, Has.Count.EqualTo(1));
             }
         }
 
