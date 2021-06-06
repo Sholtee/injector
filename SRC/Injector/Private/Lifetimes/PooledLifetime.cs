@@ -11,7 +11,6 @@ using System.Runtime.CompilerServices;
 namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
-    using Primitives.Threading;
 
     internal sealed partial class PooledLifetime : InjectorDotNetLifetime<PooledLifetime>, IHasCapacity
     {
@@ -30,56 +29,49 @@ namespace Solti.Utils.DI.Internals
 
             $"{ServiceContainer.INTERNAL_SERVICE_NAME_PREFIX}pool_{iface.GUID}_{name}";
 
-        private AbstractServiceEntry GetPoolEntry(Type iface, string? name, IServiceContainer owner)
-        {
-            if (iface is null)
-                throw new ArgumentNullException(nameof(iface));
+        //
+        // Nem kell a kulonbozo parametereket validalni. Ha vmelyikkel gaz van akkor ide mar el sem
+        // jutunk.
+        //
 
-            if (!iface.IsInterface)
-                throw new ArgumentException(Interfaces.Properties.Resources.NOT_AN_INTERFACE, nameof(iface));
+        private AbstractServiceEntry GetPoolEntry(Type iface, string? name, IServiceContainer owner) => new SingletonServiceEntry
+        (
+            iface.IsGenericTypeDefinition
+                ? typeof(IPool<>)
+                : typeof(IPool<>).MakeGenericType(iface),
+            GetPoolName(iface, name),
+            iface.IsGenericTypeDefinition
+                ? typeof(PoolService<>)
+                : typeof(PoolService<>).MakeGenericType(iface),
+            new Dictionary<string, object?>
+            {
+                //
+                // Az argumentum nevek meg kell egyezzenek a PoolService.ctor() parameter neveivel.
+                // Kesobb majd lehet szebben is megoldhato lesz: https://github.com/dotnet/csharplang/issues/373
+                //
 
-            if (owner is null)
-                throw new ArgumentNullException(nameof(owner));
-
-            return new SingletonServiceEntry
-            (
-                iface.IsGenericTypeDefinition
-                    ? typeof(IPool<>)
-                    : typeof(IPool<>).MakeGenericType(iface),
-                GetPoolName(iface, name),
-                iface.IsGenericTypeDefinition
-                    ? typeof(PoolService<>)
-                    : typeof(PoolService<>).MakeGenericType(iface),
-                new Dictionary<string, object?>
-                {
-                    //
-                    // Az argumentum nevek meg kell egyezzenek a PoolService.ctor() parameter neveivel.
-                    // Kesobb majd lehet szebben is megoldhato lesz: https://github.com/dotnet/csharplang/issues/373
-                    //
-
-                    ["capacity"] = Capacity,
-                    ["name"] = name
-                },
-                owner
-            );
-        }
+                ["capacity"] = Capacity,
+                ["name"] = name
+            },
+            owner
+        );
 
         public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Type implementation, IServiceContainer owner)
         {
-            yield return GetPoolEntry(iface, name, owner);
             yield return new PooledServiceEntrySupportsProxying(iface, name, implementation, owner);
+            yield return GetPoolEntry(iface, name, owner);
         }
 
         public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Type implementation, IReadOnlyDictionary<string, object?> explicitArgs, IServiceContainer owner)
         {
-            yield return GetPoolEntry(iface, name, owner);
             yield return new PooledServiceEntrySupportsProxying(iface, name, implementation, explicitArgs, owner);
+            yield return GetPoolEntry(iface, name, owner);
         }
 
         public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Func<IInjector, Type, object> factory, IServiceContainer owner)
         {
-            yield return GetPoolEntry(iface, name, owner);
             yield return new PooledServiceEntrySupportsProxying(iface, name, factory, owner);
+            yield return GetPoolEntry(iface, name, owner);
         }
 
         public override int CompareTo(Lifetime other) => other is PooledLifetime
