@@ -35,7 +35,8 @@
 			"https://xref.docs.microsoft.com/query?uid={uid}"
 		],
 		"xref": [
-			"https://sholtee.github.io/proxygen/doc/xrefmap.yml"
+			"https://sholtee.github.io/proxygen/doc/xrefmap.yml",
+			"https://sholtee.github.io/primitives/doc/xrefmap.yml"
 		]
 	}
 }
