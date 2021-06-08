@@ -18,6 +18,8 @@ namespace Solti.Utils.DI.Internals
     {
         private readonly List<IServiceReference> FInstances = new(1); // max egy eleme lehet
 
+        protected override void SaveReference(IServiceReference serviceReference) => FInstances.Add(serviceReference);
+
         protected PooledServiceEntry(PooledServiceEntry entry, IServiceContainer owner) : base(entry, owner)
         {
         }
@@ -36,8 +38,8 @@ namespace Solti.Utils.DI.Internals
 
         public override bool SetInstance(IServiceReference reference)
         {
+            CheckNotDisposed();
             EnsureAppropriateReference(reference);
-            EnsureProducible();
 
             IInjector relatedInjector = Ensure.IsNotNull(reference.RelatedInjector, $"{nameof(reference)}.{nameof(reference.RelatedInjector)}");
             Ensure.AreEqual(relatedInjector.UnderlyingContainer, Owner, Resources.INAPPROPRIATE_OWNERSHIP);
@@ -56,7 +58,7 @@ namespace Solti.Utils.DI.Internals
 
             if (relatedInjector.GetOption<bool>(PooledLifetime.POOL_SCOPE))
             {
-                reference.Value = Factory!(relatedInjector, Interface);
+                base.SetInstance(reference);
             }
 
             //
@@ -92,9 +94,10 @@ namespace Solti.Utils.DI.Internals
                 //
 
                 reference.Value = poolItem;
+
+                SaveReference(reference);
             }
 
-            FInstances.Add(reference);
             State |= ServiceEntryStates.Built;
 
             return true;
@@ -115,38 +118,42 @@ namespace Solti.Utils.DI.Internals
             return result;
         }
 
-        AbstractServiceEntry ISupportsSpecialization.Specialize(params Type[] genericArguments) => this switch
+        AbstractServiceEntry ISupportsSpecialization.Specialize(params Type[] genericArguments)
         {
-            //
-            // Itt ne a "Lifetime"-ot hasznaljuk mert a pool-t nem szeretnenk megegyszer regisztralni.
-            //
+            CheckNotDisposed();
+            Ensure.Parameter.IsNotNull(genericArguments, nameof(genericArguments));
 
-            _ when Implementation is not null && ExplicitArgs is null => new PooledServiceEntry
-            (
-                Interface.MakeGenericType(genericArguments),
-                Name,
-                Implementation.MakeGenericType(genericArguments),
-                Owner
-            ),
-            _ when Implementation is not null && ExplicitArgs is not null => new PooledServiceEntry
-            (
-                Interface.MakeGenericType(genericArguments),
-                Name,
-                Implementation.MakeGenericType(genericArguments),
-                ExplicitArgs,
-                Owner
-            ),
-            _ when Factory is not null => new PooledServiceEntry
-            (
-                Interface.MakeGenericType(genericArguments),
-                Name,
-                Factory,
-                Owner
-            ),
-            _ => throw new NotSupportedException()
-        };
+            return this switch
+            {
+                //
+                // Itt ne a "Lifetime"-ot hasznaljuk mert a pool-t nem szeretnenk megegyszer regisztralni.
+                //
 
-        public override IReadOnlyCollection<IServiceReference> Instances => FInstances;
+                _ when Implementation is not null && ExplicitArgs is null => new PooledServiceEntry
+                (
+                    Interface.MakeGenericType(genericArguments),
+                    Name,
+                    Implementation.MakeGenericType(genericArguments),
+                    Owner
+                ),
+                _ when Implementation is not null && ExplicitArgs is not null => new PooledServiceEntry
+                (
+                    Interface.MakeGenericType(genericArguments),
+                    Name,
+                    Implementation.MakeGenericType(genericArguments),
+                    ExplicitArgs,
+                    Owner
+                ),
+                _ when Factory is not null => new PooledServiceEntry
+                (
+                    Interface.MakeGenericType(genericArguments),
+                    Name,
+                    Factory,
+                    Owner
+                ),
+                _ => throw new NotSupportedException()
+            };
+        }
 
         public override object GetInstance(IServiceReference reference)
         {
@@ -172,5 +179,7 @@ namespace Solti.Utils.DI.Internals
         }
 
         public override Lifetime Lifetime { get; } = Lifetime.Pooled;
+
+        public override IReadOnlyCollection<IServiceReference> Instances => FInstances;
     }
 }

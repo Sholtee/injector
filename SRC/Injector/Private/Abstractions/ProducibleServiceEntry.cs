@@ -35,18 +35,22 @@ namespace Solti.Utils.DI.Internals
         #region Features
         Func<IInjector, Type, object>? ISupportsProxying.Factory { get => Factory; set => Factory = value; }
 
-        AbstractServiceEntry ISupportsSpecialization.Specialize(params Type[] genericArguments) =>
-        (
-            this switch
-            {
+        AbstractServiceEntry ISupportsSpecialization.Specialize(params Type[] genericArguments)
+        {
+            CheckNotDisposed();
+            Ensure.Parameter.IsNotNull(genericArguments, nameof(genericArguments));
+
+            return (
+                this switch
+                {
                 //
                 // "Service(typeof(IGeneric<>), ...)" eseten az implementaciot konkretizaljuk.
                 //
 
                 _ when Implementation is not null && ExplicitArgs is null =>
-                    Lifetime!.CreateFrom(Interface.MakeGenericType(genericArguments), Name, Implementation.MakeGenericType(genericArguments), Owner),
-                _ when Implementation is not null && ExplicitArgs is not null =>
-                    Lifetime!.CreateFrom(Interface.MakeGenericType(genericArguments), Name, Implementation.MakeGenericType(genericArguments), ExplicitArgs, Owner),
+                        Lifetime!.CreateFrom(Interface.MakeGenericType(genericArguments), Name, Implementation.MakeGenericType(genericArguments), Owner),
+                    _ when Implementation is not null && ExplicitArgs is not null =>
+                        Lifetime!.CreateFrom(Interface.MakeGenericType(genericArguments), Name, Implementation.MakeGenericType(genericArguments), ExplicitArgs, Owner),
 
                 //
                 // "Factory(typeof(IGeneric<>), ...)" eseten az eredeti factory lesz hivva a 
@@ -54,10 +58,11 @@ namespace Solti.Utils.DI.Internals
                 //
 
                 _ when Factory is not null =>
-                    Lifetime!.CreateFrom(Interface.MakeGenericType(genericArguments), Name, Factory, Owner),
-                _ => throw new NotSupportedException()
-            }
-        ).Single();
+                        Lifetime!.CreateFrom(Interface.MakeGenericType(genericArguments), Name, Factory, Owner),
+                    _ => throw new NotSupportedException()
+                }
+            ).Single();
+        }
         #endregion
     }
 }

@@ -86,14 +86,7 @@ namespace Solti.Utils.DI.Internals
         {
             CheckNotDisposed();
 
-            IServiceReference reference = GetReference(iface, name);
-
-            object instance = reference.GetInstance();
-
-            if (!iface.IsInstanceOfType(instance))
-                throw new InvalidCastException(string.Format(Resources.Culture, Resources.INVALID_INSTANCE, iface));
-
-            return instance;
+            return GetReference(iface, name).GetInstance();
         }
 
         public object? TryGet(Type iface, string? name) 

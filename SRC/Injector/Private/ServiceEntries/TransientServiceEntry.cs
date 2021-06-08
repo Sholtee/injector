@@ -19,6 +19,8 @@ namespace Solti.Utils.DI.Internals
         {
         }
 
+        protected override void SaveReference(IServiceReference serviceReference) => FInstances.Add(serviceReference);
+
         public TransientServiceEntry(Type @interface, string? name, Func<IInjector, Type, object> factory, IServiceContainer owner) : base(@interface, name, factory, owner)
         {
         }
@@ -33,9 +35,9 @@ namespace Solti.Utils.DI.Internals
 
         public override bool SetInstance(IServiceReference reference)
         {
+            CheckNotDisposed();
             EnsureAppropriateReference(reference);
-            EnsureProducible();
-            
+
             IInjector relatedInjector = Ensure.IsNotNull(reference.RelatedInjector, $"{nameof(reference)}.{nameof(reference.RelatedInjector)}");
             Ensure.AreEqual(relatedInjector.UnderlyingContainer, Owner, Resources.INAPPROPRIATE_OWNERSHIP);
 
@@ -43,7 +45,7 @@ namespace Solti.Utils.DI.Internals
                 .Get<IReadOnlyDictionary<string, object>>($"{ServiceContainer.INTERNAL_SERVICE_NAME_PREFIX}options")
                 .GetValueOrDefault<int?>("MaxSpawnedTransientServices");
 
-            if (FInstances.Count >= threshold)
+            if (Instances.Count >= threshold)
                 //
                 // Ha ide jutunk az azt jelenti h jo esellyel a tartalmazo injector ujrahasznositasra kerult
                 // (ahogy az a teljesitmeny teszteknel meg is tortent).
@@ -53,30 +55,21 @@ namespace Solti.Utils.DI.Internals
                 throw new Exception(string.Format(Resources.Culture, Resources.INJECTOR_SHOULD_BE_RELEASED, threshold));
                 #pragma warning restore CA2201
 
-                //
-                // "Factory" biztos nem NULL [lasd EnsureProducible()]
-                //
-
-            reference.Value = Factory!(relatedInjector, Interface);
-
-            FInstances.Add(reference);
-            State |= ServiceEntryStates.Instantiated;
-
-            return true;
+            return base.SetInstance(reference);
         }
 
         public override AbstractServiceEntry CopyTo(IServiceContainer target)
         {
+            CheckNotDisposed();
             Ensure.Parameter.IsNotNull(target, nameof(target));
-            Ensure.NotDisposed(this);
-
+            
             var result = new TransientServiceEntry(this, target);
             target.Add(result);
             return result;
         }
 
-        public override IReadOnlyCollection<IServiceReference> Instances => FInstances;
-
         public override Lifetime Lifetime { get; } = Lifetime.Transient;
+
+        public override IReadOnlyCollection<IServiceReference> Instances => FInstances;
     }
 }

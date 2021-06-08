@@ -19,6 +19,8 @@ namespace Solti.Utils.DI.Internals
         {
         }
 
+        protected override void SaveReference(IServiceReference serviceReference) => FInstances.Add(serviceReference);
+
         public ScopedServiceEntry(Type @interface, string? name, Func<IInjector, Type, object> factory, IServiceContainer owner) : base(@interface, name, factory, owner)
         {
         }
@@ -33,8 +35,8 @@ namespace Solti.Utils.DI.Internals
 
         public override bool SetInstance(IServiceReference reference)
         {
+            CheckNotDisposed();
             EnsureAppropriateReference(reference);
-            EnsureProducible();
 
             IInjector relatedInjector = Ensure.IsNotNull(reference.RelatedInjector, $"{nameof(reference)}.{nameof(reference.RelatedInjector)}");
             Ensure.AreEqual(relatedInjector.UnderlyingContainer, Owner, Resources.INAPPROPRIATE_OWNERSHIP);
@@ -47,14 +49,11 @@ namespace Solti.Utils.DI.Internals
             if (State.HasFlag(ServiceEntryStates.Built)) return false;
 
             //
-            // Kulomben legyartjuk: 
-            // - Elsokent a Factory-t hivjuk es Instance-nak csak sikeres visszateres eseten adjunk erteket.
-            // - "Factory" biztosan nem NULL [lasd EnsureProducible()].
+            // Kulomben legyartjuk
             //
 
-            reference.Value = Factory!(relatedInjector, Interface);
+            base.SetInstance(reference);
 
-            FInstances.Add(reference);
             State |= ServiceEntryStates.Built;
 
             return true;
@@ -70,8 +69,8 @@ namespace Solti.Utils.DI.Internals
             return result;
         }
 
-        public override IReadOnlyCollection<IServiceReference> Instances => FInstances;
-
         public override Lifetime Lifetime { get; } = Lifetime.Scoped;
+
+        public override IReadOnlyCollection<IServiceReference> Instances => FInstances;
     }
 }
