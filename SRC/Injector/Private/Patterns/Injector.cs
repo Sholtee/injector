@@ -82,26 +82,23 @@ namespace Solti.Utils.DI.Internals
             }
         }
 
-        public object Get(Type iface, string? name) 
-        {
-            CheckNotDisposed();
-
-            return GetReference(iface, name).GetInstance();
-        }
-
-        public object? TryGet(Type iface, string? name) 
+        public IServiceReference? TryGetReference(Type iface, string? name)
         {
             CheckNotDisposed();
 
             try
             {
-                return Get(iface, name);
+                return GetReference(iface, name);
             }
-            catch(ServiceNotFoundException) 
+            catch (ServiceNotFoundException)
             {
                 return null;
             }
         }
+
+        public object Get(Type iface, string? name) => GetReference(iface, name).GetInstance();
+
+        public object? TryGet(Type iface, string? name) => TryGetReference(iface, name)?.GetInstance();
 
         public IServiceContainer UnderlyingContainer 
         {
