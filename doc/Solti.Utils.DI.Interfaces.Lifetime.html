@@ -278,13 +278,13 @@
     </tbody>
   </table>
   <a id="Solti_Utils_DI_Interfaces_Lifetime_CreateFrom_" data-uid="Solti.Utils.DI.Interfaces.Lifetime.CreateFrom*"></a>
-  <h4 id="Solti_Utils_DI_Interfaces_Lifetime_CreateFrom_System_Type_System_String_System_Func_Solti_Utils_DI_Interfaces_IInjector_System_Type_System_Object__Solti_Utils_DI_Interfaces_IServiceContainer_System_Func_System_Object_System_Type_System_Object____" data-uid="Solti.Utils.DI.Interfaces.Lifetime.CreateFrom(System.Type,System.String,System.Func{Solti.Utils.DI.Interfaces.IInjector,System.Type,System.Object},Solti.Utils.DI.Interfaces.IServiceContainer,System.Func{System.Object,System.Type,System.Object}[])">CreateFrom(Type, String, Func&lt;IInjector, Type, Object&gt;, IServiceContainer, Func&lt;Object, Type, Object&gt;[])</h4>
+  <h4 id="Solti_Utils_DI_Interfaces_Lifetime_CreateFrom_System_Type_System_String_System_Func_Solti_Utils_DI_Interfaces_IInjector_System_Type_System_Object__Solti_Utils_DI_Interfaces_IServiceContainer_" data-uid="Solti.Utils.DI.Interfaces.Lifetime.CreateFrom(System.Type,System.String,System.Func{Solti.Utils.DI.Interfaces.IInjector,System.Type,System.Object},Solti.Utils.DI.Interfaces.IServiceContainer)">CreateFrom(Type, String, Func&lt;IInjector, Type, Object&gt;, IServiceContainer)</h4>
   <div class="markdown level1 summary"><p>Creates a service entry from the given <code data-dev-comment-type="paramref" class="paramref">factory</code>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public virtual IEnumerable&lt;AbstractServiceEntry&gt; CreateFrom(Type iface, string name, Func&lt;IInjector, Type, object&gt; factory, IServiceContainer owner, params Func&lt;object, Type, object&gt;[] customConverters)</code></pre>
+    <pre><code class="lang-csharp hljs">public virtual IEnumerable&lt;AbstractServiceEntry&gt; CreateFrom(Type iface, string name, Func&lt;IInjector, Type, object&gt; factory, IServiceContainer owner)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -316,11 +316,6 @@
         <td><span class="parametername">owner</span></td>
         <td></td>
       </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.func-3">Func</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.type">Type</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a>&gt;[]</td>
-        <td><span class="parametername">customConverters</span></td>
-        <td></td>
-      </tr>
     </tbody>
   </table>
   <h5 class="returns">Returns</h5>
@@ -339,13 +334,13 @@
     </tbody>
   </table>
   <a id="Solti_Utils_DI_Interfaces_Lifetime_CreateFrom_" data-uid="Solti.Utils.DI.Interfaces.Lifetime.CreateFrom*"></a>
-  <h4 id="Solti_Utils_DI_Interfaces_Lifetime_CreateFrom_System_Type_System_String_System_Object_System_Boolean_Solti_Utils_DI_Interfaces_IServiceContainer_System_Func_System_Object_System_Type_System_Object____" data-uid="Solti.Utils.DI.Interfaces.Lifetime.CreateFrom(System.Type,System.String,System.Object,System.Boolean,Solti.Utils.DI.Interfaces.IServiceContainer,System.Func{System.Object,System.Type,System.Object}[])">CreateFrom(Type, String, Object, Boolean, IServiceContainer, Func&lt;Object, Type, Object&gt;[])</h4>
+  <h4 id="Solti_Utils_DI_Interfaces_Lifetime_CreateFrom_System_Type_System_String_System_Object_System_Boolean_Solti_Utils_DI_Interfaces_IServiceContainer_" data-uid="Solti.Utils.DI.Interfaces.Lifetime.CreateFrom(System.Type,System.String,System.Object,System.Boolean,Solti.Utils.DI.Interfaces.IServiceContainer)">CreateFrom(Type, String, Object, Boolean, IServiceContainer)</h4>
   <div class="markdown level1 summary"><p>Creates a service entry from the given <code data-dev-comment-type="paramref" class="paramref">value</code>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public virtual IEnumerable&lt;AbstractServiceEntry&gt; CreateFrom(Type iface, string name, object value, bool externallyOwned, IServiceContainer owner, params Func&lt;object, Type, object&gt;[] customConverters)</code></pre>
+    <pre><code class="lang-csharp hljs">public virtual IEnumerable&lt;AbstractServiceEntry&gt; CreateFrom(Type iface, string name, object value, bool externallyOwned, IServiceContainer owner)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -382,11 +377,6 @@
         <td><span class="parametername">owner</span></td>
         <td></td>
       </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.func-3">Func</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.type">Type</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a>&gt;[]</td>
-        <td><span class="parametername">customConverters</span></td>
-        <td></td>
-      </tr>
     </tbody>
   </table>
   <h5 class="returns">Returns</h5>
@@ -405,13 +395,13 @@
     </tbody>
   </table>
   <a id="Solti_Utils_DI_Interfaces_Lifetime_CreateFrom_" data-uid="Solti.Utils.DI.Interfaces.Lifetime.CreateFrom*"></a>
-  <h4 id="Solti_Utils_DI_Interfaces_Lifetime_CreateFrom_System_Type_System_String_System_Type_Solti_Utils_DI_Interfaces_IServiceContainer_System_Func_System_Object_System_Type_System_Object____" data-uid="Solti.Utils.DI.Interfaces.Lifetime.CreateFrom(System.Type,System.String,System.Type,Solti.Utils.DI.Interfaces.IServiceContainer,System.Func{System.Object,System.Type,System.Object}[])">CreateFrom(Type, String, Type, IServiceContainer, Func&lt;Object, Type, Object&gt;[])</h4>
+  <h4 id="Solti_Utils_DI_Interfaces_Lifetime_CreateFrom_System_Type_System_String_System_Type_Solti_Utils_DI_Interfaces_IServiceContainer_" data-uid="Solti.Utils.DI.Interfaces.Lifetime.CreateFrom(System.Type,System.String,System.Type,Solti.Utils.DI.Interfaces.IServiceContainer)">CreateFrom(Type, String, Type, IServiceContainer)</h4>
   <div class="markdown level1 summary"><p>Creates a service entry from the given <code data-dev-comment-type="paramref" class="paramref">implementation</code>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public virtual IEnumerable&lt;AbstractServiceEntry&gt; CreateFrom(Type iface, string name, Type implementation, IServiceContainer owner, params Func&lt;object, Type, object&gt;[] customConverters)</code></pre>
+    <pre><code class="lang-csharp hljs">public virtual IEnumerable&lt;AbstractServiceEntry&gt; CreateFrom(Type iface, string name, Type implementation, IServiceContainer owner)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -443,11 +433,6 @@
         <td><span class="parametername">owner</span></td>
         <td></td>
       </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.func-3">Func</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.type">Type</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a>&gt;[]</td>
-        <td><span class="parametername">customConverters</span></td>
-        <td></td>
-      </tr>
     </tbody>
   </table>
   <h5 class="returns">Returns</h5>
@@ -466,13 +451,13 @@
     </tbody>
   </table>
   <a id="Solti_Utils_DI_Interfaces_Lifetime_CreateFrom_" data-uid="Solti.Utils.DI.Interfaces.Lifetime.CreateFrom*"></a>
-  <h4 id="Solti_Utils_DI_Interfaces_Lifetime_CreateFrom_System_Type_System_String_System_Type_System_Collections_Generic_IReadOnlyDictionary_System_String_System_Object__Solti_Utils_DI_Interfaces_IServiceContainer_System_Func_System_Object_System_Type_System_Object____" data-uid="Solti.Utils.DI.Interfaces.Lifetime.CreateFrom(System.Type,System.String,System.Type,System.Collections.Generic.IReadOnlyDictionary{System.String,System.Object},Solti.Utils.DI.Interfaces.IServiceContainer,System.Func{System.Object,System.Type,System.Object}[])">CreateFrom(Type, String, Type, IReadOnlyDictionary&lt;String, Object&gt;, IServiceContainer, Func&lt;Object, Type, Object&gt;[])</h4>
+  <h4 id="Solti_Utils_DI_Interfaces_Lifetime_CreateFrom_System_Type_System_String_System_Type_System_Collections_Generic_IReadOnlyDictionary_System_String_System_Object__Solti_Utils_DI_Interfaces_IServiceContainer_" data-uid="Solti.Utils.DI.Interfaces.Lifetime.CreateFrom(System.Type,System.String,System.Type,System.Collections.Generic.IReadOnlyDictionary{System.String,System.Object},Solti.Utils.DI.Interfaces.IServiceContainer)">CreateFrom(Type, String, Type, IReadOnlyDictionary&lt;String, Object&gt;, IServiceContainer)</h4>
   <div class="markdown level1 summary"><p>Creates a service entry from the given <code data-dev-comment-type="paramref" class="paramref">implementation</code>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public virtual IEnumerable&lt;AbstractServiceEntry&gt; CreateFrom(Type iface, string name, Type implementation, IReadOnlyDictionary&lt;string, object&gt; explicitArgs, IServiceContainer owner, params Func&lt;object, Type, object&gt;[] customConverters)</code></pre>
+    <pre><code class="lang-csharp hljs">public virtual IEnumerable&lt;AbstractServiceEntry&gt; CreateFrom(Type iface, string name, Type implementation, IReadOnlyDictionary&lt;string, object&gt; explicitArgs, IServiceContainer owner)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -507,11 +492,6 @@
       <tr>
         <td><a class="xref" href="Solti.Utils.DI.Interfaces.IServiceContainer.html">IServiceContainer</a></td>
         <td><span class="parametername">owner</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.func-3">Func</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.type">Type</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a>&gt;[]</td>
-        <td><span class="parametername">customConverters</span></td>
         <td></td>
       </tr>
     </tbody>

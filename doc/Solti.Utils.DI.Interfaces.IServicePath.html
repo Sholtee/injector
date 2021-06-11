@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Interface IServiceGraph
+    <title>Interface IServicePath
    | Injector </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Interface IServiceGraph
+    <meta name="title" content="Interface IServicePath
    | Injector ">
     <meta name="generator" content="docfx 2.46.0.0">
     
@@ -37,12 +37,12 @@
       <div role="main" class="container body-content hide-when-search">
         <div class="article row grid">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="Solti.Utils.DI.Interfaces.IServiceGraph">
+            <article class="content wrap" id="_content" data-uid="Solti.Utils.DI.Interfaces.IServicePath">
   
   
-  <h1 id="Solti_Utils_DI_Interfaces_IServiceGraph" data-uid="Solti.Utils.DI.Interfaces.IServiceGraph" class="text-break">Interface IServiceGraph
+  <h1 id="Solti_Utils_DI_Interfaces_IServicePath" data-uid="Solti.Utils.DI.Interfaces.IServicePath" class="text-break">Interface IServicePath
   </h1>
-  <div class="markdown level0 summary"><p>Describes the service graph in which the current request takes place.</p>
+  <div class="markdown level0 summary"><p>Describes the path in which the current request takes place.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritedMembers">
@@ -53,15 +53,15 @@
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Solti.Utils.DI.Interfaces.html">Solti.Utils.DI.Interfaces</a></h6>
   <h6><strong>Assembly</strong>: Solti.Utils.DI.Interfaces.dll</h6>
-  <h5 id="Solti_Utils_DI_Interfaces_IServiceGraph_syntax">Syntax</h5>
+  <h5 id="Solti_Utils_DI_Interfaces_IServicePath_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public interface IServiceGraph : IEnumerable&lt;IServiceReference&gt;, IEnumerable</code></pre>
+    <pre><code class="lang-csharp hljs">public interface IServicePath : IEnumerable&lt;IServiceReference&gt;, IEnumerable</code></pre>
   </div>
   <h3 id="properties">Properties
   </h3>
-  <a id="Solti_Utils_DI_Interfaces_IServiceGraph_Requestor_" data-uid="Solti.Utils.DI.Interfaces.IServiceGraph.Requestor*"></a>
-  <h4 id="Solti_Utils_DI_Interfaces_IServiceGraph_Requestor" data-uid="Solti.Utils.DI.Interfaces.IServiceGraph.Requestor">Requestor</h4>
-  <div class="markdown level1 summary"><p>The requestor of the service.</p>
+  <a id="Solti_Utils_DI_Interfaces_IServicePath_Requestor_" data-uid="Solti.Utils.DI.Interfaces.IServicePath.Requestor*"></a>
+  <h4 id="Solti_Utils_DI_Interfaces_IServicePath_Requestor" data-uid="Solti.Utils.DI.Interfaces.IServicePath.Requestor">Requestor</h4>
+  <div class="markdown level1 summary"><p>The last pushed service.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -85,18 +85,18 @@
   </table>
   <h3 id="methods">Methods
   </h3>
-  <a id="Solti_Utils_DI_Interfaces_IServiceGraph_CheckNotCircular_" data-uid="Solti.Utils.DI.Interfaces.IServiceGraph.CheckNotCircular*"></a>
-  <h4 id="Solti_Utils_DI_Interfaces_IServiceGraph_CheckNotCircular" data-uid="Solti.Utils.DI.Interfaces.IServiceGraph.CheckNotCircular">CheckNotCircular()</h4>
-  <div class="markdown level1 summary"><p>Throws if the graph is circular.</p>
+  <a id="Solti_Utils_DI_Interfaces_IServicePath_CheckNotCircular_" data-uid="Solti.Utils.DI.Interfaces.IServicePath.CheckNotCircular*"></a>
+  <h4 id="Solti_Utils_DI_Interfaces_IServicePath_CheckNotCircular" data-uid="Solti.Utils.DI.Interfaces.IServicePath.CheckNotCircular">CheckNotCircular()</h4>
+  <div class="markdown level1 summary"><p>Throws if the path is circular.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">void CheckNotCircular()</code></pre>
   </div>
-  <a id="Solti_Utils_DI_Interfaces_IServiceGraph_With_" data-uid="Solti.Utils.DI.Interfaces.IServiceGraph.With*"></a>
-  <h4 id="Solti_Utils_DI_Interfaces_IServiceGraph_With_Solti_Utils_DI_Interfaces_IServiceReference_" data-uid="Solti.Utils.DI.Interfaces.IServiceGraph.With(Solti.Utils.DI.Interfaces.IServiceReference)">With(IServiceReference)</h4>
-  <div class="markdown level1 summary"><p>Appends the graph with the given <a class="xref" href="Solti.Utils.DI.Interfaces.IServiceReference.html">IServiceReference</a>.</p>
+  <a id="Solti_Utils_DI_Interfaces_IServicePath_With_" data-uid="Solti.Utils.DI.Interfaces.IServicePath.With*"></a>
+  <h4 id="Solti_Utils_DI_Interfaces_IServicePath_With_Solti_Utils_DI_Interfaces_IServiceReference_" data-uid="Solti.Utils.DI.Interfaces.IServicePath.With(Solti.Utils.DI.Interfaces.IServiceReference)">With(IServiceReference)</h4>
+  <div class="markdown level1 summary"><p>Appends the path with the given <a class="xref" href="Solti.Utils.DI.Interfaces.IServiceReference.html">IServiceReference</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
