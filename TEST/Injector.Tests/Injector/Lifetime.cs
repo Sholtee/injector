@@ -494,6 +494,10 @@ namespace Solti.Utils.DI.Injector.Tests
         }
 
         [Test]
+        public void Lifetime_Instance_ShouldBeTypeChecked() =>
+            Assert.Throws<InvalidCastException>(() => Container.Instance(typeof(IDisposable), new object()), Resources.INVALID_INSTANCE);
+
+        [Test]
         public void Lifetime_PermissiveDI_LegalCases(
             [Values(true, false)] bool useChildContainer,
             [ValueSource(nameof(Lifetimes))] Lifetime dependant,

@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 
 namespace Solti.Utils.DI.Interfaces
 {
+    using Primitives;
     using Primitives.Patterns;
     using Properties;
 
@@ -25,9 +26,8 @@ namespace Solti.Utils.DI.Interfaces
         /// <param name="interface">The interface of the service.</param>
         /// <param name="name">The (optional) name of the service.</param>
         /// <param name="owner">The owner of this entry.</param>
-        /// <param name="customConverters">Custom converters related to this entry.</param>
         /// <exception cref="ArgumentException">The <paramref name="interface"/> is not an interface.</exception>
-        public AbstractServiceEntry(Type @interface, string? name, IServiceContainer owner, params Func<object, Type, object>[] customConverters) : this(@interface, name, null, owner, customConverters)
+        public AbstractServiceEntry(Type @interface, string? name, IServiceContainer owner) : this(@interface, name, null, owner)
         {
         }
 
@@ -38,16 +38,14 @@ namespace Solti.Utils.DI.Interfaces
         /// <param name="name">The (optional) name of the service.</param>
         /// <param name="implementation">The (optional) implementation of the service.</param>
         /// <param name="owner">The owner of this entry.</param>
-        /// <param name="customConverters">Custom converters related to this entry.</param>
         /// <exception cref="ArgumentException">The <paramref name="interface"/> is not an interface.</exception>
         /// <exception cref="ArgumentException">The <paramref name="implementation"/> does not support the <paramref name="interface"/>.</exception>
-        protected AbstractServiceEntry(Type @interface, string? name, Type? implementation, IServiceContainer owner, params Func<object, Type, object>[] customConverters)
+        protected AbstractServiceEntry(Type @interface, string? name, Type? implementation, IServiceContainer owner)
         {
-            Interface        = @interface ?? throw new ArgumentNullException(nameof(@interface));
-            Owner            = owner ?? throw new ArgumentNullException(nameof(owner));
-            CustomConverters = customConverters ?? throw new ArgumentNullException(nameof(customConverters));
-            Name             = name;
-            Implementation   = implementation;
+            Interface      = @interface ?? throw new ArgumentNullException(nameof(@interface));
+            Owner          = owner ?? throw new ArgumentNullException(nameof(owner));
+            Name           = name;
+            Implementation = implementation;
 
             if (!@interface.IsInterface)
                 throw new ArgumentException(Resources.NOT_AN_INTERFACE, nameof(@interface));
@@ -59,7 +57,7 @@ namespace Solti.Utils.DI.Interfaces
             //   3) Pl a Provider() hivas is "rossz" tipus regisztral
             //
 
-            if (implementation != null && !implementation.IsClass)
+            if (implementation is not null && !implementation.IsClass)
                 throw new ArgumentException(Resources.NOT_A_CLASS, nameof(implementation));
         }
 
@@ -92,10 +90,9 @@ namespace Solti.Utils.DI.Interfaces
         public virtual Lifetime? Lifetime { get; }
 
         /// <summary>
-        /// Returns custom converters related to this entry.
+        /// Indicates whether this entry can be shared across injectors.
         /// </summary>
-        /// <remarks>Converters describe how to extract the actual service object from the value stored in the <see cref="IServiceReference"/>.</remarks>
-        public IReadOnlyCollection<Func<object, Type, object>> CustomConverters { get; }
+        public virtual bool IsShared { get; }
         #endregion
 
         #region Mutables
@@ -124,12 +121,28 @@ namespace Solti.Utils.DI.Interfaces
             throw new NotImplementedException();
 
         /// <summary>
+        /// Returns the effective service instance from the given <paramref name="reference"/>. The <paramref name="reference"/> must be taken from this entry.
+        /// </summary>
+        public virtual object GetInstance(IServiceReference reference)
+        {
+            if (reference is null)
+                throw new ArgumentNullException(nameof(reference));
+
+            if (reference.RelatedServiceEntry != this)
+                throw new ArgumentException(Resources.INCOMPATIBLE_REFERENCE);
+
+            return reference.Value!;
+        }
+
+        /// <summary>
         /// Copies this entry to a new collection.
         /// </summary>
         /// <param name="target">The target <see cref="IServiceContainer"/> to which we want to copy this entry.</param>
         public virtual AbstractServiceEntry CopyTo(IServiceContainer target)
         {
-            if (target == null) throw new ArgumentNullException(nameof(target));
+            if (target is null)
+                throw new ArgumentNullException(nameof(target));
+            
             CheckNotDisposed();
 
             target.Add(this);
@@ -157,8 +170,8 @@ namespace Solti.Utils.DI.Interfaces
             hashCode.Add(Factory);
             hashCode.Add(Implementation);
 
-            foreach (IServiceReference instance in Instances)
-                hashCode.Add(instance.GetEffectiveValue());
+            foreach (IServiceReference reference in Instances)
+                hashCode.Add(GetInstance(reference));
 
             return hashCode.ToHashCode();
 #else
@@ -171,11 +184,11 @@ namespace Solti.Utils.DI.Interfaces
                 Implementation
             };
 
-            foreach (IServiceReference instance in Instances)
+            foreach (IServiceReference reference in Instances)
                 current = new
                 {
                     Previous = current,
-                    Instance = instance.GetEffectiveValue()
+                    Instance = GetInstance(reference)
                 };
 
             return current.GetHashCode();
@@ -192,8 +205,8 @@ namespace Solti.Utils.DI.Interfaces
 
             return new StringBuilder(this.FriendlyName())
                 .AppendFormat(Resources.Culture, NAME_PART, nameof(Lifetime), Lifetime?.ToString() ?? "NULL")
-                .AppendFormat(Resources.Culture, NAME_PART, nameof(Implementation), Implementation?.ToString() ?? "NULL")
-                .AppendFormat(Resources.Culture, NAME_PART, nameof(Instances), Instances.Any() ? string.Join(", ", Instances.Select(instance => instance.GetEffectiveValue())) : "EMPTY")             
+                .AppendFormat(Resources.Culture, NAME_PART, nameof(Implementation), Implementation?.GetFriendlyName() ?? "NULL")
+                .AppendFormat(Resources.Culture, NAME_PART, nameof(Instances), Instances.Any() ? string.Join(", ", Instances.Select(GetInstance)) : "EMPTY")             
                 .ToString();
         }
 

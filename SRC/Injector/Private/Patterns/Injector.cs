@@ -5,8 +5,6 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Solti.Utils.DI.Internals
@@ -17,37 +15,11 @@ namespace Solti.Utils.DI.Internals
 
     internal partial class Injector : ServiceContainer, IInjector, IScopeFactory
     {
-        private readonly IServiceGraph FGraph = new ServiceGraph();
+        private readonly IServicePath FPath = new ServicePath();
 
-        private readonly ExclusiveBlock FExclusiveBlock = new ExclusiveBlock();
+        private readonly ExclusiveBlock FExclusiveBlock = new();
 
         private readonly IReadOnlyDictionary<string, object> FOptions;
-
-        private void CheckBreaksTheRuleOfStrictDI(AbstractServiceEntry requested)
-        {
-            if (!Config.Value.Injector.StrictDI) return;
-
-            AbstractServiceEntry? requestor = FGraph.Requestor?.RelatedServiceEntry; // lehet NULL
-
-            //
-            // Ha a fuggosegi fa gyokerenel vagyunk akkor a metodus nem ertelmezett.
-            //
-
-            if (requestor == null) return;
-
-            //
-            // A kerelmezett szerviznek legalabb addig kell leteznie mint a kerelmezo szerviznek.
-            //
-
-            if (requested.Lifetime!.CompareTo(requestor.Lifetime!) < 0)
-            {
-                var ex = new RequestNotAllowedException(Resources.STRICT_DI);
-                ex.Data[nameof(requestor)] = requestor;
-                ex.Data[nameof(requested)] = requested;
-
-                throw ex;
-            }
-        }
 
         protected override void Dispose(bool disposeManaged)
         {
@@ -70,7 +42,7 @@ namespace Solti.Utils.DI.Internals
             UnderlyingContainer
                 .Instance<IInjector>(this)
                 .Instance<IScopeFactory>(this)
-                .Instance(FGraph)
+                .Instance(FPath)
                 .Instance($"{INTERNAL_SERVICE_NAME_PREFIX}options", FOptions);
 
             this.RegisterServiceEnumerator();
@@ -106,78 +78,27 @@ namespace Solti.Utils.DI.Internals
 
             using (FExclusiveBlock.Enter())
             {
-
-                //
-                // Ha vkinek a fuggosege vagyunk akkor a fuggo szerviz itt meg nem lehet legyartva.
-                //
-
-                Debug.Assert(FGraph.Requestor?.Value == null, "Already produced services can not request dependencies");
-
-                const string path = nameof(path);
-
-                try
-                {
-                    //
-                    // Bejegyzes lekerdezese, generikus bejegyzes tipizalasat megengedjuk. A "QueryModes.ThrowOnError" 
-                    // miatt "entry" tuti nem NULL.
-                    //
-
-                    AbstractServiceEntry requestedEntry = Get(iface, name, QueryModes.AllowSpecialization | QueryModes.ThrowOnError)!;
-
-                    CheckBreaksTheRuleOfStrictDI(requestedEntry);
-
-                    IServiceReference requested = Instantiate(requestedEntry);
-
-                    //
-                    // Az igenylo (ha van) fuggosegei koze felvesszuk az ujonan letrehozott szervizt
-                    //
-
-                    FGraph.Requestor?.AddDependency(requested);
-
-                    return requested;
-                }
-
-                //
-                // Csak ott bovitjuk a kivetelt ahol az dobva volt (ez a metodus lehet rekurzivan hivva).
-                //
-
-                catch (ServiceNotFoundException e) when (e.Data[path] == null)
-                {
-                    e.Data[path] = string.Join(" -> ", FGraph
-                        .Select(node => (IServiceId)node.RelatedServiceEntry)
-                        .Append(new ServiceId(iface, name))
-                        .Select(IServiceIdExtensions.FriendlyName));
-
-                    throw;
-                }
+                return Resolve(iface, name);
             }
         }
 
-        public object Get(Type iface, string? name) 
-        {
-            CheckNotDisposed();
-
-            object instance = GetReference(iface, name).GetEffectiveValue();
-
-            if (!iface.IsInstanceOfType(instance))
-                throw new InvalidCastException(string.Format(Resources.Culture, Resources.INVALID_INSTANCE, iface));
-
-            return instance;
-        }
-
-        public object? TryGet(Type iface, string? name) 
+        public IServiceReference? TryGetReference(Type iface, string? name)
         {
             CheckNotDisposed();
 
             try
             {
-                return Get(iface, name);
+                return GetReference(iface, name);
             }
-            catch(ServiceNotFoundException) 
+            catch (ServiceNotFoundException)
             {
                 return null;
             }
         }
+
+        public object Get(Type iface, string? name) => GetReference(iface, name).GetInstance();
+
+        public object? TryGet(Type iface, string? name) => TryGetReference(iface, name)?.GetInstance();
 
         public IServiceContainer UnderlyingContainer 
         {

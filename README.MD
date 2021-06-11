@@ -6,7 +6,7 @@
 |**Injector.NET**|[![Nuget (with prereleases)](https://img.shields.io/nuget/vpre/injector.net)](https://www.nuget.org/packages/injector.net )|
 |**Injector.NET.Interfaces**|[![Nuget (with prereleases)](https://img.shields.io/nuget/vpre/injector.net.interfaces)](https://www.nuget.org/packages/injector.net.interfaces )|
 
-**This documentation refers the version 4.X of the library**
+**This documentation refers the version 5.X of the library**
 ## Overview
 [Dependency Injection](https://en.wikipedia.org/wiki/Dependency_injection ) is a design pattern that helps you separate the dependencies of your code from its behavior. Additionaly it makes the code easy to test by let you [mock](https://en.wikipedia.org/wiki/Mock_object ) the dependencies in your unit tests. This library provides several mechanisms to register, acquire and inherit services.
 ## Key features
@@ -590,5 +590,7 @@ This project currently targets *.NET Standard* 2.0 and 2.1.
 ## Migrating from version 3.X
 - Auto service registration has been removed, so you should register all the services manually
 - Configuration has been moved to `runtimeconfig.json` (and got a new layout). See [this](https://github.com/Sholtee/injector/blob/master/TEST/Injector.Tests/runtimeconfig.template.json ) as a reference
+## Migrating from version 4.X
+- Renamed built in service `IServiceGraph` to `IServicePath`.
 ## Version history
 Can be found [here](https://github.com/Sholtee/injector/blob/master/history.md )

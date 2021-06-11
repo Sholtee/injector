@@ -1,26 +1,36 @@
 ﻿/********************************************************************************
-* ServiceReferenceExtensions.cs                                                 *
+* IServiceReferenceExtensions.cs                                                *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
-using System.Diagnostics;
+using System;
 
 namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
 
-    internal static class ServiceReferenceExtensions
+    internal static class IServiceReferenceExtensions
     {
         public static void SetInstance(this IServiceReference svc)
         {
-            bool succeeded = svc.RelatedServiceEntry.SetInstance(svc);
+            if (svc is null)
+                throw new ArgumentNullException(nameof(svc));
 
             //
             // Elmeletileg a SetInstance() csak akkor lehet hivva ha szukseges is letrehozni a
             // szervizpeldanyt.
             //
 
-            Debug.Assert(succeeded, $"{nameof(SetInstance)}() failed");
+            if (!svc.RelatedServiceEntry.SetInstance(svc))
+                throw new InvalidOperationException(); // TODO: error message
+        }
+
+        public static object GetInstance(this IServiceReference svc)
+        {
+            if (svc is null)
+                throw new ArgumentNullException(nameof(svc));
+
+            return svc.RelatedServiceEntry.GetInstance(svc);
         }
     }
 }

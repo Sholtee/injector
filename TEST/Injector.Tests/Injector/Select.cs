@@ -157,7 +157,7 @@ namespace Solti.Utils.DI.Injector.Tests
         }
 
         [Test]
-        public void Injector_Select_ShouldWorkWithBuiltInServices([Values(typeof(IInjector), typeof(IServiceGraph), typeof(IScopeFactory), typeof(IReadOnlyDictionary<string, object>))] Type svc)
+        public void Injector_Select_ShouldWorkWithBuiltInServices([Values(typeof(IInjector), typeof(IServicePath), typeof(IScopeFactory), typeof(IReadOnlyDictionary<string, object>))] Type svc)
         {
             using (IInjector injector = Container.CreateInjector())
             {

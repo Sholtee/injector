@@ -9,25 +9,21 @@ using System.Collections.Generic;
 namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
+    using Properties;
 
-    /// <summary>
-    /// Describes an instance service entry.
-    /// </summary>
     internal class InstanceServiceEntry : AbstractServiceEntry
     {
         private readonly IReadOnlyCollection<ServiceReference> FInstances;
 
-        public InstanceServiceEntry(Type @interface, string? name, object instance, bool externallyOwned, IServiceContainer owner, params Func<object, Type, object>[] customConverters) : base(
+        public InstanceServiceEntry(Type @interface, string? name, object instance, bool externallyOwned, IServiceContainer owner) : base(
             @interface, 
             name, 
-            owner,
-            customConverters)
+            owner)
         {
             Ensure.Parameter.IsNotNull(instance, nameof(instance));
 
-            //
-            // Nem kell kulon ellenorizni a peldanyt mert az injector ugy is validal.
-            //
+            if (!Interface.IsInstanceOfType(instance))
+                throw new InvalidCastException(string.Format(Resources.Culture, Resources.INVALID_INSTANCE, Interface));
 
             FInstances = new[] 
             { 
@@ -58,5 +54,7 @@ namespace Solti.Utils.DI.Internals
             //
 
             throw new NotImplementedException();
+
+        public override bool IsShared => true;
     }
 }

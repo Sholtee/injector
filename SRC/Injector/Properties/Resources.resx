@@ -186,4 +186,7 @@
   <data name="POOL_ITEM_ALREADY_TAKEN" xml:space="preserve">
     <value>The pool item you requested already held by the current thread.</value>
   </data>
+  <data name="FOREIGN_DEPENDENCY" xml:space="preserve">
+    <value>You can not add dependency to an already instantiated service.</value>
+  </data>
 </root>

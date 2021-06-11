@@ -36,7 +36,7 @@ namespace Solti.Utils.DI
             Ensure.Parameter.IsNotNull(self, nameof(self));
             Ensure.Parameter.IsNotNull(@class, nameof(@class));
 
-            return Resolver.GetExtended(@class).Invoke(self, explicitArgs ?? new Dictionary<string, object?>(0));
+            return ServiceActivator.GetExtended(@class).Invoke(self, explicitArgs ?? new Dictionary<string, object?>(0));
         }
 
         /// <summary>
@@ -59,6 +59,19 @@ namespace Solti.Utils.DI
             Ensure.Parameter.IsNotNull(self, nameof(self));
 
             return (TClass) self.Instantiate(typeof(TClass), explicitArgs);
+        }
+
+        /// <summary>
+        /// Gets the option associated with the given <paramref name="optionName"/>.
+        /// </summary>
+        /// <remarks>Options can be set via the <see cref="IScopeFactory.CreateScope(IReadOnlyDictionary{string, object}?)"/> method.</remarks>
+        public static T? GetOption<T>(this IInjector self, string optionName)
+        {
+            Ensure.Parameter.IsNotNull(self, nameof(self));
+
+            return self
+                .Get<IReadOnlyDictionary<string, object>>($"{ServiceContainer.INTERNAL_SERVICE_NAME_PREFIX}options")
+                .GetValueOrDefault<T>(optionName);
         }
     }
 }

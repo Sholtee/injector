@@ -294,6 +294,7 @@ namespace Solti.Utils.DI.Injector.Tests
             using (IInjector injector = Container.CreateInjector()) 
             {
                 Assert.Throws<InvalidCastException>(() => injector.Get<IInterface_1>(), string.Format(Resources.INVALID_INSTANCE, typeof(IInterface_1)));
+                Assert.That(injector.UnderlyingContainer.Get<IInterface_1>().Instances, Is.Empty);
             }
         }
 

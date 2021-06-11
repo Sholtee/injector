@@ -1,5 +1,5 @@
 ﻿/********************************************************************************
-* Resolver.cs                                                                   *
+* ServiceActivator.cs                                                           *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
@@ -17,7 +17,7 @@ namespace Solti.Utils.DI.Internals
     using Properties;
     using Proxy.Internals;
 
-    internal static class Resolver
+    internal static class ServiceActivator
     {
         private static object? voidVal;
 
@@ -60,7 +60,7 @@ namespace Solti.Utils.DI.Internals
             Ensure.Parameter.IsNotGenericDefinition(type, nameof(type));
         }
 
-        private static TDelegate CreateResolver<TDelegate>(ConstructorInfo constructor, Func<(Type Type, string Name, OptionsAttribute? Options), Expression> argumentResolver, ParameterExpression[] variables, ParameterExpression[] parameters)
+        private static TDelegate CreateActivator<TDelegate>(ConstructorInfo constructor, Func<(Type Type, string Name, OptionsAttribute? Options), Expression> argumentResolver, ParameterExpression[] variables, ParameterExpression[] parameters)
         {
             IReadOnlyCollection<ParameterInfo>? ctorParamz = null;        
 
@@ -85,7 +85,7 @@ namespace Solti.Utils.DI.Internals
 
             ctorParamz ??= constructor.GetParameters();
 
-            return Expression.Lambda<TDelegate>
+            Expression<TDelegate> resolver = Expression.Lambda<TDelegate>
             (
                 Expression.Block
                 (
@@ -108,7 +108,11 @@ namespace Solti.Utils.DI.Internals
                     )
                 ),
                 parameters
-            ).Compile();
+            );
+
+            Debug.WriteLine($"Created activator:{Environment.NewLine}{resolver.GetDebugView()}");
+
+            return resolver.Compile();
         }
 
         public static Func<IInjector, Type, object> Get(ConstructorInfo constructor) => Cache.GetOrAdd(constructor, () =>
@@ -121,7 +125,7 @@ namespace Solti.Utils.DI.Internals
                 injector = Expression.Parameter(typeof(IInjector), nameof(injector)),
                 iface    = Expression.Parameter(typeof(Type),      nameof(iface));
 
-            return CreateResolver<Func<IInjector, Type, object>>
+            return CreateActivator<Func<IInjector, Type, object>>
             (
                 constructor, 
                 ResolveArgument,
@@ -188,7 +192,7 @@ namespace Solti.Utils.DI.Internals
                 explicitArgs = Expression.Parameter(typeof(IReadOnlyDictionary<string, object?>), nameof(explicitArgs)),
                 explicitArg  = Expression.Variable(typeof(object), nameof(explicitArg));
 
-            return CreateResolver<Func<IInjector, IReadOnlyDictionary<string, object?>, object>>
+            return CreateActivator<Func<IInjector, IReadOnlyDictionary<string, object?>, object>>
             (
                 constructor,
                 ResolveArgument,
@@ -273,41 +277,46 @@ namespace Solti.Utils.DI.Internals
             Type delegateType = typeof(Func<>).MakeGenericType(iface);
 
             //
-            // injector => () => (iface) injector.[Try]Get(iface, svcName)
+            // () => (iface) injector.[Try]Get(iface, svcName)
             //
 
             ParameterExpression injector = Expression.Parameter(typeof(IInjector), nameof(injector));
 
-            Func<IInjector, Delegate> createValueFactory = Expression.Lambda<Func<IInjector, Delegate>>
+            LambdaExpression valueFactory = Expression.Lambda
             (
-                Expression.Lambda
+                delegateType,
+                Expression.Convert
                 (
-                    delegateType,
-                    Expression.Convert
+                    Expression.Call
                     (
-                        Expression.Call
-                        (
-                            injector,
-                            options?.Optional == true ? InjectorTryGet : InjectorGet,
-                            Expression.Constant(iface),
-                            Expression.Constant(options?.Name, typeof(string))
-                        ),
-                        iface
-                    )
+                        injector,
+                        options?.Optional == true ? InjectorTryGet : InjectorGet,
+                        Expression.Constant(iface),
+                        Expression.Constant(options?.Name, typeof(string))
+                    ),
+                    iface
+                )
+            );
+
+            //
+            // injector => new Lazy<iface>(() => (iface) injector.[Try]Get(iface, svcName))
+            //
+
+            Type lazyType = typeof(Lazy<>).MakeGenericType(iface);
+
+            Expression<Func<IInjector, object>> lazyFactory = Expression.Lambda<Func<IInjector, object>>
+            (
+                Expression.New
+                (
+                    lazyType.GetConstructor(new[] { delegateType }) ?? throw new MissingMethodException(lazyType.Name, "Ctor"),
+                    valueFactory
                 ),
                 injector
-            ).Compile();
+            );
 
-            //
-            // injector => new Lazy<iface>(Func<iface>)
-            //
+            Debug.WriteLine($"Created Lazy<> factory:{Environment.NewLine}{lazyFactory.GetDebugView()}");
 
-            Func<object[], object> lazyFactory = typeof(Lazy<>)
-                .MakeGenericType(iface)
-                .GetConstructor(new[] { delegateType })
-                .ToStaticDelegate();
-
-            return new Func<IInjector, object>(i => lazyFactory.Invoke(new object[] { createValueFactory(i) }));
+            return lazyFactory.Compile();
         });
     }
 }

@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <AssemblyName>Solti.Utils.DI.Diagnostics</AssemblyName>
+    <RootNamespace>Solti.Utils.DI.Diagnostics</RootNamespace>
+  </PropertyGroup>
+
+  <Import Project="../Common.targets" />
+
+  <PropertyGroup>
+    <Description>Contains diagnostics related features (such as dependency visualization) for Injector.NET</Description>
+    <PackageId>Injector.NET.Diagnostics</PackageId>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Perf|AnyCPU'">
+    <Optimize>true</Optimize>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Interfaces\Injector.Interfaces.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Solti.Utils.Primitives" Version="2.*" />
+  </ItemGroup>
+
+</Project>

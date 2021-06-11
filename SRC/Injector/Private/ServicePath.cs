@@ -1,5 +1,5 @@
 ﻿/********************************************************************************
-* ServiceGraph.cs                                                               *
+* ServicePath.cs                                                                *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
@@ -14,11 +14,11 @@ namespace Solti.Utils.DI.Internals
     using Primitives.Patterns;
     using Properties;
 
-    internal sealed class ServiceGraph: IServiceGraph
+    internal sealed class ServicePath: IServicePath
     {
-        private readonly Stack<IServiceReference> FGraph = new();
+        private readonly Stack<IServiceReference> FPath = new();
 
-        public IServiceReference? Requestor => FGraph.Any() ? FGraph.Peek() : null;
+        public IServiceReference? Requestor => FPath.Any() ? FPath.Peek() : null;
 
         public void CheckNotCircular()
         {
@@ -28,48 +28,52 @@ namespace Solti.Utils.DI.Internals
 
             int firstIndex = this.FirstIndexOf(Ensure.IsNotNull(Requestor, nameof(Requestor)), ServiceReferenceComparer.Instance);
 
-            if (firstIndex < FGraph.Count - 1)
-            {
-                //
-                // Csak magat a kort adjuk vissza.
-                //
-
-                string path = string.Join(" -> ", this.Skip(firstIndex).Select(sr => sr.RelatedServiceEntry).Select(IServiceIdExtensions.FriendlyName));
-
+            if (firstIndex < FPath.Count - 1)
                 throw new CircularReferenceException(string.Format
                 (
                     Resources.Culture,
                     Resources.CIRCULAR_REFERENCE,
-                    path 
+
+                    //
+                    // Csak magat a kort adjuk vissza.
+                    //
+
+                    Format
+                    (
+                        this.Skip(firstIndex)
+                    )
                 ));
-            }
         }
 
         public IDisposable With(IServiceReference node) 
         {
-            FGraph.Push(node);
-            return new WithScope(FGraph);
+            FPath.Push(node);
+            return new WithScope(FPath);
         }
 
         private sealed class WithScope : Disposable 
         {
-            private readonly Stack<IServiceReference> FGraph;
+            private readonly Stack<IServiceReference> FPath;
 
-            public WithScope(Stack<IServiceReference> graph) => FGraph = graph;
+            public WithScope(Stack<IServiceReference> path) => FPath = path;
 
             protected override void Dispose(bool disposeManaged)
             {
-                FGraph.Pop();
+                FPath.Pop();
                 base.Dispose(disposeManaged);
             }
         }
+
+        public static string Format(IEnumerable<IServiceReference> path) => Format(path.Select(svc => svc.RelatedServiceEntry));
+
+        public static string Format(IEnumerable<IServiceId> path) => string.Join(" -> ", path.Select(IServiceIdExtensions.FriendlyName));
 
         public IEnumerator<IServiceReference> GetEnumerator() =>
             //
             // Verem elemek felsorolasa forditva tortenik -> Reverse()
             //
 
-            FGraph.Reverse().GetEnumerator();
+            FPath.Reverse().GetEnumerator();
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
     }

@@ -14,33 +14,32 @@ namespace Solti.Utils.DI.Internals
     using Primitives.Threading;
     using Properties;
 
-    /// <summary>
-    /// Describes a pooled service entry.
-    /// </summary>
     internal class PooledServiceEntry : ProducibleServiceEntryBase, ISupportsSpecialization
     {
         private readonly List<IServiceReference> FInstances = new(1); // max egy eleme lehet
+
+        protected override void SaveReference(IServiceReference serviceReference) => FInstances.Add(serviceReference);
 
         protected PooledServiceEntry(PooledServiceEntry entry, IServiceContainer owner) : base(entry, owner)
         {
         }
 
-        public PooledServiceEntry(Type @interface, string? name, Func<IInjector, Type, object> factory, IServiceContainer owner, params Func<object, Type, object>[] customConverters) : base(@interface, name, factory, owner, customConverters)
+        public PooledServiceEntry(Type @interface, string? name, Func<IInjector, Type, object> factory, IServiceContainer owner) : base(@interface, name, factory, owner)
         {
         }
 
-        public PooledServiceEntry(Type @interface, string? name, Type implementation, IServiceContainer owner, params Func<object, Type, object>[] customConverters) : base(@interface, name, implementation, owner, customConverters)
+        public PooledServiceEntry(Type @interface, string? name, Type implementation, IServiceContainer owner) : base(@interface, name, implementation, owner)
         {
         }
 
-        public PooledServiceEntry(Type @interface, string? name, Type implementation, IReadOnlyDictionary<string, object?> explicitArgs, IServiceContainer owner, params Func<object, Type, object>[] customConverters) : base(@interface, name, implementation, explicitArgs, owner, customConverters)
+        public PooledServiceEntry(Type @interface, string? name, Type implementation, IReadOnlyDictionary<string, object?> explicitArgs, IServiceContainer owner) : base(@interface, name, implementation, explicitArgs, owner)
         {
         }
 
         public override bool SetInstance(IServiceReference reference)
-        {       
+        {
+            CheckNotDisposed();
             EnsureAppropriateReference(reference);
-            EnsureProducible();
 
             IInjector relatedInjector = Ensure.IsNotNull(reference.RelatedInjector, $"{nameof(reference)}.{nameof(reference.RelatedInjector)}");
             Ensure.AreEqual(relatedInjector.UnderlyingContainer, Owner, Resources.INAPPROPRIATE_OWNERSHIP);
@@ -57,13 +56,13 @@ namespace Solti.Utils.DI.Internals
             // Pool-ban az eredeti factory-t hivjuk
             //
 
-            if (relatedInjector.Get<IReadOnlyDictionary<string, object>>($"{ServiceContainer.INTERNAL_SERVICE_NAME_PREFIX}options").GetValueOrDefault<bool>(PooledLifetime.POOL_SCOPE))
+            if (relatedInjector.GetOption<bool>(PooledLifetime.POOL_SCOPE))
             {
-                reference.Value = Factory!(relatedInjector, Interface);
+                base.SetInstance(reference);
             }
 
             //
-            // Kulonben megszolitjuk a bejegyzeshez tartozo PoolService-t
+            // Fogyasztoban megszolitjuk a bejegyzeshez tartozo PoolService-t
             //
 
             else
@@ -87,7 +86,7 @@ namespace Solti.Utils.DI.Internals
                 // legyen gond az elettartammal.
                 //
 
-                relatedInjector.Get<IServiceGraph>().Requestor?.AddDependency(poolItem.Value);
+                relatedInjector.Get<IServicePath>().Requestor?.AddDependency(poolItem.Value);
 
                 //
                 // Nem gond h a poolItem-et adjuk vissza, igy NEM annak tartalma kerul felszabaditasra a 
@@ -95,9 +94,10 @@ namespace Solti.Utils.DI.Internals
                 //
 
                 reference.Value = poolItem;
+
+                SaveReference(reference);
             }
 
-            FInstances.Add(reference);
             State |= ServiceEntryStates.Built;
 
             return true;
@@ -118,42 +118,68 @@ namespace Solti.Utils.DI.Internals
             return result;
         }
 
-        AbstractServiceEntry ISupportsSpecialization.Specialize(params Type[] genericArguments) => this switch
+        AbstractServiceEntry ISupportsSpecialization.Specialize(params Type[] genericArguments)
         {
+            CheckNotDisposed();
+            Ensure.Parameter.IsNotNull(genericArguments, nameof(genericArguments));
+
+            return this switch
+            {
+                //
+                // Itt ne a "Lifetime"-ot hasznaljuk mert a pool-t nem szeretnenk megegyszer regisztralni.
+                //
+
+                _ when Implementation is not null && ExplicitArgs is null => new PooledServiceEntry
+                (
+                    Interface.MakeGenericType(genericArguments),
+                    Name,
+                    Implementation.MakeGenericType(genericArguments),
+                    Owner
+                ),
+                _ when Implementation is not null && ExplicitArgs is not null => new PooledServiceEntry
+                (
+                    Interface.MakeGenericType(genericArguments),
+                    Name,
+                    Implementation.MakeGenericType(genericArguments),
+                    ExplicitArgs,
+                    Owner
+                ),
+                _ when Factory is not null => new PooledServiceEntry
+                (
+                    Interface.MakeGenericType(genericArguments),
+                    Name,
+                    Factory,
+                    Owner
+                ),
+                _ => throw new NotSupportedException()
+            };
+        }
+
+        public override object GetInstance(IServiceReference reference)
+        {
+            object instance = base.GetInstance(reference);
+
+            if (!reference.RelatedInjector!.GetOption<bool>(PooledLifetime.POOL_SCOPE))
+            {
+                //
+                // Ha fogyaszto oldalon vagyunk akkor PoolItem-et kapunk vissza, abbol kell elovarazsolni az erteket
+                //
+
+                var poolItem = (PoolItem<IServiceReference>) instance;
+                return poolItem
+                    .Value
+                    .GetInstance();
+            }
+
             //
-            // Itt ne a "Lifetime"-ot hasznaljuk mert a pool-t nem szeretnenk megegyszer regisztralni.
+            // Pool scope-ban nincs dolgunk
             //
 
-            _ when Implementation is not null && ExplicitArgs is null => new PooledServiceEntry
-            (
-                Interface.MakeGenericType(genericArguments),
-                Name,
-                Implementation.MakeGenericType(genericArguments),
-                Owner,
-                CustomConverters.ToArray()
-            ),
-            _ when Implementation is not null && ExplicitArgs is not null => new PooledServiceEntry
-            (
-                Interface.MakeGenericType(genericArguments),
-                Name,
-                Implementation.MakeGenericType(genericArguments),
-                ExplicitArgs,
-                Owner,
-                CustomConverters.ToArray()
-            ),
-            _ when Factory is not null => new PooledServiceEntry
-            (
-                Interface.MakeGenericType(genericArguments),
-                Name,
-                Factory,
-                Owner,
-                CustomConverters.ToArray()
-            ),
-            _ => throw new NotSupportedException()
-        };
-
-        public override IReadOnlyCollection<IServiceReference> Instances => FInstances;
+            return instance;
+        }
 
         public override Lifetime Lifetime { get; } = Lifetime.Pooled;
+
+        public override IReadOnlyCollection<IServiceReference> Instances => FInstances;
     }
 }

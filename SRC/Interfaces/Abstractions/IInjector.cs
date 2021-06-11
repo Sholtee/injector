@@ -21,9 +21,17 @@ namespace Solti.Utils.DI.Interfaces
         /// </summary>
         /// <param name="iface">The "id" of the service to be resolved. It must be an interface.</param>
         /// <param name="name">The (optional) name of the service.</param>
-        /// <returns>The resolved service.</returns>
+        /// <returns>The resolved service reference.</returns>
         /// <exception cref="ServiceNotFoundException">The service or one or more dependencies could not be found.</exception>
-        IServiceReference GetReference(Type iface, string? name);
+        IServiceReference GetReference(Type iface, string? name = null);
+
+        /// <summary>
+        /// Tries to get the <see cref="IServiceReference"/> associated with the given interface and (optional) name.
+        /// </summary>
+        /// <param name="iface">The "id" of the service to be resolved. It must be an interface.</param>
+        /// <param name="name">The (optional) name of the service.</param>
+        /// <returns>The resolved service reference.</returns>
+        IServiceReference? TryGetReference(Type iface, string? name = null);
 
         /// <summary>
         /// Gets the service instance associated with the given interface and (optional) name.

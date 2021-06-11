@@ -115,6 +115,15 @@ namespace Solti.Utils.DI.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You can not add dependency to an already instantiated service..
+        /// </summary>
+        internal static string FOREIGN_DEPENDENCY {
+            get {
+                return ResourceManager.GetString("FOREIGN_DEPENDENCY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Inappropriate ownership..
         /// </summary>
         internal static string INAPPROPRIATE_OWNERSHIP {

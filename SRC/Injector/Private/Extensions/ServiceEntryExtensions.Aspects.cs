@@ -45,7 +45,7 @@ namespace Solti.Utils.DI.Internals
                 ? compatibleParamz[0].Name
                 : "target";
 
-            Func<IInjector, IReadOnlyDictionary<string, object?>, object> factory = Resolver.GetExtended(ctor);
+            Func<IInjector, IReadOnlyDictionary<string, object?>, object> factory = ServiceActivator.GetExtended(ctor);
 
             return (IInjector injector, Type iface, object instance) => factory(injector, new Dictionary<string, object?>
             {

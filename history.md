@@ -198,3 +198,8 @@
   - *fixed:* Moved `ServiceEntryExtensions` to interfaces project (i consider it as a fix since it was declared accidentally in a wrong place)
   - *fixed:* `IServiceContainerBasicExtensions.Provider()` failed on generic service registration
   - *fixed:* Missing validation in `PooledLifetime`
+- 5.0.0:
+  - *breaking:* Dropped "custom converter"s
+  - *breaking:* Renamed `IServiceGraph` -> `IServicePath`
+  - *introduced:* `Solti.Utils.DI.Diagnostics` namespace
+  - *introduced:* `IInjector.TryGetReference()` method

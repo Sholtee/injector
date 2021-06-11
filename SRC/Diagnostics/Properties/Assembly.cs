@@ -1,9 +1,10 @@
 ﻿/********************************************************************************
-* IServiceGraph.cs                                                              *
+* Assembly.cs                                                                   *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
-using Solti.Utils.DI.Interfaces;
+using System;
+using System.Resources;
 using System.Runtime.CompilerServices;
 
-[assembly: TypeForwardedTo(typeof(IServiceGraph))]
+[assembly: NeutralResourcesLanguage("en"), CLSCompliant(true), InternalsVisibleTo("Solti.Utils.DI.Tests")]

@@ -14,14 +14,13 @@ namespace Solti.Utils.DI.Internals
     using Primitives.Threading;
     using Properties;
 
-    /// <summary>
-    /// Describes a singleton service entry.
-    /// </summary>
     internal class SingletonServiceEntry : ProducibleServiceEntry
     {
         private readonly ConcurrentBag<IServiceReference> FInstances = new();
 
         private readonly ExclusiveBlock FExclusiveBlock = new();
+
+        protected override void SaveReference(IServiceReference serviceReference) => FInstances.Add(serviceReference);
 
         protected override void Dispose(bool disposeManaged)
         {
@@ -37,15 +36,15 @@ namespace Solti.Utils.DI.Internals
             await base.AsyncDispose();
         }
 
-        public SingletonServiceEntry(Type @interface, string? name, Func<IInjector, Type, object> factory, IServiceContainer owner, params Func<object, Type, object>[] customConverters) : base(@interface, name, factory, owner, customConverters)
+        public SingletonServiceEntry(Type @interface, string? name, Func<IInjector, Type, object> factory, IServiceContainer owner) : base(@interface, name, factory, owner)
         {
         }
 
-        public SingletonServiceEntry(Type @interface, string? name, Type implementation, IServiceContainer owner, params Func<object, Type, object>[] customConverters) : base(@interface, name, implementation, owner, customConverters)
+        public SingletonServiceEntry(Type @interface, string? name, Type implementation, IServiceContainer owner) : base(@interface, name, implementation, owner)
         {
         }
 
-        public SingletonServiceEntry(Type @interface, string? name, Type implementation, IReadOnlyDictionary<string, object?> explicitArgs, IServiceContainer owner, params Func<object, Type, object>[] customConverters) : base(@interface, name, implementation, explicitArgs, owner, customConverters)
+        public SingletonServiceEntry(Type @interface, string? name, Type implementation, IReadOnlyDictionary<string, object?> explicitArgs, IServiceContainer owner) : base(@interface, name, implementation, explicitArgs, owner)
         {
         }
 
@@ -54,7 +53,6 @@ namespace Solti.Utils.DI.Internals
             using (FExclusiveBlock.Enter())
             {
                 EnsureAppropriateReference(reference);
-                EnsureProducible();
 
                 //
                 // Singleton bejegyzeshez mindig sajat injector van letrehozva a deklaralo kontenerbol
@@ -71,22 +69,21 @@ namespace Solti.Utils.DI.Internals
                 if (State.HasFlag(ServiceEntryStates.Built)) return false;
 
                 //
-                // Kulonben legyartjuk: 
-                // - Elsokent a Factory-t hivjuk es Instance-nak csak sikeres visszateres eseten adjunk erteket.
-                // - "Factory" biztosan nem NULL [lasd EnsureProducible()].
+                // Kulonben legyartjuk
                 //
 
-                reference.Value = Factory!(relatedInjector, Interface);
+                base.SetInstance(reference);
 
-                FInstances.Add(reference);
                 State |= ServiceEntryStates.Built;
 
                 return true;
             }
         }
 
-        public override IReadOnlyCollection<IServiceReference> Instances => FInstances;
-
         public override Lifetime Lifetime { get; } = Lifetime.Singleton;
+
+        public override bool IsShared => true;
+
+        public override IReadOnlyCollection<IServiceReference> Instances => FInstances;
     }
 }

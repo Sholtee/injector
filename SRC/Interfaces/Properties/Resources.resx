@@ -120,6 +120,9 @@
   <data name="INAPROPRIATE_OWNERSHIP" xml:space="preserve">
     <value>Not owned entry can not be proxied.</value>
   </data>
+  <data name="INCOMPATIBLE_REFERENCE" xml:space="preserve">
+    <value>The given service reference is not compatible.</value>
+  </data>
   <data name="NOT_AN_INTERFACE" xml:space="preserve">
     <value>Parameter must be an interface.</value>
   </data>
