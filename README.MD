@@ -591,6 +591,7 @@ This project currently targets *.NET Standard* 2.0 and 2.1.
 - Auto service registration has been removed, so you should register all the services manually
 - Configuration has been moved to `runtimeconfig.json` (and got a new layout). See [this](https://github.com/Sholtee/injector/blob/master/TEST/Injector.Tests/runtimeconfig.template.json ) as a reference
 ## Migrating from version 4.X
+- *Custom converter* support has been dropped so instances returned by *factory function*s must implement the service interface.
 - Renamed built in service `IServiceGraph` to `IServicePath`.
 ## Version history
 Can be found [here](https://github.com/Sholtee/injector/blob/master/history.md )
