@@ -4,14 +4,16 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 
 namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
 
-    internal abstract class InjectorDotNetLifetime<TLifetime> : Lifetime, IHasPrecedence where TLifetime: InjectorDotNetLifetime<TLifetime>, new()
+    internal abstract class InjectorDotNetLifetime : Lifetime, IHasPrecedence
     {
         private PropertyInfo BoundProperty { get; }
 
@@ -21,16 +23,20 @@ namespace Solti.Utils.DI.Internals
             Precedence = precedence;
         }
 
-        protected static void Bind()  // ModuleInitializer-bol kell hivni
+        [ModuleInitializer]
+        public static void Initialize() // nem lehet generikusban
         {
-            var self = new TLifetime();
-            self.BoundProperty.SetValue(null, self);
+            foreach (Type t in typeof(InjectorDotNetLifetime).Assembly.DefinedTypes.Where(t => t.GetInterfaces().Any(iface => iface.GUID == typeof(IConcreteLifetime<>).GUID)))
+            {
+                var lifetime = (InjectorDotNetLifetime) Activator.CreateInstance(t);
+                lifetime.BoundProperty.SetValue(null, lifetime);
+            }
         }
 
         public int Precedence { get; }
 
-        public override int CompareTo(Lifetime other) => other is IHasPrecedence hasPriority
-            ? Precedence - hasPriority.Precedence
+        public override int CompareTo(Lifetime other) => other is IHasPrecedence hasPrecedence
+            ? Precedence - hasPrecedence.Precedence
             : other.CompareTo(this) * -1;
 
         public override string ToString() => BoundProperty.Name;

@@ -6,21 +6,17 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Runtime.CompilerServices;
 
 namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
 
-    internal sealed partial class PooledLifetime : InjectorDotNetLifetime<PooledLifetime>, IHasCapacity
+    internal sealed partial class PooledLifetime : InjectorDotNetLifetime, IHasCapacity, IConcreteLifetime<PooledLifetime>
     {
         [SuppressMessage("Performance", "CA1802:Use literals where appropriate", Justification = "Due to interpolation it cannot be const.")]
         public static readonly string POOL_SCOPE = $"_{nameof(POOL_SCOPE)}";
 
         public PooledLifetime() : base(bindTo: () => Pooled, precedence: 20) { }
-
-        [ModuleInitializer]
-        public static void Setup() => Bind();
 
         public static string GetPoolName(Type iface, string? name) =>
             //

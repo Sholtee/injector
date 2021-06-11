@@ -16,18 +16,12 @@ namespace Solti.Utils.DI.Perf
 
     public class InjectorTestsBase
     {
-        static InjectorTestsBase() 
-        {
+        static InjectorTestsBase() =>
             //
             // Ugy tunik a modul inicializalok nem futnak ha a kodunkat a BenchmarkDotNet forditja
             //
 
-            InstanceLifetime.Setup();
-            SingletonLifetime.Setup();
-            TransientLifetime.Setup();
-            ScopedLifetime.Setup();
-            PooledLifetime.Setup();
-        }
+            InjectorDotNetLifetime.Initialize();
 
         private IServiceContainer FContainer;
 
