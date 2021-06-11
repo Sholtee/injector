@@ -201,4 +201,5 @@
 - 5.0.0:
   - *breaking:* Dropped "custom converter"s
   - *breaking:* Renamed `IServiceGraph` -> `IServicePath`
+  - *introduced:* `Solti.Utils.DI.Diagnostics` namespace
   - *introduced:* `IInjector.TryGetReference()` method
