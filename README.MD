@@ -590,7 +590,7 @@ using (IInjector injector = container.CreateInjector())
   ...
 }
 ```
-![Injector.NET dependency graph](https://github.com/Sholtee/injector/raw/master/assets/dep_graph.svg) 
+![Injector.NET dependency graph](https://raw.githubusercontent.com/Sholtee/injector/master/Assets/dep_graph.svg ) 
 ## Resources
 You can browse the [detailed API docs](https://sholtee.github.io/injector ) or the [benchmark results](https://sholtee.github.io/injector/perf/ ).
 ## Supported frameworks
