@@ -5,6 +5,7 @@
 |:--:|:--:|
 |**Injector.NET**|[![Nuget (with prereleases)](https://img.shields.io/nuget/vpre/injector.net)](https://www.nuget.org/packages/injector.net )|
 |**Injector.NET.Interfaces**|[![Nuget (with prereleases)](https://img.shields.io/nuget/vpre/injector.net.interfaces)](https://www.nuget.org/packages/injector.net.interfaces )|
+|**Injector.NET.Diagnostics**|[![Nuget (with prereleases)](https://img.shields.io/nuget/vpre/injector.net.diagnostics)](https://www.nuget.org/packages/injector.net.diagnostics )|
 
 **This documentation refers the version 5.X of the library**
 ## Overview
@@ -116,7 +117,7 @@ Registering a service can be done via several patterns (I name them recipes):
         public MyService(IService_1 dep1, [Options(Optional = true)]IService_2 dep2) {...}
       }
       ```
-  - By default services must not have non-interface dependency. To work around this limitation you can specify custom constructor arguments on service registration:
+  - By default services must not have non-interface dependency. To work around this limitation you can provide custom constructor arguments:
     ```csharp
     container.Service<IMyService, MyService>(new Dictionary<string, object?>{["paramName"] = someValue}, Lifetime.Transient);
     ```
@@ -417,7 +418,7 @@ public interface IService
 }
 ```
 ### Naked aspects
-An aspect is naked when it references its interceptor by name (and the interceptor is placed in a spearate assembly). This practice ensures the separation of concerns (the project containing the service interface won't reference logic related assemblies implicitly).
+An aspect is naked when it references its interceptor by name (and the interceptor is placed in a spearate assembly). This practice ensures the *separation of concerns* (the project containing the service interface won't reference logic related assemblies implicitly).
 ```csharp
 ...
 [AttributeUsage(AttributeTargets.Interface, AllowMultiple = false)]
@@ -575,6 +576,20 @@ Differences compared to `IInjector`:
 - Every requested service is optional (so `IServiceProvider.GetService()` does not throw if a service can not be found). This rule applies to services requested via constructor parameters too.
 - You can request named services only by using `OptionsAttribute` (`IServiceProvider.GetService()` has no name parameter).
 - Since the `IServiceProvider` interface is not an `IDisposable` descendant you should release the disposable returned by the `CreateProvider()` to end the scope lifetime.
+## Visualizing the dependency graph
+This library has built in [DOT Graph](https://graphviz.org ) support (requires the [Injector.NET.Diagnostics](https://www.nuget.org/packages/injector.net.diagnostics ) package):
+```csharp
+using Solti.Utils.DI;
+using Solti.Utils.DI.Diagnostics;
+using Solti.Utils.DI.Interfaces;
+...
+...
+using (IInjector injector = container.CreateInjector())
+{
+  string graph = injector.GetDependencyGraph<IMyService>()
+  ...
+}
+```
 ## Resources
 You can browse the [detailed API docs](https://sholtee.github.io/injector ) or the [benchmark results](https://sholtee.github.io/injector/perf/ ).
 ## Supported frameworks
