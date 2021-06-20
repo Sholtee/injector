@@ -64,17 +64,14 @@ namespace Solti.Utils.DI
             if (Value is not null)
                 throw new InvalidOperationException(Resources.FOREIGN_DEPENDENCY);
 
-            dependency.AddRef();
+            dependency.AddRef(); // dobhat kivetelt
 
-            try
-            {
-                FDependencies.Add(dependency);
-            }
-            catch 
-            {
-                dependency.Release();
-                throw;
-            }
+            //
+            // Elvileg nem dobhat kivetelt igy nem gond h "dependency" referencia szamlalojat korabban
+            // noveltuk meg.
+            //
+
+            FDependencies.Add(dependency);
         }
 
         public object? Value
@@ -89,6 +86,11 @@ namespace Solti.Utils.DI
                 CheckNotDisposed();
 
                 Ensure.Parameter.IsNotNull(value, nameof(value));
+
+                //
+                // Tudatosan nincs tipus validalas (PooledServiceEntry pl nem RelatedServiceEntry.Interface tipusu
+                // erteket allit be).
+                //
 
                 FValue.Value = value;
             }
