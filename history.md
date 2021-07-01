@@ -203,3 +203,5 @@
   - *breaking:* Renamed `IServiceGraph` -> `IServicePath`
   - *introduced:* `Solti.Utils.DI.Diagnostics` namespace
   - *introduced:* `IInjector.TryGetReference()` method
+- 5.0.1:
+  - *updated:* Dependencies
