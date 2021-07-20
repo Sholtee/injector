@@ -204,9 +204,9 @@ namespace Solti.Utils.DI.Container.Tests
 
         public OrderInspectingProxyBase(TInterface target, string name) : base(target) => Name = name;
 
-        public override object Invoke(MethodInfo method, object[] args, MemberInfo extra)
+        public override object Invoke(InvocationContext context)
         {
-            IEnumerable<string> result = (IEnumerable<string>) base.Invoke(method, args, extra);
+            IEnumerable<string> result = (IEnumerable<string>) base.Invoke(context);
 
             return result.Append(Name);
         }

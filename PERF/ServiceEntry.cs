@@ -48,7 +48,7 @@ namespace Solti.Utils.DI.Perf
         {
             public DummyContainer() : base(null) {}
 
-            public override object Invoke(MethodInfo method, object[] args, MemberInfo extra)
+            public override object Invoke(InvocationContext context)
                 => throw new InvalidOperationException("Owner methods should not be invoked.");
         }
 

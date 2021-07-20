@@ -230,11 +230,11 @@ namespace Solti.Utils.DI.UseCases
 
             public MethodInvocationLoggerInterceptor(TInterface target, ILogger logger): base(target) => Logger = logger;
 
-            public override object Invoke(MethodInfo method, object[] args, MemberInfo extra)
+            public override object Invoke(InvocationContext context)
             {
-                Logger.Write($"{method.Name}({string.Join(", ", args.Select(arg => arg?.ToString() ?? "null"))})");
+                Logger.Write($"{context.Method.Name}({string.Join(", ", context.Args.Select(arg => arg?.ToString() ?? "null"))})");
 
-                return base.Invoke(method, args, extra);
+                return base.Invoke(context);
             }
         }
 
