@@ -205,3 +205,7 @@
   - *introduced:* `IInjector.TryGetReference()` method
 - 5.0.1:
   - *updated:* Dependencies
+- 6.0.0:
+  - *breaking:* The layout of the `InterfaceInterceptor<>` class has been changed. For more information see [this](https://github.com/Sholtee/proxygen#migrating-from-version ) or [that](https://sholtee.github.io/proxygen/doc/Solti.Utils.Proxy.InterfaceInterceptor-1.html )
+  - *introduced:* `ServiceContainer.MaxChildCount` property
+  - *improved:* `IServiceContainer.CreateChild()`, `IServiceContainer.CreateInjector()`, `ServiceContainer.Dispose()`, `Injector.Dispose()` performance
