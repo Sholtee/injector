@@ -8,7 +8,7 @@
   <Import Project="../Common.targets" />
 
   <ItemGroup>
-    <PackageReference Include="Solti.Utils.Primitives" Version="2.*" />
+    <PackageReference Include="Solti.Utils.Primitives" Version="3.*" />
   </ItemGroup>
 
   <ItemGroup>
