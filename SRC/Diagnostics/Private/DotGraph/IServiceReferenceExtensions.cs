@@ -17,7 +17,7 @@ namespace Solti.Utils.DI.Internals
             (
                 friendlyName.GetHashCode
                 (
-#if !NETSTANDARD2_0
+#if NETSTANDARD2_1_OR_GREATER
                     System.StringComparison.OrdinalIgnoreCase
 #endif
                 )

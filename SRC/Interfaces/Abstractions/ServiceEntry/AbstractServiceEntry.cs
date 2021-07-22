@@ -161,7 +161,7 @@ namespace Solti.Utils.DI.Interfaces
         /// <returns>The hash code of this entry.</returns>
         public override int GetHashCode()
         {
-#if !NETSTANDARD2_0
+#if NETSTANDARD2_1_OR_GREATER
             var hashCode = new HashCode();
 
             hashCode.Add(Owner);

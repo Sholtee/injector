@@ -13,10 +13,10 @@ namespace Solti.Utils.DI.Internals
     internal sealed class ServiceIdComparer : ComparerBase<ServiceIdComparer, IServiceId>
     {
         public override int GetHashCode(IServiceId obj) =>
-#if NETSTANDARD2_0
-            new { obj.Interface, obj.Name }.GetHashCode()
-#else
+#if NETSTANDARD2_1_OR_GREATER
             HashCode.Combine(obj.Interface, obj.Name)
+#else
+            new { obj.Interface, obj.Name }.GetHashCode()        
 #endif
             ;
     }
