@@ -15,7 +15,6 @@ namespace Solti.Utils.DI.Interfaces
     /// Provides the mechanism of storing service entries.
     /// </summary>
     /// <remarks>The implementations have to be thread safe.</remarks>
-    [SuppressMessage("Naming", "CA1710:Identifiers should have correct suffix", Justification = "The name is meaningful.")]
     public interface IServiceContainer : IComposite<IServiceContainer>, IEnumerable<AbstractServiceEntry>, IDisposableEx
     {
         /// <summary>

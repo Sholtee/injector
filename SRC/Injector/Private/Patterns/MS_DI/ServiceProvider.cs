@@ -15,7 +15,7 @@ namespace Solti.Utils.DI.Internals
         public ServiceProvider(IServiceContainer parent, IReadOnlyDictionary<string, object>? options) : base(parent, options)
             => this.Instance<IServiceProvider>(this);
 
-        public override Injector CreateScope(IReadOnlyDictionary<string, object>? options) => new ServiceProvider(Parent!, options);
+        public override Injector CreateScope(IReadOnlyDictionary<string, object>? options) => new ServiceProvider((IServiceContainer) Parent!, options);
 
         public override Injector CreateScope(IServiceContainer parent, IReadOnlyDictionary<string, object>? options) => new ServiceProvider(parent, options);
 

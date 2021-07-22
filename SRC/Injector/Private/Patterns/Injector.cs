@@ -111,7 +111,7 @@ namespace Solti.Utils.DI.Internals
         #endregion
 
         #region IScopeFactory
-        public virtual Injector CreateScope(IReadOnlyDictionary<string, object>? options) => new Injector(Parent!, options);
+        public virtual Injector CreateScope(IReadOnlyDictionary<string, object>? options) => new Injector((IServiceContainer) Parent!, options);
 
         public virtual Injector CreateScope(IServiceContainer parent, IReadOnlyDictionary<string, object>? options) => new Injector(parent, options);
 

@@ -25,7 +25,6 @@ namespace Solti.Utils.DI
     /// Implements the <see cref="IServiceContainer"/> interface.
     /// </summary>
     /// <remarks>All public members of this class are thread safe.</remarks>
-    [SuppressMessage("Naming", "CA1710:Identifiers should have correct suffix", Justification = "The name provides meaningful information about the implementation")]
     public class ServiceContainer : Composite<IServiceContainer>, IServiceContainer
     {
         /// <summary>
@@ -227,11 +226,14 @@ namespace Solti.Utils.DI
         /// Creates a new <see cref="ServiceContainer"/> instance copying the entries from the <paramref name="parent"/>.
         /// </summary>
         /// <param name="parent">The parent <see cref="IServiceContainer"/>.</param>
-        [SuppressMessage("Usage", "CA2214:Do not call overridable methods in constructors", Justification = "This is intended to make inheritance logic extensible.")]
-        protected internal ServiceContainer(IServiceContainer? parent) : base(parent, Config.Value.ServiceContainer.MaxChildCount)
+        protected internal ServiceContainer(IServiceContainer? parent) : base()
         {
+            MaxChildCount = Config.Value.ServiceContainer.MaxChildCount;
             FEntries = new Dictionary<IServiceId, AbstractServiceEntry>(parent?.Count ?? 0, ServiceIdComparer.Instance);
-            if (parent == null) return;
+
+            if (parent is null) return;
+
+            Parent = parent;
 
             try
             {
