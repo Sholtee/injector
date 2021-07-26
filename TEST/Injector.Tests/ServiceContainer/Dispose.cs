@@ -67,30 +67,30 @@ namespace Solti.Utils.DI.Container.Tests
         public void IServiceContainer_Dispose_ShouldDisposeChildContainerAndItsEntries()
         {
             IServiceContainer grandChild;
-            IDisposable instance;
+            IDisposableEx instance;
 
             using (IServiceContainer child = Container.CreateChild())
             {
                 grandChild = child.CreateChild().Instance(instance = new Disposable(), releaseOnDispose: true);
             }
 
-            Assert.Throws<ObjectDisposedException>(grandChild.Dispose);
-            Assert.Throws<ObjectDisposedException>(instance.Dispose);
+            Assert.That(grandChild.Disposed);
+            Assert.That(instance.Disposed);
         }
 
         [Test]
         public async Task IServiceContainer_DisposeAsync_ShouldDisposeChildContainerAndItsEntries()
         {
             IServiceContainer grandChild;
-            IDisposable instance;
+            IDisposableEx instance;
 
             await using (IServiceContainer child = Container.CreateChild())
             {
                 grandChild = child.CreateChild().Instance(instance = new Disposable(), releaseOnDispose: true);
             }
 
-            Assert.Throws<ObjectDisposedException>(grandChild.Dispose);
-            Assert.Throws<ObjectDisposedException>(instance.Dispose);
+            Assert.That(grandChild.Disposed);
+            Assert.That(instance.Disposed);
         }
 
         [Test]
