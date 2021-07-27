@@ -106,7 +106,7 @@ namespace Solti.Utils.DI.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Entry can not be specialized..
+        ///   Looks up a localized string similar to Entry ({0}) can not be specialized..
         /// </summary>
         internal static string ENTRY_CANNOT_BE_SPECIALIZED {
             get {

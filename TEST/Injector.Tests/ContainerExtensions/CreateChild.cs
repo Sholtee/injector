@@ -26,9 +26,9 @@ namespace Solti.Utils.DI.Container.Tests
 
             IServiceContainer child = Container.CreateChild();
 
-            Assert.AreEqual(GetHashCode(Container.Get<IInterface_1>(QueryModes.ThrowOnError)), GetHashCode(child.Get<IInterface_1>(QueryModes.ThrowOnError)));
-            Assert.AreEqual(GetHashCode(Container.Get<IInterface_2>(QueryModes.ThrowOnError)), GetHashCode(child.Get<IInterface_2>(QueryModes.ThrowOnError)));
-            Assert.AreEqual(GetHashCode(Container.Get<IDisposable>(QueryModes.ThrowOnError)), GetHashCode(child.Get<IDisposable>(QueryModes.ThrowOnError)));
+            Assert.AreEqual(GetHashCode(Container.Get<IInterface_1>(QueryModes.ThrowOnMissing)), GetHashCode(child.Get<IInterface_1>(QueryModes.ThrowOnMissing)));
+            Assert.AreEqual(GetHashCode(Container.Get<IInterface_2>(QueryModes.ThrowOnMissing)), GetHashCode(child.Get<IInterface_2>(QueryModes.ThrowOnMissing)));
+            Assert.AreEqual(GetHashCode(Container.Get<IDisposable>(QueryModes.ThrowOnMissing)), GetHashCode(child.Get<IDisposable>(QueryModes.ThrowOnMissing)));
 
             int GetHashCode(AbstractServiceEntry info) => new
             {
@@ -65,7 +65,7 @@ namespace Solti.Utils.DI.Container.Tests
                 .Service<IInterface_1, Implementation_1_No_Dep>(lifetime)
                 .CreateChild();
 
-            Assert.DoesNotThrow(() => child.Get<IInterface_1>(QueryModes.ThrowOnError));
+            Assert.DoesNotThrow(() => child.Get<IInterface_1>(QueryModes.ThrowOnMissing));
         }
 
         [TestCaseSource(nameof(Lifetimes))]
@@ -74,16 +74,16 @@ namespace Solti.Utils.DI.Container.Tests
             Container.Service<IInterface_1, Implementation_1_No_Dep>(lifetime);
 
             Func<IInjector, Type, object>
-                originalFactory = Container.Get<IInterface_1>(QueryModes.ThrowOnError).Factory,
+                originalFactory = Container.Get<IInterface_1>(QueryModes.ThrowOnMissing).Factory,
                 proxiedFactory = Container
                     .Proxy<IInterface_1>((me, val) => new DecoratedImplementation_1())
-                    .Get<IInterface_1>(QueryModes.ThrowOnError)
+                    .Get<IInterface_1>(QueryModes.ThrowOnMissing)
                     .Factory;
 
             Assert.AreNotSame(originalFactory, proxiedFactory);
 
             IServiceContainer child = Container.CreateChild();
-            Assert.AreSame(proxiedFactory, child.Get<IInterface_1>(QueryModes.ThrowOnError).Factory);
+            Assert.AreSame(proxiedFactory, child.Get<IInterface_1>(QueryModes.ThrowOnMissing).Factory);
         }
 
         [TestCaseSource(nameof(Lifetimes))]
@@ -93,8 +93,8 @@ namespace Solti.Utils.DI.Container.Tests
                 .CreateChild()
                 .Service<IInterface_1, Implementation_1_No_Dep>(lifetime);
 
-            Assert.Throws<ServiceNotFoundException>(() => Container.Get<IInterface_1>(QueryModes.ThrowOnError));
-            Assert.DoesNotThrow(() => child.Get<IInterface_1>(QueryModes.ThrowOnError));
+            Assert.Throws<ServiceNotFoundException>(() => Container.Get<IInterface_1>(QueryModes.ThrowOnMissing));
+            Assert.DoesNotThrow(() => child.Get<IInterface_1>(QueryModes.ThrowOnMissing));
         }
 
         [Test]

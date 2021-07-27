@@ -14,16 +14,16 @@ namespace Solti.Utils.DI.Interfaces
     public enum QueryModes
     {
         /// <summary>
-        /// Allows returning NULL if the desired service could not be queried.
+        /// Allows returning NULL if the desired service could not be found.
         /// </summary>
         #pragma warning disable CA1008 // "Default" is the zero value
         Default = 0,
         #pragma warning restore CA1008
 
         /// <summary>
-        /// Instructs the <see cref="IServiceContainer.Get"/> to throw if the desired service could not be queried.
+        /// Instructs the <see cref="IServiceContainer.Get"/> to throw if the desired service could not be found.
         /// </summary>
-        ThrowOnError,
+        ThrowOnMissing,
 
         /// <summary>
         /// Allows "auto registering" if the entry can be specialized.

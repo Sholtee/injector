@@ -71,7 +71,7 @@ namespace Solti.Utils.DI.Perf
         {
             for (int i = 0; i < OperationsPerInvoke; i++)
             {
-                FContainer.Get<IList>(QueryModes.ThrowOnError);
+                FContainer.Get<IList>(QueryModes.ThrowOnMissing);
             }
         }
 
@@ -92,7 +92,7 @@ namespace Solti.Utils.DI.Perf
         {
             for (int i = 0; i < OperationsPerInvoke; i++)
             {
-                FContainer.Get<IList<object>>(i.ToString(), QueryModes.AllowSpecialization | QueryModes.ThrowOnError);
+                FContainer.Get<IList<object>>(i.ToString(), QueryModes.AllowSpecialization | QueryModes.ThrowOnMissing);
             }
         }
     }

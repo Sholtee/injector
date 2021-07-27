@@ -181,7 +181,7 @@
     <value>Parameter should not be abstract.</value>
   </data>
   <data name="ENTRY_CANNOT_BE_SPECIALIZED" xml:space="preserve">
-    <value>Entry can not be specialized.</value>
+    <value>Entry ({0}) can not be specialized.</value>
   </data>
   <data name="POOL_ITEM_ALREADY_TAKEN" xml:space="preserve">
     <value>The pool item you requested already held by the current thread.</value>

@@ -48,7 +48,7 @@ namespace Solti.Utils.DI
             if (interceptor == null)
                 throw new ArgumentNullException(nameof(interceptor));
 
-            AbstractServiceEntry entry = self.Get(iface, name, QueryModes.AllowSpecialization | QueryModes.ThrowOnError)!;
+            AbstractServiceEntry entry = self.Get(iface, name, QueryModes.AllowSpecialization | QueryModes.ThrowOnMissing)!;
 
             if (entry.Owner != self)
                 throw new InvalidOperationException(Resources.INAPROPRIATE_OWNERSHIP);

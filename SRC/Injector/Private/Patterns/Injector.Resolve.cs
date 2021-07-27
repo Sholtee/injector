@@ -125,7 +125,7 @@ namespace Solti.Utils.DI.Internals
                 // miatt "relatedEntry" tuti nem NULL.
                 //
 
-                AbstractServiceEntry requested = Get(iface, name, QueryModes.AllowSpecialization | QueryModes.ThrowOnError)!;
+                AbstractServiceEntry requested = Get(iface, name, QueryModes.AllowSpecialization | QueryModes.ThrowOnMissing)!;
 
                 if (Config.Value.Injector.StrictDI)
                 {

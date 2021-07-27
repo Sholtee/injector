@@ -123,7 +123,7 @@ namespace Solti.Utils.DI
                 //
 
                 if (!hasGenericEntry)
-                    return !mode.HasFlag(QueryModes.ThrowOnError) 
+                    return !mode.HasFlag(QueryModes.ThrowOnMissing) 
                         ? (AbstractServiceEntry?) null 
                         : throw new ServiceNotFoundException(string.Format(Resources.Culture, Resources.SERVICE_NOT_FOUND, key.FriendlyName()));
             }
@@ -155,8 +155,7 @@ namespace Solti.Utils.DI
                         .Get(serviceInterface, name, mode);
 
                     //
-                    // "specialized" lehet NULL ha a "QueryModes.ThrowOnError" nem volt beallitva es "existing"
-                    // nem valositja meg a "ISupportsSpecialization" interface-t.
+                    // "specialized" elmeletben lehet NULL.
                     //
 
                     return specialized?.CopyTo(this);
@@ -166,19 +165,15 @@ namespace Solti.Utils.DI
                 // Ha mi vagyunk a tulajdonosok akkor nekunk kell tipizalni majd felvenni a bejegyzest.
                 //
 
-                if (existing is ISupportsSpecialization generic) 
-                {
-                    //
-                    // Ne az "FEntries.Add(specialized, specialized)"-ot hivjuk mert a "this.Add()" virtualis.
-                    //
+                if (existing is not ISupportsSpecialization generic)
+                    throw new NotSupportedException(string.Format(Resources.Culture, Resources.ENTRY_CANNOT_BE_SPECIALIZED, key.FriendlyName()));
 
-                    Add(specialized = generic.Specialize(serviceInterface.GetGenericArguments()));
-                    return specialized;
-                }
+                //
+                // Ne az "FEntries.Add(specialized, specialized)"-ot hivjuk mert a "this.Add()" virtualis.
+                //
 
-                return !mode.HasFlag(QueryModes.ThrowOnError)
-                    ? (AbstractServiceEntry?) null
-                    : throw new NotSupportedException(Resources.ENTRY_CANNOT_BE_SPECIALIZED);
+                Add(specialized = generic.Specialize(serviceInterface.GetGenericArguments()));
+                return specialized;           
             }
 
             IServiceId MakeId(Type iface) => new ServiceId(iface, name);

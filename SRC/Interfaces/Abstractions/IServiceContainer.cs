@@ -31,8 +31,8 @@ namespace Solti.Utils.DI.Interfaces
         /// <param name="name">The (optional) name of the service.</param>
         /// <param name="mode">Options</param>
         /// <returns>The requested service entry.</returns>
-        /// <exception cref="ServiceNotFoundException">If the <see cref="QueryModes.ThrowOnError"/> flag was set and the service could not be found.</exception>
-        /// <exception cref="NotSupportedException">If the <see cref="QueryModes.ThrowOnError"/> flag was set and the service could not be specialized.</exception>
+        /// <exception cref="ServiceNotFoundException">If the <see cref="QueryModes.ThrowOnMissing"/> flag was set and the service could not be found.</exception>
+        /// <exception cref="NotSupportedException">If the service could not be specialized.</exception>
         [SuppressMessage("Naming", "CA1716:Identifiers should not match keywords", Justification = "The identifier won't confuse the users of the API.")]
         AbstractServiceEntry? Get(Type serviceInterface, string? name = null, QueryModes mode = QueryModes.Default);
 

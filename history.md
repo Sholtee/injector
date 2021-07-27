@@ -207,5 +207,6 @@
   - *updated:* Dependencies
 - 6.0.0:
   - *breaking:* The layout of the `InterfaceInterceptor<>` class has been changed. For more information see [this](https://github.com/Sholtee/proxygen#migrating-from-version ) or [that](https://sholtee.github.io/proxygen/doc/Solti.Utils.Proxy.InterfaceInterceptor-1.html )
+  - *breaking:* Renamed `QueryModes.ThrowOnError` -> `QueryModes.ThrowOnMissing`. Along with this change the behavior of `ServiceContainer.Get()` has been altered too: It may throw if the desired service is found but can not be specialized.
   - *introduced:* Initializer for the `ServiceContainer.MaxChildCount` property
   - *improved:* `IServiceContainer.CreateChild()`, `IServiceContainer.CreateInjector()`, `ServiceContainer.Dispose()`, `Injector.Dispose()` performance

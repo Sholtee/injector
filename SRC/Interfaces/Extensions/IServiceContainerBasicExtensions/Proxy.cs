@@ -34,7 +34,7 @@ namespace Solti.Utils.DI.Interfaces
             // - "QueryModes.ThrowOnError" miatt "entry" sose NULL
             //
 
-            AbstractServiceEntry entry = self.Get(iface, name, QueryModes.AllowSpecialization | QueryModes.ThrowOnError)!;
+            AbstractServiceEntry entry = self.Get(iface, name, QueryModes.AllowSpecialization | QueryModes.ThrowOnMissing)!;
 
             if (entry.Owner != self)
                 throw new InvalidOperationException(Resources.INAPROPRIATE_OWNERSHIP);
