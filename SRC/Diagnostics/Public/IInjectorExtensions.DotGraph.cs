@@ -1,5 +1,5 @@
 ﻿/********************************************************************************
-* IInjectorExtensions.cs                                                        *
+* IInjectorExtensions.DotGraph.cs                                               *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
@@ -10,10 +10,7 @@ namespace Solti.Utils.DI.Diagnostics
     using Interfaces;
     using Internals;
 
-    /// <summary>
-    /// Defines some diagnostic related extensions for the <see cref="IInjector"/> interface.
-    /// </summary>
-    public static class IInjectorExtensions
+    public static partial class IInjectorExtensions
     {
         /// <summary>
         /// Gets the dependency graph in <a href="https://graphviz.org/">DOT graph</a> format.

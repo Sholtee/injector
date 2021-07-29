@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <AssemblyName>Solti.Utils.DI.Diagnostics</AssemblyName>
@@ -21,6 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="ProxyGen.NET" Version="5.*" />
     <PackageReference Include="Solti.Utils.Primitives" Version="3.*" />
   </ItemGroup>
 
