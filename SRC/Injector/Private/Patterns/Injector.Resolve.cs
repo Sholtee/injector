@@ -110,7 +110,7 @@ namespace Solti.Utils.DI.Internals
             }
         }
 
-        private IServiceReference Resolve(Type iface, string? name)
+        private IServiceReference? Resolve(Type iface, string? name, QueryModes queryModes)
         {
             //
             // Ha vkinek a fuggosege vagyunk akkor a fuggo szerviz itt meg nem lehet legyartva.
@@ -118,56 +118,18 @@ namespace Solti.Utils.DI.Internals
 
             Assert(FPath.Requestor?.Value is null, "Already produced services can not request dependencies");
 
+            AbstractServiceEntry? requested;
+
             try
             {
-                //
-                // Bejegyzes lekerdezese, generikus bejegyzes tipizalasat megengedjuk. A "QueryModes.ThrowOnError" 
-                // miatt "relatedEntry" tuti nem NULL.
-                //
-
-                AbstractServiceEntry requested = Get(iface, name, QueryModes.AllowSpecialization | QueryModes.ThrowOnMissing)!;
-
-                if (Config.Value.Injector.StrictDI)
-                {
-                    AbstractServiceEntry? requestor = FPath.Requestor?.RelatedServiceEntry;
-
-                    //
-                    // - Ha a fuggosegi fa gyokerenel vagyunk akkor a metodus nem ertelmezett.
-                    // - A kerelmezett szerviznek legalabb addig kell leteznie mint a kerelmezo szerviznek.
-                    //
-
-                    if (requestor is not null && requested.Lifetime!.CompareTo(requestor.Lifetime!) < 0)
-                    {
-                        var ex = new RequestNotAllowedException(Resources.STRICT_DI);
-                        ex.Data["requestor"] = requestor;
-                        ex.Data["requested"] = requested;
-
-                        throw ex;
-                    }
-                }
-
-                //
-                // Fuggosegek feloldasa es peldanyositas (ez a metodus rekurzivan ismet meghivasra kerulhet)
-                //
-
-                IServiceReference resolved = Resolve(requested);
-
-                //
-                // Minden fuggoseget megtalaltunk, a szerviz sikeresen peldanyositasra kerult.
-                // Ha a szervizt egy masik szerviz fuggosege akkor felvesszuk annak fuggosegi listajaba.
-                //
-
-                FPath.Requestor?.AddDependency(resolved);
-                return resolved;
+                requested = Get(iface, name, queryModes);
             }
-
-            //
-            // Ha a rekurzio alatt a Get() nem talal egy fuggoseget akkor vissza adjuk a teljes fuggosegi utat (FPath mar
-            // tartalmazhat elemeket epp ezert az utvonalat csak a hivasi sor legvegen kell megadni -> Data[path] == null).
-            //
-
-            catch (ServiceNotFoundException e) when (e.Data["path"] is null)
+            catch (ServiceNotFoundException e)
             {
+                //
+                // Ha az igenyelt szerviz valakinek a fuggosege akkor az utvonal mar biztosan nem ures.
+                //
+
                 e.Data["path"] = ServicePath.Format
                 (
                     FPath
@@ -176,6 +138,42 @@ namespace Solti.Utils.DI.Internals
                 );
                 throw;
             }
+
+            if (requested is null)
+                return null;
+
+            if (Config.Value.Injector.StrictDI)
+            {
+                AbstractServiceEntry? requestor = FPath.Requestor?.RelatedServiceEntry;
+
+                //
+                // - Ha a fuggosegi fa gyokerenel vagyunk akkor a metodus nem ertelmezett.
+                // - A kerelmezett szerviznek legalabb addig kell leteznie mint a kerelmezo szerviznek.
+                //
+
+                if (requestor is not null && requested.Lifetime!.CompareTo(requestor.Lifetime!) < 0)
+                {
+                    var ex = new RequestNotAllowedException(Resources.STRICT_DI);
+                    ex.Data["requestor"] = requestor;
+                    ex.Data["requested"] = requested;
+
+                    throw ex;
+                }
+            }
+
+            //
+            // Fuggosegek feloldasa es peldanyositas (ez a metodus rekurzivan ismet meghivasra kerulhet)
+            //
+
+            IServiceReference resolved = Resolve(requested);
+
+            //
+            // Minden fuggoseget megtalaltunk, a szerviz sikeresen peldanyositasra kerult.
+            // Ha a szervizt egy masik szerviz fuggosege akkor felvesszuk annak fuggosegi listajaba.
+            //
+
+            FPath.Requestor?.AddDependency(resolved);
+            return resolved;
         }
     }
 }

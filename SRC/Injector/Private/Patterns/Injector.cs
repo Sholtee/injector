@@ -5,6 +5,7 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Threading.Tasks;
 
 namespace Solti.Utils.DI.Internals
@@ -20,6 +21,20 @@ namespace Solti.Utils.DI.Internals
         private readonly ExclusiveBlock FExclusiveBlock = new();
 
         private readonly IReadOnlyDictionary<string, object> FOptions;
+
+        private IServiceReference? GetReferenceInternal(Type iface, string? name, QueryModes queryModes)
+        {
+            CheckNotDisposed();
+
+            Ensure.Parameter.IsNotNull(iface, nameof(iface));
+            Ensure.Parameter.IsInterface(iface, nameof(iface));
+            Ensure.Parameter.IsNotGenericDefinition(iface, nameof(iface));
+
+            using (FExclusiveBlock.Enter())
+            {
+                return Resolve(iface, name, queryModes);
+            }
+        }
 
         protected override void Dispose(bool disposeManaged)
         {
@@ -37,8 +52,9 @@ namespace Solti.Utils.DI.Internals
 
         public Injector(IServiceContainer parent, IReadOnlyDictionary<string, object>? options) : base(Ensure.Parameter.IsNotNull(parent, nameof(parent)))
         {
-            FOptions = (options ?? new Dictionary<string, object>()).Extend(nameof(Config.Value.Injector.MaxSpawnedTransientServices), Config.Value.Injector.MaxSpawnedTransientServices);
-            
+            FOptions = (options is null ? ImmutableDictionary.Create<string, object>() : options.ToImmutableDictionary())
+                .Add(nameof(Config.Value.Injector.MaxSpawnedTransientServices), Config.Value.Injector.MaxSpawnedTransientServices);
+
             UnderlyingContainer
                 .Instance<IInjector>(this)
                 .Instance<IScopeFactory>(this)
@@ -68,33 +84,9 @@ namespace Solti.Utils.DI.Internals
         }
 
         #region IInjector
-        public IServiceReference GetReference(Type iface, string? name)
-        {
-            CheckNotDisposed();
+        public IServiceReference GetReference(Type iface, string? name) => GetReferenceInternal(iface, name, QueryModes.AllowSpecialization | QueryModes.ThrowOnMissing)!;
 
-            Ensure.Parameter.IsNotNull(iface, nameof(iface));
-            Ensure.Parameter.IsInterface(iface, nameof(iface));
-            Ensure.Parameter.IsNotGenericDefinition(iface, nameof(iface));
-
-            using (FExclusiveBlock.Enter())
-            {
-                return Resolve(iface, name);
-            }
-        }
-
-        public IServiceReference? TryGetReference(Type iface, string? name)
-        {
-            CheckNotDisposed();
-
-            try
-            {
-                return GetReference(iface, name);
-            }
-            catch (ServiceNotFoundException)
-            {
-                return null;
-            }
-        }
+        public IServiceReference? TryGetReference(Type iface, string? name) => GetReferenceInternal(iface, name, QueryModes.AllowSpecialization);
 
         public object Get(Type iface, string? name) => GetReference(iface, name).GetInstance();
 

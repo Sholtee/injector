@@ -23,11 +23,6 @@ namespace Solti.Utils.DI.Injector.Tests
             {
                 yield return new List<(Type Interface, Type Implementation)>
                 {
-                    (typeof(INonExisting), null)
-                };
-
-                yield return new List<(Type Interface, Type Implementation)>
-                {
                     (typeof(IInterface_7<INonExisting>), typeof(Implementation_7_TInterface_Dependant<INonExisting>))
                 };
 
@@ -39,15 +34,24 @@ namespace Solti.Utils.DI.Injector.Tests
             }
         }
 
+        [Test]
+        public void Injector_TryGet_ShouldReturnNullIfTheServiceNotFound()
+        {
+            using (IInjector injector = Container.CreateInjector())
+            {
+                Assert.That(injector.TryGet<INonExisting>(), Is.Null);
+            }
+        }
+
         [TestCaseSource(nameof(BadRegistrations))]
-        public void Injector_TryGet_ShouldReturnNullIfTheServiceCouldNotBeResolved(List<(Type Interface, Type Implementation)> registrations)
+        public void Injector_TryGet_ShouldThrowIfTheServiceCouldNotBeResolvedDueToAMissingDependency(List<(Type Interface, Type Implementation)> registrations)
         {
             foreach ((Type Interface, Type Implementation) reg in registrations)
                 if (reg.Implementation != null) Container.Service(reg.Interface, reg.Implementation, Lifetime.Transient);
 
             using (IInjector injector = Container.CreateInjector())
             {
-                Assert.That(injector.TryGet(registrations.Last().Interface), Is.Null);
+                Assert.Throws<ServiceNotFoundException>(() =>injector.TryGet(registrations.Last().Interface));
             }
         }
 

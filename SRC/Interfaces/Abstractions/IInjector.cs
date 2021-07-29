@@ -30,7 +30,7 @@ namespace Solti.Utils.DI.Interfaces
         /// </summary>
         /// <param name="iface">The "id" of the service to be resolved. It must be an interface.</param>
         /// <param name="name">The (optional) name of the service.</param>
-        /// <returns>The resolved service reference.</returns>
+        /// <returns>The resolved service reference or NULL.</returns>
         IServiceReference? TryGetReference(Type iface, string? name = null);
 
         /// <summary>
@@ -48,7 +48,7 @@ namespace Solti.Utils.DI.Interfaces
         /// </summary>
         /// <param name="iface">The "id" of the service to be resolved. It must be an interface.</param>
         /// <param name="name">The (optional) name of the service.</param>
-        /// <returns>The requested service instance if the resolution was successful, null otherwise.</returns>
+        /// <returns>The requested service instance or NULL.</returns>
         object? TryGet(Type iface, string? name = null);
 
         /// <summary>
