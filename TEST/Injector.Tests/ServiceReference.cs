@@ -32,7 +32,7 @@ namespace Solti.Utils.DI.Internals.Tests
         }
 
         [Test]
-        public void Dispose_ShouldDisposeTheValueAndDecrementTheRefCountOfTheDependencies() 
+        public void Release_ShouldDisposeTheValueAndDecrementTheRefCountOfTheDependencies() 
         {         
             var dependency = new ServiceReference(new AbstractServiceEntry(typeof(IDummyService), null, new Mock<IServiceContainer>(MockBehavior.Strict).Object), new Mock<IInjector>(MockBehavior.Strict).Object) 
             { 
@@ -56,7 +56,7 @@ namespace Solti.Utils.DI.Internals.Tests
         }
 
         [Test]
-        public void DisposeAsync_ShouldDisposeTheValueSynchronouslyAndDecrementTheRefCountOfTheDependencies()
+        public void ReleaseAsync_ShouldDisposeTheValueSynchronouslyAndDecrementTheRefCountOfTheDependencies()
         {
             var dependency = new ServiceReference(new AbstractServiceEntry(typeof(IDummyService), null, new Mock<IServiceContainer>(MockBehavior.Strict).Object), new Mock<IInjector>(MockBehavior.Strict).Object) 
             { 
@@ -74,14 +74,14 @@ namespace Solti.Utils.DI.Internals.Tests
 
             Assert.That(dependency.RefCount, Is.EqualTo(2));
 
-            svc.DisposeAsync().AsTask().Wait();
+            svc.ReleaseAsync().Wait();
 
             target.Verify(d => d.Dispose(), Times.Once);
             Assert.That(dependency.RefCount, Is.EqualTo(1));
         }
 
         [Test]
-        public void DisposeAsync_ShouldDisposeTheValueAsynchronouslyAndDecrementTheRefCountOfTheDependencies()
+        public void ReleaseAsync_ShouldDisposeTheValueAsynchronouslyAndDecrementTheRefCountOfTheDependencies()
         {
             var dependency = new ServiceReference(new AbstractServiceEntry(typeof(IDummyService), null, new Mock<IServiceContainer>(MockBehavior.Strict).Object), new Mock<IInjector>(MockBehavior.Strict).Object) 
             { 
@@ -100,7 +100,7 @@ namespace Solti.Utils.DI.Internals.Tests
 
             Assert.That(dependency.RefCount, Is.EqualTo(2));
 
-            svc.DisposeAsync().AsTask().Wait();
+            svc.ReleaseAsync().Wait();
 
             target.Verify(d => d.DisposeAsync(), Times.Once);
             Assert.That(dependency.RefCount, Is.EqualTo(1));
@@ -109,7 +109,7 @@ namespace Solti.Utils.DI.Internals.Tests
         public interface ICompositeDisposable : IDisposable, IAsyncDisposable { }
 
         [Test]
-        public void DisposeAsync_AsynchronousDisposalShouldHaveHigherPriority()
+        public void ReleaseAsync_AsynchronousDisposalShouldHaveHigherPriority()
         {
             var target = new Mock<ICompositeDisposable>(MockBehavior.Strict);
             target
@@ -121,7 +121,7 @@ namespace Solti.Utils.DI.Internals.Tests
                 Value = target.Object
             };
 
-            svc.DisposeAsync().AsTask().Wait();
+            svc.ReleaseAsync().Wait();
 
             target.Verify(d => d.Dispose(), Times.Never);
             target.Verify(d => d.DisposeAsync(), Times.Once);
