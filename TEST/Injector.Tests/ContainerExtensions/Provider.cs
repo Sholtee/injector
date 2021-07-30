@@ -54,7 +54,7 @@ namespace Solti.Utils.DI.Container.Tests
             Container.Provider<IList<int>, ListProvider>(para.Actual);
 
             Assert.That(Container.Get<IList<int>>().Lifetime, Is.EqualTo(para.Actual));
-            Assert.That(Container.Get<IServiceProvider>($"{ServiceContainer.INTERNAL_SERVICE_NAME_PREFIX}{typeof(IList<int>).FullName}_provider_").Lifetime, Is.EqualTo(para.Underlying));
+            Assert.That(Container.Get<IServiceProvider>($"{Consts.INTERNAL_SERVICE_NAME_PREFIX}{typeof(IList<int>).FullName}_provider_").Lifetime, Is.EqualTo(para.Underlying));
         }
 
         [TestCaseSource(nameof(Lifetimes))]
@@ -70,7 +70,7 @@ namespace Solti.Utils.DI.Container.Tests
 
             var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
             mockInjector
-                .Setup(i => i.Get(typeof(IServiceProvider), $"{ServiceContainer.INTERNAL_SERVICE_NAME_PREFIX}{typeof(IServiceProvider).FullName}_provider_"))
+                .Setup(i => i.Get(typeof(IServiceProvider), $"{Consts.INTERNAL_SERVICE_NAME_PREFIX}{typeof(IServiceProvider).FullName}_provider_"))
                 .Returns<Type, string>((t, n) => Container.Get(t, n).Factory(null, t));
 
             Assert.That(entry.Factory(mockInjector.Object, entry.Interface), Is.InstanceOf<SelfReturningProvider>());
@@ -86,7 +86,7 @@ namespace Solti.Utils.DI.Container.Tests
 
             var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
             mockInjector
-                .Setup(i => i.Get(typeof(IServiceProvider), $"{ServiceContainer.INTERNAL_SERVICE_NAME_PREFIX}{typeof(IList<>).FullName}_provider_"))
+                .Setup(i => i.Get(typeof(IServiceProvider), $"{Consts.INTERNAL_SERVICE_NAME_PREFIX}{typeof(IList<>).FullName}_provider_"))
                 .Returns<Type, string>((t, n) => Container.Get(t, n).Factory(null, t));
 
             Assert.That(entry.Factory(mockInjector.Object, typeof(IList<int>)), Is.InstanceOf<IList<int>>());

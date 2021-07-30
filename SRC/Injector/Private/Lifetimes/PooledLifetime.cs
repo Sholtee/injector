@@ -5,7 +5,6 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -13,17 +12,16 @@ namespace Solti.Utils.DI.Internals
 
     internal sealed class PooledLifetime : InjectorDotNetLifetime, IHasCapacity, IConcreteLifetime<PooledLifetime>
     {
-        [SuppressMessage("Performance", "CA1802:Use literals where appropriate", Justification = "Due to interpolation it cannot be const.")]
-        public static readonly string POOL_SCOPE = $"_{nameof(POOL_SCOPE)}";
-
         public PooledLifetime() : base(bindTo: () => Pooled, precedence: 20) { }
+
+        public const string POOL_SCOPE = nameof(POOL_SCOPE);
 
         public static string GetPoolName(Type iface, string? name) =>
             //
             // Type.GUID lezart es nyilt generikusnal is azonos
             //
 
-            $"{ServiceContainer.INTERNAL_SERVICE_NAME_PREFIX}pool_{iface.GUID}_{name}";
+            $"{Consts.INTERNAL_SERVICE_NAME_PREFIX}pool_{iface.GUID}_{name}";
 
         //
         // Nem kell a kulonbozo parametereket validalni. Ha vmelyikkel gaz van akkor ide mar el sem

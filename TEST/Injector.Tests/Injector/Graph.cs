@@ -4,7 +4,6 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 
@@ -35,10 +34,9 @@ namespace Solti.Utils.DI.Injector.Graph.Tests
 
             svc3 = GetDependency(svc4, typeof(IInterface_3));
             Assert.That(svc3.RefCount, Is.EqualTo(2));
-            Assert.That(svc3.Dependencies.Count, Is.EqualTo(3));
+            Assert.That(svc3.Dependencies.Count, Is.EqualTo(2));
             Assert.NotNull(GetDependency(svc3, typeof(IInterface_1)));
             Assert.NotNull(GetDependency(svc3, typeof(IInterface_2)));
-            Assert.NotNull(GetDependency(svc3, typeof(IReadOnlyDictionary<string, object>), $"{ServiceContainer.INTERNAL_SERVICE_NAME_PREFIX}options")); // implicit fuggoseg
 
             svc2 = GetDependency(svc4, typeof(IInterface_2));
             Assert.That(svc2.RefCount, Is.EqualTo(3));
@@ -47,8 +45,7 @@ namespace Solti.Utils.DI.Injector.Graph.Tests
 
             svc1 = GetDependency(svc3, typeof(IInterface_1));
             Assert.That(svc1.RefCount, Is.EqualTo(2));
-            Assert.That(svc1.Dependencies.Count, Is.EqualTo(1));
-            Assert.NotNull(GetDependency(svc1, typeof(IReadOnlyDictionary<string, object>), $"{ServiceContainer.INTERNAL_SERVICE_NAME_PREFIX}options")); // implicit fuggoseg
+            Assert.That(svc1.Dependencies.Count, Is.EqualTo(0));
 
             return new[] { svc1, svc2, svc3, svc4 };
 
@@ -115,17 +112,14 @@ namespace Solti.Utils.DI.Injector.Graph.Tests
                 id2 = ContainsNode("<<u>Solti.Utils.DI.Interfaces.IInjector</u><br/><br/><i>Instance</i>>"),
                 id3 = ContainsNode("<<u>Solti.Utils.DI.Injector.Graph.Tests.GraphTests.IInterface_2</u><br/><br/><i>Singleton</i>>"),
                 id4 = ContainsNode("<<u>Solti.Utils.DI.Injector.Graph.Tests.GraphTests.IInterface_1</u><br/><br/><i>Transient</i>>"),
-                id5 = ContainsNode("<<u>System.Collections.Generic.IReadOnlyDictionary{string, object}:$options</u><br/><br/><i>Instance</i>>"),
-                id6 = ContainsNode("<<u>Solti.Utils.DI.Injector.Graph.Tests.GraphTests.IInterface_3</u><br/><br/><i>Transient</i>>");
+                id5 = ContainsNode("<<u>Solti.Utils.DI.Injector.Graph.Tests.GraphTests.IInterface_3</u><br/><br/><i>Transient</i>>");
 
             ContainsEdge(id1, id2);
             ContainsEdge(id1, id3);
             ContainsEdge(id3, id4);
-            ContainsEdge(id4, id5);
-            ContainsEdge(id1, id6);
-            ContainsEdge(id6, id5);
-            ContainsEdge(id6, id4);
-            ContainsEdge(id6, id3);
+            ContainsEdge(id1, id5);
+            ContainsEdge(id5, id4);
+            ContainsEdge(id5, id3);
 
             string ContainsNode(string str)
             {

@@ -22,7 +22,7 @@ namespace Solti.Utils.DI.Container.Tests
         [TestCase("cica")]
         public void IServiceContainer_Get_ShouldReturnOnTypeMatch(string name)
         {          
-            var entry = new TransientServiceEntry(typeof(IList<>), name, typeof(MyList<>), Container);
+            var entry = new TransientServiceEntry(typeof(IList<>), name, typeof(MyList<>), Container, int.MaxValue);
             Container.Add(entry);
 
             Assert.That(Container.Get(typeof(IList<>), name, QueryModes.ThrowOnMissing), Is.EqualTo(entry));

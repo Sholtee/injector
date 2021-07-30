@@ -58,7 +58,7 @@ namespace Solti.Utils.DI.Internals
                     //   -> Ennek az injector peldanynak a felszabaditasa nem befolyasolja a szerviz elettartamat.
                     //
 
-                    Injector dedicatedInjector = CreateScope(requested.Owner, FOptions);
+                    Injector dedicatedInjector = CreateScope(requested.Owner);
 
                     try
                     {

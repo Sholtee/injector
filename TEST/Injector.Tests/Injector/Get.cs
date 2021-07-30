@@ -125,7 +125,7 @@ namespace Solti.Utils.DI.Injector.Tests
                 .Service(typeof(IInterface_3<>), typeof(Implementation_3_IInterface_1_Dependant<>), Lifetime.Transient)
                 .Service(typeof(IInterface_6<>), typeof(Implementation_6_IInterface_3_Dependant<>), lifetime);
 
-            Assert.That(Container.Where(entry => entry.Name?.StartsWith(ServiceContainer.INTERNAL_SERVICE_NAME_PREFIX) != true).Count, Is.EqualTo(3));
+            Assert.That(Container.Where(entry => entry.Name?.StartsWith(Consts.INTERNAL_SERVICE_NAME_PREFIX) != true).Count, Is.EqualTo(2));
 
             using (IInjector injector = Container.CreateInjector())
             {         

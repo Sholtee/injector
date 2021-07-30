@@ -4,7 +4,6 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
-using System.Collections.Generic;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -12,12 +11,20 @@ namespace Solti.Utils.DI.Internals
 
     internal class ServiceProvider : Injector, IServiceProvider, IInjector
     {
-        public ServiceProvider(IServiceContainer parent, IReadOnlyDictionary<string, object>? options) : base(parent, options)
+        public ServiceProvider(IServiceContainer parent) : base(parent)
             => this.Instance<IServiceProvider>(this);
 
-        public override Injector CreateScope(IReadOnlyDictionary<string, object>? options) => new ServiceProvider((IServiceContainer) Parent!, options);
+        public override Injector CreateScope()
+        {
+            CheckNotDisposed();
+            return new ServiceProvider((IServiceContainer) Parent!);
+        }
 
-        public override Injector CreateScope(IServiceContainer parent, IReadOnlyDictionary<string, object>? options) => new ServiceProvider(parent, options);
+        public override Injector CreateScope(IServiceContainer parent)
+        {
+            CheckNotDisposed();
+            return new ServiceProvider(parent);
+        }
 
         //
         // IInjector.Get() elvileg sose adhatna vissza NULL-t viszont h biztositsuk 

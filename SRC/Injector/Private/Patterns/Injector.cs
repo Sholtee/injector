@@ -5,7 +5,6 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Threading.Tasks;
 
 namespace Solti.Utils.DI.Internals
@@ -19,8 +18,6 @@ namespace Solti.Utils.DI.Internals
         private readonly IServicePath FPath = new ServicePath();
 
         private readonly ExclusiveBlock FExclusiveBlock = new();
-
-        private readonly IReadOnlyDictionary<string, object> FOptions;
 
         private IServiceReference? GetReferenceInternal(Type iface, string? name, QueryModes queryModes)
         {
@@ -50,16 +47,12 @@ namespace Solti.Utils.DI.Internals
             await FExclusiveBlock.DisposeAsync();    
         }
 
-        public Injector(IServiceContainer parent, IReadOnlyDictionary<string, object>? options) : base(Ensure.Parameter.IsNotNull(parent, nameof(parent)))
+        public Injector(IServiceContainer parent) : base(Ensure.Parameter.IsNotNull(parent, nameof(parent)))
         {
-            FOptions = (options is null ? ImmutableDictionary.Create<string, object>() : options.ToImmutableDictionary())
-                .Add(nameof(Config.Value.Injector.MaxSpawnedTransientServices), Config.Value.Injector.MaxSpawnedTransientServices);
-
             UnderlyingContainer
                 .Instance<IInjector>(this)
                 .Instance<IScopeFactory>(this)
-                .Instance(FPath)
-                .Instance($"{INTERNAL_SERVICE_NAME_PREFIX}options", FOptions);
+                .Instance(FPath);
 
             this.RegisterServiceEnumerator();
         }
@@ -103,13 +96,21 @@ namespace Solti.Utils.DI.Internals
         #endregion
 
         #region IScopeFactory
-        public virtual Injector CreateScope(IReadOnlyDictionary<string, object>? options) => new Injector((IServiceContainer) Parent!, options);
+        public virtual Injector CreateScope()
+        {
+            CheckNotDisposed();
+            return new Injector((IServiceContainer) Parent!);
+        }
 
-        public virtual Injector CreateScope(IServiceContainer parent, IReadOnlyDictionary<string, object>? options) => new Injector(parent, options);
+        public virtual Injector CreateScope(IServiceContainer parent)
+        {
+            CheckNotDisposed();
+            return new Injector(parent);
+        }
 
-        IInjector IScopeFactory.CreateScope(IReadOnlyDictionary<string, object>? options) => CreateScope(options);
+        IInjector IScopeFactory.CreateScope() => CreateScope();
 
-        IInjector IScopeFactory.CreateScope(IServiceContainer parent, IReadOnlyDictionary<string, object>? options) => CreateScope(parent, options);
+        IInjector IScopeFactory.CreateScope(IServiceContainer parent) => CreateScope(parent);
         #endregion
 
         #region Composite

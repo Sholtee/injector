@@ -12,7 +12,7 @@ namespace Solti.Utils.DI.Internals
 
     internal interface IPool: IEnumerable<(int OwnerThread, IServiceReference Object)>
     {
-        PoolItem<IServiceReference>? Get(CheckoutPolicy checkoutPolicy);
+        PoolItem<IServiceReference> Get();
     }
 
     internal interface IPool<TInterface>: IPool where TInterface: class

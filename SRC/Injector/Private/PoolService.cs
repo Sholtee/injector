@@ -3,8 +3,6 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
-using System.Collections.Generic;
-
 namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
@@ -23,23 +21,23 @@ namespace Solti.Utils.DI.Internals
             //   3) Letrehozaskor a mar meglevo grafot boviteni kell 
             //
 
-            () => scopeFactory
-                //
-                // A letrehozott injector elettartamat PoolService deklaralo kontenere kezeli
-                //
-
-                .CreateScope(new Dictionary<string, object> { [PooledLifetime.POOL_SCOPE] = true })
+            () =>
+            {
+                IInjector dedicatedInjector = scopeFactory.CreateScope();
+                dedicatedInjector.Meta(PooledLifetime.POOL_SCOPE, true);
 
                 //
                 // A referenciat magat adjuk vissza, hogy azt fuggosegkent menteni lehessen a
                 // hivo scope-jaban.
                 //
 
-                .GetReference(typeof(TInterface), name),
+                IServiceReference serviceReference = dedicatedInjector.GetReference(typeof(TInterface), name);
+                return serviceReference;
+            },
 
             suppressItemDispose: true
         ) {}
 
-        public PoolItem<IServiceReference>? Get(CheckoutPolicy checkoutPolicy) => GetItem(checkoutPolicy, default);
+        public PoolItem<IServiceReference> Get() => GetItem(CheckoutPolicy.Block, default)!;
     }
 }

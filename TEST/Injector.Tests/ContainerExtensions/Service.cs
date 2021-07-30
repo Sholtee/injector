@@ -137,7 +137,7 @@ namespace Solti.Utils.DI.Container.Tests
             Container
                 .Service<IInterface_3<int>, Implementation_3_IInterface_1_Dependant<int>>(lifetime);
 
-            Assert.AreEqual(new TransientServiceEntry(typeof(IInterface_3<int>), null, typeof(Implementation_3_IInterface_1_Dependant<int>), Container), Container.Get<IInterface_3<int>>());
+            Assert.AreEqual(new TransientServiceEntry(typeof(IInterface_3<int>), null, typeof(Implementation_3_IInterface_1_Dependant<int>), Container, int.MaxValue), Container.Get<IInterface_3<int>>());
         }
 
         [TestCaseSource(nameof(Lifetimes))]

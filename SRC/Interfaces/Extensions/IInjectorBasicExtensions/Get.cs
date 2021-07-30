@@ -1,5 +1,5 @@
 /********************************************************************************
-* IInjectorBasicExtensions.cs                                                   *
+* Get.cs                                                                        *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
@@ -7,10 +7,7 @@ using System;
 
 namespace Solti.Utils.DI.Interfaces
 {
-    /// <summary>
-    /// Defines basic extensions for the <see cref="IInjector"/> interface.
-    /// </summary>
-    public static class IInjectorBasicExtensions
+    public static partial class IInjectorBasicExtensions
     {
         /// <summary>
         /// Gets the service instance associated with the given interface and (optional) name.

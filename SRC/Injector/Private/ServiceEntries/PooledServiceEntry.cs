@@ -14,6 +14,10 @@ namespace Solti.Utils.DI.Internals
     using Primitives.Threading;
     using Properties;
 
+    //
+    // A PooledServiceEntry ket modon is lehet peldanyositva: Egy kulonallo poolban vagy a felhasznalo oldalan.
+    //
+
     internal class PooledServiceEntry : ProducibleServiceEntryBase, ISupportsSpecialization
     {
         private readonly List<IServiceReference> FInstances = new(1); // max egy eleme lehet
@@ -56,7 +60,7 @@ namespace Solti.Utils.DI.Internals
             // Pool-ban az eredeti factory-t hivjuk
             //
 
-            if (relatedInjector.GetOption<bool>(PooledLifetime.POOL_SCOPE))
+            if (relatedInjector.Meta(PooledLifetime.POOL_SCOPE) is true)
             {
                 base.SetInstance(reference);
             }
@@ -78,7 +82,7 @@ namespace Solti.Utils.DI.Internals
                 if (relatedPool.Any(item => item.OwnerThread == Thread.CurrentThread.ManagedThreadId))
                     throw new RequestNotAllowedException(Resources.POOL_ITEM_ALREADY_TAKEN);
 
-                PoolItem<IServiceReference> poolItem = relatedPool.Get(CheckoutPolicy.Block)!; // CheckoutPolicy.Block miatt sose NULL
+                PoolItem<IServiceReference> poolItem = relatedPool.Get();
 
                 //
                 // Mivel a pool elem scope-ja kulonbozik "relatedInjector" scope-jatol (egymastol fuggetlenul 
@@ -159,7 +163,7 @@ namespace Solti.Utils.DI.Internals
         {
             object instance = base.GetInstance(reference);
 
-            if (!reference.RelatedInjector!.GetOption<bool>(PooledLifetime.POOL_SCOPE))
+            if (reference.RelatedInjector!.Meta(PooledLifetime.POOL_SCOPE) is not true)
             {
                 //
                 // Ha fogyaszto oldalon vagyunk akkor PoolItem-et kapunk vissza, abbol kell elovarazsolni az erteket
