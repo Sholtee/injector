@@ -3,6 +3,7 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
+using System;
 using NUnit.Framework;
 
 namespace Solti.Utils.DI.Injector.Tests
@@ -97,6 +98,33 @@ namespace Solti.Utils.DI.Injector.Tests
 
                     Assert.DoesNotThrow(() => svc.Interface.Get<IInjector>());
                 }
+            }
+        }
+
+        [Test]
+        public void Injector_Misc_RequestedServiceMayAccessItsParentInjector([ValueSource(nameof(Lifetimes))] Lifetime lifetime)
+        {
+            Container.Factory<IInterface_1>(injector =>
+            {
+                Assert.DoesNotThrow(() => injector.Get(typeof(IInjector)));
+                return new Implementation_1();
+            }, lifetime);
+
+            Container.CreateInjector().Get<IInterface_1>();
+        }
+
+        [Test]
+        public void Injector_Misc_RequestedServiceMayAccessItsParentProvider([ValueSource(nameof(Lifetimes))] Lifetime lifetime)
+        {
+            Container.Factory<IInterface_1>(injector =>
+            {
+                Assert.DoesNotThrow(() => injector.Get(typeof(IServiceProvider)));
+                return new Implementation_1();
+            }, lifetime);
+
+            using (Container.CreateProvider(out IServiceProvider prov))
+            {
+                prov.GetService(typeof(IInterface_1));
             }
         }
     }
