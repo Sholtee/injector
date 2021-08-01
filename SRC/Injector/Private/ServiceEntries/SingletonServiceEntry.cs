@@ -50,6 +50,8 @@ namespace Solti.Utils.DI.Internals
 
         public override bool SetInstance(IServiceReference reference)
         {
+            CheckNotDisposed();
+
             using (FExclusiveBlock.Enter())
             {
                 EnsureAppropriateReference(reference);
@@ -82,7 +84,7 @@ namespace Solti.Utils.DI.Internals
 
         public override Lifetime Lifetime { get; } = Lifetime.Singleton;
 
-        public override bool IsShared => true;
+        public override bool IsShared { get; } = true;
 
         public override IReadOnlyCollection<IServiceReference> Instances => FInstances;
     }

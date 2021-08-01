@@ -77,7 +77,7 @@ namespace Solti.Utils.DI.Internals
             }
 
             //
-            // 3. eset: Uj peldanyt kell letrehozni es ezt az injector peldany ezt megteheti
+            // 3. eset: Uj peldanyt kell letrehozni es ezt az injector peldany megteheti
             //
 
             Assert(UnderlyingContainer == requested.Owner || UnderlyingContainer.Parent == requested.Owner, "Foreign entry");
