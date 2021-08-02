@@ -291,21 +291,17 @@ namespace Solti.Utils.DI.Injector.Tests
                 }
             });
 
-            Assert.False(extra.Wait(10));
+            Assert.False(extra.Wait(100));
 
             stop.Set();
+      
+            Assert.True(extra.Wait(100));
+
+            //
+            // Mielott felszabaditanank a gyoker kontenert megvarjuk amig mindenki leall.
+            //
+
             Task.WaitAll(holders);
-            extra.Wait();
-
-            extra = Task.Run(() =>
-            {
-                using (IInjector injector = Container.CreateInjector())
-                {
-                    injector.Get<IInterface_1>();
-                }
-            });
-
-            Assert.True(extra.Wait(10));
         }
 
         [Test]
