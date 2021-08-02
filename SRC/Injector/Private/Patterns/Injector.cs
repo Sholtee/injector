@@ -15,7 +15,7 @@ namespace Solti.Utils.DI.Internals
 
     internal partial class Injector : ServiceContainer, IInjector, IScopeFactory
     {
-        private readonly IServicePath FPath = new ServicePath();
+        private readonly ServicePath FPath = new();
 
         private readonly ExclusiveBlock FExclusiveBlock = new();
 
@@ -57,7 +57,7 @@ namespace Solti.Utils.DI.Internals
             UnderlyingContainer
                 .Instance<IInjector>(this)
                 .Instance<IScopeFactory>(this)
-                .Instance(FPath);
+                .Instance<IServicePath>(FPath);
 
             this.RegisterServiceEnumerator();
         }

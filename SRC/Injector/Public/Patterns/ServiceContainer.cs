@@ -34,7 +34,7 @@ namespace Solti.Utils.DI
         // (generikus bejegyzes lezarasakor) ezert szalbiztosnak kell h legyen.
         //
 
-        private readonly ReaderWriterLockSlim FLock = new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
+        private readonly ReaderWriterLockSlim FLock = new(LockRecursionPolicy.SupportsRecursion);
 
         private bool ShouldDispose(AbstractServiceEntry entry) => entry.Owner == this;
 
