@@ -284,6 +284,19 @@ namespace Solti.Utils.DI.Injector.Tests
         }
 
         [Test]
+        public void Injector_Get_ShouldResolveItself2()
+        {
+            Container.Service<IInterface_7<IInjector>, Implementation_7_TInterface_Dependant<IInjector>>(Lifetime.Transient);
+
+            using (IInjector injector = Container.CreateInjector())
+            {
+                var svc = injector.Get<IInterface_7<IInjector>>();
+
+                Assert.That(svc.Interface, Is.EqualTo(injector));
+            }
+        }
+
+        [Test]
         public void Injector_Get_ShouldBeTypeChecked() 
         {
             Container.Factory(typeof(IInterface_1), (injector, iface) => new object(), Lifetime.Transient);
