@@ -4,6 +4,8 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Diagnostics.CodeAnalysis;
+using System.Threading;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -13,17 +15,26 @@ namespace Solti.Utils.DI.Internals
 
     internal sealed class PoolService<TInterface> : ObjectPool<IServiceReference>, IPool<TInterface> where TInterface: class
     {
-        private sealed class ServiceReferenceLifetimeManager : ILifetimeManager<IServiceReference>
+        private sealed class ServiceReferenceLifetimeManager: Disposable, ILifetimeManager<IServiceReference>
         {
             //
             // Mivel az osszes pool elemnek sajat scope-ja van ezert h az esetleges korkoros referenciat
             // detektalni tudjuk, rekurzio eseten a mar korabban letrehozott scope-ot kell hasznaljuk.
             //
+            // Ne [ThreadStatic]-t hasznaljunk, hogy minden interface-nev paroshoz kulon peldany tartozzon.
+            //
 
-            [ThreadStatic]
-            private static IInjector? FCurrentScope;
+            private readonly ThreadLocal<IInjector?> FCurrentScope = new(trackAllValues: false);
 
             public IScopeFactory ScopeFactory { get; }
+
+            protected override void Dispose(bool disposeManaged)
+            {
+                if (disposeManaged)
+                    FCurrentScope.Dispose();
+
+                base.Dispose(disposeManaged);
+            }
 
             public string? Name { get; }
 
@@ -35,7 +46,7 @@ namespace Solti.Utils.DI.Internals
 
             public IServiceReference Create()
             {
-                FCurrentScope ??= ScopeFactory.CreateScope();
+                FCurrentScope.Value ??= ScopeFactory.CreateScope();
                 try
                 {
                     //
@@ -45,13 +56,13 @@ namespace Solti.Utils.DI.Internals
                     //   3) Letrehozaskor a mar meglevo grafot boviteni kell 
                     //
 
-                    FCurrentScope.Meta(PooledLifetime.POOL_SCOPE, true);
+                    FCurrentScope.Value.Meta(PooledLifetime.POOL_SCOPE, true);
 
-                    return FCurrentScope.GetReference(typeof(TInterface), Name);
+                    return FCurrentScope.Value.GetReference(typeof(TInterface), Name);
                 }
                 finally
                 {
-                    FCurrentScope = null;
+                    FCurrentScope.Value = null;
                 }
             }
 
@@ -77,7 +88,16 @@ namespace Solti.Utils.DI.Internals
             }
         }
 
+        [SuppressMessage("Reliability", "CA2000:Dispose objects before losing scope", Justification = "LifetimeManager is released in the Dispose(bool) method")]
         public PoolService(IScopeFactory scopeFactory, int capacity, string? name) : base(capacity, new ServiceReferenceLifetimeManager(scopeFactory, name)) {}
+
+        protected override void Dispose(bool disposeManaged)
+        {
+            base.Dispose(disposeManaged); // eloszor hivjuk
+
+            if (disposeManaged)
+                ((IDisposable) LifetimeManager).Dispose();
+        }
 
         public PoolItem<IServiceReference> Get() => this.GetItem(CheckoutPolicy.Block)!;
     }
