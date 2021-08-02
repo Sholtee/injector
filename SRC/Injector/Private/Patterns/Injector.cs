@@ -35,10 +35,15 @@ namespace Solti.Utils.DI.Internals
 
         protected override void Dispose(bool disposeManaged)
         {
+            base.Dispose(disposeManaged);
+
+            //
+            // Mivel felszabaditaskor elmeletben meg kerdezhetunk le szervizeket ezert az exkluziv blokkot
+            // csak a base() hivas utan szabaditsuk fel.
+            //
+
             if (disposeManaged)
                 FExclusiveBlock.Dispose();
-
-            base.Dispose(disposeManaged);
         }
 
         protected override async ValueTask AsyncDispose()
