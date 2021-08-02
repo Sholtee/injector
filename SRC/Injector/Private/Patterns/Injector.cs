@@ -38,8 +38,9 @@ namespace Solti.Utils.DI.Internals
             base.Dispose(disposeManaged);
 
             //
-            // Mivel felszabaditaskor elmeletben meg kerdezhetunk le szervizeket ezert az exkluziv blokkot
-            // csak a base() hivas utan szabaditsuk fel.
+            // Mivel felszabaditaskor elmeletben meg kerdezhetunk le szervizeket (szerviz Dispose()
+            // metodusaban van injector.Get() hivas) ezert az exkluziv blokkot csak a base() hivas
+            // utan szabaditsuk fel.
             //
 
             if (disposeManaged)

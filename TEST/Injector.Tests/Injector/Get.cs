@@ -6,15 +6,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
 
-using Moq;
 using NUnit.Framework;
 
 namespace Solti.Utils.DI.Injector.Tests
 {
     using Interfaces;
     using Internals;
+    using Primitives.Patterns;
     using Properties;
 
     public partial class InjectorTestsBase<TContainer>
@@ -442,6 +441,37 @@ namespace Solti.Utils.DI.Injector.Tests
         private sealed class NotUsedImplementation<T> : IInterface_3<T>
         {
             public IInterface_1 Interface1 => throw new NotImplementedException();
+        }
+
+        public class MyServiceUsesItsOnwerInjector : Disposable, IMyService
+        {
+            public IInjector Injector { get; }
+
+            public MyServiceUsesItsOnwerInjector(IInjector injector)
+            {
+                Injector = injector;
+            }
+
+            public void DoSomething()
+            {
+            }
+
+            protected override void Dispose(bool disposeManaged)
+            {
+                Injector.Get<IServicePath>();
+
+                base.Dispose(disposeManaged);
+            }
+        }
+
+        [Test]
+        public void Injector_Get_MayBeCalledFromAnOwnedServiceBeingDisposed()
+        {
+            Container.Service<IMyService, MyServiceUsesItsOnwerInjector>(Lifetime.Scoped);
+
+            IInjector injector = Container.CreateInjector();
+            injector.Get<IMyService>();
+            Assert.DoesNotThrow(injector.Dispose);
         }
     }
 }
