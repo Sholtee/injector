@@ -283,30 +283,29 @@ namespace Solti.Utils.DI.Injector.Tests
 
             Thread.Sleep(100);
 
-            Assert.False
-            (
-                Task.Run(() =>
+            Task extra = Task.Run(() =>
+            {
+                using (IInjector injector = Container.CreateInjector())
                 {
-                    using (IInjector injector = Container.CreateInjector())
-                    {
-                        injector.Get<IInterface_1>();
-                    }
-                }).Wait(10)
-            );
+                    injector.Get<IInterface_1>();
+                }
+            });
+
+            Assert.False(extra.Wait(10));
 
             stop.Set();
             Task.WaitAll(holders);
+            extra.Wait();
 
-            Assert.True
-            (
-                Task.Run(() =>
+            extra = Task.Run(() =>
+            {
+                using (IInjector injector = Container.CreateInjector())
                 {
-                    using (IInjector injector = Container.CreateInjector())
-                    {
-                        injector.Get<IInterface_1>();
-                    }
-                }).Wait(10)
-            );
+                    injector.Get<IInterface_1>();
+                }
+            });
+
+            Assert.True(extra.Wait(10));
         }
 
         [Test]
