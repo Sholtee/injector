@@ -5,8 +5,6 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -72,34 +70,16 @@ namespace Solti.Utils.DI.Internals
 
             else
             {
+                //
+                // Mivel itt elkerjuk a pool-t magat ezert annak a felszabaditasa biztosan a mi felszabaditasunk utan
+                // fog megtortenni: biztonsagosan visszahelyezhetjuk mindig az elkert szervizt a pool-ba
+                //
+
                 IPool relatedPool = (IPool) relatedInjector.Get(typeof(IPool<>).MakeGenericType(Interface), PooledLifetime.GetPoolName(Interface, Name));
-
-                if (relatedPool.Any(item => item.OwnerThread == Thread.CurrentThread.ManagedThreadId))
-                    //
-                    // Mivel a mogottes ObjectPool<>.Get() ugyanazt az entitast adja vissza ha ugyanabbol a szalbol tobbszor
-                    // hivjuk (es a szerviz maga hiaba Scoped ez siman lehetseges ha tobb injector-t hozunk letre ugyanabban
-                    // a szalban). Ezert h az ellem poolba visszahelyezesevel ne legyen kavarodas ilyen esetben kivetelt dobunk.
-                    //
-
-                    throw new RequestNotAllowedException(Resources.POOL_ITEM_ALREADY_TAKEN);
 
                 PoolItem<IServiceReference> poolItem = relatedPool.Get();
 
-                //
-                // Mivel a pool elem scope-ja kulonbozik "relatedInjector" scope-jatol (egymastol fuggetlenul 
-                // felszabaditasra kerulhetnek) ezert felvesszuk az elemet fuggosegkent is h biztosan ne
-                // legyen gond az elettartammal.
-                //
-
-                relatedInjector.Get<IServicePath>().Requestor?.AddDependency(poolItem.Value);
-
-                //
-                // Nem gond h a poolItem-et adjuk vissza, igy NEM annak tartalma kerul felszabaditasra a 
-                // scope lezarasakor (poolItem felszabaditasa visszateszi a legyartott elemet a pool-ba).
-                //
-
                 reference.Value = poolItem;
-
                 SaveReference(reference);
             }
 
