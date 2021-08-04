@@ -11,26 +11,15 @@ namespace Solti.Utils.DI.Internals
 
     internal static class IServiceReferenceExtensions
     {
-        public static void SetInstance(this IServiceReference svc)
+        public static void SetInstance(this IServiceReference self)
         {
-            if (svc is null)
-                throw new ArgumentNullException(nameof(svc));
-
             //
             // Elmeletileg a SetInstance() csak akkor lehet hivva ha szukseges is letrehozni a
             // szervizpeldanyt.
             //
 
-            if (!svc.RelatedServiceEntry.SetInstance(svc))
+            if (!self.RelatedServiceEntry.SetInstance(self))
                 throw new InvalidOperationException(); // TODO: error message
-        }
-
-        public static object GetInstance(this IServiceReference svc)
-        {
-            if (svc is null)
-                throw new ArgumentNullException(nameof(svc));
-
-            return svc.RelatedServiceEntry.GetInstance(svc);
         }
     }
 }

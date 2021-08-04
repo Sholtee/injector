@@ -87,7 +87,7 @@ namespace Solti.Utils.DI.Internals
 
         public IServiceReference? TryGetReference(Type iface, string? name) => GetReferenceInternal(iface, name, QueryModes.AllowSpecialization);
 
-        public object Get(Type iface, string? name) => GetReference(iface, name).GetInstance();
+        public object Get(Type iface, string? name) => GetReference(iface, name).GetInstance()!;
 
         public object? TryGet(Type iface, string? name) => TryGetReference(iface, name)?.GetInstance();
 

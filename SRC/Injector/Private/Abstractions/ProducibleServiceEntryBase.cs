@@ -100,19 +100,9 @@ namespace Solti.Utils.DI.Internals
             if (Factory is null)
                 throw new InvalidOperationException(Resources.NOT_PRODUCIBLE);
 
-            //
-            // Peldanyositas utan ellenorizzuk a tipust (Factory, Proxy, stb visszaadhat vicces dolgokat).
-            //
-            // TBD: Vajon fel kene szabaditani a szervizpeldanyt ha gond vt?
-            //
-
-            object instance = Factory(serviceReference.RelatedInjector!, Interface);
-            if (!Interface.IsInstanceOfType(instance))
-                throw new InvalidCastException(string.Format(Resources.Culture, Resources.INVALID_INSTANCE, Interface));
-
-            serviceReference.Value = instance;
-
+            serviceReference.Value = Factory(serviceReference.RelatedInjector!, Interface);
             SaveReference(serviceReference);
+
             State |= ServiceEntryStates.Instantiated;
 
             return true;

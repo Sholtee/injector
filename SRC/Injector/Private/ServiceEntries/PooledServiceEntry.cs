@@ -77,9 +77,7 @@ namespace Solti.Utils.DI.Internals
 
                 IPool relatedPool = (IPool) relatedInjector.Get(typeof(IPool<>).MakeGenericType(Interface), PooledLifetime.GetPoolName(Interface, Name));
 
-                PoolItem<IServiceReference> poolItem = relatedPool.Get();
-
-                reference.Value = poolItem;
+                reference.Value = relatedPool.Get();
                 SaveReference(reference);
             }
 
@@ -138,29 +136,6 @@ namespace Solti.Utils.DI.Internals
                 ),
                 _ => throw new NotSupportedException()
             };
-        }
-
-        public override object GetInstance(IServiceReference reference)
-        {
-            object instance = base.GetInstance(reference);
-
-            if (reference.RelatedInjector!.Meta(PooledLifetime.POOL_SCOPE) is not true)
-            {
-                //
-                // Ha fogyaszto oldalon vagyunk akkor PoolItem-et kapunk vissza, abbol kell elovarazsolni az erteket
-                //
-
-                var poolItem = (PoolItem<IServiceReference>) instance;
-                return poolItem
-                    .Value
-                    .GetInstance();
-            }
-
-            //
-            // Pool scope-ban nincs dolgunk
-            //
-
-            return instance;
         }
 
         public override Lifetime Lifetime { get; } = Lifetime.Pooled;

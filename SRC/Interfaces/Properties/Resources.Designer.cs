@@ -70,15 +70,6 @@ namespace Solti.Utils.DI.Interfaces.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The given service reference is not compatible..
-        /// </summary>
-        internal static string INCOMPATIBLE_REFERENCE {
-            get {
-                return ResourceManager.GetString("INCOMPATIBLE_REFERENCE", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Parameter must be a class..
         /// </summary>
         internal static string NOT_A_CLASS {

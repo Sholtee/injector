@@ -9,7 +9,7 @@ using System.Diagnostics.CodeAnalysis;
 namespace Solti.Utils.DI.Interfaces
 {
     /// <summary>
-    /// Describes the state of a <see cref="AbstractServiceEntry"/>
+    /// Describes the actual state of an <see cref="AbstractServiceEntry"/>
     /// </summary>
     [Flags]
     [SuppressMessage("Usage", "CA2217:Do not mark enums with FlagsAttribute", Justification = "The value of 1 is a valid flag value.")]

@@ -1,18 +1,9 @@
 ﻿/********************************************************************************
-* IPool.cs                                                                      *
+* IWrapped.cs                                                                   *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
-namespace Solti.Utils.DI.Internals
-{
-    using Interfaces;
+using Solti.Utils.DI.Interfaces;
+using System.Runtime.CompilerServices;
 
-    internal interface IPool
-    {
-        IWrapped Get();
-    }
-
-    internal interface IPool<TInterface>: IPool where TInterface: class
-    {
-    }
-}
+[assembly: TypeForwardedTo(typeof(IWrapped))]

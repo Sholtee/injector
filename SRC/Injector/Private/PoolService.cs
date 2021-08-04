@@ -88,6 +88,36 @@ namespace Solti.Utils.DI.Internals
             }
         }
 
+        private sealed class Wrapped : Disposable, IWrapped
+        {
+            public Wrapped(ObjectPool<IServiceReference> owner)
+            {
+                Owner = owner;
+                Reference = owner.Get(CheckoutPolicy.Block)!;
+            }
+
+            protected override void Dispose(bool disposeManaged)
+            {
+                if (disposeManaged)
+                    Owner.Return(Reference);
+
+                base.Dispose(disposeManaged);
+            }
+
+            public ObjectPool<IServiceReference> Owner { get; }
+
+            public IServiceReference Reference { get; }
+
+            public object UnderlyingObject
+            {
+                get
+                {
+                    CheckNotDisposed();
+                    return Reference.Value!;
+                }
+            }
+        }
+
         [SuppressMessage("Reliability", "CA2000:Dispose objects before losing scope", Justification = "LifetimeManager is released in the Dispose(bool) method")]
         public PoolService(IScopeFactory scopeFactory, int capacity, string? name) : base(capacity, new ServiceReferenceLifetimeManager(scopeFactory, name)) {}
 
@@ -99,6 +129,6 @@ namespace Solti.Utils.DI.Internals
                 ((IDisposable) LifetimeManager).Dispose();
         }
 
-        public PoolItem<IServiceReference> Get() => this.GetItem(CheckoutPolicy.Block)!;
+        public IWrapped Get() => new Wrapped(this);
     }
 }

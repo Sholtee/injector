@@ -88,9 +88,11 @@ namespace Solti.Utils.DI
                 Ensure.Parameter.IsNotNull(value, nameof(value));
 
                 //
-                // Tudatosan nincs tipus validalas (PooledServiceEntry pl nem RelatedServiceEntry.Interface tipusu
-                // erteket allit be).
+                // A beallitando peldany tipusanak megfelelonek kell lenni
                 //
+
+                if (!RelatedServiceEntry.Interface.IsInstanceOfType((value as IWrapped)?.UnderlyingObject ?? value))
+                    throw new InvalidCastException(string.Format(Resources.Culture, Resources.INVALID_INSTANCE, RelatedServiceEntry.Interface));
 
                 FValue.Value = value;
             }

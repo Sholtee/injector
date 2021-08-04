@@ -40,24 +40,25 @@ namespace Solti.Utils.DI.Internals
             CheckNotDisposed();
             Ensure.Parameter.IsNotNull(genericArguments, nameof(genericArguments));
 
-            return (
+            return 
+            (
                 this switch
                 {
-                //
-                // "Service(typeof(IGeneric<>), ...)" eseten az implementaciot konkretizaljuk.
-                //
+                    //
+                    // "Service(typeof(IGeneric<>), ...)" eseten az implementaciot konkretizaljuk.
+                    //
 
-                _ when Implementation is not null && ExplicitArgs is null =>
+                    _ when Implementation is not null && ExplicitArgs is null =>
                         Lifetime!.CreateFrom(Interface.MakeGenericType(genericArguments), Name, Implementation.MakeGenericType(genericArguments), Owner),
                     _ when Implementation is not null && ExplicitArgs is not null =>
                         Lifetime!.CreateFrom(Interface.MakeGenericType(genericArguments), Name, Implementation.MakeGenericType(genericArguments), ExplicitArgs, Owner),
 
-                //
-                // "Factory(typeof(IGeneric<>), ...)" eseten az eredeti factory lesz hivva a 
-                // konkretizalt interface-re.
-                //
+                    //
+                    // "Factory(typeof(IGeneric<>), ...)" eseten az eredeti factory lesz hivva a 
+                    // konkretizalt interface-re.
+                    //
 
-                _ when Factory is not null =>
+                    _ when Factory is not null =>
                         Lifetime!.CreateFrom(Interface.MakeGenericType(genericArguments), Name, Factory, Owner),
                     _ => throw new NotSupportedException()
                 }

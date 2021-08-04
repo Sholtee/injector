@@ -9,7 +9,6 @@ using System.Collections.Generic;
 namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
-    using Properties;
 
     internal class InstanceServiceEntry : AbstractServiceEntry
     {
@@ -21,9 +20,6 @@ namespace Solti.Utils.DI.Internals
             owner)
         {
             Ensure.Parameter.IsNotNull(instance, nameof(instance));
-
-            if (!Interface.IsInstanceOfType(instance))
-                throw new InvalidCastException(string.Format(Resources.Culture, Resources.INVALID_INSTANCE, Interface));
 
             FInstances = new[] 
             { 

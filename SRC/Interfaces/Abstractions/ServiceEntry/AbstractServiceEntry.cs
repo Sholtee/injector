@@ -121,20 +121,6 @@ namespace Solti.Utils.DI.Interfaces
             throw new NotImplementedException();
 
         /// <summary>
-        /// Returns the effective service instance from the given <paramref name="reference"/>. The <paramref name="reference"/> must be taken from this entry.
-        /// </summary>
-        public virtual object GetInstance(IServiceReference reference)
-        {
-            if (reference is null)
-                throw new ArgumentNullException(nameof(reference));
-
-            if (reference.RelatedServiceEntry != this)
-                throw new ArgumentException(Resources.INCOMPATIBLE_REFERENCE);
-
-            return reference.Value!;
-        }
-
-        /// <summary>
         /// Copies this entry to a new collection.
         /// </summary>
         /// <param name="target">The target <see cref="IServiceContainer"/> to which we want to copy this entry.</param>
@@ -171,7 +157,7 @@ namespace Solti.Utils.DI.Interfaces
             hashCode.Add(Implementation);
 
             foreach (IServiceReference reference in Instances)
-                hashCode.Add(GetInstance(reference));
+                hashCode.Add(reference.GetInstance());
 
             return hashCode.ToHashCode();
 #else
@@ -188,7 +174,7 @@ namespace Solti.Utils.DI.Interfaces
                 current = new
                 {
                     Previous = current,
-                    Instance = GetInstance(reference)
+                    Instance = reference.GetInstance()
                 };
 
             return current.GetHashCode();
@@ -206,7 +192,7 @@ namespace Solti.Utils.DI.Interfaces
             return new StringBuilder(this.FriendlyName())
                 .AppendFormat(Resources.Culture, NAME_PART, nameof(Lifetime), Lifetime?.ToString() ?? "NULL")
                 .AppendFormat(Resources.Culture, NAME_PART, nameof(Implementation), Implementation?.GetFriendlyName() ?? "NULL")
-                .AppendFormat(Resources.Culture, NAME_PART, nameof(Instances), Instances.Any() ? string.Join(", ", Instances.Select(GetInstance)) : "EMPTY")             
+                .AppendFormat(Resources.Culture, NAME_PART, nameof(Instances), Instances.Any() ? string.Join(", ", Instances.Select(IServiceReferenceExtensions.GetInstance)) : "EMPTY")             
                 .ToString();
         }
 

@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
+using Moq;
 using NUnit.Framework;
 
 namespace Solti.Utils.DI.Injector.Tests
@@ -485,6 +486,24 @@ namespace Solti.Utils.DI.Injector.Tests
             IInjector injector = Container.CreateInjector();
             injector.Get<IMyService>();
             Assert.DoesNotThrow(injector.Dispose);
+        }
+
+        [Test]
+        public void Injector_Get_ShouldExtractWrappedService()
+        {
+            IDisposable obj = new Disposable();
+
+            Mock<IWrapped> mockWrapped = new(MockBehavior.Strict);
+            mockWrapped
+                .SetupGet(x => x.UnderlyingObject)
+                .Returns(obj);
+
+            Container.Factory(typeof(IDisposable), (i, t) => mockWrapped.Object, Lifetime.Transient);
+
+            using (IInjector injector = Container.CreateInjector())
+            {
+                Assert.DoesNotThrow(() => injector.Get<IDisposable>());
+            }
         }
     }
 }

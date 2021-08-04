@@ -210,5 +210,7 @@
   - *breaking:* Renamed `QueryModes.ThrowOnError` -> `QueryModes.ThrowOnMissing`. Along with this change the behavior of `ServiceContainer.Get()` has been altered too: It may throw if the desired service is found but can not be specialized.
   - *breaking:* `Injector.TryGet()` doesn't eat the `ServiceNotFoundException` if it was thrown due to a missing dependency.
   - *breaking:* "Scope options" are substituted by the `IInjectorExtensions.Meta()` method
+  - *breaking:* Dropped `AbstractServiceEntry.GetInstance()` method
   - *introduced:* Initializer for the `ServiceContainer.MaxChildCount` property
+  - *introduced:* `IWrapped` interface
   - *improved:* `IServiceContainer.CreateChild()`, `IServiceContainer.CreateInjector()`, `ServiceContainer.Dispose()`, `Injector.Dispose()` performance
