@@ -91,7 +91,7 @@ namespace Solti.Utils.DI
                 // A beallitando peldany tipusanak megfelelonek kell lenni
                 //
 
-                if (!RelatedServiceEntry.Interface.IsInstanceOfType((value as IWrapped)?.UnderlyingObject ?? value))
+                if (!RelatedServiceEntry.Interface.IsInstanceOfType((value as IWrapped<object>)?.Value ?? value))
                     throw new InvalidCastException(string.Format(Resources.Culture, Resources.INVALID_INSTANCE, RelatedServiceEntry.Interface));
 
                 FValue.Value = value;

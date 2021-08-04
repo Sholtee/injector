@@ -212,5 +212,5 @@
   - *breaking:* "Scope options" are substituted by the `IInjectorExtensions.Meta()` method
   - *breaking:* Dropped `AbstractServiceEntry.GetInstance()` method
   - *introduced:* Initializer for the `ServiceContainer.MaxChildCount` property
-  - *introduced:* `IWrapped` interface
+  - *introduced:* Wrapped service (`IWrapped<object>`) support
   - *improved:* `IServiceContainer.CreateChild()`, `IServiceContainer.CreateInjector()`, `ServiceContainer.Dispose()`, `Injector.Dispose()` performance

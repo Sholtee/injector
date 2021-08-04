@@ -88,7 +88,7 @@ namespace Solti.Utils.DI.Internals
             }
         }
 
-        private sealed class Wrapped : Disposable, IWrapped
+        private sealed class Wrapped : Disposable, IWrapped<object>
         {
             public Wrapped(ObjectPool<IServiceReference> owner)
             {
@@ -98,6 +98,8 @@ namespace Solti.Utils.DI.Internals
 
             protected override void Dispose(bool disposeManaged)
             {
+                CheckNotDisposed();
+
                 if (disposeManaged)
                     Owner.Return(Reference);
 
@@ -108,7 +110,7 @@ namespace Solti.Utils.DI.Internals
 
             public IServiceReference Reference { get; }
 
-            public object UnderlyingObject
+            public object Value
             {
                 get
                 {
@@ -129,6 +131,6 @@ namespace Solti.Utils.DI.Internals
                 ((IDisposable) LifetimeManager).Dispose();
         }
 
-        public IWrapped Get() => new Wrapped(this);
+        public IWrapped<object> Get() => new Wrapped(this);
     }
 }

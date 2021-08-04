@@ -7,6 +7,8 @@ using System;
 
 namespace Solti.Utils.DI.Interfaces
 {
+    using Primitives.Patterns;
+
     /// <summary>
     /// Defines some <see cref="IServiceReference"/> related extensions
     /// </summary>
@@ -20,8 +22,8 @@ namespace Solti.Utils.DI.Interfaces
             if (self is null)
                 throw new ArgumentNullException(nameof(self));
 
-            return self.Value is IWrapped wrapped
-                ? wrapped.UnderlyingObject
+            return self.Value is IWrapped<object> wrapped
+                ? wrapped.Value
                 : self.Value;
         }
     }

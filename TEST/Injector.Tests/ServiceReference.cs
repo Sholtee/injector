@@ -46,9 +46,9 @@ namespace Solti.Utils.DI.Internals.Tests
         {
             IDisposable obj = new Disposable();
   
-            Mock<IWrapped> mockWrapped = new(MockBehavior.Strict);
+            Mock<IWrapped<object>> mockWrapped = new(MockBehavior.Strict);
             mockWrapped
-                .SetupGet(x => x.UnderlyingObject)
+                .SetupGet(x => x.Value)
                 .Returns(obj);
 
             var svc = new ServiceReference(new AbstractServiceEntry(typeof(IDisposable), null, new Mock<IServiceContainer>(MockBehavior.Strict).Object), new Mock<IInjector>(MockBehavior.Strict).Object);
@@ -59,9 +59,9 @@ namespace Solti.Utils.DI.Internals.Tests
         [Test]
         public void WrappedValue_ShouldBeValidated()
         {
-            Mock<IWrapped> mockWrapped = new(MockBehavior.Strict);
+            Mock<IWrapped<object>> mockWrapped = new(MockBehavior.Strict);
             mockWrapped
-                .SetupGet(x => x.UnderlyingObject)
+                .SetupGet(x => x.Value)
                 .Returns(new object());
 
             var svc = new ServiceReference(new AbstractServiceEntry(typeof(IDisposable), null, new Mock<IServiceContainer>(MockBehavior.Strict).Object), new Mock<IInjector>(MockBehavior.Strict).Object);

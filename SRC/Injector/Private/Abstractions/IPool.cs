@@ -5,11 +5,11 @@
 ********************************************************************************/
 namespace Solti.Utils.DI.Internals
 {
-    using Interfaces;
+    using Primitives.Patterns;
 
     internal interface IPool
     {
-        IWrapped Get();
+        IWrapped<object> Get();
     }
 
     internal interface IPool<TInterface>: IPool where TInterface: class

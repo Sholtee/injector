@@ -3,7 +3,7 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
-using Solti.Utils.DI.Interfaces;
+using Solti.Utils.Primitives.Patterns;
 using System.Runtime.CompilerServices;
 
-[assembly: TypeForwardedTo(typeof(IWrapped))]
+[assembly: TypeForwardedTo(typeof(IWrapped<>))]

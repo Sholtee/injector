@@ -493,10 +493,12 @@ namespace Solti.Utils.DI.Injector.Tests
         {
             IDisposable obj = new Disposable();
 
-            Mock<IWrapped> mockWrapped = new(MockBehavior.Strict);
+            Mock<IWrapped<object>> mockWrapped = new(MockBehavior.Strict);
             mockWrapped
-                .SetupGet(x => x.UnderlyingObject)
+                .SetupGet(x => x.Value)
                 .Returns(obj);
+            mockWrapped
+                .Setup(x => x.Dispose());
 
             Container.Factory(typeof(IDisposable), (i, t) => mockWrapped.Object, Lifetime.Transient);
 
