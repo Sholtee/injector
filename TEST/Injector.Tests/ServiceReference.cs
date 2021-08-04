@@ -32,6 +32,44 @@ namespace Solti.Utils.DI.Internals.Tests
         }
 
         [Test]
+        public void Value_ShouldBeValidated()
+        {
+            var svc = new ServiceReference(new AbstractServiceEntry(typeof(IDummyService), null, new Mock<IServiceContainer>(MockBehavior.Strict).Object), new Mock<IInjector>(MockBehavior.Strict).Object);
+
+            Assert.Throws<ArgumentNullException>(() => svc.Value = null);
+            Assert.Throws<InvalidCastException>(() => svc.Value = new object(), Resources.INVALID_INSTANCE);
+            Assert.DoesNotThrow(() => svc.Value = new Mock<IDummyService>().Object);
+        }
+
+        [Test]
+        public void Value_MayBeWrapped()
+        {
+            IDisposable obj = new Disposable();
+  
+            Mock<IWrapped> mockWrapped = new(MockBehavior.Strict);
+            mockWrapped
+                .SetupGet(x => x.UnderlyingObject)
+                .Returns(obj);
+
+            var svc = new ServiceReference(new AbstractServiceEntry(typeof(IDisposable), null, new Mock<IServiceContainer>(MockBehavior.Strict).Object), new Mock<IInjector>(MockBehavior.Strict).Object);
+
+            Assert.DoesNotThrow(() => svc.Value = mockWrapped.Object);
+        }
+
+        [Test]
+        public void WrappedValue_ShouldBeValidated()
+        {
+            Mock<IWrapped> mockWrapped = new(MockBehavior.Strict);
+            mockWrapped
+                .SetupGet(x => x.UnderlyingObject)
+                .Returns(new object());
+
+            var svc = new ServiceReference(new AbstractServiceEntry(typeof(IDisposable), null, new Mock<IServiceContainer>(MockBehavior.Strict).Object), new Mock<IInjector>(MockBehavior.Strict).Object);
+
+            Assert.Throws<InvalidCastException>(() => svc.Value = mockWrapped.Object);
+        }
+
+        [Test]
         public void Release_ShouldDisposeTheValueAndDecrementTheRefCountOfTheDependencies() 
         {         
             var dependency = new ServiceReference(new AbstractServiceEntry(typeof(IDummyService), null, new Mock<IServiceContainer>(MockBehavior.Strict).Object), new Mock<IInjector>(MockBehavior.Strict).Object) 
