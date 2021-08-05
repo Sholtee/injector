@@ -85,15 +85,15 @@ namespace Solti.Utils.DI.Internals
             return true;
         }
 
+        //
+        // Ez itt trukkos mert a PooledServiceEntrySupportsProxying-ban ez a metodus nincs felulirva
+        // igy az ilyen tipusu bejegyzesek a deklaralo konteneren kivul nem proxy-zhatok.
+        //
+
         public sealed override AbstractServiceEntry CopyTo(IServiceContainer target)
         {
             CheckNotDisposed();
             Ensure.Parameter.IsNotNull(target, nameof(target));
-
-            //
-            // Ez itt trukkos mert a leszarmazottban is csak "sima" PooledServiceEntry-t regisztral
-            // (igy az mar nem lesz proxy-zhato).
-            //
 
             var result = new PooledServiceEntry(this, target);
             target.Add(result);
