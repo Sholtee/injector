@@ -51,6 +51,6 @@ namespace Solti.Utils.DI.Internals
 
             throw new NotImplementedException();
 
-        public override bool IsShared => true;
+        public override bool IsShared { get; } = true;
     }
 }
