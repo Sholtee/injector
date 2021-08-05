@@ -10,7 +10,7 @@ namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
 
-    internal class PooledServiceEntrySupportsProxying : PooledServiceEntry, ISupportsProxying, ISupportsSpecialization
+    internal class PooledServiceEntrySupportsProxying : PooledServiceEntry, ISupportsProxying
     {
         public PooledServiceEntrySupportsProxying(Type @interface, string? name, Func<IInjector, Type, object> factory, IServiceContainer owner) : base(@interface, name, factory, owner)
         {
@@ -26,35 +26,37 @@ namespace Solti.Utils.DI.Internals
 
         Func<IInjector, Type, object>? ISupportsProxying.Factory { get => Factory; set => Factory = value; }
 
-        AbstractServiceEntry ISupportsSpecialization.Specialize(params Type[] genericArguments) => this switch
+        public override AbstractServiceEntry Specialize(params Type[] genericArguments)
         {
-            //
-            // Itt ne a "Lifetime"-ot hasznaljuk mert a pool-t nem szeretnenk megegyszer regisztralni.
-            //
+            CheckNotDisposed();
+            Ensure.Parameter.IsNotNull(genericArguments, nameof(genericArguments));
 
-            _ when Implementation is not null && ExplicitArgs is null => new PooledServiceEntrySupportsProxying
-            (
-                Interface.MakeGenericType(genericArguments),
-                Name,
-                Implementation.MakeGenericType(genericArguments),
-                Owner
-            ),
-            _ when Implementation is not null && ExplicitArgs is not null => new PooledServiceEntrySupportsProxying
-            (
-                Interface.MakeGenericType(genericArguments),
-                Name,
-                Implementation.MakeGenericType(genericArguments),
-                ExplicitArgs,
-                Owner
-            ),
-            _ when Factory is not null => new PooledServiceEntrySupportsProxying
-            (
-                Interface.MakeGenericType(genericArguments),
-                Name,
-                Factory,
-                Owner
-            ),
-            _ => throw new NotSupportedException()
-        };
+            return this switch
+            {
+                _ when Implementation is not null && ExplicitArgs is null => new PooledServiceEntrySupportsProxying
+                (
+                    Interface.MakeGenericType(genericArguments),
+                    Name,
+                    Implementation.MakeGenericType(genericArguments),
+                    Owner
+                ),
+                _ when Implementation is not null && ExplicitArgs is not null => new PooledServiceEntrySupportsProxying
+                (
+                    Interface.MakeGenericType(genericArguments),
+                    Name,
+                    Implementation.MakeGenericType(genericArguments),
+                    ExplicitArgs,
+                    Owner
+                ),
+                _ when Factory is not null => new PooledServiceEntrySupportsProxying
+                (
+                    Interface.MakeGenericType(genericArguments),
+                    Name,
+                    Factory,
+                    Owner
+                ),
+                _ => throw new NotSupportedException()
+            };
+        }
     }
 }

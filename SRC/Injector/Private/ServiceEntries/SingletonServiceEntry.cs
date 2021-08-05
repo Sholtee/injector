@@ -14,7 +14,7 @@ namespace Solti.Utils.DI.Internals
     using Primitives.Threading;
     using Properties;
 
-    internal class SingletonServiceEntry : ProducibleServiceEntry
+    internal class SingletonServiceEntry : ProducibleServiceEntrySupportsProxying
     {
         private readonly ConcurrentBag<IServiceReference> FInstances = new();
 
@@ -80,6 +80,39 @@ namespace Solti.Utils.DI.Internals
 
                 return true;
             }
+        }
+
+        public override AbstractServiceEntry Specialize(params Type[] genericArguments)
+        {
+            CheckNotDisposed();
+            Ensure.Parameter.IsNotNull(genericArguments, nameof(genericArguments));
+
+            return this switch
+            {
+                _ when Implementation is not null && ExplicitArgs is null => new SingletonServiceEntry
+                (
+                    Interface.MakeGenericType(genericArguments),
+                    Name,
+                    Implementation.MakeGenericType(genericArguments),
+                    Owner
+                ),
+                _ when Implementation is not null && ExplicitArgs is not null => new SingletonServiceEntry
+                (
+                    Interface.MakeGenericType(genericArguments),
+                    Name,
+                    Implementation.MakeGenericType(genericArguments),
+                    ExplicitArgs,
+                    Owner
+                ),
+                _ when Factory is not null => new SingletonServiceEntry
+                (
+                    Interface.MakeGenericType(genericArguments),
+                    Name,
+                    Factory,
+                    Owner
+                ),
+                _ => throw new NotSupportedException()
+            };
         }
 
         public override Lifetime Lifetime { get; } = Lifetime.Singleton;

@@ -11,7 +11,7 @@ namespace Solti.Utils.DI.Internals
     using Interfaces;
     using Properties;
 
-    internal class ScopedServiceEntry : ProducibleServiceEntry
+    internal class ScopedServiceEntry : ProducibleServiceEntrySupportsProxying
     {
         private readonly List<IServiceReference> FInstances = new(1); // max egy eleme lehet
 
@@ -67,6 +67,39 @@ namespace Solti.Utils.DI.Internals
             var result = new ScopedServiceEntry(this, target);
             target.Add(result);
             return result;
+        }
+
+        public override AbstractServiceEntry Specialize(params Type[] genericArguments)
+        {
+            CheckNotDisposed();
+            Ensure.Parameter.IsNotNull(genericArguments, nameof(genericArguments));
+
+            return this switch
+            {
+                _ when Implementation is not null && ExplicitArgs is null => new ScopedServiceEntry
+                (
+                    Interface.MakeGenericType(genericArguments),
+                    Name,
+                    Implementation.MakeGenericType(genericArguments),
+                    Owner
+                ),
+                _ when Implementation is not null && ExplicitArgs is not null => new ScopedServiceEntry
+                (
+                    Interface.MakeGenericType(genericArguments),
+                    Name,
+                    Implementation.MakeGenericType(genericArguments),
+                    ExplicitArgs,
+                    Owner
+                ),
+                _ when Factory is not null => new ScopedServiceEntry
+                (
+                    Interface.MakeGenericType(genericArguments),
+                    Name,
+                    Factory,
+                    Owner
+                ),
+                _ => throw new NotSupportedException()
+            };
         }
 
         public override Lifetime Lifetime { get; } = Lifetime.Scoped;

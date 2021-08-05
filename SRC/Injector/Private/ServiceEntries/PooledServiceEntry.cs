@@ -9,14 +9,13 @@ using System.Collections.Generic;
 namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
-    using Primitives.Threading;
     using Properties;
 
     //
     // A PooledServiceEntry ket modon is lehet peldanyositva: Egy kulonallo poolban vagy a felhasznalo oldalan.
     //
 
-    internal class PooledServiceEntry : ProducibleServiceEntryBase, ISupportsSpecialization
+    internal class PooledServiceEntry : ProducibleServiceEntry
     {
         private readonly List<IServiceReference> FInstances = new(1); // max egy eleme lehet
 
@@ -101,17 +100,13 @@ namespace Solti.Utils.DI.Internals
             return result;
         }
 
-        AbstractServiceEntry ISupportsSpecialization.Specialize(params Type[] genericArguments)
+        public override AbstractServiceEntry Specialize(params Type[] genericArguments)
         {
             CheckNotDisposed();
             Ensure.Parameter.IsNotNull(genericArguments, nameof(genericArguments));
 
             return this switch
             {
-                //
-                // Itt ne a "Lifetime"-ot hasznaljuk mert a pool-t nem szeretnenk megegyszer regisztralni.
-                //
-
                 _ when Implementation is not null && ExplicitArgs is null => new PooledServiceEntry
                 (
                     Interface.MakeGenericType(genericArguments),

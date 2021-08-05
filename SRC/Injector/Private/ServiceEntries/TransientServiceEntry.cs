@@ -11,7 +11,7 @@ namespace Solti.Utils.DI.Internals
     using Interfaces;
     using Properties;
 
-    internal class TransientServiceEntry : ProducibleServiceEntry
+    internal class TransientServiceEntry : ProducibleServiceEntrySupportsProxying
     {
         private readonly List<IServiceReference> FInstances = new();
 
@@ -68,6 +68,42 @@ namespace Solti.Utils.DI.Internals
             var result = new TransientServiceEntry(this, target);
             target.Add(result);
             return result;
+        }
+
+        public override AbstractServiceEntry Specialize(params Type[] genericArguments)
+        {
+            CheckNotDisposed();
+            Ensure.Parameter.IsNotNull(genericArguments, nameof(genericArguments));
+
+            return this switch
+            {
+                _ when Implementation is not null && ExplicitArgs is null => new TransientServiceEntry
+                (
+                    Interface.MakeGenericType(genericArguments),
+                    Name,
+                    Implementation.MakeGenericType(genericArguments),
+                    Owner,
+                    MaxSpawnedServices
+                ),
+                _ when Implementation is not null && ExplicitArgs is not null => new TransientServiceEntry
+                (
+                    Interface.MakeGenericType(genericArguments),
+                    Name,
+                    Implementation.MakeGenericType(genericArguments),
+                    ExplicitArgs,
+                    Owner,
+                    MaxSpawnedServices
+                ),
+                _ when Factory is not null => new TransientServiceEntry
+                (
+                    Interface.MakeGenericType(genericArguments),
+                    Name,
+                    Factory,
+                    Owner,
+                    MaxSpawnedServices
+                ),
+                _ => throw new NotSupportedException()
+            };
         }
 
         public override Lifetime Lifetime { get; } = Lifetime.Transient;
