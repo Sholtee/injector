@@ -29,7 +29,7 @@ namespace Solti.Utils.DI.Internals
         /// The <see cref="Config"/> instance.
         /// </summary>
         public static Config Value { get; private set; } = new Config();
-#if DEBUG
+
         internal static void Reset() =>
             //
             // Mivel a referenciak irasa atomi muvelet ezert nem kell lock a Reset() miatt
@@ -37,6 +37,5 @@ namespace Solti.Utils.DI.Internals
             //
 
             Value = new Config();
-#endif
     }
 }
