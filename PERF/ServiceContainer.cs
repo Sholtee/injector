@@ -9,15 +9,30 @@ using System.Collections.Generic;
 using System.Linq;
 
 using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Engines;
 
 namespace Solti.Utils.DI.Perf
 {
-    using static Consts;
     using Interfaces;
 
     [MemoryDiagnoser]
+    [SimpleJob(RunStrategy.Throughput, invocationCount: InvocationCount)]
     public class ServiceContainer
     {
+        const int InvocationCount = 10000;
+
+        private int I;
+
+        private static readonly IReadOnlyList<Type> RandomClasses = typeof(object)
+            .Assembly
+            .ExportedTypes
+            .Where(t => t.IsClass && !t.IsAbstract && !t.IsGenericTypeDefinition)
+            .ToArray();
+
+        private static readonly IReadOnlyList<Type> SpecializedInterfaces = RandomClasses
+            .Select(cls => typeof(IList<>).MakeGenericType(cls))
+            .ToArray();
+
         private DI.ServiceContainer FContainer;
 
         [GlobalCleanup]
@@ -27,73 +42,75 @@ namespace Solti.Utils.DI.Perf
             FContainer = null;
         }
 
-        private static readonly IReadOnlyList<Type> RandomInterfaces = typeof(object)
-            .Assembly
-            .GetTypes()
-            .Where(t => t.IsInterface)
-            .ToArray();
-
-        //
-        // FContainer.Count lekerdezese idoigenyes
-        //
-
-        private int OverallAddInvocations { get; set; }
-
-        [Benchmark(OperationsPerInvoke = OperationsPerInvoke)]
-        public void Add() 
+        [GlobalSetup(Target = nameof(Add))]
+        public void SetupAdd()
         {
-            using (IServiceContainer container = new DI.ServiceContainer())
-            {
-                for (int i = 0; i < OperationsPerInvoke; i++, OverallAddInvocations++)
-                {
-                    container.Add
-                    (
-                        new AbstractServiceEntry
-                        (
-                            RandomInterfaces[OverallAddInvocations % RandomInterfaces.Count],
-                            (OverallAddInvocations / RandomInterfaces.Count).ToString(),
-                            container
-                        )
-                    );
-                }
-            }
+            FContainer = new DI.ServiceContainer();
+            I = 0;
         }
+
+        [Benchmark]
+        public void Add() => FContainer.Add
+        (
+            new AbstractServiceEntry
+            (
+                typeof(IList),
+                I++.ToString(),
+                FContainer
+            )
+        );
 
         [GlobalSetup(Target = nameof(Get))]
         public void SetupGet() 
         {
             FContainer = new DI.ServiceContainer();
-            FContainer.Factory<IList>(injector => Array.Empty<int>(), Lifetime.Transient);
+            for (int i = 0; i < InvocationCount; i++)
+            {
+                FContainer.Factory(typeof(IList), i.ToString(), (i, t) => null, Lifetime.Transient);
+            }
+            I = 0;
         }
 
-        [Benchmark(OperationsPerInvoke = OperationsPerInvoke)]
-        public void Get()
-        {
-            for (int i = 0; i < OperationsPerInvoke; i++)
-            {
-                FContainer.Get<IList>(QueryModes.ThrowOnMissing);
-            }
-        }
+        [Benchmark]
+        public AbstractServiceEntry Get() => FContainer.Get(typeof(IList), (++I % InvocationCount).ToString(), QueryModes.ThrowOnMissing);
 
         [GlobalSetup(Target = nameof(Specialize))]
         public void SetupSpecialize()
         {
             FContainer = new DI.ServiceContainer();
-            for (int i = 0; i < OperationsPerInvoke; i++)
+            for (int i = 0; i < InvocationCount; i++)
             {
-                FContainer.Service(typeof(IList<>), i.ToString(), typeof(MyList<>), Lifetime.Transient);
+                FContainer.Factory(typeof(IList<>), i.ToString(), (i, t) => null, Lifetime.Transient);
             }
+            I = 0;
         }
 
-        private sealed class MyList<T> : List<T> { } // csak egy konstruktor legyen
-
-        [Benchmark(OperationsPerInvoke = OperationsPerInvoke)]
-        public void Specialize() 
+        [Benchmark]
+        public AbstractServiceEntry Specialize()
         {
-            for (int i = 0; i < OperationsPerInvoke; i++)
+            I++;
+            return FContainer.Get(SpecializedInterfaces[I % SpecializedInterfaces.Count], (I % InvocationCount).ToString(), QueryModes.AllowSpecialization | QueryModes.ThrowOnMissing);
+        }
+
+        private IServiceContainer FChild;
+
+        [GlobalSetup(Target = nameof(SpecializeInChildContainer))]
+        public void SetupSpecializeInChildContainer()
+        {
+            FContainer = new DI.ServiceContainer();
+            for (int i = 0; i < InvocationCount; i++)
             {
-                FContainer.Get<IList<object>>(i.ToString(), QueryModes.AllowSpecialization | QueryModes.ThrowOnMissing);
+                FContainer.Factory(typeof(IList<>), i.ToString(), (i, t) => null, Lifetime.Singleton);
             }
+            FChild = FContainer.CreateChild();
+            I = 0;
+        }
+
+        [Benchmark]
+        public AbstractServiceEntry SpecializeInChildContainer()
+        {
+            I++;
+            return FChild.Get(SpecializedInterfaces[I % SpecializedInterfaces.Count], (I % InvocationCount).ToString(), QueryModes.AllowSpecialization | QueryModes.ThrowOnMissing);
         }
     }
 }
