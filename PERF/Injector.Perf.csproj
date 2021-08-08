@@ -18,9 +18,10 @@
 
   <ItemGroup>
     <PackageReference Include="BenchmarkDotNet" Version="0.*" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.*" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(LibVersion)' != ''" >
+  <ItemGroup Condition="'$(LibVersion)' != ''">
     <PackageReference Include="Injector.NET" Version="$(LibVersion)"></PackageReference>
   </ItemGroup>
 
