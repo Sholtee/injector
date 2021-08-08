@@ -5,10 +5,12 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Engines;
 
+using Lamar;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Solti.Utils.DI.Perf
@@ -46,7 +48,8 @@ namespace Solti.Utils.DI.Perf
             IIocContainer RegisterSingleton<TInterface, TImplementation>() where TImplementation: TInterface;
             IIocContainer RegisterScoped<TInterface, TImplementation>() where TImplementation : TInterface;
             IIocContainer RegisterTransient<TInterface, TImplementation>() where TImplementation : TInterface;
-            IServiceProvider CreateProvider();
+            void Build();
+            IServiceProvider CreateScope();
         }
 
         #region Containers
@@ -67,7 +70,9 @@ namespace Solti.Utils.DI.Perf
                 base.Dispose(disposeManaged);
             }
 
-            public IServiceProvider CreateProvider()
+            public void Build() { }
+
+            public IServiceProvider CreateScope()
             {
                 FUnderlyingContainer.CreateProvider(out IServiceProvider serviceProvider);
                 return serviceProvider;
@@ -92,29 +97,81 @@ namespace Solti.Utils.DI.Perf
             }
 
             public override string ToString() => nameof(InjectorDotNetServiceContainer);
+
         }
 
-        public sealed class MsExtensionsServiceCollection : IIocContainer
+        public sealed class LamarContainer : Disposable,  IIocContainer
         {
-            private readonly IServiceCollection FunderlyingContainer = new ServiceCollection();
+            private readonly IServiceCollection FUnderlyingContainer = new ServiceCollection();
 
-            public IServiceProvider CreateProvider() => FunderlyingContainer.BuildServiceProvider();
+            private Container FBuiltContainer;
+
+            protected override void Dispose(bool disposeManaged)
+            {
+                if (disposeManaged)
+                    FBuiltContainer?.Dispose();
+
+                base.Dispose(disposeManaged);
+            }
+
+            public void Build() => FBuiltContainer = new Container(FUnderlyingContainer);
+
+            public IServiceProvider CreateScope() => FBuiltContainer.GetNestedContainer();
 
             public IIocContainer RegisterScoped<TInterface, TImplementation>() where TImplementation : TInterface
             {
-                FunderlyingContainer.AddScoped(typeof(TInterface), typeof(TImplementation));
+                FUnderlyingContainer.AddScoped(typeof(TInterface), typeof(TImplementation));
                 return this;
             }
 
             public IIocContainer RegisterSingleton<TInterface, TImplementation>() where TImplementation : TInterface
             {
-                FunderlyingContainer.AddSingleton(typeof(TInterface), typeof(TImplementation));
+                FUnderlyingContainer.AddSingleton(typeof(TInterface), typeof(TImplementation));
                 return this;
             }
 
             public IIocContainer RegisterTransient<TInterface, TImplementation>() where TImplementation : TInterface
             {
-                FunderlyingContainer.AddTransient(typeof(TInterface), typeof(TImplementation));
+                FUnderlyingContainer.AddTransient(typeof(TInterface), typeof(TImplementation));
+                return this;
+            }
+
+            public override string ToString() => nameof(LamarContainer);
+        }
+
+        public sealed class MsExtensionsServiceCollection : Disposable, IIocContainer
+        {
+            private readonly IServiceCollection FUnderlyingContainer = new ServiceCollection();
+
+            private ServiceProvider FBuiltProvider;
+
+            protected override void Dispose(bool disposeManaged)
+            {
+                if (disposeManaged)
+                    FBuiltProvider?.Dispose();
+
+                base.Dispose(disposeManaged);
+            }
+
+            public void Build() => FBuiltProvider = FUnderlyingContainer.BuildServiceProvider();
+
+            public IServiceProvider CreateScope() => FBuiltProvider.CreateScope().ServiceProvider;
+
+            public IIocContainer RegisterScoped<TInterface, TImplementation>() where TImplementation : TInterface
+            {
+                FUnderlyingContainer.AddScoped(typeof(TInterface), typeof(TImplementation));
+                return this;
+            }
+
+            public IIocContainer RegisterSingleton<TInterface, TImplementation>() where TImplementation : TInterface
+            {
+                FUnderlyingContainer.AddSingleton(typeof(TInterface), typeof(TImplementation));
+                return this;
+            }
+
+            public IIocContainer RegisterTransient<TInterface, TImplementation>() where TImplementation : TInterface
+            {
+                FUnderlyingContainer.AddTransient(typeof(TInterface), typeof(TImplementation));
                 return this;
             }
 
@@ -122,13 +179,26 @@ namespace Solti.Utils.DI.Perf
         }
         #endregion
 
-        public IServiceProvider ServiceProvider { get; set; }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private IDependant RequestService()
+        {
+            IServiceProvider serviceProvider = Container.CreateScope();
+            try
+            {
+                return serviceProvider.GetService<IDependant>();
+            }
+            finally
+            {
+                (serviceProvider as IDisposable)?.Dispose();
+            }
+        }
 
         public IEnumerable<IIocContainer> Containers
         {
             get
             {
                 yield return new InjectorDotNetServiceContainer();
+                yield return new LamarContainer();
                 yield return new MsExtensionsServiceCollection();
             }
         }
@@ -140,39 +210,30 @@ namespace Solti.Utils.DI.Perf
         public void GlobalCleanup() => (Container as IDisposable)?.Dispose();
 
         [GlobalSetup(Target = nameof(Singleton))]
-        public void SetupSingleton() => ServiceProvider = Container
+        public void SetupSingleton() => Container
             .RegisterSingleton<IDependency, Dependency>()
             .RegisterSingleton<IDependant, Dependant>()
-            .CreateProvider();
-
-        [GlobalCleanup(Target = nameof(Singleton))]
-        public void CleanupSingleton() => ((IDisposable) ServiceProvider).Dispose();
+            .Build();
 
         [Benchmark]
-        public IDependant Singleton() => ServiceProvider.GetService<IDependant>();
+        public IDependant Singleton() => RequestService();
 
         [GlobalSetup(Target = nameof(Scoped))]
-        public void SetupScoped() => ServiceProvider = Container
+        public void SetupScoped() => Container
             .RegisterScoped<IDependency, Dependency>()
             .RegisterScoped<IDependant, Dependant>()
-            .CreateProvider();
-
-        [GlobalCleanup(Target = nameof(Scoped))]
-        public void CleanupScoped() => ((IDisposable) ServiceProvider).Dispose();
+            .Build();
 
         [Benchmark]
-        public IDependant Scoped() => ServiceProvider.GetService<IDependant>();
+        public IDependant Scoped() => RequestService();
 
         [GlobalSetup(Target = nameof(Transient))]
-        public void SetupTransient() => ServiceProvider = Container
+        public void SetupTransient() => Container
             .RegisterTransient<IDependency, Dependency>()
             .RegisterTransient<IDependant, Dependant>()
-            .CreateProvider();
-
-        [GlobalCleanup(Target = nameof(Transient))]
-        public void CleanupTransient() => ((IDisposable) ServiceProvider).Dispose();
+            .Build();
 
         [Benchmark]
-        public IDependant Transient() => ServiceProvider.GetService<IDependant>();
+        public IDependant Transient() => RequestService();
     }
 }
