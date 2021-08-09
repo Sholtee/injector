@@ -188,6 +188,7 @@ namespace Solti.Utils.DI.Perf
             .Service<IDependency, Dependency>(DependencyLifetime)
             .Service<IDependant, Dependant>(DependantLifetime));
 
+        [Benchmark]
         public IInjector CreateInjector() => Container.CreateInjector();
     }
 }
