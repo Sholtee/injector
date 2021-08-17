@@ -16,7 +16,7 @@ namespace Solti.Utils.DI.Internals
 
     internal partial class Injector
     {
-        private IServiceReference Resolve(AbstractServiceEntry requested)
+        internal IServiceReference Resolve(AbstractServiceEntry requested)
         {
             //
             // 1. eset: Csak egy peldanyt kell letrehozni amit vki korabban mar megtett [HasFlag(Built)],
@@ -110,7 +110,7 @@ namespace Solti.Utils.DI.Internals
             }
         }
 
-        private IServiceReference? Resolve(Type iface, string? name, QueryModes queryModes)
+        internal IServiceReference? Resolve(Type iface, string? name, QueryModes queryModes)
         {
             //
             // Ha vkinek a fuggosege vagyunk akkor a fuggo szerviz itt meg nem lehet legyartva.

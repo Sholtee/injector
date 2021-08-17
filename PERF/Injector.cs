@@ -191,4 +191,35 @@ namespace Solti.Utils.DI.Perf
         [Benchmark]
         public IInjector CreateInjector() => Container.CreateInjector();
     }
+
+    [MemoryDiagnoser]
+    [SimpleJob(RunStrategy.Throughput, invocationCount: 10000)]
+    public class InjectorResolve : InjectorTestsBase
+    {
+        private Injector Injector { get; set; }
+
+        public AbstractServiceEntry EntryToResolve { get; set; }
+
+        [ParamsSource(nameof(Lifetimes))]
+        public Lifetime DependencyLifetime { get; set; }
+
+        [ParamsSource(nameof(Lifetimes))]
+        public Lifetime DependantLifetime { get; set; }
+
+        [GlobalSetup]
+        public void Setup() => Setup(container =>
+        {
+            Injector = (Injector) container
+                .Service<IDependency, Dependency>(DependencyLifetime)
+                .Service<IDependant, Dependant>(DependantLifetime)
+                .CreateInjector();
+            EntryToResolve = Injector.UnderlyingContainer.Get<IDependant>();
+        });
+
+        [Benchmark]
+        public IServiceReference ResolveCore() => Injector.Resolve(EntryToResolve);
+
+        [Benchmark]
+        public IServiceReference Resolve() => Injector.Resolve(EntryToResolve.Interface, EntryToResolve.Name, QueryModes.AllowSpecialization | QueryModes.ThrowOnMissing);
+    }
 }
