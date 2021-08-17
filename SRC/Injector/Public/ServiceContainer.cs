@@ -215,14 +215,11 @@ namespace Solti.Utils.DI
         /// Creates a new <see cref="ServiceContainer"/> instance copying the entries from the <paramref name="parent"/>.
         /// </summary>
         /// <param name="parent">The parent <see cref="IServiceContainer"/>.</param>
-        protected internal ServiceContainer(IServiceContainer? parent) : base()
+        protected internal ServiceContainer(IServiceContainer? parent) : base(parent, Config.Value.ServiceContainer.MaxChildCount)
         {
-            MaxChildCount = Config.Value.ServiceContainer.MaxChildCount;
             FEntries = new Dictionary<IServiceId, AbstractServiceEntry>(parent?.Count ?? 0, ServiceIdComparer.Instance);
 
             if (parent is null) return;
-
-            Parent = parent;
 
             try
             {

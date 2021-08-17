@@ -15,7 +15,7 @@ namespace Solti.Utils.DI.Interfaces
     /// Provides the mechanism of storing service entries.
     /// </summary>
     /// <remarks>The implementations have to be thread safe.</remarks>
-    public interface IServiceContainer : IComposite<IServiceContainer>, IEnumerable<AbstractServiceEntry>, IDisposableEx
+    public interface IServiceContainer : IComposite<IServiceContainer>, IEnumerable<AbstractServiceEntry>, IDisposableEx, INotifyOnDispose
     {
         /// <summary>
         /// Adds a new entry to the container overwriting the existing value (if it was abstract).
