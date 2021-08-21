@@ -12,6 +12,8 @@ namespace Solti.Utils.DI.Internals
 
     internal sealed class ServiceIdComparer : ComparerBase<ServiceIdComparer, IServiceId>
     {
+        public override bool Equals(IServiceId x, IServiceId y) => x.Interface == y.Interface && x.Name == y.Name;
+
         public override int GetHashCode(IServiceId obj) =>
 #if NETSTANDARD2_1_OR_GREATER
             HashCode.Combine(obj.Interface, obj.Name)
