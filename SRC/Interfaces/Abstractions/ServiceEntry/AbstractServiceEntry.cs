@@ -136,6 +136,12 @@ namespace Solti.Utils.DI.Interfaces
         }
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public virtual AbstractServiceEntry Copy() => this;
+
+        /// <summary>
         /// Compares this entry with another one.
         /// </summary>
         /// <remarks>Entries having the same property values are considered equivalent.</remarks>
