@@ -6,254 +6,18 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
-
-
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 
 namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
-    using Primitives;
     using Primitives.Patterns;
 
-    public interface IServiceRegistry : IComposite<IServiceRegistry>, INotifyOnDispose
-    {
-        AbstractServiceEntry? GetEntry(Type iface, string? name);
-
-        IReadOnlyList<AbstractServiceEntry> RegisteredEntries { get; }
-    }
-
-    public delegate AbstractServiceEntry? Resolver(ServiceRegistry self, Type iface, string? name);
-
-    public delegate Resolver ResolverBuilder(int index, AbstractServiceEntry entry);
-
-    public interface IResolverBuilder
-    {
-        Resolver Build(IEnumerable<AbstractServiceEntry> entries, ResolverBuilder regularEntryResolverBuilder, ResolverBuilder genericEntryResolverBuilder, out int reCount, out int geCount);
-    }
-
-    public sealed class CompiledExpressionResolverBuilder: IResolverBuilder
-    {
-        private static Expression CreateSwitch<TKey>(Expression value, IEnumerable<(TKey Key, Expression Body)> cases) => Expression.Switch
-        (
-            value,
-            cases.Select
-            (
-                @case => Expression.SwitchCase
-                (
-                    @case.Body,
-                    Expression.Constant(@case.Key, typeof(TKey))
-                )
-            ).ToArray()
-        );
-
-        //
-        // (self, iface, name) =>
-        // {
-        //   switch (iface.GUID) // GUID nyilt es lezart generikusnal ugyanaz
-        //   {
-        //     case typeof(IServiceA).GUID:
-        //     {
-        //       switch (name)
-        //       {
-        //         case null: return GetLocalEntryA(self);
-        //         ...
-        //         default: return null;
-        //       }
-        //     }
-        //     case typeof(IServiceB).GUID: // IsShared
-        //     {
-        //        case "cica": return self.Parent is not null
-        //            ? self.Parent.GetEntry(iface, name)
-        //            : GetLocalEntryB(self);
-        //         ...
-        //         default: return null;
-        //     }
-        //     case typeof(IServiceC<>).GUID:
-        //     {
-        //       switch (name)
-        //       {
-        //         case null: return GetLocalSpecializedEntryC(self, iface);
-        //         ...
-        //         default: return null;
-        //       }
-        //     }
-        //     ...
-        //     default: return null;
-        //   }
-        // }
-        //
-
-        public Resolver Build(IEnumerable<AbstractServiceEntry> entries, ResolverBuilder regularEntryResolverBuilder, ResolverBuilder genericEntryResolverBuilder, out int reCount, out int geCount)
-        {
-            if (entries is null)
-                throw new ArgumentNullException(nameof(entries));
-
-            if (regularEntryResolverBuilder is null)
-                throw new ArgumentNullException(nameof(regularEntryResolverBuilder));
-
-            if (genericEntryResolverBuilder is null)
-                throw new ArgumentNullException(nameof(genericEntryResolverBuilder));
-
-            ParameterExpression
-                self  = Expression.Parameter(typeof(ServiceRegistry), nameof(self)),
-                iface = Expression.Parameter(typeof(Type), nameof(iface)),
-                name  = Expression.Parameter(typeof(string), nameof(name));
-
-            PropertyInfo
-                guidProp = (PropertyInfo) ((MemberExpression) ((Expression<Func<Type, Guid>>)(t => t.GUID)).Body).Member,
-                parentProp = (PropertyInfo) ((MemberExpression) ((Expression<Func<ServiceRegistry, ServiceRegistry?>>)(sr => sr.Parent)).Body).Member;
-
-            MethodInfo
-                getEntryMethod = ((MethodCallExpression) ((Expression<Action<ServiceRegistry>>) (sr => sr.GetEntry(null!, null))).Body).Method;
-
-            int // GetEntryResolver()-ben nem hivatkozhatunk by-ref parametert
-                regularEntryCount = 0,
-                genericEntryCount = 0;
-
-            LabelTarget returnLabel = Expression.Label(typeof(AbstractServiceEntry));
-
-            Expression<Resolver> lambda = Expression.Lambda<Resolver>
-            (
-                Expression.Block
-                (
-                    type: typeof(AbstractServiceEntry),
-                    CreateSwitch
-                    (
-                        value: Expression.Property(iface, guidProp),
-                        cases: entries
-                            .GroupBy(entry => entry.Interface.GUID)
-                            .Select
-                            (
-                                grp =>
-                                (
-                                    value: grp.Key,
-                                    cases: CreateSwitch
-                                    (
-                                        name,
-                                        grp.Select(entry => (entry.Name, GetEntryResolver(entry)))
-                                    )
-                                )
-                            )
-                    ),
-                    Expression.Label(returnLabel, Expression.Default(typeof(AbstractServiceEntry)))
-                ),
-                self, iface, name
-            );
-
-            reCount = regularEntryCount;
-            geCount = genericEntryCount;
-
-            Debug.WriteLine(lambda.GetDebugView());
-            return lambda.Compile();
-
-            Expression GetEntryResolver(AbstractServiceEntry entry)
-            {
-                Expression invocation = Expression.Invoke
-                (
-                    Expression.Constant
-                    (
-                        entry.Interface.IsGenericTypeDefinition
-                            ? genericEntryResolverBuilder(genericEntryCount++, entry)
-                            : regularEntryResolverBuilder(regularEntryCount++, entry)
-                    ),
-                    self, iface, name
-                );
-
-                if (entry.IsShared)
-                {
-                    MemberExpression root = Expression.Property(self, parentProp);
-
-                    invocation = Expression.Condition
-                    (
-                        test: Expression.NotEqual(root, Expression.Constant(null, typeof(ServiceRegistry))),
-                        ifTrue: Expression.Call(root, getEntryMethod, iface, name),
-                        ifFalse: invocation
-                    );
-                }
-
-                return Expression.Return(returnLabel, invocation);
-            }
-        }
-
-        public override string ToString() => nameof(CompiledExpressionResolverBuilder);
-    }
-
-    public sealed class ChainedMethodsResolverBuilder : IResolverBuilder
-    {
-        public Resolver Build(IEnumerable<AbstractServiceEntry> entries, ResolverBuilder regularEntryResolverBuilder, ResolverBuilder genericEntryResolverBuilder, out int reCount, out int geCount)
-        {
-            if (entries is null)
-                throw new ArgumentNullException(nameof(entries));
-
-            if (regularEntryResolverBuilder is null)
-                throw new ArgumentNullException(nameof(regularEntryResolverBuilder));
-
-            if (genericEntryResolverBuilder is null)
-                throw new ArgumentNullException(nameof(genericEntryResolverBuilder));
-
-            Resolver resolver = (_, _, _) => null;
-
-            int // GetEntryResolver()-ben nem hivatkozhatunk by-ref parametert
-                regularEntryCount = 0,
-                genericEntryCount = 0;
-
-            foreach (AbstractServiceEntry entry in entries)
-            {
-                Resolver next = resolver;
-
-                if (entry.Interface.IsGenericTypeDefinition)
-                {
-                    Resolver geResolver = genericEntryResolverBuilder(genericEntryCount++, entry);
-
-                    resolver = (self, iface, name) =>
-                    {
-                        if (entry.Interface.GUID == iface.GUID && entry.Name == name)
-                        {
-                            return geResolver(self, iface, name);
-                        }
-                        return next(self, iface, name);
-                    };
-                }
-                else
-                {
-                    Resolver reResolver = regularEntryResolverBuilder(regularEntryCount++, entry);
-
-                    resolver = (self, iface, name) =>
-                    {
-                        if (entry.Interface == iface && entry.Name == name)
-                        {
-                            return reResolver(self, iface, name);
-                        }
-                        return next(self, iface, name);
-                    };
-                }
-
-                if (entry.IsShared)
-                {
-                    Resolver baseResolver = resolver;
-
-                    resolver = (self, iface, name) => self.Parent is not null
-                        ? self.Parent.GetEntry(iface, name)
-                        : baseResolver(self, iface, name);
-                }
-            }
-
-            reCount = regularEntryCount;
-            geCount = genericEntryCount;
-
-            return resolver;
-        }
-
-        public override string ToString() => nameof(ChainedMethodsResolverBuilder);
-    }
-
+    /// <summary>
+    /// Implements the <see cref="IServiceRegistry"/> interface.
+    /// </summary>
     public class ServiceRegistry : Composite<IServiceRegistry>, IServiceRegistry
     {
         #region Private
@@ -284,6 +48,9 @@ namespace Solti.Utils.DI.Internals
         #endregion
 
         #region Protected
+        /// <summary>
+        /// Returns a <see cref="Resolver"/> that is responsible for resolving regular enries.
+        /// </summary>
         protected virtual Resolver RegularEntryResolverFactory(int index, AbstractServiceEntry entry) => (self, iface, name) =>
         {
             EntryHolder holder = self.FRegularEntries[index];
@@ -303,6 +70,9 @@ namespace Solti.Utils.DI.Internals
             return holder.Value;
         };
 
+        /// <summary>
+        /// Returns a <see cref="Resolver"/> that is responsible for resolving generic enries.
+        /// </summary>
         protected virtual Resolver GenericEntryResolverFactory(int index, AbstractServiceEntry entry)
         {
             if (entry is not ISupportsSpecialization supportsSpecialization)
@@ -331,6 +101,7 @@ namespace Solti.Utils.DI.Internals
             };
         }
 
+        /// <inheritdoc/>
         protected override void Dispose(bool disposeManaged)
         {
             if (disposeManaged)
@@ -343,6 +114,7 @@ namespace Solti.Utils.DI.Internals
             base.Dispose(disposeManaged);
         }
 
+        /// <inheritdoc/>
         protected async override ValueTask AsyncDispose()
         {
             await Task.WhenAll
@@ -354,7 +126,10 @@ namespace Solti.Utils.DI.Internals
         }
         #endregion
 
-        public ServiceRegistry(IEnumerable<AbstractServiceEntry> entries, IResolverBuilder resolverBuilder): base()
+        /// <summary>
+        /// Creates a new <see cref="ServiceRegistry"/> instance.
+        /// </summary>
+        public ServiceRegistry(IEnumerable<AbstractServiceEntry> entries, ResolverBuilder resolverBuilder): base()
         {
             if (entries is null)
                 throw new ArgumentNullException(nameof(entries));
@@ -369,6 +144,9 @@ namespace Solti.Utils.DI.Internals
             FSpecializedEntries = CreateArray(() => new ConcurrentDictionary<Type, Lazy<AbstractServiceEntry>>(), geCount);
         }
 
+        /// <summary>
+        /// Creates a new <see cref="ServiceRegistry"/> instance.
+        /// </summary>
         public ServiceRegistry(ServiceRegistry parent): base(parent)
         {
             if (parent is null)
@@ -381,10 +159,15 @@ namespace Solti.Utils.DI.Internals
             FSpecializedEntries = CreateArray(() => new ConcurrentDictionary<Type, Lazy<AbstractServiceEntry>>(), parent.FSpecializedEntries.Length);
         }
 
+        /// <summary>
+        /// The parent of this entry.
+        /// </summary>
         public new ServiceRegistry? Parent => (ServiceRegistry?) base.Parent;
 
+        /// <inheritdoc/>
         public AbstractServiceEntry? GetEntry(Type iface, string? name) => FResolver.Invoke(this, iface ?? throw new ArgumentNullException(nameof(iface)), name);
 
+        /// <inheritdoc/>
         public IReadOnlyList<AbstractServiceEntry> RegisteredEntries { get; }
     }
 }

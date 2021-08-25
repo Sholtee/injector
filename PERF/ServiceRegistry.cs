@@ -17,17 +17,17 @@ namespace Solti.Utils.DI.Perf
     [MemoryDiagnoser]
     public class ServiceRegistry
     {
-        public IEnumerable<IResolverBuilder> ResolverBuilders
+        public IEnumerable<ResolverBuilder> ResolverBuilders
         {
             get
             {
-                yield return new ChainedMethodsResolverBuilder();
-                yield return new CompiledExpressionResolverBuilder();
+                yield return ResolverBuilder.ChainedDelegates;
+                yield return ResolverBuilder.CompiledExpression;
             }
         }
 
         [ParamsSource(nameof(ResolverBuilders))]
-        public IResolverBuilder ResolverBuilder {get; set;} 
+        public ResolverBuilder ResolverBuilder {get; set;} 
 
         [Params(1, 10, 20, 100, 1000)]
         public int ServiceCount { get; set; }
