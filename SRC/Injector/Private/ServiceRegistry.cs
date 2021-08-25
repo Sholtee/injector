@@ -42,17 +42,15 @@ namespace Solti.Utils.DI.Internals
     {
         private static Expression CreateSwitch<TKey>(Expression value, IEnumerable<(TKey Key, Expression Body)> cases) => Expression.Switch
         (
-            switchValue: value,
-            defaultBody: Expression.Block(Expression.Constant(null, typeof(AbstractServiceEntry))),
-            comparison: null, // default
-            cases: cases.Select
+            value,
+            cases.Select
             (
                 @case => Expression.SwitchCase
                 (
                     @case.Body,
                     Expression.Constant(@case.Key, typeof(TKey))
                 )
-            )
+            ).ToArray()
         );
 
         //
@@ -119,25 +117,32 @@ namespace Solti.Utils.DI.Internals
                 regularEntryCount = 0,
                 genericEntryCount = 0;
 
+            LabelTarget returnLabel = Expression.Label(typeof(AbstractServiceEntry));
+
             Expression<Resolver> lambda = Expression.Lambda<Resolver>
             (
-                CreateSwitch
+                Expression.Block
                 (
-                    value: Expression.Property(iface, guidProp),
-                    cases: entries
-                        .GroupBy(entry => entry.Interface.GUID)
-                        .Select
-                        (
-                            grp =>
+                    type: typeof(AbstractServiceEntry),
+                    CreateSwitch
+                    (
+                        value: Expression.Property(iface, guidProp),
+                        cases: entries
+                            .GroupBy(entry => entry.Interface.GUID)
+                            .Select
                             (
-                                value: grp.Key,
-                                cases: CreateSwitch
+                                grp =>
                                 (
-                                    name,
-                                    grp.Select(entry => (entry.Name, GetEntryResolver(entry)))
+                                    value: grp.Key,
+                                    cases: CreateSwitch
+                                    (
+                                        name,
+                                        grp.Select(entry => (entry.Name, GetEntryResolver(entry)))
+                                    )
                                 )
                             )
-                        )
+                    ),
+                    Expression.Label(returnLabel, Expression.Default(typeof(AbstractServiceEntry)))
                 ),
                 self, iface, name
             );
@@ -165,15 +170,15 @@ namespace Solti.Utils.DI.Internals
                 {
                     MemberExpression root = Expression.Property(self, parentProp);
 
-                    invocation = Expression.IfThenElse
+                    invocation = Expression.Condition
                     (
                         test: Expression.NotEqual(root, Expression.Constant(null, typeof(ServiceRegistry))),
-                        ifTrue: Expression.Call(root, getEntryMethod),
+                        ifTrue: Expression.Call(root, getEntryMethod, iface, name),
                         ifFalse: invocation
                     );
                 }
 
-                return Expression.Block(invocation);
+                return Expression.Return(returnLabel, invocation);
             }
         }
 
