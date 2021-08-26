@@ -172,7 +172,7 @@ namespace Solti.Utils.DI.Internals
         }
 
         /// <summary>
-        /// The parent of this entry.
+        /// The parent of this registry.
         /// </summary>
         public new ServiceRegistry? Parent => (ServiceRegistry?) base.Parent;
 
