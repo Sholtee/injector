@@ -129,13 +129,10 @@ namespace Solti.Utils.DI.Internals
         /// <summary>
         /// Creates a new <see cref="ServiceRegistry"/> instance.
         /// </summary>
-        public ServiceRegistry(IEnumerable<AbstractServiceEntry> entries, ResolverBuilder resolverBuilder): base()
+        public ServiceRegistry(IEnumerable<AbstractServiceEntry> entries, ResolverBuilder resolverBuilder, int maxChildCount = int.MaxValue) : base(maxChildCount: maxChildCount)
         {
-            if (entries is null)
-                throw new ArgumentNullException(nameof(entries));
-
-            if (resolverBuilder is null)
-                throw new ArgumentNullException(nameof(resolverBuilder));
+            Ensure.Parameter.IsNotNull(entries, nameof(entries));
+            Ensure.Parameter.IsNotNull(resolverBuilder, nameof(resolverBuilder));
 
             RegisteredEntries = entries.ToArray(); // elsonek legyen inicialva [BuildResolver() hasznalja]
 
@@ -147,11 +144,26 @@ namespace Solti.Utils.DI.Internals
         /// <summary>
         /// Creates a new <see cref="ServiceRegistry"/> instance.
         /// </summary>
-        public ServiceRegistry(ServiceRegistry parent): base(parent)
-        {
-            if (parent is null)
-                throw new ArgumentNullException(nameof(parent));
+        public ServiceRegistry(IEnumerable<AbstractServiceEntry> entries, int maxChildCount = int.MaxValue) : this
+        (
+            entries,
 
+            //
+            // Kis elemszamnal -ha nem kell specializalni- a ResolverBuilder.ChainedDelegates joval gyorsabb (lasd teljesitmeny tesztek)
+            //
+
+            entries.Count() <= 50 && !entries.Any(entry => entry.Interface.IsGenericTypeDefinition)
+                ? ResolverBuilder.ChainedDelegates
+                : ResolverBuilder.CompiledExpression,
+            
+            maxChildCount
+        ) { }
+
+            /// <summary>
+        /// Creates a new <see cref="ServiceRegistry"/> instance.
+        /// </summary>
+        public ServiceRegistry(ServiceRegistry parent): base(Ensure.Parameter.IsNotNull(parent, nameof(parent)), parent.MaxChildCount)
+        {
             RegisteredEntries = parent.RegisteredEntries;
 
             FResolver = parent.FResolver;
@@ -165,7 +177,7 @@ namespace Solti.Utils.DI.Internals
         public new ServiceRegistry? Parent => (ServiceRegistry?) base.Parent;
 
         /// <inheritdoc/>
-        public AbstractServiceEntry? GetEntry(Type iface, string? name) => FResolver.Invoke(this, iface ?? throw new ArgumentNullException(nameof(iface)), name);
+        public AbstractServiceEntry? GetEntry(Type iface, string? name) => FResolver.Invoke(this, Ensure.Parameter.IsNotNull(iface, nameof(iface)), name);
 
         /// <inheritdoc/>
         public IReadOnlyList<AbstractServiceEntry> RegisteredEntries { get; }

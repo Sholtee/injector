@@ -26,7 +26,7 @@ namespace Solti.Utils.DI.Internals
     public abstract class ResolverBuilder
     {
         /// <summary>
-        /// Represents as built resolver case.
+        /// Represents a built resolver case.
         /// </summary>
         public delegate Resolver ResolverCaseBuilder(int index, AbstractServiceEntry entry);
 
@@ -100,14 +100,9 @@ namespace Solti.Utils.DI.Internals
 
             public override Resolver Build(IEnumerable<AbstractServiceEntry> entries, ResolverCaseBuilder regularEntryResolverBuilder, ResolverCaseBuilder genericEntryResolverBuilder, out int reCount, out int geCount)
             {
-                if (entries is null)
-                    throw new ArgumentNullException(nameof(entries));
-
-                if (regularEntryResolverBuilder is null)
-                    throw new ArgumentNullException(nameof(regularEntryResolverBuilder));
-
-                if (genericEntryResolverBuilder is null)
-                    throw new ArgumentNullException(nameof(genericEntryResolverBuilder));
+                Ensure.Parameter.IsNotNull(entries, nameof(entries));
+                Ensure.Parameter.IsNotNull(regularEntryResolverBuilder, nameof(regularEntryResolverBuilder));
+                Ensure.Parameter.IsNotNull(genericEntryResolverBuilder, nameof(genericEntryResolverBuilder));
 
                 ParameterExpression
                     self = Expression.Parameter(typeof(ServiceRegistry), nameof(self)),
@@ -197,14 +192,9 @@ namespace Solti.Utils.DI.Internals
         {
             public override Resolver Build(IEnumerable<AbstractServiceEntry> entries, ResolverCaseBuilder regularEntryResolverBuilder, ResolverCaseBuilder genericEntryResolverBuilder, out int reCount, out int geCount)
             {
-                if (entries is null)
-                    throw new ArgumentNullException(nameof(entries));
-
-                if (regularEntryResolverBuilder is null)
-                    throw new ArgumentNullException(nameof(regularEntryResolverBuilder));
-
-                if (genericEntryResolverBuilder is null)
-                    throw new ArgumentNullException(nameof(genericEntryResolverBuilder));
+                Ensure.Parameter.IsNotNull(entries, nameof(entries));
+                Ensure.Parameter.IsNotNull(regularEntryResolverBuilder, nameof(regularEntryResolverBuilder));
+                Ensure.Parameter.IsNotNull(genericEntryResolverBuilder, nameof(genericEntryResolverBuilder));
 
                 Resolver resolver = (_, _, _) => null;
 
