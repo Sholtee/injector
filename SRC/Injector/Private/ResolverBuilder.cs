@@ -209,6 +209,8 @@ namespace Solti.Utils.DI.Internals
                     if (entry.Interface.IsGenericTypeDefinition)
                     {
                         Resolver geResolver = genericEntryResolverBuilder(genericEntryCount++, entry);
+                        if (entry.IsShared)
+                            geResolver = InvokeParent(geResolver);
 
                         resolver = (self, iface, name) =>
                         {
@@ -222,6 +224,8 @@ namespace Solti.Utils.DI.Internals
                     else
                     {
                         Resolver reResolver = regularEntryResolverBuilder(regularEntryCount++, entry);
+                        if (entry.IsShared)
+                            reResolver = InvokeParent(reResolver);
 
                         resolver = (self, iface, name) =>
                         {
@@ -233,14 +237,9 @@ namespace Solti.Utils.DI.Internals
                         };
                     }
 
-                    if (entry.IsShared)
-                    {
-                        Resolver baseResolver = resolver;
-
-                        resolver = (self, iface, name) => self.Parent is not null
-                            ? self.Parent.GetEntry(iface, name)
-                            : baseResolver(self, iface, name);
-                    }
+                    static Resolver InvokeParent(Resolver resolver) => (self, iface, name) => self.Parent is not null
+                        ? self.Parent.GetEntry(iface, name)
+                        : resolver(self, iface, name);
                 }
 
                 reCount = regularEntryCount;
