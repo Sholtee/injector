@@ -42,6 +42,8 @@ namespace Solti.Utils.DI.Internals
 
         public override Lifetime? Lifetime { get; } = Lifetime.Instance;
 
+        public override AbstractServiceEntry Copy() => this;
+
         public override IReadOnlyCollection<IServiceReference> Instances => FInstances;
 
         public override bool SetInstance(IServiceReference reference) =>

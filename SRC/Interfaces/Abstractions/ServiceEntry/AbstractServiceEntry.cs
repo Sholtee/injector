@@ -117,8 +117,7 @@ namespace Solti.Utils.DI.Interfaces
         /// </summary>
         /// <param name="serviceReference">The <see cref="IServiceReference"/> of the service being created.</param>
         /// <returns>Returns false if the entry was already built.</returns>
-        public virtual bool SetInstance(IServiceReference serviceReference) =>
-            throw new NotImplementedException();
+        public virtual bool SetInstance(IServiceReference serviceReference) => throw new NotImplementedException();
 
         /// <summary>
         /// Copies this entry to a new collection.
@@ -136,10 +135,9 @@ namespace Solti.Utils.DI.Interfaces
         }
 
         /// <summary>
-        /// 
+        /// Creates a copy from this entry.
         /// </summary>
-        /// <returns></returns>
-        public virtual AbstractServiceEntry Copy() => this;
+        public virtual AbstractServiceEntry Copy() => throw new NotImplementedException();
 
         /// <summary>
         /// Compares this entry with another one.

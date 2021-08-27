@@ -36,6 +36,10 @@ namespace Solti.Utils.DI.Internals
             await base.AsyncDispose();
         }
 
+        private SingletonServiceEntry(SingletonServiceEntry entry, IServiceContainer owner) : base(entry, owner)
+        {
+        }
+
         public SingletonServiceEntry(Type @interface, string? name, Func<IInjector, Type, object> factory, IServiceContainer owner) : base(@interface, name, factory, owner)
         {
         }
@@ -114,6 +118,10 @@ namespace Solti.Utils.DI.Internals
                 _ => throw new NotSupportedException()
             };
         }
+
+#pragma warning disable CA2000 // Dispose objects before losing scope
+        public override AbstractServiceEntry Copy() => new SingletonServiceEntry(this, new ServiceContainer());
+#pragma warning restore CA2000 // Dispose objects before losing scope
 
         public override Lifetime Lifetime { get; } = Lifetime.Singleton;
 

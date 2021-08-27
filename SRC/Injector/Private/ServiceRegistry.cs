@@ -80,6 +80,9 @@ namespace Solti.Utils.DI.Internals
 
             return (self, iface, name) =>
             {
+                if (iface.IsGenericTypeDefinition)
+                    throw new InvalidOperationException(); // TODO
+
                 ConcurrentDictionary<Type, Lazy<AbstractServiceEntry>> specializedEntries = self.FSpecializedEntries[index];
 
                 //
