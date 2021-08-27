@@ -20,7 +20,7 @@ namespace Solti.Utils.DI.Internals.Tests
         [Test]
         public void GetEntry_ShouldReturnOnTypeMatch([Values(null, "cica")] string name, [ValueSource(nameof(ResolverBuilders))] ResolverBuilder resolver)
         {
-            TransientServiceEntry entry = new(typeof(IDisposable), name, typeof(Disposable), new ServiceContainer(), int.MaxValue);
+            TransientServiceEntry entry = new(typeof(IDisposable), name, typeof(Disposable), null, int.MaxValue);
             Registry = new ServiceRegistry(new[] { entry }, resolver);
 
             Assert.That(Registry.GetEntry(typeof(IDisposable), name), Is.Not.Null);
@@ -29,7 +29,7 @@ namespace Solti.Utils.DI.Internals.Tests
         [Test]
         public void GetEntry_ShouldCache_RegularCase([Values(null, "cica")] string name, [ValueSource(nameof(ResolverBuilders))] ResolverBuilder resolver)
         {
-            TransientServiceEntry entry = new(typeof(IDisposable), name, typeof(Disposable), new ServiceContainer(), int.MaxValue);
+            TransientServiceEntry entry = new(typeof(IDisposable), name, typeof(Disposable), null, int.MaxValue);
             Registry = new ServiceRegistry(new[] { entry }, resolver);
 
             Assert.AreSame(Registry.GetEntry(typeof(IDisposable), name), Registry.GetEntry(typeof(IDisposable), name));
@@ -38,7 +38,7 @@ namespace Solti.Utils.DI.Internals.Tests
         [Test]
         public void GetEntry_ShouldBeThreadSafe_RegularCase([Values(null, "cica")] string name, [ValueSource(nameof(ResolverBuilders))] ResolverBuilder resolver)
         {
-            TransientServiceEntry entry = new(typeof(IDisposable), name, typeof(Disposable), new ServiceContainer(), int.MaxValue);
+            TransientServiceEntry entry = new(typeof(IDisposable), name, typeof(Disposable), null, int.MaxValue);
             Registry = new ServiceRegistry(new[] { entry }, resolver);
 
             AbstractServiceEntry[] results = null;
@@ -56,7 +56,7 @@ namespace Solti.Utils.DI.Internals.Tests
         [Test]
         public void GetEntry_ShouldThrowOnGenericTypeDefinition([Values(null, "cica")] string name)
         {
-            TransientServiceEntry entry = new(typeof(IList<>), name, typeof(MyList<>), new ServiceContainer(), int.MaxValue);
+            TransientServiceEntry entry = new(typeof(IList<>), name, typeof(MyList<>), null, int.MaxValue);
             Registry = new ServiceRegistry(new[] { entry });
 
             Assert.Throws<InvalidOperationException>(() => Registry.GetEntry(typeof(IList<>), name));
@@ -65,7 +65,7 @@ namespace Solti.Utils.DI.Internals.Tests
         [Test]
         public void GetEntry_ShouldSpecialize([Values(null, "cica")] string name, [ValueSource(nameof(ResolverBuilders))] ResolverBuilder resolver)
         {
-            TransientServiceEntry entry = new(typeof(IList<>), name, typeof(MyList<>), new ServiceContainer(), int.MaxValue);
+            TransientServiceEntry entry = new(typeof(IList<>), name, typeof(MyList<>), null, int.MaxValue);
             Registry = new ServiceRegistry(new[] { entry }, resolver);
 
             AbstractServiceEntry specialized = Registry.GetEntry(typeof(IList<int>), name);
@@ -77,16 +77,16 @@ namespace Solti.Utils.DI.Internals.Tests
         [Test]
         public void GetEntry_ShouldCache_GenericCase([Values(null, "cica")] string name, [ValueSource(nameof(ResolverBuilders))] ResolverBuilder resolver)
         {
-            TransientServiceEntry entry = new(typeof(IList<>), name, typeof(MyList<>), new ServiceContainer(), int.MaxValue);
+            TransientServiceEntry entry = new(typeof(IList<>), name, typeof(MyList<>), null, int.MaxValue);
             Registry = new ServiceRegistry(new[] { entry }, resolver);
 
-            Assert.AreSame(Registry.GetEntry(typeof(IList<int>), name),  Registry.GetEntry(typeof(IList<int>), name));
+            Assert.AreSame(Registry.GetEntry(typeof(IList<int>), name), Registry.GetEntry(typeof(IList<int>), name));
         }
 
         [Test]
         public void GetEntry_ShouldBeThreadSafe_GenericCase([Values(null, "cica")] string name, [ValueSource(nameof(ResolverBuilders))] ResolverBuilder resolver)
         {
-            TransientServiceEntry entry = new(typeof(IList<>), name, typeof(MyList<>), new ServiceContainer(), int.MaxValue);
+            TransientServiceEntry entry = new(typeof(IList<>), name, typeof(MyList<>), null, int.MaxValue);
             Registry = new ServiceRegistry(new[] { entry }, resolver);
 
             AbstractServiceEntry[] results = null;
@@ -102,9 +102,9 @@ namespace Solti.Utils.DI.Internals.Tests
         }
 
         [Test]
-        public void GetEntry_ShouldResolveFromTheCurrentRegistry_RegularCase([Values(null, "cica")] string name, [ValueSource(nameof(ResolverBuilders))] ResolverBuilder resolver)
+        public void GetEntry_ShouldResolveNonSharedEntriesFromTheCurrentRegistry_RegularCase([Values(null, "cica")] string name, [ValueSource(nameof(ResolverBuilders))] ResolverBuilder resolver)
         {
-            TransientServiceEntry entry = new(typeof(IDisposable), name, typeof(Disposable), new ServiceContainer(), int.MaxValue);
+            TransientServiceEntry entry = new(typeof(IDisposable), name, typeof(Disposable), null, int.MaxValue);
             Registry = new ServiceRegistry(new[] { entry }, resolver);
 
             ServiceRegistry child = new(Registry);
@@ -113,14 +113,34 @@ namespace Solti.Utils.DI.Internals.Tests
         }
 
         [Test]
-        public void GetEntry_ShouldResolveFromTheCurrentRegistry_GenericCase([Values(null, "cica")] string name, [ValueSource(nameof(ResolverBuilders))] ResolverBuilder resolver)
+        public void GetEntry_ShouldResolveNonSharedEntriesFromTheCurrentRegistry_GenericCase([Values(null, "cica")] string name, [ValueSource(nameof(ResolverBuilders))] ResolverBuilder resolver)
         {
-            TransientServiceEntry entry = new(typeof(IList<>), name, typeof(MyList<>), new ServiceContainer(), int.MaxValue);
+            TransientServiceEntry entry = new(typeof(IList<>), name, typeof(MyList<>), null, int.MaxValue);
             Registry = new ServiceRegistry(new[] { entry }, resolver);
 
             ServiceRegistry child = new(Registry);
 
             Assert.AreNotSame(Registry.GetEntry(typeof(IList<int>), name), child.GetEntry(typeof(IList<int>), name));
+        }
+
+        [Test]
+        public void GetEntry_ShouldResolveSharedEntriesFromTheParentRegistry_RegularCase([Values(null, "cica")] string name, [ValueSource(nameof(ResolverBuilders))] ResolverBuilder resolver)
+        {
+            SingletonServiceEntry entry = new(typeof(IDisposable), name, typeof(Disposable), null);
+            Registry = new ServiceRegistry(new[] { entry }, resolver);
+
+            ServiceRegistry child = new ServiceRegistry(Registry);
+            Assert.AreSame(Registry.GetEntry(typeof(IDisposable), name), child.GetEntry(typeof(IDisposable), name));
+        }
+
+        [Test]
+        public void GetEntry_ShouldResolveSharedEntriesFromTheParentRegistry_GenericCase([Values(null, "cica")] string name, [ValueSource(nameof(ResolverBuilders))] ResolverBuilder resolver)
+        {
+            SingletonServiceEntry entry = new(typeof(IList<>), name, typeof(MyList<>), null);
+            Registry = new ServiceRegistry(new[] { entry }, resolver);
+
+            ServiceRegistry child = new ServiceRegistry(Registry);
+            Assert.AreSame(Registry.GetEntry(typeof(IList<int>), name), child.GetEntry(typeof(IList<int>), name));
         }
     }
 

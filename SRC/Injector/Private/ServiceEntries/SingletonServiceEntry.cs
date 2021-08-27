@@ -119,9 +119,7 @@ namespace Solti.Utils.DI.Internals
             };
         }
 
-#pragma warning disable CA2000 // Dispose objects before losing scope
-        public override AbstractServiceEntry Copy() => new SingletonServiceEntry(this, new ServiceContainer());
-#pragma warning restore CA2000 // Dispose objects before losing scope
+        public override AbstractServiceEntry Copy() => new SingletonServiceEntry(this, null!);
 
         public override Lifetime Lifetime { get; } = Lifetime.Singleton;
 

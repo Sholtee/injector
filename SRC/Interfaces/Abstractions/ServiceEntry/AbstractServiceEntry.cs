@@ -43,7 +43,7 @@ namespace Solti.Utils.DI.Interfaces
         protected AbstractServiceEntry(Type @interface, string? name, Type? implementation, IServiceContainer owner)
         {
             Interface      = @interface ?? throw new ArgumentNullException(nameof(@interface));
-            Owner          = owner ?? throw new ArgumentNullException(nameof(owner));
+            Owner          = owner /*?? throw new ArgumentNullException(nameof(owner))*/;
             Name           = name;
             Implementation = implementation;
 

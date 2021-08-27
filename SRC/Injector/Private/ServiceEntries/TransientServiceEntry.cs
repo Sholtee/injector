@@ -70,9 +70,7 @@ namespace Solti.Utils.DI.Internals
             return result;
         }
 
-#pragma warning disable CA2000 // Dispose objects before losing scope
-        public override AbstractServiceEntry Copy() => new TransientServiceEntry(this, new ServiceContainer());
-#pragma warning restore CA2000 // Dispose objects before losing scope
+        public override AbstractServiceEntry Copy() => new TransientServiceEntry(this, null!);
 
         public override AbstractServiceEntry Specialize(params Type[] genericArguments)
         {
