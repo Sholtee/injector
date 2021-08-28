@@ -15,10 +15,7 @@ namespace Solti.Utils.DI.Internals
     using Interfaces;
     using Primitives.Patterns;
 
-    /// <summary>
-    /// Implements the <see cref="IServiceRegistry"/> interface.
-    /// </summary>
-    public class ServiceRegistry : Composite<IServiceRegistry>, IServiceRegistry
+    internal class ServiceRegistry : Composite<IServiceRegistry>, IServiceRegistry
     {
         #region Private
         private readonly Resolver FResolver;
@@ -48,9 +45,6 @@ namespace Solti.Utils.DI.Internals
         #endregion
 
         #region Protected
-        /// <summary>
-        /// Returns a <see cref="Resolver"/> that is responsible for resolving regular enries.
-        /// </summary>
         protected virtual Resolver RegularEntryResolverFactory(int index, AbstractServiceEntry entry) => (self, iface, name) =>
         {
             EntryHolder holder = self.FRegularEntries[index];
@@ -70,9 +64,6 @@ namespace Solti.Utils.DI.Internals
             return holder.Value;
         };
 
-        /// <summary>
-        /// Returns a <see cref="Resolver"/> that is responsible for resolving generic enries.
-        /// </summary>
         protected virtual Resolver GenericEntryResolverFactory(int index, AbstractServiceEntry entry)
         {
             if (entry is not ISupportsSpecialization supportsSpecialization)
@@ -104,7 +95,6 @@ namespace Solti.Utils.DI.Internals
             };
         }
 
-        /// <inheritdoc/>
         protected override void Dispose(bool disposeManaged)
         {
             if (disposeManaged)
@@ -117,7 +107,6 @@ namespace Solti.Utils.DI.Internals
             base.Dispose(disposeManaged);
         }
 
-        /// <inheritdoc/>
         protected async override ValueTask AsyncDispose()
         {
             await Task.WhenAll
@@ -129,9 +118,6 @@ namespace Solti.Utils.DI.Internals
         }
         #endregion
 
-        /// <summary>
-        /// Creates a new <see cref="ServiceRegistry"/> instance.
-        /// </summary>
         public ServiceRegistry(IEnumerable<AbstractServiceEntry> entries, ResolverBuilder resolverBuilder, int maxChildCount = int.MaxValue) : base(maxChildCount: maxChildCount)
         {
             Ensure.Parameter.IsNotNull(entries, nameof(entries));
@@ -144,9 +130,6 @@ namespace Solti.Utils.DI.Internals
             FSpecializedEntries = CreateArray(() => new ConcurrentDictionary<Type, Lazy<AbstractServiceEntry>>(), geCount);
         }
 
-        /// <summary>
-        /// Creates a new <see cref="ServiceRegistry"/> instance.
-        /// </summary>
         public ServiceRegistry(IEnumerable<AbstractServiceEntry> entries, int maxChildCount = int.MaxValue) : this
         (
             entries,
@@ -162,9 +145,6 @@ namespace Solti.Utils.DI.Internals
             maxChildCount
         ) { }
 
-            /// <summary>
-        /// Creates a new <see cref="ServiceRegistry"/> instance.
-        /// </summary>
         public ServiceRegistry(ServiceRegistry parent): base(Ensure.Parameter.IsNotNull(parent, nameof(parent)), parent.MaxChildCount)
         {
             RegisteredEntries = parent.RegisteredEntries;
@@ -174,15 +154,10 @@ namespace Solti.Utils.DI.Internals
             FSpecializedEntries = CreateArray(() => new ConcurrentDictionary<Type, Lazy<AbstractServiceEntry>>(), parent.FSpecializedEntries.Length);
         }
 
-        /// <summary>
-        /// The parent of this registry.
-        /// </summary>
         public new ServiceRegistry? Parent => (ServiceRegistry?) base.Parent;
 
-        /// <inheritdoc/>
         public AbstractServiceEntry? GetEntry(Type iface, string? name) => FResolver.Invoke(this, Ensure.Parameter.IsNotNull(iface, nameof(iface)), name);
 
-        /// <inheritdoc/>
         public IReadOnlyList<AbstractServiceEntry> RegisteredEntries { get; }
     }
 }

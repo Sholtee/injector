@@ -15,7 +15,7 @@ namespace Solti.Utils.DI.Internals.Tests
     using Interfaces;
     using Primitives.Patterns;
 
-    public partial class ServiceRegistryTests
+    internal partial class ServiceRegistryTests
     {
         [Test]
         public void GetEntry_ShouldReturnOnTypeMatch([Values(null, "cica")] string name, [ValueSource(nameof(ResolverBuilders))] ResolverBuilder resolver)

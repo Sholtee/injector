@@ -15,34 +15,16 @@ namespace Solti.Utils.DI.Internals
     using Interfaces;
     using Primitives;
 
-    /// <summary>
-    /// Represents a built service entry resolver.
-    /// </summary>
-    public delegate AbstractServiceEntry? Resolver(ServiceRegistry self, Type iface, string? name);
+    internal delegate AbstractServiceEntry? Resolver(ServiceRegistry self, Type iface, string? name);
 
-    /// <summary>
-    /// Represents an abstract resolver builder.
-    /// </summary>
-    public abstract class ResolverBuilder
+    internal abstract class ResolverBuilder
     {
-        /// <summary>
-        /// Represents a built resolver case.
-        /// </summary>
         public delegate Resolver ResolverCaseBuilder(int index, AbstractServiceEntry entry);
 
-        /// <summary>
-        /// The build logic.
-        /// </summary>
         public abstract Resolver Build(IEnumerable<AbstractServiceEntry> entries, ResolverCaseBuilder regularEntryResolverBuilder, ResolverCaseBuilder genericEntryResolverBuilder, out int reCount, out int geCount);
 
-        /// <summary>
-        /// Returns a <see cref="ResolverBuilder"/> that uses compiled <see cref="Expression"/>s.
-        /// </summary>
         public static ResolverBuilder CompiledExpression { get; } = new CompiledExpressionResolverBuilder();
 
-        /// <summary>
-        /// Returns a <see cref="ResolverBuilder"/> that uses chained <see cref="Delegate"/>s.
-        /// </summary>
         public static ResolverBuilder ChainedDelegates { get; } = new ChainedDelegatesResolverBuilder();
 
         #region Private

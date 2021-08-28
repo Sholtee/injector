@@ -15,7 +15,7 @@ namespace Solti.Utils.DI.Internals.Tests
     using Internals;
     using Primitives.Patterns;
 
-    public partial class ServiceRegistryTests
+    internal partial class ServiceRegistryTests
     {
         [Test]
         public void Dispose_ShouldDisposeNonSharedEntriesOnly([ValueSource(nameof(ResolverBuilders))] ResolverBuilder resolver)

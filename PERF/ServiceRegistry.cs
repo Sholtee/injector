@@ -17,17 +17,22 @@ namespace Solti.Utils.DI.Perf
     [MemoryDiagnoser]
     public class ServiceRegistry
     {
-        public IEnumerable<ResolverBuilder> ResolverBuilders
+        //
+        // Mind az deklaralo osztalynak mind a ParameterSource-al annotalt property-nek publikusnak kell lennie... Viszont a ResolverBuilder
+        // internal, ezert object-et adunk vissza.
+        //
+
+        public IEnumerable<object> ResolverBuilders
         {
             get
             {
-                yield return ResolverBuilder.ChainedDelegates;
-                yield return ResolverBuilder.CompiledExpression;
+                yield return Internals.ResolverBuilder.ChainedDelegates;
+                yield return Internals.ResolverBuilder.CompiledExpression;
             }
         }
 
         [ParamsSource(nameof(ResolverBuilders))]
-        public ResolverBuilder ResolverBuilder {get; set;} 
+        public object ResolverBuilder {get; set;} 
 
         [Params(1, 10, 20, 100, 1000)]
         public int ServiceCount { get; set; }
@@ -42,7 +47,7 @@ namespace Solti.Utils.DI.Perf
         [GlobalSetup(Target = nameof(GetEntry))]
         public void SetupGet()
         {
-            Registry = new Internals.ServiceRegistry(Enumerable.Repeat(0, ServiceCount).Select((_, i) => new TransientServiceEntry(typeof(IList), i.ToString(), (i, t) => null!, new DI.ServiceContainer(), int.MaxValue)), ResolverBuilder);
+            Registry = new Internals.ServiceRegistry(Enumerable.Repeat(0, ServiceCount).Select((_, i) => new TransientServiceEntry(typeof(IList), i.ToString(), (i, t) => null!, new DI.ServiceContainer(), int.MaxValue)), (ResolverBuilder) ResolverBuilder);
             I = 0;
         }
 
@@ -52,7 +57,7 @@ namespace Solti.Utils.DI.Perf
         [GlobalSetup(Target = nameof(Specialize))]
         public void SetupSpecialize()
         {
-            Registry = new Internals.ServiceRegistry(Enumerable.Repeat(0, ServiceCount).Select((_, i) => new TransientServiceEntry(typeof(IList<>), i.ToString(), (i, t) => null!, new DI.ServiceContainer(), int.MaxValue)), ResolverBuilder);
+            Registry = new Internals.ServiceRegistry(Enumerable.Repeat(0, ServiceCount).Select((_, i) => new TransientServiceEntry(typeof(IList<>), i.ToString(), (i, t) => null!, new DI.ServiceContainer(), int.MaxValue)), (ResolverBuilder) ResolverBuilder);
             I = 0;
         }
 

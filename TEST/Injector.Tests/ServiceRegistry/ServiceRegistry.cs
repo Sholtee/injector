@@ -14,7 +14,7 @@ namespace Solti.Utils.DI.Internals.Tests
     using Interfaces;
 
     [TestFixture]
-    public partial class ServiceRegistryTests
+    internal partial class ServiceRegistryTests
     {
         public ServiceRegistry Registry { get; set; }
 
