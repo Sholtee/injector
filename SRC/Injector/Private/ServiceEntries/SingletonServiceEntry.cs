@@ -12,7 +12,6 @@ namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
     using Primitives.Threading;
-    using Properties;
 
     internal class SingletonServiceEntry : ProducibleServiceEntrySupportsProxying
     {
@@ -59,13 +58,6 @@ namespace Solti.Utils.DI.Internals
             using (FExclusiveBlock.Enter())
             {
                 EnsureAppropriateReference(reference);
-
-                //
-                // Singleton bejegyzeshez mindig sajat injector van letrehozva a deklaralo kontenerbol
-                //
-
-                IInjector relatedInjector = Ensure.IsNotNull(reference.RelatedInjector, $"{nameof(reference)}.{nameof(reference.RelatedInjector)}");
-                Ensure.AreEqual(relatedInjector.UnderlyingContainer.Parent, Owner, Resources.INAPPROPRIATE_OWNERSHIP);
 
                 //
                 // Ha mar le lett gyartva akkor nincs dolgunk, jelezzuk a hivonak h ovlassa ki a korabban 

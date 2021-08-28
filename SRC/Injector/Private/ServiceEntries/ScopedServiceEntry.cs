@@ -9,7 +9,6 @@ using System.Collections.Generic;
 namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
-    using Properties;
 
     internal class ScopedServiceEntry : ProducibleServiceEntrySupportsProxying
     {
@@ -37,9 +36,6 @@ namespace Solti.Utils.DI.Internals
         {
             CheckNotDisposed();
             EnsureAppropriateReference(reference);
-
-            IInjector relatedInjector = Ensure.IsNotNull(reference.RelatedInjector, $"{nameof(reference)}.{nameof(reference.RelatedInjector)}");
-            Ensure.AreEqual(relatedInjector.UnderlyingContainer, Owner, Resources.INAPPROPRIATE_OWNERSHIP);
 
             //
             // Ha mar le lett gyartva akkor nincs dolgunk, jelezzuk a hivonak h ovlassa ki a korabban 

@@ -124,15 +124,6 @@ namespace Solti.Utils.DI.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Inappropriate ownership..
-        /// </summary>
-        internal static string INAPPROPRIATE_OWNERSHIP {
-            get {
-                return ResourceManager.GetString("INAPPROPRIATE_OWNERSHIP", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to The injector can not hold more than {0} transient services. It usually indicates that you were recycling the injector..
         /// </summary>
         internal static string INJECTOR_SHOULD_BE_RELEASED {

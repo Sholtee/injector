@@ -44,9 +44,6 @@ namespace Solti.Utils.DI.Internals
             CheckNotDisposed();
             EnsureAppropriateReference(reference);
 
-            IInjector relatedInjector = Ensure.IsNotNull(reference.RelatedInjector, $"{nameof(reference)}.{nameof(reference.RelatedInjector)}");
-            Ensure.AreEqual(relatedInjector.UnderlyingContainer, Owner, Resources.INAPPROPRIATE_OWNERSHIP);
-
             if (Instances.Count >= MaxSpawnedServices)
                 //
                 // Ha ide jutunk az azt jelenti h jo esellyel a tartalmazo injector ujrahasznositasra kerult

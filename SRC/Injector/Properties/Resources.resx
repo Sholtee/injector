@@ -171,9 +171,6 @@
   <data name="IS_NULL" xml:space="preserve">
     <value>The value of "{0}" can not be null.</value>
   </data>
-  <data name="INAPPROPRIATE_OWNERSHIP" xml:space="preserve">
-    <value>Inappropriate ownership.</value>
-  </data>
   <data name="NOT_BELONGING_REFERENCE" xml:space="preserve">
     <value>The servicereference belongs to an another entry.</value>
   </data>
