@@ -116,7 +116,7 @@ namespace Solti.Utils.DI.Internals
             // Ha vkinek a fuggosege vagyunk akkor a fuggo szerviz itt meg nem lehet legyartva.
             //
 
-            Assert(FPath.Requestor?.Value is null, "Already produced services can not request dependencies");
+            Assert(FPath.Last?.Value is null, "Already produced services can not request dependencies");
 
             AbstractServiceEntry? requested;
 
@@ -144,7 +144,7 @@ namespace Solti.Utils.DI.Internals
 
             if (Config.Value.Injector.StrictDI)
             {
-                AbstractServiceEntry? requestor = FPath.Requestor?.RelatedServiceEntry;
+                AbstractServiceEntry? requestor = FPath.Last?.RelatedServiceEntry;
 
                 //
                 // - Ha a fuggosegi fa gyokerenel vagyunk akkor a metodus nem ertelmezett.
@@ -172,7 +172,7 @@ namespace Solti.Utils.DI.Internals
             // Ha a szervizt egy masik szerviz fuggosege akkor felvesszuk annak fuggosegi listajaba.
             //
 
-            FPath.Requestor?.AddDependency(resolved);
+            FPath.Last?.AddDependency(resolved);
             return resolved;
         }
     }

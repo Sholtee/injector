@@ -23,24 +23,10 @@ namespace Solti.Utils.DI.Internals
         private readonly ServicePath FPath = new();
 
         private readonly ExclusiveBlock FExclusiveBlock = new();
-
-        private IServiceReference? GetReferenceInternal(Type iface, string? name, bool throwOnMissing)
-        {
-            CheckNotDisposed();
-
-            Ensure.Parameter.IsNotNull(iface, nameof(iface));
-            Ensure.Parameter.IsInterface(iface, nameof(iface));
-            Ensure.Parameter.IsNotGenericDefinition(iface, nameof(iface));
-
-            using (FExclusiveBlock.Enter())
-            {
-                return Resolve(iface, name, throwOnMissing);
-            }
-        }
         #endregion
 
         #region Internal
-        internal IServiceReference Resolve(AbstractServiceEntry requested)
+        internal IServiceReference GetReferenceInternal(AbstractServiceEntry requested)
         {
             //
             // 1. eset: Csak egy peldanyt kell letrehozni amit vki korabban mar megtett [HasFlag(Built)]
@@ -79,7 +65,7 @@ namespace Solti.Utils.DI.Internals
                     //   -> Ennek az injector peldanynak a felszabaditasa nem befolyasolja a szerviz elettartamat.
                     //
 
-                    Injector_New dedicatedInjector = Factory.CreateScope();
+                    Injector_New dedicatedInjector = Parent.CreateScope();
 
                     try
                     {
@@ -87,7 +73,7 @@ namespace Solti.Utils.DI.Internals
                         // Ugrunk a 3. esetre
                         //
 
-                        return dedicatedInjector.Resolve(requested);
+                        return dedicatedInjector.GetReferenceInternal(requested);
                     }
                     catch
                     {
@@ -103,7 +89,7 @@ namespace Solti.Utils.DI.Internals
             // A result.Value itt meg ures, a SetInstance() allitja be
             //
 
-            IServiceReference result = new ServiceReference(requested, this);
+            ServiceReference result = new(requested, this);
 
             try
             {
@@ -119,7 +105,7 @@ namespace Solti.Utils.DI.Internals
                     // (nyilvan ha korabban mar letre tudtunk hozni peldanyt akkor ez mar felesleges).
                     //
 
-                    if (!requested.Instances.Any())
+                    if (!FPath.First!.RelatedServiceEntry.Instances.Any())
                         FPath.CheckNotCircular();
 
                     result.SetInstance();
@@ -128,18 +114,18 @@ namespace Solti.Utils.DI.Internals
             }
             catch
             {
-                result.Release();
+                result.Release(); // NE Dispose() legyen mert azt direktbe nem lehet hivni
                 throw;
             }
         }
 
-        internal IServiceReference? Resolve(Type iface, string? name, bool throwOnMissing)
+        internal IServiceReference? GetReferenceInternal(Type iface, string? name, bool throwOnMissing)
         {
             //
             // Ha vkinek a fuggosege vagyunk akkor a fuggo szerviz itt meg nem lehet legyartva.
             //
 
-            Assert(FPath.Requestor?.Value is null, "Already produced services can not request dependencies");
+            Assert(FPath.Last?.Value is null, "Already produced services can not request dependencies");
 
             AbstractServiceEntry? requested = GetEntry(iface, name);
 
@@ -164,7 +150,7 @@ namespace Solti.Utils.DI.Internals
 
             if (Config.Value.Injector.StrictDI)
             {
-                AbstractServiceEntry? requestor = FPath.Requestor?.RelatedServiceEntry;
+                AbstractServiceEntry? requestor = FPath.Last?.RelatedServiceEntry;
 
                 //
                 // - Ha a fuggosegi fa gyokerenel vagyunk akkor a metodus nem ertelmezett.
@@ -185,14 +171,14 @@ namespace Solti.Utils.DI.Internals
             // Fuggosegek feloldasa es peldanyositas (ez a metodus rekurzivan ismet meghivasra kerulhet)
             //
 
-            IServiceReference resolved = Resolve(requested);
+            IServiceReference resolved = GetReferenceInternal(requested);
 
             //
             // Minden fuggoseget megtalaltunk, a szerviz sikeresen peldanyositasra kerult.
             // Ha a szervizt egy masik szerviz fuggosege akkor felvesszuk annak fuggosegi listajaba.
             //
 
-            FPath.Requestor?.AddDependency(resolved);
+            FPath.Last?.AddDependency(resolved);
             return resolved;
         }
         #endregion
@@ -219,14 +205,38 @@ namespace Solti.Utils.DI.Internals
         }
         #endregion
 
-        public Injector_New(ScopeFactory parent) : base(Ensure.Parameter.IsNotNull(parent, nameof(parent))) => Factory = parent;
+        public Injector_New(ScopeFactory parent) : base(Ensure.Parameter.IsNotNull(parent, nameof(parent))) { }
 
-        public ScopeFactory Factory { get; }
+        public new ScopeFactory Parent => (ScopeFactory) base.Parent!;
 
         #region IInjector
-        public IServiceReference GetReference(Type iface, string? name) => GetReferenceInternal(iface, name, throwOnMissing: true)!;
+        public IServiceReference GetReference(Type iface, string? name)
+        {
+            CheckNotDisposed();
 
-        public IServiceReference? TryGetReference(Type iface, string? name) => GetReferenceInternal(iface, name, throwOnMissing: false);
+            Ensure.Parameter.IsNotNull(iface, nameof(iface));
+            Ensure.Parameter.IsInterface(iface, nameof(iface));
+            Ensure.Parameter.IsNotGenericDefinition(iface, nameof(iface));
+
+            using (FExclusiveBlock.Enter())
+            {
+                return GetReferenceInternal(iface, name, throwOnMissing: true)!;
+            }
+        }
+
+        public IServiceReference? TryGetReference(Type iface, string? name)
+        {
+            CheckNotDisposed();
+
+            Ensure.Parameter.IsNotNull(iface, nameof(iface));
+            Ensure.Parameter.IsInterface(iface, nameof(iface));
+            Ensure.Parameter.IsNotGenericDefinition(iface, nameof(iface));
+
+            using (FExclusiveBlock.Enter())
+            {
+                return GetReferenceInternal(iface, name, throwOnMissing: false);
+            }
+        }
 
         public object Get(Type iface, string? name) => GetReference(iface, name).GetInstance()!;
 

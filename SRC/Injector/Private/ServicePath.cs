@@ -16,9 +16,11 @@ namespace Solti.Utils.DI.Internals
 
     internal sealed class ServicePath: IServicePath
     {
-        private readonly Stack<IServiceReference> FPath = new();
+        private readonly LinkedList<IServiceReference> FPath = new();
 
-        public IServiceReference? Requestor => FPath.Any() ? FPath.Peek() : null;
+        public IServiceReference? Last => FPath.Last?.Value;
+
+        public IServiceReference? First => FPath.First?.Value;
 
         public void CheckNotCircular()
         {
@@ -26,7 +28,7 @@ namespace Solti.Utils.DI.Internals
             // Ha egynel tobbszor szerepel az aktualis szerviz az aktualis utvonalon akkor korkoros referenciank van.
             //
 
-            int firstIndex = this.FirstIndexOf(Ensure.IsNotNull(Requestor, nameof(Requestor)), ServiceReferenceComparer.Instance);
+            int firstIndex = FPath.FirstIndexOf(Ensure.IsNotNull(Last, nameof(Last)), ServiceReferenceComparer.Instance);
 
             if (firstIndex < FPath.Count - 1)
                 throw new CircularReferenceException(string.Format
@@ -47,19 +49,19 @@ namespace Solti.Utils.DI.Internals
 
         public IDisposable With(IServiceReference node) 
         {
-            FPath.Push(node);
+            FPath.AddLast(node);
             return new WithScope(FPath);
         }
 
         private sealed class WithScope : Disposable 
         {
-            private readonly Stack<IServiceReference> FPath;
+            private readonly LinkedList<IServiceReference> FPath;
 
-            public WithScope(Stack<IServiceReference> path) => FPath = path;
+            public WithScope(LinkedList<IServiceReference> path) => FPath = path;
 
             protected override void Dispose(bool disposeManaged)
             {
-                FPath.Pop();
+                FPath.RemoveLast();
                 base.Dispose(disposeManaged);
             }
         }
@@ -68,12 +70,7 @@ namespace Solti.Utils.DI.Internals
 
         public static string Format(IEnumerable<IServiceId> path) => string.Join(" -> ", path.Select(IServiceIdExtensions.FriendlyName));
 
-        public IEnumerator<IServiceReference> GetEnumerator() =>
-            //
-            // Verem elemek felsorolasa forditva tortenik -> Reverse()
-            //
-
-            FPath.Reverse().GetEnumerator();
+        public IEnumerator<IServiceReference> GetEnumerator() => FPath.GetEnumerator();
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
     }

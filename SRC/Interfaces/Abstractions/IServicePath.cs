@@ -15,9 +15,14 @@ namespace Solti.Utils.DI.Interfaces
     public interface IServicePath: IEnumerable<IServiceReference>
     {
         /// <summary>
+        /// The first pushed service.
+        /// </summary>
+        IServiceReference? First { get; }
+
+        /// <summary>
         /// The last pushed service.
         /// </summary>
-        IServiceReference? Requestor { get; }
+        IServiceReference? Last { get; }
 
         /// <summary>
         /// Appends the path with the given <see cref="IServiceReference"/>.
