@@ -12,7 +12,7 @@ namespace Solti.Utils.DI.Internals
 {
     using Primitives.Threading;
 
-    internal class ConcurrentCollection<T> : ICollection<T>
+    internal class ConcurrentCollection<T> : ICollection<T>, IReadOnlyCollection<T>
     {
         private readonly ConcurrentLinkedList<T> FUnderlyingList = new();
 
