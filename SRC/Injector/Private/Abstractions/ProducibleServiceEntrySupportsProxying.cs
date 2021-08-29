@@ -19,6 +19,10 @@ namespace Solti.Utils.DI.Internals
         {
         }
 
+        protected ProducibleServiceEntrySupportsProxying(ProducibleServiceEntrySupportsProxying entry, IServiceRegistry owner) : base(entry, owner)
+        {
+        }
+
         protected ProducibleServiceEntrySupportsProxying(Type @interface, string? name, Func<IInjector, Type, object> factory, IServiceContainer owner) : base(@interface, name, factory, owner)
         {
         }

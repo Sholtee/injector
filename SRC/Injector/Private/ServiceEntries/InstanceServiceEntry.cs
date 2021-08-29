@@ -13,6 +13,7 @@ namespace Solti.Utils.DI.Internals
     internal class InstanceServiceEntry : AbstractServiceEntry
     {
         private readonly IReadOnlyCollection<ServiceReference> FInstances;
+        private IServiceRegistry? FRegistry; 
 
         public InstanceServiceEntry(Type @interface, string? name, object instance, bool externallyOwned, IServiceContainer owner) : base(
             @interface, 
@@ -42,7 +43,13 @@ namespace Solti.Utils.DI.Internals
 
         public override Lifetime? Lifetime { get; } = Lifetime.Instance;
 
-        public override AbstractServiceEntry Copy() => this;
+        public override IServiceRegistry? Registry => FRegistry;
+
+        public override AbstractServiceEntry CopyTo(IServiceRegistry owner)
+        {
+            FRegistry = owner;
+            return this;
+        }
 
         public override IReadOnlyCollection<IServiceReference> Instances => FInstances;
 

@@ -35,7 +35,7 @@ namespace Solti.Utils.DI.Internals
             await base.AsyncDispose();
         }
 
-        private SingletonServiceEntry(SingletonServiceEntry entry, IServiceContainer owner) : base(entry, owner)
+        private SingletonServiceEntry(SingletonServiceEntry entry, IServiceRegistry owner) : base(entry, owner)
         {
         }
 
@@ -78,7 +78,7 @@ namespace Solti.Utils.DI.Internals
             }
         }
 
-        public override AbstractServiceEntry Specialize(params Type[] genericArguments)
+        public override AbstractServiceEntry Specialize(params Type[] genericArguments) // TODO: torolni
         {
             CheckNotDisposed();
             Ensure.Parameter.IsNotNull(genericArguments, nameof(genericArguments));
@@ -111,7 +111,9 @@ namespace Solti.Utils.DI.Internals
             };
         }
 
-        public override AbstractServiceEntry Copy() => new SingletonServiceEntry(this, null!);
+        public override AbstractServiceEntry Specialize(IServiceRegistry owner, params Type[] genericArguments) => Specialize(Ensure.Parameter.IsNotNull(genericArguments, nameof(genericArguments))).CopyTo(Ensure.Parameter.IsNotNull(owner, nameof(owner)));
+
+        public override AbstractServiceEntry CopyTo(IServiceRegistry registry) => new SingletonServiceEntry(this, Ensure.Parameter.IsNotNull(registry, nameof(registry)));
 
         public override Lifetime Lifetime { get; } = Lifetime.Singleton;
 

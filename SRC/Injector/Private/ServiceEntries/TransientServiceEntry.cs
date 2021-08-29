@@ -20,6 +20,11 @@ namespace Solti.Utils.DI.Internals
             MaxSpawnedServices = entry.MaxSpawnedServices;
         }
 
+        private TransientServiceEntry(TransientServiceEntry entry, IServiceRegistry owner) : base(entry, owner)
+        {
+            MaxSpawnedServices = entry.MaxSpawnedServices;
+        }
+
         protected override void SaveReference(IServiceReference serviceReference) => FInstances.Add(serviceReference);
 
         public TransientServiceEntry(Type @interface, string? name, Func<IInjector, Type, object> factory, IServiceContainer owner, int maxSpawnedServices) : base(@interface, name, factory, owner)
@@ -67,7 +72,7 @@ namespace Solti.Utils.DI.Internals
             return result;
         }
 
-        public override AbstractServiceEntry Copy() => new TransientServiceEntry(this, null!);
+        public override AbstractServiceEntry CopyTo(IServiceRegistry owner) => new TransientServiceEntry(this, Ensure.Parameter.IsNotNull(owner, nameof(owner)));
 
         public override AbstractServiceEntry Specialize(params Type[] genericArguments)
         {
@@ -104,6 +109,8 @@ namespace Solti.Utils.DI.Internals
                 _ => throw new NotSupportedException()
             };
         }
+
+        public override AbstractServiceEntry Specialize(IServiceRegistry owner, params Type[] genericArguments) => Specialize(Ensure.Parameter.IsNotNull(genericArguments, nameof(genericArguments))).CopyTo(Ensure.Parameter.IsNotNull(owner, nameof(owner)));
 
         public override Lifetime Lifetime { get; } = Lifetime.Transient;
 

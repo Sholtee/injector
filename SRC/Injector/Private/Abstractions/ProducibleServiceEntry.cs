@@ -16,7 +16,18 @@ namespace Solti.Utils.DI.Internals
         #region Protected
         protected abstract void SaveReference(IServiceReference serviceReference);
 
-        protected ProducibleServiceEntry(ProducibleServiceEntry entry, IServiceContainer owner) : base(entry.Interface, entry.Name, entry.Implementation, owner)
+        protected ProducibleServiceEntry(ProducibleServiceEntry entry, IServiceContainer owner) : base(entry.Interface, entry.Name, entry.Implementation, owner) // TODO: torolni
+        {
+            Factory = entry.Factory;
+            ExplicitArgs = entry.ExplicitArgs;
+
+            //
+            // Itt nem kell "this.ApplyAspects()" hivas mert a forras bejegyzesen mar
+            // hivva volt.
+            //
+        }
+
+        protected ProducibleServiceEntry(ProducibleServiceEntry entry, IServiceRegistry owner) : base(entry.Interface, entry.Name, entry.Implementation, owner)
         {
             Factory = entry.Factory;
             ExplicitArgs = entry.ExplicitArgs;
@@ -109,6 +120,8 @@ namespace Solti.Utils.DI.Internals
         }
 
         public abstract AbstractServiceEntry Specialize(params Type[] genericArguments);
+
+        public abstract AbstractServiceEntry Specialize(IServiceRegistry owner, params Type[] genericArguments);
 
         public IReadOnlyDictionary<string, object?>? ExplicitArgs { get; }
     }

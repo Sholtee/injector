@@ -55,7 +55,7 @@ namespace Solti.Utils.DI.Internals
                 {
                     if (holder.Value is null)
                     {
-                        holder.Value = entry.Copy();
+                        holder.Value = entry.CopyTo(self);
                         self.FUsedEntries.Add(holder.Value);
                     }
                 }
@@ -87,7 +87,7 @@ namespace Solti.Utils.DI.Internals
 
                 AbstractServiceEntry Specialize()
                 {
-                    AbstractServiceEntry specializedEntry = supportsSpecialization.Specialize(iface.GenericTypeArguments);
+                    AbstractServiceEntry specializedEntry = supportsSpecialization.Specialize(self, iface.GenericTypeArguments);
 
                     self.FUsedEntries.Add(specializedEntry);
                     return specializedEntry;

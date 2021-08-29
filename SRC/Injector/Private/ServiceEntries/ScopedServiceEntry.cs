@@ -14,7 +14,11 @@ namespace Solti.Utils.DI.Internals
     {
         private readonly List<IServiceReference> FInstances = new(1); // max egy eleme lehet
 
-        private ScopedServiceEntry(ScopedServiceEntry entry, IServiceContainer owner) : base(entry, owner)
+        private ScopedServiceEntry(ScopedServiceEntry entry, IServiceContainer owner) : base(entry, owner) // TODO: torolni
+        {
+        }
+
+        private ScopedServiceEntry(ScopedServiceEntry entry, IServiceRegistry owner) : base(entry, owner)
         {
         }
 
@@ -65,7 +69,9 @@ namespace Solti.Utils.DI.Internals
             return result;
         }
 
-        public override AbstractServiceEntry Specialize(params Type[] genericArguments)
+        public override AbstractServiceEntry CopyTo(IServiceRegistry registry) => new ScopedServiceEntry(this, Ensure.Parameter.IsNotNull(registry, nameof(registry)));
+
+        public override AbstractServiceEntry Specialize(params Type[] genericArguments) // TODO: torolni
         {
             CheckNotDisposed();
             Ensure.Parameter.IsNotNull(genericArguments, nameof(genericArguments));
@@ -97,6 +103,8 @@ namespace Solti.Utils.DI.Internals
                 _ => throw new NotSupportedException()
             };
         }
+
+        public override AbstractServiceEntry Specialize(IServiceRegistry owner, params Type[] genericArguments) => Specialize(Ensure.Parameter.IsNotNull(genericArguments, nameof(genericArguments))).CopyTo(Ensure.Parameter.IsNotNull(owner, nameof(owner)));
 
         public override Lifetime Lifetime { get; } = Lifetime.Scoped;
 

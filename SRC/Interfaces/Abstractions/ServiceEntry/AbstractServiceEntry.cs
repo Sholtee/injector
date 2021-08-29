@@ -61,6 +61,37 @@ namespace Solti.Utils.DI.Interfaces
                 throw new ArgumentException(Resources.NOT_A_CLASS, nameof(implementation));
         }
 
+        /// <summary>
+        /// Creates a new <see cref="AbstractServiceEntry"/> instance.
+        /// </summary>
+        /// <param name="interface">The interface of the service.</param>
+        /// <param name="name">The (optional) name of the service.</param>
+        /// <param name="implementation">The (optional) implementation of the service.</param>
+        /// <param name="registry">The owner of this entry.</param>
+        /// <exception cref="ArgumentException">The <paramref name="interface"/> is not an interface.</exception>
+        /// <exception cref="ArgumentException">The <paramref name="implementation"/> does not support the <paramref name="interface"/>.</exception>
+        protected AbstractServiceEntry(Type @interface, string? name, Type? implementation, IServiceRegistry registry)
+        {
+            Interface = @interface ?? throw new ArgumentNullException(nameof(@interface));
+            Registry = registry ?? throw new ArgumentNullException(nameof(registry));
+            Name = name;
+            Implementation = implementation;
+            Owner = null!;
+
+            if (!@interface.IsInterface)
+                throw new ArgumentException(Resources.NOT_AN_INTERFACE, nameof(@interface));
+
+            //
+            // Ha van implementacio akkor nem kell ellenorizni h megvalositja e az interface-t mivel:
+            //   1) Ha meg is valositja, Proxy()-val ugy is el lehet rontani
+            //   2) Epp ezert az Injector ellenorizni fogja a Factory hivas visszatereset
+            //   3) Pl a Provider() hivas is "rossz" tipus regisztral
+            //
+
+            if (implementation is not null && !implementation.IsClass)
+                throw new ArgumentException(Resources.NOT_A_CLASS, nameof(implementation));
+        }
+
         #region Immutables
         /// <summary>
         /// The interface of the service.
@@ -78,6 +109,11 @@ namespace Solti.Utils.DI.Interfaces
         /// The owner of this entry.
         /// </summary>
         public IServiceContainer Owner { get; }
+
+        /// <summary>
+        /// The owner of this entry.
+        /// </summary>
+        public virtual IServiceRegistry? Registry { get; }
 
         /// <summary>
         /// The (optional) implementation of the service.
@@ -122,22 +158,22 @@ namespace Solti.Utils.DI.Interfaces
         /// <summary>
         /// Copies this entry to a new collection.
         /// </summary>
-        /// <param name="target">The target <see cref="IServiceContainer"/> to which we want to copy this entry.</param>
-        public virtual AbstractServiceEntry CopyTo(IServiceContainer target)
+        /// <param name="owner">The target <see cref="IServiceContainer"/> to which we want to copy this entry.</param>
+        public virtual AbstractServiceEntry CopyTo(IServiceContainer owner)
         {
-            if (target is null)
-                throw new ArgumentNullException(nameof(target));
+            if (owner is null)
+                throw new ArgumentNullException(nameof(owner));
             
             CheckNotDisposed();
 
-            target.Add(this);
+            owner.Add(this);
             return this;
         }
 
         /// <summary>
         /// Creates a copy from this entry.
         /// </summary>
-        public virtual AbstractServiceEntry Copy() => throw new NotImplementedException();
+        public virtual AbstractServiceEntry CopyTo(IServiceRegistry owner) => throw new NotImplementedException();
 
         /// <summary>
         /// Compares this entry with another one.

@@ -24,6 +24,10 @@ namespace Solti.Utils.DI.Internals
         {
         }
 
+        protected PooledServiceEntry(PooledServiceEntry entry, IServiceRegistry owner) : base(entry, owner)
+        {
+        }
+
         public PooledServiceEntry(Type @interface, string? name, Func<IInjector, Type, object> factory, IServiceContainer owner) : base(@interface, name, factory, owner)
         {
         }
@@ -98,7 +102,9 @@ namespace Solti.Utils.DI.Internals
             return result;
         }
 
-        public override AbstractServiceEntry Specialize(params Type[] genericArguments)
+        public sealed override AbstractServiceEntry CopyTo(IServiceRegistry registry) => new PooledServiceEntry(this, Ensure.Parameter.IsNotNull(registry, nameof(registry)));
+
+        public override AbstractServiceEntry Specialize(params Type[] genericArguments) // TODO: torolni
         {
             CheckNotDisposed();
             Ensure.Parameter.IsNotNull(genericArguments, nameof(genericArguments));
@@ -130,6 +136,8 @@ namespace Solti.Utils.DI.Internals
                 _ => throw new NotSupportedException()
             };
         }
+
+        public override AbstractServiceEntry Specialize(IServiceRegistry owner, params Type[] genericArguments) => Specialize(genericArguments).CopyTo(Ensure.Parameter.IsNotNull(owner, nameof(owner)));
 
         public override Lifetime Lifetime { get; } = Lifetime.Pooled;
 
