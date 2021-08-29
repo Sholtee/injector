@@ -7,4 +7,5 @@
 - [Injector Resolve](https://sholtee.github.io/injector/perf/Solti.Utils.DI.Perf.InjectorResolve-report-github.html )
 - [ServiceContainer](https://sholtee.github.io/injector/perf/Solti.Utils.DI.Perf.ServiceContainer-report-github.html )
 - [ServiceEntry](https://sholtee.github.io/injector/perf/Solti.Utils.DI.Perf.ServiceEntry-report-github.html )
+- [ServicePath](https://sholtee.github.io/injector/perf/Solti.Utils.DI.Perf.ServicePath-report-github.html )
 - [ServiceRegistry](https://sholtee.github.io/injector/perf/Solti.Utils.DI.Perf.ServiceRegistry-report-github.html )
