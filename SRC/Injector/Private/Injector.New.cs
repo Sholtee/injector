@@ -98,18 +98,23 @@ namespace Solti.Utils.DI.Internals
                 // feloldasakor o lesz a szulo (FGraph.Requestor).
                 //
 
-                using (FPath.With(result))
+                FPath.Push(result);
+                try
                 {
                     //
                     // Ha korabban meg nem peldanyositottuk egyszer sem a szervizt akkor ellenorizzuk h nincs e korkoros referencia
                     // (nyilvan ha korabban mar letre tudtunk hozni peldanyt akkor ez mar felesleges).
                     //
 
-                    if (!FPath.First!.RelatedServiceEntry.Instances.Any())
+                    if (FPath.First!.RelatedServiceEntry.Instances.Count == 0)
                         FPath.CheckNotCircular();
 
                     result.SetInstance();
                     return result;
+                }
+                finally
+                {
+                    FPath.Pop();
                 }
             }
             catch

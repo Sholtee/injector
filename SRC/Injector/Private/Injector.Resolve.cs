@@ -95,12 +95,17 @@ namespace Solti.Utils.DI.Internals
                 // feloldasakor o lesz a szulo (FGraph.Requestor).
                 //
 
-                using (FPath.With(result))
+                FPath.Push(result);
+                try
                 {
                     FPath.CheckNotCircular();
 
                     result.SetInstance();
                     return result;
+                }
+                finally
+                {
+                    FPath.Pop();
                 }
             }
             catch

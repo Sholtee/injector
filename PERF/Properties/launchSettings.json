@@ -2,7 +2,7 @@
   "profiles": {
     "Injector.Perf": {
       "commandName": "Project",
-      "commandLineArgs": "-f *ServiceRegistry*"
+      "commandLineArgs": "-f *ServicePath*"
     }
   }
 }

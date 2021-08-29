@@ -211,6 +211,7 @@
   - *breaking:* `Injector.TryGet()` doesn't eat the `ServiceNotFoundException` if it was thrown due to a missing dependency.
   - *breaking:* "Scope options" are substituted by the `IInjectorExtensions.Meta()` method
   - *breaking:* Dropped `AbstractServiceEntry.GetInstance()` method
+  - *breaking:* Modified `IServicePath` layout
   - *introduced:* Initializer for the `ServiceContainer.MaxChildCount` property
   - *introduced:* Wrapped service (`IWrapped<object>`) support
   - *improved:* `IServiceContainer.CreateChild()`, `IServiceContainer.CreateInjector()`, `ServiceContainer.Dispose()`, `Injector.Dispose()` performance
