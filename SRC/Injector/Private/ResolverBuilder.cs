@@ -15,7 +15,7 @@ namespace Solti.Utils.DI.Internals
     using Interfaces;
     using Primitives;
 
-    internal delegate AbstractServiceEntry? Resolver(ServiceRegistry self, Type iface, string? name);
+    internal delegate AbstractServiceEntry? Resolver(ServiceRegistryBase self, Type iface, string? name);
 
     internal abstract class ResolverBuilder
     {
@@ -87,16 +87,16 @@ namespace Solti.Utils.DI.Internals
                 Ensure.Parameter.IsNotNull(genericEntryResolverBuilder, nameof(genericEntryResolverBuilder));
 
                 ParameterExpression
-                    self = Expression.Parameter(typeof(ServiceRegistry), nameof(self)),
+                    self = Expression.Parameter(typeof(ServiceRegistryBase), nameof(self)),
                     iface = Expression.Parameter(typeof(Type), nameof(iface)),
                     name = Expression.Parameter(typeof(string), nameof(name));
 
                 PropertyInfo
                     guidProp = (PropertyInfo) ((MemberExpression) ((Expression<Func<Type, Guid>>) (t => t.GUID)).Body).Member,
-                    parentProp = (PropertyInfo) ((MemberExpression) ((Expression<Func<ServiceRegistry, ServiceRegistry?>>) (sr => sr.Parent)).Body).Member;
+                    parentProp = (PropertyInfo) ((MemberExpression) ((Expression<Func<ServiceRegistryBase, ServiceRegistryBase?>>) (sr => sr.Parent)).Body).Member;
 
                 MethodInfo
-                    getEntryMethod = ((MethodCallExpression) ((Expression<Action<ServiceRegistry>>) (sr => sr.GetEntry(null!, null))).Body).Method;
+                    getEntryMethod = ((MethodCallExpression) ((Expression<Action<ServiceRegistryBase>>) (sr => sr.GetEntry(null!, null))).Body).Method;
 
                 int // GetEntryResolver()-ben nem hivatkozhatunk by-ref parametert
                     regularEntryCount = 0,
@@ -157,7 +157,7 @@ namespace Solti.Utils.DI.Internals
 
                         invocation = Expression.Condition
                         (
-                            test: Expression.NotEqual(root, Expression.Constant(null, typeof(ServiceRegistry))),
+                            test: Expression.NotEqual(root, Expression.Constant(null, typeof(ServiceRegistryBase))),
                             ifTrue: Expression.Call(root, getEntryMethod, iface, name),
                             ifFalse: invocation
                         );

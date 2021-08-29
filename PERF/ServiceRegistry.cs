@@ -3,6 +3,7 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,12 +33,24 @@ namespace Solti.Utils.DI.Perf
         }
 
         [ParamsSource(nameof(ResolverBuilders))]
-        public object ResolverBuilder {get; set;} 
+        public object ResolverBuilder { get; set; }
+
+        public IEnumerable<Type> RegistryTypes
+        {
+            get
+            {
+                yield return typeof(Internals.ServiceRegistry);
+                yield return typeof(Internals.ConcurrentServiceRegistry);
+            }
+        }
+
+        [ParamsSource(nameof(RegistryTypes))]
+        public Type RegistryType {get; set;}
 
         [Params(1, 10, 20, 100, 1000)]
         public int ServiceCount { get; set; }
 
-        private Internals.ServiceRegistry Registry { get; set; }
+        private ServiceRegistryBase Registry { get; set; }
 
         private int I { get; set; }
 
@@ -47,7 +60,12 @@ namespace Solti.Utils.DI.Perf
         [GlobalSetup(Target = nameof(GetEntry))]
         public void SetupGet()
         {
-            Registry = new Internals.ServiceRegistry(Enumerable.Repeat(0, ServiceCount).Select((_, i) => new TransientServiceEntry(typeof(IList), i.ToString(), (i, t) => null!, new DI.ServiceContainer(), int.MaxValue)), (ResolverBuilder) ResolverBuilder);
+            Registry = (ServiceRegistryBase) System.Activator.CreateInstance(RegistryType, new object[] 
+            {
+                Enumerable.Repeat(0, ServiceCount).Select((_, i) => (AbstractServiceEntry) new TransientServiceEntry(typeof(IList), i.ToString(), (i, t) => null!,  null, int.MaxValue)),
+                ResolverBuilder,
+                int.MaxValue
+            });
             I = 0;
         }
 
@@ -57,7 +75,12 @@ namespace Solti.Utils.DI.Perf
         [GlobalSetup(Target = nameof(Specialize))]
         public void SetupSpecialize()
         {
-            Registry = new Internals.ServiceRegistry(Enumerable.Repeat(0, ServiceCount).Select((_, i) => new TransientServiceEntry(typeof(IList<>), i.ToString(), (i, t) => null!, new DI.ServiceContainer(), int.MaxValue)), (ResolverBuilder) ResolverBuilder);
+            Registry = (ServiceRegistryBase) System.Activator.CreateInstance(RegistryType, new object[]
+            {
+                Enumerable.Repeat(0, ServiceCount).Select((_, i) => (AbstractServiceEntry) new TransientServiceEntry(typeof(IList<>), i.ToString(), (i, t) => null!,  null, int.MaxValue)),
+                ResolverBuilder,
+                int.MaxValue
+            });
             I = 0;
         }
 

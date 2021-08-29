@@ -16,7 +16,7 @@ namespace Solti.Utils.DI.Internals.Tests
     [TestFixture]
     internal partial class ServiceRegistryTests
     {
-        public ServiceRegistry Registry { get; set; }
+        public ServiceRegistryBase Registry { get; set; }
 
         public static IEnumerable<ResolverBuilder> ResolverBuilders
         {
@@ -27,24 +27,26 @@ namespace Solti.Utils.DI.Internals.Tests
             }
         }
 
+        public static IEnumerable<Type> RegistryTypes 
+        {
+            get 
+            {
+                yield return typeof(ServiceRegistry);
+                yield return typeof(ConcurrentServiceRegistry);
+            }
+        }
+
         [TearDown]
         public void TearDown() => Registry?.Dispose();
 
         [Test]
-        public void Ctor_ShouldThrowIfTheEntryCanNotBeSpecialized()
+        public void Children_ShouldBeUpToDate([ValueSource(nameof(RegistryTypes))] Type registryType)
         {
-            AbstractServiceEntry entry = new(typeof(IList<>), null, new ServiceContainer());
-            Assert.Throws<InvalidOperationException>(() => new ServiceRegistry(new[] { entry }));
-        }
-
-        [Test]
-        public void Children_ShouldBeUpToDate()
-        {
-            Registry = new ServiceRegistry(Array.Empty<AbstractServiceEntry>());
+            Registry = (ServiceRegistryBase) Activator.CreateInstance(registryType, new object[] { Array.Empty<AbstractServiceEntry>(), null, int.MaxValue });
 
             Assert.That(Registry.Children, Is.Empty);
 
-            using (IServiceRegistry child = new  ServiceRegistry(Registry))
+            using (IServiceRegistry child = (ServiceRegistryBase) Activator.CreateInstance(registryType, new object[] { Registry }))
             {
                 Assert.That(Registry.Children.Count, Is.EqualTo(1));
                 Assert.AreSame(Registry.Children.First(), child);

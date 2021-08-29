@@ -10,9 +10,9 @@ namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
 
-    internal class ScopeFactory : ServiceRegistry, IScopeFactory
+    internal class ScopeFactory : ConcurrentServiceRegistry, IScopeFactory
     {
-        public ScopeFactory(IEnumerable<AbstractServiceEntry> entries) : base(entries, Config.Value.ServiceContainer.MaxChildCount) // TODO: ServiceFactory config
+        public ScopeFactory(IEnumerable<AbstractServiceEntry> entries) : base(entries, maxChildCount: Config.Value.ServiceContainer.MaxChildCount) // TODO: ServiceFactory config
         {
         }
 

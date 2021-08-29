@@ -18,23 +18,24 @@ namespace Solti.Utils.DI.Internals.Tests
     internal partial class ServiceRegistryTests
     {
         [Test]
-        public void Dispose_ShouldDisposeNonSharedEntriesOnly([ValueSource(nameof(ResolverBuilders))] ResolverBuilder resolver)
+        public void Dispose_ShouldDisposeNonSharedEntriesOnly([ValueSource(nameof(RegistryTypes))] Type registryType, [ValueSource(nameof(ResolverBuilders))] ResolverBuilder resolver)
         {
-            Registry = new ServiceRegistry
-            (
-                new AbstractServiceEntry[] 
+            Registry = (ServiceRegistryBase) Activator.CreateInstance(registryType, new object[]
+            {
+                new AbstractServiceEntry[]
                 {
                     new TransientServiceEntry(typeof(IDisposable), "owned", typeof(Disposable), null, int.MaxValue),
                     new SingletonServiceEntry(typeof(IDisposable), "notowned", typeof(Disposable), null)
                 },
-                resolver
-            );
+                resolver,
+                int.MaxValue
+            });
 
             AbstractServiceEntry
                 owned,
                 notOwned;
 
-            using (ServiceRegistry child = new(Registry))
+            using (ServiceRegistryBase child = (ServiceRegistryBase) Activator.CreateInstance(registryType, new object[] { Registry }))
             {
                 notOwned = child.GetEntry(typeof(IDisposable), "notowned");
                 owned = child.GetEntry(typeof(IDisposable), "owned");
@@ -45,23 +46,24 @@ namespace Solti.Utils.DI.Internals.Tests
         }
 
         [Test]
-        public async Task DisposeAsync_ShouldDisposeNonSharedEntriesOnly([ValueSource(nameof(ResolverBuilders))] ResolverBuilder resolver)
+        public async Task DisposeAsync_ShouldDisposeNonSharedEntriesOnly([ValueSource(nameof(RegistryTypes))] Type registryType, [ValueSource(nameof(ResolverBuilders))] ResolverBuilder resolver)
         {
-            Registry = new ServiceRegistry
-            (
+            Registry = (ServiceRegistryBase) Activator.CreateInstance(registryType, new object[]
+            {
                 new AbstractServiceEntry[]
                 {
                     new TransientServiceEntry(typeof(IDisposable), "owned", typeof(Disposable), null, int.MaxValue),
                     new SingletonServiceEntry(typeof(IDisposable), "notowned", typeof(Disposable), null)
                 },
-                resolver
-            );
+                resolver,
+                int.MaxValue
+            });
 
             AbstractServiceEntry
                 owned,
                 notOwned;
 
-            await using (ServiceRegistry child = new(Registry))
+            await using (ServiceRegistryBase child = (ServiceRegistryBase) Activator.CreateInstance(registryType, new object[] { Registry }))
             {
                 notOwned = child.GetEntry(typeof(IDisposable), "notowned");
                 owned = child.GetEntry(typeof(IDisposable), "owned");
@@ -72,22 +74,24 @@ namespace Solti.Utils.DI.Internals.Tests
         }
 
         [Test]
-        public void Dispose_ShouldDisposeChildRegistryAndItsEntries()
+        public void Dispose_ShouldDisposeChildRegistryAndItsEntries([ValueSource(nameof(RegistryTypes))] Type registryType)
         {
-            Registry = new ServiceRegistry
-            (
+            Registry = (ServiceRegistryBase) Activator.CreateInstance(registryType, new object[]
+            {
                 new AbstractServiceEntry[]
                 {
                     new TransientServiceEntry(typeof(IDisposable), null, typeof(Disposable), null, int.MaxValue)
-                }
-            );
+                },
+                null,
+                int.MaxValue
+            });
 
             AbstractServiceEntry entry;
-            ServiceRegistry grandChild;
+            ServiceRegistryBase grandChild;
 
-            using (ServiceRegistry child = new(Registry))
+            using (ServiceRegistryBase child = (ServiceRegistryBase) Activator.CreateInstance(registryType, new object[] { Registry }))
             {
-                grandChild = new ServiceRegistry(child);
+                grandChild = (ServiceRegistryBase) Activator.CreateInstance(registryType, new object[] { child });
                 entry = grandChild.GetEntry(typeof(IDisposable), null);
             }
 
@@ -96,22 +100,24 @@ namespace Solti.Utils.DI.Internals.Tests
         }
 
         [Test]
-        public async Task DisposeAsync_ShouldDisposeDescendantRegistries()
+        public async Task DisposeAsync_ShouldDisposeDescendantRegistries([ValueSource(nameof(RegistryTypes))] Type registryType)
         {
-            Registry = new ServiceRegistry
-            (
+            Registry = (ServiceRegistryBase) Activator.CreateInstance(registryType, new object[]
+            {
                 new AbstractServiceEntry[]
                 {
                     new TransientServiceEntry(typeof(IDisposable), null, typeof(Disposable), null, int.MaxValue)
-                }
-            );
+                },
+                null,
+                int.MaxValue
+            });
 
             AbstractServiceEntry entry;
-            ServiceRegistry grandChild;
+            ServiceRegistryBase grandChild;
 
-            await using (ServiceRegistry child = new(Registry))
+            await using (ServiceRegistryBase child = (ServiceRegistryBase) Activator.CreateInstance(registryType, new object[] { Registry }))
             {
-                grandChild = new ServiceRegistry(child);
+                grandChild = (ServiceRegistryBase) Activator.CreateInstance(registryType, new object[] { child }); ;
                 entry = grandChild.GetEntry(typeof(IDisposable), null);
             }
 
@@ -120,20 +126,21 @@ namespace Solti.Utils.DI.Internals.Tests
         }
 
         [Test]
-        public void Dispose_ShouldDisposeSpecializedEntries([ValueSource(nameof(ResolverBuilders))] ResolverBuilder resolver)
+        public void Dispose_ShouldDisposeSpecializedEntries([ValueSource(nameof(RegistryTypes))] Type registryType, [ValueSource(nameof(ResolverBuilders))] ResolverBuilder resolver)
         {
-            Registry = new ServiceRegistry
-            (
+            Registry = (ServiceRegistryBase) Activator.CreateInstance(registryType, new object[]
+            {
                 new AbstractServiceEntry[]
                 {
                     new TransientServiceEntry(typeof(IList<>), null, typeof(MyList<>), null, int.MaxValue),
                 },
-                resolver
-            );
+                resolver,
+                int.MaxValue
+            });
 
             AbstractServiceEntry owned;
 
-            using (ServiceRegistry child = new(Registry))
+            using (ServiceRegistryBase child = (ServiceRegistryBase) Activator.CreateInstance(registryType, new object[] { Registry }))
             {
                 owned = child.GetEntry(typeof(IList<int>), null);
             }
@@ -142,20 +149,21 @@ namespace Solti.Utils.DI.Internals.Tests
         }
 
         [Test]
-        public async Task DisposeAsync_ShouldDisposeSpecializedEntries([ValueSource(nameof(ResolverBuilders))] ResolverBuilder resolver)
+        public async Task DisposeAsync_ShouldDisposeSpecializedEntries([ValueSource(nameof(RegistryTypes))] Type registryType, [ValueSource(nameof(ResolverBuilders))] ResolverBuilder resolver)
         {
-            Registry = new ServiceRegistry
-            (
+            Registry = (ServiceRegistryBase) Activator.CreateInstance(registryType, new object[]
+            {
                 new AbstractServiceEntry[]
                 {
                     new TransientServiceEntry(typeof(IList<>), null, typeof(MyList<>), null, int.MaxValue),
                 },
-                resolver
-            );
+                resolver,
+                int.MaxValue
+            });
 
             AbstractServiceEntry owned;
 
-            await using (ServiceRegistry child = new(Registry))
+            await using (ServiceRegistryBase child = (ServiceRegistryBase) Activator.CreateInstance(registryType, new object[] { Registry }))
             {
                 owned = child.GetEntry(typeof(IList<int>), null);
             }
