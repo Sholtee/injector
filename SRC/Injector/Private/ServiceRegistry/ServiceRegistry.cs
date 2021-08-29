@@ -70,7 +70,5 @@ namespace Solti.Utils.DI.Internals
             FRegularEntries = new AbstractServiceEntry?[parent.FRegularEntries.Length];
             FSpecializedEntries = CreateArray(() => new Dictionary<Type, AbstractServiceEntry>(), parent.FSpecializedEntries.Length);
         }
-
-        public override string ToString() => nameof(ServiceRegistry);
     }
 }

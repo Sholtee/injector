@@ -18,34 +18,43 @@ namespace Solti.Utils.DI.Perf
     [MemoryDiagnoser]
     public class ServiceRegistry
     {
+        public sealed class Named<T>
+        {
+            public string Name { get; init; }
+
+            public T Value { get; init; }
+
+            public override string ToString() => Name;
+        }
+
         //
         // Mind az deklaralo osztalynak mind a ParameterSource-al annotalt property-nek publikusnak kell lennie... Viszont a ResolverBuilder
         // internal, ezert object-et adunk vissza.
         //
 
-        public IEnumerable<object> ResolverBuilders
+        public IEnumerable<Named<object>> ResolverBuilders
         {
             get
             {
-                yield return Internals.ResolverBuilder.ChainedDelegates;
-                yield return Internals.ResolverBuilder.CompiledExpression;
+                yield return new Named<object> { Name = "Chained", Value = Internals.ResolverBuilder.ChainedDelegates };
+                yield return new Named<object> { Name = "Compiled", Value = Internals.ResolverBuilder.CompiledExpression };
             }
         }
 
         [ParamsSource(nameof(ResolverBuilders))]
-        public object ResolverBuilder { get; set; }
+        public Named<object> ResolverBuilder { get; set; }
 
-        public IEnumerable<Type> RegistryTypes
+        public IEnumerable<Named<Type>> RegistryTypes
         {
             get
             {
-                yield return typeof(Internals.ServiceRegistry);
-                yield return typeof(Internals.ConcurrentServiceRegistry);
+                yield return new Named<Type> { Name = "Linear", Value = typeof(Internals.ServiceRegistry) } ;
+                yield return new Named<Type> { Name = "Concurrent", Value = typeof(Internals.ConcurrentServiceRegistry) };
             }
         }
 
         [ParamsSource(nameof(RegistryTypes))]
-        public Type RegistryType {get; set;}
+        public Named<Type> RegistryType {get; set;}
 
         [Params(1, 10, 20, 100, 1000)]
         public int ServiceCount { get; set; }
@@ -60,10 +69,10 @@ namespace Solti.Utils.DI.Perf
         [GlobalSetup(Target = nameof(GetEntry))]
         public void SetupGet()
         {
-            Registry = (ServiceRegistryBase) System.Activator.CreateInstance(RegistryType, new object[] 
+            Registry = (ServiceRegistryBase) System.Activator.CreateInstance(RegistryType.Value, new object[] 
             {
                 Enumerable.Repeat(0, ServiceCount).Select((_, i) => (AbstractServiceEntry) new TransientServiceEntry(typeof(IList), i.ToString(), (i, t) => null!,  null, int.MaxValue)),
-                ResolverBuilder,
+                (ResolverBuilder) ResolverBuilder.Value,
                 int.MaxValue
             });
             I = 0;
@@ -75,10 +84,10 @@ namespace Solti.Utils.DI.Perf
         [GlobalSetup(Target = nameof(Specialize))]
         public void SetupSpecialize()
         {
-            Registry = (ServiceRegistryBase) System.Activator.CreateInstance(RegistryType, new object[]
+            Registry = (ServiceRegistryBase) System.Activator.CreateInstance(RegistryType.Value, new object[]
             {
                 Enumerable.Repeat(0, ServiceCount).Select((_, i) => (AbstractServiceEntry) new TransientServiceEntry(typeof(IList<>), i.ToString(), (i, t) => null!,  null, int.MaxValue)),
-                ResolverBuilder,
+                (ResolverBuilder) ResolverBuilder.Value,
                 int.MaxValue
             });
             I = 0;

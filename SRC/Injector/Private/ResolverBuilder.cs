@@ -166,8 +166,6 @@ namespace Solti.Utils.DI.Internals
                     return Expression.Return(returnLabel, invocation);
                 }
             }
-
-            public override string ToString() => nameof(CompiledExpressionResolverBuilder);
         }
 
         private sealed class ChainedDelegatesResolverBuilder: ResolverBuilder
@@ -229,8 +227,6 @@ namespace Solti.Utils.DI.Internals
 
                 return resolver;
             }
-
-            public override string ToString() => nameof(ChainedDelegatesResolverBuilder);
         }
         #endregion
     }

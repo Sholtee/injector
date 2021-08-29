@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
 namespace Solti.Utils.DI.Internals
@@ -15,12 +16,15 @@ namespace Solti.Utils.DI.Internals
 
     internal abstract class ServiceRegistryBase : Composite<IServiceRegistry>, IServiceRegistry
     {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         protected static Resolver GenericEntryResolverFactory(int index, AbstractServiceEntry originalEntry) =>
             (self, iface, name) => self.ResolveGenericEntry(index, iface, originalEntry);
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         protected static Resolver RegularEntryResolverFactory(int index, AbstractServiceEntry originalEntry) =>
             (self, iface, name) => self.ResolveRegularEntry(index, originalEntry);
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         protected static ResolverBuilder GetResolverBuilder(IEnumerable<AbstractServiceEntry> entries) =>
             //
             // Kis elemszamnal -ha nem kell specializalni- a ResolverBuilder.ChainedDelegates joval gyorsabb (lasd teljesitmeny tesztek)
@@ -30,6 +34,7 @@ namespace Solti.Utils.DI.Internals
                 ? ResolverBuilder.ChainedDelegates
                 : ResolverBuilder.CompiledExpression;
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         protected static T[] CreateArray<T>(Func<T> factory, int count)
         {
             T[] result = new T[count];

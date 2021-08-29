@@ -90,7 +90,5 @@ namespace Solti.Utils.DI.Internals
             FRegularEntries = CreateArray(() => new EntryHolder(), parent.FRegularEntries.Length);
             FSpecializedEntries = CreateArray(() => new ConcurrentDictionary<Type, Lazy<AbstractServiceEntry>>(), parent.FSpecializedEntries.Length);
         }
-
-        public override string ToString() => nameof(ConcurrentServiceRegistry);
     }
 }
