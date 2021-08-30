@@ -23,7 +23,25 @@ namespace Solti.Utils.DI.Internals
 
         private readonly ConcurrentDictionary<Type, Lazy<AbstractServiceEntry>>[] FSpecializedEntries;
 
-        protected override AbstractServiceEntry ResolveGenericEntry(int index, Type specializedInterface, AbstractServiceEntry originalEntry)
+        public ConcurrentServiceRegistry(IEnumerable<AbstractServiceEntry> entries, ResolverBuilder? resolverBuilder = null, int maxChildCount = int.MaxValue) : base(entries, maxChildCount)
+        {
+            resolverBuilder ??= GetResolverBuilder(entries);
+
+            BuiltResolver = resolverBuilder.Build(RegisteredEntries, RegularEntryResolverFactory, GenericEntryResolverFactory, out int reCount, out int geCount);
+
+            FRegularEntries = CreateArray(() => new EntryHolder(), reCount);
+            FSpecializedEntries = CreateArray(() => new ConcurrentDictionary<Type, Lazy<AbstractServiceEntry>>(), geCount);
+        }
+
+        public ConcurrentServiceRegistry(ConcurrentServiceRegistry parent) : base(Ensure.Parameter.IsNotNull(parent, nameof(parent)))
+        {
+            BuiltResolver = parent.BuiltResolver;
+
+            FRegularEntries = CreateArray(() => new EntryHolder(), parent.RegularEntryCount);
+            FSpecializedEntries = CreateArray(() => new ConcurrentDictionary<Type, Lazy<AbstractServiceEntry>>(), parent.GenericEntryCount);
+        }
+
+        public override AbstractServiceEntry ResolveGenericEntry(int index, Type specializedInterface, AbstractServiceEntry originalEntry)
         {
             if (specializedInterface.IsGenericTypeDefinition)
                 throw new InvalidOperationException(); // TODO
@@ -50,7 +68,7 @@ namespace Solti.Utils.DI.Internals
             }
         }
 
-        protected override AbstractServiceEntry ResolveRegularEntry(int index, AbstractServiceEntry originalEntry)
+        public override AbstractServiceEntry ResolveRegularEntry(int index, AbstractServiceEntry originalEntry)
         {
             EntryHolder holder = FRegularEntries[index];
 
@@ -67,24 +85,6 @@ namespace Solti.Utils.DI.Internals
             }
 
             return holder.Value;
-        }
-
-        public ConcurrentServiceRegistry(IEnumerable<AbstractServiceEntry> entries, ResolverBuilder? resolverBuilder = null, int maxChildCount = int.MaxValue) : base(entries, maxChildCount)
-        {
-            resolverBuilder ??= GetResolverBuilder(entries);
-
-            BuiltResolver = resolverBuilder.Build(RegisteredEntries, RegularEntryResolverFactory, GenericEntryResolverFactory, out int reCount, out int geCount);
-
-            FRegularEntries = CreateArray(() => new EntryHolder(), reCount);
-            FSpecializedEntries = CreateArray(() => new ConcurrentDictionary<Type, Lazy<AbstractServiceEntry>>(), geCount);
-        }
-
-        public ConcurrentServiceRegistry(ConcurrentServiceRegistry parent) : base(Ensure.Parameter.IsNotNull(parent, nameof(parent)))
-        {
-            BuiltResolver = parent.BuiltResolver;
-
-            FRegularEntries = CreateArray(() => new EntryHolder(), parent.RegularEntryCount);
-            FSpecializedEntries = CreateArray(() => new ConcurrentDictionary<Type, Lazy<AbstractServiceEntry>>(), parent.GenericEntryCount);
         }
 
         public override ICollection<AbstractServiceEntry> UsedEntries { get; } = new ConcurrentCollection<AbstractServiceEntry>();

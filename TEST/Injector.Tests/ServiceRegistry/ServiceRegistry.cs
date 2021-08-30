@@ -24,6 +24,7 @@ namespace Solti.Utils.DI.Internals.Tests
             {
                 yield return ResolverBuilder.ChainedDelegates;
                 yield return ResolverBuilder.CompiledExpression;
+                yield return ResolverBuilder.CompiledCode;
             }
         }
 

@@ -47,10 +47,6 @@ namespace Solti.Utils.DI.Internals
             return result;
         }
 
-        protected abstract AbstractServiceEntry ResolveRegularEntry(int index, AbstractServiceEntry originalEntry);
-
-        protected abstract AbstractServiceEntry ResolveGenericEntry(int index, Type specializedInterface, AbstractServiceEntry originalEntry);
-
         protected override void Dispose(bool disposeManaged)
         {
             if (disposeManaged)
@@ -81,11 +77,15 @@ namespace Solti.Utils.DI.Internals
 
         protected ServiceRegistryBase(ServiceRegistryBase parent) : base(parent, parent.MaxChildCount) => RegisteredEntries = parent.RegisteredEntries;
 
-        public new ServiceRegistryBase? Parent => (ServiceRegistryBase?) base.Parent;
+        IServiceRegistry? IServiceRegistry.Parent => (IServiceRegistry?) Parent;
 
         public AbstractServiceEntry? GetEntry(Type iface, string? name) => BuiltResolver.Invoke(this, Ensure.Parameter.IsNotNull(iface, nameof(iface)), name);
 
         public IReadOnlyList<AbstractServiceEntry> RegisteredEntries { get; }
+
+        public abstract AbstractServiceEntry ResolveRegularEntry(int index, AbstractServiceEntry originalEntry);
+
+        public abstract AbstractServiceEntry ResolveGenericEntry(int index, Type specializedInterface, AbstractServiceEntry originalEntry);
 
         public abstract ICollection<AbstractServiceEntry> UsedEntries { get; }
 

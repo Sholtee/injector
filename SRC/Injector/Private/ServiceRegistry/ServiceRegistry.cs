@@ -16,7 +16,25 @@ namespace Solti.Utils.DI.Internals
 
         private readonly Dictionary<Type, AbstractServiceEntry>[] FSpecializedEntries;
 
-        protected override AbstractServiceEntry ResolveGenericEntry(int index, Type specializedInterface, AbstractServiceEntry originalEntry)
+        public ServiceRegistry(IEnumerable<AbstractServiceEntry> entries, ResolverBuilder? resolverBuilder = null, int maxChildCount = int.MaxValue) : base(entries, maxChildCount)
+        {
+            resolverBuilder ??= GetResolverBuilder(entries);
+
+            BuiltResolver = resolverBuilder.Build(RegisteredEntries, RegularEntryResolverFactory, GenericEntryResolverFactory, out int reCount, out int geCount);
+
+            FRegularEntries = new AbstractServiceEntry?[reCount];
+            FSpecializedEntries = CreateArray(() => new Dictionary<Type, AbstractServiceEntry>(), geCount);
+        }
+
+        public ServiceRegistry(ServiceRegistryBase parent) : base(Ensure.Parameter.IsNotNull(parent, nameof(parent)))
+        {
+            BuiltResolver = parent.BuiltResolver;
+
+            FRegularEntries = new AbstractServiceEntry?[parent.RegularEntryCount];
+            FSpecializedEntries = CreateArray(() => new Dictionary<Type, AbstractServiceEntry>(), parent.GenericEntryCount);
+        }
+
+        public override AbstractServiceEntry ResolveGenericEntry(int index, Type specializedInterface, AbstractServiceEntry originalEntry)
         {
             if (specializedInterface.IsGenericTypeDefinition)
                 throw new InvalidOperationException(); // TODO
@@ -36,7 +54,7 @@ namespace Solti.Utils.DI.Internals
             return specializedEntry;
         }
 
-        protected override AbstractServiceEntry ResolveRegularEntry(int index, AbstractServiceEntry originalEntry)
+        public override AbstractServiceEntry ResolveRegularEntry(int index, AbstractServiceEntry originalEntry)
         {
             ref AbstractServiceEntry? value = ref FRegularEntries[index];
 
@@ -47,24 +65,6 @@ namespace Solti.Utils.DI.Internals
             }
 
             return value;
-        }
-
-        public ServiceRegistry(IEnumerable<AbstractServiceEntry> entries, ResolverBuilder? resolverBuilder = null, int maxChildCount = int.MaxValue) : base(entries, maxChildCount)
-        {
-            resolverBuilder ??= GetResolverBuilder(entries);
-
-            BuiltResolver = resolverBuilder.Build(RegisteredEntries, RegularEntryResolverFactory, GenericEntryResolverFactory, out int reCount, out int geCount);
-
-            FRegularEntries = new AbstractServiceEntry?[reCount];
-            FSpecializedEntries = CreateArray(() => new Dictionary<Type, AbstractServiceEntry>(), geCount);
-        }
-
-        public ServiceRegistry(ServiceRegistryBase parent) : base(Ensure.Parameter.IsNotNull(parent, nameof(parent)))
-        {
-            BuiltResolver = parent.BuiltResolver;
-
-            FRegularEntries = new AbstractServiceEntry?[parent.RegularEntryCount];
-            FSpecializedEntries = CreateArray(() => new Dictionary<Type, AbstractServiceEntry>(), parent.GenericEntryCount);
         }
 
         public override ICollection<AbstractServiceEntry> UsedEntries { get; } = new List<AbstractServiceEntry>();

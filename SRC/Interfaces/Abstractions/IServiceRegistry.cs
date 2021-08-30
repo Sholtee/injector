@@ -21,8 +21,24 @@ namespace Solti.Utils.DI.Interfaces
         AbstractServiceEntry? GetEntry(Type iface, string? name);
 
         /// <summary>
+        /// Resolves a regular entry.
+        /// </summary>
+        AbstractServiceEntry ResolveRegularEntry(int index, AbstractServiceEntry originalEntry);
+
+        /// <summary>
+        /// Resolves a generic entry.
+        /// </summary>
+        /// <returns></returns>
+        AbstractServiceEntry ResolveGenericEntry(int index, Type specializedInterface, AbstractServiceEntry originalEntry);
+
+        /// <summary>
         /// Returns all the registered entries.
         /// </summary>
         IReadOnlyList<AbstractServiceEntry> RegisteredEntries { get; }
+
+        /// <summary>
+        /// The parent registry
+        /// </summary>
+        new IServiceRegistry? Parent { get; }
     }
 }
