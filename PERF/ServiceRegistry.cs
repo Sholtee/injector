@@ -38,7 +38,7 @@ namespace Solti.Utils.DI.Perf
             {
                 yield return new Named<object> { Name = "Chained", Value = Internals.ResolverBuilder.ChainedDelegates };
                 yield return new Named<object> { Name = "Expression", Value = Internals.ResolverBuilder.CompiledExpression };
-                yield return new Named<object> { Name = "Compiled", Value = Internals.ResolverBuilder.CompiledExpression };
+                yield return new Named<object> { Name = "Compiled", Value = Internals.ResolverBuilder.CompiledCode };
             }
         }
 
