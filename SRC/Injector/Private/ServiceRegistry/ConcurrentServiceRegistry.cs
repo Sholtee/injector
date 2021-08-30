@@ -23,10 +23,6 @@ namespace Solti.Utils.DI.Internals
 
         private readonly ConcurrentDictionary<Type, Lazy<AbstractServiceEntry>>[] FSpecializedEntries;
 
-        protected override ICollection<AbstractServiceEntry> UsedEntries { get; } = new ConcurrentCollection<AbstractServiceEntry>();
-
-        protected override Resolver BuiltResolver { get; }
-
         protected override AbstractServiceEntry ResolveGenericEntry(int index, Type specializedInterface, AbstractServiceEntry originalEntry)
         {
             if (specializedInterface.IsGenericTypeDefinition)
@@ -87,8 +83,16 @@ namespace Solti.Utils.DI.Internals
         {
             BuiltResolver = parent.BuiltResolver;
 
-            FRegularEntries = CreateArray(() => new EntryHolder(), parent.FRegularEntries.Length);
-            FSpecializedEntries = CreateArray(() => new ConcurrentDictionary<Type, Lazy<AbstractServiceEntry>>(), parent.FSpecializedEntries.Length);
+            FRegularEntries = CreateArray(() => new EntryHolder(), parent.RegularEntryCount);
+            FSpecializedEntries = CreateArray(() => new ConcurrentDictionary<Type, Lazy<AbstractServiceEntry>>(), parent.GenericEntryCount);
         }
+
+        public override ICollection<AbstractServiceEntry> UsedEntries { get; } = new ConcurrentCollection<AbstractServiceEntry>();
+
+        public override Resolver BuiltResolver { get; }
+
+        public override int RegularEntryCount => FRegularEntries.Length;
+
+        public override int GenericEntryCount => FSpecializedEntries.Length;
     }
 }

@@ -47,10 +47,6 @@ namespace Solti.Utils.DI.Internals
             return result;
         }
 
-        protected abstract ICollection<AbstractServiceEntry> UsedEntries { get; }
-
-        protected abstract Resolver BuiltResolver { get; }
-
         protected abstract AbstractServiceEntry ResolveRegularEntry(int index, AbstractServiceEntry originalEntry);
 
         protected abstract AbstractServiceEntry ResolveGenericEntry(int index, Type specializedInterface, AbstractServiceEntry originalEntry);
@@ -90,5 +86,13 @@ namespace Solti.Utils.DI.Internals
         public AbstractServiceEntry? GetEntry(Type iface, string? name) => BuiltResolver.Invoke(this, Ensure.Parameter.IsNotNull(iface, nameof(iface)), name);
 
         public IReadOnlyList<AbstractServiceEntry> RegisteredEntries { get; }
+
+        public abstract ICollection<AbstractServiceEntry> UsedEntries { get; }
+
+        public abstract Resolver BuiltResolver { get; }
+
+        public abstract int RegularEntryCount { get; }
+
+        public abstract int GenericEntryCount { get; }
     }
 }

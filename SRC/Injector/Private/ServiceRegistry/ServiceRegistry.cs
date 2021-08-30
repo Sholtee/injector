@@ -16,10 +16,6 @@ namespace Solti.Utils.DI.Internals
 
         private readonly Dictionary<Type, AbstractServiceEntry>[] FSpecializedEntries;
 
-        protected override ICollection<AbstractServiceEntry> UsedEntries { get; } = new List<AbstractServiceEntry>();
-
-        protected override Resolver BuiltResolver { get; }
-
         protected override AbstractServiceEntry ResolveGenericEntry(int index, Type specializedInterface, AbstractServiceEntry originalEntry)
         {
             if (specializedInterface.IsGenericTypeDefinition)
@@ -63,12 +59,20 @@ namespace Solti.Utils.DI.Internals
             FSpecializedEntries = CreateArray(() => new Dictionary<Type, AbstractServiceEntry>(), geCount);
         }
 
-        public ServiceRegistry(ServiceRegistry parent) : base(Ensure.Parameter.IsNotNull(parent, nameof(parent)))
+        public ServiceRegistry(ServiceRegistryBase parent) : base(Ensure.Parameter.IsNotNull(parent, nameof(parent)))
         {
             BuiltResolver = parent.BuiltResolver;
 
-            FRegularEntries = new AbstractServiceEntry?[parent.FRegularEntries.Length];
-            FSpecializedEntries = CreateArray(() => new Dictionary<Type, AbstractServiceEntry>(), parent.FSpecializedEntries.Length);
+            FRegularEntries = new AbstractServiceEntry?[parent.RegularEntryCount];
+            FSpecializedEntries = CreateArray(() => new Dictionary<Type, AbstractServiceEntry>(), parent.GenericEntryCount);
         }
+
+        public override ICollection<AbstractServiceEntry> UsedEntries { get; } = new List<AbstractServiceEntry>();
+
+        public override Resolver BuiltResolver { get; }
+
+        public override int RegularEntryCount => FRegularEntries.Length;
+
+        public override int GenericEntryCount => FSpecializedEntries.Length;
     }
 }

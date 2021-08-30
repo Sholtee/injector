@@ -17,7 +17,7 @@ namespace Solti.Utils.DI.Internals
     using Primitives.Threading;
     using Properties;
 
-    internal class Injector_New: ConcurrentServiceRegistry, IInjector
+    internal class Injector_New: ServiceRegistry, IInjector
     {
         #region Private
         private readonly ServicePath FPath = new();
