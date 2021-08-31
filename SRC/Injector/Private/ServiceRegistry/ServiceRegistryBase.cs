@@ -27,12 +27,12 @@ namespace Solti.Utils.DI.Internals
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         protected static ResolverBuilder GetResolverBuilder(IEnumerable<AbstractServiceEntry> entries) =>
             //
-            // Kis elemszamnal -ha nem kell specializalni- a ResolverBuilder.ChainedDelegates joval gyorsabb (lasd teljesitmeny tesztek)
+            // Teljesitmenytesztek alapjan...
             //
 
-            entries.Count() <= 50 && !entries.Any(entry => entry.Interface.IsGenericTypeDefinition)
-                ? ResolverBuilder.ChainedDelegates
-                : ResolverBuilder.CompiledExpression;
+            entries.Count() <= 100
+                ? ResolverBuilder.CompiledExpression
+                : ResolverBuilder.CompiledCode;
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         protected static T[] CreateArray<T>(Func<T> factory, int count)
