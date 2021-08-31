@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 
 using NUnit.Framework;
 
@@ -43,7 +44,7 @@ namespace Solti.Utils.DI.Internals.Tests
         [Test]
         public void Children_ShouldBeUpToDate([ValueSource(nameof(RegistryTypes))] Type registryType)
         {
-            Registry = (ServiceRegistryBase) Activator.CreateInstance(registryType, new object[] { Array.Empty<AbstractServiceEntry>(), null, int.MaxValue });
+            Registry = (ServiceRegistryBase) Activator.CreateInstance(registryType, new object[] { Array.Empty<AbstractServiceEntry>(), null, int.MaxValue, CancellationToken.None });
 
             Assert.That(Registry.Children, Is.Empty);
 

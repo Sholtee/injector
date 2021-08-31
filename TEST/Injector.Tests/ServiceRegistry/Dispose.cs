@@ -5,6 +5,7 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 
 using NUnit.Framework;
@@ -28,7 +29,8 @@ namespace Solti.Utils.DI.Internals.Tests
                     new SingletonServiceEntry(typeof(IDisposable), "notowned", typeof(Disposable), null)
                 },
                 resolver,
-                int.MaxValue
+                int.MaxValue, 
+                CancellationToken.None
             });
 
             AbstractServiceEntry
@@ -56,7 +58,8 @@ namespace Solti.Utils.DI.Internals.Tests
                     new SingletonServiceEntry(typeof(IDisposable), "notowned", typeof(Disposable), null)
                 },
                 resolver,
-                int.MaxValue
+                int.MaxValue,
+                CancellationToken.None
             });
 
             AbstractServiceEntry
@@ -83,7 +86,8 @@ namespace Solti.Utils.DI.Internals.Tests
                     new TransientServiceEntry(typeof(IDisposable), null, typeof(Disposable), null, int.MaxValue)
                 },
                 null,
-                int.MaxValue
+                int.MaxValue,
+                CancellationToken.None
             });
 
             AbstractServiceEntry entry;
@@ -109,7 +113,8 @@ namespace Solti.Utils.DI.Internals.Tests
                     new TransientServiceEntry(typeof(IDisposable), null, typeof(Disposable), null, int.MaxValue)
                 },
                 null,
-                int.MaxValue
+                int.MaxValue,
+                CancellationToken.None
             });
 
             AbstractServiceEntry entry;
@@ -135,7 +140,8 @@ namespace Solti.Utils.DI.Internals.Tests
                     new TransientServiceEntry(typeof(IList<>), null, typeof(MyList<>), null, int.MaxValue),
                 },
                 resolver,
-                int.MaxValue
+                int.MaxValue,
+                CancellationToken.None
             });
 
             AbstractServiceEntry owned;
@@ -158,7 +164,8 @@ namespace Solti.Utils.DI.Internals.Tests
                     new TransientServiceEntry(typeof(IList<>), null, typeof(MyList<>), null, int.MaxValue),
                 },
                 resolver,
-                int.MaxValue
+                int.MaxValue,
+                CancellationToken.None
             });
 
             AbstractServiceEntry owned;
