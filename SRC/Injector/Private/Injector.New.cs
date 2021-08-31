@@ -180,7 +180,7 @@ namespace Solti.Utils.DI.Internals
 
             //
             // Minden fuggoseget megtalaltunk, a szerviz sikeresen peldanyositasra kerult.
-            // Ha a szervizt egy masik szerviz fuggosege akkor felvesszuk annak fuggosegi listajaba.
+            // Ha a szerviz egy masik szerviz fuggosege akkor felvesszuk annak fuggosegi listajaba.
             //
 
             FPath.Last?.AddDependency(resolved);
