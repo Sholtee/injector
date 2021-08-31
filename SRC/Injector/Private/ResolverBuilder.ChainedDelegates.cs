@@ -3,6 +3,7 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
+using System;
 using System.Collections.Generic;
 using System.Threading;
 
@@ -38,7 +39,13 @@ namespace Solti.Utils.DI.Internals
 
                         resolver = (self, iface, name) =>
                         {
-                            if (entry.Interface.GUID == iface.GUID && entry.Name == name)
+                            //
+                            // NE tipusok GUID property-ere teszteljunk mert az kibaszott lassu (lasd teljesitmeny tesztek)
+                            //
+
+                            Type pureType = iface.IsGenericType ? iface.GetGenericTypeDefinition() : iface;
+
+                            if (entry.Interface == pureType && entry.Name == name)
                             {
                                 return geResolver(self, iface, name);
                             }

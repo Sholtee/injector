@@ -36,9 +36,13 @@ namespace Solti.Utils.DI.Internals
             //
             // (self, iface, name) =>
             // {
-            //   switch (iface.GUID) // GUID nyilt es lezart generikusnal ugyanaz
+            //   Type pureType = iface.IsGenericType
+            //     ? iface.GetGenericTypeDefinition()
+            //     : iface;
+            //
+            //   switch (pureType) // NE iface.GUID property-re vizsgaljunk mert kibaszott lassu lekeredzni
             //   {
-            //     case typeof(IServiceA).GUID:
+            //     case typeof(IServiceA):
             //     {
             //       switch (name)
             //       {
@@ -47,7 +51,7 @@ namespace Solti.Utils.DI.Internals
             //         default: return null;
             //       }
             //     }
-            //     case typeof(IServiceB).GUID: // IsShared
+            //     case typeof(IServiceB): // IsShared
             //     {
             //        case "cica": return self.Parent is not null
             //            ? self.Parent.GetEntry(iface, name)
@@ -55,7 +59,7 @@ namespace Solti.Utils.DI.Internals
             //         ...
             //         default: return null;
             //     }
-            //     case typeof(IServiceC<>).GUID:
+            //     case typeof(IServiceC<>):
             //     {
             //       switch (name)
             //       {
@@ -77,16 +81,18 @@ namespace Solti.Utils.DI.Internals
                 Ensure.Parameter.IsNotNull(genericEntryResolverBuilder, nameof(genericEntryResolverBuilder));
 
                 ParameterExpression
-                    self  = Expression.Parameter(typeof(IServiceRegistry), nameof(self)),
+                    self = Expression.Parameter(typeof(IServiceRegistry), nameof(self)),
                     iface = Expression.Parameter(typeof(Type), nameof(iface)),
-                    name  = Expression.Parameter(typeof(string), nameof(name));
+                    name = Expression.Parameter(typeof(string), nameof(name)),
+                    pureType = Expression.Variable(typeof(Type), nameof(pureType));
 
                 PropertyInfo
-                    guidProp   = (PropertyInfo) ((MemberExpression) ((Expression<Func<Type, Guid>>) (t => t.GUID)).Body).Member,
-                    parentProp = (PropertyInfo) ((MemberExpression) ((Expression<Func<IServiceRegistry, IServiceRegistry?>>) (sr => sr.Parent)).Body).Member;
+                    parentProp = ExtractProperty<IServiceRegistry, IServiceRegistry?>(r => r.Parent),
+                    isGeneric = ExtractProperty<Type, bool>(t => t.IsGenericType);
 
                 MethodInfo
-                    getEntryMethod = ((MethodCallExpression) ((Expression<Action<IServiceRegistry>>) (sr => sr.GetEntry(null!, null))).Body).Method;
+                    getEntryMethod = ExtractMethod<IServiceRegistry>(r => r.GetEntry(null!, null)),
+                    getGenericTypeMethod = ExtractMethod<Type>(t => t.GetGenericTypeDefinition());
 
                 int // GetEntryResolver()-ben nem hivatkozhatunk by-ref parametert
                     regularEntryCount = 0,
@@ -99,11 +105,22 @@ namespace Solti.Utils.DI.Internals
                     Expression.Block
                     (
                         type: typeof(AbstractServiceEntry),
+                        variables: new[] { pureType },
+                        Expression.Assign
+                        (
+                            left: pureType, 
+                            right: Expression.Condition
+                            (
+                                test: Expression.Property(iface, isGeneric),
+                                ifTrue: Expression.Call(iface, getGenericTypeMethod),
+                                ifFalse: iface
+                            )
+                        ),
                         CreateSwitch
                         (
-                            value: Expression.Property(iface, guidProp),
+                            value: pureType,
                             cases: entries
-                                .GroupBy(entry => entry.Interface.GUID)
+                                .GroupBy(entry => entry.Interface)
                                 .Select
                                 (
                                     grp =>
@@ -155,6 +172,10 @@ namespace Solti.Utils.DI.Internals
 
                     return Expression.Return(returnLabel, invocation);
                 }
+
+                static PropertyInfo ExtractProperty<TTarget, TProp>(Expression<Func<TTarget, TProp>> expr) => (PropertyInfo) ((MemberExpression) expr.Body).Member;
+
+                static MethodInfo ExtractMethod<TTarget>(Expression<Action<TTarget>> expr) => ((MethodCallExpression) expr.Body).Method;
             }
         }
     }

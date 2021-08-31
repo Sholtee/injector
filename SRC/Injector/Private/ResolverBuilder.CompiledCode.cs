@@ -125,6 +125,49 @@ namespace Solti.Utils.DI.Internals
                     iface = Parameter(Identifier(nameof(iface))),
                     name  = Parameter(Identifier(nameof(name)));
 
+                LocalDeclarationStatementSyntax pureType = LocalDeclarationStatement
+                (
+                    VariableDeclaration
+                    (
+                        GetQualifiedName(typeof(Type))
+                    )
+                    .WithVariables
+                    (
+                        SingletonSeparatedList
+                        (
+                            VariableDeclarator
+                            (
+                                Identifier(nameof(pureType))
+                            )
+                            .WithInitializer
+                            (
+                                EqualsValueClause
+                                (
+                                    ConditionalExpression
+                                    (
+                                        condition: MemberAccessExpression
+                                        (
+                                            SyntaxKind.SimpleMemberAccessExpression,
+                                            IdentifierName(iface.Identifier),
+                                            IdentifierName(nameof(Type.IsGenericType))
+                                        ),
+                                        whenTrue: InvocationExpression
+                                        (
+                                            MemberAccessExpression
+                                            (
+                                                SyntaxKind.SimpleMemberAccessExpression,
+                                                IdentifierName(iface.Identifier),
+                                                IdentifierName(nameof(Type.GetGenericTypeDefinition))
+                                            )
+                                        ),
+                                        whenFalse: IdentifierName(iface.Identifier)
+                                    )
+                                )
+                            )
+                        )
+                    )
+                );
+
                 LambdaExpressionSyntax lambda = ParenthesizedLambdaExpression()
                     .WithParameterList
                     (
@@ -137,24 +180,24 @@ namespace Solti.Utils.DI.Internals
                     (
                         Block
                         (
+                            pureType,
                             CreateSwitch
                             (
-                                value: InvocationExpression
+                                value: MemberAccessExpression
                                 (
-                                    MemberAccessExpression
+                                    SyntaxKind.SimpleMemberAccessExpression,
+                                    IdentifierName
                                     (
-                                        SyntaxKind.SimpleMemberAccessExpression,
-                                        MemberAccessExpression
-                                        (
-                                            SyntaxKind.SimpleMemberAccessExpression,
-                                            IdentifierName(iface.Identifier),
-                                            IdentifierName(nameof(Type.GUID))
-                                        ),
-                                        IdentifierName(nameof(ToString))
-                                    )
+                                        pureType
+                                            .Declaration
+                                            .Variables
+                                            .Single()
+                                            .Identifier
+                                    ),
+                                    IdentifierName(nameof(Type.FullName))
                                 ),
                                 cases: entries
-                                    .GroupBy(entry => entry.Interface.GUID.ToString())
+                                    .GroupBy(entry => entry.Interface.FullName)
                                     .Select
                                     (
                                         grp => 
@@ -205,9 +248,13 @@ namespace Solti.Utils.DI.Internals
                         CommaSeparatedList(regularResolvers, genericResolvers)   
                     )
                 )
-                .WithBody
+                .WithExpressionBody
                 (
-                    Block(SingletonList<StatementSyntax>(ReturnStatement(lambda)))
+                    ArrowExpressionClause(lambda)
+                )
+                .WithSemicolonToken
+                (
+                    Token(SyntaxKind.SemicolonToken)
                 );
 
                 StatementSyntax CreateResolveStatement(AbstractServiceEntry entry)
@@ -328,34 +375,35 @@ namespace Solti.Utils.DI.Internals
             //
             // public static class ResolverFactory
             // {
-            //     public static Resolver Create(Resolver[] regularResolvers, Resolver[] genericResolvers)
+            //     public static Resolver Create(Resolver[] regularResolvers, Resolver[] genericResolvers) =>  (self, iface, name) => 
             //     {
-            //         return (self, iface, name) => 
+            //         Type pureType = iface.IsGenericType
+            //             ? iface.GetGenericTypeDefinition()
+            //             : iface;
+            //
+            //         switch (pureType.FullName) // NE iface.GUID property-re vizsgaljunk mert kibaszott lassu lekeredzni
             //         {
-            //             switch (iface.GUID.ToString())
-            //             {
-            //                 case "FCC22E95-66C7-4365-B8FA-510E623C0FCF": // regular
-            //                     switch (name)
-            //                     {
-            //                         case "owned":
-            //                             return regularResolvers[0](self, iface, name);
-            //                         case "notowned":
-            //                             return self.Parent != null
-            //                                 ? self.Parent.GetEntry(iface, name)
-            //                                 : regularResolvers[1](self, iface, name);
-            //                     }
-            //                     break;
-            //                 case "DE67CA38-CD59-4506-8E12-AA32551A00E8": // generic
-            //                     switch (name)
-            //                     {
-            //                         case null:
-            //                             return genericResolvers[0](self, iface, name);
-            //                     }
-            //                     break;
-            //             }
-            //             return null;
-            //         };
-            //     }
+            //             case "xXx": // regular
+            //                 switch (name)
+            //                 {
+            //                     case "owned":
+            //                         return regularResolvers[0](self, iface, name);
+            //                     case "notowned":
+            //                         return self.Parent != null
+            //                             ? self.Parent.GetEntry(iface, name)
+            //                             : regularResolvers[1](self, iface, name);
+            //                 }
+            //                 break;
+            //             case "yYy": // generic
+            //                 switch (name)
+            //                 {
+            //                     case null:
+            //                         return genericResolvers[0](self, iface, name);
+            //                 }
+            //                 break;
+            //         }
+            //         return null;
+            //     };
             // }
             //
 
