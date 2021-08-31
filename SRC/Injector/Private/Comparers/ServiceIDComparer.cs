@@ -10,7 +10,7 @@ namespace Solti.Utils.DI.Internals
     using Interfaces;
     using Primitives;
 
-    internal sealed class ServiceIdComparer : ComparerBase<ServiceIdComparer, IServiceId>
+    internal sealed class ServiceIdComparer : ComparerBase<ServiceIdComparer, IServiceId> // TODO: torolni
     {
         public override bool Equals(IServiceId x, IServiceId y) => x.Interface == y.Interface && x.Name == y.Name;
 
