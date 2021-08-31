@@ -18,7 +18,7 @@ namespace Solti.Utils.DI.Interfaces
     /// <summary>
     /// Describes an abstract service definition.
     /// </summary>
-    public class AbstractServiceEntry: Disposable, IServiceDefinition
+    public class AbstractServiceEntry: Disposable, IServiceDefinition // TODO: legyen tenylegesen abstract
     {
         /// <summary>
         /// Creates a new <see cref="AbstractServiceEntry"/> instance.
@@ -113,7 +113,7 @@ namespace Solti.Utils.DI.Interfaces
         /// <summary>
         /// The owner of this entry.
         /// </summary>
-        public virtual IServiceRegistry? Registry { get; }
+        public virtual IServiceRegistry? Registry { get; } // TODO: atnevezni owner-re
 
         /// <summary>
         /// The (optional) implementation of the service.
@@ -159,7 +159,7 @@ namespace Solti.Utils.DI.Interfaces
         /// Copies this entry to a new collection.
         /// </summary>
         /// <param name="owner">The target <see cref="IServiceContainer"/> to which we want to copy this entry.</param>
-        public virtual AbstractServiceEntry CopyTo(IServiceContainer owner)
+        public virtual AbstractServiceEntry CopyTo(IServiceContainer owner) // TODO: torolni
         {
             if (owner is null)
                 throw new ArgumentNullException(nameof(owner));

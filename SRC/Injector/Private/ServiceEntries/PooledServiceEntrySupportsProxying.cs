@@ -10,7 +10,7 @@ namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
 
-    internal class PooledServiceEntrySupportsProxying : PooledServiceEntry, ISupportsProxying
+    internal class PooledServiceEntrySupportsProxying : PooledServiceEntry, ISupportsProxying // TODO: osszefesulni a PooledServiceEntry-vel
     {
         public PooledServiceEntrySupportsProxying(Type @interface, string? name, Func<IInjector, Type, object> factory, IServiceContainer owner) : base(@interface, name, factory, owner)
         {

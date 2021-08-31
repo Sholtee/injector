@@ -34,7 +34,7 @@ namespace Solti.Utils.DI.Interfaces
         /// <summary>
         /// Returns all the registered entries.
         /// </summary>
-        IReadOnlyList<AbstractServiceEntry> RegisteredEntries { get; }
+        ICollection<AbstractServiceEntry> RegisteredEntries { get; }
 
         /// <summary>
         /// The parent registry

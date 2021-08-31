@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Collections.Generic;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -11,11 +12,30 @@ namespace Solti.Utils.DI.Internals
 
     internal class ContextualServiceEntry : AbstractServiceEntry
     {
-        public ContextualServiceEntry(Type @interface, Func<IInjector, Type, object> factory) : base(@interface, null, null!)
+        private readonly IReadOnlyCollection<ServiceReference> FInstances;
+
+        private readonly Func<IServiceRegistry, object> FSelector;
+
+        public ContextualServiceEntry(Type @interface, Func<IServiceRegistry, object> selector) : base(@interface, null, null!)
         {
-            Factory = factory;
+            FInstances = Array.Empty<ServiceReference>();
+            FSelector = Ensure.Parameter.IsNotNull(selector, nameof(selector));
         }
 
+        private ContextualServiceEntry(ContextualServiceEntry original, IServiceRegistry owner) : base(original.Interface, original.Name, null!)
+        {
+            Registry = Ensure.Parameter.IsNotNull(owner, nameof(owner));
+            FSelector = original.FSelector;
+            FInstances = new[] 
+            {
+                new ServiceReference(this, FSelector(owner), externallyOwned: true)
+            };
+        }
 
+        public override IServiceRegistry? Registry { get; }
+
+        public override AbstractServiceEntry CopyTo(IServiceRegistry owner) => new ContextualServiceEntry(this, Ensure.Parameter.IsNotNull(owner, nameof(owner)));
+
+        public override IReadOnlyCollection<IServiceReference> Instances => FInstances;
     }
 }

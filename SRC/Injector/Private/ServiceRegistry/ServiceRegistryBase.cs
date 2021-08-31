@@ -72,16 +72,20 @@ namespace Solti.Utils.DI.Internals
         {
             Ensure.Parameter.IsNotNull(entries, nameof(entries));
 
-            RegisteredEntries = entries.ToArray();
+            RegisteredEntries = entries
+                .Concat(ContextualServices)
+                .ToArray();
         }
 
         protected ServiceRegistryBase(ServiceRegistryBase parent) : base(parent, parent.MaxChildCount) => RegisteredEntries = parent.RegisteredEntries;
+
+        protected virtual IEnumerable<ContextualServiceEntry> ContextualServices { get; } = Array.Empty<ContextualServiceEntry>();
 
         IServiceRegistry? IServiceRegistry.Parent => (IServiceRegistry?) Parent;
 
         public AbstractServiceEntry? GetEntry(Type iface, string? name) => BuiltResolver.Invoke(this, Ensure.Parameter.IsNotNull(iface, nameof(iface)), name);
 
-        public IReadOnlyList<AbstractServiceEntry> RegisteredEntries { get; }
+        public ICollection<AbstractServiceEntry> RegisteredEntries { get; }
 
         public abstract AbstractServiceEntry ResolveRegularEntry(int index, AbstractServiceEntry originalEntry);
 
