@@ -350,9 +350,9 @@ namespace Solti.Utils.DI.Internals
                 }
             }
 
-            private static IEnumerable<Assembly> GetRuntimeAssemblies()
+            private static IEnumerable<string> GetRuntimeAssemblies()
             {
-                yield return typeof(object).Assembly;
+                yield return typeof(object).Assembly.Location;
 #if NETSTANDARD
                 string[] mandatoryAssemblies =
                 {
@@ -367,7 +367,7 @@ namespace Solti.Utils.DI.Internals
                 {
                     string fileName = Path.GetFileNameWithoutExtension(assemblyPath);
                     if (mandatoryAssemblies.Contains(fileName))
-                        yield return Assembly.LoadFile(assemblyPath);
+                        yield return assemblyPath;
                 }
 #endif
             }
@@ -459,10 +459,10 @@ namespace Solti.Utils.DI.Internals
                         CSharpSyntaxTree.Create(unit)
                     },
                     references: GetRuntimeAssemblies()
-                        .Append(typeof(AbstractServiceEntry).Assembly)
-                        .Append(typeof(IDisposableEx).Assembly)
-                        .Append(typeof(ResolverBuilder).Assembly)
-                        .Select(asm => MetadataReference.CreateFromFile(asm.Location)),
+                        .Append(typeof(AbstractServiceEntry).Assembly.Location)
+                        .Append(typeof(IDisposableEx).Assembly.Location)
+                        .Append(typeof(ResolverBuilder).Assembly.Location)
+                        .Select(path => MetadataReference.CreateFromFile(path)),
                     options: new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary, optimizationLevel: OptimizationLevel.Release)
                 );
 
