@@ -5,6 +5,7 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -16,11 +17,11 @@ namespace Solti.Utils.DI.Internals
 
         private readonly Dictionary<Type, AbstractServiceEntry>[] FSpecializedEntries;
 
-        public ServiceRegistry(IEnumerable<AbstractServiceEntry> entries, ResolverBuilder? resolverBuilder = null, int maxChildCount = int.MaxValue) : base(entries, maxChildCount)
+        public ServiceRegistry(IEnumerable<AbstractServiceEntry> entries, ResolverBuilder? resolverBuilder = null, int maxChildCount = int.MaxValue, CancellationToken cancellation = default) : base(entries, maxChildCount)
         {
             resolverBuilder ??= GetResolverBuilder(entries);
 
-            BuiltResolver = resolverBuilder.Build(RegisteredEntries, RegularEntryResolverFactory, GenericEntryResolverFactory, out int reCount, out int geCount);
+            BuiltResolver = resolverBuilder.Build(RegisteredEntries, RegularEntryResolverFactory, GenericEntryResolverFactory, out int reCount, out int geCount, cancellation);
 
             FRegularEntries = new AbstractServiceEntry?[reCount];
             FSpecializedEntries = CreateArray(() => new Dictionary<Type, AbstractServiceEntry>(), geCount);
