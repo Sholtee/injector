@@ -7,6 +7,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 using BenchmarkDotNet.Attributes;
 
@@ -14,25 +16,39 @@ namespace Solti.Utils.DI.Perf
 {
     using Interfaces;
     using Internals;
+    using Primitives;
 
-    [MemoryDiagnoser]
-    public class ServiceRegistry
+    public abstract class ServiceRegistryTestsBase
     {
         public sealed class Named<T>
         {
             public string Name { get; init; }
-
             public T Value { get; init; }
-
             public override string ToString() => Name;
         }
 
+        public static IEnumerable<Named<Type>> RegistryTypes
+        {
+            get
+            {
+                yield return new Named<Type> { Name = "Linear", Value = typeof(ServiceRegistry) };
+                yield return new Named<Type> { Name = "Concurrent", Value = typeof(ConcurrentServiceRegistry) };
+            }
+        }
+
+        [ParamsSource(nameof(RegistryTypes))]
+        public Named<Type> RegistryType { get; set; }
+    }
+
+    [MemoryDiagnoser]
+    public class ServiceRegistry_GetEntry: ServiceRegistryTestsBase
+    {
         //
         // Mind az deklaralo osztalynak mind a ParameterSource-al annotalt property-nek publikusnak kell lennie... Viszont a ResolverBuilder
         // internal, ezert object-et adunk vissza.
         //
 
-        public IEnumerable<Named<object>> ResolverBuilders
+        public static IEnumerable<Named<object>> ResolverBuilders
         {
             get
             {
@@ -45,18 +61,6 @@ namespace Solti.Utils.DI.Perf
         [ParamsSource(nameof(ResolverBuilders))]
         public Named<object> ResolverBuilder { get; set; }
 
-        public IEnumerable<Named<Type>> RegistryTypes
-        {
-            get
-            {
-                yield return new Named<Type> { Name = "Linear", Value = typeof(Internals.ServiceRegistry) } ;
-                yield return new Named<Type> { Name = "Concurrent", Value = typeof(Internals.ConcurrentServiceRegistry) };
-            }
-        }
-
-        [ParamsSource(nameof(RegistryTypes))]
-        public Named<Type> RegistryType {get; set;}
-
         [Params(1, 10, 20, 100, 1000)]
         public int ServiceCount { get; set; }
 
@@ -67,34 +71,77 @@ namespace Solti.Utils.DI.Perf
         [GlobalCleanup]
         public void Cleanup() => Registry.Dispose();
 
-        [GlobalSetup(Target = nameof(GetEntry))]
-        public void SetupGet()
+        [GlobalSetup(Target = nameof(ResolveRegularEntry))]
+        public void SetupResolveRegularEntry()
         {
             Registry = (ServiceRegistryBase) System.Activator.CreateInstance(RegistryType.Value, new object[] 
             {
                 Enumerable.Repeat(0, ServiceCount).Select((_, i) => (AbstractServiceEntry) new TransientServiceEntry(typeof(IList), i.ToString(), (i, t) => null!,  null, int.MaxValue)),
                 (ResolverBuilder) ResolverBuilder.Value,
-                int.MaxValue
+                CancellationToken.None
             });
             I = 0;
         }
 
         [Benchmark]
-        public AbstractServiceEntry GetEntry() => Registry!.GetEntry(typeof(IList), (++I % ServiceCount).ToString())!;
+        public AbstractServiceEntry ResolveRegularEntry() => Registry!.GetEntry(typeof(IList), (++I % ServiceCount).ToString())!;
 
-        [GlobalSetup(Target = nameof(Specialize))]
-        public void SetupSpecialize()
+        [GlobalSetup(Target = nameof(ResolveGenericEntry))]
+        public void SetupResolveGenericEntry()
         {
             Registry = (ServiceRegistryBase) System.Activator.CreateInstance(RegistryType.Value, new object[]
             {
                 Enumerable.Repeat(0, ServiceCount).Select((_, i) => (AbstractServiceEntry) new TransientServiceEntry(typeof(IList<>), i.ToString(), (i, t) => null!,  null, int.MaxValue)),
                 (ResolverBuilder) ResolverBuilder.Value,
-                int.MaxValue
+                CancellationToken.None
             });
             I = 0;
         }
 
         [Benchmark]
-        public AbstractServiceEntry Specialize() => Registry!.GetEntry(typeof(IList<object>), (++I % ServiceCount).ToString())!;
+        public AbstractServiceEntry ResolveGenericEntry() => Registry!.GetEntry(typeof(IList<object>), (++I % ServiceCount).ToString())!;
+    }
+
+    [MemoryDiagnoser]
+    public class ServiceRegistry_Lifetime : ServiceRegistryTestsBase
+    {
+        private ServiceRegistryBase Registry { get; set; }
+
+        private Func<object[], object> Factory { get; set; }
+
+        [GlobalSetup]
+        public void Setup()
+        {
+            Registry = (ServiceRegistryBase) System.Activator.CreateInstance(RegistryType.Value, new object[]
+            {
+                Array.Empty<AbstractServiceEntry>(),
+                ResolverBuilder.CompiledExpression,
+                CancellationToken.None
+            });
+
+            Factory = (RegistryType.Value.GetConstructor(new Type[] { RegistryType.Value }) ?? RegistryType.Value.GetConstructor(new Type[] { typeof(ServiceRegistryBase) }))
+                .ToStaticDelegate();
+        }
+
+        [GlobalCleanup]
+        public void Cleanup() => Registry?.Dispose();
+
+        [Benchmark]
+        public void CreateAndDispose()
+        {
+            using (IServiceRegistry child = (IServiceRegistry) Factory(new object[] { Registry }))
+            {
+                _ = child.Parent;
+            }
+        }
+
+        [Benchmark]
+        public async Task CreateAndDisposeAsync()
+        {
+            await using (IServiceRegistry child = (IServiceRegistry)Factory(new object[] { Registry }))
+            {
+                _ = child.Parent;
+            }
+        }
     }
 }

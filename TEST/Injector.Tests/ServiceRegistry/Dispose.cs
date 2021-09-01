@@ -87,17 +87,22 @@ namespace Solti.Utils.DI.Internals.Tests
                 CancellationToken.None
             });
 
-            AbstractServiceEntry entry;
-            ServiceRegistryBase grandChild;
+            AbstractServiceEntry entry1, entry2;
+            ServiceRegistryBase grandChild1, grandChild2;
 
             using (ServiceRegistryBase child = (ServiceRegistryBase) Activator.CreateInstance(registryType, new object[] { Registry }))
             {
-                grandChild = (ServiceRegistryBase) Activator.CreateInstance(registryType, new object[] { child });
-                entry = grandChild.GetEntry(typeof(IDisposable), null);
+                grandChild1 = (ServiceRegistryBase) Activator.CreateInstance(registryType, new object[] { child });
+                entry1 = grandChild1.GetEntry(typeof(IDisposable), null);
+
+                grandChild2 = (ServiceRegistryBase) Activator.CreateInstance(registryType, new object[] { child });
+                entry2 = grandChild2.GetEntry(typeof(IDisposable), null);
             }
 
-            Assert.IsTrue(grandChild.Disposed);
-            Assert.IsTrue(entry.Disposed);
+            Assert.IsTrue(grandChild1.Disposed);
+            Assert.IsTrue(entry1.Disposed);
+            Assert.IsTrue(grandChild2.Disposed);
+            Assert.IsTrue(entry2.Disposed);
         }
 
         [Test]
@@ -113,17 +118,22 @@ namespace Solti.Utils.DI.Internals.Tests
                 CancellationToken.None
             });
 
-            AbstractServiceEntry entry;
-            ServiceRegistryBase grandChild;
+            AbstractServiceEntry entry1, entry2;
+            ServiceRegistryBase grandChild1, grandChild2;
 
             await using (ServiceRegistryBase child = (ServiceRegistryBase) Activator.CreateInstance(registryType, new object[] { Registry }))
             {
-                grandChild = (ServiceRegistryBase) Activator.CreateInstance(registryType, new object[] { child }); ;
-                entry = grandChild.GetEntry(typeof(IDisposable), null);
+                grandChild1 = (ServiceRegistryBase) Activator.CreateInstance(registryType, new object[] { child });
+                entry1 = grandChild1.GetEntry(typeof(IDisposable), null);
+
+                grandChild2 = (ServiceRegistryBase) Activator.CreateInstance(registryType, new object[] { child });
+                entry2 = grandChild2.GetEntry(typeof(IDisposable), null);
             }
 
-            Assert.IsTrue(grandChild.Disposed);
-            Assert.IsTrue(entry.Disposed);
+            Assert.IsTrue(grandChild1.Disposed);
+            Assert.IsTrue(entry1.Disposed);
+            Assert.IsTrue(grandChild2.Disposed);
+            Assert.IsTrue(entry2.Disposed);
         }
 
         [Test]
