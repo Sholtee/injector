@@ -14,6 +14,7 @@ namespace Solti.Utils.DI.Internals
 
     internal class ServiceRegistry : ServiceRegistryBase
     {
+        #region Private
         private readonly AbstractServiceEntry?[] FRegularEntries;
 
         private readonly Dictionary<Type, AbstractServiceEntry>[] FSpecializedEntries;
@@ -27,7 +28,9 @@ namespace Solti.Utils.DI.Internals
                 item.OnDispose += (_, _) => Remove(node);
             }
         }
+        #endregion
 
+        #region Protected
         protected override ICollection<AbstractServiceEntry> UsedEntries { get; } = new List<AbstractServiceEntry>();
 
         protected override ICollection<IServiceRegistry> DerivedRegistries { get; } = new RegistryCollection();
@@ -68,7 +71,9 @@ namespace Solti.Utils.DI.Internals
 
             await base.AsyncDispose();
         }
+        #endregion
 
+        #region Public
         public ServiceRegistry(IEnumerable<AbstractServiceEntry> entries, ResolverBuilder? resolverBuilder = null, CancellationToken cancellation = default) : base(entries)
         {
             resolverBuilder ??= GetResolverBuilder(entries);
@@ -125,5 +130,6 @@ namespace Solti.Utils.DI.Internals
         public override int RegularEntryCount => FRegularEntries.Length;
 
         public override int GenericEntryCount => FSpecializedEntries.Length;
+        #endregion
     }
 }
