@@ -4,7 +4,6 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -109,7 +108,7 @@ namespace Solti.Utils.DI.Internals
                     if (FPath.First!.RelatedServiceEntry.Instances.Count == 0)
                         FPath.CheckNotCircular();
 
-                    result.SetInstance();
+                    requested.SetInstance(result);
                     return result;
                 }
                 finally

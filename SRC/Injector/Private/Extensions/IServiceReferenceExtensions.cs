@@ -9,7 +9,7 @@ namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
 
-    internal static class IServiceReferenceExtensions
+    internal static class IServiceReferenceExtensions // TODO:  torolni
     {
         public static void SetInstance(this IServiceReference self)
         {
