@@ -36,13 +36,6 @@ namespace Solti.Utils.DI.Perf
             }
         }
 
-        [ParamsSource(nameof(RegistryTypes))]
-        public Named<Type> RegistryType { get; set; }
-    }
-
-    [MemoryDiagnoser]
-    public class ServiceRegistry_GetEntry: ServiceRegistryTestsBase
-    {
         //
         // Mind az deklaralo osztalynak mind a ParameterSource-al annotalt property-nek publikusnak kell lennie... Viszont a ResolverBuilder
         // internal, ezert object-et adunk vissza.
@@ -58,6 +51,13 @@ namespace Solti.Utils.DI.Perf
             }
         }
 
+        [ParamsSource(nameof(RegistryTypes))]
+        public Named<Type> RegistryType { get; set; }
+    }
+
+    [MemoryDiagnoser]
+    public class ServiceRegistry_GetEntry: ServiceRegistryTestsBase
+    {
         [ParamsSource(nameof(ResolverBuilders))]
         public Named<object> ResolverBuilder { get; set; }
 
@@ -103,7 +103,7 @@ namespace Solti.Utils.DI.Perf
     }
 
     [MemoryDiagnoser]
-    public class ServiceRegistry_Lifetime : ServiceRegistryTestsBase
+    public class ServiceRegistry_Derive : ServiceRegistryTestsBase
     {
         private ServiceRegistryBase Registry { get; set; }
 
@@ -127,7 +127,7 @@ namespace Solti.Utils.DI.Perf
         public void Cleanup() => Registry?.Dispose();
 
         [Benchmark]
-        public void CreateAndDispose()
+        public void DeriveAndDispose()
         {
             using (IServiceRegistry child = (IServiceRegistry) Factory(new object[] { Registry }))
             {
@@ -136,12 +136,33 @@ namespace Solti.Utils.DI.Perf
         }
 
         [Benchmark]
-        public async Task CreateAndDisposeAsync()
+        public async Task DeriveAndDisposeAsync()
         {
-            await using (IServiceRegistry child = (IServiceRegistry)Factory(new object[] { Registry }))
+            await using (IServiceRegistry child = (IServiceRegistry) Factory(new object[] { Registry }))
             {
                 _ = child.Parent;
             }
         }
+    }
+
+    [MemoryDiagnoser]
+    public class ServiceRegistry_Create : ServiceRegistryTestsBase
+    {
+        [ParamsSource(nameof(ResolverBuilders))]
+        public Named<object> ResolverBuilder { get; set; }
+
+        private Func<object[], object> Factory { get; set; }
+
+        [GlobalSetup]
+        public void Setup()
+        {
+            Factory = RegistryType
+                .Value
+                .GetConstructor(new Type[] { typeof(IEnumerable<AbstractServiceEntry>), typeof(ResolverBuilder), typeof(CancellationToken) })
+                .ToStaticDelegate();
+        }
+
+        [Benchmark]
+        public IServiceRegistry Create() => (IServiceRegistry) Factory(new object[] { Array.Empty<AbstractServiceEntry>(), ResolverBuilder.Value, CancellationToken.None } );
     }
 }
