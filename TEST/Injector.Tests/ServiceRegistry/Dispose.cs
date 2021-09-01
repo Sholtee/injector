@@ -29,7 +29,6 @@ namespace Solti.Utils.DI.Internals.Tests
                     new SingletonServiceEntry(typeof(IDisposable), "notowned", typeof(Disposable), null)
                 },
                 resolver,
-                int.MaxValue, 
                 CancellationToken.None
             });
 
@@ -58,7 +57,6 @@ namespace Solti.Utils.DI.Internals.Tests
                     new SingletonServiceEntry(typeof(IDisposable), "notowned", typeof(Disposable), null)
                 },
                 resolver,
-                int.MaxValue,
                 CancellationToken.None
             });
 
@@ -86,7 +84,6 @@ namespace Solti.Utils.DI.Internals.Tests
                     new TransientServiceEntry(typeof(IDisposable), null, typeof(Disposable), null, int.MaxValue)
                 },
                 null,
-                int.MaxValue,
                 CancellationToken.None
             });
 
@@ -113,7 +110,6 @@ namespace Solti.Utils.DI.Internals.Tests
                     new TransientServiceEntry(typeof(IDisposable), null, typeof(Disposable), null, int.MaxValue)
                 },
                 null,
-                int.MaxValue,
                 CancellationToken.None
             });
 
@@ -140,7 +136,6 @@ namespace Solti.Utils.DI.Internals.Tests
                     new TransientServiceEntry(typeof(IList<>), null, typeof(MyList<>), null, int.MaxValue),
                 },
                 resolver,
-                int.MaxValue,
                 CancellationToken.None
             });
 
@@ -164,7 +159,6 @@ namespace Solti.Utils.DI.Internals.Tests
                     new TransientServiceEntry(typeof(IList<>), null, typeof(MyList<>), null, int.MaxValue),
                 },
                 resolver,
-                int.MaxValue,
                 CancellationToken.None
             });
 

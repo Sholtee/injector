@@ -249,9 +249,5 @@ namespace Solti.Utils.DI.Internals
 
         IServiceContainer IInjector.UnderlyingContainer => throw new NotSupportedException(); // TODO: torolni
         #endregion
-
-        #region Composite
-        public override ICollection<IServiceRegistry> Children { get; } = Array.Empty<IServiceRegistry>();
-        #endregion
     }
 }

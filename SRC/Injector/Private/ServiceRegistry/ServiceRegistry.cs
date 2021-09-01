@@ -10,6 +10,7 @@ using System.Threading;
 namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
+    using System.Threading.Tasks;
 
     internal class ServiceRegistry : ServiceRegistryBase
     {
@@ -17,7 +18,58 @@ namespace Solti.Utils.DI.Internals
 
         private readonly Dictionary<Type, AbstractServiceEntry>[] FSpecializedEntries;
 
-        public ServiceRegistry(IEnumerable<AbstractServiceEntry> entries, ResolverBuilder? resolverBuilder = null, int maxChildCount = int.MaxValue, CancellationToken cancellation = default) : base(entries, maxChildCount)
+        private sealed class RegistryCollection : LinkedList<IServiceRegistry>, ICollection<IServiceRegistry>
+        {
+            void ICollection<IServiceRegistry>.Add(IServiceRegistry item)
+            {
+                LinkedListNode<IServiceRegistry> node = AddLast(item);
+
+                item.OnDispose += (_, _) => Remove(node);
+            }
+        }
+
+        protected override ICollection<AbstractServiceEntry> UsedEntries { get; } = new List<AbstractServiceEntry>();
+
+        protected override ICollection<IServiceRegistry> DerivedRegistries { get; } = new RegistryCollection();
+
+        protected override void Dispose(bool disposeManaged)
+        {
+            if (DerivedRegistries.Count > 0)
+            {
+                //
+                // Elemet felsorolas kozben nem tudunk eltavolitani a listabol ezert masolatot keszitunk eloszor
+                // (ami bar lassit a torteneten de nem szalbiztos registry-nek elvileg nem is lesz leszarmazottja).
+                //
+
+                IServiceRegistry[] registries = new IServiceRegistry[DerivedRegistries.Count];
+                DerivedRegistries.CopyTo(registries, 0);
+
+                for (int i = 0; i < registries.Length; i++)
+                {
+                    registries[i].Dispose();
+                }
+            }
+
+            base.Dispose(disposeManaged);
+        }
+
+        protected async override ValueTask AsyncDispose()
+        {
+            if (DerivedRegistries.Count > 0)
+            {
+                IServiceRegistry[] registries = new IServiceRegistry[DerivedRegistries.Count];
+                DerivedRegistries.CopyTo(registries, 0);
+
+                for (int i = 0; i < registries.Length; i++)
+                {
+                    await registries[i].DisposeAsync();
+                }
+            }
+
+            await base.AsyncDispose();
+        }
+
+        public ServiceRegistry(IEnumerable<AbstractServiceEntry> entries, ResolverBuilder? resolverBuilder = null, CancellationToken cancellation = default) : base(entries)
         {
             resolverBuilder ??= GetResolverBuilder(entries);
 
@@ -67,8 +119,6 @@ namespace Solti.Utils.DI.Internals
 
             return value;
         }
-
-        public override ICollection<AbstractServiceEntry> UsedEntries { get; } = new List<AbstractServiceEntry>();
 
         public override Resolver BuiltResolver { get; }
 

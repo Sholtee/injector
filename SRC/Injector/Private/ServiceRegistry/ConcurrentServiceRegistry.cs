@@ -7,13 +7,16 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
+    using Primitives.Threading;
 
     internal class ConcurrentServiceRegistry : ServiceRegistryBase
     {
+        #region Private
         private sealed class EntryHolder
         {
             public AbstractServiceEntry? Value;
@@ -23,7 +26,78 @@ namespace Solti.Utils.DI.Internals
 
         private readonly ConcurrentDictionary<Type, Lazy<AbstractServiceEntry>>[] FSpecializedEntries;
 
-        public ConcurrentServiceRegistry(IEnumerable<AbstractServiceEntry> entries, ResolverBuilder? resolverBuilder = null, int maxChildCount = int.MaxValue, CancellationToken cancellation = default) : base(entries, maxChildCount)
+        private sealed class ConcurrentRegistryCollection : ConcurrentCollection<IServiceRegistry>
+        {
+            public override void Add(IServiceRegistry item)
+            {
+                LinkedListNode<IServiceRegistry> node = new() 
+                { 
+                    Value = item 
+                };
+
+                item.OnDispose += (_, _) => FUnderlyingList.Remove(node);
+
+                FUnderlyingList.Add(node);
+            }
+        }
+        #endregion
+
+        #region Protected
+        protected override ICollection<AbstractServiceEntry> UsedEntries { get; } = new ConcurrentCollection<AbstractServiceEntry>();
+
+        protected override ICollection<IServiceRegistry> DerivedRegistries { get; } = new ConcurrentRegistryCollection();
+
+        protected override void Dispose(bool disposeManaged)
+        {
+            if (disposeManaged)
+            {
+                //
+                // Felsorolas kozben nem lehet listabol eltavolitani az aktualis elemet utana viszont mar siman.
+                // Ha kozben magan a leszarmazotton is hivva volt a Dispose() akkor sincs gond, ez esetben az
+                // ujabb Dispose() hivas mar nem csinal semmit.
+                //
+
+                if (DerivedRegistries.Count > 0)
+                {
+                    IServiceRegistry? previous = null;
+
+                    foreach (IServiceRegistry current in DerivedRegistries)
+                    {
+                        previous?.Dispose();
+                        previous = current;
+                    }
+
+                    previous?.Dispose();
+                }
+            }
+
+            base.Dispose(disposeManaged);
+        }
+
+        protected async override ValueTask AsyncDispose()
+        {
+            if (DerivedRegistries.Count > 0)
+            {
+                IServiceRegistry? previous = null;
+
+                foreach (IServiceRegistry current in DerivedRegistries)
+                {
+                    if (previous is not null)
+                        await previous.DisposeAsync();
+
+                    previous = current;
+                }
+
+                if (previous is not null)
+                    await previous.DisposeAsync();
+            }
+
+            await base.AsyncDispose();
+        }
+        #endregion
+
+        #region Public
+        public ConcurrentServiceRegistry(IEnumerable<AbstractServiceEntry> entries, ResolverBuilder? resolverBuilder = null, CancellationToken cancellation = default) : base(entries)
         {
             resolverBuilder ??= GetResolverBuilder(entries);
 
@@ -87,12 +161,11 @@ namespace Solti.Utils.DI.Internals
             return holder.Value;
         }
 
-        public override ICollection<AbstractServiceEntry> UsedEntries { get; } = new ConcurrentCollection<AbstractServiceEntry>();
-
         public override Resolver BuiltResolver { get; }
 
         public override int RegularEntryCount => FRegularEntries.Length;
 
         public override int GenericEntryCount => FSpecializedEntries.Length;
+        #endregion
     }
 }

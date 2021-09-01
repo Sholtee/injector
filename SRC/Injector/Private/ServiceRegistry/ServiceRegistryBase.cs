@@ -14,7 +14,7 @@ namespace Solti.Utils.DI.Internals
     using Interfaces;
     using Primitives.Patterns;
 
-    internal abstract class ServiceRegistryBase : Composite<IServiceRegistry>, IServiceRegistry
+    internal abstract class ServiceRegistryBase : DisposableSupportsNotifyOnDispose, IServiceRegistry
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         protected static Resolver GenericEntryResolverFactory(int index, AbstractServiceEntry originalEntry) =>
@@ -68,7 +68,7 @@ namespace Solti.Utils.DI.Internals
             await base.AsyncDispose();
         }
 
-        protected ServiceRegistryBase(IEnumerable<AbstractServiceEntry> entries, int maxChildCount) : base(maxChildCount: maxChildCount)
+        protected ServiceRegistryBase(IEnumerable<AbstractServiceEntry> entries) : base()
         {
             Ensure.Parameter.IsNotNull(entries, nameof(entries));
 
@@ -77,21 +77,33 @@ namespace Solti.Utils.DI.Internals
                 .ToArray();
         }
 
-        protected ServiceRegistryBase(ServiceRegistryBase parent) : base(parent, parent.MaxChildCount) => RegisteredEntries = parent.RegisteredEntries;
+        protected ServiceRegistryBase(ServiceRegistryBase parent) : base()
+        {
+            Ensure.Parameter.IsNotNull(parent, nameof(parent));
+
+            RegisteredEntries = parent.RegisteredEntries;
+            Parent = parent;
+
+            parent.DerivedRegistries.Add(this);
+        }
 
         protected virtual IEnumerable<ContextualServiceEntry> ContextualServices { get; } = Array.Empty<ContextualServiceEntry>();
 
-        IServiceRegistry? IServiceRegistry.Parent => (IServiceRegistry?) Parent;
+        protected abstract ICollection<AbstractServiceEntry> UsedEntries { get; }
+
+        protected abstract ICollection<IServiceRegistry> DerivedRegistries { get; }
+
+        IReadOnlyCollection<IServiceRegistry> IServiceRegistry.DerivedRegistries => (IReadOnlyCollection<IServiceRegistry>) DerivedRegistries;
+
+        public IServiceRegistry? Parent { get; }
 
         public AbstractServiceEntry? GetEntry(Type iface, string? name) => BuiltResolver.Invoke(this, Ensure.Parameter.IsNotNull(iface, nameof(iface)), name);
 
-        public ICollection<AbstractServiceEntry> RegisteredEntries { get; }
+        public IReadOnlyCollection<AbstractServiceEntry> RegisteredEntries { get; }
 
         public abstract AbstractServiceEntry ResolveRegularEntry(int index, AbstractServiceEntry originalEntry);
 
         public abstract AbstractServiceEntry ResolveGenericEntry(int index, Type specializedInterface, AbstractServiceEntry originalEntry);
-
-        public abstract ICollection<AbstractServiceEntry> UsedEntries { get; }
 
         public abstract Resolver BuiltResolver { get; }
 

@@ -14,13 +14,13 @@ namespace Solti.Utils.DI.Internals
 
     internal class ConcurrentCollection<T> : ICollection<T>, IReadOnlyCollection<T>
     {
-        private readonly ConcurrentLinkedList<T> FUnderlyingList = new();
+        protected readonly ConcurrentLinkedList<T> FUnderlyingList = new();
 
         public int Count => FUnderlyingList.Count;
 
         public bool IsReadOnly { get; }
 
-        public void Add(T item) => FUnderlyingList.Add(new LinkedListNode<T> { Value = item });
+        public virtual void Add(T item) => FUnderlyingList.Add(new LinkedListNode<T> { Value = item });
 
         public IEnumerator<T> GetEnumerator() => FUnderlyingList.Select(node => node.Value).GetEnumerator()!;
 
