@@ -60,7 +60,7 @@ namespace Solti.Utils.DI.Internals
                         return requested.Instances.Single();
 
                     //
-                    // Letrehozunk egy dedikalt injector-t aminek a felszabaditasa "Factory" feladata lesz
+                    // Letrehozunk egy dedikalt injector-t aminek a felszabaditasa "Parent" feladata lesz
                     //   -> Ennek az injector peldanynak a felszabaditasa nem befolyasolja a szerviz elettartamat.
                     //
 
