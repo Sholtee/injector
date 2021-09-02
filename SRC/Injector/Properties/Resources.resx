@@ -169,7 +169,7 @@
     <value>The value of "{0}" should be null.</value>
   </data>
   <data name="IS_NULL" xml:space="preserve">
-    <value>The value of "{0}" can not be null.</value>
+    <value>The value of "{0}" cannot be null.</value>
   </data>
   <data name="NOT_BELONGING_REFERENCE" xml:space="preserve">
     <value>The servicereference belongs to an another entry.</value>
@@ -182,5 +182,8 @@
   </data>
   <data name="FOREIGN_DEPENDENCY" xml:space="preserve">
     <value>You can not add dependency to an already instantiated service.</value>
+  </data>
+  <data name="BUILT_IN_SERVICE_OVERRIDE" xml:space="preserve">
+    <value>Built in services cannot be overridden.</value>
   </data>
 </root>

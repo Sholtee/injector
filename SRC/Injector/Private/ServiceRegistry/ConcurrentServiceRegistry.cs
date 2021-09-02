@@ -97,9 +97,9 @@ namespace Solti.Utils.DI.Internals
         #endregion
 
         #region Public
-        public ConcurrentServiceRegistry(IEnumerable<AbstractServiceEntry> entries, ResolverBuilder? resolverBuilder = null, CancellationToken cancellation = default) : base(entries)
+        public ConcurrentServiceRegistry(ISet<AbstractServiceEntry> entries, ResolverBuilder? resolverBuilder = null, CancellationToken cancellation = default) : base(entries)
         {
-            resolverBuilder ??= GetResolverBuilder(entries);
+            resolverBuilder ??= GetDefaultResolverBuilder(entries);
 
             BuiltResolver = resolverBuilder.Build(RegisteredEntries, RegularEntryResolverFactory, GenericEntryResolverFactory, out int reCount, out int geCount, cancellation);
 

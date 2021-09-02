@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading;
 
 using NUnit.Framework;
@@ -13,6 +14,7 @@ using NUnit.Framework;
 namespace Solti.Utils.DI.Internals.Tests
 {
     using Interfaces;
+    using Properties;
 
     [TestFixture]
     internal partial class ServiceRegistryTests
@@ -44,7 +46,7 @@ namespace Solti.Utils.DI.Internals.Tests
         [Test]
         public void Children_ShouldBeUpToDate([ValueSource(nameof(RegistryTypes))] Type registryType)
         {
-            Registry = (ServiceRegistryBase) Activator.CreateInstance(registryType, new object[] { Array.Empty<AbstractServiceEntry>(), null, CancellationToken.None });
+            Registry = (ServiceRegistryBase) Activator.CreateInstance(registryType, new object[] { new HashSet<AbstractServiceEntry>(ServiceIdComparer.Instance), null, CancellationToken.None });
 
             Assert.That(Registry.DerivedRegistries, Is.Empty);
 
@@ -56,5 +58,9 @@ namespace Solti.Utils.DI.Internals.Tests
 
             Assert.That(Registry.DerivedRegistries, Is.Empty);
         }
+
+        [Test]
+        public void Ctor_ShouldThrowOnOverriddenService() =>
+            Assert.Throws<ArgumentException>(() => new ScopeFactory(new HashSet<AbstractServiceEntry>(ServiceIdComparer.Instance) { new AbstractServiceEntry(typeof(IInjector), null, null) }), Resources.BUILT_IN_SERVICE_OVERRIDE);
     }
 }

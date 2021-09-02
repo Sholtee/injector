@@ -12,20 +12,17 @@ namespace Solti.Utils.DI.Internals
 
     internal class ScopeFactory : ConcurrentServiceRegistry, IScopeFactory
     {
-        public ScopeFactory(IEnumerable<AbstractServiceEntry> entries) : base(entries)
+        public ScopeFactory(ISet<AbstractServiceEntry> entries) : base(entries)
         {
         }
 
         public virtual Injector_New CreateScope() => new(this);
 
-        protected override IEnumerable<ContextualServiceEntry> ContextualServices
+        protected override IReadOnlyCollection<ContextualServiceEntry> ContextualServices => new[]
         {
-            get 
-            {
-                yield return new ContextualServiceEntry(typeof(IInjector), owner => (IInjector) owner);
-                yield return new ContextualServiceEntry(typeof(IScopeFactory), owner => (IScopeFactory) owner.Parent!);
-            }
-        }
+            new ContextualServiceEntry(typeof(IInjector), owner => (IInjector) owner),
+            new ContextualServiceEntry(typeof(IScopeFactory), owner => (IScopeFactory) owner.Parent!)
+        };
 
         IInjector IScopeFactory.CreateScope() => CreateScope();
 

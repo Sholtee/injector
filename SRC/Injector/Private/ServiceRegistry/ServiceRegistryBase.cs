@@ -13,6 +13,7 @@ namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
     using Primitives.Patterns;
+    using Properties;
 
     internal abstract class ServiceRegistryBase : DisposableSupportsNotifyOnDispose, IServiceRegistry
     {
@@ -25,7 +26,7 @@ namespace Solti.Utils.DI.Internals
             (self, iface, name) => self.ResolveRegularEntry(index, originalEntry);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        protected static ResolverBuilder GetResolverBuilder(IEnumerable<AbstractServiceEntry> entries) =>
+        protected static ResolverBuilder GetDefaultResolverBuilder(IEnumerable<AbstractServiceEntry> entries) =>
             //
             // Teljesitmenytesztek alapjan...
             //
@@ -68,13 +69,18 @@ namespace Solti.Utils.DI.Internals
             await base.AsyncDispose();
         }
 
-        protected ServiceRegistryBase(IEnumerable<AbstractServiceEntry> entries) : base()
+        protected ServiceRegistryBase(ISet<AbstractServiceEntry> entries) : base()
         {
             Ensure.Parameter.IsNotNull(entries, nameof(entries));
 
-            RegisteredEntries = entries
-                .Concat(ContextualServices)
-                .ToArray();
+            int oldLength = entries.Count;
+
+            entries.UnionWith(ContextualServices);
+
+            if (entries.Count != oldLength + ContextualServices.Count)
+                throw new ArgumentException(Resources.BUILT_IN_SERVICE_OVERRIDE, nameof(entries));
+
+            RegisteredEntries = entries as IReadOnlyCollection<AbstractServiceEntry> ?? entries.ToArray(); // HashSet megvalositja az IReadOnlyCollection-t
         }
 
         protected ServiceRegistryBase(ServiceRegistryBase parent) : base()
@@ -87,7 +93,7 @@ namespace Solti.Utils.DI.Internals
             parent.DerivedRegistries.Add(this);
         }
 
-        protected virtual IEnumerable<ContextualServiceEntry> ContextualServices { get; } = Array.Empty<ContextualServiceEntry>();
+        protected virtual IReadOnlyCollection<ContextualServiceEntry> ContextualServices { get; } = Array.Empty<ContextualServiceEntry>();
 
         protected abstract ICollection<AbstractServiceEntry> UsedEntries { get; }
 

@@ -23,7 +23,7 @@ namespace Solti.Utils.DI.Internals.Tests
         {
             Registry = (ServiceRegistryBase) Activator.CreateInstance(registryType, new object[]
             {
-                new AbstractServiceEntry[]
+                new HashSet<AbstractServiceEntry>(ServiceIdComparer.Instance)
                 {
                     new TransientServiceEntry(typeof(IDisposable), "owned", typeof(Disposable), null, int.MaxValue),
                     new SingletonServiceEntry(typeof(IDisposable), "notowned", typeof(Disposable), null)
@@ -51,7 +51,7 @@ namespace Solti.Utils.DI.Internals.Tests
         {
             Registry = (ServiceRegistryBase) Activator.CreateInstance(registryType, new object[]
             {
-                new AbstractServiceEntry[]
+                new HashSet<AbstractServiceEntry>(ServiceIdComparer.Instance)
                 {
                     new TransientServiceEntry(typeof(IDisposable), "owned", typeof(Disposable), null, int.MaxValue),
                     new SingletonServiceEntry(typeof(IDisposable), "notowned", typeof(Disposable), null)
@@ -79,7 +79,7 @@ namespace Solti.Utils.DI.Internals.Tests
         {
             Registry = (ServiceRegistryBase) Activator.CreateInstance(registryType, new object[]
             {
-                new AbstractServiceEntry[]
+                new HashSet<AbstractServiceEntry>(ServiceIdComparer.Instance)
                 {
                     new TransientServiceEntry(typeof(IDisposable), null, typeof(Disposable), null, int.MaxValue)
                 },
@@ -110,7 +110,7 @@ namespace Solti.Utils.DI.Internals.Tests
         {
             Registry = (ServiceRegistryBase) Activator.CreateInstance(registryType, new object[]
             {
-                new AbstractServiceEntry[]
+                new HashSet<AbstractServiceEntry>(ServiceIdComparer.Instance)
                 {
                     new TransientServiceEntry(typeof(IDisposable), null, typeof(Disposable), null, int.MaxValue)
                 },
@@ -141,7 +141,7 @@ namespace Solti.Utils.DI.Internals.Tests
         {
             Registry = (ServiceRegistryBase) Activator.CreateInstance(registryType, new object[]
             {
-                new AbstractServiceEntry[]
+                new HashSet<AbstractServiceEntry>(ServiceIdComparer.Instance)
                 {
                     new TransientServiceEntry(typeof(IList<>), null, typeof(MyList<>), null, int.MaxValue),
                 },
@@ -164,7 +164,7 @@ namespace Solti.Utils.DI.Internals.Tests
         {
             Registry = (ServiceRegistryBase) Activator.CreateInstance(registryType, new object[]
             {
-                new AbstractServiceEntry[]
+                new HashSet<AbstractServiceEntry>(ServiceIdComparer.Instance)
                 {
                     new TransientServiceEntry(typeof(IList<>), null, typeof(MyList<>), null, int.MaxValue),
                 },

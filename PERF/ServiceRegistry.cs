@@ -76,7 +76,16 @@ namespace Solti.Utils.DI.Perf
         {
             Registry = (ServiceRegistryBase) System.Activator.CreateInstance(RegistryType.Value, new object[] 
             {
-                Enumerable.Repeat(0, ServiceCount).Select((_, i) => (AbstractServiceEntry) new TransientServiceEntry(typeof(IList), i.ToString(), (i, t) => null!,  null, int.MaxValue)),
+                new HashSet<AbstractServiceEntry>
+                (
+                    Enumerable
+                        .Repeat(0, ServiceCount)
+                        .Select
+                        (
+                            (_, i) => (AbstractServiceEntry) new TransientServiceEntry(typeof(IList), i.ToString(), (i, t) => null!,  null, int.MaxValue)
+                        ),
+                    ServiceIdComparer.Instance
+                ),
                 (ResolverBuilder) ResolverBuilder.Value,
                 CancellationToken.None
             });
@@ -91,7 +100,16 @@ namespace Solti.Utils.DI.Perf
         {
             Registry = (ServiceRegistryBase) System.Activator.CreateInstance(RegistryType.Value, new object[]
             {
-                Enumerable.Repeat(0, ServiceCount).Select((_, i) => (AbstractServiceEntry) new TransientServiceEntry(typeof(IList<>), i.ToString(), (i, t) => null!,  null, int.MaxValue)),
+                new HashSet<AbstractServiceEntry>
+                (
+                    Enumerable
+                        .Repeat(0, ServiceCount)
+                        .Select
+                        (
+                            (_, i) => (AbstractServiceEntry) new TransientServiceEntry(typeof(IList<>), i.ToString(), (i, t) => null!,  null, int.MaxValue)
+                        ),
+                    ServiceIdComparer.Instance
+                ),
                 (ResolverBuilder) ResolverBuilder.Value,
                 CancellationToken.None
             });
@@ -114,7 +132,7 @@ namespace Solti.Utils.DI.Perf
         {
             Registry = (ServiceRegistryBase) System.Activator.CreateInstance(RegistryType.Value, new object[]
             {
-                Array.Empty<AbstractServiceEntry>(),
+                new HashSet<AbstractServiceEntry>(ServiceIdComparer.Instance),
                 ResolverBuilder.CompiledExpression,
                 CancellationToken.None
             });
@@ -153,16 +171,18 @@ namespace Solti.Utils.DI.Perf
 
         private Func<object[], object> Factory { get; set; }
 
+        private ISet<AbstractServiceEntry> EmptySet { get; } = new HashSet<AbstractServiceEntry>(ServiceIdComparer.Instance);
+
         [GlobalSetup]
         public void Setup()
         {
             Factory = RegistryType
                 .Value
-                .GetConstructor(new Type[] { typeof(IEnumerable<AbstractServiceEntry>), typeof(ResolverBuilder), typeof(CancellationToken) })
+                .GetConstructor(new Type[] { typeof(ISet<AbstractServiceEntry>), typeof(ResolverBuilder), typeof(CancellationToken) })
                 .ToStaticDelegate();
         }
 
         [Benchmark]
-        public IServiceRegistry Create() => (IServiceRegistry) Factory(new object[] { Array.Empty<AbstractServiceEntry>(), ResolverBuilder.Value, CancellationToken.None } );
+        public IServiceRegistry Create() => (IServiceRegistry) Factory(new object[] { EmptySet, ResolverBuilder.Value, CancellationToken.None } );
     }
 }

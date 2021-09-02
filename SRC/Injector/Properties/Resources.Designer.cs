@@ -70,6 +70,15 @@ namespace Solti.Utils.DI.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Built in services cannot be overridden..
+        /// </summary>
+        internal static string BUILT_IN_SERVICE_OVERRIDE {
+            get {
+                return ResourceManager.GetString("BUILT_IN_SERVICE_OVERRIDE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Creating proxy is not allowed here..
         /// </summary>
         internal static string CANT_PROXY {
@@ -160,7 +169,7 @@ namespace Solti.Utils.DI.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The value of &quot;{0}&quot; can not be null..
+        ///   Looks up a localized string similar to The value of &quot;{0}&quot; cannot be null..
         /// </summary>
         internal static string IS_NULL {
             get {
