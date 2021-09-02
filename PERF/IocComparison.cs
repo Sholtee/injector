@@ -18,6 +18,8 @@ namespace Solti.Utils.DI.Perf
     using Interfaces;
     using Primitives.Patterns;
 
+    using IServiceCollection = Microsoft.Extensions.DependencyInjection.IServiceCollection;
+
     [MemoryDiagnoser]
     [SimpleJob(RunStrategy.Throughput, invocationCount: 10000)]
     public class IocComparison
@@ -102,7 +104,7 @@ namespace Solti.Utils.DI.Perf
 
         public sealed class LamarContainer : Disposable,  IIocContainer
         {
-            private readonly IServiceCollection FUnderlyingContainer = new ServiceCollection();
+            private readonly IServiceCollection FUnderlyingContainer = new Microsoft.Extensions.DependencyInjection.ServiceCollection();
 
             private Container FBuiltContainer;
 
@@ -141,7 +143,7 @@ namespace Solti.Utils.DI.Perf
 
         public sealed class MsExtensionsServiceCollection : Disposable, IIocContainer
         {
-            private readonly IServiceCollection FUnderlyingContainer = new ServiceCollection();
+            private readonly IServiceCollection FUnderlyingContainer = new Microsoft.Extensions.DependencyInjection.ServiceCollection();
 
             private ServiceProvider FBuiltProvider;
 

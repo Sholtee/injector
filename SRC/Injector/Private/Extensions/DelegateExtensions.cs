@@ -7,7 +7,7 @@ using System;
 
 namespace Solti.Utils.DI.Internals
 {
-    internal static class DelegateExtensions
+    internal static class DelegateExtensions // TODO: torolni
     {
 //      public static Func<T, bool> And<T>(this Func<T, bool> predicate, Func<T, bool> extension) => x => predicate(x) && extension(x);
 

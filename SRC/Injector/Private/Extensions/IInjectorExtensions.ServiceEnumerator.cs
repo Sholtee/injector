@@ -15,7 +15,7 @@ namespace Solti.Utils.DI.Internals
     using Interfaces;
     using Primitives;
 
-    internal static class IInjectorExtensions
+    internal static class IInjectorExtensions // TODO: torolni
     {
         private static readonly MethodInfo GenericCast = MethodInfoExtractor
             .Extract<IEnumerable>(e => e.Cast<object>())
