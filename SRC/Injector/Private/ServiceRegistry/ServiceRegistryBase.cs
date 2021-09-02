@@ -93,7 +93,7 @@ namespace Solti.Utils.DI.Internals
             parent.DerivedRegistries.Add(this);
         }
 
-        protected virtual IReadOnlyCollection<ContextualServiceEntry> ContextualServices { get; } = Array.Empty<ContextualServiceEntry>();
+        protected virtual IReadOnlyCollection<AbstractServiceEntry> ContextualServices { get; } = Array.Empty<AbstractServiceEntry>();
 
         protected abstract ICollection<AbstractServiceEntry> UsedEntries { get; }
 
