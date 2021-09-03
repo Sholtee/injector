@@ -26,7 +26,7 @@ namespace Solti.Utils.DI.Internals
         private AbstractServiceEntry PoolService(Type iface, string? name, IServiceContainer owner)
         {
             Ensure.Parameter.IsNotNull(iface, nameof(iface));
-            Ensure.Parameter.IsInterface(iface, nameof(iface);
+            Ensure.Parameter.IsInterface(iface, nameof(iface));
 
             return new SingletonServiceEntry
             (
