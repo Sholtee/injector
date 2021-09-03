@@ -16,12 +16,13 @@ namespace Solti.Utils.DI.Internals
 
         public const string POOL_SCOPE = nameof(POOL_SCOPE);
 
-        public static string GetPoolName(Type iface, string? name) =>
-            //
-            // Type.GUID lezart es nyilt generikusnal is azonos
-            //
+        public static string GetPoolName(Type iface, string? name)
+        {
+            if (iface.IsGenericType)
+                iface = iface.GetGenericTypeDefinition();
 
-            $"{Consts.INTERNAL_SERVICE_NAME_PREFIX}pool_{iface.FullName}_{name}"; // ne iface.GUID-ot hasznaljunk mert az kibaszott lassu
+            return $"{Consts.INTERNAL_SERVICE_NAME_PREFIX}pool_{iface.FullName}_{name}"; // ne iface.GUID-ot hasznaljunk mert az kibaszott lassu
+        }
 
         private AbstractServiceEntry PoolService(Type iface, string? name, IServiceContainer owner)
         {
