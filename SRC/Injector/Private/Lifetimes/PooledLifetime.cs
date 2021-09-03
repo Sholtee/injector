@@ -21,51 +21,56 @@ namespace Solti.Utils.DI.Internals
             // Type.GUID lezart es nyilt generikusnal is azonos
             //
 
-            $"{Consts.INTERNAL_SERVICE_NAME_PREFIX}pool_{iface.GUID}_{name}";
+            $"{Consts.INTERNAL_SERVICE_NAME_PREFIX}pool_{iface.FullName}_{name}"; // ne iface.GUID-ot hasznaljunk mert az kibaszott lassu
 
-        //
-        // Nem kell a kulonbozo parametereket validalni. Ha vmelyikkel gaz van akkor ide mar el sem
-        // jutunk.
-        //
+        private AbstractServiceEntry PoolService(Type iface, string? name, IServiceContainer owner)
+        {
+            Ensure.Parameter.IsNotNull(iface, nameof(iface));
+            Ensure.Parameter.IsInterface(iface, nameof(iface);
 
-        private AbstractServiceEntry GetPoolEntry(Type iface, string? name, IServiceContainer owner) => new SingletonServiceEntry
-        (
-            iface.IsGenericTypeDefinition
-                ? typeof(IPool<>)
-                : typeof(IPool<>).MakeGenericType(iface),
-            GetPoolName(iface, name),
-            iface.IsGenericTypeDefinition
-                ? typeof(PoolService<>)
-                : typeof(PoolService<>).MakeGenericType(iface),
-            new Dictionary<string, object?>
-            {
-                //
-                // Az argumentum nevek meg kell egyezzenek a PoolService.ctor() parameter neveivel.
-                // Kesobb majd lehet szebben is megoldhato lesz: https://github.com/dotnet/csharplang/issues/373
-                //
+            return new SingletonServiceEntry
+            (
+                iface.IsGenericTypeDefinition
+                    ? typeof(IPool<>)
+                    : typeof(IPool<>).MakeGenericType(iface),
+                GetPoolName(iface, name),
+                iface.IsGenericTypeDefinition
+                    ? typeof(PoolService<>)
+                    : typeof(PoolService<>).MakeGenericType(iface),
+                new Dictionary<string, object?>
+                {
+                    //
+                    // Az argumentum nevek meg kell egyezzenek a PoolService.ctor() parameter neveivel.
+                    // Kesobb majd lehet szebben is megoldhato lesz: https://github.com/dotnet/csharplang/issues/373
+                    //
 
-                ["capacity"] = Capacity,
-                ["name"] = name
-            },
-            owner
-        );
+                    ["capacity"] = Capacity,
+                    ["name"] = name
+                },
+                owner
+            );
+        }
 
         public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Type implementation, IServiceContainer owner)
         {
+            //
+            // A sorrent szamit (last IModifiedServiceCollection.LastEntry)
+            //
+
+            yield return PoolService(iface, name, owner);
             yield return new PooledServiceEntrySupportsProxying(iface, name, implementation, owner);
-            yield return GetPoolEntry(iface, name, owner);
         }
 
         public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Type implementation, IReadOnlyDictionary<string, object?> explicitArgs, IServiceContainer owner)
         {
+            yield return PoolService(iface, name, owner);
             yield return new PooledServiceEntrySupportsProxying(iface, name, implementation, explicitArgs, owner);
-            yield return GetPoolEntry(iface, name, owner);
         }
 
         public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Func<IInjector, Type, object> factory, IServiceContainer owner)
         {
+            yield return PoolService(iface, name, owner);
             yield return new PooledServiceEntrySupportsProxying(iface, name, factory, owner);
-            yield return GetPoolEntry(iface, name, owner);
         }
 
         public override int CompareTo(Lifetime other) => other is PooledLifetime
