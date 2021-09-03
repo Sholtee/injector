@@ -23,7 +23,8 @@ namespace Solti.Utils.DI.Internals
         {
             new ContextualServiceEntry(typeof(IInjector), owner => (IInjector) owner),
             new ContextualServiceEntry(typeof(IScopeFactory), owner => (IScopeFactory) owner.Parent!),
-            new ScopedServiceEntry(typeof(IEnumerable<>), null, typeof(ServiceEnumerator<>), null!)
+            new ScopedServiceEntry(typeof(IEnumerable<>), null, typeof(ServiceEnumerator<>), null!),
+            new ScopedServiceEntry(typeof(IDictionary<string, object?>), $"{Consts.INTERNAL_SERVICE_NAME_PREFIX}meta", (_, _) => new Dictionary<string, object?>(), null!)
         };
 
         IInjector IScopeFactory.CreateScope() => CreateScope();
