@@ -61,6 +61,15 @@ namespace Solti.Utils.DI.Interfaces.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to An entry with the same ID has already been registered..
+        /// </summary>
+        internal static string ENTRY_ALREADY_REGISTERED {
+            get {
+                return ResourceManager.GetString("ENTRY_ALREADY_REGISTERED", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Not owned entry can not be proxied..
         /// </summary>
         internal static string INAPROPRIATE_OWNERSHIP {
@@ -93,6 +102,15 @@ namespace Solti.Utils.DI.Interfaces.Properties {
         internal static string NOT_IMPLEMENTED {
             get {
                 return ResourceManager.GetString("NOT_IMPLEMENTED", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open generics are not supported..
+        /// </summary>
+        internal static string OPEN_GENERIC {
+            get {
+                return ResourceManager.GetString("OPEN_GENERIC", resourceCulture);
             }
         }
         

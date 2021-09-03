@@ -62,22 +62,22 @@ namespace Solti.Utils.DI.Interfaces
         public abstract int CompareTo(Lifetime other);
 
         /// <summary>
-        /// Creates a service entry from the given <paramref name="implementation"/>.
+        /// Creates one or more service entry for the given <paramref name="implementation"/>.
         /// </summary>
         public virtual IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Type implementation, IServiceContainer owner) => throw new NotSupportedException();
 
         /// <summary>
-        /// Creates a service entry from the given <paramref name="implementation"/>.
+        /// Creates one or more service entry for the given <paramref name="implementation"/>.
         /// </summary>
         public virtual IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Type implementation, IReadOnlyDictionary<string, object?> explicitArgs, IServiceContainer owner) => throw new NotSupportedException();
 
         /// <summary>
-        /// Creates a service entry from the given <paramref name="factory"/>.
+        /// Creates one or more service entry for the given <paramref name="factory"/>.
         /// </summary>
         public virtual IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Func<IInjector, Type, object> factory, IServiceContainer owner) => throw new NotSupportedException();
 
         /// <summary>
-        /// Creates a service entry from the given <paramref name="value"/>.
+        /// Creates one or more service entry for the given <paramref name="value"/>.
         /// </summary>
         public virtual IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, object value, bool externallyOwned, IServiceContainer owner) => throw new NotSupportedException();
     }
