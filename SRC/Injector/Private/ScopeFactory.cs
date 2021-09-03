@@ -18,7 +18,7 @@ namespace Solti.Utils.DI.Internals
 
         public virtual Injector_New CreateScope() => new(this);
 
-        protected override IReadOnlyCollection<AbstractServiceEntry> ContextualServices => new AbstractServiceEntry[]
+        protected override IReadOnlyCollection<AbstractServiceEntry> BuiltInServices => new AbstractServiceEntry[]
         {
             new ContextualServiceEntry(typeof(IInjector), owner => (IInjector) owner),
             new ContextualServiceEntry(typeof(IScopeFactory), owner => (IScopeFactory) owner.Parent!),

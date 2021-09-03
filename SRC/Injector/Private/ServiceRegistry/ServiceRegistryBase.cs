@@ -75,9 +75,9 @@ namespace Solti.Utils.DI.Internals
 
             int oldLength = entries.Count;
 
-            entries.UnionWith(ContextualServices);
+            entries.UnionWith(BuiltInServices);
 
-            if (entries.Count != oldLength + ContextualServices.Count)
+            if (entries.Count != oldLength + BuiltInServices.Count)
                 throw new ArgumentException(Resources.BUILT_IN_SERVICE_OVERRIDE, nameof(entries));
 
             RegisteredEntries = entries as IReadOnlyCollection<AbstractServiceEntry> ?? entries.ToArray(); // HashSet megvalositja az IReadOnlyCollection-t
@@ -93,7 +93,7 @@ namespace Solti.Utils.DI.Internals
             parent.DerivedRegistries.Add(this);
         }
 
-        protected virtual IReadOnlyCollection<AbstractServiceEntry> ContextualServices { get; } = Array.Empty<AbstractServiceEntry>();
+        protected virtual IReadOnlyCollection<AbstractServiceEntry> BuiltInServices { get; } = Array.Empty<AbstractServiceEntry>();
 
         protected abstract ICollection<AbstractServiceEntry> UsedEntries { get; }
 
