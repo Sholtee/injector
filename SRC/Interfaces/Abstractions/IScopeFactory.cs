@@ -8,6 +8,7 @@ namespace Solti.Utils.DI.Interfaces
     /// <summary>
     /// Provides a thread safe way to create new scopes.
     /// </summary>
+    /// <remarks>Disposing the factory destroys all the living child scopes.</remarks>
     public interface IScopeFactory
     {
         /// <summary>

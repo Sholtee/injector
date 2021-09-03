@@ -5,6 +5,7 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -12,7 +13,7 @@ namespace Solti.Utils.DI.Internals
 
     internal class ScopeFactory : ConcurrentServiceRegistry, IScopeFactory
     {
-        public ScopeFactory(ISet<AbstractServiceEntry> entries) : base(entries)
+        public ScopeFactory(ISet<AbstractServiceEntry> entries, CancellationToken cancellation = default) : base(entries, cancellation: cancellation)
         {
         }
 
