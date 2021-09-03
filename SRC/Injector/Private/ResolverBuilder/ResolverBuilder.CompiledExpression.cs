@@ -87,12 +87,12 @@ namespace Solti.Utils.DI.Internals
                     pureType = Expression.Variable(typeof(Type), nameof(pureType));
 
                 PropertyInfo
-                    parentProp = ExtractProperty<IServiceRegistry, IServiceRegistry?>(r => r.Parent),
-                    isGeneric = ExtractProperty<Type, bool>(t => t.IsGenericType);
+                    parentProp = PropertyInfoExtractor.Extract<IServiceRegistry, IServiceRegistry?>(r => r.Parent),
+                    isGeneric = PropertyInfoExtractor.Extract<Type, bool>(t => t.IsGenericType);
 
                 MethodInfo
-                    getEntryMethod = ExtractMethod<IServiceRegistry>(r => r.GetEntry(null!, null)),
-                    getGenericTypeMethod = ExtractMethod<Type>(t => t.GetGenericTypeDefinition());
+                    getEntryMethod = MethodInfoExtractor.Extract<IServiceRegistry>(r => r.GetEntry(null!, null)),
+                    getGenericTypeMethod = MethodInfoExtractor.Extract<Type>(t => t.GetGenericTypeDefinition());
 
                 int // GetEntryResolver()-ben nem hivatkozhatunk by-ref parametert
                     regularEntryCount = 0,
@@ -172,10 +172,6 @@ namespace Solti.Utils.DI.Internals
 
                     return Expression.Return(returnLabel, invocation);
                 }
-
-                static PropertyInfo ExtractProperty<TTarget, TProp>(Expression<Func<TTarget, TProp>> expr) => (PropertyInfo) ((MemberExpression) expr.Body).Member;
-
-                static MethodInfo ExtractMethod<TTarget>(Expression<Action<TTarget>> expr) => ((MethodCallExpression) expr.Body).Method;
             }
         }
     }
