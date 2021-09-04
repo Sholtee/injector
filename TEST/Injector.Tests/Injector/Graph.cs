@@ -57,37 +57,13 @@ namespace Solti.Utils.DI.Injector.Graph.Tests
         {
             IServiceReference[] references;
 
-            using (IServiceContainer container = new ServiceContainer())
-            {
-                container
+            using (IScopeFactory root = DI.ScopeFactory.Create(svcs => svcs
                     .Service<IInterface_1, Implementation_1>(Lifetime.Transient)
                     .Service<IInterface_2, Implementation_2>(Lifetime.Singleton)
                     .Service<IInterface_3, Implementation_3>(Lifetime.Transient)
-                    .Service<IInterface_4, Implementation_4>(Lifetime.Scoped);
-
-                references = Validate(container.CreateInjector());
-            }
-
-            Assert.That(references.All(reference => reference.RefCount == 0));
-        }
-
-        [Test]
-        public void ComplexTestWithChildContainer()
-        {
-            IServiceReference[] references;
-
-            using (IServiceContainer container = new ServiceContainer())
-            {
-                container
-                    .Service<IInterface_1, Implementation_1>(Lifetime.Transient)
-                    .Service<IInterface_2, Implementation_2>(Lifetime.Singleton);
-
-                IServiceContainer child = container.CreateChild();
-                child
-                    .Service<IInterface_3, Implementation_3>(Lifetime.Transient)
-                    .Service<IInterface_4, Implementation_4>(Lifetime.Scoped);
-
-                references = Validate(child.CreateInjector());
+                    .Service<IInterface_4, Implementation_4>(Lifetime.Scoped)))
+            { 
+                references = Validate(root.CreateScope());
             }
 
             Assert.That(references.All(reference => reference.RefCount == 0));
@@ -96,20 +72,18 @@ namespace Solti.Utils.DI.Injector.Graph.Tests
         [Test]
         public void DotGraphTest()
         {
-            using IServiceContainer container = new ServiceContainer();
-
-            container
+            using IScopeFactory root = DI.ScopeFactory.Create(svcs => svcs
                 .Service<IInterface_1, Implementation_1>(Lifetime.Transient)
                 .Service<IInterface_2, Implementation_2>(Lifetime.Singleton)
                 .Service<IInterface_3, Implementation_3>(Lifetime.Transient)
-                .Service<IInterface_4, Implementation_4>(Lifetime.Scoped);
+                .Service<IInterface_4, Implementation_4>(Lifetime.Scoped));
 
-            using IInjector injector = container.CreateInjector();
+            IInjector injector = root.CreateScope(); // nem kell using, root.Dispose() ot is likvidalja
 
             string 
                 dotGraph = injector.GetDependencyGraph<IInterface_4>(),             
                 id1 = ContainsNode("<<u>Solti.Utils.DI.Injector.Graph.Tests.GraphTests.IInterface_4</u><br/><br/><i>Scoped</i>>"),
-                id2 = ContainsNode("<<u>Solti.Utils.DI.Interfaces.IInjector</u><br/><br/><i>Instance</i>>"),
+                id2 = ContainsNode("<<u>Solti.Utils.DI.Interfaces.IInjector</u><br/><br/><i>NULL</i>>"),
                 id3 = ContainsNode("<<u>Solti.Utils.DI.Injector.Graph.Tests.GraphTests.IInterface_2</u><br/><br/><i>Singleton</i>>"),
                 id4 = ContainsNode("<<u>Solti.Utils.DI.Injector.Graph.Tests.GraphTests.IInterface_1</u><br/><br/><i>Transient</i>>"),
                 id5 = ContainsNode("<<u>Solti.Utils.DI.Injector.Graph.Tests.GraphTests.IInterface_3</u><br/><br/><i>Transient</i>>");

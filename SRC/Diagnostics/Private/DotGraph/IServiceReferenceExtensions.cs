@@ -23,7 +23,7 @@ namespace Solti.Utils.DI.Internals
                 )
             )
             {
-                Label = $"<u>{friendlyName}</u><br/><br/><i>{serviceReference.RelatedServiceEntry.Lifetime}</i>"
+                Label = $"<u>{friendlyName}</u><br/><br/><i>{serviceReference.RelatedServiceEntry.Lifetime?.ToString() ?? "NULL"}</i>"
             };
         }
 
