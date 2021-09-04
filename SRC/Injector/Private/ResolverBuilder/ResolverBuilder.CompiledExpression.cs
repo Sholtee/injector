@@ -36,11 +36,7 @@ namespace Solti.Utils.DI.Internals
             //
             // (self, iface, name) =>
             // {
-            //   Type pureType = iface.IsGenericType
-            //     ? iface.GetGenericTypeDefinition()
-            //     : iface;
-            //
-            //   switch (pureType) // NE iface.GUID property-re vizsgaljunk mert kibaszott lassu lekeredzni
+            //   switch (iface) // NE iface.GUID property-re vizsgaljunk mert kibaszott lassu lekeredzni
             //   {
             //     case typeof(IServiceA):
             //     {
@@ -59,6 +55,22 @@ namespace Solti.Utils.DI.Internals
             //         ...
             //         default: return null;
             //     }
+            //     case typof(IServiceC<int>): // lezart generikus
+            //     {
+            //       switch (name)
+            //       {
+            //         case null: return GetLocalEntryC(self);
+            //         ...
+            //         default: return null;
+            //       }     
+            //     }
+            //  }
+            //
+            //  if (!iface.IsGenericType)
+            //     return null;
+            //
+            //  switch(iface.GetGenericTypeDefinition())
+            //  {
             //     case typeof(IServiceC<>):
             //     {
             //       switch (name)
@@ -83,8 +95,7 @@ namespace Solti.Utils.DI.Internals
                 ParameterExpression
                     self = Expression.Parameter(typeof(IServiceRegistry), nameof(self)),
                     iface = Expression.Parameter(typeof(Type), nameof(iface)),
-                    name = Expression.Parameter(typeof(string), nameof(name)),
-                    pureType = Expression.Variable(typeof(Type), nameof(pureType));
+                    name = Expression.Parameter(typeof(string), nameof(name));
 
                 PropertyInfo
                     parentProp = PropertyInfoExtractor.Extract<IServiceRegistry, IServiceRegistry?>(r => r.Parent),
@@ -98,42 +109,75 @@ namespace Solti.Utils.DI.Internals
                     regularEntryCount = 0,
                     genericEntryCount = 0;
 
+
+                IEnumerable<IGrouping<Type, AbstractServiceEntry>>? groupedEntries = entries.GroupBy(entry => entry.Interface);
+
                 LabelTarget returnLabel = Expression.Label(typeof(AbstractServiceEntry));
+
+                Expression 
+                    nonGenericSwitch = CreateSwitch
+                    (
+                        value: iface,
+                        cases: groupedEntries
+                            .Where(grp => !grp.Key.IsGenericTypeDefinition)
+                            .Select
+                            (
+                                grp =>
+                                (
+                                    value: grp.Key,
+                                    cases: CreateSwitch
+                                    (
+                                        name,
+                                        grp.Select
+                                        (
+                                            entry => 
+                                            (
+                                                entry.Name,
+                                                GetEntryResolver(entry, regularEntryResolverBuilder, regularEntryCount++)
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                    ),
+                    genericSwitch = CreateSwitch
+                    (
+                        value: Expression.Call(iface, getGenericTypeMethod),
+                        cases: groupedEntries
+                            .Where(grp => grp.Key.IsGenericTypeDefinition)
+                            .Select
+                            (
+                                grp =>
+                                (
+                                    value: grp.Key,
+                                    cases: CreateSwitch
+                                    (
+                                        name,
+                                        grp.Select
+                                        (
+                                            entry =>
+                                            (
+                                                entry.Name,
+                                                GetEntryResolver(entry, genericEntryResolverBuilder, genericEntryCount++)
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                    );
 
                 Expression<Resolver> lambda = Expression.Lambda<Resolver>
                 (
                     Expression.Block
                     (
                         type: typeof(AbstractServiceEntry),
-                        variables: new[] { pureType },
-                        Expression.Assign
+                        nonGenericSwitch,
+                        Expression.IfThen
                         (
-                            left: pureType, 
-                            right: Expression.Condition
-                            (
-                                test: Expression.Property(iface, isGeneric),
-                                ifTrue: Expression.Call(iface, getGenericTypeMethod),
-                                ifFalse: iface
-                            )
+                            test: Expression.Not(Expression.Property(iface, isGeneric)),
+                            ifTrue: Expression.Return(returnLabel, Expression.Default(typeof(AbstractServiceEntry)))
                         ),
-                        CreateSwitch
-                        (
-                            value: pureType,
-                            cases: entries
-                                .GroupBy(entry => entry.Interface)
-                                .Select
-                                (
-                                    grp =>
-                                    (
-                                        value: grp.Key,
-                                        cases: CreateSwitch
-                                        (
-                                            name,
-                                            grp.Select(entry => (entry.Name, GetEntryResolver(entry)))
-                                        )
-                                    )
-                                )
-                        ),
+                        genericSwitch,
                         Expression.Label(returnLabel, Expression.Default(typeof(AbstractServiceEntry)))
                     ),
                     self, iface, name
@@ -145,15 +189,13 @@ namespace Solti.Utils.DI.Internals
                 Debug.WriteLine(lambda.GetDebugView());
                 return lambda.Compile();
 
-                Expression GetEntryResolver(AbstractServiceEntry entry)
+                Expression GetEntryResolver(AbstractServiceEntry entry, ResolverCaseBuilder caseBuilder, int index)
                 {
                     Expression invocation = Expression.Invoke
                     (
                         Expression.Constant
                         (
-                            entry.Interface.IsGenericTypeDefinition
-                                ? genericEntryResolverBuilder(genericEntryCount++, entry)
-                                : regularEntryResolverBuilder(regularEntryCount++, entry)
+                            caseBuilder(index, entry)
                         ),
                         self, iface, name
                     );
