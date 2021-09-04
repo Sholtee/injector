@@ -11,8 +11,11 @@ namespace Solti.Utils.DI.Interfaces
 {
     public static partial class IInjectorBasicExtensions
     {
-        [SuppressMessage("Performance", "CA1802:Use literals where appropriate", Justification = "Due to interpolation it cannot be const")]
-        private static readonly string META_NAME = $"{Consts.INTERNAL_SERVICE_NAME_PREFIX}meta";
+        /// <summary>
+        /// Name of the "meta" entry
+        /// </summary>
+        [SuppressMessage("Naming", "CA1707:Identifiers should not contain underscores")]
+        public static readonly string META_NAME = $"{Consts.INTERNAL_SERVICE_NAME_PREFIX}meta";
 
         /// <summary>
         /// Sets a meta-data on the given <see cref="IInjector"/> (scope).
@@ -25,13 +28,7 @@ namespace Solti.Utils.DI.Interfaces
             if (key is null)
                 throw new ArgumentNullException(nameof(key));
 
-            IDictionary<string, object?>? metaContainer = self.TryGet<IDictionary<string, object?>>(META_NAME);
-            if (metaContainer is null)
-            {
-                metaContainer = new Dictionary<string, object?>();
-                self.UnderlyingContainer.Instance(META_NAME, metaContainer);
-            }
-
+            IDictionary<string, object?>? metaContainer = self.Get<IDictionary<string, object?>>(META_NAME);
             metaContainer[key] = value;
         }
 
@@ -46,8 +43,9 @@ namespace Solti.Utils.DI.Interfaces
             if (key is null)
                 throw new ArgumentNullException(nameof(key));
 
-            object? val = null;
-            self.TryGet<IDictionary<string, object?>>(META_NAME)?.TryGetValue(key, out val);
+            self
+                .Get<IDictionary<string, object?>>(META_NAME)
+                .TryGetValue(key, out object? val);
             
             return val;
         }

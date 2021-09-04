@@ -181,9 +181,12 @@
     <value>Entry ({0}) can not be specialized.</value>
   </data>
   <data name="FOREIGN_DEPENDENCY" xml:space="preserve">
-    <value>You can not add dependency to an already instantiated service.</value>
+    <value>You cannot add dependency to an already instantiated service.</value>
   </data>
   <data name="BUILT_IN_SERVICE_OVERRIDE" xml:space="preserve">
     <value>Built in services cannot be overridden.</value>
+  </data>
+  <data name="INJECTOR_IS_DISPOSING" xml:space="preserve">
+    <value>Injector cannot be invoked when it is about to dispose.</value>
   </data>
 </root>

@@ -124,11 +124,20 @@ namespace Solti.Utils.DI.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to You can not add dependency to an already instantiated service..
+        ///   Looks up a localized string similar to You cannot add dependency to an already instantiated service..
         /// </summary>
         internal static string FOREIGN_DEPENDENCY {
             get {
                 return ResourceManager.GetString("FOREIGN_DEPENDENCY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Injector cannot be invoked when it is about to dispose..
+        /// </summary>
+        internal static string INJECTOR_IS_DISPOSING {
+            get {
+                return ResourceManager.GetString("INJECTOR_IS_DISPOSING", resourceCulture);
             }
         }
         

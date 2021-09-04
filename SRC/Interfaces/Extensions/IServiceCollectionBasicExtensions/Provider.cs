@@ -45,8 +45,8 @@ namespace Solti.Utils.DI.Interfaces
                 throw new NotSupportedException(Resources.OPEN_GENERIC);
 
             return self
-                .Service(typeof(IServiceProvider), name, provider, lifetime)
-                .AddProxy((injector, iface, instance) => ((IServiceProvider) instance).GetService(iface));
+                .Service(iface, name, provider, lifetime)
+                .WithProxy((injector, iface, instance) => ((IServiceProvider) instance).GetService(iface));
         }
 
         /// <summary>

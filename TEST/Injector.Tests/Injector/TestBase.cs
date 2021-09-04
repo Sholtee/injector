@@ -5,8 +5,6 @@
 ********************************************************************************/
 using System.Collections.Generic;
 
-using NUnit.Framework;
-
 namespace Solti.Utils.DI.Injector.Tests
 {
     using DI.Tests;
@@ -42,10 +40,5 @@ namespace Solti.Utils.DI.Injector.Tests
                 yield return Lifetime.Singleton;
             }
         }
-    }
-
-    [TestFixture]
-    public class InjectorTests : InjectorTestsBase<ServiceContainer>
-    {
     }
 }

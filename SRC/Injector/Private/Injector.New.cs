@@ -19,6 +19,8 @@ namespace Solti.Utils.DI.Internals
     internal class Injector_New: ServiceRegistry, IInjector
     {
         #region Private
+        private bool FDisposing;
+
         private readonly ServicePath FPath = new();
 
         private readonly ExclusiveBlock FExclusiveBlock = new();
@@ -188,6 +190,12 @@ namespace Solti.Utils.DI.Internals
         #endregion
 
         #region Protected
+        protected override void BeforeDispose()
+        {
+            FDisposing = true;
+            base.BeforeDispose();
+        }
+
         protected override void Dispose(bool disposeManaged)
         {
             base.Dispose(disposeManaged);
@@ -218,6 +226,9 @@ namespace Solti.Utils.DI.Internals
         {
             CheckNotDisposed();
 
+            if (FDisposing)
+                throw new InvalidOperationException(Resources.INJECTOR_IS_DISPOSING);
+
             Ensure.Parameter.IsNotNull(iface, nameof(iface));
             Ensure.Parameter.IsInterface(iface, nameof(iface));
             Ensure.Parameter.IsNotGenericDefinition(iface, nameof(iface));
@@ -231,6 +242,9 @@ namespace Solti.Utils.DI.Internals
         public IServiceReference? TryGetReference(Type iface, string? name)
         {
             CheckNotDisposed();
+
+            if (FDisposing)
+                throw new InvalidOperationException(Resources.INJECTOR_IS_DISPOSING);
 
             Ensure.Parameter.IsNotNull(iface, nameof(iface));
             Ensure.Parameter.IsInterface(iface, nameof(iface));

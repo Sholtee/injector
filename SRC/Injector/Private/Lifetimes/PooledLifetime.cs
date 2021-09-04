@@ -59,19 +59,19 @@ namespace Solti.Utils.DI.Internals
             //
 
             yield return PoolService(iface, name, owner);
-            yield return new PooledServiceEntrySupportsProxying(iface, name, implementation, owner);
+            yield return new PooledServiceEntry(iface, name, implementation, owner);
         }
 
         public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Type implementation, IReadOnlyDictionary<string, object?> explicitArgs, IServiceContainer owner)
         {
             yield return PoolService(iface, name, owner);
-            yield return new PooledServiceEntrySupportsProxying(iface, name, implementation, explicitArgs, owner);
+            yield return new PooledServiceEntry(iface, name, implementation, explicitArgs, owner);
         }
 
         public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Func<IInjector, Type, object> factory, IServiceContainer owner)
         {
             yield return PoolService(iface, name, owner);
-            yield return new PooledServiceEntrySupportsProxying(iface, name, factory, owner);
+            yield return new PooledServiceEntry(iface, name, factory, owner);
         }
 
         public override int CompareTo(Lifetime other) => other is PooledLifetime

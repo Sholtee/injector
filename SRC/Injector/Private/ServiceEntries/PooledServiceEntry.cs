@@ -14,7 +14,7 @@ namespace Solti.Utils.DI.Internals
     // A PooledServiceEntry ket modon is lehet peldanyositva: Egy kulonallo poolban vagy a felhasznalo oldalan.
     //
 
-    internal class PooledServiceEntry : ProducibleServiceEntry
+    internal class PooledServiceEntry : ProducibleServiceEntrySupportsProxying
     {
         private readonly List<IServiceReference> FInstances = new(1); // max egy eleme lehet
 

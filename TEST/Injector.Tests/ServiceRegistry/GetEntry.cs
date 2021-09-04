@@ -24,7 +24,7 @@ namespace Solti.Utils.DI.Internals.Tests
             TransientServiceEntry entry = new(typeof(IDisposable), name, typeof(Disposable), null, int.MaxValue);
             Registry = (ServiceRegistryBase) Activator.CreateInstance(registryType, new object[] { new HashSet<AbstractServiceEntry>(ServiceIdComparer.Instance) { entry }, resolver, CancellationToken.None } );
 
-            Assert.That(Registry.GetEntry(typeof(IDisposable), name), Is.Not.Null);
+            Assert.That(Registry.GetEntry<IDisposable>(name), Is.Not.Null);
         }
 
         [Test]
@@ -33,7 +33,7 @@ namespace Solti.Utils.DI.Internals.Tests
             TransientServiceEntry entry = new(typeof(IDisposable), name, typeof(Disposable), null, int.MaxValue);
             Registry = (ServiceRegistryBase) Activator.CreateInstance(registryType, new object[] { new HashSet<AbstractServiceEntry>(ServiceIdComparer.Instance) { entry }, resolver, CancellationToken.None });
 
-            Assert.AreSame(Registry.GetEntry(typeof(IDisposable), name), Registry.GetEntry(typeof(IDisposable), name));
+            Assert.AreSame(Registry.GetEntry<IDisposable>(name), Registry.GetEntry(typeof(IDisposable), name));
         }
 
         [Test]
@@ -46,7 +46,7 @@ namespace Solti.Utils.DI.Internals.Tests
 
             Assert.DoesNotThrowAsync(async () => results = await Task.WhenAll(Enumerable
                 .Repeat(0, 40)
-                .Select(_ => Task.Run(() => Registry.GetEntry(typeof(IDisposable), name)))));
+                .Select(_ => Task.Run(() => Registry.GetEntry<IDisposable>(name)))));
 
             results = results.Distinct().ToArray();
 
@@ -69,7 +69,7 @@ namespace Solti.Utils.DI.Internals.Tests
             TransientServiceEntry entry = new(typeof(IList<>), name, typeof(MyList<>), null, int.MaxValue);
             Registry = (ServiceRegistryBase) Activator.CreateInstance(registryType, new object[] { new HashSet<AbstractServiceEntry>(ServiceIdComparer.Instance) { entry }, resolver, CancellationToken.None });
 
-            AbstractServiceEntry specialized = Registry.GetEntry(typeof(IList<int>), name);
+            AbstractServiceEntry specialized = Registry.GetEntry<IList<int>>(name);
             Assert.That(specialized, Is.Not.Null);
             Assert.That(specialized, Is.InstanceOf<TransientServiceEntry>());
             Assert.That(specialized.Interface, Is.EqualTo(typeof(IList<int>)));
@@ -94,7 +94,7 @@ namespace Solti.Utils.DI.Internals.Tests
 
             Assert.DoesNotThrowAsync(async () => results = await Task.WhenAll(Enumerable
                 .Repeat(0, 40)
-                .Select(_ => Task.Run(() => Registry.GetEntry(typeof(IList<int>), name)))));
+                .Select(_ => Task.Run(() => Registry.GetEntry<IList<int>>(name)))));
 
             results = results.Distinct().ToArray();
 
@@ -124,7 +124,7 @@ namespace Solti.Utils.DI.Internals.Tests
 
             ServiceRegistryBase child = (ServiceRegistryBase) Activator.CreateInstance(registryType, new object[] { Registry });
 
-            Assert.AreNotSame(Registry.GetEntry(typeof(IList<int>), name), child.GetEntry(typeof(IList<int>), name));
+            Assert.AreNotSame(Registry.GetEntry<IList<int>>(name), child.GetEntry<IList<int>>(name));
         }
 
         [Test]
@@ -148,7 +148,7 @@ namespace Solti.Utils.DI.Internals.Tests
             Registry = (ServiceRegistryBase) Activator.CreateInstance(registryType, new object[] { new HashSet<AbstractServiceEntry>(ServiceIdComparer.Instance) { entry }, resolver, CancellationToken.None });
 
             ServiceRegistryBase child = (ServiceRegistryBase) Activator.CreateInstance(registryType, new object[] { Registry });
-            Assert.AreSame(Registry.GetEntry(typeof(IList<int>), name), child.GetEntry(typeof(IList<int>), name));
+            Assert.AreSame(Registry.GetEntry<IList<int>>(name), child.GetEntry<IList<int>>(name));
         }
     }
 

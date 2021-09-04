@@ -76,12 +76,5 @@ namespace Solti.Utils.DI.Internals
             if (!(comparer ?? EqualityComparer<T>.Default).Equals(a, b))
                 throw new Exception(message ?? Resources.NOT_EQUAL);
         }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void NotDisposed(IDisposableEx obj) 
-        {
-            if (obj.Disposed)
-                throw new ObjectDisposedException(null);
-        }
     }
 }

@@ -30,6 +30,7 @@ namespace Solti.Utils.DI.Internals
             {
                 new ServiceReference(this, FSelector(owner), externallyOwned: true)
             };
+            State = ServiceEntryStates.Built;
         }
 
         public override IServiceRegistry? Registry { get; }

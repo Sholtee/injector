@@ -35,6 +35,6 @@ namespace Solti.Utils.DI.Interfaces
         /// <summary>
         /// Registers a set of services.
         /// </summary>
-        public static IModifiedServiceCollection Register(this IServiceCollection self, params AbstractServiceEntry[] entries) => self.Register(entries);
+        public static IModifiedServiceCollection Register(this IServiceCollection self, params AbstractServiceEntry[] entries) => self.Register((IEnumerable<AbstractServiceEntry>) entries);
     }
 }
