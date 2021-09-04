@@ -138,7 +138,7 @@ namespace Solti.Utils.DI.Internals
                 if (throwOnMissing)
                 {
                     ServiceId id = new(iface, name);
-                    ServiceNotFoundException ex = new(string.Format(Resources.Culture, Resources.SERVICE_NOT_FOUND, id));
+                    ServiceNotFoundException ex = new(string.Format(Resources.Culture, Resources.SERVICE_NOT_FOUND, id.FriendlyName()));
                     ex.Data["path"] = ServicePath.Format
                     (
                         FPath
