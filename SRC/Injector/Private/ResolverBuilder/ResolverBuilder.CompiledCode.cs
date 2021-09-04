@@ -121,50 +121,136 @@ namespace Solti.Utils.DI.Internals
                     regularResolvers = Parameter(Identifier(nameof(regularResolvers))).WithType(GetQualifiedName(typeof(Resolver[]))),
                     genericResolvers = Parameter(Identifier(nameof(genericResolvers))).WithType(GetQualifiedName(typeof(Resolver[]))),
 
-                    self  = Parameter(Identifier(nameof(self))),
+                    self = Parameter(Identifier(nameof(self))),
                     iface = Parameter(Identifier(nameof(iface))),
-                    name  = Parameter(Identifier(nameof(name)));
+                    name = Parameter(Identifier(nameof(name)));
 
-                LocalDeclarationStatementSyntax pureType = LocalDeclarationStatement
-                (
-                    VariableDeclaration
+                IEnumerable<IGrouping<Type, AbstractServiceEntry>> groupedEntries = entries.GroupBy(entry => entry.Interface);
+
+                List<StatementSyntax> statements = new();
+
+                if (groupedEntries.Any(grp => !grp.Key.IsGenericTypeDefinition))
+                {
+                    statements.Add
                     (
-                        GetQualifiedName(typeof(Type))
-                    )
-                    .WithVariables
-                    (
-                        SingletonSeparatedList
+                        CreateSwitch
                         (
-                            VariableDeclarator
+                            value: MemberAccessExpression
                             (
-                                Identifier(nameof(pureType))
-                            )
-                            .WithInitializer
-                            (
-                                EqualsValueClause
+                                SyntaxKind.SimpleMemberAccessExpression,
+                                IdentifierName(iface.Identifier),
+                                IdentifierName(nameof(Type.FullName))
+                            ),
+                            cases: groupedEntries
+                                .Where(grp => !grp.Key.IsGenericTypeDefinition)
+                                .Select
                                 (
-                                    ConditionalExpression
+                                    grp =>
                                     (
-                                        condition: MemberAccessExpression
-                                        (
-                                            SyntaxKind.SimpleMemberAccessExpression,
-                                            IdentifierName(iface.Identifier),
-                                            IdentifierName(nameof(Type.IsGenericType))
-                                        ),
-                                        whenTrue: InvocationExpression
-                                        (
-                                            MemberAccessExpression
+                                        (string?) grp.Key.FullName,
+                                        new StatementSyntax[]
+                                        {
+                                            CreateSwitch
                                             (
-                                                SyntaxKind.SimpleMemberAccessExpression,
-                                                IdentifierName(iface.Identifier),
-                                                IdentifierName(nameof(Type.GetGenericTypeDefinition))
-                                            )
-                                        ),
-                                        whenFalse: IdentifierName(iface.Identifier)
+                                                value: IdentifierName(name.Identifier),
+                                                cases: grp.Select
+                                                (
+                                                entry =>
+                                                (
+                                                    entry.Name,
+                                                    new StatementSyntax[]
+                                                    {
+                                                        CreateResolveStatement(entry, regularResolvers, createRegularResolver)
+                                                    }
+                                                )
+                                                )
+                                            ),
+                                            BreakStatement()
+                                        }
                                     )
                                 )
+                        )
+                    );
+                }
+
+                if (groupedEntries.Any(grp => grp.Key.IsGenericTypeDefinition))
+                {
+                    statements.Add
+                    (
+                        IfStatement
+                        (
+                            condition: PrefixUnaryExpression
+                            (
+                                SyntaxKind.LogicalNotExpression,
+                                MemberAccessExpression
+                                (
+                                    SyntaxKind.SimpleMemberAccessExpression,
+                                    IdentifierName(iface.Identifier),
+                                    IdentifierName(nameof(Type.IsGenericType))
+                                )
+                            ),
+                            statement: ReturnStatement
+                            (
+                                LiteralExpression(SyntaxKind.NullLiteralExpression)
                             )
                         )
+                    );
+
+                    statements.Add
+                    (
+                        CreateSwitch
+                        (
+                            value: MemberAccessExpression
+                            (
+                                SyntaxKind.SimpleMemberAccessExpression,
+                                InvocationExpression
+                                (
+                                    MemberAccessExpression
+                                    (
+                                        SyntaxKind.SimpleMemberAccessExpression,
+                                        IdentifierName(iface.Identifier),
+                                        IdentifierName(nameof(Type.GetGenericTypeDefinition))
+                                    )
+                                ),
+                                IdentifierName(nameof(Type.FullName))
+                            ),
+                            cases: groupedEntries
+                                .Where(grp => grp.Key.IsGenericTypeDefinition)
+                                .Select
+                                (
+                                    grp =>
+                                    (
+                                        (string?) grp.Key.FullName,
+                                        new StatementSyntax[]
+                                        {
+                                            CreateSwitch
+                                            (
+                                                value: IdentifierName(name.Identifier),
+                                                cases: grp.Select
+                                                (
+                                                entry =>
+                                                (
+                                                    entry.Name,
+                                                    new StatementSyntax[]
+                                                    {
+                                                        CreateResolveStatement(entry, genericResolvers, createGenericResover)
+                                                    }
+                                                )
+                                                )
+                                            ),
+                                            BreakStatement()
+                                        }
+                                    )
+                                )
+                        )
+                    );
+                }
+
+                statements.Add
+                (
+                    ReturnStatement
+                    (
+                        LiteralExpression(SyntaxKind.NullLiteralExpression)
                     )
                 );
 
@@ -178,55 +264,7 @@ namespace Solti.Utils.DI.Internals
                     )
                     .WithBlock
                     (
-                        Block
-                        (
-                            pureType,
-                            CreateSwitch
-                            (
-                                value: MemberAccessExpression
-                                (
-                                    SyntaxKind.SimpleMemberAccessExpression,
-                                    IdentifierName
-                                    (
-                                        pureType
-                                            .Declaration
-                                            .Variables
-                                            .Single()
-                                            .Identifier
-                                    ),
-                                    IdentifierName(nameof(Type.FullName))
-                                ),
-                                cases: entries
-                                    .GroupBy(entry => entry.Interface.FullName)
-                                    .Select
-                                    (
-                                        grp => 
-                                        (
-                                            (string?) grp.Key,
-                                            new StatementSyntax[]
-                                            {
-                                                 CreateSwitch
-                                                 (
-                                                     value: IdentifierName(name.Identifier),
-                                                     cases: grp.Select
-                                                     (
-                                                        entry => 
-                                                        (
-                                                           entry.Name, 
-                                                           new StatementSyntax[] { CreateResolveStatement(entry) }
-                                                        )
-                                                     )
-                                                 ),
-                                                 BreakStatement()
-                                            }
-                                        )
-                                    )
-                            ),
-                            ReturnStatement
-                            (
-                                LiteralExpression(SyntaxKind.NullLiteralExpression)
-                            )
-                        )
+                        Block(statements)
                     );
 
                 return MethodDeclaration
@@ -257,13 +295,13 @@ namespace Solti.Utils.DI.Internals
                     Token(SyntaxKind.SemicolonToken)
                 );
 
-                StatementSyntax CreateResolveStatement(AbstractServiceEntry entry)
+                StatementSyntax CreateResolveStatement(AbstractServiceEntry entry, ParameterSyntax relatedParam, Func<AbstractServiceEntry, int> resolverFactory)
                 {
                     InvocationExpressionSyntax invokeResolver = InvocationExpression
                     (
                         ElementAccessExpression
                         (
-                            IdentifierName((entry.Interface.IsGenericTypeDefinition ? genericResolvers : regularResolvers).Identifier)
+                            IdentifierName(relatedParam.Identifier)
                         )
                         .WithArgumentList
                         (
@@ -276,10 +314,7 @@ namespace Solti.Utils.DI.Internals
                                         LiteralExpression
                                         (
                                             SyntaxKind.NumericLiteralExpression,
-                                            Literal
-                                            (
-                                                (entry.Interface.IsGenericTypeDefinition ? createGenericResover : createRegularResolver).Invoke(entry)
-                                            )
+                                            Literal(resolverFactory(entry))
                                         )
                                     )
                                 )
@@ -375,13 +410,9 @@ namespace Solti.Utils.DI.Internals
             //
             // public static class ResolverFactory
             // {
-            //     public static Resolver Create(Resolver[] regularResolvers, Resolver[] genericResolvers) =>  (self, iface, name) => 
+            //     public static Resolver Create(Resolver[] regularResolvers, Resolver[] genericResolvers) => (self, iface, name) => 
             //     {
-            //         Type pureType = iface.IsGenericType
-            //             ? iface.GetGenericTypeDefinition()
-            //             : iface;
-            //
-            //         switch (pureType.FullName) // NE iface.GUID property-re vizsgaljunk mert kibaszott lassu lekeredzni
+            //         switch (iface.FullName) // NE iface.GUID property-re vizsgaljunk mert kibaszott lassu lekeredzni
             //         {
             //             case "xXx": // regular
             //                 switch (name)
@@ -394,6 +425,13 @@ namespace Solti.Utils.DI.Internals
             //                             : regularResolvers[1](self, iface, name);
             //                 }
             //                 break;
+            //         }
+            //         
+            //         if (!iface.IsGenericType)
+            //             return null;
+            //
+            //         switch (iface.GetGenericTypeDefintion().FullName)
+            //         {
             //             case "yYy": // generic
             //                 switch (name)
             //                 {
@@ -402,6 +440,7 @@ namespace Solti.Utils.DI.Internals
             //                 }
             //                 break;
             //         }
+            //
             //         return null;
             //     };
             // }

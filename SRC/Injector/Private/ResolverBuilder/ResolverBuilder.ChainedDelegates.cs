@@ -3,8 +3,8 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
-using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 
 namespace Solti.Utils.DI.Internals
@@ -23,60 +23,53 @@ namespace Solti.Utils.DI.Internals
 
                 Resolver resolver = (_, _, _) => null;
 
-                int // GetEntryResolver()-ben nem hivatkozhatunk by-ref parametert
-                    regularEntryCount = 0,
-                    genericEntryCount = 0;
+                reCount = 0;
 
-                foreach (AbstractServiceEntry entry in entries)
+                foreach (AbstractServiceEntry entry in entries.Where(entry => !entry.Interface.IsGenericTypeDefinition))
                 {
-                    Resolver next = resolver;
+                    Resolver 
+                        next = resolver,
+                        reResolver = regularEntryResolverBuilder(reCount++, entry);
 
-                    if (entry.Interface.IsGenericTypeDefinition)
+                    if (entry.IsShared)
+                        reResolver = InvokeParent(reResolver);
+
+                    resolver = (self, iface, name) =>
                     {
-                        Resolver geResolver = genericEntryResolverBuilder(genericEntryCount++, entry);
-                        if (entry.IsShared)
-                            geResolver = InvokeParent(geResolver);
-
-                        resolver = (self, iface, name) =>
+                        if (entry.Interface == iface && entry.Name == name)
                         {
-                            //
-                            // NE tipusok GUID property-ere teszteljunk mert az kibaszott lassu (lasd teljesitmeny tesztek)
-                            //
-
-                            Type pureType = iface.IsGenericType ? iface.GetGenericTypeDefinition() : iface;
-
-                            if (entry.Interface == pureType && entry.Name == name)
-                            {
-                                return geResolver(self, iface, name);
-                            }
-                            return next(self, iface, name);
-                        };
-                    }
-                    else
-                    {
-                        Resolver reResolver = regularEntryResolverBuilder(regularEntryCount++, entry);
-                        if (entry.IsShared)
-                            reResolver = InvokeParent(reResolver);
-
-                        resolver = (self, iface, name) =>
-                        {
-                            if (entry.Interface == iface && entry.Name == name)
-                            {
-                                return reResolver(self, iface, name);
-                            }
-                            return next(self, iface, name);
-                        };
-                    }
-
-                    static Resolver InvokeParent(Resolver resolver) => (self, iface, name) => self.Parent is not null
-                        ? self.Parent.GetEntry(iface, name)
-                        : resolver(self, iface, name);
+                            return reResolver(self, iface, name);
+                        }
+                        return next(self, iface, name);
+                    };
                 }
 
-                reCount = regularEntryCount;
-                geCount = genericEntryCount;
+                geCount = 0;
+
+                foreach (AbstractServiceEntry entry in entries.Where(entry => entry.Interface.IsGenericTypeDefinition))
+                {
+                    Resolver 
+                        next = resolver,
+                        geResolver = genericEntryResolverBuilder(geCount++, entry);
+
+                    if (entry.IsShared)
+                        geResolver = InvokeParent(geResolver);
+
+                    resolver = (self, iface, name) =>
+                    {
+                        if (entry.Interface == iface.GetGenericTypeDefinition() && entry.Name == name)
+                        {
+                            return geResolver(self, iface, name);
+                        }
+                        return next(self, iface, name);
+                    };
+                }
 
                 return resolver;
+
+                static Resolver InvokeParent(Resolver resolver) => (self, iface, name) => self.Parent is not null
+                    ? self.Parent.GetEntry(iface, name)
+                    : resolver(self, iface, name);
             }
         }
     }

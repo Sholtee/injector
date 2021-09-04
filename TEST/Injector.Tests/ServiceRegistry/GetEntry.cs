@@ -103,14 +103,17 @@ namespace Solti.Utils.DI.Internals.Tests
         }
 
         [Test]
-        public void GetEntry_ShouldResolveNonSharedEntriesFromTheCurrentRegistry_RegularCase([Values(null, "cica")] string name, [ValueSource(nameof(RegistryTypes))] Type registryType, [ValueSource(nameof(ResolverBuilders))] ResolverBuilder resolver)
+        public void GetEntry_ShouldResolveNonSharedEntriesFromTheCurrentRegistry_RegularCase([Values(null, "cica")] string name, [Values(typeof(ICustomFormatter), typeof(IList<int>))] Type serviceType, [ValueSource(nameof(RegistryTypes))] Type registryType, [ValueSource(nameof(ResolverBuilders))] ResolverBuilder resolver)
         {
-            TransientServiceEntry entry = new(typeof(IDisposable), name, typeof(Disposable), null, int.MaxValue);
+            TransientServiceEntry entry = new(serviceType, name, (_, _) => null, null, int.MaxValue);
             Registry = (ServiceRegistryBase) Activator.CreateInstance(registryType, new object[] { new HashSet<AbstractServiceEntry>(ServiceIdComparer.Instance) { entry }, resolver, CancellationToken.None });
 
             ServiceRegistryBase child = (ServiceRegistryBase) Activator.CreateInstance(registryType, new object[] { Registry });
 
-            Assert.AreNotSame(Registry.GetEntry(typeof(IDisposable), name), child.GetEntry(typeof(IDisposable), name));
+            entry = (TransientServiceEntry) Registry.GetEntry(serviceType, name);
+
+            Assert.That(entry, Is.Not.Null);
+            Assert.AreNotSame(entry, child.GetEntry(serviceType, name));
         }
 
         [Test]
@@ -125,13 +128,17 @@ namespace Solti.Utils.DI.Internals.Tests
         }
 
         [Test]
-        public void GetEntry_ShouldResolveSharedEntriesFromTheParentRegistry_RegularCase([Values(null, "cica")] string name, [ValueSource(nameof(RegistryTypes))] Type registryType, [ValueSource(nameof(ResolverBuilders))] ResolverBuilder resolver)
+        public void GetEntry_ShouldResolveSharedEntriesFromTheParentRegistry_RegularCase([Values(null, "cica")] string name, [Values(typeof(ICustomFormatter), typeof(IList<int>))] Type serviceType, [ValueSource(nameof(RegistryTypes))] Type registryType, [ValueSource(nameof(ResolverBuilders))] ResolverBuilder resolver)
         {
-            SingletonServiceEntry entry = new(typeof(IDisposable), name, typeof(Disposable), null);
+            SingletonServiceEntry entry = new(serviceType, name, (_, _) => null, null);
             Registry = (ServiceRegistryBase) Activator.CreateInstance(registryType, new object[] { new HashSet<AbstractServiceEntry>(ServiceIdComparer.Instance) { entry }, resolver, CancellationToken.None });
 
             ServiceRegistryBase child = (ServiceRegistryBase) Activator.CreateInstance(registryType, new object[] { Registry });
-            Assert.AreSame(Registry.GetEntry(typeof(IDisposable), name), child.GetEntry(typeof(IDisposable), name));
+
+            entry = (SingletonServiceEntry) Registry.GetEntry(serviceType, name);
+
+            Assert.That(entry, Is.Not.Null);
+            Assert.AreSame(entry, child.GetEntry(serviceType, name));
         }
 
         [Test]

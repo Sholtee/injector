@@ -105,81 +105,97 @@ namespace Solti.Utils.DI.Internals
                     getEntryMethod = MethodInfoExtractor.Extract<IServiceRegistry>(r => r.GetEntry(null!, null)),
                     getGenericTypeMethod = MethodInfoExtractor.Extract<Type>(t => t.GetGenericTypeDefinition());
 
-                int // GetEntryResolver()-ben nem hivatkozhatunk by-ref parametert
+                int // lambda-ban nem hivatkozhatunk by-ref parametert
                     regularEntryCount = 0,
                     genericEntryCount = 0;
-
 
                 IEnumerable<IGrouping<Type, AbstractServiceEntry>>? groupedEntries = entries.GroupBy(entry => entry.Interface);
 
                 LabelTarget returnLabel = Expression.Label(typeof(AbstractServiceEntry));
 
-                Expression 
-                    nonGenericSwitch = CreateSwitch
-                    (
-                        value: iface,
-                        cases: groupedEntries
-                            .Where(grp => !grp.Key.IsGenericTypeDefinition)
-                            .Select
-                            (
-                                grp =>
-                                (
-                                    value: grp.Key,
-                                    cases: CreateSwitch
-                                    (
-                                        name,
-                                        grp.Select
-                                        (
-                                            entry => 
-                                            (
-                                                entry.Name,
-                                                GetEntryResolver(entry, regularEntryResolverBuilder, regularEntryCount++)
-                                            )
-                                        )
-                                    )
-                                )
-                            )
-                    ),
-                    genericSwitch = CreateSwitch
-                    (
-                        value: Expression.Call(iface, getGenericTypeMethod),
-                        cases: groupedEntries
-                            .Where(grp => grp.Key.IsGenericTypeDefinition)
-                            .Select
-                            (
-                                grp =>
-                                (
-                                    value: grp.Key,
-                                    cases: CreateSwitch
-                                    (
-                                        name,
-                                        grp.Select
-                                        (
-                                            entry =>
-                                            (
-                                                entry.Name,
-                                                GetEntryResolver(entry, genericEntryResolverBuilder, genericEntryCount++)
-                                            )
-                                        )
-                                    )
-                                )
-                            )
-                    );
+                List<Expression> expressions = new();
 
-                Expression<Resolver> lambda = Expression.Lambda<Resolver>
-                (
-                    Expression.Block
+                if (groupedEntries.Any(grp => !grp.Key.IsGenericTypeDefinition))
+                {
+                    expressions.Add
                     (
-                        type: typeof(AbstractServiceEntry),
-                        nonGenericSwitch,
+                        CreateSwitch
+                        (
+                            value: iface,
+                            cases: groupedEntries
+                                .Where(grp => !grp.Key.IsGenericTypeDefinition)
+                                .Select
+                                (
+                                    grp =>
+                                    (
+                                        value: grp.Key,
+                                        cases: CreateSwitch
+                                        (
+                                            name,
+                                            grp.Select
+                                            (
+                                                entry =>
+                                                (
+                                                    entry.Name,
+                                                    GetEntryResolver(entry, regularEntryResolverBuilder, regularEntryCount++)
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                        )
+                    );
+                }
+
+                if (groupedEntries.Any(grp => grp.Key.IsGenericTypeDefinition))
+                {
+                    expressions.Add
+                    (
                         Expression.IfThen
                         (
                             test: Expression.Not(Expression.Property(iface, isGeneric)),
                             ifTrue: Expression.Return(returnLabel, Expression.Default(typeof(AbstractServiceEntry)))
-                        ),
-                        genericSwitch,
-                        Expression.Label(returnLabel, Expression.Default(typeof(AbstractServiceEntry)))
-                    ),
+                        )
+                    );
+
+                    expressions.Add
+                    (
+                        CreateSwitch
+                        (
+                            value: Expression.Call(iface, getGenericTypeMethod),
+                            cases: groupedEntries
+                                .Where(grp => grp.Key.IsGenericTypeDefinition)
+                                .Select
+                                (
+                                    grp =>
+                                    (
+                                        value: grp.Key,
+                                        cases: CreateSwitch
+                                        (
+                                            name,
+                                            grp.Select
+                                            (
+                                                entry =>
+                                                (
+                                                    entry.Name,
+                                                    GetEntryResolver(entry, genericEntryResolverBuilder, genericEntryCount++)
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                        )
+                    );
+                }
+
+                expressions.Add
+                (
+                    Expression.Label(returnLabel, Expression.Default(typeof(AbstractServiceEntry)))
+                );
+
+                Expression<Resolver> lambda = Expression.Lambda<Resolver>
+                (
+                    Expression.Block(expressions),
                     self, iface, name
                 );
 
