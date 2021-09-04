@@ -16,46 +16,40 @@ namespace Solti.Utils.DI.Injector.Tests
     using Interfaces;
     using Primitives.Patterns;
 
-    public partial class InjectorTestsBase<TContainer>
+    public partial class InjectorTests
     {
         [TestCaseSource(nameof(InjectorControlledLifetimes))]
         public void Injector_Dispose_ShouldFreeOwnedEntries(Lifetime lifetime)
         {
-            var mockSingleton = new Mock<IInterface_1_Disaposable>(MockBehavior.Strict);
-            mockSingleton.Setup(s => s.Dispose());
+            var mockDisposable = new Mock<IInterface_1_Disaposable>(MockBehavior.Strict);
+            mockDisposable.Setup(s => s.Dispose());
 
-            Container.Factory(inj => mockSingleton.Object, lifetime);
+            Root = ScopeFactory.Create(svcs => svcs.Factory(inj => mockDisposable.Object, lifetime));
 
-            using (IInjector injector = Container.CreateInjector())
+            using (IInjector injector = Root.CreateScope())
             {
                 injector.Get<IInterface_1_Disaposable>();
             }
            
-            mockSingleton.Verify(s => s.Dispose(), Times.Once);
+            mockDisposable.Verify(s => s.Dispose(), Times.Once);
         }
 
         [TestCaseSource(nameof(InjectorControlledLifetimes))]
         public async Task Injector_DisposeAsync_ShouldFreeOwnedEntriesAsynchronously(Lifetime lifetime)
         {
-            var mockSingleton = new Mock<IAsyncDisposable>(MockBehavior.Strict);
-            mockSingleton
+            var mockDisposable = new Mock<IAsyncDisposable>(MockBehavior.Strict);
+            mockDisposable
                 .Setup(s => s.DisposeAsync())
                 .Returns(default(ValueTask));
 
-            Container.Factory(inj => mockSingleton.Object, lifetime);
-#if LANG_VERSION_8
-            await using (IInjector injector = Container.CreateInjector())
-#else
-            IInjector injector = Container.CreateInjector();
-            try
-#endif
+            Root = ScopeFactory.Create(svcs => svcs.Factory(inj => mockDisposable.Object, lifetime));
+
+            await using (IInjector injector = Root.CreateScope())
             {
                 injector.Get<IAsyncDisposable>();
             }
-#if !LANG_VERSION_8
-            finally { await injector.DisposeAsync(); }
-#endif
-            mockSingleton.Verify(s => s.DisposeAsync(), Times.Once);
+
+            mockDisposable.Verify(s => s.DisposeAsync(), Times.Once);
         }
 
         [TestCaseSource(nameof(InjectorControlledLifetimes))]
@@ -63,11 +57,11 @@ namespace Solti.Utils.DI.Injector.Tests
         {
             var disposable = new Disposable();
 
-            Container
+            Root = ScopeFactory.Create(svcs => svcs
                 .Factory<IDisposableEx>(i => disposable, lifetime)
-                .Service<IInterface_7<Lazy<IDisposableEx>>, Implementation_7_TInterface_Dependant<Lazy<IDisposableEx>>>(lifetime);
+                .Service<IInterface_7<Lazy<IDisposableEx>>, Implementation_7_TInterface_Dependant<Lazy<IDisposableEx>>>(lifetime));
 
-            using (IInjector injector = Container.CreateInjector()) 
+            using (IInjector injector = Root.CreateScope()) 
             {
                 var svc = injector.Get<IInterface_7<Lazy<IDisposableEx>>>();
                 Assert.That(svc.Interface, Is.Not.Null);              
@@ -75,7 +69,7 @@ namespace Solti.Utils.DI.Injector.Tests
 
             Assert.That(disposable.Disposed, Is.False);
 
-            using (IInjector injector = Container.CreateInjector())
+            using (IInjector injector = Root.CreateScope())
             {
                 var svc = injector.Get<IInterface_7<Lazy<IDisposableEx>>>();
                 Assert.That(svc.Interface.Value, Is.Not.Null);
@@ -87,11 +81,11 @@ namespace Solti.Utils.DI.Injector.Tests
         [TestCaseSource(nameof(InjectorControlledLifetimes))]
         public void Injector_Dispose_ShouldFreeEnumeratedServices(Lifetime lifetime)
         {
-            Container.Service<IDisposableEx, Disposable>(lifetime);
+            Root = ScopeFactory.Create(svcs => svcs.Service<IDisposableEx, Disposable>(lifetime));
 
             IDisposableEx svc;
             
-            using (IInjector injector = Container.CreateInjector()) 
+            using (IInjector injector = Root.CreateScope()) 
             {
                 svc = injector.Get<IEnumerable<IDisposableEx>>().Single();
             }
