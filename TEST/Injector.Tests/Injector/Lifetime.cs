@@ -38,9 +38,11 @@ namespace Solti.Utils.DI.Injector.Tests
         [Test]
         public void Lifetime_TransientService_ShouldNotBeInstantiatedIfTheScopeWasRecycled() 
         {
-            Config.Value.Injector.MaxSpawnedTransientServices = 1;
-
-            Root = ScopeFactory.Create(svcs => svcs.Service<IInterface_1, Implementation_1_No_Dep>(Lifetime.Transient));
+            Root = ScopeFactory.Create
+            (
+                svcs => svcs.Service<IInterface_1, Implementation_1_No_Dep>(Lifetime.Transient),
+                new ScopeOptions { MaxSpawnedTransientServices = 1 }
+            );
 
             using (IInjector injector1 = Root.CreateScope())
             {
@@ -549,9 +551,13 @@ namespace Solti.Utils.DI.Injector.Tests
         {
             Config.Value.Injector.StrictDI = true;
 
-            Root = ScopeFactory.Create(svcs => svcs
-                .Service<IInterface_1, Implementation_1_No_Dep>(dependency)
-                .Service<IInterface_2, Implementation_2_IInterface_1_Dependant>(requestor));
+            Root = ScopeFactory.Create
+            (
+                svcs => svcs
+                    .Service<IInterface_1, Implementation_1_No_Dep>(dependency)
+                    .Service<IInterface_2, Implementation_2_IInterface_1_Dependant>(requestor),
+                new ScopeOptions { StrictDI = true }
+            );
 
             //
             // Ket kulonallo injectort hozzunk letre.
@@ -569,11 +575,13 @@ namespace Solti.Utils.DI.Injector.Tests
         [Test]
         public void Lifetime_StrictDI_IllegalCases2()
         {
-            Config.Value.Injector.StrictDI = true;
-
-            Root = ScopeFactory.Create(svcs => svcs
-                .Service<IInterface_1, Implementation_1_No_Dep>(Lifetime.Pooled)
-                .Service<IInterface_2, Implementation_2_IInterface_1_Dependant>(Lifetime.Pooled));
+            Root = ScopeFactory.Create
+            (
+                svcs => svcs
+                    .Service<IInterface_1, Implementation_1_No_Dep>(Lifetime.Pooled)
+                    .Service<IInterface_2, Implementation_2_IInterface_1_Dependant>(Lifetime.Pooled),
+                new ScopeOptions { StrictDI = true }
+            );
 
             //
             // Ket kulonallo injectort hozzunk letre.

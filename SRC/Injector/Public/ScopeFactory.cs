@@ -19,14 +19,14 @@ namespace Solti.Utils.DI
         /// <summary>
         /// Creates a new scope factory.
         /// </summary>
-        public static IScopeFactory Create(Action<IServiceCollection> registerServices, CancellationToken cancellation = default)
+        public static IScopeFactory Create(Action<IServiceCollection> registerServices, ScopeOptions? options = null, CancellationToken cancellation = default)
         {
             Ensure.Parameter.IsNotNull(registerServices, nameof(registerServices));
 
             ServiceCollection serviceCollection = new();
             registerServices(serviceCollection);
 
-            return new Internals.ScopeFactory(serviceCollection, cancellation);
+            return new Internals.ScopeFactory(serviceCollection, options, cancellation);
         }
     }
 }

@@ -50,8 +50,8 @@ namespace Solti.Utils.DI.Internals.Tests
 
                 AbstractServiceEntry entry = injector.UnderlyingContainer.Get<IService>();
 
-                Assert.That(entry.Instances.Single().RelatedInjector, Is.Not.EqualTo(injector));
-                Assert.That(entry.Instances.Single().RelatedInjector.UnderlyingContainer.Parent, Is.EqualTo(entry.Owner));
+                Assert.That(entry.Instances.Single().Scope, Is.Not.EqualTo(injector));
+                Assert.That(entry.Instances.Single().Scope.UnderlyingContainer.Parent, Is.EqualTo(entry.Owner));
             }
         }
 
@@ -68,8 +68,8 @@ namespace Solti.Utils.DI.Internals.Tests
 
                 AbstractServiceEntry entry = injector.UnderlyingContainer.Get<IService>();
 
-                Assert.That(entry.Instances.Single().RelatedInjector, Is.EqualTo(injector));
-                Assert.That(entry.Instances.Single().RelatedInjector.UnderlyingContainer, Is.EqualTo(entry.Owner));
+                Assert.That(entry.Instances.Single().Scope, Is.EqualTo(injector));
+                Assert.That(entry.Instances.Single().Scope.UnderlyingContainer, Is.EqualTo(entry.Owner));
             }
         }
     }

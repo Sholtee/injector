@@ -13,9 +13,12 @@ namespace Solti.Utils.DI.Internals
 
     internal class ScopeFactory : ConcurrentServiceRegistry, IScopeFactory
     {
-        public ScopeFactory(ISet<AbstractServiceEntry> entries, CancellationToken cancellation = default) : base(entries, cancellation: cancellation)
+        public ScopeFactory(ISet<AbstractServiceEntry> entries, ScopeOptions? options = null, CancellationToken cancellation = default) : base(entries, cancellation: cancellation)
         {
+            Options = options ?? new ScopeOptions();
         }
+
+        public ScopeOptions Options { get; }
 
         public virtual Injector_New CreateScope() => new(this);
 

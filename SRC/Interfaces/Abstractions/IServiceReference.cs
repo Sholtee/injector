@@ -21,7 +21,7 @@ namespace Solti.Utils.DI.Interfaces
         /// <summary>
         /// The (optional) <see cref="IInjector"/> instance who created this reference.
         /// </summary>
-        IInjector? RelatedInjector { get; }
+        IInjector? Scope { get; }
 
         /// <summary>
         /// The dependencies of the bound service.

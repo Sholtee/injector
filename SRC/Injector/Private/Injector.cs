@@ -121,6 +121,8 @@ namespace Solti.Utils.DI.Internals
 
         #region Composite
         public override ICollection<IServiceContainer> Children { get; } = Array.Empty<IServiceContainer>();
+
+        public ScopeOptions Options => throw new NotImplementedException();
         #endregion
     }
 }

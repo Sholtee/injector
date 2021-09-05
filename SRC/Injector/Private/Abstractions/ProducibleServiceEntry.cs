@@ -111,7 +111,7 @@ namespace Solti.Utils.DI.Internals
             if (Factory is null)
                 throw new InvalidOperationException(Resources.NOT_PRODUCIBLE);
 
-            serviceReference.Value = Factory(serviceReference.RelatedInjector!, Interface);
+            serviceReference.Value = Factory(serviceReference.Scope!, Interface);
             SaveReference(serviceReference);
 
             State |= ServiceEntryStates.Instantiated;

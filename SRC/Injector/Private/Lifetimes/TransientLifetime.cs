@@ -16,17 +16,17 @@ namespace Solti.Utils.DI.Internals
 
         public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Type implementation, IServiceContainer owner)
         {
-            yield return new TransientServiceEntry(iface, name, implementation, owner, Config.Value.Injector.MaxSpawnedTransientServices);
+            yield return new TransientServiceEntry(iface, name, implementation, owner);
         }
 
         public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Type implementation, IReadOnlyDictionary<string, object?> explicitArgs, IServiceContainer owner)
         {
-             yield return new TransientServiceEntry(iface, name, implementation, explicitArgs, owner, Config.Value.Injector.MaxSpawnedTransientServices);
+             yield return new TransientServiceEntry(iface, name, implementation, explicitArgs, owner);
         }
 
         public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Func<IInjector, Type, object> factory, IServiceContainer owner)
         {
-            yield return new TransientServiceEntry(iface, name, factory, owner, Config.Value.Injector.MaxSpawnedTransientServices);
+            yield return new TransientServiceEntry(iface, name, factory, owner);
         }
     }
 }

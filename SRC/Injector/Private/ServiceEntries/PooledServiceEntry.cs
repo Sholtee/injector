@@ -45,7 +45,7 @@ namespace Solti.Utils.DI.Internals
             CheckNotDisposed();
             EnsureAppropriateReference(reference);
 
-            IInjector relatedInjector = reference.RelatedInjector!;
+            IInjector relatedInjector = reference.Scope!;
 
             //
             // Ha mar le lett gyartva akkor nincs dolgunk, jelezzuk a hivonak h ovlassa ki a

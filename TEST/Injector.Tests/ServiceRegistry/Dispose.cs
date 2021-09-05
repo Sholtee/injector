@@ -25,7 +25,7 @@ namespace Solti.Utils.DI.Internals.Tests
             {
                 new HashSet<AbstractServiceEntry>(ServiceIdComparer.Instance)
                 {
-                    new TransientServiceEntry(typeof(IDisposable), "owned", typeof(Disposable), null, int.MaxValue),
+                    new TransientServiceEntry(typeof(IDisposable), "owned", typeof(Disposable), null),
                     new SingletonServiceEntry(typeof(IDisposable), "notowned", typeof(Disposable), null)
                 },
                 resolver,
@@ -53,7 +53,7 @@ namespace Solti.Utils.DI.Internals.Tests
             {
                 new HashSet<AbstractServiceEntry>(ServiceIdComparer.Instance)
                 {
-                    new TransientServiceEntry(typeof(IDisposable), "owned", typeof(Disposable), null, int.MaxValue),
+                    new TransientServiceEntry(typeof(IDisposable), "owned", typeof(Disposable), null),
                     new SingletonServiceEntry(typeof(IDisposable), "notowned", typeof(Disposable), null)
                 },
                 resolver,
@@ -81,7 +81,7 @@ namespace Solti.Utils.DI.Internals.Tests
             {
                 new HashSet<AbstractServiceEntry>(ServiceIdComparer.Instance)
                 {
-                    new TransientServiceEntry(typeof(IDisposable), null, typeof(Disposable), null, int.MaxValue)
+                    new TransientServiceEntry(typeof(IDisposable), null, typeof(Disposable), null)
                 },
                 null,
                 CancellationToken.None
@@ -112,7 +112,7 @@ namespace Solti.Utils.DI.Internals.Tests
             {
                 new HashSet<AbstractServiceEntry>(ServiceIdComparer.Instance)
                 {
-                    new TransientServiceEntry(typeof(IDisposable), null, typeof(Disposable), null, int.MaxValue)
+                    new TransientServiceEntry(typeof(IDisposable), null, typeof(Disposable), null)
                 },
                 null,
                 CancellationToken.None
@@ -143,7 +143,7 @@ namespace Solti.Utils.DI.Internals.Tests
             {
                 new HashSet<AbstractServiceEntry>(ServiceIdComparer.Instance)
                 {
-                    new TransientServiceEntry(typeof(IList<>), null, typeof(MyList<>), null, int.MaxValue),
+                    new TransientServiceEntry(typeof(IList<>), null, typeof(MyList<>), null),
                 },
                 resolver,
                 CancellationToken.None
@@ -166,7 +166,7 @@ namespace Solti.Utils.DI.Internals.Tests
             {
                 new HashSet<AbstractServiceEntry>(ServiceIdComparer.Instance)
                 {
-                    new TransientServiceEntry(typeof(IList<>), null, typeof(MyList<>), null, int.MaxValue),
+                    new TransientServiceEntry(typeof(IList<>), null, typeof(MyList<>), null),
                 },
                 resolver,
                 CancellationToken.None

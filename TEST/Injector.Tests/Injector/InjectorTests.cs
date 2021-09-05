@@ -222,9 +222,6 @@ namespace Solti.Utils.DI.Injector.Tests
 
         public IScopeFactory Root { get; set; }
 
-        [SetUp]
-        public void Setup() => Config.Reset();
-
         [TearDown]
         public void TearDwon()
         {

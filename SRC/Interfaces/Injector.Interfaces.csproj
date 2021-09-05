@@ -8,6 +8,10 @@
   <Import Project="../Common.targets" />
 
   <ItemGroup>
+    <Compile Include="..\IsExternalInit.cs" Link="IsExternalInit.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Solti.Utils.Primitives" Version="5.*" />
   </ItemGroup>
 

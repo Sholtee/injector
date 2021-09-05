@@ -82,7 +82,7 @@ namespace Solti.Utils.DI.Perf
                         .Repeat(0, ServiceCount)
                         .Select
                         (
-                            (_, i) => (AbstractServiceEntry) new TransientServiceEntry(typeof(IList), i.ToString(), (i, t) => null!,  null, int.MaxValue)
+                            (_, i) => (AbstractServiceEntry) new TransientServiceEntry(typeof(IList), i.ToString(), (i, t) => null!,  null)
                         ),
                     ServiceIdComparer.Instance
                 ),
@@ -106,7 +106,7 @@ namespace Solti.Utils.DI.Perf
                         .Repeat(0, ServiceCount)
                         .Select
                         (
-                            (_, i) => (AbstractServiceEntry) new TransientServiceEntry(typeof(IList<>), i.ToString(), (i, t) => null!,  null, int.MaxValue)
+                            (_, i) => (AbstractServiceEntry) new TransientServiceEntry(typeof(IList<>), i.ToString(), (i, t) => null!,  null)
                         ),
                     ServiceIdComparer.Instance
                 ),

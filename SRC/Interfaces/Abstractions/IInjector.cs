@@ -56,5 +56,10 @@ namespace Solti.Utils.DI.Interfaces
         /// </summary>
         /// <remarks>Every injector has its own service container that serves it on service request. This container is a direct descendant of the container from which the injector was created.</remarks>
         IServiceContainer UnderlyingContainer { get; }
+
+        /// <summary>
+        /// Describes the scope behavior.
+        /// </summary>
+        ScopeOptions Options { get; }
     }
 }

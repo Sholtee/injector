@@ -33,7 +33,7 @@ namespace Solti.Utils.DI.Container.Tests
             Container.Factory(typeof(IInterface_3<>), factory, lifetime);
 
             Assert.That(Container.Where(entry => !entry.IsInternal()).Count(), Is.EqualTo(1));
-            Assert.AreEqual(new TransientServiceEntry(typeof(IInterface_3<int>), null, factory, Container, int.MaxValue), Container.Get<IInterface_3<int>>(QueryModes.AllowSpecialization));
+            Assert.AreEqual(new TransientServiceEntry(typeof(IInterface_3<int>), null, factory, Container), Container.Get<IInterface_3<int>>(QueryModes.AllowSpecialization));
             Assert.That(Container.Where(entry => !entry.IsInternal()).Count(), Is.EqualTo(2));
         }
 

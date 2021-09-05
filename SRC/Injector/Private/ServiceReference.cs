@@ -24,7 +24,7 @@ namespace Solti.Utils.DI
         public ServiceReference(AbstractServiceEntry entry, IInjector injector)
         {
             RelatedServiceEntry = Ensure.Parameter.IsNotNull(entry, nameof(entry));
-            RelatedInjector = Ensure.Parameter.IsNotNull(injector, nameof(injector));
+            Scope = Ensure.Parameter.IsNotNull(injector, nameof(injector));
         }
 
         public ServiceReference(AbstractServiceEntry entry, object value, bool externallyOwned)
@@ -40,7 +40,7 @@ namespace Solti.Utils.DI
 
         public AbstractServiceEntry RelatedServiceEntry { get; }
 
-        public IInjector? RelatedInjector { get; }
+        public IInjector? Scope { get; }
 
         public IReadOnlyCollection<IServiceReference> Dependencies 
         {

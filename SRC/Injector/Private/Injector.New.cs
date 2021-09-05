@@ -154,7 +154,7 @@ namespace Solti.Utils.DI.Internals
                 return null;
             }
 
-            if (Config.Value.Injector.StrictDI) // TODO: ScopeFactory ctor parameterbe
+            if (Options.StrictDI)
             {
                 AbstractServiceEntry? requestor = FPath.Last?.RelatedServiceEntry;
 
@@ -259,6 +259,8 @@ namespace Solti.Utils.DI.Internals
         public object Get(Type iface, string? name) => GetReference(iface, name).GetInstance()!;
 
         public object? TryGet(Type iface, string? name) => TryGetReference(iface, name)?.GetInstance();
+
+        public ScopeOptions Options => Parent.Options;
 
         IServiceContainer IInjector.UnderlyingContainer => throw new NotSupportedException(); // TODO: torolni
         #endregion
