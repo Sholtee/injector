@@ -23,5 +23,10 @@ namespace Solti.Utils.DI.Interfaces
         /// Creates an independent new scope
         /// </summary>
         IInjector CreateScope(IServiceContainer parent); // TODO: torolni
+
+        /// <summary>
+        /// Options applied on the newly created scopes.
+        /// </summary>
+        ScopeOptions ScopeOptions { get; }
     }
 }

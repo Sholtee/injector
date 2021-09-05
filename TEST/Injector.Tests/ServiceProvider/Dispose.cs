@@ -13,17 +13,21 @@ namespace Solti.Utils.DI.Injector.Tests
 {
     using Interfaces;
 
-    public partial class InjectorTestsBase<TContainer>
+    public partial class InjectorTests
     {
         [Test]
-        public void ServiceProvider_Dispose_ShouldFreeOwnedEntries([ValueSource(nameof(InjectorControlledLifetimes))] Lifetime lifetime)
+        public void ServiceProvider_Dispose_ShouldFreeOwnedEntries([ValueSource(nameof(ScopeControlledLifetimes))] Lifetime lifetime)
         {
             var mockSingleton = new Mock<IInterface_1_Disaposable>(MockBehavior.Strict);
             mockSingleton.Setup(s => s.Dispose());
 
-            Container.Factory(inj => mockSingleton.Object, lifetime);
+            Root = ScopeFactory.Create
+            (
+                svcs => svcs.Factory(inj => mockSingleton.Object, lifetime),
+                new ScopeOptions { SupportsServiceProvider = true }
+            );
 
-            using (Container.CreateProvider(out IServiceProvider provider))
+            using (Root.CreateScope(out IServiceProvider provider))
             {
                 provider.GetService<IInterface_1_Disaposable>();
             }
@@ -32,26 +36,24 @@ namespace Solti.Utils.DI.Injector.Tests
         }
 
         [Test]
-        public async Task ServiceProvider_DisposeAsync_ShouldFreeOwnedEntriesAsynchronously([ValueSource(nameof(InjectorControlledLifetimes))] Lifetime lifetime)
+        public async Task ServiceProvider_DisposeAsync_ShouldFreeOwnedEntriesAsynchronously([ValueSource(nameof(ScopeControlledLifetimes))] Lifetime lifetime)
         {
             var mockSingleton = new Mock<IAsyncDisposable>(MockBehavior.Strict);
             mockSingleton
                 .Setup(s => s.DisposeAsync())
                 .Returns(default(ValueTask));
 
-            Container.Factory(inj => mockSingleton.Object, lifetime);
-#if LANG_VERSION_8
-            await using (Container.CreateProvider(out IServiceProvider provider))
-#else
-            IAsyncDisposable scope = Container.CreateProvider(out IServiceProvider provider);
-            try
-#endif
+            Root = ScopeFactory.Create
+            (
+                svcs => svcs.Factory(inj => mockSingleton.Object, lifetime),
+                new ScopeOptions { SupportsServiceProvider = true }
+            );
+
+            await using (Root.CreateScope(out IServiceProvider provider))
             {
                 provider.GetService<IAsyncDisposable>();
             }
-#if !LANG_VERSION_8
-            finally { await scope.DisposeAsync(); }
-#endif
+
             mockSingleton.Verify(s => s.DisposeAsync(), Times.Once);
         }
     }

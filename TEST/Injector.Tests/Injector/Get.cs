@@ -24,7 +24,7 @@ namespace Solti.Utils.DI.Injector.Tests
         [Test]
         public void Injector_Get_ShouldThrowOnNonInterfaceKey()
         {
-            Root = ScopeFactory.Create((IServiceCollection svcs) => { });
+            Root = ScopeFactory.Create(svcs => { });
 
             using (IInjector injector = Root.CreateScope())
             {

@@ -99,6 +99,7 @@ namespace Solti.Utils.DI.Internals
                 return this;
             }
         }
+        public ScopeOptions Options => throw new NotImplementedException();
         #endregion
 
         #region IScopeFactory
@@ -117,12 +118,12 @@ namespace Solti.Utils.DI.Internals
         IInjector IScopeFactory.CreateScope() => CreateScope();
 
         IInjector IScopeFactory.CreateScope(IServiceContainer parent) => CreateScope(parent);
+
+        public ScopeOptions ScopeOptions => throw new NotImplementedException();
         #endregion
 
         #region Composite
         public override ICollection<IServiceContainer> Children { get; } = Array.Empty<IServiceContainer>();
-
-        public ScopeOptions Options => throw new NotImplementedException();
         #endregion
     }
 }

@@ -11,12 +11,14 @@ namespace Solti.Utils.DI.Injector.Tests
 {
     using Interfaces;
 
-    public partial class InjectorTestsBase<TContainer>
+    public partial class InjectorTests
     {
         [Test]
         public void ServiceProvider_GetService_ShouldResolveItself1() 
         {
-            using (Container.CreateProvider(out IServiceProvider provider)) 
+            Root = ScopeFactory.Create(svcs => { }, new ScopeOptions { SupportsServiceProvider = true });
+
+            using (Root.CreateScope(out IServiceProvider provider)) 
             {
                 Assert.That(provider.GetService<IServiceProvider>(), Is.EqualTo(provider));            
             }
@@ -25,11 +27,15 @@ namespace Solti.Utils.DI.Injector.Tests
         [Test]
         public void ServiceProvider_GetService_ShouldResolveItself2()
         {
-            Container.Service<IInterface_7<IServiceProvider>, Implementation_7_TInterface_Dependant<IServiceProvider>>(Lifetime.Transient);
+            Root = ScopeFactory.Create
+            (
+                svcs => svcs.Service<IInterface_7<IServiceProvider>, Implementation_7_TInterface_Dependant<IServiceProvider>>(Lifetime.Transient), 
+                new ScopeOptions { SupportsServiceProvider = true }
+            );
 
-            using (Container.CreateProvider(out IServiceProvider provider))
+            using (Root.CreateScope(out IServiceProvider provider))
             {
-                var svc = provider.GetService<IInterface_7<IServiceProvider>>();
+                IInterface_7<IServiceProvider> svc = provider.GetService<IInterface_7<IServiceProvider>>();
 
                 Assert.That(svc.Interface, Is.EqualTo(provider));
             }
@@ -38,7 +44,9 @@ namespace Solti.Utils.DI.Injector.Tests
         [Test]
         public void ServiceProvider_GetService_ShouldReturnNullOnMissingService1() 
         {
-            using (Container.CreateProvider(out IServiceProvider provider))
+            Root = ScopeFactory.Create(svcs => { }, new ScopeOptions { SupportsServiceProvider = true });
+
+            using (Root.CreateScope(out IServiceProvider provider))
             {
                 Assert.That(provider.GetService<IInterface_1>(), Is.Null);
             }
@@ -47,11 +55,15 @@ namespace Solti.Utils.DI.Injector.Tests
         [Test]
         public void ServiceProvider_GetService_ShouldReturnNullOnMissingService2([ValueSource(nameof(Lifetimes))] Lifetime lifetime)
         {
-            Container.Service<IInterface_7<IInterface_1>, Implementation_7_TInterface_Dependant<IInterface_1>>(lifetime);
+            Root = ScopeFactory.Create
+            (
+                svcs => svcs.Service<IInterface_7<IInterface_1>, Implementation_7_TInterface_Dependant<IInterface_1>>(lifetime),
+                new ScopeOptions { SupportsServiceProvider = true }
+            );
 
-            using (Container.CreateProvider(out IServiceProvider provider))
+            using (Root.CreateScope(out IServiceProvider provider))
             {
-                var svc = provider.GetService<IInterface_7<IInterface_1>>();
+                IInterface_7<IInterface_1> svc = provider.GetService<IInterface_7<IInterface_1>>();
 
                 Assert.That(svc, Is.Not.Null);
                 Assert.That(svc.Interface, Is.Null);
@@ -68,11 +80,15 @@ namespace Solti.Utils.DI.Injector.Tests
         [Test]
         public void ServiceProvider_GetService_ShouldResolveNamedDependencies([ValueSource(nameof(Lifetimes))] Lifetime lifetime1, [ValueSource(nameof(Lifetimes))] Lifetime lifetime2) 
         {
-            Container
-                .Service<IInterface_1, Implementation_1_No_Dep>("cica", lifetime1)
-                .Service<IInterface_7<IInterface_1>, MyServiceUsingNamedDependency>(lifetime2);
+            Root = ScopeFactory.Create
+            (
+                svcs => svcs
+                    .Service<IInterface_1, Implementation_1_No_Dep>("cica", lifetime1)
+                    .Service<IInterface_7<IInterface_1>, MyServiceUsingNamedDependency>(lifetime2),
+                new ScopeOptions { SupportsServiceProvider = true }
+            );
 
-            using (Container.CreateProvider(out IServiceProvider provider))
+            using (Root.CreateScope(out IServiceProvider provider))
             {
                 var svc = provider.GetService<IInterface_7<IInterface_1>>();
 
@@ -84,11 +100,15 @@ namespace Solti.Utils.DI.Injector.Tests
         [Test]
         public void ServiceProvider_GetService_ShouldResolveDependencies([ValueSource(nameof(Lifetimes))] Lifetime lifetime1, [ValueSource(nameof(Lifetimes))] Lifetime lifetime2)
         {
-            Container
-                .Service<IInterface_1, Implementation_1_No_Dep>(lifetime1)
-                .Service<IInterface_7<IInterface_1>, Implementation_7_TInterface_Dependant<IInterface_1>>(lifetime2);
+            Root = ScopeFactory.Create
+            (
+                svcs => svcs
+                    .Service<IInterface_1, Implementation_1_No_Dep>(lifetime1)
+                    .Service<IInterface_7<IInterface_1>, Implementation_7_TInterface_Dependant<IInterface_1>>(lifetime2),
+                new ScopeOptions { SupportsServiceProvider = true }
+            );
 
-            using (Container.CreateProvider(out IServiceProvider provider))
+            using (Root.CreateScope(out IServiceProvider provider))
             {
                 var svc = provider.GetService<IInterface_7<IInterface_1>>();
 

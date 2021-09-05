@@ -26,7 +26,12 @@ namespace Solti.Utils.DI
             ServiceCollection serviceCollection = new();
             registerServices(serviceCollection);
 
-            return new Internals.ScopeFactory(serviceCollection, options, cancellation);
+            if (options is null)
+                options = new ScopeOptions();
+
+            return options.SupportsServiceProvider
+                ? new Internals.ScopeFactorySupportsServiceProvider(serviceCollection, options, cancellation)
+                : new Internals.ScopeFactory(serviceCollection, options, cancellation);
         }
     }
 }

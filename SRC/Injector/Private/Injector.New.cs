@@ -1,5 +1,5 @@
 ﻿/********************************************************************************
-* Injector_New.cs                                                               *
+* Injector.cs                                                                   *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
@@ -217,7 +217,7 @@ namespace Solti.Utils.DI.Internals
         }
         #endregion
 
-        public Injector_New(ScopeFactory parent) : base(Ensure.Parameter.IsNotNull(parent, nameof(parent))) { }
+        public Injector_New(ScopeFactory parent) : base(parent) { }
 
         public new ScopeFactory Parent => (ScopeFactory) base.Parent!;
 
@@ -260,7 +260,7 @@ namespace Solti.Utils.DI.Internals
 
         public object? TryGet(Type iface, string? name) => TryGetReference(iface, name)?.GetInstance();
 
-        public ScopeOptions Options => Parent.Options;
+        public ScopeOptions Options => Parent.ScopeOptions;
 
         IServiceContainer IInjector.UnderlyingContainer => throw new NotSupportedException(); // TODO: torolni
         #endregion

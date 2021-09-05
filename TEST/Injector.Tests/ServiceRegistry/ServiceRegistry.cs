@@ -61,6 +61,6 @@ namespace Solti.Utils.DI.Internals.Tests
 
         [Test]
         public void Ctor_ShouldThrowOnOverriddenService() =>
-            Assert.Throws<ArgumentException>(() => new ScopeFactory(new HashSet<AbstractServiceEntry>(ServiceIdComparer.Instance) { new AbstractServiceEntry(typeof(IInjector), null, null) }), Resources.BUILT_IN_SERVICE_OVERRIDE);
+            Assert.Throws<ArgumentException>(() => new ScopeFactory(new HashSet<AbstractServiceEntry>(ServiceIdComparer.Instance) { new AbstractServiceEntry(typeof(IInjector), null, null) }, new ScopeOptions()), Resources.BUILT_IN_SERVICE_OVERRIDE);
     }
 }

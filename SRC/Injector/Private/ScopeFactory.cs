@@ -13,23 +13,25 @@ namespace Solti.Utils.DI.Internals
 
     internal class ScopeFactory : ConcurrentServiceRegistry, IScopeFactory
     {
-        public ScopeFactory(ISet<AbstractServiceEntry> entries, ScopeOptions? options = null, CancellationToken cancellation = default) : base(entries, cancellation: cancellation)
+        public ScopeFactory(ISet<AbstractServiceEntry> entries, ScopeOptions scopeOptions, CancellationToken cancellation = default) : base(entries, cancellation: cancellation)
         {
-            Options = options ?? new ScopeOptions();
+            ScopeOptions = scopeOptions;
         }
 
-        public ScopeOptions Options { get; }
+        public ScopeOptions ScopeOptions { get; }
 
         public virtual Injector_New CreateScope() => new(this);
 
-        protected override IReadOnlyCollection<AbstractServiceEntry> BuiltInServices => new AbstractServiceEntry[]
+        protected static IReadOnlyCollection<AbstractServiceEntry> DefaultBuiltInServices { get; } = new AbstractServiceEntry[]
         {
             new ContextualServiceEntry(typeof(IServiceRegistry), null, owner => owner),
             new ContextualServiceEntry(typeof(IInjector), null,  owner => (IInjector) owner),
             new ContextualServiceEntry(typeof(IScopeFactory), null, owner => (IScopeFactory) owner.Parent!),
-            new ContextualServiceEntry(typeof(IDictionary<string, object?>), IInjectorBasicExtensions.META_NAME, _ => new Dictionary<string, object?>()), // ne Scoped legyen h StrictDI sose anyazzon
+            new ContextualServiceEntry(typeof(IDictionary<string, object?>), IInjectorBasicExtensions.META_NAME, _ => new Dictionary<string, object?>()), // ne Scoped legyen h StrictDI ne anyazzon
             new ScopedServiceEntry(typeof(IEnumerable<>), null, typeof(ServiceEnumerator<>), null!)
         };
+
+        protected override IReadOnlyCollection<AbstractServiceEntry> BuiltInServices { get; } = DefaultBuiltInServices;
 
         IInjector IScopeFactory.CreateScope() => CreateScope();
 
