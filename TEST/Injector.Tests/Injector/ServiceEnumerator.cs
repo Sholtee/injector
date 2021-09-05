@@ -1,5 +1,5 @@
 ﻿/********************************************************************************
-* Select.cs                                                                     *
+* ServiceEnumerator.cs                                                          *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
@@ -13,24 +13,22 @@ using NUnit.Framework;
 namespace Solti.Utils.DI.Injector.Tests
 {
     using Interfaces;
-    using Internals;
 
-    public partial class InjectorTestsBase<TContainer>
+    public partial class InjectorTests
     {
         [Test]
-        public void Injector_Select_ShouldReturnAllTheRegisteredServicesWithTheGivenInterface() 
+        public void Injector_ServiceEnumerator_ShouldReturnAllTheRegisteredServicesWithTheGivenInterface() 
         {
-            Container
+            Root = ScopeFactory.Create(svcs => svcs
                 .Service<IInterface_1, Implementation_1>(Lifetime.Transient)
                 .Service<IInterface_1, Implementation_2>(1.ToString(), Lifetime.Scoped)
                 .Service<IInterface_1, Implementation_3>(2.ToString(), Lifetime.Singleton)
-                .Service<IInterface_2, Implementation_2_IInterface_1_Dependant>(Lifetime.Transient);
+                .Service<IInterface_2, Implementation_2_IInterface_1_Dependant>(Lifetime.Transient));
 
-            using (IInjector injector = Container.CreateInjector()) 
+            using (IInjector injector = Root.CreateScope()) 
             {
                 IInterface_1[] svcs = injector
-                    .Select(typeof(IInterface_1))
-                    .Cast<IInterface_1>()
+                    .Get<IEnumerable<IInterface_1>>()
                     .ToArray();
 
                 Assert.That(svcs.Length, Is.EqualTo(3));
@@ -41,19 +39,18 @@ namespace Solti.Utils.DI.Injector.Tests
         }
 
         [Test]
-        public void Injector_Select_ShouldReturnAllTheRegisteredServicesWithTheGivenGenericInterface()
+        public void Injector_ServiceEnumerator_ShouldReturnAllTheRegisteredServicesWithTheGivenGenericInterface()
         {
-            Container
+            Root = ScopeFactory.Create(svcs => svcs
                 .Service(typeof(IInterface_3<>), typeof(GenericImplementation_1<>), Lifetime.Singleton)
                 .Service(typeof(IInterface_3<>), 1.ToString(), typeof(GenericImplementation_2<>), Lifetime.Scoped)
                 .Service(typeof(IInterface_3<>), 2.ToString(), typeof(GenericImplementation_3<>), Lifetime.Transient)
-                .Service<IInterface_1, Implementation_1>(Lifetime.Singleton); // StrictDI-t ne szegjuk meg
+                .Service<IInterface_1, Implementation_1>(Lifetime.Singleton)); // StrictDI-t ne szegjuk meg
 
-            using (IInjector injector = Container.CreateInjector())
+            using (IInjector injector = Root.CreateScope())
             {
                 IInterface_3<int>[] svcs = injector
-                    .Select(typeof(IInterface_3<int>))
-                    .Cast<IInterface_3<int>>()
+                    .Get<IEnumerable<IInterface_3<int>>>()
                     .ToArray();
 
                 Assert.That(svcs.Length, Is.EqualTo(3));
@@ -86,35 +83,33 @@ namespace Solti.Utils.DI.Injector.Tests
         }
 
         [Test]
-        public void Injector_Select_EnumerableCanBeEnumeratedMultipleTimes() 
+        public void Injector_ServiceEnumerator_EnumerableCanBeEnumeratedMultipleTimes() 
         {
-            Container.Service<IInterface_1, Implementation_1>(Lifetime.Transient);
+            Root = ScopeFactory.Create(svcs => svcs.Service<IInterface_1, Implementation_1>(Lifetime.Transient));
 
-            using (IInjector injector = Container.CreateInjector())
+            using (IInjector injector = Root.CreateScope())
             {
-                IEnumerable svcs = injector.Select(typeof(IInterface_1));
+                IEnumerable<IInterface_1> svcs = injector.Get<IEnumerable<IInterface_1>>();
 
                 for (int i = 0; i < 3; i++)
                 {
-                    Assert.DoesNotThrow(() => svcs.Cast<IInterface_1>().ToArray());
+                    Assert.DoesNotThrow(() => svcs.ToArray());
                 }
             }
         }
 
         [Test]
-        public void Injector_Select_ShouldHandleOpenAndClosedGenericsTogether()
+        public void Injector_ServiceEnumerator_ShouldHandleOpenAndClosedGenericsTogether()
         {
-            Container
+            Root = ScopeFactory.Create(svcs => svcs
                 .Service<IInterface_1, Implementation_1>(Lifetime.Transient)
                 .Service(typeof(IInterface_3<>), 1.ToString(), typeof(GenericImplementation_1<>), Lifetime.Transient)
                 .Service(typeof(IInterface_3<>), 2.ToString(), typeof(GenericImplementation_2<>), Lifetime.Transient)
-                .Service<IInterface_3<int>, GenericImplementation_3<int>>(Lifetime.Transient);
+                .Service<IInterface_3<int>, GenericImplementation_3<int>>(Lifetime.Transient));
 
-            using (IInjector injector = Container.CreateInjector())
+            using (IInjector injector = Root.CreateScope())
             {
-                IEnumerable<IInterface_3<int>> svcs = injector
-                    .Select(typeof(IInterface_3<int>))
-                    .Cast<IInterface_3<int>>();
+                IEnumerable<IInterface_3<int>> svcs = injector.Get<IEnumerable<IInterface_3<int>>>();
 
                 Assert.That(svcs.Count(), Is.EqualTo(3));
                 Assert.That(svcs.Any(svc => svc is GenericImplementation_1<int>));
@@ -124,11 +119,11 @@ namespace Solti.Utils.DI.Injector.Tests
         }
 
         [Test]
-        public void Injector_Select_TransientServicesShouldBeUniqueInEachEnumeration() 
+        public void Injector_ServiceEnumerator_TransientServicesShouldBeUniqueInEachEnumeration() 
         {
-            Container.Service<IInterface_1, Implementation_1>(Lifetime.Transient);
+            Root = ScopeFactory.Create(svcs => svcs.Service<IInterface_1, Implementation_1>(Lifetime.Transient));
 
-            using (IInjector injector = Container.CreateInjector()) 
+            using (IInjector injector = Root.CreateScope()) 
             {
                 IEnumerable<IInterface_1> svcs = injector.Get<IEnumerable<IInterface_1>>();
                 Assert.AreNotSame(svcs.Single(), svcs.Single());
@@ -141,15 +136,16 @@ namespace Solti.Utils.DI.Injector.Tests
             {
                 yield return Lifetime.Singleton;
                 yield return Lifetime.Scoped;
+                yield return Lifetime.Pooled;
             }
         }
 
         [Test]
-        public void Injector_Select_NotTransientServicesShouldBeTheSameInEachEnumeration([ValueSource(nameof(NonTransientLifetimes))] Lifetime lifetime)
+        public void Injector_ServiceEnumerator_NotTransientServicesShouldBeTheSameInEachEnumeration([ValueSource(nameof(NonTransientLifetimes))] Lifetime lifetime)
         {
-            Container.Service<IInterface_1, Implementation_1>(lifetime);
+            Root = ScopeFactory.Create(svcs => svcs.Service<IInterface_1, Implementation_1>(lifetime));
 
-            using (IInjector injector = Container.CreateInjector())
+            using (IInjector injector = Root.CreateScope())
             {
                 IEnumerable<IInterface_1> svcs = injector.Get<IEnumerable<IInterface_1>>();
                 Assert.AreSame(svcs.Single(), svcs.Single());
@@ -157,9 +153,11 @@ namespace Solti.Utils.DI.Injector.Tests
         }
 
         [Test]
-        public void Injector_Select_ShouldWorkWithBuiltInServices([Values(typeof(IInjector), typeof(IServicePath), typeof(IScopeFactory))] Type svc)
+        public void Injector_ServiceEnumerator_ShouldWorkWithBuiltInServices([Values(typeof(IInjector), typeof(IServiceRegistry), typeof(IScopeFactory))] Type svc)
         {
-            using (IInjector injector = Container.CreateInjector())
+            Root = ScopeFactory.Create(svcs => { });
+
+            using (IInjector injector = Root.CreateScope())
             {
                 Assert.That(((IEnumerable) injector.Get(typeof(IEnumerable<>).MakeGenericType(svc))).Cast<object>().Count(), Is.EqualTo(1));
             }

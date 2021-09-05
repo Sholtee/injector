@@ -11,6 +11,7 @@ using NUnit.Framework;
 namespace Solti.Utils.DI.Injector.Tests
 {
     using Interfaces;
+    using Internals;
 
     [TestFixture]
     public partial class InjectorTests
@@ -220,6 +221,9 @@ namespace Solti.Utils.DI.Injector.Tests
         #endregion
 
         public IScopeFactory Root { get; set; }
+
+        [SetUp]
+        public void Setup() => Config.Reset();
 
         [TearDown]
         public void TearDwon()

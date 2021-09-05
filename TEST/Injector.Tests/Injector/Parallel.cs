@@ -13,9 +13,12 @@ using NUnit.Framework;
 namespace Solti.Utils.DI.Injector.Tests
 {
     using Interfaces;
+    using Internals;
+
+    using ScopeFactory = DI.ScopeFactory;
 
     [TestFixture]
-    public partial class InjectorTestsBase<TContainer>
+    public partial class InjectorTests
     {
         private const int TASK_COUNT = 10;
 
@@ -29,15 +32,12 @@ namespace Solti.Utils.DI.Injector.Tests
         public void Parallelism_DependencyResolutionTest(
             [ValueSource(nameof(Lifetimes))] Lifetime l1,
             [ValueSource(nameof(Lifetimes))] Lifetime l2,
-            [ValueSource(nameof(Lifetimes))] Lifetime l3,
-            [Values(true, false)] bool createChildContainer) 
+            [ValueSource(nameof(Lifetimes))] Lifetime l3) 
         {
-            Container
+            Root = ScopeFactory.Create(svcs => svcs
                 .Service(typeof(IList<>), typeof(MyList<>), l1)
                 .Service<IInterface_7<IList<object>>, Implementation_7_TInterface_Dependant<IList<object>>>(l2)
-                .Service<IInterface_7<IInterface_7<IList<object>>>, Implementation_7_TInterface_Dependant<IInterface_7<IList<object>>>>(l3);
-
-            IServiceContainer container = createChildContainer ? Container.CreateChild() : Container;
+                .Service<IInterface_7<IInterface_7<IList<object>>>, Implementation_7_TInterface_Dependant<IInterface_7<IList<object>>>>(l3));
 
             Assert.DoesNotThrow(() => Task.WaitAll
             (
@@ -46,7 +46,7 @@ namespace Solti.Utils.DI.Injector.Tests
 
             void Worker() 
             {
-                using (IInjector injector = container.CreateInjector())
+                using (IInjector injector = Root.CreateScope())
                 {
                     for (int i = 0; i < 50; i++)
                         injector.Get<IInterface_7<IInterface_7<IList<object>>>>();
@@ -55,13 +55,9 @@ namespace Solti.Utils.DI.Injector.Tests
         }
 
         [Test]
-        public void Parallelism_SpecializationTest(
-            [ValueSource(nameof(Lifetimes))] Lifetime lifetime,
-            [Values(true, false)] bool createChildContainer)
+        public void Parallelism_SpecializationTest([ValueSource(nameof(Lifetimes))] Lifetime lifetime)
         {
-            Container.Service(typeof(IList<>), typeof(MyList<>), lifetime);
-
-            IServiceContainer container = createChildContainer ? Container.CreateChild() : Container;
+            Root = ScopeFactory.Create(svcs => svcs.Service(typeof(IList<>), typeof(MyList<>), lifetime));
 
             Assert.DoesNotThrow(() => Task.WaitAll
             (
@@ -70,7 +66,7 @@ namespace Solti.Utils.DI.Injector.Tests
 
             void Worker()
             {
-                using (IInjector injector = container.CreateInjector())
+                using (IInjector injector = Root.CreateScope())
                 {
                     foreach (Type type in RandomTypes.Take(20))
                         injector.Get(typeof(IList<>).MakeGenericType(type));
