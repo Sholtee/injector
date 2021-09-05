@@ -470,7 +470,8 @@ namespace Solti.Utils.DI.Injector.Tests
 
             protected override void Dispose(bool disposeManaged)
             {
-                Injector.Get<IScopeFactory>();
+                if (disposeManaged)
+                    Injector.Get<IScopeFactory>();
 
                 base.Dispose(disposeManaged);
             }
@@ -483,7 +484,7 @@ namespace Solti.Utils.DI.Injector.Tests
 
             IInjector injector = Root.CreateScope();
             injector.Get<IMyService>();
-            Assert.Throws<InvalidOperationException>(injector.Dispose, Resources.INJECTOR_IS_DISPOSING);
+            Assert.Throws<InvalidOperationException>(injector.Dispose, Resources.INJECTOR_IS_BEING_DISPOSED);
         }
 
         [Test]

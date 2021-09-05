@@ -135,9 +135,9 @@ namespace Solti.Utils.DI.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Injector cannot be invoked when it is about to dispose..
         /// </summary>
-        internal static string INJECTOR_IS_DISPOSING {
+        internal static string INJECTOR_IS_BEING_DISPOSED {
             get {
-                return ResourceManager.GetString("INJECTOR_IS_DISPOSING", resourceCulture);
+                return ResourceManager.GetString("INJECTOR_IS_BEING_DISPOSED", resourceCulture);
             }
         }
         

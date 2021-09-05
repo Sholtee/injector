@@ -18,27 +18,31 @@ namespace Solti.Utils.DI.Injector.Tests
     using Primitives.Patterns;
     using Properties;
 
-    public partial class InjectorTestsBase<TContainer>
+    using ScopeFactory = DI.ScopeFactory;
+
+    public partial class InjectorTests
     {
         [Test]
         public void Lifetime_TransientService_ShouldBeInstantiatedOnEveryRequest()
         {
-            Container.Service<IInterface_1, Implementation_1_No_Dep>(Lifetime.Transient);
+            Root = ScopeFactory.Create(svcs => svcs.Service<IInterface_1, Implementation_1_No_Dep>(Lifetime.Transient));
 
-            using (IInjector injector = Container.CreateInjector())
+            using (IInjector injector = Root.CreateScope())
             {
+                Assert.IsNotNull(injector.Get<IInterface_1>());
+                Assert.That(injector.Get<IServiceRegistry>().GetEntry<IInterface_1>().Registry, Is.EqualTo(injector));
                 Assert.AreNotSame(injector.Get<IInterface_1>(), injector.Get<IInterface_1>());
             }
         }
 
         [Test]
-        public void Lifetime_TransientService_ShouldNotBeInstantiatedIfTheInjectorWasRecycled() 
+        public void Lifetime_TransientService_ShouldNotBeInstantiatedIfTheScopeWasRecycled() 
         {
             Config.Value.Injector.MaxSpawnedTransientServices = 1;
 
-            Container.Service<IInterface_1, Implementation_1_No_Dep>(Lifetime.Transient);
+            Root = ScopeFactory.Create(svcs => svcs.Service<IInterface_1, Implementation_1_No_Dep>(Lifetime.Transient));
 
-            using (IInjector injector1 = Container.CreateInjector())
+            using (IInjector injector1 = Root.CreateScope())
             {
                 Assert.DoesNotThrow(() => injector1.Get<IInterface_1>());
                 Assert.Throws<Exception>(() => injector1.Get<IInterface_1>(), Resources.INJECTOR_SHOULD_BE_RELEASED);
@@ -47,7 +51,7 @@ namespace Solti.Utils.DI.Injector.Tests
                 // Ettol meg masik injector tud peldanyositani.
                 //
 
-                using (IInjector injector2 = Container.CreateInjector())
+                using (IInjector injector2 = Root.CreateScope())
                 {
                     Assert.DoesNotThrow(() => injector2.Get<IInterface_1>());
                 }
@@ -55,27 +59,20 @@ namespace Solti.Utils.DI.Injector.Tests
         }
 
         [Test]
-        public void Lifetime_InheritedTransientService_ShouldBeInstantiatedOnEveryRequest()
+        public void Lifetime_ScopedService_ShouldBeInstantiatedOnlyOncePerScope()
         {
-            Container.Service<IInterface_1, Implementation_1_No_Dep>(Lifetime.Transient);
+            Root = ScopeFactory.Create(svcs => svcs.Service<IInterface_1, Implementation_1_No_Dep>(Lifetime.Scoped));
 
-            using (IInjector injector = Container.CreateChild().CreateInjector())
+            using (IInjector injector1 = Root.CreateScope())
             {
-                Assert.AreNotSame(injector.Get<IInterface_1>(), injector.Get<IInterface_1>());
-            }
-        }
-
-        [Test]
-        public void Lifetime_ScopedService_ShouldBeInstantiatedOnlyOncePerInjector()
-        {
-            Container.Service<IInterface_1, Implementation_1_No_Dep>(Lifetime.Scoped);
-
-            using (IInjector injector1 = Container.CreateInjector())
-            {
+                Assert.NotNull(injector1.Get<IInterface_1>());
+                Assert.That(injector1.Get<IServiceRegistry>().GetEntry<IInterface_1>().Registry, Is.EqualTo(injector1));
                 Assert.AreSame(injector1.Get<IInterface_1>(), injector1.Get<IInterface_1>());
 
-                using (IInjector injector2 = Container.CreateInjector())
+                using (IInjector injector2 = Root.CreateScope())
                 {
+                    Assert.NotNull(injector2.Get<IInterface_1>());
+                    Assert.That(injector2.Get<IServiceRegistry>().GetEntry<IInterface_1>().Registry, Is.EqualTo(injector2));
                     Assert.AreSame(injector2.Get<IInterface_1>(), injector2.Get<IInterface_1>());
                     Assert.AreNotSame(injector1.Get<IInterface_1>(), injector2.Get<IInterface_1>());
                 }
@@ -83,7 +80,7 @@ namespace Solti.Utils.DI.Injector.Tests
         }
 
         [Test]
-        public async Task Lifetime_ScopedService_ShouldBeInstantiatedOnlyOncePerInjector_ParallelTest()
+        public async Task Lifetime_ScopedService_ShouldBeInstantiatedOnlyOncePerScope_ParallelTest()
         {
             //
             // Ne mindig csak a ket Get() hivas eredmenyet hasonlitsuk ossze
@@ -91,13 +88,13 @@ namespace Solti.Utils.DI.Injector.Tests
 
             var store = new ConcurrentDictionary<IInterface_1, bool>();
 
-            Container.Service<IInterface_1, Implementation_1_No_Dep>(Lifetime.Scoped);
+            Root = ScopeFactory.Create(svcs => svcs.Service<IInterface_1, Implementation_1_No_Dep>(Lifetime.Scoped));
 
             await Task.WhenAll
             (
                 Enumerable.Repeat(0, 100).Select(_ => Task.Factory.StartNew(() =>
                 {
-                    using (IInjector injector = Container.CreateInjector())
+                    using (IInjector injector = Root.CreateScope())
                     {
                         Assert.That(store.TryAdd(injector.Get<IInterface_1>(), true));
                         Assert.False(store.TryAdd(injector.Get<IInterface_1>(), true));
@@ -107,45 +104,26 @@ namespace Solti.Utils.DI.Injector.Tests
         }
 
         [Test]
-        public void Lifetime_InheritedScopedService_ShouldBeInstantiatedOnlyOncePerInjector()
+        public void Lifetime_SingletonService_ShouldBeInstantiatedOnlyOnce()
         {
-            IServiceContainer childContainer = Container // nem muszaj dispose-olni Container felszabaditasakor ugy is dispose-olva lesz
-                .Service<IInterface_1, Implementation_1_No_Dep>(Lifetime.Scoped)
-                .CreateChild();
+            Root = ScopeFactory.Create(svcs => svcs.Service<IInterface_1, Implementation_1_No_Dep>(Lifetime.Singleton));
 
-            using (IInjector injector1 = childContainer.CreateInjector())
+            using (IInjector injector1 = Root.CreateScope())
             {
-                Assert.AreSame(injector1.Get<IInterface_1>(), injector1.Get<IInterface_1>());
-
-                using (IInjector injector2 = childContainer.CreateInjector())
+                using (IInjector injector2 = Root.CreateScope())
                 {
+                    Assert.IsNotNull(injector1.Get<IInterface_1>());
+                    Assert.IsNotNull(injector2.Get<IInterface_1>());
+
+                    Assert.AreSame(injector1.Get<IInterface_1>(), injector1.Get<IInterface_1>());
                     Assert.AreSame(injector2.Get<IInterface_1>(), injector2.Get<IInterface_1>());
-                    Assert.AreNotSame(injector1.Get<IInterface_1>(), injector2.Get<IInterface_1>());
+                    Assert.AreSame(injector2.Get<IInterface_1>(), injector2.Get<IInterface_1>());
                 }
             }
         }
 
         [Test]
-        public void Lifetime_SingletonService_ShouldBeInstantiatedOnlyOncePerDeclaringContainer()
-        {
-            Container.Service<IInterface_1, Implementation_1_No_Dep>(Lifetime.Singleton);
-
-            using (IInjector injector1 = Container.CreateInjector())
-            {
-                using (IInjector injector2 = Container.CreateChild().CreateInjector())
-                {
-                    using (IInjector injector3 = Container.CreateChild().CreateChild().CreateInjector())
-                    {                    
-                        Assert.AreSame(injector1.Get<IInterface_1>(), injector3.Get<IInterface_1>());
-                        Assert.AreSame(injector2.Get<IInterface_1>(), injector3.Get<IInterface_1>());
-                        Assert.AreSame(injector3.Get<IInterface_1>(), injector3.Get<IInterface_1>());
-                    }
-                }
-            }
-        }
-
-        [Test]
-        public async Task Lifetime_SingletonService_ShouldBeInstantiatedOnlyOncePerDeclaringContainer_ParallelTest()
+        public async Task Lifetime_SingletonService_ShouldBeInstantiatedOnlyOnceInTheRootScope_ParallelTest()
         {
             //
             // Ne mindig csak a ket Get() hivas eredmenyet hasonlitsuk ossze
@@ -153,13 +131,13 @@ namespace Solti.Utils.DI.Injector.Tests
 
             var store = new ConcurrentDictionary<IInterface_1, bool>();
 
-            Container.Service<IInterface_1, Implementation_1_No_Dep>(Lifetime.Singleton);
+            Root = ScopeFactory.Create(svcs => svcs.Service<IInterface_1, Implementation_1_No_Dep>(Lifetime.Singleton));
 
             await Task.WhenAll
             (
                 Enumerable.Repeat(0, 100).Select(_ => Task.Factory.StartNew(() =>
                 {
-                    using (IInjector injector = Container.CreateInjector())
+                    using (IInjector injector = Root.CreateScope())
                     {
                         store.TryAdd(injector.Get<IInterface_1>(), true);
                     }
@@ -176,18 +154,16 @@ namespace Solti.Utils.DI.Injector.Tests
 
             Disposable instance;
 
-            using (IServiceContainer child = Container.CreateChild())
+            using (IScopeFactory root = ScopeFactory.Create(svcs => svcs
+                .Service<IDisposable, Disposable>(Lifetime.Scoped)
+                .Service<IInterface_7<IDisposable>, Implementation_7_TInterface_Dependant<IDisposable>>(Lifetime.Singleton)))
             {
-                child
-                    .Service<IDisposable, Disposable>(Lifetime.Scoped)
-                    .Service<IInterface_7<IDisposable>, Implementation_7_TInterface_Dependant<IDisposable>>(Lifetime.Singleton);
-
-                using (IInjector injector = child.CreateInjector())
+                using (IInjector injector = root.CreateScope())
                 {
                     injector.Get<IInterface_7<IDisposable>>();
                 }
 
-                using (IInjector injector = child.CreateInjector())
+                using (IInjector injector = root.CreateScope())
                 {
                     instance = (Disposable) injector.Get<IInterface_7<IDisposable>>().Interface;
                     Assert.That(instance.Disposed, Is.False);
@@ -200,83 +176,55 @@ namespace Solti.Utils.DI.Injector.Tests
         [Test]
         public void Lifetime_SingletonService_ShouldHaveItsOwnInjector() 
         {
-            Container
-                .Service<IInterface_7<IInjector>, Implementation_7_TInterface_Dependant<IInjector>>(Lifetime.Singleton)
-                .Service<IInterface_7<IInjector>, Implementation_7_TInterface_Dependant<IInjector>>("named", Lifetime.Singleton);
+            Root = ScopeFactory.Create(svcs => svcs.Service<IInterface_7<IInjector>, Implementation_7_TInterface_Dependant<IInjector>>(Lifetime.Singleton));
 
-            using (IInjector injector = Container.CreateInjector()) 
+            using (IInjector injector = Root.CreateScope()) 
             {
-                IInterface_7<IInjector> svc = injector.Get<IInterface_7<IInjector>>("named");
+                IInterface_7<IInjector> svc = injector.Get<IInterface_7<IInjector>>();
 
                 Assert.That(svc.Interface, Is.Not.SameAs(injector));
-                Assert.That(svc.Interface.UnderlyingContainer.Parent, Is.SameAs(Container));
-
-                Assert.That(svc.Interface.Get<IInterface_7<IInjector>>().Interface, Is.Not.SameAs(injector));
-                Assert.That(svc.Interface.Get<IInterface_7<IInjector>>().Interface.UnderlyingContainer.Parent, Is.SameAs(Container));
-
-                Assert.That(svc.Interface.Get<IInterface_7<IInjector>>().Interface, Is.Not.SameAs(svc.Interface));
             }
         }
 
-        [TestCaseSource(nameof(InjectorControlledLifetimes))]
-        public void Lifetime_NonSingletonService_ShouldResolveDependencyFromTheParentContainer(Lifetime lifetime) 
+        [TestCaseSource(nameof(ScopeControlledLifetimes))]
+        public void Lifetime_NonSingletonService_ShouldBeInstantiatedInTheCurrentScope(Lifetime lifetime) 
         {
-            Container.Service<IInterface_2, Implementation_2_IInterface_1_Dependant>(lifetime);
+            Root = ScopeFactory.Create(svcs => svcs.Service<IInterface_1, Implementation_1_No_Dep>(lifetime));
 
-            IServiceContainer child = Container.CreateChild();
-            child.Service<IInterface_1, Implementation_1_No_Dep>(Lifetime.Transient);
-
-            using (IInjector injector = child.CreateInjector())
+            using (IInjector injector = Root.CreateScope())
             {
-                Assert.DoesNotThrow(() => injector.Get<IInterface_2>());
+                Assert.That(injector.Get<IServiceRegistry>().GetEntry<IInterface_1>().Registry, Is.SameAs(injector));
             }
         }
 
         [Test]
-        public void Lifetime_SingletonService_ShouldResolveDependencyFromTheDeclaringContainer_DeclarationTest()
+        public void Lifetime_SingletonService_ShouldBeInstantiatedInTheRootScope()
         {
-            Container.Service<IInterface_2, Implementation_2_IInterface_1_Dependant>(Lifetime.Singleton);
+            Root = ScopeFactory.Create(svcs => svcs.Service<IInterface_1, Implementation_1_No_Dep>(Lifetime.Singleton));
 
-            IServiceContainer child = Container.CreateChild();
-            child.Service<IInterface_1, Implementation_1_No_Dep>(Lifetime.Transient);
-
-            using (IInjector injector = child.CreateInjector())
+            using (IInjector injector = Root.CreateScope())
             {
-                Assert.Throws<ServiceNotFoundException>(() => injector.Get<IInterface_2>());
+                Assert.That(injector.Get<IServiceRegistry>().GetEntry<IInterface_1>().Registry, Is.SameAs(Root));
             }
         }
 
         [Test]
-        public void Lifetime_SingletonService_ShouldResolveDependencyFromTheDeclaringContainer_DecorationTest()
+        public void Lifetime_PooledService_ShouldBeInstantiatedUpToNTimes([Values(1, 2, 3)] int times)
         {
-            Config.Value.Injector.StrictDI = false;
-
-            Container
-                .Service<IInterface_1, Implementation_1_No_Dep>(Lifetime.Transient)
-                .Service<IInterface_2, Implementation_2_IInterface_1_Dependant>(Lifetime.Singleton);
-
-            IServiceContainer child = Container.CreateChild();
-            child.Proxy<IInterface_1>((i, curr) => new DecoratedImplementation_1());
-
-            using (IInjector injector = child.CreateInjector())
-            {
-                Assert.That(injector.Get<IInterface_2>().Interface1, Is.InstanceOf<Implementation_1_No_Dep>());
-                Assert.That(injector.Get<IInterface_1>(), Is.InstanceOf<DecoratedImplementation_1>());
-            }
-        }
-
-        [Test]
-        public void Lifetime_PooledService_ShouldBeInstantiatedUpToNTimesPerDeclaringContainer([Values(1, 2, 3)] int times)
-        {
-            Container.Service<IInterface_1, Implementation_1_No_Dep>(Lifetime.Pooled.WithCapacity(times));
+            Root = ScopeFactory.Create(svcs => svcs.Service<IInterface_1, Implementation_1_No_Dep>(Lifetime.Pooled.WithCapacity(times)));
 
             ManualResetEventSlim stop = new ManualResetEventSlim();
 
             Task[] holders = Enumerable.Repeat(0, times).Select(_ => Task.Run(() =>
             {
-                using (IInjector injector = Container.CreateInjector())
+                using (IInjector injector = Root.CreateScope())
                 {
                     Assert.AreSame(injector.Get<IInterface_1>(), injector.Get<IInterface_1>());
+
+                    //
+                    // Nem tesszuk vissza a pool-ba
+                    //
+
                     stop.Wait();
                 }
             })).ToArray();
@@ -285,7 +233,7 @@ namespace Solti.Utils.DI.Injector.Tests
 
             Task extra = Task.Run(() =>
             {
-                using (IInjector injector = Container.CreateInjector())
+                using (IInjector injector = Root.CreateScope())
                 {
                     injector.Get<IInterface_1>();
                 }
@@ -305,26 +253,23 @@ namespace Solti.Utils.DI.Injector.Tests
         }
 
         [Test]
-        public async Task Lifetime_PooledService_ShouldHaveItsOwnInjector()
+        public async Task Lifetime_PooledService_ShouldHaveItsOwnScope()
         {
-            Container.Service<IInterface_7<IInjector>, Implementation_7_TInterface_Dependant<IInjector>>(Lifetime.Pooled.WithCapacity(2));
+            Root = ScopeFactory.Create(svcs => svcs.Service<IInterface_7<IInjector>, Implementation_7_TInterface_Dependant<IInjector>>(Lifetime.Pooled.WithCapacity(2)));
 
-            using (IInjector injector1 = Container.CreateInjector())
+            using (IInjector injector1 = Root.CreateScope())
             {
                 IInterface_7<IInjector> svc1 = injector1.Get<IInterface_7<IInjector>>();
 
                 Assert.That(svc1.Interface, Is.Not.SameAs(injector1));
-                Assert.That(svc1.Interface.UnderlyingContainer.Parent, Is.SameAs(Container));
 
-                await Task.Run(() =>
+                await Task.Run(() => // kulon szal kell hogy ne ugyanazt a szerviz peldanyt kapjuk vissza
                 {
-                    using (IInjector injector2 = Container.CreateInjector())
+                    using (IInjector injector2 = Root.CreateScope())
                     {
                         IInterface_7<IInjector> svc2 = injector2.Get<IInterface_7<IInjector>>();
 
                         Assert.That(svc2.Interface, Is.Not.SameAs(injector2));
-                        Assert.That(svc2.Interface.UnderlyingContainer.Parent, Is.SameAs(Container));
-
                         Assert.AreNotSame(svc1.Interface, svc2.Interface);
                     }
                 });
@@ -336,15 +281,13 @@ namespace Solti.Utils.DI.Injector.Tests
         private class DisposableService : Disposable, IDisposableService { }
 
         [Test]
-        public void Lifetime_PooledService_ShouldBeDisposedOnContainerDisposal()
+        public void Lifetime_PooledService_ShouldBeDisposedOnRootDisposal()
         {
             IDisposableEx disposable;
 
-            using (IServiceContainer container = Container.CreateChild())
+            using (IScopeFactory root = ScopeFactory.Create(svcs => svcs.Service<IDisposableService, DisposableService>(Lifetime.Pooled)))
             {
-                container.Service<IDisposableService, DisposableService>(Lifetime.Pooled);
-
-                using (IInjector injector = container.CreateInjector())
+                using (IInjector injector = root.CreateScope())
                 {
                     disposable = injector.Get<IDisposableService>();
                 }
@@ -356,13 +299,15 @@ namespace Solti.Utils.DI.Injector.Tests
         }
 
         [Test]
-        public void Lifetime_PooledService_MayHavePooledDependency()
+        public void Lifetime_PooledService_MayHavePooledDependency() // igazabol ezt a StrictDI tiltja
         {
-            Container
-                .Service<IInterface_1, Implementation_1>(Lifetime.Pooled)
-                .Service<IInterface_7<IInterface_1>, Implementation_7_TInterface_Dependant<IInterface_1>>(Lifetime.Pooled);
+            Config.Value.Injector.StrictDI = false;
 
-            using (IInjector injector = Container.CreateInjector())
+            Root = ScopeFactory.Create(svcs => svcs
+                .Service<IInterface_1, Implementation_1_No_Dep>(Lifetime.Pooled)
+                .Service<IInterface_7<IInterface_1>, Implementation_7_TInterface_Dependant<IInterface_1>>(Lifetime.Pooled));
+
+            using (IInjector injector = Root.CreateScope())
             {
                 IInterface_7<IInterface_1> svc = injector.Get<IInterface_7<IInterface_1>>();
 
@@ -373,11 +318,11 @@ namespace Solti.Utils.DI.Injector.Tests
         [Test]
         public void Lifetime_PooledService_MayHaveRegularDependency()
         {
-            Container
-                .Service<IInterface_1, Implementation_1>(Lifetime.Transient)
-                .Service<IInterface_7<IInterface_1>, Implementation_7_TInterface_Dependant<IInterface_1>>(Lifetime.Pooled);
+            Root = ScopeFactory.Create(svcs => svcs
+                .Service<IInterface_1, Implementation_1_No_Dep>(Lifetime.Transient)
+                .Service<IInterface_7<IInterface_1>, Implementation_7_TInterface_Dependant<IInterface_1>>(Lifetime.Pooled));
 
-            using (IInjector injector = Container.CreateInjector())
+            using (IInjector injector = Root.CreateScope())
             {
                 IInterface_7<IInterface_1> svc = injector.Get<IInterface_7<IInterface_1>>();
 
@@ -402,13 +347,11 @@ namespace Solti.Utils.DI.Injector.Tests
         {
             DisposableServiceHavingDisposableDependency svc;
 
-            using (IServiceContainer container = Container.CreateChild())
+            using (IScopeFactory root = ScopeFactory.Create(svcs => svcs
+                .Service<IDisposableEx, Disposable>(lifetime)
+                .Service<IDisposableService, DisposableServiceHavingDisposableDependency>(Lifetime.Pooled)))
             {
-                container
-                    .Service<IDisposableEx, Disposable>(lifetime)
-                    .Service<IDisposableService, DisposableServiceHavingDisposableDependency>(Lifetime.Pooled);
-
-                using (IInjector injector = container.CreateInjector())
+                using (IInjector injector = root.CreateScope())
                 {
                     svc = (DisposableServiceHavingDisposableDependency) injector.Get<IDisposableService>();
                 }
@@ -427,13 +370,11 @@ namespace Solti.Utils.DI.Injector.Tests
         {
             DisposableServiceHavingDisposableDependency svc;
 
-            using (IServiceContainer container = Container.CreateChild())
+            using (IScopeFactory root = ScopeFactory.Create(svcs => svcs
+                .Service<IDisposableEx, Disposable>(Lifetime.Pooled)
+                .Service<IDisposableService, DisposableServiceHavingDisposableDependency>(lifetime)))
             {
-                container
-                    .Service<IDisposableEx, Disposable>(Lifetime.Pooled)
-                    .Service<IDisposableService, DisposableServiceHavingDisposableDependency>(lifetime);
-
-                using (IInjector injector = container.CreateInjector())
+                using (IInjector injector = root.CreateScope())
                 {
                     svc = (DisposableServiceHavingDisposableDependency) injector.Get<IDisposableService>();
                 }
@@ -449,18 +390,18 @@ namespace Solti.Utils.DI.Injector.Tests
         [Test]
         public async Task Lifetime_PooledService_MayBeGeneric([Values(null, "cica")] string name, [ValueSource(nameof(Lifetimes))] Lifetime depLifetime)
         {
-            Container
-                .Service<IInterface_1, Implementation_1>(depLifetime)
-                .Service(typeof(IInterface_3<>), name, typeof(GenericImplementation_1<>), Lifetime.Pooled.WithCapacity(2));
+            Root = ScopeFactory.Create(svcs => svcs
+                .Service<IInterface_1, Implementation_1_No_Dep>(depLifetime)
+                .Service(typeof(IInterface_3<>), name, typeof(Implementation_3_IInterface_1_Dependant<>), Lifetime.Pooled.WithCapacity(2)));
 
-            using (IInjector injector1 = Container.CreateInjector())
+            using (IInjector injector1 = Root.CreateScope())
             {
                 Assert.AreSame(injector1.Get<IInterface_3<int>>(name), injector1.Get<IInterface_3<int>>(name));
                 Assert.AreSame(injector1.Get<IInterface_3<string>>(name), injector1.Get<IInterface_3<string>>(name));
 
                 await Task.Run(() =>
                 {
-                    using (IInjector injector2 = Container.CreateInjector())
+                    using (IInjector injector2 = Root.CreateScope())
                     {
                         Assert.AreSame(injector2.Get<IInterface_3<int>>(name), injector2.Get<IInterface_3<int>>(name));
                         Assert.AreSame(injector2.Get<IInterface_3<string>>(name), injector2.Get<IInterface_3<string>>(name));
@@ -473,38 +414,30 @@ namespace Solti.Utils.DI.Injector.Tests
         }
 
         [Test]
-        public void Lifetime_Instance_ShouldBeResolvedFromTheDeclaringContainer() 
+        public void Lifetime_Instance_ShouldBeResolvedFromTheRootScope() 
         {
-            Container.Instance<IDisposable>(new Disposable(), true);
+            Root = ScopeFactory.Create(svcs => svcs.Instance<IDisposable>(new Disposable(), true));
 
-            using (IServiceContainer child = Container.CreateChild())
+            using (IInjector injector = Root.CreateScope())
             {
-                IInjector
-                    injector1 = Container.CreateInjector(),
-                    injector2 = child.CreateInjector();
-
-                Assert.AreSame(injector1.UnderlyingContainer.Get<IDisposable>(), injector2.UnderlyingContainer.Get<IDisposable>());
-                Assert.AreSame(injector1.Get<IDisposable>(), injector2.Get<IDisposable>());
+                Assert.That(injector.Get<IServiceRegistry>().GetEntry<IDisposable>().Registry, Is.SameAs(Root));
             }
         }
 
         [Test]
         public void Lifetime_Instance_ShouldBeTypeChecked() =>
-            Assert.Throws<InvalidCastException>(() => Container.Instance(typeof(IDisposable), new object()), Resources.INVALID_INSTANCE);
+            Assert.Throws<InvalidCastException>(() => ScopeFactory.Create(svcs => svcs.Instance(typeof(IDisposable), new object())), Resources.INVALID_INSTANCE);
 
         [Test]
         public void Lifetime_PermissiveDI_LegalCases(
-            [Values(true, false)] bool useChildContainer,
             [ValueSource(nameof(Lifetimes))] Lifetime dependant,
             [ValueSource(nameof(Lifetimes))] Lifetime dependency)
         {
             Config.Value.Injector.StrictDI = false;
 
-            Container.Service<IInterface_1, Implementation_1_No_Dep>(dependency);
-
-            IServiceContainer sourceContainer = useChildContainer ? Container.CreateChild() : Container;
-
-            sourceContainer.Service<IInterface_2, Implementation_2_IInterface_1_Dependant>(dependant);
+            Root = ScopeFactory.Create(svcs => svcs
+                .Service<IInterface_1, Implementation_1_No_Dep>(dependency)
+                .Service<IInterface_2, Implementation_2_IInterface_1_Dependant>(dependant));
 
             //
             // Ket kulonallo injectort hozzunk letre.
@@ -512,7 +445,7 @@ namespace Solti.Utils.DI.Injector.Tests
 
             for (int i = 0; i < 2; i++)
             {
-                using (IInjector injector = sourceContainer.CreateInjector())
+                using (IInjector injector = Root.CreateScope())
                 {
                     Assert.DoesNotThrow(() => injector.Get<IInterface_2>());
                 }
@@ -520,17 +453,13 @@ namespace Solti.Utils.DI.Injector.Tests
         }
 
         [Test]
-        public void Lifetime_PermissiveDI_LegalCases(
-            [Values(true, false)] bool useChildContainer,
-            [ValueSource(nameof(Lifetimes))] Lifetime dependant)
+        public void Lifetime_PermissiveDI_LegalCases([ValueSource(nameof(Lifetimes))] Lifetime dependant)
         {
             Config.Value.Injector.StrictDI = false;
 
-            Container.Instance<IInterface_1>(new Implementation_1_No_Dep());
-
-            IServiceContainer sourceContainer = useChildContainer ? Container.CreateChild() : Container;
-
-            sourceContainer.Service<IInterface_2, Implementation_2_IInterface_1_Dependant>(dependant);
+            Root = ScopeFactory.Create(svcs => svcs
+                .Instance<IInterface_1>(new Implementation_1_No_Dep())
+                .Service<IInterface_2, Implementation_2_IInterface_1_Dependant>(dependant));
 
             //
             // Ket kulonallo injectort hozzunk letre.
@@ -538,7 +467,7 @@ namespace Solti.Utils.DI.Injector.Tests
 
             for (int i = 0; i < 2; i++)
             {
-                using (IInjector injector = sourceContainer.CreateInjector())
+                using (IInjector injector = Root.CreateScope())
                 {
                     Assert.DoesNotThrow(() => injector.Get<IInterface_2>());
                 }
@@ -547,17 +476,14 @@ namespace Solti.Utils.DI.Injector.Tests
 
         [Test]
         public void Lifetime_StrictDI_LegalCases1(
-            [Values(true, false)] bool useChildContainer,
-            [ValueSource(nameof(InjectorControlledLifetimes))] Lifetime dependant,
+            [ValueSource(nameof(ScopeControlledLifetimes))] Lifetime dependant,
             [ValueSource(nameof(Lifetimes))] Lifetime dependency) 
         {
             Config.Value.Injector.StrictDI = true;
 
-            Container
+            Root = ScopeFactory.Create(svcs => svcs
                 .Service<IInterface_1, Implementation_1_No_Dep>(dependency)
-                .Service<IInterface_2, Implementation_2_IInterface_1_Dependant>(dependant);
-
-            IServiceContainer sourceContainer = useChildContainer ? Container.CreateChild() : Container;
+                .Service<IInterface_2, Implementation_2_IInterface_1_Dependant>(dependant));
 
             //
             // Ket kulonallo injectort hozzunk letre.
@@ -565,7 +491,7 @@ namespace Solti.Utils.DI.Injector.Tests
 
             for (int i = 0; i < 2; i++)
             {
-                using (IInjector injector = sourceContainer.CreateInjector())
+                using (IInjector injector = Root.CreateScope())
                 {
                     Assert.DoesNotThrow(() => injector.Get<IInterface_2>());
                 }
@@ -573,17 +499,13 @@ namespace Solti.Utils.DI.Injector.Tests
         }
 
         [Test]
-        public void Lifetime_StrictDI_LegalCases2(
-            [Values(true, false)] bool useChildContainer,
-            [ValueSource(nameof(InjectorControlledLifetimes))] Lifetime dependant)
+        public void Lifetime_StrictDI_LegalCases2([ValueSource(nameof(ScopeControlledLifetimes))] Lifetime dependant)
         {
             Config.Value.Injector.StrictDI = true;
 
-            Container
+            Root = ScopeFactory.Create(svcs => svcs
                 .Instance<IInterface_1>(new Implementation_1_No_Dep())
-                .Service<IInterface_2, Implementation_2_IInterface_1_Dependant>(dependant);
-
-            IServiceContainer sourceContainer = useChildContainer ? Container.CreateChild() : Container;
+                .Service<IInterface_2, Implementation_2_IInterface_1_Dependant>(dependant));
 
             //
             // Ket kulonallo injectort hozzunk letre.
@@ -591,7 +513,7 @@ namespace Solti.Utils.DI.Injector.Tests
 
             for (int i = 0; i < 2; i++)
             {
-                using (IInjector injector = sourceContainer.CreateInjector())
+                using (IInjector injector = Root.CreateScope())
                 {
                     Assert.DoesNotThrow(() => injector.Get<IInterface_2>());
                 }
@@ -599,15 +521,13 @@ namespace Solti.Utils.DI.Injector.Tests
         }
 
         [Test]
-        public void Lifetime_StrictDI_LegalCases3([Values(true, false)] bool useChildContainer)
+        public void Lifetime_StrictDI_LegalCases3()
         {
             Config.Value.Injector.StrictDI = true;
 
-            Container
+            Root = ScopeFactory.Create(svcs => svcs
                 .Service<IInterface_1, Implementation_1_No_Dep>(Lifetime.Singleton)
-                .Service<IInterface_2, Implementation_2_IInterface_1_Dependant>(Lifetime.Singleton);
-
-            IServiceContainer sourceContainer = useChildContainer ? Container.CreateChild() : Container;
+                .Service<IInterface_2, Implementation_2_IInterface_1_Dependant>(Lifetime.Singleton));
 
             //
             // Ket kulonallo injectort hozzunk letre.
@@ -615,7 +535,7 @@ namespace Solti.Utils.DI.Injector.Tests
 
             for (int i = 0; i < 2; i++)
             {
-                using (IInjector injector = sourceContainer.CreateInjector())
+                using (IInjector injector = Root.CreateScope())
                 {
                     Assert.DoesNotThrow(() => injector.Get<IInterface_2>());
                 }
@@ -624,18 +544,14 @@ namespace Solti.Utils.DI.Injector.Tests
 
         [Test]
         public void Lifetime_StrictDI_IllegalCases1(
-            [Values(true, false)] bool useChildContainer,
-            [ValueSource(nameof(InjectorControlledLifetimes))] Lifetime dependency,
-            [ValueSource(nameof(ContainerControlledLifetimes))] Lifetime requestor,
-            [Values(true, false)] bool strictDI) 
+            [ValueSource(nameof(ScopeControlledLifetimes))] Lifetime dependency,
+            [ValueSource(nameof(RootControlledLifetimes))] Lifetime requestor) 
         {
-            Config.Value.Injector.StrictDI = strictDI;
+            Config.Value.Injector.StrictDI = true;
 
-            Container
+            Root = ScopeFactory.Create(svcs => svcs
                 .Service<IInterface_1, Implementation_1_No_Dep>(dependency)
-                .Service<IInterface_2, Implementation_2_IInterface_1_Dependant>(requestor);
-
-            IServiceContainer sourceContainer = useChildContainer ? Container.CreateChild() : Container;
+                .Service<IInterface_2, Implementation_2_IInterface_1_Dependant>(requestor));
 
             //
             // Ket kulonallo injectort hozzunk letre.
@@ -643,28 +559,21 @@ namespace Solti.Utils.DI.Injector.Tests
 
             for (int i = 0; i < 2; i++)
             {
-                using (IInjector injector = sourceContainer.CreateInjector())
+                using (IInjector injector = Root.CreateScope())
                 {
-                    TestDelegate cb = () => injector.Get<IInterface_2>();
-
-                    if (strictDI)
-                        Assert.Throws<RequestNotAllowedException>(cb);
-                    else
-                        Assert.DoesNotThrow(cb);
+                    Assert.Throws<RequestNotAllowedException>(() => injector.Get<IInterface_2>());
                 }
             }
         }
 
         [Test]
-        public void Lifetime_StrictDI_IllegalCases2([Values(true, false)] bool useChildContainer, [Values(true, false)] bool strictDI)
+        public void Lifetime_StrictDI_IllegalCases2()
         {
-            Config.Value.Injector.StrictDI = strictDI;
+            Config.Value.Injector.StrictDI = true;
 
-            Container
+            Root = ScopeFactory.Create(svcs => svcs
                 .Service<IInterface_1, Implementation_1_No_Dep>(Lifetime.Pooled)
-                .Service<IInterface_2, Implementation_2_IInterface_1_Dependant>(Lifetime.Pooled);
-
-            IServiceContainer sourceContainer = useChildContainer ? Container.CreateChild() : Container;
+                .Service<IInterface_2, Implementation_2_IInterface_1_Dependant>(Lifetime.Pooled));
 
             //
             // Ket kulonallo injectort hozzunk letre.
@@ -672,16 +581,54 @@ namespace Solti.Utils.DI.Injector.Tests
 
             for (int i = 0; i < 2; i++)
             {
-                using (IInjector injector = sourceContainer.CreateInjector())
+                using (IInjector injector = Root.CreateScope())
                 {
-                    TestDelegate cb = () => injector.Get<IInterface_2>();
-
-                    if (strictDI)
-                        Assert.Throws<RequestNotAllowedException>(cb);
-                    else
-                        Assert.DoesNotThrow(cb);
+                    Assert.Throws<RequestNotAllowedException>(() => injector.Get<IInterface_2>());
                 }
             }
+        }
+
+        private sealed class DisposableServiceUsingDisposableDependency<TDependency>: Disposable, IInterface_7<TDependency> where TDependency : class, IDisposableEx
+        {
+            public TDependency Interface { get; }
+
+            public DisposableServiceUsingDisposableDependency(TDependency dependency)
+            {
+                Interface = dependency;
+            }
+
+            protected override void Dispose(bool disposeManaged)
+            {
+                Assert.False(Interface.Disposed);
+
+                base.Dispose(disposeManaged);
+            }
+        }
+
+        [Test]
+        public void Lifetime_ServiceMayAccessItsDependencyOnDispose([ValueSource(nameof(Lifetimes))] Lifetime dependency, [ValueSource(nameof(Lifetimes))] Lifetime dependant, [Values(true, false)] bool dependencyAlreadyRequested)
+        {
+            IInterface_7<IDisposableEx> inst;
+
+            using (IScopeFactory root = ScopeFactory.Create(svcs => svcs
+                .Service<IDisposableEx, Disposable>(dependency)
+                .Service<IInterface_7<IDisposableEx>, DisposableServiceUsingDisposableDependency<IDisposableEx>>(dependant)))
+            {
+                if (dependencyAlreadyRequested)
+                {
+                    using (IInjector injector = root.CreateScope())
+                    {
+                        injector.Get<IDisposableEx>();
+                    }
+                }
+
+                inst = root
+                    .CreateScope() // direkt nincs felszbaaditva
+                    .Get<IInterface_7<IDisposableEx>>();
+            }
+
+            Assert.That(inst.Interface.Disposed);
+            Assert.That(((IDisposableEx) inst).Disposed);
         }
     }
 }

@@ -227,7 +227,7 @@ namespace Solti.Utils.DI.Internals
             CheckNotDisposed();
 
             if (FDisposing)
-                throw new InvalidOperationException(Resources.INJECTOR_IS_DISPOSING);
+                throw new InvalidOperationException(Resources.INJECTOR_IS_BEING_DISPOSED);
 
             Ensure.Parameter.IsNotNull(iface, nameof(iface));
             Ensure.Parameter.IsInterface(iface, nameof(iface));
@@ -244,7 +244,7 @@ namespace Solti.Utils.DI.Internals
             CheckNotDisposed();
 
             if (FDisposing)
-                throw new InvalidOperationException(Resources.INJECTOR_IS_DISPOSING);
+                throw new InvalidOperationException(Resources.INJECTOR_IS_BEING_DISPOSED);
 
             Ensure.Parameter.IsNotNull(iface, nameof(iface));
             Ensure.Parameter.IsInterface(iface, nameof(iface));

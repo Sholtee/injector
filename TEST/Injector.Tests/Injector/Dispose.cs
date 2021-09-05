@@ -18,7 +18,7 @@ namespace Solti.Utils.DI.Injector.Tests
 
     public partial class InjectorTests
     {
-        [TestCaseSource(nameof(InjectorControlledLifetimes))]
+        [TestCaseSource(nameof(ScopeControlledLifetimes))]
         public void Injector_Dispose_ShouldFreeOwnedEntries(Lifetime lifetime)
         {
             var mockDisposable = new Mock<IInterface_1_Disaposable>(MockBehavior.Strict);
@@ -34,7 +34,7 @@ namespace Solti.Utils.DI.Injector.Tests
             mockDisposable.Verify(s => s.Dispose(), Times.Once);
         }
 
-        [TestCaseSource(nameof(InjectorControlledLifetimes))]
+        [TestCaseSource(nameof(ScopeControlledLifetimes))]
         public async Task Injector_DisposeAsync_ShouldFreeOwnedEntriesAsynchronously(Lifetime lifetime)
         {
             var mockDisposable = new Mock<IAsyncDisposable>(MockBehavior.Strict);
@@ -52,7 +52,7 @@ namespace Solti.Utils.DI.Injector.Tests
             mockDisposable.Verify(s => s.DisposeAsync(), Times.Once);
         }
 
-        [TestCaseSource(nameof(InjectorControlledLifetimes))]
+        [TestCaseSource(nameof(ScopeControlledLifetimes))]
         public void Injector_Dispose_ShouldFreeUsedLazyEntries(Lifetime lifetime) 
         {
             var disposable = new Disposable();
@@ -78,7 +78,7 @@ namespace Solti.Utils.DI.Injector.Tests
             Assert.That(disposable.Disposed);
         }
 
-        [TestCaseSource(nameof(InjectorControlledLifetimes))]
+        [TestCaseSource(nameof(ScopeControlledLifetimes))]
         public void Injector_Dispose_ShouldFreeEnumeratedServices(Lifetime lifetime)
         {
             Root = ScopeFactory.Create(svcs => svcs.Service<IDisposableEx, Disposable>(lifetime));

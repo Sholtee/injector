@@ -186,7 +186,7 @@
   <data name="BUILT_IN_SERVICE_OVERRIDE" xml:space="preserve">
     <value>Built in services cannot be overridden.</value>
   </data>
-  <data name="INJECTOR_IS_DISPOSING" xml:space="preserve">
+  <data name="INJECTOR_IS_BEING_DISPOSED" xml:space="preserve">
     <value>Injector cannot be invoked when it is about to dispose.</value>
   </data>
 </root>

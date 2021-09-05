@@ -27,7 +27,7 @@ namespace Solti.Utils.DI.Injector.Tests
             }
         }
 
-        public static IEnumerable<Lifetime> InjectorControlledLifetimes
+        public static IEnumerable<Lifetime> ScopeControlledLifetimes
         {
             get
             {
@@ -36,7 +36,7 @@ namespace Solti.Utils.DI.Injector.Tests
             }
         }
 
-        public static IEnumerable<Lifetime> ContainerControlledLifetimes
+        public static IEnumerable<Lifetime> RootControlledLifetimes
         {
             get
             {
@@ -222,6 +222,10 @@ namespace Solti.Utils.DI.Injector.Tests
         public IScopeFactory Root { get; set; }
 
         [TearDown]
-        public void TearDwon() => Root?.Dispose();
+        public void TearDwon()
+        {
+            Root?.Dispose();
+            Root = null;
+        }
     }
 }
