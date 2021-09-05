@@ -12,6 +12,8 @@ namespace Solti.Utils.DI.Internals.Tests
 {
     using Interfaces;
 
+    using ScopeFactory = DI.ScopeFactory;
+
     public class ServiceInstantiationStrategyTests
     {
         private interface IService { }
@@ -22,54 +24,46 @@ namespace Solti.Utils.DI.Internals.Tests
         [Test]
         public void NotOwnedServiceInstantiationStrategy_ShouldLock()
         {
-            using (IServiceContainer container = new ServiceContainer())
-            {
-                container.Factory<IService>(i =>
+            using (IScopeFactory root = ScopeFactory.Create(svcs => svcs.Factory<IService>(i =>
                 {
-                    Assert.That(Monitor.IsEntered(container.Get<IService>()));
+                    Assert.That(Monitor.IsEntered(i.Get<IServiceRegistry>().GetEntry<IService>()));
                     return new Service();
-                }, Lifetime.Singleton);
+                }, Lifetime.Singleton)))
+            {
+                IInjector injector = root.CreateScope();
 
-                container.CreateInjector().Get<IService>();
+                injector.Get<IService>();
 
-                Assert.That(container.Get<IService>().Instances, Is.Not.Null); // factory hivva volt
-                Assert.That(Monitor.IsEntered(container.Get<IService>()), Is.False);
+                AbstractServiceEntry entry = injector.Get<IServiceRegistry>().GetEntry<IService>();
+
+                Assert.That(entry.Instances, Is.Not.Empty); // factory hivva volt
+                Assert.That(Monitor.IsEntered(entry), Is.False);
             }
         }
 
         [Test]
         public void NotOwnedServiceInstantiationStrategy_ShouldInstantiateWithANewInjector()
         {
-            using (IServiceContainer container = new ServiceContainer())
+            using (IScopeFactory root = ScopeFactory.Create(svcs => svcs.Service<IService, Service>(Lifetime.Singleton)))
             {
-                container.Service<IService, Service>(Lifetime.Singleton);
-
-                IInjector injector = container.CreateInjector();
+                IInjector injector = root.CreateScope();
 
                 injector.Get<IService>();
 
-                AbstractServiceEntry entry = injector.UnderlyingContainer.Get<IService>();
-
-                Assert.That(entry.Instances.Single().Scope, Is.Not.EqualTo(injector));
-                Assert.That(entry.Instances.Single().Scope.UnderlyingContainer.Parent, Is.EqualTo(entry.Owner));
+                Assert.That(injector.Get<IServiceRegistry>().GetEntry<IService>().Instances.Single().Scope, Is.Not.SameAs(injector));
             }
         }
 
         [Test]
         public void OwnedServiceInstantiationStrategy_ShouldUseTheExistingInjector()
         {
-            using (IServiceContainer container = new ServiceContainer())
+            using (IScopeFactory root = ScopeFactory.Create(svcs => svcs.Service<IService, Service>(Lifetime.Transient)))
             {
-                container.Service<IService, Service>(Lifetime.Transient);
-
-                IInjector injector = container.CreateInjector();
+                IInjector injector = root.CreateScope();
 
                 injector.Get<IService>();
 
-                AbstractServiceEntry entry = injector.UnderlyingContainer.Get<IService>();
-
-                Assert.That(entry.Instances.Single().Scope, Is.EqualTo(injector));
-                Assert.That(entry.Instances.Single().Scope.UnderlyingContainer, Is.EqualTo(entry.Owner));
+                Assert.That(injector.Get<IServiceRegistry>().GetEntry<IService>().Instances.Single().Scope, Is.SameAs(injector));
             }
         }
     }
