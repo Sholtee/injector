@@ -21,11 +21,11 @@ namespace Solti.Utils.DI.Internals
 
         protected override IReadOnlyCollection<AbstractServiceEntry> BuiltInServices => new AbstractServiceEntry[]
         {
-            new ContextualServiceEntry(typeof(IServiceRegistry), owner => owner),
-            new ContextualServiceEntry(typeof(IInjector), owner => (IInjector) owner),
-            new ContextualServiceEntry(typeof(IScopeFactory), owner => (IScopeFactory) owner.Parent!),
-            new ScopedServiceEntry(typeof(IEnumerable<>), null, typeof(ServiceEnumerator<>), null!),
-            new ScopedServiceEntry(typeof(IDictionary<string, object?>), IInjectorBasicExtensions.META_NAME, (_, _) => new Dictionary<string, object?>(), null!)
+            new ContextualServiceEntry(typeof(IServiceRegistry), null, owner => owner),
+            new ContextualServiceEntry(typeof(IInjector), null,  owner => (IInjector) owner),
+            new ContextualServiceEntry(typeof(IScopeFactory), null, owner => (IScopeFactory) owner.Parent!),
+            new ContextualServiceEntry(typeof(IDictionary<string, object?>), IInjectorBasicExtensions.META_NAME, _ => new Dictionary<string, object?>()), // ne Scoped legyen h StrictDI sose anyazzon
+            new ScopedServiceEntry(typeof(IEnumerable<>), null, typeof(ServiceEnumerator<>), null!)
         };
 
         IInjector IScopeFactory.CreateScope() => CreateScope();

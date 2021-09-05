@@ -16,7 +16,7 @@ namespace Solti.Utils.DI.Internals
 
         private readonly Func<IServiceRegistry, object> FSelector;
 
-        public ContextualServiceEntry(Type @interface, Func<IServiceRegistry, object> selector) : base(@interface, null, null!)
+        public ContextualServiceEntry(Type @interface, string? name, Func<IServiceRegistry, object> selector) : base(@interface, name, null!)
         {
             FInstances = Array.Empty<ServiceReference>();
             FSelector = Ensure.Parameter.IsNotNull(selector, nameof(selector));

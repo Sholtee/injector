@@ -154,7 +154,7 @@ namespace Solti.Utils.DI.Internals
                 return null;
             }
 
-            if (Config.Value.Injector.StrictDI)
+            if (Config.Value.Injector.StrictDI) // TODO: ScopeFactory ctor parameterbe
             {
                 AbstractServiceEntry? requestor = FPath.Last?.RelatedServiceEntry;
 
@@ -163,7 +163,7 @@ namespace Solti.Utils.DI.Internals
                 // - A kerelmezett szerviznek legalabb addig kell leteznie mint a kerelmezo szerviznek.
                 //
 
-                if (requestor is not null && requested.Lifetime!.CompareTo(requestor.Lifetime!) < 0)
+                if (requestor?.Lifetime is not null && requested.Lifetime?.CompareTo(requestor.Lifetime) < 0)
                 {
                     var ex = new RequestNotAllowedException(Resources.STRICT_DI);
                     ex.Data["requestor"] = requestor;
