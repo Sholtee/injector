@@ -17,7 +17,7 @@ namespace Solti.Utils.DI.Internals
     {
         private readonly ConcurrentBag<IServiceReference> FInstances = new();
 
-        private readonly ExclusiveBlock FExclusiveBlock = new();
+        private readonly ExclusiveBlock FExclusiveBlock = new(ExclusiveBlockFeatures.SupportsRecursion); // rekurzio tamogatas kell h a CDEP detektalas mukodjon
 
         protected override void SaveReference(IServiceReference serviceReference) => FInstances.Add(serviceReference);
 
@@ -63,7 +63,8 @@ namespace Solti.Utils.DI.Internals
                 // beallitott erteket.
                 //
 
-                if (State.HasFlag(ServiceEntryStates.Built)) return false;
+                if (State.HasFlag(ServiceEntryStates.Built))
+                    return false;
 
                 //
                 // Kulonben legyartjuk

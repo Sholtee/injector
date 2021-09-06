@@ -42,7 +42,8 @@ namespace Solti.Utils.DI.Internals
             // beallitott erteket -> Minden egyes scope maximum egy sajat peldannyal rendelkezhet.
             //
 
-            if (State.HasFlag(ServiceEntryStates.Built)) return false;
+            if (State.HasFlag(ServiceEntryStates.Built))
+                return false;
 
             //
             // Kulomben legyartjuk
