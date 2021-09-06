@@ -45,56 +45,54 @@ namespace Solti.Utils.DI.Perf
         }
         #endregion
 
-        public interface IIocContainer
+        public interface IIocContainer: IDisposable
         {
             IIocContainer RegisterSingleton<TInterface, TImplementation>() where TImplementation: TInterface;
             IIocContainer RegisterScoped<TInterface, TImplementation>() where TImplementation : TInterface;
             IIocContainer RegisterTransient<TInterface, TImplementation>() where TImplementation : TInterface;
             void Build();
-            IServiceProvider CreateScope();
+            IDisposable CreateScope(out IServiceProvider provider);
         }
 
         #region Containers
         public sealed class InjectorDotNetServiceContainer : Disposable, IIocContainer
         {
-            private readonly IServiceContainer FUnderlyingContainer = new DI.ServiceContainer();
+            private IScopeFactory FRoot;
 
-            public InjectorDotNetServiceContainer()
-            {
-                Internals.Config.Value.Injector.MaxSpawnedTransientServices = int.MaxValue;
-            }
+            private readonly List<Action<Interfaces.IServiceCollection>> FRegistrationActions = new();
 
             protected override void Dispose(bool disposeManaged)
             {
-                FUnderlyingContainer.Dispose();        
-                Internals.Config.Reset();
+                if (disposeManaged)
+                    FRoot?.Dispose();        
 
                 base.Dispose(disposeManaged);
             }
 
-            public void Build() { }
+            public void Build() => FRoot = ScopeFactory.Create
+            (
+                svcs => FRegistrationActions.ForEach(addRegistration => addRegistration(svcs)),
+                new ScopeOptions { MaxSpawnedTransientServices = int.MaxValue }
+            );
 
-            public IServiceProvider CreateScope()
-            {
-                FUnderlyingContainer.CreateProvider(out IServiceProvider serviceProvider);
-                return serviceProvider;
-            }
+            public IDisposable CreateScope(out IServiceProvider provider) => FRoot.CreateScope(out provider);
+
 
             public IIocContainer RegisterScoped<TInterface, TImplementation>() where TImplementation : TInterface
             {
-                FUnderlyingContainer.Service(typeof(TInterface), typeof(TImplementation), Lifetime.Scoped);
+                FRegistrationActions.Add(svcs => svcs.Service(typeof(TInterface), typeof(TImplementation), Lifetime.Scoped));
                 return this;
             }
 
             public IIocContainer RegisterSingleton<TInterface, TImplementation>() where TImplementation : TInterface
             {
-                FUnderlyingContainer.Service(typeof(TInterface), typeof(TImplementation), Lifetime.Singleton);
+                FRegistrationActions.Add(svcs => svcs.Service(typeof(TInterface), typeof(TImplementation), Lifetime.Singleton));
                 return this;
             }
 
             public IIocContainer RegisterTransient<TInterface, TImplementation>() where TImplementation : TInterface
             {
-                FUnderlyingContainer.Service(typeof(TInterface), typeof(TImplementation), Lifetime.Transient);
+                FRegistrationActions.Add(svcs => svcs.Service(typeof(TInterface), typeof(TImplementation), Lifetime.Transient));
                 return this;
             }
 
@@ -118,7 +116,12 @@ namespace Solti.Utils.DI.Perf
 
             public void Build() => FBuiltContainer = new Container(FUnderlyingContainer);
 
-            public IServiceProvider CreateScope() => FBuiltContainer.GetNestedContainer();
+            public IDisposable CreateScope(out IServiceProvider provider)
+            {
+                INestedContainer nestedContainer = FBuiltContainer.GetNestedContainer();
+                provider = nestedContainer;
+                return nestedContainer;
+            }
 
             public IIocContainer RegisterScoped<TInterface, TImplementation>() where TImplementation : TInterface
             {
@@ -157,7 +160,12 @@ namespace Solti.Utils.DI.Perf
 
             public void Build() => FBuiltProvider = FUnderlyingContainer.BuildServiceProvider();
 
-            public IServiceProvider CreateScope() => FBuiltProvider.CreateScope().ServiceProvider;
+            public IDisposable CreateScope(out IServiceProvider provider)
+            {
+                IServiceScope scope = FBuiltProvider.CreateScope();
+                provider = scope.ServiceProvider;
+                return scope;
+            }
 
             public IIocContainer RegisterScoped<TInterface, TImplementation>() where TImplementation : TInterface
             {
@@ -184,18 +192,13 @@ namespace Solti.Utils.DI.Perf
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private IDependant RequestService()
         {
-            IServiceProvider serviceProvider = Container.CreateScope();
-            try
+            using (Container.CreateScope(out IServiceProvider serviceProvider))
             {
                 return serviceProvider.GetService<IDependant>();
             }
-            finally
-            {
-                (serviceProvider as IDisposable)?.Dispose();
-            }
         }
 
-        public IEnumerable<IIocContainer> Containers
+        public static IEnumerable<IIocContainer> Containers
         {
             get
             {
@@ -209,7 +212,7 @@ namespace Solti.Utils.DI.Perf
         public IIocContainer Container { get; set; }
 
         [GlobalCleanup]
-        public void GlobalCleanup() => (Container as IDisposable)?.Dispose();
+        public void GlobalCleanup() => Container?.Dispose();
 
         [GlobalSetup(Target = nameof(Singleton))]
         public void SetupSingleton() => Container

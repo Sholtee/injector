@@ -19,6 +19,8 @@ namespace Solti.Utils.DI.Internals.Tests
     using Proxy;
     using Proxy.Generators;
 
+    using ScopeFactory = DI.ScopeFactory;
+
     [TestFixture]
     public sealed class ServiceActivatorTests
     {
@@ -173,12 +175,11 @@ namespace Solti.Utils.DI.Internals.Tests
             // Ne mock-oljuk az injector-t h a megfelelo kiveteleket kapjuk
             //
 
-            using (IServiceContainer container = new ServiceContainer())
+            using (IScopeFactory root = ScopeFactory.Create(svcs => svcs
+                .Factory<IDisposable>(i => new Disposable(), Lifetime.Scoped)
+                .Factory<IList>(i => new List<object>(), Lifetime.Scoped)))
             {
-                IInjector injector = container
-                    .Factory<IDisposable>(i => new Disposable(), Lifetime.Scoped)
-                    .Factory<IList>(i => new List<object>(), Lifetime.Scoped)
-                    .CreateInjector();
+                IInjector injector = root.CreateScope();
 
                 //
                 // Ez mukodne viszont nem adtuk meg a nem interface parametert.

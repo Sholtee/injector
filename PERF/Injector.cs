@@ -23,7 +23,7 @@ namespace Solti.Utils.DI.Perf
 
             InjectorDotNetLifetime.Initialize();
 
-        public IEnumerable<Lifetime> Lifetimes
+        public static IEnumerable<Lifetime> Lifetimes
         {
             get
             {
@@ -83,23 +83,13 @@ namespace Solti.Utils.DI.Perf
         }
         #endregion
 
-        protected IServiceContainer Container { get; private set; }
+        protected IScopeFactory Root { get; private set; }
 
-        protected void Setup(Action<IServiceContainer> setupContainer, int maxSpawnedTransientServices = int.MaxValue, int maxChildCount = int.MaxValue)
-        {
-            Config.Value.Injector.MaxSpawnedTransientServices = maxSpawnedTransientServices;
-            Config.Value.ServiceContainer.MaxChildCount = maxChildCount;
-
-            Container = new DI.ServiceContainer();
-            setupContainer(Container);
-        }
+        protected IScopeFactory Setup(Action<IServiceCollection> setupContainer) =>
+            Root = DI.ScopeFactory.Create(setupContainer, new ScopeOptions { MaxSpawnedTransientServices = int.MaxValue });
 
         [GlobalCleanup]
-        public void Cleanup()
-        {
-            Container?.Dispose();
-            Config.Reset();
-        }
+        public void Cleanup() => Root?.Dispose();
     }
 
     [MemoryDiagnoser]
@@ -115,38 +105,46 @@ namespace Solti.Utils.DI.Perf
         public Lifetime DependantLifetime { get; set; }
 
         [GlobalSetup(Target = nameof(NonGeneric))]
-        public void SetupNonGeneric() => Setup(container => Injector = container
-            .Service<IDependency, Dependency>(DependencyLifetime)
-            .Service<IDependant, Dependant>(DependantLifetime)
-            .CreateInjector());
+        public void SetupNonGeneric() => Injector = Setup
+        (
+            container => container
+                .Service<IDependency, Dependency>(DependencyLifetime)
+                .Service<IDependant, Dependant>(DependantLifetime)
+        ).CreateScope();
 
         [Benchmark]
         public IDependant NonGeneric() => Injector.Get<IDependant>(name: null);
 
         [GlobalSetup(Target = nameof(Generic))]
-        public void SetupGeneric() => Setup(container => Injector = container
-            .Service<IDependency, Dependency>(DependencyLifetime)
-            .Service(typeof(IDependant<>), typeof(Dependant<>), DependantLifetime)
-            .CreateInjector());
+        public void SetupGeneric() => Injector = Setup
+        (
+            container => container
+                .Service<IDependency, Dependency>(DependencyLifetime)
+                .Service(typeof(IDependant<>), typeof(Dependant<>), DependantLifetime)
+        ).CreateScope();
 
         [Benchmark]
         public IDependant<string> Generic() => Injector.Get<IDependant<string>>(name: null);
 
         [GlobalSetup(Target = nameof(Lazy))]
-        public void SetupLazy() => Setup(container => Injector = container
-            .Service<IDependency, Dependency>(DependencyLifetime)
-            .Service<IDependantLazy, DependantLazy>(DependantLifetime)
-            .CreateInjector());
+        public void SetupLazy() => Injector = Setup
+        (
+            container => container
+                .Service<IDependency, Dependency>(DependencyLifetime)
+                .Service<IDependantLazy, DependantLazy>(DependantLifetime)
+        ).CreateScope();
 
         [Benchmark]
         public IDependantLazy Lazy() => Injector.Get<IDependantLazy>(name: null);
 
         [GlobalSetup(Target = nameof(Enumerable))]
-        public void SetupEnumerable() => Setup(container => Injector = container
-            .Service<IDependency, Dependency>(DependencyLifetime)
-            .Service<IDependant, Dependant>(1.ToString(), DependantLifetime)
-            .Service<IDependant, Dependant>(2.ToString(), DependantLifetime)
-            .CreateInjector());
+        public void SetupEnumerable() => Injector = Setup
+        (
+            container => container
+                .Service<IDependency, Dependency>(DependencyLifetime)
+                .Service<IDependant, Dependant>(1.ToString(), DependantLifetime)
+                .Service<IDependant, Dependant>(2.ToString(), DependantLifetime)
+        ).CreateScope();
 
         [Benchmark]
         public /*IEnumerable<IDependant>*/ void Enumerable() => Injector.Get<IEnumerable<IDependant>>(name: null);
@@ -162,9 +160,10 @@ namespace Solti.Utils.DI.Perf
         public Lifetime DependencyLifetime { get; set; }
 
         [GlobalSetup(Target = nameof(Instantiate))]
-        public void SetupInstantiate() => Setup(container => Injector = container
-            .Service<IDependency, Dependency>(DependencyLifetime)
-            .CreateInjector());
+        public void SetupInstantiate() => Injector = Setup
+        (
+            container => container.Service<IDependency, Dependency>(DependencyLifetime)
+        ).CreateScope();
 
         [Benchmark]
         public Outer Instantiate() => Injector.Instantiate<Outer>(new Dictionary<string, object>
@@ -175,7 +174,7 @@ namespace Solti.Utils.DI.Perf
 
     [MemoryDiagnoser]
     [SimpleJob(RunStrategy.Throughput, invocationCount: 10000)]
-    public class InjectorLifetime : InjectorTestsBase
+    public class ScopeCreation : InjectorTestsBase
     {
         [ParamsSource(nameof(Lifetimes))]
         public Lifetime DependencyLifetime { get; set; }
@@ -183,43 +182,12 @@ namespace Solti.Utils.DI.Perf
         [ParamsSource(nameof(Lifetimes))]
         public Lifetime DependantLifetime { get; set; }
 
-        [GlobalSetup(Target = nameof(CreateInjector))]
+        [GlobalSetup(Target = nameof(CreateScope))]
         public void SetupCreateInjector() => Setup(container => container
             .Service<IDependency, Dependency>(DependencyLifetime)
             .Service<IDependant, Dependant>(DependantLifetime));
 
         [Benchmark]
-        public IInjector CreateInjector() => Container.CreateInjector();
-    }
-
-    [MemoryDiagnoser]
-    [SimpleJob(RunStrategy.Throughput, invocationCount: 10000)]
-    public class InjectorResolve : InjectorTestsBase
-    {
-        private Injector Injector { get; set; }
-
-        public AbstractServiceEntry EntryToResolve { get; set; }
-
-        [ParamsSource(nameof(Lifetimes))]
-        public Lifetime DependencyLifetime { get; set; }
-
-        [ParamsSource(nameof(Lifetimes))]
-        public Lifetime DependantLifetime { get; set; }
-
-        [GlobalSetup]
-        public void Setup() => Setup(container =>
-        {
-            Injector = (Injector) container
-                .Service<IDependency, Dependency>(DependencyLifetime)
-                .Service<IDependant, Dependant>(DependantLifetime)
-                .CreateInjector();
-            EntryToResolve = Injector.UnderlyingContainer.Get<IDependant>();
-        });
-
-        [Benchmark]
-        public IServiceReference ResolveCore() => Injector.Resolve(EntryToResolve);
-
-        [Benchmark]
-        public IServiceReference Resolve() => Injector.Resolve(EntryToResolve.Interface, EntryToResolve.Name, QueryModes.AllowSpecialization | QueryModes.ThrowOnMissing);
+        public IInjector CreateScope() => Root.CreateScope();
     }
 }

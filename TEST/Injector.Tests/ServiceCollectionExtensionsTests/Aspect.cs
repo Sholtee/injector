@@ -6,35 +6,26 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 
 using Moq;
 using NUnit.Framework;
 
-namespace Solti.Utils.DI.Container.Tests
+namespace Solti.Utils.DI.ServiceCollection.Tests
 {
     using Interfaces;
     using Primitives.Patterns;
     using Properties;
-    using Proxy; 
+    using Proxy;
 
-    public partial class ContainerTestsBase<TContainer>
+    public partial class ServiceCollectionExtensionsTests
     {
-        [Test]
-        public void Aspects_ShouldNotBeAppliedAgainstAbstractServices() 
-        {
-            Container.Abstract<IMyService>();
-
-            Assert.That(Container.Get<IMyService>().Factory, Is.Null);
-        }
-
         [TestCaseSource(nameof(Lifetimes))]
         public void Aspects_ProxyInstallationShouldBeDoneOnServiceRegistration(Lifetime lifetime) 
         {
-            Container.Service<IMyService, MyService>(lifetime);
+            Collection.Service<IMyService, MyService>(lifetime);
 
-            IMyService instance = (IMyService) Container
-                .Get<IMyService>()
+            IMyService instance = (IMyService) Collection
+                .LastEntry
                 .Factory
                 .Invoke(new Mock<IInjector>(MockBehavior.Strict).Object, typeof(IMyService));
 
@@ -54,10 +45,10 @@ namespace Solti.Utils.DI.Container.Tests
                 .Setup(i => i.Get(It.Is<Type>(t => t == typeof(IDisposable)), null))
                 .Returns(new Disposable());
 
-            Container.Service<IMyDependantService, MyService>(lifetime);
+            Collection.Service<IMyDependantService, MyService>(lifetime);
 
-            Container
-                .Get<IMyDependantService>()
+            Collection
+                .LastEntry
                 .Factory
                 .Invoke(mockInjector.Object, typeof(IMyDependantService));
 
@@ -65,24 +56,14 @@ namespace Solti.Utils.DI.Container.Tests
         }
 
         [TestCaseSource(nameof(Lifetimes))]
-        public void Aspects_ServiceInheritanceShouldNotTriggerTheProxyRegistration(Lifetime lifetime) 
-        {
-            Container.Service<IMyService, MyService>(lifetime);
-
-            IServiceContainer child = Container.CreateChild();
-
-            Assert.AreSame(child.Get<IMyService>().Factory, Container.Get<IMyService>().Factory);
-        }
-
-        [TestCaseSource(nameof(Lifetimes))]
         public void Aspects_ShouldWorkWithGenericServices(Lifetime lifetime) 
         {
-            Container.Service(typeof(IMyGenericService<>), typeof(MyGenericService<>), lifetime);
+            Collection.Service(typeof(IMyGenericService<>), typeof(MyGenericService<>), lifetime);
 
-            Assert.That(Container.Get(typeof(IMyGenericService<>)).Factory, Is.Null);
+            Assert.That(Collection.LastEntry.Factory, Is.Null);
 
-            IMyGenericService<int> instance = (IMyGenericService<int>) Container
-                .Get<IMyGenericService<int>>(QueryModes.AllowSpecialization)
+            IMyGenericService<int> instance = (IMyGenericService<int>) ((ISupportsSpecialization) Collection.LastEntry)
+                .Specialize(new Mock<IServiceRegistry>(MockBehavior.Strict).Object, typeof(int))
                 .Factory
                 .Invoke(new Mock<IInjector>(MockBehavior.Strict).Object, typeof(IMyService));
 
@@ -96,7 +77,7 @@ namespace Solti.Utils.DI.Container.Tests
 
         [Test]
         public void Aspects_ShouldThrowOnInstances() =>
-            Assert.Throws<InvalidOperationException>(() => Container.Instance<IMyService>(new MyService()), Resources.CANT_PROXY);
+            Assert.Throws<InvalidOperationException>(() => Collection.Instance<IMyService>(new MyService()).WithProxy((_, _, _) => null), Resources.CANT_PROXY);
 
         [Test]
         public void Aspects_AspectAttributeMustBeOverridden() 
@@ -109,9 +90,9 @@ namespace Solti.Utils.DI.Container.Tests
         [Test]
         public void Aspects_ShouldBeControlledByAspectKind([Values(AspectKind.Service, AspectKind.Factory)] AspectKind kind, [ValueSource(nameof(Lifetimes))] Lifetime lifetime) 
         {
-            Container.Factory<IMyService>(i => new MyService(), lifetime);
+            Collection.Factory<IMyService>(i => new MyService(), lifetime);
 
-            AbstractServiceEntry entry = Container.Get<IMyService>();
+            AbstractServiceEntry entry = Collection.LastEntry;
 
             var mockAspect = new Mock<AspectWithoutImplementation>(MockBehavior.Strict, kind);
 
@@ -151,10 +132,10 @@ namespace Solti.Utils.DI.Container.Tests
                 .Setup(x => x.GetAspectsOrder())
                 .Returns(Array.Empty<string>());
 
-            Container.Factory(i => mockService.Object, lifetime);
+            Collection.Factory(i => mockService.Object, lifetime);
 
-            var svc = (IOrderInspectingService) Container
-                .Get<IOrderInspectingService>()
+            var svc = (IOrderInspectingService) Collection
+                .LastEntry
                 .Factory(new Mock<IInjector>(MockBehavior.Strict).Object, typeof(IOrderInspectingService));
 
             Assert.That(svc.GetAspectsOrder().SequenceEqual(new[] { nameof(OrderInspectingAspect1Attribute), nameof(OrderInspectingAspect2Attribute), nameof(OrderInspectingAspect3Attribute) }));

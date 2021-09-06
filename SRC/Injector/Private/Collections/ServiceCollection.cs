@@ -6,10 +6,9 @@
 using System;
 using System.Collections.Generic;
 
-namespace Solti.Utils.DI
+namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
-    using Internals;
 
     internal class ServiceCollection : HashSet<AbstractServiceEntry>, IModifiedServiceCollection
     {
