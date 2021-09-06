@@ -7,7 +7,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Threading.Tasks;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -30,9 +29,9 @@ namespace Solti.Utils.DI.Internals
             setter.Factory = (injector, type) => decorator(injector, type, oldFactory(injector, type));
         }
 
-        private static async Task<Func<IInjector, Type, object, object>> BuildDelegate(Type iface, Type interceptor)
+        private static Func<IInjector, Type, object, object> BuildDelegate(Type iface, Type interceptor)
         {
-            interceptor = await ProxyFactory.GenerateProxyTypeAsync(iface, interceptor);
+            interceptor = ProxyFactory.GenerateProxyType(iface, interceptor);
 
             ConstructorInfo ctor = interceptor.GetApplicableConstructor();
 
@@ -58,20 +57,20 @@ namespace Solti.Utils.DI.Internals
         // nehezebb lenne tesztelni.
         //
 
-        internal static async Task<Func<IInjector, Type, object, object>[]> GenerateProxyDelegates(Type iface, IEnumerable<AspectAttribute> aspects)
+        internal static Func<IInjector, Type, object, object>[] GenerateProxyDelegates(Type iface, IEnumerable<AspectAttribute> aspects)
         {
             //
             // A visszaadott dekoratorok sorrendje megegyezik az aspektusok sorrendjevel:
             // https://docs.microsoft.com/en-us/dotnet/api/system.threading.tasks.task.whenall?view=net-5.0#System_Threading_Tasks_Task_WhenAll_System_Threading_Tasks_Task
             //
 
-            return await Task.WhenAll(aspects.Select(AspectToDelegate));
+            return aspects.Select(AspectToDelegate).ToArray();
 
-            async Task<Func<IInjector, Type, object, object>> AspectToDelegate(AspectAttribute aspect)
+            Func<IInjector, Type, object, object> AspectToDelegate(AspectAttribute aspect)
             {
                 return aspect.Kind switch
                 {
-                    AspectKind.Service => await BuildDelegate(iface, aspect.GetInterceptorType(iface)),
+                    AspectKind.Service => BuildDelegate(iface, aspect.GetInterceptorType(iface)),
                     AspectKind.Factory => aspect.GetInterceptor,
                     _ => throw new NotSupportedException()
                 };
@@ -96,29 +95,16 @@ namespace Solti.Utils.DI.Internals
             if (entry is not ISupportsProxying || entry.Factory == null)
                 throw new InvalidOperationException(Resources.CANT_PROXY);
 
-            //
-            // Mivel a proxy-k legeneralasa sokaig tarthat ezert ahelyett h megvarnank amig az osszes proxy osszeallitasra 
-            // kerul elinditunk egy task-ot (ami az osszes generalast elvegzi), a bejegyzes factory-jat pedig egy 
-            // placeholder-el irjuk felul ami a tenyleges dekoratorokat fogja hivni ha majd egyszer elerhetoek lesznek.
-            //
-
-            Task<Func<IInjector, Type, object, object>[]> realDelegates = GenerateProxyDelegates
+            Func<IInjector, Type, object, object>[] decorators = GenerateProxyDelegates
             (
                 entry.Interface,
                 aspects
             );
-          
-            entry.ApplyProxy((IInjector injector, Type iface, object current) => realDelegates
 
-                //
-                // - Blokkolodik ha meg nincsenek kesz, egybol visszater kulonben
-                // - Lehet olvasva parhuzamosan (https://docs.microsoft.com/en-us/dotnet/api/system.threading.tasks.task-1?view=net-5.0#thread-safety)
-                //
-
-                .Result
-                .Aggregate(
-                    current, 
-                    (object current, Func<IInjector, Type, object, object> decorator) => decorator(injector, iface, current)));
+            foreach (Func<IInjector, Type, object, object> decorator in decorators)
+            {
+                entry.ApplyProxy(decorator);
+            }
         }
 
         public static void ApplyInterceptor(this AbstractServiceEntry entry, Type interceptor)
@@ -126,13 +112,13 @@ namespace Solti.Utils.DI.Internals
             if (entry is not ISupportsProxying || entry.Factory == null)
                 throw new InvalidOperationException(Resources.CANT_PROXY);
 
-            Task<Func<IInjector, Type, object, object>> realDelegate = BuildDelegate
+            Func<IInjector, Type, object, object> realDelegate = BuildDelegate
             (
                 entry.Interface,
                 interceptor
             );
 
-            entry.ApplyProxy((IInjector injector, Type iface, object current) => realDelegate.Result.Invoke(injector, iface, current));
+            entry.ApplyProxy(realDelegate);
         }
     }
 }

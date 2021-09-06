@@ -19,8 +19,8 @@ namespace Solti.Utils.DI.ServiceCollection.Tests
 
     public partial class ServiceCollectionExtensionsTests
     {
-        [TestCaseSource(nameof(Lifetimes))]
-        public void Aspects_ProxyInstallationShouldBeDoneOnServiceRegistration(Lifetime lifetime) 
+        [Test]
+        public void Aspects_ProxyInstallationShouldBeDoneOnServiceRegistration([ValueSource(nameof(Lifetimes))] Lifetime lifetime) 
         {
             Collection.Service<IMyService, MyService>(lifetime);
 
@@ -37,8 +37,8 @@ namespace Solti.Utils.DI.ServiceCollection.Tests
             Assert.That(instance, Is.InstanceOf<MyService>());
         }
 
-        [TestCaseSource(nameof(Lifetimes))]
-        public void Aspects_ProxyMayHaveDependency(Lifetime lifetime) 
+        [Test]
+        public void Aspects_ProxyMayHaveDependency([ValueSource(nameof(Lifetimes))] Lifetime lifetime) 
         {
             var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
             mockInjector
@@ -55,8 +55,8 @@ namespace Solti.Utils.DI.ServiceCollection.Tests
             mockInjector.Verify(i => i.Get(It.Is<Type>(t => t == typeof(IDisposable)), null), Times.Once);
         }
 
-        [TestCaseSource(nameof(Lifetimes))]
-        public void Aspects_ShouldWorkWithGenericServices(Lifetime lifetime) 
+        [Test]
+        public void Aspects_ShouldWorkWithGenericServices([ValueSource(nameof(Lifetimes))] Lifetime lifetime) 
         {
             Collection.Service(typeof(IMyGenericService<>), typeof(MyGenericService<>), lifetime);
 
@@ -105,7 +105,7 @@ namespace Solti.Utils.DI.ServiceCollection.Tests
                         .Setup(aspect => aspect.GetInterceptorType(It.Is<Type>(t => t == typeof(IMyService))))
                         .Returns(typeof(InterfaceInterceptor<IMyService>));
                     
-                    Assert.DoesNotThrowAsync(async () => delegates = await Internals.ServiceEntryExtensions.GenerateProxyDelegates(typeof(IMyService), new[] { mockAspect.Object }));
+                    Assert.DoesNotThrow(() => delegates = Internals.ServiceEntryExtensions.GenerateProxyDelegates(typeof(IMyService), new[] { mockAspect.Object }));
 
                     mockAspect.Verify(aspect => aspect.GetInterceptorType(It.Is<Type>(t => t == typeof(IMyService))), Times.Once);
                     Assert.That(delegates.Length, Is.EqualTo(1));
@@ -117,15 +117,15 @@ namespace Solti.Utils.DI.ServiceCollection.Tests
                         .Setup(aspect => aspect.GetInterceptor(It.IsAny<IInjector>(), It.Is<Type>(t => t == typeof(IMyService)), It.IsAny<IMyService>()))
                         .Returns(decorated);
 
-                    Assert.DoesNotThrowAsync(async () => delegates = await Internals.ServiceEntryExtensions.GenerateProxyDelegates(typeof(IMyService), new[] { mockAspect.Object }));
+                    Assert.DoesNotThrow(() => delegates = Internals.ServiceEntryExtensions.GenerateProxyDelegates(typeof(IMyService), new[] { mockAspect.Object }));
                     Assert.That(delegates.Single(), Is.EqualTo((Func<IInjector, Type, object, object>) mockAspect.Object.GetInterceptor));
 
                     break;
             }
         }
 
-        [TestCaseSource(nameof(Lifetimes))]
-        public void Aspects_ApplyingAspectsShouldBeSequential(Lifetime lifetime) 
+        [Test]
+        public void Aspects_ApplyingAspectsShouldBeSequential([ValueSource(nameof(Lifetimes))] Lifetime lifetime) 
         {
             var mockService = new Mock<IOrderInspectingService>(MockBehavior.Strict);
             mockService

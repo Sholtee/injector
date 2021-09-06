@@ -99,7 +99,7 @@ namespace Solti.Utils.DI.ServiceCollection.Tests
         }
 
         [TestCaseSource(nameof(Lifetimes))]
-        public void Container_Service_ShouldHandleExplicitArgsInCaseOfGenericService(Lifetime lifetime)
+        public void Service_ShouldHandleExplicitArgsInCaseOfGenericService(Lifetime lifetime)
         {
             Collection.Service(typeof(IServiceHavingNonInterfaceCtorArg<>), typeof(ServiceHavingNonInterfaceCtorArg<>), new Dictionary<string, object> { ["para"] = "cica" }, lifetime);
 

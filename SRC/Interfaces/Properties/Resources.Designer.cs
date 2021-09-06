@@ -61,15 +61,6 @@ namespace Solti.Utils.DI.Interfaces.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to An entry with the same ID has already been registered..
-        /// </summary>
-        internal static string ENTRY_ALREADY_REGISTERED {
-            get {
-                return ResourceManager.GetString("ENTRY_ALREADY_REGISTERED", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Not owned entry can not be proxied..
         /// </summary>
         internal static string INAPROPRIATE_OWNERSHIP {
@@ -120,6 +111,15 @@ namespace Solti.Utils.DI.Interfaces.Properties {
         internal static string PROXYING_NOT_SUPPORTED {
             get {
                 return ResourceManager.GetString("PROXYING_NOT_SUPPORTED", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A service with the same ID has already been registered..
+        /// </summary>
+        internal static string SERVICE_ALREADY_REGISTERED {
+            get {
+                return ResourceManager.GetString("SERVICE_ALREADY_REGISTERED", resourceCulture);
             }
         }
     }

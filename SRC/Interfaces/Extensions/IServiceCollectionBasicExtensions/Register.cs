@@ -26,7 +26,7 @@ namespace Solti.Utils.DI.Interfaces
             foreach (AbstractServiceEntry entry in entries)
             {
                 if (!self.Add(entry))
-                    throw new InvalidOperationException(Resources.ENTRY_ALREADY_REGISTERED);
+                    throw new ServiceAlreadyRegisteredException(Resources.SERVICE_ALREADY_REGISTERED);
             }
 
             return (IModifiedServiceCollection) self;

@@ -117,9 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ENTRY_ALREADY_REGISTERED" xml:space="preserve">
-    <value>An entry with the same ID has already been registered.</value>
-  </data>
   <data name="INAPROPRIATE_OWNERSHIP" xml:space="preserve">
     <value>Not owned entry can not be proxied.</value>
   </data>
@@ -137,5 +134,8 @@
   </data>
   <data name="PROXYING_NOT_SUPPORTED" xml:space="preserve">
     <value>The entry does not support proxying.</value>
+  </data>
+  <data name="SERVICE_ALREADY_REGISTERED" xml:space="preserve">
+    <value>A service with the same ID has already been registered.</value>
   </data>
 </root>

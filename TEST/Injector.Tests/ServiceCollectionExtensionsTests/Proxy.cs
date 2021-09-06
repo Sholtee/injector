@@ -43,7 +43,12 @@ namespace Solti.Utils.DI.ServiceCollection.Tests
                 .WithProxy(mockCallback1.Object)
                 .WithProxy(mockCallback2.Object);
 
-            ServiceReference svc = new(Collection.LastEntry, new Mock<IInjector>(MockBehavior.Strict).Object);
+            var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
+            mockInjector
+                .SetupGet(i => i.Options)
+                .Returns(new ScopeOptions());
+
+            ServiceReference svc = new(Collection.LastEntry, mockInjector.Object);
 
             Assert.That(svc.RelatedServiceEntry.SetInstance(svc));
             Assert.That(svc.Value, Is.InstanceOf<DecoratedImplementation_1>());
@@ -53,7 +58,7 @@ namespace Solti.Utils.DI.ServiceCollection.Tests
         }
 
         [TestCaseSource(nameof(ScopeControlledLifetimes))]
-        public void Proxy_ShouldWorkWithGenericServices(Lifetime lifetime)
+        public void Proxy_ShouldWorkWithClosedGenerics(Lifetime lifetime)
         {
             var mockCallback = new Mock<Func<IInjector, Type, object, object>>(MockBehavior.Strict);
             mockCallback
@@ -61,15 +66,20 @@ namespace Solti.Utils.DI.ServiceCollection.Tests
                 .Returns(new DecoratedImplementation_3<int>());
 
             Collection
-                .Service(typeof(IInterface_3<>), typeof(Implementation_3_IInterface_1_Dependant<>), lifetime)
+                .Service(typeof(IInterface_3<int>), typeof(Implementation_3_IInterface_1_Dependant<int>), lifetime)
                 .WithProxy(mockCallback.Object);
 
             var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
+            
             mockInjector
                 .Setup(i => i.Get(It.Is<Type>(t => t == typeof(IInterface_1)), null))
                 .Returns(new Implementation_1_No_Dep());
 
-            ServiceReference svc = new ServiceReference(((ISupportsSpecialization) Collection.LastEntry).Specialize(new Mock<IServiceRegistry>(MockBehavior.Strict).Object, typeof(int)), mockInjector.Object);
+            mockInjector
+                .SetupGet(i => i.Options)
+                .Returns(new ScopeOptions());
+
+            ServiceReference svc = new ServiceReference(Collection.LastEntry, mockInjector.Object);
 
             Assert.That(svc.RelatedServiceEntry.SetInstance(svc));
             Assert.That(svc.Value, Is.InstanceOf<DecoratedImplementation_3<int>>());
@@ -118,6 +128,10 @@ namespace Solti.Utils.DI.ServiceCollection.Tests
                 .Setup(i => i.Get(typeof(IInterface_3<int>), null))
                 .Returns(new Implementation_3_IInterface_1_Dependant<int>(null));
 
+            mockInjector
+                .SetupGet(i => i.Options)
+                .Returns(new ScopeOptions());
+
             ServiceReference svc = new ServiceReference(Collection.LastEntry, mockInjector.Object);
 
             Assert.That(svc.RelatedServiceEntry.SetInstance(svc));
@@ -153,6 +167,10 @@ namespace Solti.Utils.DI.ServiceCollection.Tests
             Assert.DoesNotThrow(() => Collection.WithProxy((p1, p2, p3) => new DecoratedImplementation_1()));
 
             var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
+
+            mockInjector
+                .SetupGet(i => i.Options)
+                .Returns(new ScopeOptions());
 
             ServiceReference svc = new ServiceReference(Collection.LastEntry, mockInjector.Object);
 
