@@ -176,16 +176,10 @@ namespace Solti.Utils.DI.Perf
     [SimpleJob(RunStrategy.Throughput, invocationCount: 10000)]
     public class ScopeCreation : InjectorTestsBase
     {
-        [ParamsSource(nameof(Lifetimes))]
-        public Lifetime DependencyLifetime { get; set; }
-
-        [ParamsSource(nameof(Lifetimes))]
-        public Lifetime DependantLifetime { get; set; }
-
         [GlobalSetup(Target = nameof(CreateScope))]
         public void SetupCreateInjector() => Setup(container => container
-            .Service<IDependency, Dependency>(DependencyLifetime)
-            .Service<IDependant, Dependant>(DependantLifetime));
+            .Service<IDependency, Dependency>(Lifetime.Transient)
+            .Service<IDependant, Dependant>(Lifetime.Scoped));
 
         [Benchmark]
         public IInjector CreateScope() => Root.CreateScope();
