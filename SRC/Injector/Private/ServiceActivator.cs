@@ -141,28 +141,31 @@ namespace Solti.Utils.DI.Internals
             {
                 Type parameterType = GetEffectiveParameterType(param.Type, out bool isLazy) ?? throw new ArgumentException(Resources.INVALID_CONSTRUCTOR, nameof(constructor));
 
-                if (isLazy)
+                return isLazy
                     //
                     // Lazy<IInterface>(() => (IInterface) injector.[Try]Get(typeof(IInterface), svcName))
                     //
 
-                    return Expression.Invoke
+                    ? Expression.Invoke
                     (
-                        Expression.Constant(GetLazyFactory(parameterType, param.Options)),
+                        Expression.Constant
+                        (
+                            GetLazyFactory(parameterType, param.Options)
+                        ),
                         injector
-                    )!;
+                    )
 
-                //
-                // injector.[Try]Get(typeof(IInterface), svcName)
-                //
+                    //
+                    // injector.[Try]Get(typeof(IInterface), svcName)
+                    //
 
-                return Expression.Call
-                (
-                    injector,
-                    param.Options?.Optional == true ? InjectorTryGet : InjectorGet,
-                    Expression.Constant(parameterType),
-                    Expression.Constant(param.Options?.Name, typeof(string))
-                )!;
+                    : Expression.Call
+                    (
+                        injector,
+                        param.Options?.Optional == true ? InjectorTryGet : InjectorGet,
+                        Expression.Constant(parameterType),
+                        Expression.Constant(param.Options?.Name, typeof(string))
+                    );
             }
         });
 
