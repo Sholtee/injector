@@ -187,6 +187,8 @@ namespace Solti.Utils.DI.Interfaces
         /// <returns>The hash code of this entry.</returns>
         public override int GetHashCode()
         {
+            CheckNotDisposed();
+
 #if NETSTANDARD2_1_OR_GREATER
             var hashCode = new HashCode();
 
@@ -227,6 +229,8 @@ namespace Solti.Utils.DI.Interfaces
         /// <returns></returns>
         public override string ToString()
         {
+            CheckNotDisposed();
+
             const string NAME_PART = " - {0}: {1}";
 
             return new StringBuilder(this.FriendlyName())
