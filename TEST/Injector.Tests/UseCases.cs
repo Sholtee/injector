@@ -9,7 +9,6 @@ using System.Data;
 using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Text;
 
 using Microsoft.Extensions.Configuration;
@@ -21,42 +20,13 @@ namespace Solti.Utils.DI.UseCases
 {
     using Interfaces;
     using Internals;
-    using Primitives.Patterns;
     using Proxy;
-    using DI.Tests;
+
+    using ScopeFactory = DI.ScopeFactory;
 
     [TestFixture]
-    public class Tests: TestBase<ServiceContainer>
+    public class UseCases
     {
-        [Test]
-        public void BulkedProxyingTest()
-        {
-            Container
-                .Service<IMyModule1, Module1>(Lifetime.Transient)
-                .Service<IMyModule2, Module2>(Lifetime.Transient)
-                .Service<IDisposable, Disposable>(Lifetime.Transient);
-
-            foreach (AbstractServiceEntry entry in Container.Where(e => typeof(IModule).IsAssignableFrom(e.Interface)))
-                Container.Proxy(entry.Interface, typeof(InterfaceInterceptor<>).MakeGenericType(entry.Interface));
-
-            var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
-            mockInjector
-                .SetupGet(i => i.UnderlyingContainer)
-                .Returns(Container);
-
-            Assert.That(GetService<IDisposable>() is Disposable);
-            Assert.That(GetService<IMyModule1>() is InterfaceInterceptor<IMyModule1>);
-            Assert.That(GetService<IMyModule2>() is InterfaceInterceptor<IMyModule2>);
-
-            object GetService<TInterface>() 
-            {
-                ServiceReference svc = new ServiceReference(Container.Get<TInterface>(), mockInjector.Object);
-                Container.Get<TInterface>().SetInstance(svc);
-
-                return svc.Value;
-            }
-        }
-
         public interface IModule
         {
             void DoSomething(object arg);
@@ -84,49 +54,11 @@ namespace Solti.Utils.DI.UseCases
         }
 
         [Test]
-        public void ContextualDependencyTest() 
-        {
-            Container.Service<IModule, ModuleHavingContextualDep>(Lifetime.Scoped);
-
-            using (IInjector injector = Container.CreateInjector()) 
-            {
-                injector
-                    .UnderlyingContainer
-                    .Instance(new FakeHttpRequest().Act().Like<IHttpRequest>());
-
-                Assert.DoesNotThrow(() => injector.Get<IModule>());
-            }
-        }
-
-        public interface IHttpRequest  // publikusnak kell lennie
-        {
-            string this[string key] { get; }
-        }
-
-        public sealed class FakeHttpRequest // publikusnak kell lennie
-        {
-            public string this[string key] { get => key; }
-        }
-
-        private sealed class ModuleHavingContextualDep : IModule
-        {
-            public ModuleHavingContextualDep(IHttpRequest httpRequest) 
-            {
-                Assert.That(httpRequest, Is.Not.Null);
-                Assert.That(httpRequest["cica"], Is.EqualTo("cica"));
-            }
-
-            public void DoSomething(object arg) {}
-
-            public void DoSomethingElse() {}
-        }
-
-        [Test]
         public void DbConnectionProviderTest() 
         {
             const string connString = "Data Source=MSSQL1;Initial Catalog=MyCatalog;Integrated Security=true;";
 
-            Container
+            using IScopeFactory root = ScopeFactory.Create(svcs => svcs
                 .Provider<IDbConnection, DbConnectionProvider>(Lifetime.Scoped)
                 .Factory<IConfiguration>(_ => new ConfigurationBuilder().AddJsonStream
                 (
@@ -144,15 +76,14 @@ namespace Solti.Utils.DI.UseCases
                         ")
                     )
                 ).Build(),
-                Lifetime.Singleton);
+                Lifetime.Singleton));
 
-            using (IInjector injector = Container.CreateInjector()) 
-            {
-                IDbConnection conn = injector.Get<IDbConnection>();
+            using IInjector injector = root.CreateScope();
 
-                Assert.That(conn, Is.InstanceOf<SqlConnection>());
-                Assert.That(conn.ConnectionString, Is.EqualTo(connString));
-            }
+            IDbConnection conn = injector.Get<IDbConnection>();
+
+            Assert.That(conn, Is.InstanceOf<SqlConnection>());
+            Assert.That(conn.ConnectionString, Is.EqualTo(connString));
         }
 
         public class DbConnectionProvider : IServiceProvider
@@ -172,23 +103,13 @@ namespace Solti.Utils.DI.UseCases
             {
                 if (serviceType != typeof(IDbConnection))
                     throw new NotSupportedException();
-#if !LANG_VERSION_8
-                IDbConnection connection;
-                switch (Options.Provider) 
-                {
-                    case "SqlServer":
-                        connection = new SqlConnection(Options.ConnectionString);
-                        break;
-                    default:
-                        throw new NotSupportedException("Provider not supported");
-                }
-#else
+
                 IDbConnection connection = Options.Provider switch
                 {
                     "SqlServer" => new SqlConnection(Options.ConnectionString),
                     _ => throw new NotSupportedException("Provider not supported")
                 };
-#endif
+
                 //connection.Open();
 
                 return connection;
@@ -198,15 +119,14 @@ namespace Solti.Utils.DI.UseCases
         [Test]
         public void LoggerAspectTest()
         {
-            Container.Factory(i => new Mock<IModuleWithAspects>().Object, Lifetime.Transient);
+            using IScopeFactory root = ScopeFactory.Create(svcs => svcs.Factory(i => new Mock<IModuleWithAspects>().Object, Lifetime.Transient));
 
-            using (IInjector injector = Container.CreateInjector())
-            {
-                IModule module = injector.Get<IModuleWithAspects>();
+            IInjector injector = root.CreateScope();
 
-                Assert.DoesNotThrow(() => module.DoSomething("cica"));
-                Assert.That(MyLogger.LastMessage, Is.EqualTo("DoSomething(cica)"));
-            }
+            IModule module = injector.Get<IModuleWithAspects>();
+
+            Assert.DoesNotThrow(() => module.DoSomething("cica"));
+            Assert.That(MyLogger.LastMessage, Is.EqualTo("DoSomething(cica)"));
         }
 
         public interface ILogger 

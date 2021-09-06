@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -13,7 +14,6 @@ using NUnit.Framework;
 namespace Solti.Utils.DI.Internals.Tests
 {
     using Interfaces;
-    using System.Collections.Generic;
 
     [TestFixture]
     public class ServiceEntryTests

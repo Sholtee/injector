@@ -5,7 +5,6 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 
 using Moq;
 using NUnit.Framework;
@@ -13,11 +12,8 @@ using NUnit.Framework;
 namespace Solti.Utils.Proxy.Tests
 {
     using DI.Interfaces;
-    using DI.Internals;
 
     using Primitives.Patterns;
-
-    using Proxy.Generators;
 
     [TestFixture]
     public class ProxyFactoryTests
