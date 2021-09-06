@@ -23,7 +23,7 @@ namespace Solti.Utils.DI.Internals
 
         private readonly ServicePath FPath = new();
 
-        private readonly ExclusiveBlock FExclusiveBlock = new();
+        private readonly ExclusiveBlock? FExclusiveBlock;
         #endregion
 
         #region Internal
@@ -207,17 +207,23 @@ namespace Solti.Utils.DI.Internals
             //
 
             if (disposeManaged)
-                FExclusiveBlock.Dispose();
+                FExclusiveBlock?.Dispose();
         }
 
         protected override async ValueTask AsyncDispose()
         {
             await base.AsyncDispose();
-            await FExclusiveBlock.DisposeAsync();
+
+            if (FExclusiveBlock is not null)
+                await FExclusiveBlock.DisposeAsync();
         }
         #endregion
 
-        public Injector(ScopeFactory parent) : base(parent) { }
+        public Injector(ScopeFactory parent) : base(parent)
+        {
+            if (Options.SafeMode)
+                FExclusiveBlock = new ExclusiveBlock(ExclusiveBlockFeatures.SupportsRecursion);
+        }
 
         public new ScopeFactory Parent => (ScopeFactory) base.Parent!;
 
@@ -233,7 +239,7 @@ namespace Solti.Utils.DI.Internals
             Ensure.Parameter.IsInterface(iface, nameof(iface));
             Ensure.Parameter.IsNotGenericDefinition(iface, nameof(iface));
 
-            using (FExclusiveBlock.Enter())
+            using (FExclusiveBlock?.Enter())
             {
                 return GetReferenceInternal(iface, name, throwOnMissing: true)!;
             }
@@ -250,7 +256,7 @@ namespace Solti.Utils.DI.Internals
             Ensure.Parameter.IsInterface(iface, nameof(iface));
             Ensure.Parameter.IsNotGenericDefinition(iface, nameof(iface));
 
-            using (FExclusiveBlock.Enter())
+            using (FExclusiveBlock?.Enter())
             {
                 return GetReferenceInternal(iface, name, throwOnMissing: false);
             }

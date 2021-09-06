@@ -23,9 +23,15 @@ namespace Solti.Utils.DI.Interfaces
         public int MaxSpawnedTransientServices { get; init; } = 512;
 
         /// <summary>
-        /// Indicates whether the created scopes should implement the <see cref="IServiceProvider"/> interface.
+        /// Specifies whether the created scopes should implement the <see cref="IServiceProvider"/> interface.
         /// </summary>
         /// <remarks>Setting this property to true configures the <see cref="IInjector.Get(Type, string?)"/> method to not throw if the requested dependency cannot be found.</remarks>
         public bool SupportsServiceProvider { get; init; }
+
+        /// <summary>
+        /// Enables some extra validations.
+        /// </summary>
+        /// <remarks>Disable this feature when the performance is important.</remarks>
+        public bool SafeMode { get; init; } = true;
     }
 }

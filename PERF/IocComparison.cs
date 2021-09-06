@@ -72,7 +72,11 @@ namespace Solti.Utils.DI.Perf
             public void Build() => FRoot = ScopeFactory.Create
             (
                 svcs => FRegistrationActions.ForEach(addRegistration => addRegistration(svcs)),
-                new ScopeOptions { MaxSpawnedTransientServices = int.MaxValue }
+                new ScopeOptions 
+                {
+                    MaxSpawnedTransientServices = int.MaxValue,
+                    SafeMode = false
+                }
             );
 
             public IDisposable CreateScope(out IServiceProvider provider) => FRoot.CreateScope(out provider);
