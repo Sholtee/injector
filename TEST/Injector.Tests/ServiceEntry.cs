@@ -21,14 +21,12 @@ namespace Solti.Utils.DI.Internals.Tests
         [Test]
         public void Equals_ShouldDoWhatItsNameSuggests()
         {
-            var dummyContainer = new Mock<IServiceContainer>(MockBehavior.Strict).Object;
-            using (var entry = new AbstractServiceEntry(typeof(IDisposable), null, dummyContainer))
+            using (var entry = new DummyServiceEntry(typeof(IDisposable), null))
             {
                 Assert.That(entry.Equals(entry));
-                Assert.That(entry.Equals(new AbstractServiceEntry(typeof(IDisposable), null, dummyContainer)));
+                Assert.That(entry.Equals(new DummyServiceEntry(typeof(IDisposable), null)));
                 Assert.That(entry.Equals(null), Is.False);
-                Assert.That(entry.Equals(new AbstractServiceEntry(typeof(IDisposable), "cica", dummyContainer)), Is.False);
-                Assert.That(entry.Equals(new AbstractServiceEntry(typeof(IDisposable), null, new Mock<IServiceContainer>(MockBehavior.Strict).Object)), Is.False);
+                Assert.That(entry.Equals(new DummyServiceEntry(typeof(IDisposable), "cica")), Is.False);
             }
         }
 
@@ -54,12 +52,22 @@ namespace Solti.Utils.DI.Internals.Tests
 
         private class MyServiceEntry : AbstractServiceEntry 
         {
-            public MyServiceEntry(Type iface) : base(iface, null, new Mock<IServiceContainer>(MockBehavior.Strict).Object) 
+            public MyServiceEntry(Type iface) : base(iface, null) 
             {
                 Instances = new[] { new ServiceReference(this, new Mock<IInjector>().Object) };
             }
 
             public override IReadOnlyCollection<IServiceReference> Instances { get; }
+
+            public override AbstractServiceEntry CopyTo(IServiceRegistry owner)
+            {
+                throw new NotImplementedException();
+            }
+
+            public override bool SetInstance(IServiceReference serviceReference)
+            {
+                throw new NotImplementedException();
+            }
         }
     }
 }

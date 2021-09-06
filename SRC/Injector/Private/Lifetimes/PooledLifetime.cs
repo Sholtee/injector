@@ -24,7 +24,7 @@ namespace Solti.Utils.DI.Internals
             return $"{Consts.INTERNAL_SERVICE_NAME_PREFIX}pool_{iface.FullName}_{name}"; // ne iface.GUID-ot hasznaljunk mert az kibaszott lassu
         }
 
-        private AbstractServiceEntry PoolService(Type iface, string? name, IServiceContainer owner)
+        private AbstractServiceEntry PoolService(Type iface, string? name)
         {
             Ensure.Parameter.IsNotNull(iface, nameof(iface));
             Ensure.Parameter.IsInterface(iface, nameof(iface));
@@ -48,30 +48,30 @@ namespace Solti.Utils.DI.Internals
                     ["capacity"] = Capacity,
                     ["name"] = name
                 },
-                owner
+                null
             );
         }
 
-        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Type implementation, IServiceContainer owner)
+        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Type implementation)
         {
             //
             // A sorrent szamit (last IModifiedServiceCollection.LastEntry)
             //
 
-            yield return PoolService(iface, name, owner);
-            yield return new PooledServiceEntry(iface, name, implementation, owner);
+            yield return PoolService(iface, name);
+            yield return new PooledServiceEntry(iface, name, implementation, null);
         }
 
-        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Type implementation, IReadOnlyDictionary<string, object?> explicitArgs, IServiceContainer owner)
+        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Type implementation, IReadOnlyDictionary<string, object?> explicitArgs)
         {
-            yield return PoolService(iface, name, owner);
-            yield return new PooledServiceEntry(iface, name, implementation, explicitArgs, owner);
+            yield return PoolService(iface, name);
+            yield return new PooledServiceEntry(iface, name, implementation, explicitArgs, null);
         }
 
-        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Func<IInjector, Type, object> factory, IServiceContainer owner)
+        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Func<IInjector, Type, object> factory)
         {
-            yield return PoolService(iface, name, owner);
-            yield return new PooledServiceEntry(iface, name, factory, owner);
+            yield return PoolService(iface, name);
+            yield return new PooledServiceEntry(iface, name, factory, null);
         }
 
         public override int CompareTo(Lifetime other) => other is PooledLifetime

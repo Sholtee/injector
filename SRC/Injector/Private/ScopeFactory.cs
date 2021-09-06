@@ -3,7 +3,6 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
-using System;
 using System.Collections.Generic;
 using System.Threading;
 
@@ -20,7 +19,7 @@ namespace Solti.Utils.DI.Internals
 
         public ScopeOptions ScopeOptions { get; }
 
-        public virtual Injector_New CreateScope() => new(this);
+        public virtual Injector CreateScope() => new(this);
 
         protected static IReadOnlyCollection<AbstractServiceEntry> DefaultBuiltInServices { get; } = new AbstractServiceEntry[]
         {
@@ -34,7 +33,5 @@ namespace Solti.Utils.DI.Internals
         protected override IReadOnlyCollection<AbstractServiceEntry> BuiltInServices { get; } = DefaultBuiltInServices;
 
         IInjector IScopeFactory.CreateScope() => CreateScope();
-
-        IInjector IScopeFactory.CreateScope(IServiceContainer parent) => throw new NotImplementedException(); // TODO: torolni
     }
 }

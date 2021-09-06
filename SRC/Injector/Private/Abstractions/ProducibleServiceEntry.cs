@@ -5,6 +5,7 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -16,7 +17,7 @@ namespace Solti.Utils.DI.Internals
         #region Protected
         protected abstract void SaveReference(IServiceReference serviceReference);
 
-        protected ProducibleServiceEntry(ProducibleServiceEntry entry, IServiceContainer owner) : base(entry.Interface, entry.Name, entry.Implementation, owner) // TODO: torolni
+        protected ProducibleServiceEntry(ProducibleServiceEntry entry, IServiceRegistry? owner) : base(entry.Interface, entry.Name, entry.Implementation, owner)
         {
             Factory = entry.Factory;
             ExplicitArgs = entry.ExplicitArgs;
@@ -27,18 +28,7 @@ namespace Solti.Utils.DI.Internals
             //
         }
 
-        protected ProducibleServiceEntry(ProducibleServiceEntry entry, IServiceRegistry owner) : base(entry.Interface, entry.Name, entry.Implementation, owner)
-        {
-            Factory = entry.Factory;
-            ExplicitArgs = entry.ExplicitArgs;
-
-            //
-            // Itt nem kell "this.ApplyAspects()" hivas mert a forras bejegyzesen mar
-            // hivva volt.
-            //
-        }
-
-        protected ProducibleServiceEntry(Type @interface, string? name, Func<IInjector, Type, object> factory, IServiceContainer owner) : base(@interface, name, null, owner)
+        protected ProducibleServiceEntry(Type @interface, string? name, Func<IInjector, Type, object> factory, IServiceRegistry? owner) : base(@interface, name, null, owner)
         {
             //
             // Os ellenorzi az interface-t es a tulajdonost.
@@ -48,7 +38,7 @@ namespace Solti.Utils.DI.Internals
             this.ApplyAspects();
         }
 
-        protected ProducibleServiceEntry(Type @interface, string? name, Type implementation, IServiceContainer owner) : base(@interface, name, implementation, owner)
+        protected ProducibleServiceEntry(Type @interface, string? name, Type implementation, IServiceRegistry? owner) : base(@interface, name, implementation, owner)
         {
             //
             // Os ellenorzi a tobbit.
@@ -72,7 +62,7 @@ namespace Solti.Utils.DI.Internals
                 implementation.GetApplicableConstructor();
         }
 
-        protected ProducibleServiceEntry(Type @interface, string? name, Type implementation, IReadOnlyDictionary<string, object?> explicitArgs, IServiceContainer owner) : base(@interface, name, implementation, owner)
+        protected ProducibleServiceEntry(Type @interface, string? name, Type implementation, IReadOnlyDictionary<string, object?> explicitArgs, IServiceRegistry? owner) : base(@interface, name, implementation, owner)
         {
             //
             // Os ellenorzi a tobbit.
@@ -94,6 +84,7 @@ namespace Solti.Utils.DI.Internals
             ExplicitArgs = explicitArgs;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         protected void EnsureAppropriateReference(IServiceReference reference)
         {
             Ensure.Parameter.IsNotNull(reference, nameof(reference));
@@ -119,9 +110,7 @@ namespace Solti.Utils.DI.Internals
             return true;
         }
 
-        public abstract AbstractServiceEntry Specialize(params Type[] genericArguments);
-
-        public abstract AbstractServiceEntry Specialize(IServiceRegistry owner, params Type[] genericArguments);
+        public abstract AbstractServiceEntry Specialize(IServiceRegistry? owner, params Type[] genericArguments);
 
         public IReadOnlyDictionary<string, object?>? ExplicitArgs { get; }
     }

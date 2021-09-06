@@ -332,7 +332,7 @@ namespace Solti.Utils.DI.Injector.Tests
         {
             public IServiceReference GotReference { get; private set; }
 
-            public HackyServiceEntry() : base(typeof(IInterface_1), null, null!) { }
+            public HackyServiceEntry() : base(typeof(IInterface_1), null) { }
 
             public override AbstractServiceEntry CopyTo(IServiceRegistry owner) => this;
 

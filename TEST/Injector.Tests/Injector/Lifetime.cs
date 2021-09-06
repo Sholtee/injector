@@ -30,7 +30,7 @@ namespace Solti.Utils.DI.Injector.Tests
             using (IInjector injector = Root.CreateScope())
             {
                 Assert.IsNotNull(injector.Get<IInterface_1>());
-                Assert.That(injector.Get<IServiceRegistry>().GetEntry<IInterface_1>().Registry, Is.EqualTo(injector));
+                Assert.That(injector.Get<IServiceRegistry>().GetEntry<IInterface_1>().Owner, Is.EqualTo(injector));
                 Assert.AreNotSame(injector.Get<IInterface_1>(), injector.Get<IInterface_1>());
             }
         }
@@ -47,7 +47,7 @@ namespace Solti.Utils.DI.Injector.Tests
             using (IInjector injector1 = Root.CreateScope())
             {
                 Assert.DoesNotThrow(() => injector1.Get<IInterface_1>());
-                Assert.Throws<Exception>(() => injector1.Get<IInterface_1>(), Resources.INJECTOR_SHOULD_BE_RELEASED);
+                Assert.Throws<InvalidOperationException>(() => injector1.Get<IInterface_1>(), Resources.INJECTOR_SHOULD_BE_RELEASED);
 
                 //
                 // Ettol meg masik injector tud peldanyositani.
@@ -68,13 +68,13 @@ namespace Solti.Utils.DI.Injector.Tests
             using (IInjector injector1 = Root.CreateScope())
             {
                 Assert.NotNull(injector1.Get<IInterface_1>());
-                Assert.That(injector1.Get<IServiceRegistry>().GetEntry<IInterface_1>().Registry, Is.EqualTo(injector1));
+                Assert.That(injector1.Get<IServiceRegistry>().GetEntry<IInterface_1>().Owner, Is.EqualTo(injector1));
                 Assert.AreSame(injector1.Get<IInterface_1>(), injector1.Get<IInterface_1>());
 
                 using (IInjector injector2 = Root.CreateScope())
                 {
                     Assert.NotNull(injector2.Get<IInterface_1>());
-                    Assert.That(injector2.Get<IServiceRegistry>().GetEntry<IInterface_1>().Registry, Is.EqualTo(injector2));
+                    Assert.That(injector2.Get<IServiceRegistry>().GetEntry<IInterface_1>().Owner, Is.EqualTo(injector2));
                     Assert.AreSame(injector2.Get<IInterface_1>(), injector2.Get<IInterface_1>());
                     Assert.AreNotSame(injector1.Get<IInterface_1>(), injector2.Get<IInterface_1>());
                 }
@@ -193,7 +193,7 @@ namespace Solti.Utils.DI.Injector.Tests
 
             using (IInjector injector = Root.CreateScope())
             {
-                Assert.That(injector.Get<IServiceRegistry>().GetEntry<IInterface_1>().Registry, Is.SameAs(injector));
+                Assert.That(injector.Get<IServiceRegistry>().GetEntry<IInterface_1>().Owner, Is.SameAs(injector));
             }
         }
 
@@ -204,7 +204,7 @@ namespace Solti.Utils.DI.Injector.Tests
 
             using (IInjector injector = Root.CreateScope())
             {
-                Assert.That(injector.Get<IServiceRegistry>().GetEntry<IInterface_1>().Registry, Is.SameAs(Root));
+                Assert.That(injector.Get<IServiceRegistry>().GetEntry<IInterface_1>().Owner, Is.SameAs(Root));
             }
         }
 
@@ -418,7 +418,7 @@ namespace Solti.Utils.DI.Injector.Tests
 
             using (IInjector injector = Root.CreateScope())
             {
-                Assert.That(injector.Get<IServiceRegistry>().GetEntry<IDisposable>().Registry, Is.SameAs(Root));
+                Assert.That(injector.Get<IServiceRegistry>().GetEntry<IDisposable>().Owner, Is.SameAs(Root));
             }
         }
 

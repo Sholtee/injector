@@ -16,15 +16,15 @@ namespace Solti.Utils.DI.Internals
 
         private readonly Func<IServiceRegistry, object> FSelector;
 
-        public ContextualServiceEntry(Type @interface, string? name, Func<IServiceRegistry, object> selector) : base(@interface, name, null!)
+        public ContextualServiceEntry(Type @interface, string? name, Func<IServiceRegistry, object> selector) : base(@interface, name, null, null)
         {
             FInstances = Array.Empty<ServiceReference>();
             FSelector = Ensure.Parameter.IsNotNull(selector, nameof(selector));
         }
 
-        private ContextualServiceEntry(ContextualServiceEntry original, IServiceRegistry owner) : base(original.Interface, original.Name, null!)
+        private ContextualServiceEntry(ContextualServiceEntry original, IServiceRegistry owner) : base(original.Interface, original.Name)
         {
-            Registry = Ensure.Parameter.IsNotNull(owner, nameof(owner));
+            Owner = Ensure.Parameter.IsNotNull(owner, nameof(owner));
             FSelector = original.FSelector;
             FInstances = new[] 
             {
@@ -33,9 +33,11 @@ namespace Solti.Utils.DI.Internals
             State = ServiceEntryStates.Built;
         }
 
-        public override IServiceRegistry? Registry { get; }
+        public override IServiceRegistry? Owner { get; }
 
         public override AbstractServiceEntry CopyTo(IServiceRegistry owner) => new ContextualServiceEntry(this, Ensure.Parameter.IsNotNull(owner, nameof(owner)));
+
+        public override bool SetInstance(IServiceReference serviceReference) => throw new NotImplementedException();
 
         public override IReadOnlyCollection<IServiceReference> Instances => FInstances;
     }

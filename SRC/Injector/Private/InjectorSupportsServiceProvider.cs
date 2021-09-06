@@ -9,7 +9,7 @@ namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
 
-    internal class InjectorSupportsServiceProvider : Injector_New, IServiceProvider, IInjector
+    internal class InjectorSupportsServiceProvider : Injector, IServiceProvider, IInjector
     {
         public InjectorSupportsServiceProvider(ScopeFactory parent) : base(parent) { }
 

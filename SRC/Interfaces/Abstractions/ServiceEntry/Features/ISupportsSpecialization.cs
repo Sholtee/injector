@@ -15,11 +15,6 @@ namespace Solti.Utils.DI.Interfaces
         /// <summary>
         /// Specializes a service entry if it is generic.
         /// </summary>
-        AbstractServiceEntry Specialize(params Type[] genericArguments); // TODO: torolni
-
-        /// <summary>
-        /// Specializes a service entry if it is generic.
-        /// </summary>
         AbstractServiceEntry Specialize(IServiceRegistry owner, params Type[] genericArguments);
     }
 }

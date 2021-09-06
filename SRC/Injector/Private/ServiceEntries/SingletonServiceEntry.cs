@@ -35,30 +35,29 @@ namespace Solti.Utils.DI.Internals
             await base.AsyncDispose();
         }
 
-        private SingletonServiceEntry(SingletonServiceEntry entry, IServiceRegistry owner) : base(entry, owner)
+        private SingletonServiceEntry(SingletonServiceEntry entry, IServiceRegistry? owner) : base(entry, owner)
         {
         }
 
-        public SingletonServiceEntry(Type @interface, string? name, Func<IInjector, Type, object> factory, IServiceContainer owner) : base(@interface, name, factory, owner)
+        public SingletonServiceEntry(Type @interface, string? name, Func<IInjector, Type, object> factory, IServiceRegistry? owner) : base(@interface, name, factory, owner)
         {
         }
 
-        public SingletonServiceEntry(Type @interface, string? name, Type implementation, IServiceContainer owner) : base(@interface, name, implementation, owner)
+        public SingletonServiceEntry(Type @interface, string? name, Type implementation, IServiceRegistry? owner) : base(@interface, name, implementation, owner)
         {
         }
 
-        public SingletonServiceEntry(Type @interface, string? name, Type implementation, IReadOnlyDictionary<string, object?> explicitArgs, IServiceContainer owner) : base(@interface, name, implementation, explicitArgs, owner)
+        public SingletonServiceEntry(Type @interface, string? name, Type implementation, IReadOnlyDictionary<string, object?> explicitArgs, IServiceRegistry? owner) : base(@interface, name, implementation, explicitArgs, owner)
         {
         }
 
         public override bool SetInstance(IServiceReference reference)
         {
             CheckNotDisposed();
+            EnsureAppropriateReference(reference);
 
             using (FExclusiveBlock.Enter())
             {
-                EnsureAppropriateReference(reference);
-
                 //
                 // Ha mar le lett gyartva akkor nincs dolgunk, jelezzuk a hivonak h ovlassa ki a korabban 
                 // beallitott erteket.
@@ -78,7 +77,7 @@ namespace Solti.Utils.DI.Internals
             }
         }
 
-        public override AbstractServiceEntry Specialize(params Type[] genericArguments) // TODO: torolni
+        public override AbstractServiceEntry Specialize(IServiceRegistry? owner, params Type[] genericArguments) // TODO: torolni
         {
             CheckNotDisposed();
             Ensure.Parameter.IsNotNull(genericArguments, nameof(genericArguments));
@@ -90,7 +89,7 @@ namespace Solti.Utils.DI.Internals
                     Interface.MakeGenericType(genericArguments),
                     Name,
                     Implementation.MakeGenericType(genericArguments),
-                    Owner
+                    owner
                 ),
                 _ when Implementation is not null && ExplicitArgs is not null => new SingletonServiceEntry
                 (
@@ -98,20 +97,18 @@ namespace Solti.Utils.DI.Internals
                     Name,
                     Implementation.MakeGenericType(genericArguments),
                     ExplicitArgs,
-                    Owner
+                    owner
                 ),
                 _ when Factory is not null => new SingletonServiceEntry
                 (
                     Interface.MakeGenericType(genericArguments),
                     Name,
                     Factory,
-                    Owner
+                    owner
                 ),
                 _ => throw new NotSupportedException()
             };
         }
-
-        public override AbstractServiceEntry Specialize(IServiceRegistry owner, params Type[] genericArguments) => Specialize(Ensure.Parameter.IsNotNull(genericArguments, nameof(genericArguments))).CopyTo(Ensure.Parameter.IsNotNull(owner, nameof(owner)));
 
         public override AbstractServiceEntry CopyTo(IServiceRegistry registry) => new SingletonServiceEntry(this, Ensure.Parameter.IsNotNull(registry, nameof(registry)));
 

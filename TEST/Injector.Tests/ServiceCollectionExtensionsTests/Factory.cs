@@ -19,7 +19,7 @@ namespace Solti.Utils.DI.ServiceCollection.Tests
         [Test]
         public void Factory_ShouldBeNullChecked()
         {
-            Assert.Throws<ArgumentNullException>(() => IServiceContainerBasicExtensions.Factory(null, typeof(IDisposable), (i, t) => new Disposable(), Lifetime.Transient));
+            Assert.Throws<ArgumentNullException>(() => IServiceCollectionBasicExtensions.Factory(null, typeof(IDisposable), (i, t) => new Disposable(), Lifetime.Transient));
             Assert.Throws<ArgumentNullException>(() => Collection.Factory(null, (i, t) => new Disposable(), Lifetime.Transient));
             Assert.Throws<ArgumentNullException>(() => Collection.Factory(typeof(IDisposable), null, Lifetime.Transient));
             Assert.Throws<ArgumentNullException>(() => Collection.Factory(typeof(IDisposable), (i, t) => new Disposable(), null));
@@ -32,7 +32,7 @@ namespace Solti.Utils.DI.ServiceCollection.Tests
 
             Collection.Factory(typeof(IInterface_3<>), factory, lifetime);
 
-            Assert.AreEqual(new TransientServiceEntry(typeof(IInterface_3<int>), null, factory, null), ((ISupportsSpecialization) Collection.LastEntry).Specialize(new Mock<IServiceRegistry>(MockBehavior.Strict).Object, typeof(int)));
+            Assert.AreEqual(new TransientServiceEntry(typeof(IInterface_3<int>), null, factory, null), ((ISupportsSpecialization) Collection.LastEntry).Specialize(null, typeof(int)));
         }
 
         [TestCase(null)]

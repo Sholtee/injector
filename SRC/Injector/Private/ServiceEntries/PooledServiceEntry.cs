@@ -20,23 +20,19 @@ namespace Solti.Utils.DI.Internals
 
         protected override void SaveReference(IServiceReference serviceReference) => FInstances.Add(serviceReference);
 
-        protected PooledServiceEntry(PooledServiceEntry entry, IServiceContainer owner) : base(entry, owner)
+        protected PooledServiceEntry(PooledServiceEntry entry, IServiceRegistry? owner) : base(entry, owner)
         {
         }
 
-        protected PooledServiceEntry(PooledServiceEntry entry, IServiceRegistry owner) : base(entry, owner)
+        public PooledServiceEntry(Type @interface, string? name, Func<IInjector, Type, object> factory, IServiceRegistry? owner) : base(@interface, name, factory, owner)
         {
         }
 
-        public PooledServiceEntry(Type @interface, string? name, Func<IInjector, Type, object> factory, IServiceContainer owner) : base(@interface, name, factory, owner)
+        public PooledServiceEntry(Type @interface, string? name, Type implementation, IServiceRegistry? owner) : base(@interface, name, implementation, owner)
         {
         }
 
-        public PooledServiceEntry(Type @interface, string? name, Type implementation, IServiceContainer owner) : base(@interface, name, implementation, owner)
-        {
-        }
-
-        public PooledServiceEntry(Type @interface, string? name, Type implementation, IReadOnlyDictionary<string, object?> explicitArgs, IServiceContainer owner) : base(@interface, name, implementation, explicitArgs, owner)
+        public PooledServiceEntry(Type @interface, string? name, Type implementation, IReadOnlyDictionary<string, object?> explicitArgs, IServiceRegistry? owner) : base(@interface, name, implementation, explicitArgs, owner)
         {
         }
 
@@ -87,24 +83,9 @@ namespace Solti.Utils.DI.Internals
             return true;
         }
 
-        //
-        // Ez itt trukkos mert a PooledServiceEntrySupportsProxying-ban ez a metodus nincs felulirva
-        // igy az ilyen tipusu bejegyzesek a deklaralo konteneren kivul nem proxy-zhatok.
-        //
-
-        public sealed override AbstractServiceEntry CopyTo(IServiceContainer target)
-        {
-            CheckNotDisposed();
-            Ensure.Parameter.IsNotNull(target, nameof(target));
-
-            var result = new PooledServiceEntry(this, target);
-            target.Add(result);
-            return result;
-        }
-
         public sealed override AbstractServiceEntry CopyTo(IServiceRegistry registry) => new PooledServiceEntry(this, Ensure.Parameter.IsNotNull(registry, nameof(registry)));
 
-        public override AbstractServiceEntry Specialize(params Type[] genericArguments) // TODO: torolni
+        public override AbstractServiceEntry Specialize(IServiceRegistry? owner, params Type[] genericArguments) // TODO: torolni
         {
             CheckNotDisposed();
             Ensure.Parameter.IsNotNull(genericArguments, nameof(genericArguments));
@@ -116,7 +97,7 @@ namespace Solti.Utils.DI.Internals
                     Interface.MakeGenericType(genericArguments),
                     Name,
                     Implementation.MakeGenericType(genericArguments),
-                    Owner
+                    owner
                 ),
                 _ when Implementation is not null && ExplicitArgs is not null => new PooledServiceEntry
                 (
@@ -124,20 +105,18 @@ namespace Solti.Utils.DI.Internals
                     Name,
                     Implementation.MakeGenericType(genericArguments),
                     ExplicitArgs,
-                    Owner
+                    owner
                 ),
                 _ when Factory is not null => new PooledServiceEntry
                 (
                     Interface.MakeGenericType(genericArguments),
                     Name,
                     Factory,
-                    Owner
+                    owner
                 ),
                 _ => throw new NotSupportedException()
             };
         }
-
-        public override AbstractServiceEntry Specialize(IServiceRegistry owner, params Type[] genericArguments) => Specialize(genericArguments).CopyTo(Ensure.Parameter.IsNotNull(owner, nameof(owner)));
 
         public override Lifetime Lifetime { get; } = Lifetime.Pooled;
 

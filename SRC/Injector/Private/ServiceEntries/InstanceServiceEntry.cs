@@ -15,10 +15,7 @@ namespace Solti.Utils.DI.Internals
         private readonly IReadOnlyCollection<ServiceReference> FInstances;
         private IServiceRegistry? FRegistry; 
 
-        public InstanceServiceEntry(Type @interface, string? name, object instance, bool externallyOwned, IServiceContainer owner) : base(
-            @interface, 
-            name, 
-            owner)
+        public InstanceServiceEntry(Type @interface, string? name, object instance, bool externallyOwned, IServiceRegistry? owner) : base(@interface, name, null, owner)
         {
             Ensure.Parameter.IsNotNull(instance, nameof(instance));
 
@@ -43,7 +40,7 @@ namespace Solti.Utils.DI.Internals
 
         public override Lifetime? Lifetime { get; } = Lifetime.Instance;
 
-        public override IServiceRegistry? Registry => FRegistry;
+        public override IServiceRegistry? Owner => FRegistry;
 
         public override AbstractServiceEntry CopyTo(IServiceRegistry owner)
         {
@@ -53,12 +50,7 @@ namespace Solti.Utils.DI.Internals
 
         public override IReadOnlyCollection<IServiceReference> Instances => FInstances;
 
-        public override bool SetInstance(IServiceReference reference) =>
-            //
-            // Peldany eseten ez a metodus elvileg sose kerulhet meghivasra.
-            //
-
-            throw new NotImplementedException();
+        public override bool SetInstance(IServiceReference reference) => throw new NotImplementedException();
 
         public override bool IsShared { get; } = true;
     }

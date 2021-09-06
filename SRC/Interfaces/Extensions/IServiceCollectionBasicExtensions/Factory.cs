@@ -32,7 +32,7 @@ namespace Solti.Utils.DI.Interfaces
 
             return self.Register
             (
-                lifetime.CreateFrom(iface, name, factory, null!)
+                lifetime.CreateFrom(iface, name, factory)
             );
         }
 

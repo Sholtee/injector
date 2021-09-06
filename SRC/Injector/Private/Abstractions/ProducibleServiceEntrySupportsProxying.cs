@@ -15,23 +15,19 @@ namespace Solti.Utils.DI.Internals
     /// </summary>
     internal abstract class ProducibleServiceEntrySupportsProxying : ProducibleServiceEntry, ISupportsProxying
     {
-        protected ProducibleServiceEntrySupportsProxying(ProducibleServiceEntrySupportsProxying entry, IServiceContainer owner) : base(entry, owner)
+        protected ProducibleServiceEntrySupportsProxying(ProducibleServiceEntrySupportsProxying entry, IServiceRegistry? owner) : base(entry, owner)
         {
         }
 
-        protected ProducibleServiceEntrySupportsProxying(ProducibleServiceEntrySupportsProxying entry, IServiceRegistry owner) : base(entry, owner)
+        protected ProducibleServiceEntrySupportsProxying(Type @interface, string? name, Func<IInjector, Type, object> factory, IServiceRegistry? owner) : base(@interface, name, factory, owner)
         {
         }
 
-        protected ProducibleServiceEntrySupportsProxying(Type @interface, string? name, Func<IInjector, Type, object> factory, IServiceContainer owner) : base(@interface, name, factory, owner)
+        protected ProducibleServiceEntrySupportsProxying(Type @interface, string? name, Type implementation, IServiceRegistry? owner) : base(@interface, name, implementation, owner)
         {
         }
 
-        protected ProducibleServiceEntrySupportsProxying(Type @interface, string? name, Type implementation, IServiceContainer owner) : base(@interface, name, implementation, owner)
-        {
-        }
-
-        protected ProducibleServiceEntrySupportsProxying(Type @interface, string? name, Type implementation, IReadOnlyDictionary<string, object?> explicitArgs, IServiceContainer owner) : base(@interface, name, implementation, explicitArgs, owner)
+        protected ProducibleServiceEntrySupportsProxying(Type @interface, string? name, Type implementation, IReadOnlyDictionary<string, object?> explicitArgs, IServiceRegistry? owner) : base(@interface, name, implementation, explicitArgs, owner)
         {
         }
 

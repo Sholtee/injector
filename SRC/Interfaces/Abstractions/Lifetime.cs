@@ -26,22 +26,22 @@ namespace Solti.Utils.DI.Interfaces
             FInstance;
 
         /// <summary>
-        /// Services having singleton liftime are instantiated only once (in declaring <see cref="IServiceContainer"/>) on the first request and disposed automatically when their container is disposed.
+        /// Services having singleton liftime are instantiated only once in the root scope (on the first request) and disposed automatically when the root is released.
         /// </summary>
         public static Lifetime Singleton { get => FSingleton ?? throw new NotSupportedException(); protected set => FSingleton = value; }
 
         /// <summary>
-        /// Services having scoped liftime are instantiated only once (per <see cref="IInjector"/>) on the first request and disposed automatically when the parent <see cref="IInjector"/> is disposed.
+        /// Services having scoped liftime are instantiated only once (per scope) on the first request and disposed automatically when the parent scope is disposed.
         /// </summary>
         public static Lifetime Scoped { get => FScoped ?? throw new NotSupportedException(); protected set => FScoped = value; }
 
         /// <summary>
-        /// Services having transient lifetime are instantiated on every request and released automatically when the parent <see cref="IInjector"/> is disposed.
+        /// Services having transient lifetime are instantiated on every request and released automatically when the parent scope is disposed.
         /// </summary>
         public static Lifetime Transient { get => FTransient ?? throw new NotSupportedException(); protected set => FTransient = value; }
 
         /// <summary>
-        /// Services having pooled lifetime are instantiated in a separate <see href="https://en.wikipedia.org/wiki/Object_pool_pattern">pool</see>. Every <see cref="IInjector"/> may request a service instance from the pool which is automatically resetted and returned when the parent <see cref="IInjector"/> is disposed.
+        /// Services having pooled lifetime are instantiated in a separate <see href="https://en.wikipedia.org/wiki/Object_pool_pattern">pool</see>. Every <see cref="IInjector"/> may request a service instance from the pool which is automatically resetted and returned when the parent scope is disposed.
         /// </summary>
         /// <remarks>Pooled services should implement the <see cref="IResettable"/> interface.</remarks>
         public static Lifetime Pooled { get => FPooled ?? throw new NotSupportedException(); protected set => FPooled = value; }
@@ -64,21 +64,21 @@ namespace Solti.Utils.DI.Interfaces
         /// <summary>
         /// Creates one or more service entry for the given <paramref name="implementation"/>.
         /// </summary>
-        public virtual IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Type implementation, IServiceContainer owner) => throw new NotSupportedException();
+        public virtual IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Type implementation) => throw new NotSupportedException();
 
         /// <summary>
         /// Creates one or more service entry for the given <paramref name="implementation"/>.
         /// </summary>
-        public virtual IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Type implementation, IReadOnlyDictionary<string, object?> explicitArgs, IServiceContainer owner) => throw new NotSupportedException();
+        public virtual IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Type implementation, IReadOnlyDictionary<string, object?> explicitArgs) => throw new NotSupportedException();
 
         /// <summary>
         /// Creates one or more service entry for the given <paramref name="factory"/>.
         /// </summary>
-        public virtual IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Func<IInjector, Type, object> factory, IServiceContainer owner) => throw new NotSupportedException();
+        public virtual IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Func<IInjector, Type, object> factory) => throw new NotSupportedException();
 
         /// <summary>
         /// Creates one or more service entry for the given <paramref name="value"/>.
         /// </summary>
-        public virtual IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, object value, bool externallyOwned, IServiceContainer owner) => throw new NotSupportedException();
+        public virtual IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, object value, bool externallyOwned) => throw new NotSupportedException();
     }
 }

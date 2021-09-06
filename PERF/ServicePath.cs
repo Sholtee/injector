@@ -38,14 +38,14 @@ namespace Solti.Utils.DI.Perf
 
             void Extend(int i)
             {
-                Path.Push(new ServiceReference(new AbstractServiceEntry(typeof(IInjector), i++.ToString(), null), DummyInjector));
+                Path.Push(new ServiceReference(new DummyServiceEntry(typeof(IInjector), i.ToString()), DummyInjector));
                 try
                 {
                     if (WithCircularityCheck)
                         Path.CheckNotCircular();
 
-                    if (i < Depth)
-                        Extend(i);
+                    if (i < Depth - 1)
+                        Extend(i++);
                 }
                 finally 
                 {

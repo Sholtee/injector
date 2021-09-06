@@ -16,7 +16,7 @@ namespace Solti.Utils.DI.Internals
     using Primitives.Threading;
     using Properties;
 
-    internal class Injector_New: ServiceRegistry, IInjector
+    internal class Injector : ServiceRegistry, IInjector
     {
         #region Private
         private bool FDisposing;
@@ -66,7 +66,7 @@ namespace Solti.Utils.DI.Internals
                     //   -> Ennek az injector peldanynak a felszabaditasa nem befolyasolja a szerviz elettartamat.
                     //
 
-                    Injector_New dedicatedInjector = Parent.CreateScope();
+                    Injector dedicatedInjector = Parent.CreateScope();
 
                     try
                     {
@@ -217,7 +217,7 @@ namespace Solti.Utils.DI.Internals
         }
         #endregion
 
-        public Injector_New(ScopeFactory parent) : base(parent) { }
+        public Injector(ScopeFactory parent) : base(parent) { }
 
         public new ScopeFactory Parent => (ScopeFactory) base.Parent!;
 
@@ -261,8 +261,6 @@ namespace Solti.Utils.DI.Internals
         public object? TryGet(Type iface, string? name) => TryGetReference(iface, name)?.GetInstance();
 
         public ScopeOptions Options => Parent.ScopeOptions;
-
-        IServiceContainer IInjector.UnderlyingContainer => throw new NotSupportedException(); // TODO: torolni
         #endregion
     }
 }

@@ -15,7 +15,7 @@ namespace Solti.Utils.DI.Interfaces
         /// <summary>
         /// The owner of the service.
         /// </summary>
-        IServiceContainer Owner { get; }
+        IServiceRegistry? Owner { get; }
 
         /// <summary>
         /// The related (optional) implementation. 

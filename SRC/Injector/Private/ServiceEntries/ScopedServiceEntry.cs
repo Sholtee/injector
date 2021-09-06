@@ -14,25 +14,21 @@ namespace Solti.Utils.DI.Internals
     {
         private readonly List<IServiceReference> FInstances = new(1); // max egy eleme lehet
 
-        private ScopedServiceEntry(ScopedServiceEntry entry, IServiceContainer owner) : base(entry, owner) // TODO: torolni
-        {
-        }
-
-        private ScopedServiceEntry(ScopedServiceEntry entry, IServiceRegistry owner) : base(entry, owner)
+        private ScopedServiceEntry(ScopedServiceEntry entry, IServiceRegistry? owner) : base(entry, owner) // TODO: torolni
         {
         }
 
         protected override void SaveReference(IServiceReference serviceReference) => FInstances.Add(serviceReference);
 
-        public ScopedServiceEntry(Type @interface, string? name, Func<IInjector, Type, object> factory, IServiceContainer owner) : base(@interface, name, factory, owner)
+        public ScopedServiceEntry(Type @interface, string? name, Func<IInjector, Type, object> factory, IServiceRegistry? owner) : base(@interface, name, factory, owner)
         {
         }
 
-        public ScopedServiceEntry(Type @interface, string? name, Type implementation, IServiceContainer owner) : base(@interface, name, implementation, owner)
+        public ScopedServiceEntry(Type @interface, string? name, Type implementation, IServiceRegistry? owner) : base(@interface, name, implementation, owner)
         {
         }
 
-        public ScopedServiceEntry(Type @interface, string? name, Type implementation, IReadOnlyDictionary<string, object?> explicitArgs, IServiceContainer owner) : base(@interface, name, implementation, explicitArgs, owner)
+        public ScopedServiceEntry(Type @interface, string? name, Type implementation, IReadOnlyDictionary<string, object?> explicitArgs, IServiceRegistry? owner) : base(@interface, name, implementation, explicitArgs, owner)
         {
         }
 
@@ -59,19 +55,9 @@ namespace Solti.Utils.DI.Internals
             return true;
         }
 
-        public override AbstractServiceEntry CopyTo(IServiceContainer target)
-        {
-            CheckNotDisposed();
-            Ensure.Parameter.IsNotNull(target, nameof(target));
-
-            var result = new ScopedServiceEntry(this, target);
-            target.Add(result);
-            return result;
-        }
-
         public override AbstractServiceEntry CopyTo(IServiceRegistry registry) => new ScopedServiceEntry(this, Ensure.Parameter.IsNotNull(registry, nameof(registry)));
 
-        public override AbstractServiceEntry Specialize(params Type[] genericArguments) // TODO: torolni
+        public override AbstractServiceEntry Specialize(IServiceRegistry? owner, params Type[] genericArguments) // TODO: torolni
         {
             CheckNotDisposed();
             Ensure.Parameter.IsNotNull(genericArguments, nameof(genericArguments));
@@ -83,7 +69,7 @@ namespace Solti.Utils.DI.Internals
                     Interface.MakeGenericType(genericArguments),
                     Name,
                     Implementation.MakeGenericType(genericArguments),
-                    Owner
+                    owner
                 ),
                 _ when Implementation is not null && ExplicitArgs is not null => new ScopedServiceEntry
                 (
@@ -91,20 +77,18 @@ namespace Solti.Utils.DI.Internals
                     Name,
                     Implementation.MakeGenericType(genericArguments),
                     ExplicitArgs,
-                    Owner
+                    owner
                 ),
                 _ when Factory is not null => new ScopedServiceEntry
                 (
                     Interface.MakeGenericType(genericArguments),
                     Name,
                     Factory,
-                    Owner
+                    owner
                 ),
                 _ => throw new NotSupportedException()
             };
         }
-
-        public override AbstractServiceEntry Specialize(IServiceRegistry owner, params Type[] genericArguments) => Specialize(Ensure.Parameter.IsNotNull(genericArguments, nameof(genericArguments))).CopyTo(Ensure.Parameter.IsNotNull(owner, nameof(owner)));
 
         public override Lifetime Lifetime { get; } = Lifetime.Scoped;
 

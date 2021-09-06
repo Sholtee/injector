@@ -23,7 +23,7 @@ namespace Solti.Utils.DI.Internals.Tests
         [Test]
         public void Value_CanBeSetOnce() 
         {
-            var svc = new ServiceReference(new AbstractServiceEntry(typeof(IDummyService), null, new Mock<IServiceContainer>(MockBehavior.Strict).Object), new Mock<IInjector>(MockBehavior.Strict).Object)
+            var svc = new ServiceReference(new DummyServiceEntry(typeof(IDummyService), null), new Mock<IInjector>(MockBehavior.Strict).Object)
             {
                 Value = new Mock<IDummyService>().Object
             };
@@ -34,7 +34,7 @@ namespace Solti.Utils.DI.Internals.Tests
         [Test]
         public void Value_ShouldBeValidated()
         {
-            var svc = new ServiceReference(new AbstractServiceEntry(typeof(IDummyService), null, new Mock<IServiceContainer>(MockBehavior.Strict).Object), new Mock<IInjector>(MockBehavior.Strict).Object);
+            var svc = new ServiceReference(new DummyServiceEntry(typeof(IDummyService), null), new Mock<IInjector>(MockBehavior.Strict).Object);
 
             Assert.Throws<ArgumentNullException>(() => svc.Value = null);
             Assert.Throws<InvalidCastException>(() => svc.Value = new object(), Resources.INVALID_INSTANCE);
@@ -51,7 +51,7 @@ namespace Solti.Utils.DI.Internals.Tests
                 .SetupGet(x => x.Value)
                 .Returns(obj);
 
-            var svc = new ServiceReference(new AbstractServiceEntry(typeof(IDisposable), null, new Mock<IServiceContainer>(MockBehavior.Strict).Object), new Mock<IInjector>(MockBehavior.Strict).Object);
+            var svc = new ServiceReference(new DummyServiceEntry(typeof(IDisposable), null), new Mock<IInjector>(MockBehavior.Strict).Object);
 
             Assert.DoesNotThrow(() => svc.Value = mockWrapped.Object);
         }
@@ -64,7 +64,7 @@ namespace Solti.Utils.DI.Internals.Tests
                 .SetupGet(x => x.Value)
                 .Returns(new object());
 
-            var svc = new ServiceReference(new AbstractServiceEntry(typeof(IDisposable), null, new Mock<IServiceContainer>(MockBehavior.Strict).Object), new Mock<IInjector>(MockBehavior.Strict).Object);
+            var svc = new ServiceReference(new DummyServiceEntry(typeof(IDisposable), null), new Mock<IInjector>(MockBehavior.Strict).Object);
 
             Assert.Throws<InvalidCastException>(() => svc.Value = mockWrapped.Object);
         }
@@ -72,14 +72,14 @@ namespace Solti.Utils.DI.Internals.Tests
         [Test]
         public void Release_ShouldDisposeTheValueAndDecrementTheRefCountOfTheDependencies() 
         {         
-            var dependency = new ServiceReference(new AbstractServiceEntry(typeof(IDummyService), null, new Mock<IServiceContainer>(MockBehavior.Strict).Object), new Mock<IInjector>(MockBehavior.Strict).Object) 
+            var dependency = new ServiceReference(new DummyServiceEntry(typeof(IDummyService), null), new Mock<IInjector>(MockBehavior.Strict).Object) 
             { 
                 Value = new Mock<IDummyService>().Object // refcount == 1
             };
 
             var target = new Disposable();
 
-            var svc = new ServiceReference(new AbstractServiceEntry(typeof(IDisposable), null, new Mock<IServiceContainer>(MockBehavior.Strict).Object), new Mock<IInjector>(MockBehavior.Strict).Object);
+            var svc = new ServiceReference(new DummyServiceEntry(typeof(IDisposable), null), new Mock<IInjector>(MockBehavior.Strict).Object);
 
             svc.AddDependency(dependency);
             svc.Value = target;
@@ -96,7 +96,7 @@ namespace Solti.Utils.DI.Internals.Tests
         [Test]
         public void ReleaseAsync_ShouldDisposeTheValueSynchronouslyAndDecrementTheRefCountOfTheDependencies()
         {
-            var dependency = new ServiceReference(new AbstractServiceEntry(typeof(IDummyService), null, new Mock<IServiceContainer>(MockBehavior.Strict).Object), new Mock<IInjector>(MockBehavior.Strict).Object) 
+            var dependency = new ServiceReference(new DummyServiceEntry(typeof(IDummyService), null), new Mock<IInjector>(MockBehavior.Strict).Object) 
             { 
                 Value = new Mock<IDummyService>().Object 
             };
@@ -105,7 +105,7 @@ namespace Solti.Utils.DI.Internals.Tests
 
             target.Setup(d => d.Dispose());
 
-            var svc = new ServiceReference(new AbstractServiceEntry(typeof(IDisposable), null, new Mock<IServiceContainer>(MockBehavior.Strict).Object), new Mock<IInjector>(MockBehavior.Strict).Object);
+            var svc = new ServiceReference(new DummyServiceEntry(typeof(IDisposable), null), new Mock<IInjector>(MockBehavior.Strict).Object);
 
             svc.AddDependency(dependency);
             svc.Value = target.Object;
@@ -121,7 +121,7 @@ namespace Solti.Utils.DI.Internals.Tests
         [Test]
         public void ReleaseAsync_ShouldDisposeTheValueAsynchronouslyAndDecrementTheRefCountOfTheDependencies()
         {
-            var dependency = new ServiceReference(new AbstractServiceEntry(typeof(IDummyService), null, new Mock<IServiceContainer>(MockBehavior.Strict).Object), new Mock<IInjector>(MockBehavior.Strict).Object) 
+            var dependency = new ServiceReference(new DummyServiceEntry(typeof(IDummyService), null), new Mock<IInjector>(MockBehavior.Strict).Object) 
             { 
                 Value = new Mock<IDummyService>().Object 
             };
@@ -131,7 +131,7 @@ namespace Solti.Utils.DI.Internals.Tests
                 .Setup(d => d.DisposeAsync())
                 .Returns(default(ValueTask));
 
-            var svc = new ServiceReference(new AbstractServiceEntry(typeof(IAsyncDisposable), null, new Mock<IServiceContainer>(MockBehavior.Strict).Object), new Mock<IInjector>(MockBehavior.Strict).Object);
+            var svc = new ServiceReference(new DummyServiceEntry(typeof(IAsyncDisposable), null), new Mock<IInjector>(MockBehavior.Strict).Object);
 
             svc.AddDependency(dependency);
             svc.Value = target.Object;
@@ -154,7 +154,7 @@ namespace Solti.Utils.DI.Internals.Tests
                 .Setup(d => d.DisposeAsync())
                 .Returns(default(ValueTask));
 
-            var svc = new ServiceReference(new AbstractServiceEntry(typeof(ICompositeDisposable), null, new Mock<IServiceContainer>(MockBehavior.Strict).Object), new Mock<IInjector>(MockBehavior.Strict).Object) 
+            var svc = new ServiceReference(new DummyServiceEntry(typeof(ICompositeDisposable), null), new Mock<IInjector>(MockBehavior.Strict).Object) 
             { 
                 Value = target.Object
             };
@@ -169,7 +169,7 @@ namespace Solti.Utils.DI.Internals.Tests
         public void ExternallyOwned_ShouldPreventTheValueFromBeingDisposed() 
         {
             var target = new Disposable();
-            var svc = new ServiceReference(new AbstractServiceEntry(typeof(IDisposable), null, new Mock<IServiceContainer>(MockBehavior.Strict).Object), target, externallyOwned: true);
+            var svc = new ServiceReference(new DummyServiceEntry(typeof(IDisposable), null), target, externallyOwned: true);
 
             svc.Release();
 
@@ -181,20 +181,20 @@ namespace Solti.Utils.DI.Internals.Tests
         [Test]
         public void AddDependency_ShouldThrowOnExternallyOwnedService() 
         {
-            var svc = new ServiceReference(new AbstractServiceEntry(typeof(IDummyService), null, new Mock<IServiceContainer>(MockBehavior.Strict).Object), value: new Mock<IDummyService>().Object, false);
+            var svc = new ServiceReference(new DummyServiceEntry(typeof(IDummyService), null), value: new Mock<IDummyService>().Object, false);
 
-            Assert.Throws<InvalidOperationException>(() => svc.AddDependency(new ServiceReference(new AbstractServiceEntry(typeof(IDisposable), null, new Mock<IServiceContainer>(MockBehavior.Strict).Object), value: new Disposable(), false)), Resources.FOREIGN_DEPENDENCY);
+            Assert.Throws<InvalidOperationException>(() => svc.AddDependency(new ServiceReference(new DummyServiceEntry(typeof(IDisposable), null), value: new Disposable(), false)), Resources.FOREIGN_DEPENDENCY);
         }
 
         [Test]
         public void AddDependency_ShouldThrowIfTheServiceInstanceIsSet()
         {
-            var svc = new ServiceReference(new AbstractServiceEntry(typeof(IDummyService), null, new Mock<IServiceContainer>(MockBehavior.Strict).Object), injector: new Mock<IInjector>(MockBehavior.Strict).Object);
+            var svc = new ServiceReference(new DummyServiceEntry(typeof(IDummyService), null), injector: new Mock<IInjector>(MockBehavior.Strict).Object);
 
-            Assert.DoesNotThrow(() => svc.AddDependency(new ServiceReference(new AbstractServiceEntry(typeof(IDisposable), null, new Mock<IServiceContainer>(MockBehavior.Strict).Object), value: new Disposable(), false)));
+            Assert.DoesNotThrow(() => svc.AddDependency(new ServiceReference(new DummyServiceEntry(typeof(IDisposable), null), value: new Disposable(), false)));
             svc.Value = new Mock<IDummyService>().Object;
 
-            Assert.Throws<InvalidOperationException>(() => svc.AddDependency(new ServiceReference(new AbstractServiceEntry(typeof(IDisposable), null, new Mock<IServiceContainer>(MockBehavior.Strict).Object), value: new Disposable(), false)), Resources.FOREIGN_DEPENDENCY);
+            Assert.Throws<InvalidOperationException>(() => svc.AddDependency(new ServiceReference(new DummyServiceEntry(typeof(IDisposable), null), value: new Disposable(), false)), Resources.FOREIGN_DEPENDENCY);
         }
     }
 }

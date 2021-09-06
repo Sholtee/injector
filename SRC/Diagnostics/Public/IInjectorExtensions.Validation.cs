@@ -37,7 +37,7 @@ namespace Solti.Utils.DI.Diagnostics
             if (injector is null)
                 throw new ArgumentNullException(nameof(injector));
 
-            foreach (AbstractServiceEntry entry in injector.UnderlyingContainer)
+            foreach (AbstractServiceEntry entry in injector.Get<IServiceRegistry>().RegisteredEntries)
             {
                 //
                 // Generikus, Instance stb nem jatszanak
