@@ -122,8 +122,6 @@ namespace Solti.Utils.DI.Injector.Tests
         [TestCaseSource(nameof(Lifetimes))]
         public void Injector_Get_ShouldResolveGenericDependencies(Lifetime lifetime)
         {
-            Config.Value.Injector.StrictDI = false;
-
             Root = ScopeFactory.Create(svcs => svcs
                 .Service<IInterface_1, Implementation_1_No_Dep>(Lifetime.Transient)
                 .Service(typeof(IInterface_3<>), typeof(Implementation_3_IInterface_1_Dependant<>), Lifetime.Transient)

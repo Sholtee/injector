@@ -152,8 +152,6 @@ namespace Solti.Utils.DI.Injector.Tests
         [Test]
         public void Lifetime_SingletonService_MayHaveScopedDependency()
         {
-            Config.Value.Injector.StrictDI = false;
-
             Disposable instance;
 
             using (IScopeFactory root = ScopeFactory.Create(svcs => svcs
@@ -303,8 +301,6 @@ namespace Solti.Utils.DI.Injector.Tests
         [Test]
         public void Lifetime_PooledService_MayHavePooledDependency() // igazabol ezt a StrictDI tiltja
         {
-            Config.Value.Injector.StrictDI = false;
-
             Root = ScopeFactory.Create(svcs => svcs
                 .Service<IInterface_1, Implementation_1_No_Dep>(Lifetime.Pooled)
                 .Service<IInterface_7<IInterface_1>, Implementation_7_TInterface_Dependant<IInterface_1>>(Lifetime.Pooled));
@@ -435,8 +431,6 @@ namespace Solti.Utils.DI.Injector.Tests
             [ValueSource(nameof(Lifetimes))] Lifetime dependant,
             [ValueSource(nameof(Lifetimes))] Lifetime dependency)
         {
-            Config.Value.Injector.StrictDI = false;
-
             Root = ScopeFactory.Create(svcs => svcs
                 .Service<IInterface_1, Implementation_1_No_Dep>(dependency)
                 .Service<IInterface_2, Implementation_2_IInterface_1_Dependant>(dependant));
@@ -457,8 +451,6 @@ namespace Solti.Utils.DI.Injector.Tests
         [Test]
         public void Lifetime_PermissiveDI_LegalCases([ValueSource(nameof(Lifetimes))] Lifetime dependant)
         {
-            Config.Value.Injector.StrictDI = false;
-
             Root = ScopeFactory.Create(svcs => svcs
                 .Instance<IInterface_1>(new Implementation_1_No_Dep())
                 .Service<IInterface_2, Implementation_2_IInterface_1_Dependant>(dependant));
@@ -481,11 +473,13 @@ namespace Solti.Utils.DI.Injector.Tests
             [ValueSource(nameof(ScopeControlledLifetimes))] Lifetime dependant,
             [ValueSource(nameof(Lifetimes))] Lifetime dependency) 
         {
-            Config.Value.Injector.StrictDI = true;
-
-            Root = ScopeFactory.Create(svcs => svcs
-                .Service<IInterface_1, Implementation_1_No_Dep>(dependency)
-                .Service<IInterface_2, Implementation_2_IInterface_1_Dependant>(dependant));
+            Root = ScopeFactory.Create
+            (
+                svcs => svcs
+                    .Service<IInterface_1, Implementation_1_No_Dep>(dependency)
+                    .Service<IInterface_2, Implementation_2_IInterface_1_Dependant>(dependant),
+                new ScopeOptions { StrictDI = true }
+            );
 
             //
             // Ket kulonallo injectort hozzunk letre.
@@ -503,11 +497,13 @@ namespace Solti.Utils.DI.Injector.Tests
         [Test]
         public void Lifetime_StrictDI_LegalCases2([ValueSource(nameof(ScopeControlledLifetimes))] Lifetime dependant)
         {
-            Config.Value.Injector.StrictDI = true;
-
-            Root = ScopeFactory.Create(svcs => svcs
-                .Instance<IInterface_1>(new Implementation_1_No_Dep())
-                .Service<IInterface_2, Implementation_2_IInterface_1_Dependant>(dependant));
+            Root = ScopeFactory.Create
+            (
+                svcs => svcs
+                    .Instance<IInterface_1>(new Implementation_1_No_Dep())
+                    .Service<IInterface_2, Implementation_2_IInterface_1_Dependant>(dependant),
+                new ScopeOptions { StrictDI = true }
+            );
 
             //
             // Ket kulonallo injectort hozzunk letre.
@@ -525,11 +521,13 @@ namespace Solti.Utils.DI.Injector.Tests
         [Test]
         public void Lifetime_StrictDI_LegalCases3()
         {
-            Config.Value.Injector.StrictDI = true;
-
-            Root = ScopeFactory.Create(svcs => svcs
-                .Service<IInterface_1, Implementation_1_No_Dep>(Lifetime.Singleton)
-                .Service<IInterface_2, Implementation_2_IInterface_1_Dependant>(Lifetime.Singleton));
+            Root = ScopeFactory.Create
+            (
+                svcs => svcs
+                    .Service<IInterface_1, Implementation_1_No_Dep>(Lifetime.Singleton)
+                    .Service<IInterface_2, Implementation_2_IInterface_1_Dependant>(Lifetime.Singleton),
+                new ScopeOptions { StrictDI = true }
+            );
 
             //
             // Ket kulonallo injectort hozzunk letre.
@@ -549,8 +547,6 @@ namespace Solti.Utils.DI.Injector.Tests
             [ValueSource(nameof(ScopeControlledLifetimes))] Lifetime dependency,
             [ValueSource(nameof(RootControlledLifetimes))] Lifetime requestor) 
         {
-            Config.Value.Injector.StrictDI = true;
-
             Root = ScopeFactory.Create
             (
                 svcs => svcs
