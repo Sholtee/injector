@@ -4,7 +4,6 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -15,11 +14,11 @@ namespace Solti.Utils.DI.Internals
 
     internal class SingletonServiceEntry : ProducibleServiceEntry
     {
-        private readonly ConcurrentBag<IServiceReference> FInstances = new();
+        private readonly IServiceReference?[] FInstances = new IServiceReference?[1];
 
         private readonly ExclusiveBlock FExclusiveBlock = new(ExclusiveBlockFeatures.SupportsRecursion); // rekurzio tamogatas kell h a CDEP detektalas mukodjon
 
-        protected override void SaveReference(IServiceReference serviceReference) => FInstances.Add(serviceReference);
+        protected override void SaveReference(IServiceReference serviceReference) => FInstances[0] = serviceReference;
 
         protected override void Dispose(bool disposeManaged)
         {
@@ -117,6 +116,6 @@ namespace Solti.Utils.DI.Internals
 
         public override bool IsShared { get; } = true;
 
-        public override IReadOnlyCollection<IServiceReference> Instances => FInstances;
+        public override IReadOnlyCollection<IServiceReference> Instances => (FInstances[0] is not null ? FInstances : Array.Empty<IServiceReference>())!;
     }
 }

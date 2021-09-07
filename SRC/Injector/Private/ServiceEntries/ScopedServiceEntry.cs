@@ -12,13 +12,13 @@ namespace Solti.Utils.DI.Internals
 
     internal class ScopedServiceEntry : ProducibleServiceEntry
     {
-        private readonly List<IServiceReference> FInstances = new(1); // max egy eleme lehet
+        private readonly IServiceReference?[] FInstances = new IServiceReference?[1]; // max egy eleme lehet
 
         private ScopedServiceEntry(ScopedServiceEntry entry, IServiceRegistry? owner) : base(entry, owner) // TODO: torolni
         {
         }
 
-        protected override void SaveReference(IServiceReference serviceReference) => FInstances.Add(serviceReference);
+        protected override void SaveReference(IServiceReference serviceReference) => FInstances[0] = serviceReference;
 
         public ScopedServiceEntry(Type @interface, string? name, Func<IInjector, Type, object> factory, IServiceRegistry? owner) : base(@interface, name, factory, owner)
         {
@@ -93,6 +93,6 @@ namespace Solti.Utils.DI.Internals
 
         public override Lifetime Lifetime { get; } = Lifetime.Scoped;
 
-        public override IReadOnlyCollection<IServiceReference> Instances => FInstances;
+        public override IReadOnlyCollection<IServiceReference> Instances => (FInstances[0] is not null ? FInstances : Array.Empty<IServiceReference>())!;
     }
 }
