@@ -24,6 +24,11 @@ namespace Solti.Utils.DI.Internals
 
         private readonly EntryHolder[] FRegularEntries;
 
+        //
+        // Ez NE egyetlen szotar legyen mert ott a neveket is szamon kene tartsuk amivel viszont
+        // jelentosen lassulna a bejegyzes lekerdezes.
+        //
+
         private readonly ConcurrentDictionary<Type, Lazy<AbstractServiceEntry>>[] FSpecializedEntries;
 
         private sealed class ConcurrentRegistryCollection : ConcurrentCollection<IServiceRegistry>

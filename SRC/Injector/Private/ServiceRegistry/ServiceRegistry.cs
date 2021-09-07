@@ -17,6 +17,11 @@ namespace Solti.Utils.DI.Internals
         #region Private
         private readonly AbstractServiceEntry?[] FRegularEntries;
 
+        //
+        // Ez NE egyetlen szotar legyen mert ott a neveket is szamon kene tartsuk amivel viszont
+        // jelentosen lassulna a bejegyzes lekerdezes.
+        //
+
         private readonly Dictionary<Type, AbstractServiceEntry>[] FSpecializedEntries;
 
         private sealed class RegistryCollection : LinkedList<IServiceRegistry>, ICollection<IServiceRegistry>
