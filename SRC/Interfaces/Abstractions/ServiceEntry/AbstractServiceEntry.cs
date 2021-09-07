@@ -103,7 +103,7 @@ namespace Solti.Utils.DI.Interfaces
         /// <summary>
         /// The previously created service instance(s) related to this entry. Don't use it directly.
         /// </summary>
-        public virtual IReadOnlyCollection<IServiceReference> Instances { get; } = Array.Empty<IServiceReference>();
+        public virtual IReadOnlyList<IServiceReference> Instances { get; } = Array.Empty<IServiceReference>();
 
         /// <summary>
         /// Describes the actual state of this entry.

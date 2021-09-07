@@ -93,6 +93,6 @@ namespace Solti.Utils.DI.Internals
 
         public override Lifetime Lifetime { get; } = Lifetime.Scoped;
 
-        public override IReadOnlyCollection<IServiceReference> Instances => (FInstances[0] is not null ? FInstances : Array.Empty<IServiceReference>())!;
+        public override IReadOnlyList<IServiceReference> Instances => (FInstances[0] is not null ? FInstances : Array.Empty<IServiceReference>())!;
     }
 }

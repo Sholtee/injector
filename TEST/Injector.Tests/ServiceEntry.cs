@@ -57,7 +57,7 @@ namespace Solti.Utils.DI.Internals.Tests
                 Instances = new[] { new ServiceReference(this, new Mock<IInjector>().Object) };
             }
 
-            public override IReadOnlyCollection<IServiceReference> Instances { get; }
+            public override IReadOnlyList<IServiceReference> Instances { get; }
 
             public override AbstractServiceEntry CopyTo(IServiceRegistry owner)
             {

@@ -12,7 +12,7 @@ namespace Solti.Utils.DI.Internals
 
     internal class ContextualServiceEntry : AbstractServiceEntry
     {
-        private readonly IReadOnlyCollection<ServiceReference> FInstances;
+        private readonly IReadOnlyList<ServiceReference> FInstances;
 
         private readonly Func<IServiceRegistry, object> FSelector;
 
@@ -39,6 +39,6 @@ namespace Solti.Utils.DI.Internals
 
         public override bool SetInstance(IServiceReference serviceReference) => throw new NotImplementedException();
 
-        public override IReadOnlyCollection<IServiceReference> Instances => FInstances;
+        public override IReadOnlyList<IServiceReference> Instances => FInstances;
     }
 }

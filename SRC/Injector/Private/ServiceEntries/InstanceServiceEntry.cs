@@ -12,7 +12,7 @@ namespace Solti.Utils.DI.Internals
 
     internal class InstanceServiceEntry : AbstractServiceEntry
     {
-        private readonly IReadOnlyCollection<ServiceReference> FInstances;
+        private readonly IReadOnlyList<ServiceReference> FInstances;
         private IServiceRegistry? FRegistry; 
 
         public InstanceServiceEntry(Type @interface, string? name, object instance, bool externallyOwned, IServiceRegistry? owner) : base(@interface, name, null, owner)
@@ -48,7 +48,7 @@ namespace Solti.Utils.DI.Internals
             return this;
         }
 
-        public override IReadOnlyCollection<IServiceReference> Instances => FInstances;
+        public override IReadOnlyList<IServiceReference> Instances => FInstances;
 
         public override bool SetInstance(IServiceReference reference) => throw new NotImplementedException();
 

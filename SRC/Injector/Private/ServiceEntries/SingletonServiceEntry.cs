@@ -116,6 +116,6 @@ namespace Solti.Utils.DI.Internals
 
         public override bool IsShared { get; } = true;
 
-        public override IReadOnlyCollection<IServiceReference> Instances => (FInstances[0] is not null ? FInstances : Array.Empty<IServiceReference>())!;
+        public override IReadOnlyList<IServiceReference> Instances => (FInstances[0] is not null ? FInstances : Array.Empty<IServiceReference>())!;
     }
 }

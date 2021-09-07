@@ -35,7 +35,10 @@ namespace Solti.Utils.DI.Internals
             //
 
             if (requested.State.HasFlag(ServiceEntryStates.Built))
-                return requested.Instances.Single();
+            {
+                Assert(requested.Instances.Count == 1, "Built entry must contain exactly one service instance");
+                return requested.Instances[0];
+            }
 
             //
             // 2. eset: Uj peldanyt kell letrehozni de a bejegyzes megosztott ezert dedikalt scope kell neki
@@ -59,7 +62,10 @@ namespace Solti.Utils.DI.Internals
                     //
 
                     if (requested.State.HasFlag(ServiceEntryStates.Built))
-                        return requested.Instances.Single();
+                    {
+                        Assert(requested.Instances.Count == 1, "Built entry must contain exactly one service instance");
+                        return requested.Instances[0];
+                    }
 
                     //
                     // Letrehozunk egy dedikalt injector-t aminek a felszabaditasa "Parent" feladata lesz

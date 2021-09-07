@@ -89,6 +89,6 @@ namespace Solti.Utils.DI.Internals
 
         public override Lifetime Lifetime { get; } = Lifetime.Transient;
 
-        public override IReadOnlyCollection<IServiceReference> Instances => FInstances;
+        public override IReadOnlyList<IServiceReference> Instances => FInstances;
     }
 }
