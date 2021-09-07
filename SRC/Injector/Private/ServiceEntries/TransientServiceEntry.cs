@@ -33,8 +33,6 @@ namespace Solti.Utils.DI.Internals
         {
         }
 
-        public int MaxSpawnedServices { get; }
-
         public override bool SetInstance(IServiceReference reference)
         {
             CheckNotDisposed();
@@ -46,7 +44,7 @@ namespace Solti.Utils.DI.Internals
                 // (ahogy az a teljesitmeny teszteknel meg is tortent).
                 //
 
-                throw new InvalidOperationException(string.Format(Resources.Culture, Resources.INJECTOR_SHOULD_BE_RELEASED, MaxSpawnedServices));
+                throw new InvalidOperationException(string.Format(Resources.Culture, Resources.INJECTOR_SHOULD_BE_RELEASED, reference.Scope.Options.MaxSpawnedTransientServices));
 
             return base.SetInstance(reference);
         }
