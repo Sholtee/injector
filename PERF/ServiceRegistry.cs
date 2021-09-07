@@ -11,6 +11,7 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Engines;
 
 namespace Solti.Utils.DI.Perf
 {
@@ -121,6 +122,7 @@ namespace Solti.Utils.DI.Perf
     }
 
     [MemoryDiagnoser]
+    [SimpleJob(RunStrategy.Throughput, invocationCount: 10000)]
     public class ServiceRegistry_Derive : ServiceRegistryTestsBase
     {
         private ServiceRegistryBase Registry { get; set; }
@@ -143,6 +145,9 @@ namespace Solti.Utils.DI.Perf
 
         [GlobalCleanup]
         public void Cleanup() => Registry?.Dispose();
+
+        [Benchmark]
+        public IServiceRegistry Derive() => (IServiceRegistry) Factory(new object[] { Registry });
 
         [Benchmark]
         public void DeriveAndDispose()
