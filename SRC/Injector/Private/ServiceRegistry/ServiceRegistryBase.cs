@@ -52,9 +52,12 @@ namespace Solti.Utils.DI.Internals
         {
             if (disposeManaged)
             {
-                foreach (AbstractServiceEntry usedEntry in UsedEntries)
+                if (UsedEntries.Count > 0)
                 {
-                    usedEntry.Dispose();
+                    foreach (AbstractServiceEntry usedEntry in UsedEntries)
+                    {
+                        usedEntry.Dispose();
+                    }
                 }
             }
             base.Dispose(disposeManaged);
@@ -62,10 +65,13 @@ namespace Solti.Utils.DI.Internals
 
         protected async override ValueTask AsyncDispose()
         {
-            await Task.WhenAll
-            (
-                UsedEntries.Select(usedEntry => usedEntry.DisposeAsync().AsTask())
-            );
+            if (UsedEntries.Count > 0)
+            {
+                await Task.WhenAll
+                (
+                    UsedEntries.Select(usedEntry => usedEntry.DisposeAsync().AsTask())
+                );
+            }
             await base.AsyncDispose();
         }
 
