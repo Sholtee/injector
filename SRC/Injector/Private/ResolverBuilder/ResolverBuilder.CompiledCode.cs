@@ -135,11 +135,14 @@ namespace Solti.Utils.DI.Internals
                     (
                         CreateSwitch
                         (
-                            value: MemberAccessExpression
+                            value: InvocationExpression
                             (
-                                SyntaxKind.SimpleMemberAccessExpression,
-                                IdentifierName(iface.Identifier),
-                                IdentifierName(nameof(Type.FullName))
+                                MemberAccessExpression
+                                (
+                                    SyntaxKind.SimpleMemberAccessExpression,
+                                    IdentifierName(iface.Identifier),
+                                    IdentifierName(nameof(Type.ToString))
+                                )
                             ),
                             cases: groupedEntries
                                 .Where(grp => !grp.Key.IsGenericTypeDefinition)
@@ -147,7 +150,7 @@ namespace Solti.Utils.DI.Internals
                                 (
                                     grp =>
                                     (
-                                        (string?) grp.Key.FullName,
+                                        (string?) grp.Key.ToString(),
                                         new StatementSyntax[]
                                         {
                                             CreateSwitch
@@ -200,19 +203,22 @@ namespace Solti.Utils.DI.Internals
                     (
                         CreateSwitch
                         (
-                            value: MemberAccessExpression
+                            value: InvocationExpression
                             (
-                                SyntaxKind.SimpleMemberAccessExpression,
-                                InvocationExpression
+                                MemberAccessExpression
                                 (
-                                    MemberAccessExpression
+                                    SyntaxKind.SimpleMemberAccessExpression,
+                                    InvocationExpression
                                     (
-                                        SyntaxKind.SimpleMemberAccessExpression,
-                                        IdentifierName(iface.Identifier),
-                                        IdentifierName(nameof(Type.GetGenericTypeDefinition))
-                                    )
-                                ),
-                                IdentifierName(nameof(Type.FullName))
+                                        MemberAccessExpression
+                                        (
+                                            SyntaxKind.SimpleMemberAccessExpression,
+                                            IdentifierName(iface.Identifier),
+                                            IdentifierName(nameof(Type.GetGenericTypeDefinition))
+                                        )
+                                    ),
+                                    IdentifierName(nameof(Type.ToString))
+                                )
                             ),
                             cases: groupedEntries
                                 .Where(grp => grp.Key.IsGenericTypeDefinition)
@@ -220,7 +226,7 @@ namespace Solti.Utils.DI.Internals
                                 (
                                     grp =>
                                     (
-                                        (string?) grp.Key.FullName,
+                                        (string?) grp.Key.ToString(),
                                         new StatementSyntax[]
                                         {
                                             CreateSwitch
@@ -412,7 +418,7 @@ namespace Solti.Utils.DI.Internals
             // {
             //     public static Resolver Create(Resolver[] regularResolvers, Resolver[] genericResolvers) => (self, iface, name) => 
             //     {
-            //         switch (iface.FullName) // NE iface.GUID property-re vizsgaljunk mert kibaszott lassu lekeredzni
+            //         switch (iface.ToString()) // NE iface.GUID property-re vizsgaljunk mert kibaszott lassu lekeredzni
             //         {
             //             case "xXx": // regular
             //                 switch (name)
@@ -430,7 +436,7 @@ namespace Solti.Utils.DI.Internals
             //         if (!iface.IsGenericType)
             //             return null;
             //
-            //         switch (iface.GetGenericTypeDefintion().FullName)
+            //         switch (iface.GetGenericTypeDefintion().ToString())
             //         {
             //             case "yYy": // generic
             //                 switch (name)
