@@ -12,7 +12,7 @@ namespace Solti.Utils.DI.Internals
     using Interfaces;
     using Properties;
 
-    internal abstract class ProducibleServiceEntry : AbstractServiceEntry, ISupportsSpecialization
+    internal abstract class ProducibleServiceEntry : AbstractServiceEntry, ISupportsSpecialization, ISupportsProxying
     {
         #region Protected
         protected abstract void SaveReference(IServiceReference serviceReference);
@@ -110,8 +110,14 @@ namespace Solti.Utils.DI.Internals
             return true;
         }
 
+        public IReadOnlyDictionary<string, object?>? ExplicitArgs { get; }
+
         public abstract AbstractServiceEntry Specialize(IServiceRegistry? owner, params Type[] genericArguments);
 
-        public IReadOnlyDictionary<string, object?>? ExplicitArgs { get; }
+        Func<IInjector, Type, object>? ISupportsProxying.Factory
+        {
+            get => Factory;
+            set => Factory = value;
+        }
     }
 }

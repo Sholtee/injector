@@ -10,7 +10,7 @@ namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
 
-    internal class ScopedServiceEntry : ProducibleServiceEntrySupportsProxying
+    internal class ScopedServiceEntry : ProducibleServiceEntry
     {
         private readonly List<IServiceReference> FInstances = new(1); // max egy eleme lehet
 

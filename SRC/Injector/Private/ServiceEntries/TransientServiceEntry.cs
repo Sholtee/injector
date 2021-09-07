@@ -11,7 +11,7 @@ namespace Solti.Utils.DI.Internals
     using Interfaces;
     using Properties;
 
-    internal class TransientServiceEntry : ProducibleServiceEntrySupportsProxying
+    internal class TransientServiceEntry : ProducibleServiceEntry
     {
         private readonly List<IServiceReference> FInstances = new();
 

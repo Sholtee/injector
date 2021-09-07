@@ -13,7 +13,7 @@ namespace Solti.Utils.DI.Internals
     using Interfaces;
     using Primitives.Threading;
 
-    internal class SingletonServiceEntry : ProducibleServiceEntrySupportsProxying
+    internal class SingletonServiceEntry : ProducibleServiceEntry
     {
         private readonly ConcurrentBag<IServiceReference> FInstances = new();
 
