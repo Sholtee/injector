@@ -77,7 +77,7 @@ namespace Solti.Utils.DI.Internals
             }
         }
 
-        public override AbstractServiceEntry Specialize(IServiceRegistry? owner, params Type[] genericArguments) // TODO: torolni
+        public override AbstractServiceEntry Specialize(IServiceRegistry? owner, params Type[] genericArguments)
         {
             CheckNotDisposed();
             Ensure.Parameter.IsNotNull(genericArguments, nameof(genericArguments));

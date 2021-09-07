@@ -14,7 +14,7 @@ namespace Solti.Utils.DI.Internals
     {
         private readonly IServiceReference?[] FInstances = new IServiceReference?[1]; // max egy eleme lehet
 
-        private ScopedServiceEntry(ScopedServiceEntry entry, IServiceRegistry? owner) : base(entry, owner) // TODO: torolni
+        private ScopedServiceEntry(ScopedServiceEntry entry, IServiceRegistry? owner) : base(entry, owner)
         {
         }
 
@@ -58,7 +58,7 @@ namespace Solti.Utils.DI.Internals
 
         public override AbstractServiceEntry CopyTo(IServiceRegistry registry) => new ScopedServiceEntry(this, Ensure.Parameter.IsNotNull(registry, nameof(registry)));
 
-        public override AbstractServiceEntry Specialize(IServiceRegistry? owner, params Type[] genericArguments) // TODO: torolni
+        public override AbstractServiceEntry Specialize(IServiceRegistry? owner, params Type[] genericArguments)
         {
             CheckNotDisposed();
             Ensure.Parameter.IsNotNull(genericArguments, nameof(genericArguments));
