@@ -116,7 +116,9 @@ namespace Solti.Utils.DI.Internals
                     if (FPath.First!.RelatedServiceEntry.Instances.Count == 0)
                         FPath.CheckNotCircular();
 
-                    requested.SetInstance(result);
+                    bool instanceSet = requested.SetInstance(result);
+                    Assert(instanceSet, "Requested instance could not be set");
+
                     return result;
                 }
                 finally
