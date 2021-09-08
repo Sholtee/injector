@@ -7,6 +7,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -51,6 +52,19 @@ namespace Solti.Utils.DI.Internals
                         Remove(node);
                 };
             }
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        protected static T[] CreateArray<T>(Func<T> factory, int count)
+        {
+            T[] result = new T[count];
+
+            for (int i = 0; i < count; i++)
+            {
+                result[i] = factory();
+            }
+
+            return result;
         }
         #endregion
 

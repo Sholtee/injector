@@ -23,7 +23,7 @@ namespace Solti.Utils.DI.Internals
         // jelentosen lassulna a bejegyzes lekerdezes.
         //
 
-        private readonly Dictionary<Type, AbstractServiceEntry>[] FSpecializedEntries;
+        private readonly Dictionary<Type, AbstractServiceEntry>?[] FSpecializedEntries;
 
         private readonly List<AbstractServiceEntry> FUsedEntries = new();
 
@@ -93,7 +93,7 @@ namespace Solti.Utils.DI.Internals
             BuiltResolver = resolverBuilder.Build(RegisteredEntries, RegularEntryResolverFactory, GenericEntryResolverFactory, out int reCount, out int geCount, cancellation);
 
             FRegularEntries = new AbstractServiceEntry?[reCount];
-            FSpecializedEntries = CreateArray(() => new Dictionary<Type, AbstractServiceEntry>(), geCount);
+            FSpecializedEntries = new Dictionary<Type, AbstractServiceEntry>?[geCount];
         }
 
         public ServiceRegistry(ServiceRegistryBase parent) : base(Ensure.Parameter.IsNotNull(parent, nameof(parent)))
@@ -101,14 +101,16 @@ namespace Solti.Utils.DI.Internals
             BuiltResolver = parent.BuiltResolver;
 
             FRegularEntries = new AbstractServiceEntry?[parent.RegularEntryCount];
-            FSpecializedEntries = CreateArray(() => new Dictionary<Type, AbstractServiceEntry>(), parent.GenericEntryCount);
+            FSpecializedEntries = new Dictionary<Type, AbstractServiceEntry>?[parent.GenericEntryCount];
         }
 
         public override AbstractServiceEntry ResolveGenericEntry(int index, Type specializedInterface, AbstractServiceEntry originalEntry)
         {
             Debug.Assert(specializedInterface.IsConstructedGenericType, $"{nameof(specializedInterface)} must be a closed generic type");
 
-            Dictionary<Type, AbstractServiceEntry> specializedEntries = FSpecializedEntries[index];
+            ref Dictionary<Type, AbstractServiceEntry>? specializedEntries = ref FSpecializedEntries[index];
+            if (specializedEntries is null)
+                specializedEntries = new Dictionary<Type, AbstractServiceEntry>();
 
             if (!specializedEntries.TryGetValue(specializedInterface, out AbstractServiceEntry specializedEntry))
             {

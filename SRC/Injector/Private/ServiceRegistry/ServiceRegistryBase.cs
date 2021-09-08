@@ -35,19 +35,6 @@ namespace Solti.Utils.DI.Internals
                 ? ResolverBuilder.CompiledExpression
                 : ResolverBuilder.CompiledCode;
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        protected static T[] CreateArray<T>(Func<T> factory, int count)
-        {
-            T[] result = new T[count];
-
-            for (int i = 0; i < count; i++)
-            {
-                result[i] = factory();
-            }
-
-            return result;
-        }
-
         protected ServiceRegistryBase(ISet<AbstractServiceEntry> entries) : base()
         {
             Ensure.Parameter.IsNotNull(entries, nameof(entries));
