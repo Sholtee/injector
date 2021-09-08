@@ -31,48 +31,41 @@ namespace Solti.Utils.DI.Internals
 
         private readonly ConcurrentDictionary<Type, Lazy<AbstractServiceEntry>>[] FSpecializedEntries;
 
-        private sealed class ConcurrentRegistryCollection : ConcurrentCollection<IServiceRegistry>
+        private readonly ConcurrentBag<AbstractServiceEntry> FUsedEntries = new();
+
+        private readonly ConcurrentRegistryCollection FDerivedRegistries = new();
+
+        private sealed class ConcurrentRegistryCollection : ConcurrentLinkedList<IServiceRegistry>, IReadOnlyCollection<IServiceRegistry>
         {
-            public override void Add(IServiceRegistry item)
+            public void Add(IServiceRegistry item)
             {
-                LinkedListNode<IServiceRegistry> node = new() 
-                { 
-                    Value = item 
+                LinkedListNode<IServiceRegistry> node = AddFirst(item);
+                item.OnDispose += (_, _) =>
+                {
+                    //
+                    // A Dispose() karakterisztikajabol adodoan ez a metodus biztosan csak egyszer lesz meghivva
+                    //
+
+                    if (node.Owner is not null) // Takefirst() mar kivehette a listabol
+                        Remove(node);
                 };
-
-                item.OnDispose += (_, _) => FUnderlyingList.Remove(node);
-
-                FUnderlyingList.Add(node);
             }
         }
         #endregion
 
         #region Protected
-        protected override ICollection<AbstractServiceEntry> UsedEntries { get; } = new ConcurrentCollection<AbstractServiceEntry>();
-
-        protected override ICollection<IServiceRegistry> DerivedRegistries { get; } = new ConcurrentRegistryCollection();
-
         protected override void Dispose(bool disposeManaged)
         {
             if (disposeManaged)
             {
-                //
-                // Felsorolas kozben nem lehet listabol eltavolitani az aktualis elemet utana viszont mar siman.
-                // Ha kozben magan a leszarmazotton is hivva volt a Dispose() akkor sincs gond, ez esetben az
-                // ujabb Dispose() hivas mar nem csinal semmit.
-                //
-
-                if (DerivedRegistries.Count > 0)
+                while (FDerivedRegistries.TakeFirst(out IServiceRegistry registry))
                 {
-                    IServiceRegistry? previous = null;
+                    registry.Dispose();
+                }
 
-                    foreach (IServiceRegistry current in DerivedRegistries)
-                    {
-                        previous?.Dispose();
-                        previous = current;
-                    }
-
-                    previous?.Dispose();
+                while (FUsedEntries.TryTake(out AbstractServiceEntry entry))
+                {
+                    entry.Dispose();
                 }
             }
 
@@ -81,24 +74,20 @@ namespace Solti.Utils.DI.Internals
 
         protected async override ValueTask AsyncDispose()
         {
-            if (DerivedRegistries.Count > 0)
+            while (FDerivedRegistries.TakeFirst(out IServiceRegistry registry))
             {
-                IServiceRegistry? previous = null;
+                await registry.DisposeAsync();
+            }
 
-                foreach (IServiceRegistry current in DerivedRegistries)
-                {
-                    if (previous is not null)
-                        await previous.DisposeAsync();
-
-                    previous = current;
-                }
-
-                if (previous is not null)
-                    await previous.DisposeAsync();
+            while (FUsedEntries.TryTake(out AbstractServiceEntry entry))
+            {
+                await entry.DisposeAsync();
             }
 
             await base.AsyncDispose();
         }
+
+        protected override void AddChild(IServiceRegistry registry) => FDerivedRegistries.Add(registry);
         #endregion
 
         #region Public
@@ -142,7 +131,7 @@ namespace Solti.Utils.DI.Internals
 
                 AbstractServiceEntry specializedEntry = supportsSpecialization.Specialize(this, specializedInterface.GenericTypeArguments);
 
-                UsedEntries.Add(specializedEntry);
+                FUsedEntries.Add(specializedEntry);
                 return specializedEntry;
             }
         }
@@ -158,7 +147,7 @@ namespace Solti.Utils.DI.Internals
                     if (holder.Value is null)
                     {
                         holder.Value = originalEntry.CopyTo(this);
-                        UsedEntries.Add(holder.Value);
+                        FUsedEntries.Add(holder.Value);
                     }
                 }
             }
@@ -167,6 +156,10 @@ namespace Solti.Utils.DI.Internals
         }
 
         public override Resolver BuiltResolver { get; }
+
+        public override IReadOnlyCollection<AbstractServiceEntry> UsedEntries => FUsedEntries;
+
+        public override IReadOnlyCollection<IServiceRegistry> DerivedRegistries => FDerivedRegistries;
 
         public override int RegularEntryCount => FRegularEntries.Length;
 

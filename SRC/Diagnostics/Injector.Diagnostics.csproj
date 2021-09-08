@@ -22,7 +22,7 @@
 
   <ItemGroup>
     <PackageReference Include="ProxyGen.NET" Version="5.*" />
-    <PackageReference Include="Solti.Utils.Primitives" Version="5.*" />
+    <PackageReference Include="Solti.Utils.Primitives" Version="6.*" />
   </ItemGroup>
 
 </Project>

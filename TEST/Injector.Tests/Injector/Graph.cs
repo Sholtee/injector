@@ -13,7 +13,6 @@ namespace Solti.Utils.DI.Injector.Graph.Tests
 {
     using Diagnostics;
     using Interfaces;
-    using Internals;
 
     [TestFixture]
     public class GraphTests

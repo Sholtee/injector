@@ -5,6 +5,7 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading;
 
 namespace Solti.Utils.DI.Internals
@@ -24,37 +25,40 @@ namespace Solti.Utils.DI.Internals
 
         private readonly Dictionary<Type, AbstractServiceEntry>[] FSpecializedEntries;
 
-        private sealed class RegistryCollection : LinkedList<IServiceRegistry>, ICollection<IServiceRegistry>
+        private readonly List<AbstractServiceEntry> FUsedEntries = new();
+
+        private readonly RegistryCollection FDerivedRegistries = new();
+
+        private sealed class RegistryCollection : LinkedList<IServiceRegistry>, IReadOnlyCollection<IServiceRegistry>
         {
-            void ICollection<IServiceRegistry>.Add(IServiceRegistry item)
+            public void Add(IServiceRegistry item)
             {
                 LinkedListNode<IServiceRegistry> node = AddLast(item);
 
-                item.OnDispose += (_, _) => Remove(node);
+                item.OnDispose += (_, _) =>
+                {
+                    if (node.List is not null)
+                        Remove(node);
+                };
             }
         }
         #endregion
 
         #region Protected
-        protected override ICollection<AbstractServiceEntry> UsedEntries { get; } = new List<AbstractServiceEntry>();
-
-        protected override ICollection<IServiceRegistry> DerivedRegistries { get; } = new RegistryCollection();
-
         protected override void Dispose(bool disposeManaged)
         {
-            if (DerivedRegistries.Count > 0)
+            if (disposeManaged)
             {
-                //
-                // Elemet felsorolas kozben nem tudunk eltavolitani a listabol ezert masolatot keszitunk eloszor
-                // (ami bar lassit a torteneten de nem szalbiztos registry-nek elvileg nem is lesz leszarmazottja).
-                //
-
-                IServiceRegistry[] registries = new IServiceRegistry[DerivedRegistries.Count];
-                DerivedRegistries.CopyTo(registries, 0);
-
-                for (int i = 0; i < registries.Length; i++)
+                for (LinkedListNode<IServiceRegistry> registry; (registry = FDerivedRegistries.First) is not null;)
                 {
-                    registries[i].Dispose();
+                    registry.Value.Dispose();
+                }
+
+                Debug.Assert(FDerivedRegistries.Count == 0, "DerivedRegistries is not empty");
+
+                for (int i = 0; i < FUsedEntries.Count; i++)
+                {
+                    FUsedEntries[i].Dispose();
                 }
             }
 
@@ -63,19 +67,22 @@ namespace Solti.Utils.DI.Internals
 
         protected async override ValueTask AsyncDispose()
         {
-            if (DerivedRegistries.Count > 0)
+            for (LinkedListNode<IServiceRegistry> registry; (registry = FDerivedRegistries.First) is not null;)
             {
-                IServiceRegistry[] registries = new IServiceRegistry[DerivedRegistries.Count];
-                DerivedRegistries.CopyTo(registries, 0);
+                await registry.Value.DisposeAsync();
+            }
 
-                for (int i = 0; i < registries.Length; i++)
-                {
-                    await registries[i].DisposeAsync();
-                }
+            Debug.Assert(FDerivedRegistries.Count == 0, "DerivedRegistries is not empty");
+
+            for (int i = 0; i < FUsedEntries.Count; i++)
+            {
+                await FUsedEntries[i].DisposeAsync();
             }
 
             await base.AsyncDispose();
         }
+
+        protected override void AddChild(IServiceRegistry registry) => FDerivedRegistries.Add(registry);
         #endregion
 
         #region Public
@@ -110,7 +117,7 @@ namespace Solti.Utils.DI.Internals
 
                 specializedEntry = supportsSpecialization.Specialize(this, specializedInterface.GenericTypeArguments);
 
-                UsedEntries.Add(specializedEntry);
+                FUsedEntries.Add(specializedEntry);
                 specializedEntries.Add(specializedInterface, specializedEntry);
             }
 
@@ -124,13 +131,17 @@ namespace Solti.Utils.DI.Internals
             if (value is null)
             {    
                 value = originalEntry.CopyTo(this);
-                UsedEntries.Add(value);
+                FUsedEntries.Add(value);
             }
 
             return value;
         }
 
         public override Resolver BuiltResolver { get; }
+
+        public override IReadOnlyCollection<AbstractServiceEntry> UsedEntries => FUsedEntries;
+
+        public override IReadOnlyCollection<IServiceRegistry> DerivedRegistries => FDerivedRegistries;
 
         public override int RegularEntryCount => FRegularEntries.Length;
 
