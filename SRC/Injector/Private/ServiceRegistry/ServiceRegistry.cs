@@ -33,7 +33,7 @@ namespace Solti.Utils.DI.Internals
         {
             public void Add(IServiceRegistry item)
             {
-                LinkedListNode<IServiceRegistry> node = AddLast(item);
+                LinkedListNode<IServiceRegistry> node = AddFirst(item);
 
                 item.OnDispose += (_, _) =>
                 {
@@ -106,8 +106,7 @@ namespace Solti.Utils.DI.Internals
 
         public override AbstractServiceEntry ResolveGenericEntry(int index, Type specializedInterface, AbstractServiceEntry originalEntry)
         {
-            if (specializedInterface.IsGenericTypeDefinition)
-                throw new InvalidOperationException(); // TODO
+            Debug.Assert(specializedInterface.IsConstructedGenericType, $"{nameof(specializedInterface)} must be a closed generic type");
 
             Dictionary<Type, AbstractServiceEntry> specializedEntries = FSpecializedEntries[index];
 
