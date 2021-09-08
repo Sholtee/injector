@@ -55,15 +55,6 @@ namespace Solti.Utils.DI.Internals.Tests
         }
 
         [Test]
-        public void GetEntry_ShouldThrowOnGenericTypeDefinition([Values(null, "cica")] string name, [ValueSource(nameof(RegistryTypes))] Type registryType, [ValueSource(nameof(ResolverBuilders))] ResolverBuilder resolver)
-        {
-            TransientServiceEntry entry = new(typeof(IList<>), name, typeof(MyList<>), null);
-            Registry = (ServiceRegistryBase) Activator.CreateInstance(registryType, new object[] { new HashSet<AbstractServiceEntry>(ServiceIdComparer.Instance) { entry }, resolver, CancellationToken.None });
-
-            Assert.Throws<InvalidOperationException>(() => Registry.GetEntry(typeof(IList<>), name));
-        }
-
-        [Test]
         public void GetEntry_ShouldSpecialize([Values(null, "cica")] string name, [ValueSource(nameof(RegistryTypes))] Type registryType, [ValueSource(nameof(ResolverBuilders))] ResolverBuilder resolver)
         {
             TransientServiceEntry entry = new(typeof(IList<>), name, typeof(MyList<>), null);
