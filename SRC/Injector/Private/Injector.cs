@@ -108,16 +108,19 @@ namespace Solti.Utils.DI.Internals
                 FPath.Push(result);
                 try
                 {
-                    //
-                    // Ha korabban meg nem peldanyositottuk egyszer sem a szervizt akkor ellenorizzuk h nincs e korkoros referencia
-                    // (nyilvan ha korabban mar letre tudtunk hozni peldanyt akkor ez mar felesleges).
-                    //
+                    if (Options.SafeMode)
+                    {
+                        //
+                        // Ha korabban meg nem peldanyositottuk egyszer sem a szervizt akkor ellenorizzuk h nincs e korkoros referencia
+                        // (nyilvan ha korabban mar letre tudtunk hozni peldanyt akkor ez mar felesleges).
+                        //
 
-                    if (FPath.First!.RelatedServiceEntry.Instances.Count == 0)
-                        FPath.CheckNotCircular();
+                        if (FPath.First!.RelatedServiceEntry.Instances.Count == 0)
+                            FPath.CheckNotCircular();
+                    }
 
                     bool instanceSet = requested.SetInstance(result);
-                    Assert(instanceSet, "Requested instance could not be set");
+                    Assert(instanceSet && result.Value is not null, "Requested instance could not be set");
 
                     return result;
                 }
