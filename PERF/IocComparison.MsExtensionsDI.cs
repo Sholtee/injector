@@ -1,5 +1,5 @@
 ﻿/********************************************************************************
-* IocComparison.MsExtensionsServiceCollection.cs                                *
+* IocComparison.MsExtensionsDI.cs                                               *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
@@ -12,7 +12,7 @@ namespace Solti.Utils.DI.Perf
 
     public partial class IocComparison
     {
-        public sealed class MsExtensionsServiceCollection : Disposable, IIocContainer
+        public sealed class MsExtensionsDI : Disposable, IIocContainer
         {
             private readonly IServiceCollection FUnderlyingContainer = new ServiceCollection();
 
@@ -71,7 +71,7 @@ namespace Solti.Utils.DI.Perf
                 return this;
             }
 
-            public override string ToString() => nameof(MsExtensionsServiceCollection);
+            public override string ToString() => nameof(MsExtensionsDI);
         }
     }
 }

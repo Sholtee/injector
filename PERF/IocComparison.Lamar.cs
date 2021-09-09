@@ -1,5 +1,5 @@
 ﻿/********************************************************************************
-* IocComparison.LamarContainer.cs                                               *
+* IocComparison.Lamar.cs                                                        *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
@@ -14,7 +14,7 @@ namespace Solti.Utils.DI.Perf
 
     public partial class IocComparison
     {
-        public sealed class LamarContainer : Disposable,  IIocContainer
+        public sealed class Lamar : Disposable,  IIocContainer
         {
             private readonly IServiceCollection FUnderlyingContainer = new ServiceCollection();
 
@@ -73,7 +73,7 @@ namespace Solti.Utils.DI.Perf
                 return this;
             }
 
-            public override string ToString() => nameof(LamarContainer);
+            public override string ToString() => nameof(Lamar);
         }
     }
 }

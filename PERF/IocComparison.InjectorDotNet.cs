@@ -1,5 +1,5 @@
 ﻿/********************************************************************************
-* IocComparison.InjectorDotNetServiceContainer.cs                               *
+* IocComparison.InjectorDotNet.cs                                               *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
@@ -13,7 +13,7 @@ namespace Solti.Utils.DI.Perf
 
     public partial class IocComparison
     {
-        public sealed class InjectorDotNetServiceContainer : Disposable, IIocContainer
+        public sealed class InjectorDotNet : Disposable, IIocContainer
         {
             private IScopeFactory FRoot;
 
@@ -58,25 +58,7 @@ namespace Solti.Utils.DI.Perf
                 return this;
             }
 
-            public IIocContainer RegisterSingleton<TInterface>(Func<IServiceProvider, TInterface> factory) where TInterface : class
-            {
-                FRegistrationActions.Add(svcs => svcs.Factory(injector => factory((IServiceProvider) injector), Lifetime.Singleton));
-                return this;
-            }
-
-            public IIocContainer RegisterScoped<TInterface>(Func<IServiceProvider, TInterface> factory) where TInterface : class
-            {
-                FRegistrationActions.Add(svcs => svcs.Factory(injector => factory((IServiceProvider) injector), Lifetime.Scoped));
-                return this;
-            }
-
-            public IIocContainer RegisterTransient<TInterface>(Func<IServiceProvider, TInterface> factory) where TInterface : class
-            {
-                FRegistrationActions.Add(svcs => svcs.Factory(injector => factory((IServiceProvider) injector), Lifetime.Transient));
-                return this;
-            }
-
-            public override string ToString() => nameof(InjectorDotNetServiceContainer);
+            public override string ToString() => nameof(InjectorDotNet);
         }
     }
 }

@@ -17,8 +17,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Autofac" Version="6.*" />
+    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="7.*" />
     <PackageReference Include="BenchmarkDotNet" Version="0.*" />
-    <PackageReference Include="Lamar" Version="5.*" />
+    <PackageReference Include="Lamar" Version="6.*" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.*" />
   </ItemGroup>
 
