@@ -101,8 +101,8 @@ namespace Solti.Utils.DI.Internals
             try
             {
                 //
-                // Az epp letrehozas alatt levo szerviz kerul az ut legvegere igy a fuggosegei
-                // feloldasakor o lesz a szulo (FGraph.Requestor).
+                // Az epp letrehozas alatt levo szerviz kerul az ut legvegere igy a fuggosegei feloldasakor o lesz a szulo
+                // (FPath.Last).
                 //
 
                 FPath.Push(result);
@@ -115,7 +115,7 @@ namespace Solti.Utils.DI.Internals
                         // (nyilvan ha korabban mar letre tudtunk hozni peldanyt akkor ez mar felesleges).
                         //
 
-                        if (FPath.First!.RelatedServiceEntry.Instances.Count == 0)
+                        if (!FPath.First!.RelatedServiceEntry.State.HasFlag(ServiceEntryStates.Instantiated))
                             FPath.CheckNotCircular();
                     }
 
