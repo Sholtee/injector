@@ -13,7 +13,7 @@ namespace Solti.Utils.DI.Internals
 
     internal class TransientServiceEntry : ProducibleServiceEntry
     {
-        private readonly List<IServiceReference> FInstances = new();
+        private readonly List<IServiceReference> FInstances = new(capacity: 10);
 
         private TransientServiceEntry(TransientServiceEntry entry, IServiceRegistry owner) : base(entry, owner)
         {
