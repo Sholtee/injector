@@ -5,6 +5,7 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading.Tasks;
 
 namespace Solti.Utils.DI.Internals
@@ -18,7 +19,11 @@ namespace Solti.Utils.DI.Internals
 
         private readonly ExclusiveBlock FExclusiveBlock = new(ExclusiveBlockFeatures.SupportsRecursion); // rekurzio tamogatas kell h a CDEP detektalas mukodjon
 
-        protected override void SaveReference(IServiceReference serviceReference) => FInstances[0] = serviceReference;
+        protected override void SaveReference(IServiceReference serviceReference)
+        {
+            Debug.Assert(FInstances[0] is null, "Instance has already been set.");
+            FInstances[0] = serviceReference;
+        }
 
         protected override void Dispose(bool disposeManaged)
         {
