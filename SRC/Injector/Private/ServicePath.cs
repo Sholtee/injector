@@ -15,11 +15,23 @@ namespace Solti.Utils.DI.Internals
 
     internal sealed class ServicePath: IServicePath
     {
-        private readonly LinkedList<IServiceReference> FPath = new();
+        //
+        // Eredetileg itt lancolt listat hasznaltam de mint kiderult az nem epp a leggyorsabb
+        //
 
-        public IServiceReference? Last => FPath.Last?.Value;
+        private readonly List<IServiceReference> FPath = new(capacity: 10);
 
-        public IServiceReference? First => FPath.First?.Value;
+        public IServiceReference? Last => FPath.Count > 0
+#if NETSTANDARD2_1_OR_GREATER
+            ? FPath[^1]
+#else
+            ? FPath[FPath.Count - 1]
+#endif
+            : null;
+
+        public IServiceReference? First => FPath.Count > 0
+            ? FPath[0]
+            : null;
 
         public void CheckNotCircular()
         {
@@ -30,17 +42,15 @@ namespace Solti.Utils.DI.Internals
             int firstIndex = 0;
             bool found = false;
 
-            foreach (IServiceReference reference in FPath)
+            for(; firstIndex < FPath.Count; firstIndex++)
             {
-                AbstractServiceEntry current = reference.RelatedServiceEntry;
+                AbstractServiceEntry current = FPath[firstIndex].RelatedServiceEntry;
 
                 if (current.Interface == last.Interface && current.Name == last.Name)
                 {
                     found = true;
                     break;
                 }
-
-                firstIndex++;
             }
 
             Debug.Assert(found);
@@ -66,14 +76,14 @@ namespace Solti.Utils.DI.Internals
                 ));
         }
 
-        public void Push(IServiceReference node)
+        public void Push(IServiceReference reference)
         {
-            Ensure.Parameter.IsNotNull(node, nameof(node));
+            Ensure.Parameter.IsNotNull(reference, nameof(reference));
 
-            FPath.AddLast(node);
+            FPath.Add(reference);
         }
 
-        public void Pop() => FPath.RemoveLast();
+        public void Pop() => FPath.RemoveAt(FPath.Count - 1);
 
         public static string Format(IEnumerable<IServiceReference> path) => Format(path.Select(svc => svc.RelatedServiceEntry));
 

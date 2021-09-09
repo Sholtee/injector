@@ -12,7 +12,7 @@ namespace Solti.Utils.DI.Perf
     using Proxy;
 
     [MemoryDiagnoser]
-    [SimpleJob(RunStrategy.Throughput, invocationCount: 1000)]
+    [SimpleJob(RunStrategy.Throughput, invocationCount: 3000)]
     public class ServicePath
     {
         private Internals.ServicePath Path { get; set; }
