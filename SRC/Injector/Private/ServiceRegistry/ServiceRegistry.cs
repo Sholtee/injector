@@ -5,6 +5,7 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Diagnostics;
 using System.Threading;
 
@@ -23,7 +24,7 @@ namespace Solti.Utils.DI.Internals
         // jelentosen lassulna a bejegyzes lekerdezes.
         //
 
-        private readonly Dictionary<Type, AbstractServiceEntry>?[] FSpecializedEntries;
+        private readonly HybridDictionary?[] FSpecializedEntries;
 
         private readonly List<AbstractServiceEntry> FUsedEntries = new();
 
@@ -93,7 +94,7 @@ namespace Solti.Utils.DI.Internals
             BuiltResolver = resolverBuilder.Build(RegisteredEntries, RegularEntryResolverFactory, GenericEntryResolverFactory, out int reCount, out int geCount, cancellation);
 
             FRegularEntries = new AbstractServiceEntry?[reCount];
-            FSpecializedEntries = new Dictionary<Type, AbstractServiceEntry>?[geCount];
+            FSpecializedEntries = new HybridDictionary?[geCount];
         }
 
         public ServiceRegistry(ServiceRegistryBase parent) : base(Ensure.Parameter.IsNotNull(parent, nameof(parent)))
@@ -101,25 +102,27 @@ namespace Solti.Utils.DI.Internals
             BuiltResolver = parent.BuiltResolver;
 
             FRegularEntries = new AbstractServiceEntry?[parent.RegularEntryCount];
-            FSpecializedEntries = new Dictionary<Type, AbstractServiceEntry>?[parent.GenericEntryCount];
+            FSpecializedEntries = new HybridDictionary?[parent.GenericEntryCount];
         }
 
         public override AbstractServiceEntry ResolveGenericEntry(int index, Type specializedInterface, AbstractServiceEntry originalEntry)
         {
             Debug.Assert(specializedInterface.IsConstructedGenericType, $"{nameof(specializedInterface)} must be a closed generic type");
 
-            ref Dictionary<Type, AbstractServiceEntry>? specializedEntries = ref FSpecializedEntries[index];
+            ref HybridDictionary? specializedEntries = ref FSpecializedEntries[index];
             if (specializedEntries is null)
-                specializedEntries = new Dictionary<Type, AbstractServiceEntry>();
+                specializedEntries = new HybridDictionary();
 
-            if (!specializedEntries.TryGetValue(specializedInterface, out AbstractServiceEntry specializedEntry))
+            AbstractServiceEntry? specializedEntry = (AbstractServiceEntry?) specializedEntries[specializedInterface];
+
+            if (specializedEntry is null)
             {
                 ISupportsSpecialization supportsSpecialization = (ISupportsSpecialization) originalEntry;
 
                 specializedEntry = supportsSpecialization.Specialize(this, specializedInterface.GenericTypeArguments);
+                specializedEntries[specializedInterface] = specializedEntry;
 
                 FUsedEntries.Add(specializedEntry);
-                specializedEntries.Add(specializedInterface, specializedEntry);
             }
 
             return specializedEntry;
