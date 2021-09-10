@@ -50,14 +50,15 @@ namespace Solti.Utils.DI.Internals
         }
 
         [SuppressMessage("Usage", "CA2214:Do not call overridable methods in constructors")]
-        protected ServiceRegistryBase(ServiceRegistryBase parent) : base()
+        protected ServiceRegistryBase(ServiceRegistryBase parent, bool register) : base()
         {
             Ensure.Parameter.IsNotNull(parent, nameof(parent));
 
             RegisteredEntries = parent.RegisteredEntries;
             Parent = parent;
 
-            parent.AddChild(this);
+            if (register)
+                parent.AddChild(this);
         }
 
         protected abstract void AddChild(IServiceRegistry registry);

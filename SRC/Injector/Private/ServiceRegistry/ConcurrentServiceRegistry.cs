@@ -116,7 +116,7 @@ namespace Solti.Utils.DI.Internals
             FSpecializedEntries = CreateArray(() => new ConcurrentDictionary<Type, Lazy<AbstractServiceEntry>>(), geCount);
         }
 
-        public ConcurrentServiceRegistry(ConcurrentServiceRegistry parent) : base(Ensure.Parameter.IsNotNull(parent, nameof(parent)))
+        public ConcurrentServiceRegistry(ConcurrentServiceRegistry parent, bool register) : base(Ensure.Parameter.IsNotNull(parent, nameof(parent)), register)
         {
             BuiltResolver = parent.BuiltResolver;
 

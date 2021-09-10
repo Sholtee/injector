@@ -72,7 +72,7 @@ namespace Solti.Utils.DI.Internals
                     //   -> Ennek az injector peldanynak a felszabaditasa nem befolyasolja a szerviz elettartamat.
                     //
 
-                    Injector dedicatedInjector = Parent.CreateScope();
+                    Injector dedicatedInjector = Parent.CreateScope(register: true);
 
                     try
                     {
@@ -230,7 +230,7 @@ namespace Solti.Utils.DI.Internals
         }
         #endregion
 
-        public Injector(ScopeFactory parent) : base(parent)
+        public Injector(ScopeFactory parent, bool register) : base(parent, register)
         {
             if (Options.SafeMode)
                 FExclusiveBlock = new ExclusiveBlock(ExclusiveBlockFeatures.SupportsRecursion);

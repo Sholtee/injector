@@ -180,10 +180,31 @@ namespace Solti.Utils.DI.Injector.Tests
 
             using (IInjector injector = Root.CreateScope()) 
             {
-                IInterface_7<IInjector> svc = injector.Get<IInterface_7<IInjector>>();
+                IInjector dedicatedInjector = injector.Get<IInterface_7<IInjector>>().Interface;
 
-                Assert.That(svc.Interface, Is.Not.SameAs(injector));
+                Assert.That(dedicatedInjector, Is.Not.SameAs(injector));
             }
+        }
+
+        [Test]
+        public void Lifetime_SingletonService_DedicatedInjectorShouldBeReleasedOnRootDisposal([Values(true, false)] bool safeMode)
+        {
+            IInjector dedicatedInjector;
+
+            using (IScopeFactory root = ScopeFactory.Create(svcs => svcs.Service<IInterface_7<IInjector>, Implementation_7_TInterface_Dependant<IInjector>>(Lifetime.Singleton), new ScopeOptions { SafeMode = safeMode }))
+            {
+                using (IInjector injector = root.CreateScope())
+                {
+                    IInterface_7<IInjector> svc = injector.Get<IInterface_7<IInjector>>();
+                    dedicatedInjector = svc.Interface;
+
+                    Assert.That(dedicatedInjector, Is.Not.SameAs(injector));
+                }
+
+                Assert.That(dedicatedInjector.Disposed, Is.False);
+            }
+
+            Assert.That(dedicatedInjector.Disposed, Is.True);
         }
 
         [TestCaseSource(nameof(ScopeControlledLifetimes))]

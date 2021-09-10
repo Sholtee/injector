@@ -19,7 +19,7 @@ namespace Solti.Utils.DI.Internals
 
         public ScopeOptions ScopeOptions { get; }
 
-        public virtual Injector CreateScope() => new(this);
+        public virtual Injector CreateScope(bool register) => new Injector(this, register);
 
         protected static IReadOnlyCollection<AbstractServiceEntry> DefaultBuiltInServices { get; } = new AbstractServiceEntry[]
         {
@@ -32,6 +32,6 @@ namespace Solti.Utils.DI.Internals
 
         protected override IReadOnlyCollection<AbstractServiceEntry> BuiltInServices { get; } = DefaultBuiltInServices;
 
-        IInjector IScopeFactory.CreateScope() => CreateScope();
+        IInjector IScopeFactory.CreateScope() => CreateScope(ScopeOptions.SafeMode);
     }
 }

@@ -97,7 +97,7 @@ namespace Solti.Utils.DI.Internals
             FSpecializedEntries = new HybridDictionary?[geCount];
         }
 
-        public ServiceRegistry(ServiceRegistryBase parent) : base(Ensure.Parameter.IsNotNull(parent, nameof(parent)))
+        public ServiceRegistry(ServiceRegistryBase parent, bool register) : base(Ensure.Parameter.IsNotNull(parent, nameof(parent)), register)
         {
             BuiltResolver = parent.BuiltResolver;
 

@@ -36,7 +36,7 @@ namespace Solti.Utils.DI.Internals.Tests
                 owned,
                 notOwned;
 
-            using (ServiceRegistryBase child = (ServiceRegistryBase) Activator.CreateInstance(registryType, new object[] { Registry }))
+            using (ServiceRegistryBase child = (ServiceRegistryBase) Activator.CreateInstance(registryType, new object[] { Registry, true }))
             {
                 notOwned = child.GetEntry<IDisposable>("notowned");
                 owned = child.GetEntry<IDisposable>("owned");
@@ -64,7 +64,7 @@ namespace Solti.Utils.DI.Internals.Tests
                 owned,
                 notOwned;
 
-            await using (ServiceRegistryBase child = (ServiceRegistryBase) Activator.CreateInstance(registryType, new object[] { Registry }))
+            await using (ServiceRegistryBase child = (ServiceRegistryBase) Activator.CreateInstance(registryType, new object[] { Registry, true }))
             {
                 notOwned = child.GetEntry<IDisposable>("notowned");
                 owned = child.GetEntry<IDisposable>("owned");
@@ -90,12 +90,16 @@ namespace Solti.Utils.DI.Internals.Tests
             AbstractServiceEntry entry1, entry2;
             ServiceRegistryBase grandChild1, grandChild2;
 
-            using (ServiceRegistryBase child = (ServiceRegistryBase) Activator.CreateInstance(registryType, new object[] { Registry }))
+            using (ServiceRegistryBase child = (ServiceRegistryBase) Activator.CreateInstance(registryType, new object[] { Registry, true }))
             {
-                grandChild1 = (ServiceRegistryBase) Activator.CreateInstance(registryType, new object[] { child });
+                grandChild1 = (ServiceRegistryBase) Activator.CreateInstance(registryType, new object[] { child, true });
+                Assert.That(grandChild1.Parent, Is.SameAs(child));
+
                 entry1 = grandChild1.GetEntry<IDisposable>();
 
-                grandChild2 = (ServiceRegistryBase) Activator.CreateInstance(registryType, new object[] { child });
+                grandChild2 = (ServiceRegistryBase) Activator.CreateInstance(registryType, new object[] { child, true });
+                Assert.That(grandChild2.Parent, Is.SameAs(child));
+
                 entry2 = grandChild2.GetEntry<IDisposable>();
             }
 
@@ -103,6 +107,35 @@ namespace Solti.Utils.DI.Internals.Tests
             Assert.IsTrue(entry1.Disposed);
             Assert.IsTrue(grandChild2.Disposed);
             Assert.IsTrue(entry2.Disposed);
+        }
+
+        [Test]
+        public void Dispose_ShouldDisposeRegisteredChildRegistriesOnly([ValueSource(nameof(RegistryTypes))] Type registryType)
+        {
+            Registry = (ServiceRegistryBase) Activator.CreateInstance(registryType, new object[]
+            {
+                new HashSet<AbstractServiceEntry>(ServiceIdComparer.Instance)
+                {
+                    new TransientServiceEntry(typeof(IDisposable), null, typeof(Disposable), null)
+                },
+                null,
+                CancellationToken.None
+            });
+
+            ServiceRegistryBase grandChild1, grandChild2;
+
+            using (ServiceRegistryBase child = (ServiceRegistryBase)Activator.CreateInstance(registryType, new object[] { Registry, true }))
+            {
+                grandChild1 = (ServiceRegistryBase) Activator.CreateInstance(registryType, new object[] { child, true });
+                Assert.That(grandChild1.Parent, Is.SameAs(child));
+
+                grandChild2 = (ServiceRegistryBase) Activator.CreateInstance(registryType, new object[] { child, false });
+                Assert.That(grandChild2.Parent, Is.SameAs(child));
+            }
+
+
+            Assert.IsTrue(grandChild1.Disposed);
+            Assert.IsFalse(grandChild2.Disposed);
         }
 
         [Test]
@@ -121,12 +154,12 @@ namespace Solti.Utils.DI.Internals.Tests
             AbstractServiceEntry entry1, entry2;
             ServiceRegistryBase grandChild1, grandChild2;
 
-            await using (ServiceRegistryBase child = (ServiceRegistryBase) Activator.CreateInstance(registryType, new object[] { Registry }))
+            await using (ServiceRegistryBase child = (ServiceRegistryBase) Activator.CreateInstance(registryType, new object[] { Registry, true }))
             {
-                grandChild1 = (ServiceRegistryBase) Activator.CreateInstance(registryType, new object[] { child });
+                grandChild1 = (ServiceRegistryBase) Activator.CreateInstance(registryType, new object[] { child, true });
                 entry1 = grandChild1.GetEntry<IDisposable>();
 
-                grandChild2 = (ServiceRegistryBase) Activator.CreateInstance(registryType, new object[] { child });
+                grandChild2 = (ServiceRegistryBase) Activator.CreateInstance(registryType, new object[] { child, true });
                 entry2 = grandChild2.GetEntry<IDisposable>();
             }
 
@@ -151,7 +184,7 @@ namespace Solti.Utils.DI.Internals.Tests
 
             AbstractServiceEntry owned;
 
-            using (ServiceRegistryBase child = (ServiceRegistryBase) Activator.CreateInstance(registryType, new object[] { Registry }))
+            using (ServiceRegistryBase child = (ServiceRegistryBase) Activator.CreateInstance(registryType, new object[] { Registry, true }))
             {
                 owned = child.GetEntry<IList<int>>();
             }
@@ -174,7 +207,7 @@ namespace Solti.Utils.DI.Internals.Tests
 
             AbstractServiceEntry owned;
 
-            await using (ServiceRegistryBase child = (ServiceRegistryBase) Activator.CreateInstance(registryType, new object[] { Registry }))
+            await using (ServiceRegistryBase child = (ServiceRegistryBase) Activator.CreateInstance(registryType, new object[] { Registry, true }))
             {
                 owned = child.GetEntry<IList<int>>();
             }

@@ -6,7 +6,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Threading;
 
 using NUnit.Framework;
@@ -50,7 +49,7 @@ namespace Solti.Utils.DI.Internals.Tests
 
             Assert.That(Registry.DerivedRegistries, Is.Empty);
 
-            using (IServiceRegistry child = (ServiceRegistryBase) Activator.CreateInstance(registryType, new object[] { Registry }))
+            using (IServiceRegistry child = (ServiceRegistryBase) Activator.CreateInstance(registryType, new object[] { Registry, true }))
             {
                 Assert.That(Registry.DerivedRegistries.Count, Is.EqualTo(1));
                 Assert.AreSame(Registry.DerivedRegistries.First(), child);
