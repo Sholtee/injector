@@ -17,13 +17,13 @@ namespace Solti.Utils.DI.Interfaces
         /// <summary>
         /// Gets the friendly name of the <see cref="IServiceId"/> instance.
         /// </summary>
-        public static string FriendlyName(this IServiceId src) 
+        public static string FriendlyName(this IServiceId self) 
         {
-            if (src is null)
-                throw new ArgumentNullException(nameof(src));
+            if (self is null)
+                throw new ArgumentNullException(nameof(self));
 
-            string result = src.Interface.GetFriendlyName();
-            if (src.Name is not null) result += $":{src.Name}";
+            string result = self.Interface.GetFriendlyName();
+            if (self.Name is not null) result += $":{self.Name}";
             return result;
         }
     }
