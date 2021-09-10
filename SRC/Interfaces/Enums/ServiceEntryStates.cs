@@ -33,7 +33,7 @@ namespace Solti.Utils.DI.Interfaces
         Built = Instantiated | 2,
 
         /// <summary>
-        /// Indicates that the entry was disposed. It implies that all the <see cref="AbstractServiceEntry.Instances"/> item were dereferenced.
+        /// Indicates that the entry was disposed. It implies that all the <see cref="AbstractServiceEntry.Instances"/> were dereferenced.
         /// </summary>
         Disposed = 4
     }
