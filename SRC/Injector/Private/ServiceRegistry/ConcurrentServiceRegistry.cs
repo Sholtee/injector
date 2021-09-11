@@ -124,11 +124,11 @@ namespace Solti.Utils.DI.Internals
             FSpecializedEntries = CreateArray(() => new ConcurrentDictionary<Type, Lazy<AbstractServiceEntry>>(), parent.GenericEntryCount);
         }
 
-        public override AbstractServiceEntry ResolveGenericEntry(int index, Type specializedInterface, AbstractServiceEntry originalEntry)
+        public override AbstractServiceEntry ResolveGenericEntry(int slot, Type specializedInterface, AbstractServiceEntry originalEntry)
         {
             Debug.Assert(specializedInterface.IsConstructedGenericType, $"{nameof(specializedInterface)} must be a closed generic type");
 
-            ConcurrentDictionary<Type, Lazy<AbstractServiceEntry>> specializedEntries = FSpecializedEntries[index];
+            ConcurrentDictionary<Type, Lazy<AbstractServiceEntry>> specializedEntries = FSpecializedEntries[slot];
 
             //
             // Lazy azert kell mert ha ugyanarra a kulcsra parhuzamosan kerul meghivasra a GetOrAdd() akkor a factory
@@ -150,9 +150,9 @@ namespace Solti.Utils.DI.Internals
             }
         }
 
-        public override AbstractServiceEntry ResolveRegularEntry(int index, AbstractServiceEntry originalEntry)
+        public override AbstractServiceEntry ResolveRegularEntry(int slot, AbstractServiceEntry originalEntry)
         {
-            EntryHolder holder = FRegularEntries[index];
+            EntryHolder holder = FRegularEntries[slot];
 
             if (holder.Value is null)
             {

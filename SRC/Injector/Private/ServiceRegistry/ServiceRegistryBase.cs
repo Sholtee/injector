@@ -18,12 +18,12 @@ namespace Solti.Utils.DI.Internals
     internal abstract class ServiceRegistryBase : DisposableSupportsNotifyOnDispose, IServiceRegistry
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        protected static Resolver GenericEntryResolverFactory(int index, AbstractServiceEntry originalEntry) =>
-            (self, iface, name) => self.ResolveGenericEntry(index, iface, originalEntry);
+        protected static Resolver GenericEntryResolverFactory(int slot, AbstractServiceEntry originalEntry) =>
+            (self, iface, name) => self.ResolveGenericEntry(slot, iface, originalEntry);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        protected static Resolver RegularEntryResolverFactory(int index, AbstractServiceEntry originalEntry) =>
-            (self, iface, name) => self.ResolveRegularEntry(index, originalEntry);
+        protected static Resolver RegularEntryResolverFactory(int slot, AbstractServiceEntry originalEntry) =>
+            (self, iface, name) => self.ResolveRegularEntry(slot, originalEntry);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         protected static ResolverBuilder GetDefaultResolverBuilder(IEnumerable<AbstractServiceEntry> entries) =>
@@ -75,9 +75,9 @@ namespace Solti.Utils.DI.Internals
 
         public abstract IReadOnlyCollection<AbstractServiceEntry> UsedEntries { get; }
 
-        public abstract AbstractServiceEntry ResolveRegularEntry(int index, AbstractServiceEntry originalEntry);
+        public abstract AbstractServiceEntry ResolveRegularEntry(int slot, AbstractServiceEntry originalEntry);
 
-        public abstract AbstractServiceEntry ResolveGenericEntry(int index, Type specializedInterface, AbstractServiceEntry originalEntry);
+        public abstract AbstractServiceEntry ResolveGenericEntry(int slot, Type specializedInterface, AbstractServiceEntry originalEntry);
 
         public abstract Resolver BuiltResolver { get; }
 

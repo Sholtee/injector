@@ -23,13 +23,13 @@ namespace Solti.Utils.DI.Interfaces
         /// <summary>
         /// Resolves a regular entry.
         /// </summary>
-        AbstractServiceEntry ResolveRegularEntry(int index, AbstractServiceEntry originalEntry);
+        AbstractServiceEntry ResolveRegularEntry(int slot, AbstractServiceEntry originalEntry);
 
         /// <summary>
         /// Resolves a generic entry.
         /// </summary>
         /// <returns></returns>
-        AbstractServiceEntry ResolveGenericEntry(int index, Type specializedInterface, AbstractServiceEntry originalEntry);
+        AbstractServiceEntry ResolveGenericEntry(int slot, Type specializedInterface, AbstractServiceEntry originalEntry);
 
         /// <summary>
         /// Returns all the registered entries.
