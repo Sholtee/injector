@@ -16,7 +16,7 @@ namespace Solti.Utils.DI
 
     internal sealed class ServiceReference : DisposeByRefObject, IServiceReference
     {
-        private readonly List<IServiceReference> FDependencies = new(capacity: 10);
+        private readonly IList<IServiceReference> FDependencies;
 
         private readonly WriteOnce<object> FValue = new(strict: false);
 
@@ -24,6 +24,9 @@ namespace Solti.Utils.DI
         {
             RelatedServiceEntry = Ensure.Parameter.IsNotNull(entry, nameof(entry));
             Scope = Ensure.Parameter.IsNotNull(injector, nameof(injector));
+            FDependencies = new List<IServiceReference>(capacity: entry.State.HasFlag(ServiceEntryStates.Instantiated)
+                ? entry.Instances[0].Dependencies.Count
+                : 10);
         }
 
         public ServiceReference(AbstractServiceEntry entry, object value, bool externallyOwned)
@@ -35,6 +38,8 @@ namespace Solti.Utils.DI
             //
             // Elore definialt szerviz peldanynak nem lehet fuggosege.
             //
+
+            FDependencies = Array.Empty<IServiceReference>();
         }
 
         public AbstractServiceEntry RelatedServiceEntry { get; }
@@ -46,7 +51,7 @@ namespace Solti.Utils.DI
             get 
             {
                 CheckNotDisposed();
-                return FDependencies;
+                return (IReadOnlyCollection<IServiceReference>) FDependencies;
             }
         }
 
@@ -113,7 +118,7 @@ namespace Solti.Utils.DI
                 for (int i = 0; i < FDependencies.Count; i++)
                 {
                     FDependencies[i].Release();
-                }     
+                }
             }
 
             base.Dispose(disposeManaged);
