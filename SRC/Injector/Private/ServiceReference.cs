@@ -5,7 +5,6 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Solti.Utils.DI
@@ -17,7 +16,7 @@ namespace Solti.Utils.DI
 
     internal sealed class ServiceReference : DisposeByRefObject, IServiceReference
     {
-        private readonly List<IServiceReference> FDependencies = new();
+        private readonly List<IServiceReference> FDependencies = new(capacity: 10);
 
         private readonly WriteOnce<object> FValue = new(strict: false);
 
@@ -111,8 +110,10 @@ namespace Solti.Utils.DI
                 if (Value is IDisposable disposable)
                     disposable.Dispose();
 
-                foreach (IServiceReference dep in Dependencies)
-                    dep.Release();          
+                for (int i = 0; i < FDependencies.Count; i++)
+                {
+                    FDependencies[i].Release();
+                }     
             }
 
             base.Dispose(disposeManaged);
@@ -137,10 +138,10 @@ namespace Solti.Utils.DI
                         break;
                 }
 
-                await Task.WhenAll
-                (
-                    Dependencies.Select(dep => dep.ReleaseAsync())
-                );
+                for (int i = 0; i < FDependencies.Count; i++)
+                {
+                    await FDependencies[i].ReleaseAsync();
+                }
             }
 
             //
