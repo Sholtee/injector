@@ -11,7 +11,6 @@ using System.Runtime.CompilerServices;
 namespace Solti.Utils.DI.Internals
 {
     using Properties;
-    using Primitives.Patterns;
 
     /// <summary>
     /// Every method that can be accessed publicly or use one or more parameters that were passed outside of the library 
