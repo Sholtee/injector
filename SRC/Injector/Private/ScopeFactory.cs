@@ -33,5 +33,7 @@ namespace Solti.Utils.DI.Internals
         protected override IReadOnlyCollection<AbstractServiceEntry> BuiltInServices { get; } = DefaultBuiltInServices;
 
         IInjector IScopeFactory.CreateScope() => CreateScope(ScopeOptions.SafeMode);
+
+        IInjector IScopeFactory.CreateScopeSafe() => CreateScope(true);
     }
 }

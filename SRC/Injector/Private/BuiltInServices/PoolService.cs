@@ -46,7 +46,7 @@ namespace Solti.Utils.DI.Internals
 
             public IServiceReference Create()
             {
-                FCurrentScope.Value ??= ScopeFactory.CreateScope();
+                FCurrentScope.Value ??= ScopeFactory.CreateScopeSafe();
                 try
                 {
                     //
