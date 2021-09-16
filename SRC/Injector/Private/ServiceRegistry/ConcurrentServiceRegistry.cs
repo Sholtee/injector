@@ -9,16 +9,13 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
-    using Primitives.Threading;
 
     internal class ConcurrentServiceRegistry : ServiceRegistryBase
     {
-        #region Private
         private sealed class EntryHolder
         {
             public AbstractServiceEntry? Value;
@@ -33,27 +30,6 @@ namespace Solti.Utils.DI.Internals
 
         private readonly ConcurrentDictionary<Type, Lazy<AbstractServiceEntry>>[] FSpecializedEntries;
 
-        private readonly ConcurrentBag<AbstractServiceEntry> FUsedEntries = new();
-
-        private readonly ConcurrentRegistryCollection FDerivedRegistries = new();
-
-        private sealed class ConcurrentRegistryCollection : ConcurrentLinkedList<IServiceRegistry>, IReadOnlyCollection<IServiceRegistry>
-        {
-            public void Add(IServiceRegistry item)
-            {
-                LinkedListNode<IServiceRegistry> node = AddFirst(item);
-                item.OnDispose += (_, _) =>
-                {
-                    //
-                    // A Dispose() karakterisztikajabol adodoan ez a metodus biztosan csak egyszer lesz meghivva
-                    //
-
-                    if (node.Owner is not null) // Takefirst() mar kivehette a listabol
-                        Remove(node);
-                };
-            }
-        }
-
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         protected static T[] CreateArray<T>(Func<T> factory, int count)
         {
@@ -66,46 +42,7 @@ namespace Solti.Utils.DI.Internals
 
             return result;
         }
-        #endregion
 
-        #region Protected
-        protected override void Dispose(bool disposeManaged)
-        {
-            if (disposeManaged)
-            {
-                while (FDerivedRegistries.TakeFirst(out IServiceRegistry registry))
-                {
-                    registry.Dispose();
-                }
-
-                while (FUsedEntries.TryTake(out AbstractServiceEntry entry))
-                {
-                    entry.Dispose();
-                }
-            }
-
-            base.Dispose(disposeManaged);
-        }
-
-        protected async override ValueTask AsyncDispose()
-        {
-            while (FDerivedRegistries.TakeFirst(out IServiceRegistry registry))
-            {
-                await registry.DisposeAsync();
-            }
-
-            while (FUsedEntries.TryTake(out AbstractServiceEntry entry))
-            {
-                await entry.DisposeAsync();
-            }
-
-            await base.AsyncDispose();
-        }
-
-        protected override void AddChild(IServiceRegistry registry) => FDerivedRegistries.Add(registry);
-        #endregion
-
-        #region Public
         public ConcurrentServiceRegistry(ISet<AbstractServiceEntry> entries, ResolverBuilder? resolverBuilder = null, CancellationToken cancellation = default) : base(entries)
         {
             resolverBuilder ??= GetDefaultResolverBuilder(entries);
@@ -116,7 +53,7 @@ namespace Solti.Utils.DI.Internals
             FSpecializedEntries = CreateArray(() => new ConcurrentDictionary<Type, Lazy<AbstractServiceEntry>>(), geCount);
         }
 
-        public ConcurrentServiceRegistry(ConcurrentServiceRegistry parent, bool register) : base(Ensure.Parameter.IsNotNull(parent, nameof(parent)), register)
+        public ConcurrentServiceRegistry(ConcurrentServiceRegistry parent) : base(parent)
         {
             BuiltResolver = parent.BuiltResolver;
 
@@ -142,11 +79,7 @@ namespace Solti.Utils.DI.Internals
             AbstractServiceEntry Specialize()
             {
                 ISupportsSpecialization supportsSpecialization = (ISupportsSpecialization) originalEntry;
-
-                AbstractServiceEntry specializedEntry = supportsSpecialization.Specialize(this, specializedInterface.GenericTypeArguments);
-
-                FUsedEntries.Add(specializedEntry);
-                return specializedEntry;
+                return supportsSpecialization.Specialize(this, specializedInterface.GenericTypeArguments);
             }
         }
 
@@ -161,7 +94,6 @@ namespace Solti.Utils.DI.Internals
                     if (holder.Value is null)
                     {
                         holder.Value = originalEntry.CopyTo(this);
-                        FUsedEntries.Add(holder.Value);
                     }
                 }
             }
@@ -171,13 +103,8 @@ namespace Solti.Utils.DI.Internals
 
         public override Resolver BuiltResolver { get; }
 
-        public override IReadOnlyCollection<AbstractServiceEntry> UsedEntries => FUsedEntries;
-
-        public override IReadOnlyCollection<IServiceRegistry> DerivedRegistries => FDerivedRegistries;
-
         public override int RegularEntryCount => FRegularEntries.Length;
 
         public override int GenericEntryCount => FSpecializedEntries.Length;
-        #endregion
     }
 }

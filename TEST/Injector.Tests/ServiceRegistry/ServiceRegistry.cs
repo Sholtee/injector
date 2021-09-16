@@ -43,22 +43,6 @@ namespace Solti.Utils.DI.Internals.Tests
         public void TearDown() => Registry?.Dispose();
 
         [Test]
-        public void Children_ShouldBeUpToDate([ValueSource(nameof(RegistryTypes))] Type registryType)
-        {
-            Registry = (ServiceRegistryBase) Activator.CreateInstance(registryType, new object[] { new HashSet<AbstractServiceEntry>(ServiceIdComparer.Instance), null, CancellationToken.None });
-
-            Assert.That(Registry.DerivedRegistries, Is.Empty);
-
-            using (IServiceRegistry child = (ServiceRegistryBase) Activator.CreateInstance(registryType, new object[] { Registry, true }))
-            {
-                Assert.That(Registry.DerivedRegistries.Count, Is.EqualTo(1));
-                Assert.AreSame(Registry.DerivedRegistries.First(), child);
-            }
-
-            Assert.That(Registry.DerivedRegistries, Is.Empty);
-        }
-
-        [Test]
         public void Ctor_ShouldThrowOnOverriddenService() =>
             Assert.Throws<ArgumentException>(() => new ScopeFactory(new HashSet<AbstractServiceEntry>(ServiceIdComparer.Instance) { new DummyServiceEntry(typeof(IInjector), null) }, new ScopeOptions()), Resources.BUILT_IN_SERVICE_OVERRIDE);
     }

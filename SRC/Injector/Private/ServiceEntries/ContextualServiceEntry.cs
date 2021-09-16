@@ -4,7 +4,6 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
-using System.Collections.Generic;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -12,33 +11,29 @@ namespace Solti.Utils.DI.Internals
 
     internal class ContextualServiceEntry : AbstractServiceEntry
     {
-        private readonly IReadOnlyList<ServiceReference> FInstances;
+        private readonly object? FInstance;
 
         private readonly Func<IServiceRegistry, object> FSelector;
-
-        public ContextualServiceEntry(Type @interface, string? name, Func<IServiceRegistry, object> selector) : base(@interface, name, null, null)
-        {
-            FInstances = Array.Empty<ServiceReference>();
-            FSelector = Ensure.Parameter.IsNotNull(selector, nameof(selector));
-        }
 
         private ContextualServiceEntry(ContextualServiceEntry original, IServiceRegistry owner) : base(original.Interface, original.Name)
         {
             Owner = Ensure.Parameter.IsNotNull(owner, nameof(owner));
             FSelector = original.FSelector;
-            FInstances = new[] 
-            {
-                new ServiceReference(this, FSelector(owner), externallyOwned: true)
-            };
+            FInstance = FSelector(owner);
             State = ServiceEntryStates.Built;
         }
+
+        public ContextualServiceEntry(Type @interface, string? name, Func<IServiceRegistry, object> selector) : base(@interface, name, null, null)
+        {
+            FSelector = Ensure.Parameter.IsNotNull(selector, nameof(selector));
+        }
+
+        public override object CreateInstance(IInjector scope) => throw new InvalidOperationException();
+
+        public override object GetSingleInstance() => FInstance ?? throw new InvalidOperationException();
 
         public override IServiceRegistry? Owner { get; }
 
         public override AbstractServiceEntry CopyTo(IServiceRegistry owner) => new ContextualServiceEntry(this, Ensure.Parameter.IsNotNull(owner, nameof(owner)));
-
-        public override bool SetInstance(IServiceReference serviceReference) => throw new NotImplementedException();
-
-        public override IReadOnlyList<IServiceReference> Instances => FInstances;
     }
 }

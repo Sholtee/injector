@@ -310,36 +310,6 @@ namespace Solti.Utils.DI.Injector.Tests
             using (IInjector injector = Root.CreateScope()) 
             {
                 Assert.Throws<InvalidCastException>(() => injector.Get<IInterface_1>(), string.Format(Resources.INVALID_INSTANCE, typeof(IInterface_1)));
-                Assert.That(injector.Get<IServiceRegistry>().GetEntry<IInterface_1>().Instances, Is.Empty);
-            }
-        }
-
-        [Test]
-        public void Injector_Get_ShouldDisposeTheServiceReferenceOnError()
-        {
-            HackyServiceEntry entry = new();
-            Root = ScopeFactory.Create(svcs => svcs.Register(entry));
-
-            using (IInjector injector = Root.CreateScope())
-            {
-                Assert.Throws<Exception>(() => injector.Get<IInterface_1>());
-
-                Assert.That(entry.GotReference.RefCount == 0);
-            }
-        }
-
-        private sealed class HackyServiceEntry : AbstractServiceEntry
-        {
-            public IServiceReference GotReference { get; private set; }
-
-            public HackyServiceEntry() : base(typeof(IInterface_1), null) { }
-
-            public override AbstractServiceEntry CopyTo(IServiceRegistry owner) => this;
-
-            public override bool SetInstance(IServiceReference serviceReference)
-            {
-                GotReference = serviceReference;
-                throw new Exception();
             }
         }
 

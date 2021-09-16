@@ -5,7 +5,6 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -13,16 +12,10 @@ namespace Solti.Utils.DI.Internals
 
     internal class ScopedServiceEntry : ProducibleServiceEntry
     {
-        private readonly IServiceReference?[] FInstances = new IServiceReference?[1]; // max egy eleme lehet
+        private object? FInstance;
 
         private ScopedServiceEntry(ScopedServiceEntry entry, IServiceRegistry? owner) : base(entry, owner)
         {
-        }
-
-        protected override void SaveReference(IServiceReference serviceReference)
-        {
-            Debug.Assert(FInstances[0] is null, "Instance has already been set.");
-            FInstances[0] = serviceReference;
         }
 
         public ScopedServiceEntry(Type @interface, string? name, Func<IInjector, Type, object> factory, IServiceRegistry? owner) : base(@interface, name, factory, owner)
@@ -37,35 +30,27 @@ namespace Solti.Utils.DI.Internals
         {
         }
 
-        public override bool SetInstance(IServiceReference reference)
+        public override object CreateInstance(IInjector scope)
         {
-            CheckNotDisposed();
-            EnsureAppropriateReference(reference);
+            Ensure.Parameter.IsNotNull(scope, nameof(scope));
+            EnsureProducible();
 
-            //
-            // Ha mar le lett gyartva akkor nincs dolgunk, jelezzuk a hivonak h ovlassa ki a korabban 
-            // beallitott erteket -> Minden egyes scope maximum egy sajat peldannyal rendelkezhet.
-            //
+            if (FInstance is not null)
+                throw new InvalidOperationException(); // TODO: uzenet
 
-            if (State.HasFlag(ServiceEntryStates.Built))
-                return false;
-
-            //
-            // Kulomben legyartjuk
-            //
-
-            base.SetInstance(reference);
+            FInstance = Factory!(scope, Interface);
 
             State |= ServiceEntryStates.Built;
 
-            return true;
+            return FInstance;
         }
+
+        public override object GetSingleInstance() => FInstance ?? throw new InvalidOperationException(); // TODO: uzenet
 
         public override AbstractServiceEntry CopyTo(IServiceRegistry registry) => new ScopedServiceEntry(this, Ensure.Parameter.IsNotNull(registry, nameof(registry)));
 
         public override AbstractServiceEntry Specialize(IServiceRegistry? owner, params Type[] genericArguments)
         {
-            CheckNotDisposed();
             Ensure.Parameter.IsNotNull(genericArguments, nameof(genericArguments));
 
             return this switch
@@ -97,7 +82,5 @@ namespace Solti.Utils.DI.Internals
         }
 
         public override Lifetime Lifetime { get; } = Lifetime.Scoped;
-
-        public override IReadOnlyList<IServiceReference> Instances => (FInstances[0] is not null ? FInstances : Array.Empty<IServiceReference>())!;
     }
 }

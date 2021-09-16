@@ -4,7 +4,6 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
-using System.Collections.Generic;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -12,17 +11,13 @@ namespace Solti.Utils.DI.Internals
 
     internal class InstanceServiceEntry : AbstractServiceEntry
     {
-        private readonly IReadOnlyList<ServiceReference> FInstances;
-        private IServiceRegistry? FRegistry; 
+        private readonly object FInstance;
 
-        public InstanceServiceEntry(Type @interface, string? name, object instance, bool externallyOwned, IServiceRegistry? owner) : base(@interface, name, null, owner)
+        public InstanceServiceEntry(Type @interface, string? name, object instance, IServiceRegistry? owner) : base(@interface, name, null, owner)
         {
             Ensure.Parameter.IsNotNull(instance, nameof(instance));
 
-            FInstances = new[] 
-            { 
-                new ServiceReference(this, instance, externallyOwned)
-            };
+            FInstance = instance;
 
             //
             // Ez kivetelt fog dobni ha "@interface"-en akar csak egy aspektus is van (peldanynak nincs
@@ -40,17 +35,11 @@ namespace Solti.Utils.DI.Internals
 
         public override Lifetime? Lifetime { get; } = Lifetime.Instance;
 
-        public override IServiceRegistry? Owner => FRegistry;
+        public override AbstractServiceEntry CopyTo(IServiceRegistry owner) => this;
 
-        public override AbstractServiceEntry CopyTo(IServiceRegistry owner)
-        {
-            FRegistry = owner;
-            return this;
-        }
+        public override object CreateInstance(IInjector scope) => throw new InvalidOperationException();
 
-        public override IReadOnlyList<IServiceReference> Instances => FInstances;
-
-        public override bool SetInstance(IServiceReference reference) => throw new NotImplementedException();
+        public override object GetSingleInstance() => FInstance;
 
         public override bool IsShared { get; } = true;
     }

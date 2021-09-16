@@ -28,13 +28,8 @@ namespace Solti.Utils.DI.Interfaces
         Instantiated = 1,
 
         /// <summary>
-        /// Signals that no build phase required. It also means that the <see cref="AbstractServiceEntry.Instances"/> property contains exactly one element.
+        /// Signals that no build phase required. It also means that the <see cref="AbstractServiceEntry.GetSingleInstance"/> method can be called.
         /// </summary>
-        Built = Instantiated | 2,
-
-        /// <summary>
-        /// Indicates that the entry was disposed. It implies that all the <see cref="AbstractServiceEntry.Instances"/> were dereferenced.
-        /// </summary>
-        Disposed = 4
+        Built = Instantiated | 2
     }
 }

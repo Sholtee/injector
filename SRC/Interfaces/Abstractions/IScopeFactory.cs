@@ -22,7 +22,7 @@ namespace Solti.Utils.DI.Interfaces
         /// <summary>
         /// Creates an independent new scope whose lifetime is maintained by the system.
         /// </summary>
-        IInjector CreateScopeSafe();
+        IInjector CreateSystemScope();
 
         /// <summary>
         /// Options applied on the newly created scopes.

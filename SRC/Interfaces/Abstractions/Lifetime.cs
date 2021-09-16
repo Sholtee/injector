@@ -79,6 +79,6 @@ namespace Solti.Utils.DI.Interfaces
         /// <summary>
         /// Creates one or more service entry for the given <paramref name="value"/>.
         /// </summary>
-        public virtual IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, object value, bool externallyOwned) => throw new NotSupportedException();
+        public virtual IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, object value) => throw new NotSupportedException();
     }
 }

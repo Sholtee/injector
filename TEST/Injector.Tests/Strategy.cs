@@ -16,10 +16,18 @@ namespace Solti.Utils.DI.Internals.Tests
 
     public class ServiceInstantiationStrategyTests
     {
-        private interface IService { }
-        private class Service : IService { }
+        private interface IService 
+        {
+            IInjector Scope { get; }
+        }
 
-        private interface IService_2 { }
+        private class Service : IService
+        {
+            public Service(IInjector scope) => Scope = scope;
+
+            public IInjector Scope { get; }
+        }
+
 
         [Test]
         public void NotOwnedServiceInstantiationStrategy_ShouldLock()
@@ -27,7 +35,7 @@ namespace Solti.Utils.DI.Internals.Tests
             using (IScopeFactory root = ScopeFactory.Create(svcs => svcs.Factory<IService>(i =>
                 {
                     Assert.That(Monitor.IsEntered(i.Get<IServiceRegistry>().GetEntry<IService>()));
-                    return new Service();
+                    return new Service(i);
                 }, Lifetime.Singleton)))
             {
                 IInjector injector = root.CreateScope();
@@ -36,7 +44,7 @@ namespace Solti.Utils.DI.Internals.Tests
 
                 AbstractServiceEntry entry = injector.Get<IServiceRegistry>().GetEntry<IService>();
 
-                Assert.That(entry.Instances, Is.Not.Empty); // factory hivva volt
+                Assert.That(entry.State.HasFlag(ServiceEntryStates.Instantiated)); // factory hivva volt
                 Assert.That(Monitor.IsEntered(entry), Is.False);
             }
         }
@@ -48,9 +56,7 @@ namespace Solti.Utils.DI.Internals.Tests
             {
                 IInjector injector = root.CreateScope();
 
-                injector.Get<IService>();
-
-                Assert.That(injector.Get<IServiceRegistry>().GetEntry<IService>().Instances.Single().Scope, Is.Not.SameAs(injector));
+                Assert.That(injector.Get<IService>().Scope, Is.Not.SameAs(injector));
             }
         }
 
@@ -61,9 +67,7 @@ namespace Solti.Utils.DI.Internals.Tests
             {
                 IInjector injector = root.CreateScope();
 
-                injector.Get<IService>();
-
-                Assert.That(injector.Get<IServiceRegistry>().GetEntry<IService>().Instances.Single().Scope, Is.SameAs(injector));
+                Assert.That(injector.Get<IService>().Scope, Is.SameAs(injector));
             }
         }
     }

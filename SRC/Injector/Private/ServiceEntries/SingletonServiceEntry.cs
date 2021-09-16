@@ -5,39 +5,15 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Threading.Tasks;
+using System.Runtime.CompilerServices;
 
 namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
-    using Primitives.Threading;
 
     internal class SingletonServiceEntry : ProducibleServiceEntry
     {
-        private readonly IServiceReference?[] FInstances = new IServiceReference?[1];
-
-        private readonly ExclusiveBlock FExclusiveBlock = new(ExclusiveBlockFeatures.SupportsRecursion); // rekurzio tamogatas kell h a CDEP detektalas mukodjon
-
-        protected override void SaveReference(IServiceReference serviceReference)
-        {
-            Debug.Assert(FInstances[0] is null, "Instance has already been set.");
-            FInstances[0] = serviceReference;
-        }
-
-        protected override void Dispose(bool disposeManaged)
-        {
-            if (disposeManaged)
-                FExclusiveBlock.Dispose();
-
-            base.Dispose(disposeManaged);
-        }
-
-        protected override async ValueTask AsyncDispose()
-        {
-            await FExclusiveBlock.DisposeAsync();
-            await base.AsyncDispose();
-        }
+        private object? FInstance;
 
         private SingletonServiceEntry(SingletonServiceEntry entry, IServiceRegistry? owner) : base(entry, owner)
         {
@@ -55,36 +31,26 @@ namespace Solti.Utils.DI.Internals
         {
         }
 
-        public override bool SetInstance(IServiceReference reference)
+        [MethodImpl(MethodImplOptions.Synchronized)]
+        public override object CreateInstance(IInjector scope)
         {
-            CheckNotDisposed();
-            EnsureAppropriateReference(reference);
+            Ensure.Parameter.IsNotNull(scope, nameof(scope));
+            EnsureProducible();
 
-            using (FExclusiveBlock.Enter())
-            {
-                //
-                // Ha mar le lett gyartva akkor nincs dolgunk, jelezzuk a hivonak h ovlassa ki a korabban 
-                // beallitott erteket.
-                //
+            if (FInstance is not null)
+                throw new InvalidOperationException(); // TODO: uzenet
 
-                if (State.HasFlag(ServiceEntryStates.Built))
-                    return false;
+            FInstance = Factory!(scope, Interface);
 
-                //
-                // Kulonben legyartjuk
-                //
+            State |= ServiceEntryStates.Built;
 
-                base.SetInstance(reference);
-
-                State |= ServiceEntryStates.Built;
-
-                return true;
-            }
+            return FInstance;
         }
+
+        public override object GetSingleInstance() => FInstance ?? throw new InvalidOperationException(); // TODO: uzenet
 
         public override AbstractServiceEntry Specialize(IServiceRegistry? owner, params Type[] genericArguments)
         {
-            CheckNotDisposed();
             Ensure.Parameter.IsNotNull(genericArguments, nameof(genericArguments));
 
             return this switch
@@ -120,7 +86,5 @@ namespace Solti.Utils.DI.Internals
         public override Lifetime Lifetime { get; } = Lifetime.Singleton;
 
         public override bool IsShared { get; } = true;
-
-        public override IReadOnlyList<IServiceReference> Instances => (FInstances[0] is not null ? FInstances : Array.Empty<IServiceReference>())!;
     }
 }

@@ -4,21 +4,17 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Solti.Utils.DI.Interfaces
 {
     using Primitives;
-    using Primitives.Patterns;
     using Properties;
 
     /// <summary>
     /// Describes an abstract service definition.
     /// </summary>
-    public abstract class AbstractServiceEntry: Disposable, IServiceDefinition // TODO: legyen tenylegesen abstract
+    public abstract class AbstractServiceEntry: IServiceDefinition
     {
         /// <summary>
         /// Creates a new <see cref="AbstractServiceEntry"/> instance.
@@ -74,14 +70,20 @@ namespace Solti.Utils.DI.Interfaces
         public string? Name { get; }
 
         /// <summary>
+        /// The (optional) implementation of the service.
+        /// </summary>
+        public Type? Implementation { get; }
+
+        /// <summary>
         /// The owner of this entry.
         /// </summary>
         public virtual IServiceRegistry? Owner { get; }
 
         /// <summary>
-        /// The (optional) implementation of the service.
+        /// If set, this property contains the accessor function that extracts the effective service instance from the value returned by the <see cref="Factory"/> function.
         /// </summary>
-        public Type? Implementation { get; }
+        /// <remarks>Disposal logic is alwais applied against the original value (returned by the <see cref="Factory"/> function.</remarks>
+        public virtual Func<object, object>? ServiceAccess { get; }
 
         /// <summary>
         /// The related <see cref="Interfaces.Lifetime"/>.
@@ -101,22 +103,20 @@ namespace Solti.Utils.DI.Interfaces
         public Func<IInjector, Type, object>? Factory { get; protected set; }
 
         /// <summary>
-        /// The previously created service instance(s) related to this entry. Don't use it directly.
-        /// </summary>
-        public virtual IReadOnlyList<IServiceReference> Instances { get; } = Array.Empty<IServiceReference>();
-
-        /// <summary>
         /// Describes the actual state of this entry.
         /// </summary>
         public ServiceEntryStates State { get; protected set; }
         #endregion
 
         /// <summary>
-        /// Calls the <see cref="Factory"/> to set an instance in the <see cref="Instances"/> list.
+        /// Gets the previously created service instance.
         /// </summary>
-        /// <param name="serviceReference">The <see cref="IServiceReference"/> of the service being created.</param>
-        /// <returns>Returns false if the entry was already built.</returns>
-        public abstract bool SetInstance(IServiceReference serviceReference);
+        public abstract object GetSingleInstance();
+
+        /// <summary>
+        /// Creates a new instance.
+        /// </summary>
+        public abstract object CreateInstance(IInjector scope);
 
         /// <summary>
         /// Creates a copy from this entry.
@@ -124,101 +124,17 @@ namespace Solti.Utils.DI.Interfaces
         public abstract AbstractServiceEntry CopyTo(IServiceRegistry owner);
 
         /// <summary>
-        /// Compares this entry with another one.
-        /// </summary>
-        /// <remarks>Entries having the same property values are considered equivalent.</remarks>
-        public override bool Equals(object obj) => ReferenceEquals(this, obj) || (obj is AbstractServiceEntry && obj.GetHashCode() == GetHashCode());
-
-        /// <summary>
-        /// Gets the hash code of this entry.
-        /// </summary>
-        /// <returns>The hash code of this entry.</returns>
-        public override int GetHashCode()
-        {
-            CheckNotDisposed();
-
-#if NETSTANDARD2_1_OR_GREATER
-            var hashCode = new HashCode();
-
-            hashCode.Add(Owner);
-            hashCode.Add(Interface);
-            hashCode.Add(Name);
-            hashCode.Add(Factory);
-            hashCode.Add(Implementation);
-
-            foreach (IServiceReference reference in Instances)
-                hashCode.Add(reference.GetInstance());
-
-            return hashCode.ToHashCode();
-#else
-            object current = new
-            {
-                Owner,
-                Interface,
-                Name,
-                Factory,
-                Implementation
-            };
-
-            foreach (IServiceReference reference in Instances)
-                current = new
-                {
-                    Previous = current,
-                    Instance = reference.GetInstance()
-                };
-
-            return current.GetHashCode();
-#endif
-        }
-
-        /// <summary>
         /// See <see cref="object.ToString"/>.
         /// </summary>
         /// <returns></returns>
         public override string ToString()
         {
-            CheckNotDisposed();
-
             const string NAME_PART = " - {0}: {1}";
 
             return new StringBuilder(this.FriendlyName())
                 .AppendFormat(Resources.Culture, NAME_PART, nameof(Lifetime), Lifetime?.ToString() ?? "NULL")
-                .AppendFormat(Resources.Culture, NAME_PART, nameof(Implementation), Implementation?.GetFriendlyName() ?? "NULL")
-                .AppendFormat(Resources.Culture, NAME_PART, nameof(Instances), Instances.Any() ? string.Join(", ", Instances.Select(IServiceReferenceExtensions.GetInstance)) : "EMPTY")             
+                .AppendFormat(Resources.Culture, NAME_PART, nameof(Implementation), Implementation?.GetFriendlyName() ?? "NULL")           
                 .ToString();
-        }
-
-        /// <summary>
-        /// Decrements the reference counter of the service <see cref="Instances"/>.
-        /// </summary>
-        protected override void Dispose(bool disposeManaged)
-        {
-            if (disposeManaged)
-            {
-                foreach (IServiceReference instance in Instances)
-                    instance.Release();
-
-                State |= ServiceEntryStates.Disposed;
-            }
-
-            base.Dispose(disposeManaged);
-        }
-
-        /// <summary>
-        /// Decrements the reference counter of the service <see cref="Instances"/>.
-        /// </summary>
-        protected override async ValueTask AsyncDispose()
-        {
-            await Task.WhenAll
-            (
-                Instances.Select(instance => instance.ReleaseAsync())
-            );
-
-            State |= ServiceEntryStates.Disposed;
-
-            //
-            // Nem kell "base" hivas mert az a Dispose()-t hivna.
-            //
         }
     }
 }

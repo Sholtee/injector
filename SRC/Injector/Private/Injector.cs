@@ -4,11 +4,11 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
-
-using static System.Diagnostics.Debug;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -19,26 +19,25 @@ namespace Solti.Utils.DI.Internals
     internal class Injector : ServiceRegistry, IInjector
     {
         #region Private
+        private readonly ExclusiveBlock? FExclusiveBlock;
+
         private bool FDisposing;
 
-        private readonly ServicePath FPath = new();
+        private ServicePath? FPath;
 
-        private readonly ExclusiveBlock? FExclusiveBlock;
+        private IList<object>? FProvidedDisposables;
         #endregion
 
         #region Internal
-        internal IServiceReference GetReferenceInternal(AbstractServiceEntry requested)
+        internal object GetInternalUnsafe(AbstractServiceEntry requested)
         {
             //
-            // 1. eset: Csak egy peldanyt kell letrehozni amit vki korabban mar megtett [HasFlag(Built)]
-            //          -> visszaadjuk azt.
+            // 1. eset: Csak egy peldanyt kell letrehozni amit vki korabban mar megtett [HasFlag(Built)] -> visszaadjuk azt.
+            //          Ebben az esetben a szerviz felszabaditasaval mar nem kell foglalkoznunk.
             //
 
             if (requested.State.HasFlag(ServiceEntryStates.Built))
-            {
-                Assert(requested.Instances.Count == 1, "Built entry must contain exactly one service instance");
-                return requested.Instances[0];
-            }
+                return requested.GetSingleInstance();
 
             //
             // 2. eset: Uj peldanyt kell letrehozni de a bejegyzes megosztott ezert dedikalt scope kell neki
@@ -62,17 +61,14 @@ namespace Solti.Utils.DI.Internals
                     //
 
                     if (requested.State.HasFlag(ServiceEntryStates.Built))
-                    {
-                        Assert(requested.Instances.Count == 1, "Built entry must contain exactly one service instance");
-                        return requested.Instances[0];
-                    }
+                        return requested.GetSingleInstance();
 
                     //
                     // Letrehozunk egy dedikalt injector-t aminek a felszabaditasa "Parent" feladata lesz
                     //   -> Ennek az injector peldanynak a felszabaditasa nem befolyasolja a szerviz elettartamat.
                     //
 
-                    Injector dedicatedInjector = Parent.CreateScope(register: true);
+                    Injector dedicatedInjector = (Injector) Parent.CreateSystemScope();
 
                     try
                     {
@@ -80,7 +76,7 @@ namespace Solti.Utils.DI.Internals
                         // Ugrunk a 3. esetre
                         //
 
-                        return dedicatedInjector.GetReferenceInternal(requested);
+                        return dedicatedInjector.GetInternalUnsafe(requested);
                     }
                     catch
                     {
@@ -90,60 +86,46 @@ namespace Solti.Utils.DI.Internals
                 }
             }
 
+            object result;
+
             //
-            // 3. eset: Uj peldanyt kell letrehozni 
-            //
-            // A result.Value itt meg ures, a SetInstance() allitja be
+            // Ha korabban mar tudtuk peldanyositani a szervizt vagy pedig nem biztonsagos modban vagyunk akkor nics
+            // korkoros referencia ellenorzes.
             //
 
-            ServiceReference result = new(requested, this);
-
-            try
+            if (!Options.SafeMode || FPath?.First?.State.HasFlag(ServiceEntryStates.Instantiated) is true)
+                result = requested.CreateInstance(this);
+            else
             {
-                //
-                // Az epp letrehozas alatt levo szerviz kerul az ut legvegere igy a fuggosegei feloldasakor o lesz a szulo
-                // (FPath.Last).
-                //
+                FPath ??= new ServicePath();
 
-                FPath.Push(result);
+                FPath.Push(requested);
                 try
                 {
-                    if (Options.SafeMode)
-                    {
-                        //
-                        // Ha korabban meg nem peldanyositottuk egyszer sem a szervizt akkor ellenorizzuk h nincs e korkoros referencia
-                        // (nyilvan ha korabban mar letre tudtunk hozni peldanyt akkor ez mar felesleges).
-                        //
-
-                        if (!FPath.First!.RelatedServiceEntry.State.HasFlag(ServiceEntryStates.Instantiated))
-                            FPath.CheckNotCircular();
-                    }
-
-                    bool instanceSet = requested.SetInstance(result);
-                    Assert(instanceSet && result.Value is not null, "Requested instance could not be set");
-
-                    return result;
+                    FPath.CheckNotCircular();
+                    result = requested.CreateInstance(this);
                 }
                 finally
                 {
                     FPath.Pop();
                 }
             }
-            catch
+
+            //
+            // Ellenorizzuk h az ujonan letrehozott peldanyt kesobb fel kell e szabaditani
+            //
+
+            if (result is IDisposable || result is IAsyncDisposable)
             {
-                result.Release(); // NE Dispose() legyen mert azt direktbe nem lehet hivni
-                throw;
+                FProvidedDisposables ??= new List<object>(capacity: 5);
+                FProvidedDisposables.Add(result);
             }
+
+            return result;
         }
 
-        internal IServiceReference? GetReferenceInternal(Type iface, string? name, bool throwOnMissing)
+        internal object? GetInternalUnsafe(Type iface, string? name, bool throwOnMissing)
         {
-            //
-            // Ha vkinek a fuggosege vagyunk akkor a fuggo szerviz itt meg nem lehet legyartva.
-            //
-
-            Assert(FPath.Last?.Value is null, "Already produced services can not request dependencies");
-
             AbstractServiceEntry? requested = GetEntry(iface, name);
 
             if (requested is null)
@@ -155,7 +137,7 @@ namespace Solti.Utils.DI.Internals
                     ex.Data["path"] = ServicePath.Format
                     (
                         FPath
-                            .Select(svc => (IServiceId) svc.RelatedServiceEntry)
+                            .Select(svc => (IServiceId) svc)
                             .Append(id)
                     );
 
@@ -167,7 +149,7 @@ namespace Solti.Utils.DI.Internals
 
             if (Options.StrictDI)
             {
-                AbstractServiceEntry? requestor = FPath.Last?.RelatedServiceEntry;
+                AbstractServiceEntry? requestor = FPath?.Last;
 
                 //
                 // - Ha a fuggosegi fa gyokerenel vagyunk akkor a metodus nem ertelmezett.
@@ -188,15 +170,33 @@ namespace Solti.Utils.DI.Internals
             // Fuggosegek feloldasa es peldanyositas (ez a metodus rekurzivan ismet meghivasra kerulhet)
             //
 
-            IServiceReference resolved = GetReferenceInternal(requested);
+            object instance = GetInternalUnsafe(requested);
 
-            //
-            // Minden fuggoseget megtalaltunk, a szerviz sikeresen peldanyositasra kerult.
-            // Ha a szerviz egy masik szerviz fuggosege akkor felvesszuk annak fuggosegi listajaba.
-            //
+            if (requested.ServiceAccess is not null)
+                instance = requested.ServiceAccess(instance);
 
-            FPath.Last?.AddDependency(resolved);
-            return resolved;
+            if (!requested.Interface.IsInstanceOfType(instance))
+                throw new InvalidCastException(string.Format(Resources.Culture, Resources.INVALID_INSTANCE, requested.Interface));
+
+            return instance;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal object? GetInternal(Type iface, string? name, bool throwOnMissing)
+        {
+            CheckNotDisposed();
+
+            if (FDisposing)
+                throw new InvalidOperationException(Resources.INJECTOR_IS_BEING_DISPOSED);
+
+            Ensure.Parameter.IsNotNull(iface, nameof(iface));
+            Ensure.Parameter.IsInterface(iface, nameof(iface));
+            Ensure.Parameter.IsNotGenericDefinition(iface, nameof(iface));
+
+            using (FExclusiveBlock?.Enter())
+            {
+                return GetInternalUnsafe(iface, name, throwOnMissing);
+            }
         }
         #endregion
 
@@ -209,73 +209,65 @@ namespace Solti.Utils.DI.Internals
 
         protected override void Dispose(bool disposeManaged)
         {
-            base.Dispose(disposeManaged);
-
-            //
-            // Mivel felszabaditaskor elmeletben meg kerdezhetunk le szervizeket (szerviz Dispose()
-            // metodusaban van injector.Get() hivas) ezert az exkluziv blokkot csak a base() hivas
-            // utan szabaditsuk fel.
-            //
-
             if (disposeManaged)
+            {
+                if (FProvidedDisposables is not null)
+                {
+                    //
+                    // Forditott iranyban szabaditsuk fel a szervizeket mint ahogy letrehoztuk oket (igy az eppen felszabaditas alatt levo szerviz
+                    // meg tudja hivatkozni a fuggosegeit).
+                    //
+
+                    for (int i = FProvidedDisposables.Count - 1; i >= 0; i--)
+                    {
+                        ((IDisposable) FProvidedDisposables[i]).Dispose();
+                    }
+                }
+
                 FExclusiveBlock?.Dispose();
+            }
+
+            base.Dispose(disposeManaged);           
         }
 
         protected override async ValueTask AsyncDispose()
         {
-            await base.AsyncDispose();
+            if (FProvidedDisposables is not null)
+            {
+                for (int i = FProvidedDisposables.Count - 1; i >= 0; i--)
+                {
+                    if (FProvidedDisposables[i] is IAsyncDisposable asyncDisposable)
+                        await asyncDisposable.DisposeAsync();
+                    else if (FProvidedDisposables[i] is IDisposable disposable)
+                        disposable.Dispose();
+                }
+            }
 
             if (FExclusiveBlock is not null)
                 await FExclusiveBlock.DisposeAsync();
+
+            //
+            // Nem kell "base" hivas mert az a Dispose()-t hivja
+            //
         }
         #endregion
 
-        public Injector(ScopeFactory parent, bool register) : base(parent, register)
+        public Injector(ScopeFactory parent) : base(parent)
         {
             if (Options.SafeMode)
+                //
+                // Feladatabol adodoan nem lehet csak az elso hasznalat elott inicializalni.
+                //
+
                 FExclusiveBlock = new ExclusiveBlock(ExclusiveBlockFeatures.SupportsRecursion);
         }
 
         public new ScopeFactory Parent => (ScopeFactory) base.Parent!;
 
         #region IInjector
-        public IServiceReference GetReference(Type iface, string? name)
-        {
-            CheckNotDisposed();
+        public object Get(Type iface, string? name) => GetInternal(iface, name, throwOnMissing: true)!;
 
-            if (FDisposing)
-                throw new InvalidOperationException(Resources.INJECTOR_IS_BEING_DISPOSED);
-
-            Ensure.Parameter.IsNotNull(iface, nameof(iface));
-            Ensure.Parameter.IsInterface(iface, nameof(iface));
-            Ensure.Parameter.IsNotGenericDefinition(iface, nameof(iface));
-
-            using (FExclusiveBlock?.Enter())
-            {
-                return GetReferenceInternal(iface, name, throwOnMissing: true)!;
-            }
-        }
-
-        public IServiceReference? TryGetReference(Type iface, string? name)
-        {
-            CheckNotDisposed();
-
-            if (FDisposing)
-                throw new InvalidOperationException(Resources.INJECTOR_IS_BEING_DISPOSED);
-
-            Ensure.Parameter.IsNotNull(iface, nameof(iface));
-            Ensure.Parameter.IsInterface(iface, nameof(iface));
-            Ensure.Parameter.IsNotGenericDefinition(iface, nameof(iface));
-
-            using (FExclusiveBlock?.Enter())
-            {
-                return GetReferenceInternal(iface, name, throwOnMissing: false);
-            }
-        }
-
-        public object Get(Type iface, string? name) => GetReference(iface, name).GetInstance()!;
-
-        public object? TryGet(Type iface, string? name) => TryGetReference(iface, name)?.GetInstance();
+        public object? TryGet(Type iface, string? name) => GetInternal(iface, name, throwOnMissing: false);
 
         public ScopeOptions Options => Parent.ScopeOptions;
         #endregion

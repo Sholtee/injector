@@ -5,21 +5,80 @@
 ********************************************************************************/
 using System.Collections.Generic;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
+    using Primitives.Threading;
 
     internal class ScopeFactory : ConcurrentServiceRegistry, IScopeFactory
     {
-        public ScopeFactory(ISet<AbstractServiceEntry> entries, ScopeOptions scopeOptions, CancellationToken cancellation = default) : base(entries, cancellation: cancellation)
+        //
+        // A "rendszer" scope-okat a rendszer hpeldanyositja megosztott szervizek letrehozasakor ezert tovabb kell
+        // letezzenek mint a "user" scope-ok.
+        //
+
+        private readonly ConcurrentScopeCollection FSystemScopes = new();
+
+        private readonly ConcurrentScopeCollection FUserScopes = new();
+
+        private sealed class ConcurrentScopeCollection : ConcurrentLinkedList<Injector>, IReadOnlyCollection<Injector>
         {
-            ScopeOptions = scopeOptions;
+            public void Add(Injector item)
+            {
+                LinkedListNode<Injector> node = AddFirst(item);
+                item.OnDispose += (_, _) =>
+                {
+                    //
+                    // A Dispose() karakterisztikajabol adodoan ez a metodus biztosan csak egyszer lesz meghivva
+                    //
+
+                    if (node.Owner is not null) // Takefirst() mar kivehette a listabol
+                        Remove(node);
+                };
+            }
         }
 
-        public ScopeOptions ScopeOptions { get; }
+        protected override void Dispose(bool disposeManaged)
+        {
+            if (disposeManaged)
+            {
+                ReversedDispose(FUserScopes);
 
-        public virtual Injector CreateScope(bool register) => new Injector(this, register);
+                //
+                // "system" scope-okat a letrehozasuk forditott sorrendjeben szabaditjuk fel a "user"
+                // scope-ok utan,
+                //
+
+                ReversedDispose(FSystemScopes);
+            }
+
+            base.Dispose(disposeManaged);
+
+            static void ReversedDispose(ConcurrentScopeCollection scopes)
+            {
+                while (scopes.TakeFirst(out Injector scope)) // AddFirst() adta hozza -> forditott a sorrend
+                {
+                    scope.Dispose();
+                }
+            }
+        }
+
+        protected async override ValueTask AsyncDispose()
+        {
+            await ReversedDispose(FUserScopes);
+            await ReversedDispose(FSystemScopes);
+            await base.AsyncDispose();
+
+            static async Task ReversedDispose(ConcurrentScopeCollection scopes)
+            {
+                while (scopes.TakeFirst(out Injector scope))
+                {
+                    await scope.DisposeAsync();
+                }
+            }
+        }
 
         protected static IReadOnlyCollection<AbstractServiceEntry> DefaultBuiltInServices { get; } = new AbstractServiceEntry[]
         {
@@ -32,8 +91,32 @@ namespace Solti.Utils.DI.Internals
 
         protected override IReadOnlyCollection<AbstractServiceEntry> BuiltInServices { get; } = DefaultBuiltInServices;
 
-        IInjector IScopeFactory.CreateScope() => CreateScope(ScopeOptions.SafeMode);
+        protected virtual Injector CreateScopeInternal() => new Injector(this);
 
-        IInjector IScopeFactory.CreateScopeSafe() => CreateScope(true);
+        public IInjector CreateScope()
+        {
+            Injector scope = CreateScopeInternal();
+            if (ScopeOptions.SafeMode)
+                FUserScopes.Add(scope);
+            return scope;
+        }
+
+        public IInjector CreateSystemScope()
+        {
+            Injector scope = CreateScopeInternal();
+            FSystemScopes.Add(scope); // minden kepp hozzaadjuk (a "user" tuti nem szabaditja fel)
+            return scope;
+        }
+
+        public ScopeFactory(ISet<AbstractServiceEntry> entries, ScopeOptions scopeOptions, CancellationToken cancellation = default) : base(entries, cancellation: cancellation)
+        {
+            ScopeOptions = scopeOptions;
+        }
+
+        public ScopeOptions ScopeOptions { get; }
+
+        public IReadOnlyCollection<IInjector> SystemScopes => FSystemScopes;
+
+        public IReadOnlyCollection<IInjector> UserScopes => FUserScopes;
     }
 }

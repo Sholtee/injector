@@ -26,17 +26,6 @@ namespace Solti.Utils.DI.ServiceCollection.Tests
             Collection = new ServiceCollection();
         }
 
-        [TearDown]
-        public void Teardown()
-        {
-            foreach (AbstractServiceEntry entry in Collection)
-            {
-                entry.Dispose();
-            }
-
-            Collection = null;
-        }
-
         public static IEnumerable<Lifetime> Lifetimes
         {
             get

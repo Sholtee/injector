@@ -19,9 +19,9 @@ namespace Solti.Utils.DI.Internals
         // Eredetileg itt lancolt listat hasznaltam de mint kiderult az nem epp a leggyorsabb
         //
 
-        private readonly List<IServiceReference> FPath = new(capacity: 10);
+        private readonly List<AbstractServiceEntry> FPath = new(capacity: 10);
 
-        public IServiceReference? Last => FPath.Count > 0
+        public AbstractServiceEntry? Last => FPath.Count > 0
 #if NETSTANDARD2_1_OR_GREATER
             ? FPath[^1]
 #else
@@ -29,7 +29,7 @@ namespace Solti.Utils.DI.Internals
 #endif
             : null;
 
-        public IServiceReference? First => FPath.Count > 0
+        public AbstractServiceEntry? First => FPath.Count > 0
             ? FPath[0]
             : null;
 
@@ -37,14 +37,14 @@ namespace Solti.Utils.DI.Internals
         {
             Ensure.IsNotNull(Last, nameof(Last));
 
-            AbstractServiceEntry last = Last!.RelatedServiceEntry;
+            AbstractServiceEntry last = Last!;
 
             int firstIndex = 0;
             bool found = false;
 
             for(; firstIndex < FPath.Count; firstIndex++)
             {
-                AbstractServiceEntry current = FPath[firstIndex].RelatedServiceEntry;
+                AbstractServiceEntry current = FPath[firstIndex];
 
                 if (current.Interface == last.Interface && current.Name == last.Name)
                 {
@@ -76,20 +76,18 @@ namespace Solti.Utils.DI.Internals
                 ));
         }
 
-        public void Push(IServiceReference reference)
+        public void Push(AbstractServiceEntry entry)
         {
-            Ensure.Parameter.IsNotNull(reference, nameof(reference));
+            Ensure.Parameter.IsNotNull(entry, nameof(entry));
 
-            FPath.Add(reference);
+            FPath.Add(entry);
         }
 
         public void Pop() => FPath.RemoveAt(FPath.Count - 1);
 
-        public static string Format(IEnumerable<IServiceReference> path) => Format(path.Select(svc => svc.RelatedServiceEntry));
-
         public static string Format(IEnumerable<IServiceId> path) => string.Join(" -> ", path.Select(IServiceIdExtensions.FriendlyName));
 
-        public IEnumerator<IServiceReference> GetEnumerator() => FPath.GetEnumerator();
+        public IEnumerator<AbstractServiceEntry> GetEnumerator() => FPath.GetEnumerator();
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
     }
