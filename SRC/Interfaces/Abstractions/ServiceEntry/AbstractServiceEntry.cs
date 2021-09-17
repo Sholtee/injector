@@ -77,12 +77,12 @@ namespace Solti.Utils.DI.Interfaces
         /// <summary>
         /// The owner of this entry.
         /// </summary>
-        public virtual IServiceRegistry? Owner { get; }
+        public IServiceRegistry? Owner { get; }
 
         /// <summary>
         /// If set, this property contains the accessor function that extracts the effective service instance from the value returned by the <see cref="Factory"/> function.
         /// </summary>
-        /// <remarks>Disposal logic is alwais applied against the original value (returned by the <see cref="Factory"/> function.</remarks>
+        /// <remarks>Disposal logic is alwais applied against the original value (returned by the <see cref="Factory"/> function).</remarks>
         public virtual Func<object, object>? ServiceAccess { get; }
 
         /// <summary>

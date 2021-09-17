@@ -16,7 +16,7 @@ namespace Solti.Utils.DI.Internals
     using Primitives.Threading;
     using Properties;
 
-    internal class Injector : ServiceRegistry, IInjector
+    internal class Injector : ServiceRegistry, IInjector, ICaptureDisposable
     {
         #region Private
         private readonly ExclusiveBlock? FExclusiveBlock;
@@ -25,7 +25,14 @@ namespace Solti.Utils.DI.Internals
 
         private ServicePath? FPath;
 
-        private IList<object>? FProvidedDisposables;
+        //
+        // - Azert Stack<> hogy forditott iranyban szabaditsuk fel a szervizeket mint ahogy letrehoztuk oket (igy az
+        //   eppen felszabaditas alatt levo szerviz meg tudja hivatkozni a fuggosegeit).
+        // - Ne Stack<IDisposable> legyen h tamogassuk azt a perverz esetet is ha egy szerviz csak az
+        //   IAsyncDisposable-t valositja meg.
+        //
+
+        private Stack<object>? FCapturedDisposables;
         #endregion
 
         #region Internal
@@ -44,8 +51,8 @@ namespace Solti.Utils.DI.Internals
             //          Megjegyzesek:
             //            - Megosztott bejegyzesek injector peldanyok kozt ertelmezettek ezert minden muveletnek exkluzivnak kell lennie.
             //            - A Monitor.IsEntered() vizsgalat azert kell h lassuk ha az aktualis szal korabban mar elkezdte feldolgozni a
-            //              szerviz igenylest (nem mellesleg a lock(...) rekurzio eseten nem blokkolodik, igy ez a megoldas jol kezeli
-            //              azt az esetet is ha megosztott bejegyzes hivatkozik sajat magara -> nem lesz S.O.E.).
+            //              szerviz igenylest. Ez a megoldas jol kezeli azt az esetet ha megosztott bejegyzes hivatkozik sajat magara
+            //              -> nem lesz S.O.E.
             //
 
             if (requested.IsShared && !Monitor.IsEntered(requested))
@@ -89,7 +96,7 @@ namespace Solti.Utils.DI.Internals
             object result;
 
             //
-            // Ha korabban mar tudtuk peldanyositani a szervizt vagy pedig nem biztonsagos modban vagyunk akkor nics
+            // Ha korabban mar tudtuk peldanyositani a szervizt vagy pedig nem biztonsagos modban vagyunk akkor nincs
             // korkoros referencia ellenorzes.
             //
 
@@ -116,10 +123,7 @@ namespace Solti.Utils.DI.Internals
             //
 
             if (result is IDisposable || result is IAsyncDisposable)
-            {
-                FProvidedDisposables ??= new List<object>(capacity: 5);
-                FProvidedDisposables.Add(result);
-            }
+                CaptureDisposable(result);
 
             return result;
         }
@@ -133,7 +137,12 @@ namespace Solti.Utils.DI.Internals
                 if (throwOnMissing)
                 {
                     ServiceId id = new(iface, name);
-                    ServiceNotFoundException ex = new(string.Format(Resources.Culture, Resources.SERVICE_NOT_FOUND, id.FriendlyName()));
+                    
+                    ServiceNotFoundException ex = new
+                    (
+                        string.Format(Resources.Culture, Resources.SERVICE_NOT_FOUND, id.FriendlyName())
+                    );
+
                     ex.Data["path"] = ServicePath.Format
                     (
                         FPath
@@ -193,7 +202,7 @@ namespace Solti.Utils.DI.Internals
             Ensure.Parameter.IsInterface(iface, nameof(iface));
             Ensure.Parameter.IsNotGenericDefinition(iface, nameof(iface));
 
-            using (FExclusiveBlock?.Enter())
+            using (FExclusiveBlock?.Enter()) // "using" nem szall el NULL-ra sem
             {
                 return GetInternalUnsafe(iface, name, throwOnMissing);
             }
@@ -211,35 +220,42 @@ namespace Solti.Utils.DI.Internals
         {
             if (disposeManaged)
             {
-                if (FProvidedDisposables is not null)
+                while (FCapturedDisposables?.Count > 0)
                 {
-                    //
-                    // Forditott iranyban szabaditsuk fel a szervizeket mint ahogy letrehoztuk oket (igy az eppen felszabaditas alatt levo szerviz
-                    // meg tudja hivatkozni a fuggosegeit).
-                    //
-
-                    for (int i = FProvidedDisposables.Count - 1; i >= 0; i--)
+                    switch (FCapturedDisposables.Pop())
                     {
-                        ((IDisposable) FProvidedDisposables[i]).Dispose();
+                        case IDisposable disposable:
+                            disposable.Dispose();
+                            break;
+
+                        //
+                        // Tamogassuk azt a pervezs esetet ha egy szerviz csak az IAsyncDisposable interface-t valositja meg.
+                        //
+
+                        case IAsyncDisposable asyncDisposable:
+                            asyncDisposable.DisposeAsync().AsTask().GetAwaiter().GetResult();
+                            break;
                     }
                 }
 
                 FExclusiveBlock?.Dispose();
             }
 
-            base.Dispose(disposeManaged);           
+            base.Dispose(disposeManaged);         
         }
 
         protected override async ValueTask AsyncDispose()
         {
-            if (FProvidedDisposables is not null)
+            while (FCapturedDisposables?.Count > 0)
             {
-                for (int i = FProvidedDisposables.Count - 1; i >= 0; i--)
+                switch (FCapturedDisposables.Pop())
                 {
-                    if (FProvidedDisposables[i] is IAsyncDisposable asyncDisposable)
+                    case IAsyncDisposable asyncDisposable:
                         await asyncDisposable.DisposeAsync();
-                    else if (FProvidedDisposables[i] is IDisposable disposable)
+                        break;
+                    case IDisposable disposable:
                         disposable.Dispose();
+                        break;
                 }
             }
 
@@ -252,7 +268,7 @@ namespace Solti.Utils.DI.Internals
         }
         #endregion
 
-        public Injector(ScopeFactory parent) : base(parent)
+        public Injector(ScopeFactory parent, ScopeKind kind) : base(parent)
         {
             if (Options.SafeMode)
                 //
@@ -260,9 +276,30 @@ namespace Solti.Utils.DI.Internals
                 //
 
                 FExclusiveBlock = new ExclusiveBlock(ExclusiveBlockFeatures.SupportsRecursion);
+
+            Kind = kind;
         }
 
         public new ScopeFactory Parent => (ScopeFactory) base.Parent!;
+
+        public ScopeKind Kind { get; }
+
+        public void CaptureDisposable(object obj)
+        {
+            if (Kind is ScopeKind.System)
+                //
+                // A rendszer scope-ok altal kozze tett szervizek egyszerre tobb scope-ban is hasznalva lehetnek (AbstractServiceEntry.IsShared)
+                // ezert azok felszabaditasat a szulo vegzi, letrehozasuk forditott sorrendjeben (igy az eppen felszabaditas alatt levo szerviz
+                // meg tudja hivatkozni a fuggosegeit).
+                //
+
+                Parent.CaptureDisposable(obj);
+            else
+            {
+                FCapturedDisposables ??= new Stack<object>(capacity: 5);
+                FCapturedDisposables.Push(obj);
+            }
+        }
 
         #region IInjector
         public object Get(Type iface, string? name) => GetInternal(iface, name, throwOnMissing: true)!;

@@ -15,9 +15,8 @@ namespace Solti.Utils.DI.Internals
 
         private readonly Func<IServiceRegistry, object> FSelector;
 
-        private ContextualServiceEntry(ContextualServiceEntry original, IServiceRegistry owner) : base(original.Interface, original.Name)
+        private ContextualServiceEntry(ContextualServiceEntry original, IServiceRegistry owner) : base(original.Interface, original.Name, null, Ensure.Parameter.IsNotNull(owner, nameof(owner)))
         {
-            Owner = Ensure.Parameter.IsNotNull(owner, nameof(owner));
             FSelector = original.FSelector;
             FInstance = FSelector(owner);
             State = ServiceEntryStates.Built;
@@ -31,8 +30,6 @@ namespace Solti.Utils.DI.Internals
         public override object CreateInstance(IInjector scope) => throw new InvalidOperationException();
 
         public override object GetSingleInstance() => FInstance ?? throw new InvalidOperationException();
-
-        public override IServiceRegistry? Owner { get; }
 
         public override AbstractServiceEntry CopyTo(IServiceRegistry owner) => new ContextualServiceEntry(this, Ensure.Parameter.IsNotNull(owner, nameof(owner)));
     }
