@@ -53,7 +53,7 @@ namespace Solti.Utils.DI.Internals
                     scope.Dispose();
                 }
 
-                // Debug.Assert(FScopes.Count == 0, "Scope block must be empty");
+                Debug.Assert(FScopes.Count == 0, "Scope block must be empty");
 
                 while (FCapturedDisposables.TryPop(out object obj))
                 {
@@ -84,7 +84,7 @@ namespace Solti.Utils.DI.Internals
                 await scope.DisposeAsync();
             }
 
-            // Debug.Assert(FScopes.Count == 0, "Scope block must be empty");
+            Debug.Assert(FScopes.Count == 0, "Scope block must be empty");
 
             while (FCapturedDisposables.TryPop(out object obj))
             {
@@ -136,6 +136,8 @@ namespace Solti.Utils.DI.Internals
         }
 
         public void CaptureDisposable(object obj) => FCapturedDisposables.Push(obj);
+
+        public IReadOnlyCollection<object> CapturedDisposables => FCapturedDisposables;
 
         public ScopeOptions ScopeOptions { get; }
 

@@ -474,5 +474,72 @@ namespace Solti.Utils.DI.Injector.Tests
                 Assert.DoesNotThrow(() => injector.Get<IDisposable>());
             }
         }
+
+        [Test]
+        public void Injector_Get_ShouldCaptureTransientDisposables()
+        {
+            var mockDisposable = new Mock<IInterface_1_Disaposable>(MockBehavior.Strict);
+            mockDisposable.Setup(d => d.Dispose());
+
+            Root = ScopeFactory.Create(svcs => svcs.Factory<IInterface_1_Disaposable>(i => mockDisposable.Object, Lifetime.Transient));
+
+            using (IInjector injector = Root.CreateScope())
+            {
+                injector.Get<IInterface_1_Disaposable>();
+                injector.Get<IInterface_1_Disaposable>();
+
+                var captureDisposable = (ICaptureDisposable) injector;
+                Assert.That(captureDisposable.CapturedDisposables.Count, Is.EqualTo(2));
+            }
+
+            mockDisposable.Verify(d => d.Dispose(), Times.Exactly(2));
+        }
+
+        [Test]
+        public void Injector_Get_ShouldCaptureScopedDisposables()
+        {
+            var mockDisposable = new Mock<IInterface_1_Disaposable>(MockBehavior.Strict);
+            mockDisposable.Setup(d => d.Dispose());
+
+            Root = ScopeFactory.Create(svcs => svcs.Factory<IInterface_1_Disaposable>(i => mockDisposable.Object, Lifetime.Scoped));
+
+            using (IInjector injector = Root.CreateScope())
+            {
+                injector.Get<IInterface_1_Disaposable>();
+                injector.Get<IInterface_1_Disaposable>();
+
+                var captureDisposable = (ICaptureDisposable) injector;
+                Assert.That(captureDisposable.CapturedDisposables.Count, Is.EqualTo(1));
+            }
+
+            mockDisposable.Verify(d => d.Dispose(), Times.Once);
+        }
+
+        [Test]
+        public void Injector_Get_ShouldCaptureSingletonDisposablesInTheRoot()
+        {
+            var mockDisposable = new Mock<IInterface_1_Disaposable>(MockBehavior.Strict);
+            mockDisposable.Setup(d => d.Dispose());
+
+            using (IScopeFactory root = ScopeFactory.Create(svcs => svcs.Factory<IInterface_1_Disaposable>(i => mockDisposable.Object, Lifetime.Singleton)))
+            {
+                using (IInjector injector = root.CreateScope())
+                {
+                    injector.Get<IInterface_1_Disaposable>();
+                    injector.Get<IInterface_1_Disaposable>();
+                }
+
+                using (IInjector injector = root.CreateScope())
+                {
+                    injector.Get<IInterface_1_Disaposable>();
+                    injector.Get<IInterface_1_Disaposable>();
+                }
+
+                var captureDisposable = (ICaptureDisposable) root;
+                Assert.That(captureDisposable.CapturedDisposables.Count, Is.EqualTo(1));
+            }
+
+            mockDisposable.Verify(d => d.Dispose(), Times.Once);
+        }
     }
 }

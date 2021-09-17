@@ -284,6 +284,9 @@ namespace Solti.Utils.DI.Internals
 
         public ScopeKind Kind { get; }
 
+        #region ICaptureDisposable
+        public IReadOnlyCollection<object> CapturedDisposables => ((IReadOnlyCollection<object>?) FCapturedDisposables) ?? Array.Empty<object>();
+
         public void CaptureDisposable(object obj)
         {
             if (Kind is ScopeKind.System)
@@ -300,6 +303,7 @@ namespace Solti.Utils.DI.Internals
                 FCapturedDisposables.Push(obj);
             }
         }
+        #endregion
 
         #region IInjector
         public object Get(Type iface, string? name) => GetInternal(iface, name, throwOnMissing: true)!;
