@@ -11,7 +11,7 @@ namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
 
-    internal class SingletonServiceEntry : ProducibleServiceEntry
+    internal record SingletonServiceEntry : ProducibleServiceEntry
     {
         private object? FInstance;
 

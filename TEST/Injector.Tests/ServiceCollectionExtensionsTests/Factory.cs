@@ -4,8 +4,8 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Linq;
 
-using Moq;
 using NUnit.Framework;
 
 namespace Solti.Utils.DI.ServiceCollection.Tests
@@ -32,7 +32,7 @@ namespace Solti.Utils.DI.ServiceCollection.Tests
 
             Collection.Factory(typeof(IInterface_3<>), factory, lifetime);
 
-            Assert.AreEqual(new TransientServiceEntry(typeof(IInterface_3<int>), null, factory, null), ((ISupportsSpecialization) Collection.LastEntry).Specialize(null, typeof(int)));
+            Assert.AreEqual(lifetime.CreateFrom(typeof(IInterface_3<int>), null, factory).Last(), ((ISupportsSpecialization) Collection.LastEntry).Specialize(null, typeof(int)));
         }
 
         [TestCase(null)]

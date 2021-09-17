@@ -9,7 +9,7 @@ namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
 
-    internal class InstanceServiceEntry : AbstractServiceEntry
+    internal record InstanceServiceEntry : AbstractServiceEntry
     {
         private readonly object FInstance;
 

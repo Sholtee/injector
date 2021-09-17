@@ -9,7 +9,7 @@ namespace Solti.Utils.DI
 {
     using Interfaces;
 
-    public class DummyServiceEntry : AbstractServiceEntry
+    public record DummyServiceEntry : AbstractServiceEntry
     {
         public DummyServiceEntry(Type iface, string name) : base(iface, name) { }
 
