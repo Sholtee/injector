@@ -15,6 +15,7 @@ namespace Solti.Utils.DI.Interfaces
         /// <summary>
         /// Instructs the <see cref="IInjector"/> to throw if a service being requested has a dependency that should live shorter than the service should (e.g.: a <see cref="Lifetime.Singleton"/> service cannot have <see cref="Lifetime.Transient"/> dependency).
         /// </summary>
+        /// <remarks>This option is available only when <see cref="SafeMode"/> is true.</remarks>
         public bool StrictDI { get; init; }
 
         /// <summary>

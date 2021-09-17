@@ -13,9 +13,9 @@ namespace Solti.Utils.DI.Internals
     using Primitives.Patterns;
     using Primitives.Threading;
 
-    internal sealed class PoolService<TInterface> : ObjectPool<IServiceReference>, IPool<TInterface> where TInterface: class
+    internal sealed class PoolService<TInterface> : ObjectPool<object>, IPool<TInterface> where TInterface: class
     {
-        private sealed class ServiceReferenceLifetimeManager: Disposable, ILifetimeManager<IServiceReference>
+        private sealed class ServiceReferenceLifetimeManager: Disposable, ILifetimeManager<object>
         {
             //
             // Mivel az osszes pool elemnek sajat scope-ja van ezert h az esetleges korkoros referenciat
@@ -44,21 +44,20 @@ namespace Solti.Utils.DI.Internals
                 Name = name;
             }
 
-            public IServiceReference Create()
+            public object Create()
             {
-                FCurrentScope.Value ??= ScopeFactory.CreateScopeSafe();
+                FCurrentScope.Value ??= ScopeFactory.CreateSystemScope();
                 try
                 {
                     //
                     // Ez itt trukkos mert:
                     //   1) "injector" by design nem szalbiztos viszont ez a metodus lehet hivva paralell
                     //   2) Minden egyes legyartott elemnek sajat scope kell (az egyes elemek kulon szalakban lehetnek hasznalva)
-                    //   3) Letrehozaskor a mar meglevo grafot boviteni kell 
                     //
 
                     FCurrentScope.Value.Meta(PooledLifetime.POOL_SCOPE, true);
 
-                    return FCurrentScope.Value.GetReference(typeof(TInterface), Name);
+                    return FCurrentScope.Value.Get(typeof(TInterface), Name);
                 }
                 finally
                 {
@@ -66,34 +65,27 @@ namespace Solti.Utils.DI.Internals
                 }
             }
 
-            public void Dispose(IServiceReference item)
-            {
-            }
+            public void Dispose(object item) {} //scope fogja felszabaditani
 
-            public void CheckOut(IServiceReference item)
-            {
-                item.AddRef();
-            }
+            public void CheckOut(object item) {}
 
-            public void CheckIn(IServiceReference item)
+            public void CheckIn(object item)
             {
-                if (item.Value is IResettable resettable && resettable.Dirty)
+                if (item is IResettable resettable && resettable.Dirty)
                     resettable.Reset();
-
-                item.Release();
             }
 
-            public void RecursionDetected()
-            {
-            }
+            public void RecursionDetected() {}
         }
 
         private sealed class Wrapped : Disposable, IWrapped<object>
         {
-            public Wrapped(ObjectPool<IServiceReference> owner)
+            private readonly object FValue;
+
+            public Wrapped(ObjectPool<object> owner)
             {
                 Owner = owner;
-                Reference = owner.Get(CheckoutPolicy.Block)!;
+                FValue = owner.Get(CheckoutPolicy.Block)!;
             }
 
             protected override void Dispose(bool disposeManaged)
@@ -101,26 +93,24 @@ namespace Solti.Utils.DI.Internals
                 CheckNotDisposed();
 
                 if (disposeManaged)
-                    Owner.Return(Reference);
+                    Owner.Return(FValue);
 
                 base.Dispose(disposeManaged);
             }
 
-            public ObjectPool<IServiceReference> Owner { get; }
-
-            public IServiceReference Reference { get; }
+            public ObjectPool<object> Owner { get; }
 
             public object Value
             {
-                get
+                get 
                 {
                     CheckNotDisposed();
-                    return Reference.Value!;
+                    return FValue;
                 }
             }
         }
 
-        [SuppressMessage("Reliability", "CA2000:Dispose objects before losing scope", Justification = "LifetimeManager is released in the Dispose(bool) method")]
+        [SuppressMessage("Reliability", "CA2000:Dispose objects before losing scope")]
         public PoolService(IScopeFactory scopeFactory, int capacity, string? name) : base(capacity, new ServiceReferenceLifetimeManager(scopeFactory, name)) {}
 
         protected override void Dispose(bool disposeManaged)

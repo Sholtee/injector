@@ -99,7 +99,7 @@ namespace Solti.Utils.DI.Internals.Tests
             TransientServiceEntry entry = new(serviceType, name, (_, _) => null, null);
             Registry = (ServiceRegistryBase) Activator.CreateInstance(registryType, new object[] { new HashSet<AbstractServiceEntry>(ServiceIdComparer.Instance) { entry }, resolver, CancellationToken.None });
 
-            ServiceRegistryBase child = (ServiceRegistryBase) Activator.CreateInstance(registryType, new object[] { Registry, true });
+            ServiceRegistryBase child = (ServiceRegistryBase) Activator.CreateInstance(registryType, new object[] { Registry });
 
             entry = (TransientServiceEntry) Registry.GetEntry(serviceType, name);
 
@@ -113,7 +113,7 @@ namespace Solti.Utils.DI.Internals.Tests
             TransientServiceEntry entry = new(typeof(IList<>), name, typeof(MyList<>), null);
             Registry = (ServiceRegistryBase) Activator.CreateInstance(registryType, new object[] { new HashSet<AbstractServiceEntry>(ServiceIdComparer.Instance) { entry }, resolver, CancellationToken.None });
 
-            ServiceRegistryBase child = (ServiceRegistryBase) Activator.CreateInstance(registryType, new object[] { Registry, true });
+            ServiceRegistryBase child = (ServiceRegistryBase) Activator.CreateInstance(registryType, new object[] { Registry });
 
             Assert.AreNotSame(Registry.GetEntry<IList<int>>(name), child.GetEntry<IList<int>>(name));
         }
@@ -124,7 +124,7 @@ namespace Solti.Utils.DI.Internals.Tests
             SingletonServiceEntry entry = new(serviceType, name, (_, _) => null, null);
             Registry = (ServiceRegistryBase) Activator.CreateInstance(registryType, new object[] { new HashSet<AbstractServiceEntry>(ServiceIdComparer.Instance) { entry }, resolver, CancellationToken.None });
 
-            ServiceRegistryBase child = (ServiceRegistryBase) Activator.CreateInstance(registryType, new object[] { Registry, true });
+            ServiceRegistryBase child = (ServiceRegistryBase) Activator.CreateInstance(registryType, new object[] { Registry });
 
             entry = (SingletonServiceEntry) Registry.GetEntry(serviceType, name);
 
@@ -138,7 +138,7 @@ namespace Solti.Utils.DI.Internals.Tests
             SingletonServiceEntry entry = new(typeof(IList<>), name, typeof(MyList<>), null);
             Registry = (ServiceRegistryBase) Activator.CreateInstance(registryType, new object[] { new HashSet<AbstractServiceEntry>(ServiceIdComparer.Instance) { entry }, resolver, CancellationToken.None });
 
-            ServiceRegistryBase child = (ServiceRegistryBase) Activator.CreateInstance(registryType, new object[] { Registry, true });
+            ServiceRegistryBase child = (ServiceRegistryBase) Activator.CreateInstance(registryType, new object[] { Registry });
             Assert.AreSame(Registry.GetEntry<IList<int>>(name), child.GetEntry<IList<int>>(name));
         }
     }

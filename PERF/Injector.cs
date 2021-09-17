@@ -155,31 +155,6 @@ namespace Solti.Utils.DI.Perf
 
     [MemoryDiagnoser]
     [SimpleJob(RunStrategy.Throughput, invocationCount: 10000)]
-    public class InjectorGetReference: InjectorTestsBase
-    {
-        private Injector Injector { get; set; }
-
-        public AbstractServiceEntry Entry { get; set; }
-
-        [ParamsSource(nameof(Lifetimes))]
-        public Lifetime Lifetime { get; set; }
-
-        [GlobalSetup]
-        public void Setup()
-        {
-            Injector = (Injector) Setup(container => container.Service<IDependency, Dependency>(Lifetime)).CreateScope();
-            Entry = Injector.GetEntry<IDependency>();
-        }
-
-        [Benchmark]
-        public IServiceReference GetReferenceByEntry() => Injector.GetReferenceInternal(Entry);
-
-        [Benchmark]
-        public IServiceReference GetReferenceById() => Injector.GetReferenceInternal(typeof(IDependency), null, true);
-    }
-
-    [MemoryDiagnoser]
-    [SimpleJob(RunStrategy.Throughput, invocationCount: 10000)]
     public class InjectorInstantiate : InjectorTestsBase 
     {
         public IInjector Injector { get; set; }

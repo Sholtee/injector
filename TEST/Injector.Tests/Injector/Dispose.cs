@@ -19,7 +19,7 @@ namespace Solti.Utils.DI.Injector.Tests
     public partial class InjectorTests
     {
         [TestCaseSource(nameof(ScopeControlledLifetimes))]
-        public void Injector_Dispose_ShouldFreeOwnedEntries(Lifetime lifetime)
+        public void Injector_Dispose_ShouldFreeServices(Lifetime lifetime)
         {
             var mockDisposable = new Mock<IInterface_1_Disaposable>(MockBehavior.Strict);
             mockDisposable.Setup(s => s.Dispose());
@@ -35,7 +35,7 @@ namespace Solti.Utils.DI.Injector.Tests
         }
 
         [TestCaseSource(nameof(ScopeControlledLifetimes))]
-        public async Task Injector_DisposeAsync_ShouldFreeOwnedEntriesAsynchronously(Lifetime lifetime)
+        public async Task Injector_DisposeAsync_ShouldFreeServicesAsynchronously(Lifetime lifetime)
         {
             var mockDisposable = new Mock<IAsyncDisposable>(MockBehavior.Strict);
             mockDisposable
@@ -53,7 +53,7 @@ namespace Solti.Utils.DI.Injector.Tests
         }
 
         [TestCaseSource(nameof(ScopeControlledLifetimes))]
-        public void Injector_Dispose_ShouldFreeUsedLazyEntries(Lifetime lifetime) 
+        public void Injector_Dispose_ShouldFreeUsedLazyServices(Lifetime lifetime) 
         {
             var disposable = new Disposable();
 
@@ -91,6 +91,43 @@ namespace Solti.Utils.DI.Injector.Tests
             }
 
             Assert.That(svc.Disposed);
+        }
+
+        private class DisposableDependant : Disposable, IInterface_7_Disposable<IDisposableEx>
+        {
+            public DisposableDependant(IDisposableEx dependency) => Interface = dependency;
+
+            public IDisposableEx Interface { get; }
+
+            protected override void Dispose(bool disposeManaged)
+            {
+                if (disposeManaged)
+                {
+                    Assert.That(Interface.Disposed, Is.False);
+                }
+
+                base.Dispose(disposeManaged);
+            }
+        }
+
+        [TestCaseSource(nameof(ScopeControlledLifetimes))]
+        public void Injector_Dispose_ShouldFreeServicesInAReverseOrder(Lifetime lifetime)
+        {
+            Root = ScopeFactory.Create(svcs => svcs
+                .Service<IDisposableEx, Disposable>(lifetime)
+                .Service<IInterface_7_Disposable<IDisposableEx>, DisposableDependant>(lifetime));
+
+            IDisposableEx dependency;
+            IInterface_7_Disposable<IDisposableEx> dependant;
+
+            using (IInjector injector = Root.CreateScope())
+            {
+                dependant = injector.Get<IInterface_7_Disposable<IDisposableEx>>();
+                dependency = dependant.Interface;
+            }
+
+            Assert.That(dependency.Disposed);
+            Assert.That(dependant.Disposed);
         }
     }
 }

@@ -12,6 +12,7 @@ namespace Solti.Utils.DI.Injector.Tests
 {
     using Interfaces;
     using Internals;
+    using Primitives.Patterns;
 
     [TestFixture]
     public partial class InjectorTests
@@ -147,6 +148,11 @@ namespace Solti.Utils.DI.Injector.Tests
         }
 
         public interface IInterface_7<TInterface> where TInterface : class
+        {
+            TInterface Interface { get; }
+        }
+
+        public interface IInterface_7_Disposable<TInterface> : IDisposableEx where TInterface : class
         {
             TInterface Interface { get; }
         }

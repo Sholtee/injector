@@ -13,7 +13,7 @@ namespace Solti.Utils.DI.Interfaces
     /// <summary>
     /// Defines the layout of an abstract service registry.
     /// </summary>
-    public interface IServiceRegistry: IDisposableEx, INotifyOnDispose
+    public interface IServiceRegistry: IDisposableEx
     {
         /// <summary>
         /// Returns the <see cref="AbstractServiceEntry"/> associated with given interface and name.
@@ -39,11 +39,6 @@ namespace Solti.Utils.DI.Interfaces
         /// <summary>
         /// The parent registry
         /// </summary>
-        IServiceRegistry? Parent { get; }
-
-        /// <summary>
-        /// The derived registries.
-        /// </summary>
-        IReadOnlyCollection<IServiceRegistry> DerivedRegistries { get; }
+        IServiceRegistry? Parent { get; } // TODO: torolni / atmozgatni
     }
 }

@@ -12,11 +12,9 @@ namespace Solti.Utils.DI.Internals
     using Interfaces;
     using Properties;
 
-    internal abstract class ProducibleServiceEntry : AbstractServiceEntry, ISupportsSpecialization, ISupportsProxying
+    internal abstract record ProducibleServiceEntry : AbstractServiceEntry, ISupportsSpecialization, ISupportsProxying
     {
         #region Protected
-        protected abstract void SaveReference(IServiceReference serviceReference);
-
         protected ProducibleServiceEntry(ProducibleServiceEntry entry, IServiceRegistry? owner) : base(entry.Interface, entry.Name, entry.Implementation, owner)
         {
             Factory = entry.Factory;
@@ -85,30 +83,12 @@ namespace Solti.Utils.DI.Internals
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        protected void EnsureAppropriateReference(IServiceReference reference)
+        protected void EnsureProducible()
         {
-            Ensure.Parameter.IsNotNull(reference, nameof(reference));
-            Ensure.AreEqual(reference.RelatedServiceEntry, this, Resources.NOT_BELONGING_REFERENCE);
-            Ensure.IsNull(reference.Value, $"{nameof(reference)}.{nameof(reference.Value)}");
-        }
-        #endregion
-
-        public override bool SetInstance(IServiceReference serviceReference)
-        {
-            //
-            // Ha nincs factory akkor amugy sem lehet peldanyositani a szervizt tok mind1 mi az.
-            //
-
             if (Factory is null)
                 throw new InvalidOperationException(Resources.NOT_PRODUCIBLE);
-
-            serviceReference.Value = Factory(serviceReference.Scope!, Interface);
-            SaveReference(serviceReference);
-
-            State |= ServiceEntryStates.Instantiated;
-
-            return true;
         }
+        #endregion
 
         public IReadOnlyDictionary<string, object?>? ExplicitArgs { get; }
 

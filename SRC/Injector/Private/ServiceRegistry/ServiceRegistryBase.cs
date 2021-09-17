@@ -5,7 +5,6 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
 
@@ -49,31 +48,21 @@ namespace Solti.Utils.DI.Internals
             RegisteredEntries = entries as IReadOnlyCollection<AbstractServiceEntry> ?? entries.ToArray(); // HashSet megvalositja az IReadOnlyCollection-t
         }
 
-        [SuppressMessage("Usage", "CA2214:Do not call overridable methods in constructors")]
-        protected ServiceRegistryBase(ServiceRegistryBase parent, bool register) : base()
+        protected ServiceRegistryBase(ServiceRegistryBase parent) : base()
         {
             Ensure.Parameter.IsNotNull(parent, nameof(parent));
 
             RegisteredEntries = parent.RegisteredEntries;
             Parent = parent;
-
-            if (register)
-                parent.AddChild(this);
         }
-
-        protected abstract void AddChild(IServiceRegistry registry);
 
         protected virtual IReadOnlyCollection<AbstractServiceEntry> BuiltInServices { get; } = Array.Empty<AbstractServiceEntry>();
 
-        public IServiceRegistry? Parent { get; }
+        public IServiceRegistry? Parent { get; } // TODO: torolni / atmozgatni
 
         public AbstractServiceEntry? GetEntry(Type iface, string? name) => BuiltResolver.Invoke(this, Ensure.Parameter.IsNotNull(iface, nameof(iface)), name);
 
         public IReadOnlyCollection<AbstractServiceEntry> RegisteredEntries { get; }
-
-        public abstract IReadOnlyCollection<IServiceRegistry> DerivedRegistries { get; }
-
-        public abstract IReadOnlyCollection<AbstractServiceEntry> UsedEntries { get; }
 
         public abstract AbstractServiceEntry ResolveRegularEntry(int slot, AbstractServiceEntry originalEntry);
 

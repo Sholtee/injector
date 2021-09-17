@@ -38,7 +38,7 @@ namespace Solti.Utils.DI.Perf
 
             void Extend(int i)
             {
-                Path.Push(new ServiceReference(new DummyServiceEntry(typeof(IInjector), i.ToString()), DummyInjector));
+                Path.Push(new DummyServiceEntry(typeof(IInjector), i.ToString()));
                 try
                 {
                     if (WithCircularityCheck)

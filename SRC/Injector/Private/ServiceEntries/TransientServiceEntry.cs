@@ -11,15 +11,13 @@ namespace Solti.Utils.DI.Internals
     using Interfaces;
     using Properties;
 
-    internal class TransientServiceEntry : ProducibleServiceEntry
+    internal record TransientServiceEntry : ProducibleServiceEntry
     {
-        private readonly List<IServiceReference> FInstances = new(capacity: 10);
+        private int FInstanceCount;
 
         private TransientServiceEntry(TransientServiceEntry entry, IServiceRegistry owner) : base(entry, owner)
         {
         }
-
-        protected override void SaveReference(IServiceReference serviceReference) => FInstances.Add(serviceReference);
 
         public TransientServiceEntry(Type @interface, string? name, Func<IInjector, Type, object> factory, IServiceRegistry? owner) : base(@interface, name, factory, owner)
         {
@@ -33,28 +31,33 @@ namespace Solti.Utils.DI.Internals
         {
         }
 
-        public override bool SetInstance(IServiceReference reference)
-        {
-            CheckNotDisposed();
-            EnsureAppropriateReference(reference);
+        public override object GetSingleInstance() => throw new NotSupportedException();
 
-            if (Instances.Count >= reference.Scope!.Options.MaxSpawnedTransientServices)
+        public override object CreateInstance(IInjector scope)
+        {
+            Ensure.Parameter.IsNotNull(scope, nameof(scope));
+            EnsureProducible();
+
+            if (FInstanceCount == scope.Options.MaxSpawnedTransientServices)
                 //
                 // Ha ide jutunk az azt jelenti h jo esellyel a tartalmazo injector ujrahasznositasra kerult
                 // (ahogy az a teljesitmeny teszteknel meg is tortent).
                 //
 
-                throw new InvalidOperationException(string.Format(Resources.Culture, Resources.INJECTOR_SHOULD_BE_RELEASED, reference.Scope.Options.MaxSpawnedTransientServices));
+                throw new InvalidOperationException(string.Format(Resources.Culture, Resources.INJECTOR_SHOULD_BE_RELEASED, scope.Options.MaxSpawnedTransientServices));
 
-            return base.SetInstance(reference);
+            object instance = Factory!(scope, Interface);
+
+            State |= ServiceEntryStates.Instantiated;
+            FInstanceCount++;
+
+            return instance;
         }
 
         public override AbstractServiceEntry CopyTo(IServiceRegistry owner) => new TransientServiceEntry(this, Ensure.Parameter.IsNotNull(owner, nameof(owner)));
 
         public override AbstractServiceEntry Specialize(IServiceRegistry? owner, params Type[] genericArguments)
         {
-            CheckNotDisposed();
-
             Ensure.Parameter.IsNotNull(genericArguments, nameof(genericArguments));
 
             return this switch
@@ -86,7 +89,5 @@ namespace Solti.Utils.DI.Internals
         }
 
         public override Lifetime Lifetime { get; } = Lifetime.Transient;
-
-        public override IReadOnlyList<IServiceReference> Instances => FInstances;
     }
 }

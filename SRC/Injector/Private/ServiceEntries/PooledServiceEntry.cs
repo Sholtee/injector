@@ -5,25 +5,19 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 
 namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
+    using Primitives.Patterns;
 
     //
     // A PooledServiceEntry ket modon is lehet peldanyositva: Egy kulonallo poolban vagy a felhasznalo oldalan.
     //
 
-    internal class PooledServiceEntry : ProducibleServiceEntry
+    internal record PooledServiceEntry : ProducibleServiceEntry
     {
-        private readonly IServiceReference?[] FInstances = new IServiceReference?[1]; // max egy eleme lehet
-
-        protected override void SaveReference(IServiceReference serviceReference)
-        {
-            Debug.Assert(FInstances[0] is null, "Instance has already been set.");
-            FInstances[0] = serviceReference;
-        }
+        private object? FInstance;
 
         protected PooledServiceEntry(PooledServiceEntry entry, IServiceRegistry? owner) : base(entry, owner)
         {
@@ -41,12 +35,13 @@ namespace Solti.Utils.DI.Internals
         {
         }
 
-        public override bool SetInstance(IServiceReference reference)
+        public override object CreateInstance(IInjector scope)
         {
-            CheckNotDisposed();
-            EnsureAppropriateReference(reference);
+            Ensure.Parameter.IsNotNull(scope, nameof(scope));
+            EnsureProducible();
 
-            IInjector relatedInjector = reference.Scope!;
+            if (FInstance is not null)
+                throw new InvalidOperationException(); // TODO: uzenet
 
             //
             // Ha mar le lett gyartva akkor nincs dolgunk, jelezzuk a hivonak h ovlassa ki a
@@ -61,10 +56,8 @@ namespace Solti.Utils.DI.Internals
             // Pool-ban az eredeti factory-t hivjuk
             //
 
-            if (relatedInjector.Meta(PooledLifetime.POOL_SCOPE) is true)
-            {
-                base.SetInstance(reference);
-            }
+            if (scope.Meta(PooledLifetime.POOL_SCOPE) is true)
+                FInstance = Factory!(scope, Interface);
 
             //
             // Fogyasztoban megszolitjuk a bejegyzeshez tartozo PoolService-t
@@ -77,22 +70,26 @@ namespace Solti.Utils.DI.Internals
                 // fog megtortenni: biztonsagosan visszahelyezhetjuk mindig az elkert szervizt a pool-ba
                 //
 
-                IPool relatedPool = (IPool) relatedInjector.Get(typeof(IPool<>).MakeGenericType(Interface), PooledLifetime.GetPoolName(Interface, Name));
+                IPool relatedPool = (IPool) scope.Get
+                (
+                    typeof(IPool<>).MakeGenericType(Interface),
+                    PooledLifetime.GetPoolName(Interface, Name)
+                );
 
-                reference.Value = relatedPool.Get();
-                SaveReference(reference);
+                FInstance = relatedPool.Get();
             }
 
             State |= ServiceEntryStates.Built;
 
-            return true;
+            return FInstance;
         }
 
-        public sealed override AbstractServiceEntry CopyTo(IServiceRegistry registry) => new PooledServiceEntry(this, Ensure.Parameter.IsNotNull(registry, nameof(registry)));
+        public override object GetSingleInstance() => FInstance ?? throw new InvalidOperationException(); // TODO: uzenet
+
+        public override AbstractServiceEntry CopyTo(IServiceRegistry registry) => new PooledServiceEntry(this, Ensure.Parameter.IsNotNull(registry, nameof(registry)));
 
         public override AbstractServiceEntry Specialize(IServiceRegistry? owner, params Type[] genericArguments)
         {
-            CheckNotDisposed();
             Ensure.Parameter.IsNotNull(genericArguments, nameof(genericArguments));
 
             return this switch
@@ -125,6 +122,8 @@ namespace Solti.Utils.DI.Internals
 
         public override Lifetime Lifetime { get; } = Lifetime.Pooled;
 
-        public override IReadOnlyList<IServiceReference> Instances => (FInstances[0] is not null ? FInstances : Array.Empty<IServiceReference>())!;
+        public override Func<object, object>? ServiceAccess { get; } = instance => instance is IWrapped<object> wrapped
+            ? wrapped.Value
+            : instance;
     }
 }

@@ -16,7 +16,7 @@ namespace Solti.Utils.DI.Internals
     {
         public ScopeFactorySupportsServiceProvider(ISet<AbstractServiceEntry> entries, ScopeOptions options, CancellationToken cancellation = default) : base(entries, options, cancellation) { }
 
-        public override Injector CreateScope(bool register) => new InjectorSupportsServiceProvider(this, register);
+        protected override Injector CreateScopeInternal(ScopeKind kind) => new InjectorSupportsServiceProvider(this, kind);
 
         protected new static IReadOnlyCollection<AbstractServiceEntry> DefaultBuiltInServices { get; } = ScopeFactory
             .DefaultBuiltInServices

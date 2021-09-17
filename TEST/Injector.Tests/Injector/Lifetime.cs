@@ -433,19 +433,15 @@ namespace Solti.Utils.DI.Injector.Tests
         }
 
         [Test]
-        public void Lifetime_Instance_ShouldBeResolvedFromTheRootScope() 
+        public void Lifetime_Instance_ShouldNotHaveOwner() 
         {
-            Root = ScopeFactory.Create(svcs => svcs.Instance<IDisposable>(new Disposable(), true));
+            Root = ScopeFactory.Create(svcs => svcs.Instance<IDisposable>(new Disposable()));
 
             using (IInjector injector = Root.CreateScope())
             {
-                Assert.That(injector.Get<IServiceRegistry>().GetEntry<IDisposable>().Owner, Is.SameAs(Root));
+                Assert.That(injector.Get<IServiceRegistry>().GetEntry<IDisposable>().Owner, Is.Null);
             }
         }
-
-        [Test]
-        public void Lifetime_Instance_ShouldBeTypeChecked() =>
-            Assert.Throws<InvalidCastException>(() => ScopeFactory.Create(svcs => svcs.Instance(typeof(IDisposable), new object())), Resources.INVALID_INSTANCE);
 
         [Test]
         public void Lifetime_PermissiveDI_LegalCases(

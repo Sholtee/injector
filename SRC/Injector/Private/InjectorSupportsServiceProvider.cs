@@ -11,7 +11,7 @@ namespace Solti.Utils.DI.Internals
 
     internal class InjectorSupportsServiceProvider : Injector, IServiceProvider, IInjector
     {
-        public InjectorSupportsServiceProvider(ScopeFactory parent, bool register) : base(parent, register) { }
+        public InjectorSupportsServiceProvider(ScopeFactory parent, ScopeKind kind) : base(parent, kind) { }
 
         //
         // IInjector.Get() elvileg sose adhatna vissza NULL-t viszont h biztositsuk 
