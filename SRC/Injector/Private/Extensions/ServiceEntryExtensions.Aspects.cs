@@ -11,24 +11,11 @@ using System.Reflection;
 namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
-    using Properties;
+    using Interfaces.Properties;
     using Proxy;
 
     internal static partial class ServiceEntryExtensions
     {
-        private static void ApplyProxy(this AbstractServiceEntry entry, Func<IInjector, Type, object, object> decorator) 
-        {
-            ISupportsProxying setter = (ISupportsProxying) entry;
-
-            //
-            // Bovitjuk a hivasi lancot a decorator-al.
-            //
-
-            Func<IInjector, Type, object> oldFactory = setter.Factory!;
-
-            setter.Factory = (injector, type) => decorator(injector, type, oldFactory(injector, type));
-        }
-
         private static Func<IInjector, Type, object, object> BuildDelegate(Type iface, Type interceptor)
         {
             interceptor = ProxyFactory.GenerateProxyType(iface, interceptor);
@@ -87,8 +74,8 @@ namespace Solti.Utils.DI.Internals
             // (megjegyzes: nyilt generikusoknak, peldany bejegyzeseknek biztosan nincs Factory-ja).
             //
 
-            if (entry is not ISupportsProxying || entry.Factory == null)
-                throw new InvalidOperationException(Resources.CANT_PROXY);
+            if (entry is not ISupportsProxying || entry.Factory is null)
+                throw new InvalidOperationException(Resources.PROXYING_NOT_SUPPORTED);
 
             Func<IInjector, Type, object, object>[] decorators = GenerateProxyDelegates
             (
@@ -104,8 +91,8 @@ namespace Solti.Utils.DI.Internals
 
         public static void ApplyInterceptor(this AbstractServiceEntry entry, Type interceptor)
         {
-            if (entry is not ISupportsProxying || entry.Factory == null)
-                throw new InvalidOperationException(Resources.CANT_PROXY);
+            if (entry is not ISupportsProxying || entry.Factory is null)
+                throw new InvalidOperationException(Resources.PROXYING_NOT_SUPPORTED);
 
             Func<IInjector, Type, object, object> realDelegate = BuildDelegate
             (

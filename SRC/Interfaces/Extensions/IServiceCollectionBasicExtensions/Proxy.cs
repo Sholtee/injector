@@ -7,8 +7,6 @@ using System;
 
 namespace Solti.Utils.DI.Interfaces
 {
-    using Properties;
- 
     public static partial class IServiceCollectionBasicExtensions
     {
         /// <summary>
@@ -23,23 +21,7 @@ namespace Solti.Utils.DI.Interfaces
             if (self is null)
                 throw new ArgumentNullException(nameof(self));
 
-            if (decorator is null)
-                throw new ArgumentNullException(nameof(decorator));
-
-            if (self.LastEntry is not ISupportsProxying setter || setter.Factory is null)
-                //
-                // Generikus szerviz, Abstract(), Instance() eseten a metodus nem ertelmezett.
-                //
-
-                throw new InvalidOperationException(Resources.PROXYING_NOT_SUPPORTED);
-
-            //
-            // Bovitjuk a hivasi lancot a decorator-al.
-            //
-
-            Func<IInjector, Type, object> oldFactory = setter.Factory;
-
-            setter.Factory = (injector, type) => decorator(injector, type, oldFactory(injector, type));
+            self.LastEntry.ApplyProxy(decorator);
 
             return self;
         }

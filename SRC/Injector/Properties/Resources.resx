@@ -120,9 +120,6 @@
   <data name="PARAMETER_IS_GENERIC" xml:space="preserve">
     <value>Parameter should not be generic.</value>
   </data>
-  <data name="CANT_PROXY" xml:space="preserve">
-    <value>Creating proxy is not allowed here.</value>
-  </data>
   <data name="CIRCULAR_REFERENCE" xml:space="preserve">
     <value>Circular reference: {0}.</value>
   </data>

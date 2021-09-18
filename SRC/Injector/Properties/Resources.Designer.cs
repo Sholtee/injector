@@ -70,15 +70,6 @@ namespace Solti.Utils.DI.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Creating proxy is not allowed here..
-        /// </summary>
-        internal static string CANT_PROXY {
-            get {
-                return ResourceManager.GetString("CANT_PROXY", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Circular reference: {0}..
         /// </summary>
         internal static string CIRCULAR_REFERENCE {
