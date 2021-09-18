@@ -61,15 +61,6 @@ namespace Solti.Utils.DI.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &quot;{0}&quot; is already registered..
-        /// </summary>
-        internal static string ALREADY_REGISTERED {
-            get {
-                return ResourceManager.GetString("ALREADY_REGISTERED", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Built in services cannot be overridden..
         /// </summary>
         internal static string BUILT_IN_SERVICE_OVERRIDE {
@@ -115,24 +106,6 @@ namespace Solti.Utils.DI.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Entry ({0}) can not be specialized..
-        /// </summary>
-        internal static string ENTRY_CANNOT_BE_SPECIALIZED {
-            get {
-                return ResourceManager.GetString("ENTRY_CANNOT_BE_SPECIALIZED", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to You cannot add dependency to an already instantiated service..
-        /// </summary>
-        internal static string FOREIGN_DEPENDENCY {
-            get {
-                return ResourceManager.GetString("FOREIGN_DEPENDENCY", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Injector cannot be invoked when it is about to dispose..
         /// </summary>
         internal static string INJECTOR_IS_BEING_DISPOSED {
@@ -160,15 +133,6 @@ namespace Solti.Utils.DI.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Injector must not contain abstract service entries..
-        /// </summary>
-        internal static string INVALID_INJECTOR_ENTRY {
-            get {
-                return ResourceManager.GetString("INVALID_INJECTOR_ENTRY", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to The service instance must implement the interface: &quot;{0}&quot;..
         /// </summary>
         internal static string INVALID_INSTANCE {
@@ -183,15 +147,6 @@ namespace Solti.Utils.DI.Properties {
         internal static string IS_NULL {
             get {
                 return ResourceManager.GetString("IS_NULL", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The servicereference belongs to an another entry..
-        /// </summary>
-        internal static string NOT_BELONGING_REFERENCE {
-            get {
-                return ResourceManager.GetString("NOT_BELONGING_REFERENCE", resourceCulture);
             }
         }
         
