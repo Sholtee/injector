@@ -59,11 +59,6 @@ namespace Solti.Utils.DI.Internals
 
         internal static Func<IInjector, Type, object, object>[] GenerateProxyDelegates(Type iface, IEnumerable<AspectAttribute> aspects)
         {
-            //
-            // A visszaadott dekoratorok sorrendje megegyezik az aspektusok sorrendjevel:
-            // https://docs.microsoft.com/en-us/dotnet/api/system.threading.tasks.task.whenall?view=net-5.0#System_Threading_Tasks_Task_WhenAll_System_Threading_Tasks_Task
-            //
-
             return aspects.Select(AspectToDelegate).ToArray();
 
             Func<IInjector, Type, object, object> AspectToDelegate(AspectAttribute aspect)
