@@ -49,9 +49,11 @@ namespace Solti.Utils.Proxy
         /// <param name="argTypes">An array of <see cref="Type"/> objects representing the number, order, and type of the parameters of the desired <typeparamref name="TInterceptor"/> constructor.</param>
         /// <param name="args">Arguments to be passed to the constructor of the <typeparamref name="TInterceptor"/>.</param>
         /// <returns>The newly created proxy instance.</returns>
-        public static TInterface Create<TInterface, TInterceptor>(Type[] argTypes, params object[] args) where TInterface : class where TInterceptor : InterfaceInterceptor<TInterface> => (TInterface)
-            GenerateProxyType<TInterface, TInterceptor>()
-                .CreateInstance(argTypes, args);
+        public static TInterface Create<TInterface, TInterceptor>(Type[] argTypes, params object[] args) where TInterface : class where TInterceptor : InterfaceInterceptor<TInterface> => (TInterface) GenerateProxyType<TInterface, TInterceptor>().CreateInstance
+        (
+            Ensure.Parameter.IsNotNull(argTypes, nameof(argTypes)),
+            Ensure.Parameter.IsNotNull(args, nameof(args))
+        );
 
         /// <summary>
         /// Creates a new proxy instance with the given target.
@@ -130,7 +132,11 @@ namespace Solti.Utils.Proxy
         /// <param name="argTypes">An array of <see cref="Type"/> objects representing the number, order, and type of the parameters of the desired <paramref name="interceptor"/> constructor.</param>
         /// <param name="args">Arguments to be passed to the constructor of the <paramref name="interceptor"/>.</param>
         /// <returns>The newly created proxy instance.</returns>
-        public static object Create(Type iface, Type interceptor, Type[] argTypes, params object[] args) => GenerateProxyType(iface, interceptor).CreateInstance(argTypes, args);
+        public static object Create(Type iface, Type interceptor, Type[] argTypes, params object[] args) => GenerateProxyType(iface, interceptor).CreateInstance
+        (
+            Ensure.Parameter.IsNotNull(argTypes, nameof(argTypes)),
+            Ensure.Parameter.IsNotNull(args, nameof(args))
+        );
 
         /// <summary>
         /// Creates a new proxy instance with the given target.
