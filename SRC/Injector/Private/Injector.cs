@@ -146,7 +146,7 @@ namespace Solti.Utils.DI.Internals
                     ex.Data["path"] = ServicePath.Format
                     (
                         FPath
-                            .Select(svc => (IServiceId) svc)
+                            .Cast<IServiceId>()
                             .Append(id)
                     );
 
