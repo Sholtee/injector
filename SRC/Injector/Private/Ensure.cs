@@ -4,7 +4,6 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 
@@ -23,10 +22,6 @@ namespace Solti.Utils.DI.Internals
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public static T IsNotNull<T>(T? argument, string name) where T : class =>
-                argument ?? throw new ArgumentNullException(name);
-
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            public static T? IsNotNull<T>(T? argument, string name) where T : struct =>
                 argument ?? throw new ArgumentNullException(name);
 
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -59,21 +54,7 @@ namespace Solti.Utils.DI.Internals
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void IsNull(object? value, string member)
-        {
-            if (value != null)
-                throw new Exception(string.Format(Resources.Culture, Resources.NOT_NULL, member));
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T IsNotNull<T>(T? value, string member) where T: class =>
             value ?? throw new Exception(string.Format(Resources.Culture, Resources.IS_NULL, member));       
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void AreEqual<T>(T a, T b, string? message = null, IEqualityComparer<T>? comparer = null)
-        {
-            if (!(comparer ?? EqualityComparer<T>.Default).Equals(a, b))
-                throw new Exception(message ?? Resources.NOT_EQUAL);
-        }
     }
 }
