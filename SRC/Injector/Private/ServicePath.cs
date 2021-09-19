@@ -83,7 +83,13 @@ namespace Solti.Utils.DI.Internals
             FPath.Add(entry);
         }
 
-        public void Pop() => FPath.RemoveAt(FPath.Count - 1);
+        public void Pop() =>
+            //
+            // Utolso elem eltavolitasa gyors muvelet [nincs Array.Copy()]:
+            // https://github.com/dotnet/runtime/blob/78593b9e095f974305b2033b465455e458e30267/src/libraries/System.Private.CoreLib/src/System/Collections/Generic/List.cs#L925
+            //
+
+            FPath.RemoveAt(FPath.Count - 1);
 
         public static string Format(IEnumerable<IServiceId> path) => string.Join(" -> ", path.Select(IServiceIdExtensions.FriendlyName));
 
