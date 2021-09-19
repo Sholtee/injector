@@ -18,7 +18,7 @@ namespace Solti.Utils.DI.Internals
 
     internal abstract partial class ResolverBuilder
     {
-        public delegate Resolver ResolverCaseBuilder(int index, AbstractServiceEntry entry);
+        public delegate Resolver ResolverCaseBuilder(int slot, AbstractServiceEntry entry);
 
         public abstract Resolver Build(IEnumerable<AbstractServiceEntry> entries, ResolverCaseBuilder regularEntryResolverBuilder, ResolverCaseBuilder genericEntryResolverBuilder, out int reCount, out int geCount, CancellationToken cancellation = default);
 

@@ -205,13 +205,13 @@ namespace Solti.Utils.DI.Internals
                 Debug.WriteLine(lambda.GetDebugView());
                 return lambda.Compile();
 
-                Expression GetEntryResolver(AbstractServiceEntry entry, ResolverCaseBuilder caseBuilder, int index)
+                Expression GetEntryResolver(AbstractServiceEntry entry, ResolverCaseBuilder caseBuilder, int slot)
                 {
                     Expression invocation = Expression.Invoke
                     (
                         Expression.Constant
                         (
-                            caseBuilder(index, entry)
+                            caseBuilder(slot, entry)
                         ),
                         self, iface, name
                     );

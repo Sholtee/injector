@@ -478,15 +478,15 @@ namespace Solti.Utils.DI.Internals
                                     entries, 
                                     entry =>
                                     {
-                                        int index = regularEntryResolvers.Count;
-                                        regularEntryResolvers.Add(regularEntryResolverBuilder(index, entry));
-                                        return index;
+                                        int slot = regularEntryResolvers.Count;
+                                        regularEntryResolvers.Add(regularEntryResolverBuilder(slot, entry));
+                                        return slot;
                                     },
                                     entry =>
                                     {
-                                        int index = genericEntryResolvers.Count;
-                                        genericEntryResolvers.Add(genericEntryResolverBuilder(index, entry));
-                                        return index;
+                                        int slot = genericEntryResolvers.Count;
+                                        genericEntryResolvers.Add(genericEntryResolverBuilder(slot, entry));
+                                        return slot;
                                     }
                                 )
                             )
