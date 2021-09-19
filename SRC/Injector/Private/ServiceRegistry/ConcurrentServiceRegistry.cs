@@ -43,22 +43,16 @@ namespace Solti.Utils.DI.Internals
             return result;
         }
 
-        public ConcurrentServiceRegistry(ISet<AbstractServiceEntry> entries, ResolverBuilder? resolverBuilder = null, CancellationToken cancellation = default) : base(entries)
+        public ConcurrentServiceRegistry(ISet<AbstractServiceEntry> entries, ResolverBuilder? resolverBuilder = null, CancellationToken cancellation = default) : base(entries, resolverBuilder, cancellation)
         {
-            resolverBuilder ??= GetDefaultResolverBuilder(entries);
-
-            BuiltResolver = resolverBuilder.Build(RegisteredEntries, RegularEntryResolverFactory, GenericEntryResolverFactory, out int reCount, out int geCount, cancellation);
-
-            FRegularEntries = CreateArray(() => new EntryHolder(), reCount);
-            FSpecializedEntries = CreateArray(() => new ConcurrentDictionary<Type, Lazy<AbstractServiceEntry>>(), geCount);
+            FRegularEntries = CreateArray(() => new EntryHolder(), RegularEntryCount);
+            FSpecializedEntries = CreateArray(() => new ConcurrentDictionary<Type, Lazy<AbstractServiceEntry>>(), GenericEntryCount);
         }
 
         public ConcurrentServiceRegistry(ConcurrentServiceRegistry parent) : base(parent)
         {
-            BuiltResolver = parent.BuiltResolver;
-
-            FRegularEntries = CreateArray(() => new EntryHolder(), parent.RegularEntryCount);
-            FSpecializedEntries = CreateArray(() => new ConcurrentDictionary<Type, Lazy<AbstractServiceEntry>>(), parent.GenericEntryCount);
+            FRegularEntries = CreateArray(() => new EntryHolder(), RegularEntryCount);
+            FSpecializedEntries = CreateArray(() => new ConcurrentDictionary<Type, Lazy<AbstractServiceEntry>>(), GenericEntryCount);
         }
 
         public override AbstractServiceEntry ResolveGenericEntry(int slot, Type specializedInterface, AbstractServiceEntry originalEntry)
@@ -100,11 +94,5 @@ namespace Solti.Utils.DI.Internals
 
             return holder.Value;
         }
-
-        public override Resolver BuiltResolver { get; }
-
-        public override int RegularEntryCount => FRegularEntries.Length;
-
-        public override int GenericEntryCount => FSpecializedEntries.Length;
     }
 }

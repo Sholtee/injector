@@ -24,22 +24,16 @@ namespace Solti.Utils.DI.Internals
 
         private readonly HybridDictionary?[] FSpecializedEntries;
 
-        public ServiceRegistry(ISet<AbstractServiceEntry> entries, ResolverBuilder? resolverBuilder = null, CancellationToken cancellation = default) : base(entries)
+        public ServiceRegistry(ISet<AbstractServiceEntry> entries, ResolverBuilder? resolverBuilder = null, CancellationToken cancellation = default) : base(entries, resolverBuilder, cancellation)
         {
-            resolverBuilder ??= GetDefaultResolverBuilder(entries);
-
-            BuiltResolver = resolverBuilder.Build(RegisteredEntries, RegularEntryResolverFactory, GenericEntryResolverFactory, out int reCount, out int geCount, cancellation);
-
-            FRegularEntries = new AbstractServiceEntry?[reCount];
-            FSpecializedEntries = new HybridDictionary?[geCount];
+            FRegularEntries = new AbstractServiceEntry?[RegularEntryCount];
+            FSpecializedEntries = new HybridDictionary?[GenericEntryCount];
         }
 
         public ServiceRegistry(ServiceRegistryBase parent) : base(parent)
         {
-            BuiltResolver = parent.BuiltResolver;
-
-            FRegularEntries = new AbstractServiceEntry?[parent.RegularEntryCount];
-            FSpecializedEntries = new HybridDictionary?[parent.GenericEntryCount];
+            FRegularEntries = new AbstractServiceEntry?[RegularEntryCount];
+            FSpecializedEntries = new HybridDictionary?[GenericEntryCount];
         }
 
         public override AbstractServiceEntry ResolveGenericEntry(int slot, Type specializedInterface, AbstractServiceEntry originalEntry)
@@ -71,11 +65,5 @@ namespace Solti.Utils.DI.Internals
 
             return value;
         }
-
-        public override Resolver BuiltResolver { get; }
-
-        public override int RegularEntryCount => FRegularEntries.Length;
-
-        public override int GenericEntryCount => FSpecializedEntries.Length;
     }
 }

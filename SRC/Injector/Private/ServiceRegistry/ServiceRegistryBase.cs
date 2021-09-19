@@ -6,7 +6,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
+using System.Threading;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -16,25 +16,13 @@ namespace Solti.Utils.DI.Internals
 
     internal abstract class ServiceRegistryBase : DisposableSupportsNotifyOnDispose, IServiceRegistry
     {
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        protected static Resolver GenericEntryResolverFactory(int slot, AbstractServiceEntry originalEntry) =>
+        private static Resolver GenericEntryResolverFactory(int slot, AbstractServiceEntry originalEntry) =>
             (self, iface, name) => self.ResolveGenericEntry(slot, iface, originalEntry);
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        protected static Resolver RegularEntryResolverFactory(int slot, AbstractServiceEntry originalEntry) =>
+        private static Resolver RegularEntryResolverFactory(int slot, AbstractServiceEntry originalEntry) =>
             (self, iface, name) => self.ResolveRegularEntry(slot, originalEntry);
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        protected static ResolverBuilder GetDefaultResolverBuilder(IEnumerable<AbstractServiceEntry> entries) =>
-            //
-            // Teljesitmenytesztek alapjan...
-            //
-
-            entries.Count() <= 100
-                ? ResolverBuilder.CompiledExpression
-                : ResolverBuilder.CompiledCode;
-
-        protected ServiceRegistryBase(ISet<AbstractServiceEntry> entries) : base()
+        protected ServiceRegistryBase(ISet<AbstractServiceEntry> entries, ResolverBuilder? resolverBuilder, CancellationToken cancellation) : base()
         {
             Ensure.Parameter.IsNotNull(entries, nameof(entries));
 
@@ -46,14 +34,29 @@ namespace Solti.Utils.DI.Internals
                 throw new ArgumentException(Resources.BUILT_IN_SERVICE_OVERRIDE, nameof(entries));
 
             RegisteredEntries = entries as IReadOnlyCollection<AbstractServiceEntry> ?? entries.ToArray(); // HashSet megvalositja az IReadOnlyCollection-t
+
+            resolverBuilder ??= RegisteredEntries.Count <= 100
+                //
+                // Teljesitmenytesztek alapjan...
+                //
+
+                ? ResolverBuilder.CompiledExpression
+                : ResolverBuilder.CompiledCode;
+
+            BuiltResolver = resolverBuilder.Build(RegisteredEntries, RegularEntryResolverFactory, GenericEntryResolverFactory, out int reCount, out int geCount, cancellation);
+            RegularEntryCount = reCount;
+            GenericEntryCount = geCount;
         }
 
         protected ServiceRegistryBase(ServiceRegistryBase parent) : base()
         {
             Ensure.Parameter.IsNotNull(parent, nameof(parent));
 
-            RegisteredEntries = parent.RegisteredEntries;
             Parent = parent;
+            RegisteredEntries = parent.RegisteredEntries;
+            BuiltResolver     = parent.BuiltResolver;
+            RegularEntryCount = parent.RegularEntryCount;
+            GenericEntryCount = parent.GenericEntryCount;
         }
 
         protected virtual IReadOnlyCollection<AbstractServiceEntry> BuiltInServices { get; } = Array.Empty<AbstractServiceEntry>();
@@ -68,10 +71,10 @@ namespace Solti.Utils.DI.Internals
 
         public abstract AbstractServiceEntry ResolveGenericEntry(int slot, Type specializedInterface, AbstractServiceEntry originalEntry);
 
-        public abstract Resolver BuiltResolver { get; }
+        public Resolver BuiltResolver { get; }
 
-        public abstract int RegularEntryCount { get; }
+        public int RegularEntryCount { get; }
 
-        public abstract int GenericEntryCount { get; }
+        public int GenericEntryCount { get; }
     }
 }
