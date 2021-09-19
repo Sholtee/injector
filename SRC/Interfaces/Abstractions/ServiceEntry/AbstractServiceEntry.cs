@@ -49,10 +49,10 @@ namespace Solti.Utils.DI.Interfaces
             // Ha van implementacio akkor nem kell ellenorizni h megvalositja e az interface-t mivel:
             //   1) Ha meg is valositja, Proxy()-val ugy is el lehet rontani
             //   2) Epp ezert az Injector ellenorizni fogja a Factory hivas visszatereset
-            //   3) Pl a Provider() hivas is "rossz" tipus regisztral
+            //   3) Pl a Provider() hivas is "rossz" tipust regisztral
             //
 
-            if (implementation is not null && !implementation.IsClass)
+            if (implementation?.IsClass is false)
                 throw new ArgumentException(Resources.NOT_A_CLASS, nameof(implementation));
         }
 
