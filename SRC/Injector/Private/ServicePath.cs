@@ -22,11 +22,7 @@ namespace Solti.Utils.DI.Internals
         private readonly List<AbstractServiceEntry> FPath = new(capacity: 10);
 
         public AbstractServiceEntry? Last => FPath.Count > 0
-#if NETSTANDARD2_1_OR_GREATER
             ? FPath[^1]
-#else
-            ? FPath[FPath.Count - 1]
-#endif
             : null;
 
         public AbstractServiceEntry? First => FPath.Count > 0
