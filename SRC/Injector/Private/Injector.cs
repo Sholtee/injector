@@ -270,17 +270,18 @@ namespace Solti.Utils.DI.Internals
 
         public Injector(ScopeFactory parent, ScopeKind kind) : base(parent)
         {
+            Parent = parent;
+            Kind = kind;
+
             if (Options.SafeMode)
                 //
                 // Feladatabol adodoan nem lehet csak az elso hasznalat elott inicializalni.
                 //
 
                 FExclusiveBlock = new ExclusiveBlock(ExclusiveBlockFeatures.SupportsRecursion);
-
-            Kind = kind;
         }
 
-        public new ScopeFactory Parent => (ScopeFactory) base.Parent!;
+        public new ScopeFactory Parent { get; }
 
         public ScopeKind Kind { get; }
 
