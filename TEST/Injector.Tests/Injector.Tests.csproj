@@ -5,7 +5,7 @@
     <RootNamespace>Solti.Utils.DI.Tests</RootNamespace>
   </PropertyGroup>
 
-  <Import Project="../Common.targets" />
+  <Import Project="..\Common.targets" />
 
   <ItemGroup>
     <Compile Remove="Injector\Graph.cs" />

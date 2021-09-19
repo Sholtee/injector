@@ -5,7 +5,7 @@
     <RootNamespace>Solti.Utils.DI.Diagnostics</RootNamespace>
   </PropertyGroup>
 
-  <Import Project="../Common.targets" />
+  <Import Project="..\Common\Common.targets" />
 
   <PropertyGroup>
     <Description>Contains diagnostics related features (such as dependency visualization) for Injector.NET</Description>

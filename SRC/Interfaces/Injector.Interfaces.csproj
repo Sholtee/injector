@@ -5,10 +5,10 @@
     <RootNamespace>Solti.Utils.DI.Interfaces</RootNamespace>
   </PropertyGroup>
 
-  <Import Project="../Common.targets" />
+  <Import Project="..\Common\Common.targets" />
 
   <ItemGroup>
-    <Compile Include="..\IsExternalInit.cs" Link="IsExternalInit.cs" />
+    <Compile Include="..\Common\IsExternalInit.cs" Link="IsExternalInit.cs" />
   </ItemGroup>
 
   <ItemGroup>

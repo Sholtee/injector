@@ -5,7 +5,7 @@
     <RootNamespace>Solti.Utils.DI</RootNamespace>
   </PropertyGroup>
 
-  <Import Project="../Common.targets" />
+  <Import Project="..\Common\Common.targets" />
 
   <PropertyGroup>
     <DefineConstants>BACKWARD_COMPATIBILITY</DefineConstants>
@@ -20,13 +20,14 @@
     <Optimize>true</Optimize>
   </PropertyGroup>
 
-  <ItemGroup Condition="'$(Configuration)'!='Debug'">
-    <Compile Remove="Private\Annotations\ExcludeFromCoverageAttribute.cs" />
-  </ItemGroup>
-
   <ItemGroup>
     <None Remove="docfx.json" />
     <None Remove="index.md" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Private\Annotations\" />
+    <Compile Include="..\Common\ModuleInitializerAttribute.cs" Link="Private\Annotations\ModuleInitializerAttribute.cs" />
   </ItemGroup>
 
   <ItemGroup>
