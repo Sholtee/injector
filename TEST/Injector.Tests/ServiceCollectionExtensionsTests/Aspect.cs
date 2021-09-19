@@ -13,8 +13,8 @@ using NUnit.Framework;
 namespace Solti.Utils.DI.ServiceCollection.Tests
 {
     using Interfaces;
+    using Interfaces.Properties;
     using Primitives.Patterns;
-    using Properties;
     using Proxy;
 
     public partial class ServiceCollectionExtensionsTests
@@ -77,7 +77,7 @@ namespace Solti.Utils.DI.ServiceCollection.Tests
 
         [Test]
         public void Aspects_ShouldThrowOnInstances() =>
-            Assert.Throws<InvalidOperationException>(() => Collection.Instance<IMyService>(new MyService()).WithProxy((_, _, _) => null), Resources.CANT_PROXY);
+            Assert.Throws<InvalidOperationException>(() => Collection.Instance<IMyService>(new MyService()).WithProxy((_, _, _) => null), Resources.PROXYING_NOT_SUPPORTED);
 
         [Test]
         public void Aspects_AspectAttributeMustBeOverridden() 

@@ -11,7 +11,7 @@ using NUnit.Framework;
 namespace Solti.Utils.DI.ServiceCollection.Tests
 {
     using Interfaces;
-    using Properties;
+    using Interfaces.Properties;
 
     using Utils.Proxy;
     
@@ -86,7 +86,7 @@ namespace Solti.Utils.DI.ServiceCollection.Tests
         {
             Collection.Service(typeof(IInterface_3<>), typeof(Implementation_3_IInterface_1_Dependant<>), lifetime);
 
-            Assert.Throws<InvalidOperationException>(() => Collection.WithProxy((injector, type, inst) => inst), Resources.CANT_PROXY);
+            Assert.Throws<InvalidOperationException>(() => Collection.WithProxy((injector, type, inst) => inst), Resources.PROXYING_NOT_SUPPORTED);
         }
 
         [Test]
@@ -94,7 +94,7 @@ namespace Solti.Utils.DI.ServiceCollection.Tests
         {
             Collection.Instance<IInterface_1>(new Implementation_1_No_Dep());
 
-            Assert.Throws<InvalidOperationException>(() => Collection.WithProxy((p1, p2, p3) => default), Resources.CANT_PROXY);
+            Assert.Throws<InvalidOperationException>(() => Collection.WithProxy((p1, p2, p3) => default), Resources.PROXYING_NOT_SUPPORTED);
         }
 
         [Test]
@@ -102,7 +102,7 @@ namespace Solti.Utils.DI.ServiceCollection.Tests
         {
             Collection.Register(new DummyServiceEntry(typeof(IInterface_1), null));
 
-            Assert.Throws<InvalidOperationException>(() => Collection.WithProxy((p1, p2, p3) => default), Resources.CANT_PROXY);
+            Assert.Throws<InvalidOperationException>(() => Collection.WithProxy((p1, p2, p3) => default), Resources.PROXYING_NOT_SUPPORTED);
         }
 
         [TestCaseSource(nameof(ScopeControlledLifetimes))]
