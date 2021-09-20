@@ -9,16 +9,7 @@ namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
 
-    internal class ServiceId : IServiceId
+    internal sealed record ServiceId(Type Interface, string? Name) : IServiceId
     {
-        public ServiceId(Type @interface, string? name) 
-        {
-            Interface = @interface;
-            Name = name;
-        }
-
-        public Type Interface { get; }
-
-        public string? Name { get; }
     }
 }
