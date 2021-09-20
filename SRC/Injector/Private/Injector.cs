@@ -93,10 +93,19 @@ namespace Solti.Utils.DI.Internals
                 }
             }
 
+            //
+            // 3. eset: Uj peldanyt kell letrehozni es ezt az aktualis scope meg is teheti
+            //
+
             object instance;
 
             if (Options.SafeMode && FPath!.First?.State.HasFlag(ServiceEntryStates.Instantiated) is not true)
             {
+                //
+                // Ezt a logikat NE az overload-ban hivjuk hogy a "requested" bejegyzes az ujonan letrehozott
+                // scope FPath-aban keruljon regisztralasra.
+                //
+
                 FPath.Push(requested);
                 try
                 {
@@ -140,20 +149,14 @@ namespace Solti.Utils.DI.Internals
                     (
                         string.Format(Resources.Culture, Resources.SERVICE_NOT_FOUND, id.FriendlyName())
                     );
+   
+                    //
+                    // Csak az "igenylo -> igenyelt" parost adjuk vissza.
+                    //
 
-                    if (FPath is not null) // unsafe modban nincs utvonal
-                    {
-                        //
-                        // Csak az "igenylo -> igenyelt" parost adjuk vissza.
-                        //
-
-                        List<IServiceId> ids = new(capacity: 2);
-                        if (FPath.Last is not null)
-                            ids.Add(FPath.Last);
-                        ids.Add(id);
-
-                        ex.Data["path"] = ServicePath.Format(ids);
-                    }
+                    AbstractServiceEntry? requestor = FPath?.Last; // unsafe modban nincs utvonal
+                    if (requestor is not null)
+                        ex.Data["path"] = ServicePath.Format(new IServiceId[] {requestor, id});
 
                     throw ex;
                 }
@@ -163,7 +166,7 @@ namespace Solti.Utils.DI.Internals
 
             if (Options.StrictDI)
             {
-                AbstractServiceEntry? requestor = FPath?.Last;
+                AbstractServiceEntry? requestor = FPath?.Last; // unsafe modban nincs utvonal
 
                 //
                 // - Ha a fuggosegi fa gyokerenel vagyunk akkor a metodus nem ertelmezett.
