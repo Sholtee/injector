@@ -55,7 +55,7 @@ namespace Solti.Utils.DI.Internals
         public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Type implementation)
         {
             //
-            // A sorrent szamit (last IModifiedServiceCollection.LastEntry)
+            // A sorrend szamit (last IModifiedServiceCollection.LastEntry)
             //
 
             yield return PoolService(iface, name);
