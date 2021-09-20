@@ -126,8 +126,7 @@ namespace Solti.Utils.DI.Interfaces
         /// <summary>
         /// See <see cref="object.ToString"/>.
         /// </summary>
-        /// <returns></returns>
-        public override string ToString()
+        public sealed override string ToString() // "sealed" azert kell h a leszarmazott "record"-oknal a fordito ne irja felul 
         {
             const string NAME_PART = " - {0}: {1}";
 
