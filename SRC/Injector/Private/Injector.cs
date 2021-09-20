@@ -21,9 +21,9 @@ namespace Solti.Utils.DI.Internals
         #region Private
         private readonly ExclusiveBlock? FExclusiveBlock;
 
-        private bool FDisposing;
+        private readonly ServicePath? FPath;
 
-        private ServicePath? FPath;
+        private bool FDisposing;
 
         //
         // - Azert Stack<> hogy forditott iranyban szabaditsuk fel a szervizeket mint ahogy letrehoztuk oket (igy az
@@ -93,39 +93,37 @@ namespace Solti.Utils.DI.Internals
                 }
             }
 
-            object result;
+            object instance;
 
-            //
-            // Ha korabban mar tudtuk peldanyositani a szervizt vagy pedig nem biztonsagos modban vagyunk akkor nincs
-            // korkoros referencia ellenorzes.
-            //
-
-            if (!Options.SafeMode || FPath?.First?.State.HasFlag(ServiceEntryStates.Instantiated) is true)
-                result = requested.CreateInstance(this);
-            else
+            if (Options.SafeMode && FPath!.First?.State.HasFlag(ServiceEntryStates.Instantiated) is not true)
             {
-                FPath ??= new ServicePath();
-
                 FPath.Push(requested);
                 try
                 {
                     FPath.CheckNotCircular();
-                    result = requested.CreateInstance(this);
+                    instance = requested.CreateInstance(this);
                 }
                 finally
                 {
                     FPath.Pop();
                 }
             }
+            else
+                //
+                // Ha korabban mar tudtuk peldanyositani a szervizt vagy pedig nem biztonsagos modban vagyunk akkor nincs
+                // korkoros referencia ellenorzes.
+                //
+
+                instance = requested.CreateInstance(this);
 
             //
             // Ellenorizzuk h az ujonan letrehozott peldanyt kesobb fel kell e szabaditani
             //
 
-            if (result is IDisposable || result is IAsyncDisposable)
-                CaptureDisposable(result);
+            if (instance is IDisposable || instance is IAsyncDisposable)
+                CaptureDisposable(instance);
 
-            return result;
+            return instance;
         }
 
         internal object? GetInternalUnsafe(Type iface, string? name, bool throwOnMissing)
@@ -143,12 +141,19 @@ namespace Solti.Utils.DI.Internals
                         string.Format(Resources.Culture, Resources.SERVICE_NOT_FOUND, id.FriendlyName())
                     );
 
-                    ex.Data["path"] = ServicePath.Format
-                    (
-                        FPath
-                            .Cast<IServiceId>()
-                            .Append(id)
-                    );
+                    if (FPath is not null) // unsafe modban nincs utvonal
+                    {
+                        //
+                        // Csak az "igenylo -> igenyelt" parost adjuk vissza.
+                        //
+
+                        List<IServiceId> ids = new(capacity: 2);
+                        if (FPath.Last is not null)
+                            ids.Add(FPath.Last);
+                        ids.Add(id);
+
+                        ex.Data["path"] = ServicePath.Format(ids);
+                    }
 
                     throw ex;
                 }
@@ -167,7 +172,7 @@ namespace Solti.Utils.DI.Internals
 
                 if (requestor?.Lifetime is not null && requested.Lifetime?.CompareTo(requestor.Lifetime) < 0)
                 {
-                    var ex = new RequestNotAllowedException(Resources.STRICT_DI);
+                    RequestNotAllowedException ex = new(Resources.STRICT_DI);
                     ex.Data["requestor"] = requestor;
                     ex.Data["requested"] = requested;
 
@@ -274,11 +279,10 @@ namespace Solti.Utils.DI.Internals
             Kind = kind;
 
             if (Options.SafeMode)
-                //
-                // Feladatabol adodoan nem lehet csak az elso hasznalat elott inicializalni.
-                //
-
+            {
                 FExclusiveBlock = new ExclusiveBlock(ExclusiveBlockFeatures.SupportsRecursion);
+                FPath = new ServicePath();
+            }
         }
 
         public new ScopeFactory Parent { get; }

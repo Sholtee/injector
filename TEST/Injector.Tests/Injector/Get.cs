@@ -61,13 +61,15 @@ namespace Solti.Utils.DI.Injector.Tests
         }
 
         [Test]
-        public void Injector_Get_ShouldThrowOnNonRegisteredDependency([ValueSource(nameof(Lifetimes))] Lifetime lifetime)
+        public void Injector_Get_ShouldThrowOnNonRegisteredDependency([ValueSource(nameof(Lifetimes))] Lifetime lifetime1, [ValueSource(nameof(Lifetimes))] Lifetime lifetime2)
         {
-            Root = ScopeFactory.Create(svcs => svcs.Service<IInterface_7<IInterface_1>, Implementation_7_TInterface_Dependant<IInterface_1>>(lifetime));
+            Root = ScopeFactory.Create(svcs => svcs
+                .Service<IInterface_7<IInterface_1>, Implementation_7_TInterface_Dependant<IInterface_1>>(lifetime1)
+                .Service<IInterface_7<IInterface_7<IInterface_1>>, Implementation_7_TInterface_Dependant<IInterface_7<IInterface_1>>>(lifetime2));
 
             using (IInjector injector = Root.CreateScope())
             {
-                var e = Assert.Throws<ServiceNotFoundException>(() => injector.Get<IInterface_7<IInterface_1>>());
+                var e = Assert.Throws<ServiceNotFoundException>(() => injector.Get<IInterface_7<IInterface_7<IInterface_1>>>());
                 Assert.That(e.Data.Contains("path"));
                 Assert.That(e.Data["path"], Is.EqualTo(string.Join(" -> ", new ServiceId(typeof(IInterface_7<IInterface_1>), null).FriendlyName(), new ServiceId(typeof(IInterface_1), null).FriendlyName())));
             }
