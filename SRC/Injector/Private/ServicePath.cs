@@ -31,7 +31,8 @@ namespace Solti.Utils.DI.Internals
 
         public void CheckNotCircular()
         {
-            Ensure.IsNotNull(Last, nameof(Last));
+            if (FPath.Count <= 1)
+                return;
 
             AbstractServiceEntry last = Last!;
 

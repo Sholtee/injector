@@ -88,7 +88,7 @@ namespace Solti.Utils.DI.Internals
                 // Ha korabban meg nem peldanyositottuk a szervizt akkor ellenorizzuk hogy nincs e korkoros referencia.
                 //
 
-                if (FPath.First?.State.HasFlag(ServiceEntryStates.Instantiated) is not true)
+                if (!(FPath.First ?? requested).State.HasFlag(ServiceEntryStates.Instantiated))
                 {
                     FPath.Push(requested); // nem szal biztos -> lock-on belul legyen
                     try
