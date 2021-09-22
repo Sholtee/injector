@@ -77,7 +77,7 @@ namespace Solti.Utils.DI.Interfaces
         /// <summary>
         /// The owner of this entry.
         /// </summary>
-        public IServiceRegistry? Owner { get; }
+        public IServiceRegistry? Owner { get; } // TODO: IInjector legyen
 
         /// <summary>
         /// If set, this property contains the accessor function that extracts the effective service instance from the value returned by the <see cref="Factory"/> function.

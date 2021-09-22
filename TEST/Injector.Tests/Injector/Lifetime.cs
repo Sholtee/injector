@@ -14,11 +14,8 @@ using NUnit.Framework;
 namespace Solti.Utils.DI.Injector.Tests
 {
     using Interfaces;
-    using Internals;
     using Primitives.Patterns;
     using Properties;
-
-    using ScopeFactory = DI.ScopeFactory;
 
     public partial class InjectorTests
     {
@@ -174,7 +171,7 @@ namespace Solti.Utils.DI.Injector.Tests
         }
 
         [Test]
-        public void Lifetime_SingletonService_ShouldHaveItsOwnInjector() 
+        public void Lifetime_SingletonService_ShouldBeResolvedFromTheRootScope() 
         {
             Root = ScopeFactory.Create(svcs => svcs.Service<IInterface_7<IInjector>, Implementation_7_TInterface_Dependant<IInjector>>(Lifetime.Singleton));
 
@@ -182,29 +179,8 @@ namespace Solti.Utils.DI.Injector.Tests
             {
                 IInjector dedicatedInjector = injector.Get<IInterface_7<IInjector>>().Interface;
 
-                Assert.That(dedicatedInjector, Is.Not.SameAs(injector));
+                Assert.That(dedicatedInjector, Is.SameAs(Root));
             }
-        }
-
-        [Test]
-        public void Lifetime_SingletonService_DedicatedInjectorShouldBeReleasedOnRootDisposal([Values(true, false)] bool safeMode)
-        {
-            IInjector dedicatedInjector;
-
-            using (IScopeFactory root = ScopeFactory.Create(svcs => svcs.Service<IInterface_7<IInjector>, Implementation_7_TInterface_Dependant<IInjector>>(Lifetime.Singleton), new ScopeOptions { SafeMode = safeMode }))
-            {
-                using (IInjector injector = root.CreateScope())
-                {
-                    IInterface_7<IInjector> svc = injector.Get<IInterface_7<IInjector>>();
-                    dedicatedInjector = svc.Interface;
-
-                    Assert.That(dedicatedInjector, Is.Not.SameAs(injector));
-                }
-
-                Assert.That(dedicatedInjector.Disposed, Is.False);
-            }
-
-            Assert.That(dedicatedInjector.Disposed, Is.True);
         }
 
         [TestCaseSource(nameof(ScopeControlledLifetimes))]
@@ -620,7 +596,8 @@ namespace Solti.Utils.DI.Injector.Tests
 
             protected override void Dispose(bool disposeManaged)
             {
-                Assert.False(Interface.Disposed);
+                if (disposeManaged)
+                    Assert.False(Interface.Disposed);
 
                 base.Dispose(disposeManaged);
             }
@@ -643,9 +620,10 @@ namespace Solti.Utils.DI.Injector.Tests
                     }
                 }
 
-                inst = root
-                    .CreateScope() // direkt nincs felszbaaditva
-                    .Get<IInterface_7<IDisposableEx>>();
+                using (IInjector effectiveInjector = root.CreateScope())
+                {
+                    inst = effectiveInjector.Get<IInterface_7<IDisposableEx>>();
+                }
             }
 
             Assert.That(inst.Interface.Disposed);

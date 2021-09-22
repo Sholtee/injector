@@ -61,7 +61,7 @@ namespace Solti.Utils.DI.Internals
 
         protected virtual IReadOnlyCollection<AbstractServiceEntry> BuiltInServices { get; } = Array.Empty<AbstractServiceEntry>();
 
-        public IServiceRegistry? Parent { get; } // TODO: torolni / atmozgatni
+        public IServiceRegistry? Parent { get; }
 
         public AbstractServiceEntry? GetEntry(Type iface, string? name) => BuiltResolver.Invoke(this, Ensure.Parameter.IsNotNull(iface, nameof(iface)), name);
 

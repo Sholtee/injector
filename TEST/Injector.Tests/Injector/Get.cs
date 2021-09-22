@@ -17,8 +17,6 @@ namespace Solti.Utils.DI.Injector.Tests
     using Primitives.Patterns;
     using Properties;
 
-    using ScopeFactory = DI.ScopeFactory;
-
     public partial class InjectorTests
     {
         [Test]

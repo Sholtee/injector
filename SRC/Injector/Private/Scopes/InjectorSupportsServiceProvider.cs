@@ -4,6 +4,8 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Collections.Generic;
+using System.Threading;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -11,7 +13,21 @@ namespace Solti.Utils.DI.Internals
 
     internal class InjectorSupportsServiceProvider : Injector, IServiceProvider, IInjector
     {
-        public InjectorSupportsServiceProvider(ScopeFactory parent, ScopeKind kind) : base(parent, kind) { }
+        protected override Injector CreateDerived() => new InjectorSupportsServiceProvider(this);
+
+        protected override IReadOnlyCollection<AbstractServiceEntry> BuiltInServices
+        {
+            get
+            {
+                List<AbstractServiceEntry> serviceList = new(base.BuiltInServices);
+                serviceList.Add(new ContextualServiceEntry(typeof(IServiceProvider), null, owner => (IServiceProvider) owner));
+                return serviceList;
+            }
+        }
+
+        public InjectorSupportsServiceProvider(ISet<AbstractServiceEntry> entries, ScopeOptions options, CancellationToken cancellation) : base(entries, options, cancellation) { }
+
+        public InjectorSupportsServiceProvider(InjectorSupportsServiceProvider parent) : base(parent) { }
 
         //
         // IInjector.Get() elvileg sose adhatna vissza NULL-t viszont h biztositsuk 

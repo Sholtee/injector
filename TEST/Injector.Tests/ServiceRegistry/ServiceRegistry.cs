@@ -5,15 +5,12 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
 
 using NUnit.Framework;
 
 namespace Solti.Utils.DI.Internals.Tests
 {
     using Interfaces;
-    using Properties;
 
     [TestFixture]
     internal partial class ServiceRegistryTests
@@ -41,9 +38,5 @@ namespace Solti.Utils.DI.Internals.Tests
 
         [TearDown]
         public void TearDown() => Registry?.Dispose();
-
-        [Test]
-        public void Ctor_ShouldThrowOnOverriddenService() =>
-            Assert.Throws<ArgumentException>(() => new ScopeFactory(new HashSet<AbstractServiceEntry>(ServiceIdComparer.Instance) { new DummyServiceEntry(typeof(IInjector), null) }, new ScopeOptions()), Resources.BUILT_IN_SERVICE_OVERRIDE);
     }
 }

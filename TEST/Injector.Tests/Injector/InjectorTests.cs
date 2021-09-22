@@ -13,6 +13,7 @@ namespace Solti.Utils.DI.Injector.Tests
     using Interfaces;
     using Internals;
     using Primitives.Patterns;
+    using Properties;
 
     [TestFixture]
     public partial class InjectorTests
@@ -234,5 +235,9 @@ namespace Solti.Utils.DI.Injector.Tests
             Root?.Dispose();
             Root = null;
         }
+
+        [Test]
+        public void Ctor_ShouldThrowOnOverriddenService() =>
+            Assert.Throws<ArgumentException>(() => new Injector(new HashSet<AbstractServiceEntry>(ServiceIdComparer.Instance) { new DummyServiceEntry(typeof(IInjector), null) }, new ScopeOptions(), default), Resources.BUILT_IN_SERVICE_OVERRIDE);
     }
 }

@@ -15,30 +15,34 @@ namespace Solti.Utils.DI.Internals
 
     internal sealed class PoolService<TInterface> : ObjectPool<object>, IPool<TInterface> where TInterface: class
     {
-        private sealed class ServiceReferenceLifetimeManager: Disposable, ILifetimeManager<object>
+        private sealed class PooledServiceLifetimeManager: Disposable, ILifetimeManager<object>
         {
-            //
-            // Mivel az osszes pool elemnek sajat scope-ja van ezert h az esetleges korkoros referenciat
-            // detektalni tudjuk, rekurzio eseten a mar korabban letrehozott scope-ot kell hasznaljuk.
             //
             // Ne [ThreadStatic]-t hasznaljunk, hogy minden interface-nev paroshoz kulon peldany tartozzon.
             //
 
-            private readonly ThreadLocal<IInjector?> FCurrentScope = new(trackAllValues: false);
-
-            public IScopeFactory ScopeFactory { get; }
+            private readonly ThreadLocal<IInjector?> FDedicatedScope = new(trackAllValues: true);
 
             protected override void Dispose(bool disposeManaged)
             {
                 if (disposeManaged)
-                    FCurrentScope.Dispose();
+                {
+                    foreach (IInjector? scope in FDedicatedScope.Values)
+                    {
+                        scope?.Dispose();
+                    }
+
+                    FDedicatedScope.Dispose();
+                }
 
                 base.Dispose(disposeManaged);
             }
 
+            public IScopeFactory ScopeFactory { get; }
+
             public string? Name { get; }
 
-            public ServiceReferenceLifetimeManager(IScopeFactory scopeFactory, string? name)
+            public PooledServiceLifetimeManager(IScopeFactory scopeFactory, string? name)
             {
                 ScopeFactory = scopeFactory;
                 Name = name;
@@ -46,23 +50,22 @@ namespace Solti.Utils.DI.Internals
 
             public object Create()
             {
-                FCurrentScope.Value ??= ScopeFactory.CreateSystemScope();
-                try
-                {
-                    //
-                    // Ez itt trukkos mert:
-                    //   1) "injector" by design nem szalbiztos viszont ez a metodus lehet hivva paralell
-                    //   2) Minden egyes legyartott elemnek sajat scope kell (az egyes elemek kulon szalakban lehetnek hasznalva)
-                    //
+                //
+                // Mivel az osszes pool elemnek sajat scope-ja van ezert h az esetleges korkoros referenciat
+                // detektalni tudjuk, rekurzio eseten a mar korabban letrehozott scope-ot kell hasznaljuk.
+                //
 
-                    FCurrentScope.Value.Meta(PooledLifetime.POOL_SCOPE, true);
+                IInjector dedicatedScope = FDedicatedScope.Value ??= ScopeFactory.CreateScope();
 
-                    return FCurrentScope.Value.Get(typeof(TInterface), Name);
-                }
-                finally
-                {
-                    FCurrentScope.Value = null;
-                }
+                //
+                // Ez itt trukkos mert:
+                //   1) "injector" by design nem szalbiztos viszont ez a metodus lehet hivva paralell
+                //   2) Minden egyes legyartott elemnek sajat scope kell (az egyes elemek kulon szalakban lehetnek hasznalva)
+                //
+
+                dedicatedScope.Meta(PooledLifetime.POOL_SCOPE, true);
+
+                return dedicatedScope.Get(typeof(TInterface), Name);
             }
 
             public void Dispose(object item) {} //scope fogja felszabaditani
@@ -111,7 +114,20 @@ namespace Solti.Utils.DI.Internals
         }
 
         [SuppressMessage("Reliability", "CA2000:Dispose objects before losing scope")]
-        public PoolService(IScopeFactory scopeFactory, int capacity, string? name) : base(capacity, new ServiceReferenceLifetimeManager(scopeFactory, name)) {}
+        public PoolService(IScopeFactory scopeFactory, int capacity, string? name) : base(capacity, new PooledServiceLifetimeManager(scopeFactory, name)) 
+        {
+            //
+            //                                            !!HACK!!
+            //
+            // Az egyes pool elemekhez tartozo dedikalt scope-ok felszabaditasa a pool szerviz felszabaditasakor tortenik.
+            // Igy viszont ha a pool elemnek megosztott (Singleton) fuggosege van (ami meg korabban meg nem vt igenyelve)
+            // az elobb kerulne feszabaditasra mint a pool elem maga.
+            // Ezert meg a pool szerviz peldanyositasakor elkerunk egy pool elemet (amit egybol vissza is rakunk) hogy az
+            // esetleges megosztott fuggosegek mar peldanyositasra keruljenek.
+            //
+
+            Get().Dispose();
+        }
 
         protected override void Dispose(bool disposeManaged)
         {

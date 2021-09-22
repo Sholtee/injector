@@ -13,9 +13,6 @@ using NUnit.Framework;
 namespace Solti.Utils.DI.Injector.Tests
 {
     using Interfaces;
-    using Internals;
-
-    using ScopeFactory = DI.ScopeFactory;
 
     [TestFixture]
     public partial class InjectorTests

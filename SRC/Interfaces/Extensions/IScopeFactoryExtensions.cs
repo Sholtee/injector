@@ -22,7 +22,7 @@ namespace Solti.Utils.DI.Interfaces
             if (self is null)
                 throw new ArgumentNullException(nameof(self));
 
-            if (!self.ScopeOptions.SupportsServiceProvider)
+            if (!self.Options.SupportsServiceProvider)
                 throw new NotSupportedException();
 
             IInjector injector = self.CreateScope();

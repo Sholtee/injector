@@ -39,6 +39,6 @@ namespace Solti.Utils.DI.Interfaces
         /// <summary>
         /// The parent registry
         /// </summary>
-        IServiceRegistry? Parent { get; } // TODO: torolni / atmozgatni
+        IServiceRegistry? Parent { get; }
     }
 }
