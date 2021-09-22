@@ -33,7 +33,6 @@ namespace Solti.Utils.DI.Perf
                 new ScopeOptions 
                 {
                     MaxSpawnedTransientServices = int.MaxValue,
-                    SafeMode = false,
                     SupportsServiceProvider = true
                 }
             );

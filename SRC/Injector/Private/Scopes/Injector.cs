@@ -15,7 +15,7 @@ namespace Solti.Utils.DI.Internals
 
     internal class Injector : ConcurrentServiceRegistry, IInjector, IScopeFactory, ICaptureDisposable
     {
-        private readonly ServicePath? FPath;
+        private readonly ServicePath FPath = new();
 
         //
         // - Azert Stack<> hogy forditott iranyban szabaditsuk fel a szervizeket mint ahogy letrehoztuk oket (igy az
@@ -49,8 +49,8 @@ namespace Solti.Utils.DI.Internals
 
             //
             // 3. eset: Uj peldanyt kell letrehozni. Itt a teljes lekerdezest zaroljuk ne csak a "requested" bejegyzest
-            //          (ha singleton hivatkozik singleton-ra korkorosen es parhuzamosan probaljuk a ket szervizt le-
-            //          gyartani kesz is a dead lock). A lock() jol kezeli azt az esetet is ha rekurzivan kerul ez a 
+            //          (ha megosztott szerviz hivatkozik megosztottra korkorosen es parhuzamosan probaljuk a ket szervizt
+            //          legyartani kesz is a dead lock). A lock() jol kezeli azt az esetet is ha rekurzivan kerul ez a 
             //          metodus meghivasra.
             //
 
@@ -65,7 +65,7 @@ namespace Solti.Utils.DI.Internals
 
                 if (Options.StrictDI)
                 {
-                    AbstractServiceEntry? requestor = FPath?.Last; // unsafe modban nincs utvonal
+                    AbstractServiceEntry? requestor = FPath.Last;
 
                     //
                     // - Ha a fuggosegi fa gyokerenel vagyunk akkor a metodus nem ertelmezett.
@@ -84,7 +84,11 @@ namespace Solti.Utils.DI.Internals
 
                 object instance;
 
-                if (Options.SafeMode && FPath!.First?.State.HasFlag(ServiceEntryStates.Instantiated) is not true) // unsafe modban nincs utvonal
+                //
+                // Ha korabban meg nem peldanyositottuk a szervizt akkor ellenorizzuk hogy nincs e korkoros referencia.
+                //
+
+                if (FPath.First?.State.HasFlag(ServiceEntryStates.Instantiated) is not true)
                 {
                     FPath.Push(requested); // nem szal biztos -> lock-on belul legyen
                     try
@@ -98,11 +102,6 @@ namespace Solti.Utils.DI.Internals
                     }
                 }
                 else
-                    //
-                    // Ha korabban mar tudtuk peldanyositani a szervizt vagy pedig nem biztonsagos modban vagyunk akkor nincs
-                    // korkoros referencia ellenorzes.
-                    //
-
                     instance = requested.CreateInstance(this);
 
                 //
@@ -160,7 +159,8 @@ namespace Solti.Utils.DI.Internals
             new ContextualServiceEntry(typeof(IInjector), null,  owner => (IInjector) owner),
             
             //
-            // ScopaFactory-nak mindig a gyoker scope-ot hasznaljuk
+            // ScopaFactory-nak mindig a gyoker scope-ot hasznaljuk (ez a getter csak gyoker scope-ban
+            // kerul meghivasra)
             //
 
             new ContextualServiceEntry(typeof(IScopeFactory), null, owner => this),
@@ -228,17 +228,11 @@ namespace Solti.Utils.DI.Internals
         public Injector(ISet<AbstractServiceEntry> entries, ScopeOptions options, CancellationToken cancellation) : base(entries, cancellation: cancellation)
         {
             Options = options;
-
-            if (Options.SafeMode)
-                FPath = new ServicePath();
         }
 
         public Injector(Injector parent) : base(parent)
         {
             Options = parent.Options;
-
-            if (Options.SafeMode)
-                FPath = new ServicePath();
         }
 
         #region IScopeFactory
