@@ -13,9 +13,9 @@ namespace Solti.Utils.DI.Internals
     using Primitives.Patterns;
     using Primitives.Threading;
 
-    internal sealed class PoolService<TInterface> : ObjectPool<object>, IPool<TInterface> where TInterface: class
+    internal sealed class PoolService<TInterface> : ObjectPool<TInterface>, IPool<TInterface> where TInterface: class
     {
-        private sealed class PooledServiceLifetimeManager: Disposable, ILifetimeManager<object>
+        private sealed class PooledServiceLifetimeManager: Disposable, ILifetimeManager<TInterface>
         {
             //
             // Ne [ThreadStatic]-t hasznaljunk, hogy minden interface-nev paroshoz kulon peldany tartozzon.
@@ -48,7 +48,7 @@ namespace Solti.Utils.DI.Internals
                 Name = name;
             }
 
-            public object Create()
+            public TInterface Create()
             {
                 //
                 // Mivel az osszes pool elemnek sajat scope-ja van ezert h az esetleges korkoros referenciat
@@ -65,14 +65,14 @@ namespace Solti.Utils.DI.Internals
 
                 dedicatedScope.Meta(PooledLifetime.POOL_SCOPE, true);
 
-                return dedicatedScope.Get(typeof(TInterface), Name);
+                return dedicatedScope.Get<TInterface>(Name);
             }
 
-            public void Dispose(object item) {} //scope fogja felszabaditani
+            public void Dispose(TInterface item) {} //scope fogja felszabaditani
 
-            public void CheckOut(object item) {}
+            public void CheckOut(TInterface item) {}
 
-            public void CheckIn(object item)
+            public void CheckIn(TInterface item)
             {
                 if (item is IResettable resettable && resettable.Dirty)
                     resettable.Reset();
@@ -81,11 +81,11 @@ namespace Solti.Utils.DI.Internals
             public void RecursionDetected() {}
         }
 
-        private sealed class Wrapped : Disposable, IWrapped<object>
+        private sealed class Wrapped : Disposable, IWrapped<object> // NE IWrapped<TInterface> legyen mert azt a rendszer nem ismeri
         {
-            private readonly object FValue;
+            private readonly TInterface FValue;
 
-            public Wrapped(ObjectPool<object> owner)
+            public Wrapped(ObjectPool<TInterface> owner)
             {
                 Owner = owner;
                 FValue = owner.Get(CheckoutPolicy.Block)!;
@@ -101,7 +101,7 @@ namespace Solti.Utils.DI.Internals
                 base.Dispose(disposeManaged);
             }
 
-            public ObjectPool<object> Owner { get; }
+            public ObjectPool<TInterface> Owner { get; }
 
             public object Value
             {
