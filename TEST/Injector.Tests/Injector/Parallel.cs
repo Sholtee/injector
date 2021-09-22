@@ -26,7 +26,7 @@ namespace Solti.Utils.DI.Injector.Tests
             .ToArray();
 
         [Test]
-        public void Parallelism_DependencyResolutionTest(
+        public void Parallelism_DependencyResolutionInASeparateScope(
             [ValueSource(nameof(Lifetimes))] Lifetime l1,
             [ValueSource(nameof(Lifetimes))] Lifetime l2,
             [ValueSource(nameof(Lifetimes))] Lifetime l3) 
@@ -52,7 +52,33 @@ namespace Solti.Utils.DI.Injector.Tests
         }
 
         [Test]
-        public void Parallelism_SpecializationTest([ValueSource(nameof(Lifetimes))] Lifetime lifetime)
+        public void Parallelism_DependencyResolutionInTheSameScope(
+            [ValueSource(nameof(Lifetimes))] Lifetime l1,
+            [ValueSource(nameof(Lifetimes))] Lifetime l2,
+            [ValueSource(nameof(Lifetimes))] Lifetime l3)
+        {
+            Root = ScopeFactory.Create(svcs => svcs
+                .Service(typeof(IList<>), typeof(MyList<>), l1)
+                .Service<IInterface_7<IList<object>>, Implementation_7_TInterface_Dependant<IList<object>>>(l2)
+                .Service<IInterface_7<IInterface_7<IList<object>>>, Implementation_7_TInterface_Dependant<IInterface_7<IList<object>>>>(l3));
+
+            using (IInjector injector = Root.CreateScope())
+            {
+                Assert.DoesNotThrow(() => Task.WaitAll
+                (
+                    Enumerable.Repeat(0, TASK_COUNT).Select(_ => Task.Run(Worker)).ToArray()
+                ));
+
+                void Worker()
+                {
+                    for (int i = 0; i < 50; i++)
+                        injector.Get<IInterface_7<IInterface_7<IList<object>>>>();
+                }
+            }
+        }
+
+        [Test]
+        public void Parallelism_SpecializationInASeparateScope([ValueSource(nameof(Lifetimes))] Lifetime lifetime)
         {
             Root = ScopeFactory.Create(svcs => svcs.Service(typeof(IList<>), typeof(MyList<>), lifetime));
 
@@ -64,6 +90,26 @@ namespace Solti.Utils.DI.Injector.Tests
             void Worker()
             {
                 using (IInjector injector = Root.CreateScope())
+                {
+                    foreach (Type type in RandomTypes.Take(20))
+                        injector.Get(typeof(IList<>).MakeGenericType(type));
+                }
+            }
+        }
+
+        [Test]
+        public void Parallelism_SpecializationInTheSameScope([ValueSource(nameof(Lifetimes))] Lifetime lifetime)
+        {
+            Root = ScopeFactory.Create(svcs => svcs.Service(typeof(IList<>), typeof(MyList<>), lifetime));
+
+            using (IInjector injector = Root.CreateScope())
+            {
+                Assert.DoesNotThrow(() => Task.WaitAll
+                (
+                    Enumerable.Repeat(0, TASK_COUNT).Select(_ => Task.Run(Worker)).ToArray()
+                ));
+
+                void Worker()
                 {
                     foreach (Type type in RandomTypes.Take(20))
                         injector.Get(typeof(IList<>).MakeGenericType(type));
