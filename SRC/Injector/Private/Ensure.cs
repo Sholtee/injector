@@ -51,10 +51,6 @@ namespace Solti.Utils.DI.Internals
                 if (argument.IsAbstract)
                     throw new ArgumentException(Resources.PARAMETER_IS_ABSTRACT, name);
             }
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T IsNotNull<T>(T? value, string member) where T: class =>
-            value ?? throw new Exception(string.Format(Resources.Culture, Resources.IS_NULL, member));       
+        }    
     }
 }
