@@ -15,7 +15,7 @@ namespace Solti.Utils.DI.Internals
 
     internal sealed class PoolService<TInterface> : ObjectPool<TInterface>, IPool<TInterface> where TInterface: class
     {
-        private sealed class PooledServiceLifetimeManager: Disposable, ILifetimeManager<TInterface>
+        private sealed class PoolServiceLifetimeManager: Disposable, ILifetimeManager<TInterface>
         {
             //
             // Ne [ThreadStatic]-t hasznaljunk, hogy minden interface-nev paroshoz kulon peldany tartozzon.
@@ -42,7 +42,7 @@ namespace Solti.Utils.DI.Internals
 
             public string? Name { get; }
 
-            public PooledServiceLifetimeManager(IScopeFactory scopeFactory, string? name)
+            public PoolServiceLifetimeManager(IScopeFactory scopeFactory, string? name)
             {
                 ScopeFactory = scopeFactory;
                 Name = name;
@@ -114,7 +114,7 @@ namespace Solti.Utils.DI.Internals
         }
 
         [SuppressMessage("Reliability", "CA2000:Dispose objects before losing scope")]
-        public PoolService(IScopeFactory scopeFactory, int capacity, string? name) : base(capacity, new PooledServiceLifetimeManager(scopeFactory, name)) 
+        public PoolService(IScopeFactory scopeFactory, int capacity, string? name) : base(capacity, new PoolServiceLifetimeManager(scopeFactory, name)) 
         {
             //
             //                                            !!HACK!!
