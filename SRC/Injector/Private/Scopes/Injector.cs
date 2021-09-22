@@ -33,8 +33,9 @@ namespace Solti.Utils.DI.Internals
         private object GetOrCreateInstance(AbstractServiceEntry requested)
         {
             //
-            // 1. eset: Csak egy peldanyt kell letrehozni amit vki korabban mar megtett [HasFlag(Built)] -> visszaadjuk azt.
-            //          Ebben az esetben a szerviz felszabaditasaval mar nem kell foglalkoznunk.
+            // 1. eset: Csak egy peldanyt kell letrehozni amit vki korabban mar megtett [HasFlag(Built)]
+            //    - Visszaadjuk azt (a szerviz tulajdonosa itt lenyegtelen)
+            //    - A szerviz felszabaditasaval mar nem kell foglalkoznunk
             //
 
             if (requested.State.HasFlag(ServiceEntryStates.Built))
@@ -48,10 +49,10 @@ namespace Solti.Utils.DI.Internals
                 return ((Injector) requested.Owner!).GetOrCreateInstance(requested);
 
             //
-            // 3. eset: Uj peldanyt kell letrehozni. Itt a teljes lekerdezest zaroljuk ne csak a "requested" bejegyzest
-            //          (ha megosztott szerviz hivatkozik megosztottra korkorosen es parhuzamosan probaljuk a ket szervizt
-            //          legyartani kesz is a dead lock). A lock() jol kezeli azt az esetet is ha rekurzivan kerul ez a 
-            //          metodus meghivasra.
+            // 3. eset: Uj peldanyt kell letrehozni.
+            //    - Itt a teljes lekerdezest zaroljuk ne csak a "requested" bejegyzest (ha megosztott szerviz hivatkozik megosztottra
+            //      korkorosen es parhuzamosan probaljuk a ket szervizt legyartani kesz is a dead lock).
+            //    - A lock() jol kezeli azt az esetet is ha rekurzivan kerul ez a metodus meghivasra.
             //
 
             lock (FRequestLock)
@@ -63,7 +64,12 @@ namespace Solti.Utils.DI.Internals
                 if (requested.State.HasFlag(ServiceEntryStates.Built))
                     return requested.GetSingleInstance();
 
-                if (Options.StrictDI)
+                //
+                // StrictDI ellenorzes csak akkor van ha korabban meg nem tudtuk peldanyositani a szervizt (ha korabban
+                // mar tudtuk peldanyositani akkor ez az ellenorzes is mar megtortent).
+                //
+
+                if (Options.StrictDI && !requested.State.HasFlag(ServiceEntryStates.Instantiated))
                 {
                     AbstractServiceEntry? requestor = FPath.Last;
 
@@ -85,15 +91,19 @@ namespace Solti.Utils.DI.Internals
                 object instance;
 
                 //
-                // Ha korabban meg nem peldanyositottuk a szervizt akkor ellenorizzuk hogy nincs e korkoros referencia.
+                // 1) Korabban mar peldanyositott szervizt igenylunk -> Nem bovitjuk az utvonalat a szerviz iranyaban,
+                //    ugy sem lesz CDEP (peldanyositott szerviznek minden fuggosege is mar peldanyositott)
+                // 2) Korabban meg nem peldanyositottuk a szervizt -> Bovitjuk az utvonalat a szerviz iranyaban
+                //    a) 1 hosszu utnal -> nincs CDEP ellenorzes
+                //    b) Kulonben -> CDEP ellenorzes 
                 //
 
-                if (!(FPath.First ?? requested).State.HasFlag(ServiceEntryStates.Instantiated))
+                if (!requested.State.HasFlag(ServiceEntryStates.Instantiated))
                 {
-                    FPath.Push(requested); // nem szal biztos -> lock-on belul legyen
+                    FPath.Push(requested);
                     try
                     {
-                        FPath.CheckNotCircular();
+                        FPath.CheckNotCircular(); // egy elemnel nem csinal semmit
                         instance = requested.CreateInstance(this);
                     }
                     finally
