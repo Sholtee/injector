@@ -68,8 +68,8 @@ namespace Solti.Utils.DI.Injector.Tests
             using (IInjector injector = Root.CreateScope())
             {
                 var e = Assert.Throws<ServiceNotFoundException>(() => injector.Get<IInterface_7<IInterface_7<IInterface_1>>>());
-                Assert.That(e.Data.Contains("path"));
-                Assert.That(e.Data["path"], Is.EqualTo(string.Join(" -> ", new ServiceId(typeof(IInterface_7<IInterface_1>), null).FriendlyName(), new ServiceId(typeof(IInterface_1), null).FriendlyName())));
+                Assert.That(e.Data["requested"], Is.EqualTo(new MissingServiceEntry(typeof(IInterface_1), null)));
+                Assert.That(e.Data["requestor"], Is.EqualTo(injector.Get<IServiceRegistry>().GetEntry<IInterface_7<IInterface_1>>()));
             }
         }
 

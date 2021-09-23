@@ -23,14 +23,9 @@ namespace Solti.Utils.DI.Interfaces
         AbstractServiceEntry? Last { get; }
 
         /// <summary>
-        /// Appends the path with the given <see cref="AbstractServiceEntry"/>.
+        /// The length of the path.
         /// </summary>
-        void Push(AbstractServiceEntry entry);
-
-        /// <summary>
-        /// Removes the <see cref="Last"/> pushed <see cref="AbstractServiceEntry"/>.
-        /// </summary>
-        void Pop();
+        int Length { get; }
 
         /// <summary>
         /// Throws if the path is circular.

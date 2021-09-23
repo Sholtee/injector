@@ -88,6 +88,8 @@ namespace Solti.Utils.DI.Internals
 
             FPath.RemoveAt(FPath.Count - 1);
 
+        public int Length => FPath.Count;
+
         public static string Format(IEnumerable<IServiceId> path) => string.Join(" -> ", path.Select(IServiceIdExtensions.FriendlyName));
 
         public IEnumerator<AbstractServiceEntry> GetEnumerator() => FPath.GetEnumerator();

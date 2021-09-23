@@ -122,5 +122,14 @@ namespace Solti.Utils.DI.Interfaces.Properties {
                 return ResourceManager.GetString("SERVICE_ALREADY_REGISTERED", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No registered implementation for &quot;{0}&quot;..
+        /// </summary>
+        internal static string SERVICE_NOT_FOUND {
+            get {
+                return ResourceManager.GetString("SERVICE_NOT_FOUND", resourceCulture);
+            }
+        }
     }
 }

@@ -138,4 +138,7 @@
   <data name="SERVICE_ALREADY_REGISTERED" xml:space="preserve">
     <value>A service with the same ID has already been registered.</value>
   </data>
+  <data name="SERVICE_NOT_FOUND" xml:space="preserve">
+    <value>No registered implementation for "{0}".</value>
+  </data>
 </root>

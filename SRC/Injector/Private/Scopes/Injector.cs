@@ -45,8 +45,8 @@ namespace Solti.Utils.DI.Internals
             // 2. eset: Nem mi vagyunk a tulajdonosok, ertesitjuk a tulajdonost h hozza letre o a bejegyzest
             //
 
-            if (requested.Owner != this)
-                return ((Injector) requested.Owner!).GetOrCreateInstance(requested);
+            if (requested.Owner is not null && requested.Owner != this)
+                return ((Injector) requested.Owner).GetOrCreateInstance(requested);
 
             //
             // 3. eset: Uj peldanyt kell letrehozni.
@@ -139,16 +139,12 @@ namespace Solti.Utils.DI.Internals
             AbstractServiceEntry? requested = GetEntry(iface, name); // szal biztos
 
             if (requested is null)
-                return throwOnMissing
-                    //
-                    // Itt a kerelmezot nem tudjuk lekerdezni mivel FPath nem szalbiztos.
-                    //
+            {
+                if (!throwOnMissing)
+                    return null;
 
-                    ? throw new ServiceNotFoundException
-                    (
-                        string.Format(Resources.Culture, Resources.SERVICE_NOT_FOUND, new ServiceId(iface, name).FriendlyName())
-                    )
-                    : null;
+                requested = new MissingServiceEntry(iface, name);
+            }
 
             object instance = GetOrCreateInstance(requested); // szal biztos
 
@@ -166,7 +162,8 @@ namespace Solti.Utils.DI.Internals
         protected override IReadOnlyCollection<AbstractServiceEntry> BuiltInServices => new AbstractServiceEntry[]
         {
             new ContextualServiceEntry(typeof(IServiceRegistry), null, owner => owner),
-            new ContextualServiceEntry(typeof(IInjector), null,  owner => (IInjector) owner),
+            new ContextualServiceEntry(typeof(IInjector), null,  owner => owner),
+            new ContextualServiceEntry(typeof(IServicePath), null,  owner => ((Injector) owner).FPath),
             
             //
             // ScopaFactory-nak mindig a gyoker scope-ot hasznaljuk (ez a getter csak gyoker scope-ban
