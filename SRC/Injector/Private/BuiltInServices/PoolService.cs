@@ -13,6 +13,15 @@ namespace Solti.Utils.DI.Internals
     using Primitives.Patterns;
     using Primitives.Threading;
 
+    //                                        !!!FIGYELEM!!!
+    //
+    // Ez az osztaly kozponti komponens, ezert minden modositast korultekintoen, a teljesitmenyt szem elott tartva
+    // kell elvegezni:
+    // - nincs Sysmte.Linq
+    // - nincs System.Reflection
+    // - mindig futtassuk a teljesitmeny teszteket (is) hogy a hatekonysag nem romlott e
+    //
+
     internal sealed class PoolService<TInterface> : ObjectPool<TInterface>, IPool<TInterface> where TInterface: class
     {
         private sealed class PoolServiceLifetimeManager: Disposable, ILifetimeManager<TInterface>
@@ -62,7 +71,7 @@ namespace Solti.Utils.DI.Internals
                 return dedicatedScope.Get<TInterface>(Name);
             }
 
-            public void Dispose(TInterface item) {} //scope fogja felszabaditani
+            public void Dispose(TInterface item) {} // scope fogja felszabaditani
 
             public void CheckOut(TInterface item) {}
 
@@ -108,7 +117,6 @@ namespace Solti.Utils.DI.Internals
         [SuppressMessage("Reliability", "CA2000:Dispose objects before losing scope")]
         public PoolService(IScopeFactory scopeFactory, int capacity, string? name) : base(capacity, new PoolServiceLifetimeManager(scopeFactory, name)) 
         {
-            //
             //                                            !!HACK!!
             //
             // Az egyes pool elemekhez tartozo dedikalt scope-ok felszabaditasa a pool szerviz felszabaditasakor tortenik.
