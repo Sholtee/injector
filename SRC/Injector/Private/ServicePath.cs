@@ -6,7 +6,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
+using System.Linq; // TODO: torolni
 
 namespace Solti.Utils.DI.Internals
 {
@@ -90,7 +90,7 @@ namespace Solti.Utils.DI.Internals
 
         public int Length => FPath.Count;
 
-        public static string Format(IEnumerable<IServiceId> path) => string.Join(" -> ", path.Select(IServiceIdExtensions.FriendlyName));
+        public static string Format(IEnumerable<AbstractServiceEntry> path) => string.Join(" -> ", path.Select(entry => entry.ToString(shortForm: true)));
 
         public IEnumerator<AbstractServiceEntry> GetEnumerator() => FPath.GetEnumerator();
 

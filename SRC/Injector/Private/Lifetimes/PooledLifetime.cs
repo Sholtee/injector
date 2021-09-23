@@ -21,7 +21,7 @@ namespace Solti.Utils.DI.Internals
             if (iface.IsGenericType)
                 iface = iface.GetGenericTypeDefinition();
 
-            return $"{Consts.INTERNAL_SERVICE_NAME_PREFIX}pool_{new ServiceId(iface, name).FriendlyName()}"; // ne iface.GUID-ot hasznaljunk mert az kibaszott lassu
+            return $"{Consts.INTERNAL_SERVICE_NAME_PREFIX}pool_{new MissingServiceEntry(iface, name).ToString(shortForm: true)}"; // ne iface.GUID-ot hasznaljunk mert az kibaszott lassu
         }
 
         private AbstractServiceEntry PoolService(Type iface, string? name)

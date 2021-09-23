@@ -14,7 +14,7 @@ namespace Solti.Utils.DI.Interfaces
     /// <summary>
     /// Describes a missing service.
     /// </summary>
-    /// <remarks>This entry can not be instantiated.</remarks>
+    /// <remarks>This entry cannot be instantiated.</remarks>
     public sealed record MissingServiceEntry : AbstractServiceEntry
     {
         /// <summary>
@@ -44,7 +44,7 @@ namespace Solti.Utils.DI.Interfaces
             IServicePath path = scope.Get<IServicePath>();
             Debug.Assert(path.Last == this, "Wrong path");
 
-            ServiceNotFoundException ex = new(string.Format(Resources.Culture, Resources.SERVICE_NOT_FOUND, this.FriendlyName()));
+            ServiceNotFoundException ex = new(string.Format(Resources.Culture, Resources.SERVICE_NOT_FOUND, ToString(shortForm: true)));
 
             ex.Data["requested"] = this;
             ex.Data["requestor"] = path.Length > 1

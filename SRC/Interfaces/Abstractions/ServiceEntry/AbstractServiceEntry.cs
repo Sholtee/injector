@@ -123,17 +123,35 @@ namespace Solti.Utils.DI.Interfaces
         /// </summary>
         public abstract AbstractServiceEntry CopyTo(IServiceRegistry owner);
 
-        /// <summary>
-        /// See <see cref="object.ToString"/>.
-        /// </summary>
-        public sealed override string ToString() // "sealed" azert kell h a leszarmazott "record"-oknal a fordito ne irja felul 
-        {
-            const string NAME_PART = " - {0}: {1}";
+        /// <inheritdoc/>
+        public sealed override string ToString() => ToString(false); // "sealed" azert kell h a leszarmazott "record"-oknal a fordito ne irja felul 
 
-            return new StringBuilder(this.FriendlyName())
-                .AppendFormat(Resources.Culture, NAME_PART, nameof(Lifetime), Lifetime?.ToString() ?? "NULL")
-                .AppendFormat(Resources.Culture, NAME_PART, nameof(Implementation), Implementation?.GetFriendlyName() ?? "NULL")           
-                .ToString();
+        /// <summary>
+        /// Returns the string reprezentation of this entry.
+        /// </summary>
+        public string ToString(bool shortForm)
+        {
+            StringBuilder result = new(Interface.GetFriendlyName());
+            
+            if (Name is not null)
+                result.Append($":{Name}");
+
+            if (!shortForm)
+            {
+                const string
+                    NAME_PART = " - {0}: {1}",
+                    NULL = nameof(NULL);
+
+                //
+                // Ennyihez nem kell StringBuilder
+                //
+
+                result
+                    .AppendFormat(Resources.Culture, NAME_PART, nameof(Lifetime), Lifetime?.ToString() ?? NULL)
+                    .AppendFormat(Resources.Culture, NAME_PART, nameof(Implementation), Implementation?.GetFriendlyName() ?? NULL);
+            }
+
+            return result.ToString();
         }
     }
 }
