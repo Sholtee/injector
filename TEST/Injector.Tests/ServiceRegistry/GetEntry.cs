@@ -141,6 +141,14 @@ namespace Solti.Utils.DI.Internals.Tests
             ServiceRegistryBase child = (ServiceRegistryBase) Activator.CreateInstance(registryType, new object[] { Registry });
             Assert.AreSame(Registry.GetEntry<IList<int>>(name), child.GetEntry<IList<int>>(name));
         }
+
+        [Test]
+        public void GetEntry_ShouldReturnAMissingServiceEntryOnMissingService([Values(null, "cica")] string name, [ValueSource(nameof(RegistryTypes))] Type registryType)
+        {
+            Registry = (ServiceRegistryBase)Activator.CreateInstance(registryType, new object[] { new HashSet<AbstractServiceEntry>(ServiceIdComparer.Instance), null, CancellationToken.None });
+
+            Assert.AreEqual(Registry.GetEntry<IDisposable>(name), new MissingServiceEntry(typeof(IDisposable), name));
+        }
     }
 
     //

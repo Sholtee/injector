@@ -134,7 +134,7 @@ namespace Solti.Utils.DI.Internals
             }
         }
 
-        private object? Get(Type iface, string? name, bool throwOnMissing)
+        private object? GetOrCreateInstance(Type iface, string? name, bool throwOnMissing)
         {
             CheckNotDisposed();
 
@@ -145,15 +145,14 @@ namespace Solti.Utils.DI.Internals
             Ensure.Parameter.IsInterface(iface, nameof(iface));
             Ensure.Parameter.IsNotGenericDefinition(iface, nameof(iface));
 
-            AbstractServiceEntry? requested = GetEntry(iface, name); // szal biztos
+            AbstractServiceEntry requested = GetEntry(iface, name); // szal biztos
 
-            if (requested is null)
-            {
-                if (!throwOnMissing)
-                    return null;
+            //
+            // TODO: ONRequest callback
+            //
 
-                requested = new MissingServiceEntry(iface, name);
-            }
+            if (requested is MissingServiceEntry && !throwOnMissing)
+                return null;
 
             object instance = GetOrCreateInstance(requested); // szal biztos
 
@@ -264,13 +263,13 @@ namespace Solti.Utils.DI.Internals
         #endregion
 
         #region ICaptureDisposable
-        public IReadOnlyCollection<object> CapturedDisposables => ((IReadOnlyCollection<object>?) FCapturedDisposables) ?? Array.Empty<object>();
+        public IReadOnlyCollection<object> CapturedDisposables => FCapturedDisposables;
         #endregion
 
         #region IInjector
-        public object Get(Type iface, string? name) => Get(iface, name, throwOnMissing: true)!;
+        public object Get(Type iface, string? name) => GetOrCreateInstance(iface, name, throwOnMissing: true)!;
 
-        public object? TryGet(Type iface, string? name) => Get(iface, name, throwOnMissing: false);
+        public object? TryGet(Type iface, string? name) => GetOrCreateInstance(iface, name, throwOnMissing: false);
 
         public ScopeOptions Options { get; }
         #endregion

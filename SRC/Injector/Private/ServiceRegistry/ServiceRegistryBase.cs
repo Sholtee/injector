@@ -72,7 +72,7 @@ namespace Solti.Utils.DI.Internals
 
         public IServiceRegistry? Parent { get; }
 
-        public AbstractServiceEntry? GetEntry(Type iface, string? name) => BuiltResolver.Invoke(this, Ensure.Parameter.IsNotNull(iface, nameof(iface)), name);
+        public AbstractServiceEntry GetEntry(Type iface, string? name) => BuiltResolver.Invoke(this, Ensure.Parameter.IsNotNull(iface, nameof(iface)), name) ?? new MissingServiceEntry(iface, name);
 
         public IReadOnlyCollection<AbstractServiceEntry> RegisteredEntries { get; }
 

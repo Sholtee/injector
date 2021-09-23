@@ -14,6 +14,7 @@ namespace Solti.Utils.DI.Interfaces
     /// <summary>
     /// Describes a missing service.
     /// </summary>
+    /// <remarks>This entry can not be instantiated.</remarks>
     public sealed record MissingServiceEntry : AbstractServiceEntry
     {
         /// <summary>
