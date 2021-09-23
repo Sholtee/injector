@@ -81,8 +81,8 @@ namespace Solti.Utils.DI.Internals
                     if (requestor?.Lifetime is not null && requested.Lifetime?.CompareTo(requestor.Lifetime) < 0)
                     {
                         RequestNotAllowedException ex = new(Resources.STRICT_DI);
-                        ex.Data["requestor"] = requestor;
-                        ex.Data["requested"] = requested;
+                        ex.Data[nameof(requestor)] = requestor;
+                        ex.Data[nameof(requested)] = requested;
 
                         throw ex;
                     }
