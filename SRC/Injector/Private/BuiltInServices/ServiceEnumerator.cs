@@ -6,11 +6,19 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
+
+    //                                        !!!FIGYELEM!!!
+    //
+    // Ez az osztaly kozponti komponens, ezert minden modositast korultekintoen, a teljesitmenyt szem elott tartva
+    // kell elvegezni:
+    // - nincs Sysmte.Linq
+    // - nincs System.Reflection
+    // - mindig futtassuk a teljesitmeny teszteket (is) hogy a hatekonysag nem romlott e
+    //
 
     internal sealed class ServiceEnumerator<TInterface>: IEnumerable<TInterface> where TInterface: class
     {
@@ -20,28 +28,28 @@ namespace Solti.Utils.DI.Internals
 
         public IEnumerator<TInterface> GetEnumerator()
         {
-            foreach (string? svcName in GetNames())
+            Func<AbstractServiceEntry, bool> isCompatible = !typeof(TInterface).IsGenericType
+                ? entry => entry.Interface == typeof(TInterface)
+
+                //
+                // a) IList<int> volt regisztralva
+                // b) IList<> volt regisztralva
+                //
+
+                : entry => entry.Interface == typeof(TInterface) || entry.Interface == typeof(TInterface).GetGenericTypeDefinition();
+
+            //
+            // Lezart generikus mellett szerepelhet annak nyitott parja is -> Distinct
+            //
+
+            HashSet<string?> hashSet = new();
+
+            foreach (AbstractServiceEntry entry in Injector.Get<IServiceRegistry>().RegisteredEntries)
             {
-                yield return Injector.Get<TInterface>(svcName);
-            }
-
-            IEnumerable<string?> GetNames() 
-            {
-                Func<AbstractServiceEntry, bool> filter = !typeof(TInterface).IsGenericType
-                    ? entry => entry.Interface == typeof(TInterface)
-                    : entry => entry.Interface == typeof(TInterface) || entry.Interface == typeof(TInterface).GetGenericTypeDefinition();
-
-                return Injector
-                    .Get<IServiceRegistry>()
-                    .RegisteredEntries
-                    .Where(filter)
-                    .Select(entry => entry.Name)
-
-                    //
-                    // Lezart generikus mellett szerepelhet annak nyitott parja is
-                    //
-
-                    .Distinct();
+                if (isCompatible(entry) && hashSet.Add(entry.Name))
+                {
+                    yield return Injector.Get<TInterface>(entry.Name);
+                }
             }
         }
 
