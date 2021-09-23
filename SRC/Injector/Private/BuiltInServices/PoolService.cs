@@ -51,17 +51,13 @@ namespace Solti.Utils.DI.Internals
             public TInterface Create()
             {
                 //
-                // Mivel az osszes pool elemnek sajat scope-ja van ezert h az esetleges korkoros referenciat
-                // detektalni tudjuk, rekurzio eseten a mar korabban letrehozott scope-ot kell hasznaljuk.
+                // Ez itt trukkos mert:
+                //   - Minden egyes legyartott elemnek sajat scope kell (az egyes elemek kulon szalakban vannak hasznalva)
+                //   - Mivel az osszes pool elemnek sajat scope-ja van ezert h az esetleges korkoros referenciat
+                //     detektalni tudjuk, rekurzio eseten a mar korabban letrehozott scope-ot kell hasznaljuk.
                 //
 
                 IInjector dedicatedScope = FDedicatedScope.Value ??= ScopeFactory.CreateScope();
-
-                //
-                // Ez itt trukkos mert:
-                //   1) "injector" by design nem szalbiztos viszont ez a metodus lehet hivva paralell
-                //   2) Minden egyes legyartott elemnek sajat scope kell (az egyes elemek kulon szalakban lehetnek hasznalva)
-                //
 
                 dedicatedScope.Meta(PooledLifetime.POOL_SCOPE, true);
 
