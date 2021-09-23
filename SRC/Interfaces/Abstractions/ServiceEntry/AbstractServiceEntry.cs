@@ -142,10 +142,6 @@ namespace Solti.Utils.DI.Interfaces
                     NAME_PART = " - {0}: {1}",
                     NULL = nameof(NULL);
 
-                //
-                // Ennyihez nem kell StringBuilder
-                //
-
                 result
                     .AppendFormat(Resources.Culture, NAME_PART, nameof(Lifetime), Lifetime?.ToString() ?? NULL)
                     .AppendFormat(Resources.Culture, NAME_PART, nameof(Implementation), Implementation?.GetFriendlyName() ?? NULL);
