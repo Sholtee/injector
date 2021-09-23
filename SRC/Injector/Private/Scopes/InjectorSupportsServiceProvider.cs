@@ -11,6 +11,15 @@ namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
 
+    //                                        !!!FIGYELEM!!!
+    //
+    // Ez az osztaly kozponti komponens, ezert minden modositast korultekintoen, a teljesitmenyt szem elott tartva
+    // kell elvegezni:
+    // - nincs Sysmte.Linq
+    // - nincs System.Reflection
+    // - mindig futtassuk a teljesitmeny teszteket (is) hogy a hatekonysag nem romlott e
+    //
+
     internal class InjectorSupportsServiceProvider : Injector, IServiceProvider, IInjector
     {
         protected override Injector CreateDerived() => new InjectorSupportsServiceProvider(this);
