@@ -59,17 +59,24 @@ namespace Solti.Utils.DI.Injector.Tests
         }
 
         [Test]
-        public void Injector_Get_ShouldThrowOnNonRegisteredDependency([ValueSource(nameof(Lifetimes))] Lifetime lifetime1, [ValueSource(nameof(Lifetimes))] Lifetime lifetime2)
+        public void Injector_Get_ShouldThrowOnNonRegisteredDependency([ValueSource(nameof(Lifetimes))] Lifetime lifetime)
         {
-            Root = ScopeFactory.Create(svcs => svcs
-                .Service<IInterface_7<IInterface_1>, Implementation_7_TInterface_Dependant<IInterface_1>>(lifetime1)
-                .Service<IInterface_7<IInterface_7<IInterface_1>>, Implementation_7_TInterface_Dependant<IInterface_7<IInterface_1>>>(lifetime2));
+            Root = ScopeFactory.Create(svcs => svcs.Service<IInterface_7<IInterface_1>, Implementation_7_TInterface_Dependant<IInterface_1>>(lifetime));
 
             using (IInjector injector = Root.CreateScope())
             {
-                var e = Assert.Throws<ServiceNotFoundException>(() => injector.Get<IInterface_7<IInterface_7<IInterface_1>>>());
-                Assert.That(e.Data["requested"], Is.EqualTo(new MissingServiceEntry(typeof(IInterface_1), null)));
-                Assert.That(e.Data["requestor"], Is.EqualTo(injector.Get<IServiceRegistry>().GetEntry<IInterface_7<IInterface_1>>()));
+                var ex = Assert.Throws<ServiceNotFoundException>(() => injector.Get<IInterface_7<IInterface_1>>());
+                
+                //
+                // NE "injector"-bol kerdezzuk le mert pooled szervizeknek sajat scope-juk van
+                //
+
+                AbstractServiceEntry requestor = ((IInjector) ex.Data["scope"])
+                    .Get<IServiceRegistry>()
+                    .GetEntry<IInterface_7<IInterface_1>>();
+
+                Assert.That(ex.Data["requested"], Is.EqualTo(new MissingServiceEntry(typeof(IInterface_1), null)));
+                Assert.That(ex.Data["requestor"], Is.EqualTo(requestor));
             }
         }
 

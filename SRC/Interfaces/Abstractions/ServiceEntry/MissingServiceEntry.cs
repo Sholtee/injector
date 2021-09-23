@@ -49,7 +49,9 @@ namespace Solti.Utils.DI.Interfaces
             ex.Data["requestor"] = path.Length > 1
                 ? path.Reverse().Skip(1).First() // TODO: LINQ nelkul?
                 : null;
-
+#if DEBUG
+            ex.Data[nameof(scope)] = scope;
+#endif
             throw ex;
         }
 
