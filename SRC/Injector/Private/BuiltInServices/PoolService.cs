@@ -21,15 +21,15 @@ namespace Solti.Utils.DI.Internals
             // Ne [ThreadStatic]-t hasznaljunk, hogy minden interface-nev paroshoz kulon peldany tartozzon.
             //
 
-            private readonly ThreadLocal<IInjector?> FDedicatedScope = new(trackAllValues: true);
+            private readonly ThreadLocal<IInjector> FDedicatedScope;
 
             protected override void Dispose(bool disposeManaged)
             {
                 if (disposeManaged)
                 {
-                    foreach (IInjector? scope in FDedicatedScope.Values)
+                    foreach (IInjector scope in FDedicatedScope.Values)
                     {
-                        scope?.Dispose();
+                        scope.Dispose();
                     }
 
                     FDedicatedScope.Dispose();
@@ -38,13 +38,11 @@ namespace Solti.Utils.DI.Internals
                 base.Dispose(disposeManaged);
             }
 
-            public IScopeFactory ScopeFactory { get; }
-
             public string? Name { get; }
 
             public PoolServiceLifetimeManager(IScopeFactory scopeFactory, string? name)
             {
-                ScopeFactory = scopeFactory;
+                FDedicatedScope = new ThreadLocal<IInjector>(scopeFactory.CreateScope, trackAllValues: true);
                 Name = name;
             }
 
@@ -57,7 +55,7 @@ namespace Solti.Utils.DI.Internals
                 //     detektalni tudjuk, rekurzio eseten a mar korabban letrehozott scope-ot kell hasznaljuk.
                 //
 
-                IInjector dedicatedScope = FDedicatedScope.Value ??= ScopeFactory.CreateScope();
+                IInjector dedicatedScope = FDedicatedScope.Value;
 
                 dedicatedScope.Meta(PooledLifetime.POOL_SCOPE, true);
 
@@ -89,8 +87,6 @@ namespace Solti.Utils.DI.Internals
 
             protected override void Dispose(bool disposeManaged)
             {
-                CheckNotDisposed();
-
                 if (disposeManaged)
                     Owner.Return(FValue);
 
