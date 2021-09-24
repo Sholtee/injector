@@ -15,7 +15,7 @@ namespace Solti.Utils.DI.Internals
     // A PooledServiceEntry ket modon is lehet peldanyositva: Egy kulonallo poolban vagy a felhasznalo oldalan.
     //
 
-    internal sealed class PooledServiceEntry : ProducibleServiceEntry
+    internal sealed class PooledServiceEntry : ProducibleServiceEntry, IRequiresServiceAccess
     {
         private object? FInstance;
 
@@ -127,7 +127,7 @@ namespace Solti.Utils.DI.Internals
 
         public override Lifetime Lifetime { get; } = Lifetime.Pooled;
 
-        public override Func<object, object>? ServiceAccess { get; } = instance => instance is IWrapped<object> wrapped
+        public Func<object, object> ServiceAccess { get; } = instance => instance is IWrapped<object> wrapped
             ? wrapped.Value
             : instance;
     }

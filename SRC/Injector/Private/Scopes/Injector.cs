@@ -156,8 +156,8 @@ namespace Solti.Utils.DI.Internals
 
             object instance = GetOrCreateInstance(requested); // szal biztos
 
-            if (requested.ServiceAccess is not null)
-                instance = requested.ServiceAccess(instance);
+            if (requested is IRequiresServiceAccess accessor)
+                instance = accessor.ServiceAccess(instance);
 
             if (!requested.Interface.IsInstanceOfType(instance))
                 throw new InvalidCastException(string.Format(Resources.Culture, Resources.INVALID_INSTANCE, requested.Interface));
