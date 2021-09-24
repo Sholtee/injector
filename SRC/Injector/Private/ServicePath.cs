@@ -6,19 +6,24 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq; // TODO: torolni
+using System.Text;
 
 namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
     using Properties;
 
+    //                                        !!!FIGYELEM!!!
+    //
+    // Ez az osztaly kozponti komponens, ezert minden modositast korultekintoen, a teljesitmenyt szem elott tartva
+    // kell elvegezni:
+    // - nincs Sysmte.Linq
+    // - nincs System.Reflection
+    // - mindig futtassuk a teljesitmeny teszteket (is) hogy a hatekonysag nem romlott e
+    //
+
     internal sealed class ServicePath: IServicePath
     {
-        //
-        // Eredetileg itt lancolt listat hasznaltam de mint kiderult az nem epp a leggyorsabb
-        //
-
         private readonly List<AbstractServiceEntry> FPath = new(capacity: 10);
 
         public AbstractServiceEntry? Last => FPath.Count > 0
@@ -56,29 +61,25 @@ namespace Solti.Utils.DI.Internals
             // Ha egynel tobbszor szerepel az aktualis szerviz az aktualis utvonalon akkor korkoros referenciank van.
             //
 
-            if (firstIndex < FPath.Count - 1)
-                throw new CircularReferenceException(string.Format
-                (
-                    Resources.Culture,
-                    Resources.CIRCULAR_REFERENCE,
+            if (firstIndex < FPath.Count - 1) throw new CircularReferenceException
+            (
+                string.Format(Resources.Culture, Resources.CIRCULAR_REFERENCE, Format(GetCircle()))
+            );
 
-                    //
-                    // Csak magat a kort adjuk vissza.
-                    //
+            //
+            // Csak magat a kort adjuk vissza.
+            //
 
-                    Format
-                    (
-                        FPath.Skip(firstIndex)
-                    )
-                ));
+            IEnumerable<AbstractServiceEntry> GetCircle()
+            {
+                for (int i = firstIndex; i < FPath.Count; i++)
+                {
+                    yield return FPath[i];
+                }
+            }
         }
 
-        public void Push(AbstractServiceEntry entry)
-        {
-            Ensure.Parameter.IsNotNull(entry, nameof(entry));
-
-            FPath.Add(entry);
-        }
+        public void Push(AbstractServiceEntry entry) => FPath.Add(entry);
 
         public void Pop() =>
             //
@@ -90,7 +91,20 @@ namespace Solti.Utils.DI.Internals
 
         public int Length => FPath.Count;
 
-        public static string Format(IEnumerable<AbstractServiceEntry> path) => string.Join(" -> ", path.Select(entry => entry.ToString(shortForm: true)));
+        public static string Format(IEnumerable<AbstractServiceEntry> path)
+        {
+            StringBuilder sb = new();
+
+            foreach (AbstractServiceEntry entry in path)
+            {
+                if (sb.Length > 0)
+                    sb.Append(" -> ");
+
+                sb.Append(entry.ToString(shortForm: true));
+            }
+
+            return sb.ToString();
+        }
 
         public IEnumerator<AbstractServiceEntry> GetEnumerator() => FPath.GetEnumerator();
 
