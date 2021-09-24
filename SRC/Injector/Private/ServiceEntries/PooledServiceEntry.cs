@@ -21,18 +21,22 @@ namespace Solti.Utils.DI.Internals
 
         protected PooledServiceEntry(PooledServiceEntry entry, IServiceRegistry? owner) : base(entry, owner)
         {
+            PoolName = entry.PoolName;
         }
 
-        public PooledServiceEntry(Type @interface, string? name, Func<IInjector, Type, object> factory, IServiceRegistry? owner) : base(@interface, name, factory, owner)
+        public PooledServiceEntry(Type @interface, string? name, Func<IInjector, Type, object> factory, IServiceRegistry? owner, string poolName) : base(@interface, name, factory, owner)
         {
+            PoolName = poolName;
         }
 
-        public PooledServiceEntry(Type @interface, string? name, Type implementation, IServiceRegistry? owner) : base(@interface, name, implementation, owner)
+        public PooledServiceEntry(Type @interface, string? name, Type implementation, IServiceRegistry? owner, string poolName) : base(@interface, name, implementation, owner)
         {
+            PoolName = poolName;
         }
 
-        public PooledServiceEntry(Type @interface, string? name, Type implementation, IReadOnlyDictionary<string, object?> explicitArgs, IServiceRegistry? owner) : base(@interface, name, implementation, explicitArgs, owner)
+        public PooledServiceEntry(Type @interface, string? name, Type implementation, IReadOnlyDictionary<string, object?> explicitArgs, IServiceRegistry? owner, string poolName) : base(@interface, name, implementation, explicitArgs, owner)
         {
+            PoolName = poolName;
         }
 
         public override object CreateInstance(IInjector scope)
@@ -70,11 +74,7 @@ namespace Solti.Utils.DI.Internals
                 // fog megtortenni: biztonsagosan visszahelyezhetjuk mindig az elkert szervizt a pool-ba
                 //
 
-                IPool relatedPool = (IPool) scope.Get
-                (
-                    typeof(IPool<>).MakeGenericType(Interface),
-                    PooledLifetime.GetPoolName(Interface, Name)
-                );
+                IPool relatedPool = (IPool) scope.Get(typeof(IPool<>).MakeGenericType(Interface), PoolName);
 
                 FInstance = relatedPool.Get();
             }
@@ -99,7 +99,8 @@ namespace Solti.Utils.DI.Internals
                     Interface.MakeGenericType(genericArguments),
                     Name,
                     Implementation.MakeGenericType(genericArguments),
-                    owner
+                    owner,
+                    PoolName
                 ),
                 _ when Implementation is not null && ExplicitArgs is not null => new PooledServiceEntry
                 (
@@ -107,18 +108,22 @@ namespace Solti.Utils.DI.Internals
                     Name,
                     Implementation.MakeGenericType(genericArguments),
                     ExplicitArgs,
-                    owner
+                    owner,
+                    PoolName
                 ),
                 _ when Factory is not null => new PooledServiceEntry
                 (
                     Interface.MakeGenericType(genericArguments),
                     Name,
                     Factory,
-                    owner
+                    owner,
+                    PoolName
                 ),
                 _ => throw new NotSupportedException()
             };
         }
+
+        public string PoolName { get; }
 
         public override Lifetime Lifetime { get; } = Lifetime.Pooled;
 

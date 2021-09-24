@@ -12,66 +12,73 @@ namespace Solti.Utils.DI.Internals
 
     internal sealed class PooledLifetime : InjectorDotNetLifetime, IHasCapacity, IConcreteLifetime<PooledLifetime>
     {
+        private AbstractServiceEntry GetPoolService(Type iface, string? name, string poolName) => new SingletonServiceEntry
+        (
+            iface.IsGenericTypeDefinition
+                ? typeof(IPool<>)
+                : typeof(IPool<>).MakeGenericType(iface),
+            poolName,
+            iface.IsGenericTypeDefinition
+                ? typeof(PoolService<>)
+                : typeof(PoolService<>).MakeGenericType(iface),
+            new Dictionary<string, object?>
+            {
+                //
+                // Az argumentum nevek meg kell egyezzenek a PoolService.ctor() parameter neveivel.
+                // Kesobb majd lehet szebben is megoldhato lesz: https://github.com/dotnet/csharplang/issues/373
+                //
+
+                ["capacity"] = Capacity,
+                ["name"] = name // eredeti szervizt az eredeti neven keressuk
+            },
+            null
+        );
+ 
+        private static string GetPoolName(Type iface, string? name)
+        {
+            if (iface.IsConstructedGenericType)
+                iface = iface.GetGenericTypeDefinition();
+
+            return $"{Consts.INTERNAL_SERVICE_NAME_PREFIX}pool_{(iface, name).GetHashCode():X}";
+        }
+
         public PooledLifetime() : base(bindTo: () => Pooled, precedence: 20) { }
 
         public const string POOL_SCOPE = nameof(POOL_SCOPE);
 
-        public static string GetPoolName(Type iface, string? name)
-        {
-            if (iface.IsGenericType)
-                iface = iface.GetGenericTypeDefinition();
-
-            return $"{Consts.INTERNAL_SERVICE_NAME_PREFIX}pool_{new MissingServiceEntry(iface, name).ToString(shortForm: true)}"; // ne iface.GUID-ot hasznaljunk mert az kibaszott lassu
-        }
-
-        private AbstractServiceEntry PoolService(Type iface, string? name)
-        {
-            Ensure.Parameter.IsNotNull(iface, nameof(iface));
-            Ensure.Parameter.IsInterface(iface, nameof(iface));
-
-            return new SingletonServiceEntry
-            (
-                iface.IsGenericTypeDefinition
-                    ? typeof(IPool<>)
-                    : typeof(IPool<>).MakeGenericType(iface),
-                GetPoolName(iface, name),
-                iface.IsGenericTypeDefinition
-                    ? typeof(PoolService<>)
-                    : typeof(PoolService<>).MakeGenericType(iface),
-                new Dictionary<string, object?>
-                {
-                    //
-                    // Az argumentum nevek meg kell egyezzenek a PoolService.ctor() parameter neveivel.
-                    // Kesobb majd lehet szebben is megoldhato lesz: https://github.com/dotnet/csharplang/issues/373
-                    //
-
-                    ["capacity"] = Capacity,
-                    ["name"] = name
-                },
-                null
-            );
-        }
-
         public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Type implementation)
         {
+            string poolName = GetPoolName(iface, name);
+
             //
-            // A sorrend szamit (last IModifiedServiceCollection.LastEntry)
+            // A sorrend szamit (last IModifiedServiceCollection.LastEntry) viszont a validalas miatt eloszor a 
+            // PooledServiceEntry-t hozzuk letre.
             //
 
-            yield return PoolService(iface, name);
-            yield return new PooledServiceEntry(iface, name, implementation, null);
+            PooledServiceEntry pooledServiceEntry = new(iface, name, implementation, null, poolName);
+
+            yield return GetPoolService(iface, name, poolName);
+            yield return pooledServiceEntry;
         }
 
         public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Type implementation, IReadOnlyDictionary<string, object?> explicitArgs)
         {
-            yield return PoolService(iface, name);
-            yield return new PooledServiceEntry(iface, name, implementation, explicitArgs, null);
+            string poolName = GetPoolName(iface, name);
+
+            PooledServiceEntry pooledServiceEntry = new(iface, name, implementation, explicitArgs, null, poolName);
+
+            yield return GetPoolService(iface, name, poolName);
+            yield return pooledServiceEntry;
         }
 
         public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Func<IInjector, Type, object> factory)
         {
-            yield return PoolService(iface, name);
-            yield return new PooledServiceEntry(iface, name, factory, null);
+            string poolName = GetPoolName(iface, name);
+
+            PooledServiceEntry pooledServiceEntry = new(iface, name, factory, null, poolName);
+
+            yield return GetPoolService(iface, name, poolName);
+            yield return pooledServiceEntry;
         }
 
         public override int CompareTo(Lifetime other) => other is PooledLifetime
