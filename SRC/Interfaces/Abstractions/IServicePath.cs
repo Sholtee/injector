@@ -10,7 +10,7 @@ namespace Solti.Utils.DI.Interfaces
     /// <summary>
     /// Describes the path in which the current request takes place.
     /// </summary>
-    public interface IServicePath: IEnumerable<AbstractServiceEntry>
+    public interface IServicePath: IReadOnlyList<AbstractServiceEntry>
     {
         /// <summary>
         /// The first pushed <see cref="AbstractServiceEntry"/>.
@@ -21,11 +21,6 @@ namespace Solti.Utils.DI.Interfaces
         /// The last pushed <see cref="AbstractServiceEntry"/>.
         /// </summary>
         AbstractServiceEntry? Last { get; }
-
-        /// <summary>
-        /// The length of the path.
-        /// </summary>
-        int Length { get; }
 
         /// <summary>
         /// Throws if the path is circular.

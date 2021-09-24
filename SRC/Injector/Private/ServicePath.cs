@@ -89,7 +89,9 @@ namespace Solti.Utils.DI.Internals
 
             FPath.RemoveAt(FPath.Count - 1);
 
-        public int Length => FPath.Count;
+        public int Count => FPath.Count;
+
+        public AbstractServiceEntry this[int index] => FPath[index];
 
         public static string Format(IEnumerable<AbstractServiceEntry> path)
         {

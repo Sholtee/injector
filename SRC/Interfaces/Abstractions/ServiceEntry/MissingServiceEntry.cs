@@ -5,7 +5,6 @@
 ********************************************************************************/
 using System;
 using System.Diagnostics;
-using System.Linq;
 
 namespace Solti.Utils.DI.Interfaces
 {
@@ -47,8 +46,8 @@ namespace Solti.Utils.DI.Interfaces
             ServiceNotFoundException ex = new(string.Format(Resources.Culture, Resources.SERVICE_NOT_FOUND, ToString(shortForm: true)));
 
             ex.Data["requested"] = this;
-            ex.Data["requestor"] = path.Length > 1
-                ? path.Reverse().Skip(1).First() // TODO: LINQ nelkul?
+            ex.Data["requestor"] = path.Count > 1
+                ? path[path.Count - 2]
                 : null;
 #if DEBUG
             ex.Data[nameof(scope)] = scope;
