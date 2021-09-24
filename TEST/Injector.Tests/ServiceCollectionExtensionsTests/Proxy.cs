@@ -100,7 +100,7 @@ namespace Solti.Utils.DI.ServiceCollection.Tests
         [Test]
         public void Proxy_ShouldThrowOnAbstractService()
         {
-            Collection.Register(new DummyServiceEntry(typeof(IInterface_1), null));
+            Collection.Register(new MissingServiceEntry(typeof(IInterface_1), null));
 
             Assert.Throws<InvalidOperationException>(() => Collection.WithProxy((p1, p2, p3) => default), Resources.PROXYING_NOT_SUPPORTED);
         }

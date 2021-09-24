@@ -25,7 +25,7 @@ namespace Solti.Utils.DI.Perf
         [Params(true, false)]
         public bool WithCircularityCheck { get; set; }
 
-        [GlobalSetup(Target = nameof(Extend))]
+        [GlobalSetup]
         public void SetupExtend()
         {
             Path = new Internals.ServicePath();
@@ -38,7 +38,7 @@ namespace Solti.Utils.DI.Perf
 
             void Extend(int i)
             {
-                Path.Push(new DummyServiceEntry(typeof(IInjector), i.ToString()));
+                Path.Push(new MissingServiceEntry(typeof(IInjector), i.ToString()));
                 try
                 {
                     if (WithCircularityCheck)

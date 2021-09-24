@@ -238,6 +238,6 @@ namespace Solti.Utils.DI.Injector.Tests
 
         [Test]
         public void Ctor_ShouldThrowOnOverriddenService() =>
-            Assert.Throws<ArgumentException>(() => new Injector(new HashSet<AbstractServiceEntry>(ServiceIdComparer.Instance) { new DummyServiceEntry(typeof(IInjector), null) }, new ScopeOptions(), default), Resources.BUILT_IN_SERVICE_OVERRIDE);
+            Assert.Throws<ArgumentException>(() => new Injector(new HashSet<AbstractServiceEntry>(ServiceIdComparer.Instance) { new MissingServiceEntry(typeof(IInjector), null) }, new ScopeOptions(), default), Resources.BUILT_IN_SERVICE_OVERRIDE);
     }
 }
