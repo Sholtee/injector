@@ -30,9 +30,11 @@ namespace Solti.Utils.DI.ServiceCollection.Tests
         {
             Func<IInjector, Type, object> factory = (injector, type) => null;
 
-            Collection.Factory(typeof(IInterface_3<>), factory, lifetime);
+            Assert.DoesNotThrow(() => Collection.Factory(typeof(IInterface_3<>), factory, lifetime));
 
-            Assert.AreEqual(lifetime.CreateFrom(typeof(IInterface_3<int>), null, factory).Last(), ((ISupportsSpecialization) Collection.LastEntry).Specialize(null, typeof(int)));
+            AbstractServiceEntry expected = lifetime.CreateFrom(typeof(IInterface_3<int>), null, factory).Last();
+
+            Assert.That(((ISupportsSpecialization) Collection.LastEntry).Specialize(null, typeof(int)), Is.InstanceOf(expected.GetType()).And.EqualTo(expected).Using(ServiceIdComparer.Instance));
         }
 
         [TestCase(null)]

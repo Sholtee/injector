@@ -15,11 +15,11 @@ namespace Solti.Utils.DI.Internals
     // A PooledServiceEntry ket modon is lehet peldanyositva: Egy kulonallo poolban vagy a felhasznalo oldalan.
     //
 
-    internal record PooledServiceEntry : ProducibleServiceEntry
+    internal sealed class PooledServiceEntry : ProducibleServiceEntry
     {
         private object? FInstance;
 
-        protected PooledServiceEntry(PooledServiceEntry entry, IServiceRegistry? owner) : base(entry, owner)
+        private PooledServiceEntry(PooledServiceEntry entry, IServiceRegistry? owner) : base(entry, owner)
         {
             PoolName = entry.PoolName;
         }

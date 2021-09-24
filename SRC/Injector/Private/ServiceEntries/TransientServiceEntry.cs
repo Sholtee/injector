@@ -11,7 +11,7 @@ namespace Solti.Utils.DI.Internals
     using Interfaces;
     using Properties;
 
-    internal record TransientServiceEntry : ProducibleServiceEntry
+    internal sealed class TransientServiceEntry : ProducibleServiceEntry
     {
         private int FInstanceCount;
 

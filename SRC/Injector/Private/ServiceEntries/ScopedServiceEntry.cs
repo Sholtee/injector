@@ -10,7 +10,7 @@ namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
 
-    internal record ScopedServiceEntry : ProducibleServiceEntry
+    internal sealed class ScopedServiceEntry : ProducibleServiceEntry
     {
         private object? FInstance;
 

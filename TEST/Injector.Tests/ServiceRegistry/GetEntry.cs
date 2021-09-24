@@ -147,7 +147,7 @@ namespace Solti.Utils.DI.Internals.Tests
         {
             Registry = (ServiceRegistryBase)Activator.CreateInstance(registryType, new object[] { new HashSet<AbstractServiceEntry>(ServiceIdComparer.Instance), null, CancellationToken.None });
 
-            Assert.AreEqual(Registry.GetEntry<IDisposable>(name), new MissingServiceEntry(typeof(IDisposable), name));
+            Assert.That(Registry.GetEntry<IDisposable>(name), Is.InstanceOf<MissingServiceEntry>().And.EqualTo(new MissingServiceEntry(typeof(IDisposable), name)).Using(ServiceIdComparer.Instance));
         }
     }
 

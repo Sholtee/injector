@@ -14,7 +14,7 @@ namespace Solti.Utils.DI.Interfaces
     /// <summary>
     /// Describes an abstract service definition.
     /// </summary>
-    public abstract record AbstractServiceEntry: IServiceDefinition
+    public abstract class AbstractServiceEntry: IServiceDefinition
     {
         /// <summary>
         /// Creates a new <see cref="AbstractServiceEntry"/> instance.
@@ -124,7 +124,7 @@ namespace Solti.Utils.DI.Interfaces
         public abstract AbstractServiceEntry CopyTo(IServiceRegistry owner);
 
         /// <inheritdoc/>
-        public sealed override string ToString() => ToString(false); // "sealed" azert kell h a leszarmazott "record"-oknal a fordito ne irja felul 
+        public override string ToString() => ToString(false); 
 
         /// <summary>
         /// Returns the string reprezentation of this entry.

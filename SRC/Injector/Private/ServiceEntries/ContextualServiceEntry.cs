@@ -9,7 +9,7 @@ namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
 
-    internal record ContextualServiceEntry : AbstractServiceEntry
+    internal sealed class ContextualServiceEntry : AbstractServiceEntry
     {
         private readonly object? FInstance;
 
