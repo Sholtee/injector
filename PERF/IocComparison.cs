@@ -18,8 +18,6 @@ namespace Solti.Utils.DI.Perf
     [SimpleJob(RunStrategy.Throughput, invocationCount: 30000)]
     public partial class IocComparison
     {
-        const int RequestPerInvoke = 50;
-
         #region Services
         public interface IDependency
         {
@@ -41,6 +39,9 @@ namespace Solti.Utils.DI.Perf
         }
         #endregion
 
+        [Params(0, 1, 5, 20)]
+        public int InvocationCount { get; set; }
+
         public interface IIocContainer: IDisposable
         {
             IIocContainer RegisterSingleton<TInterface, TImplementation>() where TImplementation: TInterface;
@@ -55,7 +56,7 @@ namespace Solti.Utils.DI.Perf
         {
             using (Container.CreateScope(out IServiceProvider serviceProvider))
             {
-                for (int i = 0; i < RequestPerInvoke; i++)
+                for (int i = 0; i < InvocationCount; i++)
                 {
                     _ = serviceProvider.GetService<IDependant>();
                 }
@@ -85,7 +86,7 @@ namespace Solti.Utils.DI.Perf
             .RegisterSingleton<IDependant, Dependant>()
             .Build();
 
-        [Benchmark(OperationsPerInvoke = RequestPerInvoke)]
+        [Benchmark]
         public void SingletonService() => RequestService();
 
         [GlobalSetup(Target = nameof(ScopedService))]
@@ -93,7 +94,7 @@ namespace Solti.Utils.DI.Perf
             .RegisterScoped<IDependency, Dependency>()
             .RegisterScoped<IDependant, Dependant>().Build();
 
-        [Benchmark(OperationsPerInvoke = RequestPerInvoke)]
+        [Benchmark]
         public void ScopedService() => RequestService();
 
         [GlobalSetup(Target = nameof(TransientService))]
@@ -101,7 +102,7 @@ namespace Solti.Utils.DI.Perf
             .RegisterTransient<IDependency, Dependency>()
             .RegisterTransient<IDependant, Dependant>().Build();
 
-        [Benchmark(OperationsPerInvoke = RequestPerInvoke)]
+        [Benchmark]
         public void TransientService() => RequestService();
     }
 }
