@@ -43,7 +43,7 @@ namespace Solti.Utils.DI.Perf
         {
         }
 
-        public interface IDependant 
+        public interface IDependant
         {
             IDependency Dependency { get; }
         }
@@ -85,8 +85,8 @@ namespace Solti.Utils.DI.Perf
 
         protected IScopeFactory Root { get; private set; }
 
-        protected IScopeFactory Setup(Action<IServiceCollection> setupContainer) => Root = ScopeFactory.Create(setupContainer, new ScopeOptions 
-        { 
+        protected IScopeFactory Setup(Action<IServiceCollection> setupContainer) => Root = ScopeFactory.Create(setupContainer, new ScopeOptions
+        {
             MaxSpawnedTransientServices = int.MaxValue
         });
 
@@ -95,8 +95,7 @@ namespace Solti.Utils.DI.Perf
     }
 
     [MemoryDiagnoser]
-    [SimpleJob(RunStrategy.Throughput, invocationCount: 10000)]
-    public class InjectorGet: InjectorTestsBase
+    public class InjectorGet : InjectorTestsBase
     {
         public IInjector Injector { get; set; }
 
@@ -153,8 +152,7 @@ namespace Solti.Utils.DI.Perf
     }
 
     [MemoryDiagnoser]
-    [SimpleJob(RunStrategy.Throughput, invocationCount: 10000)]
-    public class InjectorInstantiate : InjectorTestsBase 
+    public class InjectorInstantiate : InjectorTestsBase
     {
         public IInjector Injector { get; set; }
 
@@ -175,15 +173,19 @@ namespace Solti.Utils.DI.Perf
     }
 
     [MemoryDiagnoser]
-    [SimpleJob(RunStrategy.Throughput, invocationCount: 10000)]
     public class ScopeCreation : InjectorTestsBase
     {
-        [GlobalSetup(Target = nameof(CreateScope))]
+        [GlobalSetup(Target = nameof(CreateAndDisposeScope))]
         public void SetupCreateInjector() => Setup(container => container
             .Service<IDependency, Dependency>(Lifetime.Transient)
             .Service<IDependant, Dependant>(Lifetime.Scoped));
 
         [Benchmark]
-        public IInjector CreateScope() => Root.CreateScope();
+        public void CreateAndDisposeScope()
+        {
+            using (Root.CreateScope())
+            {
+            }
+        }
     }
 }
