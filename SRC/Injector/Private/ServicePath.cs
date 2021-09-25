@@ -26,20 +26,12 @@ namespace Solti.Utils.DI.Internals
     {
         private readonly List<AbstractServiceEntry> FPath = new(capacity: 10);
 
-        public AbstractServiceEntry? Last => FPath.Count > 0
-            ? FPath[^1]
-            : null;
-
-        public AbstractServiceEntry? First => FPath.Count > 0
-            ? FPath[0]
-            : null;
-
         public void CheckNotCircular()
         {
             if (FPath.Count <= 1)
                 return;
 
-            AbstractServiceEntry last = Last!;
+            AbstractServiceEntry last = FPath[^1];
 
             int firstIndex = 0;
             bool found = false;

@@ -74,20 +74,20 @@ namespace Solti.Utils.DI.Internals
                     return requested.GetSingleInstance();
 
                 //
-                // StrictDI ellenorzes csak akkor van ha korabban meg nem tudtuk peldanyositani a szervizt (ha korabban
-                // mar tudtuk peldanyositani akkor ez az ellenorzes is mar megtortent).
+                // - StrictDI ellenorzes csak akkor van ha korabban meg nem tudtuk peldanyositani a szervizt (ha korabban
+                //   mar tudtuk peldanyositani akkor ez az ellenorzes is mar megtortent).
+                // - Ha a fuggosegi fa gyokerenel vagyunk akkor a metodus nem ertelmezett.
                 //
 
-                if (Options.StrictDI && !requested.State.HasFlag(ServiceEntryStates.Instantiated))
+                if (Options.StrictDI && !requested.State.HasFlag(ServiceEntryStates.Instantiated) && FPath.Count > 0)
                 {
-                    AbstractServiceEntry? requestor = FPath.Last;
+                    AbstractServiceEntry requestor = FPath[^1];
 
                     //
-                    // - Ha a fuggosegi fa gyokerenel vagyunk akkor a metodus nem ertelmezett.
-                    // - A kerelmezett szerviznek legalabb addig kell leteznie mint a kerelmezo szerviznek.
+                    // A kerelmezett szerviznek legalabb addig kell leteznie mint a kerelmezo szerviznek.
                     //
 
-                    if (requestor?.Lifetime is not null && requested.Lifetime?.CompareTo(requestor.Lifetime) < 0)
+                    if (requested.Lifetime!.CompareTo(requestor.Lifetime!) < 0)
                     {
                         RequestNotAllowedException ex = new(Resources.STRICT_DI);
                         ex.Data[nameof(requestor)] = requestor;
@@ -148,7 +148,7 @@ namespace Solti.Utils.DI.Internals
             AbstractServiceEntry requested = GetEntry(iface, name); // szal biztos
 
             //
-            // TODO: ONRequest callback
+            // TODO: OnRequest callback
             //
 
             if (requested is MissingServiceEntry && !throwOnMissing)

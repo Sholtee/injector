@@ -41,14 +41,12 @@ namespace Solti.Utils.DI.Interfaces
             //
 
             IServicePath path = scope.Get<IServicePath>();
-            Debug.Assert(path.Last == this, "Wrong path");
+            Debug.Assert(path[^1] == this, "Wrong path");
 
             ServiceNotFoundException ex = new(string.Format(Resources.Culture, Resources.SERVICE_NOT_FOUND, ToString(shortForm: true)));
 
             ex.Data["requested"] = this;
-            ex.Data["requestor"] = path.Count > 1
-                ? path[path.Count - 2]
-                : null;
+            ex.Data["requestor"] = path.Count > 1 ? path[^2] : null;
 #if DEBUG
             ex.Data[nameof(scope)] = scope;
 #endif
