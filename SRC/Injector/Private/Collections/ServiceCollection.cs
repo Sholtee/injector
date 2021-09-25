@@ -10,7 +10,7 @@ namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
 
-    internal class ServiceCollection : HashSet<AbstractServiceEntry>, IModifiedServiceCollection
+    internal sealed class ServiceCollection : HashSet<AbstractServiceEntry>, IModifiedServiceCollection
     {
         private AbstractServiceEntry? FLastEntry;
 
