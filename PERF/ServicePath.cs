@@ -3,21 +3,28 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
+using System.Collections.Generic;
+using System.Linq;
+
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Engines;
 
 namespace Solti.Utils.DI.Perf
 {
     using Interfaces;
-    using Proxy;
 
     [MemoryDiagnoser]
-    [SimpleJob(RunStrategy.Throughput, invocationCount: 3000)]
     public class ServicePath
     {
-        private Internals.ServicePath Path { get; set; }
+        private static IReadOnlyList<AbstractServiceEntry> Entries { get; } = typeof(object)
+            .Assembly
+            .ExportedTypes
+            .Where(t => t.IsInterface && t.IsGenericTypeDefinition)
+            .Select(t => new MissingServiceEntry(t, null))
+            .Take(10)
+            .ToArray();
 
-        private readonly IInjector DummyInjector = ProxyFactory.Create<IInjector, InterfaceInterceptor<IInjector>>(new object[] { null });
+        private Internals.ServicePath Path { get; set; }
 
         [Params(1, 5, 10)]
         public int Depth { get; set; }
@@ -38,7 +45,7 @@ namespace Solti.Utils.DI.Perf
 
             void Extend(int i)
             {
-                Path.Push(new MissingServiceEntry(typeof(IInjector), i.ToString()));
+                Path.Push(Entries[i]);
                 try
                 {
                     if (WithCircularityCheck)
