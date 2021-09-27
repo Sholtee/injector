@@ -147,10 +147,6 @@ namespace Solti.Utils.DI.Internals
 
             AbstractServiceEntry requested = GetEntry(iface, name); // szal biztos
 
-            //
-            // TODO: OnRequest callback
-            //
-
             if (requested is MissingServiceEntry && !throwOnMissing)
                 return null;
 
