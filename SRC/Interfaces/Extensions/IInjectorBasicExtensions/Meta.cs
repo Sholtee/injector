@@ -15,7 +15,7 @@ namespace Solti.Utils.DI.Interfaces
         /// Name of the "meta" entry
         /// </summary>
         [SuppressMessage("Naming", "CA1707:Identifiers should not contain underscores")]
-        public static readonly string META_NAME = $"{Consts.INTERNAL_SERVICE_NAME_PREFIX}meta";
+        public const string META_NAME = $"{Consts.INTERNAL_SERVICE_NAME_PREFIX}meta";
 
         /// <summary>
         /// Sets a meta-data on the given <see cref="IInjector"/> (scope).
