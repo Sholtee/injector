@@ -23,7 +23,7 @@ namespace Solti.Utils.DI.Internals
     // - mindig futtassuk a teljesitmeny teszteket (is) hogy a hatekonysag nem romlott e
     //
 
-    internal abstract class ServiceRegistryBase : DisposableSupportsNotifyOnDispose, IServiceRegistry
+    internal abstract class ServiceRegistryBase : Disposable, IServiceRegistry
     {
         private static Resolver GenericEntryResolverFactory(int slot, AbstractServiceEntry originalEntry) =>
             (self, iface, name) => self.ResolveGenericEntry(slot, iface, originalEntry);
