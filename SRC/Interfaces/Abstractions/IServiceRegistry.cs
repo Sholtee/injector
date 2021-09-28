@@ -18,7 +18,7 @@ namespace Solti.Utils.DI.Interfaces
         /// <summary>
         /// Returns the <see cref="AbstractServiceEntry"/> associated with given interface and name.
         /// </summary>
-        AbstractServiceEntry? GetEntry(Type iface, string? name);
+        AbstractServiceEntry GetEntry(Type iface, string? name);
 
         /// <summary>
         /// Resolves a regular entry.
