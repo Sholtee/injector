@@ -17,6 +17,7 @@ namespace Solti.Utils.DI.Perf
     using Interfaces;
     using Internals;
     using Primitives;
+    using Primitives.Patterns;
 
     public abstract class ServiceRegistryTestsBase
     {
@@ -127,12 +128,19 @@ namespace Solti.Utils.DI.Perf
 
         private Func<object[], object> Factory { get; set; }
 
+        [Params(0, 1, 5, 20)]
+        public int EntryCount { get; set; }
+
         [GlobalSetup]
         public void Setup()
         {
             Registry = (ServiceRegistryBase) System.Activator.CreateInstance(RegistryType.Value, new object[]
             {
-                new HashSet<AbstractServiceEntry>(ServiceIdComparer.Instance),
+                new HashSet<AbstractServiceEntry>
+                (
+                    Enumerable.Repeat(0, EntryCount).Select((_, i) => new ScopedServiceEntry(typeof(IDisposable), i.ToString(), typeof(Disposable), null)),
+                    ServiceIdComparer.Instance
+                ),
                 ResolverBuilder.CompiledExpression,
                 CancellationToken.None
             });
