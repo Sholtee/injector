@@ -60,7 +60,7 @@ namespace Solti.Utils.DI.Internals
             Ensure.Parameter.IsNotGenericDefinition(type, nameof(type));
         }
 
-        private static TDelegate CreateActivator<TDelegate>(ConstructorInfo constructor, Func<(Type Type, string Name, OptionsAttribute? Options), Expression> argumentResolver, ParameterExpression[] variables, ParameterExpression[] parameters)
+        private static TDelegate CreateActivator<TDelegate>(ConstructorInfo constructor, Func<Type, string, OptionsAttribute?, Expression> dependencyResolver, ParameterExpression[] variables, ParameterExpression[] parameters)
         {
             IReadOnlyCollection<ParameterInfo>? ctorParamz = null;        
 
@@ -92,17 +92,36 @@ namespace Solti.Utils.DI.Internals
                     variables,
                     Expression.Convert
                     (
-                        Expression.New
+                        Expression.MemberInit
                         (
-                            constructor,
-                            ctorParamz.Select
+                            Expression.New
                             (
-                                param => Expression.Convert
+                                constructor,
+                                ctorParamz.Select
                                 (
-                                    argumentResolver((param.ParameterType, param.Name, param.GetCustomAttribute<OptionsAttribute>())),
-                                    param.ParameterType
+                                    param => Expression.Convert
+                                    (
+                                        dependencyResolver(param.ParameterType, param.Name, param.GetCustomAttribute<OptionsAttribute>()),
+                                        param.ParameterType
+                                    )
                                 )
-                            )
+                            ),
+                            constructor
+                                .ReflectedType
+                                .GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.SetProperty)
+                                .Where(property => property.GetCustomAttribute<InjectAttribute>() is not null)
+                                .Select
+                                (
+                                    property => Expression.Bind
+                                    (
+                                        property,
+                                        Expression.Convert
+                                        (
+                                            dependencyResolver(property.PropertyType, property.Name, property.GetCustomAttribute<OptionsAttribute>()),
+                                            property.PropertyType
+                                        )
+                                    )
+                                )
                         ),
                         typeof(object)
                     )
@@ -137,9 +156,9 @@ namespace Solti.Utils.DI.Internals
                 }
             );
 
-            Expression ResolveArgument((Type Type, string _, OptionsAttribute? Options) param) 
+            Expression ResolveArgument(Type type, string _, OptionsAttribute? options) 
             {
-                Type parameterType = GetEffectiveParameterType(param.Type, out bool isLazy) ?? throw new ArgumentException(Resources.INVALID_CONSTRUCTOR, nameof(constructor));
+                Type parameterType = GetEffectiveParameterType(type, out bool isLazy) ?? throw new ArgumentException(Resources.INVALID_CONSTRUCTOR, nameof(constructor));
 
                 return isLazy
                     //
@@ -150,7 +169,7 @@ namespace Solti.Utils.DI.Internals
                     (
                         Expression.Constant
                         (
-                            GetLazyFactory(parameterType, param.Options)
+                            GetLazyFactory(parameterType, options)
                         ),
                         injector
                     )
@@ -162,9 +181,9 @@ namespace Solti.Utils.DI.Internals
                     : Expression.Call
                     (
                         injector,
-                        param.Options?.Optional == true ? InjectorTryGet : InjectorGet,
+                        options?.Optional is true ? InjectorTryGet : InjectorGet,
                         Expression.Constant(parameterType),
-                        Expression.Constant(param.Options?.Name, typeof(string))
+                        Expression.Constant(options?.Name, typeof(string))
                     );
             }
         });
@@ -207,14 +226,14 @@ namespace Solti.Utils.DI.Internals
                 }
             );
 
-            Expression ResolveArgument((Type Type, string Name, OptionsAttribute? Options) param)
+            Expression ResolveArgument(Type type, string name, OptionsAttribute? options)
             {
                 //
                 // Nem gond ha ez vegul nem interface tipus lesz, az injector.Get() ugy is szol
                 // majd miatta.
                 //
 
-                Type parameterType = GetEffectiveParameterType(param.Type, out bool isLazy) ?? param.Type;
+                Type parameterType = GetEffectiveParameterType(type, out bool isLazy) ?? type;
 
                 //
                 // explicitArgs.TryGetValue(paramName, out explicitArg)
@@ -228,7 +247,7 @@ namespace Solti.Utils.DI.Internals
                     (
                         explicitArgs, 
                         DictTryGetValue, 
-                        Expression.Constant(param.Name), 
+                        Expression.Constant(name), 
                         explicitArg
                     ),
                     ifTrue: explicitArg,
@@ -241,7 +260,7 @@ namespace Solti.Utils.DI.Internals
                         (
                             Expression.Constant
                             (
-                                GetLazyFactory(parameterType, param.Options)
+                                GetLazyFactory(parameterType, options)
                             ),
                             injector
                         )
@@ -253,9 +272,9 @@ namespace Solti.Utils.DI.Internals
                         : Expression.Call
                         (
                             injector,
-                            param.Options?.Optional == true ? InjectorTryGet : InjectorGet,
+                            options?.Optional is true ? InjectorTryGet : InjectorGet,
                             Expression.Constant(parameterType),
-                            Expression.Constant(param.Options?.Name, typeof(string))
+                            Expression.Constant(options?.Name, typeof(string))
                         )
                 );
             }
