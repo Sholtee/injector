@@ -7,7 +7,6 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Runtime.CompilerServices;
 using System.Threading;
 
 namespace Solti.Utils.DI.Internals
@@ -30,7 +29,11 @@ namespace Solti.Utils.DI.Internals
             public AbstractServiceEntry? Value;
         }
 
+        private readonly Func<EntryHolder[]> FRegularEntriesFactory;
+
         private readonly EntryHolder[] FRegularEntries;
+
+        private readonly Func<ConcurrentDictionary<Type, Lazy<AbstractServiceEntry>>[]> FSpecializedEntriesFactory;
 
         //
         // Ez NE egyetlen szotar legyen mert ott a neveket is szamon kene tartsuk amivel viszont
@@ -39,29 +42,22 @@ namespace Solti.Utils.DI.Internals
 
         private readonly ConcurrentDictionary<Type, Lazy<AbstractServiceEntry>>[] FSpecializedEntries;
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        protected static T[] CreateArray<T>(Func<T> factory, int count)
-        {
-            T[] result = new T[count];
-
-            for (int i = 0; i < count; i++)
-            {
-                result[i] = factory();
-            }
-
-            return result;
-        }
-
         public ConcurrentServiceRegistry(ISet<AbstractServiceEntry> entries, ResolverBuilder? resolverBuilder = null, CancellationToken cancellation = default) : base(entries, resolverBuilder, cancellation)
         {
-            FRegularEntries = CreateArray(() => new EntryHolder(), RegularEntryCount);
-            FSpecializedEntries = CreateArray(() => new ConcurrentDictionary<Type, Lazy<AbstractServiceEntry>>(), GenericEntryCount);
+            FRegularEntriesFactory = ArrayFactory<EntryHolder>.Create(RegularEntryCount);
+            FRegularEntries = FRegularEntriesFactory();
+
+            FSpecializedEntriesFactory = ArrayFactory<ConcurrentDictionary<Type, Lazy<AbstractServiceEntry>>>.Create(GenericEntryCount);
+            FSpecializedEntries = FSpecializedEntriesFactory();
         }
 
         public ConcurrentServiceRegistry(ConcurrentServiceRegistry parent) : base(parent)
         {
-            FRegularEntries = CreateArray(() => new EntryHolder(), RegularEntryCount);
-            FSpecializedEntries = CreateArray(() => new ConcurrentDictionary<Type, Lazy<AbstractServiceEntry>>(), GenericEntryCount);
+            FRegularEntriesFactory = parent.FRegularEntriesFactory;
+            FRegularEntries = FRegularEntriesFactory();
+
+            FSpecializedEntriesFactory = parent.FSpecializedEntriesFactory;
+            FSpecializedEntries = FSpecializedEntriesFactory();
         }
 
         public override AbstractServiceEntry ResolveGenericEntry(int slot, Type specializedInterface, AbstractServiceEntry originalEntry)
@@ -71,8 +67,8 @@ namespace Solti.Utils.DI.Internals
             ConcurrentDictionary<Type, Lazy<AbstractServiceEntry>> specializedEntries = FSpecializedEntries[slot];
 
             //
-            // Lazy azert kell mert ha ugyanarra a kulcsra parhuzamosan kerul meghivasra a GetOrAdd() akkor a factory
-            // tobbszor is meg lehet hivva (lasd MSDN).
+            // Lazy<> azert kell mert ha ugyanarra a kulcsra parhuzamosan kerul meghivasra a GetOrAdd() akkor a factory
+            // tobbszor is lefuthat (lasd MSDN).
             //
 
             return specializedEntries
