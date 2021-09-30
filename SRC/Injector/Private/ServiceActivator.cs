@@ -15,12 +15,9 @@ namespace Solti.Utils.DI.Internals
     using Interfaces;
     using Primitives;
     using Properties;
-    using Proxy.Internals;
 
     internal static class ServiceActivator
     {
-        private static object? voidVal;
-
         private static readonly MethodInfo
             //
             // Csak kifejezesek, nem tenyleges metodus hivas
@@ -28,7 +25,7 @@ namespace Solti.Utils.DI.Internals
 
             InjectorGet     = MethodInfoExtractor.Extract<IInjector>(i => i.Get(null!, null)),
             InjectorTryGet  = MethodInfoExtractor.Extract<IInjector>(i => i.TryGet(null!, null)),
-            DictTryGetValue = MethodInfoExtractor.Extract<IReadOnlyDictionary<string, object?>>(dict => dict.TryGetValue(default!, out voidVal));
+            DictTryGetValue = MethodInfoExtractor.Extract<IReadOnlyDictionary<string, object?>, object?>((dict, outVal) => dict.TryGetValue(default!, out outVal));
 
         private static Type? GetEffectiveType(Type type, out bool isLazy)
         {
@@ -209,7 +206,7 @@ namespace Solti.Utils.DI.Internals
             {
                 //
                 // Itt nem lehet forditas idoben validalni hogy "type" megfelelo tipus e (nem interface parameter szerepelhet
-                // az explicit ertekek kozt). Injector.Get() ugy is szolni fogkesobb ha gond van.
+                // az explicit ertekek kozt). Injector.Get() ugy is szolni fog kesobb ha gond van.
                 //
 
                 type = GetEffectiveType(type, out bool isLazy) ?? type;
