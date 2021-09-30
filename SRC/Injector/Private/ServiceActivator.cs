@@ -30,21 +30,21 @@ namespace Solti.Utils.DI.Internals
             InjectorTryGet  = MethodInfoExtractor.Extract<IInjector>(i => i.TryGet(null!, null)),
             DictTryGetValue = MethodInfoExtractor.Extract<IReadOnlyDictionary<string, object?>>(dict => dict.TryGetValue(default!, out voidVal));
 
-        private static Type? GetEffectiveParameterType(Type paramType, out bool isLazy)
+        private static Type? GetEffectiveType(Type type, out bool isLazy)
         {
-            if (paramType.IsInterface)
+            if (type.IsInterface)
             {
                 isLazy = false;
-                return paramType;
+                return type;
             }
 
-            if (paramType.IsGenericType && paramType.GetGenericTypeDefinition() == typeof(Lazy<>))
+            if (type.IsConstructedGenericType && type.GetGenericTypeDefinition() == typeof(Lazy<>))
             {
-                paramType = paramType.GetGenericArguments().Single();
-                if (paramType.IsInterface)
+                type = type.GetGenericArguments().Single();
+                if (type.IsInterface)
                 {
                     isLazy = true;
-                    return paramType;
+                    return type;
                 }
             }
 
@@ -62,29 +62,6 @@ namespace Solti.Utils.DI.Internals
 
         private static TDelegate CreateActivator<TDelegate>(ConstructorInfo constructor, Func<Type, string, OptionsAttribute?, Expression> dependencyResolver, ParameterExpression[] variables, ParameterExpression[] parameters)
         {
-            IReadOnlyCollection<ParameterInfo>? ctorParamz = null;        
-
-            if (constructor.DeclaringType.GetCustomAttribute<RelatedGeneratorAttribute>() is not null)
-            {
-                //
-                // Specialis eset amikor proxy-t hozunk letre majd probaljuk aktivalni. Itt a parametereken levo attributumok nem lennenek 
-                // lathatok ezert a varazslas.
-                //
-
-                Type @base = constructor.DeclaringType.BaseType;
-                Debug.Assert(@base is not null);
-
-                ConstructorInfo? baseCtor = @base!.GetConstructor(constructor
-                    .GetParameters()
-                    .Select(param => param.ParameterType)
-                    .ToArray());
-
-                if (baseCtor is not null)
-                    ctorParamz = baseCtor.GetParameters();
-            }
-
-            ctorParamz ??= constructor.GetParameters();
-
             Expression<TDelegate> resolver = Expression.Lambda<TDelegate>
             (
                 Expression.Block
@@ -97,14 +74,16 @@ namespace Solti.Utils.DI.Internals
                             Expression.New
                             (
                                 constructor,
-                                ctorParamz.Select
-                                (
-                                    param => Expression.Convert
+                                constructor
+                                    .GetParameters()
+                                    .Select
                                     (
-                                        dependencyResolver(param.ParameterType, param.Name, param.GetCustomAttribute<OptionsAttribute>()),
-                                        param.ParameterType
+                                        param => Expression.Convert
+                                        (
+                                            dependencyResolver(param.ParameterType, param.Name, param.GetCustomAttribute<OptionsAttribute>()),
+                                            param.ParameterType
+                                        )
                                     )
-                                )
                             ),
                             constructor
                                 .ReflectedType
@@ -147,7 +126,7 @@ namespace Solti.Utils.DI.Internals
             return CreateActivator<Func<IInjector, Type, object>>
             (
                 constructor, 
-                ResolveArgument,
+                ResolveDependency,
                 Array.Empty<ParameterExpression>(),
                 new[]
                 {
@@ -156,9 +135,9 @@ namespace Solti.Utils.DI.Internals
                 }
             );
 
-            Expression ResolveArgument(Type type, string _, OptionsAttribute? options) 
+            Expression ResolveDependency(Type type, string _, OptionsAttribute? options) 
             {
-                Type parameterType = GetEffectiveParameterType(type, out bool isLazy) ?? throw new ArgumentException(Resources.INVALID_CONSTRUCTOR, nameof(constructor));
+                type = GetEffectiveType(type, out bool isLazy) ?? throw new ArgumentException(Resources.INVALID_CONSTRUCTOR, nameof(constructor));
 
                 return isLazy
                     //
@@ -169,7 +148,7 @@ namespace Solti.Utils.DI.Internals
                     (
                         Expression.Constant
                         (
-                            GetLazyFactory(parameterType, options)
+                            GetLazyFactory(type, options)
                         ),
                         injector
                     )
@@ -182,7 +161,7 @@ namespace Solti.Utils.DI.Internals
                     (
                         injector,
                         options?.Optional is true ? InjectorTryGet : InjectorGet,
-                        Expression.Constant(parameterType),
+                        Expression.Constant(type),
                         Expression.Constant(options?.Name, typeof(string))
                     );
             }
@@ -202,42 +181,42 @@ namespace Solti.Utils.DI.Internals
         public static Func<IInjector, IReadOnlyDictionary<string, object?>, object> GetExtended(ConstructorInfo constructor) => Cache.GetOrAdd(constructor, () =>
         {
             //
-            // (injector, explicitParamz) =>
+            // (injector, explicitVals) =>
             // {
-            //    object explicitArg;
-            //    return new Service(explicitArgs.TryGetValue(paramName, out explicitArg) ? explicitArg : Lazy<IDependency_1>) | injector.[Try]Get(typeof(IDependency_1)), ...);
+            //    object explicitVal;
+            //    return new Service(explicitVals.TryGetValue(paramName, out explicitVal) ? explicitVal : Lazy<IDependency_1>) | injector.[Try]Get(typeof(IDependency_1)), ...);
             // }
             //
 
             ParameterExpression
                 injector     = Expression.Parameter(typeof(IInjector), nameof(injector)),
-                explicitArgs = Expression.Parameter(typeof(IReadOnlyDictionary<string, object?>), nameof(explicitArgs)),
-                explicitArg  = Expression.Variable(typeof(object), nameof(explicitArg));
+                explicitVals = Expression.Parameter(typeof(IReadOnlyDictionary<string, object?>), nameof(explicitVals)),
+                explicitVal  = Expression.Variable(typeof(object), nameof(explicitVal));
 
             return CreateActivator<Func<IInjector, IReadOnlyDictionary<string, object?>, object>>
             (
                 constructor,
-                ResolveArgument,
-                new[] { explicitArg },
+                ResolveDependency,
+                new[] { explicitVal },
                 new[]
                 {
                     injector,
-                    explicitArgs
+                    explicitVals
                 }
             );
 
-            Expression ResolveArgument(Type type, string name, OptionsAttribute? options)
+            Expression ResolveDependency(Type type, string name, OptionsAttribute? options)
             {
                 //
-                // Nem gond ha ez vegul nem interface tipus lesz, az injector.Get() ugy is szol
-                // majd miatta.
+                // Itt nem lehet forditas idoben validalni hogy "type" megfelelo tipus e (nem interface parameter szerepelhet
+                // az explicit ertekek kozt). Injector.Get() ugy is szolni fogkesobb ha gond van.
                 //
 
-                Type parameterType = GetEffectiveParameterType(type, out bool isLazy) ?? type;
+                type = GetEffectiveType(type, out bool isLazy) ?? type;
 
                 //
-                // explicitArgs.TryGetValue(paramName, out explicitArg)
-                //   ? explicitArg 
+                // explicitVals.TryGetValue(name, out explicitVal)
+                //   ? explicitVal 
                 //   : Lazy<IDependency_1>) | injector.[Try]Get(typeof(IDependency_1))
                 //
 
@@ -245,12 +224,12 @@ namespace Solti.Utils.DI.Internals
                 (
                     test: Expression.Call
                     (
-                        explicitArgs, 
+                        explicitVals, 
                         DictTryGetValue, 
                         Expression.Constant(name), 
-                        explicitArg
+                        explicitVal
                     ),
-                    ifTrue: explicitArg,
+                    ifTrue: explicitVal,
                     ifFalse: isLazy
                         //
                         // Lazy<IInterface>(() => (IInterface) injector.[Try]Get(typeof(IInterface), svcName))
@@ -260,7 +239,7 @@ namespace Solti.Utils.DI.Internals
                         (
                             Expression.Constant
                             (
-                                GetLazyFactory(parameterType, options)
+                                GetLazyFactory(type, options)
                             ),
                             injector
                         )
@@ -273,7 +252,7 @@ namespace Solti.Utils.DI.Internals
                         (
                             injector,
                             options?.Optional is true ? InjectorTryGet : InjectorGet,
-                            Expression.Constant(parameterType),
+                            Expression.Constant(type),
                             Expression.Constant(options?.Name, typeof(string))
                         )
                 );
