@@ -33,21 +33,21 @@ namespace Solti.Utils.DI.Internals
 
         private readonly EntryHolder[] FRegularEntries;
 
-        private readonly Func<ConcurrentDictionary<Type, Lazy<AbstractServiceEntry>>[]> FSpecializedEntriesFactory;
+        private readonly Func<ConcurrentDictionary<Type, AbstractServiceEntry>[]> FSpecializedEntriesFactory;
 
         //
         // Ez NE egyetlen szotar legyen mert ott a neveket is szamon kene tartsuk amivel viszont
         // jelentosen lassulna a bejegyzes lekerdezes.
         //
 
-        private readonly ConcurrentDictionary<Type, Lazy<AbstractServiceEntry>>[] FSpecializedEntries;
+        private readonly ConcurrentDictionary<Type, AbstractServiceEntry>[] FSpecializedEntries;
 
         public ConcurrentServiceRegistry(ISet<AbstractServiceEntry> entries, ResolverBuilder? resolverBuilder = null, CancellationToken cancellation = default) : base(entries, resolverBuilder, cancellation)
         {
             FRegularEntriesFactory = ArrayFactory<EntryHolder>.Create(RegularEntryCount);
             FRegularEntries = FRegularEntriesFactory();
 
-            FSpecializedEntriesFactory = ArrayFactory<ConcurrentDictionary<Type, Lazy<AbstractServiceEntry>>>.Create(GenericEntryCount);
+            FSpecializedEntriesFactory = ArrayFactory<ConcurrentDictionary<Type, AbstractServiceEntry>>.Create(GenericEntryCount);
             FSpecializedEntries = FSpecializedEntriesFactory();
         }
 
@@ -64,22 +64,18 @@ namespace Solti.Utils.DI.Internals
         {
             Debug.Assert(specializedInterface.IsConstructedGenericType, $"{nameof(specializedInterface)} must be a closed generic type");
 
-            ConcurrentDictionary<Type, Lazy<AbstractServiceEntry>> specializedEntries = FSpecializedEntries[slot];
+            ConcurrentDictionary<Type, AbstractServiceEntry> specializedEntries = FSpecializedEntries[slot];
 
             //
-            // Lazy<> azert kell mert ha ugyanarra a kulcsra parhuzamosan kerul meghivasra a GetOrAdd() akkor a factory
-            // tobbszor is lefuthat (lasd MSDN).
+            // Megjegyzes: Ha ugyanarra a kulcsra parhuzamosan kerul meghivasra a GetOrAdd() akkor a factory
+            // tobbszor is lefuthat (lasd MSDN) de itt ez nem okoz gondot.
             //
 
-            return specializedEntries
-                .GetOrAdd(specializedInterface, _ => new Lazy<AbstractServiceEntry>(Specialize, LazyThreadSafetyMode.ExecutionAndPublication))
-                .Value;
-
-            AbstractServiceEntry Specialize()
+            return specializedEntries.GetOrAdd(specializedInterface, _ =>
             {
                 ISupportsSpecialization supportsSpecialization = (ISupportsSpecialization) originalEntry;
                 return supportsSpecialization.Specialize(this, specializedInterface.GenericTypeArguments);
-            }
+            });
         }
 
         public override AbstractServiceEntry ResolveRegularEntry(int slot, AbstractServiceEntry originalEntry)
