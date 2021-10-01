@@ -30,8 +30,8 @@ namespace Solti.Utils.DI
                 options = new ScopeOptions();
 
             return options.SupportsServiceProvider
-                ? new InjectorSupportsServiceProvider(serviceCollection, options, cancellation)
-                : new Injector(serviceCollection, options, cancellation);
+                ? new ConcurrentInjectorSupportsServiceProvider(serviceCollection, options, cancellation)
+                : new ConcurrentInjector(serviceCollection, options, cancellation);
         }
     }
 }

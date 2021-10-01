@@ -62,18 +62,17 @@ namespace Solti.Utils.DI.Injector.Tests
                 .Service<IInterface_7<IList<object>>, Implementation_7_TInterface_Dependant<IList<object>>>(l2)
                 .Service<IInterface_7<IInterface_7<IList<object>>>, Implementation_7_TInterface_Dependant<IInterface_7<IList<object>>>>(l3));
 
-            using (IInjector injector = Root.CreateScope())
-            {
-                Assert.DoesNotThrow(() => Task.WaitAll
-                (
-                    Enumerable.Repeat(0, TASK_COUNT).Select(_ => Task.Run(Worker)).ToArray()
-                ));
+            IInjector injector = (IInjector) Root;
 
-                void Worker()
-                {
-                    for (int i = 0; i < 50; i++)
-                        injector.Get<IInterface_7<IInterface_7<IList<object>>>>();
-                }
+            Assert.DoesNotThrow(() => Task.WaitAll
+            (
+                Enumerable.Repeat(0, TASK_COUNT).Select(_ => Task.Run(Worker)).ToArray()
+            ));
+
+            void Worker()
+            {
+                for (int i = 0; i < 50; i++)
+                    injector.Get<IInterface_7<IInterface_7<IList<object>>>>();
             }
         }
 
@@ -102,18 +101,17 @@ namespace Solti.Utils.DI.Injector.Tests
         {
             Root = ScopeFactory.Create(svcs => svcs.Service(typeof(IList<>), typeof(MyList<>), lifetime));
 
-            using (IInjector injector = Root.CreateScope())
-            {
-                Assert.DoesNotThrow(() => Task.WaitAll
-                (
-                    Enumerable.Repeat(0, TASK_COUNT).Select(_ => Task.Run(Worker)).ToArray()
-                ));
+            IInjector injector = (IInjector) Root;
 
-                void Worker()
-                {
-                    foreach (Type type in RandomTypes.Take(20))
-                        injector.Get(typeof(IList<>).MakeGenericType(type));
-                }
+            Assert.DoesNotThrow(() => Task.WaitAll
+            (
+                Enumerable.Repeat(0, TASK_COUNT).Select(_ => Task.Run(Worker)).ToArray()
+            ));
+
+            void Worker()
+            {
+                foreach (Type type in RandomTypes.Take(20))
+                    injector.Get(typeof(IList<>).MakeGenericType(type));
             }
         }
     }

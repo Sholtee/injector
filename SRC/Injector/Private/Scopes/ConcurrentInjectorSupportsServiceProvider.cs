@@ -1,9 +1,11 @@
 ﻿/********************************************************************************
-* InjectorSupportsServiceProvider.cs                                            *
+* ConcurrentInjectorSupportsServiceProvider.cs                                  *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Collections.Generic;
+using System.Threading;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -18,9 +20,23 @@ namespace Solti.Utils.DI.Internals
     // - mindig futtassuk a teljesitmeny teszteket (is) hogy a hatekonysag nem romlott e
     //
 
-    internal class InjectorSupportsServiceProvider : Injector, IServiceProvider, IInjector
+    internal class ConcurrentInjectorSupportsServiceProvider : ConcurrentInjector, IServiceProvider, IInjector
     {
-        public InjectorSupportsServiceProvider(ConcurrentInjectorSupportsServiceProvider parent) : base(parent) { }
+        protected override IInjector CreateDerived() => new InjectorSupportsServiceProvider(this);
+
+        protected override IReadOnlyCollection<AbstractServiceEntry> BuiltInServices
+        {
+            get
+            {
+                List<AbstractServiceEntry> serviceList = new(base.BuiltInServices);
+                serviceList.Add(new ContextualServiceEntry(typeof(IServiceProvider), null, owner => (IServiceProvider) owner));
+                return serviceList;
+            }
+        }
+
+        public ConcurrentInjectorSupportsServiceProvider(ISet<AbstractServiceEntry> entries, ScopeOptions options, CancellationToken cancellation) : base(entries, options, cancellation) { }
+
+        public ConcurrentInjectorSupportsServiceProvider(ConcurrentInjectorSupportsServiceProvider parent) : base(parent) { }
 
         //
         // IInjector.Get() elvileg sose adhatna vissza NULL-t viszont h biztositsuk 
