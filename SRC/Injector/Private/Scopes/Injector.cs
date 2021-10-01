@@ -103,8 +103,7 @@ namespace Solti.Utils.DI.Internals
                 // 1) Korabban mar peldanyositott szervizt igenylunk -> Nem bovitjuk az utvonalat a szerviz iranyaban,
                 //    ugy sem lesz CDEP (peldanyositott szerviznek minden fuggosege is mar peldanyositott)
                 // 2) Korabban meg nem peldanyositottuk a szervizt -> Bovitjuk az utvonalat a szerviz iranyaban
-                //    a) 1 hosszu utnal -> nincs CDEP ellenorzes
-                //    b) Kulonben -> CDEP ellenorzes 
+                //    -> CDEP ellenorzes 
                 //
 
                 if (!requested.State.HasFlag(ServiceEntryStates.Instantiated))
@@ -112,7 +111,6 @@ namespace Solti.Utils.DI.Internals
                     FPath.Push(requested);
                     try
                     {
-                        FPath.CheckNotCircular(); // egy elemnel nem csinal semmit
                         instance = requested.CreateInstance(this);
                     }
                     finally

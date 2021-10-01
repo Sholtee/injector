@@ -5,7 +5,6 @@
 ********************************************************************************/
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Text;
 
 namespace Solti.Utils.DI.Internals
@@ -26,37 +25,28 @@ namespace Solti.Utils.DI.Internals
     {
         private readonly List<AbstractServiceEntry> FPath = new(capacity: 10);
 
-        public void CheckNotCircular()
+        public void Push(AbstractServiceEntry entry)
         {
-            if (FPath.Count <= 1)
-                return;
+            int foundIndex = 0;
 
-            AbstractServiceEntry last = FPath[^1];
-
-            int firstIndex = 0;
-            bool found = false;
-
-            for(; firstIndex < FPath.Count; firstIndex++)
+            for(; foundIndex < FPath.Count; foundIndex++)
             {
-                AbstractServiceEntry current = FPath[firstIndex];
+                AbstractServiceEntry current = FPath[foundIndex];
 
-                if (current.Interface == last.Interface && current.Name == last.Name)
-                {
-                    found = true;
+                if (current.Interface == entry.Interface && current.Name == entry.Name)
                     break;
-                }
             }
 
-            Debug.Assert(found);
-
             //
-            // Ha egynel tobbszor szerepel az aktualis szerviz az aktualis utvonalon akkor korkoros referenciank van.
+            // Ha egynel tobbszor szerepelne az aktualis szerviz az aktualis utvonalon akkor korkoros referenciank van.
             //
 
-            if (firstIndex < FPath.Count - 1) throw new CircularReferenceException
+            if (foundIndex < FPath.Count) throw new CircularReferenceException
             (
                 string.Format(Resources.Culture, Resources.CIRCULAR_REFERENCE, Format(GetCircle()))
             );
+
+            FPath.Add(entry);
 
             //
             // Csak magat a kort adjuk vissza.
@@ -64,14 +54,14 @@ namespace Solti.Utils.DI.Internals
 
             IEnumerable<AbstractServiceEntry> GetCircle()
             {
-                for (int i = firstIndex; i < FPath.Count; i++)
+                for (int i = foundIndex; i < FPath.Count; i++)
                 {
                     yield return FPath[i];
                 }
+
+                yield return entry;
             }
         }
-
-        public void Push(AbstractServiceEntry entry) => FPath.Add(entry);
 
         public void Pop() =>
             //
