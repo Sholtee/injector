@@ -52,7 +52,7 @@ namespace Solti.Utils.DI.Perf
                         Path.CheckNotCircular();
 
                     if (i < Depth - 1)
-                        Extend(i++);
+                        Extend(++i);
                 }
                 finally 
                 {
