@@ -48,15 +48,7 @@ namespace Solti.Utils.DI.Internals
             if (requested is MissingServiceEntry && !throwOnMissing)
                 return null;
 
-            object instance = GetOrCreateInstance(requested); // szal biztos
-
-            if (requested is IRequiresServiceAccess accessor)
-                instance = accessor.ServiceAccess(instance);
-
-            if (!requested.Interface.IsInstanceOfType(instance))
-                throw new InvalidCastException(string.Format(Resources.Culture, Resources.INVALID_INSTANCE, requested.Interface));
-
-            return instance;
+            return requested.GetOrCreateInstance(this);
         }
 
         protected virtual IInjector CreateDerived() => new Injector(this);
