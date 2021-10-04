@@ -15,7 +15,7 @@ namespace Solti.Utils.DI.Internals
 
     internal static class ArrayFactory<T> where T : new()
     {
-        public static Func<T[]> Create(int count)
+        public static Func<T[]> Create(int count) => Cache.GetOrAdd(count, () =>
         {
             Expression<Func<T[]>> expr = Expression.Lambda<Func<T[]>>
             (
@@ -35,6 +35,6 @@ namespace Solti.Utils.DI.Internals
                     yield return Expression.New(ctor);
                 }
             }
-        }
+        });
     }
 }
