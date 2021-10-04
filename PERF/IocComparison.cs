@@ -71,6 +71,7 @@ namespace Solti.Utils.DI.Perf
                 yield return new InjectorDotNet();
                 yield return new Lamar();
                 yield return new MsExtensionsDI();
+                yield return new Stashbox();
             }
         }
 
