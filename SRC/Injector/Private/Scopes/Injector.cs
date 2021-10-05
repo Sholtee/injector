@@ -5,6 +5,7 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
 namespace Solti.Utils.DI.Internals
@@ -29,6 +30,7 @@ namespace Solti.Utils.DI.Internals
 
         private bool FDisposing;
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private object? GetOrCreateInstance(Type iface, string? name, bool throwOnMissing)
         {
             CheckNotDisposed();
