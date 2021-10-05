@@ -3,9 +3,6 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
-using System.Linq;
-using System.Threading;
-
 using NUnit.Framework;
 
 namespace Solti.Utils.DI.Internals.Tests
@@ -26,27 +23,6 @@ namespace Solti.Utils.DI.Internals.Tests
             public Service(IInjector scope) => Scope = scope;
 
             public IInjector Scope { get; }
-        }
-
-
-        [Test]
-        public void NotOwnedServiceInstantiationStrategy_ShouldLock()
-        {
-            using (IScopeFactory root = ScopeFactory.Create(svcs => svcs.Factory<IService>(i =>
-                {
-                    Assert.That(Monitor.IsEntered(i.Get<IServiceRegistry>().GetEntry<IService>()));
-                    return new Service(i);
-                }, Lifetime.Singleton)))
-            {
-                IInjector injector = root.CreateScope();
-
-                injector.Get<IService>();
-
-                AbstractServiceEntry entry = injector.Get<IServiceRegistry>().GetEntry<IService>();
-
-                Assert.That(entry.State.HasFlag(ServiceEntryStates.Instantiated)); // factory hivva volt
-                Assert.That(Monitor.IsEntered(entry), Is.False);
-            }
         }
 
         [Test]
