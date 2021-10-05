@@ -5,7 +5,6 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -31,7 +30,7 @@ namespace Solti.Utils.DI.Internals
         {
         }
 
-        [MethodImpl(MethodImplOptions.Synchronized)]
+        //[MethodImpl(MethodImplOptions.Synchronized)]
         public override object CreateInstance(IInjector scope)
         {
             Ensure.Parameter.IsNotNull(scope, nameof(scope));
