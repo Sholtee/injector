@@ -42,7 +42,7 @@ namespace Solti.Utils.DI.Internals
 
         private readonly ConcurrentDictionary<Type, AbstractServiceEntry>[] FSpecializedEntries;
 
-        public ConcurrentServiceRegistry(ISet<AbstractServiceEntry> entries, ResolverBuilder? resolverBuilder = null, CancellationToken cancellation = default) : base(entries, resolverBuilder, cancellation)
+        public ConcurrentServiceRegistry(IServiceCollection entries, ResolverBuilder? resolverBuilder = null, CancellationToken cancellation = default) : base(entries, resolverBuilder, cancellation)
         {
             FRegularEntriesFactory = ArrayFactory<EntryHolder>.Create(RegularEntryCount);
             FRegularEntries = FRegularEntriesFactory();

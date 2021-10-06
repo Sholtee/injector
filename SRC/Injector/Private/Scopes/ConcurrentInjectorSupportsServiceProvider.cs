@@ -34,7 +34,7 @@ namespace Solti.Utils.DI.Internals
             }
         }
 
-        public ConcurrentInjectorSupportsServiceProvider(ISet<AbstractServiceEntry> entries, ScopeOptions options, CancellationToken cancellation) : base(entries, options, cancellation) { }
+        public ConcurrentInjectorSupportsServiceProvider(IServiceCollection entries, ScopeOptions options, CancellationToken cancellation) : base(entries, options, cancellation) { }
 
         public ConcurrentInjectorSupportsServiceProvider(ConcurrentInjectorSupportsServiceProvider parent) : base(parent) { }
 

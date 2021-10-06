@@ -6,7 +6,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -46,9 +45,9 @@ namespace Solti.Utils.DI.Perf
         {
             get
             {
-                yield return new Named<object> { Name = "Chained", Value = Internals.ResolverBuilder.ChainedDelegates };
-                yield return new Named<object> { Name = "Expression", Value = Internals.ResolverBuilder.CompiledExpression };
-                yield return new Named<object> { Name = "Compiled", Value = Internals.ResolverBuilder.CompiledCode };
+                yield return new Named<object> { Name = "Chained", Value = ResolverBuilder.ChainedDelegates };
+                yield return new Named<object> { Name = "Expression", Value = ResolverBuilder.CompiledExpression };
+                yield return new Named<object> { Name = "Compiled", Value = ResolverBuilder.CompiledCode };
             }
         }
 
@@ -75,19 +74,17 @@ namespace Solti.Utils.DI.Perf
         [GlobalSetup(Target = nameof(ResolveRegularEntry))]
         public void SetupResolveRegularEntry()
         {
+            ServiceCollection services = new();
+
+            for (int i = 0; i < ServiceCount; i++)
+            {
+                services.Factory<IList>(i.ToString(), _ => Array.Empty<object>(), Lifetime.Transient);
+            }
+
             Registry = (ServiceRegistryBase) System.Activator.CreateInstance(RegistryType.Value, new object[] 
             {
-                new HashSet<AbstractServiceEntry>
-                (
-                    Enumerable
-                        .Repeat(0, ServiceCount)
-                        .Select
-                        (
-                            (_, i) => (AbstractServiceEntry) new TransientServiceEntry(typeof(IList), i.ToString(), (i, t) => null!,  null)
-                        ),
-                    ServiceIdComparer.Instance
-                ),
-                (ResolverBuilder) ResolverBuilder.Value,
+                services,
+                ResolverBuilder.Value,
                 CancellationToken.None
             });
             I = 0;
@@ -96,22 +93,24 @@ namespace Solti.Utils.DI.Perf
         [Benchmark]
         public AbstractServiceEntry ResolveRegularEntry() => Registry!.GetEntry(typeof(IList), (++I % ServiceCount).ToString())!;
 
+        private sealed class MyList<T> : List<T> // csak egy konstruktora van
+        {
+        }
+
         [GlobalSetup(Target = nameof(ResolveGenericEntry))]
         public void SetupResolveGenericEntry()
         {
+            ServiceCollection services = new();
+
+            for (int i = 0; i < ServiceCount; i++)
+            {
+                services.Service(typeof(IList<>), i.ToString(), typeof(MyList<>), Lifetime.Transient);
+            }
+
             Registry = (ServiceRegistryBase) System.Activator.CreateInstance(RegistryType.Value, new object[]
             {
-                new HashSet<AbstractServiceEntry>
-                (
-                    Enumerable
-                        .Repeat(0, ServiceCount)
-                        .Select
-                        (
-                            (_, i) => (AbstractServiceEntry) new TransientServiceEntry(typeof(IList<>), i.ToString(), (i, t) => null!,  null)
-                        ),
-                    ServiceIdComparer.Instance
-                ),
-                (ResolverBuilder) ResolverBuilder.Value,
+                services,
+                ResolverBuilder.Value,
                 CancellationToken.None
             });
             I = 0;
@@ -134,13 +133,16 @@ namespace Solti.Utils.DI.Perf
         [GlobalSetup]
         public void Setup()
         {
+            ServiceCollection services = new();
+
+            for (int i = 0; i < EntryCount; i++)
+            {
+                services.Service<IDisposable, Disposable>(i.ToString(), Lifetime.Scoped);
+            }
+
             Registry = (ServiceRegistryBase) System.Activator.CreateInstance(RegistryType.Value, new object[]
             {
-                new HashSet<AbstractServiceEntry>
-                (
-                    Enumerable.Repeat(0, EntryCount).Select((_, i) => new ScopedServiceEntry(typeof(IDisposable), i.ToString(), typeof(Disposable), null)),
-                    ServiceIdComparer.Instance
-                ),
+                services,
                 ResolverBuilder.CompiledExpression,
                 CancellationToken.None
             });
@@ -179,18 +181,25 @@ namespace Solti.Utils.DI.Perf
 
         private Func<object[], object> Factory { get; set; }
 
-        private ISet<AbstractServiceEntry> EmptySet { get; } = new HashSet<AbstractServiceEntry>(ServiceIdComparer.Instance);
+        private IServiceCollection EmptyColl { get; } = new ServiceCollection();
 
         [GlobalSetup]
-        public void Setup()
-        {
-            Factory = RegistryType
-                .Value
-                .GetConstructor(new Type[] { typeof(ISet<AbstractServiceEntry>), typeof(ResolverBuilder), typeof(CancellationToken) })
-                .ToStaticDelegate();
-        }
+        public void Setup() => Factory = RegistryType
+            .Value
+            .GetConstructor(new Type[]
+            {
+                typeof(IServiceCollection),
+                typeof(ResolverBuilder),
+                typeof(CancellationToken)
+            })
+            .ToStaticDelegate();
 
         [Benchmark]
-        public IServiceRegistry Create() => (IServiceRegistry) Factory(new object[] { EmptySet, ResolverBuilder.Value, CancellationToken.None } );
+        public IServiceRegistry Create() => (IServiceRegistry) Factory(new object[] 
+        {
+            EmptyColl,
+            ResolverBuilder.Value,
+            CancellationToken.None
+        });
     }
 }

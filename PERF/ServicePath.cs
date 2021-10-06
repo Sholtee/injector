@@ -11,6 +11,7 @@ using BenchmarkDotNet.Attributes;
 namespace Solti.Utils.DI.Perf
 {
     using Interfaces;
+    using Internals;
 
     [MemoryDiagnoser]
     public class ServicePath
@@ -19,7 +20,7 @@ namespace Solti.Utils.DI.Perf
             .Assembly
             .ExportedTypes
             .Where(t => t.IsInterface && !t.IsGenericTypeDefinition)
-            .Select(t => new MissingServiceEntry(t, null))
+            .Select(t => new DummyServiceEntry(t, null))
             .Take(10)
             .ToArray();
 

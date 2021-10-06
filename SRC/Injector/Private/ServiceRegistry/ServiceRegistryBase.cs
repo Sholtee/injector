@@ -18,8 +18,8 @@ namespace Solti.Utils.DI.Internals
     //
     // Ez az osztaly kozponti komponens, ezert minden modositast korultekintoen, a teljesitmenyt szem elott tartva
     // kell elvegezni:
-    // - nincs Sysmte.Linq
-    // - nincs System.Reflection
+    // - nincs Sysmte.Linq (nem inicializalassal kapcsolatos kodban)
+    // - nincs System.Reflection (nem inicializalassal kapcsolatos kodban)
     // - mindig futtassuk a teljesitmeny teszteket (is) hogy a hatekonysag nem romlott e
     //
 
@@ -31,7 +31,7 @@ namespace Solti.Utils.DI.Internals
         private static Resolver RegularEntryResolverFactory(int slot, AbstractServiceEntry originalEntry) =>
             (self, iface, name) => self.ResolveRegularEntry(slot, originalEntry);
 
-        protected ServiceRegistryBase(ISet<AbstractServiceEntry> entries, ResolverBuilder? resolverBuilder, CancellationToken cancellation) : base()
+        protected ServiceRegistryBase(IServiceCollection entries, ResolverBuilder? resolverBuilder, CancellationToken cancellation) : base()
         {
             Ensure.Parameter.IsNotNull(entries, nameof(entries));
 
@@ -41,6 +41,8 @@ namespace Solti.Utils.DI.Internals
 
             if (entries.Count != oldLength + BuiltInServices.Count)
                 throw new ArgumentException(Resources.BUILT_IN_SERVICE_OVERRIDE, nameof(entries));
+
+            entries.RegisterKnownGenericServices();
 
             RegisteredEntries = entries as IReadOnlyCollection<AbstractServiceEntry> ?? entries.ToArray(); // HashSet megvalositja az IReadOnlyCollection-t
 

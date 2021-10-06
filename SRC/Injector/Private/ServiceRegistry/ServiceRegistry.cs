@@ -4,7 +4,6 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
 
@@ -40,7 +39,7 @@ namespace Solti.Utils.DI.Internals
 
         private readonly DictionarySlim<TypeWrap, AbstractServiceEntry>?[] FSpecializedEntries;
 
-        public ServiceRegistry(ISet<AbstractServiceEntry> entries, ResolverBuilder? resolverBuilder = null, CancellationToken cancellation = default) : base(entries, resolverBuilder, cancellation)
+        public ServiceRegistry(IServiceCollection entries, ResolverBuilder? resolverBuilder = null, CancellationToken cancellation = default) : base(entries, resolverBuilder, cancellation)
         {
             FRegularEntries = new AbstractServiceEntry?[RegularEntryCount];
             FSpecializedEntries = new DictionarySlim<TypeWrap, AbstractServiceEntry>?[GenericEntryCount];

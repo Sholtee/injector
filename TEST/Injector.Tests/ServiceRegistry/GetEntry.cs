@@ -22,7 +22,7 @@ namespace Solti.Utils.DI.Internals.Tests
         public void GetEntry_ShouldReturnOnTypeMatch([Values(null, "cica")] string name, [ValueSource(nameof(RegistryTypes))] Type registryType, [ValueSource(nameof(ResolverBuilders))] ResolverBuilder resolver)
         {
             TransientServiceEntry entry = new(typeof(IDisposable), name, typeof(Disposable), null);
-            Registry = (ServiceRegistryBase) Activator.CreateInstance(registryType, new object[] { new HashSet<AbstractServiceEntry>(ServiceIdComparer.Instance) { entry }, resolver, CancellationToken.None } );
+            Registry = (ServiceRegistryBase) Activator.CreateInstance(registryType, new object[] { new ServiceCollection { entry }, resolver, CancellationToken.None } );
 
             Assert.That(Registry.GetEntry<IDisposable>(name), Is.Not.Null);
         }
@@ -31,7 +31,7 @@ namespace Solti.Utils.DI.Internals.Tests
         public void GetEntry_ShouldCache_RegularCase([Values(null, "cica")] string name, [ValueSource(nameof(RegistryTypes))] Type registryType, [ValueSource(nameof(ResolverBuilders))] ResolverBuilder resolver)
         {
             TransientServiceEntry entry = new(typeof(IDisposable), name, typeof(Disposable), null);
-            Registry = (ServiceRegistryBase) Activator.CreateInstance(registryType, new object[] { new HashSet<AbstractServiceEntry>(ServiceIdComparer.Instance) { entry }, resolver, CancellationToken.None });
+            Registry = (ServiceRegistryBase) Activator.CreateInstance(registryType, new object[] { new ServiceCollection { entry }, resolver, CancellationToken.None });
 
             Assert.AreSame(Registry.GetEntry<IDisposable>(name), Registry.GetEntry(typeof(IDisposable), name));
         }
@@ -40,7 +40,7 @@ namespace Solti.Utils.DI.Internals.Tests
         public void GetEntry_ShouldBeThreadSafe_RegularCase([Values(null, "cica")] string name, [ValueSource(nameof(ResolverBuilders))] ResolverBuilder resolver)
         {
             TransientServiceEntry entry = new(typeof(IDisposable), name, typeof(Disposable), null);
-            Registry = new ConcurrentServiceRegistry(new HashSet<AbstractServiceEntry>(ServiceIdComparer.Instance) { entry }, resolver);
+            Registry = new ConcurrentServiceRegistry(new ServiceCollection { entry }, resolver);
 
             AbstractServiceEntry[] results = null;
 
@@ -58,7 +58,7 @@ namespace Solti.Utils.DI.Internals.Tests
         public void GetEntry_ShouldSpecialize([Values(null, "cica")] string name, [ValueSource(nameof(RegistryTypes))] Type registryType, [ValueSource(nameof(ResolverBuilders))] ResolverBuilder resolver)
         {
             TransientServiceEntry entry = new(typeof(IList<>), name, typeof(MyList<>), null);
-            Registry = (ServiceRegistryBase) Activator.CreateInstance(registryType, new object[] { new HashSet<AbstractServiceEntry>(ServiceIdComparer.Instance) { entry }, resolver, CancellationToken.None });
+            Registry = (ServiceRegistryBase) Activator.CreateInstance(registryType, new object[] { new ServiceCollection { entry }, resolver, CancellationToken.None });
 
             AbstractServiceEntry specialized = Registry.GetEntry<IList<int>>(name);
             Assert.That(specialized, Is.Not.Null);
@@ -70,7 +70,7 @@ namespace Solti.Utils.DI.Internals.Tests
         public void GetEntry_ShouldCache_GenericCase([Values(null, "cica")] string name, [ValueSource(nameof(RegistryTypes))] Type registryType, [ValueSource(nameof(ResolverBuilders))] ResolverBuilder resolver)
         {
             TransientServiceEntry entry = new(typeof(IList<>), name, typeof(MyList<>), null);
-            Registry = (ServiceRegistryBase) Activator.CreateInstance(registryType, new object[] { new HashSet<AbstractServiceEntry>(ServiceIdComparer.Instance) { entry }, resolver, CancellationToken.None });
+            Registry = (ServiceRegistryBase) Activator.CreateInstance(registryType, new object[] { new ServiceCollection { entry }, resolver, CancellationToken.None });
 
             Assert.AreSame(Registry.GetEntry(typeof(IList<int>), name), Registry.GetEntry(typeof(IList<int>), name));
         }
@@ -79,7 +79,7 @@ namespace Solti.Utils.DI.Internals.Tests
         public void GetEntry_ShouldBeThreadSafe_GenericCase([Values(null, "cica")] string name, [ValueSource(nameof(ResolverBuilders))] ResolverBuilder resolver)
         {
             TransientServiceEntry entry = new(typeof(IList<>), name, typeof(MyList<>), null);
-            Registry = new ConcurrentServiceRegistry(new HashSet<AbstractServiceEntry>(ServiceIdComparer.Instance) { entry }, resolver);
+            Registry = new ConcurrentServiceRegistry(new ServiceCollection { entry }, resolver);
 
             AbstractServiceEntry[] results = null;
 
@@ -97,7 +97,7 @@ namespace Solti.Utils.DI.Internals.Tests
         public void GetEntry_ShouldResolveNonSharedEntriesFromTheCurrentRegistry_RegularCase([Values(null, "cica")] string name, [Values(typeof(ICustomFormatter), typeof(IList<int>))] Type serviceType, [ValueSource(nameof(RegistryTypes))] Type registryType, [ValueSource(nameof(ResolverBuilders))] ResolverBuilder resolver)
         {
             TransientServiceEntry entry = new(serviceType, name, (_, _) => null, null);
-            Registry = (ServiceRegistryBase) Activator.CreateInstance(registryType, new object[] { new HashSet<AbstractServiceEntry>(ServiceIdComparer.Instance) { entry }, resolver, CancellationToken.None });
+            Registry = (ServiceRegistryBase) Activator.CreateInstance(registryType, new object[] { new ServiceCollection { entry }, resolver, CancellationToken.None });
 
             ServiceRegistryBase child = (ServiceRegistryBase) Activator.CreateInstance(registryType, new object[] { Registry });
 
@@ -111,7 +111,7 @@ namespace Solti.Utils.DI.Internals.Tests
         public void GetEntry_ShouldResolveNonSharedEntriesFromTheCurrentRegistry_GenericCase([Values(null, "cica")] string name, [ValueSource(nameof(RegistryTypes))] Type registryType, [ValueSource(nameof(ResolverBuilders))] ResolverBuilder resolver)
         {
             TransientServiceEntry entry = new(typeof(IList<>), name, typeof(MyList<>), null);
-            Registry = (ServiceRegistryBase) Activator.CreateInstance(registryType, new object[] { new HashSet<AbstractServiceEntry>(ServiceIdComparer.Instance) { entry }, resolver, CancellationToken.None });
+            Registry = (ServiceRegistryBase) Activator.CreateInstance(registryType, new object[] { new ServiceCollection { entry }, resolver, CancellationToken.None });
 
             ServiceRegistryBase child = (ServiceRegistryBase) Activator.CreateInstance(registryType, new object[] { Registry });
 
@@ -122,7 +122,7 @@ namespace Solti.Utils.DI.Internals.Tests
         public void GetEntry_ShouldResolveSharedEntriesFromTheParentRegistry_RegularCase([Values(null, "cica")] string name, [Values(typeof(ICustomFormatter), typeof(IList<int>))] Type serviceType, [ValueSource(nameof(RegistryTypes))] Type registryType, [ValueSource(nameof(ResolverBuilders))] ResolverBuilder resolver)
         {
             SingletonServiceEntry entry = new(serviceType, name, (_, _) => null, null);
-            Registry = (ServiceRegistryBase) Activator.CreateInstance(registryType, new object[] { new HashSet<AbstractServiceEntry>(ServiceIdComparer.Instance) { entry }, resolver, CancellationToken.None });
+            Registry = (ServiceRegistryBase) Activator.CreateInstance(registryType, new object[] { new ServiceCollection { entry }, resolver, CancellationToken.None });
 
             ServiceRegistryBase child = (ServiceRegistryBase) Activator.CreateInstance(registryType, new object[] { Registry });
 
@@ -136,7 +136,7 @@ namespace Solti.Utils.DI.Internals.Tests
         public void GetEntry_ShouldResolveSharedEntriesFromTheParentRegistry_GenericCase([Values(null, "cica")] string name, [ValueSource(nameof(RegistryTypes))] Type registryType, [ValueSource(nameof(ResolverBuilders))] ResolverBuilder resolver)
         {
             SingletonServiceEntry entry = new(typeof(IList<>), name, typeof(MyList<>), null);
-            Registry = (ServiceRegistryBase) Activator.CreateInstance(registryType, new object[] { new HashSet<AbstractServiceEntry>(ServiceIdComparer.Instance) { entry }, resolver, CancellationToken.None });
+            Registry = (ServiceRegistryBase) Activator.CreateInstance(registryType, new object[] { new ServiceCollection { entry }, resolver, CancellationToken.None });
 
             ServiceRegistryBase child = (ServiceRegistryBase) Activator.CreateInstance(registryType, new object[] { Registry });
             Assert.AreSame(Registry.GetEntry<IList<int>>(name), child.GetEntry<IList<int>>(name));
@@ -145,7 +145,7 @@ namespace Solti.Utils.DI.Internals.Tests
         [Test]
         public void GetEntry_ShouldReturnAMissingServiceEntryOnMissingService([Values(null, "cica")] string name, [ValueSource(nameof(RegistryTypes))] Type registryType)
         {
-            Registry = (ServiceRegistryBase)Activator.CreateInstance(registryType, new object[] { new HashSet<AbstractServiceEntry>(ServiceIdComparer.Instance), null, CancellationToken.None });
+            Registry = (ServiceRegistryBase)Activator.CreateInstance(registryType, new object[] { new ServiceCollection(), null, CancellationToken.None });
 
             Assert.That(Registry.GetEntry<IDisposable>(name), Is.InstanceOf<MissingServiceEntry>().And.EqualTo(new MissingServiceEntry(typeof(IDisposable), name)).Using(ServiceIdComparer.Instance));
         }

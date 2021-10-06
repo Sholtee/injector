@@ -92,7 +92,7 @@ namespace Solti.Utils.DI.Internals
 
         protected override ValueTask AsyncDispose() => FDisposables.DisposeAsync();
 
-        public ConcurrentInjector(ISet<AbstractServiceEntry> entries, ScopeOptions options, CancellationToken cancellation) : base(entries, cancellation: cancellation)
+        public ConcurrentInjector(IServiceCollection entries, ScopeOptions options, CancellationToken cancellation) : base(entries, cancellation: cancellation)
         {
             Options = options;
         }
