@@ -12,6 +12,7 @@ namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
     using Interfaces.Properties;
+    using Primitives;
     using Proxy;
 
     internal static partial class ServiceEntryExtensions
@@ -22,21 +23,30 @@ namespace Solti.Utils.DI.Internals
 
             ConstructorInfo ctor = interceptor.GetApplicableConstructor();
 
-            ParameterInfo[] compatibleParamz = ctor
-                .GetParameters()
-                .Where(para => para.ParameterType == iface)
-                .ToArray();
+            IReadOnlyList<ParameterInfo> paramz = ctor.GetParameters();
 
-            string targetName = compatibleParamz.Length == 1
-                ? compatibleParamz[0].Name
-                : "target";
-
-            Func<IInjector, IReadOnlyDictionary<string, object?>, object> factory = ServiceActivator.GetExtended(ctor);
-
-            return (IInjector injector, Type iface, object instance) => factory(injector, new Dictionary<string, object?>
+            if (paramz.Count is 1 && paramz[0].ParameterType == iface)
             {
-                {targetName, instance}
-            });
+                Func<object?[], object> ctorFn = ctor.ToStaticDelegate();
+                return (IInjector injector, Type iface, object instance) => ctorFn(new object[] { instance });
+            }
+            else
+            {
+                IReadOnlyList<ParameterInfo> ifaceParamz = paramz
+                    .Where(para => para.ParameterType == iface)
+                    .ToArray();
+
+                string targetName = ifaceParamz.Count == 1
+                    ? ifaceParamz[0].Name
+                    : "target";
+
+                Func<IInjector, IReadOnlyDictionary<string, object?>, object> factory = ServiceActivator.GetExtended(ctor);
+
+                return (IInjector injector, Type iface, object instance) => factory(injector, new Dictionary<string, object?>
+                {
+                    {targetName, instance}
+                });
+            }
         }
 
         //
