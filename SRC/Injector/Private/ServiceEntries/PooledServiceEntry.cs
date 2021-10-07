@@ -48,15 +48,6 @@ namespace Solti.Utils.DI.Internals
                 throw new InvalidOperationException(); // TODO: uzenet
 
             //
-            // Ha mar le lett gyartva akkor nincs dolgunk, jelezzuk a hivonak h ovlassa ki a
-            // korabban beallitott erteket -> Kovetkezes kepp egy scope MINDIG csak egy 
-            // elemet vehet ki a pool-bol
-            //
-
-            if (State.HasFlag(ServiceEntryStates.Built))
-                return false;
-
-            //
             // Pool-ban az eredeti factory-t hivjuk
             //
 
