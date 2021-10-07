@@ -168,4 +168,7 @@
   <data name="INJECTOR_IS_BEING_DISPOSED" xml:space="preserve">
     <value>Injector cannot be invoked when it is about to dispose.</value>
   </data>
+  <data name="TARGET_PARAM_CANNOT_BE_DETERMINED" xml:space="preserve">
+    <value>The interceptor must have exactly one constructor parameter for the target object.</value>
+  </data>
 </root>

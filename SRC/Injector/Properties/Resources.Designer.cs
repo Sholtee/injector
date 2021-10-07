@@ -19,7 +19,7 @@ namespace Solti.Utils.DI.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -210,6 +210,15 @@ namespace Solti.Utils.DI.Properties {
         internal static string STRICT_DI {
             get {
                 return ResourceManager.GetString("STRICT_DI", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The interceptor must have exactly one constructor parameter for the target object..
+        /// </summary>
+        internal static string TARGET_PARAM_CANNOT_BE_DETERMINED {
+            get {
+                return ResourceManager.GetString("TARGET_PARAM_CANNOT_BE_DETERMINED", resourceCulture);
             }
         }
     }

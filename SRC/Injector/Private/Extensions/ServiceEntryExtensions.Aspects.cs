@@ -25,20 +25,20 @@ namespace Solti.Utils.DI.Internals
 
             IReadOnlyList<ParameterInfo> paramz = ctor.GetParameters();
 
-            if (paramz.Count is 1 && paramz[0].ParameterType == iface)
+            if (paramz.Count is 1 && IsTargetParameter(paramz[0]))
             {
                 Func<object?[], object> ctorFn = ctor.ToStaticDelegate();
+
                 return (IInjector injector, Type iface, object instance) => ctorFn(new object[] { instance });
             }
             else
             {
-                IReadOnlyList<ParameterInfo> ifaceParamz = paramz
-                    .Where(para => para.ParameterType == iface)
-                    .ToArray();
+                IReadOnlyList<ParameterInfo> targetParam = paramz.Where(IsTargetParameter).ToArray();
 
-                string targetName = ifaceParamz.Count == 1
-                    ? ifaceParamz[0].Name
-                    : "target";
+                if (targetParam.Count is not 1)
+                    throw new InvalidOperationException(Properties.Resources.TARGET_PARAM_CANNOT_BE_DETERMINED);
+
+                string targetName = targetParam[0].Name;
 
                 Func<IInjector, IReadOnlyDictionary<string, object?>, object> factory = ServiceActivator.GetExtended(ctor);
 
@@ -47,6 +47,8 @@ namespace Solti.Utils.DI.Internals
                     {targetName, instance}
                 });
             }
+
+            bool IsTargetParameter(ParameterInfo param) => param.ParameterType == iface && param.GetCustomAttribute<OptionsAttribute>()?.Name is null;
         }
 
         //
