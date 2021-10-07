@@ -40,7 +40,7 @@ namespace Solti.Utils.DI.Internals
 
             FInstance = Factory!(scope, Interface);
 
-            State |= ServiceEntryStates.Built;
+            UpdateState(ServiceEntryStates.Built);
 
             return FInstance;
         }

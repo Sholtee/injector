@@ -143,7 +143,7 @@ namespace Solti.Utils.DI.Internals
                 // - Ha a fuggosegi fa gyokerenel vagyunk akkor a metodus nem ertelmezett.
                 //
 
-                if (Options.StrictDI && !requested.State.HasFlag(ServiceEntryStates.Instantiated) && FPath.Count > 0)
+                if (Options.StrictDI && !requested.State.HasFlag(ServiceEntryStates.Validated) && FPath.Count > 0)
                 {
                     AbstractServiceEntry requestor = FPath[^1];
 
@@ -170,7 +170,7 @@ namespace Solti.Utils.DI.Internals
                 //    -> CDEP ellenorzes 
                 //
 
-                if (!requested.State.HasFlag(ServiceEntryStates.Instantiated))
+                if (!requested.State.HasFlag(ServiceEntryStates.Validated))
                 {
                     FPath.Push(requested);
                     try

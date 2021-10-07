@@ -5,6 +5,7 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
 namespace Solti.Utils.DI.Internals
@@ -19,6 +20,18 @@ namespace Solti.Utils.DI.Internals
         {
             Factory = entry.Factory;
             ExplicitArgs = entry.ExplicitArgs;
+            Root = entry.Root ?? entry;
+
+            //
+            // Ha korabban mar sikerult validalni a bejegyzest [lasd UpdateState()] akkor azt a masolaton mar nem
+            // kell megtenni.
+            //
+            // Megjegyzes:
+            //    Ez csak regularis bejegyzesekre mukodik mivel azoknak van szuloje.
+            //
+
+            if (Root.State.HasFlag(ServiceEntryStates.Validated))
+                State = ServiceEntryStates.Validated;
 
             //
             // Itt nem kell "this.ApplyAspects()" hivas mert a forras bejegyzesen mar
@@ -88,7 +101,28 @@ namespace Solti.Utils.DI.Internals
             if (Factory is null)
                 throw new InvalidOperationException(Resources.NOT_PRODUCIBLE);
         }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        protected void UpdateState(ServiceEntryStates newState)
+        {
+            if (newState == State)
+                return;
+
+            Debug.Assert(newState > State, "New state must be greater than the old one.");
+
+            State = newState;
+
+            if (State.HasFlag(ServiceEntryStates.Validated) && Root?.State < ServiceEntryStates.Validated)
+                //
+                // Nem gond ha ez parhuzamosan kerul meghivasra tobb kulonbozo masolt bejegyzesbol (az ertekadas
+                // atomi muvelet es a validalt allapoton kivul mas nem kerul beallitasra a gyokerben).
+                //
+
+                Root.State = ServiceEntryStates.Validated;
+        }
         #endregion
+
+        public ProducibleServiceEntry? Root { get; }
 
         public IReadOnlyDictionary<string, object?>? ExplicitArgs { get; }
 

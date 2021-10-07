@@ -70,7 +70,7 @@ namespace Solti.Utils.DI.Internals
                 FInstance = relatedPool.Get();
             }
 
-            State |= ServiceEntryStates.Built;
+            UpdateState(ServiceEntryStates.Built);
 
             return FInstance;
         }

@@ -30,7 +30,6 @@ namespace Solti.Utils.DI.Internals
         {
         }
 
-        //[MethodImpl(MethodImplOptions.Synchronized)]
         public override object CreateInstance(IInjector scope)
         {
             Ensure.Parameter.IsNotNull(scope, nameof(scope));
@@ -41,7 +40,7 @@ namespace Solti.Utils.DI.Internals
 
             FInstance = Factory!(scope, Interface);
 
-            State |= ServiceEntryStates.Built;
+            UpdateState(ServiceEntryStates.Built);
 
             return FInstance;
         }

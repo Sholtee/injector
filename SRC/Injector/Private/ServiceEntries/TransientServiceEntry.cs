@@ -48,7 +48,7 @@ namespace Solti.Utils.DI.Internals
 
             object instance = Factory!(scope, Interface);
 
-            State |= ServiceEntryStates.Instantiated;
+            UpdateState(ServiceEntryStates.Instantiated);
             FInstanceCount++;
 
             return instance;
