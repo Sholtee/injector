@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Solti.Utils.DI.Interfaces
 {
@@ -11,6 +12,7 @@ namespace Solti.Utils.DI.Interfaces
     /// Describes the actual state of an <see cref="AbstractServiceEntry"/>
     /// </summary>
     [Flags]
+    [SuppressMessage("Usage", "CA2217:Do not mark enums with FlagsAttribute"), SuppressMessage("Design", "CA1008:Enums should have zero value")]
     public enum ServiceEntryStates: int
     {
         /// <summary>
