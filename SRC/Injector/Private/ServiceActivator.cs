@@ -72,7 +72,7 @@ namespace Solti.Utils.DI.Internals
                             (
                                 constructor,
                                 constructor
-                                    .GetParameters()
+                                    .GetParametersSafe()
                                     .Select
                                     (
                                         param => Expression.Convert
@@ -84,7 +84,7 @@ namespace Solti.Utils.DI.Internals
                             ),
                             constructor
                                 .ReflectedType
-                                .GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.SetProperty)
+                                .GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.SetProperty | BindingFlags.FlattenHierarchy)
                                 .Where(property => property.GetCustomAttribute<InjectAttribute>() is not null)
                                 .Select
                                 (
