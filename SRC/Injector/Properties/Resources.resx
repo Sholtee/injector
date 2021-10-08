@@ -117,14 +117,8 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ALREADY_REGISTERED" xml:space="preserve">
-    <value>"{0}" is already registered.</value>
-  </data>
   <data name="PARAMETER_IS_GENERIC" xml:space="preserve">
     <value>Parameter should not be generic.</value>
-  </data>
-  <data name="CANT_PROXY" xml:space="preserve">
-    <value>Creating proxy is not allowed here.</value>
   </data>
   <data name="CIRCULAR_REFERENCE" xml:space="preserve">
     <value>Circular reference: {0}.</value>
@@ -138,9 +132,6 @@
   <data name="INVALID_CONSTRUCTOR" xml:space="preserve">
     <value>All constructor arguments must be an interface/Lazy&lt;interface&gt;.</value>
   </data>
-  <data name="INVALID_INJECTOR_ENTRY" xml:space="preserve">
-    <value>Injector must not contain abstract service entries.</value>
-  </data>
   <data name="INVALID_INSTANCE" xml:space="preserve">
     <value>The service instance must implement the interface: "{0}".</value>
   </data>
@@ -152,9 +143,6 @@
   </data>
   <data name="NOT_PRODUCIBLE" xml:space="preserve">
     <value>The service has no factory function.</value>
-  </data>
-  <data name="SERVICE_NOT_FOUND" xml:space="preserve">
-    <value>No registered implementation for "{0}".</value>
   </data>
   <data name="INJECTOR_SHOULD_BE_RELEASED" xml:space="preserve">
     <value>The injector can not hold more than {0} transient services. It usually indicates that you were recycling the injector.</value>
@@ -169,24 +157,18 @@
     <value>The value of "{0}" should be null.</value>
   </data>
   <data name="IS_NULL" xml:space="preserve">
-    <value>The value of "{0}" can not be null.</value>
-  </data>
-  <data name="INAPPROPRIATE_OWNERSHIP" xml:space="preserve">
-    <value>Inappropriate ownership.</value>
-  </data>
-  <data name="NOT_BELONGING_REFERENCE" xml:space="preserve">
-    <value>The servicereference belongs to an another entry.</value>
+    <value>The value of "{0}" cannot be null.</value>
   </data>
   <data name="PARAMETER_IS_ABSTRACT" xml:space="preserve">
     <value>Parameter should not be abstract.</value>
   </data>
-  <data name="ENTRY_CANNOT_BE_SPECIALIZED" xml:space="preserve">
-    <value>Entry can not be specialized.</value>
+  <data name="BUILT_IN_SERVICE_OVERRIDE" xml:space="preserve">
+    <value>Built in services cannot be overridden.</value>
   </data>
-  <data name="POOL_ITEM_ALREADY_TAKEN" xml:space="preserve">
-    <value>The pool item you requested already held by the current thread.</value>
+  <data name="INJECTOR_IS_BEING_DISPOSED" xml:space="preserve">
+    <value>Injector cannot be invoked when it is about to dispose.</value>
   </data>
-  <data name="FOREIGN_DEPENDENCY" xml:space="preserve">
-    <value>You can not add dependency to an already instantiated service.</value>
+  <data name="TARGET_PARAM_CANNOT_BE_DETERMINED" xml:space="preserve">
+    <value>The interceptor must have exactly one constructor parameter for the target object.</value>
   </data>
 </root>

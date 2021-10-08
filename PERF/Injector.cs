@@ -10,7 +10,6 @@ using BenchmarkDotNet.Attributes;
 
 namespace Solti.Utils.DI.Perf
 {
-    using static Consts;
     using Interfaces;
     using Internals;
 
@@ -23,7 +22,16 @@ namespace Solti.Utils.DI.Perf
 
             InjectorDotNetLifetime.Initialize();
 
-        private IServiceContainer FContainer;
+        public static IEnumerable<Lifetime> Lifetimes
+        {
+            get
+            {
+                yield return Lifetime.Transient;
+                yield return Lifetime.Scoped;
+                yield return Lifetime.Singleton;
+                yield return Lifetime.Pooled.WithCapacity(4);
+            }
+        }
 
         #region Services
         public interface IDependency
@@ -34,7 +42,7 @@ namespace Solti.Utils.DI.Perf
         {
         }
 
-        public interface IDependant 
+        public interface IDependant
         {
             IDependency Dependency { get; }
         }
@@ -74,27 +82,21 @@ namespace Solti.Utils.DI.Perf
         }
         #endregion
 
-        protected IServiceContainer CreateContainer() => FContainer = new DI.ServiceContainer();
+        protected IScopeFactory Root { get; private set; }
 
-        protected IInjector CreateInjector() => FContainer.CreateInjector();
+        protected IScopeFactory Setup(Action<IServiceCollection> setupContainer) => Root = ScopeFactory.Create(setupContainer, new ScopeOptions
+        {
+            MaxSpawnedTransientServices = int.MaxValue
+        });
 
         [GlobalCleanup]
-        public void Cleanup() => FContainer.Dispose();
+        public void Cleanup() => Root?.Dispose();
     }
 
     [MemoryDiagnoser]
-    public class InjectorGet: InjectorTestsBase
+    public class InjectorGet : InjectorTestsBase
     {
-        public IEnumerable<Lifetime> Lifetimes 
-        {
-            get 
-            {
-                yield return Lifetime.Transient;
-                yield return Lifetime.Scoped;
-                yield return Lifetime.Singleton;
-                yield return Lifetime.Pooled.WithCapacity(4);
-            }
-        }
+        public IInjector Injector { get; set; }
 
         [ParamsSource(nameof(Lifetimes))]
         public Lifetime DependencyLifetime { get; set; }
@@ -103,108 +105,85 @@ namespace Solti.Utils.DI.Perf
         public Lifetime DependantLifetime { get; set; }
 
         [GlobalSetup(Target = nameof(NonGeneric))]
-        public void SetupNonGeneric() => CreateContainer()
-            .Service<IDependency, Dependency>(DependencyLifetime)
-            .Service<IDependant, Dependant>(DependantLifetime);
+        public void SetupNonGeneric() => Injector = Setup
+        (
+            container => container
+                .Service<IDependency, Dependency>(DependencyLifetime)
+                .Service<IDependant, Dependant>(DependantLifetime)
+        ).CreateScope();
 
-        [Benchmark(OperationsPerInvoke = OperationsPerInvoke)]
-        public void NonGeneric()
-        {
-            using (IInjector injector = CreateInjector())
-            {
-                for (int i = 0; i < OperationsPerInvoke; i++)
-                {
-                    injector.Get<IDependant>(name: null);
-                }
-            }
-        }
+        [Benchmark]
+        public IDependant NonGeneric() => Injector.Get<IDependant>(name: null);
 
         [GlobalSetup(Target = nameof(Generic))]
-        public void SetupGeneric() => CreateContainer()
-            .Service<IDependency, Dependency>(DependencyLifetime)
-            .Service(typeof(IDependant<>), typeof(Dependant<>), DependantLifetime);
+        public void SetupGeneric() => Injector = Setup
+        (
+            container => container
+                .Service<IDependency, Dependency>(DependencyLifetime)
+                .Service(typeof(IDependant<>), typeof(Dependant<>), DependantLifetime)
+        ).CreateScope();
 
-        [Benchmark(OperationsPerInvoke = OperationsPerInvoke)]
-        public void Generic()
-        {
-            using (IInjector injector = CreateInjector())
-            {
-                for (int i = 0; i < OperationsPerInvoke; i++)
-                {
-                    injector.Get<IDependant<string>>(name: null);
-                }
-            }
-        }
+        [Benchmark]
+        public IDependant<string> Generic() => Injector.Get<IDependant<string>>(name: null);
 
         [GlobalSetup(Target = nameof(Lazy))]
-        public void SetupLazy() => CreateContainer()
-            .Service<IDependency, Dependency>(DependencyLifetime)
-            .Service<IDependantLazy, DependantLazy>(DependantLifetime);
+        public void SetupLazy() => Injector = Setup
+        (
+            container => container
+                .Service<IDependency, Dependency>(DependencyLifetime)
+                .Service<IDependantLazy, DependantLazy>(DependantLifetime)
+        ).CreateScope();
 
-        [Benchmark(OperationsPerInvoke = OperationsPerInvoke)]
-        public void Lazy()
-        {
-            using (IInjector injector = CreateInjector())
-            {
-                for (int i = 0; i < OperationsPerInvoke; i++)
-                {
-                    injector.Get<IDependantLazy>(name: null);
-                }
-            }
-        }
+        [Benchmark]
+        public IDependantLazy Lazy() => Injector.Get<IDependantLazy>(name: null);
 
         [GlobalSetup(Target = nameof(Enumerable))]
-        public void SetupEnumerable() => CreateContainer()
-            .Service<IDependency, Dependency>(DependencyLifetime)
-            .Service<IDependant, Dependant>(1.ToString(), DependantLifetime)
-            .Service<IDependant, Dependant>(2.ToString(), DependantLifetime);
+        public void SetupEnumerable() => Injector = Setup
+        (
+            container => container
+                .Service<IDependency, Dependency>(DependencyLifetime)
+                .Service<IDependant, Dependant>(1.ToString(), DependantLifetime)
+                .Service<IDependant, Dependant>(2.ToString(), DependantLifetime)
+        ).CreateScope();
 
-        [Benchmark(OperationsPerInvoke = OperationsPerInvoke)]
-        public void Enumerable()
-        {
-            using (IInjector injector = CreateInjector())
-            {
-                for (int i = 0; i < OperationsPerInvoke; i++)
-                {
-                    injector.Get<IEnumerable<IDependant>>(name: null);
-                }
-            }
-        }
+        [Benchmark]
+        public /*IEnumerable<IDependant>*/ void Enumerable() => Injector.Get<IEnumerable<IDependant>>(name: null);
     }
 
     [MemoryDiagnoser]
-    public class InjectorInstantiate : InjectorTestsBase 
+    public class InjectorInstantiate : InjectorTestsBase
     {
-        public IEnumerable<Lifetime> Lifetimes
-        {
-            get
-            {
-                yield return Lifetime.Transient;
-                yield return Lifetime.Scoped;
-                yield return Lifetime.Singleton;
-                yield return Lifetime.Pooled.WithCapacity(4);
-            }
-        }
+        public IInjector Injector { get; set; }
 
         [ParamsSource(nameof(Lifetimes))]
         public Lifetime DependencyLifetime { get; set; }
 
         [GlobalSetup(Target = nameof(Instantiate))]
-        public void SetupInstantiate() => CreateContainer()
-            .Service<IDependency, Dependency>(DependencyLifetime);
+        public void SetupInstantiate() => Injector = Setup
+        (
+            container => container.Service<IDependency, Dependency>(DependencyLifetime)
+        ).CreateScope();
 
-        [Benchmark(OperationsPerInvoke = OperationsPerInvoke)]
-        public void Instantiate()
+        [Benchmark]
+        public Outer Instantiate() => Injector.Instantiate<Outer>(new Dictionary<string, object>
         {
-            using (IInjector injector = CreateInjector())
+            { "num", 10 }
+        });
+    }
+
+    [MemoryDiagnoser]
+    public class ScopeCreation : InjectorTestsBase
+    {
+        [GlobalSetup(Target = nameof(CreateAndDisposeScope))]
+        public void SetupCreateInjector() => Setup(container => container
+            .Service<IDependency, Dependency>(Lifetime.Transient)
+            .Service<IDependant, Dependant>(Lifetime.Scoped));
+
+        [Benchmark]
+        public void CreateAndDisposeScope()
+        {
+            using (Root.CreateScope())
             {
-                for (int i = 0; i < OperationsPerInvoke; i++)
-                {
-                    injector.Instantiate<Outer>(new Dictionary<string, object>
-                    {
-                        { "num", 10 }
-                    });
-                }
             }
         }
     }

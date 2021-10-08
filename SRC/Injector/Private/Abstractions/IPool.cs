@@ -3,16 +3,13 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
-using System.Collections.Generic;
-
 namespace Solti.Utils.DI.Internals
 {
-    using Interfaces;
-    using Primitives.Threading;
+    using Primitives.Patterns;
 
-    internal interface IPool: IEnumerable<(int OwnerThread, IServiceReference Object)>
+    internal interface IPool
     {
-        PoolItem<IServiceReference>? Get(CheckoutPolicy checkoutPolicy);
+        IWrapped<object> Get();
     }
 
     internal interface IPool<TInterface>: IPool where TInterface: class

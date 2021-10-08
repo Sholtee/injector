@@ -5,7 +5,7 @@
     <RootNamespace>Solti.Utils.DI</RootNamespace>
   </PropertyGroup>
 
-  <Import Project="../Common.targets" />
+  <Import Project="..\Common\Common.targets" />
 
   <PropertyGroup>
     <DefineConstants>BACKWARD_COMPATIBILITY</DefineConstants>
@@ -20,18 +20,22 @@
     <Optimize>true</Optimize>
   </PropertyGroup>
 
-  <ItemGroup Condition="'$(Configuration)'!='Debug'">
-    <Compile Remove="Private\Annotations\ExcludeFromCoverageAttribute.cs" />
-  </ItemGroup>
-
   <ItemGroup>
     <None Remove="docfx.json" />
     <None Remove="index.md" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="ProxyGen.NET" Version="4.*" />
-    <PackageReference Include="Solti.Utils.Primitives" Version="2.*" />
+    <Folder Include="Private\Annotations\" />
+    <Compile Include="..\Common\ModuleInitializerAttribute.cs" Link="Private\Annotations\ModuleInitializerAttribute.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="IndexRange" Version="1.*" Condition="'$(TargetFramework)' == 'netstandard2.0'" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="3.8.*" />
+    <PackageReference Include="Microsoft.Experimental.Collections" Version="1.0.6-e190117-3" />
+    <PackageReference Include="ProxyGen.NET" Version="5.*" />
+    <PackageReference Include="Solti.Utils.Primitives" Version="6.*" />
   </ItemGroup>
 
   <ItemGroup>

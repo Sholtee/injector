@@ -17,7 +17,7 @@ namespace Solti.Utils.DI.Interfaces
         /// </summary>
         public static TInterface? GetService<TInterface>(this IServiceProvider self) where TInterface : class
         {
-            if (self == null)
+            if (self is null)
                 throw new ArgumentNullException(nameof(self));
 
             return (TInterface?) self.GetService(typeof(TInterface));

@@ -19,7 +19,7 @@ namespace Solti.Utils.DI.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -61,20 +61,11 @@ namespace Solti.Utils.DI.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &quot;{0}&quot; is already registered..
+        ///   Looks up a localized string similar to Built in services cannot be overridden..
         /// </summary>
-        internal static string ALREADY_REGISTERED {
+        internal static string BUILT_IN_SERVICE_OVERRIDE {
             get {
-                return ResourceManager.GetString("ALREADY_REGISTERED", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Creating proxy is not allowed here..
-        /// </summary>
-        internal static string CANT_PROXY {
-            get {
-                return ResourceManager.GetString("CANT_PROXY", resourceCulture);
+                return ResourceManager.GetString("BUILT_IN_SERVICE_OVERRIDE", resourceCulture);
             }
         }
         
@@ -106,29 +97,11 @@ namespace Solti.Utils.DI.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Entry can not be specialized..
+        ///   Looks up a localized string similar to Injector cannot be invoked when it is about to dispose..
         /// </summary>
-        internal static string ENTRY_CANNOT_BE_SPECIALIZED {
+        internal static string INJECTOR_IS_BEING_DISPOSED {
             get {
-                return ResourceManager.GetString("ENTRY_CANNOT_BE_SPECIALIZED", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to You can not add dependency to an already instantiated service..
-        /// </summary>
-        internal static string FOREIGN_DEPENDENCY {
-            get {
-                return ResourceManager.GetString("FOREIGN_DEPENDENCY", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Inappropriate ownership..
-        /// </summary>
-        internal static string INAPPROPRIATE_OWNERSHIP {
-            get {
-                return ResourceManager.GetString("INAPPROPRIATE_OWNERSHIP", resourceCulture);
+                return ResourceManager.GetString("INJECTOR_IS_BEING_DISPOSED", resourceCulture);
             }
         }
         
@@ -151,15 +124,6 @@ namespace Solti.Utils.DI.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Injector must not contain abstract service entries..
-        /// </summary>
-        internal static string INVALID_INJECTOR_ENTRY {
-            get {
-                return ResourceManager.GetString("INVALID_INJECTOR_ENTRY", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to The service instance must implement the interface: &quot;{0}&quot;..
         /// </summary>
         internal static string INVALID_INSTANCE {
@@ -169,20 +133,11 @@ namespace Solti.Utils.DI.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The value of &quot;{0}&quot; can not be null..
+        ///   Looks up a localized string similar to The value of &quot;{0}&quot; cannot be null..
         /// </summary>
         internal static string IS_NULL {
             get {
                 return ResourceManager.GetString("IS_NULL", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The servicereference belongs to an another entry..
-        /// </summary>
-        internal static string NOT_BELONGING_REFERENCE {
-            get {
-                return ResourceManager.GetString("NOT_BELONGING_REFERENCE", resourceCulture);
             }
         }
         
@@ -250,29 +205,20 @@ namespace Solti.Utils.DI.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The pool item you requested already held by the current thread..
-        /// </summary>
-        internal static string POOL_ITEM_ALREADY_TAKEN {
-            get {
-                return ResourceManager.GetString("POOL_ITEM_ALREADY_TAKEN", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to No registered implementation for &quot;{0}&quot;..
-        /// </summary>
-        internal static string SERVICE_NOT_FOUND {
-            get {
-                return ResourceManager.GetString("SERVICE_NOT_FOUND", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Attempt to request a dependency that should live shorter than the requestor should..
         /// </summary>
         internal static string STRICT_DI {
             get {
                 return ResourceManager.GetString("STRICT_DI", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The interceptor must have exactly one constructor parameter for the target object..
+        /// </summary>
+        internal static string TARGET_PARAM_CANNOT_BE_DETERMINED {
+            get {
+                return ResourceManager.GetString("TARGET_PARAM_CANNOT_BE_DETERMINED", resourceCulture);
             }
         }
     }

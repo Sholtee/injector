@@ -19,7 +19,7 @@ namespace Solti.Utils.DI.Internals
 
         protected InjectorDotNetLifetime(Expression<Func<Lifetime>> bindTo, int precedence)
         {
-            BoundProperty = (PropertyInfo) ((MemberExpression) bindTo.Body).Member;
+            BoundProperty = PropertyInfoExtractor.Extract(bindTo);
             Precedence = precedence;
         }
 

@@ -1,6 +1,7 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
+    <LangVersion>preview</LangVersion>
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
     <Configurations>Debug</Configurations>
@@ -13,7 +14,7 @@
   <ItemGroup>
     <PackageReference Include="Moq" Version="4.*" />
     <PackageReference Include="nunit" Version="3.*" />
-    <PackageReference Include="NUnit3TestAdapter" Version="3.*">
+    <PackageReference Include="NUnit3TestAdapter" Version="4.*">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>

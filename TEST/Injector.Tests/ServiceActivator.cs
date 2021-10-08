@@ -19,6 +19,8 @@ namespace Solti.Utils.DI.Internals.Tests
     using Proxy;
     using Proxy.Generators;
 
+    using ScopeFactory = DI.ScopeFactory;
+
     [TestFixture]
     public sealed class ServiceActivatorTests
     {
@@ -50,6 +52,30 @@ namespace Solti.Utils.DI.Internals.Tests
             public MyClass()
             {
             }
+        }
+
+        private class MyClass2
+        {
+            [Inject, Options(Name = "cica")]
+            public IDisposable Dep1 { get; init; }
+            [Inject]
+            public IList Dep2 { get; init; }
+            public int Int { get; init; }
+        }
+
+        private class MyClassHavingLazyProperty
+        {
+            [Inject, Options(Name = "cica")]
+            public Lazy<IDisposable> Dep1 { get; init; }
+            [Inject]
+            public Lazy<IList> Dep2 { get; init; }
+            public int Int { get; init; }
+        }
+
+        private class MyClassHavingOptionalProperty
+        {
+            [Inject, Options(Optional = true)]
+            public IList Dep { get; init; }
         }
 
         [TestCase(typeof(IDisposable), null, typeof(IList), "cica")]
@@ -99,6 +125,113 @@ namespace Solti.Utils.DI.Internals.Tests
         }
 
         [Test]
+        public void Activator_ShouldResolveProperties()
+        {
+            var mockDisposable = new Mock<IDisposable>();
+
+            var mockServiceFactory = new Mock<IList>();
+
+            var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
+
+            foreach (Func<IInjector, object> activator in GetActivators(typeof(MyClass2).GetConstructor(Type.EmptyTypes)))
+            {
+                mockInjector
+                    .Setup(i => i.Get(It.IsAny<Type>(), It.IsAny<string>()))
+                    .Returns<Type, string>((type, name) =>
+                    {
+                        if (type == typeof(IDisposable) && name == "cica") return mockDisposable.Object;
+                        if (type == typeof(IList)) return mockServiceFactory.Object;
+
+                        Assert.Fail("Unknown type");
+                        return null;
+                    });
+
+                MyClass2 instance = (MyClass2) activator(mockInjector.Object);
+
+                Assert.That(instance, Is.Not.Null);
+                Assert.That(instance.Dep1, Is.SameAs(mockDisposable.Object));
+                Assert.That(instance.Dep2, Is.SameAs(mockServiceFactory.Object));
+
+                mockInjector.Verify(i => i.Get(It.Is<Type>(t => t == typeof(IDisposable)), It.Is<string>(n => n == "cica")), Times.Once);
+                mockInjector.Verify(i => i.Get(It.Is<Type>(t => t == typeof(IList)), It.Is<string>(n => n == null)), Times.Once);
+                mockInjector.Verify(i => i.Get(It.IsAny<Type>(), It.IsAny<string>()), Times.Exactly(2));
+
+                mockInjector.Reset();
+            }
+
+            IEnumerable<Func<IInjector, object>> GetActivators(ConstructorInfo ctor)
+            {
+                Func<IInjector, Type, object> factory = ServiceActivator.Get(ctor);
+                yield return injector => factory(injector, null);
+
+                Func<IInjector, IReadOnlyDictionary<string, object>, object> factoryEx = ServiceActivator.GetExtended(ctor);
+                yield return injector => factoryEx(injector, new Dictionary<string, object>(0));
+            }
+        }
+
+        [Test]
+        public void Activator_ShouldResolveLazyProperties()
+        {
+            var mockDisposable = new Mock<IDisposable>();
+
+            var mockServiceFactory = new Mock<IList>();
+
+            var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
+
+            foreach (Func<IInjector, object> activator in GetActivators(typeof(MyClassHavingLazyProperty).GetConstructor(Type.EmptyTypes)))
+            {
+                mockInjector
+                    .Setup(i => i.Get(It.IsAny<Type>(), It.IsAny<string>()))
+                    .Returns<Type, string>((type, name) =>
+                    {
+                        if (type == typeof(IDisposable) && name == "cica") return mockDisposable.Object;
+                        if (type == typeof(IList)) return mockServiceFactory.Object;
+
+                        Assert.Fail("Unknown type");
+                        return null;
+                    });
+
+                MyClassHavingLazyProperty instance = (MyClassHavingLazyProperty) activator(mockInjector.Object);
+
+                Assert.That(instance, Is.Not.Null);
+                Assert.That(instance.Dep1, Is.Not.Null);
+                Assert.That(instance.Dep2, Is.Not.Null);
+                Assert.That(instance.Dep1.Value, Is.SameAs(mockDisposable.Object));
+                Assert.That(instance.Dep2.Value, Is.SameAs(mockServiceFactory.Object));
+
+                mockInjector.Verify(i => i.Get(It.Is<Type>(t => t == typeof(IDisposable)), It.Is<string>(n => n == "cica")), Times.Once);
+                mockInjector.Verify(i => i.Get(It.Is<Type>(t => t == typeof(IList)), It.Is<string>(n => n == null)), Times.Once);
+                mockInjector.Verify(i => i.Get(It.IsAny<Type>(), It.IsAny<string>()), Times.Exactly(2));
+
+                mockInjector.Reset();
+            }
+
+            IEnumerable<Func<IInjector, object>> GetActivators(ConstructorInfo ctor)
+            {
+                Func<IInjector, Type, object> factory = ServiceActivator.Get(ctor);
+                yield return injector => factory(injector, null);
+
+                Func<IInjector, IReadOnlyDictionary<string, object>, object> factoryEx = ServiceActivator.GetExtended(ctor);
+                yield return injector => factoryEx(injector, new Dictionary<string, object>(0));
+            }
+        }
+
+        [Test]
+        public void Activator_ShouldResolveOptionalProperties()
+        {
+            var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
+            mockInjector
+                .Setup(i => i.TryGet(typeof(IList), null))
+                .Returns(new List<IDictionary>());
+
+            Func<IInjector, Type, object> factory = ServiceActivator.Get(typeof(MyClassHavingOptionalProperty));
+
+            Assert.DoesNotThrow(() => factory.Invoke(mockInjector.Object, typeof(IList)));
+
+            mockInjector.Verify(i => i.TryGet(typeof(IList), null), Times.Once);
+        }
+
+        [Test]
         public void Get_ShouldHandleParameterlessConstructors()
         {
             var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
@@ -119,7 +252,7 @@ namespace Solti.Utils.DI.Internals.Tests
         }
 
         [Test]
-        public void ExtendedActivator_ShouldHandleExplicitArguments()
+        public void ExtendedActivator_ShouldSupportExplicitArguments()
         {
             var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
             mockInjector.Setup(i => i.Get(It.IsAny<Type>(), It.IsAny<string>()));
@@ -139,7 +272,24 @@ namespace Solti.Utils.DI.Internals.Tests
         }
 
         [Test]
-        public void ExtendedActivator_ShouldHandleOptionalArguments() 
+        public void ExtendedActivator_ShouldSupportExplicitProperties()
+        {
+            var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
+
+            Func<IInjector, IReadOnlyDictionary<string, object>, object> factory = ServiceActivator
+                .GetExtended(typeof(MyClassHavingOptionalProperty).GetConstructor(Type.EmptyTypes));
+
+            var ret = (MyClassHavingOptionalProperty) factory(mockInjector.Object, new Dictionary<string, object>
+            {
+                {nameof(MyClassHavingOptionalProperty.Dep), new List<string>()}
+            });
+
+            Assert.That(ret, Is.InstanceOf<MyClassHavingOptionalProperty>());
+            Assert.That(ret.Dep, Is.Not.Null);
+        }
+
+        [Test]
+        public void ExtendedActivator_ShouldResolveOptionalArguments() 
         {
             var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
             mockInjector
@@ -159,6 +309,22 @@ namespace Solti.Utils.DI.Internals.Tests
         }
 
         [Test]
+        public void ExtendedActivator_ShouldResolveOptionalProperties()
+        {
+            var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
+            mockInjector
+                .Setup(i => i.TryGet(typeof(IList), null))
+                .Returns(new List<IDictionary>());
+
+            Func<IInjector, IReadOnlyDictionary<string, object>, object> factory = ServiceActivator
+                .GetExtended(typeof(MyClassHavingOptionalProperty));
+
+            Assert.DoesNotThrow(() => factory.Invoke(mockInjector.Object, new Dictionary<string, object>()));
+
+            mockInjector.Verify(i => i.TryGet(typeof(IList), null), Times.Once);
+        }
+
+        [Test]
         public void ExtendedActivator_ShouldThrowOnNonInterfaceArguments()
         {
             ConstructorInfo ctor = typeof(MyClass).GetConstructor(new[] { typeof(IDisposable), typeof(IList), typeof(int) });
@@ -173,12 +339,11 @@ namespace Solti.Utils.DI.Internals.Tests
             // Ne mock-oljuk az injector-t h a megfelelo kiveteleket kapjuk
             //
 
-            using (IServiceContainer container = new ServiceContainer())
+            using (IScopeFactory root = ScopeFactory.Create(svcs => svcs
+                .Factory<IDisposable>(i => new Disposable(), Lifetime.Scoped)
+                .Factory<IList>(i => new List<object>(), Lifetime.Scoped)))
             {
-                IInjector injector = container
-                    .Factory<IDisposable>(i => new Disposable(), Lifetime.Scoped)
-                    .Factory<IList>(i => new List<object>(), Lifetime.Scoped)
-                    .CreateInjector();
+                IInjector injector = root.CreateScope();
 
                 //
                 // Ez mukodne viszont nem adtuk meg a nem interface parametert.

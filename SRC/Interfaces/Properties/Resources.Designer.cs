@@ -70,15 +70,6 @@ namespace Solti.Utils.DI.Interfaces.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The given service reference is not compatible..
-        /// </summary>
-        internal static string INCOMPATIBLE_REFERENCE {
-            get {
-                return ResourceManager.GetString("INCOMPATIBLE_REFERENCE", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Parameter must be a class..
         /// </summary>
         internal static string NOT_A_CLASS {
@@ -106,11 +97,38 @@ namespace Solti.Utils.DI.Interfaces.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Open generics are not supported..
+        /// </summary>
+        internal static string OPEN_GENERIC {
+            get {
+                return ResourceManager.GetString("OPEN_GENERIC", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The entry does not support proxying..
         /// </summary>
         internal static string PROXYING_NOT_SUPPORTED {
             get {
                 return ResourceManager.GetString("PROXYING_NOT_SUPPORTED", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A service with the same ID has already been registered..
+        /// </summary>
+        internal static string SERVICE_ALREADY_REGISTERED {
+            get {
+                return ResourceManager.GetString("SERVICE_ALREADY_REGISTERED", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No registered implementation for &quot;{0}&quot;..
+        /// </summary>
+        internal static string SERVICE_NOT_FOUND {
+            get {
+                return ResourceManager.GetString("SERVICE_NOT_FOUND", resourceCulture);
             }
         }
     }

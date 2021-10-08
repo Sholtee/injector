@@ -4,6 +4,7 @@
     <OutputType>Exe</OutputType>
     <IsPackable>false</IsPackable>
     <TargetFramework>net5.0</TargetFramework>
+    <LangVersion>preview</LangVersion>
     <Configurations>Debug;Release</Configurations>
     <!--BenchmarkDotNet requires the exe and csproj name to be equal-->
     <AssemblyName>Injector.Perf</AssemblyName>
@@ -17,10 +18,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Autofac" Version="6.*" />
+    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="7.*" />
     <PackageReference Include="BenchmarkDotNet" Version="0.*" />
+    <PackageReference Include="Lamar" Version="6.*" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.*" />
+    <PackageReference Include="Stashbox.Extensions.Dependencyinjection" Version="2.*" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(LibVersion)' != ''" >
+  <ItemGroup Condition="'$(LibVersion)' != ''">
     <PackageReference Include="Injector.NET" Version="$(LibVersion)"></PackageReference>
   </ItemGroup>
 

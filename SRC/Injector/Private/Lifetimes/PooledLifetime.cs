@@ -5,7 +5,6 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -13,29 +12,12 @@ namespace Solti.Utils.DI.Internals
 
     internal sealed class PooledLifetime : InjectorDotNetLifetime, IHasCapacity, IConcreteLifetime<PooledLifetime>
     {
-        [SuppressMessage("Performance", "CA1802:Use literals where appropriate", Justification = "Due to interpolation it cannot be const.")]
-        public static readonly string POOL_SCOPE = $"_{nameof(POOL_SCOPE)}";
-
-        public PooledLifetime() : base(bindTo: () => Pooled, precedence: 20) { }
-
-        public static string GetPoolName(Type iface, string? name) =>
-            //
-            // Type.GUID lezart es nyilt generikusnal is azonos
-            //
-
-            $"{ServiceContainer.INTERNAL_SERVICE_NAME_PREFIX}pool_{iface.GUID}_{name}";
-
-        //
-        // Nem kell a kulonbozo parametereket validalni. Ha vmelyikkel gaz van akkor ide mar el sem
-        // jutunk.
-        //
-
-        private AbstractServiceEntry GetPoolEntry(Type iface, string? name, IServiceContainer owner) => new SingletonServiceEntry
+        private AbstractServiceEntry GetPoolService(Type iface, string? name, string poolName) => new SingletonServiceEntry
         (
             iface.IsGenericTypeDefinition
                 ? typeof(IPool<>)
                 : typeof(IPool<>).MakeGenericType(iface),
-            GetPoolName(iface, name),
+            poolName,
             iface.IsGenericTypeDefinition
                 ? typeof(PoolService<>)
                 : typeof(PoolService<>).MakeGenericType(iface),
@@ -47,27 +29,56 @@ namespace Solti.Utils.DI.Internals
                 //
 
                 ["capacity"] = Capacity,
-                ["name"] = name
+                ["name"] = name // eredeti szervizt az eredeti neven keressuk
             },
-            owner
+            null
         );
-
-        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Type implementation, IServiceContainer owner)
+ 
+        private static string GetPoolName(Type iface, string? name)
         {
-            yield return new PooledServiceEntrySupportsProxying(iface, name, implementation, owner);
-            yield return GetPoolEntry(iface, name, owner);
+            if (iface.IsConstructedGenericType)
+                iface = iface.GetGenericTypeDefinition();
+
+            return $"{Consts.INTERNAL_SERVICE_NAME_PREFIX}pool_{(iface, name).GetHashCode():X}";
         }
 
-        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Type implementation, IReadOnlyDictionary<string, object?> explicitArgs, IServiceContainer owner)
+        public PooledLifetime() : base(bindTo: () => Pooled, precedence: 20) { }
+
+        public const string POOL_SCOPE = nameof(POOL_SCOPE);
+
+        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Type implementation)
         {
-            yield return new PooledServiceEntrySupportsProxying(iface, name, implementation, explicitArgs, owner);
-            yield return GetPoolEntry(iface, name, owner);
+            string poolName = GetPoolName(iface, name);
+
+            //
+            // A sorrend szamit (last IModifiedServiceCollection.LastEntry) viszont a validalas miatt eloszor a 
+            // PooledServiceEntry-t hozzuk letre.
+            //
+
+            PooledServiceEntry pooledServiceEntry = new(iface, name, implementation, null, poolName);
+
+            yield return GetPoolService(iface, name, poolName);
+            yield return pooledServiceEntry;
         }
 
-        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Func<IInjector, Type, object> factory, IServiceContainer owner)
+        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Type implementation, IReadOnlyDictionary<string, object?> explicitArgs)
         {
-            yield return new PooledServiceEntrySupportsProxying(iface, name, factory, owner);
-            yield return GetPoolEntry(iface, name, owner);
+            string poolName = GetPoolName(iface, name);
+
+            PooledServiceEntry pooledServiceEntry = new(iface, name, implementation, explicitArgs, null, poolName);
+
+            yield return GetPoolService(iface, name, poolName);
+            yield return pooledServiceEntry;
+        }
+
+        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Func<IInjector, Type, object> factory)
+        {
+            string poolName = GetPoolName(iface, name);
+
+            PooledServiceEntry pooledServiceEntry = new(iface, name, factory, null, poolName);
+
+            yield return GetPoolService(iface, name, poolName);
+            yield return pooledServiceEntry;
         }
 
         public override int CompareTo(Lifetime other) => other is PooledLifetime

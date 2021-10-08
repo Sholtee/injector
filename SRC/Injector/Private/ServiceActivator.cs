@@ -15,12 +15,9 @@ namespace Solti.Utils.DI.Internals
     using Interfaces;
     using Primitives;
     using Properties;
-    using Proxy.Internals;
 
     internal static class ServiceActivator
     {
-        private static object? voidVal;
-
         private static readonly MethodInfo
             //
             // Csak kifejezesek, nem tenyleges metodus hivas
@@ -28,23 +25,23 @@ namespace Solti.Utils.DI.Internals
 
             InjectorGet     = MethodInfoExtractor.Extract<IInjector>(i => i.Get(null!, null)),
             InjectorTryGet  = MethodInfoExtractor.Extract<IInjector>(i => i.TryGet(null!, null)),
-            DictTryGetValue = MethodInfoExtractor.Extract<IReadOnlyDictionary<string, object?>>(dict => dict.TryGetValue(default!, out voidVal));
+            DictTryGetValue = MethodInfoExtractor.Extract<IReadOnlyDictionary<string, object?>, object?>((dict, outVal) => dict.TryGetValue(default!, out outVal));
 
-        private static Type? GetEffectiveParameterType(Type paramType, out bool isLazy)
+        private static Type? GetEffectiveType(Type type, out bool isLazy)
         {
-            if (paramType.IsInterface)
+            if (type.IsInterface)
             {
                 isLazy = false;
-                return paramType;
+                return type;
             }
 
-            if (paramType.IsGenericType && paramType.GetGenericTypeDefinition() == typeof(Lazy<>))
+            if (type.IsConstructedGenericType && type.GetGenericTypeDefinition() == typeof(Lazy<>))
             {
-                paramType = paramType.GetGenericArguments().Single();
-                if (paramType.IsInterface)
+                type = type.GetGenericArguments().Single();
+                if (type.IsInterface)
                 {
                     isLazy = true;
-                    return paramType;
+                    return type;
                 }
             }
 
@@ -60,31 +57,8 @@ namespace Solti.Utils.DI.Internals
             Ensure.Parameter.IsNotGenericDefinition(type, nameof(type));
         }
 
-        private static TDelegate CreateActivator<TDelegate>(ConstructorInfo constructor, Func<(Type Type, string Name, OptionsAttribute? Options), Expression> argumentResolver, ParameterExpression[] variables, ParameterExpression[] parameters)
+        private static TDelegate CreateActivator<TDelegate>(ConstructorInfo constructor, Func<Type, string, OptionsAttribute?, Expression> dependencyResolver, ParameterExpression[] variables, ParameterExpression[] parameters)
         {
-            IReadOnlyCollection<ParameterInfo>? ctorParamz = null;        
-
-            if (constructor.DeclaringType.GetCustomAttribute<RelatedGeneratorAttribute>() is not null)
-            {
-                //
-                // Specialis eset amikor proxy-t hozunk letre majd probaljuk aktivalni. Itt a parametereken levo attributumok nem lennenek 
-                // lathatok ezert a varazslas.
-                //
-
-                Type @base = constructor.DeclaringType.BaseType;
-                Debug.Assert(@base is not null);
-
-                ConstructorInfo? baseCtor = @base!.GetConstructor(constructor
-                    .GetParameters()
-                    .Select(param => param.ParameterType)
-                    .ToArray());
-
-                if (baseCtor is not null)
-                    ctorParamz = baseCtor.GetParameters();
-            }
-
-            ctorParamz ??= constructor.GetParameters();
-
             Expression<TDelegate> resolver = Expression.Lambda<TDelegate>
             (
                 Expression.Block
@@ -92,17 +66,38 @@ namespace Solti.Utils.DI.Internals
                     variables,
                     Expression.Convert
                     (
-                        Expression.New
+                        Expression.MemberInit
                         (
-                            constructor,
-                            ctorParamz.Select
+                            Expression.New
                             (
-                                param => Expression.Convert
+                                constructor,
+                                constructor
+                                    .GetParametersSafe()
+                                    .Select
+                                    (
+                                        param => Expression.Convert
+                                        (
+                                            dependencyResolver(param.ParameterType, param.Name, param.GetCustomAttribute<OptionsAttribute>()),
+                                            param.ParameterType
+                                        )
+                                    )
+                            ),
+                            constructor
+                                .ReflectedType
+                                .GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.SetProperty | BindingFlags.FlattenHierarchy)
+                                .Where(property => property.GetCustomAttribute<InjectAttribute>() is not null)
+                                .Select
                                 (
-                                    argumentResolver((param.ParameterType, param.Name, param.GetCustomAttribute<OptionsAttribute>())),
-                                    param.ParameterType
+                                    property => Expression.Bind
+                                    (
+                                        property,
+                                        Expression.Convert
+                                        (
+                                            dependencyResolver(property.PropertyType, property.Name, property.GetCustomAttribute<OptionsAttribute>()),
+                                            property.PropertyType
+                                        )
+                                    )
                                 )
-                            )
                         ),
                         typeof(object)
                     )
@@ -128,7 +123,7 @@ namespace Solti.Utils.DI.Internals
             return CreateActivator<Func<IInjector, Type, object>>
             (
                 constructor, 
-                ResolveArgument,
+                ResolveDependency,
                 Array.Empty<ParameterExpression>(),
                 new[]
                 {
@@ -137,32 +132,35 @@ namespace Solti.Utils.DI.Internals
                 }
             );
 
-            Expression ResolveArgument((Type Type, string _, OptionsAttribute? Options) param) 
+            Expression ResolveDependency(Type type, string _, OptionsAttribute? options) 
             {
-                Type parameterType = GetEffectiveParameterType(param.Type, out bool isLazy) ?? throw new ArgumentException(Resources.INVALID_CONSTRUCTOR, nameof(constructor));
+                type = GetEffectiveType(type, out bool isLazy) ?? throw new ArgumentException(Resources.INVALID_CONSTRUCTOR, nameof(constructor));
 
-                if (isLazy)
+                return isLazy
                     //
                     // Lazy<IInterface>(() => (IInterface) injector.[Try]Get(typeof(IInterface), svcName))
                     //
 
-                    return Expression.Invoke
+                    ? Expression.Invoke
                     (
-                        Expression.Constant(GetLazyFactory(parameterType, param.Options)),
+                        Expression.Constant
+                        (
+                            GetLazyFactory(type, options)
+                        ),
                         injector
-                    )!;
+                    )
 
-                //
-                // injector.[Try]Get(typeof(IInterface), svcName)
-                //
+                    //
+                    // injector.[Try]Get(typeof(IInterface), svcName)
+                    //
 
-                return Expression.Call
-                (
-                    injector,
-                    param.Options?.Optional == true ? InjectorTryGet : InjectorGet,
-                    Expression.Constant(parameterType),
-                    Expression.Constant(param.Options?.Name, typeof(string))
-                )!;
+                    : Expression.Call
+                    (
+                        injector,
+                        options?.Optional is true ? InjectorTryGet : InjectorGet,
+                        Expression.Constant(type),
+                        Expression.Constant(options?.Name, typeof(string))
+                    );
             }
         });
 
@@ -180,42 +178,42 @@ namespace Solti.Utils.DI.Internals
         public static Func<IInjector, IReadOnlyDictionary<string, object?>, object> GetExtended(ConstructorInfo constructor) => Cache.GetOrAdd(constructor, () =>
         {
             //
-            // (injector, explicitParamz) =>
+            // (injector, explicitVals) =>
             // {
-            //    object explicitArg;
-            //    return new Service(explicitArgs.TryGetValue(paramName, out explicitArg) ? explicitArg : Lazy<IDependency_1>) | injector.[Try]Get(typeof(IDependency_1)), ...);
+            //    object explicitVal;
+            //    return new Service(explicitVals.TryGetValue(paramName, out explicitVal) ? explicitVal : Lazy<IDependency_1>) | injector.[Try]Get(typeof(IDependency_1)), ...);
             // }
             //
 
             ParameterExpression
                 injector     = Expression.Parameter(typeof(IInjector), nameof(injector)),
-                explicitArgs = Expression.Parameter(typeof(IReadOnlyDictionary<string, object?>), nameof(explicitArgs)),
-                explicitArg  = Expression.Variable(typeof(object), nameof(explicitArg));
+                explicitVals = Expression.Parameter(typeof(IReadOnlyDictionary<string, object?>), nameof(explicitVals)),
+                explicitVal  = Expression.Variable(typeof(object), nameof(explicitVal));
 
             return CreateActivator<Func<IInjector, IReadOnlyDictionary<string, object?>, object>>
             (
                 constructor,
-                ResolveArgument,
-                new[] { explicitArg },
+                ResolveDependency,
+                new[] { explicitVal },
                 new[]
                 {
                     injector,
-                    explicitArgs
+                    explicitVals
                 }
             );
 
-            Expression ResolveArgument((Type Type, string Name, OptionsAttribute? Options) param)
+            Expression ResolveDependency(Type type, string name, OptionsAttribute? options)
             {
                 //
-                // Nem gond ha ez vegul nem interface tipus lesz, az injector.Get() ugy is szol
-                // majd miatta.
+                // Itt nem lehet forditas idoben validalni hogy "type" megfelelo tipus e (nem interface parameter szerepelhet
+                // az explicit ertekek kozt). Injector.Get() ugy is szolni fog kesobb ha gond van.
                 //
 
-                Type parameterType = GetEffectiveParameterType(param.Type, out bool isLazy) ?? param.Type;
+                type = GetEffectiveType(type, out bool isLazy) ?? type;
 
                 //
-                // explicitArgs.TryGetValue(paramName, out explicitArg)
-                //   ? explicitArg 
+                // explicitVals.TryGetValue(name, out explicitVal)
+                //   ? explicitVal 
                 //   : Lazy<IDependency_1>) | injector.[Try]Get(typeof(IDependency_1))
                 //
 
@@ -223,12 +221,12 @@ namespace Solti.Utils.DI.Internals
                 (
                     test: Expression.Call
                     (
-                        explicitArgs, 
+                        explicitVals, 
                         DictTryGetValue, 
-                        Expression.Constant(param.Name), 
-                        explicitArg
+                        Expression.Constant(name), 
+                        explicitVal
                     ),
-                    ifTrue: explicitArg,
+                    ifTrue: explicitVal,
                     ifFalse: isLazy
                         //
                         // Lazy<IInterface>(() => (IInterface) injector.[Try]Get(typeof(IInterface), svcName))
@@ -238,7 +236,7 @@ namespace Solti.Utils.DI.Internals
                         (
                             Expression.Constant
                             (
-                                GetLazyFactory(parameterType, param.Options)
+                                GetLazyFactory(type, options)
                             ),
                             injector
                         )
@@ -250,9 +248,9 @@ namespace Solti.Utils.DI.Internals
                         : Expression.Call
                         (
                             injector,
-                            param.Options?.Optional == true ? InjectorTryGet : InjectorGet,
-                            Expression.Constant(parameterType),
-                            Expression.Constant(param.Options?.Name, typeof(string))
+                            options?.Optional is true ? InjectorTryGet : InjectorGet,
+                            Expression.Constant(type),
+                            Expression.Constant(options?.Name, typeof(string))
                         )
                 );
             }

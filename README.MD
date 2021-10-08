@@ -250,23 +250,23 @@ public class ParameterValidatorProxy<TInterface> : InterfaceInterceptor<TInterfa
   { 
   }
 
-  public override object Invoke(MethodInfo method, object[] args, MemberInfo extra)
+  public override object Invoke(InvocationContext context)
   {
-    foreach(var ctx in method.GetParameters().Select(
+    foreach(var descr in context.Method.GetParameters().Select(
       (p, i) => new 
       { 
         Parameter = p, 
-        Value = args[i], 
+        Value = context.Args[i], 
         Validators = p.GetCustomAttributes<ParameterValidatorAttribute>() 
       }))
     {
-      foreach (var validator in ctx.Validators) 
+      foreach (var validator in descr.Validators) 
       {
-        validator.Validate(ctx.Parameter, ctx.Value);
+        validator.Validate(descr.Parameter, descr.Value);
       }
     }
 
-    return base.Invoke(method, args, extra);
+    return base.Invoke(context);
   }
 }
 ```
@@ -307,16 +307,16 @@ public class ParameterValidatorProxy<TInterface> : InterfaceInterceptor<TInterfa
       Connection = dbConn;
     }
 	
-    public override object Invoke(MethodInfo method, object[] args, MemberInfo extra)
+    public override object Invoke(InvocationContext context) // Note that this example won't work with async methods
     {
       // Create transactions only if needed
-      if (method.GetCustomAttribute<TransactionalAttribute>() == null) 
-        return base.Invoke(method, args, extra);
+      if (context.Method.GetCustomAttribute<TransactionalAttribute>() == null) 
+        return base.Invoke(context);
 		
       IDbTransaction transaction = Connection.BeginTransaction();
       try
       {
-        object result = base.Invoke(method, args, extra);
+        object result = base.Invoke(context);
         transaction.Commit();
         return result;
       }
@@ -381,10 +381,10 @@ public class MethodInvocationLoggerInterceptor<TInterface> : InterfaceIntercepto
 
   public MethodInvocationLoggerInterceptor(TInterface target, ILogger logger): base(target) => Logger = logger;
 
-  public override object Invoke(MethodInfo method, object[] args, MemberInfo extra)
+  public override object Invoke(InvocationContext context)
   {
-    Logger.Write($"{method.Name}({string.Join(", ", args.Select(arg => arg?.ToString() ?? "null"))})");
-    return base.Invoke(method, args, extra);
+    Logger.Write($"{context.Method.Name}({string.Join(", ", context.Args.Select(arg => arg?.ToString() ?? "null"))})");
+    return base.Invoke(context);
   }
 }
 

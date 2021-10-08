@@ -1,11 +1,11 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <AssemblyName>Solti.Utils.DI.Diagnostics</AssemblyName>
     <RootNamespace>Solti.Utils.DI.Diagnostics</RootNamespace>
   </PropertyGroup>
 
-  <Import Project="../Common.targets" />
+  <Import Project="..\Common\Common.targets" />
 
   <PropertyGroup>
     <Description>Contains diagnostics related features (such as dependency visualization) for Injector.NET</Description>
@@ -21,7 +21,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Solti.Utils.Primitives" Version="2.*" />
+    <PackageReference Include="ProxyGen.NET" Version="5.*" />
+    <PackageReference Include="Solti.Utils.Primitives" Version="6.*" />
   </ItemGroup>
 
 </Project>

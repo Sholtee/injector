@@ -120,9 +120,6 @@
   <data name="INAPROPRIATE_OWNERSHIP" xml:space="preserve">
     <value>Not owned entry can not be proxied.</value>
   </data>
-  <data name="INCOMPATIBLE_REFERENCE" xml:space="preserve">
-    <value>The given service reference is not compatible.</value>
-  </data>
   <data name="NOT_AN_INTERFACE" xml:space="preserve">
     <value>Parameter must be an interface.</value>
   </data>
@@ -132,7 +129,16 @@
   <data name="NOT_IMPLEMENTED" xml:space="preserve">
     <value>The type must implement the "{0}" interface.</value>
   </data>
+  <data name="OPEN_GENERIC" xml:space="preserve">
+    <value>Open generics are not supported.</value>
+  </data>
   <data name="PROXYING_NOT_SUPPORTED" xml:space="preserve">
     <value>The entry does not support proxying.</value>
+  </data>
+  <data name="SERVICE_ALREADY_REGISTERED" xml:space="preserve">
+    <value>A service with the same ID has already been registered.</value>
+  </data>
+  <data name="SERVICE_NOT_FOUND" xml:space="preserve">
+    <value>No registered implementation for "{0}".</value>
   </data>
 </root>

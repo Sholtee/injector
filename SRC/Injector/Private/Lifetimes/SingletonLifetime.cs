@@ -14,19 +14,19 @@ namespace Solti.Utils.DI.Internals
     {
         public SingletonLifetime() : base(bindTo: () => Singleton, precedence: 30) { }
 
-        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Type implementation, IServiceContainer owner)
+        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Type implementation)
         {
-            yield return new SingletonServiceEntry(iface, name, implementation, owner);
+            yield return new SingletonServiceEntry(iface, name, implementation, null);
         }
 
-        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Type implementation, IReadOnlyDictionary<string, object?> explicitArgs, IServiceContainer owner)
+        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Type implementation, IReadOnlyDictionary<string, object?> explicitArgs)
         {
-            yield return new SingletonServiceEntry(iface, name, implementation, explicitArgs, owner);
+            yield return new SingletonServiceEntry(iface, name, implementation, explicitArgs, null);
         }
 
-        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Func<IInjector, Type, object> factory, IServiceContainer owner)
+        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Func<IInjector, Type, object> factory)
         {
-            yield return new SingletonServiceEntry(iface, name, factory, owner);
+            yield return new SingletonServiceEntry(iface, name, factory, null);
         }
     }
 }

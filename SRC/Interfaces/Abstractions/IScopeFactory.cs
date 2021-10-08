@@ -3,23 +3,25 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
-using System.Collections.Generic;
 
 namespace Solti.Utils.DI.Interfaces
 {
+    using Primitives.Patterns;
+
     /// <summary>
     /// Provides a thread safe way to create new scopes.
     /// </summary>
-    public interface IScopeFactory
+    /// <remarks>Disposing the factory destroys all the living child scopes.</remarks>
+    public interface IScopeFactory: IDisposableEx
     {
         /// <summary>
         /// Creates an independent new scope
         /// </summary>
-        IInjector CreateScope(IReadOnlyDictionary<string, object>? options);
+        IInjector CreateScope();
 
         /// <summary>
-        /// Creates an independent new scope
+        /// Options applied on the newly created scopes.
         /// </summary>
-        IInjector CreateScope(IServiceContainer parent, IReadOnlyDictionary<string, object>? options);
+        ScopeOptions Options { get; }
     }
 }

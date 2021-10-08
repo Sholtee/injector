@@ -17,23 +17,6 @@ namespace Solti.Utils.DI.Interfaces
     public interface IInjector: IDisposableEx
     {
         /// <summary>
-        /// Gets the <see cref="IServiceReference"/> associated with the given interface and (optional) name.
-        /// </summary>
-        /// <param name="iface">The "id" of the service to be resolved. It must be an interface.</param>
-        /// <param name="name">The (optional) name of the service.</param>
-        /// <returns>The resolved service reference.</returns>
-        /// <exception cref="ServiceNotFoundException">The service or one or more dependencies could not be found.</exception>
-        IServiceReference GetReference(Type iface, string? name = null);
-
-        /// <summary>
-        /// Tries to get the <see cref="IServiceReference"/> associated with the given interface and (optional) name.
-        /// </summary>
-        /// <param name="iface">The "id" of the service to be resolved. It must be an interface.</param>
-        /// <param name="name">The (optional) name of the service.</param>
-        /// <returns>The resolved service reference.</returns>
-        IServiceReference? TryGetReference(Type iface, string? name = null);
-
-        /// <summary>
         /// Gets the service instance associated with the given interface and (optional) name.
         /// </summary>
         /// <param name="iface">The "id" of the service to be resolved. It must be an interface.</param>
@@ -48,13 +31,12 @@ namespace Solti.Utils.DI.Interfaces
         /// </summary>
         /// <param name="iface">The "id" of the service to be resolved. It must be an interface.</param>
         /// <param name="name">The (optional) name of the service.</param>
-        /// <returns>The requested service instance if the resolution was successful, null otherwise.</returns>
+        /// <returns>The requested service instance or NULL.</returns>
         object? TryGet(Type iface, string? name = null);
 
         /// <summary>
-        /// Gets the <see cref="IServiceContainer"/> associated with the injector.
+        /// Describes the scope behavior.
         /// </summary>
-        /// <remarks>Every injector has its own service container that serves it on service request. This container is a direct descendant of the container from which the injector was created.</remarks>
-        IServiceContainer UnderlyingContainer { get; }
+        ScopeOptions Options { get; }
     }
 }

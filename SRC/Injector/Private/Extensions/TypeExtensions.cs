@@ -28,7 +28,7 @@ namespace Solti.Utils.DI.Internals
             if (src.GetCustomAttribute<RelatedGeneratorAttribute>() is not null)
             {
                 Type @base = src.BaseType;
-                Debug.Assert(@base != null);
+                Debug.Assert(@base is not null);
 
                 ConstructorInfo baseCtor = @base!.GetApplicableConstructor();
 
@@ -50,7 +50,7 @@ namespace Solti.Utils.DI.Internals
 
             try
             {
-                return constructors.SingleOrDefault(ctor => ctor.GetCustomAttribute<ServiceActivatorAttribute>() != null) ?? constructors.Single();
+                return constructors.SingleOrDefault(ctor => ctor.GetCustomAttribute<ServiceActivatorAttribute>() is not null) ?? constructors.Single();
             }
             catch (InvalidOperationException)
             {
@@ -58,13 +58,27 @@ namespace Solti.Utils.DI.Internals
             }
         });
 
+        private sealed record HashCombiner<T>(HashCombiner<T>? Previous, T Current);
+
         public static object CreateInstance(this Type src, Type[] argTypes, params object?[] args)
         {
-            ConstructorInfo ctor = src.GetConstructor(argTypes);
-            if (ctor == null)
-                throw new ArgumentException(Resources.CONSTRUCTOR_NOT_FOUND, nameof(argTypes));
+            HashCombiner<Type> key = new(null, src);
 
-            return ctor.ToStaticDelegate().Invoke(args);
+            for (int i = 0; i < argTypes.Length; i++)
+            {
+                key = new HashCombiner<Type>(key, argTypes[i]);
+            }
+
+            Func<object?[], object> factory = Cache.GetOrAdd(key, () =>
+            {
+                ConstructorInfo ctor = src.GetConstructor(argTypes); // idoigenyes
+                if (ctor is null)
+                    throw new ArgumentException(Resources.CONSTRUCTOR_NOT_FOUND, nameof(argTypes));
+
+                return ctor.ToStaticDelegate();
+            });
+
+            return factory(args);
         }
     }
 }

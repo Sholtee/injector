@@ -205,3 +205,13 @@
   - *introduced:* `IInjector.TryGetReference()` method
 - 5.0.1:
   - *updated:* Dependencies
+- 6.0.0:
+  - *breaking:* The layout of the `InterfaceInterceptor<>` class has been changed. For more information see [this](https://github.com/Sholtee/proxygen#migrating-from-version ) or [that](https://sholtee.github.io/proxygen/doc/Solti.Utils.Proxy.InterfaceInterceptor-1.html )
+  - *breaking:* Renamed `QueryModes.ThrowOnError` -> `QueryModes.ThrowOnMissing`. Along with this change the behavior of `ServiceContainer.Get()` has been altered too: It may throw if the desired service is found but can not be specialized.
+  - *breaking:* `Injector.TryGet()` doesn't eat the `ServiceNotFoundException` if it was thrown due to a missing dependency.
+  - *breaking:* "Scope options" are substituted by the `IInjectorExtensions.Meta()` method
+  - *breaking:* Dropped `AbstractServiceEntry.GetInstance()` method
+  - *breaking:* Modified `IServicePath` layout
+  - *introduced:* Initializer for the `ServiceContainer.MaxChildCount` property
+  - *introduced:* Wrapped service (`IWrapped<object>`) support
+  - *improved:* `IServiceContainer.CreateChild()`, `IServiceContainer.CreateInjector()`, `ServiceContainer.Dispose()`, `Injector.Dispose()` performance
