@@ -45,86 +45,64 @@
   <div class="markdown level0 summary"><p>Provides a thread safe way to create new scopes.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="https://sholtee.github.io/primitives/doc/Solti.Utils.Primitives.Patterns.IDisposableEx.html#Solti_Utils_Primitives_Patterns_IDisposableEx_Disposed">IDisposableEx.Disposed</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.idisposable.dispose#System_IDisposable_Dispose">IDisposable.Dispose()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.iasyncdisposable.disposeasync#System_IAsyncDisposable_DisposeAsync">IAsyncDisposable.DisposeAsync()</a>
+    </div>
+  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Solti.Utils.DI.Interfaces.html">Solti.Utils.DI.Interfaces</a></h6>
   <h6><strong>Assembly</strong>: Solti.Utils.DI.Interfaces.dll</h6>
   <h5 id="Solti_Utils_DI_Interfaces_IScopeFactory_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public interface IScopeFactory</code></pre>
+    <pre><code class="lang-csharp hljs">public interface IScopeFactory : IDisposableEx, IDisposable, IAsyncDisposable</code></pre>
   </div>
+  <h5 id="Solti_Utils_DI_Interfaces_IScopeFactory_remarks"><strong>Remarks</strong></h5>
+  <div class="markdown level0 remarks"><p>Disposing the factory destroys all the living child scopes.</p>
+</div>
+  <h3 id="properties">Properties
+  </h3>
+  <a id="Solti_Utils_DI_Interfaces_IScopeFactory_Options_" data-uid="Solti.Utils.DI.Interfaces.IScopeFactory.Options*"></a>
+  <h4 id="Solti_Utils_DI_Interfaces_IScopeFactory_Options" data-uid="Solti.Utils.DI.Interfaces.IScopeFactory.Options">Options</h4>
+  <div class="markdown level1 summary"><p>Options applied on the newly created scopes.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">ScopeOptions Options { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.ScopeOptions.html">ScopeOptions</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   <h3 id="methods">Methods
   </h3>
   <a id="Solti_Utils_DI_Interfaces_IScopeFactory_CreateScope_" data-uid="Solti.Utils.DI.Interfaces.IScopeFactory.CreateScope*"></a>
-  <h4 id="Solti_Utils_DI_Interfaces_IScopeFactory_CreateScope_Solti_Utils_DI_Interfaces_IServiceContainer_System_Collections_Generic_IReadOnlyDictionary_System_String_System_Object__" data-uid="Solti.Utils.DI.Interfaces.IScopeFactory.CreateScope(Solti.Utils.DI.Interfaces.IServiceContainer,System.Collections.Generic.IReadOnlyDictionary{System.String,System.Object})">CreateScope(IServiceContainer, IReadOnlyDictionary&lt;String, Object&gt;)</h4>
+  <h4 id="Solti_Utils_DI_Interfaces_IScopeFactory_CreateScope" data-uid="Solti.Utils.DI.Interfaces.IScopeFactory.CreateScope">CreateScope()</h4>
   <div class="markdown level1 summary"><p>Creates an independent new scope</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">IInjector CreateScope(IServiceContainer parent, IReadOnlyDictionary&lt;string, object&gt; options)</code></pre>
+    <pre><code class="lang-csharp hljs">IInjector CreateScope()</code></pre>
   </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Solti.Utils.DI.Interfaces.IServiceContainer.html">IServiceContainer</a></td>
-        <td><span class="parametername">parent</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2">IReadOnlyDictionary</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a>&gt;</td>
-        <td><span class="parametername">options</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Solti.Utils.DI.Interfaces.IInjector.html">IInjector</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <a id="Solti_Utils_DI_Interfaces_IScopeFactory_CreateScope_" data-uid="Solti.Utils.DI.Interfaces.IScopeFactory.CreateScope*"></a>
-  <h4 id="Solti_Utils_DI_Interfaces_IScopeFactory_CreateScope_System_Collections_Generic_IReadOnlyDictionary_System_String_System_Object__" data-uid="Solti.Utils.DI.Interfaces.IScopeFactory.CreateScope(System.Collections.Generic.IReadOnlyDictionary{System.String,System.Object})">CreateScope(IReadOnlyDictionary&lt;String, Object&gt;)</h4>
-  <div class="markdown level1 summary"><p>Creates an independent new scope</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">IInjector CreateScope(IReadOnlyDictionary&lt;string, object&gt; options)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2">IReadOnlyDictionary</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a>&gt;</td>
-        <td><span class="parametername">options</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
@@ -143,6 +121,9 @@
   <h3 id="extensionmethods">Extension Methods</h3>
   <div>
       <a class="xref" href="Solti.Utils.Proxy.ObjectExtensions.html#Solti_Utils_Proxy_ObjectExtensions_Act__1___0_">ObjectExtensions.Act&lt;TTarget&gt;(TTarget)</a>
+  </div>
+  <div>
+      <a class="xref" href="Solti.Utils.DI.Interfaces.IScopeFactoryExtensions.html#Solti_Utils_DI_Interfaces_IScopeFactoryExtensions_CreateScope_Solti_Utils_DI_Interfaces_IScopeFactory_System_IServiceProvider__">IScopeFactoryExtensions.CreateScope(IScopeFactory, out IServiceProvider)</a>
   </div>
 </article>
           </div>

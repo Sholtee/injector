@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Class OptionsAttribute
+    <title>Class InjectAttribute
    | Injector </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Class OptionsAttribute
+    <meta name="title" content="Class InjectAttribute
    | Injector ">
     <meta name="generator" content="docfx 2.58.0.0">
     
@@ -37,19 +37,19 @@
       <div role="main" class="container body-content hide-when-search">
         <div class="article row grid">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="Solti.Utils.DI.Interfaces.OptionsAttribute">
+            <article class="content wrap" id="_content" data-uid="Solti.Utils.DI.Interfaces.InjectAttribute">
   
   
-  <h1 id="Solti_Utils_DI_Interfaces_OptionsAttribute" data-uid="Solti.Utils.DI.Interfaces.OptionsAttribute" class="text-break">Class OptionsAttribute
+  <h1 id="Solti_Utils_DI_Interfaces_InjectAttribute" data-uid="Solti.Utils.DI.Interfaces.InjectAttribute" class="text-break">Class InjectAttribute
   </h1>
-  <div class="markdown level0 summary"><p>Controls the <a class="xref" href="Solti.Utils.DI.Interfaces.IInjector.html">IInjector</a> during the dependency resolution.</p>
+  <div class="markdown level0 summary"><p>Marks a property to be resolved.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
     <div class="level1"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.attribute">Attribute</a></div>
-    <div class="level2"><span class="xref">OptionsAttribute</span></div>
+    <div class="level2"><span class="xref">InjectAttribute</span></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
@@ -182,63 +182,13 @@
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Solti.Utils.DI.Interfaces.html">Solti.Utils.DI.Interfaces</a></h6>
   <h6><strong>Assembly</strong>: Solti.Utils.DI.Interfaces.dll</h6>
-  <h5 id="Solti_Utils_DI_Interfaces_OptionsAttribute_syntax">Syntax</h5>
+  <h5 id="Solti_Utils_DI_Interfaces_InjectAttribute_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[AttributeUsage(AttributeTargets.Property | AttributeTargets.Parameter, AllowMultiple = false)]
-public sealed class OptionsAttribute : Attribute</code></pre>
+    <pre><code class="lang-csharp hljs">[AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
+public sealed class InjectAttribute : Attribute</code></pre>
   </div>
-  <h3 id="properties">Properties
-  </h3>
-  <a id="Solti_Utils_DI_Interfaces_OptionsAttribute_Name_" data-uid="Solti.Utils.DI.Interfaces.OptionsAttribute.Name*"></a>
-  <h4 id="Solti_Utils_DI_Interfaces_OptionsAttribute_Name" data-uid="Solti.Utils.DI.Interfaces.OptionsAttribute.Name">Name</h4>
-  <div class="markdown level1 summary"><p>The name of the service.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public string Name { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <a id="Solti_Utils_DI_Interfaces_OptionsAttribute_Optional_" data-uid="Solti.Utils.DI.Interfaces.OptionsAttribute.Optional*"></a>
-  <h4 id="Solti_Utils_DI_Interfaces_OptionsAttribute_Optional" data-uid="Solti.Utils.DI.Interfaces.OptionsAttribute.Optional">Optional</h4>
-  <div class="markdown level1 summary"><p>Indicates whether the service is optional or not.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool Optional { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Solti_Utils_DI_Interfaces_OptionsAttribute_Optional_remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>This option is ignored if you are using the MS preferred DI (<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.iserviceprovider">IServiceProvider</a>).</p>
+  <h5 id="Solti_Utils_DI_Interfaces_InjectAttribute_remarks"><strong>Remarks</strong></h5>
+  <div class="markdown level0 remarks"><p>The target property must be writable.</p>
 </div>
   <h3 id="extensionmethods">Extension Methods</h3>
   <div>

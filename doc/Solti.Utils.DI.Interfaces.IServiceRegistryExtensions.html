@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Class ServiceContainerConfig
+    <title>Class IServiceRegistryExtensions
    | Injector </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Class ServiceContainerConfig
+    <meta name="title" content="Class IServiceRegistryExtensions
    | Injector ">
     <meta name="generator" content="docfx 2.58.0.0">
     
@@ -37,18 +37,18 @@
       <div role="main" class="container body-content hide-when-search">
         <div class="article row grid">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="Solti.Utils.DI.Internals.ServiceContainerConfig">
+            <article class="content wrap" id="_content" data-uid="Solti.Utils.DI.Interfaces.IServiceRegistryExtensions">
   
   
-  <h1 id="Solti_Utils_DI_Internals_ServiceContainerConfig" data-uid="Solti.Utils.DI.Internals.ServiceContainerConfig" class="text-break">Class ServiceContainerConfig
+  <h1 id="Solti_Utils_DI_Interfaces_IServiceRegistryExtensions" data-uid="Solti.Utils.DI.Interfaces.IServiceRegistryExtensions" class="text-break">Class IServiceRegistryExtensions
   </h1>
-  <div class="markdown level0 summary"><p>Defines some options that control the behavior of the <a class="xref" href="Solti.Utils.DI.ServiceContainer.html">ServiceContainer</a> objects.</p>
+  <div class="markdown level0 summary"><p>Provides some extensions for the <a class="xref" href="Solti.Utils.DI.Interfaces.IServiceRegistry.html">IServiceRegistry</a> interface.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
-    <div class="level1"><span class="xref">ServiceContainerConfig</span></div>
+    <div class="level1"><span class="xref">IServiceRegistryExtensions</span></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
@@ -74,24 +74,46 @@
       <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a>
     </div>
   </div>
-  <h6><strong>Namespace</strong>: <a class="xref" href="Solti.Utils.DI.Internals.html">Solti.Utils.DI.Internals</a></h6>
-  <h6><strong>Assembly</strong>: Solti.Utils.DI.dll</h6>
-  <h5 id="Solti_Utils_DI_Internals_ServiceContainerConfig_syntax">Syntax</h5>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Solti.Utils.DI.Interfaces.html">Solti.Utils.DI.Interfaces</a></h6>
+  <h6><strong>Assembly</strong>: Solti.Utils.DI.Interfaces.dll</h6>
+  <h5 id="Solti_Utils_DI_Interfaces_IServiceRegistryExtensions_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class ServiceContainerConfig</code></pre>
+    <pre><code class="lang-csharp hljs">public static class IServiceRegistryExtensions</code></pre>
   </div>
-  <h3 id="properties">Properties
+  <h3 id="methods">Methods
   </h3>
-  <a id="Solti_Utils_DI_Internals_ServiceContainerConfig_MaxChildCount_" data-uid="Solti.Utils.DI.Internals.ServiceContainerConfig.MaxChildCount*"></a>
-  <h4 id="Solti_Utils_DI_Internals_ServiceContainerConfig_MaxChildCount" data-uid="Solti.Utils.DI.Internals.ServiceContainerConfig.MaxChildCount">MaxChildCount</h4>
-  <div class="markdown level1 summary"><p>Limits the count of the nested containers.</p>
+  <a id="Solti_Utils_DI_Interfaces_IServiceRegistryExtensions_GetEntry_" data-uid="Solti.Utils.DI.Interfaces.IServiceRegistryExtensions.GetEntry*"></a>
+  <h4 id="Solti_Utils_DI_Interfaces_IServiceRegistryExtensions_GetEntry__1_Solti_Utils_DI_Interfaces_IServiceRegistry_System_String_" data-uid="Solti.Utils.DI.Interfaces.IServiceRegistryExtensions.GetEntry``1(Solti.Utils.DI.Interfaces.IServiceRegistry,System.String)">GetEntry&lt;TInterface&gt;(IServiceRegistry, String)</h4>
+  <div class="markdown level1 summary"><p>Gets the servie entry associated with the given interface and name.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public int MaxChildCount { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public static AbstractServiceEntry GetEntry&lt;TInterface&gt;(this IServiceRegistry self, string name = null)</code></pre>
   </div>
-  <h5 class="propertyValue">Property Value</h5>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.IServiceRegistry.html">IServiceRegistry</a></td>
+        <td><span class="parametername">self</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">name</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
@@ -101,15 +123,26 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html">AbstractServiceEntry</a></td>
         <td></td>
       </tr>
     </tbody>
   </table>
-  <h3 id="extensionmethods">Extension Methods</h3>
-  <div>
-      <a class="xref" href="Solti.Utils.Proxy.ObjectExtensions.html#Solti_Utils_Proxy_ObjectExtensions_Act__1___0_">ObjectExtensions.Act&lt;TTarget&gt;(TTarget)</a>
-  </div>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TInterface</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
 </article>
           </div>
           

@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Class IServiceIdExtensions
+    <title>Class IScopeFactoryExtensions
    | Injector </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Class IServiceIdExtensions
+    <meta name="title" content="Class IScopeFactoryExtensions
    | Injector ">
     <meta name="generator" content="docfx 2.58.0.0">
     
@@ -37,18 +37,18 @@
       <div role="main" class="container body-content hide-when-search">
         <div class="article row grid">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="Solti.Utils.DI.Interfaces.IServiceIdExtensions">
+            <article class="content wrap" id="_content" data-uid="Solti.Utils.DI.Interfaces.IScopeFactoryExtensions">
   
   
-  <h1 id="Solti_Utils_DI_Interfaces_IServiceIdExtensions" data-uid="Solti.Utils.DI.Interfaces.IServiceIdExtensions" class="text-break">Class IServiceIdExtensions
+  <h1 id="Solti_Utils_DI_Interfaces_IScopeFactoryExtensions" data-uid="Solti.Utils.DI.Interfaces.IScopeFactoryExtensions" class="text-break">Class IScopeFactoryExtensions
   </h1>
-  <div class="markdown level0 summary"><p>Defines some extensions to the <a class="xref" href="Solti.Utils.DI.Interfaces.IServiceId.html">IServiceId</a> interface.</p>
+  <div class="markdown level0 summary"><p>Defines some extensions to the <a class="xref" href="Solti.Utils.DI.Interfaces.IScopeFactory.html">IScopeFactory</a> interface.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
-    <div class="level1"><span class="xref">IServiceIdExtensions</span></div>
+    <div class="level1"><span class="xref">IScopeFactoryExtensions</span></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
@@ -76,20 +76,20 @@
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Solti.Utils.DI.Interfaces.html">Solti.Utils.DI.Interfaces</a></h6>
   <h6><strong>Assembly</strong>: Solti.Utils.DI.Interfaces.dll</h6>
-  <h5 id="Solti_Utils_DI_Interfaces_IServiceIdExtensions_syntax">Syntax</h5>
+  <h5 id="Solti_Utils_DI_Interfaces_IScopeFactoryExtensions_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static class IServiceIdExtensions</code></pre>
+    <pre><code class="lang-csharp hljs">public static class IScopeFactoryExtensions</code></pre>
   </div>
   <h3 id="methods">Methods
   </h3>
-  <a id="Solti_Utils_DI_Interfaces_IServiceIdExtensions_FriendlyName_" data-uid="Solti.Utils.DI.Interfaces.IServiceIdExtensions.FriendlyName*"></a>
-  <h4 id="Solti_Utils_DI_Interfaces_IServiceIdExtensions_FriendlyName_Solti_Utils_DI_Interfaces_IServiceId_" data-uid="Solti.Utils.DI.Interfaces.IServiceIdExtensions.FriendlyName(Solti.Utils.DI.Interfaces.IServiceId)">FriendlyName(IServiceId)</h4>
-  <div class="markdown level1 summary"><p>Gets the friendly name of the <a class="xref" href="Solti.Utils.DI.Interfaces.IServiceId.html">IServiceId</a> instance.</p>
+  <a id="Solti_Utils_DI_Interfaces_IScopeFactoryExtensions_CreateScope_" data-uid="Solti.Utils.DI.Interfaces.IScopeFactoryExtensions.CreateScope*"></a>
+  <h4 id="Solti_Utils_DI_Interfaces_IScopeFactoryExtensions_CreateScope_Solti_Utils_DI_Interfaces_IScopeFactory_System_IServiceProvider__" data-uid="Solti.Utils.DI.Interfaces.IScopeFactoryExtensions.CreateScope(Solti.Utils.DI.Interfaces.IScopeFactory,System.IServiceProvider@)">CreateScope(IScopeFactory, out IServiceProvider)</h4>
+  <div class="markdown level1 summary"><p>Creates a <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.iserviceprovider">IServiceProvider</a> instance representing the newly created scope.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static string FriendlyName(this IServiceId src)</code></pre>
+    <pre><code class="lang-csharp hljs">public static IDisposableEx CreateScope(this IScopeFactory self, out IServiceProvider provider)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -102,8 +102,13 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Solti.Utils.DI.Interfaces.IServiceId.html">IServiceId</a></td>
-        <td><span class="parametername">src</span></td>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.IScopeFactory.html">IScopeFactory</a></td>
+        <td><span class="parametername">self</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.iserviceprovider">IServiceProvider</a></td>
+        <td><span class="parametername">provider</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -118,7 +123,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><a class="xref" href="https://sholtee.github.io/primitives/doc/Solti.Utils.Primitives.Patterns.IDisposableEx.html">IDisposableEx</a></td>
         <td></td>
       </tr>
     </tbody>

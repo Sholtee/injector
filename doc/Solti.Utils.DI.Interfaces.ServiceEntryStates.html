@@ -42,7 +42,7 @@
   
   <h1 id="Solti_Utils_DI_Interfaces_ServiceEntryStates" data-uid="Solti.Utils.DI.Interfaces.ServiceEntryStates" class="text-break">Enum ServiceEntryStates
   </h1>
-  <div class="markdown level0 summary"><p>Describes the state of a <a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html">AbstractServiceEntry</a></p>
+  <div class="markdown level0 summary"><p>Describes the actual state of an <a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html">AbstractServiceEntry</a></p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Solti.Utils.DI.Interfaces.html">Solti.Utils.DI.Interfaces</a></h6>
@@ -64,7 +64,7 @@ public enum ServiceEntryStates</code></pre>
     <tbody>
       <tr>
         <td id="Solti_Utils_DI_Interfaces_ServiceEntryStates_Built">Built</td>
-        <td><p>Signals that no build phase required. It also means that the <a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_Instances">Instances</a> property contains exactly one element.</p>
+        <td><p>Signals that no build phase required. It also means that the <a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_GetSingleInstance">GetSingleInstance()</a> method can be called.</p>
 </td>
       </tr>
       <tr>
@@ -73,13 +73,13 @@ public enum ServiceEntryStates</code></pre>
 </td>
       </tr>
       <tr>
-        <td id="Solti_Utils_DI_Interfaces_ServiceEntryStates_Disposed">Disposed</td>
-        <td><p>Indicates that the entry was disposed. It implies that all the <a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_Instances">Instances</a> item were dereferenced.</p>
+        <td id="Solti_Utils_DI_Interfaces_ServiceEntryStates_Instantiated">Instantiated</td>
+        <td><p>Indicates that the entry was already instantiated one or more times.</p>
 </td>
       </tr>
       <tr>
-        <td id="Solti_Utils_DI_Interfaces_ServiceEntryStates_Instantiated">Instantiated</td>
-        <td><p>Indicates that the entry was already instantiated one or more times.</p>
+        <td id="Solti_Utils_DI_Interfaces_ServiceEntryStates_Validated">Validated</td>
+        <td><p>Indicates that the entry is validated so it can be instantiated.</p>
 </td>
       </tr>
     </tbody>

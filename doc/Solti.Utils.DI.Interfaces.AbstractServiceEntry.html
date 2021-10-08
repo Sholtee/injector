@@ -48,33 +48,24 @@
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
-    <div class="level1"><a class="xref" href="https://sholtee.github.io/primitives/doc/Solti.Utils.Primitives.Patterns.Disposable.html">Disposable</a></div>
-    <div class="level2"><span class="xref">AbstractServiceEntry</span></div>
+    <div class="level1"><span class="xref">AbstractServiceEntry</span></div>
+      <div class="level2"><a class="xref" href="Solti.Utils.DI.Interfaces.MissingServiceEntry.html">MissingServiceEntry</a></div>
   </div>
   <div classs="implements">
     <h5>Implements</h5>
-    <div><a class="xref" href="https://sholtee.github.io/primitives/doc/Solti.Utils.Primitives.Patterns.IDisposableEx.html">IDisposableEx</a></div>
-    <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.idisposable">IDisposable</a></div>
-    <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.iasyncdisposable">IAsyncDisposable</a></div>
     <div><a class="xref" href="Solti.Utils.DI.Interfaces.IServiceDefinition.html">IServiceDefinition</a></div>
     <div><a class="xref" href="Solti.Utils.DI.Interfaces.IServiceId.html">IServiceId</a></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
-      <a class="xref" href="https://sholtee.github.io/primitives/doc/Solti.Utils.Primitives.Patterns.Disposable.html#Solti_Utils_Primitives_Patterns_Disposable_CheckNotDisposed">Disposable.CheckNotDisposed()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://sholtee.github.io/primitives/doc/Solti.Utils.Primitives.Patterns.Disposable.html#Solti_Utils_Primitives_Patterns_Disposable_Dispose">Disposable.Dispose()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://sholtee.github.io/primitives/doc/Solti.Utils.Primitives.Patterns.Disposable.html#Solti_Utils_Primitives_Patterns_Disposable_DisposeAsync">Disposable.DisposeAsync()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://sholtee.github.io/primitives/doc/Solti.Utils.Primitives.Patterns.Disposable.html#Solti_Utils_Primitives_Patterns_Disposable_Disposed">Disposable.Disposed</a>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a>
     </div>
     <div>
       <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a>
     </div>
     <div>
       <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
@@ -90,18 +81,18 @@
   <h6><strong>Assembly</strong>: Solti.Utils.DI.Interfaces.dll</h6>
   <h5 id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class AbstractServiceEntry : Disposable, IDisposableEx, IDisposable, IAsyncDisposable, IServiceDefinition, IServiceId</code></pre>
+    <pre><code class="lang-csharp hljs">public abstract class AbstractServiceEntry : IServiceDefinition, IServiceId</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
   <a id="Solti_Utils_DI_Interfaces_AbstractServiceEntry__ctor_" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.#ctor*"></a>
-  <h4 id="Solti_Utils_DI_Interfaces_AbstractServiceEntry__ctor_System_Type_System_String_Solti_Utils_DI_Interfaces_IServiceContainer_" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.#ctor(System.Type,System.String,Solti.Utils.DI.Interfaces.IServiceContainer)">AbstractServiceEntry(Type, String, IServiceContainer)</h4>
+  <h4 id="Solti_Utils_DI_Interfaces_AbstractServiceEntry__ctor_System_Type_System_String_" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.#ctor(System.Type,System.String)">AbstractServiceEntry(Type, String)</h4>
   <div class="markdown level1 summary"><p>Creates a new <a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html">AbstractServiceEntry</a> instance.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public AbstractServiceEntry(Type interface, string name, IServiceContainer owner)</code></pre>
+    <pre><code class="lang-csharp hljs">protected AbstractServiceEntry(Type interface, string name)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -125,12 +116,6 @@
         <td><p>The (optional) name of the service.</p>
 </td>
       </tr>
-      <tr>
-        <td><a class="xref" href="Solti.Utils.DI.Interfaces.IServiceContainer.html">IServiceContainer</a></td>
-        <td><span class="parametername">owner</span></td>
-        <td><p>The owner of this entry.</p>
-</td>
-      </tr>
     </tbody>
   </table>
   <h5 class="exceptions">Exceptions</h5>
@@ -150,13 +135,13 @@
     </tbody>
   </table>
   <a id="Solti_Utils_DI_Interfaces_AbstractServiceEntry__ctor_" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.#ctor*"></a>
-  <h4 id="Solti_Utils_DI_Interfaces_AbstractServiceEntry__ctor_System_Type_System_String_System_Type_Solti_Utils_DI_Interfaces_IServiceContainer_" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.#ctor(System.Type,System.String,System.Type,Solti.Utils.DI.Interfaces.IServiceContainer)">AbstractServiceEntry(Type, String, Type, IServiceContainer)</h4>
+  <h4 id="Solti_Utils_DI_Interfaces_AbstractServiceEntry__ctor_System_Type_System_String_System_Type_Solti_Utils_DI_Interfaces_IServiceRegistry_" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.#ctor(System.Type,System.String,System.Type,Solti.Utils.DI.Interfaces.IServiceRegistry)">AbstractServiceEntry(Type, String, Type, IServiceRegistry)</h4>
   <div class="markdown level1 summary"><p>Creates a new <a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html">AbstractServiceEntry</a> instance.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected AbstractServiceEntry(Type interface, string name, Type implementation, IServiceContainer owner)</code></pre>
+    <pre><code class="lang-csharp hljs">protected AbstractServiceEntry(Type interface, string name, Type implementation, IServiceRegistry owner)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -187,7 +172,7 @@
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="Solti.Utils.DI.Interfaces.IServiceContainer.html">IServiceContainer</a></td>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.IServiceRegistry.html">IServiceRegistry</a></td>
         <td><span class="parametername">owner</span></td>
         <td><p>The owner of this entry.</p>
 </td>
@@ -261,30 +246,6 @@
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.type">Type</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <a id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_Instances_" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.Instances*"></a>
-  <h4 id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_Instances" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.Instances">Instances</h4>
-  <div class="markdown level1 summary"><p>The previously created service instance(s) related to this entry. Don&apos;t use it directly.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public virtual IReadOnlyCollection&lt;IServiceReference&gt; Instances { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ireadonlycollection-1">IReadOnlyCollection</a>&lt;<a class="xref" href="Solti.Utils.DI.Interfaces.IServiceReference.html">IServiceReference</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -398,7 +359,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IServiceContainer Owner { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public IServiceRegistry Owner { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -410,7 +371,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Solti.Utils.DI.Interfaces.IServiceContainer.html">IServiceContainer</a></td>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.IServiceRegistry.html">IServiceRegistry</a></td>
         <td></td>
       </tr>
     </tbody>
@@ -441,40 +402,14 @@
   </table>
   <h3 id="methods">Methods
   </h3>
-  <a id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_AsyncDispose_" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.AsyncDispose*"></a>
-  <h4 id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_AsyncDispose" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.AsyncDispose">AsyncDispose()</h4>
-  <div class="markdown level1 summary"><p>Decrements the reference counter of the service <a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_Instances">Instances</a>.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected override async ValueTask AsyncDispose()</code></pre>
-  </div>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.tasks.valuetask">ValueTask</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="https://sholtee.github.io/primitives/doc/Solti.Utils.Primitives.Patterns.Disposable.html#Solti_Utils_Primitives_Patterns_Disposable_AsyncDispose">Disposable.AsyncDispose()</a></div>
   <a id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_CopyTo_" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.CopyTo*"></a>
-  <h4 id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_CopyTo_Solti_Utils_DI_Interfaces_IServiceContainer_" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.CopyTo(Solti.Utils.DI.Interfaces.IServiceContainer)">CopyTo(IServiceContainer)</h4>
-  <div class="markdown level1 summary"><p>Copies this entry to a new collection.</p>
+  <h4 id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_CopyTo_Solti_Utils_DI_Interfaces_IServiceRegistry_" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.CopyTo(Solti.Utils.DI.Interfaces.IServiceRegistry)">CopyTo(IServiceRegistry)</h4>
+  <div class="markdown level1 summary"><p>Creates a copy from this entry.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public virtual AbstractServiceEntry CopyTo(IServiceContainer target)</code></pre>
+    <pre><code class="lang-csharp hljs">public abstract AbstractServiceEntry CopyTo(IServiceRegistry owner)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -487,10 +422,9 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Solti.Utils.DI.Interfaces.IServiceContainer.html">IServiceContainer</a></td>
-        <td><span class="parametername">target</span></td>
-        <td><p>The target <a class="xref" href="Solti.Utils.DI.Interfaces.IServiceContainer.html">IServiceContainer</a> to which we want to copy this entry.</p>
-</td>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.IServiceRegistry.html">IServiceRegistry</a></td>
+        <td><span class="parametername">owner</span></td>
+        <td></td>
       </tr>
     </tbody>
   </table>
@@ -509,14 +443,14 @@
       </tr>
     </tbody>
   </table>
-  <a id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_Dispose_" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.Dispose*"></a>
-  <h4 id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_Dispose_System_Boolean_" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.Dispose(System.Boolean)">Dispose(Boolean)</h4>
-  <div class="markdown level1 summary"><p>Decrements the reference counter of the service <a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_Instances">Instances</a>.</p>
+  <a id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_CreateInstance_" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.CreateInstance*"></a>
+  <h4 id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_CreateInstance_Solti_Utils_DI_Interfaces_IInjector_" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.CreateInstance(Solti.Utils.DI.Interfaces.IInjector)">CreateInstance(IInjector)</h4>
+  <div class="markdown level1 summary"><p>Creates a new instance.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected override void Dispose(bool disposeManaged)</code></pre>
+    <pre><code class="lang-csharp hljs">public abstract object CreateInstance(IInjector scope)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -529,109 +463,8 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td><span class="parametername">disposeManaged</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="https://sholtee.github.io/primitives/doc/Solti.Utils.Primitives.Patterns.Disposable.html#Solti_Utils_Primitives_Patterns_Disposable_Dispose_System_Boolean_">Disposable.Dispose(Boolean)</a></div>
-  <a id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_Equals_" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.Equals*"></a>
-  <h4 id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_Equals_System_Object_" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.Equals(System.Object)">Equals(Object)</h4>
-  <div class="markdown level1 summary"><p>Compares this entry with another one.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override bool Equals(object obj)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></td>
-        <td><span class="parametername">obj</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a></div>
-  <h5 id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_Equals_System_Object__remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>Entries having the same property values are considered equivalent.</p>
-</div>
-  <a id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_GetHashCode_" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.GetHashCode*"></a>
-  <h4 id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_GetHashCode" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.GetHashCode">GetHashCode()</h4>
-  <div class="markdown level1 summary"><p>Gets the hash code of this entry.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override int GetHashCode()</code></pre>
-  </div>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
-        <td><p>The hash code of this entry.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a></div>
-  <a id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_GetInstance_" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.GetInstance*"></a>
-  <h4 id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_GetInstance_Solti_Utils_DI_Interfaces_IServiceReference_" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.GetInstance(Solti.Utils.DI.Interfaces.IServiceReference)">GetInstance(IServiceReference)</h4>
-  <div class="markdown level1 summary"><p>Returns the effective service instance from the given <code data-dev-comment-type="paramref" class="paramref">reference</code>. The <code data-dev-comment-type="paramref" class="paramref">reference</code> must be taken from this entry.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public virtual object GetInstance(IServiceReference reference)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Solti.Utils.DI.Interfaces.IServiceReference.html">IServiceReference</a></td>
-        <td><span class="parametername">reference</span></td>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.IInjector.html">IInjector</a></td>
+        <td><span class="parametername">scope</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -651,33 +484,15 @@
       </tr>
     </tbody>
   </table>
-  <a id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_SetInstance_" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.SetInstance*"></a>
-  <h4 id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_SetInstance_Solti_Utils_DI_Interfaces_IServiceReference_" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.SetInstance(Solti.Utils.DI.Interfaces.IServiceReference)">SetInstance(IServiceReference)</h4>
-  <div class="markdown level1 summary"><p>Calls the <a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_Factory">Factory</a> to set an instance in the <a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_Instances">Instances</a> list.</p>
+  <a id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_GetSingleInstance_" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.GetSingleInstance*"></a>
+  <h4 id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_GetSingleInstance" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.GetSingleInstance">GetSingleInstance()</h4>
+  <div class="markdown level1 summary"><p>Gets the previously created service instance.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public virtual bool SetInstance(IServiceReference serviceReference)</code></pre>
+    <pre><code class="lang-csharp hljs">public abstract object GetSingleInstance()</code></pre>
   </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Solti.Utils.DI.Interfaces.IServiceReference.html">IServiceReference</a></td>
-        <td><span class="parametername">serviceReference</span></td>
-        <td><p>The <a class="xref" href="Solti.Utils.DI.Interfaces.IServiceReference.html">IServiceReference</a> of the service being created.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
@@ -688,16 +503,14 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td><p>Returns false if the entry was already built.</p>
-</td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></td>
+        <td></td>
       </tr>
     </tbody>
   </table>
   <a id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_ToString_" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.ToString*"></a>
   <h4 id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_ToString" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.ToString">ToString()</h4>
-  <div class="markdown level1 summary"><p>See <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">ToString()</a>.</p>
-</div>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -720,16 +533,48 @@
   </table>
   <h5 class="overrides">Overrides</h5>
   <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a></div>
+  <a id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_ToString_" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.ToString*"></a>
+  <h4 id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_ToString_System_Boolean_" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.ToString(System.Boolean)">ToString(Boolean)</h4>
+  <div class="markdown level1 summary"><p>Returns the string reprezentation of this entry.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string ToString(bool shortForm)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">shortForm</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   <h3 id="implements">Implements</h3>
-  <div>
-      <a class="xref" href="https://sholtee.github.io/primitives/doc/Solti.Utils.Primitives.Patterns.IDisposableEx.html">IDisposableEx</a>
-  </div>
-  <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.idisposable">System.IDisposable</a>
-  </div>
-  <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.iasyncdisposable">System.IAsyncDisposable</a>
-  </div>
   <div>
       <a class="xref" href="Solti.Utils.DI.Interfaces.IServiceDefinition.html">IServiceDefinition</a>
   </div>
@@ -739,9 +584,6 @@
   <h3 id="extensionmethods">Extension Methods</h3>
   <div>
       <a class="xref" href="Solti.Utils.Proxy.ObjectExtensions.html#Solti_Utils_Proxy_ObjectExtensions_Act__1___0_">ObjectExtensions.Act&lt;TTarget&gt;(TTarget)</a>
-  </div>
-  <div>
-      <a class="xref" href="Solti.Utils.DI.Interfaces.IServiceIdExtensions.html#Solti_Utils_DI_Interfaces_IServiceIdExtensions_FriendlyName_Solti_Utils_DI_Interfaces_IServiceId_">IServiceIdExtensions.FriendlyName(IServiceId)</a>
   </div>
   <div>
       <a class="xref" href="Solti.Utils.DI.Interfaces.ServiceEntryExtensions.html#Solti_Utils_DI_Interfaces_ServiceEntryExtensions_IsService_Solti_Utils_DI_Interfaces_AbstractServiceEntry_">ServiceEntryExtensions.IsService(AbstractServiceEntry)</a>
@@ -754,6 +596,9 @@
   </div>
   <div>
       <a class="xref" href="Solti.Utils.DI.Interfaces.ServiceEntryExtensions.html#Solti_Utils_DI_Interfaces_ServiceEntryExtensions_IsInternal_Solti_Utils_DI_Interfaces_AbstractServiceEntry_">ServiceEntryExtensions.IsInternal(AbstractServiceEntry)</a>
+  </div>
+  <div>
+      <a class="xref" href="Solti.Utils.DI.Interfaces.ServiceEntryExtensions.html#Solti_Utils_DI_Interfaces_ServiceEntryExtensions_ApplyProxy_Solti_Utils_DI_Interfaces_AbstractServiceEntry_System_Func_Solti_Utils_DI_Interfaces_IInjector_System_Type_System_Object_System_Object__">ServiceEntryExtensions.ApplyProxy(AbstractServiceEntry, Func&lt;IInjector, Type, Object, Object&gt;)</a>
   </div>
 </article>
           </div>
