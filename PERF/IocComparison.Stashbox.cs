@@ -5,7 +5,9 @@
 ********************************************************************************/
 using System;
 
-using Microsoft.Extensions.DependencyInjection;
+using Stashbox;
+using Stashbox.Extensions.Dependencyinjection;
+using Stashbox.Lifetime;
 
 namespace Solti.Utils.DI.Perf
 {
@@ -15,52 +17,40 @@ namespace Solti.Utils.DI.Perf
     {
         public sealed class Stashbox : Disposable, IIocContainer
         {
-            private readonly IServiceCollection FUnderlyingContainer = new ServiceCollection();
+            private readonly StashboxContainer FUnderlyingContainer = new(opts => opts.WithDisposableTransientTracking());
 
-            private IServiceProvider FBuiltProvider;
+            protected override void Dispose(bool disposeManaged)
+            {
+                if (disposeManaged)
+                    FUnderlyingContainer.Dispose();
 
-            public void Build() => FBuiltProvider = FUnderlyingContainer.UseStashbox();
+                base.Dispose(disposeManaged);
+            }
+
+            public void Build() { }
 
             public IDisposable CreateScope(out IServiceProvider provider)
             {
-                IServiceScope scope = FBuiltProvider.CreateScope();
-                provider = scope.ServiceProvider;
+                IDependencyResolver scope = FUnderlyingContainer.BeginScope();
+                provider = new StashboxRequiredServiceProvider(scope);
                 return scope;
             }
 
             public IIocContainer RegisterScoped<TInterface, TImplementation>() where TImplementation : TInterface
             {
-                FUnderlyingContainer.AddScoped(typeof(TInterface), typeof(TImplementation));
+                FUnderlyingContainer.Register(typeof(TInterface), typeof(TImplementation), opts => opts.WithLifetime(Lifetimes.Scoped));
                 return this;
             }
 
             public IIocContainer RegisterSingleton<TInterface, TImplementation>() where TImplementation : TInterface
             {
-                FUnderlyingContainer.AddSingleton(typeof(TInterface), typeof(TImplementation));
+                FUnderlyingContainer.Register(typeof(TInterface), typeof(TImplementation), opts => opts.WithLifetime(Lifetimes.Singleton));
                 return this;
             }
 
             public IIocContainer RegisterTransient<TInterface, TImplementation>() where TImplementation : TInterface
             {
-                FUnderlyingContainer.AddTransient(typeof(TInterface), typeof(TImplementation));
-                return this;
-            }
-
-            public IIocContainer RegisterSingleton<TInterface>(Func<IServiceProvider, TInterface> factory) where TInterface : class
-            {
-                FUnderlyingContainer.AddSingleton(typeof(TInterface), factory);
-                return this;
-            }
-
-            public IIocContainer RegisterScoped<TInterface>(Func<IServiceProvider, TInterface> factory) where TInterface : class
-            {
-                FUnderlyingContainer.AddScoped(typeof(TInterface), factory);
-                return this;
-            }
-
-            public IIocContainer RegisterTransient<TInterface>(Func<IServiceProvider, TInterface> factory) where TInterface : class
-            {
-                FUnderlyingContainer.AddTransient(typeof(TInterface), factory);
+                FUnderlyingContainer.Register(typeof(TInterface), typeof(TImplementation), opts => opts.WithLifetime(Lifetimes.Transient));
                 return this;
             }
 

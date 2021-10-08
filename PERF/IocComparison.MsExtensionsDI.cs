@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Solti.Utils.DI.Perf
@@ -50,24 +51,6 @@ namespace Solti.Utils.DI.Perf
             public IIocContainer RegisterTransient<TInterface, TImplementation>() where TImplementation : TInterface
             {
                 FUnderlyingContainer.AddTransient(typeof(TInterface), typeof(TImplementation));
-                return this;
-            }
-
-            public IIocContainer RegisterSingleton<TInterface>(Func<IServiceProvider, TInterface> factory) where TInterface : class
-            {
-                FUnderlyingContainer.AddSingleton(typeof(TInterface), factory);
-                return this;
-            }
-
-            public IIocContainer RegisterScoped<TInterface>(Func<IServiceProvider, TInterface> factory) where TInterface : class
-            {
-                FUnderlyingContainer.AddScoped(typeof(TInterface), factory);
-                return this;
-            }
-
-            public IIocContainer RegisterTransient<TInterface>(Func<IServiceProvider, TInterface> factory) where TInterface : class
-            {
-                FUnderlyingContainer.AddTransient(typeof(TInterface), factory);
                 return this;
             }
 
