@@ -205,13 +205,19 @@
   - *introduced:* `IInjector.TryGetReference()` method
 - 5.0.1:
   - *updated:* Dependencies
-- 6.0.0:
-  - *breaking:* The layout of the `InterfaceInterceptor<>` class has been changed. For more information see [this](https://github.com/Sholtee/proxygen#migrating-from-version ) or [that](https://sholtee.github.io/proxygen/doc/Solti.Utils.Proxy.InterfaceInterceptor-1.html )
-  - *breaking:* Renamed `QueryModes.ThrowOnError` -> `QueryModes.ThrowOnMissing`. Along with this change the behavior of `ServiceContainer.Get()` has been altered too: It may throw if the desired service is found but can not be specialized.
+- 6.0.0-preview1:
+  - *done:* Logic has been rewritten from the scratch with performance in mind
+  - *breaking:* Temporarily removed *Diagnostics* package (due to compatibility issues)
+  - *breaking:* New `IServiceCollection` layout (now it is just a `ISet<AbstractServiceEntry>` descendant)
+  - *breaking:* Dropped `ServiceContainer` class (it is substituted with the `ServiceCollection` class)
+  - *breaking:* Dropped `runtimeconfig` configuration. Scopes can be tweaked via the `ScopeOptions` class.
+  - *breaking:* Dropped concept of service references (so `IServiceReference` has been removed)
   - *breaking:* `Injector.TryGet()` doesn't eat the `ServiceNotFoundException` if it was thrown due to a missing dependency.
-  - *breaking:* "Scope options" are substituted by the `IInjectorExtensions.Meta()` method
-  - *breaking:* Dropped `AbstractServiceEntry.GetInstance()` method
-  - *breaking:* Modified `IServicePath` layout
-  - *introduced:* Initializer for the `ServiceContainer.MaxChildCount` property
-  - *introduced:* Wrapped service (`IWrapped<object>`) support
-  - *improved:* `IServiceContainer.CreateChild()`, `IServiceContainer.CreateInjector()`, `ServiceContainer.Dispose()`, `Injector.Dispose()` performance
+  - *breaking:* New `AbstractServiceEntry` layout
+  - *breaking:* New `IServicePath` layout
+  - *breaking:* New `InterfaceInterceptor<>` layout. For more information see [this](https://github.com/Sholtee/proxygen#migrating-from-version ) or [that](https://sholtee.github.io/proxygen/doc/Solti.Utils.Proxy.InterfaceInterceptor-1.html )
+  - *introduced:* `ScopeFactory` class
+  - *introduced:* Property injection support (Properties should be annotated with the `InjectAttribute`)
+  - *introduced:* `IServiceRegistry` interface
+  - *introduced:* `IInjectorExtensions.Meta()` method
+  - *extended:* `ServiceEntryStates` enum
