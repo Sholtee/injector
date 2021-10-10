@@ -12,7 +12,7 @@ namespace Solti.Utils.DI.Internals
     using Interfaces;
 
     /// <summary>
-    /// 
+    /// Represents a delegate that is responsible for resolving the service entry associated with the given interface and name.
     /// </summary>
     public delegate AbstractServiceEntry? Resolver(IServiceRegistry self, Type iface, string? name);
 
