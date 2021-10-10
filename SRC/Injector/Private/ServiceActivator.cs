@@ -306,7 +306,7 @@ namespace Solti.Utils.DI.Internals
             (
                 Expression.New
                 (
-                    lazyType.GetConstructor(new[] { delegateType }) ?? throw new MissingMethodException(lazyType.Name, "Ctor"),
+                    lazyType.GetConstructor(new[] { delegateType }) ?? throw new MissingMethodException(lazyType.Name, ConstructorInfo.ConstructorName),
                     valueFactory
                 ),
                 injector
