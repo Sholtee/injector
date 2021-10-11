@@ -6,24 +6,35 @@
 using System;
 using System.Collections.Generic;
 
-namespace Solti.Utils.DI.Internals
+namespace Solti.Utils.DI
 {
     using Interfaces;
+    using Internals;
 
-    internal sealed class ServiceCollection : HashSet<AbstractServiceEntry>, IModifiedServiceCollection
+    /// <summary>
+    /// Implements the <see cref="IServiceCollection"/> interface.
+    /// </summary>
+    public sealed class ServiceCollection : HashSet<AbstractServiceEntry>, IModifiedServiceCollection
     {
         private AbstractServiceEntry? FLastEntry;
 
         bool ISet<AbstractServiceEntry>.Add(AbstractServiceEntry item)
         {
+            Ensure.Parameter.IsNotNull(item, nameof(item));
+
             bool success = Add(item);
             if (success)
                 FLastEntry = item;
+            
             return success;
         }
 
+        /// <summary>
+        /// Creates a new <see cref="ServiceCollection"/> instance.
+        /// </summary>
         public ServiceCollection() : base(ServiceIdComparer.Instance) { }
 
+        /// <inheritdoc/>
         public AbstractServiceEntry LastEntry => FLastEntry ?? throw new InvalidOperationException();
     }
 }

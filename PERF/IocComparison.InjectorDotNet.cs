@@ -4,7 +4,6 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
-using System.Collections.Generic;
 
 namespace Solti.Utils.DI.Perf
 {
@@ -17,7 +16,7 @@ namespace Solti.Utils.DI.Perf
         {
             private IScopeFactory FRoot;
 
-            private readonly List<Action<IServiceCollection>> FRegistrationActions = new();
+            private readonly ServiceCollection FServices = new();
 
             protected override void Dispose(bool disposeManaged)
             {
@@ -29,7 +28,7 @@ namespace Solti.Utils.DI.Perf
 
             public void Build() => FRoot = ScopeFactory.Create
             (
-                svcs => FRegistrationActions.ForEach(addRegistration => addRegistration(svcs)),
+                FServices,
                 new ScopeOptions 
                 {
                     MaxSpawnedTransientServices = int.MaxValue,
@@ -41,19 +40,19 @@ namespace Solti.Utils.DI.Perf
 
             public IIocContainer RegisterScoped<TInterface, TImplementation>() where TImplementation : TInterface
             {
-                FRegistrationActions.Add(svcs => svcs.Service(typeof(TInterface), typeof(TImplementation), Lifetime.Scoped));
+                FServices.Service(typeof(TInterface), typeof(TImplementation), Lifetime.Scoped);
                 return this;
             }
 
             public IIocContainer RegisterSingleton<TInterface, TImplementation>() where TImplementation : TInterface
             {
-                FRegistrationActions.Add(svcs => svcs.Service(typeof(TInterface), typeof(TImplementation), Lifetime.Singleton));
+                FServices.Service(typeof(TInterface), typeof(TImplementation), Lifetime.Singleton);
                 return this;
             }
 
             public IIocContainer RegisterTransient<TInterface, TImplementation>() where TImplementation : TInterface
             {
-                FRegistrationActions.Add(svcs => svcs.Service(typeof(TInterface), typeof(TImplementation), Lifetime.Transient));
+                FServices.Service(typeof(TInterface), typeof(TImplementation), Lifetime.Transient);
                 return this;
             }
 

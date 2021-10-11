@@ -23,15 +23,24 @@ namespace Solti.Utils.DI
         {
             Ensure.Parameter.IsNotNull(registerServices, nameof(registerServices));
 
-            ServiceCollection serviceCollection = new();
-            registerServices(serviceCollection);
+            ServiceCollection services = new();
+            registerServices(services);
 
-            if (options is null)
-                options = new ScopeOptions();
+            return Create(services, options, cancellation);
+        }
+
+        /// <summary>
+        /// Creates a new scope factory.
+        /// </summary>
+        public static IScopeFactory Create(IServiceCollection services, ScopeOptions? options = null, CancellationToken cancellation = default)
+        {
+            Ensure.Parameter.IsNotNull(services, nameof(services));
+
+            options ??= new();
 
             return options.SupportsServiceProvider
-                ? new ConcurrentInjectorSupportsServiceProvider(serviceCollection, options, cancellation)
-                : new ConcurrentInjector(serviceCollection, options, cancellation);
+                ? new ConcurrentInjectorSupportsServiceProvider(services, options, cancellation)
+                : new ConcurrentInjector(services, options, cancellation);
         }
     }
 }

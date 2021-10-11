@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 using NUnit.Framework;
 
-namespace Solti.Utils.DI.Injector.Tests
+namespace Solti.Utils.DI.Tests
 {
     using Interfaces;
     using Primitives.Patterns;

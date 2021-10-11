@@ -10,7 +10,7 @@ using System.Linq;
 using Moq;
 using NUnit.Framework;
 
-namespace Solti.Utils.DI.ServiceCollection.Tests
+namespace Solti.Utils.DI.Tests
 {
     using Internals;
     using Interfaces;

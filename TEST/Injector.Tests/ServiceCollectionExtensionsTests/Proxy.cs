@@ -8,7 +8,7 @@ using System;
 using Moq;
 using NUnit.Framework;
 
-namespace Solti.Utils.DI.ServiceCollection.Tests
+namespace Solti.Utils.DI.Tests
 {
     using Interfaces;
     using Interfaces.Properties;

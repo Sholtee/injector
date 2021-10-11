@@ -15,7 +15,7 @@ namespace Solti.Utils.DI.Perf
     {
         public sealed class MsExtensionsDI : Disposable, IIocContainer
         {
-            private readonly IServiceCollection FUnderlyingContainer = new ServiceCollection();
+            private readonly IServiceCollection FUnderlyingContainer = new Microsoft.Extensions.DependencyInjection.ServiceCollection();
 
             private ServiceProvider FBuiltProvider;
 
