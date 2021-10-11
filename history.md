@@ -221,3 +221,6 @@
   - *introduced:* `IServiceRegistry` interface
   - *introduced:* `IInjectorExtensions.Meta()` method
   - *extended:* `ServiceEntryStates` enum
+- 6.0.0-preview2:
+  - *done:* Exposed `ServiceCollection` class
+  - *added:* `ScopeFactory.Create()` overload
