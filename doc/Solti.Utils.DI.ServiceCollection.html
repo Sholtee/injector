@@ -1,0 +1,332 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class ServiceCollection
+   | Injector </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class ServiceCollection
+   | Injector ">
+    <meta name="generator" content="docfx 2.58.0.0">
+    
+    <link rel="shortcut icon" href="icon.png">
+    <link rel="stylesheet" href="styles/docfx.vendor.css">
+    <link rel="stylesheet" href="styles/docfx.css">
+    <link rel="stylesheet" href="styles/main.css">
+    <meta property="docfx:navrel" content="toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        <div class="article row grid">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Solti.Utils.DI.ServiceCollection">
+  
+  
+  <h1 id="Solti_Utils_DI_ServiceCollection" data-uid="Solti.Utils.DI.ServiceCollection" class="text-break">Class ServiceCollection
+  </h1>
+  <div class="markdown level0 summary"><p>Implements the <a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollection.html">IServiceCollection</a> interface.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level1"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.hashset-1">HashSet</a>&lt;<a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html">AbstractServiceEntry</a>&gt;</div>
+    <div class="level2"><span class="xref">ServiceCollection</span></div>
+  </div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ireadonlycollection-1">IReadOnlyCollection</a>&lt;<a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html">AbstractServiceEntry</a>&gt;</div>
+    <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.runtime.serialization.ideserializationcallback">IDeserializationCallback</a></div>
+    <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.runtime.serialization.iserializable">ISerializable</a></div>
+    <div><a class="xref" href="Solti.Utils.DI.Interfaces.IModifiedServiceCollection.html">IModifiedServiceCollection</a></div>
+    <div><a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollection.html">IServiceCollection</a></div>
+    <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.iset-1">ISet</a>&lt;<a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html">AbstractServiceEntry</a>&gt;</div>
+    <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.icollection-1">ICollection</a>&lt;<a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html">AbstractServiceEntry</a>&gt;</div>
+    <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html">AbstractServiceEntry</a>&gt;</div>
+    <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.ienumerable">IEnumerable</a></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.hashset-1.add#System_Collections_Generic_HashSet_1_Add__0_">HashSet&lt;AbstractServiceEntry&gt;.Add(AbstractServiceEntry)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.hashset-1.clear#System_Collections_Generic_HashSet_1_Clear">HashSet&lt;AbstractServiceEntry&gt;.Clear()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.hashset-1.contains#System_Collections_Generic_HashSet_1_Contains__0_">HashSet&lt;AbstractServiceEntry&gt;.Contains(AbstractServiceEntry)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.hashset-1.copyto#System_Collections_Generic_HashSet_1_CopyTo__0___">HashSet&lt;AbstractServiceEntry&gt;.CopyTo(AbstractServiceEntry[])</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.hashset-1.copyto#System_Collections_Generic_HashSet_1_CopyTo__0___System_Int32_">HashSet&lt;AbstractServiceEntry&gt;.CopyTo(AbstractServiceEntry[], Int32)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.hashset-1.copyto#System_Collections_Generic_HashSet_1_CopyTo__0___System_Int32_System_Int32_">HashSet&lt;AbstractServiceEntry&gt;.CopyTo(AbstractServiceEntry[], Int32, Int32)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.hashset-1.createsetcomparer#System_Collections_Generic_HashSet_1_CreateSetComparer">HashSet&lt;AbstractServiceEntry&gt;.CreateSetComparer()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.hashset-1.exceptwith#System_Collections_Generic_HashSet_1_ExceptWith_System_Collections_Generic_IEnumerable__0__">HashSet&lt;AbstractServiceEntry&gt;.ExceptWith(IEnumerable&lt;AbstractServiceEntry&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.hashset-1.getenumerator#System_Collections_Generic_HashSet_1_GetEnumerator">HashSet&lt;AbstractServiceEntry&gt;.GetEnumerator()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.hashset-1.getobjectdata#System_Collections_Generic_HashSet_1_GetObjectData_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_">HashSet&lt;AbstractServiceEntry&gt;.GetObjectData(SerializationInfo, StreamingContext)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.hashset-1.intersectwith#System_Collections_Generic_HashSet_1_IntersectWith_System_Collections_Generic_IEnumerable__0__">HashSet&lt;AbstractServiceEntry&gt;.IntersectWith(IEnumerable&lt;AbstractServiceEntry&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.hashset-1.ispropersubsetof#System_Collections_Generic_HashSet_1_IsProperSubsetOf_System_Collections_Generic_IEnumerable__0__">HashSet&lt;AbstractServiceEntry&gt;.IsProperSubsetOf(IEnumerable&lt;AbstractServiceEntry&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.hashset-1.ispropersupersetof#System_Collections_Generic_HashSet_1_IsProperSupersetOf_System_Collections_Generic_IEnumerable__0__">HashSet&lt;AbstractServiceEntry&gt;.IsProperSupersetOf(IEnumerable&lt;AbstractServiceEntry&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.hashset-1.issubsetof#System_Collections_Generic_HashSet_1_IsSubsetOf_System_Collections_Generic_IEnumerable__0__">HashSet&lt;AbstractServiceEntry&gt;.IsSubsetOf(IEnumerable&lt;AbstractServiceEntry&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.hashset-1.issupersetof#System_Collections_Generic_HashSet_1_IsSupersetOf_System_Collections_Generic_IEnumerable__0__">HashSet&lt;AbstractServiceEntry&gt;.IsSupersetOf(IEnumerable&lt;AbstractServiceEntry&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.hashset-1.ondeserialization#System_Collections_Generic_HashSet_1_OnDeserialization_System_Object_">HashSet&lt;AbstractServiceEntry&gt;.OnDeserialization(Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.hashset-1.overlaps#System_Collections_Generic_HashSet_1_Overlaps_System_Collections_Generic_IEnumerable__0__">HashSet&lt;AbstractServiceEntry&gt;.Overlaps(IEnumerable&lt;AbstractServiceEntry&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.hashset-1.remove#System_Collections_Generic_HashSet_1_Remove__0_">HashSet&lt;AbstractServiceEntry&gt;.Remove(AbstractServiceEntry)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.hashset-1.removewhere#System_Collections_Generic_HashSet_1_RemoveWhere_System_Predicate__0__">HashSet&lt;AbstractServiceEntry&gt;.RemoveWhere(Predicate&lt;AbstractServiceEntry&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.hashset-1.setequals#System_Collections_Generic_HashSet_1_SetEquals_System_Collections_Generic_IEnumerable__0__">HashSet&lt;AbstractServiceEntry&gt;.SetEquals(IEnumerable&lt;AbstractServiceEntry&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.hashset-1.symmetricexceptwith#System_Collections_Generic_HashSet_1_SymmetricExceptWith_System_Collections_Generic_IEnumerable__0__">HashSet&lt;AbstractServiceEntry&gt;.SymmetricExceptWith(IEnumerable&lt;AbstractServiceEntry&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.hashset-1.system-collections-generic-icollection-t--add#System_Collections_Generic_HashSet_1_System_Collections_Generic_ICollection_T__Add__0_">HashSet&lt;AbstractServiceEntry&gt;.ICollection&lt;AbstractServiceEntry&gt;.Add(AbstractServiceEntry)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.hashset-1.system-collections-generic-ienumerable-t--getenumerator#System_Collections_Generic_HashSet_1_System_Collections_Generic_IEnumerable_T__GetEnumerator">HashSet&lt;AbstractServiceEntry&gt;.IEnumerable&lt;AbstractServiceEntry&gt;.GetEnumerator()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.hashset-1.system-collections-ienumerable-getenumerator#System_Collections_Generic_HashSet_1_System_Collections_IEnumerable_GetEnumerator">HashSet&lt;AbstractServiceEntry&gt;.IEnumerable.GetEnumerator()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.hashset-1.trimexcess#System_Collections_Generic_HashSet_1_TrimExcess">HashSet&lt;AbstractServiceEntry&gt;.TrimExcess()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.hashset-1.unionwith#System_Collections_Generic_HashSet_1_UnionWith_System_Collections_Generic_IEnumerable__0__">HashSet&lt;AbstractServiceEntry&gt;.UnionWith(IEnumerable&lt;AbstractServiceEntry&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.hashset-1.comparer#System_Collections_Generic_HashSet_1_Comparer">HashSet&lt;AbstractServiceEntry&gt;.Comparer</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.hashset-1.count#System_Collections_Generic_HashSet_1_Count">HashSet&lt;AbstractServiceEntry&gt;.Count</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.hashset-1.system-collections-generic-icollection-t--isreadonly#System_Collections_Generic_HashSet_1_System_Collections_Generic_ICollection_T__IsReadOnly">HashSet&lt;AbstractServiceEntry&gt;.ICollection&lt;AbstractServiceEntry&gt;.IsReadOnly</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Solti.Utils.DI.html">Solti.Utils.DI</a></h6>
+  <h6><strong>Assembly</strong>: Solti.Utils.DI.dll</h6>
+  <h5 id="Solti_Utils_DI_ServiceCollection_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public sealed class ServiceCollection : HashSet&lt;AbstractServiceEntry&gt;, IReadOnlyCollection&lt;AbstractServiceEntry&gt;, IDeserializationCallback, ISerializable, IModifiedServiceCollection, IServiceCollection, ISet&lt;AbstractServiceEntry&gt;, ICollection&lt;AbstractServiceEntry&gt;, IEnumerable&lt;AbstractServiceEntry&gt;, IEnumerable</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+  </h3>
+  <a id="Solti_Utils_DI_ServiceCollection__ctor_" data-uid="Solti.Utils.DI.ServiceCollection.#ctor*"></a>
+  <h4 id="Solti_Utils_DI_ServiceCollection__ctor" data-uid="Solti.Utils.DI.ServiceCollection.#ctor">ServiceCollection()</h4>
+  <div class="markdown level1 summary"><p>Creates a new <a class="xref" href="Solti.Utils.DI.ServiceCollection.html">ServiceCollection</a> instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ServiceCollection()</code></pre>
+  </div>
+  <h3 id="properties">Properties
+  </h3>
+  <a id="Solti_Utils_DI_ServiceCollection_LastEntry_" data-uid="Solti.Utils.DI.ServiceCollection.LastEntry*"></a>
+  <h4 id="Solti_Utils_DI_ServiceCollection_LastEntry" data-uid="Solti.Utils.DI.ServiceCollection.LastEntry">LastEntry</h4>
+  <div class="markdown level1 summary"><p>The last added service.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public AbstractServiceEntry LastEntry { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html">AbstractServiceEntry</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="eii">Explicit Interface Implementations
+  </h3>
+  <a id="Solti_Utils_DI_ServiceCollection_System_Collections_Generic_ISet_Solti_Utils_DI_Interfaces_AbstractServiceEntry__Add_" data-uid="Solti.Utils.DI.ServiceCollection.System#Collections#Generic#ISet{Solti#Utils#DI#Interfaces#AbstractServiceEntry}#Add*"></a>
+  <h4 id="Solti_Utils_DI_ServiceCollection_System_Collections_Generic_ISet_Solti_Utils_DI_Interfaces_AbstractServiceEntry__Add_Solti_Utils_DI_Interfaces_AbstractServiceEntry_" data-uid="Solti.Utils.DI.ServiceCollection.System#Collections#Generic#ISet{Solti#Utils#DI#Interfaces#AbstractServiceEntry}#Add(Solti.Utils.DI.Interfaces.AbstractServiceEntry)">ISet&lt;AbstractServiceEntry&gt;.Add(AbstractServiceEntry)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">bool ISet&lt;AbstractServiceEntry&gt;.Add(AbstractServiceEntry item)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html">AbstractServiceEntry</a></td>
+        <td><span class="parametername">item</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ireadonlycollection-1">System.Collections.Generic.IReadOnlyCollection&lt;T&gt;</a>
+  </div>
+  <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.runtime.serialization.ideserializationcallback">System.Runtime.Serialization.IDeserializationCallback</a>
+  </div>
+  <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.runtime.serialization.iserializable">System.Runtime.Serialization.ISerializable</a>
+  </div>
+  <div>
+      <a class="xref" href="Solti.Utils.DI.Interfaces.IModifiedServiceCollection.html">IModifiedServiceCollection</a>
+  </div>
+  <div>
+      <a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollection.html">IServiceCollection</a>
+  </div>
+  <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.iset-1">System.Collections.Generic.ISet&lt;T&gt;</a>
+  </div>
+  <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.icollection-1">System.Collections.Generic.ICollection&lt;T&gt;</a>
+  </div>
+  <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">System.Collections.Generic.IEnumerable&lt;T&gt;</a>
+  </div>
+  <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.ienumerable">System.Collections.IEnumerable</a>
+  </div>
+  <h3 id="extensionmethods">Extension Methods</h3>
+  <div>
+      <a class="xref" href="Solti.Utils.DI.IServiceCollectionAdvancedExtensions.html#Solti_Utils_DI_IServiceCollectionAdvancedExtensions_WithProxy__1_Solti_Utils_DI_Interfaces_IModifiedServiceCollection_">IServiceCollectionAdvancedExtensions.WithProxy&lt;TInterceptor&gt;(IModifiedServiceCollection)</a>
+  </div>
+  <div>
+      <a class="xref" href="Solti.Utils.DI.IServiceCollectionAdvancedExtensions.html#Solti_Utils_DI_IServiceCollectionAdvancedExtensions_WithProxy_Solti_Utils_DI_Interfaces_IModifiedServiceCollection_System_Type_">IServiceCollectionAdvancedExtensions.WithProxy(IModifiedServiceCollection, Type)</a>
+  </div>
+  <div>
+      <a class="xref" href="Solti.Utils.Proxy.ObjectExtensions.html#Solti_Utils_Proxy_ObjectExtensions_Act__1___0_">ObjectExtensions.Act&lt;TTarget&gt;(TTarget)</a>
+  </div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="styles/docfx.js"></script>
+    <script type="text/javascript" src="styles/main.js"></script>
+  </body>
+</html>

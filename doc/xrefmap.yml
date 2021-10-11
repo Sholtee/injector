@@ -1650,6 +1650,12 @@ references:
   commentId: T:Solti.Utils.DI.ScopeFactory
   fullName: Solti.Utils.DI.ScopeFactory
   nameWithType: ScopeFactory
+- uid: Solti.Utils.DI.ScopeFactory.Create(Solti.Utils.DI.Interfaces.IServiceCollection,Solti.Utils.DI.Interfaces.ScopeOptions,System.Threading.CancellationToken)
+  name: Create(IServiceCollection, ScopeOptions, CancellationToken)
+  href: Solti.Utils.DI.ScopeFactory.html#Solti_Utils_DI_ScopeFactory_Create_Solti_Utils_DI_Interfaces_IServiceCollection_Solti_Utils_DI_Interfaces_ScopeOptions_System_Threading_CancellationToken_
+  commentId: M:Solti.Utils.DI.ScopeFactory.Create(Solti.Utils.DI.Interfaces.IServiceCollection,Solti.Utils.DI.Interfaces.ScopeOptions,System.Threading.CancellationToken)
+  fullName: Solti.Utils.DI.ScopeFactory.Create(Solti.Utils.DI.Interfaces.IServiceCollection, Solti.Utils.DI.Interfaces.ScopeOptions, System.Threading.CancellationToken)
+  nameWithType: ScopeFactory.Create(IServiceCollection, ScopeOptions, CancellationToken)
 - uid: Solti.Utils.DI.ScopeFactory.Create(System.Action{Solti.Utils.DI.Interfaces.IServiceCollection},Solti.Utils.DI.Interfaces.ScopeOptions,System.Threading.CancellationToken)
   name: Create(Action<IServiceCollection>, ScopeOptions, CancellationToken)
   href: Solti.Utils.DI.ScopeFactory.html#Solti_Utils_DI_ScopeFactory_Create_System_Action_Solti_Utils_DI_Interfaces_IServiceCollection__Solti_Utils_DI_Interfaces_ScopeOptions_System_Threading_CancellationToken_
@@ -1666,6 +1672,55 @@ references:
   isSpec: "True"
   fullName: Solti.Utils.DI.ScopeFactory.Create
   nameWithType: ScopeFactory.Create
+- uid: Solti.Utils.DI.ServiceCollection
+  name: ServiceCollection
+  href: Solti.Utils.DI.ServiceCollection.html
+  commentId: T:Solti.Utils.DI.ServiceCollection
+  fullName: Solti.Utils.DI.ServiceCollection
+  nameWithType: ServiceCollection
+- uid: Solti.Utils.DI.ServiceCollection.#ctor
+  name: ServiceCollection()
+  href: Solti.Utils.DI.ServiceCollection.html#Solti_Utils_DI_ServiceCollection__ctor
+  commentId: M:Solti.Utils.DI.ServiceCollection.#ctor
+  fullName: Solti.Utils.DI.ServiceCollection.ServiceCollection()
+  nameWithType: ServiceCollection.ServiceCollection()
+- uid: Solti.Utils.DI.ServiceCollection.#ctor*
+  name: ServiceCollection
+  href: Solti.Utils.DI.ServiceCollection.html#Solti_Utils_DI_ServiceCollection__ctor_
+  commentId: Overload:Solti.Utils.DI.ServiceCollection.#ctor
+  isSpec: "True"
+  fullName: Solti.Utils.DI.ServiceCollection.ServiceCollection
+  nameWithType: ServiceCollection.ServiceCollection
+- uid: Solti.Utils.DI.ServiceCollection.LastEntry
+  name: LastEntry
+  href: Solti.Utils.DI.ServiceCollection.html#Solti_Utils_DI_ServiceCollection_LastEntry
+  commentId: P:Solti.Utils.DI.ServiceCollection.LastEntry
+  fullName: Solti.Utils.DI.ServiceCollection.LastEntry
+  nameWithType: ServiceCollection.LastEntry
+- uid: Solti.Utils.DI.ServiceCollection.LastEntry*
+  name: LastEntry
+  href: Solti.Utils.DI.ServiceCollection.html#Solti_Utils_DI_ServiceCollection_LastEntry_
+  commentId: Overload:Solti.Utils.DI.ServiceCollection.LastEntry
+  isSpec: "True"
+  fullName: Solti.Utils.DI.ServiceCollection.LastEntry
+  nameWithType: ServiceCollection.LastEntry
+- uid: Solti.Utils.DI.ServiceCollection.System#Collections#Generic#ISet{Solti#Utils#DI#Interfaces#AbstractServiceEntry}#Add(Solti.Utils.DI.Interfaces.AbstractServiceEntry)
+  name: ISet<AbstractServiceEntry>.Add(AbstractServiceEntry)
+  href: Solti.Utils.DI.ServiceCollection.html#Solti_Utils_DI_ServiceCollection_System_Collections_Generic_ISet_Solti_Utils_DI_Interfaces_AbstractServiceEntry__Add_Solti_Utils_DI_Interfaces_AbstractServiceEntry_
+  commentId: M:Solti.Utils.DI.ServiceCollection.System#Collections#Generic#ISet{Solti#Utils#DI#Interfaces#AbstractServiceEntry}#Add(Solti.Utils.DI.Interfaces.AbstractServiceEntry)
+  name.vb: System.Collections.Generic.ISet<Solti.Utils.DI.Interfaces.AbstractServiceEntry>.Add(AbstractServiceEntry)
+  fullName: Solti.Utils.DI.ServiceCollection.System.Collections.Generic.ISet<Solti.Utils.DI.Interfaces.AbstractServiceEntry>.Add(Solti.Utils.DI.Interfaces.AbstractServiceEntry)
+  nameWithType: ServiceCollection.ISet<AbstractServiceEntry>.Add(AbstractServiceEntry)
+  nameWithType.vb: ServiceCollection.System.Collections.Generic.ISet<Solti.Utils.DI.Interfaces.AbstractServiceEntry>.Add(AbstractServiceEntry)
+- uid: Solti.Utils.DI.ServiceCollection.System#Collections#Generic#ISet{Solti#Utils#DI#Interfaces#AbstractServiceEntry}#Add*
+  name: ISet<AbstractServiceEntry>.Add
+  href: Solti.Utils.DI.ServiceCollection.html#Solti_Utils_DI_ServiceCollection_System_Collections_Generic_ISet_Solti_Utils_DI_Interfaces_AbstractServiceEntry__Add_
+  commentId: Overload:Solti.Utils.DI.ServiceCollection.System#Collections#Generic#ISet{Solti#Utils#DI#Interfaces#AbstractServiceEntry}#Add
+  isSpec: "True"
+  name.vb: System.Collections.Generic.ISet<Solti.Utils.DI.Interfaces.AbstractServiceEntry>.Add
+  fullName: Solti.Utils.DI.ServiceCollection.System.Collections.Generic.ISet<Solti.Utils.DI.Interfaces.AbstractServiceEntry>.Add
+  nameWithType: ServiceCollection.ISet<AbstractServiceEntry>.Add
+  nameWithType.vb: ServiceCollection.System.Collections.Generic.ISet<Solti.Utils.DI.Interfaces.AbstractServiceEntry>.Add
 - uid: Solti.Utils.Proxy
   name: Solti.Utils.Proxy
   href: Solti.Utils.Proxy.html
