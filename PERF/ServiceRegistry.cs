@@ -173,6 +173,7 @@ namespace Solti.Utils.DI.Perf
         }
     }
 
+    [Ignore]
     [MemoryDiagnoser]
     public class ServiceRegistry_Create : ServiceRegistryTestsBase
     {
