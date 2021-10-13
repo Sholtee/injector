@@ -14,6 +14,7 @@ namespace Solti.Utils.DI.Perf
 {
     using Interfaces;
 
+    [Ignore]
     [MemoryDiagnoser]
     [SimpleJob(RunStrategy.Throughput, invocationCount: 90000)]
     public partial class IocComparison
