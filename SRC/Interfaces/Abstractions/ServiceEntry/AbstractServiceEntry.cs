@@ -12,7 +12,7 @@ namespace Solti.Utils.DI.Interfaces
     using Properties;
 
     /// <summary>
-    /// Describes an abstract service definition.
+    /// Describes an abstract service entry.
     /// </summary>
     public abstract class AbstractServiceEntry: IServiceDefinition
     {
@@ -105,11 +105,13 @@ namespace Solti.Utils.DI.Interfaces
         /// <summary>
         /// Gets the previously created service instance.
         /// </summary>
+        /// <remarks>This method may throw an <see cref="InvalidOperationException"/> if the entry can create more than one service instace.</remarks>
         public abstract object GetSingleInstance();
 
         /// <summary>
-        /// Creates a new instance.
+        /// Creates a new service instance.
         /// </summary>
+        /// <remarks>This method may throw an <see cref="InvalidOperationException"/> if the entry already created a single instance from the service.</remarks>
         public abstract object CreateInstance(IInjector scope);
 
         /// <summary>
