@@ -15,7 +15,7 @@ namespace Solti.Utils.DI.Interfaces
         /// <summary>
         /// Contains the accessor function that extracts the effective service instance from the value returned by the <see cref="AbstractServiceEntry.Factory"/> function.
         /// </summary>
-        /// <remarks>Disposal logic is alwais applied against the original value (returned by the <see cref="AbstractServiceEntry.Factory"/> function).</remarks>
+        /// <remarks>Disposal logic is always applied against the original value (returned by the <see cref="AbstractServiceEntry.Factory"/> function).</remarks>
         public Func<object, object> ServiceAccess { get; }
     }
 }
