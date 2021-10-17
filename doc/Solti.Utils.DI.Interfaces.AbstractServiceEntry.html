@@ -42,7 +42,7 @@
   
   <h1 id="Solti_Utils_DI_Interfaces_AbstractServiceEntry" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry" class="text-break">Class AbstractServiceEntry
   </h1>
-  <div class="markdown level0 summary"><p>Describes an abstract service definition.</p>
+  <div class="markdown level0 summary"><p>Describes an abstract service entry.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
@@ -445,7 +445,7 @@
   </table>
   <a id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_CreateInstance_" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.CreateInstance*"></a>
   <h4 id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_CreateInstance_Solti_Utils_DI_Interfaces_IInjector_" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.CreateInstance(Solti.Utils.DI.Interfaces.IInjector)">CreateInstance(IInjector)</h4>
-  <div class="markdown level1 summary"><p>Creates a new instance.</p>
+  <div class="markdown level1 summary"><p>Creates a new service instance.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -484,6 +484,9 @@
       </tr>
     </tbody>
   </table>
+  <h5 id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_CreateInstance_Solti_Utils_DI_Interfaces_IInjector__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>This method may throw an <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.invalidoperationexception">InvalidOperationException</a> if the entry already created a single instance from the service.</p>
+</div>
   <a id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_GetSingleInstance_" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.GetSingleInstance*"></a>
   <h4 id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_GetSingleInstance" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.GetSingleInstance">GetSingleInstance()</h4>
   <div class="markdown level1 summary"><p>Gets the previously created service instance.</p>
@@ -508,6 +511,9 @@
       </tr>
     </tbody>
   </table>
+  <h5 id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_GetSingleInstance_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>This method may throw an <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.invalidoperationexception">InvalidOperationException</a> if the entry can create more than one service instace.</p>
+</div>
   <a id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_ToString_" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.ToString*"></a>
   <h4 id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_ToString" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.ToString">ToString()</h4>
   <div class="markdown level1 summary"></div>
