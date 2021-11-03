@@ -50,9 +50,9 @@
 6. Destroying the injector
 7. Destroying the root scope
 
-Points from 1 to 4 are done in initialization time (typically at application startup), points from 5 to 7 are executed multiple times, parallelly (e.g. per WEB request). Point 8 is done in finalization time (mostly at termination). Note that child containers don't have to be freed since their lifetimes are controlled by their parents.
+Points from 1 to 3 are done in initialization time (typically at application startup), points from 4 to 6 are executed multiple times, parallelly (e.g. per WEB request). Point 7 is done in finalization time (mostly at termination).
 ### Creating a scope factory
-The first step before we'd start is creating a *root* container:
+The first step before we'd start is creating a _scope factory_:
 ```csharp
 using Solti.Utils.DI.Interfaces;
 using Solti.Utils.DI;
