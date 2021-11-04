@@ -288,7 +288,7 @@ public class NakedValidatorAspectAttribute: AspectAttribute
 {
   public override Type GetInterceptor(Type iface)
   {
-    Type interceptor = Type.GetType("Solti.Utils.DI.Extensions.Aspects.ParameterValidator`1, Solti.Utils.DI.Extensions, Version=3.3.1.0, Culture=neutral, PublicKeyToken=null", throwOnError: true);
+    Type interceptor = Type.GetType("Solti.Utils.Aspects.ParameterValidator`1, Solti.Utils.Aspects, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null", throwOnError: true);
     return interceptor.MakeGenericType(iface);
   }
 }
@@ -309,7 +309,7 @@ await using (IInjector injector = scopeFactory.CreateScope())
 ```
 *Remarks:*
 - `IInjector` instances are NOT thread safe so every session / worker must have its own scope.
-- To release resources held by the scope, at the end of the session you should dispose the injector.
+- To release resources held by the scope, at the end of the session you should dispose the `IInjector`.
 ### Requesting services
 ```csharp
 IMyService svc = injector.Get<IMyService>();
@@ -429,5 +429,32 @@ This project currently targets *.NET Standard* 2.0 and 2.1.
 ## Migrating from version 4.X
 - *Custom converter* support has been dropped so instances returned by *factory function*s must implement the service interface.
 - Renamed built in service `IServiceGraph` to `IServicePath`.
+## Migrating from version 5.X
+- The `ServiceContainer` class has been dropped. You can register services when creating the (newly introduced) _scope_ factory:
+  ```csharp
+  using IScopeFactory scopeFactory = ScopeFactory.Create(svcs => svcs
+    .Service(...)
+    .Factory(...)
+    .Provider(...));
+  ```
+  or
+  ```csharp
+   using IScopeFactory scopeFactory = ScopeFactory.Create(new ServiceCollection()
+    .Service(...)
+    .Factory(...)
+    .Provider(...)); 
+  ```
+- `runtimeconfig` configuration has been removed. Scopes can be tweaked via the `ScopeOptions` class:
+  ```csharp
+  ScopeFactory.Create(svcs => ..., new ScopeOptions {...})
+  ```
+- Container inheritance and abstract service recipe have been dropped so remove codes that depend on it.
+- As the name suggests, `IScopeFactory` is responsible for creating scopes:
+  ```csharp
+  /*await*/ using IInjector scope = scopeFactory.CreateScope();
+  ```
+  Note that `IInjector` instance MUST be freed at the end of the session (scope factory doesn't maintain the lifetime of the created scopes)
+- Due to performance considerations, the concept of service references are gone
+- The layout of the `InterfaceInterceptor<>.Invoke()` method has been changed: Now it has only a single parameter (`InvocationContext`) that contains all the invocation related attributes.
 ## Version history
 Can be found [here](https://github.com/Sholtee/injector/blob/master/history.md )
