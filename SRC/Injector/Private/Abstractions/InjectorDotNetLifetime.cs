@@ -23,7 +23,9 @@ namespace Solti.Utils.DI.Internals
             Precedence = precedence;
         }
 
+        #pragma warning disable CA2255 // The 'ModuleInitializer' attribute should not be used in libraries
         [ModuleInitializer]
+        #pragma warning restore CA2255
         public static void Initialize() // nem lehet generikusban
         {
             foreach (Type t in typeof(InjectorDotNetLifetime).Assembly.DefinedTypes.Where(t => t.GetInterfaces().Any(iface => iface.GUID == typeof(IConcreteLifetime<>).GUID)))
