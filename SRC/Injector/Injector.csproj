@@ -60,11 +60,11 @@
   <PropertyGroup>
     <Description>A featherweight dependency injector.</Description>
     <PackageId>Injector.NET</PackageId>
-    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageReadmeFile>README.MD</PackageReadmeFile>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="..\..\README.md" Pack="true" PackagePath="\"/>
+    <None Include="..\..\README.MD" Pack="true" PackagePath="\"/>
   </ItemGroup>
 	
 </Project>
