@@ -39,6 +39,10 @@ namespace Solti.Utils.DI.Tests
             Assert.That(Collection.Provider<IInterface_1, ProviderHavingOverloadedCtor>(lifetime).LastEntry.IsService());
 
         [TestCaseSource(nameof(Lifetimes))]
+        public void Provider_ShouldSupportExplicitArgs(Lifetime lifetime) =>
+            Assert.DoesNotThrow(() => Collection.Provider<IInterface_1, ProviderHavingNonInterfaceDependency>(new Dictionary<string, object> { ["val"] = 1 }, lifetime));
+
+        [TestCaseSource(nameof(Lifetimes))]
         public void Provider_MayHaveDeferredDependency(Lifetime lifetime) =>
             Assert.DoesNotThrow(() => Collection.Provider<IInterface_1, ProviderHavingDeferredDependency>(lifetime));
 
