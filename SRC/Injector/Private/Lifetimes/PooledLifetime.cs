@@ -10,7 +10,7 @@ namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
 
-    internal sealed class PooledLifetime : InjectorDotNetLifetime, IHasCapacity, IConcreteLifetime<PooledLifetime>
+    internal sealed class PooledLifetime : InjectorDotNetLifetime, IHasCapacity
     {
         private AbstractServiceEntry GetPoolService(Type iface, string? name, string poolName) => new SingletonServiceEntry
         (
@@ -42,7 +42,7 @@ namespace Solti.Utils.DI.Internals
             return $"{Consts.INTERNAL_SERVICE_NAME_PREFIX}pool_{(iface, name).GetHashCode():X}";
         }
 
-        public PooledLifetime() : base(bindTo: () => Pooled, precedence: 20) { }
+        public PooledLifetime() : base(precedence: 20) => Pooled = this;
 
         public const string POOL_SCOPE = nameof(POOL_SCOPE);
 
@@ -97,5 +97,7 @@ namespace Solti.Utils.DI.Internals
         };
 
         public int Capacity { get; set; } = Environment.ProcessorCount;
+
+        public override string ToString() => nameof(Pooled);
     }
 }
