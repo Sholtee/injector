@@ -226,3 +226,8 @@
   - *added:* `ScopeFactory.Create()` overload
 - 6.0.0:
   - *added:* Package "readme"
+- 6.1.0:
+  - *improved:* Module initialization
+  - *introduced:* `IServiceCollectionBasicExtensions.Remove()` method
+  - *introduced:* `IServiceCollectionBasicExtensions.Provider()` explicit argument support
+  - *exposed:* `ServiceIdComparer` class
