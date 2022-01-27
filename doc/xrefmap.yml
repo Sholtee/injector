@@ -812,6 +812,43 @@ references:
   isSpec: "True"
   fullName: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Register
   nameWithType: IServiceCollectionBasicExtensions.Register
+- uid: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Remove(Solti.Utils.DI.Interfaces.IServiceCollection,System.Type)
+  name: Remove(IServiceCollection, Type)
+  href: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.html#Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Remove_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_
+  commentId: M:Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Remove(Solti.Utils.DI.Interfaces.IServiceCollection,System.Type)
+  fullName: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Remove(Solti.Utils.DI.Interfaces.IServiceCollection, System.Type)
+  nameWithType: IServiceCollectionBasicExtensions.Remove(IServiceCollection, Type)
+- uid: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Remove(Solti.Utils.DI.Interfaces.IServiceCollection,System.Type,System.String)
+  name: Remove(IServiceCollection, Type, String)
+  href: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.html#Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Remove_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_String_
+  commentId: M:Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Remove(Solti.Utils.DI.Interfaces.IServiceCollection,System.Type,System.String)
+  fullName: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Remove(Solti.Utils.DI.Interfaces.IServiceCollection, System.Type, System.String)
+  nameWithType: IServiceCollectionBasicExtensions.Remove(IServiceCollection, Type, String)
+- uid: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Remove*
+  name: Remove
+  href: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.html#Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Remove_
+  commentId: Overload:Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Remove
+  isSpec: "True"
+  fullName: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Remove
+  nameWithType: IServiceCollectionBasicExtensions.Remove
+- uid: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Remove``1(Solti.Utils.DI.Interfaces.IServiceCollection)
+  name: Remove<TInterface>(IServiceCollection)
+  href: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.html#Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Remove__1_Solti_Utils_DI_Interfaces_IServiceCollection_
+  commentId: M:Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Remove``1(Solti.Utils.DI.Interfaces.IServiceCollection)
+  name.vb: Remove(Of TInterface)(IServiceCollection)
+  fullName: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Remove<TInterface>(Solti.Utils.DI.Interfaces.IServiceCollection)
+  fullName.vb: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Remove(Of TInterface)(Solti.Utils.DI.Interfaces.IServiceCollection)
+  nameWithType: IServiceCollectionBasicExtensions.Remove<TInterface>(IServiceCollection)
+  nameWithType.vb: IServiceCollectionBasicExtensions.Remove(Of TInterface)(IServiceCollection)
+- uid: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Remove``1(Solti.Utils.DI.Interfaces.IServiceCollection,System.String)
+  name: Remove<TInterface>(IServiceCollection, String)
+  href: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.html#Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Remove__1_Solti_Utils_DI_Interfaces_IServiceCollection_System_String_
+  commentId: M:Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Remove``1(Solti.Utils.DI.Interfaces.IServiceCollection,System.String)
+  name.vb: Remove(Of TInterface)(IServiceCollection, String)
+  fullName: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Remove<TInterface>(Solti.Utils.DI.Interfaces.IServiceCollection, System.String)
+  fullName.vb: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Remove(Of TInterface)(Solti.Utils.DI.Interfaces.IServiceCollection, System.String)
+  nameWithType: IServiceCollectionBasicExtensions.Remove<TInterface>(IServiceCollection, String)
+  nameWithType.vb: IServiceCollectionBasicExtensions.Remove(Of TInterface)(IServiceCollection, String)
 - uid: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Service(Solti.Utils.DI.Interfaces.IServiceCollection,System.Type,System.String,System.Type,Solti.Utils.DI.Interfaces.Lifetime)
   name: Service(IServiceCollection, Type, String, Type, Lifetime)
   href: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.html#Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Service_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_String_System_Type_Solti_Utils_DI_Interfaces_Lifetime_
@@ -1600,6 +1637,38 @@ references:
   commentId: F:Solti.Utils.DI.Interfaces.ServiceEntryStates.Validated
   fullName: Solti.Utils.DI.Interfaces.ServiceEntryStates.Validated
   nameWithType: ServiceEntryStates.Validated
+- uid: Solti.Utils.DI.Interfaces.ServiceIdComparer
+  name: ServiceIdComparer
+  href: Solti.Utils.DI.Interfaces.ServiceIdComparer.html
+  commentId: T:Solti.Utils.DI.Interfaces.ServiceIdComparer
+  fullName: Solti.Utils.DI.Interfaces.ServiceIdComparer
+  nameWithType: ServiceIdComparer
+- uid: Solti.Utils.DI.Interfaces.ServiceIdComparer.Equals(Solti.Utils.DI.Interfaces.IServiceId,Solti.Utils.DI.Interfaces.IServiceId)
+  name: Equals(IServiceId, IServiceId)
+  href: Solti.Utils.DI.Interfaces.ServiceIdComparer.html#Solti_Utils_DI_Interfaces_ServiceIdComparer_Equals_Solti_Utils_DI_Interfaces_IServiceId_Solti_Utils_DI_Interfaces_IServiceId_
+  commentId: M:Solti.Utils.DI.Interfaces.ServiceIdComparer.Equals(Solti.Utils.DI.Interfaces.IServiceId,Solti.Utils.DI.Interfaces.IServiceId)
+  fullName: Solti.Utils.DI.Interfaces.ServiceIdComparer.Equals(Solti.Utils.DI.Interfaces.IServiceId, Solti.Utils.DI.Interfaces.IServiceId)
+  nameWithType: ServiceIdComparer.Equals(IServiceId, IServiceId)
+- uid: Solti.Utils.DI.Interfaces.ServiceIdComparer.Equals*
+  name: Equals
+  href: Solti.Utils.DI.Interfaces.ServiceIdComparer.html#Solti_Utils_DI_Interfaces_ServiceIdComparer_Equals_
+  commentId: Overload:Solti.Utils.DI.Interfaces.ServiceIdComparer.Equals
+  isSpec: "True"
+  fullName: Solti.Utils.DI.Interfaces.ServiceIdComparer.Equals
+  nameWithType: ServiceIdComparer.Equals
+- uid: Solti.Utils.DI.Interfaces.ServiceIdComparer.GetHashCode(Solti.Utils.DI.Interfaces.IServiceId)
+  name: GetHashCode(IServiceId)
+  href: Solti.Utils.DI.Interfaces.ServiceIdComparer.html#Solti_Utils_DI_Interfaces_ServiceIdComparer_GetHashCode_Solti_Utils_DI_Interfaces_IServiceId_
+  commentId: M:Solti.Utils.DI.Interfaces.ServiceIdComparer.GetHashCode(Solti.Utils.DI.Interfaces.IServiceId)
+  fullName: Solti.Utils.DI.Interfaces.ServiceIdComparer.GetHashCode(Solti.Utils.DI.Interfaces.IServiceId)
+  nameWithType: ServiceIdComparer.GetHashCode(IServiceId)
+- uid: Solti.Utils.DI.Interfaces.ServiceIdComparer.GetHashCode*
+  name: GetHashCode
+  href: Solti.Utils.DI.Interfaces.ServiceIdComparer.html#Solti_Utils_DI_Interfaces_ServiceIdComparer_GetHashCode_
+  commentId: Overload:Solti.Utils.DI.Interfaces.ServiceIdComparer.GetHashCode
+  isSpec: "True"
+  fullName: Solti.Utils.DI.Interfaces.ServiceIdComparer.GetHashCode
+  nameWithType: ServiceIdComparer.GetHashCode
 - uid: Solti.Utils.DI.Interfaces.ServiceNotFoundException
   name: ServiceNotFoundException
   href: Solti.Utils.DI.Interfaces.ServiceNotFoundException.html
