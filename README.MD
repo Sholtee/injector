@@ -197,8 +197,7 @@ using Solti.Utils.DI;
 using Solti.Utils.Proxy; 
 ...
 svcs
-  .Service<IMyModule, MyModule>(Lifetime.Scoped)
-  .Proxy<IMyModule, ParameterValidatorProxy<IMyModule>>();
+  .Service<IMyModule, MyModule>(Lifetime.Scoped).WithProxy<ParameterValidatorProxy<IMyModule>>();
 ```
 Where the `ParameterValidatorProxy<TInterface>` is an `InterfaceInterceptor<TInterface>` descendant containing the parameter validation logic:
 ```csharp
@@ -334,7 +333,7 @@ IMyService svc = injector.Get<IMyService>("servicename");
   ```
 - To access all services with the given interface, use the magic `IEnumerable<>` service:
   ```csharp
-  // Return all the IMyService instances regardless their names
+  // Returns all the IMyService instances regardless their names
   IEnumerable<IMyService> svcs = injector.Get<IEnumerable<IMyService>>();
   // Service instantiation is done during enumeration
   ```
@@ -355,10 +354,10 @@ using(IScopeFactory scopeFactory = ScopeFactory.Create(svcs => svcs.Service<IMyS
     {
       {"num", 10}
     });
-  } // Using the instantiated object is safe in the using block only
+  }
 }
 ```
-As you can see there are three major differences compared to `injector.Get()`:
+As you can see, there are three major differences compared to `injector.Get()`:
 - The instantiated `Type` does not have to be a registered service.
 - You can pass arbitrary arguments to the constructor via the `explicitArgs` parameter (which means the instantiated type may have non-registered/non-interface dependency).
 - The caller is responsible for freeing the returned object (that must be done before the scope disposal).
