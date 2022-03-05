@@ -178,27 +178,27 @@ namespace Solti.Utils.DI.Internals
         public static Func<IInjector, IReadOnlyDictionary<string, object?>, object> GetExtended(ConstructorInfo constructor) => Cache.GetOrAdd(constructor, () =>
         {
             //
-            // (injector, explicitVals) =>
+            // (injector, explicitArgs) =>
             // {
-            //    object explicitVal;
-            //    return new Service(explicitVals.TryGetValue(paramName, out explicitVal) ? explicitVal : Lazy<IDependency_1>) | injector.[Try]Get(typeof(IDependency_1)), ...);
+            //    object arg;
+            //    return new Service(explicitArgs.TryGetValue(paramName, out arg) ? arg : Lazy<IDependency_1>) | injector.[Try]Get(typeof(IDependency_1)), ...);
             // }
             //
 
             ParameterExpression
                 injector     = Expression.Parameter(typeof(IInjector), nameof(injector)),
-                explicitVals = Expression.Parameter(typeof(IReadOnlyDictionary<string, object?>), nameof(explicitVals)),
-                explicitVal  = Expression.Variable(typeof(object), nameof(explicitVal));
+                explicitArgs = Expression.Parameter(typeof(IReadOnlyDictionary<string, object?>), nameof(explicitArgs)),
+                arg          = Expression.Variable(typeof(object), nameof(arg));
 
             return CreateActivator<Func<IInjector, IReadOnlyDictionary<string, object?>, object>>
             (
                 constructor,
                 ResolveDependency,
-                new[] { explicitVal },
+                new[] { arg },
                 new[]
                 {
                     injector,
-                    explicitVals
+                    explicitArgs
                 }
             );
 
@@ -212,21 +212,21 @@ namespace Solti.Utils.DI.Internals
                 type = GetEffectiveType(type, out bool isLazy) ?? type;
 
                 //
-                // explicitVals.TryGetValue(name, out explicitVal)
-                //   ? explicitVal 
-                //   : Lazy<IDependency_1>) | injector.[Try]Get(typeof(IDependency_1))
+                // explicitArgs.TryGetValue(name, out explicitVal)
+                //   ? explicitArgs 
+                //   : Lazy<IDependency_1>() | injector.[Try]Get(typeof(IDependency_1))
                 //
 
                 return Expression.Condition
                 (
                     test: Expression.Call
                     (
-                        explicitVals, 
+                        explicitArgs, 
                         DictTryGetValue, 
                         Expression.Constant(name), 
-                        explicitVal
+                        arg
                     ),
-                    ifTrue: explicitVal,
+                    ifTrue: arg,
                     ifFalse: isLazy
                         //
                         // Lazy<IInterface>(() => (IInterface) injector.[Try]Get(typeof(IInterface), svcName))
@@ -265,6 +265,81 @@ namespace Solti.Utils.DI.Internals
             EnsureCanBeInstantiated(type);
 
             return GetExtended(type.GetApplicableConstructor());
+        });
+
+        public static Func<IInjector, object, object> GetExtended(ConstructorInfo constructor, Type paramzProvider) => Cache.GetOrAdd(new { constructor, paramzProvider }, () =>
+        {
+            //
+            // (injector, explicitArgs) =>
+            //    return (object) new Service(((ParamzProvider) explicitArgs).argName_1 | Lazy<IDependency_1>() | injector.[Try]Get(typeof(IDependency_1)), ...);
+            //
+
+            ParameterExpression
+                injector = Expression.Parameter(typeof(IInjector), nameof(injector)),
+                explicitArgs = Expression.Parameter(typeof(object), nameof(explicitArgs));
+
+            return CreateActivator<Func<IInjector, object, object>>
+            (
+                constructor,
+                ResolveDependency,
+                Array.Empty<ParameterExpression>(),
+                new[]
+                {
+                    injector,
+                    explicitArgs
+                }
+            );
+
+            Expression ResolveDependency(Type type, string name, OptionsAttribute? options)
+            {
+                PropertyInfo? valueProvider = paramzProvider.GetProperty(name, BindingFlags.Instance | BindingFlags.Public | BindingFlags.FlattenHierarchy);
+
+                if (valueProvider?.CanRead is true && valueProvider.PropertyType == type)
+                    //
+                    // ((ParamzProvider) explicitArgs).argName_1 
+                    //
+
+                    return Expression.Property
+                    (
+                        Expression.Convert(explicitArgs, paramzProvider),
+                        valueProvider
+                    );
+
+                type = GetEffectiveType(type, out bool isLazy) ?? throw new ArgumentException(Resources.INVALID_CONSTRUCTOR, nameof(constructor));
+
+                if (isLazy)
+                    //
+                    // Lazy<IInterface>(() => (IInterface) injector.[Try]Get(typeof(IInterface), svcName))
+                    //
+
+                    return Expression.Invoke
+                    (
+                        Expression.Constant
+                        (
+                            GetLazyFactory(type, options)
+                        ),
+                        injector
+                    );
+
+                //
+                // injector.[Try]Get(typeof(IInterface), svcName)
+                //
+
+                return Expression.Call
+                (
+                    injector,
+                    options?.Optional is true ? InjectorTryGet : InjectorGet,
+                    Expression.Constant(type),
+                    Expression.Constant(options?.Name, typeof(string))
+                );
+            }
+        });
+
+        public static Func<IInjector, object, object> GetExtended(Type type, Type paramzProvider) => Cache.GetOrAdd(type, () =>
+        {
+            EnsureCanBeInstantiated(type);
+
+            return GetExtended(type.GetApplicableConstructor(), paramzProvider);
         });
 
         public static Func<IInjector, object> GetLazyFactory(Type iface, OptionsAttribute? options) => Cache.GetOrAdd((iface, options?.Name, options?.Optional), () =>

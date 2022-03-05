@@ -272,6 +272,25 @@ namespace Solti.Utils.DI.Internals.Tests
         }
 
         [Test]
+        public void ExtendedActivator_ShouldSupportExplicitArguments2()
+        {
+            var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
+            mockInjector.Setup(i => i.Get(It.IsAny<Type>(), It.IsAny<string>()));
+
+            var paramz = new { capacity = 10 };
+
+            Func<IInjector, object, object> factory = ServiceActivator
+                .GetExtended(typeof(List<string>).GetConstructor(new[] { typeof(int) }), paramz.GetType());
+
+            object lst = factory(mockInjector.Object, paramz);
+
+            Assert.That(lst, Is.InstanceOf<List<string>>());
+            Assert.That(((List<string>)lst).Capacity, Is.EqualTo(10));
+
+            mockInjector.Verify(i => i.Get(It.IsAny<Type>(), It.IsAny<string>()), Times.Never);
+        }
+
+        [Test]
         public void ExtendedActivator_ShouldSupportExplicitProperties()
         {
             var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
@@ -283,6 +302,25 @@ namespace Solti.Utils.DI.Internals.Tests
             {
                 {nameof(MyClassHavingOptionalProperty.Dep), new List<string>()}
             });
+
+            Assert.That(ret, Is.InstanceOf<MyClassHavingOptionalProperty>());
+            Assert.That(ret.Dep, Is.Not.Null);
+        }
+
+        [Test]
+        public void ExtendedActivator_ShouldSupportExplicitProperties2()
+        {
+            var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
+
+            var paramz = new 
+            {
+                Dep = (IList) new List<string>()
+            };
+
+            Func<IInjector, object, object> factory = ServiceActivator
+                .GetExtended(typeof(MyClassHavingOptionalProperty).GetConstructor(Type.EmptyTypes), paramz.GetType());
+
+            var ret = (MyClassHavingOptionalProperty)factory(mockInjector.Object, paramz);
 
             Assert.That(ret, Is.InstanceOf<MyClassHavingOptionalProperty>());
             Assert.That(ret.Dep, Is.Not.Null);
@@ -309,6 +347,28 @@ namespace Solti.Utils.DI.Internals.Tests
         }
 
         [Test]
+        public void ExtendedActivator_ShouldResolveOptionalArguments2()
+        {
+            var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
+            mockInjector
+                .Setup(i => i.Get(typeof(IList<IDictionary>), null))
+                .Returns(new List<IDictionary>());
+            mockInjector
+                .Setup(i => i.TryGet(typeof(IDisposable), null))
+                .Returns(null);
+
+            var paramz = new { };
+
+            Func<IInjector, object, object> factory = ServiceActivator
+                .GetExtended(typeof(MyInterceptor), paramz.GetType());
+
+            Assert.DoesNotThrow(() => factory.Invoke(mockInjector.Object, paramz));
+
+            mockInjector.Verify(i => i.Get(typeof(IList<IDictionary>), null), Times.Once);
+            mockInjector.Verify(i => i.TryGet(typeof(IDisposable), null), Times.Once);
+        }
+
+        [Test]
         public void ExtendedActivator_ShouldResolveOptionalProperties()
         {
             var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
@@ -320,6 +380,24 @@ namespace Solti.Utils.DI.Internals.Tests
                 .GetExtended(typeof(MyClassHavingOptionalProperty));
 
             Assert.DoesNotThrow(() => factory.Invoke(mockInjector.Object, new Dictionary<string, object>()));
+
+            mockInjector.Verify(i => i.TryGet(typeof(IList), null), Times.Once);
+        }
+
+        [Test]
+        public void ExtendedActivator_ShouldResolveOptionalProperties2()
+        {
+            var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
+            mockInjector
+                .Setup(i => i.TryGet(typeof(IList), null))
+                .Returns(new List<IDictionary>());
+
+            var paramz = new { };
+
+            Func<IInjector, object, object> factory = ServiceActivator
+                .GetExtended(typeof(MyClassHavingOptionalProperty), paramz.GetType());
+
+            Assert.DoesNotThrow(() => factory.Invoke(mockInjector.Object, paramz));
 
             mockInjector.Verify(i => i.TryGet(typeof(IList), null), Times.Once);
         }
@@ -351,6 +429,14 @@ namespace Solti.Utils.DI.Internals.Tests
 
                 Assert.Throws<ArgumentException>(() => ServiceActivator.GetExtended(ctor).Invoke(injector, new Dictionary<string, object>(0)), Resources.PARAMETER_NOT_AN_INTERFACE);
             }
+        }
+
+        [Test]
+        public void ExtendedActivator_ShouldThrowOnNonInterfaceArguments2()
+        {
+            ConstructorInfo ctor = typeof(MyClass).GetConstructor(new[] { typeof(IDisposable), typeof(IList), typeof(int) });
+
+            Assert.Throws<ArgumentException>(() => ServiceActivator.GetExtended(ctor, new { }.GetType()), Resources.INVALID_CONSTRUCTOR);
         }
 
         [Test]
