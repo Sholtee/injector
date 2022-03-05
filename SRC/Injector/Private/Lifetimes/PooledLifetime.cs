@@ -21,16 +21,7 @@ namespace Solti.Utils.DI.Internals
             iface.IsGenericTypeDefinition
                 ? typeof(PoolService<>)
                 : typeof(PoolService<>).MakeGenericType(iface),
-            new Dictionary<string, object?>
-            {
-                //
-                // Az argumentum nevek meg kell egyezzenek a PoolService.ctor() parameter neveivel.
-                // Kesobb majd lehet szebben is megoldhato lesz: https://github.com/dotnet/csharplang/issues/373
-                //
-
-                ["capacity"] = Capacity,
-                ["name"] = name // eredeti szervizt az eredeti neven keressuk
-            },
+            new { capacity = Capacity, name },
             null
         );
  

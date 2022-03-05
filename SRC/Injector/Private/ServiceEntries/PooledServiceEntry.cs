@@ -34,7 +34,7 @@ namespace Solti.Utils.DI.Internals
             PoolName = poolName;
         }
 
-        public PooledServiceEntry(Type @interface, string? name, Type implementation, IReadOnlyDictionary<string, object?> explicitArgs, IServiceRegistry? owner, string poolName) : base(@interface, name, implementation, explicitArgs, owner)
+        public PooledServiceEntry(Type @interface, string? name, Type implementation, object explicitArgs, IServiceRegistry? owner, string poolName) : base(@interface, name, implementation, explicitArgs, owner)
         {
             PoolName = poolName;
         }

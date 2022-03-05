@@ -26,7 +26,7 @@ namespace Solti.Utils.DI.Internals
         {
         }
 
-        public ScopedServiceEntry(Type @interface, string? name, Type implementation, IReadOnlyDictionary<string, object?> explicitArgs, IServiceRegistry? owner) : base(@interface, name, implementation, explicitArgs, owner)
+        public ScopedServiceEntry(Type @interface, string? name, Type implementation, object explicitArgs, IServiceRegistry? owner) : base(@interface, name, implementation, explicitArgs, owner)
         {
         }
 

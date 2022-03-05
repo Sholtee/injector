@@ -73,7 +73,7 @@ namespace Solti.Utils.DI.Internals
                 implementation.GetApplicableConstructor();
         }
 
-        protected ProducibleServiceEntry(Type @interface, string? name, Type implementation, IReadOnlyDictionary<string, object?> explicitArgs, IServiceRegistry? owner) : base(@interface, name, implementation, owner)
+        protected ProducibleServiceEntry(Type @interface, string? name, Type implementation, object explicitArgs, IServiceRegistry? owner) : base(@interface, name, implementation, owner)
         {
             //
             // Os ellenorzi a tobbit.
@@ -84,12 +84,26 @@ namespace Solti.Utils.DI.Internals
 
             if (!@interface.IsGenericTypeDefinition)
             {
-                Func<IInjector, IReadOnlyDictionary<string, object?>, object> factoryEx = ServiceActivator.GetExtended(implementation);
+                if (explicitArgs is IReadOnlyDictionary<string, object?> dict)
+                {
+                    Func<IInjector, IReadOnlyDictionary<string, object?>, object> factoryEx = ServiceActivator.GetExtended(implementation);
 
-                Factory = (injector, _) => factoryEx(injector, explicitArgs!);
+                    Factory = (injector, _) => factoryEx(injector, dict);
+                }
+                else
+                {
+                    Func<IInjector, object, object> factoryEx = ServiceActivator.GetExtended(implementation, explicitArgs.GetType());
+
+                    Factory = (injector, _) => factoryEx(injector, explicitArgs);
+                }
+
                 this.ApplyAspects();
             }
             else
+                //
+                // Validalas vegett
+                //
+
                 implementation.GetApplicableConstructor();
 
             ExplicitArgs = explicitArgs;
@@ -124,7 +138,7 @@ namespace Solti.Utils.DI.Internals
 
         public ProducibleServiceEntry? Root { get; }
 
-        public IReadOnlyDictionary<string, object?>? ExplicitArgs { get; }
+        public object? ExplicitArgs { get; }
 
         public abstract AbstractServiceEntry Specialize(IServiceRegistry? owner, params Type[] genericArguments);
 
