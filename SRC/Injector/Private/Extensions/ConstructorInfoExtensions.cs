@@ -9,15 +9,13 @@ using System.Reflection;
 
 namespace Solti.Utils.DI.Internals
 {
-    using Proxy.Internals;
-
     internal static class ConstructorInfoExtensions
     {
         public static IReadOnlyList<ParameterInfo> GetParametersSafe(this ConstructorInfo self)
         {
             IReadOnlyList<ParameterInfo> paramz = self.GetParameters();
 
-            if (self.ReflectedType.GetCustomAttribute<RelatedGeneratorAttribute>() is not null)
+            if (self.ReflectedType.IsProxy())
             {
                 //
                 // Specialis eset amikor generalt proxy tipussal dolgozunk. Itt bar a konstruktorok szama es elrendezese

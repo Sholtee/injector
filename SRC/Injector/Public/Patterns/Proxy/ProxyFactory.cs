@@ -22,12 +22,6 @@ namespace Solti.Utils.Proxy
     /// </summary>
     public static class ProxyFactory
     {
-        private static Type GenerateProxyType<TInterface, TInterceptor>() where TInterface : class where TInterceptor : InterfaceInterceptor<TInterface> => 
-            ProxyGenerator<TInterface, TInterceptor>.GetGeneratedType();
-
-        private static Task<Type> GenerateProxyTypeAsync<TInterface, TInterceptor>() where TInterface : class where TInterceptor : InterfaceInterceptor<TInterface> =>
-            ProxyGenerator<TInterface, TInterceptor>.GetGeneratedTypeAsync();
-
         /// <summary>
         /// Creates a new proxy instance with the given arguments.
         /// </summary>
@@ -35,11 +29,11 @@ namespace Solti.Utils.Proxy
         /// <typeparam name="TInterceptor">The interceptor class. It must be an <see cref="InterfaceInterceptor{TInterface}"/> descendant.</typeparam>
         /// <param name="args">Arguments to be passed to the constructor of the <typeparamref name="TInterceptor"/>.</param>
         /// <returns>The newly created proxy instance.</returns>
-        public static TInterface Create<TInterface, TInterceptor>(params object[] args) where TInterface : class where TInterceptor : InterfaceInterceptor<TInterface> => (TInterface) 
-            GenerateProxyType<TInterface, TInterceptor>()
-                .GetApplicableConstructor()
-                .ToStaticDelegate()
-                .Invoke(args);
+        public static TInterface Create<TInterface, TInterceptor>(params object[] args) where TInterface : class where TInterceptor : InterfaceInterceptor<TInterface> => (TInterface) ProxyGenerator<TInterface, TInterceptor>
+            .GetGeneratedType()
+            .GetApplicableConstructor()
+            .ToStaticDelegate()
+            .Invoke(args);
 
         /// <summary>
         /// Creates a new proxy instance with the given arguments.
@@ -49,11 +43,13 @@ namespace Solti.Utils.Proxy
         /// <param name="argTypes">An array of <see cref="Type"/> objects representing the number, order, and type of the parameters of the desired <typeparamref name="TInterceptor"/> constructor.</param>
         /// <param name="args">Arguments to be passed to the constructor of the <typeparamref name="TInterceptor"/>.</param>
         /// <returns>The newly created proxy instance.</returns>
-        public static TInterface Create<TInterface, TInterceptor>(Type[] argTypes, params object[] args) where TInterface : class where TInterceptor : InterfaceInterceptor<TInterface> => (TInterface) GenerateProxyType<TInterface, TInterceptor>().CreateInstance
-        (
-            Ensure.Parameter.IsNotNull(argTypes, nameof(argTypes)),
-            Ensure.Parameter.IsNotNull(args, nameof(args))
-        );
+        public static TInterface Create<TInterface, TInterceptor>(Type[] argTypes, params object[] args) where TInterface : class where TInterceptor : InterfaceInterceptor<TInterface> => (TInterface) ProxyGenerator<TInterface, TInterceptor>
+            .GetGeneratedType()
+            .CreateInstance
+            (
+                Ensure.Parameter.IsNotNull(argTypes, nameof(argTypes)),
+                Ensure.Parameter.IsNotNull(args, nameof(args))
+            );
 
         /// <summary>
         /// Creates a new proxy instance with the given target.
@@ -75,42 +71,14 @@ namespace Solti.Utils.Proxy
         /// <param name="targetParamName">Parameter name of the target (usually "target").</param>
         /// <returns>The newly created proxy instance.</returns>
         public static TInterface Create<TInterface, TInterceptor>(TInterface target, IInjector injector, string targetParamName = "target") where TInterface : class where TInterceptor : InterfaceInterceptor<TInterface> => (TInterface) 
-            injector.Instantiate(GenerateProxyType<TInterface, TInterceptor>(), new Dictionary<string, object?>
+            injector.Instantiate(ProxyGenerator<TInterface, TInterceptor>.GetGeneratedType(), new Dictionary<string, object?>
             {
                 {targetParamName, target}
             });
 
-        private static readonly MethodInfo FGenericGenerateProxyType = MethodInfoExtractor
-            .Extract(() => GenerateProxyType<object, InterfaceInterceptor<object>>())
-            .GetGenericMethodDefinition();
+        internal static Type GenerateProxyType(Type iface, Type interceptor) => new ProxyGenerator(iface, interceptor).GetGeneratedType();
 
-        internal static Type GenerateProxyType(Type iface, Type interceptor)
-        {
-            Ensure.Parameter.IsNotNull(iface, nameof(iface));
-            Ensure.Parameter.IsNotNull(interceptor, nameof(interceptor));
-
-            //
-            // A tobbit a ProxyGenerator<> ellenorzi.
-            //
-
-            return (Type) FGenericGenerateProxyType.MakeGenericMethod(iface, interceptor).ToStaticDelegate().Invoke(Array.Empty<object>());
-        }
-
-        private static readonly MethodInfo FGenericGenerateProxyTypeAsync = MethodInfoExtractor
-            .Extract(() => GenerateProxyTypeAsync<object, InterfaceInterceptor<object>>())
-            .GetGenericMethodDefinition();
-
-        internal static Task<Type> GenerateProxyTypeAsync(Type iface, Type interceptor)
-        {
-            Ensure.Parameter.IsNotNull(iface, nameof(iface));
-            Ensure.Parameter.IsNotNull(interceptor, nameof(interceptor));
-
-            //
-            // A tobbit a ProxyGenerator<> ellenorzi.
-            //
-
-            return (Task<Type>) FGenericGenerateProxyTypeAsync.MakeGenericMethod(iface, interceptor).ToStaticDelegate().Invoke(Array.Empty<object>());
-        }
+        internal static Task<Type> GenerateProxyTypeAsync(Type iface, Type interceptor) => new ProxyGenerator(iface, interceptor).GetGeneratedTypeAsync();
 
         /// <summary>
         /// Creates a new proxy instance with the given arguments.

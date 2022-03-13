@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -14,19 +15,20 @@ namespace Solti.Utils.DI.Internals
     using Interfaces;
     using Primitives;
     using Properties;
-    using Proxy.Internals;
 
     internal static class TypeExtensions
     {
+        public static bool IsProxy(this Type src) => src.GetCustomAttribute<GeneratedCodeAttribute>()?.Tool.Equals("ProxyGen.NET", StringComparison.OrdinalIgnoreCase) is true;
+
         public static ConstructorInfo GetApplicableConstructor(this Type src) => Cache.GetOrAdd(src, () =>
         {
-            //
-            // Specialis eset amikor proxy-t hozunk letre majd probaljuk aktivalni. Itt a ServiceActivatorAttribute nem lesz lathato mivel
-            // az aktualis proxy tipus osenek konstruktoran van (ha van).
-            //
-
-            if (src.GetCustomAttribute<RelatedGeneratorAttribute>() is not null)
+            if (src.IsProxy())
             {
+                //
+                // Specialis eset amikor proxy-t hozunk letre majd probaljuk aktivalni. Itt a ServiceActivatorAttribute nem lesz lathato mivel
+                // az aktualis proxy tipus osenek konstruktoran van (ha van).
+                //
+
                 Type @base = src.BaseType;
                 Debug.Assert(@base is not null);
 

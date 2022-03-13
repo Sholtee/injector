@@ -13,13 +13,13 @@ namespace Solti.Utils.DI.Internals
     using Interfaces;
     using Interfaces.Properties;
     using Primitives;
-    using Proxy;
+    using Proxy.Generators;
 
     internal static partial class ServiceEntryExtensions
     {
         private static Func<IInjector, Type, object, object> BuildDelegate(Type iface, Type interceptor)
         {
-            interceptor = ProxyFactory.GenerateProxyType(iface, interceptor);
+            interceptor = new ProxyGenerator(iface, interceptor).GetGeneratedType();
 
             ConstructorInfo ctor = interceptor.GetApplicableConstructor();
 
