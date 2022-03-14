@@ -61,7 +61,7 @@ namespace Solti.Utils.DI.Perf
         [ParamsSource(nameof(ResolverBuilders))]
         public Named<object> ResolverBuilder { get; set; }
 
-        [Params(1, 10, 20, 100, 1000)]
+        [Params(1, 10, 20, 100)]
         public int ServiceCount { get; set; }
 
         private ServiceRegistryBase Registry { get; set; }
@@ -127,7 +127,7 @@ namespace Solti.Utils.DI.Perf
 
         private Func<object[], object> Factory { get; set; }
 
-        [Params(0, 1, 5, 20)]
+        [Params(0, 1, 5, 10)]
         public int EntryCount { get; set; }
 
         [GlobalSetup]
