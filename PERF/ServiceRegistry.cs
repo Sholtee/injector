@@ -55,7 +55,6 @@ namespace Solti.Utils.DI.Perf
         public Named<Type> RegistryType { get; set; }
     }
 
-    [Ignore]
     [MemoryDiagnoser]
     public class ServiceRegistry_GetEntry: ServiceRegistryTestsBase
     {
@@ -121,7 +120,6 @@ namespace Solti.Utils.DI.Perf
         public AbstractServiceEntry ResolveGenericEntry() => Registry!.GetEntry(typeof(IList<object>), (++I % ServiceCount).ToString())!;
     }
 
-    [Ignore]
     [MemoryDiagnoser]
     public class ServiceRegistry_Derive : ServiceRegistryTestsBase
     {
@@ -175,7 +173,6 @@ namespace Solti.Utils.DI.Perf
         }
     }
 
-    [Ignore]
     [MemoryDiagnoser]
     public class ServiceRegistry_Create : ServiceRegistryTestsBase
     {

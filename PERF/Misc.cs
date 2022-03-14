@@ -13,7 +13,6 @@ namespace Solti.Utils.DI.Perf
     // Nem tudtam h a Type.GUID property-t hasznalo resolver-ek miert kibaszott lassuak... Mar tudom...
     //
 
-    [Ignore]
     [MemoryDiagnoser]
     public class TypeBench
     {

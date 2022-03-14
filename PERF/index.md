@@ -4,7 +4,6 @@
 - [ArrayFactory](https://sholtee.github.io/injector/perf/Solti.Utils.DI.Perf.ArrayFactory-report-github.html )
 - [Injector Get](https://sholtee.github.io/injector/perf/Solti.Utils.DI.Perf.InjectorGet-report-github.html )
 - [Injector Instantiate](https://sholtee.github.io/injector/perf/Solti.Utils.DI.Perf.InjectorInstantiate-report-github.html )
-- [IoC Comparison](https://sholtee.github.io/injector/perf/Solti.Utils.DI.Perf.IocComparison-report-github.html )
 - [Scope Creation](https://sholtee.github.io/injector/perf/Solti.Utils.DI.Perf.ScopeCreation-report-github.html )
 - [ServicePath](https://sholtee.github.io/injector/perf/Solti.Utils.DI.Perf.ServicePath-report-github.html )
 - [ServiceRegistry - Create](https://sholtee.github.io/injector/perf/Solti.Utils.DI.Perf.ServiceRegistry_Create-report-github.html )
