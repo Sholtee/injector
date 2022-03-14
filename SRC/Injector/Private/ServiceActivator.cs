@@ -363,7 +363,7 @@ namespace Solti.Utils.DI.Internals
                     Expression.Call
                     (
                         injector,
-                        options?.Optional == true ? InjectorTryGet : InjectorGet,
+                        options?.Optional is true ? InjectorTryGet : InjectorGet,
                         Expression.Constant(iface),
                         Expression.Constant(options?.Name, typeof(string))
                     ),
