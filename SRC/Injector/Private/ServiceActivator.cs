@@ -294,7 +294,7 @@ namespace Solti.Utils.DI.Internals
             {
                 PropertyInfo? valueProvider = paramzProvider.GetProperty(name, BindingFlags.Instance | BindingFlags.Public | BindingFlags.FlattenHierarchy);
 
-                if (valueProvider?.CanRead is true && valueProvider.PropertyType == type)
+                if (valueProvider?.CanRead is true && type.IsAssignableFrom(valueProvider.PropertyType))
                     //
                     // ((ParamzProvider) explicitArgs).argName_1 
                     //
@@ -335,7 +335,7 @@ namespace Solti.Utils.DI.Internals
             }
         });
 
-        public static Func<IInjector, object, object> GetExtended(Type type, Type paramzProvider) => Cache.GetOrAdd(type, () =>
+        public static Func<IInjector, object, object> GetExtended(Type type, Type paramzProvider) => Cache.GetOrAdd(new { type, paramzProvider }, () =>
         {
             EnsureCanBeInstantiated(type);
 

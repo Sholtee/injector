@@ -28,6 +28,18 @@ namespace Solti.Utils.DI.Tests
         }
 
         [Test]
+        public void Injector_Instantiate_ShouldUseTheCurrentInjector2()
+        {
+            Root = ScopeFactory.Create(svcs => { });
+
+            using (IInjector injector = Root.CreateScope())
+            {
+                Implementation_7_TInterface_Dependant<IInjector> obj = injector.Instantiate<Implementation_7_TInterface_Dependant<IInjector>>(new { });
+                Assert.That(obj.Interface, Is.SameAs(injector));
+            }
+        }
+
+        [Test]
         public void Injector_Instantiate_ShouldAcceptExplicitArguments()
         {
             Root = ScopeFactory.Create(svcs => { });
@@ -45,6 +57,21 @@ namespace Solti.Utils.DI.Tests
             }
         }
 
+        [Test]
+        public void Injector_Instantiate_ShouldAcceptExplicitArguments2()
+        {
+            Root = ScopeFactory.Create(svcs => { });
+
+            var dep = new Implementation_1_No_Dep();
+
+            using (IInjector injector = Root.CreateScope())
+            {
+                Implementation_2_IInterface_1_Dependant obj = injector.Instantiate<Implementation_2_IInterface_1_Dependant>(new {interface1 = dep});
+
+                Assert.That(obj.Interface1, Is.SameAs(dep));
+            }
+        }
+
         [TestCaseSource(nameof(Lifetimes))]
         public void Injector_Instantiate_ShouldResolveDependencies(Lifetime lifetime)
         {
@@ -53,6 +80,18 @@ namespace Solti.Utils.DI.Tests
             using (IInjector injector = Root.CreateScope())
             {
                 Implementation_2_IInterface_1_Dependant obj = injector.Instantiate<Implementation_2_IInterface_1_Dependant>();
+                Assert.That(obj.Interface1, Is.InstanceOf<Implementation_1_No_Dep>());
+            }
+        }
+
+        [TestCaseSource(nameof(Lifetimes))]
+        public void Injector_Instantiate_ShouldResolveDependencies2(Lifetime lifetime)
+        {
+            Root = ScopeFactory.Create(svcs => svcs.Service<IInterface_1, Implementation_1_No_Dep>(lifetime));
+
+            using (IInjector injector = Root.CreateScope())
+            {
+                Implementation_2_IInterface_1_Dependant obj = injector.Instantiate<Implementation_2_IInterface_1_Dependant>(new { });
                 Assert.That(obj.Interface1, Is.InstanceOf<Implementation_1_No_Dep>());
             }
         }
@@ -68,6 +107,17 @@ namespace Solti.Utils.DI.Tests
             }           
         }
 
+        [Test]
+        public void Injector_Instantiate_ShouldThrowOnOpenGenericType2()
+        {
+            Root = ScopeFactory.Create(svcs => { });
+
+            using (IInjector injector = Root.CreateScope())
+            {
+                Assert.Throws<ArgumentException>(() => injector.Instantiate(typeof(Implementation_3_IInterface_1_Dependant<>), new { }), Resources.PARAMETER_IS_GENERIC);
+            }
+        }
+
         [TestCaseSource(nameof(Lifetimes))]
         public void Injector_Instantiate_ShouldWorkWithClosedGenericType(Lifetime lifetime)
         {
@@ -76,6 +126,18 @@ namespace Solti.Utils.DI.Tests
             using (IInjector injector = Root.CreateScope())
             {
                 Implementation_3_IInterface_1_Dependant<string> obj = injector.Instantiate<Implementation_3_IInterface_1_Dependant<string>>();
+                Assert.That(obj.Interface1, Is.InstanceOf<Implementation_1_No_Dep>());
+            }
+        }
+
+        [TestCaseSource(nameof(Lifetimes))]
+        public void Injector_Instantiate_ShouldWorkWithClosedGenericType2(Lifetime lifetime)
+        {
+            Root = ScopeFactory.Create(svcs => svcs.Service<IInterface_1, Implementation_1_No_Dep>(lifetime));
+
+            using (IInjector injector = Root.CreateScope())
+            {
+                Implementation_3_IInterface_1_Dependant<string> obj = injector.Instantiate<Implementation_3_IInterface_1_Dependant<string>>(new { });
                 Assert.That(obj.Interface1, Is.InstanceOf<Implementation_1_No_Dep>());
             }
         }
@@ -89,6 +151,17 @@ namespace Solti.Utils.DI.Tests
             {
                 Assert.DoesNotThrow(() => injector.Instantiate<Implementation_8_MultiCtor>());
             }          
+        }
+
+        [Test]
+        public void Injector_Instantiate_ShouldTakeTheServiceActivatorAttributeIntoAccount2()
+        {
+            Root = ScopeFactory.Create(svcs => { });
+
+            using (IInjector injector = Root.CreateScope())
+            {
+                Assert.DoesNotThrow(() => injector.Instantiate<Implementation_8_MultiCtor>(new { }));
+            }
         }
 
         [Test]
