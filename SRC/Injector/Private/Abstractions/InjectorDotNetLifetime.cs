@@ -3,6 +3,8 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
+using System;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
 namespace Solti.Utils.DI.Internals
@@ -32,5 +34,8 @@ namespace Solti.Utils.DI.Internals
         public override int CompareTo(Lifetime other) => other is IHasPrecedence hasPrecedence
             ? Precedence - hasPrecedence.Precedence
             : other.CompareTo(this) * -1;
+
+        public sealed override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Type implementation, IReadOnlyDictionary<string, object?> explicitArgs) =>
+            CreateFrom(iface, name, implementation, (object) explicitArgs);
     }
 }

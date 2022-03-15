@@ -19,7 +19,7 @@ namespace Solti.Utils.DI.Internals
             yield return new TransientServiceEntry(iface, name, implementation, null);
         }
 
-        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Type implementation, IReadOnlyDictionary<string, object?> explicitArgs)
+        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Type implementation, object explicitArgs)
         {
              yield return new TransientServiceEntry(iface, name, implementation, explicitArgs, null);
         }

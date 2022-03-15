@@ -52,7 +52,7 @@ namespace Solti.Utils.DI.Internals
             yield return pooledServiceEntry;
         }
 
-        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Type implementation, IReadOnlyDictionary<string, object?> explicitArgs)
+        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Type implementation, object explicitArgs)
         {
             string poolName = GetPoolName(iface, name);
 

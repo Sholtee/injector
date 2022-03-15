@@ -62,22 +62,27 @@ namespace Solti.Utils.DI.Interfaces
         public abstract int CompareTo(Lifetime other);
 
         /// <summary>
-        /// Creates one or more service entry for the given <paramref name="implementation"/>.
+        /// Creates one or more service entry against the given <paramref name="implementation"/>.
         /// </summary>
         public virtual IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Type implementation) => throw new NotSupportedException();
 
         /// <summary>
-        /// Creates one or more service entry for the given <paramref name="implementation"/>.
+        /// Creates one or more service entry against the given <paramref name="implementation"/> using arbitrary constructor argument.
         /// </summary>
         public virtual IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Type implementation, IReadOnlyDictionary<string, object?> explicitArgs) => throw new NotSupportedException();
 
         /// <summary>
-        /// Creates one or more service entry for the given <paramref name="factory"/>.
+        /// Creates one or more service entry against the given <paramref name="implementation"/> using arbitrary constructor argument.
+        /// </summary>
+        public virtual IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Type implementation, object explicitArgs) => throw new NotSupportedException();
+
+        /// <summary>
+        /// Creates one or more service entry against the given <paramref name="factory"/>.
         /// </summary>
         public virtual IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Func<IInjector, Type, object> factory) => throw new NotSupportedException();
 
         /// <summary>
-        /// Creates one or more service entry for the given <paramref name="value"/>.
+        /// Creates one or more service entry against the given <paramref name="value"/>.
         /// </summary>
         public virtual IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, object value) => throw new NotSupportedException();
     }

@@ -86,6 +86,27 @@ namespace Solti.Utils.DI.Tests
             mockInjector.Verify(i => i.Get(typeof(IInterface_1), null), Times.Once);
         }
 
+        [TestCaseSource(nameof(Lifetimes))]
+        public void Service_ShouldHandleExplicitArgs2(Lifetime lifetime)
+        {
+            Collection.Service<IServiceHavingNonInterfaceCtorArg, ServiceHavingNonInterfaceCtorArg>(new { para = "cica" }, lifetime);
+
+            Func<IInjector, Type, object> fact = Collection.LastEntry.Factory;
+
+            Assert.That(fact, Is.Not.Null);
+
+            var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
+            mockInjector
+                .Setup(i => i.Get(typeof(IInterface_1), null))
+                .Returns(null);
+
+            IServiceHavingNonInterfaceCtorArg myService = (IServiceHavingNonInterfaceCtorArg) fact(mockInjector.Object, typeof(IServiceHavingNonInterfaceCtorArg));
+
+            Assert.That(myService.CtorParam, Is.EqualTo("cica"));
+
+            mockInjector.Verify(i => i.Get(typeof(IInterface_1), null), Times.Once);
+        }
+
         private interface IServiceHavingNonInterfaceCtorArg<T>
         {
             string CtorParam { get; }
@@ -113,6 +134,27 @@ namespace Solti.Utils.DI.Tests
                 .Returns(null);
 
             IServiceHavingNonInterfaceCtorArg<object> myService = (IServiceHavingNonInterfaceCtorArg<object>) fact(mockInjector.Object, typeof(IServiceHavingNonInterfaceCtorArg<object>));
+
+            Assert.That(myService.CtorParam, Is.EqualTo("cica"));
+
+            mockInjector.Verify(i => i.Get(typeof(IInterface_1), null), Times.Once);
+        }
+
+        [TestCaseSource(nameof(Lifetimes))]
+        public void Service_ShouldHandleExplicitArgsInCaseOfGenericService2(Lifetime lifetime)
+        {
+            Collection.Service(typeof(IServiceHavingNonInterfaceCtorArg<>), typeof(ServiceHavingNonInterfaceCtorArg<>), new { para = "cica" }, lifetime);
+
+            Func<IInjector, Type, object> fact = ((ISupportsSpecialization) Collection.LastEntry).Specialize(new Mock<IServiceRegistry>(MockBehavior.Strict).Object, typeof(object)).Factory;
+
+            Assert.That(fact, Is.Not.Null);
+
+            var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
+            mockInjector
+                .Setup(i => i.Get(typeof(IInterface_1), null))
+                .Returns(null);
+
+            IServiceHavingNonInterfaceCtorArg<object> myService = (IServiceHavingNonInterfaceCtorArg<object>)fact(mockInjector.Object, typeof(IServiceHavingNonInterfaceCtorArg<object>));
 
             Assert.That(myService.CtorParam, Is.EqualTo("cica"));
 
