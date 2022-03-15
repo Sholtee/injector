@@ -42,7 +42,7 @@ BenchmarkDotNet=v0.13.1, OS=Windows 10.0.17763.2366 (1809/October2018Update/Reds
 Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 .NET SDK=6.0.200
   [Host]     : .NET 6.0.2 (6.0.222.6406), X64 RyuJIT
-  Job-OMBUID : .NET 6.0.2 (6.0.222.6406), X64 RyuJIT
+  Job-BHSBYS : .NET 6.0.2 (6.0.222.6406), X64 RyuJIT
 
 InvocationCount=1000000  RunStrategy=Throughput  
 </code></pre><table>
@@ -61,36 +61,36 @@ InvocationCount=1000000  RunStrategy=Throughput
 <tr>
 <td><strong>Instantiate</strong></td>
 <td><strong>Pooled</strong></td>
-<td style="text-align:right"><strong>366.9 ns</strong></td>
-<td style="text-align:right"><strong>6.18 ns</strong></td>
-<td style="text-align:right"><strong>5.48 ns</strong></td>
+<td style="text-align:right"><strong>374.3 ns</strong></td>
+<td style="text-align:right"><strong>7.56 ns</strong></td>
+<td style="text-align:right"><strong>8.09 ns</strong></td>
 <td style="text-align:right"><strong>0.0240</strong></td>
 <td style="text-align:right"><strong>440 B</strong></td>
 </tr>
 <tr>
 <td><strong>Instantiate</strong></td>
 <td><strong>Scoped</strong></td>
-<td style="text-align:right"><strong>343.6 ns</strong></td>
-<td style="text-align:right"><strong>4.71 ns</strong></td>
-<td style="text-align:right"><strong>4.40 ns</strong></td>
+<td style="text-align:right"><strong>356.8 ns</strong></td>
+<td style="text-align:right"><strong>6.91 ns</strong></td>
+<td style="text-align:right"><strong>8.22 ns</strong></td>
 <td style="text-align:right"><strong>0.0240</strong></td>
 <td style="text-align:right"><strong>440 B</strong></td>
 </tr>
 <tr>
 <td><strong>Instantiate</strong></td>
 <td><strong>Singleton</strong></td>
-<td style="text-align:right"><strong>368.5 ns</strong></td>
-<td style="text-align:right"><strong>4.50 ns</strong></td>
-<td style="text-align:right"><strong>4.21 ns</strong></td>
+<td style="text-align:right"><strong>376.9 ns</strong></td>
+<td style="text-align:right"><strong>5.87 ns</strong></td>
+<td style="text-align:right"><strong>5.49 ns</strong></td>
 <td style="text-align:right"><strong>0.0240</strong></td>
 <td style="text-align:right"><strong>440 B</strong></td>
 </tr>
 <tr>
 <td><strong>Instantiate</strong></td>
 <td><strong>Transient</strong></td>
-<td style="text-align:right"><strong>369.5 ns</strong></td>
-<td style="text-align:right"><strong>6.10 ns</strong></td>
-<td style="text-align:right"><strong>5.70 ns</strong></td>
+<td style="text-align:right"><strong>409.3 ns</strong></td>
+<td style="text-align:right"><strong>8.26 ns</strong></td>
+<td style="text-align:right"><strong>10.15 ns</strong></td>
 <td style="text-align:right"><strong>0.0250</strong></td>
 <td style="text-align:right"><strong>464 B</strong></td>
 </tr>

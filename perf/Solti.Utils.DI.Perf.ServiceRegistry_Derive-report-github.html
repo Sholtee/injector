@@ -42,7 +42,7 @@ BenchmarkDotNet=v0.13.1, OS=Windows 10.0.17763.2366 (1809/October2018Update/Reds
 Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 .NET SDK=6.0.200
   [Host]     : .NET 6.0.2 (6.0.222.6406), X64 RyuJIT
-  Job-OMBUID : .NET 6.0.2 (6.0.222.6406), X64 RyuJIT
+  Job-BHSBYS : .NET 6.0.2 (6.0.222.6406), X64 RyuJIT
 
 InvocationCount=1000000  RunStrategy=Throughput  
 </code></pre><table>
@@ -63,9 +63,9 @@ InvocationCount=1000000  RunStrategy=Throughput
 <td><strong>DeriveAndDispose</strong></td>
 <td><strong>0</strong></td>
 <td><strong>Concurrent</strong></td>
-<td style="text-align:right"><strong>157.7 ns</strong></td>
-<td style="text-align:right"><strong>3.18 ns</strong></td>
-<td style="text-align:right"><strong>4.24 ns</strong></td>
+<td style="text-align:right"><strong>164.8 ns</strong></td>
+<td style="text-align:right"><strong>2.66 ns</strong></td>
+<td style="text-align:right"><strong>4.37 ns</strong></td>
 <td style="text-align:right"><strong>0.0090</strong></td>
 <td style="text-align:right"><strong>176 B</strong></td>
 </tr>
@@ -73,9 +73,9 @@ InvocationCount=1000000  RunStrategy=Throughput
 <td>DeriveAndDisposeAsync</td>
 <td>0</td>
 <td>Concurrent</td>
-<td style="text-align:right">215.6 ns</td>
-<td style="text-align:right">2.11 ns</td>
-<td style="text-align:right">1.76 ns</td>
+<td style="text-align:right">234.5 ns</td>
+<td style="text-align:right">4.52 ns</td>
+<td style="text-align:right">4.64 ns</td>
 <td style="text-align:right">0.0090</td>
 <td style="text-align:right">176 B</td>
 </tr>
@@ -83,9 +83,9 @@ InvocationCount=1000000  RunStrategy=Throughput
 <td><strong>DeriveAndDispose</strong></td>
 <td><strong>0</strong></td>
 <td><strong>Linear</strong></td>
-<td style="text-align:right"><strong>140.7 ns</strong></td>
-<td style="text-align:right"><strong>2.73 ns</strong></td>
-<td style="text-align:right"><strong>2.68 ns</strong></td>
+<td style="text-align:right"><strong>148.6 ns</strong></td>
+<td style="text-align:right"><strong>2.99 ns</strong></td>
+<td style="text-align:right"><strong>4.57 ns</strong></td>
 <td style="text-align:right"><strong>0.0080</strong></td>
 <td style="text-align:right"><strong>160 B</strong></td>
 </tr>
@@ -93,9 +93,9 @@ InvocationCount=1000000  RunStrategy=Throughput
 <td>DeriveAndDisposeAsync</td>
 <td>0</td>
 <td>Linear</td>
-<td style="text-align:right">202.9 ns</td>
-<td style="text-align:right">3.11 ns</td>
-<td style="text-align:right">2.60 ns</td>
+<td style="text-align:right">207.6 ns</td>
+<td style="text-align:right">2.98 ns</td>
+<td style="text-align:right">2.64 ns</td>
 <td style="text-align:right">0.0080</td>
 <td style="text-align:right">160 B</td>
 </tr>
@@ -103,9 +103,9 @@ InvocationCount=1000000  RunStrategy=Throughput
 <td><strong>DeriveAndDispose</strong></td>
 <td><strong>1</strong></td>
 <td><strong>Concurrent</strong></td>
-<td style="text-align:right"><strong>167.3 ns</strong></td>
-<td style="text-align:right"><strong>3.19 ns</strong></td>
-<td style="text-align:right"><strong>5.50 ns</strong></td>
+<td style="text-align:right"><strong>175.9 ns</strong></td>
+<td style="text-align:right"><strong>3.51 ns</strong></td>
+<td style="text-align:right"><strong>7.62 ns</strong></td>
 <td style="text-align:right"><strong>0.0110</strong></td>
 <td style="text-align:right"><strong>208 B</strong></td>
 </tr>
@@ -113,9 +113,9 @@ InvocationCount=1000000  RunStrategy=Throughput
 <td>DeriveAndDisposeAsync</td>
 <td>1</td>
 <td>Concurrent</td>
-<td style="text-align:right">225.9 ns</td>
-<td style="text-align:right">2.27 ns</td>
-<td style="text-align:right">2.01 ns</td>
+<td style="text-align:right">240.5 ns</td>
+<td style="text-align:right">4.69 ns</td>
+<td style="text-align:right">4.81 ns</td>
 <td style="text-align:right">0.0110</td>
 <td style="text-align:right">208 B</td>
 </tr>
@@ -123,9 +123,9 @@ InvocationCount=1000000  RunStrategy=Throughput
 <td><strong>DeriveAndDispose</strong></td>
 <td><strong>1</strong></td>
 <td><strong>Linear</strong></td>
-<td style="text-align:right"><strong>147.0 ns</strong></td>
-<td style="text-align:right"><strong>2.76 ns</strong></td>
-<td style="text-align:right"><strong>3.38 ns</strong></td>
+<td style="text-align:right"><strong>146.0 ns</strong></td>
+<td style="text-align:right"><strong>1.65 ns</strong></td>
+<td style="text-align:right"><strong>1.46 ns</strong></td>
 <td style="text-align:right"><strong>0.0090</strong></td>
 <td style="text-align:right"><strong>168 B</strong></td>
 </tr>
@@ -133,9 +133,9 @@ InvocationCount=1000000  RunStrategy=Throughput
 <td>DeriveAndDisposeAsync</td>
 <td>1</td>
 <td>Linear</td>
-<td style="text-align:right">205.2 ns</td>
-<td style="text-align:right">3.24 ns</td>
-<td style="text-align:right">3.03 ns</td>
+<td style="text-align:right">215.9 ns</td>
+<td style="text-align:right">4.13 ns</td>
+<td style="text-align:right">5.07 ns</td>
 <td style="text-align:right">0.0090</td>
 <td style="text-align:right">168 B</td>
 </tr>
@@ -143,9 +143,9 @@ InvocationCount=1000000  RunStrategy=Throughput
 <td><strong>DeriveAndDispose</strong></td>
 <td><strong>5</strong></td>
 <td><strong>Concurrent</strong></td>
-<td style="text-align:right"><strong>201.0 ns</strong></td>
-<td style="text-align:right"><strong>4.06 ns</strong></td>
-<td style="text-align:right"><strong>5.82 ns</strong></td>
+<td style="text-align:right"><strong>213.4 ns</strong></td>
+<td style="text-align:right"><strong>4.21 ns</strong></td>
+<td style="text-align:right"><strong>6.44 ns</strong></td>
 <td style="text-align:right"><strong>0.0180</strong></td>
 <td style="text-align:right"><strong>336 B</strong></td>
 </tr>
@@ -153,9 +153,9 @@ InvocationCount=1000000  RunStrategy=Throughput
 <td>DeriveAndDisposeAsync</td>
 <td>5</td>
 <td>Concurrent</td>
-<td style="text-align:right">268.6 ns</td>
-<td style="text-align:right">5.33 ns</td>
-<td style="text-align:right">7.12 ns</td>
+<td style="text-align:right">280.7 ns</td>
+<td style="text-align:right">5.47 ns</td>
+<td style="text-align:right">7.48 ns</td>
 <td style="text-align:right">0.0180</td>
 <td style="text-align:right">336 B</td>
 </tr>
@@ -163,9 +163,9 @@ InvocationCount=1000000  RunStrategy=Throughput
 <td><strong>DeriveAndDispose</strong></td>
 <td><strong>5</strong></td>
 <td><strong>Linear</strong></td>
-<td style="text-align:right"><strong>149.9 ns</strong></td>
-<td style="text-align:right"><strong>2.94 ns</strong></td>
-<td style="text-align:right"><strong>3.50 ns</strong></td>
+<td style="text-align:right"><strong>163.1 ns</strong></td>
+<td style="text-align:right"><strong>3.20 ns</strong></td>
+<td style="text-align:right"><strong>3.68 ns</strong></td>
 <td style="text-align:right"><strong>0.0100</strong></td>
 <td style="text-align:right"><strong>200 B</strong></td>
 </tr>
@@ -173,9 +173,9 @@ InvocationCount=1000000  RunStrategy=Throughput
 <td>DeriveAndDisposeAsync</td>
 <td>5</td>
 <td>Linear</td>
-<td style="text-align:right">211.2 ns</td>
-<td style="text-align:right">1.63 ns</td>
-<td style="text-align:right">1.36 ns</td>
+<td style="text-align:right">225.5 ns</td>
+<td style="text-align:right">4.36 ns</td>
+<td style="text-align:right">6.39 ns</td>
 <td style="text-align:right">0.0100</td>
 <td style="text-align:right">200 B</td>
 </tr>
@@ -183,9 +183,9 @@ InvocationCount=1000000  RunStrategy=Throughput
 <td><strong>DeriveAndDispose</strong></td>
 <td><strong>10</strong></td>
 <td><strong>Concurrent</strong></td>
-<td style="text-align:right"><strong>251.6 ns</strong></td>
-<td style="text-align:right"><strong>4.98 ns</strong></td>
-<td style="text-align:right"><strong>7.30 ns</strong></td>
+<td style="text-align:right"><strong>266.1 ns</strong></td>
+<td style="text-align:right"><strong>5.11 ns</strong></td>
+<td style="text-align:right"><strong>5.46 ns</strong></td>
 <td style="text-align:right"><strong>0.0270</strong></td>
 <td style="text-align:right"><strong>496 B</strong></td>
 </tr>
@@ -193,9 +193,9 @@ InvocationCount=1000000  RunStrategy=Throughput
 <td>DeriveAndDisposeAsync</td>
 <td>10</td>
 <td>Concurrent</td>
-<td style="text-align:right">365.2 ns</td>
-<td style="text-align:right">7.32 ns</td>
-<td style="text-align:right">10.01 ns</td>
+<td style="text-align:right">362.6 ns</td>
+<td style="text-align:right">7.10 ns</td>
+<td style="text-align:right">5.93 ns</td>
 <td style="text-align:right">0.0270</td>
 <td style="text-align:right">496 B</td>
 </tr>
@@ -203,9 +203,9 @@ InvocationCount=1000000  RunStrategy=Throughput
 <td><strong>DeriveAndDispose</strong></td>
 <td><strong>10</strong></td>
 <td><strong>Linear</strong></td>
-<td style="text-align:right"><strong>156.1 ns</strong></td>
-<td style="text-align:right"><strong>2.57 ns</strong></td>
-<td style="text-align:right"><strong>2.27 ns</strong></td>
+<td style="text-align:right"><strong>170.7 ns</strong></td>
+<td style="text-align:right"><strong>3.43 ns</strong></td>
+<td style="text-align:right"><strong>6.10 ns</strong></td>
 <td style="text-align:right"><strong>0.0130</strong></td>
 <td style="text-align:right"><strong>240 B</strong></td>
 </tr>
@@ -213,9 +213,9 @@ InvocationCount=1000000  RunStrategy=Throughput
 <td>DeriveAndDisposeAsync</td>
 <td>10</td>
 <td>Linear</td>
-<td style="text-align:right">222.9 ns</td>
-<td style="text-align:right">4.30 ns</td>
-<td style="text-align:right">5.74 ns</td>
+<td style="text-align:right">229.5 ns</td>
+<td style="text-align:right">4.16 ns</td>
+<td style="text-align:right">3.47 ns</td>
 <td style="text-align:right">0.0130</td>
 <td style="text-align:right">240 B</td>
 </tr>
