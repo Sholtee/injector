@@ -403,6 +403,30 @@ namespace Solti.Utils.DI.Internals.Tests
         }
 
         [Test]
+        public void ExtendedActivator_ShouldResolveLazyArguments()
+        {
+            var mockInjector = new Mock<IInjector>(MockBehavior.Loose);
+
+            Func<IInjector, IReadOnlyDictionary<string, object>, object> factory =  ServiceActivator
+                .GetExtended(typeof(MyClass).GetConstructor(new[] { typeof(Lazy<IDisposable>), typeof(Lazy<IList>) }));
+
+            Assert.DoesNotThrow(() => factory.Invoke(mockInjector.Object, new Dictionary<string, object>()));
+        }
+
+        [Test]
+        public void ExtendedActivator_ShouldResolveLazyArguments2()
+        {
+            var mockInjector = new Mock<IInjector>(MockBehavior.Loose);
+
+            var paramz = new { };
+
+            Func<IInjector, object, object> factory = ServiceActivator
+                .GetExtended(typeof(MyClass).GetConstructor(new[] { typeof(Lazy<IDisposable>), typeof(Lazy<IList>) }), paramz.GetType());
+
+            Assert.DoesNotThrow(() => factory.Invoke(mockInjector.Object, paramz));
+        }
+
+        [Test]
         public void ExtendedActivator_ShouldThrowOnNonInterfaceArguments()
         {
             ConstructorInfo ctor = typeof(MyClass).GetConstructor(new[] { typeof(IDisposable), typeof(IList), typeof(int) });
