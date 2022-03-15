@@ -8,5 +8,5 @@
 - [ServicePath](https://sholtee.github.io/injector/perf/Solti.Utils.DI.Perf.ServicePath-report-github.html )
 - [ServiceRegistry - Create](https://sholtee.github.io/injector/perf/Solti.Utils.DI.Perf.ServiceRegistry_Create-report-github.html )
 - [ServiceRegistry - Derive](https://sholtee.github.io/injector/perf/Solti.Utils.DI.Perf.ServiceRegistry_Derive-report-github.html )
-- [ServiceRegistry - Resolve](https://sholtee.github.io/injector/perf/Solti.Utils.DI.Perf.ServiceRegistry_Resolve-report-github.html )
+- [ServiceRegistry - GetEntry](https://sholtee.github.io/injector/perf/Solti.Utils.DI.Perf.ServiceRegistry_GetEntry-report-github.html )
 - [TypeBench](https://sholtee.github.io/injector/perf/Solti.Utils.DI.Perf.TypeBench-report-github.html )
