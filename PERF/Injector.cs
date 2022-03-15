@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 
 using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Engines;
 
 namespace Solti.Utils.DI.Perf
 {
@@ -15,6 +16,8 @@ namespace Solti.Utils.DI.Perf
 
     public class InjectorTestsBase
     {
+        public const int INVOCATION_COUNT = 1000000;
+
         static InjectorTestsBase() =>
             //
             // Ugy tunik a modul inicializalok nem futnak ha a kodunkat a BenchmarkDotNet forditja
@@ -94,6 +97,7 @@ namespace Solti.Utils.DI.Perf
     }
 
     [MemoryDiagnoser]
+    [SimpleJob(RunStrategy.Throughput, invocationCount: INVOCATION_COUNT)]
     public class InjectorGet : InjectorTestsBase
     {
         public IInjector Injector { get; set; }
@@ -151,6 +155,7 @@ namespace Solti.Utils.DI.Perf
     }
 
     [MemoryDiagnoser]
+    [SimpleJob(RunStrategy.Throughput, invocationCount: INVOCATION_COUNT)]
     public class InjectorInstantiate : InjectorTestsBase
     {
         public IInjector Injector { get; set; }
@@ -172,6 +177,7 @@ namespace Solti.Utils.DI.Perf
     }
 
     [MemoryDiagnoser]
+    [SimpleJob(RunStrategy.Throughput, invocationCount: INVOCATION_COUNT)]
     public class ScopeCreation : InjectorTestsBase
     {
         [GlobalSetup(Target = nameof(CreateAndDisposeScope))]

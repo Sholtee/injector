@@ -10,6 +10,7 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Engines;
 
 namespace Solti.Utils.DI.Perf
 {
@@ -20,6 +21,8 @@ namespace Solti.Utils.DI.Perf
 
     public abstract class ServiceRegistryTestsBase
     {
+        public const int INVOCATION_COUNT = 1000000;
+
         public sealed class Named<T>
         {
             public string Name { get; init; }
@@ -56,12 +59,13 @@ namespace Solti.Utils.DI.Perf
     }
 
     [MemoryDiagnoser]
+    [SimpleJob(RunStrategy.Throughput, invocationCount: INVOCATION_COUNT)]
     public class ServiceRegistry_GetEntry: ServiceRegistryTestsBase
     {
         [ParamsSource(nameof(ResolverBuilders))]
         public Named<object> ResolverBuilder { get; set; }
 
-        [Params(1, 10, 20, 100)]
+        [Params(1, 5, 10)]
         public int ServiceCount { get; set; }
 
         private ServiceRegistryBase Registry { get; set; }
@@ -121,6 +125,7 @@ namespace Solti.Utils.DI.Perf
     }
 
     [MemoryDiagnoser]
+    [SimpleJob(RunStrategy.Throughput, invocationCount: INVOCATION_COUNT)]
     public class ServiceRegistry_Derive : ServiceRegistryTestsBase
     {
         private ServiceRegistryBase Registry { get; set; }
@@ -174,6 +179,7 @@ namespace Solti.Utils.DI.Perf
     }
 
     [MemoryDiagnoser]
+    [SimpleJob(RunStrategy.Throughput, invocationCount: 100)] // ez hivhatja a Roslyn-t stb szoval nem lesz epp gyors
     public class ServiceRegistry_Create : ServiceRegistryTestsBase
     {
         [ParamsSource(nameof(ResolverBuilders))]
@@ -195,11 +201,12 @@ namespace Solti.Utils.DI.Perf
             .ToStaticDelegate();
 
         [Benchmark]
-        public IServiceRegistry Create() => (IServiceRegistry) Factory(new object[] 
+        public void CreateAndDispose()
         {
-            EmptyColl,
-            ResolverBuilder.Value,
-            CancellationToken.None
-        });
+            using (IServiceRegistry registry = (IServiceRegistry) Factory(new object[] { EmptyColl, ResolverBuilder.Value, CancellationToken.None })) 
+            {
+                _ = registry.Parent;
+            }
+        }
     }
 }
