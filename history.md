@@ -231,3 +231,8 @@
   - *introduced:* `IServiceCollectionBasicExtensions.Remove()` method
   - *introduced:* `IServiceCollectionBasicExtensions.Provider()` explicit argument support
   - *exposed:* `ServiceIdComparer` class
+- 6.2.0:
+  - *updated:* `ProxyGen.NET` to v6
+  - *updated:* `Roslyn` to v4
+  - *introduced:* On service creation, explicit arguments may also be passed as regular objects
+  - *done:* test against `netcoreapp3.0`, `net5.0`, `net6.0`

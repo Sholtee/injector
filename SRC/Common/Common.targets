@@ -2,7 +2,7 @@
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
     <Authors>Denes Solti</Authors>
-    <Version>6.1.0</Version>
+    <Version>6.2.0</Version>
     <Configurations>Debug;Release</Configurations>
     <LangVersion>preview</LangVersion>
     <Nullable>enable</Nullable>
