@@ -8,13 +8,14 @@ using System;
 namespace Solti.Utils.DI.Interfaces
 {
     /// <summary>
-    /// Defines several handy extensions for the <see cref="Lifetime"/> class.
+    /// Defines several handy extensions against the <see cref="Lifetime"/> class.
     /// </summary>
     public static class LifetimeExtensions
     {
         /// <summary>
-        /// Sets the capacity. 
+        /// Sets the capacity if the operation is supported. 
         /// </summary>
+        /// <remarks>This extensions is intended to be used to configure <see cref="Lifetime.Pooled"/> lifetime.</remarks>
         public static Lifetime WithCapacity(this Lifetime self, int capacity)
         {
             if (self is null)
