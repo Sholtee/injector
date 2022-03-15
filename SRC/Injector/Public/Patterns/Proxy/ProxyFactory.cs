@@ -5,8 +5,6 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
-using System.Reflection;
-using System.Threading.Tasks;
 
 namespace Solti.Utils.Proxy
 {
@@ -77,8 +75,6 @@ namespace Solti.Utils.Proxy
             });
 
         internal static Type GenerateProxyType(Type iface, Type interceptor) => new ProxyGenerator(iface, interceptor).GetGeneratedType();
-
-        internal static Task<Type> GenerateProxyTypeAsync(Type iface, Type interceptor) => new ProxyGenerator(iface, interceptor).GetGeneratedTypeAsync();
 
         /// <summary>
         /// Creates a new proxy instance with the given arguments.
