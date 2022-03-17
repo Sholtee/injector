@@ -237,4 +237,4 @@
   - *introduced:* On service creation, explicit arguments may also be passed as regular objects
   - *done:* test against `netcoreapp3.0`, `net5.0`, `net6.0`
 - 6.2.1:
-  - *updated:* `ProxyGen.NET` to v6.0.1 (v6.0.0 had a nasty perfomance issue)
+  - *updated:* `ProxyGen.NET` to v6.0.1 (v6.0.0 had a nasty performance issue)
