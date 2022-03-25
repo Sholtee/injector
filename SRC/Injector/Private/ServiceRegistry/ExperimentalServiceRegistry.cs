@@ -96,10 +96,9 @@ namespace Solti.Utils.DI.Internals
             if (FParent is not null)
             {
                 AbstractServiceEntry? existing = FParent.ResolveEntry(iface, serviceIdVal);
-                if (existing is not null)
-                    return existing.IsShared
-                        ? existing
-                        : existing.WithOwner(this);
+                return existing is null || existing.IsShared
+                    ? existing
+                    : existing.WithOwner(this);
             }        
 
             if (iface.IsGenericType)
