@@ -34,6 +34,6 @@ namespace Solti.Utils.DI.Internals
 
         public Func<IServiceRegistry, object> Selector { get; }
 
-        public override AbstractServiceEntry CopyTo(IServiceRegistry owner) => new ContextualServiceEntry(this, Ensure.Parameter.IsNotNull(owner, nameof(owner)));
+        public override AbstractServiceEntry WithOwner(IServiceRegistry owner) => new ContextualServiceEntry(this, Ensure.Parameter.IsNotNull(owner, nameof(owner)));
     }
 }

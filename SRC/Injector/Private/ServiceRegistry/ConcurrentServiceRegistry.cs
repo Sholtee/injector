@@ -88,7 +88,7 @@ namespace Solti.Utils.DI.Internals
                 {
                     if (holder.Value is null)
                     {
-                        holder.Value = originalEntry.CopyTo(this);
+                        holder.Value = originalEntry.WithOwner(this);
                     }
                 }
             }

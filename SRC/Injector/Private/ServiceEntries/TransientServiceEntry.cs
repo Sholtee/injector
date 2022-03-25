@@ -54,7 +54,7 @@ namespace Solti.Utils.DI.Internals
             return instance;
         }
 
-        public override AbstractServiceEntry CopyTo(IServiceRegistry owner) => new TransientServiceEntry(this, Ensure.Parameter.IsNotNull(owner, nameof(owner)));
+        public override AbstractServiceEntry WithOwner(IServiceRegistry owner) => new TransientServiceEntry(this, Ensure.Parameter.IsNotNull(owner, nameof(owner)));
 
         public override AbstractServiceEntry Specialize(IServiceRegistry? owner, params Type[] genericArguments)
         {

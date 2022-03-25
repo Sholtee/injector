@@ -47,7 +47,7 @@ namespace Solti.Utils.DI.Internals
 
         public override object GetSingleInstance() => FInstance ?? throw new InvalidOperationException(); // TODO: uzenet
 
-        public override AbstractServiceEntry CopyTo(IServiceRegistry registry) => new ScopedServiceEntry(this, Ensure.Parameter.IsNotNull(registry, nameof(registry)));
+        public override AbstractServiceEntry WithOwner(IServiceRegistry registry) => new ScopedServiceEntry(this, Ensure.Parameter.IsNotNull(registry, nameof(registry)));
 
         public override AbstractServiceEntry Specialize(IServiceRegistry? owner, params Type[] genericArguments)
         {

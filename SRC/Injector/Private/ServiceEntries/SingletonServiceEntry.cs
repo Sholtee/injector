@@ -79,7 +79,7 @@ namespace Solti.Utils.DI.Internals
             };
         }
 
-        public override AbstractServiceEntry CopyTo(IServiceRegistry registry) => new SingletonServiceEntry(this, Ensure.Parameter.IsNotNull(registry, nameof(registry)));
+        public override AbstractServiceEntry WithOwner(IServiceRegistry registry) => new SingletonServiceEntry(this, Ensure.Parameter.IsNotNull(registry, nameof(registry)));
 
         public override Lifetime Lifetime { get; } = Lifetime.Singleton;
 

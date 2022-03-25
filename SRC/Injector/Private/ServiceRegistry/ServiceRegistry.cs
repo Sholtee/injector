@@ -73,7 +73,7 @@ namespace Solti.Utils.DI.Internals
         {
             ref AbstractServiceEntry? value = ref FRegularEntries[slot];
             if (value is null) 
-                value = originalEntry.CopyTo(this);
+                value = originalEntry.WithOwner(this);
 
             return value;
         }

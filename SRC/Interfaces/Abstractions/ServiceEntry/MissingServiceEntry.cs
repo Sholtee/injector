@@ -19,12 +19,12 @@ namespace Solti.Utils.DI.Interfaces
         /// <summary>
         /// Creates a new <see cref="MissingServiceEntry"/> instance.
         /// </summary>
-        public MissingServiceEntry(Type @interface, string? name) : base(@interface, name) { }
+        public MissingServiceEntry(Type @interface, in string? name) : base(@interface, name) { }
 
         /// <summary>
         /// Not implemented.
         /// </summary>
-        public override AbstractServiceEntry CopyTo(IServiceRegistry owner) => throw new NotImplementedException();
+        public override AbstractServiceEntry WithOwner(IServiceRegistry owner) => throw new NotImplementedException();
 
         /// <summary>
         /// Throws a <see cref="ServiceNotFoundException"/>.

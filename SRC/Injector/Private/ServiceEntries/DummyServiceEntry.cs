@@ -15,7 +15,7 @@ namespace Solti.Utils.DI.Internals
         {
         }
 
-        public override AbstractServiceEntry CopyTo(IServiceRegistry owner) => throw new NotImplementedException();
+        public override AbstractServiceEntry WithOwner(IServiceRegistry owner) => throw new NotImplementedException();
 
         public override object CreateInstance(IInjector scope) => throw new NotImplementedException();
 

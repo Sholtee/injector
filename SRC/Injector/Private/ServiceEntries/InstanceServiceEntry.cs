@@ -35,7 +35,7 @@ namespace Solti.Utils.DI.Internals
 
         public override Lifetime? Lifetime { get; } = Lifetime.Instance;
 
-        public override AbstractServiceEntry CopyTo(IServiceRegistry owner) => this;
+        public override AbstractServiceEntry WithOwner(IServiceRegistry owner) => this;
 
         public override object CreateInstance(IInjector scope) => throw new InvalidOperationException();
 

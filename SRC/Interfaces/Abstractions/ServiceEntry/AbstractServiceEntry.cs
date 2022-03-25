@@ -22,7 +22,7 @@ namespace Solti.Utils.DI.Interfaces
         /// <param name="interface">The interface of the service.</param>
         /// <param name="name">The (optional) name of the service.</param>
         /// <exception cref="ArgumentException">The <paramref name="interface"/> is not an interface.</exception>
-        protected AbstractServiceEntry(Type @interface, string? name) : this(@interface, name, null, null)
+        protected AbstractServiceEntry(Type @interface, in string? name) : this(@interface, name, null, null)
         {
         }
 
@@ -35,7 +35,7 @@ namespace Solti.Utils.DI.Interfaces
         /// <param name="owner">The owner of this entry.</param>
         /// <exception cref="ArgumentException">The <paramref name="interface"/> is not an interface.</exception>
         /// <exception cref="ArgumentException">The <paramref name="implementation"/> does not support the <paramref name="interface"/>.</exception>
-        protected AbstractServiceEntry(Type @interface, string? name, Type? implementation, IServiceRegistry? owner)
+        protected AbstractServiceEntry(Type @interface, in string? name, Type? implementation, IServiceRegistry? owner)
         {
             Interface      = @interface ?? throw new ArgumentNullException(nameof(@interface));
             Owner          = owner;
@@ -117,7 +117,7 @@ namespace Solti.Utils.DI.Interfaces
         /// <summary>
         /// Creates a copy from this entry.
         /// </summary>
-        public abstract AbstractServiceEntry CopyTo(IServiceRegistry owner);
+        public abstract AbstractServiceEntry WithOwner(IServiceRegistry owner);
 
         /// <inheritdoc/>
         public override string ToString() => ToString(false); 
