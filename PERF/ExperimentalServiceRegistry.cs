@@ -5,6 +5,7 @@
 ********************************************************************************/
 using System;
 using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -36,10 +37,11 @@ namespace Solti.Utils.DI.Perf
 
         public const int OPERATIONS_PER_INVOKE = 1000;
 
+        public const int OPERATIONS_PER_INVOKE_SMALL = 10;
+
         private int I;
 
-        [GlobalSetup(Target = nameof(ResolveRegularEntry))]
-        public void SetupResolveRegularEntry()
+        private void SetupResolveRegularEntryCore()
         {
             ServiceCollection services = new();
 
@@ -51,6 +53,9 @@ namespace Solti.Utils.DI.Perf
             Registry = new ExperimentalServiceRegistry(services);
             I = 0;
         }
+
+        [GlobalSetup(Target = nameof(ResolveRegularEntry))]
+        public void SetupResolveRegularEntry() => SetupResolveRegularEntryCore();
 
         [Benchmark(OperationsPerInvoke = OPERATIONS_PER_INVOKE)]
         public void ResolveRegularEntry()
@@ -64,12 +69,40 @@ namespace Solti.Utils.DI.Perf
             }
         }
 
+        [GlobalSetup(Target = nameof(ResolveRegularEntryFromChild))]
+        public void SetupResolveRegularEntryFromChild() => SetupResolveRegularEntryCore();
+
+        [Benchmark(OperationsPerInvoke = OPERATIONS_PER_INVOKE)]
+        public void ResolveRegularEntryFromChild()
+        {
+            string name = (++I % ServiceCount).ToString();
+            Type svc = typeof(IList);
+
+            ExperimentalServiceRegistry child = new(Registry);
+
+            for (int i = 0; i < OPERATIONS_PER_INVOKE; i++)
+            {
+                _ = child.ResolveEntry(svc, name);
+            }
+        }
+
+        [GlobalSetup(Target = nameof(ResolveRegularEntryFromChildSingleCall))]
+        public void SetupResolveRegularEntryFromChildSingleCall() => SetupResolveRegularEntryCore();
+
+        [Benchmark(OperationsPerInvoke = OPERATIONS_PER_INVOKE_SMALL)]
+        public void ResolveRegularEntryFromChildSingleCall()
+        {
+            for (int i = 0; i < OPERATIONS_PER_INVOKE_SMALL; i++)
+            {
+                _ = new ExperimentalServiceRegistry(Registry).ResolveEntry(typeof(IList), (++I % ServiceCount).ToString());
+            }
+        }
+
         private sealed class MyList<T> : List<T> // csak egy konstruktora van
         {
         }
 
-        [GlobalSetup(Target = nameof(ResolveGenericEntry))]
-        public void SetupResolveGenericEntry()
+        private void SetupResolveGenericEntryCore()
         {
             ServiceCollection services = new();
 
@@ -82,6 +115,9 @@ namespace Solti.Utils.DI.Perf
             I = 0;
         }
 
+        [GlobalSetup(Target = nameof(ResolveGenericEntry))]
+        public void SetupResolveGenericEntry() => SetupResolveGenericEntryCore();
+
         [Benchmark(OperationsPerInvoke = OPERATIONS_PER_INVOKE)]
         public void ResolveGenericEntry()
         {
@@ -93,21 +129,47 @@ namespace Solti.Utils.DI.Perf
                 _ = Registry!.ResolveEntry(svc, name);
             }
         }
+
+        [GlobalSetup(Target = nameof(ResolveGenericEntryFromChild))]
+        public void SetupResolveGenericEntryFromChild() => SetupResolveGenericEntryCore();
+
+        [Benchmark(OperationsPerInvoke = OPERATIONS_PER_INVOKE)]
+        public void ResolveGenericEntryFromChild()
+        {
+            string name = (++I % ServiceCount).ToString();
+            Type svc = typeof(IList<object>);
+
+            ExperimentalServiceRegistry child = new(Registry);
+
+            for (int i = 0; i < OPERATIONS_PER_INVOKE; i++)
+            {
+                _ = child.ResolveEntry(svc, name);
+            }
+        }
+
+        [GlobalSetup(Target = nameof(ResolveGenericEntryFromChildSingleCall))]
+        public void SetupResolveGenericEntryFromChildSingleCall() => SetupResolveGenericEntryCore();
+
+        [Benchmark(OperationsPerInvoke = OPERATIONS_PER_INVOKE_SMALL)]
+        public void ResolveGenericEntryFromChildSingleCall()
+        {
+            for (int i = 0; i < OPERATIONS_PER_INVOKE_SMALL; i++)
+            {
+                _ = new ExperimentalServiceRegistry(Registry).ResolveEntry(typeof(IList<object>), (++I % ServiceCount).ToString());
+            }
+        }
     }
 
     [MemoryDiagnoser]
     [SimpleJob(RunStrategy.Throughput, invocationCount: 1000000)]
     public class ExperimentalServiceRegistry_Derive : ExperimentalServiceRegistryBase
     {
-        [Params(0, 1, 5, 10)]
-        public int EntryCount { get; set; }
-
         [GlobalSetup]
         public void Setup()
         {
             ServiceCollection services = new();
 
-            for (int i = 0; i < EntryCount; i++)
+            for (int i = 0; i < 10; i++)
             {
                 services.Service<IDisposable, Disposable>(i.ToString(), Lifetime.Scoped);
             }
@@ -118,7 +180,7 @@ namespace Solti.Utils.DI.Perf
         [Benchmark]
         public void DeriveAndDispose()
         {
-            using (ExperimentalServiceRegistry child = new ExperimentalServiceRegistry(Registry))
+            using (ExperimentalServiceRegistry child = new(Registry))
             {
                 _ = child.Parent;
             }
@@ -127,7 +189,7 @@ namespace Solti.Utils.DI.Perf
         [Benchmark]
         public async Task DeriveAndDisposeAsync()
         {
-            await using (ExperimentalServiceRegistry child = new ExperimentalServiceRegistry(Registry))
+            await using (ExperimentalServiceRegistry child = new(Registry))
             {
                 _ = child.Parent;
             }
