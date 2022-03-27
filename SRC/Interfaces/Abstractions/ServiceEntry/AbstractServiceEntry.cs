@@ -145,5 +145,8 @@ namespace Solti.Utils.DI.Interfaces
 
             return result.ToString();
         }
+
+        /// <inheritdoc/>
+        public sealed override int GetHashCode() => base.GetHashCode();
     }
 }

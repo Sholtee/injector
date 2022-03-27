@@ -4,8 +4,10 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -16,6 +18,17 @@ namespace Solti.Utils.DI.Internals
 
     internal class ExperimentalScope: Disposable
     {
+        private static readonly ConcurrentDictionary<SpecializedEntryKey, AbstractServiceEntry> FSpecializedEntries = new();
+
+        private sealed record SpecializedEntryKey(Type Interface, AbstractServiceEntry Entry);
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static AbstractServiceEntry Specialize(AbstractServiceEntry entry, Type iface) => FSpecializedEntries.GetOrAdd
+        (
+            new SpecializedEntryKey(iface, entry),
+            static key => ((ISupportsSpecialization) key.Entry).Specialize(null!, key.Interface.GenericTypeArguments)
+        );
+
         private readonly object FLock = new();
 
         //
@@ -26,6 +39,7 @@ namespace Solti.Utils.DI.Internals
 
         private readonly IList<object> FCapturedDisposables = new List<object>();
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private protected void CaptureDisposable(object instance)
         {
             if (instance is IDisposable || instance is IAsyncDisposable)
@@ -176,10 +190,11 @@ namespace Solti.Utils.DI.Internals
 
                     if (specializedEntry is null)
                         //
-                        // Specialize the entry if previously it has not been yet.
+                        // Specialize the entry if previously it has not been yet. Always return the same specialized
+                        // entry to not screw up the circular reference validation.
                         // 
 
-                        specializedEntry = ((ISupportsSpecialization) openEntry).Specialize(null, iface.GenericTypeArguments);
+                        specializedEntry = Specialize(openEntry, iface);
                 }
 
                 object value = specializedEntry.CreateInstance(null!);
@@ -237,7 +252,7 @@ namespace Solti.Utils.DI.Internals
 
                     if (specializedEntry is null)
                     {
-                        specializedEntry = ((ISupportsSpecialization) openEntry).Specialize(null, iface.GenericTypeArguments);
+                        specializedEntry = Specialize(openEntry, iface);
 
                         Debug.Assert(node is null);
                         node = new ServiceEntryNode(specializedEntry);
