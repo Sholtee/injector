@@ -6,7 +6,6 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
@@ -190,9 +189,13 @@ namespace Solti.Utils.DI.Internals
             if (entry.IsShared && self.FParent is not null)
                 return ResolveServiceHavingSingleValue(self.FParent, slot, entry);
 
+            //------------------------Singleton/Scoped------------------------------------
+
             ref object? value = ref self.FSlots[slot];
             if (value is not null)
                 return value;
+
+            //----------------------------------------------------------------------------
 
             //
             // If the lock already taken, don't enter again (it would have performance penalty)
@@ -204,6 +207,8 @@ namespace Solti.Utils.DI.Internals
 
             try
             {
+                //------------------------Singleton/Scoped------------------------------------
+
                 //
                 // Another thread may set the value while we reached here
                 //
@@ -211,6 +216,8 @@ namespace Solti.Utils.DI.Internals
                 #pragma warning disable CA1508 // Since we are in a multi-threaded environment this check is required 
                 if (value is null)
                 #pragma warning restore CA1508
+
+                //-----------------------------------------------------------------------------
                 {
                     value = entry.CreateInstance(null!);
                     self.CaptureDisposable(value);
