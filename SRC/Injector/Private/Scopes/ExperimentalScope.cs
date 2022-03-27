@@ -147,8 +147,8 @@ namespace Solti.Utils.DI.Internals
             // If the lock already taken, don't enter again (it would have performance penalty)
             //
 
-            bool lockHeld = Monitor.IsEntered(FLock);
-            if (!lockHeld)
+            bool releaseLock = !Monitor.IsEntered(FLock);
+            if (releaseLock)
                 Monitor.Enter(FLock);
 
             try
@@ -196,7 +196,7 @@ namespace Solti.Utils.DI.Internals
             }
             finally
             {
-                if (lockHeld)
+                if (releaseLock)
                     Monitor.Exit(FLock);
             }
         }
@@ -217,8 +217,8 @@ namespace Solti.Utils.DI.Internals
                 node = ref node.Next;
             }
 
-            bool lockHeld = Monitor.IsEntered(FLock);
-            if (!lockHeld)
+            bool releaseLock = !Monitor.IsEntered(FLock);
+            if (releaseLock)
                 Monitor.Enter(FLock);
 
             try
@@ -251,7 +251,7 @@ namespace Solti.Utils.DI.Internals
             }
             finally
             {
-                if (lockHeld)
+                if (releaseLock)
                     Monitor.Exit(FLock);
             }
         }
