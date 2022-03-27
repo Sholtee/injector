@@ -84,5 +84,7 @@ namespace Solti.Utils.DI.Internals
         public override Lifetime Lifetime { get; } = Lifetime.Singleton;
 
         public override bool IsShared { get; } = true;
+
+        public override bool CreatesSingleInstance { get; } = true;
     }
 }

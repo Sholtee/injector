@@ -118,6 +118,8 @@ namespace Solti.Utils.DI.Internals
 
         public override Lifetime Lifetime { get; } = Lifetime.Pooled;
 
+        public override bool CreatesSingleInstance { get; } = true;
+
         public Func<object, object> ServiceAccess { get; } = instance => instance is IWrapped<object> wrapped
             ? wrapped.Value
             : instance;

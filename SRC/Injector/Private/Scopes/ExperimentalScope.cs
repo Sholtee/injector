@@ -6,10 +6,11 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
+
+using static System.Diagnostics.Debug;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -31,6 +32,41 @@ namespace Solti.Utils.DI.Internals
 
         private readonly object FLock = new();
 
+        private readonly ExperimentalScope? FParent;
+
+        public ExperimentalScope(IEnumerable<AbstractServiceEntry> registeredEntries)
+        {
+            int
+                genericSlotsWithSingleValue = 0,
+                genericSlots = 0;
+
+            //
+            // TODO: remove
+            //
+
+            foreach (AbstractServiceEntry entry in registeredEntries)
+            {
+                if (entry.Interface.IsGenericTypeDefinition)
+                {
+                    if (entry.CreatesSingleInstance)
+                        genericSlotsWithSingleValue++;
+                    else
+                        genericSlots++;
+                }
+            }
+
+            FGenericSlotsWithSingleValue = new ServiceEntryNodeHavingValue[genericSlotsWithSingleValue];
+            FGenericSlots = new ServiceEntryNode[genericSlots];
+        }
+
+        public ExperimentalScope(ExperimentalScope parent)
+        {
+            FParent = parent;
+            FGenericSlotsWithSingleValue = new ServiceEntryNodeHavingValue[parent.FGenericSlotsWithSingleValue.Length];
+            FGenericSlots = new ServiceEntryNode[parent.FGenericSlots.Length];
+        }
+
+        #region Dispose
         //
         // Store objects to handle the rare case when service instance implements the
         // IAsyncDisposable interface only.
@@ -40,7 +76,7 @@ namespace Solti.Utils.DI.Internals
         private readonly IList<object> FCapturedDisposables = new List<object>();
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private protected void CaptureDisposable(object instance)
+        private void CaptureDisposable(object instance)
         {
             if (instance is IDisposable || instance is IAsyncDisposable)
                 FCapturedDisposables.Add(instance);
@@ -83,9 +119,10 @@ namespace Solti.Utils.DI.Internals
                 }
             }
         }
+        #endregion
 
         #region Nodes
-        private protected class ServiceEntryNode<TDescendant> where TDescendant: ServiceEntryNode<TDescendant>
+        private class ServiceEntryNode<TDescendant> where TDescendant: ServiceEntryNode<TDescendant>
         {
             public ServiceEntryNode(AbstractServiceEntry entry)
             {
@@ -104,7 +141,7 @@ namespace Solti.Utils.DI.Internals
         /// <summary>
         /// Node of runtime specialized (Transient) generic
         /// </summary>
-        private protected class ServiceEntryNode : ServiceEntryNode<ServiceEntryNode>
+        private class ServiceEntryNode : ServiceEntryNode<ServiceEntryNode>
         {
             public ServiceEntryNode(AbstractServiceEntry entry) : base(entry)
             {
@@ -114,7 +151,7 @@ namespace Solti.Utils.DI.Internals
         /// <summary>
         /// Node of runtime specialized (Scoped/Singleton) generic
         /// </summary>
-        private protected sealed class ServiceEntryNodeHavingValue : ServiceEntryNode<ServiceEntryNodeHavingValue>
+        private sealed class ServiceEntryNodeHavingValue : ServiceEntryNode<ServiceEntryNodeHavingValue>
         {
             public ServiceEntryNodeHavingValue(AbstractServiceEntry entry, object value) : base(entry)
             {
@@ -126,9 +163,21 @@ namespace Solti.Utils.DI.Internals
         #endregion
 
         #region ResolveGenericService
-        private protected object? ResolveGenericService(ref ServiceEntryNodeHavingValue? node, Type iface, AbstractServiceEntry openEntry)
+        private readonly ServiceEntryNodeHavingValue?[] FGenericSlotsWithSingleValue;
+
+        internal static object ResolveGenericServiceHavingSingleValue(ExperimentalScope self, int slot, Type iface, AbstractServiceEntry openEntry)
         {
-            Debug.Assert(iface.IsConstructedGenericType, "The service interface must be a constructed generic type");
+            Assert(openEntry.Interface.IsGenericTypeDefinition, "Entry must reference an open generic service");
+            Assert(iface.IsConstructedGenericType, "The service interface must be a constructed generic type");
+
+            //
+            // In case of shared entries retrieve the value from the parent.
+            //
+
+            if (openEntry.IsShared && self.FParent is not null)
+                return ResolveGenericServiceHavingSingleValue(self.FParent, slot, iface, openEntry);
+
+            ref ServiceEntryNodeHavingValue? node = ref self.FGenericSlotsWithSingleValue[slot];
 
             AbstractServiceEntry? specializedEntry = null;
 
@@ -161,9 +210,9 @@ namespace Solti.Utils.DI.Internals
             // If the lock already taken, don't enter again (it would have performance penalty)
             //
 
-            bool releaseLock = !Monitor.IsEntered(FLock);
+            bool releaseLock = !Monitor.IsEntered(self.FLock);
             if (releaseLock)
-                Monitor.Enter(FLock);
+                Monitor.Enter(self.FLock);
 
             try
             {
@@ -198,7 +247,7 @@ namespace Solti.Utils.DI.Internals
                 }
 
                 object value = specializedEntry.CreateInstance(null!);
-                CaptureDisposable(value);
+                self.CaptureDisposable(value);
 
                 if (node is null)
                     //
@@ -212,13 +261,21 @@ namespace Solti.Utils.DI.Internals
             finally
             {
                 if (releaseLock)
-                    Monitor.Exit(FLock);
+                    Monitor.Exit(self.FLock);
             }
         }
 
-        private protected object? ResolveGenericService(ref ServiceEntryNode? node, Type iface, AbstractServiceEntry openEntry)
+        private readonly ServiceEntryNode?[] FGenericSlots;
+
+        internal static object ResolveGenericService(ExperimentalScope self, int slot, Type iface, AbstractServiceEntry openEntry)
         {
-            Debug.Assert(iface.IsConstructedGenericType, "The service interface must be a constructed generic type");
+            Assert(openEntry.Interface.IsGenericTypeDefinition, "Entry must reference an open generic service");
+            Assert(iface.IsConstructedGenericType, "The service interface must be a constructed generic type");
+
+            if (openEntry.IsShared && self.FParent is not null)
+                return ResolveGenericService(self.FParent, slot, iface, openEntry);
+
+            ref ServiceEntryNode? node = ref self.FGenericSlots[slot];
 
             AbstractServiceEntry? specializedEntry = null;
 
@@ -232,9 +289,9 @@ namespace Solti.Utils.DI.Internals
                 node = ref node.Next;
             }
 
-            bool releaseLock = !Monitor.IsEntered(FLock);
+            bool releaseLock = !Monitor.IsEntered(self.FLock);
             if (releaseLock)
-                Monitor.Enter(FLock);
+                Monitor.Enter(self.FLock);
 
             try
             {
@@ -254,20 +311,20 @@ namespace Solti.Utils.DI.Internals
                     {
                         specializedEntry = Specialize(openEntry, iface);
 
-                        Debug.Assert(node is null);
+                        Assert(node is null);
                         node = new ServiceEntryNode(specializedEntry);
                     }
                 }
 
                 object value = specializedEntry.CreateInstance(null!);
-                CaptureDisposable(value);    
+                self.CaptureDisposable(value);    
 
                 return value;
             }
             finally
             {
                 if (releaseLock)
-                    Monitor.Exit(FLock);
+                    Monitor.Exit(self.FLock);
             }
         }
     }

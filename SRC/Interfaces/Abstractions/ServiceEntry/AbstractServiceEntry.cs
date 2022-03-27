@@ -88,6 +88,11 @@ namespace Solti.Utils.DI.Interfaces
         /// Indicates whether this entry can be shared across injectors.
         /// </summary>
         public virtual bool IsShared { get; }
+
+        /// <summary>
+        /// Returns true if this entry is responsioble for creating a single service instance.
+        /// </summary>
+        public virtual bool CreatesSingleInstance { get; }
         #endregion
 
         #region Mutables
