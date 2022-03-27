@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
@@ -30,13 +31,19 @@ namespace Solti.Utils.DI.Internals
             static key => ((ISupportsSpecialization) key.Entry).Specialize(null!, key.Interface.GenericTypeArguments)
         );
 
-        private readonly object FLock = new();
+        //
+        // It locks all the write operations related to this scope. Reading already produced services
+        // may be done parallelly.
+        //
+
+        private readonly object FWriteLock = new();
 
         private readonly ExperimentalScope? FParent;
 
         public ExperimentalScope(IEnumerable<AbstractServiceEntry> registeredEntries)
         {
             int
+                slots = 0,
                 genericSlotsWithSingleValue = 0,
                 genericSlots = 0;
 
@@ -53,17 +60,24 @@ namespace Solti.Utils.DI.Internals
                     else
                         genericSlots++;
                 }
+                else
+                {
+                    if (entry.CreatesSingleInstance)
+                        slots++;
+                }
             }
 
-            FGenericSlotsWithSingleValue = new ServiceEntryNodeHavingValue[genericSlotsWithSingleValue];
-            FGenericSlots = new ServiceEntryNode[genericSlots];
+            FSlots = Array<object>.Create(slots);
+            FGenericSlotsWithSingleValue = Array<ServiceEntryNodeHavingValue>.Create(genericSlotsWithSingleValue);
+            FGenericSlots = Array<ServiceEntryNode>.Create(genericSlots);
         }
 
         public ExperimentalScope(ExperimentalScope parent)
         {
             FParent = parent;
-            FGenericSlotsWithSingleValue = new ServiceEntryNodeHavingValue[parent.FGenericSlotsWithSingleValue.Length];
-            FGenericSlots = new ServiceEntryNode[parent.FGenericSlots.Length];
+            FSlots = Array<object>.Create(parent.FSlots.Length);
+            FGenericSlotsWithSingleValue = Array<ServiceEntryNodeHavingValue>.Create(parent.FGenericSlotsWithSingleValue.Length);
+            FGenericSlots = Array<ServiceEntryNode>.Create(parent.FGenericSlots.Length);
         }
 
         #region Dispose
@@ -162,6 +176,81 @@ namespace Solti.Utils.DI.Internals
         }
         #endregion
 
+        #region ResolveService
+        private readonly object?[] FSlots;
+
+        internal static object ResolveServiceHavingSingleValue(ExperimentalScope self, int slot, AbstractServiceEntry entry)
+        {
+            Assert(entry.Interface.IsGenericTypeDefinition, "Entry must reference a NON generic service");
+
+            //
+            // In case of shared entries retrieve the value from the parent.
+            //
+
+            if (entry.IsShared && self.FParent is not null)
+                return ResolveServiceHavingSingleValue(self.FParent, slot, entry);
+
+            ref object? value = ref self.FSlots[slot];
+            if (value is not null)
+                return value;
+
+            //
+            // If the lock already taken, don't enter again (it would have performance penalty)
+            //
+
+            bool releaseLock = !Monitor.IsEntered(self.FWriteLock);
+            if (releaseLock)
+                Monitor.Enter(self.FWriteLock);
+
+            try
+            {
+                //
+                // Another thread may set the value while we reached here
+                //
+
+                #pragma warning disable CA1508 // Since we are in a multi-threaded environment this check is required 
+                if (value is null)
+                #pragma warning restore CA1508
+                {
+                    value = entry.CreateInstance(null!);
+                    self.CaptureDisposable(value);
+                }
+
+                return value;
+            }
+            finally
+            {
+                if (releaseLock)
+                    Monitor.Exit(self.FWriteLock);
+            }
+        }
+
+        internal static object ResolveService(ExperimentalScope self, AbstractServiceEntry entry)
+        {
+            Assert(entry.Interface.IsGenericTypeDefinition, "Entry must reference a NON generic service");
+
+            if (entry.IsShared && self.FParent is not null)
+                return ResolveService(self.FParent, entry);
+
+            bool releaseLock = !Monitor.IsEntered(self.FWriteLock);
+            if (releaseLock)
+                Monitor.Enter(self.FWriteLock);
+
+            try
+            {
+                object value = entry.CreateInstance(null!);
+                self.CaptureDisposable(value);
+
+                return value;
+            }
+            finally
+            {
+                if (releaseLock)
+                    Monitor.Exit(self.FWriteLock);
+            }
+        }
+        #endregion
+
         #region ResolveGenericService
         private readonly ServiceEntryNodeHavingValue?[] FGenericSlotsWithSingleValue;
 
@@ -210,9 +299,9 @@ namespace Solti.Utils.DI.Internals
             // If the lock already taken, don't enter again (it would have performance penalty)
             //
 
-            bool releaseLock = !Monitor.IsEntered(self.FLock);
+            bool releaseLock = !Monitor.IsEntered(self.FWriteLock);
             if (releaseLock)
-                Monitor.Enter(self.FLock);
+                Monitor.Enter(self.FWriteLock);
 
             try
             {
@@ -227,8 +316,10 @@ namespace Solti.Utils.DI.Internals
                         if (node.Entry.Interface == iface)
                         {
                             //------------------------Singleton/Scoped------------------------------------
+
                             if (node.Value is not null)
                                 return node.Value;
+
                             //----------------------------------------------------------------------------
 
                             specializedEntry = node.Entry;
@@ -261,7 +352,7 @@ namespace Solti.Utils.DI.Internals
             finally
             {
                 if (releaseLock)
-                    Monitor.Exit(self.FLock);
+                    Monitor.Exit(self.FWriteLock);
             }
         }
 
@@ -289,9 +380,9 @@ namespace Solti.Utils.DI.Internals
                 node = ref node.Next;
             }
 
-            bool releaseLock = !Monitor.IsEntered(self.FLock);
+            bool releaseLock = !Monitor.IsEntered(self.FWriteLock);
             if (releaseLock)
-                Monitor.Enter(self.FLock);
+                Monitor.Enter(self.FWriteLock);
 
             try
             {
@@ -324,7 +415,7 @@ namespace Solti.Utils.DI.Internals
             finally
             {
                 if (releaseLock)
-                    Monitor.Exit(self.FLock);
+                    Monitor.Exit(self.FWriteLock);
             }
         }
     }
