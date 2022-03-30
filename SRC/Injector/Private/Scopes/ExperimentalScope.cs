@@ -17,17 +17,23 @@ namespace Solti.Utils.DI.Internals
     using Interfaces;
     using Primitives.Patterns;
 
-    internal class ExperimentalScope: Disposable
+    internal class ExperimentalScope : Disposable
     {
-        private static readonly ConcurrentDictionary<SpecializedEntryKey, AbstractServiceEntry> FSpecializedEntries = new();
+        //
+        // Dictionary performs much better against int keys
+        //
 
-        private sealed record SpecializedEntryKey(Type Interface, AbstractServiceEntry Entry);
+        private static readonly ConcurrentDictionary<int, AbstractServiceEntry> FSpecializedEntries = new();
+
+        private readonly IReadOnlyDictionary<int, Func<ExperimentalScope, Type, object>> FCases;
+
+        internal static int HashCombine(object? a, object? b) => unchecked((a?.GetHashCode() ?? 0) ^ (b?.GetHashCode() ?? 0));
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static AbstractServiceEntry Specialize(AbstractServiceEntry entry, Type iface) => FSpecializedEntries.GetOrAdd
         (
-            new SpecializedEntryKey(iface, entry),
-            static key => ((ISupportsSpecialization) key.Entry).Specialize(null!, key.Interface.GenericTypeArguments)
+            HashCombine(entry, iface),
+            _ => ((ISupportsSpecialization) entry).Specialize(null!, iface.GenericTypeArguments)
         );
 
         //
@@ -42,31 +48,51 @@ namespace Solti.Utils.DI.Internals
         public ExperimentalScope(IEnumerable<AbstractServiceEntry> registeredEntries)
         {
             int
-                slots = 0,
+                regularSlots = 0,
                 genericSlotsWithSingleValue = 0,
                 genericSlots = 0;
 
-            //
-            // TODO: remove
-            //
+            Dictionary<int, Func<ExperimentalScope, Type, object>> cases = new();
 
             foreach (AbstractServiceEntry entry in registeredEntries)
             {
+                //
+                // Enforce that there is no closed generic service registered. It's required to keep the GetInstance()
+                // method simple.
+                //
+
+                if (entry.Interface.IsGenericType && !entry.Interface.IsGenericTypeDefinition)
+                    throw new InvalidOperationException(); // TODO: message
+
+                int key = HashCombine(entry.Interface, entry.Name);
+
                 if (entry.Interface.IsGenericTypeDefinition)
                 {
                     if (entry.CreatesSingleInstance)
-                        genericSlotsWithSingleValue++;
+                    {
+                        int slot = genericSlotsWithSingleValue++; // capture an immutable variable
+                        cases.Add(key, (scope, iface) => scope.ResolveGenericServiceHavingSingleValue(slot, iface, entry));
+                    }
                     else
-                        genericSlots++;
+                    {
+                        int slot = genericSlots++;
+                        cases.Add(key, (scope, iface) => scope.ResolveGenericService(slot, iface, entry));
+                    }
                 }
                 else
                 {
                     if (entry.CreatesSingleInstance)
-                        slots++;
+                    {
+                        int slot = regularSlots++;
+                        cases.Add(key, (scope, iface) => scope.ResolveServiceHavingSingleValue(slot, entry));
+                    }
+                    else
+                        cases.Add(key, (scope, iface) => scope.ResolveService(entry));
                 }
             }
 
-            FSlots = Array<object>.Create(slots);
+            FCases = cases;
+            FRegularSlots = Array<object>.Create(regularSlots);
             FGenericSlotsWithSingleValue = Array<ServiceEntryNodeHavingValue>.Create(genericSlotsWithSingleValue);
             FGenericSlots = Array<ServiceEntryNode>.Create(genericSlots);
         }
@@ -74,9 +100,23 @@ namespace Solti.Utils.DI.Internals
         public ExperimentalScope(ExperimentalScope parent)
         {
             FParent = parent;
-            FSlots = Array<object>.Create(parent.FSlots.Length);
+            FCases = parent.FCases;
+            FRegularSlots = Array<object>.Create(parent.FRegularSlots.Length);
             FGenericSlotsWithSingleValue = Array<ServiceEntryNodeHavingValue>.Create(parent.FGenericSlotsWithSingleValue.Length);
             FGenericSlots = Array<ServiceEntryNode>.Create(parent.FGenericSlots.Length);
+        }
+
+        public object? GetInstance(Type iface, in string? name)
+        {
+            Ensure.Parameter.IsNotNull(iface, nameof(iface));
+            Ensure.Parameter.IsInterface(iface, nameof(iface));
+            Ensure.Parameter.IsNotGenericDefinition(iface, nameof(iface));
+
+            int key = HashCombine(iface.IsGenericType ? iface.GetGenericTypeDefinition() : iface, name);
+
+            return FCases.TryGetValue(key, out Func<ExperimentalScope, Type, object> factory)
+                ? factory(this, iface)
+                : null;
         }
 
         #region Dispose
@@ -176,7 +216,7 @@ namespace Solti.Utils.DI.Internals
         #endregion
 
         #region ResolveService
-        private readonly object?[] FSlots;
+        private readonly object?[] FRegularSlots;
 
         internal object ResolveServiceHavingSingleValue(int slot, AbstractServiceEntry entry)
         {
@@ -191,7 +231,7 @@ namespace Solti.Utils.DI.Internals
 
             //------------------------Singleton/Scoped------------------------------------
 
-            ref object? value = ref FSlots[slot];
+            ref object? value = ref FRegularSlots[slot];
             if (value is not null)
                 return value;
 
