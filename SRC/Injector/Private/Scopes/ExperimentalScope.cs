@@ -27,6 +27,7 @@ namespace Solti.Utils.DI.Internals
 
         private readonly IReadOnlyDictionary<int, Func<ExperimentalScope, Type, object>> FCases;
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static int HashCombine(object? a, object? b) => unchecked((a?.GetHashCode() ?? 0) ^ (b?.GetHashCode() ?? 0));
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
