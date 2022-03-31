@@ -16,6 +16,7 @@ namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
     using Primitives.Patterns;
+    using Properties;
 
     internal class ExperimentalScope : Disposable
     {
@@ -37,6 +38,56 @@ namespace Solti.Utils.DI.Internals
             _ => ((ISupportsSpecialization) entry).Specialize(null!, iface.GenericTypeArguments)
         );
 
+        private ServicePath? FPath;
+
+        private object CreateInstance(AbstractServiceEntry requested)
+        {
+            object instance;
+
+            if (!requested.State.HasFlag(ServiceEntryStates.Validated))
+            {
+                //
+                // At the root of the dependency graph this validation makes no sense.
+                //
+
+                if (Options.StrictDI && FPath?.Count > 0)
+                {
+                    AbstractServiceEntry requestor = FPath[^1];
+
+                    //
+                    // The requested service should not exist longer than its requestor.
+                    //
+
+                    if (requested.Lifetime!.CompareTo(requestor.Lifetime!) < 0)
+                    {
+                        RequestNotAllowedException ex = new(Resources.STRICT_DI);
+                        ex.Data[nameof(requestor)] = requestor;
+                        ex.Data[nameof(requested)] = requested;
+
+                        throw ex;
+                    }
+                }
+
+                if (FPath is null)
+                    FPath = new ServicePath();
+
+                FPath.Push(requested);
+                try
+                {
+                    instance = requested.CreateInstance(null!);
+                }
+                finally
+                {
+                    FPath.Pop();
+                }
+            }
+            else
+                instance = requested.CreateInstance(null!);
+
+            FDisposableStore.Capture(instance);
+            return instance;
+        }
+
         //
         // It locks all the write operations related to this scope. Reading already produced services
         // may be done parallelly.
@@ -46,7 +97,7 @@ namespace Solti.Utils.DI.Internals
 
         private readonly ExperimentalScope? FParent;
 
-        public ExperimentalScope(IEnumerable<AbstractServiceEntry> registeredEntries)
+        public ExperimentalScope(IEnumerable<AbstractServiceEntry> registeredEntries, ScopeOptions options)
         {
             int
                 regularSlots = 0,
@@ -96,6 +147,8 @@ namespace Solti.Utils.DI.Internals
             FRegularSlots = Array<object>.Create(regularSlots);
             FGenericSlotsWithSingleValue = Array<ServiceEntryNodeHavingValue>.Create(genericSlotsWithSingleValue);
             FGenericSlots = Array<ServiceEntryNode>.Create(genericSlots);
+
+            Options = options;
         }
 
         public ExperimentalScope(ExperimentalScope parent)
@@ -105,6 +158,8 @@ namespace Solti.Utils.DI.Internals
             FRegularSlots = Array<object>.Create(parent.FRegularSlots.Length);
             FGenericSlotsWithSingleValue = Array<ServiceEntryNodeHavingValue>.Create(parent.FGenericSlotsWithSingleValue.Length);
             FGenericSlots = Array<ServiceEntryNode>.Create(parent.FGenericSlots.Length);
+
+            Options = parent.Options;
         }
 
         public object? GetInstance(Type iface, in string? name)
@@ -120,59 +175,22 @@ namespace Solti.Utils.DI.Internals
                 : null;
         }
 
+        public ScopeOptions Options { get; }
+
         #region Dispose
         //
-        // Store objects to handle the rare case when service instance implements the
-        // IAsyncDisposable interface only.
         // This list should not be thread safe since it is called inside a lock.
         //
 
-        private readonly IList<object> FCapturedDisposables = new List<object>();
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private void CaptureDisposable(object instance)
-        {
-            if (instance is IDisposable || instance is IAsyncDisposable)
-                FCapturedDisposables.Add(instance);
-        }
+        private readonly CaptureDisposable FDisposableStore = new();
 
         protected override void Dispose(bool disposeManaged)
         {
+            FDisposableStore.Dispose();
             base.Dispose(disposeManaged);
-
-            for (int i = 0; i < FCapturedDisposables.Count; i++)
-            {
-                switch (FCapturedDisposables[i])
-                {
-                    case IDisposable disposable:
-                        disposable.Dispose();
-                        break;
-                    case IAsyncDisposable asyncDisposable:
-                        asyncDisposable
-                            .DisposeAsync()
-                            .AsTask()
-                            .GetAwaiter()
-                            .GetResult();
-                        break;
-                }
-            }
         }
 
-        protected override async ValueTask AsyncDispose()
-        {
-            for (int i = 0; i < FCapturedDisposables.Count; i++)
-            {
-                switch (FCapturedDisposables[i])
-                {
-                    case IAsyncDisposable asyncDisposable:
-                        await asyncDisposable.DisposeAsync();
-                        break;
-                    case IDisposable disposable:
-                        disposable.Dispose();
-                        break;
-                }
-            }
-        }
+        protected override ValueTask AsyncDispose() => FDisposableStore.DisposeAsync();
         #endregion
 
         #region Nodes
@@ -259,10 +277,7 @@ namespace Solti.Utils.DI.Internals
                 #pragma warning restore CA1508
 
                 //-----------------------------------------------------------------------------
-                {
-                    value = entry.CreateInstance(null!);
-                    CaptureDisposable(value);
-                }
+                    value = CreateInstance(entry);
 
                 return value;
             }
@@ -286,10 +301,7 @@ namespace Solti.Utils.DI.Internals
 
             try
             {
-                object value = entry.CreateInstance(null!);
-                CaptureDisposable(value);
-
-                return value;
+                return CreateInstance(entry);
             }
             finally
             {
@@ -385,15 +397,15 @@ namespace Solti.Utils.DI.Internals
                         specializedEntry = Specialize(openEntry, iface);
                 }
 
-                object value = specializedEntry.CreateInstance(null!);
-                CaptureDisposable(value);
+                object value = CreateInstance(specializedEntry);
 
-                if (node is null)
-                    //
-                    // Writing a "ref" variable is atomic
-                    //
+                Assert(node is null, "Related node must not be assigned");
 
-                    node = new ServiceEntryNodeHavingValue(specializedEntry, value);
+                //
+                // Writing a "ref" variable is atomic
+                //
+
+                node = new ServiceEntryNodeHavingValue(specializedEntry, value);
 
                 return value;
             }
@@ -455,10 +467,7 @@ namespace Solti.Utils.DI.Internals
                     }
                 }
 
-                object value = specializedEntry.CreateInstance(null!);
-                CaptureDisposable(value);    
-
-                return value;
+                return CreateInstance(specializedEntry);
             }
             finally
             {
