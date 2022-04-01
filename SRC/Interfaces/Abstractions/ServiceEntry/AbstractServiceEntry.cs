@@ -88,11 +88,6 @@ namespace Solti.Utils.DI.Interfaces
         /// Indicates whether this entry can be shared across injectors.
         /// </summary>
         public virtual bool IsShared { get; }
-
-        /// <summary>
-        /// Returns true if this entry is responsioble for creating a single service instance.
-        /// </summary>
-        public virtual bool CreatesSingleInstance { get; }
         #endregion
 
         #region Mutables
@@ -102,9 +97,9 @@ namespace Solti.Utils.DI.Interfaces
         public Func<IInjector, Type, object>? Factory { get; protected set; }
 
         /// <summary>
-        /// Describes the actual state of this entry.
+        /// Flags belong to this entry.
         /// </summary>
-        public ServiceEntryStates State { get; protected set; }
+        public ServiceEntryFlags Flags { get; set; }
         #endregion
 
         /// <summary>

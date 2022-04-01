@@ -248,16 +248,16 @@ namespace Solti.Utils.DI.Tests
             using (IInjector injector1 = Root.CreateScope())
             {
                 IServiceRegistry registry = injector1.Get<IServiceRegistry>();
-                Assert.That(registry.GetEntry<IInterface_1>().State, Is.EqualTo(ServiceEntryStates.Default));
+                Assert.That(registry.GetEntry<IInterface_1>().Flags, Is.EqualTo(ServiceEntryFlags.Default));
 
                 injector1.Get<IInterface_1>();
-                Assert.That(registry.GetEntry<IInterface_1>().State.HasFlag(ServiceEntryStates.Validated));
+                Assert.That(registry.GetEntry<IInterface_1>().Flags.HasFlag(ServiceEntryFlags.Validated));
             }
 
             using (IInjector injector2 = Root.CreateScope())
             {
                 IServiceRegistry registry = injector2.Get<IServiceRegistry>();
-                Assert.That(registry.GetEntry<IInterface_1>().State.HasFlag(ServiceEntryStates.Validated));
+                Assert.That(registry.GetEntry<IInterface_1>().Flags.HasFlag(ServiceEntryFlags.Validated));
             }
         }
     }

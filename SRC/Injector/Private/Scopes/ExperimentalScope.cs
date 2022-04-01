@@ -44,7 +44,7 @@ namespace Solti.Utils.DI.Internals
         {
             object instance;
 
-            if (!requested.State.HasFlag(ServiceEntryStates.Validated))
+            if (!requested.Flags.HasFlag(ServiceEntryFlags.Validated))
             {
                 //
                 // At the root of the dependency graph this validation makes no sense.
@@ -80,11 +80,15 @@ namespace Solti.Utils.DI.Internals
                 {
                     FPath.Pop();
                 }
+
+                requested.Flags |= ServiceEntryFlags.Validated;
             }
             else
                 instance = requested.CreateInstance(null!);
 
-            FDisposableStore.Capture(instance);
+            if (!requested.Flags.HasFlag(ServiceEntryFlags.SuppressDispose))
+                FDisposableStore.Capture(instance);
+
             return instance;
         }
 
@@ -120,7 +124,7 @@ namespace Solti.Utils.DI.Internals
 
                 if (entry.Interface.IsGenericTypeDefinition)
                 {
-                    if (entry.CreatesSingleInstance)
+                    if (entry.Flags.HasFlag(ServiceEntryFlags.CreateSingleInstance))
                     {
                         int slot = genericSlotsWithSingleValue++; // capture an immutable variable
                         cases.Add(key, (scope, iface) => scope.ResolveGenericServiceHavingSingleValue(slot, iface, entry));
@@ -133,7 +137,7 @@ namespace Solti.Utils.DI.Internals
                 }
                 else
                 {
-                    if (entry.CreatesSingleInstance)
+                    if (entry.Flags.HasFlag(ServiceEntryFlags.CreateSingleInstance))
                     {
                         int slot = regularSlots++;
                         cases.Add(key, (scope, iface) => scope.ResolveServiceHavingSingleValue(slot, entry));
@@ -145,8 +149,8 @@ namespace Solti.Utils.DI.Internals
 
             FCases = cases;
             FRegularSlots = Array<object>.Create(regularSlots);
-            FGenericSlotsWithSingleValue = Array<ServiceEntryNodeHavingValue>.Create(genericSlotsWithSingleValue);
-            FGenericSlots = Array<ServiceEntryNode>.Create(genericSlots);
+            FGenericSlotsWithSingleValue = Array<Node<Type, object>>.Create(genericSlotsWithSingleValue);
+            FGenericSlots = Array< Node<Type, AbstractServiceEntry>>.Create(genericSlots);
 
             Options = options;
         }
@@ -156,8 +160,8 @@ namespace Solti.Utils.DI.Internals
             FParent = parent;
             FCases = parent.FCases;
             FRegularSlots = Array<object>.Create(parent.FRegularSlots.Length);
-            FGenericSlotsWithSingleValue = Array<ServiceEntryNodeHavingValue>.Create(parent.FGenericSlotsWithSingleValue.Length);
-            FGenericSlots = Array<ServiceEntryNode>.Create(parent.FGenericSlots.Length);
+            FGenericSlotsWithSingleValue = Array<Node<Type, object>>.Create(parent.FGenericSlotsWithSingleValue.Length);
+            FGenericSlots = Array<Node<Type, AbstractServiceEntry>>.Create(parent.FGenericSlots.Length);
 
             Options = parent.Options;
         }
@@ -194,43 +198,23 @@ namespace Solti.Utils.DI.Internals
         #endregion
 
         #region Nodes
-        private class ServiceEntryNode<TDescendant> where TDescendant: ServiceEntryNode<TDescendant>
+        private class Node<TKey, TValue>
         {
-            public ServiceEntryNode(AbstractServiceEntry entry)
+            public Node(TKey key, TValue value)
             {
-                Entry = entry;
+                Key = key;
+                Value = value;
             }
 
-            public readonly AbstractServiceEntry Entry;
+            public readonly TKey Key;
+
+            public readonly TValue Value;
 
             //
             // Intentionally not a propery (to make referencing possible)
             //
 
-            public TDescendant? Next;
-        }
-
-        /// <summary>
-        /// Node of runtime specialized (Transient) generic
-        /// </summary>
-        private class ServiceEntryNode : ServiceEntryNode<ServiceEntryNode>
-        {
-            public ServiceEntryNode(AbstractServiceEntry entry) : base(entry)
-            {
-            }
-        }
-
-        /// <summary>
-        /// Node of runtime specialized (Scoped/Singleton) generic
-        /// </summary>
-        private sealed class ServiceEntryNodeHavingValue : ServiceEntryNode<ServiceEntryNodeHavingValue>
-        {
-            public ServiceEntryNodeHavingValue(AbstractServiceEntry entry, object value) : base(entry)
-            {
-                Value = value;
-            }
-
-            public readonly object? Value;
+            public Node<TKey, TValue>? Next;
         }
         #endregion
 
@@ -245,7 +229,7 @@ namespace Solti.Utils.DI.Internals
             // In case of shared entries retrieve the value from the parent.
             //
 
-            if (entry.IsShared && FParent is not null)
+            if (entry.Flags.HasFlag(ServiceEntryFlags.Shared) && FParent is not null)
                 return FParent.ResolveServiceHavingSingleValue(slot, entry);
 
             //------------------------Singleton/Scoped------------------------------------
@@ -292,7 +276,7 @@ namespace Solti.Utils.DI.Internals
         {
             Assert(entry.Interface.IsGenericTypeDefinition, "Entry must reference a NON generic service");
 
-            if (entry.IsShared && FParent is not null)
+            if (entry.Flags.HasFlag(ServiceEntryFlags.Shared) && FParent is not null)
                 return FParent.ResolveService(entry);
 
             bool releaseLock = !Monitor.IsEntered(FWriteLock);
@@ -312,7 +296,7 @@ namespace Solti.Utils.DI.Internals
         #endregion
 
         #region ResolveGenericService
-        private readonly ServiceEntryNodeHavingValue?[] FGenericSlotsWithSingleValue;
+        private readonly Node<Type, object>?[] FGenericSlotsWithSingleValue;
 
         internal object ResolveGenericServiceHavingSingleValue(int slot, Type iface, AbstractServiceEntry openEntry)
         {
@@ -323,35 +307,15 @@ namespace Solti.Utils.DI.Internals
             // In case of shared entries retrieve the value from the parent.
             //
 
-            if (openEntry.IsShared && FParent is not null)
+            if (openEntry.Flags.HasFlag(ServiceEntryFlags.Shared) && FParent is not null)
                 return FParent.ResolveGenericServiceHavingSingleValue(slot, iface, openEntry);
 
-            ref ServiceEntryNodeHavingValue? node = ref FGenericSlotsWithSingleValue[slot];
-
-            AbstractServiceEntry? specializedEntry = null;
+            ref Node<Type, object>? node = ref FGenericSlotsWithSingleValue[slot];
 
             while (node is not null)
             {
-                if (node.Entry.Interface == iface)
-                {
-                    //------------------------Singleton/Scoped------------------------------------
-
-                    //
-                    // If already produced (singleton/scoped), return the instance.
-                    //
-
-                    if (node.Value is not null)
-                        return node.Value;
-
-                    //-----------------------------------------------------------------------------
-
-                    //
-                    // Else creata a new one in a thread safe manner
-                    //
-
-                    specializedEntry = node.Entry;
-                    break;
-                }
+                if (node.Key == iface)
+                    return node.Value;
                 node = ref node.Next;
             }
 
@@ -365,49 +329,39 @@ namespace Solti.Utils.DI.Internals
 
             try
             {
-                if (specializedEntry is null)
+                //
+                // Another thread may set the node while we reached here
+                //
+
+                #pragma warning disable CA1508
+                while (node is not null)
+                #pragma warning restore CA1508
                 {
-                    //
-                    // Another thread may set the entry while we reached here
-                    //
+                    if (node.Key == iface)
+                        return node.Value;
 
-                    while (node is not null)
-                    {
-                        if (node.Entry.Interface == iface)
-                        {
-                            //------------------------Singleton/Scoped------------------------------------
-
-                            if (node.Value is not null)
-                                return node.Value;
-
-                            //----------------------------------------------------------------------------
-
-                            specializedEntry = node.Entry;
-                            break;
-                        }
-                        node = ref node.Next;
-                    }
-
-                    if (specializedEntry is null)
-                        //
-                        // Specialize the entry if previously it has not been yet. Always return the same specialized
-                        // entry to not screw up the circular reference validation.
-                        // 
-
-                        specializedEntry = Specialize(openEntry, iface);
+                    node = ref node.Next;
                 }
-
-                object value = CreateInstance(specializedEntry);
-
-                Assert(node is null, "Related node must not be assigned");
 
                 //
                 // Writing a "ref" variable is atomic
                 //
 
-                node = new ServiceEntryNodeHavingValue(specializedEntry, value);
+                node = new Node<Type, object>
+                (
+                    iface,
+                    CreateInstance
+                    (
+                        //
+                        // Specialize the entry if previously it has not been yet. Always return the same specialized
+                        // entry to not screw up the circular reference validation.
+                        //
 
-                return value;
+                        Specialize(openEntry, iface)
+                    )
+                );
+
+                return node.Value;
             }
             finally
             {
@@ -416,27 +370,20 @@ namespace Solti.Utils.DI.Internals
             }
         }
 
-        private readonly ServiceEntryNode?[] FGenericSlots;
+        private readonly Node<Type, AbstractServiceEntry>?[] FGenericSlots;
 
         internal object ResolveGenericService(int slot, Type iface, AbstractServiceEntry openEntry)
         {
             Assert(openEntry.Interface.IsGenericTypeDefinition, "Entry must reference an open generic service");
             Assert(iface.IsConstructedGenericType, "The service interface must be a constructed generic type");
 
-            if (openEntry.IsShared && FParent is not null)
+            if (openEntry.Flags.HasFlag(ServiceEntryFlags.Shared) && FParent is not null)
                 return FParent.ResolveGenericService(slot, iface, openEntry);
 
-            ref ServiceEntryNode? node = ref FGenericSlots[slot];
+            ref Node<Type, AbstractServiceEntry>? node = ref FGenericSlots[slot];
 
-            AbstractServiceEntry? specializedEntry = null;
-
-            while (node is not null)
+            while (node is not null && node.Key != iface)
             {
-                if (node.Entry.Interface == iface)
-                {
-                    specializedEntry = node.Entry;
-                    break;
-                }
                 node = ref node.Next;
             }
 
@@ -446,28 +393,19 @@ namespace Solti.Utils.DI.Internals
 
             try
             {
-                if (specializedEntry is null)
+                //
+                // Another thread may set the node while we reached here.
+                //
+
+                while (node is not null && node.Key != iface)
                 {
-                    while (node is not null)
-                    {
-                        if (node.Entry.Interface == iface)
-                        {
-                            specializedEntry = node.Entry;
-                            break;
-                        }
-                        node = ref node.Next;
-                    }
-
-                    if (specializedEntry is null)
-                    {
-                        specializedEntry = Specialize(openEntry, iface);
-
-                        Assert(node is null);
-                        node = new ServiceEntryNode(specializedEntry);
-                    }
+                    node = ref node.Next;
                 }
 
-                return CreateInstance(specializedEntry);
+                if (node is null)
+                    node = new Node<Type, AbstractServiceEntry>(iface, Specialize(openEntry, iface));
+
+                return CreateInstance(node.Value);
             }
             finally
             {

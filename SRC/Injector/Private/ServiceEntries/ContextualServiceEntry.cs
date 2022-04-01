@@ -16,7 +16,7 @@ namespace Solti.Utils.DI.Internals
         private ContextualServiceEntry(ContextualServiceEntry original, IServiceRegistry owner) : base(original.Interface, original.Name, null, Ensure.Parameter.IsNotNull(owner, nameof(owner)))
         {
             Selector = original.Selector;
-            State = ServiceEntryStates.Built;
+            Flags = ServiceEntryFlags.Built | ServiceEntryFlags.CreateSingleInstance;
         }
 
         public ContextualServiceEntry(Type @interface, string? name, Func<IServiceRegistry, object> selector) : base(@interface, name, null, null) =>
@@ -35,7 +35,5 @@ namespace Solti.Utils.DI.Internals
         public Func<IServiceRegistry, object> Selector { get; }
 
         public override AbstractServiceEntry CopyTo(IServiceRegistry owner) => new ContextualServiceEntry(this, Ensure.Parameter.IsNotNull(owner, nameof(owner)));
-
-        public override bool CreatesSingleInstance { get; } = true;
     }
 }

@@ -30,7 +30,7 @@ namespace Solti.Utils.DI.Internals
             // SetInstance() ne legyen hivva.
             //
 
-            State = ServiceEntryStates.Built;
+            Flags = ServiceEntryFlags.Built;
         }
 
         public override Lifetime? Lifetime { get; } = Lifetime.Instance;

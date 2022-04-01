@@ -30,8 +30,8 @@ namespace Solti.Utils.DI.Internals
             //    Ez csak regularis bejegyzesekre mukodik mivel azoknak van szuloje.
             //
 
-            if (Root.State.HasFlag(ServiceEntryStates.Validated))
-                State = ServiceEntryStates.Validated;
+            if (Root.Flags.HasFlag(ServiceEntryFlags.Validated))
+                Flags = ServiceEntryFlags.Validated;
 
             //
             // Itt nem kell "this.ApplyAspects()" hivas mert a forras bejegyzesen mar
@@ -117,22 +117,22 @@ namespace Solti.Utils.DI.Internals
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        protected void UpdateState(ServiceEntryStates newState)
+        protected void UpdateState(ServiceEntryFlags newState)
         {
-            if (newState == State)
+            if (newState == Flags)
                 return;
 
-            Debug.Assert(newState > State, "New state must be greater than the old one.");
+            Debug.Assert(newState > Flags, "New state must be greater than the old one.");
 
-            State = newState;
+            Flags = newState;
 
-            if (State.HasFlag(ServiceEntryStates.Validated) && Root?.State < ServiceEntryStates.Validated)
+            if (Flags.HasFlag(ServiceEntryFlags.Validated) && Root?.Flags < ServiceEntryFlags.Validated)
                 //
                 // Nem gond ha ez parhuzamosan kerul meghivasra tobb kulonbozo masolt bejegyzesbol (az ertekadas
                 // atomi muvelet es a validalt allapoton kivul mas nem kerul beallitasra a gyokerben).
                 //
 
-                Root.State = ServiceEntryStates.Validated;
+                Root.Flags = ServiceEntryFlags.Validated;
         }
         #endregion
 

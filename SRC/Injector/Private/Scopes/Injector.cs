@@ -84,7 +84,7 @@ namespace Solti.Utils.DI.Internals
             //    - A szerviz felszabaditasaval mar nem kell foglalkoznunk
             //
 
-            if (requested.State.HasFlag(ServiceEntryStates.Built))
+            if (requested.Flags.HasFlag(ServiceEntryFlags.Built))
                 return requested.GetSingleInstance();
 
             //
@@ -104,7 +104,7 @@ namespace Solti.Utils.DI.Internals
             // - Ha a fuggosegi fa gyokerenel vagyunk akkor a metodus nem ertelmezett.
             //
 
-            if (Options.StrictDI && !requested.State.HasFlag(ServiceEntryStates.Validated) && FPath.Count > 0)
+            if (Options.StrictDI && !requested.Flags.HasFlag(ServiceEntryFlags.Validated) && FPath.Count > 0)
             {
                 AbstractServiceEntry requestor = FPath[^1];
 
@@ -131,7 +131,7 @@ namespace Solti.Utils.DI.Internals
             //    -> CDEP ellenorzes 
             //
 
-            if (!requested.State.HasFlag(ServiceEntryStates.Validated))
+            if (!requested.Flags.HasFlag(ServiceEntryFlags.Validated))
             {
                 FPath.Push(requested);
                 try
