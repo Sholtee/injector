@@ -166,7 +166,7 @@ namespace Solti.Utils.DI.Internals
             Options = parent.Options;
         }
 
-        public object? TryGet(Type iface, in string? name)
+        public object? TryGet(Type iface, string? name)
         {
             Ensure.Parameter.IsNotNull(iface, nameof(iface));
             Ensure.Parameter.IsInterface(iface, nameof(iface));
@@ -179,7 +179,7 @@ namespace Solti.Utils.DI.Internals
                 : null;
         }
 
-        public object Get(Type iface, in string? name)
+        public object Get(Type iface, string? name)
         {
             object? instance = TryGet(iface, name);
 

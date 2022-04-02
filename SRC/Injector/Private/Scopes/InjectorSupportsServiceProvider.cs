@@ -28,7 +28,7 @@ namespace Solti.Utils.DI.Internals
         // ezert itt megengedjuk.
         //
 
-        object IInjector.Get(Type iface, in string? name) => TryGet(iface, name)!;
+        object IInjector.Get(Type iface, string? name) => TryGet(iface, name)!;
 
         object? IServiceProvider.GetService(Type serviceType) => TryGet(serviceType, null);
     }
