@@ -205,6 +205,15 @@ namespace Solti.Utils.DI.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Service &quot;{0}&quot; could not be found..
+        /// </summary>
+        internal static string SERVICE_NOT_FOUND {
+            get {
+                return ResourceManager.GetString("SERVICE_NOT_FOUND", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Attempt to request a dependency that should live shorter than the requestor should..
         /// </summary>
         internal static string STRICT_DI {

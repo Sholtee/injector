@@ -25,7 +25,7 @@ namespace Solti.Utils.DI.Interfaces
         /// <summary>
         /// Specifies whether the created scopes should implement the <see cref="IServiceProvider"/> interface.
         /// </summary>
-        /// <remarks>Setting this property to true configures the <see cref="IInjector.Get(Type, string?)"/> method to not throw if the requested dependency cannot be found.</remarks>
+        /// <remarks>Setting this property to true configures the <see cref="IInjector.Get(Type, in string?)"/> method to not throw if the requested dependency cannot be found.</remarks>
         public bool SupportsServiceProvider { get; init; }
     }
 }

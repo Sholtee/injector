@@ -18,7 +18,7 @@ namespace Solti.Utils.DI.Internals
     using Primitives.Patterns;
     using Properties;
 
-    internal class ExperimentalScope : Disposable
+    internal class ExperimentalScope : Disposable, IInjector
     {
         //
         // Dictionary performs much better against int keys
@@ -26,7 +26,7 @@ namespace Solti.Utils.DI.Internals
 
         private static readonly ConcurrentDictionary<int, AbstractServiceEntry> FSpecializedEntries = new();
 
-        private readonly IReadOnlyDictionary<int, Func<ExperimentalScope, Type, object>> FCases;
+        private readonly IReadOnlyDictionary<int, Func<ExperimentalScope, Type, object>> FResolvers;
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static int HashCombine(object? a, object? b) => unchecked((a?.GetHashCode() ?? 0) ^ (b?.GetHashCode() ?? 0));
@@ -74,7 +74,7 @@ namespace Solti.Utils.DI.Internals
                 FPath.Push(requested);
                 try
                 {
-                    instance = requested.CreateInstance(null!);
+                    instance = requested.CreateInstance(this);
                 }
                 finally
                 {
@@ -84,7 +84,7 @@ namespace Solti.Utils.DI.Internals
                 requested.Flags |= ServiceEntryFlags.Validated;
             }
             else
-                instance = requested.CreateInstance(null!);
+                instance = requested.CreateInstance(this);
 
             if (!requested.Flags.HasFlag(ServiceEntryFlags.SuppressDispose))
                 FDisposableStore.Capture(instance);
@@ -108,7 +108,7 @@ namespace Solti.Utils.DI.Internals
                 genericSlotsWithSingleValue = 0,
                 genericSlots = 0;
 
-            Dictionary<int, Func<ExperimentalScope, Type, object>> cases = new();
+            Dictionary<int, Func<ExperimentalScope, Type, object>> resolvers = new();
 
             foreach (AbstractServiceEntry entry in registeredEntries)
             {
@@ -127,12 +127,12 @@ namespace Solti.Utils.DI.Internals
                     if (entry.Flags.HasFlag(ServiceEntryFlags.CreateSingleInstance))
                     {
                         int slot = genericSlotsWithSingleValue++; // capture an immutable variable
-                        cases.Add(key, (scope, iface) => scope.ResolveGenericServiceHavingSingleValue(slot, iface, entry));
+                        resolvers.Add(key, (scope, iface) => scope.ResolveGenericServiceHavingSingleValue(slot, iface, entry));
                     }
                     else
                     {
                         int slot = genericSlots++;
-                        cases.Add(key, (scope, iface) => scope.ResolveGenericService(slot, iface, entry));
+                        resolvers.Add(key, (scope, iface) => scope.ResolveGenericService(slot, iface, entry));
                     }
                 }
                 else
@@ -140,14 +140,14 @@ namespace Solti.Utils.DI.Internals
                     if (entry.Flags.HasFlag(ServiceEntryFlags.CreateSingleInstance))
                     {
                         int slot = regularSlots++;
-                        cases.Add(key, (scope, iface) => scope.ResolveServiceHavingSingleValue(slot, entry));
+                        resolvers.Add(key, (scope, iface) => scope.ResolveServiceHavingSingleValue(slot, entry));
                     }
                     else
-                        cases.Add(key, (scope, iface) => scope.ResolveService(entry));
+                        resolvers.Add(key, (scope, iface) => scope.ResolveService(entry));
                 }
             }
 
-            FCases = cases;
+            FResolvers = resolvers;
             FRegularSlots = Array<object>.Create(regularSlots);
             FGenericSlotsWithSingleValue = Array<Node<Type, object>>.Create(genericSlotsWithSingleValue);
             FGenericSlots = Array< Node<Type, AbstractServiceEntry>>.Create(genericSlots);
@@ -158,7 +158,7 @@ namespace Solti.Utils.DI.Internals
         public ExperimentalScope(ExperimentalScope parent)
         {
             FParent = parent;
-            FCases = parent.FCases;
+            FResolvers = parent.FResolvers;
             FRegularSlots = Array<object>.Create(parent.FRegularSlots.Length);
             FGenericSlotsWithSingleValue = Array<Node<Type, object>>.Create(parent.FGenericSlotsWithSingleValue.Length);
             FGenericSlots = Array<Node<Type, AbstractServiceEntry>>.Create(parent.FGenericSlots.Length);
@@ -166,7 +166,7 @@ namespace Solti.Utils.DI.Internals
             Options = parent.Options;
         }
 
-        public object? GetInstance(Type iface, in string? name)
+        public object? TryGet(Type iface, in string? name)
         {
             Ensure.Parameter.IsNotNull(iface, nameof(iface));
             Ensure.Parameter.IsInterface(iface, nameof(iface));
@@ -174,11 +174,31 @@ namespace Solti.Utils.DI.Internals
 
             int key = HashCombine(iface.IsGenericType ? iface.GetGenericTypeDefinition() : iface, name);
 
-            return FCases.TryGetValue(key, out Func<ExperimentalScope, Type, object> factory)
+            return FResolvers.TryGetValue(key, out Func<ExperimentalScope, Type, object> factory)
                 ? factory(this, iface)
                 : null;
         }
 
+        public object Get(Type iface, in string? name)
+        {
+            object? instance = TryGet(iface, name);
+
+            if (instance is null)
+            {
+                MissingServiceEntry requested = new(iface, name);
+
+                ServiceNotFoundException ex = new(string.Format(Resources.Culture, Resources.SERVICE_NOT_FOUND, requested.ToString(shortForm: true)));
+
+                ex.Data["requested"] = requested;
+                ex.Data["requestor"] = FPath?.Count > 0 ? FPath[^1] : null;
+#if DEBUG
+                ex.Data["scope"] = this;
+#endif
+                throw ex;
+            }
+
+            return instance;
+        }
         public ScopeOptions Options { get; }
 
         #region Dispose

@@ -11,7 +11,7 @@ namespace Solti.Utils.DI.Interfaces
     /// Describes the path in which the current request takes place.
     /// </summary>
     /// <remarks>The last entry describes the service that is currently being requested.</remarks>
-    public interface IServicePath: IReadOnlyList<AbstractServiceEntry>
+    public interface IServicePath: IReadOnlyList<AbstractServiceEntry> // TODO: REMOVE
     {
     }
 }

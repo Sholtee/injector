@@ -161,9 +161,9 @@ namespace Solti.Utils.DI.Internals
         #endregion
 
         #region IInjector
-        public object Get(Type iface, string? name) => GetOrCreateInstance(iface, name, throwOnMissing: true)!;
+        public object Get(Type iface, in string? name) => GetOrCreateInstance(iface, name, throwOnMissing: true)!;
 
-        public object? TryGet(Type iface, string? name) => GetOrCreateInstance(iface, name, throwOnMissing: false);
+        public object? TryGet(Type iface, in string? name) => GetOrCreateInstance(iface, name, throwOnMissing: false);
 
         public ScopeOptions Options { get; }
         #endregion

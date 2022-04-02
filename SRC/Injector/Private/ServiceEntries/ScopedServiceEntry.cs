@@ -82,7 +82,5 @@ namespace Solti.Utils.DI.Internals
         }
 
         public override Lifetime Lifetime { get; } = Lifetime.Scoped;
-
-        public override bool CreatesSingleInstance { get; } = true;
     }
 }

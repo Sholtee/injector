@@ -171,4 +171,7 @@
   <data name="TARGET_PARAM_CANNOT_BE_DETERMINED" xml:space="preserve">
     <value>The interceptor must have exactly one constructor parameter for the target object.</value>
   </data>
+  <data name="SERVICE_NOT_FOUND" xml:space="preserve">
+    <value>Service "{0}" could not be found.</value>
+  </data>
 </root>
