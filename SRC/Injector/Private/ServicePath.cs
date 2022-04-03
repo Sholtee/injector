@@ -33,6 +33,11 @@ namespace Solti.Utils.DI.Internals
             {
                 AbstractServiceEntry current = FPath[foundIndex];
 
+                //
+                // TODO: After removing the AbstractServiceEntry.CopyTo() method, a reference comparison
+                //       will be enough here.
+                //       
+
                 if (current.Interface == entry.Interface && current.Name == entry.Name)
                     break;
             }
