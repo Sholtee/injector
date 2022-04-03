@@ -166,6 +166,8 @@ namespace Solti.Utils.DI.Internals
         public object? TryGet(Type iface, string? name) => GetOrCreateInstance(iface, name, throwOnMissing: false);
 
         public ScopeOptions Options { get; }
+
+        public new object? Parent { get; }
         #endregion
     }
 }

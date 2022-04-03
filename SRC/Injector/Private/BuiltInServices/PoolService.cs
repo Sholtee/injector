@@ -22,9 +22,9 @@ namespace Solti.Utils.DI.Internals
     // - mindig futtassuk a teljesitmeny teszteket (is) hogy a hatekonysag nem romlott e
     //
 
-    internal sealed class PoolService<TInterface> : ObjectPool<TInterface>, IPool<TInterface> where TInterface: class
+    internal sealed class PoolService<TInterface> : ObjectPool<object>, IPool<TInterface> where TInterface: class
     {
-        private sealed class PoolServiceLifetimeManager: Disposable, ILifetimeManager<TInterface>
+        private sealed class PoolServiceLifetimeManager: Disposable, ILifetimeManager<object>
         {
             //
             // Ne [ThreadStatic]-t hasznaljunk, hogy minden interface-nev paroshoz kulon peldany tartozzon.
@@ -51,11 +51,11 @@ namespace Solti.Utils.DI.Internals
 
             public PoolServiceLifetimeManager(IScopeFactory scopeFactory, string? name)
             {
-                FDedicatedScope = new ThreadLocal<IInjector>(scopeFactory.CreateScope, trackAllValues: true);
+                FDedicatedScope = new ThreadLocal<IInjector>(() => scopeFactory.CreateScope(this), trackAllValues: true);
                 Name = name;
             }
 
-            public TInterface Create()
+            public object Create()
             {
                 //
                 // Ez itt trukkos mert:
@@ -66,16 +66,16 @@ namespace Solti.Utils.DI.Internals
 
                 IInjector dedicatedScope = FDedicatedScope.Value;
 
-                dedicatedScope.Meta(PooledLifetime.POOL_SCOPE, true);
+                dedicatedScope.Meta(PooledLifetime.POOL_SCOPE, true); // TODO: Remove
 
                 return dedicatedScope.Get<TInterface>(Name);
             }
 
-            public void Dispose(TInterface item) {} // scope fogja felszabaditani
+            public void Dispose(object item) {} // scope fogja felszabaditani
 
-            public void CheckOut(TInterface item) {}
+            public void CheckOut(object item) {}
 
-            public void CheckIn(TInterface item)
+            public void CheckIn(object item)
             {
                 if (item is IResettable resettable && resettable.Dirty)
                     resettable.Reset();
@@ -84,11 +84,11 @@ namespace Solti.Utils.DI.Internals
             public void RecursionDetected() {}
         }
 
-        private sealed class Wrapped : Disposable, IWrapped<object> // NE IWrapped<TInterface> legyen mert azt a rendszer nem ismeri
+        private sealed class Wrapped : Disposable, IWrapped<object>
         {
-            private readonly TInterface FValue;
+            private readonly object FValue;
 
-            public Wrapped(ObjectPool<TInterface> owner)
+            public Wrapped(ObjectPool<object> owner)
             {
                 Owner = owner;
                 FValue = owner.Get(CheckoutPolicy.Block)!;
@@ -102,7 +102,7 @@ namespace Solti.Utils.DI.Internals
                 base.Dispose(disposeManaged);
             }
 
-            public ObjectPool<TInterface> Owner { get; }
+            public ObjectPool<object> Owner { get; }
 
             public object Value
             {

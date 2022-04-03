@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace Solti.Utils.DI.Interfaces
@@ -87,7 +88,7 @@ namespace Solti.Utils.DI.Interfaces
         /// <summary>
         /// Indicates whether this entry can be shared across injectors.
         /// </summary>
-        public virtual bool IsShared { get; }  // TODO: REMOVE
+        public bool IsShared => Flags.HasFlag(ServiceEntryFlags.Shared);  // TODO: REMOVE
         #endregion
 
         #region Mutables
@@ -99,7 +100,7 @@ namespace Solti.Utils.DI.Interfaces
         /// <summary>
         /// Flags belong to this entry.
         /// </summary>
-        public ServiceEntryFlags Flags { get; set; }
+        public ServiceEntryFlags Flags { get; protected set; }
         #endregion
 
         /// <summary>
@@ -113,6 +114,13 @@ namespace Solti.Utils.DI.Interfaces
         /// </summary>
         /// <remarks>This method may throw an <see cref="InvalidOperationException"/> if the entry already created a single instance from the service.</remarks>
         public abstract object CreateInstance(IInjector scope);
+
+        /// <summary>
+        /// Sets the <see cref="ServiceEntryFlags.Validated"/> flag.
+        /// </summary>
+        /// <remarks>This method is called right after the first successful service instantiation so next time when the service is requested there won't be time consuming validation phase.</remarks>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void SetValidated() => Flags |= ServiceEntryFlags.Validated;
 
         /// <summary>
         /// Creates a copy from this entry.

@@ -15,12 +15,12 @@ namespace Solti.Utils.DI.Interfaces
         /// Name of the "meta" entry
         /// </summary>
         [SuppressMessage("Naming", "CA1707:Identifiers should not contain underscores")]
-        public const string META_NAME = $"{Consts.INTERNAL_SERVICE_NAME_PREFIX}meta";
+        public const string META_NAME = $"{Consts.INTERNAL_SERVICE_NAME_PREFIX}meta";  // TODO: remove
 
         /// <summary>
         /// Sets a meta-data on the given <see cref="IInjector"/> (scope).
         /// </summary>
-        public static void Meta(this IInjector self, string key, object? value)
+        public static void Meta(this IInjector self, string key, object? value)  // TODO: remove
         {
             if (self is null)
                 throw new ArgumentNullException(nameof(self));
@@ -35,7 +35,7 @@ namespace Solti.Utils.DI.Interfaces
         /// <summary>
         /// Gets a meta-data associated with the given <see cref="IInjector"/> (scope).
         /// </summary>
-        public static object? Meta(this IInjector self, string key)
+        public static object? Meta(this IInjector self, string key)  // TODO: remove
         {
             if (self is null)
                 throw new ArgumentNullException(nameof(self));

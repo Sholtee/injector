@@ -4,12 +4,12 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
-using System.Collections.Generic;
 
 namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
     using Primitives.Patterns;
+    using Primitives.Threading;
 
     //
     // A PooledServiceEntry ket modon is lehet peldanyositva: Egy kulonallo poolban vagy a felhasznalo oldalan.
@@ -22,21 +22,25 @@ namespace Solti.Utils.DI.Internals
         private PooledServiceEntry(PooledServiceEntry entry, IServiceRegistry? owner) : base(entry, owner)
         {
             PoolName = entry.PoolName;
+            Flags |= ServiceEntryFlags.CreateSingleInstance;
         }
 
         public PooledServiceEntry(Type @interface, string? name, Func<IInjector, Type, object> factory, IServiceRegistry? owner, string poolName) : base(@interface, name, factory, owner)
         {
             PoolName = poolName;
+            Flags |= ServiceEntryFlags.CreateSingleInstance;
         }
 
         public PooledServiceEntry(Type @interface, string? name, Type implementation, IServiceRegistry? owner, string poolName) : base(@interface, name, implementation, owner)
         {
             PoolName = poolName;
+            Flags |= ServiceEntryFlags.CreateSingleInstance;
         }
 
         public PooledServiceEntry(Type @interface, string? name, Type implementation, object explicitArgs, IServiceRegistry? owner, string poolName) : base(@interface, name, implementation, explicitArgs, owner)
         {
             PoolName = poolName;
+            Flags |= ServiceEntryFlags.CreateSingleInstance;
         }
 
         public override object CreateInstance(IInjector scope)
@@ -51,7 +55,7 @@ namespace Solti.Utils.DI.Internals
             // Pool-ban az eredeti factory-t hivjuk
             //
 
-            if (scope.Meta(PooledLifetime.POOL_SCOPE) is true)
+            if (scope.Meta(PooledLifetime.POOL_SCOPE) is true /*TODO: Remove*/ || scope.Parent is ILifetimeManager<object>)
                 FInstance = Factory!(scope, Interface);
 
             //
@@ -65,7 +69,11 @@ namespace Solti.Utils.DI.Internals
                 // fog megtortenni: biztonsagosan visszahelyezhetjuk mindig az elkert szervizt a pool-ba
                 //
 
-                IPool relatedPool = (IPool) scope.Get(typeof(IPool<>).MakeGenericType(Interface), PoolName);
+                IPool relatedPool = (IPool) scope.Get
+                (
+                    typeof(IPool<>).MakeGenericType(Interface), // time consuming but called rarely
+                    PoolName
+                );
 
                 FInstance = relatedPool.Get();
             }

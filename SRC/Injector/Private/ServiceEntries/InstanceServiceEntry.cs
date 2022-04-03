@@ -26,21 +26,16 @@ namespace Solti.Utils.DI.Internals
 
             this.ApplyAspects();
 
-            //
-            // SetInstance() ne legyen hivva.
-            //
 
-            Flags = ServiceEntryFlags.Built;
+            Flags = ServiceEntryFlags.Built | ServiceEntryFlags.Validated | ServiceEntryFlags.Shared | ServiceEntryFlags.CreateSingleInstance | ServiceEntryFlags.SuppressDispose;
         }
 
         public override Lifetime? Lifetime { get; } = Lifetime.Instance;
 
         public override AbstractServiceEntry CopyTo(IServiceRegistry owner) => this;
 
-        public override object CreateInstance(IInjector scope) => throw new InvalidOperationException();
+        public override object CreateInstance(IInjector scope) => FInstance;
 
         public override object GetSingleInstance() => FInstance;
-
-        public override bool IsShared { get; } = true;
     }
 }

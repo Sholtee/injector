@@ -4,7 +4,6 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
-using System.Collections.Generic;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -16,18 +15,22 @@ namespace Solti.Utils.DI.Internals
 
         private ScopedServiceEntry(ScopedServiceEntry entry, IServiceRegistry? owner) : base(entry, owner)
         {
+            Flags |= ServiceEntryFlags.CreateSingleInstance;
         }
 
         public ScopedServiceEntry(Type @interface, string? name, Func<IInjector, Type, object> factory, IServiceRegistry? owner) : base(@interface, name, factory, owner)
         {
+            Flags |= ServiceEntryFlags.CreateSingleInstance;
         }
 
         public ScopedServiceEntry(Type @interface, string? name, Type implementation, IServiceRegistry? owner) : base(@interface, name, implementation, owner)
         {
+            Flags |= ServiceEntryFlags.CreateSingleInstance;
         }
 
         public ScopedServiceEntry(Type @interface, string? name, Type implementation, object explicitArgs, IServiceRegistry? owner) : base(@interface, name, implementation, explicitArgs, owner)
         {
+            Flags |= ServiceEntryFlags.CreateSingleInstance;
         }
 
         public override object CreateInstance(IInjector scope)

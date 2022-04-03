@@ -29,12 +29,12 @@ namespace Solti.Utils.DI.Interfaces
         /// <summary>
         /// Indicates that the entry was already instantiated one or more times.
         /// </summary>
-        Instantiated = Validated | 1 << 1,
+        Instantiated = Validated | 1 << 1, // TODO: remove
 
         /// <summary>
         /// Signals that no build phase required. It also means that the <see cref="AbstractServiceEntry.GetSingleInstance"/> method can be called.
         /// </summary>
-        Built = Instantiated | 1 << 2,
+        Built = Instantiated | 1 << 2, // TODO: remove
 
         /// <summary>
         /// A single instance will be created.

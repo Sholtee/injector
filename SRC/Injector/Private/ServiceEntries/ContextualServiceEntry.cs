@@ -16,7 +16,7 @@ namespace Solti.Utils.DI.Internals
         private ContextualServiceEntry(ContextualServiceEntry original, IServiceRegistry owner) : base(original.Interface, original.Name, null, Ensure.Parameter.IsNotNull(owner, nameof(owner)))
         {
             Selector = original.Selector;
-            Flags = ServiceEntryFlags.Built | ServiceEntryFlags.CreateSingleInstance;
+            Flags = ServiceEntryFlags.Built | ServiceEntryFlags.CreateSingleInstance | ServiceEntryFlags.Validated | ServiceEntryFlags.SuppressDispose;
         }
 
         public ContextualServiceEntry(Type @interface, string? name, Func<IServiceRegistry, object> selector) : base(@interface, name, null, null) =>

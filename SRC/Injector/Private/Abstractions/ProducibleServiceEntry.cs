@@ -117,7 +117,7 @@ namespace Solti.Utils.DI.Internals
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        protected void UpdateState(ServiceEntryFlags newState)
+        protected void UpdateState(ServiceEntryFlags newState) // TODO: remove
         {
             if (newState == Flags)
                 return;
@@ -136,11 +136,11 @@ namespace Solti.Utils.DI.Internals
         }
         #endregion
 
-        public ProducibleServiceEntry? Root { get; }
+        public ProducibleServiceEntry? Root { get; } // TODO: remove
 
         public object? ExplicitArgs { get; }
 
-        public abstract AbstractServiceEntry Specialize(IServiceRegistry? owner, params Type[] genericArguments);
+        public abstract AbstractServiceEntry Specialize(IServiceRegistry? owner /*TODO: remove*/, params Type[] genericArguments);
 
         Func<IInjector, Type, object>? ISupportsProxying.Factory
         {

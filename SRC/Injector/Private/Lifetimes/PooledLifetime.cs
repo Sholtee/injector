@@ -35,7 +35,7 @@ namespace Solti.Utils.DI.Internals
 
         public PooledLifetime() : base(precedence: 20) => Pooled = this;
 
-        public const string POOL_SCOPE = nameof(POOL_SCOPE);
+        public const string POOL_SCOPE = nameof(POOL_SCOPE); // TODO: Remove
 
         public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Type implementation)
         {

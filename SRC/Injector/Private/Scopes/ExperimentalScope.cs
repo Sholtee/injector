@@ -81,7 +81,7 @@ namespace Solti.Utils.DI.Internals
                     FPath.Pop();
                 }
 
-                requested.Flags |= ServiceEntryFlags.Validated;
+                requested.SetValidated();
             }
             else
                 instance = requested.CreateInstance(this);
@@ -199,7 +199,10 @@ namespace Solti.Utils.DI.Internals
 
             return instance;
         }
+        
         public ScopeOptions Options { get; }
+
+        public object? Parent { get; }
 
         #region Dispose
         //
