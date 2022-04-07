@@ -25,6 +25,8 @@ namespace Solti.Utils.DI.Internals
 
             InjectorGet     = MethodInfoExtractor.Extract<IInjector>(i => i.Get(null!, null)),
             InjectorTryGet  = MethodInfoExtractor.Extract<IInjector>(i => i.TryGet(null!, null)),
+            LazyGet         = MethodInfoExtractor.Extract(() => LazyGetImpl<object>(null!, null)).GetGenericMethodDefinition(),
+            LazyTryGet      = MethodInfoExtractor.Extract(() => LazyTryGetImpl<object>(null!, null)).GetGenericMethodDefinition(),
             DictTryGetValue = MethodInfoExtractor.Extract<IReadOnlyDictionary<string, object?>, object?>((dict, outVal) => dict.TryGetValue(default!, out outVal));
 
         private static Type? GetEffectiveType(Type type, out bool isLazy)
@@ -347,49 +349,25 @@ namespace Solti.Utils.DI.Internals
             Ensure.Parameter.IsInterface(iface, nameof(iface));
             Ensure.Parameter.IsNotGenericDefinition(iface, nameof(iface));
 
-            Type delegateType = typeof(Func<>).MakeGenericType(iface);
-
-            //
-            // () => (iface) injector.[Try]Get(iface, svcName)
-            //
+            MethodInfo lazyFactory = (options?.Optional is true ? LazyTryGet : LazyGet).MakeGenericMethod(iface);
 
             ParameterExpression injector = Expression.Parameter(typeof(IInjector), nameof(injector));
 
-            LambdaExpression valueFactory = Expression.Lambda
+            return Expression.Lambda<Func<IInjector, object>>
             (
-                delegateType,
-                Expression.Convert
+                Expression.Call
                 (
-                    Expression.Call
-                    (
-                        injector,
-                        options?.Optional is true ? InjectorTryGet : InjectorGet,
-                        Expression.Constant(iface),
-                        Expression.Constant(options?.Name, typeof(string))
-                    ),
-                    iface
-                )
-            );
-
-            //
-            // injector => new Lazy<iface>(() => (iface) injector.[Try]Get(iface, svcName))
-            //
-
-            Type lazyType = typeof(Lazy<>).MakeGenericType(iface);
-
-            Expression<Func<IInjector, object>> lazyFactory = Expression.Lambda<Func<IInjector, object>>
-            (
-                Expression.New
-                (
-                    lazyType.GetConstructor(new[] { delegateType }) ?? throw new MissingMethodException(lazyType.Name, ConstructorInfo.ConstructorName),
-                    valueFactory
+                    lazyFactory,
+                    injector,
+                    Expression.Constant(options?.Name, typeof(string))
                 ),
                 injector
-            );
+            ).Compile();
 
-            Debug.WriteLine($"Created Lazy<> factory:{Environment.NewLine}{lazyFactory.GetDebugView()}");
-
-            return lazyFactory.Compile();
         });
+
+        private static object LazyGetImpl<TInterface>(IInjector injector, string? name) where TInterface : class => new Lazy<TInterface>(() => (TInterface) injector.Get(typeof(TInterface), name));
+
+        private static object LazyTryGetImpl<TInterface>(IInjector injector, string? name) where TInterface : class => new Lazy<TInterface?>(() => (TInterface?) injector.TryGet(typeof(TInterface), name));
     }
 }
