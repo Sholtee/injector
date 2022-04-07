@@ -74,7 +74,7 @@ namespace Solti.Utils.DI.Internals
             // Ellenorizzuk h az ujonan letrehozott peldanyt kesobb fel kell e szabaditani
             //
 
-            if (obj is IDisposable || obj is IAsyncDisposable)
+            if (obj is IDisposable || obj is IAsyncDisposable) // TODO: remove this validation
                 FCapturedDisposables.Push(obj);
         }
 

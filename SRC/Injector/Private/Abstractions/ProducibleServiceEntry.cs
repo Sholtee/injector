@@ -136,6 +136,15 @@ namespace Solti.Utils.DI.Internals
         }
         #endregion
 
+        public override object CreateInstance(IInjector scope, out IDisposable? lifetime)
+        {
+            EnsureProducible();
+
+            object result = Factory!(scope, Interface);
+            lifetime = result as IDisposable;
+            return result;
+        }
+
         public ProducibleServiceEntry? Root { get; } // TODO: remove
 
         public object? ExplicitArgs { get; }

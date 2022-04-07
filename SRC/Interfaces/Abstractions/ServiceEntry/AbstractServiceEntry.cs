@@ -113,7 +113,12 @@ namespace Solti.Utils.DI.Interfaces
         /// Creates a new service instance.
         /// </summary>
         /// <remarks>This method may throw an <see cref="InvalidOperationException"/> if the entry already created a single instance from the service.</remarks>
-        public abstract object CreateInstance(IInjector scope);
+        public abstract object CreateInstance(IInjector scope); // TODO: remove
+
+        /// <summary>
+        /// Creates a new service instance.
+        /// </summary>
+        public virtual object CreateInstance(IInjector scope, out IDisposable? lifetime) => throw new NotImplementedException(); // TODO: make abstract
 
         /// <summary>
         /// Sets the <see cref="ServiceEntryFlags.Validated"/> flag.

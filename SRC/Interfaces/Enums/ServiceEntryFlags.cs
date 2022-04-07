@@ -42,13 +42,8 @@ namespace Solti.Utils.DI.Interfaces
         CreateSingleInstance = 1 << 3,
 
         /// <summary>
-        /// The created instance is disposed from user code.
-        /// </summary>
-        SuppressDispose = 1 << 4,
-
-        /// <summary>
         /// The created service instance is shared between scopes.
         /// </summary>
-        Shared = 1 << 5,
+        Shared = 1 << 4,
     }
 }

@@ -43,6 +43,7 @@ namespace Solti.Utils.DI.Internals
         private object CreateInstance(AbstractServiceEntry requested)
         {
             object instance;
+            IDisposable? lifetime;
 
             if (!requested.Flags.HasFlag(ServiceEntryFlags.Validated))
             {
@@ -74,7 +75,9 @@ namespace Solti.Utils.DI.Internals
                 FPath.Push(requested);
                 try
                 {
-                    instance = requested.CreateInstance(this);
+                    #pragma warning disable CA2000 // Dispose objects before losing scope
+                    instance = requested.CreateInstance(this, out lifetime);
+                    #pragma warning restore CA2000
                 }
                 finally
                 {
@@ -84,10 +87,12 @@ namespace Solti.Utils.DI.Internals
                 requested.SetValidated();
             }
             else
-                instance = requested.CreateInstance(this);
+                #pragma warning disable CA2000 // Dispose objects before losing scope
+                instance = requested.CreateInstance(this, out lifetime);
+                #pragma warning restore CA2000
 
-            if (!requested.Flags.HasFlag(ServiceEntryFlags.SuppressDispose))
-                FDisposableStore.Capture(instance);
+            if (lifetime is not null)
+                FDisposableStore.Capture(lifetime);
 
             return instance;
         }

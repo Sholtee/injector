@@ -27,7 +27,14 @@ namespace Solti.Utils.DI.Internals
             this.ApplyAspects();
 
 
-            Flags = ServiceEntryFlags.Built | ServiceEntryFlags.Validated | ServiceEntryFlags.Shared | ServiceEntryFlags.CreateSingleInstance | ServiceEntryFlags.SuppressDispose;
+            Flags = ServiceEntryFlags.Built | ServiceEntryFlags.Validated | ServiceEntryFlags.Shared | ServiceEntryFlags.CreateSingleInstance;
+        }
+
+
+        public override object CreateInstance(IInjector scope, out IDisposable? lifetime)
+        {
+            lifetime = null;
+            return FInstance;
         }
 
         public override Lifetime? Lifetime { get; } = Lifetime.Instance;
