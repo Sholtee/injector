@@ -12,7 +12,7 @@ namespace Solti.Utils.DI.Internals
 
     internal sealed class TransientServiceEntry : ProducibleServiceEntry
     {
-        private int FInstanceCount;
+        private int FInstanceCount; // TODO: remove
 
         private TransientServiceEntry(TransientServiceEntry entry, IServiceRegistry owner) : base(entry, owner)
         {

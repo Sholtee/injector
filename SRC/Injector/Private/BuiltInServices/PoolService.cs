@@ -84,36 +84,6 @@ namespace Solti.Utils.DI.Internals
             public void RecursionDetected() {}
         }
 
-        private sealed class Wrapped : Disposable, IWrapped<object>
-        {
-            private readonly object FValue;
-
-            public Wrapped(ObjectPool<object> owner)
-            {
-                Owner = owner;
-                FValue = owner.Get(CheckoutPolicy.Block)!;
-            }
-
-            protected override void Dispose(bool disposeManaged)
-            {
-                if (disposeManaged)
-                    Owner.Return(FValue);
-
-                base.Dispose(disposeManaged);
-            }
-
-            public ObjectPool<object> Owner { get; }
-
-            public object Value
-            {
-                get 
-                {
-                    CheckNotDisposed();
-                    return FValue;
-                }
-            }
-        }
-
         [SuppressMessage("Reliability", "CA2000:Dispose objects before losing scope")]
         public PoolService(IScopeFactory scopeFactory, int capacity, string? name) : base(capacity, new PoolServiceLifetimeManager(scopeFactory, name)) 
         {
@@ -126,7 +96,7 @@ namespace Solti.Utils.DI.Internals
             // esetleges megosztott fuggosegek mar peldanyositasra keruljenek.
             //
 
-            Get().Dispose();
+            Return(Get());
         }
 
         protected override void Dispose(bool disposeManaged)
@@ -137,6 +107,6 @@ namespace Solti.Utils.DI.Internals
                 ((IDisposable) LifetimeManager).Dispose();
         }
 
-        public IWrapped<object> Get() => new Wrapped(this);
+        public object Get() => Get(CheckoutPolicy.Block)!;
     }
 }

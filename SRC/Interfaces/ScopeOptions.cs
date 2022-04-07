@@ -20,7 +20,7 @@ namespace Solti.Utils.DI.Interfaces
         /// <summary>
         /// The maximum number of <see cref="Lifetime.Transient"/> service instances can be held by the <see cref="IInjector"/>.
         /// </summary>
-        public int MaxSpawnedTransientServices { get; init; } = 512;
+        public int MaxSpawnedTransientServices { get; init; } = 512; // TODO: remove
 
         /// <summary>
         /// Specifies whether the created scopes should implement the <see cref="IServiceProvider"/> interface.

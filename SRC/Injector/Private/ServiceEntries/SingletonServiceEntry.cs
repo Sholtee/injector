@@ -11,7 +11,7 @@ namespace Solti.Utils.DI.Internals
 
     internal sealed class SingletonServiceEntry : ProducibleServiceEntry
     {
-        private object? FInstance;
+        private object? FInstance; // TODO: remove
 
         private SingletonServiceEntry(SingletonServiceEntry entry, IServiceRegistry? owner) : base(entry, owner)
         {

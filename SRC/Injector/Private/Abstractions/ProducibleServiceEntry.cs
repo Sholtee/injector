@@ -16,6 +16,7 @@ namespace Solti.Utils.DI.Internals
     internal abstract class ProducibleServiceEntry : AbstractServiceEntry, ISupportsSpecialization, ISupportsProxying
     {
         #region Protected
+        // TODO: remove
         protected ProducibleServiceEntry(ProducibleServiceEntry entry, IServiceRegistry? owner) : base(entry.Interface, entry.Name, entry.Implementation, owner)
         {
             Factory = entry.Factory;

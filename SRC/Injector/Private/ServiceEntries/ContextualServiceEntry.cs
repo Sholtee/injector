@@ -19,8 +19,11 @@ namespace Solti.Utils.DI.Internals
             Flags = ServiceEntryFlags.Built | ServiceEntryFlags.CreateSingleInstance | ServiceEntryFlags.Validated;
         }
 
-        public ContextualServiceEntry(Type @interface, string? name, Func<IServiceRegistry, object> selector) : base(@interface, name, null, null) =>
+        public ContextualServiceEntry(Type @interface, string? name, Func<IServiceRegistry /*TODO: should be IInjector*/, object> selector) : base(@interface, name, null, null)
+        {
             Selector = selector;
+            Flags = ServiceEntryFlags.Built | ServiceEntryFlags.CreateSingleInstance | ServiceEntryFlags.Validated;
+        }
 
         public override object CreateInstance(IInjector scope) => throw new InvalidOperationException();
 
@@ -33,7 +36,7 @@ namespace Solti.Utils.DI.Internals
             return FInstance ??= Selector(Owner);
         }
 
-        public override object GetSingleInstance()
+        public override object GetSingleInstance() // TODO: remove
         {
             if (Owner is null)
                 throw new InvalidOperationException();
@@ -43,6 +46,6 @@ namespace Solti.Utils.DI.Internals
 
         public Func<IServiceRegistry, object> Selector { get; }
 
-        public override AbstractServiceEntry CopyTo(IServiceRegistry owner) => new ContextualServiceEntry(this, Ensure.Parameter.IsNotNull(owner, nameof(owner)));
+        public override AbstractServiceEntry CopyTo(IServiceRegistry owner) => new ContextualServiceEntry(this, Ensure.Parameter.IsNotNull(owner, nameof(owner))); // TODO: remove
     }
 }

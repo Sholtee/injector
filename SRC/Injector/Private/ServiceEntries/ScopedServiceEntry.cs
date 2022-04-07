@@ -11,7 +11,7 @@ namespace Solti.Utils.DI.Internals
 
     internal sealed class ScopedServiceEntry : ProducibleServiceEntry
     {
-        private object? FInstance;
+        private object? FInstance; // TODO: remove
 
         private ScopedServiceEntry(ScopedServiceEntry entry, IServiceRegistry? owner) : base(entry, owner)
         {

@@ -17,7 +17,7 @@ namespace Solti.Utils.DI.Internals
 
     internal sealed class PooledServiceEntry : ProducibleServiceEntry, IRequiresServiceAccess
     {
-        private object? FInstance;
+        private object? FInstance; // TODO: remove
 
         private PooledServiceEntry(PooledServiceEntry entry, IServiceRegistry? owner) : base(entry, owner)
         {
@@ -43,7 +43,7 @@ namespace Solti.Utils.DI.Internals
             Flags |= ServiceEntryFlags.CreateSingleInstance;
         }
 
-        public override object CreateInstance(IInjector scope)
+        public override object CreateInstance(IInjector scope) // TODO: remove
         {
             Ensure.Parameter.IsNotNull(scope, nameof(scope));
             EnsureProducible();
@@ -55,7 +55,7 @@ namespace Solti.Utils.DI.Internals
             // Pool-ban az eredeti factory-t hivjuk
             //
 
-            if (scope.Meta(PooledLifetime.POOL_SCOPE) is true /*TODO: Remove*/ || scope.Parent is ILifetimeManager<object>)
+            if (scope.Meta(PooledLifetime.POOL_SCOPE) is true)
                 FInstance = Factory!(scope, Interface);
 
             //
@@ -75,7 +75,7 @@ namespace Solti.Utils.DI.Internals
                     PoolName
                 );
 
-                FInstance = relatedPool.Get();
+                FInstance = new PoolItemCheckin(relatedPool, relatedPool.Get());
             }
 
             UpdateState(ServiceEntryFlags.Built);
@@ -83,7 +83,54 @@ namespace Solti.Utils.DI.Internals
             return FInstance;
         }
 
-        public override object GetSingleInstance() => FInstance ?? throw new InvalidOperationException(); // TODO: uzenet
+        private sealed class PoolItemCheckin : Disposable
+        {
+            public PoolItemCheckin(IPool pool, object instance)
+            {
+                Pool = pool;
+                Instance = instance;
+            }
+
+            protected override void Dispose(bool disposeManaged)
+            {
+                base.Dispose(disposeManaged);
+
+                Pool.Return(Instance);
+            }
+
+            public IPool Pool { get; }
+
+            public object Instance { get; }
+        }
+
+        public override object CreateInstance(IInjector scope, out IDisposable? lifetime)
+        {
+            if (scope.Parent is ILifetimeManager<object>)
+
+                //
+                // In pool, we call the original factory
+                //
+
+                return base.CreateInstance(scope, out lifetime);
+            else
+            {
+                //
+                // In consumer side we get the item from the pool
+                //
+
+                IPool relatedPool = (IPool) scope.Get
+                (
+                    typeof(IPool<>).MakeGenericType(Interface), // time consuming but called rarely
+                    PoolName
+                );
+
+                object result = relatedPool.Get();
+                lifetime = new PoolItemCheckin(relatedPool, result);
+                return result;
+            }
+        }
+
+        public override object GetSingleInstance() => FInstance ?? throw new InvalidOperationException(); // TODO: remove
 
         public override AbstractServiceEntry CopyTo(IServiceRegistry registry) => new PooledServiceEntry(this, Ensure.Parameter.IsNotNull(registry, nameof(registry)));
 
