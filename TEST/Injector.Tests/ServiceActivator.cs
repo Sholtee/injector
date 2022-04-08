@@ -6,6 +6,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Reflection;
 
 using Moq;
@@ -523,17 +524,22 @@ namespace Solti.Utils.DI.Internals.Tests
 
         [TestCase(null)]
         [TestCase("cica")]
-        public void GetLazyFactory_ShouldReturnProperFactory(string svcName)
+        public void CreateLazy_ShouldReturnProperLazyInstance(string svcName)
         {
             var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
             mockInjector
                 .Setup(i => i.Get(It.IsAny<Type>(), It.IsAny<string>()))
                 .Returns<Type, string>((type, name) => new Disposable());
 
-            Func<IInjector, Lazy<IDisposable>> factory = (Func<IInjector, Lazy<IDisposable>>) ServiceActivator.GetLazyFactory(typeof(IDisposable), new OptionsAttribute { Name = svcName });
-            Assert.That(factory, Is.Not.Null);
+            ParameterExpression injector = Expression.Parameter(typeof(IInjector));
 
-            Lazy<IDisposable> lazy = factory(mockInjector.Object) as Lazy<IDisposable>;
+            Func<IInjector, Lazy<IDisposable>> factory = Expression.Lambda<Func<IInjector, Lazy<IDisposable>>>
+            (
+                ServiceActivator.CreateLazy(injector, typeof(IDisposable), new OptionsAttribute { Name = svcName }),
+                injector
+            ).Compile();
+
+            Lazy<IDisposable> lazy = factory(mockInjector.Object);
             Assert.That(lazy, Is.Not.Null);
 
             mockInjector.Verify(i => i.Get(It.IsAny<Type>(), It.IsAny<string>()), Times.Never);
@@ -542,13 +548,6 @@ namespace Solti.Utils.DI.Internals.Tests
             Assert.That(retval, Is.InstanceOf<Disposable>());
 
             mockInjector.Verify(i => i.Get(It.Is<Type>(t => t == typeof(IDisposable)), It.Is<string>(s => s == svcName)), Times.Once);
-        }
-
-        [TestCase(null)]
-        [TestCase("cica")]
-        public void GetLazyFactory_ShouldCache(string svcName)
-        {
-            Assert.AreSame(ServiceActivator.GetLazyFactory(typeof(IDisposable), new OptionsAttribute { Name = svcName }), ServiceActivator.GetLazyFactory(typeof(IDisposable), new OptionsAttribute { Name = svcName }));
         }
 
         [Test]
