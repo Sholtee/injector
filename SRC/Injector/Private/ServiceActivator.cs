@@ -77,11 +77,7 @@ namespace Solti.Utils.DI.Internals
                                     .GetParametersSafe()
                                     .Select
                                     (
-                                        param => Expression.Convert
-                                        (
-                                            dependencyResolver(param.ParameterType, param.Name, param.GetCustomAttribute<OptionsAttribute>()),
-                                            param.ParameterType
-                                        )
+                                        param => dependencyResolver(param.ParameterType, param.Name, param.GetCustomAttribute<OptionsAttribute>())
                                     )
                             ),
                             constructor
@@ -93,11 +89,7 @@ namespace Solti.Utils.DI.Internals
                                     property => Expression.Bind
                                     (
                                         property,
-                                        Expression.Convert
-                                        (
-                                            dependencyResolver(property.PropertyType, property.Name, property.GetCustomAttribute<OptionsAttribute>()),
-                                            property.PropertyType
-                                        )
+                                        dependencyResolver(property.PropertyType, property.Name, property.GetCustomAttribute<OptionsAttribute>())
                                     )
                                 )
                         ),
@@ -153,15 +145,19 @@ namespace Solti.Utils.DI.Internals
                     )
 
                     //
-                    // injector.[Try]Get(typeof(IInterface), svcName)
+                    // (TInterface) injector.[Try]Get(typeof(IInterface), svcName)
                     //
 
-                    : Expression.Call
+                    : Expression.Convert
                     (
-                        injector,
-                        options?.Optional is true ? InjectorTryGet : InjectorGet,
-                        Expression.Constant(type),
-                        Expression.Constant(options?.Name, typeof(string))
+                        Expression.Call
+                        (
+                            injector,
+                            options?.Optional is true ? InjectorTryGet : InjectorGet,
+                            Expression.Constant(type),
+                            Expression.Constant(options?.Name, typeof(string))
+                        ),
+                        type
                     );
             }
         });
@@ -211,12 +207,12 @@ namespace Solti.Utils.DI.Internals
                 // az explicit ertekek kozt). Injector.Get() ugy is szolni fog kesobb ha gond van.
                 //
 
-                type = GetEffectiveType(type, out bool isLazy) ?? type;
+                Type effectiveType = GetEffectiveType(type, out bool isLazy) ?? type;
 
                 //
                 // explicitArgs.TryGetValue(name, out explicitVal)
-                //   ? explicitArgs 
-                //   : Lazy<IDependency_1>() | injector.[Try]Get(typeof(IDependency_1))
+                //   ? (TInterface) explicitVal 
+                //   : Lazy<IDependency_1>() | (TInterface) injector.[Try]Get(typeof(IDependency_1))
                 //
 
                 return Expression.Condition
@@ -228,7 +224,7 @@ namespace Solti.Utils.DI.Internals
                         Expression.Constant(name), 
                         arg
                     ),
-                    ifTrue: arg,
+                    ifTrue: Expression.Convert(arg, type),
                     ifFalse: isLazy
                         //
                         // Lazy<IInterface>(() => (IInterface) injector.[Try]Get(typeof(IInterface), svcName))
@@ -238,21 +234,25 @@ namespace Solti.Utils.DI.Internals
                         (
                             Expression.Constant
                             (
-                                GetLazyFactory(type, options)
+                                GetLazyFactory(effectiveType, options)
                             ),
                             injector
                         )
 
                         //
-                        // injector.[Try]Get(typeof(IInterface), svcName)
+                        // (TInterface) injector.[Try]Get(typeof(IInterface), svcName)
                         //
 
-                        : Expression.Call
+                        : Expression.Convert
                         (
-                            injector,
-                            options?.Optional is true ? InjectorTryGet : InjectorGet,
-                            Expression.Constant(type),
-                            Expression.Constant(options?.Name, typeof(string))
+                            Expression.Call
+                            (
+                                injector,
+                                options?.Optional is true ? InjectorTryGet : InjectorGet,
+                                Expression.Constant(type),
+                                Expression.Constant(options?.Name, typeof(string))
+                            ),
+                            type
                         )
                 );
             }
@@ -324,15 +324,19 @@ namespace Solti.Utils.DI.Internals
                     );
 
                 //
-                // injector.[Try]Get(typeof(IInterface), svcName)
+                // (TInterfcae) injector.[Try]Get(typeof(IInterface), svcName)
                 //
 
-                return Expression.Call
+                return Expression.Convert
                 (
-                    injector,
-                    options?.Optional is true ? InjectorTryGet : InjectorGet,
-                    Expression.Constant(type),
-                    Expression.Constant(options?.Name, typeof(string))
+                    Expression.Call
+                    (
+                        injector,
+                        options?.Optional is true ? InjectorTryGet : InjectorGet,
+                        Expression.Constant(type),
+                        Expression.Constant(options?.Name, typeof(string))
+                    ),
+                    type
                 );
             }
         });
@@ -344,7 +348,7 @@ namespace Solti.Utils.DI.Internals
             return GetExtended(type.GetApplicableConstructor(), paramzProvider);
         });
 
-        public static Func<IInjector, object> GetLazyFactory(Type iface, OptionsAttribute? options) => Cache.GetOrAdd((iface, options?.Name, options?.Optional), () =>
+        public static Delegate GetLazyFactory(Type iface, OptionsAttribute? options) => Cache.GetOrAdd((iface, options?.Name, options?.Optional), () =>
         {
             Ensure.Parameter.IsInterface(iface, nameof(iface));
             Ensure.Parameter.IsNotGenericDefinition(iface, nameof(iface));
@@ -353,8 +357,15 @@ namespace Solti.Utils.DI.Internals
 
             ParameterExpression injector = Expression.Parameter(typeof(IInjector), nameof(injector));
 
-            return Expression.Lambda<Func<IInjector, object>>
+            Type factoryType = typeof(Func<,>).MakeGenericType
             (
+                typeof(IInjector), 
+                typeof(Lazy<>).MakeGenericType(iface)
+            );
+
+            return Expression.Lambda
+            (
+                factoryType,
                 Expression.Call
                 (
                     lazyFactory,
@@ -363,11 +374,10 @@ namespace Solti.Utils.DI.Internals
                 ),
                 injector
             ).Compile();
-
         });
 
-        private static object LazyGetImpl<TInterface>(IInjector injector, string? name) where TInterface : class => new Lazy<TInterface>(() => (TInterface) injector.Get(typeof(TInterface), name));
+        private static Lazy<TInterface> LazyGetImpl<TInterface>(IInjector injector, string? name) where TInterface : class => new Lazy<TInterface>(() => (TInterface) injector.Get(typeof(TInterface), name));
 
-        private static object LazyTryGetImpl<TInterface>(IInjector injector, string? name) where TInterface : class => new Lazy<TInterface?>(() => (TInterface?) injector.TryGet(typeof(TInterface), name));
+        private static Lazy<TInterface?> LazyTryGetImpl<TInterface>(IInjector injector, string? name) where TInterface : class => new Lazy<TInterface?>(() => (TInterface?) injector.TryGet(typeof(TInterface), name));
     }
 }

@@ -530,7 +530,7 @@ namespace Solti.Utils.DI.Internals.Tests
                 .Setup(i => i.Get(It.IsAny<Type>(), It.IsAny<string>()))
                 .Returns<Type, string>((type, name) => new Disposable());
 
-            Func<IInjector, object> factory = ServiceActivator.GetLazyFactory(typeof(IDisposable), new OptionsAttribute { Name = svcName });
+            Func<IInjector, Lazy<IDisposable>> factory = (Func<IInjector, Lazy<IDisposable>>) ServiceActivator.GetLazyFactory(typeof(IDisposable), new OptionsAttribute { Name = svcName });
             Assert.That(factory, Is.Not.Null);
 
             Lazy<IDisposable> lazy = factory(mockInjector.Object) as Lazy<IDisposable>;
