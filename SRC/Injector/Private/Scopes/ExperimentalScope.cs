@@ -48,16 +48,16 @@ namespace Solti.Utils.DI.Internals
             object instance;
             IDisposable? lifetime;
 
-            if (!requested.Flags.HasFlag(ServiceEntryFlags.Validated))
+            //
+            // At the root of the dependency graph this validation makes no sense.
+            //
+
+            if (Options.StrictDI && FPath?.Count > 0)
             {
-                //
-                // At the root of the dependency graph this validation makes no sense.
-                //
+                AbstractServiceEntry requestor = FPath[^1];
 
-                if (Options.StrictDI && FPath?.Count > 0)
+                if (!requestor.Flags.HasFlag(ServiceEntryFlags.Validated))
                 {
-                    AbstractServiceEntry requestor = FPath[^1];
-
                     //
                     // The requested service should not exist longer than its requestor.
                     //
@@ -71,9 +71,11 @@ namespace Solti.Utils.DI.Internals
                         throw ex;
                     }
                 }
+            }
 
-                if (FPath is null)
-                    FPath = new ServicePath();
+            if (!requested.Flags.HasFlag(ServiceEntryFlags.Validated))
+            {
+                FPath ??= new ServicePath();
 
                 FPath.Push(requested);
                 try
@@ -189,7 +191,7 @@ namespace Solti.Utils.DI.Internals
                 // method simple.
                 //
 
-                if (entry.Interface.IsGenericType && !entry.Interface.IsGenericTypeDefinition)
+                if (entry.Interface.IsConstructedGenericType)
                     throw new InvalidOperationException(); // TODO: message
 
                 int key = HashCombine(entry.Interface, entry.Name);
@@ -222,7 +224,7 @@ namespace Solti.Utils.DI.Internals
             FResolvers = resolvers;
             FRegularSlots = Array<object>.Create(regularSlots);
             FGenericSlotsWithSingleValue = Array<Node<Type, object>>.Create(genericSlotsWithSingleValue);
-            FGenericSlots = Array< Node<Type, AbstractServiceEntry>>.Create(genericSlots);
+            FGenericSlots = Array<Node<Type, AbstractServiceEntry>>.Create(genericSlots);
 
             Options = options;
             Lifetime = lifetime;
