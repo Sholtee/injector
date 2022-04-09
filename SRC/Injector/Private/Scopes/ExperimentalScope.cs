@@ -56,20 +56,17 @@ namespace Solti.Utils.DI.Internals
             {
                 AbstractServiceEntry requestor = FPath[^1];
 
-                if (!requestor.Flags.HasFlag(ServiceEntryFlags.Validated))
+                //
+                // The requested service should not exist longer than its requestor.
+                //
+
+                if (!requestor.Flags.HasFlag(ServiceEntryFlags.Validated) && requested.Lifetime!.CompareTo(requestor.Lifetime!) < 0)
                 {
-                    //
-                    // The requested service should not exist longer than its requestor.
-                    //
+                    RequestNotAllowedException ex = new(Resources.STRICT_DI);
+                    ex.Data[nameof(requestor)] = requestor;
+                    ex.Data[nameof(requested)] = requested;
 
-                    if (requested.Lifetime!.CompareTo(requestor.Lifetime!) < 0)
-                    {
-                        RequestNotAllowedException ex = new(Resources.STRICT_DI);
-                        ex.Data[nameof(requestor)] = requestor;
-                        ex.Data[nameof(requested)] = requested;
-
-                        throw ex;
-                    }
+                    throw ex;
                 }
             }
 
