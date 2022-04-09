@@ -4,13 +4,9 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
-using System.Threading;
 using System.Threading.Tasks;
-
-using static System.Diagnostics.Debug;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -18,29 +14,36 @@ namespace Solti.Utils.DI.Internals
     using Primitives.Patterns;
     using Properties;
 
-    internal class ExperimentalScope : Disposable, IInjector
+    internal class ExperimentalScope:
+        Disposable,
+        IInjector,
+        IResolveService<ExperimentalScope>,
+        IResolveServiceHavingSingleValue<ExperimentalScope>,
+        IResolveGenericService<ExperimentalScope>,
+        IResolveGenericServiceHavingSingleValue<ExperimentalScope>
     {
         //
         // Dictionary performs much better against int keys
         //
 
-        private static readonly ConcurrentDictionary<int, AbstractServiceEntry> FSpecializedEntries = new();
-
         private readonly IReadOnlyDictionary<int, Func<ExperimentalScope, Type, object>> FResolvers;
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static int HashCombine(object? a, object? b) => unchecked((a?.GetHashCode() ?? 0) ^ (b?.GetHashCode() ?? 0));
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static AbstractServiceEntry Specialize(AbstractServiceEntry entry, Type iface) => FSpecializedEntries.GetOrAdd
-        (
-            HashCombine(entry, iface),
-            _ => ((ISupportsSpecialization) entry).Specialize(null!, iface.GenericTypeArguments)
-        );
+        #pragma warning disable CA1307 // Specify StringComparison for clarity
+        internal static int HashCombine(Type iface, string? name) => unchecked(iface.GetHashCode() ^ (name?.GetHashCode() ?? 0));
+        #pragma warning restore CA1307
 
         private ServicePath? FPath;
 
-        private object CreateInstance(AbstractServiceEntry requested)
+        #region IInstanceFactory
+        //
+        // It locks all the write operations related to this scope. Reading already produced services
+        // can be done parallelly.
+        //
+
+        object IInstanceFactory<ExperimentalScope>.Lock { get; } = new();
+
+        object IInstanceFactory<ExperimentalScope>.CreateInstance(AbstractServiceEntry requested)
         {
             object instance;
             IDisposable? lifetime;
@@ -97,16 +100,80 @@ namespace Solti.Utils.DI.Internals
             return instance;
         }
 
+        private readonly ExperimentalScope? FSuper;
+
+        ExperimentalScope? IInstanceFactory<ExperimentalScope>.Super => FSuper;
+
+        private readonly object?[] FRegularSlots;
+
+        ref object? IInstanceFactory<ExperimentalScope, object?>.GetSlot(int slot) => ref FRegularSlots[slot];
+
+        private readonly Node<Type, object>?[] FGenericSlotsWithSingleValue;
+
+        ref Node<Type, object>? IInstanceFactory<ExperimentalScope, Node<Type, object>?>.GetSlot(int slot) => ref FGenericSlotsWithSingleValue[slot];
+
+        private readonly Node<Type, AbstractServiceEntry>?[] FGenericSlots;
+
+        ref Node<Type, AbstractServiceEntry>? IInstanceFactory<ExperimentalScope, Node<Type, AbstractServiceEntry>?>.GetSlot(int slot) => ref FGenericSlots[slot];
+        #endregion
+
+        #region IInjector
+        public ScopeOptions Options { get; }
+
+        public object? Lifetime { get; }
+
+        public object Get(Type iface, string? name)
+        {
+            object? instance = TryGet(iface, name);
+
+            if (instance is null)
+            {
+                MissingServiceEntry requested = new(iface, name);
+
+                ServiceNotFoundException ex = new(string.Format(Resources.Culture, Resources.SERVICE_NOT_FOUND, requested.ToString(shortForm: true)));
+
+                ex.Data["requested"] = requested;
+                ex.Data["requestor"] = FPath?.Count > 0 ? FPath[^1] : null;
+#if DEBUG
+                ex.Data["scope"] = this;
+#endif
+                throw ex;
+            }
+
+            return instance;
+        }
+
+        public object? TryGet(Type iface, string? name)
+        {
+            Ensure.Parameter.IsNotNull(iface, nameof(iface));
+            Ensure.Parameter.IsInterface(iface, nameof(iface));
+            Ensure.Parameter.IsNotGenericDefinition(iface, nameof(iface));
+
+            int key = HashCombine(iface.IsGenericType ? iface.GetGenericTypeDefinition() : iface, name);
+
+            return FResolvers.TryGetValue(key, out Func<ExperimentalScope, Type, object> factory)
+                ? factory(this, iface)
+                : null;
+        }
+        #endregion
+
+        #region Dispose
         //
-        // It locks all the write operations related to this scope. Reading already produced services
-        // may be done parallelly.
+        // This list should not be thread safe since it is called inside a lock.
         //
 
-        private readonly object FWriteLock = new();
+        private readonly CaptureDisposable FDisposableStore = new();
 
-        private readonly ExperimentalScope? FParent;
+        protected override void Dispose(bool disposeManaged)
+        {
+            FDisposableStore.Dispose();
+            base.Dispose(disposeManaged);
+        }
 
-        public ExperimentalScope(IEnumerable<AbstractServiceEntry> registeredEntries, ScopeOptions options)
+        protected override ValueTask AsyncDispose() => FDisposableStore.DisposeAsync();
+        #endregion
+
+        public ExperimentalScope(IEnumerable<AbstractServiceEntry> registeredEntries, ScopeOptions options, object? lifetime)
         {
             int
                 regularSlots = 0,
@@ -158,289 +225,19 @@ namespace Solti.Utils.DI.Internals
             FGenericSlots = Array< Node<Type, AbstractServiceEntry>>.Create(genericSlots);
 
             Options = options;
+            Lifetime = lifetime;
         }
 
-        public ExperimentalScope(ExperimentalScope parent)
+        public ExperimentalScope(ExperimentalScope super, object? lifetime)
         {
-            FParent = parent;
-            FResolvers = parent.FResolvers;
-            FRegularSlots = Array<object>.Create(parent.FRegularSlots.Length);
-            FGenericSlotsWithSingleValue = Array<Node<Type, object>>.Create(parent.FGenericSlotsWithSingleValue.Length);
-            FGenericSlots = Array<Node<Type, AbstractServiceEntry>>.Create(parent.FGenericSlots.Length);
+            FSuper = super;
+            FResolvers = super.FResolvers;
+            FRegularSlots = Array<object>.Create(super.FRegularSlots.Length);
+            FGenericSlotsWithSingleValue = Array<Node<Type, object>>.Create(super.FGenericSlotsWithSingleValue.Length);
+            FGenericSlots = Array<Node<Type, AbstractServiceEntry>>.Create(super.FGenericSlots.Length);
 
-            Options = parent.Options;
-        }
-
-        public object? TryGet(Type iface, string? name)
-        {
-            Ensure.Parameter.IsNotNull(iface, nameof(iface));
-            Ensure.Parameter.IsInterface(iface, nameof(iface));
-            Ensure.Parameter.IsNotGenericDefinition(iface, nameof(iface));
-
-            int key = HashCombine(iface.IsGenericType ? iface.GetGenericTypeDefinition() : iface, name);
-
-            return FResolvers.TryGetValue(key, out Func<ExperimentalScope, Type, object> factory)
-                ? factory(this, iface)
-                : null;
-        }
-
-        public object Get(Type iface, string? name)
-        {
-            object? instance = TryGet(iface, name);
-
-            if (instance is null)
-            {
-                MissingServiceEntry requested = new(iface, name);
-
-                ServiceNotFoundException ex = new(string.Format(Resources.Culture, Resources.SERVICE_NOT_FOUND, requested.ToString(shortForm: true)));
-
-                ex.Data["requested"] = requested;
-                ex.Data["requestor"] = FPath?.Count > 0 ? FPath[^1] : null;
-#if DEBUG
-                ex.Data["scope"] = this;
-#endif
-                throw ex;
-            }
-
-            return instance;
-        }
-        
-        public ScopeOptions Options { get; }
-
-        public object? Parent { get; }
-
-        #region Dispose
-        //
-        // This list should not be thread safe since it is called inside a lock.
-        //
-
-        private readonly CaptureDisposable FDisposableStore = new();
-
-        protected override void Dispose(bool disposeManaged)
-        {
-            FDisposableStore.Dispose();
-            base.Dispose(disposeManaged);
-        }
-
-        protected override ValueTask AsyncDispose() => FDisposableStore.DisposeAsync();
-        #endregion
-
-        #region Nodes
-        private class Node<TKey, TValue>
-        {
-            public Node(TKey key, TValue value)
-            {
-                Key = key;
-                Value = value;
-            }
-
-            public readonly TKey Key;
-
-            public readonly TValue Value;
-
-            //
-            // Intentionally not a propery (to make referencing possible)
-            //
-
-            public Node<TKey, TValue>? Next;
-        }
-        #endregion
-
-        #region ResolveService
-        private readonly object?[] FRegularSlots;
-
-        internal object ResolveServiceHavingSingleValue(int slot, AbstractServiceEntry entry)
-        {
-            Assert(entry.Interface.IsGenericTypeDefinition, "Entry must reference a NON generic service");
-
-            //
-            // In case of shared entries retrieve the value from the parent.
-            //
-
-            if (entry.Flags.HasFlag(ServiceEntryFlags.Shared) && FParent is not null)
-                return FParent.ResolveServiceHavingSingleValue(slot, entry);
-
-            //------------------------Singleton/Scoped------------------------------------
-
-            ref object? value = ref FRegularSlots[slot];
-            if (value is not null)
-                return value;
-
-            //----------------------------------------------------------------------------
-
-            //
-            // If the lock already taken, don't enter again (it would have performance penalty)
-            //
-
-            bool releaseLock = !Monitor.IsEntered(FWriteLock);
-            if (releaseLock)
-                Monitor.Enter(FWriteLock);
-
-            try
-            {
-                //------------------------Singleton/Scoped------------------------------------
-
-                //
-                // Another thread may set the value while we reached here
-                //
-
-                #pragma warning disable CA1508 // Since we are in a multi-threaded environment this check is required 
-                if (value is null)
-                #pragma warning restore CA1508
-
-                //-----------------------------------------------------------------------------
-                    value = CreateInstance(entry);
-
-                return value;
-            }
-            finally
-            {
-                if (releaseLock)
-                    Monitor.Exit(FWriteLock);
-            }
-        }
-
-        internal object ResolveService(AbstractServiceEntry entry)
-        {
-            Assert(entry.Interface.IsGenericTypeDefinition, "Entry must reference a NON generic service");
-
-            if (entry.Flags.HasFlag(ServiceEntryFlags.Shared) && FParent is not null)
-                return FParent.ResolveService(entry);
-
-            bool releaseLock = !Monitor.IsEntered(FWriteLock);
-            if (releaseLock)
-                Monitor.Enter(FWriteLock);
-
-            try
-            {
-                return CreateInstance(entry);
-            }
-            finally
-            {
-                if (releaseLock)
-                    Monitor.Exit(FWriteLock);
-            }
-        }
-        #endregion
-
-        #region ResolveGenericService
-        private readonly Node<Type, object>?[] FGenericSlotsWithSingleValue;
-
-        internal object ResolveGenericServiceHavingSingleValue(int slot, Type iface, AbstractServiceEntry openEntry)
-        {
-            Assert(openEntry.Interface.IsGenericTypeDefinition, "Entry must reference an open generic service");
-            Assert(iface.IsConstructedGenericType, "The service interface must be a constructed generic type");
-
-            //
-            // In case of shared entries retrieve the value from the parent.
-            //
-
-            if (openEntry.Flags.HasFlag(ServiceEntryFlags.Shared) && FParent is not null)
-                return FParent.ResolveGenericServiceHavingSingleValue(slot, iface, openEntry);
-
-            ref Node<Type, object>? node = ref FGenericSlotsWithSingleValue[slot];
-
-            while (node is not null)
-            {
-                if (node.Key == iface)
-                    return node.Value;
-                node = ref node.Next;
-            }
-
-            //
-            // If the lock already taken, don't enter again (it would have performance penalty)
-            //
-
-            bool releaseLock = !Monitor.IsEntered(FWriteLock);
-            if (releaseLock)
-                Monitor.Enter(FWriteLock);
-
-            try
-            {
-                //
-                // Another thread may set the node while we reached here
-                //
-
-                #pragma warning disable CA1508
-                while (node is not null)
-                #pragma warning restore CA1508
-                {
-                    if (node.Key == iface)
-                        return node.Value;
-
-                    node = ref node.Next;
-                }
-
-                //
-                // Writing a "ref" variable is atomic
-                //
-
-                node = new Node<Type, object>
-                (
-                    iface,
-                    CreateInstance
-                    (
-                        //
-                        // Specialize the entry if previously it has not been yet. Always return the same specialized
-                        // entry to not screw up the circular reference validation.
-                        //
-
-                        Specialize(openEntry, iface)
-                    )
-                );
-
-                return node.Value;
-            }
-            finally
-            {
-                if (releaseLock)
-                    Monitor.Exit(FWriteLock);
-            }
-        }
-
-        private readonly Node<Type, AbstractServiceEntry>?[] FGenericSlots;
-
-        internal object ResolveGenericService(int slot, Type iface, AbstractServiceEntry openEntry)
-        {
-            Assert(openEntry.Interface.IsGenericTypeDefinition, "Entry must reference an open generic service");
-            Assert(iface.IsConstructedGenericType, "The service interface must be a constructed generic type");
-
-            if (openEntry.Flags.HasFlag(ServiceEntryFlags.Shared) && FParent is not null)
-                return FParent.ResolveGenericService(slot, iface, openEntry);
-
-            ref Node<Type, AbstractServiceEntry>? node = ref FGenericSlots[slot];
-
-            while (node is not null && node.Key != iface)
-            {
-                node = ref node.Next;
-            }
-
-            bool releaseLock = !Monitor.IsEntered(FWriteLock);
-            if (releaseLock)
-                Monitor.Enter(FWriteLock);
-
-            try
-            {
-                //
-                // Another thread may set the node while we reached here.
-                //
-
-                while (node is not null && node.Key != iface)
-                {
-                    node = ref node.Next;
-                }
-
-                if (node is null)
-                    node = new Node<Type, AbstractServiceEntry>(iface, Specialize(openEntry, iface));
-
-                return CreateInstance(node.Value);
-            }
-            finally
-            {
-                if (releaseLock)
-                    Monitor.Exit(FWriteLock);
-            }
+            Options = super.Options;
+            Lifetime = lifetime;
         }
     }
-    #endregion
 }

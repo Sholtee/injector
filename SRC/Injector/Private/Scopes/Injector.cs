@@ -167,7 +167,7 @@ namespace Solti.Utils.DI.Internals
 
         public ScopeOptions Options { get; }
 
-        public new object? Parent { get; }
+        public object? Lifetime { get; }
         #endregion
     }
 }

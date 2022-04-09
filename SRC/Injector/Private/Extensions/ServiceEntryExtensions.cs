@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Collections.Concurrent;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -12,7 +13,7 @@ namespace Solti.Utils.DI.Internals
 
     internal static partial class ServiceEntryExtensions
     {
-        public static object GetOrCreateInstance(this AbstractServiceEntry entry, IServiceFactory factory)
+        public static object GetOrCreateInstance(this AbstractServiceEntry entry, IServiceFactory factory) // TODO: remove
         {
             object instance = factory.GetOrCreateInstance(entry);
 
@@ -24,5 +25,21 @@ namespace Solti.Utils.DI.Internals
 
             return instance;
         }
+
+        //
+        // Dictionary performs much better against int keys
+        //
+
+        private static readonly ConcurrentDictionary<int, AbstractServiceEntry> FSpecializedEntries = new();
+
+        //
+        // Always return the same specialized entry to not screw up the circular reference validation.
+        //
+
+        public static AbstractServiceEntry Specialize(this AbstractServiceEntry entry, Type iface) => FSpecializedEntries.GetOrAdd
+        (
+            unchecked(entry.GetHashCode() ^ iface.GetHashCode()),
+            _ => ((ISupportsSpecialization) entry).Specialize(null!, iface.GenericTypeArguments)
+        );
     }
 }

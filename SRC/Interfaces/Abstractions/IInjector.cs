@@ -35,9 +35,9 @@ namespace Solti.Utils.DI.Interfaces
         object? TryGet(Type iface, string? name = null);
 
         /// <summary>
-        /// The parent that is responsible for releasing the scope. The value of null indicates that the user is obliged to call the <see cref="IDisposable.Dispose"/> method.
+        /// The object that is responsible for releasing the scope. The value of null indicates that the user is obliged to call the <see cref="IDisposable.Dispose"/> method.
         /// </summary>
-        object? Parent { get; }
+        object? Lifetime { get; }
 
         /// <summary>
         /// Describes the scope behavior.
