@@ -23,17 +23,23 @@ namespace Solti.Utils.DI.Internals
         IResolveGenericServiceHavingSingleValue<ExperimentalScope>
     {
         //
+        // This list should not be thread safe since it is called inside a lock.
+        //
+
+        private readonly CaptureDisposable FDisposableStore = new();
+
+        //
         // Dictionary performs much better against int keys
         //
 
         private readonly IReadOnlyDictionary<int, Func<ExperimentalScope, Type, object>> FResolvers;
 
+        private ServicePath? FPath;
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         #pragma warning disable CA1307 // Specify StringComparison for clarity
         internal static int HashCombine(Type iface, string? name) => unchecked(iface.GetHashCode() ^ (name?.GetHashCode() ?? 0));
         #pragma warning restore CA1307
-
-        private ServicePath? FPath;
 
         #region IInstanceFactory
         //
@@ -157,12 +163,6 @@ namespace Solti.Utils.DI.Internals
         #endregion
 
         #region Dispose
-        //
-        // This list should not be thread safe since it is called inside a lock.
-        //
-
-        private readonly CaptureDisposable FDisposableStore = new();
-
         protected override void Dispose(bool disposeManaged)
         {
             FDisposableStore.Dispose();

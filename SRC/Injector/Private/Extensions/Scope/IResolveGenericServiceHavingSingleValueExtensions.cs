@@ -17,6 +17,7 @@ namespace Solti.Utils.DI.Internals
         public static object ResolveGenericServiceHavingSingleValue<TDescendant>(this IResolveGenericServiceHavingSingleValue<TDescendant> self, int slot, Type iface, AbstractServiceEntry openEntry) where TDescendant: IResolveGenericServiceHavingSingleValue<TDescendant>
         {
             Assert(openEntry.Interface.IsGenericTypeDefinition, "Entry must reference an open generic service");
+            Assert(openEntry.Flags.HasFlag(ServiceEntryFlags.CreateSingleInstance), "Entry must resolve a single value");
             Assert(iface.IsConstructedGenericType, "The service interface must be a constructed generic type");
 
             //

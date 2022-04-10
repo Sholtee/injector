@@ -17,6 +17,7 @@ namespace Solti.Utils.DI.Internals
         public static object ResolveGenericService<TDescendant>(this IResolveGenericService<TDescendant> self, int slot, Type iface, AbstractServiceEntry openEntry) where TDescendant: IResolveGenericService<TDescendant>
         {
             Assert(openEntry.Interface.IsGenericTypeDefinition, "Entry must reference an open generic service");
+            Assert(!openEntry.Flags.HasFlag(ServiceEntryFlags.CreateSingleInstance), "Entry must be allowed to resolve multiple values");
             Assert(iface.IsConstructedGenericType, "The service interface must be a constructed generic type");
 
             if (openEntry.Flags.HasFlag(ServiceEntryFlags.Shared) && self.Super is not null)

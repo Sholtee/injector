@@ -16,6 +16,7 @@ namespace Solti.Utils.DI.Internals
         public static object ResolveService<TDescendant>(this IResolveService<TDescendant> self, AbstractServiceEntry entry) where TDescendant: IResolveService<TDescendant>
         {
             Assert(entry.Interface.IsGenericTypeDefinition, "Entry must reference a NON generic service");
+            Assert(!entry.Flags.HasFlag(ServiceEntryFlags.CreateSingleInstance), "Entry must be allowed to resolve multiple values");
 
             if (entry.Flags.HasFlag(ServiceEntryFlags.Shared) && self.Super is not null)
                 return self.Super.ResolveService(entry);
