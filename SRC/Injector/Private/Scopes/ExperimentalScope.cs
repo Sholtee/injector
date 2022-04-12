@@ -32,7 +32,7 @@ namespace Solti.Utils.DI.Internals
         // Dictionary performs much better against int keys
         //
 
-        private readonly IReadOnlyDictionary<int, Func<ExperimentalScope, Type, object>> FResolvers;
+        private readonly Func<int, Func<ExperimentalScope, Type, object>?> FResolve;
 
         private ServicePath? FPath;
 
@@ -156,9 +156,7 @@ namespace Solti.Utils.DI.Internals
 
             int key = HashCombine(iface.IsGenericType ? iface.GetGenericTypeDefinition() : iface, name);
 
-            return FResolvers.TryGetValue(key, out Func<ExperimentalScope, Type, object> factory)
-                ? factory(this, iface)
-                : null;
+            return FResolve(key)?.Invoke(this, iface);
         }
         #endregion
 
@@ -179,58 +177,62 @@ namespace Solti.Utils.DI.Internals
                 genericSlotsWithSingleValue = 0,
                 genericSlots = 0;
 
-            Dictionary<int, Func<ExperimentalScope, Type, object>> resolvers = new();
-
-            foreach (AbstractServiceEntry entry in registeredEntries)
-            {
-                //
-                // Enforce that there is no closed generic service registered. It's required to keep the GetInstance()
-                // method simple.
-                //
-
-                if (entry.Interface.IsConstructedGenericType)
-                    throw new InvalidOperationException(); // TODO: message
-
-                int key = HashCombine(entry.Interface, entry.Name);
-
-                if (entry.Interface.IsGenericTypeDefinition)
-                {
-                    if (entry.Flags.HasFlag(ServiceEntryFlags.CreateSingleInstance))
-                    {
-                        int slot = genericSlotsWithSingleValue++; // capture an immutable variable
-                        resolvers.Add(key, (scope, iface) => scope.ResolveGenericServiceHavingSingleValue(slot, iface, entry));
-                    }
-                    else
-                    {
-                        int slot = genericSlots++;
-                        resolvers.Add(key, (scope, iface) => scope.ResolveGenericService(slot, iface, entry));
-                    }
-                }
-                else
-                {
-                    if (entry.Flags.HasFlag(ServiceEntryFlags.CreateSingleInstance))
-                    {
-                        int slot = regularSlots++;
-                        resolvers.Add(key, (scope, iface) => scope.ResolveServiceHavingSingleValue(slot, entry));
-                    }
-                    else
-                        resolvers.Add(key, (scope, iface) => scope.ResolveService(entry));
-                }
-            }
-
-            FResolvers = resolvers;
+            FResolve = ISwitchBuilder<int, Func<ExperimentalScope, Type, object>>.Default.Instance.Build
+            (
+                GetResolvers()
+            );
             FRegularSlots = Array<object>.Create(regularSlots);
             FGenericSlotsWithSingleValue = Array<Node<Type, object>>.Create(genericSlotsWithSingleValue);
             FGenericSlots = Array<Node<Type, AbstractServiceEntry>>.Create(genericSlots);
 
             Options = options;
             Lifetime = lifetime;
+
+            IEnumerable<KeyValuePair<int, Func<ExperimentalScope, Type, object>>> GetResolvers()
+            {
+                foreach (AbstractServiceEntry entry in registeredEntries)
+                {
+                    //
+                    // Enforce that there is no closed generic service registered. It's required to keep the GetInstance()
+                    // method simple.
+                    //
+
+                    if (entry.Interface.IsConstructedGenericType)
+                        throw new InvalidOperationException(); // TODO: message
+
+                    int key = HashCombine(entry.Interface, entry.Name);
+
+                    if (entry.Interface.IsGenericTypeDefinition)
+                    {
+                        if (entry.Flags.HasFlag(ServiceEntryFlags.CreateSingleInstance))
+                        {
+                            int slot = genericSlotsWithSingleValue++; // capture an immutable variable
+                            yield return new KeyValuePair<int, Func<ExperimentalScope, Type, object>>(key, (scope, iface) => scope.ResolveGenericServiceHavingSingleValue(slot, iface, entry));
+                        }
+                        else
+                        {
+                            int slot = genericSlots++;
+                            yield return new KeyValuePair<int, Func<ExperimentalScope, Type, object>>(key, (scope, iface) => scope.ResolveGenericService(slot, iface, entry));
+                        }
+                    }
+                    else
+                    {
+                        if (entry.Flags.HasFlag(ServiceEntryFlags.CreateSingleInstance))
+                        {
+                            int slot = regularSlots++;
+                            yield return new KeyValuePair<int, Func<ExperimentalScope, Type, object>>(key, (scope, iface) => scope.ResolveServiceHavingSingleValue(slot, entry));
+                        }
+                        else
+                            yield return new KeyValuePair<int, Func<ExperimentalScope, Type, object>>(key, (scope, iface) => scope.ResolveService(entry));
+                    }
+                }
+            }
         }
 
         public ExperimentalScope(ExperimentalScope super, object? lifetime)
         {
             FSuper = super;
-            FResolvers = super.FResolvers;
+            FResolve = super.FResolve;
             FRegularSlots = Array<object>.Create(super.FRegularSlots.Length);
             FGenericSlotsWithSingleValue = Array<Node<Type, object>>.Create(super.FGenericSlotsWithSingleValue.Length);
             FGenericSlots = Array<Node<Type, AbstractServiceEntry>>.Create(super.FGenericSlots.Length);
