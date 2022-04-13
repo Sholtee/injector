@@ -28,10 +28,6 @@ namespace Solti.Utils.DI.Internals
 
         private readonly CaptureDisposable FDisposableStore = new();
 
-        //
-        // Dictionary performs much better against int keys
-        //
-
         private readonly Func<int, Func<ExperimentalScope, Type, object>?> FResolve;
 
         private ServicePath? FPath;
@@ -177,7 +173,7 @@ namespace Solti.Utils.DI.Internals
                 genericSlotsWithSingleValue = 0,
                 genericSlots = 0;
 
-            FResolve = ISwitchBuilder<int, Func<ExperimentalScope, Type, object>>.Default.Instance.Build
+            FResolve = ISwitchBuilder<Func<ExperimentalScope, Type, object>>.Default.Instance.Build
             (
                 GetResolvers()
             );

@@ -11,15 +11,19 @@ namespace Solti.Utils.DI.Internals
 {
     using Primitives.Patterns;
 
-    internal interface ISwitchBuilder<TKey, TValue>
+    internal interface ISwitchBuilder<TValue>
     {
-        Func<TKey, TValue?> Build(IEnumerable<KeyValuePair<TKey, TValue>> cases);
+        Func<int, TValue?> Build(IEnumerable<KeyValuePair<int, TValue>> cases);
 
-        public sealed class Default: Singleton<Default>, ISwitchBuilder<TKey, TValue>
+        public sealed class Default: Singleton<Default>, ISwitchBuilder<TValue>
         {
-            public Func<TKey, TValue?> Build(IEnumerable<KeyValuePair<TKey, TValue>> cases)
+            public Func<int, TValue?> Build(IEnumerable<KeyValuePair<int, TValue>> cases)
             {
-                Dictionary<TKey, TValue> dict = cases.ToDictionary(x => x.Key, x => x.Value);
+                //
+                // Dictionary performs much better against int keys
+                //
+
+                Dictionary<int, TValue> dict = cases.ToDictionary(x => x.Key, x => x.Value);
 
                 return key => dict.TryGetValue(key, out TValue? result) ? result : default(TValue);
             }
