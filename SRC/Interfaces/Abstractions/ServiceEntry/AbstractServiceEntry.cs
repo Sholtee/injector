@@ -4,7 +4,6 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
-using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace Solti.Utils.DI.Interfaces
@@ -15,7 +14,7 @@ namespace Solti.Utils.DI.Interfaces
     /// <summary>
     /// Describes an abstract service entry.
     /// </summary>
-    public abstract class AbstractServiceEntry: IServiceDefinition
+    public abstract class AbstractServiceEntry
     {
         /// <summary>
         /// Creates a new <see cref="AbstractServiceEntry"/> instance.
@@ -23,7 +22,7 @@ namespace Solti.Utils.DI.Interfaces
         /// <param name="interface">The interface of the service.</param>
         /// <param name="name">The (optional) name of the service.</param>
         /// <exception cref="ArgumentException">The <paramref name="interface"/> is not an interface.</exception>
-        protected AbstractServiceEntry(Type @interface, string? name) : this(@interface, name, null, null)
+        protected AbstractServiceEntry(Type @interface, string? name) : this(@interface, name, null)
         {
         }
 
@@ -33,13 +32,11 @@ namespace Solti.Utils.DI.Interfaces
         /// <param name="interface">The interface of the service.</param>
         /// <param name="name">The (optional) name of the service.</param>
         /// <param name="implementation">The (optional) implementation of the service.</param>
-        /// <param name="owner">The owner of this entry.</param>
         /// <exception cref="ArgumentException">The <paramref name="interface"/> is not an interface.</exception>
         /// <exception cref="ArgumentException">The <paramref name="implementation"/> does not support the <paramref name="interface"/>.</exception>
-        protected AbstractServiceEntry(Type @interface, string? name, Type? implementation, IServiceRegistry? owner)
+        protected AbstractServiceEntry(Type @interface, string? name, Type? implementation)
         {
             Interface      = @interface ?? throw new ArgumentNullException(nameof(@interface));
-            Owner          = owner;
             Name           = name;
             Implementation = implementation;
 
@@ -76,19 +73,9 @@ namespace Solti.Utils.DI.Interfaces
         public Type? Implementation { get; }
 
         /// <summary>
-        /// The owner of this entry.
-        /// </summary>
-        public IServiceRegistry? Owner { get; } // TODO: REMOVE
-
-        /// <summary>
         /// The related <see cref="Interfaces.Lifetime"/>.
         /// </summary>
         public virtual Lifetime? Lifetime { get; }
-
-        /// <summary>
-        /// Indicates whether this entry can be shared across injectors.
-        /// </summary>
-        public bool IsShared => Flags.HasFlag(ServiceEntryFlags.Shared);  // TODO: REMOVE
         #endregion
 
         #region Mutables
@@ -104,33 +91,9 @@ namespace Solti.Utils.DI.Interfaces
         #endregion
 
         /// <summary>
-        /// Gets the previously created service instance.
-        /// </summary>
-        /// <remarks>This method may throw an <see cref="InvalidOperationException"/> if the entry can create more than one service instace.</remarks>
-        public abstract object GetSingleInstance();  // TODO: REMOVE
-
-        /// <summary>
         /// Creates a new service instance.
         /// </summary>
-        /// <remarks>This method may throw an <see cref="InvalidOperationException"/> if the entry already created a single instance from the service.</remarks>
-        public abstract object CreateInstance(IInjector scope); // TODO: remove
-
-        /// <summary>
-        /// Creates a new service instance.
-        /// </summary>
-        public virtual object CreateInstance(IInjector scope, out IDisposable? lifetime) => throw new NotImplementedException(); // TODO: make abstract
-
-        /// <summary>
-        /// Sets the <see cref="ServiceEntryFlags.Validated"/> flag.
-        /// </summary>
-        /// <remarks>This method is called right after the first successful service instantiation so next time when the service is requested there won't be time consuming validation phase.</remarks>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void SetValidated() => Flags |= ServiceEntryFlags.Validated;
-
-        /// <summary>
-        /// Creates a copy from this entry.
-        /// </summary>
-        public abstract AbstractServiceEntry CopyTo(IServiceRegistry owner);  // TODO: REMOVE
+        public abstract object CreateInstance(IInjector scope, out object? lifetime);
 
         /// <inheritdoc/>
         public override string ToString() => ToString(false); 

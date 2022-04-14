@@ -132,9 +132,6 @@
   <data name="INVALID_CONSTRUCTOR" xml:space="preserve">
     <value>All constructor arguments must be an interface/Lazy&lt;interface&gt;.</value>
   </data>
-  <data name="INVALID_INSTANCE" xml:space="preserve">
-    <value>The service instance must implement the interface: "{0}".</value>
-  </data>
   <data name="PARAMETER_NOT_AN_INTERFACE" xml:space="preserve">
     <value>Parameter must be an interface.</value>
   </data>
@@ -143,9 +140,6 @@
   </data>
   <data name="NOT_PRODUCIBLE" xml:space="preserve">
     <value>The service has no factory function.</value>
-  </data>
-  <data name="INJECTOR_SHOULD_BE_RELEASED" xml:space="preserve">
-    <value>The injector can not hold more than {0} transient services. It usually indicates that you were recycling the injector.</value>
   </data>
   <data name="STRICT_DI" xml:space="preserve">
     <value>Attempt to request a dependency that should live shorter than the requestor should.</value>

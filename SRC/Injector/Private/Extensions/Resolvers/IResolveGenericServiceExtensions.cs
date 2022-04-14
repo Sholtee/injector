@@ -36,17 +36,20 @@ namespace Solti.Utils.DI.Internals
 
             try
             {
-                //
-                // Another thread may set the node while we reached here.
-                //
-
-                while (node is not null && node.Key != iface)
+                if (node?.Key != iface)
                 {
-                    node = ref node.Next;
-                }
+                    //
+                    // Another thread may set the node while we reached here.
+                    //
 
-                if (node is null)
-                    node = new Node<Type, AbstractServiceEntry>(iface, openEntry.Specialize(iface));
+                    while (node is not null && node.Key != iface)
+                    {
+                        node = ref node.Next;
+                    }
+
+                    if (node is null)
+                        node = new Node<Type, AbstractServiceEntry>(iface, openEntry.Specialize(iface));
+                }
 
                 return self.CreateInstance(node.Value);
             }

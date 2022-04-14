@@ -1,5 +1,5 @@
 ﻿/********************************************************************************
-* IServicePath.cs                                                               *
+* IReadOnlyServiceCollection.cs                                                 *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
@@ -8,10 +8,9 @@ using System.Collections.Generic;
 namespace Solti.Utils.DI.Interfaces
 {
     /// <summary>
-    /// Describes the path in which the current request takes place.
+    /// Specifies the contract for a read-only <see cref="AbstractServiceEntry"/> collection.
     /// </summary>
-    /// <remarks>The last entry describes the service that is currently being requested.</remarks>
-    public interface IServicePath: IReadOnlyList<AbstractServiceEntry> // TODO: REMOVE
+    public interface IReadOnlyServiceCollection : IReadOnlyCollection<AbstractServiceEntry>
     {
     }
 }

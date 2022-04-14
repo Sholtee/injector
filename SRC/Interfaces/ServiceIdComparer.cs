@@ -3,27 +3,22 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
-using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Solti.Utils.DI.Interfaces
 {
     using Primitives;
 
     /// <summary>
-    /// Specifies how to compare <see cref="IServiceId"/> instances.
+    /// Specifies how to compare <see cref="AbstractServiceEntry"/> instances considering their interface and name only.
     /// </summary>
-    public sealed class ServiceIdComparer : ComparerBase<ServiceIdComparer, IServiceId>
+    public sealed class ServiceIdComparer : ComparerBase<ServiceIdComparer, AbstractServiceEntry>
     {
         /// <inheritdoc/>
-        public override bool Equals(IServiceId x, IServiceId y) => x?.Interface == y?.Interface && x?.Name == y?.Name;
+        public override bool Equals(AbstractServiceEntry x, AbstractServiceEntry y) => x?.Interface == y?.Interface && x?.Name == y?.Name;
 
         /// <inheritdoc/>
-        public override int GetHashCode(IServiceId obj) =>
-#if NETSTANDARD2_1_OR_GREATER
-            HashCode.Combine(obj?.Interface, obj?.Name)
-#else
-            new { obj?.Interface, obj?.Name }.GetHashCode()        
-#endif
-            ;
+        [SuppressMessage("Globalization", "CA1307:Specify StringComparison for clarity")]
+        public override int GetHashCode(AbstractServiceEntry obj) => unchecked((obj?.Interface.GetHashCode() ?? 0) ^ (obj?.Name?.GetHashCode() ?? 0));
     }
 }

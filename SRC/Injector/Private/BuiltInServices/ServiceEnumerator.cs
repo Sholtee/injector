@@ -32,19 +32,19 @@ namespace Solti.Utils.DI.Internals
                 ? entry => entry.Interface == typeof(TInterface)
 
                 //
-                // a) IList<int> volt regisztralva
-                // b) IList<> volt regisztralva
+                // a) IList<int> registered
+                // b) IList<> registered
                 //
 
                 : entry => entry.Interface == typeof(TInterface) || entry.Interface == typeof(TInterface).GetGenericTypeDefinition();
 
             //
-            // Lezart generikus mellett szerepelhet annak nyitott parja is -> Distinct
+            // Beside the closed generic its opened counterpart can be included -> Distinct
             //
 
             HashSet<string?> hashSet = new();
 
-            foreach (AbstractServiceEntry entry in Injector.Get<IServiceRegistry>().RegisteredEntries)
+            foreach (AbstractServiceEntry entry in Injector.Get<IReadOnlyServiceCollection>())
             {
                 if (isCompatible(entry) && hashSet.Add(entry.Name))
                 {

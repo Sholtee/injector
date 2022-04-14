@@ -106,29 +106,11 @@ namespace Solti.Utils.DI.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The injector can not hold more than {0} transient services. It usually indicates that you were recycling the injector..
-        /// </summary>
-        internal static string INJECTOR_SHOULD_BE_RELEASED {
-            get {
-                return ResourceManager.GetString("INJECTOR_SHOULD_BE_RELEASED", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to All constructor arguments must be an interface/Lazy&lt;interface&gt;..
         /// </summary>
         internal static string INVALID_CONSTRUCTOR {
             get {
                 return ResourceManager.GetString("INVALID_CONSTRUCTOR", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The service instance must implement the interface: &quot;{0}&quot;..
-        /// </summary>
-        internal static string INVALID_INSTANCE {
-            get {
-                return ResourceManager.GetString("INVALID_INSTANCE", resourceCulture);
             }
         }
         

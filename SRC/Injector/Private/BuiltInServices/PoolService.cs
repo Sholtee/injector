@@ -66,8 +66,6 @@ namespace Solti.Utils.DI.Internals
 
                 IInjector dedicatedScope = FDedicatedScope.Value;
 
-                dedicatedScope.Meta(PooledLifetime.POOL_SCOPE, true); // TODO: Remove
-
                 return dedicatedScope.Get<TInterface>(Name);
             }
 

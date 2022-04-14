@@ -3,7 +3,6 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
-using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 
@@ -21,7 +20,7 @@ namespace Solti.Utils.DI.Internals
     // - mindig futtassuk a teljesitmeny teszteket (is) hogy a hatekonysag nem romlott e
     //
 
-    internal sealed class ServicePath: IServicePath
+    internal sealed class ServicePath
     {
         private readonly List<AbstractServiceEntry> FPath = new(capacity: 10);
 
@@ -31,19 +30,13 @@ namespace Solti.Utils.DI.Internals
 
             for(; foundIndex < FPath.Count; foundIndex++)
             {
-                AbstractServiceEntry current = FPath[foundIndex];
-
-                //
-                // TODO: After removing the AbstractServiceEntry.CopyTo() method, a reference comparison
-                //       will be enough here.
-                //       
-
-                if (current.Interface == entry.Interface && current.Name == entry.Name)
+                if (FPath[foundIndex] == entry)
                     break;
             }
 
             //
-            // Ha egynel tobbszor szerepelne az aktualis szerviz az aktualis utvonalon akkor korkoros referenciank van.
+            // If the service is included more than once in the current route, it indicates that there is a 
+            // circular reference in the graph.
             //
 
             if (foundIndex < FPath.Count) throw new CircularReferenceException
@@ -54,7 +47,7 @@ namespace Solti.Utils.DI.Internals
             FPath.Add(entry);
 
             //
-            // Csak magat a kort adjuk vissza.
+            // Return the circle itself.
             //
 
             IEnumerable<AbstractServiceEntry> GetCircle()
@@ -70,7 +63,7 @@ namespace Solti.Utils.DI.Internals
 
         public void Pop() =>
             //
-            // Utolso elem eltavolitasa gyors muvelet [nincs Array.Copy()]:
+            // Removing the last entry is a quick operation [there is no Array.Copy()]:
             // https://github.com/dotnet/runtime/blob/78593b9e095f974305b2033b465455e458e30267/src/libraries/System.Private.CoreLib/src/System/Collections/Generic/List.cs#L925
             //
 
@@ -94,9 +87,5 @@ namespace Solti.Utils.DI.Internals
 
             return sb.ToString();
         }
-
-        public IEnumerator<AbstractServiceEntry> GetEnumerator() => FPath.GetEnumerator();
-
-        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
     }
 }

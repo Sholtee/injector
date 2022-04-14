@@ -12,8 +12,8 @@ namespace Solti.Utils.DI.Interfaces
     /// Describes the actual state of an <see cref="AbstractServiceEntry"/>
     /// </summary>
     [Flags]
-    [SuppressMessage("Usage", "CA2217:Do not mark enums with FlagsAttribute"), SuppressMessage("Design", "CA1008:Enums should have zero value")]
     [SuppressMessage("Naming", "CA1711:Identifiers should not have incorrect suffix")]
+    [SuppressMessage("Design", "CA1008:Enums should have zero value")]
     public enum ServiceEntryFlags: int
     {
         /// <summary>
@@ -27,23 +27,13 @@ namespace Solti.Utils.DI.Interfaces
         Validated = 1 << 0,
 
         /// <summary>
-        /// Indicates that the entry was already instantiated one or more times.
-        /// </summary>
-        Instantiated = Validated | 1 << 1, // TODO: remove
-
-        /// <summary>
-        /// Signals that no build phase required. It also means that the <see cref="AbstractServiceEntry.GetSingleInstance"/> method can be called.
-        /// </summary>
-        Built = Instantiated | 1 << 2, // TODO: remove
-
-        /// <summary>
         /// A single instance will be created.
         /// </summary>
-        CreateSingleInstance = 1 << 3,
+        CreateSingleInstance = 1 << 2,
 
         /// <summary>
         /// The created service instance is shared between scopes.
         /// </summary>
-        Shared = 1 << 4,
+        Shared = 1 << 3,
     }
 }

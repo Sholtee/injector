@@ -9,23 +9,9 @@ using System.Collections.Concurrent;
 namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
-    using Properties;
 
     internal static partial class ServiceEntryExtensions
     {
-        public static object GetOrCreateInstance(this AbstractServiceEntry entry, IServiceFactory factory) // TODO: remove
-        {
-            object instance = factory.GetOrCreateInstance(entry);
-
-            if (entry is IRequiresServiceAccess accessor)
-                instance = accessor.ServiceAccess(instance);
-
-            if (!entry.Interface.IsInstanceOfType(instance))
-                throw new InvalidCastException(string.Format(Resources.Culture, Resources.INVALID_INSTANCE, entry.Interface));
-
-            return instance;
-        }
-
         //
         // Dictionary performs much better against int keys
         //
@@ -39,7 +25,7 @@ namespace Solti.Utils.DI.Internals
         public static AbstractServiceEntry Specialize(this AbstractServiceEntry entry, Type iface) => FSpecializedEntries.GetOrAdd
         (
             unchecked(entry.GetHashCode() ^ iface.GetHashCode()),
-            _ => ((ISupportsSpecialization) entry).Specialize(null!, iface.GenericTypeArguments)
+            _ => ((ISupportsSpecialization) entry).Specialize(iface.GenericTypeArguments)
         );
     }
 }

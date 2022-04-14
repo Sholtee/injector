@@ -9,43 +9,17 @@ namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
 
-    internal sealed class ContextualServiceEntry : AbstractServiceEntry
+    internal sealed class ContextualServiceEntry : ProducibleServiceEntry
     {
-        private object? FInstance;
+        public ContextualServiceEntry(Type @interface, string? name, Func<IInjector, Type, object> factory) : base(@interface, name, factory) =>
+            Flags = ServiceEntryFlags.CreateSingleInstance | ServiceEntryFlags.Validated;
 
-        private ContextualServiceEntry(ContextualServiceEntry original, IServiceRegistry owner) : base(original.Interface, original.Name, null, Ensure.Parameter.IsNotNull(owner, nameof(owner)))
+        public override object CreateInstance(IInjector scope, out object? lifetime)
         {
-            Selector = original.Selector;
-            Flags = ServiceEntryFlags.Built | ServiceEntryFlags.CreateSingleInstance | ServiceEntryFlags.Validated;
-        }
-
-        public ContextualServiceEntry(Type @interface, string? name, Func<IServiceRegistry /*TODO: should be IInjector*/, object> selector) : base(@interface, name, null, null)
-        {
-            Selector = selector;
-            Flags = ServiceEntryFlags.Built | ServiceEntryFlags.CreateSingleInstance | ServiceEntryFlags.Validated;
-        }
-
-        public override object CreateInstance(IInjector scope) => throw new InvalidOperationException();
-
-        public override object CreateInstance(IInjector scope, out IDisposable? lifetime)
-        {
-            if (Owner is null)
-                throw new InvalidOperationException();
-
             lifetime = null;
-            return FInstance ??= Selector(Owner);
+            return Factory!(scope, Interface);
         }
 
-        public override object GetSingleInstance() // TODO: remove
-        {
-            if (Owner is null)
-                throw new InvalidOperationException();
-
-            return FInstance ??= Selector(Owner);
-        }
-
-        public Func<IServiceRegistry, object> Selector { get; }
-
-        public override AbstractServiceEntry CopyTo(IServiceRegistry owner) => new ContextualServiceEntry(this, Ensure.Parameter.IsNotNull(owner, nameof(owner))); // TODO: remove
+        public override AbstractServiceEntry Specialize(params Type[] genericArguments) => throw new NotImplementedException();
     }
 }

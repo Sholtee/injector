@@ -16,7 +16,8 @@ namespace Solti.Utils.DI.Interfaces
         /// <summary>
         /// Creates an independent new scope
         /// </summary>
-        IInjector CreateScope(object? parent = null);
+        /// <param name="lifetime">Optional hint specifying the object that is responsible for releasing the newly created scope.</param>
+        IInjector CreateScope(object? lifetime = null);
 
         /// <summary>
         /// Options applied on the newly created scopes.

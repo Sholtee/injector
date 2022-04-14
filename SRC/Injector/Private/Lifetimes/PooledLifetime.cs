@@ -21,10 +21,9 @@ namespace Solti.Utils.DI.Internals
             iface.IsGenericTypeDefinition
                 ? typeof(PoolService<>)
                 : typeof(PoolService<>).MakeGenericType(iface),
-            new { capacity = Capacity, name },
-            null
+            new { capacity = Capacity, name }
         );
- 
+
         private static string GetPoolName(Type iface, string? name)
         {
             if (iface.IsConstructedGenericType)
@@ -35,8 +34,6 @@ namespace Solti.Utils.DI.Internals
 
         public PooledLifetime() : base(precedence: 20) => Pooled = this;
 
-        public const string POOL_SCOPE = nameof(POOL_SCOPE); // TODO: Remove
-
         public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Type implementation)
         {
             string poolName = GetPoolName(iface, name);
@@ -46,30 +43,24 @@ namespace Solti.Utils.DI.Internals
             // PooledServiceEntry-t hozzuk letre.
             //
 
-            PooledServiceEntry pooledServiceEntry = new(iface, name, implementation, null, poolName);
-
             yield return GetPoolService(iface, name, poolName);
-            yield return pooledServiceEntry;
+            yield return new PooledServiceEntry(iface, name, implementation, poolName);
         }
 
         public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Type implementation, object explicitArgs)
         {
             string poolName = GetPoolName(iface, name);
 
-            PooledServiceEntry pooledServiceEntry = new(iface, name, implementation, explicitArgs, null, poolName);
-
             yield return GetPoolService(iface, name, poolName);
-            yield return pooledServiceEntry;
+            yield return new PooledServiceEntry(iface, name, implementation, explicitArgs, poolName);
         }
 
         public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Func<IInjector, Type, object> factory)
         {
             string poolName = GetPoolName(iface, name);
 
-            PooledServiceEntry pooledServiceEntry = new(iface, name, factory, null, poolName);
-
             yield return GetPoolService(iface, name, poolName);
-            yield return pooledServiceEntry;
+            yield return new PooledServiceEntry(iface, name, factory, poolName);
         }
 
         public override int CompareTo(Lifetime other) => other is PooledLifetime

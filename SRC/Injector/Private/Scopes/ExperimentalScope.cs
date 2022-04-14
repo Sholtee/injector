@@ -17,6 +17,7 @@ namespace Solti.Utils.DI.Internals
     internal class ExperimentalScope:
         Disposable,
         IInjector,
+        IScopeFactory,
         IResolveService<ExperimentalScope>,
         IResolveServiceHavingSingleValue<ExperimentalScope>,
         IResolveGenericService<ExperimentalScope>,
@@ -37,6 +38,19 @@ namespace Solti.Utils.DI.Internals
         internal static int HashCombine(Type iface, string? name) => unchecked(iface.GetHashCode() ^ (name?.GetHashCode() ?? 0));
         #pragma warning restore CA1307
 
+        protected virtual IEnumerable<AbstractServiceEntry> GetAllServices(IEnumerable<AbstractServiceEntry> registeredEntries)
+        {
+            yield return new ContextualServiceEntry(typeof(IInjector), null, (i, _) => i);
+            yield return new ContextualServiceEntry(typeof(IScopeFactory), null, (i, _) => this /*factory is always the root*/);
+            yield return new InstanceServiceEntry(typeof(IReadOnlyServiceCollection), null, new ReadOnlyServiceCollection(registeredEntries)); // TBD: May enumerate built-in services?
+            yield return new ScopedServiceEntry(typeof(IEnumerable<>), null, typeof(ServiceEnumerator<>));
+
+            foreach (AbstractServiceEntry entry in registeredEntries)
+            {
+                yield return entry;
+            }
+        }
+
         #region IInstanceFactory
         //
         // It locks all the write operations related to this scope. Reading already produced services
@@ -48,7 +62,7 @@ namespace Solti.Utils.DI.Internals
         object IInstanceFactory<ExperimentalScope>.CreateInstance(AbstractServiceEntry requested)
         {
             object instance;
-            IDisposable? lifetime;
+            object? lifetime;
 
             //
             // At the root of the dependency graph this validation makes no sense.
@@ -79,21 +93,15 @@ namespace Solti.Utils.DI.Internals
                 FPath.Push(requested);
                 try
                 {
-                    #pragma warning disable CA2000 // Dispose objects before losing scope
                     instance = requested.CreateInstance(this, out lifetime);
-                    #pragma warning restore CA2000
                 }
                 finally
                 {
                     FPath.Pop();
                 }
-
-                requested.SetValidated();
             }
             else
-                #pragma warning disable CA2000 // Dispose objects before losing scope
                 instance = requested.CreateInstance(this, out lifetime);
-                #pragma warning restore CA2000
 
             if (lifetime is not null)
                 FDisposableStore.Capture(lifetime);
@@ -123,7 +131,7 @@ namespace Solti.Utils.DI.Internals
 
         public object? Lifetime { get; }
 
-        public object Get(Type iface, string? name)
+        public virtual object Get(Type iface, string? name)
         {
             object? instance = TryGet(iface, name);
 
@@ -166,6 +174,10 @@ namespace Solti.Utils.DI.Internals
         protected override ValueTask AsyncDispose() => FDisposableStore.DisposeAsync();
         #endregion
 
+        #region IScopeFactory
+        public virtual IInjector CreateScope(object? lifetime = null) => new ExperimentalScope(this, lifetime);
+        #endregion
+
         public ExperimentalScope(IEnumerable<AbstractServiceEntry> registeredEntries, ScopeOptions options, object? lifetime)
         {
             int
@@ -186,10 +198,10 @@ namespace Solti.Utils.DI.Internals
 
             IEnumerable<KeyValuePair<int, Func<ExperimentalScope, Type, object>>> GetResolvers()
             {
-                foreach (AbstractServiceEntry entry in registeredEntries)
+                foreach (AbstractServiceEntry entry in GetAllServices(registeredEntries))
                 {
                     //
-                    // Enforce that there is no closed generic service registered. It's required to keep the GetInstance()
+                    // Enforce that there is no closed generic service registered. It's required to keep the Get()
                     // method simple.
                     //
 

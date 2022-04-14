@@ -16,7 +16,7 @@ namespace Solti.Utils.DI.Internals
 
         public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, object value)
         {
-            yield return new InstanceServiceEntry(iface, name, value, null);
+            yield return new InstanceServiceEntry(iface, name, value);
         }
 
         public override string ToString() => nameof(Instance);
