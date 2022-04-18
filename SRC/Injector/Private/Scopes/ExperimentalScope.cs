@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
@@ -29,7 +30,7 @@ namespace Solti.Utils.DI.Internals
 
         private readonly CaptureDisposable FDisposableStore = new();
 
-        private readonly Func<int, Func<ExperimentalScope, Type, object>?> FResolve;
+        private readonly Func<int, Func<ExperimentalScope, Type, object>?> FGetResolver;
 
         private ServicePath? FPath;
 
@@ -42,9 +43,10 @@ namespace Solti.Utils.DI.Internals
         {
             yield return new ContextualServiceEntry(typeof(IInjector), null, (i, _) => i);
             yield return new ContextualServiceEntry(typeof(IScopeFactory), null, (i, _) => this /*factory is always the root*/);
-            yield return new InstanceServiceEntry(typeof(IReadOnlyServiceCollection), null, new ReadOnlyServiceCollection(registeredEntries)); // TBD: May enumerate built-in services?
-            yield return new ScopedServiceEntry(typeof(IEnumerable<>), null, typeof(ServiceEnumerator<>));
-
+            yield return new ScopedServiceEntry(typeof(IEnumerable<>), null, typeof(ServiceEnumerator<>), new { registeredServices = new List<AbstractServiceEntry>(registeredEntries) });
+#if DEBUG
+            yield return new InstanceServiceEntry(typeof(ICollection), "captured_disposables", FDisposableStore.CapturedDisposables);
+#endif
             foreach (AbstractServiceEntry entry in registeredEntries)
             {
                 yield return entry;
@@ -158,9 +160,27 @@ namespace Solti.Utils.DI.Internals
             Ensure.Parameter.IsInterface(iface, nameof(iface));
             Ensure.Parameter.IsNotGenericDefinition(iface, nameof(iface));
 
-            int key = HashCombine(iface.IsGenericType ? iface.GetGenericTypeDefinition() : iface, name);
+            //
+            // Most likely screnario: We are looking for a non-generic regular service (IMyService) or we request a
+            // generic service (IMyGenericService<TTypeArgument>) that needs to be constructed.
+            //
 
-            return FResolve(key)?.Invoke(this, iface);
+            Func<ExperimentalScope, Type, object>? resolver = FGetResolver
+            (
+                HashCombine(iface.IsConstructedGenericType ? iface.GetGenericTypeDefinition() : iface, name)
+            );
+
+            if (resolver is null && iface.IsConstructedGenericType)
+                //
+                // Less likely case: We request a registered-as-constructed generic service
+                //
+
+                resolver = FGetResolver
+                (
+                    HashCombine(iface, name)
+                );
+
+            return resolver?.Invoke(this, iface);
         }
         #endregion
 
@@ -185,7 +205,7 @@ namespace Solti.Utils.DI.Internals
                 genericSlotsWithSingleValue = 0,
                 genericSlots = 0;
 
-            FResolve = ISwitchBuilder<Func<ExperimentalScope, Type, object>>.Default.Instance.Build
+            FGetResolver = ISwitchBuilder<Func<ExperimentalScope, Type, object>>.Default.Instance.Build
             (
                 GetResolvers()
             );
@@ -200,14 +220,6 @@ namespace Solti.Utils.DI.Internals
             {
                 foreach (AbstractServiceEntry entry in GetAllServices(registeredEntries))
                 {
-                    //
-                    // Enforce that there is no closed generic service registered. It's required to keep the Get()
-                    // method simple.
-                    //
-
-                    if (entry.Interface.IsConstructedGenericType)
-                        throw new InvalidOperationException(); // TODO: message
-
                     int key = HashCombine(entry.Interface, entry.Name);
 
                     if (entry.Interface.IsGenericTypeDefinition)
@@ -240,7 +252,7 @@ namespace Solti.Utils.DI.Internals
         public ExperimentalScope(ExperimentalScope super, object? lifetime)
         {
             FSuper = super;
-            FResolve = super.FResolve;
+            FGetResolver = super.FGetResolver;
             FRegularSlots = Array<object>.Create(super.FRegularSlots.Length);
             FGenericSlotsWithSingleValue = Array<Node<Type, object>>.Create(super.FGenericSlotsWithSingleValue.Length);
             FGenericSlots = Array<Node<Type, AbstractServiceEntry>>.Create(super.FGenericSlots.Length);

@@ -27,33 +27,7 @@ namespace Solti.Utils.DI.Tests
             using (IInjector injector = Root.CreateScope())
             {
                 Assert.IsNotNull(injector.Get<IInterface_1>());
-                Assert.That(injector.Get<IServiceRegistry>().GetEntry<IInterface_1>().Owner, Is.EqualTo(injector));
                 Assert.AreNotSame(injector.Get<IInterface_1>(), injector.Get<IInterface_1>());
-            }
-        }
-
-        [Test]
-        public void Lifetime_TransientService_ShouldNotBeInstantiatedIfTheScopeWasRecycled() 
-        {
-            Root = ScopeFactory.Create
-            (
-                svcs => svcs.Service<IInterface_1, Implementation_1_No_Dep>(Lifetime.Transient),
-                new ScopeOptions { MaxSpawnedTransientServices = 1 }
-            );
-
-            using (IInjector injector1 = Root.CreateScope())
-            {
-                Assert.DoesNotThrow(() => injector1.Get<IInterface_1>());
-                Assert.Throws<InvalidOperationException>(() => injector1.Get<IInterface_1>(), Resources.INJECTOR_SHOULD_BE_RELEASED);
-
-                //
-                // Ettol meg masik injector tud peldanyositani.
-                //
-
-                using (IInjector injector2 = Root.CreateScope())
-                {
-                    Assert.DoesNotThrow(() => injector2.Get<IInterface_1>());
-                }
             }
         }
 
@@ -65,13 +39,11 @@ namespace Solti.Utils.DI.Tests
             using (IInjector injector1 = Root.CreateScope())
             {
                 Assert.NotNull(injector1.Get<IInterface_1>());
-                Assert.That(injector1.Get<IServiceRegistry>().GetEntry<IInterface_1>().Owner, Is.EqualTo(injector1));
                 Assert.AreSame(injector1.Get<IInterface_1>(), injector1.Get<IInterface_1>());
 
                 using (IInjector injector2 = Root.CreateScope())
                 {
                     Assert.NotNull(injector2.Get<IInterface_1>());
-                    Assert.That(injector2.Get<IServiceRegistry>().GetEntry<IInterface_1>().Owner, Is.EqualTo(injector2));
                     Assert.AreSame(injector2.Get<IInterface_1>(), injector2.Get<IInterface_1>());
                     Assert.AreNotSame(injector1.Get<IInterface_1>(), injector2.Get<IInterface_1>());
                 }
@@ -186,22 +158,22 @@ namespace Solti.Utils.DI.Tests
         [TestCaseSource(nameof(ScopeControlledLifetimes))]
         public void Lifetime_NonSingletonService_ShouldBeInstantiatedInTheCurrentScope(Lifetime lifetime) 
         {
-            Root = ScopeFactory.Create(svcs => svcs.Service<IInterface_1, Implementation_1_No_Dep>(lifetime));
+            Root = ScopeFactory.Create(svcs => svcs.Service<IInterface_7<IInjector>, Implementation_7<IInjector>>(lifetime));
 
             using (IInjector injector = Root.CreateScope())
             {
-                Assert.That(injector.Get<IServiceRegistry>().GetEntry<IInterface_1>().Owner, Is.SameAs(injector));
+                Assert.That(injector.Get<IInterface_7<IInjector>>().Interface, Is.SameAs(injector));
             }
         }
 
         [Test]
         public void Lifetime_SingletonService_ShouldBeInstantiatedInTheRootScope()
         {
-            Root = ScopeFactory.Create(svcs => svcs.Service<IInterface_1, Implementation_1_No_Dep>(Lifetime.Singleton));
+            Root = ScopeFactory.Create(svcs => svcs.Service<IInterface_7<IInjector>, Implementation_7<IInjector>>(Lifetime.Singleton));
 
             using (IInjector injector = Root.CreateScope())
             {
-                Assert.That(injector.Get<IServiceRegistry>().GetEntry<IInterface_1>().Owner, Is.SameAs(Root));
+                Assert.That(injector.Get<IInterface_7<IInjector>>().Interface, Is.SameAs(Root));
             }
         }
 
@@ -405,17 +377,6 @@ namespace Solti.Utils.DI.Tests
                         Assert.AreNotSame(injector1.Get<IInterface_3<string>>(name), injector2.Get<IInterface_3<string>>(name));
                     }
                 });
-            }
-        }
-
-        [Test]
-        public void Lifetime_Instance_ShouldNotHaveOwner() 
-        {
-            Root = ScopeFactory.Create(svcs => svcs.Instance<IDisposable>(new Disposable()));
-
-            using (IInjector injector = Root.CreateScope())
-            {
-                Assert.That(injector.Get<IServiceRegistry>().GetEntry<IDisposable>().Owner, Is.Null);
             }
         }
 

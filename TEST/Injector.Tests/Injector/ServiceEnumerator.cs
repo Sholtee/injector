@@ -153,7 +153,7 @@ namespace Solti.Utils.DI.Tests
         }
 
         [Test]
-        public void Injector_ServiceEnumerator_ShouldWorkWithBuiltInServices([Values(typeof(IInjector), typeof(IServiceRegistry), typeof(IScopeFactory))] Type svc)
+        public void Injector_ServiceEnumerator_ShouldWorkWithBuiltInServices([Values(typeof(IInjector), typeof(IScopeFactory))] Type svc)
         {
             Root = ScopeFactory.Create(svcs => { });
 

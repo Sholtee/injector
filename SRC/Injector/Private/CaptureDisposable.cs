@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -73,6 +74,6 @@ namespace Solti.Utils.DI.Internals
                 FCapturedDisposables.Push(obj);
         }
 
-        public IReadOnlyCollection<object> CapturedDisposables => FCapturedDisposables;
+        public ICollection CapturedDisposables => FCapturedDisposables;
     }
 }

@@ -15,7 +15,7 @@ namespace Solti.Utils.DI.Internals
     {
         public static object ResolveServiceHavingSingleValue<TDescendant>(this IResolveServiceHavingSingleValue<TDescendant> self, int slot, AbstractServiceEntry entry) where TDescendant: IResolveServiceHavingSingleValue<TDescendant>
         {
-            Assert(entry.Interface.IsGenericTypeDefinition, "Entry must reference a NON generic service");
+            Assert(!entry.Interface.IsGenericTypeDefinition, "Entry must reference a NON generic service");
             Assert(entry.Flags.HasFlag(ServiceEntryFlags.CreateSingleInstance), "Entry must resolve a single value");
 
             //
