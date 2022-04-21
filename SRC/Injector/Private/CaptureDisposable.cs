@@ -64,15 +64,7 @@ namespace Solti.Utils.DI.Internals
             //
         }
 
-        public void Capture(object obj)
-        {
-            //
-            // The object must implement the IDisposable and/or the IAsyncDisposable interface
-            //
-
-            if (obj is IDisposable || obj is IAsyncDisposable)
-                FCapturedDisposables.Push(obj);
-        }
+        public void Capture(object obj) => FCapturedDisposables.Push(obj);
 
         public ICollection CapturedDisposables => FCapturedDisposables;
     }
