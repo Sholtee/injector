@@ -25,7 +25,7 @@ namespace Solti.Utils.DI.Internals
         // This list should not be thread safe since it is called inside a lock.
         //
 
-        private readonly CaptureDisposable FDisposableStore = new();
+        private CaptureDisposable? FDisposableStore;
 
         private readonly Resolver FResolver;
 
@@ -96,8 +96,11 @@ namespace Solti.Utils.DI.Internals
             else
                 instance = requested.CreateInstance(this, out lifetime);
 
-            if (lifetime is not null)
+            if (lifetime is IDisposable || lifetime is IAsyncDisposable)
+            {
+                FDisposableStore ??= new CaptureDisposable();
                 FDisposableStore.Capture(lifetime);
+            }
 
             return instance;
         }
@@ -175,11 +178,11 @@ namespace Solti.Utils.DI.Internals
         #region Dispose
         protected override void Dispose(bool disposeManaged)
         {
-            FDisposableStore.Dispose();
+            FDisposableStore?.Dispose();
             base.Dispose(disposeManaged);
         }
 
-        protected override ValueTask AsyncDispose() => FDisposableStore.DisposeAsync();
+        protected override ValueTask AsyncDispose() => FDisposableStore?.DisposeAsync() ?? default;
         #endregion
 
         #region IScopeFactory
@@ -191,20 +194,18 @@ namespace Solti.Utils.DI.Internals
             #pragma warning disable CA2214 // Do not call overridable methods in constructors
             FResolver = new Resolver(GetAllServices(registeredEntries));
             #pragma warning restore CA2214
-            FSlots = Array<object>.Create(FResolver.Slots);
-
-            Options = options;
-            Lifetime = lifetime;
+            FSlots    = Array<object>.Create(FResolver.Slots);
+            Options   = options;
+            Lifetime  = lifetime;
         }
 
         public ExperimentalScope(ExperimentalScope super, object? lifetime)
         {
-            FSuper = super;
+            FSuper    = super;
             FResolver = super.FResolver;
-            FSlots = Array<object>.Create(FResolver.Slots);
-
-            Options = super.Options;
-            Lifetime = lifetime;
+            FSlots    = Array<object>.Create(FResolver.Slots);
+            Options   = super.Options;
+            Lifetime  = lifetime;
         }
     }
 }
