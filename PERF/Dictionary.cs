@@ -11,8 +11,6 @@ using BenchmarkDotNet.Attributes;
 
 namespace Solti.Utils.DI.Perf
 {
-    using Internals;
-
     [MemoryDiagnoser]
     public class Dictionary
     {
@@ -21,6 +19,8 @@ namespace Solti.Utils.DI.Perf
         private Dictionary<int,  object> Dict { get; set; }
 
         private readonly string[] Names;
+
+        private static int HashCombine(Type iface, string name) => unchecked(iface.GetHashCode() ^ (name?.GetHashCode() ?? 0));
 
         public Dictionary()
         {
@@ -44,7 +44,7 @@ namespace Solti.Utils.DI.Perf
 
             for (int i = 0; i < Keys; i++)
             {
-                Dict.Add(ExperimentalScope.HashCombine(typeof(IFormattable), Names[i]), new object());
+                Dict.Add(HashCombine(typeof(IFormattable), Names[i]), new object());
             }
         }
 
@@ -53,7 +53,7 @@ namespace Solti.Utils.DI.Perf
         {
             for (int i = 0; i < Keys; i++)
             {
-                Dict.TryGetValue(ExperimentalScope.HashCombine(typeof(IFormattable), Names[i]), out object _);
+                Dict.TryGetValue(HashCombine(typeof(IFormattable), Names[i]), out object _);
             }
         }
 
@@ -66,7 +66,7 @@ namespace Solti.Utils.DI.Perf
 
             for (int i = 0; i < Keys; i++)
             {
-                Dict.Add(ExperimentalScope.HashCombine(Ifaces[i], null), new object());
+                Dict.Add(HashCombine(Ifaces[i], null), new object());
             }
         }
 
@@ -75,7 +75,7 @@ namespace Solti.Utils.DI.Perf
         {
             for (int i = 0; i < Keys; i++)
             {
-                Dict.TryGetValue(ExperimentalScope.HashCombine(Ifaces[i], null), out object _);
+                Dict.TryGetValue(HashCombine(Ifaces[i], null), out object _);
             }
         }
     }

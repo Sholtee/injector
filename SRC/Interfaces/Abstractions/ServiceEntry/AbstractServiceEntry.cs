@@ -91,6 +91,11 @@ namespace Solti.Utils.DI.Interfaces
         #endregion
 
         /// <summary>
+        /// Specializes a service entry if it is generic.
+        /// </summary>
+        public virtual AbstractServiceEntry Specialize(params Type[] genericArguments) => throw new NotSupportedException();
+
+        /// <summary>
         /// Creates a new service instance.
         /// </summary>
         public abstract object CreateInstance(IInjector scope, out object? lifetime);

@@ -19,10 +19,7 @@ namespace Solti.Utils.DI.Internals
         Disposable,
         IInjector,
         IScopeFactory,
-        IResolveService<ExperimentalScope>,
-        IResolveServiceHavingSingleValue<ExperimentalScope>,
-        IResolveGenericService<ExperimentalScope>,
-        IResolveGenericServiceHavingSingleValue<ExperimentalScope>
+        IInstanceFactory
     {
         //
         // This list should not be thread safe since it is called inside a lock.
@@ -30,14 +27,9 @@ namespace Solti.Utils.DI.Internals
 
         private readonly CaptureDisposable FDisposableStore = new();
 
-        private readonly Func<int, Func<ExperimentalScope, Type, object>?> FGetResolver;
+        private readonly Resolver FResolver;
 
         private ServicePath? FPath;
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        #pragma warning disable CA1307 // Specify StringComparison for clarity
-        internal static int HashCombine(Type iface, string? name) => unchecked(iface.GetHashCode() ^ (name?.GetHashCode() ?? 0));
-        #pragma warning restore CA1307
 
         protected virtual IEnumerable<AbstractServiceEntry> GetAllServices(IEnumerable<AbstractServiceEntry> registeredEntries)
         {
@@ -53,15 +45,14 @@ namespace Solti.Utils.DI.Internals
             }
         }
 
-        #region IInstanceFactory
         //
         // It locks all the write operations related to this scope. Reading already produced services
         // can be done parallelly.
         //
 
-        object IInstanceFactory<ExperimentalScope>.Lock { get; } = new();
+        private readonly object FLock = new();
 
-        object IInstanceFactory<ExperimentalScope>.CreateInstance(AbstractServiceEntry requested)
+        private object CreateInstanceCore(AbstractServiceEntry requested)
         {
             object instance;
             object? lifetime;
@@ -111,22 +102,39 @@ namespace Solti.Utils.DI.Internals
             return instance;
         }
 
-        private readonly ExperimentalScope? FSuper;
+        object IInstanceFactory.CreateInstance(AbstractServiceEntry requested)
+        {
+            if (requested.Flags.HasFlag(ServiceEntryFlags.Shared) && FSuper is not null)
+                return FSuper.CreateInstance(requested);
 
-        ExperimentalScope? IInstanceFactory<ExperimentalScope>.Super => FSuper;
+            lock(FLock)
+                return CreateInstanceCore(requested);
+        }
 
-        private readonly object?[] FRegularSlots;
+        object IInstanceFactory.GetOrCreateInstance(AbstractServiceEntry requested, int slot)
+        {
+            if (requested.Flags.HasFlag(ServiceEntryFlags.Shared) && FSuper is not null)
+                return FSuper.GetOrCreateInstance(requested, slot);
 
-        ref object? IInstanceFactory<ExperimentalScope, object?>.GetSlot(int slot) => ref FRegularSlots[slot];
+            if (slot < FSlots.Length && FSlots[slot] is not null)
+                return FSlots[slot]!;
 
-        private readonly Node<Type, object>?[] FGenericSlotsWithSingleValue;
+            lock (FLock)
+            {
+                if (slot < FSlots.Length && FSlots[slot] is not null)
+                    return FSlots[slot]!;
 
-        ref Node<Type, object>? IInstanceFactory<ExperimentalScope, Node<Type, object>?>.GetSlot(int slot) => ref FGenericSlotsWithSingleValue[slot];
+                if (slot >= FSlots.Length)
+                    Array.Resize(ref FSlots, slot + 1);
 
-        private readonly Node<Type, AbstractServiceEntry>?[] FGenericSlots;
+                return FSlots[slot] = CreateInstanceCore(requested);
+            }
+        }
 
-        ref Node<Type, AbstractServiceEntry>? IInstanceFactory<ExperimentalScope, Node<Type, AbstractServiceEntry>?>.GetSlot(int slot) => ref FGenericSlots[slot];
-        #endregion
+        private readonly IInstanceFactory? FSuper;
+
+
+        private object?[] FSlots;
 
         #region IInjector
         public ScopeOptions Options { get; }
@@ -160,27 +168,7 @@ namespace Solti.Utils.DI.Internals
             Ensure.Parameter.IsInterface(iface, nameof(iface));
             Ensure.Parameter.IsNotGenericDefinition(iface, nameof(iface));
 
-            //
-            // Most likely screnario: We are looking for a non-generic regular service (IMyService) or we request a
-            // generic service (IMyGenericService<TTypeArgument>) that needs to be constructed.
-            //
-
-            Func<ExperimentalScope, Type, object>? resolver = FGetResolver
-            (
-                HashCombine(iface.IsConstructedGenericType ? iface.GetGenericTypeDefinition() : iface, name)
-            );
-
-            if (resolver is null && iface.IsConstructedGenericType)
-                //
-                // Less likely case: We request a registered-as-constructed generic service
-                //
-
-                resolver = FGetResolver
-                (
-                    HashCombine(iface, name)
-                );
-
-            return resolver?.Invoke(this, iface);
+            return FResolver.Get(iface, name)?.Invoke(this);
         }
         #endregion
 
@@ -200,62 +188,20 @@ namespace Solti.Utils.DI.Internals
 
         public ExperimentalScope(IEnumerable<AbstractServiceEntry> registeredEntries, ScopeOptions options, object? lifetime)
         {
-            int
-                regularSlots = 0,
-                genericSlotsWithSingleValue = 0,
-                genericSlots = 0;
-
-            FGetResolver = ISwitchBuilder<Func<ExperimentalScope, Type, object>>.Default.Instance.Build
-            (
-                GetResolvers()
-            );
-            FRegularSlots = Array<object>.Create(regularSlots);
-            FGenericSlotsWithSingleValue = Array<Node<Type, object>>.Create(genericSlotsWithSingleValue);
-            FGenericSlots = Array<Node<Type, AbstractServiceEntry>>.Create(genericSlots);
+            #pragma warning disable CA2214 // Do not call overridable methods in constructors
+            FResolver = new Resolver(GetAllServices(registeredEntries));
+            #pragma warning restore CA2214
+            FSlots = Array<object>.Create(FResolver.Slots);
 
             Options = options;
             Lifetime = lifetime;
-
-            IEnumerable<KeyValuePair<int, Func<ExperimentalScope, Type, object>>> GetResolvers()
-            {
-                foreach (AbstractServiceEntry entry in GetAllServices(registeredEntries))
-                {
-                    int key = HashCombine(entry.Interface, entry.Name);
-
-                    if (entry.Interface.IsGenericTypeDefinition)
-                    {
-                        if (entry.Flags.HasFlag(ServiceEntryFlags.CreateSingleInstance))
-                        {
-                            int slot = genericSlotsWithSingleValue++; // capture an immutable variable
-                            yield return new KeyValuePair<int, Func<ExperimentalScope, Type, object>>(key, (scope, iface) => scope.ResolveGenericServiceHavingSingleValue(slot, iface, entry));
-                        }
-                        else
-                        {
-                            int slot = genericSlots++;
-                            yield return new KeyValuePair<int, Func<ExperimentalScope, Type, object>>(key, (scope, iface) => scope.ResolveGenericService(slot, iface, entry));
-                        }
-                    }
-                    else
-                    {
-                        if (entry.Flags.HasFlag(ServiceEntryFlags.CreateSingleInstance))
-                        {
-                            int slot = regularSlots++;
-                            yield return new KeyValuePair<int, Func<ExperimentalScope, Type, object>>(key, (scope, iface) => scope.ResolveServiceHavingSingleValue(slot, entry));
-                        }
-                        else
-                            yield return new KeyValuePair<int, Func<ExperimentalScope, Type, object>>(key, (scope, iface) => scope.ResolveService(entry));
-                    }
-                }
-            }
         }
 
         public ExperimentalScope(ExperimentalScope super, object? lifetime)
         {
             FSuper = super;
-            FGetResolver = super.FGetResolver;
-            FRegularSlots = Array<object>.Create(super.FRegularSlots.Length);
-            FGenericSlotsWithSingleValue = Array<Node<Type, object>>.Create(super.FGenericSlotsWithSingleValue.Length);
-            FGenericSlots = Array<Node<Type, AbstractServiceEntry>>.Create(super.FGenericSlots.Length);
+            FResolver = super.FResolver;
+            FSlots = Array<object>.Create(FResolver.Slots);
 
             Options = super.Options;
             Lifetime = lifetime;

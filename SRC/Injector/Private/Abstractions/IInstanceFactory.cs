@@ -1,11 +1,16 @@
 ﻿/********************************************************************************
-* IResolveService.cs                                                            *
+* IInstanceFactory.cs                                                           *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 namespace Solti.Utils.DI.Internals
 {
-    internal interface IResolveService<TDescendant> : IInstanceFactory<TDescendant> where TDescendant: IResolveService<TDescendant>
+    using Interfaces;
+
+    internal interface IInstanceFactory
     {
+        object CreateInstance(AbstractServiceEntry requested);
+
+        object GetOrCreateInstance(AbstractServiceEntry requested, int slot);
     }
 }

@@ -93,8 +93,6 @@ namespace Solti.Utils.DI.Internals
 
         public object? ExplicitArgs { get; }
 
-        public abstract AbstractServiceEntry Specialize(params Type[] genericArguments);
-
         Func<IInjector, Type, object>? ISupportsProxying.Factory
         {
             get => Factory;
