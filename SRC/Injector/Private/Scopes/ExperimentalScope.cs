@@ -4,9 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
 namespace Solti.Utils.DI.Internals
@@ -105,24 +103,25 @@ namespace Solti.Utils.DI.Internals
             return instance;
         }
 
+        #region IInstanceFactory
         object IInstanceFactory.CreateInstance(AbstractServiceEntry requested)
         {
-            if (requested.Flags.HasFlag(ServiceEntryFlags.Shared) && FSuper is not null)
-                return FSuper.CreateInstance(requested);
+            //
+            // In the same thread locks can be taken recursively.
+            //
 
             lock(FLock)
+            {
                 return CreateInstanceCore(requested);
+            }   
         }
 
         object IInstanceFactory.GetOrCreateInstance(AbstractServiceEntry requested, int slot)
         {
-            if (requested.Flags.HasFlag(ServiceEntryFlags.Shared) && FSuper is not null)
-                return FSuper.GetOrCreateInstance(requested, slot);
-
             if (slot < FSlots.Length && FSlots[slot] is not null)
                 return FSlots[slot]!;
 
-            lock (FLock)
+            lock(FLock)
             {
                 if (slot < FSlots.Length && FSlots[slot] is not null)
                     return FSlots[slot]!;
@@ -134,8 +133,8 @@ namespace Solti.Utils.DI.Internals
             }
         }
 
-        private readonly IInstanceFactory? FSuper;
-
+        public IInstanceFactory? Super { get; }
+        #endregion
 
         private object?[] FSlots;
 
@@ -201,11 +200,11 @@ namespace Solti.Utils.DI.Internals
 
         public ExperimentalScope(ExperimentalScope super, object? lifetime)
         {
-            FSuper    = super;
             FResolver = super.FResolver;
             FSlots    = Array<object>.Create(FResolver.Slots);
             Options   = super.Options;
             Lifetime  = lifetime;
+            Super     = super;
         }
     }
 }

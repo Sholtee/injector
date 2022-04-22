@@ -9,6 +9,8 @@ namespace Solti.Utils.DI.Internals
 
     internal interface IInstanceFactory
     {
+        IInstanceFactory? Super { get; }
+
         object CreateInstance(AbstractServiceEntry requested);
 
         object GetOrCreateInstance(AbstractServiceEntry requested, int slot);

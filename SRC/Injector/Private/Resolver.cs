@@ -25,7 +25,7 @@ namespace Solti.Utils.DI.Internals
 
         private readonly IReadOnlyDictionary<int, AbstractServiceEntry> FGenericEntries;
 
-        private IReadOnlyDictionary<int, Func<IInstanceFactory, object?>> FResolvers;
+        private /*IReadOnly*/Dictionary<int, Func<IInstanceFactory, object?>> FResolvers;
 
         private readonly object FLock = new();
 
@@ -34,10 +34,14 @@ namespace Solti.Utils.DI.Internals
             if (entry.Flags.HasFlag(ServiceEntryFlags.CreateSingleInstance))
             {
                 int slot = FSlots++;
-                return fact => fact.GetOrCreateInstance(entry, slot);
+                return entry.Flags.HasFlag(ServiceEntryFlags.Shared)
+                    ? fact => (fact.Super ?? fact).GetOrCreateInstance(entry, slot)
+                    : fact => fact.GetOrCreateInstance(entry, slot);
             }
             else
-                return fact => fact.CreateInstance(entry);
+                return entry.Flags.HasFlag(ServiceEntryFlags.Shared)
+                    ? fact => (fact.Super ?? fact).CreateInstance(entry)
+                    : fact => fact.CreateInstance(entry);
         }
 
         private int FSlots;
@@ -82,10 +86,10 @@ namespace Solti.Utils.DI.Internals
                         resolver = CreateResolver(genericEntry.Specialize(iface.GenericTypeArguments));
 
                         //
-                        // In theory copying the dictionary is quick: https://github.com/dotnet/runtime/blob/c78bf2f522b4ce5a449faf6a38a0752b642a7f79/src/libraries/System.Private.CoreLib/src/System/Collections/Generic/Dictionary.cs#L126
+                        // In theory copying a dictionary is quick: https://github.com/dotnet/runtime/blob/c78bf2f522b4ce5a449faf6a38a0752b642a7f79/src/libraries/System.Private.CoreLib/src/System/Collections/Generic/Dictionary.cs#L126
                         //
 
-                        Dictionary<int, Func<IInstanceFactory, object?>> extendedResolvers = new((IDictionary<int, Func<IInstanceFactory, object?>>) FResolvers);
+                        Dictionary<int, Func<IInstanceFactory, object?>> extendedResolvers = new(FResolvers);
                         extendedResolvers.Add(key, resolver);
 
                         FResolvers = extendedResolvers;
