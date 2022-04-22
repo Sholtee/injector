@@ -29,19 +29,7 @@ namespace Solti.Utils.DI.Internals
 
         private ServicePath? FPath;
 
-        protected virtual IEnumerable<AbstractServiceEntry> GetAllServices(IEnumerable<AbstractServiceEntry> registeredEntries)
-        {
-            yield return new ContextualServiceEntry(typeof(IInjector), null, (i, _) => i);
-            yield return new ContextualServiceEntry(typeof(IScopeFactory), null, (i, _) => this /*factory is always the root*/);
-            yield return new ScopedServiceEntry(typeof(IEnumerable<>), null, typeof(ServiceEnumerator<>), new { registeredServices = new List<AbstractServiceEntry>(registeredEntries) });
-#if DEBUG
-            yield return new InstanceServiceEntry(typeof(System.Collections.ICollection), "captured_disposables", (FDisposableStore = new()).CapturedDisposables);
-#endif
-            foreach (AbstractServiceEntry entry in registeredEntries)
-            {
-                yield return entry;
-            }
-        }
+        private object?[] FSlots;
 
         //
         // It locks all the write operations related to this scope. Reading already produced services
@@ -103,6 +91,20 @@ namespace Solti.Utils.DI.Internals
             return instance;
         }
 
+        protected virtual IEnumerable<AbstractServiceEntry> GetAllServices(IEnumerable<AbstractServiceEntry> registeredEntries)
+        {
+            yield return new ContextualServiceEntry(typeof(IInjector), null, (i, _) => i);
+            yield return new ContextualServiceEntry(typeof(IScopeFactory), null, (i, _) => this /*factory is always the root*/);
+            yield return new ScopedServiceEntry(typeof(IEnumerable<>), null, typeof(ServiceEnumerator<>), new { registeredServices = new List<AbstractServiceEntry>(registeredEntries) });
+#if DEBUG
+            yield return new InstanceServiceEntry(typeof(System.Collections.ICollection), "captured_disposables", (FDisposableStore = new()).CapturedDisposables);
+#endif
+            foreach (AbstractServiceEntry entry in registeredEntries)
+            {
+                yield return entry;
+            }
+        }
+
         #region IInstanceFactory
         object IInstanceFactory.CreateInstance(AbstractServiceEntry requested)
         {
@@ -135,8 +137,6 @@ namespace Solti.Utils.DI.Internals
 
         public IInstanceFactory? Super { get; }
         #endregion
-
-        private object?[] FSlots;
 
         #region IInjector
         public ScopeOptions Options { get; }
