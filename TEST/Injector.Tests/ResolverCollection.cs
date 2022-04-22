@@ -86,35 +86,6 @@ namespace Solti.Utils.DI.Internals.Tests
                 .Verify(f => f.CreateInstance(entry), Times.Once);
         }
 
-        [Test]
-        public void CreatedResolver_ShouldBeAssignedToTheProperSlot([Values(null, "cica")] string name)
-        {
-            ScopedServiceEntry 
-                entry1 = new(typeof(IList), name, (_, _) => new List<object>()),
-                entry2 = new(typeof(IList<object>), name, (_, _) => new List<object>());
-
-            Mock<IInstanceFactory> mockFactory = new(MockBehavior.Strict);
-            mockFactory
-                .Setup(f => f.GetOrCreateInstance(entry1, 0))
-                .Returns((object) null);
-            mockFactory
-                .Setup(f => f.GetOrCreateInstance(entry2, 1))
-                .Returns((object) null);
-            mockFactory
-                .SetupGet(f => f.Super)
-                .Returns((IInstanceFactory)null);
-
-            ResolverCollection resolvers = new(new[] { entry1, entry2 });
-
-            Assert.DoesNotThrow(() => resolvers.Get(typeof(IList), name).Invoke(mockFactory.Object));
-            mockFactory
-                .Verify(f => f.GetOrCreateInstance(entry1, 0), Times.Once);
-
-            Assert.DoesNotThrow(() => resolvers.Get(typeof(IList<object>), name).Invoke(mockFactory.Object));
-            mockFactory
-                .Verify(f => f.GetOrCreateInstance(entry2, 1), Times.Once);
-        }
-
         public class MyLiyt<T>: List<T> { }
 
         [Test]
@@ -168,11 +139,11 @@ namespace Solti.Utils.DI.Internals.Tests
         }
 
         [Test]
-        public void CreatedResolver_ShouldBeAssignedToTheProperSlot_RegularCase()
+        public void CreatedResolver_ShouldBeAssignedToTheProperSlot_RegularCase([Values(null, "cica")] string name)
         {
             ScopedServiceEntry
-                entry1 = new(typeof(IList), null, typeof(MyLiyt<object>)),
-                entry2 = new(typeof(IDisposable), null, typeof(Disposable));
+                entry1 = new(typeof(IList), name, typeof(MyLiyt<object>)),
+                entry2 = new(typeof(IDisposable), name, typeof(Disposable));
 
             Mock<IInstanceFactory> mockFactory = new(MockBehavior.Strict);
             mockFactory
@@ -184,11 +155,11 @@ namespace Solti.Utils.DI.Internals.Tests
 
             ResolverCollection resolvers = new(new[] { entry1, entry2 });
 
-            Assert.DoesNotThrow(() => resolvers.Get(typeof(IList), null).Invoke(mockFactory.Object));
+            Assert.DoesNotThrow(() => resolvers.Get(typeof(IList), name).Invoke(mockFactory.Object));
             mockFactory
                 .Verify(f => f.GetOrCreateInstance(It.Is<ScopedServiceEntry>(e => e.Interface == typeof(IList)), 0), Times.Once);
 
-            Assert.DoesNotThrow(() => resolvers.Get(typeof(IDisposable), null).Invoke(mockFactory.Object));
+            Assert.DoesNotThrow(() => resolvers.Get(typeof(IDisposable), name).Invoke(mockFactory.Object));
             mockFactory
                 .Verify(f => f.GetOrCreateInstance(It.Is<ScopedServiceEntry>(e => e.Interface == typeof(IDisposable)), 1), Times.Once);
         }
@@ -306,6 +277,24 @@ namespace Solti.Utils.DI.Internals.Tests
             ResolverCollection resolvers = new(new[] { genericEntry });
 
             Assert.AreSame(resolvers.Get(typeof(IList<int>), name), resolvers.Get(typeof(IList<int>), name));
+        }
+
+        [Test]
+        public void Get_ShouldReturnNullOnNonRegisteredService()
+        {
+            Assert.IsNull(new ResolverCollection(Array<AbstractServiceEntry>.Empty).Get(typeof(IList), null));
+        }
+
+        [Test]
+        public void Get_ShouldReturnNullOnNonRegisteredService_GenericCase()
+        {
+            Assert.IsNull(new ResolverCollection(new AbstractServiceEntry[] { new ScopedServiceEntry(typeof(IList<object>), null, typeof(MyLiyt<object>)) } ).Get(typeof(IList<int>), null));
+        }
+
+        [Test]
+        public void Get_ShouldReturnNullOnNonRegisteredService_NamedCase()
+        {
+            Assert.IsNull(new ResolverCollection(new AbstractServiceEntry[] { new ScopedServiceEntry(typeof(IList), 0.ToString(), typeof(MyLiyt<object>)) }).Get(typeof(IList), null));
         }
     }
 }
