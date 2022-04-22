@@ -25,7 +25,7 @@ namespace Solti.Utils.DI.Internals
 
         private CaptureDisposable? FDisposableStore;
 
-        private readonly Resolver FResolver;
+        private readonly ResolverCollection FResolver;
 
         private ServicePath? FPath;
 
@@ -35,7 +35,7 @@ namespace Solti.Utils.DI.Internals
             yield return new ContextualServiceEntry(typeof(IScopeFactory), null, (i, _) => this /*factory is always the root*/);
             yield return new ScopedServiceEntry(typeof(IEnumerable<>), null, typeof(ServiceEnumerator<>), new { registeredServices = new List<AbstractServiceEntry>(registeredEntries) });
 #if DEBUG
-            yield return new InstanceServiceEntry(typeof(ICollection), "captured_disposables", FDisposableStore.CapturedDisposables);
+            yield return new InstanceServiceEntry(typeof(System.Collections.ICollection), "captured_disposables", (FDisposableStore = new()).CapturedDisposables);
 #endif
             foreach (AbstractServiceEntry entry in registeredEntries)
             {
@@ -191,7 +191,7 @@ namespace Solti.Utils.DI.Internals
         public ExperimentalScope(IEnumerable<AbstractServiceEntry> registeredEntries, ScopeOptions options, object? lifetime)
         {
             #pragma warning disable CA2214 // Do not call overridable methods in constructors
-            FResolver = new Resolver(GetAllServices(registeredEntries));
+            FResolver = new ResolverCollection(GetAllServices(registeredEntries));
             #pragma warning restore CA2214
             FSlots    = Array<object>.Create(FResolver.Slots);
             Options   = options;

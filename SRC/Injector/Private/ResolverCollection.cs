@@ -1,5 +1,5 @@
 ﻿/********************************************************************************
-* Resolver.cs                                                                   *
+* ResolverCollection.cs                                                         *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
@@ -11,7 +11,7 @@ namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
 
-    internal sealed class Resolver
+    internal sealed class ResolverCollection
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         #pragma warning disable CA1307 // Specify StringComparison for clarity
@@ -19,11 +19,14 @@ namespace Solti.Utils.DI.Internals
         #pragma warning restore CA1307
 
         //
-        // - Dictionary performs much better against int keys.
-        // - Don't use ImmutableArray here since it is 2-3 times slower.
+        // Dictionary performs much better against int keys.
         //
 
         private readonly IReadOnlyDictionary<int, AbstractServiceEntry> FGenericEntries;
+
+        //
+        // Don't use ImmutableArray here since it is 2-3 times slower.
+        //
 
         private /*IReadOnly*/Dictionary<int, Func<IInstanceFactory, object?>> FResolvers;
 
@@ -47,7 +50,7 @@ namespace Solti.Utils.DI.Internals
         private int FSlots;
         public int Slots => FSlots;
 
-        public Resolver(IEnumerable<AbstractServiceEntry> entries)
+        public ResolverCollection(IEnumerable<AbstractServiceEntry> entries)
         {
             Dictionary<int, AbstractServiceEntry> genericEntries = new();
             Dictionary<int, Func<IInstanceFactory, object?>> resolvers = new();
