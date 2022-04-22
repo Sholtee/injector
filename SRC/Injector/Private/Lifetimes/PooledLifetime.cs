@@ -39,35 +39,41 @@ namespace Solti.Utils.DI.Internals
             string poolName = GetPoolName(iface, name);
 
             //
-            // A sorrend szamit (last IModifiedServiceCollection.LastEntry) viszont a validalas miatt eloszor a 
-            // PooledServiceEntry-t hozzuk letre.
+            // PooledServiceEntry is created first (to do the neccessary validations) but returned last
+            // (thus the IModifiedServiceCollection.LastEntry won't be screwed up)
             //
 
+            PooledServiceEntry entry = new(iface, name, implementation, poolName);
+
             yield return GetPoolService(iface, name, poolName);
-            yield return new PooledServiceEntry(iface, name, implementation, poolName);
+            yield return entry;
         }
 
         public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Type implementation, object explicitArgs)
         {
             string poolName = GetPoolName(iface, name);
 
+            PooledServiceEntry entry = new(iface, name, implementation, explicitArgs, poolName);
+
             yield return GetPoolService(iface, name, poolName);
-            yield return new PooledServiceEntry(iface, name, implementation, explicitArgs, poolName);
+            yield return entry;
         }
 
         public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Func<IInjector, Type, object> factory)
         {
             string poolName = GetPoolName(iface, name);
 
+            PooledServiceEntry entry = new(iface, name, factory, poolName);
+
             yield return GetPoolService(iface, name, poolName);
-            yield return new PooledServiceEntry(iface, name, factory, poolName);
+            yield return entry;
         }
 
         public override int CompareTo(Lifetime other) => other is PooledLifetime
             //
-            // Ez itt bar megtori a szabalyt amikent az IComparable-t implementalni kene meg is szukseges
-            // mivel pooled szerviznek nem lehet pooled fuggosege (a fuggoseg sosem kerulne vissza a szulo
-            // pool-ba)
+            // It breaks the contract how the IComparable interfacce is supposed to be implemented but
+            // required since a pooled service can not have pooled dependency (dependency would never 
+            // get back to its parent pool)
             //
 
             ? -1

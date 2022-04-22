@@ -22,7 +22,7 @@ namespace Solti.Utils.DI.Internals.Tests
     public sealed class ResolverCollectionTests
     {
         [Test]
-        public void CreatedResolver_ShouldResolveFromSuperInCaseOfSharedEntry([Values(null, "cica")] string name)
+        public void CreatedResolver_ShouldResolveFromSuperFactoryInCaseOfSharedEntry([Values(null, "cica")] string name)
         {
             SingletonServiceEntry entry = new(typeof(IList), name, (_, _) => new List<object>());
 
@@ -47,7 +47,7 @@ namespace Solti.Utils.DI.Internals.Tests
         }
 
         [Test]
-        public void CreatedResolver_ShouldResolveFromCurrentInCaseOfNonSharedEntry1([Values(null, "cica")] string name)
+        public void CreatedResolver_ShouldResolveFromCurrentFactoryInCaseOfNonSharedEntry1([Values(null, "cica")] string name)
         {
             ScopedServiceEntry entry = new(typeof(IList), name, (_, _) => new List<object>());
 
@@ -67,7 +67,7 @@ namespace Solti.Utils.DI.Internals.Tests
         }
 
         [Test]
-        public void CreatedResolver_ShouldResolveFromCurrentInCaseOfNonSharedEntry2([Values(null, "cica")] string name)
+        public void CreatedResolver_ShouldResolveFromCurrentFactoryInCaseOfNonSharedEntry2([Values(null, "cica")] string name)
         {
             TransientServiceEntry entry = new(typeof(IList), name, (_, _) => new List<object>());
 
