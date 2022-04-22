@@ -20,7 +20,7 @@ namespace Solti.Utils.DI.Internals
         IInstanceFactory
     {
         //
-        // This list should not be thread safe since it is called inside a lock.
+        // This list should not be thread safe since it is invoked inside the write lock.
         //
 
         private CaptureDisposable? FDisposableStore;
