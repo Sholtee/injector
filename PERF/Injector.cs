@@ -16,7 +16,7 @@ namespace Solti.Utils.DI.Perf
 
     public class InjectorTestsBase
     {
-        public const int INVOCATION_COUNT = 1000000;
+        public const int INVOCATION_COUNT = 2000000;
 
         static InjectorTestsBase() =>
             //

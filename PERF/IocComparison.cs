@@ -15,7 +15,7 @@ namespace Solti.Utils.DI.Perf
     using Interfaces;
 
     [MemoryDiagnoser]
-    [SimpleJob(RunStrategy.Throughput, invocationCount: 90000)]
+    [SimpleJob(RunStrategy.Throughput, invocationCount: 100000)]
     public partial class IocComparison
     {
         #region Services
@@ -68,6 +68,7 @@ namespace Solti.Utils.DI.Perf
             get
             {
                 yield return new Autofac();
+                yield return new DryIoc();
                 yield return new InjectorDotNet();
                 yield return new Lamar();
                 yield return new MsExtensionsDI();
