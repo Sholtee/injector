@@ -129,6 +129,12 @@ namespace Solti.Utils.DI.Internals
                     return FSlots[slot]!;
 
                 if (slot >= FSlots.Length)
+                    //
+                    // We reach here when we made a service request that triggered a ResolverCollection update.
+                    // Scopes created after the update won't be affected as they allocate their slot array with
+                    // the proper size.
+                    //
+
                     Array.Resize(ref FSlots, slot + 1);
 
                 return FSlots[slot] = CreateInstanceCore(requested);
