@@ -1,5 +1,5 @@
 ﻿/********************************************************************************
-* ExperimantelScope.cs                                                          *
+* VariableCapturing.cs                                                          *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
@@ -10,7 +10,7 @@ using NUnit.Framework;
 namespace Solti.Utils.DI.Internals.Tests
 {
     [TestFixture]
-    public class ExperimantelScopeTests
+    public class VariableCapturingTests
     {
         [Test]
         public void VariableCapturingTest()
