@@ -39,7 +39,7 @@ namespace Solti.Utils.DI.Tests
         {
             Collection.Service(typeof(IInterface_3<>), typeof(Implementation_3_IInterface_1_Dependant<>), lifetime);
 
-            AbstractServiceEntry entry = ((ISupportsSpecialization) Collection.LastEntry).Specialize(typeof(int));
+            AbstractServiceEntry entry = Collection.LastEntry.Specialize(typeof(int));
 
             Assert.That(entry, Is.Not.Null);
             Assert.That(entry.Interface, Is.EqualTo(typeof(IInterface_3<int>)));
@@ -124,7 +124,7 @@ namespace Solti.Utils.DI.Tests
         {
             Collection.Service(typeof(IServiceHavingNonInterfaceCtorArg<>), typeof(ServiceHavingNonInterfaceCtorArg<>), new Dictionary<string, object> { ["para"] = "cica" }, lifetime);
 
-            Func<IInjector, Type, object> fact = ((ISupportsSpecialization) Collection.LastEntry).Specialize(typeof(object)).Factory;
+            Func<IInjector, Type, object> fact = Collection.LastEntry.Specialize(typeof(object)).Factory;
 
             Assert.That(fact, Is.Not.Null);
 
@@ -145,7 +145,7 @@ namespace Solti.Utils.DI.Tests
         {
             Collection.Service(typeof(IServiceHavingNonInterfaceCtorArg<>), typeof(ServiceHavingNonInterfaceCtorArg<>), new { para = "cica" }, lifetime);
 
-            Func<IInjector, Type, object> fact = ((ISupportsSpecialization) Collection.LastEntry).Specialize(typeof(object)).Factory;
+            Func<IInjector, Type, object> fact = Collection.LastEntry.Specialize(typeof(object)).Factory;
 
             Assert.That(fact, Is.Not.Null);
 
@@ -186,7 +186,7 @@ namespace Solti.Utils.DI.Tests
             Assert.That(Collection.LastEntry.Factory, Is.EqualTo(ServiceActivator.Get(typeof(Implementation_8_MultiCtor).GetConstructor(new Type[0]))));
 
             Assert.DoesNotThrow(() => Collection.Service(typeof(IInterface_3<>), typeof(Implementation_9_MultiCtor<>), lifetime));
-            Assert.That(((ISupportsSpecialization) Collection.LastEntry).Specialize(typeof(int)).Factory, Is.EqualTo(ServiceActivator.Get(typeof(Implementation_9_MultiCtor<int>).GetConstructor(new Type[] { typeof(IInterface_1) }))));
+            Assert.That(Collection.LastEntry.Specialize(typeof(int)).Factory, Is.EqualTo(ServiceActivator.Get(typeof(Implementation_9_MultiCtor<int>).GetConstructor(new Type[] { typeof(IInterface_1) }))));
         }
 
         [TestCaseSource(nameof(Lifetimes))]

@@ -63,7 +63,7 @@ namespace Solti.Utils.DI.Tests
 
             Assert.That(Collection.LastEntry.Factory, Is.Null);
 
-            IMyGenericService<int> instance = (IMyGenericService<int>)((ISupportsSpecialization)Collection.LastEntry)
+            IMyGenericService<int> instance = (IMyGenericService<int>) Collection.LastEntry
                 .Specialize(typeof(int))
                 .Factory
                 .Invoke(new Mock<IInjector>(MockBehavior.Strict).Object, typeof(IMyService));

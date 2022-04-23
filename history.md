@@ -242,7 +242,7 @@
   - *breaking:* Slightly modified `AbstractServiceEntry` layout
   - *breaking:* Removed `ScopeFactory.Create()` `cancellation` parameter (root now can be created in reasonable time)
   - *breaking:* Removed `ScopeOptions.MaxSpawnedTransientServices` property (due to performance considerations)
-  - *breaking:* Dropped `IServiceRegistry`, `IServicePath`, `IserviceDefinition`, `IServiceId` interfaces
+  - *breaking:* Dropped `IServiceRegistry`, `IServicePath`, `IserviceDefinition`, `IServiceId`, `ISupportsSpecialization` interfaces
   - *breaking:* Dropped concept of scope metadata
   - *breaking:* Removed obsolete `IServiceCollectionBasicExtensions.Service()`, `IInjectorAdvancedExtensions.Instantiate()` overloads
   - *breaking:* Removed `ProxyFactory` & `DuckFactory` classes (ProxyGen v7 provides almost identical functionality)

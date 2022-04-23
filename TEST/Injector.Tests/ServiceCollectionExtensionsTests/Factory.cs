@@ -34,7 +34,7 @@ namespace Solti.Utils.DI.Tests
 
             AbstractServiceEntry expected = lifetime.CreateFrom(typeof(IInterface_3<int>), null, factory).Last();
 
-            Assert.That(((ISupportsSpecialization) Collection.LastEntry).Specialize(typeof(int)), Is.InstanceOf(expected.GetType()).And.EqualTo(expected).Using(ServiceIdComparer.Instance));
+            Assert.That(Collection.LastEntry.Specialize(typeof(int)), Is.InstanceOf(expected.GetType()).And.EqualTo(expected).Using(ServiceIdComparer.Instance));
         }
 
         [TestCase(null)]

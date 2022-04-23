@@ -11,7 +11,7 @@ namespace Solti.Utils.DI.Internals
     using Interfaces;
     using Properties;
 
-    internal abstract class ProducibleServiceEntry : AbstractServiceEntry, ISupportsSpecialization, ISupportsProxying
+    internal abstract class ProducibleServiceEntry : AbstractServiceEntry, ISupportsProxying
     {
         #region Protected
         protected ProducibleServiceEntry(Type @interface, string? name, Func<IInjector, Type, object> factory) : base(@interface, name, null)
