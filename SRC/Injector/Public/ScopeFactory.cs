@@ -44,8 +44,8 @@ namespace Solti.Utils.DI
             options ??= new();
 
             return options.SupportsServiceProvider
-                ? new ExperimentalScopeSupportsServiceProvider(services, options, lifetimne)
-                : new ExperimentalScope(services, options, lifetimne);
+                ? new InjectorSupportsServiceProvider(services, options, lifetimne)
+                : new Injector(services, options, lifetimne);
         }
     }
 }

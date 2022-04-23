@@ -1,5 +1,5 @@
 ﻿/********************************************************************************
-* ExperimentalScope.cs                                                          *
+* InjectorSupportsServiceProvider.cs                                            *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
@@ -10,7 +10,7 @@ namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
 
-    internal class ExperimentalScopeSupportsServiceProvider : ExperimentalScope, IServiceProvider
+    internal class InjectorSupportsServiceProvider : Injector, IServiceProvider
     {
         protected override IEnumerable<AbstractServiceEntry> GetAllServices(IEnumerable<AbstractServiceEntry> registeredEntries)
         {
@@ -22,11 +22,11 @@ namespace Solti.Utils.DI.Internals
             }
         }
 
-        public ExperimentalScopeSupportsServiceProvider(IEnumerable<AbstractServiceEntry> registeredEntries, ScopeOptions options, object? lifetime) : base(registeredEntries, options, lifetime)
+        public InjectorSupportsServiceProvider(IEnumerable<AbstractServiceEntry> registeredEntries, ScopeOptions options, object? lifetime) : base(registeredEntries, options, lifetime)
         {
         }
 
-        public ExperimentalScopeSupportsServiceProvider(ExperimentalScopeSupportsServiceProvider super, object? lifetime) : base(super, lifetime)
+        public InjectorSupportsServiceProvider(InjectorSupportsServiceProvider super, object? lifetime) : base(super, lifetime)
         {
         }
 
@@ -34,6 +34,6 @@ namespace Solti.Utils.DI.Internals
 
         public object GetService(Type serviceType) => TryGet(serviceType, null)!;
 
-        public override IInjector CreateScope(object? lifetime = null) => new ExperimentalScopeSupportsServiceProvider(this, lifetime);
+        public override IInjector CreateScope(object? lifetime = null) => new InjectorSupportsServiceProvider(this, lifetime);
     }
 }

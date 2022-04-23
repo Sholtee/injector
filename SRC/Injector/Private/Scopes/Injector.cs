@@ -1,5 +1,5 @@
 ﻿/********************************************************************************
-* ExperimentalScope.cs                                                          *
+* Injector.cs                                                                   *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
@@ -13,7 +13,7 @@ namespace Solti.Utils.DI.Internals
     using Primitives.Patterns;
     using Properties;
 
-    internal class ExperimentalScope:
+    internal class Injector:
         Disposable,
         IInjector,
         IScopeFactory,
@@ -97,7 +97,7 @@ namespace Solti.Utils.DI.Internals
             yield return new ContextualServiceEntry(typeof(IScopeFactory), null, (i, _) => this /*factory is always the root*/);
             yield return new ScopedServiceEntry(typeof(IEnumerable<>), null, typeof(ServiceEnumerator<>), new { registeredServices = new List<AbstractServiceEntry>(registeredEntries) });
 #if DEBUG
-            yield return new ContextualServiceEntry(typeof(System.Collections.ICollection), "captured_disposables", (i, _) => (((ExperimentalScope) i).FDisposableStore ??= new()).CapturedDisposables);
+            yield return new ContextualServiceEntry(typeof(System.Collections.ICollection), "captured_disposables", (i, _) => (((Injector) i).FDisposableStore ??= new()).CapturedDisposables);
 #endif
             foreach (AbstractServiceEntry entry in registeredEntries)
             {
@@ -191,10 +191,10 @@ namespace Solti.Utils.DI.Internals
         #endregion
 
         #region IScopeFactory
-        public virtual IInjector CreateScope(object? lifetime = null) => new ExperimentalScope(this, lifetime);
+        public virtual IInjector CreateScope(object? lifetime = null) => new Injector(this, lifetime);
         #endregion
 
-        public ExperimentalScope(IEnumerable<AbstractServiceEntry> registeredEntries, ScopeOptions options, object? lifetime)
+        public Injector(IEnumerable<AbstractServiceEntry> registeredEntries, ScopeOptions options, object? lifetime)
         {
             #pragma warning disable CA2214 // Do not call overridable methods in constructors
             FResolver = new ResolverCollection(GetAllServices(registeredEntries));
@@ -204,7 +204,7 @@ namespace Solti.Utils.DI.Internals
             Lifetime  = lifetime;
         }
 
-        public ExperimentalScope(ExperimentalScope super, object? lifetime)
+        public Injector(Injector super, object? lifetime)
         {
             FResolver = super.FResolver;
             FSlots    = Array<object>.Create(FResolver.Slots);
