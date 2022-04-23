@@ -13,22 +13,11 @@ namespace Solti.Utils.DI.Internals.Tests
     using Interfaces;
     using Properties;
     using Proxy;
+    using Proxy.Generators;
 
     [TestFixture]
     public sealed class TypeExtensionsTests
     {
-        [Test]
-        public void CreateInstance_ShouldInstantiate() =>
-            Assert.That(typeof(List<int>).CreateInstance(Array.Empty<Type>()), Is.InstanceOf<List<int>>());
-
-        [Test]
-        public void CreateInstance_ShouldPassCtorParameters() =>
-            Assert.That(((List<int>)typeof(List<int>).CreateInstance(new[] { typeof(int) }, 1)).Capacity, Is.EqualTo(1));
-
-        [Test]
-        public void CreateInstance_ShouldThrowIfConstructorCanNotBeFound() =>
-            Assert.Throws<ArgumentException>(() => typeof(List<int>).CreateInstance(new[] { typeof(string) }, "cica"), Resources.CONSTRUCTOR_NOT_FOUND);
-
         public class InterceptorHavingMultipleCtors<TInterface> : InterfaceInterceptor<TInterface> where TInterface : class
         {
             [ServiceActivator]
@@ -49,7 +38,7 @@ namespace Solti.Utils.DI.Internals.Tests
             get
             {
                 yield return typeof(MyClassHavingMultipleCtors);
-                yield return ProxyFactory.GenerateProxyType(typeof(IDisposable), typeof(InterceptorHavingMultipleCtors<IDisposable>));
+                yield return ProxyGenerator<IDisposable, InterceptorHavingMultipleCtors<IDisposable>>.GetGeneratedType();
             }
         }
 

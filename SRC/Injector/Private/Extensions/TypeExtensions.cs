@@ -20,13 +20,12 @@ namespace Solti.Utils.DI.Internals
     {
         public static bool IsProxy(this Type src) => src.GetCustomAttribute<GeneratedCodeAttribute>()?.Tool.Equals("ProxyGen.NET", StringComparison.OrdinalIgnoreCase) is true;
 
-        public static ConstructorInfo GetApplicableConstructor(this Type src) => Cache.GetOrAdd(src, () =>
+        public static ConstructorInfo GetApplicableConstructor(this Type src) => Cache.GetOrAdd(src, () => // TODO: remove LINQ
         {
             if (src.IsProxy())
             {
                 //
-                // Specialis eset amikor proxy-t hozunk letre majd probaljuk aktivalni. Itt a ServiceActivatorAttribute nem lesz lathato mivel
-                // az aktualis proxy tipus osenek konstruktoran van (ha van).
+                // In case of generated proxy types the ServiceActivatorAttribute is not visible as it is placed on the anchestor
                 //
 
                 Type @base = src.BaseType;
@@ -35,7 +34,8 @@ namespace Solti.Utils.DI.Internals
                 ConstructorInfo baseCtor = @base!.GetApplicableConstructor();
 
                 //
-                // Mivel a generalt proxy "orokolte" ose osszes konstruktorat ezert parameter egyeztetessel megtalalhatjuk
+                // Since the generated proxy type "inherited" all the public constructor from its anchestor, we can find the proper
+                // one with parameter matching
                 //
 
                 return src.GetConstructor
@@ -44,43 +44,21 @@ namespace Solti.Utils.DI.Internals
                 );
             }
 
-            IReadOnlyList<ConstructorInfo> constructors = src.GetConstructors();
+            IReadOnlyList<ConstructorInfo> 
+                constructors = src.GetConstructors(),
+                compatibleCtors = constructors.Where(ctor => ctor.GetCustomAttribute<ServiceActivatorAttribute>() is not null).ToList();
 
             //
-            // Az implementacionak pontosan egy (megjelolt) konstruktoranak kell lennie.
+            // The implementation must have exactly one (annotated) constructor
             //
 
-            try
-            {
-                return constructors.SingleOrDefault(ctor => ctor.GetCustomAttribute<ServiceActivatorAttribute>() is not null) ?? constructors.Single();
-            }
-            catch (InvalidOperationException)
-            {
+            if (compatibleCtors.Count is 0)
+                compatibleCtors = constructors;
+
+            if (compatibleCtors.Count > 1)
                 throw new NotSupportedException(string.Format(Resources.Culture, Resources.CONSTRUCTOR_OVERLOADING_NOT_SUPPORTED, src));
-            }
+
+            return compatibleCtors.Single();
         });
-
-        private sealed record HashCombiner<T>(HashCombiner<T>? Previous, T Current);
-
-        public static object CreateInstance(this Type src, Type[] argTypes, params object?[] args)
-        {
-            HashCombiner<Type> key = new(null, src);
-
-            for (int i = 0; i < argTypes.Length; i++)
-            {
-                key = new HashCombiner<Type>(key, argTypes[i]);
-            }
-
-            Func<object?[], object> factory = Cache.GetOrAdd(key, () =>
-            {
-                ConstructorInfo ctor = src.GetConstructor(argTypes); // idoigenyes
-                if (ctor is null)
-                    throw new ArgumentException(Resources.CONSTRUCTOR_NOT_FOUND, nameof(argTypes));
-
-                return ctor.ToStaticDelegate();
-            });
-
-            return factory(args);
-        }
     }
 }

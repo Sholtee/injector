@@ -22,7 +22,7 @@ namespace Solti.Utils.DI.Tests
 
             using (IInjector injector = Root.CreateScope())
             {
-                Implementation_7_TInterface_Dependant<IInjector> obj = injector.Instantiate<Implementation_7_TInterface_Dependant<IInjector>>();
+                Implementation_7_TInterface_Dependant<IInjector> obj = injector.Instantiate<Implementation_7_TInterface_Dependant<IInjector>>(new Dictionary<string, object>());
                 Assert.That(obj.Interface, Is.SameAs(injector));
             }
         }
@@ -79,7 +79,7 @@ namespace Solti.Utils.DI.Tests
 
             using (IInjector injector = Root.CreateScope())
             {
-                Implementation_2_IInterface_1_Dependant obj = injector.Instantiate<Implementation_2_IInterface_1_Dependant>();
+                Implementation_2_IInterface_1_Dependant obj = injector.Instantiate<Implementation_2_IInterface_1_Dependant>(new Dictionary<string, object>());
                 Assert.That(obj.Interface1, Is.InstanceOf<Implementation_1_No_Dep>());
             }
         }
@@ -103,7 +103,7 @@ namespace Solti.Utils.DI.Tests
 
             using (IInjector injector = Root.CreateScope())
             {
-                Assert.Throws<ArgumentException>(() => injector.Instantiate(typeof(Implementation_3_IInterface_1_Dependant<>)), Resources.PARAMETER_IS_GENERIC);
+                Assert.Throws<ArgumentException>(() => injector.Instantiate(typeof(Implementation_3_IInterface_1_Dependant<>), new Dictionary<string, object>()), Resources.PARAMETER_IS_GENERIC);
             }           
         }
 
@@ -125,7 +125,7 @@ namespace Solti.Utils.DI.Tests
 
             using (IInjector injector = Root.CreateScope())
             {
-                Implementation_3_IInterface_1_Dependant<string> obj = injector.Instantiate<Implementation_3_IInterface_1_Dependant<string>>();
+                Implementation_3_IInterface_1_Dependant<string> obj = injector.Instantiate<Implementation_3_IInterface_1_Dependant<string>>(new Dictionary<string, object>());
                 Assert.That(obj.Interface1, Is.InstanceOf<Implementation_1_No_Dep>());
             }
         }
@@ -149,7 +149,7 @@ namespace Solti.Utils.DI.Tests
 
             using (IInjector injector = Root.CreateScope())
             {
-                Assert.DoesNotThrow(() => injector.Instantiate<Implementation_8_MultiCtor>());
+                Assert.DoesNotThrow(() => injector.Instantiate<Implementation_8_MultiCtor>(new Dictionary<string, object>()));
             }          
         }
 
@@ -167,14 +167,14 @@ namespace Solti.Utils.DI.Tests
         [Test]
         public void Injector_Instantiate_ShouldValidate() 
         {
-            Assert.Throws<ArgumentNullException>(() => IInjectorAdvancedExtensions.Instantiate(null, typeof(object)));
+            Assert.Throws<ArgumentNullException>(() => IInjectorAdvancedExtensions.Instantiate(null, typeof(object), new Dictionary<string, object>()));
 
             Root = ScopeFactory.Create(svcs => { });
 
             using (IInjector injector = Root.CreateScope())
             {
-                Assert.Throws<ArgumentNullException>(() => injector.Instantiate(null));
-                Assert.Throws<ArgumentException>(() => injector.Instantiate(typeof(IInjector)));
+                Assert.Throws<ArgumentNullException>(() => injector.Instantiate(null, new Dictionary<string, object>()));
+                Assert.Throws<ArgumentException>(() => injector.Instantiate(typeof(IInjector), new Dictionary<string, object>()));
             }
         }
     }

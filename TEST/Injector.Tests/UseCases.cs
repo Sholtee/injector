@@ -19,10 +19,8 @@ using NUnit.Framework;
 namespace Solti.Utils.DI.UseCases
 {
     using Interfaces;
-    using Internals;
     using Proxy;
-
-    using ScopeFactory = DI.ScopeFactory;
+    using Proxy.Generators;
 
     [TestFixture]
     public class UseCases
@@ -166,16 +164,15 @@ namespace Solti.Utils.DI.UseCases
                 Logger = logger;
             }
 
-            public override object GetInterceptor(IInjector injector, Type iface, object instance) => ProxyFactory.Create(
-                iface, 
-                typeof(MethodInvocationLoggerInterceptor<>).MakeGenericType(iface), 
-                new[] 
-                { 
-                    iface, 
-                    typeof(ILogger)
-                }, 
-                instance, 
-                Activator.CreateInstance(Logger));
+            public override object GetInterceptor(IInjector injector, Type iface, object instance) => injector.Instantiate
+            (
+                new ProxyGenerator(iface, typeof(MethodInvocationLoggerInterceptor<>).MakeGenericType(iface)).GetGeneratedType(),
+                new Dictionary<string, object>
+                {
+                    ["target"] = instance,
+                    ["logger"] = Activator.CreateInstance(Logger)
+                }
+            );
         }
     }
 }
