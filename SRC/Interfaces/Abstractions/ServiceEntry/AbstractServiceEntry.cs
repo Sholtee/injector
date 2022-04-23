@@ -44,10 +44,8 @@ namespace Solti.Utils.DI.Interfaces
                 throw new ArgumentException(Resources.NOT_AN_INTERFACE, nameof(@interface));
 
             //
-            // Ha van implementacio akkor nem kell ellenorizni h megvalositja e az interface-t mivel:
-            //   1) Ha meg is valositja, Proxy()-val ugy is el lehet rontani
-            //   2) Epp ezert az Injector ellenorizni fogja a Factory hivas visszatereset
-            //   3) Pl a Provider() hivas is "rossz" tipust regisztral
+            // The given "implementation" not necessarily implements the service interface (for instance in case 
+            // of Proxy recipe) therefore the missing validation.
             //
 
             if (implementation?.IsClass is false)
@@ -80,12 +78,12 @@ namespace Solti.Utils.DI.Interfaces
 
         #region Mutables
         /// <summary>
-        /// The concrete factory. Don't use it directly.
+        /// The concrete factory. Don't use it directly!
         /// </summary>
         public Func<IInjector, Type, object>? Factory { get; protected set; }
 
         /// <summary>
-        /// Flags belong to this entry.
+        /// Flags related to this entry.
         /// </summary>
         public ServiceEntryFlags Flags { get; protected set; }
         #endregion
@@ -96,7 +94,7 @@ namespace Solti.Utils.DI.Interfaces
         public virtual AbstractServiceEntry Specialize(params Type[] genericArguments) => throw new NotSupportedException();
 
         /// <summary>
-        /// Creates a new service instance.
+        /// Creates a new service instance. Don't use it directly!
         /// </summary>
         public abstract object CreateInstance(IInjector scope, out object? lifetime);
 
