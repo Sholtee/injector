@@ -1,15 +1,18 @@
 ﻿/********************************************************************************
-* IPathAccess.cs                                                                *
+* IInstanceFactory.cs                                                           *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
-
 namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
 
-    internal interface IPathAccess
+    internal interface IInstanceFactory
     {
-        IServicePath Path { get; }
+        IInstanceFactory? Super { get; }
+
+        object CreateInstance(AbstractServiceEntry requested);
+
+        object GetOrCreateInstance(AbstractServiceEntry requested, int slot);
     }
 }

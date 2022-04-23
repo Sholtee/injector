@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -11,13 +12,13 @@ namespace Solti.Utils.DI.Internals
 {
     using Primitives.Patterns;
 
-    internal sealed class CaptureDisposable: Disposable, ICaptureDisposable
+    internal sealed class CaptureDisposable: Disposable
     {
         //
-        // - Azert Stack<> hogy forditott iranyban szabaditsuk fel a szervizeket mint ahogy letrehoztuk oket (igy az
-        //   eppen felszabaditas alatt levo szerviz meg tudja hivatkozni a fuggosegeit).
-        // - Ne Stack<IDisposable> legyen h tamogassuk azt a perverz esetet is ha egy szerviz csak az
-        //   IAsyncDisposable-t valositja meg.
+        // - We use Stack<> to free instances in the inverse order as they were created (so the service being disposed
+        //   still able to use its dependencies).
+        // - Don't use Stack<IDisposable> to support the pervert scenario when a service implements the IAsyncDisposable
+        //   interface only.
         //
 
         private readonly Stack<object> FCapturedDisposables = new(capacity: 5);
@@ -33,11 +34,6 @@ namespace Solti.Utils.DI.Internals
                         case IDisposable disposable:
                             disposable.Dispose();
                             break;
-
-                        //
-                        // Tamogassuk azt a pervezs esetet ha egy szerviz csak az IAsyncDisposable interface-t valositja meg.
-                        //
-
                         case IAsyncDisposable asyncDisposable:
                             asyncDisposable.DisposeAsync().AsTask().GetAwaiter().GetResult();
                             break;
@@ -64,20 +60,12 @@ namespace Solti.Utils.DI.Internals
             }
 
             //
-            // Nem kell "base" hivas mert az a Dispose()-t hivja
+            // Don't call the base here since it would invoke the Dispose method().
             //
         }
 
-        public void Capture(object obj)
-        {
-            //
-            // Ellenorizzuk h az ujonan letrehozott peldanyt kesobb fel kell e szabaditani
-            //
+        public void Capture(object obj) => FCapturedDisposables.Push(obj);
 
-            if (obj is IDisposable || obj is IAsyncDisposable)
-                FCapturedDisposables.Push(obj);
-        }
-
-        public IReadOnlyCollection<object> CapturedDisposables => FCapturedDisposables;
+        public ICollection CapturedDisposables => FCapturedDisposables;
     }
 }

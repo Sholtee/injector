@@ -5,114 +5,57 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
 namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
+    using Primitives.Patterns;
     using Properties;
 
-    //                                        !!!FIGYELEM!!!
-    //
-    // Ez az osztaly kozponti komponens, ezert minden modositast korultekintoen, a teljesitmenyt szem elott tartva
-    // kell elvegezni:
-    // - nincs Sysmte.Linq
-    // - nincs System.Reflection
-    // - mindig futtassuk a teljesitmeny teszteket (is) hogy a hatekonysag nem romlott e
-    //
-
-    internal class Injector : ServiceRegistry, IInjector, IServiceFactory, ICaptureDisposable, IPathAccess
+    internal class Injector:
+        Disposable,
+        IInjector,
+        IScopeFactory,
+        IInstanceFactory
     {
-        private readonly ServicePath FPath = new();
+        //
+        // This list should not be thread safe since it is invoked inside the write lock.
+        //
 
-        private readonly CaptureDisposable FDisposables = new();
+        private CaptureDisposable? FDisposableStore;
 
-        private bool FDisposing;
+        private readonly ResolverCollection FResolver;
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private object? GetOrCreateInstance(Type iface, string? name, bool throwOnMissing)
+        private ServicePath? FPath;
+
+        private object?[] FSlots;
+
+        //
+        // It locks all the write operations related to this scope. Reading already produced services
+        // can be done parallelly.
+        //
+
+        private readonly object FLock = new();
+
+        private object CreateInstanceCore(AbstractServiceEntry requested)
         {
-            CheckNotDisposed();
-
-            if (FDisposing)
-                //
-                // Egy szerviz a felszabaditasa kozben akar uj fuggoseget hivatkozni.
-                //
-
-                throw new InvalidOperationException(Resources.INJECTOR_IS_BEING_DISPOSED);
-
-            Ensure.Parameter.IsNotNull(iface, nameof(iface));
-            Ensure.Parameter.IsInterface(iface, nameof(iface));
-            Ensure.Parameter.IsNotGenericDefinition(iface, nameof(iface));
-
-            AbstractServiceEntry requested = GetEntry(iface, name);
-
-            if (requested is MissingServiceEntry && !throwOnMissing)
-                return null;
-
-            return requested.GetOrCreateInstance(this);
-        }
-
-        protected override void BeforeDispose()
-        {
-            FDisposing = true;
-            base.BeforeDispose();
-        }
-
-        protected override void Dispose(bool disposeManaged)
-        {
-            if (disposeManaged)
-                FDisposables.Dispose();
-
-            base.Dispose(disposeManaged);
-        }
-
-        protected override ValueTask AsyncDispose() => FDisposables.DisposeAsync();
-
-        public Injector(ConcurrentInjector parent) : base(parent)
-        {
-            Options = parent.Options;
-        }
-
-        #region IServiceFactory
-        public object GetOrCreateInstance(AbstractServiceEntry requested)
-        {
-            //
-            // 1. eset: Csak egy peldanyt kell letrehozni amit vki korabban mar megtett [HasFlag(Built)]
-            //    - Visszaadjuk azt (a szerviz tulajdonosa itt lenyegtelen)
-            //    - A szerviz felszabaditasaval mar nem kell foglalkoznunk
-            //
-
-            if (requested.State.HasFlag(ServiceEntryStates.Built))
-                return requested.GetSingleInstance();
+            object instance;
+            object? lifetime;
 
             //
-            // 2. eset: Nem mi vagyunk a tulajdonosok, ertesitjuk a tulajdonost h hozza letre o a bejegyzest
+            // At the root of the dependency graph this validation makes no sense.
             //
 
-            if (requested.Owner is not null && requested.Owner != this)
-                return ((IServiceFactory) requested.Owner).GetOrCreateInstance(requested);
-
-            //
-            // 3. eset: Uj peldanyt kell letrehozni.
-            //
-
-            //
-            // - StrictDI ellenorzes csak akkor van ha korabban meg nem tudtuk peldanyositani a szervizt (ha korabban
-            //   mar tudtuk peldanyositani akkor ez az ellenorzes is mar megtortent).
-            // - Ha a fuggosegi fa gyokerenel vagyunk akkor a metodus nem ertelmezett.
-            //
-
-            if (Options.StrictDI && !requested.State.HasFlag(ServiceEntryStates.Validated) && FPath.Count > 0)
+            if (Options.StrictDI && FPath?.Count > 0)
             {
                 AbstractServiceEntry requestor = FPath[^1];
 
                 //
-                // A kerelmezett szerviznek legalabb addig kell leteznie mint a kerelmezo szerviznek.
+                // The requested service should not exist longer than its requestor.
                 //
 
-                if (requested.Lifetime!.CompareTo(requestor.Lifetime!) < 0)
+                if (!requestor.Flags.HasFlag(ServiceEntryFlags.Validated) && requested.Lifetime?.CompareTo(requestor.Lifetime!) < 0)
                 {
                     RequestNotAllowedException ex = new(Resources.STRICT_DI);
                     ex.Data[nameof(requestor)] = requestor;
@@ -122,21 +65,14 @@ namespace Solti.Utils.DI.Internals
                 }
             }
 
-            object instance;
-
-            //
-            // 1) Korabban mar peldanyositott szervizt igenylunk -> Nem bovitjuk az utvonalat a szerviz iranyaban,
-            //    ugy sem lesz CDEP (peldanyositott szerviznek minden fuggosege is mar peldanyositott)
-            // 2) Korabban meg nem peldanyositottuk a szervizt -> Bovitjuk az utvonalat a szerviz iranyaban
-            //    -> CDEP ellenorzes 
-            //
-
-            if (!requested.State.HasFlag(ServiceEntryStates.Validated))
+            if (!requested.Flags.HasFlag(ServiceEntryFlags.Validated))
             {
+                FPath ??= new ServicePath();
+
                 FPath.Push(requested);
                 try
                 {
-                    instance = requested.CreateInstance(this);
+                    instance = requested.CreateInstance(this, out lifetime);
                 }
                 finally
                 {
@@ -144,28 +80,137 @@ namespace Solti.Utils.DI.Internals
                 }
             }
             else
-                instance = requested.CreateInstance(this);
+                instance = requested.CreateInstance(this, out lifetime);
 
-            FDisposables.Capture(instance);
+            if (lifetime is not null)
+            {
+                FDisposableStore ??= new CaptureDisposable();
+                FDisposableStore.Capture(lifetime);
+            }
 
             return instance;
         }
-        #endregion
 
-        #region IPathAccess
-        public IServicePath Path => FPath;
-        #endregion
+        protected virtual IEnumerable<AbstractServiceEntry> GetAllServices(IEnumerable<AbstractServiceEntry> registeredEntries)
+        {
+            yield return new ContextualServiceEntry(typeof(IInjector), null, (i, _) => i);
+            yield return new ContextualServiceEntry(typeof(IScopeFactory), null, (i, _) => this /*factory is always the root*/);
+            yield return new ScopedServiceEntry(typeof(IEnumerable<>), null, typeof(ServiceEnumerator<>), new { registeredServices = new List<AbstractServiceEntry>(registeredEntries) });
+#if DEBUG
+            yield return new ContextualServiceEntry(typeof(System.Collections.ICollection), "captured_disposables", (i, _) => (((Injector) i).FDisposableStore ??= new()).CapturedDisposables);
+#endif
+            foreach (AbstractServiceEntry entry in registeredEntries)
+            {
+                yield return entry;
+            }
+        }
 
-        #region ICaptureDisposable
-        public IReadOnlyCollection<object> CapturedDisposables => FDisposables.CapturedDisposables;
+        #region IInstanceFactory
+        object IInstanceFactory.CreateInstance(AbstractServiceEntry requested)
+        {
+            //
+            // In the same thread locks can be taken recursively.
+            //
+
+            lock(FLock)
+            {
+                return CreateInstanceCore(requested);
+            }   
+        }
+
+        object IInstanceFactory.GetOrCreateInstance(AbstractServiceEntry requested, int slot)
+        {
+            if (slot < FSlots.Length && FSlots[slot] is not null)
+                return FSlots[slot]!;
+
+            lock(FLock)
+            {
+                if (slot < FSlots.Length && FSlots[slot] is not null)
+                    return FSlots[slot]!;
+
+                if (slot >= FSlots.Length)
+                    //
+                    // We reach here when we made a service request that triggered a ResolverCollection update.
+                    // Scopes created after the update won't be affected as they allocate their slot array with
+                    // the proper size.
+                    //
+
+                    Array.Resize(ref FSlots, slot + 1);
+
+                return FSlots[slot] = CreateInstanceCore(requested);
+            }
+        }
+
+        public IInstanceFactory? Super { get; }
         #endregion
 
         #region IInjector
-        public object Get(Type iface, string? name) => GetOrCreateInstance(iface, name, throwOnMissing: true)!;
-
-        public object? TryGet(Type iface, string? name) => GetOrCreateInstance(iface, name, throwOnMissing: false);
-
         public ScopeOptions Options { get; }
+
+        public object? Lifetime { get; }
+
+        public virtual object Get(Type iface, string? name)
+        {
+            object? instance = TryGet(iface, name);
+
+            if (instance is null)
+            {
+                MissingServiceEntry requested = new(iface, name);
+
+                ServiceNotFoundException ex = new(string.Format(Resources.Culture, Resources.SERVICE_NOT_FOUND, requested.ToString(shortForm: true)));
+
+                ex.Data["requested"] = requested;
+                ex.Data["requestor"] = FPath?.Count > 0 ? FPath[^1] : null;
+#if DEBUG
+                ex.Data["scope"] = this;
+#endif
+                throw ex;
+            }
+
+            return instance;
+        }
+
+        public object? TryGet(Type iface, string? name)
+        {
+            Ensure.Parameter.IsNotNull(iface, nameof(iface));
+            Ensure.Parameter.IsInterface(iface, nameof(iface));
+            Ensure.Parameter.IsNotGenericDefinition(iface, nameof(iface));
+
+            return FResolver.Get(iface, name)?.Invoke(this);
+        }
         #endregion
+
+        #region Dispose
+        protected override void Dispose(bool disposeManaged)
+        {
+            FDisposableStore?.Dispose();
+            base.Dispose(disposeManaged);
+        }
+
+        protected override ValueTask AsyncDispose() => FDisposableStore?.DisposeAsync() ?? default;
+        #endregion
+
+        #region IScopeFactory
+        public virtual IInjector CreateScope(object? lifetime = null) => new Injector(this, lifetime);
+        #endregion
+
+        public Injector(IEnumerable<AbstractServiceEntry> registeredEntries, ScopeOptions options, object? lifetime)
+        {
+            #pragma warning disable CA2214 // Do not call overridable methods in constructors
+            FResolver = new ResolverCollection(GetAllServices(registeredEntries));
+            #pragma warning restore CA2214
+            FSlots    = Array<object>.Create(FResolver.Slots);
+            Options   = options;
+            Lifetime  = lifetime;
+        }
+
+        public Injector(Injector super, object? lifetime)
+        {
+            FResolver = super.FResolver;
+            FSlots    = Array<object>.Create(FResolver.Slots);
+            Options   = super.Options;
+            Lifetime  = lifetime;
+            Super     = super;
+        }
     }
 }

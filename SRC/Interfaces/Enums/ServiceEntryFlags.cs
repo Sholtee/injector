@@ -1,5 +1,5 @@
 ﻿/********************************************************************************
-* ServiceEntryStates.cs                                                         *
+* ServiceEntryFlags.cs                                                          *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
@@ -12,8 +12,9 @@ namespace Solti.Utils.DI.Interfaces
     /// Describes the actual state of an <see cref="AbstractServiceEntry"/>
     /// </summary>
     [Flags]
-    [SuppressMessage("Usage", "CA2217:Do not mark enums with FlagsAttribute"), SuppressMessage("Design", "CA1008:Enums should have zero value")]
-    public enum ServiceEntryStates: int
+    [SuppressMessage("Naming", "CA1711:Identifiers should not have incorrect suffix")]
+    [SuppressMessage("Design", "CA1008:Enums should have zero value")]
+    public enum ServiceEntryFlags: int
     {
         /// <summary>
         /// The default state.
@@ -26,13 +27,13 @@ namespace Solti.Utils.DI.Interfaces
         Validated = 1 << 0,
 
         /// <summary>
-        /// Indicates that the entry was already instantiated one or more times.
+        /// A single instance will be created.
         /// </summary>
-        Instantiated = Validated | 1 << 1,
+        CreateSingleInstance = 1 << 2,
 
         /// <summary>
-        /// Signals that no build phase required. It also means that the <see cref="AbstractServiceEntry.GetSingleInstance"/> method can be called.
+        /// The created service instance is shared between scopes.
         /// </summary>
-        Built = Instantiated | 1 << 2
+        Shared = 1 << 3,
     }
 }

@@ -16,17 +16,17 @@ namespace Solti.Utils.DI.Internals
 
         public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Type implementation)
         {
-            yield return new SingletonServiceEntry(iface, name, implementation, null);
+            yield return new SingletonServiceEntry(iface, name, implementation);
         }
 
         public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Type implementation, object explicitArgs)
         {
-            yield return new SingletonServiceEntry(iface, name, implementation, explicitArgs, null);
+            yield return new SingletonServiceEntry(iface, name, implementation, explicitArgs);
         }
 
         public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Func<IInjector, Type, object> factory)
         {
-            yield return new SingletonServiceEntry(iface, name, factory, null);
+            yield return new SingletonServiceEntry(iface, name, factory);
         }
 
         public override string ToString() => nameof(Singleton);

@@ -87,10 +87,7 @@ namespace Solti.Utils.DI.Perf
 
         protected IScopeFactory Root { get; private set; }
 
-        protected IScopeFactory Setup(Action<IServiceCollection> setupContainer) => Root = ScopeFactory.Create(setupContainer, new ScopeOptions
-        {
-            MaxSpawnedTransientServices = int.MaxValue
-        });
+        protected IScopeFactory Setup(Action<IServiceCollection> setupContainer) => Root = ScopeFactory.Create(setupContainer);
 
         [GlobalCleanup]
         public void Cleanup() => Root?.Dispose();

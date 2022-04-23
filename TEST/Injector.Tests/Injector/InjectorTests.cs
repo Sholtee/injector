@@ -153,6 +153,13 @@ namespace Solti.Utils.DI.Tests
             TInterface Interface { get; }
         }
 
+        public class Implementation_7<TInterface>: IInterface_7<TInterface> where TInterface : class
+        {
+            public TInterface Interface { get; }
+
+            public Implementation_7(TInterface iface) => Interface = iface;
+        }
+
         public interface IInterface_7_Disposable<TInterface> : IDisposableEx where TInterface : class
         {
             TInterface Interface { get; }
@@ -229,6 +236,14 @@ namespace Solti.Utils.DI.Tests
 
         public IScopeFactory Root { get; set; }
 
+        static InjectorTests() =>
+            //
+            // Lifetime.XxX properties are late bound so we need to initialize them (outside the
+            // test environment it is done when the InjectorDotNet library is loaded).
+            //
+
+            InjectorDotNetLifetime.Initialize();
+
         [TearDown]
         public void TearDwon()
         {
@@ -239,26 +254,5 @@ namespace Solti.Utils.DI.Tests
         [Test]
         public void Ctor_ShouldThrowOnOverriddenService() =>
             Assert.Throws<ArgumentException>(() => ScopeFactory.Create(svcs => svcs.Add(new DummyServiceEntry(typeof(IInjector), null))), Resources.BUILT_IN_SERVICE_OVERRIDE);
-
-        [Test]
-        public void ServiceValidationState_ShouldBeShared([ValueSource(nameof(Lifetimes))] Lifetime lifetime)
-        {
-            Root = ScopeFactory.Create(svcs => svcs.Service<IInterface_1, Implementation_1_No_Dep>(lifetime));
-
-            using (IInjector injector1 = Root.CreateScope())
-            {
-                IServiceRegistry registry = injector1.Get<IServiceRegistry>();
-                Assert.That(registry.GetEntry<IInterface_1>().State, Is.EqualTo(ServiceEntryStates.Default));
-
-                injector1.Get<IInterface_1>();
-                Assert.That(registry.GetEntry<IInterface_1>().State.HasFlag(ServiceEntryStates.Validated));
-            }
-
-            using (IInjector injector2 = Root.CreateScope())
-            {
-                IServiceRegistry registry = injector2.Get<IServiceRegistry>();
-                Assert.That(registry.GetEntry<IInterface_1>().State.HasFlag(ServiceEntryStates.Validated));
-            }
-        }
     }
 }

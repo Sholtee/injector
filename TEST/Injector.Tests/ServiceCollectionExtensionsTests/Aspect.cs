@@ -64,7 +64,7 @@ namespace Solti.Utils.DI.Tests
             Assert.That(Collection.LastEntry.Factory, Is.Null);
 
             IMyGenericService<int> instance = (IMyGenericService<int>)((ISupportsSpecialization)Collection.LastEntry)
-                .Specialize(new Mock<IServiceRegistry>(MockBehavior.Strict).Object, typeof(int))
+                .Specialize(typeof(int))
                 .Factory
                 .Invoke(new Mock<IInjector>(MockBehavior.Strict).Object, typeof(IMyService));
 
@@ -158,7 +158,7 @@ namespace Solti.Utils.DI.Tests
 
         [Test]
         public void Aspects_ApplyingAspectsShouldThrowIfThereIsNoTargetCtorParameter([Values(typeof(InterceptorHavingNoTarget), typeof(InterceptorHavingMultipleTarget))] Type interceptor) =>
-            Assert.Throws<InvalidOperationException>(() => new ScopedServiceEntry(typeof(IInterface_1), null, typeof(Implementation_1_No_Dep), null).ApplyInterceptor(interceptor), Properties.Resources.TARGET_PARAM_CANNOT_BE_DETERMINED);
+            Assert.Throws<InvalidOperationException>(() => new ScopedServiceEntry(typeof(IInterface_1), null, typeof(Implementation_1_No_Dep)).ApplyInterceptor(interceptor), Properties.Resources.TARGET_PARAM_CANNOT_BE_DETERMINED);
     }
 
     public class AspectWithoutImplementation : AspectAttribute

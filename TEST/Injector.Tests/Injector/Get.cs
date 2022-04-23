@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -66,17 +67,9 @@ namespace Solti.Utils.DI.Tests
             using (IInjector injector = Root.CreateScope())
             {
                 var ex = Assert.Throws<ServiceNotFoundException>(() => injector.Get<IInterface_7<IInterface_1>>());
-                
-                //
-                // NE "injector"-bol kerdezzuk le mert pooled szervizeknek sajat scope-juk van
-                //
-
-                AbstractServiceEntry requestor = ((IInjector) ex.Data["scope"])
-                    .Get<IServiceRegistry>()
-                    .GetEntry<IInterface_7<IInterface_1>>();
 
                 Assert.That(ex.Data["requested"], Is.InstanceOf<MissingServiceEntry>().And.EqualTo(new MissingServiceEntry(typeof(IInterface_1), null)).Using(ServiceIdComparer.Instance));
-                Assert.That(ex.Data["requestor"], Is.EqualTo(requestor));
+                Assert.That(ex.Data["requestor"], Is.EqualTo(new DummyServiceEntry(typeof(IInterface_7<IInterface_1>), null)).Using(ServiceIdComparer.Instance));
             }
         }
 
@@ -316,7 +309,7 @@ namespace Solti.Utils.DI.Tests
 
             using (IInjector injector = Root.CreateScope()) 
             {
-                Assert.Throws<InvalidCastException>(() => injector.Get<IInterface_1>(), string.Format(Resources.INVALID_INSTANCE, typeof(IInterface_1)));
+                Assert.Throws<InvalidCastException>(() => injector.Get<IInterface_1>());
             }
         }
 
@@ -452,7 +445,7 @@ namespace Solti.Utils.DI.Tests
             }
         }
 
-        [Test]
+        [Test, Ignore("TBD whether this feature is required or not")]
         public void Injector_Get_ShouldThrowIfItIsCalledInsideDispose()
         {
             Root = ScopeFactory.Create(svcs => svcs.Service<IMyService, MyServiceUsingItsOnwerInjectorOnDisposal>(Lifetime.Scoped));
@@ -495,8 +488,8 @@ namespace Solti.Utils.DI.Tests
                 injector.Get<IInterface_1_Disaposable>();
                 injector.Get<IInterface_1_Disaposable>();
 
-                var captureDisposable = (ICaptureDisposable) injector;
-                Assert.That(captureDisposable.CapturedDisposables.Count, Is.EqualTo(2));
+                ICollection capturedDisposables = injector.Get<ICollection>("captured_disposables");
+                Assert.That(capturedDisposables.Count, Is.EqualTo(2));
             }
 
             mockDisposable.Verify(d => d.Dispose(), Times.Exactly(2));
@@ -515,8 +508,8 @@ namespace Solti.Utils.DI.Tests
                 injector.Get<IInterface_1_Disaposable>();
                 injector.Get<IInterface_1_Disaposable>();
 
-                var captureDisposable = (ICaptureDisposable) injector;
-                Assert.That(captureDisposable.CapturedDisposables.Count, Is.EqualTo(1));
+                ICollection capturedDisposables = injector.Get<ICollection>("captured_disposables");
+                Assert.That(capturedDisposables.Count, Is.EqualTo(1));
             }
 
             mockDisposable.Verify(d => d.Dispose(), Times.Once);
@@ -542,8 +535,8 @@ namespace Solti.Utils.DI.Tests
                     injector.Get<IInterface_1_Disaposable>();
                 }
 
-                var captureDisposable = (ICaptureDisposable) root;
-                Assert.That(captureDisposable.CapturedDisposables.Count, Is.EqualTo(1));
+                ICollection capturedDisposables = ((IInjector) root).Get<ICollection>("captured_disposables");
+                Assert.That(capturedDisposables.Count, Is.EqualTo(1));
             }
 
             mockDisposable.Verify(d => d.Dispose(), Times.Once);

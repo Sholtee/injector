@@ -5,8 +5,6 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Runtime.CompilerServices;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -16,43 +14,16 @@ namespace Solti.Utils.DI.Internals
     internal abstract class ProducibleServiceEntry : AbstractServiceEntry, ISupportsSpecialization, ISupportsProxying
     {
         #region Protected
-        protected ProducibleServiceEntry(ProducibleServiceEntry entry, IServiceRegistry? owner) : base(entry.Interface, entry.Name, entry.Implementation, owner)
+        protected ProducibleServiceEntry(Type @interface, string? name, Func<IInjector, Type, object> factory) : base(@interface, name, null)
         {
-            Factory = entry.Factory;
-            ExplicitArgs = entry.ExplicitArgs;
-            Root = entry.Root ?? entry;
-
-            //
-            // Ha korabban mar sikerult validalni a bejegyzest [lasd UpdateState()] akkor azt a masolaton mar nem
-            // kell megtenni.
-            //
-            // Megjegyzes:
-            //    Ez csak regularis bejegyzesekre mukodik mivel azoknak van szuloje.
-            //
-
-            if (Root.State.HasFlag(ServiceEntryStates.Validated))
-                State = ServiceEntryStates.Validated;
-
-            //
-            // Itt nem kell "this.ApplyAspects()" hivas mert a forras bejegyzesen mar
-            // hivva volt.
-            //
-        }
-
-        protected ProducibleServiceEntry(Type @interface, string? name, Func<IInjector, Type, object> factory, IServiceRegistry? owner) : base(@interface, name, null, owner)
-        {
-            //
-            // Os ellenorzi az interface-t es a tulajdonost.
-            //
-
             Factory = Ensure.Parameter.IsNotNull(factory, nameof(factory));
             this.ApplyAspects();
         }
 
-        protected ProducibleServiceEntry(Type @interface, string? name, Type implementation, IServiceRegistry? owner) : base(@interface, name, implementation, owner)
+        protected ProducibleServiceEntry(Type @interface, string? name, Type implementation) : base(@interface, name, implementation)
         {
             //
-            // Os ellenorzi a tobbit.
+            // Ancestor does the rest of validation
             //
 
             Ensure.Parameter.IsNotNull(implementation, nameof(implementation));
@@ -64,19 +35,16 @@ namespace Solti.Utils.DI.Internals
             }
             else
                 //
-                // Konstruktor validalas csak generikus esetben kell (mert ilyenkor nincs Resolver.Get()
-                // hivas). A GetApplicableConstructor() validal valamint mukodik generikusokra is.
+                // Just to validate the implementation.
                 //
-                // Generikus esetben az aspektusok a bejegyzes tipizalasakor lesznek alkalmazva.
-                // 
 
                 implementation.GetApplicableConstructor();
         }
 
-        protected ProducibleServiceEntry(Type @interface, string? name, Type implementation, object explicitArgs, IServiceRegistry? owner) : base(@interface, name, implementation, owner)
+        protected ProducibleServiceEntry(Type @interface, string? name, Type implementation, object explicitArgs) : base(@interface, name, implementation)
         {
             //
-            // Os ellenorzi a tobbit.
+            // Ancestor does the rest of validation
             //
 
             Ensure.Parameter.IsNotNull(implementation, nameof(implementation));
@@ -101,46 +69,29 @@ namespace Solti.Utils.DI.Internals
             }
             else
                 //
-                // Validalas vegett
+                // Just to validate the implementation.
                 //
 
                 implementation.GetApplicableConstructor();
 
             ExplicitArgs = explicitArgs;
         }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        protected void EnsureProducible()
-        {
-            if (Factory is null)
-                throw new InvalidOperationException(Resources.NOT_PRODUCIBLE);
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        protected void UpdateState(ServiceEntryStates newState)
-        {
-            if (newState == State)
-                return;
-
-            Debug.Assert(newState > State, "New state must be greater than the old one.");
-
-            State = newState;
-
-            if (State.HasFlag(ServiceEntryStates.Validated) && Root?.State < ServiceEntryStates.Validated)
-                //
-                // Nem gond ha ez parhuzamosan kerul meghivasra tobb kulonbozo masolt bejegyzesbol (az ertekadas
-                // atomi muvelet es a validalt allapoton kivul mas nem kerul beallitasra a gyokerben).
-                //
-
-                Root.State = ServiceEntryStates.Validated;
-        }
         #endregion
 
-        public ProducibleServiceEntry? Root { get; }
+        public override object CreateInstance(IInjector scope, out object? lifetime)
+        {
+            object result = (Factory ?? throw new InvalidOperationException(Resources.NOT_PRODUCIBLE))(scope, Interface);
+
+            //
+            // Getting here indicates that the service graph validated successfully.
+            //
+
+            Flags |= ServiceEntryFlags.Validated;
+            lifetime = result as IDisposable ?? (object?) (result as IAsyncDisposable);
+            return result;
+        }
 
         public object? ExplicitArgs { get; }
-
-        public abstract AbstractServiceEntry Specialize(IServiceRegistry? owner, params Type[] genericArguments);
 
         Func<IInjector, Type, object>? ISupportsProxying.Factory
         {

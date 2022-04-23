@@ -4,32 +4,36 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Collections.Generic;
 
 namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
 
-    //                                        !!!FIGYELEM!!!
-    //
-    // Ez az osztaly kozponti komponens, ezert minden modositast korultekintoen, a teljesitmenyt szem elott tartva
-    // kell elvegezni:
-    // - nincs Sysmte.Linq
-    // - nincs System.Reflection
-    // - mindig futtassuk a teljesitmeny teszteket (is) hogy a hatekonysag nem romlott e
-    //
-
-    internal class InjectorSupportsServiceProvider : Injector, IServiceProvider, IInjector
+    internal class InjectorSupportsServiceProvider : Injector, IServiceProvider
     {
-        public InjectorSupportsServiceProvider(ConcurrentInjectorSupportsServiceProvider parent) : base(parent) { }
+        protected override IEnumerable<AbstractServiceEntry> GetAllServices(IEnumerable<AbstractServiceEntry> registeredEntries)
+        {
+            yield return new ContextualServiceEntry(typeof(IServiceProvider), null, (i, _) => i);
 
-        //
-        // IInjector.Get() elvileg sose adhatna vissza NULL-t viszont h biztositsuk 
-        // h a ServiceProvider konstruktor parameterek feloldasakor se dobjon kivetelt
-        // ezert itt megengedjuk.
-        //
+            foreach (AbstractServiceEntry entry in base.GetAllServices(registeredEntries))
+            {
+                yield return entry;
+            }
+        }
 
-        object IInjector.Get(Type iface, string? name) => TryGet(iface, name)!;
+        public InjectorSupportsServiceProvider(IEnumerable<AbstractServiceEntry> registeredEntries, ScopeOptions options, object? lifetime) : base(registeredEntries, options, lifetime)
+        {
+        }
 
-        object? IServiceProvider.GetService(Type serviceType) => TryGet(serviceType, null);
+        public InjectorSupportsServiceProvider(InjectorSupportsServiceProvider super, object? lifetime) : base(super, lifetime)
+        {
+        }
+
+        public override object Get(Type iface, string? name) => TryGet(iface, name)!;
+
+        public object GetService(Type serviceType) => TryGet(serviceType, null)!;
+
+        public override IInjector CreateScope(object? lifetime = null) => new InjectorSupportsServiceProvider(this, lifetime);
     }
 }

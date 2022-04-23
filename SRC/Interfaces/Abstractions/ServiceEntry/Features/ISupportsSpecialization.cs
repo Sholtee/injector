@@ -10,11 +10,11 @@ namespace Solti.Utils.DI.Interfaces
     /// <summary>
     /// Provides the mechanism for specializing service entries. 
     /// </summary>
-    public interface ISupportsSpecialization
+    public interface ISupportsSpecialization // TODO: REMOVE
     {
         /// <summary>
         /// Specializes a service entry if it is generic.
         /// </summary>
-        AbstractServiceEntry Specialize(IServiceRegistry? owner, params Type[] genericArguments);
+        AbstractServiceEntry Specialize(params Type[] genericArguments);
     }
 }

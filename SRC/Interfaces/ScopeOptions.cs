@@ -18,11 +18,6 @@ namespace Solti.Utils.DI.Interfaces
         public bool StrictDI { get; init; }
 
         /// <summary>
-        /// The maximum number of <see cref="Lifetime.Transient"/> service instances can be held by the <see cref="IInjector"/>.
-        /// </summary>
-        public int MaxSpawnedTransientServices { get; init; } = 512;
-
-        /// <summary>
         /// Specifies whether the created scopes should implement the <see cref="IServiceProvider"/> interface.
         /// </summary>
         /// <remarks>Setting this property to true configures the <see cref="IInjector.Get(Type, string?)"/> method to not throw if the requested dependency cannot be found.</remarks>
