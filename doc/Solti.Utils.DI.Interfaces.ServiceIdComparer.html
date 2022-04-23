@@ -42,29 +42,29 @@
   
   <h1 id="Solti_Utils_DI_Interfaces_ServiceIdComparer" data-uid="Solti.Utils.DI.Interfaces.ServiceIdComparer" class="text-break">Class ServiceIdComparer
   </h1>
-  <div class="markdown level0 summary"><p>Specifies how to compare <a class="xref" href="Solti.Utils.DI.Interfaces.IServiceId.html">IServiceId</a> instances.</p>
+  <div class="markdown level0 summary"><p>Specifies how to compare <a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html">AbstractServiceEntry</a> instances considering their interface and name only.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
-    <div class="level1"><a class="xref" href="https://sholtee.github.io/primitives/doc/Solti.Utils.Primitives.ComparerBase-2.html">ComparerBase</a>&lt;<a class="xref" href="Solti.Utils.DI.Interfaces.ServiceIdComparer.html">ServiceIdComparer</a>, <a class="xref" href="Solti.Utils.DI.Interfaces.IServiceId.html">IServiceId</a>&gt;</div>
+    <div class="level1"><a class="xref" href="https://sholtee.github.io/primitives/doc/Solti.Utils.Primitives.ComparerBase-2.html">ComparerBase</a>&lt;<a class="xref" href="Solti.Utils.DI.Interfaces.ServiceIdComparer.html">ServiceIdComparer</a>, <a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html">AbstractServiceEntry</a>&gt;</div>
     <div class="level2"><span class="xref">ServiceIdComparer</span></div>
   </div>
   <div classs="implements">
     <h5>Implements</h5>
-    <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.iequalitycomparer-1">IEqualityComparer</a>&lt;<a class="xref" href="Solti.Utils.DI.Interfaces.IServiceId.html">IServiceId</a>&gt;</div>
+    <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.iequalitycomparer-1">IEqualityComparer</a>&lt;<a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html">AbstractServiceEntry</a>&gt;</div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
-      <a class="xref" href="https://sholtee.github.io/primitives/doc/Solti.Utils.Primitives.ComparerBase-2.html#Solti_Utils_Primitives_ComparerBase_2_Equals__1__1_">ComparerBase&lt;ServiceIdComparer, IServiceId&gt;.Equals(IServiceId, IServiceId)</a>
+      <a class="xref" href="https://sholtee.github.io/primitives/doc/Solti.Utils.Primitives.ComparerBase-2.html#Solti_Utils_Primitives_ComparerBase_2_Equals__1__1_">ComparerBase&lt;ServiceIdComparer, AbstractServiceEntry&gt;.Equals(AbstractServiceEntry, AbstractServiceEntry)</a>
     </div>
     <div>
-      <a class="xref" href="https://sholtee.github.io/primitives/doc/Solti.Utils.Primitives.ComparerBase-2.html#Solti_Utils_Primitives_ComparerBase_2_GetHashCode__1_">ComparerBase&lt;ServiceIdComparer, IServiceId&gt;.GetHashCode(IServiceId)</a>
+      <a class="xref" href="https://sholtee.github.io/primitives/doc/Solti.Utils.Primitives.ComparerBase-2.html#Solti_Utils_Primitives_ComparerBase_2_GetHashCode__1_">ComparerBase&lt;ServiceIdComparer, AbstractServiceEntry&gt;.GetHashCode(AbstractServiceEntry)</a>
     </div>
     <div>
-      <a class="xref" href="https://sholtee.github.io/primitives/doc/Solti.Utils.Primitives.ComparerBase-2.html#Solti_Utils_Primitives_ComparerBase_2_Instance">ComparerBase&lt;ServiceIdComparer, IServiceId&gt;.Instance</a>
+      <a class="xref" href="https://sholtee.github.io/primitives/doc/Solti.Utils.Primitives.ComparerBase-2.html#Solti_Utils_Primitives_ComparerBase_2_Instance">ComparerBase&lt;ServiceIdComparer, AbstractServiceEntry&gt;.Instance</a>
     </div>
     <div>
       <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">Object.Equals(Object)</a>
@@ -92,17 +92,17 @@
   <h6><strong>Assembly</strong>: Solti.Utils.DI.Interfaces.dll</h6>
   <h5 id="Solti_Utils_DI_Interfaces_ServiceIdComparer_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public sealed class ServiceIdComparer : ComparerBase&lt;ServiceIdComparer, IServiceId&gt;, IEqualityComparer&lt;IServiceId&gt;</code></pre>
+    <pre><code class="lang-csharp hljs">public sealed class ServiceIdComparer : ComparerBase&lt;ServiceIdComparer, AbstractServiceEntry&gt;, IEqualityComparer&lt;AbstractServiceEntry&gt;</code></pre>
   </div>
   <h3 id="methods">Methods
   </h3>
   <a id="Solti_Utils_DI_Interfaces_ServiceIdComparer_Equals_" data-uid="Solti.Utils.DI.Interfaces.ServiceIdComparer.Equals*"></a>
-  <h4 id="Solti_Utils_DI_Interfaces_ServiceIdComparer_Equals_Solti_Utils_DI_Interfaces_IServiceId_Solti_Utils_DI_Interfaces_IServiceId_" data-uid="Solti.Utils.DI.Interfaces.ServiceIdComparer.Equals(Solti.Utils.DI.Interfaces.IServiceId,Solti.Utils.DI.Interfaces.IServiceId)">Equals(IServiceId, IServiceId)</h4>
+  <h4 id="Solti_Utils_DI_Interfaces_ServiceIdComparer_Equals_Solti_Utils_DI_Interfaces_AbstractServiceEntry_Solti_Utils_DI_Interfaces_AbstractServiceEntry_" data-uid="Solti.Utils.DI.Interfaces.ServiceIdComparer.Equals(Solti.Utils.DI.Interfaces.AbstractServiceEntry,Solti.Utils.DI.Interfaces.AbstractServiceEntry)">Equals(AbstractServiceEntry, AbstractServiceEntry)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override bool Equals(IServiceId x, IServiceId y)</code></pre>
+    <pre><code class="lang-csharp hljs">public override bool Equals(AbstractServiceEntry x, AbstractServiceEntry y)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -115,12 +115,12 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Solti.Utils.DI.Interfaces.IServiceId.html">IServiceId</a></td>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html">AbstractServiceEntry</a></td>
         <td><span class="parametername">x</span></td>
         <td></td>
       </tr>
       <tr>
-        <td><a class="xref" href="Solti.Utils.DI.Interfaces.IServiceId.html">IServiceId</a></td>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html">AbstractServiceEntry</a></td>
         <td><span class="parametername">y</span></td>
         <td></td>
       </tr>
@@ -142,14 +142,14 @@
     </tbody>
   </table>
   <h5 class="overrides">Overrides</h5>
-  <div><span class="xref">Solti.Utils.Primitives.ComparerBase&lt;Solti.Utils.DI.Interfaces.ServiceIdComparer, Solti.Utils.DI.Interfaces.IServiceId&gt;.Equals(Solti.Utils.DI.Interfaces.IServiceId, Solti.Utils.DI.Interfaces.IServiceId)</span></div>
+  <div><span class="xref">Solti.Utils.Primitives.ComparerBase&lt;Solti.Utils.DI.Interfaces.ServiceIdComparer, Solti.Utils.DI.Interfaces.AbstractServiceEntry&gt;.Equals(Solti.Utils.DI.Interfaces.AbstractServiceEntry, Solti.Utils.DI.Interfaces.AbstractServiceEntry)</span></div>
   <a id="Solti_Utils_DI_Interfaces_ServiceIdComparer_GetHashCode_" data-uid="Solti.Utils.DI.Interfaces.ServiceIdComparer.GetHashCode*"></a>
-  <h4 id="Solti_Utils_DI_Interfaces_ServiceIdComparer_GetHashCode_Solti_Utils_DI_Interfaces_IServiceId_" data-uid="Solti.Utils.DI.Interfaces.ServiceIdComparer.GetHashCode(Solti.Utils.DI.Interfaces.IServiceId)">GetHashCode(IServiceId)</h4>
+  <h4 id="Solti_Utils_DI_Interfaces_ServiceIdComparer_GetHashCode_Solti_Utils_DI_Interfaces_AbstractServiceEntry_" data-uid="Solti.Utils.DI.Interfaces.ServiceIdComparer.GetHashCode(Solti.Utils.DI.Interfaces.AbstractServiceEntry)">GetHashCode(AbstractServiceEntry)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override int GetHashCode(IServiceId obj)</code></pre>
+    <pre><code class="lang-csharp hljs">public override int GetHashCode(AbstractServiceEntry obj)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -162,7 +162,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Solti.Utils.DI.Interfaces.IServiceId.html">IServiceId</a></td>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html">AbstractServiceEntry</a></td>
         <td><span class="parametername">obj</span></td>
         <td></td>
       </tr>
@@ -184,7 +184,7 @@
     </tbody>
   </table>
   <h5 class="overrides">Overrides</h5>
-  <div><span class="xref">Solti.Utils.Primitives.ComparerBase&lt;Solti.Utils.DI.Interfaces.ServiceIdComparer, Solti.Utils.DI.Interfaces.IServiceId&gt;.GetHashCode(Solti.Utils.DI.Interfaces.IServiceId)</span></div>
+  <div><span class="xref">Solti.Utils.Primitives.ComparerBase&lt;Solti.Utils.DI.Interfaces.ServiceIdComparer, Solti.Utils.DI.Interfaces.AbstractServiceEntry&gt;.GetHashCode(Solti.Utils.DI.Interfaces.AbstractServiceEntry)</span></div>
   <h3 id="implements">Implements</h3>
   <div>
       <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.iequalitycomparer-1">System.Collections.Generic.IEqualityComparer&lt;T&gt;</a>

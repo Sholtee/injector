@@ -73,9 +73,6 @@
       <h4><a class="xref" href="Solti.Utils.DI.Interfaces.IServiceProviderBasicExtensions.html">IServiceProviderBasicExtensions</a></h4>
       <section><p>Defines basic extensions for the <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.iserviceprovider">IServiceProvider</a> interface.</p>
 </section>
-      <h4><a class="xref" href="Solti.Utils.DI.Interfaces.IServiceRegistryExtensions.html">IServiceRegistryExtensions</a></h4>
-      <section><p>Provides some extensions for the <a class="xref" href="Solti.Utils.DI.Interfaces.IServiceRegistry.html">IServiceRegistry</a> interface.</p>
-</section>
       <h4><a class="xref" href="Solti.Utils.DI.Interfaces.Lifetime.html">Lifetime</a></h4>
       <section><p>Describes the lifetime of a service.</p>
 </section>
@@ -104,7 +101,7 @@
       <section><p>Defines some extensions for the <a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html">AbstractServiceEntry</a> class.</p>
 </section>
       <h4><a class="xref" href="Solti.Utils.DI.Interfaces.ServiceIdComparer.html">ServiceIdComparer</a></h4>
-      <section><p>Specifies how to compare <a class="xref" href="Solti.Utils.DI.Interfaces.IServiceId.html">IServiceId</a> instances.</p>
+      <section><p>Specifies how to compare <a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html">AbstractServiceEntry</a> instances considering their interface and name only.</p>
 </section>
       <h4><a class="xref" href="Solti.Utils.DI.Interfaces.ServiceNotFoundException.html">ServiceNotFoundException</a></h4>
       <section><p>The exception that is thrown when a service could not be found.</p>
@@ -120,26 +117,11 @@
       <h4><a class="xref" href="Solti.Utils.DI.Interfaces.IModifiedServiceCollection.html">IModifiedServiceCollection</a></h4>
       <section><p>Extends the <a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollection.html">IServiceCollection</a> interface with a property of <a class="xref" href="Solti.Utils.DI.Interfaces.IModifiedServiceCollection.html#Solti_Utils_DI_Interfaces_IModifiedServiceCollection_LastEntry">LastEntry</a>.</p>
 </section>
-      <h4><a class="xref" href="Solti.Utils.DI.Interfaces.IRequiresServiceAccess.html">IRequiresServiceAccess</a></h4>
-      <section><p>Implies that the <a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_Factory">Factory</a> function returns a wrapped service instance that has to be extracted.</p>
-</section>
       <h4><a class="xref" href="Solti.Utils.DI.Interfaces.IScopeFactory.html">IScopeFactory</a></h4>
       <section><p>Provides a thread safe way to create new scopes.</p>
 </section>
       <h4><a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollection.html">IServiceCollection</a></h4>
       <section><p>Specifies the contract for an <a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html">AbstractServiceEntry</a> set.</p>
-</section>
-      <h4><a class="xref" href="Solti.Utils.DI.Interfaces.IServiceDefinition.html">IServiceDefinition</a></h4>
-      <section><p>Describes a service definition.</p>
-</section>
-      <h4><a class="xref" href="Solti.Utils.DI.Interfaces.IServiceId.html">IServiceId</a></h4>
-      <section><p>Describes a service id.</p>
-</section>
-      <h4><a class="xref" href="Solti.Utils.DI.Interfaces.IServicePath.html">IServicePath</a></h4>
-      <section><p>Describes the path in which the current request takes place.</p>
-</section>
-      <h4><a class="xref" href="Solti.Utils.DI.Interfaces.IServiceRegistry.html">IServiceRegistry</a></h4>
-      <section><p>Defines the layout of an abstract service registry.</p>
 </section>
       <h4><a class="xref" href="Solti.Utils.DI.Interfaces.ISupportsProxying.html">ISupportsProxying</a></h4>
       <section><p>Provides the mechanism for overriding the factory function. </p>
@@ -152,7 +134,7 @@
       <h4><a class="xref" href="Solti.Utils.DI.Interfaces.AspectKind.html">AspectKind</a></h4>
       <section><p>Specifies the method that will be used to generate the proxy.</p>
 </section>
-      <h4><a class="xref" href="Solti.Utils.DI.Interfaces.ServiceEntryStates.html">ServiceEntryStates</a></h4>
+      <h4><a class="xref" href="Solti.Utils.DI.Interfaces.ServiceEntryFlags.html">ServiceEntryFlags</a></h4>
       <section><p>Describes the actual state of an <a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html">AbstractServiceEntry</a></p>
 </section>
 </article>

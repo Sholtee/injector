@@ -80,31 +80,6 @@
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public static class IInjectorBasicExtensions</code></pre>
   </div>
-  <h3 id="fields">Fields
-  </h3>
-  <h4 id="Solti_Utils_DI_Interfaces_IInjectorBasicExtensions_META_NAME" data-uid="Solti.Utils.DI.Interfaces.IInjectorBasicExtensions.META_NAME">META_NAME</h4>
-  <div class="markdown level1 summary"><p>Name of the &quot;meta&quot; entry</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const string META_NAME = &quot;$meta&quot;</code></pre>
-  </div>
-  <h5 class="fieldValue">Field Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
   <h3 id="methods">Methods
   </h3>
   <a id="Solti_Utils_DI_Interfaces_IInjectorBasicExtensions_Get_" data-uid="Solti.Utils.DI.Interfaces.IInjectorBasicExtensions.Get*"></a>
@@ -186,88 +161,6 @@
         <td><a class="xref" href="Solti.Utils.DI.Interfaces.ServiceNotFoundException.html">ServiceNotFoundException</a></td>
         <td><p>The service could not be found.</p>
 </td>
-      </tr>
-    </tbody>
-  </table>
-  <a id="Solti_Utils_DI_Interfaces_IInjectorBasicExtensions_Meta_" data-uid="Solti.Utils.DI.Interfaces.IInjectorBasicExtensions.Meta*"></a>
-  <h4 id="Solti_Utils_DI_Interfaces_IInjectorBasicExtensions_Meta_Solti_Utils_DI_Interfaces_IInjector_System_String_" data-uid="Solti.Utils.DI.Interfaces.IInjectorBasicExtensions.Meta(Solti.Utils.DI.Interfaces.IInjector,System.String)">Meta(IInjector, String)</h4>
-  <div class="markdown level1 summary"><p>Gets a meta-data associated with the given <a class="xref" href="Solti.Utils.DI.Interfaces.IInjector.html">IInjector</a> (scope).</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static object Meta(this IInjector self, string key)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Solti.Utils.DI.Interfaces.IInjector.html">IInjector</a></td>
-        <td><span class="parametername">self</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">key</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <a id="Solti_Utils_DI_Interfaces_IInjectorBasicExtensions_Meta_" data-uid="Solti.Utils.DI.Interfaces.IInjectorBasicExtensions.Meta*"></a>
-  <h4 id="Solti_Utils_DI_Interfaces_IInjectorBasicExtensions_Meta_Solti_Utils_DI_Interfaces_IInjector_System_String_System_Object_" data-uid="Solti.Utils.DI.Interfaces.IInjectorBasicExtensions.Meta(Solti.Utils.DI.Interfaces.IInjector,System.String,System.Object)">Meta(IInjector, String, Object)</h4>
-  <div class="markdown level1 summary"><p>Sets a meta-data on the given <a class="xref" href="Solti.Utils.DI.Interfaces.IInjector.html">IInjector</a> (scope).</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static void Meta(this IInjector self, string key, object value)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Solti.Utils.DI.Interfaces.IInjector.html">IInjector</a></td>
-        <td><span class="parametername">self</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">key</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></td>
-        <td><span class="parametername">value</span></td>
-        <td></td>
       </tr>
     </tbody>
   </table>

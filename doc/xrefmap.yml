@@ -140,12 +140,12 @@ references:
   commentId: M:Solti.Utils.DI.Interfaces.AbstractServiceEntry.#ctor(System.Type,System.String)
   fullName: Solti.Utils.DI.Interfaces.AbstractServiceEntry.AbstractServiceEntry(System.Type, System.String)
   nameWithType: AbstractServiceEntry.AbstractServiceEntry(Type, String)
-- uid: Solti.Utils.DI.Interfaces.AbstractServiceEntry.#ctor(System.Type,System.String,System.Type,Solti.Utils.DI.Interfaces.IServiceRegistry)
-  name: AbstractServiceEntry(Type, String, Type, IServiceRegistry)
-  href: Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry__ctor_System_Type_System_String_System_Type_Solti_Utils_DI_Interfaces_IServiceRegistry_
-  commentId: M:Solti.Utils.DI.Interfaces.AbstractServiceEntry.#ctor(System.Type,System.String,System.Type,Solti.Utils.DI.Interfaces.IServiceRegistry)
-  fullName: Solti.Utils.DI.Interfaces.AbstractServiceEntry.AbstractServiceEntry(System.Type, System.String, System.Type, Solti.Utils.DI.Interfaces.IServiceRegistry)
-  nameWithType: AbstractServiceEntry.AbstractServiceEntry(Type, String, Type, IServiceRegistry)
+- uid: Solti.Utils.DI.Interfaces.AbstractServiceEntry.#ctor(System.Type,System.String,System.Type)
+  name: AbstractServiceEntry(Type, String, Type)
+  href: Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry__ctor_System_Type_System_String_System_Type_
+  commentId: M:Solti.Utils.DI.Interfaces.AbstractServiceEntry.#ctor(System.Type,System.String,System.Type)
+  fullName: Solti.Utils.DI.Interfaces.AbstractServiceEntry.AbstractServiceEntry(System.Type, System.String, System.Type)
+  nameWithType: AbstractServiceEntry.AbstractServiceEntry(Type, String, Type)
 - uid: Solti.Utils.DI.Interfaces.AbstractServiceEntry.#ctor*
   name: AbstractServiceEntry
   href: Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry__ctor_
@@ -153,25 +153,15 @@ references:
   isSpec: "True"
   fullName: Solti.Utils.DI.Interfaces.AbstractServiceEntry.AbstractServiceEntry
   nameWithType: AbstractServiceEntry.AbstractServiceEntry
-- uid: Solti.Utils.DI.Interfaces.AbstractServiceEntry.CopyTo(Solti.Utils.DI.Interfaces.IServiceRegistry)
-  name: CopyTo(IServiceRegistry)
-  href: Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_CopyTo_Solti_Utils_DI_Interfaces_IServiceRegistry_
-  commentId: M:Solti.Utils.DI.Interfaces.AbstractServiceEntry.CopyTo(Solti.Utils.DI.Interfaces.IServiceRegistry)
-  fullName: Solti.Utils.DI.Interfaces.AbstractServiceEntry.CopyTo(Solti.Utils.DI.Interfaces.IServiceRegistry)
-  nameWithType: AbstractServiceEntry.CopyTo(IServiceRegistry)
-- uid: Solti.Utils.DI.Interfaces.AbstractServiceEntry.CopyTo*
-  name: CopyTo
-  href: Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_CopyTo_
-  commentId: Overload:Solti.Utils.DI.Interfaces.AbstractServiceEntry.CopyTo
-  isSpec: "True"
-  fullName: Solti.Utils.DI.Interfaces.AbstractServiceEntry.CopyTo
-  nameWithType: AbstractServiceEntry.CopyTo
-- uid: Solti.Utils.DI.Interfaces.AbstractServiceEntry.CreateInstance(Solti.Utils.DI.Interfaces.IInjector)
-  name: CreateInstance(IInjector)
-  href: Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_CreateInstance_Solti_Utils_DI_Interfaces_IInjector_
-  commentId: M:Solti.Utils.DI.Interfaces.AbstractServiceEntry.CreateInstance(Solti.Utils.DI.Interfaces.IInjector)
-  fullName: Solti.Utils.DI.Interfaces.AbstractServiceEntry.CreateInstance(Solti.Utils.DI.Interfaces.IInjector)
-  nameWithType: AbstractServiceEntry.CreateInstance(IInjector)
+- uid: Solti.Utils.DI.Interfaces.AbstractServiceEntry.CreateInstance(Solti.Utils.DI.Interfaces.IInjector,System.Object@)
+  name: CreateInstance(IInjector, out Object)
+  href: Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_CreateInstance_Solti_Utils_DI_Interfaces_IInjector_System_Object__
+  commentId: M:Solti.Utils.DI.Interfaces.AbstractServiceEntry.CreateInstance(Solti.Utils.DI.Interfaces.IInjector,System.Object@)
+  name.vb: CreateInstance(IInjector, ByRef Object)
+  fullName: Solti.Utils.DI.Interfaces.AbstractServiceEntry.CreateInstance(Solti.Utils.DI.Interfaces.IInjector, out System.Object)
+  fullName.vb: Solti.Utils.DI.Interfaces.AbstractServiceEntry.CreateInstance(Solti.Utils.DI.Interfaces.IInjector, ByRef System.Object)
+  nameWithType: AbstractServiceEntry.CreateInstance(IInjector, out Object)
+  nameWithType.vb: AbstractServiceEntry.CreateInstance(IInjector, ByRef Object)
 - uid: Solti.Utils.DI.Interfaces.AbstractServiceEntry.CreateInstance*
   name: CreateInstance
   href: Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_CreateInstance_
@@ -192,19 +182,32 @@ references:
   isSpec: "True"
   fullName: Solti.Utils.DI.Interfaces.AbstractServiceEntry.Factory
   nameWithType: AbstractServiceEntry.Factory
-- uid: Solti.Utils.DI.Interfaces.AbstractServiceEntry.GetSingleInstance
-  name: GetSingleInstance()
-  href: Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_GetSingleInstance
-  commentId: M:Solti.Utils.DI.Interfaces.AbstractServiceEntry.GetSingleInstance
-  fullName: Solti.Utils.DI.Interfaces.AbstractServiceEntry.GetSingleInstance()
-  nameWithType: AbstractServiceEntry.GetSingleInstance()
-- uid: Solti.Utils.DI.Interfaces.AbstractServiceEntry.GetSingleInstance*
-  name: GetSingleInstance
-  href: Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_GetSingleInstance_
-  commentId: Overload:Solti.Utils.DI.Interfaces.AbstractServiceEntry.GetSingleInstance
+- uid: Solti.Utils.DI.Interfaces.AbstractServiceEntry.Flags
+  name: Flags
+  href: Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_Flags
+  commentId: P:Solti.Utils.DI.Interfaces.AbstractServiceEntry.Flags
+  fullName: Solti.Utils.DI.Interfaces.AbstractServiceEntry.Flags
+  nameWithType: AbstractServiceEntry.Flags
+- uid: Solti.Utils.DI.Interfaces.AbstractServiceEntry.Flags*
+  name: Flags
+  href: Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_Flags_
+  commentId: Overload:Solti.Utils.DI.Interfaces.AbstractServiceEntry.Flags
   isSpec: "True"
-  fullName: Solti.Utils.DI.Interfaces.AbstractServiceEntry.GetSingleInstance
-  nameWithType: AbstractServiceEntry.GetSingleInstance
+  fullName: Solti.Utils.DI.Interfaces.AbstractServiceEntry.Flags
+  nameWithType: AbstractServiceEntry.Flags
+- uid: Solti.Utils.DI.Interfaces.AbstractServiceEntry.GetHashCode
+  name: GetHashCode()
+  href: Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_GetHashCode
+  commentId: M:Solti.Utils.DI.Interfaces.AbstractServiceEntry.GetHashCode
+  fullName: Solti.Utils.DI.Interfaces.AbstractServiceEntry.GetHashCode()
+  nameWithType: AbstractServiceEntry.GetHashCode()
+- uid: Solti.Utils.DI.Interfaces.AbstractServiceEntry.GetHashCode*
+  name: GetHashCode
+  href: Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_GetHashCode_
+  commentId: Overload:Solti.Utils.DI.Interfaces.AbstractServiceEntry.GetHashCode
+  isSpec: "True"
+  fullName: Solti.Utils.DI.Interfaces.AbstractServiceEntry.GetHashCode
+  nameWithType: AbstractServiceEntry.GetHashCode
 - uid: Solti.Utils.DI.Interfaces.AbstractServiceEntry.Implementation
   name: Implementation
   href: Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_Implementation
@@ -231,19 +234,6 @@ references:
   isSpec: "True"
   fullName: Solti.Utils.DI.Interfaces.AbstractServiceEntry.Interface
   nameWithType: AbstractServiceEntry.Interface
-- uid: Solti.Utils.DI.Interfaces.AbstractServiceEntry.IsShared
-  name: IsShared
-  href: Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_IsShared
-  commentId: P:Solti.Utils.DI.Interfaces.AbstractServiceEntry.IsShared
-  fullName: Solti.Utils.DI.Interfaces.AbstractServiceEntry.IsShared
-  nameWithType: AbstractServiceEntry.IsShared
-- uid: Solti.Utils.DI.Interfaces.AbstractServiceEntry.IsShared*
-  name: IsShared
-  href: Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_IsShared_
-  commentId: Overload:Solti.Utils.DI.Interfaces.AbstractServiceEntry.IsShared
-  isSpec: "True"
-  fullName: Solti.Utils.DI.Interfaces.AbstractServiceEntry.IsShared
-  nameWithType: AbstractServiceEntry.IsShared
 - uid: Solti.Utils.DI.Interfaces.AbstractServiceEntry.Lifetime
   name: Lifetime
   href: Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_Lifetime
@@ -270,32 +260,22 @@ references:
   isSpec: "True"
   fullName: Solti.Utils.DI.Interfaces.AbstractServiceEntry.Name
   nameWithType: AbstractServiceEntry.Name
-- uid: Solti.Utils.DI.Interfaces.AbstractServiceEntry.Owner
-  name: Owner
-  href: Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_Owner
-  commentId: P:Solti.Utils.DI.Interfaces.AbstractServiceEntry.Owner
-  fullName: Solti.Utils.DI.Interfaces.AbstractServiceEntry.Owner
-  nameWithType: AbstractServiceEntry.Owner
-- uid: Solti.Utils.DI.Interfaces.AbstractServiceEntry.Owner*
-  name: Owner
-  href: Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_Owner_
-  commentId: Overload:Solti.Utils.DI.Interfaces.AbstractServiceEntry.Owner
+- uid: Solti.Utils.DI.Interfaces.AbstractServiceEntry.Specialize(System.Type[])
+  name: Specialize(Type[])
+  href: Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_Specialize_System_Type___
+  commentId: M:Solti.Utils.DI.Interfaces.AbstractServiceEntry.Specialize(System.Type[])
+  name.vb: Specialize(Type())
+  fullName: Solti.Utils.DI.Interfaces.AbstractServiceEntry.Specialize(System.Type[])
+  fullName.vb: Solti.Utils.DI.Interfaces.AbstractServiceEntry.Specialize(System.Type())
+  nameWithType: AbstractServiceEntry.Specialize(Type[])
+  nameWithType.vb: AbstractServiceEntry.Specialize(Type())
+- uid: Solti.Utils.DI.Interfaces.AbstractServiceEntry.Specialize*
+  name: Specialize
+  href: Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_Specialize_
+  commentId: Overload:Solti.Utils.DI.Interfaces.AbstractServiceEntry.Specialize
   isSpec: "True"
-  fullName: Solti.Utils.DI.Interfaces.AbstractServiceEntry.Owner
-  nameWithType: AbstractServiceEntry.Owner
-- uid: Solti.Utils.DI.Interfaces.AbstractServiceEntry.State
-  name: State
-  href: Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_State
-  commentId: P:Solti.Utils.DI.Interfaces.AbstractServiceEntry.State
-  fullName: Solti.Utils.DI.Interfaces.AbstractServiceEntry.State
-  nameWithType: AbstractServiceEntry.State
-- uid: Solti.Utils.DI.Interfaces.AbstractServiceEntry.State*
-  name: State
-  href: Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_State_
-  commentId: Overload:Solti.Utils.DI.Interfaces.AbstractServiceEntry.State
-  isSpec: "True"
-  fullName: Solti.Utils.DI.Interfaces.AbstractServiceEntry.State
-  nameWithType: AbstractServiceEntry.State
+  fullName: Solti.Utils.DI.Interfaces.AbstractServiceEntry.Specialize
+  nameWithType: AbstractServiceEntry.Specialize
 - uid: Solti.Utils.DI.Interfaces.AbstractServiceEntry.ToString
   name: ToString()
   href: Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_ToString
@@ -459,6 +439,19 @@ references:
   isSpec: "True"
   fullName: Solti.Utils.DI.Interfaces.IInjector.Get
   nameWithType: IInjector.Get
+- uid: Solti.Utils.DI.Interfaces.IInjector.Lifetime
+  name: Lifetime
+  href: Solti.Utils.DI.Interfaces.IInjector.html#Solti_Utils_DI_Interfaces_IInjector_Lifetime
+  commentId: P:Solti.Utils.DI.Interfaces.IInjector.Lifetime
+  fullName: Solti.Utils.DI.Interfaces.IInjector.Lifetime
+  nameWithType: IInjector.Lifetime
+- uid: Solti.Utils.DI.Interfaces.IInjector.Lifetime*
+  name: Lifetime
+  href: Solti.Utils.DI.Interfaces.IInjector.html#Solti_Utils_DI_Interfaces_IInjector_Lifetime_
+  commentId: Overload:Solti.Utils.DI.Interfaces.IInjector.Lifetime
+  isSpec: "True"
+  fullName: Solti.Utils.DI.Interfaces.IInjector.Lifetime
+  nameWithType: IInjector.Lifetime
 - uid: Solti.Utils.DI.Interfaces.IInjector.Options
   name: Options
   href: Solti.Utils.DI.Interfaces.IInjector.html#Solti_Utils_DI_Interfaces_IInjector_Options
@@ -507,31 +500,6 @@ references:
   fullName.vb: Solti.Utils.DI.Interfaces.IInjectorBasicExtensions.Get(Of TInterface)(Solti.Utils.DI.Interfaces.IInjector, System.String)
   nameWithType: IInjectorBasicExtensions.Get<TInterface>(IInjector, String)
   nameWithType.vb: IInjectorBasicExtensions.Get(Of TInterface)(IInjector, String)
-- uid: Solti.Utils.DI.Interfaces.IInjectorBasicExtensions.Meta(Solti.Utils.DI.Interfaces.IInjector,System.String)
-  name: Meta(IInjector, String)
-  href: Solti.Utils.DI.Interfaces.IInjectorBasicExtensions.html#Solti_Utils_DI_Interfaces_IInjectorBasicExtensions_Meta_Solti_Utils_DI_Interfaces_IInjector_System_String_
-  commentId: M:Solti.Utils.DI.Interfaces.IInjectorBasicExtensions.Meta(Solti.Utils.DI.Interfaces.IInjector,System.String)
-  fullName: Solti.Utils.DI.Interfaces.IInjectorBasicExtensions.Meta(Solti.Utils.DI.Interfaces.IInjector, System.String)
-  nameWithType: IInjectorBasicExtensions.Meta(IInjector, String)
-- uid: Solti.Utils.DI.Interfaces.IInjectorBasicExtensions.Meta(Solti.Utils.DI.Interfaces.IInjector,System.String,System.Object)
-  name: Meta(IInjector, String, Object)
-  href: Solti.Utils.DI.Interfaces.IInjectorBasicExtensions.html#Solti_Utils_DI_Interfaces_IInjectorBasicExtensions_Meta_Solti_Utils_DI_Interfaces_IInjector_System_String_System_Object_
-  commentId: M:Solti.Utils.DI.Interfaces.IInjectorBasicExtensions.Meta(Solti.Utils.DI.Interfaces.IInjector,System.String,System.Object)
-  fullName: Solti.Utils.DI.Interfaces.IInjectorBasicExtensions.Meta(Solti.Utils.DI.Interfaces.IInjector, System.String, System.Object)
-  nameWithType: IInjectorBasicExtensions.Meta(IInjector, String, Object)
-- uid: Solti.Utils.DI.Interfaces.IInjectorBasicExtensions.Meta*
-  name: Meta
-  href: Solti.Utils.DI.Interfaces.IInjectorBasicExtensions.html#Solti_Utils_DI_Interfaces_IInjectorBasicExtensions_Meta_
-  commentId: Overload:Solti.Utils.DI.Interfaces.IInjectorBasicExtensions.Meta
-  isSpec: "True"
-  fullName: Solti.Utils.DI.Interfaces.IInjectorBasicExtensions.Meta
-  nameWithType: IInjectorBasicExtensions.Meta
-- uid: Solti.Utils.DI.Interfaces.IInjectorBasicExtensions.META_NAME
-  name: META_NAME
-  href: Solti.Utils.DI.Interfaces.IInjectorBasicExtensions.html#Solti_Utils_DI_Interfaces_IInjectorBasicExtensions_META_NAME
-  commentId: F:Solti.Utils.DI.Interfaces.IInjectorBasicExtensions.META_NAME
-  fullName: Solti.Utils.DI.Interfaces.IInjectorBasicExtensions.META_NAME
-  nameWithType: IInjectorBasicExtensions.META_NAME
 - uid: Solti.Utils.DI.Interfaces.IInjectorBasicExtensions.TryGet*
   name: TryGet
   href: Solti.Utils.DI.Interfaces.IInjectorBasicExtensions.html#Solti_Utils_DI_Interfaces_IInjectorBasicExtensions_TryGet_
@@ -573,37 +541,18 @@ references:
   commentId: T:Solti.Utils.DI.Interfaces.InjectAttribute
   fullName: Solti.Utils.DI.Interfaces.InjectAttribute
   nameWithType: InjectAttribute
-- uid: Solti.Utils.DI.Interfaces.IRequiresServiceAccess
-  name: IRequiresServiceAccess
-  href: Solti.Utils.DI.Interfaces.IRequiresServiceAccess.html
-  commentId: T:Solti.Utils.DI.Interfaces.IRequiresServiceAccess
-  fullName: Solti.Utils.DI.Interfaces.IRequiresServiceAccess
-  nameWithType: IRequiresServiceAccess
-- uid: Solti.Utils.DI.Interfaces.IRequiresServiceAccess.ServiceAccess
-  name: ServiceAccess
-  href: Solti.Utils.DI.Interfaces.IRequiresServiceAccess.html#Solti_Utils_DI_Interfaces_IRequiresServiceAccess_ServiceAccess
-  commentId: P:Solti.Utils.DI.Interfaces.IRequiresServiceAccess.ServiceAccess
-  fullName: Solti.Utils.DI.Interfaces.IRequiresServiceAccess.ServiceAccess
-  nameWithType: IRequiresServiceAccess.ServiceAccess
-- uid: Solti.Utils.DI.Interfaces.IRequiresServiceAccess.ServiceAccess*
-  name: ServiceAccess
-  href: Solti.Utils.DI.Interfaces.IRequiresServiceAccess.html#Solti_Utils_DI_Interfaces_IRequiresServiceAccess_ServiceAccess_
-  commentId: Overload:Solti.Utils.DI.Interfaces.IRequiresServiceAccess.ServiceAccess
-  isSpec: "True"
-  fullName: Solti.Utils.DI.Interfaces.IRequiresServiceAccess.ServiceAccess
-  nameWithType: IRequiresServiceAccess.ServiceAccess
 - uid: Solti.Utils.DI.Interfaces.IScopeFactory
   name: IScopeFactory
   href: Solti.Utils.DI.Interfaces.IScopeFactory.html
   commentId: T:Solti.Utils.DI.Interfaces.IScopeFactory
   fullName: Solti.Utils.DI.Interfaces.IScopeFactory
   nameWithType: IScopeFactory
-- uid: Solti.Utils.DI.Interfaces.IScopeFactory.CreateScope
-  name: CreateScope()
-  href: Solti.Utils.DI.Interfaces.IScopeFactory.html#Solti_Utils_DI_Interfaces_IScopeFactory_CreateScope
-  commentId: M:Solti.Utils.DI.Interfaces.IScopeFactory.CreateScope
-  fullName: Solti.Utils.DI.Interfaces.IScopeFactory.CreateScope()
-  nameWithType: IScopeFactory.CreateScope()
+- uid: Solti.Utils.DI.Interfaces.IScopeFactory.CreateScope(System.Object)
+  name: CreateScope(Object)
+  href: Solti.Utils.DI.Interfaces.IScopeFactory.html#Solti_Utils_DI_Interfaces_IScopeFactory_CreateScope_System_Object_
+  commentId: M:Solti.Utils.DI.Interfaces.IScopeFactory.CreateScope(System.Object)
+  fullName: Solti.Utils.DI.Interfaces.IScopeFactory.CreateScope(System.Object)
+  nameWithType: IScopeFactory.CreateScope(Object)
 - uid: Solti.Utils.DI.Interfaces.IScopeFactory.CreateScope*
   name: CreateScope
   href: Solti.Utils.DI.Interfaces.IScopeFactory.html#Solti_Utils_DI_Interfaces_IScopeFactory_CreateScope_
@@ -870,15 +819,6 @@ references:
   commentId: M:Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Service(Solti.Utils.DI.Interfaces.IServiceCollection,System.Type,System.String,System.Type,Solti.Utils.DI.Interfaces.Lifetime)
   fullName: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Service(Solti.Utils.DI.Interfaces.IServiceCollection, System.Type, System.String, System.Type, Solti.Utils.DI.Interfaces.Lifetime)
   nameWithType: IServiceCollectionBasicExtensions.Service(IServiceCollection, Type, String, Type, Lifetime)
-- uid: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Service(Solti.Utils.DI.Interfaces.IServiceCollection,System.Type,System.String,System.Type,System.Collections.Generic.IReadOnlyDictionary{System.String,System.Object},Solti.Utils.DI.Interfaces.Lifetime)
-  name: Service(IServiceCollection, Type, String, Type, IReadOnlyDictionary<String, Object>, Lifetime)
-  href: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.html#Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Service_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_String_System_Type_System_Collections_Generic_IReadOnlyDictionary_System_String_System_Object__Solti_Utils_DI_Interfaces_Lifetime_
-  commentId: M:Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Service(Solti.Utils.DI.Interfaces.IServiceCollection,System.Type,System.String,System.Type,System.Collections.Generic.IReadOnlyDictionary{System.String,System.Object},Solti.Utils.DI.Interfaces.Lifetime)
-  name.vb: Service(IServiceCollection, Type, String, Type, IReadOnlyDictionary(Of String, Object), Lifetime)
-  fullName: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Service(Solti.Utils.DI.Interfaces.IServiceCollection, System.Type, System.String, System.Type, System.Collections.Generic.IReadOnlyDictionary<System.String, System.Object>, Solti.Utils.DI.Interfaces.Lifetime)
-  fullName.vb: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Service(Solti.Utils.DI.Interfaces.IServiceCollection, System.Type, System.String, System.Type, System.Collections.Generic.IReadOnlyDictionary(Of System.String, System.Object), Solti.Utils.DI.Interfaces.Lifetime)
-  nameWithType: IServiceCollectionBasicExtensions.Service(IServiceCollection, Type, String, Type, IReadOnlyDictionary<String, Object>, Lifetime)
-  nameWithType.vb: IServiceCollectionBasicExtensions.Service(IServiceCollection, Type, String, Type, IReadOnlyDictionary(Of String, Object), Lifetime)
 - uid: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Service(Solti.Utils.DI.Interfaces.IServiceCollection,System.Type,System.String,System.Type,System.Object,Solti.Utils.DI.Interfaces.Lifetime)
   name: Service(IServiceCollection, Type, String, Type, Object, Lifetime)
   href: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.html#Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Service_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_String_System_Type_System_Object_Solti_Utils_DI_Interfaces_Lifetime_
@@ -891,15 +831,6 @@ references:
   commentId: M:Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Service(Solti.Utils.DI.Interfaces.IServiceCollection,System.Type,System.Type,Solti.Utils.DI.Interfaces.Lifetime)
   fullName: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Service(Solti.Utils.DI.Interfaces.IServiceCollection, System.Type, System.Type, Solti.Utils.DI.Interfaces.Lifetime)
   nameWithType: IServiceCollectionBasicExtensions.Service(IServiceCollection, Type, Type, Lifetime)
-- uid: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Service(Solti.Utils.DI.Interfaces.IServiceCollection,System.Type,System.Type,System.Collections.Generic.IReadOnlyDictionary{System.String,System.Object},Solti.Utils.DI.Interfaces.Lifetime)
-  name: Service(IServiceCollection, Type, Type, IReadOnlyDictionary<String, Object>, Lifetime)
-  href: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.html#Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Service_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_Type_System_Collections_Generic_IReadOnlyDictionary_System_String_System_Object__Solti_Utils_DI_Interfaces_Lifetime_
-  commentId: M:Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Service(Solti.Utils.DI.Interfaces.IServiceCollection,System.Type,System.Type,System.Collections.Generic.IReadOnlyDictionary{System.String,System.Object},Solti.Utils.DI.Interfaces.Lifetime)
-  name.vb: Service(IServiceCollection, Type, Type, IReadOnlyDictionary(Of String, Object), Lifetime)
-  fullName: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Service(Solti.Utils.DI.Interfaces.IServiceCollection, System.Type, System.Type, System.Collections.Generic.IReadOnlyDictionary<System.String, System.Object>, Solti.Utils.DI.Interfaces.Lifetime)
-  fullName.vb: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Service(Solti.Utils.DI.Interfaces.IServiceCollection, System.Type, System.Type, System.Collections.Generic.IReadOnlyDictionary(Of System.String, System.Object), Solti.Utils.DI.Interfaces.Lifetime)
-  nameWithType: IServiceCollectionBasicExtensions.Service(IServiceCollection, Type, Type, IReadOnlyDictionary<String, Object>, Lifetime)
-  nameWithType.vb: IServiceCollectionBasicExtensions.Service(IServiceCollection, Type, Type, IReadOnlyDictionary(Of String, Object), Lifetime)
 - uid: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Service(Solti.Utils.DI.Interfaces.IServiceCollection,System.Type,System.Type,System.Object,Solti.Utils.DI.Interfaces.Lifetime)
   name: Service(IServiceCollection, Type, Type, Object, Lifetime)
   href: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.html#Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Service_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_Type_System_Object_Solti_Utils_DI_Interfaces_Lifetime_
@@ -922,15 +853,6 @@ references:
   fullName.vb: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Service(Of TInterface, TImplementation)(Solti.Utils.DI.Interfaces.IServiceCollection, Solti.Utils.DI.Interfaces.Lifetime)
   nameWithType: IServiceCollectionBasicExtensions.Service<TInterface, TImplementation>(IServiceCollection, Lifetime)
   nameWithType.vb: IServiceCollectionBasicExtensions.Service(Of TInterface, TImplementation)(IServiceCollection, Lifetime)
-- uid: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Service``2(Solti.Utils.DI.Interfaces.IServiceCollection,System.Collections.Generic.IReadOnlyDictionary{System.String,System.Object},Solti.Utils.DI.Interfaces.Lifetime)
-  name: Service<TInterface, TImplementation>(IServiceCollection, IReadOnlyDictionary<String, Object>, Lifetime)
-  href: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.html#Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Service__2_Solti_Utils_DI_Interfaces_IServiceCollection_System_Collections_Generic_IReadOnlyDictionary_System_String_System_Object__Solti_Utils_DI_Interfaces_Lifetime_
-  commentId: M:Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Service``2(Solti.Utils.DI.Interfaces.IServiceCollection,System.Collections.Generic.IReadOnlyDictionary{System.String,System.Object},Solti.Utils.DI.Interfaces.Lifetime)
-  name.vb: Service(Of TInterface, TImplementation)(IServiceCollection, IReadOnlyDictionary(Of String, Object), Lifetime)
-  fullName: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Service<TInterface, TImplementation>(Solti.Utils.DI.Interfaces.IServiceCollection, System.Collections.Generic.IReadOnlyDictionary<System.String, System.Object>, Solti.Utils.DI.Interfaces.Lifetime)
-  fullName.vb: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Service(Of TInterface, TImplementation)(Solti.Utils.DI.Interfaces.IServiceCollection, System.Collections.Generic.IReadOnlyDictionary(Of System.String, System.Object), Solti.Utils.DI.Interfaces.Lifetime)
-  nameWithType: IServiceCollectionBasicExtensions.Service<TInterface, TImplementation>(IServiceCollection, IReadOnlyDictionary<String, Object>, Lifetime)
-  nameWithType.vb: IServiceCollectionBasicExtensions.Service(Of TInterface, TImplementation)(IServiceCollection, IReadOnlyDictionary(Of String, Object), Lifetime)
 - uid: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Service``2(Solti.Utils.DI.Interfaces.IServiceCollection,System.Object,Solti.Utils.DI.Interfaces.Lifetime)
   name: Service<TInterface, TImplementation>(IServiceCollection, Object, Lifetime)
   href: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.html#Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Service__2_Solti_Utils_DI_Interfaces_IServiceCollection_System_Object_Solti_Utils_DI_Interfaces_Lifetime_
@@ -949,15 +871,6 @@ references:
   fullName.vb: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Service(Of TInterface, TImplementation)(Solti.Utils.DI.Interfaces.IServiceCollection, System.String, Solti.Utils.DI.Interfaces.Lifetime)
   nameWithType: IServiceCollectionBasicExtensions.Service<TInterface, TImplementation>(IServiceCollection, String, Lifetime)
   nameWithType.vb: IServiceCollectionBasicExtensions.Service(Of TInterface, TImplementation)(IServiceCollection, String, Lifetime)
-- uid: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Service``2(Solti.Utils.DI.Interfaces.IServiceCollection,System.String,System.Collections.Generic.IReadOnlyDictionary{System.String,System.Object},Solti.Utils.DI.Interfaces.Lifetime)
-  name: Service<TInterface, TImplementation>(IServiceCollection, String, IReadOnlyDictionary<String, Object>, Lifetime)
-  href: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.html#Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Service__2_Solti_Utils_DI_Interfaces_IServiceCollection_System_String_System_Collections_Generic_IReadOnlyDictionary_System_String_System_Object__Solti_Utils_DI_Interfaces_Lifetime_
-  commentId: M:Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Service``2(Solti.Utils.DI.Interfaces.IServiceCollection,System.String,System.Collections.Generic.IReadOnlyDictionary{System.String,System.Object},Solti.Utils.DI.Interfaces.Lifetime)
-  name.vb: Service(Of TInterface, TImplementation)(IServiceCollection, String, IReadOnlyDictionary(Of String, Object), Lifetime)
-  fullName: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Service<TInterface, TImplementation>(Solti.Utils.DI.Interfaces.IServiceCollection, System.String, System.Collections.Generic.IReadOnlyDictionary<System.String, System.Object>, Solti.Utils.DI.Interfaces.Lifetime)
-  fullName.vb: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Service(Of TInterface, TImplementation)(Solti.Utils.DI.Interfaces.IServiceCollection, System.String, System.Collections.Generic.IReadOnlyDictionary(Of System.String, System.Object), Solti.Utils.DI.Interfaces.Lifetime)
-  nameWithType: IServiceCollectionBasicExtensions.Service<TInterface, TImplementation>(IServiceCollection, String, IReadOnlyDictionary<String, Object>, Lifetime)
-  nameWithType.vb: IServiceCollectionBasicExtensions.Service(Of TInterface, TImplementation)(IServiceCollection, String, IReadOnlyDictionary(Of String, Object), Lifetime)
 - uid: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Service``2(Solti.Utils.DI.Interfaces.IServiceCollection,System.String,System.Object,Solti.Utils.DI.Interfaces.Lifetime)
   name: Service<TInterface, TImplementation>(IServiceCollection, String, Object, Lifetime)
   href: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.html#Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Service__2_Solti_Utils_DI_Interfaces_IServiceCollection_System_String_System_Object_Solti_Utils_DI_Interfaces_Lifetime_
@@ -983,89 +896,6 @@ references:
   isSpec: "True"
   fullName: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.WithProxy
   nameWithType: IServiceCollectionBasicExtensions.WithProxy
-- uid: Solti.Utils.DI.Interfaces.IServiceDefinition
-  name: IServiceDefinition
-  href: Solti.Utils.DI.Interfaces.IServiceDefinition.html
-  commentId: T:Solti.Utils.DI.Interfaces.IServiceDefinition
-  fullName: Solti.Utils.DI.Interfaces.IServiceDefinition
-  nameWithType: IServiceDefinition
-- uid: Solti.Utils.DI.Interfaces.IServiceDefinition.Factory
-  name: Factory
-  href: Solti.Utils.DI.Interfaces.IServiceDefinition.html#Solti_Utils_DI_Interfaces_IServiceDefinition_Factory
-  commentId: P:Solti.Utils.DI.Interfaces.IServiceDefinition.Factory
-  fullName: Solti.Utils.DI.Interfaces.IServiceDefinition.Factory
-  nameWithType: IServiceDefinition.Factory
-- uid: Solti.Utils.DI.Interfaces.IServiceDefinition.Factory*
-  name: Factory
-  href: Solti.Utils.DI.Interfaces.IServiceDefinition.html#Solti_Utils_DI_Interfaces_IServiceDefinition_Factory_
-  commentId: Overload:Solti.Utils.DI.Interfaces.IServiceDefinition.Factory
-  isSpec: "True"
-  fullName: Solti.Utils.DI.Interfaces.IServiceDefinition.Factory
-  nameWithType: IServiceDefinition.Factory
-- uid: Solti.Utils.DI.Interfaces.IServiceDefinition.Implementation
-  name: Implementation
-  href: Solti.Utils.DI.Interfaces.IServiceDefinition.html#Solti_Utils_DI_Interfaces_IServiceDefinition_Implementation
-  commentId: P:Solti.Utils.DI.Interfaces.IServiceDefinition.Implementation
-  fullName: Solti.Utils.DI.Interfaces.IServiceDefinition.Implementation
-  nameWithType: IServiceDefinition.Implementation
-- uid: Solti.Utils.DI.Interfaces.IServiceDefinition.Implementation*
-  name: Implementation
-  href: Solti.Utils.DI.Interfaces.IServiceDefinition.html#Solti_Utils_DI_Interfaces_IServiceDefinition_Implementation_
-  commentId: Overload:Solti.Utils.DI.Interfaces.IServiceDefinition.Implementation
-  isSpec: "True"
-  fullName: Solti.Utils.DI.Interfaces.IServiceDefinition.Implementation
-  nameWithType: IServiceDefinition.Implementation
-- uid: Solti.Utils.DI.Interfaces.IServiceDefinition.Owner
-  name: Owner
-  href: Solti.Utils.DI.Interfaces.IServiceDefinition.html#Solti_Utils_DI_Interfaces_IServiceDefinition_Owner
-  commentId: P:Solti.Utils.DI.Interfaces.IServiceDefinition.Owner
-  fullName: Solti.Utils.DI.Interfaces.IServiceDefinition.Owner
-  nameWithType: IServiceDefinition.Owner
-- uid: Solti.Utils.DI.Interfaces.IServiceDefinition.Owner*
-  name: Owner
-  href: Solti.Utils.DI.Interfaces.IServiceDefinition.html#Solti_Utils_DI_Interfaces_IServiceDefinition_Owner_
-  commentId: Overload:Solti.Utils.DI.Interfaces.IServiceDefinition.Owner
-  isSpec: "True"
-  fullName: Solti.Utils.DI.Interfaces.IServiceDefinition.Owner
-  nameWithType: IServiceDefinition.Owner
-- uid: Solti.Utils.DI.Interfaces.IServiceId
-  name: IServiceId
-  href: Solti.Utils.DI.Interfaces.IServiceId.html
-  commentId: T:Solti.Utils.DI.Interfaces.IServiceId
-  fullName: Solti.Utils.DI.Interfaces.IServiceId
-  nameWithType: IServiceId
-- uid: Solti.Utils.DI.Interfaces.IServiceId.Interface
-  name: Interface
-  href: Solti.Utils.DI.Interfaces.IServiceId.html#Solti_Utils_DI_Interfaces_IServiceId_Interface
-  commentId: P:Solti.Utils.DI.Interfaces.IServiceId.Interface
-  fullName: Solti.Utils.DI.Interfaces.IServiceId.Interface
-  nameWithType: IServiceId.Interface
-- uid: Solti.Utils.DI.Interfaces.IServiceId.Interface*
-  name: Interface
-  href: Solti.Utils.DI.Interfaces.IServiceId.html#Solti_Utils_DI_Interfaces_IServiceId_Interface_
-  commentId: Overload:Solti.Utils.DI.Interfaces.IServiceId.Interface
-  isSpec: "True"
-  fullName: Solti.Utils.DI.Interfaces.IServiceId.Interface
-  nameWithType: IServiceId.Interface
-- uid: Solti.Utils.DI.Interfaces.IServiceId.Name
-  name: Name
-  href: Solti.Utils.DI.Interfaces.IServiceId.html#Solti_Utils_DI_Interfaces_IServiceId_Name
-  commentId: P:Solti.Utils.DI.Interfaces.IServiceId.Name
-  fullName: Solti.Utils.DI.Interfaces.IServiceId.Name
-  nameWithType: IServiceId.Name
-- uid: Solti.Utils.DI.Interfaces.IServiceId.Name*
-  name: Name
-  href: Solti.Utils.DI.Interfaces.IServiceId.html#Solti_Utils_DI_Interfaces_IServiceId_Name_
-  commentId: Overload:Solti.Utils.DI.Interfaces.IServiceId.Name
-  isSpec: "True"
-  fullName: Solti.Utils.DI.Interfaces.IServiceId.Name
-  nameWithType: IServiceId.Name
-- uid: Solti.Utils.DI.Interfaces.IServicePath
-  name: IServicePath
-  href: Solti.Utils.DI.Interfaces.IServicePath.html
-  commentId: T:Solti.Utils.DI.Interfaces.IServicePath
-  fullName: Solti.Utils.DI.Interfaces.IServicePath
-  nameWithType: IServicePath
 - uid: Solti.Utils.DI.Interfaces.IServiceProviderBasicExtensions
   name: IServiceProviderBasicExtensions
   href: Solti.Utils.DI.Interfaces.IServiceProviderBasicExtensions.html
@@ -1088,99 +918,6 @@ references:
   fullName.vb: Solti.Utils.DI.Interfaces.IServiceProviderBasicExtensions.GetService(Of TInterface)(System.IServiceProvider)
   nameWithType: IServiceProviderBasicExtensions.GetService<TInterface>(IServiceProvider)
   nameWithType.vb: IServiceProviderBasicExtensions.GetService(Of TInterface)(IServiceProvider)
-- uid: Solti.Utils.DI.Interfaces.IServiceRegistry
-  name: IServiceRegistry
-  href: Solti.Utils.DI.Interfaces.IServiceRegistry.html
-  commentId: T:Solti.Utils.DI.Interfaces.IServiceRegistry
-  fullName: Solti.Utils.DI.Interfaces.IServiceRegistry
-  nameWithType: IServiceRegistry
-- uid: Solti.Utils.DI.Interfaces.IServiceRegistry.GetEntry(System.Type,System.String)
-  name: GetEntry(Type, String)
-  href: Solti.Utils.DI.Interfaces.IServiceRegistry.html#Solti_Utils_DI_Interfaces_IServiceRegistry_GetEntry_System_Type_System_String_
-  commentId: M:Solti.Utils.DI.Interfaces.IServiceRegistry.GetEntry(System.Type,System.String)
-  fullName: Solti.Utils.DI.Interfaces.IServiceRegistry.GetEntry(System.Type, System.String)
-  nameWithType: IServiceRegistry.GetEntry(Type, String)
-- uid: Solti.Utils.DI.Interfaces.IServiceRegistry.GetEntry*
-  name: GetEntry
-  href: Solti.Utils.DI.Interfaces.IServiceRegistry.html#Solti_Utils_DI_Interfaces_IServiceRegistry_GetEntry_
-  commentId: Overload:Solti.Utils.DI.Interfaces.IServiceRegistry.GetEntry
-  isSpec: "True"
-  fullName: Solti.Utils.DI.Interfaces.IServiceRegistry.GetEntry
-  nameWithType: IServiceRegistry.GetEntry
-- uid: Solti.Utils.DI.Interfaces.IServiceRegistry.Parent
-  name: Parent
-  href: Solti.Utils.DI.Interfaces.IServiceRegistry.html#Solti_Utils_DI_Interfaces_IServiceRegistry_Parent
-  commentId: P:Solti.Utils.DI.Interfaces.IServiceRegistry.Parent
-  fullName: Solti.Utils.DI.Interfaces.IServiceRegistry.Parent
-  nameWithType: IServiceRegistry.Parent
-- uid: Solti.Utils.DI.Interfaces.IServiceRegistry.Parent*
-  name: Parent
-  href: Solti.Utils.DI.Interfaces.IServiceRegistry.html#Solti_Utils_DI_Interfaces_IServiceRegistry_Parent_
-  commentId: Overload:Solti.Utils.DI.Interfaces.IServiceRegistry.Parent
-  isSpec: "True"
-  fullName: Solti.Utils.DI.Interfaces.IServiceRegistry.Parent
-  nameWithType: IServiceRegistry.Parent
-- uid: Solti.Utils.DI.Interfaces.IServiceRegistry.RegisteredEntries
-  name: RegisteredEntries
-  href: Solti.Utils.DI.Interfaces.IServiceRegistry.html#Solti_Utils_DI_Interfaces_IServiceRegistry_RegisteredEntries
-  commentId: P:Solti.Utils.DI.Interfaces.IServiceRegistry.RegisteredEntries
-  fullName: Solti.Utils.DI.Interfaces.IServiceRegistry.RegisteredEntries
-  nameWithType: IServiceRegistry.RegisteredEntries
-- uid: Solti.Utils.DI.Interfaces.IServiceRegistry.RegisteredEntries*
-  name: RegisteredEntries
-  href: Solti.Utils.DI.Interfaces.IServiceRegistry.html#Solti_Utils_DI_Interfaces_IServiceRegistry_RegisteredEntries_
-  commentId: Overload:Solti.Utils.DI.Interfaces.IServiceRegistry.RegisteredEntries
-  isSpec: "True"
-  fullName: Solti.Utils.DI.Interfaces.IServiceRegistry.RegisteredEntries
-  nameWithType: IServiceRegistry.RegisteredEntries
-- uid: Solti.Utils.DI.Interfaces.IServiceRegistry.ResolveGenericEntry(System.Int32,System.Type,Solti.Utils.DI.Interfaces.AbstractServiceEntry)
-  name: ResolveGenericEntry(Int32, Type, AbstractServiceEntry)
-  href: Solti.Utils.DI.Interfaces.IServiceRegistry.html#Solti_Utils_DI_Interfaces_IServiceRegistry_ResolveGenericEntry_System_Int32_System_Type_Solti_Utils_DI_Interfaces_AbstractServiceEntry_
-  commentId: M:Solti.Utils.DI.Interfaces.IServiceRegistry.ResolveGenericEntry(System.Int32,System.Type,Solti.Utils.DI.Interfaces.AbstractServiceEntry)
-  fullName: Solti.Utils.DI.Interfaces.IServiceRegistry.ResolveGenericEntry(System.Int32, System.Type, Solti.Utils.DI.Interfaces.AbstractServiceEntry)
-  nameWithType: IServiceRegistry.ResolveGenericEntry(Int32, Type, AbstractServiceEntry)
-- uid: Solti.Utils.DI.Interfaces.IServiceRegistry.ResolveGenericEntry*
-  name: ResolveGenericEntry
-  href: Solti.Utils.DI.Interfaces.IServiceRegistry.html#Solti_Utils_DI_Interfaces_IServiceRegistry_ResolveGenericEntry_
-  commentId: Overload:Solti.Utils.DI.Interfaces.IServiceRegistry.ResolveGenericEntry
-  isSpec: "True"
-  fullName: Solti.Utils.DI.Interfaces.IServiceRegistry.ResolveGenericEntry
-  nameWithType: IServiceRegistry.ResolveGenericEntry
-- uid: Solti.Utils.DI.Interfaces.IServiceRegistry.ResolveRegularEntry(System.Int32,Solti.Utils.DI.Interfaces.AbstractServiceEntry)
-  name: ResolveRegularEntry(Int32, AbstractServiceEntry)
-  href: Solti.Utils.DI.Interfaces.IServiceRegistry.html#Solti_Utils_DI_Interfaces_IServiceRegistry_ResolveRegularEntry_System_Int32_Solti_Utils_DI_Interfaces_AbstractServiceEntry_
-  commentId: M:Solti.Utils.DI.Interfaces.IServiceRegistry.ResolveRegularEntry(System.Int32,Solti.Utils.DI.Interfaces.AbstractServiceEntry)
-  fullName: Solti.Utils.DI.Interfaces.IServiceRegistry.ResolveRegularEntry(System.Int32, Solti.Utils.DI.Interfaces.AbstractServiceEntry)
-  nameWithType: IServiceRegistry.ResolveRegularEntry(Int32, AbstractServiceEntry)
-- uid: Solti.Utils.DI.Interfaces.IServiceRegistry.ResolveRegularEntry*
-  name: ResolveRegularEntry
-  href: Solti.Utils.DI.Interfaces.IServiceRegistry.html#Solti_Utils_DI_Interfaces_IServiceRegistry_ResolveRegularEntry_
-  commentId: Overload:Solti.Utils.DI.Interfaces.IServiceRegistry.ResolveRegularEntry
-  isSpec: "True"
-  fullName: Solti.Utils.DI.Interfaces.IServiceRegistry.ResolveRegularEntry
-  nameWithType: IServiceRegistry.ResolveRegularEntry
-- uid: Solti.Utils.DI.Interfaces.IServiceRegistryExtensions
-  name: IServiceRegistryExtensions
-  href: Solti.Utils.DI.Interfaces.IServiceRegistryExtensions.html
-  commentId: T:Solti.Utils.DI.Interfaces.IServiceRegistryExtensions
-  fullName: Solti.Utils.DI.Interfaces.IServiceRegistryExtensions
-  nameWithType: IServiceRegistryExtensions
-- uid: Solti.Utils.DI.Interfaces.IServiceRegistryExtensions.GetEntry*
-  name: GetEntry
-  href: Solti.Utils.DI.Interfaces.IServiceRegistryExtensions.html#Solti_Utils_DI_Interfaces_IServiceRegistryExtensions_GetEntry_
-  commentId: Overload:Solti.Utils.DI.Interfaces.IServiceRegistryExtensions.GetEntry
-  isSpec: "True"
-  fullName: Solti.Utils.DI.Interfaces.IServiceRegistryExtensions.GetEntry
-  nameWithType: IServiceRegistryExtensions.GetEntry
-- uid: Solti.Utils.DI.Interfaces.IServiceRegistryExtensions.GetEntry``1(Solti.Utils.DI.Interfaces.IServiceRegistry,System.String)
-  name: GetEntry<TInterface>(IServiceRegistry, String)
-  href: Solti.Utils.DI.Interfaces.IServiceRegistryExtensions.html#Solti_Utils_DI_Interfaces_IServiceRegistryExtensions_GetEntry__1_Solti_Utils_DI_Interfaces_IServiceRegistry_System_String_
-  commentId: M:Solti.Utils.DI.Interfaces.IServiceRegistryExtensions.GetEntry``1(Solti.Utils.DI.Interfaces.IServiceRegistry,System.String)
-  name.vb: GetEntry(Of TInterface)(IServiceRegistry, String)
-  fullName: Solti.Utils.DI.Interfaces.IServiceRegistryExtensions.GetEntry<TInterface>(Solti.Utils.DI.Interfaces.IServiceRegistry, System.String)
-  fullName.vb: Solti.Utils.DI.Interfaces.IServiceRegistryExtensions.GetEntry(Of TInterface)(Solti.Utils.DI.Interfaces.IServiceRegistry, System.String)
-  nameWithType: IServiceRegistryExtensions.GetEntry<TInterface>(IServiceRegistry, String)
-  nameWithType.vb: IServiceRegistryExtensions.GetEntry(Of TInterface)(IServiceRegistry, String)
 - uid: Solti.Utils.DI.Interfaces.ISupportsProxying
   name: ISupportsProxying
   href: Solti.Utils.DI.Interfaces.ISupportsProxying.html
@@ -1206,15 +943,15 @@ references:
   commentId: T:Solti.Utils.DI.Interfaces.ISupportsSpecialization
   fullName: Solti.Utils.DI.Interfaces.ISupportsSpecialization
   nameWithType: ISupportsSpecialization
-- uid: Solti.Utils.DI.Interfaces.ISupportsSpecialization.Specialize(Solti.Utils.DI.Interfaces.IServiceRegistry,System.Type[])
-  name: Specialize(IServiceRegistry, Type[])
-  href: Solti.Utils.DI.Interfaces.ISupportsSpecialization.html#Solti_Utils_DI_Interfaces_ISupportsSpecialization_Specialize_Solti_Utils_DI_Interfaces_IServiceRegistry_System_Type___
-  commentId: M:Solti.Utils.DI.Interfaces.ISupportsSpecialization.Specialize(Solti.Utils.DI.Interfaces.IServiceRegistry,System.Type[])
-  name.vb: Specialize(IServiceRegistry, Type())
-  fullName: Solti.Utils.DI.Interfaces.ISupportsSpecialization.Specialize(Solti.Utils.DI.Interfaces.IServiceRegistry, System.Type[])
-  fullName.vb: Solti.Utils.DI.Interfaces.ISupportsSpecialization.Specialize(Solti.Utils.DI.Interfaces.IServiceRegistry, System.Type())
-  nameWithType: ISupportsSpecialization.Specialize(IServiceRegistry, Type[])
-  nameWithType.vb: ISupportsSpecialization.Specialize(IServiceRegistry, Type())
+- uid: Solti.Utils.DI.Interfaces.ISupportsSpecialization.Specialize(System.Type[])
+  name: Specialize(Type[])
+  href: Solti.Utils.DI.Interfaces.ISupportsSpecialization.html#Solti_Utils_DI_Interfaces_ISupportsSpecialization_Specialize_System_Type___
+  commentId: M:Solti.Utils.DI.Interfaces.ISupportsSpecialization.Specialize(System.Type[])
+  name.vb: Specialize(Type())
+  fullName: Solti.Utils.DI.Interfaces.ISupportsSpecialization.Specialize(System.Type[])
+  fullName.vb: Solti.Utils.DI.Interfaces.ISupportsSpecialization.Specialize(System.Type())
+  nameWithType: ISupportsSpecialization.Specialize(Type[])
+  nameWithType.vb: ISupportsSpecialization.Specialize(Type())
 - uid: Solti.Utils.DI.Interfaces.ISupportsSpecialization.Specialize*
   name: Specialize
   href: Solti.Utils.DI.Interfaces.ISupportsSpecialization.html#Solti_Utils_DI_Interfaces_ISupportsSpecialization_Specialize_
@@ -1275,15 +1012,6 @@ references:
   commentId: M:Solti.Utils.DI.Interfaces.Lifetime.CreateFrom(System.Type,System.String,System.Type)
   fullName: Solti.Utils.DI.Interfaces.Lifetime.CreateFrom(System.Type, System.String, System.Type)
   nameWithType: Lifetime.CreateFrom(Type, String, Type)
-- uid: Solti.Utils.DI.Interfaces.Lifetime.CreateFrom(System.Type,System.String,System.Type,System.Collections.Generic.IReadOnlyDictionary{System.String,System.Object})
-  name: CreateFrom(Type, String, Type, IReadOnlyDictionary<String, Object>)
-  href: Solti.Utils.DI.Interfaces.Lifetime.html#Solti_Utils_DI_Interfaces_Lifetime_CreateFrom_System_Type_System_String_System_Type_System_Collections_Generic_IReadOnlyDictionary_System_String_System_Object__
-  commentId: M:Solti.Utils.DI.Interfaces.Lifetime.CreateFrom(System.Type,System.String,System.Type,System.Collections.Generic.IReadOnlyDictionary{System.String,System.Object})
-  name.vb: CreateFrom(Type, String, Type, IReadOnlyDictionary(Of String, Object))
-  fullName: Solti.Utils.DI.Interfaces.Lifetime.CreateFrom(System.Type, System.String, System.Type, System.Collections.Generic.IReadOnlyDictionary<System.String, System.Object>)
-  fullName.vb: Solti.Utils.DI.Interfaces.Lifetime.CreateFrom(System.Type, System.String, System.Type, System.Collections.Generic.IReadOnlyDictionary(Of System.String, System.Object))
-  nameWithType: Lifetime.CreateFrom(Type, String, Type, IReadOnlyDictionary<String, Object>)
-  nameWithType.vb: Lifetime.CreateFrom(Type, String, Type, IReadOnlyDictionary(Of String, Object))
 - uid: Solti.Utils.DI.Interfaces.Lifetime.CreateFrom(System.Type,System.String,System.Type,System.Object)
   name: CreateFrom(Type, String, Type, Object)
   href: Solti.Utils.DI.Interfaces.Lifetime.html#Solti_Utils_DI_Interfaces_Lifetime_CreateFrom_System_Type_System_String_System_Type_System_Object_
@@ -1400,25 +1128,15 @@ references:
   isSpec: "True"
   fullName: Solti.Utils.DI.Interfaces.MissingServiceEntry.MissingServiceEntry
   nameWithType: MissingServiceEntry.MissingServiceEntry
-- uid: Solti.Utils.DI.Interfaces.MissingServiceEntry.CopyTo(Solti.Utils.DI.Interfaces.IServiceRegistry)
-  name: CopyTo(IServiceRegistry)
-  href: Solti.Utils.DI.Interfaces.MissingServiceEntry.html#Solti_Utils_DI_Interfaces_MissingServiceEntry_CopyTo_Solti_Utils_DI_Interfaces_IServiceRegistry_
-  commentId: M:Solti.Utils.DI.Interfaces.MissingServiceEntry.CopyTo(Solti.Utils.DI.Interfaces.IServiceRegistry)
-  fullName: Solti.Utils.DI.Interfaces.MissingServiceEntry.CopyTo(Solti.Utils.DI.Interfaces.IServiceRegistry)
-  nameWithType: MissingServiceEntry.CopyTo(IServiceRegistry)
-- uid: Solti.Utils.DI.Interfaces.MissingServiceEntry.CopyTo*
-  name: CopyTo
-  href: Solti.Utils.DI.Interfaces.MissingServiceEntry.html#Solti_Utils_DI_Interfaces_MissingServiceEntry_CopyTo_
-  commentId: Overload:Solti.Utils.DI.Interfaces.MissingServiceEntry.CopyTo
-  isSpec: "True"
-  fullName: Solti.Utils.DI.Interfaces.MissingServiceEntry.CopyTo
-  nameWithType: MissingServiceEntry.CopyTo
-- uid: Solti.Utils.DI.Interfaces.MissingServiceEntry.CreateInstance(Solti.Utils.DI.Interfaces.IInjector)
-  name: CreateInstance(IInjector)
-  href: Solti.Utils.DI.Interfaces.MissingServiceEntry.html#Solti_Utils_DI_Interfaces_MissingServiceEntry_CreateInstance_Solti_Utils_DI_Interfaces_IInjector_
-  commentId: M:Solti.Utils.DI.Interfaces.MissingServiceEntry.CreateInstance(Solti.Utils.DI.Interfaces.IInjector)
-  fullName: Solti.Utils.DI.Interfaces.MissingServiceEntry.CreateInstance(Solti.Utils.DI.Interfaces.IInjector)
-  nameWithType: MissingServiceEntry.CreateInstance(IInjector)
+- uid: Solti.Utils.DI.Interfaces.MissingServiceEntry.CreateInstance(Solti.Utils.DI.Interfaces.IInjector,System.Object@)
+  name: CreateInstance(IInjector, out Object)
+  href: Solti.Utils.DI.Interfaces.MissingServiceEntry.html#Solti_Utils_DI_Interfaces_MissingServiceEntry_CreateInstance_Solti_Utils_DI_Interfaces_IInjector_System_Object__
+  commentId: M:Solti.Utils.DI.Interfaces.MissingServiceEntry.CreateInstance(Solti.Utils.DI.Interfaces.IInjector,System.Object@)
+  name.vb: CreateInstance(IInjector, ByRef Object)
+  fullName: Solti.Utils.DI.Interfaces.MissingServiceEntry.CreateInstance(Solti.Utils.DI.Interfaces.IInjector, out System.Object)
+  fullName.vb: Solti.Utils.DI.Interfaces.MissingServiceEntry.CreateInstance(Solti.Utils.DI.Interfaces.IInjector, ByRef System.Object)
+  nameWithType: MissingServiceEntry.CreateInstance(IInjector, out Object)
+  nameWithType.vb: MissingServiceEntry.CreateInstance(IInjector, ByRef Object)
 - uid: Solti.Utils.DI.Interfaces.MissingServiceEntry.CreateInstance*
   name: CreateInstance
   href: Solti.Utils.DI.Interfaces.MissingServiceEntry.html#Solti_Utils_DI_Interfaces_MissingServiceEntry_CreateInstance_
@@ -1426,19 +1144,6 @@ references:
   isSpec: "True"
   fullName: Solti.Utils.DI.Interfaces.MissingServiceEntry.CreateInstance
   nameWithType: MissingServiceEntry.CreateInstance
-- uid: Solti.Utils.DI.Interfaces.MissingServiceEntry.GetSingleInstance
-  name: GetSingleInstance()
-  href: Solti.Utils.DI.Interfaces.MissingServiceEntry.html#Solti_Utils_DI_Interfaces_MissingServiceEntry_GetSingleInstance
-  commentId: M:Solti.Utils.DI.Interfaces.MissingServiceEntry.GetSingleInstance
-  fullName: Solti.Utils.DI.Interfaces.MissingServiceEntry.GetSingleInstance()
-  nameWithType: MissingServiceEntry.GetSingleInstance()
-- uid: Solti.Utils.DI.Interfaces.MissingServiceEntry.GetSingleInstance*
-  name: GetSingleInstance
-  href: Solti.Utils.DI.Interfaces.MissingServiceEntry.html#Solti_Utils_DI_Interfaces_MissingServiceEntry_GetSingleInstance_
-  commentId: Overload:Solti.Utils.DI.Interfaces.MissingServiceEntry.GetSingleInstance
-  isSpec: "True"
-  fullName: Solti.Utils.DI.Interfaces.MissingServiceEntry.GetSingleInstance
-  nameWithType: MissingServiceEntry.GetSingleInstance
 - uid: Solti.Utils.DI.Interfaces.OptionsAttribute
   name: OptionsAttribute
   href: Solti.Utils.DI.Interfaces.OptionsAttribute.html
@@ -1508,19 +1213,6 @@ references:
   commentId: T:Solti.Utils.DI.Interfaces.ScopeOptions
   fullName: Solti.Utils.DI.Interfaces.ScopeOptions
   nameWithType: ScopeOptions
-- uid: Solti.Utils.DI.Interfaces.ScopeOptions.MaxSpawnedTransientServices
-  name: MaxSpawnedTransientServices
-  href: Solti.Utils.DI.Interfaces.ScopeOptions.html#Solti_Utils_DI_Interfaces_ScopeOptions_MaxSpawnedTransientServices
-  commentId: P:Solti.Utils.DI.Interfaces.ScopeOptions.MaxSpawnedTransientServices
-  fullName: Solti.Utils.DI.Interfaces.ScopeOptions.MaxSpawnedTransientServices
-  nameWithType: ScopeOptions.MaxSpawnedTransientServices
-- uid: Solti.Utils.DI.Interfaces.ScopeOptions.MaxSpawnedTransientServices*
-  name: MaxSpawnedTransientServices
-  href: Solti.Utils.DI.Interfaces.ScopeOptions.html#Solti_Utils_DI_Interfaces_ScopeOptions_MaxSpawnedTransientServices_
-  commentId: Overload:Solti.Utils.DI.Interfaces.ScopeOptions.MaxSpawnedTransientServices
-  isSpec: "True"
-  fullName: Solti.Utils.DI.Interfaces.ScopeOptions.MaxSpawnedTransientServices
-  nameWithType: ScopeOptions.MaxSpawnedTransientServices
 - uid: Solti.Utils.DI.Interfaces.ScopeOptions.StrictDI
   name: StrictDI
   href: Solti.Utils.DI.Interfaces.ScopeOptions.html#Solti_Utils_DI_Interfaces_ScopeOptions_StrictDI
@@ -1658,48 +1350,48 @@ references:
   isSpec: "True"
   fullName: Solti.Utils.DI.Interfaces.ServiceEntryExtensions.IsService
   nameWithType: ServiceEntryExtensions.IsService
-- uid: Solti.Utils.DI.Interfaces.ServiceEntryStates
-  name: ServiceEntryStates
-  href: Solti.Utils.DI.Interfaces.ServiceEntryStates.html
-  commentId: T:Solti.Utils.DI.Interfaces.ServiceEntryStates
-  fullName: Solti.Utils.DI.Interfaces.ServiceEntryStates
-  nameWithType: ServiceEntryStates
-- uid: Solti.Utils.DI.Interfaces.ServiceEntryStates.Built
-  name: Built
-  href: Solti.Utils.DI.Interfaces.ServiceEntryStates.html#Solti_Utils_DI_Interfaces_ServiceEntryStates_Built
-  commentId: F:Solti.Utils.DI.Interfaces.ServiceEntryStates.Built
-  fullName: Solti.Utils.DI.Interfaces.ServiceEntryStates.Built
-  nameWithType: ServiceEntryStates.Built
-- uid: Solti.Utils.DI.Interfaces.ServiceEntryStates.Default
+- uid: Solti.Utils.DI.Interfaces.ServiceEntryFlags
+  name: ServiceEntryFlags
+  href: Solti.Utils.DI.Interfaces.ServiceEntryFlags.html
+  commentId: T:Solti.Utils.DI.Interfaces.ServiceEntryFlags
+  fullName: Solti.Utils.DI.Interfaces.ServiceEntryFlags
+  nameWithType: ServiceEntryFlags
+- uid: Solti.Utils.DI.Interfaces.ServiceEntryFlags.CreateSingleInstance
+  name: CreateSingleInstance
+  href: Solti.Utils.DI.Interfaces.ServiceEntryFlags.html#Solti_Utils_DI_Interfaces_ServiceEntryFlags_CreateSingleInstance
+  commentId: F:Solti.Utils.DI.Interfaces.ServiceEntryFlags.CreateSingleInstance
+  fullName: Solti.Utils.DI.Interfaces.ServiceEntryFlags.CreateSingleInstance
+  nameWithType: ServiceEntryFlags.CreateSingleInstance
+- uid: Solti.Utils.DI.Interfaces.ServiceEntryFlags.Default
   name: Default
-  href: Solti.Utils.DI.Interfaces.ServiceEntryStates.html#Solti_Utils_DI_Interfaces_ServiceEntryStates_Default
-  commentId: F:Solti.Utils.DI.Interfaces.ServiceEntryStates.Default
-  fullName: Solti.Utils.DI.Interfaces.ServiceEntryStates.Default
-  nameWithType: ServiceEntryStates.Default
-- uid: Solti.Utils.DI.Interfaces.ServiceEntryStates.Instantiated
-  name: Instantiated
-  href: Solti.Utils.DI.Interfaces.ServiceEntryStates.html#Solti_Utils_DI_Interfaces_ServiceEntryStates_Instantiated
-  commentId: F:Solti.Utils.DI.Interfaces.ServiceEntryStates.Instantiated
-  fullName: Solti.Utils.DI.Interfaces.ServiceEntryStates.Instantiated
-  nameWithType: ServiceEntryStates.Instantiated
-- uid: Solti.Utils.DI.Interfaces.ServiceEntryStates.Validated
+  href: Solti.Utils.DI.Interfaces.ServiceEntryFlags.html#Solti_Utils_DI_Interfaces_ServiceEntryFlags_Default
+  commentId: F:Solti.Utils.DI.Interfaces.ServiceEntryFlags.Default
+  fullName: Solti.Utils.DI.Interfaces.ServiceEntryFlags.Default
+  nameWithType: ServiceEntryFlags.Default
+- uid: Solti.Utils.DI.Interfaces.ServiceEntryFlags.Shared
+  name: Shared
+  href: Solti.Utils.DI.Interfaces.ServiceEntryFlags.html#Solti_Utils_DI_Interfaces_ServiceEntryFlags_Shared
+  commentId: F:Solti.Utils.DI.Interfaces.ServiceEntryFlags.Shared
+  fullName: Solti.Utils.DI.Interfaces.ServiceEntryFlags.Shared
+  nameWithType: ServiceEntryFlags.Shared
+- uid: Solti.Utils.DI.Interfaces.ServiceEntryFlags.Validated
   name: Validated
-  href: Solti.Utils.DI.Interfaces.ServiceEntryStates.html#Solti_Utils_DI_Interfaces_ServiceEntryStates_Validated
-  commentId: F:Solti.Utils.DI.Interfaces.ServiceEntryStates.Validated
-  fullName: Solti.Utils.DI.Interfaces.ServiceEntryStates.Validated
-  nameWithType: ServiceEntryStates.Validated
+  href: Solti.Utils.DI.Interfaces.ServiceEntryFlags.html#Solti_Utils_DI_Interfaces_ServiceEntryFlags_Validated
+  commentId: F:Solti.Utils.DI.Interfaces.ServiceEntryFlags.Validated
+  fullName: Solti.Utils.DI.Interfaces.ServiceEntryFlags.Validated
+  nameWithType: ServiceEntryFlags.Validated
 - uid: Solti.Utils.DI.Interfaces.ServiceIdComparer
   name: ServiceIdComparer
   href: Solti.Utils.DI.Interfaces.ServiceIdComparer.html
   commentId: T:Solti.Utils.DI.Interfaces.ServiceIdComparer
   fullName: Solti.Utils.DI.Interfaces.ServiceIdComparer
   nameWithType: ServiceIdComparer
-- uid: Solti.Utils.DI.Interfaces.ServiceIdComparer.Equals(Solti.Utils.DI.Interfaces.IServiceId,Solti.Utils.DI.Interfaces.IServiceId)
-  name: Equals(IServiceId, IServiceId)
-  href: Solti.Utils.DI.Interfaces.ServiceIdComparer.html#Solti_Utils_DI_Interfaces_ServiceIdComparer_Equals_Solti_Utils_DI_Interfaces_IServiceId_Solti_Utils_DI_Interfaces_IServiceId_
-  commentId: M:Solti.Utils.DI.Interfaces.ServiceIdComparer.Equals(Solti.Utils.DI.Interfaces.IServiceId,Solti.Utils.DI.Interfaces.IServiceId)
-  fullName: Solti.Utils.DI.Interfaces.ServiceIdComparer.Equals(Solti.Utils.DI.Interfaces.IServiceId, Solti.Utils.DI.Interfaces.IServiceId)
-  nameWithType: ServiceIdComparer.Equals(IServiceId, IServiceId)
+- uid: Solti.Utils.DI.Interfaces.ServiceIdComparer.Equals(Solti.Utils.DI.Interfaces.AbstractServiceEntry,Solti.Utils.DI.Interfaces.AbstractServiceEntry)
+  name: Equals(AbstractServiceEntry, AbstractServiceEntry)
+  href: Solti.Utils.DI.Interfaces.ServiceIdComparer.html#Solti_Utils_DI_Interfaces_ServiceIdComparer_Equals_Solti_Utils_DI_Interfaces_AbstractServiceEntry_Solti_Utils_DI_Interfaces_AbstractServiceEntry_
+  commentId: M:Solti.Utils.DI.Interfaces.ServiceIdComparer.Equals(Solti.Utils.DI.Interfaces.AbstractServiceEntry,Solti.Utils.DI.Interfaces.AbstractServiceEntry)
+  fullName: Solti.Utils.DI.Interfaces.ServiceIdComparer.Equals(Solti.Utils.DI.Interfaces.AbstractServiceEntry, Solti.Utils.DI.Interfaces.AbstractServiceEntry)
+  nameWithType: ServiceIdComparer.Equals(AbstractServiceEntry, AbstractServiceEntry)
 - uid: Solti.Utils.DI.Interfaces.ServiceIdComparer.Equals*
   name: Equals
   href: Solti.Utils.DI.Interfaces.ServiceIdComparer.html#Solti_Utils_DI_Interfaces_ServiceIdComparer_Equals_
@@ -1707,12 +1399,12 @@ references:
   isSpec: "True"
   fullName: Solti.Utils.DI.Interfaces.ServiceIdComparer.Equals
   nameWithType: ServiceIdComparer.Equals
-- uid: Solti.Utils.DI.Interfaces.ServiceIdComparer.GetHashCode(Solti.Utils.DI.Interfaces.IServiceId)
-  name: GetHashCode(IServiceId)
-  href: Solti.Utils.DI.Interfaces.ServiceIdComparer.html#Solti_Utils_DI_Interfaces_ServiceIdComparer_GetHashCode_Solti_Utils_DI_Interfaces_IServiceId_
-  commentId: M:Solti.Utils.DI.Interfaces.ServiceIdComparer.GetHashCode(Solti.Utils.DI.Interfaces.IServiceId)
-  fullName: Solti.Utils.DI.Interfaces.ServiceIdComparer.GetHashCode(Solti.Utils.DI.Interfaces.IServiceId)
-  nameWithType: ServiceIdComparer.GetHashCode(IServiceId)
+- uid: Solti.Utils.DI.Interfaces.ServiceIdComparer.GetHashCode(Solti.Utils.DI.Interfaces.AbstractServiceEntry)
+  name: GetHashCode(AbstractServiceEntry)
+  href: Solti.Utils.DI.Interfaces.ServiceIdComparer.html#Solti_Utils_DI_Interfaces_ServiceIdComparer_GetHashCode_Solti_Utils_DI_Interfaces_AbstractServiceEntry_
+  commentId: M:Solti.Utils.DI.Interfaces.ServiceIdComparer.GetHashCode(Solti.Utils.DI.Interfaces.AbstractServiceEntry)
+  fullName: Solti.Utils.DI.Interfaces.ServiceIdComparer.GetHashCode(Solti.Utils.DI.Interfaces.AbstractServiceEntry)
+  nameWithType: ServiceIdComparer.GetHashCode(AbstractServiceEntry)
 - uid: Solti.Utils.DI.Interfaces.ServiceIdComparer.GetHashCode*
   name: GetHashCode
   href: Solti.Utils.DI.Interfaces.ServiceIdComparer.html#Solti_Utils_DI_Interfaces_ServiceIdComparer_GetHashCode_
@@ -1751,18 +1443,6 @@ references:
   isSpec: "True"
   fullName: Solti.Utils.DI.Interfaces.ServiceNotFoundException.ServiceNotFoundException
   nameWithType: ServiceNotFoundException.ServiceNotFoundException
-- uid: Solti.Utils.DI.Internals
-  name: Solti.Utils.DI.Internals
-  href: Solti.Utils.DI.Internals.html
-  commentId: N:Solti.Utils.DI.Internals
-  fullName: Solti.Utils.DI.Internals
-  nameWithType: Solti.Utils.DI.Internals
-- uid: Solti.Utils.DI.Internals.Resolver
-  name: Resolver
-  href: Solti.Utils.DI.Internals.Resolver.html
-  commentId: T:Solti.Utils.DI.Internals.Resolver
-  fullName: Solti.Utils.DI.Internals.Resolver
-  nameWithType: Resolver
 - uid: Solti.Utils.DI.IServiceCollectionAdvancedExtensions
   name: IServiceCollectionAdvancedExtensions
   href: Solti.Utils.DI.IServiceCollectionAdvancedExtensions.html
@@ -1797,21 +1477,21 @@ references:
   commentId: T:Solti.Utils.DI.ScopeFactory
   fullName: Solti.Utils.DI.ScopeFactory
   nameWithType: ScopeFactory
-- uid: Solti.Utils.DI.ScopeFactory.Create(Solti.Utils.DI.Interfaces.IServiceCollection,Solti.Utils.DI.Interfaces.ScopeOptions,System.Threading.CancellationToken)
-  name: Create(IServiceCollection, ScopeOptions, CancellationToken)
-  href: Solti.Utils.DI.ScopeFactory.html#Solti_Utils_DI_ScopeFactory_Create_Solti_Utils_DI_Interfaces_IServiceCollection_Solti_Utils_DI_Interfaces_ScopeOptions_System_Threading_CancellationToken_
-  commentId: M:Solti.Utils.DI.ScopeFactory.Create(Solti.Utils.DI.Interfaces.IServiceCollection,Solti.Utils.DI.Interfaces.ScopeOptions,System.Threading.CancellationToken)
-  fullName: Solti.Utils.DI.ScopeFactory.Create(Solti.Utils.DI.Interfaces.IServiceCollection, Solti.Utils.DI.Interfaces.ScopeOptions, System.Threading.CancellationToken)
-  nameWithType: ScopeFactory.Create(IServiceCollection, ScopeOptions, CancellationToken)
-- uid: Solti.Utils.DI.ScopeFactory.Create(System.Action{Solti.Utils.DI.Interfaces.IServiceCollection},Solti.Utils.DI.Interfaces.ScopeOptions,System.Threading.CancellationToken)
-  name: Create(Action<IServiceCollection>, ScopeOptions, CancellationToken)
-  href: Solti.Utils.DI.ScopeFactory.html#Solti_Utils_DI_ScopeFactory_Create_System_Action_Solti_Utils_DI_Interfaces_IServiceCollection__Solti_Utils_DI_Interfaces_ScopeOptions_System_Threading_CancellationToken_
-  commentId: M:Solti.Utils.DI.ScopeFactory.Create(System.Action{Solti.Utils.DI.Interfaces.IServiceCollection},Solti.Utils.DI.Interfaces.ScopeOptions,System.Threading.CancellationToken)
-  name.vb: Create(Action(Of IServiceCollection), ScopeOptions, CancellationToken)
-  fullName: Solti.Utils.DI.ScopeFactory.Create(System.Action<Solti.Utils.DI.Interfaces.IServiceCollection>, Solti.Utils.DI.Interfaces.ScopeOptions, System.Threading.CancellationToken)
-  fullName.vb: Solti.Utils.DI.ScopeFactory.Create(System.Action(Of Solti.Utils.DI.Interfaces.IServiceCollection), Solti.Utils.DI.Interfaces.ScopeOptions, System.Threading.CancellationToken)
-  nameWithType: ScopeFactory.Create(Action<IServiceCollection>, ScopeOptions, CancellationToken)
-  nameWithType.vb: ScopeFactory.Create(Action(Of IServiceCollection), ScopeOptions, CancellationToken)
+- uid: Solti.Utils.DI.ScopeFactory.Create(Solti.Utils.DI.Interfaces.IServiceCollection,Solti.Utils.DI.Interfaces.ScopeOptions,System.Object)
+  name: Create(IServiceCollection, ScopeOptions, Object)
+  href: Solti.Utils.DI.ScopeFactory.html#Solti_Utils_DI_ScopeFactory_Create_Solti_Utils_DI_Interfaces_IServiceCollection_Solti_Utils_DI_Interfaces_ScopeOptions_System_Object_
+  commentId: M:Solti.Utils.DI.ScopeFactory.Create(Solti.Utils.DI.Interfaces.IServiceCollection,Solti.Utils.DI.Interfaces.ScopeOptions,System.Object)
+  fullName: Solti.Utils.DI.ScopeFactory.Create(Solti.Utils.DI.Interfaces.IServiceCollection, Solti.Utils.DI.Interfaces.ScopeOptions, System.Object)
+  nameWithType: ScopeFactory.Create(IServiceCollection, ScopeOptions, Object)
+- uid: Solti.Utils.DI.ScopeFactory.Create(System.Action{Solti.Utils.DI.Interfaces.IServiceCollection},Solti.Utils.DI.Interfaces.ScopeOptions,System.Object)
+  name: Create(Action<IServiceCollection>, ScopeOptions, Object)
+  href: Solti.Utils.DI.ScopeFactory.html#Solti_Utils_DI_ScopeFactory_Create_System_Action_Solti_Utils_DI_Interfaces_IServiceCollection__Solti_Utils_DI_Interfaces_ScopeOptions_System_Object_
+  commentId: M:Solti.Utils.DI.ScopeFactory.Create(System.Action{Solti.Utils.DI.Interfaces.IServiceCollection},Solti.Utils.DI.Interfaces.ScopeOptions,System.Object)
+  name.vb: Create(Action(Of IServiceCollection), ScopeOptions, Object)
+  fullName: Solti.Utils.DI.ScopeFactory.Create(System.Action<Solti.Utils.DI.Interfaces.IServiceCollection>, Solti.Utils.DI.Interfaces.ScopeOptions, System.Object)
+  fullName.vb: Solti.Utils.DI.ScopeFactory.Create(System.Action(Of Solti.Utils.DI.Interfaces.IServiceCollection), Solti.Utils.DI.Interfaces.ScopeOptions, System.Object)
+  nameWithType: ScopeFactory.Create(Action<IServiceCollection>, ScopeOptions, Object)
+  nameWithType.vb: ScopeFactory.Create(Action(Of IServiceCollection), ScopeOptions, Object)
 - uid: Solti.Utils.DI.ScopeFactory.Create*
   name: Create
   href: Solti.Utils.DI.ScopeFactory.html#Solti_Utils_DI_ScopeFactory_Create_

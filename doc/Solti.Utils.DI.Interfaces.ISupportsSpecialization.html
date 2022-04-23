@@ -54,13 +54,13 @@
   <h3 id="methods">Methods
   </h3>
   <a id="Solti_Utils_DI_Interfaces_ISupportsSpecialization_Specialize_" data-uid="Solti.Utils.DI.Interfaces.ISupportsSpecialization.Specialize*"></a>
-  <h4 id="Solti_Utils_DI_Interfaces_ISupportsSpecialization_Specialize_Solti_Utils_DI_Interfaces_IServiceRegistry_System_Type___" data-uid="Solti.Utils.DI.Interfaces.ISupportsSpecialization.Specialize(Solti.Utils.DI.Interfaces.IServiceRegistry,System.Type[])">Specialize(IServiceRegistry, Type[])</h4>
+  <h4 id="Solti_Utils_DI_Interfaces_ISupportsSpecialization_Specialize_System_Type___" data-uid="Solti.Utils.DI.Interfaces.ISupportsSpecialization.Specialize(System.Type[])">Specialize(Type[])</h4>
   <div class="markdown level1 summary"><p>Specializes a service entry if it is generic.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">AbstractServiceEntry Specialize(IServiceRegistry owner, params Type[] genericArguments)</code></pre>
+    <pre><code class="lang-csharp hljs">AbstractServiceEntry Specialize(params Type[] genericArguments)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -72,11 +72,6 @@
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <td><a class="xref" href="Solti.Utils.DI.Interfaces.IServiceRegistry.html">IServiceRegistry</a></td>
-        <td><span class="parametername">owner</span></td>
-        <td></td>
-      </tr>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.type">Type</a>[]</td>
         <td><span class="parametername">genericArguments</span></td>
