@@ -19,7 +19,5 @@ namespace Solti.Utils.DI.Internals
             lifetime = null;
             return Factory!(scope, Interface);
         }
-
-        public override AbstractServiceEntry Specialize(params Type[] genericArguments) => throw new NotImplementedException();
     }
 }
