@@ -234,7 +234,18 @@
 - 6.2.0:
   - *updated:* `ProxyGen.NET` to v6
   - *updated:* `Roslyn` to v4
-  - *introduced:* On service creation, explicit arguments may also be passed as regular objects
+  - *introduced:* On service creation, explicit arguments can be passed as regular objects
   - *done:* test against `netcoreapp3.0`, `net5.0`, `net6.0`
 - 6.2.1:
   - *updated:* `ProxyGen.NET` to v6.0.1 (v6.0.0 had a nasty performance issue)
+- 7.0.0-preview1:
+  - *breaking:* Slightly modified `AbstractServiceEntry` layout
+  - *breaking:* Removed `ScopeFactory.Create()` `cancellation` parameter (root now can be created in reasonable time)
+  - *breaking:* Removed `ScopeOptions.MaxSpawnedTransientServices` property (due to performance considerations)
+  - *breaking:* Dropped `IServiceRegistry`, `IServicePath`, `IserviceDefinition`, `IServiceId` interfaces
+  - *breaking:* Dropped concept of scope metadata
+  - *breaking:* Removed obsolete `IServiceCollectionBasicExtensions.Service()`, `IInjectorAdvancedExtensions.Instantiate()` overloads
+  - *breaking:* Removed `ProxyFactory` & `DuckFactory` classes (ProxyGen v7 provides almost identical functionality)
+  - *improved:* Service resolution performance (scope logic has been rewritten from the scratch)
+  - *improved:* Significantly reduced file size
+  - *updated:* `ProxyGen.NET` to v7.0.0-preview1
