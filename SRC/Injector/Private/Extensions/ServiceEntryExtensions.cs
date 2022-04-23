@@ -40,6 +40,10 @@ namespace Solti.Utils.DI.Internals
 
                 string targetName = targetParam[0].Name;
 
+                //
+                // TODO: Using dictionary in the activator is not too performant. Try to figure something else.
+                //
+
                 Func<IInjector, IReadOnlyDictionary<string, object?>, object> factory = ServiceActivator.GetExtended(ctor);
 
                 return (IInjector injector, Type iface, object instance) => factory(injector, new Dictionary<string, object?>
