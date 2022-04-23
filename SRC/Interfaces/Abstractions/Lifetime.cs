@@ -69,11 +69,6 @@ namespace Solti.Utils.DI.Interfaces
         /// <summary>
         /// Creates one or more service entry against the given <paramref name="implementation"/> using arbitrary constructor argument.
         /// </summary>
-        public virtual IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Type implementation, IReadOnlyDictionary<string, object?> explicitArgs) => throw new NotSupportedException(); // TODO: remove
-
-        /// <summary>
-        /// Creates one or more service entry against the given <paramref name="implementation"/> using arbitrary constructor argument.
-        /// </summary>
         public virtual IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Type implementation, object explicitArgs) => throw new NotSupportedException();
 
         /// <summary>
