@@ -87,7 +87,7 @@ namespace Solti.Utils.DI.Internals
             //
 
             Flags |= ServiceEntryFlags.Validated;
-            lifetime = result as IDisposable;
+            lifetime = result as IDisposable ?? (object?) (result as IAsyncDisposable);
             return result;
         }
 

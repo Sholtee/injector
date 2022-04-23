@@ -55,7 +55,7 @@ namespace Solti.Utils.DI.Internals
                 // The requested service should not exist longer than its requestor.
                 //
 
-                if (!requestor.Flags.HasFlag(ServiceEntryFlags.Validated) && requested.Lifetime!.CompareTo(requestor.Lifetime!) < 0)
+                if (!requestor.Flags.HasFlag(ServiceEntryFlags.Validated) && requested.Lifetime?.CompareTo(requestor.Lifetime!) < 0)
                 {
                     RequestNotAllowedException ex = new(Resources.STRICT_DI);
                     ex.Data[nameof(requestor)] = requestor;
@@ -82,7 +82,7 @@ namespace Solti.Utils.DI.Internals
             else
                 instance = requested.CreateInstance(this, out lifetime);
 
-            if (lifetime is IDisposable || lifetime is IAsyncDisposable)
+            if (lifetime is not null)
             {
                 FDisposableStore ??= new CaptureDisposable();
                 FDisposableStore.Capture(lifetime);
@@ -97,7 +97,7 @@ namespace Solti.Utils.DI.Internals
             yield return new ContextualServiceEntry(typeof(IScopeFactory), null, (i, _) => this /*factory is always the root*/);
             yield return new ScopedServiceEntry(typeof(IEnumerable<>), null, typeof(ServiceEnumerator<>), new { registeredServices = new List<AbstractServiceEntry>(registeredEntries) });
 #if DEBUG
-            yield return new InstanceServiceEntry(typeof(System.Collections.ICollection), "captured_disposables", (FDisposableStore = new()).CapturedDisposables);
+            yield return new ContextualServiceEntry(typeof(System.Collections.ICollection), "captured_disposables", (i, _) => (((ExperimentalScope) i).FDisposableStore ??= new()).CapturedDisposables);
 #endif
             foreach (AbstractServiceEntry entry in registeredEntries)
             {

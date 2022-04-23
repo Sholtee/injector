@@ -15,7 +15,6 @@ namespace Solti.Utils.DI.Tests
 {
     using Interfaces;
     using Primitives.Patterns;
-    using Properties;
 
     public partial class InjectorTests
     {

@@ -445,7 +445,7 @@ namespace Solti.Utils.DI.Tests
             }
         }
 
-        [Test]
+        [Test, Ignore("TBD whether this feature is required or not")]
         public void Injector_Get_ShouldThrowIfItIsCalledInsideDispose()
         {
             Root = ScopeFactory.Create(svcs => svcs.Service<IMyService, MyServiceUsingItsOnwerInjectorOnDisposal>(Lifetime.Scoped));
