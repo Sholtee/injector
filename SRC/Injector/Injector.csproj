@@ -32,7 +32,7 @@
   <ItemGroup>
     <PackageReference Include="IndexRange" Version="1.*" Condition="'$(TargetFramework)' == 'netstandard2.0'" />
     <PackageReference Include="ProxyGen.NET" Version="7.0-preview*" />
-    <PackageReference Include="Solti.Utils.Primitives" Version="6.*" />
+    <PackageReference Include="Solti.Utils.Primitives" Version="7.0-preview*" />
   </ItemGroup>
 
   <ItemGroup>

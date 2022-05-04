@@ -83,7 +83,7 @@ namespace Solti.Utils.DI.Internals
         }
 
         [SuppressMessage("Reliability", "CA2000:Dispose objects before losing scope")]
-        public PoolService(IScopeFactory scopeFactory, int capacity, string? name) : base(capacity, new PoolServiceLifetimeManager(scopeFactory, name)) 
+        public PoolService(IScopeFactory scopeFactory, int capacity, string? name) : base(new PoolServiceLifetimeManager(scopeFactory, name), capacity) 
         {
             //                                            !!HACK!!
             //

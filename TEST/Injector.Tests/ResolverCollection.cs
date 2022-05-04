@@ -15,8 +15,8 @@ using NUnit.Framework;
 
 namespace Solti.Utils.DI.Internals.Tests
 {
+    using DI.Tests;
     using Interfaces;
-    using Primitives.Patterns;
 
     [TestFixture]
     public sealed class ResolverCollectionTests
@@ -143,7 +143,7 @@ namespace Solti.Utils.DI.Internals.Tests
         {
             ScopedServiceEntry
                 entry1 = new(typeof(IList), name, typeof(MyLiyt<object>)),
-                entry2 = new(typeof(IDisposable), name, typeof(Disposable));
+                entry2 = new(typeof(IDisposable), name, typeof(MyDisposable));
 
             Mock<IInstanceFactory> mockFactory = new(MockBehavior.Strict);
             mockFactory

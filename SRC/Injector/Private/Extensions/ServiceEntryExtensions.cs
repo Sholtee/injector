@@ -27,9 +27,9 @@ namespace Solti.Utils.DI.Internals
 
             if (paramz.Count is 1 && IsTargetParameter(paramz[0]))
             {
-                Func<object?[], object> ctorFn = ctor.ToStaticDelegate();
+                StaticMethod ctorFn = ctor.ToStaticDelegate();
 
-                return (IInjector injector, Type iface, object instance) => ctorFn(new object[] { instance });
+                return (IInjector injector, Type iface, object instance) => ctorFn(new object[] { instance })!;
             }
             else
             {

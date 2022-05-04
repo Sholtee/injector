@@ -102,7 +102,7 @@ namespace Solti.Utils.DI.Internals
             return resolver.Compile();
         }
 
-        public static Func<IInjector, Type, object> Get(ConstructorInfo constructor) => Cache.GetOrAdd(constructor, () =>
+        public static Func<IInjector, Type, object> Get(ConstructorInfo constructor) => Cache.GetOrAdd(constructor, static constructor =>
         {
             //
             // (injector, iface)  => (object) new Service(IDependency_1 | Lazy<IDependency_1>, IDependency_2 | Lazy<IDependency_2>,...)
@@ -151,10 +151,10 @@ namespace Solti.Utils.DI.Internals
 
             EnsureCanBeInstantiated(type);
 
-            return Cache.GetOrAdd(type, () => Get(type.GetApplicableConstructor()));
+            return Cache.GetOrAdd(type, static type => Get(type.GetApplicableConstructor()));
         }
 
-        public static Func<IInjector, IReadOnlyDictionary<string, object?>, object> GetExtended(ConstructorInfo constructor) => Cache.GetOrAdd(constructor, () =>
+        public static Func<IInjector, IReadOnlyDictionary<string, object?>, object> GetExtended(ConstructorInfo constructor) => Cache.GetOrAdd(constructor, static constructor =>
         {
             //
             // (injector, explicitArgs) =>
@@ -222,7 +222,7 @@ namespace Solti.Utils.DI.Internals
             }
         });
 
-        public static Func<IInjector, IReadOnlyDictionary<string, object?>, object> GetExtended(Type type) => Cache.GetOrAdd(type, () => 
+        public static Func<IInjector, IReadOnlyDictionary<string, object?>, object> GetExtended(Type type) => Cache.GetOrAdd(type, static type => 
         {
             //
             // Itt validaljunk ne a hivo oldalon (kodduplikalas elkerulese vegett).
@@ -233,7 +233,7 @@ namespace Solti.Utils.DI.Internals
             return GetExtended(type.GetApplicableConstructor());
         });
 
-        public static Func<IInjector, object, object> GetExtended(ConstructorInfo constructor, Type paramzProvider) => Cache.GetOrAdd(new { constructor, paramzProvider }, () =>
+        public static Func<IInjector, object, object> GetExtended(ConstructorInfo constructor, Type paramzProvider) => Cache.GetOrAdd(new { constructor, paramzProvider }, static ctx =>
         {
             //
             // (injector, explicitArgs) =>
@@ -246,7 +246,7 @@ namespace Solti.Utils.DI.Internals
 
             return CreateActivator<Func<IInjector, object, object>>
             (
-                constructor,
+                ctx.constructor,
                 ResolveDependency,
                 Array.Empty<ParameterExpression>(),
                 new[]
@@ -258,7 +258,7 @@ namespace Solti.Utils.DI.Internals
 
             Expression ResolveDependency(Type type, string name, OptionsAttribute? options)
             {
-                PropertyInfo? valueProvider = paramzProvider.GetProperty(name, BindingFlags.Instance | BindingFlags.Public | BindingFlags.FlattenHierarchy);
+                PropertyInfo? valueProvider = ctx.paramzProvider.GetProperty(name, BindingFlags.Instance | BindingFlags.Public | BindingFlags.FlattenHierarchy);
 
                 if (valueProvider?.CanRead is true && type.IsAssignableFrom(valueProvider.PropertyType))
                     //
@@ -267,7 +267,7 @@ namespace Solti.Utils.DI.Internals
 
                     return Expression.Property
                     (
-                        Expression.Convert(explicitArgs, paramzProvider),
+                        Expression.Convert(explicitArgs, ctx.paramzProvider),
                         valueProvider
                     );
 
@@ -288,11 +288,11 @@ namespace Solti.Utils.DI.Internals
             }
         });
 
-        public static Func<IInjector, object, object> GetExtended(Type type, Type paramzProvider) => Cache.GetOrAdd(new { type, paramzProvider }, () =>
+        public static Func<IInjector, object, object> GetExtended(Type type, Type paramzProvider) => Cache.GetOrAdd(new { type, paramzProvider }, static ctx =>
         {
-            EnsureCanBeInstantiated(type);
+            EnsureCanBeInstantiated(ctx.type);
 
-            return GetExtended(type.GetApplicableConstructor(), paramzProvider);
+            return GetExtended(ctx.type.GetApplicableConstructor(), ctx.paramzProvider);
         });
 
         private static Expression GetService(ParameterExpression injector, Type iface, OptionsAttribute? options) => Expression.Convert

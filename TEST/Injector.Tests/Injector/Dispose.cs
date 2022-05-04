@@ -81,7 +81,7 @@ namespace Solti.Utils.DI.Tests
         [TestCaseSource(nameof(ScopeControlledLifetimes))]
         public void Injector_Dispose_ShouldFreeEnumeratedServices(Lifetime lifetime)
         {
-            Root = ScopeFactory.Create(svcs => svcs.Service<IDisposableEx, Disposable>(lifetime));
+            Root = ScopeFactory.Create(svcs => svcs.Service<IDisposableEx, MyDisposable>(lifetime));
 
             IDisposableEx svc;
             
@@ -114,7 +114,7 @@ namespace Solti.Utils.DI.Tests
         public void Injector_Dispose_ShouldFreeServicesInAReverseOrder(Lifetime lifetime)
         {
             Root = ScopeFactory.Create(svcs => svcs
-                .Service<IDisposableEx, Disposable>(lifetime)
+                .Service<IDisposableEx, MyDisposable>(lifetime)
                 .Service<IInterface_7_Disposable<IDisposableEx>, DisposableDependant>(lifetime));
 
             IDisposableEx dependency;

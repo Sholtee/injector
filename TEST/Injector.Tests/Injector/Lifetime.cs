@@ -123,7 +123,7 @@ namespace Solti.Utils.DI.Tests
             Disposable instance;
 
             using (IScopeFactory root = ScopeFactory.Create(svcs => svcs
-                .Service<IDisposable, Disposable>(Lifetime.Scoped)
+                .Service<IDisposable, MyDisposable>(Lifetime.Scoped)
                 .Service<IInterface_7<IDisposable>, Implementation_7_TInterface_Dependant<IDisposable>>(Lifetime.Singleton)))
             {
                 using (IInjector injector = root.CreateScope())
@@ -314,7 +314,7 @@ namespace Solti.Utils.DI.Tests
             DisposableServiceHavingDisposableDependency svc;
 
             using (IScopeFactory root = ScopeFactory.Create(svcs => svcs
-                .Service<IDisposableEx, Disposable>(lifetime)
+                .Service<IDisposableEx, MyDisposable>(lifetime)
                 .Service<IDisposableService, DisposableServiceHavingDisposableDependency>(Lifetime.Pooled)))
             {
                 using (IInjector injector = root.CreateScope())
@@ -337,7 +337,7 @@ namespace Solti.Utils.DI.Tests
             DisposableServiceHavingDisposableDependency svc;
 
             using (IScopeFactory root = ScopeFactory.Create(svcs => svcs
-                .Service<IDisposableEx, Disposable>(Lifetime.Pooled)
+                .Service<IDisposableEx, MyDisposable>(Lifetime.Pooled)
                 .Service<IDisposableService, DisposableServiceHavingDisposableDependency>(lifetime)))
             {
                 using (IInjector injector = root.CreateScope())
@@ -569,7 +569,7 @@ namespace Solti.Utils.DI.Tests
             IInterface_7<IDisposableEx> inst;
 
             using (IScopeFactory root = ScopeFactory.Create(svcs => svcs
-                .Service<IDisposableEx, Disposable>(dependency)
+                .Service<IDisposableEx, MyDisposable>(dependency)
                 .Service<IInterface_7<IDisposableEx>, DisposableServiceUsingDisposableDependency<IDisposableEx>>(dependant)))
             {
                 if (dependencyAlreadyRequested)

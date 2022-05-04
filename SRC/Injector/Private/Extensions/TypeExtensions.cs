@@ -20,7 +20,7 @@ namespace Solti.Utils.DI.Internals
     {
         public static bool IsProxy(this Type src) => src.GetCustomAttribute<GeneratedCodeAttribute>()?.Tool.Equals("ProxyGen.NET", StringComparison.OrdinalIgnoreCase) is true;
 
-        public static ConstructorInfo GetApplicableConstructor(this Type src) => Cache.GetOrAdd(src, () => // TODO: remove LINQ
+        public static ConstructorInfo GetApplicableConstructor(this Type src) => Cache.GetOrAdd(src, static src => // TODO: remove LINQ
         {
             if (src.IsProxy())
             {

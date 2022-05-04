@@ -553,8 +553,8 @@ namespace Solti.Utils.DI.Internals.Tests
         [Test]
         public void Get_ShouldCache()
         {
-            Assert.AreSame(ServiceActivator.Get(typeof(Disposable)), ServiceActivator.Get(typeof(Disposable)));
-            Assert.AreSame(ServiceActivator.Get(typeof(Disposable).GetApplicableConstructor()), ServiceActivator.Get(typeof(Disposable).GetApplicableConstructor()));
+            Assert.AreSame(ServiceActivator.Get(typeof(MyClass2)), ServiceActivator.Get(typeof(MyClass2)));
+            Assert.AreSame(ServiceActivator.Get(typeof(MyClass2).GetApplicableConstructor()), ServiceActivator.Get(typeof(MyClass2).GetApplicableConstructor()));
         }
 
         [Test]
