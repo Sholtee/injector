@@ -15,20 +15,20 @@ namespace Solti.Utils.DI.Internals
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         #pragma warning disable CA1307 // Specify StringComparison for clarity
-        private static int HashCombine(Type iface, string? name) => unchecked(iface.GetHashCode() ^ (name?.GetHashCode() ?? 0));
+        private static long HashCombine(Type iface, string? name) => ((long) iface.GetHashCode() << 32) | ((uint) (name?.GetHashCode() ?? 0));
         #pragma warning restore CA1307
 
         //
         // Dictionary performs much better against int keys.
         //
 
-        private readonly IReadOnlyDictionary<int, AbstractServiceEntry> FGenericEntries;
+        private readonly IReadOnlyDictionary<long, AbstractServiceEntry> FGenericEntries;
 
         //
         // Don't use ImmutableArray here since it is 2-3 times slower.
         //
 
-        private /*IReadOnly*/Dictionary<int, Func<IInstanceFactory, object?>> FResolvers;
+        private /*IReadOnly*/Dictionary<long, Func<IInstanceFactory, object?>> FResolvers;
 
         private readonly object FLock = new();
 
@@ -52,12 +52,12 @@ namespace Solti.Utils.DI.Internals
 
         public ResolverCollection(IEnumerable<AbstractServiceEntry> entries)
         {
-            Dictionary<int, AbstractServiceEntry> genericEntries = new();
-            Dictionary<int, Func<IInstanceFactory, object?>> resolvers = new();
+            Dictionary<long, AbstractServiceEntry> genericEntries = new();
+            Dictionary<long, Func<IInstanceFactory, object?>> resolvers = new();
 
             foreach (AbstractServiceEntry entry in entries)
             {
-                int key = HashCombine(entry.Interface, entry.Name);
+                long key = HashCombine(entry.Interface, entry.Name);
                 if (entry.Interface.IsGenericTypeDefinition)
                     genericEntries.Add(key, entry);
                 else
@@ -70,7 +70,7 @@ namespace Solti.Utils.DI.Internals
 
         public Func<IInstanceFactory, object?>? Get(Type iface, string? name)
         {
-            int key = HashCombine(iface, name);
+            long key = HashCombine(iface, name);
 
             if (!FResolvers.TryGetValue(key, out Func<IInstanceFactory, object?> resolver) && iface.IsConstructedGenericType)
             {
@@ -92,7 +92,7 @@ namespace Solti.Utils.DI.Internals
                         // In theory copying a dictionary is quick: https://github.com/dotnet/runtime/blob/c78bf2f522b4ce5a449faf6a38a0752b642a7f79/src/libraries/System.Private.CoreLib/src/System/Collections/Generic/Dictionary.cs#L126
                         //
 
-                        Dictionary<int, Func<IInstanceFactory, object?>> extendedResolvers = new(FResolvers);
+                        Dictionary<long, Func<IInstanceFactory, object?>> extendedResolvers = new(FResolvers);
                         extendedResolvers.Add(key, resolver);
 
                         FResolvers = extendedResolvers;
