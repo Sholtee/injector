@@ -10,25 +10,44 @@ using System.Runtime.CompilerServices;
 namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
+    using Primitives.Patterns;
 
     internal sealed class ResolverCollection
     {
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        #pragma warning disable CA1307 // Specify StringComparison for clarity
-        private static long HashCombine(Type iface, string? name) => ((long) iface.GetHashCode() << 32) | ((uint) (name?.GetHashCode() ?? 0));
-        #pragma warning restore CA1307
+        private sealed class CompositeKey
+        {
+            public readonly Type Interface;
 
-        //
-        // Dictionary performs much better against int keys.
-        //
+            public readonly string? Name;
 
-        private readonly IReadOnlyDictionary<long, AbstractServiceEntry> FGenericEntries;
+            public readonly int HashCode;
+
+            public CompositeKey(Type iface, string? name)
+            {
+                Interface = iface;
+                Name = name;
+                #pragma warning disable CA1307 // Specify StringComparison for clarity
+                HashCode = iface.GetHashCode() ^ (name?.GetHashCode() ?? 0);
+                #pragma warning restore CA1307
+            }
+        }
+
+        private sealed class CompositeKeyComparer : Singleton<CompositeKeyComparer>, IEqualityComparer<CompositeKey>
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public bool Equals(CompositeKey x, CompositeKey y) => x.Interface == y.Interface && x.Name == y.Name;
+
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public int GetHashCode(CompositeKey obj) => obj.HashCode;
+        }
+
+        private readonly IReadOnlyDictionary<CompositeKey, AbstractServiceEntry> FGenericEntries;
 
         //
         // Don't use ImmutableArray here since it is 2-3 times slower.
         //
 
-        private /*IReadOnly*/Dictionary<long, Func<IInstanceFactory, object?>> FResolvers;
+        private /*IReadOnly*/Dictionary<CompositeKey, Func<IInstanceFactory, object?>> FResolvers;
 
         private readonly object FLock = new();
 
@@ -52,12 +71,12 @@ namespace Solti.Utils.DI.Internals
 
         public ResolverCollection(IEnumerable<AbstractServiceEntry> entries)
         {
-            Dictionary<long, AbstractServiceEntry> genericEntries = new();
-            Dictionary<long, Func<IInstanceFactory, object?>> resolvers = new();
+            Dictionary<CompositeKey, AbstractServiceEntry> genericEntries = new(CompositeKeyComparer.Instance);
+            Dictionary<CompositeKey, Func<IInstanceFactory, object?>> resolvers = new(CompositeKeyComparer.Instance);
 
             foreach (AbstractServiceEntry entry in entries)
             {
-                long key = HashCombine(entry.Interface, entry.Name);
+                CompositeKey key = new(entry.Interface, entry.Name);
                 if (entry.Interface.IsGenericTypeDefinition)
                     genericEntries.Add(key, entry);
                 else
@@ -70,7 +89,7 @@ namespace Solti.Utils.DI.Internals
 
         public Func<IInstanceFactory, object?>? Get(Type iface, string? name)
         {
-            long key = HashCombine(iface, name);
+            CompositeKey key = new(iface, name);
 
             if (!FResolvers.TryGetValue(key, out Func<IInstanceFactory, object?> resolver) && iface.IsConstructedGenericType)
             {
@@ -80,7 +99,7 @@ namespace Solti.Utils.DI.Internals
                     // FResolvers instance may be changed while we reached here
                     //
 
-                    if (!FResolvers.TryGetValue(key, out resolver) && FGenericEntries.TryGetValue(HashCombine(iface.GetGenericTypeDefinition(), name), out AbstractServiceEntry genericEntry))
+                    if (!FResolvers.TryGetValue(key, out resolver) && FGenericEntries.TryGetValue(new CompositeKey(iface.GetGenericTypeDefinition(), name), out AbstractServiceEntry genericEntry))
                     {
                         //
                         // Create a new resolver for the specializted entry
@@ -92,7 +111,7 @@ namespace Solti.Utils.DI.Internals
                         // In theory copying a dictionary is quick: https://github.com/dotnet/runtime/blob/c78bf2f522b4ce5a449faf6a38a0752b642a7f79/src/libraries/System.Private.CoreLib/src/System/Collections/Generic/Dictionary.cs#L126
                         //
 
-                        Dictionary<long, Func<IInstanceFactory, object?>> extendedResolvers = new(FResolvers);
+                        Dictionary<CompositeKey, Func<IInstanceFactory, object?>> extendedResolvers = new(FResolvers, CompositeKeyComparer.Instance);
                         extendedResolvers.Add(key, resolver);
 
                         FResolvers = extendedResolvers;
