@@ -1,5 +1,5 @@
 ﻿/********************************************************************************
-* ResolverCollection.cs                                                         *
+* ServiceResolver.cs                                                            *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
@@ -12,7 +12,7 @@ namespace Solti.Utils.DI.Internals
     using Interfaces;
     using Primitives.Patterns;
 
-    internal sealed class ResolverCollection
+    internal sealed class ServiceResolver: IServiceResolver
     {
         private sealed class CompositeKey
         {
@@ -55,7 +55,7 @@ namespace Solti.Utils.DI.Internals
         {
             if (entry.Flags.HasFlag(ServiceEntryFlags.CreateSingleInstance))
             {
-                int slot = FSlots++;
+                int slot = Slots++;
                 return entry.Flags.HasFlag(ServiceEntryFlags.Shared)
                     ? fact => (fact.Super ?? fact).GetOrCreateInstance(entry, slot)
                     : fact => fact.GetOrCreateInstance(entry, slot);
@@ -66,10 +66,9 @@ namespace Solti.Utils.DI.Internals
                     : fact => fact.CreateInstance(entry);
         }
 
-        private int FSlots;
-        public int Slots => FSlots;
+        public int Slots { get; private set; }
 
-        public ResolverCollection(IEnumerable<AbstractServiceEntry> entries)
+        public ServiceResolver(IEnumerable<AbstractServiceEntry> entries)
         {
             Dictionary<CompositeKey, AbstractServiceEntry> genericEntries = new(CompositeKeyComparer.Instance);
             Dictionary<CompositeKey, Func<IInstanceFactory, object?>> resolvers = new(CompositeKeyComparer.Instance);
@@ -87,7 +86,7 @@ namespace Solti.Utils.DI.Internals
             FResolvers = resolvers;
         }
 
-        public Func<IInstanceFactory, object?>? Get(Type iface, string? name)
+        public object? Resolve(Type iface, string? name, IInstanceFactory instanceFactory)
         {
             CompositeKey key = new(iface, name);
 
@@ -119,7 +118,7 @@ namespace Solti.Utils.DI.Internals
                 }
             }
 
-            return resolver;
+            return resolver?.Invoke(instanceFactory);
         }
     }
 }

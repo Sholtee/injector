@@ -1,14 +1,11 @@
 ﻿/********************************************************************************
-* ResolverCollection.cs                                                         *
+* ServiceResolver.cs                                                            *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 
 using Moq;
 using NUnit.Framework;
@@ -19,10 +16,18 @@ namespace Solti.Utils.DI.Internals.Tests
     using Interfaces;
 
     [TestFixture]
-    public sealed class ResolverCollectionTests
+    public sealed class ServiceResolverTests
     {
+        public static IEnumerable<Func<IEnumerable<AbstractServiceEntry>, IServiceResolver>> ResolverFactories
+        {
+            get 
+            {
+                yield return entries => new ServiceResolver(entries);
+            }
+        }
+
         [Test]
-        public void CreatedResolver_ShouldResolveFromSuperFactoryInCaseOfSharedEntry([Values(null, "cica")] string name)
+        public void Resolve_ShouldResolveFromSuperFactoryInCaseOfSharedEntry([Values(null, "cica")] string name, [ValueSource(nameof(ResolverFactories))] Func<IEnumerable<AbstractServiceEntry>, IServiceResolver> resolverFactory)
         {
             SingletonServiceEntry entry = new(typeof(IList), name, (_, _) => new List<object>());
 
@@ -39,15 +44,15 @@ namespace Solti.Utils.DI.Internals.Tests
                 .SetupGet(f => f.Super)
                 .Returns(mockSuperFactory.Object);
 
-            ResolverCollection resolvers = new(new[] { entry });
+            IServiceResolver resolver = resolverFactory(new[] { entry });
 
-            Assert.DoesNotThrow(() => resolvers.Get(typeof(IList), name).Invoke(mockFactory.Object));
+            Assert.DoesNotThrow(() => resolver.Resolve(typeof(IList), name, mockFactory.Object));
             mockSuperFactory
                 .Verify(f => f.GetOrCreateInstance(entry, 0), Times.Once);
         }
 
         [Test]
-        public void CreatedResolver_ShouldResolveFromCurrentFactoryInCaseOfNonSharedEntry1([Values(null, "cica")] string name)
+        public void Resolve_ShouldResolveFromCurrentFactoryInCaseOfNonSharedEntry1([Values(null, "cica")] string name, [ValueSource(nameof(ResolverFactories))] Func<IEnumerable<AbstractServiceEntry>, IServiceResolver> resolverFactory)
         {
             ScopedServiceEntry entry = new(typeof(IList), name, (_, _) => new List<object>());
 
@@ -59,15 +64,15 @@ namespace Solti.Utils.DI.Internals.Tests
                 .SetupGet(f => f.Super)
                 .Returns((IInstanceFactory) null);
 
-            ResolverCollection resolvers = new(new[] { entry });
+            IServiceResolver resolver = resolverFactory(new[] { entry });
 
-            Assert.DoesNotThrow(() => resolvers.Get(typeof(IList), name).Invoke(mockFactory.Object));
+            Assert.DoesNotThrow(() => resolver.Resolve(typeof(IList), name, mockFactory.Object));
             mockFactory
                 .Verify(f => f.GetOrCreateInstance(entry, 0), Times.Once);
         }
 
         [Test]
-        public void CreatedResolver_ShouldResolveFromCurrentFactoryInCaseOfNonSharedEntry2([Values(null, "cica")] string name)
+        public void Resolve_ShouldResolveFromCurrentFactoryInCaseOfNonSharedEntry2([Values(null, "cica")] string name, [ValueSource(nameof(ResolverFactories))] Func<IEnumerable<AbstractServiceEntry>, IServiceResolver> resolverFactory)
         {
             TransientServiceEntry entry = new(typeof(IList), name, (_, _) => new List<object>());
 
@@ -79,9 +84,9 @@ namespace Solti.Utils.DI.Internals.Tests
                 .SetupGet(f => f.Super)
                 .Returns((IInstanceFactory) null);
 
-            ResolverCollection resolvers = new(new[] { entry });
+            IServiceResolver resolver = resolverFactory(new[] { entry });
 
-            Assert.DoesNotThrow(() => resolvers.Get(typeof(IList), name).Invoke(mockFactory.Object));
+            Assert.DoesNotThrow(() => resolver.Resolve(typeof(IList), name, mockFactory.Object));
             mockFactory
                 .Verify(f => f.CreateInstance(entry), Times.Once);
         }
@@ -89,7 +94,7 @@ namespace Solti.Utils.DI.Internals.Tests
         public class MyLiyt<T>: List<T> { }
 
         [Test]
-        public void CreatedResolver_ShouldBeAssignedToTheProperSlot_GenericCase([Values(null, "cica")] string name)
+        public void Resolve_ShouldAssignTheProperSlot_GenericCase([Values(null, "cica")] string name, [ValueSource(nameof(ResolverFactories))] Func<IEnumerable<AbstractServiceEntry>, IServiceResolver> resolverFactory)
         {
             ScopedServiceEntry entry = new(typeof(IList<>), name, typeof(MyLiyt<>));
 
@@ -101,19 +106,19 @@ namespace Solti.Utils.DI.Internals.Tests
                 .SetupGet(f => f.Super)
                 .Returns((IInstanceFactory) null);
 
-            ResolverCollection resolvers = new(new[] { entry });
+            IServiceResolver resolver = resolverFactory(new[] { entry });
 
-            Assert.DoesNotThrow(() => resolvers.Get(typeof(IList<int>), name).Invoke(mockFactory.Object));
+            Assert.DoesNotThrow(() => resolver.Resolve(typeof(IList<int>), name, mockFactory.Object));
             mockFactory
                 .Verify(f => f.GetOrCreateInstance(It.Is<ScopedServiceEntry>(e => e.Interface == typeof(IList<int>)), 0), Times.Once);
 
-            Assert.DoesNotThrow(() => resolvers.Get(typeof(IList<string>), name).Invoke(mockFactory.Object));
+            Assert.DoesNotThrow(() => resolver.Resolve(typeof(IList<string>), name, mockFactory.Object));
             mockFactory
                 .Verify(f => f.GetOrCreateInstance(It.Is<ScopedServiceEntry>(e => e.Interface == typeof(IList<string>)), 1), Times.Once);
         }
 
         [Test]
-        public void CreatedResolver_ShouldBeAssignedToTheProperSlot_NamedCase()
+        public void Resolve_ShouldAssignTheProperSlot_NamedCase([ValueSource(nameof(ResolverFactories))] Func<IEnumerable<AbstractServiceEntry>, IServiceResolver> resolverFactory)
         {
             ScopedServiceEntry
                 entry1 = new(typeof(IList), 0.ToString(), typeof(MyLiyt<object>)),
@@ -127,19 +132,19 @@ namespace Solti.Utils.DI.Internals.Tests
                 .SetupGet(f => f.Super)
                 .Returns((IInstanceFactory) null);
 
-            ResolverCollection resolvers = new(new[] { entry1, entry2 });
+            IServiceResolver resolver = resolverFactory(new[] { entry1, entry2 });
 
-            Assert.DoesNotThrow(() => resolvers.Get(typeof(IList), 0.ToString()).Invoke(mockFactory.Object));
+            Assert.DoesNotThrow(() => resolver.Resolve(typeof(IList), 0.ToString(), mockFactory.Object));
             mockFactory
                 .Verify(f => f.GetOrCreateInstance(It.Is<ScopedServiceEntry>(e => e.Interface == typeof(IList) && e.Name == 0.ToString()), 0), Times.Once);
 
-            Assert.DoesNotThrow(() => resolvers.Get(typeof(IList), 1.ToString()).Invoke(mockFactory.Object));
+            Assert.DoesNotThrow(() => resolver.Resolve(typeof(IList), 1.ToString(), mockFactory.Object));
             mockFactory
                 .Verify(f => f.GetOrCreateInstance(It.Is<ScopedServiceEntry>(e => e.Interface == typeof(IList) && e.Name == 1.ToString()), 1), Times.Once);
         }
 
         [Test]
-        public void CreatedResolver_ShouldBeAssignedToTheProperSlot_RegularCase([Values(null, "cica")] string name)
+        public void Resolve_ShouldAssignTheProperSlot_RegularCase([Values(null, "cica")] string name, [ValueSource(nameof(ResolverFactories))] Func<IEnumerable<AbstractServiceEntry>, IServiceResolver> resolverFactory)
         {
             ScopedServiceEntry
                 entry1 = new(typeof(IList), name, typeof(MyLiyt<object>)),
@@ -153,19 +158,19 @@ namespace Solti.Utils.DI.Internals.Tests
                 .SetupGet(f => f.Super)
                 .Returns((IInstanceFactory) null);
 
-            ResolverCollection resolvers = new(new[] { entry1, entry2 });
+            IServiceResolver resolver = resolverFactory(new[] { entry1, entry2 });
 
-            Assert.DoesNotThrow(() => resolvers.Get(typeof(IList), name).Invoke(mockFactory.Object));
+            Assert.DoesNotThrow(() => resolver.Resolve(typeof(IList), name, mockFactory.Object));
             mockFactory
                 .Verify(f => f.GetOrCreateInstance(It.Is<ScopedServiceEntry>(e => e.Interface == typeof(IList)), 0), Times.Once);
 
-            Assert.DoesNotThrow(() => resolvers.Get(typeof(IDisposable), name).Invoke(mockFactory.Object));
+            Assert.DoesNotThrow(() => resolver.Resolve(typeof(IDisposable), name, mockFactory.Object));
             mockFactory
                 .Verify(f => f.GetOrCreateInstance(It.Is<ScopedServiceEntry>(e => e.Interface == typeof(IDisposable)), 1), Times.Once);
         }
 
         [Test]
-        public void Get_ShouldSpecializeOnlyWhenNeeeded([Values(null, "cica")] string name)
+        public void Resolve_ShouldSpecializeOnlyWhenNeeeded([Values(null, "cica")] string name, [ValueSource(nameof(ResolverFactories))] Func<IEnumerable<AbstractServiceEntry>, IServiceResolver> resolverFactory)
         {
             TransientServiceEntry 
                 genericEntry = new(typeof(IList<>), name, typeof(MyLiyt<>)),
@@ -179,19 +184,19 @@ namespace Solti.Utils.DI.Internals.Tests
                 .SetupGet(f => f.Super)
                 .Returns((IInstanceFactory) null);
 
-            ResolverCollection resolvers = new(new[] { genericEntry, specializedEntry });
+            IServiceResolver resolver = resolverFactory(new[] { genericEntry, specializedEntry });
 
-            Assert.DoesNotThrow(() => resolvers.Get(typeof(IList<int>), name).Invoke(mockFactory.Object));
+            Assert.DoesNotThrow(() => resolver.Resolve(typeof(IList<int>), name, mockFactory.Object));
             mockFactory
                 .Verify(f => f.CreateInstance(specializedEntry), Times.Once);
 
-            Assert.DoesNotThrow(() => resolvers.Get(typeof(IList<object>), name).Invoke(mockFactory.Object));
+            Assert.DoesNotThrow(() => resolver.Resolve(typeof(IList<object>), name, mockFactory.Object));
             mockFactory
                 .Verify(f => f.CreateInstance(It.Is<TransientServiceEntry>(e => e.Interface == typeof(IList<int>))), Times.Once);
         }
 
         [Test]
-        public void Get_ShouldSpecialize1([Values(null, "cica")] string name)
+        public void Resolve_ShouldSpecialize1([Values(null, "cica")] string name, [ValueSource(nameof(ResolverFactories))] Func<IEnumerable<AbstractServiceEntry>, IServiceResolver> resolverFactory)
         {
             TransientServiceEntry genericEntry = new(typeof(IList<>), name, typeof(MyLiyt<>));
 
@@ -203,98 +208,49 @@ namespace Solti.Utils.DI.Internals.Tests
                 .SetupGet(f => f.Super)
                 .Returns((IInstanceFactory) null);
 
-            ResolverCollection resolvers = new(new[] { genericEntry });
+            IServiceResolver resolver = resolverFactory(new[] { genericEntry });
 
-            Assert.DoesNotThrow(() => resolvers.Get(typeof(IList<int>), name).Invoke(mockFactory.Object));
+            Assert.DoesNotThrow(() => resolver.Resolve(typeof(IList<int>), name, mockFactory.Object));
             mockFactory
                 .Verify(f => f.CreateInstance(It.Is<TransientServiceEntry>(e => e.Interface == typeof(IList<int>))), Times.Once);
         }
 
         [Test]
-        public void Get_ShouldSpecialize2([Values(null, "cica")] string name)
+        public void Resolve_ShouldSpecialize2([Values(null, "cica")] string name, [ValueSource(nameof(ResolverFactories))] Func<IEnumerable<AbstractServiceEntry>, IServiceResolver> resolverFactory)
         {
             ScopedServiceEntry genericEntry = new(typeof(IList<>), name, typeof(MyLiyt<>));
 
             Mock<IInstanceFactory> mockFactory = new(MockBehavior.Strict);
             mockFactory
                 .Setup(f => f.GetOrCreateInstance(It.IsAny<ScopedServiceEntry>(), 0))
-                .Returns((object)null);
+                .Returns((object) null);
             mockFactory
                 .SetupGet(f => f.Super)
                 .Returns((IInstanceFactory) null);
 
-            ResolverCollection resolvers = new(new[] { genericEntry });
+            IServiceResolver resolver = resolverFactory(new[] { genericEntry });
 
-            Assert.DoesNotThrow(() => resolvers.Get(typeof(IList<int>), name).Invoke(mockFactory.Object));
+            Assert.DoesNotThrow(() => resolver.Resolve(typeof(IList<int>), name, mockFactory.Object));
             mockFactory
                 .Verify(f => f.GetOrCreateInstance(It.Is<ScopedServiceEntry>(e => e.Interface == typeof(IList<int>)), 0), Times.Once);
         }
 
-        private class BlockingServiceEntry : AbstractServiceEntry
+        [Test]
+        public void Resolve_ShouldReturnNullOnNonRegisteredService([ValueSource(nameof(ResolverFactories))] Func<IEnumerable<AbstractServiceEntry>, IServiceResolver> resolverFactory)
         {
-            public readonly ManualResetEventSlim Lock = new();
-
-            public BlockingServiceEntry(Type iface) : base(iface, null) { }
-
-            public override object CreateInstance(IInjector scope, out object lifetime)
-            {
-                throw new NotImplementedException();
-            }
-
-            public override AbstractServiceEntry Specialize(params Type[] genericArguments)
-            {
-                Lock.Wait();
-                return new BlockingServiceEntry(Interface.MakeGenericType(genericArguments));
-            }
+            Assert.IsNull(resolverFactory(Array<AbstractServiceEntry>.Empty).Resolve(typeof(IList), null, null));
         }
 
         [Test]
-        public async Task Specialization_ShouldBeThreadSafe()
+        public void Resolve_ShouldReturnNullOnNonRegisteredService_GenericCase([ValueSource(nameof(ResolverFactories))] Func<IEnumerable<AbstractServiceEntry>, IServiceResolver> resolverFactory)
         {
-            BlockingServiceEntry genericEntry = new(typeof(IList<>));
-
-            ResolverCollection resolvers = new(new[] { genericEntry });
-
-            Task<Func<IInstanceFactory, object>[]> t = Task.WhenAll(Enumerable
-                .Repeat(0, 20)
-                .Select(_ => Task.Run(() => resolvers.Get(typeof(IList<int>), null)))
-                .ToArray());
-
-            t.Wait(200);
-
-            genericEntry.Lock.Set();
-
-            Func<IInstanceFactory, object>[] facts = await t;
-
-            Assert.That(facts.Distinct().Count(), Is.EqualTo(1));
+            Assert.IsNull(resolverFactory(new AbstractServiceEntry[] { new ScopedServiceEntry(typeof(IList<object>), null, typeof(MyLiyt<object>)) } ).Resolve(typeof(IList<int>), null, null));
         }
 
         [Test]
-        public void Get_ShouldCache([Values(null, "cica")] string name)
+        public void Resolve_ShouldReturnNullOnNonRegisteredService_NamedCase([ValueSource(nameof(ResolverFactories))] Func<IEnumerable<AbstractServiceEntry>, IServiceResolver> resolverFactory)
         {
-            ScopedServiceEntry genericEntry = new(typeof(IList<>), name, typeof(MyLiyt<>));
-
-            ResolverCollection resolvers = new(new[] { genericEntry });
-
-            Assert.AreSame(resolvers.Get(typeof(IList<int>), name), resolvers.Get(typeof(IList<int>), name));
-        }
-
-        [Test]
-        public void Get_ShouldReturnNullOnNonRegisteredService()
-        {
-            Assert.IsNull(new ResolverCollection(Array<AbstractServiceEntry>.Empty).Get(typeof(IList), null));
-        }
-
-        [Test]
-        public void Get_ShouldReturnNullOnNonRegisteredService_GenericCase()
-        {
-            Assert.IsNull(new ResolverCollection(new AbstractServiceEntry[] { new ScopedServiceEntry(typeof(IList<object>), null, typeof(MyLiyt<object>)) } ).Get(typeof(IList<int>), null));
-        }
-
-        [Test]
-        public void Get_ShouldReturnNullOnNonRegisteredService_NamedCase()
-        {
-            Assert.IsNull(new ResolverCollection(new AbstractServiceEntry[] { new ScopedServiceEntry(typeof(IList), 0.ToString(), typeof(MyLiyt<object>)) }).Get(typeof(IList), null));
+            Assert.IsNull(resolverFactory(new AbstractServiceEntry[] { new ScopedServiceEntry(typeof(IList), 0.ToString(), typeof(MyLiyt<object>)) }).Resolve(typeof(IList), null, null));
         }
     }
 }

@@ -25,7 +25,7 @@ namespace Solti.Utils.DI.Internals
 
         private CaptureDisposable? FDisposableStore;
 
-        private readonly ResolverCollection FResolver;
+        private readonly IServiceResolver FResolver;
 
         private ServicePath? FPath;
 
@@ -176,7 +176,7 @@ namespace Solti.Utils.DI.Internals
             Ensure.Parameter.IsInterface(iface, nameof(iface));
             Ensure.Parameter.IsNotGenericDefinition(iface, nameof(iface));
 
-            return FResolver.Get(iface, name)?.Invoke(this);
+            return FResolver.Resolve(iface, name, this);
         }
         #endregion
 
@@ -197,7 +197,7 @@ namespace Solti.Utils.DI.Internals
         public Injector(IEnumerable<AbstractServiceEntry> registeredEntries, ScopeOptions options, object? lifetime)
         {
             #pragma warning disable CA2214 // Do not call overridable methods in constructors
-            FResolver = new ResolverCollection(GetAllServices(registeredEntries));
+            FResolver = new ServiceResolver(GetAllServices(registeredEntries));
             #pragma warning restore CA2214
             FSlots    = Array<object>.Create(FResolver.Slots);
             Options   = options;
