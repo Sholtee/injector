@@ -88,6 +88,12 @@ namespace Solti.Utils.DI.Internals
                 FDisposableStore.Capture(lifetime);
             }
 
+            if (instance is null)
+                throw new InvalidOperationException(string.Format(Resources.Culture, Resources.IS_NULL, nameof(instance)));
+/*
+            if (requested.Interface.IsInstanceOfType(instance))
+                throw new InvalidOperationException();
+*/
             return instance;
         }
 
@@ -197,7 +203,7 @@ namespace Solti.Utils.DI.Internals
         public Injector(IEnumerable<AbstractServiceEntry> registeredEntries, ScopeOptions options, object? lifetime)
         {
             #pragma warning disable CA2214 // Do not call overridable methods in constructors
-            FResolver = new ServiceResolver(GetAllServices(registeredEntries));
+            FResolver = new ServiceResolver_Dict(GetAllServices(registeredEntries));
             #pragma warning restore CA2214
             FSlots    = Array<object>.Create(FResolver.Slots);
             Options   = options;

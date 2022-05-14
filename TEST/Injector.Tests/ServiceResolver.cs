@@ -22,7 +22,8 @@ namespace Solti.Utils.DI.Internals.Tests
         {
             get 
             {
-                yield return entries => new ServiceResolver(entries);
+                yield return entries => new ServiceResolver_Tree(entries);
+                yield return entries => new ServiceResolver_Dict(entries);
             }
         }
 
@@ -34,7 +35,7 @@ namespace Solti.Utils.DI.Internals.Tests
             Mock<IInstanceFactory> mockSuperFactory = new(MockBehavior.Strict);
             mockSuperFactory
                 .Setup(f => f.GetOrCreateInstance(entry, 0))
-                .Returns((object) null);
+                .Returns(new object());
             mockSuperFactory
                 .SetupGet(f => f.Super)
                 .Returns((IInstanceFactory) null);
@@ -59,7 +60,7 @@ namespace Solti.Utils.DI.Internals.Tests
             Mock<IInstanceFactory> mockFactory = new(MockBehavior.Strict);
             mockFactory
                 .Setup(f => f.GetOrCreateInstance(entry, 0))
-                .Returns((object) null);
+                .Returns(new object());
             mockFactory
                 .SetupGet(f => f.Super)
                 .Returns((IInstanceFactory) null);
@@ -79,7 +80,7 @@ namespace Solti.Utils.DI.Internals.Tests
             Mock<IInstanceFactory> mockFactory = new(MockBehavior.Strict);
             mockFactory
                 .Setup(f => f.CreateInstance(entry))
-                .Returns((object) null);
+                .Returns(new object());
             mockFactory
                 .SetupGet(f => f.Super)
                 .Returns((IInstanceFactory) null);
@@ -101,7 +102,7 @@ namespace Solti.Utils.DI.Internals.Tests
             Mock<IInstanceFactory> mockFactory = new(MockBehavior.Strict);
             mockFactory
                 .Setup(f => f.GetOrCreateInstance(It.Is<ScopedServiceEntry>(e => e.Interface.GetGenericTypeDefinition() == typeof(IList<>)), It.IsAny<int>()))
-                .Returns((object) null);
+                .Returns(new object());
             mockFactory
                 .SetupGet(f => f.Super)
                 .Returns((IInstanceFactory) null);
@@ -127,7 +128,7 @@ namespace Solti.Utils.DI.Internals.Tests
             Mock<IInstanceFactory> mockFactory = new(MockBehavior.Strict);
             mockFactory
                 .Setup(f => f.GetOrCreateInstance(It.Is<ScopedServiceEntry>(e => e.Interface == typeof(IList)), It.IsAny<int>()))
-                .Returns((object) null);
+                .Returns(new object());
             mockFactory
                 .SetupGet(f => f.Super)
                 .Returns((IInstanceFactory) null);
@@ -153,7 +154,7 @@ namespace Solti.Utils.DI.Internals.Tests
             Mock<IInstanceFactory> mockFactory = new(MockBehavior.Strict);
             mockFactory
                 .Setup(f => f.GetOrCreateInstance(It.IsAny<ScopedServiceEntry>(), It.IsAny<int>()))
-                .Returns((object) null);
+                .Returns(new object());
             mockFactory
                 .SetupGet(f => f.Super)
                 .Returns((IInstanceFactory) null);
@@ -179,7 +180,7 @@ namespace Solti.Utils.DI.Internals.Tests
             Mock<IInstanceFactory> mockFactory = new(MockBehavior.Strict);
             mockFactory
                 .Setup(f => f.CreateInstance(It.IsAny<TransientServiceEntry>()))
-                .Returns((object) null);
+                .Returns(new object());
             mockFactory
                 .SetupGet(f => f.Super)
                 .Returns((IInstanceFactory) null);
@@ -203,7 +204,7 @@ namespace Solti.Utils.DI.Internals.Tests
             Mock<IInstanceFactory> mockFactory = new(MockBehavior.Strict);
             mockFactory
                 .Setup(f => f.CreateInstance(It.IsAny<TransientServiceEntry>()))
-                .Returns((object) null);
+                .Returns(new object());
             mockFactory
                 .SetupGet(f => f.Super)
                 .Returns((IInstanceFactory) null);
@@ -223,7 +224,7 @@ namespace Solti.Utils.DI.Internals.Tests
             Mock<IInstanceFactory> mockFactory = new(MockBehavior.Strict);
             mockFactory
                 .Setup(f => f.GetOrCreateInstance(It.IsAny<ScopedServiceEntry>(), 0))
-                .Returns((object) null);
+                .Returns(new object());
             mockFactory
                 .SetupGet(f => f.Super)
                 .Returns((IInstanceFactory) null);
