@@ -20,6 +20,11 @@ namespace Solti.Utils.DI.Perf
             svc_1 = (long) typeof(IList<int>).TypeHandle.Value,
             svc_2 = (long) typeof(IList<object>).TypeHandle.Value;
 
+        private static readonly string
+            name_1 = new("kutya"),
+            name_2 = new("kutya"), // different reference
+            name_3 = "kutya_2";
+
         [Benchmark]
         public int CompareIds() => ServiceResolver_BTree.CompareServiceIds(svc_1, null, svc_1, null);
 
@@ -27,9 +32,9 @@ namespace Solti.Utils.DI.Perf
         public int CompareIdsNoMatch() => ServiceResolver_BTree.CompareServiceIds(svc_1, null, svc_2, null);
 
         [Benchmark]
-        public int CompareNamedIds() => ServiceResolver_BTree.CompareServiceIds(svc_1, "kutya", svc_1, "kutya");
+        public int CompareNamedIds() => ServiceResolver_BTree.CompareServiceIds(svc_1, name_1, svc_1, name_2);
 
         [Benchmark]
-        public int CompareNamedIdsNoMatch() => ServiceResolver_BTree.CompareServiceIds(svc_1, "kutya", svc_1, "cica");
+        public int CompareNamedIdsNoMatch() => ServiceResolver_BTree.CompareServiceIds(svc_1, name_1, svc_1, name_3);
     }
 }
