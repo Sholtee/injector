@@ -24,14 +24,13 @@ namespace Solti.Utils.DI.Internals
         #region Private
         private static readonly StringComparer FStringComparer = StringComparer.Ordinal;
 
-        internal static int CompareServiceIds(Type iface1, string? name1, Type iface2, string? name2)
+        internal static int CompareServiceIds(long iface1, string? name1, long iface2, string? name2)
         {
             //
-            // IntPtr 32 bits long on x86 and 64 bits long on x64 systems however we have to return 
-            // an Int32 on every systems -> Math.Sign()
+            // We have to return Int32 -> Math.Sign()
             //
 
-            int order = Math.Sign((long) iface1.TypeHandle.Value - (long) iface2.TypeHandle.Value);
+            int order = Math.Sign(iface1 - iface2);
             if (order is 0)
                 //
                 // StringComparer supports NULL despite it is not reflected by nullable annotation
@@ -51,8 +50,8 @@ namespace Solti.Utils.DI.Internals
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public int Compare(IHasRelatedEntry x, IHasRelatedEntry y) => CompareServiceIds
             (
-                x.RelatedEntry.Interface, x.RelatedEntry.Name, 
-                y.RelatedEntry.Interface, y.RelatedEntry.Name
+                (long) x.RelatedEntry.Interface.TypeHandle.Value, x.RelatedEntry.Name, 
+                (long) y.RelatedEntry.Interface.TypeHandle.Value, y.RelatedEntry.Name
             );
         }
 
@@ -77,10 +76,10 @@ namespace Solti.Utils.DI.Internals
                     order,
                     Expression.Invoke
                     (
-                        Expression.Constant((Func<Type, string?, Type, string?, int>)CompareServiceIds),
+                        Expression.Constant((Func<long, string?, long, string?, int>) CompareServiceIds),
                         iface,
                         name,
-                        Expression.Constant(RelatedEntry.Interface),
+                        Expression.Constant((long) RelatedEntry.Interface.TypeHandle.Value),
                         Expression.Constant(RelatedEntry.Name, typeof(string)) // typeof(string) is required as Name might be NULL
                     )
                 );
@@ -157,10 +156,10 @@ namespace Solti.Utils.DI.Internals
                     order,
                     Expression.Invoke
                     (
-                        Expression.Constant((Func<Type, string?, Type, string?, int>) CompareServiceIds),
+                        Expression.Constant((Func<long, string?, long, string?, int>) CompareServiceIds),
                         iface,
                         name,
-                        Expression.Constant(RelatedEntry.Interface),
+                        Expression.Constant((long) RelatedEntry.Interface.TypeHandle.Value),
                         Expression.Constant(RelatedEntry.Name, typeof(string)) // typeof(string) is required as Name might be NULL
                     )
                 );
@@ -246,16 +245,16 @@ namespace Solti.Utils.DI.Internals
             return returnNull;
         }
 
-        private static Func<Type, string?, AbstractServiceEntry?> BuildSwitch(RedBlackTree<EntryResolutionNode> tree)
+        private static Func<long, string?, AbstractServiceEntry?> BuildSwitch(RedBlackTree<EntryResolutionNode> tree)
         {
             ParameterExpression
-                iface = Expression.Parameter(typeof(Type), nameof(iface)),
+                iface = Expression.Parameter(typeof(long), nameof(iface)),
                 name  = Expression.Parameter(typeof(string), nameof(name)),
                 order = Expression.Variable(typeof(int), nameof(order));
 
             LabelTarget ret = Expression.Label(typeof(AbstractServiceEntry));
 
-            Expression<Func<Type, string?, AbstractServiceEntry?>> resolver = Expression.Lambda<Func<Type, string?, AbstractServiceEntry?>>
+            Expression<Func<long, string?, AbstractServiceEntry?>> resolver = Expression.Lambda<Func<long, string?, AbstractServiceEntry?>>
             (
                 BuildSwitchBody
                 (
@@ -272,17 +271,17 @@ namespace Solti.Utils.DI.Internals
             return resolver.Compile();
         }
 
-        private static Func<Type, string?, IInstanceFactory, object?> BuildSwitch(RedBlackTree<ServiceResolutionNode> tree)
+        private static Func<long, string?, IInstanceFactory, object?> BuildSwitch(RedBlackTree<ServiceResolutionNode> tree)
         {
             ParameterExpression
-                iface = Expression.Parameter(typeof(Type), nameof(iface)),
-                name = Expression.Parameter(typeof(string), nameof(name)),
-                fact = Expression.Parameter(typeof(IInstanceFactory), nameof(fact)),
+                iface = Expression.Parameter(typeof(long), nameof(iface)),
+                name  = Expression.Parameter(typeof(string), nameof(name)),
+                fact  = Expression.Parameter(typeof(IInstanceFactory), nameof(fact)),
                 order = Expression.Variable(typeof(int), nameof(order));
 
             LabelTarget ret = Expression.Label(typeof(object));
 
-            Expression<Func<Type, string?, IInstanceFactory, object?>> resolver = Expression.Lambda<Func<Type, string?, IInstanceFactory, object?>>
+            Expression<Func<long, string?, IInstanceFactory, object?>> resolver = Expression.Lambda<Func<long, string?, IInstanceFactory, object?>>
             (
                 BuildSwitchBody
                 (
@@ -304,11 +303,11 @@ namespace Solti.Utils.DI.Internals
             ? Slots++
             : null;
 
-        private readonly Func<Type, string?, AbstractServiceEntry?> FGetGenericEntry;
+        private readonly Func<long, string?, AbstractServiceEntry?> FGetGenericEntry;
 
         private readonly RedBlackTree<ServiceResolutionNode> FSwitch;
 
-        private volatile Func<Type, string?, IInstanceFactory, object?> FInvokeFactory;
+        private volatile Func<long, string?, IInstanceFactory, object?> FInvokeFactory;
 
         private readonly object FLock = new();
         #endregion
@@ -347,15 +346,17 @@ namespace Solti.Utils.DI.Internals
 
         public object? Resolve(Type iface, string? name, IInstanceFactory instanceFactory)
         {
-            object? result = FInvokeFactory(iface, name, instanceFactory);
+            long handle = (long) iface.TypeHandle.Value;
+
+            object? result = FInvokeFactory(handle, name, instanceFactory);
 
             AbstractServiceEntry? genericEntry;
 
-            if (result is null && iface.IsConstructedGenericType && (genericEntry = FGetGenericEntry(iface.GetGenericTypeDefinition(), name)) is not null)
+            if (result is null && iface.IsConstructedGenericType && (genericEntry = FGetGenericEntry((long) iface.GetGenericTypeDefinition().TypeHandle.Value, name)) is not null)
             {
                 lock (FLock)
                 {
-                    result = FInvokeFactory(iface, name, instanceFactory);
+                    result = FInvokeFactory(handle, name, instanceFactory);
                     if (result is null)
                     {
                         genericEntry = genericEntry.Specialize(iface.GenericTypeArguments);
@@ -367,7 +368,7 @@ namespace Solti.Utils.DI.Internals
                         Assert(added, $"Failed to register entry: {genericEntry}");
 
                         FInvokeFactory = BuildSwitch(FSwitch);
-                        result = FInvokeFactory(iface, name, instanceFactory);
+                        result = FInvokeFactory(handle, name, instanceFactory);
                     }
                 }
             }

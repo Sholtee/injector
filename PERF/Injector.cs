@@ -36,6 +36,18 @@ namespace Solti.Utils.DI.Perf
             }
         }
 
+        public static IEnumerable<string> Engines
+        {
+            get
+            {
+                yield return ServiceResolver_Dict.Id;
+                yield return ServiceResolver_BTree.Id;
+            }
+        }
+
+        [ParamsSource(nameof(Engines))]
+        public string Engine { get; set; }
+
         #region Services
         public interface IDependency
         {
@@ -87,7 +99,7 @@ namespace Solti.Utils.DI.Perf
 
         protected IScopeFactory Root { get; private set; }
 
-        protected IScopeFactory Setup(Action<IServiceCollection> setupContainer) => Root = ScopeFactory.Create(setupContainer);
+        protected IScopeFactory Setup(Action<IServiceCollection> setupContainer) => Root = ScopeFactory.Create(setupContainer, new ScopeOptions { Engine = Engine });
 
         [GlobalCleanup]
         public void Cleanup() => Root?.Dispose();
