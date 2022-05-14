@@ -11,9 +11,9 @@ using NUnit.Framework;
 namespace Solti.Utils.DI.Tests
 {
     using Interfaces;
+    using Interfaces.Properties;
     using Internals;
     using Primitives.Patterns;
-    using Properties;
 
     [TestFixture]
     public partial class InjectorTests
@@ -45,6 +45,15 @@ namespace Solti.Utils.DI.Tests
             {
                 yield return Lifetime.Pooled;
                 yield return Lifetime.Singleton;
+            }
+        }
+
+        public static IEnumerable<string> Engines
+        {
+            get
+            {
+                yield return ServiceResolver_BTree.Id;
+                yield return ServiceResolver_Dict.Id;
             }
         }
         #endregion
@@ -252,7 +261,7 @@ namespace Solti.Utils.DI.Tests
         }
 
         [Test]
-        public void Ctor_ShouldThrowOnOverriddenService() =>
-            Assert.Throws<ArgumentException>(() => ScopeFactory.Create(svcs => svcs.Add(new DummyServiceEntry(typeof(IInjector), null))), Resources.BUILT_IN_SERVICE_OVERRIDE);
+        public void Ctor_ShouldThrowOnOverriddenService([ValueSource(nameof(Engines))] string engine) =>
+            Assert.Throws<InvalidOperationException>(() => ScopeFactory.Create(svcs => svcs.Add(new DummyServiceEntry(typeof(IInjector), null)), new ScopeOptions { Engine = engine }), Resources.SERVICE_ALREADY_REGISTERED);
     }
 }

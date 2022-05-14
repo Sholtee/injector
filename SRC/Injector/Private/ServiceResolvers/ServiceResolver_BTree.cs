@@ -1,5 +1,5 @@
 ﻿/********************************************************************************
-* ServiceResolver.BinaryTree.cs                                                 *
+* ServiceResolver_BTree.cs                                                      *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
@@ -14,11 +14,12 @@ using static System.Diagnostics.Debug;
 namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
+    using Interfaces.Properties;
 
     using Primitives;
     using Primitives.Patterns;
 
-    internal sealed class ServiceResolver_Tree: IServiceResolver
+    internal sealed class ServiceResolver_BTree: IServiceResolver
     {
         #region Private
         private static readonly StringComparer FStringComparer = StringComparer.Ordinal;
@@ -299,6 +300,10 @@ namespace Solti.Utils.DI.Internals
             return resolver.Compile();
         }
 
+        private int? GetSlotFor(AbstractServiceEntry entry) => entry.Flags.HasFlag(ServiceEntryFlags.CreateSingleInstance)
+            ? Slots++
+            : null;
+
         private readonly Func<Type, string?, AbstractServiceEntry?> FGetGenericEntry;
 
         private readonly RedBlackTree<ServiceResolutionNode> FSwitch;
@@ -308,9 +313,11 @@ namespace Solti.Utils.DI.Internals
         private readonly object FLock = new();
         #endregion
 
+        public const string Id = "btree";
+
         public int Slots { get; private set; }
 
-        public ServiceResolver_Tree(IEnumerable<AbstractServiceEntry> entries)
+        public ServiceResolver_BTree(IEnumerable<AbstractServiceEntry> entries)
         {
             RedBlackTree<EntryResolutionNode> getEntrySwitch = new(NodeComparer.Instance);
             FSwitch = new RedBlackTree<ServiceResolutionNode>(NodeComparer.Instance);
@@ -324,15 +331,14 @@ namespace Solti.Utils.DI.Internals
                     )
                     : FSwitch.Add
                     (
-                        new ServiceResolutionNode
-                        (
-                            entry,
-                            entry.Flags.HasFlag(ServiceEntryFlags.CreateSingleInstance)
-                                ? Slots++
-                                : null
-                        )
+                        new ServiceResolutionNode(entry, GetSlotFor(entry))
                     );
-                Assert(added, $"Failed to register entry: {entry}");
+                if (!added)
+                {
+                    InvalidOperationException ex = new(Resources.SERVICE_ALREADY_REGISTERED);
+                    ex.Data[nameof(entry)] = entry;
+                    throw ex;
+                }
             }
 
             FGetGenericEntry = BuildSwitch(getEntrySwitch);
@@ -352,19 +358,15 @@ namespace Solti.Utils.DI.Internals
                     result = FInvokeFactory(iface, name, instanceFactory);
                     if (result is null)
                     {
+                        genericEntry = genericEntry.Specialize(iface.GenericTypeArguments);
+
                         bool added = FSwitch.Add
                         (
-                            new ServiceResolutionNode
-                            (
-                                genericEntry.Specialize(iface.GenericTypeArguments),
-                                genericEntry.Flags.HasFlag(ServiceEntryFlags.CreateSingleInstance)
-                                    ? Slots++
-                                    : null
-                            )
+                            new ServiceResolutionNode(genericEntry, GetSlotFor(genericEntry))
                         );
-                        Assert(added, $"Failed to register entry: {genericEntry.Specialize(iface.GenericTypeArguments)}");
-                        FInvokeFactory = BuildSwitch(FSwitch);
+                        Assert(added, $"Failed to register entry: {genericEntry}");
 
+                        FInvokeFactory = BuildSwitch(FSwitch);
                         result = FInvokeFactory(iface, name, instanceFactory);
                     }
                 }

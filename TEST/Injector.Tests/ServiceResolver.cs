@@ -22,7 +22,7 @@ namespace Solti.Utils.DI.Internals.Tests
         {
             get 
             {
-                yield return entries => new ServiceResolver_Tree(entries);
+                yield return entries => new ServiceResolver_BTree(entries);
                 yield return entries => new ServiceResolver_Dict(entries);
             }
         }

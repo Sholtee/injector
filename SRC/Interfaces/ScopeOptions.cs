@@ -22,5 +22,11 @@ namespace Solti.Utils.DI.Interfaces
         /// </summary>
         /// <remarks>Setting this property to true configures the <see cref="IInjector.Get(Type, string?)"/> method to not throw if the requested dependency cannot be found.</remarks>
         public bool SupportsServiceProvider { get; init; }
+
+        /// <summary>
+        /// Specifies the service resolution engine.
+        /// </summary>
+        /// <remarks>Leave this property blank to use the default implementation.</remarks>
+        public string? Engine { get; init; }
     }
 }

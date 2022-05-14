@@ -17,15 +17,15 @@ namespace Solti.Utils.DI.Perf
     public class ServiceIdComparer
     {
         [Benchmark]
-        public int CompareIds() => ServiceResolver_Tree.CompareServiceIds(typeof(IList<int>), null, typeof(IList<int>), null);
+        public int CompareIds() => ServiceResolver_BTree.CompareServiceIds(typeof(IList<int>), null, typeof(IList<int>), null);
 
         [Benchmark]
-        public int CompareIdsNoMatch() => ServiceResolver_Tree.CompareServiceIds(typeof(IList<int>), null, typeof(IList<object>), null);
+        public int CompareIdsNoMatch() => ServiceResolver_BTree.CompareServiceIds(typeof(IList<int>), null, typeof(IList<object>), null);
 
         [Benchmark]
-        public int CompareNamedIds() => ServiceResolver_Tree.CompareServiceIds(typeof(IList<int>), "kutya", typeof(IList<int>), "kutya");
+        public int CompareNamedIds() => ServiceResolver_BTree.CompareServiceIds(typeof(IList<int>), "kutya", typeof(IList<int>), "kutya");
 
         [Benchmark]
-        public int CompareNamedIdsNoMatch() => ServiceResolver_Tree.CompareServiceIds(typeof(IList<int>), "kutya", typeof(IList<int>), "cica");
+        public int CompareNamedIdsNoMatch() => ServiceResolver_BTree.CompareServiceIds(typeof(IList<int>), "kutya", typeof(IList<int>), "cica");
     }
 }

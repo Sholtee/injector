@@ -1,5 +1,5 @@
 ﻿/********************************************************************************
-* ServiceResolver.Dictionary.cs                                                 *
+* ServiceResolver_Dict.cs                                                       *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
@@ -9,6 +9,7 @@ using System.Collections.Generic;
 namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
+    using Interfaces.Properties;
 
     internal sealed class ServiceResolver_Dict: IServiceResolver
     {
@@ -39,6 +40,8 @@ namespace Solti.Utils.DI.Internals
                     : fact => fact.CreateInstance(entry);
         }
 
+        public const string Id = "dict";
+
         public int Slots { get; private set; }
 
         public ServiceResolver_Dict(IEnumerable<AbstractServiceEntry> entries)
@@ -52,7 +55,22 @@ namespace Solti.Utils.DI.Internals
                 if (entry.Interface.IsGenericTypeDefinition)
                     genericEntries.Add(key, entry);
                 else
-                    resolvers.Add(key, CreateResolver(entry));
+                {
+                    bool added =
+#if NETSTANDARD2_1_OR_GREATER
+                    resolvers.TryAdd(key, CreateResolver(entry));
+#else
+                    resolvers.ContainsKey(key);
+                    if (!added)
+                        resolvers.Add(key, CreateResolver(entry));
+#endif
+                    if (!added)
+                    {
+                        InvalidOperationException ex = new(Resources.SERVICE_ALREADY_REGISTERED);
+                        ex.Data[nameof(entry)] = entry;
+                        throw ex;
+                    }
+                }
             }
 
             FGenericEntries = genericEntries;

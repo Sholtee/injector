@@ -35,9 +35,9 @@ namespace Solti.Utils.DI.Tests
         }
 
         [Test]
-        public void Injector_TryGet_ShouldReturnNullIfTheServiceNotFound()
+        public void Injector_TryGet_ShouldReturnNullIfTheServiceNotFound([ValueSource(nameof(Engines))] string engine)
         {
-            Root = ScopeFactory.Create(svcs => { });
+            Root = ScopeFactory.Create(svcs => { }, new ScopeOptions { Engine = engine });
 
             using (IInjector injector = Root.CreateScope())
             {
@@ -45,15 +45,19 @@ namespace Solti.Utils.DI.Tests
             }
         }
 
-        [TestCaseSource(nameof(BadRegistrations))]
-        public void Injector_TryGet_ShouldThrowIfTheServiceCouldNotBeResolvedDueToAMissingDependency(List<(Type Interface, Type Implementation)> registrations)
+        [Test]
+        public void Injector_TryGet_ShouldThrowIfTheServiceCouldNotBeResolvedDueToAMissingDependency([ValueSource(nameof(BadRegistrations))] List<(Type Interface, Type Implementation)> registrations, [ValueSource(nameof(Engines))] string engine)
         {
-            Root = ScopeFactory.Create(svcs =>
-            {
-                foreach ((Type Interface, Type Implementation) reg in registrations)
-                    if (reg.Implementation is not null)
-                        svcs.Service(reg.Interface, reg.Implementation, Lifetime.Transient);
-            });
+            Root = ScopeFactory.Create
+            (
+                svcs =>
+                {
+                    foreach ((Type Interface, Type Implementation) reg in registrations)
+                        if (reg.Implementation is not null)
+                            svcs.Service(reg.Interface, reg.Implementation, Lifetime.Transient);
+                },
+                new ScopeOptions { Engine = engine }  
+            );
 
             using (IInjector injector = Root.CreateScope())
             {
@@ -62,9 +66,9 @@ namespace Solti.Utils.DI.Tests
         }
 
         [Test]
-        public void Injector_TryGet_ShouldSupportNamedServices([Values(null, "cica")] string name, [ValueSource(nameof(Lifetimes))] Lifetime lifetime) 
+        public void Injector_TryGet_ShouldSupportNamedServices([Values(null, "cica")] string name, [ValueSource(nameof(Lifetimes))] Lifetime lifetime, [ValueSource(nameof(Engines))] string engine) 
         {
-            Root = ScopeFactory.Create(svcs => svcs.Service<IInterface_1, Implementation_1_No_Dep>(name, lifetime));
+            Root = ScopeFactory.Create(svcs => svcs.Service<IInterface_1, Implementation_1_No_Dep>(name, lifetime), new ScopeOptions { Engine = engine });
 
             using (IInjector injector = Root.CreateScope())
             {

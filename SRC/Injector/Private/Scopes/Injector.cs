@@ -197,14 +197,24 @@ namespace Solti.Utils.DI.Internals
         #endregion
 
         #region IScopeFactory
-        public virtual IInjector CreateScope(object? lifetime = null) => new Injector(this, lifetime);
+        public virtual IInjector CreateScope(object? lifetime) => new Injector(this, lifetime);
         #endregion
 
         public Injector(IEnumerable<AbstractServiceEntry> registeredEntries, ScopeOptions options, object? lifetime)
         {
             #pragma warning disable CA2214 // Do not call overridable methods in constructors
-            FResolver = new ServiceResolver_Dict(GetAllServices(registeredEntries));
+            IReadOnlyCollection<AbstractServiceEntry> svcs = new List<AbstractServiceEntry>
+            (
+                GetAllServices(registeredEntries)
+            );
             #pragma warning restore CA2214
+
+            FResolver = (options.Engine ?? ServiceResolver_BTree.Id) switch
+            {
+                ServiceResolver_BTree.Id => new ServiceResolver_BTree(svcs),
+                ServiceResolver_Dict.Id  => new ServiceResolver_Dict(svcs),
+                _ => throw new NotSupportedException()
+            };
             FSlots    = Array<object>.Create(FResolver.Slots);
             Options   = options;
             Lifetime  = lifetime;
