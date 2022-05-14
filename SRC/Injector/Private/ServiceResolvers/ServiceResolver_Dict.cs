@@ -56,15 +56,15 @@ namespace Solti.Utils.DI.Internals
                     genericEntries.Add(key, entry);
                 else
                 {
-                    bool added =
 #if NETSTANDARD2_1_OR_GREATER
-                    resolvers.TryAdd(key, CreateResolver(entry));
+                    if (!resolvers.TryAdd(key, CreateResolver(entry)))
 #else
-                    resolvers.ContainsKey(key);
-                    if (!added)
+                    try
+                    {
                         resolvers.Add(key, CreateResolver(entry));
+                    }
+                    catch (ArgumentException)
 #endif
-                    if (!added)
                     {
                         InvalidOperationException ex = new(Resources.SERVICE_ALREADY_REGISTERED);
                         ex.Data[nameof(entry)] = entry;
