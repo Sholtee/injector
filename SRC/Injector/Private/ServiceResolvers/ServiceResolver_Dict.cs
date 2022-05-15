@@ -95,7 +95,10 @@ namespace Solti.Utils.DI.Internals
                         // Create a new resolver for the specializted entry
                         //
 
-                        resolver = CreateResolver(genericEntry.Specialize(iface.GenericTypeArguments));
+                        resolver = CreateResolver
+                        (
+                            genericEntry.Specialize(iface.GenericTypeArguments)
+                        );
 
                         //
                         // In theory copying a dictionary is quick: https://github.com/dotnet/runtime/blob/c78bf2f522b4ce5a449faf6a38a0752b642a7f79/src/libraries/System.Private.CoreLib/src/System/Collections/Generic/Dictionary.cs#L126
