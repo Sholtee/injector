@@ -5,6 +5,7 @@
 ********************************************************************************/
 using System;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Engines;
@@ -36,5 +37,43 @@ namespace Solti.Utils.DI.Perf
 
         [Benchmark]
         public object ViaActivator() => Factory(null);
+    }
+
+    [Ignore]
+    [MemoryDiagnoser]
+    [SimpleJob(RunStrategy.Throughput, invocationCount: 1000000)]
+    public class ServiceActivator_New
+    {
+        public class DummyInjector : IInjector
+        {
+            public object Lifetime { get; }
+
+            public ScopeOptions Options { get; }
+
+            public bool Disposed { get; }
+
+            public void Dispose() {}
+
+            public ValueTask DisposeAsync() => default;
+
+            public object Get(Type iface, string name = null) => this;
+
+            public object TryGet(Type iface, string name = null) => this;
+        }
+
+        public class MyClass
+        {
+            public MyClass(IInjector injector) { }
+        }
+
+        private static readonly IInjector Injector = new DummyInjector();
+
+        [Benchmark(Baseline = true)]
+        public object InstantiateDirectly() => new MyClass(Injector);
+
+        private static readonly Func<IInjector, Type, object> Factory = ServiceActivator.Get(typeof(MyClass));
+
+        [Benchmark]
+        public object ViaActivator() => Factory(Injector, typeof(MyClass));
     }
 }
