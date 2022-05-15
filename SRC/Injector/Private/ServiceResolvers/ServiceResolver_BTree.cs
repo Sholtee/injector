@@ -295,6 +295,8 @@ namespace Solti.Utils.DI.Internals
                 {
                     lock (FLock)
                     {
+                        int snapshot = Slots;
+
                         //
                         // Another thread might have registered the resolver while we reached here.
                         //
@@ -309,6 +311,12 @@ namespace Solti.Utils.DI.Internals
 
                         if (registered)
                             FGetResolver = BuildSwitch<Func<IInstanceFactory, object>, ServiceResolutionNode>(FGetResolverSwitch);
+                        else
+                            //
+                            // An extra slot might be added, revert it.
+                            //
+
+                            Slots = snapshot;
                     }
 
                     resolver = FGetResolver(handle, name);
