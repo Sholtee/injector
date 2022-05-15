@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -15,7 +16,8 @@ namespace Solti.Utils.DI.Internals
 #endif
     interface IServiceResolver
     {
-        object? Resolve(Type iface, string? name, IInstanceFactory instanceFactory);
+        [SuppressMessage("Naming", "CA1716:Identifiers should not match keywords")]
+        Func<IInstanceFactory, object>? Get(Type iface, string? name);
 
         int Slots { get; }
     }

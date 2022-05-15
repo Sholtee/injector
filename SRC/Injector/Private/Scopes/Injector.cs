@@ -197,7 +197,7 @@ namespace Solti.Utils.DI.Internals
             Ensure.Parameter.IsInterface(iface, nameof(iface));
             Ensure.Parameter.IsNotGenericDefinition(iface, nameof(iface));
 
-            return FResolver.Resolve(iface, name, this);
+            return FResolver.Get(iface, name)?.Invoke(this);
         }
         #endregion
 

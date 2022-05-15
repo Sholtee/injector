@@ -12,9 +12,7 @@ using BenchmarkDotNet.Engines;
 
 namespace Solti.Utils.DI.Perf
 {
-    using Interfaces;
     using Internals;
-    using Primitives.Patterns;
 
     [MemoryDiagnoser]
     [SimpleJob(RunStrategy.Throughput, invocationCount: 10000000)]
@@ -43,23 +41,12 @@ namespace Solti.Utils.DI.Perf
 
         private IServiceResolver Resolver { get; set; }
 
-        private sealed class DummyInstanceFactory : Singleton<DummyInstanceFactory>, IInstanceFactory
-        {
-            private static readonly object Obj = new();
-
-            public IInstanceFactory Super { get; }
-
-            public object CreateInstance(AbstractServiceEntry requested) => Obj;
-
-            public object GetOrCreateInstance(AbstractServiceEntry requested, int slot) => Obj;
-        }
-
         [GlobalSetup]
         public void Setup() => Resolver = (IServiceResolver) Activator.CreateInstance(Engine, new object[] { Interfaces.Take(ServiceCount).Select(t => new TransientServiceEntry(t, null, (_, _) => null)) });
 
         private int Index;
 
         [Benchmark]
-        public object Resolve() => Resolver.Resolve(Interfaces[Index++ % ServiceCount], null, DummyInstanceFactory.Instance);
+        public object Resolve() => Resolver.Get(Interfaces[Index++ % ServiceCount], null);
     }
 }

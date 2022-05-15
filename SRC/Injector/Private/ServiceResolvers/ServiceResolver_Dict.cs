@@ -21,11 +21,11 @@ namespace Solti.Utils.DI.Internals
         // Don't use ImmutableArray here since it is 2-3 times slower.
         //
 
-        private volatile /*IReadOnly*/Dictionary<CompositeKey, Func<IInstanceFactory, object?>> FResolvers;
+        private volatile /*IReadOnly*/Dictionary<CompositeKey, Func<IInstanceFactory, object>> FResolvers;
 
         private readonly object FLock = new();
 
-        private Func<IInstanceFactory, object?> CreateResolver(AbstractServiceEntry entry)
+        private Func<IInstanceFactory, object> CreateResolver(AbstractServiceEntry entry)
         {
             if (entry.Flags.HasFlag(ServiceEntryFlags.CreateSingleInstance))
             {
@@ -47,7 +47,7 @@ namespace Solti.Utils.DI.Internals
         public ServiceResolver_Dict(IEnumerable<AbstractServiceEntry> entries)
         {
             Dictionary<CompositeKey, AbstractServiceEntry> genericEntries = new();
-            Dictionary<CompositeKey, Func<IInstanceFactory, object?>> resolvers = new();
+            Dictionary<CompositeKey, Func<IInstanceFactory, object>> resolvers = new();
 
             foreach (AbstractServiceEntry entry in entries)
             {
@@ -77,11 +77,11 @@ namespace Solti.Utils.DI.Internals
             FResolvers = resolvers;
         }
 
-        public object? Resolve(Type iface, string? name, IInstanceFactory instanceFactory)
+        public Func<IInstanceFactory, object>? Get(Type iface, string? name)
         {
             CompositeKey key = new(iface, name);
 
-            if (!FResolvers.TryGetValue(key, out Func<IInstanceFactory, object?> resolver) && iface.IsConstructedGenericType)
+            if (!FResolvers.TryGetValue(key, out Func<IInstanceFactory, object> resolver) && iface.IsConstructedGenericType)
             {
                 lock (FLock)
                 {
@@ -101,7 +101,7 @@ namespace Solti.Utils.DI.Internals
                         // In theory copying a dictionary is quick: https://github.com/dotnet/runtime/blob/c78bf2f522b4ce5a449faf6a38a0752b642a7f79/src/libraries/System.Private.CoreLib/src/System/Collections/Generic/Dictionary.cs#L126
                         //
 
-                        Dictionary<CompositeKey, Func<IInstanceFactory, object?>> extendedResolvers = new(FResolvers);
+                        Dictionary<CompositeKey, Func<IInstanceFactory, object>> extendedResolvers = new(FResolvers);
                         extendedResolvers.Add(key, resolver);
 
                         FResolvers = extendedResolvers;
@@ -109,7 +109,7 @@ namespace Solti.Utils.DI.Internals
                 }
             }
 
-            return resolver?.Invoke(instanceFactory);
+            return resolver;
         }
     }
 }

@@ -283,35 +283,40 @@ namespace Solti.Utils.DI.Internals
             FGetResolver = BuildSwitch<Func<IInstanceFactory, object>, ServiceResolutionNode>(FGetResolverSwitch);
         }
 
-        public object? Resolve(Type iface, string? name, IInstanceFactory instanceFactory)
+        public Func<IInstanceFactory, object>? Get(Type iface, string? name)
         {
             long handle = (long) iface.TypeHandle.Value;
 
             Func<IInstanceFactory, object>? resolver = FGetResolver(handle, name);
-
-            AbstractServiceEntry? genericEntry;
-
-            if (resolver is null && iface.IsConstructedGenericType && (genericEntry = FGetGenericEntry((long) iface.GetGenericTypeDefinition().TypeHandle.Value, name)) is not null)
+            if (resolver is null && iface.IsConstructedGenericType)
             {
-                lock (FLock)
+                AbstractServiceEntry? genericEntry = FGetGenericEntry((long) iface.GetGenericTypeDefinition().TypeHandle.Value, name);
+                if (genericEntry is not null)
                 {
-                    genericEntry = genericEntry.Specialize(iface.GenericTypeArguments);
-
-                    int snapshot = Slots;
-
-                    if (FGetResolverSwitch.Add(CreateServiceResolutionNode(genericEntry)))
-                        FGetResolver = BuildSwitch<Func<IInstanceFactory, object>, ServiceResolutionNode>(FGetResolverSwitch);
-                    else
+                    lock (FLock)
+                    {
                         //
-                        // Another thread has already done this work. The slot number might be inconsistent now. Correct it!
+                        // Another thread might have registered the resolver while we reached here.
                         //
 
-                        Slots = snapshot;
+                        bool registered = FGetResolverSwitch.Add
+                        (
+                            CreateServiceResolutionNode
+                            (
+                                genericEntry.Specialize(iface.GenericTypeArguments)
+                            )
+                        );
+
+                        if (registered)
+                            FGetResolver = BuildSwitch<Func<IInstanceFactory, object>, ServiceResolutionNode>(FGetResolverSwitch);
+                    }
+
+                    resolver = FGetResolver(handle, name);
+                    Assert(resolver is not null, "Resolver cannot be NULL after it was registered");
                 }
-                resolver = FGetResolver(handle, name);
             }
 
-            return resolver?.Invoke(instanceFactory);
+            return resolver;
         }
     }
 }
