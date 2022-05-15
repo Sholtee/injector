@@ -12,6 +12,7 @@ namespace Solti.Utils.DI.Perf
 {
     using Internals;
 
+    [Ignore]
     [MemoryDiagnoser]
     [SimpleJob(RunStrategy.Throughput, invocationCount: 100000000)]
     public class ServiceIdComparer

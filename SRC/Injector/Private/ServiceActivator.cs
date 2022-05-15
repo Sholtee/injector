@@ -23,9 +23,10 @@ namespace Solti.Utils.DI.Internals
             // Csak kifejezesek, nem tenyleges metodus hivas
             //
 
-            InjectorGet     = MethodInfoExtractor.Extract<IInjector>(i => i.Get(null!, null)),
-            InjectorTryGet  = MethodInfoExtractor.Extract<IInjector>(i => i.TryGet(null!, null)),
-            DictTryGetValue = MethodInfoExtractor.Extract<IReadOnlyDictionary<string, object?>, object?>((dict, outVal) => dict.TryGetValue(default!, out outVal));
+            FInjectorGet     = MethodInfoExtractor.Extract<IInjector>(i => i.Get(null!, null)),
+            FInjectorTryGet  = MethodInfoExtractor.Extract<IInjector>(i => i.TryGet(null!, null)),
+            FDictTryGetValue = MethodInfoExtractor.Extract<IReadOnlyDictionary<string, object?>, object?>((dict, outVal) => dict.TryGetValue(default!, out outVal)),
+            FCreateLazy      = MethodInfoExtractor.Extract(() => CreateLazy<object>(null!, null)).GetGenericMethodDefinition();
 
         private static Type? GetEffectiveType(Type type, out bool isLazy)
         {
@@ -201,7 +202,7 @@ namespace Solti.Utils.DI.Internals
                     test: Expression.Call
                     (
                         explicitArgs, 
-                        DictTryGetValue, 
+                        FDictTryGetValue, 
                         Expression.Constant(name), 
                         arg
                     ),
@@ -300,18 +301,34 @@ namespace Solti.Utils.DI.Internals
             Expression.Call
             (
                 injector,
-                options?.Optional is true ? InjectorTryGet : InjectorGet,
+                options?.Optional is true ? FInjectorTryGet : FInjectorGet,
                 Expression.Constant(iface),
                 Expression.Constant(options?.Name, typeof(string))
             ),
             iface
         );
 
-        internal static NewExpression CreateLazy(ParameterExpression injector, Type iface, OptionsAttribute? options)
+        private static Lazy<TService> CreateLazy<TService>(IInjector injector, OptionsAttribute? options)
+        {
+            Func<Type, string?, object> factory = options?.Optional is true
+                ? injector.TryGet!
+                : injector.Get;
+
+            return new Lazy<TService>(() => (TService) factory(typeof(TService), options?.Name));
+        }
+
+        internal static Expression CreateLazy(ParameterExpression injector, Type iface, OptionsAttribute? options)
         {
             Ensure.Parameter.IsInterface(iface, nameof(iface));
             Ensure.Parameter.IsNotGenericDefinition(iface, nameof(iface));
 
+            //
+            // According to ServiceActivator_Lazy perf tests, it seems
+            // - either the New expression is being compiled to Activator.CreateInstace() call
+            // - or the runtime built lambdas are by-design ridiculously slow
+            //
+
+            /*
             Type delegateType = typeof(Func<>).MakeGenericType(iface);
 
             //
@@ -335,6 +352,9 @@ namespace Solti.Utils.DI.Internals
                 lazyType.GetConstructor(new[] { delegateType }) ?? throw new MissingMethodException(lazyType.Name, ConstructorInfo.ConstructorName),
                 valueFactory
             );
+            */
+
+            return Expression.Call(FCreateLazy.MakeGenericMethod(iface), injector, Expression.Constant(options, typeof(OptionsAttribute)));
         }
     }
 }
