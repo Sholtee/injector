@@ -350,7 +350,16 @@ namespace Solti.Utils.DI.Internals
             );
             */
 
-            return Expression.Call((options?.Optional is true ? FCreateLazyOpt : FCreateLazy).MakeGenericMethod(iface), injector, Expression.Constant(options?.Name, typeof(string)));
+            MethodInfo createLazy = options?.Optional is true
+                ? FCreateLazyOpt
+                : FCreateLazy;
+
+            return Expression.Call
+            (
+                createLazy.MakeGenericMethod(iface),
+                injector,
+                Expression.Constant(options?.Name, typeof(string))
+            );
         }
     }
 }
