@@ -215,6 +215,13 @@ namespace Solti.Utils.DI.Internals
         public virtual IInjector CreateScope(object? lifetime) => new Injector(this, lifetime);
         #endregion
 
+        //
+        // According to performance tests, up to ~80 items btree is faster than dictionary. Assuming that
+        // there won't be more than 30 constructed generic service 50 seems a good threshold.
+        //
+
+        public const int BTREE_ITEM_THRESHOLD = 50;
+
         public Injector(IEnumerable<AbstractServiceEntry> registeredEntries, ScopeOptions options, object? lifetime)
         {
             #pragma warning disable CA2214 // Do not call overridable methods in constructors
@@ -224,7 +231,7 @@ namespace Solti.Utils.DI.Internals
             );
             #pragma warning restore CA2214
 
-            FResolver = (options.Engine ?? ServiceResolver_BTree.Id) switch
+            FResolver = (options.Engine ?? (svcs.Count <= BTREE_ITEM_THRESHOLD ? ServiceResolver_BTree.Id : ServiceResolver_Dict.Id)) switch
             {
                 ServiceResolver_BTree.Id => new ServiceResolver_BTree(svcs),
                 ServiceResolver_Dict.Id  => new ServiceResolver_Dict(svcs),
