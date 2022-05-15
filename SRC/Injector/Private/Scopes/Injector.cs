@@ -5,6 +5,7 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Solti.Utils.DI.Internals
@@ -36,7 +37,7 @@ namespace Solti.Utils.DI.Internals
         // can be done parallelly.
         //
 
-        private readonly object FLock = new();
+        private readonly object? FLock;
 
         private object CreateInstanceCore(AbstractServiceEntry requested)
         {
@@ -118,10 +119,17 @@ namespace Solti.Utils.DI.Internals
             // In the same thread locks can be taken recursively.
             //
 
-            lock(FLock)
+            if (FLock is not null)
+                Monitor.Enter(FLock);
+            try
             {
                 return CreateInstanceCore(requested);
-            }   
+            }
+            finally
+            {
+                if (FLock is not null)
+                    Monitor.Exit(FLock);
+            }
         }
 
         object IInstanceFactory.GetOrCreateInstance(AbstractServiceEntry requested, int slot)
@@ -129,7 +137,9 @@ namespace Solti.Utils.DI.Internals
             if (slot < FSlots.Length && FSlots[slot] is not null)
                 return FSlots[slot]!;
 
-            lock(FLock)
+            if (FLock is not null)
+                Monitor.Enter(FLock);
+            try
             {
                 if (slot < FSlots.Length && FSlots[slot] is not null)
                     return FSlots[slot]!;
@@ -144,6 +154,11 @@ namespace Solti.Utils.DI.Internals
                     Array.Resize(ref FSlots, slot + 1);
 
                 return FSlots[slot] = CreateInstanceCore(requested);
+            }
+            finally
+            {
+                if (FLock is not null)
+                    Monitor.Exit(FLock);
             }
         }
 
@@ -218,6 +233,7 @@ namespace Solti.Utils.DI.Internals
             FSlots    = Array<object>.Create(FResolver.Slots);
             Options   = options;
             Lifetime  = lifetime;
+            FLock     = new object();
         }
 
         public Injector(Injector super, object? lifetime)
@@ -227,6 +243,12 @@ namespace Solti.Utils.DI.Internals
             Options   = super.Options;
             Lifetime  = lifetime;
             Super     = super;
+
+            //
+            // Assuming that the successor is not shared we don't need lock
+            //
+
+            FLock = null;
         }
     }
 }
