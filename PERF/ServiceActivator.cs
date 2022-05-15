@@ -15,28 +15,43 @@ namespace Solti.Utils.DI.Perf
     using Interfaces;
     using Internals;
 
+    internal sealed class DummyInjector : IInjector
+    {
+        public object Lifetime { get; }
+
+        public ScopeOptions Options { get; }
+
+        public bool Disposed { get; }
+
+        public void Dispose() { }
+
+        public ValueTask DisposeAsync() => default;
+
+        public object Get(Type iface, string name = null) => this;
+
+        public object TryGet(Type iface, string name = null) => this;
+    }
+
     [Ignore]
     [MemoryDiagnoser]
     [SimpleJob(RunStrategy.Throughput, invocationCount: 1000000)]
     public class ServiceActivator_Lazy
     {
-        [Benchmark(Baseline = true)]
-        public object InstantiateDirectly()
-        {
-            IInjector injector = null;
-            return new Lazy<ICloneable>(() => (ICloneable) injector.Get(typeof(ICloneable)));
-        }
+        private static readonly IInjector Injector = new DummyInjector();
 
-        private static Func<IInjector, Lazy<ICloneable>> CreateFactory()
+        [Benchmark(Baseline = true)]
+        public object InstantiateDirectly() => new Lazy<IInjector>(() => (IInjector) Injector.Get(typeof(IInjector)));
+
+        private static Func<IInjector, Lazy<IInjector>> CreateFactory()
         {
             ParameterExpression injector = Expression.Parameter(typeof(IInjector));
-            return Expression.Lambda<Func<IInjector, Lazy<ICloneable>>>(ServiceActivator.CreateLazy(injector, typeof(ICloneable), null), injector).Compile();
+            return Expression.Lambda<Func<IInjector, Lazy<IInjector>>>(ServiceActivator.CreateLazy(injector, typeof(IInjector), null), injector).Compile();
         }
 
-        private static readonly Func<IInjector, Lazy<ICloneable>> Factory = CreateFactory();
+        private static readonly Func<IInjector, Lazy<IInjector>> Factory = CreateFactory();
 
         [Benchmark]
-        public object ViaActivator() => Factory(null);
+        public object ViaActivator() => Factory(Injector);
     }
 
     [Ignore]
@@ -44,23 +59,6 @@ namespace Solti.Utils.DI.Perf
     [SimpleJob(RunStrategy.Throughput, invocationCount: 1000000)]
     public class ServiceActivator_New
     {
-        public class DummyInjector : IInjector
-        {
-            public object Lifetime { get; }
-
-            public ScopeOptions Options { get; }
-
-            public bool Disposed { get; }
-
-            public void Dispose() {}
-
-            public ValueTask DisposeAsync() => default;
-
-            public object Get(Type iface, string name = null) => this;
-
-            public object TryGet(Type iface, string name = null) => this;
-        }
-
         public class MyClass
         {
             public MyClass(IInjector injector) { }

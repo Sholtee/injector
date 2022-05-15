@@ -26,7 +26,8 @@ namespace Solti.Utils.DI.Internals
             FInjectorGet     = MethodInfoExtractor.Extract<IInjector>(i => i.Get(null!, null)),
             FInjectorTryGet  = MethodInfoExtractor.Extract<IInjector>(i => i.TryGet(null!, null)),
             FDictTryGetValue = MethodInfoExtractor.Extract<IReadOnlyDictionary<string, object?>, object?>((dict, outVal) => dict.TryGetValue(default!, out outVal)),
-            FCreateLazy      = MethodInfoExtractor.Extract(() => CreateLazy<object>(null!, null)).GetGenericMethodDefinition();
+            FCreateLazy      = MethodInfoExtractor.Extract(() => CreateLazy<object>(null!, null)).GetGenericMethodDefinition(),
+            FCreateLazyOpt   = MethodInfoExtractor.Extract(() => CreateLazyOpt<object>(null!, null)).GetGenericMethodDefinition();
 
         private static Type? GetEffectiveType(Type type, out bool isLazy)
         {
@@ -308,14 +309,9 @@ namespace Solti.Utils.DI.Internals
             iface
         );
 
-        private static Lazy<TService> CreateLazy<TService>(IInjector injector, OptionsAttribute? options)
-        {
-            Func<Type, string?, object> factory = options?.Optional is true
-                ? injector.TryGet!
-                : injector.Get;
+        private static Lazy<TService> CreateLazy<TService>(IInjector injector, string? name) => new Lazy<TService>(() => (TService) injector.Get(typeof(TService), name));
 
-            return new Lazy<TService>(() => (TService) factory(typeof(TService), options?.Name));
-        }
+        private static Lazy<TService> CreateLazyOpt<TService>(IInjector injector, string? name) => new Lazy<TService>(() => (TService) injector.TryGet(typeof(TService), name)!);
 
         internal static Expression CreateLazy(ParameterExpression injector, Type iface, OptionsAttribute? options)
         {
@@ -354,7 +350,7 @@ namespace Solti.Utils.DI.Internals
             );
             */
 
-            return Expression.Call(FCreateLazy.MakeGenericMethod(iface), injector, Expression.Constant(options, typeof(OptionsAttribute)));
+            return Expression.Call((options?.Optional is true ? FCreateLazyOpt : FCreateLazy).MakeGenericMethod(iface), injector, Expression.Constant(options?.Name, typeof(string)));
         }
     }
 }
