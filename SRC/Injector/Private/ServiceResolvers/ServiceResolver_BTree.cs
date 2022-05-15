@@ -6,7 +6,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using System.Reflection;
 using System.Runtime.CompilerServices;
 
 using static System.Diagnostics.Debug;
@@ -40,22 +39,24 @@ namespace Solti.Utils.DI.Internals
             return order;
         }
 
-        private interface IHasRelatedEntry
+        private interface IResolutionNode
         {
             AbstractServiceEntry RelatedEntry { get; }
+
+            IEnumerable<Expression> Build(ParameterExpression iface, ParameterExpression name, ParameterExpression order, LabelTarget ret);
         }
 
-        private sealed class NodeComparer : Singleton<NodeComparer>, IComparer<IHasRelatedEntry>
+        private sealed class NodeComparer : Singleton<NodeComparer>, IComparer<IResolutionNode>
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            public int Compare(IHasRelatedEntry x, IHasRelatedEntry y) => CompareServiceIds
+            public int Compare(IResolutionNode x, IResolutionNode y) => CompareServiceIds
             (
                 (long) x.RelatedEntry.Interface.TypeHandle.Value, x.RelatedEntry.Name, 
                 (long) y.RelatedEntry.Interface.TypeHandle.Value, y.RelatedEntry.Name
             );
         }
 
-        private sealed class EntryResolutionNode : RedBlackTreeNode, IHasRelatedEntry
+        private sealed class EntryResolutionNode : RedBlackTreeNode, IResolutionNode
         {
             public EntryResolutionNode(NodeColor color, AbstractServiceEntry relatedEntry) : base(color) => RelatedEntry = relatedEntry;
 
@@ -122,30 +123,42 @@ namespace Solti.Utils.DI.Internals
             }
         }
 
-        private sealed class ServiceResolutionNode : RedBlackTreeNode, IHasRelatedEntry
+        private ServiceResolutionNode CreateServiceResolutionNode(AbstractServiceEntry entry)
         {
-            private static readonly MethodInfo
-                FCreateInstance = MethodInfoExtractor.Extract<IInstanceFactory>(fact => fact.CreateInstance(null!)),
-                FGetOrCreateInstance = MethodInfoExtractor.Extract<IInstanceFactory>(fact => fact.GetOrCreateInstance(null!, 0));
+            Func<IInstanceFactory, object> factory;
 
-            private static readonly PropertyInfo
-                FSuper = PropertyInfoExtractor.Extract<IInstanceFactory, IInstanceFactory?>(fact => fact.Super);
+            if (entry.Flags.HasFlag(ServiceEntryFlags.CreateSingleInstance))
+            {
+                int slot = Slots++;
+                factory = entry.Flags.HasFlag(ServiceEntryFlags.Shared)
+                    ? fact => (fact.Super ?? fact).GetOrCreateInstance(entry, slot)
+                    : fact => fact.GetOrCreateInstance(entry, slot);
+            }
+            else
+                factory = entry.Flags.HasFlag(ServiceEntryFlags.Shared)
+                    ? fact => (fact.Super ?? fact).CreateInstance(entry)
+                    : fact => fact.CreateInstance(entry);
 
-            public ServiceResolutionNode(NodeColor color, AbstractServiceEntry relatedEntry, int? slot) : base(color)
+            return new ServiceResolutionNode(entry, factory);
+        }
+
+        private sealed class ServiceResolutionNode : RedBlackTreeNode, IResolutionNode
+        {
+            public ServiceResolutionNode(NodeColor color, AbstractServiceEntry relatedEntry, Func<IInstanceFactory, object> factory) : base(color)
             {
                 RelatedEntry = relatedEntry;
-                Slot = slot;
+                Factory = factory;
             }
 
-            public ServiceResolutionNode(AbstractServiceEntry relatedEntry, int? slot) : this(NodeColor.Unspecified, relatedEntry, slot) { }
+            public ServiceResolutionNode(AbstractServiceEntry relatedEntry, Func<IInstanceFactory, object> factory) : this(NodeColor.Unspecified, relatedEntry, factory) { }
 
-            public override RedBlackTreeNode ShallowClone() => new ServiceResolutionNode(Color, RelatedEntry, Slot);
+            public override RedBlackTreeNode ShallowClone() => new ServiceResolutionNode(Color, RelatedEntry, Factory);
+
+            public Func<IInstanceFactory, object> Factory { get; }
 
             public AbstractServiceEntry RelatedEntry { get; }
 
-            public int? Slot { get; }
-
-            public IEnumerable<Expression> Build(ParameterExpression iface, ParameterExpression name, ParameterExpression svcFactory, ParameterExpression order, LabelTarget ret)
+            public IEnumerable<Expression> Build(ParameterExpression iface, ParameterExpression name, ParameterExpression order, LabelTarget ret)
             {
                 //
                 // order = CompareServiceIds(iface, name, RelatedEntry.Interface, RelatedEntry.Name);
@@ -165,41 +178,13 @@ namespace Solti.Utils.DI.Internals
                 );
 
                 //
-                // if (order is 0)
-                //     return [svcFactory|svcFactory.Super ?? svcFactory].CreateInstance(RelatedEntry);
-                //          OR
-                //     return [svcFactory|svcFactory.Super ?? svcFactory].GetOrCreateInstance(RelatedEntry, Slot)
+                // if (order is 0) return Factory;
                 //
-
-                Expression instance = RelatedEntry.Flags.HasFlag(ServiceEntryFlags.Shared)
-                    ? Expression.Coalesce
-                    (
-                        Expression.Property(svcFactory, FSuper),
-                        svcFactory
-                    )
-                    : svcFactory;
 
                 yield return Expression.IfThen
                 (
                     Expression.Equal(order, Expression.Constant(0)),
-                    Expression.Return
-                    (
-                        ret,
-                        Slot is null
-                            ? Expression.Call
-                            (
-                                instance,
-                                FCreateInstance,
-                                Expression.Constant(RelatedEntry)
-                            )
-                            : Expression.Call
-                            (
-                                instance,
-                                FGetOrCreateInstance,
-                                Expression.Constant(RelatedEntry),
-                                Expression.Constant(Slot.Value)
-                            )
-                    )
+                    Expression.Return(ret, Expression.Constant(Factory))
                 );
 
                 //
@@ -208,13 +193,13 @@ namespace Solti.Utils.DI.Internals
                 //
 
                 Expression?
-                    returnNull = Expression.Return(ret, Expression.Default(typeof(object))),
+                    returnNull = Expression.Return(ret, Expression.Default(typeof(Func<IInstanceFactory, object>))),
                     ifLess = Expression.Block
                     (
-                        (Left as ServiceResolutionNode)?.Build(iface, name, svcFactory, order, ret) ?? new[] { returnNull }
+                        (Left as ServiceResolutionNode)?.Build(iface, name, order, ret) ?? new[] { returnNull }
                     ),
                     ifGreater = Expression.Block(
-                        (Right as ServiceResolutionNode)?.Build(iface, name, svcFactory, order, ret) ?? new[] { returnNull }
+                        (Right as ServiceResolutionNode)?.Build(iface, name, order, ret) ?? new[] { returnNull }
                     );
 
                 yield return Expression.IfThenElse
@@ -226,88 +211,42 @@ namespace Solti.Utils.DI.Internals
             }
         }
 
-        private static Expression BuildSwitchBody(IEnumerable<Expression>? @switch, ParameterExpression order, LabelTarget ret)
+        private static Func<long, string?, TRet?> BuildSwitch<TRet, TNode>(RedBlackTree<TNode> tree) where TNode : RedBlackTreeNode, IResolutionNode
         {
-            //
-            // return null;
-            //
+            ParameterExpression
+                iface = Expression.Parameter(typeof(long), nameof(iface)),
+                name  = Expression.Parameter(typeof(string), nameof(name)),
+                order = Expression.Variable(typeof(int), nameof(order));
+
+            LabelTarget ret = Expression.Label(typeof(TRet));
 
             LabelExpression returnNull = Expression.Label(ret, Expression.Default(ret.Type));
+
+            IEnumerable<Expression>? @switch = tree.Root?.Build(iface, name, order, ret);
+
+            Expression body;
 
             if (@switch is not null)
             {
                 List<Expression> block = new(@switch);
                 block.Add(returnNull);
 
-                return Expression.Block(new[] { order }, block);
+                body = Expression.Block(new[] { order }, block);
             }
-            
-            return returnNull;
-        }
+            else body = returnNull;
 
-        private static Func<long, string?, AbstractServiceEntry?> BuildSwitch(RedBlackTree<EntryResolutionNode> tree)
-        {
-            ParameterExpression
-                iface = Expression.Parameter(typeof(long), nameof(iface)),
-                name  = Expression.Parameter(typeof(string), nameof(name)),
-                order = Expression.Variable(typeof(int), nameof(order));
-
-            LabelTarget ret = Expression.Label(typeof(AbstractServiceEntry));
-
-            Expression<Func<long, string?, AbstractServiceEntry?>> resolver = Expression.Lambda<Func<long, string?, AbstractServiceEntry?>>
-            (
-                BuildSwitchBody
-                (
-                    tree.Root?.Build(iface, name, order, ret),
-                    order,
-                    ret
-                ),
-                iface,
-                name
-            );
+            Expression<Func<long, string?, TRet?>> resolver = Expression.Lambda<Func<long, string?, TRet?>>(body, iface, name);
 
             WriteLine($"Created resolver:{Environment.NewLine}{resolver.GetDebugView()}");
 
             return resolver.Compile();
         }
-
-        private static Func<long, string?, IInstanceFactory, object?> BuildSwitch(RedBlackTree<ServiceResolutionNode> tree)
-        {
-            ParameterExpression
-                iface = Expression.Parameter(typeof(long), nameof(iface)),
-                name  = Expression.Parameter(typeof(string), nameof(name)),
-                fact  = Expression.Parameter(typeof(IInstanceFactory), nameof(fact)),
-                order = Expression.Variable(typeof(int), nameof(order));
-
-            LabelTarget ret = Expression.Label(typeof(object));
-
-            Expression<Func<long, string?, IInstanceFactory, object?>> resolver = Expression.Lambda<Func<long, string?, IInstanceFactory, object?>>
-            (
-                BuildSwitchBody
-                (
-                    tree.Root?.Build(iface, name, fact, order, ret),
-                    order,
-                    ret
-                ),
-                iface,
-                name,
-                fact
-            );
-
-            WriteLine($"Created resolver:{Environment.NewLine}{resolver.GetDebugView()}");
-
-            return resolver.Compile();
-        }
-
-        private int? GetSlotFor(AbstractServiceEntry entry) => entry.Flags.HasFlag(ServiceEntryFlags.CreateSingleInstance)
-            ? Slots++
-            : null;
 
         private readonly Func<long, string?, AbstractServiceEntry?> FGetGenericEntry;
 
-        private readonly RedBlackTree<ServiceResolutionNode> FSwitch;
+        private readonly RedBlackTree<ServiceResolutionNode> FGetResolverSwitch;
 
-        private volatile Func<long, string?, IInstanceFactory, object?> FInvokeFactory;
+        private volatile Func<long, string?, Func<IInstanceFactory, object>?> FGetResolver;
 
         private readonly object FLock = new();
         #endregion
@@ -318,19 +257,19 @@ namespace Solti.Utils.DI.Internals
 
         public ServiceResolver_BTree(IEnumerable<AbstractServiceEntry> entries)
         {
-            RedBlackTree<EntryResolutionNode> getEntrySwitch = new(NodeComparer.Instance);
-            FSwitch = new RedBlackTree<ServiceResolutionNode>(NodeComparer.Instance);
+            RedBlackTree<EntryResolutionNode> getGenericEntrySwitch = new(NodeComparer.Instance);
+            FGetResolverSwitch = new RedBlackTree<ServiceResolutionNode>(NodeComparer.Instance);
 
             foreach (AbstractServiceEntry entry in entries)
             {
                 bool added = entry.Interface.IsGenericTypeDefinition
-                    ? getEntrySwitch.Add
+                    ? getGenericEntrySwitch.Add
                     (
                         new EntryResolutionNode(entry)
                     )
-                    : FSwitch.Add
+                    : FGetResolverSwitch.Add
                     (
-                        new ServiceResolutionNode(entry, GetSlotFor(entry))
+                        CreateServiceResolutionNode(entry)
                     );
                 if (!added)
                 {
@@ -340,40 +279,39 @@ namespace Solti.Utils.DI.Internals
                 }
             }
 
-            FGetGenericEntry = BuildSwitch(getEntrySwitch);
-            FInvokeFactory = BuildSwitch(FSwitch);
+            FGetGenericEntry = BuildSwitch<AbstractServiceEntry, EntryResolutionNode>(getGenericEntrySwitch);
+            FGetResolver = BuildSwitch<Func<IInstanceFactory, object>, ServiceResolutionNode>(FGetResolverSwitch);
         }
 
         public object? Resolve(Type iface, string? name, IInstanceFactory instanceFactory)
         {
             long handle = (long) iface.TypeHandle.Value;
 
-            object? result = FInvokeFactory(handle, name, instanceFactory);
+            Func<IInstanceFactory, object>? resolver = FGetResolver(handle, name);
 
             AbstractServiceEntry? genericEntry;
 
-            if (result is null && iface.IsConstructedGenericType && (genericEntry = FGetGenericEntry((long) iface.GetGenericTypeDefinition().TypeHandle.Value, name)) is not null)
+            if (resolver is null && iface.IsConstructedGenericType && (genericEntry = FGetGenericEntry((long) iface.GetGenericTypeDefinition().TypeHandle.Value, name)) is not null)
             {
                 lock (FLock)
                 {
-                    result = FInvokeFactory(handle, name, instanceFactory);
-                    if (result is null)
-                    {
-                        genericEntry = genericEntry.Specialize(iface.GenericTypeArguments);
+                    genericEntry = genericEntry.Specialize(iface.GenericTypeArguments);
 
-                        bool added = FSwitch.Add
-                        (
-                            new ServiceResolutionNode(genericEntry, GetSlotFor(genericEntry))
-                        );
-                        Assert(added, $"Failed to register entry: {genericEntry}");
+                    int snapshot = Slots;
 
-                        FInvokeFactory = BuildSwitch(FSwitch);
-                        result = FInvokeFactory(handle, name, instanceFactory);
-                    }
+                    if (FGetResolverSwitch.Add(CreateServiceResolutionNode(genericEntry)))
+                        FGetResolver = BuildSwitch<Func<IInstanceFactory, object>, ServiceResolutionNode>(FGetResolverSwitch);
+                    else
+                        //
+                        // Another thread has already done this work. The slot number might be inconsistent now. Correct it!
+                        //
+
+                        Slots = snapshot;
                 }
+                resolver = FGetResolver(handle, name);
             }
 
-            return result;
+            return resolver?.Invoke(instanceFactory);
         }
     }
 }

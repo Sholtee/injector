@@ -86,7 +86,7 @@ namespace Solti.Utils.DI.Tests
             }
         }
 
-        [Test, Ignore("btree + pooled lifetime == deadlock, WHY????")]
+        [Test]
         public void Parallelism_SpecializationInASeparateScope([ValueSource(nameof(Lifetimes))] Lifetime lifetime, [ValueSource(nameof(Engines))] string engine)
         {
             Root = ScopeFactory.Create(svcs => svcs.Service(typeof(IList<>), typeof(MyList<>), lifetime), new ScopeOptions { Engine = engine });
