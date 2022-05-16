@@ -92,7 +92,7 @@ Registering a service may be done via several patterns (I name them recipes):
         public MyService(Lazy<IService_1> dep1, Lazy<IService_2> dep2) {...}
       }
       ```
-    - You can mark the requested dependency as optional. In this case the system won't throw if the dependency can not be found:
+    - You can mark the requested dependency as optional. In this case the system won't throw if the dependency cannot be found:
       ```csharp 
       public class MyService: IMyService
       {
@@ -102,6 +102,8 @@ Registering a service may be done via several patterns (I name them recipes):
   - By default, services must not have non-interface dependency. To work around this limitation you can provide custom constructor arguments:
     ```csharp
     svcs.Service<IMyService, MyService>(new Dictionary<string, object?>{["paramName"] = someValue}, Lifetime.Transient);
+    // or
+    svcs.Service<IMyService, MyService>(new {paramName = someValue}, Lifetime.Transient);
     ```
 - **Factory recipe**: As the name suggests services registered by this way have a factory function: 
   ```csharp
@@ -407,7 +409,7 @@ using(IScopeFactory scopeFactory = ScopeFactory.Create(svcs => ..., new ScopeOpt
 }
 ```
 Differences compared to `IInjector`:
-- Every requested service is optional (so `IServiceProvider.GetService()` does not throw if a service can not be found). This rule applies to services requested via constructor parameters too.
+- Every requested service is optional (so `IServiceProvider.GetService()` does not throw if a service cannot be found). This rule applies to services requested via constructor parameters too.
 - You can request named services only by using the `OptionsAttribute` (`IServiceProvider.GetService()` has no name parameter).
 - Since the `IServiceProvider` interface is not an `IDisposable` descendant you should release the disposable returned by the `CreateScope()` to end the scope lifetime.
 ## Resources
