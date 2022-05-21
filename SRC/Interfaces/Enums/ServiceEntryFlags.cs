@@ -29,11 +29,11 @@ namespace Solti.Utils.DI.Interfaces
         /// <summary>
         /// A single instance will be created.
         /// </summary>
-        CreateSingleInstance = 1 << 2,
+        CreateSingleInstance = 1 << 1,
 
         /// <summary>
         /// The created service instance is shared between scopes.
         /// </summary>
-        Shared = 1 << 3,
+        Shared = 1 << 2,
     }
 }
