@@ -165,4 +165,10 @@
   <data name="SERVICE_NOT_FOUND" xml:space="preserve">
     <value>Service "{0}" could not be found.</value>
   </data>
+  <data name="NOT_BUILT" xml:space="preserve">
+    <value>The entry must be built in order to create service instances.</value>
+  </data>
+  <data name="INTERCEPTOR_FACTORY_NOT_IMPLEMENTED" xml:space="preserve">
+    <value>Aspects should implement the IInterceptorFactory interface.</value>
+  </data>
 </root>

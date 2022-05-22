@@ -27,15 +27,15 @@ namespace Solti.Utils.DI.Internals
 
         private Func<IInstanceFactory, object> CreateResolver(AbstractServiceEntry entry)
         {
-            if (entry.Flags.HasFlag(ServiceEntryFlags.CreateSingleInstance))
+            if (entry.Features.HasFlag(ServiceEntryFlags.CreateSingleInstance))
             {
                 int slot = Slots++;
-                return entry.Flags.HasFlag(ServiceEntryFlags.Shared)
+                return entry.Features.HasFlag(ServiceEntryFlags.Shared)
                     ? fact => (fact.Super ?? fact).GetOrCreateInstance(entry, slot)
                     : fact => fact.GetOrCreateInstance(entry, slot);
             }
             else
-                return entry.Flags.HasFlag(ServiceEntryFlags.Shared)
+                return entry.Features.HasFlag(ServiceEntryFlags.Shared)
                     ? fact => (fact.Super ?? fact).CreateInstance(entry)
                     : fact => fact.CreateInstance(entry);
         }

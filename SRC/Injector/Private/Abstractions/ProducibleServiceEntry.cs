@@ -5,98 +5,202 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq.Expressions;
 
 namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
-    using Properties;
+    using Primitives;
 
-    internal abstract class ProducibleServiceEntry : AbstractServiceEntry, ISupportsProxying
+    using static Interfaces.Properties.Resources;
+    using static Properties.Resources;
+
+    internal abstract partial class ProducibleServiceEntry : AbstractServiceEntry
     {
-        #region Protected
-        protected ProducibleServiceEntry(Type @interface, string? name, Func<IInjector, Type, object> factory) : base(@interface, name, null)
+        #region Private
+        private static Expression<Func<IInjector, Type, object>>? GetFactory(Type @interface, Type implementation)
         {
-            Factory = Ensure.Parameter.IsNotNull(factory, nameof(factory));
-            this.ApplyAspects();
+            if (!@interface.IsGenericTypeDefinition)
+                return ServiceActivator.Get(implementation);
+
+            //
+            // Just to validate the implementation.
+            //
+
+            implementation.GetApplicableConstructor();
+            return null;
         }
 
-        protected ProducibleServiceEntry(Type @interface, string? name, Type implementation) : base(@interface, name, implementation)
+        private static Expression<Func<IInjector, Type, object>>? GetFactory(Type @interface, Type implementation, object explicitArgs)
         {
-            //
-            // Ancestor does the rest of validation
-            //
-
-            Ensure.Parameter.IsNotNull(implementation, nameof(implementation));
-
             if (!@interface.IsGenericTypeDefinition)
-            {
-                Factory = ServiceActivator.Get(implementation);
-                this.ApplyAspects();
-            }
-            else
-                //
-                // Just to validate the implementation.
-                //
+                return explicitArgs is IReadOnlyDictionary<string, object?> dict
+                    ? ServiceActivator.Get(implementation, dict)
+                    : ServiceActivator.Get(implementation, explicitArgs);
 
-                implementation.GetApplicableConstructor();
-        }
-
-        protected ProducibleServiceEntry(Type @interface, string? name, Type implementation, object explicitArgs) : base(@interface, name, implementation)
-        {
             //
-            // Ancestor does the rest of validation
+            // Just to validate the implementation.
             //
 
-            Ensure.Parameter.IsNotNull(implementation, nameof(implementation));
-            Ensure.Parameter.IsNotNull(explicitArgs, nameof(explicitArgs));
-
-            if (!@interface.IsGenericTypeDefinition)
-            {
-                if (explicitArgs is IReadOnlyDictionary<string, object?> dict)
-                {
-                    Func<IInjector, IReadOnlyDictionary<string, object?>, object> factoryEx = ServiceActivator.GetExtended(implementation);
-
-                    Factory = (injector, _) => factoryEx(injector, dict);
-                }
-                else
-                {
-                    Func<IInjector, object, object> factoryEx = ServiceActivator.GetExtended(implementation, explicitArgs.GetType());
-
-                    Factory = (injector, _) => factoryEx(injector, explicitArgs);
-                }
-
-                this.ApplyAspects();
-            }
-            else
-                //
-                // Just to validate the implementation.
-                //
-
-                implementation.GetApplicableConstructor();
-
-            ExplicitArgs = explicitArgs;
+            implementation.GetApplicableConstructor();
+            return null;
         }
         #endregion
 
+        #region Protected
+        protected ProducibleServiceEntry(Type @interface, string? name) : base
+        (
+            Ensure.Parameter.IsNotNull(@interface, nameof(@interface)),
+            name,
+            null,
+            null
+        ) { }
+
+        protected ProducibleServiceEntry(Type @interface, string? name, Expression<Func<IInjector, Type, object>> factory) : base
+        (
+            Ensure.Parameter.IsNotNull(@interface, nameof(@interface)),
+            name,
+            null,
+            Ensure.Parameter.IsNotNull(factory, nameof(factory))
+        )
+        {
+            ApplyAspects();
+        }
+
+        protected ProducibleServiceEntry(Type @interface, string? name, Type implementation) : base
+        (
+            Ensure.Parameter.IsNotNull(@interface, nameof(@interface)),
+            name,
+            Ensure.Parameter.IsNotNull(implementation, nameof(implementation)),
+            GetFactory
+            (
+                @interface,
+                implementation
+            )
+        )
+        {
+            if (Factory is not null)
+                ApplyAspects();
+        }
+
+        protected ProducibleServiceEntry(Type @interface, string? name, Type implementation, object explicitArgs) : base
+        (
+            Ensure.Parameter.IsNotNull(@interface, nameof(@interface)),
+            name,
+            Ensure.Parameter.IsNotNull(implementation, nameof(implementation)), 
+            GetFactory
+            (
+                @interface,
+                implementation,
+                Ensure.Parameter.IsNotNull(explicitArgs, nameof(explicitArgs))
+            )
+        )
+        {
+            //
+            // Ancestor does the rest of validation
+            //
+
+            ExplicitArgs = explicitArgs;
+
+            if (Factory is not null)
+                ApplyAspects();
+        }
+        #endregion
+
+        private IList<Expression<Func<IInjector, Type, object, object>>>? FProxies;
+
+        private Func<IInjector, Type, object>? FBuiltFactory;
+#if DEBUG
+        public Func<IInjector, Type, object>? BuiltFactory => FBuiltFactory;
+#endif
+        public override void Build(Func<LambdaExpression, LambdaExpression> visitor)
+        {
+            if (visitor is null)
+                throw new ArgumentNullException(nameof(visitor));
+
+            if (Factory is null)
+                throw new InvalidOperationException(NOT_PRODUCIBLE);
+
+            //
+            // Chain all the related delegates
+            //
+#if false
+            Func<IInjector, Type, object> factory = (Func<IInjector, Type, object>) visitor(Factory).Compile();
+
+            if (FProxies?.Count > 0)
+            {
+                foreach (Expression<Func<IInjector, Type, object, object>>? applyProxyExpr in FProxies)
+                {
+                    Func<IInjector, Type, object, object> applyProxy = (Func<IInjector, Type, object, object>) visitor(applyProxyExpr).Compile();
+
+                    Func<IInjector, Type, object> innerFactory = factory;
+
+                    factory = (injector, type) => applyProxy(injector, type, innerFactory(injector, type));
+                }
+            }
+
+            FBuiltFactory = factory;
+#else
+            if (FProxies?.Count > 0)
+            {
+                ParameterExpression
+                    injector = Expression.Parameter(typeof(IInjector), nameof(injector)),
+                    iface = Expression.Parameter(typeof(Type), nameof(iface));
+
+                InvocationExpression invocation = Expression.Invoke
+                (
+                    visitor(Factory),
+                    injector,
+                    iface
+                );
+
+                foreach (Expression<Func<IInjector, Type, object, object>>? applyProxyExpr in FProxies)
+                {
+                    invocation = Expression.Invoke
+                    (
+                        visitor(applyProxyExpr),
+                        injector,
+                        iface,
+                        invocation
+                    );
+                }
+
+                Expression<Func<IInjector, Type, object>> resolver = Expression.Lambda<Func<IInjector, Type, object>>(invocation, injector, iface);
+                Debug.WriteLine($"Created activator: {Environment.NewLine}{resolver.GetDebugView()}");
+
+                FBuiltFactory = resolver.Compile();
+            }
+            else FBuiltFactory = (Func<IInjector, Type, object>) visitor(Factory).Compile();
+#endif
+            State = (State | ServiceEntryStateFlags.Built) & ~ServiceEntryStateFlags.Validated;
+        }
+
         public override object CreateInstance(IInjector scope, out object? lifetime)
         {
-            object result = (Factory ?? throw new InvalidOperationException(Resources.NOT_PRODUCIBLE))(scope, Interface);
+            if (FBuiltFactory is null)
+                throw new InvalidOperationException(NOT_BUILT);
+
+            object result = FBuiltFactory(scope, Interface);
 
             //
             // Getting here indicates that the service graph validated successfully.
             //
 
-            Flags |= ServiceEntryFlags.Validated;
+            State |= ServiceEntryStateFlags.Validated;
             lifetime = result as IDisposable ?? (object?) (result as IAsyncDisposable);
             return result;
         }
 
-        public object? ExplicitArgs { get; }
-
-        Func<IInjector, Type, object>? ISupportsProxying.Factory
+        public override void ApplyProxy(Expression<Func<IInjector, Type, object, object>> applyProxy)
         {
-            get => Factory;
-            set => Factory = value;
+            if (Factory is null)
+                throw new NotSupportedException(PROXYING_NOT_SUPPORTED);
+
+            FProxies ??= new List<Expression<Func<IInjector, Type, object, object>>>();
+            FProxies.Add(applyProxy);
         }
+
+        public object? ExplicitArgs { get; }
     }
 }

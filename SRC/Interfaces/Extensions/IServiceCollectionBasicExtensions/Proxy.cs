@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Linq.Expressions;
 
 namespace Solti.Utils.DI.Interfaces
 {
@@ -16,7 +17,7 @@ namespace Solti.Utils.DI.Interfaces
         /// <param name="decorator">The decorator funtion. It must return the decorated instance. The original instance can be accessed via the 3rd parameter of the decorator function.</param>
         /// <remarks>You can't create proxies against generic or instance entries. A service can be decorated multiple times.</remarks>
         /// <exception cref="InvalidOperationException">When proxying not allowed (see above).</exception>
-        public static IModifiedServiceCollection WithProxy(this IModifiedServiceCollection self, Func<IInjector, Type, object, object> decorator)
+        public static IModifiedServiceCollection WithProxy(this IModifiedServiceCollection self, Expression<Func<IInjector, Type, object, object>> decorator)
         {
             if (self is null)
                 throw new ArgumentNullException(nameof(self));

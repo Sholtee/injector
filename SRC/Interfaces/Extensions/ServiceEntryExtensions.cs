@@ -7,8 +7,6 @@ using System;
 
 namespace Solti.Utils.DI.Interfaces
 {
-    using Properties;
-
     /// <summary>
     /// Defines some extensions for the <see cref="AbstractServiceEntry"/> class.
     /// </summary>
@@ -56,29 +54,6 @@ namespace Solti.Utils.DI.Interfaces
                 throw new ArgumentNullException(nameof(self));
 
             return self.Name?.StartsWith(Consts.INTERNAL_SERVICE_NAME_PREFIX, StringComparison.Ordinal) is true;
-        }
-
-        /// <summary>
-        /// Applies the given <paramref name="decorator"/>.
-        /// </summary>
-        public static void ApplyProxy(this AbstractServiceEntry self, Func<IInjector, Type, object, object> decorator)
-        {
-            if (self is null)
-                throw new ArgumentNullException(nameof(self));
-
-            if (decorator is null)
-                throw new ArgumentNullException(nameof(decorator));
-
-            if (self is not ISupportsProxying setter || setter.Factory is null)
-                throw new InvalidOperationException(Resources.PROXYING_NOT_SUPPORTED);
-
-            //
-            // Bovitjuk a hivasi lancot a decorator-al.
-            //
-
-            Func<IInjector, Type, object> oldFactory = setter.Factory;
-
-            setter.Factory = (injector, type) => decorator(injector, type, oldFactory(injector, type));
         }
     }
 }

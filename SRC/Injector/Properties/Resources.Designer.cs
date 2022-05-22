@@ -97,6 +97,15 @@ namespace Solti.Utils.DI.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Aspects should implement the IInterceptorFactory interface..
+        /// </summary>
+        internal static string INTERCEPTOR_FACTORY_NOT_IMPLEMENTED {
+            get {
+                return ResourceManager.GetString("INTERCEPTOR_FACTORY_NOT_IMPLEMENTED", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to All constructor arguments must be an interface/Lazy&lt;interface&gt;..
         /// </summary>
         internal static string INVALID_CONSTRUCTOR {
@@ -111,6 +120,15 @@ namespace Solti.Utils.DI.Properties {
         internal static string IS_NULL {
             get {
                 return ResourceManager.GetString("IS_NULL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The entry must be built in order to create service instances..
+        /// </summary>
+        internal static string NOT_BUILT {
+            get {
+                return ResourceManager.GetString("NOT_BUILT", resourceCulture);
             }
         }
         

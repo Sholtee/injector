@@ -131,15 +131,15 @@ namespace Solti.Utils.DI.Internals
         {
             Func<IInstanceFactory, object> factory;
 
-            if (entry.Flags.HasFlag(ServiceEntryFlags.CreateSingleInstance))
+            if (entry.Features.HasFlag(ServiceEntryFlags.CreateSingleInstance))
             {
                 int slot = Slots++;
-                factory = entry.Flags.HasFlag(ServiceEntryFlags.Shared)
+                factory = entry.Features.HasFlag(ServiceEntryFlags.Shared)
                     ? fact => (fact.Super ?? fact).GetOrCreateInstance(entry, slot)
                     : fact => fact.GetOrCreateInstance(entry, slot);
             }
             else
-                factory = entry.Flags.HasFlag(ServiceEntryFlags.Shared)
+                factory = entry.Features.HasFlag(ServiceEntryFlags.Shared)
                     ? fact => (fact.Super ?? fact).CreateInstance(entry)
                     : fact => fact.CreateInstance(entry);
 

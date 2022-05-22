@@ -41,8 +41,7 @@ namespace Solti.Utils.DI.Internals
 
         private object CreateInstanceCore(AbstractServiceEntry requested)
         {
-            object instance;
-            object? lifetime;
+            object? instance, lifetime;
 
             //
             // At the root of the dependency graph this validation makes no sense.
@@ -56,7 +55,7 @@ namespace Solti.Utils.DI.Internals
                 // The requested service should not exist longer than its requestor.
                 //
 
-                if (!requestor.Flags.HasFlag(ServiceEntryFlags.Validated) && requested.Lifetime?.CompareTo(requestor.Lifetime!) < 0)
+                if (!requestor.State.HasFlag(ServiceEntryStateFlags.Validated) && requested.Lifetime?.CompareTo(requestor.Lifetime!) < 0)
                 {
                     RequestNotAllowedException ex = new(Resources.STRICT_DI);
                     ex.Data[nameof(requestor)] = requestor;
@@ -66,7 +65,7 @@ namespace Solti.Utils.DI.Internals
                 }
             }
 
-            if (!requested.Flags.HasFlag(ServiceEntryFlags.Validated))
+            if (!requested.State.HasFlag(ServiceEntryStateFlags.Validated))
             {
                 FPath ??= new ServicePath();
 

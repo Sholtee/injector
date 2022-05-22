@@ -8,6 +8,7 @@ using System;
 namespace Solti.Utils.DI
 {
     using Interfaces;
+    using Interfaces.Properties;
     using Internals;
     using Proxy;
 
@@ -41,7 +42,16 @@ namespace Solti.Utils.DI
             if (interceptor is null)
                 throw new ArgumentNullException(nameof(interceptor));
 
-            self.LastEntry.ApplyInterceptor(interceptor);
+            //
+            // TODO: FIXME:
+            //   We should support proxying even if the LastEntry is a 3rd party implementation
+            //   (should we make ApplyInterceptor static?)
+            //
+
+            if (self.LastEntry is not ProducibleServiceEntry pse)
+                throw new NotSupportedException(Resources.PROXYING_NOT_SUPPORTED);
+
+            pse.ApplyInterceptor(interceptor);
 
             return self;
         }

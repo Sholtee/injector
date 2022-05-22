@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Linq.Expressions;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -11,7 +12,7 @@ namespace Solti.Utils.DI.Internals
 
     internal sealed class TransientServiceEntry : ProducibleServiceEntry
     {
-        public TransientServiceEntry(Type @interface, string? name, Func<IInjector, Type, object> factory) : base(@interface, name, factory)
+        public TransientServiceEntry(Type @interface, string? name, Expression<Func<IInjector, Type, object>> factory) : base(@interface, name, factory)
         {
         }
 
