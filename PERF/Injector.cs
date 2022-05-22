@@ -13,6 +13,7 @@ namespace Solti.Utils.DI.Perf
 {
     using Interfaces;
     using Internals;
+    using Proxy;
 
     public class InjectorTestsBase
     {
@@ -127,6 +128,19 @@ namespace Solti.Utils.DI.Perf
 
         [Benchmark]
         public IDependant NonGeneric() => Injector.Get<IDependant>(name: null);
+
+        [GlobalSetup(Target = nameof(NonGenericProxy))]
+        public void SetupNonGenericProxy() => Injector = Setup
+        (
+            container => container
+                .Service<IDependency, Dependency>(DependencyLifetime)
+                .WithProxy<InterfaceInterceptor<IDependency>>()
+                .Service<IDependant, Dependant>(DependantLifetime)
+                .WithProxy<InterfaceInterceptor<IDependant>>()
+        ).CreateScope();
+
+        [Benchmark]
+        public IDependant NonGenericProxy() => Injector.Get<IDependant>(name: null);
 
         [GlobalSetup(Target = nameof(Generic))]
         public void SetupGeneric() => Injector = Setup
