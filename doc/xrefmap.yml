@@ -383,25 +383,6 @@ references:
   commentId: F:Solti.Utils.DI.Interfaces.Consts.INTERNAL_SERVICE_NAME_PREFIX
   fullName: Solti.Utils.DI.Interfaces.Consts.INTERNAL_SERVICE_NAME_PREFIX
   nameWithType: Consts.INTERNAL_SERVICE_NAME_PREFIX
-- uid: Solti.Utils.DI.Interfaces.IHasCapacity
-  name: IHasCapacity
-  href: Solti.Utils.DI.Interfaces.IHasCapacity.html
-  commentId: T:Solti.Utils.DI.Interfaces.IHasCapacity
-  fullName: Solti.Utils.DI.Interfaces.IHasCapacity
-  nameWithType: IHasCapacity
-- uid: Solti.Utils.DI.Interfaces.IHasCapacity.Capacity
-  name: Capacity
-  href: Solti.Utils.DI.Interfaces.IHasCapacity.html#Solti_Utils_DI_Interfaces_IHasCapacity_Capacity
-  commentId: P:Solti.Utils.DI.Interfaces.IHasCapacity.Capacity
-  fullName: Solti.Utils.DI.Interfaces.IHasCapacity.Capacity
-  nameWithType: IHasCapacity.Capacity
-- uid: Solti.Utils.DI.Interfaces.IHasCapacity.Capacity*
-  name: Capacity
-  href: Solti.Utils.DI.Interfaces.IHasCapacity.html#Solti_Utils_DI_Interfaces_IHasCapacity_Capacity_
-  commentId: Overload:Solti.Utils.DI.Interfaces.IHasCapacity.Capacity
-  isSpec: "True"
-  fullName: Solti.Utils.DI.Interfaces.IHasCapacity.Capacity
-  nameWithType: IHasCapacity.Capacity
 - uid: Solti.Utils.DI.Interfaces.IInjector
   name: IInjector
   href: Solti.Utils.DI.Interfaces.IInjector.html
@@ -925,19 +906,6 @@ references:
   commentId: T:Solti.Utils.DI.Interfaces.Lifetime
   fullName: Solti.Utils.DI.Interfaces.Lifetime
   nameWithType: Lifetime
-- uid: Solti.Utils.DI.Interfaces.Lifetime.Clone
-  name: Clone()
-  href: Solti.Utils.DI.Interfaces.Lifetime.html#Solti_Utils_DI_Interfaces_Lifetime_Clone
-  commentId: M:Solti.Utils.DI.Interfaces.Lifetime.Clone
-  fullName: Solti.Utils.DI.Interfaces.Lifetime.Clone()
-  nameWithType: Lifetime.Clone()
-- uid: Solti.Utils.DI.Interfaces.Lifetime.Clone*
-  name: Clone
-  href: Solti.Utils.DI.Interfaces.Lifetime.html#Solti_Utils_DI_Interfaces_Lifetime_Clone_
-  commentId: Overload:Solti.Utils.DI.Interfaces.Lifetime.Clone
-  isSpec: "True"
-  fullName: Solti.Utils.DI.Interfaces.Lifetime.Clone
-  nameWithType: Lifetime.Clone
 - uid: Solti.Utils.DI.Interfaces.Lifetime.CompareTo(Solti.Utils.DI.Interfaces.Lifetime)
   name: CompareTo(Lifetime)
   href: Solti.Utils.DI.Interfaces.Lifetime.html#Solti_Utils_DI_Interfaces_Lifetime_CompareTo_Solti_Utils_DI_Interfaces_Lifetime_
@@ -1050,25 +1018,19 @@ references:
   isSpec: "True"
   fullName: Solti.Utils.DI.Interfaces.Lifetime.Transient
   nameWithType: Lifetime.Transient
-- uid: Solti.Utils.DI.Interfaces.LifetimeExtensions
-  name: LifetimeExtensions
-  href: Solti.Utils.DI.Interfaces.LifetimeExtensions.html
-  commentId: T:Solti.Utils.DI.Interfaces.LifetimeExtensions
-  fullName: Solti.Utils.DI.Interfaces.LifetimeExtensions
-  nameWithType: LifetimeExtensions
-- uid: Solti.Utils.DI.Interfaces.LifetimeExtensions.WithCapacity(Solti.Utils.DI.Interfaces.Lifetime,System.Int32)
-  name: WithCapacity(Lifetime, Int32)
-  href: Solti.Utils.DI.Interfaces.LifetimeExtensions.html#Solti_Utils_DI_Interfaces_LifetimeExtensions_WithCapacity_Solti_Utils_DI_Interfaces_Lifetime_System_Int32_
-  commentId: M:Solti.Utils.DI.Interfaces.LifetimeExtensions.WithCapacity(Solti.Utils.DI.Interfaces.Lifetime,System.Int32)
-  fullName: Solti.Utils.DI.Interfaces.LifetimeExtensions.WithCapacity(Solti.Utils.DI.Interfaces.Lifetime, System.Int32)
-  nameWithType: LifetimeExtensions.WithCapacity(Lifetime, Int32)
-- uid: Solti.Utils.DI.Interfaces.LifetimeExtensions.WithCapacity*
-  name: WithCapacity
-  href: Solti.Utils.DI.Interfaces.LifetimeExtensions.html#Solti_Utils_DI_Interfaces_LifetimeExtensions_WithCapacity_
-  commentId: Overload:Solti.Utils.DI.Interfaces.LifetimeExtensions.WithCapacity
+- uid: Solti.Utils.DI.Interfaces.Lifetime.Using(System.Object)
+  name: Using(Object)
+  href: Solti.Utils.DI.Interfaces.Lifetime.html#Solti_Utils_DI_Interfaces_Lifetime_Using_System_Object_
+  commentId: M:Solti.Utils.DI.Interfaces.Lifetime.Using(System.Object)
+  fullName: Solti.Utils.DI.Interfaces.Lifetime.Using(System.Object)
+  nameWithType: Lifetime.Using(Object)
+- uid: Solti.Utils.DI.Interfaces.Lifetime.Using*
+  name: Using
+  href: Solti.Utils.DI.Interfaces.Lifetime.html#Solti_Utils_DI_Interfaces_Lifetime_Using_
+  commentId: Overload:Solti.Utils.DI.Interfaces.Lifetime.Using
   isSpec: "True"
-  fullName: Solti.Utils.DI.Interfaces.LifetimeExtensions.WithCapacity
-  nameWithType: LifetimeExtensions.WithCapacity
+  fullName: Solti.Utils.DI.Interfaces.Lifetime.Using
+  nameWithType: Lifetime.Using
 - uid: Solti.Utils.DI.Interfaces.MissingServiceEntry
   name: MissingServiceEntry
   href: Solti.Utils.DI.Interfaces.MissingServiceEntry.html
@@ -1444,6 +1406,38 @@ references:
   fullName.vb: Solti.Utils.DI.IServiceCollectionAdvancedExtensions.WithProxy(Of TInterceptor)(Solti.Utils.DI.Interfaces.IModifiedServiceCollection)
   nameWithType: IServiceCollectionAdvancedExtensions.WithProxy<TInterceptor>(IModifiedServiceCollection)
   nameWithType.vb: IServiceCollectionAdvancedExtensions.WithProxy(Of TInterceptor)(IModifiedServiceCollection)
+- uid: Solti.Utils.DI.PoolConfig
+  name: PoolConfig
+  href: Solti.Utils.DI.PoolConfig.html
+  commentId: T:Solti.Utils.DI.PoolConfig
+  fullName: Solti.Utils.DI.PoolConfig
+  nameWithType: PoolConfig
+- uid: Solti.Utils.DI.PoolConfig.#ctor(System.Int32)
+  name: PoolConfig(Int32)
+  href: Solti.Utils.DI.PoolConfig.html#Solti_Utils_DI_PoolConfig__ctor_System_Int32_
+  commentId: M:Solti.Utils.DI.PoolConfig.#ctor(System.Int32)
+  fullName: Solti.Utils.DI.PoolConfig.PoolConfig(System.Int32)
+  nameWithType: PoolConfig.PoolConfig(Int32)
+- uid: Solti.Utils.DI.PoolConfig.#ctor*
+  name: PoolConfig
+  href: Solti.Utils.DI.PoolConfig.html#Solti_Utils_DI_PoolConfig__ctor_
+  commentId: Overload:Solti.Utils.DI.PoolConfig.#ctor
+  isSpec: "True"
+  fullName: Solti.Utils.DI.PoolConfig.PoolConfig
+  nameWithType: PoolConfig.PoolConfig
+- uid: Solti.Utils.DI.PoolConfig.Capacity
+  name: Capacity
+  href: Solti.Utils.DI.PoolConfig.html#Solti_Utils_DI_PoolConfig_Capacity
+  commentId: P:Solti.Utils.DI.PoolConfig.Capacity
+  fullName: Solti.Utils.DI.PoolConfig.Capacity
+  nameWithType: PoolConfig.Capacity
+- uid: Solti.Utils.DI.PoolConfig.Capacity*
+  name: Capacity
+  href: Solti.Utils.DI.PoolConfig.html#Solti_Utils_DI_PoolConfig_Capacity_
+  commentId: Overload:Solti.Utils.DI.PoolConfig.Capacity
+  isSpec: "True"
+  fullName: Solti.Utils.DI.PoolConfig.Capacity
+  nameWithType: PoolConfig.Capacity
 - uid: Solti.Utils.DI.ScopeFactory
   name: ScopeFactory
   href: Solti.Utils.DI.ScopeFactory.html

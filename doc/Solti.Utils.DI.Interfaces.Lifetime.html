@@ -52,7 +52,6 @@
   </div>
   <div classs="implements">
     <h5>Implements</h5>
-    <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.icloneable">ICloneable</a></div>
     <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.icomparable-1">IComparable</a>&lt;<a class="xref" href="Solti.Utils.DI.Interfaces.Lifetime.html">Lifetime</a>&gt;</div>
   </div>
   <div class="inheritedMembers">
@@ -83,7 +82,7 @@
   <h6><strong>Assembly</strong>: Solti.Utils.DI.Interfaces.dll</h6>
   <h5 id="Solti_Utils_DI_Interfaces_Lifetime_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract class Lifetime : ICloneable, IComparable&lt;Lifetime&gt;</code></pre>
+    <pre><code class="lang-csharp hljs">public abstract class Lifetime : IComparable&lt;Lifetime&gt;</code></pre>
   </div>
   <h3 id="properties">Properties
   </h3>
@@ -212,30 +211,6 @@
   </table>
   <h3 id="methods">Methods
   </h3>
-  <a id="Solti_Utils_DI_Interfaces_Lifetime_Clone_" data-uid="Solti.Utils.DI.Interfaces.Lifetime.Clone*"></a>
-  <h4 id="Solti_Utils_DI_Interfaces_Lifetime_Clone" data-uid="Solti.Utils.DI.Interfaces.Lifetime.Clone">Clone()</h4>
-  <div class="markdown level1 summary"><p>See <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.icloneable.clone#system-icloneable-clone">Clone()</a></p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public virtual object Clone()</code></pre>
-  </div>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
   <a id="Solti_Utils_DI_Interfaces_Lifetime_CompareTo_" data-uid="Solti.Utils.DI.Interfaces.Lifetime.CompareTo*"></a>
   <h4 id="Solti_Utils_DI_Interfaces_Lifetime_CompareTo_Solti_Utils_DI_Interfaces_Lifetime_" data-uid="Solti.Utils.DI.Interfaces.Lifetime.CompareTo(Solti.Utils.DI.Interfaces.Lifetime)">CompareTo(Lifetime)</h4>
   <div class="markdown level1 summary"><p>See <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.icomparable-1.compareto#system-icomparable-1-compareto(-0)">CompareTo(T)</a></p>
@@ -486,16 +461,50 @@
       </tr>
     </tbody>
   </table>
+  <a id="Solti_Utils_DI_Interfaces_Lifetime_Using_" data-uid="Solti.Utils.DI.Interfaces.Lifetime.Using*"></a>
+  <h4 id="Solti_Utils_DI_Interfaces_Lifetime_Using_System_Object_" data-uid="Solti.Utils.DI.Interfaces.Lifetime.Using(System.Object)">Using(Object)</h4>
+  <div class="markdown level1 summary"><p>Creates a copy from this instance using the given <code data-dev-comment-type="paramref" class="paramref">configuration</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual Lifetime Using(object configuration)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></td>
+        <td><span class="parametername">configuration</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.Lifetime.html">Lifetime</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   <h3 id="implements">Implements</h3>
   <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.icloneable">System.ICloneable</a>
-  </div>
-  <div>
       <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.icomparable-1">System.IComparable&lt;T&gt;</a>
-  </div>
-  <h3 id="extensionmethods">Extension Methods</h3>
-  <div>
-      <a class="xref" href="Solti.Utils.DI.Interfaces.LifetimeExtensions.html#Solti_Utils_DI_Interfaces_LifetimeExtensions_WithCapacity_Solti_Utils_DI_Interfaces_Lifetime_System_Int32_">LifetimeExtensions.WithCapacity(Lifetime, Int32)</a>
   </div>
 </article>
           </div>
