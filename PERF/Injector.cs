@@ -32,7 +32,7 @@ namespace Solti.Utils.DI.Perf
                 yield return Lifetime.Transient;
                 yield return Lifetime.Scoped;
                 yield return Lifetime.Singleton;
-                yield return Lifetime.Pooled.WithCapacity(4);
+                yield return Lifetime.Pooled.Using(new PoolConfig(Capacity: 4));
             }
         }
 

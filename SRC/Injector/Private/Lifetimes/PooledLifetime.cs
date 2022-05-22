@@ -10,7 +10,7 @@ namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
 
-    internal sealed class PooledLifetime : InjectorDotNetLifetime, IHasCapacity
+    internal sealed class PooledLifetime : InjectorDotNetLifetime
     {
         private AbstractServiceEntry GetPoolService(Type iface, string? name, string poolName) => new SingletonServiceEntry
         (
@@ -71,21 +71,21 @@ namespace Solti.Utils.DI.Internals
 
         public override int CompareTo(Lifetime other) => other is PooledLifetime
             //
-            // It breaks the contract how the IComparable interfacce is supposed to be implemented but
-            // required since a pooled service can not have pooled dependency (dependency would never 
+            // It breaks the contract how the IComparable interface is supposed to be implemented but
+            // required since a pooled service cannot have pooled dependency (dependency would never 
             // get back to its parent pool)
             //
 
             ? -1
             : base.CompareTo(other);
 
-        public override object Clone() => new PooledLifetime
-        {
-            Capacity = Capacity
-        };
-
-        public int Capacity { get; set; } = Environment.ProcessorCount;
+        public int Capacity { get; init; } = Environment.ProcessorCount;
 
         public override string ToString() => nameof(Pooled);
+
+        public override Lifetime Using(object configuration) => new PooledLifetime
+        {
+            Capacity = ((PoolConfig) configuration).Capacity,
+        };
     }
 }
