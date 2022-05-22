@@ -16,6 +16,7 @@ namespace Solti.Utils.DI.Tests
     using Interfaces;
     using Interfaces.Properties;
     using Primitives.Patterns;
+    using Primitives.Threading;
     using Proxy;
 
     public partial class ServiceCollectionExtensionsTests
@@ -23,13 +24,18 @@ namespace Solti.Utils.DI.Tests
         [Test]
         public void Aspects_ProxyInstallationShouldBeDoneOnBuild([ValueSource(nameof(Lifetimes))] Lifetime lifetime)
         {
+            var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
+            mockInjector
+                .SetupGet(i => i.Lifetime)
+                .Returns(new Mock<ILifetimeManager<object>>(MockBehavior.Strict).Object);
+
             Collection.Service<IMyService, MyService>(lifetime);
 
             AbstractServiceEntry lastEntry = Collection.LastEntry;
             lastEntry.Build(_ => _);
 
             IMyService instance = (IMyService) lastEntry
-                .CreateInstance(new Mock<IInjector>(MockBehavior.Strict).Object, out object _);
+                .CreateInstance(mockInjector.Object, out object _);
 
             Assert.That(instance, Is.Not.Null);
             Assert.That(instance, Is.InstanceOf<InterfaceInterceptor<IMyService>>());
@@ -46,6 +52,9 @@ namespace Solti.Utils.DI.Tests
             mockInjector
                 .Setup(i => i.Get(It.Is<Type>(t => t == typeof(IDisposable)), null))
                 .Returns(new Disposable());
+            mockInjector
+                .SetupGet(i => i.Lifetime)
+                .Returns(new Mock<ILifetimeManager<object>>(MockBehavior.Strict).Object);
 
             Collection.Service<IMyDependantService, MyService>(lifetime);
 
@@ -60,6 +69,11 @@ namespace Solti.Utils.DI.Tests
         [Test]
         public void Aspects_ShouldWorkWithGenericServices([ValueSource(nameof(Lifetimes))] Lifetime lifetime)
         {
+            var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
+            mockInjector
+                .SetupGet(i => i.Lifetime)
+                .Returns(new Mock<ILifetimeManager<object>>(MockBehavior.Strict).Object);
+
             Collection.Service(typeof(IMyGenericService<>), typeof(MyGenericService<>), lifetime);
 
             AbstractServiceEntry lastEntry = Collection.LastEntry;
@@ -68,7 +82,7 @@ namespace Solti.Utils.DI.Tests
             lastEntry = lastEntry.Specialize(typeof(int));
             Assert.DoesNotThrow(() => lastEntry.Build(_ => _));
 
-            IMyGenericService<int> instance = (IMyGenericService<int>) lastEntry.CreateInstance(new Mock<IInjector>(MockBehavior.Strict).Object, out object _);
+            IMyGenericService<int> instance = (IMyGenericService<int>) lastEntry.CreateInstance(mockInjector.Object, out object _);
 
             Assert.That(instance, Is.Not.Null);
             Assert.That(instance, Is.InstanceOf<InterfaceInterceptor<IMyGenericService<int>>>());
@@ -80,7 +94,7 @@ namespace Solti.Utils.DI.Tests
 
         [Test]
         public void Aspects_ShouldThrowOnInstances() =>
-            Assert.Throws<InvalidOperationException>(() => Collection.Instance<IMyService>(new MyService()).WithProxy((_, _, _) => null), Resources.PROXYING_NOT_SUPPORTED);
+            Assert.Throws<NotSupportedException>(() => Collection.Instance<IMyService>(new MyService()).WithProxy((_, _, _) => null), Resources.PROXYING_NOT_SUPPORTED);
 
         [Test]
         public void Aspects_ApplyingAspectsShouldBeSequential([ValueSource(nameof(Lifetimes))] Lifetime lifetime)
@@ -90,12 +104,17 @@ namespace Solti.Utils.DI.Tests
                 .Setup(x => x.GetAspectsOrder())
                 .Returns(Array.Empty<string>());
 
+            var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
+            mockInjector
+                .SetupGet(i => i.Lifetime)
+                .Returns(new Mock<ILifetimeManager<object>>(MockBehavior.Strict).Object);
+
             Collection.Factory(i => mockService.Object, lifetime);
 
             AbstractServiceEntry lastEntry = Collection.LastEntry;
             lastEntry.Build(_ => _);
 
-            IOrderInspectingService svc = (IOrderInspectingService) lastEntry.CreateInstance(new Mock<IInjector>(MockBehavior.Strict).Object, out object _);
+            IOrderInspectingService svc = (IOrderInspectingService) lastEntry.CreateInstance(mockInjector.Object, out object _);
 
             Assert.That(svc.GetAspectsOrder().SequenceEqual(new[]
             {

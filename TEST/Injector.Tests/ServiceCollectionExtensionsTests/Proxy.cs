@@ -94,7 +94,7 @@ namespace Solti.Utils.DI.Tests
         {
             Collection.Instance<IInterface_1>(new Implementation_1_No_Dep());
 
-            Assert.Throws<InvalidOperationException>(() => Collection.WithProxy((p1, p2, p3) => default), Resources.PROXYING_NOT_SUPPORTED);
+            Assert.Throws<NotSupportedException>(() => Collection.WithProxy((p1, p2, p3) => default), Resources.PROXYING_NOT_SUPPORTED);
         }
 
         [Test]
@@ -102,7 +102,7 @@ namespace Solti.Utils.DI.Tests
         {
             Collection.Register(new MissingServiceEntry(typeof(IInterface_1), null));
 
-            Assert.Throws<InvalidOperationException>(() => Collection.WithProxy((p1, p2, p3) => default), Resources.PROXYING_NOT_SUPPORTED);
+            Assert.Throws<NotSupportedException>(() => Collection.WithProxy((p1, p2, p3) => default), Resources.PROXYING_NOT_SUPPORTED);
         }
 
         [TestCaseSource(nameof(ScopeControlledLifetimes))]
