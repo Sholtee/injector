@@ -52,16 +52,19 @@ namespace Solti.Utils.DI.Internals
         {
             foreach (AspectAttribute aspect in aspects)
             {
-                yield return aspect switch
+                switch (aspect)
                 {
-                    IInterceptorFactory<Type> typeFactory => BuildDelegate
-                    (
-                        typeFactory.GetInterceptor(Interface)
-                    ),
-                    IInterceptorFactory<Expression<Func<IInjector, Type, object, object>>> expressionFactory =>
-                        expressionFactory.GetInterceptor(Interface),
-                    _ => throw new InvalidOperationException(Resources.INTERCEPTOR_FACTORY_NOT_IMPLEMENTED)
-                };
+                    case IInterceptorFactory<Type> typeFactory:
+                        yield return BuildDelegate(typeFactory.GetInterceptor(Interface));
+                        break;
+                    case IInterceptorFactory<Expression<Func<IInjector, Type, object, object>>> expressionFactory:
+                        yield return expressionFactory.GetInterceptor(Interface);
+                        break;
+                    default:
+                        InvalidOperationException ex = new(Resources.INTERCEPTOR_FACTORY_NOT_IMPLEMENTED);
+                        ex.Data[nameof(aspect)] = aspect;
+                        throw ex;
+                }
             }
         }
 
