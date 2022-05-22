@@ -29,7 +29,7 @@ namespace Solti.Utils.DI.Internals
             if (Interface.GetCustomAttributes<AspectAttribute>(inherit: true).Any())
                 throw new NotSupportedException(Resources.PROXYING_NOT_SUPPORTED);
 
-            State = ServiceEntryStateFlags.Validated;
+            State = ServiceEntryStateFlags.Validated | ServiceEntryStateFlags.Built;
         }
 
         public override object CreateInstance(IInjector scope, out object? lifetime)

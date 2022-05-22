@@ -253,8 +253,8 @@ namespace Solti.Utils.DI.Tests
             Root = ScopeFactory.Create
             (
                 svcs => svcs
-                    .Factory<IInterface_4>(injector => new Implementation_4_CDep(injector.Get<IInterface_5>()), lifetime1)
-                    .Factory<IInterface_5>(injector => new Implementation_5_CDep(injector.Get<IInterface_4>()), lifetime2),
+                    .Factory<IInterface_4>(injector => new Implementation_4_CDep(injector.Get<IInterface_5>(null)), lifetime1)
+                    .Factory<IInterface_5>(injector => new Implementation_5_CDep(injector.Get<IInterface_4>(null)), lifetime2),
                 new ScopeOptions { Engine = engine }
             );
 
@@ -293,7 +293,7 @@ namespace Solti.Utils.DI.Tests
             Root = ScopeFactory.Create
             (
                 svcs => svcs
-                    .Service<IInterface_1, Implementation_1_No_Dep>(lifetime).WithProxy((injector, _, _) => injector.Get<IInterface_1>()),
+                    .Service<IInterface_1, Implementation_1_No_Dep>(lifetime).WithProxy((injector, _, _) => injector.Get<IInterface_1>(null)),
                 new ScopeOptions { Engine = engine }
             );
 
@@ -425,24 +425,6 @@ namespace Solti.Utils.DI.Tests
         {
             public Implementation_7_UsingOptionalLazyDependency([Options(Optional = true)] Lazy<IInterface_1> dep) : base(dep)
             {
-            }
-        }
-
-        [Test]
-        public void Injector_Get_ShouldThrowIfTheServiceIsNotProducible([ValueSource(nameof(Lifetimes))]Lifetime lifetime, [ValueSource(nameof(Engines))] string engine) 
-        {
-            Root = ScopeFactory.Create(svcs =>
-            {
-                var setter = (ISupportsProxying) svcs
-                    .Service<IInterface_1, Implementation_1_No_Dep>(lifetime)
-                    .LastEntry;
-
-                setter.Factory = null;
-            }, new ScopeOptions { Engine = engine });
-
-            using (IInjector injector = Root.CreateScope()) 
-            {
-                Assert.Throws<InvalidOperationException>(() => injector.Get<IInterface_1>(), Resources.NOT_PRODUCIBLE);
             }
         }
 

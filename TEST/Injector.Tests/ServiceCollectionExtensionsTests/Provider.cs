@@ -59,7 +59,7 @@ namespace Solti.Utils.DI.Tests
 
             var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
 
-            Assert.That(entry.Factory(mockInjector.Object, typeof(IList)), Is.InstanceOf<IList>());
+            Assert.That(entry.Factory.Compile().Invoke(mockInjector.Object, typeof(IList)), Is.InstanceOf<IList>());
         }
 
         [TestCaseSource(nameof(Lifetimes))]
@@ -71,7 +71,7 @@ namespace Solti.Utils.DI.Tests
 
             var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
 
-            Assert.That(entry.Factory(mockInjector.Object, typeof(IList<int>)), Is.InstanceOf<IList<int>>());
+            Assert.That(entry.Factory.Compile().Invoke(mockInjector.Object, typeof(IList<int>)), Is.InstanceOf<IList<int>>());
         }
 
         [TestCaseSource(nameof(Lifetimes))]

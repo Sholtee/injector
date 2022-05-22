@@ -165,28 +165,6 @@ namespace Solti.Utils.DI.Perf
 
     [MemoryDiagnoser]
     [SimpleJob(RunStrategy.Throughput, invocationCount: INVOCATION_COUNT)]
-    public class InjectorInstantiate : InjectorTestsBase
-    {
-        public IInjector Injector { get; set; }
-
-        [ParamsSource(nameof(Lifetimes))]
-        public Lifetime DependencyLifetime { get; set; }
-
-        [GlobalSetup(Target = nameof(Instantiate))]
-        public void SetupInstantiate() => Injector = Setup
-        (
-            container => container.Service<IDependency, Dependency>(DependencyLifetime)
-        ).CreateScope();
-
-        [Benchmark]
-        public Outer Instantiate() => Injector.Instantiate<Outer>(new Dictionary<string, object>
-        {
-            { "num", 10 }
-        });
-    }
-
-    [MemoryDiagnoser]
-    [SimpleJob(RunStrategy.Throughput, invocationCount: INVOCATION_COUNT)]
     public class ScopeCreation : InjectorTestsBase
     {
         [GlobalSetup(Target = nameof(CreateAndDisposeScope))]

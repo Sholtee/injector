@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 
+using Moq;
 using NUnit.Framework;
 
 namespace Solti.Utils.DI.Tests
@@ -262,6 +263,6 @@ namespace Solti.Utils.DI.Tests
 
         [Test]
         public void Ctor_ShouldThrowOnOverriddenService([ValueSource(nameof(Engines))] string engine) =>
-            Assert.Throws<InvalidOperationException>(() => ScopeFactory.Create(svcs => svcs.Add(new DummyServiceEntry(typeof(IInjector), null)), new ScopeOptions { Engine = engine }), Resources.SERVICE_ALREADY_REGISTERED);
+            Assert.Throws<InvalidOperationException>(() => ScopeFactory.Create(svcs => svcs.Add(new InstanceServiceEntry(typeof(IInjector), null, new Mock<IInjector>().Object)), new ScopeOptions { Engine = engine }), Resources.SERVICE_ALREADY_REGISTERED);
     }
 }

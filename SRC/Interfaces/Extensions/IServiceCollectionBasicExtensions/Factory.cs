@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Linq.Expressions;
 
 namespace Solti.Utils.DI.Interfaces
 {
@@ -18,12 +19,12 @@ namespace Solti.Utils.DI.Interfaces
         /// <param name="factory">The factory function that is responsible for the instantiation. Its call count depends on the value of the <paramref name="lifetime"/> parameter. Note that the second parameter of the <paramref name="factory"/> is never generic, even if you registered the factory for an open generic interface.</param>
         /// <param name="lifetime">The <see cref="Lifetime"/> of the service.</param>
         /// <remarks>You can register generic services (where the <paramref name="iface"/> parameter is an open generic type).</remarks>
-        public static IModifiedServiceCollection Factory(this IServiceCollection self, Type iface, string? name, Func<IInjector, Type, object> factory, Lifetime lifetime)
+        public static IModifiedServiceCollection Factory(this IServiceCollection self, Type iface, string? name, Expression<Func<IInjector, Type, object>> factory, Lifetime lifetime)
         {
-            if (self == null)
+            if (self is null)
                 throw new ArgumentNullException(nameof(self));
 
-            if (lifetime == null)
+            if (lifetime is null)
                 throw new ArgumentNullException(nameof(lifetime));
 
             //
@@ -44,7 +45,7 @@ namespace Solti.Utils.DI.Interfaces
         /// <param name="factory">The factory function that is responsible for the instantiation. Its call count depends on the value of the <paramref name="lifetime"/> parameter. Note that the second parameter of the <paramref name="factory"/> is never generic, even if you registered the factory for an open generic interface.</param>
         /// <param name="lifetime">The <see cref="Lifetime"/> of the service.</param>
         /// <remarks>You can register generic services (where the <paramref name="iface"/> parameter is an open generic type).</remarks>
-        public static IModifiedServiceCollection Factory(this IServiceCollection self, Type iface, Func<IInjector, Type, object> factory, Lifetime lifetime) 
+        public static IModifiedServiceCollection Factory(this IServiceCollection self, Type iface, Expression<Func<IInjector, Type, object>> factory, Lifetime lifetime) 
             => self.Factory(iface, null, factory, lifetime);
 
         /// <summary>
@@ -55,8 +56,8 @@ namespace Solti.Utils.DI.Interfaces
         /// <param name="name">The (optional) name of the service.</param>
         /// <param name="factory">The factory function that is responsible for the instantiation. Its call count depends on the value of the <paramref name="lifetime"/> parameter.</param>
         /// <param name="lifetime">The <see cref="Lifetime"/> of the service.</param>
-        public static IModifiedServiceCollection Factory<TInterface>(this IServiceCollection self, string? name, Func<IInjector, TInterface> factory, Lifetime lifetime) where TInterface : class
-            => self.Factory(typeof(TInterface), name, (injector, type) => factory(injector), lifetime);
+        public static IModifiedServiceCollection Factory<TInterface>(this IServiceCollection self, string? name, Expression<Func<IInjector, TInterface>> factory, Lifetime lifetime) where TInterface : class
+            => self.Factory(typeof(TInterface), name, WrapToStandardFactory(factory), lifetime);
 
         /// <summary>
         /// Registers a new service factory with the given type. Factories are also services except that the instantiating process is delegated to the caller. Useful if a service has more than one constructor.
@@ -65,7 +66,25 @@ namespace Solti.Utils.DI.Interfaces
         /// <param name="self">The target <see cref="IServiceCollection"/>.</param>
         /// <param name="factory">The factory function that is responsible for the instantiation. Its call count depends on the value of the <paramref name="lifetime"/> parameter.</param>
         /// <param name="lifetime">The <see cref="Lifetime"/> of the service.</param>
-        public static IModifiedServiceCollection Factory<TInterface>(this IServiceCollection self, Func<IInjector, TInterface> factory, Lifetime lifetime) where TInterface : class
-            => self.Factory(null, injector => factory(injector), lifetime);
+        public static IModifiedServiceCollection Factory<TInterface>(this IServiceCollection self, Expression<Func<IInjector, TInterface>> factory, Lifetime lifetime) where TInterface : class
+            => self.Factory(typeof(TInterface), null, WrapToStandardFactory(factory), lifetime);
+
+        private static Expression<Func<IInjector, Type, object>> WrapToStandardFactory<TInterface>(Expression<Func<IInjector, TInterface>> factory)
+        {
+            //
+            // TODO: Try to update the original expression to avoid nested method calls
+            //
+
+            ParameterExpression
+                injector = Expression.Parameter(typeof(IInjector), nameof(injector)),
+                iface = Expression.Parameter(typeof(Type), nameof(iface));
+
+            return Expression.Lambda<Func<IInjector, Type, object>>
+            (
+                Expression.Invoke(factory, injector),
+                injector,
+                iface
+            );
+        }
     }
 }

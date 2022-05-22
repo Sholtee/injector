@@ -71,6 +71,14 @@ namespace Solti.Utils.DI.Internals
                 injector = Expression.Parameter(typeof(IInjector), nameof(injector)),
                 iface = Expression.Parameter(typeof(Type), nameof(iface));
 
+            List<ParameterExpression> paramz = new(3)
+            {
+                injector,
+                iface
+            };
+            if (additinalParameter is not null)
+                paramz.Add(additinalParameter);
+
             Expression<TDelegate> resolver = Expression.Lambda<TDelegate>
             (
                 Expression.Block
@@ -118,9 +126,7 @@ namespace Solti.Utils.DI.Internals
                         typeof(object)
                     )
                 ),
-                injector,
-                iface,
-                additinalParameter
+                paramz
             );
 
             Debug.WriteLine($"Created activator:{Environment.NewLine}{resolver.GetDebugView()}");

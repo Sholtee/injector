@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Linq.Expressions;
 
 namespace Solti.Utils.DI.Interfaces
 {
@@ -20,11 +21,11 @@ namespace Solti.Utils.DI.Interfaces
             if (self is null)
                 throw new ArgumentNullException(nameof(self));
 
-            return self.Implementation is not  null;
+            return self.Implementation is not null;
         }
 
         /// <summary>
-        /// The service was registered via <see cref="IServiceCollectionBasicExtensions.Factory(IServiceCollection, Type, string, Func{IInjector, Type, object}, Lifetime)"/> call.
+        /// The service was registered via <see cref="IServiceCollectionBasicExtensions.Factory(IServiceCollection, Type, string, Expression{Func{IInjector, Type, object}}, Lifetime)"/> call.
         /// </summary>
         public static bool IsFactory(this AbstractServiceEntry self)
         {

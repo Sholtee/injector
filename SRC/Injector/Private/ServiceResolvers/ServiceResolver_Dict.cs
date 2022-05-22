@@ -27,6 +27,9 @@ namespace Solti.Utils.DI.Internals
 
         private Func<IInstanceFactory, object> CreateResolver(AbstractServiceEntry entry)
         {
+            if (!entry.State.HasFlag(ServiceEntryStateFlags.Built))
+                entry.Build(_ => _);
+
             if (entry.Features.HasFlag(ServiceEntryFlags.CreateSingleInstance))
             {
                 int slot = Slots++;

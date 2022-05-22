@@ -31,8 +31,6 @@ namespace Solti.Utils.DI.Internals
                 Type @base = src.BaseType;
                 Debug.Assert(@base is not null);
 
-                ConstructorInfo baseCtor = @base!.GetApplicableConstructor();
-
                 //
                 // Since the generated proxy type "inherited" all the public constructor from its anchestor, we can find the proper
                 // one with parameter matching
@@ -40,25 +38,31 @@ namespace Solti.Utils.DI.Internals
 
                 return src.GetConstructor
                 (
-                    baseCtor.GetParameters().Select(p => p.ParameterType).ToArray()
+                    @base!
+                        .GetApplicableConstructor()
+                        .GetParameters()
+                        .Select(p => p.ParameterType)
+                        .ToArray()
                 );
             }
 
             IReadOnlyList<ConstructorInfo> 
-                constructors = src.GetConstructors(),
-                compatibleCtors = constructors.Where(ctor => ctor.GetCustomAttribute<ServiceActivatorAttribute>() is not null).ToList();
+                publicCtors = src.GetConstructors(),
+                promisingCtors = publicCtors
+                    .Where(ctor => ctor.GetCustomAttribute<ServiceActivatorAttribute>() is not null)
+                    .ToList();
 
             //
             // The implementation must have exactly one (annotated) constructor
             //
 
-            if (compatibleCtors.Count is 0)
-                compatibleCtors = constructors;
+            if (promisingCtors.Count is 0)
+                promisingCtors = publicCtors;
 
-            if (compatibleCtors.Count > 1)
+            if (promisingCtors.Count > 1)
                 throw new NotSupportedException(string.Format(Resources.Culture, Resources.CONSTRUCTOR_OVERLOADING_NOT_SUPPORTED, src));
 
-            return compatibleCtors.Single();
+            return promisingCtors[0];
         });
     }
 }

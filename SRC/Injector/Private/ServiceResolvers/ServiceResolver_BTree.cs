@@ -143,6 +143,9 @@ namespace Solti.Utils.DI.Internals
                     ? fact => (fact.Super ?? fact).CreateInstance(entry)
                     : fact => fact.CreateInstance(entry);
 
+            if (!entry.State.HasFlag(ServiceEntryStateFlags.Built))
+                entry.Build(_ => _);
+
             return new ResolutionNode<Func<IInstanceFactory, object>>(entry, factory);
         }
 

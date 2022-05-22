@@ -4,7 +4,6 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
-using System.Collections.Generic;
 
 namespace Solti.Utils.DI.Interfaces
 {
@@ -22,7 +21,7 @@ namespace Solti.Utils.DI.Interfaces
         /// <param name="explicitArgs">Explicit arguments, provided by the user.</param>
         /// <param name="lifetime">The <see cref="Lifetime"/> of the service.</param>
         /// <remarks>The provided <see cref="IServiceProvider"/> implementation won't be disposed even if it implements the <see cref="IDisposable"/> interface.</remarks>
-        public static IModifiedServiceCollection Provider(this IServiceCollection self, Type iface, string? name, Type provider, IReadOnlyDictionary<string, object?> explicitArgs, Lifetime lifetime)
+        public static IModifiedServiceCollection Provider(this IServiceCollection self, Type iface, string? name, Type provider, object explicitArgs, Lifetime lifetime)
         {
             if (self is null)
                 throw new ArgumentNullException(nameof(self));
@@ -111,7 +110,7 @@ namespace Solti.Utils.DI.Interfaces
         /// <param name="explicitArgs">Explicit arguments, provided by the user.</param>
         /// <param name="lifetime">The <see cref="Lifetime"/> of the service.</param>
         /// <remarks>The provided <see cref="IServiceProvider"/> implementation won't be disposed even if it implements the <see cref="IDisposable"/> interface.</remarks>
-        public static IModifiedServiceCollection Provider(this IServiceCollection self, Type iface, Type provider, IReadOnlyDictionary<string, object?> explicitArgs, Lifetime lifetime) => self.Provider(iface, null, provider, explicitArgs, lifetime);
+        public static IModifiedServiceCollection Provider(this IServiceCollection self, Type iface, Type provider, object explicitArgs, Lifetime lifetime) => self.Provider(iface, null, provider, explicitArgs, lifetime);
 
         /// <summary>
         /// Registers a new provider. Providers are "factory services" responsible for creating the concrete service.
@@ -145,7 +144,7 @@ namespace Solti.Utils.DI.Interfaces
         /// <param name="explicitArgs">Explicit arguments, provided by the user.</param>
         /// <param name="lifetime">The <see cref="Lifetime"/> of the service.</param>
         /// <remarks>The provided <see cref="IServiceProvider"/> implementation won't be disposed even if it implements the <see cref="IDisposable"/> interface.</remarks>
-        public static IModifiedServiceCollection Provider<TInterface, TProvider>(this IServiceCollection self, IReadOnlyDictionary<string, object?> explicitArgs, Lifetime lifetime) where TProvider : class, IServiceProvider where TInterface : class
+        public static IModifiedServiceCollection Provider<TInterface, TProvider>(this IServiceCollection self, object explicitArgs, Lifetime lifetime) where TProvider : class, IServiceProvider where TInterface : class
             => self.Provider(typeof(TInterface), typeof(TProvider), explicitArgs, lifetime);
     }
 }

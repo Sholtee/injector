@@ -4,11 +4,11 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 
 using Microsoft.Extensions.Configuration;
@@ -19,6 +19,7 @@ using NUnit.Framework;
 namespace Solti.Utils.DI.UseCases
 {
     using Interfaces;
+    using Primitives;
     using Proxy;
     using Proxy.Generators;
 
@@ -154,25 +155,28 @@ namespace Solti.Utils.DI.UseCases
         }
 
         [AttributeUsage(AttributeTargets.Interface, AllowMultiple = true)]
-        public sealed class MethodInvocationLoggerAspect : AspectAttribute
+        public sealed class MethodInvocationLoggerAspect : AspectAttribute, IInterceptorFactory<Expression<Func<IInjector, Type, object, object>>>
         {
             public Type Logger { get; }
             
             public MethodInvocationLoggerAspect(Type logger) 
             {
-                Kind = AspectKind.Factory;
                 Logger = logger;
             }
 
-            public override object GetInterceptor(IInjector injector, Type iface, object instance) => injector.Instantiate
-            (
-                new ProxyGenerator(iface, typeof(MethodInvocationLoggerInterceptor<>).MakeGenericType(iface)).GetGeneratedType(),
-                new Dictionary<string, object>
-                {
-                    ["target"] = instance,
-                    ["logger"] = Activator.CreateInstance(Logger)
-                }
-            );
+            public Expression<Func<IInjector, Type, object, object>> GetInterceptor(Type iface)
+            {
+                StaticMethod ctor = new ProxyGenerator
+                (
+                    iface,
+                    typeof(MethodInvocationLoggerInterceptor<>).MakeGenericType(iface)
+                )
+                .GetGeneratedType()
+                .GetConstructor(new[] { iface, typeof(ILogger) })
+                .ToStaticDelegate();
+
+                return (injector, type, target) => ctor(target, Activator.CreateInstance(Logger));
+            }
         }
     }
 }

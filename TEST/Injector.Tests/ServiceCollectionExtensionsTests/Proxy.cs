@@ -40,8 +40,8 @@ namespace Solti.Utils.DI.Tests
 
             Collection
                 .Service<IInterface_1, Implementation_1_No_Dep>(lifetime)
-                .WithProxy(mockCallback1.Object)
-                .WithProxy(mockCallback2.Object);
+                .WithProxy((injector, iface, curr) => mockCallback1.Object(injector, iface, curr))
+                .WithProxy((injector, iface, curr) => mockCallback2.Object(injector, iface, curr));
 
             var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
             mockInjector
@@ -64,7 +64,7 @@ namespace Solti.Utils.DI.Tests
 
             Collection
                 .Service(typeof(IInterface_3<int>), typeof(Implementation_3_IInterface_1_Dependant<int>), lifetime)
-                .WithProxy(mockCallback.Object);
+                .WithProxy((injector, iface, curr) => mockCallback.Object(injector, iface, curr));
 
             var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
             
