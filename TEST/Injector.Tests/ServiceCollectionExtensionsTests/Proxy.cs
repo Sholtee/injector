@@ -48,6 +48,7 @@ namespace Solti.Utils.DI.Tests
                 .SetupGet(i => i.Options)
                 .Returns(new ScopeOptions());
 
+            Collection.LastEntry.Build(_ => _);
             Assert.That(Collection.LastEntry.CreateInstance(mockInjector.Object, out _), Is.InstanceOf<DecoratedImplementation_1>());
 
             mockCallback1.Verify(_ => _(It.IsAny<IInjector>(), typeof(IInterface_1), It.IsAny<IInterface_1>()), Times.Once);
@@ -76,6 +77,7 @@ namespace Solti.Utils.DI.Tests
                 .SetupGet(i => i.Options)
                 .Returns(new ScopeOptions());
 
+            Collection.LastEntry.Build(_ => _);
             Assert.That(Collection.LastEntry.CreateInstance(mockInjector.Object, out _), Is.InstanceOf<DecoratedImplementation_3<int>>());
 
             mockCallback.Verify(_ => _(It.IsAny<IInjector>(), typeof(IInterface_3<int>), It.IsAny<IInterface_3<int>>()), Times.Once);
@@ -86,7 +88,7 @@ namespace Solti.Utils.DI.Tests
         {
             Collection.Service(typeof(IInterface_3<>), typeof(Implementation_3_IInterface_1_Dependant<>), lifetime);
 
-            Assert.Throws<InvalidOperationException>(() => Collection.WithProxy((injector, type, inst) => inst), Resources.PROXYING_NOT_SUPPORTED);
+            Assert.Throws<NotSupportedException>(() => Collection.WithProxy((injector, type, inst) => inst), Resources.PROXYING_NOT_SUPPORTED);
         }
 
         [Test]
@@ -126,6 +128,7 @@ namespace Solti.Utils.DI.Tests
                 .SetupGet(i => i.Options)
                 .Returns(new ScopeOptions());
 
+            Collection.LastEntry.Build(_ => _);
             object instance = Collection.LastEntry.CreateInstance(mockInjector.Object, out _);
 
             Assert.That(instance, Is.InstanceOf<MyProxyWithDependency>());
@@ -165,6 +168,7 @@ namespace Solti.Utils.DI.Tests
                 .SetupGet(i => i.Options)
                 .Returns(new ScopeOptions());
 
+            Collection.LastEntry.Build(_ => _);
             Assert.That(Collection.LastEntry.CreateInstance(mockInjector.Object, out _), Is.InstanceOf<DecoratedImplementation_1>());
         }
     }

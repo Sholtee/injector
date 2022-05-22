@@ -14,6 +14,7 @@ namespace Solti.Utils.DI.Tests
 {
     using Interfaces;
     using Internals;
+    using Primitives;
     using Primitives.Patterns;
     using Properties;
     
@@ -184,10 +185,10 @@ namespace Solti.Utils.DI.Tests
         public void Service_ShouldBeInstructedByServiceActivator(Lifetime lifetime)
         {
             Assert.DoesNotThrow(() => Collection.Service<IInterface_1, Implementation_8_MultiCtor>(lifetime));
-            Assert.That(Collection.LastEntry.Factory, Is.EqualTo(ServiceActivator.Get(typeof(Implementation_8_MultiCtor).GetConstructor(new Type[0]))));
+            Assert.That(Collection.LastEntry.Factory.GetDebugView(), Is.EqualTo(ServiceActivator.Get(typeof(Implementation_8_MultiCtor).GetConstructor(Type.EmptyTypes)).GetDebugView()));
 
             Assert.DoesNotThrow(() => Collection.Service(typeof(IInterface_3<>), typeof(Implementation_9_MultiCtor<>), lifetime));
-            Assert.That(Collection.LastEntry.Specialize(typeof(int)).Factory, Is.EqualTo(ServiceActivator.Get(typeof(Implementation_9_MultiCtor<int>).GetConstructor(new Type[] { typeof(IInterface_1) }))));
+            Assert.That(Collection.LastEntry.Specialize(typeof(int)).Factory.GetDebugView(), Is.EqualTo(ServiceActivator.Get(typeof(Implementation_9_MultiCtor<int>).GetConstructor(new Type[] { typeof(IInterface_1) })).GetDebugView()));
         }
 
         [TestCaseSource(nameof(Lifetimes))]
