@@ -230,32 +230,24 @@ namespace Solti.Utils.DI.Internals
                 {
                     lock (FLock)
                     {
-                        int snapshot = Slots;
-
                         //
                         // Another thread might have registered the resolver while we reached here.
                         //
 
-                        bool registered = FGetResolverSwitch.Add
-                        (
-                            CreateServiceResolutionNode
+                        resolver = FGetResolver(handle, name);
+                        if (resolver is null)
+                        {
+                            ResolutionNode<Func<IInstanceFactory, object>> node = CreateServiceResolutionNode
                             (
                                 genericEntry.Specialize(iface.GenericTypeArguments)
-                            )
-                        );
+                            );
 
-                        if (registered)
+                            FGetResolverSwitch.Add(node);
                             FGetResolver = BuildSwitch(FGetResolverSwitch);
-                        else
-                            //
-                            // An extra slot might be added, revert it.
-                            //
 
-                            Slots = snapshot;
+                            resolver = node.Result;
+                        }
                     }
-
-                    resolver = FGetResolver(handle, name);
-                    Assert(resolver is not null, "Resolver cannot be NULL after it was registered");
                 }
             }
 
