@@ -81,7 +81,7 @@ namespace Solti.Utils.DI.Internals
         {
             CompositeKey key = new(iface, name);
 
-            if (!FResolvers.TryGetValue(key, out Func<IInstanceFactory, object> resolver) && iface.IsConstructedGenericType)
+            if (!FResolvers.TryGetValue(key, out Func<IInstanceFactory, object> resolver) && iface.IsConstructedGenericType && FGenericEntries.TryGetValue(new CompositeKey(iface.GetGenericTypeDefinition(), name), out AbstractServiceEntry genericEntry))
             {
                 lock (FLock)
                 {
@@ -89,7 +89,7 @@ namespace Solti.Utils.DI.Internals
                     // FResolvers instance may be changed while we reached here
                     //
 
-                    if (!FResolvers.TryGetValue(key, out resolver) && FGenericEntries.TryGetValue(new CompositeKey(iface.GetGenericTypeDefinition(), name), out AbstractServiceEntry genericEntry))
+                    if (!FResolvers.TryGetValue(key, out resolver))
                     {
                         //
                         // Create a new resolver for the specializted entry
