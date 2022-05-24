@@ -18,7 +18,7 @@ namespace Solti.Utils.DI.Internals
     using Primitives;
     using Primitives.Patterns;
 
-    internal sealed class ServiceResolver_BTree : IServiceResolver
+    internal sealed class ServiceResolver_BTree : ServiceResolverBase
     {
         #region Private
         private static readonly StringComparer FStringComparer = StringComparer.Ordinal;
@@ -127,24 +127,11 @@ namespace Solti.Utils.DI.Internals
             }
         }
 
-        private ResolutionNode<Func<IInstanceFactory, object>> CreateServiceResolutionNode(AbstractServiceEntry entry)
-        {
-            Func<IInstanceFactory, object> factory;
-
-            if (entry.Flags.HasFlag(ServiceEntryFlags.CreateSingleInstance))
-            {
-                int slot = Slots++;
-                factory = entry.Flags.HasFlag(ServiceEntryFlags.Shared)
-                    ? fact => (fact.Super ?? fact).GetOrCreateInstance(entry, slot)
-                    : fact => fact.GetOrCreateInstance(entry, slot);
-            }
-            else
-                factory = entry.Flags.HasFlag(ServiceEntryFlags.Shared)
-                    ? fact => (fact.Super ?? fact).CreateInstance(entry)
-                    : fact => fact.CreateInstance(entry);
-
-            return new ResolutionNode<Func<IInstanceFactory, object>>(entry, factory);
-        }
+        private ResolutionNode<Func<IInstanceFactory, object>> CreateServiceResolutionNode(AbstractServiceEntry entry) => new ResolutionNode<Func<IInstanceFactory, object>>
+        (
+            entry,
+            CreateResolver(entry)
+        );
 
         private static Func<long, string?, TResult?> BuildSwitch<TResult>(RedBlackTree<ResolutionNode<TResult>> tree)
         {
@@ -183,12 +170,9 @@ namespace Solti.Utils.DI.Internals
 
         private volatile Func<long, string?, Func<IInstanceFactory, object>?> FGetResolver;
 
-        private readonly object FLock = new();
         #endregion
 
         public const string Id = "btree";
-
-        public int Slots { get; private set; }
 
         public ServiceResolver_BTree(IEnumerable<AbstractServiceEntry> entries)
         {
@@ -218,7 +202,7 @@ namespace Solti.Utils.DI.Internals
             FGetResolver = BuildSwitch(FGetResolverSwitch);
         }
 
-        public Func<IInstanceFactory, object>? Get(Type iface, string? name)
+        public override Func<IInstanceFactory, object>? Get(Type iface, string? name)
         {
             long handle = (long) iface.TypeHandle.Value;
 
