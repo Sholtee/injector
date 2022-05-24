@@ -18,7 +18,7 @@ namespace Solti.Utils.DI.Internals
     using Primitives;
     using Primitives.Patterns;
 
-    internal sealed class ServiceResolver_BTree : IServiceResolver
+    internal sealed class ServiceResolver_BTree : ServiceResolverBase
     {
         #region Private
         private static readonly StringComparer FStringComparer = StringComparer.Ordinal;
@@ -127,27 +127,14 @@ namespace Solti.Utils.DI.Internals
             }
         }
 
-        private ResolutionNode<Func<IInstanceFactory, object>> CreateServiceResolutionNode(AbstractServiceEntry entry)
-        {
-            Func<IInstanceFactory, object> factory;
-
-            if (entry.Features.HasFlag(ServiceEntryFlags.CreateSingleInstance))
-            {
-                int slot = Slots++;
-                factory = entry.Features.HasFlag(ServiceEntryFlags.Shared)
-                    ? fact => (fact.Super ?? fact).GetOrCreateInstance(entry, slot)
-                    : fact => fact.GetOrCreateInstance(entry, slot);
-            }
-            else
-                factory = entry.Features.HasFlag(ServiceEntryFlags.Shared)
-                    ? fact => (fact.Super ?? fact).CreateInstance(entry)
-                    : fact => fact.CreateInstance(entry);
+        private ResolutionNode<Func<IInstanceFactory, object>> CreateServiceResolutionNode(AbstractServiceEntry entry) => new ResolutionNode<Func<IInstanceFactory, object>>
+        (
+            entry,
+            CreateResolver(entry)
+        );
 
             if (!entry.State.HasFlag(ServiceEntryStateFlags.Built))
                 entry.Build(_ => _);
-
-            return new ResolutionNode<Func<IInstanceFactory, object>>(entry, factory);
-        }
 
         private static Func<long, string?, TResult?> BuildSwitch<TResult>(RedBlackTree<ResolutionNode<TResult>> tree)
         {
@@ -186,12 +173,9 @@ namespace Solti.Utils.DI.Internals
 
         private volatile Func<long, string?, Func<IInstanceFactory, object>?> FGetResolver;
 
-        private readonly object FLock = new();
         #endregion
 
         public const string Id = "btree";
-
-        public int Slots { get; private set; }
 
         public ServiceResolver_BTree(IEnumerable<AbstractServiceEntry> entries)
         {
@@ -221,7 +205,7 @@ namespace Solti.Utils.DI.Internals
             FGetResolver = BuildSwitch(FGetResolverSwitch);
         }
 
-        public Func<IInstanceFactory, object>? Get(Type iface, string? name)
+        public override Func<IInstanceFactory, object>? Get(Type iface, string? name)
         {
             long handle = (long) iface.TypeHandle.Value;
 
@@ -233,32 +217,24 @@ namespace Solti.Utils.DI.Internals
                 {
                     lock (FLock)
                     {
-                        int snapshot = Slots;
-
                         //
                         // Another thread might have registered the resolver while we reached here.
                         //
 
-                        bool registered = FGetResolverSwitch.Add
-                        (
-                            CreateServiceResolutionNode
+                        resolver = FGetResolver(handle, name);
+                        if (resolver is null)
+                        {
+                            ResolutionNode<Func<IInstanceFactory, object>> node = CreateServiceResolutionNode
                             (
                                 genericEntry.Specialize(iface.GenericTypeArguments)
-                            )
-                        );
+                            );
 
-                        if (registered)
+                            FGetResolverSwitch.Add(node);
                             FGetResolver = BuildSwitch(FGetResolverSwitch);
-                        else
-                            //
-                            // An extra slot might be added, revert it.
-                            //
 
-                            Slots = snapshot;
+                            resolver = node.Result;
+                        }
                     }
-
-                    resolver = FGetResolver(handle, name);
-                    Assert(resolver is not null, "Resolver cannot be NULL after it was registered");
                 }
             }
 

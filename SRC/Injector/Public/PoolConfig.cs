@@ -1,18 +1,13 @@
 ﻿/********************************************************************************
-* IHasCapacity.cs                                                               *
+* PoolConfig.cs                                                                 *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
-namespace Solti.Utils.DI.Interfaces
+
+namespace Solti.Utils.DI
 {
     /// <summary>
-    /// Provides the mechanism for adjusting capacity.
+    /// Contains pool realted configurations.
     /// </summary>
-    public interface IHasCapacity
-    {
-        /// <summary>
-        /// The capacity.
-        /// </summary>
-        int Capacity { get; set; }
-    }
+    public sealed record PoolConfig(int Capacity);
 }

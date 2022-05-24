@@ -179,7 +179,7 @@ namespace Solti.Utils.DI.Tests
         [Test]
         public void Lifetime_PooledService_ShouldBeInstantiatedUpToNTimes([Values(1, 2, 3)] int times)
         {
-            Root = ScopeFactory.Create(svcs => svcs.Service<IInterface_1, Implementation_1_No_Dep>(Lifetime.Pooled.WithCapacity(times)));
+            Root = ScopeFactory.Create(svcs => svcs.Service<IInterface_1, Implementation_1_No_Dep>(Lifetime.Pooled.Using(new PoolConfig(Capacity: times))));
 
             ManualResetEventSlim stop = new ManualResetEventSlim();
 
@@ -223,7 +223,7 @@ namespace Solti.Utils.DI.Tests
         [Test]
         public async Task Lifetime_PooledService_ShouldHaveItsOwnScope()
         {
-            Root = ScopeFactory.Create(svcs => svcs.Service<IInterface_7<IInjector>, Implementation_7_TInterface_Dependant<IInjector>>(Lifetime.Pooled.WithCapacity(2)));
+            Root = ScopeFactory.Create(svcs => svcs.Service<IInterface_7<IInjector>, Implementation_7_TInterface_Dependant<IInjector>>(Lifetime.Pooled.Using(new PoolConfig(Capacity: 2))));
 
             using (IInjector injector1 = Root.CreateScope())
             {
@@ -358,7 +358,7 @@ namespace Solti.Utils.DI.Tests
         {
             Root = ScopeFactory.Create(svcs => svcs
                 .Service<IInterface_1, Implementation_1_No_Dep>(depLifetime)
-                .Service(typeof(IInterface_3<>), name, typeof(Implementation_3_IInterface_1_Dependant<>), Lifetime.Pooled.WithCapacity(2)));
+                .Service(typeof(IInterface_3<>), name, typeof(Implementation_3_IInterface_1_Dependant<>), Lifetime.Pooled.Using(new PoolConfig(Capacity: 2))));
 
             using (IInjector injector1 = Root.CreateScope())
             {

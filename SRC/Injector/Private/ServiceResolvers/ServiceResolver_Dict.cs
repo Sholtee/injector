@@ -11,7 +11,7 @@ namespace Solti.Utils.DI.Internals
     using Interfaces;
     using Interfaces.Properties;
 
-    internal sealed class ServiceResolver_Dict: IServiceResolver
+    internal sealed class ServiceResolver_Dict: ServiceResolverBase
     {
         private sealed record CompositeKey(Type Interface, string? Name);
 
@@ -23,29 +23,8 @@ namespace Solti.Utils.DI.Internals
 
         private volatile /*IReadOnly*/Dictionary<CompositeKey, Func<IInstanceFactory, object>> FResolvers;
 
-        private readonly object FLock = new();
-
-        private Func<IInstanceFactory, object> CreateResolver(AbstractServiceEntry entry)
-        {
-            if (!entry.State.HasFlag(ServiceEntryStateFlags.Built))
-                entry.Build(_ => _);
-
-            if (entry.Features.HasFlag(ServiceEntryFlags.CreateSingleInstance))
-            {
-                int slot = Slots++;
-                return entry.Features.HasFlag(ServiceEntryFlags.Shared)
-                    ? fact => (fact.Super ?? fact).GetOrCreateInstance(entry, slot)
-                    : fact => fact.GetOrCreateInstance(entry, slot);
-            }
-            else
-                return entry.Features.HasFlag(ServiceEntryFlags.Shared)
-                    ? fact => (fact.Super ?? fact).CreateInstance(entry)
-                    : fact => fact.CreateInstance(entry);
-        }
 
         public const string Id = "dict";
-
-        public int Slots { get; private set; }
 
         public ServiceResolver_Dict(IEnumerable<AbstractServiceEntry> entries)
         {
@@ -80,11 +59,11 @@ namespace Solti.Utils.DI.Internals
             FResolvers = resolvers;
         }
 
-        public Func<IInstanceFactory, object>? Get(Type iface, string? name)
+        public override Func<IInstanceFactory, object>? Get(Type iface, string? name)
         {
             CompositeKey key = new(iface, name);
 
-            if (!FResolvers.TryGetValue(key, out Func<IInstanceFactory, object> resolver) && iface.IsConstructedGenericType)
+            if (!FResolvers.TryGetValue(key, out Func<IInstanceFactory, object> resolver) && iface.IsConstructedGenericType && FGenericEntries.TryGetValue(new CompositeKey(iface.GetGenericTypeDefinition(), name), out AbstractServiceEntry genericEntry))
             {
                 lock (FLock)
                 {
@@ -92,7 +71,7 @@ namespace Solti.Utils.DI.Internals
                     // FResolvers instance may be changed while we reached here
                     //
 
-                    if (!FResolvers.TryGetValue(key, out resolver) && FGenericEntries.TryGetValue(new CompositeKey(iface.GetGenericTypeDefinition(), name), out AbstractServiceEntry genericEntry))
+                    if (!FResolvers.TryGetValue(key, out resolver))
                     {
                         //
                         // Create a new resolver for the specializted entry
