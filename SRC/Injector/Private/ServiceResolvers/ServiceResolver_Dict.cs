@@ -13,7 +13,7 @@ namespace Solti.Utils.DI.Internals
 
     internal sealed class ServiceResolver_Dict: ServiceResolverBase
     {
-        private sealed record CompositeKey(Type Interface, string? Name);
+        private sealed record CompositeKey(long Handle, string? Name);
 
         private readonly IReadOnlyDictionary<CompositeKey, AbstractServiceEntry> FGenericEntries;
 
@@ -32,7 +32,7 @@ namespace Solti.Utils.DI.Internals
 
             foreach (AbstractServiceEntry entry in entries)
             {
-                CompositeKey key = new(entry.Interface, entry.Name);
+                CompositeKey key = new((long) entry.Interface.TypeHandle.Value, entry.Name);
                 if (entry.Interface.IsGenericTypeDefinition)
                     genericEntries.Add(key, entry);
                 else
@@ -60,9 +60,9 @@ namespace Solti.Utils.DI.Internals
 
         public override Func<IInstanceFactory, object>? Get(Type iface, string? name)
         {
-            CompositeKey key = new(iface, name);
+            CompositeKey key = new((long) iface.TypeHandle.Value, name);
 
-            if (!FResolvers.TryGetValue(key, out Func<IInstanceFactory, object> resolver) && iface.IsConstructedGenericType && FGenericEntries.TryGetValue(new CompositeKey(iface.GetGenericTypeDefinition(), name), out AbstractServiceEntry genericEntry))
+            if (!FResolvers.TryGetValue(key, out Func<IInstanceFactory, object> resolver) && iface.IsConstructedGenericType && FGenericEntries.TryGetValue(new CompositeKey((long) iface.GetGenericTypeDefinition().TypeHandle.Value, name), out AbstractServiceEntry genericEntry))
             {
                 lock (FLock)
                 {
