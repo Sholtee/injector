@@ -133,9 +133,6 @@ namespace Solti.Utils.DI.Internals
             CreateResolver(entry)
         );
 
-            if (!entry.State.HasFlag(ServiceEntryStateFlags.Built))
-                entry.Build(_ => _);
-
         private static Func<long, string?, TResult?> BuildSwitch<TResult>(RedBlackTree<ResolutionNode<TResult>> tree)
         {
             ParameterExpression
