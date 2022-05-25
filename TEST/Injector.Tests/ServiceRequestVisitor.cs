@@ -88,5 +88,18 @@ namespace Solti.Utils.DI.Internals.Tests
             Assert.That(requests[0].Interface, Is.Null);
             Assert.That(requests[0].Name, Is.Null);
         }
+
+        [Test]
+        public void Visit_ShouldBeAbleToAmendTheExpression()
+        {
+            Expression<Action<IInjector>> expr = i => i.Get(typeof(IList), null);
+
+            ServiceRequestVisitor visitor = new();
+            visitor.VisitServiceRequest += (orig, _, iface, name) => Expression.Throw(Expression.Constant(new Exception("cica")));
+            expr = (Expression<Action<IInjector>>) visitor.Visit(expr);
+
+            Action<IInjector> fn = expr.Compile();
+            Assert.Throws<Exception>(() => fn(null), "cica");
+        }
     }
 }
