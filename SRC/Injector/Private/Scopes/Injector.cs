@@ -152,8 +152,7 @@ namespace Solti.Utils.DI.Internals
                 if (slot < FSlots.Length && FSlots[slot] is not null)
                     return FSlots[slot]!;
 
-                Monitor.Enter(FLock);
-                try
+                lock(FLock)
                 {
                     //
                     // Other thread might have set the value while we reached here
@@ -166,10 +165,6 @@ namespace Solti.Utils.DI.Internals
                         Array.Resize(ref FSlots, slot + 1);
 
                     return FSlots[slot] = CreateInstanceCore(requested);
-                }
-                finally
-                {
-                    Monitor.Exit(FLock);
                 }
             }
         }
