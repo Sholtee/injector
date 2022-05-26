@@ -134,16 +134,8 @@ namespace Solti.Utils.DI.Internals
 
         object IInstanceFactory.GetOrCreateInstance(AbstractServiceEntry requested, int slot)
         {
-            if (slot < FSlots.Length && FSlots[slot] is not null)
-                return FSlots[slot]!;
-
-            if (FLock is not null)
-                Monitor.Enter(FLock);
-            try
+            if (FLock is null)
             {
-                if (slot < FSlots.Length && FSlots[slot] is not null)
-                    return FSlots[slot]!;
-
                 if (slot >= FSlots.Length)
                     //
                     // We reach here when we made a service request that triggered a ResolverCollection update.
@@ -153,12 +145,32 @@ namespace Solti.Utils.DI.Internals
 
                     Array.Resize(ref FSlots, slot + 1);
 
-                return FSlots[slot] = CreateInstanceCore(requested);
+                return FSlots[slot] ??= CreateInstanceCore(requested);
             }
-            finally
+            else
             {
-                if (FLock is not null)
+                if (slot < FSlots.Length && FSlots[slot] is not null)
+                    return FSlots[slot]!;
+
+                Monitor.Enter(FLock);
+                try
+                {
+                    //
+                    // Other thread might have set the value while we reached here
+                    //
+
+                    if (slot < FSlots.Length && FSlots[slot] is not null)
+                        return FSlots[slot]!;
+
+                    if (slot >= FSlots.Length)
+                        Array.Resize(ref FSlots, slot + 1);
+
+                    return FSlots[slot] = CreateInstanceCore(requested);
+                }
+                finally
+                {
                     Monitor.Exit(FLock);
+                }
             }
         }
 
