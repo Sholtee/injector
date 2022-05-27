@@ -134,7 +134,12 @@ namespace Solti.Utils.DI.Internals
 
         object IInstanceFactory.GetOrCreateInstance(AbstractServiceEntry requested, int slot)
         {
-            if (FLock is null)
+            if (slot < FSlots.Length && FSlots[slot] is not null)
+                return FSlots[slot]!;
+
+            if (FLock is not null)
+                Monitor.Enter(FLock);
+            try
             {
                 if (slot >= FSlots.Length)
                     //
@@ -147,25 +152,10 @@ namespace Solti.Utils.DI.Internals
 
                 return FSlots[slot] ??= CreateInstanceCore(requested);
             }
-            else
+            finally
             {
-                if (slot < FSlots.Length && FSlots[slot] is not null)
-                    return FSlots[slot]!;
-
-                lock(FLock)
-                {
-                    //
-                    // Other thread might have set the value while we reached here
-                    //
-
-                    if (slot < FSlots.Length && FSlots[slot] is not null)
-                        return FSlots[slot]!;
-
-                    if (slot >= FSlots.Length)
-                        Array.Resize(ref FSlots, slot + 1);
-
-                    return FSlots[slot] = CreateInstanceCore(requested);
-                }
+                if (FLock is not null)
+                    Monitor.Exit(FLock);
             }
         }
 
