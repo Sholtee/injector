@@ -26,7 +26,7 @@ namespace Solti.Utils.DI.Internals
 
         private CaptureDisposable? FDisposableStore;
 
-        private readonly IServiceResolver FResolver;
+        private readonly IServiceResolverLookup FResolverLookup;
 
         private ServicePath? FPath;
 
@@ -196,7 +196,7 @@ namespace Solti.Utils.DI.Internals
             Ensure.Parameter.IsInterface(iface, nameof(iface));
             Ensure.Parameter.IsNotGenericDefinition(iface, nameof(iface));
 
-            return FResolver.Get(iface, name)?.Invoke(this);
+            return FResolverLookup.Get(iface, name)?.Invoke(this);
         }
         #endregion
 
@@ -230,13 +230,13 @@ namespace Solti.Utils.DI.Internals
             );
             #pragma warning restore CA2214
 
-            FResolver = (options.Engine ?? (svcs.Count <= BTREE_ITEM_THRESHOLD ? ServiceResolver_BTree.Id : ServiceResolver_Dict.Id)) switch
+            FResolverLookup = (options.Engine ?? (svcs.Count <= BTREE_ITEM_THRESHOLD ? ServiceResolverLookup_BTree.Id : ServiceResolverLookup_Dict.Id)) switch
             {
-                ServiceResolver_BTree.Id => new ServiceResolver_BTree(svcs),
-                ServiceResolver_Dict.Id  => new ServiceResolver_Dict(svcs),
+                ServiceResolverLookup_BTree.Id => new ServiceResolverLookup_BTree(svcs),
+                ServiceResolverLookup_Dict.Id  => new ServiceResolverLookup_Dict(svcs),
                 _ => throw new NotSupportedException()
             };
-            FSlots    = Array<object>.Create(FResolver.Slots);
+            FSlots    = Array<object>.Create(FResolverLookup.Slots);
             Options   = options;
             Lifetime  = lifetime;
             FLock     = new object();
@@ -244,8 +244,8 @@ namespace Solti.Utils.DI.Internals
 
         public Injector(Injector super, object? lifetime)
         {
-            FResolver = super.FResolver;
-            FSlots    = Array<object>.Create(FResolver.Slots);
+            FResolverLookup = super.FResolverLookup;
+            FSlots    = Array<object>.Create(FResolverLookup.Slots);
             Options   = super.Options;
             Lifetime  = lifetime;
             Super     = super;

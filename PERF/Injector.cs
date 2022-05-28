@@ -41,8 +41,8 @@ namespace Solti.Utils.DI.Perf
         {
             get
             {
-                yield return ServiceResolver_Dict.Id;
-                yield return ServiceResolver_BTree.Id;
+                yield return ServiceResolverLookup_Dict.Id;
+                yield return ServiceResolverLookup_BTree.Id;
             }
         }
 

@@ -24,37 +24,36 @@ namespace Solti.Utils.DI.Internals
                 MethodInfoExtractor.Extract<IInjector>(i => i.TryGet<object>(null)).GetGenericMethodDefinition()
             };
 
-        public event Func<MethodCallExpression, Expression, Type, string?, Expression>? VisitServiceRequest;
+        private readonly Func<MethodCallExpression, Expression, Type, string?, Expression> FVisitor;
+
+        public ServiceRequestVisitor(Func<MethodCallExpression, Expression, Type, string?, Expression> visitor) => FVisitor = visitor;
 
         protected override Expression VisitMethodCall(MethodCallExpression node)
         {
-            if (VisitServiceRequest is not null)
+            if (!node.Method.IsGenericMethod)
             {
-                if (!node.Method.IsGenericMethod)
+                if (Array.IndexOf(FInjectorGet, node.Method) >= 0 && node.Arguments[0] is ConstantExpression iface && node.Arguments[1] is ConstantExpression name)
                 {
-                    if (Array.IndexOf(FInjectorGet, node.Method) >= 0 && node.Arguments[0] is ConstantExpression iface && node.Arguments[1] is ConstantExpression name)
-                    {
-                        return VisitServiceRequest
-                        (
-                            node,
-                            node.Object,
-                            (Type)iface.Value,
-                            (string?)name.Value
-                        );
-                    }
+                    return FVisitor
+                    (
+                        node,
+                        node.Object,
+                        (Type)iface.Value,
+                        (string?)name.Value
+                    );
                 }
-                else
+            }
+            else
+            {
+                if (Array.IndexOf(FGenericInjectorGet, node.Method.GetGenericMethodDefinition()) >= 0 && node.Arguments[1] is ConstantExpression name)
                 {
-                    if (Array.IndexOf(FGenericInjectorGet, node.Method.GetGenericMethodDefinition()) >= 0 && node.Arguments[1] is ConstantExpression name)
-                    {
-                        return VisitServiceRequest
-                        (
-                            node,
-                            node.Arguments[0],
-                            node.Method.GetGenericArguments()[0],
-                            (string?) name.Value
-                        );
-                    }
+                    return FVisitor
+                    (
+                        node,
+                        node.Arguments[0],
+                        node.Method.GetGenericArguments()[0],
+                        (string?) name.Value
+                    );
                 }
             }
 

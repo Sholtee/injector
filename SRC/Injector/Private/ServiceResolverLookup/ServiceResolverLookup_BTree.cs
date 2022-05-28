@@ -1,5 +1,5 @@
 ﻿/********************************************************************************
-* ServiceResolver_BTree.cs                                                      *
+* ServiceResolverLookup_BTree.cs                                                *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
@@ -18,7 +18,7 @@ namespace Solti.Utils.DI.Internals
     using Primitives;
     using Primitives.Patterns;
 
-    internal sealed class ServiceResolver_BTree : ServiceResolverBase
+    internal sealed class ServiceResolverLookup_BTree : ServiceResolverLookupBase
     {
         #region Private
         private static readonly StringComparer FStringComparer = StringComparer.Ordinal;
@@ -174,7 +174,7 @@ namespace Solti.Utils.DI.Internals
 
         public const string Id = "btree";
 
-        public ServiceResolver_BTree(IEnumerable<AbstractServiceEntry> entries)
+        public ServiceResolverLookup_BTree(IEnumerable<AbstractServiceEntry> entries)
         {
             RedBlackTree<ResolutionNode<AbstractServiceEntry>> getGenericEntrySwitch = new(NodeComparer.Instance);
             FGetResolverSwitch = new RedBlackTree<ResolutionNode<Func<IInstanceFactory, object>>>(NodeComparer.Instance);

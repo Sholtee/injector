@@ -1,5 +1,5 @@
 ﻿/********************************************************************************
-* ServiceResolver_Dict.cs                                                       *
+* ServiceResolverLookup_Dict.cs                                                 *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
@@ -11,7 +11,7 @@ namespace Solti.Utils.DI.Internals
     using Interfaces;
     using Interfaces.Properties;
 
-    internal sealed class ServiceResolver_Dict: ServiceResolverBase
+    internal sealed class ServiceResolverLookup_Dict: ServiceResolverLookupBase
     {
         private sealed record CompositeKey(Type Interface, string? Name);
 
@@ -26,7 +26,7 @@ namespace Solti.Utils.DI.Internals
 
         public const string Id = "dict";
 
-        public ServiceResolver_Dict(IEnumerable<AbstractServiceEntry> entries)
+        public ServiceResolverLookup_Dict(IEnumerable<AbstractServiceEntry> entries)
         {
             Dictionary<CompositeKey, AbstractServiceEntry> genericEntries = new();
             Dictionary<CompositeKey, Func<IInstanceFactory, object>> resolvers = new();

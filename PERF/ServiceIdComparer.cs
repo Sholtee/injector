@@ -27,15 +27,15 @@ namespace Solti.Utils.DI.Perf
             name_3 = "kutya_2";
 
         [Benchmark]
-        public int CompareIds() => ServiceResolver_BTree.CompareServiceIds(svc_1, null, svc_1, null);
+        public int CompareIds() => ServiceResolverLookup_BTree.CompareServiceIds(svc_1, null, svc_1, null);
 
         [Benchmark]
-        public int CompareIdsNoMatch() => ServiceResolver_BTree.CompareServiceIds(svc_1, null, svc_2, null);
+        public int CompareIdsNoMatch() => ServiceResolverLookup_BTree.CompareServiceIds(svc_1, null, svc_2, null);
 
         [Benchmark]
-        public int CompareNamedIds() => ServiceResolver_BTree.CompareServiceIds(svc_1, name_1, svc_1, name_2);
+        public int CompareNamedIds() => ServiceResolverLookup_BTree.CompareServiceIds(svc_1, name_1, svc_1, name_2);
 
         [Benchmark]
-        public int CompareNamedIdsNoMatch() => ServiceResolver_BTree.CompareServiceIds(svc_1, name_1, svc_1, name_3);
+        public int CompareNamedIdsNoMatch() => ServiceResolverLookup_BTree.CompareServiceIds(svc_1, name_1, svc_1, name_3);
     }
 }

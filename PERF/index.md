@@ -4,5 +4,5 @@
 - [IOC Comparison](https://sholtee.github.io/injector/perf/Solti.Utils.DI.Perf.IocComparison-report-github.html )
 - [Scope Creation](https://sholtee.github.io/injector/perf/Solti.Utils.DI.Perf.ScopeCreation-report-github.html )
 - [ServicePath](https://sholtee.github.io/injector/perf/Solti.Utils.DI.Perf.ServicePath-report-github.html )
-- [ServiceResolver](https://sholtee.github.io/injector/perf/Solti.Utils.DI.Perf.ServiceResolver-report-github.html )
+- [ServiceResolverLookup](https://sholtee.github.io/injector/perf/Solti.Utils.DI.Perf.ServiceResolverLookup-report-github.html )
 - [TypeBench](https://sholtee.github.io/injector/perf/Solti.Utils.DI.Perf.TypeBench-report-github.html )

@@ -1,5 +1,5 @@
 ﻿/********************************************************************************
-* ServiceResolverBase.cs                                                        *
+* ServiceResolverLookupBase.cs                                                  *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
@@ -9,7 +9,7 @@ namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
 
-    internal abstract class ServiceResolverBase : IServiceResolver
+    internal abstract class ServiceResolverLookupBase : IServiceResolverLookup
     {
         protected readonly object FLock = new();
 

@@ -1,5 +1,5 @@
 ﻿/********************************************************************************
-* IServiceResolver.cs                                                           *
+* IServiceResolverLookup.cs                                                     *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
@@ -14,7 +14,7 @@ namespace Solti.Utils.DI.Internals
 #else
     internal
 #endif
-    interface IServiceResolver
+    interface IServiceResolverLookup
     {
         [SuppressMessage("Naming", "CA1716:Identifiers should not match keywords")]
         Func<IInstanceFactory, object>? Get(Type iface, string? name);

@@ -33,12 +33,11 @@ namespace Solti.Utils.DI.Internals.Tests
         {
             List<(Type Interface, string Name)> requests = new(); 
 
-            ServiceRequestVisitor visitor = new();
-            visitor.VisitServiceRequest += (orig, _, iface, name) =>
+            ServiceRequestVisitor visitor = new((orig, _, iface, name) =>
             {
                 requests.Add((iface, name));
                 return orig;
-            };
+            });
             visitor.Visit(expresision);
 
             Assert.That(requests.Count, Is.EqualTo(1));
@@ -60,12 +59,11 @@ namespace Solti.Utils.DI.Internals.Tests
         {
             List<(Type Interface, string Name)> requests = new();
 
-            ServiceRequestVisitor visitor = new();
-            visitor.VisitServiceRequest += (orig, _, iface, name) =>
+            ServiceRequestVisitor visitor = new((orig, _, iface, name) =>
             {
                 requests.Add((iface, name));
                 return orig;
-            };
+            });
             visitor.Visit(expresision);
 
             Assert.That(requests.Count, Is.EqualTo(0));
@@ -76,12 +74,11 @@ namespace Solti.Utils.DI.Internals.Tests
         {
             List<(Type Interface, string Name)> requests = new();
 
-            ServiceRequestVisitor visitor = new();
-            visitor.VisitServiceRequest += (orig, _, iface, name) =>
+            ServiceRequestVisitor visitor = new((orig, _, iface, name) =>
             {
                 requests.Add((iface, name));
                 return orig;
-            };
+            });
             visitor.Visit((Expression<Action<IInjector>>) (i => i.Get(null, null)));
 
             Assert.That(requests.Count, Is.EqualTo(1));
@@ -94,8 +91,7 @@ namespace Solti.Utils.DI.Internals.Tests
         {
             Expression<Action<IInjector>> expr = i => i.Get(typeof(IList), null);
 
-            ServiceRequestVisitor visitor = new();
-            visitor.VisitServiceRequest += (orig, _, iface, name) => Expression.Throw(Expression.Constant(new Exception("cica")));
+            ServiceRequestVisitor visitor = new((orig, _, iface, name) => Expression.Throw(Expression.Constant(new Exception("cica"))));
             expr = (Expression<Action<IInjector>>) visitor.Visit(expr);
 
             Action<IInjector> fn = expr.Compile();
