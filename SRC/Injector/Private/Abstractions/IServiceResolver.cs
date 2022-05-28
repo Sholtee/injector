@@ -1,24 +1,23 @@
 ﻿/********************************************************************************
-* IServiceResolverLookup.cs                                                     *
+* IServiceResolver.cs                                                           *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
-using System;
-using System.Diagnostics.CodeAnalysis;
 
 namespace Solti.Utils.DI.Internals
 {
+    using Interfaces;
+
 #if DEBUG // test methods must be public -> make internal types public so they can be passed as parameter
     #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
     public
 #else
     internal
 #endif
-    interface IServiceResolverLookup
+    interface IServiceResolver
     {
-        [SuppressMessage("Naming", "CA1716:Identifiers should not match keywords")]
-        IServiceResolver? Get(Type iface, string? name);
+        AbstractServiceEntry RelatedEntry { get; }
 
-        int Slots { get; }
+        object Resolve(IInstanceFactory instanceFactory);
     }
 }

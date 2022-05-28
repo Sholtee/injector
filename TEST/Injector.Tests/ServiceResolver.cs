@@ -47,7 +47,7 @@ namespace Solti.Utils.DI.Internals.Tests
 
             IServiceResolverLookup lookup = lookupFactory(new[] { entry });
 
-            Assert.DoesNotThrow(() => lookup.Get(typeof(IList), name).Invoke(mockFactory.Object));
+            Assert.DoesNotThrow(() => lookup.Get(typeof(IList), name).Resolve(mockFactory.Object));
             mockSuperFactory
                 .Verify(f => f.GetOrCreateInstance(entry, 0), Times.Once);
         }
@@ -67,7 +67,7 @@ namespace Solti.Utils.DI.Internals.Tests
 
             IServiceResolverLookup lookup = lookupFactory(new[] { entry });
 
-            Assert.DoesNotThrow(() => lookup.Get(typeof(IList), name).Invoke(mockFactory.Object));
+            Assert.DoesNotThrow(() => lookup.Get(typeof(IList), name).Resolve(mockFactory.Object));
             mockFactory
                 .Verify(f => f.GetOrCreateInstance(entry, 0), Times.Once);
         }
@@ -87,7 +87,7 @@ namespace Solti.Utils.DI.Internals.Tests
 
             IServiceResolverLookup lookup = lookupFactory(new[] { entry });
 
-            Assert.DoesNotThrow(() => lookup.Get(typeof(IList), name).Invoke(mockFactory.Object));
+            Assert.DoesNotThrow(() => lookup.Get(typeof(IList), name).Resolve(mockFactory.Object));
             mockFactory
                 .Verify(f => f.CreateInstance(entry), Times.Once);
         }
@@ -109,11 +109,11 @@ namespace Solti.Utils.DI.Internals.Tests
 
             IServiceResolverLookup lookup = lookupFactory(new[] { entry });
 
-            Assert.DoesNotThrow(() => lookup.Get(typeof(IList<int>), name).Invoke(mockFactory.Object));
+            Assert.DoesNotThrow(() => lookup.Get(typeof(IList<int>), name).Resolve(mockFactory.Object));
             mockFactory
                 .Verify(f => f.GetOrCreateInstance(It.Is<ScopedServiceEntry>(e => e.Interface == typeof(IList<int>)), 0), Times.Once);
 
-            Assert.DoesNotThrow(() => lookup.Get(typeof(IList<string>), name).Invoke(mockFactory.Object));
+            Assert.DoesNotThrow(() => lookup.Get(typeof(IList<string>), name).Resolve(mockFactory.Object));
             mockFactory
                 .Verify(f => f.GetOrCreateInstance(It.Is<ScopedServiceEntry>(e => e.Interface == typeof(IList<string>)), 1), Times.Once);
         }
@@ -135,11 +135,11 @@ namespace Solti.Utils.DI.Internals.Tests
 
             IServiceResolverLookup lookup = lookupFactory(new[] { entry1, entry2 });
 
-            Assert.DoesNotThrow(() => lookup.Get(typeof(IList), 0.ToString()).Invoke(mockFactory.Object));
+            Assert.DoesNotThrow(() => lookup.Get(typeof(IList), 0.ToString()).Resolve(mockFactory.Object));
             mockFactory
                 .Verify(f => f.GetOrCreateInstance(It.Is<ScopedServiceEntry>(e => e.Interface == typeof(IList) && e.Name == 0.ToString()), 0), Times.Once);
 
-            Assert.DoesNotThrow(() => lookup.Get(typeof(IList), 1.ToString()).Invoke(mockFactory.Object));
+            Assert.DoesNotThrow(() => lookup.Get(typeof(IList), 1.ToString()).Resolve(mockFactory.Object));
             mockFactory
                 .Verify(f => f.GetOrCreateInstance(It.Is<ScopedServiceEntry>(e => e.Interface == typeof(IList) && e.Name == 1.ToString()), 1), Times.Once);
         }
@@ -161,11 +161,11 @@ namespace Solti.Utils.DI.Internals.Tests
 
             IServiceResolverLookup lookup = lookupFactory(new[] { entry1, entry2 });
 
-            Assert.DoesNotThrow(() => lookup.Get(typeof(IList), name).Invoke(mockFactory.Object));
+            Assert.DoesNotThrow(() => lookup.Get(typeof(IList), name).Resolve(mockFactory.Object));
             mockFactory
                 .Verify(f => f.GetOrCreateInstance(It.Is<ScopedServiceEntry>(e => e.Interface == typeof(IList)), 0), Times.Once);
 
-            Assert.DoesNotThrow(() => lookup.Get(typeof(IDisposable), name).Invoke(mockFactory.Object));
+            Assert.DoesNotThrow(() => lookup.Get(typeof(IDisposable), name).Resolve(mockFactory.Object));
             mockFactory
                 .Verify(f => f.GetOrCreateInstance(It.Is<ScopedServiceEntry>(e => e.Interface == typeof(IDisposable)), 1), Times.Once);
         }
@@ -187,11 +187,11 @@ namespace Solti.Utils.DI.Internals.Tests
 
             IServiceResolverLookup lookup = lookupFactory(new[] { genericEntry, specializedEntry });
 
-            Assert.DoesNotThrow(() => lookup.Get(typeof(IList<int>), name).Invoke(mockFactory.Object));
+            Assert.DoesNotThrow(() => lookup.Get(typeof(IList<int>), name).Resolve(mockFactory.Object));
             mockFactory
                 .Verify(f => f.CreateInstance(specializedEntry), Times.Once);
 
-            Assert.DoesNotThrow(() => lookup.Get(typeof(IList<object>), name).Invoke(mockFactory.Object));
+            Assert.DoesNotThrow(() => lookup.Get(typeof(IList<object>), name).Resolve(mockFactory.Object));
             mockFactory
                 .Verify(f => f.CreateInstance(It.Is<TransientServiceEntry>(e => e.Interface == typeof(IList<int>))), Times.Once);
         }
@@ -211,7 +211,7 @@ namespace Solti.Utils.DI.Internals.Tests
 
             IServiceResolverLookup lookup = lookupFactory(new[] { genericEntry });
 
-            Assert.DoesNotThrow(() => lookup.Get(typeof(IList<int>), name).Invoke(mockFactory.Object));
+            Assert.DoesNotThrow(() => lookup.Get(typeof(IList<int>), name).Resolve(mockFactory.Object));
             mockFactory
                 .Verify(f => f.CreateInstance(It.Is<TransientServiceEntry>(e => e.Interface == typeof(IList<int>))), Times.Once);
         }
@@ -231,7 +231,7 @@ namespace Solti.Utils.DI.Internals.Tests
 
             IServiceResolverLookup lookup = lookupFactory(new[] { genericEntry });
 
-            Assert.DoesNotThrow(() => lookup.Get(typeof(IList<int>), name).Invoke(mockFactory.Object));
+            Assert.DoesNotThrow(() => lookup.Get(typeof(IList<int>), name).Resolve(mockFactory.Object));
             mockFactory
                 .Verify(f => f.GetOrCreateInstance(It.Is<ScopedServiceEntry>(e => e.Interface == typeof(IList<int>)), 0), Times.Once);
         }

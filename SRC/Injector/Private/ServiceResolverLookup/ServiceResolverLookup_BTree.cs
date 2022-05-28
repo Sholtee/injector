@@ -127,7 +127,7 @@ namespace Solti.Utils.DI.Internals
             }
         }
 
-        private ResolutionNode<Func<IInstanceFactory, object>> CreateServiceResolutionNode(AbstractServiceEntry entry) => new ResolutionNode<Func<IInstanceFactory, object>>
+        private ResolutionNode<IServiceResolver> CreateServiceResolutionNode(AbstractServiceEntry entry) => new ResolutionNode<IServiceResolver>
         (
             entry,
             CreateResolver(entry)
@@ -166,9 +166,9 @@ namespace Solti.Utils.DI.Internals
 
         private readonly Func<long, string?, AbstractServiceEntry?> FGetGenericEntry;
 
-        private readonly RedBlackTree<ResolutionNode<Func<IInstanceFactory, object>>> FGetResolverSwitch;
+        private readonly RedBlackTree<ResolutionNode<IServiceResolver>> FGetResolverSwitch;
 
-        private volatile Func<long, string?, Func<IInstanceFactory, object>?> FGetResolver;
+        private volatile Func<long, string?, IServiceResolver?> FGetResolver;
 
         #endregion
 
@@ -177,7 +177,7 @@ namespace Solti.Utils.DI.Internals
         public ServiceResolverLookup_BTree(IEnumerable<AbstractServiceEntry> entries)
         {
             RedBlackTree<ResolutionNode<AbstractServiceEntry>> getGenericEntrySwitch = new(NodeComparer.Instance);
-            FGetResolverSwitch = new RedBlackTree<ResolutionNode<Func<IInstanceFactory, object>>>(NodeComparer.Instance);
+            FGetResolverSwitch = new RedBlackTree<ResolutionNode<IServiceResolver>>(NodeComparer.Instance);
 
             foreach (AbstractServiceEntry entry in entries)
             {
@@ -202,11 +202,11 @@ namespace Solti.Utils.DI.Internals
             FGetResolver = BuildSwitch(FGetResolverSwitch);
         }
 
-        public override Func<IInstanceFactory, object>? Get(Type iface, string? name)
+        public override IServiceResolver? Get(Type iface, string? name)
         {
             long handle = (long) iface.TypeHandle.Value;
 
-            Func<IInstanceFactory, object>? resolver = FGetResolver(handle, name);
+            IServiceResolver? resolver = FGetResolver(handle, name);
             if (resolver is null && iface.IsConstructedGenericType)
             {
                 AbstractServiceEntry? genericEntry = FGetGenericEntry((long) iface.GetGenericTypeDefinition().TypeHandle.Value, name);
@@ -221,7 +221,7 @@ namespace Solti.Utils.DI.Internals
                         resolver = FGetResolver(handle, name);
                         if (resolver is null)
                         {
-                            ResolutionNode<Func<IInstanceFactory, object>> node = CreateServiceResolutionNode
+                            ResolutionNode<IServiceResolver> node = CreateServiceResolutionNode
                             (
                                 genericEntry.Specialize(iface.GenericTypeArguments)
                             );
