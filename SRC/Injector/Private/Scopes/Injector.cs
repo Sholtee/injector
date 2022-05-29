@@ -218,6 +218,9 @@ namespace Solti.Utils.DI.Internals
         // According to performance tests, up to ~80 items btree is faster than dictionary. Assuming that
         // there won't be more than 30 constructed generic service 50 seems a good threshold.
         //
+        // Note that built btree is 5-10% slower than the regular one (It would be worth an investigation
+        // why).
+        //
 
         public const int BTREE_ITEM_THRESHOLD = 50;
 
