@@ -115,18 +115,25 @@ namespace Solti.Utils.DI.Internals
             return resolver.Compile();
         }
 
-        private readonly Func<long, string?, AbstractServiceEntry?> FGetGenericEntry;
+        private Func<long, string?, AbstractServiceEntry?> FGetGenericEntry;
 
         private volatile Func<long, string?, IServiceResolver?> FGetResolver;
-
         #endregion
+
+        protected override void InitSwitches(IEnumerable<AbstractServiceEntry> entries)
+        {
+            base.InitSwitches(entries);
+
+            FGetGenericEntry = BuildSwitch(FGetGenericEntrySwitch);
+            FGetResolver = BuildSwitch(FGetResolverSwitch);
+        }
 
         public new const string Id = "builtbtree";
 
-        public ServiceResolverLookup_BuiltBTree(IEnumerable<AbstractServiceEntry> entries): base(entries)
+        #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
+        public ServiceResolverLookup_BuiltBTree(IEnumerable<AbstractServiceEntry> entries, ServiceResolutionMode resolutionMode) : base(entries, resolutionMode)
+        #pragma warning restore CS8618
         {
-            FGetGenericEntry = BuildSwitch(FGetGenericEntrySwitch);
-            FGetResolver = BuildSwitch(FGetResolverSwitch);
         }
 
         public override IServiceResolver? Get(Type iface, string? name)
@@ -153,7 +160,7 @@ namespace Solti.Utils.DI.Internals
                                 genericEntry.Specialize(iface.GenericTypeArguments)
                             );
 
-                            FGetResolverSwitch.Add(node);
+                            FGetResolverSwitch = FGetResolverSwitch.With(node);
                             FGetResolver = BuildSwitch(FGetResolverSwitch);
 
                             resolver = node.Result;

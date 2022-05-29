@@ -10,8 +10,6 @@ using System.Runtime.CompilerServices;
 namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
-    using Interfaces.Properties;
-
     using Primitives;
     using Primitives.Patterns;
 
@@ -96,9 +94,9 @@ namespace Solti.Utils.DI.Internals
         #endregion
 
         #region Protected
-        protected readonly RedBlackTree<ResolutionNode<AbstractServiceEntry>> FGetGenericEntrySwitch;
+        protected readonly /*readonly*/ RedBlackTree<ResolutionNode<AbstractServiceEntry>> FGetGenericEntrySwitch = new(NodeComparer.Instance);
 
-        protected volatile RedBlackTree<ResolutionNode<IServiceResolver>> FGetResolverSwitch;
+        protected volatile /*readonly*/ RedBlackTree<ResolutionNode<IServiceResolver>> FGetResolverSwitch = new(NodeComparer.Instance);
 
         protected ResolutionNode<IServiceResolver> CreateServiceResolutionNode(AbstractServiceEntry entry) => CreateNode
         (
@@ -125,15 +123,9 @@ namespace Solti.Utils.DI.Internals
 
             public TResult Result { get; }
         }
-        #endregion
 
-        public const string Id = "btree";
-
-        public ServiceResolverLookup_BTree(IEnumerable<AbstractServiceEntry> entries)
+        protected virtual void InitSwitches(IEnumerable<AbstractServiceEntry> entries)
         {
-            FGetGenericEntrySwitch = new RedBlackTree<ResolutionNode<AbstractServiceEntry>>(NodeComparer.Instance);
-            FGetResolverSwitch = new RedBlackTree<ResolutionNode<IServiceResolver>>(NodeComparer.Instance);
-
             foreach (AbstractServiceEntry entry in entries)
             {
                 bool added = entry.Interface.IsGenericTypeDefinition
@@ -146,10 +138,25 @@ namespace Solti.Utils.DI.Internals
                         CreateServiceResolutionNode(entry)
                     );
                 if (!added)
+                    ServiceErrors.AlreadyRegistered(entry);
+            }
+        }
+        #endregion
+
+        public const string Id = "btree";
+
+        public ServiceResolverLookup_BTree(IEnumerable<AbstractServiceEntry> entries, ServiceResolutionMode resolutionMode): base(resolutionMode)
+        {
+            #pragma warning disable CA2214 // Do not call overridable methods in constructors
+            InitSwitches(entries);
+            #pragma warning restore CA2214
+            InitResolvers(GetRegisteredResolvers());
+
+            IEnumerable<IServiceResolver> GetRegisteredResolvers()
+            {
+                foreach (ResolutionNode<IServiceResolver> node in FGetResolverSwitch)
                 {
-                    InvalidOperationException ex = new(Resources.SERVICE_ALREADY_REGISTERED);
-                    ex.Data[nameof(entry)] = entry;
-                    throw ex;
+                    yield return node.Result;
                 }
             }
         }

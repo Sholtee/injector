@@ -14,9 +14,9 @@ namespace Solti.Utils.DI.Tests
     public partial class InjectorTests
     {
         [Test]
-        public void ServiceProvider_GetService_ShouldResolveItself1() 
+        public void ServiceProvider_GetService_ShouldResolveItself1([ValueSource(nameof(Engines))] string engine, [ValueSource(nameof(ResolutionModes))] ServiceResolutionMode resolutionMode) 
         {
-            Root = ScopeFactory.Create(svcs => { }, new ScopeOptions { SupportsServiceProvider = true });
+            Root = ScopeFactory.Create(svcs => { }, new ScopeOptions { SupportsServiceProvider = true, Engine = engine, ServiceResolutionMode = resolutionMode });
 
             using (Root.CreateScope(out IServiceProvider provider)) 
             {
@@ -25,12 +25,12 @@ namespace Solti.Utils.DI.Tests
         }
 
         [Test]
-        public void ServiceProvider_GetService_ShouldResolveItself2()
+        public void ServiceProvider_GetService_ShouldResolveItself2([ValueSource(nameof(Engines))] string engine, [ValueSource(nameof(ResolutionModes))] ServiceResolutionMode resolutionMode)
         {
             Root = ScopeFactory.Create
             (
                 svcs => svcs.Service<IInterface_7<IServiceProvider>, Implementation_7_TInterface_Dependant<IServiceProvider>>(Lifetime.Transient), 
-                new ScopeOptions { SupportsServiceProvider = true }
+                new ScopeOptions { SupportsServiceProvider = true, Engine = engine, ServiceResolutionMode = resolutionMode }
             );
 
             using (Root.CreateScope(out IServiceProvider provider))
@@ -42,9 +42,9 @@ namespace Solti.Utils.DI.Tests
         }
 
         [Test]
-        public void ServiceProvider_GetService_ShouldReturnNullOnMissingService1() 
+        public void ServiceProvider_GetService_ShouldReturnNullOnMissingService1([ValueSource(nameof(Engines))] string engine, [ValueSource(nameof(ResolutionModes))] ServiceResolutionMode resolutionMode) 
         {
-            Root = ScopeFactory.Create(svcs => { }, new ScopeOptions { SupportsServiceProvider = true });
+            Root = ScopeFactory.Create(svcs => { }, new ScopeOptions { SupportsServiceProvider = true, Engine = engine, ServiceResolutionMode = resolutionMode });
 
             using (Root.CreateScope(out IServiceProvider provider))
             {
@@ -53,12 +53,12 @@ namespace Solti.Utils.DI.Tests
         }
 
         [Test]
-        public void ServiceProvider_GetService_ShouldReturnNullOnMissingService2([ValueSource(nameof(Lifetimes))] Lifetime lifetime)
+        public void ServiceProvider_GetService_ShouldReturnNullOnMissingService2([ValueSource(nameof(Lifetimes))] Lifetime lifetime, [ValueSource(nameof(Engines))] string engine, [ValueSource(nameof(ResolutionModes))] ServiceResolutionMode resolutionMode)
         {
             Root = ScopeFactory.Create
             (
                 svcs => svcs.Service<IInterface_7<IInterface_1>, Implementation_7_TInterface_Dependant<IInterface_1>>(lifetime),
-                new ScopeOptions { SupportsServiceProvider = true }
+                new ScopeOptions { SupportsServiceProvider = true, Engine = engine, ServiceResolutionMode = resolutionMode }
             );
 
             using (Root.CreateScope(out IServiceProvider provider))
@@ -78,14 +78,14 @@ namespace Solti.Utils.DI.Tests
         }
 
         [Test]
-        public void ServiceProvider_GetService_ShouldResolveNamedDependencies([ValueSource(nameof(Lifetimes))] Lifetime lifetime1, [ValueSource(nameof(Lifetimes))] Lifetime lifetime2) 
+        public void ServiceProvider_GetService_ShouldResolveNamedDependencies([ValueSource(nameof(Lifetimes))] Lifetime lifetime1, [ValueSource(nameof(Lifetimes))] Lifetime lifetime2, [ValueSource(nameof(Engines))] string engine, [ValueSource(nameof(ResolutionModes))] ServiceResolutionMode resolutionMode) 
         {
             Root = ScopeFactory.Create
             (
                 svcs => svcs
                     .Service<IInterface_1, Implementation_1_No_Dep>("cica", lifetime1)
                     .Service<IInterface_7<IInterface_1>, MyServiceUsingNamedDependency>(lifetime2),
-                new ScopeOptions { SupportsServiceProvider = true }
+                new ScopeOptions { SupportsServiceProvider = true, Engine = engine, ServiceResolutionMode = resolutionMode }
             );
 
             using (Root.CreateScope(out IServiceProvider provider))
@@ -98,14 +98,14 @@ namespace Solti.Utils.DI.Tests
         }
 
         [Test]
-        public void ServiceProvider_GetService_ShouldResolveDependencies([ValueSource(nameof(Lifetimes))] Lifetime lifetime1, [ValueSource(nameof(Lifetimes))] Lifetime lifetime2)
+        public void ServiceProvider_GetService_ShouldResolveDependencies([ValueSource(nameof(Lifetimes))] Lifetime lifetime1, [ValueSource(nameof(Lifetimes))] Lifetime lifetime2, [ValueSource(nameof(Engines))] string engine, [ValueSource(nameof(ResolutionModes))] ServiceResolutionMode resolutionMode)
         {
             Root = ScopeFactory.Create
             (
                 svcs => svcs
                     .Service<IInterface_1, Implementation_1_No_Dep>(lifetime1)
                     .Service<IInterface_7<IInterface_1>, Implementation_7_TInterface_Dependant<IInterface_1>>(lifetime2),
-                new ScopeOptions { SupportsServiceProvider = true }
+                new ScopeOptions { SupportsServiceProvider = true, Engine = engine, ServiceResolutionMode = resolutionMode }
             );
 
             using (Root.CreateScope(out IServiceProvider provider))

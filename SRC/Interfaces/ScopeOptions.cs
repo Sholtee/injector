@@ -28,5 +28,10 @@ namespace Solti.Utils.DI.Interfaces
         /// </summary>
         /// <remarks>Leave this property blank to use the default implementation.</remarks>
         public string? Engine { get; init; }
+
+        /// <summary>
+        /// Specifies the service resolution mode.
+        /// </summary>
+        public ServiceResolutionMode ServiceResolutionMode { get; init; } = ServiceResolutionMode.AOT;
     }
 }

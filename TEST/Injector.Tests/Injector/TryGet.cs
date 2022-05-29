@@ -35,9 +35,9 @@ namespace Solti.Utils.DI.Tests
         }
 
         [Test]
-        public void Injector_TryGet_ShouldReturnNullIfTheServiceNotFound([ValueSource(nameof(Engines))] string engine)
+        public void Injector_TryGet_ShouldReturnNullIfTheServiceNotFound([ValueSource(nameof(Engines))] string engine, [ValueSource(nameof(ResolutionModes))] ServiceResolutionMode resolutionMode)
         {
-            Root = ScopeFactory.Create(svcs => { }, new ScopeOptions { Engine = engine });
+            Root = ScopeFactory.Create(svcs => { }, new ScopeOptions { Engine = engine, ServiceResolutionMode = resolutionMode });
 
             using (IInjector injector = Root.CreateScope())
             {
@@ -46,7 +46,7 @@ namespace Solti.Utils.DI.Tests
         }
 
         [Test]
-        public void Injector_TryGet_ShouldThrowIfTheServiceCouldNotBeResolvedDueToAMissingDependency([ValueSource(nameof(BadRegistrations))] List<(Type Interface, Type Implementation)> registrations, [ValueSource(nameof(Engines))] string engine)
+        public void Injector_TryGet_ShouldThrowIfTheServiceCouldNotBeResolvedDueToAMissingDependency([ValueSource(nameof(BadRegistrations))] List<(Type Interface, Type Implementation)> registrations, [ValueSource(nameof(Engines))] string engine, [ValueSource(nameof(ResolutionModes))] ServiceResolutionMode resolutionMode)
         {
             Root = ScopeFactory.Create
             (
@@ -56,7 +56,7 @@ namespace Solti.Utils.DI.Tests
                         if (reg.Implementation is not null)
                             svcs.Service(reg.Interface, reg.Implementation, Lifetime.Transient);
                 },
-                new ScopeOptions { Engine = engine }  
+                new ScopeOptions { Engine = engine, ServiceResolutionMode = resolutionMode }  
             );
 
             using (IInjector injector = Root.CreateScope())
@@ -66,9 +66,9 @@ namespace Solti.Utils.DI.Tests
         }
 
         [Test]
-        public void Injector_TryGet_ShouldSupportNamedServices([Values(null, "cica")] string name, [ValueSource(nameof(Lifetimes))] Lifetime lifetime, [ValueSource(nameof(Engines))] string engine) 
+        public void Injector_TryGet_ShouldSupportNamedServices([Values(null, "cica")] string name, [ValueSource(nameof(Lifetimes))] Lifetime lifetime, [ValueSource(nameof(Engines))] string engine, [ValueSource(nameof(ResolutionModes))] ServiceResolutionMode resolutionMode) 
         {
-            Root = ScopeFactory.Create(svcs => svcs.Service<IInterface_1, Implementation_1_No_Dep>(name, lifetime), new ScopeOptions { Engine = engine });
+            Root = ScopeFactory.Create(svcs => svcs.Service<IInterface_1, Implementation_1_No_Dep>(name, lifetime), new ScopeOptions { Engine = engine, ServiceResolutionMode = resolutionMode });
 
             using (IInjector injector = Root.CreateScope())
             {

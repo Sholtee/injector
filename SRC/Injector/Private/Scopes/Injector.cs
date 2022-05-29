@@ -172,22 +172,10 @@ namespace Solti.Utils.DI.Internals
         public virtual object Get(Type iface, string? name)
         {
             object? instance = TryGet(iface, name);
-
             if (instance is null)
-            {
-                MissingServiceEntry requested = new(iface, name);
+                ServiceErrors.NotFound(iface, name, FPath);
 
-                ServiceNotFoundException ex = new(string.Format(Resources.Culture, Resources.SERVICE_NOT_FOUND, requested.ToString(shortForm: true)));
-
-                ex.Data["requested"] = requested;
-                ex.Data["requestor"] = FPath?.Count > 0 ? FPath[^1] : null;
-#if DEBUG
-                ex.Data["scope"] = this;
-#endif
-                throw ex;
-            }
-
-            return instance;
+            return instance!;
         }
 
         public object? TryGet(Type iface, string? name)
@@ -235,9 +223,9 @@ namespace Solti.Utils.DI.Internals
 
             FResolverLookup = (options.Engine ?? (svcs.Count <= BTREE_ITEM_THRESHOLD ? ServiceResolverLookup_BTree.Id : ServiceResolverLookup_Dict.Id)) switch
             {
-                ServiceResolverLookup_BTree.Id => new ServiceResolverLookup_BTree(svcs),
-                ServiceResolverLookup_BuiltBTree.Id => new ServiceResolverLookup_BuiltBTree(svcs),
-                ServiceResolverLookup_Dict.Id  => new ServiceResolverLookup_Dict(svcs),
+                ServiceResolverLookup_BTree.Id => new ServiceResolverLookup_BTree(svcs, options.ServiceResolutionMode),
+                ServiceResolverLookup_BuiltBTree.Id => new ServiceResolverLookup_BuiltBTree(svcs, options.ServiceResolutionMode),
+                ServiceResolverLookup_Dict.Id  => new ServiceResolverLookup_Dict(svcs, options.ServiceResolutionMode),
                 _ => throw new NotSupportedException()
             };
             FSlots    = Array<object>.Create(FResolverLookup.Slots);
