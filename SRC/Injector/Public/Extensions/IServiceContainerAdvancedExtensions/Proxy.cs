@@ -18,7 +18,7 @@ namespace Solti.Utils.DI
         /// </summary>
         /// <typeparam name="TInterceptor">The interceptor class.</typeparam>
         /// <param name="self">The target <see cref="IServiceCollection"/>.</param>
-        /// <remarks>You can't create proxies against instances or not owned entries. A service can be decorated multiple times.</remarks>
+        /// <remarks>You can't create proxies against instances and open generic services. A service can be decorated multiple times.</remarks>
         /// <exception cref="InvalidOperationException">When proxying is not allowed (see remarks).</exception>
         public static IModifiedServiceCollection WithProxy<TInterceptor>(this IModifiedServiceCollection self) => self.WithProxy(typeof(TInterceptor));
 
@@ -27,7 +27,7 @@ namespace Solti.Utils.DI
         /// </summary>
         /// <param name="self">The target <see cref="IServiceCollection"/>.</param>
         /// <param name="interceptor">The interceptor class.</param>
-        /// <remarks>You can't create proxies against instances or not owned entries. A service can be decorated multiple times.</remarks>
+        /// <remarks>You can't create proxies against instances and open generic services. A service can be decorated multiple times.</remarks>
         /// <exception cref="InvalidOperationException">When proxying is not allowed (see remarks).</exception>
         public static IModifiedServiceCollection WithProxy(this IModifiedServiceCollection self, Type interceptor)
         {
