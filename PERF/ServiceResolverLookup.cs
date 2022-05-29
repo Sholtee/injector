@@ -31,6 +31,7 @@ namespace Solti.Utils.DI.Perf
         {
             get
             {
+                yield return typeof(ServiceResolverLookup_BTree);
                 yield return typeof(ServiceResolverLookup_BuiltBTree);
                 yield return typeof(ServiceResolverLookup_Dict);
             }
