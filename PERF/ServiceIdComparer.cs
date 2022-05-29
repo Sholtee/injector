@@ -10,7 +10,7 @@ using BenchmarkDotNet.Engines;
 
 namespace Solti.Utils.DI.Perf
 {
-    using Internals;
+    using static Internals.ServiceResolverLookup_BTree;
 
     [Ignore]
     [MemoryDiagnoser]
@@ -27,15 +27,15 @@ namespace Solti.Utils.DI.Perf
             name_3 = "kutya_2";
 
         [Benchmark]
-        public int CompareIds() => ServiceResolverLookup_BuiltBTree.CompareServiceIds(svc_1, null, svc_1, null);
+        public int CompareIds() => CompareServiceIds(svc_1, null, svc_1, null);
 
         [Benchmark]
-        public int CompareIdsNoMatch() => ServiceResolverLookup_BuiltBTree.CompareServiceIds(svc_1, null, svc_2, null);
+        public int CompareIdsNoMatch() => CompareServiceIds(svc_1, null, svc_2, null);
 
         [Benchmark]
-        public int CompareNamedIds() => ServiceResolverLookup_BuiltBTree.CompareServiceIds(svc_1, name_1, svc_1, name_2);
+        public int CompareNamedIds() => CompareServiceIds(svc_1, name_1, svc_1, name_2);
 
         [Benchmark]
-        public int CompareNamedIdsNoMatch() => ServiceResolverLookup_BuiltBTree.CompareServiceIds(svc_1, name_1, svc_1, name_3);
+        public int CompareNamedIdsNoMatch() => CompareServiceIds(svc_1, name_1, svc_1, name_3);
     }
 }
