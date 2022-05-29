@@ -142,6 +142,8 @@ namespace Solti.Utils.DI.Internals
 
             FBuiltFactory = factory;
 #else
+            Expression<Func<IInjector, Type, object>> factory;
+
             if (FProxies?.Count > 0)
             {
                 ParameterExpression
@@ -166,12 +168,12 @@ namespace Solti.Utils.DI.Internals
                     );
                 }
 
-                Expression<Func<IInjector, Type, object>> resolver = Expression.Lambda<Func<IInjector, Type, object>>(invocation, injector, iface);
-                Debug.WriteLine($"Created activator: {Environment.NewLine}{resolver.GetDebugView()}");
-
-                FBuiltFactory = resolver.Compile();
+                factory = Expression.Lambda<Func<IInjector, Type, object>>(invocation, injector, iface);
             }
-            else FBuiltFactory = (Func<IInjector, Type, object>) visitor(Factory).Compile();
+            else factory = (Expression<Func<IInjector, Type, object>>) visitor(Factory);
+
+            Debug.WriteLine($"Created factory: {Environment.NewLine}{factory.GetDebugView()}");
+            FBuiltFactory = factory.Compile();
 #endif
             State = (State | ServiceEntryStateFlags.Built) & ~ServiceEntryStateFlags.Validated;
         }
