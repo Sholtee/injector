@@ -50,6 +50,9 @@ namespace Solti.Utils.DI.Perf
         [ParamsSource(nameof(Engines))]
         public string Engine { get; set; }
 
+        [Params(ServiceResolutionMode.JIT, ServiceResolutionMode.AOT)]
+        public ServiceResolutionMode ResolutionMode { get; set; }
+
         #region Services
         public interface IDependency
         {
@@ -101,7 +104,7 @@ namespace Solti.Utils.DI.Perf
 
         protected IScopeFactory Root { get; private set; }
 
-        protected IScopeFactory Setup(Action<IServiceCollection> setupContainer) => Root = ScopeFactory.Create(setupContainer, new ScopeOptions { Engine = Engine });
+        protected IScopeFactory Setup(Action<IServiceCollection> setupContainer) => Root = ScopeFactory.Create(setupContainer, new ScopeOptions { Engine = Engine, ServiceResolutionMode = ResolutionMode });
 
         [GlobalCleanup]
         public void Cleanup() => Root?.Dispose();
