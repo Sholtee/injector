@@ -94,12 +94,6 @@ namespace Solti.Utils.DI.Perf
             public DependantLazy(Lazy<IDependency> dependency) => LazyDependency = dependency;
             public Lazy<IDependency> LazyDependency { get; }
         }
-
-        public class Outer
-        {
-            public Outer(IDependency dependency, int num) => Dependency = dependency;
-            public IDependency Dependency { get; }
-        }
         #endregion
 
         protected IScopeFactory Root { get; private set; }
@@ -107,7 +101,7 @@ namespace Solti.Utils.DI.Perf
         protected IScopeFactory Setup(Action<IServiceCollection> setupContainer) => Root = ScopeFactory.Create(setupContainer, new ScopeOptions { Engine = Engine, ServiceResolutionMode = ResolutionMode });
 
         [GlobalCleanup]
-        public void Cleanup() => Root?.Dispose();
+        public virtual void Cleanup() => Root?.Dispose();
     }
 
     [MemoryDiagnoser]
@@ -115,6 +109,13 @@ namespace Solti.Utils.DI.Perf
     public class InjectorGet : InjectorTestsBase
     {
         public IInjector Injector { get; set; }
+
+        [GlobalCleanup]
+        public override void Cleanup()
+        {
+            Injector?.Dispose();
+            base.Cleanup();
+        }
 
         [ParamsSource(nameof(Lifetimes))]
         public Lifetime DependencyLifetime { get; set; }
