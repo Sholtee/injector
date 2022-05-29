@@ -127,6 +127,8 @@ namespace Solti.Utils.DI.Internals
         }
         #endregion
 
+        public const string Id = "btree";
+
         public ServiceResolverLookup_BTree(IEnumerable<AbstractServiceEntry> entries)
         {
             FGetGenericEntrySwitch = new RedBlackTree<ResolutionNode<AbstractServiceEntry>>(NodeComparer.Instance);

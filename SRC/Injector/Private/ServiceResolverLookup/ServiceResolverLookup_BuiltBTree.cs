@@ -121,7 +121,7 @@ namespace Solti.Utils.DI.Internals
 
         #endregion
 
-        public const string Id = "btree";
+        public new const string Id = "builtbtree";
 
         public ServiceResolverLookup_BuiltBTree(IEnumerable<AbstractServiceEntry> entries): base(entries)
         {

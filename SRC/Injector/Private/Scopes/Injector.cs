@@ -230,8 +230,9 @@ namespace Solti.Utils.DI.Internals
             );
             #pragma warning restore CA2214
 
-            FResolverLookup = (options.Engine ?? (svcs.Count <= BTREE_ITEM_THRESHOLD ? ServiceResolverLookup_BuiltBTree.Id : ServiceResolverLookup_Dict.Id)) switch
+            FResolverLookup = (options.Engine ?? (svcs.Count <= BTREE_ITEM_THRESHOLD ? ServiceResolverLookup_BTree.Id : ServiceResolverLookup_Dict.Id)) switch
             {
+                ServiceResolverLookup_BTree.Id => new ServiceResolverLookup_BTree(svcs),
                 ServiceResolverLookup_BuiltBTree.Id => new ServiceResolverLookup_BuiltBTree(svcs),
                 ServiceResolverLookup_Dict.Id  => new ServiceResolverLookup_Dict(svcs),
                 _ => throw new NotSupportedException()
