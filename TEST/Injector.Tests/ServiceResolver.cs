@@ -23,6 +23,7 @@ namespace Solti.Utils.DI.Internals.Tests
             get 
             {
                 yield return entries => new ServiceResolverLookup_BTree(entries);
+                yield return entries => new ServiceResolverLookup_BuiltBTree(entries);
                 yield return entries => new ServiceResolverLookup_Dict(entries);
             }
         }
