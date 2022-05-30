@@ -28,17 +28,13 @@ namespace Solti.Utils.DI.Internals
 
         public ServiceRequestVisitor(Func<MethodCallExpression, Expression, Type, string?, Expression> visitor) => FVisitor = visitor;
 
-        public int VisitedRequests { get; private set; }
-
-        public int AlteredRequests { get; private set; }
-
         protected override Expression VisitMethodCall(MethodCallExpression node)
         {
             if (!node.Method.IsGenericMethod)
             {
                 if (Array.IndexOf(FInjectorGet, node.Method) >= 0 && node.Arguments[0] is ConstantExpression iface && node.Arguments[1] is ConstantExpression name)
                 {
-                    return CallVisitor
+                    return FVisitor
                     (
                         node,
                         node.Object,
@@ -51,7 +47,7 @@ namespace Solti.Utils.DI.Internals
             {
                 if (Array.IndexOf(FGenericInjectorGet, node.Method.GetGenericMethodDefinition()) >= 0 && node.Arguments[1] is ConstantExpression name)
                 {
-                    return CallVisitor
+                    return FVisitor
                     (
                         node,
                         node.Arguments[0],
@@ -62,17 +58,6 @@ namespace Solti.Utils.DI.Internals
             }
 
             return base.VisitMethodCall(node);
-
-            Expression CallVisitor(MethodCallExpression original, Expression target, Type iface, string? name)
-            {
-                VisitedRequests++;
-
-                Expression result = FVisitor(original, target, iface, name);
-                if (result != original)
-                    AlteredRequests++;
-
-                return result;
-            }
         }
     }
 }

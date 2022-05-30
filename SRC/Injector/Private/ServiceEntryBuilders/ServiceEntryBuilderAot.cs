@@ -78,8 +78,16 @@ namespace Solti.Utils.DI.Internals
             if (entry.State.HasFlag(ServiceEntryStateFlags.Built))
                 return;
 
-            ServiceRequestVisitor visitor = new(Visit);
+            ServiceRequestVisitor visitor;
+#if DEBUG
+            int
+                visitedRequests = 0,
+                alteredRequests = 0;
 
+            visitor = new(VisitAndDebug);
+#else
+            visitor = new(Visit);
+#endif
             //
             // Throws if the request is circular
             //
@@ -93,8 +101,20 @@ namespace Solti.Utils.DI.Internals
             {
                 FPath.Pop();
             }
+#if DEBUG
+            Debug.WriteLine($"[{entry.ToString(shortForm: true)}] built: visited {visitedRequests}, altered {alteredRequests} requests");
 
-            Debug.WriteLine($"[{entry.ToString(shortForm: true)}] built: visited {visitor.VisitedRequests}, altered {visitor.AlteredRequests} requests");
+            Expression VisitAndDebug(MethodCallExpression original, Expression target, Type iface, string? name)
+            {
+                visitedRequests++;
+
+                Expression result = Visit(original, target, iface, name);
+                if (result != original)
+                    alteredRequests++;
+
+                return result;
+            }
+#endif
         }
     }
 }
