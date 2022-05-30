@@ -40,6 +40,8 @@ namespace Solti.Utils.DI.Internals
                 //
                 // Do NOT throw here as the injector.Get() method can be overridden in a permissive manner
                 //
+                // TODO: Throw if not permissive...
+                //
 
                 return method;
             }
@@ -97,6 +99,11 @@ namespace Solti.Utils.DI.Internals
             //
 
             FPath.Push(entry);
+
+            //
+            // TODO: Enforce strict DI rules
+            //
+
             try
             {
                 entry.Build(lambda => (LambdaExpression) FVisitor.Visit(lambda));
@@ -105,6 +112,10 @@ namespace Solti.Utils.DI.Internals
             {
                 FPath.Pop();
             }
+
+            //
+            // TODO: Set the entry validated
+            //
 #if DEBUG
             Debug.WriteLine($"[{entry.ToString(shortForm: true)}] built: visited {visitedRequests}, altered {alteredRequests} requests");
 
