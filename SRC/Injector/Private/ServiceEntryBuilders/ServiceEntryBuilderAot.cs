@@ -11,10 +11,12 @@ namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
 
-    internal sealed class ServiceEntryBuilderAot: ServiceEntryBuilder
+    internal sealed class ServiceEntryBuilderAot : ServiceEntryBuilder
     {
         private readonly ServicePath FPath;
-
+#if !DEBUG
+        private readonly ServiceRequestVisitor FVisitor;
+#endif
         private Expression Visit(MethodCallExpression method, Expression target, Type iface, string? name)
         {
             //
@@ -69,7 +71,13 @@ namespace Solti.Utils.DI.Internals
 
         public new const ServiceResolutionMode Id = ServiceResolutionMode.AOT;
 
-        public ServiceEntryBuilderAot(IServiceResolverLookup lookup): base(lookup) => FPath = new ServicePath();
+        public ServiceEntryBuilderAot(IServiceResolverLookup lookup) : base(lookup)
+        {
+            FPath = new ServicePath();
+#if !DEBUG
+            FVisitor = new ServiceRequestVisitor(Visit);
+#endif
+        }
 
         public override void Build(AbstractServiceEntry entry)
         {
@@ -77,16 +85,12 @@ namespace Solti.Utils.DI.Internals
 
             if (entry.State.HasFlag(ServiceEntryStateFlags.Built))
                 return;
-
-            ServiceRequestVisitor visitor;
 #if DEBUG
             int
                 visitedRequests = 0,
                 alteredRequests = 0;
 
-            visitor = new(VisitAndDebug);
-#else
-            visitor = new(Visit);
+            ServiceRequestVisitor FVisitor = new(VisitAndDebug);
 #endif
             //
             // Throws if the request is circular
@@ -95,7 +99,7 @@ namespace Solti.Utils.DI.Internals
             FPath.Push(entry);
             try
             {
-                entry.Build(lambda => (LambdaExpression) visitor.Visit(lambda));
+                entry.Build(lambda => (LambdaExpression) FVisitor.Visit(lambda));
             }
             finally
             {
