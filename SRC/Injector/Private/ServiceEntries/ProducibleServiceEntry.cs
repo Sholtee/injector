@@ -19,6 +19,10 @@ namespace Solti.Utils.DI.Internals
     internal abstract partial class ProducibleServiceEntry : AbstractServiceEntry
     {
         #region Private
+        private List<Expression<Func<IInjector, Type, object, object>>>? FProxies;
+
+        private Func<IInjector, Type, object>? FBuiltFactory;
+
         private static Expression<Func<IInjector, Type, object>>? GetFactory(Type @interface, Type implementation)
         {
             if (!@interface.IsGenericTypeDefinition)
@@ -108,12 +112,6 @@ namespace Solti.Utils.DI.Internals
         }
         #endregion
 
-        private IList<Expression<Func<IInjector, Type, object, object>>>? FProxies;
-
-        private Func<IInjector, Type, object>? FBuiltFactory;
-#if DEBUG
-        public Func<IInjector, Type, object>? BuiltFactory => FBuiltFactory;
-#endif
         public override void Build(Func<LambdaExpression, LambdaExpression> visitor)
         {
             if (visitor is null)
@@ -204,5 +202,10 @@ namespace Solti.Utils.DI.Internals
         }
 
         public object? ExplicitArgs { get; }
+
+        public Func<IInjector, Type, object>? BuiltFactory => FBuiltFactory;
+
+        public IReadOnlyList<Expression<Func<IInjector, Type, object, object>>> Proxies =>
+            (IReadOnlyList<Expression<Func<IInjector, Type, object, object>>>?) FProxies ?? Array<Expression<Func<IInjector, Type, object, object>>>.Empty;
     }
 }
