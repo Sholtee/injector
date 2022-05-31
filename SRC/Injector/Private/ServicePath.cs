@@ -37,7 +37,7 @@ namespace Solti.Utils.DI.Internals
                 // specialized entries [entry.Specialize(MyType) != entry.Specialize(MyType)]
                 //
 
-                if (ReferenceEquals(that, entry) || (that.Interface == entry.Interface && that.Name == entry.Name))
+                if (ReferenceEquals(that, entry) || ServiceIdComparer.Instance.Equals(that, entry))
                     break;
             }
 
