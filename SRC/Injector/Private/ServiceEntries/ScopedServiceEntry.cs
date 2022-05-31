@@ -24,34 +24,29 @@ namespace Solti.Utils.DI.Internals
         {
         }
 
-        public override AbstractServiceEntry Specialize(params Type[] genericArguments)
+        public override AbstractServiceEntry Specialize(params Type[] genericArguments!!) => this switch
         {
-            Ensure.Parameter.IsNotNull(genericArguments, nameof(genericArguments));
-
-            return this switch
-            {
-                _ when Implementation is not null && ExplicitArgs is null => new ScopedServiceEntry
-                (
-                    Interface.MakeGenericType(genericArguments),
-                    Name,
-                    Implementation.MakeGenericType(genericArguments)
-                ),
-                _ when Implementation is not null && ExplicitArgs is not null => new ScopedServiceEntry
-                (
-                    Interface.MakeGenericType(genericArguments),
-                    Name,
-                    Implementation.MakeGenericType(genericArguments),
-                    ExplicitArgs
-                ),
-                _ when Factory is not null => new ScopedServiceEntry
-                (
-                    Interface.MakeGenericType(genericArguments),
-                    Name,
-                    Factory
-                ),
-                _ => throw new NotSupportedException()
-            };
-        }
+            _ when Implementation is not null && ExplicitArgs is null => new ScopedServiceEntry
+            (
+                Interface.MakeGenericType(genericArguments),
+                Name,
+                Implementation.MakeGenericType(genericArguments)
+            ),
+            _ when Implementation is not null && ExplicitArgs is not null => new ScopedServiceEntry
+            (
+                Interface.MakeGenericType(genericArguments),
+                Name,
+                Implementation.MakeGenericType(genericArguments),
+                ExplicitArgs
+            ),
+            _ when Factory is not null => new ScopedServiceEntry
+            (
+                Interface.MakeGenericType(genericArguments),
+                Name,
+                Factory
+            ),
+            _ => throw new NotSupportedException()
+        };
 
         public override Lifetime Lifetime { get; } = Lifetime.Scoped;
 

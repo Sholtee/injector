@@ -16,10 +16,8 @@ namespace Solti.Utils.DI.Internals
     {
         public object Instance { get; }
 
-        public InstanceServiceEntry(Type @interface, string? name, object instance) : base(@interface, name, null, null)
+        public InstanceServiceEntry(Type @interface!!, string? name, object instance!!) : base(@interface, name, null, null)
         {
-            Ensure.Parameter.IsNotNull(instance, nameof(instance));
-
             Instance = instance;
 
             //

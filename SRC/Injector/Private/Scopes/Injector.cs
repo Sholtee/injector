@@ -178,11 +178,13 @@ namespace Solti.Utils.DI.Internals
             return instance!;
         }
 
-        public object? TryGet(Type iface, string? name)
+        public object? TryGet(Type iface!!, string? name)
         {
-            Ensure.Parameter.IsNotNull(iface, nameof(iface));
-            Ensure.Parameter.IsInterface(iface, nameof(iface));
-            Ensure.Parameter.IsNotGenericDefinition(iface, nameof(iface));
+            if (!iface.IsInterface)
+                throw new ArgumentException(Resources.PARAMETER_NOT_AN_INTERFACE, nameof(iface));
+
+            if (iface.IsGenericTypeDefinition)
+                throw new ArgumentException(Resources.PARAMETER_IS_GENERIC, nameof(iface));
 
             return FResolverLookup.Get(iface, name)?.Resolve(this);
         }

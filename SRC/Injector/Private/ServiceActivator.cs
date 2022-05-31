@@ -51,12 +51,16 @@ namespace Solti.Utils.DI.Internals
             return null;
         }
 
-        private static void EnsureCanBeInstantiated(Type type) 
+        private static void EnsureCanBeInstantiated(Type type!!) 
         {
-            Ensure.Parameter.IsNotNull(type, nameof(type));
-            Ensure.Parameter.IsClass(type, nameof(type));
-            Ensure.Parameter.IsNotAbstract(type, nameof(type));
-            Ensure.Parameter.IsNotGenericDefinition(type, nameof(type));
+            if (!type.IsClass)
+                throw new ArgumentException(Resources.PARAMETER_NOT_A_CLASS, nameof(type));
+
+            if (type.IsAbstract)
+                throw new ArgumentException(Resources.PARAMETER_IS_ABSTRACT, nameof(type));
+
+            if (type.IsGenericTypeDefinition)
+                throw new ArgumentException(Resources.PARAMETER_IS_GENERIC, nameof(type));
         }
 
         private static Expression<TDelegate> CreateActivator<TDelegate>
@@ -359,8 +363,8 @@ namespace Solti.Utils.DI.Internals
 
         internal static Expression CreateLazy(ParameterExpression injector, Type iface, OptionsAttribute? options)
         {
-            Ensure.Parameter.IsInterface(iface, nameof(iface));
-            Ensure.Parameter.IsNotGenericDefinition(iface, nameof(iface));
+            if (!iface.IsInterface)
+                throw new ArgumentException(Resources.PARAMETER_NOT_AN_INTERFACE, nameof(iface));
 
             //
             // According to ServiceActivator_Lazy perf tests, the runtime built lambdas are by-design ridiculously slow
