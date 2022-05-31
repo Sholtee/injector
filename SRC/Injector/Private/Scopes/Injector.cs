@@ -173,7 +173,7 @@ namespace Solti.Utils.DI.Internals
         {
             object? instance = TryGet(iface, name);
             if (instance is null)
-                ServiceErrors.NotFound(iface, name, FPath);
+                ServiceErrors.NotFound(iface, name, FPath?.Last);
 
             return instance!;
         }
@@ -223,9 +223,9 @@ namespace Solti.Utils.DI.Internals
 
             FResolverLookup = (options.Engine ?? (svcs.Count <= BTREE_ITEM_THRESHOLD ? ServiceResolverLookup_BTree.Id : ServiceResolverLookup_Dict.Id)) switch
             {
-                ServiceResolverLookup_BTree.Id => new ServiceResolverLookup_BTree(svcs, options.ServiceResolutionMode),
-                ServiceResolverLookup_BuiltBTree.Id => new ServiceResolverLookup_BuiltBTree(svcs, options.ServiceResolutionMode),
-                ServiceResolverLookup_Dict.Id  => new ServiceResolverLookup_Dict(svcs, options.ServiceResolutionMode),
+                ServiceResolverLookup_BTree.Id => new ServiceResolverLookup_BTree(svcs, options),
+                ServiceResolverLookup_BuiltBTree.Id => new ServiceResolverLookup_BuiltBTree(svcs, options),
+                ServiceResolverLookup_Dict.Id  => new ServiceResolverLookup_Dict(svcs, options),
                 _ => throw new NotSupportedException()
             };
             FSlots    = Array<object>.Create(FResolverLookup.Slots);

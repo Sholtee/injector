@@ -46,7 +46,7 @@ namespace Solti.Utils.DI.Tests
         }
 
         [Test]
-        public void Injector_TryGet_ShouldThrowIfTheServiceCouldNotBeResolvedDueToAMissingDependency([ValueSource(nameof(BadRegistrations))] List<(Type Interface, Type Implementation)> registrations, [ValueSource(nameof(Engines))] string engine, [ValueSource(nameof(ResolutionModes))] ServiceResolutionMode resolutionMode)
+        public void Injector_TryGet_ShouldThrowIfTheServiceCouldNotBeResolvedDueToAMissingDependency([ValueSource(nameof(BadRegistrations))] List<(Type Interface, Type Implementation)> registrations, [ValueSource(nameof(Engines))] string engine)
         {
             Root = ScopeFactory.Create
             (
@@ -56,7 +56,7 @@ namespace Solti.Utils.DI.Tests
                         if (reg.Implementation is not null)
                             svcs.Service(reg.Interface, reg.Implementation, Lifetime.Transient);
                 },
-                new ScopeOptions { Engine = engine, ServiceResolutionMode = resolutionMode }  
+                new ScopeOptions { Engine = engine, ServiceResolutionMode = ServiceResolutionMode.JIT }  
             );
 
             using (IInjector injector = Root.CreateScope())

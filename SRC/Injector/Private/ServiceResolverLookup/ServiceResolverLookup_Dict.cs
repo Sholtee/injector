@@ -24,7 +24,7 @@ namespace Solti.Utils.DI.Internals
 
         public const string Id = "dict";
 
-        public ServiceResolverLookup_Dict(IEnumerable<AbstractServiceEntry> entries, ServiceResolutionMode resolutionMode): base(resolutionMode)
+        public ServiceResolverLookup_Dict(IEnumerable<AbstractServiceEntry> entries, ScopeOptions scopeOptions) : base(scopeOptions)
         {
             foreach (AbstractServiceEntry entry in entries)
             {

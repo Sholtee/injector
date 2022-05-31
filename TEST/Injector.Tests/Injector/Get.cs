@@ -60,9 +60,9 @@ namespace Solti.Utils.DI.Tests
         }
 
         [Test]
-        public void Injector_Get_ShouldThrowOnNonRegisteredDependency([ValueSource(nameof(Lifetimes))] Lifetime lifetime, [ValueSource(nameof(Engines))] string engine, [ValueSource(nameof(ResolutionModes))] ServiceResolutionMode resolutionMode)
+        public void Injector_Get_ShouldThrowOnNonRegisteredDependency([ValueSource(nameof(Lifetimes))] Lifetime lifetime, [ValueSource(nameof(Engines))] string engine)
         {
-            Root = ScopeFactory.Create(svcs => svcs.Service<IInterface_7<IInterface_1>, Implementation_7_TInterface_Dependant<IInterface_1>>(lifetime), new ScopeOptions { Engine = engine, ServiceResolutionMode = resolutionMode });
+            Root = ScopeFactory.Create(svcs => svcs.Service<IInterface_7<IInterface_1>, Implementation_7_TInterface_Dependant<IInterface_1>>(lifetime), new ScopeOptions { Engine = engine, ServiceResolutionMode = ServiceResolutionMode.JIT });
 
             using (IInjector injector = Root.CreateScope())
             {

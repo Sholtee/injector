@@ -131,7 +131,7 @@ namespace Solti.Utils.DI.Internals
         public new const string Id = "builtbtree";
 
         #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
-        public ServiceResolverLookup_BuiltBTree(IEnumerable<AbstractServiceEntry> entries, ServiceResolutionMode resolutionMode) : base(entries, resolutionMode)
+        public ServiceResolverLookup_BuiltBTree(IEnumerable<AbstractServiceEntry> entries, ScopeOptions scopeOptions) : base(entries, scopeOptions)
         #pragma warning restore CS8618
         {
         }

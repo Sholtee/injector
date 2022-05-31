@@ -42,10 +42,10 @@ namespace Solti.Utils.DI.Internals
         {
             Debug.Assert(FServiceEntryBuilder is null, "Attempt to initialize the lookup more than once.");
 
-            FServiceEntryBuilder = ResolutionMode switch 
+            FServiceEntryBuilder = ScopeOptions.ServiceResolutionMode switch 
             {
                 ServiceEntryBuilder.Id => new ServiceEntryBuilder(this),
-                ServiceEntryBuilderAot.Id => new ServiceEntryBuilderAot(this),
+                ServiceEntryBuilderAot.Id => new ServiceEntryBuilderAot(this, ScopeOptions),
                 _ => throw new NotSupportedException()
             };
 
@@ -55,9 +55,9 @@ namespace Solti.Utils.DI.Internals
             }
         }
 
-        protected ServiceResolverLookupBase(ServiceResolutionMode resolutionMode) => ResolutionMode = resolutionMode;
+        protected ServiceResolverLookupBase(ScopeOptions scopeOptions) => ScopeOptions = scopeOptions;
 
-        public ServiceResolutionMode ResolutionMode { get; }
+        public ScopeOptions ScopeOptions { get; }
 
         public int Slots { get; private set; }
 

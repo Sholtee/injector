@@ -12,14 +12,14 @@ namespace Solti.Utils.DI.Internals
 
     internal static class ServiceErrors
     {
-        public static void NotFound(Type iface, string? name, ServicePath? path)
+        public static void NotFound(Type iface, string? name, AbstractServiceEntry? requestor)
         {
             MissingServiceEntry requested = new(iface, name);
 
             ServiceNotFoundException ex = new(string.Format(Culture, SERVICE_NOT_FOUND, requested.ToString(shortForm: true)));
 
-            ex.Data["requested"] = requested;
-            ex.Data["requestor"] = path?.Count > 0 ? path[^1] : null;
+            ex.Data[nameof(requested)] = requested;
+            ex.Data[nameof(requestor)] = requestor;
             throw ex;
         }
 

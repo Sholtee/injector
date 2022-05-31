@@ -14,6 +14,8 @@ namespace Solti.Utils.DI.Internals
     internal sealed class ServiceEntryBuilderAot : ServiceEntryBuilder
     {
         private readonly ServicePath FPath;
+
+        private readonly ScopeOptions FScopeOptions;
 #if !DEBUG
         private readonly ServiceRequestVisitor FVisitor;
 #endif
@@ -38,12 +40,13 @@ namespace Solti.Utils.DI.Internals
                     return Expression.Default(iface);
 
                 //
-                // Do NOT throw here as the injector.Get() method can be overridden in a permissive manner
-                //
-                // TODO: Throw if not permissive...
+                // The injector.Get() method can be overridden in a permissive manner
                 //
 
-                return method;
+                if (FScopeOptions.SupportsServiceProvider)
+                    return method;
+
+                ServiceErrors.NotFound(iface, name, FPath?.Last);
             }
 
             //
@@ -73,8 +76,9 @@ namespace Solti.Utils.DI.Internals
 
         public new const ServiceResolutionMode Id = ServiceResolutionMode.AOT;
 
-        public ServiceEntryBuilderAot(IServiceResolverLookup lookup) : base(lookup)
+        public ServiceEntryBuilderAot(IServiceResolverLookup lookup, ScopeOptions scopeOptions) : base(lookup)
         {
+            FScopeOptions = scopeOptions;
             FPath = new ServicePath();
 #if !DEBUG
             FVisitor = new ServiceRequestVisitor(Visit);

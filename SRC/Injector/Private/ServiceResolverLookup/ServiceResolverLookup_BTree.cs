@@ -145,7 +145,7 @@ namespace Solti.Utils.DI.Internals
 
         public const string Id = "btree";
 
-        public ServiceResolverLookup_BTree(IEnumerable<AbstractServiceEntry> entries, ServiceResolutionMode resolutionMode): base(resolutionMode)
+        public ServiceResolverLookup_BTree(IEnumerable<AbstractServiceEntry> entries, ScopeOptions scopeOptions): base(scopeOptions)
         {
             #pragma warning disable CA2214 // Do not call overridable methods in constructors
             InitSwitches(entries);
