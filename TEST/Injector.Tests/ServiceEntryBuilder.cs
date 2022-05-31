@@ -46,9 +46,9 @@ namespace Solti.Utils.DI.Internals.Tests
             public MyService(IList dep, int extra) { }    
         }
 
-        private class MySErvice_MissingDep: IMyService
+        private class MyService_OptionalDep : IMyService
         {
-            public MySErvice_MissingDep([Options(Optional = true)] IDictionary nonExisting) { }
+            public MyService_OptionalDep([Options(Optional = true)] IList dep) { }
         }
 
         private class MyService_GenericDep : IMyService
@@ -87,7 +87,7 @@ namespace Solti.Utils.DI.Internals.Tests
             Root = null;
         }
 
-        private void DoTest(IModifiedServiceCollection svcs, ServiceResolutionMode resolutionMode, Lifetime lifetime)
+        private void DoTest(IModifiedServiceCollection svcs, ServiceResolutionMode resolutionMode, Lifetime lifetime, bool optional)
         {
             AbstractServiceEntry dependant = svcs.LastEntry;
 
@@ -96,9 +96,14 @@ namespace Solti.Utils.DI.Internals.Tests
             AbstractServiceEntry dependency = svcs.LastEntry;
 
             Mock<DummyInjector> mockInjector = new(MockBehavior.Strict);
-            mockInjector
-                .Setup(i => i.Get(typeof(IList), null))
-                .Returns(new List<object>());
+            if (optional)
+                mockInjector
+                    .Setup(i => i.TryGet(typeof(IList), null))
+                    .Returns(new List<object>());
+            else
+                mockInjector
+                    .Setup(i => i.Get(typeof(IList), null))
+                    .Returns(new List<object>());
             mockInjector
                 .Setup(i => i.CreateInstance(dependency))
                 .Returns(new List<object>());
@@ -121,7 +126,10 @@ namespace Solti.Utils.DI.Internals.Tests
 
             if (resolutionMode is ServiceResolutionMode.JIT)
             {
-                mockInjector.Verify(i => i.Get(typeof(IList), null), Times.Once);
+                if (optional)
+                    mockInjector.Verify(i => i.TryGet(typeof(IList), null), Times.Once);
+                else
+                    mockInjector.Verify(i => i.Get(typeof(IList), null), Times.Once);
                 mockInjector.Verify(i => i.CreateInstance(It.IsAny<AbstractServiceEntry>()), Times.Never);
                 mockInjector.Verify(i => i.GetOrCreateInstance(It.IsAny<AbstractServiceEntry>(), It.IsAny<int>()), Times.Never);
             }
@@ -129,7 +137,10 @@ namespace Solti.Utils.DI.Internals.Tests
             {
                 mockInjector.Verify(i => i.CreateInstance(dependency), Times.Exactly(!dependency.Features.HasFlag(ServiceEntryFlags.CreateSingleInstance) ? 1 : 0));
                 mockInjector.Verify(i => i.GetOrCreateInstance(dependency, It.IsAny<int>()), Times.Exactly(dependency.Features.HasFlag(ServiceEntryFlags.CreateSingleInstance) ? 1 : 0));
-                mockInjector.Verify(i => i.Get(It.IsAny<Type>(), It.IsAny<string>()), Times.Never);
+                if (optional)
+                    mockInjector.Verify(i => i.TryGet(It.IsAny<Type>(), It.IsAny<string>()), Times.Never);
+                else
+                    mockInjector.Verify(i => i.Get(It.IsAny<Type>(), It.IsAny<string>()), Times.Never);
             }
             else Assert.Fail("Unknown resolution mode");
         }
@@ -140,8 +151,8 @@ namespace Solti.Utils.DI.Internals.Tests
 
             Mock<DummyInjector> mockInjector = new(MockBehavior.Strict);
             mockInjector
-                .Setup(i => i.TryGet(typeof(IDictionary), null))
-                .Returns((IDictionary) null);
+                .Setup(i => i.TryGet(typeof(IList), null))
+                .Returns((IList) null);
 
             Root = ScopeFactory.Create
             (
@@ -158,7 +169,7 @@ namespace Solti.Utils.DI.Internals.Tests
 
             if (resolutionMode is ServiceResolutionMode.JIT)
             {
-                mockInjector.Verify(i => i.TryGet(typeof(IDictionary), null), Times.Once);
+                mockInjector.Verify(i => i.TryGet(typeof(IList), null), Times.Once);
             }
             else if (resolutionMode is ServiceResolutionMode.AOT)
             {
@@ -222,7 +233,16 @@ namespace Solti.Utils.DI.Internals.Tests
             IModifiedServiceCollection svcs = new ServiceCollection() 
                 .Service<IMyService, MyService>(Lifetime.Scoped);
 
-            DoTest(svcs, resolutionMode, lifetime);
+            DoTest(svcs, resolutionMode, lifetime, optional: false);
+        }
+
+        [Test]
+        public void Builder_MayModifyInjectorInvocations_OptionalServiceExt([Values(ServiceResolutionMode.JIT, ServiceResolutionMode.AOT)] ServiceResolutionMode resolutionMode, [ValueSource(nameof(Lifetimes))] Lifetime lifetime)
+        {
+            IModifiedServiceCollection svcs = new ServiceCollection()
+                .Service<IMyService, MyService_OptionalDep>(Lifetime.Scoped);
+
+            DoTest(svcs, resolutionMode, lifetime, optional: true);
         }
 
         [Test]
@@ -231,14 +251,23 @@ namespace Solti.Utils.DI.Internals.Tests
             IModifiedServiceCollection svcs = new ServiceCollection()
                 .Service(typeof(IMyService), typeof(MyService), Lifetime.Scoped);
 
-            DoTest(svcs, resolutionMode, lifetime);
+            DoTest(svcs, resolutionMode, lifetime, optional: false);
+        }
+
+        [Test]
+        public void Builder_MayModifyInjectorInvocations_OptionalService([Values(ServiceResolutionMode.JIT, ServiceResolutionMode.AOT)] ServiceResolutionMode resolutionMode, [ValueSource(nameof(Lifetimes))] Lifetime lifetime)
+        {
+            IModifiedServiceCollection svcs = new ServiceCollection()
+                .Service(typeof(IMyService), typeof(MyService_OptionalDep), Lifetime.Scoped);
+
+            DoTest(svcs, resolutionMode, lifetime, optional: true);
         }
 
         [Test]
         public void Builder_MayModifyInjectorInvocations_ServiceExt_MissingDep([Values(ServiceResolutionMode.JIT, ServiceResolutionMode.AOT)] ServiceResolutionMode resolutionMode, [ValueSource(nameof(Lifetimes))] Lifetime lifetime)
         {
             IModifiedServiceCollection svcs = new ServiceCollection()
-                .Service<IMyService, MySErvice_MissingDep>(Lifetime.Scoped);
+                .Service<IMyService, MyService_OptionalDep>(Lifetime.Scoped);
 
             DoMissingDepTest(svcs, resolutionMode, lifetime);
         }
@@ -247,7 +276,7 @@ namespace Solti.Utils.DI.Internals.Tests
         public void Builder_MayModifyInjectorInvocations_Service_MissingDep([Values(ServiceResolutionMode.JIT, ServiceResolutionMode.AOT)] ServiceResolutionMode resolutionMode, [ValueSource(nameof(Lifetimes))] Lifetime lifetime)
         {
             IModifiedServiceCollection svcs = new ServiceCollection()
-                .Service(typeof(IMyService), typeof(MySErvice_MissingDep), Lifetime.Scoped);
+                .Service(typeof(IMyService), typeof(MyService_OptionalDep), Lifetime.Scoped);
 
             DoMissingDepTest(svcs, resolutionMode, lifetime);
         }
@@ -258,7 +287,7 @@ namespace Solti.Utils.DI.Internals.Tests
             IModifiedServiceCollection svcs = new ServiceCollection()
                 .Service<IMyService, MyService>(new { extra = 0 }, Lifetime.Scoped);
 
-            DoTest(svcs, resolutionMode, lifetime);
+            DoTest(svcs, resolutionMode, lifetime, optional: false);
         }
 
         [Test]
@@ -267,7 +296,7 @@ namespace Solti.Utils.DI.Internals.Tests
             IModifiedServiceCollection svcs = new ServiceCollection()
                 .Service(typeof(IMyService), typeof(MyService), new { extra = 0 }, Lifetime.Scoped);
 
-            DoTest(svcs, resolutionMode, lifetime);
+            DoTest(svcs, resolutionMode, lifetime, optional: false);
         }
 
         [Test]
@@ -276,7 +305,16 @@ namespace Solti.Utils.DI.Internals.Tests
             IModifiedServiceCollection svcs = new ServiceCollection()
                 .Factory<IMyService>(injector => new MyService(injector.Get<IList>(null)), Lifetime.Scoped);
 
-            DoTest(svcs, resolutionMode, lifetime);
+            DoTest(svcs, resolutionMode, lifetime, optional: false);
+        }
+
+        [Test]
+        public void Builder_MayModifyInjectorInvocations_OptionalFactoryExt([Values(ServiceResolutionMode.JIT, ServiceResolutionMode.AOT)] ServiceResolutionMode resolutionMode, [ValueSource(nameof(Lifetimes))] Lifetime lifetime)
+        {
+            IModifiedServiceCollection svcs = new ServiceCollection()
+                .Factory<IMyService>(injector => new MyService_OptionalDep(injector.TryGet<IList>(null)), Lifetime.Scoped);
+
+            DoTest(svcs, resolutionMode, lifetime, optional: true);
         }
 
         [Test]
@@ -285,14 +323,23 @@ namespace Solti.Utils.DI.Internals.Tests
             IModifiedServiceCollection svcs = new ServiceCollection()
                 .Factory(typeof(IMyService), (injector, _) => new MyService((IList) injector.Get(typeof(IList), null)), Lifetime.Scoped);
 
-            DoTest(svcs, resolutionMode, lifetime);
+            DoTest(svcs, resolutionMode, lifetime, optional: false);
+        }
+
+        [Test]
+        public void Builder_MayModifyInjectorInvocations_OptionalFactory([Values(ServiceResolutionMode.JIT, ServiceResolutionMode.AOT)] ServiceResolutionMode resolutionMode, [ValueSource(nameof(Lifetimes))] Lifetime lifetime)
+        {
+            IModifiedServiceCollection svcs = new ServiceCollection()
+                .Factory(typeof(IMyService), (injector, _) => new MyService_OptionalDep((IList) injector.TryGet(typeof(IList), null)), Lifetime.Scoped);
+
+            DoTest(svcs, resolutionMode, lifetime, optional: true);
         }
 
         [Test]
         public void Builder_MayModifyInjectorInvocations_FactoryExt_MissingDep([Values(ServiceResolutionMode.JIT, ServiceResolutionMode.AOT)] ServiceResolutionMode resolutionMode, [ValueSource(nameof(Lifetimes))] Lifetime lifetime)
         {
             IModifiedServiceCollection svcs = new ServiceCollection()
-                .Factory<IMyService>(injector => new MySErvice_MissingDep(injector.TryGet<IDictionary>(null)), Lifetime.Scoped);
+                .Factory<IMyService>(injector => new MyService_OptionalDep(injector.TryGet<IList>(null)), Lifetime.Scoped);
 
             DoMissingDepTest(svcs, resolutionMode, lifetime);
         }
@@ -301,7 +348,7 @@ namespace Solti.Utils.DI.Internals.Tests
         public void Builder_MayModifyInjectorInvocations_Factory_MissingDep([Values(ServiceResolutionMode.JIT, ServiceResolutionMode.AOT)] ServiceResolutionMode resolutionMode, [ValueSource(nameof(Lifetimes))] Lifetime lifetime)
         {
             IModifiedServiceCollection svcs = new ServiceCollection()
-                .Factory(typeof(IMyService), (injector, _) => new MySErvice_MissingDep((IDictionary) injector.TryGet(typeof(IDictionary), null)), Lifetime.Scoped);
+                .Factory(typeof(IMyService), (injector, _) => new MyService_OptionalDep((IList) injector.TryGet(typeof(IList), null)), Lifetime.Scoped);
 
             DoMissingDepTest(svcs, resolutionMode, lifetime);
         }
