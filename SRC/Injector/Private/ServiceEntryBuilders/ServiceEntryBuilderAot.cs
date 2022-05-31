@@ -32,19 +32,12 @@ namespace Solti.Utils.DI.Internals
                 // Missing but not required dependency
                 //
 
-                if (method.Method.Name == nameof(IInjector.TryGet))
+                if (method.Method.Name == nameof(IInjector.TryGet) || FScopeOptions.SupportsServiceProvider)
                     //
                     // injector.[Try]Get(iface, name) -> (TInterface) null
                     //
 
                     return Expression.Default(iface);
-
-                //
-                // The injector.Get() method can be overridden in a permissive manner
-                //
-
-                if (FScopeOptions.SupportsServiceProvider)
-                    return method;
 
                 ServiceErrors.NotFound(iface, name, FPath?.Last);
             }
