@@ -11,6 +11,5 @@ namespace Solti.Utils.DI.Interfaces
     /// </summary>
     public static partial class IServiceCollectionBasicExtensions
     {
-
     }
 }

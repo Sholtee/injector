@@ -20,23 +20,10 @@ namespace Solti.Utils.DI.Interfaces
         /// <param name="implementation">The service implementation to be registered. It can not be null and must implement the <paramref name="iface"/> interface. Additionally it must have only null or one constructor (that may request another dependecies). In case of multiple constructors you can use the <see cref="IServiceCollectionBasicExtensions.Factory(IServiceCollection, Type, string?, Expression{Func{IInjector, Type, object}}, Lifetime)"/> method or the <see cref="ServiceActivatorAttribute"/>.</param>
         /// <param name="lifetime">The <see cref="Lifetime"/> of the service.</param>
         /// <remarks>You may register generic services (where both the interface and the implementation are open generic types). The system will specialize the implementation if you request the concrete service.</remarks> 
-        public static IModifiedServiceCollection Service(this IServiceCollection self, Type iface, string? name, Type implementation, Lifetime lifetime)
-        {
-            if (self is null)
-                throw new ArgumentNullException(nameof(self));
-
-            if (lifetime is null)
-                throw new ArgumentNullException(nameof(lifetime));
-
-            //
-            // Tobbi parametert az xXxServiceEntry konstruktora fogja ellenorizni.
-            //
-
-            return self.Register
-            (
-                lifetime.CreateFrom(iface, name, implementation)
-            );
-        }
+        public static IModifiedServiceCollection Service(this IServiceCollection self!!, Type iface!!, string? name, Type implementation!!, Lifetime lifetime!!) => self.Register
+        (
+            lifetime.CreateFrom(iface, name, implementation)
+        );
 
         /// <summary>
         /// Registers a service <paramref name="implementation"/> using arbitrary constructor arguments.
@@ -48,26 +35,10 @@ namespace Solti.Utils.DI.Interfaces
         /// <param name="explicitArgs">Explicit arguments, provided by the user (may be an anonym object or a <see cref="IReadOnlyDictionary{TKey, TValue}"/> where the key is <see cref="string"/> and value is <see cref="object"/>).</param>
         /// <param name="lifetime">The <see cref="Lifetime"/> of the service.</param>
         /// <remarks>You may register generic services (where both the interface and the implementation are open generic types). The system will specialize the implementation if you request the concrete service.</remarks> 
-        public static IModifiedServiceCollection Service(this IServiceCollection self, Type iface, string? name, Type implementation, object explicitArgs, Lifetime lifetime)
-        {
-            if (self is null)
-                throw new ArgumentNullException(nameof(self));
-
-            if (lifetime is null)
-                throw new ArgumentNullException(nameof(lifetime));
-
-            if (explicitArgs is null)
-                throw new ArgumentNullException(nameof(explicitArgs));
-
-            //
-            // Tobbi parametert az xXxServiceEntry konstruktora fogja ellenorizni.
-            //
-
-            return self.Register
-            (
-                lifetime.CreateFrom(iface, name, implementation, explicitArgs)
-            );
-        }
+        public static IModifiedServiceCollection Service(this IServiceCollection self!!, Type iface!!, string? name, Type implementation!!, object explicitArgs!!, Lifetime lifetime!!) => self.Register
+        (
+            lifetime.CreateFrom(iface, name, implementation, explicitArgs)
+        );
 
         /// <summary>
         /// Registers a new service with the given implementation.

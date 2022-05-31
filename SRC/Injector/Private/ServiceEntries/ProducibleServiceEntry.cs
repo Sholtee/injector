@@ -173,7 +173,7 @@ namespace Solti.Utils.DI.Internals
             State = (State | ServiceEntryStateFlags.Built) & ~ServiceEntryStateFlags.Validated;
         }
 
-        public override object CreateInstance(IInjector scope, out object? lifetime)
+        public override object CreateInstance(IInjector scope!!, out object? lifetime)
         {
             if (FBuiltFactory is null)
                 throw new InvalidOperationException(NOT_BUILT);
@@ -189,7 +189,7 @@ namespace Solti.Utils.DI.Internals
             return result;
         }
 
-        public override void ApplyProxy(Expression<Func<IInjector, Type, object, object>> applyProxy)
+        public override void ApplyProxy(Expression<Func<IInjector, Type, object, object>> applyProxy!!)
         {
             if (Factory is null)
                 throw new NotSupportedException(PROXYING_NOT_SUPPORTED);

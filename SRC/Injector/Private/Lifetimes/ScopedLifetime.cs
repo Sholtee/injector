@@ -15,17 +15,17 @@ namespace Solti.Utils.DI.Internals
     {
         public ScopedLifetime() : base(precedence: 10) => Scoped = this;
 
-        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Type implementation)
+        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface!!, string? name, Type implementation!!)
         {
             yield return new ScopedServiceEntry(iface, name, implementation);
         }
 
-        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Type implementation, object explicitArgs)
+        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface!!, string? name, Type implementation!!, object explicitArgs!!)
         {
             yield return new ScopedServiceEntry(iface, name, implementation, explicitArgs);
         }
 
-        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Expression<Func<IInjector, Type, object>> factory)
+        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface!!, string? name, Expression<Func<IInjector, Type, object>> factory!!)
         {
             yield return new ScopedServiceEntry(iface, name, factory);
         }

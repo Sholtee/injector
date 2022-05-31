@@ -17,11 +17,8 @@ namespace Solti.Utils.DI.Interfaces
         /// <summary>
         /// Creates a <see cref="IServiceProvider"/> instance representing the newly created scope.
         /// </summary>
-        public static IDisposableEx CreateScope(this IScopeFactory self, out IServiceProvider provider)
+        public static IDisposableEx CreateScope(this IScopeFactory self!!, out IServiceProvider provider)
         {
-            if (self is null)
-                throw new ArgumentNullException(nameof(self));
-
             if (!self.Options.SupportsServiceProvider)
                 throw new NotSupportedException();
 
