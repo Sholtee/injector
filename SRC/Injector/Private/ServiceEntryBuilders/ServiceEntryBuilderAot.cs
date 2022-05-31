@@ -3,7 +3,6 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
-using System;
 using System.Diagnostics;
 using System.Linq.Expressions;
 
@@ -17,56 +16,8 @@ namespace Solti.Utils.DI.Internals
 
         private readonly ScopeOptions FScopeOptions;
 #if !DEBUG
-        private readonly ServiceRequestVisitor FVisitor;
+        private readonly ServiceRequestReplacer FReplacer;
 #endif
-        private Expression Visit(MethodCallExpression method, Expression target, Type iface, string? name)
-        {
-            //
-            // It specializes generic services ahead of time
-            //
-
-            IServiceResolver? resolver = FLookup.Get(iface, name);
-            if (resolver is null)
-            {
-                //
-                // Missing but not required dependency
-                //
-
-                if (method.Method.Name == nameof(IInjector.TryGet) || FScopeOptions.SupportsServiceProvider)
-                    //
-                    // injector.[Try]Get(iface, name) -> (TInterface) null
-                    //
-
-                    return Expression.Default(iface);
-
-                ServiceErrors.NotFound(iface, name, FPath?.Last);
-            }
-
-            //
-            // injector.[Try]Get(iface, name) -> resolver.Resolve((IInstanceFactory) injector)
-            //
-
-            Expression resolve = Expression.Invoke
-            (
-                Expression.Constant((Func<IInstanceFactory, object>) resolver!.Resolve),
-                Expression.Convert(target, typeof(IInstanceFactory))
-            );
-
-            return method.Method.ReturnType != iface
-                ? resolve
-
-                //
-                // As IInjectorExtensions.[Try]Get() is a typed method (method.ReturnType == iface), this cast would be
-                // redundant.
-                //
-
-                : Expression.Convert
-                (
-                    resolve,
-                    iface
-                );
-        }
-
         public new const ServiceResolutionMode Id = ServiceResolutionMode.AOT;
 
         public ServiceEntryBuilderAot(IServiceResolverLookup lookup, ScopeOptions scopeOptions) : base(lookup)
@@ -74,7 +25,7 @@ namespace Solti.Utils.DI.Internals
             FScopeOptions = scopeOptions;
             FPath = new ServicePath();
 #if !DEBUG
-            FVisitor = new ServiceRequestVisitor(Visit);
+            FReplacer = new ServiceRequestReplacer(lookup, scopeOptions.SupportsServiceProvider);
 #endif
         }
 
@@ -85,11 +36,7 @@ namespace Solti.Utils.DI.Internals
             if (entry.State.HasFlag(ServiceEntryStateFlags.Built))
                 return;
 #if DEBUG
-            int
-                visitedRequests = 0,
-                alteredRequests = 0;
-
-            ServiceRequestVisitor FVisitor = new(VisitAndDebug);
+            ServiceRequestReplacerDebug FReplacer = new(FLookup, FScopeOptions.SupportsServiceProvider);
 #endif
             //
             // Throws if the request is circular
@@ -103,7 +50,7 @@ namespace Solti.Utils.DI.Internals
 
             try
             {
-                entry.Build(lambda => (LambdaExpression) FVisitor.Visit(lambda));
+                entry.Build(lambda => (LambdaExpression) FReplacer.Visit(lambda));
             }
             finally
             {
@@ -114,18 +61,7 @@ namespace Solti.Utils.DI.Internals
             // TODO: Set the entry validated
             //
 #if DEBUG
-            Debug.WriteLine($"[{entry.ToString(shortForm: true)}] built: visited {visitedRequests}, altered {alteredRequests} requests");
-
-            Expression VisitAndDebug(MethodCallExpression original, Expression target, Type iface, string? name)
-            {
-                visitedRequests++;
-
-                Expression result = Visit(original, target, iface, name);
-                if (result != original)
-                    alteredRequests++;
-
-                return result;
-            }
+            Debug.WriteLine($"[{entry.ToString(shortForm: true)}] built: visited {FReplacer.VisitedRequests}, altered {FReplacer.AlteredRequests} request(s)");
 #endif
         }
     }

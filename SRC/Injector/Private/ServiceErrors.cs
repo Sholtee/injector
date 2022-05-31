@@ -19,7 +19,9 @@ namespace Solti.Utils.DI.Internals
             ServiceNotFoundException ex = new(string.Format(Culture, SERVICE_NOT_FOUND, requested.ToString(shortForm: true)));
 
             ex.Data[nameof(requested)] = requested;
-            ex.Data[nameof(requestor)] = requestor;
+            if (requestor is not null)
+                ex.Data[nameof(requestor)] = requestor;
+
             throw ex;
         }
 

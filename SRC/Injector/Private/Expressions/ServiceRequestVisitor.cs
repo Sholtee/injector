@@ -11,7 +11,7 @@ namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
 
-    internal sealed class ServiceRequestVisitor : ExpressionVisitor
+    internal abstract class ServiceRequestVisitor : ExpressionVisitor
     {
         private static readonly MethodInfo[]
             FInjectorGet = new[]
@@ -24,9 +24,7 @@ namespace Solti.Utils.DI.Internals
                 MethodInfoExtractor.Extract<IInjector>(i => i.TryGet<object>(null)).GetGenericMethodDefinition()
             };
 
-        private readonly Func<MethodCallExpression, Expression, Type, string?, Expression> FVisitor;
-
-        public ServiceRequestVisitor(Func<MethodCallExpression, Expression, Type, string?, Expression> visitor) => FVisitor = visitor;
+        protected abstract Expression VisitServiceRequest(MethodCallExpression method, Expression target, Type iface, string? name);
 
         protected override Expression VisitMethodCall(MethodCallExpression node)
         {
@@ -34,7 +32,7 @@ namespace Solti.Utils.DI.Internals
             {
                 if (Array.IndexOf(FInjectorGet, node.Method) >= 0 && node.Arguments[0] is ConstantExpression iface && node.Arguments[1] is ConstantExpression name)
                 {
-                    return FVisitor
+                    return VisitServiceRequest
                     (
                         node,
                         node.Object,
@@ -47,7 +45,7 @@ namespace Solti.Utils.DI.Internals
             {
                 if (Array.IndexOf(FGenericInjectorGet, node.Method.GetGenericMethodDefinition()) >= 0 && node.Arguments[1] is ConstantExpression name)
                 {
-                    return FVisitor
+                    return VisitServiceRequest
                     (
                         node,
                         node.Arguments[0],
