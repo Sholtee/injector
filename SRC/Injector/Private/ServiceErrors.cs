@@ -19,16 +19,8 @@ namespace Solti.Utils.DI.Internals
             ServiceNotFoundException ex = new(string.Format(Culture, SERVICE_NOT_FOUND, requested.ToString(shortForm: true)));
 
             ex.Data[nameof(requested)] = requested;
-            if (requestor is not null)
-                ex.Data[nameof(requestor)] = requestor;
+            ex.Data[nameof(requestor)] = requestor;
 
-            throw ex;
-        }
-
-        public static void AlreadyRegistered(AbstractServiceEntry entry)
-        {
-            InvalidOperationException ex = new(SERVICE_ALREADY_REGISTERED);
-            ex.Data[nameof(entry)] = entry;
             throw ex;
         }
     }

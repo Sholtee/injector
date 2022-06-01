@@ -120,56 +120,43 @@ namespace Solti.Utils.DI.Internals
         private volatile Func<long, string?, IServiceResolver?> FGetResolver;
         #endregion
 
-        protected override void InitSwitches(IEnumerable<AbstractServiceEntry> entries)
+        protected override void AddResolver(IServiceResolver resolver)
         {
-            base.InitSwitches(entries);
+            base.AddResolver(resolver);
 
-            FGetGenericEntry = BuildSwitch(FGetGenericEntrySwitch);
-            FGetResolver = BuildSwitch(FGetResolverSwitch);
+            //
+            // In initialization phase "FGetResolver" might be null, which is fine as we can avoid
+            // unnecessary BuildSwitch() calls
+            //
+
+            if (FGetResolver is not null)
+                FGetResolver = BuildSwitch(FGetResolverSwitch);
+        }
+
+        protected override bool TryGetResolver(Type iface, string? name, out IServiceResolver resolver)
+        {
+            if (FGetResolver is null)
+                return base.TryGetResolver(iface, name, out resolver);
+
+            resolver = FGetResolver((long) iface.TypeHandle.Value, name)!;
+            return resolver is not null;
+        }
+
+        protected override bool TryGetGenericEntry(Type iface, string? name, out AbstractServiceEntry genericEntry)
+        {
+            if (FGetGenericEntry is null)
+                return base.TryGetGenericEntry(iface, name, out genericEntry);
+
+            genericEntry = FGetGenericEntry((long) iface.TypeHandle.Value, name)!;
+            return genericEntry is not null;
         }
 
         public new const string Id = "builtbtree";
 
-        #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
         public ServiceResolverLookup_BuiltBTree(IEnumerable<AbstractServiceEntry> entries, ScopeOptions scopeOptions) : base(entries, scopeOptions)
-        #pragma warning restore CS8618
         {
-        }
-
-        public override IServiceResolver? Get(Type iface, string? name)
-        {
-            long handle = (long) iface.TypeHandle.Value;
-
-            IServiceResolver? resolver = FGetResolver(handle, name);
-            if (resolver is null && iface.IsConstructedGenericType)
-            {
-                AbstractServiceEntry? genericEntry = FGetGenericEntry((long) iface.GetGenericTypeDefinition().TypeHandle.Value, name);
-                if (genericEntry is not null)
-                {
-                    lock (FLock)
-                    {
-                        //
-                        // Another thread might have registered the resolver while we reached here.
-                        //
-
-                        resolver = FGetResolver(handle, name);
-                        if (resolver is null)
-                        {
-                            ResolutionNode<IServiceResolver> node = CreateServiceResolutionNode
-                            (
-                                genericEntry.Specialize(iface.GenericTypeArguments)
-                            );
-
-                            FGetResolverSwitch = FGetResolverSwitch.With(node);
-                            FGetResolver = BuildSwitch(FGetResolverSwitch);
-
-                            resolver = node.Result;
-                        }
-                    }
-                }
-            }
-
-            return resolver;
+            FGetGenericEntry = BuildSwitch(FGetGenericEntrySwitch);
+            FGetResolver = BuildSwitch(FGetResolverSwitch);
         }
     }
 }

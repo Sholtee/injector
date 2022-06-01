@@ -5,24 +5,24 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 
 namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
+    using Interfaces.Properties;
 
     internal abstract class ServiceResolverLookupBase : IServiceResolverLookup
     {
-        private IServiceEntryBuilder? FServiceEntryBuilder;
+        private readonly IServiceEntryBuilder FServiceEntryBuilder;
 
-        protected readonly object FLock = new();
+        private readonly object FLock = new();
 
-        /// <summary>
-        /// Creates a new resolver for the given <paramref name="entry"/>. Since build is not possible till all the entries were registered,
-        /// after initial phase created resolvers shall be passed to <see cref="InitResolvers(IEnumerable{IServiceResolver})"/> method.
-        /// </summary>
-        protected IServiceResolver CreateResolver(AbstractServiceEntry entry)
+        private IServiceResolver CreateResolver(AbstractServiceEntry entry)
         {
+            //
+            // When this method is called from a constructor, FServiceEntryBuilder is intentionally NULL
+            //
+
             FServiceEntryBuilder?.Build(entry);
 
             return entry.Features.HasFlag(ServiceEntryFlags.CreateSingleInstance)
@@ -35,32 +35,99 @@ namespace Solti.Utils.DI.Internals
                     : new ServiceResolver(entry);
         }
 
-        /// <summary>
-        /// When all the user provided entries are registered, this method should be called on newly built resolvers
-        /// </summary>
-        protected void InitResolvers(IEnumerable<IServiceResolver> resolvers)
+        private List<AbstractServiceEntry> RegisterEntries(IEnumerable<AbstractServiceEntry> entries)
         {
-            Debug.Assert(FServiceEntryBuilder is null, "Attempt to initialize the lookup more than once.");
+            List<AbstractServiceEntry> regularEntries = new();
 
-            FServiceEntryBuilder = ScopeOptions.ServiceResolutionMode switch 
+            foreach (AbstractServiceEntry entry in entries)
+            {
+                bool added = entry.Interface.IsGenericTypeDefinition
+                    ? TryAddGenericEntry(entry)
+                    : TryAddResolver(CreateResolver(entry));
+                if (!added)
+                {
+                    InvalidOperationException ex = new(Resources.SERVICE_ALREADY_REGISTERED);
+                    ex.Data[nameof(entry)] = entry;
+                    throw ex;
+                }
+
+                if (!entry.Interface.IsGenericTypeDefinition)
+                    regularEntries.Add(entry);
+            }
+
+            return regularEntries;
+        }
+
+        /// <summary>
+        /// Tries to add the given <paramref name="resolver"/> to the underlying collection.
+        /// </summary>
+        /// <remarks>This method is called in the lookup initialization phase meaning it shall not deal with parallel access.</remarks>
+        protected abstract bool TryAddResolver(IServiceResolver resolver);
+
+        protected abstract void AddResolver(IServiceResolver resolver);
+
+        /// <summary>
+        /// Registers the given open generic <paramref name="entry"/>.
+        /// </summary>
+        /// <remarks>This method is called in the lookup initialization phase meaning it shall not deal with parallel access.</remarks>
+        protected abstract bool TryAddGenericEntry(AbstractServiceEntry entry);
+
+        protected abstract bool TryGetResolver(Type iface, string? name, out IServiceResolver resolver);
+
+        protected abstract bool TryGetGenericEntry(Type iface, string? name, out AbstractServiceEntry genericEntry);
+
+        protected ServiceResolverLookupBase(IEnumerable<AbstractServiceEntry> entries, ScopeOptions scopeOptions)
+        {
+            //
+            // Register all the entries without building them.
+            //
+
+            List<AbstractServiceEntry> regularEntries = RegisterEntries(entries);
+
+            //
+            // 
+            // Now it's safe to build (all dependencies are available)
+            //
+
+            FServiceEntryBuilder = scopeOptions.ServiceResolutionMode switch
             {
                 ServiceEntryBuilder.Id => new ServiceEntryBuilder(this),
-                ServiceEntryBuilderAot.Id => new ServiceEntryBuilderAot(this, ScopeOptions),
+                ServiceEntryBuilderAot.Id => new ServiceEntryBuilderAot(this, scopeOptions),
                 _ => throw new NotSupportedException()
             };
 
-            foreach (IServiceResolver resolver in resolvers)
-            {
-                FServiceEntryBuilder.Build(resolver.RelatedEntry);
-            }
+            regularEntries.ForEach(FServiceEntryBuilder.Build);
         }
-
-        protected ServiceResolverLookupBase(ScopeOptions scopeOptions) => ScopeOptions = scopeOptions;
-
-        public ScopeOptions ScopeOptions { get; }
 
         public int Slots { get; private set; }
 
-        public abstract IServiceResolver? Get(Type iface, string? name);
+        public IServiceResolver? Get(Type iface, string? name)
+        {
+            if (TryGetResolver(iface, name, out IServiceResolver resolver))
+                return resolver;
+
+            if (!iface.IsGenericType || !TryGetGenericEntry(iface.GetGenericTypeDefinition(), name, out AbstractServiceEntry genericEntry))
+                return null;
+
+            lock (FLock)
+            {
+                //
+                // Another thread might have registered the resolver while we reached here.
+                //
+
+                if (TryGetResolver(iface, name, out resolver))
+                    return resolver;
+
+                AddResolver
+                (
+                    resolver = CreateResolver
+                    (
+                        genericEntry.Specialize(iface.GenericTypeArguments)
+                    )
+                );
+
+                return resolver;
+            }
+        }
     }
 }

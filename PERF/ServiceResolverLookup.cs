@@ -12,6 +12,7 @@ using BenchmarkDotNet.Engines;
 
 namespace Solti.Utils.DI.Perf
 {
+    using Interfaces;
     using Internals;
 
     [MemoryDiagnoser]
@@ -42,8 +43,21 @@ namespace Solti.Utils.DI.Perf
 
         private IServiceResolverLookup Lookup { get; set; }
 
-        [GlobalSetup]
-        public void Setup() => Lookup = (IServiceResolverLookup) Activator.CreateInstance(Engine, new object[] { Interfaces.Take(ServiceCount).Select(t => new TransientServiceEntry(t, null, (_, _) => null)) });
+        [GlobalSetup(Target = nameof(Resolve))]
+        public void SetupResolve() => Lookup = (IServiceResolverLookup) Activator.CreateInstance
+        (
+            Engine,
+            new object[]
+            {
+                Interfaces
+                    .Take(ServiceCount)
+                    .Select(t => new TransientServiceEntry(t, null, (_, _) => null)),
+                new ScopeOptions 
+                {
+                    ServiceResolutionMode = ServiceResolutionMode.JIT
+                }
+            }
+        );
 
         private int Index;
 

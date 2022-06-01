@@ -18,6 +18,7 @@ namespace Solti.Utils.DI.Internals
         #region Private
         private static readonly StringComparer FStringComparer = StringComparer.Ordinal;
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static int CompareServiceIds(long iface1, string? name1, long iface2, string? name2)
         {
             //
@@ -57,10 +58,12 @@ namespace Solti.Utils.DI.Internals
             value
         );
 
-        private static TResult? GetResult<TResult>(ResolutionNode<TResult>? node, long iface, string? name)
+        private static bool TryGet<TResult>(ResolutionNode<TResult>? node, long iface, string? name, out TResult result)
         {
+            result = default!;
+
             if (node is null)
-                return default;
+                return false;
 
             int order = CompareServiceIds
             (
@@ -71,38 +74,35 @@ namespace Solti.Utils.DI.Internals
             );
 
             if (order is 0)
-                return node.Result;
+            {
+                result = node.Result;
+                return true;
+            }
 
             if (order < 0)
             {
                 if (node.Left is not ResolutionNode<TResult> child)
-                    return default;
+                    return false;
 
-                return GetResult(child, iface, name);
+                return TryGet(child, iface, name, out result);
             }
 
             if (order > 0)
             {
                 if (node.Right is not ResolutionNode<TResult> child)
-                    return default;
+                    return false;
 
-                return GetResult(child, iface, name);
+                return TryGet(child, iface, name, out result);
             }
 
-            return default;
+            return false;
         }
         #endregion
 
         #region Protected
-        protected readonly /*readonly*/ RedBlackTree<ResolutionNode<AbstractServiceEntry>> FGetGenericEntrySwitch = new(NodeComparer.Instance);
+        protected readonly RedBlackTree<ResolutionNode<AbstractServiceEntry>> FGetGenericEntrySwitch = new(NodeComparer.Instance);
 
-        protected volatile /*readonly*/ RedBlackTree<ResolutionNode<IServiceResolver>> FGetResolverSwitch = new(NodeComparer.Instance);
-
-        protected ResolutionNode<IServiceResolver> CreateServiceResolutionNode(AbstractServiceEntry entry) => CreateNode
-        (
-            entry,
-            CreateResolver(entry)
-        );
+        protected volatile RedBlackTree<ResolutionNode<IServiceResolver>> FGetResolverSwitch = new(NodeComparer.Instance);
 
         protected sealed class ResolutionNode<TResult> : RedBlackTreeNode, ICompositeKey
         {
@@ -124,91 +124,42 @@ namespace Solti.Utils.DI.Internals
             public TResult Result { get; }
         }
 
-        protected virtual void InitSwitches(IEnumerable<AbstractServiceEntry> entries)
-        {
-            foreach (AbstractServiceEntry entry in entries)
-            {
-                bool added = entry.Interface.IsGenericTypeDefinition
-                    ? FGetGenericEntrySwitch.Add
-                    (
-                        CreateNode(entry, entry)
-                    )
-                    : FGetResolverSwitch.Add
-                    (
-                        CreateServiceResolutionNode(entry)
-                    );
-                if (!added)
-                    ServiceErrors.AlreadyRegistered(entry);
-            }
-        }
+        protected override bool TryAddResolver(IServiceResolver resolver) => FGetResolverSwitch.Add
+        (
+            CreateNode(resolver.RelatedEntry, resolver)
+        );
+
+        protected override void AddResolver(IServiceResolver resolver) => FGetResolverSwitch = FGetResolverSwitch.With
+        (
+            CreateNode(resolver.RelatedEntry, resolver)
+        );
+
+        protected override bool TryAddGenericEntry(AbstractServiceEntry entry) => FGetGenericEntrySwitch.Add
+        (
+            CreateNode(entry, entry)
+        );
+
+        protected override bool TryGetResolver(Type iface, string? name, out IServiceResolver resolver) => TryGet
+        (
+            FGetResolverSwitch.Root,
+            (long) iface.TypeHandle.Value,
+            name,
+            out resolver
+        );
+
+        protected override bool TryGetGenericEntry(Type iface, string? name, out AbstractServiceEntry genericEntry) => TryGet
+        (
+            FGetGenericEntrySwitch.Root,
+            (long) iface.TypeHandle.Value,
+            name,
+            out genericEntry
+        );
         #endregion
 
         public const string Id = "btree";
 
-        public ServiceResolverLookup_BTree(IEnumerable<AbstractServiceEntry> entries, ScopeOptions scopeOptions): base(scopeOptions)
+        public ServiceResolverLookup_BTree(IEnumerable<AbstractServiceEntry> entries, ScopeOptions scopeOptions): base(entries, scopeOptions)
         {
-            #pragma warning disable CA2214 // Do not call overridable methods in constructors
-            InitSwitches(entries);
-            #pragma warning restore CA2214
-            InitResolvers(GetRegisteredResolvers());
-
-            IEnumerable<IServiceResolver> GetRegisteredResolvers()
-            {
-                foreach (ResolutionNode<IServiceResolver> node in FGetResolverSwitch)
-                {
-                    yield return node.Result;
-                }
-            }
-        }
-
-        public override IServiceResolver? Get(Type iface, string? name)
-        {
-            long handle = (long) iface.TypeHandle.Value;
-
-            IServiceResolver? resolver = GetResult
-            (
-                FGetResolverSwitch.Root,
-                handle,
-                name
-            );
-            if (resolver is null && iface.IsConstructedGenericType)
-            {
-                AbstractServiceEntry? genericEntry = GetResult
-                (
-                    FGetGenericEntrySwitch.Root,
-                    (long) iface.GetGenericTypeDefinition().TypeHandle.Value,
-                    name
-                );
-                if (genericEntry is not null)
-                {
-                    lock (FLock)
-                    {
-                        //
-                        // Another thread might have registered the resolver while we reached here.
-                        //
-
-                        resolver = GetResult
-                        (
-                            FGetResolverSwitch.Root,
-                            handle,
-                            name
-                        );
-                        if (resolver is null)
-                        {
-                            ResolutionNode<IServiceResolver> node = CreateServiceResolutionNode
-                            (
-                                genericEntry.Specialize(iface.GenericTypeArguments)
-                            );
-
-                            FGetResolverSwitch = FGetResolverSwitch.With(node);
-
-                            resolver = node.Result;
-                        }
-                    }
-                }
-            }
-
-            return resolver;
         }
     }
 }
