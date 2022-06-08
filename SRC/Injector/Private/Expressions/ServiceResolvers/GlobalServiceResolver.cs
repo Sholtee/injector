@@ -3,16 +3,21 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
+using System.Linq.Expressions;
+
 namespace Solti.Utils.DI.Internals
 {
-    using Interfaces;
-
     internal sealed partial class GlobalServiceResolver : ServiceResolverBase
     {
-        public GlobalServiceResolver(AbstractServiceEntry relatedEntry) : base(relatedEntry)
-        {
-        }
-
-        public override object Resolve(IInstanceFactory instanceFactory) => (instanceFactory.Super ?? instanceFactory).CreateInstance(FRelatedEntry);
+        public override Expression GetResolveExpression(Expression instanceFactory) => Expression.Call
+        (
+            Expression.Coalesce
+            (
+                Expression.Property(instanceFactory, FSuper),
+                instanceFactory
+            ),
+            FCreateInstance,
+            Expression.Constant(FRelatedEntry)
+        );
     }
 }

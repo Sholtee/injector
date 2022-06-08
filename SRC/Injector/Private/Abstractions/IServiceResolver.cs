@@ -3,6 +3,7 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
+using System.Linq.Expressions;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -19,5 +20,7 @@ namespace Solti.Utils.DI.Internals
         AbstractServiceEntry RelatedEntry { get; }
 
         object Resolve(IInstanceFactory instanceFactory);
+
+        Expression GetResolveExpression(Expression instanceFactory);
     }
 }

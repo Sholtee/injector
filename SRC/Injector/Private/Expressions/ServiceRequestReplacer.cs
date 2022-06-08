@@ -53,9 +53,8 @@ namespace Solti.Utils.DI.Internals
             // injector.[Try]Get(iface, name) -> resolver.Resolve((IInstanceFactory) injector)
             //
 
-            Expression resolve = Expression.Invoke
+            Expression resolve = resolver!.GetResolveExpression
             (
-                Expression.Constant((Func<IInstanceFactory, object>) resolver!.Resolve),
                 Expression.Convert(target, typeof(IInstanceFactory))
             );
 
