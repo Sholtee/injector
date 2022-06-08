@@ -12,7 +12,7 @@ namespace Solti.Utils.DI.Internals
 
     internal sealed partial class ServiceResolverLookup_BuiltBTree : ServiceResolverLookup_BTree
     {
-        private Func<long, string?, AbstractServiceEntry?> FGetGenericEntry;
+        private readonly Func<long, string?, AbstractServiceEntry?> FGetGenericEntry;
 
         private volatile Func<long, string?, IServiceResolver?> FGetResolver;
 
