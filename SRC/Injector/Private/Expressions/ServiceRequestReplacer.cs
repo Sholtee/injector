@@ -58,11 +58,14 @@ namespace Solti.Utils.DI.Internals
             );
 
             return method.Method.ReturnType != iface
+                //
+                // Cast already in the expression since the replaced IInjector.[Try]Get() method is not typed
+                //
+
                 ? resolve
 
                 //
-                // As IInjectorExtensions.[Try]Get() is a typed method (method.ReturnType == iface), this cast would be
-                // redundant.
+                // We are about to replace the typed IInjectorExtensions.[Try]Get() method so we will need an extry cast.
                 //
 
                 : Expression.Convert
