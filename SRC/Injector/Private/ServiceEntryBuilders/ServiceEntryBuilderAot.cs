@@ -25,7 +25,7 @@ namespace Solti.Utils.DI.Internals
             FScopeOptions = scopeOptions;
             FPath = new ServicePath();
 #if !DEBUG
-            FReplacer = new ServiceRequestReplacer(lookup, scopeOptions.SupportsServiceProvider);
+            FReplacer = new ServiceRequestReplacer(lookup, FPath, scopeOptions.SupportsServiceProvider);
 #endif
         }
 
@@ -36,7 +36,7 @@ namespace Solti.Utils.DI.Internals
             if (entry.State.HasFlag(ServiceEntryStateFlags.Built))
                 return;
 #if DEBUG
-            ServiceRequestReplacerDebug FReplacer = new(FLookup, FScopeOptions.SupportsServiceProvider);
+            ServiceRequestReplacerDebug FReplacer = new(FLookup, FPath, FScopeOptions.SupportsServiceProvider);
 #endif
             //
             // Throws if the request is circular

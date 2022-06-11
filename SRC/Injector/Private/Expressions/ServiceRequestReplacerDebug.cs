@@ -10,7 +10,7 @@ namespace Solti.Utils.DI.Internals
 {
     internal sealed class ServiceRequestReplacerDebug : ServiceRequestReplacer
     {
-        public ServiceRequestReplacerDebug(IServiceResolverLookup lookup, bool permissive) : base(lookup, permissive)
+        public ServiceRequestReplacerDebug(IServiceResolverLookup lookup, ServicePath path, bool permissive) : base(lookup, path, permissive)
         {
         }
 

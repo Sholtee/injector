@@ -14,11 +14,14 @@ namespace Solti.Utils.DI.Internals
     {
         public IServiceResolverLookup Lookup { get; }
 
+        public ServicePath Path { get; }
+
         public bool Permissive { get; }
 
-        public ServiceRequestReplacer(IServiceResolverLookup lookup, bool permissive)
+        public ServiceRequestReplacer(IServiceResolverLookup lookup, ServicePath path, bool permissive)
         {
             Lookup = lookup;
+            Path = path;
             Permissive = permissive;
         }
 
@@ -42,11 +45,7 @@ namespace Solti.Utils.DI.Internals
 
                     return Expression.Default(iface);
 
-                //
-                // TODO: FIXME: pass the requestor
-                //
-
-                ServiceErrors.NotFound(iface, name, null);
+                ServiceErrors.NotFound(iface, name, Path.Last);
             }
 
             //
