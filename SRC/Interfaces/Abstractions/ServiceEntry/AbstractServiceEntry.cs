@@ -105,6 +105,11 @@ namespace Solti.Utils.DI.Interfaces
         public abstract object CreateInstance(IInjector scope, out object? lifetime);
 
         /// <summary>
+        /// If supported, sets the <see cref="State"/> of this entry to <see cref="ServiceEntryStateFlags.Validated"/>.
+        /// </summary>
+        public virtual void SetValidated() => throw new NotSupportedException();
+
+        /// <summary>
         /// Builds this entry.
         /// </summary>
         public virtual void Build(Func<LambdaExpression, LambdaExpression> visit) => throw new NotSupportedException();

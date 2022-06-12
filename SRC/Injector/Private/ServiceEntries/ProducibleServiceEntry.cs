@@ -189,6 +189,8 @@ namespace Solti.Utils.DI.Internals
             return result;
         }
 
+        public override void SetValidated() => State |= ServiceEntryStateFlags.Validated;
+
         public override void ApplyProxy(Expression<Func<IInjector, Type, object, object>> applyProxy!!)
         {
             if (Factory is null)

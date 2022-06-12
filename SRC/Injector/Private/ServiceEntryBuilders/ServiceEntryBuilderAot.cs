@@ -12,20 +12,20 @@ namespace Solti.Utils.DI.Internals
 
     internal sealed class ServiceEntryBuilderAot : ServiceEntryBuilder
     {
-        private readonly ServicePath FPath;
+        private ServicePath Path { get; }
 
-        private readonly ScopeOptions FScopeOptions;
+        private ScopeOptions ScopeOptions { get; }
 #if !DEBUG
-        private readonly ServiceRequestReplacer FReplacer;
+        private ServiceRequestReplacer Replacer { get; }
 #endif
         public new const ServiceResolutionMode Id = ServiceResolutionMode.AOT;
 
         public ServiceEntryBuilderAot(IServiceResolverLookup lookup, ScopeOptions scopeOptions) : base(lookup)
         {
-            FScopeOptions = scopeOptions;
-            FPath = new ServicePath();
+            ScopeOptions = scopeOptions;
+            Path = new ServicePath();
 #if !DEBUG
-            FReplacer = new ServiceRequestReplacer(lookup, FPath, scopeOptions.SupportsServiceProvider);
+            Replacer = new ServiceRequestReplacer(lookup, Path, scopeOptions.SupportsServiceProvider);
 #endif
         }
 
@@ -36,13 +36,13 @@ namespace Solti.Utils.DI.Internals
             if (entry.State.HasFlag(ServiceEntryStateFlags.Built))
                 return;
 #if DEBUG
-            ServiceRequestReplacerDebug FReplacer = new(FLookup, FPath, FScopeOptions.SupportsServiceProvider);
+            ServiceRequestReplacerDebug Replacer = new(FLookup, Path, ScopeOptions.SupportsServiceProvider);
 #endif
             //
             // Throws if the request is circular
             //
 
-            FPath.Push(entry);
+            Path.Push(entry);
 
             //
             // TODO: Enforce strict DI rules
@@ -50,18 +50,20 @@ namespace Solti.Utils.DI.Internals
 
             try
             {
-                entry.Build(lambda => (LambdaExpression) FReplacer.Visit(lambda));
+                entry.Build(lambda => (LambdaExpression) Replacer.Visit(lambda));
             }
             finally
             {
-                FPath.Pop();
+                Path.Pop();
             }
 
             //
-            // TODO: Set the entry validated
+            // No circular reference, no Strict DI violation... entry is validated
             //
+
+           // entry.SetValidated(); // <- uncomment if StrictDI validation is done above
 #if DEBUG
-            Debug.WriteLine($"[{entry.ToString(shortForm: true)}] built: visited {FReplacer.VisitedRequests}, altered {FReplacer.AlteredRequests} request(s)");
+            Debug.WriteLine($"[{entry.ToString(shortForm: true)}] built: visited {Replacer.VisitedRequests}, altered {Replacer.AlteredRequests} request(s)");
 #endif
         }
     }

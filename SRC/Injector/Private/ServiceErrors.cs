@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Runtime.CompilerServices;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -12,6 +13,7 @@ namespace Solti.Utils.DI.Internals
 
     internal static class ServiceErrors
     {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void NotFound(Type iface, string? name, AbstractServiceEntry? requestor)
         {
             MissingServiceEntry requested = new(iface, name);

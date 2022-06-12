@@ -5,6 +5,7 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -17,10 +18,13 @@ namespace Solti.Utils.DI.Internals
 
         private readonly object FLock = new();
 
+        private readonly bool FInitialized;
+
         private IServiceResolver CreateResolver(AbstractServiceEntry entry)
         {
             //
-            // When this method is called from a constructor, FServiceEntryBuilder is intentionally NULL
+            // When this method is called from a constructor, FServiceEntryBuilder is intentionally NULL.
+            // In every other case, we MUST build the entry before it gets exposed.
             //
 
             FServiceEntryBuilder?.Build(entry);
@@ -85,7 +89,6 @@ namespace Solti.Utils.DI.Internals
             List<AbstractServiceEntry> regularEntries = RegisterEntries(entries);
 
             //
-            // 
             // Now it's safe to build (all dependencies are available)
             //
 
@@ -96,7 +99,12 @@ namespace Solti.Utils.DI.Internals
                 _ => throw new NotSupportedException()
             };
 
-            regularEntries.ForEach(FServiceEntryBuilder.Build);
+            foreach (AbstractServiceEntry regularEntry in regularEntries)
+            {
+                _ = Get(regularEntry.Interface, regularEntry.Name);
+            }
+
+            FInitialized = true;
         }
 
         public int Slots { get; private set; }
@@ -104,7 +112,23 @@ namespace Solti.Utils.DI.Internals
         public IServiceResolver? Get(Type iface, string? name)
         {
             if (TryGetResolver(iface, name, out IServiceResolver resolver))
+            {
+                //
+                // During initialization phase the entry might not have been built. Note that initialization
+                // is single threaded so no lock required.
+                //
+                // TODO: FIXME: It's an ugly implementation =(
+                //
+
+                if (!FInitialized && !resolver.RelatedEntry.State.HasFlag(ServiceEntryStateFlags.Built))
+                {
+                    FServiceEntryBuilder.Build(resolver.RelatedEntry);
+                }
+
+                Debug.Assert(resolver.RelatedEntry.State.HasFlag(ServiceEntryStateFlags.Built), "Returned entry must be built");
+                
                 return resolver;
+            }
 
             if (!iface.IsGenericType || !TryGetGenericEntry(iface.GetGenericTypeDefinition(), name, out AbstractServiceEntry genericEntry))
                 return null;

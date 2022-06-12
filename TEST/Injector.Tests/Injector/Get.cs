@@ -206,7 +206,7 @@ namespace Solti.Utils.DI.Tests
         }
 
         [Test]
-        public void Injector_GetByProvider_ShouldThrowOnCircularReference([ValueSource(nameof(Engines))] string engine, [ValueSource(nameof(ResolutionModes))] ServiceResolutionMode resolutionMode)
+        public void Injector_GetByProvider_ShouldThrowOnCircularReference([ValueSource(nameof(Engines))] string engine)
         {
             Root = ScopeFactory.Create
             (
@@ -214,7 +214,7 @@ namespace Solti.Utils.DI.Tests
                     .Service<IInterface_4, Implementation_4_CDep>(Lifetime.Transient)
                     .Service<IInterface_5, Implementation_5_CDep>(Lifetime.Transient)
                     .Provider<IInterface_1, CdepProvider>(Lifetime.Transient),
-                new ScopeOptions { Engine = engine, ServiceResolutionMode = resolutionMode }
+                new ScopeOptions { Engine = engine, ServiceResolutionMode = ServiceResolutionMode.JIT }
             );
 
             using (IInjector injector = Root.CreateScope())
@@ -230,14 +230,14 @@ namespace Solti.Utils.DI.Tests
         }
 
         [Test]
-        public void Injector_GetByService_ShouldThrowOnCircularReference([ValueSource(nameof(Lifetimes))] Lifetime lifetime1, [ValueSource(nameof(Lifetimes))] Lifetime lifetime2, [ValueSource(nameof(Engines))] string engine, [ValueSource(nameof(ResolutionModes))] ServiceResolutionMode resolutionMode)
+        public void Injector_GetByService_ShouldThrowOnCircularReference([ValueSource(nameof(Lifetimes))] Lifetime lifetime1, [ValueSource(nameof(Lifetimes))] Lifetime lifetime2, [ValueSource(nameof(Engines))] string engine)
         {
             Root = ScopeFactory.Create
             (
                 svcs => svcs
                     .Service<IInterface_4, Implementation_4_CDep>(lifetime1)
                     .Service<IInterface_5, Implementation_5_CDep>(lifetime2),
-                new ScopeOptions { Engine = engine, ServiceResolutionMode = resolutionMode }
+                new ScopeOptions { Engine = engine, ServiceResolutionMode = ServiceResolutionMode.JIT }
             );
 
             using (IInjector injector = Root.CreateScope())
@@ -248,14 +248,14 @@ namespace Solti.Utils.DI.Tests
         }
 
         [Test]
-        public void Injector_GetByFactory_ShouldThrowOnCircularReference([ValueSource(nameof(Lifetimes))] Lifetime lifetime1, [ValueSource(nameof(Lifetimes))] Lifetime lifetime2, [ValueSource(nameof(Engines))] string engine, [ValueSource(nameof(ResolutionModes))] ServiceResolutionMode resolutionMode)
+        public void Injector_GetByFactory_ShouldThrowOnCircularReference([ValueSource(nameof(Lifetimes))] Lifetime lifetime1, [ValueSource(nameof(Lifetimes))] Lifetime lifetime2, [ValueSource(nameof(Engines))] string engine)
         {
             Root = ScopeFactory.Create
             (
                 svcs => svcs
                     .Factory<IInterface_4>(injector => new Implementation_4_CDep(injector.Get<IInterface_5>(null)), lifetime1)
                     .Factory<IInterface_5>(injector => new Implementation_5_CDep(injector.Get<IInterface_4>(null)), lifetime2),
-                new ScopeOptions { Engine = engine, ServiceResolutionMode = resolutionMode }
+                new ScopeOptions { Engine = engine, ServiceResolutionMode = ServiceResolutionMode.JIT }
             );
 
             using (IInjector injector = Root.CreateScope())
@@ -266,7 +266,7 @@ namespace Solti.Utils.DI.Tests
         }
 
         [Test]
-        public void Injector_GetByCtor_ShouldThrowOnCircularReference([ValueSource(nameof(Engines))] string engine, [ValueSource(nameof(ResolutionModes))] ServiceResolutionMode resolutionMode)
+        public void Injector_GetByCtor_ShouldThrowOnCircularReference([ValueSource(nameof(Engines))] string engine)
         {
             //
             // IInjector.Get() hivasok a konstruktorban vannak
@@ -278,7 +278,7 @@ namespace Solti.Utils.DI.Tests
                     .Service<IInterface_1, Implementation_7_CDep>(Lifetime.Transient)
                     .Service<IInterface_4, Implementation_4_CDep>(Lifetime.Transient)
                     .Service<IInterface_5, Implementation_5_CDep>(Lifetime.Transient),
-                new ScopeOptions { Engine = engine, ServiceResolutionMode = resolutionMode }
+                new ScopeOptions { Engine = engine, ServiceResolutionMode = ServiceResolutionMode.JIT }
             );
 
             using (IInjector injector = Root.CreateScope())
@@ -288,13 +288,13 @@ namespace Solti.Utils.DI.Tests
         }
 
         [Test]
-        public void Injector_GetByProxy_ShouldThrowOnCircularReference([ValueSource(nameof(Lifetimes))]Lifetime lifetime, [ValueSource(nameof(Engines))] string engine, [ValueSource(nameof(ResolutionModes))] ServiceResolutionMode resolutionMode)
+        public void Injector_GetByProxy_ShouldThrowOnCircularReference([ValueSource(nameof(Lifetimes))]Lifetime lifetime, [ValueSource(nameof(Engines))] string engine)
         {
             Root = ScopeFactory.Create
             (
                 svcs => svcs
                     .Service<IInterface_1, Implementation_1_No_Dep>(lifetime).WithProxy((injector, _, _) => injector.Get<IInterface_1>(null)),
-                new ScopeOptions { Engine = engine, ServiceResolutionMode = resolutionMode }
+                new ScopeOptions { Engine = engine, ServiceResolutionMode = ServiceResolutionMode.JIT }
             );
 
             using (IInjector injector = Root.CreateScope())
@@ -304,9 +304,9 @@ namespace Solti.Utils.DI.Tests
         }
 
         [Test]
-        public void Injector_Get_ShouldThrowOnRecursiveReference([ValueSource(nameof(Lifetimes))] Lifetime lifetime, [ValueSource(nameof(Engines))] string engine, [ValueSource(nameof(ResolutionModes))] ServiceResolutionMode resolutionMode) 
+        public void Injector_Get_ShouldThrowOnRecursiveReference([ValueSource(nameof(Lifetimes))] Lifetime lifetime, [ValueSource(nameof(Engines))] string engine) 
         {
-            Root = ScopeFactory.Create(svcs => svcs.Service<IInterface_1, Implementation_10_RecursiveCDep>(lifetime), new ScopeOptions { Engine = engine, ServiceResolutionMode = resolutionMode });
+            Root = ScopeFactory.Create(svcs => svcs.Service<IInterface_1, Implementation_10_RecursiveCDep>(lifetime), new ScopeOptions { Engine = engine, ServiceResolutionMode = ServiceResolutionMode.JIT });
 
             using (IInjector injector = Root.CreateScope())
             {
