@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -20,28 +21,19 @@ namespace Solti.Utils.DI.Internals
 
         private readonly bool FInitialized;
 
-        private IServiceResolver CreateResolver(AbstractServiceEntry entry)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private IServiceResolver CreateResolver(AbstractServiceEntry entry) => entry.Features.HasFlag(ServiceEntryFlags.CreateSingleInstance)
+            ? entry.Features.HasFlag(ServiceEntryFlags.Shared)
+                ? new GlobalScopedServiceResolver(entry, Slots++)
+                : new ScopedServiceResolver(entry, Slots++)
+            : entry.Features.HasFlag(ServiceEntryFlags.Shared)
+                ? new GlobalServiceResolver(entry)
+                : new ServiceResolver(entry);
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private List<(Type Interface, string? Name)> RegisterEntries(IEnumerable<AbstractServiceEntry> entries)
         {
-            //
-            // When this method is called from a constructor, FServiceEntryBuilder is intentionally NULL.
-            // In every other case, we MUST build the entry before it gets exposed.
-            //
-
-            FServiceEntryBuilder?.Build(entry);
-
-            return entry.Features.HasFlag(ServiceEntryFlags.CreateSingleInstance)
-                ? entry.Features.HasFlag(ServiceEntryFlags.Shared)
-                    ? new GlobalScopedServiceResolver(entry, Slots++)
-                    : new ScopedServiceResolver(entry, Slots++)
-
-                : entry.Features.HasFlag(ServiceEntryFlags.Shared)
-                    ? new GlobalServiceResolver(entry)
-                    : new ServiceResolver(entry);
-        }
-
-        private List<AbstractServiceEntry> RegisterEntries(IEnumerable<AbstractServiceEntry> entries)
-        {
-            List<AbstractServiceEntry> regularEntries = new();
+            List<(Type, string?)> regularEntries = new();
 
             foreach (AbstractServiceEntry entry in entries)
             {
@@ -56,10 +48,70 @@ namespace Solti.Utils.DI.Internals
                 }
 
                 if (!entry.Interface.IsGenericTypeDefinition)
-                    regularEntries.Add(entry);
+                    regularEntries.Add((entry.Interface, entry.Name));
             }
 
             return regularEntries;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private IServiceResolver? GetEarly(Type iface, string? name)
+        {
+            Debug.Assert(!FInitialized, "This method is for initialization purposes only");
+
+            if (TryGetResolver(iface, name, out IServiceResolver resolver))
+            {
+                //
+                // During initialization phase the entry might not have been built.
+                //
+
+                if (!resolver.RelatedEntry.State.HasFlag(ServiceEntryStateFlags.Built))
+                {
+                    FServiceEntryBuilder.Build(resolver.RelatedEntry);
+                }
+
+                return resolver;
+            }
+
+            if (!iface.IsGenericType || !TryGetGenericEntry(iface.GetGenericTypeDefinition(), name, out AbstractServiceEntry genericEntry))
+                return null;
+
+            genericEntry = genericEntry.Specialize(iface.GenericTypeArguments);
+            FServiceEntryBuilder.Build(genericEntry);
+
+            AddResolver(resolver = CreateResolver(genericEntry));
+            return resolver;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private IServiceResolver? GetCore(Type iface, string? name)
+        {
+            if (TryGetResolver(iface, name, out IServiceResolver resolver))
+                return resolver;
+
+            if (!iface.IsGenericType || !TryGetGenericEntry(iface.GetGenericTypeDefinition(), name, out AbstractServiceEntry genericEntry))
+                return null;
+
+            lock (FLock)
+            {
+                //
+                // Another thread might have registered the resolver while we reached here.
+                //
+
+                if (TryGetResolver(iface, name, out resolver))
+                    return resolver;
+
+                genericEntry = genericEntry.Specialize(iface.GenericTypeArguments);
+                
+                //
+                // Build the entry before it gets exposed.
+                //
+
+                FServiceEntryBuilder.Build(genericEntry);
+
+                AddResolver(resolver = CreateResolver(genericEntry));
+                return resolver;
+            }
         }
 
         /// <summary>
@@ -86,7 +138,7 @@ namespace Solti.Utils.DI.Internals
             // Register all the entries without building them.
             //
 
-            List<AbstractServiceEntry> regularEntries = RegisterEntries(entries);
+            List<(Type Interface, string? Name)> regularEntries = RegisterEntries(entries);
 
             //
             // Now it's safe to build (all dependencies are available)
@@ -99,9 +151,9 @@ namespace Solti.Utils.DI.Internals
                 _ => throw new NotSupportedException()
             };
 
-            foreach (AbstractServiceEntry regularEntry in regularEntries)
+            foreach ((Type Interface, string? Name) in regularEntries)
             {
-                _ = Get(regularEntry.Interface, regularEntry.Name);
+                _ = Get(Interface, Name);
             }
 
             FInitialized = true;
@@ -109,49 +161,8 @@ namespace Solti.Utils.DI.Internals
 
         public int Slots { get; private set; }
 
-        public IServiceResolver? Get(Type iface, string? name)
-        {
-            if (TryGetResolver(iface, name, out IServiceResolver resolver))
-            {
-                //
-                // During initialization phase the entry might not have been built. Note that initialization
-                // is single threaded so no lock required.
-                //
-                // TODO: FIXME: It's an ugly implementation =(
-                //
-
-                if (!FInitialized && !resolver.RelatedEntry.State.HasFlag(ServiceEntryStateFlags.Built))
-                {
-                    FServiceEntryBuilder.Build(resolver.RelatedEntry);
-                }
-
-                Debug.Assert(resolver.RelatedEntry.State.HasFlag(ServiceEntryStateFlags.Built), "Returned entry must be built");
-                
-                return resolver;
-            }
-
-            if (!iface.IsGenericType || !TryGetGenericEntry(iface.GetGenericTypeDefinition(), name, out AbstractServiceEntry genericEntry))
-                return null;
-
-            lock (FLock)
-            {
-                //
-                // Another thread might have registered the resolver while we reached here.
-                //
-
-                if (TryGetResolver(iface, name, out resolver))
-                    return resolver;
-
-                AddResolver
-                (
-                    resolver = CreateResolver
-                    (
-                        genericEntry.Specialize(iface.GenericTypeArguments)
-                    )
-                );
-
-                return resolver;
-            }
-        }
+        public IServiceResolver? Get(Type iface, string? name) => FInitialized
+            ? GetCore(iface, name)
+            : GetEarly(iface, name);
     }
 }
