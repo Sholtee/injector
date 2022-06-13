@@ -5,8 +5,9 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Runtime.CompilerServices;
+
+using static System.Diagnostics.Debug;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -57,7 +58,7 @@ namespace Solti.Utils.DI.Internals
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private IServiceResolver? GetEarly(Type iface, string? name)
         {
-            Debug.Assert(!FInitialized, "This method is for initialization purposes only");
+            Assert(!FInitialized, "This method is for initialization purposes only");
 
             if (TryGetResolver(iface, name, out IServiceResolver resolver))
             {
@@ -86,6 +87,8 @@ namespace Solti.Utils.DI.Internals
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private IServiceResolver? GetCore(Type iface, string? name)
         {
+            Assert(FInitialized, "This method cannot be called in initialization phase");
+
             if (TryGetResolver(iface, name, out IServiceResolver resolver))
                 return resolver;
 
@@ -161,8 +164,14 @@ namespace Solti.Utils.DI.Internals
 
         public int Slots { get; private set; }
 
-        public IServiceResolver? Get(Type iface, string? name) => FInitialized
-            ? GetCore(iface, name)
-            : GetEarly(iface, name);
+        public IServiceResolver? Get(Type iface, string? name)
+        {
+            IServiceResolver? resolver = FInitialized
+                ? GetCore(iface, name)
+                : GetEarly(iface, name);
+
+            Assert(resolver?.RelatedEntry.State.HasFlag(ServiceEntryStateFlags.Built) is not false, "Entry must be built when it gets exposed");
+            return resolver;
+        }
     }
 }
