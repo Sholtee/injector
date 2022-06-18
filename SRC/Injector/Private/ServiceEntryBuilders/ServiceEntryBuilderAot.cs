@@ -38,7 +38,7 @@ namespace Solti.Utils.DI.Internals
 
             //
             // At the root of the dependency graph this validation makes no sense. This validation should run even if
-            // the requested entry is already build.
+            // the requested entry is already built.
             //
 
             if (FOptions.StrictDI && FPath.Count > 0)
