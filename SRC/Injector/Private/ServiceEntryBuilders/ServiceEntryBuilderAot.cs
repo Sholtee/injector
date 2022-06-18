@@ -12,58 +12,64 @@ namespace Solti.Utils.DI.Internals
 
     internal sealed class ServiceEntryBuilderAot : ServiceEntryBuilder
     {
-        private ServicePath Path { get; }
+        private readonly ServicePath FPath;
 
-        private ScopeOptions ScopeOptions { get; }
+        private readonly ScopeOptions FOptions;
+
+        private readonly IServiceResolverLookup FLookup;
 #if !DEBUG
-        private ServiceRequestReplacer Replacer { get; }
+        private readonly ServiceRequestReplacer FReplacer;
 #endif
         public new const ServiceResolutionMode Id = ServiceResolutionMode.AOT;
 
-        public ServiceEntryBuilderAot(IServiceResolverLookup lookup, ScopeOptions scopeOptions) : base(lookup)
+        public ServiceEntryBuilderAot(IServiceResolverLookup lookup, ScopeOptions options)
         {
-            ScopeOptions = scopeOptions;
-            Path = new ServicePath();
+            FLookup = lookup;
+            FOptions = options;
+            FPath = new ServicePath();
 #if !DEBUG
-            Replacer = new ServiceRequestReplacer(lookup, Path, scopeOptions.SupportsServiceProvider);
+            FReplacer = new ServiceRequestReplacer(lookup, FPath, scopeOptions.SupportsServiceProvider);
 #endif
         }
 
-        public override void Build(AbstractServiceEntry entry)
+        public override void Build(AbstractServiceEntry requested)
         {
-            Debug.Assert(!entry.Interface.IsGenericTypeDefinition, "Generic entry cannot be built");
+            Debug.Assert(!requested.Interface.IsGenericTypeDefinition, "Generic entry cannot be built");
 
-            if (entry.State.HasFlag(ServiceEntryStateFlags.Built))
+            //
+            // At the root of the dependency graph this validation makes no sense. This validation should run even if
+            // the requested entry is already build.
+            //
+
+            if (FOptions.StrictDI && FPath.Count > 0)
+                ServiceErrors.EnsureNotBreaksTheRuleOfStrictDI(FPath[^1], requested);
+
+            if (requested.State.HasFlag(ServiceEntryStateFlags.Built))
                 return;
 #if DEBUG
-            ServiceRequestReplacerDebug Replacer = new(FLookup, Path, ScopeOptions.SupportsServiceProvider);
+            ServiceRequestReplacerDebug FReplacer = new(FLookup, FPath, FOptions.SupportsServiceProvider);
 #endif
             //
             // Throws if the request is circular
             //
 
-            Path.Push(entry);
-
-            //
-            // TODO: Enforce strict DI rules
-            //
-
+            FPath.Push(requested);
             try
             {
-                entry.Build(lambda => (LambdaExpression) Replacer.Visit(lambda));
+                requested.Build(lambda => (LambdaExpression) FReplacer.Visit(lambda));
             }
             finally
             {
-                Path.Pop();
+                FPath.Pop();
             }
 
             //
             // No circular reference, no Strict DI violation... entry is validated
             //
 
-           // entry.SetValidated(); // <- uncomment if StrictDI validation is done above
+            requested.SetValidated();
 #if DEBUG
-            Debug.WriteLine($"[{entry.ToString(shortForm: true)}] built: visited {Replacer.VisitedRequests}, altered {Replacer.AlteredRequests} request(s)");
+            Debug.WriteLine($"[{requested.ToString(shortForm: true)}] built: visited {FReplacer.VisitedRequests}, altered {FReplacer.AlteredRequests} request(s)");
 #endif
         }
     }

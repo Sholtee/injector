@@ -11,14 +11,7 @@ namespace Solti.Utils.DI.Internals
 
     internal class ServiceEntryBuilder: IServiceEntryBuilder
     {
-        protected readonly IServiceResolverLookup FLookup;
-
         public const ServiceResolutionMode Id = ServiceResolutionMode.JIT;
-
-        public ServiceEntryBuilder(IServiceResolverLookup lookup)
-        {
-            FLookup = lookup;
-        }
 
         public virtual void Build(AbstractServiceEntry entry)
         {

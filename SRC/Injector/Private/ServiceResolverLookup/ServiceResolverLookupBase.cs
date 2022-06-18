@@ -16,11 +16,10 @@ namespace Solti.Utils.DI.Internals
 
     internal abstract class ServiceResolverLookupBase : IServiceResolverLookup
     {
+        #region Private
         private readonly IServiceEntryBuilder FServiceEntryBuilder;
 
         private readonly object FLock = new();
-
-        private readonly bool FInitialized;
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private IServiceResolver CreateResolver(AbstractServiceEntry entry) => entry.Features.HasFlag(ServiceEntryFlags.CreateSingleInstance)
@@ -60,27 +59,25 @@ namespace Solti.Utils.DI.Internals
         {
             Assert(!FInitialized, "This method is for initialization purposes only");
 
-            if (TryGetResolver(iface, name, out IServiceResolver resolver))
+            if (!TryGetResolver(iface, name, out IServiceResolver resolver))
             {
-                //
-                // During initialization phase the entry might not have been built.
-                //
+                if (!iface.IsGenericType || !TryGetGenericEntry(iface.GetGenericTypeDefinition(), name, out AbstractServiceEntry genericEntry))
+                    return null;
 
-                if (!resolver.RelatedEntry.State.HasFlag(ServiceEntryStateFlags.Built))
-                {
-                    FServiceEntryBuilder.Build(resolver.RelatedEntry);
-                }
-
-                return resolver;
+                AddResolver
+                (
+                    resolver = CreateResolver
+                    (
+                        genericEntry.Specialize(iface.GenericTypeArguments)
+                    )
+                );
             }
 
-            if (!iface.IsGenericType || !TryGetGenericEntry(iface.GetGenericTypeDefinition(), name, out AbstractServiceEntry genericEntry))
-                return null;
+            //
+            // During initialization phase, Build() may be required for regular entries too.
+            //
 
-            genericEntry = genericEntry.Specialize(iface.GenericTypeArguments);
-            FServiceEntryBuilder.Build(genericEntry);
-
-            AddResolver(resolver = CreateResolver(genericEntry));
+            FServiceEntryBuilder.Build(resolver.RelatedEntry);
             return resolver;
         }
 
@@ -107,15 +104,23 @@ namespace Solti.Utils.DI.Internals
                 genericEntry = genericEntry.Specialize(iface.GenericTypeArguments);
                 
                 //
-                // Build the entry before it gets exposed.
+                // Build the entry before it gets exposed (before the AddResolver call).
                 //
 
                 FServiceEntryBuilder.Build(genericEntry);
 
-                AddResolver(resolver = CreateResolver(genericEntry));
+                AddResolver
+                (
+                    resolver = CreateResolver(genericEntry)
+                );
+                
                 return resolver;
             }
         }
+        #endregion
+
+        #region Protected
+        protected readonly bool FInitialized;
 
         /// <summary>
         /// Tries to add the given <paramref name="resolver"/> to the underlying collection.
@@ -149,7 +154,7 @@ namespace Solti.Utils.DI.Internals
 
             FServiceEntryBuilder = scopeOptions.ServiceResolutionMode switch
             {
-                ServiceEntryBuilder.Id => new ServiceEntryBuilder(this),
+                ServiceEntryBuilder.Id => new ServiceEntryBuilder(),
                 ServiceEntryBuilderAot.Id => new ServiceEntryBuilderAot(this, scopeOptions),
                 _ => throw new NotSupportedException()
             };
@@ -161,6 +166,7 @@ namespace Solti.Utils.DI.Internals
 
             FInitialized = true;
         }
+        #endregion
 
         public int Slots { get; private set; }
 

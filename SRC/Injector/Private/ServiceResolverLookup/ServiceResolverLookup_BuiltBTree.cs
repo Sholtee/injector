@@ -21,17 +21,17 @@ namespace Solti.Utils.DI.Internals
             base.AddResolver(resolver);
 
             //
-            // In initialization phase "FGetResolver" might be null, which is fine as we can avoid
-            // unnecessary BuildSwitch() calls
+            // During initialization phase "FGetResolver" & "FGetGenericEntry" is intentionally null
+            // to avoid unnecessary BuildSwitch() calls.
             //
 
-            if (FGetResolver is not null)
+            if (FInitialized)
                 FGetResolver = BuildSwitch(FGetResolverSwitch);
         }
 
         protected override bool TryGetResolver(Type iface, string? name, out IServiceResolver resolver)
         {
-            if (FGetResolver is null)
+            if (!FInitialized)
                 return base.TryGetResolver(iface, name, out resolver);
 
             resolver = FGetResolver((long) iface.TypeHandle.Value, name)!;
@@ -40,7 +40,7 @@ namespace Solti.Utils.DI.Internals
 
         protected override bool TryGetGenericEntry(Type iface, string? name, out AbstractServiceEntry genericEntry)
         {
-            if (FGetGenericEntry is null)
+            if (!FInitialized)
                 return base.TryGetGenericEntry(iface, name, out genericEntry);
 
             genericEntry = FGetGenericEntry((long) iface.TypeHandle.Value, name)!;

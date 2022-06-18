@@ -5,6 +5,7 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -39,6 +40,7 @@ namespace Solti.Utils.DI.Internals
 
         private readonly object? FLock;
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private object CreateInstanceCore(AbstractServiceEntry requested)
         {
             object? instance, lifetime;
@@ -48,22 +50,7 @@ namespace Solti.Utils.DI.Internals
             //
 
             if (Options.StrictDI && FPath?.Count > 0)
-            {
-                AbstractServiceEntry requestor = FPath[^1];
-
-                //
-                // The requested service should not exist longer than its requestor.
-                //
-
-                if (!requestor.State.HasFlag(ServiceEntryStateFlags.Validated) && requested.Lifetime?.CompareTo(requestor.Lifetime!) < 0)
-                {
-                    RequestNotAllowedException ex = new(Resources.STRICT_DI);
-                    ex.Data[nameof(requestor)] = requestor;
-                    ex.Data[nameof(requested)] = requested;
-
-                    throw ex;
-                }
-            }
+                ServiceErrors.EnsureNotBreaksTheRuleOfStrictDI(FPath[^1], requested);
 
             if (!requested.State.HasFlag(ServiceEntryStateFlags.Validated))
             {
@@ -78,6 +65,8 @@ namespace Solti.Utils.DI.Internals
                 {
                     FPath.Pop();
                 }
+
+                requested.SetValidated();
             }
             else
                 instance = requested.CreateInstance(this, out lifetime);

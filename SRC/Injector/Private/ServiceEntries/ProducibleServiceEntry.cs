@@ -180,11 +180,6 @@ namespace Solti.Utils.DI.Internals
 
             object result = FBuiltFactory(scope, Interface);
 
-            //
-            // Getting here indicates that the service graph validated successfully.
-            //
-
-            State |= ServiceEntryStateFlags.Validated;
             lifetime = result as IDisposable ?? (object?) (result as IAsyncDisposable);
             return result;
         }
