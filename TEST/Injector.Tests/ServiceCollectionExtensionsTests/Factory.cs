@@ -5,13 +5,13 @@
 ********************************************************************************/
 using System;
 using System.Linq;
+using System.Linq.Expressions;
 
 using NUnit.Framework;
 
 namespace Solti.Utils.DI.Tests
 {
     using Interfaces;
-    using Internals;
     using Primitives.Patterns;
 
     public partial class ServiceCollectionExtensionsTests
@@ -19,16 +19,16 @@ namespace Solti.Utils.DI.Tests
         [Test]
         public void Factory_ShouldBeNullChecked()
         {
-            Assert.Throws<ArgumentNullException>(() => IServiceCollectionBasicExtensions.Factory(null, typeof(IDisposable), (i, t) => new Disposable(), Lifetime.Transient));
-            Assert.Throws<ArgumentNullException>(() => Collection.Factory(null, (i, t) => new Disposable(), Lifetime.Transient));
+            Assert.Throws<ArgumentNullException>(() => IServiceCollectionBasicExtensions.Factory(null, typeof(IDisposable), (i, t) => new Disposable(false), Lifetime.Transient));
+            Assert.Throws<ArgumentNullException>(() => Collection.Factory(null, (i, t) => new Disposable(false), Lifetime.Transient));
             Assert.Throws<ArgumentNullException>(() => Collection.Factory(typeof(IDisposable), null, Lifetime.Transient));
-            Assert.Throws<ArgumentNullException>(() => Collection.Factory(typeof(IDisposable), (i, t) => new Disposable(), null));
+            Assert.Throws<ArgumentNullException>(() => Collection.Factory(typeof(IDisposable), (i, t) => new Disposable(false), null));
         }
 
         [TestCaseSource(nameof(Lifetimes))]
         public void Factory_ShouldHandleGenericTypes(Lifetime lifetime)
         {
-            Func<IInjector, Type, object> factory = (injector, type) => null;
+            Expression<Func<IInjector, Type, object>> factory = (injector, type) => null;
 
             Assert.DoesNotThrow(() => Collection.Factory(typeof(IInterface_3<>), factory, lifetime));
 
@@ -48,7 +48,7 @@ namespace Solti.Utils.DI.Tests
         [TestCaseSource(nameof(Lifetimes))]
         public void Factory_ShouldAcceptNamedServices(Lifetime lifetime)
         {
-            Func<IInjector, Type, IInterface_1> factory = (injector, type) => new Implementation_1_No_Dep();
+            Expression<Func<IInjector, Type, object>> factory = (injector, type) => new Implementation_1_No_Dep();
 
             Assert.DoesNotThrow(() => Collection
                 .Factory(typeof(IInterface_1), "svc1", factory, lifetime)

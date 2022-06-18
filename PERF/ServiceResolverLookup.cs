@@ -1,5 +1,5 @@
 ﻿/********************************************************************************
-* ServiceResolver.cs                                                            *
+* ServiceResolverLookup.cs                                                      *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
@@ -12,11 +12,12 @@ using BenchmarkDotNet.Engines;
 
 namespace Solti.Utils.DI.Perf
 {
+    using Interfaces;
     using Internals;
 
     [MemoryDiagnoser]
     [SimpleJob(RunStrategy.Throughput, invocationCount: 10000000)]
-    public class ServiceResolver
+    public class ServiceResolverLookup
     {
         public static Type[] Interfaces { get; } = typeof(object)
             .Assembly
@@ -31,22 +32,36 @@ namespace Solti.Utils.DI.Perf
         {
             get
             {
-                yield return typeof(ServiceResolver_BTree);
-                yield return typeof(ServiceResolver_Dict);
+                yield return typeof(ServiceResolverLookup_BTree);
+                yield return typeof(ServiceResolverLookup_BuiltBTree);
+                yield return typeof(ServiceResolverLookup_Dict);
             }
         }
 
         [ParamsSource(nameof(Engines))]
         public Type Engine { get; set; }
 
-        private IServiceResolver Resolver { get; set; }
+        private IServiceResolverLookup Lookup { get; set; }
 
-        [GlobalSetup]
-        public void Setup() => Resolver = (IServiceResolver) Activator.CreateInstance(Engine, new object[] { Interfaces.Take(ServiceCount).Select(t => new TransientServiceEntry(t, null, (_, _) => null)) });
+        [GlobalSetup(Target = nameof(Resolve))]
+        public void SetupResolve() => Lookup = (IServiceResolverLookup) Activator.CreateInstance
+        (
+            Engine,
+            new object[]
+            {
+                Interfaces
+                    .Take(ServiceCount)
+                    .Select(t => new TransientServiceEntry(t, null, (_, _) => null)),
+                new ScopeOptions 
+                {
+                    ServiceResolutionMode = ServiceResolutionMode.JIT
+                }
+            }
+        );
 
         private int Index;
 
         [Benchmark]
-        public object Resolve() => Resolver.Get(Interfaces[Index++ % ServiceCount], null);
+        public object Resolve() => Lookup.Get(Interfaces[Index++ % ServiceCount], null);
     }
 }

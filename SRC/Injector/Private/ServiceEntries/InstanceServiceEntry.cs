@@ -4,37 +4,40 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Linq;
+using System.Reflection;
 
 namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
+    using Interfaces.Properties;
 
     internal sealed class InstanceServiceEntry : AbstractServiceEntry
     {
-        private readonly object FInstance;
+        public object Instance { get; }
 
-        public InstanceServiceEntry(Type @interface, string? name, object instance) : base(@interface, name, null)
+        public InstanceServiceEntry(Type @interface!!, string? name, object instance!!) : base(@interface, name, null, null)
         {
-            Ensure.Parameter.IsNotNull(instance, nameof(instance));
-
-            FInstance = instance;
+            Instance = instance;
 
             //
             // It will throw if the service interface is derocated with an aspect.
             //
 
-            this.ApplyAspects();
+            if (Interface.GetCustomAttributes<AspectAttribute>(inherit: true).Any())
+                throw new NotSupportedException(Resources.PROXYING_NOT_SUPPORTED);
 
-            Flags = ServiceEntryFlags.Validated | ServiceEntryFlags.Shared | ServiceEntryFlags.CreateSingleInstance;
+            State = ServiceEntryStateFlags.Validated | ServiceEntryStateFlags.Built;
         }
-
 
         public override object CreateInstance(IInjector scope, out object? lifetime)
         {
             lifetime = null;
-            return FInstance;
+            return Instance;
         }
 
         public override Lifetime? Lifetime { get; } = Lifetime.Instance;
+
+        public override ServiceEntryFlags Features { get; } = ServiceEntryFlags.Shared | ServiceEntryFlags.CreateSingleInstance;
     }
 }

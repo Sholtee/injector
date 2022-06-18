@@ -9,7 +9,7 @@ using System.Diagnostics.CodeAnalysis;
 namespace Solti.Utils.DI.Interfaces
 {
     /// <summary>
-    /// Describes the actual state of an <see cref="AbstractServiceEntry"/>
+    /// Describes the features of an <see cref="AbstractServiceEntry"/>
     /// </summary>
     [Flags]
     [SuppressMessage("Naming", "CA1711:Identifiers should not have incorrect suffix")]
@@ -22,18 +22,13 @@ namespace Solti.Utils.DI.Interfaces
         Default = 0,
 
         /// <summary>
-        /// Indicates that the entry is validated so it can be instantiated.
-        /// </summary>
-        Validated = 1 << 0,
-
-        /// <summary>
         /// A single instance will be created.
         /// </summary>
-        CreateSingleInstance = 1 << 1,
+        CreateSingleInstance = 1 << 0,
 
         /// <summary>
         /// The created service instance is shared between scopes.
         /// </summary>
-        Shared = 1 << 2,
+        Shared = 1 << 1
     }
 }

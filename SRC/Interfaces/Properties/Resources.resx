@@ -141,4 +141,7 @@
   <data name="SERVICE_NOT_FOUND" xml:space="preserve">
     <value>No registered implementation for "{0}".</value>
   </data>
+  <data name="SPECIALIZATION_NOT_SUPPORTED" xml:space="preserve">
+    <value>The entry does not support specialization.</value>
+  </data>
 </root>

@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq.Expressions;
 
 namespace Solti.Utils.DI.Interfaces
 {
@@ -71,7 +72,7 @@ namespace Solti.Utils.DI.Interfaces
         /// <summary>
         /// Creates one or more service entry against the given <paramref name="factory"/>.
         /// </summary>
-        public virtual IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Func<IInjector, Type, object> factory) => throw NotSupported;
+        public virtual IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Expression<Func<IInjector, Type, object>> factory) => throw NotSupported;
 
         /// <summary>
         /// Creates one or more service entry against the given <paramref name="value"/>.

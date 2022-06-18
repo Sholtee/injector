@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Linq.Expressions;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -11,50 +12,44 @@ namespace Solti.Utils.DI.Internals
 
     internal sealed class SingletonServiceEntry : ProducibleServiceEntry
     {
-        public SingletonServiceEntry(Type @interface, string? name, Func<IInjector, Type, object> factory) : base(@interface, name, factory)
+        public SingletonServiceEntry(Type @interface, string? name, Expression<Func<IInjector, Type, object>> factory) : base(@interface, name, factory)
         {
-            Flags |= ServiceEntryFlags.CreateSingleInstance | ServiceEntryFlags.Shared;
         }
 
         public SingletonServiceEntry(Type @interface, string? name, Type implementation) : base(@interface, name, implementation)
         {
-            Flags |= ServiceEntryFlags.CreateSingleInstance | ServiceEntryFlags.Shared;
         }
 
         public SingletonServiceEntry(Type @interface, string? name, Type implementation, object explicitArgs) : base(@interface, name, implementation, explicitArgs)
         {
-            Flags |= ServiceEntryFlags.CreateSingleInstance | ServiceEntryFlags.Shared;
         }
 
-        public override AbstractServiceEntry Specialize(params Type[] genericArguments)
+        public override AbstractServiceEntry Specialize(params Type[] genericArguments!!) => this switch
         {
-            Ensure.Parameter.IsNotNull(genericArguments, nameof(genericArguments));
-
-            return this switch
-            {
-                _ when Implementation is not null && ExplicitArgs is null => new SingletonServiceEntry
-                (
-                    Interface.MakeGenericType(genericArguments),
-                    Name,
-                    Implementation.MakeGenericType(genericArguments)
-                ),
-                _ when Implementation is not null && ExplicitArgs is not null => new SingletonServiceEntry
-                (
-                    Interface.MakeGenericType(genericArguments),
-                    Name,
-                    Implementation.MakeGenericType(genericArguments),
-                    ExplicitArgs
-                ),
-                _ when Factory is not null => new SingletonServiceEntry
-                (
-                    Interface.MakeGenericType(genericArguments),
-                    Name,
-                    Factory
-                ),
-                _ => throw new NotSupportedException()
-            };
-        }
+            _ when Implementation is not null && ExplicitArgs is null => new SingletonServiceEntry
+            (
+                Interface.MakeGenericType(genericArguments),
+                Name,
+                Implementation.MakeGenericType(genericArguments)
+            ),
+            _ when Implementation is not null && ExplicitArgs is not null => new SingletonServiceEntry
+            (
+                Interface.MakeGenericType(genericArguments),
+                Name,
+                Implementation.MakeGenericType(genericArguments),
+                ExplicitArgs
+            ),
+            _ when Factory is not null => new SingletonServiceEntry
+            (
+                Interface.MakeGenericType(genericArguments),
+                Name,
+                Factory
+            ),
+            _ => throw new NotSupportedException()
+        };
 
         public override Lifetime Lifetime { get; } = Lifetime.Singleton;
+
+        public override ServiceEntryFlags Features { get; } = ServiceEntryFlags.CreateSingleInstance | ServiceEntryFlags.Shared;
     }
 }

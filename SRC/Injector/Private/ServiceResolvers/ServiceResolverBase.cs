@@ -3,33 +3,29 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
-using System;
+using System.Linq.Expressions;
+using System.Reflection;
 
 namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
 
-    internal abstract class ServiceResolverBase : IServiceResolver
+    internal abstract class ServiceResolverBase: IServiceResolver
     {
-        protected readonly object FLock = new();
+        protected static readonly MethodInfo
+            FCreateInstance = MethodInfoExtractor.Extract<IInstanceFactory>(fact => fact.CreateInstance(null!));
 
-        protected Func<IInstanceFactory, object> CreateResolver(AbstractServiceEntry entry)
-        {
-            if (entry.Flags.HasFlag(ServiceEntryFlags.CreateSingleInstance))
-            {
-                int slot = Slots++;
-                return entry.Flags.HasFlag(ServiceEntryFlags.Shared)
-                    ? fact => (fact.Super ?? fact).GetOrCreateInstance(entry, slot)
-                    : fact => fact.GetOrCreateInstance(entry, slot);
-            }
-            else
-                return entry.Flags.HasFlag(ServiceEntryFlags.Shared)
-                    ? fact => (fact.Super ?? fact).CreateInstance(entry)
-                    : fact => fact.CreateInstance(entry);
-        }
+        protected static readonly PropertyInfo
+            FSuper = PropertyInfoExtractor.Extract<IInstanceFactory, IInstanceFactory?>(fact => fact.Super);
 
-        public int Slots { get; private set; }
+        protected readonly AbstractServiceEntry FRelatedEntry;
 
-        public abstract Func<IInstanceFactory, object>? Get(Type iface, string? name);
+        AbstractServiceEntry IServiceResolver.RelatedEntry => FRelatedEntry;
+
+        protected ServiceResolverBase(AbstractServiceEntry relatedEntry) => FRelatedEntry = relatedEntry;
+
+        public abstract object Resolve(IInstanceFactory instanceFactory);
+
+        public abstract Expression GetResolveExpression(Expression instanceFactory);
     }
 }

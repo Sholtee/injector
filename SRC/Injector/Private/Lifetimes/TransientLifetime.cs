@@ -5,6 +5,7 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -14,17 +15,17 @@ namespace Solti.Utils.DI.Internals
     {
         public TransientLifetime() : base(precedence: 10) => Transient = this;
 
-        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Type implementation)
+        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface!!, string? name, Type implementation!!)
         {
             yield return new TransientServiceEntry(iface, name, implementation);
         }
 
-        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Type implementation, object explicitArgs)
+        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface!!, string? name, Type implementation!!, object explicitArgs!!)
         {
              yield return new TransientServiceEntry(iface, name, implementation, explicitArgs);
         }
 
-        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Func<IInjector, Type, object> factory)
+        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface!!, string? name, Expression<Func<IInjector, Type, object>> factory!!)
         {
             yield return new TransientServiceEntry(iface, name, factory);
         }

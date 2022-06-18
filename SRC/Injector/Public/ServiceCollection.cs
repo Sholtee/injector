@@ -9,7 +9,6 @@ using System.Collections.Generic;
 namespace Solti.Utils.DI
 {
     using Interfaces;
-    using Internals;
 
     /// <summary>
     /// Implements the <see cref="IServiceCollection"/> interface.
@@ -18,10 +17,8 @@ namespace Solti.Utils.DI
     {
         private AbstractServiceEntry? FLastEntry;
 
-        bool ISet<AbstractServiceEntry>.Add(AbstractServiceEntry item)
+        bool ISet<AbstractServiceEntry>.Add(AbstractServiceEntry item!!)
         {
-            Ensure.Parameter.IsNotNull(item, nameof(item));
-
             bool success = Add(item);
             if (success)
                 FLastEntry = item;

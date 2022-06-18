@@ -1,20 +1,23 @@
 ﻿/********************************************************************************
-* ISupportsProxying.cs                                                          *
+* ServiceResolutionMode.cs                                                      *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
-using System;
-
 namespace Solti.Utils.DI.Interfaces
 {
     /// <summary>
-    /// Provides the mechanism for overriding the factory function. 
+    /// Specifies when the system should build the dependency graph. 
     /// </summary>
-    public interface  ISupportsProxying
+    public enum ServiceResolutionMode
     {
         /// <summary>
-        /// The factory function that can be overridden.
+        /// Just In Time
         /// </summary>
-        Func<IInjector, Type, object>? Factory { get;  set; }
+        JIT,
+
+        /// <summary>
+        /// Ahead Of Time
+        /// </summary>
+        AOT
     }
 }

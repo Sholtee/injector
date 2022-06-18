@@ -13,6 +13,7 @@ namespace Solti.Utils.DI.Perf
 {
     using Interfaces;
     using Internals;
+    using Proxy;
 
     public class InjectorTestsBase
     {
@@ -40,13 +41,17 @@ namespace Solti.Utils.DI.Perf
         {
             get
             {
-                yield return ServiceResolver_Dict.Id;
-                yield return ServiceResolver_BTree.Id;
+                yield return ServiceResolverLookup_Dict.Id;
+                yield return ServiceResolverLookup_BTree.Id;
+                yield return ServiceResolverLookup_BuiltBTree.Id;
             }
         }
 
         [ParamsSource(nameof(Engines))]
         public string Engine { get; set; }
+
+        [Params(ServiceResolutionMode.JIT, ServiceResolutionMode.AOT)]
+        public ServiceResolutionMode ResolutionMode { get; set; }
 
         #region Services
         public interface IDependency
@@ -89,20 +94,14 @@ namespace Solti.Utils.DI.Perf
             public DependantLazy(Lazy<IDependency> dependency) => LazyDependency = dependency;
             public Lazy<IDependency> LazyDependency { get; }
         }
-
-        public class Outer
-        {
-            public Outer(IDependency dependency, int num) => Dependency = dependency;
-            public IDependency Dependency { get; }
-        }
         #endregion
 
         protected IScopeFactory Root { get; private set; }
 
-        protected IScopeFactory Setup(Action<IServiceCollection> setupContainer) => Root = ScopeFactory.Create(setupContainer, new ScopeOptions { Engine = Engine });
+        protected IScopeFactory Setup(Action<IServiceCollection> setupContainer) => Root = ScopeFactory.Create(setupContainer, new ScopeOptions { Engine = Engine, ServiceResolutionMode = ResolutionMode });
 
         [GlobalCleanup]
-        public void Cleanup() => Root?.Dispose();
+        public virtual void Cleanup() => Root?.Dispose();
     }
 
     [MemoryDiagnoser]
@@ -110,6 +109,13 @@ namespace Solti.Utils.DI.Perf
     public class InjectorGet : InjectorTestsBase
     {
         public IInjector Injector { get; set; }
+
+        [GlobalCleanup]
+        public override void Cleanup()
+        {
+            Injector?.Dispose();
+            base.Cleanup();
+        }
 
         [ParamsSource(nameof(Lifetimes))]
         public Lifetime DependencyLifetime { get; set; }
@@ -127,6 +133,19 @@ namespace Solti.Utils.DI.Perf
 
         [Benchmark]
         public IDependant NonGeneric() => Injector.Get<IDependant>(name: null);
+
+        [GlobalSetup(Target = nameof(NonGenericProxy))]
+        public void SetupNonGenericProxy() => Injector = Setup
+        (
+            container => container
+                .Service<IDependency, Dependency>(DependencyLifetime)
+                .WithProxy<InterfaceInterceptor<IDependency>>()
+                .Service<IDependant, Dependant>(DependantLifetime)
+                .WithProxy<InterfaceInterceptor<IDependant>>()
+        ).CreateScope();
+
+        [Benchmark]
+        public IDependant NonGenericProxy() => Injector.Get<IDependant>(name: null);
 
         [GlobalSetup(Target = nameof(Generic))]
         public void SetupGeneric() => Injector = Setup
@@ -161,28 +180,6 @@ namespace Solti.Utils.DI.Perf
 
         [Benchmark]
         public /*IEnumerable<IDependant>*/ void Enumerable() => Injector.Get<IEnumerable<IDependant>>(name: null);
-    }
-
-    [MemoryDiagnoser]
-    [SimpleJob(RunStrategy.Throughput, invocationCount: INVOCATION_COUNT)]
-    public class InjectorInstantiate : InjectorTestsBase
-    {
-        public IInjector Injector { get; set; }
-
-        [ParamsSource(nameof(Lifetimes))]
-        public Lifetime DependencyLifetime { get; set; }
-
-        [GlobalSetup(Target = nameof(Instantiate))]
-        public void SetupInstantiate() => Injector = Setup
-        (
-            container => container.Service<IDependency, Dependency>(DependencyLifetime)
-        ).CreateScope();
-
-        [Benchmark]
-        public Outer Instantiate() => Injector.Instantiate<Outer>(new Dictionary<string, object>
-        {
-            { "num", 10 }
-        });
     }
 
     [MemoryDiagnoser]

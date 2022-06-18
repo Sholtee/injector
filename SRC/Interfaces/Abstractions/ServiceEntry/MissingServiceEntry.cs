@@ -16,7 +16,7 @@ namespace Solti.Utils.DI.Interfaces
         /// <summary>
         /// Creates a new <see cref="MissingServiceEntry"/> instance.
         /// </summary>
-        public MissingServiceEntry(Type @interface, string? name) : base(@interface, name) { }
+        public MissingServiceEntry(Type @interface, string? name) : base(@interface, name, null, null) { }
 
         /// <summary>
         /// Not implemented.

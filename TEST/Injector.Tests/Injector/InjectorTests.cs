@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 
+using Moq;
 using NUnit.Framework;
 
 namespace Solti.Utils.DI.Tests
@@ -52,8 +53,18 @@ namespace Solti.Utils.DI.Tests
         {
             get
             {
-                yield return ServiceResolver_BTree.Id;
-                yield return ServiceResolver_Dict.Id;
+                yield return ServiceResolverLookup_BuiltBTree.Id;
+                yield return ServiceResolverLookup_BTree.Id;
+                yield return ServiceResolverLookup_Dict.Id;
+            }
+        }
+
+        public static IEnumerable<ServiceResolutionMode> ResolutionModes
+        {
+            get
+            {
+                yield return ServiceResolutionMode.JIT;
+                yield return ServiceResolutionMode.AOT;
             }
         }
         #endregion
@@ -261,7 +272,7 @@ namespace Solti.Utils.DI.Tests
         }
 
         [Test]
-        public void Ctor_ShouldThrowOnOverriddenService([ValueSource(nameof(Engines))] string engine) =>
-            Assert.Throws<InvalidOperationException>(() => ScopeFactory.Create(svcs => svcs.Add(new DummyServiceEntry(typeof(IInjector), null)), new ScopeOptions { Engine = engine }), Resources.SERVICE_ALREADY_REGISTERED);
+        public void Ctor_ShouldThrowOnOverriddenService([ValueSource(nameof(Engines))] string engine, [ValueSource(nameof(ResolutionModes))] ServiceResolutionMode resolutionMode) =>
+            Assert.Throws<InvalidOperationException>(() => ScopeFactory.Create(svcs => svcs.Add(new InstanceServiceEntry(typeof(IInjector), null, new Mock<IInjector>().Object)), new ScopeOptions { Engine = engine, ServiceResolutionMode = resolutionMode }), Resources.SERVICE_ALREADY_REGISTERED);
     }
 }

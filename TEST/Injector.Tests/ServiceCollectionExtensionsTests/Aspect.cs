@@ -16,19 +16,26 @@ namespace Solti.Utils.DI.Tests
     using Interfaces;
     using Interfaces.Properties;
     using Primitives.Patterns;
+    using Primitives.Threading;
     using Proxy;
 
     public partial class ServiceCollectionExtensionsTests
     {
         [Test]
-        public void Aspects_ProxyInstallationShouldBeDoneOnServiceRegistration([ValueSource(nameof(Lifetimes))] Lifetime lifetime)
+        public void Aspects_ProxyInstallationShouldBeDoneOnBuild([ValueSource(nameof(Lifetimes))] Lifetime lifetime)
         {
+            var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
+            mockInjector
+                .SetupGet(i => i.Lifetime)
+                .Returns(new Mock<ILifetimeManager<object>>(MockBehavior.Strict).Object);
+
             Collection.Service<IMyService, MyService>(lifetime);
 
-            IMyService instance = (IMyService)Collection
-                .LastEntry
-                .Factory
-                .Invoke(new Mock<IInjector>(MockBehavior.Strict).Object, typeof(IMyService));
+            AbstractServiceEntry lastEntry = Collection.LastEntry;
+            lastEntry.Build(_ => _);
+
+            IMyService instance = (IMyService) lastEntry
+                .CreateInstance(mockInjector.Object, out object _);
 
             Assert.That(instance, Is.Not.Null);
             Assert.That(instance, Is.InstanceOf<InterfaceInterceptor<IMyService>>());
@@ -45,13 +52,16 @@ namespace Solti.Utils.DI.Tests
             mockInjector
                 .Setup(i => i.Get(It.Is<Type>(t => t == typeof(IDisposable)), null))
                 .Returns(new Disposable());
+            mockInjector
+                .SetupGet(i => i.Lifetime)
+                .Returns(new Mock<ILifetimeManager<object>>(MockBehavior.Strict).Object);
 
             Collection.Service<IMyDependantService, MyService>(lifetime);
 
-            Collection
-                .LastEntry
-                .Factory
-                .Invoke(mockInjector.Object, typeof(IMyDependantService));
+            AbstractServiceEntry lastEntry = Collection.LastEntry;
+            lastEntry.Build(_ => _);
+
+            lastEntry.CreateInstance(mockInjector.Object, out object _);
 
             mockInjector.Verify(i => i.Get(It.Is<Type>(t => t == typeof(IDisposable)), null), Times.Once);
         }
@@ -59,71 +69,32 @@ namespace Solti.Utils.DI.Tests
         [Test]
         public void Aspects_ShouldWorkWithGenericServices([ValueSource(nameof(Lifetimes))] Lifetime lifetime)
         {
+            var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
+            mockInjector
+                .SetupGet(i => i.Lifetime)
+                .Returns(new Mock<ILifetimeManager<object>>(MockBehavior.Strict).Object);
+
             Collection.Service(typeof(IMyGenericService<>), typeof(MyGenericService<>), lifetime);
 
-            Assert.That(Collection.LastEntry.Factory, Is.Null);
+            AbstractServiceEntry lastEntry = Collection.LastEntry;
+            Assert.That(lastEntry.Factory, Is.Null);
 
-            IMyGenericService<int> instance = (IMyGenericService<int>) Collection.LastEntry
-                .Specialize(typeof(int))
-                .Factory
-                .Invoke(new Mock<IInjector>(MockBehavior.Strict).Object, typeof(IMyService));
+            lastEntry = lastEntry.Specialize(typeof(int));
+            Assert.DoesNotThrow(() => lastEntry.Build(_ => _));
+
+            IMyGenericService<int> instance = (IMyGenericService<int>) lastEntry.CreateInstance(mockInjector.Object, out object _);
 
             Assert.That(instance, Is.Not.Null);
             Assert.That(instance, Is.InstanceOf<InterfaceInterceptor<IMyGenericService<int>>>());
 
-            instance = ((InterfaceInterceptor<IMyGenericService<int>>)instance).Target;
+            instance = ((InterfaceInterceptor<IMyGenericService<int>>) instance).Target;
             Assert.That(instance, Is.Not.Null);
             Assert.That(instance, Is.InstanceOf<MyGenericService<int>>());
         }
 
         [Test]
         public void Aspects_ShouldThrowOnInstances() =>
-            Assert.Throws<InvalidOperationException>(() => Collection.Instance<IMyService>(new MyService()).WithProxy((_, _, _) => null), Resources.PROXYING_NOT_SUPPORTED);
-
-        [Test]
-        public void Aspects_AspectAttributeMustBeOverridden()
-        {
-            var attr = new AspectWithoutImplementation();
-            Assert.Throws<NotImplementedException>(() => attr.GetInterceptorType(null));
-            Assert.Throws<NotImplementedException>(() => attr.GetInterceptor(null, null, null));
-        }
-
-        [Test]
-        public void Aspects_ShouldBeControlledByAspectKind([Values(AspectKind.Service, AspectKind.Factory)] AspectKind kind, [ValueSource(nameof(Lifetimes))] Lifetime lifetime)
-        {
-            Collection.Factory<IMyService>(i => new MyService(), lifetime);
-
-            AbstractServiceEntry entry = Collection.LastEntry;
-
-            var mockAspect = new Mock<AspectWithoutImplementation>(MockBehavior.Strict, kind);
-
-            Func<IInjector, Type, object, object>[] delegates = null;
-
-            switch (kind)
-            {
-                case AspectKind.Service:
-                    mockAspect
-                        .Setup(aspect => aspect.GetInterceptorType(It.Is<Type>(t => t == typeof(IMyService))))
-                        .Returns(typeof(InterfaceInterceptor<IMyService>));
-
-                    Assert.DoesNotThrow(() => delegates = Internals.ServiceEntryExtensions.GenerateProxyDelegates(typeof(IMyService), new[] { mockAspect.Object }));
-
-                    mockAspect.Verify(aspect => aspect.GetInterceptorType(It.Is<Type>(t => t == typeof(IMyService))), Times.Once);
-                    Assert.That(delegates.Length, Is.EqualTo(1));
-
-                    break;
-                case AspectKind.Factory:
-                    var decorated = new MyService();
-                    mockAspect
-                        .Setup(aspect => aspect.GetInterceptor(It.IsAny<IInjector>(), It.Is<Type>(t => t == typeof(IMyService)), It.IsAny<IMyService>()))
-                        .Returns(decorated);
-
-                    Assert.DoesNotThrow(() => delegates = Internals.ServiceEntryExtensions.GenerateProxyDelegates(typeof(IMyService), new[] { mockAspect.Object }));
-                    Assert.That(delegates.Single(), Is.EqualTo((Func<IInjector, Type, object, object>)mockAspect.Object.GetInterceptor));
-
-                    break;
-            }
-        }
+            Assert.Throws<NotSupportedException>(() => Collection.Instance<IMyService>(new MyService()).WithProxy((_, _, _) => null), Resources.PROXYING_NOT_SUPPORTED);
 
         [Test]
         public void Aspects_ApplyingAspectsShouldBeSequential([ValueSource(nameof(Lifetimes))] Lifetime lifetime)
@@ -133,13 +104,24 @@ namespace Solti.Utils.DI.Tests
                 .Setup(x => x.GetAspectsOrder())
                 .Returns(Array.Empty<string>());
 
+            var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
+            mockInjector
+                .SetupGet(i => i.Lifetime)
+                .Returns(new Mock<ILifetimeManager<object>>(MockBehavior.Strict).Object);
+
             Collection.Factory(i => mockService.Object, lifetime);
 
-            var svc = (IOrderInspectingService)Collection
-                .LastEntry
-                .Factory(new Mock<IInjector>(MockBehavior.Strict).Object, typeof(IOrderInspectingService));
+            AbstractServiceEntry lastEntry = Collection.LastEntry;
+            lastEntry.Build(_ => _);
 
-            Assert.That(svc.GetAspectsOrder().SequenceEqual(new[] { nameof(OrderInspectingAspect1Attribute), nameof(OrderInspectingAspect2Attribute), nameof(OrderInspectingAspect3Attribute) }));
+            IOrderInspectingService svc = (IOrderInspectingService) lastEntry.CreateInstance(mockInjector.Object, out object _);
+
+            Assert.That(svc.GetAspectsOrder().SequenceEqual(new[]
+            {
+                nameof(OrderInspectingAspect1Attribute),
+                nameof(OrderInspectingAspect2Attribute),
+                nameof(OrderInspectingAspect3Attribute)
+            }));
         }
 
         public class InterceptorHavingNoTarget : InterfaceInterceptor<IInterface_1>
@@ -161,11 +143,6 @@ namespace Solti.Utils.DI.Tests
             Assert.Throws<InvalidOperationException>(() => new ScopedServiceEntry(typeof(IInterface_1), null, typeof(Implementation_1_No_Dep)).ApplyInterceptor(interceptor), Properties.Resources.TARGET_PARAM_CANNOT_BE_DETERMINED);
     }
 
-    public class AspectWithoutImplementation : AspectAttribute
-    {
-        public AspectWithoutImplementation(AspectKind kind = AspectKind.Service) => Kind = kind;
-    }
-
     [DummyAspect]
     public interface IMyService
     {
@@ -182,9 +159,9 @@ namespace Solti.Utils.DI.Tests
     public class MyGenericService<T> : IMyGenericService<T> { }
 
     [AttributeUsage(AttributeTargets.Interface, AllowMultiple = false)]
-    public class DummyAspectAttribute : AspectAttribute
+    public class DummyAspectAttribute : AspectAttribute, IInterceptorFactory<Type>
     {
-        public override Type GetInterceptorType(Type iface) => typeof(InterfaceInterceptor<>).MakeGenericType(iface);
+        public Type GetInterceptor(Type iface) => typeof(InterfaceInterceptor<>).MakeGenericType(iface);
     }
 
     public class MyInterceptorHavingDependency<TInterface> : InterfaceInterceptor<TInterface> where TInterface : class
@@ -193,9 +170,9 @@ namespace Solti.Utils.DI.Tests
     }
 
     [AttributeUsage(AttributeTargets.Interface, AllowMultiple = false)]
-    public class DummyAspectHavingDependencyAttribute : AspectAttribute
+    public class DummyAspectHavingDependencyAttribute : AspectAttribute, IInterceptorFactory<Type>
     {
-        public override Type GetInterceptorType(Type iface) => typeof(MyInterceptorHavingDependency<>).MakeGenericType(iface);
+        public Type GetInterceptor(Type iface) => typeof(MyInterceptorHavingDependency<>).MakeGenericType(iface);
     }
 
     public abstract class OrderInspectingProxyBase<TInterface> : InterfaceInterceptor<TInterface> where TInterface : class
@@ -213,36 +190,36 @@ namespace Solti.Utils.DI.Tests
     }
 
     [AttributeUsage(AttributeTargets.Interface, AllowMultiple = false)]
-    public class OrderInspectingAspect1Attribute : AspectAttribute
+    public class OrderInspectingAspect1Attribute : AspectAttribute, IInterceptorFactory<Type>
     {
         public class OrderInspectingProxy<TInterface> : OrderInspectingProxyBase<TInterface> where TInterface : class
         {
             public OrderInspectingProxy(TInterface target) : base(target, nameof(OrderInspectingAspect1Attribute)) { }
         }
 
-        public override Type GetInterceptorType(Type iface) => typeof(OrderInspectingProxy<>).MakeGenericType(iface);
+        public Type GetInterceptor(Type iface) => typeof(OrderInspectingProxy<>).MakeGenericType(iface);
     }
 
     [AttributeUsage(AttributeTargets.Interface, AllowMultiple = false)]
-    public class OrderInspectingAspect2Attribute : AspectAttribute
+    public class OrderInspectingAspect2Attribute : AspectAttribute, IInterceptorFactory<Type>
     {
         public class OrderInspectingProxy<TInterface> : OrderInspectingProxyBase<TInterface> where TInterface : class
         {
             public OrderInspectingProxy(TInterface target) : base(target, nameof(OrderInspectingAspect2Attribute)) { }
         }
 
-        public override Type GetInterceptorType(Type iface) => typeof(OrderInspectingProxy<>).MakeGenericType(iface);
+        public Type GetInterceptor(Type iface) => typeof(OrderInspectingProxy<>).MakeGenericType(iface);
     }
 
     [AttributeUsage(AttributeTargets.Interface, AllowMultiple = false)]
-    public class OrderInspectingAspect3Attribute : AspectAttribute
+    public class OrderInspectingAspect3Attribute : AspectAttribute, IInterceptorFactory<Type>
     {
         public class OrderInspectingProxy<TInterface> : OrderInspectingProxyBase<TInterface> where TInterface : class
         {
             public OrderInspectingProxy(TInterface target) : base(target, nameof(OrderInspectingAspect3Attribute)) { }
         }
 
-        public override Type GetInterceptorType(Type iface) => typeof(OrderInspectingProxy<>).MakeGenericType(iface);
+        public Type GetInterceptor(Type iface) => typeof(OrderInspectingProxy<>).MakeGenericType(iface);
     }
 
     [OrderInspectingAspect1, OrderInspectingAspect2, OrderInspectingAspect3]

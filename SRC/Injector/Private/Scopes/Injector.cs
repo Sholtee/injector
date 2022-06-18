@@ -5,6 +5,7 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -26,7 +27,7 @@ namespace Solti.Utils.DI.Internals
 
         private CaptureDisposable? FDisposableStore;
 
-        private readonly IServiceResolver FResolver;
+        private readonly IServiceResolverLookup FResolverLookup;
 
         private ServicePath? FPath;
 
@@ -39,34 +40,19 @@ namespace Solti.Utils.DI.Internals
 
         private readonly object? FLock;
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private object CreateInstanceCore(AbstractServiceEntry requested)
         {
-            object instance;
-            object? lifetime;
+            object? instance, lifetime;
 
             //
             // At the root of the dependency graph this validation makes no sense.
             //
 
             if (Options.StrictDI && FPath?.Count > 0)
-            {
-                AbstractServiceEntry requestor = FPath[^1];
+                ServiceErrors.EnsureNotBreaksTheRuleOfStrictDI(FPath[^1], requested);
 
-                //
-                // The requested service should not exist longer than its requestor.
-                //
-
-                if (!requestor.Flags.HasFlag(ServiceEntryFlags.Validated) && requested.Lifetime?.CompareTo(requestor.Lifetime!) < 0)
-                {
-                    RequestNotAllowedException ex = new(Resources.STRICT_DI);
-                    ex.Data[nameof(requestor)] = requestor;
-                    ex.Data[nameof(requested)] = requested;
-
-                    throw ex;
-                }
-            }
-
-            if (!requested.Flags.HasFlag(ServiceEntryFlags.Validated))
+            if (!requested.State.HasFlag(ServiceEntryStateFlags.Validated))
             {
                 FPath ??= new ServicePath();
 
@@ -79,6 +65,8 @@ namespace Solti.Utils.DI.Internals
                 {
                     FPath.Pop();
                 }
+
+                requested.SetValidated();
             }
             else
                 instance = requested.CreateInstance(this, out lifetime);
@@ -170,31 +158,21 @@ namespace Solti.Utils.DI.Internals
         public virtual object Get(Type iface, string? name)
         {
             object? instance = TryGet(iface, name);
-
             if (instance is null)
-            {
-                MissingServiceEntry requested = new(iface, name);
+                ServiceErrors.NotFound(iface, name, FPath?.Last);
 
-                ServiceNotFoundException ex = new(string.Format(Resources.Culture, Resources.SERVICE_NOT_FOUND, requested.ToString(shortForm: true)));
-
-                ex.Data["requested"] = requested;
-                ex.Data["requestor"] = FPath?.Count > 0 ? FPath[^1] : null;
-#if DEBUG
-                ex.Data["scope"] = this;
-#endif
-                throw ex;
-            }
-
-            return instance;
+            return instance!;
         }
 
-        public object? TryGet(Type iface, string? name)
+        public object? TryGet(Type iface!!, string? name)
         {
-            Ensure.Parameter.IsNotNull(iface, nameof(iface));
-            Ensure.Parameter.IsInterface(iface, nameof(iface));
-            Ensure.Parameter.IsNotGenericDefinition(iface, nameof(iface));
+            if (!iface.IsInterface)
+                throw new ArgumentException(Resources.PARAMETER_NOT_AN_INTERFACE, nameof(iface));
 
-            return FResolver.Get(iface, name)?.Invoke(this);
+            if (iface.IsGenericTypeDefinition)
+                throw new ArgumentException(Resources.PARAMETER_IS_GENERIC, nameof(iface));
+
+            return FResolverLookup.Get(iface, name)?.Resolve(this);
         }
         #endregion
 
@@ -216,6 +194,9 @@ namespace Solti.Utils.DI.Internals
         // According to performance tests, up to ~80 items btree is faster than dictionary. Assuming that
         // there won't be more than 30 constructed generic service 50 seems a good threshold.
         //
+        // Note that built btree is 5-10% slower than the regular one (It would be worth an investigation
+        // why).
+        //
 
         public const int BTREE_ITEM_THRESHOLD = 50;
 
@@ -228,13 +209,14 @@ namespace Solti.Utils.DI.Internals
             );
             #pragma warning restore CA2214
 
-            FResolver = (options.Engine ?? (svcs.Count <= BTREE_ITEM_THRESHOLD ? ServiceResolver_BTree.Id : ServiceResolver_Dict.Id)) switch
+            FResolverLookup = (options.Engine ?? (svcs.Count <= BTREE_ITEM_THRESHOLD ? ServiceResolverLookup_BTree.Id : ServiceResolverLookup_Dict.Id)) switch
             {
-                ServiceResolver_BTree.Id => new ServiceResolver_BTree(svcs),
-                ServiceResolver_Dict.Id  => new ServiceResolver_Dict(svcs),
+                ServiceResolverLookup_BTree.Id => new ServiceResolverLookup_BTree(svcs, options),
+                ServiceResolverLookup_BuiltBTree.Id => new ServiceResolverLookup_BuiltBTree(svcs, options),
+                ServiceResolverLookup_Dict.Id  => new ServiceResolverLookup_Dict(svcs, options),
                 _ => throw new NotSupportedException()
             };
-            FSlots    = Array<object>.Create(FResolver.Slots);
+            FSlots    = Array<object>.Create(FResolverLookup.Slots);
             Options   = options;
             Lifetime  = lifetime;
             FLock     = new object();
@@ -242,8 +224,8 @@ namespace Solti.Utils.DI.Internals
 
         public Injector(Injector super, object? lifetime)
         {
-            FResolver = super.FResolver;
-            FSlots    = Array<object>.Create(FResolver.Slots);
+            FResolverLookup = super.FResolverLookup;
+            FSlots    = Array<object>.Create(FResolverLookup.Slots);
             Options   = super.Options;
             Lifetime  = lifetime;
             Super     = super;

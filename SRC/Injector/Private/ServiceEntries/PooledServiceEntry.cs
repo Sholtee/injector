@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Linq.Expressions;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -13,22 +14,22 @@ namespace Solti.Utils.DI.Internals
 
     internal sealed class PooledServiceEntry : ProducibleServiceEntry
     {
-        public PooledServiceEntry(Type @interface, string? name, Func<IInjector, Type, object> factory, string poolName) : base(@interface, name, factory)
+        private Type? FPoolType;
+        public Type PoolType => FPoolType ??= typeof(IPool<>).MakeGenericType(Interface);
+
+        public PooledServiceEntry(Type @interface, string? name, Expression<Func<IInjector, Type, object>> factory, string poolName) : base(@interface, name, factory)
         {
             PoolName = poolName;
-            Flags |= ServiceEntryFlags.CreateSingleInstance;
         }
 
         public PooledServiceEntry(Type @interface, string? name, Type implementation, string poolName) : base(@interface, name, implementation)
         {
             PoolName = poolName;
-            Flags |= ServiceEntryFlags.CreateSingleInstance;
         }
 
         public PooledServiceEntry(Type @interface, string? name, Type implementation, object explicitArgs, string poolName) : base(@interface, name, implementation, explicitArgs)
         {
             PoolName = poolName;
-            Flags |= ServiceEntryFlags.CreateSingleInstance;
         }
 
         private sealed class PoolItemCheckin : Disposable
@@ -54,7 +55,6 @@ namespace Solti.Utils.DI.Internals
         public override object CreateInstance(IInjector scope, out object? lifetime)
         {
             if (scope.Lifetime is ILifetimeManager<object>)
-
                 //
                 // In pool, we call the original factory
                 //
@@ -66,11 +66,7 @@ namespace Solti.Utils.DI.Internals
                 // On consumer side we get the item from the pool
                 //
 
-                IPool relatedPool = (IPool) scope.Get
-                (
-                    typeof(IPool<>).MakeGenericType(Interface), // time consuming but called rarely
-                    PoolName
-                );
+                IPool relatedPool = (IPool) scope.Get(PoolType, PoolName);
 
                 object result = relatedPool.Get();
                 lifetime = new PoolItemCheckin(relatedPool, result);
@@ -78,40 +74,37 @@ namespace Solti.Utils.DI.Internals
             }
         }
 
-        public override AbstractServiceEntry Specialize(params Type[] genericArguments)
+        public override AbstractServiceEntry Specialize(params Type[] genericArguments!!) => this switch
         {
-            Ensure.Parameter.IsNotNull(genericArguments, nameof(genericArguments));
-
-            return this switch
-            {
-                _ when Implementation is not null && ExplicitArgs is null => new PooledServiceEntry
-                (
-                    Interface.MakeGenericType(genericArguments),
-                    Name,
-                    Implementation.MakeGenericType(genericArguments),
-                    PoolName
-                ),
-                _ when Implementation is not null && ExplicitArgs is not null => new PooledServiceEntry
-                (
-                    Interface.MakeGenericType(genericArguments),
-                    Name,
-                    Implementation.MakeGenericType(genericArguments),
-                    ExplicitArgs,
-                    PoolName
-                ),
-                _ when Factory is not null => new PooledServiceEntry
-                (
-                    Interface.MakeGenericType(genericArguments),
-                    Name,
-                    Factory,
-                    PoolName
-                ),
-                _ => throw new NotSupportedException()
-            };
-        }
+            _ when Implementation is not null && ExplicitArgs is null => new PooledServiceEntry
+            (
+                Interface.MakeGenericType(genericArguments),
+                Name,
+                Implementation.MakeGenericType(genericArguments),
+                PoolName
+            ),
+            _ when Implementation is not null && ExplicitArgs is not null => new PooledServiceEntry
+            (
+                Interface.MakeGenericType(genericArguments),
+                Name,
+                Implementation.MakeGenericType(genericArguments),
+                ExplicitArgs,
+                PoolName
+            ),
+            _ when Factory is not null => new PooledServiceEntry
+            (
+                Interface.MakeGenericType(genericArguments),
+                Name,
+                Factory,
+                PoolName
+            ),
+            _ => throw new NotSupportedException()
+        };
 
         public string PoolName { get; }
 
         public override Lifetime Lifetime { get; } = Lifetime.Pooled;
+
+        public override ServiceEntryFlags Features { get; } = ServiceEntryFlags.CreateSingleInstance;
     }
 }

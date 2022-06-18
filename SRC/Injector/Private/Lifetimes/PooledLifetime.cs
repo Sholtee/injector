@@ -5,6 +5,7 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -34,7 +35,7 @@ namespace Solti.Utils.DI.Internals
 
         public PooledLifetime() : base(precedence: 20) => Pooled = this;
 
-        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Type implementation)
+        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface!!, string? name, Type implementation!!)
         {
             string poolName = GetPoolName(iface, name);
 
@@ -49,7 +50,7 @@ namespace Solti.Utils.DI.Internals
             yield return entry;
         }
 
-        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Type implementation, object explicitArgs)
+        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface!!, string? name, Type implementation!!, object explicitArgs!!)
         {
             string poolName = GetPoolName(iface, name);
 
@@ -59,7 +60,7 @@ namespace Solti.Utils.DI.Internals
             yield return entry;
         }
 
-        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Func<IInjector, Type, object> factory)
+        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface!!, string? name, Expression<Func<IInjector, Type, object>> factory!!)
         {
             string poolName = GetPoolName(iface, name);
 
@@ -69,7 +70,7 @@ namespace Solti.Utils.DI.Internals
             yield return entry;
         }
 
-        public override int CompareTo(Lifetime other) => other is PooledLifetime
+        public override int CompareTo(Lifetime other!!) => other is PooledLifetime
             //
             // It breaks the contract how the IComparable interface is supposed to be implemented but
             // required since a pooled service cannot have pooled dependency (dependency would never 
@@ -83,7 +84,7 @@ namespace Solti.Utils.DI.Internals
 
         public override string ToString() => nameof(Pooled);
 
-        public override Lifetime Using(object configuration) => new PooledLifetime
+        public override Lifetime Using(object configuration!!) => new PooledLifetime
         {
             Capacity = ((PoolConfig) configuration).Capacity,
         };

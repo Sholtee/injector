@@ -1,9 +1,14 @@
 ﻿/********************************************************************************
-* ISupportsProxying.cs                                                          *
+* IServiceEntryBuilder.cs                                                       *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
-using Solti.Utils.DI.Interfaces;
-using System.Runtime.CompilerServices;
+namespace Solti.Utils.DI.Internals
+{
+    using Interfaces;
 
-[assembly: TypeForwardedTo(typeof(ISupportsProxying))]
+    internal interface IServiceEntryBuilder
+    {
+        void Build(AbstractServiceEntry entry);
+    }
+}

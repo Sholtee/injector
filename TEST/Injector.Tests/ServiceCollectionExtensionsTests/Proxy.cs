@@ -40,14 +40,15 @@ namespace Solti.Utils.DI.Tests
 
             Collection
                 .Service<IInterface_1, Implementation_1_No_Dep>(lifetime)
-                .WithProxy(mockCallback1.Object)
-                .WithProxy(mockCallback2.Object);
+                .WithProxy((injector, iface, curr) => mockCallback1.Object(injector, iface, curr))
+                .WithProxy((injector, iface, curr) => mockCallback2.Object(injector, iface, curr));
 
             var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
             mockInjector
                 .SetupGet(i => i.Options)
                 .Returns(new ScopeOptions());
 
+            Collection.LastEntry.Build(_ => _);
             Assert.That(Collection.LastEntry.CreateInstance(mockInjector.Object, out _), Is.InstanceOf<DecoratedImplementation_1>());
 
             mockCallback1.Verify(_ => _(It.IsAny<IInjector>(), typeof(IInterface_1), It.IsAny<IInterface_1>()), Times.Once);
@@ -64,7 +65,7 @@ namespace Solti.Utils.DI.Tests
 
             Collection
                 .Service(typeof(IInterface_3<int>), typeof(Implementation_3_IInterface_1_Dependant<int>), lifetime)
-                .WithProxy(mockCallback.Object);
+                .WithProxy((injector, iface, curr) => mockCallback.Object(injector, iface, curr));
 
             var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
             
@@ -76,6 +77,7 @@ namespace Solti.Utils.DI.Tests
                 .SetupGet(i => i.Options)
                 .Returns(new ScopeOptions());
 
+            Collection.LastEntry.Build(_ => _);
             Assert.That(Collection.LastEntry.CreateInstance(mockInjector.Object, out _), Is.InstanceOf<DecoratedImplementation_3<int>>());
 
             mockCallback.Verify(_ => _(It.IsAny<IInjector>(), typeof(IInterface_3<int>), It.IsAny<IInterface_3<int>>()), Times.Once);
@@ -86,7 +88,7 @@ namespace Solti.Utils.DI.Tests
         {
             Collection.Service(typeof(IInterface_3<>), typeof(Implementation_3_IInterface_1_Dependant<>), lifetime);
 
-            Assert.Throws<InvalidOperationException>(() => Collection.WithProxy((injector, type, inst) => inst), Resources.PROXYING_NOT_SUPPORTED);
+            Assert.Throws<NotSupportedException>(() => Collection.WithProxy((injector, type, inst) => inst), Resources.PROXYING_NOT_SUPPORTED);
         }
 
         [Test]
@@ -94,7 +96,7 @@ namespace Solti.Utils.DI.Tests
         {
             Collection.Instance<IInterface_1>(new Implementation_1_No_Dep());
 
-            Assert.Throws<InvalidOperationException>(() => Collection.WithProxy((p1, p2, p3) => default), Resources.PROXYING_NOT_SUPPORTED);
+            Assert.Throws<NotSupportedException>(() => Collection.WithProxy((p1, p2, p3) => default), Resources.PROXYING_NOT_SUPPORTED);
         }
 
         [Test]
@@ -102,7 +104,7 @@ namespace Solti.Utils.DI.Tests
         {
             Collection.Register(new MissingServiceEntry(typeof(IInterface_1), null));
 
-            Assert.Throws<InvalidOperationException>(() => Collection.WithProxy((p1, p2, p3) => default), Resources.PROXYING_NOT_SUPPORTED);
+            Assert.Throws<NotSupportedException>(() => Collection.WithProxy((p1, p2, p3) => default), Resources.PROXYING_NOT_SUPPORTED);
         }
 
         [TestCaseSource(nameof(ScopeControlledLifetimes))]
@@ -126,6 +128,7 @@ namespace Solti.Utils.DI.Tests
                 .SetupGet(i => i.Options)
                 .Returns(new ScopeOptions());
 
+            Collection.LastEntry.Build(_ => _);
             object instance = Collection.LastEntry.CreateInstance(mockInjector.Object, out _);
 
             Assert.That(instance, Is.InstanceOf<MyProxyWithDependency>());
@@ -165,6 +168,7 @@ namespace Solti.Utils.DI.Tests
                 .SetupGet(i => i.Options)
                 .Returns(new ScopeOptions());
 
+            Collection.LastEntry.Build(_ => _);
             Assert.That(Collection.LastEntry.CreateInstance(mockInjector.Object, out _), Is.InstanceOf<DecoratedImplementation_1>());
         }
     }

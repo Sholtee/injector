@@ -3,11 +3,12 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
-using System;
-using System.Diagnostics.CodeAnalysis;
+using System.Linq.Expressions;
 
 namespace Solti.Utils.DI.Internals
 {
+    using Interfaces;
+
 #if DEBUG // test methods must be public -> make internal types public so they can be passed as parameter
     #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
     public
@@ -16,9 +17,10 @@ namespace Solti.Utils.DI.Internals
 #endif
     interface IServiceResolver
     {
-        [SuppressMessage("Naming", "CA1716:Identifiers should not match keywords")]
-        Func<IInstanceFactory, object>? Get(Type iface, string? name);
+        AbstractServiceEntry RelatedEntry { get; }
 
-        int Slots { get; }
+        object Resolve(IInstanceFactory instanceFactory);
+
+        Expression GetResolveExpression(Expression instanceFactory);
     }
 }

@@ -69,7 +69,7 @@ namespace Solti.Utils.DI.Perf
         [Benchmark(Baseline = true)]
         public object InstantiateDirectly() => new MyClass(Injector);
 
-        private static readonly Func<IInjector, Type, object> Factory = ServiceActivator.Get(typeof(MyClass));
+        private static readonly Func<IInjector, Type, object> Factory = ServiceActivator.Get(typeof(MyClass)).Compile();
 
         [Benchmark]
         public object ViaActivator() => Factory(Injector, typeof(MyClass));

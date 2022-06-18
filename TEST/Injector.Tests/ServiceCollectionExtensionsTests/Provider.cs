@@ -14,8 +14,9 @@ using NUnit.Framework;
 namespace Solti.Utils.DI.Tests
 {
     using Interfaces;
+    using Primitives.Threading;
     using Properties;
-    
+
     public partial class ServiceCollectionExtensionsTests
     {
         [TestCaseSource(nameof(Lifetimes))]
@@ -56,10 +57,14 @@ namespace Solti.Utils.DI.Tests
             AbstractServiceEntry entry = Collection
                 .Provider<IList, ListProvider>(lifetime)
                 .LastEntry;
+            entry.Build(_ => _);
 
             var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
+            mockInjector
+                .SetupGet(i => i.Lifetime)
+                .Returns(new Mock<ILifetimeManager<object>>().Object);
 
-            Assert.That(entry.Factory(mockInjector.Object, typeof(IList)), Is.InstanceOf<IList>());
+            Assert.That(entry.CreateInstance(mockInjector.Object, out object _), Is.InstanceOf<IList>());
         }
 
         [TestCaseSource(nameof(Lifetimes))]
@@ -68,10 +73,14 @@ namespace Solti.Utils.DI.Tests
             AbstractServiceEntry entry = Collection
                 .Provider<IList<int>, GenericListProvider>(lifetime)
                 .LastEntry;
+            entry.Build(_ => _);
 
             var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
+            mockInjector
+                .SetupGet(i => i.Lifetime)
+                .Returns(new Mock<ILifetimeManager<object>>().Object);
 
-            Assert.That(entry.Factory(mockInjector.Object, typeof(IList<int>)), Is.InstanceOf<IList<int>>());
+            Assert.That(entry.CreateInstance(mockInjector.Object, out object _), Is.InstanceOf<IList<int>>());
         }
 
         [TestCaseSource(nameof(Lifetimes))]
