@@ -78,62 +78,13 @@
   <h3 id="constructors">Constructors
   </h3>
   <a id="Solti_Utils_DI_Interfaces_AbstractServiceEntry__ctor_" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.#ctor*"></a>
-  <h4 id="Solti_Utils_DI_Interfaces_AbstractServiceEntry__ctor_System_Type_System_String_" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.#ctor(System.Type,System.String)">AbstractServiceEntry(Type, String)</h4>
+  <h4 id="Solti_Utils_DI_Interfaces_AbstractServiceEntry__ctor_System_Type_System_String_System_Type_System_Linq_Expressions_Expression_System_Func_Solti_Utils_DI_Interfaces_IInjector_System_Type_System_Object___" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.#ctor(System.Type,System.String,System.Type,System.Linq.Expressions.Expression{System.Func{Solti.Utils.DI.Interfaces.IInjector,System.Type,System.Object}})">AbstractServiceEntry(Type, String, Type, Expression&lt;Func&lt;IInjector, Type, Object&gt;&gt;)</h4>
   <div class="markdown level1 summary"><p>Creates a new <a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html">AbstractServiceEntry</a> instance.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected AbstractServiceEntry(Type interface, string name)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.type">Type</a></td>
-        <td><span class="parametername">interface</span></td>
-        <td><p>The interface of the service.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">name</span></td>
-        <td><p>The (optional) name of the service.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></td>
-        <td><p>The <code data-dev-comment-type="paramref" class="paramref">interface</code> is not an interface.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <a id="Solti_Utils_DI_Interfaces_AbstractServiceEntry__ctor_" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.#ctor*"></a>
-  <h4 id="Solti_Utils_DI_Interfaces_AbstractServiceEntry__ctor_System_Type_System_String_System_Type_" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.#ctor(System.Type,System.String,System.Type)">AbstractServiceEntry(Type, String, Type)</h4>
-  <div class="markdown level1 summary"><p>Creates a new <a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html">AbstractServiceEntry</a> instance.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected AbstractServiceEntry(Type interface, string name, Type implementation)</code></pre>
+    <pre><code class="lang-csharp hljs">protected AbstractServiceEntry(Type interface, string name, Type implementation, Expression&lt;Func&lt;IInjector, Type, object&gt;&gt; factory)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -163,6 +114,12 @@
         <td><p>The (optional) implementation of the service.</p>
 </td>
       </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.linq.expressions.expression-1">Expression</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.func-3">Func</a>&lt;<a class="xref" href="Solti.Utils.DI.Interfaces.IInjector.html">IInjector</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.type">Type</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a>&gt;&gt;</td>
+        <td><span class="parametername">factory</span></td>
+        <td><p>The (optional) factory of the service.</p>
+</td>
+      </tr>
     </tbody>
   </table>
   <h5 class="exceptions">Exceptions</h5>
@@ -190,12 +147,12 @@
   </h3>
   <a id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_Factory_" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.Factory*"></a>
   <h4 id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_Factory" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.Factory">Factory</h4>
-  <div class="markdown level1 summary"><p>The concrete factory. Don&apos;t use it directly!</p>
+  <div class="markdown level1 summary"><p>The (optional) factory of this service.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Func&lt;IInjector, Type, object&gt; Factory { get; protected set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public Expression&lt;Func&lt;IInjector, Type, object&gt;&gt; Factory { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -207,19 +164,19 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.func-3">Func</a>&lt;<a class="xref" href="Solti.Utils.DI.Interfaces.IInjector.html">IInjector</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.type">Type</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a>&gt;</td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.linq.expressions.expression-1">Expression</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.func-3">Func</a>&lt;<a class="xref" href="Solti.Utils.DI.Interfaces.IInjector.html">IInjector</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.type">Type</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a>&gt;&gt;</td>
         <td></td>
       </tr>
     </tbody>
   </table>
-  <a id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_Flags_" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.Flags*"></a>
-  <h4 id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_Flags" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.Flags">Flags</h4>
-  <div class="markdown level1 summary"><p>Flags related to this entry.</p>
+  <a id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_Features_" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.Features*"></a>
+  <h4 id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_Features" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.Features">Features</h4>
+  <div class="markdown level1 summary"><p>Features related to this entry.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public ServiceEntryFlags Flags { get; protected set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public virtual ServiceEntryFlags Features { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -338,11 +295,87 @@
   <h5 id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_Name_remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>A service is identified by its <a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_Interface">Interface</a> and <a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_Name">Name</a>.</p>
 </div>
+  <a id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_State_" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.State*"></a>
+  <h4 id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_State" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.State">State</h4>
+  <div class="markdown level1 summary"><p>Current state of this entry.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ServiceEntryStateFlags State { get; protected set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.ServiceEntryStateFlags.html">ServiceEntryStateFlags</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   <h3 id="methods">Methods
   </h3>
+  <a id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_ApplyProxy_" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.ApplyProxy*"></a>
+  <h4 id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_ApplyProxy_System_Linq_Expressions_Expression_System_Func_Solti_Utils_DI_Interfaces_IInjector_System_Type_System_Object_System_Object___" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.ApplyProxy(System.Linq.Expressions.Expression{System.Func{Solti.Utils.DI.Interfaces.IInjector,System.Type,System.Object,System.Object}})">ApplyProxy(Expression&lt;Func&lt;IInjector, Type, Object, Object&gt;&gt;)</h4>
+  <div class="markdown level1 summary"><p>If implemented, alters the service instantiation process in order to wrap the original service into a proxy.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void ApplyProxy(Expression&lt;Func&lt;IInjector, Type, object, object&gt;&gt; applyProxy)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.linq.expressions.expression-1">Expression</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.func-4">Func</a>&lt;<a class="xref" href="Solti.Utils.DI.Interfaces.IInjector.html">IInjector</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.type">Type</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a>&gt;&gt;</td>
+        <td><span class="parametername">applyProxy</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_Build_" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.Build*"></a>
+  <h4 id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_Build_System_Func_System_Linq_Expressions_LambdaExpression_System_Linq_Expressions_LambdaExpression__" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.Build(System.Func{System.Linq.Expressions.LambdaExpression,System.Linq.Expressions.LambdaExpression})">Build(Func&lt;LambdaExpression, LambdaExpression&gt;)</h4>
+  <div class="markdown level1 summary"><p>Builds this entry.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void Build(Func&lt;LambdaExpression, LambdaExpression&gt; visit)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.linq.expressions.lambdaexpression">LambdaExpression</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.linq.expressions.lambdaexpression">LambdaExpression</a>&gt;</td>
+        <td><span class="parametername">visit</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   <a id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_CreateInstance_" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.CreateInstance*"></a>
   <h4 id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_CreateInstance_Solti_Utils_DI_Interfaces_IInjector_System_Object__" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.CreateInstance(Solti.Utils.DI.Interfaces.IInjector,System.Object@)">CreateInstance(IInjector, out Object)</h4>
-  <div class="markdown level1 summary"><p>Creates a new service instance. Don&apos;t use it directly!</p>
+  <div class="markdown level1 summary"><p>Creates a new service instance. Should throw if the <a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_State">State</a> is not <a class="xref" href="Solti.Utils.DI.Interfaces.ServiceEntryStateFlags.html#Solti_Utils_DI_Interfaces_ServiceEntryStateFlags_Built">Built</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -388,7 +421,8 @@
   </table>
   <a id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_GetHashCode_" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.GetHashCode*"></a>
   <h4 id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_GetHashCode" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.GetHashCode">GetHashCode()</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Returns the unique hash code of this entry. You are not allowed to override this method.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -411,6 +445,15 @@
   </table>
   <h5 class="overrides">Overrides</h5>
   <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#system-object-gethashcode">Object.GetHashCode()</a></div>
+  <a id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_SetValidated_" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.SetValidated*"></a>
+  <h4 id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_SetValidated" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.SetValidated">SetValidated()</h4>
+  <div class="markdown level1 summary"><p>If supported, sets the <a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_State">State</a> of this entry to <a class="xref" href="Solti.Utils.DI.Interfaces.ServiceEntryStateFlags.html#Solti_Utils_DI_Interfaces_ServiceEntryStateFlags_Validated">Validated</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void SetValidated()</code></pre>
+  </div>
   <a id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_Specialize_" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.Specialize*"></a>
   <h4 id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_Specialize_System_Type___" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.Specialize(System.Type[])">Specialize(Type[])</h4>
   <div class="markdown level1 summary"><p>Specializes a service entry if it is generic.</p>
@@ -530,9 +573,6 @@
   </div>
   <div>
       <a class="xref" href="Solti.Utils.DI.Interfaces.ServiceEntryExtensions.html#Solti_Utils_DI_Interfaces_ServiceEntryExtensions_IsInternal_Solti_Utils_DI_Interfaces_AbstractServiceEntry_">ServiceEntryExtensions.IsInternal(AbstractServiceEntry)</a>
-  </div>
-  <div>
-      <a class="xref" href="Solti.Utils.DI.Interfaces.ServiceEntryExtensions.html#Solti_Utils_DI_Interfaces_ServiceEntryExtensions_ApplyProxy_Solti_Utils_DI_Interfaces_AbstractServiceEntry_System_Func_Solti_Utils_DI_Interfaces_IInjector_System_Type_System_Object_System_Object__">ServiceEntryExtensions.ApplyProxy(AbstractServiceEntry, Func&lt;IInjector, Type, Object, Object&gt;)</a>
   </div>
 </article>
           </div>

@@ -50,7 +50,7 @@
       <section><p>Describes an abstract service entry.</p>
 </section>
       <h4><a class="xref" href="Solti.Utils.DI.Interfaces.AspectAttribute.html">AspectAttribute</a></h4>
-      <section><p>Defines an abstract aspect that can be applied on a service interface.</p>
+      <section><p>Defines an abstract aspect that can be applied against service interfaces.</p>
 </section>
       <h4><a class="xref" href="Solti.Utils.DI.Interfaces.CircularReferenceException.html">CircularReferenceException</a></h4>
       <section><p>The exception that is thrown on circular reference.</p>
@@ -108,6 +108,9 @@
       <h4><a class="xref" href="Solti.Utils.DI.Interfaces.IInjector.html">IInjector</a></h4>
       <section><p>Provides the mechanism for injecting resources.</p>
 </section>
+      <h4><a class="xref" href="Solti.Utils.DI.Interfaces.IInterceptorFactory-1.html">IInterceptorFactory&lt;TInterceptor&gt;</a></h4>
+      <section><p>Describes the contract how to create interface interceptors. Implementors are supposed to be aspects.</p>
+</section>
       <h4><a class="xref" href="Solti.Utils.DI.Interfaces.IModifiedServiceCollection.html">IModifiedServiceCollection</a></h4>
       <section><p>Extends the <a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollection.html">IServiceCollection</a> interface with a property of <a class="xref" href="Solti.Utils.DI.Interfaces.IModifiedServiceCollection.html#Solti_Utils_DI_Interfaces_IModifiedServiceCollection_LastEntry">LastEntry</a>.</p>
 </section>
@@ -117,16 +120,16 @@
       <h4><a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollection.html">IServiceCollection</a></h4>
       <section><p>Specifies the contract for an <a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html">AbstractServiceEntry</a> set.</p>
 </section>
-      <h4><a class="xref" href="Solti.Utils.DI.Interfaces.ISupportsProxying.html">ISupportsProxying</a></h4>
-      <section><p>Provides the mechanism for overriding the factory function. </p>
-</section>
     <h3 id="enums">Enums
   </h3>
-      <h4><a class="xref" href="Solti.Utils.DI.Interfaces.AspectKind.html">AspectKind</a></h4>
-      <section><p>Specifies the method that will be used to generate the proxy.</p>
-</section>
       <h4><a class="xref" href="Solti.Utils.DI.Interfaces.ServiceEntryFlags.html">ServiceEntryFlags</a></h4>
+      <section><p>Describes the features of an <a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html">AbstractServiceEntry</a></p>
+</section>
+      <h4><a class="xref" href="Solti.Utils.DI.Interfaces.ServiceEntryStateFlags.html">ServiceEntryStateFlags</a></h4>
       <section><p>Describes the actual state of an <a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html">AbstractServiceEntry</a></p>
+</section>
+      <h4><a class="xref" href="Solti.Utils.DI.Interfaces.ServiceResolutionMode.html">ServiceResolutionMode</a></h4>
+      <section><p>Specifies when the system should build the dependency graph. </p>
 </section>
 </article>
           </div>

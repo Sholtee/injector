@@ -42,7 +42,7 @@
   
   <h1 id="Solti_Utils_DI_Interfaces_AspectAttribute" data-uid="Solti.Utils.DI.Interfaces.AspectAttribute" class="text-break">Class AspectAttribute
   </h1>
-  <div class="markdown level0 summary"><p>Defines an abstract aspect that can be applied on a service interface.</p>
+  <div class="markdown level0 summary"><p>Defines an abstract aspect that can be applied against service interfaces.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
@@ -187,131 +187,9 @@
     <pre><code class="lang-csharp hljs">[AttributeUsage(AttributeTargets.Interface)]
 public abstract class AspectAttribute : Attribute</code></pre>
   </div>
-  <h3 id="properties">Properties
-  </h3>
-  <a id="Solti_Utils_DI_Interfaces_AspectAttribute_Kind_" data-uid="Solti.Utils.DI.Interfaces.AspectAttribute.Kind*"></a>
-  <h4 id="Solti_Utils_DI_Interfaces_AspectAttribute_Kind" data-uid="Solti.Utils.DI.Interfaces.AspectAttribute.Kind">Kind</h4>
-  <div class="markdown level1 summary"><p>The kind of this aspect.</p>
+  <h5 id="Solti_Utils_DI_Interfaces_AspectAttribute_remarks"><strong>Remarks</strong></h5>
+  <div class="markdown level0 remarks"><p>Derived aspects must implement the <a class="xref" href="Solti.Utils.DI.Interfaces.IInterceptorFactory-1.html">IInterceptorFactory&lt;TInterceptor&gt;</a> interface.</p>
 </div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public AspectKind Kind { get; protected set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Solti.Utils.DI.Interfaces.AspectKind.html">AspectKind</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h3 id="methods">Methods
-  </h3>
-  <a id="Solti_Utils_DI_Interfaces_AspectAttribute_GetInterceptor_" data-uid="Solti.Utils.DI.Interfaces.AspectAttribute.GetInterceptor*"></a>
-  <h4 id="Solti_Utils_DI_Interfaces_AspectAttribute_GetInterceptor_Solti_Utils_DI_Interfaces_IInjector_System_Type_System_Object_" data-uid="Solti.Utils.DI.Interfaces.AspectAttribute.GetInterceptor(Solti.Utils.DI.Interfaces.IInjector,System.Type,System.Object)">GetInterceptor(IInjector, Type, Object)</h4>
-  <div class="markdown level1 summary"><p>Decorates the given service instance. </p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public virtual object GetInterceptor(IInjector injector, Type iface, object instance)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Solti.Utils.DI.Interfaces.IInjector.html">IInjector</a></td>
-        <td><span class="parametername">injector</span></td>
-        <td><p>The injector on which the service request was initiated.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.type">Type</a></td>
-        <td><span class="parametername">iface</span></td>
-        <td><p>The service type.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></td>
-        <td><span class="parametername">instance</span></td>
-        <td><p>The service instance to be decorated.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></td>
-        <td><p>The decorated service instance.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <a id="Solti_Utils_DI_Interfaces_AspectAttribute_GetInterceptorType_" data-uid="Solti.Utils.DI.Interfaces.AspectAttribute.GetInterceptorType*"></a>
-  <h4 id="Solti_Utils_DI_Interfaces_AspectAttribute_GetInterceptorType_System_Type_" data-uid="Solti.Utils.DI.Interfaces.AspectAttribute.GetInterceptorType(System.Type)">GetInterceptorType(Type)</h4>
-  <div class="markdown level1 summary"><p>Returns a InterfaceInterceptor descendant to the specified interface.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public virtual Type GetInterceptorType(Type iface)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.type">Type</a></td>
-        <td><span class="parametername">iface</span></td>
-        <td><p>The interface on which this attribute was applied.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.type">Type</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
 </article>
           </div>
           
