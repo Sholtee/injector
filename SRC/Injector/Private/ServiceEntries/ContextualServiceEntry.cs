@@ -16,7 +16,7 @@ namespace Solti.Utils.DI.Internals
         public ContextualServiceEntry(Type @interface, string? name, Func<IInjector, Type, object> factory) : base(@interface, name)
         {
             Factory = factory;
-            State = ServiceEntryStateFlags.Built | ServiceEntryStateFlags.Validated;
+            State = ServiceEntryStates.Built | ServiceEntryStates.Validated;
         }
 
         public override object CreateInstance(IInjector scope, out object? lifetime)
@@ -25,6 +25,6 @@ namespace Solti.Utils.DI.Internals
             return Factory(scope, Interface);
         }
 
-        public override ServiceEntryFlags Features { get; } = ServiceEntryFlags.CreateSingleInstance;
+        public override ServiceEntryFeatures Features { get; } = ServiceEntryFeatures.CreateSingleInstance;
     }
 }

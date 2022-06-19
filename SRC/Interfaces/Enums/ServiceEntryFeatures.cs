@@ -1,5 +1,5 @@
 ﻿/********************************************************************************
-* ServiceEntryFlags.cs                                                          *
+* ServiceEntryFeatures.cs                                                       *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
@@ -12,9 +12,8 @@ namespace Solti.Utils.DI.Interfaces
     /// Describes the features of an <see cref="AbstractServiceEntry"/>
     /// </summary>
     [Flags]
-    [SuppressMessage("Naming", "CA1711:Identifiers should not have incorrect suffix")]
     [SuppressMessage("Design", "CA1008:Enums should have zero value")]
-    public enum ServiceEntryFlags: int
+    public enum ServiceEntryFeatures: int
     {
         /// <summary>
         /// The default state.

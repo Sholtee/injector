@@ -52,7 +52,7 @@ namespace Solti.Utils.DI.Internals
             if (Options.StrictDI && FPath?.Count > 0)
                 ServiceErrors.EnsureNotBreaksTheRuleOfStrictDI(FPath[^1], requested);
 
-            if (!requested.State.HasFlag(ServiceEntryStateFlags.Validated))
+            if (!requested.State.HasFlag(ServiceEntryStates.Validated))
             {
                 FPath ??= new ServicePath();
 

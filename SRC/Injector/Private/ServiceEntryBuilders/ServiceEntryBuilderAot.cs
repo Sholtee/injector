@@ -44,7 +44,7 @@ namespace Solti.Utils.DI.Internals
             if (FOptions.StrictDI && FPath.Count > 0)
                 ServiceErrors.EnsureNotBreaksTheRuleOfStrictDI(FPath[^1], requested);
 
-            if (requested.State.HasFlag(ServiceEntryStateFlags.Built))
+            if (requested.State.HasFlag(ServiceEntryStates.Built))
                 return;
 #if DEBUG
             ServiceRequestReplacerDebug FReplacer = new(FLookup, FPath, FOptions.SupportsServiceProvider);
@@ -56,7 +56,7 @@ namespace Solti.Utils.DI.Internals
             FPath.Push(requested);
             try
             {
-                requested.Build(lambda => (LambdaExpression) FReplacer.Visit(lambda));
+                requested.VisitFactory(lambda => (LambdaExpression) FReplacer.Visit(lambda), FactoryVisitorOptions.BuildDelegate);
             }
             finally
             {

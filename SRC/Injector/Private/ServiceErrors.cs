@@ -34,7 +34,7 @@ namespace Solti.Utils.DI.Internals
             // The requested service should not exist longer than its requestor.
             //
 
-            if (!requestor.State.HasFlag(ServiceEntryStateFlags.Validated) && requested.Lifetime?.CompareTo(requestor.Lifetime!) < 0)
+            if (!requestor.State.HasFlag(ServiceEntryStates.Validated) && requested.Lifetime?.CompareTo(requestor.Lifetime!) < 0)
             {
                 RequestNotAllowedException ex = new(STRICT_DI);
                 ex.Data[nameof(requestor)] = requestor;

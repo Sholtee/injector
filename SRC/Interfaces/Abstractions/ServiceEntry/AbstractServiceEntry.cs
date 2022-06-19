@@ -79,14 +79,14 @@ namespace Solti.Utils.DI.Interfaces
         /// <summary>
         /// Features related to this entry.
         /// </summary>
-        public virtual ServiceEntryFlags Features { get; }
+        public virtual ServiceEntryFeatures Features { get; }
         #endregion
 
         #region Mutables
         /// <summary>
         /// Current state of this entry.
         /// </summary>
-        public ServiceEntryStateFlags State { get; protected set; }
+        public ServiceEntryStates State { get; protected set; }
         #endregion
 
         /// <summary>
@@ -100,19 +100,19 @@ namespace Solti.Utils.DI.Interfaces
         public virtual void ApplyProxy(Expression<Func<IInjector, Type, object, object>> applyProxy) => throw new NotSupportedException(Resources.PROXYING_NOT_SUPPORTED);
 
         /// <summary>
-        /// Creates a new service instance. Should throw if the <see cref="State"/> is not <see cref="ServiceEntryStateFlags.Built"/>.
+        /// Creates a new service instance. Should throw if the <see cref="State"/> is not <see cref="ServiceEntryStates.Built"/>.
         /// </summary>
         public abstract object CreateInstance(IInjector scope, out object? lifetime);
 
         /// <summary>
-        /// If supported, sets the <see cref="State"/> of this entry to <see cref="ServiceEntryStateFlags.Validated"/>.
+        /// If supported, sets the <see cref="State"/> of this entry to <see cref="ServiceEntryStates.Validated"/>.
         /// </summary>
         public virtual void SetValidated() => throw new NotSupportedException();
 
         /// <summary>
         /// Builds this entry.
         /// </summary>
-        public virtual void Build(Func<LambdaExpression, LambdaExpression> visit) => throw new NotSupportedException();
+        public virtual void VisitFactory(Func<LambdaExpression, LambdaExpression> visitor, FactoryVisitorOptions options) => throw new NotSupportedException();
 
         /// <inheritdoc/>
         public override string ToString() => ToString(false); 
