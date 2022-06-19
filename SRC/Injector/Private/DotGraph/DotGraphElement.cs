@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 namespace Solti.Utils.DI.Internals
@@ -14,33 +15,22 @@ namespace Solti.Utils.DI.Internals
     internal abstract record DotGraphElement
     {
         /// <summary>
-        /// Attributes related to this element. Principal attribute can be found <a href="https://graphviz.org/pdf/dotguide.pdf">here</a>.
+        /// Attributes related to this element. Principal attributes can be found <a href="https://graphviz.org/pdf/dotguide.pdf">here</a>.
         /// </summary>
         protected IDictionary<string, string> Attributes { get; } = new AttributeCollection();
 
-        public override string ToString() => Attributes.Count > 0
-            ? $" [{string.Join(",", Attributes.Select(attr => $"{attr.Key}={attr.Value}"))}];"
-            : ";";
+        public override string ToString() => Attributes.ToString();
 
         private sealed class AttributeCollection : Dictionary<string, string>
         {
-            public override int GetHashCode()
-            {
-                //
-                // HashCode struct nincs netstandard2_0 alatt
-                //
+            [SuppressMessage("Globalization", "CA1307:Specify StringComparison for clarity")]
+            public override int GetHashCode() => ToString().GetHashCode();
 
-                object? current = null;
+            public override bool Equals(object obj) => (obj as AttributeCollection)?.ToString() == ToString();
 
-                foreach (var kvp in this)
-                {
-                    current = new { current, kvp.Key, kvp.Value }; // anonim objektum "record"-kent viselkedik
-                }
-
-                return current?.GetHashCode() ?? 0;
-            }
-
-            public override bool Equals(object obj) => obj is AttributeCollection coll && coll.GetHashCode() == GetHashCode();
+            public override string ToString() => Count > 0
+                ? $" [{string.Join(",", this.Select(static attr => $"{attr.Key}={attr.Value}"))}];"
+                : ";";
         }
     }
 }
