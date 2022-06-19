@@ -5,9 +5,9 @@
 ********************************************************************************/
 namespace Solti.Utils.DI.Internals
 {
-    internal record DotGraphEdge : DotGraphElement
+    internal class DotGraphEdge : DotGraphElement
     {
-        public DotGraphEdge(DotGraphNode from, DotGraphNode to)
+        public DotGraphEdge(DotGraphNode from, DotGraphNode to): base($"{from.Id} -> {from.Id}")
         {
             From = from;
             To = to;
@@ -18,7 +18,5 @@ namespace Solti.Utils.DI.Internals
         public DotGraphNode From { get; }
 
         public DotGraphNode To { get; }
-
-        public override string ToString() => $"{From.Id} -> {To.Id}{base.ToString()}";
     }
 }

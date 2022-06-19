@@ -3,23 +3,24 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
-using System.Globalization;
+using System.Text.RegularExpressions;
 
 namespace Solti.Utils.DI.Internals
 {
-    internal record DotGraphNode : DotGraphElement
+    internal class DotGraphNode : DotGraphElement
     {
-        private readonly int FId;
+        //
+        // See https://graphviz.org/doc/info/lang.html
+        //
+
+        private static readonly Regex FIncompatibleChars = new("[^0-9a-zA-Z_\\200-\\377]", RegexOptions.Compiled);
 
         //
-        // Node azonositonak betuvel kell kezdodnie es egyedinek kell lennie.
-        // 
+        // Id must begin with a letter and cannot contain spaces.
+        //
 
-        public string Id => $"N_{FId.ToString("X8", CultureInfo.InvariantCulture)}";
-
-        public DotGraphNode(int id)
+        public DotGraphNode(string id): base($"N_{FIncompatibleChars.Replace(id, "_")}")
         {
-            FId = id;
             Attributes["shape"] = "box";
             Attributes["margin"] = ".1";
         }
@@ -27,12 +28,10 @@ namespace Solti.Utils.DI.Internals
         /// <summary>
         /// Label that accepts HTML like elements.
         /// </summary>
-        public string Label 
+        public string Label
         {
             get => Attributes["label"];
             set => Attributes["label"] = $"<{value}>";
         }
-
-        public override string ToString() => Id + base.ToString();
     }
 }
