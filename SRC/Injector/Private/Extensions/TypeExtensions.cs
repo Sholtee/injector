@@ -41,7 +41,7 @@ namespace Solti.Utils.DI.Internals
                     @base!
                         .GetApplicableConstructor()
                         .GetParameters()
-                        .Select(p => p.ParameterType)
+                        .Select(static p => p.ParameterType)
                         .ToArray()
                 );
             }
@@ -49,7 +49,7 @@ namespace Solti.Utils.DI.Internals
             IReadOnlyList<ConstructorInfo> 
                 publicCtors = src.GetConstructors(),
                 promisingCtors = publicCtors
-                    .Where(ctor => ctor.GetCustomAttribute<ServiceActivatorAttribute>() is not null)
+                    .Where(static ctor => ctor.GetCustomAttribute<ServiceActivatorAttribute>() is not null)
                     .ToList();
 
             //
