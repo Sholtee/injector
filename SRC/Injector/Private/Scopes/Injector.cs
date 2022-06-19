@@ -19,7 +19,8 @@ namespace Solti.Utils.DI.Internals
         Disposable,
         IInjector,
         IScopeFactory,
-        IInstanceFactory
+        IInstanceFactory,
+        IServiceEntryLookup
     {
         //
         // This list should not be thread safe since it is invoked inside the write lock.
@@ -188,6 +189,10 @@ namespace Solti.Utils.DI.Internals
 
         #region IScopeFactory
         public virtual IInjector CreateScope(object? lifetime) => new Injector(this, lifetime);
+        #endregion
+
+        #region IServiceEntryLookup
+        AbstractServiceEntry? IServiceEntryLookup.Get(Type iface, string? name) => FResolverLookup.Get(iface, name)?.RelatedEntry;
         #endregion
 
         //
