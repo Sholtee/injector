@@ -5,6 +5,7 @@
 ********************************************************************************/
 using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq.Expressions;
 
 namespace Solti.Utils.DI.Interfaces
 {
@@ -28,6 +29,11 @@ namespace Solti.Utils.DI.Interfaces
         /// <summary>
         /// The created service instance is shared between scopes.
         /// </summary>
-        Shared = 1 << 1
+        Shared = 1 << 1,
+
+        /// <summary>
+        /// Calling the <see cref="AbstractServiceEntry.VisitFactory(Func{LambdaExpression, LambdaExpression}, FactoryVisitorOptions)"/> method is supported if the entry refers a NON open generic service.
+        /// </summary>
+        SupportsVisit = 1 << 2
     }
 }
