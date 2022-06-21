@@ -12,17 +12,17 @@ namespace Solti.Utils.DI.Internals
 
     internal class ServiceRequestReplacer : ServiceRequestVisitor
     {
-        public IServiceResolverLookup Lookup { get; }
+        private readonly IServiceResolverLookup FLookup;
 
-        public ServicePath Path { get; }
+        private readonly ServicePath FPath;
 
-        public bool Permissive { get; }
+        private readonly bool FPermissive;
 
         public ServiceRequestReplacer(IServiceResolverLookup lookup, ServicePath path, bool permissive)
         {
-            Lookup = lookup;
-            Path = path;
-            Permissive = permissive;
+            FLookup = lookup;
+            FPath = path;
+            FPermissive = permissive;
         }
 
         protected override Expression VisitServiceRequest(MethodCallExpression method, Expression target, Type iface, string? name)
@@ -31,21 +31,21 @@ namespace Solti.Utils.DI.Internals
             // It specializes generic services ahead of time
             //
 
-            IServiceResolver? resolver = Lookup.Get(iface, name);
+            IServiceResolver? resolver = FLookup.Get(iface, name);
             if (resolver is null)
             {
                 //
                 // Missing but not required dependency
                 //
 
-                if (method.Method.Name == nameof(IInjector.TryGet) || Permissive)
+                if (method.Method.Name == nameof(IInjector.TryGet) || FPermissive)
                     //
                     // injector.[Try]Get(iface, name) -> (TInterface) null
                     //
 
                     return Expression.Default(iface);
 
-                ServiceErrors.NotFound(iface, name, Path.Last);
+                ServiceErrors.NotFound(iface, name, FPath.Last);
             }
 
             //
