@@ -3,9 +3,9 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -13,61 +13,58 @@ namespace Solti.Utils.DI.Internals
 
     internal sealed class DotGraphBuilder : ServiceEntryBuilder
     {
-        public DotGraph Graph { get; }
+        private readonly IServiceEntryLookup FLookup;
 
-        public IServiceEntryLookup Lookup { get; }
+        private readonly ServicePath FPath = new();
 
-        public ServicePath Path { get; }
+        private readonly GraphBuilderVisitor FVisitor;
 
-        public DotGraphBuilder(DotGraph graph, IServiceEntryLookup lookup)
+        public DotGraph Graph { get; } = new();
+
+        public DotGraphBuilder(IServiceEntryLookup lookup)
         {
-            Graph = graph;
-            Lookup = lookup;
-            Path = new ServicePath();
+            FLookup = lookup;
+            FVisitor = new GraphBuilderVisitor(this);
         }
+
+        public void BuildById(Type iface, string? name) => Build
+        (
+            FLookup.Get(iface, name) ?? new MissingServiceEntry(iface, name)
+        );
 
         public override void Build(AbstractServiceEntry entry)
         {
-            AbstractServiceEntry? parent = Path.Last;
-
             try
             {
-                Path.Push(entry);
+                FPath.Push(entry);
             }
             catch (CircularReferenceException cref)
             {
-                HashSet<DotGraphNode> circle = new
-                (
-                    (
-                        (IReadOnlyList<AbstractServiceEntry>) cref.Data[nameof(circle)]
-                    ).Select(entry => new ServiceNode(entry))
-                );
+                IReadOnlyList<AbstractServiceEntry> circle = (IReadOnlyList<AbstractServiceEntry>) cref.Data[nameof(circle)];
 
-                foreach (DotGraphEdge edge in Graph.Edges)
+                foreach (ServiceEdge edge in Graph.Edges)
                 {
-                    if (circle.Contains(edge.From) && circle.Contains(edge.To))
+                    if (circle.Contains(edge.From.RelatedEntry) && circle.Contains(edge.To.RelatedEntry))
                         edge.Attributes["color"] = "red";
                 }
 
                 return;
             }
-
-            //
-            // Should not be within the firs try-catch block
-            //
-
+   
             try
             {
-                Graph.Nodes.Add(new ServiceNode(entry));
+                ServiceNode child = new(entry);
 
-                if (parent is not null)
-                    Graph.Edges.Add(new DotGraphEdge(new ServiceNode(parent), new ServiceNode(entry)));
+                Graph.Nodes.Add(child);
 
-                //entry.VisitFactory(..., FactoryVisitorOptions.Default);
+                if (FPath.Last is not null)
+                    Graph.Edges.Add(new DotGraphEdge(new ServiceNode(FPath.Last), child));
+
+                entry.VisitFactory(FVisitor.VisitLambda, FactoryVisitorOptions.Default);
             }
             finally
             {
-                Path.Pop();
+                FPath.Pop();
             }
         }
     }

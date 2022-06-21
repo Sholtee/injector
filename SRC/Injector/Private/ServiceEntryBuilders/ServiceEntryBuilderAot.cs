@@ -4,7 +4,6 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System.Diagnostics;
-using System.Linq.Expressions;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -56,7 +55,7 @@ namespace Solti.Utils.DI.Internals
             FPath.Push(requested);
             try
             {
-                requested.VisitFactory(lambda => (LambdaExpression) FReplacer.Visit(lambda), FactoryVisitorOptions.BuildDelegate);
+                requested.VisitFactory(FReplacer.VisitLambda, FactoryVisitorOptions.BuildDelegate);
             }
             finally
             {

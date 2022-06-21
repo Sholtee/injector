@@ -57,5 +57,7 @@ namespace Solti.Utils.DI.Internals
 
             return base.VisitMethodCall(node);
         }
+
+        public LambdaExpression VisitLambda(LambdaExpression lambda) => (LambdaExpression) Visit(lambda);
     }
 }

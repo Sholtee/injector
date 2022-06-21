@@ -7,7 +7,7 @@ namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
 
-    internal class ServiceNode : DotGraphNode
+    internal sealed class ServiceNode : DotGraphNode
     {
         public AbstractServiceEntry RelatedEntry { get; }
 

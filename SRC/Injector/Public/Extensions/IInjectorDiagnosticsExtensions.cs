@@ -23,7 +23,10 @@ namespace Solti.Utils.DI.Diagnostics
             if (injector is not IServiceEntryLookup serviceEntryLookup)
                 throw new NotSupportedException();
 
-            throw new NotImplementedException();
+            DotGraphBuilder graphBuilder = new(serviceEntryLookup);
+            graphBuilder.BuildById(iface, name);
+
+            return graphBuilder.Graph.ToString();
         }
     }
 }
