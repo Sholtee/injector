@@ -14,20 +14,21 @@ namespace Solti.Utils.DI.Internals
         private readonly ServicePath FPath;
 
         private readonly ScopeOptions FOptions;
-
+#if DEBUG
         private readonly IServiceResolverLookup FLookup;
-#if !DEBUG
+#else
         private readonly ServiceRequestReplacer FReplacer;
 #endif
         public new const ServiceResolutionMode Id = ServiceResolutionMode.AOT;
 
         public ServiceEntryBuilderAot(IServiceResolverLookup lookup, ScopeOptions options)
         {
-            FLookup = lookup;
             FOptions = options;
             FPath = new ServicePath();
-#if !DEBUG
-            FReplacer = new ServiceRequestReplacer(lookup, FPath, scopeOptions.SupportsServiceProvider);
+#if DEBUG
+            FLookup = lookup;
+#else
+            FReplacer = new ServiceRequestReplacer(lookup, FPath, options.SupportsServiceProvider);
 #endif
         }
 
@@ -40,8 +41,8 @@ namespace Solti.Utils.DI.Internals
             // the requested entry is already built.
             //
 
-            if (FOptions.StrictDI && FPath.Count > 0)
-                ServiceErrors.EnsureNotBreaksTheRuleOfStrictDI(FPath[^1], requested);
+            if (FOptions.StrictDI && FPath.Last is not null)
+                ServiceErrors.EnsureNotBreaksTheRuleOfStrictDI(FPath.Last, requested);
 
             if (requested.State.HasFlag(ServiceEntryStates.Built))
                 return;
