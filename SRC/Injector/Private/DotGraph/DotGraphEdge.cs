@@ -7,7 +7,7 @@ namespace Solti.Utils.DI.Internals
 {
     internal class DotGraphEdge : DotGraphElement
     {
-        public DotGraphEdge(DotGraphNode from, DotGraphNode to): base($"{from.Id} -> {from.Id}")
+        public DotGraphEdge(DotGraphNode from, DotGraphNode to): base($"{from.Id} -> {to.Id}")
         {
             From = from;
             To = to;

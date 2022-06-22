@@ -17,21 +17,23 @@ namespace Solti.Utils.DI.Internals
 
         public ISet<DotGraphEdge> Edges { get; } = new HashSet<DotGraphEdge>();
 
-        public override string ToString()
+        public override string ToString() => ToString("\\r\\n");
+
+        public string ToString(string newLine)
         {
             StringBuilder sb = new();
-            sb.AppendLine("digraph G {");
+            sb.Append($"digraph G {{{newLine}");
 
             foreach (DotGraphNode node in Nodes)
             {
-                sb.AppendLine($"  {node}");
+                sb.Append($"  {node}{newLine}");
             }
 
-            sb.AppendLine();
+            sb.Append(newLine);
 
             foreach (DotGraphEdge edge in Edges)
             {
-                sb.AppendLine($"  {edge}");
+                sb.Append($"  {edge}{newLine}");
             }
 
             sb.Append('}');

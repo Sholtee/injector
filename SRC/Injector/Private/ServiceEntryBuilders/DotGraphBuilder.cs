@@ -34,6 +34,20 @@ namespace Solti.Utils.DI.Internals
 
         public override void Build(AbstractServiceEntry entry)
         {
+            ServiceNode child = new(entry);
+
+            if (FPath.Last is not null)
+                Graph.Edges.Add
+                (
+                    new ServiceEdge
+                    (
+                        new ServiceNode(FPath.Last),
+                        child
+                    )
+                );
+
+            Graph.Nodes.Add(child);
+
             try
             {
                 FPath.Push(entry);
@@ -53,14 +67,8 @@ namespace Solti.Utils.DI.Internals
    
             try
             {
-                ServiceNode child = new(entry);
-
-                Graph.Nodes.Add(child);
-
-                if (FPath.Last is not null)
-                    Graph.Edges.Add(new DotGraphEdge(new ServiceNode(FPath.Last), child));
-
-                entry.VisitFactory(FVisitor.VisitLambda, FactoryVisitorOptions.Default);
+                if (entry.Features.HasFlag(ServiceEntryFeatures.SupportsVisit))
+                    entry.VisitFactory(FVisitor.VisitLambda, FactoryVisitorOptions.Default);
             }
             finally
             {

@@ -1,0 +1,7 @@
+﻿digraph G {
+  N_Solti_Utils_DI_Tests_InjectorTests_IInterface_4 [shape=box,margin=.1,label=<<u>Solti.Utils.DI.Tests.InjectorTests.IInterface_4</u><br/><br/><i>Scoped</i>>];
+  N_Solti_Utils_DI_Tests_InjectorTests_IInterface_5 [shape=box,margin=.1,label=<<u>Solti.Utils.DI.Tests.InjectorTests.IInterface_5</u><br/><br/><i>Scoped</i>>];
+
+  N_Solti_Utils_DI_Tests_InjectorTests_IInterface_4 -> N_Solti_Utils_DI_Tests_InjectorTests_IInterface_5 [style=normal,color=red];
+  N_Solti_Utils_DI_Tests_InjectorTests_IInterface_5 -> N_Solti_Utils_DI_Tests_InjectorTests_IInterface_4 [style=normal,color=red];
+}

@@ -1,5 +1,5 @@
 ﻿/********************************************************************************
-* IInjectorDiagnosticsExtensions.cs                                             *
+* IScopeFactoryDiagnosticsExtensions.cs                                         *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
@@ -13,20 +13,26 @@ namespace Solti.Utils.DI.Diagnostics
     /// <summary>
     /// Defines diagnostics related extensions for the <see cref="IInjector"/> interface.
     /// </summary>
-    public static class IInjectorDiagnosticsExtensions
+    public static class IScopeFactoryDiagnosticsExtensions
     {
         /// <summary>
         /// Gets the dependency graph in <a href="https://graphviz.org/">DOT graph</a> format.
         /// </summary>
-        public static string GetDependencyGraph(this IInjector injector!!, Type iface!!, string? name = null)
+        public static string GetDependencyGraph(this IScopeFactory root!!, Type iface!!, string? name = null, string newLine!! = "\r\n")
         {
-            if (injector is not IServiceEntryLookup serviceEntryLookup)
+            if (root is not IServiceEntryLookup serviceEntryLookup)
                 throw new NotSupportedException();
 
             DotGraphBuilder graphBuilder = new(serviceEntryLookup);
             graphBuilder.BuildById(iface, name);
 
-            return graphBuilder.Graph.ToString();
+            return graphBuilder.Graph.ToString(newLine);
         }
+
+        /// <summary>
+        /// Gets the dependency graph in <a href="https://graphviz.org/">DOT graph</a> format.
+        /// </summary>
+        public static string GetDependencyGraph<TService>(this IScopeFactory root!!, string? name = null, string newLine!! = "\r\n") where TService : class =>
+            root.GetDependencyGraph(typeof(TService), name, newLine);
     }
 }
