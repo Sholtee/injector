@@ -3,6 +3,7 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -17,7 +18,7 @@ namespace Solti.Utils.DI.Internals
 
         public ISet<DotGraphEdge> Edges { get; } = new HashSet<DotGraphEdge>();
 
-        public override string ToString() => ToString("\\r\\n");
+        public override string ToString() => ToString(Environment.NewLine);
 
         public string ToString(string newLine)
         {

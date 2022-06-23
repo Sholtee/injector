@@ -48,7 +48,7 @@ namespace Solti.Utils.DI.Internals
 
             Graph.Nodes.Add(child);
 
-            if (entry.Features.HasFlag(ServiceEntryFeatures.SupportsVisit))
+            if (!entry.Features.HasFlag(ServiceEntryFeatures.SupportsVisit))
                 return;
 
             try
