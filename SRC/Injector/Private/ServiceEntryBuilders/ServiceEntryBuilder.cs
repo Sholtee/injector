@@ -17,7 +17,7 @@ namespace Solti.Utils.DI.Internals
         {
             Debug.Assert(!entry.Interface.IsGenericTypeDefinition, "Generic entry cannot be built");
 
-            if (!entry.State.HasFlag(ServiceEntryStates.Built))
+            if (entry.Features.HasFlag(ServiceEntryFeatures.SupportsVisit) && !entry.State.HasFlag(ServiceEntryStates.Built))
                 entry.VisitFactory(static _ => _, FactoryVisitorOptions.BuildDelegate);
         }
     }

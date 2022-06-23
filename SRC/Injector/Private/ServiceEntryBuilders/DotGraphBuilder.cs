@@ -48,6 +48,9 @@ namespace Solti.Utils.DI.Internals
 
             Graph.Nodes.Add(child);
 
+            if (entry.Features.HasFlag(ServiceEntryFeatures.SupportsVisit))
+                return;
+
             try
             {
                 FPath.Push(entry);
@@ -67,8 +70,7 @@ namespace Solti.Utils.DI.Internals
    
             try
             {
-                if (entry.Features.HasFlag(ServiceEntryFeatures.SupportsVisit))
-                    entry.VisitFactory(FVisitor.VisitLambda, FactoryVisitorOptions.Default);
+                entry.VisitFactory(FVisitor.VisitLambda, FactoryVisitorOptions.Default);
             }
             finally
             {

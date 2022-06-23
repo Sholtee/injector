@@ -44,7 +44,7 @@ namespace Solti.Utils.DI.Internals
             if (FOptions.StrictDI && FPath.Last is not null)
                 ServiceErrors.EnsureNotBreaksTheRuleOfStrictDI(FPath.Last, requested);
 
-            if (requested.State.HasFlag(ServiceEntryStates.Built))
+            if (!requested.Features.HasFlag(ServiceEntryFeatures.SupportsVisit) || requested.State.HasFlag(ServiceEntryStates.Built))
                 return;
 #if DEBUG
             ServiceRequestReplacerDebug FReplacer = new(FLookup, FPath, FOptions.SupportsServiceProvider);
