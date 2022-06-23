@@ -32,7 +32,7 @@ namespace Solti.Utils.DI.Interfaces
         Shared = 1 << 1,
 
         /// <summary>
-        /// Calling the <see cref="AbstractServiceEntry.VisitFactory(Func{LambdaExpression, LambdaExpression}, FactoryVisitorOptions)"/> method is supported if the entry refers a NON open generic service.
+        /// Calling the <see cref="AbstractServiceEntry.VisitFactory(Func{LambdaExpression, LambdaExpression}, FactoryVisitorOptions)"/> method is supportedif the entry has a factory function defined.
         /// </summary>
         SupportsVisit = 1 << 2
     }
