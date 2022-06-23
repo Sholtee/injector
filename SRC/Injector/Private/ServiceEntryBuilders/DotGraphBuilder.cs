@@ -59,7 +59,7 @@ namespace Solti.Utils.DI.Internals
                 foreach (ServiceEdge edge in Graph.Edges)
                 {
                     if (circle.Contains(edge.From.RelatedEntry) && circle.Contains(edge.To.RelatedEntry))
-                        edge.Attributes["color"] = "red";
+                        edge.MarkRed();
                 }
 
                 return;

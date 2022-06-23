@@ -14,5 +14,7 @@ namespace Solti.Utils.DI.Internals
         public new ServiceNode From => (ServiceNode) base.From;
 
         public new ServiceNode To => (ServiceNode) base.To;
+
+        public void MarkRed() => Attributes["color"] = "red";
     }
 }
