@@ -110,7 +110,6 @@ namespace Solti.Utils.DI.Perf
     {
         public IInjector Injector { get; set; }
 
-        [GlobalCleanup]
         public override void Cleanup()
         {
             Injector?.Dispose();
