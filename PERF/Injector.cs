@@ -37,19 +37,6 @@ namespace Solti.Utils.DI.Perf
             }
         }
 
-        public static IEnumerable<string> Engines
-        {
-            get
-            {
-                yield return ServiceResolverLookup_Dict.Id;
-                yield return ServiceResolverLookup_BTree.Id;
-                yield return ServiceResolverLookup_BuiltBTree.Id;
-            }
-        }
-
-        [ParamsSource(nameof(Engines))]
-        public string Engine { get; set; }
-
         [Params(ServiceResolutionMode.JIT, ServiceResolutionMode.AOT)]
         public ServiceResolutionMode ResolutionMode { get; set; }
 
@@ -98,7 +85,7 @@ namespace Solti.Utils.DI.Perf
 
         protected IScopeFactory Root { get; private set; }
 
-        protected IScopeFactory Setup(Action<IServiceCollection> setupContainer) => Root = ScopeFactory.Create(setupContainer, new ScopeOptions { Engine = Engine, ServiceResolutionMode = ResolutionMode });
+        protected IScopeFactory Setup(Action<IServiceCollection> setupContainer) => Root = ScopeFactory.Create(setupContainer, new ScopeOptions { ServiceResolutionMode = ResolutionMode });
 
         [GlobalCleanup]
         public virtual void Cleanup() => Root?.Dispose();
