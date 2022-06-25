@@ -14,22 +14,16 @@ namespace Solti.Utils.DI.Internals
         private readonly ServicePath FPath;
 
         private readonly ScopeOptions FOptions;
-#if DEBUG
-        private readonly IServiceResolverLookup FLookup;
-#else
+
         private readonly ServiceRequestReplacer FReplacer;
-#endif
+
         public new const ServiceResolutionMode Id = ServiceResolutionMode.AOT;
 
         public ServiceEntryBuilderAot(IServiceResolverLookup lookup, ScopeOptions options)
         {
             FOptions = options;
             FPath = new ServicePath();
-#if DEBUG
-            FLookup = lookup;
-#else
             FReplacer = new ServiceRequestReplacer(lookup, FPath, options.SupportsServiceProvider);
-#endif
         }
 
         public override void Build(AbstractServiceEntry requested)
@@ -46,9 +40,7 @@ namespace Solti.Utils.DI.Internals
 
             if (!requested.Features.HasFlag(ServiceEntryFeatures.SupportsVisit) || requested.State.HasFlag(ServiceEntryStates.Built))
                 return;
-#if DEBUG
-            ServiceRequestReplacerDebug FReplacer = new(FLookup, FPath, FOptions.SupportsServiceProvider);
-#endif
+
             //
             // Throws if the request is circular
             //
@@ -68,9 +60,6 @@ namespace Solti.Utils.DI.Internals
             //
 
             requested.SetValidated();
-#if DEBUG
-            Debug.WriteLine($"[{requested.ToString(shortForm: true)}] built: visited {FReplacer.VisitedRequests}, altered {FReplacer.AlteredRequests} request(s)");
-#endif
         }
     }
 }
