@@ -1,0 +1,13 @@
+﻿digraph G {
+  N_Solti_Utils_DI_Tests_InjectorTests_IInterface_1 [shape=box,margin=.1,label=<<u>Solti.Utils.DI.Tests.InjectorTests.IInterface_1</u><br/><br/><i>Singleton</i>>];
+  N_Solti_Utils_DI_Tests_InjectorTests_IInterface_2 [shape=box,margin=.1,label=<<u>Solti.Utils.DI.Tests.InjectorTests.IInterface_2</u><br/><br/><i>Scoped</i>>];
+  N_Solti_Utils_DI_Tests_InjectorTests_IInterface_4 [shape=box,margin=.1,label=<<u>Solti.Utils.DI.Tests.InjectorTests.IInterface_4</u><br/><br/><i>NULL</i>>,color=red,fontcolor=red];
+  N_Solti_Utils_DI_Tests_InjectorTests_IInterface_7_object__cica [shape=box,margin=.1,label=<<u>Solti.Utils.DI.Tests.InjectorTests.IInterface_7{object}:cica</u><br/><br/><i>Transient</i>>];
+  N_Solti_Utils_DI_Tests_InjectorTests_IInterface_3_int_ [shape=box,margin=.1,label=<<u>Solti.Utils.DI.Tests.InjectorTests.IInterface_3{int}</u><br/><br/><i>Transient</i>>];
+
+  N_Solti_Utils_DI_Tests_InjectorTests_IInterface_1 -> N_Solti_Utils_DI_Tests_InjectorTests_IInterface_2 [style=normal,color=red];
+  N_Solti_Utils_DI_Tests_InjectorTests_IInterface_2 -> N_Solti_Utils_DI_Tests_InjectorTests_IInterface_4 [style=normal];
+  N_Solti_Utils_DI_Tests_InjectorTests_IInterface_2 -> N_Solti_Utils_DI_Tests_InjectorTests_IInterface_7_object__cica [style=normal,color=red];
+  N_Solti_Utils_DI_Tests_InjectorTests_IInterface_7_object__cica -> N_Solti_Utils_DI_Tests_InjectorTests_IInterface_1 [style=normal,color=red];
+  N_Solti_Utils_DI_Tests_InjectorTests_IInterface_1 -> N_Solti_Utils_DI_Tests_InjectorTests_IInterface_3_int_ [style=normal];
+}
