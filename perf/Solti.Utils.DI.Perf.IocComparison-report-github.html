@@ -1,0 +1,962 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title> | Benchmark Results </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content=" | Benchmark Results ">
+    <meta name="generator" content="docfx 2.58.0.0">
+    
+    <link rel="shortcut icon" href="icon.png">
+    <link rel="stylesheet" href="styles/docfx.vendor.css">
+    <link rel="stylesheet" href="styles/docfx.css">
+    <link rel="stylesheet" href="styles/main.css">
+    <meta property="docfx:navrel" content="">
+    <meta property="docfx:tocrel" content="">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        <div class="article row grid">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+
+<pre><code class="lang-ini">
+BenchmarkDotNet=v0.13.1, OS=Windows 10.0.17763.2366 (1809/October2018Update/Redstone5)
+Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
+.NET SDK=6.0.300
+  [Host]     : .NET 6.0.5 (6.0.522.21309), X64 RyuJIT
+  Job-DQFMAB : .NET 6.0.5 (6.0.522.21309), X64 RyuJIT
+
+InvocationCount=100000  RunStrategy=Throughput  
+</code></pre><table>
+<thead>
+<tr>
+<th>Method</th>
+<th>InvocationCount</th>
+<th>Container</th>
+<th style="text-align:right">Mean</th>
+<th style="text-align:right">Error</th>
+<th style="text-align:right">StdDev</th>
+<th style="text-align:right">Median</th>
+<th style="text-align:right">Gen 0</th>
+<th style="text-align:right">Gen 1</th>
+<th style="text-align:right">Allocated</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>SingletonService</strong></td>
+<td><strong>0</strong></td>
+<td><strong>Autofac</strong></td>
+<td style="text-align:right"><strong>536.03 ns</strong></td>
+<td style="text-align:right"><strong>10.612 ns</strong></td>
+<td style="text-align:right"><strong>20.947 ns</strong></td>
+<td style="text-align:right"><strong>533.49 ns</strong></td>
+<td style="text-align:right"><strong>0.0900</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>1,704 B</strong></td>
+</tr>
+<tr>
+<td>ScopedService</td>
+<td>0</td>
+<td>Autofac</td>
+<td style="text-align:right">567.45 ns</td>
+<td style="text-align:right">11.372 ns</td>
+<td style="text-align:right">31.321 ns</td>
+<td style="text-align:right">564.51 ns</td>
+<td style="text-align:right">0.0900</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">1,704 B</td>
+</tr>
+<tr>
+<td>TransientService</td>
+<td>0</td>
+<td>Autofac</td>
+<td style="text-align:right">512.28 ns</td>
+<td style="text-align:right">10.216 ns</td>
+<td style="text-align:right">20.868 ns</td>
+<td style="text-align:right">512.22 ns</td>
+<td style="text-align:right">0.0900</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">1,704 B</td>
+</tr>
+<tr>
+<td><strong>SingletonService</strong></td>
+<td><strong>0</strong></td>
+<td><strong>DryIoc</strong></td>
+<td style="text-align:right"><strong>155.91 ns</strong></td>
+<td style="text-align:right"><strong>3.141 ns</strong></td>
+<td style="text-align:right"><strong>8.599 ns</strong></td>
+<td style="text-align:right"><strong>154.01 ns</strong></td>
+<td style="text-align:right"><strong>0.0100</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>312 B</strong></td>
+</tr>
+<tr>
+<td>ScopedService</td>
+<td>0</td>
+<td>DryIoc</td>
+<td style="text-align:right">159.72 ns</td>
+<td style="text-align:right">3.196 ns</td>
+<td style="text-align:right">6.671 ns</td>
+<td style="text-align:right">158.08 ns</td>
+<td style="text-align:right">0.0100</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">312 B</td>
+</tr>
+<tr>
+<td>TransientService</td>
+<td>0</td>
+<td>DryIoc</td>
+<td style="text-align:right">157.44 ns</td>
+<td style="text-align:right">3.134 ns</td>
+<td style="text-align:right">6.037 ns</td>
+<td style="text-align:right">157.67 ns</td>
+<td style="text-align:right">0.0100</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">312 B</td>
+</tr>
+<tr>
+<td><strong>SingletonService</strong></td>
+<td><strong>0</strong></td>
+<td><strong>InjectorDotNet</strong></td>
+<td style="text-align:right"><strong>63.54 ns</strong></td>
+<td style="text-align:right"><strong>4.764 ns</strong></td>
+<td style="text-align:right"><strong>14.047 ns</strong></td>
+<td style="text-align:right"><strong>57.95 ns</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>160 B</strong></td>
+</tr>
+<tr>
+<td>ScopedService</td>
+<td>0</td>
+<td>InjectorDotNet</td>
+<td style="text-align:right">55.72 ns</td>
+<td style="text-align:right">2.443 ns</td>
+<td style="text-align:right">6.479 ns</td>
+<td style="text-align:right">54.50 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">160 B</td>
+</tr>
+<tr>
+<td>TransientService</td>
+<td>0</td>
+<td>InjectorDotNet</td>
+<td style="text-align:right">56.01 ns</td>
+<td style="text-align:right">3.892 ns</td>
+<td style="text-align:right">11.103 ns</td>
+<td style="text-align:right">52.14 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">144 B</td>
+</tr>
+<tr>
+<td><strong>SingletonService</strong></td>
+<td><strong>0</strong></td>
+<td><strong>Lamar</strong></td>
+<td style="text-align:right"><strong>906.34 ns</strong></td>
+<td style="text-align:right"><strong>27.074 ns</strong></td>
+<td style="text-align:right"><strong>77.244 ns</strong></td>
+<td style="text-align:right"><strong>881.58 ns</strong></td>
+<td style="text-align:right"><strong>0.0200</strong></td>
+<td style="text-align:right"><strong>0.0100</strong></td>
+<td style="text-align:right"><strong>440 B</strong></td>
+</tr>
+<tr>
+<td>ScopedService</td>
+<td>0</td>
+<td>Lamar</td>
+<td style="text-align:right">856.55 ns</td>
+<td style="text-align:right">22.563 ns</td>
+<td style="text-align:right">64.008 ns</td>
+<td style="text-align:right">845.45 ns</td>
+<td style="text-align:right">0.0200</td>
+<td style="text-align:right">0.0100</td>
+<td style="text-align:right">440 B</td>
+</tr>
+<tr>
+<td>TransientService</td>
+<td>0</td>
+<td>Lamar</td>
+<td style="text-align:right">846.45 ns</td>
+<td style="text-align:right">21.899 ns</td>
+<td style="text-align:right">61.767 ns</td>
+<td style="text-align:right">822.02 ns</td>
+<td style="text-align:right">0.0200</td>
+<td style="text-align:right">0.0100</td>
+<td style="text-align:right">440 B</td>
+</tr>
+<tr>
+<td><strong>SingletonService</strong></td>
+<td><strong>0</strong></td>
+<td><strong>MsExtensionsDI</strong></td>
+<td style="text-align:right"><strong>95.17 ns</strong></td>
+<td style="text-align:right"><strong>1.932 ns</strong></td>
+<td style="text-align:right"><strong>5.190 ns</strong></td>
+<td style="text-align:right"><strong>95.70 ns</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>128 B</strong></td>
+</tr>
+<tr>
+<td>ScopedService</td>
+<td>0</td>
+<td>MsExtensionsDI</td>
+<td style="text-align:right">95.15 ns</td>
+<td style="text-align:right">1.932 ns</td>
+<td style="text-align:right">5.157 ns</td>
+<td style="text-align:right">95.28 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">128 B</td>
+</tr>
+<tr>
+<td>TransientService</td>
+<td>0</td>
+<td>MsExtensionsDI</td>
+<td style="text-align:right">99.66 ns</td>
+<td style="text-align:right">2.020 ns</td>
+<td style="text-align:right">4.721 ns</td>
+<td style="text-align:right">100.50 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">128 B</td>
+</tr>
+<tr>
+<td><strong>SingletonService</strong></td>
+<td><strong>0</strong></td>
+<td><strong>Stashbox</strong></td>
+<td style="text-align:right"><strong>61.70 ns</strong></td>
+<td style="text-align:right"><strong>1.891 ns</strong></td>
+<td style="text-align:right"><strong>4.914 ns</strong></td>
+<td style="text-align:right"><strong>61.29 ns</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>136 B</strong></td>
+</tr>
+<tr>
+<td>ScopedService</td>
+<td>0</td>
+<td>Stashbox</td>
+<td style="text-align:right">60.03 ns</td>
+<td style="text-align:right">2.232 ns</td>
+<td style="text-align:right">5.920 ns</td>
+<td style="text-align:right">58.88 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">136 B</td>
+</tr>
+<tr>
+<td>TransientService</td>
+<td>0</td>
+<td>Stashbox</td>
+<td style="text-align:right">61.75 ns</td>
+<td style="text-align:right">2.908 ns</td>
+<td style="text-align:right">7.712 ns</td>
+<td style="text-align:right">60.80 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">136 B</td>
+</tr>
+<tr>
+<td><strong>SingletonService</strong></td>
+<td><strong>1</strong></td>
+<td><strong>Autofac</strong></td>
+<td style="text-align:right"><strong>967.01 ns</strong></td>
+<td style="text-align:right"><strong>18.915 ns</strong></td>
+<td style="text-align:right"><strong>25.890 ns</strong></td>
+<td style="text-align:right"><strong>963.03 ns</strong></td>
+<td style="text-align:right"><strong>0.1300</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>2,496 B</strong></td>
+</tr>
+<tr>
+<td>ScopedService</td>
+<td>1</td>
+<td>Autofac</td>
+<td style="text-align:right">1,965.80 ns</td>
+<td style="text-align:right">37.572 ns</td>
+<td style="text-align:right">35.145 ns</td>
+<td style="text-align:right">1,961.12 ns</td>
+<td style="text-align:right">0.1700</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">3,288 B</td>
+</tr>
+<tr>
+<td>TransientService</td>
+<td>1</td>
+<td>Autofac</td>
+<td style="text-align:right">1,701.58 ns</td>
+<td style="text-align:right">32.502 ns</td>
+<td style="text-align:right">81.540 ns</td>
+<td style="text-align:right">1,698.56 ns</td>
+<td style="text-align:right">0.1600</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">3,048 B</td>
+</tr>
+<tr>
+<td><strong>SingletonService</strong></td>
+<td><strong>1</strong></td>
+<td><strong>DryIoc</strong></td>
+<td style="text-align:right"><strong>198.04 ns</strong></td>
+<td style="text-align:right"><strong>3.996 ns</strong></td>
+<td style="text-align:right"><strong>6.221 ns</strong></td>
+<td style="text-align:right"><strong>197.87 ns</strong></td>
+<td style="text-align:right"><strong>0.0100</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>312 B</strong></td>
+</tr>
+<tr>
+<td>ScopedService</td>
+<td>1</td>
+<td>DryIoc</td>
+<td style="text-align:right">305.83 ns</td>
+<td style="text-align:right">6.028 ns</td>
+<td style="text-align:right">10.072 ns</td>
+<td style="text-align:right">304.21 ns</td>
+<td style="text-align:right">0.0200</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">424 B</td>
+</tr>
+<tr>
+<td>TransientService</td>
+<td>1</td>
+<td>DryIoc</td>
+<td style="text-align:right">223.53 ns</td>
+<td style="text-align:right">4.507 ns</td>
+<td style="text-align:right">11.308 ns</td>
+<td style="text-align:right">221.42 ns</td>
+<td style="text-align:right">0.0100</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">360 B</td>
+</tr>
+<tr>
+<td><strong>SingletonService</strong></td>
+<td><strong>1</strong></td>
+<td><strong>InjectorDotNet</strong></td>
+<td style="text-align:right"><strong>129.27 ns</strong></td>
+<td style="text-align:right"><strong>2.660 ns</strong></td>
+<td style="text-align:right"><strong>7.589 ns</strong></td>
+<td style="text-align:right"><strong>129.78 ns</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>160 B</strong></td>
+</tr>
+<tr>
+<td>ScopedService</td>
+<td>1</td>
+<td>InjectorDotNet</td>
+<td style="text-align:right">200.50 ns</td>
+<td style="text-align:right">4.018 ns</td>
+<td style="text-align:right">3.355 ns</td>
+<td style="text-align:right">200.74 ns</td>
+<td style="text-align:right">0.0100</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">208 B</td>
+</tr>
+<tr>
+<td>TransientService</td>
+<td>1</td>
+<td>InjectorDotNet</td>
+<td style="text-align:right">184.71 ns</td>
+<td style="text-align:right">2.935 ns</td>
+<td style="text-align:right">2.451 ns</td>
+<td style="text-align:right">185.02 ns</td>
+<td style="text-align:right">0.0100</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">192 B</td>
+</tr>
+<tr>
+<td><strong>SingletonService</strong></td>
+<td><strong>1</strong></td>
+<td><strong>Lamar</strong></td>
+<td style="text-align:right"><strong>923.26 ns</strong></td>
+<td style="text-align:right"><strong>18.438 ns</strong></td>
+<td style="text-align:right"><strong>49.215 ns</strong></td>
+<td style="text-align:right"><strong>918.00 ns</strong></td>
+<td style="text-align:right"><strong>0.0200</strong></td>
+<td style="text-align:right"><strong>0.0100</strong></td>
+<td style="text-align:right"><strong>480 B</strong></td>
+</tr>
+<tr>
+<td>ScopedService</td>
+<td>1</td>
+<td>Lamar</td>
+<td style="text-align:right">1,059.61 ns</td>
+<td style="text-align:right">21.516 ns</td>
+<td style="text-align:right">62.764 ns</td>
+<td style="text-align:right">1,049.03 ns</td>
+<td style="text-align:right">0.0300</td>
+<td style="text-align:right">0.0100</td>
+<td style="text-align:right">624 B</td>
+</tr>
+<tr>
+<td>TransientService</td>
+<td>1</td>
+<td>Lamar</td>
+<td style="text-align:right">911.22 ns</td>
+<td style="text-align:right">22.532 ns</td>
+<td style="text-align:right">63.921 ns</td>
+<td style="text-align:right">899.61 ns</td>
+<td style="text-align:right">0.0200</td>
+<td style="text-align:right">0.0100</td>
+<td style="text-align:right">528 B</td>
+</tr>
+<tr>
+<td><strong>SingletonService</strong></td>
+<td><strong>1</strong></td>
+<td><strong>MsExtensionsDI</strong></td>
+<td style="text-align:right"><strong>156.77 ns</strong></td>
+<td style="text-align:right"><strong>3.108 ns</strong></td>
+<td style="text-align:right"><strong>3.053 ns</strong></td>
+<td style="text-align:right"><strong>156.95 ns</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>128 B</strong></td>
+</tr>
+<tr>
+<td>ScopedService</td>
+<td>1</td>
+<td>MsExtensionsDI</td>
+<td style="text-align:right">324.74 ns</td>
+<td style="text-align:right">6.261 ns</td>
+<td style="text-align:right">6.149 ns</td>
+<td style="text-align:right">326.36 ns</td>
+<td style="text-align:right">0.0100</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">336 B</td>
+</tr>
+<tr>
+<td>TransientService</td>
+<td>1</td>
+<td>MsExtensionsDI</td>
+<td style="text-align:right">167.52 ns</td>
+<td style="text-align:right">3.266 ns</td>
+<td style="text-align:right">3.631 ns</td>
+<td style="text-align:right">166.68 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">176 B</td>
+</tr>
+<tr>
+<td><strong>SingletonService</strong></td>
+<td><strong>1</strong></td>
+<td><strong>Stashbox</strong></td>
+<td style="text-align:right"><strong>85.58 ns</strong></td>
+<td style="text-align:right"><strong>1.842 ns</strong></td>
+<td style="text-align:right"><strong>5.195 ns</strong></td>
+<td style="text-align:right"><strong>85.97 ns</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>136 B</strong></td>
+</tr>
+<tr>
+<td>ScopedService</td>
+<td>1</td>
+<td>Stashbox</td>
+<td style="text-align:right">280.36 ns</td>
+<td style="text-align:right">5.566 ns</td>
+<td style="text-align:right">6.187 ns</td>
+<td style="text-align:right">278.14 ns</td>
+<td style="text-align:right">0.0200</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">416 B</td>
+</tr>
+<tr>
+<td>TransientService</td>
+<td>1</td>
+<td>Stashbox</td>
+<td style="text-align:right">110.86 ns</td>
+<td style="text-align:right">2.256 ns</td>
+<td style="text-align:right">4.808 ns</td>
+<td style="text-align:right">110.72 ns</td>
+<td style="text-align:right">0.0100</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">184 B</td>
+</tr>
+<tr>
+<td><strong>SingletonService</strong></td>
+<td><strong>5</strong></td>
+<td><strong>Autofac</strong></td>
+<td style="text-align:right"><strong>2,838.87 ns</strong></td>
+<td style="text-align:right"><strong>56.521 ns</strong></td>
+<td style="text-align:right"><strong>127.578 ns</strong></td>
+<td style="text-align:right"><strong>2,798.45 ns</strong></td>
+<td style="text-align:right"><strong>0.3000</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>5,664 B</strong></td>
+</tr>
+<tr>
+<td>ScopedService</td>
+<td>5</td>
+<td>Autofac</td>
+<td style="text-align:right">3,773.88 ns</td>
+<td style="text-align:right">72.936 ns</td>
+<td style="text-align:right">86.825 ns</td>
+<td style="text-align:right">3,785.40 ns</td>
+<td style="text-align:right">0.3500</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">6,456 B</td>
+</tr>
+<tr>
+<td>TransientService</td>
+<td>5</td>
+<td>Autofac</td>
+<td style="text-align:right">5,958.69 ns</td>
+<td style="text-align:right">84.395 ns</td>
+<td style="text-align:right">78.943 ns</td>
+<td style="text-align:right">5,946.92 ns</td>
+<td style="text-align:right">0.4600</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">8,424 B</td>
+</tr>
+<tr>
+<td><strong>SingletonService</strong></td>
+<td><strong>5</strong></td>
+<td><strong>DryIoc</strong></td>
+<td style="text-align:right"><strong>341.54 ns</strong></td>
+<td style="text-align:right"><strong>6.732 ns</strong></td>
+<td style="text-align:right"><strong>8.754 ns</strong></td>
+<td style="text-align:right"><strong>341.07 ns</strong></td>
+<td style="text-align:right"><strong>0.0100</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>312 B</strong></td>
+</tr>
+<tr>
+<td>ScopedService</td>
+<td>5</td>
+<td>DryIoc</td>
+<td style="text-align:right">495.92 ns</td>
+<td style="text-align:right">6.827 ns</td>
+<td style="text-align:right">5.330 ns</td>
+<td style="text-align:right">494.15 ns</td>
+<td style="text-align:right">0.0200</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">424 B</td>
+</tr>
+<tr>
+<td>TransientService</td>
+<td>5</td>
+<td>DryIoc</td>
+<td style="text-align:right">408.94 ns</td>
+<td style="text-align:right">8.140 ns</td>
+<td style="text-align:right">6.797 ns</td>
+<td style="text-align:right">410.37 ns</td>
+<td style="text-align:right">0.0300</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">552 B</td>
+</tr>
+<tr>
+<td><strong>SingletonService</strong></td>
+<td><strong>5</strong></td>
+<td><strong>InjectorDotNet</strong></td>
+<td style="text-align:right"><strong>376.56 ns</strong></td>
+<td style="text-align:right"><strong>7.156 ns</strong></td>
+<td style="text-align:right"><strong>7.656 ns</strong></td>
+<td style="text-align:right"><strong>377.85 ns</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>160 B</strong></td>
+</tr>
+<tr>
+<td>ScopedService</td>
+<td>5</td>
+<td>InjectorDotNet</td>
+<td style="text-align:right">434.27 ns</td>
+<td style="text-align:right">8.472 ns</td>
+<td style="text-align:right">11.016 ns</td>
+<td style="text-align:right">431.47 ns</td>
+<td style="text-align:right">0.0100</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">208 B</td>
+</tr>
+<tr>
+<td>TransientService</td>
+<td>5</td>
+<td>InjectorDotNet</td>
+<td style="text-align:right">642.67 ns</td>
+<td style="text-align:right">12.677 ns</td>
+<td style="text-align:right">13.564 ns</td>
+<td style="text-align:right">637.88 ns</td>
+<td style="text-align:right">0.0200</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">384 B</td>
+</tr>
+<tr>
+<td><strong>SingletonService</strong></td>
+<td><strong>5</strong></td>
+<td><strong>Lamar</strong></td>
+<td style="text-align:right"><strong>1,123.93 ns</strong></td>
+<td style="text-align:right"><strong>22.340 ns</strong></td>
+<td style="text-align:right"><strong>60.016 ns</strong></td>
+<td style="text-align:right"><strong>1,109.97 ns</strong></td>
+<td style="text-align:right"><strong>0.0300</strong></td>
+<td style="text-align:right"><strong>0.0100</strong></td>
+<td style="text-align:right"><strong>640 B</strong></td>
+</tr>
+<tr>
+<td>ScopedService</td>
+<td>5</td>
+<td>Lamar</td>
+<td style="text-align:right">1,384.87 ns</td>
+<td style="text-align:right">26.970 ns</td>
+<td style="text-align:right">46.521 ns</td>
+<td style="text-align:right">1,382.97 ns</td>
+<td style="text-align:right">0.0400</td>
+<td style="text-align:right">0.0200</td>
+<td style="text-align:right">880 B</td>
+</tr>
+<tr>
+<td>TransientService</td>
+<td>5</td>
+<td>Lamar</td>
+<td style="text-align:right">1,313.28 ns</td>
+<td style="text-align:right">26.915 ns</td>
+<td style="text-align:right">78.512 ns</td>
+<td style="text-align:right">1,302.97 ns</td>
+<td style="text-align:right">0.0400</td>
+<td style="text-align:right">0.0200</td>
+<td style="text-align:right">880 B</td>
+</tr>
+<tr>
+<td><strong>SingletonService</strong></td>
+<td><strong>5</strong></td>
+<td><strong>MsExtensionsDI</strong></td>
+<td style="text-align:right"><strong>334.54 ns</strong></td>
+<td style="text-align:right"><strong>5.570 ns</strong></td>
+<td style="text-align:right"><strong>5.210 ns</strong></td>
+<td style="text-align:right"><strong>334.27 ns</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>128 B</strong></td>
+</tr>
+<tr>
+<td>ScopedService</td>
+<td>5</td>
+<td>MsExtensionsDI</td>
+<td style="text-align:right">684.18 ns</td>
+<td style="text-align:right">13.607 ns</td>
+<td style="text-align:right">19.515 ns</td>
+<td style="text-align:right">682.00 ns</td>
+<td style="text-align:right">0.0100</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">336 B</td>
+</tr>
+<tr>
+<td>TransientService</td>
+<td>5</td>
+<td>MsExtensionsDI</td>
+<td style="text-align:right">417.29 ns</td>
+<td style="text-align:right">8.237 ns</td>
+<td style="text-align:right">9.486 ns</td>
+<td style="text-align:right">418.70 ns</td>
+<td style="text-align:right">0.0200</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">368 B</td>
+</tr>
+<tr>
+<td><strong>SingletonService</strong></td>
+<td><strong>5</strong></td>
+<td><strong>Stashbox</strong></td>
+<td style="text-align:right"><strong>180.60 ns</strong></td>
+<td style="text-align:right"><strong>3.646 ns</strong></td>
+<td style="text-align:right"><strong>7.282 ns</strong></td>
+<td style="text-align:right"><strong>180.45 ns</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>136 B</strong></td>
+</tr>
+<tr>
+<td>ScopedService</td>
+<td>5</td>
+<td>Stashbox</td>
+<td style="text-align:right">419.49 ns</td>
+<td style="text-align:right">8.190 ns</td>
+<td style="text-align:right">13.456 ns</td>
+<td style="text-align:right">418.27 ns</td>
+<td style="text-align:right">0.0200</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">416 B</td>
+</tr>
+<tr>
+<td>TransientService</td>
+<td>5</td>
+<td>Stashbox</td>
+<td style="text-align:right">253.66 ns</td>
+<td style="text-align:right">5.061 ns</td>
+<td style="text-align:right">10.106 ns</td>
+<td style="text-align:right">253.50 ns</td>
+<td style="text-align:right">0.0200</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">376 B</td>
+</tr>
+<tr>
+<td><strong>SingletonService</strong></td>
+<td><strong>20</strong></td>
+<td><strong>Autofac</strong></td>
+<td style="text-align:right"><strong>8,595.30 ns</strong></td>
+<td style="text-align:right"><strong>170.686 ns</strong></td>
+<td style="text-align:right"><strong>421.893 ns</strong></td>
+<td style="text-align:right"><strong>8,601.96 ns</strong></td>
+<td style="text-align:right"><strong>0.9500</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>17,544 B</strong></td>
+</tr>
+<tr>
+<td>ScopedService</td>
+<td>20</td>
+<td>Autofac</td>
+<td style="text-align:right">9,616.24 ns</td>
+<td style="text-align:right">192.289 ns</td>
+<td style="text-align:right">405.603 ns</td>
+<td style="text-align:right">9,681.80 ns</td>
+<td style="text-align:right">1.0000</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">18,336 B</td>
+</tr>
+<tr>
+<td>TransientService</td>
+<td>20</td>
+<td>Autofac</td>
+<td style="text-align:right">20,852.84 ns</td>
+<td style="text-align:right">406.481 ns</td>
+<td style="text-align:right">701.159 ns</td>
+<td style="text-align:right">20,851.26 ns</td>
+<td style="text-align:right">1.5600</td>
+<td style="text-align:right">0.0100</td>
+<td style="text-align:right">28,584 B</td>
+</tr>
+<tr>
+<td><strong>SingletonService</strong></td>
+<td><strong>20</strong></td>
+<td><strong>DryIoc</strong></td>
+<td style="text-align:right"><strong>762.91 ns</strong></td>
+<td style="text-align:right"><strong>14.972 ns</strong></td>
+<td style="text-align:right"><strong>25.826 ns</strong></td>
+<td style="text-align:right"><strong>763.99 ns</strong></td>
+<td style="text-align:right"><strong>0.0100</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>312 B</strong></td>
+</tr>
+<tr>
+<td>ScopedService</td>
+<td>20</td>
+<td>DryIoc</td>
+<td style="text-align:right">1,057.46 ns</td>
+<td style="text-align:right">12.976 ns</td>
+<td style="text-align:right">11.503 ns</td>
+<td style="text-align:right">1,059.03 ns</td>
+<td style="text-align:right">0.0200</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">424 B</td>
+</tr>
+<tr>
+<td>TransientService</td>
+<td>20</td>
+<td>DryIoc</td>
+<td style="text-align:right">996.72 ns</td>
+<td style="text-align:right">19.439 ns</td>
+<td style="text-align:right">19.091 ns</td>
+<td style="text-align:right">999.55 ns</td>
+<td style="text-align:right">0.0600</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">1,272 B</td>
+</tr>
+<tr>
+<td><strong>SingletonService</strong></td>
+<td><strong>20</strong></td>
+<td><strong>InjectorDotNet</strong></td>
+<td style="text-align:right"><strong>1,138.46 ns</strong></td>
+<td style="text-align:right"><strong>15.934 ns</strong></td>
+<td style="text-align:right"><strong>14.125 ns</strong></td>
+<td style="text-align:right"><strong>1,135.12 ns</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>160 B</strong></td>
+</tr>
+<tr>
+<td>ScopedService</td>
+<td>20</td>
+<td>InjectorDotNet</td>
+<td style="text-align:right">1,143.94 ns</td>
+<td style="text-align:right">13.819 ns</td>
+<td style="text-align:right">11.540 ns</td>
+<td style="text-align:right">1,138.84 ns</td>
+<td style="text-align:right">0.0100</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">208 B</td>
+</tr>
+<tr>
+<td>TransientService</td>
+<td>20</td>
+<td>InjectorDotNet</td>
+<td style="text-align:right">2,222.08 ns</td>
+<td style="text-align:right">22.086 ns</td>
+<td style="text-align:right">18.443 ns</td>
+<td style="text-align:right">2,212.06 ns</td>
+<td style="text-align:right">0.0600</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">1,104 B</td>
+</tr>
+<tr>
+<td><strong>SingletonService</strong></td>
+<td><strong>20</strong></td>
+<td><strong>Lamar</strong></td>
+<td style="text-align:right"><strong>1,680.69 ns</strong></td>
+<td style="text-align:right"><strong>31.868 ns</strong></td>
+<td style="text-align:right"><strong>28.250 ns</strong></td>
+<td style="text-align:right"><strong>1,689.78 ns</strong></td>
+<td style="text-align:right"><strong>0.0600</strong></td>
+<td style="text-align:right"><strong>0.0300</strong></td>
+<td style="text-align:right"><strong>1,240 B</strong></td>
+</tr>
+<tr>
+<td>ScopedService</td>
+<td>20</td>
+<td>Lamar</td>
+<td style="text-align:right">2,011.24 ns</td>
+<td style="text-align:right">39.664 ns</td>
+<td style="text-align:right">42.440 ns</td>
+<td style="text-align:right">1,990.70 ns</td>
+<td style="text-align:right">0.1000</td>
+<td style="text-align:right">0.0500</td>
+<td style="text-align:right">1,840 B</td>
+</tr>
+<tr>
+<td>TransientService</td>
+<td>20</td>
+<td>Lamar</td>
+<td style="text-align:right">1,960.48 ns</td>
+<td style="text-align:right">24.082 ns</td>
+<td style="text-align:right">20.110 ns</td>
+<td style="text-align:right">1,954.67 ns</td>
+<td style="text-align:right">0.1200</td>
+<td style="text-align:right">0.0600</td>
+<td style="text-align:right">2,200 B</td>
+</tr>
+<tr>
+<td><strong>SingletonService</strong></td>
+<td><strong>20</strong></td>
+<td><strong>MsExtensionsDI</strong></td>
+<td style="text-align:right"><strong>923.92 ns</strong></td>
+<td style="text-align:right"><strong>17.861 ns</strong></td>
+<td style="text-align:right"><strong>21.262 ns</strong></td>
+<td style="text-align:right"><strong>917.40 ns</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>128 B</strong></td>
+</tr>
+<tr>
+<td>ScopedService</td>
+<td>20</td>
+<td>MsExtensionsDI</td>
+<td style="text-align:right">1,588.79 ns</td>
+<td style="text-align:right">15.382 ns</td>
+<td style="text-align:right">13.636 ns</td>
+<td style="text-align:right">1,595.11 ns</td>
+<td style="text-align:right">0.0100</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">336 B</td>
+</tr>
+<tr>
+<td>TransientService</td>
+<td>20</td>
+<td>MsExtensionsDI</td>
+<td style="text-align:right">1,204.25 ns</td>
+<td style="text-align:right">21.531 ns</td>
+<td style="text-align:right">19.087 ns</td>
+<td style="text-align:right">1,205.85 ns</td>
+<td style="text-align:right">0.0500</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">1,088 B</td>
+</tr>
+<tr>
+<td><strong>SingletonService</strong></td>
+<td><strong>20</strong></td>
+<td><strong>Stashbox</strong></td>
+<td style="text-align:right"><strong>440.61 ns</strong></td>
+<td style="text-align:right"><strong>8.722 ns</strong></td>
+<td style="text-align:right"><strong>12.227 ns</strong></td>
+<td style="text-align:right"><strong>438.31 ns</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>136 B</strong></td>
+</tr>
+<tr>
+<td>ScopedService</td>
+<td>20</td>
+<td>Stashbox</td>
+<td style="text-align:right">842.87 ns</td>
+<td style="text-align:right">11.198 ns</td>
+<td style="text-align:right">8.742 ns</td>
+<td style="text-align:right">842.84 ns</td>
+<td style="text-align:right">0.0200</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">416 B</td>
+</tr>
+<tr>
+<td>TransientService</td>
+<td>20</td>
+<td>Stashbox</td>
+<td style="text-align:right">689.48 ns</td>
+<td style="text-align:right">12.489 ns</td>
+<td style="text-align:right">20.168 ns</td>
+<td style="text-align:right">692.55 ns</td>
+<td style="text-align:right">0.0500</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">1,096 B</td>
+</tr>
+</tbody>
+</table>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="styles/docfx.js"></script>
+    <script type="text/javascript" src="styles/main.js"></script>
+  </body>
+</html>
