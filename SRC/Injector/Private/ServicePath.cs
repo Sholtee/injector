@@ -46,15 +46,28 @@ namespace Solti.Utils.DI.Internals
             // circular reference in the graph.
             //
 
-            if (foundIndex < FPath.Count) throw new CircularReferenceException
-            (
-                string.Format(Resources.Culture, Resources.CIRCULAR_REFERENCE, Format(GetCircle()))
-            );
+            if (foundIndex < FPath.Count)
+            {
+                List<AbstractServiceEntry> circle = new(GetCircle());
+
+                CircularReferenceException ex = new 
+                (
+                    string.Format
+                    (
+                        Resources.Culture,
+                        Resources.CIRCULAR_REFERENCE,
+                        Format(circle)
+                    )
+                );
+                ex.Data[nameof(circle)] = circle;
+
+                throw ex;
+            }
 
             FPath.Add(entry);
 
             //
-            // Return the circle itself.
+            // Return just the circle itself.
             //
 
             IEnumerable<AbstractServiceEntry> GetCircle()

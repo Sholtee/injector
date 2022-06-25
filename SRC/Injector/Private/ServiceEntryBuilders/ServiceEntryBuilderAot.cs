@@ -4,7 +4,6 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System.Diagnostics;
-using System.Linq.Expressions;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -16,20 +15,15 @@ namespace Solti.Utils.DI.Internals
 
         private readonly ScopeOptions FOptions;
 
-        private readonly IServiceResolverLookup FLookup;
-#if !DEBUG
         private readonly ServiceRequestReplacer FReplacer;
-#endif
+
         public new const ServiceResolutionMode Id = ServiceResolutionMode.AOT;
 
         public ServiceEntryBuilderAot(IServiceResolverLookup lookup, ScopeOptions options)
         {
-            FLookup = lookup;
             FOptions = options;
             FPath = new ServicePath();
-#if !DEBUG
-            FReplacer = new ServiceRequestReplacer(lookup, FPath, scopeOptions.SupportsServiceProvider);
-#endif
+            FReplacer = new ServiceRequestReplacer(lookup, FPath, options.SupportsServiceProvider);
         }
 
         public override void Build(AbstractServiceEntry requested)
@@ -41,14 +35,12 @@ namespace Solti.Utils.DI.Internals
             // the requested entry is already built.
             //
 
-            if (FOptions.StrictDI && FPath.Count > 0)
-                ServiceErrors.EnsureNotBreaksTheRuleOfStrictDI(FPath[^1], requested);
+            if (FOptions.StrictDI && FPath.Last is not null)
+                ServiceErrors.EnsureNotBreaksTheRuleOfStrictDI(FPath.Last, requested);
 
-            if (requested.State.HasFlag(ServiceEntryStateFlags.Built))
+            if (!requested.Features.HasFlag(ServiceEntryFeatures.SupportsVisit) || requested.State.HasFlag(ServiceEntryStates.Built))
                 return;
-#if DEBUG
-            ServiceRequestReplacerDebug FReplacer = new(FLookup, FPath, FOptions.SupportsServiceProvider);
-#endif
+
             //
             // Throws if the request is circular
             //
@@ -56,7 +48,7 @@ namespace Solti.Utils.DI.Internals
             FPath.Push(requested);
             try
             {
-                requested.Build(lambda => (LambdaExpression) FReplacer.Visit(lambda));
+                requested.VisitFactory(FReplacer.VisitLambda, FactoryVisitorOptions.BuildDelegate);
             }
             finally
             {
@@ -68,9 +60,6 @@ namespace Solti.Utils.DI.Internals
             //
 
             requested.SetValidated();
-#if DEBUG
-            Debug.WriteLine($"[{requested.ToString(shortForm: true)}] built: visited {FReplacer.VisitedRequests}, altered {FReplacer.AlteredRequests} request(s)");
-#endif
         }
     }
 }

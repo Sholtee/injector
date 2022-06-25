@@ -112,7 +112,7 @@ namespace Solti.Utils.DI.Internals
         }
         #endregion
 
-        public override void Build(Func<LambdaExpression, LambdaExpression> visitor!!)
+        public override void VisitFactory(Func<LambdaExpression, LambdaExpression> visitor!!, FactoryVisitorOptions options)
         {
             if (Factory is null)
                 throw new InvalidOperationException(NOT_PRODUCIBLE);
@@ -120,23 +120,7 @@ namespace Solti.Utils.DI.Internals
             //
             // Chain all the related delegates
             //
-#if false
-            Func<IInjector, Type, object> factory = (Func<IInjector, Type, object>) visitor(Factory).Compile();
 
-            if (FProxies?.Count > 0)
-            {
-                foreach (Expression<Func<IInjector, Type, object, object>>? applyProxyExpr in FProxies)
-                {
-                    Func<IInjector, Type, object, object> applyProxy = (Func<IInjector, Type, object, object>) visitor(applyProxyExpr).Compile();
-
-                    Func<IInjector, Type, object> innerFactory = factory;
-
-                    factory = (injector, type) => applyProxy(injector, type, innerFactory(injector, type));
-                }
-            }
-
-            FBuiltFactory = factory;
-#else
             Expression<Func<IInjector, Type, object>> factory;
 
             if (FProxies?.Count > 0)
@@ -167,10 +151,13 @@ namespace Solti.Utils.DI.Internals
             }
             else factory = (Expression<Func<IInjector, Type, object>>) visitor(Factory);
 
-            Debug.WriteLine($"Created factory: {Environment.NewLine}{factory.GetDebugView()}");
-            FBuiltFactory = factory.Compile();
-#endif
-            State = (State | ServiceEntryStateFlags.Built) & ~ServiceEntryStateFlags.Validated;
+            if (options.HasFlag(FactoryVisitorOptions.BuildDelegate))
+            {
+                Debug.WriteLine($"Created factory: {Environment.NewLine}{factory.GetDebugView()}");
+                FBuiltFactory = factory.Compile();
+            
+                State = (State | ServiceEntryStates.Built) & ~ServiceEntryStates.Validated;
+            }
         }
 
         public override object CreateInstance(IInjector scope!!, out object? lifetime)
@@ -184,7 +171,7 @@ namespace Solti.Utils.DI.Internals
             return result;
         }
 
-        public override void SetValidated() => State |= ServiceEntryStateFlags.Validated;
+        public override void SetValidated() => State |= ServiceEntryStates.Validated;
 
         public override void ApplyProxy(Expression<Func<IInjector, Type, object, object>> applyProxy!!)
         {

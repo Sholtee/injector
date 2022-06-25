@@ -1,16 +1,18 @@
 ﻿/********************************************************************************
-* IInjectorExtensions.cs                                                        *
+* IServiceEntryLookup.cs                                                        *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
-namespace Solti.Utils.DI.Diagnostics
+using System;
+using System.Diagnostics.CodeAnalysis;
+
+namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
 
-    /// <summary>
-    /// Defines some diagnostic related extensions for the <see cref="IInjector"/> interface.
-    /// </summary>
-    public static partial class IInjectorExtensions
+    internal interface IServiceEntryLookup
     {
+        [SuppressMessage("Naming", "CA1716:Identifiers should not match keywords")]
+        AbstractServiceEntry? Get(Type iface, string? name);
     }
 }

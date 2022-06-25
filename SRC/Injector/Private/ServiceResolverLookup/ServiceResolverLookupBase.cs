@@ -22,11 +22,11 @@ namespace Solti.Utils.DI.Internals
         private readonly object FLock = new();
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private IServiceResolver CreateResolver(AbstractServiceEntry entry) => entry.Features.HasFlag(ServiceEntryFlags.CreateSingleInstance)
-            ? entry.Features.HasFlag(ServiceEntryFlags.Shared)
+        private IServiceResolver CreateResolver(AbstractServiceEntry entry) => entry.Features.HasFlag(ServiceEntryFeatures.CreateSingleInstance)
+            ? entry.Features.HasFlag(ServiceEntryFeatures.Shared)
                 ? new GlobalScopedServiceResolver(entry, Slots++)
                 : new ScopedServiceResolver(entry, Slots++)
-            : entry.Features.HasFlag(ServiceEntryFlags.Shared)
+            : entry.Features.HasFlag(ServiceEntryFeatures.Shared)
                 ? new GlobalServiceResolver(entry)
                 : new ServiceResolver(entry);
 
@@ -176,7 +176,7 @@ namespace Solti.Utils.DI.Internals
                 ? GetCore(iface, name)
                 : GetEarly(iface, name);
 
-            Assert(resolver?.RelatedEntry.State.HasFlag(ServiceEntryStateFlags.Built) is not false, "Entry must be built when it gets exposed");
+            Assert(resolver?.RelatedEntry.State.HasFlag(ServiceEntryStates.Built) is not false, "Entry must be built when it gets exposed");
             return resolver;
         }
     }

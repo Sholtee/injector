@@ -1,20 +1,20 @@
 ﻿/********************************************************************************
-* ServiceEntryStateFlags.cs                                                     *
+* ServiceEntryFeatures.cs                                                       *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq.Expressions;
 
 namespace Solti.Utils.DI.Interfaces
 {
     /// <summary>
-    /// Describes the actual state of an <see cref="AbstractServiceEntry"/>
+    /// Describes the features of an <see cref="AbstractServiceEntry"/>
     /// </summary>
     [Flags]
-    [SuppressMessage("Naming", "CA1711:Identifiers should not have incorrect suffix")]
     [SuppressMessage("Design", "CA1008:Enums should have zero value")]
-    public enum ServiceEntryStateFlags : int
+    public enum ServiceEntryFeatures: int
     {
         /// <summary>
         /// The default state.
@@ -22,13 +22,18 @@ namespace Solti.Utils.DI.Interfaces
         Default = 0,
 
         /// <summary>
-        /// Indicates that the entry has already been built.
+        /// A single instance will be created.
         /// </summary>
-        Built = 1 << 0,
+        CreateSingleInstance = 1 << 0,
 
         /// <summary>
-        /// Indicates that the entry is validated so it can be instantiated.
+        /// The created service instance is shared between scopes.
         /// </summary>
-        Validated = 1 << 1
+        Shared = 1 << 1,
+
+        /// <summary>
+        /// Calling the <see cref="AbstractServiceEntry.VisitFactory(Func{LambdaExpression, LambdaExpression}, FactoryVisitorOptions)"/> method is supportedif the entry has a factory function defined.
+        /// </summary>
+        SupportsVisit = 1 << 2
     }
 }

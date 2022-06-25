@@ -21,4 +21,19 @@
   <ItemGroup>
     <ProjectReference Include="..\..\SRC\Injector\Injector.csproj" />
   </ItemGroup>
+  
+  <ItemGroup>
+    <None Update="graph_1.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="graph_2.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="graph_3.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="graph_4.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 </Project>

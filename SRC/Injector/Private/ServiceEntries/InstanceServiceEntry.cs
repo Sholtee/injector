@@ -27,7 +27,7 @@ namespace Solti.Utils.DI.Internals
             if (Interface.GetCustomAttributes<AspectAttribute>(inherit: true).Any())
                 throw new NotSupportedException(Resources.PROXYING_NOT_SUPPORTED);
 
-            State = ServiceEntryStateFlags.Validated | ServiceEntryStateFlags.Built;
+            State = ServiceEntryStates.Validated | ServiceEntryStates.Built;
         }
 
         public override object CreateInstance(IInjector scope, out object? lifetime)
@@ -38,6 +38,6 @@ namespace Solti.Utils.DI.Internals
 
         public override Lifetime? Lifetime { get; } = Lifetime.Instance;
 
-        public override ServiceEntryFlags Features { get; } = ServiceEntryFlags.Shared | ServiceEntryFlags.CreateSingleInstance;
+        public override ServiceEntryFeatures Features { get; } = ServiceEntryFeatures.Shared | ServiceEntryFeatures.CreateSingleInstance;
     }
 }
