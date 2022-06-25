@@ -176,7 +176,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public virtual ServiceEntryFlags Features { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public virtual ServiceEntryFeatures Features { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -188,7 +188,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Solti.Utils.DI.Interfaces.ServiceEntryFlags.html">ServiceEntryFlags</a></td>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.ServiceEntryFeatures.html">ServiceEntryFeatures</a></td>
         <td></td>
       </tr>
     </tbody>
@@ -302,7 +302,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public ServiceEntryStateFlags State { get; protected set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public ServiceEntryStates State { get; protected set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -314,7 +314,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Solti.Utils.DI.Interfaces.ServiceEntryStateFlags.html">ServiceEntryStateFlags</a></td>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.ServiceEntryStates.html">ServiceEntryStates</a></td>
         <td></td>
       </tr>
     </tbody>
@@ -347,35 +347,9 @@
       </tr>
     </tbody>
   </table>
-  <a id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_Build_" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.Build*"></a>
-  <h4 id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_Build_System_Func_System_Linq_Expressions_LambdaExpression_System_Linq_Expressions_LambdaExpression__" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.Build(System.Func{System.Linq.Expressions.LambdaExpression,System.Linq.Expressions.LambdaExpression})">Build(Func&lt;LambdaExpression, LambdaExpression&gt;)</h4>
-  <div class="markdown level1 summary"><p>Builds this entry.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public virtual void Build(Func&lt;LambdaExpression, LambdaExpression&gt; visit)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.linq.expressions.lambdaexpression">LambdaExpression</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.linq.expressions.lambdaexpression">LambdaExpression</a>&gt;</td>
-        <td><span class="parametername">visit</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
   <a id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_CreateInstance_" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.CreateInstance*"></a>
   <h4 id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_CreateInstance_Solti_Utils_DI_Interfaces_IInjector_System_Object__" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.CreateInstance(Solti.Utils.DI.Interfaces.IInjector,System.Object@)">CreateInstance(IInjector, out Object)</h4>
-  <div class="markdown level1 summary"><p>Creates a new service instance. Should throw if the <a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_State">State</a> is not <a class="xref" href="Solti.Utils.DI.Interfaces.ServiceEntryStateFlags.html#Solti_Utils_DI_Interfaces_ServiceEntryStateFlags_Built">Built</a>.</p>
+  <div class="markdown level1 summary"><p>Creates a new service instance. Should throw if the <a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_State">State</a> is not <a class="xref" href="Solti.Utils.DI.Interfaces.ServiceEntryStates.html#Solti_Utils_DI_Interfaces_ServiceEntryStates_Built">Built</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -447,7 +421,7 @@
   <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#system-object-gethashcode">Object.GetHashCode()</a></div>
   <a id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_SetValidated_" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.SetValidated*"></a>
   <h4 id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_SetValidated" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.SetValidated">SetValidated()</h4>
-  <div class="markdown level1 summary"><p>If supported, sets the <a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_State">State</a> of this entry to <a class="xref" href="Solti.Utils.DI.Interfaces.ServiceEntryStateFlags.html#Solti_Utils_DI_Interfaces_ServiceEntryStateFlags_Validated">Validated</a>.</p>
+  <div class="markdown level1 summary"><p>If supported, sets the <a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_State">State</a> of this entry to <a class="xref" href="Solti.Utils.DI.Interfaces.ServiceEntryStates.html#Solti_Utils_DI_Interfaces_ServiceEntryStates_Validated">Validated</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -557,6 +531,37 @@
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_VisitFactory_" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.VisitFactory*"></a>
+  <h4 id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_VisitFactory_System_Func_System_Linq_Expressions_LambdaExpression_System_Linq_Expressions_LambdaExpression__Solti_Utils_DI_Interfaces_FactoryVisitorOptions_" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.VisitFactory(System.Func{System.Linq.Expressions.LambdaExpression,System.Linq.Expressions.LambdaExpression},Solti.Utils.DI.Interfaces.FactoryVisitorOptions)">VisitFactory(Func&lt;LambdaExpression, LambdaExpression&gt;, FactoryVisitorOptions)</h4>
+  <div class="markdown level1 summary"><p>Builds this entry.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void VisitFactory(Func&lt;LambdaExpression, LambdaExpression&gt; visitor, FactoryVisitorOptions options)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.linq.expressions.lambdaexpression">LambdaExpression</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.linq.expressions.lambdaexpression">LambdaExpression</a>&gt;</td>
+        <td><span class="parametername">visitor</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.FactoryVisitorOptions.html">FactoryVisitorOptions</a></td>
+        <td><span class="parametername">options</span></td>
         <td></td>
       </tr>
     </tbody>

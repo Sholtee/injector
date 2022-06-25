@@ -13,69 +13,34 @@ references:
   commentId: N:Solti.Utils.DI.Diagnostics
   fullName: Solti.Utils.DI.Diagnostics
   nameWithType: Solti.Utils.DI.Diagnostics
-- uid: Solti.Utils.DI.Diagnostics.IHasValidationMethod
-  name: IHasValidationMethod
-  href: Solti.Utils.DI.Diagnostics.IHasValidationMethod.html
-  commentId: T:Solti.Utils.DI.Diagnostics.IHasValidationMethod
-  fullName: Solti.Utils.DI.Diagnostics.IHasValidationMethod
-  nameWithType: IHasValidationMethod
-- uid: Solti.Utils.DI.Diagnostics.IHasValidationMethod.Validate
-  name: Validate()
-  href: Solti.Utils.DI.Diagnostics.IHasValidationMethod.html#Solti_Utils_DI_Diagnostics_IHasValidationMethod_Validate
-  commentId: M:Solti.Utils.DI.Diagnostics.IHasValidationMethod.Validate
-  fullName: Solti.Utils.DI.Diagnostics.IHasValidationMethod.Validate()
-  nameWithType: IHasValidationMethod.Validate()
-- uid: Solti.Utils.DI.Diagnostics.IHasValidationMethod.Validate*
-  name: Validate
-  href: Solti.Utils.DI.Diagnostics.IHasValidationMethod.html#Solti_Utils_DI_Diagnostics_IHasValidationMethod_Validate_
-  commentId: Overload:Solti.Utils.DI.Diagnostics.IHasValidationMethod.Validate
-  isSpec: "True"
-  fullName: Solti.Utils.DI.Diagnostics.IHasValidationMethod.Validate
-  nameWithType: IHasValidationMethod.Validate
-- uid: Solti.Utils.DI.Diagnostics.IInjectorExtensions
-  name: IInjectorExtensions
-  href: Solti.Utils.DI.Diagnostics.IInjectorExtensions.html
-  commentId: T:Solti.Utils.DI.Diagnostics.IInjectorExtensions
-  fullName: Solti.Utils.DI.Diagnostics.IInjectorExtensions
-  nameWithType: IInjectorExtensions
-- uid: Solti.Utils.DI.Diagnostics.IInjectorExtensions.GetDependencyGraph(Solti.Utils.DI.Interfaces.IInjector,Type,System.Nullable{System.String})
-  name: GetDependencyGraph(IInjector, Type, Nullable<String>)
-  href: Solti.Utils.DI.Diagnostics.IInjectorExtensions.html#Solti_Utils_DI_Diagnostics_IInjectorExtensions_GetDependencyGraph_Solti_Utils_DI_Interfaces_IInjector_Type_System_Nullable_System_String__
-  commentId: M:Solti.Utils.DI.Diagnostics.IInjectorExtensions.GetDependencyGraph(Solti.Utils.DI.Interfaces.IInjector,Type,System.Nullable{System.String})
-  name.vb: GetDependencyGraph(IInjector, Type, Nullable(Of String))
-  fullName: Solti.Utils.DI.Diagnostics.IInjectorExtensions.GetDependencyGraph(Solti.Utils.DI.Interfaces.IInjector, Type, System.Nullable<System.String>)
-  fullName.vb: Solti.Utils.DI.Diagnostics.IInjectorExtensions.GetDependencyGraph(Solti.Utils.DI.Interfaces.IInjector, Type, System.Nullable(Of System.String))
-  nameWithType: IInjectorExtensions.GetDependencyGraph(IInjector, Type, Nullable<String>)
-  nameWithType.vb: IInjectorExtensions.GetDependencyGraph(IInjector, Type, Nullable(Of String))
-- uid: Solti.Utils.DI.Diagnostics.IInjectorExtensions.GetDependencyGraph*
+- uid: Solti.Utils.DI.Diagnostics.IScopeFactoryDiagnosticsExtensions
+  name: IScopeFactoryDiagnosticsExtensions
+  href: Solti.Utils.DI.Diagnostics.IScopeFactoryDiagnosticsExtensions.html
+  commentId: T:Solti.Utils.DI.Diagnostics.IScopeFactoryDiagnosticsExtensions
+  fullName: Solti.Utils.DI.Diagnostics.IScopeFactoryDiagnosticsExtensions
+  nameWithType: IScopeFactoryDiagnosticsExtensions
+- uid: Solti.Utils.DI.Diagnostics.IScopeFactoryDiagnosticsExtensions.GetDependencyGraph(Solti.Utils.DI.Interfaces.IScopeFactory,System.Type,System.String,System.String)
+  name: GetDependencyGraph(IScopeFactory, Type, String, String)
+  href: Solti.Utils.DI.Diagnostics.IScopeFactoryDiagnosticsExtensions.html#Solti_Utils_DI_Diagnostics_IScopeFactoryDiagnosticsExtensions_GetDependencyGraph_Solti_Utils_DI_Interfaces_IScopeFactory_System_Type_System_String_System_String_
+  commentId: M:Solti.Utils.DI.Diagnostics.IScopeFactoryDiagnosticsExtensions.GetDependencyGraph(Solti.Utils.DI.Interfaces.IScopeFactory,System.Type,System.String,System.String)
+  fullName: Solti.Utils.DI.Diagnostics.IScopeFactoryDiagnosticsExtensions.GetDependencyGraph(Solti.Utils.DI.Interfaces.IScopeFactory, System.Type, System.String, System.String)
+  nameWithType: IScopeFactoryDiagnosticsExtensions.GetDependencyGraph(IScopeFactory, Type, String, String)
+- uid: Solti.Utils.DI.Diagnostics.IScopeFactoryDiagnosticsExtensions.GetDependencyGraph*
   name: GetDependencyGraph
-  href: Solti.Utils.DI.Diagnostics.IInjectorExtensions.html#Solti_Utils_DI_Diagnostics_IInjectorExtensions_GetDependencyGraph_
-  commentId: Overload:Solti.Utils.DI.Diagnostics.IInjectorExtensions.GetDependencyGraph
+  href: Solti.Utils.DI.Diagnostics.IScopeFactoryDiagnosticsExtensions.html#Solti_Utils_DI_Diagnostics_IScopeFactoryDiagnosticsExtensions_GetDependencyGraph_
+  commentId: Overload:Solti.Utils.DI.Diagnostics.IScopeFactoryDiagnosticsExtensions.GetDependencyGraph
   isSpec: "True"
-  fullName: Solti.Utils.DI.Diagnostics.IInjectorExtensions.GetDependencyGraph
-  nameWithType: IInjectorExtensions.GetDependencyGraph
-- uid: Solti.Utils.DI.Diagnostics.IInjectorExtensions.GetDependencyGraph``1(Solti.Utils.DI.Interfaces.IInjector,System.Nullable{System.String})
-  name: GetDependencyGraph<TInterface>(IInjector, Nullable<String>)
-  href: Solti.Utils.DI.Diagnostics.IInjectorExtensions.html#Solti_Utils_DI_Diagnostics_IInjectorExtensions_GetDependencyGraph__1_Solti_Utils_DI_Interfaces_IInjector_System_Nullable_System_String__
-  commentId: M:Solti.Utils.DI.Diagnostics.IInjectorExtensions.GetDependencyGraph``1(Solti.Utils.DI.Interfaces.IInjector,System.Nullable{System.String})
-  name.vb: GetDependencyGraph(Of TInterface)(IInjector, Nullable(Of String))
-  fullName: Solti.Utils.DI.Diagnostics.IInjectorExtensions.GetDependencyGraph<TInterface>(Solti.Utils.DI.Interfaces.IInjector, System.Nullable<System.String>)
-  fullName.vb: Solti.Utils.DI.Diagnostics.IInjectorExtensions.GetDependencyGraph(Of TInterface)(Solti.Utils.DI.Interfaces.IInjector, System.Nullable(Of System.String))
-  nameWithType: IInjectorExtensions.GetDependencyGraph<TInterface>(IInjector, Nullable<String>)
-  nameWithType.vb: IInjectorExtensions.GetDependencyGraph(Of TInterface)(IInjector, Nullable(Of String))
-- uid: Solti.Utils.DI.Diagnostics.IInjectorExtensions.Validate(Solti.Utils.DI.Interfaces.IInjector)
-  name: Validate(IInjector)
-  href: Solti.Utils.DI.Diagnostics.IInjectorExtensions.html#Solti_Utils_DI_Diagnostics_IInjectorExtensions_Validate_Solti_Utils_DI_Interfaces_IInjector_
-  commentId: M:Solti.Utils.DI.Diagnostics.IInjectorExtensions.Validate(Solti.Utils.DI.Interfaces.IInjector)
-  fullName: Solti.Utils.DI.Diagnostics.IInjectorExtensions.Validate(Solti.Utils.DI.Interfaces.IInjector)
-  nameWithType: IInjectorExtensions.Validate(IInjector)
-- uid: Solti.Utils.DI.Diagnostics.IInjectorExtensions.Validate*
-  name: Validate
-  href: Solti.Utils.DI.Diagnostics.IInjectorExtensions.html#Solti_Utils_DI_Diagnostics_IInjectorExtensions_Validate_
-  commentId: Overload:Solti.Utils.DI.Diagnostics.IInjectorExtensions.Validate
-  isSpec: "True"
-  fullName: Solti.Utils.DI.Diagnostics.IInjectorExtensions.Validate
-  nameWithType: IInjectorExtensions.Validate
+  fullName: Solti.Utils.DI.Diagnostics.IScopeFactoryDiagnosticsExtensions.GetDependencyGraph
+  nameWithType: IScopeFactoryDiagnosticsExtensions.GetDependencyGraph
+- uid: Solti.Utils.DI.Diagnostics.IScopeFactoryDiagnosticsExtensions.GetDependencyGraph``1(Solti.Utils.DI.Interfaces.IScopeFactory,System.String,System.String)
+  name: GetDependencyGraph<TService>(IScopeFactory, String, String)
+  href: Solti.Utils.DI.Diagnostics.IScopeFactoryDiagnosticsExtensions.html#Solti_Utils_DI_Diagnostics_IScopeFactoryDiagnosticsExtensions_GetDependencyGraph__1_Solti_Utils_DI_Interfaces_IScopeFactory_System_String_System_String_
+  commentId: M:Solti.Utils.DI.Diagnostics.IScopeFactoryDiagnosticsExtensions.GetDependencyGraph``1(Solti.Utils.DI.Interfaces.IScopeFactory,System.String,System.String)
+  name.vb: GetDependencyGraph(Of TService)(IScopeFactory, String, String)
+  fullName: Solti.Utils.DI.Diagnostics.IScopeFactoryDiagnosticsExtensions.GetDependencyGraph<TService>(Solti.Utils.DI.Interfaces.IScopeFactory, System.String, System.String)
+  fullName.vb: Solti.Utils.DI.Diagnostics.IScopeFactoryDiagnosticsExtensions.GetDependencyGraph(Of TService)(Solti.Utils.DI.Interfaces.IScopeFactory, System.String, System.String)
+  nameWithType: IScopeFactoryDiagnosticsExtensions.GetDependencyGraph<TService>(IScopeFactory, String, String)
+  nameWithType.vb: IScopeFactoryDiagnosticsExtensions.GetDependencyGraph(Of TService)(IScopeFactory, String, String)
 - uid: Solti.Utils.DI.Interfaces
   name: Solti.Utils.DI.Interfaces
   href: Solti.Utils.DI.Interfaces.html
@@ -120,22 +85,6 @@ references:
   isSpec: "True"
   fullName: Solti.Utils.DI.Interfaces.AbstractServiceEntry.ApplyProxy
   nameWithType: AbstractServiceEntry.ApplyProxy
-- uid: Solti.Utils.DI.Interfaces.AbstractServiceEntry.Build(System.Func{System.Linq.Expressions.LambdaExpression,System.Linq.Expressions.LambdaExpression})
-  name: Build(Func<LambdaExpression, LambdaExpression>)
-  href: Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_Build_System_Func_System_Linq_Expressions_LambdaExpression_System_Linq_Expressions_LambdaExpression__
-  commentId: M:Solti.Utils.DI.Interfaces.AbstractServiceEntry.Build(System.Func{System.Linq.Expressions.LambdaExpression,System.Linq.Expressions.LambdaExpression})
-  name.vb: Build(Func(Of LambdaExpression, LambdaExpression))
-  fullName: Solti.Utils.DI.Interfaces.AbstractServiceEntry.Build(System.Func<System.Linq.Expressions.LambdaExpression, System.Linq.Expressions.LambdaExpression>)
-  fullName.vb: Solti.Utils.DI.Interfaces.AbstractServiceEntry.Build(System.Func(Of System.Linq.Expressions.LambdaExpression, System.Linq.Expressions.LambdaExpression))
-  nameWithType: AbstractServiceEntry.Build(Func<LambdaExpression, LambdaExpression>)
-  nameWithType.vb: AbstractServiceEntry.Build(Func(Of LambdaExpression, LambdaExpression))
-- uid: Solti.Utils.DI.Interfaces.AbstractServiceEntry.Build*
-  name: Build
-  href: Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_Build_
-  commentId: Overload:Solti.Utils.DI.Interfaces.AbstractServiceEntry.Build
-  isSpec: "True"
-  fullName: Solti.Utils.DI.Interfaces.AbstractServiceEntry.Build
-  nameWithType: AbstractServiceEntry.Build
 - uid: Solti.Utils.DI.Interfaces.AbstractServiceEntry.CreateInstance(Solti.Utils.DI.Interfaces.IInjector,System.Object@)
   name: CreateInstance(IInjector, out Object)
   href: Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_CreateInstance_Solti_Utils_DI_Interfaces_IInjector_System_Object__
@@ -304,6 +253,22 @@ references:
   isSpec: "True"
   fullName: Solti.Utils.DI.Interfaces.AbstractServiceEntry.ToString
   nameWithType: AbstractServiceEntry.ToString
+- uid: Solti.Utils.DI.Interfaces.AbstractServiceEntry.VisitFactory(System.Func{System.Linq.Expressions.LambdaExpression,System.Linq.Expressions.LambdaExpression},Solti.Utils.DI.Interfaces.FactoryVisitorOptions)
+  name: VisitFactory(Func<LambdaExpression, LambdaExpression>, FactoryVisitorOptions)
+  href: Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_VisitFactory_System_Func_System_Linq_Expressions_LambdaExpression_System_Linq_Expressions_LambdaExpression__Solti_Utils_DI_Interfaces_FactoryVisitorOptions_
+  commentId: M:Solti.Utils.DI.Interfaces.AbstractServiceEntry.VisitFactory(System.Func{System.Linq.Expressions.LambdaExpression,System.Linq.Expressions.LambdaExpression},Solti.Utils.DI.Interfaces.FactoryVisitorOptions)
+  name.vb: VisitFactory(Func(Of LambdaExpression, LambdaExpression), FactoryVisitorOptions)
+  fullName: Solti.Utils.DI.Interfaces.AbstractServiceEntry.VisitFactory(System.Func<System.Linq.Expressions.LambdaExpression, System.Linq.Expressions.LambdaExpression>, Solti.Utils.DI.Interfaces.FactoryVisitorOptions)
+  fullName.vb: Solti.Utils.DI.Interfaces.AbstractServiceEntry.VisitFactory(System.Func(Of System.Linq.Expressions.LambdaExpression, System.Linq.Expressions.LambdaExpression), Solti.Utils.DI.Interfaces.FactoryVisitorOptions)
+  nameWithType: AbstractServiceEntry.VisitFactory(Func<LambdaExpression, LambdaExpression>, FactoryVisitorOptions)
+  nameWithType.vb: AbstractServiceEntry.VisitFactory(Func(Of LambdaExpression, LambdaExpression), FactoryVisitorOptions)
+- uid: Solti.Utils.DI.Interfaces.AbstractServiceEntry.VisitFactory*
+  name: VisitFactory
+  href: Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_VisitFactory_
+  commentId: Overload:Solti.Utils.DI.Interfaces.AbstractServiceEntry.VisitFactory
+  isSpec: "True"
+  fullName: Solti.Utils.DI.Interfaces.AbstractServiceEntry.VisitFactory
+  nameWithType: AbstractServiceEntry.VisitFactory
 - uid: Solti.Utils.DI.Interfaces.AspectAttribute
   name: AspectAttribute
   href: Solti.Utils.DI.Interfaces.AspectAttribute.html
@@ -353,6 +318,24 @@ references:
   commentId: F:Solti.Utils.DI.Interfaces.Consts.INTERNAL_SERVICE_NAME_PREFIX
   fullName: Solti.Utils.DI.Interfaces.Consts.INTERNAL_SERVICE_NAME_PREFIX
   nameWithType: Consts.INTERNAL_SERVICE_NAME_PREFIX
+- uid: Solti.Utils.DI.Interfaces.FactoryVisitorOptions
+  name: FactoryVisitorOptions
+  href: Solti.Utils.DI.Interfaces.FactoryVisitorOptions.html
+  commentId: T:Solti.Utils.DI.Interfaces.FactoryVisitorOptions
+  fullName: Solti.Utils.DI.Interfaces.FactoryVisitorOptions
+  nameWithType: FactoryVisitorOptions
+- uid: Solti.Utils.DI.Interfaces.FactoryVisitorOptions.BuildDelegate
+  name: BuildDelegate
+  href: Solti.Utils.DI.Interfaces.FactoryVisitorOptions.html#Solti_Utils_DI_Interfaces_FactoryVisitorOptions_BuildDelegate
+  commentId: F:Solti.Utils.DI.Interfaces.FactoryVisitorOptions.BuildDelegate
+  fullName: Solti.Utils.DI.Interfaces.FactoryVisitorOptions.BuildDelegate
+  nameWithType: FactoryVisitorOptions.BuildDelegate
+- uid: Solti.Utils.DI.Interfaces.FactoryVisitorOptions.Default
+  name: Default
+  href: Solti.Utils.DI.Interfaces.FactoryVisitorOptions.html#Solti_Utils_DI_Interfaces_FactoryVisitorOptions_Default
+  commentId: F:Solti.Utils.DI.Interfaces.FactoryVisitorOptions.Default
+  fullName: Solti.Utils.DI.Interfaces.FactoryVisitorOptions.Default
+  nameWithType: FactoryVisitorOptions.Default
 - uid: Solti.Utils.DI.Interfaces.IInjector
   name: IInjector
   href: Solti.Utils.DI.Interfaces.IInjector.html
@@ -1253,54 +1236,60 @@ references:
   isSpec: "True"
   fullName: Solti.Utils.DI.Interfaces.ServiceEntryExtensions.IsService
   nameWithType: ServiceEntryExtensions.IsService
-- uid: Solti.Utils.DI.Interfaces.ServiceEntryFlags
-  name: ServiceEntryFlags
-  href: Solti.Utils.DI.Interfaces.ServiceEntryFlags.html
-  commentId: T:Solti.Utils.DI.Interfaces.ServiceEntryFlags
-  fullName: Solti.Utils.DI.Interfaces.ServiceEntryFlags
-  nameWithType: ServiceEntryFlags
-- uid: Solti.Utils.DI.Interfaces.ServiceEntryFlags.CreateSingleInstance
+- uid: Solti.Utils.DI.Interfaces.ServiceEntryFeatures
+  name: ServiceEntryFeatures
+  href: Solti.Utils.DI.Interfaces.ServiceEntryFeatures.html
+  commentId: T:Solti.Utils.DI.Interfaces.ServiceEntryFeatures
+  fullName: Solti.Utils.DI.Interfaces.ServiceEntryFeatures
+  nameWithType: ServiceEntryFeatures
+- uid: Solti.Utils.DI.Interfaces.ServiceEntryFeatures.CreateSingleInstance
   name: CreateSingleInstance
-  href: Solti.Utils.DI.Interfaces.ServiceEntryFlags.html#Solti_Utils_DI_Interfaces_ServiceEntryFlags_CreateSingleInstance
-  commentId: F:Solti.Utils.DI.Interfaces.ServiceEntryFlags.CreateSingleInstance
-  fullName: Solti.Utils.DI.Interfaces.ServiceEntryFlags.CreateSingleInstance
-  nameWithType: ServiceEntryFlags.CreateSingleInstance
-- uid: Solti.Utils.DI.Interfaces.ServiceEntryFlags.Default
+  href: Solti.Utils.DI.Interfaces.ServiceEntryFeatures.html#Solti_Utils_DI_Interfaces_ServiceEntryFeatures_CreateSingleInstance
+  commentId: F:Solti.Utils.DI.Interfaces.ServiceEntryFeatures.CreateSingleInstance
+  fullName: Solti.Utils.DI.Interfaces.ServiceEntryFeatures.CreateSingleInstance
+  nameWithType: ServiceEntryFeatures.CreateSingleInstance
+- uid: Solti.Utils.DI.Interfaces.ServiceEntryFeatures.Default
   name: Default
-  href: Solti.Utils.DI.Interfaces.ServiceEntryFlags.html#Solti_Utils_DI_Interfaces_ServiceEntryFlags_Default
-  commentId: F:Solti.Utils.DI.Interfaces.ServiceEntryFlags.Default
-  fullName: Solti.Utils.DI.Interfaces.ServiceEntryFlags.Default
-  nameWithType: ServiceEntryFlags.Default
-- uid: Solti.Utils.DI.Interfaces.ServiceEntryFlags.Shared
+  href: Solti.Utils.DI.Interfaces.ServiceEntryFeatures.html#Solti_Utils_DI_Interfaces_ServiceEntryFeatures_Default
+  commentId: F:Solti.Utils.DI.Interfaces.ServiceEntryFeatures.Default
+  fullName: Solti.Utils.DI.Interfaces.ServiceEntryFeatures.Default
+  nameWithType: ServiceEntryFeatures.Default
+- uid: Solti.Utils.DI.Interfaces.ServiceEntryFeatures.Shared
   name: Shared
-  href: Solti.Utils.DI.Interfaces.ServiceEntryFlags.html#Solti_Utils_DI_Interfaces_ServiceEntryFlags_Shared
-  commentId: F:Solti.Utils.DI.Interfaces.ServiceEntryFlags.Shared
-  fullName: Solti.Utils.DI.Interfaces.ServiceEntryFlags.Shared
-  nameWithType: ServiceEntryFlags.Shared
-- uid: Solti.Utils.DI.Interfaces.ServiceEntryStateFlags
-  name: ServiceEntryStateFlags
-  href: Solti.Utils.DI.Interfaces.ServiceEntryStateFlags.html
-  commentId: T:Solti.Utils.DI.Interfaces.ServiceEntryStateFlags
-  fullName: Solti.Utils.DI.Interfaces.ServiceEntryStateFlags
-  nameWithType: ServiceEntryStateFlags
-- uid: Solti.Utils.DI.Interfaces.ServiceEntryStateFlags.Built
+  href: Solti.Utils.DI.Interfaces.ServiceEntryFeatures.html#Solti_Utils_DI_Interfaces_ServiceEntryFeatures_Shared
+  commentId: F:Solti.Utils.DI.Interfaces.ServiceEntryFeatures.Shared
+  fullName: Solti.Utils.DI.Interfaces.ServiceEntryFeatures.Shared
+  nameWithType: ServiceEntryFeatures.Shared
+- uid: Solti.Utils.DI.Interfaces.ServiceEntryFeatures.SupportsVisit
+  name: SupportsVisit
+  href: Solti.Utils.DI.Interfaces.ServiceEntryFeatures.html#Solti_Utils_DI_Interfaces_ServiceEntryFeatures_SupportsVisit
+  commentId: F:Solti.Utils.DI.Interfaces.ServiceEntryFeatures.SupportsVisit
+  fullName: Solti.Utils.DI.Interfaces.ServiceEntryFeatures.SupportsVisit
+  nameWithType: ServiceEntryFeatures.SupportsVisit
+- uid: Solti.Utils.DI.Interfaces.ServiceEntryStates
+  name: ServiceEntryStates
+  href: Solti.Utils.DI.Interfaces.ServiceEntryStates.html
+  commentId: T:Solti.Utils.DI.Interfaces.ServiceEntryStates
+  fullName: Solti.Utils.DI.Interfaces.ServiceEntryStates
+  nameWithType: ServiceEntryStates
+- uid: Solti.Utils.DI.Interfaces.ServiceEntryStates.Built
   name: Built
-  href: Solti.Utils.DI.Interfaces.ServiceEntryStateFlags.html#Solti_Utils_DI_Interfaces_ServiceEntryStateFlags_Built
-  commentId: F:Solti.Utils.DI.Interfaces.ServiceEntryStateFlags.Built
-  fullName: Solti.Utils.DI.Interfaces.ServiceEntryStateFlags.Built
-  nameWithType: ServiceEntryStateFlags.Built
-- uid: Solti.Utils.DI.Interfaces.ServiceEntryStateFlags.Default
+  href: Solti.Utils.DI.Interfaces.ServiceEntryStates.html#Solti_Utils_DI_Interfaces_ServiceEntryStates_Built
+  commentId: F:Solti.Utils.DI.Interfaces.ServiceEntryStates.Built
+  fullName: Solti.Utils.DI.Interfaces.ServiceEntryStates.Built
+  nameWithType: ServiceEntryStates.Built
+- uid: Solti.Utils.DI.Interfaces.ServiceEntryStates.Default
   name: Default
-  href: Solti.Utils.DI.Interfaces.ServiceEntryStateFlags.html#Solti_Utils_DI_Interfaces_ServiceEntryStateFlags_Default
-  commentId: F:Solti.Utils.DI.Interfaces.ServiceEntryStateFlags.Default
-  fullName: Solti.Utils.DI.Interfaces.ServiceEntryStateFlags.Default
-  nameWithType: ServiceEntryStateFlags.Default
-- uid: Solti.Utils.DI.Interfaces.ServiceEntryStateFlags.Validated
+  href: Solti.Utils.DI.Interfaces.ServiceEntryStates.html#Solti_Utils_DI_Interfaces_ServiceEntryStates_Default
+  commentId: F:Solti.Utils.DI.Interfaces.ServiceEntryStates.Default
+  fullName: Solti.Utils.DI.Interfaces.ServiceEntryStates.Default
+  nameWithType: ServiceEntryStates.Default
+- uid: Solti.Utils.DI.Interfaces.ServiceEntryStates.Validated
   name: Validated
-  href: Solti.Utils.DI.Interfaces.ServiceEntryStateFlags.html#Solti_Utils_DI_Interfaces_ServiceEntryStateFlags_Validated
-  commentId: F:Solti.Utils.DI.Interfaces.ServiceEntryStateFlags.Validated
-  fullName: Solti.Utils.DI.Interfaces.ServiceEntryStateFlags.Validated
-  nameWithType: ServiceEntryStateFlags.Validated
+  href: Solti.Utils.DI.Interfaces.ServiceEntryStates.html#Solti_Utils_DI_Interfaces_ServiceEntryStates_Validated
+  commentId: F:Solti.Utils.DI.Interfaces.ServiceEntryStates.Validated
+  fullName: Solti.Utils.DI.Interfaces.ServiceEntryStates.Validated
+  nameWithType: ServiceEntryStates.Validated
 - uid: Solti.Utils.DI.Interfaces.ServiceIdComparer
   name: ServiceIdComparer
   href: Solti.Utils.DI.Interfaces.ServiceIdComparer.html
