@@ -432,6 +432,51 @@ references:
   fullName.vb: Solti.Utils.DI.Interfaces.IInjectorBasicExtensions.TryGet(Of TInterface)(Solti.Utils.DI.Interfaces.IInjector, System.String)
   nameWithType: IInjectorBasicExtensions.TryGet<TInterface>(IInjector, String)
   nameWithType.vb: IInjectorBasicExtensions.TryGet(Of TInterface)(IInjector, String)
+- uid: Solti.Utils.DI.Interfaces.IInstanceFactory
+  name: IInstanceFactory
+  href: Solti.Utils.DI.Interfaces.IInstanceFactory.html
+  commentId: T:Solti.Utils.DI.Interfaces.IInstanceFactory
+  fullName: Solti.Utils.DI.Interfaces.IInstanceFactory
+  nameWithType: IInstanceFactory
+- uid: Solti.Utils.DI.Interfaces.IInstanceFactory.CreateInstance(Solti.Utils.DI.Interfaces.AbstractServiceEntry)
+  name: CreateInstance(AbstractServiceEntry)
+  href: Solti.Utils.DI.Interfaces.IInstanceFactory.html#Solti_Utils_DI_Interfaces_IInstanceFactory_CreateInstance_Solti_Utils_DI_Interfaces_AbstractServiceEntry_
+  commentId: M:Solti.Utils.DI.Interfaces.IInstanceFactory.CreateInstance(Solti.Utils.DI.Interfaces.AbstractServiceEntry)
+  fullName: Solti.Utils.DI.Interfaces.IInstanceFactory.CreateInstance(Solti.Utils.DI.Interfaces.AbstractServiceEntry)
+  nameWithType: IInstanceFactory.CreateInstance(AbstractServiceEntry)
+- uid: Solti.Utils.DI.Interfaces.IInstanceFactory.CreateInstance*
+  name: CreateInstance
+  href: Solti.Utils.DI.Interfaces.IInstanceFactory.html#Solti_Utils_DI_Interfaces_IInstanceFactory_CreateInstance_
+  commentId: Overload:Solti.Utils.DI.Interfaces.IInstanceFactory.CreateInstance
+  isSpec: "True"
+  fullName: Solti.Utils.DI.Interfaces.IInstanceFactory.CreateInstance
+  nameWithType: IInstanceFactory.CreateInstance
+- uid: Solti.Utils.DI.Interfaces.IInstanceFactory.GetOrCreateInstance(Solti.Utils.DI.Interfaces.AbstractServiceEntry,System.Int32)
+  name: GetOrCreateInstance(AbstractServiceEntry, Int32)
+  href: Solti.Utils.DI.Interfaces.IInstanceFactory.html#Solti_Utils_DI_Interfaces_IInstanceFactory_GetOrCreateInstance_Solti_Utils_DI_Interfaces_AbstractServiceEntry_System_Int32_
+  commentId: M:Solti.Utils.DI.Interfaces.IInstanceFactory.GetOrCreateInstance(Solti.Utils.DI.Interfaces.AbstractServiceEntry,System.Int32)
+  fullName: Solti.Utils.DI.Interfaces.IInstanceFactory.GetOrCreateInstance(Solti.Utils.DI.Interfaces.AbstractServiceEntry, System.Int32)
+  nameWithType: IInstanceFactory.GetOrCreateInstance(AbstractServiceEntry, Int32)
+- uid: Solti.Utils.DI.Interfaces.IInstanceFactory.GetOrCreateInstance*
+  name: GetOrCreateInstance
+  href: Solti.Utils.DI.Interfaces.IInstanceFactory.html#Solti_Utils_DI_Interfaces_IInstanceFactory_GetOrCreateInstance_
+  commentId: Overload:Solti.Utils.DI.Interfaces.IInstanceFactory.GetOrCreateInstance
+  isSpec: "True"
+  fullName: Solti.Utils.DI.Interfaces.IInstanceFactory.GetOrCreateInstance
+  nameWithType: IInstanceFactory.GetOrCreateInstance
+- uid: Solti.Utils.DI.Interfaces.IInstanceFactory.Super
+  name: Super
+  href: Solti.Utils.DI.Interfaces.IInstanceFactory.html#Solti_Utils_DI_Interfaces_IInstanceFactory_Super
+  commentId: P:Solti.Utils.DI.Interfaces.IInstanceFactory.Super
+  fullName: Solti.Utils.DI.Interfaces.IInstanceFactory.Super
+  nameWithType: IInstanceFactory.Super
+- uid: Solti.Utils.DI.Interfaces.IInstanceFactory.Super*
+  name: Super
+  href: Solti.Utils.DI.Interfaces.IInstanceFactory.html#Solti_Utils_DI_Interfaces_IInstanceFactory_Super_
+  commentId: Overload:Solti.Utils.DI.Interfaces.IInstanceFactory.Super
+  isSpec: "True"
+  fullName: Solti.Utils.DI.Interfaces.IInstanceFactory.Super
+  nameWithType: IInstanceFactory.Super
 - uid: Solti.Utils.DI.Interfaces.IInterceptorFactory`1
   name: IInterceptorFactory<TInterceptor>
   href: Solti.Utils.DI.Interfaces.IInterceptorFactory-1.html
