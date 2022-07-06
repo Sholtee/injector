@@ -3,22 +3,27 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
-namespace Solti.Utils.DI.Internals
-{
-    using Interfaces;
 
-#if DEBUG // test methods must be public -> make internal types public so they can be passed as parameter
-    #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-    public
-#else
-    internal
-#endif
-    interface IInstanceFactory
+namespace Solti.Utils.DI.Interfaces
+{
+    /// <summary>
+    /// Describes the methods how to create servive instances.
+    /// </summary>
+    public interface IInstanceFactory
     {
+        /// <summary>
+        /// The parent factory. NULL in case of root factory.
+        /// </summary>
         IInstanceFactory? Super { get; }
 
+        /// <summary>
+        /// Creates a new service instance from the given <see cref="AbstractServiceEntry"/>.
+        /// </summary>
         object CreateInstance(AbstractServiceEntry requested);
 
+        /// <summary>
+        /// Gets or creates a service instance assigned to the given slot.
+        /// </summary>
         object GetOrCreateInstance(AbstractServiceEntry requested, int slot);
     }
 }
