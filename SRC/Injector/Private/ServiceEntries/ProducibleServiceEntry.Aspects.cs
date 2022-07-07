@@ -14,7 +14,7 @@ namespace Solti.Utils.DI.Internals
     using Properties;
     using Proxy.Generators;
 
-    internal abstract partial class ProducibleServiceEntry
+    public abstract partial class ProducibleServiceEntry
     {
         private Expression<Func<IInjector, Type, object, object>> BuildDelegate(Type interceptor)
         {
@@ -68,7 +68,7 @@ namespace Solti.Utils.DI.Internals
             }
         }
 
-        public void ApplyAspects() 
+        internal void ApplyAspects() 
         {
             foreach (Expression<Func<IInjector, Type, object, object>> interceptor in GetInterceptors(Interface.GetCustomAttributes<AspectAttribute>(inherit: true)))
             {
@@ -76,7 +76,7 @@ namespace Solti.Utils.DI.Internals
             }
         }
 
-        public void ApplyInterceptor(Type interceptor) => ApplyProxy
+        internal void ApplyInterceptor(Type interceptor) => ApplyProxy
         (
             BuildDelegate(interceptor)
         );

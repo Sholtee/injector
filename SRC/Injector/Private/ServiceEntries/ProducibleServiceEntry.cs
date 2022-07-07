@@ -16,7 +16,10 @@ namespace Solti.Utils.DI.Internals
     using static Interfaces.Properties.Resources;
     using static Properties.Resources;
 
-    internal abstract partial class ProducibleServiceEntry : AbstractServiceEntry
+    /// <summary>
+    /// Reperesents the base class of producible servce entries.
+    /// </summary>
+    public abstract partial class ProducibleServiceEntry : AbstractServiceEntry
     {
         #region Private
         private List<Expression<Func<IInjector, Type, object, object>>>? FProxies;
@@ -53,6 +56,9 @@ namespace Solti.Utils.DI.Internals
         #endregion
 
         #region Protected
+        /// <summary>
+        /// Creartes a new <see cref="ProducibleServiceEntry"/> instance.
+        /// </summary>
         protected ProducibleServiceEntry(Type @interface!!, string? name) : base
         (
             @interface,
@@ -61,6 +67,9 @@ namespace Solti.Utils.DI.Internals
             null
         ) { }
 
+        /// <summary>
+        /// Creartes a new <see cref="ProducibleServiceEntry"/> instance.
+        /// </summary>
         protected ProducibleServiceEntry(Type @interface!!, string? name, Expression<Func<IInjector, Type, object>> factory!!) : base
         (
             @interface,
@@ -72,6 +81,9 @@ namespace Solti.Utils.DI.Internals
             ApplyAspects();
         }
 
+        /// <summary>
+        /// Creartes a new <see cref="ProducibleServiceEntry"/> instance.
+        /// </summary>
         protected ProducibleServiceEntry(Type @interface!!, string? name, Type implementation!!) : base
         (
             @interface,
@@ -88,6 +100,9 @@ namespace Solti.Utils.DI.Internals
                 ApplyAspects();
         }
 
+        /// <summary>
+        /// Creartes a new <see cref="ProducibleServiceEntry"/> instance.
+        /// </summary>
         protected ProducibleServiceEntry(Type @interface!!, string? name, Type implementation!!, object explicitArgs!!) : base
         (
             @interface,
@@ -112,6 +127,7 @@ namespace Solti.Utils.DI.Internals
         }
         #endregion
 
+        /// <inheritdoc/>
         public override void VisitFactory(Func<LambdaExpression, LambdaExpression> visitor!!, FactoryVisitorOptions options)
         {
             if (Factory is null)
@@ -160,6 +176,7 @@ namespace Solti.Utils.DI.Internals
             }
         }
 
+        /// <inheritdoc/>
         public override object CreateInstance(IInjector scope!!, out object? lifetime)
         {
             if (FBuiltFactory is null)
@@ -171,8 +188,10 @@ namespace Solti.Utils.DI.Internals
             return result;
         }
 
+        /// <inheritdoc/>
         public override void SetValidated() => State |= ServiceEntryStates.Validated;
 
+        /// <inheritdoc/>
         public override void ApplyProxy(Expression<Func<IInjector, Type, object, object>> applyProxy!!)
         {
             if (Factory is null)
@@ -182,10 +201,19 @@ namespace Solti.Utils.DI.Internals
             FProxies.Add(applyProxy);
         }
 
+        /// <summary>
+        /// Explicit argument, applied on service instantiation.
+        /// </summary>
         public object? ExplicitArgs { get; }
 
+        /// <summary>
+        /// The concrete factory. Not null when the entry is <see cref="ServiceEntryStates.Built"/>.
+        /// </summary>
         public Func<IInjector, Type, object>? BuiltFactory => FBuiltFactory;
 
+        /// <summary>
+        /// The applied proxies.
+        /// </summary>
         public IReadOnlyList<Expression<Func<IInjector, Type, object, object>>> Proxies =>
             (IReadOnlyList<Expression<Func<IInjector, Type, object, object>>>?) FProxies ?? Array<Expression<Func<IInjector, Type, object, object>>>.Empty;
     }
