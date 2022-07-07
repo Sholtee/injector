@@ -1416,6 +1416,152 @@ references:
   commentId: F:Solti.Utils.DI.Interfaces.ServiceResolutionMode.JIT
   fullName: Solti.Utils.DI.Interfaces.ServiceResolutionMode.JIT
   nameWithType: ServiceResolutionMode.JIT
+- uid: Solti.Utils.DI.Internals
+  name: Solti.Utils.DI.Internals
+  href: Solti.Utils.DI.Internals.html
+  commentId: N:Solti.Utils.DI.Internals
+  fullName: Solti.Utils.DI.Internals
+  nameWithType: Solti.Utils.DI.Internals
+- uid: Solti.Utils.DI.Internals.ProducibleServiceEntry
+  name: ProducibleServiceEntry
+  href: Solti.Utils.DI.Internals.ProducibleServiceEntry.html
+  commentId: T:Solti.Utils.DI.Internals.ProducibleServiceEntry
+  fullName: Solti.Utils.DI.Internals.ProducibleServiceEntry
+  nameWithType: ProducibleServiceEntry
+- uid: Solti.Utils.DI.Internals.ProducibleServiceEntry.#ctor(System.Type,System.String)
+  name: ProducibleServiceEntry(Type, String)
+  href: Solti.Utils.DI.Internals.ProducibleServiceEntry.html#Solti_Utils_DI_Internals_ProducibleServiceEntry__ctor_System_Type_System_String_
+  commentId: M:Solti.Utils.DI.Internals.ProducibleServiceEntry.#ctor(System.Type,System.String)
+  fullName: Solti.Utils.DI.Internals.ProducibleServiceEntry.ProducibleServiceEntry(System.Type, System.String)
+  nameWithType: ProducibleServiceEntry.ProducibleServiceEntry(Type, String)
+- uid: Solti.Utils.DI.Internals.ProducibleServiceEntry.#ctor(System.Type,System.String,System.Linq.Expressions.Expression{System.Func{Solti.Utils.DI.Interfaces.IInjector,System.Type,System.Object}})
+  name: ProducibleServiceEntry(Type, String, Expression<Func<IInjector, Type, Object>>)
+  href: Solti.Utils.DI.Internals.ProducibleServiceEntry.html#Solti_Utils_DI_Internals_ProducibleServiceEntry__ctor_System_Type_System_String_System_Linq_Expressions_Expression_System_Func_Solti_Utils_DI_Interfaces_IInjector_System_Type_System_Object___
+  commentId: M:Solti.Utils.DI.Internals.ProducibleServiceEntry.#ctor(System.Type,System.String,System.Linq.Expressions.Expression{System.Func{Solti.Utils.DI.Interfaces.IInjector,System.Type,System.Object}})
+  name.vb: ProducibleServiceEntry(Type, String, Expression(Of Func(Of IInjector, Type, Object)))
+  fullName: Solti.Utils.DI.Internals.ProducibleServiceEntry.ProducibleServiceEntry(System.Type, System.String, System.Linq.Expressions.Expression<System.Func<Solti.Utils.DI.Interfaces.IInjector, System.Type, System.Object>>)
+  fullName.vb: Solti.Utils.DI.Internals.ProducibleServiceEntry.ProducibleServiceEntry(System.Type, System.String, System.Linq.Expressions.Expression(Of System.Func(Of Solti.Utils.DI.Interfaces.IInjector, System.Type, System.Object)))
+  nameWithType: ProducibleServiceEntry.ProducibleServiceEntry(Type, String, Expression<Func<IInjector, Type, Object>>)
+  nameWithType.vb: ProducibleServiceEntry.ProducibleServiceEntry(Type, String, Expression(Of Func(Of IInjector, Type, Object)))
+- uid: Solti.Utils.DI.Internals.ProducibleServiceEntry.#ctor(System.Type,System.String,System.Type)
+  name: ProducibleServiceEntry(Type, String, Type)
+  href: Solti.Utils.DI.Internals.ProducibleServiceEntry.html#Solti_Utils_DI_Internals_ProducibleServiceEntry__ctor_System_Type_System_String_System_Type_
+  commentId: M:Solti.Utils.DI.Internals.ProducibleServiceEntry.#ctor(System.Type,System.String,System.Type)
+  fullName: Solti.Utils.DI.Internals.ProducibleServiceEntry.ProducibleServiceEntry(System.Type, System.String, System.Type)
+  nameWithType: ProducibleServiceEntry.ProducibleServiceEntry(Type, String, Type)
+- uid: Solti.Utils.DI.Internals.ProducibleServiceEntry.#ctor(System.Type,System.String,System.Type,System.Object)
+  name: ProducibleServiceEntry(Type, String, Type, Object)
+  href: Solti.Utils.DI.Internals.ProducibleServiceEntry.html#Solti_Utils_DI_Internals_ProducibleServiceEntry__ctor_System_Type_System_String_System_Type_System_Object_
+  commentId: M:Solti.Utils.DI.Internals.ProducibleServiceEntry.#ctor(System.Type,System.String,System.Type,System.Object)
+  fullName: Solti.Utils.DI.Internals.ProducibleServiceEntry.ProducibleServiceEntry(System.Type, System.String, System.Type, System.Object)
+  nameWithType: ProducibleServiceEntry.ProducibleServiceEntry(Type, String, Type, Object)
+- uid: Solti.Utils.DI.Internals.ProducibleServiceEntry.#ctor*
+  name: ProducibleServiceEntry
+  href: Solti.Utils.DI.Internals.ProducibleServiceEntry.html#Solti_Utils_DI_Internals_ProducibleServiceEntry__ctor_
+  commentId: Overload:Solti.Utils.DI.Internals.ProducibleServiceEntry.#ctor
+  isSpec: "True"
+  fullName: Solti.Utils.DI.Internals.ProducibleServiceEntry.ProducibleServiceEntry
+  nameWithType: ProducibleServiceEntry.ProducibleServiceEntry
+- uid: Solti.Utils.DI.Internals.ProducibleServiceEntry.ApplyProxy(System.Linq.Expressions.Expression{System.Func{Solti.Utils.DI.Interfaces.IInjector,System.Type,System.Object,System.Object}})
+  name: ApplyProxy(Expression<Func<IInjector, Type, Object, Object>>)
+  href: Solti.Utils.DI.Internals.ProducibleServiceEntry.html#Solti_Utils_DI_Internals_ProducibleServiceEntry_ApplyProxy_System_Linq_Expressions_Expression_System_Func_Solti_Utils_DI_Interfaces_IInjector_System_Type_System_Object_System_Object___
+  commentId: M:Solti.Utils.DI.Internals.ProducibleServiceEntry.ApplyProxy(System.Linq.Expressions.Expression{System.Func{Solti.Utils.DI.Interfaces.IInjector,System.Type,System.Object,System.Object}})
+  name.vb: ApplyProxy(Expression(Of Func(Of IInjector, Type, Object, Object)))
+  fullName: Solti.Utils.DI.Internals.ProducibleServiceEntry.ApplyProxy(System.Linq.Expressions.Expression<System.Func<Solti.Utils.DI.Interfaces.IInjector, System.Type, System.Object, System.Object>>)
+  fullName.vb: Solti.Utils.DI.Internals.ProducibleServiceEntry.ApplyProxy(System.Linq.Expressions.Expression(Of System.Func(Of Solti.Utils.DI.Interfaces.IInjector, System.Type, System.Object, System.Object)))
+  nameWithType: ProducibleServiceEntry.ApplyProxy(Expression<Func<IInjector, Type, Object, Object>>)
+  nameWithType.vb: ProducibleServiceEntry.ApplyProxy(Expression(Of Func(Of IInjector, Type, Object, Object)))
+- uid: Solti.Utils.DI.Internals.ProducibleServiceEntry.ApplyProxy*
+  name: ApplyProxy
+  href: Solti.Utils.DI.Internals.ProducibleServiceEntry.html#Solti_Utils_DI_Internals_ProducibleServiceEntry_ApplyProxy_
+  commentId: Overload:Solti.Utils.DI.Internals.ProducibleServiceEntry.ApplyProxy
+  isSpec: "True"
+  fullName: Solti.Utils.DI.Internals.ProducibleServiceEntry.ApplyProxy
+  nameWithType: ProducibleServiceEntry.ApplyProxy
+- uid: Solti.Utils.DI.Internals.ProducibleServiceEntry.BuiltFactory
+  name: BuiltFactory
+  href: Solti.Utils.DI.Internals.ProducibleServiceEntry.html#Solti_Utils_DI_Internals_ProducibleServiceEntry_BuiltFactory
+  commentId: P:Solti.Utils.DI.Internals.ProducibleServiceEntry.BuiltFactory
+  fullName: Solti.Utils.DI.Internals.ProducibleServiceEntry.BuiltFactory
+  nameWithType: ProducibleServiceEntry.BuiltFactory
+- uid: Solti.Utils.DI.Internals.ProducibleServiceEntry.BuiltFactory*
+  name: BuiltFactory
+  href: Solti.Utils.DI.Internals.ProducibleServiceEntry.html#Solti_Utils_DI_Internals_ProducibleServiceEntry_BuiltFactory_
+  commentId: Overload:Solti.Utils.DI.Internals.ProducibleServiceEntry.BuiltFactory
+  isSpec: "True"
+  fullName: Solti.Utils.DI.Internals.ProducibleServiceEntry.BuiltFactory
+  nameWithType: ProducibleServiceEntry.BuiltFactory
+- uid: Solti.Utils.DI.Internals.ProducibleServiceEntry.CreateInstance(Solti.Utils.DI.Interfaces.IInjector,System.Object@)
+  name: CreateInstance(IInjector, out Object)
+  href: Solti.Utils.DI.Internals.ProducibleServiceEntry.html#Solti_Utils_DI_Internals_ProducibleServiceEntry_CreateInstance_Solti_Utils_DI_Interfaces_IInjector_System_Object__
+  commentId: M:Solti.Utils.DI.Internals.ProducibleServiceEntry.CreateInstance(Solti.Utils.DI.Interfaces.IInjector,System.Object@)
+  name.vb: CreateInstance(IInjector, ByRef Object)
+  fullName: Solti.Utils.DI.Internals.ProducibleServiceEntry.CreateInstance(Solti.Utils.DI.Interfaces.IInjector, out System.Object)
+  fullName.vb: Solti.Utils.DI.Internals.ProducibleServiceEntry.CreateInstance(Solti.Utils.DI.Interfaces.IInjector, ByRef System.Object)
+  nameWithType: ProducibleServiceEntry.CreateInstance(IInjector, out Object)
+  nameWithType.vb: ProducibleServiceEntry.CreateInstance(IInjector, ByRef Object)
+- uid: Solti.Utils.DI.Internals.ProducibleServiceEntry.CreateInstance*
+  name: CreateInstance
+  href: Solti.Utils.DI.Internals.ProducibleServiceEntry.html#Solti_Utils_DI_Internals_ProducibleServiceEntry_CreateInstance_
+  commentId: Overload:Solti.Utils.DI.Internals.ProducibleServiceEntry.CreateInstance
+  isSpec: "True"
+  fullName: Solti.Utils.DI.Internals.ProducibleServiceEntry.CreateInstance
+  nameWithType: ProducibleServiceEntry.CreateInstance
+- uid: Solti.Utils.DI.Internals.ProducibleServiceEntry.ExplicitArgs
+  name: ExplicitArgs
+  href: Solti.Utils.DI.Internals.ProducibleServiceEntry.html#Solti_Utils_DI_Internals_ProducibleServiceEntry_ExplicitArgs
+  commentId: P:Solti.Utils.DI.Internals.ProducibleServiceEntry.ExplicitArgs
+  fullName: Solti.Utils.DI.Internals.ProducibleServiceEntry.ExplicitArgs
+  nameWithType: ProducibleServiceEntry.ExplicitArgs
+- uid: Solti.Utils.DI.Internals.ProducibleServiceEntry.ExplicitArgs*
+  name: ExplicitArgs
+  href: Solti.Utils.DI.Internals.ProducibleServiceEntry.html#Solti_Utils_DI_Internals_ProducibleServiceEntry_ExplicitArgs_
+  commentId: Overload:Solti.Utils.DI.Internals.ProducibleServiceEntry.ExplicitArgs
+  isSpec: "True"
+  fullName: Solti.Utils.DI.Internals.ProducibleServiceEntry.ExplicitArgs
+  nameWithType: ProducibleServiceEntry.ExplicitArgs
+- uid: Solti.Utils.DI.Internals.ProducibleServiceEntry.Proxies
+  name: Proxies
+  href: Solti.Utils.DI.Internals.ProducibleServiceEntry.html#Solti_Utils_DI_Internals_ProducibleServiceEntry_Proxies
+  commentId: P:Solti.Utils.DI.Internals.ProducibleServiceEntry.Proxies
+  fullName: Solti.Utils.DI.Internals.ProducibleServiceEntry.Proxies
+  nameWithType: ProducibleServiceEntry.Proxies
+- uid: Solti.Utils.DI.Internals.ProducibleServiceEntry.Proxies*
+  name: Proxies
+  href: Solti.Utils.DI.Internals.ProducibleServiceEntry.html#Solti_Utils_DI_Internals_ProducibleServiceEntry_Proxies_
+  commentId: Overload:Solti.Utils.DI.Internals.ProducibleServiceEntry.Proxies
+  isSpec: "True"
+  fullName: Solti.Utils.DI.Internals.ProducibleServiceEntry.Proxies
+  nameWithType: ProducibleServiceEntry.Proxies
+- uid: Solti.Utils.DI.Internals.ProducibleServiceEntry.SetValidated
+  name: SetValidated()
+  href: Solti.Utils.DI.Internals.ProducibleServiceEntry.html#Solti_Utils_DI_Internals_ProducibleServiceEntry_SetValidated
+  commentId: M:Solti.Utils.DI.Internals.ProducibleServiceEntry.SetValidated
+  fullName: Solti.Utils.DI.Internals.ProducibleServiceEntry.SetValidated()
+  nameWithType: ProducibleServiceEntry.SetValidated()
+- uid: Solti.Utils.DI.Internals.ProducibleServiceEntry.SetValidated*
+  name: SetValidated
+  href: Solti.Utils.DI.Internals.ProducibleServiceEntry.html#Solti_Utils_DI_Internals_ProducibleServiceEntry_SetValidated_
+  commentId: Overload:Solti.Utils.DI.Internals.ProducibleServiceEntry.SetValidated
+  isSpec: "True"
+  fullName: Solti.Utils.DI.Internals.ProducibleServiceEntry.SetValidated
+  nameWithType: ProducibleServiceEntry.SetValidated
+- uid: Solti.Utils.DI.Internals.ProducibleServiceEntry.VisitFactory(System.Func{System.Linq.Expressions.LambdaExpression,System.Linq.Expressions.LambdaExpression},Solti.Utils.DI.Interfaces.FactoryVisitorOptions)
+  name: VisitFactory(Func<LambdaExpression, LambdaExpression>, FactoryVisitorOptions)
+  href: Solti.Utils.DI.Internals.ProducibleServiceEntry.html#Solti_Utils_DI_Internals_ProducibleServiceEntry_VisitFactory_System_Func_System_Linq_Expressions_LambdaExpression_System_Linq_Expressions_LambdaExpression__Solti_Utils_DI_Interfaces_FactoryVisitorOptions_
+  commentId: M:Solti.Utils.DI.Internals.ProducibleServiceEntry.VisitFactory(System.Func{System.Linq.Expressions.LambdaExpression,System.Linq.Expressions.LambdaExpression},Solti.Utils.DI.Interfaces.FactoryVisitorOptions)
+  name.vb: VisitFactory(Func(Of LambdaExpression, LambdaExpression), FactoryVisitorOptions)
+  fullName: Solti.Utils.DI.Internals.ProducibleServiceEntry.VisitFactory(System.Func<System.Linq.Expressions.LambdaExpression, System.Linq.Expressions.LambdaExpression>, Solti.Utils.DI.Interfaces.FactoryVisitorOptions)
+  fullName.vb: Solti.Utils.DI.Internals.ProducibleServiceEntry.VisitFactory(System.Func(Of System.Linq.Expressions.LambdaExpression, System.Linq.Expressions.LambdaExpression), Solti.Utils.DI.Interfaces.FactoryVisitorOptions)
+  nameWithType: ProducibleServiceEntry.VisitFactory(Func<LambdaExpression, LambdaExpression>, FactoryVisitorOptions)
+  nameWithType.vb: ProducibleServiceEntry.VisitFactory(Func(Of LambdaExpression, LambdaExpression), FactoryVisitorOptions)
+- uid: Solti.Utils.DI.Internals.ProducibleServiceEntry.VisitFactory*
+  name: VisitFactory
+  href: Solti.Utils.DI.Internals.ProducibleServiceEntry.html#Solti_Utils_DI_Internals_ProducibleServiceEntry_VisitFactory_
+  commentId: Overload:Solti.Utils.DI.Internals.ProducibleServiceEntry.VisitFactory
+  isSpec: "True"
+  fullName: Solti.Utils.DI.Internals.ProducibleServiceEntry.VisitFactory
+  nameWithType: ProducibleServiceEntry.VisitFactory
 - uid: Solti.Utils.DI.IServiceCollectionAdvancedExtensions
   name: IServiceCollectionAdvancedExtensions
   href: Solti.Utils.DI.IServiceCollectionAdvancedExtensions.html
