@@ -114,6 +114,11 @@ namespace Solti.Utils.DI.Interfaces
         /// </summary>
         public virtual void VisitFactory(Func<LambdaExpression, LambdaExpression> visitor, FactoryVisitorOptions options) => throw new NotSupportedException();
 
+        /// <summary>
+        /// Creates a resolver expression that instantiates the represented service using the <see cref="IInstanceFactory"/> interface.
+        /// </summary>
+        public virtual Expression CreateResolverExpression(ParameterExpression injector, ref int slot) => throw new NotSupportedException();
+
         /// <inheritdoc/>
         public override string ToString() => ToString(false); 
 

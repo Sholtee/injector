@@ -10,7 +10,7 @@ namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
 
-    internal sealed class ScopedServiceEntry : ProducibleServiceEntry
+    internal sealed class ScopedServiceEntry : ScopedServiceEntryBase
     {
         public ScopedServiceEntry(Type @interface, string? name, Expression<Func<IInjector, Type, object>> factory) : base(@interface, name, factory)
         {

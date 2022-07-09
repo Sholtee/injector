@@ -12,7 +12,7 @@ namespace Solti.Utils.DI.Internals
     using Primitives.Patterns;
     using Primitives.Threading;
 
-    internal sealed class PooledServiceEntry : ProducibleServiceEntry
+    internal sealed class PooledServiceEntry : ScopedServiceEntryBase
     {
         private Type? FPoolType;
         public Type PoolType => FPoolType ??= typeof(IPool<>).MakeGenericType(Interface);

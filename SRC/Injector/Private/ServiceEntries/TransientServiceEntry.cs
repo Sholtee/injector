@@ -10,7 +10,7 @@ namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
 
-    internal sealed class TransientServiceEntry : ProducibleServiceEntry
+    internal sealed partial class TransientServiceEntry : ProducibleServiceEntry
     {
         public TransientServiceEntry(Type @interface, string? name, Expression<Func<IInjector, Type, object>> factory) : base(@interface, name, factory)
         {

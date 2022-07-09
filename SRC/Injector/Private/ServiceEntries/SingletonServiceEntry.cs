@@ -10,7 +10,7 @@ namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
 
-    internal sealed class SingletonServiceEntry : ProducibleServiceEntry
+    internal sealed class SingletonServiceEntry : SingletonServiceEntryBase
     {
         public SingletonServiceEntry(Type @interface, string? name, Expression<Func<IInjector, Type, object>> factory) : base(@interface, name, factory)
         {
