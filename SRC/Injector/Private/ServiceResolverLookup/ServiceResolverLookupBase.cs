@@ -21,14 +21,14 @@ namespace Solti.Utils.DI.Internals
 
         private readonly object FLock = new();
 
+        private int FSlots;
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private IServiceResolver CreateResolver(AbstractServiceEntry entry) => entry.Features.HasFlag(ServiceEntryFeatures.CreateSingleInstance)
-            ? entry.Features.HasFlag(ServiceEntryFeatures.Shared)
-                ? new GlobalScopedServiceResolver(entry, Slots++)
-                : new ScopedServiceResolver(entry, Slots++)
-            : entry.Features.HasFlag(ServiceEntryFeatures.Shared)
-                ? new GlobalServiceResolver(entry)
-                : new ServiceResolver(entry);
+        private ServiceResolver CreateResolver(AbstractServiceEntry entry) => new ServiceResolver
+        (
+            entry,
+            entry.CreateResolver(ref FSlots)
+        );
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private List<(Type Interface, string? Name)> RegisterEntries(IEnumerable<AbstractServiceEntry> entries)
@@ -55,11 +55,11 @@ namespace Solti.Utils.DI.Internals
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private IServiceResolver? GetEarly(Type iface, string? name)
+        private ServiceResolver? GetEarly(Type iface, string? name)
         {
             Assert(!FInitialized, "This method is for initialization purposes only");
 
-            if (!TryGetResolver(iface, name, out IServiceResolver resolver))
+            if (!TryGetResolver(iface, name, out ServiceResolver resolver))
             {
                 if (!iface.IsGenericType || !TryGetGenericEntry(iface.GetGenericTypeDefinition(), name, out AbstractServiceEntry genericEntry))
                     return null;
@@ -82,11 +82,11 @@ namespace Solti.Utils.DI.Internals
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private IServiceResolver? GetCore(Type iface, string? name)
+        private ServiceResolver? GetCore(Type iface, string? name)
         {
             Assert(FInitialized, "This method cannot be called in initialization phase");
 
-            if (TryGetResolver(iface, name, out IServiceResolver resolver))
+            if (TryGetResolver(iface, name, out ServiceResolver resolver))
                 return resolver;
 
             if (!iface.IsGenericType || !TryGetGenericEntry(iface.GetGenericTypeDefinition(), name, out AbstractServiceEntry genericEntry))
@@ -126,9 +126,9 @@ namespace Solti.Utils.DI.Internals
         /// Tries to add the given <paramref name="resolver"/> to the underlying collection.
         /// </summary>
         /// <remarks>This method is called in the lookup initialization phase meaning it shall not deal with parallel access.</remarks>
-        protected abstract bool TryAddResolver(IServiceResolver resolver);
+        protected abstract bool TryAddResolver(ServiceResolver resolver);
 
-        protected abstract void AddResolver(IServiceResolver resolver);
+        protected abstract void AddResolver(ServiceResolver resolver);
 
         /// <summary>
         /// Registers the given open generic <paramref name="entry"/>.
@@ -136,7 +136,7 @@ namespace Solti.Utils.DI.Internals
         /// <remarks>This method is called in the lookup initialization phase meaning it shall not deal with parallel access.</remarks>
         protected abstract bool TryAddGenericEntry(AbstractServiceEntry entry);
 
-        protected abstract bool TryGetResolver(Type iface, string? name, out IServiceResolver resolver);
+        protected abstract bool TryGetResolver(Type iface, string? name, out ServiceResolver resolver);
 
         protected abstract bool TryGetGenericEntry(Type iface, string? name, out AbstractServiceEntry genericEntry);
 
@@ -168,11 +168,11 @@ namespace Solti.Utils.DI.Internals
         }
         #endregion
 
-        public int Slots { get; private set; }
+        public int Slots => FSlots;
 
-        public IServiceResolver? Get(Type iface, string? name)
+        public ServiceResolver? Get(Type iface, string? name)
         {
-            IServiceResolver? resolver = FInitialized
+            ServiceResolver? resolver = FInitialized
                 ? GetCore(iface, name)
                 : GetEarly(iface, name);
 

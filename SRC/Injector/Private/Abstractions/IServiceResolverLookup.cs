@@ -9,7 +9,7 @@ using System.Diagnostics.CodeAnalysis;
 namespace Solti.Utils.DI.Internals
 {
 #if DEBUG // test methods must be public -> make internal types public so they can be passed as parameter
-    #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
     public
 #else
     internal
@@ -17,7 +17,7 @@ namespace Solti.Utils.DI.Internals
     interface IServiceResolverLookup
     {
         [SuppressMessage("Naming", "CA1716:Identifiers should not match keywords")]
-        IServiceResolver? Get(Type iface, string? name);
+        ServiceResolver? Get(Type iface, string? name);
 
         int Slots { get; }
     }

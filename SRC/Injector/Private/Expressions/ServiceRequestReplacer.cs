@@ -31,7 +31,7 @@ namespace Solti.Utils.DI.Internals
             // It specializes generic services ahead of time
             //
 
-            IServiceResolver? resolver = FLookup.Get(iface, name);
+            ServiceResolver? resolver = FLookup.Get(iface, name);
             if (resolver is null)
             {
                 //
@@ -52,8 +52,12 @@ namespace Solti.Utils.DI.Internals
             // injector.[Try]Get(iface, name) -> resolver.Resolve((IInstanceFactory) injector)
             //
 
-            Expression resolve = resolver!.GetResolveExpression
+            Func<IInstanceFactory, object> resolveFn = resolver!.Resolve;
+
+            Expression resolve = Expression.Call
             (
+                Expression.Constant(resolveFn.Target),
+                resolveFn.Method,
                 Expression.Convert(target, typeof(IInstanceFactory))
             );
 
