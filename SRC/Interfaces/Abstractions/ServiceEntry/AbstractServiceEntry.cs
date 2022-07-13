@@ -105,6 +105,11 @@ namespace Solti.Utils.DI.Interfaces
         public abstract object CreateInstance(IInjector scope, out object? lifetime);
 
         /// <summary>
+        /// Creates a resolver function that instantiates the represented service.
+        /// </summary>
+        public virtual Func<IInstanceFactory, object> CreateResolver(ref int slot) => throw new NotSupportedException();
+
+        /// <summary>
         /// If supported, sets the <see cref="State"/> of this entry to <see cref="ServiceEntryStates.Validated"/>.
         /// </summary>
         public virtual void SetValidated() => throw new NotSupportedException();
@@ -113,11 +118,6 @@ namespace Solti.Utils.DI.Interfaces
         /// Builds this entry.
         /// </summary>
         public virtual void VisitFactory(Func<LambdaExpression, LambdaExpression> visitor, FactoryVisitorOptions options) => throw new NotSupportedException();
-
-        /// <summary>
-        /// Creates a resolver expression that instantiates the represented service using the <see cref="IInstanceFactory"/> interface.
-        /// </summary>
-        public virtual Expression CreateResolverExpression(ParameterExpression injector, ref int slot) => throw new NotSupportedException();
 
         /// <inheritdoc/>
         public override string ToString() => ToString(false); 
