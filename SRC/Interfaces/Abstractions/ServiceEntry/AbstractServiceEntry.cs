@@ -102,7 +102,7 @@ namespace Solti.Utils.DI.Interfaces
         /// <summary>
         /// Creates a new service instance. Should throw if the <see cref="State"/> is not <see cref="ServiceEntryStates.Built"/>.
         /// </summary>
-        public abstract object CreateInstance(IInjector scope, out object? lifetime);
+        public virtual object CreateInstance(IInjector scope, out object? lifetime) => throw new NotSupportedException();
 
         /// <summary>
         /// Creates a resolver function that instantiates the represented service.
