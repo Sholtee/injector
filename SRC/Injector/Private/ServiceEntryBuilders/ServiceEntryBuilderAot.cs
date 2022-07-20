@@ -48,7 +48,7 @@ namespace Solti.Utils.DI.Internals
             FPath.Push(requested);
             try
             {
-                requested.VisitFactory(FReplacer.VisitLambda, FactoryVisitorOptions.BuildDelegate);
+                requested.VisitFactory(FReplacer.VisitLambda, VisitFactoryOptions.BuildDelegate);
             }
             finally
             {

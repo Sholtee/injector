@@ -17,7 +17,7 @@ namespace Solti.Utils.DI.Internals
     public abstract partial class ProducibleServiceEntry
     {
         /// <inheritdoc/>
-        public override void VisitFactory(Func<LambdaExpression, LambdaExpression> visitor!!, FactoryVisitorOptions options)
+        public override void VisitFactory(Func<LambdaExpression, LambdaExpression> visitor!!, VisitFactoryOptions options)
         {
             if (Factory is null)
                 throw new InvalidOperationException(NOT_PRODUCIBLE);
@@ -56,7 +56,7 @@ namespace Solti.Utils.DI.Internals
             }
             else factory = (Expression<Func<IInjector, Type, object>>) visitor(Factory);
 
-            if (options.HasFlag(FactoryVisitorOptions.BuildDelegate))
+            if (options.HasFlag(VisitFactoryOptions.BuildDelegate))
             {
                 Debug.WriteLine($"Created factory: {Environment.NewLine}{factory.GetDebugView()}");
                 FBuiltFactory = factory.Compile();

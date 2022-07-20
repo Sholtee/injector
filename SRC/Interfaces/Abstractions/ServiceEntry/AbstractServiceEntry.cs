@@ -117,7 +117,7 @@ namespace Solti.Utils.DI.Interfaces
         /// <summary>
         /// Builds this entry.
         /// </summary>
-        public virtual void VisitFactory(Func<LambdaExpression, LambdaExpression> visitor, FactoryVisitorOptions options) => throw new NotSupportedException();
+        public virtual void VisitFactory(Func<LambdaExpression, LambdaExpression> visitor, VisitFactoryOptions options) => throw new NotSupportedException();
 
         /// <inheritdoc/>
         public override string ToString() => ToString(false); 

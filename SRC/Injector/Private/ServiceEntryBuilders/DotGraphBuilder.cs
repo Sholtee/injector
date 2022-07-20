@@ -70,7 +70,7 @@ namespace Solti.Utils.DI.Internals
    
             try
             {
-                entry.VisitFactory(FVisitor.VisitLambda, FactoryVisitorOptions.Default);
+                entry.VisitFactory(FVisitor.VisitLambda, VisitFactoryOptions.Default);
             }
             finally
             {
