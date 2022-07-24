@@ -102,7 +102,7 @@ namespace Solti.Utils.DI.Internals
         #region Protected
         protected readonly RedBlackTree<ResolutionNode<AbstractServiceEntry>> FGetGenericEntrySwitch = new(NodeComparer.Instance);
 
-        protected volatile RedBlackTree<ResolutionNode<IServiceResolver>> FGetResolverSwitch = new(NodeComparer.Instance);
+        protected volatile RedBlackTree<ResolutionNode<ServiceResolver>> FGetResolverSwitch = new(NodeComparer.Instance);
 
         protected sealed class ResolutionNode<TResult> : RedBlackTreeNode, ICompositeKey
         {
@@ -124,12 +124,12 @@ namespace Solti.Utils.DI.Internals
             public TResult Result { get; }
         }
 
-        protected override bool TryAddResolver(IServiceResolver resolver) => FGetResolverSwitch.Add
+        protected override bool TryAddResolver(ServiceResolver resolver) => FGetResolverSwitch.Add
         (
             CreateNode(resolver.RelatedEntry, resolver)
         );
 
-        protected override void AddResolver(IServiceResolver resolver) => FGetResolverSwitch = FGetResolverSwitch.With
+        protected override void AddResolver(ServiceResolver resolver) => FGetResolverSwitch = FGetResolverSwitch.With
         (
             CreateNode(resolver.RelatedEntry, resolver)
         );
@@ -139,7 +139,7 @@ namespace Solti.Utils.DI.Internals
             CreateNode(entry, entry)
         );
 
-        protected override bool TryGetResolver(Type iface, string? name, out IServiceResolver resolver) => TryGet
+        protected override bool TryGetResolver(Type iface, string? name, out ServiceResolver resolver) => TryGet
         (
             FGetResolverSwitch.Root,
             (long) iface.TypeHandle.Value,

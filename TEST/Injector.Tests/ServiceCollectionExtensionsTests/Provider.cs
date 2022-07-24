@@ -57,7 +57,7 @@ namespace Solti.Utils.DI.Tests
             AbstractServiceEntry entry = Collection
                 .Provider<IList, ListProvider>(lifetime)
                 .LastEntry;
-            entry.VisitFactory(_ => _, FactoryVisitorOptions.BuildDelegate);
+            entry.VisitFactory(_ => _, VisitFactoryOptions.BuildDelegate);
 
             var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
             mockInjector
@@ -73,7 +73,7 @@ namespace Solti.Utils.DI.Tests
             AbstractServiceEntry entry = Collection
                 .Provider<IList<int>, GenericListProvider>(lifetime)
                 .LastEntry;
-            entry.VisitFactory(_ => _, FactoryVisitorOptions.BuildDelegate);
+            entry.VisitFactory(_ => _, VisitFactoryOptions.BuildDelegate);
 
             var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
             mockInjector

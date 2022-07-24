@@ -14,9 +14,9 @@ namespace Solti.Utils.DI.Internals
     {
         private readonly Func<long, string?, AbstractServiceEntry?> FGetGenericEntry;
 
-        private volatile Func<long, string?, IServiceResolver?> FGetResolver;
+        private volatile Func<long, string?, ServiceResolver?> FGetResolver;
 
-        protected override void AddResolver(IServiceResolver resolver)
+        protected override void AddResolver(ServiceResolver resolver)
         {
             base.AddResolver(resolver);
 
@@ -29,7 +29,7 @@ namespace Solti.Utils.DI.Internals
                 FGetResolver = BuildSwitch(FGetResolverSwitch);
         }
 
-        protected override bool TryGetResolver(Type iface, string? name, out IServiceResolver resolver)
+        protected override bool TryGetResolver(Type iface, string? name, out ServiceResolver resolver)
         {
             if (!FInitialized)
                 return base.TryGetResolver(iface, name, out resolver);

@@ -12,11 +12,11 @@ namespace Solti.Utils.DI.Internals
     using Interfaces;
     using Interfaces.Properties;
 
-    internal sealed class InstanceServiceEntry : AbstractServiceEntry
+    internal sealed class InstanceServiceEntry : SingletonServiceEntryBase
     {
         public object Instance { get; }
 
-        public InstanceServiceEntry(Type @interface!!, string? name, object instance!!) : base(@interface, name, null, null)
+        public InstanceServiceEntry(Type @interface!!, string? name, object instance!!) : base(@interface, name)
         {
             Instance = instance;
 

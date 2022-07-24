@@ -102,7 +102,8 @@ namespace Solti.Utils.DI.Internals
         }
 
         #region IInstanceFactory
-        object IInstanceFactory.CreateInstance(AbstractServiceEntry requested)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public object CreateInstance(AbstractServiceEntry requested)
         {
             //
             // In the same thread locks can be taken recursively.
@@ -121,7 +122,8 @@ namespace Solti.Utils.DI.Internals
             }
         }
 
-        object IInstanceFactory.GetOrCreateInstance(AbstractServiceEntry requested, int slot)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public object GetOrCreateInstance(AbstractServiceEntry requested, int slot)
         {
             if (slot < FSlots.Length && FSlots[slot] is not null)
                 return FSlots[slot]!;
@@ -148,7 +150,11 @@ namespace Solti.Utils.DI.Internals
             }
         }
 
-        public IInstanceFactory? Super { get; }
+        public IInstanceFactory? Super
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get;
+        }
         #endregion
 
         #region IInjector

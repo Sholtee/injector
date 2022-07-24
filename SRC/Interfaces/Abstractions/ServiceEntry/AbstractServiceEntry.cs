@@ -99,7 +99,12 @@ namespace Solti.Utils.DI.Interfaces
         /// <summary>
         /// Creates a new service instance. Should throw if the <see cref="State"/> is not <see cref="ServiceEntryStates.Built"/>.
         /// </summary>
-        public abstract object CreateInstance(IInjector scope, out object? lifetime);
+        public virtual object CreateInstance(IInjector scope, out object? lifetime) => throw new NotSupportedException();
+
+        /// <summary>
+        /// Creates a resolver function that instantiates the represented service.
+        /// </summary>
+        public virtual Func<IInstanceFactory, object> CreateResolver(ref int slot) => throw new NotSupportedException();
 
         /// <summary>
         /// If supported, sets the <see cref="State"/> of this entry to <see cref="ServiceEntryStates.Validated"/>.
@@ -109,7 +114,7 @@ namespace Solti.Utils.DI.Interfaces
         /// <summary>
         /// Builds this entry.
         /// </summary>
-        public virtual void VisitFactory(Func<LambdaExpression, LambdaExpression> visitor, FactoryVisitorOptions options) => throw new NotSupportedException();
+        public virtual void VisitFactory(Func<LambdaExpression, LambdaExpression> visitor, VisitFactoryOptions options) => throw new NotSupportedException();
 
         /// <inheritdoc/>
         public override string ToString() => ToString(false); 

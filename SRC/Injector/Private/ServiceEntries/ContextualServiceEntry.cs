@@ -9,7 +9,7 @@ namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
 
-    internal sealed class ContextualServiceEntry : ProducibleServiceEntry
+    internal sealed class ContextualServiceEntry : ScopedServiceEntryBase
     {
         public new Func<IInjector, Type, object> Factory { get; }
 

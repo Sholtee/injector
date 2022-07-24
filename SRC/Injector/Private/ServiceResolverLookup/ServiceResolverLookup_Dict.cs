@@ -29,7 +29,7 @@ namespace Solti.Utils.DI.Internals
 
         private readonly Dictionary<CompositeKey, AbstractServiceEntry> FGenericEntries = new();
 
-        private volatile Dictionary<CompositeKey, IServiceResolver> FResolvers = new();
+        private volatile Dictionary<CompositeKey, ServiceResolver> FResolvers = new();
 
         private static bool TryAdd<TValue>(Dictionary<CompositeKey, TValue> target, AbstractServiceEntry entry, TValue value)
         {
@@ -51,9 +51,9 @@ namespace Solti.Utils.DI.Internals
 
         protected override bool TryAddGenericEntry(AbstractServiceEntry entry) => TryAdd(FGenericEntries, entry, entry);
 
-        protected override void AddResolver(IServiceResolver resolver)
+        protected override void AddResolver(ServiceResolver resolver)
         {
-            Dictionary<CompositeKey, IServiceResolver> extendedResolvers = new(FResolvers);          
+            Dictionary<CompositeKey, ServiceResolver> extendedResolvers = new(FResolvers);          
             
             extendedResolvers.Add
             (
@@ -64,10 +64,10 @@ namespace Solti.Utils.DI.Internals
             FResolvers = extendedResolvers;
         }
 
-        protected override bool TryAddResolver(IServiceResolver resolver) =>
+        protected override bool TryAddResolver(ServiceResolver resolver) =>
             TryAdd(FResolvers, resolver.RelatedEntry, resolver);
 
-        protected override bool TryGetResolver(Type iface, string? name, out IServiceResolver resolver) =>
+        protected override bool TryGetResolver(Type iface, string? name, out ServiceResolver resolver) =>
             FResolvers.TryGetValue(new CompositeKey(iface, name), out resolver);
 
         protected override bool TryGetGenericEntry(Type iface, string? name, out AbstractServiceEntry genericEntry) =>

@@ -5,6 +5,7 @@
 ********************************************************************************/
 using System;
 using System.Linq.Expressions;
+using System.Runtime.CompilerServices;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -22,6 +23,24 @@ namespace Solti.Utils.DI.Internals
 
         public TransientServiceEntry(Type @interface, string? name, Type implementation, object explicitArgs) : base(@interface, name, implementation, explicitArgs)
         {
+        }
+
+        public override Func<IInstanceFactory, object> CreateResolver(ref int slot)
+        {
+            return Resolve;
+
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            object Resolve(IInstanceFactory factory)
+            {
+                //
+                // Inlining works against non-interface, non-virtual methods only
+                //
+
+                if (factory is Injector injector)
+                    return injector.CreateInstance(this);
+
+                return factory.CreateInstance(this);
+            }
         }
 
         public override AbstractServiceEntry Specialize(params Type[] genericArguments!!) => this switch
