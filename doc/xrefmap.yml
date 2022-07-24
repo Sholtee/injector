@@ -101,6 +101,22 @@ references:
   isSpec: "True"
   fullName: Solti.Utils.DI.Interfaces.AbstractServiceEntry.CreateInstance
   nameWithType: AbstractServiceEntry.CreateInstance
+- uid: Solti.Utils.DI.Interfaces.AbstractServiceEntry.CreateResolver(System.Int32@)
+  name: CreateResolver(ref Int32)
+  href: Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_CreateResolver_System_Int32__
+  commentId: M:Solti.Utils.DI.Interfaces.AbstractServiceEntry.CreateResolver(System.Int32@)
+  name.vb: CreateResolver(ByRef Int32)
+  fullName: Solti.Utils.DI.Interfaces.AbstractServiceEntry.CreateResolver(ref System.Int32)
+  fullName.vb: Solti.Utils.DI.Interfaces.AbstractServiceEntry.CreateResolver(ByRef System.Int32)
+  nameWithType: AbstractServiceEntry.CreateResolver(ref Int32)
+  nameWithType.vb: AbstractServiceEntry.CreateResolver(ByRef Int32)
+- uid: Solti.Utils.DI.Interfaces.AbstractServiceEntry.CreateResolver*
+  name: CreateResolver
+  href: Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_CreateResolver_
+  commentId: Overload:Solti.Utils.DI.Interfaces.AbstractServiceEntry.CreateResolver
+  isSpec: "True"
+  fullName: Solti.Utils.DI.Interfaces.AbstractServiceEntry.CreateResolver
+  nameWithType: AbstractServiceEntry.CreateResolver
 - uid: Solti.Utils.DI.Interfaces.AbstractServiceEntry.Factory
   name: Factory
   href: Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_Factory
@@ -253,15 +269,15 @@ references:
   isSpec: "True"
   fullName: Solti.Utils.DI.Interfaces.AbstractServiceEntry.ToString
   nameWithType: AbstractServiceEntry.ToString
-- uid: Solti.Utils.DI.Interfaces.AbstractServiceEntry.VisitFactory(System.Func{System.Linq.Expressions.LambdaExpression,System.Linq.Expressions.LambdaExpression},Solti.Utils.DI.Interfaces.FactoryVisitorOptions)
-  name: VisitFactory(Func<LambdaExpression, LambdaExpression>, FactoryVisitorOptions)
-  href: Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_VisitFactory_System_Func_System_Linq_Expressions_LambdaExpression_System_Linq_Expressions_LambdaExpression__Solti_Utils_DI_Interfaces_FactoryVisitorOptions_
-  commentId: M:Solti.Utils.DI.Interfaces.AbstractServiceEntry.VisitFactory(System.Func{System.Linq.Expressions.LambdaExpression,System.Linq.Expressions.LambdaExpression},Solti.Utils.DI.Interfaces.FactoryVisitorOptions)
-  name.vb: VisitFactory(Func(Of LambdaExpression, LambdaExpression), FactoryVisitorOptions)
-  fullName: Solti.Utils.DI.Interfaces.AbstractServiceEntry.VisitFactory(System.Func<System.Linq.Expressions.LambdaExpression, System.Linq.Expressions.LambdaExpression>, Solti.Utils.DI.Interfaces.FactoryVisitorOptions)
-  fullName.vb: Solti.Utils.DI.Interfaces.AbstractServiceEntry.VisitFactory(System.Func(Of System.Linq.Expressions.LambdaExpression, System.Linq.Expressions.LambdaExpression), Solti.Utils.DI.Interfaces.FactoryVisitorOptions)
-  nameWithType: AbstractServiceEntry.VisitFactory(Func<LambdaExpression, LambdaExpression>, FactoryVisitorOptions)
-  nameWithType.vb: AbstractServiceEntry.VisitFactory(Func(Of LambdaExpression, LambdaExpression), FactoryVisitorOptions)
+- uid: Solti.Utils.DI.Interfaces.AbstractServiceEntry.VisitFactory(System.Func{System.Linq.Expressions.LambdaExpression,System.Linq.Expressions.LambdaExpression},Solti.Utils.DI.Interfaces.VisitFactoryOptions)
+  name: VisitFactory(Func<LambdaExpression, LambdaExpression>, VisitFactoryOptions)
+  href: Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_VisitFactory_System_Func_System_Linq_Expressions_LambdaExpression_System_Linq_Expressions_LambdaExpression__Solti_Utils_DI_Interfaces_VisitFactoryOptions_
+  commentId: M:Solti.Utils.DI.Interfaces.AbstractServiceEntry.VisitFactory(System.Func{System.Linq.Expressions.LambdaExpression,System.Linq.Expressions.LambdaExpression},Solti.Utils.DI.Interfaces.VisitFactoryOptions)
+  name.vb: VisitFactory(Func(Of LambdaExpression, LambdaExpression), VisitFactoryOptions)
+  fullName: Solti.Utils.DI.Interfaces.AbstractServiceEntry.VisitFactory(System.Func<System.Linq.Expressions.LambdaExpression, System.Linq.Expressions.LambdaExpression>, Solti.Utils.DI.Interfaces.VisitFactoryOptions)
+  fullName.vb: Solti.Utils.DI.Interfaces.AbstractServiceEntry.VisitFactory(System.Func(Of System.Linq.Expressions.LambdaExpression, System.Linq.Expressions.LambdaExpression), Solti.Utils.DI.Interfaces.VisitFactoryOptions)
+  nameWithType: AbstractServiceEntry.VisitFactory(Func<LambdaExpression, LambdaExpression>, VisitFactoryOptions)
+  nameWithType.vb: AbstractServiceEntry.VisitFactory(Func(Of LambdaExpression, LambdaExpression), VisitFactoryOptions)
 - uid: Solti.Utils.DI.Interfaces.AbstractServiceEntry.VisitFactory*
   name: VisitFactory
   href: Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_VisitFactory_
@@ -318,24 +334,6 @@ references:
   commentId: F:Solti.Utils.DI.Interfaces.Consts.INTERNAL_SERVICE_NAME_PREFIX
   fullName: Solti.Utils.DI.Interfaces.Consts.INTERNAL_SERVICE_NAME_PREFIX
   nameWithType: Consts.INTERNAL_SERVICE_NAME_PREFIX
-- uid: Solti.Utils.DI.Interfaces.FactoryVisitorOptions
-  name: FactoryVisitorOptions
-  href: Solti.Utils.DI.Interfaces.FactoryVisitorOptions.html
-  commentId: T:Solti.Utils.DI.Interfaces.FactoryVisitorOptions
-  fullName: Solti.Utils.DI.Interfaces.FactoryVisitorOptions
-  nameWithType: FactoryVisitorOptions
-- uid: Solti.Utils.DI.Interfaces.FactoryVisitorOptions.BuildDelegate
-  name: BuildDelegate
-  href: Solti.Utils.DI.Interfaces.FactoryVisitorOptions.html#Solti_Utils_DI_Interfaces_FactoryVisitorOptions_BuildDelegate
-  commentId: F:Solti.Utils.DI.Interfaces.FactoryVisitorOptions.BuildDelegate
-  fullName: Solti.Utils.DI.Interfaces.FactoryVisitorOptions.BuildDelegate
-  nameWithType: FactoryVisitorOptions.BuildDelegate
-- uid: Solti.Utils.DI.Interfaces.FactoryVisitorOptions.Default
-  name: Default
-  href: Solti.Utils.DI.Interfaces.FactoryVisitorOptions.html#Solti_Utils_DI_Interfaces_FactoryVisitorOptions_Default
-  commentId: F:Solti.Utils.DI.Interfaces.FactoryVisitorOptions.Default
-  fullName: Solti.Utils.DI.Interfaces.FactoryVisitorOptions.Default
-  nameWithType: FactoryVisitorOptions.Default
 - uid: Solti.Utils.DI.Interfaces.IInjector
   name: IInjector
   href: Solti.Utils.DI.Interfaces.IInjector.html
@@ -1049,22 +1047,6 @@ references:
   isSpec: "True"
   fullName: Solti.Utils.DI.Interfaces.MissingServiceEntry.MissingServiceEntry
   nameWithType: MissingServiceEntry.MissingServiceEntry
-- uid: Solti.Utils.DI.Interfaces.MissingServiceEntry.CreateInstance(Solti.Utils.DI.Interfaces.IInjector,System.Object@)
-  name: CreateInstance(IInjector, out Object)
-  href: Solti.Utils.DI.Interfaces.MissingServiceEntry.html#Solti_Utils_DI_Interfaces_MissingServiceEntry_CreateInstance_Solti_Utils_DI_Interfaces_IInjector_System_Object__
-  commentId: M:Solti.Utils.DI.Interfaces.MissingServiceEntry.CreateInstance(Solti.Utils.DI.Interfaces.IInjector,System.Object@)
-  name.vb: CreateInstance(IInjector, ByRef Object)
-  fullName: Solti.Utils.DI.Interfaces.MissingServiceEntry.CreateInstance(Solti.Utils.DI.Interfaces.IInjector, out System.Object)
-  fullName.vb: Solti.Utils.DI.Interfaces.MissingServiceEntry.CreateInstance(Solti.Utils.DI.Interfaces.IInjector, ByRef System.Object)
-  nameWithType: MissingServiceEntry.CreateInstance(IInjector, out Object)
-  nameWithType.vb: MissingServiceEntry.CreateInstance(IInjector, ByRef Object)
-- uid: Solti.Utils.DI.Interfaces.MissingServiceEntry.CreateInstance*
-  name: CreateInstance
-  href: Solti.Utils.DI.Interfaces.MissingServiceEntry.html#Solti_Utils_DI_Interfaces_MissingServiceEntry_CreateInstance_
-  commentId: Overload:Solti.Utils.DI.Interfaces.MissingServiceEntry.CreateInstance
-  isSpec: "True"
-  fullName: Solti.Utils.DI.Interfaces.MissingServiceEntry.CreateInstance
-  nameWithType: MissingServiceEntry.CreateInstance
 - uid: Solti.Utils.DI.Interfaces.OptionsAttribute
   name: OptionsAttribute
   href: Solti.Utils.DI.Interfaces.OptionsAttribute.html
@@ -1416,6 +1398,24 @@ references:
   commentId: F:Solti.Utils.DI.Interfaces.ServiceResolutionMode.JIT
   fullName: Solti.Utils.DI.Interfaces.ServiceResolutionMode.JIT
   nameWithType: ServiceResolutionMode.JIT
+- uid: Solti.Utils.DI.Interfaces.VisitFactoryOptions
+  name: VisitFactoryOptions
+  href: Solti.Utils.DI.Interfaces.VisitFactoryOptions.html
+  commentId: T:Solti.Utils.DI.Interfaces.VisitFactoryOptions
+  fullName: Solti.Utils.DI.Interfaces.VisitFactoryOptions
+  nameWithType: VisitFactoryOptions
+- uid: Solti.Utils.DI.Interfaces.VisitFactoryOptions.BuildDelegate
+  name: BuildDelegate
+  href: Solti.Utils.DI.Interfaces.VisitFactoryOptions.html#Solti_Utils_DI_Interfaces_VisitFactoryOptions_BuildDelegate
+  commentId: F:Solti.Utils.DI.Interfaces.VisitFactoryOptions.BuildDelegate
+  fullName: Solti.Utils.DI.Interfaces.VisitFactoryOptions.BuildDelegate
+  nameWithType: VisitFactoryOptions.BuildDelegate
+- uid: Solti.Utils.DI.Interfaces.VisitFactoryOptions.Default
+  name: Default
+  href: Solti.Utils.DI.Interfaces.VisitFactoryOptions.html#Solti_Utils_DI_Interfaces_VisitFactoryOptions_Default
+  commentId: F:Solti.Utils.DI.Interfaces.VisitFactoryOptions.Default
+  fullName: Solti.Utils.DI.Interfaces.VisitFactoryOptions.Default
+  nameWithType: VisitFactoryOptions.Default
 - uid: Solti.Utils.DI.Internals
   name: Solti.Utils.DI.Internals
   href: Solti.Utils.DI.Internals.html
@@ -1546,15 +1546,15 @@ references:
   isSpec: "True"
   fullName: Solti.Utils.DI.Internals.ProducibleServiceEntry.SetValidated
   nameWithType: ProducibleServiceEntry.SetValidated
-- uid: Solti.Utils.DI.Internals.ProducibleServiceEntry.VisitFactory(System.Func{System.Linq.Expressions.LambdaExpression,System.Linq.Expressions.LambdaExpression},Solti.Utils.DI.Interfaces.FactoryVisitorOptions)
-  name: VisitFactory(Func<LambdaExpression, LambdaExpression>, FactoryVisitorOptions)
-  href: Solti.Utils.DI.Internals.ProducibleServiceEntry.html#Solti_Utils_DI_Internals_ProducibleServiceEntry_VisitFactory_System_Func_System_Linq_Expressions_LambdaExpression_System_Linq_Expressions_LambdaExpression__Solti_Utils_DI_Interfaces_FactoryVisitorOptions_
-  commentId: M:Solti.Utils.DI.Internals.ProducibleServiceEntry.VisitFactory(System.Func{System.Linq.Expressions.LambdaExpression,System.Linq.Expressions.LambdaExpression},Solti.Utils.DI.Interfaces.FactoryVisitorOptions)
-  name.vb: VisitFactory(Func(Of LambdaExpression, LambdaExpression), FactoryVisitorOptions)
-  fullName: Solti.Utils.DI.Internals.ProducibleServiceEntry.VisitFactory(System.Func<System.Linq.Expressions.LambdaExpression, System.Linq.Expressions.LambdaExpression>, Solti.Utils.DI.Interfaces.FactoryVisitorOptions)
-  fullName.vb: Solti.Utils.DI.Internals.ProducibleServiceEntry.VisitFactory(System.Func(Of System.Linq.Expressions.LambdaExpression, System.Linq.Expressions.LambdaExpression), Solti.Utils.DI.Interfaces.FactoryVisitorOptions)
-  nameWithType: ProducibleServiceEntry.VisitFactory(Func<LambdaExpression, LambdaExpression>, FactoryVisitorOptions)
-  nameWithType.vb: ProducibleServiceEntry.VisitFactory(Func(Of LambdaExpression, LambdaExpression), FactoryVisitorOptions)
+- uid: Solti.Utils.DI.Internals.ProducibleServiceEntry.VisitFactory(System.Func{System.Linq.Expressions.LambdaExpression,System.Linq.Expressions.LambdaExpression},Solti.Utils.DI.Interfaces.VisitFactoryOptions)
+  name: VisitFactory(Func<LambdaExpression, LambdaExpression>, VisitFactoryOptions)
+  href: Solti.Utils.DI.Internals.ProducibleServiceEntry.html#Solti_Utils_DI_Internals_ProducibleServiceEntry_VisitFactory_System_Func_System_Linq_Expressions_LambdaExpression_System_Linq_Expressions_LambdaExpression__Solti_Utils_DI_Interfaces_VisitFactoryOptions_
+  commentId: M:Solti.Utils.DI.Internals.ProducibleServiceEntry.VisitFactory(System.Func{System.Linq.Expressions.LambdaExpression,System.Linq.Expressions.LambdaExpression},Solti.Utils.DI.Interfaces.VisitFactoryOptions)
+  name.vb: VisitFactory(Func(Of LambdaExpression, LambdaExpression), VisitFactoryOptions)
+  fullName: Solti.Utils.DI.Internals.ProducibleServiceEntry.VisitFactory(System.Func<System.Linq.Expressions.LambdaExpression, System.Linq.Expressions.LambdaExpression>, Solti.Utils.DI.Interfaces.VisitFactoryOptions)
+  fullName.vb: Solti.Utils.DI.Internals.ProducibleServiceEntry.VisitFactory(System.Func(Of System.Linq.Expressions.LambdaExpression, System.Linq.Expressions.LambdaExpression), Solti.Utils.DI.Interfaces.VisitFactoryOptions)
+  nameWithType: ProducibleServiceEntry.VisitFactory(Func<LambdaExpression, LambdaExpression>, VisitFactoryOptions)
+  nameWithType.vb: ProducibleServiceEntry.VisitFactory(Func(Of LambdaExpression, LambdaExpression), VisitFactoryOptions)
 - uid: Solti.Utils.DI.Internals.ProducibleServiceEntry.VisitFactory*
   name: VisitFactory
   href: Solti.Utils.DI.Internals.ProducibleServiceEntry.html#Solti_Utils_DI_Internals_ProducibleServiceEntry_VisitFactory_
