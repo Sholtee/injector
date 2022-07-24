@@ -250,8 +250,10 @@
   - *improved:* Significantly reduced file size
   - *updated:* `ProxyGen.NET` to v7.0.0-preview1
 - 7.0.0-preview2:
-  - *breaking*: Modified `AbstractServiceEntry` layout
-  - *introduced*: Expression based factory registration 
-  - *introduced*: *Ahead Of Time* dependency resolution
-  - *done*: Dependency visualisation is back
+  - *breaking:* Modified `AbstractServiceEntry` layout
+  - *introduced:* Expression based factory registration 
+  - *introduced:* *Ahead Of Time* dependency resolution
+  - *done:* Dependency visualisation is back
   - *updated:* `ProxyGen.NET` to v7.0.0-preview6
+- 7.0.0-preview3:
+  - *introduced:* New service resolver concept
