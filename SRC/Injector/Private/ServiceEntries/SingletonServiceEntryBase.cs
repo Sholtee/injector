@@ -11,7 +11,7 @@ namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
 
-    internal partial class SingletonServiceEntryBase : ProducibleServiceEntry
+    internal abstract class SingletonServiceEntryBase : ProducibleServiceEntry
     {
         protected SingletonServiceEntryBase(Type @interface, string? name) : base(@interface, name)
         {
