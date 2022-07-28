@@ -14,7 +14,7 @@ namespace Solti.Utils.DI.Internals
     {
         protected override IEnumerable<AbstractServiceEntry> GetAllServices(IEnumerable<AbstractServiceEntry> registeredEntries)
         {
-            yield return new ContextualServiceEntry(typeof(IServiceProvider), null, (i, _) => i);
+            yield return new ContextualServiceEntry(typeof(IServiceProvider), null, static (i, _) => i);
 
             foreach (AbstractServiceEntry entry in base.GetAllServices(registeredEntries))
             {
