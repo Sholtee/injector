@@ -51,8 +51,11 @@ namespace Solti.Utils.DI.Internals
             return null;
         }
 
-        private static void EnsureCanBeInstantiated(Type type!!) 
+        private static void EnsureCanBeInstantiated(Type type) 
         {
+            if (type is null)
+                throw new ArgumentNullException(nameof(type));
+
             if (!type.IsClass)
                 throw new ArgumentException(Resources.PARAMETER_NOT_A_CLASS, nameof(type));
 

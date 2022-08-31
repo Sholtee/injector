@@ -16,14 +16,26 @@ namespace Solti.Utils.DI.Interfaces
         /// <param name="iface">The service interface to be registered. It can not be null and can be registered only once (with the given <paramref name="name"/>).</param>
         /// <param name="name">The (optional) name of the service.</param>
         /// <param name="instance">The pre-created instance to be registered. It can not be null and must implement the <paramref name="iface"/> interface.</param>
-        public static IModifiedServiceCollection Instance(this IServiceCollection self!!, Type iface!!, string? name, object instance!!) => self.Register
-        (
-            //
-            // Further validations are done by the created InstanceServiceEntry
-            //
+        public static IModifiedServiceCollection Instance(this IServiceCollection self, Type iface, string? name, object instance)
+        {
+            if (self is null)
+                throw new ArgumentNullException(nameof(self));
 
-            Lifetime.Instance.CreateFrom(iface, name, instance)
-        );
+            if (iface is null)
+                throw new ArgumentNullException(nameof(iface));
+
+            if (instance is null)
+                throw new ArgumentNullException(nameof(instance));
+
+            return self.Register
+            (
+                //
+                // Further validations are done by the created InstanceServiceEntry
+                //
+
+                Lifetime.Instance.CreateFrom(iface, name, instance)
+            );
+        }
 
         /// <summary>
         /// Registers a pre-created instance. Useful to creating "constant" values (e.g. command-line arguments).

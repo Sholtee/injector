@@ -17,8 +17,11 @@ namespace Solti.Utils.DI.Internals
     public abstract partial class ProducibleServiceEntry
     {
         /// <inheritdoc/>
-        public override void VisitFactory(Func<LambdaExpression, LambdaExpression> visitor!!, VisitFactoryOptions options)
+        public override void VisitFactory(Func<LambdaExpression, LambdaExpression> visitor, VisitFactoryOptions options)
         {
+            if (visitor is null)
+                throw new ArgumentNullException(nameof(visitor));
+
             if (Factory is null)
                 throw new InvalidOperationException(NOT_PRODUCIBLE);
 

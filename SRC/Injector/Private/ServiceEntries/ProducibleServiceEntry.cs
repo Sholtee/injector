@@ -6,7 +6,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using System.Reflection;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -58,9 +57,9 @@ namespace Solti.Utils.DI.Internals
         /// <summary>
         /// Creartes a new <see cref="ProducibleServiceEntry"/> instance.
         /// </summary>
-        protected ProducibleServiceEntry(Type @interface!!, string? name) : base
+        protected ProducibleServiceEntry(Type @interface, string? name) : base
         (
-            @interface,
+            @interface ?? throw new ArgumentNullException(nameof(@interface)),
             name,
             null,
             null
@@ -69,22 +68,22 @@ namespace Solti.Utils.DI.Internals
         /// <summary>
         /// Creartes a new <see cref="ProducibleServiceEntry"/> instance.
         /// </summary>
-        protected ProducibleServiceEntry(Type @interface!!, string? name, Expression<Func<IInjector, Type, object>> factory!!) : base
+        protected ProducibleServiceEntry(Type @interface, string? name, Expression<Func<IInjector, Type, object>> factory) : base
         (
-            @interface,
+            @interface ?? throw new ArgumentNullException(nameof(@interface)),
             name,
             null,
-            factory
+            factory ?? throw new ArgumentNullException(nameof(factory))
         ) => ApplyAspects();
 
         /// <summary>
         /// Creartes a new <see cref="ProducibleServiceEntry"/> instance.
         /// </summary>
-        protected ProducibleServiceEntry(Type @interface!!, string? name, Type implementation!!) : base
+        protected ProducibleServiceEntry(Type @interface, string? name, Type implementation) : base
         (
-            @interface,
+            @interface ?? throw new ArgumentNullException(nameof(@interface)),
             name,
-            implementation,
+            implementation ?? throw new ArgumentNullException(nameof(implementation)),
             GetFactory
             (
                 @interface,
@@ -99,16 +98,16 @@ namespace Solti.Utils.DI.Internals
         /// <summary>
         /// Creartes a new <see cref="ProducibleServiceEntry"/> instance.
         /// </summary>
-        protected ProducibleServiceEntry(Type @interface!!, string? name, Type implementation!!, object explicitArgs!!) : base
+        protected ProducibleServiceEntry(Type @interface, string? name, Type implementation, object explicitArgs) : base
         (
-            @interface,
+            @interface ?? throw new ArgumentNullException(nameof(@interface)),
             name,
-            implementation, 
+            implementation ?? throw new ArgumentNullException(nameof(implementation)), 
             GetFactory
             (
                 @interface,
                 implementation,
-                explicitArgs
+                explicitArgs ?? throw new ArgumentNullException(nameof(explicitArgs))
             )
         )
         {
@@ -124,8 +123,11 @@ namespace Solti.Utils.DI.Internals
         #endregion
 
         /// <inheritdoc/>
-        public override object CreateInstance(IInjector scope!!, out object? lifetime)
+        public override object CreateInstance(IInjector scope, out object? lifetime)
         {
+            if (scope is null)
+                throw new ArgumentNullException(nameof(scope));
+
             if (FBuiltFactory is null)
                 throw new InvalidOperationException(NOT_BUILT);
 
@@ -139,8 +141,11 @@ namespace Solti.Utils.DI.Internals
         public override void SetValidated() => State |= ServiceEntryStates.Validated;
 
         /// <inheritdoc/>
-        public override void ApplyProxy(Expression<Func<IInjector, Type, object, object>> applyProxy!!)
+        public override void ApplyProxy(Expression<Func<IInjector, Type, object, object>> applyProxy)
         {
+            if (applyProxy is null)
+                throw new ArgumentNullException(nameof(applyProxy));
+
             if (Factory is null)
                 throw new NotSupportedException(PROXYING_NOT_SUPPORTED);
 

@@ -16,9 +16,9 @@ namespace Solti.Utils.DI.Internals
     {
         public object Instance { get; }
 
-        public InstanceServiceEntry(Type @interface!!, string? name, object instance!!) : base(@interface, name)
+        public InstanceServiceEntry(Type iface, string? name, object instance) : base(iface ?? throw new ArgumentNullException(nameof(iface)), name)
         {
-            Instance = instance;
+            Instance = instance ?? throw new ArgumentNullException(nameof(instance));
 
             //
             // It will throw if the service interface is derocated with an aspect.

@@ -17,8 +17,14 @@ namespace Solti.Utils.DI.Interfaces
         /// <param name="self">The target <see cref="IServiceCollection"/>.</param>
         /// <param name="iface">The service interface.</param>
         /// <param name="name">The (optional) service name.</param>
-        public static IServiceCollection Remove(this IServiceCollection self!!, Type iface!!, string? name)
+        public static IServiceCollection Remove(this IServiceCollection self, Type iface, string? name)
         {
+            if (self is null)
+                throw new ArgumentNullException(nameof(self));
+
+            if (iface is null)
+                throw new ArgumentNullException(nameof(iface));
+
             //
             // Entries are stored by their interface and name so this way of removal works.
             //

@@ -171,8 +171,11 @@ namespace Solti.Utils.DI.Internals
             return instance!;
         }
 
-        public object? TryGet(Type iface!!, string? name)
+        public object? TryGet(Type iface, string? name)
         {
+            if (iface is null)
+                throw new ArgumentNullException(nameof(iface));
+
             if (!iface.IsInterface)
                 throw new ArgumentException(Resources.PARAMETER_NOT_AN_INTERFACE, nameof(iface));
 

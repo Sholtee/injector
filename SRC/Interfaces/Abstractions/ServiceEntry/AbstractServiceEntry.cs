@@ -26,8 +26,11 @@ namespace Solti.Utils.DI.Interfaces
         /// <param name="factory">The (optional) factory of the service.</param>
         /// <exception cref="ArgumentException">The <paramref name="interface"/> is not an interface.</exception>
         /// <exception cref="ArgumentException">The <paramref name="implementation"/> does not support the <paramref name="interface"/>.</exception>
-        protected AbstractServiceEntry(Type @interface!!, string? name, Type? implementation, Expression<Func<IInjector, Type, object>>? factory)
+        protected AbstractServiceEntry(Type @interface, string? name, Type? implementation, Expression<Func<IInjector, Type, object>>? factory)
         {
+            if (@interface is null)
+                throw new ArgumentNullException(nameof(@interface));
+
             if (!@interface.IsInterface)
                 throw new ArgumentException(Resources.NOT_AN_INTERFACE, nameof(@interface));
 

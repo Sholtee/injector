@@ -74,32 +74,38 @@ namespace Solti.Utils.DI.Internals
             }
         }
 
-        public override AbstractServiceEntry Specialize(params Type[] genericArguments!!) => this switch
+        public override AbstractServiceEntry Specialize(params Type[] genericArguments)
         {
-            _ when Implementation is not null && ExplicitArgs is null => new PooledServiceEntry
-            (
-                Interface.MakeGenericType(genericArguments),
-                Name,
-                Implementation.MakeGenericType(genericArguments),
-                PoolName
-            ),
-            _ when Implementation is not null && ExplicitArgs is not null => new PooledServiceEntry
-            (
-                Interface.MakeGenericType(genericArguments),
-                Name,
-                Implementation.MakeGenericType(genericArguments),
-                ExplicitArgs,
-                PoolName
-            ),
-            _ when Factory is not null => new PooledServiceEntry
-            (
-                Interface.MakeGenericType(genericArguments),
-                Name,
-                Factory,
-                PoolName
-            ),
-            _ => throw new NotSupportedException()
-        };
+            if (genericArguments is null)
+                throw new ArgumentNullException(nameof(genericArguments));
+
+            return this switch
+            {
+                _ when Implementation is not null && ExplicitArgs is null => new PooledServiceEntry
+                (
+                    Interface.MakeGenericType(genericArguments),
+                    Name,
+                    Implementation.MakeGenericType(genericArguments),
+                    PoolName
+                ),
+                _ when Implementation is not null && ExplicitArgs is not null => new PooledServiceEntry
+                (
+                    Interface.MakeGenericType(genericArguments),
+                    Name,
+                    Implementation.MakeGenericType(genericArguments),
+                    ExplicitArgs,
+                    PoolName
+                ),
+                _ when Factory is not null => new PooledServiceEntry
+                (
+                    Interface.MakeGenericType(genericArguments),
+                    Name,
+                    Factory,
+                    PoolName
+                ),
+                _ => throw new NotSupportedException()
+            };
+        }
 
         public string PoolName { get; }
 

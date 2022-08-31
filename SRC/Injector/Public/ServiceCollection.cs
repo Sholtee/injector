@@ -17,8 +17,11 @@ namespace Solti.Utils.DI
     {
         private AbstractServiceEntry? FLastEntry;
 
-        bool ISet<AbstractServiceEntry>.Add(AbstractServiceEntry item!!)
+        bool ISet<AbstractServiceEntry>.Add(AbstractServiceEntry item)
         {
+            if (item is null)
+                throw new ArgumentNullException(nameof(item));
+
             bool success = Add(item);
             if (success)
                 FLastEntry = item;

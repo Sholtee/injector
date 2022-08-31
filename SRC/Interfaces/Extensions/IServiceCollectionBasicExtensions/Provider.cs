@@ -21,8 +21,23 @@ namespace Solti.Utils.DI.Interfaces
         /// <param name="explicitArgs">Explicit arguments, provided by the user.</param>
         /// <param name="lifetime">The <see cref="Lifetime"/> of the service.</param>
         /// <remarks>The provided <see cref="IServiceProvider"/> implementation won't be disposed even if it implements the <see cref="IDisposable"/> interface.</remarks>
-        public static IModifiedServiceCollection Provider(this IServiceCollection self!!, Type iface!!, string? name, Type provider!!, object explicitArgs!!, Lifetime lifetime!!)
+        public static IModifiedServiceCollection Provider(this IServiceCollection self, Type iface, string? name, Type provider, object explicitArgs, Lifetime lifetime)
         {
+            if (self is null)
+                throw new ArgumentNullException(nameof(self));
+
+            if (iface is null)
+                throw new ArgumentNullException(nameof(iface));
+
+            if (provider is null)
+                throw new ArgumentNullException(nameof(provider));
+
+            if (explicitArgs is null)
+                throw new ArgumentNullException(nameof(explicitArgs));
+
+            if (lifetime is null)
+                throw new ArgumentNullException(nameof(lifetime));
+
             //
             // Further validations are done by the created xXxServiceEntry
             //
@@ -47,8 +62,20 @@ namespace Solti.Utils.DI.Interfaces
         /// <param name="provider">The type of the provider. It may have dependencies and must implement the <see cref="IServiceProvider"/> interface.</param>
         /// <param name="lifetime">The <see cref="Lifetime"/> of the service.</param>
         /// <remarks>The provided <see cref="IServiceProvider"/> implementation won't be disposed even if it implements the <see cref="IDisposable"/> interface.</remarks>
-        public static IModifiedServiceCollection Provider(this IServiceCollection self!!, Type iface!!, string? name, Type provider!!, Lifetime lifetime!!)
+        public static IModifiedServiceCollection Provider(this IServiceCollection self, Type iface, string? name, Type provider, Lifetime lifetime)
         {
+            if (self is null)
+                throw new ArgumentNullException(nameof(self));
+
+            if (iface is null)
+                throw new ArgumentNullException(nameof(iface));
+
+            if (provider is null)
+                throw new ArgumentNullException(nameof(provider));
+
+            if (lifetime is null)
+                throw new ArgumentNullException(nameof(lifetime));
+
             //
             // Further validations are done by the created xXxServiceEntry
             //

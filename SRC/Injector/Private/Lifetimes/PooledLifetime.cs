@@ -35,8 +35,14 @@ namespace Solti.Utils.DI.Internals
 
         public PooledLifetime() : base(precedence: 20) => Pooled = this;
 
-        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface!!, string? name, Type implementation!!)
+        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Type implementation)
         {
+            if (iface is null)
+                throw new ArgumentNullException(nameof(iface));
+
+            if (implementation is null)
+                throw new ArgumentNullException(nameof(implementation));
+
             string poolName = GetPoolName(iface, name);
 
             //
@@ -50,8 +56,17 @@ namespace Solti.Utils.DI.Internals
             yield return entry;
         }
 
-        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface!!, string? name, Type implementation!!, object explicitArgs!!)
+        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Type implementation, object explicitArgs)
         {
+            if (iface is null)
+                throw new ArgumentNullException(nameof(iface));
+
+            if (implementation is null)
+                throw new ArgumentNullException(nameof(implementation));
+
+            if (explicitArgs is null)
+                throw new ArgumentNullException(nameof(explicitArgs));
+
             string poolName = GetPoolName(iface, name);
 
             PooledServiceEntry entry = new(iface, name, implementation, explicitArgs, poolName);
@@ -60,8 +75,14 @@ namespace Solti.Utils.DI.Internals
             yield return entry;
         }
 
-        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface!!, string? name, Expression<Func<IInjector, Type, object>> factory!!)
+        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Expression<Func<IInjector, Type, object>> factory)
         {
+            if (iface is null)
+                throw new ArgumentNullException(nameof(iface));
+
+            if (factory is null)
+                throw new ArgumentNullException(nameof(factory));
+
             string poolName = GetPoolName(iface, name);
 
             PooledServiceEntry entry = new(iface, name, factory, poolName);
@@ -70,23 +91,35 @@ namespace Solti.Utils.DI.Internals
             yield return entry;
         }
 
-        public override int CompareTo(Lifetime other!!) => other is PooledLifetime
-            //
-            // It breaks the contract how the IComparable interface is supposed to be implemented but
-            // required since a pooled service cannot have pooled dependency (dependency would never 
-            // get back to its parent pool)
-            //
+        public override int CompareTo(Lifetime other)
+        {
+            if (other is null)
+                throw new ArgumentNullException(nameof(other));
 
-            ? -1
-            : base.CompareTo(other);
+            return other is PooledLifetime
+                //
+                // It breaks the contract how the IComparable interface is supposed to be implemented but
+                // required since a pooled service cannot have pooled dependency (dependency would never 
+                // get back to its parent pool)
+                //
+
+                ? -1
+                : base.CompareTo(other);
+        }
 
         public int Capacity { get; init; } = Environment.ProcessorCount;
 
         public override string ToString() => nameof(Pooled);
 
-        public override Lifetime Using(object configuration!!) => new PooledLifetime
+        public override Lifetime Using(object configuration)
         {
-            Capacity = ((PoolConfig) configuration).Capacity,
-        };
+            if (configuration is null)
+                throw new ArgumentNullException(nameof(configuration));
+
+            return new PooledLifetime
+            {
+                Capacity = ((PoolConfig) configuration).Capacity,
+            };
+        }
     }
 }

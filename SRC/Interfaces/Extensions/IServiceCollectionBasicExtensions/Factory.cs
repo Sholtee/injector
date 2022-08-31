@@ -19,14 +19,29 @@ namespace Solti.Utils.DI.Interfaces
         /// <param name="factory">The factory function that is responsible for the instantiation. Its call count depends on the value of the <paramref name="lifetime"/> parameter. Note that the second parameter of the <paramref name="factory"/> is never generic, even if you registered the factory for an open generic interface.</param>
         /// <param name="lifetime">The <see cref="Lifetime"/> of the service.</param>
         /// <remarks>You can register generic services (where the <paramref name="iface"/> parameter is an open generic type).</remarks>
-        public static IModifiedServiceCollection Factory(this IServiceCollection self!!, Type iface!!, string? name, Expression<Func<IInjector, Type, object>> factory!!, Lifetime lifetime!!) => self.Register
-        (
-            //
-            // Further validations are done by the created xXxServiceEntry
-            //
+        public static IModifiedServiceCollection Factory(this IServiceCollection self, Type iface, string? name, Expression<Func<IInjector, Type, object>> factory, Lifetime lifetime)
+        {
+            if (self is null)
+                throw new ArgumentNullException(nameof(self));
 
-            lifetime.CreateFrom(iface, name, factory)
-        );
+            if (iface is null)
+                throw new ArgumentNullException(nameof(iface));
+
+            if (factory is null)
+                throw new ArgumentNullException(nameof(factory));
+
+            if (lifetime is null)
+                throw new ArgumentNullException(nameof(lifetime));
+
+            return self.Register
+            (
+                //
+                // Further validations are done by the created xXxServiceEntry
+                //
+
+                lifetime.CreateFrom(iface, name, factory)
+            );
+        }
 
         /// <summary>
         /// Registers a new service factory with the given type. Factories are also services except that the instantiating process is delegated to the caller. Useful if a service has more than one constructor.
@@ -60,8 +75,11 @@ namespace Solti.Utils.DI.Interfaces
         public static IModifiedServiceCollection Factory<TInterface>(this IServiceCollection self, Expression<Func<IInjector, TInterface>> factory, Lifetime lifetime) where TInterface : class
             => self.Factory(typeof(TInterface), null, WrapToStandardFactory(factory), lifetime);
 
-        private static Expression<Func<IInjector, Type, object>> WrapToStandardFactory<TInterface>(Expression<Func<IInjector, TInterface>> factory!!)
+        private static Expression<Func<IInjector, Type, object>> WrapToStandardFactory<TInterface>(Expression<Func<IInjector, TInterface>> factory)
         {
+            if (factory is null)
+                throw new ArgumentNullException(nameof(factory));
+
             //
             // TODO: Try to update the original expression to avoid nested method calls
             //
