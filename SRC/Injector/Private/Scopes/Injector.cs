@@ -223,13 +223,16 @@ namespace Solti.Utils.DI.Internals
             );
             #pragma warning restore CA2214
 
-            FResolverLookup = (options.Engine ?? (svcs.Count <= BTREE_ITEM_THRESHOLD ? ServiceResolverLookup_BuiltBTree.Id : ServiceResolverLookup_Dict.Id)) switch
+            #pragma warning disable CA1304 // Specify CultureInfo
+            FResolverLookup = (options.Engine?.ToLower() ?? (svcs.Count <= BTREE_ITEM_THRESHOLD ? ServiceResolverLookup_BuiltBTree.Id : ServiceResolverLookup_Dict.Id)) switch
             {
                 ServiceResolverLookup_BTree.Id => new ServiceResolverLookup_BTree(svcs, options),
                 ServiceResolverLookup_BuiltBTree.Id => new ServiceResolverLookup_BuiltBTree(svcs, options),
                 ServiceResolverLookup_Dict.Id  => new ServiceResolverLookup_Dict(svcs, options),
                 _ => throw new NotSupportedException()
             };
+            #pragma warning restore CA1304 // Specify CultureInfo
+
             FSlots    = Array<object>.Create(FResolverLookup.Slots);
             Options   = options;
             Lifetime  = lifetime;
