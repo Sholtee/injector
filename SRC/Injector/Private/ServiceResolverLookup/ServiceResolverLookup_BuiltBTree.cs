@@ -12,9 +12,9 @@ namespace Solti.Utils.DI.Internals
 
     internal sealed partial class ServiceResolverLookup_BuiltBTree : ServiceResolverLookup_BTree
     {
-        private readonly Func<long, string?, AbstractServiceEntry?> FGetGenericEntry;
+        private readonly Func<CompositeKey, AbstractServiceEntry?> FGetGenericEntry;
 
-        private volatile Func<long, string?, ServiceResolver?> FGetResolver;
+        private volatile Func<CompositeKey, ServiceResolver?> FGetResolver;
 
         protected override void AddResolver(ServiceResolver resolver)
         {
@@ -34,7 +34,10 @@ namespace Solti.Utils.DI.Internals
             if (!FInitialized)
                 return base.TryGetResolver(iface, name, out resolver);
 
-            resolver = FGetResolver((long) iface.TypeHandle.Value, name)!;
+            resolver = FGetResolver
+            (
+                new CompositeKey(iface, name)
+            )!;
             return resolver is not null;
         }
 
@@ -43,7 +46,10 @@ namespace Solti.Utils.DI.Internals
             if (!FInitialized)
                 return base.TryGetGenericEntry(iface, name, out genericEntry);
 
-            genericEntry = FGetGenericEntry((long) iface.TypeHandle.Value, name)!;
+            genericEntry = FGetGenericEntry
+            (
+                new CompositeKey(iface, name)
+            )!;
             return genericEntry is not null;
         }
 

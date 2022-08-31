@@ -15,7 +15,7 @@ namespace Solti.Utils.DI.Internals
 
     internal sealed partial class ServiceResolverLookup_BuiltBTree : ServiceResolverLookup_BTree
     {
-        private static IEnumerable<Expression> Build<TResult>(ResolutionNode<TResult>? node, ParameterExpression iface, ParameterExpression name, ParameterExpression order, LabelTarget ret)
+        private static IEnumerable<Expression> Build<TResult>(RedBlackTreeNode<KeyValuePair<CompositeKey, TResult>>? node, ParameterExpression key, ParameterExpression order, LabelTarget ret)
         {
             if (node is null)
             {
@@ -36,11 +36,9 @@ namespace Solti.Utils.DI.Internals
                 order,
                 Expression.Invoke
                 (
-                    Expression.Constant((Func<long, string?, long, string?, int>) CompareServiceIds),
-                    iface,
-                    name,
-                    Expression.Constant(node.Interface),
-                    Expression.Constant(node.Name, typeof(string)) // typeof(string) is required as Name might be NULL
+                    Expression.Constant((Func<CompositeKey, CompositeKey, int>) CompareServiceIds),
+                    key,
+                    Expression.Constant(node.Data.Key)
                 )
             );
 
@@ -54,7 +52,7 @@ namespace Solti.Utils.DI.Internals
                 Expression.Return
                 (
                     ret,
-                    Expression.Constant(node.Result, typeof(TResult))
+                    Expression.Constant(node.Data.Value, typeof(TResult))
                 )
             );
 
@@ -68,20 +66,18 @@ namespace Solti.Utils.DI.Internals
                 Expression.LessThan(order, Expression.Constant(0)),
                 ifTrue: Expression.Block
                 (
-                    Build(node.Left as ResolutionNode<TResult>, iface, name, order, ret)
+                    Build(node.Left, key, order, ret)
                 ),
                 ifFalse: Expression.Block
                 (
-                    Build(node.Right as ResolutionNode<TResult>, iface, name, order, ret)
+                    Build(node.Right, key, order, ret)
                 )
             );
         }
 
-        private static Func<long, string?, TResult?> BuildSwitch<TResult>(RedBlackTree<ResolutionNode<TResult>> tree)
+        private static Func<CompositeKey, TResult?> BuildSwitch<TResult>(RedBlackTree<KeyValuePair<CompositeKey, TResult>> tree)
         {
-            ParameterExpression
-                iface = Expression.Parameter(typeof(long), nameof(iface)),
-                name  = Expression.Parameter(typeof(string), nameof(name));
+            ParameterExpression key = Expression.Parameter(typeof(CompositeKey), nameof(key));
 
             LabelTarget ret = Expression.Label(typeof(TResult), nameof(ret));
 
@@ -95,18 +91,15 @@ namespace Solti.Utils.DI.Internals
                 ParameterExpression order = Expression.Variable(typeof(int), nameof(order));
                 List<Expression> block = new
                 (
-                    Build(tree.Root, iface, name, order, ret)
-                );
-                block.Add(returnNull);
+                    Build(tree.Root, key, order, ret)
+                )
+                {
+                    returnNull
+                };
                 body = Expression.Block(new[] { order }, block);
             }
 
-            Expression<Func<long, string?, TResult?>> resolver = Expression.Lambda<Func<long, string?, TResult?>>
-            (
-                body,
-                iface,
-                name
-            );
+            Expression<Func<CompositeKey, TResult?>> resolver = Expression.Lambda<Func<CompositeKey, TResult?>>(body,key);
 
             WriteLine($"Created resolver:{Environment.NewLine}{resolver.GetDebugView()}");
 

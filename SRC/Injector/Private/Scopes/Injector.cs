@@ -205,14 +205,14 @@ namespace Solti.Utils.DI.Internals
         #endregion
 
         //
-        // According to performance tests, up to ~80 items btree is faster than dictionary. Assuming that
-        // there won't be more than 30 constructed generic service 50 seems a good threshold.
+        // According to performance tests, up to ~50 items btree is faster than dictionary. Assuming that
+        // there won't be more than 20 constructed generic service 30 seems a good threshold.
         //
         // Note that built btree is 5-10% slower than the regular one (It would be worth an investigation
         // why).
         //
 
-        public const int BTREE_ITEM_THRESHOLD = 50;
+        public const int BTREE_ITEM_THRESHOLD = 30;
 
         public Injector(IEnumerable<AbstractServiceEntry> registeredEntries, ScopeOptions options, object? lifetime)
         {
@@ -223,7 +223,7 @@ namespace Solti.Utils.DI.Internals
             );
             #pragma warning restore CA2214
 
-            FResolverLookup = (options.Engine ?? (svcs.Count <= BTREE_ITEM_THRESHOLD ? ServiceResolverLookup_BTree.Id : ServiceResolverLookup_Dict.Id)) switch
+            FResolverLookup = (options.Engine ?? (svcs.Count <= BTREE_ITEM_THRESHOLD ? ServiceResolverLookup_BuiltBTree.Id : ServiceResolverLookup_Dict.Id)) switch
             {
                 ServiceResolverLookup_BTree.Id => new ServiceResolverLookup_BTree(svcs, options),
                 ServiceResolverLookup_BuiltBTree.Id => new ServiceResolverLookup_BuiltBTree(svcs, options),

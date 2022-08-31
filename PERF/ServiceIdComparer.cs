@@ -17,25 +17,22 @@ namespace Solti.Utils.DI.Perf
     [SimpleJob(RunStrategy.Throughput, invocationCount: 100000000)]
     public class ServiceIdComparer
     {
-        private static readonly long
-            svc_1 = (long) typeof(IList<int>).TypeHandle.Value,
-            svc_2 = (long) typeof(IList<object>).TypeHandle.Value;
-
-        private static readonly string
-            name_1 = new("kutya"),
-            name_2 = new("kutya"), // different reference
-            name_3 = "kutya_2";
+        private static readonly CompositeKey
+            Svc1 = new(typeof(IList<int>), null),
+            Svc2 = new(typeof(IList<object>), null),
+            Svc3 = new(typeof(IList<int>), "kutya"),
+            Svc4 = new(typeof(IList<object>), "cica");
 
         [Benchmark]
-        public int CompareIds() => CompareServiceIds(svc_1, null, svc_1, null);
+        public int CompareIds() => CompareServiceIds(Svc1, Svc1);
 
         [Benchmark]
-        public int CompareIdsNoMatch() => CompareServiceIds(svc_1, null, svc_2, null);
+        public int CompareIdsNoMatch() => CompareServiceIds(Svc1, Svc2);
 
         [Benchmark]
-        public int CompareNamedIds() => CompareServiceIds(svc_1, name_1, svc_1, name_2);
+        public int CompareNamedIds() => CompareServiceIds(Svc3, Svc3);
 
         [Benchmark]
-        public int CompareNamedIdsNoMatch() => CompareServiceIds(svc_1, name_1, svc_1, name_3);
+        public int CompareNamedIdsNoMatch() => CompareServiceIds(Svc3, Svc4);
     }
 }

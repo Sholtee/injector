@@ -11,118 +11,52 @@ namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
     using Primitives;
-    using Primitives.Patterns;
 
     internal class ServiceResolverLookup_BTree : ServiceResolverLookupBase
     {
         #region Private
         private static readonly StringComparer FStringComparer = StringComparer.Ordinal;
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static int CompareServiceIds(long iface1, string? name1, long iface2, string? name2)
+        internal sealed record CompositeKey(long Interface, string? Name)
+        {
+            public CompositeKey(Type iface, string? name): this((long) iface.TypeHandle.Value, name)
+            {
+            }
+        }
+
+        internal static int CompareServiceIds(CompositeKey x, CompositeKey y)
         {
             //
             // We have to return Int32 -> Math.Sign()
             //
 
-            int order = Math.Sign(iface1 - iface2);
+            int order = Math.Sign(x.Interface - y.Interface);
             if (order is 0)
                 //
                 // StringComparer supports NULL despite it is not reflected by nullable annotation
                 //
 
-                order = FStringComparer.Compare(name1!, name2!);
+                order = FStringComparer.Compare(x.Name, y.Name);
             return order;
         }
 
-        private interface ICompositeKey
-        {
-            long Interface { get; }
-            string? Name { get; }
-        }
-
-        private sealed class NodeComparer : Singleton<NodeComparer>, IComparer<ICompositeKey>
-        {
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            public int Compare(ICompositeKey x, ICompositeKey y) => CompareServiceIds
-            (
-                x.Interface, x.Name,
-                y.Interface, y.Name
-            );
-        }
-
-        private static ResolutionNode<TResult> CreateNode<TResult>(AbstractServiceEntry key, TResult value) => new ResolutionNode<TResult>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static RedBlackTreeNode<KeyValuePair<CompositeKey, TResult>> CreateNode<TResult>(AbstractServiceEntry key, TResult value) => new
         (
-            (long) key.Interface.TypeHandle.Value,
-            key.Name,
-            value
-        );
-
-        private static bool TryGet<TResult>(ResolutionNode<TResult>? node, long iface, string? name, out TResult result)
-        {
-            result = default!;
-
-            if (node is null)
-                return false;
-
-            int order = CompareServiceIds
+            new KeyValuePair<CompositeKey, TResult>
             (
-                iface,
-                name,
-                node.Interface,
-                node.Name
-            );
-
-            if (order is 0)
-            {
-                result = node.Result;
-                return true;
-            }
-
-            if (order < 0)
-            {
-                if (node.Left is not ResolutionNode<TResult> child)
-                    return false;
-
-                return TryGet(child, iface, name, out result);
-            }
-
-            if (order > 0)
-            {
-                if (node.Right is not ResolutionNode<TResult> child)
-                    return false;
-
-                return TryGet(child, iface, name, out result);
-            }
-
-            return false;
-        }
+                new CompositeKey(key.Interface, key.Name),
+                value
+            )
+        );
         #endregion
 
         #region Protected
-        protected readonly RedBlackTree<ResolutionNode<AbstractServiceEntry>> FGetGenericEntrySwitch = new(NodeComparer.Instance);
+        protected readonly RedBlackTree<KeyValuePair<CompositeKey, AbstractServiceEntry>> FGetGenericEntrySwitch =
+            RedBlackTreeExtensions.Create<CompositeKey, AbstractServiceEntry>(CompareServiceIds);
 
-        protected volatile RedBlackTree<ResolutionNode<ServiceResolver>> FGetResolverSwitch = new(NodeComparer.Instance);
-
-        protected sealed class ResolutionNode<TResult> : RedBlackTreeNode, ICompositeKey
-        {
-            public ResolutionNode(NodeColor color, long iface, string? name, TResult result) : base(color)
-            {
-                Interface = iface;
-                Name = name;
-                Result = result;
-            }
-
-            public ResolutionNode(long iface, string? name, TResult result) : this(NodeColor.Unspecified, iface, name, result) { }
-
-            public override RedBlackTreeNode ShallowClone() => new ResolutionNode<TResult>(Color, Interface, Name, Result);
-
-            public long Interface { get; }
-
-            public string? Name { get; }
-
-            public TResult Result { get; }
-        }
+        protected volatile RedBlackTree<KeyValuePair<CompositeKey, ServiceResolver>> FGetResolverSwitch =
+            RedBlackTreeExtensions.Create<CompositeKey, ServiceResolver>(CompareServiceIds);
 
         protected override bool TryAddResolver(ServiceResolver resolver) => FGetResolverSwitch.Add
         (
@@ -139,19 +73,17 @@ namespace Solti.Utils.DI.Internals
             CreateNode(entry, entry)
         );
 
-        protected override bool TryGetResolver(Type iface, string? name, out ServiceResolver resolver) => TryGet
+        protected override bool TryGetResolver(Type iface, string? name, out ServiceResolver resolver) => FGetResolverSwitch.TryGet
         (
-            FGetResolverSwitch.Root,
-            (long) iface.TypeHandle.Value,
-            name,
+            CompareServiceIds,
+            new CompositeKey(iface, name),
             out resolver
         );
 
-        protected override bool TryGetGenericEntry(Type iface, string? name, out AbstractServiceEntry genericEntry) => TryGet
+        protected override bool TryGetGenericEntry(Type iface, string? name, out AbstractServiceEntry genericEntry) => FGetGenericEntrySwitch.TryGet
         (
-            FGetGenericEntrySwitch.Root,
-            (long) iface.TypeHandle.Value,
-            name,
+            CompareServiceIds,
+            new CompositeKey(iface, name),
             out genericEntry
         );
         #endregion
