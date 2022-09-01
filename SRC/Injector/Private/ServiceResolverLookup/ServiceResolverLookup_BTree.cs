@@ -17,20 +17,13 @@ namespace Solti.Utils.DI.Internals
         #region Private
         private static readonly StringComparer FStringComparer = StringComparer.Ordinal;
 
-        internal sealed record CompositeKey(long Interface, string? Name)
-        {
-            public CompositeKey(Type iface, string? name): this((long) iface.TypeHandle.Value, name)
-            {
-            }
-        }
-
         internal static int CompareServiceIds(CompositeKey x, CompositeKey y)
         {
             //
             // We have to return Int32 -> Math.Sign()
             //
 
-            int order = Math.Sign(x.Interface - y.Interface);
+            int order = Math.Sign(x.Handle - y.Handle);
             if (order is 0)
                 //
                 // StringComparer supports NULL despite it is not reflected by nullable annotation

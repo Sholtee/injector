@@ -10,6 +10,7 @@ using BenchmarkDotNet.Engines;
 
 namespace Solti.Utils.DI.Perf
 {
+    using Internals;
     using static Internals.ServiceResolverLookup_BTree;
 
     [Ignore]

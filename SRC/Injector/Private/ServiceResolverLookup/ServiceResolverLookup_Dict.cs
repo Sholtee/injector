@@ -12,21 +12,6 @@ namespace Solti.Utils.DI.Internals
 
     internal sealed class ServiceResolverLookup_Dict: ServiceResolverLookupBase
     {
-        private sealed record CompositeKey
-        {
-            public readonly long Handle;
-
-            public readonly string? Name;
-
-            public CompositeKey(Type iface, string? name)
-            {
-                Handle = (long) iface.TypeHandle.Value;
-                Name = name;
-            }
-
-            public CompositeKey(AbstractServiceEntry entry) : this(entry.Interface, entry.Name) { }
-        }
-
         private readonly Dictionary<CompositeKey, AbstractServiceEntry> FGenericEntries = new();
 
         private volatile Dictionary<CompositeKey, ServiceResolver> FResolvers = new();
