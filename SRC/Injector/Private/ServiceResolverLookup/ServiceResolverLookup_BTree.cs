@@ -15,30 +15,14 @@ namespace Solti.Utils.DI.Internals
     internal class ServiceResolverLookup_BTree : ServiceResolverLookupBase
     {
         #region Private
-        private static readonly StringComparer FStringComparer = StringComparer.Ordinal;
-
-        internal static int CompareServiceIds(CompositeKey x, CompositeKey y)
-        {
-            //
-            // We have to return Int32 -> Math.Sign()
-            //
-
-            int order = Math.Sign(x.Handle - y.Handle);
-            if (order is 0)
-                //
-                // StringComparer supports NULL despite it is not reflected by nullable annotation
-                //
-
-                order = FStringComparer.Compare(x.Name, y.Name);
-            return order;
-        }
+        internal static int CompareServiceIds(CompositeKey x, CompositeKey y) => x.CompareTo(y);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static RedBlackTreeNode<KeyValuePair<CompositeKey, TResult>> CreateNode<TResult>(AbstractServiceEntry key, TResult value) => new
+        private static RedBlackTreeNode<KeyValuePair<CompositeKey, TResult>> CreateNode<TResult>(AbstractServiceEntry entry, TResult value) => new
         (
             new KeyValuePair<CompositeKey, TResult>
             (
-                new CompositeKey(key.Interface, key.Name),
+                new CompositeKey(entry),
                 value
             )
         );
