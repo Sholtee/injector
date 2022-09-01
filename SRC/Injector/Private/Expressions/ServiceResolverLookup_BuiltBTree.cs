@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Reflection;
 
 using static System.Diagnostics.Debug;
 
@@ -13,8 +14,10 @@ namespace Solti.Utils.DI.Internals
 {
     using Primitives;
 
-    internal sealed partial class ServiceResolverLookup_BuiltBTree : ServiceResolverLookup_BTree
+    internal partial class ServiceResolverLookup_BuiltBTree
     {
+        private static readonly MethodInfo FCompareTo = MethodInfoExtractor.Extract<CompositeKey>(ck => ck.CompareTo(null!));
+
         private static IEnumerable<Expression> Build<TResult>(RedBlackTreeNode<KeyValuePair<CompositeKey, TResult>>? node, ParameterExpression key, ParameterExpression order, LabelTarget ret)
         {
             if (node is null)
@@ -28,22 +31,45 @@ namespace Solti.Utils.DI.Internals
             }
 
             //
-            // order = CompareServiceIds(iface, name, RelatedEntry.Interface, RelatedEntry.Name);
+            // order = key.CompareTo(node.Data);
             //
 
             yield return Expression.Assign
             (
                 order,
-                Expression.Invoke
+                Expression.Call
                 (
-                    Expression.Constant((Func<CompositeKey, CompositeKey, int>) CompareServiceIds),
                     key,
+                    FCompareTo,
                     Expression.Constant(node.Data.Key)
                 )
             );
 
             //
-            // if (order is null) return Result;
+            // if (order < 0) {...}
+            // if (order > 0) {...}
+            //
+
+            yield return Expression.IfThen
+            (
+                Expression.LessThan(order, Expression.Constant(0)),
+                ifTrue: Expression.Block
+                (
+                    Build(node.Left, key, order, ret)
+                )
+            );
+
+            yield return Expression.IfThen
+            (
+                Expression.GreaterThan(order, Expression.Constant(0)),
+                ifTrue: Expression.Block
+                (
+                    Build(node.Right, key, order, ret)
+                )
+            );
+
+            //
+            // if (order == 0) return Result;
             //
 
             yield return Expression.IfThen
@@ -53,24 +79,6 @@ namespace Solti.Utils.DI.Internals
                 (
                     ret,
                     Expression.Constant(node.Data.Value, typeof(TResult))
-                )
-            );
-
-            //
-            // if (order < 0) {...}
-            // else {...}
-            //
-
-            yield return Expression.IfThenElse
-            (
-                Expression.LessThan(order, Expression.Constant(0)),
-                ifTrue: Expression.Block
-                (
-                    Build(node.Left, key, order, ret)
-                ),
-                ifFalse: Expression.Block
-                (
-                    Build(node.Right, key, order, ret)
                 )
             );
         }
