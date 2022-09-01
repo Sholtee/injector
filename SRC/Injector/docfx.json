@@ -2,13 +2,13 @@
 	"metadata": [{
 		"src": [
 			{
-				"src": "../../BIN/Debug/netstandard2.0",
+				"src": "../../BIN/Debug/netstandard2.1",
 				"files": [ "*.dll" ]
 			}
 		],
 		"dest": "../../BIN/DOC",
 		"properties": {
-			"TargetFramework": "netstandard2.0"
+			"TargetFramework": "netstandard2.1"
 		}
 	}],
 	"build": {
