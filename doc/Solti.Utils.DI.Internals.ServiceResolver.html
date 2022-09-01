@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Class PoolConfig
+    <title>Class ServiceResolver
    | Injector </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Class PoolConfig
+    <meta name="title" content="Class ServiceResolver
    | Injector ">
     <meta name="generator" content="docfx 2.59.3.0">
     
@@ -37,39 +37,37 @@
       <div role="main" class="container body-content hide-when-search">
         <div class="article row grid">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="Solti.Utils.DI.PoolConfig">
+            <article class="content wrap" id="_content" data-uid="Solti.Utils.DI.Internals.ServiceResolver">
   
   
-  <h1 id="Solti_Utils_DI_PoolConfig" data-uid="Solti.Utils.DI.PoolConfig" class="text-break">Class PoolConfig
+  <h1 id="Solti_Utils_DI_Internals_ServiceResolver" data-uid="Solti.Utils.DI.Internals.ServiceResolver" class="text-break">Class ServiceResolver
   </h1>
-  <div class="markdown level0 summary"><p>Contains pool realted configurations.</p>
-</div>
+  <div class="markdown level0 summary"></div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
-    <div class="level1"><span class="xref">PoolConfig</span></div>
+    <div class="level1"><span class="xref">ServiceResolver</span></div>
   </div>
   <div class="implements">
     <h5>Implements</h5>
-    <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.iequatable-1">IEquatable</a>&lt;<a class="xref" href="Solti.Utils.DI.PoolConfig.html">PoolConfig</a>&gt;</div>
+    <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.iequatable-1">IEquatable</a>&lt;<a class="xref" href="Solti.Utils.DI.Internals.ServiceResolver.html">ServiceResolver</a>&gt;</div>
   </div>
-  <h6><strong>Namespace</strong>: <a class="xref" href="Solti.Utils.DI.html">Solti.Utils.DI</a></h6>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Solti.Utils.DI.Internals.html">Solti.Utils.DI.Internals</a></h6>
   <h6><strong>Assembly</strong>: Solti.Utils.DI.dll</h6>
-  <h5 id="Solti_Utils_DI_PoolConfig_syntax">Syntax</h5>
+  <h5 id="Solti_Utils_DI_Internals_ServiceResolver_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public sealed class PoolConfig : Object</code></pre>
+    <pre><code class="lang-csharp hljs">public sealed class ServiceResolver : Object</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
-  <a id="Solti_Utils_DI_PoolConfig__ctor_" data-uid="Solti.Utils.DI.PoolConfig.#ctor*"></a>
-  <h4 id="Solti_Utils_DI_PoolConfig__ctor_System_Int32_" data-uid="Solti.Utils.DI.PoolConfig.#ctor(System.Int32)">PoolConfig(Int32)</h4>
-  <div class="markdown level1 summary"><p>Contains pool realted configurations.</p>
-</div>
+  <a id="Solti_Utils_DI_Internals_ServiceResolver__ctor_" data-uid="Solti.Utils.DI.Internals.ServiceResolver.#ctor*"></a>
+  <h4 id="Solti_Utils_DI_Internals_ServiceResolver__ctor_Solti_Utils_DI_Interfaces_AbstractServiceEntry_System_Func_Solti_Utils_DI_Interfaces_IInstanceFactory_System_Object__" data-uid="Solti.Utils.DI.Internals.ServiceResolver.#ctor(Solti.Utils.DI.Interfaces.AbstractServiceEntry,System.Func{Solti.Utils.DI.Interfaces.IInstanceFactory,System.Object})">ServiceResolver(AbstractServiceEntry, Func&lt;IInstanceFactory, Object&gt;)</h4>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public PoolConfig(int Capacity)</code></pre>
+    <pre><code class="lang-csharp hljs">public ServiceResolver(AbstractServiceEntry RelatedEntry, Func&lt;IInstanceFactory, object&gt; Resolve)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -82,21 +80,26 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
-        <td><span class="parametername">Capacity</span></td>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html">AbstractServiceEntry</a></td>
+        <td><span class="parametername">RelatedEntry</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;<a class="xref" href="Solti.Utils.DI.Interfaces.IInstanceFactory.html">IInstanceFactory</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a>&gt;</td>
+        <td><span class="parametername">Resolve</span></td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <h3 id="properties">Properties
   </h3>
-  <a id="Solti_Utils_DI_PoolConfig_Capacity_" data-uid="Solti.Utils.DI.PoolConfig.Capacity*"></a>
-  <h4 id="Solti_Utils_DI_PoolConfig_Capacity" data-uid="Solti.Utils.DI.PoolConfig.Capacity">Capacity</h4>
+  <a id="Solti_Utils_DI_Internals_ServiceResolver_RelatedEntry_" data-uid="Solti.Utils.DI.Internals.ServiceResolver.RelatedEntry*"></a>
+  <h4 id="Solti_Utils_DI_Internals_ServiceResolver_RelatedEntry" data-uid="Solti.Utils.DI.Internals.ServiceResolver.RelatedEntry">RelatedEntry</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public int Capacity { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public AbstractServiceEntry RelatedEntry { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -108,20 +111,43 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html">AbstractServiceEntry</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Solti_Utils_DI_Internals_ServiceResolver_Resolve_" data-uid="Solti.Utils.DI.Internals.ServiceResolver.Resolve*"></a>
+  <h4 id="Solti_Utils_DI_Internals_ServiceResolver_Resolve" data-uid="Solti.Utils.DI.Internals.ServiceResolver.Resolve">Resolve</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Func&lt;IInstanceFactory, object&gt; Resolve { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;<a class="xref" href="Solti.Utils.DI.Interfaces.IInstanceFactory.html">IInstanceFactory</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <h3 id="methods">Methods
   </h3>
-  <a id="Solti_Utils_DI_PoolConfig__Clone___" data-uid="Solti.Utils.DI.PoolConfig.{Clone}$*"></a>
-  <h4 id="Solti_Utils_DI_PoolConfig__Clone__" data-uid="Solti.Utils.DI.PoolConfig.{Clone}$">&lt;Clone&gt;$()</h4>
+  <a id="Solti_Utils_DI_Internals_ServiceResolver__Clone___" data-uid="Solti.Utils.DI.Internals.ServiceResolver.{Clone}$*"></a>
+  <h4 id="Solti_Utils_DI_Internals_ServiceResolver__Clone__" data-uid="Solti.Utils.DI.Internals.ServiceResolver.{Clone}$">&lt;Clone&gt;$()</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public PoolConfig &lt;Clone&gt;$()</code></pre>
+    <pre><code class="lang-csharp hljs">public ServiceResolver &lt;Clone&gt;$()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -133,18 +159,18 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Solti.Utils.DI.PoolConfig.html">PoolConfig</a></td>
+        <td><a class="xref" href="Solti.Utils.DI.Internals.ServiceResolver.html">ServiceResolver</a></td>
         <td></td>
       </tr>
     </tbody>
   </table>
-  <a id="Solti_Utils_DI_PoolConfig_Deconstruct_" data-uid="Solti.Utils.DI.PoolConfig.Deconstruct*"></a>
-  <h4 id="Solti_Utils_DI_PoolConfig_Deconstruct_System_Int32__" data-uid="Solti.Utils.DI.PoolConfig.Deconstruct(System.Int32@)">Deconstruct(out Int32)</h4>
+  <a id="Solti_Utils_DI_Internals_ServiceResolver_Deconstruct_" data-uid="Solti.Utils.DI.Internals.ServiceResolver.Deconstruct*"></a>
+  <h4 id="Solti_Utils_DI_Internals_ServiceResolver_Deconstruct_Solti_Utils_DI_Interfaces_AbstractServiceEntry__System_Func_Solti_Utils_DI_Interfaces_IInstanceFactory_System_Object___" data-uid="Solti.Utils.DI.Internals.ServiceResolver.Deconstruct(Solti.Utils.DI.Interfaces.AbstractServiceEntry@,System.Func{Solti.Utils.DI.Interfaces.IInstanceFactory,System.Object}@)">Deconstruct(out AbstractServiceEntry, out Func&lt;IInstanceFactory, Object&gt;)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void Deconstruct(out int Capacity)</code></pre>
+    <pre><code class="lang-csharp hljs">public void Deconstruct(out AbstractServiceEntry RelatedEntry, out Func&lt;IInstanceFactory, object&gt; Resolve)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -157,19 +183,24 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
-        <td><span class="parametername">Capacity</span></td>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html">AbstractServiceEntry</a></td>
+        <td><span class="parametername">RelatedEntry</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;<a class="xref" href="Solti.Utils.DI.Interfaces.IInstanceFactory.html">IInstanceFactory</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a>&gt;</td>
+        <td><span class="parametername">Resolve</span></td>
         <td></td>
       </tr>
     </tbody>
   </table>
-  <a id="Solti_Utils_DI_PoolConfig_Equals_" data-uid="Solti.Utils.DI.PoolConfig.Equals*"></a>
-  <h4 id="Solti_Utils_DI_PoolConfig_Equals_Solti_Utils_DI_PoolConfig_" data-uid="Solti.Utils.DI.PoolConfig.Equals(Solti.Utils.DI.PoolConfig)">Equals(PoolConfig)</h4>
+  <a id="Solti_Utils_DI_Internals_ServiceResolver_Equals_" data-uid="Solti.Utils.DI.Internals.ServiceResolver.Equals*"></a>
+  <h4 id="Solti_Utils_DI_Internals_ServiceResolver_Equals_Solti_Utils_DI_Internals_ServiceResolver_" data-uid="Solti.Utils.DI.Internals.ServiceResolver.Equals(Solti.Utils.DI.Internals.ServiceResolver)">Equals(ServiceResolver)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool Equals(PoolConfig other)</code></pre>
+    <pre><code class="lang-csharp hljs">public bool Equals(ServiceResolver other)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -182,7 +213,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Solti.Utils.DI.PoolConfig.html">PoolConfig</a></td>
+        <td><a class="xref" href="Solti.Utils.DI.Internals.ServiceResolver.html">ServiceResolver</a></td>
         <td><span class="parametername">other</span></td>
         <td></td>
       </tr>
@@ -203,8 +234,8 @@
       </tr>
     </tbody>
   </table>
-  <a id="Solti_Utils_DI_PoolConfig_Equals_" data-uid="Solti.Utils.DI.PoolConfig.Equals*"></a>
-  <h4 id="Solti_Utils_DI_PoolConfig_Equals_System_Object_" data-uid="Solti.Utils.DI.PoolConfig.Equals(System.Object)">Equals(Object)</h4>
+  <a id="Solti_Utils_DI_Internals_ServiceResolver_Equals_" data-uid="Solti.Utils.DI.Internals.ServiceResolver.Equals*"></a>
+  <h4 id="Solti_Utils_DI_Internals_ServiceResolver_Equals_System_Object_" data-uid="Solti.Utils.DI.Internals.ServiceResolver.Equals(System.Object)">Equals(Object)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -243,8 +274,8 @@
       </tr>
     </tbody>
   </table>
-  <a id="Solti_Utils_DI_PoolConfig_GetHashCode_" data-uid="Solti.Utils.DI.PoolConfig.GetHashCode*"></a>
-  <h4 id="Solti_Utils_DI_PoolConfig_GetHashCode" data-uid="Solti.Utils.DI.PoolConfig.GetHashCode">GetHashCode()</h4>
+  <a id="Solti_Utils_DI_Internals_ServiceResolver_GetHashCode_" data-uid="Solti.Utils.DI.Internals.ServiceResolver.GetHashCode*"></a>
+  <h4 id="Solti_Utils_DI_Internals_ServiceResolver_GetHashCode" data-uid="Solti.Utils.DI.Internals.ServiceResolver.GetHashCode">GetHashCode()</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -266,8 +297,8 @@
       </tr>
     </tbody>
   </table>
-  <a id="Solti_Utils_DI_PoolConfig_ToString_" data-uid="Solti.Utils.DI.PoolConfig.ToString*"></a>
-  <h4 id="Solti_Utils_DI_PoolConfig_ToString" data-uid="Solti.Utils.DI.PoolConfig.ToString">ToString()</h4>
+  <a id="Solti_Utils_DI_Internals_ServiceResolver_ToString_" data-uid="Solti.Utils.DI.Internals.ServiceResolver.ToString*"></a>
+  <h4 id="Solti_Utils_DI_Internals_ServiceResolver_ToString" data-uid="Solti.Utils.DI.Internals.ServiceResolver.ToString">ToString()</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -291,13 +322,13 @@
   </table>
   <h3 id="operators">Operators
   </h3>
-  <a id="Solti_Utils_DI_PoolConfig_op_Equality_" data-uid="Solti.Utils.DI.PoolConfig.op_Equality*"></a>
-  <h4 id="Solti_Utils_DI_PoolConfig_op_Equality_Solti_Utils_DI_PoolConfig_Solti_Utils_DI_PoolConfig_" data-uid="Solti.Utils.DI.PoolConfig.op_Equality(Solti.Utils.DI.PoolConfig,Solti.Utils.DI.PoolConfig)">Equality(PoolConfig, PoolConfig)</h4>
+  <a id="Solti_Utils_DI_Internals_ServiceResolver_op_Equality_" data-uid="Solti.Utils.DI.Internals.ServiceResolver.op_Equality*"></a>
+  <h4 id="Solti_Utils_DI_Internals_ServiceResolver_op_Equality_Solti_Utils_DI_Internals_ServiceResolver_Solti_Utils_DI_Internals_ServiceResolver_" data-uid="Solti.Utils.DI.Internals.ServiceResolver.op_Equality(Solti.Utils.DI.Internals.ServiceResolver,Solti.Utils.DI.Internals.ServiceResolver)">Equality(ServiceResolver, ServiceResolver)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static bool operator ==(PoolConfig left, PoolConfig right)</code></pre>
+    <pre><code class="lang-csharp hljs">public static bool operator ==(ServiceResolver left, ServiceResolver right)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -310,12 +341,12 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Solti.Utils.DI.PoolConfig.html">PoolConfig</a></td>
+        <td><a class="xref" href="Solti.Utils.DI.Internals.ServiceResolver.html">ServiceResolver</a></td>
         <td><span class="parametername">left</span></td>
         <td></td>
       </tr>
       <tr>
-        <td><a class="xref" href="Solti.Utils.DI.PoolConfig.html">PoolConfig</a></td>
+        <td><a class="xref" href="Solti.Utils.DI.Internals.ServiceResolver.html">ServiceResolver</a></td>
         <td><span class="parametername">right</span></td>
         <td></td>
       </tr>
@@ -336,13 +367,13 @@
       </tr>
     </tbody>
   </table>
-  <a id="Solti_Utils_DI_PoolConfig_op_Inequality_" data-uid="Solti.Utils.DI.PoolConfig.op_Inequality*"></a>
-  <h4 id="Solti_Utils_DI_PoolConfig_op_Inequality_Solti_Utils_DI_PoolConfig_Solti_Utils_DI_PoolConfig_" data-uid="Solti.Utils.DI.PoolConfig.op_Inequality(Solti.Utils.DI.PoolConfig,Solti.Utils.DI.PoolConfig)">Inequality(PoolConfig, PoolConfig)</h4>
+  <a id="Solti_Utils_DI_Internals_ServiceResolver_op_Inequality_" data-uid="Solti.Utils.DI.Internals.ServiceResolver.op_Inequality*"></a>
+  <h4 id="Solti_Utils_DI_Internals_ServiceResolver_op_Inequality_Solti_Utils_DI_Internals_ServiceResolver_Solti_Utils_DI_Internals_ServiceResolver_" data-uid="Solti.Utils.DI.Internals.ServiceResolver.op_Inequality(Solti.Utils.DI.Internals.ServiceResolver,Solti.Utils.DI.Internals.ServiceResolver)">Inequality(ServiceResolver, ServiceResolver)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static bool operator !=(PoolConfig left, PoolConfig right)</code></pre>
+    <pre><code class="lang-csharp hljs">public static bool operator !=(ServiceResolver left, ServiceResolver right)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -355,12 +386,12 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Solti.Utils.DI.PoolConfig.html">PoolConfig</a></td>
+        <td><a class="xref" href="Solti.Utils.DI.Internals.ServiceResolver.html">ServiceResolver</a></td>
         <td><span class="parametername">left</span></td>
         <td></td>
       </tr>
       <tr>
-        <td><a class="xref" href="Solti.Utils.DI.PoolConfig.html">PoolConfig</a></td>
+        <td><a class="xref" href="Solti.Utils.DI.Internals.ServiceResolver.html">ServiceResolver</a></td>
         <td><span class="parametername">right</span></td>
         <td></td>
       </tr>
