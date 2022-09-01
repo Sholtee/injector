@@ -14,9 +14,6 @@ namespace Solti.Utils.DI.Internals
 
     internal class ServiceResolverLookup_BTree : ServiceResolverLookupBase
     {
-        #region Private
-        internal static int CompareServiceIds(CompositeKey x, CompositeKey y) => x.CompareTo(y);
-
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static RedBlackTreeNode<KeyValuePair<CompositeKey, TResult>> CreateNode<TResult>(AbstractServiceEntry entry, TResult value) => new
         (
@@ -26,14 +23,13 @@ namespace Solti.Utils.DI.Internals
                 value
             )
         );
-        #endregion
 
         #region Protected
         protected readonly RedBlackTree<KeyValuePair<CompositeKey, AbstractServiceEntry>> FGetGenericEntrySwitch =
-            RedBlackTreeExtensions.Create<CompositeKey, AbstractServiceEntry>(CompareServiceIds);
+            RedBlackTreeExtensions.Create<CompositeKey, AbstractServiceEntry>();
 
         protected volatile RedBlackTree<KeyValuePair<CompositeKey, ServiceResolver>> FGetResolverSwitch =
-            RedBlackTreeExtensions.Create<CompositeKey, ServiceResolver>(CompareServiceIds);
+            RedBlackTreeExtensions.Create<CompositeKey, ServiceResolver>();
 
         protected override bool TryAddResolver(ServiceResolver resolver) => FGetResolverSwitch.Add
         (
@@ -52,14 +48,12 @@ namespace Solti.Utils.DI.Internals
 
         protected override bool TryGetResolver(Type iface, string? name, out ServiceResolver resolver) => FGetResolverSwitch.TryGet
         (
-            CompareServiceIds,
             new CompositeKey(iface, name),
             out resolver
         );
 
         protected override bool TryGetGenericEntry(Type iface, string? name, out AbstractServiceEntry genericEntry) => FGetGenericEntrySwitch.TryGet
         (
-            CompareServiceIds,
             new CompositeKey(iface, name),
             out genericEntry
         );

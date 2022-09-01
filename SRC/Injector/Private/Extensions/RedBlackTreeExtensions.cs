@@ -9,19 +9,16 @@ using System.Collections.Generic;
 namespace Solti.Utils.DI.Internals
 {
     using Primitives;
+    using Primitives.Patterns;
 
     internal static class RedBlackTreeExtensions
     {
-        private sealed class KVPComparer<TKey, TValue> : IComparer<KeyValuePair<TKey, TValue>>
+        private sealed class KVPComparer<TKey, TValue> : Singleton<KVPComparer<TKey, TValue>>, IComparer<KeyValuePair<TKey, TValue>> where TKey: IComparable<TKey>
         {
-            public Func<TKey, TKey, int> Implementation { get; }
-
-            public KVPComparer(Func<TKey, TKey, int> implementation) => Implementation = implementation;
-
-            public int Compare(KeyValuePair<TKey, TValue> x, KeyValuePair<TKey, TValue> y) => Implementation(x.Key, y.Key);
+            public int Compare(KeyValuePair<TKey, TValue> x, KeyValuePair<TKey, TValue> y) => x.Key.CompareTo(y.Key);
         }
 
-        private static bool TryGet<TKey, TValue>(RedBlackTreeNode<KeyValuePair<TKey, TValue>>? node, Func<TKey, TKey, int> compare, TKey key, out TValue result)
+        private static bool TryGet<TKey, TValue>(RedBlackTreeNode<KeyValuePair<TKey, TValue>>? node, TKey key, out TValue result) where TKey : IComparable<TKey>
         {
             if (node is null)
             {
@@ -29,31 +26,26 @@ namespace Solti.Utils.DI.Internals
                 return false;
             }
 
-            int order = compare
-            (
-                key,
-                node.Data.Key
-            );
+            int order = key.CompareTo(node.Data.Key);
 
             if (order < 0)
-                return TryGet(node.Left, compare, key, out result);
+                return TryGet(node.Left, key, out result);
 
             if (order > 0)
-                return TryGet(node.Right, compare, key, out result);
+                return TryGet(node.Right, key, out result);
 
             result = node.Data.Value;
             return true;
         }
 
-        public static RedBlackTree<KeyValuePair<TKey, TValue>> Create<TKey, TValue>(Func<TKey, TKey, int> compare) => new
+        public static RedBlackTree<KeyValuePair<TKey, TValue>> Create<TKey, TValue>() where TKey : IComparable<TKey> => new
         (
-            new KVPComparer<TKey, TValue>(compare)
+            KVPComparer<TKey, TValue>.Instance
         );
 
-        public static bool TryGet<TKey, TValue>(this RedBlackTree<KeyValuePair<TKey, TValue>> src, Func<TKey, TKey, int> compare, TKey key, out TValue result) => TryGet
+        public static bool TryGet<TKey, TValue>(this RedBlackTree<KeyValuePair<TKey, TValue>> src, TKey key, out TValue result) where TKey : IComparable<TKey> => TryGet
         (
             src.Root,
-            compare,
             key,
             out result
         );
