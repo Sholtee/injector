@@ -205,33 +205,32 @@ namespace Solti.Utils.DI.Internals
         #endregion
 
         //
-        // According to performance tests, up to ~50 items btree is faster than dictionary. Assuming that
-        // there won't be more than 20 constructed generic service 30 seems a good threshold.
-        //
-        // Note that built btree is 5-10% slower than the regular one (It would be worth an investigation
-        // why).
+        // According to performance tests, up to ~50 items built btree is faster than dictionary.
+        // Assuming that there won't be more than 20 constructed generic service 30 seems a good
+        // threshold.
         //
 
         public const int BTREE_ITEM_THRESHOLD = 30;
 
         public Injector(IEnumerable<AbstractServiceEntry> registeredEntries, ScopeOptions options, object? lifetime)
         {
-            #pragma warning disable CA2214 // Do not call overridable methods in constructors
+            
             IReadOnlyCollection<AbstractServiceEntry> svcs = new List<AbstractServiceEntry>
             (
+                #pragma warning disable CA2214 // Do not call overridable methods in constructors
                 GetAllServices(registeredEntries)
+                #pragma warning restore CA2214
             );
-            #pragma warning restore CA2214
-
+            
             #pragma warning disable CA1304 // Specify CultureInfo
             FResolverLookup = (options.Engine?.ToLower() ?? (svcs.Count <= BTREE_ITEM_THRESHOLD ? ServiceResolverLookup_BuiltBTree.Id : ServiceResolverLookup_Dict.Id)) switch
+            #pragma warning restore CA1304 // Specify CultureInfo
             {
                 ServiceResolverLookup_BTree.Id => new ServiceResolverLookup_BTree(svcs, options),
                 ServiceResolverLookup_BuiltBTree.Id => new ServiceResolverLookup_BuiltBTree(svcs, options),
                 ServiceResolverLookup_Dict.Id  => new ServiceResolverLookup_Dict(svcs, options),
                 _ => throw new NotSupportedException()
             };
-            #pragma warning restore CA1304 // Specify CultureInfo
 
             FSlots    = Array<object>.Create(FResolverLookup.Slots);
             Options   = options;
