@@ -13,28 +13,33 @@ namespace Solti.Utils.DI.Internals
 
     internal sealed class CompositeKey: IComparable<CompositeKey>, IEquatable<CompositeKey>
     {
-        public readonly long Handle;
+        private int? FHash;
 
-        public readonly string? Name;
+        private readonly long FHandle;
 
-        public readonly int Hash;
+        private readonly string? FName;
 
         public CompositeKey(Type iface, string? name)
         {
-            Handle = (long) iface.TypeHandle.Value;
-            Name = name;
-            #pragma warning disable CA1307
-            Hash = unchecked(Handle.GetHashCode() ^ (Name?.GetHashCode() ?? 0));
-            #pragma warning restore CA1307
+            FHandle = (long) iface.TypeHandle.Value;
+            FName = name;   
         }
 
         public CompositeKey(AbstractServiceEntry entry) : this(entry.Interface, entry.Name) { }
 
-        public override int GetHashCode() => Hash;
+        public override int GetHashCode() =>
+            //
+            // We don't need lock in multithreaded environments as assigning a value to FHash multiple times
+            // should not cause any issue.
+            //
+
+            #pragma warning disable CA1307
+            FHash ??= unchecked(FHandle.GetHashCode() ^ (FName?.GetHashCode() ?? 0));
+            #pragma warning restore CA1307
 
         public override bool Equals(object obj) => obj is CompositeKey other && Equals(other);
 
-        public bool Equals(CompositeKey other) => Handle == other.Handle && Name == other.Name;
+        public bool Equals(CompositeKey other) => FHandle == other.FHandle && FName == other.FName;
 
         public int CompareTo(CompositeKey other)
         {
@@ -42,13 +47,13 @@ namespace Solti.Utils.DI.Internals
             // We have to return Int32 -> Math.Sign()
             //
 
-            int order = Math.Sign(Handle - other.Handle);
+            int order = Math.Sign(FHandle - other.FHandle);
             if (order is 0)
                 //
                 // StringComparer supports NULL despite it is not reflected by nullable annotation
                 //
 
-                order = InvariantCultureIgnoreCase.Compare(Name, other.Name);
+                order = InvariantCultureIgnoreCase.Compare(FName, other.FName);
             return order;
         }
     }
