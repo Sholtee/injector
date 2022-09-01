@@ -14,10 +14,14 @@ namespace Solti.Utils.DI.Interfaces
     /// </summary>
     public sealed class ServiceIdComparer : ComparerBase<ServiceIdComparer, AbstractServiceEntry>
     {
-        /// <inheritdoc/>
+        /// <summary>
+        /// See <see cref="ComparerBase{TConcreteComparer, T}.Equals(T, T)"/>
+        /// </summary>
         public override bool Equals(AbstractServiceEntry x, AbstractServiceEntry y) => x?.Interface == y?.Interface && x?.Name == y?.Name;
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// See <see cref="ComparerBase{TConcreteComparer, T}.GetHashCode(T)"/>
+        /// </summary>
         [SuppressMessage("Globalization", "CA1307:Specify StringComparison for clarity")]
         public override int GetHashCode(AbstractServiceEntry obj) => unchecked((obj?.Interface.GetHashCode() ?? 0) ^ (obj?.Name?.GetHashCode() ?? 0));
     }

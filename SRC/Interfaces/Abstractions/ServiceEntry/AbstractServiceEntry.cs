@@ -119,11 +119,13 @@ namespace Solti.Utils.DI.Interfaces
         /// </summary>
         public virtual void VisitFactory(Func<LambdaExpression, LambdaExpression> visitor, VisitFactoryOptions options) => throw new NotSupportedException();
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Returns the short string representation of this entry.
+        /// </summary>
         public override string ToString() => ToString(false); 
 
         /// <summary>
-        /// Returns the string reprezentation of this entry.
+        /// Returns the string representation of this entry.
         /// </summary>
         public string ToString(bool shortForm)
         {
