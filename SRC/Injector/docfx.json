@@ -1,10 +1,11 @@
 {
 	"metadata": [{
-		"src": [{
-		    "src": "../",
-			"files": ["*/*.csproj"],
-			"exclude": ["**/bin/**", "**/obj/**"]
-		}],
+		"src": [
+			{
+				"src": "../../BIN/Debug/netstandard2.0",
+				"files": [ "*.dll" ]
+			}
+		],
 		"dest": "../../BIN/DOC",
 		"properties": {
 			"TargetFramework": "netstandard2.0"
