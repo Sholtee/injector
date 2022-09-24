@@ -5,6 +5,7 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -16,6 +17,7 @@ namespace Solti.Utils.DI.Internals
 
         private volatile Dictionary<CompositeKey, ServiceResolver> FResolvers = new();
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static bool TryAdd<TValue>(Dictionary<CompositeKey, TValue> target, AbstractServiceEntry entry, TValue value)
         {
             CompositeKey key = new(entry);
@@ -36,18 +38,13 @@ namespace Solti.Utils.DI.Internals
 
         protected override bool TryAddGenericEntry(AbstractServiceEntry entry) => TryAdd(FGenericEntries, entry, entry);
 
-        protected override void AddResolver(ServiceResolver resolver)
+        protected override void AddResolver(ServiceResolver resolver) => FResolvers = new Dictionary<CompositeKey, ServiceResolver>(FResolvers)
         {
-            Dictionary<CompositeKey, ServiceResolver> extendedResolvers = new(FResolvers);          
-            
-            extendedResolvers.Add
-            (
+            {
                 new CompositeKey(resolver.RelatedEntry),
                 resolver
-            );
-            
-            FResolvers = extendedResolvers;
-        }
+            }
+        };
 
         protected override bool TryAddResolver(ServiceResolver resolver) =>
             TryAdd(FResolvers, resolver.RelatedEntry, resolver);
