@@ -16,7 +16,7 @@ namespace Solti.Utils.DI.Internals.Tests
     using Interfaces;
 
     [TestFixture]
-    public sealed class ServiceResolverTests
+    internal sealed class ServiceResolverTests
     {
         public static IEnumerable<Func<IEnumerable<AbstractServiceEntry>, ServiceResolutionMode, IServiceResolverLookup>> Lookups
         {
