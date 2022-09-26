@@ -9,11 +9,29 @@ using System.Text;
 
 namespace Solti.Utils.DI.Internals
 {
+    using Primitives.Patterns;
+    using Primitives.Threading;
+
     /// <summary>
     /// Describe a <a href="https://graphviz.org/">DOT graph</a>.
     /// </summary>
     internal class DotGraph
     {
+        //
+        // We cannot inherit from StringBuilder since it is sealed.
+        //
+
+        private sealed class PooledStringBuilder : IResettable
+        {
+            public StringBuilder StringBuilder { get; } = new();
+
+            bool IResettable.Dirty => StringBuilder.Length > 0;
+
+            void IResettable.Reset() => StringBuilder.Clear();
+        }
+
+        private static readonly ObjectPool<PooledStringBuilder> FPool = new(static () => new PooledStringBuilder(), Environment.ProcessorCount);
+
         public ISet<DotGraphNode> Nodes { get; } = new HashSet<DotGraphNode>();
 
         public ISet<DotGraphEdge> Edges { get; } = new HashSet<DotGraphEdge>();
@@ -22,7 +40,9 @@ namespace Solti.Utils.DI.Internals
 
         public string ToString(string newLine)
         {
-            StringBuilder sb = new();
+            using PoolItem<PooledStringBuilder> poolEntry = FPool.GetItem(CheckoutPolicy.Block)!;
+
+            StringBuilder sb = poolEntry.Value.StringBuilder;
             sb.Append($"digraph G {{{newLine}");
 
             foreach (DotGraphNode node in Nodes)
