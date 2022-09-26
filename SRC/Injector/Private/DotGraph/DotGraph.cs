@@ -40,9 +40,9 @@ namespace Solti.Utils.DI.Internals
 
         public string ToString(string newLine)
         {
-            using PoolItem<PooledStringBuilder> poolEntry = FPool.GetItem(CheckoutPolicy.Block)!;
+            using PoolItem<PooledStringBuilder> poolItem = FPool.GetItem(CheckoutPolicy.Block)!;
 
-            StringBuilder sb = poolEntry.Value.StringBuilder;
+            StringBuilder sb = poolItem.Value.StringBuilder;
             sb.Append($"digraph G {{{newLine}");
 
             foreach (DotGraphNode node in Nodes)
