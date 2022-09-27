@@ -26,10 +26,10 @@ namespace Solti.Utils.DI.Diagnostics
             if (iface is null)
                 throw new ArgumentNullException(nameof(iface));
 
-            if (root is not IServiceEntryLookup serviceEntryLookup)
+            if (root is not Injector injector)
                 throw new NotSupportedException();
 
-            DotGraphBuilder graphBuilder = new(serviceEntryLookup);
+            DotGraphBuilder graphBuilder = new(injector.ServiceResolverLookup);
             graphBuilder.BuildById(iface, name);
 
             return graphBuilder.Graph.ToString(newLine ?? Environment.NewLine);
