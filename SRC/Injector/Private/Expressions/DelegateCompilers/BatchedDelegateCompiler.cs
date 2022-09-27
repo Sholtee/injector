@@ -10,7 +10,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 
-namespace Solti.Utils.DI.Private.Expressions.DelegateCompilers
+namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
     using Primitives;

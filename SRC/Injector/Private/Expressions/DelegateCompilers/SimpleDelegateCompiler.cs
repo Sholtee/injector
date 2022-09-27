@@ -6,7 +6,7 @@
 using System;
 using System.Linq.Expressions;
 
-namespace Solti.Utils.DI.Private.Expressions.DelegateCompilers
+namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
     using Primitives.Patterns;
