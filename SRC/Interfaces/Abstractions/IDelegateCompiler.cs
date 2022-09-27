@@ -14,13 +14,8 @@ namespace Solti.Utils.DI.Interfaces
     public interface IDelegateCompiler
     {
         /// <summary>
-        /// Compiles the given <paramref name="expression"/> in a deferred manner.
+        /// Compiles the given <paramref name="expression"/>.
         /// </summary>
         void Compile<TDelegate>(Expression<TDelegate> expression, Action<TDelegate> completionCallback);
-
-        /// <summary>
-        /// Compiles all the delegates filed by the <see cref="Compile{TDelegate}(Expression{TDelegate}, Action{TDelegate})"/> method.
-        /// </summary>
-        void Compile();
     }
 }

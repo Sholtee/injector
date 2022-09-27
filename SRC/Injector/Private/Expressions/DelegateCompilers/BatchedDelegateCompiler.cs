@@ -1,5 +1,5 @@
 ﻿/********************************************************************************
-* DelegateCompiler.cs                                                           *
+* BatchedDelegateCompiler.cs                                                    *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
@@ -10,12 +10,12 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 
-namespace Solti.Utils.DI.Internals
+namespace Solti.Utils.DI.Private.Expressions.DelegateCompilers
 {
     using Interfaces;
     using Primitives;
 
-    internal sealed class DelegateCompiler : IDelegateCompiler
+    internal sealed class BatchedDelegateCompiler : IDelegateCompiler
     {
         private readonly List<(Expression Expression, MethodInfo Method)> FCompilations = new();
 
@@ -40,7 +40,7 @@ namespace Solti.Utils.DI.Internals
                         )
                     )
                 );
-                
+
                 Debug.WriteLine($"Created batched compilation:{Environment.NewLine}{expr.GetDebugView()}");
 
                 expr.Compile().Invoke();
