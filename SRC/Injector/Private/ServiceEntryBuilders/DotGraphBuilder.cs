@@ -11,7 +11,7 @@ namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
 
-    internal sealed class DotGraphBuilder : ServiceEntryBuilder
+    internal sealed class DotGraphBuilder : IServiceEntryBuilder
     {
         private readonly IServiceResolverLookup FLookup;
 
@@ -32,7 +32,7 @@ namespace Solti.Utils.DI.Internals
             FLookup.Get(iface, name)?.RelatedEntry ?? new MissingServiceEntry(iface, name)
         );
 
-        public override void Build(AbstractServiceEntry entry)
+        public void Build(AbstractServiceEntry entry)
         {
             ServiceNode child = new(entry);
 
@@ -70,7 +70,7 @@ namespace Solti.Utils.DI.Internals
    
             try
             {
-                entry.VisitFactory(FVisitor.VisitLambda, VisitFactoryOptions.Default);
+                entry.VisitFactory(FVisitor.VisitLambda, null);
             }
             finally
             {

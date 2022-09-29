@@ -17,7 +17,7 @@ namespace Solti.Utils.DI.Internals
     public abstract partial class ProducibleServiceEntry
     {
         /// <inheritdoc/>
-        public override void VisitFactory(Func<LambdaExpression, LambdaExpression> visitor, VisitFactoryOptions options)
+        public override void VisitFactory(Func<LambdaExpression, LambdaExpression> visitor, IDelegateCompiler? compiler)
         {
             if (visitor is null)
                 throw new ArgumentNullException(nameof(visitor));
@@ -29,7 +29,7 @@ namespace Solti.Utils.DI.Internals
             // Chain all the related delegates
             //
 
-            Expression<Func<IInjector, Type, object>> factory;
+            Expression<Func<IInjector, Type, object>> factoryExpr;
 
             if (FProxies?.Count > 0)
             {
@@ -55,14 +55,14 @@ namespace Solti.Utils.DI.Internals
                     );
                 }
 
-                factory = Expression.Lambda<Func<IInjector, Type, object>>(invocation, injector, iface);
+                factoryExpr = Expression.Lambda<Func<IInjector, Type, object>>(invocation, injector, iface);
             }
-            else factory = (Expression<Func<IInjector, Type, object>>) visitor(Factory);
+            else factoryExpr = (Expression<Func<IInjector, Type, object>>) visitor(Factory);
 
-            if (options.HasFlag(VisitFactoryOptions.BuildDelegate))
+            if (compiler is not null)
             {
-                Debug.WriteLine($"Created factory: {Environment.NewLine}{factory.GetDebugView()}");
-                FBuiltFactory = factory.Compile();
+                Debug.WriteLine($"Created factory: {Environment.NewLine}{factoryExpr.GetDebugView()}");
+                compiler.Compile(factoryExpr, factory => FBuiltFactory = factory);
             
                 State = (State | ServiceEntryStates.Built) & ~ServiceEntryStates.Validated;
             }

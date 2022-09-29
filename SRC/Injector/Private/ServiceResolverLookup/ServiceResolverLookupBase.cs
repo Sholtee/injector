@@ -19,6 +19,8 @@ namespace Solti.Utils.DI.Internals
         #region Private
         private readonly IServiceEntryBuilder FServiceEntryBuilder;
 
+        private readonly BatchedDelegateCompiler FDelegateCompiler = new();
+
         private readonly object FLock = new();
 
         private int FSlots;
@@ -102,12 +104,13 @@ namespace Solti.Utils.DI.Internals
                     return resolver;
 
                 genericEntry = genericEntry.Specialize(iface.GenericTypeArguments);
-                
+
                 //
                 // Build the entry before it gets exposed (before the AddResolver call).
                 //
 
                 FServiceEntryBuilder.Build(genericEntry);
+                FDelegateCompiler.Compile();
 
                 AddResolver
                 (
@@ -154,8 +157,8 @@ namespace Solti.Utils.DI.Internals
 
             FServiceEntryBuilder = scopeOptions.ServiceResolutionMode switch
             {
-                ServiceEntryBuilder.Id => new ServiceEntryBuilder(),
-                ServiceEntryBuilderAot.Id => new ServiceEntryBuilderAot(this, scopeOptions),
+                ServiceEntryBuilder.Id => new ServiceEntryBuilder(FDelegateCompiler),
+                ServiceEntryBuilderAot.Id => new ServiceEntryBuilderAot(this, FDelegateCompiler, scopeOptions),
                 _ => throw new NotSupportedException()
             };
 
@@ -164,6 +167,11 @@ namespace Solti.Utils.DI.Internals
                 _ = Get(Interface, Name);
             }
 
+            //
+            // Compile the delegates, assembled by the Get() calls
+            //
+
+            FDelegateCompiler.Compile();
             FInitialized = true;
         }
         #endregion

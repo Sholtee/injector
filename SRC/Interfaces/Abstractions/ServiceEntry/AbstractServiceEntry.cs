@@ -115,9 +115,9 @@ namespace Solti.Utils.DI.Interfaces
         public virtual void SetValidated() => throw new NotSupportedException();
 
         /// <summary>
-        /// Builds this entry.
+        /// Visits the underlying factory expression and compiles it if a <paramref name="compiler"/> is set.
         /// </summary>
-        public virtual void VisitFactory(Func<LambdaExpression, LambdaExpression> visitor, VisitFactoryOptions options) => throw new NotSupportedException();
+        public virtual void VisitFactory(Func<LambdaExpression, LambdaExpression> visitor, IDelegateCompiler? compiler) => throw new NotSupportedException();
 
         /// <summary>
         /// Returns the short string representation of this entry.

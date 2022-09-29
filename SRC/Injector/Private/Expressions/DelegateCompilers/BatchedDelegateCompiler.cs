@@ -17,13 +17,16 @@ namespace Solti.Utils.DI.Internals
 
     internal sealed class BatchedDelegateCompiler : IDelegateCompiler
     {
-        private readonly List<(Expression Expression, MethodInfo Method)> FCompilations = new();
+        private readonly List<(Expression Expression, Expression Callback)> FCompilations = new();
 
         public void Compile<TDelegate>(Expression<TDelegate> expression, Action<TDelegate> completionCallback) =>
-            FCompilations.Add((expression, completionCallback.Method));
+            FCompilations.Add((expression, Expression.Constant(completionCallback)));
 
         public void Compile()
         {
+            if (FCompilations.Count is 0)
+                return;
+
             try
             {
                 Expression<Action> expr = Expression.Lambda<Action>
@@ -34,7 +37,7 @@ namespace Solti.Utils.DI.Internals
                         (
                             compilation => Expression.Invoke
                             (
-                                Expression.Constant(compilation.Method),
+                                compilation.Callback,
                                 compilation.Expression
                             )
                         )

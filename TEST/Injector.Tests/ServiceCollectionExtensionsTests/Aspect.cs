@@ -32,7 +32,7 @@ namespace Solti.Utils.DI.Tests
             Collection.Service<IMyService, MyService>(lifetime);
 
             AbstractServiceEntry lastEntry = Collection.LastEntry;
-            lastEntry.VisitFactory(_ => _, VisitFactoryOptions.BuildDelegate);
+            lastEntry.VisitFactory(_ => _, new SimpleDelegateCompiler());
 
             IMyService instance = (IMyService) lastEntry
                 .CreateInstance(mockInjector.Object, out object _);
@@ -59,7 +59,7 @@ namespace Solti.Utils.DI.Tests
             Collection.Service<IMyDependantService, MyService>(lifetime);
 
             AbstractServiceEntry lastEntry = Collection.LastEntry;
-            lastEntry.VisitFactory(_ => _, VisitFactoryOptions.BuildDelegate);
+            lastEntry.VisitFactory(_ => _, new SimpleDelegateCompiler());
 
             lastEntry.CreateInstance(mockInjector.Object, out object _);
 
@@ -80,7 +80,7 @@ namespace Solti.Utils.DI.Tests
             Assert.That(lastEntry.Factory, Is.Null);
 
             lastEntry = lastEntry.Specialize(typeof(int));
-            Assert.DoesNotThrow(() => lastEntry.VisitFactory(_ => _, VisitFactoryOptions.BuildDelegate));
+            Assert.DoesNotThrow(() => lastEntry.VisitFactory(_ => _, new SimpleDelegateCompiler()));
 
             IMyGenericService<int> instance = (IMyGenericService<int>) lastEntry.CreateInstance(mockInjector.Object, out object _);
 
@@ -112,7 +112,7 @@ namespace Solti.Utils.DI.Tests
             Collection.Factory(i => mockService.Object, lifetime);
 
             AbstractServiceEntry lastEntry = Collection.LastEntry;
-            lastEntry.VisitFactory(_ => _, VisitFactoryOptions.BuildDelegate);
+            lastEntry.VisitFactory(_ => _, new SimpleDelegateCompiler());
 
             IOrderInspectingService svc = (IOrderInspectingService) lastEntry.CreateInstance(mockInjector.Object, out object _);
 

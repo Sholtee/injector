@@ -19,7 +19,7 @@ namespace Solti.Utils.DI.Internals
 
         public new const ServiceResolutionMode Id = ServiceResolutionMode.AOT;
 
-        public ServiceEntryBuilderAot(IServiceResolverLookup lookup, ScopeOptions options)
+        public ServiceEntryBuilderAot(IServiceResolverLookup lookup, IDelegateCompiler compiler, ScopeOptions options): base(compiler)
         {
             FOptions = options;
             FPath = new ServicePath();
@@ -48,7 +48,7 @@ namespace Solti.Utils.DI.Internals
             FPath.Push(requested);
             try
             {
-                requested.VisitFactory(FReplacer.VisitLambda, VisitFactoryOptions.BuildDelegate);
+                requested.VisitFactory(FReplacer.VisitLambda, FCompiler);
             }
             finally
             {
