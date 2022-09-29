@@ -29,7 +29,7 @@ namespace Solti.Utils.DI.Diagnostics
             if (root is not Injector injector)
                 throw new NotSupportedException();
 
-            DotGraphBuilder graphBuilder = new(injector.ServiceResolverLookup);
+            DotGraphServiceEntryVisitor graphBuilder = new(injector.ServiceResolverLookup);
             graphBuilder.BuildById(iface, name);
 
             return graphBuilder.Graph.ToString(newLine ?? Environment.NewLine);

@@ -10,9 +10,9 @@ namespace Solti.Utils.DI.Internals
 {
     internal sealed class GraphBuilderVisitor : ServiceRequestVisitor
     {
-        private readonly DotGraphBuilder FBuilder;
+        private readonly DotGraphServiceEntryVisitor FBuilder;
 
-        public GraphBuilderVisitor(DotGraphBuilder builder) => FBuilder = builder;
+        public GraphBuilderVisitor(DotGraphServiceEntryVisitor builder) => FBuilder = builder;
 
         protected override Expression VisitServiceRequest(MethodCallExpression method, Expression target, Type iface, string? name)
         {

@@ -1,5 +1,5 @@
 ﻿/********************************************************************************
-* IServiceEntryBuilder.cs                                                       *
+* IServiceEntryVisitor.cs                                                       *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
@@ -7,8 +7,8 @@ namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
 
-    internal interface IServiceEntryBuilder
+    internal interface IServiceEntryVisitor
     {
-        void Build(AbstractServiceEntry entry);
+        void Visit(AbstractServiceEntry entry);
     }
 }

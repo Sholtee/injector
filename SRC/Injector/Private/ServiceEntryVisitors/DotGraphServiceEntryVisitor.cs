@@ -1,5 +1,5 @@
 ﻿/********************************************************************************
-* DotGraphBuilder.cs                                                            *
+* DotGraphServiceEntryVisitor.cs                                                *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
@@ -11,7 +11,7 @@ namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
 
-    internal sealed class DotGraphBuilder : IServiceEntryBuilder
+    internal sealed class DotGraphServiceEntryVisitor : IServiceEntryVisitor
     {
         private readonly IServiceResolverLookup FLookup;
 
@@ -21,18 +21,18 @@ namespace Solti.Utils.DI.Internals
 
         public DotGraph Graph { get; } = new();
 
-        public DotGraphBuilder(IServiceResolverLookup lookup)
+        public DotGraphServiceEntryVisitor(IServiceResolverLookup lookup)
         {
             FLookup = lookup;
             FVisitor = new GraphBuilderVisitor(this);
         }
 
-        public void BuildById(Type iface, string? name) => Build
+        public void BuildById(Type iface, string? name) => Visit
         (
             FLookup.Get(iface, name)?.RelatedEntry ?? new MissingServiceEntry(iface, name)
         );
 
-        public void Build(AbstractServiceEntry entry)
+        public void Visit(AbstractServiceEntry entry)
         {
             ServiceNode child = new(entry);
 

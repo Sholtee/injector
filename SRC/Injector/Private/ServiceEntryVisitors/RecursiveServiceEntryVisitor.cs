@@ -1,5 +1,5 @@
 ﻿/********************************************************************************
-* ServiceEntryBuilderAot.cs                                                     *
+* RecursiveServiceEntryVisitor.cs                                               *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
@@ -9,7 +9,7 @@ namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
 
-    internal sealed class ServiceEntryBuilderAot : ServiceEntryBuilder
+    internal sealed class RecursiveServiceEntryVisitor : IServiceEntryVisitor
     {
         private readonly ServicePath FPath;
 
@@ -17,16 +17,17 @@ namespace Solti.Utils.DI.Internals
 
         private readonly ServiceRequestReplacer FReplacer;
 
-        public new const ServiceResolutionMode Id = ServiceResolutionMode.AOT;
+        private readonly IDelegateCompiler FCompiler;
 
-        public ServiceEntryBuilderAot(IServiceResolverLookup lookup, IDelegateCompiler compiler, ScopeOptions options): base(compiler)
+        public RecursiveServiceEntryVisitor(IServiceResolverLookup lookup, IDelegateCompiler compiler, ScopeOptions options)
         {
             FOptions = options;
             FPath = new ServicePath();
             FReplacer = new ServiceRequestReplacer(lookup, FPath, options.SupportsServiceProvider);
+            FCompiler = compiler;
         }
 
-        public override void Build(AbstractServiceEntry requested)
+        public void Visit(AbstractServiceEntry requested)
         {
             Debug.Assert(!requested.Interface.IsGenericTypeDefinition, "Generic entry cannot be built");
 

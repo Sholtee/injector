@@ -1,5 +1,5 @@
 ﻿/********************************************************************************
-* ServiceEntryBuilder.cs                                                        *
+* ShallowServiceEntryVisitor.cs                                                 *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
@@ -9,17 +9,15 @@ namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
 
-    internal class ServiceEntryBuilder: IServiceEntryBuilder
+    internal sealed class ShallowServiceEntryVisitor: IServiceEntryVisitor
     {
-        protected readonly IDelegateCompiler FCompiler;
+        private readonly IDelegateCompiler FCompiler;
 
-        public const ServiceResolutionMode Id = ServiceResolutionMode.JIT;
+        public ShallowServiceEntryVisitor(IDelegateCompiler compiler) => FCompiler = compiler;
 
-        public ServiceEntryBuilder(IDelegateCompiler compiler) => FCompiler = compiler;
-
-        public virtual void Build(AbstractServiceEntry entry)
+        public void Visit(AbstractServiceEntry entry)
         {
-            Debug.Assert(!entry.Interface.IsGenericTypeDefinition, "Generic entry cannot be built");
+            Debug.Assert(!entry.Interface.IsGenericTypeDefinition, "Generic entry cannot be visited");
 
             if (entry.Features.HasFlag(ServiceEntryFeatures.SupportsVisit) && !entry.State.HasFlag(ServiceEntryStates.Built))
                 entry.VisitFactory(static _ => _, FCompiler);
