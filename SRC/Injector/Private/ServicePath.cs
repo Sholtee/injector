@@ -50,7 +50,7 @@ namespace Solti.Utils.DI.Internals
             {
                 List<AbstractServiceEntry> circle = new(GetCircle());
 
-                CircularReferenceException ex = new 
+                CircularReferenceException ex = new
                 (
                     string.Format
                     (
@@ -58,8 +58,10 @@ namespace Solti.Utils.DI.Internals
                         Resources.CIRCULAR_REFERENCE,
                         Format(circle)
                     )
-                );
-                ex.Data[nameof(circle)] = circle;
+                )
+                {
+                    Circle = circle
+                };
 
                 throw ex;
             }

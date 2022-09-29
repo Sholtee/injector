@@ -57,11 +57,9 @@ namespace Solti.Utils.DI.Internals
             }
             catch (CircularReferenceException cref)
             {
-                IReadOnlyList<AbstractServiceEntry> circle = (IReadOnlyList<AbstractServiceEntry>) cref.Data[nameof(circle)];
-
                 foreach (ServiceEdge edge in Graph.Edges)
                 {
-                    if (circle.Contains(edge.From.RelatedEntry) && circle.Contains(edge.To.RelatedEntry))
+                    if (cref.Circle.Contains(edge.From.RelatedEntry) && cref.Circle.Contains(edge.To.RelatedEntry))
                         edge.MarkRed();
                 }
 
