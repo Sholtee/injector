@@ -17,7 +17,7 @@ namespace Solti.Utils.DI.Internals
     internal abstract class ServiceResolverLookupBase : IServiceResolverLookup
     {
         #region Private
-        private readonly IServiceEntryVisitor FServiceEntryBuilder;
+        private readonly IServiceEntryVisitor FServiceEntryVisitor;
 
         private readonly BatchedDelegateCompiler FDelegateCompiler = new();
 
@@ -79,7 +79,7 @@ namespace Solti.Utils.DI.Internals
             // During initialization phase, Build() may be required for regular entries too.
             //
 
-            FServiceEntryBuilder.Visit(resolver.RelatedEntry);
+            FServiceEntryVisitor.Visit(resolver.RelatedEntry);
             return resolver;
         }
 
@@ -109,7 +109,7 @@ namespace Solti.Utils.DI.Internals
                 // Build the entry before it gets exposed (before the AddResolver call).
                 //
 
-                FServiceEntryBuilder.Visit(genericEntry);
+                FServiceEntryVisitor.Visit(genericEntry);
                 FDelegateCompiler.Compile();
 
                 AddResolver
@@ -155,7 +155,7 @@ namespace Solti.Utils.DI.Internals
             // Now it's safe to build (all dependencies are available)
             //
 
-            FServiceEntryBuilder = scopeOptions.ServiceResolutionMode switch
+            FServiceEntryVisitor = scopeOptions.ServiceResolutionMode switch
             {
                 ServiceResolutionMode.JIT => new ShallowServiceEntryVisitor(FDelegateCompiler),
                 ServiceResolutionMode.AOT => new RecursiveServiceEntryVisitor(this, FDelegateCompiler, scopeOptions),
