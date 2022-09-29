@@ -29,7 +29,7 @@ namespace Solti.Utils.DI.Internals
 
         public void Visit(AbstractServiceEntry requested)
         {
-            Debug.Assert(!requested.Interface.IsGenericTypeDefinition, "Generic entry cannot be built");
+            Debug.Assert(!requested.Interface.IsGenericTypeDefinition, "Generic entry cannot be visited");
 
             //
             // At the root of the dependency graph this validation makes no sense. This validation should run even if
