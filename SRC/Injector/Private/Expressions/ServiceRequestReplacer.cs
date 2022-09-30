@@ -10,7 +10,7 @@ namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
 
-    internal class ServiceRequestReplacer : ServiceRequestVisitor
+    internal sealed class ServiceRequestReplacer : ServiceRequestVisitor
     {
         private readonly IServiceResolverLookup FLookup;
 
