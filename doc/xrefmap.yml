@@ -328,6 +328,24 @@ references:
   commentId: F:Solti.Utils.DI.Interfaces.Consts.INTERNAL_SERVICE_NAME_PREFIX
   fullName: Solti.Utils.DI.Interfaces.Consts.INTERNAL_SERVICE_NAME_PREFIX
   nameWithType: Consts.INTERNAL_SERVICE_NAME_PREFIX
+- uid: Solti.Utils.DI.Interfaces.IHasTag
+  name: IHasTag
+  href: Solti.Utils.DI.Interfaces.IHasTag.html
+  commentId: T:Solti.Utils.DI.Interfaces.IHasTag
+  fullName: Solti.Utils.DI.Interfaces.IHasTag
+  nameWithType: IHasTag
+- uid: Solti.Utils.DI.Interfaces.IHasTag.Tag
+  name: Tag
+  href: Solti.Utils.DI.Interfaces.IHasTag.html#Solti_Utils_DI_Interfaces_IHasTag_Tag
+  commentId: P:Solti.Utils.DI.Interfaces.IHasTag.Tag
+  fullName: Solti.Utils.DI.Interfaces.IHasTag.Tag
+  nameWithType: IHasTag.Tag
+- uid: Solti.Utils.DI.Interfaces.IHasTag.Tag*
+  name: Tag
+  href: Solti.Utils.DI.Interfaces.IHasTag.html#Solti_Utils_DI_Interfaces_IHasTag_Tag_
+  commentId: Overload:Solti.Utils.DI.Interfaces.IHasTag.Tag
+  fullName: Solti.Utils.DI.Interfaces.IHasTag.Tag
+  nameWithType: IHasTag.Tag
 - uid: Solti.Utils.DI.Interfaces.IInjector
   name: IInjector
   href: Solti.Utils.DI.Interfaces.IInjector.html
@@ -346,18 +364,6 @@ references:
   commentId: Overload:Solti.Utils.DI.Interfaces.IInjector.Get
   fullName: Solti.Utils.DI.Interfaces.IInjector.Get
   nameWithType: IInjector.Get
-- uid: Solti.Utils.DI.Interfaces.IInjector.Lifetime
-  name: Lifetime
-  href: Solti.Utils.DI.Interfaces.IInjector.html#Solti_Utils_DI_Interfaces_IInjector_Lifetime
-  commentId: P:Solti.Utils.DI.Interfaces.IInjector.Lifetime
-  fullName: Solti.Utils.DI.Interfaces.IInjector.Lifetime
-  nameWithType: IInjector.Lifetime
-- uid: Solti.Utils.DI.Interfaces.IInjector.Lifetime*
-  name: Lifetime
-  href: Solti.Utils.DI.Interfaces.IInjector.html#Solti_Utils_DI_Interfaces_IInjector_Lifetime_
-  commentId: Overload:Solti.Utils.DI.Interfaces.IInjector.Lifetime
-  fullName: Solti.Utils.DI.Interfaces.IInjector.Lifetime
-  nameWithType: IInjector.Lifetime
 - uid: Solti.Utils.DI.Interfaces.IInjector.Options
   name: Options
   href: Solti.Utils.DI.Interfaces.IInjector.html#Solti_Utils_DI_Interfaces_IInjector_Options
