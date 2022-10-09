@@ -17,7 +17,7 @@ namespace Solti.Utils.DI.Perf
 
     internal sealed class DummyInjector : IInjector
     {
-        public object Lifetime { get; }
+        public object Tag { get; }
 
         public ScopeOptions Options { get; }
 

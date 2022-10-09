@@ -26,7 +26,7 @@ namespace Solti.Utils.DI.Tests
         {
             var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
             mockInjector
-                .SetupGet(i => i.Lifetime)
+                .SetupGet(i => i.Tag)
                 .Returns(new Mock<ILifetimeManager<object>>(MockBehavior.Strict).Object);
 
             Collection.Service<IMyService, MyService>(lifetime);
@@ -53,7 +53,7 @@ namespace Solti.Utils.DI.Tests
                 .Setup(i => i.Get(It.Is<Type>(t => t == typeof(IDisposable)), null))
                 .Returns(new Disposable());
             mockInjector
-                .SetupGet(i => i.Lifetime)
+                .SetupGet(i => i.Tag)
                 .Returns(new Mock<ILifetimeManager<object>>(MockBehavior.Strict).Object);
 
             Collection.Service<IMyDependantService, MyService>(lifetime);
@@ -71,7 +71,7 @@ namespace Solti.Utils.DI.Tests
         {
             var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
             mockInjector
-                .SetupGet(i => i.Lifetime)
+                .SetupGet(i => i.Tag)
                 .Returns(new Mock<ILifetimeManager<object>>(MockBehavior.Strict).Object);
 
             Collection.Service(typeof(IMyGenericService<>), typeof(MyGenericService<>), lifetime);
@@ -106,7 +106,7 @@ namespace Solti.Utils.DI.Tests
 
             var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
             mockInjector
-                .SetupGet(i => i.Lifetime)
+                .SetupGet(i => i.Tag)
                 .Returns(new Mock<ILifetimeManager<object>>(MockBehavior.Strict).Object);
 
             Collection.Factory(i => mockService.Object, lifetime);

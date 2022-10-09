@@ -16,8 +16,8 @@ namespace Solti.Utils.DI.Interfaces
         /// <summary>
         /// Creates an independent new scope
         /// </summary>
-        /// <param name="lifetime">Optional hint specifying the object that is responsible for releasing the newly created scope.</param>
-        IInjector CreateScope(object? lifetime = null);
+        /// <param name="tag">User defined data bound to the scope. You can read this value back via the <see cref="IHasTag"/> interface.</param>
+        IInjector CreateScope(object? tag = null);
 
         /// <summary>
         /// Options applied on the newly created scopes.

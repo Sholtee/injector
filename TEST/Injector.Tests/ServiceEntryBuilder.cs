@@ -22,7 +22,7 @@ namespace Solti.Utils.DI.Internals.Tests
         public abstract class DummyInjector : IInjector, IInstanceFactory
         {
             public IInstanceFactory Super { get; }
-            public object Lifetime { get; } = new Mock<ILifetimeManager<object>>().Object;
+            public object Tag { get; } = new Mock<ILifetimeManager<object>>().Object;
             public ScopeOptions Options { get; }
             public bool Disposed { get; }
             public void Dispose() { }
