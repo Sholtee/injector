@@ -159,8 +159,6 @@ namespace Solti.Utils.DI.Internals
         #region IInjector
         public ScopeOptions Options { get; }
 
-        public object? Lifetime { get; }
-
         public virtual object Get(Type iface, string? name)
         {
             object? instance = TryGet(iface, name);
@@ -196,7 +194,11 @@ namespace Solti.Utils.DI.Internals
         #endregion
 
         #region IScopeFactory
-        public virtual IInjector CreateScope(object? lifetime) => new Injector(this, lifetime);
+        public virtual IInjector CreateScope(object? tag) => new Injector(this, tag);
+        #endregion
+
+        #region IHasTag
+        public object? Tag { get; }
         #endregion
 
         //
@@ -209,7 +211,7 @@ namespace Solti.Utils.DI.Internals
 
         public IServiceResolverLookup ServiceResolverLookup => FResolverLookup;
 
-        public Injector(IEnumerable<AbstractServiceEntry> registeredEntries, ScopeOptions options, object? lifetime)
+        public Injector(IEnumerable<AbstractServiceEntry> registeredEntries, ScopeOptions options, object? tag)
         {
             
             IReadOnlyCollection<AbstractServiceEntry> svcs = new List<AbstractServiceEntry>
@@ -229,18 +231,18 @@ namespace Solti.Utils.DI.Internals
                 _ => throw new NotSupportedException()
             };
 
-            FSlots    = Array<object>.Create(FResolverLookup.Slots);
-            Options   = options;
-            Lifetime  = lifetime;
-            FLock     = new object();
+            FSlots  = Array<object>.Create(FResolverLookup.Slots);
+            Options = options;
+            Tag     = tag;
+            FLock   = new object();
         }
 
-        public Injector(Injector super, object? lifetime)
+        public Injector(Injector super, object? tag)
         {
             FResolverLookup = super.FResolverLookup;
             FSlots    = Array<object>.Create(FResolverLookup.Slots);
             Options   = super.Options;
-            Lifetime  = lifetime;
+            Tag       = tag;
             Super     = super;
 
             //

@@ -54,7 +54,7 @@ namespace Solti.Utils.DI.Internals
 
         public override object CreateInstance(IInjector scope, out object? lifetime)
         {
-            if (scope.Lifetime is ILifetimeManager<object>)
+            if (scope.Tag is ILifetimeManager<object>)
                 //
                 // In pool, we call the original factory
                 //

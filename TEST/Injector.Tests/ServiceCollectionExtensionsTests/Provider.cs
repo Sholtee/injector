@@ -62,7 +62,7 @@ namespace Solti.Utils.DI.Tests
 
             var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
             mockInjector
-                .SetupGet(i => i.Lifetime)
+                .SetupGet(i => i.Tag)
                 .Returns(new Mock<ILifetimeManager<object>>().Object);
 
             Assert.That(entry.CreateInstance(mockInjector.Object, out object _), Is.InstanceOf<IList>());
@@ -78,7 +78,7 @@ namespace Solti.Utils.DI.Tests
 
             var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
             mockInjector
-                .SetupGet(i => i.Lifetime)
+                .SetupGet(i => i.Tag)
                 .Returns(new Mock<ILifetimeManager<object>>().Object);
 
             Assert.That(entry.CreateInstance(mockInjector.Object, out object _), Is.InstanceOf<IList<int>>());

@@ -13,7 +13,7 @@ namespace Solti.Utils.DI.Interfaces
     /// <summary>
     /// Provides the mechanism for injecting resources.
     /// </summary>
-    public interface IInjector: IDisposableEx
+    public interface IInjector: IDisposableEx, IHasTag
     {
         /// <summary>
         /// Gets the service instance associated with the given interface and (optional) name.
@@ -32,11 +32,6 @@ namespace Solti.Utils.DI.Interfaces
         /// <param name="name">The (optional) name of the service.</param>
         /// <returns>The requested service instance or NULL.</returns>
         object? TryGet(Type iface, string? name = null);
-
-        /// <summary>
-        /// The object that is responsible for releasing the scope. The value of null indicates that the user is obliged to call the <see cref="IDisposable.Dispose"/> method.
-        /// </summary>
-        object? Lifetime { get; }
 
         /// <summary>
         /// Describes the scope behavior.
