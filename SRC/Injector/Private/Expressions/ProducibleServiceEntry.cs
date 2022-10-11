@@ -29,7 +29,7 @@ namespace Solti.Utils.DI.Internals
             // Chain all the related delegates
             //
 
-            Expression<Func<IInjector, Type, object>> factory;
+            Expression<Func<IInjector, Type, object>> factory = (Expression<Func<IInjector, Type, object>>) visitor(Factory);
 
             if (FProxies?.Count > 0)
             {
@@ -39,7 +39,7 @@ namespace Solti.Utils.DI.Internals
 
                 InvocationExpression invocation = Expression.Invoke
                 (
-                    visitor(Factory),
+                    factory,
                     injector,
                     iface
                 );
@@ -57,7 +57,6 @@ namespace Solti.Utils.DI.Internals
 
                 factory = Expression.Lambda<Func<IInjector, Type, object>>(invocation, injector, iface);
             }
-            else factory = (Expression<Func<IInjector, Type, object>>) visitor(Factory);
 
             if (options.HasFlag(VisitFactoryOptions.BuildDelegate))
             {
