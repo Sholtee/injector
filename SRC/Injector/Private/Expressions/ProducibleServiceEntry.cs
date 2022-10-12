@@ -5,6 +5,7 @@
 ********************************************************************************/
 using System;
 using System.Diagnostics;
+using System.Linq;
 using System.Linq.Expressions;
 
 namespace Solti.Utils.DI.Internals
@@ -37,14 +38,16 @@ namespace Solti.Utils.DI.Internals
                     injector = Expression.Parameter(typeof(IInjector), nameof(injector)),
                     iface = Expression.Parameter(typeof(Type), nameof(iface));
 
-                Expression inner = UnfoldLambdaExpressionVisitor.Unfold(Factory, injector, iface);
-
-                foreach (LambdaExpression applyProxyExpr in FProxies)
-                {
-                    inner = UnfoldLambdaExpressionVisitor.Unfold(applyProxyExpr, injector, iface, inner);
-                }
-
-                factoryExpr = Expression.Lambda<Func<IInjector, Type, object>>(inner, injector, iface);
+                factoryExpr = Expression.Lambda<Func<IInjector, Type, object>>
+                (
+                    FProxies.Aggregate
+                    (
+                        UnfoldLambdaExpressionVisitor.Unfold(Factory, injector, iface),
+                        (inner, proxyExpr) => UnfoldLambdaExpressionVisitor.Unfold(proxyExpr, injector, iface, inner)
+                    ),
+                    injector,
+                    iface
+                );
             }
             else factoryExpr = Factory;
 
