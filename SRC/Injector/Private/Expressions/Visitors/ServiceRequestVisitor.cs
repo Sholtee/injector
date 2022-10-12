@@ -1,5 +1,5 @@
 ﻿/********************************************************************************
-* ServiceRequestVisitor.cs                                                       *
+* ServiceRequestVisitor.cs                                                      *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
@@ -36,8 +36,8 @@ namespace Solti.Utils.DI.Internals
                     (
                         node,
                         node.Object,
-                        (Type) iface.Value,
-                        (string?) name.Value
+                        (Type)iface.Value,
+                        (string?)name.Value
                     );
                 }
             }
@@ -50,7 +50,7 @@ namespace Solti.Utils.DI.Internals
                         node,
                         node.Arguments[0],
                         node.Method.GetGenericArguments()[0],
-                        (string?) name.Value
+                        (string?)name.Value
                     );
                 }
             }
@@ -58,6 +58,6 @@ namespace Solti.Utils.DI.Internals
             return base.VisitMethodCall(node);
         }
 
-        public LambdaExpression VisitLambda(LambdaExpression lambda) => (LambdaExpression) Visit(lambda);
+        public LambdaExpression VisitLambda(LambdaExpression lambda) => (LambdaExpression)Visit(lambda);
     }
 }

@@ -29,7 +29,7 @@ namespace Solti.Utils.DI.Internals
             // Chain all the related delegates
             //
 
-            Expression<Func<IInjector, Type, object>> factoryExpr = (Expression<Func<IInjector, Type, object>>) visitor(Factory);
+            Expression<Func<IInjector, Type, object>> factoryExpr;
 
             if (FProxies?.Count > 0)
             {
@@ -37,26 +37,18 @@ namespace Solti.Utils.DI.Internals
                     injector = Expression.Parameter(typeof(IInjector), nameof(injector)),
                     iface = Expression.Parameter(typeof(Type), nameof(iface));
 
-                InvocationExpression invocation = Expression.Invoke
-                (
-                    factoryExpr,
-                    injector,
-                    iface
-                );
+                Expression inner = UnfoldLambdaExpressionVisitor.Unfold(Factory, injector, iface);
 
-                foreach (Expression<Func<IInjector, Type, object, object>>? applyProxyExpr in FProxies)
+                foreach (LambdaExpression applyProxyExpr in FProxies)
                 {
-                    invocation = Expression.Invoke
-                    (
-                        visitor(applyProxyExpr),
-                        injector,
-                        iface,
-                        invocation
-                    );
+                    inner = UnfoldLambdaExpressionVisitor.Unfold(applyProxyExpr, injector, iface, inner);
                 }
 
-                factoryExpr = Expression.Lambda<Func<IInjector, Type, object>>(invocation, injector, iface);
+                factoryExpr = Expression.Lambda<Func<IInjector, Type, object>>(inner, injector, iface);
             }
+            else factoryExpr = Factory;
+
+            factoryExpr = (Expression<Func<IInjector, Type, object>>) visitor(factoryExpr);
 
             if (compiler is not null)
             {

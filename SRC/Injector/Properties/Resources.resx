@@ -171,4 +171,7 @@
   <data name="INTERCEPTOR_FACTORY_NOT_IMPLEMENTED" xml:space="preserve">
     <value>Aspects should implement the IInterceptorFactory interface.</value>
   </data>
+  <data name="LAMBDA_LAYOUT_NOT_SUPPORTED" xml:space="preserve">
+    <value>Layout not supported.</value>
+  </data>
 </root>

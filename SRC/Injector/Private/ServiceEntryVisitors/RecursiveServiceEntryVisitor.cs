@@ -15,7 +15,7 @@ namespace Solti.Utils.DI.Internals
 
         private readonly ScopeOptions FOptions;
 
-        private readonly ServiceRequestReplacer FReplacer;
+        private readonly ServiceRequestReplacerVisitor FReplacer;
 
         private readonly IDelegateCompiler FCompiler;
 
@@ -23,7 +23,7 @@ namespace Solti.Utils.DI.Internals
         {
             FOptions = options;
             FPath = new ServicePath();
-            FReplacer = new ServiceRequestReplacer(lookup, FPath, options.SupportsServiceProvider);
+            FReplacer = new ServiceRequestReplacerVisitor(lookup, FPath, options.SupportsServiceProvider);
             FCompiler = compiler;
         }
 

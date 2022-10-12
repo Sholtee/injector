@@ -124,6 +124,15 @@ namespace Solti.Utils.DI.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Layout not supported..
+        /// </summary>
+        internal static string LAMBDA_LAYOUT_NOT_SUPPORTED {
+            get {
+                return ResourceManager.GetString("LAMBDA_LAYOUT_NOT_SUPPORTED", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The entry must be built in order to create service instances..
         /// </summary>
         internal static string NOT_BUILT {

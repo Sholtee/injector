@@ -10,7 +10,7 @@ namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
 
-    internal sealed class ServiceRequestReplacer : ServiceRequestVisitor
+    internal sealed class ServiceRequestReplacerVisitor : ServiceRequestVisitor
     {
         private readonly IServiceResolverLookup FLookup;
 
@@ -18,7 +18,7 @@ namespace Solti.Utils.DI.Internals
 
         private readonly bool FPermissive;
 
-        public ServiceRequestReplacer(IServiceResolverLookup lookup, ServicePath path, bool permissive)
+        public ServiceRequestReplacerVisitor(IServiceResolverLookup lookup, ServicePath path, bool permissive)
         {
             FLookup = lookup;
             FPath = path;
