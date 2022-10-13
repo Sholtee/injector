@@ -158,7 +158,7 @@ namespace Solti.Utils.DI.Internals
             FServiceEntryVisitor = scopeOptions.ServiceResolutionMode switch
             {
                 ServiceResolutionMode.JIT => new ShallowServiceEntryVisitor(FDelegateCompiler),
-                ServiceResolutionMode.AOT => new RecursiveServiceEntryVisitor(this, FDelegateCompiler, scopeOptions),
+                ServiceResolutionMode.AOT => new RecursiveGraphBuilder(this, FDelegateCompiler, scopeOptions),
                 _ => throw new NotSupportedException()
             };
 

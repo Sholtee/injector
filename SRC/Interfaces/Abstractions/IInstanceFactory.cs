@@ -9,7 +9,7 @@ namespace Solti.Utils.DI.Interfaces
     /// <summary>
     /// Describes the methods how to create servive instances.
     /// </summary>
-    public interface IInstanceFactory
+    public interface IInstanceFactory: IInjector
     {
         /// <summary>
         /// The parent factory. NULL in case of root factory.

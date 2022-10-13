@@ -18,10 +18,10 @@ namespace Solti.Utils.DI.Internals
     public abstract partial class ProducibleServiceEntry
     {
         /// <inheritdoc/>
-        public override void VisitFactory(Func<LambdaExpression, LambdaExpression> visitor, IDelegateCompiler? compiler)
+        public override void Build(IDelegateCompiler? compiler, params IFactoryVisitor[] visitors)
         {
-            if (visitor is null)
-                throw new ArgumentNullException(nameof(visitor));
+            if (visitors is null)
+                throw new ArgumentNullException(nameof(visitors));
 
             if (Factory is null)
                 throw new InvalidOperationException(NOT_PRODUCIBLE);
@@ -30,33 +30,16 @@ namespace Solti.Utils.DI.Internals
             // Chain all the related delegates
             //
 
-            Expression<Func<IInjector, Type, object>> factoryExpr;
-
-            if (FProxies?.Count > 0)
-            {
-                ParameterExpression
-                    injector = Expression.Parameter(typeof(IInjector), nameof(injector)),
-                    iface = Expression.Parameter(typeof(Type), nameof(iface));
-
-                factoryExpr = Expression.Lambda<Func<IInjector, Type, object>>
-                (
-                    FProxies.Aggregate
-                    (
-                        UnfoldLambdaExpressionVisitor.Unfold(Factory, injector, iface),
-                        (inner, proxyExpr) => UnfoldLambdaExpressionVisitor.Unfold(proxyExpr, injector, iface, inner)
-                    ),
-                    injector,
-                    iface
-                );
-            }
-            else factoryExpr = Factory;
-
-            factoryExpr = (Expression<Func<IInjector, Type, object>>) visitor(factoryExpr);
+            LambdaExpression factoryExpr = visitors.Aggregate<IFactoryVisitor, LambdaExpression>
+            (
+                Factory,
+                (visited, visitor) => visitor.Visit(visited, this)
+            );
 
             if (compiler is not null)
             {
                 Debug.WriteLine($"Created factory: {Environment.NewLine}{factoryExpr.GetDebugView()}");
-                compiler.Compile(factoryExpr, factory => FBuiltFactory = factory);
+                compiler.Compile<FactoryDelegate>((Expression<FactoryDelegate>) factoryExpr, factory => CreateInstance = factory);
             
                 State = (State | ServiceEntryStates.Built) & ~ServiceEntryStates.Validated;
             }

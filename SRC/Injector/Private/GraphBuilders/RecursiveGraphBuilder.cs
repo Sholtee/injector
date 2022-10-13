@@ -1,5 +1,5 @@
 ﻿/********************************************************************************
-* RecursiveServiceEntryVisitor.cs                                               *
+* RecursiveGraphBuilder.cs                                                      *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
@@ -9,7 +9,7 @@ namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
 
-    internal sealed class RecursiveServiceEntryVisitor : IServiceEntryVisitor
+    internal sealed class RecursiveGraphBuilder: IGraphBuilder
     {
         private readonly ServicePath FPath;
 
@@ -19,7 +19,7 @@ namespace Solti.Utils.DI.Internals
 
         private readonly IDelegateCompiler FCompiler;
 
-        public RecursiveServiceEntryVisitor(IServiceResolverLookup lookup, IDelegateCompiler compiler, ScopeOptions options)
+        public RecursiveGraphBuilder(IServiceResolverLookup lookup, IDelegateCompiler compiler, ScopeOptions options)
         {
             FOptions = options;
             FPath = new ServicePath();
@@ -27,9 +27,9 @@ namespace Solti.Utils.DI.Internals
             FCompiler = compiler;
         }
 
-        public void Visit(AbstractServiceEntry requested)
+        public void Build(AbstractServiceEntry requested)
         {
-            Debug.Assert(!requested.Interface.IsGenericTypeDefinition, "Generic entry cannot be visited");
+            Debug.Assert(!requested.Interface.IsGenericTypeDefinition, "Generic entry cannot be built");
 
             //
             // At the root of the dependency graph this validation makes no sense. This validation should run even if
@@ -49,7 +49,7 @@ namespace Solti.Utils.DI.Internals
             FPath.Push(requested);
             try
             {
-                requested.VisitFactory(FReplacer.VisitLambda, FCompiler);
+                requested.Build(FCompiler, FReplacer);
             }
             finally
             {

@@ -20,9 +20,7 @@ namespace Solti.Utils.DI.Internals
     public abstract partial class ProducibleServiceEntry : AbstractServiceEntry
     {
         #region Private
-        private List<Expression<Func<IInjector, Type, object, object>>>? FProxies;
-
-        private Func<IInjector, Type, object>? FBuiltFactory;
+        private readonly List<Expression<Func<IInjector, Type, object, object>>> FProxies = new();
 
         private static Expression<Func<IInjector, Type, object>>? GetFactory(Type @interface, Type implementation)
         {
@@ -149,7 +147,6 @@ namespace Solti.Utils.DI.Internals
             if (Factory is null)
                 throw new NotSupportedException(PROXYING_NOT_SUPPORTED);
 
-            FProxies ??= new List<Expression<Func<IInjector, Type, object, object>>>();
             FProxies.Add(applyProxy);
         }
 
@@ -159,14 +156,8 @@ namespace Solti.Utils.DI.Internals
         public object? ExplicitArgs { get; }
 
         /// <summary>
-        /// The concrete factory. Not null when the entry is <see cref="ServiceEntryStates.Built"/>.
-        /// </summary>
-        public Func<IInjector, Type, object>? BuiltFactory => FBuiltFactory;
-
-        /// <summary>
         /// The applied proxies.
         /// </summary>
-        public IReadOnlyList<Expression<Func<IInjector, Type, object, object>>> Proxies =>
-            (IReadOnlyList<Expression<Func<IInjector, Type, object, object>>>?) FProxies ?? Array<Expression<Func<IInjector, Type, object, object>>>.Empty;
+        public override IReadOnlyList<Expression<Func<IInjector, Type, object, object>>> Proxies => FProxies;
     }
 }

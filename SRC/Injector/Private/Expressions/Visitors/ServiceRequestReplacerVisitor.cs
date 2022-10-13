@@ -10,7 +10,7 @@ namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
 
-    internal sealed class ServiceRequestReplacerVisitor : ServiceRequestVisitor
+    internal sealed class ServiceRequestReplacerVisitor : ServiceRequestVisitor, IFactoryVisitor
     {
         private readonly IServiceResolverLookup FLookup;
 
@@ -24,6 +24,8 @@ namespace Solti.Utils.DI.Internals
             FPath = path;
             FPermissive = permissive;
         }
+
+        public LambdaExpression Visit(LambdaExpression factory, AbstractServiceEntry entry) => (LambdaExpression) Visit(factory);
 
         protected override Expression VisitServiceRequest(MethodCallExpression method, Expression target, Type iface, string? name)
         {
@@ -49,16 +51,15 @@ namespace Solti.Utils.DI.Internals
             }
 
             //
-            // injector.[Try]Get(iface, name) -> resolver.Resolve((IInstanceFactory) injector)
+            // injector.[Try]Get(iface, name) -> resolver.Resolve(injector)
             //
 
             Func<IInstanceFactory, object> resolveFn = resolver!.Resolve;
 
-            Expression resolve = Expression.Call
+            Expression resolve = Expression.Invoke
             (
-                Expression.Constant(resolveFn.Target),
-                resolveFn.Method,
-                Expression.Convert(target, typeof(IInstanceFactory))
+                Expression.Constant(resolveFn),
+                target
             );
 
             return method.Method.ReturnType != iface
@@ -69,7 +70,7 @@ namespace Solti.Utils.DI.Internals
                 ? resolve
 
                 //
-                // We are about to replace the typed IInjectorExtensions.[Try]Get() method so we will need an extry cast.
+                // We are about to replace the typed IInjectorExtensions.[Try]Get() method so we need an extra cast.
                 //
 
                 : Expression.Convert

@@ -19,7 +19,8 @@ namespace Solti.Utils.DI.Internals
                 MethodInfoExtractor.Extract<IInjector>(i => i.Get(null!, null)),
                 MethodInfoExtractor.Extract<IInjector>(i => i.TryGet(null!, null))
             },
-            FGenericInjectorGet = new[] {
+            FGenericInjectorGet = new[]
+            {
                 MethodInfoExtractor.Extract<IInjector>(i => i.Get<object>(null)).GetGenericMethodDefinition(),
                 MethodInfoExtractor.Extract<IInjector>(i => i.TryGet<object>(null)).GetGenericMethodDefinition()
             };
@@ -57,7 +58,5 @@ namespace Solti.Utils.DI.Internals
 
             return base.VisitMethodCall(node);
         }
-
-        public LambdaExpression VisitLambda(LambdaExpression lambda) => (LambdaExpression)Visit(lambda);
     }
 }

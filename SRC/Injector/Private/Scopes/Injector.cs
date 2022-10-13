@@ -17,7 +17,6 @@ namespace Solti.Utils.DI.Internals
 
     internal class Injector:
         Disposable,
-        IInjector,
         IScopeFactory,
         IInstanceFactory
     {
@@ -43,7 +42,7 @@ namespace Solti.Utils.DI.Internals
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private object CreateInstanceCore(AbstractServiceEntry requested)
         {
-            object? instance, lifetime;
+            object? instance, disposable;
 
             //
             // At the root of the dependency graph this validation makes no sense.
@@ -52,6 +51,9 @@ namespace Solti.Utils.DI.Internals
             if (Options.StrictDI && FPath?.Last is not null)
                 ServiceErrors.EnsureNotBreaksTheRuleOfStrictDI(FPath.Last, requested);
 
+            if (requested.CreateInstance is null)
+                throw new InvalidOperationException(Resources.NOT_PRODUCIBLE);
+
             if (!requested.State.HasFlag(ServiceEntryStates.Validated))
             {
                 FPath ??= new ServicePath();
@@ -59,7 +61,7 @@ namespace Solti.Utils.DI.Internals
                 FPath.Push(requested);
                 try
                 {
-                    instance = requested.CreateInstance(this, out lifetime);
+                    instance = requested.CreateInstance(this, out disposable);
                 }
                 finally
                 {
@@ -69,12 +71,12 @@ namespace Solti.Utils.DI.Internals
                 requested.SetValidated();
             }
             else
-                instance = requested.CreateInstance(this, out lifetime);
+                instance = requested.CreateInstance(this, out disposable);
 
-            if (lifetime is not null)
+            if (disposable is not null)
             {
                 FDisposableStore ??= new CaptureDisposable();
-                FDisposableStore.Capture(lifetime);
+                FDisposableStore.Capture(disposable);
             }
 
             if (instance is null)
