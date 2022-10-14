@@ -13,6 +13,12 @@ namespace Solti.Utils.DI.Internals
     {
         private readonly IDelegateCompiler FCompiler;
 
+        private static readonly IFactoryVisitor[] FVisitors = new IFactoryVisitor[]
+        {
+            new MergeProxiesVisitor(),
+            new ApplyLifetimeManagerVisitor()
+        };
+
         public ShallowDependencyGraphBuilder(IDelegateCompiler compiler) => FCompiler = compiler;
 
         public void Build(AbstractServiceEntry requested)
@@ -22,7 +28,7 @@ namespace Solti.Utils.DI.Internals
             if (!requested.Features.HasFlag(ServiceEntryFeatures.SupportsBuild) || requested.State.HasFlag(ServiceEntryStates.Built))
                 return;
 
-            requested.Build(FCompiler);
+            requested.Build(FCompiler, FVisitors);
         }
     }
 }

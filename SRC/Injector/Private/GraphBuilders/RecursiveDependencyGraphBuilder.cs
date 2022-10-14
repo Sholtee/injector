@@ -15,7 +15,7 @@ namespace Solti.Utils.DI.Internals
 
         private readonly ScopeOptions FOptions;
 
-        private readonly ServiceRequestReplacerVisitor FReplacer;
+        private readonly IFactoryVisitor[] FVisitors;
 
         private readonly IDelegateCompiler FCompiler;
 
@@ -23,7 +23,12 @@ namespace Solti.Utils.DI.Internals
         {
             FOptions = options;
             FPath = new ServicePath();
-            FReplacer = new ServiceRequestReplacerVisitor(lookup, FPath, options.SupportsServiceProvider);
+            FVisitors = new IFactoryVisitor[]
+            {
+                new MergeProxiesVisitor(),
+                new ApplyLifetimeManagerVisitor(),
+                new ServiceRequestReplacerVisitor(lookup, FPath, options.SupportsServiceProvider)
+            };
             FCompiler = compiler;
         }
 
@@ -49,7 +54,7 @@ namespace Solti.Utils.DI.Internals
             FPath.Push(requested);
             try
             {
-                requested.Build(FCompiler, FReplacer);
+                requested.Build(FCompiler, FVisitors);
             }
             finally
             {

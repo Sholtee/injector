@@ -52,28 +52,6 @@ namespace Solti.Utils.DI.Internals
             public object Instance { get; }
         }
 
-        public override object CreateInstance(IInjector scope, out object? lifetime)
-        {
-            if (scope.Tag is ILifetimeManager<object>)
-                //
-                // In pool, we call the original factory
-                //
-
-                return base.CreateInstance(scope, out lifetime);
-            else
-            {
-                //
-                // On consumer side we get the item from the pool
-                //
-
-                IPool relatedPool = (IPool) scope.Get(PoolType, PoolName);
-
-                object result = relatedPool.Get();
-                lifetime = new PoolItemCheckin(relatedPool, result);
-                return result;
-            }
-        }
-
         public override AbstractServiceEntry Specialize(params Type[] genericArguments)
         {
             if (genericArguments is null)
