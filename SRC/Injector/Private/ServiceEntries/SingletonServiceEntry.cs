@@ -56,6 +56,6 @@ namespace Solti.Utils.DI.Internals
 
         public override Lifetime Lifetime { get; } = Lifetime.Singleton;
 
-        public override ServiceEntryFeatures Features { get; } = ServiceEntryFeatures.CreateSingleInstance | ServiceEntryFeatures.Shared | ServiceEntryFeatures.SupportsVisit;
+        public override ServiceEntryFeatures Features { get; } = ServiceEntryFeatures.CreateSingleInstance | ServiceEntryFeatures.Shared | ServiceEntryFeatures.SupportsBuild;
     }
 }

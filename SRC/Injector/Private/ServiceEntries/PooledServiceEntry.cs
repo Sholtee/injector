@@ -12,7 +12,7 @@ namespace Solti.Utils.DI.Internals
     using Primitives.Patterns;
     using Primitives.Threading;
 
-    internal sealed class PooledServiceEntry : ScopedServiceEntryBase
+    internal sealed partial class PooledServiceEntry : ScopedServiceEntryBase
     {
         private Type? FPoolType;
         public Type PoolType => FPoolType ??= typeof(IPool<>).MakeGenericType(Interface);
@@ -111,6 +111,6 @@ namespace Solti.Utils.DI.Internals
 
         public override Lifetime Lifetime { get; } = Lifetime.Pooled;
 
-        public override ServiceEntryFeatures Features { get; } = ServiceEntryFeatures.CreateSingleInstance | ServiceEntryFeatures.SupportsVisit;
+        public override ServiceEntryFeatures Features { get; } = ServiceEntryFeatures.CreateSingleInstance | ServiceEntryFeatures.SupportsBuild;
     }
 }

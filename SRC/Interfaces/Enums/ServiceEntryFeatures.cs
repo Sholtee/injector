@@ -5,7 +5,6 @@
 ********************************************************************************/
 using System;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq.Expressions;
 
 namespace Solti.Utils.DI.Interfaces
 {
@@ -32,8 +31,12 @@ namespace Solti.Utils.DI.Interfaces
         Shared = 1 << 1,
 
         /// <summary>
-        /// Calling the <see cref="AbstractServiceEntry.VisitFactory(Func{LambdaExpression, LambdaExpression}, IDelegateCompiler?)"/> method is supported.
+        /// Calling the <see cref="AbstractServiceEntry.Build(IDelegateCompiler?, IFactoryVisitor[])"/> method is supported.
         /// </summary>
-        SupportsVisit = 1 << 2
+        SupportsBuild = 1 << 2
+
+        //
+        // TBD: SupportsProxying
+        //
     }
 }

@@ -1,5 +1,5 @@
 ﻿/********************************************************************************
-* RecursiveGraphBuilder.cs                                                      *
+* RecursiveDependencyGraphBuilder.cs                                            *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
@@ -9,7 +9,7 @@ namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
 
-    internal sealed class RecursiveGraphBuilder: IGraphBuilder
+    internal sealed class RecursiveDependencyGraphBuilder: IGraphBuilder
     {
         private readonly ServicePath FPath;
 
@@ -19,7 +19,7 @@ namespace Solti.Utils.DI.Internals
 
         private readonly IDelegateCompiler FCompiler;
 
-        public RecursiveGraphBuilder(IServiceResolverLookup lookup, IDelegateCompiler compiler, ScopeOptions options)
+        public RecursiveDependencyGraphBuilder(IServiceResolverLookup lookup, IDelegateCompiler compiler, ScopeOptions options)
         {
             FOptions = options;
             FPath = new ServicePath();
@@ -39,7 +39,7 @@ namespace Solti.Utils.DI.Internals
             if (FOptions.StrictDI && FPath.Last is not null)
                 ServiceErrors.EnsureNotBreaksTheRuleOfStrictDI(FPath.Last, requested);
 
-            if (!requested.Features.HasFlag(ServiceEntryFeatures.SupportsVisit) || requested.State.HasFlag(ServiceEntryStates.Built))
+            if (!requested.Features.HasFlag(ServiceEntryFeatures.SupportsBuild) || requested.State.HasFlag(ServiceEntryStates.Built))
                 return;
 
             //

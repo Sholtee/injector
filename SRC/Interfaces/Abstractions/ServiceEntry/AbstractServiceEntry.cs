@@ -90,7 +90,7 @@ namespace Solti.Utils.DI.Interfaces
         public ServiceEntryStates State { get; protected set; }
 
         /// <summary>
-        /// Contains the built <see cref="Factory"/> after calling the <see cref="Build(IDelegateCompiler?, ExpressionVisitor[])"/> method.
+        /// Contains the built <see cref="Factory"/> after calling the <see cref="Build(IDelegateCompiler?, IFactoryVisitor[])"/> method.
         /// </summary>
         public FactoryDelegate? CreateInstance { get; protected set; }
 
@@ -115,6 +115,11 @@ namespace Solti.Utils.DI.Interfaces
         /// </summary>
         /// <remarks>If the <paramref name="compiler"/> is omitted, only the <paramref name="visitors"/> will be executed.</remarks>
         public virtual void Build(IDelegateCompiler? compiler, params IFactoryVisitor[] visitors) => throw new NotSupportedException();
+
+        /// <summary>
+        /// Creates the lifetime manager expression.
+        /// </summary>
+        public virtual Expression CreateLifetimeManager(Expression service, ParameterExpression scope, ParameterExpression disposable) => throw new NotSupportedException();
 
         /// <summary>
         /// Creates a resolver function that instantiates the represented service.
