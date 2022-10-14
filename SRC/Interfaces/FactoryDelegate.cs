@@ -12,5 +12,5 @@ namespace Solti.Utils.DI.Interfaces
     /// </summary>
     /// <returns></returns>
     [SuppressMessage("Naming", "CA1711:Identifiers should not have incorrect suffix")]
-    public delegate object FactoryDelegate(IInjector scope, out object? disposable);
+    public delegate object FactoryDelegate(IInstanceFactory scope, out object? disposable);
 }

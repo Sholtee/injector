@@ -17,9 +17,9 @@ namespace Solti.Utils.DI.Internals
     internal abstract class ServiceResolverLookupBase : IServiceResolverLookup
     {
         #region Private
-        private readonly IServiceEntryVisitor FServiceEntryVisitor;
-
         private readonly BatchedDelegateCompiler FDelegateCompiler = new();
+
+        private readonly IGraphBuilder FGraphBuilder;
 
         private readonly object FLock = new();
 
@@ -79,7 +79,7 @@ namespace Solti.Utils.DI.Internals
             // During initialization phase, Build() may be required for regular entries too.
             //
 
-            FServiceEntryVisitor.Visit(resolver.RelatedEntry);
+            FGraphBuilder.Build(resolver.RelatedEntry);
             return resolver;
         }
 
@@ -109,7 +109,7 @@ namespace Solti.Utils.DI.Internals
                 // Build the entry before it gets exposed (before the AddResolver call).
                 //
 
-                FServiceEntryVisitor.Visit(genericEntry);
+                FGraphBuilder.Build(genericEntry);
                 FDelegateCompiler.Compile();
 
                 AddResolver
@@ -155,10 +155,10 @@ namespace Solti.Utils.DI.Internals
             // Now it's safe to build (all dependencies are available)
             //
 
-            FServiceEntryVisitor = scopeOptions.ServiceResolutionMode switch
+            FGraphBuilder = scopeOptions.ServiceResolutionMode switch
             {
-                ServiceResolutionMode.JIT => new ShallowServiceEntryVisitor(FDelegateCompiler),
-                ServiceResolutionMode.AOT => new RecursiveGraphBuilder(this, FDelegateCompiler, scopeOptions),
+                ServiceResolutionMode.JIT => new ShallowDependencyGraphBuilder(FDelegateCompiler),
+                ServiceResolutionMode.AOT => new RecursiveDependencyGraphBuilder(this, FDelegateCompiler, scopeOptions),
                 _ => throw new NotSupportedException()
             };
 
@@ -168,7 +168,7 @@ namespace Solti.Utils.DI.Internals
             }
 
             //
-            // Compile the delegates, assembled by the Get() calls
+            // Factory compilations are deferred, do it now
             //
 
             FDelegateCompiler.Compile();

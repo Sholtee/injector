@@ -17,12 +17,11 @@ namespace Solti.Utils.DI.Internals
         {
             Factory = factory;
             State = ServiceEntryStates.Built | ServiceEntryStates.Validated;
-        }
-
-        public override object CreateInstance(IInjector scope, out object? lifetime)
-        {
-            lifetime = null;
-            return Factory(scope, Interface);
+            CreateInstance = (IInstanceFactory scope, out object? lifetime) =>
+            {
+                lifetime = null;
+                return Factory(scope, Interface);
+            };
         }
 
         public override ServiceEntryFeatures Features { get; } = ServiceEntryFeatures.CreateSingleInstance;

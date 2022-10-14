@@ -119,7 +119,7 @@ namespace Solti.Utils.DI.Interfaces
         /// <summary>
         /// Creates the lifetime manager expression.
         /// </summary>
-        public virtual Expression CreateLifetimeManager(Expression service, ParameterExpression scope, ParameterExpression disposable) => throw new NotSupportedException();
+        public virtual Expression CreateLifetimeManager(Expression getService, ParameterExpression scope, ParameterExpression disposable) => throw new NotSupportedException();
 
         /// <summary>
         /// Creates a resolver function that instantiates the represented service.

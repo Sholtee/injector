@@ -11,19 +11,24 @@ namespace Solti.Utils.DI.Internals
     public abstract partial class ProducibleServiceEntry
     {
         /// <inheritdoc/>
-        public override Expression CreateLifetimeManager(Expression service, ParameterExpression scope, ParameterExpression disposable) =>
+        public override Expression CreateLifetimeManager(Expression getService, ParameterExpression scope, ParameterExpression disposable)
+        {
             //
             // disposable = service as IDisposable ?? (object?) (service as IAsyncDisposable);
             // return service;
             //
 
-            Expression.Block
+            ParameterExpression service = Expression.Parameter(getService.Type, nameof(service));
+
+            return Expression.Block
             (
-                typeof(object),
+                type: typeof(object),
+                variables: new[] { service },
+                Expression.Assign(service, getService),
                 Expression.Assign
                 (
                     disposable,
-                    Expression.IfThenElse
+                    Expression.Condition
                     (
                         Expression.Or
                         (
@@ -31,10 +36,12 @@ namespace Solti.Utils.DI.Internals
                             Expression.TypeIs(service, typeof(IAsyncDisposable))
                         ),
                         service,
-                        Expression.Default(disposable.Type)
+                        Expression.Default(disposable.Type),
+                        disposable.Type
                     )
                 ),
                 service
             );
+        }
     }
 }

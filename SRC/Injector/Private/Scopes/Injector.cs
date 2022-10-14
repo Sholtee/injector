@@ -51,8 +51,8 @@ namespace Solti.Utils.DI.Internals
             if (Options.StrictDI && FPath?.Last is not null)
                 ServiceErrors.EnsureNotBreaksTheRuleOfStrictDI(FPath.Last, requested);
 
-            if (requested.CreateInstance is null)
-                throw new InvalidOperationException(Resources.NOT_PRODUCIBLE);
+            if (!requested.State.HasFlag(ServiceEntryStates.Built))
+                throw new InvalidOperationException(Resources.NOT_BUILT);
 
             if (!requested.State.HasFlag(ServiceEntryStates.Validated))
             {
@@ -61,7 +61,7 @@ namespace Solti.Utils.DI.Internals
                 FPath.Push(requested);
                 try
                 {
-                    instance = requested.CreateInstance(this, out disposable);
+                    instance = requested.CreateInstance!(this, out disposable);
                 }
                 finally
                 {
@@ -71,7 +71,7 @@ namespace Solti.Utils.DI.Internals
                 requested.SetValidated();
             }
             else
-                instance = requested.CreateInstance(this, out disposable);
+                instance = requested.CreateInstance!(this, out disposable);
 
             if (disposable is not null)
             {

@@ -13,6 +13,9 @@ namespace Solti.Utils.DI.Internals
 
     internal sealed class SimpleDelegateCompiler : Singleton<SimpleDelegateCompiler>, IDelegateCompiler
     {
-        public void Compile<TDelegate>(Expression<TDelegate> expression, Action<TDelegate> completionCallback) => completionCallback(expression.Compile());
+        public void Compile<TDelegate>(Expression<TDelegate> expression, Action<TDelegate> completionCallback) => completionCallback
+        (
+            expression.Compile()
+        );
     }
 }

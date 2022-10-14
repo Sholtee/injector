@@ -14,10 +14,10 @@ namespace Solti.Utils.DI.Internals
 
     internal sealed partial class PooledServiceEntry
     {
-        private delegate object InvokePoolDelegate(IPool pool, out IDisposable disposable);
+        private delegate object InvokePoolDelegate(IPool pool, out object disposable);
 
         /// <inheritdoc/>
-        public override Expression CreateLifetimeManager(Expression service, ParameterExpression scope, ParameterExpression disposable)
+        public override Expression CreateLifetimeManager(Expression getService, ParameterExpression scope, ParameterExpression disposable)
         {
             /*
             if (scope.Tag is ILifetimeManager<object>)
@@ -40,14 +40,14 @@ namespace Solti.Utils.DI.Internals
             }
             */
 
-            return Expression.IfThenElse
+            return Expression.Condition
             (
                 test: UnfoldLambdaExpressionVisitor.Unfold
                 (
                     (Expression<Func<IInjector, bool>>) (scope => scope.Tag is ILifetimeManager<object>),
                     scope
                 ),
-                ifTrue: base.CreateLifetimeManager(service, scope, disposable),
+                ifTrue: base.CreateLifetimeManager(getService, scope, disposable),
                 ifFalse: Expression.Invoke
                 (
                     Expression.Constant((InvokePoolDelegate) InvokePool),
@@ -57,11 +57,12 @@ namespace Solti.Utils.DI.Internals
                         scope
                     ),
                     disposable
-                )
+                ),
+                type: typeof(object)
             );
 
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            static object InvokePool(IPool pool, out IDisposable disposable)
+            static object InvokePool(IPool pool, out object disposable)
             {
                 object result = pool.Get();
                 disposable = new PoolItemCheckin(pool, result);

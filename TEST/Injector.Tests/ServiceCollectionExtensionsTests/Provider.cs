@@ -58,9 +58,9 @@ namespace Solti.Utils.DI.Tests
             AbstractServiceEntry entry = Collection
                 .Provider<IList, ListProvider>(lifetime)
                 .LastEntry;
-            entry.VisitFactory(_ => _, new SimpleDelegateCompiler());
+            entry.Build(new SimpleDelegateCompiler(), new ApplyLifetimeManagerVisitor());
 
-            var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
+            var mockInjector = new Mock<IInstanceFactory>(MockBehavior.Strict);
             mockInjector
                 .SetupGet(i => i.Tag)
                 .Returns(new Mock<ILifetimeManager<object>>().Object);
@@ -74,9 +74,9 @@ namespace Solti.Utils.DI.Tests
             AbstractServiceEntry entry = Collection
                 .Provider<IList<int>, GenericListProvider>(lifetime)
                 .LastEntry;
-            entry.VisitFactory(_ => _, new SimpleDelegateCompiler());
+            entry.Build(new SimpleDelegateCompiler(), new ApplyLifetimeManagerVisitor());
 
-            var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
+            var mockInjector = new Mock<IInstanceFactory>(MockBehavior.Strict);
             mockInjector
                 .SetupGet(i => i.Tag)
                 .Returns(new Mock<ILifetimeManager<object>>().Object);
