@@ -80,17 +80,13 @@ namespace Solti.Utils.DI.Interfaces
             if (factory is null)
                 throw new ArgumentNullException(nameof(factory));
 
-            //
-            // TODO: Try to update the original expression to avoid nested method calls
-            //
-
             ParameterExpression
-                injector = Expression.Parameter(typeof(IInjector), nameof(injector)),
+                injector = factory.Parameters[0],
                 iface = Expression.Parameter(typeof(Type), nameof(iface));
 
             return Expression.Lambda<Func<IInjector, Type, object>>
             (
-                Expression.Invoke(factory, injector),
+                factory.Body,
                 injector,
                 iface
             );

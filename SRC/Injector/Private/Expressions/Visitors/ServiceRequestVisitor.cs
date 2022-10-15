@@ -37,8 +37,8 @@ namespace Solti.Utils.DI.Internals
                     (
                         node,
                         node.Object,
-                        (Type)iface.Value,
-                        (string?)name.Value
+                        (Type) iface.Value,
+                        (string?) name.Value
                     );
                 }
             }
@@ -51,7 +51,7 @@ namespace Solti.Utils.DI.Internals
                         node,
                         node.Arguments[0],
                         node.Method.GetGenericArguments()[0],
-                        (string?)name.Value
+                        (string?) name.Value
                     );
                 }
             }
