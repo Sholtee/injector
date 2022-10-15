@@ -205,6 +205,15 @@ namespace Solti.Utils.DI.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Only request targeting IInstanceFactory can be replaced..
+        /// </summary>
+        internal static string REQUEST_NOT_REPLACEABLE {
+            get {
+                return ResourceManager.GetString("REQUEST_NOT_REPLACEABLE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Service &quot;{0}&quot; could not be found..
         /// </summary>
         internal static string SERVICE_NOT_FOUND {

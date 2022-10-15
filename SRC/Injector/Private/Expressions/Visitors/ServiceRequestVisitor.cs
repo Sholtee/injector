@@ -25,7 +25,7 @@ namespace Solti.Utils.DI.Internals
                 MethodInfoExtractor.Extract<IInjector>(i => i.TryGet<object>(null)).GetGenericMethodDefinition()
             };
 
-        protected abstract Expression VisitServiceRequest(MethodCallExpression method, Expression target, Type iface, string? name);
+        protected abstract Expression VisitServiceRequest(MethodCallExpression request, Expression target, Type iface, string? name);
 
         protected override Expression VisitMethodCall(MethodCallExpression node)
         {

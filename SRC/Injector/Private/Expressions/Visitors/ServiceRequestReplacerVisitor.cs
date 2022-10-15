@@ -4,11 +4,13 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Diagnostics;
 using System.Linq.Expressions;
 
 namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
+    using Properties;
 
     internal sealed class ServiceRequestReplacerVisitor : ServiceRequestVisitor, IFactoryVisitor
     {
@@ -27,8 +29,14 @@ namespace Solti.Utils.DI.Internals
 
         public LambdaExpression Visit(LambdaExpression factory, AbstractServiceEntry entry) => (LambdaExpression) Visit(factory);
 
-        protected override Expression VisitServiceRequest(MethodCallExpression method, Expression target, Type iface, string? name)
+        protected override Expression VisitServiceRequest(MethodCallExpression request, Expression target, Type iface, string? name)
         {
+            if (target.Type != typeof(IInstanceFactory))
+            {
+                Trace.TraceWarning(Resources.REQUEST_NOT_REPLACEABLE);
+                return request;
+            }
+
             //
             // It specializes generic services ahead of time
             //
@@ -40,7 +48,7 @@ namespace Solti.Utils.DI.Internals
                 // Missing but not required dependency
                 //
 
-                if (method.Method.Name == nameof(IInjector.TryGet) || FPermissive)
+                if (request.Method.Name == nameof(IInjector.TryGet) || FPermissive)
                     //
                     // injector.[Try]Get(iface, name) -> (TInterface) null
                     //
@@ -62,7 +70,7 @@ namespace Solti.Utils.DI.Internals
                 target
             );
 
-            return method.Method.ReturnType != iface
+            return request.Method.ReturnType != iface
                 //
                 // Cast already in the expression since the replaced IInjector.[Try]Get() method is not typed
                 //
