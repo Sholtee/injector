@@ -214,8 +214,7 @@ namespace Solti.Utils.DI.Internals
         public IServiceResolverLookup ServiceResolverLookup => FResolverLookup;
 
         public Injector(IEnumerable<AbstractServiceEntry> registeredEntries, ScopeOptions options, object? tag)
-        {
-            
+        {  
             IReadOnlyCollection<AbstractServiceEntry> svcs = new List<AbstractServiceEntry>
             (
                 #pragma warning disable CA2214 // Do not call overridable methods in constructors

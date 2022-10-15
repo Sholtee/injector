@@ -10,11 +10,12 @@ using System.Linq.Expressions;
 
 namespace Solti.Utils.DI.Internals
 {
+    using Primitives.Patterns;
     using Properties;
 
     internal sealed class UnfoldLambdaExpressionVisitor : ExpressionVisitor
     {
-        private IReadOnlyList<ParameterExpression>? FParameters;
+        private readonly WriteOnce<IReadOnlyList<ParameterExpression>> FParameters = new();
 
         public IReadOnlyList<Expression> ParameterSubstitutions { get; }
 
@@ -25,20 +26,20 @@ namespace Solti.Utils.DI.Internals
 
         protected override Expression VisitLambda<T>(Expression<T> node)
         {
-            if (FParameters is not null)
+            if (FParameters.HasValue)
                 //
-                // We have no business with nested lambdas.
+                // In nested lambdas we just replace the captured compatible variables.
                 //
 
-                return node;
+                return base.VisitLambda(node);
 
             if (node.Parameters.Count != ParameterSubstitutions.Count)
                 throw new NotSupportedException(Resources.LAMBDA_LAYOUT_NOT_SUPPORTED);
 
-            FParameters = node.Parameters;
+            FParameters!.Value = node.Parameters;
 
             //
-            // We just need the method body
+            // From the main method we just need the method body
             //
 
             return Visit(node.Body);
@@ -47,11 +48,12 @@ namespace Solti.Utils.DI.Internals
         protected override Expression VisitParameter(ParameterExpression node)
         {
             //
-            // Don't deal with variables
+            // Find the corresponding parameter
             //
 
             int? index = FParameters
-                ?.Select((p, i) => new { Parameter = p, Index = i })
+                .Value
+                .Select((p, i) => new { Parameter = p, Index = i })
                 .SingleOrDefault(p => p.Parameter == node)
                 ?.Index;
 
