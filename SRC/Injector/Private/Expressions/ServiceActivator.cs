@@ -401,6 +401,11 @@ namespace Solti.Utils.DI.Internals
             );
             */
 
+            //
+            // This workaround solves the above mentioned issue but suppresses the ServiceRequestReplacerVisitor.
+            // Altough it shouldn't matter as Lazy pattern is for services having considerable instatiation time.
+            //
+
             MethodInfo createLazy = options?.Optional is true
                 ? FCreateLazyOpt
                 : FCreateLazy;
