@@ -22,11 +22,11 @@ namespace Solti.Utils.DI.Internals
             }
         }
 
-        public InjectorSupportsServiceProvider(IEnumerable<AbstractServiceEntry> registeredEntries, ScopeOptions options, object? lifetime) : base(registeredEntries, options, lifetime)
+        public InjectorSupportsServiceProvider(IEnumerable<AbstractServiceEntry> registeredEntries, ScopeOptions options, object? tag) : base(registeredEntries, options, tag)
         {
         }
 
-        public InjectorSupportsServiceProvider(InjectorSupportsServiceProvider super, object? lifetime) : base(super, lifetime)
+        public InjectorSupportsServiceProvider(InjectorSupportsServiceProvider super, object? tag) : base(super, tag)
         {
         }
 
@@ -34,6 +34,6 @@ namespace Solti.Utils.DI.Internals
 
         public object GetService(Type serviceType) => TryGet(serviceType, null)!;
 
-        public override IInjector CreateScope(object? lifetime = null) => new InjectorSupportsServiceProvider(this, lifetime);
+        public override IInjector CreateScope(object? tag) => new InjectorSupportsServiceProvider(this, tag);
     }
 }
