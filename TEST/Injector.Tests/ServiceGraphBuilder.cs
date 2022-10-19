@@ -1,5 +1,5 @@
 ﻿/********************************************************************************
-* ServiceEntryBuilder.cs                                                        *
+* ServiceGraphBuilder.cs                                                        *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
@@ -17,7 +17,7 @@ namespace Solti.Utils.DI.Internals.Tests
     using Primitives.Threading;
 
     [TestFixture]
-    public sealed class ServiceEntryBuilderTests
+    public sealed class ServiceGraphBuilderTests
     {
         public abstract class DummyInjector : IInjector, IInstanceFactory
         {
@@ -72,7 +72,7 @@ namespace Solti.Utils.DI.Internals.Tests
             }
         }
 
-        static ServiceEntryBuilderTests() =>
+        static ServiceGraphBuilderTests() =>
             //
             // Lifetime.XxX properties are late bound so we need to initialize them (outside the
             // test environment it is done when the InjectorDotNet library is loaded).
