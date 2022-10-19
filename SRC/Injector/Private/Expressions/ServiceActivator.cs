@@ -370,7 +370,9 @@ namespace Solti.Utils.DI.Internals
                 throw new ArgumentException(Resources.PARAMETER_NOT_AN_INTERFACE, nameof(iface));
 
             //
-            // According to ServiceActivator_Lazy perf tests, the runtime built lambdas are by-design ridiculously slow
+            // According to ServiceActivator_Lazy perf tests, runtime built lambdas containing a nested function
+            // are ridiculously slow (I suspect the nested lambda is instantiated by an Activator.CreateInstance
+            // call).
             //
 
             /*
