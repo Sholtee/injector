@@ -89,7 +89,7 @@ namespace Solti.Utils.DI.Internals
         protected virtual IEnumerable<AbstractServiceEntry> GetAllServices(IEnumerable<AbstractServiceEntry> registeredEntries)
         {
             yield return new ContextualServiceEntry(typeof(IInjector), null, static (i, _) => i);
-            yield return new ContextualServiceEntry(typeof(IScopeFactory), null, (i, _) => this /*factory is always the root*/);
+            yield return new ContextualServiceEntry(typeof(IScopeFactory), null, (_, _) => this /*factory is always the root*/);
             yield return new ScopedServiceEntry(typeof(IEnumerable<>), null, typeof(ServiceEnumerator<>), new { registeredServices = new List<AbstractServiceEntry>(registeredEntries) });
 #if DEBUG
             yield return new ContextualServiceEntry(typeof(System.Collections.ICollection), "captured_disposables", static (i, _) => (((Injector) i).FDisposableStore ??= new()).CapturedDisposables);
