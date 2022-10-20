@@ -49,8 +49,9 @@ namespace Solti.Utils.DI.Internals
             // At the root of the dependency graph this validation makes no sense.
             //
 
-            if (Options.StrictDI && FPath?.Last is not null)
-                ServiceErrors.EnsureNotBreaksTheRuleOfStrictDI(FPath.Last, requested);
+            AbstractServiceEntry? requestor = FPath?.Last;
+            if (Options.StrictDI && requestor?.State.HasFlag(ServiceEntryStates.Validated) is false)
+                ServiceErrors.EnsureNotBreaksTheRuleOfStrictDI(requestor, requested);
 
             if (!requested.State.HasFlag(ServiceEntryStates.Validated))
             {

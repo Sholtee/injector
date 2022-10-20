@@ -138,7 +138,7 @@
   <data name="NOT_PRODUCIBLE" xml:space="preserve">
     <value>The service has no factory function.</value>
   </data>
-  <data name="STRICT_DI" xml:space="preserve">
+  <data name="STRICT_DI_DEP" xml:space="preserve">
     <value>Attempt to request a dependency that should live shorter than the requestor should.</value>
   </data>
   <data name="NOT_EQUAL" xml:space="preserve">
@@ -170,5 +170,8 @@
   </data>
   <data name="INTERCEPTOR_FACTORY_NOT_IMPLEMENTED" xml:space="preserve">
     <value>Aspects should implement the IInterceptorFactory interface.</value>
+  </data>
+  <data name="STRICT_DI_SCOPE" xml:space="preserve">
+    <value>Attempt to request the scope itself.</value>
   </data>
 </root>

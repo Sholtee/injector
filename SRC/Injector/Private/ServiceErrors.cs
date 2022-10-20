@@ -12,6 +12,10 @@ namespace Solti.Utils.DI.Internals
 
     using static Properties.Resources;
 
+    //
+    // This class is to use the same validation logic in JIT and AOT resolutins too
+    //
+
     internal static class ServiceErrors
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -30,13 +34,22 @@ namespace Solti.Utils.DI.Internals
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void EnsureNotBreaksTheRuleOfStrictDI(AbstractServiceEntry requestor, AbstractServiceEntry requested)
         {
+            if (requested.Interface == typeof(IInjector) && requested.Name is null)
+            {
+                RequestNotAllowedException ex = new(STRICT_DI_SCOPE);
+                ex.Data[nameof(requestor)] = requestor;
+                ex.Data[nameof(requested)] = requested;
+
+                throw ex;
+            }
+
             //
             // The requested service should not exist longer than its requestor.
             //
 
-            if (!requestor.State.HasFlag(ServiceEntryStates.Validated) && requested.Lifetime?.CompareTo(requestor.Lifetime!) < 0)
+            if (requested.Lifetime?.CompareTo(requestor.Lifetime!) < 0)
             {
-                RequestNotAllowedException ex = new(STRICT_DI);
+                RequestNotAllowedException ex = new(STRICT_DI_DEP);
                 ex.Data[nameof(requestor)] = requestor;
                 ex.Data[nameof(requested)] = requested;
 

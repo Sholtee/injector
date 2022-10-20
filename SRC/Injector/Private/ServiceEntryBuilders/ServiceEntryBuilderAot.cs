@@ -35,7 +35,7 @@ namespace Solti.Utils.DI.Internals
             // the requested entry is already built.
             //
 
-            if (FOptions.StrictDI && FPath.Last is not null)
+            if (FOptions.StrictDI && FPath.Last?.State.HasFlag(ServiceEntryStates.Validated) is false)
                 ServiceErrors.EnsureNotBreaksTheRuleOfStrictDI(FPath.Last, requested);
 
             if (!requested.Features.HasFlag(ServiceEntryFeatures.SupportsVisit) || requested.State.HasFlag(ServiceEntryStates.Built))

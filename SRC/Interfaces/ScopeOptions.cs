@@ -13,7 +13,11 @@ namespace Solti.Utils.DI.Interfaces
     public class ScopeOptions
     {
         /// <summary>
-        /// Instructs the <see cref="IInjector"/> to throw if a service being requested has a dependency that should live shorter than the service should (e.g.: a <see cref="Lifetime.Singleton"/> service cannot have <see cref="Lifetime.Transient"/> dependency).
+        /// Instructs the scope system to throw if 
+        /// <list type="bullet">
+        /// <item>A service being requested has a dependency that should live shorter than the service should (e.g.: a <see cref="Lifetime.Singleton"/> service cannot have <see cref="Lifetime.Transient"/> dependency)</item>
+        /// <item>The scope (<see cref="IInjector"/>) itself is being requested. This restriction ensures that the dependency graph will not change in runtime.</item>
+        /// </list>
         /// </summary>
         public bool StrictDI { get; init; }
 

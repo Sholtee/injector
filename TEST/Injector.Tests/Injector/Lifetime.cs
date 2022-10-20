@@ -571,6 +571,31 @@ namespace Solti.Utils.DI.Tests
             )
         );
 
+        [Test]
+        public void Lifetime_StrictDI_IllegalCases3_JIT([ValueSource(nameof(Lifetimes))] Lifetime lifetime)
+        {
+            Root = ScopeFactory.Create
+            (
+                svcs => svcs.Service<IInterface_7<IInjector>, Implementation_7<IInjector>>(lifetime),
+                new ScopeOptions { StrictDI = true, ServiceResolutionMode = ServiceResolutionMode.JIT }
+            );
+
+            using (IInjector injector = Root.CreateScope())
+            {
+                Assert.Throws<RequestNotAllowedException>(() => injector.Get<IInterface_7<IInjector>>());
+            }
+        }
+
+        [Test]
+        public void Lifetime_StrictDI_IllegalCases3_AOT([ValueSource(nameof(Lifetimes))] Lifetime lifetime) => Assert.Throws<RequestNotAllowedException>
+        (
+            () => ScopeFactory.Create
+            (
+                svcs => svcs.Service<IInterface_7<IInjector>, Implementation_7<IInjector>>(lifetime),
+                new ScopeOptions { StrictDI = true, ServiceResolutionMode = ServiceResolutionMode.AOT }
+            )
+        );
+
         private sealed class DisposableServiceUsingDisposableDependency<TDependency>: Disposable, IInterface_7<TDependency> where TDependency : class, IDisposableEx
         {
             public TDependency Interface { get; }

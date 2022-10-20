@@ -207,9 +207,18 @@ namespace Solti.Utils.DI.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Attempt to request a dependency that should live shorter than the requestor should..
         /// </summary>
-        internal static string STRICT_DI {
+        internal static string STRICT_DI_DEP {
             get {
-                return ResourceManager.GetString("STRICT_DI", resourceCulture);
+                return ResourceManager.GetString("STRICT_DI_DEP", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Attempt to request the scope itself..
+        /// </summary>
+        internal static string STRICT_DI_SCOPE {
+            get {
+                return ResourceManager.GetString("STRICT_DI_SCOPE", resourceCulture);
             }
         }
         
