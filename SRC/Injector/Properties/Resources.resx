@@ -174,4 +174,7 @@
   <data name="STRICT_DI_SCOPE" xml:space="preserve">
     <value>Attempt to request the scope itself.</value>
   </data>
+  <data name="INVALID_CONFIG" xml:space="preserve">
+    <value>Invalid configuration.</value>
+  </data>
 </root>

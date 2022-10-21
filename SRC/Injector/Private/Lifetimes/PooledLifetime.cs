@@ -10,28 +10,21 @@ using System.Linq.Expressions;
 namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
+    using Properties;
 
     internal sealed class PooledLifetime : InjectorDotNetLifetime
     {
-        private AbstractServiceEntry GetPoolService(Type iface, string? name, string poolName) => new SingletonServiceEntry
+        private AbstractServiceEntry GetPoolService(PooledServiceEntry entry) => new SingletonServiceEntry
         (
-            iface.IsGenericTypeDefinition
+            entry.Interface.IsGenericTypeDefinition
                 ? typeof(IPool<>)
-                : typeof(IPool<>).MakeGenericType(iface),
-            poolName,
-            iface.IsGenericTypeDefinition
+                : typeof(IPool<>).MakeGenericType(entry.Interface),
+            entry.PoolName,
+            entry.Interface.IsGenericTypeDefinition
                 ? typeof(PoolService<>)
-                : typeof(PoolService<>).MakeGenericType(iface),
-            new { capacity = Capacity, name }
+                : typeof(PoolService<>).MakeGenericType(entry.Interface),
+            new { capacity = Capacity, name = entry.Name }
         );
-
-        private static string GetPoolName(Type iface, string? name)
-        {
-            if (iface.IsConstructedGenericType)
-                iface = iface.GetGenericTypeDefinition();
-
-            return $"{Consts.INTERNAL_SERVICE_NAME_PREFIX}pool_{(iface, name).GetHashCode():X}";
-        }
 
         public PooledLifetime() : base(precedence: 20) => Pooled = this;
 
@@ -43,16 +36,9 @@ namespace Solti.Utils.DI.Internals
             if (implementation is null)
                 throw new ArgumentNullException(nameof(implementation));
 
-            string poolName = GetPoolName(iface, name);
+            PooledServiceEntry entry = new(iface, name, implementation);
 
-            //
-            // PooledServiceEntry is created first (to do the neccessary validations) but returned last
-            // (thus the IModifiedServiceCollection.LastEntry won't be screwed up)
-            //
-
-            PooledServiceEntry entry = new(iface, name, implementation, poolName);
-
-            yield return GetPoolService(iface, name, poolName);
+            yield return GetPoolService(entry);
             yield return entry;
         }
 
@@ -67,11 +53,9 @@ namespace Solti.Utils.DI.Internals
             if (explicitArgs is null)
                 throw new ArgumentNullException(nameof(explicitArgs));
 
-            string poolName = GetPoolName(iface, name);
+            PooledServiceEntry entry = new(iface, name, implementation, explicitArgs);
 
-            PooledServiceEntry entry = new(iface, name, implementation, explicitArgs, poolName);
-
-            yield return GetPoolService(iface, name, poolName);
+            yield return GetPoolService(entry);
             yield return entry;
         }
 
@@ -83,11 +67,9 @@ namespace Solti.Utils.DI.Internals
             if (factory is null)
                 throw new ArgumentNullException(nameof(factory));
 
-            string poolName = GetPoolName(iface, name);
+            PooledServiceEntry entry = new(iface, name, factory);
 
-            PooledServiceEntry entry = new(iface, name, factory, poolName);
-
-            yield return GetPoolService(iface, name, poolName);
+            yield return GetPoolService(entry);
             yield return entry;
         }
 
@@ -113,12 +95,12 @@ namespace Solti.Utils.DI.Internals
 
         public override Lifetime Using(object configuration)
         {
-            if (configuration is null)
-                throw new ArgumentNullException(nameof(configuration));
+            if (configuration is not PoolConfig config)
+                throw new ArgumentException(Resources.INVALID_CONFIG, nameof(configuration));
 
             return new PooledLifetime
             {
-                Capacity = ((PoolConfig) configuration).Capacity,
+                Capacity = config.Capacity,
             };
         }
     }

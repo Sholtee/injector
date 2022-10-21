@@ -15,21 +15,23 @@ namespace Solti.Utils.DI.Internals
     internal sealed class PooledServiceEntry : ScopedServiceEntryBase
     {
         private Type? FPoolType;
-        public Type PoolType => FPoolType ??= typeof(IPool<>).MakeGenericType(Interface);
+        public Type PoolType =>
+            FPoolType ??= typeof(IPool<>).MakeGenericType(Interface);
 
-        public PooledServiceEntry(Type @interface, string? name, Expression<Func<IInjector, Type, object>> factory, string poolName) : base(@interface, name, factory)
+        private string? FPoolName;
+        public string PoolName => 
+            FPoolName ??= $"{Consts.INTERNAL_SERVICE_NAME_PREFIX}pool_{(Interface.IsConstructedGenericType ? Interface.GetGenericTypeDefinition() : Interface, Name).GetHashCode():X}";
+
+        public PooledServiceEntry(Type @interface, string? name, Expression<Func<IInjector, Type, object>> factory) : base(@interface, name, factory)
         {
-            PoolName = poolName;
         }
 
-        public PooledServiceEntry(Type @interface, string? name, Type implementation, string poolName) : base(@interface, name, implementation)
+        public PooledServiceEntry(Type @interface, string? name, Type implementation) : base(@interface, name, implementation)
         {
-            PoolName = poolName;
         }
 
-        public PooledServiceEntry(Type @interface, string? name, Type implementation, object explicitArgs, string poolName) : base(@interface, name, implementation, explicitArgs)
+        public PooledServiceEntry(Type @interface, string? name, Type implementation, object explicitArgs) : base(@interface, name, implementation, explicitArgs)
         {
-            PoolName = poolName;
         }
 
         private sealed class PoolItemCheckin : Disposable
@@ -85,29 +87,24 @@ namespace Solti.Utils.DI.Internals
                 (
                     Interface.MakeGenericType(genericArguments),
                     Name,
-                    Implementation.MakeGenericType(genericArguments),
-                    PoolName
+                    Implementation.MakeGenericType(genericArguments)
                 ),
                 _ when Implementation is not null && ExplicitArgs is not null => new PooledServiceEntry
                 (
                     Interface.MakeGenericType(genericArguments),
                     Name,
                     Implementation.MakeGenericType(genericArguments),
-                    ExplicitArgs,
-                    PoolName
+                    ExplicitArgs
                 ),
                 _ when Factory is not null => new PooledServiceEntry
                 (
                     Interface.MakeGenericType(genericArguments),
                     Name,
-                    Factory,
-                    PoolName
+                    Factory
                 ),
                 _ => throw new NotSupportedException()
             };
         }
-
-        public string PoolName { get; }
 
         public override Lifetime Lifetime { get; } = Lifetime.Pooled;
 
