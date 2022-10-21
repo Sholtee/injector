@@ -9,6 +9,21 @@ namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
 
+    /// <summary>
+    /// Applies the lifetime manager, provided by the <see cref="AbstractServiceEntry"/>
+    /// </summary>
+    /// <remarks>
+    /// <code>(_, _) => ...</code>
+    /// becomes for instance
+    /// <code>
+    /// (_, _, out IDisposable? disposable) =>
+    /// {
+    ///     object svc = ...;
+    ///     disposable = svc as IDisposable;
+    ///     return svc;
+    /// }
+    /// </code>
+    /// </remarks>
     internal sealed class ApplyLifetimeManagerVisitor : IFactoryVisitor
     {
         public LambdaExpression Visit(LambdaExpression factory, AbstractServiceEntry entry)

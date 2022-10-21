@@ -12,6 +12,10 @@ namespace Solti.Utils.DI.Internals
     using Interfaces;
     using Properties;
 
+    /// <summary>
+    /// Replaces the <see cref="IInjector"/> invocations with the corresponing <see cref="ServiceResolver.Resolve"/> calls.
+    /// </summary>
+    /// <remarks>This results a faster generated delegate since it saves a <see cref="IServiceResolverLookup.Get(Type, string?)"/> invocation for each dependency.</remarks>
     internal sealed class ServiceRequestReplacerVisitor : ServiceRequestVisitor, IFactoryVisitor
     {
         private readonly IServiceResolverLookup FLookup;

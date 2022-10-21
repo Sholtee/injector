@@ -11,6 +11,9 @@ namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
 
+    /// <summary>
+    /// Visits <see cref="IInjector.Get(Type, string?)"/>, <see cref="IInjector.TryGet(Type, string?)"/>, <see cref="IInjectorBasicExtensions.Get{TInterface}(Interfaces.IInjector, string?)"/> and <see cref="IInjectorBasicExtensions.TryGet{TInterface}(Interfaces.IInjector, string?)"/> invocations.
+    /// </summary>
     internal abstract class ServiceRequestVisitor : ExpressionVisitor
     {
         private static readonly MethodInfo[]

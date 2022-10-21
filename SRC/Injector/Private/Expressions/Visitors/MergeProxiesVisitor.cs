@@ -11,6 +11,19 @@ namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
 
+    /// <summary>
+    /// Merges proxy lambads to a single expression.
+    /// </summary>
+    /// <remarks>
+    /// <code>(injector, iface) => new Proxy_2
+    /// (
+    ///     new Proxy_1
+    ///     (
+    ///         factory(injector, iface)
+    ///     )
+    /// )
+    /// </code>
+    /// </remarks>
     internal sealed class MergeProxiesVisitor : IFactoryVisitor
     {
         public LambdaExpression Visit(LambdaExpression factory, AbstractServiceEntry entry)

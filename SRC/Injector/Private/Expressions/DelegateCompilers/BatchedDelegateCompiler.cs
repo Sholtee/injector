@@ -8,49 +8,48 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 
 namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
     using Primitives;
 
+    /// <summary>
+    /// Collects compilations and builds them in a batch. This is to reduce the number of <see cref="LambdaExpression.Compile()"/> call
+    /// </summary>
+    /// <remarks>Lambda compilation is a time consuming operations as it builds and loads an <see cref="Assembly"/> runtime.</remarks>
     internal sealed class BatchedDelegateCompiler : IDelegateCompiler
     {
-        private readonly List<(Expression Expression, Expression Callback)> FCompilations = new();
+        private readonly List<(LambdaExpression LambdaExpression, Expression Callback)> FCompilations = new();
 
-        public void Compile<TDelegate>(Expression<TDelegate> expression, Action<TDelegate> completionCallback) =>
-            FCompilations.Add((expression, Expression.Constant(completionCallback)));
+        public void Compile<TDelegate>(Expression<TDelegate> lambdaExpression, Action<TDelegate> completionCallback) =>
+            FCompilations.Add((lambdaExpression, Expression.Constant(completionCallback)));
 
         public void Compile()
         {
             if (FCompilations.Count is 0)
                 return;
 
-            try
-            {
-                Expression<Action> expr = Expression.Lambda<Action>
+            Expression<Action> expr = Expression.Lambda<Action>
+            (
+                Expression.Block
                 (
-                    Expression.Block
+                    FCompilations.Select
                     (
-                        FCompilations.Select
+                        compilation => Expression.Invoke
                         (
-                            compilation => Expression.Invoke
-                            (
-                                compilation.Callback,
-                                compilation.Expression
-                            )
+                            compilation.Callback,
+                            compilation.LambdaExpression
                         )
                     )
-                );
+                )
+            );
+            
+            Debug.WriteLine($"Created batched compilation:{Environment.NewLine}{expr.GetDebugView()}");
 
-                Debug.WriteLine($"Created batched compilation:{Environment.NewLine}{expr.GetDebugView()}");
-
-                expr.Compile().Invoke();
-            }
-            finally
-            {
-                FCompilations.Clear();
-            }
+            FCompilations.Clear();
+            expr.Compile().Invoke();
         }
     }
 }

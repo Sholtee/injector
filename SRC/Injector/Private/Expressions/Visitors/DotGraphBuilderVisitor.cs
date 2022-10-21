@@ -10,6 +10,9 @@ namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
 
+    /// <summary>
+    /// Visits the dependency tree to build <a href="https://graphviz.org/">DOT graph</a> graph.
+    /// </summary>
     internal sealed class DotGraphBuilderVisitor : ServiceRequestVisitor, IFactoryVisitor
     {
         private readonly DotGraphBuilder FBuilder;

@@ -13,6 +13,10 @@ namespace Solti.Utils.DI.Internals
     using Primitives.Patterns;
     using Properties;
 
+    /// <summary>
+    /// Extracts the method body and replaces the parameters in the referencies.
+    /// </summary>
+    /// <remarks><code>param => param.DoComething();</code> becomes <code>substitution.DoSomething();</code></remarks>
     internal sealed class UnfoldLambdaExpressionVisitor : ExpressionVisitor
     {
         private readonly WriteOnce<IReadOnlyList<ParameterExpression>> FParameters = new();
