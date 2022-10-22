@@ -32,9 +32,9 @@ namespace Solti.Utils.DI.Internals
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void EnsureNotBreaksTheRuleOfStrictDI(AbstractServiceEntry requestor, AbstractServiceEntry requested)
+        public static void EnsureNotBreaksTheRuleOfStrictDI(AbstractServiceEntry requestor, AbstractServiceEntry requested, bool supportServiceProvider)
         {
-            if (requested.Interface == typeof(IInjector) && requested.Name is null)
+            if ((requested.Interface == typeof(IInjector) || (supportServiceProvider && requested.Interface == typeof(IServiceProvider)))  && requested.Name is null)
             {
                 RequestNotAllowedException ex = new(STRICT_DI_SCOPE);
                 ex.Data[nameof(requestor)] = requestor;

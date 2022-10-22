@@ -51,7 +51,7 @@ namespace Solti.Utils.DI.Internals
 
             AbstractServiceEntry? requestor = FPath?.Last;
             if (Options.StrictDI && requestor?.State.HasFlag(ServiceEntryStates.Validated) is false)
-                ServiceErrors.EnsureNotBreaksTheRuleOfStrictDI(requestor, requested);
+                ServiceErrors.EnsureNotBreaksTheRuleOfStrictDI(requestor, requested, Options.SupportsServiceProvider);
 
             if (!requested.State.HasFlag(ServiceEntryStates.Validated))
             {

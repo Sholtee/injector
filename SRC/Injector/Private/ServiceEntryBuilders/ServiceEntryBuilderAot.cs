@@ -36,7 +36,7 @@ namespace Solti.Utils.DI.Internals
             //
 
             if (FOptions.StrictDI && FPath.Last?.State.HasFlag(ServiceEntryStates.Validated) is false)
-                ServiceErrors.EnsureNotBreaksTheRuleOfStrictDI(FPath.Last, requested);
+                ServiceErrors.EnsureNotBreaksTheRuleOfStrictDI(FPath.Last, requested, FOptions.SupportsServiceProvider);
 
             if (!requested.Features.HasFlag(ServiceEntryFeatures.SupportsVisit) || requested.State.HasFlag(ServiceEntryStates.Built))
                 return;
