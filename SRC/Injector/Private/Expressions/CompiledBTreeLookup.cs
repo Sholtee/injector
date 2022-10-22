@@ -1,5 +1,5 @@
 ﻿/********************************************************************************
-* ServiceResolverLookup_BuiltBTree.cs                                           *
+* BuiltBTreeLookup.cs                                                           *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
@@ -14,18 +14,18 @@ namespace Solti.Utils.DI.Internals
 {
     using Primitives;
 
-    internal partial class ServiceResolverLookup_BuiltBTree
+    internal partial class CompiledBTreeLookup<TData>
     {
         private static readonly MethodInfo FCompareTo = MethodInfoExtractor.Extract<CompositeKey>(ck => ck.CompareTo(null!));
 
-        private static IEnumerable<Expression> Build<TResult>(RedBlackTreeNode<KeyValuePair<CompositeKey, TResult>>? node, ParameterExpression key, ParameterExpression order, LabelTarget ret)
+        private static IEnumerable<Expression> BuildNode(RedBlackTreeNode<KeyValuePair<CompositeKey, TData>>? node, ParameterExpression key, ParameterExpression order, LabelTarget ret)
         {
             if (node is null)
             {
                 yield return Expression.Return
                 (
                     ret,
-                    Expression.Default(typeof(TResult))
+                    Expression.Default(typeof(TData))
                 );
                 yield break;
             }
@@ -55,7 +55,7 @@ namespace Solti.Utils.DI.Internals
                 Expression.LessThan(order, Expression.Constant(0)),
                 ifTrue: Expression.Block
                 (
-                    Build(node.Left, key, order, ret)
+                    BuildNode(node.Left, key, order, ret)
                 )
             );
 
@@ -64,30 +64,26 @@ namespace Solti.Utils.DI.Internals
                 Expression.GreaterThan(order, Expression.Constant(0)),
                 ifTrue: Expression.Block
                 (
-                    Build(node.Right, key, order, ret)
+                    BuildNode(node.Right, key, order, ret)
                 )
             );
 
             //
-            // if (order == 0) return Result;
+            // return Result;
             //
 
-            yield return Expression.IfThen
+            yield return Expression.Return
             (
-                Expression.Equal(order, Expression.Constant(0)),
-                Expression.Return
-                (
-                    ret,
-                    Expression.Constant(node.Data.Value, typeof(TResult))
-                )
+                ret,
+                Expression.Constant(node.Data.Value, typeof(TData))
             );
         }
 
-        private static Func<CompositeKey, TResult?> BuildSwitch<TResult>(RedBlackTree<KeyValuePair<CompositeKey, TResult>> tree)
+        private static Expression<Func<CompositeKey, TData?>> BuildTree(RedBlackTree<KeyValuePair<CompositeKey, TData>> tree)
         {
             ParameterExpression key = Expression.Parameter(typeof(CompositeKey), nameof(key));
 
-            LabelTarget ret = Expression.Label(typeof(TResult), nameof(ret));
+            LabelTarget ret = Expression.Label(typeof(TData), nameof(ret));
 
             LabelExpression returnNull = Expression.Label(ret, Expression.Default(ret.Type));
 
@@ -99,7 +95,7 @@ namespace Solti.Utils.DI.Internals
                 ParameterExpression order = Expression.Variable(typeof(int), nameof(order));
                 List<Expression> block = new
                 (
-                    Build(tree.Root, key, order, ret)
+                    BuildNode(tree.Root, key, order, ret)
                 )
                 {
                     returnNull
@@ -107,11 +103,11 @@ namespace Solti.Utils.DI.Internals
                 body = Expression.Block(new[] { order }, block);
             }
 
-            Expression<Func<CompositeKey, TResult?>> resolver = Expression.Lambda<Func<CompositeKey, TResult?>>(body,key);
+            Expression<Func<CompositeKey, TData?>> lambda = Expression.Lambda<Func<CompositeKey, TData?>>(body,key);
 
-            WriteLine($"Created resolver:{Environment.NewLine}{resolver.GetDebugView()}");
+            WriteLine($"Created tree:{Environment.NewLine}{lambda.GetDebugView()}");
 
-            return resolver.Compile();
+            return lambda;
         }
     }
 }

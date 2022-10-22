@@ -9,8 +9,6 @@ using static System.StringComparer;
 
 namespace Solti.Utils.DI.Internals
 {
-    using Interfaces;
-
     internal sealed class CompositeKey: IComparable<CompositeKey>, IEquatable<CompositeKey>
     {
         private int? FHash;
@@ -24,8 +22,6 @@ namespace Solti.Utils.DI.Internals
             FHandle = (long) iface.TypeHandle.Value;
             FName = name;   
         }
-
-        public CompositeKey(AbstractServiceEntry entry) : this(entry.Interface, entry.Name) { }
 
         public override int GetHashCode() =>
             //

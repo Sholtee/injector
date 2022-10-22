@@ -24,7 +24,7 @@ namespace Solti.Utils.DI.Internals.Tests
             {
                 yield return (entries, mode) => new ServiceResolverLookup_BTree(entries, new ScopeOptions { ServiceResolutionMode = mode });
                 yield return (entries, mode) => new ServiceResolverLookup_BuiltBTree(entries, new ScopeOptions { ServiceResolutionMode = mode });
-                yield return (entries, mode) => new ServiceResolverLookup_Dict(entries, new ScopeOptions { ServiceResolutionMode = mode });
+                yield return (entries, mode) => new ArmedServiceResolverLookup(entries, new ScopeOptions { ServiceResolutionMode = mode });
             }
         }
 

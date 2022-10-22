@@ -223,12 +223,12 @@ namespace Solti.Utils.DI.Internals
             );
             
             #pragma warning disable CA1304 // Specify CultureInfo
-            FResolverLookup = (options.Engine?.ToLower() ?? (svcs.Count <= BTREE_ITEM_THRESHOLD ? ServiceResolverLookup_BuiltBTree.Id : ServiceResolverLookup_Dict.Id)) switch
+            FResolverLookup = (options.Engine?.ToLower() ?? (svcs.Count <= BTREE_ITEM_THRESHOLD ? ServiceResolverLookup_BuiltBTree.Id : ConcurrentServiceResolverLookup.Id)) switch
             #pragma warning restore CA1304 // Specify CultureInfo
             {
                 ServiceResolverLookup_BTree.Id => new ServiceResolverLookup_BTree(svcs, options),
                 ServiceResolverLookup_BuiltBTree.Id => new ServiceResolverLookup_BuiltBTree(svcs, options),
-                ServiceResolverLookup_Dict.Id  => new ServiceResolverLookup_Dict(svcs, options),
+                ConcurrentServiceResolverLookup.Id  => new ArmedServiceResolverLookup(svcs, options),
                 _ => throw new NotSupportedException()
             };
 
