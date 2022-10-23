@@ -45,11 +45,26 @@
   <div class="markdown level0 summary"><p>Describes the methods how to create servive instances.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="Solti.Utils.DI.Interfaces.IInjector.html#Solti_Utils_DI_Interfaces_IInjector_Get_System_Type_System_String_">IInjector.Get(Type, String)</a>
+    </div>
+    <div>
+      <a class="xref" href="Solti.Utils.DI.Interfaces.IInjector.html#Solti_Utils_DI_Interfaces_IInjector_TryGet_System_Type_System_String_">IInjector.TryGet(Type, String)</a>
+    </div>
+    <div>
+      <a class="xref" href="Solti.Utils.DI.Interfaces.IInjector.html#Solti_Utils_DI_Interfaces_IInjector_Options">IInjector.Options</a>
+    </div>
+    <div>
+      <a class="xref" href="Solti.Utils.DI.Interfaces.IHasTag.html#Solti_Utils_DI_Interfaces_IHasTag_Tag">IHasTag.Tag</a>
+    </div>
+  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Solti.Utils.DI.Interfaces.html">Solti.Utils.DI.Interfaces</a></h6>
   <h6><strong>Assembly</strong>: Solti.Utils.DI.Interfaces.dll</h6>
   <h5 id="Solti_Utils_DI_Interfaces_IInstanceFactory_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public interface IInstanceFactory</code></pre>
+    <pre><code class="lang-csharp hljs">public interface IInstanceFactory : IInjector, IHasTag</code></pre>
   </div>
   <h3 id="properties">Properties
   </h3>

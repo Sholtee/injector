@@ -59,7 +59,7 @@
   <h3 id="fields">Fields
   </h3>
   <h4 id="Solti_Utils_DI_Interfaces_ServiceEntryStates_Built" data-uid="Solti.Utils.DI.Interfaces.ServiceEntryStates.Built">Built</h4>
-  <div class="markdown level1 summary"><p>Indicates that the entry has already been built.</p>
+  <div class="markdown level1 summary"><p>Indicates that the entry has already been built (meaning that the <a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_CreateInstance">CreateInstance</a> property is not null).</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -127,6 +127,9 @@
       </tr>
     </tbody>
   </table>
+  <h5 id="Solti_Utils_DI_Interfaces_ServiceEntryStates_Validated_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Validation includes circular dependency and strict DI violation checks</p>
+</div>
   <h4 id="Solti_Utils_DI_Interfaces_ServiceEntryStates_value__" data-uid="Solti.Utils.DI.Interfaces.ServiceEntryStates.value__">value__</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
