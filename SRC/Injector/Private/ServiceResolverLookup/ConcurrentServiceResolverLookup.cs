@@ -16,9 +16,9 @@ namespace Solti.Utils.DI.Internals
     /// <summary>
     /// Resolver lookup being shared among scopes.
     /// </summary>
-    internal sealed class ConcurrentServiceResolverLookup<TResolverLookup, TEntryLookup>: IServiceResolverLookup
-        where TResolverLookup: class, ILookup<ServiceResolver, TResolverLookup>, new()
-        where TEntryLookup: class, ILookup<AbstractServiceEntry, TEntryLookup>, new()
+    internal class ConcurrentServiceResolverLookup<TResolverLookup, TEntryLookup>: IServiceResolverLookup
+        where TResolverLookup: class, ILookup<ServiceResolver, TResolverLookup>
+        where TEntryLookup: class, ILookup<AbstractServiceEntry, TEntryLookup>
     {
         //
         // Don't use late binding (ILookup<>) to let the compiler inline
@@ -48,23 +48,18 @@ namespace Solti.Utils.DI.Internals
             FGraphBuilder = graphBuilderFactory(this);
         }
 
-        public ConcurrentServiceResolverLookup<TNewResolverLookup, TNewEntryLookup> ChangeBackend<TNewResolverLookup, TNewEntryLookup>
+        protected ConcurrentServiceResolverLookup
         (
-            Func<TResolverLookup, TNewResolverLookup> changeResolverLookup,
-            Func<TEntryLookup, TNewEntryLookup> changeEntryLookup,
+            IEnumerable<AbstractServiceEntry> entries,
+            TResolverLookup resolvers,
+            TEntryLookup genericEntries,
             Func<IServiceResolverLookup, IGraphBuilder> graphBuilderFactory
+        ): this
+        (
+            resolvers,
+            genericEntries,
+            graphBuilderFactory
         )
-            where TNewResolverLookup : class, ILookup<ServiceResolver, TNewResolverLookup>
-            where TNewEntryLookup : class, ILookup<AbstractServiceEntry, TNewEntryLookup>
-        =>
-            new
-            (
-                changeResolverLookup(FResolvers),
-                changeEntryLookup(FGenericEntries),
-                graphBuilderFactory
-            );
-
-        public ConcurrentServiceResolverLookup(IEnumerable<AbstractServiceEntry> entries, Func<IServiceResolverLookup, IGraphBuilder> graphBuilderFactory): this(new TResolverLookup(), new TEntryLookup(), graphBuilderFactory)
         {
             foreach (AbstractServiceEntry entry in entries)
             {
@@ -91,6 +86,22 @@ namespace Solti.Utils.DI.Internals
                     FGraphBuilder.Build(entry);
             }
         }
+
+        public ConcurrentServiceResolverLookup<TNewResolverLookup, TNewEntryLookup> ChangeBackend<TNewResolverLookup, TNewEntryLookup>
+        (
+            Func<TResolverLookup, TNewResolverLookup> changeResolverLookup,
+            Func<TEntryLookup, TNewEntryLookup> changeEntryLookup,
+            Func<IServiceResolverLookup, IGraphBuilder> graphBuilderFactory
+        )
+            where TNewResolverLookup : class, ILookup<ServiceResolver, TNewResolverLookup>
+            where TNewEntryLookup : class, ILookup<AbstractServiceEntry, TNewEntryLookup>
+        =>
+            new
+            (
+                changeResolverLookup(FResolvers),
+                changeEntryLookup(FGenericEntries),
+                graphBuilderFactory
+            );
 
         public int Slots => FSlots;
 
@@ -131,5 +142,26 @@ namespace Solti.Utils.DI.Internals
             Debug.Assert(resolver?.RelatedEntry.State.HasFlag(ServiceEntryStates.Built) is not false, "Entry must be built when it gets exposed");
             return resolver;
         }
+    }
+
+    //
+    // Workaroung to enforce "new" constraint
+    //
+
+    internal sealed class ConstructableConcurrentServiceResolverLookup<TResolverLookup, TEntryLookup> : ConcurrentServiceResolverLookup<TResolverLookup, TEntryLookup>
+        where TResolverLookup : class, ILookup<ServiceResolver, TResolverLookup>, new()
+        where TEntryLookup : class, ILookup<AbstractServiceEntry, TEntryLookup>, new()
+    {
+        public ConstructableConcurrentServiceResolverLookup
+        (
+            IEnumerable<AbstractServiceEntry> entries,
+            Func<IServiceResolverLookup, IGraphBuilder> graphBuilderFactory
+        ) : base
+        (
+            entries,
+            new TResolverLookup(),
+            new TEntryLookup(),
+            graphBuilderFactory
+        ){ }
     }
 }

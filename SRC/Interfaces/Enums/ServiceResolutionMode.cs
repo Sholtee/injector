@@ -13,6 +13,7 @@ namespace Solti.Utils.DI.Interfaces
         /// <summary>
         /// Just In Time
         /// </summary>
+        /// <remarks>Useful if you're planning to mock the <see cref="IInjector"/> invocations.</remarks>
         JIT,
 
         /// <summary>

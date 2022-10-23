@@ -16,9 +16,9 @@ namespace Solti.Utils.DI.Internals
     using Primitives;
 
     /// <summary>
-    /// Collects compilations and builds them in a batch. This is to reduce the number of <see cref="LambdaExpression.Compile()"/> call
+    /// Collects compilations and builds them in a batch. This is to reduce the number of <see cref="LambdaExpression.Compile()"/> calls
     /// </summary>
-    /// <remarks>Lambda compilation is a time consuming operations as it builds and loads an <see cref="Assembly"/> runtime.</remarks>
+    /// <remarks>Lambda compilation is a time consuming operation as it requires an <see cref="Assembly"/> to be built runtime.</remarks>
     internal sealed class BatchedDelegateCompiler : IDelegateCompiler
     {
         private readonly List<(LambdaExpression LambdaExpression, Expression Callback)> FCompilations = new();

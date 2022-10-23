@@ -13,7 +13,7 @@ namespace Solti.Utils.DI.Internals
     {
         private readonly ServicePath FPath;
 
-        private readonly ScopeOptions FOptions;
+        private readonly bool FStrictDI;
 
         private readonly IFactoryVisitor[] FVisitors;
 
@@ -21,7 +21,7 @@ namespace Solti.Utils.DI.Internals
 
         public RecursiveDependencyGraphBuilder(IServiceResolverLookup lookup, IDelegateCompiler compiler, ScopeOptions options)
         {
-            FOptions = options;
+            FStrictDI = options.StrictDI;
             FPath = new ServicePath();
             FVisitors = new IFactoryVisitor[]
             {
@@ -41,7 +41,7 @@ namespace Solti.Utils.DI.Internals
             // the requested entry is already built.
             //
 
-            if (FOptions.StrictDI && FPath.Last is not null)
+            if (FStrictDI && FPath.Last is not null)
                 ServiceErrors.EnsureNotBreaksTheRuleOfStrictDI(FPath.Last, requested);
 
             if (!requested.Features.HasFlag(ServiceEntryFeatures.SupportsBuild) || requested.State.HasFlag(ServiceEntryStates.Built))
