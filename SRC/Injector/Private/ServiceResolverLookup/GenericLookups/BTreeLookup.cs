@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -21,6 +22,7 @@ namespace Solti.Utils.DI.Internals
             RedBlackTreeExtensions.Create<CompositeKey, TData>()
         ) {}
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public BTreeLookup<TData> Add(CompositeKey key, TData data) => new
         (
             FTree.With
@@ -29,11 +31,13 @@ namespace Solti.Utils.DI.Internals
             )
         );
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool TryAdd(CompositeKey key, TData data) => FTree.Add
         (
             new KeyValuePair<CompositeKey, TData>(key, data)
         );
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool TryGet(CompositeKey key, out TData data) => FTree.TryGet(key, out data);
 
         public CompiledBTreeLookup<TData> Compile(IDelegateCompiler compiler) => new

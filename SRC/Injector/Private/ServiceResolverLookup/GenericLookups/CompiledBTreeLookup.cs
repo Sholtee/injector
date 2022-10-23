@@ -5,6 +5,7 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -29,6 +30,7 @@ namespace Solti.Utils.DI.Internals
             );
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public CompiledBTreeLookup<TData> Add(CompositeKey key, TData data) => new
         (
             FTree.With
@@ -38,8 +40,10 @@ namespace Solti.Utils.DI.Internals
             Compiler
         );
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool TryAdd(CompositeKey key, TData data) => throw new NotSupportedException();
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool TryGet(CompositeKey key, out TData data) => (data = FTryGet!(key)!) is not null;
 
         public IDelegateCompiler Compiler { get; set; }

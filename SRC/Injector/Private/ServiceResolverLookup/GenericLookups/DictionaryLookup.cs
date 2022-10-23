@@ -5,6 +5,7 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -16,6 +17,7 @@ namespace Solti.Utils.DI.Internals
 
         public DictionaryLookup() : this(new Dictionary<CompositeKey, TData>()) { }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public DictionaryLookup<TData> Add(CompositeKey key, TData data) => new
         (
             new Dictionary<CompositeKey, TData>(FDictionary)
@@ -24,6 +26,7 @@ namespace Solti.Utils.DI.Internals
             }
         );
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool TryAdd(CompositeKey key, TData data)
         {
 #if NETSTANDARD2_1_OR_GREATER
@@ -41,6 +44,7 @@ namespace Solti.Utils.DI.Internals
 #endif
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool TryGet(CompositeKey key, out TData data) => FDictionary.TryGetValue(key, out data);
     }
 }
