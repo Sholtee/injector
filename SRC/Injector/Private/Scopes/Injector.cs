@@ -213,17 +213,8 @@ namespace Solti.Utils.DI.Internals
                 GetAllServices(registeredEntries)
                 #pragma warning restore CA2214
             );
-            
-            #pragma warning disable CA1304 // Specify CultureInfo
-            FResolverLookup = (options.Engine?.ToLower() ?? (svcs.Count <= BTREE_ITEM_THRESHOLD ? ServiceResolverLookup_BuiltBTree.Id : ConcurrentServiceResolverLookup.Id)) switch
-            #pragma warning restore CA1304 // Specify CultureInfo
-            {
-                ServiceResolverLookup_BTree.Id => new ServiceResolverLookup_BTree(svcs, options),
-                ServiceResolverLookup_BuiltBTree.Id => new ServiceResolverLookup_BuiltBTree(svcs, options),
-                ConcurrentServiceResolverLookup.Id  => new ArmedServiceResolverLookup(svcs, options),
-                _ => throw new NotSupportedException()
-            };
 
+            FResolverLookup = ServiceResolverLookupBuilder.Build(svcs, options);  
             FSlots  = Array<object>.Create(FResolverLookup.Slots);
             Options = options;
             Tag     = tag;

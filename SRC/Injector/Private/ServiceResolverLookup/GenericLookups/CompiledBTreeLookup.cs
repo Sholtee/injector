@@ -15,14 +15,12 @@ namespace Solti.Utils.DI.Internals
     {
         private readonly RedBlackTree<KeyValuePair<CompositeKey, TData>> FTree;
 
-        private readonly IDelegateCompiler FCompiler;
-
         private Func<CompositeKey, TData?>? FTryGet;
 
         public CompiledBTreeLookup(RedBlackTree<KeyValuePair<CompositeKey, TData>> tree, IDelegateCompiler compiler)
         {
             FTree = tree.Clone();
-            FCompiler = compiler;
+            Compiler = compiler;
 
             compiler.Compile
             (
@@ -37,11 +35,13 @@ namespace Solti.Utils.DI.Internals
             (
                 new KeyValuePair<CompositeKey, TData>(key, data)
             ),
-            FCompiler
+            Compiler
         );
 
-        public bool TryAdd(CompositeKey key, TData data) => throw new NotImplementedException();
+        public bool TryAdd(CompositeKey key, TData data) => throw new NotSupportedException();
 
         public bool TryGet(CompositeKey key, out TData data) => (data = FTryGet!(key)!) is not null;
+
+        public IDelegateCompiler Compiler { get; set; }
     }
 }

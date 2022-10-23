@@ -24,47 +24,59 @@ namespace Solti.Utils.DI.Internals
 
         public const string DICT = nameof(DICT);
 
-        public static IServiceResolverLookup Build(ICollection<AbstractServiceEntry> entries, ScopeOptions scopeOptions)
+        public static IServiceResolverLookup Build(IReadOnlyCollection<AbstractServiceEntry> entries, ScopeOptions scopeOptions)
         {
-            BatchedDelegateCompiler delegateCompiler = new();
-
             #pragma warning disable CA1304 // Specify CultureInfo
-            IServiceResolverLookup lookup = (scopeOptions.Engine?.ToUpper() ?? (entries.Count <= BTREE_ITEM_THRESHOLD ? BTREE : DICT)) switch
+            switch (scopeOptions.Engine?.ToUpper() ?? (entries.Count <= BTREE_ITEM_THRESHOLD ? BTREE : DICT))
             #pragma warning restore CA1304 // Specify CultureInfo
             {
-                DICT => CreateInitialLookup<DictionaryLookup<ServiceResolver>, DictionaryLookup<AbstractServiceEntry>>().ChangeBackend
-                (
-                    static _ => _,
-                    static _ => _,
-                    CreateGraphBuilderFactory
+                case DICT:
+                {
+                    BatchedDelegateCompiler batchedDelegateCompiler = new();
+
+                    var lookup = CreateInitialLookup<DictionaryLookup<ServiceResolver>, DictionaryLookup<AbstractServiceEntry>>(batchedDelegateCompiler);
+
+                    batchedDelegateCompiler.Compile();
+
+                    return lookup.ChangeBackend
                     (
-                        new SimpleDelegateCompiler()
-                    )
-                ),
-                BTREE => CreateInitialLookup<BTreeLookup<ServiceResolver>, BTreeLookup<AbstractServiceEntry>>().ChangeBackend
-                (
-                    btree => btree.Compile(delegateCompiler),
-                    btree => btree.Compile(delegateCompiler),
-                    CreateGraphBuilderFactory
+                        static dict => dict,
+                        static dict => dict,
+                        CreateGraphBuilderFactory(SimpleDelegateCompiler.Instance)
+                    );
+                }
+
+                case BTREE:
+                {
+                    BatchedDelegateCompiler batchedDelegateCompiler = new();
+
+                    var lookup = CreateInitialLookup<BTreeLookup<ServiceResolver>, BTreeLookup<AbstractServiceEntry>>(batchedDelegateCompiler)
+                        //
+                        // Compile btree's in this batch
+                        //
+                        .ChangeBackend(btree => btree.Compile(batchedDelegateCompiler), btree => btree.Compile(batchedDelegateCompiler));
+
+                    batchedDelegateCompiler.Compile();
+
+                    return lookup.ChangeBackend
                     (
-                        new SimpleDelegateCompiler()
-                    )
-                ),
-                _ => throw new NotSupportedException()
-            };
+                        static btree => { btree.Compiler = SimpleDelegateCompiler.Instance; return btree; },
+                        static btree => { btree.Compiler = SimpleDelegateCompiler.Instance; return btree; },
+                        CreateGraphBuilderFactory(SimpleDelegateCompiler.Instance)
+                    );
+                }
 
-            delegateCompiler.Compile();
+                default: throw new NotSupportedException();
+            }
 
-            return lookup;
-
-            ConcurrentServiceResolverLookup<TResolverLookup, TEntryLookup> CreateInitialLookup<TResolverLookup, TEntryLookup>()
+            ConcurrentServiceResolverLookup<TResolverLookup, TEntryLookup> CreateInitialLookup<TResolverLookup, TEntryLookup>(IDelegateCompiler compiler)
                 where TResolverLookup : class, ILookup<ServiceResolver, TResolverLookup>, new()
                 where TEntryLookup : class, ILookup<AbstractServiceEntry, TEntryLookup>, new()
             =>
                 new ConstructableConcurrentServiceResolverLookup<TResolverLookup, TEntryLookup>
                 (
                     entries,
-                    CreateGraphBuilderFactory(delegateCompiler)
+                    CreateGraphBuilderFactory(compiler)
                 );
 
             Func<IServiceResolverLookup, IGraphBuilder> CreateGraphBuilderFactory(IDelegateCompiler compiler) =>

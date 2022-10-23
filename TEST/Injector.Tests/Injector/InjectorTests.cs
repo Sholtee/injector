@@ -53,9 +53,8 @@ namespace Solti.Utils.DI.Tests
         {
             get
             {
-                yield return ServiceResolverLookup_BuiltBTree.Id;
-                yield return ServiceResolverLookup_BTree.Id;
-                yield return ConcurrentServiceResolverLookup.Id;
+                yield return ServiceResolverLookupBuilder.BTREE;
+                yield return ServiceResolverLookupBuilder.DICT;
             }
         }
 

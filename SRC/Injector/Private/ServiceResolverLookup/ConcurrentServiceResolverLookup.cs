@@ -32,6 +32,10 @@ namespace Solti.Utils.DI.Internals
 
         private readonly object FLock = new();
 
+        private readonly bool FInitialized;
+
+        private readonly Func<IServiceResolverLookup, IGraphBuilder> FGraphBuilderFactory;
+
         private int FSlots;
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -45,7 +49,9 @@ namespace Solti.Utils.DI.Internals
         {
             FResolvers = resolvers;
             FGenericEntries = genericEntries;
+            FGraphBuilderFactory = graphBuilderFactory;
             FGraphBuilder = graphBuilderFactory(this);
+            FInitialized = true;
         }
 
         protected ConcurrentServiceResolverLookup
@@ -54,13 +60,13 @@ namespace Solti.Utils.DI.Internals
             TResolverLookup resolvers,
             TEntryLookup genericEntries,
             Func<IServiceResolverLookup, IGraphBuilder> graphBuilderFactory
-        ): this
-        (
-            resolvers,
-            genericEntries,
-            graphBuilderFactory
         )
         {
+            FResolvers = resolvers;
+            FGenericEntries = genericEntries;
+            FGraphBuilderFactory = graphBuilderFactory;
+            FGraphBuilder = graphBuilderFactory(this);
+
             foreach (AbstractServiceEntry entry in entries)
             {
                 CompositeKey key = new(entry.Interface, entry.Name);
@@ -82,16 +88,22 @@ namespace Solti.Utils.DI.Internals
 
             foreach (AbstractServiceEntry entry in entries)
             {
-                if (!entry.Interface.IsGenericTypeDefinition && !entry.State.HasFlag(ServiceEntryStates.Built))
+                //
+                // To enforce strict DI validations don't deal with ServiceEntryStates
+                //
+
+                if (!entry.Interface.IsGenericTypeDefinition)
                     FGraphBuilder.Build(entry);
             }
+
+            FInitialized = true;
         }
 
         public ConcurrentServiceResolverLookup<TNewResolverLookup, TNewEntryLookup> ChangeBackend<TNewResolverLookup, TNewEntryLookup>
         (
             Func<TResolverLookup, TNewResolverLookup> changeResolverLookup,
             Func<TEntryLookup, TNewEntryLookup> changeEntryLookup,
-            Func<IServiceResolverLookup, IGraphBuilder> graphBuilderFactory
+            Func<IServiceResolverLookup, IGraphBuilder>? graphBuilderFactory = null
         )
             where TNewResolverLookup : class, ILookup<ServiceResolver, TNewResolverLookup>
             where TNewEntryLookup : class, ILookup<AbstractServiceEntry, TNewEntryLookup>
@@ -100,7 +112,7 @@ namespace Solti.Utils.DI.Internals
             (
                 changeResolverLookup(FResolvers),
                 changeEntryLookup(FGenericEntries),
-                graphBuilderFactory
+                graphBuilderFactory ?? FGraphBuilderFactory
             );
 
         public int Slots => FSlots;
@@ -108,12 +120,26 @@ namespace Solti.Utils.DI.Internals
         public ServiceResolver? Get(Type iface, string? name)
         {
             CompositeKey key = new(iface, name);
-            if (!FResolvers.TryGet(key, out ServiceResolver? resolver) && iface.IsConstructedGenericType)
+
+            if (FResolvers.TryGet(key, out ServiceResolver? resolver))
+            {
+                //
+                // In initialization phase, build the full dependency graph even if the related entry already
+                // built.
+                //
+
+                if (!FInitialized)
+                {
+                    FGraphBuilder.Build(resolver.RelatedEntry);
+                }
+            }
+
+            else if (iface.IsConstructedGenericType)
             {
                 lock (FLock)
                 {
                     //
-                    // Another thread might have registered the resolver while we reached here.
+                    // Another thread might have done this work.
                     //
 
                     if (!FResolvers.TryGet(key, out resolver))
