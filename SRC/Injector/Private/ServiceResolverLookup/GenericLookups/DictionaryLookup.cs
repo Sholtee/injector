@@ -8,7 +8,7 @@ using System.Collections.Generic;
 
 namespace Solti.Utils.DI.Internals
 {
-    internal sealed class DictionaryLookup<TData>: ILookup<TData>
+    internal sealed class DictionaryLookup<TData>: ILookup<TData, DictionaryLookup<TData>>
     {
         private readonly Dictionary<CompositeKey, TData> FDictionary;
 
@@ -16,7 +16,7 @@ namespace Solti.Utils.DI.Internals
 
         public DictionaryLookup() : this(new Dictionary<CompositeKey, TData>()) { }
 
-        public ILookup<TData> Add(CompositeKey key, TData data) => new DictionaryLookup<TData>
+        public DictionaryLookup<TData> Add(CompositeKey key, TData data) => new
         (
             new Dictionary<CompositeKey, TData>(FDictionary)
             {

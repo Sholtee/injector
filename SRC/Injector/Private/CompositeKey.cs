@@ -1,5 +1,5 @@
 ﻿/********************************************************************************
-* ServicePath.cs                                                                *
+* CompositeKey.cs                                                               *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
@@ -11,8 +11,6 @@ namespace Solti.Utils.DI.Internals
 {
     internal sealed class CompositeKey: IComparable<CompositeKey>, IEquatable<CompositeKey>
     {
-        private int? FHash;
-
         private readonly long FHandle;
 
         private readonly string? FName;
@@ -24,13 +22,8 @@ namespace Solti.Utils.DI.Internals
         }
 
         public override int GetHashCode() =>
-            //
-            // We don't need lock in multithreaded environments as assigning a value to FHash multiple times
-            // should not cause any issue.
-            //
-
             #pragma warning disable CA1307
-            FHash ??= unchecked(FHandle.GetHashCode() ^ (FName?.GetHashCode() ?? 0));
+            unchecked(FHandle.GetHashCode() ^ (FName?.GetHashCode() ?? 0));
             #pragma warning restore CA1307
 
         public override bool Equals(object obj) => obj is CompositeKey other && Equals(other);

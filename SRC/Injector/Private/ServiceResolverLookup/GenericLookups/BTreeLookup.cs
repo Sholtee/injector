@@ -10,7 +10,7 @@ namespace Solti.Utils.DI.Internals
     using Interfaces;
     using Primitives;
 
-    internal sealed class BTreeLookup<TData> : ILookup<TData>
+    internal sealed class BTreeLookup<TData> : ILookup<TData, BTreeLookup<TData>>
     {
         private readonly RedBlackTree<KeyValuePair<CompositeKey, TData>> FTree;
 
@@ -21,7 +21,7 @@ namespace Solti.Utils.DI.Internals
             RedBlackTreeExtensions.Create<CompositeKey, TData>()
         ) {}
 
-        public ILookup<TData> Add(CompositeKey key, TData data) => new BTreeLookup<TData>
+        public BTreeLookup<TData> Add(CompositeKey key, TData data) => new
         (
             FTree.With
             (

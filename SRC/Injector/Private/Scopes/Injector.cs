@@ -203,14 +203,6 @@ namespace Solti.Utils.DI.Internals
         public object? Tag { get; }
         #endregion
 
-        //
-        // According to performance tests, up to ~50 items built btree is faster than dictionary.
-        // Assuming that there won't be more than 20 constructed generic service 30 seems a good
-        // threshold.
-        //
-
-        public const int BTREE_ITEM_THRESHOLD = 30;
-
         public IServiceResolverLookup ServiceResolverLookup => FResolverLookup;
 
         public Injector(IEnumerable<AbstractServiceEntry> registeredEntries, ScopeOptions options, object? tag)
