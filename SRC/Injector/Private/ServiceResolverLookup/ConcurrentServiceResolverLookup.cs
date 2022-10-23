@@ -45,12 +45,19 @@ namespace Solti.Utils.DI.Internals
             entry.CreateResolver(ref FSlots)
         );
 
-        private ConcurrentServiceResolverLookup(TResolverLookup resolvers, TEntryLookup genericEntries, Func<IServiceResolverLookup, IGraphBuilder> graphBuilderFactory)
+        private ConcurrentServiceResolverLookup
+        (
+            TResolverLookup resolvers,
+            TEntryLookup genericEntries,
+            Func<IServiceResolverLookup, IGraphBuilder> graphBuilderFactory,
+            int slots
+        )
         {
             FResolvers = resolvers;
             FGenericEntries = genericEntries;
             FGraphBuilderFactory = graphBuilderFactory;
             FGraphBuilder = graphBuilderFactory(this);
+            FSlots = slots;
             FInitialized = true;
         }
 
@@ -89,7 +96,8 @@ namespace Solti.Utils.DI.Internals
             foreach (AbstractServiceEntry entry in entries)
             {
                 //
-                // To enforce strict DI validations don't deal with ServiceEntryStates
+                // In initialization phase, build the full dependency graph even if the related entry already
+                // built.
                 //
 
                 if (!entry.Interface.IsGenericTypeDefinition)
@@ -112,7 +120,8 @@ namespace Solti.Utils.DI.Internals
             (
                 changeResolverLookup(FResolvers),
                 changeEntryLookup(FGenericEntries),
-                graphBuilderFactory ?? FGraphBuilderFactory
+                graphBuilderFactory ?? FGraphBuilderFactory,
+                FSlots
             );
 
         public int Slots => FSlots;
@@ -126,6 +135,7 @@ namespace Solti.Utils.DI.Internals
                 //
                 // In initialization phase, build the full dependency graph even if the related entry already
                 // built.
+                // Note that initialization is always single-threaded so there is no need to lock.
                 //
 
                 if (!FInitialized)
@@ -145,6 +155,7 @@ namespace Solti.Utils.DI.Internals
                     if (!FResolvers.TryGet(key, out resolver))
                     {
                         CompositeKey genericKey = new(iface.GetGenericTypeDefinition(), name);
+
                         if (FGenericEntries.TryGet(genericKey, out AbstractServiceEntry genericEntry))
                         {
                             genericEntry = genericEntry.Specialize(iface.GenericTypeArguments);

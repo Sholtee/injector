@@ -28,34 +28,31 @@ namespace Solti.Utils.DI.Perf
         [Params(1, 2, 5, 10, 20, 50, 80)]
         public int ServiceCount { get; set; }
 
-        public static IEnumerable<Type> Engines
+        public static IEnumerable<string> Engines
         {
             get
             {
-                yield return typeof(ServiceResolverLookup_BTree);
-                yield return typeof(ServiceResolverLookup_BuiltBTree);
-                yield return typeof(ConcurrentServiceResolverLookup);
+                yield return ServiceResolverLookupBuilder.DICT;
+                yield return ServiceResolverLookupBuilder.BTREE;
             }
         }
 
         [ParamsSource(nameof(Engines))]
-        public Type Engine { get; set; }
+        public string Engine { get; set; }
 
         private IServiceResolverLookup Lookup { get; set; }
 
         [GlobalSetup(Target = nameof(Resolve))]
-        public void SetupResolve() => Lookup = (IServiceResolverLookup) Activator.CreateInstance
+        public void SetupResolve() => Lookup = ServiceResolverLookupBuilder.Build
         (
-            Engine,
-            new object[]
+            Interfaces
+                .Take(ServiceCount)
+                .Select(t => new TransientServiceEntry(t, null, static (_, _) => null))
+                .ToList(),
+            new ScopeOptions 
             {
-                Interfaces
-                    .Take(ServiceCount)
-                    .Select(t => new TransientServiceEntry(t, null, (_, _) => null)),
-                new ScopeOptions 
-                {
-                    ServiceResolutionMode = ServiceResolutionMode.JIT
-                }
+                ServiceResolutionMode = ServiceResolutionMode.JIT,
+                Engine = Engine
             }
         );
 
