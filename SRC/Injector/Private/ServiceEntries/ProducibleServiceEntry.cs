@@ -5,6 +5,8 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using System.Linq.Expressions;
 
 namespace Solti.Utils.DI.Internals
@@ -14,15 +16,15 @@ namespace Solti.Utils.DI.Internals
     using static Interfaces.Properties.Resources;
     using static Properties.Resources;
 
+    using Primitives;
+
     /// <summary>
     /// Reperesents the base class of producible servce entries.
     /// </summary>
     public abstract partial class ProducibleServiceEntry : AbstractServiceEntry
     {
         #region Private
-        private List<Expression<Func<IInjector, Type, object, object>>>? FProxies;
-
-        private Func<IInjector, Type, object>? FBuiltFactory;
+        private readonly List<Expression<Func<IInjector, Type, object, object>>> FProxies = new();
 
         private static Expression<Func<IInjector, Type, object>>? GetFactory(Type @interface, Type implementation)
         {
@@ -123,18 +125,31 @@ namespace Solti.Utils.DI.Internals
         #endregion
 
         /// <inheritdoc/>
-        public override object CreateInstance(IInjector scope, out object? lifetime)
+        public override void Build(IDelegateCompiler? compiler, params IFactoryVisitor[] visitors)
         {
-            if (scope is null)
-                throw new ArgumentNullException(nameof(scope));
+            if (visitors is null)
+                throw new ArgumentNullException(nameof(visitors));
 
-            if (FBuiltFactory is null)
-                throw new InvalidOperationException(NOT_BUILT);
+            if (Factory is null)
+                throw new InvalidOperationException(NOT_PRODUCIBLE);
 
-            object result = FBuiltFactory(scope, Interface);
+            //
+            // Chain all the related delegates
+            //
 
-            lifetime = result as IDisposable ?? (object?) (result as IAsyncDisposable);
-            return result;
+            LambdaExpression factoryExpr = visitors.Aggregate<IFactoryVisitor, LambdaExpression>
+            (
+                Factory,
+                (visited, visitor) => visitor.Visit(visited, this)
+            );
+
+            if (compiler is not null)
+            {
+                Debug.WriteLine($"Created factory: {Environment.NewLine}{factoryExpr.GetDebugView()}");
+                compiler.Compile((Expression<FactoryDelegate>) factoryExpr, factory => CreateInstance = factory);
+
+                State = (State | ServiceEntryStates.Built) & ~ServiceEntryStates.Validated;
+            }
         }
 
         /// <inheritdoc/>
@@ -149,7 +164,6 @@ namespace Solti.Utils.DI.Internals
             if (Factory is null)
                 throw new NotSupportedException(PROXYING_NOT_SUPPORTED);
 
-            FProxies ??= new List<Expression<Func<IInjector, Type, object, object>>>();
             FProxies.Add(applyProxy);
         }
 
@@ -159,14 +173,8 @@ namespace Solti.Utils.DI.Internals
         public object? ExplicitArgs { get; }
 
         /// <summary>
-        /// The concrete factory. Not null when the entry is <see cref="ServiceEntryStates.Built"/>.
-        /// </summary>
-        public Func<IInjector, Type, object>? BuiltFactory => FBuiltFactory;
-
-        /// <summary>
         /// The applied proxies.
         /// </summary>
-        public IReadOnlyList<Expression<Func<IInjector, Type, object, object>>> Proxies =>
-            (IReadOnlyList<Expression<Func<IInjector, Type, object, object>>>?) FProxies ?? Array<Expression<Func<IInjector, Type, object, object>>>.Empty;
+        public override IReadOnlyList<Expression<Func<IInjector, Type, object, object>>> Proxies => FProxies;
     }
 }

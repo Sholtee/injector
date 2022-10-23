@@ -30,7 +30,7 @@ namespace Solti.Utils.DI.Diagnostics
                 throw new NotSupportedException();
 
             DotGraphBuilder graphBuilder = new(injector.ServiceResolverLookup);
-            graphBuilder.BuildById(iface, name);
+            graphBuilder.Build(iface, name);
 
             return graphBuilder.Graph.ToString(newLine ?? Environment.NewLine);
         }

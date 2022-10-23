@@ -1,24 +1,20 @@
 ﻿/********************************************************************************
-* ServiceResolutionMode.cs                                                      *
+* IFactoryVisitor.cs                                                            *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
+using System.Linq.Expressions;
+
 namespace Solti.Utils.DI.Interfaces
 {
     /// <summary>
-    /// Specifies when the system should build the dependency graph. 
+    /// Defines the contract of visiting factory methods.
     /// </summary>
-    public enum ServiceResolutionMode
+    public interface IFactoryVisitor
     {
         /// <summary>
-        /// Just In Time
+        /// Represents a visit step.
         /// </summary>
-        /// <remarks>Useful if you're planning to mock the <see cref="IInjector"/> invocations.</remarks>
-        JIT,
-
-        /// <summary>
-        /// Ahead Of Time
-        /// </summary>
-        AOT
+        LambdaExpression Visit(LambdaExpression factory, AbstractServiceEntry entry);
     }
 }

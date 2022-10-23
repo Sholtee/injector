@@ -28,12 +28,11 @@ namespace Solti.Utils.DI.Internals
                 throw new NotSupportedException(Resources.PROXYING_NOT_SUPPORTED);
 
             State = ServiceEntryStates.Validated | ServiceEntryStates.Built;
-        }
-
-        public override object CreateInstance(IInjector scope, out object? lifetime)
-        {
-            lifetime = null;
-            return Instance;
+            CreateInstance = (IInstanceFactory scope, out object? lifetime) =>
+            {
+                lifetime = null;
+                return Instance;
+            };
         }
 
         public override Lifetime? Lifetime { get; } = Lifetime.Instance;

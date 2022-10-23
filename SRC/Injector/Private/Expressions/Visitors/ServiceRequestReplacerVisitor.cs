@@ -4,13 +4,19 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Diagnostics;
 using System.Linq.Expressions;
 
 namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
+    using Properties;
 
-    internal class ServiceRequestReplacer : ServiceRequestVisitor
+    /// <summary>
+    /// Replaces the <see cref="IInjector"/> invocations with the corresponing <see cref="ServiceResolver.Resolve"/> calls.
+    /// </summary>
+    /// <remarks>This results a faster generated delegate since it saves a <see cref="IServiceResolverLookup.Get(Type, string?)"/> invocation for each dependency.</remarks>
+    internal sealed class ServiceRequestReplacerVisitor : ServiceRequestVisitor, IFactoryVisitor
     {
         private readonly IServiceResolverLookup FLookup;
 
@@ -18,15 +24,23 @@ namespace Solti.Utils.DI.Internals
 
         private readonly bool FPermissive;
 
-        public ServiceRequestReplacer(IServiceResolverLookup lookup, ServicePath path, bool permissive)
+        public ServiceRequestReplacerVisitor(IServiceResolverLookup lookup, ServicePath path, bool permissive)
         {
             FLookup = lookup;
             FPath = path;
             FPermissive = permissive;
         }
 
-        protected override Expression VisitServiceRequest(MethodCallExpression method, Expression target, Type iface, string? name)
+        public LambdaExpression Visit(LambdaExpression factory, AbstractServiceEntry entry) => (LambdaExpression) Visit(factory);
+
+        protected override Expression VisitServiceRequest(MethodCallExpression request, Expression target, Type iface, string? name)
         {
+            if (target.Type != typeof(IInstanceFactory))
+            {
+                Trace.TraceWarning(Resources.REQUEST_NOT_REPLACEABLE);
+                return request;
+            }
+
             //
             // It specializes generic services ahead of time
             //
@@ -38,7 +52,7 @@ namespace Solti.Utils.DI.Internals
                 // Missing but not required dependency
                 //
 
-                if (method.Method.Name == nameof(IInjector.TryGet) || FPermissive)
+                if (request.Method.Name == nameof(IInjector.TryGet) || FPermissive)
                     //
                     // injector.[Try]Get(iface, name) -> (TInterface) null
                     //
@@ -49,19 +63,18 @@ namespace Solti.Utils.DI.Internals
             }
 
             //
-            // injector.[Try]Get(iface, name) -> resolver.Resolve((IInstanceFactory) injector)
+            // injector.[Try]Get(iface, name) -> resolver.Resolve(injector)
             //
 
             Func<IInstanceFactory, object> resolveFn = resolver!.Resolve;
 
-            Expression resolve = Expression.Call
+            Expression resolve = Expression.Invoke
             (
-                Expression.Constant(resolveFn.Target),
-                resolveFn.Method,
-                Expression.Convert(target, typeof(IInstanceFactory))
+                Expression.Constant(resolveFn),
+                target
             );
 
-            return method.Method.ReturnType != iface
+            return request.Method.ReturnType != iface
                 //
                 // Cast already in the expression since the replaced IInjector.[Try]Get() method is not typed
                 //
@@ -69,7 +82,7 @@ namespace Solti.Utils.DI.Internals
                 ? resolve
 
                 //
-                // We are about to replace the typed IInjectorExtensions.[Try]Get() method so we will need an extry cast.
+                // We are about to replace the typed IInjectorExtensions.[Try]Get() method so we need an extra cast.
                 //
 
                 : Expression.Convert

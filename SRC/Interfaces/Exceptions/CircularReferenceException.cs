@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Collections.Generic;
 
 namespace Solti.Utils.DI.Interfaces
 {
@@ -32,5 +33,10 @@ namespace Solti.Utils.DI.Interfaces
         public CircularReferenceException(string message, Exception innerException) : base(message, innerException)
         {
         }
+
+        /// <summary>
+        /// The circle
+        /// </summary>
+        public IReadOnlyList<AbstractServiceEntry>? Circle { get; init; }
     }
 }

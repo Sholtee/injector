@@ -177,4 +177,10 @@
   <data name="INVALID_CONFIG" xml:space="preserve">
     <value>Invalid configuration.</value>
   </data>
+  <data name="LAMBDA_LAYOUT_NOT_SUPPORTED" xml:space="preserve">
+    <value>Layout not supported.</value>
+  </data>
+  <data name="REQUEST_NOT_REPLACEABLE" xml:space="preserve">
+    <value>Only request targeting IInstanceFactory can be replaced.</value>
+  </data>
 </root>

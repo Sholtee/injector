@@ -1,5 +1,5 @@
 ﻿/********************************************************************************
-* GraphBuilderVisitor.cs                                                        *
+* DotGraphBuilderVisitor.cs                                                     *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
@@ -8,15 +8,22 @@ using System.Linq.Expressions;
 
 namespace Solti.Utils.DI.Internals
 {
-    internal sealed class GraphBuilderVisitor : ServiceRequestVisitor
+    using Interfaces;
+
+    /// <summary>
+    /// Visits the dependency tree to build <a href="https://graphviz.org/">DOT graph</a> graph.
+    /// </summary>
+    internal sealed class DotGraphBuilderVisitor : ServiceRequestVisitor, IFactoryVisitor
     {
         private readonly DotGraphBuilder FBuilder;
 
-        public GraphBuilderVisitor(DotGraphBuilder builder) => FBuilder = builder;
+        public DotGraphBuilderVisitor(DotGraphBuilder builder) => FBuilder = builder;
+
+        public LambdaExpression Visit(LambdaExpression factory, AbstractServiceEntry entry) => (LambdaExpression) Visit(factory);
 
         protected override Expression VisitServiceRequest(MethodCallExpression method, Expression target, Type iface, string? name)
         {
-            FBuilder.BuildById(iface, name);
+            FBuilder.Build(iface, name);
             return method;
         }
     }

@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Text;
 
@@ -87,6 +88,16 @@ namespace Solti.Utils.DI.Interfaces
         /// Current state of this entry.
         /// </summary>
         public ServiceEntryStates State { get; protected set; }
+
+        /// <summary>
+        /// Contains the built <see cref="Factory"/> after calling the <see cref="Build(IDelegateCompiler?, IFactoryVisitor[])"/> method.
+        /// </summary>
+        public FactoryDelegate? CreateInstance { get; protected set; }
+
+        /// <summary>
+        /// Proxies applied.
+        /// </summary>
+        public virtual IReadOnlyList<Expression<Func<IInjector, Type, object, object>>> Proxies => throw new NotSupportedException(Resources.PROXYING_NOT_SUPPORTED);
         #endregion
 
         /// <summary>
@@ -100,9 +111,15 @@ namespace Solti.Utils.DI.Interfaces
         public virtual void ApplyProxy(Expression<Func<IInjector, Type, object, object>> applyProxy) => throw new NotSupportedException(Resources.PROXYING_NOT_SUPPORTED);
 
         /// <summary>
-        /// Creates a new service instance. Should throw if the <see cref="State"/> is not <see cref="ServiceEntryStates.Built"/>.
+        /// Builds this entry applying the provided factory <paramref name="visitors"/>.
         /// </summary>
-        public virtual object CreateInstance(IInjector scope, out object? lifetime) => throw new NotSupportedException();
+        /// <remarks>If the <paramref name="compiler"/> is omitted, only the <paramref name="visitors"/> will be executed.</remarks>
+        public virtual void Build(IDelegateCompiler? compiler, params IFactoryVisitor[] visitors) => throw new NotSupportedException();
+
+        /// <summary>
+        /// Creates the lifetime manager expression.
+        /// </summary>
+        public virtual Expression CreateLifetimeManager(Expression getService, ParameterExpression scope, ParameterExpression disposable) => throw new NotSupportedException();
 
         /// <summary>
         /// Creates a resolver function that instantiates the represented service.
@@ -113,11 +130,6 @@ namespace Solti.Utils.DI.Interfaces
         /// If supported, sets the <see cref="State"/> of this entry to <see cref="ServiceEntryStates.Validated"/>.
         /// </summary>
         public virtual void SetValidated() => throw new NotSupportedException();
-
-        /// <summary>
-        /// Builds this entry.
-        /// </summary>
-        public virtual void VisitFactory(Func<LambdaExpression, LambdaExpression> visitor, VisitFactoryOptions options) => throw new NotSupportedException();
 
         /// <summary>
         /// Returns the short string representation of this entry.

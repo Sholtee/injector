@@ -17,7 +17,6 @@ namespace Solti.Utils.DI.Internals
 
     internal class Injector:
         Disposable,
-        IInjector,
         IScopeFactory,
         IInstanceFactory
     {
@@ -43,7 +42,7 @@ namespace Solti.Utils.DI.Internals
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private object CreateInstanceCore(AbstractServiceEntry requested)
         {
-            object? instance, lifetime;
+            object? instance, disposable;
 
             //
             // At the root of the dependency graph this validation makes no sense.
@@ -53,6 +52,9 @@ namespace Solti.Utils.DI.Internals
             if (Options.StrictDI && requestor?.State.HasFlag(ServiceEntryStates.Validated) is false)
                 ServiceErrors.EnsureNotBreaksTheRuleOfStrictDI(requestor, requested, Options.SupportsServiceProvider);
 
+            if (!requested.State.HasFlag(ServiceEntryStates.Built))
+                throw new InvalidOperationException(Resources.NOT_BUILT);
+
             if (!requested.State.HasFlag(ServiceEntryStates.Validated))
             {
                 FPath ??= new ServicePath();
@@ -60,7 +62,7 @@ namespace Solti.Utils.DI.Internals
                 FPath.Push(requested);
                 try
                 {
-                    instance = requested.CreateInstance(this, out lifetime);
+                    instance = requested.CreateInstance!(this, out disposable);
                 }
                 finally
                 {
@@ -70,12 +72,12 @@ namespace Solti.Utils.DI.Internals
                 requested.SetValidated();
             }
             else
-                instance = requested.CreateInstance(this, out lifetime);
+                instance = requested.CreateInstance!(this, out disposable);
 
-            if (lifetime is not null)
+            if (disposable is not null)
             {
                 FDisposableStore ??= new CaptureDisposable();
-                FDisposableStore.Capture(lifetime);
+                FDisposableStore.Capture(disposable);
             }
 
             if (instance is null)
@@ -202,36 +204,18 @@ namespace Solti.Utils.DI.Internals
         public object? Tag { get; }
         #endregion
 
-        //
-        // According to performance tests, up to ~50 items built btree is faster than dictionary.
-        // Assuming that there won't be more than 20 constructed generic service 30 seems a good
-        // threshold.
-        //
-
-        public const int BTREE_ITEM_THRESHOLD = 30;
-
         public IServiceResolverLookup ServiceResolverLookup => FResolverLookup;
 
         public Injector(IEnumerable<AbstractServiceEntry> registeredEntries, ScopeOptions options, object? tag)
-        {
-            
+        {  
             IReadOnlyCollection<AbstractServiceEntry> svcs = new List<AbstractServiceEntry>
             (
                 #pragma warning disable CA2214 // Do not call overridable methods in constructors
                 GetAllServices(registeredEntries)
                 #pragma warning restore CA2214
             );
-            
-            #pragma warning disable CA1304 // Specify CultureInfo
-            FResolverLookup = (options.Engine?.ToLower() ?? (svcs.Count <= BTREE_ITEM_THRESHOLD ? ServiceResolverLookup_BuiltBTree.Id : ServiceResolverLookup_Dict.Id)) switch
-            #pragma warning restore CA1304 // Specify CultureInfo
-            {
-                ServiceResolverLookup_BTree.Id => new ServiceResolverLookup_BTree(svcs, options),
-                ServiceResolverLookup_BuiltBTree.Id => new ServiceResolverLookup_BuiltBTree(svcs, options),
-                ServiceResolverLookup_Dict.Id  => new ServiceResolverLookup_Dict(svcs, options),
-                _ => throw new NotSupportedException()
-            };
 
+            FResolverLookup = ServiceResolverLookupBuilder.Build(svcs, options);  
             FSlots  = Array<object>.Create(FResolverLookup.Slots);
             Options = options;
             Tag     = tag;

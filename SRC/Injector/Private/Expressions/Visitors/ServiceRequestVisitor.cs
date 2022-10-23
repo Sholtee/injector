@@ -1,5 +1,5 @@
 ﻿/********************************************************************************
-* ServiceRequestVisitor.cs                                                       *
+* ServiceRequestVisitor.cs                                                      *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
@@ -11,6 +11,9 @@ namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
 
+    /// <summary>
+    /// Visits <see cref="IInjector.Get(Type, string?)"/>, <see cref="IInjector.TryGet(Type, string?)"/>, <see cref="IInjectorBasicExtensions.Get{TInterface}(Interfaces.IInjector, string?)"/> and <see cref="IInjectorBasicExtensions.TryGet{TInterface}(Interfaces.IInjector, string?)"/> invocations.
+    /// </summary>
     internal abstract class ServiceRequestVisitor : ExpressionVisitor
     {
         private static readonly MethodInfo[]
@@ -19,12 +22,13 @@ namespace Solti.Utils.DI.Internals
                 MethodInfoExtractor.Extract<IInjector>(i => i.Get(null!, null)),
                 MethodInfoExtractor.Extract<IInjector>(i => i.TryGet(null!, null))
             },
-            FGenericInjectorGet = new[] {
+            FGenericInjectorGet = new[]
+            {
                 MethodInfoExtractor.Extract<IInjector>(i => i.Get<object>(null)).GetGenericMethodDefinition(),
                 MethodInfoExtractor.Extract<IInjector>(i => i.TryGet<object>(null)).GetGenericMethodDefinition()
             };
 
-        protected abstract Expression VisitServiceRequest(MethodCallExpression method, Expression target, Type iface, string? name);
+        protected abstract Expression VisitServiceRequest(MethodCallExpression request, Expression target, Type iface, string? name);
 
         protected override Expression VisitMethodCall(MethodCallExpression node)
         {
@@ -57,7 +61,5 @@ namespace Solti.Utils.DI.Internals
 
             return base.VisitMethodCall(node);
         }
-
-        public LambdaExpression VisitLambda(LambdaExpression lambda) => (LambdaExpression) Visit(lambda);
     }
 }

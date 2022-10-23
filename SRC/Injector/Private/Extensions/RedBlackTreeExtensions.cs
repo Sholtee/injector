@@ -5,6 +5,7 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -38,16 +39,31 @@ namespace Solti.Utils.DI.Internals
             return true;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static RedBlackTree<KeyValuePair<TKey, TValue>> Create<TKey, TValue>() where TKey : IComparable<TKey> => new
         (
             KVPComparer<TKey, TValue>.Instance
         );
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool TryGet<TKey, TValue>(this RedBlackTree<KeyValuePair<TKey, TValue>> src, TKey key, out TValue result) where TKey : IComparable<TKey> => TryGet
         (
             src.Root,
             key,
             out result
         );
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static RedBlackTree<KeyValuePair<TKey, TValue>> Clone<TKey, TValue>(this RedBlackTree<KeyValuePair<TKey, TValue>> src) where TKey : IComparable<TKey>
+        {
+            RedBlackTree<KeyValuePair<TKey, TValue>> clone = new(src.Comparer);
+
+            foreach (RedBlackTreeNode<KeyValuePair<TKey, TValue>> node in src)
+            {
+                clone.Add(node.Data);
+            }
+
+            return clone;
+        }
     }
 }

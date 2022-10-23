@@ -1,5 +1,5 @@
 ﻿/********************************************************************************
-* ServiceEntryBuilderAot.cs                                                     *
+* RecursiveDependencyGraphBuilder.cs                                            *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
@@ -9,24 +9,30 @@ namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
 
-    internal sealed class ServiceEntryBuilderAot : ServiceEntryBuilder
+    internal sealed class RecursiveDependencyGraphBuilder: IGraphBuilder
     {
         private readonly ServicePath FPath;
 
         private readonly ScopeOptions FOptions;
 
-        private readonly ServiceRequestReplacer FReplacer;
+        private readonly IFactoryVisitor[] FVisitors;
 
-        public new const ServiceResolutionMode Id = ServiceResolutionMode.AOT;
+        private readonly IDelegateCompiler FCompiler;
 
-        public ServiceEntryBuilderAot(IServiceResolverLookup lookup, ScopeOptions options)
+        public RecursiveDependencyGraphBuilder(IServiceResolverLookup lookup, IDelegateCompiler compiler, ScopeOptions options)
         {
             FOptions = options;
             FPath = new ServicePath();
-            FReplacer = new ServiceRequestReplacer(lookup, FPath, options.SupportsServiceProvider);
+            FVisitors = new IFactoryVisitor[]
+            {
+                new MergeProxiesVisitor(),
+                new ApplyLifetimeManagerVisitor(),
+                new ServiceRequestReplacerVisitor(lookup, FPath, options.SupportsServiceProvider)
+            };
+            FCompiler = compiler;
         }
 
-        public override void Build(AbstractServiceEntry requested)
+        public void Build(AbstractServiceEntry requested)
         {
             Debug.Assert(!requested.Interface.IsGenericTypeDefinition, "Generic entry cannot be built");
 
@@ -35,10 +41,10 @@ namespace Solti.Utils.DI.Internals
             // the requested entry is already built.
             //
 
-            if (FOptions.StrictDI && FPath.Last?.State.HasFlag(ServiceEntryStates.Validated) is false)
+            if (FOptions.StrictDI && FPath.Last is not null)
                 ServiceErrors.EnsureNotBreaksTheRuleOfStrictDI(FPath.Last, requested, FOptions.SupportsServiceProvider);
 
-            if (!requested.Features.HasFlag(ServiceEntryFeatures.SupportsVisit) || requested.State.HasFlag(ServiceEntryStates.Built))
+            if (!requested.Features.HasFlag(ServiceEntryFeatures.SupportsBuild) || requested.State.HasFlag(ServiceEntryStates.Built))
                 return;
 
             //
@@ -48,7 +54,7 @@ namespace Solti.Utils.DI.Internals
             FPath.Push(requested);
             try
             {
-                requested.VisitFactory(FReplacer.VisitLambda, VisitFactoryOptions.BuildDelegate);
+                requested.Build(FCompiler, FVisitors);
             }
             finally
             {

@@ -1,24 +1,21 @@
 ﻿/********************************************************************************
-* ServiceResolutionMode.cs                                                      *
+* IDelegateCompiler.cs                                                          *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
+using System;
+using System.Linq.Expressions;
+
 namespace Solti.Utils.DI.Interfaces
 {
     /// <summary>
-    /// Specifies when the system should build the dependency graph. 
+    /// Specifies the contract of delegate compilers.
     /// </summary>
-    public enum ServiceResolutionMode
+    public interface IDelegateCompiler
     {
         /// <summary>
-        /// Just In Time
+        /// Compiles the given <paramref name="expression"/>.
         /// </summary>
-        /// <remarks>Useful if you're planning to mock the <see cref="IInjector"/> invocations.</remarks>
-        JIT,
-
-        /// <summary>
-        /// Ahead Of Time
-        /// </summary>
-        AOT
+        void Compile<TDelegate>(Expression<TDelegate> expression, Action<TDelegate> completionCallback);
     }
 }

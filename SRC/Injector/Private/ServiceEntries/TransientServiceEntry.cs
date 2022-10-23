@@ -75,6 +75,6 @@ namespace Solti.Utils.DI.Internals
 
         public override Lifetime Lifetime { get; } = Lifetime.Transient;
 
-        public override ServiceEntryFeatures Features { get; } = ServiceEntryFeatures.SupportsVisit;
+        public override ServiceEntryFeatures Features { get; } = ServiceEntryFeatures.SupportsBuild;
     }
 }

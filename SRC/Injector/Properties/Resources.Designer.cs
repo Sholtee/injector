@@ -133,6 +133,15 @@ namespace Solti.Utils.DI.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Layout not supported..
+        /// </summary>
+        internal static string LAMBDA_LAYOUT_NOT_SUPPORTED {
+            get {
+                return ResourceManager.GetString("LAMBDA_LAYOUT_NOT_SUPPORTED", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The entry must be built in order to create service instances..
         /// </summary>
         internal static string NOT_BUILT {
@@ -201,6 +210,15 @@ namespace Solti.Utils.DI.Properties {
         internal static string PARAMETER_NOT_AN_INTERFACE {
             get {
                 return ResourceManager.GetString("PARAMETER_NOT_AN_INTERFACE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only request targeting IInstanceFactory can be replaced..
+        /// </summary>
+        internal static string REQUEST_NOT_REPLACEABLE {
+            get {
+                return ResourceManager.GetString("REQUEST_NOT_REPLACEABLE", resourceCulture);
             }
         }
         

@@ -1,13 +1,16 @@
 ﻿/********************************************************************************
-* IServiceEntryBuilder.cs                                                       *
+* IGraphBuilder.cs                                                              *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
+using Solti.Utils.DI.Interfaces;
+
 namespace Solti.Utils.DI.Internals
 {
-    using Interfaces;
-
-    internal interface IServiceEntryBuilder
+    /// <summary>
+    /// Builds the dependency graph.
+    /// </summary>
+    internal interface IGraphBuilder
     {
         void Build(AbstractServiceEntry entry);
     }

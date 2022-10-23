@@ -14,6 +14,7 @@ using NUnit.Framework;
 namespace Solti.Utils.DI.Tests
 {
     using Interfaces;
+    using Internals;
     using Primitives.Threading;
     using Properties;
 
@@ -57,9 +58,9 @@ namespace Solti.Utils.DI.Tests
             AbstractServiceEntry entry = Collection
                 .Provider<IList, ListProvider>(lifetime)
                 .LastEntry;
-            entry.VisitFactory(_ => _, VisitFactoryOptions.BuildDelegate);
+            entry.Build(new SimpleDelegateCompiler(), new MergeProxiesVisitor(), new ApplyLifetimeManagerVisitor());
 
-            var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
+            var mockInjector = new Mock<IInstanceFactory>(MockBehavior.Strict);
             mockInjector
                 .SetupGet(i => i.Tag)
                 .Returns(new Mock<ILifetimeManager<object>>().Object);
@@ -73,9 +74,9 @@ namespace Solti.Utils.DI.Tests
             AbstractServiceEntry entry = Collection
                 .Provider<IList<int>, GenericListProvider>(lifetime)
                 .LastEntry;
-            entry.VisitFactory(_ => _, VisitFactoryOptions.BuildDelegate);
+            entry.Build(new SimpleDelegateCompiler(), new MergeProxiesVisitor(), new ApplyLifetimeManagerVisitor());
 
-            var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
+            var mockInjector = new Mock<IInstanceFactory>(MockBehavior.Strict);
             mockInjector
                 .SetupGet(i => i.Tag)
                 .Returns(new Mock<ILifetimeManager<object>>().Object);
