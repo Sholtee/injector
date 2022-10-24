@@ -16,6 +16,6 @@ namespace Solti.Utils.DI.Interfaces
         /// <summary>
         /// Compiles the given <paramref name="expression"/>.
         /// </summary>
-        void Compile<TDelegate>(Expression<TDelegate> expression, Action<TDelegate> completionCallback);
+        void Compile<TDelegate>(Expression<TDelegate> expression, Action<TDelegate> completionCallback) where TDelegate: Delegate;
     }
 }
