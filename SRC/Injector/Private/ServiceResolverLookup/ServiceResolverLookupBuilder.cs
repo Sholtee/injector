@@ -52,7 +52,7 @@ namespace Solti.Utils.DI.Internals
 
                     var lookup = CreateInitialLookup<BTreeLookup<ServiceResolver>, BTreeLookup<AbstractServiceEntry>>(batchedDelegateCompiler)
                         //
-                        // Compile btree's in this batch
+                        // Compile btrees in this batch
                         //
                         .ChangeBackend(btree => btree.Compile(batchedDelegateCompiler), btree => btree.Compile(batchedDelegateCompiler));
 
