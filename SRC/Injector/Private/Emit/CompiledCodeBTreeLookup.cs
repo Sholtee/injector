@@ -30,17 +30,23 @@ namespace Solti.Utils.DI.Internals
 
             for (int i = 0; i < parts.Length - 1; i++)
             {
-                names[i] = IdentifierName(parts[i]);
+                names.Add
+                (
+                    IdentifierName(parts[i])
+                );
             }
 
-            names[names.Count - 1] = !type.IsGenericTypeDefinition ? IdentifierName(parts[parts.Length - 1]) : GenericName(parts[parts.Length - 1]).WithTypeArgumentList
+            names.Add
             (
-                TypeArgumentList
+                !type.IsConstructedGenericType ? IdentifierName(parts[parts.Length - 1]) : GenericName(parts[parts.Length - 1]).WithTypeArgumentList
                 (
-                    ToCommaSeparatedList
+                    TypeArgumentList
                     (
-                        type.GetGenericArguments(),
-                        ResolveType
+                        ToCommaSeparatedList
+                        (
+                            type.GetGenericArguments(),
+                            ResolveType
+                        )
                     )
                 )
             );
@@ -162,7 +168,7 @@ namespace Solti.Utils.DI.Internals
 
         public MethodDeclarationSyntax BuildFactory(out object? closures)
         {
-            List<RedBlackTreeNode<KeyValuePair<CompositeKey, TData>>> nodeLst = new();
+            List<KeyValuePair<CompositeKey, TData>> nodeLst = new();
 
             IdentifierNameSyntax
                 array = IdentifierName(nameof(array)),
@@ -262,7 +268,7 @@ namespace Solti.Utils.DI.Internals
             }
         }
 
-        private static IEnumerable<StatementSyntax> BuildNode(RedBlackTreeNode<KeyValuePair<CompositeKey, TData>>? node, IdentifierNameSyntax key, IdentifierNameSyntax array, IdentifierNameSyntax order, IList<RedBlackTreeNode<KeyValuePair<CompositeKey, TData>>> nodes)
+        private static IEnumerable<StatementSyntax> BuildNode(RedBlackTreeNode<KeyValuePair<CompositeKey, TData>>? node, IdentifierNameSyntax key, IdentifierNameSyntax array, IdentifierNameSyntax order, IList<KeyValuePair<CompositeKey, TData>> nodes)
         {
             if (node is null)
             {
@@ -273,7 +279,7 @@ namespace Solti.Utils.DI.Internals
                 yield break;
             }
 
-            nodes.Add(node);
+            nodes.Add(node.Data);
 
             int i = nodes.Count - 1;  // store here since the recursive calls will change the count
 

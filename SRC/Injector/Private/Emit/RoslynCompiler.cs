@@ -1,5 +1,5 @@
 ﻿/********************************************************************************
-* Compiler.cs                                                                   *
+* RoslynCompiler.cs                                                             *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
@@ -20,7 +20,9 @@ using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Solti.Utils.DI.Internals
 {
-    internal sealed class Compiler
+    using Interfaces;
+
+    internal sealed class RoslynCompiler
     {
         private static IEnumerable<MetadataReference> GetReferences()
         {
@@ -28,21 +30,44 @@ namespace Solti.Utils.DI.Internals
 
             string tpa = (string) AppContext.GetData("TRUSTED_PLATFORM_ASSEMBLIES");
 
-            foreach (string asm in tpa.Split(Path.PathSeparator))
+            if (!string.IsNullOrEmpty(tpa))
             {
-                foreach (string platformAsm in platformAsms)
+                foreach (string asm in tpa.Split(Path.PathSeparator))
                 {
-                    if (Path.GetFileName(asm).Equals(platformAsm, StringComparison.OrdinalIgnoreCase))
-                        yield return MetadataReference.CreateFromFile(asm);
+                    foreach (string platformAsm in platformAsms)
+                    {
+                        if (Path.GetFileName(asm).Equals(platformAsm, StringComparison.OrdinalIgnoreCase))
+                            yield return MetadataReference.CreateFromFile(asm);
+                    }
                 }
             }
 
-            yield return MetadataReference.CreateFromFile(typeof(Compiler).Assembly.Location);
+            yield return MetadataReference.CreateFromFile(typeof(object).Assembly.Location);
+            yield return MetadataReference.CreateFromFile(typeof(RoslynCompiler).Assembly.Location);
+            yield return MetadataReference.CreateFromFile(typeof(AbstractServiceEntry).Assembly.Location);
         }
 
-        private readonly List<IRoslyCompilable> FCompilables = new();
+        private readonly List<MethodDeclarationSyntax> FMethods = new();
 
-        public void Compile(IRoslyCompilable compilable) => FCompilables.Add(compilable);
+        private readonly List<Action<Type>> FCallbacks = new();
+
+        public void Compile(IRoslynCompilable compilable, Action<object?> completionCallback)
+        {
+            MethodDeclarationSyntax method = compilable.BuildFactory(out object? closures);
+
+            FMethods.Add(method);
+
+            FCallbacks.Add
+            (
+                type => completionCallback
+                (
+                    type.GetMethod(method.Identifier.ValueText).Invoke(null, new object[]
+                    {
+                        closures!
+                    })
+                )
+            );
+        }
 
         public void Compile()
         {
@@ -63,38 +88,19 @@ namespace Solti.Utils.DI.Internals
                             (
                                 SingletonList<MemberDeclarationSyntax>
                                 (
-                                    ClassDeclaration("Generated").WithMembers
+                                    ClassDeclaration(className).WithMembers
                                     (
-                                        List<MemberDeclarationSyntax>
+                                        List<MemberDeclarationSyntax>(FMethods)
+                                    )
+                                    .WithModifiers
+                                    (
+                                        TokenList
                                         (
-                                            FCompilables.Select
-                                            (
-                                                c =>
-                                                {
-                                                    MethodDeclarationSyntax method = c.BuildFactory(out object? closures);
-
-                                                    callbacks.Add
-                                                    (
-                                                        type => c.CompletionCallback
-                                                        (
-                                                            type.InvokeMember
-                                                            (
-                                                                method.Identifier.ValueText,
-                                                                BindingFlags.Public | BindingFlags.Static | BindingFlags.InvokeMethod,
-                                                                null,
-                                                                null,
-                                                                new object[]
-                                                                {
-                                                                    closures!
-                                                                },
-                                                                null
-                                                            )
-                                                        )
-                                                    );
-                                                    
-                                                    return method;
-                                                }
-                                            )
+                                            new[]
+                                            {
+                                                Token(SyntaxKind.PublicKeyword),
+                                                Token(SyntaxKind.StaticKeyword)
+                                            }
                                         )
                                     )
                                 )
@@ -158,8 +164,10 @@ namespace Solti.Utils.DI.Internals
                 )
                 .GetType(className, throwOnError: true);
 
-            FCompilables.Clear();
-            callbacks.ForEach(cb => cb(type));
+            FCallbacks.ForEach(cb => cb(type));
+            FCallbacks.Clear();
+
+            FMethods.Clear();
         }
     }
 }

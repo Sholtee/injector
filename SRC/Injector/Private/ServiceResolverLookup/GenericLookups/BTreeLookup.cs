@@ -44,6 +44,12 @@ namespace Solti.Utils.DI.Internals
         (
             FTree,
             compiler
-        ); 
+        );
+
+        public CompiledCodeBTreeLookup<TData> Compile(RoslynCompiler compiler) => new
+        (
+            FTree,
+            compiler
+        );
     }
 }

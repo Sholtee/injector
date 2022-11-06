@@ -7,24 +7,21 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
-
 namespace Solti.Utils.DI.Internals
 {
     using Primitives;
 
-    internal sealed partial class CompiledCodeBTreeLookup<TData> : ILookup<TData, CompiledCodeBTreeLookup<TData>>, IRoslyCompilable
+    internal sealed partial class CompiledCodeBTreeLookup<TData> : ILookup<TData, CompiledCodeBTreeLookup<TData>>, IRoslynCompilable
     {
         private readonly RedBlackTree<KeyValuePair<CompositeKey, TData>> FTree;
 
         private Func<CompositeKey, TData?>? FTryGet;
 
-        public CompiledCodeBTreeLookup(RedBlackTree<KeyValuePair<CompositeKey, TData>> tree, Compiler compiler)
+        public CompiledCodeBTreeLookup(RedBlackTree<KeyValuePair<CompositeKey, TData>> tree, RoslynCompiler compiler)
         {
             FTree = tree.Clone();
-            compiler.Compile(this);
+            compiler.Compile(this, cb => FTryGet = (Func<CompositeKey, TData?>) cb!);
         }
-
-        public void CompletionCallback(object? result) => FTryGet = (Func<CompositeKey, TData?>) result!;
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public CompiledCodeBTreeLookup<TData> Add(CompositeKey key, TData data) => throw new NotSupportedException();
