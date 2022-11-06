@@ -31,7 +31,8 @@
 
   <ItemGroup>
     <PackageReference Include="IndexRange" Version="1.*" Condition="'$(TargetFramework)' == 'netstandard2.0'" />
-    <PackageReference Include="ProxyGen.NET" Version="7.*" />
+	<PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.0.*" />
+	<PackageReference Include="ProxyGen.NET" Version="7.*" />
     <PackageReference Include="Solti.Utils.Primitives" Version="7.*" />
   </ItemGroup>
 

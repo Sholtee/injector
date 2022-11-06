@@ -40,7 +40,7 @@ namespace Solti.Utils.DI.Internals
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool TryGet(CompositeKey key, out TData data) => FTree.TryGet(key, out data);
 
-        public CompiledBTreeLookup<TData> Compile(IDelegateCompiler compiler) => new
+        public CompiledExpressionBTreeLookup<TData> Compile(IDelegateCompiler compiler) => new
         (
             FTree,
             compiler

@@ -1,5 +1,5 @@
 ﻿/********************************************************************************
-* CompiledBTreeLookup.cs                                                        *
+* CompiledExpressionBTreeLookup.cs                                              *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
@@ -12,13 +12,13 @@ namespace Solti.Utils.DI.Internals
     using Interfaces;
     using Primitives;
 
-    internal sealed partial class CompiledBTreeLookup<TData> : ILookup<TData, CompiledBTreeLookup<TData>>
+    internal sealed partial class CompiledExpressionBTreeLookup<TData> : ILookup<TData, CompiledExpressionBTreeLookup<TData>>
     {
         private readonly RedBlackTree<KeyValuePair<CompositeKey, TData>> FTree;
 
         private Func<CompositeKey, TData?>? FTryGet;
 
-        public CompiledBTreeLookup(RedBlackTree<KeyValuePair<CompositeKey, TData>> tree, IDelegateCompiler compiler)
+        public CompiledExpressionBTreeLookup(RedBlackTree<KeyValuePair<CompositeKey, TData>> tree, IDelegateCompiler compiler)
         {
             FTree = tree.Clone();
             Compiler = compiler;
@@ -31,7 +31,7 @@ namespace Solti.Utils.DI.Internals
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public CompiledBTreeLookup<TData> Add(CompositeKey key, TData data) => new
+        public CompiledExpressionBTreeLookup<TData> Add(CompositeKey key, TData data) => new
         (
             FTree.With
             (

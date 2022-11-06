@@ -1,5 +1,5 @@
 ﻿/********************************************************************************
-* BuiltBTreeLookup.cs                                                           *
+* CompiledExpressionBTreeLookup.cs                                              *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
@@ -14,7 +14,7 @@ namespace Solti.Utils.DI.Internals
 {
     using Primitives;
 
-    internal partial class CompiledBTreeLookup<TData>
+    internal partial class CompiledExpressionBTreeLookup<TData>
     {
         private static readonly MethodInfo FCompareTo = MethodInfoExtractor.Extract<CompositeKey>(ck => ck.CompareTo(null!));
 
