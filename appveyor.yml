@@ -7,7 +7,7 @@
 #############################################################################
 
 # common configuration for ALL branches
-image: Visual Studio 2022
+image: Visual Studio 2022 Previous
 
 environment:
   COVERALLS_REPO_TOKEN:  
