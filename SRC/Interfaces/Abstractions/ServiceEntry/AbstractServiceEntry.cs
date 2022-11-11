@@ -124,7 +124,7 @@ namespace Solti.Utils.DI.Interfaces
         /// <summary>
         /// Creates a resolver function that instantiates the represented service.
         /// </summary>
-        public virtual Func<IInstanceFactory, object> CreateResolver(ref int slot) => throw new NotSupportedException();
+        public virtual ServiceResolver CreateResolver(ref int slot) => throw new NotSupportedException();
 
         /// <summary>
         /// If supported, sets the <see cref="State"/> of this entry to <see cref="ServiceEntryStates.Validated"/>.

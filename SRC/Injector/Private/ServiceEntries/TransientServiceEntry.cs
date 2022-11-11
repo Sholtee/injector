@@ -25,7 +25,7 @@ namespace Solti.Utils.DI.Internals
         {
         }
 
-        public override Func<IInstanceFactory, object> CreateResolver(ref int slot)
+        public override ServiceResolver CreateResolver(ref int slot)
         {
             return Resolve;
 

@@ -28,7 +28,7 @@ namespace Solti.Utils.DI.Internals
 
         public void Build(Type iface, string? name) => Build
         (
-            FLookup.Get(iface, name)?.RelatedEntry ?? new MissingServiceEntry(iface, name)
+            FLookup.Get(iface, name)?.GetUnderlyingEntry() ?? new MissingServiceEntry(iface, name)
         );
 
         public void Build(AbstractServiceEntry entry)

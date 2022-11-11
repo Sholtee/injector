@@ -38,13 +38,6 @@ namespace Solti.Utils.DI.Internals
 
         private int FSlots;
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private ServiceResolver CreateResolver(AbstractServiceEntry entry) => new
-        (
-            entry,
-            entry.CreateResolver(ref FSlots)
-        );
-
         private ConcurrentServiceResolverLookup
         (
             TResolverLookup resolvers,
@@ -80,7 +73,7 @@ namespace Solti.Utils.DI.Internals
 
                 bool added = entry.Interface.IsGenericTypeDefinition
                     ? FGenericEntries.TryAdd(key, entry)
-                    : FResolvers.TryAdd(key, CreateResolver(entry));
+                    : FResolvers.TryAdd(key, entry.CreateResolver(ref FSlots));
                 if (!added)
                 {
                     InvalidOperationException ex = new(Resources.SERVICE_ALREADY_REGISTERED);
@@ -140,7 +133,7 @@ namespace Solti.Utils.DI.Internals
 
                 if (!FInitialized)
                 {
-                    FGraphBuilder.Build(resolver.RelatedEntry);
+                    FGraphBuilder.Build(resolver.GetUnderlyingEntry());
                 }
             }
 
@@ -169,14 +162,14 @@ namespace Solti.Utils.DI.Internals
                             FResolvers = FResolvers.Add
                             (
                                 key,
-                                resolver = CreateResolver(genericEntry)
+                                resolver = genericEntry.CreateResolver(ref FSlots)
                             );
                         }
                     }
                 }
             }
 
-            Debug.Assert(resolver?.RelatedEntry.State.HasFlag(ServiceEntryStates.Built) is not false, "Entry must be built when it gets exposed");
+            Debug.Assert(resolver?.GetUnderlyingEntry().State.HasFlag(ServiceEntryStates.Built) is not false, "Entry must be built when it gets exposed");
             return resolver;
         }
     }

@@ -13,7 +13,7 @@ namespace Solti.Utils.DI.Internals
     using Properties;
 
     /// <summary>
-    /// Replaces the <see cref="IInjector"/> invocations with the corresponing <see cref="ServiceResolver.Resolve"/> calls.
+    /// Replaces the <see cref="IInjector"/> invocations with the corresponing <see cref="ServiceResolver"/> calls.
     /// </summary>
     /// <remarks>This results a faster generated delegate since it saves a <see cref="IServiceResolverLookup.Get(Type, string?)"/> invocation for each dependency.</remarks>
     internal sealed class ServiceRequestReplacerVisitor : ServiceRequestVisitor, IFactoryVisitor
@@ -63,14 +63,12 @@ namespace Solti.Utils.DI.Internals
             }
 
             //
-            // injector.[Try]Get(iface, name) -> resolver.Resolve(injector)
+            // injector.[Try]Get(iface, name) -> resolver(injector)
             //
-
-            Func<IInstanceFactory, object> resolveFn = resolver!.Resolve;
 
             Expression resolve = Expression.Invoke
             (
-                Expression.Constant(resolveFn),
+                Expression.Constant(resolver),
                 target
             );
 

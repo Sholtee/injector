@@ -182,7 +182,7 @@ namespace Solti.Utils.DI.Internals
             if (iface.IsGenericTypeDefinition)
                 throw new ArgumentException(Resources.PARAMETER_IS_GENERIC, nameof(iface));
 
-            return FResolverLookup.Get(iface, name)?.Resolve(this);
+            return FResolverLookup.Get(iface, name)?.Invoke(this);
         }
         #endregion
 

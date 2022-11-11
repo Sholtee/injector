@@ -35,7 +35,7 @@ namespace Solti.Utils.DI.Perf
         [ParamsSource(nameof(Lifetimes))]
         public Lifetime Lifetime { get; set; }
 
-        private Func<IInstanceFactory, object> ResolveImpl { get; set; }
+        private Interfaces.ServiceResolver ResolveImpl { get; set; }
 
         private IInstanceFactory Scope { get; set; }
 
@@ -46,7 +46,7 @@ namespace Solti.Utils.DI.Perf
                 root = new(Lifetime.CreateFrom(typeof(IMyService), null, typeof(MyService)), new ScopeOptions(), null),
                 scope = new(root, null);
 
-            ResolveImpl = scope.ServiceResolverLookup.Get(typeof(IMyService), null).Resolve;
+            ResolveImpl = scope.ServiceResolverLookup.Get(typeof(IMyService), null);
 
             Scope = scope;
         }

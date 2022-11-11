@@ -3,11 +3,10 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
-using System;
-
-namespace Solti.Utils.DI.Internals
-{
-    using Interfaces;
-
-    internal sealed record ServiceResolver(AbstractServiceEntry RelatedEntry, Func<IInstanceFactory, object> Resolve);
+namespace Solti.Utils.DI.Interfaces
+{ 
+    /// <summary>
+    /// Creates the concrete service instance using the given factory.
+    /// </summary>
+    public delegate object ServiceResolver(IInstanceFactory instanceFactory);
 }

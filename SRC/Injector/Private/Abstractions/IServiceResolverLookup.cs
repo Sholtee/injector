@@ -8,6 +8,8 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace Solti.Utils.DI.Internals
 {
+    using Interfaces;
+
     internal interface IServiceResolverLookup
     {
         /// <summary>
