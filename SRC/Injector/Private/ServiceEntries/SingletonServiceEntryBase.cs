@@ -5,7 +5,6 @@
 ********************************************************************************/
 using System;
 using System.Linq.Expressions;
-using System.Runtime.CompilerServices;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -13,6 +12,8 @@ namespace Solti.Utils.DI.Internals
 
     internal abstract class SingletonServiceEntryBase : ProducibleServiceEntry
     {
+        private int? FAssignedSlot;
+
         protected SingletonServiceEntryBase(Type @interface, string? name) : base(@interface, name)
         {
         }
@@ -29,32 +30,37 @@ namespace Solti.Utils.DI.Internals
         {
         }
 
-        public override ServiceResolver CreateResolver(ref int slot)
+        public sealed override void Build(IDelegateCompiler? compiler, ref int slots, params IFactoryVisitor[] visitors)
         {
-            int relatedSlot = slot++;
+            base.Build(compiler, ref slots, visitors);
 
-            return Resolve;
+            if (compiler is not null)
+                FAssignedSlot = slots++;
+        }
 
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            object Resolve(IInstanceFactory factory)
+        public sealed override int? AssignedSlot => FAssignedSlot;
+
+        public sealed override object Resolve(IInstanceFactory factory)
+        {
+            if (FAssignedSlot is null)
+                throw new InvalidOperationException();
+
+            //
+            // Inlining works against non-interface, non-virtual methods only
+            //
+
+            if (factory is Injector injector)
             {
-                //
-                // Inlining works against non-interface, non-virtual methods only
-                //
+                if (injector.Super is not null)
+                    injector = (Injector) injector.Super;
 
-                if (factory is Injector injector)
-                {
-                    if (injector.Super is not null)
-                        injector = (Injector) injector.Super;
-
-                    return injector.GetOrCreateInstance(this, relatedSlot);
-                }
-
-                if (factory.Super is not null)
-                    factory = factory.Super;
-
-                return factory.GetOrCreateInstance(this, relatedSlot);
+                return injector.GetOrCreateInstance(this, FAssignedSlot);
             }
+
+            if (factory.Super is not null)
+                factory = factory.Super;
+
+            return factory.GetOrCreateInstance(this, FAssignedSlot);
         }
     }
 }

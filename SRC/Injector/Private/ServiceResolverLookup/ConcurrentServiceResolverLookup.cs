@@ -16,7 +16,7 @@ namespace Solti.Utils.DI.Internals
     /// <summary>
     /// Resolver lookup being shared among scopes.
     /// </summary>
-    internal class ConcurrentServiceResolverLookup<TResolverLookup, TEntryLookup>: IServiceResolverLookup
+    internal class ConcurrentServiceResolverLookup<TResolverLookup, TEntryLookup>: IServiceEntryLookup
         where TResolverLookup: class, ILookup<ServiceResolver, TResolverLookup>
         where TEntryLookup: class, ILookup<AbstractServiceEntry, TEntryLookup>
     {
@@ -34,7 +34,7 @@ namespace Solti.Utils.DI.Internals
 
         private readonly bool FInitialized;
 
-        private readonly Func<IServiceResolverLookup, IGraphBuilder> FGraphBuilderFactory;
+        private readonly Func<IServiceEntryLookup, IGraphBuilder> FGraphBuilderFactory;
 
         private int FSlots;
 
@@ -42,7 +42,7 @@ namespace Solti.Utils.DI.Internals
         (
             TResolverLookup resolvers,
             TEntryLookup genericEntries,
-            Func<IServiceResolverLookup, IGraphBuilder> graphBuilderFactory,
+            Func<IServiceEntryLookup, IGraphBuilder> graphBuilderFactory,
             int slots
         )
         {
@@ -59,7 +59,7 @@ namespace Solti.Utils.DI.Internals
             IEnumerable<AbstractServiceEntry> entries,
             TResolverLookup resolvers,
             TEntryLookup genericEntries,
-            Func<IServiceResolverLookup, IGraphBuilder> graphBuilderFactory
+            Func<IServiceEntryLookup, IGraphBuilder> graphBuilderFactory
         )
         {
             FResolvers = resolvers;
@@ -104,7 +104,7 @@ namespace Solti.Utils.DI.Internals
         (
             Func<TResolverLookup, TNewResolverLookup> changeResolverLookup,
             Func<TEntryLookup, TNewEntryLookup> changeEntryLookup,
-            Func<IServiceResolverLookup, IGraphBuilder>? graphBuilderFactory = null
+            Func<IServiceEntryLookup, IGraphBuilder>? graphBuilderFactory = null
         )
             where TNewResolverLookup : class, ILookup<ServiceResolver, TNewResolverLookup>
             where TNewEntryLookup : class, ILookup<AbstractServiceEntry, TNewEntryLookup>
@@ -185,7 +185,7 @@ namespace Solti.Utils.DI.Internals
         public ConstructableConcurrentServiceResolverLookup
         (
             IEnumerable<AbstractServiceEntry> entries,
-            Func<IServiceResolverLookup, IGraphBuilder> graphBuilderFactory
+            Func<IServiceEntryLookup, IGraphBuilder> graphBuilderFactory
         ) : base
         (
             entries,

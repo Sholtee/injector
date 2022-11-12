@@ -19,7 +19,9 @@ namespace Solti.Utils.DI.Internals
 
         private readonly IDelegateCompiler FCompiler;
 
-        public RecursiveDependencyGraphBuilder(IServiceResolverLookup lookup, IDelegateCompiler compiler, ScopeOptions options)
+        private int FSlots;
+
+        public RecursiveDependencyGraphBuilder(IServiceEntryLookup lookup, IDelegateCompiler compiler, ScopeOptions options)
         {
             FOptions = options;
             FPath = new ServicePath();
@@ -54,7 +56,7 @@ namespace Solti.Utils.DI.Internals
             FPath.Push(requested);
             try
             {
-                requested.Build(FCompiler, FVisitors);
+                requested.Build(FCompiler, ref FSlots, FVisitors);
             }
             finally
             {
@@ -67,5 +69,7 @@ namespace Solti.Utils.DI.Internals
 
             requested.SetValidated();
         }
+
+        public int Slots => FSlots;
     }
 }

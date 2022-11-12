@@ -125,7 +125,7 @@ namespace Solti.Utils.DI.Internals
         #endregion
 
         /// <inheritdoc/>
-        public override void Build(IDelegateCompiler? compiler, params IFactoryVisitor[] visitors)
+        public override void Build(IDelegateCompiler? compiler, ref int slots, params IFactoryVisitor[] visitors)
         {
             if (visitors is null)
                 throw new ArgumentNullException(nameof(visitors));
@@ -153,10 +153,10 @@ namespace Solti.Utils.DI.Internals
         }
 
         /// <inheritdoc/>
-        public override void SetValidated() => State |= ServiceEntryStates.Validated;
+        public sealed override void SetValidated() => State |= ServiceEntryStates.Validated;
 
         /// <inheritdoc/>
-        public override void ApplyProxy(Expression<Func<IInjector, Type, object, object>> applyProxy)
+        public sealed override void ApplyProxy(Expression<Func<IInjector, Type, object, object>> applyProxy)
         {
             if (applyProxy is null)
                 throw new ArgumentNullException(nameof(applyProxy));
@@ -175,6 +175,6 @@ namespace Solti.Utils.DI.Internals
         /// <summary>
         /// The applied proxies.
         /// </summary>
-        public override IReadOnlyList<Expression<Func<IInjector, Type, object, object>>> Proxies => FProxies;
+        public sealed override IReadOnlyList<Expression<Func<IInjector, Type, object, object>>> Proxies => FProxies;
     }
 }

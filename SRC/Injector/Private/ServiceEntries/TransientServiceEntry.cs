@@ -5,7 +5,6 @@
 ********************************************************************************/
 using System;
 using System.Linq.Expressions;
-using System.Runtime.CompilerServices;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -25,22 +24,16 @@ namespace Solti.Utils.DI.Internals
         {
         }
 
-        public override ServiceResolver CreateResolver(ref int slot)
+        public override object Resolve(IInstanceFactory factory)
         {
-            return Resolve;
+            //
+            // Inlining works against non-interface, non-virtual methods only
+            //
 
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            object Resolve(IInstanceFactory factory)
-            {
-                //
-                // Inlining works against non-interface, non-virtual methods only
-                //
+            if (factory is Injector injector)
+                return injector.CreateInstance(this);
 
-                if (factory is Injector injector)
-                    return injector.CreateInstance(this);
-
-                return factory.CreateInstance(this);
-            }
+            return factory.CreateInstance(this);
         }
 
         public override AbstractServiceEntry Specialize(params Type[] genericArguments)

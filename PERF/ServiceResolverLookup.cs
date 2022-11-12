@@ -40,7 +40,7 @@ namespace Solti.Utils.DI.Perf
         [ParamsSource(nameof(Engines))]
         public string Engine { get; set; }
 
-        private IServiceResolverLookup Lookup { get; set; }
+        private IServiceEntryLookup Lookup { get; set; }
 
         [GlobalSetup(Target = nameof(Resolve))]
         public void SetupResolve() => Lookup = ServiceResolverLookupBuilder.Build

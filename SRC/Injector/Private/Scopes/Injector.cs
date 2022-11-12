@@ -26,7 +26,7 @@ namespace Solti.Utils.DI.Internals
 
         private CaptureDisposable? FDisposableStore;
 
-        private readonly IServiceResolverLookup FResolverLookup;
+        private readonly IServiceEntryLookup FResolverLookup;
 
         private ServicePath? FPath;
 
@@ -105,35 +105,18 @@ namespace Solti.Utils.DI.Internals
 
         #region IInstanceFactory
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public object CreateInstance(AbstractServiceEntry requested)
+        public object GetOrCreateInstance(AbstractServiceEntry requested, int? slot)
         {
-            //
-            // In the same thread locks can be taken recursively.
-            //
+            if (slot < FSlots.Length && FSlots[slot.Value] is not null)
+                return FSlots[slot.Value]!;
 
             if (FLock is not null)
                 Monitor.Enter(FLock);
             try
             {
-                return CreateInstanceCore(requested);
-            }
-            finally
-            {
-                if (FLock is not null)
-                    Monitor.Exit(FLock);
-            }
-        }
+                if (slot is null)
+                    return CreateInstanceCore(requested);
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public object GetOrCreateInstance(AbstractServiceEntry requested, int slot)
-        {
-            if (slot < FSlots.Length && FSlots[slot] is not null)
-                return FSlots[slot]!;
-
-            if (FLock is not null)
-                Monitor.Enter(FLock);
-            try
-            {
                 if (slot >= FSlots.Length)
                     //
                     // We reach here when we made a service request that triggered a ResolverCollection update.
@@ -141,9 +124,9 @@ namespace Solti.Utils.DI.Internals
                     // the proper size.
                     //
 
-                    Array.Resize(ref FSlots, slot + 1);
+                    Array.Resize(ref FSlots, slot.Value + 1);
 
-                return FSlots[slot] ??= CreateInstanceCore(requested);
+                return FSlots[slot.Value] ??= CreateInstanceCore(requested);
             }
             finally
             {
@@ -204,7 +187,7 @@ namespace Solti.Utils.DI.Internals
         public object? Tag { get; }
         #endregion
 
-        public IServiceResolverLookup ServiceResolverLookup => FResolverLookup;
+        public IServiceEntryLookup ServiceResolverLookup => FResolverLookup;
 
         public Injector(IEnumerable<AbstractServiceEntry> registeredEntries, ScopeOptions options, object? tag)
         {  

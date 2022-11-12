@@ -13,6 +13,8 @@ namespace Solti.Utils.DI.Internals
     {
         private readonly IDelegateCompiler FCompiler;
 
+        private int FSlots;
+
         private static readonly IFactoryVisitor[] FVisitors = new IFactoryVisitor[]
         {
             new MergeProxiesVisitor(),
@@ -28,7 +30,9 @@ namespace Solti.Utils.DI.Internals
             if (!requested.Features.HasFlag(ServiceEntryFeatures.SupportsBuild) || requested.State.HasFlag(ServiceEntryStates.Built))
                 return;
 
-            requested.Build(FCompiler, FVisitors);
+            requested.Build(FCompiler, ref FSlots, FVisitors);
         }
+
+        public int Slots => FSlots;
     }
 }

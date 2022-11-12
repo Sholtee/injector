@@ -6,6 +6,7 @@
 using System;
 using System.Diagnostics;
 using System.Linq.Expressions;
+using System.Reflection;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -13,18 +14,20 @@ namespace Solti.Utils.DI.Internals
     using Properties;
 
     /// <summary>
-    /// Replaces the <see cref="IInjector"/> invocations with the corresponing <see cref="ServiceResolver"/> calls.
+    /// Replaces the <see cref="IInjector"/> invocations with the corresponing <see cref="AbstractServiceEntry.Resolve(IInstanceFactory)"/> calls.
     /// </summary>
-    /// <remarks>This results a faster generated delegate since it saves a <see cref="IServiceResolverLookup.Get(Type, string?)"/> invocation for each dependency.</remarks>
+    /// <remarks>This results a faster generated delegate since it saves a <see cref="IServiceEntryLookup.Get(Type, string?)"/> invocation for each dependency.</remarks>
     internal sealed class ServiceRequestReplacerVisitor : ServiceRequestVisitor, IFactoryVisitor
     {
-        private readonly IServiceResolverLookup FLookup;
+        private static readonly MethodInfo FResolveMethod = MethodInfoExtractor.Extract<AbstractServiceEntry>(entry => entry.Resolve(null!));
+
+        private readonly IServiceEntryLookup FLookup;
 
         private readonly ServicePath FPath;
 
         private readonly bool FPermissive;
 
-        public ServiceRequestReplacerVisitor(IServiceResolverLookup lookup, ServicePath path, bool permissive)
+        public ServiceRequestReplacerVisitor(IServiceEntryLookup lookup, ServicePath path, bool permissive)
         {
             FLookup = lookup;
             FPath = path;
@@ -45,8 +48,8 @@ namespace Solti.Utils.DI.Internals
             // It specializes generic services ahead of time
             //
 
-            ServiceResolver? resolver = FLookup.Get(iface, name);
-            if (resolver is null)
+            AbstractServiceEntry? entry = FLookup.Get(iface, name);
+            if (entry is null)
             {
                 //
                 // Missing but not required dependency
@@ -63,12 +66,13 @@ namespace Solti.Utils.DI.Internals
             }
 
             //
-            // injector.[Try]Get(iface, name) -> resolver(injector)
+            // injector.[Try]Get(iface, name) -> entry.Resolve(injector)
             //
 
-            Expression resolve = Expression.Invoke
+            Expression resolve = Expression.Call
             (
-                Expression.Constant(resolver),
+                Expression.Constant(entry),
+                FResolveMethod,
                 target
             );
 

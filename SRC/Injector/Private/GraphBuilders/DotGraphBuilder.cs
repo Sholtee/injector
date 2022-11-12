@@ -12,7 +12,7 @@ namespace Solti.Utils.DI.Internals
 
     internal sealed class DotGraphBuilder: IGraphBuilder
     {
-        private readonly IServiceResolverLookup FLookup;
+        private readonly IServiceEntryLookup FLookup;
 
         private readonly ServicePath FPath = new();
 
@@ -20,7 +20,7 @@ namespace Solti.Utils.DI.Internals
 
         public DotGraph Graph { get; } = new();
 
-        public DotGraphBuilder(IServiceResolverLookup lookup)
+        public DotGraphBuilder(IServiceEntryLookup lookup)
         {
             FLookup = lookup;
             FVisitor = new DotGraphBuilderVisitor(this);

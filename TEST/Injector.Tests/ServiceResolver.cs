@@ -18,7 +18,7 @@ namespace Solti.Utils.DI.Internals.Tests
     [TestFixture]
     internal sealed class ServiceResolverTests
     {
-        public static IEnumerable<Func<IReadOnlyCollection<AbstractServiceEntry>, ServiceResolutionMode, IServiceResolverLookup>> Lookups
+        public static IEnumerable<Func<IReadOnlyCollection<AbstractServiceEntry>, ServiceResolutionMode, IServiceEntryLookup>> Lookups
         {
             get 
             {
@@ -29,7 +29,7 @@ namespace Solti.Utils.DI.Internals.Tests
         }
 
         [Test]
-        public void Resolver_ShouldResolveFromSuperFactoryInCaseOfSharedEntry([Values(null, "cica")] string name, [ValueSource(nameof(Lookups))] Func<IReadOnlyCollection<AbstractServiceEntry>, ServiceResolutionMode, IServiceResolverLookup> lookupFactory, [Values(ServiceResolutionMode.JIT, ServiceResolutionMode.AOT)] ServiceResolutionMode resolutionMode)
+        public void Resolver_ShouldResolveFromSuperFactoryInCaseOfSharedEntry([Values(null, "cica")] string name, [ValueSource(nameof(Lookups))] Func<IReadOnlyCollection<AbstractServiceEntry>, ServiceResolutionMode, IServiceEntryLookup> lookupFactory, [Values(ServiceResolutionMode.JIT, ServiceResolutionMode.AOT)] ServiceResolutionMode resolutionMode)
         {
             SingletonServiceEntry entry = new(typeof(IList), name, (_, _) => new List<object>());
 
@@ -46,7 +46,7 @@ namespace Solti.Utils.DI.Internals.Tests
                 .SetupGet(f => f.Super)
                 .Returns(mockSuperFactory.Object);
 
-            IServiceResolverLookup lookup = lookupFactory(new[] { entry }, resolutionMode);
+            IServiceEntryLookup lookup = lookupFactory(new[] { entry }, resolutionMode);
 
             ServiceResolver resolver = lookup.Get(typeof(IList), name);
 
@@ -56,7 +56,7 @@ namespace Solti.Utils.DI.Internals.Tests
         }
 
         [Test]
-        public void Resolver_ShouldResolveFromCurrentFactoryInCaseOfNonSharedEntry1([Values(null, "cica")] string name, [ValueSource(nameof(Lookups))] Func<IReadOnlyCollection<AbstractServiceEntry>, ServiceResolutionMode, IServiceResolverLookup> lookupFactory, [Values(ServiceResolutionMode.JIT, ServiceResolutionMode.AOT)] ServiceResolutionMode resolutionMode)
+        public void Resolver_ShouldResolveFromCurrentFactoryInCaseOfNonSharedEntry1([Values(null, "cica")] string name, [ValueSource(nameof(Lookups))] Func<IReadOnlyCollection<AbstractServiceEntry>, ServiceResolutionMode, IServiceEntryLookup> lookupFactory, [Values(ServiceResolutionMode.JIT, ServiceResolutionMode.AOT)] ServiceResolutionMode resolutionMode)
         {
             ScopedServiceEntry entry = new(typeof(IList), name, (_, _) => new List<object>());
 
@@ -68,7 +68,7 @@ namespace Solti.Utils.DI.Internals.Tests
                 .SetupGet(f => f.Super)
                 .Returns((IInstanceFactory) null);
 
-            IServiceResolverLookup lookup = lookupFactory(new[] { entry }, resolutionMode);
+            IServiceEntryLookup lookup = lookupFactory(new[] { entry }, resolutionMode);
 
             ServiceResolver resolver = lookup.Get(typeof(IList), name);
 
@@ -78,7 +78,7 @@ namespace Solti.Utils.DI.Internals.Tests
         }
 
         [Test]
-        public void Resolver_ShouldResolveFromCurrentFactoryInCaseOfNonSharedEntry2([Values(null, "cica")] string name, [ValueSource(nameof(Lookups))] Func<IReadOnlyCollection<AbstractServiceEntry>, ServiceResolutionMode, IServiceResolverLookup> lookupFactory, [Values(ServiceResolutionMode.JIT, ServiceResolutionMode.AOT)] ServiceResolutionMode resolutionMode)
+        public void Resolver_ShouldResolveFromCurrentFactoryInCaseOfNonSharedEntry2([Values(null, "cica")] string name, [ValueSource(nameof(Lookups))] Func<IReadOnlyCollection<AbstractServiceEntry>, ServiceResolutionMode, IServiceEntryLookup> lookupFactory, [Values(ServiceResolutionMode.JIT, ServiceResolutionMode.AOT)] ServiceResolutionMode resolutionMode)
         {
             TransientServiceEntry entry = new(typeof(IList), name, (_, _) => new List<object>());
 
@@ -90,7 +90,7 @@ namespace Solti.Utils.DI.Internals.Tests
                 .SetupGet(f => f.Super)
                 .Returns((IInstanceFactory) null);
 
-            IServiceResolverLookup lookup = lookupFactory(new[] { entry }, resolutionMode);
+            IServiceEntryLookup lookup = lookupFactory(new[] { entry }, resolutionMode);
 
             ServiceResolver resolver = lookup.Get(typeof(IList), name);
 
@@ -102,7 +102,7 @@ namespace Solti.Utils.DI.Internals.Tests
         public class MyLiyt<T>: List<T> { }
 
         [Test]
-        public void Resolver_ShouldBeAssignedToTheProperSlot_GenericCase([Values(null, "cica")] string name, [ValueSource(nameof(Lookups))] Func<IReadOnlyCollection<AbstractServiceEntry>, ServiceResolutionMode, IServiceResolverLookup> lookupFactory, [Values(ServiceResolutionMode.JIT, ServiceResolutionMode.AOT)] ServiceResolutionMode resolutionMode)
+        public void Resolver_ShouldBeAssignedToTheProperSlot_GenericCase([Values(null, "cica")] string name, [ValueSource(nameof(Lookups))] Func<IReadOnlyCollection<AbstractServiceEntry>, ServiceResolutionMode, IServiceEntryLookup> lookupFactory, [Values(ServiceResolutionMode.JIT, ServiceResolutionMode.AOT)] ServiceResolutionMode resolutionMode)
         {
             ScopedServiceEntry entry = new(typeof(IList<>), name, typeof(MyLiyt<>));
 
@@ -114,7 +114,7 @@ namespace Solti.Utils.DI.Internals.Tests
                 .SetupGet(f => f.Super)
                 .Returns((IInstanceFactory) null);
 
-            IServiceResolverLookup lookup = lookupFactory(new[] { entry }, resolutionMode);
+            IServiceEntryLookup lookup = lookupFactory(new[] { entry }, resolutionMode);
 
             ServiceResolver resolver = lookup.Get(typeof(IList<int>), name);
 
@@ -130,7 +130,7 @@ namespace Solti.Utils.DI.Internals.Tests
         }
 
         [Test]
-        public void Resolver_ShouldBeAssignedToTheProperSlot_NamedCase([ValueSource(nameof(Lookups))] Func<IReadOnlyCollection<AbstractServiceEntry>, ServiceResolutionMode, IServiceResolverLookup> lookupFactory, [Values(ServiceResolutionMode.JIT, ServiceResolutionMode.AOT)] ServiceResolutionMode resolutionMode)
+        public void Resolver_ShouldBeAssignedToTheProperSlot_NamedCase([ValueSource(nameof(Lookups))] Func<IReadOnlyCollection<AbstractServiceEntry>, ServiceResolutionMode, IServiceEntryLookup> lookupFactory, [Values(ServiceResolutionMode.JIT, ServiceResolutionMode.AOT)] ServiceResolutionMode resolutionMode)
         {
             ScopedServiceEntry
                 entry1 = new(typeof(IList), 0.ToString(), typeof(MyLiyt<object>)),
@@ -144,7 +144,7 @@ namespace Solti.Utils.DI.Internals.Tests
                 .SetupGet(f => f.Super)
                 .Returns((IInstanceFactory) null);
 
-            IServiceResolverLookup lookup = lookupFactory(new[] { entry1, entry2 }, resolutionMode);
+            IServiceEntryLookup lookup = lookupFactory(new[] { entry1, entry2 }, resolutionMode);
 
             ServiceResolver resolver = lookup.Get(typeof(IList), 0.ToString());
 
@@ -160,7 +160,7 @@ namespace Solti.Utils.DI.Internals.Tests
         }
 
         [Test]
-        public void Resolver_ShouldBeAssignedToTheProperSlot_RegularCase([Values(null, "cica")] string name, [ValueSource(nameof(Lookups))] Func<IReadOnlyCollection<AbstractServiceEntry>, ServiceResolutionMode, IServiceResolverLookup> lookupFactory, [Values(ServiceResolutionMode.JIT, ServiceResolutionMode.AOT)] ServiceResolutionMode resolutionMode)
+        public void Resolver_ShouldBeAssignedToTheProperSlot_RegularCase([Values(null, "cica")] string name, [ValueSource(nameof(Lookups))] Func<IReadOnlyCollection<AbstractServiceEntry>, ServiceResolutionMode, IServiceEntryLookup> lookupFactory, [Values(ServiceResolutionMode.JIT, ServiceResolutionMode.AOT)] ServiceResolutionMode resolutionMode)
         {
             ScopedServiceEntry
                 entry1 = new(typeof(IList), name, typeof(MyLiyt<object>)),
@@ -174,7 +174,7 @@ namespace Solti.Utils.DI.Internals.Tests
                 .SetupGet(f => f.Super)
                 .Returns((IInstanceFactory) null);
 
-            IServiceResolverLookup lookup = lookupFactory(new[] { entry1, entry2 }, resolutionMode);
+            IServiceEntryLookup lookup = lookupFactory(new[] { entry1, entry2 }, resolutionMode);
 
             ServiceResolver resolver = lookup.Get(typeof(IList), name);
 
@@ -190,7 +190,7 @@ namespace Solti.Utils.DI.Internals.Tests
         }
 
         [Test]
-        public void Resolver_ShouldSpecializeOnlyIfTheConstructedGenericServiceCannotBeFound([Values(null, "cica")] string name, [ValueSource(nameof(Lookups))] Func<IReadOnlyCollection<AbstractServiceEntry>, ServiceResolutionMode, IServiceResolverLookup> lookupFactory, [Values(ServiceResolutionMode.JIT, ServiceResolutionMode.AOT)] ServiceResolutionMode resolutionMode)
+        public void Resolver_ShouldSpecializeOnlyIfTheConstructedGenericServiceCannotBeFound([Values(null, "cica")] string name, [ValueSource(nameof(Lookups))] Func<IReadOnlyCollection<AbstractServiceEntry>, ServiceResolutionMode, IServiceEntryLookup> lookupFactory, [Values(ServiceResolutionMode.JIT, ServiceResolutionMode.AOT)] ServiceResolutionMode resolutionMode)
         {
             TransientServiceEntry 
                 genericEntry = new(typeof(IList<>), name, typeof(MyLiyt<>)),
@@ -204,7 +204,7 @@ namespace Solti.Utils.DI.Internals.Tests
                 .SetupGet(f => f.Super)
                 .Returns((IInstanceFactory) null);
 
-            IServiceResolverLookup lookup = lookupFactory(new[] { genericEntry, specializedEntry }, resolutionMode);
+            IServiceEntryLookup lookup = lookupFactory(new[] { genericEntry, specializedEntry }, resolutionMode);
 
             ServiceResolver resolver = lookup.Get(typeof(IList<int>), name);
 
@@ -220,7 +220,7 @@ namespace Solti.Utils.DI.Internals.Tests
         }
 
         [Test]
-        public void Resolver_ShouldSpecialize1([Values(null, "cica")] string name, [ValueSource(nameof(Lookups))] Func<IReadOnlyCollection<AbstractServiceEntry>, ServiceResolutionMode, IServiceResolverLookup> lookupFactory, [Values(ServiceResolutionMode.JIT, ServiceResolutionMode.AOT)] ServiceResolutionMode resolutionMode)
+        public void Resolver_ShouldSpecialize1([Values(null, "cica")] string name, [ValueSource(nameof(Lookups))] Func<IReadOnlyCollection<AbstractServiceEntry>, ServiceResolutionMode, IServiceEntryLookup> lookupFactory, [Values(ServiceResolutionMode.JIT, ServiceResolutionMode.AOT)] ServiceResolutionMode resolutionMode)
         {
             TransientServiceEntry genericEntry = new(typeof(IList<>), name, typeof(MyLiyt<>));
 
@@ -232,7 +232,7 @@ namespace Solti.Utils.DI.Internals.Tests
                 .SetupGet(f => f.Super)
                 .Returns((IInstanceFactory) null);
 
-            IServiceResolverLookup lookup = lookupFactory(new[] { genericEntry }, resolutionMode);
+            IServiceEntryLookup lookup = lookupFactory(new[] { genericEntry }, resolutionMode);
 
             ServiceResolver resolver = lookup.Get(typeof(IList<int>), name);
 
@@ -242,7 +242,7 @@ namespace Solti.Utils.DI.Internals.Tests
         }
 
         [Test]
-        public void Resolver_ShouldSpecialize2([Values(null, "cica")] string name, [ValueSource(nameof(Lookups))] Func<IReadOnlyCollection<AbstractServiceEntry>, ServiceResolutionMode, IServiceResolverLookup> lookupFactory, [Values(ServiceResolutionMode.JIT, ServiceResolutionMode.AOT)] ServiceResolutionMode resolutionMode)
+        public void Resolver_ShouldSpecialize2([Values(null, "cica")] string name, [ValueSource(nameof(Lookups))] Func<IReadOnlyCollection<AbstractServiceEntry>, ServiceResolutionMode, IServiceEntryLookup> lookupFactory, [Values(ServiceResolutionMode.JIT, ServiceResolutionMode.AOT)] ServiceResolutionMode resolutionMode)
         {
             ScopedServiceEntry genericEntry = new(typeof(IList<>), name, typeof(MyLiyt<>));
 
@@ -254,7 +254,7 @@ namespace Solti.Utils.DI.Internals.Tests
                 .SetupGet(f => f.Super)
                 .Returns((IInstanceFactory) null);
 
-            IServiceResolverLookup lookup = lookupFactory(new[] { genericEntry }, resolutionMode);
+            IServiceEntryLookup lookup = lookupFactory(new[] { genericEntry }, resolutionMode);
 
             ServiceResolver resolver = lookup.Get(typeof(IList<int>), name);
 
@@ -264,19 +264,19 @@ namespace Solti.Utils.DI.Internals.Tests
         }
 
         [Test]
-        public void Resolver_ShouldReturnNullOnNonRegisteredService([ValueSource(nameof(Lookups))] Func<IReadOnlyCollection<AbstractServiceEntry>, ServiceResolutionMode, IServiceResolverLookup> lookupFactory, [Values(ServiceResolutionMode.JIT, ServiceResolutionMode.AOT)] ServiceResolutionMode resolutionMode)
+        public void Resolver_ShouldReturnNullOnNonRegisteredService([ValueSource(nameof(Lookups))] Func<IReadOnlyCollection<AbstractServiceEntry>, ServiceResolutionMode, IServiceEntryLookup> lookupFactory, [Values(ServiceResolutionMode.JIT, ServiceResolutionMode.AOT)] ServiceResolutionMode resolutionMode)
         {
             Assert.IsNull(lookupFactory(Array<AbstractServiceEntry>.Empty, resolutionMode).Get(typeof(IList), null));
         }
 
         [Test]
-        public void Resolver_ShouldReturnNullOnNonRegisteredService_GenericCase([ValueSource(nameof(Lookups))] Func<IReadOnlyCollection<AbstractServiceEntry>, ServiceResolutionMode, IServiceResolverLookup> lookupFactory, [Values(ServiceResolutionMode.JIT, ServiceResolutionMode.AOT)] ServiceResolutionMode resolutionMode)
+        public void Resolver_ShouldReturnNullOnNonRegisteredService_GenericCase([ValueSource(nameof(Lookups))] Func<IReadOnlyCollection<AbstractServiceEntry>, ServiceResolutionMode, IServiceEntryLookup> lookupFactory, [Values(ServiceResolutionMode.JIT, ServiceResolutionMode.AOT)] ServiceResolutionMode resolutionMode)
         {
             Assert.IsNull(lookupFactory(new AbstractServiceEntry[] { new ScopedServiceEntry(typeof(IList<object>), null, typeof(MyLiyt<object>)) }, resolutionMode ).Get(typeof(IList<int>), null));
         }
 
         [Test]
-        public void Resolver_ShouldReturnNullOnNonRegisteredService_NamedCase([ValueSource(nameof(Lookups))] Func<IReadOnlyCollection<AbstractServiceEntry>, ServiceResolutionMode, IServiceResolverLookup> lookupFactory, [Values(ServiceResolutionMode.JIT, ServiceResolutionMode.AOT)] ServiceResolutionMode resolutionMode)
+        public void Resolver_ShouldReturnNullOnNonRegisteredService_NamedCase([ValueSource(nameof(Lookups))] Func<IReadOnlyCollection<AbstractServiceEntry>, ServiceResolutionMode, IServiceEntryLookup> lookupFactory, [Values(ServiceResolutionMode.JIT, ServiceResolutionMode.AOT)] ServiceResolutionMode resolutionMode)
         {
             Assert.IsNull(lookupFactory(new AbstractServiceEntry[] { new ScopedServiceEntry(typeof(IList), 0.ToString(), typeof(MyLiyt<object>)) }, resolutionMode).Get(typeof(IList), null));
         }

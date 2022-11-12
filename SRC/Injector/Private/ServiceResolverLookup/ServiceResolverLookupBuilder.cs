@@ -24,7 +24,7 @@ namespace Solti.Utils.DI.Internals
 
         public const string DICT = nameof(DICT);
 
-        public static IServiceResolverLookup Build(IReadOnlyCollection<AbstractServiceEntry> entries, ScopeOptions scopeOptions)
+        public static IServiceEntryLookup Build(IReadOnlyCollection<AbstractServiceEntry> entries, ScopeOptions scopeOptions)
         {
             #pragma warning disable CA1304 // Specify CultureInfo
             switch (scopeOptions.Engine?.ToUpper() ?? (entries.Count <= BTREE_ITEM_THRESHOLD ? BTREE : DICT))
@@ -79,7 +79,7 @@ namespace Solti.Utils.DI.Internals
                     CreateGraphBuilderFactory(compiler)
                 );
 
-            Func<IServiceResolverLookup, IGraphBuilder> CreateGraphBuilderFactory(IDelegateCompiler compiler) =>
+            Func<IServiceEntryLookup, IGraphBuilder> CreateGraphBuilderFactory(IDelegateCompiler compiler) =>
                 lookup => scopeOptions.ServiceResolutionMode switch
                 {
                     ServiceResolutionMode.JIT => new ShallowDependencyGraphBuilder(compiler),

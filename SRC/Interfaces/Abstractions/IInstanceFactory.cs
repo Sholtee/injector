@@ -3,7 +3,6 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
-
 namespace Solti.Utils.DI.Interfaces
 {
     /// <summary>
@@ -17,13 +16,9 @@ namespace Solti.Utils.DI.Interfaces
         IInstanceFactory? Super { get; }
 
         /// <summary>
-        /// Creates a new service instance from the given <see cref="AbstractServiceEntry"/>.
-        /// </summary>
-        object CreateInstance(AbstractServiceEntry requested);
-
-        /// <summary>
         /// Gets or creates a service instance assigned to the given slot.
         /// </summary>
-        object GetOrCreateInstance(AbstractServiceEntry requested, int slot);
+        /// <remarks>If <paramref name="slot"/> is null, a new instance will be created.</remarks>
+        object GetOrCreateInstance(AbstractServiceEntry requested, int? slot);
     }
 }
