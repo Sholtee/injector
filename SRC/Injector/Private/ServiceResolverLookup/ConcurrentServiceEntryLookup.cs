@@ -1,12 +1,11 @@
 ﻿/********************************************************************************
-* ConcurrentServiceResolverLookup.cs                                            *
+* ConcurrentServiceEntryLookup.cs                                               *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Runtime.CompilerServices;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -16,54 +15,50 @@ namespace Solti.Utils.DI.Internals
     /// <summary>
     /// Resolver lookup being shared among scopes.
     /// </summary>
-    internal class ConcurrentServiceResolverLookup<TResolverLookup, TEntryLookup>: IServiceEntryLookup
-        where TResolverLookup: class, ILookup<ServiceResolver, TResolverLookup>
-        where TEntryLookup: class, ILookup<AbstractServiceEntry, TEntryLookup>
+    internal class ConcurrentServiceEntryLookup<TEntryLookup, TGraphBuilder>: IServiceEntryLookup
+        where TEntryLookup : class, ILookup<AbstractServiceEntry, TEntryLookup>
+        where TGraphBuilder: class, IGraphBuilder
     {
         //
         // Don't use late binding (ILookup<>) to let the compiler inline
         //
 
-        private volatile TResolverLookup FResolvers;
+        private volatile TEntryLookup FEntryLookup;
 
-        private readonly TEntryLookup FGenericEntries;
+        private readonly TEntryLookup FGenericEntryLookup;
 
-        private readonly IGraphBuilder FGraphBuilder;
+        private readonly TGraphBuilder FGraphBuilder;
 
         private readonly object FLock = new();
 
         private readonly bool FInitialized;
 
-        private readonly Func<IServiceEntryLookup, IGraphBuilder> FGraphBuilderFactory;
+        private readonly Func<IServiceEntryLookup, TGraphBuilder> FGraphBuilderFactory;
 
-        private int FSlots;
-
-        private ConcurrentServiceResolverLookup
+        private ConcurrentServiceEntryLookup
         (
-            TResolverLookup resolvers,
-            TEntryLookup genericEntries,
-            Func<IServiceEntryLookup, IGraphBuilder> graphBuilderFactory,
-            int slots
+            TEntryLookup entryLookup,
+            TEntryLookup genericEntryLookup,
+            Func<IServiceEntryLookup, TGraphBuilder> graphBuilderFactory
         )
         {
-            FResolvers = resolvers;
-            FGenericEntries = genericEntries;
+            FEntryLookup = entryLookup;
+            FGenericEntryLookup = genericEntryLookup;
             FGraphBuilderFactory = graphBuilderFactory;
             FGraphBuilder = graphBuilderFactory(this);
-            FSlots = slots;
             FInitialized = true;
         }
 
-        protected ConcurrentServiceResolverLookup
+        protected ConcurrentServiceEntryLookup
         (
             IEnumerable<AbstractServiceEntry> entries,
-            TResolverLookup resolvers,
-            TEntryLookup genericEntries,
-            Func<IServiceEntryLookup, IGraphBuilder> graphBuilderFactory
+            TEntryLookup entryLookup,
+            TEntryLookup genericEntryLookup,
+            Func<IServiceEntryLookup, TGraphBuilder> graphBuilderFactory
         )
         {
-            FResolvers = resolvers;
-            FGenericEntries = genericEntries;
+            FEntryLookup = entryLookup;
+            FGenericEntryLookup = genericEntryLookup;
             FGraphBuilderFactory = graphBuilderFactory;
             FGraphBuilder = graphBuilderFactory(this);
 
@@ -71,10 +66,7 @@ namespace Solti.Utils.DI.Internals
             {
                 CompositeKey key = new(entry.Interface, entry.Name);
 
-                bool added = entry.Interface.IsGenericTypeDefinition
-                    ? FGenericEntries.TryAdd(key, entry)
-                    : FResolvers.TryAdd(key, entry.CreateResolver(ref FSlots));
-                if (!added)
+                if (!(entry.Interface.IsGenericTypeDefinition ? FEntryLookup : FEntryLookup).TryAdd(key, entry))
                 {
                     InvalidOperationException ex = new(Resources.SERVICE_ALREADY_REGISTERED);
                     ex.Data[nameof(entry)] = entry;
@@ -100,30 +92,28 @@ namespace Solti.Utils.DI.Internals
             FInitialized = true;
         }
 
-        public ConcurrentServiceResolverLookup<TNewResolverLookup, TNewEntryLookup> ChangeBackend<TNewResolverLookup, TNewEntryLookup>
+        public ConcurrentServiceEntryLookup<TNewEntryLookup, TGraphBuilder> ChangeBackend<TNewEntryLookup>
         (
-            Func<TResolverLookup, TNewResolverLookup> changeResolverLookup,
             Func<TEntryLookup, TNewEntryLookup> changeEntryLookup,
+            Func<TEntryLookup, TNewEntryLookup> changegenericEntryLookup,
             Func<IServiceEntryLookup, IGraphBuilder>? graphBuilderFactory = null
         )
-            where TNewResolverLookup : class, ILookup<ServiceResolver, TNewResolverLookup>
             where TNewEntryLookup : class, ILookup<AbstractServiceEntry, TNewEntryLookup>
         =>
             new
             (
-                changeResolverLookup(FResolvers),
-                changeEntryLookup(FGenericEntries),
-                graphBuilderFactory ?? FGraphBuilderFactory,
-                FSlots
+                changeEntryLookup(FEntryLookup),
+                changegenericEntryLookup(FGenericEntryLookup),
+                graphBuilderFactory ?? FGraphBuilderFactory
             );
 
-        public int Slots => FSlots;
+        public int Slots => FGraphBuilder.Slots;
 
-        public ServiceResolver? Get(Type iface, string? name)
+        public AbstractServiceEntry? Get(Type iface, string? name)
         {
             CompositeKey key = new(iface, name);
 
-            if (FResolvers.TryGet(key, out ServiceResolver? resolver))
+            if (FEntryLookup.TryGet(key, out AbstractServiceEntry? entry))
             {
                 //
                 // In initialization phase, build the full dependency graph even if the related entry already
@@ -133,7 +123,7 @@ namespace Solti.Utils.DI.Internals
 
                 if (!FInitialized)
                 {
-                    FGraphBuilder.Build(resolver.GetUnderlyingEntry());
+                    FGraphBuilder.Build(entry);
                 }
             }
 
@@ -145,11 +135,11 @@ namespace Solti.Utils.DI.Internals
                     // Another thread might have done this work.
                     //
 
-                    if (!FResolvers.TryGet(key, out resolver))
+                    if (!FEntryLookup.TryGet(key, out entry))
                     {
                         CompositeKey genericKey = new(iface.GetGenericTypeDefinition(), name);
 
-                        if (FGenericEntries.TryGet(genericKey, out AbstractServiceEntry genericEntry))
+                        if (FGenericEntryLookup.TryGet(genericKey, out AbstractServiceEntry genericEntry))
                         {
                             genericEntry = genericEntry.Specialize(iface.GenericTypeArguments);
 
@@ -159,18 +149,14 @@ namespace Solti.Utils.DI.Internals
 
                             FGraphBuilder.Build(genericEntry);
 
-                            FResolvers = FResolvers.Add
-                            (
-                                key,
-                                resolver = genericEntry.CreateResolver(ref FSlots)
-                            );
+                            FEntryLookup = FEntryLookup.Add(key, entry);
                         }
                     }
                 }
             }
 
-            Debug.Assert(resolver?.GetUnderlyingEntry().State.HasFlag(ServiceEntryStates.Built) is not false, "Entry must be built when it gets exposed");
-            return resolver;
+            Debug.Assert(entry?.State.HasFlag(ServiceEntryStates.Built) is not false, "Entry must be built when it gets exposed");
+            return entry;
         }
     }
 
@@ -178,9 +164,7 @@ namespace Solti.Utils.DI.Internals
     // Workaroung to enforce "new" constraint
     //
 
-    internal sealed class ConstructableConcurrentServiceResolverLookup<TResolverLookup, TEntryLookup> : ConcurrentServiceResolverLookup<TResolverLookup, TEntryLookup>
-        where TResolverLookup : class, ILookup<ServiceResolver, TResolverLookup>, new()
-        where TEntryLookup : class, ILookup<AbstractServiceEntry, TEntryLookup>, new()
+    internal sealed class ConstructableConcurrentServiceResolverLookup<TEntryLookup> : ConcurrentServiceEntryLookup<TEntryLookup> where TEntryLookup : class, ILookup<AbstractServiceEntry, TEntryLookup>, new()
     {
         public ConstructableConcurrentServiceResolverLookup
         (
@@ -189,7 +173,7 @@ namespace Solti.Utils.DI.Internals
         ) : base
         (
             entries,
-            new TResolverLookup(),
+            new TEntryLookup(),
             new TEntryLookup(),
             graphBuilderFactory
         ){ }

@@ -12,8 +12,6 @@ namespace Solti.Utils.DI.Internals
 
     internal sealed class DotGraphBuilder: IGraphBuilder
     {
-        private readonly IServiceEntryLookup FLookup;
-
         private readonly ServicePath FPath = new();
 
         private readonly DotGraphBuilderVisitor FVisitor;
@@ -22,13 +20,13 @@ namespace Solti.Utils.DI.Internals
 
         public DotGraphBuilder(IServiceEntryLookup lookup)
         {
-            FLookup = lookup;
             FVisitor = new DotGraphBuilderVisitor(this);
+            Lookup = lookup;
         }
 
         public void Build(Type iface, string? name) => Build
         (
-            FLookup.Get(iface, name)?.GetUnderlyingEntry() ?? new MissingServiceEntry(iface, name)
+            Lookup.Get(iface, name) ?? new MissingServiceEntry(iface, name)
         );
 
         public void Build(AbstractServiceEntry entry)
@@ -64,15 +62,21 @@ namespace Solti.Utils.DI.Internals
 
                 return;
             }
-   
+
+            int unused = 0;
+
             try
             {
-                entry.Build(null, FVisitor);
+                entry.Build(null, ref unused, FVisitor);
             }
             finally
             {
                 FPath.Pop();
             }
         }
+
+        public IServiceEntryLookup Lookup { get; }
+
+        public int Slots => throw new NotSupportedException();
     }
 }

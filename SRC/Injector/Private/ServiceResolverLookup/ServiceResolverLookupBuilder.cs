@@ -69,7 +69,7 @@ namespace Solti.Utils.DI.Internals
                 default: throw new NotSupportedException();
             }
 
-            ConcurrentServiceResolverLookup<TResolverLookup, TEntryLookup> CreateInitialLookup<TResolverLookup, TEntryLookup>(IDelegateCompiler compiler)
+            ConcurrentServiceEntryLookup<TResolverLookup, TEntryLookup> CreateInitialLookup<TResolverLookup, TEntryLookup>(IDelegateCompiler compiler)
                 where TResolverLookup : class, ILookup<ServiceResolver, TResolverLookup>, new()
                 where TEntryLookup : class, ILookup<AbstractServiceEntry, TEntryLookup>, new()
             =>

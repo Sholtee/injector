@@ -3,6 +3,7 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
+using System;
 using System.Diagnostics;
 
 namespace Solti.Utils.DI.Internals
@@ -34,5 +35,7 @@ namespace Solti.Utils.DI.Internals
         }
 
         public int Slots => FSlots;
+
+        public IServiceEntryLookup Lookup => throw new NotSupportedException();
     }
 }

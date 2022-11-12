@@ -8,7 +8,7 @@ using Solti.Utils.DI.Interfaces;
 namespace Solti.Utils.DI.Internals
 {
     /// <summary>
-    /// Builds the dependency graph.
+    /// Represents the contract of dependency graph builders.
     /// </summary>
     internal interface IGraphBuilder
     {
