@@ -3,6 +3,7 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
+#pragma warning disable RS0026 // Overloads differ in in type arguments too
 using System;
 
 namespace Solti.Utils.DI.Diagnostics
