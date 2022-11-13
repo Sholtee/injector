@@ -22,9 +22,9 @@ namespace Solti.Utils.DI.Internals.Tests
         {
             get 
             {
-                yield return (entries, mode) => ServiceResolverLookupBuilder.Build(entries, new ScopeOptions { ServiceResolutionMode = mode });
-                yield return (entries, mode) => ServiceResolverLookupBuilder.Build(entries, new ScopeOptions { ServiceResolutionMode = mode });
-                yield return (entries, mode) => ServiceResolverLookupBuilder.Build(entries, new ScopeOptions { ServiceResolutionMode = mode });
+                yield return (entries, mode) => ServiceEntryLookupBuilder.Build(entries, new ScopeOptions { ServiceResolutionMode = mode });
+                yield return (entries, mode) => ServiceEntryLookupBuilder.Build(entries, new ScopeOptions { ServiceResolutionMode = mode });
+                yield return (entries, mode) => ServiceEntryLookupBuilder.Build(entries, new ScopeOptions { ServiceResolutionMode = mode });
             }
         }
 

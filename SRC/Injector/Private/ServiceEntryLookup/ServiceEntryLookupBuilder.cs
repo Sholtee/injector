@@ -1,5 +1,5 @@
 ﻿/********************************************************************************
-* ServiceResolverLookupBuilder.cs                                               *
+* ServiceEntryLookupBuilder.cs                                                  *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
@@ -10,7 +10,7 @@ namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
 
-    internal static class ServiceResolverLookupBuilder
+    internal static class ServiceEntryLookupBuilder
     {
         //
         // According to performance tests, up to ~50 items built btree is faster than dictionary.
@@ -34,23 +34,20 @@ namespace Solti.Utils.DI.Internals
                 {
                     BatchedDelegateCompiler batchedDelegateCompiler = new();
 
-                    var lookup = CreateInitialLookup<DictionaryLookup<ServiceResolver>, DictionaryLookup<AbstractServiceEntry>>(batchedDelegateCompiler);
+                    var lookup = CreateInitialLookup<DictionaryLookup<AbstractServiceEntry>>(batchedDelegateCompiler);
 
                     batchedDelegateCompiler.Compile();
+                    
+                    lookup.gra
 
-                    return lookup.ChangeBackend
-                    (
-                        static dict => dict,
-                        static dict => dict,
-                        CreateGraphBuilderFactory(SimpleDelegateCompiler.Instance)
-                    );
+                    return lookup;
                 }
 
                 case BTREE:
                 {
                     BatchedDelegateCompiler batchedDelegateCompiler = new();
 
-                    var lookup = CreateInitialLookup<BTreeLookup<ServiceResolver>, BTreeLookup<AbstractServiceEntry>>(batchedDelegateCompiler)
+                    var lookup = CreateInitialLookup<BTreeLookup<AbstractServiceEntry>>(batchedDelegateCompiler)
                         //
                         // Compile btrees in this batch
                         //
@@ -69,11 +66,9 @@ namespace Solti.Utils.DI.Internals
                 default: throw new NotSupportedException();
             }
 
-            ConcurrentServiceEntryLookup<TResolverLookup, TEntryLookup> CreateInitialLookup<TResolverLookup, TEntryLookup>(IDelegateCompiler compiler)
-                where TResolverLookup : class, ILookup<ServiceResolver, TResolverLookup>, new()
-                where TEntryLookup : class, ILookup<AbstractServiceEntry, TEntryLookup>, new()
+            ConcurrentServiceEntryLookup<TEntryLookup> CreateInitialLookup<TEntryLookup>(IDelegateCompiler compiler) where TEntryLookup : class, ILookup<AbstractServiceEntry, TEntryLookup>, new()
             =>
-                new ConstructableConcurrentServiceResolverLookup<TResolverLookup, TEntryLookup>
+                new ConstructableConcurrentServiceResolverLookup<TEntryLookup>
                 (
                     entries,
                     CreateGraphBuilderFactory(compiler)

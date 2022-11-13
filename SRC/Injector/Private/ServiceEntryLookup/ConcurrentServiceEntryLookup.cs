@@ -15,9 +15,7 @@ namespace Solti.Utils.DI.Internals
     /// <summary>
     /// Resolver lookup being shared among scopes.
     /// </summary>
-    internal class ConcurrentServiceEntryLookup<TEntryLookup, TGraphBuilder>: IServiceEntryLookup
-        where TEntryLookup : class, ILookup<AbstractServiceEntry, TEntryLookup>
-        where TGraphBuilder: class, IGraphBuilder
+    internal class ConcurrentServiceEntryLookup<TEntryLookup> : IServiceEntryLookup where TEntryLookup : class, ILookup<CompositeKey, AbstractServiceEntry>
     {
         //
         // Don't use late binding (ILookup<>) to let the compiler inline
@@ -27,19 +25,19 @@ namespace Solti.Utils.DI.Internals
 
         private readonly TEntryLookup FGenericEntryLookup;
 
-        private readonly TGraphBuilder FGraphBuilder;
+        private readonly IGraphBuilder FGraphBuilder;
 
         private readonly object FLock = new();
 
         private readonly bool FInitialized;
 
-        private readonly Func<IServiceEntryLookup, TGraphBuilder> FGraphBuilderFactory;
+        private readonly Func<IServiceEntryLookup, IGraphBuilder> FGraphBuilderFactory;
 
         private ConcurrentServiceEntryLookup
         (
             TEntryLookup entryLookup,
             TEntryLookup genericEntryLookup,
-            Func<IServiceEntryLookup, TGraphBuilder> graphBuilderFactory
+            Func<IServiceEntryLookup, IGraphBuilder> graphBuilderFactory
         )
         {
             FEntryLookup = entryLookup;
@@ -54,7 +52,7 @@ namespace Solti.Utils.DI.Internals
             IEnumerable<AbstractServiceEntry> entries,
             TEntryLookup entryLookup,
             TEntryLookup genericEntryLookup,
-            Func<IServiceEntryLookup, TGraphBuilder> graphBuilderFactory
+            Func<IServiceEntryLookup, IGraphBuilder> graphBuilderFactory
         )
         {
             FEntryLookup = entryLookup;
@@ -92,18 +90,17 @@ namespace Solti.Utils.DI.Internals
             FInitialized = true;
         }
 
-        public ConcurrentServiceEntryLookup<TNewEntryLookup, TGraphBuilder> ChangeBackend<TNewEntryLookup>
+        public ConcurrentServiceEntryLookup<TNewEntryLookup> ChangeBackend<TNewEntryLookup>
         (
-            Func<TEntryLookup, TNewEntryLookup> changeEntryLookup,
-            Func<TEntryLookup, TNewEntryLookup> changegenericEntryLookup,
+            Func<TEntryLookup, TNewEntryLookup> changeLookup,
             Func<IServiceEntryLookup, IGraphBuilder>? graphBuilderFactory = null
         )
-            where TNewEntryLookup : class, ILookup<AbstractServiceEntry, TNewEntryLookup>
+            where TNewEntryLookup : class, ILookup<CompositeKey, AbstractServiceEntry>
         =>
             new
             (
-                changeEntryLookup(FEntryLookup),
-                changegenericEntryLookup(FGenericEntryLookup),
+                changeLookup(FEntryLookup),
+                changeLookup(FGenericEntryLookup),
                 graphBuilderFactory ?? FGraphBuilderFactory
             );
 
@@ -164,7 +161,8 @@ namespace Solti.Utils.DI.Internals
     // Workaroung to enforce "new" constraint
     //
 
-    internal sealed class ConstructableConcurrentServiceResolverLookup<TEntryLookup> : ConcurrentServiceEntryLookup<TEntryLookup> where TEntryLookup : class, ILookup<AbstractServiceEntry, TEntryLookup>, new()
+    internal sealed class ConstructableConcurrentServiceResolverLookup<TEntryLookup> : ConcurrentServiceEntryLookup<TEntryLookup>
+        where TEntryLookup : class, ILookup<CompositeKey, AbstractServiceEntry>, new()
     {
         public ConstructableConcurrentServiceResolverLookup
         (

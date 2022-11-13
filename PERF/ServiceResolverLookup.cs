@@ -32,8 +32,8 @@ namespace Solti.Utils.DI.Perf
         {
             get
             {
-                yield return ServiceResolverLookupBuilder.DICT;
-                yield return ServiceResolverLookupBuilder.BTREE;
+                yield return ServiceEntryLookupBuilder.DICT;
+                yield return ServiceEntryLookupBuilder.BTREE;
             }
         }
 
@@ -43,7 +43,7 @@ namespace Solti.Utils.DI.Perf
         private IServiceEntryLookup Lookup { get; set; }
 
         [GlobalSetup(Target = nameof(Resolve))]
-        public void SetupResolve() => Lookup = ServiceResolverLookupBuilder.Build
+        public void SetupResolve() => Lookup = ServiceEntryLookupBuilder.Build
         (
             Interfaces
                 .Take(ServiceCount)

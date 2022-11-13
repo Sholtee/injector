@@ -14,8 +14,6 @@ namespace Solti.Utils.DI.Internals
     {
         void Build(AbstractServiceEntry entry);
 
-        IServiceEntryLookup Lookup { get; }
-
         int Slots { get; }
     }
 }

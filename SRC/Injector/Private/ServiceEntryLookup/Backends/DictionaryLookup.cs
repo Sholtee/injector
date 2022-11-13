@@ -3,31 +3,29 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
-using System;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 
 namespace Solti.Utils.DI.Internals
 {
-    internal sealed class DictionaryLookup<TData>: ILookup<TData, DictionaryLookup<TData>>
+    using Interfaces;
+
+    internal sealed class DictionaryLookup: ILookup<CompositeKey, AbstractServiceEntry>
     {
-        private readonly Dictionary<CompositeKey, TData> FDictionary;
+        private readonly Dictionary<CompositeKey, AbstractServiceEntry> FDictionary;
 
-        private DictionaryLookup(Dictionary<CompositeKey, TData> dictionary) => FDictionary = dictionary;
+        private DictionaryLookup(Dictionary<CompositeKey, AbstractServiceEntry> dictionary) => FDictionary = dictionary;
 
-        public DictionaryLookup() : this(new Dictionary<CompositeKey, TData>()) { }
+        public DictionaryLookup() : this(new Dictionary<CompositeKey, AbstractServiceEntry>()) { }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public DictionaryLookup<TData> Add(CompositeKey key, TData data) => new
+        public ILookup<CompositeKey, AbstractServiceEntry> Add(CompositeKey key, AbstractServiceEntry data) => new DictionaryLookup
         (
-            new Dictionary<CompositeKey, TData>(FDictionary)
+            new Dictionary<CompositeKey, AbstractServiceEntry>(FDictionary)
             {
                 {key, data}
             }
         );
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool TryAdd(CompositeKey key, TData data)
+        public bool TryAdd(CompositeKey key, AbstractServiceEntry data)
         {
 #if NETSTANDARD2_1_OR_GREATER
             return FDictionary.TryAdd(key, data);
@@ -44,7 +42,6 @@ namespace Solti.Utils.DI.Internals
 #endif
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool TryGet(CompositeKey key, out TData data) => FDictionary.TryGetValue(key, out data);
+        public bool TryGet(CompositeKey key, out AbstractServiceEntry data) => FDictionary.TryGetValue(key, out data);
     }
 }

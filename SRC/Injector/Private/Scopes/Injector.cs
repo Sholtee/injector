@@ -198,7 +198,7 @@ namespace Solti.Utils.DI.Internals
                 #pragma warning restore CA2214
             );
 
-            FResolverLookup = ServiceResolverLookupBuilder.Build(svcs, options);  
+            FResolverLookup = ServiceEntryLookupBuilder.Build(svcs, options);  
             FSlots  = Array<object>.Create(FResolverLookup.Slots);
             Options = options;
             Tag     = tag;

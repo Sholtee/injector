@@ -32,7 +32,6 @@ namespace Solti.Utils.DI.Internals
                 new ServiceRequestReplacerVisitor(lookup, FPath, options.SupportsServiceProvider)
             };
             FCompiler = compiler;
-            Lookup = lookup;
         }
 
         public void Build(AbstractServiceEntry requested)
@@ -72,7 +71,5 @@ namespace Solti.Utils.DI.Internals
         }
 
         public int Slots => FSlots;
-
-        public IServiceEntryLookup Lookup { get; }
     }
 }
