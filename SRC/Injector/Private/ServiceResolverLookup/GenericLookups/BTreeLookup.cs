@@ -19,7 +19,7 @@ namespace Solti.Utils.DI.Internals
 
         public BTreeLookup() : this
         (
-            RedBlackTreeExtensions.Create<CompositeKey, TData>()
+            RedBlackTreeExtensions.CreateLookup<CompositeKey, TData>()
         ) {}
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
