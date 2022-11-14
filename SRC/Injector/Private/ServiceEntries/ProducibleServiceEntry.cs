@@ -125,7 +125,7 @@ namespace Solti.Utils.DI.Internals
         #endregion
 
         /// <inheritdoc/>
-        public override void Build(IDelegateCompiler? compiler, ref int slots, params IFactoryVisitor[] visitors)
+        public override void Build(IDelegateCompiler? compiler, Func<int> assignSlot, params IFactoryVisitor[] visitors)
         {
             if (visitors is null)
                 throw new ArgumentNullException(nameof(visitors));

@@ -10,11 +10,11 @@ namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
 
-    internal sealed class ShallowDependencyGraphBuilder: IGraphBuilder
+    internal sealed class ShallowDependencyGraphBuilder : IGraphBuilder
     {
         private readonly IDelegateCompiler FCompiler;
 
-        private int FSlots;
+        private readonly IServiceEntryLookup FLookup;
 
         private static readonly IFactoryVisitor[] FVisitors = new IFactoryVisitor[]
         {
@@ -22,7 +22,11 @@ namespace Solti.Utils.DI.Internals
             new ApplyLifetimeManagerVisitor()
         };
 
-        public ShallowDependencyGraphBuilder(IDelegateCompiler compiler) => FCompiler = compiler;
+        public ShallowDependencyGraphBuilder(IDelegateCompiler compiler, IServiceEntryLookup lookup)
+        {
+            FCompiler = compiler;
+            FLookup = lookup;
+        }
 
         public void Build(AbstractServiceEntry requested)
         {
@@ -31,10 +35,8 @@ namespace Solti.Utils.DI.Internals
             if (!requested.Features.HasFlag(ServiceEntryFeatures.SupportsBuild) || requested.State.HasFlag(ServiceEntryStates.Built))
                 return;
 
-            requested.Build(FCompiler, ref FSlots, FVisitors);
+            requested.Build(FCompiler, FLookup.AddSlot, FVisitors);
         }
-
-        public int Slots => FSlots;
 
         public IServiceEntryLookup Lookup => throw new NotSupportedException();
     }

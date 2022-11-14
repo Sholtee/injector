@@ -30,12 +30,15 @@ namespace Solti.Utils.DI.Internals
         {
         }
 
-        public sealed override void Build(IDelegateCompiler? compiler, ref int slots, params IFactoryVisitor[] visitors)
+        public sealed override void Build(IDelegateCompiler? compiler, Func<int> assignSlot, params IFactoryVisitor[] visitors)
         {
-            base.Build(compiler, ref slots, visitors);
+            if (assignSlot is null)
+                throw new ArgumentNullException(nameof(assignSlot));
+
+            base.Build(compiler, null!, visitors);
 
             if (compiler is not null)
-                FAssignedSlot = slots++;
+                FAssignedSlot = assignSlot();
         }
 
         public sealed override int? AssignedSlot => FAssignedSlot;

@@ -31,9 +31,9 @@ namespace Solti.Utils.DI.Internals
             //
 
             if (factory is Injector injector)
-                return injector.CreateInstance(this);
+                return injector.GetOrCreateInstance(this, null);
 
-            return factory.CreateInstance(this);
+            return factory.GetOrCreateInstance(this, null);
         }
 
         public override AbstractServiceEntry Specialize(params Type[] genericArguments)

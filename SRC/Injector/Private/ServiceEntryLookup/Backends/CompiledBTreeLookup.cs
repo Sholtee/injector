@@ -11,12 +11,17 @@ namespace Solti.Utils.DI.Internals
     using Interfaces;
     using Primitives;
 
-    internal sealed partial class CompiledBTreeLookup: BTreeLookup
+    internal sealed partial class CompiledBTreeLookup: ILookup<CompositeKey, AbstractServiceEntry, CompiledBTreeLookup>
     {
-        private Func<CompositeKey, AbstractServiceEntry?>? FTryGet;
+        private /*readonly*/ Func<CompositeKey, AbstractServiceEntry?> FTryGet;
 
-        public CompiledBTreeLookup(RedBlackTree<KeyValuePair<CompositeKey, AbstractServiceEntry>> source, IDelegateCompiler compiler): base(source)
+        private readonly RedBlackTree<KeyValuePair<CompositeKey, AbstractServiceEntry>> FTree;
+
+        #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor.
+        public CompiledBTreeLookup(RedBlackTree<KeyValuePair<CompositeKey, AbstractServiceEntry>> source, IDelegateCompiler compiler)
+        #pragma warning restore CS8618
         {
+            FTree = source;
             Compiler = compiler;
 
             compiler.Compile
@@ -26,7 +31,7 @@ namespace Solti.Utils.DI.Internals
             );
         }
 
-        public override ILookup<CompositeKey, AbstractServiceEntry> Add(CompositeKey key, AbstractServiceEntry data) => new CompiledBTreeLookup
+        public CompiledBTreeLookup Add(CompositeKey key, AbstractServiceEntry data) => new
         (
             FTree.With
             (
@@ -35,10 +40,10 @@ namespace Solti.Utils.DI.Internals
             Compiler
         );
 
-        public override bool TryAdd(CompositeKey key, AbstractServiceEntry data) => throw new NotSupportedException();
+        public bool TryAdd(CompositeKey key, AbstractServiceEntry data) => throw new NotSupportedException();
 
-        public override bool TryGet(CompositeKey key, out AbstractServiceEntry data) => (data = FTryGet!(key)!) is not null;
+        public bool TryGet(CompositeKey key, out AbstractServiceEntry data) => (data = FTryGet(key)!) is not null;
 
-        public IDelegateCompiler Compiler { get; }
+        public IDelegateCompiler Compiler { get; set; }
     }
 }

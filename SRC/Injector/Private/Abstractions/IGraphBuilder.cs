@@ -13,7 +13,5 @@ namespace Solti.Utils.DI.Internals
     internal interface IGraphBuilder
     {
         void Build(AbstractServiceEntry entry);
-
-        int Slots { get; }
     }
 }

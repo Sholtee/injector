@@ -19,17 +19,19 @@ namespace Solti.Utils.DI.Internals
 
         private readonly IDelegateCompiler FCompiler;
 
-        private int FSlots;
+        private readonly IServiceEntryLookup FLookup;
+
 
         public RecursiveDependencyGraphBuilder(IServiceEntryLookup lookup, IDelegateCompiler compiler, ScopeOptions options)
         {
             FOptions = options;
             FPath = new ServicePath();
+            FLookup = lookup;
             FVisitors = new IFactoryVisitor[]
             {
                 new MergeProxiesVisitor(),
                 new ApplyLifetimeManagerVisitor(),
-                new ServiceRequestReplacerVisitor(lookup, FPath, options.SupportsServiceProvider)
+                new ServiceRequestReplacerVisitor(FLookup, FPath, options.SupportsServiceProvider)
             };
             FCompiler = compiler;
         }
@@ -56,7 +58,7 @@ namespace Solti.Utils.DI.Internals
             FPath.Push(requested);
             try
             {
-                requested.Build(FCompiler, ref FSlots, FVisitors);
+                requested.Build(FCompiler, FLookup.AddSlot, FVisitors);
             }
             finally
             {
@@ -69,7 +71,5 @@ namespace Solti.Utils.DI.Internals
 
             requested.SetValidated();
         }
-
-        public int Slots => FSlots;
     }
 }
