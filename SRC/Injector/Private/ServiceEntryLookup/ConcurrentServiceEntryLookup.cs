@@ -31,24 +31,25 @@ namespace Solti.Utils.DI.Internals
 
         private readonly object FLock = new();
 
-        private int FSlots = -1;
+        private int FSlots;
 
-        protected ConcurrentServiceEntryLookup
+        public ConcurrentServiceEntryLookup
         (
-            IEnumerable<AbstractServiceEntry> entries,
             TEntryLookup entryLookup,
             TEntryLookup genericEntryLookup,
-            Func<IServiceEntryLookup, TGraphBuilder> graphBuilderFactory
+            Func<IServiceEntryLookup, TGraphBuilder> graphBuilderFactory,
+            int slots
         )
         {
             FEntryLookup = entryLookup;
             FGenericEntryLookup = genericEntryLookup;
             FGraphBuilder = graphBuilderFactory(this);
+            FSlots = slots;
         }
 
-        public int AddSlot() => Interlocked.Increment(ref FSlots);
+        public int AddSlot() => Interlocked.Increment(ref FSlots) - 1;
 
-        public int Slots => FSlots + 1;
+        public int Slots => FSlots;
 
         public AbstractServiceEntry? Get(Type iface, string? name)
         {

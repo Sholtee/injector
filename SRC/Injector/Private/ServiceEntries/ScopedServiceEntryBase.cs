@@ -12,8 +12,6 @@ namespace Solti.Utils.DI.Internals
 
     internal abstract class ScopedServiceEntryBase: ProducibleServiceEntry
     {
-        private int? FAssignedSlot;
-
         protected ScopedServiceEntryBase(Type @interface, string? name) : base(@interface, name)
         {
         }
@@ -37,25 +35,21 @@ namespace Solti.Utils.DI.Internals
 
             base.Build(compiler, null!, visitors);
 
-            if (compiler is not null)
-                FAssignedSlot = assignSlot();
-        }
+            if (compiler is null)
+                return;
 
-        public sealed override int? AssignedSlot => FAssignedSlot;
+            int assignedSlot = assignSlot();
+            ResolveInstance = (IInstanceFactory factory) =>
+            {
+                //
+                // Inlining works against non-interface, non-virtual methods only
+                //
 
-        public sealed override object Resolve(IInstanceFactory factory)
-        {
-            if (FAssignedSlot is null)
-                throw new InvalidOperationException();
+                if (factory is Injector injector)
+                    return injector.GetOrCreateInstance(this, assignedSlot);
 
-            //
-            // Inlining works against non-interface, non-virtual methods only
-            //
-
-            if (factory is Injector injector)
-                return injector.GetOrCreateInstance(this, FAssignedSlot);
-
-            return factory.GetOrCreateInstance(this, FAssignedSlot);
+                return factory.GetOrCreateInstance(this, assignedSlot);
+            };
         }
     }
 }

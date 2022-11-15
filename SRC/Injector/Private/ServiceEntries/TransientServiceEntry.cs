@@ -24,16 +24,22 @@ namespace Solti.Utils.DI.Internals
         {
         }
 
-        public override object Resolve(IInstanceFactory factory)
+        public override void Build(IDelegateCompiler? compiler, Func<int> assignSlot, params IFactoryVisitor[] visitors)
         {
-            //
-            // Inlining works against non-interface, non-virtual methods only
-            //
+            base.Build(compiler, assignSlot, visitors);
 
-            if (factory is Injector injector)
-                return injector.GetOrCreateInstance(this, null);
+            if (compiler is not null)
+                ResolveInstance = (IInstanceFactory factory) =>
+                {
+                    //
+                    // Inlining works against non-interface, non-virtual methods only
+                    //
 
-            return factory.GetOrCreateInstance(this, null);
+                    if (factory is Injector injector)
+                        return injector.GetOrCreateInstance(this, null);
+
+                    return factory.GetOrCreateInstance(this, null);
+                };
         }
 
         public override AbstractServiceEntry Specialize(params Type[] genericArguments)

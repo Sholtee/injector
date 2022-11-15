@@ -90,9 +90,16 @@ namespace Solti.Utils.DI.Interfaces
         public ServiceEntryStates State { get; protected set; }
 
         /// <summary>
-        /// Contains the built <see cref="Factory"/> after calling the <see cref="Build(IDelegateCompiler?, ref int, IFactoryVisitor[])"/> method.
+        /// Unconditionaly creates a new service instance.
         /// </summary>
+        /// <remarks>To assign value to this property, invoke the <see cref="Build(IDelegateCompiler?, Func{int}, IFactoryVisitor[])"/> method.</remarks>
         public FactoryDelegate? CreateInstance { get; protected set; }
+
+        /// <summary>
+        /// Gets or creates a service instance.
+        /// </summary>
+        /// <remarks>To assign value to this property, invoke the <see cref="Build(IDelegateCompiler?, Func{int}, IFactoryVisitor[])"/> method.</remarks>
+        public ResolveDelegate? ResolveInstance { get; protected set; }
 
         /// <summary>
         /// Proxies applied.
@@ -120,16 +127,6 @@ namespace Solti.Utils.DI.Interfaces
         /// Creates the lifetime manager expression.
         /// </summary>
         public virtual Expression CreateLifetimeManager(Expression getService, ParameterExpression scope, ParameterExpression disposable) => throw new NotSupportedException();
-
-        /// <summary>
-        /// Creates a concrete service instance.
-        /// </summary>
-        public abstract object Resolve(IInstanceFactory instanceFactory);
-
-        /// <summary>
-        /// The assigned slot.
-        /// </summary>
-        public virtual int? AssignedSlot => null;
 
         /// <summary>
         /// If supported, sets the <see cref="State"/> of this entry to <see cref="ServiceEntryStates.Validated"/>.

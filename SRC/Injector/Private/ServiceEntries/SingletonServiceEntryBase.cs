@@ -12,8 +12,7 @@ namespace Solti.Utils.DI.Internals
 
     internal abstract class SingletonServiceEntryBase : ProducibleServiceEntry
     {
-        private int? FAssignedSlot;
-
+  
         protected SingletonServiceEntryBase(Type @interface, string? name) : base(@interface, name)
         {
         }
@@ -37,33 +36,30 @@ namespace Solti.Utils.DI.Internals
 
             base.Build(compiler, null!, visitors);
 
-            if (compiler is not null)
-                FAssignedSlot = assignSlot();
-        }
+            if (compiler is null)
+                return;
 
-        public sealed override int? AssignedSlot => FAssignedSlot;
+            int assignedSlot = assignSlot();
 
-        public sealed override object Resolve(IInstanceFactory factory)
-        {
-            if (FAssignedSlot is null)
-                throw new InvalidOperationException();
-
-            //
-            // Inlining works against non-interface, non-virtual methods only
-            //
-
-            if (factory is Injector injector)
+            ResolveInstance = (IInstanceFactory factory) =>
             {
-                if (injector.Super is not null)
-                    injector = (Injector) injector.Super;
+                //
+                // Inlining works against non-interface, non-virtual methods only
+                //
 
-                return injector.GetOrCreateInstance(this, FAssignedSlot);
-            }
+                if (factory is Injector injector)
+                {
+                    if (injector.Super is not null)
+                        injector = (Injector)injector.Super;
 
-            if (factory.Super is not null)
-                factory = factory.Super;
+                    return injector.GetOrCreateInstance(this, assignedSlot);
+                }
 
-            return factory.GetOrCreateInstance(this, FAssignedSlot);
+                if (factory.Super is not null)
+                    factory = factory.Super;
+
+                return factory.GetOrCreateInstance(this, assignedSlot);
+            };
         }
     }
 }

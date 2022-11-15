@@ -46,7 +46,7 @@ namespace Solti.Utils.DI.Perf
                 root = new(Lifetime.CreateFrom(typeof(IMyService), null, typeof(MyService)), new ScopeOptions(), null),
                 scope = new(root, null);
 
-            ResolveImpl = scope.ServiceResolverLookup.Get(typeof(IMyService), null);
+            ResolveImpl = scope.ServiceLookup.Get(typeof(IMyService), null);
 
             Scope = scope;
         }

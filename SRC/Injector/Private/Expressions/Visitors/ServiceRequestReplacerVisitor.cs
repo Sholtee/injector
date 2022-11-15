@@ -6,7 +6,6 @@
 using System;
 using System.Diagnostics;
 using System.Linq.Expressions;
-using System.Reflection;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -14,13 +13,11 @@ namespace Solti.Utils.DI.Internals
     using Properties;
 
     /// <summary>
-    /// Replaces the <see cref="IInjector"/> invocations with the corresponing <see cref="AbstractServiceEntry.Resolve(IInstanceFactory)"/> calls.
+    /// Replaces the <see cref="IInjector"/> invocations with the corresponing <see cref="AbstractServiceEntry.ResolveInstance"/> calls.
     /// </summary>
     /// <remarks>This results a faster generated delegate since it saves a <see cref="IServiceEntryLookup.Get(Type, string?)"/> invocation for each dependency.</remarks>
     internal sealed class ServiceRequestReplacerVisitor : ServiceRequestVisitor, IFactoryVisitor
     {
-        private static readonly MethodInfo FResolveMethod = MethodInfoExtractor.Extract<AbstractServiceEntry>(entry => entry.Resolve(null!));
-
         private readonly IServiceEntryLookup FLookup;
 
         private readonly ServicePath FPath;
@@ -69,10 +66,9 @@ namespace Solti.Utils.DI.Internals
             // injector.[Try]Get(iface, name) -> entry.Resolve(injector)
             //
 
-            Expression resolve = Expression.Call
+            Expression resolve = Expression.Invoke
             (
-                Expression.Constant(entry),
-                FResolveMethod,
+                Expression.Constant(entry!.ResolveInstance),
                 target
             );
 

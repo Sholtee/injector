@@ -22,7 +22,7 @@ namespace Solti.Utils.DI.Internals
         private readonly IServiceEntryLookup FLookup;
 
 
-        public RecursiveDependencyGraphBuilder(IServiceEntryLookup lookup, IDelegateCompiler compiler, ScopeOptions options)
+        public RecursiveDependencyGraphBuilder(IDelegateCompiler compiler, IServiceEntryLookup lookup, ScopeOptions options)
         {
             FOptions = options;
             FPath = new ServicePath();

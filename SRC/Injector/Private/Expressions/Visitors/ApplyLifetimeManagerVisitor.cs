@@ -8,6 +8,7 @@ using System.Linq.Expressions;
 namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
+    using Solti.Utils.DI.Interfaces.Abstractions;
 
     /// <summary>
     /// Applies the lifetime manager, provided by the <see cref="AbstractServiceEntry"/>

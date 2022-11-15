@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Threading;
@@ -15,7 +16,7 @@ namespace Solti.Utils.DI.Internals
     using Primitives.Patterns;
     using Properties;
 
-    internal class Injector:
+    internal class Injector :
         Disposable,
         IScopeFactory,
         IInstanceFactory
@@ -26,9 +27,7 @@ namespace Solti.Utils.DI.Internals
 
         private CaptureDisposable? FDisposableStore;
 
-        private readonly IServiceEntryLookup FResolverLookup;
-
-        private ServicePath? FPath;
+        private ServicePath? FPath; // Not required when AOT building is enabled 
 
         private object?[] FSlots;
 
@@ -38,6 +37,18 @@ namespace Solti.Utils.DI.Internals
         //
 
         private readonly object? FLock;
+
+        private CaptureDisposable DisposableStore
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get => FDisposableStore ??= new CaptureDisposable();
+        }
+
+        private ServicePath Path
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get => FPath ??= new ServicePath();
+        }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private object CreateInstanceCore(AbstractServiceEntry requested)
@@ -57,16 +68,14 @@ namespace Solti.Utils.DI.Internals
 
             if (!requested.State.HasFlag(ServiceEntryStates.Validated))
             {
-                FPath ??= new ServicePath();
-
-                FPath.Push(requested);
+                Path.Push(requested);
                 try
                 {
                     instance = requested.CreateInstance!(this, out disposable);
                 }
                 finally
                 {
-                    FPath.Pop();
+                    Path.Pop();
                 }
 
                 requested.SetValidated();
@@ -75,10 +84,7 @@ namespace Solti.Utils.DI.Internals
                 instance = requested.CreateInstance!(this, out disposable);
 
             if (disposable is not null)
-            {
-                FDisposableStore ??= new CaptureDisposable();
-                FDisposableStore.Capture(disposable);
-            }
+                DisposableStore.Capture(disposable);
 
             if (instance is null)
                 throw new InvalidOperationException(string.Format(Resources.Culture, Resources.IS_NULL, nameof(instance)));
@@ -89,17 +95,41 @@ namespace Solti.Utils.DI.Internals
             return instance;
         }
 
-        protected virtual IEnumerable<AbstractServiceEntry> GetAllServices(IEnumerable<AbstractServiceEntry> registeredEntries)
+        protected virtual IEnumerable<AbstractServiceEntry> BuiltInServices
         {
-            yield return new ContextualServiceEntry(typeof(IInjector), null, static (i, _) => i);
-            yield return new ContextualServiceEntry(typeof(IScopeFactory), null, (_, _) => this /*factory is always the root*/);
-            yield return new ScopedServiceEntry(typeof(IEnumerable<>), null, typeof(ServiceEnumerator<>), new { registeredServices = new List<AbstractServiceEntry>(registeredEntries) });
-#if DEBUG
-            yield return new ContextualServiceEntry(typeof(System.Collections.ICollection), "captured_disposables", static (i, _) => (((Injector) i).FDisposableStore ??= new()).CapturedDisposables);
-#endif
-            foreach (AbstractServiceEntry entry in registeredEntries)
+            get
             {
-                yield return entry;
+                yield return new ContextualServiceEntry(typeof(IInjector), null, static (i, _) => i);
+
+                //
+                // Factory is always the root.
+                //
+
+                yield return new ContextualServiceEntry(typeof(IScopeFactory), null, (_, _) => this);
+
+                //
+                // It's enough to store the original entries, no need to maintain the list (for instance
+                // when a generic service gets specialized)
+                //
+
+                yield return new ScopedServiceEntry
+                (
+                    typeof(IEnumerable<>),
+                    null,
+                    typeof(ServiceEnumerator<>),
+                    new 
+                    {
+                        root = this
+                    }
+                );
+#if DEBUG
+                yield return new ContextualServiceEntry
+                (
+                    typeof(ICollection),
+                    "captured_disposables",
+                    static (i, _) => ((Injector) i).DisposableStore.CapturedDisposables
+                );
+#endif
             }
         }
 
@@ -119,9 +149,9 @@ namespace Solti.Utils.DI.Internals
 
                 if (slot >= FSlots.Length)
                     //
-                    // We reach here when we made a service request that triggered a ResolverCollection update.
-                    // Scopes created after the update won't be affected as they allocate their slot array with
-                    // the proper size.
+                    // We reach here when we made a service request that triggered a FResolverLookup update.
+                    // Scopes created after the update won't be affected as they allocate their slot array
+                    // with the proper size.
                     //
 
                     Array.Resize(ref FSlots, slot.Value + 1);
@@ -165,7 +195,10 @@ namespace Solti.Utils.DI.Internals
             if (iface.IsGenericTypeDefinition)
                 throw new ArgumentException(Resources.PARAMETER_IS_GENERIC, nameof(iface));
 
-            return FResolverLookup.Get(iface, name)?.Invoke(this);
+            return ServiceLookup
+                .Get(iface, name)
+                ?.ResolveInstance
+                ?.Invoke(this);
         }
         #endregion
 
@@ -187,37 +220,36 @@ namespace Solti.Utils.DI.Internals
         public object? Tag { get; }
         #endregion
 
-        public IServiceEntryLookup ServiceResolverLookup => FResolverLookup;
+        public IServiceEntryLookup ServiceLookup { [MethodImpl(MethodImplOptions.AggressiveInlining)] get; }
+
+        public IReadOnlyCollection<AbstractServiceEntry> ServiceCollection { [MethodImpl(MethodImplOptions.AggressiveInlining)] get; }
 
         public Injector(IEnumerable<AbstractServiceEntry> registeredEntries, ScopeOptions options, object? tag)
-        {  
-            IReadOnlyCollection<AbstractServiceEntry> svcs = new List<AbstractServiceEntry>
-            (
-                #pragma warning disable CA2214 // Do not call overridable methods in constructors
-                GetAllServices(registeredEntries)
-                #pragma warning restore CA2214
-            );
+        {
+            List<AbstractServiceEntry> allServices = new(registeredEntries);
+            allServices.AddRange(BuiltInServices);
 
-            FResolverLookup = ServiceEntryLookupBuilder.Build(svcs, options);  
-            FSlots  = Array<object>.Create(FResolverLookup.Slots);
-            Options = options;
-            Tag     = tag;
-            FLock   = new object();
+            ServiceLookup     = ServiceEntryLookupBuilder.Build(allServices, options);  
+            FSlots            = Array<object>.Create(ServiceLookup.Slots);
+            FLock             = new object();
+            Options           = options;
+            Tag               = tag;
+            ServiceCollection = allServices;
         }
 
         public Injector(Injector super, object? tag)
         {
-            FResolverLookup = super.FResolverLookup;
-            FSlots    = Array<object>.Create(FResolverLookup.Slots);
-            Options   = super.Options;
-            Tag       = tag;
-            Super     = super;
-
             //
-            // Assuming that the successor is not shared we don't need lock
+            // Assuming this successor is not shared we don't need lock
             //
 
-            FLock = null;
+            FLock             = null;
+            ServiceLookup     = super.ServiceLookup;
+            FSlots            = Array<object>.Create(ServiceLookup.Slots);
+            Options           = super.Options;
+            Tag               = tag;
+            ServiceCollection = super.ServiceCollection;
+            Super             = super;
         }
     }
 }

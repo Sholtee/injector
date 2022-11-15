@@ -34,7 +34,7 @@ namespace Solti.Utils.DI.Internals
                 {
                     BatchedDelegateCompiler batchedDelegateCompiler = new();
 
-                    var lookup = CreateInitialLookup<DictionaryLookup<AbstractServiceEntry>>(batchedDelegateCompiler);
+                    ServiceEntryLookup<DictionaryLookup, > lookup CreateInitialLookup<DictionaryLookup<AbstractServiceEntry>>(batchedDelegateCompiler);
 
                     batchedDelegateCompiler.Compile();
                     
@@ -77,8 +77,8 @@ namespace Solti.Utils.DI.Internals
             Func<IServiceEntryLookup, IGraphBuilder> CreateGraphBuilderFactory(IDelegateCompiler compiler) =>
                 lookup => scopeOptions.ServiceResolutionMode switch
                 {
-                    ServiceResolutionMode.JIT => new ShallowDependencyGraphBuilder(compiler),
-                    ServiceResolutionMode.AOT => new RecursiveDependencyGraphBuilder(lookup, compiler, scopeOptions),
+                    ServiceResolutionMode.JIT => new ShallowDependencyGraphBuilder(compiler, lookup),
+                    ServiceResolutionMode.AOT => new RecursiveDependencyGraphBuilder(compiler, lookup, scopeOptions),
                     _ => throw new NotSupportedException()
                 };
         }

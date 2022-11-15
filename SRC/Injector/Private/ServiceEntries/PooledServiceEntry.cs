@@ -10,7 +10,6 @@ namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
     using Primitives.Patterns;
-    using Primitives.Threading;
 
     internal sealed partial class PooledServiceEntry : ScopedServiceEntryBase
     {

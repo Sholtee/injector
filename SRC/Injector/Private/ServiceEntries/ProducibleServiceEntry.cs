@@ -12,11 +12,10 @@ using System.Linq.Expressions;
 namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
+    using Primitives;
 
     using static Interfaces.Properties.Resources;
     using static Properties.Resources;
-
-    using Primitives;
 
     /// <summary>
     /// Reperesents the base class of producible servce entries.
