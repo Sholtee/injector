@@ -5,6 +5,8 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Threading;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -14,22 +16,19 @@ namespace Solti.Utils.DI.Internals
     /// <summary>
     /// Resolver lookup intended for initialization purposes
     /// </summary>
-    internal sealed class ServiceEntryLookup: IServiceEntryLookup
+    internal sealed class ServiceEntryLookup<TBackend>: IServiceEntryLookup where TBackend : class, ILookup<CompositeKey, AbstractServiceEntry, TBackend>
     {
-        private readonly ILookup<CompositeKey, AbstractServiceEntry> FEntryLookup;
-        private readonly ILookup<CompositeKey, AbstractServiceEntry> FGenericEntryLookup;
+        private volatile TBackend FEntryLookup;
+        private readonly TBackend FGenericEntryLookup;
         private readonly IGraphBuilder FGraphBuilder;
         private readonly bool FInitialized;
+        private readonly object FLock = new();
+        private int FSlots;
 
-        private ServiceEntryLookup
-        (
-            IEnumerable<AbstractServiceEntry> entries,
-            Func<ILookup<CompositeKey, AbstractServiceEntry>> lookupFactory,
-            Func<IServiceEntryLookup, IGraphBuilder> graphBuilderFactory
-        )
+        public ServiceEntryLookup(IEnumerable<AbstractServiceEntry> entries, Func<TBackend> backendFactory, Func<IServiceEntryLookup, IGraphBuilder> graphBuilderFactory)
         {
-            FEntryLookup = lookupFactory();
-            FGenericEntryLookup = lookupFactory();
+            FEntryLookup = backendFactory();
+            FGenericEntryLookup = backendFactory();
 
             foreach (AbstractServiceEntry entry in entries)
             {
@@ -65,53 +64,70 @@ namespace Solti.Utils.DI.Internals
             FInitialized = true;
         }
 
-        public int Slots { get; private set; }
+        public int Slots => FSlots;
 
-        public int AddSlot() => Slots++;
+        public int AddSlot() => Interlocked.Increment(ref FSlots) - 1;
 
         public AbstractServiceEntry? Get(Type iface, string? name)
         {
-            CompositeKey key = new(iface, name);
+            CompositeKey
+                key = new(iface, name),
+                genericKey;
 
-            if (!FEntryLookup.TryGet(key, out AbstractServiceEntry? entry) && iface.IsConstructedGenericType)
+            if (FEntryLookup.TryGet(key, out AbstractServiceEntry entry))
             {
-                CompositeKey genericKey = new(iface.GetGenericTypeDefinition(), name);
+                if (!FInitialized)
+                    //
+                    // In initialization phase, build the full dependency graph even if the related entry already
+                    // built. It is required for strict DI validations.
+                    //
 
-                if (FGenericEntryLookup.TryGet(genericKey, out AbstractServiceEntry genericEntry))
-                {
-                    entry = genericEntry.Specialize(iface.GenericTypeArguments);
-
-                    FEntryLookup.TryAdd(key, entry);
-                }
+                    FGraphBuilder.Build(entry);
             }
-
-            //
-            // In initialization phase, build the full dependency graph even if the related entry already
-            // built. It is required for strict DI validations.
-            //
-
-            if (entry is not null && (!FInitialized || !entry.State.HasFlag(ServiceEntryStates.Built)))
+            else if (iface.IsConstructedGenericType)
             {
-                FGraphBuilder.Build(entry);
+                if (!FInitialized)
+                {
+                    genericKey = new(iface.GetGenericTypeDefinition(), name);
+
+                    if (FGenericEntryLookup.TryGet(genericKey, out AbstractServiceEntry genericEntry))
+                    {
+                        entry = genericEntry.Specialize(iface.GenericTypeArguments);
+                        FGraphBuilder.Build(entry);
+
+                        bool added = FEntryLookup.TryAdd(key, entry);
+                        Debug.Assert(added, "Specialized entry should not exist by now");
+                    }
+                }
+                else
+                {
+                    lock (FLock)
+                    {
+                        //
+                        // Another thread might have done this work.
+                        //
+
+                        if (!FEntryLookup.TryGet(key, out entry))
+                        {
+                            genericKey = new(iface.GetGenericTypeDefinition(), name);
+
+                            if (FGenericEntryLookup.TryGet(genericKey, out AbstractServiceEntry genericEntry))
+                            {
+                                entry = genericEntry.Specialize(iface.GenericTypeArguments);
+                                FGraphBuilder.Build(entry);
+
+                                FEntryLookup = FEntryLookup.With(key, entry);
+                            }
+                        }
+                    }
+                }
             }
 
             return entry;
         }
 
-        public static void InitializeBackend
-        (
-            IEnumerable<AbstractServiceEntry> entries,
-            Func<ILookup<CompositeKey, AbstractServiceEntry>> lookupFactory,
-            Func<IServiceEntryLookup, IGraphBuilder> graphBuilderFactory,
-            out TEntryLookup entryLookup,
-            out TEntryLookup genericEntryLookup,
-            out int slots
-        )
-        {
-            ServiceEntryLookup builder = new(entries, lookupFactory, graphBuilderFactory);
-            entryLookup = builder.FEntryLookup;
-            genericEntryLookup = builder.FGenericEntryLookup;
-            slots = builder.Slots;
-        }
+        public TBackend EntryLookup => FEntryLookup;
+
+        public TBackend GenericEntryLookup => FGenericEntryLookup;
     }
 }

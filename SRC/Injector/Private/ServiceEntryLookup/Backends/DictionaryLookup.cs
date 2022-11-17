@@ -3,13 +3,14 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
+using System;
 using System.Collections.Generic;
 
 namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
 
-    internal sealed class DictionaryLookup: ILookup<CompositeKey, AbstractServiceEntry>
+    internal sealed class DictionaryLookup: ILookup<CompositeKey, AbstractServiceEntry, DictionaryLookup>
     {
         private readonly Dictionary<CompositeKey, AbstractServiceEntry> FDictionary;
 
@@ -17,7 +18,7 @@ namespace Solti.Utils.DI.Internals
 
         public DictionaryLookup() : this(new Dictionary<CompositeKey, AbstractServiceEntry>()) { }
 
-        public ILookup<CompositeKey, AbstractServiceEntry> Add(CompositeKey key, AbstractServiceEntry data) => new DictionaryLookup
+        public DictionaryLookup With(CompositeKey key, AbstractServiceEntry data) => new
         (
             new Dictionary<CompositeKey, AbstractServiceEntry>(FDictionary)
             {

@@ -13,37 +13,61 @@ namespace Solti.Utils.DI.Internals
 
     internal sealed partial class CompiledBTreeLookup: ILookup<CompositeKey, AbstractServiceEntry, CompiledBTreeLookup>
     {
-        private /*readonly*/ Func<CompositeKey, AbstractServiceEntry?> FTryGet;
+        private Func<CompositeKey, AbstractServiceEntry?>? FTryGet;
 
         private readonly RedBlackTree<KeyValuePair<CompositeKey, AbstractServiceEntry>> FTree;
 
-        #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor.
-        public CompiledBTreeLookup(RedBlackTree<KeyValuePair<CompositeKey, AbstractServiceEntry>> source, IDelegateCompiler compiler)
-        #pragma warning restore CS8618
-        {
-            FTree = source;
-            Compiler = compiler;
+        private readonly IDelegateCompiler FCompiler;
 
-            compiler.Compile
-            (
-                BuildTree(FTree),
-                builtDelegate => FTryGet = builtDelegate
-            );
+        private CompiledBTreeLookup(RedBlackTree<KeyValuePair<CompositeKey, AbstractServiceEntry>> tree, IDelegateCompiler compiler)
+        {
+            FTree = tree;
+            FCompiler = compiler;
         }
 
-        public CompiledBTreeLookup Add(CompositeKey key, AbstractServiceEntry data) => new
+        public CompiledBTreeLookup(IDelegateCompiler compiler) : this(RedBlackTreeExtensions.CreateLookup<CompositeKey, AbstractServiceEntry>(), compiler)
+        {
+        }
+
+        public void Compile() => FCompiler.Compile
         (
-            FTree.With
-            (
-                new KeyValuePair<CompositeKey, AbstractServiceEntry>(key, data)
-            ),
-            Compiler
+            BuildTree(FTree),
+            tryGet => FTryGet = tryGet
         );
 
-        public bool TryAdd(CompositeKey key, AbstractServiceEntry data) => throw new NotSupportedException();
+        public CompiledBTreeLookup With(CompositeKey key, AbstractServiceEntry data)
+        {
+            CompiledBTreeLookup newTree = new
+            (
+                FTree.With
+                (
+                    new KeyValuePair<CompositeKey, AbstractServiceEntry>(key, data)
+                ),
+                FCompiler
+            );
+            newTree.Compile();
+            return newTree;
+        }
 
-        public bool TryGet(CompositeKey key, out AbstractServiceEntry data) => (data = FTryGet(key)!) is not null;
+        public bool TryAdd(CompositeKey key, AbstractServiceEntry data) => FTree.TryAdd(key, data);
 
-        public IDelegateCompiler Compiler { get; set; }
+        public bool TryGet(CompositeKey key, out AbstractServiceEntry data)
+        {
+            //
+            // Try the fast way if possible
+            //
+
+            if (FTryGet is not null)
+            {
+                data = FTryGet(key)!;
+                return data is not null;
+            }
+
+            //
+            // Slow method
+            //
+
+            return FTree.TryGet(key, out data);
+        }
     }
 }

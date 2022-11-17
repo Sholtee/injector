@@ -63,11 +63,9 @@ namespace Solti.Utils.DI.Internals
                 return;
             }
 
-            int unused = 0;
-
             try
             {
-                entry.Build(null, ref unused, FVisitor);
+                entry.Build(null, null!, FVisitor);
             }
             finally
             {

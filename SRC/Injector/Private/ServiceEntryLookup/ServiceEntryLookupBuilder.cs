@@ -26,61 +26,53 @@ namespace Solti.Utils.DI.Internals
 
         public static IServiceEntryLookup Build(IReadOnlyCollection<AbstractServiceEntry> entries, ScopeOptions scopeOptions)
         {
+            IServiceEntryLookup result;
+            BatchedDelegateCompiler delegateCompiler = new();
+            delegateCompiler.BeginBatch();
+
             #pragma warning disable CA1304 // Specify CultureInfo
             switch (scopeOptions.Engine?.ToUpper() ?? (entries.Count <= BTREE_ITEM_THRESHOLD ? BTREE : DICT))
             #pragma warning restore CA1304 // Specify CultureInfo
             {
                 case DICT:
                 {
-                    BatchedDelegateCompiler batchedDelegateCompiler = new();
-
-                    ServiceEntryLookup<DictionaryLookup, > lookup CreateInitialLookup<DictionaryLookup<AbstractServiceEntry>>(batchedDelegateCompiler);
-
-                    batchedDelegateCompiler.Compile();
-                    
-                    lookup.gra
-
-                    return lookup;
+                    result = new ServiceEntryLookup<DictionaryLookup>
+                    (
+                        entries,
+                        static () => new DictionaryLookup(),
+                        CreateGraphBuilder
+                    );
+                    break;
                 }
 
                 case BTREE:
                 {
-                    BatchedDelegateCompiler batchedDelegateCompiler = new();
-
-                    var lookup = CreateInitialLookup<BTreeLookup<AbstractServiceEntry>>(batchedDelegateCompiler)
-                        //
-                        // Compile btrees in this batch
-                        //
-                        .ChangeBackend(btree => btree.Compile(batchedDelegateCompiler), btree => btree.Compile(batchedDelegateCompiler));
-
-                    batchedDelegateCompiler.Compile();
-
-                    return lookup.ChangeBackend
+                    ServiceEntryLookup<CompiledBTreeLookup> lookup = new
                     (
-                        static btree => { btree.Compiler = SimpleDelegateCompiler.Instance; return btree; },
-                        static btree => { btree.Compiler = SimpleDelegateCompiler.Instance; return btree; },
-                        CreateGraphBuilderFactory(SimpleDelegateCompiler.Instance)
+                        entries,
+                        () => new CompiledBTreeLookup(delegateCompiler),
+                        CreateGraphBuilder
                     );
+
+                    lookup.EntryLookup.Compile();
+                    lookup.GenericEntryLookup.Compile();
+
+                    result = lookup;
+                    break;
                 }
 
                 default: throw new NotSupportedException();
             }
 
-            ConcurrentServiceEntryLookup<TEntryLookup> CreateInitialLookup<TEntryLookup>(IDelegateCompiler compiler) where TEntryLookup : class, ILookup<AbstractServiceEntry, TEntryLookup>, new()
-            =>
-                new ConstructableConcurrentServiceResolverLookup<TEntryLookup>
-                (
-                    entries,
-                    CreateGraphBuilderFactory(compiler)
-                );
+            delegateCompiler.Compile();
+            return result;
 
-            Func<IServiceEntryLookup, IGraphBuilder> CreateGraphBuilderFactory(IDelegateCompiler compiler) =>
-                lookup => scopeOptions.ServiceResolutionMode switch
-                {
-                    ServiceResolutionMode.JIT => new ShallowDependencyGraphBuilder(compiler, lookup),
-                    ServiceResolutionMode.AOT => new RecursiveDependencyGraphBuilder(compiler, lookup, scopeOptions),
-                    _ => throw new NotSupportedException()
-                };
+            IGraphBuilder CreateGraphBuilder(IServiceEntryLookup lookup) => scopeOptions.ServiceResolutionMode switch
+            {
+                ServiceResolutionMode.JIT => new ShallowDependencyGraphBuilder(delegateCompiler, lookup),
+                ServiceResolutionMode.AOT => new RecursiveDependencyGraphBuilder(delegateCompiler, lookup, scopeOptions),
+                _ => throw new NotSupportedException()
+            };
         }
     }
 }

@@ -21,14 +21,27 @@ namespace Solti.Utils.DI.Internals
     /// <remarks>Lambda compilation is a time consuming operation as it requires a <see cref="Module"/> to be built runtime.</remarks>
     internal sealed class BatchedDelegateCompiler : IDelegateCompiler
     {
-        private readonly List<(LambdaExpression LambdaExpression, Expression Callback)> FCompilations = new();
+        private List<(LambdaExpression LambdaExpression, Expression Callback)>? FCompilations;
 
-        public void Compile<TDelegate>(Expression<TDelegate> lambdaExpression, Action<TDelegate> completionCallback) where TDelegate: Delegate =>
-            FCompilations.Add((lambdaExpression, Expression.Constant(completionCallback)));
+        public void Compile<TDelegate>(Expression<TDelegate> lambdaExpression, Action<TDelegate> completionCallback) where TDelegate : Delegate
+        {
+            if (FCompilations is not null)
+                FCompilations.Add
+                (
+                    (lambdaExpression, Expression.Constant(completionCallback))
+                );
+            else
+                completionCallback
+                (
+                    lambdaExpression.Compile()
+                );
+        }
+
+        public void BeginBatch() => FCompilations = new();
 
         public void Compile()
         {
-            if (FCompilations.Count is 0)
+            if (FCompilations?.Count is not > 0)
                 return;
 
             Expression<Action> expr = Expression.Lambda<Action>
@@ -48,7 +61,7 @@ namespace Solti.Utils.DI.Internals
             
             Debug.WriteLine($"Created batched compilation:{Environment.NewLine}{expr.GetDebugView()}");
 
-            FCompilations.Clear();
+            FCompilations = null;
             expr.Compile().Invoke();
         }
     }
