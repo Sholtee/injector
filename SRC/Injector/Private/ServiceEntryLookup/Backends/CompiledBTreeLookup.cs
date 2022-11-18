@@ -35,6 +35,10 @@ namespace Solti.Utils.DI.Internals
             tryGet => FTryGet = tryGet
         );
 
+        /// <summary>
+        /// Extends this tree into a new lookup
+        /// </summary>
+        /// <remarks>The returned lookup is always compiled.</remarks>
         public CompiledBTreeLookup With(CompositeKey key, AbstractServiceEntry data)
         {
             CompiledBTreeLookup newTree = new
@@ -51,6 +55,10 @@ namespace Solti.Utils.DI.Internals
 
         public bool TryAdd(CompositeKey key, AbstractServiceEntry data) => FTree.TryAdd(key, data);
 
+        /// <summary>
+        /// Tries to find an item in this lookup.
+        /// </summary>
+        /// <remarks>Until the first <see cref="Compile"/> this implementation uses the underlying red-black tree to acquire the result.</remarks>
         public bool TryGet(CompositeKey key, out AbstractServiceEntry data)
         {
             //
@@ -64,7 +72,7 @@ namespace Solti.Utils.DI.Internals
             }
 
             //
-            // Slow method
+            // Not won... lets get slow
             //
 
             return FTree.TryGet(key, out data);

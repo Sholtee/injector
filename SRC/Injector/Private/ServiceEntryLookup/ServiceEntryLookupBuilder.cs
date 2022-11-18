@@ -26,43 +26,28 @@ namespace Solti.Utils.DI.Internals
 
         public static IServiceEntryLookup Build(IReadOnlyCollection<AbstractServiceEntry> entries, ScopeOptions scopeOptions)
         {
-            IServiceEntryLookup result;
             BatchedDelegateCompiler delegateCompiler = new();
             delegateCompiler.BeginBatch();
 
             #pragma warning disable CA1304 // Specify CultureInfo
-            switch (scopeOptions.Engine?.ToUpper() ?? (entries.Count <= BTREE_ITEM_THRESHOLD ? BTREE : DICT))
+            IServiceEntryLookup result = (scopeOptions.Engine?.ToUpper() ?? (entries.Count <= BTREE_ITEM_THRESHOLD ? BTREE : DICT)) switch
             #pragma warning restore CA1304 // Specify CultureInfo
             {
-                case DICT:
-                {
-                    result = new ServiceEntryLookup<DictionaryLookup>
-                    (
-                        entries,
-                        static () => new DictionaryLookup(),
-                        CreateGraphBuilder
-                    );
-                    break;
-                }
-
-                case BTREE:
-                {
-                    ServiceEntryLookup<CompiledBTreeLookup> lookup = new
-                    (
-                        entries,
-                        () => new CompiledBTreeLookup(delegateCompiler),
-                        CreateGraphBuilder
-                    );
-
-                    lookup.EntryLookup.Compile();
-                    lookup.GenericEntryLookup.Compile();
-
-                    result = lookup;
-                    break;
-                }
-
-                default: throw new NotSupportedException();
-            }
+                DICT => new ServiceEntryLookup<DictionaryLookup>
+                (
+                    entries,
+                    backendFactory: static () => new DictionaryLookup(),
+                    graphBuilderFactory: CreateGraphBuilder
+                ),
+                BTREE => new ServiceEntryLookup<CompiledBTreeLookup>
+                (
+                    entries,
+                    backendFactory: () => new CompiledBTreeLookup(delegateCompiler),
+                    graphBuilderFactory: CreateGraphBuilder,
+                    afterConstruction: static backend => backend.Compile()
+                ),
+                _ => throw new NotSupportedException()
+            };
 
             delegateCompiler.Compile();
             return result;
