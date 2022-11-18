@@ -73,9 +73,9 @@ namespace Solti.Utils.DI.Interfaces
         public Expression<Func<IInjector, Type, object>>? Factory { get; }
 
         /// <summary>
-        /// The related <see cref="Interfaces.Lifetime"/>.
+        /// The related <see cref="Interfaces.LifetimeBase"/>.
         /// </summary>
-        public virtual Lifetime? Lifetime { get; }
+        public virtual LifetimeBase? Lifetime { get; }
 
         /// <summary>
         /// Features related to this entry.

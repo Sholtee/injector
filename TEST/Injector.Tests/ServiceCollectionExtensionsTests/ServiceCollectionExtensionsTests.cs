@@ -18,8 +18,6 @@ namespace Solti.Utils.DI.Tests
     {
         public IModifiedServiceCollection Collection { get; set; }
 
-        static ServiceCollectionExtensionsTests() => InjectorDotNetLifetime.Initialize(); // ha meg nem lett vna betoltve a Solti.Utils.DI.dll
-
         [SetUp]
         public void SetUp()
         {

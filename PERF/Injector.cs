@@ -12,21 +12,13 @@ using BenchmarkDotNet.Engines;
 namespace Solti.Utils.DI.Perf
 {
     using Interfaces;
-    using Internals;
     using Proxy;
 
     public class InjectorTestsBase
     {
         public const int INVOCATION_COUNT = 2000000;
 
-        static InjectorTestsBase() =>
-            //
-            // Ugy tunik a modul inicializalok nem futnak ha a kodunkat a BenchmarkDotNet forditja
-            //
-
-            InjectorDotNetLifetime.Initialize();
-
-        public static IEnumerable<Lifetime> Lifetimes
+        public static IEnumerable<LifetimeBase> Lifetimes
         {
             get
             {
@@ -104,10 +96,10 @@ namespace Solti.Utils.DI.Perf
         }
 
         [ParamsSource(nameof(Lifetimes))]
-        public Lifetime DependencyLifetime { get; set; }
+        public LifetimeBase DependencyLifetime { get; set; }
 
         [ParamsSource(nameof(Lifetimes))]
-        public Lifetime DependantLifetime { get; set; }
+        public LifetimeBase DependantLifetime { get; set; }
 
         [GlobalSetup(Target = nameof(NonGeneric))]
         public void SetupNonGeneric() => Injector = Setup

@@ -15,8 +15,6 @@ namespace Solti.Utils.DI.Perf
 
     public class ServiceResolver
     {
-        static ServiceResolver() => InjectorDotNetLifetime.Initialize();
-
         public interface IMyService { }
 
         public class MyService : IMyService { }
@@ -25,15 +23,15 @@ namespace Solti.Utils.DI.Perf
         {
             get
             {
-                yield return Lifetime.Transient;
-                yield return Lifetime.Scoped;
-                yield return Lifetime.Singleton;
-                yield return Lifetime.Pooled;
+                yield return DI.Lifetime.Transient;
+                yield return DI.Lifetime.Scoped;
+                yield return DI.Lifetime.Singleton;
+                yield return DI.Lifetime.Pooled;
             }
         }
 
         [ParamsSource(nameof(Lifetimes))]
-        public Lifetime Lifetime { get; set; }
+        public LifetimeBase Lifetime { get; set; }
 
         private Interfaces.ServiceResolver ResolveImpl { get; set; }
 

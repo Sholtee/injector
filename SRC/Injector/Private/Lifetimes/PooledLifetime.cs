@@ -12,7 +12,7 @@ namespace Solti.Utils.DI.Internals
     using Interfaces;
     using Properties;
 
-    internal sealed class PooledLifetime : InjectorDotNetLifetime
+    internal sealed class PooledLifetime : Lifetime
     {
         private AbstractServiceEntry GetPoolService(PooledServiceEntry entry) => new SingletonServiceEntry
         (
@@ -26,7 +26,7 @@ namespace Solti.Utils.DI.Internals
             new { capacity = Capacity, name = entry.Name }
         );
 
-        public PooledLifetime() : base(precedence: 20) => Pooled = this;
+        public PooledLifetime() : base(precedence: 20) { }
 
         public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Type implementation)
         {
@@ -73,7 +73,7 @@ namespace Solti.Utils.DI.Internals
             yield return entry;
         }
 
-        public override int CompareTo(Lifetime other)
+        public override int CompareTo(LifetimeBase other)
         {
             if (other is null)
                 throw new ArgumentNullException(nameof(other));
@@ -93,7 +93,7 @@ namespace Solti.Utils.DI.Internals
 
         public override string ToString() => nameof(Pooled);
 
-        public override Lifetime Using(object configuration)
+        public override LifetimeBase Using(object configuration)
         {
             if (configuration is not PoolConfig config)
                 throw new ArgumentException(Resources.INVALID_CONFIG, nameof(configuration));

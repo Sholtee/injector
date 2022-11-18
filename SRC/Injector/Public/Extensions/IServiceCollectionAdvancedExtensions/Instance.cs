@@ -5,9 +5,11 @@
 ********************************************************************************/
 using System;
 
-namespace Solti.Utils.DI.Interfaces
+namespace Solti.Utils.DI
 {
-    public static partial class IServiceCollectionBasicExtensions
+    using Interfaces;
+
+    public static partial class IServiceCollectionAdvancedExtensions
     {
         /// <summary>
         /// Registers a pre-created instance. Useful to creating "constant" values (e.g. command-line arguments).

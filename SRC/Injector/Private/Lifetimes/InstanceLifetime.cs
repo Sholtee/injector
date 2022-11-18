@@ -10,9 +10,9 @@ namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
 
-    internal sealed class InstanceLifetime : InjectorDotNetLifetime
+    internal sealed class InstanceLifetime : Lifetime
     {
-        public InstanceLifetime() : base(precedence: 40) => Instance = this;
+        public InstanceLifetime() : base(precedence: 40) { }
 
         public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, object value)
         {

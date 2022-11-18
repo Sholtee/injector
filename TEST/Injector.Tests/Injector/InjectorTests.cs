@@ -20,7 +20,7 @@ namespace Solti.Utils.DI.Tests
     public partial class InjectorTests
     {
         #region Lifetimes
-        public static IEnumerable<Lifetime> Lifetimes
+        public static IEnumerable<LifetimeBase> Lifetimes
         {
             get
             {
@@ -254,14 +254,6 @@ namespace Solti.Utils.DI.Tests
         #endregion
 
         public IScopeFactory Root { get; set; }
-
-        static InjectorTests() =>
-            //
-            // Lifetime.XxX properties are late bound so we need to initialize them (outside the
-            // test environment it is done when the InjectorDotNet library is loaded).
-            //
-
-            InjectorDotNetLifetime.Initialize();
 
         [TearDown]
         public void TearDwon()

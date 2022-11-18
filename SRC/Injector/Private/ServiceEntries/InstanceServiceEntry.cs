@@ -35,7 +35,7 @@ namespace Solti.Utils.DI.Internals
             };
         }
 
-        public override Lifetime? Lifetime { get; } = Lifetime.Instance;
+        public override LifetimeBase? Lifetime { get; } = DI.Lifetime.Instance;
 
         public override ServiceEntryFeatures Features { get; } = ServiceEntryFeatures.Shared | ServiceEntryFeatures.CreateSingleInstance;
     }

@@ -11,9 +11,9 @@ namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
 
-    internal sealed class ScopedLifetime : InjectorDotNetLifetime
+    internal sealed class ScopedLifetime : Lifetime
     {
-        public ScopedLifetime() : base(precedence: 10) => Scoped = this;
+        public ScopedLifetime() : base(precedence: 10) { }
 
         public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Type implementation)
         {

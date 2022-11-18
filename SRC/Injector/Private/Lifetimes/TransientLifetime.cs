@@ -11,9 +11,9 @@ namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
 
-    internal sealed class TransientLifetime : InjectorDotNetLifetime
+    internal sealed class TransientLifetime : Lifetime
     {
-        public TransientLifetime() : base(precedence: 10) => Transient = this;
+        public TransientLifetime() : base(precedence: 10) { }
 
         public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Type implementation)
         {

@@ -10,7 +10,6 @@ namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
     using Primitives.Patterns;
-    using Primitives.Threading;
 
     internal sealed partial class PooledServiceEntry : ScopedServiceEntryBase
     {
@@ -84,7 +83,7 @@ namespace Solti.Utils.DI.Internals
             };
         }
 
-        public override Lifetime Lifetime { get; } = Lifetime.Pooled;
+        public override LifetimeBase? Lifetime { get; } = DI.Lifetime.Pooled;
 
         public override ServiceEntryFeatures Features { get; } = ServiceEntryFeatures.CreateSingleInstance | ServiceEntryFeatures.SupportsBuild;
     }

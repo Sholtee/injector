@@ -11,9 +11,9 @@ namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
 
-    internal sealed class SingletonLifetime : InjectorDotNetLifetime
+    internal sealed class SingletonLifetime : Lifetime
     {
-        public SingletonLifetime() : base(precedence: 30) => Singleton = this;
+        public SingletonLifetime() : base(precedence: 30) { }
 
         public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Type implementation)
         {

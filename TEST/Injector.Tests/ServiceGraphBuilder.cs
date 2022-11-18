@@ -72,14 +72,6 @@ namespace Solti.Utils.DI.Internals.Tests
             }
         }
 
-        static ServiceGraphBuilderTests() =>
-            //
-            // Lifetime.XxX properties are late bound so we need to initialize them (outside the
-            // test environment it is done when the InjectorDotNet library is loaded).
-            //
-
-            InjectorDotNetLifetime.Initialize();
-
         [TearDown]
         public void TearDwon()
         {
