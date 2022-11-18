@@ -19,11 +19,6 @@ namespace Solti.Utils.DI.Internals
         AbstractServiceEntry? Get(Type iface, string? name);
 
         /// <summary>
-        /// Increments the slot count.
-        /// </summary>
-        int AddSlot();
-
-        /// <summary>
         /// Slots required to store scoped services.
         /// </summary>
         int Slots { get; }

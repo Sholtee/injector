@@ -24,11 +24,11 @@ namespace Solti.Utils.DI.Internals
         {
         }
 
-        public override void Build(IDelegateCompiler? compiler, Func<int> assignSlot, params IFactoryVisitor[] visitors)
+        public override void Build(IBuildContext? context, params IFactoryVisitor[] visitors)
         {
-            base.Build(compiler, assignSlot, visitors);
+            base.Build(context, visitors);
 
-            if (compiler is not null)
+            if (context is not null)
                 ResolveInstance = (IInstanceFactory factory) =>
                 {
                     //

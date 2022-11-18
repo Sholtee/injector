@@ -17,12 +17,11 @@ namespace Solti.Utils.DI.Internals
 
         private readonly IFactoryVisitor[] FVisitors;
 
-        private readonly IDelegateCompiler FCompiler;
+        private readonly IBuildContext FBuildContext;
 
         private readonly IServiceEntryLookup FLookup;
 
-
-        public RecursiveDependencyGraphBuilder(IDelegateCompiler compiler, IServiceEntryLookup lookup, ScopeOptions options)
+        public RecursiveDependencyGraphBuilder(IServiceEntryLookup lookup, IBuildContext buildContext, ScopeOptions options)
         {
             FOptions = options;
             FPath = new ServicePath();
@@ -33,7 +32,7 @@ namespace Solti.Utils.DI.Internals
                 new ApplyLifetimeManagerVisitor(),
                 new ServiceRequestReplacerVisitor(FLookup, FPath, options.SupportsServiceProvider)
             };
-            FCompiler = compiler;
+            FBuildContext = buildContext;
         }
 
         public void Build(AbstractServiceEntry requested)
@@ -58,7 +57,7 @@ namespace Solti.Utils.DI.Internals
             FPath.Push(requested);
             try
             {
-                requested.Build(FCompiler, FLookup.AddSlot, FVisitors);
+                requested.Build(FBuildContext, FVisitors);
             }
             finally
             {

@@ -124,7 +124,7 @@ namespace Solti.Utils.DI.Internals
         #endregion
 
         /// <inheritdoc/>
-        public override void Build(IDelegateCompiler? compiler, Func<int> assignSlot, params IFactoryVisitor[] visitors)
+        public override void Build(IBuildContext? context, params IFactoryVisitor[] visitors)
         {
             if (visitors is null)
                 throw new ArgumentNullException(nameof(visitors));
@@ -142,10 +142,12 @@ namespace Solti.Utils.DI.Internals
                 (visited, visitor) => visitor.Visit(visited, this)
             );
 
-            if (compiler is not null)
+            if (context is not null)
             {
                 Debug.WriteLine($"Created factory: {Environment.NewLine}{factoryExpr.GetDebugView()}");
-                compiler.Compile((Expression<FactoryDelegate>) factoryExpr, factory => CreateInstance = factory);
+                context
+                    .Compiler
+                    .Compile((Expression<FactoryDelegate>) factoryExpr, factory => CreateInstance = factory);
 
                 State = (State | ServiceEntryStates.Built) & ~ServiceEntryStates.Validated;
             }

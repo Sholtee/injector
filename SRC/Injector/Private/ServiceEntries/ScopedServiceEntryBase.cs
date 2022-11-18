@@ -28,17 +28,15 @@ namespace Solti.Utils.DI.Internals
         {
         }
 
-        public sealed override void Build(IDelegateCompiler? compiler, Func<int> assignSlot, params IFactoryVisitor[] visitors)
+        public sealed override void Build(IBuildContext? context, params IFactoryVisitor[] visitors)
         {
-            if (assignSlot is null)
-                throw new ArgumentNullException(nameof(assignSlot));
+            base.Build(context, visitors);
 
-            base.Build(compiler, null!, visitors);
-
-            if (compiler is null)
+            if (context is null)
                 return;
 
-            int assignedSlot = assignSlot();
+            int assignedSlot = context.AssignSlot();
+
             ResolveInstance = (IInstanceFactory factory) =>
             {
                 //

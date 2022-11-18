@@ -3,7 +3,6 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
-using System;
 using System.Diagnostics;
 
 namespace Solti.Utils.DI.Internals
@@ -12,9 +11,7 @@ namespace Solti.Utils.DI.Internals
 
     internal sealed class ShallowDependencyGraphBuilder : IGraphBuilder
     {
-        private readonly IDelegateCompiler FCompiler;
-
-        private readonly IServiceEntryLookup FLookup;
+        private readonly IBuildContext FBuildContext;
 
         private static readonly IFactoryVisitor[] FVisitors = new IFactoryVisitor[]
         {
@@ -22,11 +19,7 @@ namespace Solti.Utils.DI.Internals
             new ApplyLifetimeManagerVisitor()
         };
 
-        public ShallowDependencyGraphBuilder(IDelegateCompiler compiler, IServiceEntryLookup lookup)
-        {
-            FCompiler = compiler;
-            FLookup = lookup;
-        }
+        public ShallowDependencyGraphBuilder(IBuildContext buildContext) => FBuildContext = buildContext;
 
         public void Build(AbstractServiceEntry requested)
         {
@@ -35,9 +28,7 @@ namespace Solti.Utils.DI.Internals
             if (!requested.Features.HasFlag(ServiceEntryFeatures.SupportsBuild) || requested.State.HasFlag(ServiceEntryStates.Built))
                 return;
 
-            requested.Build(FCompiler, FLookup.AddSlot, FVisitors);
+            requested.Build(FBuildContext, FVisitors);
         }
-
-        public IServiceEntryLookup Lookup => throw new NotSupportedException();
     }
 }

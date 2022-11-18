@@ -36,12 +36,14 @@ namespace Solti.Utils.DI.Internals
                 DICT => new ServiceEntryLookup<DictionaryLookup>
                 (
                     entries,
+                    delegateCompiler,
                     backendFactory: static () => new DictionaryLookup(),
                     graphBuilderFactory: CreateGraphBuilder
                 ),
                 BTREE => new ServiceEntryLookup<CompiledBTreeLookup>
                 (
                     entries,
+                    delegateCompiler,
                     backendFactory: () => new CompiledBTreeLookup(delegateCompiler),
                     graphBuilderFactory: CreateGraphBuilder,
                     afterConstruction: static backend => backend.Compile()
@@ -52,10 +54,10 @@ namespace Solti.Utils.DI.Internals
             delegateCompiler.Compile();
             return result;
 
-            IGraphBuilder CreateGraphBuilder(IServiceEntryLookup lookup) => scopeOptions.ServiceResolutionMode switch
+            IGraphBuilder CreateGraphBuilder<TBackend>(ServiceEntryLookup<TBackend> lookup) where TBackend : class, ILookup<CompositeKey, AbstractServiceEntry, TBackend> => scopeOptions.ServiceResolutionMode switch
             {
-                ServiceResolutionMode.JIT => new ShallowDependencyGraphBuilder(delegateCompiler, lookup),
-                ServiceResolutionMode.AOT => new RecursiveDependencyGraphBuilder(delegateCompiler, lookup, scopeOptions),
+                ServiceResolutionMode.JIT => new ShallowDependencyGraphBuilder(lookup),
+                ServiceResolutionMode.AOT => new RecursiveDependencyGraphBuilder(lookup, lookup, scopeOptions),
                 _ => throw new NotSupportedException()
             };
         }

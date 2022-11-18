@@ -17,11 +17,12 @@ namespace Solti.Utils.DI.Internals
     /// <summary>
     /// Resolver lookup shared among scopes.
     /// </summary>
-    internal sealed class ServiceEntryLookup<TBackend>: IServiceEntryLookup where TBackend : class, ILookup<CompositeKey, AbstractServiceEntry, TBackend>
+    internal sealed class ServiceEntryLookup<TBackend>: IServiceEntryLookup, IBuildContext where TBackend : class, ILookup<CompositeKey, AbstractServiceEntry, TBackend>
     {
         private volatile TBackend FEntryLookup;
         private readonly TBackend FGenericEntryLookup;
         private readonly IGraphBuilder FGraphBuilder;
+        private readonly IDelegateCompiler FCompiler;
         private readonly bool FInitialized;
         private readonly object FLock = new();
         private int FSlots;
@@ -93,13 +94,15 @@ namespace Solti.Utils.DI.Internals
         public ServiceEntryLookup
         (
             IEnumerable<AbstractServiceEntry> entries,
+            IDelegateCompiler compiler,
             Func<TBackend> backendFactory,
-            Func<IServiceEntryLookup, IGraphBuilder> graphBuilderFactory,
+            Func<ServiceEntryLookup<TBackend>, IGraphBuilder> graphBuilderFactory,
             Action<TBackend>? afterConstruction = null
         )
         {
             FEntryLookup = backendFactory();
             FGenericEntryLookup = backendFactory();
+            FCompiler = compiler;
 
             foreach (AbstractServiceEntry entry in entries)
             {
@@ -143,7 +146,9 @@ namespace Solti.Utils.DI.Internals
 
         public int Slots => FSlots;
 
-        public int AddSlot() => Interlocked.Increment(ref FSlots) - 1;
+        public IDelegateCompiler Compiler => FCompiler;
+
+        public int AssignSlot() => Interlocked.Increment(ref FSlots) - 1;
 
         public AbstractServiceEntry? Get(Type iface, string? name) => FInitialized
             ? GetSafe(iface, name)
