@@ -29,10 +29,15 @@ namespace Solti.Utils.DI.Tests
                 .SetupGet(i => i.Tag)
                 .Returns(new Mock<ILifetimeManager<object>>(MockBehavior.Strict).Object);
 
+            var mockBuildContext = new Mock<IBuildContext>(MockBehavior.Strict);
+            mockBuildContext
+                .SetupGet(ctx => ctx.Compiler)
+                .Returns(new SimpleDelegateCompiler());
+
             Collection.Service<IMyService, MyService>(lifetime);
 
             AbstractServiceEntry lastEntry = Collection.LastEntry;
-            lastEntry.Build(new SimpleDelegateCompiler(), new MergeProxiesVisitor(), new ApplyLifetimeManagerVisitor());
+            lastEntry.Build(mockBuildContext.Object, new MergeProxiesVisitor(), new ApplyLifetimeManagerVisitor());
 
             IMyService instance = (IMyService) lastEntry
                 .CreateInstance(mockInjector.Object, out object _);
@@ -56,10 +61,15 @@ namespace Solti.Utils.DI.Tests
                 .SetupGet(i => i.Tag)
                 .Returns(new Mock<ILifetimeManager<object>>(MockBehavior.Strict).Object);
 
+            var mockBuildContext = new Mock<IBuildContext>(MockBehavior.Strict);
+            mockBuildContext
+                .SetupGet(ctx => ctx.Compiler)
+                .Returns(new SimpleDelegateCompiler());
+
             Collection.Service<IMyDependantService, MyService>(lifetime);
 
             AbstractServiceEntry lastEntry = Collection.LastEntry;
-            lastEntry.Build(new SimpleDelegateCompiler(), new MergeProxiesVisitor(), new ApplyLifetimeManagerVisitor());
+            lastEntry.Build(mockBuildContext.Object, new MergeProxiesVisitor(), new ApplyLifetimeManagerVisitor());
 
             lastEntry.CreateInstance(mockInjector.Object, out object _);
 
@@ -74,13 +84,18 @@ namespace Solti.Utils.DI.Tests
                 .SetupGet(i => i.Tag)
                 .Returns(new Mock<ILifetimeManager<object>>(MockBehavior.Strict).Object);
 
+            var mockBuildContext = new Mock<IBuildContext>(MockBehavior.Strict);
+            mockBuildContext
+                .SetupGet(ctx => ctx.Compiler)
+                .Returns(new SimpleDelegateCompiler());
+
             Collection.Service(typeof(IMyGenericService<>), typeof(MyGenericService<>), lifetime);
 
             AbstractServiceEntry lastEntry = Collection.LastEntry;
             Assert.That(lastEntry.Factory, Is.Null);
 
             lastEntry = lastEntry.Specialize(typeof(int));
-            Assert.DoesNotThrow(() => lastEntry.Build(new SimpleDelegateCompiler(), new MergeProxiesVisitor(), new ApplyLifetimeManagerVisitor()));
+            Assert.DoesNotThrow(() => lastEntry.Build(mockBuildContext.Object, new MergeProxiesVisitor(), new ApplyLifetimeManagerVisitor()));
 
             IMyGenericService<int> instance = (IMyGenericService<int>) lastEntry.CreateInstance(mockInjector.Object, out object _);
 
@@ -109,10 +124,15 @@ namespace Solti.Utils.DI.Tests
                 .SetupGet(i => i.Tag)
                 .Returns(new Mock<ILifetimeManager<object>>(MockBehavior.Strict).Object);
 
+            var mockBuildContext = new Mock<IBuildContext>(MockBehavior.Strict);
+            mockBuildContext
+                .SetupGet(ctx => ctx.Compiler)
+                .Returns(new SimpleDelegateCompiler());
+
             Collection.Factory(i => mockService.Object, lifetime);
 
             AbstractServiceEntry lastEntry = Collection.LastEntry;
-            lastEntry.Build(new SimpleDelegateCompiler(), new MergeProxiesVisitor(), new ApplyLifetimeManagerVisitor());
+            lastEntry.Build(mockBuildContext.Object, new MergeProxiesVisitor(), new ApplyLifetimeManagerVisitor());
 
             IOrderInspectingService svc = (IOrderInspectingService) lastEntry.CreateInstance(mockInjector.Object, out object _);
 

@@ -49,7 +49,12 @@ namespace Solti.Utils.DI.Tests
                 .SetupGet(i => i.Options)
                 .Returns(new ScopeOptions());
 
-            Collection.LastEntry.Build(new SimpleDelegateCompiler(), new MergeProxiesVisitor(), new ApplyLifetimeManagerVisitor());
+            var mockBuildContext = new Mock<IBuildContext>(MockBehavior.Strict);
+            mockBuildContext
+                .SetupGet(ctx => ctx.Compiler)
+                .Returns(new SimpleDelegateCompiler());
+
+            Collection.LastEntry.Build(mockBuildContext.Object, new MergeProxiesVisitor(), new ApplyLifetimeManagerVisitor());
             Assert.That(Collection.LastEntry.CreateInstance(mockInjector.Object, out _), Is.InstanceOf<DecoratedImplementation_1>());
 
             mockCallback1.Verify(_ => _(It.IsAny<IInjector>(), typeof(IInterface_1), It.IsAny<IInterface_1>()), Times.Once);
@@ -78,7 +83,12 @@ namespace Solti.Utils.DI.Tests
                 .SetupGet(i => i.Options)
                 .Returns(new ScopeOptions());
 
-            Collection.LastEntry.Build(new SimpleDelegateCompiler(), new MergeProxiesVisitor(), new ApplyLifetimeManagerVisitor());
+            var mockBuildContext = new Mock<IBuildContext>(MockBehavior.Strict);
+            mockBuildContext
+                .SetupGet(ctx => ctx.Compiler)
+                .Returns(new SimpleDelegateCompiler());
+
+            Collection.LastEntry.Build(mockBuildContext.Object, new MergeProxiesVisitor(), new ApplyLifetimeManagerVisitor());
             Assert.That(Collection.LastEntry.CreateInstance(mockInjector.Object, out _), Is.InstanceOf<DecoratedImplementation_3<int>>());
 
             mockCallback.Verify(_ => _(It.IsAny<IInjector>(), typeof(IInterface_3<int>), It.IsAny<IInterface_3<int>>()), Times.Once);
@@ -129,7 +139,12 @@ namespace Solti.Utils.DI.Tests
                 .SetupGet(i => i.Options)
                 .Returns(new ScopeOptions());
 
-            Collection.LastEntry.Build(new SimpleDelegateCompiler(), new MergeProxiesVisitor(), new ApplyLifetimeManagerVisitor());
+            var mockBuildContext = new Mock<IBuildContext>(MockBehavior.Strict);
+            mockBuildContext
+                .SetupGet(ctx => ctx.Compiler)
+                .Returns(new SimpleDelegateCompiler());
+
+            Collection.LastEntry.Build(mockBuildContext.Object, new MergeProxiesVisitor(), new ApplyLifetimeManagerVisitor());
             object instance = Collection.LastEntry.CreateInstance(mockInjector.Object, out _);
 
             Assert.That(instance, Is.InstanceOf<MyProxyWithDependency>());
@@ -169,7 +184,12 @@ namespace Solti.Utils.DI.Tests
                 .SetupGet(i => i.Options)
                 .Returns(new ScopeOptions());
 
-            Collection.LastEntry.Build(new SimpleDelegateCompiler(), new MergeProxiesVisitor(), new ApplyLifetimeManagerVisitor());
+            var mockBuildContext = new Mock<IBuildContext>(MockBehavior.Strict);
+            mockBuildContext
+                .SetupGet(ctx => ctx.Compiler)
+                .Returns(new SimpleDelegateCompiler());
+
+            Collection.LastEntry.Build(mockBuildContext.Object, new MergeProxiesVisitor(), new ApplyLifetimeManagerVisitor());
             Assert.That(Collection.LastEntry.CreateInstance(mockInjector.Object, out _), Is.InstanceOf<DecoratedImplementation_1>());
         }
     }

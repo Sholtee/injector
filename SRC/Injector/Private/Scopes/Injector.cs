@@ -99,13 +99,13 @@ namespace Solti.Utils.DI.Internals
         {
             get
             {
-                yield return new ContextualServiceEntry(typeof(IInjector), null, static (i, _) => i);
+                yield return new ScopedServiceEntry(typeof(IInjector), null, static (i, _) => i);
 
                 //
                 // Factory is always the root.
                 //
 
-                yield return new ContextualServiceEntry(typeof(IScopeFactory), null, (_, _) => this);
+                yield return new SingletonServiceEntry(typeof(IScopeFactory), null, static (i, _) => i);
 
                 //
                 // It's enough to store the original entries, no need to maintain the list (for instance
@@ -123,7 +123,7 @@ namespace Solti.Utils.DI.Internals
                     }
                 );
 #if DEBUG
-                yield return new ContextualServiceEntry
+                yield return new ScopedServiceEntry
                 (
                     typeof(ICollection),
                     "captured_disposables",
