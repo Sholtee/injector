@@ -107,20 +107,19 @@ namespace Solti.Utils.DI.Internals
 
                 yield return new SingletonServiceEntry(typeof(IScopeFactory), null, static (i, _) => i);
 
-                //
-                // It's enough to store the original entries, no need to maintain the list (for instance
-                // when a generic service gets specialized)
-                //
+
+                yield return new SingletonServiceEntry
+                (
+                    typeof(IReadOnlyCollection<AbstractServiceEntry>),
+                    $"{Consts.INTERNAL_SERVICE_NAME_PREFIX}registered_services",
+                    (_, _) => ServiceCollection
+                );
 
                 yield return new ScopedServiceEntry
                 (
                     typeof(IEnumerable<>),
                     null,
-                    typeof(ServiceEnumerator<>),
-                    new 
-                    {
-                        root = this
-                    }
+                    typeof(ServiceEnumerator<>)
                 );
 #if DEBUG
                 yield return new ScopedServiceEntry

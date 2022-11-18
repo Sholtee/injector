@@ -10,7 +10,7 @@ namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
 
-    internal sealed class SingletonServiceEntry : SingletonServiceEntryBase
+    internal class SingletonServiceEntry : ProducibleServiceEntry
     {
         public SingletonServiceEntry(Type @interface, string? name, Expression<Func<IInjector, Type, object>> factory) : base(@interface, name, factory)
         {
@@ -22,6 +22,36 @@ namespace Solti.Utils.DI.Internals
 
         public SingletonServiceEntry(Type @interface, string? name, Type implementation, object explicitArgs) : base(@interface, name, implementation, explicitArgs)
         {
+        }
+
+        public sealed override void Build(IBuildContext? context, params IFactoryVisitor[] visitors)
+        {
+            base.Build(context, visitors);
+
+            if (context is null)
+                return;
+
+            int assignedSlot = context.AssignSlot();
+
+            ResolveInstance = (IInstanceFactory factory) =>
+            {
+                //
+                // Inlining works against non-interface, non-virtual methods only
+                //
+
+                if (factory is Injector injector)
+                {
+                    if (injector.Super is not null)
+                        injector = (Injector)injector.Super;
+
+                    return injector.GetOrCreateInstance(this, assignedSlot);
+                }
+
+                if (factory.Super is not null)
+                    factory = factory.Super;
+
+                return factory.GetOrCreateInstance(this, assignedSlot);
+            };
         }
 
         public override AbstractServiceEntry Specialize(params Type[] genericArguments)
@@ -54,8 +84,8 @@ namespace Solti.Utils.DI.Internals
             };
         }
 
-        public override Lifetime Lifetime { get; } = Lifetime.Singleton;
-
         public override ServiceEntryFeatures Features { get; } = ServiceEntryFeatures.CreateSingleInstance | ServiceEntryFeatures.Shared | ServiceEntryFeatures.SupportsBuild;
+
+        public override Lifetime Lifetime { get; } = Lifetime.Singleton;
     }
 }
