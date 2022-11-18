@@ -17,7 +17,7 @@ namespace Solti.Utils.DI.Interfaces
         /// <param name="iface">The service interface to be registered. It can not be null and can be registered only once (with the given <paramref name="name"/>).</param>
         /// <param name="name">The (optional) name  of the service.</param>
         /// <param name="factory">The factory function that is responsible for the instantiation. Its call count depends on the value of the <paramref name="lifetime"/> parameter. Note that the second parameter of the <paramref name="factory"/> is never generic, even if you registered the factory for an open generic interface.</param>
-        /// <param name="lifetime">The <see cref="LifetimeBase"/> of the service.</param>
+        /// <param name="lifetime">The lifetime of service.</param>
         /// <remarks>You can register generic services (where the <paramref name="iface"/> parameter is an open generic type).</remarks>
         public static IModifiedServiceCollection Factory(this IServiceCollection self, Type iface, string? name, Expression<Func<IInjector, Type, object>> factory, LifetimeBase lifetime)
         {
@@ -49,7 +49,7 @@ namespace Solti.Utils.DI.Interfaces
         /// <param name="self">The target <see cref="IServiceCollection"/>.</param>
         /// <param name="iface">The service interface to be registered. It can not be null and can be registered only once.</param>
         /// <param name="factory">The factory function that is responsible for the instantiation. Its call count depends on the value of the <paramref name="lifetime"/> parameter. Note that the second parameter of the <paramref name="factory"/> is never generic, even if you registered the factory for an open generic interface.</param>
-        /// <param name="lifetime">The <see cref="LifetimeBase"/> of the service.</param>
+        /// <param name="lifetime">The lifetime of service.</param>
         /// <remarks>You can register generic services (where the <paramref name="iface"/> parameter is an open generic type).</remarks>
         public static IModifiedServiceCollection Factory(this IServiceCollection self, Type iface, Expression<Func<IInjector, Type, object>> factory, LifetimeBase lifetime) 
             => self.Factory(iface, null, factory, lifetime);
@@ -61,7 +61,7 @@ namespace Solti.Utils.DI.Interfaces
         /// <param name="self">The target <see cref="IServiceCollection"/>.</param>
         /// <param name="name">The (optional) name of the service.</param>
         /// <param name="factory">The factory function that is responsible for the instantiation. Its call count depends on the value of the <paramref name="lifetime"/> parameter.</param>
-        /// <param name="lifetime">The <see cref="LifetimeBase"/> of the service.</param>
+        /// <param name="lifetime">The lifetime of service.</param>
         public static IModifiedServiceCollection Factory<TInterface>(this IServiceCollection self, string? name, Expression<Func<IInjector, TInterface>> factory, LifetimeBase lifetime) where TInterface : class
             => self.Factory(typeof(TInterface), name, WrapToStandardFactory(factory), lifetime);
 
@@ -71,7 +71,7 @@ namespace Solti.Utils.DI.Interfaces
         /// <typeparam name="TInterface">The service interface to be registered. It can be registered only once.</typeparam>
         /// <param name="self">The target <see cref="IServiceCollection"/>.</param>
         /// <param name="factory">The factory function that is responsible for the instantiation. Its call count depends on the value of the <paramref name="lifetime"/> parameter.</param>
-        /// <param name="lifetime">The <see cref="LifetimeBase"/> of the service.</param>
+        /// <param name="lifetime">The lifetime of service.</param>
         public static IModifiedServiceCollection Factory<TInterface>(this IServiceCollection self, Expression<Func<IInjector, TInterface>> factory, LifetimeBase lifetime) where TInterface : class
             => self.Factory(typeof(TInterface), null, WrapToStandardFactory(factory), lifetime);
 
