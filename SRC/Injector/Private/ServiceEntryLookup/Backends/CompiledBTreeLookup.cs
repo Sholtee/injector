@@ -77,7 +77,6 @@ namespace Solti.Utils.DI.Internals
         /// <summary>
         /// Tries to find an item in this lookup.
         /// </summary>
-        /// <remarks>Until the first <see cref="Compile"/> call this implementation uses the underlying red-black tree to acquire the result.</remarks>
         public bool TryGet(CompositeKey key, out AbstractServiceEntry data) => FTryGet(key, out data);
     }
 }
