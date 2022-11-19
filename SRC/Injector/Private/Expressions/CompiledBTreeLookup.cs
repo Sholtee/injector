@@ -19,14 +19,23 @@ namespace Solti.Utils.DI.Internals
     {
         private static readonly MethodInfo FCompareTo = MethodInfoExtractor.Extract<CompositeKey>(ck => ck.CompareTo(null!));
 
-        private static IEnumerable<Expression> BuildNode(RedBlackTreeNode<KeyValuePair<CompositeKey, AbstractServiceEntry>>? node, ParameterExpression key, ParameterExpression order, LabelTarget ret)
+        private delegate bool TryGetEntry(CompositeKey key, out AbstractServiceEntry entry);
+
+        private static IEnumerable<Expression> BuildNode
+        (
+            RedBlackTreeNode<KeyValuePair<CompositeKey, AbstractServiceEntry>>? node,
+            ParameterExpression key,
+            ParameterExpression entry,
+            ParameterExpression order,
+            LabelTarget ret
+        )
         {
             if (node is null)
             {
                 yield return Expression.Return
                 (
                     ret,
-                    Expression.Default(typeof(AbstractServiceEntry))
+                    Expression.Constant(false)
                 );
                 yield break;
             }
@@ -56,7 +65,7 @@ namespace Solti.Utils.DI.Internals
                 Expression.LessThan(order, Expression.Constant(0)),
                 ifTrue: Expression.Block
                 (
-                    BuildNode(node.Left, key, order, ret)
+                    BuildNode(node.Left, key, entry, order, ret)
                 )
             );
 
@@ -65,46 +74,55 @@ namespace Solti.Utils.DI.Internals
                 Expression.GreaterThan(order, Expression.Constant(0)),
                 ifTrue: Expression.Block
                 (
-                    BuildNode(node.Right, key, order, ret)
+                    BuildNode(node.Right, key, entry, order, ret)
                 )
             );
 
             //
-            // return Result;
+            // entry = ...;
+            // return true;
             //
+
+            yield return Expression.Assign
+            (
+                entry,
+                Expression.Constant(node.Data.Value)
+            );
 
             yield return Expression.Return
             (
                 ret,
-                Expression.Constant(node.Data.Value, typeof(AbstractServiceEntry))
+                Expression.Constant(true)
             );
         }
 
-        private static Expression<Func<CompositeKey, AbstractServiceEntry?>> BuildTree(RedBlackTree<KeyValuePair<CompositeKey, AbstractServiceEntry>> tree)
+        private static Expression<TryGetEntry> BuildTree(RedBlackTree<KeyValuePair<CompositeKey, AbstractServiceEntry>> tree)
         {
-            ParameterExpression key = Expression.Parameter(typeof(CompositeKey), nameof(key));
+            ParameterExpression
+                key = Expression.Parameter(typeof(CompositeKey), nameof(key)),
+                entry = Expression.Parameter(typeof(AbstractServiceEntry).MakeByRefType(), nameof(entry));
 
-            LabelTarget ret = Expression.Label(typeof(AbstractServiceEntry), nameof(ret));
+            LabelTarget ret = Expression.Label(typeof(bool), nameof(ret));
 
-            LabelExpression returnNull = Expression.Label(ret, Expression.Default(ret.Type));
+            LabelExpression returnFalse = Expression.Label(ret, Expression.Constant(false));
 
             Expression body;
             if (tree.Root is null)
-                body = returnNull;
+                body = returnFalse;
             else
             {
                 ParameterExpression order = Expression.Variable(typeof(int), nameof(order));
                 List<Expression> block = new
                 (
-                    BuildNode(tree.Root, key, order, ret)
+                    BuildNode(tree.Root, key, entry, order, ret)
                 )
                 {
-                    returnNull
+                    returnFalse
                 };
                 body = Expression.Block(new[] { order }, block);
             }
 
-            Expression<Func<CompositeKey, AbstractServiceEntry?>> lambda = Expression.Lambda<Func<CompositeKey, AbstractServiceEntry?>>(body,key);
+            Expression<TryGetEntry> lambda = Expression.Lambda<TryGetEntry>(body, key, entry);
 
             WriteLine($"Created tree:{Environment.NewLine}{lambda.GetDebugView()}");
 

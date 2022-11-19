@@ -46,7 +46,7 @@ namespace Solti.Utils.DI.Internals
                     delegateCompiler,
                     backendFactory: () => new CompiledBTreeLookup(delegateCompiler),
                     graphBuilderFactory: CreateGraphBuilder,
-                    afterConstruction: static backend => backend.Compile()
+                    afterConstruction: static backend => backend.Compiled = true
                 ),
                 _ => throw new NotSupportedException()
             };

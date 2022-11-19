@@ -3,7 +3,6 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
-using System;
 using System.Collections.Generic;
 
 namespace Solti.Utils.DI.Internals
@@ -13,15 +12,24 @@ namespace Solti.Utils.DI.Internals
 
     internal sealed partial class CompiledBTreeLookup: ILookup<CompositeKey, AbstractServiceEntry, CompiledBTreeLookup>
     {
-        private Func<CompositeKey, AbstractServiceEntry?>? FTryGet;
+        private TryGetEntry FTryGet;
+
+        private bool FCompiled;
 
         private readonly RedBlackTree<KeyValuePair<CompositeKey, AbstractServiceEntry>> FTree;
 
         private readonly IDelegateCompiler FCompiler;
 
+        private void Compile() => FCompiler.Compile
+        (
+            BuildTree(FTree),
+            tryGet => FTryGet = tryGet
+        );
+
         private CompiledBTreeLookup(RedBlackTree<KeyValuePair<CompositeKey, AbstractServiceEntry>> tree, IDelegateCompiler compiler)
         {
             FTree = tree;
+            FTryGet = tree.TryGet;
             FCompiler = compiler;
         }
 
@@ -29,53 +37,47 @@ namespace Solti.Utils.DI.Internals
         {
         }
 
-        public void Compile() => FCompiler.Compile
-        (
-            BuildTree(FTree),
-            tryGet => FTryGet = tryGet
-        );
+        public bool Compiled
+        {
+            get => FCompiled;
+            set
+            {
+                if (!value)
+                    FTryGet = FTree.TryGet;
+                else
+                    Compile();
+
+                FCompiled = value;
+            }
+        }
 
         /// <summary>
         /// Extends this tree into a new lookup
         /// </summary>
-        /// <remarks>The returned lookup is always compiled.</remarks>
-        public CompiledBTreeLookup With(CompositeKey key, AbstractServiceEntry data)
-        {
-            CompiledBTreeLookup newTree = new
+        public CompiledBTreeLookup With(CompositeKey key, AbstractServiceEntry data) => new
+        (
+            FTree.With
             (
-                FTree.With
-                (
-                    new KeyValuePair<CompositeKey, AbstractServiceEntry>(key, data)
-                ),
-                FCompiler
-            );
-            newTree.Compile();
-            return newTree;
-        }
+                new KeyValuePair<CompositeKey, AbstractServiceEntry>(key, data)
+            ),
+            FCompiler
+        )
+        {
+            Compiled = Compiled
+        };
 
-        public bool TryAdd(CompositeKey key, AbstractServiceEntry data) => FTree.TryAdd(key, data);
+        public bool TryAdd(CompositeKey key, AbstractServiceEntry data)
+        {
+            bool updated = FTree.TryAdd(key, data);
+            if (updated && FCompiled)
+                Compile();
+            return updated;
+        }
 
         /// <summary>
         /// Tries to find an item in this lookup.
         /// </summary>
         /// <remarks>Until the first <see cref="Compile"/> call this implementation uses the underlying red-black tree to acquire the result.</remarks>
-        public bool TryGet(CompositeKey key, out AbstractServiceEntry data)
-        {
-            //
-            // Try the fast way if possible
-            //
-
-            if (FTryGet is not null)
-            {
-                data = FTryGet(key)!;
-                return data is not null;
-            }
-
-            //
-            // Not won... lets get slow
-            //
-
-            return FTree.TryGet(key, out data);
-        }
+        public bool TryGet(CompositeKey key, out AbstractServiceEntry data) => FTryGet(key, out data);
     }
 }
