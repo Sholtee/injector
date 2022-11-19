@@ -19,6 +19,7 @@ namespace Solti.Utils.DI.Internals
     /// </summary>
     internal sealed class ServiceEntryLookup<TBackend>: IServiceEntryLookup, IBuildContext where TBackend : class, ILookup<CompositeKey, AbstractServiceEntry, TBackend>
     {
+        #region Private
         private volatile TBackend FEntryLookup;
         private readonly TBackend FGenericEntryLookup;
         private readonly IGraphBuilder FGraphBuilder;
@@ -90,6 +91,7 @@ namespace Solti.Utils.DI.Internals
 
             return entry;
         }
+        #endregion
 
         public ServiceEntryLookup
         (
@@ -144,14 +146,18 @@ namespace Solti.Utils.DI.Internals
             FInitialized = true;
         }
 
-        public int Slots => FSlots;
+        #region IBuildContext
+        IDelegateCompiler IBuildContext.Compiler => FCompiler;
 
-        public IDelegateCompiler Compiler => FCompiler;
+        int IBuildContext.AssignSlot() => Interlocked.Increment(ref FSlots) - 1;
+        #endregion
 
-        public int AssignSlot() => Interlocked.Increment(ref FSlots) - 1;
+        #region IServiceEntryLookup
+        int IServiceEntryLookup.Slots => FSlots;
 
-        public AbstractServiceEntry? Get(Type iface, string? name) => FInitialized
+        AbstractServiceEntry? IServiceEntryLookup.Get(Type iface, string? name) => FInitialized
             ? GetSafe(iface, name)
             : GetUnsafe(iface, name);
+        #endregion
     }
 }
