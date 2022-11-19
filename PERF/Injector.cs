@@ -125,9 +125,9 @@ namespace Solti.Utils.DI.Perf
         (
             container => container
                 .Service<IDependency, Dependency>(DependencyLifetime)
-                .WithProxy<InterfaceInterceptor<IDependency>>()
+                .UsingProxy<InterfaceInterceptor<IDependency>>()
                 .Service<IDependant, Dependant>(DependantLifetime)
-                .WithProxy<InterfaceInterceptor<IDependant>>()
+                .UsingProxy<InterfaceInterceptor<IDependant>>()
         ).CreateScope();
 
         [Benchmark]

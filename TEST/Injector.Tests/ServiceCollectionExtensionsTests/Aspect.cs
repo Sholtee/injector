@@ -118,7 +118,7 @@ namespace Solti.Utils.DI.Tests
 
         [Test]
         public void Aspects_ShouldThrowOnInstances() =>
-            Assert.Throws<NotSupportedException>(() => Collection.Instance<IMyService>(new MyService()).WithProxy((_, _, _) => null), Resources.PROXYING_NOT_SUPPORTED);
+            Assert.Throws<NotSupportedException>(() => Collection.Instance<IMyService>(new MyService()).ApplyProxy((_, _, _) => null), Resources.PROXYING_NOT_SUPPORTED);
 
         [Test]
         public void Aspects_ApplyingAspectsShouldBeSequential([ValueSource(nameof(Lifetimes))] Lifetime lifetime)
@@ -172,7 +172,7 @@ namespace Solti.Utils.DI.Tests
 
         [Test]
         public void Aspects_ApplyingAspectsShouldThrowIfThereIsNoTargetCtorParameter([Values(typeof(InterceptorHavingNoTarget), typeof(InterceptorHavingMultipleTarget))] Type interceptor) =>
-            Assert.Throws<InvalidOperationException>(() => new ScopedServiceEntry(typeof(IInterface_1), null, typeof(Implementation_1_No_Dep)).ApplyInterceptor(interceptor), Properties.Resources.TARGET_PARAM_CANNOT_BE_DETERMINED);
+            Assert.Throws<InvalidOperationException>(() => new ScopedServiceEntry(typeof(IInterface_1), null, typeof(Implementation_1_No_Dep)).ApplyProxy(interceptor), Properties.Resources.TARGET_PARAM_CANNOT_BE_DETERMINED);
     }
 
     [DummyAspect]

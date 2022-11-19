@@ -50,7 +50,7 @@ namespace Solti.Utils.DI.Interfaces
 
             return self
                 .Service(iface, name, provider, explicitArgs, lifetime)
-                .WithProxy((injector, iface, instance) => ((IServiceProvider) instance).GetService(iface));
+                .ApplyProxy((injector, iface, instance) => ((IServiceProvider) instance).GetService(iface));
         }
 
         /// <summary>
@@ -88,7 +88,7 @@ namespace Solti.Utils.DI.Interfaces
 
             return self
                 .Service(iface, name, provider, lifetime)
-                .WithProxy((injector, iface, instance) => ((IServiceProvider) instance).GetService(iface));
+                .ApplyProxy((injector, iface, instance) => ((IServiceProvider) instance).GetService(iface));
         }
 
         /// <summary>

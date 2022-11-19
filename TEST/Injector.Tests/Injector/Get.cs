@@ -293,7 +293,7 @@ namespace Solti.Utils.DI.Tests
             Root = ScopeFactory.Create
             (
                 svcs => svcs
-                    .Service<IInterface_1, Implementation_1_No_Dep>(lifetime).WithProxy((injector, _, _) => injector.Get<IInterface_1>(null)),
+                    .Service<IInterface_1, Implementation_1_No_Dep>(lifetime).ApplyProxy((injector, _, _) => injector.Get<IInterface_1>(null)),
                 new ScopeOptions { Engine = engine, ServiceResolutionMode = ServiceResolutionMode.JIT }
             );
 

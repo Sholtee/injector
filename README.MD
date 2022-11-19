@@ -199,7 +199,7 @@ using Solti.Utils.DI;
 using Solti.Utils.Proxy; 
 ...
 svcs
-  .Service<IMyModule, MyModule>(Lifetime.Scoped).WithProxy<ParameterValidatorProxy<IMyModule>>();
+  .Service<IMyModule, MyModule>(Lifetime.Scoped).UsingProxy<ParameterValidatorProxy<IMyModule>>();
 ```
 Where the `ParameterValidatorProxy<TInterface>` is an `InterfaceInterceptor<TInterface>` descendant containing the parameter validation logic:
 ```csharp
