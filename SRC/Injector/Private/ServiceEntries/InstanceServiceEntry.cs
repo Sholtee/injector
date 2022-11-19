@@ -4,8 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
-using System.Linq;
-using System.Reflection;
+using System.Linq.Expressions;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -14,20 +13,20 @@ namespace Solti.Utils.DI.Internals
 
     internal sealed class InstanceServiceEntry : SingletonServiceEntry
     {
-        public InstanceServiceEntry(Type iface, string? name, object instance) : base(iface ?? throw new ArgumentNullException(nameof(iface)), name, (_, _) => instance)
+        public InstanceServiceEntry(Type iface, string? name, object instance) : base(iface, name, (_, _) => instance)
         {
             if (instance is null)
                 throw new ArgumentNullException(nameof(instance));
 
-            //
-            // It will throw if the service interface is derocated with an aspect.
-            //
-
-            if (Interface.GetCustomAttributes<AspectAttribute>(inherit: true).Any())
-                throw new NotSupportedException(Resources.PROXYING_NOT_SUPPORTED);
+            if (iface.IsGenericTypeDefinition)
+                throw new ArgumentException(Resources.OPEN_GENERIC, nameof(iface));
         }
 
-        public override AbstractServiceEntry Specialize(params Type[] genericArguments) => throw new NotSupportedException();
+        public override AbstractServiceEntry Specialize(params Type[] genericArguments)
+            => throw new NotSupportedException();
+
+        public override void ApplyProxy(Expression<Func<IInjector, Type, object, object>> applyProxy)
+            => throw new NotSupportedException(Resources.PROXYING_NOT_SUPPORTED);
 
         public override Lifetime Lifetime { get; } = Lifetime.Instance;
     }

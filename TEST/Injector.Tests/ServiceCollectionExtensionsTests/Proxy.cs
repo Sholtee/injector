@@ -53,6 +53,9 @@ namespace Solti.Utils.DI.Tests
             mockBuildContext
                 .SetupGet(ctx => ctx.Compiler)
                 .Returns(new SimpleDelegateCompiler());
+            mockBuildContext
+                .Setup(ctx => ctx.AssignSlot())
+                .Returns(0);
 
             Collection.LastEntry.Build(mockBuildContext.Object, new MergeProxiesVisitor(), new ApplyLifetimeManagerVisitor());
             Assert.That(Collection.LastEntry.CreateInstance(mockInjector.Object, out _), Is.InstanceOf<DecoratedImplementation_1>());
@@ -87,6 +90,9 @@ namespace Solti.Utils.DI.Tests
             mockBuildContext
                 .SetupGet(ctx => ctx.Compiler)
                 .Returns(new SimpleDelegateCompiler());
+            mockBuildContext
+                .Setup(ctx => ctx.AssignSlot())
+                .Returns(0);
 
             Collection.LastEntry.Build(mockBuildContext.Object, new MergeProxiesVisitor(), new ApplyLifetimeManagerVisitor());
             Assert.That(Collection.LastEntry.CreateInstance(mockInjector.Object, out _), Is.InstanceOf<DecoratedImplementation_3<int>>());
@@ -143,6 +149,9 @@ namespace Solti.Utils.DI.Tests
             mockBuildContext
                 .SetupGet(ctx => ctx.Compiler)
                 .Returns(new SimpleDelegateCompiler());
+            mockBuildContext
+                .Setup(ctx => ctx.AssignSlot())
+                .Returns(0);
 
             Collection.LastEntry.Build(mockBuildContext.Object, new MergeProxiesVisitor(), new ApplyLifetimeManagerVisitor());
             object instance = Collection.LastEntry.CreateInstance(mockInjector.Object, out _);
@@ -188,6 +197,9 @@ namespace Solti.Utils.DI.Tests
             mockBuildContext
                 .SetupGet(ctx => ctx.Compiler)
                 .Returns(new SimpleDelegateCompiler());
+            mockBuildContext
+                .Setup(ctx => ctx.AssignSlot())
+                .Returns(0);
 
             Collection.LastEntry.Build(mockBuildContext.Object, new MergeProxiesVisitor(), new ApplyLifetimeManagerVisitor());
             Assert.That(Collection.LastEntry.CreateInstance(mockInjector.Object, out _), Is.InstanceOf<DecoratedImplementation_1>());

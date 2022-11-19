@@ -59,6 +59,9 @@ namespace Solti.Utils.DI.Tests
             mockBuildContext
                 .SetupGet(ctx => ctx.Compiler)
                 .Returns(new SimpleDelegateCompiler());
+            mockBuildContext
+                .Setup(ctx => ctx.AssignSlot())
+                .Returns(0);
 
             AbstractServiceEntry entry = Collection
                 .Provider<IList, ListProvider>(lifetime)
@@ -81,6 +84,9 @@ namespace Solti.Utils.DI.Tests
             mockBuildContext
                 .SetupGet(ctx => ctx.Compiler)
                 .Returns(new SimpleDelegateCompiler());
+            mockBuildContext
+                .Setup(ctx => ctx.AssignSlot())
+                .Returns(0);
 
             AbstractServiceEntry entry = Collection
                 .Provider<IList<int>, GenericListProvider>(lifetime)

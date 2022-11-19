@@ -157,7 +157,7 @@ namespace Solti.Utils.DI.Internals
         public sealed override void SetValidated() => State |= ServiceEntryStates.Validated;
 
         /// <inheritdoc/>
-        public sealed override void ApplyProxy(Expression<Func<IInjector, Type, object, object>> applyProxy)
+        public override void ApplyProxy(Expression<Func<IInjector, Type, object, object>> applyProxy)
         {
             if (applyProxy is null)
                 throw new ArgumentNullException(nameof(applyProxy));

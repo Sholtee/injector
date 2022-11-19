@@ -33,6 +33,9 @@ namespace Solti.Utils.DI.Tests
             mockBuildContext
                 .SetupGet(ctx => ctx.Compiler)
                 .Returns(new SimpleDelegateCompiler());
+            mockBuildContext
+                .Setup(ctx => ctx.AssignSlot())
+                .Returns(0);
 
             Collection.Service<IMyService, MyService>(lifetime);
 
@@ -65,6 +68,9 @@ namespace Solti.Utils.DI.Tests
             mockBuildContext
                 .SetupGet(ctx => ctx.Compiler)
                 .Returns(new SimpleDelegateCompiler());
+            mockBuildContext
+                .Setup(ctx => ctx.AssignSlot())
+                .Returns(0);
 
             Collection.Service<IMyDependantService, MyService>(lifetime);
 
@@ -88,6 +94,9 @@ namespace Solti.Utils.DI.Tests
             mockBuildContext
                 .SetupGet(ctx => ctx.Compiler)
                 .Returns(new SimpleDelegateCompiler());
+            mockBuildContext
+                .Setup(ctx => ctx.AssignSlot())
+                .Returns(0);
 
             Collection.Service(typeof(IMyGenericService<>), typeof(MyGenericService<>), lifetime);
 
@@ -128,6 +137,9 @@ namespace Solti.Utils.DI.Tests
             mockBuildContext
                 .SetupGet(ctx => ctx.Compiler)
                 .Returns(new SimpleDelegateCompiler());
+            mockBuildContext
+                .Setup(ctx => ctx.AssignSlot())
+                .Returns(0);
 
             Collection.Factory(i => mockService.Object, lifetime);
 
