@@ -90,9 +90,16 @@ namespace Solti.Utils.DI.Interfaces
         public ServiceEntryStates State { get; protected set; }
 
         /// <summary>
-        /// Contains the built <see cref="Factory"/> after calling the <see cref="Build(IDelegateCompiler?, IFactoryVisitor[])"/> method.
+        /// Unconditionaly creates a new service instance.
         /// </summary>
+        /// <remarks>To assign value to this property, invoke the <see cref="Build(IBuildContext?, IFactoryVisitor[])"/> method.</remarks>
         public FactoryDelegate? CreateInstance { get; protected set; }
+
+        /// <summary>
+        /// Gets or creates a service instance.
+        /// </summary>
+        /// <remarks>To assign value to this property, invoke the <see cref="Build(IBuildContext?, IFactoryVisitor[])"/> method.</remarks>
+        public ResolveDelegate? ResolveInstance { get; protected set; }
 
         /// <summary>
         /// Proxies applied.
@@ -113,18 +120,13 @@ namespace Solti.Utils.DI.Interfaces
         /// <summary>
         /// Builds this entry applying the provided factory <paramref name="visitors"/>.
         /// </summary>
-        /// <remarks>If the <paramref name="compiler"/> is omitted, only the <paramref name="visitors"/> will be executed.</remarks>
-        public virtual void Build(IDelegateCompiler? compiler, params IFactoryVisitor[] visitors) => throw new NotSupportedException();
+        /// <remarks>If the <paramref name="context"/> is omitted, only the <paramref name="visitors"/> will be applied.</remarks>
+        public virtual void Build(IBuildContext? context, params IFactoryVisitor[] visitors) => throw new NotSupportedException();
 
         /// <summary>
         /// Creates the lifetime manager expression.
         /// </summary>
         public virtual Expression CreateLifetimeManager(Expression getService, ParameterExpression scope, ParameterExpression disposable) => throw new NotSupportedException();
-
-        /// <summary>
-        /// Creates a resolver function that instantiates the represented service.
-        /// </summary>
-        public virtual ServiceResolver CreateResolver(ref int slot) => throw new NotSupportedException();
 
         /// <summary>
         /// If supported, sets the <see cref="State"/> of this entry to <see cref="ServiceEntryStates.Validated"/>.
@@ -165,7 +167,7 @@ namespace Solti.Utils.DI.Interfaces
         }
 
         /// <summary>
-        /// Returns the unique hash code of this entry. You are not allowed to override this method.
+        /// Returns the unique hash code of this entry. Not meant to be overridden.
         /// </summary>
         public sealed override int GetHashCode() => base.GetHashCode();
     }

@@ -22,13 +22,13 @@ namespace Solti.Utils.DI.Internals
 
     internal sealed class ServiceEnumerator<TInterface>: IEnumerable<TInterface> where TInterface: class
     {
-        public ServiceEnumerator(IInjector injector, IReadOnlyCollection<AbstractServiceEntry> registeredServices)
+        public ServiceEnumerator(IInjector scope, [Options(Name = $"{Consts.INTERNAL_SERVICE_NAME_PREFIX}registered_services")] IReadOnlyCollection<AbstractServiceEntry> registeredServices)
         {
-            Injector = injector;
+            Scope = scope;
             RegisteredServices = registeredServices;
         }
 
-        public IInjector Injector { get; }
+        public IInjector Scope { get; }
 
         public IReadOnlyCollection<AbstractServiceEntry> RegisteredServices { get; }
 
@@ -54,7 +54,7 @@ namespace Solti.Utils.DI.Internals
             {
                 if (isCompatible(entry) && hashSet.Add(entry.Name))
                 {
-                    yield return Injector.Get<TInterface>(entry.Name);
+                    yield return Scope.Get<TInterface>(entry.Name);
                 }
             }
         }

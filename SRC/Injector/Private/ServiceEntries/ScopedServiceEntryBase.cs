@@ -5,7 +5,6 @@
 ********************************************************************************/
 using System;
 using System.Linq.Expressions;
-using System.Runtime.CompilerServices;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -29,24 +28,26 @@ namespace Solti.Utils.DI.Internals
         {
         }
 
-        public override ServiceResolver CreateResolver(ref int slot)
+        public sealed override void Build(IBuildContext? context, params IFactoryVisitor[] visitors)
         {
-            int relatedSlot = slot++;
+            base.Build(context, visitors);
 
-            return Resolve;
+            if (context is null)
+                return;
 
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            object Resolve(IInstanceFactory factory)
+            int assignedSlot = context.AssignSlot();
+
+            ResolveInstance = (IInstanceFactory factory) =>
             {
                 //
                 // Inlining works against non-interface, non-virtual methods only
                 //
 
                 if (factory is Injector injector)
-                    return injector.GetOrCreateInstance(this, relatedSlot);
+                    return injector.GetOrCreateInstance(this, assignedSlot);
 
-                return factory.GetOrCreateInstance(this, relatedSlot);
-            }
+                return factory.GetOrCreateInstance(this, assignedSlot);
+            };
         }
     }
 }

@@ -23,15 +23,10 @@ namespace Solti.Utils.DI.Tests
         }
 
         [Test]
-        public void Instance_ShouldNotBeAServiceOrFactory()
+        public void Instance_ShouldHaveItsOwnLifetime()
         {
             Collection.Instance<IInterface_1>(new Implementation_1_No_Dep());
-
-            AbstractServiceEntry entry = Collection.LastEntry;
-
-            Assert.That(entry.IsInstance());
-            Assert.False(entry.IsService());
-            Assert.False(entry.IsFactory());
+            Assert.That(Collection.LastEntry.IsInstance());
         }
 
         [Test]

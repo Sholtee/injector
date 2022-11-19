@@ -9,9 +9,9 @@ namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
 
-    internal sealed class ShallowDependencyGraphBuilder: IGraphBuilder
+    internal sealed class ShallowDependencyGraphBuilder : IGraphBuilder
     {
-        private readonly IDelegateCompiler FCompiler;
+        private readonly IBuildContext FBuildContext;
 
         private static readonly IFactoryVisitor[] FVisitors = new IFactoryVisitor[]
         {
@@ -19,7 +19,7 @@ namespace Solti.Utils.DI.Internals
             new ApplyLifetimeManagerVisitor()
         };
 
-        public ShallowDependencyGraphBuilder(IDelegateCompiler compiler) => FCompiler = compiler;
+        public ShallowDependencyGraphBuilder(IBuildContext buildContext) => FBuildContext = buildContext;
 
         public void Build(AbstractServiceEntry requested)
         {
@@ -28,7 +28,7 @@ namespace Solti.Utils.DI.Internals
             if (!requested.Features.HasFlag(ServiceEntryFeatures.SupportsBuild) || requested.State.HasFlag(ServiceEntryStates.Built))
                 return;
 
-            requested.Build(FCompiler, FVisitors);
+            requested.Build(FBuildContext, FVisitors);
         }
     }
 }

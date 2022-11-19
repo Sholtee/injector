@@ -84,8 +84,13 @@ namespace Solti.Utils.DI.Internals
             };
         }
 
+<<<<<<< HEAD
+        public override LifetimeBase? Lifetime { get; } = DI.Lifetime.Singleton;
+
+=======
+>>>>>>> drop_createresolver
         public override ServiceEntryFeatures Features { get; } = ServiceEntryFeatures.CreateSingleInstance | ServiceEntryFeatures.Shared | ServiceEntryFeatures.SupportsBuild;
 
-        public override LifetimeBase? Lifetime { get; } = DI.Lifetime.Singleton;
+        public override Lifetime Lifetime { get; } = Lifetime.Singleton;
     }
 }

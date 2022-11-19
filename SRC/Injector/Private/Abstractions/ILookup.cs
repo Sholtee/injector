@@ -6,23 +6,23 @@
 namespace Solti.Utils.DI.Internals
 {
     /// <summary>
-    /// Describes a generic lookup where keys are <see cref="CompositeKey"/>s.
+    /// Describes a generic lookup.
     /// </summary>
-    internal interface ILookup<TData, TImplementation> where TImplementation: ILookup<TData, TImplementation>
+    internal interface ILookup<TKey, TData, TImplementation> where TImplementation: ILookup<TKey, TData, TImplementation>
     {
         /// <summary>
         /// Tries to expand the current lookup.
         /// </summary>
-        bool TryAdd(CompositeKey key, TData data);
+        bool TryAdd(TKey key, TData data);
 
         /// <summary>
         /// Adds a new entry, returns the expanded copy of this lookup.
         /// </summary>
-        TImplementation Add(CompositeKey key, TData data);
+        TImplementation With(TKey key, TData data);
 
         /// <summary>
         /// Tries to get the <paramref name="data"/> associated with the given <paramref name="key"/>.
         /// </summary>
-        bool TryGet(CompositeKey key, out TData data);
+        bool TryGet(TKey key, out TData data);
     }
 }

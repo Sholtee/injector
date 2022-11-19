@@ -12,11 +12,10 @@ using System.Linq.Expressions;
 namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
+    using Primitives;
 
     using static Interfaces.Properties.Resources;
     using static Properties.Resources;
-
-    using Primitives;
 
     /// <summary>
     /// Reperesents the base class of producible servce entries.
@@ -125,7 +124,7 @@ namespace Solti.Utils.DI.Internals
         #endregion
 
         /// <inheritdoc/>
-        public override void Build(IDelegateCompiler? compiler, params IFactoryVisitor[] visitors)
+        public override void Build(IBuildContext? context, params IFactoryVisitor[] visitors)
         {
             if (visitors is null)
                 throw new ArgumentNullException(nameof(visitors));
@@ -143,17 +142,19 @@ namespace Solti.Utils.DI.Internals
                 (visited, visitor) => visitor.Visit(visited, this)
             );
 
-            if (compiler is not null)
+            if (context is not null)
             {
                 Debug.WriteLine($"Created factory: {Environment.NewLine}{factoryExpr.GetDebugView()}");
-                compiler.Compile((Expression<FactoryDelegate>) factoryExpr, factory => CreateInstance = factory);
+                context
+                    .Compiler
+                    .Compile((Expression<FactoryDelegate>) factoryExpr, factory => CreateInstance = factory);
 
                 State = (State | ServiceEntryStates.Built) & ~ServiceEntryStates.Validated;
             }
         }
 
         /// <inheritdoc/>
-        public override void SetValidated() => State |= ServiceEntryStates.Validated;
+        public sealed override void SetValidated() => State |= ServiceEntryStates.Validated;
 
         /// <inheritdoc/>
         public override void ApplyProxy(Expression<Func<IInjector, Type, object, object>> applyProxy)
@@ -175,6 +176,6 @@ namespace Solti.Utils.DI.Internals
         /// <summary>
         /// The applied proxies.
         /// </summary>
-        public override IReadOnlyList<Expression<Func<IInjector, Type, object, object>>> Proxies => FProxies;
+        public sealed override IReadOnlyList<Expression<Func<IInjector, Type, object, object>>> Proxies => FProxies;
     }
 }

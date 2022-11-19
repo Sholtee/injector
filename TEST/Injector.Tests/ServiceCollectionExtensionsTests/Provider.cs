@@ -55,10 +55,19 @@ namespace Solti.Utils.DI.Tests
         [TestCaseSource(nameof(Lifetimes))]
         public void Provider_ShouldSupportRegularServices(Lifetime lifetime)
         {
+            var mockBuildContext = new Mock<IBuildContext>(MockBehavior.Strict);
+            mockBuildContext
+                .SetupGet(ctx => ctx.Compiler)
+                .Returns(new SimpleDelegateCompiler());
+            mockBuildContext
+                .Setup(ctx => ctx.AssignSlot())
+                .Returns(0);
+
             AbstractServiceEntry entry = Collection
                 .Provider<IList, ListProvider>(lifetime)
                 .LastEntry;
-            entry.Build(new SimpleDelegateCompiler(), new MergeProxiesVisitor(), new ApplyLifetimeManagerVisitor());
+
+            entry.Build(mockBuildContext.Object, new MergeProxiesVisitor(), new ApplyLifetimeManagerVisitor());
 
             var mockInjector = new Mock<IInstanceFactory>(MockBehavior.Strict);
             mockInjector
@@ -71,10 +80,18 @@ namespace Solti.Utils.DI.Tests
         [TestCaseSource(nameof(Lifetimes))]
         public void Provider_ShouldSupportSpecializedServices(Lifetime lifetime)
         {
+            var mockBuildContext = new Mock<IBuildContext>(MockBehavior.Strict);
+            mockBuildContext
+                .SetupGet(ctx => ctx.Compiler)
+                .Returns(new SimpleDelegateCompiler());
+            mockBuildContext
+                .Setup(ctx => ctx.AssignSlot())
+                .Returns(0);
+
             AbstractServiceEntry entry = Collection
                 .Provider<IList<int>, GenericListProvider>(lifetime)
                 .LastEntry;
-            entry.Build(new SimpleDelegateCompiler(), new MergeProxiesVisitor(), new ApplyLifetimeManagerVisitor());
+            entry.Build(mockBuildContext.Object, new MergeProxiesVisitor(), new ApplyLifetimeManagerVisitor());
 
             var mockInjector = new Mock<IInstanceFactory>(MockBehavior.Strict);
             mockInjector

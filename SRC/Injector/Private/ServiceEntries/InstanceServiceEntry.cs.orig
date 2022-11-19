@@ -22,12 +22,16 @@ namespace Solti.Utils.DI.Internals
                 throw new ArgumentException(Resources.OPEN_GENERIC, nameof(iface));
         }
 
+<<<<<<< HEAD
+        public override LifetimeBase? Lifetime { get; } = DI.Lifetime.Instance;
+=======
         public override AbstractServiceEntry Specialize(params Type[] genericArguments)
             => throw new NotSupportedException();
+>>>>>>> drop_createresolver
 
         public override void ApplyProxy(Expression<Func<IInjector, Type, object, object>> applyProxy)
             => throw new NotSupportedException(Resources.PROXYING_NOT_SUPPORTED);
 
-        public override LifetimeBase? Lifetime { get; } = DI.Lifetime.Instance;
+        public override Lifetime Lifetime { get; } = Lifetime.Instance;
     }
 }

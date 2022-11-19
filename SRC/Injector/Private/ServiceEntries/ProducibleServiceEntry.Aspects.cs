@@ -76,7 +76,7 @@ namespace Solti.Utils.DI.Internals
             }
         }
 
-        internal void ApplyInterceptor(Type interceptor) => ApplyProxy
+        internal void ApplyProxy(Type interceptor) => ApplyProxy
         (
             BuildDelegate(interceptor)
         );

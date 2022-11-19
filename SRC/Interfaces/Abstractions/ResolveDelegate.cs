@@ -1,17 +1,12 @@
 ﻿/********************************************************************************
-* IGraphBuilder.cs                                                              *
+* ResolveDelegate.cs                                                            *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
-using Solti.Utils.DI.Interfaces;
-
-namespace Solti.Utils.DI.Internals
+namespace Solti.Utils.DI.Interfaces
 {
     /// <summary>
-    /// Represents the contract of dependency graph builders.
+    /// Gets or creates a particular service.
     /// </summary>
-    internal interface IGraphBuilder
-    {
-        void Build(AbstractServiceEntry entry);
-    }
+    public delegate object ResolveDelegate(IInstanceFactory instanceFactory);
 }

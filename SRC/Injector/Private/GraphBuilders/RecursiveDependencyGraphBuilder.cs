@@ -17,19 +17,22 @@ namespace Solti.Utils.DI.Internals
 
         private readonly IFactoryVisitor[] FVisitors;
 
-        private readonly IDelegateCompiler FCompiler;
+        private readonly IBuildContext FBuildContext;
 
-        public RecursiveDependencyGraphBuilder(IServiceResolverLookup lookup, IDelegateCompiler compiler, ScopeOptions options)
+        private readonly IServiceEntryLookup FLookup;
+
+        public RecursiveDependencyGraphBuilder(IServiceEntryLookup lookup, IBuildContext buildContext, ScopeOptions options)
         {
             FOptions = options;
             FPath = new ServicePath();
+            FLookup = lookup;
             FVisitors = new IFactoryVisitor[]
             {
                 new MergeProxiesVisitor(),
                 new ApplyLifetimeManagerVisitor(),
-                new ServiceRequestReplacerVisitor(lookup, FPath, options.SupportsServiceProvider)
+                new ServiceRequestReplacerVisitor(FLookup, FPath, options.SupportsServiceProvider)
             };
-            FCompiler = compiler;
+            FBuildContext = buildContext;
         }
 
         public void Build(AbstractServiceEntry requested)
@@ -54,13 +57,13 @@ namespace Solti.Utils.DI.Internals
             FPath.Push(requested);
             try
             {
-                requested.Build(FCompiler, FVisitors);
+                requested.Build(FBuildContext, FVisitors);
             }
             finally
             {
                 FPath.Pop();
             }
-
+            
             //
             // No circular reference, no Strict DI violation... entry is validated
             //

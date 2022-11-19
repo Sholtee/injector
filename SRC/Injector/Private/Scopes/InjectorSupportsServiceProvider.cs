@@ -12,13 +12,15 @@ namespace Solti.Utils.DI.Internals
 
     internal class InjectorSupportsServiceProvider : Injector, IServiceProvider
     {
-        protected override IEnumerable<AbstractServiceEntry> GetAllServices(IEnumerable<AbstractServiceEntry> registeredEntries)
+        protected override IEnumerable<AbstractServiceEntry> BuiltInServices
         {
-            yield return new ContextualServiceEntry(typeof(IServiceProvider), null, static (i, _) => i);
-
-            foreach (AbstractServiceEntry entry in base.GetAllServices(registeredEntries))
+            get
             {
-                yield return entry;
+                foreach (AbstractServiceEntry entry in base.BuiltInServices)
+                {
+                    yield return entry;
+                }
+                yield return new ScopedServiceEntry(typeof(IServiceProvider), null, static (i, _) => i);
             }
         }
 

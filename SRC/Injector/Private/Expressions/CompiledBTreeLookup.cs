@@ -12,20 +12,21 @@ using static System.Diagnostics.Debug;
 
 namespace Solti.Utils.DI.Internals
 {
+    using Interfaces;
     using Primitives;
 
-    internal partial class CompiledBTreeLookup<TData>
+    internal partial class CompiledBTreeLookup
     {
         private static readonly MethodInfo FCompareTo = MethodInfoExtractor.Extract<CompositeKey>(ck => ck.CompareTo(null!));
 
-        private static IEnumerable<Expression> BuildNode(RedBlackTreeNode<KeyValuePair<CompositeKey, TData>>? node, ParameterExpression key, ParameterExpression order, LabelTarget ret)
+        private static IEnumerable<Expression> BuildNode(RedBlackTreeNode<KeyValuePair<CompositeKey, AbstractServiceEntry>>? node, ParameterExpression key, ParameterExpression order, LabelTarget ret)
         {
             if (node is null)
             {
                 yield return Expression.Return
                 (
                     ret,
-                    Expression.Default(typeof(TData))
+                    Expression.Default(typeof(AbstractServiceEntry))
                 );
                 yield break;
             }
@@ -75,15 +76,15 @@ namespace Solti.Utils.DI.Internals
             yield return Expression.Return
             (
                 ret,
-                Expression.Constant(node.Data.Value, typeof(TData))
+                Expression.Constant(node.Data.Value, typeof(AbstractServiceEntry))
             );
         }
 
-        private static Expression<Func<CompositeKey, TData?>> BuildTree(RedBlackTree<KeyValuePair<CompositeKey, TData>> tree)
+        private static Expression<Func<CompositeKey, AbstractServiceEntry?>> BuildTree(RedBlackTree<KeyValuePair<CompositeKey, AbstractServiceEntry>> tree)
         {
             ParameterExpression key = Expression.Parameter(typeof(CompositeKey), nameof(key));
 
-            LabelTarget ret = Expression.Label(typeof(TData), nameof(ret));
+            LabelTarget ret = Expression.Label(typeof(AbstractServiceEntry), nameof(ret));
 
             LabelExpression returnNull = Expression.Label(ret, Expression.Default(ret.Type));
 
@@ -103,7 +104,7 @@ namespace Solti.Utils.DI.Internals
                 body = Expression.Block(new[] { order }, block);
             }
 
-            Expression<Func<CompositeKey, TData?>> lambda = Expression.Lambda<Func<CompositeKey, TData?>>(body,key);
+            Expression<Func<CompositeKey, AbstractServiceEntry?>> lambda = Expression.Lambda<Func<CompositeKey, AbstractServiceEntry?>>(body,key);
 
             WriteLine($"Created tree:{Environment.NewLine}{lambda.GetDebugView()}");
 

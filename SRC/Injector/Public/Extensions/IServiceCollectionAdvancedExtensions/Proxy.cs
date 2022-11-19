@@ -21,7 +21,7 @@ namespace Solti.Utils.DI
         /// <param name="self">The target <see cref="IServiceCollection"/>.</param>
         /// <remarks>You can't create proxies against instances and open generic services. A service can be decorated multiple times.</remarks>
         /// <exception cref="InvalidOperationException">When proxying is not allowed (see remarks).</exception>
-        public static IModifiedServiceCollection WithProxy<TInterceptor>(this IModifiedServiceCollection self) => self.WithProxy(typeof(TInterceptor));
+        public static IModifiedServiceCollection UsingProxy<TInterceptor>(this IModifiedServiceCollection self) => self.UsingProxy(typeof(TInterceptor));
 
         /// <summary>
         /// Hooks into the instantiating process to let you decorate the original service. Useful when you want to add additional functionality (e.g. parameter validation). The easiest way to decorate an instance is using the <see cref="InterfaceInterceptor{TInterface}"/> class.
@@ -30,10 +30,10 @@ namespace Solti.Utils.DI
         /// <param name="interceptor">The interceptor class.</param>
         /// <remarks>You can't create proxies against instances and open generic services. A service can be decorated multiple times.</remarks>
         /// <exception cref="InvalidOperationException">When proxying is not allowed (see remarks).</exception>
-        public static IModifiedServiceCollection WithProxy(this IModifiedServiceCollection self, Type interceptor)
+        public static IModifiedServiceCollection UsingProxy(this IModifiedServiceCollection self, Type interceptor)
         {
             //
-            // A tobbit a ProxyGenerator<> ellenorzi
+            // ProxyGenerator<> will do a comprehensive validation.
             //
 
             if (self is null)
@@ -51,7 +51,7 @@ namespace Solti.Utils.DI
             if (self.LastEntry is not ProducibleServiceEntry pse)
                 throw new NotSupportedException(Resources.PROXYING_NOT_SUPPORTED);
 
-            pse.ApplyInterceptor(interceptor);
+            pse.ApplyProxy(interceptor);
 
             return self;
         }
