@@ -94,55 +94,14 @@
   </table>
   <h3 id="methods">Methods
   </h3>
-  <a id="Solti_Utils_DI_Interfaces_IInstanceFactory_CreateInstance_" data-uid="Solti.Utils.DI.Interfaces.IInstanceFactory.CreateInstance*"></a>
-  <h4 id="Solti_Utils_DI_Interfaces_IInstanceFactory_CreateInstance_Solti_Utils_DI_Interfaces_AbstractServiceEntry_" data-uid="Solti.Utils.DI.Interfaces.IInstanceFactory.CreateInstance(Solti.Utils.DI.Interfaces.AbstractServiceEntry)">CreateInstance(AbstractServiceEntry)</h4>
-  <div class="markdown level1 summary"><p>Creates a new service instance from the given <a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html">AbstractServiceEntry</a>.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">object CreateInstance(AbstractServiceEntry requested)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html">AbstractServiceEntry</a></td>
-        <td><span class="parametername">requested</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Object</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
   <a id="Solti_Utils_DI_Interfaces_IInstanceFactory_GetOrCreateInstance_" data-uid="Solti.Utils.DI.Interfaces.IInstanceFactory.GetOrCreateInstance*"></a>
-  <h4 id="Solti_Utils_DI_Interfaces_IInstanceFactory_GetOrCreateInstance_Solti_Utils_DI_Interfaces_AbstractServiceEntry_System_Int32_" data-uid="Solti.Utils.DI.Interfaces.IInstanceFactory.GetOrCreateInstance(Solti.Utils.DI.Interfaces.AbstractServiceEntry,System.Int32)">GetOrCreateInstance(AbstractServiceEntry, Int32)</h4>
+  <h4 id="Solti_Utils_DI_Interfaces_IInstanceFactory_GetOrCreateInstance_Solti_Utils_DI_Interfaces_AbstractServiceEntry_System_Nullable_System_Int32__" data-uid="Solti.Utils.DI.Interfaces.IInstanceFactory.GetOrCreateInstance(Solti.Utils.DI.Interfaces.AbstractServiceEntry,System.Nullable{System.Int32})">GetOrCreateInstance(AbstractServiceEntry, Nullable&lt;Int32&gt;)</h4>
   <div class="markdown level1 summary"><p>Gets or creates a service instance assigned to the given slot.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">object GetOrCreateInstance(AbstractServiceEntry requested, int slot)</code></pre>
+    <pre><code class="lang-csharp hljs">object GetOrCreateInstance(AbstractServiceEntry requested, Nullable&lt;int&gt; slot)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -160,7 +119,7 @@
         <td></td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">Int32</a>&gt;</td>
         <td><span class="parametername">slot</span></td>
         <td></td>
       </tr>
@@ -181,6 +140,9 @@
       </tr>
     </tbody>
   </table>
+  <h5 id="Solti_Utils_DI_Interfaces_IInstanceFactory_GetOrCreateInstance_Solti_Utils_DI_Interfaces_AbstractServiceEntry_System_Nullable_System_Int32___remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>If <code data-dev-comment-type="paramref" class="paramref">slot</code> is null, a new instance will be created.</p>
+</div>
 </article>
           </div>
           

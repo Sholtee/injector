@@ -130,7 +130,7 @@
   </h3>
   <a id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_CreateInstance_" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.CreateInstance*"></a>
   <h4 id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_CreateInstance" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.CreateInstance">CreateInstance</h4>
-  <div class="markdown level1 summary"><p>Contains the built <a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_Factory">Factory</a> after calling the <a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_Build_Solti_Utils_DI_Interfaces_IDelegateCompiler_Solti_Utils_DI_Interfaces_IFactoryVisitor___">Build(IDelegateCompiler, IFactoryVisitor[])</a> method.</p>
+  <div class="markdown level1 summary"><p>Unconditionaly creates a new service instance.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -152,6 +152,9 @@
       </tr>
     </tbody>
   </table>
+  <h5 id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_CreateInstance_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>To assign value to this property, invoke the <a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_Build_Solti_Utils_DI_Interfaces_IBuildContext_Solti_Utils_DI_Interfaces_IFactoryVisitor___">Build(IBuildContext, IFactoryVisitor[])</a> method.</p>
+</div>
   <a id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_Factory_" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.Factory*"></a>
   <h4 id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_Factory" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.Factory">Factory</h4>
   <div class="markdown level1 summary"><p>The (optional) factory of this service.</p>
@@ -253,12 +256,12 @@
 </div>
   <a id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_Lifetime_" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.Lifetime*"></a>
   <h4 id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_Lifetime" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.Lifetime">Lifetime</h4>
-  <div class="markdown level1 summary"><p>The related <a class="xref" href="Solti.Utils.DI.Interfaces.Lifetime.html">Lifetime</a>.</p>
+  <div class="markdown level1 summary"><p>The related lifetime.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public virtual Lifetime Lifetime { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public virtual LifetimeBase Lifetime { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -270,7 +273,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Solti.Utils.DI.Interfaces.Lifetime.html">Lifetime</a></td>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.LifetimeBase.html">LifetimeBase</a></td>
         <td></td>
       </tr>
     </tbody>
@@ -326,6 +329,33 @@
       </tr>
     </tbody>
   </table>
+  <a id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_ResolveInstance_" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.ResolveInstance*"></a>
+  <h4 id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_ResolveInstance" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.ResolveInstance">ResolveInstance</h4>
+  <div class="markdown level1 summary"><p>Gets or creates a service instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ResolveDelegate ResolveInstance { get; protected set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.ResolveDelegate.html">ResolveDelegate</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_ResolveInstance_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>To assign value to this property, invoke the <a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_Build_Solti_Utils_DI_Interfaces_IBuildContext_Solti_Utils_DI_Interfaces_IFactoryVisitor___">Build(IBuildContext, IFactoryVisitor[])</a> method.</p>
+</div>
   <a id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_State_" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.State*"></a>
   <h4 id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_State" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.State">State</h4>
   <div class="markdown level1 summary"><p>Current state of this entry.</p>
@@ -379,13 +409,13 @@
     </tbody>
   </table>
   <a id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_Build_" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.Build*"></a>
-  <h4 id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_Build_Solti_Utils_DI_Interfaces_IDelegateCompiler_Solti_Utils_DI_Interfaces_IFactoryVisitor___" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.Build(Solti.Utils.DI.Interfaces.IDelegateCompiler,Solti.Utils.DI.Interfaces.IFactoryVisitor[])">Build(IDelegateCompiler, IFactoryVisitor[])</h4>
+  <h4 id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_Build_Solti_Utils_DI_Interfaces_IBuildContext_Solti_Utils_DI_Interfaces_IFactoryVisitor___" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.Build(Solti.Utils.DI.Interfaces.IBuildContext,Solti.Utils.DI.Interfaces.IFactoryVisitor[])">Build(IBuildContext, IFactoryVisitor[])</h4>
   <div class="markdown level1 summary"><p>Builds this entry applying the provided factory <code data-dev-comment-type="paramref" class="paramref">visitors</code>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public virtual void Build(IDelegateCompiler compiler, params IFactoryVisitor[] visitors)</code></pre>
+    <pre><code class="lang-csharp hljs">public virtual void Build(IBuildContext context, params IFactoryVisitor[] visitors)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -398,8 +428,8 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Solti.Utils.DI.Interfaces.IDelegateCompiler.html">IDelegateCompiler</a></td>
-        <td><span class="parametername">compiler</span></td>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.IBuildContext.html">IBuildContext</a></td>
+        <td><span class="parametername">context</span></td>
         <td></td>
       </tr>
       <tr>
@@ -409,8 +439,8 @@
       </tr>
     </tbody>
   </table>
-  <h5 id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_Build_Solti_Utils_DI_Interfaces_IDelegateCompiler_Solti_Utils_DI_Interfaces_IFactoryVisitor____remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>If the <code data-dev-comment-type="paramref" class="paramref">compiler</code> is omitted, only the <code data-dev-comment-type="paramref" class="paramref">visitors</code> will be executed.</p>
+  <h5 id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_Build_Solti_Utils_DI_Interfaces_IBuildContext_Solti_Utils_DI_Interfaces_IFactoryVisitor____remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>If the <code data-dev-comment-type="paramref" class="paramref">context</code> is omitted, only the <code data-dev-comment-type="paramref" class="paramref">visitors</code> will be applied.</p>
 </div>
   <a id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_CreateLifetimeManager_" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.CreateLifetimeManager*"></a>
   <h4 id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_CreateLifetimeManager_System_Linq_Expressions_Expression_System_Linq_Expressions_ParameterExpression_System_Linq_Expressions_ParameterExpression_" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.CreateLifetimeManager(System.Linq.Expressions.Expression,System.Linq.Expressions.ParameterExpression,System.Linq.Expressions.ParameterExpression)">CreateLifetimeManager(Expression, ParameterExpression, ParameterExpression)</h4>
@@ -463,50 +493,9 @@
       </tr>
     </tbody>
   </table>
-  <a id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_CreateResolver_" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.CreateResolver*"></a>
-  <h4 id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_CreateResolver_System_Int32__" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.CreateResolver(System.Int32@)">CreateResolver(ref Int32)</h4>
-  <div class="markdown level1 summary"><p>Creates a resolver function that instantiates the represented service.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public virtual Func&lt;IInstanceFactory, object&gt; CreateResolver(ref int slot)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">Int32</a></td>
-        <td><span class="parametername">slot</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;<a class="xref" href="Solti.Utils.DI.Interfaces.IInstanceFactory.html">IInstanceFactory</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Object</a>&gt;</td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
   <a id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_GetHashCode_" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.GetHashCode*"></a>
   <h4 id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_GetHashCode" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.GetHashCode">GetHashCode()</h4>
-  <div class="markdown level1 summary"><p>Returns the unique hash code of this entry. You are not allowed to override this method.</p>
+  <div class="markdown level1 summary"><p>Returns the unique hash code of this entry. Not meant to be overridden.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -645,13 +634,13 @@
   </table>
   <h3 id="extensionmethods">Extension Methods</h3>
   <div>
+      <a class="xref" href="Solti.Utils.DI.ServiceEntryAdvancedExtensions.html#Solti_Utils_DI_ServiceEntryAdvancedExtensions_IsInstance_Solti_Utils_DI_Interfaces_AbstractServiceEntry_">ServiceEntryAdvancedExtensions.IsInstance(AbstractServiceEntry)</a>
+  </div>
+  <div>
       <a class="xref" href="Solti.Utils.DI.Interfaces.ServiceEntryExtensions.html#Solti_Utils_DI_Interfaces_ServiceEntryExtensions_IsService_Solti_Utils_DI_Interfaces_AbstractServiceEntry_">ServiceEntryExtensions.IsService(AbstractServiceEntry)</a>
   </div>
   <div>
       <a class="xref" href="Solti.Utils.DI.Interfaces.ServiceEntryExtensions.html#Solti_Utils_DI_Interfaces_ServiceEntryExtensions_IsFactory_Solti_Utils_DI_Interfaces_AbstractServiceEntry_">ServiceEntryExtensions.IsFactory(AbstractServiceEntry)</a>
-  </div>
-  <div>
-      <a class="xref" href="Solti.Utils.DI.Interfaces.ServiceEntryExtensions.html#Solti_Utils_DI_Interfaces_ServiceEntryExtensions_IsInstance_Solti_Utils_DI_Interfaces_AbstractServiceEntry_">ServiceEntryExtensions.IsInstance(AbstractServiceEntry)</a>
   </div>
   <div>
       <a class="xref" href="Solti.Utils.DI.Interfaces.ServiceEntryExtensions.html#Solti_Utils_DI_Interfaces_ServiceEntryExtensions_IsInternal_Solti_Utils_DI_Interfaces_AbstractServiceEntry_">ServiceEntryExtensions.IsInternal(AbstractServiceEntry)</a>

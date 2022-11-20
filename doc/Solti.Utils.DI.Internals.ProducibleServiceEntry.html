@@ -57,9 +57,6 @@
       <a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_Specialize_System_Type___">AbstractServiceEntry.Specialize(Type[])</a>
     </div>
     <div>
-      <a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_CreateResolver_System_Int32__">AbstractServiceEntry.CreateResolver(Int32)</a>
-    </div>
-    <div>
       <a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_ToString">AbstractServiceEntry.ToString()</a>
     </div>
     <div>
@@ -91,6 +88,9 @@
     </div>
     <div>
       <a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_CreateInstance">AbstractServiceEntry.CreateInstance</a>
+    </div>
+    <div>
+      <a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_ResolveInstance">AbstractServiceEntry.ResolveInstance</a>
     </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Solti.Utils.DI.Internals.html">Solti.Utils.DI.Internals</a></h6>
@@ -278,7 +278,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override IReadOnlyList&lt;Expression&lt;Func&lt;IInjector, Type, object, object&gt;&gt;&gt; Proxies { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public sealed override IReadOnlyList&lt;Expression&lt;Func&lt;IInjector, Type, object, object&gt;&gt;&gt; Proxies { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -328,13 +328,13 @@
   <h5 class="overrides">Overrides</h5>
   <div><a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_ApplyProxy_System_Linq_Expressions_Expression_System_Func_Solti_Utils_DI_Interfaces_IInjector_System_Type_System_Object_System_Object___">AbstractServiceEntry.ApplyProxy(Expression&lt;Func&lt;IInjector, Type, Object, Object&gt;&gt;)</a></div>
   <a id="Solti_Utils_DI_Internals_ProducibleServiceEntry_Build_" data-uid="Solti.Utils.DI.Internals.ProducibleServiceEntry.Build*"></a>
-  <h4 id="Solti_Utils_DI_Internals_ProducibleServiceEntry_Build_Solti_Utils_DI_Interfaces_IDelegateCompiler_Solti_Utils_DI_Interfaces_IFactoryVisitor___" data-uid="Solti.Utils.DI.Internals.ProducibleServiceEntry.Build(Solti.Utils.DI.Interfaces.IDelegateCompiler,Solti.Utils.DI.Interfaces.IFactoryVisitor[])">Build(IDelegateCompiler, IFactoryVisitor[])</h4>
+  <h4 id="Solti_Utils_DI_Internals_ProducibleServiceEntry_Build_Solti_Utils_DI_Interfaces_IBuildContext_Solti_Utils_DI_Interfaces_IFactoryVisitor___" data-uid="Solti.Utils.DI.Internals.ProducibleServiceEntry.Build(Solti.Utils.DI.Interfaces.IBuildContext,Solti.Utils.DI.Interfaces.IFactoryVisitor[])">Build(IBuildContext, IFactoryVisitor[])</h4>
   <div class="markdown level1 summary"><p>Builds this entry applying the provided factory <code data-dev-comment-type="paramref" class="paramref">visitors</code>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override void Build(IDelegateCompiler compiler, params IFactoryVisitor[] visitors)</code></pre>
+    <pre><code class="lang-csharp hljs">public override void Build(IBuildContext context, params IFactoryVisitor[] visitors)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -347,8 +347,8 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Solti.Utils.DI.Interfaces.IDelegateCompiler.html">IDelegateCompiler</a></td>
-        <td><span class="parametername">compiler</span></td>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.IBuildContext.html">IBuildContext</a></td>
+        <td><span class="parametername">context</span></td>
         <td></td>
       </tr>
       <tr>
@@ -359,9 +359,9 @@
     </tbody>
   </table>
   <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_Build_Solti_Utils_DI_Interfaces_IDelegateCompiler_Solti_Utils_DI_Interfaces_IFactoryVisitor___">AbstractServiceEntry.Build(IDelegateCompiler, IFactoryVisitor[])</a></div>
-  <h5 id="Solti_Utils_DI_Internals_ProducibleServiceEntry_Build_Solti_Utils_DI_Interfaces_IDelegateCompiler_Solti_Utils_DI_Interfaces_IFactoryVisitor____remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>If the <code data-dev-comment-type="paramref" class="paramref">compiler</code> is omitted, only the <code data-dev-comment-type="paramref" class="paramref">visitors</code> will be executed.</p>
+  <div><a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_Build_Solti_Utils_DI_Interfaces_IBuildContext_Solti_Utils_DI_Interfaces_IFactoryVisitor___">AbstractServiceEntry.Build(IBuildContext, IFactoryVisitor[])</a></div>
+  <h5 id="Solti_Utils_DI_Internals_ProducibleServiceEntry_Build_Solti_Utils_DI_Interfaces_IBuildContext_Solti_Utils_DI_Interfaces_IFactoryVisitor____remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>If the <code data-dev-comment-type="paramref" class="paramref">context</code> is omitted, only the <code data-dev-comment-type="paramref" class="paramref">visitors</code> will be applied.</p>
 </div>
   <a id="Solti_Utils_DI_Internals_ProducibleServiceEntry_CreateLifetimeManager_" data-uid="Solti.Utils.DI.Internals.ProducibleServiceEntry.CreateLifetimeManager*"></a>
   <h4 id="Solti_Utils_DI_Internals_ProducibleServiceEntry_CreateLifetimeManager_System_Linq_Expressions_Expression_System_Linq_Expressions_ParameterExpression_System_Linq_Expressions_ParameterExpression_" data-uid="Solti.Utils.DI.Internals.ProducibleServiceEntry.CreateLifetimeManager(System.Linq.Expressions.Expression,System.Linq.Expressions.ParameterExpression,System.Linq.Expressions.ParameterExpression)">CreateLifetimeManager(Expression, ParameterExpression, ParameterExpression)</h4>
@@ -423,19 +423,19 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override void SetValidated()</code></pre>
+    <pre><code class="lang-csharp hljs">public sealed override void SetValidated()</code></pre>
   </div>
   <h5 class="overrides">Overrides</h5>
   <div><a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_SetValidated">AbstractServiceEntry.SetValidated()</a></div>
   <h3 id="extensionmethods">Extension Methods</h3>
   <div>
+      <a class="xref" href="Solti.Utils.DI.ServiceEntryAdvancedExtensions.html#Solti_Utils_DI_ServiceEntryAdvancedExtensions_IsInstance_Solti_Utils_DI_Interfaces_AbstractServiceEntry_">ServiceEntryAdvancedExtensions.IsInstance(AbstractServiceEntry)</a>
+  </div>
+  <div>
       <a class="xref" href="Solti.Utils.DI.Interfaces.ServiceEntryExtensions.html#Solti_Utils_DI_Interfaces_ServiceEntryExtensions_IsService_Solti_Utils_DI_Interfaces_AbstractServiceEntry_">ServiceEntryExtensions.IsService(AbstractServiceEntry)</a>
   </div>
   <div>
       <a class="xref" href="Solti.Utils.DI.Interfaces.ServiceEntryExtensions.html#Solti_Utils_DI_Interfaces_ServiceEntryExtensions_IsFactory_Solti_Utils_DI_Interfaces_AbstractServiceEntry_">ServiceEntryExtensions.IsFactory(AbstractServiceEntry)</a>
-  </div>
-  <div>
-      <a class="xref" href="Solti.Utils.DI.Interfaces.ServiceEntryExtensions.html#Solti_Utils_DI_Interfaces_ServiceEntryExtensions_IsInstance_Solti_Utils_DI_Interfaces_AbstractServiceEntry_">ServiceEntryExtensions.IsInstance(AbstractServiceEntry)</a>
   </div>
   <div>
       <a class="xref" href="Solti.Utils.DI.Interfaces.ServiceEntryExtensions.html#Solti_Utils_DI_Interfaces_ServiceEntryExtensions_IsInternal_Solti_Utils_DI_Interfaces_AbstractServiceEntry_">ServiceEntryExtensions.IsInternal(AbstractServiceEntry)</a>

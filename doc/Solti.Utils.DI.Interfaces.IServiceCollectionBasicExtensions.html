@@ -58,14 +58,81 @@
   </div>
   <h3 id="methods">Methods
   </h3>
+  <a id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_ApplyProxy_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.ApplyProxy*"></a>
+  <h4 id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_ApplyProxy_Solti_Utils_DI_Interfaces_IModifiedServiceCollection_System_Linq_Expressions_Expression_System_Func_Solti_Utils_DI_Interfaces_IInjector_System_Type_System_Object_System_Object___" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.ApplyProxy(Solti.Utils.DI.Interfaces.IModifiedServiceCollection,System.Linq.Expressions.Expression{System.Func{Solti.Utils.DI.Interfaces.IInjector,System.Type,System.Object,System.Object}})">ApplyProxy(IModifiedServiceCollection, Expression&lt;Func&lt;IInjector, Type, Object, Object&gt;&gt;)</h4>
+  <div class="markdown level1 summary"><p>Hooks into the instantiating process of last registered service. Useful when you want to add additional functionality (e.g. parameter validation).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IModifiedServiceCollection ApplyProxy(this IModifiedServiceCollection self, Expression&lt;Func&lt;IInjector, Type, object, object&gt;&gt; decorator)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.IModifiedServiceCollection.html">IModifiedServiceCollection</a></td>
+        <td><span class="parametername">self</span></td>
+        <td><p>The target <a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollection.html">IServiceCollection</a>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1">Expression</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-4">Func</a>&lt;<a class="xref" href="Solti.Utils.DI.Interfaces.IInjector.html">IInjector</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Object</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Object</a>&gt;&gt;</td>
+        <td><span class="parametername">decorator</span></td>
+        <td><p>The decorator funtion. It must return the decorated instance. The original instance can be accessed via the 3rd parameter of the decorator function.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.IModifiedServiceCollection.html">IModifiedServiceCollection</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_ApplyProxy_Solti_Utils_DI_Interfaces_IModifiedServiceCollection_System_Linq_Expressions_Expression_System_Func_Solti_Utils_DI_Interfaces_IInjector_System_Type_System_Object_System_Object____remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>You can&apos;t create proxies against instances and open generic services. A service can be decorated multiple times.</p>
+</div>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.invalidoperationexception">InvalidOperationException</a></td>
+        <td><p>When proxying not allowed (see above).</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
   <a id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Factory_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Factory*"></a>
-  <h4 id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Factory_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_Linq_Expressions_Expression_System_Func_Solti_Utils_DI_Interfaces_IInjector_System_Type_System_Object___Solti_Utils_DI_Interfaces_Lifetime_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Factory(Solti.Utils.DI.Interfaces.IServiceCollection,System.Type,System.Linq.Expressions.Expression{System.Func{Solti.Utils.DI.Interfaces.IInjector,System.Type,System.Object}},Solti.Utils.DI.Interfaces.Lifetime)">Factory(IServiceCollection, Type, Expression&lt;Func&lt;IInjector, Type, Object&gt;&gt;, Lifetime)</h4>
+  <h4 id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Factory_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_Linq_Expressions_Expression_System_Func_Solti_Utils_DI_Interfaces_IInjector_System_Type_System_Object___Solti_Utils_DI_Interfaces_LifetimeBase_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Factory(Solti.Utils.DI.Interfaces.IServiceCollection,System.Type,System.Linq.Expressions.Expression{System.Func{Solti.Utils.DI.Interfaces.IInjector,System.Type,System.Object}},Solti.Utils.DI.Interfaces.LifetimeBase)">Factory(IServiceCollection, Type, Expression&lt;Func&lt;IInjector, Type, Object&gt;&gt;, LifetimeBase)</h4>
   <div class="markdown level1 summary"><p>Registers a new service factory with the given type. Factories are also services except that the instantiating process is delegated to the caller. Useful if a service has more than one constructor.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static IModifiedServiceCollection Factory(this IServiceCollection self, Type iface, Expression&lt;Func&lt;IInjector, Type, object&gt;&gt; factory, Lifetime lifetime)</code></pre>
+    <pre><code class="lang-csharp hljs">public static IModifiedServiceCollection Factory(this IServiceCollection self, Type iface, Expression&lt;Func&lt;IInjector, Type, object&gt;&gt; factory, LifetimeBase lifetime)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -96,9 +163,9 @@
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="Solti.Utils.DI.Interfaces.Lifetime.html">Lifetime</a></td>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.LifetimeBase.html">LifetimeBase</a></td>
         <td><span class="parametername">lifetime</span></td>
-        <td><p>The <a class="xref" href="Solti.Utils.DI.Interfaces.Lifetime.html">Lifetime</a> of the service.</p>
+        <td><p>The lifetime of service.</p>
 </td>
       </tr>
     </tbody>
@@ -118,17 +185,17 @@
       </tr>
     </tbody>
   </table>
-  <h5 id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Factory_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_Linq_Expressions_Expression_System_Func_Solti_Utils_DI_Interfaces_IInjector_System_Type_System_Object___Solti_Utils_DI_Interfaces_Lifetime__remarks">Remarks</h5>
+  <h5 id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Factory_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_Linq_Expressions_Expression_System_Func_Solti_Utils_DI_Interfaces_IInjector_System_Type_System_Object___Solti_Utils_DI_Interfaces_LifetimeBase__remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>You can register generic services (where the <code data-dev-comment-type="paramref" class="paramref">iface</code> parameter is an open generic type).</p>
 </div>
   <a id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Factory_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Factory*"></a>
-  <h4 id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Factory_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_String_System_Linq_Expressions_Expression_System_Func_Solti_Utils_DI_Interfaces_IInjector_System_Type_System_Object___Solti_Utils_DI_Interfaces_Lifetime_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Factory(Solti.Utils.DI.Interfaces.IServiceCollection,System.Type,System.String,System.Linq.Expressions.Expression{System.Func{Solti.Utils.DI.Interfaces.IInjector,System.Type,System.Object}},Solti.Utils.DI.Interfaces.Lifetime)">Factory(IServiceCollection, Type, String, Expression&lt;Func&lt;IInjector, Type, Object&gt;&gt;, Lifetime)</h4>
+  <h4 id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Factory_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_String_System_Linq_Expressions_Expression_System_Func_Solti_Utils_DI_Interfaces_IInjector_System_Type_System_Object___Solti_Utils_DI_Interfaces_LifetimeBase_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Factory(Solti.Utils.DI.Interfaces.IServiceCollection,System.Type,System.String,System.Linq.Expressions.Expression{System.Func{Solti.Utils.DI.Interfaces.IInjector,System.Type,System.Object}},Solti.Utils.DI.Interfaces.LifetimeBase)">Factory(IServiceCollection, Type, String, Expression&lt;Func&lt;IInjector, Type, Object&gt;&gt;, LifetimeBase)</h4>
   <div class="markdown level1 summary"><p>Registers a new service factory with the given type. Factories are also services except that the instantiating process is delegated to the caller. Useful if a service has more than one constructor.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static IModifiedServiceCollection Factory(this IServiceCollection self, Type iface, string name, Expression&lt;Func&lt;IInjector, Type, object&gt;&gt; factory, Lifetime lifetime)</code></pre>
+    <pre><code class="lang-csharp hljs">public static IModifiedServiceCollection Factory(this IServiceCollection self, Type iface, string name, Expression&lt;Func&lt;IInjector, Type, object&gt;&gt; factory, LifetimeBase lifetime)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -165,9 +232,9 @@
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="Solti.Utils.DI.Interfaces.Lifetime.html">Lifetime</a></td>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.LifetimeBase.html">LifetimeBase</a></td>
         <td><span class="parametername">lifetime</span></td>
-        <td><p>The <a class="xref" href="Solti.Utils.DI.Interfaces.Lifetime.html">Lifetime</a> of the service.</p>
+        <td><p>The lifetime of service.</p>
 </td>
       </tr>
     </tbody>
@@ -187,17 +254,17 @@
       </tr>
     </tbody>
   </table>
-  <h5 id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Factory_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_String_System_Linq_Expressions_Expression_System_Func_Solti_Utils_DI_Interfaces_IInjector_System_Type_System_Object___Solti_Utils_DI_Interfaces_Lifetime__remarks">Remarks</h5>
+  <h5 id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Factory_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_String_System_Linq_Expressions_Expression_System_Func_Solti_Utils_DI_Interfaces_IInjector_System_Type_System_Object___Solti_Utils_DI_Interfaces_LifetimeBase__remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>You can register generic services (where the <code data-dev-comment-type="paramref" class="paramref">iface</code> parameter is an open generic type).</p>
 </div>
   <a id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Factory_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Factory*"></a>
-  <h4 id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Factory__1_Solti_Utils_DI_Interfaces_IServiceCollection_System_Linq_Expressions_Expression_System_Func_Solti_Utils_DI_Interfaces_IInjector___0___Solti_Utils_DI_Interfaces_Lifetime_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Factory``1(Solti.Utils.DI.Interfaces.IServiceCollection,System.Linq.Expressions.Expression{System.Func{Solti.Utils.DI.Interfaces.IInjector,``0}},Solti.Utils.DI.Interfaces.Lifetime)">Factory&lt;TInterface&gt;(IServiceCollection, Expression&lt;Func&lt;IInjector, TInterface&gt;&gt;, Lifetime)</h4>
+  <h4 id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Factory__1_Solti_Utils_DI_Interfaces_IServiceCollection_System_Linq_Expressions_Expression_System_Func_Solti_Utils_DI_Interfaces_IInjector___0___Solti_Utils_DI_Interfaces_LifetimeBase_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Factory``1(Solti.Utils.DI.Interfaces.IServiceCollection,System.Linq.Expressions.Expression{System.Func{Solti.Utils.DI.Interfaces.IInjector,``0}},Solti.Utils.DI.Interfaces.LifetimeBase)">Factory&lt;TInterface&gt;(IServiceCollection, Expression&lt;Func&lt;IInjector, TInterface&gt;&gt;, LifetimeBase)</h4>
   <div class="markdown level1 summary"><p>Registers a new service factory with the given type. Factories are also services except that the instantiating process is delegated to the caller. Useful if a service has more than one constructor.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static IModifiedServiceCollection Factory&lt;TInterface&gt;(this IServiceCollection self, Expression&lt;Func&lt;IInjector, TInterface&gt;&gt; factory, Lifetime lifetime)
+    <pre><code class="lang-csharp hljs">public static IModifiedServiceCollection Factory&lt;TInterface&gt;(this IServiceCollection self, Expression&lt;Func&lt;IInjector, TInterface&gt;&gt; factory, LifetimeBase lifetime)
     where TInterface : class</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
@@ -223,9 +290,9 @@
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="Solti.Utils.DI.Interfaces.Lifetime.html">Lifetime</a></td>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.LifetimeBase.html">LifetimeBase</a></td>
         <td><span class="parametername">lifetime</span></td>
-        <td><p>The <a class="xref" href="Solti.Utils.DI.Interfaces.Lifetime.html">Lifetime</a> of the service.</p>
+        <td><p>The lifetime of service.</p>
 </td>
       </tr>
     </tbody>
@@ -262,13 +329,13 @@
     </tbody>
   </table>
   <a id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Factory_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Factory*"></a>
-  <h4 id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Factory__1_Solti_Utils_DI_Interfaces_IServiceCollection_System_String_System_Linq_Expressions_Expression_System_Func_Solti_Utils_DI_Interfaces_IInjector___0___Solti_Utils_DI_Interfaces_Lifetime_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Factory``1(Solti.Utils.DI.Interfaces.IServiceCollection,System.String,System.Linq.Expressions.Expression{System.Func{Solti.Utils.DI.Interfaces.IInjector,``0}},Solti.Utils.DI.Interfaces.Lifetime)">Factory&lt;TInterface&gt;(IServiceCollection, String, Expression&lt;Func&lt;IInjector, TInterface&gt;&gt;, Lifetime)</h4>
+  <h4 id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Factory__1_Solti_Utils_DI_Interfaces_IServiceCollection_System_String_System_Linq_Expressions_Expression_System_Func_Solti_Utils_DI_Interfaces_IInjector___0___Solti_Utils_DI_Interfaces_LifetimeBase_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Factory``1(Solti.Utils.DI.Interfaces.IServiceCollection,System.String,System.Linq.Expressions.Expression{System.Func{Solti.Utils.DI.Interfaces.IInjector,``0}},Solti.Utils.DI.Interfaces.LifetimeBase)">Factory&lt;TInterface&gt;(IServiceCollection, String, Expression&lt;Func&lt;IInjector, TInterface&gt;&gt;, LifetimeBase)</h4>
   <div class="markdown level1 summary"><p>Registers a new service factory with the given type. Factories are also services except that the instantiating process is delegated to the caller. Useful if a service has more than one constructor.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static IModifiedServiceCollection Factory&lt;TInterface&gt;(this IServiceCollection self, string name, Expression&lt;Func&lt;IInjector, TInterface&gt;&gt; factory, Lifetime lifetime)
+    <pre><code class="lang-csharp hljs">public static IModifiedServiceCollection Factory&lt;TInterface&gt;(this IServiceCollection self, string name, Expression&lt;Func&lt;IInjector, TInterface&gt;&gt; factory, LifetimeBase lifetime)
     where TInterface : class</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
@@ -300,259 +367,9 @@
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="Solti.Utils.DI.Interfaces.Lifetime.html">Lifetime</a></td>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.LifetimeBase.html">LifetimeBase</a></td>
         <td><span class="parametername">lifetime</span></td>
-        <td><p>The <a class="xref" href="Solti.Utils.DI.Interfaces.Lifetime.html">Lifetime</a> of the service.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Solti.Utils.DI.Interfaces.IModifiedServiceCollection.html">IModifiedServiceCollection</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="typeParameters">Type Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="parametername">TInterface</span></td>
-        <td><p>The service interface to be registered. It can be registered only once (with the given <code data-dev-comment-type="paramref" class="paramref">name</code>).</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <a id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Instance_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Instance*"></a>
-  <h4 id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Instance_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_Object_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Instance(Solti.Utils.DI.Interfaces.IServiceCollection,System.Type,System.Object)">Instance(IServiceCollection, Type, Object)</h4>
-  <div class="markdown level1 summary"><p>Registers a pre-created instance. Useful to creating &quot;constant&quot; values (e.g. command-line arguments).</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static IModifiedServiceCollection Instance(this IServiceCollection self, Type iface, object instance)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollection.html">IServiceCollection</a></td>
-        <td><span class="parametername">self</span></td>
-        <td><p>The target <a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollection.html">IServiceCollection</a>.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a></td>
-        <td><span class="parametername">iface</span></td>
-        <td><p>The service interface to be registered. It can not be null and can be registered only once.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Object</a></td>
-        <td><span class="parametername">instance</span></td>
-        <td><p>The pre-created instance to be registered. It can not be null and must implement the <code data-dev-comment-type="paramref" class="paramref">iface</code> interface.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Solti.Utils.DI.Interfaces.IModifiedServiceCollection.html">IModifiedServiceCollection</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <a id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Instance_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Instance*"></a>
-  <h4 id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Instance_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_String_System_Object_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Instance(Solti.Utils.DI.Interfaces.IServiceCollection,System.Type,System.String,System.Object)">Instance(IServiceCollection, Type, String, Object)</h4>
-  <div class="markdown level1 summary"><p>Registers a pre-created instance. Useful to creating &quot;constant&quot; values (e.g. command-line arguments).</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static IModifiedServiceCollection Instance(this IServiceCollection self, Type iface, string name, object instance)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollection.html">IServiceCollection</a></td>
-        <td><span class="parametername">self</span></td>
-        <td><p>The target <a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollection.html">IServiceCollection</a>.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a></td>
-        <td><span class="parametername">iface</span></td>
-        <td><p>The service interface to be registered. It can not be null and can be registered only once (with the given <code data-dev-comment-type="paramref" class="paramref">name</code>).</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">name</span></td>
-        <td><p>The (optional) name of the service.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Object</a></td>
-        <td><span class="parametername">instance</span></td>
-        <td><p>The pre-created instance to be registered. It can not be null and must implement the <code data-dev-comment-type="paramref" class="paramref">iface</code> interface.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Solti.Utils.DI.Interfaces.IModifiedServiceCollection.html">IModifiedServiceCollection</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <a id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Instance_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Instance*"></a>
-  <h4 id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Instance__1_Solti_Utils_DI_Interfaces_IServiceCollection___0_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Instance``1(Solti.Utils.DI.Interfaces.IServiceCollection,``0)">Instance&lt;TInterface&gt;(IServiceCollection, TInterface)</h4>
-  <div class="markdown level1 summary"><p>Registers a pre-created instance. Useful when creating &quot;constant&quot; values (e.g. from command-line arguments).</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static IModifiedServiceCollection Instance&lt;TInterface&gt;(this IServiceCollection self, TInterface instance)
-    where TInterface : class</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollection.html">IServiceCollection</a></td>
-        <td><span class="parametername">self</span></td>
-        <td><p>The target <a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollection.html">IServiceCollection</a>.</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">TInterface</span></td>
-        <td><span class="parametername">instance</span></td>
-        <td><p>The pre-created instance to be registered.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Solti.Utils.DI.Interfaces.IModifiedServiceCollection.html">IModifiedServiceCollection</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="typeParameters">Type Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="parametername">TInterface</span></td>
-        <td><p>The service interface to be registered. It can be registered only once.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <a id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Instance_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Instance*"></a>
-  <h4 id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Instance__1_Solti_Utils_DI_Interfaces_IServiceCollection_System_String___0_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Instance``1(Solti.Utils.DI.Interfaces.IServiceCollection,System.String,``0)">Instance&lt;TInterface&gt;(IServiceCollection, String, TInterface)</h4>
-  <div class="markdown level1 summary"><p>Registers a pre-created instance. Useful when creating &quot;constant&quot; values (e.g. from command-line arguments).</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static IModifiedServiceCollection Instance&lt;TInterface&gt;(this IServiceCollection self, string name, TInterface instance)
-    where TInterface : class</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollection.html">IServiceCollection</a></td>
-        <td><span class="parametername">self</span></td>
-        <td><p>The target <a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollection.html">IServiceCollection</a>.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">name</span></td>
-        <td><p>The (optional) name of the service.</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">TInterface</span></td>
-        <td><span class="parametername">instance</span></td>
-        <td><p>The pre-created instance to be registered.</p>
+        <td><p>The lifetime of service.</p>
 </td>
       </tr>
     </tbody>
@@ -589,13 +406,13 @@
     </tbody>
   </table>
   <a id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Provider_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Provider*"></a>
-  <h4 id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Provider_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_String_System_Type_Solti_Utils_DI_Interfaces_Lifetime_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Provider(Solti.Utils.DI.Interfaces.IServiceCollection,System.Type,System.String,System.Type,Solti.Utils.DI.Interfaces.Lifetime)">Provider(IServiceCollection, Type, String, Type, Lifetime)</h4>
+  <h4 id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Provider_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_String_System_Type_Solti_Utils_DI_Interfaces_LifetimeBase_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Provider(Solti.Utils.DI.Interfaces.IServiceCollection,System.Type,System.String,System.Type,Solti.Utils.DI.Interfaces.LifetimeBase)">Provider(IServiceCollection, Type, String, Type, LifetimeBase)</h4>
   <div class="markdown level1 summary"><p>Registers a new provider. Providers are &quot;factory services&quot; responsible for creating the concrete service.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static IModifiedServiceCollection Provider(this IServiceCollection self, Type iface, string name, Type provider, Lifetime lifetime)</code></pre>
+    <pre><code class="lang-csharp hljs">public static IModifiedServiceCollection Provider(this IServiceCollection self, Type iface, string name, Type provider, LifetimeBase lifetime)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -632,9 +449,9 @@
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="Solti.Utils.DI.Interfaces.Lifetime.html">Lifetime</a></td>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.LifetimeBase.html">LifetimeBase</a></td>
         <td><span class="parametername">lifetime</span></td>
-        <td><p>The <a class="xref" href="Solti.Utils.DI.Interfaces.Lifetime.html">Lifetime</a> of the service.</p>
+        <td><p>The lifetime of service.</p>
 </td>
       </tr>
     </tbody>
@@ -654,17 +471,17 @@
       </tr>
     </tbody>
   </table>
-  <h5 id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Provider_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_String_System_Type_Solti_Utils_DI_Interfaces_Lifetime__remarks">Remarks</h5>
+  <h5 id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Provider_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_String_System_Type_Solti_Utils_DI_Interfaces_LifetimeBase__remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>The provided <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iserviceprovider">IServiceProvider</a> implementation won&apos;t be disposed even if it implements the <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.idisposable">IDisposable</a> interface.</p>
 </div>
   <a id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Provider_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Provider*"></a>
-  <h4 id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Provider_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_String_System_Type_System_Object_Solti_Utils_DI_Interfaces_Lifetime_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Provider(Solti.Utils.DI.Interfaces.IServiceCollection,System.Type,System.String,System.Type,System.Object,Solti.Utils.DI.Interfaces.Lifetime)">Provider(IServiceCollection, Type, String, Type, Object, Lifetime)</h4>
+  <h4 id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Provider_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_String_System_Type_System_Object_Solti_Utils_DI_Interfaces_LifetimeBase_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Provider(Solti.Utils.DI.Interfaces.IServiceCollection,System.Type,System.String,System.Type,System.Object,Solti.Utils.DI.Interfaces.LifetimeBase)">Provider(IServiceCollection, Type, String, Type, Object, LifetimeBase)</h4>
   <div class="markdown level1 summary"><p>Registers a new provider. Providers are &quot;factory services&quot; responsible for creating the concrete service.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static IModifiedServiceCollection Provider(this IServiceCollection self, Type iface, string name, Type provider, object explicitArgs, Lifetime lifetime)</code></pre>
+    <pre><code class="lang-csharp hljs">public static IModifiedServiceCollection Provider(this IServiceCollection self, Type iface, string name, Type provider, object explicitArgs, LifetimeBase lifetime)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -707,9 +524,9 @@
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="Solti.Utils.DI.Interfaces.Lifetime.html">Lifetime</a></td>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.LifetimeBase.html">LifetimeBase</a></td>
         <td><span class="parametername">lifetime</span></td>
-        <td><p>The <a class="xref" href="Solti.Utils.DI.Interfaces.Lifetime.html">Lifetime</a> of the service.</p>
+        <td><p>The lifetime of service.</p>
 </td>
       </tr>
     </tbody>
@@ -729,17 +546,17 @@
       </tr>
     </tbody>
   </table>
-  <h5 id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Provider_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_String_System_Type_System_Object_Solti_Utils_DI_Interfaces_Lifetime__remarks">Remarks</h5>
+  <h5 id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Provider_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_String_System_Type_System_Object_Solti_Utils_DI_Interfaces_LifetimeBase__remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>The provided <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iserviceprovider">IServiceProvider</a> implementation won&apos;t be disposed even if it implements the <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.idisposable">IDisposable</a> interface.</p>
 </div>
   <a id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Provider_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Provider*"></a>
-  <h4 id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Provider_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_Type_Solti_Utils_DI_Interfaces_Lifetime_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Provider(Solti.Utils.DI.Interfaces.IServiceCollection,System.Type,System.Type,Solti.Utils.DI.Interfaces.Lifetime)">Provider(IServiceCollection, Type, Type, Lifetime)</h4>
+  <h4 id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Provider_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_Type_Solti_Utils_DI_Interfaces_LifetimeBase_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Provider(Solti.Utils.DI.Interfaces.IServiceCollection,System.Type,System.Type,Solti.Utils.DI.Interfaces.LifetimeBase)">Provider(IServiceCollection, Type, Type, LifetimeBase)</h4>
   <div class="markdown level1 summary"><p>Registers a new provider. Providers are &quot;factory services&quot; responsible for creating the concrete service.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static IModifiedServiceCollection Provider(this IServiceCollection self, Type iface, Type provider, Lifetime lifetime)</code></pre>
+    <pre><code class="lang-csharp hljs">public static IModifiedServiceCollection Provider(this IServiceCollection self, Type iface, Type provider, LifetimeBase lifetime)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -770,9 +587,9 @@
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="Solti.Utils.DI.Interfaces.Lifetime.html">Lifetime</a></td>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.LifetimeBase.html">LifetimeBase</a></td>
         <td><span class="parametername">lifetime</span></td>
-        <td><p>The <a class="xref" href="Solti.Utils.DI.Interfaces.Lifetime.html">Lifetime</a> of the service.</p>
+        <td><p>The lifetime of service.</p>
 </td>
       </tr>
     </tbody>
@@ -792,17 +609,17 @@
       </tr>
     </tbody>
   </table>
-  <h5 id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Provider_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_Type_Solti_Utils_DI_Interfaces_Lifetime__remarks">Remarks</h5>
+  <h5 id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Provider_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_Type_Solti_Utils_DI_Interfaces_LifetimeBase__remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>The provided <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iserviceprovider">IServiceProvider</a> implementation won&apos;t be disposed even if it implements the <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.idisposable">IDisposable</a> interface.</p>
 </div>
   <a id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Provider_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Provider*"></a>
-  <h4 id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Provider_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_Type_System_Object_Solti_Utils_DI_Interfaces_Lifetime_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Provider(Solti.Utils.DI.Interfaces.IServiceCollection,System.Type,System.Type,System.Object,Solti.Utils.DI.Interfaces.Lifetime)">Provider(IServiceCollection, Type, Type, Object, Lifetime)</h4>
+  <h4 id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Provider_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_Type_System_Object_Solti_Utils_DI_Interfaces_LifetimeBase_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Provider(Solti.Utils.DI.Interfaces.IServiceCollection,System.Type,System.Type,System.Object,Solti.Utils.DI.Interfaces.LifetimeBase)">Provider(IServiceCollection, Type, Type, Object, LifetimeBase)</h4>
   <div class="markdown level1 summary"><p>Registers a new provider. Providers are &quot;factory services&quot; responsible for creating the concrete service.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static IModifiedServiceCollection Provider(this IServiceCollection self, Type iface, Type provider, object explicitArgs, Lifetime lifetime)</code></pre>
+    <pre><code class="lang-csharp hljs">public static IModifiedServiceCollection Provider(this IServiceCollection self, Type iface, Type provider, object explicitArgs, LifetimeBase lifetime)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -839,9 +656,9 @@
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="Solti.Utils.DI.Interfaces.Lifetime.html">Lifetime</a></td>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.LifetimeBase.html">LifetimeBase</a></td>
         <td><span class="parametername">lifetime</span></td>
-        <td><p>The <a class="xref" href="Solti.Utils.DI.Interfaces.Lifetime.html">Lifetime</a> of the service.</p>
+        <td><p>The lifetime of service.</p>
 </td>
       </tr>
     </tbody>
@@ -861,17 +678,17 @@
       </tr>
     </tbody>
   </table>
-  <h5 id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Provider_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_Type_System_Object_Solti_Utils_DI_Interfaces_Lifetime__remarks">Remarks</h5>
+  <h5 id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Provider_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_Type_System_Object_Solti_Utils_DI_Interfaces_LifetimeBase__remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>The provided <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iserviceprovider">IServiceProvider</a> implementation won&apos;t be disposed even if it implements the <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.idisposable">IDisposable</a> interface.</p>
 </div>
   <a id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Provider_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Provider*"></a>
-  <h4 id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Provider__2_Solti_Utils_DI_Interfaces_IServiceCollection_Solti_Utils_DI_Interfaces_Lifetime_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Provider``2(Solti.Utils.DI.Interfaces.IServiceCollection,Solti.Utils.DI.Interfaces.Lifetime)">Provider&lt;TInterface, TProvider&gt;(IServiceCollection, Lifetime)</h4>
+  <h4 id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Provider__2_Solti_Utils_DI_Interfaces_IServiceCollection_Solti_Utils_DI_Interfaces_LifetimeBase_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Provider``2(Solti.Utils.DI.Interfaces.IServiceCollection,Solti.Utils.DI.Interfaces.LifetimeBase)">Provider&lt;TInterface, TProvider&gt;(IServiceCollection, LifetimeBase)</h4>
   <div class="markdown level1 summary"><p>Registers a new provider. Providers are &quot;factory services&quot; responsible for creating the concrete service.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static IModifiedServiceCollection Provider&lt;TInterface, TProvider&gt;(this IServiceCollection self, Lifetime lifetime)
+    <pre><code class="lang-csharp hljs">public static IModifiedServiceCollection Provider&lt;TInterface, TProvider&gt;(this IServiceCollection self, LifetimeBase lifetime)
     where TInterface : class where TProvider : class, IServiceProvider</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
@@ -891,9 +708,9 @@
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="Solti.Utils.DI.Interfaces.Lifetime.html">Lifetime</a></td>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.LifetimeBase.html">LifetimeBase</a></td>
         <td><span class="parametername">lifetime</span></td>
-        <td><p>The <a class="xref" href="Solti.Utils.DI.Interfaces.Lifetime.html">Lifetime</a> of the service.</p>
+        <td><p>The lifetime of service.</p>
 </td>
       </tr>
     </tbody>
@@ -934,17 +751,17 @@
       </tr>
     </tbody>
   </table>
-  <h5 id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Provider__2_Solti_Utils_DI_Interfaces_IServiceCollection_Solti_Utils_DI_Interfaces_Lifetime__remarks">Remarks</h5>
+  <h5 id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Provider__2_Solti_Utils_DI_Interfaces_IServiceCollection_Solti_Utils_DI_Interfaces_LifetimeBase__remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>The provided <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iserviceprovider">IServiceProvider</a> implementation won&apos;t be disposed even if it implements the <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.idisposable">IDisposable</a> interface.</p>
 </div>
   <a id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Provider_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Provider*"></a>
-  <h4 id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Provider__2_Solti_Utils_DI_Interfaces_IServiceCollection_System_Object_Solti_Utils_DI_Interfaces_Lifetime_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Provider``2(Solti.Utils.DI.Interfaces.IServiceCollection,System.Object,Solti.Utils.DI.Interfaces.Lifetime)">Provider&lt;TInterface, TProvider&gt;(IServiceCollection, Object, Lifetime)</h4>
+  <h4 id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Provider__2_Solti_Utils_DI_Interfaces_IServiceCollection_System_Object_Solti_Utils_DI_Interfaces_LifetimeBase_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Provider``2(Solti.Utils.DI.Interfaces.IServiceCollection,System.Object,Solti.Utils.DI.Interfaces.LifetimeBase)">Provider&lt;TInterface, TProvider&gt;(IServiceCollection, Object, LifetimeBase)</h4>
   <div class="markdown level1 summary"><p>Registers a new provider. Providers are &quot;factory services&quot; responsible for creating the concrete service.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static IModifiedServiceCollection Provider&lt;TInterface, TProvider&gt;(this IServiceCollection self, object explicitArgs, Lifetime lifetime)
+    <pre><code class="lang-csharp hljs">public static IModifiedServiceCollection Provider&lt;TInterface, TProvider&gt;(this IServiceCollection self, object explicitArgs, LifetimeBase lifetime)
     where TInterface : class where TProvider : class, IServiceProvider</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
@@ -970,9 +787,9 @@
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="Solti.Utils.DI.Interfaces.Lifetime.html">Lifetime</a></td>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.LifetimeBase.html">LifetimeBase</a></td>
         <td><span class="parametername">lifetime</span></td>
-        <td><p>The <a class="xref" href="Solti.Utils.DI.Interfaces.Lifetime.html">Lifetime</a> of the service.</p>
+        <td><p>The lifetime of service.</p>
 </td>
       </tr>
     </tbody>
@@ -1013,17 +830,17 @@
       </tr>
     </tbody>
   </table>
-  <h5 id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Provider__2_Solti_Utils_DI_Interfaces_IServiceCollection_System_Object_Solti_Utils_DI_Interfaces_Lifetime__remarks">Remarks</h5>
+  <h5 id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Provider__2_Solti_Utils_DI_Interfaces_IServiceCollection_System_Object_Solti_Utils_DI_Interfaces_LifetimeBase__remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>The provided <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iserviceprovider">IServiceProvider</a> implementation won&apos;t be disposed even if it implements the <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.idisposable">IDisposable</a> interface.</p>
 </div>
   <a id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Provider_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Provider*"></a>
-  <h4 id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Provider__2_Solti_Utils_DI_Interfaces_IServiceCollection_System_String_Solti_Utils_DI_Interfaces_Lifetime_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Provider``2(Solti.Utils.DI.Interfaces.IServiceCollection,System.String,Solti.Utils.DI.Interfaces.Lifetime)">Provider&lt;TInterface, TProvider&gt;(IServiceCollection, String, Lifetime)</h4>
+  <h4 id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Provider__2_Solti_Utils_DI_Interfaces_IServiceCollection_System_String_Solti_Utils_DI_Interfaces_LifetimeBase_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Provider``2(Solti.Utils.DI.Interfaces.IServiceCollection,System.String,Solti.Utils.DI.Interfaces.LifetimeBase)">Provider&lt;TInterface, TProvider&gt;(IServiceCollection, String, LifetimeBase)</h4>
   <div class="markdown level1 summary"><p>Registers a new provider. Providers are &quot;factory services&quot; responsible for creating the concrete service.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static IModifiedServiceCollection Provider&lt;TInterface, TProvider&gt;(this IServiceCollection self, string name, Lifetime lifetime)
+    <pre><code class="lang-csharp hljs">public static IModifiedServiceCollection Provider&lt;TInterface, TProvider&gt;(this IServiceCollection self, string name, LifetimeBase lifetime)
     where TInterface : class where TProvider : class, IServiceProvider</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
@@ -1049,9 +866,9 @@
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="Solti.Utils.DI.Interfaces.Lifetime.html">Lifetime</a></td>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.LifetimeBase.html">LifetimeBase</a></td>
         <td><span class="parametername">lifetime</span></td>
-        <td><p>The <a class="xref" href="Solti.Utils.DI.Interfaces.Lifetime.html">Lifetime</a> of the service.</p>
+        <td><p>The lifetime of service.</p>
 </td>
       </tr>
     </tbody>
@@ -1092,7 +909,7 @@
       </tr>
     </tbody>
   </table>
-  <h5 id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Provider__2_Solti_Utils_DI_Interfaces_IServiceCollection_System_String_Solti_Utils_DI_Interfaces_Lifetime__remarks">Remarks</h5>
+  <h5 id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Provider__2_Solti_Utils_DI_Interfaces_IServiceCollection_System_String_Solti_Utils_DI_Interfaces_LifetimeBase__remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>The provided <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iserviceprovider">IServiceProvider</a> implementation won&apos;t be disposed even if it implements the <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.idisposable">IDisposable</a> interface.</p>
 </div>
   <a id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Register_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Register*"></a>
@@ -1414,13 +1231,13 @@
     </tbody>
   </table>
   <a id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Service_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Service*"></a>
-  <h4 id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Service_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_String_System_Type_Solti_Utils_DI_Interfaces_Lifetime_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Service(Solti.Utils.DI.Interfaces.IServiceCollection,System.Type,System.String,System.Type,Solti.Utils.DI.Interfaces.Lifetime)">Service(IServiceCollection, Type, String, Type, Lifetime)</h4>
+  <h4 id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Service_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_String_System_Type_Solti_Utils_DI_Interfaces_LifetimeBase_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Service(Solti.Utils.DI.Interfaces.IServiceCollection,System.Type,System.String,System.Type,Solti.Utils.DI.Interfaces.LifetimeBase)">Service(IServiceCollection, Type, String, Type, LifetimeBase)</h4>
   <div class="markdown level1 summary"><p>Registers a new service with the given implementation.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static IModifiedServiceCollection Service(this IServiceCollection self, Type iface, string name, Type implementation, Lifetime lifetime)</code></pre>
+    <pre><code class="lang-csharp hljs">public static IModifiedServiceCollection Service(this IServiceCollection self, Type iface, string name, Type implementation, LifetimeBase lifetime)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1453,13 +1270,13 @@
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a></td>
         <td><span class="parametername">implementation</span></td>
-        <td><p>The service implementation to be registered. It can not be null and must implement the <code data-dev-comment-type="paramref" class="paramref">iface</code> interface. Additionally it must have only null or one constructor (that may request another dependecies). In case of multiple constructors you can use the <a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.html#Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Factory_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_String_System_Linq_Expressions_Expression_System_Func_Solti_Utils_DI_Interfaces_IInjector_System_Type_System_Object___Solti_Utils_DI_Interfaces_Lifetime_">Factory(IServiceCollection, Type, String, Expression&lt;Func&lt;IInjector, Type, Object&gt;&gt;, Lifetime)</a> method or the <a class="xref" href="Solti.Utils.DI.Interfaces.ServiceActivatorAttribute.html">ServiceActivatorAttribute</a>.</p>
+        <td><p>The service implementation to be registered. It can not be null and must implement the <code data-dev-comment-type="paramref" class="paramref">iface</code> interface. Additionally it must have only null or one constructor (that may request another dependecies). In case of multiple constructors you can use the <a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.html#Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Factory_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_String_System_Linq_Expressions_Expression_System_Func_Solti_Utils_DI_Interfaces_IInjector_System_Type_System_Object___Solti_Utils_DI_Interfaces_LifetimeBase_">Factory(IServiceCollection, Type, String, Expression&lt;Func&lt;IInjector, Type, Object&gt;&gt;, LifetimeBase)</a> method or the <a class="xref" href="Solti.Utils.DI.Interfaces.ServiceActivatorAttribute.html">ServiceActivatorAttribute</a>.</p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="Solti.Utils.DI.Interfaces.Lifetime.html">Lifetime</a></td>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.LifetimeBase.html">LifetimeBase</a></td>
         <td><span class="parametername">lifetime</span></td>
-        <td><p>The <a class="xref" href="Solti.Utils.DI.Interfaces.Lifetime.html">Lifetime</a> of the service.</p>
+        <td><p>The lifetime of service.</p>
 </td>
       </tr>
     </tbody>
@@ -1479,17 +1296,17 @@
       </tr>
     </tbody>
   </table>
-  <h5 id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Service_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_String_System_Type_Solti_Utils_DI_Interfaces_Lifetime__remarks">Remarks</h5>
+  <h5 id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Service_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_String_System_Type_Solti_Utils_DI_Interfaces_LifetimeBase__remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>You may register generic services (where both the interface and the implementation are open generic types). The system will specialize the implementation if you request the concrete service.</p>
 </div>
   <a id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Service_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Service*"></a>
-  <h4 id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Service_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_String_System_Type_System_Object_Solti_Utils_DI_Interfaces_Lifetime_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Service(Solti.Utils.DI.Interfaces.IServiceCollection,System.Type,System.String,System.Type,System.Object,Solti.Utils.DI.Interfaces.Lifetime)">Service(IServiceCollection, Type, String, Type, Object, Lifetime)</h4>
+  <h4 id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Service_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_String_System_Type_System_Object_Solti_Utils_DI_Interfaces_LifetimeBase_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Service(Solti.Utils.DI.Interfaces.IServiceCollection,System.Type,System.String,System.Type,System.Object,Solti.Utils.DI.Interfaces.LifetimeBase)">Service(IServiceCollection, Type, String, Type, Object, LifetimeBase)</h4>
   <div class="markdown level1 summary"><p>Registers a service <code data-dev-comment-type="paramref" class="paramref">implementation</code> using arbitrary constructor arguments.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static IModifiedServiceCollection Service(this IServiceCollection self, Type iface, string name, Type implementation, object explicitArgs, Lifetime lifetime)</code></pre>
+    <pre><code class="lang-csharp hljs">public static IModifiedServiceCollection Service(this IServiceCollection self, Type iface, string name, Type implementation, object explicitArgs, LifetimeBase lifetime)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1522,7 +1339,7 @@
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a></td>
         <td><span class="parametername">implementation</span></td>
-        <td><p>The service implementation to be registered. It can not be null and must implement the <code data-dev-comment-type="paramref" class="paramref">iface</code> interface. Additionally it should have only one public constructor (that may request another dependecies). In case of multiple constructors you can use the <a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.html#Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Factory_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_Linq_Expressions_Expression_System_Func_Solti_Utils_DI_Interfaces_IInjector_System_Type_System_Object___Solti_Utils_DI_Interfaces_Lifetime_">Factory(IServiceCollection, Type, Expression&lt;Func&lt;IInjector, Type, Object&gt;&gt;, Lifetime)</a> method or the <a class="xref" href="Solti.Utils.DI.Interfaces.ServiceActivatorAttribute.html">ServiceActivatorAttribute</a>.</p>
+        <td><p>The service implementation to be registered. It can not be null and must implement the <code data-dev-comment-type="paramref" class="paramref">iface</code> interface. Additionally it should have only one public constructor (that may request another dependecies). In case of multiple constructors you can use the <a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.html#Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Factory_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_Linq_Expressions_Expression_System_Func_Solti_Utils_DI_Interfaces_IInjector_System_Type_System_Object___Solti_Utils_DI_Interfaces_LifetimeBase_">Factory(IServiceCollection, Type, Expression&lt;Func&lt;IInjector, Type, Object&gt;&gt;, LifetimeBase)</a> method or the <a class="xref" href="Solti.Utils.DI.Interfaces.ServiceActivatorAttribute.html">ServiceActivatorAttribute</a>.</p>
 </td>
       </tr>
       <tr>
@@ -1532,9 +1349,9 @@
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="Solti.Utils.DI.Interfaces.Lifetime.html">Lifetime</a></td>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.LifetimeBase.html">LifetimeBase</a></td>
         <td><span class="parametername">lifetime</span></td>
-        <td><p>The <a class="xref" href="Solti.Utils.DI.Interfaces.Lifetime.html">Lifetime</a> of the service.</p>
+        <td><p>The lifetime of service.</p>
 </td>
       </tr>
     </tbody>
@@ -1554,17 +1371,17 @@
       </tr>
     </tbody>
   </table>
-  <h5 id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Service_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_String_System_Type_System_Object_Solti_Utils_DI_Interfaces_Lifetime__remarks">Remarks</h5>
+  <h5 id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Service_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_String_System_Type_System_Object_Solti_Utils_DI_Interfaces_LifetimeBase__remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>You may register generic services (where both the interface and the implementation are open generic types). The system will specialize the implementation if you request the concrete service.</p>
 </div>
   <a id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Service_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Service*"></a>
-  <h4 id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Service_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_Type_Solti_Utils_DI_Interfaces_Lifetime_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Service(Solti.Utils.DI.Interfaces.IServiceCollection,System.Type,System.Type,Solti.Utils.DI.Interfaces.Lifetime)">Service(IServiceCollection, Type, Type, Lifetime)</h4>
+  <h4 id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Service_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_Type_Solti_Utils_DI_Interfaces_LifetimeBase_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Service(Solti.Utils.DI.Interfaces.IServiceCollection,System.Type,System.Type,Solti.Utils.DI.Interfaces.LifetimeBase)">Service(IServiceCollection, Type, Type, LifetimeBase)</h4>
   <div class="markdown level1 summary"><p>Registers a new service with the given implementation.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static IModifiedServiceCollection Service(this IServiceCollection self, Type iface, Type implementation, Lifetime lifetime)</code></pre>
+    <pre><code class="lang-csharp hljs">public static IModifiedServiceCollection Service(this IServiceCollection self, Type iface, Type implementation, LifetimeBase lifetime)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1591,13 +1408,13 @@
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a></td>
         <td><span class="parametername">implementation</span></td>
-        <td><p>The service implementation to be registered. It can not be null and must implement the <code data-dev-comment-type="paramref" class="paramref">iface</code> interface. Additionally it should have only one constructor (that may request another dependecies). In case of multiple constructors you can use the <a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.html#Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Factory_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_Linq_Expressions_Expression_System_Func_Solti_Utils_DI_Interfaces_IInjector_System_Type_System_Object___Solti_Utils_DI_Interfaces_Lifetime_">Factory(IServiceCollection, Type, Expression&lt;Func&lt;IInjector, Type, Object&gt;&gt;, Lifetime)</a> method or the <a class="xref" href="Solti.Utils.DI.Interfaces.ServiceActivatorAttribute.html">ServiceActivatorAttribute</a>.</p>
+        <td><p>The service implementation to be registered. It can not be null and must implement the <code data-dev-comment-type="paramref" class="paramref">iface</code> interface. Additionally it should have only one constructor (that may request another dependecies). In case of multiple constructors you can use the <a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.html#Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Factory_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_Linq_Expressions_Expression_System_Func_Solti_Utils_DI_Interfaces_IInjector_System_Type_System_Object___Solti_Utils_DI_Interfaces_LifetimeBase_">Factory(IServiceCollection, Type, Expression&lt;Func&lt;IInjector, Type, Object&gt;&gt;, LifetimeBase)</a> method or the <a class="xref" href="Solti.Utils.DI.Interfaces.ServiceActivatorAttribute.html">ServiceActivatorAttribute</a>.</p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="Solti.Utils.DI.Interfaces.Lifetime.html">Lifetime</a></td>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.LifetimeBase.html">LifetimeBase</a></td>
         <td><span class="parametername">lifetime</span></td>
-        <td><p>The <a class="xref" href="Solti.Utils.DI.Interfaces.Lifetime.html">Lifetime</a> of the service.</p>
+        <td><p>The lifetime of service.</p>
 </td>
       </tr>
     </tbody>
@@ -1617,17 +1434,17 @@
       </tr>
     </tbody>
   </table>
-  <h5 id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Service_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_Type_Solti_Utils_DI_Interfaces_Lifetime__remarks">Remarks</h5>
+  <h5 id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Service_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_Type_Solti_Utils_DI_Interfaces_LifetimeBase__remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>You may register generic services (where both the interface and the implementation are open generic types). The system will specialize the implementation if you request the concrete service.</p>
 </div>
   <a id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Service_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Service*"></a>
-  <h4 id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Service_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_Type_System_Object_Solti_Utils_DI_Interfaces_Lifetime_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Service(Solti.Utils.DI.Interfaces.IServiceCollection,System.Type,System.Type,System.Object,Solti.Utils.DI.Interfaces.Lifetime)">Service(IServiceCollection, Type, Type, Object, Lifetime)</h4>
+  <h4 id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Service_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_Type_System_Object_Solti_Utils_DI_Interfaces_LifetimeBase_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Service(Solti.Utils.DI.Interfaces.IServiceCollection,System.Type,System.Type,System.Object,Solti.Utils.DI.Interfaces.LifetimeBase)">Service(IServiceCollection, Type, Type, Object, LifetimeBase)</h4>
   <div class="markdown level1 summary"><p>Registers a service <code data-dev-comment-type="paramref" class="paramref">implementation</code> using arbitrary constructor arguments.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static IModifiedServiceCollection Service(this IServiceCollection self, Type iface, Type implementation, object explicitArgs, Lifetime lifetime)</code></pre>
+    <pre><code class="lang-csharp hljs">public static IModifiedServiceCollection Service(this IServiceCollection self, Type iface, Type implementation, object explicitArgs, LifetimeBase lifetime)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1654,7 +1471,7 @@
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a></td>
         <td><span class="parametername">implementation</span></td>
-        <td><p>The service implementation to be registered. It can not be null and must implement the <code data-dev-comment-type="paramref" class="paramref">iface</code> interface. Additionally it should have only one constructor (that may request another dependecies). In case of multiple constructors you can use the <a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.html#Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Factory_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_Linq_Expressions_Expression_System_Func_Solti_Utils_DI_Interfaces_IInjector_System_Type_System_Object___Solti_Utils_DI_Interfaces_Lifetime_">Factory(IServiceCollection, Type, Expression&lt;Func&lt;IInjector, Type, Object&gt;&gt;, Lifetime)</a> method or the <a class="xref" href="Solti.Utils.DI.Interfaces.ServiceActivatorAttribute.html">ServiceActivatorAttribute</a>.</p>
+        <td><p>The service implementation to be registered. It can not be null and must implement the <code data-dev-comment-type="paramref" class="paramref">iface</code> interface. Additionally it should have only one constructor (that may request another dependecies). In case of multiple constructors you can use the <a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.html#Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Factory_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_Linq_Expressions_Expression_System_Func_Solti_Utils_DI_Interfaces_IInjector_System_Type_System_Object___Solti_Utils_DI_Interfaces_LifetimeBase_">Factory(IServiceCollection, Type, Expression&lt;Func&lt;IInjector, Type, Object&gt;&gt;, LifetimeBase)</a> method or the <a class="xref" href="Solti.Utils.DI.Interfaces.ServiceActivatorAttribute.html">ServiceActivatorAttribute</a>.</p>
 </td>
       </tr>
       <tr>
@@ -1664,9 +1481,9 @@
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="Solti.Utils.DI.Interfaces.Lifetime.html">Lifetime</a></td>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.LifetimeBase.html">LifetimeBase</a></td>
         <td><span class="parametername">lifetime</span></td>
-        <td><p>The <a class="xref" href="Solti.Utils.DI.Interfaces.Lifetime.html">Lifetime</a> of the service.</p>
+        <td><p>The lifetime of service.</p>
 </td>
       </tr>
     </tbody>
@@ -1686,17 +1503,17 @@
       </tr>
     </tbody>
   </table>
-  <h5 id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Service_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_Type_System_Object_Solti_Utils_DI_Interfaces_Lifetime__remarks">Remarks</h5>
+  <h5 id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Service_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_Type_System_Object_Solti_Utils_DI_Interfaces_LifetimeBase__remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>You may register generic services (where both the interface and the implementation are open generic types). The system will specialize the implementation if you request the concrete service.</p>
 </div>
   <a id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Service_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Service*"></a>
-  <h4 id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Service__2_Solti_Utils_DI_Interfaces_IServiceCollection_Solti_Utils_DI_Interfaces_Lifetime_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Service``2(Solti.Utils.DI.Interfaces.IServiceCollection,Solti.Utils.DI.Interfaces.Lifetime)">Service&lt;TInterface, TImplementation&gt;(IServiceCollection, Lifetime)</h4>
+  <h4 id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Service__2_Solti_Utils_DI_Interfaces_IServiceCollection_Solti_Utils_DI_Interfaces_LifetimeBase_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Service``2(Solti.Utils.DI.Interfaces.IServiceCollection,Solti.Utils.DI.Interfaces.LifetimeBase)">Service&lt;TInterface, TImplementation&gt;(IServiceCollection, LifetimeBase)</h4>
   <div class="markdown level1 summary"><p>Registers a new service.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static IModifiedServiceCollection Service&lt;TInterface, TImplementation&gt;(this IServiceCollection self, Lifetime lifetime)
+    <pre><code class="lang-csharp hljs">public static IModifiedServiceCollection Service&lt;TInterface, TImplementation&gt;(this IServiceCollection self, LifetimeBase lifetime)
     where TInterface : class where TImplementation : TInterface</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
@@ -1716,9 +1533,9 @@
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="Solti.Utils.DI.Interfaces.Lifetime.html">Lifetime</a></td>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.LifetimeBase.html">LifetimeBase</a></td>
         <td><span class="parametername">lifetime</span></td>
-        <td><p>The <a class="xref" href="Solti.Utils.DI.Interfaces.Lifetime.html">Lifetime</a> of the service.</p>
+        <td><p>The lifetime of service.</p>
 </td>
       </tr>
     </tbody>
@@ -1754,19 +1571,19 @@
       </tr>
       <tr>
         <td><span class="parametername">TImplementation</span></td>
-        <td><p>The service implementation to be registered. It must implement the <code data-dev-comment-type="typeparamref" class="typeparamref">TInterface</code> interface and should have only one public constructor (that may request another dependecies). In case of multiple constructors you can use the <a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.html#Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Factory__1_Solti_Utils_DI_Interfaces_IServiceCollection_System_Linq_Expressions_Expression_System_Func_Solti_Utils_DI_Interfaces_IInjector___0___Solti_Utils_DI_Interfaces_Lifetime_">Factory&lt;TInterface&gt;(IServiceCollection, Expression&lt;Func&lt;IInjector, TInterface&gt;&gt;, Lifetime)</a> method or the <a class="xref" href="Solti.Utils.DI.Interfaces.ServiceActivatorAttribute.html">ServiceActivatorAttribute</a>.</p>
+        <td><p>The service implementation to be registered. It must implement the <code data-dev-comment-type="typeparamref" class="typeparamref">TInterface</code> interface and should have only one public constructor (that may request another dependecies). In case of multiple constructors you can use the <a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.html#Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Factory__1_Solti_Utils_DI_Interfaces_IServiceCollection_System_Linq_Expressions_Expression_System_Func_Solti_Utils_DI_Interfaces_IInjector___0___Solti_Utils_DI_Interfaces_LifetimeBase_">Factory&lt;TInterface&gt;(IServiceCollection, Expression&lt;Func&lt;IInjector, TInterface&gt;&gt;, LifetimeBase)</a> method or the <a class="xref" href="Solti.Utils.DI.Interfaces.ServiceActivatorAttribute.html">ServiceActivatorAttribute</a>.</p>
 </td>
       </tr>
     </tbody>
   </table>
   <a id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Service_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Service*"></a>
-  <h4 id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Service__2_Solti_Utils_DI_Interfaces_IServiceCollection_System_Object_Solti_Utils_DI_Interfaces_Lifetime_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Service``2(Solti.Utils.DI.Interfaces.IServiceCollection,System.Object,Solti.Utils.DI.Interfaces.Lifetime)">Service&lt;TInterface, TImplementation&gt;(IServiceCollection, Object, Lifetime)</h4>
+  <h4 id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Service__2_Solti_Utils_DI_Interfaces_IServiceCollection_System_Object_Solti_Utils_DI_Interfaces_LifetimeBase_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Service``2(Solti.Utils.DI.Interfaces.IServiceCollection,System.Object,Solti.Utils.DI.Interfaces.LifetimeBase)">Service&lt;TInterface, TImplementation&gt;(IServiceCollection, Object, LifetimeBase)</h4>
   <div class="markdown level1 summary"><p>Registers a new service using arbitrary constructor arguments.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static IModifiedServiceCollection Service&lt;TInterface, TImplementation&gt;(this IServiceCollection self, object explicitArgs, Lifetime lifetime)
+    <pre><code class="lang-csharp hljs">public static IModifiedServiceCollection Service&lt;TInterface, TImplementation&gt;(this IServiceCollection self, object explicitArgs, LifetimeBase lifetime)
     where TInterface : class where TImplementation : TInterface</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
@@ -1792,9 +1609,9 @@
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="Solti.Utils.DI.Interfaces.Lifetime.html">Lifetime</a></td>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.LifetimeBase.html">LifetimeBase</a></td>
         <td><span class="parametername">lifetime</span></td>
-        <td><p>The <a class="xref" href="Solti.Utils.DI.Interfaces.Lifetime.html">Lifetime</a> of the service.</p>
+        <td><p>The lifetime of service.</p>
 </td>
       </tr>
     </tbody>
@@ -1830,19 +1647,19 @@
       </tr>
       <tr>
         <td><span class="parametername">TImplementation</span></td>
-        <td><p>The service implementation to be registered. It must implement the <code data-dev-comment-type="typeparamref" class="typeparamref">TInterface</code> interface and should have only one constructor (that may request another dependecies). In case of multiple constructors you can use the <a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.html#Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Factory__1_Solti_Utils_DI_Interfaces_IServiceCollection_System_Linq_Expressions_Expression_System_Func_Solti_Utils_DI_Interfaces_IInjector___0___Solti_Utils_DI_Interfaces_Lifetime_">Factory&lt;TInterface&gt;(IServiceCollection, Expression&lt;Func&lt;IInjector, TInterface&gt;&gt;, Lifetime)</a> method or the <a class="xref" href="Solti.Utils.DI.Interfaces.ServiceActivatorAttribute.html">ServiceActivatorAttribute</a>.</p>
+        <td><p>The service implementation to be registered. It must implement the <code data-dev-comment-type="typeparamref" class="typeparamref">TInterface</code> interface and should have only one constructor (that may request another dependecies). In case of multiple constructors you can use the <a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.html#Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Factory__1_Solti_Utils_DI_Interfaces_IServiceCollection_System_Linq_Expressions_Expression_System_Func_Solti_Utils_DI_Interfaces_IInjector___0___Solti_Utils_DI_Interfaces_LifetimeBase_">Factory&lt;TInterface&gt;(IServiceCollection, Expression&lt;Func&lt;IInjector, TInterface&gt;&gt;, LifetimeBase)</a> method or the <a class="xref" href="Solti.Utils.DI.Interfaces.ServiceActivatorAttribute.html">ServiceActivatorAttribute</a>.</p>
 </td>
       </tr>
     </tbody>
   </table>
   <a id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Service_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Service*"></a>
-  <h4 id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Service__2_Solti_Utils_DI_Interfaces_IServiceCollection_System_String_Solti_Utils_DI_Interfaces_Lifetime_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Service``2(Solti.Utils.DI.Interfaces.IServiceCollection,System.String,Solti.Utils.DI.Interfaces.Lifetime)">Service&lt;TInterface, TImplementation&gt;(IServiceCollection, String, Lifetime)</h4>
+  <h4 id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Service__2_Solti_Utils_DI_Interfaces_IServiceCollection_System_String_Solti_Utils_DI_Interfaces_LifetimeBase_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Service``2(Solti.Utils.DI.Interfaces.IServiceCollection,System.String,Solti.Utils.DI.Interfaces.LifetimeBase)">Service&lt;TInterface, TImplementation&gt;(IServiceCollection, String, LifetimeBase)</h4>
   <div class="markdown level1 summary"><p>Registers a new service.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static IModifiedServiceCollection Service&lt;TInterface, TImplementation&gt;(this IServiceCollection self, string name, Lifetime lifetime)
+    <pre><code class="lang-csharp hljs">public static IModifiedServiceCollection Service&lt;TInterface, TImplementation&gt;(this IServiceCollection self, string name, LifetimeBase lifetime)
     where TInterface : class where TImplementation : TInterface</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
@@ -1868,9 +1685,9 @@
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="Solti.Utils.DI.Interfaces.Lifetime.html">Lifetime</a></td>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.LifetimeBase.html">LifetimeBase</a></td>
         <td><span class="parametername">lifetime</span></td>
-        <td><p>The <a class="xref" href="Solti.Utils.DI.Interfaces.Lifetime.html">Lifetime</a> of the service.</p>
+        <td><p>The lifetime of service.</p>
 </td>
       </tr>
     </tbody>
@@ -1906,19 +1723,19 @@
       </tr>
       <tr>
         <td><span class="parametername">TImplementation</span></td>
-        <td><p>The service implementation to be registered. It must implement the <code data-dev-comment-type="typeparamref" class="typeparamref">TInterface</code> interface and must have only null or one constructor (that may request another dependecies). In case of multiple constructors you can use the <a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.html#Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Factory__1_Solti_Utils_DI_Interfaces_IServiceCollection_System_Linq_Expressions_Expression_System_Func_Solti_Utils_DI_Interfaces_IInjector___0___Solti_Utils_DI_Interfaces_Lifetime_">Factory&lt;TInterface&gt;(IServiceCollection, Expression&lt;Func&lt;IInjector, TInterface&gt;&gt;, Lifetime)</a> method or the <a class="xref" href="Solti.Utils.DI.Interfaces.ServiceActivatorAttribute.html">ServiceActivatorAttribute</a>.</p>
+        <td><p>The service implementation to be registered. It must implement the <code data-dev-comment-type="typeparamref" class="typeparamref">TInterface</code> interface and must have only null or one constructor (that may request another dependecies). In case of multiple constructors you can use the <a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.html#Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Factory__1_Solti_Utils_DI_Interfaces_IServiceCollection_System_Linq_Expressions_Expression_System_Func_Solti_Utils_DI_Interfaces_IInjector___0___Solti_Utils_DI_Interfaces_LifetimeBase_">Factory&lt;TInterface&gt;(IServiceCollection, Expression&lt;Func&lt;IInjector, TInterface&gt;&gt;, LifetimeBase)</a> method or the <a class="xref" href="Solti.Utils.DI.Interfaces.ServiceActivatorAttribute.html">ServiceActivatorAttribute</a>.</p>
 </td>
       </tr>
     </tbody>
   </table>
   <a id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Service_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Service*"></a>
-  <h4 id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Service__2_Solti_Utils_DI_Interfaces_IServiceCollection_System_String_System_Object_Solti_Utils_DI_Interfaces_Lifetime_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Service``2(Solti.Utils.DI.Interfaces.IServiceCollection,System.String,System.Object,Solti.Utils.DI.Interfaces.Lifetime)">Service&lt;TInterface, TImplementation&gt;(IServiceCollection, String, Object, Lifetime)</h4>
+  <h4 id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Service__2_Solti_Utils_DI_Interfaces_IServiceCollection_System_String_System_Object_Solti_Utils_DI_Interfaces_LifetimeBase_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Service``2(Solti.Utils.DI.Interfaces.IServiceCollection,System.String,System.Object,Solti.Utils.DI.Interfaces.LifetimeBase)">Service&lt;TInterface, TImplementation&gt;(IServiceCollection, String, Object, LifetimeBase)</h4>
   <div class="markdown level1 summary"><p>Registers a new service using arbitrary constructor arguments.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static IModifiedServiceCollection Service&lt;TInterface, TImplementation&gt;(this IServiceCollection self, string name, object explicitArgs, Lifetime lifetime)
+    <pre><code class="lang-csharp hljs">public static IModifiedServiceCollection Service&lt;TInterface, TImplementation&gt;(this IServiceCollection self, string name, object explicitArgs, LifetimeBase lifetime)
     where TInterface : class where TImplementation : TInterface</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
@@ -1950,9 +1767,9 @@
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="Solti.Utils.DI.Interfaces.Lifetime.html">Lifetime</a></td>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.LifetimeBase.html">LifetimeBase</a></td>
         <td><span class="parametername">lifetime</span></td>
-        <td><p>The <a class="xref" href="Solti.Utils.DI.Interfaces.Lifetime.html">Lifetime</a> of the service.</p>
+        <td><p>The lifetime of service.</p>
 </td>
       </tr>
     </tbody>
@@ -1988,74 +1805,7 @@
       </tr>
       <tr>
         <td><span class="parametername">TImplementation</span></td>
-        <td><p>The service implementation to be registered. It must implement the <code data-dev-comment-type="typeparamref" class="typeparamref">TInterface</code> interface and must have only null or one constructor (that may request another dependecies). In case of multiple constructors you can use the <a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.html#Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Factory__1_Solti_Utils_DI_Interfaces_IServiceCollection_System_Linq_Expressions_Expression_System_Func_Solti_Utils_DI_Interfaces_IInjector___0___Solti_Utils_DI_Interfaces_Lifetime_">Factory&lt;TInterface&gt;(IServiceCollection, Expression&lt;Func&lt;IInjector, TInterface&gt;&gt;, Lifetime)</a> method or the <a class="xref" href="Solti.Utils.DI.Interfaces.ServiceActivatorAttribute.html">ServiceActivatorAttribute</a>.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <a id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_WithProxy_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.WithProxy*"></a>
-  <h4 id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_WithProxy_Solti_Utils_DI_Interfaces_IModifiedServiceCollection_System_Linq_Expressions_Expression_System_Func_Solti_Utils_DI_Interfaces_IInjector_System_Type_System_Object_System_Object___" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.WithProxy(Solti.Utils.DI.Interfaces.IModifiedServiceCollection,System.Linq.Expressions.Expression{System.Func{Solti.Utils.DI.Interfaces.IInjector,System.Type,System.Object,System.Object}})">WithProxy(IModifiedServiceCollection, Expression&lt;Func&lt;IInjector, Type, Object, Object&gt;&gt;)</h4>
-  <div class="markdown level1 summary"><p>Hooks into the instantiating process of the last registered service. Useful when you want to add additional functionality (e.g. parameter validation).</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static IModifiedServiceCollection WithProxy(this IModifiedServiceCollection self, Expression&lt;Func&lt;IInjector, Type, object, object&gt;&gt; decorator)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Solti.Utils.DI.Interfaces.IModifiedServiceCollection.html">IModifiedServiceCollection</a></td>
-        <td><span class="parametername">self</span></td>
-        <td><p>The target <a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollection.html">IServiceCollection</a>.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1">Expression</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-4">Func</a>&lt;<a class="xref" href="Solti.Utils.DI.Interfaces.IInjector.html">IInjector</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Object</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Object</a>&gt;&gt;</td>
-        <td><span class="parametername">decorator</span></td>
-        <td><p>The decorator funtion. It must return the decorated instance. The original instance can be accessed via the 3rd parameter of the decorator function.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Solti.Utils.DI.Interfaces.IModifiedServiceCollection.html">IModifiedServiceCollection</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_WithProxy_Solti_Utils_DI_Interfaces_IModifiedServiceCollection_System_Linq_Expressions_Expression_System_Func_Solti_Utils_DI_Interfaces_IInjector_System_Type_System_Object_System_Object____remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>You can&apos;t create proxies against instances and open generic services. A service can be decorated multiple times.</p>
-</div>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.invalidoperationexception">InvalidOperationException</a></td>
-        <td><p>When proxying not allowed (see above).</p>
+        <td><p>The service implementation to be registered. It must implement the <code data-dev-comment-type="typeparamref" class="typeparamref">TInterface</code> interface and must have only null or one constructor (that may request another dependecies). In case of multiple constructors you can use the <a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.html#Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Factory__1_Solti_Utils_DI_Interfaces_IServiceCollection_System_Linq_Expressions_Expression_System_Func_Solti_Utils_DI_Interfaces_IInjector___0___Solti_Utils_DI_Interfaces_LifetimeBase_">Factory&lt;TInterface&gt;(IServiceCollection, Expression&lt;Func&lt;IInjector, TInterface&gt;&gt;, LifetimeBase)</a> method or the <a class="xref" href="Solti.Utils.DI.Interfaces.ServiceActivatorAttribute.html">ServiceActivatorAttribute</a>.</p>
 </td>
       </tr>
     </tbody>
