@@ -263,3 +263,4 @@
   - *breaking:* Factory or proxy are provided as expressions
   - *breaking:* Modified `AbstractServiceEntry` layout
   - *introduced:* `IInjector.Tag` property
+  - *done:* test against `net7.0` (at the moment just in case of local builds due to OpenCover issues)
