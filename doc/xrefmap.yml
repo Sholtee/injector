@@ -924,21 +924,6 @@ references:
   commentId: T:Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions
   fullName: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions
   nameWithType: IServiceCollectionBasicExtensions
-- uid: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.ApplyProxy(Solti.Utils.DI.Interfaces.IModifiedServiceCollection,System.Linq.Expressions.Expression{Solti.Utils.DI.Interfaces.ApplyProxyDelegate})
-  name: ApplyProxy(IModifiedServiceCollection, Expression<ApplyProxyDelegate>)
-  href: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.html#Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_ApplyProxy_Solti_Utils_DI_Interfaces_IModifiedServiceCollection_System_Linq_Expressions_Expression_Solti_Utils_DI_Interfaces_ApplyProxyDelegate__
-  commentId: M:Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.ApplyProxy(Solti.Utils.DI.Interfaces.IModifiedServiceCollection,System.Linq.Expressions.Expression{Solti.Utils.DI.Interfaces.ApplyProxyDelegate})
-  name.vb: ApplyProxy(IModifiedServiceCollection, Expression(Of ApplyProxyDelegate))
-  fullName: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.ApplyProxy(Solti.Utils.DI.Interfaces.IModifiedServiceCollection, System.Linq.Expressions.Expression<Solti.Utils.DI.Interfaces.ApplyProxyDelegate>)
-  fullName.vb: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.ApplyProxy(Solti.Utils.DI.Interfaces.IModifiedServiceCollection, System.Linq.Expressions.Expression(Of Solti.Utils.DI.Interfaces.ApplyProxyDelegate))
-  nameWithType: IServiceCollectionBasicExtensions.ApplyProxy(IModifiedServiceCollection, Expression<ApplyProxyDelegate>)
-  nameWithType.vb: IServiceCollectionBasicExtensions.ApplyProxy(IModifiedServiceCollection, Expression(Of ApplyProxyDelegate))
-- uid: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.ApplyProxy*
-  name: ApplyProxy
-  href: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.html#Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_ApplyProxy_
-  commentId: Overload:Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.ApplyProxy
-  fullName: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.ApplyProxy
-  nameWithType: IServiceCollectionBasicExtensions.ApplyProxy
 - uid: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Factory(Solti.Utils.DI.Interfaces.IServiceCollection,System.Type,System.Linq.Expressions.Expression{Solti.Utils.DI.Interfaces.FactoryDelegate},Solti.Utils.DI.Interfaces.LifetimeBase)
   name: Factory(IServiceCollection, Type, Expression<FactoryDelegate>, LifetimeBase)
   href: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.html#Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Factory_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_Linq_Expressions_Expression_Solti_Utils_DI_Interfaces_FactoryDelegate__Solti_Utils_DI_Interfaces_LifetimeBase_
@@ -1164,6 +1149,21 @@ references:
   fullName.vb: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Service(Of TInterface, TImplementation)(Solti.Utils.DI.Interfaces.IServiceCollection, System.String, System.Object, Solti.Utils.DI.Interfaces.LifetimeBase)
   nameWithType: IServiceCollectionBasicExtensions.Service<TInterface, TImplementation>(IServiceCollection, String, Object, LifetimeBase)
   nameWithType.vb: IServiceCollectionBasicExtensions.Service(Of TInterface, TImplementation)(IServiceCollection, String, Object, LifetimeBase)
+- uid: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.UsingProxy(Solti.Utils.DI.Interfaces.IModifiedServiceCollection,System.Linq.Expressions.Expression{Solti.Utils.DI.Interfaces.ApplyProxyDelegate})
+  name: UsingProxy(IModifiedServiceCollection, Expression<ApplyProxyDelegate>)
+  href: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.html#Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_UsingProxy_Solti_Utils_DI_Interfaces_IModifiedServiceCollection_System_Linq_Expressions_Expression_Solti_Utils_DI_Interfaces_ApplyProxyDelegate__
+  commentId: M:Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.UsingProxy(Solti.Utils.DI.Interfaces.IModifiedServiceCollection,System.Linq.Expressions.Expression{Solti.Utils.DI.Interfaces.ApplyProxyDelegate})
+  name.vb: UsingProxy(IModifiedServiceCollection, Expression(Of ApplyProxyDelegate))
+  fullName: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.UsingProxy(Solti.Utils.DI.Interfaces.IModifiedServiceCollection, System.Linq.Expressions.Expression<Solti.Utils.DI.Interfaces.ApplyProxyDelegate>)
+  fullName.vb: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.UsingProxy(Solti.Utils.DI.Interfaces.IModifiedServiceCollection, System.Linq.Expressions.Expression(Of Solti.Utils.DI.Interfaces.ApplyProxyDelegate))
+  nameWithType: IServiceCollectionBasicExtensions.UsingProxy(IModifiedServiceCollection, Expression<ApplyProxyDelegate>)
+  nameWithType.vb: IServiceCollectionBasicExtensions.UsingProxy(IModifiedServiceCollection, Expression(Of ApplyProxyDelegate))
+- uid: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.UsingProxy*
+  name: UsingProxy
+  href: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.html#Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_UsingProxy_
+  commentId: Overload:Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.UsingProxy
+  fullName: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.UsingProxy
+  nameWithType: IServiceCollectionBasicExtensions.UsingProxy
 - uid: Solti.Utils.DI.Interfaces.IServiceProviderBasicExtensions
   name: IServiceProviderBasicExtensions
   href: Solti.Utils.DI.Interfaces.IServiceProviderBasicExtensions.html
