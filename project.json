@@ -6,7 +6,6 @@
   "vendor": "\\Vendor",
   "tests": "\\Test\\*\\*.Tests.csproj",
   "skipon": ["net7.0"],
-  "testcommonprops": "\\Test\\Common.targets",
   "artifacts": "\\Artifacts",
   "coveragefilter": "+[Solti.Utils.DI*]* -[Solti.Utils.DI*Tests]* -[*]*.Properties.*",
   "perftests": "\\PERF\\Injector.Perf.csproj",
