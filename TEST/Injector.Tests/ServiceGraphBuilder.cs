@@ -128,10 +128,8 @@ namespace Solti.Utils.DI.Internals.Tests
             {
                 mockInjector.Verify(i => i.GetOrCreateInstance(dependency, null), Times.Exactly(!dependency.Features.HasFlag(ServiceEntryFeatures.CreateSingleInstance) ? 1 : 0));
                 mockInjector.Verify(i => i.GetOrCreateInstance(dependency, It.IsAny<int>()), Times.Exactly(dependency.Features.HasFlag(ServiceEntryFeatures.CreateSingleInstance) ? 1 : 0));
-                if (optional)
-                    mockInjector.Verify(i => i.TryGet(It.IsAny<Type>(), It.IsAny<string>()), Times.Never);
-                else
-                    mockInjector.Verify(i => i.Get(It.IsAny<Type>(), It.IsAny<string>()), Times.Never);
+                mockInjector.Verify(i => i.TryGet(It.IsAny<Type>(), It.IsAny<string>()), Times.Never);
+                mockInjector.Verify(i => i.Get(It.IsAny<Type>(), It.IsAny<string>()), Times.Never);
             }
             else Assert.Fail("Unknown resolution mode");
         }
