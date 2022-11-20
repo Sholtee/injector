@@ -118,7 +118,7 @@ namespace Solti.Utils.DI.Tests
 
         [Test]
         public void Aspects_ShouldThrowOnInstances() =>
-            Assert.Throws<NotSupportedException>(() => Collection.Instance<IMyService>(new MyService()).ApplyProxy((_, _, _) => null), Resources.PROXYING_NOT_SUPPORTED);
+            Assert.Throws<NotSupportedException>(() => Collection.Instance<IMyService>(new MyService()).UsingProxy((_, _, _) => null), Resources.PROXYING_NOT_SUPPORTED);
 
         [Test]
         public void Aspects_ApplyingAspectsShouldBeSequential([ValueSource(nameof(Lifetimes))] Lifetime lifetime)
