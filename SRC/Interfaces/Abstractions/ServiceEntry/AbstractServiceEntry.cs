@@ -27,7 +27,7 @@ namespace Solti.Utils.DI.Interfaces
         /// <param name="factory">The (optional) factory of the service.</param>
         /// <exception cref="ArgumentException">The <paramref name="interface"/> is not an interface.</exception>
         /// <exception cref="ArgumentException">The <paramref name="implementation"/> does not support the <paramref name="interface"/>.</exception>
-        protected AbstractServiceEntry(Type @interface, string? name, Type? implementation, Expression<Func<IInjector, Type, object>>? factory)
+        protected AbstractServiceEntry(Type @interface, string? name, Type? implementation, Expression<FactoryDelegate>? factory)
         {
             if (@interface is null)
                 throw new ArgumentNullException(nameof(@interface));
@@ -70,7 +70,7 @@ namespace Solti.Utils.DI.Interfaces
         /// <summary>
         /// The (optional) factory of this service.
         /// </summary>
-        public Expression<Func<IInjector, Type, object>>? Factory { get; }
+        public Expression<FactoryDelegate>? Factory { get; }
 
         /// <summary>
         /// The related lifetime.
@@ -93,18 +93,18 @@ namespace Solti.Utils.DI.Interfaces
         /// Unconditionaly creates a new service instance.
         /// </summary>
         /// <remarks>To assign value to this property, invoke the <see cref="Build(IBuildContext?, IFactoryVisitor[])"/> method.</remarks>
-        public FactoryDelegate? CreateInstance { get; protected set; }
+        public CreteServiceDelegate? CreateInstance { get; protected set; }
 
         /// <summary>
         /// Gets or creates a service instance.
         /// </summary>
         /// <remarks>To assign value to this property, invoke the <see cref="Build(IBuildContext?, IFactoryVisitor[])"/> method.</remarks>
-        public ResolveDelegate? ResolveInstance { get; protected set; }
+        public ResolveServiceDelegate? ResolveInstance { get; protected set; }
 
         /// <summary>
         /// Proxies applied.
         /// </summary>
-        public virtual IReadOnlyList<Expression<Func<IInjector, Type, object, object>>> Proxies => throw new NotSupportedException(Resources.PROXYING_NOT_SUPPORTED);
+        public virtual IReadOnlyList<Expression<ApplyProxyDelegate>> Proxies => throw new NotSupportedException(Resources.PROXYING_NOT_SUPPORTED);
         #endregion
 
         /// <summary>
@@ -115,7 +115,7 @@ namespace Solti.Utils.DI.Interfaces
         /// <summary>
         /// If implemented, alters the service instantiation process in order to wrap the original service into a proxy.
         /// </summary>
-        public virtual void ApplyProxy(Expression<Func<IInjector, Type, object, object>> applyProxy) => throw new NotSupportedException(Resources.PROXYING_NOT_SUPPORTED);
+        public virtual void ApplyProxy(Expression<ApplyProxyDelegate> applyProxy) => throw new NotSupportedException(Resources.PROXYING_NOT_SUPPORTED);
 
         /// <summary>
         /// Builds this entry applying the provided factory <paramref name="visitors"/>.

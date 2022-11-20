@@ -16,7 +16,7 @@ namespace Solti.Utils.DI.Internals
         {
         }
 
-        protected ScopedServiceEntryBase(Type @interface, string? name, Expression<Func<IInjector, Type, object>> factory) : base(@interface, name, factory)
+        protected ScopedServiceEntryBase(Type @interface, string? name, Expression<FactoryDelegate> factory) : base(@interface, name, factory)
         {
         }
 

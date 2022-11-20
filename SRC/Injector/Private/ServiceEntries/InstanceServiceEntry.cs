@@ -25,7 +25,7 @@ namespace Solti.Utils.DI.Internals
         public override AbstractServiceEntry Specialize(params Type[] genericArguments)
             => throw new NotSupportedException();
 
-        public override void ApplyProxy(Expression<Func<IInjector, Type, object, object>> applyProxy)
+        public override void ApplyProxy(Expression<ApplyProxyDelegate> applyProxy)
             => throw new NotSupportedException(Resources.PROXYING_NOT_SUPPORTED);
 
         public override LifetimeBase? Lifetime { get; } = DI.Lifetime.Instance;

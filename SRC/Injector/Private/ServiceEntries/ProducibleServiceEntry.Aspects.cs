@@ -16,7 +16,7 @@ namespace Solti.Utils.DI.Internals
 
     public abstract partial class ProducibleServiceEntry
     {
-        private Expression<Func<IInjector, Type, object, object>> BuildDelegate(Type interceptor)
+        private Expression<ApplyProxyDelegate> BuildDelegate(Type interceptor)
         {
             interceptor = new ProxyGenerator(Interface, interceptor).GetGeneratedType();
 
@@ -48,7 +48,7 @@ namespace Solti.Utils.DI.Internals
             return ServiceActivator.GetLateBound(ctor, targetParam.Position);
         }
 
-        internal IEnumerable<Expression<Func<IInjector, Type, object, object>>> GetInterceptors(IEnumerable<AspectAttribute> aspects) // keep this method separated in order to seamless testing 
+        internal IEnumerable<Expression<ApplyProxyDelegate>> GetInterceptors(IEnumerable<AspectAttribute> aspects) // keep this method separated in order to seamless testing 
         {
             foreach (AspectAttribute aspect in aspects)
             {
@@ -57,7 +57,7 @@ namespace Solti.Utils.DI.Internals
                     case IInterceptorFactory<Type> typeFactory:
                         yield return BuildDelegate(typeFactory.GetInterceptor(Interface));
                         break;
-                    case IInterceptorFactory<Expression<Func<IInjector, Type, object, object>>> expressionFactory:
+                    case IInterceptorFactory<Expression<ApplyProxyDelegate>> expressionFactory:
                         yield return expressionFactory.GetInterceptor(Interface);
                         break;
                     default:
@@ -70,7 +70,7 @@ namespace Solti.Utils.DI.Internals
 
         internal void ApplyAspects() 
         {
-            foreach (Expression<Func<IInjector, Type, object, object>> interceptor in GetInterceptors(Interface.GetCustomAttributes<AspectAttribute>(inherit: true)))
+            foreach (Expression<ApplyProxyDelegate> interceptor in GetInterceptors(Interface.GetCustomAttributes<AspectAttribute>(inherit: true)))
             {
                 ApplyProxy(interceptor);
             }

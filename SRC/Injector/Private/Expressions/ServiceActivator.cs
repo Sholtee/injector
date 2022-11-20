@@ -141,13 +141,13 @@ namespace Solti.Utils.DI.Internals
             return resolver;
         }
 
-        public static Expression<Func<IInjector, Type, object>> Get(ConstructorInfo constructor)
+        public static Expression<FactoryDelegate> Get(ConstructorInfo constructor)
         {
             //
             // (injector, iface)  => (object) new Service(IDependency_1 | Lazy<IDependency_1>, IDependency_2 | Lazy<IDependency_2>,...)
             //
 
-            return CreateActivator<Func<IInjector, Type, object>>
+            return CreateActivator<FactoryDelegate>
             (
                 constructor, 
                 ResolveDependency,
@@ -173,7 +173,7 @@ namespace Solti.Utils.DI.Internals
             }
         }
 
-        public static Expression<Func<IInjector, Type, object, object>> GetLateBound(ConstructorInfo constructor, int argIndex)
+        public static Expression<ApplyProxyDelegate> GetLateBound(ConstructorInfo constructor, int argIndex)
         {
             int i = 0;
             ParameterExpression explicitArg = Expression.Parameter(typeof(object), nameof(explicitArg));
@@ -182,7 +182,7 @@ namespace Solti.Utils.DI.Internals
             // (injector, objects)  => (object) new Service(explicit | IDependency_1 | Lazy<IDependency_1>, explicit | IDependency_2 | Lazy<IDependency_2>,...)
             //
 
-            return CreateActivator<Func<IInjector, Type, object, object>>
+            return CreateActivator<ApplyProxyDelegate>
             (
                 constructor,
                 ResolveDependency,
@@ -211,7 +211,7 @@ namespace Solti.Utils.DI.Internals
             }
         }
 
-        public static Expression<Func<IInjector, Type, object>> Get(Type type)
+        public static Expression<FactoryDelegate> Get(Type type)
         {
             //
             // Itt validaljunk ne a hivo oldalon (kodduplikalas elkerulese vegett).
@@ -222,7 +222,7 @@ namespace Solti.Utils.DI.Internals
             return Get(type.GetApplicableConstructor());
         }
 
-        public static Expression<Func<IInjector, Type, object>> Get(ConstructorInfo constructor, IReadOnlyDictionary<string, object?> explicitArgs)
+        public static Expression<FactoryDelegate> Get(ConstructorInfo constructor, IReadOnlyDictionary<string, object?> explicitArgs)
         {
             ParameterExpression arg = Expression.Variable(typeof(object), nameof(arg));
 
@@ -234,7 +234,7 @@ namespace Solti.Utils.DI.Internals
             // }
             //
 
-            return CreateActivator<Func<IInjector, Type, object>>
+            return CreateActivator<FactoryDelegate>
             (
                 constructor,
                 ResolveDependency,
@@ -283,7 +283,7 @@ namespace Solti.Utils.DI.Internals
             }
         }
 
-        public static Expression<Func<IInjector, Type, object>> Get(Type type, IReadOnlyDictionary<string, object?> explicitArgs)
+        public static Expression<FactoryDelegate> Get(Type type, IReadOnlyDictionary<string, object?> explicitArgs)
         {
             //
             // Itt validaljunk ne a hivo oldalon (kodduplikalas elkerulese vegett).
@@ -294,7 +294,7 @@ namespace Solti.Utils.DI.Internals
             return Get(type.GetApplicableConstructor(), explicitArgs);
         }
 
-        public static Expression<Func<IInjector, Type, object>> Get(ConstructorInfo constructor, object paramzProvider)
+        public static Expression<FactoryDelegate> Get(ConstructorInfo constructor, object paramzProvider)
         {
             Type paramzProviderType = paramzProvider.GetType();
 
@@ -303,7 +303,7 @@ namespace Solti.Utils.DI.Internals
             //    return (object) new Service(((ParamzProvider) explicitArgs).argName_1 | Lazy<IDependency_1>() | injector.[Try]Get(typeof(IDependency_1)), ...);
             //
 
-            return CreateActivator<Func<IInjector, Type, object>>
+            return CreateActivator<FactoryDelegate>
             (
                 constructor,
                 ResolveDependency,
@@ -342,7 +342,7 @@ namespace Solti.Utils.DI.Internals
             }
         }
 
-        public static Expression<Func<IInjector, Type, object>> Get(Type type, object paramzProvider)
+        public static Expression<FactoryDelegate> Get(Type type, object paramzProvider)
         {
             EnsureCanBeInstantiated(type);
             return Get(type.GetApplicableConstructor(), paramzProvider);

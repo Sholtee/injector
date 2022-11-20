@@ -84,19 +84,19 @@ namespace Solti.Utils.DI.Internals.Tests
             {
                 yield return ctor =>
                 {
-                    Func<IInjector, Type, object> factory = ServiceActivator.Get(ctor).Compile();
+                    FactoryDelegate factory = ServiceActivator.Get(ctor).Compile();
                     return injector => factory(injector, null);
                 };
 
                 yield return ctor =>
                 {
-                    Func<IInjector, Type, object> factory = ServiceActivator.Get(ctor, new Dictionary<string, object>(0)).Compile();
+                    FactoryDelegate factory = ServiceActivator.Get(ctor, new Dictionary<string, object>(0)).Compile();
                     return injector => factory(injector, null);
                 };
 
                 yield return ctor =>
                 {
-                    Func<IInjector, Type, object> factory = ServiceActivator.Get(ctor, new { }).Compile();
+                    FactoryDelegate factory = ServiceActivator.Get(ctor, new { }).Compile();
                     return injector => factory(injector, null);
                 };
             }
@@ -216,7 +216,7 @@ namespace Solti.Utils.DI.Internals.Tests
                 .Setup(i => i.TryGet(typeof(IList), null))
                 .Returns(new List<IDictionary>());
 
-            Func<IInjector, Type, object> factory = ServiceActivator.Get(typeof(MyClassHavingOptionalProperty)).Compile();
+            FactoryDelegate factory = ServiceActivator.Get(typeof(MyClassHavingOptionalProperty)).Compile();
 
             Assert.DoesNotThrow(() => factory.Invoke(mockInjector.Object, typeof(IList)));
 
@@ -229,7 +229,7 @@ namespace Solti.Utils.DI.Internals.Tests
             var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
             mockInjector.Setup(i => i.Get(It.IsAny<Type>(), It.IsAny<string>()));
 
-            Func<IInjector, Type, object> factory = ServiceActivator.Get(typeof(MyClass).GetConstructor(Type.EmptyTypes)).Compile();
+            FactoryDelegate factory = ServiceActivator.Get(typeof(MyClass).GetConstructor(Type.EmptyTypes)).Compile();
 
             Assert.That(factory, Is.Not.Null);
 
@@ -248,7 +248,7 @@ namespace Solti.Utils.DI.Internals.Tests
             var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
             mockInjector.Setup(i => i.Get(It.IsAny<Type>(), It.IsAny<string>()));
 
-            Func<IInjector, Type, object> factory = ServiceActivator
+            FactoryDelegate factory = ServiceActivator
                 .Get(typeof(List<string>).GetConstructor(new[] {typeof(int)}), new Dictionary<string, object>
                 {
                     {"capacity", 10}
@@ -269,7 +269,7 @@ namespace Solti.Utils.DI.Internals.Tests
             var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
             mockInjector.Setup(i => i.Get(It.IsAny<Type>(), It.IsAny<string>()));
 
-            Func<IInjector, Type, object> factory = ServiceActivator
+            FactoryDelegate factory = ServiceActivator
                 .Get(typeof(List<string>).GetConstructor(new[] { typeof(int) }), new { capacity = 10 })
                 .Compile();
 
@@ -287,7 +287,7 @@ namespace Solti.Utils.DI.Internals.Tests
             var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
             mockInjector.Setup(i => i.Get(It.IsAny<Type>(), It.IsAny<string>()));
 
-            Func<IInjector, Type, object, object> factory = ServiceActivator
+            ApplyProxyDelegate factory = ServiceActivator
                 .GetLateBound(typeof(List<string>).GetConstructor(new[] { typeof(int) }), 0)
                 .Compile();
 
@@ -304,7 +304,7 @@ namespace Solti.Utils.DI.Internals.Tests
         {
             var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
 
-            Func<IInjector, Type, object> factory = ServiceActivator
+            FactoryDelegate factory = ServiceActivator
                 .Get(typeof(MyClassHavingOptionalProperty).GetConstructor(Type.EmptyTypes), new Dictionary<string, object>
                 {
                     {nameof(MyClassHavingOptionalProperty.Dep), new List<string>()}
@@ -322,7 +322,7 @@ namespace Solti.Utils.DI.Internals.Tests
         {
             var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
 
-            Func<IInjector, Type, object> factory = ServiceActivator
+            FactoryDelegate factory = ServiceActivator
                 .Get(typeof(MyClassHavingOptionalProperty).GetConstructor(Type.EmptyTypes), new
                 {
                     Dep = (IList)new List<string>()
@@ -346,7 +346,7 @@ namespace Solti.Utils.DI.Internals.Tests
                 .Setup(i => i.TryGet(typeof(IDisposable), null))
                 .Returns(null);
 
-            Func<IInjector, Type, object> factory = ServiceActivator
+            FactoryDelegate factory = ServiceActivator
                 .Get(typeof(MyInterceptor), new Dictionary<string, object>())
                 .Compile();
 
@@ -367,7 +367,7 @@ namespace Solti.Utils.DI.Internals.Tests
                 .Setup(i => i.TryGet(typeof(IDisposable), null))
                 .Returns(null);
 
-            Func<IInjector, Type, object> factory = ServiceActivator
+            FactoryDelegate factory = ServiceActivator
                 .Get(typeof(MyInterceptor), new { })
                 .Compile();
 
@@ -385,7 +385,7 @@ namespace Solti.Utils.DI.Internals.Tests
                 .Setup(i => i.TryGet(typeof(IList), null))
                 .Returns(new List<IDictionary>());
 
-            Func<IInjector, Type, object> factory = ServiceActivator
+            FactoryDelegate factory = ServiceActivator
                 .Get(typeof(MyClassHavingOptionalProperty), new Dictionary<string, object>())
                 .Compile();
 
@@ -402,7 +402,7 @@ namespace Solti.Utils.DI.Internals.Tests
                 .Setup(i => i.TryGet(typeof(IList), null))
                 .Returns(new List<IDictionary>());
 
-            Func<IInjector, Type, object> factory = ServiceActivator
+            FactoryDelegate factory = ServiceActivator
                 .Get(typeof(MyClassHavingOptionalProperty), new {})
                 .Compile();
 
@@ -416,7 +416,7 @@ namespace Solti.Utils.DI.Internals.Tests
         {
             var mockInjector = new Mock<IInjector>(MockBehavior.Loose);
 
-            Func<IInjector, Type, object> factory =  ServiceActivator
+            FactoryDelegate factory =  ServiceActivator
                 .Get(typeof(MyClass).GetConstructor(new[] { typeof(Lazy<IDisposable>), typeof(Lazy<IList>) }), new Dictionary<string, object>())
                 .Compile();
 
@@ -428,7 +428,7 @@ namespace Solti.Utils.DI.Internals.Tests
         {
             var mockInjector = new Mock<IInjector>(MockBehavior.Loose);
 
-            Func<IInjector, Type, object> factory = ServiceActivator
+            FactoryDelegate factory = ServiceActivator
                 .Get(typeof(MyClass).GetConstructor(new[] { typeof(Lazy<IDisposable>), typeof(Lazy<IList>) }), new { })
                 .Compile();
 
@@ -460,7 +460,7 @@ namespace Solti.Utils.DI.Internals.Tests
                 // Ez mukodne viszont nem adtuk meg a nem interface parametert.
                 //
 
-                Func<IInjector, Type, object> factory = ServiceActivator
+                FactoryDelegate factory = ServiceActivator
                     .Get(ctor, new Dictionary<string, object>(0))
                     .Compile();
 
@@ -510,7 +510,7 @@ namespace Solti.Utils.DI.Internals.Tests
                 .Setup(i => i.Get(It.IsAny<Type>(), It.IsAny<string>()))
                 .Returns<Type, string>((type, name) => null);
 
-            Func<IInjector, Type, object> factory = ServiceActivator
+            FactoryDelegate factory = ServiceActivator
                 .Get(typeof(MyClass).GetConstructor(new[] {typeof(IDisposable), typeof(IList) }), new Dictionary<string, object>
                 {
                     {"dep2", null}
@@ -533,7 +533,7 @@ namespace Solti.Utils.DI.Internals.Tests
                 .Setup(i => i.Get(It.IsAny<Type>(), It.IsAny<string>()))
                 .Returns<Type, string>((type, name) => null);
 
-            Func<IInjector, Type, object> factory = ServiceActivator
+            FactoryDelegate factory = ServiceActivator
                 .Get(typeof(MyClass).GetConstructor(new[] { typeof(IDisposable), typeof(IList) }), new
                 {
                     dep2 = (IList) null
@@ -556,7 +556,7 @@ namespace Solti.Utils.DI.Internals.Tests
                 .Setup(i => i.Get(It.IsAny<Type>(), It.IsAny<string>()))
                 .Returns<Type, string>((type, name) => null);
 
-            Func<IInjector, Type, object, object> factory = ServiceActivator
+            ApplyProxyDelegate factory = ServiceActivator
                 .GetLateBound(typeof(MyClass).GetConstructor(new[] { typeof(IDisposable), typeof(IList) }), 1)
                 .Compile();
 
@@ -629,7 +629,7 @@ namespace Solti.Utils.DI.Internals.Tests
         {
             Type proxy = ProxyGenerator<IList<IDictionary>, MyInterceptor>.GetGeneratedType();
 
-            Func<IInjector, Type, object> factory = ServiceActivator.Get(proxy).Compile();
+            FactoryDelegate factory = ServiceActivator.Get(proxy).Compile();
 
             var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
             mockInjector
@@ -650,7 +650,7 @@ namespace Solti.Utils.DI.Internals.Tests
         {
             Type proxy = ProxyGenerator<IList<IDictionary>, MyInterceptor>.GetGeneratedType();
 
-            Func<IInjector, Type, object> factory = ServiceActivator.Get(proxy, new Dictionary<string, object>()).Compile();
+            FactoryDelegate factory = ServiceActivator.Get(proxy, new Dictionary<string, object>()).Compile();
 
             var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
             mockInjector
@@ -671,7 +671,7 @@ namespace Solti.Utils.DI.Internals.Tests
         {
             Type proxy = ProxyGenerator<IList<IDictionary>, MyInterceptor>.GetGeneratedType();
 
-            Func<IInjector, Type, object> factory = ServiceActivator.Get(proxy, new { }).Compile();
+            FactoryDelegate factory = ServiceActivator.Get(proxy, new { }).Compile();
 
             var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
             mockInjector
@@ -692,7 +692,7 @@ namespace Solti.Utils.DI.Internals.Tests
         {
             Type proxy = ProxyGenerator<IList<IDictionary>, MyInterceptor>.GetGeneratedType();
 
-            Func<IInjector, Type, object, object> factory = ServiceActivator.GetLateBound(proxy.GetConstructor(new[] { typeof(IList<IDictionary>), typeof(IDisposable) }), 100).Compile();
+            ApplyProxyDelegate factory = ServiceActivator.GetLateBound(proxy.GetConstructor(new[] { typeof(IList<IDictionary>), typeof(IDisposable) }), 100).Compile();
 
             var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
             mockInjector

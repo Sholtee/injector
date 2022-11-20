@@ -21,7 +21,7 @@ namespace Solti.Utils.DI.Internals
         public string PoolName => 
             FPoolName ??= $"{Consts.INTERNAL_SERVICE_NAME_PREFIX}pool_{(Interface.IsConstructedGenericType ? Interface.GetGenericTypeDefinition() : Interface, Name).GetHashCode():X}";
 
-        public PooledServiceEntry(Type @interface, string? name, Expression<Func<IInjector, Type, object>> factory) : base(@interface, name, factory)
+        public PooledServiceEntry(Type @interface, string? name, Expression<FactoryDelegate> factory) : base(@interface, name, factory)
         {
         }
 

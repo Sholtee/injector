@@ -72,7 +72,7 @@ namespace Solti.Utils.DI.Tests
         {
             Collection.Service<IServiceHavingNonInterfaceCtorArg, ServiceHavingNonInterfaceCtorArg>(new Dictionary<string, object> { ["para"] = "cica" }, lifetime);
 
-            Expression<Func<IInjector, Type, object>> fact = Collection.LastEntry.Factory;
+            Expression<FactoryDelegate> fact = Collection.LastEntry.Factory;
 
             Assert.That(fact, Is.Not.Null);
 
@@ -93,7 +93,7 @@ namespace Solti.Utils.DI.Tests
         {
             Collection.Service<IServiceHavingNonInterfaceCtorArg, ServiceHavingNonInterfaceCtorArg>(new { para = "cica" }, lifetime);
 
-            Expression<Func<IInjector, Type, object>> fact = Collection.LastEntry.Factory;
+            Expression<FactoryDelegate> fact = Collection.LastEntry.Factory;
 
             Assert.That(fact, Is.Not.Null);
 
@@ -126,7 +126,7 @@ namespace Solti.Utils.DI.Tests
         {
             Collection.Service(typeof(IServiceHavingNonInterfaceCtorArg<>), typeof(ServiceHavingNonInterfaceCtorArg<>), new Dictionary<string, object> { ["para"] = "cica" }, lifetime);
 
-            Expression<Func<IInjector, Type, object>> fact = Collection.LastEntry.Specialize(typeof(object)).Factory;
+            Expression<FactoryDelegate> fact = Collection.LastEntry.Specialize(typeof(object)).Factory;
 
             Assert.That(fact, Is.Not.Null);
 
@@ -147,7 +147,7 @@ namespace Solti.Utils.DI.Tests
         {
             Collection.Service(typeof(IServiceHavingNonInterfaceCtorArg<>), typeof(ServiceHavingNonInterfaceCtorArg<>), new { para = "cica" }, lifetime);
 
-            Expression<Func<IInjector, Type, object>> fact = Collection.LastEntry.Specialize(typeof(object)).Factory;
+            Expression<FactoryDelegate> fact = Collection.LastEntry.Specialize(typeof(object)).Factory;
 
             Assert.That(fact, Is.Not.Null);
 

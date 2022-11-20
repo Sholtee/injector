@@ -28,7 +28,7 @@ namespace Solti.Utils.DI.Tests
         [TestCaseSource(nameof(Lifetimes))]
         public void Factory_ShouldHandleGenericTypes(Lifetime lifetime)
         {
-            Expression<Func<IInjector, Type, object>> factory = (injector, type) => null;
+            Expression<FactoryDelegate> factory = (injector, type) => null;
 
             Assert.DoesNotThrow(() => Collection.Factory(typeof(IInterface_3<>), factory, lifetime));
 
@@ -48,7 +48,7 @@ namespace Solti.Utils.DI.Tests
         [TestCaseSource(nameof(Lifetimes))]
         public void Factory_ShouldAcceptNamedServices(Lifetime lifetime)
         {
-            Expression<Func<IInjector, Type, object>> factory = (injector, type) => new Implementation_1_No_Dep();
+            Expression<FactoryDelegate> factory = (injector, type) => new Implementation_1_No_Dep();
 
             Assert.DoesNotThrow(() => Collection
                 .Factory(typeof(IInterface_1), "svc1", factory, lifetime)

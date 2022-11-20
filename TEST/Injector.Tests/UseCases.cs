@@ -155,7 +155,7 @@ namespace Solti.Utils.DI.UseCases
         }
 
         [AttributeUsage(AttributeTargets.Interface, AllowMultiple = true)]
-        public sealed class MethodInvocationLoggerAspect : AspectAttribute, IInterceptorFactory<Expression<Func<IInjector, Type, object, object>>>
+        public sealed class MethodInvocationLoggerAspect : AspectAttribute, IInterceptorFactory<Expression<ApplyProxyDelegate>>
         {
             public Type Logger { get; }
             
@@ -164,7 +164,7 @@ namespace Solti.Utils.DI.UseCases
                 Logger = logger;
             }
 
-            public Expression<Func<IInjector, Type, object, object>> GetInterceptor(Type iface)
+            public Expression<ApplyProxyDelegate> GetInterceptor(Type iface)
             {
                 StaticMethod ctor = new ProxyGenerator
                 (

@@ -12,7 +12,7 @@ namespace Solti.Utils.DI.Internals
 
     internal sealed class ScopedServiceEntry : ScopedServiceEntryBase
     {
-        public ScopedServiceEntry(Type @interface, string? name, Expression<Func<IInjector, Type, object>> factory) : base(@interface, name, factory)
+        public ScopedServiceEntry(Type @interface, string? name, Expression<FactoryDelegate> factory) : base(@interface, name, factory)
         {
         }
 

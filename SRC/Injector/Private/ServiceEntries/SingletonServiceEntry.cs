@@ -12,7 +12,7 @@ namespace Solti.Utils.DI.Internals
 
     internal class SingletonServiceEntry : ProducibleServiceEntry
     {
-        public SingletonServiceEntry(Type @interface, string? name, Expression<Func<IInjector, Type, object>> factory) : base(@interface, name, factory)
+        public SingletonServiceEntry(Type @interface, string? name, Expression<FactoryDelegate> factory) : base(@interface, name, factory)
         {
         }
 

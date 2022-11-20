@@ -59,7 +59,7 @@ namespace Solti.Utils.DI.Internals
             yield return entry;
         }
 
-        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Expression<Func<IInjector, Type, object>> factory)
+        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Expression<FactoryDelegate> factory)
         {
             if (iface is null)
                 throw new ArgumentNullException(nameof(iface));

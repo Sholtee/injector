@@ -23,9 +23,9 @@ namespace Solti.Utils.DI.Internals
     public abstract partial class ProducibleServiceEntry : AbstractServiceEntry
     {
         #region Private
-        private readonly List<Expression<Func<IInjector, Type, object, object>>> FProxies = new();
+        private readonly List<Expression<ApplyProxyDelegate>> FProxies = new();
 
-        private static Expression<Func<IInjector, Type, object>>? GetFactory(Type @interface, Type implementation)
+        private static Expression<FactoryDelegate>? GetFactory(Type @interface, Type implementation)
         {
             if (!@interface.IsGenericTypeDefinition)
                 return ServiceActivator.Get(implementation);
@@ -38,7 +38,7 @@ namespace Solti.Utils.DI.Internals
             return null;
         }
 
-        private static Expression<Func<IInjector, Type, object>>? GetFactory(Type @interface, Type implementation, object explicitArgs)
+        private static Expression<FactoryDelegate>? GetFactory(Type @interface, Type implementation, object explicitArgs)
         {
             if (!@interface.IsGenericTypeDefinition)
                 return explicitArgs is IReadOnlyDictionary<string, object?> dict
@@ -69,7 +69,7 @@ namespace Solti.Utils.DI.Internals
         /// <summary>
         /// Creartes a new <see cref="ProducibleServiceEntry"/> instance.
         /// </summary>
-        protected ProducibleServiceEntry(Type @interface, string? name, Expression<Func<IInjector, Type, object>> factory) : base
+        protected ProducibleServiceEntry(Type @interface, string? name, Expression<FactoryDelegate> factory) : base
         (
             @interface ?? throw new ArgumentNullException(nameof(@interface)),
             name,
@@ -147,7 +147,7 @@ namespace Solti.Utils.DI.Internals
                 Debug.WriteLine($"Created factory: {Environment.NewLine}{factoryExpr.GetDebugView()}");
                 context
                     .Compiler
-                    .Compile((Expression<FactoryDelegate>) factoryExpr, factory => CreateInstance = factory);
+                    .Compile((Expression<CreteServiceDelegate>) factoryExpr, factory => CreateInstance = factory);
 
                 State = (State | ServiceEntryStates.Built) & ~ServiceEntryStates.Validated;
             }
@@ -157,7 +157,7 @@ namespace Solti.Utils.DI.Internals
         public sealed override void SetValidated() => State |= ServiceEntryStates.Validated;
 
         /// <inheritdoc/>
-        public override void ApplyProxy(Expression<Func<IInjector, Type, object, object>> applyProxy)
+        public override void ApplyProxy(Expression<ApplyProxyDelegate> applyProxy)
         {
             if (applyProxy is null)
                 throw new ArgumentNullException(nameof(applyProxy));
@@ -176,6 +176,6 @@ namespace Solti.Utils.DI.Internals
         /// <summary>
         /// The applied proxies.
         /// </summary>
-        public sealed override IReadOnlyList<Expression<Func<IInjector, Type, object, object>>> Proxies => FProxies;
+        public sealed override IReadOnlyList<Expression<ApplyProxyDelegate>> Proxies => FProxies;
     }
 }

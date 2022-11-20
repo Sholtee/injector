@@ -33,7 +33,7 @@ namespace Solti.Utils.DI.Perf
         [ParamsSource(nameof(Lifetimes))]
         public LifetimeBase Lifetime { get; set; }
 
-        private ResolveDelegate ResolveImpl { get; set; }
+        private ResolveServiceDelegate ResolveImpl { get; set; }
 
         private IInstanceFactory Scope { get; set; }
 
