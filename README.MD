@@ -457,5 +457,26 @@ This project currently targets *.NET Standard* 2.0 and 2.1.
   Note that `IInjector` instance MUST be freed at the end of the session (scope factory doesn't maintain the lifetime of the created scopes)
 - Due to performance considerations, the concept of service references are gone
 - The layout of the `InterfaceInterceptor<>.Invoke()` method has been changed: Now it has only a single parameter (`InvocationContext`) that contains all the invocation related attributes.
+## Migrating from version 6.X
+- `Factory` and `Provider` recipe now takes `Expression<>` instead of `Func<>`. Compile time created expressions have their limitations (for e.g. they cannot contain `if` or any complex statements). To work this around:
+```csharp
+svcs.Factory<IMyService>(injector => 
+{
+    IDependency dep = injector.Get<IDependency>();
+    ...DO SOME ELABORATE STUFFS...
+    return result;
+}, ...);
+```
+needs to be refactored like:
+```csharp
+private static IMyService MyServiceFactory(IDependency dep)
+{
+    ...DO SOME ELABORATE STUFFS...
+    return result;
+}
+...
+svcs.Factory<IMyService>(injector => MyServiceFactory(injector.Get<IDependency>()), ...);
+```
+- `IServiceCollection(Basic|Advanced)Extensions.WithProxy()` has been renamed to `UsingProxy()` 
 ## Version history
 Can be found [here](https://github.com/Sholtee/injector/blob/master/history.md )
