@@ -257,3 +257,9 @@
   - *updated:* `ProxyGen.NET` to v7.0.0-preview6
 - 7.0.0-preview3:
   - *introduced:* New service resolver concept
+- 7.0.0-preview4:
+  - *improved:* Service resolution performance (using -optional- AOT resolution)
+  - *improved:* Root scope creation performance (using bulked expression compilation)
+  - *breaking:* Factory or proxy are provided as expressions
+  - *breaking:* Modified `AbstractServiceEntry` layout
+  - *introduced:* `IInjector.Tag` property
