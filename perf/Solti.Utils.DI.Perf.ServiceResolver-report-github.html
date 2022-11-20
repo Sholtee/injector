@@ -5,9 +5,9 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Injector.NET Benchmark Results | Benchmark Results </title>
+    <title> | Benchmark Results </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Injector.NET Benchmark Results | Benchmark Results ">
+    <meta name="title" content=" | Benchmark Results ">
     <meta name="generator" content="docfx 2.59.3.0">
     
     <link rel="shortcut icon" href="icon.png">
@@ -36,17 +36,55 @@
         <div class="article row grid">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="">
-<h1 id="injectornet-benchmark-results">Injector.NET Benchmark Results</h1>
 
-<ul>
-<li><a href="https://sholtee.github.io/injector/perf/Solti.Utils.DI.Perf.InjectorGet-report-github.html">Injector Get</a></li>
-<li><a href="https://sholtee.github.io/injector/perf/Solti.Utils.DI.Perf.IocComparison-report-github.html">IOC Comparison</a></li>
-<li><a href="https://sholtee.github.io/injector/perf/Solti.Utils.DI.Perf.ScopeCreation-report-github.html">Scope Creation</a></li>
-<li><a href="https://sholtee.github.io/injector/perf/Solti.Utils.DI.Perf.ServicePath-report-github.html">ServicePath</a></li>
-<li><a href="https://sholtee.github.io/injector/perf/Solti.Utils.DI.Perf.ServiceResolver-report-github.html">ServiceResolver</a></li>
-<li><a href="https://sholtee.github.io/injector/perf/Solti.Utils.DI.Perf.ServiceResolverLookup-report-github.html">ServiceResolverLookup</a></li>
-<li><a href="https://sholtee.github.io/injector/perf/Solti.Utils.DI.Perf.TypeBench-report-github.html">TypeBench</a></li>
-</ul>
+<pre><code class="lang-ini">
+BenchmarkDotNet=v0.13.2, OS=Windows 10 (10.0.17763.2366/1809/October2018Update/Redstone5), VM=Hyper-V
+Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
+.NET SDK=7.0.100
+  [Host]     : .NET 7.0.0 (7.0.22.51805), X64 RyuJIT AVX2
+  DefaultJob : .NET 7.0.0 (7.0.22.51805), X64 RyuJIT AVX2
+
+</code></pre><table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Lifetime</th>
+<th style="text-align:right">Mean</th>
+<th style="text-align:right">Error</th>
+<th style="text-align:right">StdDev</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Resolve</strong></td>
+<td><strong>Pooled</strong></td>
+<td style="text-align:right"><strong>11.22 ns</strong></td>
+<td style="text-align:right"><strong>0.128 ns</strong></td>
+<td style="text-align:right"><strong>0.113 ns</strong></td>
+</tr>
+<tr>
+<td><strong>Resolve</strong></td>
+<td><strong>Scoped</strong></td>
+<td style="text-align:right"><strong>11.22 ns</strong></td>
+<td style="text-align:right"><strong>0.199 ns</strong></td>
+<td style="text-align:right"><strong>0.186 ns</strong></td>
+</tr>
+<tr>
+<td><strong>Resolve</strong></td>
+<td><strong>Singleton</strong></td>
+<td style="text-align:right"><strong>11.83 ns</strong></td>
+<td style="text-align:right"><strong>0.280 ns</strong></td>
+<td style="text-align:right"><strong>0.311 ns</strong></td>
+</tr>
+<tr>
+<td><strong>Resolve</strong></td>
+<td><strong>Transient</strong></td>
+<td style="text-align:right"><strong>23.60 ns</strong></td>
+<td style="text-align:right"><strong>0.338 ns</strong></td>
+<td style="text-align:right"><strong>0.316 ns</strong></td>
+</tr>
+</tbody>
+</table>
 </article>
           </div>
           

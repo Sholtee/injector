@@ -8,7 +8,7 @@
     <title> | Benchmark Results </title>
     <meta name="viewport" content="width=device-width">
     <meta name="title" content=" | Benchmark Results ">
-    <meta name="generator" content="docfx 2.58.0.0">
+    <meta name="generator" content="docfx 2.59.3.0">
     
     <link rel="shortcut icon" href="icon.png">
     <link rel="stylesheet" href="styles/docfx.vendor.css">
@@ -38,11 +38,11 @@
             <article class="content wrap" id="_content" data-uid="">
 
 <pre><code class="lang-ini">
-BenchmarkDotNet=v0.13.1, OS=Windows 10.0.17763.2366 (1809/October2018Update/Redstone5)
+BenchmarkDotNet=v0.13.2, OS=Windows 10 (10.0.17763.2366/1809/October2018Update/Redstone5), VM=Hyper-V
 Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
-.NET SDK=6.0.300
-  [Host]     : .NET 6.0.5 (6.0.522.21309), X64 RyuJIT
-  Job-CMRSYY : .NET 6.0.5 (6.0.522.21309), X64 RyuJIT
+.NET SDK=7.0.100
+  [Host]     : .NET 7.0.0 (7.0.22.51805), X64 RyuJIT AVX2
+  Job-GMHUKC : .NET 7.0.0 (7.0.22.51805), X64 RyuJIT AVX2
 
 InvocationCount=2000000  RunStrategy=Throughput  
 </code></pre><table>
@@ -53,7 +53,7 @@ InvocationCount=2000000  RunStrategy=Throughput
 <th style="text-align:right">Mean</th>
 <th style="text-align:right">Error</th>
 <th style="text-align:right">StdDev</th>
-<th style="text-align:right">Gen 0</th>
+<th style="text-align:right">Gen0</th>
 <th style="text-align:right">Allocated</th>
 </tr>
 </thead>
@@ -61,20 +61,20 @@ InvocationCount=2000000  RunStrategy=Throughput
 <tr>
 <td><strong>CreateAndDisposeScope</strong></td>
 <td><strong>JIT</strong></td>
-<td style="text-align:right"><strong>52.22 ns</strong></td>
-<td style="text-align:right"><strong>1.078 ns</strong></td>
-<td style="text-align:right"><strong>1.943 ns</strong></td>
-<td style="text-align:right"><strong>0.0075</strong></td>
-<td style="text-align:right"><strong>144 B</strong></td>
+<td style="text-align:right"><strong>51.20 ns</strong></td>
+<td style="text-align:right"><strong>1.058 ns</strong></td>
+<td style="text-align:right"><strong>2.614 ns</strong></td>
+<td style="text-align:right"><strong>0.0085</strong></td>
+<td style="text-align:right"><strong>160 B</strong></td>
 </tr>
 <tr>
 <td><strong>CreateAndDisposeScope</strong></td>
 <td><strong>AOT</strong></td>
-<td style="text-align:right"><strong>53.06 ns</strong></td>
-<td style="text-align:right"><strong>0.780 ns</strong></td>
-<td style="text-align:right"><strong>0.652 ns</strong></td>
-<td style="text-align:right"><strong>0.0075</strong></td>
-<td style="text-align:right"><strong>144 B</strong></td>
+<td style="text-align:right"><strong>53.89 ns</strong></td>
+<td style="text-align:right"><strong>1.198 ns</strong></td>
+<td style="text-align:right"><strong>3.437 ns</strong></td>
+<td style="text-align:right"><strong>0.0085</strong></td>
+<td style="text-align:right"><strong>160 B</strong></td>
 </tr>
 </tbody>
 </table>

@@ -8,7 +8,7 @@
     <title> | Benchmark Results </title>
     <meta name="viewport" content="width=device-width">
     <meta name="title" content=" | Benchmark Results ">
-    <meta name="generator" content="docfx 2.58.0.0">
+    <meta name="generator" content="docfx 2.59.3.0">
     
     <link rel="shortcut icon" href="icon.png">
     <link rel="stylesheet" href="styles/docfx.vendor.css">
@@ -38,11 +38,11 @@
             <article class="content wrap" id="_content" data-uid="">
 
 <pre><code class="lang-ini">
-BenchmarkDotNet=v0.13.1, OS=Windows 10.0.17763.2366 (1809/October2018Update/Redstone5)
+BenchmarkDotNet=v0.13.2, OS=Windows 10 (10.0.17763.2366/1809/October2018Update/Redstone5), VM=Hyper-V
 Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
-.NET SDK=6.0.300
-  [Host]     : .NET 6.0.5 (6.0.522.21309), X64 RyuJIT
-  Job-NOJAPC : .NET 6.0.5 (6.0.522.21309), X64 RyuJIT
+.NET SDK=7.0.100
+  [Host]     : .NET 7.0.0 (7.0.22.51805), X64 RyuJIT AVX2
+  Job-KWVLUG : .NET 7.0.0 (7.0.22.51805), X64 RyuJIT AVX2
 
 InvocationCount=10000000  RunStrategy=Throughput  
 </code></pre><table>
@@ -55,7 +55,7 @@ InvocationCount=10000000  RunStrategy=Throughput
 <th style="text-align:right">Error</th>
 <th style="text-align:right">StdDev</th>
 <th style="text-align:right">Median</th>
-<th style="text-align:right">Gen 0</th>
+<th style="text-align:right">Gen0</th>
 <th style="text-align:right">Allocated</th>
 </tr>
 </thead>
@@ -63,231 +63,154 @@ InvocationCount=10000000  RunStrategy=Throughput
 <tr>
 <td><strong>Resolve</strong></td>
 <td><strong>1</strong></td>
-<td><strong>Solti(...)BTree [52]</strong></td>
-<td style="text-align:right"><strong>18.59 ns</strong></td>
-<td style="text-align:right"><strong>0.213 ns</strong></td>
-<td style="text-align:right"><strong>0.189 ns</strong></td>
-<td style="text-align:right"><strong>18.54 ns</strong></td>
-<td style="text-align:right"><strong>-</strong></td>
-<td style="text-align:right"><strong>-</strong></td>
+<td><strong>BTREE</strong></td>
+<td style="text-align:right"><strong>35.90 ns</strong></td>
+<td style="text-align:right"><strong>0.796 ns</strong></td>
+<td style="text-align:right"><strong>1.779 ns</strong></td>
+<td style="text-align:right"><strong>35.19 ns</strong></td>
+<td style="text-align:right"><strong>0.0017</strong></td>
+<td style="text-align:right"><strong>32 B</strong></td>
 </tr>
 <tr>
 <td><strong>Resolve</strong></td>
 <td><strong>1</strong></td>
-<td><strong>Solti(...)BTree [57]</strong></td>
-<td style="text-align:right"><strong>23.54 ns</strong></td>
+<td><strong>DICT</strong></td>
+<td style="text-align:right"><strong>50.34 ns</strong></td>
+<td style="text-align:right"><strong>0.845 ns</strong></td>
+<td style="text-align:right"><strong>0.939 ns</strong></td>
+<td style="text-align:right"><strong>50.08 ns</strong></td>
+<td style="text-align:right"><strong>0.0017</strong></td>
+<td style="text-align:right"><strong>32 B</strong></td>
+</tr>
+<tr>
+<td><strong>Resolve</strong></td>
+<td><strong>2</strong></td>
+<td><strong>BTREE</strong></td>
+<td style="text-align:right"><strong>35.45 ns</strong></td>
+<td style="text-align:right"><strong>0.762 ns</strong></td>
+<td style="text-align:right"><strong>0.991 ns</strong></td>
+<td style="text-align:right"><strong>35.28 ns</strong></td>
+<td style="text-align:right"><strong>0.0017</strong></td>
+<td style="text-align:right"><strong>32 B</strong></td>
+</tr>
+<tr>
+<td><strong>Resolve</strong></td>
+<td><strong>2</strong></td>
+<td><strong>DICT</strong></td>
+<td style="text-align:right"><strong>53.72 ns</strong></td>
+<td style="text-align:right"><strong>1.135 ns</strong></td>
+<td style="text-align:right"><strong>1.928 ns</strong></td>
+<td style="text-align:right"><strong>52.83 ns</strong></td>
+<td style="text-align:right"><strong>0.0017</strong></td>
+<td style="text-align:right"><strong>32 B</strong></td>
+</tr>
+<tr>
+<td><strong>Resolve</strong></td>
+<td><strong>5</strong></td>
+<td><strong>BTREE</strong></td>
+<td style="text-align:right"><strong>37.40 ns</strong></td>
 <td style="text-align:right"><strong>0.534 ns</strong></td>
-<td style="text-align:right"><strong>0.524 ns</strong></td>
-<td style="text-align:right"><strong>23.62 ns</strong></td>
-<td style="text-align:right"><strong>-</strong></td>
-<td style="text-align:right"><strong>-</strong></td>
-</tr>
-<tr>
-<td><strong>Resolve</strong></td>
-<td><strong>1</strong></td>
-<td><strong>Solti(...)_Dict [51]</strong></td>
-<td style="text-align:right"><strong>56.48 ns</strong></td>
-<td style="text-align:right"><strong>0.851 ns</strong></td>
-<td style="text-align:right"><strong>0.755 ns</strong></td>
-<td style="text-align:right"><strong>56.19 ns</strong></td>
-<td style="text-align:right"><strong>0.0017</strong></td>
-<td style="text-align:right"><strong>32 B</strong></td>
-</tr>
-<tr>
-<td><strong>Resolve</strong></td>
-<td><strong>2</strong></td>
-<td><strong>Solti(...)BTree [52]</strong></td>
-<td style="text-align:right"><strong>23.38 ns</strong></td>
-<td style="text-align:right"><strong>0.562 ns</strong></td>
-<td style="text-align:right"><strong>0.984 ns</strong></td>
-<td style="text-align:right"><strong>23.02 ns</strong></td>
-<td style="text-align:right"><strong>-</strong></td>
-<td style="text-align:right"><strong>-</strong></td>
-</tr>
-<tr>
-<td><strong>Resolve</strong></td>
-<td><strong>2</strong></td>
-<td><strong>Solti(...)BTree [57]</strong></td>
-<td style="text-align:right"><strong>26.55 ns</strong></td>
-<td style="text-align:right"><strong>0.503 ns</strong></td>
 <td style="text-align:right"><strong>0.446 ns</strong></td>
-<td style="text-align:right"><strong>26.43 ns</strong></td>
-<td style="text-align:right"><strong>-</strong></td>
-<td style="text-align:right"><strong>-</strong></td>
-</tr>
-<tr>
-<td><strong>Resolve</strong></td>
-<td><strong>2</strong></td>
-<td><strong>Solti(...)_Dict [51]</strong></td>
-<td style="text-align:right"><strong>58.55 ns</strong></td>
-<td style="text-align:right"><strong>0.780 ns</strong></td>
-<td style="text-align:right"><strong>0.691 ns</strong></td>
-<td style="text-align:right"><strong>58.45 ns</strong></td>
+<td style="text-align:right"><strong>37.35 ns</strong></td>
 <td style="text-align:right"><strong>0.0017</strong></td>
 <td style="text-align:right"><strong>32 B</strong></td>
 </tr>
 <tr>
 <td><strong>Resolve</strong></td>
 <td><strong>5</strong></td>
-<td><strong>Solti(...)BTree [52]</strong></td>
-<td style="text-align:right"><strong>25.89 ns</strong></td>
-<td style="text-align:right"><strong>0.610 ns</strong></td>
-<td style="text-align:right"><strong>0.814 ns</strong></td>
-<td style="text-align:right"><strong>25.89 ns</strong></td>
-<td style="text-align:right"><strong>-</strong></td>
-<td style="text-align:right"><strong>-</strong></td>
-</tr>
-<tr>
-<td><strong>Resolve</strong></td>
-<td><strong>5</strong></td>
-<td><strong>Solti(...)BTree [57]</strong></td>
-<td style="text-align:right"><strong>29.31 ns</strong></td>
-<td style="text-align:right"><strong>0.464 ns</strong></td>
-<td style="text-align:right"><strong>0.387 ns</strong></td>
-<td style="text-align:right"><strong>29.36 ns</strong></td>
-<td style="text-align:right"><strong>-</strong></td>
-<td style="text-align:right"><strong>-</strong></td>
-</tr>
-<tr>
-<td><strong>Resolve</strong></td>
-<td><strong>5</strong></td>
-<td><strong>Solti(...)_Dict [51]</strong></td>
-<td style="text-align:right"><strong>59.66 ns</strong></td>
-<td style="text-align:right"><strong>1.083 ns</strong></td>
-<td style="text-align:right"><strong>0.960 ns</strong></td>
-<td style="text-align:right"><strong>59.55 ns</strong></td>
+<td><strong>DICT</strong></td>
+<td style="text-align:right"><strong>53.98 ns</strong></td>
+<td style="text-align:right"><strong>0.979 ns</strong></td>
+<td style="text-align:right"><strong>0.867 ns</strong></td>
+<td style="text-align:right"><strong>53.53 ns</strong></td>
 <td style="text-align:right"><strong>0.0017</strong></td>
 <td style="text-align:right"><strong>32 B</strong></td>
 </tr>
 <tr>
 <td><strong>Resolve</strong></td>
 <td><strong>10</strong></td>
-<td><strong>Solti(...)BTree [52]</strong></td>
-<td style="text-align:right"><strong>30.02 ns</strong></td>
-<td style="text-align:right"><strong>0.692 ns</strong></td>
-<td style="text-align:right"><strong>0.900 ns</strong></td>
-<td style="text-align:right"><strong>30.00 ns</strong></td>
-<td style="text-align:right"><strong>-</strong></td>
-<td style="text-align:right"><strong>-</strong></td>
+<td><strong>BTREE</strong></td>
+<td style="text-align:right"><strong>40.43 ns</strong></td>
+<td style="text-align:right"><strong>0.853 ns</strong></td>
+<td style="text-align:right"><strong>0.713 ns</strong></td>
+<td style="text-align:right"><strong>40.26 ns</strong></td>
+<td style="text-align:right"><strong>0.0017</strong></td>
+<td style="text-align:right"><strong>32 B</strong></td>
 </tr>
 <tr>
 <td><strong>Resolve</strong></td>
 <td><strong>10</strong></td>
-<td><strong>Solti(...)BTree [57]</strong></td>
-<td style="text-align:right"><strong>31.98 ns</strong></td>
-<td style="text-align:right"><strong>0.718 ns</strong></td>
-<td style="text-align:right"><strong>1.139 ns</strong></td>
-<td style="text-align:right"><strong>31.79 ns</strong></td>
-<td style="text-align:right"><strong>-</strong></td>
-<td style="text-align:right"><strong>-</strong></td>
-</tr>
-<tr>
-<td><strong>Resolve</strong></td>
-<td><strong>10</strong></td>
-<td><strong>Solti(...)_Dict [51]</strong></td>
-<td style="text-align:right"><strong>56.91 ns</strong></td>
-<td style="text-align:right"><strong>1.186 ns</strong></td>
-<td style="text-align:right"><strong>1.218 ns</strong></td>
-<td style="text-align:right"><strong>57.11 ns</strong></td>
-<td style="text-align:right"><strong>0.0017</strong></td>
-<td style="text-align:right"><strong>32 B</strong></td>
-</tr>
-<tr>
-<td><strong>Resolve</strong></td>
-<td><strong>20</strong></td>
-<td><strong>Solti(...)BTree [52]</strong></td>
-<td style="text-align:right"><strong>31.56 ns</strong></td>
-<td style="text-align:right"><strong>0.712 ns</strong></td>
-<td style="text-align:right"><strong>1.150 ns</strong></td>
-<td style="text-align:right"><strong>31.88 ns</strong></td>
-<td style="text-align:right"><strong>-</strong></td>
-<td style="text-align:right"><strong>-</strong></td>
-</tr>
-<tr>
-<td><strong>Resolve</strong></td>
-<td><strong>20</strong></td>
-<td><strong>Solti(...)BTree [57]</strong></td>
-<td style="text-align:right"><strong>36.39 ns</strong></td>
-<td style="text-align:right"><strong>0.779 ns</strong></td>
-<td style="text-align:right"><strong>0.866 ns</strong></td>
-<td style="text-align:right"><strong>36.54 ns</strong></td>
-<td style="text-align:right"><strong>-</strong></td>
-<td style="text-align:right"><strong>-</strong></td>
-</tr>
-<tr>
-<td><strong>Resolve</strong></td>
-<td><strong>20</strong></td>
-<td><strong>Solti(...)_Dict [51]</strong></td>
-<td style="text-align:right"><strong>55.74 ns</strong></td>
-<td style="text-align:right"><strong>1.202 ns</strong></td>
-<td style="text-align:right"><strong>2.483 ns</strong></td>
-<td style="text-align:right"><strong>54.59 ns</strong></td>
-<td style="text-align:right"><strong>0.0017</strong></td>
-<td style="text-align:right"><strong>32 B</strong></td>
-</tr>
-<tr>
-<td><strong>Resolve</strong></td>
-<td><strong>50</strong></td>
-<td><strong>Solti(...)BTree [52]</strong></td>
-<td style="text-align:right"><strong>45.32 ns</strong></td>
-<td style="text-align:right"><strong>0.439 ns</strong></td>
-<td style="text-align:right"><strong>0.367 ns</strong></td>
-<td style="text-align:right"><strong>45.29 ns</strong></td>
-<td style="text-align:right"><strong>-</strong></td>
-<td style="text-align:right"><strong>-</strong></td>
-</tr>
-<tr>
-<td><strong>Resolve</strong></td>
-<td><strong>50</strong></td>
-<td><strong>Solti(...)BTree [57]</strong></td>
-<td style="text-align:right"><strong>45.01 ns</strong></td>
-<td style="text-align:right"><strong>0.966 ns</strong></td>
-<td style="text-align:right"><strong>0.857 ns</strong></td>
-<td style="text-align:right"><strong>44.78 ns</strong></td>
-<td style="text-align:right"><strong>-</strong></td>
-<td style="text-align:right"><strong>-</strong></td>
-</tr>
-<tr>
-<td><strong>Resolve</strong></td>
-<td><strong>50</strong></td>
-<td><strong>Solti(...)_Dict [51]</strong></td>
-<td style="text-align:right"><strong>57.56 ns</strong></td>
-<td style="text-align:right"><strong>0.718 ns</strong></td>
-<td style="text-align:right"><strong>0.637 ns</strong></td>
-<td style="text-align:right"><strong>57.46 ns</strong></td>
-<td style="text-align:right"><strong>0.0017</strong></td>
-<td style="text-align:right"><strong>32 B</strong></td>
-</tr>
-<tr>
-<td><strong>Resolve</strong></td>
-<td><strong>80</strong></td>
-<td><strong>Solti(...)BTree [52]</strong></td>
-<td style="text-align:right"><strong>42.54 ns</strong></td>
-<td style="text-align:right"><strong>0.732 ns</strong></td>
-<td style="text-align:right"><strong>0.649 ns</strong></td>
-<td style="text-align:right"><strong>42.41 ns</strong></td>
-<td style="text-align:right"><strong>-</strong></td>
-<td style="text-align:right"><strong>-</strong></td>
-</tr>
-<tr>
-<td><strong>Resolve</strong></td>
-<td><strong>80</strong></td>
-<td><strong>Solti(...)BTree [57]</strong></td>
-<td style="text-align:right"><strong>40.05 ns</strong></td>
-<td style="text-align:right"><strong>0.564 ns</strong></td>
-<td style="text-align:right"><strong>0.500 ns</strong></td>
-<td style="text-align:right"><strong>40.01 ns</strong></td>
-<td style="text-align:right"><strong>-</strong></td>
-<td style="text-align:right"><strong>-</strong></td>
-</tr>
-<tr>
-<td><strong>Resolve</strong></td>
-<td><strong>80</strong></td>
-<td><strong>Solti(...)_Dict [51]</strong></td>
+<td><strong>DICT</strong></td>
+<td style="text-align:right"><strong>55.36 ns</strong></td>
+<td style="text-align:right"><strong>1.170 ns</strong></td>
+<td style="text-align:right"><strong>1.094 ns</strong></td>
 <td style="text-align:right"><strong>54.82 ns</strong></td>
-<td style="text-align:right"><strong>1.012 ns</strong></td>
-<td style="text-align:right"><strong>1.204 ns</strong></td>
-<td style="text-align:right"><strong>54.30 ns</strong></td>
+<td style="text-align:right"><strong>0.0017</strong></td>
+<td style="text-align:right"><strong>32 B</strong></td>
+</tr>
+<tr>
+<td><strong>Resolve</strong></td>
+<td><strong>20</strong></td>
+<td><strong>BTREE</strong></td>
+<td style="text-align:right"><strong>44.44 ns</strong></td>
+<td style="text-align:right"><strong>0.948 ns</strong></td>
+<td style="text-align:right"><strong>0.931 ns</strong></td>
+<td style="text-align:right"><strong>44.36 ns</strong></td>
+<td style="text-align:right"><strong>0.0017</strong></td>
+<td style="text-align:right"><strong>32 B</strong></td>
+</tr>
+<tr>
+<td><strong>Resolve</strong></td>
+<td><strong>20</strong></td>
+<td><strong>DICT</strong></td>
+<td style="text-align:right"><strong>55.46 ns</strong></td>
+<td style="text-align:right"><strong>1.056 ns</strong></td>
+<td style="text-align:right"><strong>0.988 ns</strong></td>
+<td style="text-align:right"><strong>55.27 ns</strong></td>
+<td style="text-align:right"><strong>0.0017</strong></td>
+<td style="text-align:right"><strong>32 B</strong></td>
+</tr>
+<tr>
+<td><strong>Resolve</strong></td>
+<td><strong>50</strong></td>
+<td><strong>BTREE</strong></td>
+<td style="text-align:right"><strong>62.96 ns</strong></td>
+<td style="text-align:right"><strong>1.235 ns</strong></td>
+<td style="text-align:right"><strong>1.155 ns</strong></td>
+<td style="text-align:right"><strong>62.92 ns</strong></td>
+<td style="text-align:right"><strong>0.0017</strong></td>
+<td style="text-align:right"><strong>32 B</strong></td>
+</tr>
+<tr>
+<td><strong>Resolve</strong></td>
+<td><strong>50</strong></td>
+<td><strong>DICT</strong></td>
+<td style="text-align:right"><strong>53.60 ns</strong></td>
+<td style="text-align:right"><strong>0.521 ns</strong></td>
+<td style="text-align:right"><strong>0.487 ns</strong></td>
+<td style="text-align:right"><strong>53.49 ns</strong></td>
+<td style="text-align:right"><strong>0.0017</strong></td>
+<td style="text-align:right"><strong>32 B</strong></td>
+</tr>
+<tr>
+<td><strong>Resolve</strong></td>
+<td><strong>80</strong></td>
+<td><strong>BTREE</strong></td>
+<td style="text-align:right"><strong>51.95 ns</strong></td>
+<td style="text-align:right"><strong>0.975 ns</strong></td>
+<td style="text-align:right"><strong>0.865 ns</strong></td>
+<td style="text-align:right"><strong>51.68 ns</strong></td>
+<td style="text-align:right"><strong>0.0017</strong></td>
+<td style="text-align:right"><strong>32 B</strong></td>
+</tr>
+<tr>
+<td><strong>Resolve</strong></td>
+<td><strong>80</strong></td>
+<td><strong>DICT</strong></td>
+<td style="text-align:right"><strong>60.17 ns</strong></td>
+<td style="text-align:right"><strong>0.789 ns</strong></td>
+<td style="text-align:right"><strong>0.699 ns</strong></td>
+<td style="text-align:right"><strong>59.92 ns</strong></td>
 <td style="text-align:right"><strong>0.0017</strong></td>
 <td style="text-align:right"><strong>32 B</strong></td>
 </tr>
