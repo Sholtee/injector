@@ -52,30 +52,30 @@ references:
   commentId: T:Solti.Utils.DI.Interfaces.AbstractServiceEntry
   fullName: Solti.Utils.DI.Interfaces.AbstractServiceEntry
   nameWithType: AbstractServiceEntry
-- uid: Solti.Utils.DI.Interfaces.AbstractServiceEntry.#ctor(System.Type,System.String,System.Type,System.Linq.Expressions.Expression{System.Func{Solti.Utils.DI.Interfaces.IInjector,System.Type,System.Object}})
-  name: AbstractServiceEntry(Type, String, Type, Expression<Func<IInjector, Type, Object>>)
-  href: Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry__ctor_System_Type_System_String_System_Type_System_Linq_Expressions_Expression_System_Func_Solti_Utils_DI_Interfaces_IInjector_System_Type_System_Object___
-  commentId: M:Solti.Utils.DI.Interfaces.AbstractServiceEntry.#ctor(System.Type,System.String,System.Type,System.Linq.Expressions.Expression{System.Func{Solti.Utils.DI.Interfaces.IInjector,System.Type,System.Object}})
-  name.vb: AbstractServiceEntry(Type, String, Type, Expression(Of Func(Of IInjector, Type, Object)))
-  fullName: Solti.Utils.DI.Interfaces.AbstractServiceEntry.AbstractServiceEntry(System.Type, System.String, System.Type, System.Linq.Expressions.Expression<System.Func<Solti.Utils.DI.Interfaces.IInjector, System.Type, System.Object>>)
-  fullName.vb: Solti.Utils.DI.Interfaces.AbstractServiceEntry.AbstractServiceEntry(System.Type, System.String, System.Type, System.Linq.Expressions.Expression(Of System.Func(Of Solti.Utils.DI.Interfaces.IInjector, System.Type, System.Object)))
-  nameWithType: AbstractServiceEntry.AbstractServiceEntry(Type, String, Type, Expression<Func<IInjector, Type, Object>>)
-  nameWithType.vb: AbstractServiceEntry.AbstractServiceEntry(Type, String, Type, Expression(Of Func(Of IInjector, Type, Object)))
+- uid: Solti.Utils.DI.Interfaces.AbstractServiceEntry.#ctor(System.Type,System.String,System.Type,System.Linq.Expressions.Expression{Solti.Utils.DI.Interfaces.FactoryDelegate})
+  name: AbstractServiceEntry(Type, String, Type, Expression<FactoryDelegate>)
+  href: Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry__ctor_System_Type_System_String_System_Type_System_Linq_Expressions_Expression_Solti_Utils_DI_Interfaces_FactoryDelegate__
+  commentId: M:Solti.Utils.DI.Interfaces.AbstractServiceEntry.#ctor(System.Type,System.String,System.Type,System.Linq.Expressions.Expression{Solti.Utils.DI.Interfaces.FactoryDelegate})
+  name.vb: AbstractServiceEntry(Type, String, Type, Expression(Of FactoryDelegate))
+  fullName: Solti.Utils.DI.Interfaces.AbstractServiceEntry.AbstractServiceEntry(System.Type, System.String, System.Type, System.Linq.Expressions.Expression<Solti.Utils.DI.Interfaces.FactoryDelegate>)
+  fullName.vb: Solti.Utils.DI.Interfaces.AbstractServiceEntry.AbstractServiceEntry(System.Type, System.String, System.Type, System.Linq.Expressions.Expression(Of Solti.Utils.DI.Interfaces.FactoryDelegate))
+  nameWithType: AbstractServiceEntry.AbstractServiceEntry(Type, String, Type, Expression<FactoryDelegate>)
+  nameWithType.vb: AbstractServiceEntry.AbstractServiceEntry(Type, String, Type, Expression(Of FactoryDelegate))
 - uid: Solti.Utils.DI.Interfaces.AbstractServiceEntry.#ctor*
   name: AbstractServiceEntry
   href: Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry__ctor_
   commentId: Overload:Solti.Utils.DI.Interfaces.AbstractServiceEntry.#ctor
   fullName: Solti.Utils.DI.Interfaces.AbstractServiceEntry.AbstractServiceEntry
   nameWithType: AbstractServiceEntry.AbstractServiceEntry
-- uid: Solti.Utils.DI.Interfaces.AbstractServiceEntry.ApplyProxy(System.Linq.Expressions.Expression{System.Func{Solti.Utils.DI.Interfaces.IInjector,System.Type,System.Object,System.Object}})
-  name: ApplyProxy(Expression<Func<IInjector, Type, Object, Object>>)
-  href: Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_ApplyProxy_System_Linq_Expressions_Expression_System_Func_Solti_Utils_DI_Interfaces_IInjector_System_Type_System_Object_System_Object___
-  commentId: M:Solti.Utils.DI.Interfaces.AbstractServiceEntry.ApplyProxy(System.Linq.Expressions.Expression{System.Func{Solti.Utils.DI.Interfaces.IInjector,System.Type,System.Object,System.Object}})
-  name.vb: ApplyProxy(Expression(Of Func(Of IInjector, Type, Object, Object)))
-  fullName: Solti.Utils.DI.Interfaces.AbstractServiceEntry.ApplyProxy(System.Linq.Expressions.Expression<System.Func<Solti.Utils.DI.Interfaces.IInjector, System.Type, System.Object, System.Object>>)
-  fullName.vb: Solti.Utils.DI.Interfaces.AbstractServiceEntry.ApplyProxy(System.Linq.Expressions.Expression(Of System.Func(Of Solti.Utils.DI.Interfaces.IInjector, System.Type, System.Object, System.Object)))
-  nameWithType: AbstractServiceEntry.ApplyProxy(Expression<Func<IInjector, Type, Object, Object>>)
-  nameWithType.vb: AbstractServiceEntry.ApplyProxy(Expression(Of Func(Of IInjector, Type, Object, Object)))
+- uid: Solti.Utils.DI.Interfaces.AbstractServiceEntry.ApplyProxy(System.Linq.Expressions.Expression{Solti.Utils.DI.Interfaces.ApplyProxyDelegate})
+  name: ApplyProxy(Expression<ApplyProxyDelegate>)
+  href: Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_ApplyProxy_System_Linq_Expressions_Expression_Solti_Utils_DI_Interfaces_ApplyProxyDelegate__
+  commentId: M:Solti.Utils.DI.Interfaces.AbstractServiceEntry.ApplyProxy(System.Linq.Expressions.Expression{Solti.Utils.DI.Interfaces.ApplyProxyDelegate})
+  name.vb: ApplyProxy(Expression(Of ApplyProxyDelegate))
+  fullName: Solti.Utils.DI.Interfaces.AbstractServiceEntry.ApplyProxy(System.Linq.Expressions.Expression<Solti.Utils.DI.Interfaces.ApplyProxyDelegate>)
+  fullName.vb: Solti.Utils.DI.Interfaces.AbstractServiceEntry.ApplyProxy(System.Linq.Expressions.Expression(Of Solti.Utils.DI.Interfaces.ApplyProxyDelegate))
+  nameWithType: AbstractServiceEntry.ApplyProxy(Expression<ApplyProxyDelegate>)
+  nameWithType.vb: AbstractServiceEntry.ApplyProxy(Expression(Of ApplyProxyDelegate))
 - uid: Solti.Utils.DI.Interfaces.AbstractServiceEntry.ApplyProxy*
   name: ApplyProxy
   href: Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_ApplyProxy_
@@ -286,6 +286,60 @@ references:
   commentId: Overload:Solti.Utils.DI.Interfaces.AbstractServiceEntry.ToString
   fullName: Solti.Utils.DI.Interfaces.AbstractServiceEntry.ToString
   nameWithType: AbstractServiceEntry.ToString
+- uid: Solti.Utils.DI.Interfaces.ApplyProxyDelegate
+  name: ApplyProxyDelegate
+  href: Solti.Utils.DI.Interfaces.ApplyProxyDelegate.html
+  commentId: T:Solti.Utils.DI.Interfaces.ApplyProxyDelegate
+  fullName: Solti.Utils.DI.Interfaces.ApplyProxyDelegate
+  nameWithType: ApplyProxyDelegate
+- uid: Solti.Utils.DI.Interfaces.ApplyProxyDelegate.#ctor(System.Object,System.IntPtr)
+  name: ApplyProxyDelegate(Object, IntPtr)
+  href: Solti.Utils.DI.Interfaces.ApplyProxyDelegate.html#Solti_Utils_DI_Interfaces_ApplyProxyDelegate__ctor_System_Object_System_IntPtr_
+  commentId: M:Solti.Utils.DI.Interfaces.ApplyProxyDelegate.#ctor(System.Object,System.IntPtr)
+  fullName: Solti.Utils.DI.Interfaces.ApplyProxyDelegate.ApplyProxyDelegate(System.Object, System.IntPtr)
+  nameWithType: ApplyProxyDelegate.ApplyProxyDelegate(Object, IntPtr)
+- uid: Solti.Utils.DI.Interfaces.ApplyProxyDelegate.#ctor*
+  name: ApplyProxyDelegate
+  href: Solti.Utils.DI.Interfaces.ApplyProxyDelegate.html#Solti_Utils_DI_Interfaces_ApplyProxyDelegate__ctor_
+  commentId: Overload:Solti.Utils.DI.Interfaces.ApplyProxyDelegate.#ctor
+  fullName: Solti.Utils.DI.Interfaces.ApplyProxyDelegate.ApplyProxyDelegate
+  nameWithType: ApplyProxyDelegate.ApplyProxyDelegate
+- uid: Solti.Utils.DI.Interfaces.ApplyProxyDelegate.BeginInvoke(Solti.Utils.DI.Interfaces.IInjector,System.Type,System.Object,System.AsyncCallback,System.Object)
+  name: BeginInvoke(IInjector, Type, Object, AsyncCallback, Object)
+  href: Solti.Utils.DI.Interfaces.ApplyProxyDelegate.html#Solti_Utils_DI_Interfaces_ApplyProxyDelegate_BeginInvoke_Solti_Utils_DI_Interfaces_IInjector_System_Type_System_Object_System_AsyncCallback_System_Object_
+  commentId: M:Solti.Utils.DI.Interfaces.ApplyProxyDelegate.BeginInvoke(Solti.Utils.DI.Interfaces.IInjector,System.Type,System.Object,System.AsyncCallback,System.Object)
+  fullName: Solti.Utils.DI.Interfaces.ApplyProxyDelegate.BeginInvoke(Solti.Utils.DI.Interfaces.IInjector, System.Type, System.Object, System.AsyncCallback, System.Object)
+  nameWithType: ApplyProxyDelegate.BeginInvoke(IInjector, Type, Object, AsyncCallback, Object)
+- uid: Solti.Utils.DI.Interfaces.ApplyProxyDelegate.BeginInvoke*
+  name: BeginInvoke
+  href: Solti.Utils.DI.Interfaces.ApplyProxyDelegate.html#Solti_Utils_DI_Interfaces_ApplyProxyDelegate_BeginInvoke_
+  commentId: Overload:Solti.Utils.DI.Interfaces.ApplyProxyDelegate.BeginInvoke
+  fullName: Solti.Utils.DI.Interfaces.ApplyProxyDelegate.BeginInvoke
+  nameWithType: ApplyProxyDelegate.BeginInvoke
+- uid: Solti.Utils.DI.Interfaces.ApplyProxyDelegate.EndInvoke(System.IAsyncResult)
+  name: EndInvoke(IAsyncResult)
+  href: Solti.Utils.DI.Interfaces.ApplyProxyDelegate.html#Solti_Utils_DI_Interfaces_ApplyProxyDelegate_EndInvoke_System_IAsyncResult_
+  commentId: M:Solti.Utils.DI.Interfaces.ApplyProxyDelegate.EndInvoke(System.IAsyncResult)
+  fullName: Solti.Utils.DI.Interfaces.ApplyProxyDelegate.EndInvoke(System.IAsyncResult)
+  nameWithType: ApplyProxyDelegate.EndInvoke(IAsyncResult)
+- uid: Solti.Utils.DI.Interfaces.ApplyProxyDelegate.EndInvoke*
+  name: EndInvoke
+  href: Solti.Utils.DI.Interfaces.ApplyProxyDelegate.html#Solti_Utils_DI_Interfaces_ApplyProxyDelegate_EndInvoke_
+  commentId: Overload:Solti.Utils.DI.Interfaces.ApplyProxyDelegate.EndInvoke
+  fullName: Solti.Utils.DI.Interfaces.ApplyProxyDelegate.EndInvoke
+  nameWithType: ApplyProxyDelegate.EndInvoke
+- uid: Solti.Utils.DI.Interfaces.ApplyProxyDelegate.Invoke(Solti.Utils.DI.Interfaces.IInjector,System.Type,System.Object)
+  name: Invoke(IInjector, Type, Object)
+  href: Solti.Utils.DI.Interfaces.ApplyProxyDelegate.html#Solti_Utils_DI_Interfaces_ApplyProxyDelegate_Invoke_Solti_Utils_DI_Interfaces_IInjector_System_Type_System_Object_
+  commentId: M:Solti.Utils.DI.Interfaces.ApplyProxyDelegate.Invoke(Solti.Utils.DI.Interfaces.IInjector,System.Type,System.Object)
+  fullName: Solti.Utils.DI.Interfaces.ApplyProxyDelegate.Invoke(Solti.Utils.DI.Interfaces.IInjector, System.Type, System.Object)
+  nameWithType: ApplyProxyDelegate.Invoke(IInjector, Type, Object)
+- uid: Solti.Utils.DI.Interfaces.ApplyProxyDelegate.Invoke*
+  name: Invoke
+  href: Solti.Utils.DI.Interfaces.ApplyProxyDelegate.html#Solti_Utils_DI_Interfaces_ApplyProxyDelegate_Invoke_
+  commentId: Overload:Solti.Utils.DI.Interfaces.ApplyProxyDelegate.Invoke
+  fullName: Solti.Utils.DI.Interfaces.ApplyProxyDelegate.Invoke
+  nameWithType: ApplyProxyDelegate.Invoke
 - uid: Solti.Utils.DI.Interfaces.AspectAttribute
   name: AspectAttribute
   href: Solti.Utils.DI.Interfaces.AspectAttribute.html
@@ -358,6 +412,69 @@ references:
   commentId: F:Solti.Utils.DI.Interfaces.Consts.INTERNAL_SERVICE_NAME_PREFIX
   fullName: Solti.Utils.DI.Interfaces.Consts.INTERNAL_SERVICE_NAME_PREFIX
   nameWithType: Consts.INTERNAL_SERVICE_NAME_PREFIX
+- uid: Solti.Utils.DI.Interfaces.CreteServiceDelegate
+  name: CreteServiceDelegate
+  href: Solti.Utils.DI.Interfaces.CreteServiceDelegate.html
+  commentId: T:Solti.Utils.DI.Interfaces.CreteServiceDelegate
+  fullName: Solti.Utils.DI.Interfaces.CreteServiceDelegate
+  nameWithType: CreteServiceDelegate
+- uid: Solti.Utils.DI.Interfaces.CreteServiceDelegate.#ctor(System.Object,System.IntPtr)
+  name: CreteServiceDelegate(Object, IntPtr)
+  href: Solti.Utils.DI.Interfaces.CreteServiceDelegate.html#Solti_Utils_DI_Interfaces_CreteServiceDelegate__ctor_System_Object_System_IntPtr_
+  commentId: M:Solti.Utils.DI.Interfaces.CreteServiceDelegate.#ctor(System.Object,System.IntPtr)
+  fullName: Solti.Utils.DI.Interfaces.CreteServiceDelegate.CreteServiceDelegate(System.Object, System.IntPtr)
+  nameWithType: CreteServiceDelegate.CreteServiceDelegate(Object, IntPtr)
+- uid: Solti.Utils.DI.Interfaces.CreteServiceDelegate.#ctor*
+  name: CreteServiceDelegate
+  href: Solti.Utils.DI.Interfaces.CreteServiceDelegate.html#Solti_Utils_DI_Interfaces_CreteServiceDelegate__ctor_
+  commentId: Overload:Solti.Utils.DI.Interfaces.CreteServiceDelegate.#ctor
+  fullName: Solti.Utils.DI.Interfaces.CreteServiceDelegate.CreteServiceDelegate
+  nameWithType: CreteServiceDelegate.CreteServiceDelegate
+- uid: Solti.Utils.DI.Interfaces.CreteServiceDelegate.BeginInvoke(Solti.Utils.DI.Interfaces.IInstanceFactory,System.Object@,System.AsyncCallback,System.Object)
+  name: BeginInvoke(IInstanceFactory, out Object, AsyncCallback, Object)
+  href: Solti.Utils.DI.Interfaces.CreteServiceDelegate.html#Solti_Utils_DI_Interfaces_CreteServiceDelegate_BeginInvoke_Solti_Utils_DI_Interfaces_IInstanceFactory_System_Object__System_AsyncCallback_System_Object_
+  commentId: M:Solti.Utils.DI.Interfaces.CreteServiceDelegate.BeginInvoke(Solti.Utils.DI.Interfaces.IInstanceFactory,System.Object@,System.AsyncCallback,System.Object)
+  name.vb: BeginInvoke(IInstanceFactory, ByRef Object, AsyncCallback, Object)
+  fullName: Solti.Utils.DI.Interfaces.CreteServiceDelegate.BeginInvoke(Solti.Utils.DI.Interfaces.IInstanceFactory, out System.Object, System.AsyncCallback, System.Object)
+  fullName.vb: Solti.Utils.DI.Interfaces.CreteServiceDelegate.BeginInvoke(Solti.Utils.DI.Interfaces.IInstanceFactory, ByRef System.Object, System.AsyncCallback, System.Object)
+  nameWithType: CreteServiceDelegate.BeginInvoke(IInstanceFactory, out Object, AsyncCallback, Object)
+  nameWithType.vb: CreteServiceDelegate.BeginInvoke(IInstanceFactory, ByRef Object, AsyncCallback, Object)
+- uid: Solti.Utils.DI.Interfaces.CreteServiceDelegate.BeginInvoke*
+  name: BeginInvoke
+  href: Solti.Utils.DI.Interfaces.CreteServiceDelegate.html#Solti_Utils_DI_Interfaces_CreteServiceDelegate_BeginInvoke_
+  commentId: Overload:Solti.Utils.DI.Interfaces.CreteServiceDelegate.BeginInvoke
+  fullName: Solti.Utils.DI.Interfaces.CreteServiceDelegate.BeginInvoke
+  nameWithType: CreteServiceDelegate.BeginInvoke
+- uid: Solti.Utils.DI.Interfaces.CreteServiceDelegate.EndInvoke(System.Object@,System.IAsyncResult)
+  name: EndInvoke(out Object, IAsyncResult)
+  href: Solti.Utils.DI.Interfaces.CreteServiceDelegate.html#Solti_Utils_DI_Interfaces_CreteServiceDelegate_EndInvoke_System_Object__System_IAsyncResult_
+  commentId: M:Solti.Utils.DI.Interfaces.CreteServiceDelegate.EndInvoke(System.Object@,System.IAsyncResult)
+  name.vb: EndInvoke(ByRef Object, IAsyncResult)
+  fullName: Solti.Utils.DI.Interfaces.CreteServiceDelegate.EndInvoke(out System.Object, System.IAsyncResult)
+  fullName.vb: Solti.Utils.DI.Interfaces.CreteServiceDelegate.EndInvoke(ByRef System.Object, System.IAsyncResult)
+  nameWithType: CreteServiceDelegate.EndInvoke(out Object, IAsyncResult)
+  nameWithType.vb: CreteServiceDelegate.EndInvoke(ByRef Object, IAsyncResult)
+- uid: Solti.Utils.DI.Interfaces.CreteServiceDelegate.EndInvoke*
+  name: EndInvoke
+  href: Solti.Utils.DI.Interfaces.CreteServiceDelegate.html#Solti_Utils_DI_Interfaces_CreteServiceDelegate_EndInvoke_
+  commentId: Overload:Solti.Utils.DI.Interfaces.CreteServiceDelegate.EndInvoke
+  fullName: Solti.Utils.DI.Interfaces.CreteServiceDelegate.EndInvoke
+  nameWithType: CreteServiceDelegate.EndInvoke
+- uid: Solti.Utils.DI.Interfaces.CreteServiceDelegate.Invoke(Solti.Utils.DI.Interfaces.IInstanceFactory,System.Object@)
+  name: Invoke(IInstanceFactory, out Object)
+  href: Solti.Utils.DI.Interfaces.CreteServiceDelegate.html#Solti_Utils_DI_Interfaces_CreteServiceDelegate_Invoke_Solti_Utils_DI_Interfaces_IInstanceFactory_System_Object__
+  commentId: M:Solti.Utils.DI.Interfaces.CreteServiceDelegate.Invoke(Solti.Utils.DI.Interfaces.IInstanceFactory,System.Object@)
+  name.vb: Invoke(IInstanceFactory, ByRef Object)
+  fullName: Solti.Utils.DI.Interfaces.CreteServiceDelegate.Invoke(Solti.Utils.DI.Interfaces.IInstanceFactory, out System.Object)
+  fullName.vb: Solti.Utils.DI.Interfaces.CreteServiceDelegate.Invoke(Solti.Utils.DI.Interfaces.IInstanceFactory, ByRef System.Object)
+  nameWithType: CreteServiceDelegate.Invoke(IInstanceFactory, out Object)
+  nameWithType.vb: CreteServiceDelegate.Invoke(IInstanceFactory, ByRef Object)
+- uid: Solti.Utils.DI.Interfaces.CreteServiceDelegate.Invoke*
+  name: Invoke
+  href: Solti.Utils.DI.Interfaces.CreteServiceDelegate.html#Solti_Utils_DI_Interfaces_CreteServiceDelegate_Invoke_
+  commentId: Overload:Solti.Utils.DI.Interfaces.CreteServiceDelegate.Invoke
+  fullName: Solti.Utils.DI.Interfaces.CreteServiceDelegate.Invoke
+  nameWithType: CreteServiceDelegate.Invoke
 - uid: Solti.Utils.DI.Interfaces.FactoryDelegate
   name: FactoryDelegate
   href: Solti.Utils.DI.Interfaces.FactoryDelegate.html
@@ -376,51 +493,115 @@ references:
   commentId: Overload:Solti.Utils.DI.Interfaces.FactoryDelegate.#ctor
   fullName: Solti.Utils.DI.Interfaces.FactoryDelegate.FactoryDelegate
   nameWithType: FactoryDelegate.FactoryDelegate
-- uid: Solti.Utils.DI.Interfaces.FactoryDelegate.BeginInvoke(Solti.Utils.DI.Interfaces.IInstanceFactory,System.Object@,System.AsyncCallback,System.Object)
-  name: BeginInvoke(IInstanceFactory, out Object, AsyncCallback, Object)
-  href: Solti.Utils.DI.Interfaces.FactoryDelegate.html#Solti_Utils_DI_Interfaces_FactoryDelegate_BeginInvoke_Solti_Utils_DI_Interfaces_IInstanceFactory_System_Object__System_AsyncCallback_System_Object_
-  commentId: M:Solti.Utils.DI.Interfaces.FactoryDelegate.BeginInvoke(Solti.Utils.DI.Interfaces.IInstanceFactory,System.Object@,System.AsyncCallback,System.Object)
-  name.vb: BeginInvoke(IInstanceFactory, ByRef Object, AsyncCallback, Object)
-  fullName: Solti.Utils.DI.Interfaces.FactoryDelegate.BeginInvoke(Solti.Utils.DI.Interfaces.IInstanceFactory, out System.Object, System.AsyncCallback, System.Object)
-  fullName.vb: Solti.Utils.DI.Interfaces.FactoryDelegate.BeginInvoke(Solti.Utils.DI.Interfaces.IInstanceFactory, ByRef System.Object, System.AsyncCallback, System.Object)
-  nameWithType: FactoryDelegate.BeginInvoke(IInstanceFactory, out Object, AsyncCallback, Object)
-  nameWithType.vb: FactoryDelegate.BeginInvoke(IInstanceFactory, ByRef Object, AsyncCallback, Object)
+- uid: Solti.Utils.DI.Interfaces.FactoryDelegate.BeginInvoke(Solti.Utils.DI.Interfaces.IInjector,System.Type,System.AsyncCallback,System.Object)
+  name: BeginInvoke(IInjector, Type, AsyncCallback, Object)
+  href: Solti.Utils.DI.Interfaces.FactoryDelegate.html#Solti_Utils_DI_Interfaces_FactoryDelegate_BeginInvoke_Solti_Utils_DI_Interfaces_IInjector_System_Type_System_AsyncCallback_System_Object_
+  commentId: M:Solti.Utils.DI.Interfaces.FactoryDelegate.BeginInvoke(Solti.Utils.DI.Interfaces.IInjector,System.Type,System.AsyncCallback,System.Object)
+  fullName: Solti.Utils.DI.Interfaces.FactoryDelegate.BeginInvoke(Solti.Utils.DI.Interfaces.IInjector, System.Type, System.AsyncCallback, System.Object)
+  nameWithType: FactoryDelegate.BeginInvoke(IInjector, Type, AsyncCallback, Object)
 - uid: Solti.Utils.DI.Interfaces.FactoryDelegate.BeginInvoke*
   name: BeginInvoke
   href: Solti.Utils.DI.Interfaces.FactoryDelegate.html#Solti_Utils_DI_Interfaces_FactoryDelegate_BeginInvoke_
   commentId: Overload:Solti.Utils.DI.Interfaces.FactoryDelegate.BeginInvoke
   fullName: Solti.Utils.DI.Interfaces.FactoryDelegate.BeginInvoke
   nameWithType: FactoryDelegate.BeginInvoke
-- uid: Solti.Utils.DI.Interfaces.FactoryDelegate.EndInvoke(System.Object@,System.IAsyncResult)
-  name: EndInvoke(out Object, IAsyncResult)
-  href: Solti.Utils.DI.Interfaces.FactoryDelegate.html#Solti_Utils_DI_Interfaces_FactoryDelegate_EndInvoke_System_Object__System_IAsyncResult_
-  commentId: M:Solti.Utils.DI.Interfaces.FactoryDelegate.EndInvoke(System.Object@,System.IAsyncResult)
-  name.vb: EndInvoke(ByRef Object, IAsyncResult)
-  fullName: Solti.Utils.DI.Interfaces.FactoryDelegate.EndInvoke(out System.Object, System.IAsyncResult)
-  fullName.vb: Solti.Utils.DI.Interfaces.FactoryDelegate.EndInvoke(ByRef System.Object, System.IAsyncResult)
-  nameWithType: FactoryDelegate.EndInvoke(out Object, IAsyncResult)
-  nameWithType.vb: FactoryDelegate.EndInvoke(ByRef Object, IAsyncResult)
+- uid: Solti.Utils.DI.Interfaces.FactoryDelegate.EndInvoke(System.IAsyncResult)
+  name: EndInvoke(IAsyncResult)
+  href: Solti.Utils.DI.Interfaces.FactoryDelegate.html#Solti_Utils_DI_Interfaces_FactoryDelegate_EndInvoke_System_IAsyncResult_
+  commentId: M:Solti.Utils.DI.Interfaces.FactoryDelegate.EndInvoke(System.IAsyncResult)
+  fullName: Solti.Utils.DI.Interfaces.FactoryDelegate.EndInvoke(System.IAsyncResult)
+  nameWithType: FactoryDelegate.EndInvoke(IAsyncResult)
 - uid: Solti.Utils.DI.Interfaces.FactoryDelegate.EndInvoke*
   name: EndInvoke
   href: Solti.Utils.DI.Interfaces.FactoryDelegate.html#Solti_Utils_DI_Interfaces_FactoryDelegate_EndInvoke_
   commentId: Overload:Solti.Utils.DI.Interfaces.FactoryDelegate.EndInvoke
   fullName: Solti.Utils.DI.Interfaces.FactoryDelegate.EndInvoke
   nameWithType: FactoryDelegate.EndInvoke
-- uid: Solti.Utils.DI.Interfaces.FactoryDelegate.Invoke(Solti.Utils.DI.Interfaces.IInstanceFactory,System.Object@)
-  name: Invoke(IInstanceFactory, out Object)
-  href: Solti.Utils.DI.Interfaces.FactoryDelegate.html#Solti_Utils_DI_Interfaces_FactoryDelegate_Invoke_Solti_Utils_DI_Interfaces_IInstanceFactory_System_Object__
-  commentId: M:Solti.Utils.DI.Interfaces.FactoryDelegate.Invoke(Solti.Utils.DI.Interfaces.IInstanceFactory,System.Object@)
-  name.vb: Invoke(IInstanceFactory, ByRef Object)
-  fullName: Solti.Utils.DI.Interfaces.FactoryDelegate.Invoke(Solti.Utils.DI.Interfaces.IInstanceFactory, out System.Object)
-  fullName.vb: Solti.Utils.DI.Interfaces.FactoryDelegate.Invoke(Solti.Utils.DI.Interfaces.IInstanceFactory, ByRef System.Object)
-  nameWithType: FactoryDelegate.Invoke(IInstanceFactory, out Object)
-  nameWithType.vb: FactoryDelegate.Invoke(IInstanceFactory, ByRef Object)
+- uid: Solti.Utils.DI.Interfaces.FactoryDelegate.Invoke(Solti.Utils.DI.Interfaces.IInjector,System.Type)
+  name: Invoke(IInjector, Type)
+  href: Solti.Utils.DI.Interfaces.FactoryDelegate.html#Solti_Utils_DI_Interfaces_FactoryDelegate_Invoke_Solti_Utils_DI_Interfaces_IInjector_System_Type_
+  commentId: M:Solti.Utils.DI.Interfaces.FactoryDelegate.Invoke(Solti.Utils.DI.Interfaces.IInjector,System.Type)
+  fullName: Solti.Utils.DI.Interfaces.FactoryDelegate.Invoke(Solti.Utils.DI.Interfaces.IInjector, System.Type)
+  nameWithType: FactoryDelegate.Invoke(IInjector, Type)
 - uid: Solti.Utils.DI.Interfaces.FactoryDelegate.Invoke*
   name: Invoke
   href: Solti.Utils.DI.Interfaces.FactoryDelegate.html#Solti_Utils_DI_Interfaces_FactoryDelegate_Invoke_
   commentId: Overload:Solti.Utils.DI.Interfaces.FactoryDelegate.Invoke
   fullName: Solti.Utils.DI.Interfaces.FactoryDelegate.Invoke
   nameWithType: FactoryDelegate.Invoke
+- uid: Solti.Utils.DI.Interfaces.FactoryDelegate`1
+  name: FactoryDelegate<TInterface>
+  href: Solti.Utils.DI.Interfaces.FactoryDelegate-1.html
+  commentId: T:Solti.Utils.DI.Interfaces.FactoryDelegate`1
+  name.vb: FactoryDelegate(Of TInterface)
+  fullName: Solti.Utils.DI.Interfaces.FactoryDelegate<TInterface>
+  fullName.vb: Solti.Utils.DI.Interfaces.FactoryDelegate(Of TInterface)
+  nameWithType: FactoryDelegate<TInterface>
+  nameWithType.vb: FactoryDelegate(Of TInterface)
+- uid: Solti.Utils.DI.Interfaces.FactoryDelegate`1.#ctor(System.Object,System.IntPtr)
+  name: FactoryDelegate(Object, IntPtr)
+  href: Solti.Utils.DI.Interfaces.FactoryDelegate-1.html#Solti_Utils_DI_Interfaces_FactoryDelegate_1__ctor_System_Object_System_IntPtr_
+  commentId: M:Solti.Utils.DI.Interfaces.FactoryDelegate`1.#ctor(System.Object,System.IntPtr)
+  fullName: Solti.Utils.DI.Interfaces.FactoryDelegate<TInterface>.FactoryDelegate(System.Object, System.IntPtr)
+  fullName.vb: Solti.Utils.DI.Interfaces.FactoryDelegate(Of TInterface).FactoryDelegate(System.Object, System.IntPtr)
+  nameWithType: FactoryDelegate<TInterface>.FactoryDelegate(Object, IntPtr)
+  nameWithType.vb: FactoryDelegate(Of TInterface).FactoryDelegate(Object, IntPtr)
+- uid: Solti.Utils.DI.Interfaces.FactoryDelegate`1.#ctor*
+  name: FactoryDelegate
+  href: Solti.Utils.DI.Interfaces.FactoryDelegate-1.html#Solti_Utils_DI_Interfaces_FactoryDelegate_1__ctor_
+  commentId: Overload:Solti.Utils.DI.Interfaces.FactoryDelegate`1.#ctor
+  fullName: Solti.Utils.DI.Interfaces.FactoryDelegate<TInterface>.FactoryDelegate
+  fullName.vb: Solti.Utils.DI.Interfaces.FactoryDelegate(Of TInterface).FactoryDelegate
+  nameWithType: FactoryDelegate<TInterface>.FactoryDelegate
+  nameWithType.vb: FactoryDelegate(Of TInterface).FactoryDelegate
+- uid: Solti.Utils.DI.Interfaces.FactoryDelegate`1.BeginInvoke(Solti.Utils.DI.Interfaces.IInjector,System.AsyncCallback,System.Object)
+  name: BeginInvoke(IInjector, AsyncCallback, Object)
+  href: Solti.Utils.DI.Interfaces.FactoryDelegate-1.html#Solti_Utils_DI_Interfaces_FactoryDelegate_1_BeginInvoke_Solti_Utils_DI_Interfaces_IInjector_System_AsyncCallback_System_Object_
+  commentId: M:Solti.Utils.DI.Interfaces.FactoryDelegate`1.BeginInvoke(Solti.Utils.DI.Interfaces.IInjector,System.AsyncCallback,System.Object)
+  fullName: Solti.Utils.DI.Interfaces.FactoryDelegate<TInterface>.BeginInvoke(Solti.Utils.DI.Interfaces.IInjector, System.AsyncCallback, System.Object)
+  fullName.vb: Solti.Utils.DI.Interfaces.FactoryDelegate(Of TInterface).BeginInvoke(Solti.Utils.DI.Interfaces.IInjector, System.AsyncCallback, System.Object)
+  nameWithType: FactoryDelegate<TInterface>.BeginInvoke(IInjector, AsyncCallback, Object)
+  nameWithType.vb: FactoryDelegate(Of TInterface).BeginInvoke(IInjector, AsyncCallback, Object)
+- uid: Solti.Utils.DI.Interfaces.FactoryDelegate`1.BeginInvoke*
+  name: BeginInvoke
+  href: Solti.Utils.DI.Interfaces.FactoryDelegate-1.html#Solti_Utils_DI_Interfaces_FactoryDelegate_1_BeginInvoke_
+  commentId: Overload:Solti.Utils.DI.Interfaces.FactoryDelegate`1.BeginInvoke
+  fullName: Solti.Utils.DI.Interfaces.FactoryDelegate<TInterface>.BeginInvoke
+  fullName.vb: Solti.Utils.DI.Interfaces.FactoryDelegate(Of TInterface).BeginInvoke
+  nameWithType: FactoryDelegate<TInterface>.BeginInvoke
+  nameWithType.vb: FactoryDelegate(Of TInterface).BeginInvoke
+- uid: Solti.Utils.DI.Interfaces.FactoryDelegate`1.EndInvoke(System.IAsyncResult)
+  name: EndInvoke(IAsyncResult)
+  href: Solti.Utils.DI.Interfaces.FactoryDelegate-1.html#Solti_Utils_DI_Interfaces_FactoryDelegate_1_EndInvoke_System_IAsyncResult_
+  commentId: M:Solti.Utils.DI.Interfaces.FactoryDelegate`1.EndInvoke(System.IAsyncResult)
+  fullName: Solti.Utils.DI.Interfaces.FactoryDelegate<TInterface>.EndInvoke(System.IAsyncResult)
+  fullName.vb: Solti.Utils.DI.Interfaces.FactoryDelegate(Of TInterface).EndInvoke(System.IAsyncResult)
+  nameWithType: FactoryDelegate<TInterface>.EndInvoke(IAsyncResult)
+  nameWithType.vb: FactoryDelegate(Of TInterface).EndInvoke(IAsyncResult)
+- uid: Solti.Utils.DI.Interfaces.FactoryDelegate`1.EndInvoke*
+  name: EndInvoke
+  href: Solti.Utils.DI.Interfaces.FactoryDelegate-1.html#Solti_Utils_DI_Interfaces_FactoryDelegate_1_EndInvoke_
+  commentId: Overload:Solti.Utils.DI.Interfaces.FactoryDelegate`1.EndInvoke
+  fullName: Solti.Utils.DI.Interfaces.FactoryDelegate<TInterface>.EndInvoke
+  fullName.vb: Solti.Utils.DI.Interfaces.FactoryDelegate(Of TInterface).EndInvoke
+  nameWithType: FactoryDelegate<TInterface>.EndInvoke
+  nameWithType.vb: FactoryDelegate(Of TInterface).EndInvoke
+- uid: Solti.Utils.DI.Interfaces.FactoryDelegate`1.Invoke(Solti.Utils.DI.Interfaces.IInjector)
+  name: Invoke(IInjector)
+  href: Solti.Utils.DI.Interfaces.FactoryDelegate-1.html#Solti_Utils_DI_Interfaces_FactoryDelegate_1_Invoke_Solti_Utils_DI_Interfaces_IInjector_
+  commentId: M:Solti.Utils.DI.Interfaces.FactoryDelegate`1.Invoke(Solti.Utils.DI.Interfaces.IInjector)
+  fullName: Solti.Utils.DI.Interfaces.FactoryDelegate<TInterface>.Invoke(Solti.Utils.DI.Interfaces.IInjector)
+  fullName.vb: Solti.Utils.DI.Interfaces.FactoryDelegate(Of TInterface).Invoke(Solti.Utils.DI.Interfaces.IInjector)
+  nameWithType: FactoryDelegate<TInterface>.Invoke(IInjector)
+  nameWithType.vb: FactoryDelegate(Of TInterface).Invoke(IInjector)
+- uid: Solti.Utils.DI.Interfaces.FactoryDelegate`1.Invoke*
+  name: Invoke
+  href: Solti.Utils.DI.Interfaces.FactoryDelegate-1.html#Solti_Utils_DI_Interfaces_FactoryDelegate_1_Invoke_
+  commentId: Overload:Solti.Utils.DI.Interfaces.FactoryDelegate`1.Invoke
+  fullName: Solti.Utils.DI.Interfaces.FactoryDelegate<TInterface>.Invoke
+  fullName.vb: Solti.Utils.DI.Interfaces.FactoryDelegate(Of TInterface).Invoke
+  nameWithType: FactoryDelegate<TInterface>.Invoke
+  nameWithType.vb: FactoryDelegate(Of TInterface).Invoke
 - uid: Solti.Utils.DI.Interfaces.IBuildContext
   name: IBuildContext
   href: Solti.Utils.DI.Interfaces.IBuildContext.html
@@ -743,63 +924,63 @@ references:
   commentId: T:Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions
   fullName: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions
   nameWithType: IServiceCollectionBasicExtensions
-- uid: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.ApplyProxy(Solti.Utils.DI.Interfaces.IModifiedServiceCollection,System.Linq.Expressions.Expression{System.Func{Solti.Utils.DI.Interfaces.IInjector,System.Type,System.Object,System.Object}})
-  name: ApplyProxy(IModifiedServiceCollection, Expression<Func<IInjector, Type, Object, Object>>)
-  href: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.html#Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_ApplyProxy_Solti_Utils_DI_Interfaces_IModifiedServiceCollection_System_Linq_Expressions_Expression_System_Func_Solti_Utils_DI_Interfaces_IInjector_System_Type_System_Object_System_Object___
-  commentId: M:Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.ApplyProxy(Solti.Utils.DI.Interfaces.IModifiedServiceCollection,System.Linq.Expressions.Expression{System.Func{Solti.Utils.DI.Interfaces.IInjector,System.Type,System.Object,System.Object}})
-  name.vb: ApplyProxy(IModifiedServiceCollection, Expression(Of Func(Of IInjector, Type, Object, Object)))
-  fullName: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.ApplyProxy(Solti.Utils.DI.Interfaces.IModifiedServiceCollection, System.Linq.Expressions.Expression<System.Func<Solti.Utils.DI.Interfaces.IInjector, System.Type, System.Object, System.Object>>)
-  fullName.vb: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.ApplyProxy(Solti.Utils.DI.Interfaces.IModifiedServiceCollection, System.Linq.Expressions.Expression(Of System.Func(Of Solti.Utils.DI.Interfaces.IInjector, System.Type, System.Object, System.Object)))
-  nameWithType: IServiceCollectionBasicExtensions.ApplyProxy(IModifiedServiceCollection, Expression<Func<IInjector, Type, Object, Object>>)
-  nameWithType.vb: IServiceCollectionBasicExtensions.ApplyProxy(IModifiedServiceCollection, Expression(Of Func(Of IInjector, Type, Object, Object)))
+- uid: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.ApplyProxy(Solti.Utils.DI.Interfaces.IModifiedServiceCollection,System.Linq.Expressions.Expression{Solti.Utils.DI.Interfaces.ApplyProxyDelegate})
+  name: ApplyProxy(IModifiedServiceCollection, Expression<ApplyProxyDelegate>)
+  href: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.html#Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_ApplyProxy_Solti_Utils_DI_Interfaces_IModifiedServiceCollection_System_Linq_Expressions_Expression_Solti_Utils_DI_Interfaces_ApplyProxyDelegate__
+  commentId: M:Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.ApplyProxy(Solti.Utils.DI.Interfaces.IModifiedServiceCollection,System.Linq.Expressions.Expression{Solti.Utils.DI.Interfaces.ApplyProxyDelegate})
+  name.vb: ApplyProxy(IModifiedServiceCollection, Expression(Of ApplyProxyDelegate))
+  fullName: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.ApplyProxy(Solti.Utils.DI.Interfaces.IModifiedServiceCollection, System.Linq.Expressions.Expression<Solti.Utils.DI.Interfaces.ApplyProxyDelegate>)
+  fullName.vb: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.ApplyProxy(Solti.Utils.DI.Interfaces.IModifiedServiceCollection, System.Linq.Expressions.Expression(Of Solti.Utils.DI.Interfaces.ApplyProxyDelegate))
+  nameWithType: IServiceCollectionBasicExtensions.ApplyProxy(IModifiedServiceCollection, Expression<ApplyProxyDelegate>)
+  nameWithType.vb: IServiceCollectionBasicExtensions.ApplyProxy(IModifiedServiceCollection, Expression(Of ApplyProxyDelegate))
 - uid: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.ApplyProxy*
   name: ApplyProxy
   href: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.html#Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_ApplyProxy_
   commentId: Overload:Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.ApplyProxy
   fullName: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.ApplyProxy
   nameWithType: IServiceCollectionBasicExtensions.ApplyProxy
-- uid: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Factory(Solti.Utils.DI.Interfaces.IServiceCollection,System.Type,System.Linq.Expressions.Expression{System.Func{Solti.Utils.DI.Interfaces.IInjector,System.Type,System.Object}},Solti.Utils.DI.Interfaces.LifetimeBase)
-  name: Factory(IServiceCollection, Type, Expression<Func<IInjector, Type, Object>>, LifetimeBase)
-  href: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.html#Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Factory_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_Linq_Expressions_Expression_System_Func_Solti_Utils_DI_Interfaces_IInjector_System_Type_System_Object___Solti_Utils_DI_Interfaces_LifetimeBase_
-  commentId: M:Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Factory(Solti.Utils.DI.Interfaces.IServiceCollection,System.Type,System.Linq.Expressions.Expression{System.Func{Solti.Utils.DI.Interfaces.IInjector,System.Type,System.Object}},Solti.Utils.DI.Interfaces.LifetimeBase)
-  name.vb: Factory(IServiceCollection, Type, Expression(Of Func(Of IInjector, Type, Object)), LifetimeBase)
-  fullName: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Factory(Solti.Utils.DI.Interfaces.IServiceCollection, System.Type, System.Linq.Expressions.Expression<System.Func<Solti.Utils.DI.Interfaces.IInjector, System.Type, System.Object>>, Solti.Utils.DI.Interfaces.LifetimeBase)
-  fullName.vb: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Factory(Solti.Utils.DI.Interfaces.IServiceCollection, System.Type, System.Linq.Expressions.Expression(Of System.Func(Of Solti.Utils.DI.Interfaces.IInjector, System.Type, System.Object)), Solti.Utils.DI.Interfaces.LifetimeBase)
-  nameWithType: IServiceCollectionBasicExtensions.Factory(IServiceCollection, Type, Expression<Func<IInjector, Type, Object>>, LifetimeBase)
-  nameWithType.vb: IServiceCollectionBasicExtensions.Factory(IServiceCollection, Type, Expression(Of Func(Of IInjector, Type, Object)), LifetimeBase)
-- uid: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Factory(Solti.Utils.DI.Interfaces.IServiceCollection,System.Type,System.String,System.Linq.Expressions.Expression{System.Func{Solti.Utils.DI.Interfaces.IInjector,System.Type,System.Object}},Solti.Utils.DI.Interfaces.LifetimeBase)
-  name: Factory(IServiceCollection, Type, String, Expression<Func<IInjector, Type, Object>>, LifetimeBase)
-  href: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.html#Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Factory_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_String_System_Linq_Expressions_Expression_System_Func_Solti_Utils_DI_Interfaces_IInjector_System_Type_System_Object___Solti_Utils_DI_Interfaces_LifetimeBase_
-  commentId: M:Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Factory(Solti.Utils.DI.Interfaces.IServiceCollection,System.Type,System.String,System.Linq.Expressions.Expression{System.Func{Solti.Utils.DI.Interfaces.IInjector,System.Type,System.Object}},Solti.Utils.DI.Interfaces.LifetimeBase)
-  name.vb: Factory(IServiceCollection, Type, String, Expression(Of Func(Of IInjector, Type, Object)), LifetimeBase)
-  fullName: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Factory(Solti.Utils.DI.Interfaces.IServiceCollection, System.Type, System.String, System.Linq.Expressions.Expression<System.Func<Solti.Utils.DI.Interfaces.IInjector, System.Type, System.Object>>, Solti.Utils.DI.Interfaces.LifetimeBase)
-  fullName.vb: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Factory(Solti.Utils.DI.Interfaces.IServiceCollection, System.Type, System.String, System.Linq.Expressions.Expression(Of System.Func(Of Solti.Utils.DI.Interfaces.IInjector, System.Type, System.Object)), Solti.Utils.DI.Interfaces.LifetimeBase)
-  nameWithType: IServiceCollectionBasicExtensions.Factory(IServiceCollection, Type, String, Expression<Func<IInjector, Type, Object>>, LifetimeBase)
-  nameWithType.vb: IServiceCollectionBasicExtensions.Factory(IServiceCollection, Type, String, Expression(Of Func(Of IInjector, Type, Object)), LifetimeBase)
+- uid: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Factory(Solti.Utils.DI.Interfaces.IServiceCollection,System.Type,System.Linq.Expressions.Expression{Solti.Utils.DI.Interfaces.FactoryDelegate},Solti.Utils.DI.Interfaces.LifetimeBase)
+  name: Factory(IServiceCollection, Type, Expression<FactoryDelegate>, LifetimeBase)
+  href: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.html#Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Factory_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_Linq_Expressions_Expression_Solti_Utils_DI_Interfaces_FactoryDelegate__Solti_Utils_DI_Interfaces_LifetimeBase_
+  commentId: M:Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Factory(Solti.Utils.DI.Interfaces.IServiceCollection,System.Type,System.Linq.Expressions.Expression{Solti.Utils.DI.Interfaces.FactoryDelegate},Solti.Utils.DI.Interfaces.LifetimeBase)
+  name.vb: Factory(IServiceCollection, Type, Expression(Of FactoryDelegate), LifetimeBase)
+  fullName: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Factory(Solti.Utils.DI.Interfaces.IServiceCollection, System.Type, System.Linq.Expressions.Expression<Solti.Utils.DI.Interfaces.FactoryDelegate>, Solti.Utils.DI.Interfaces.LifetimeBase)
+  fullName.vb: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Factory(Solti.Utils.DI.Interfaces.IServiceCollection, System.Type, System.Linq.Expressions.Expression(Of Solti.Utils.DI.Interfaces.FactoryDelegate), Solti.Utils.DI.Interfaces.LifetimeBase)
+  nameWithType: IServiceCollectionBasicExtensions.Factory(IServiceCollection, Type, Expression<FactoryDelegate>, LifetimeBase)
+  nameWithType.vb: IServiceCollectionBasicExtensions.Factory(IServiceCollection, Type, Expression(Of FactoryDelegate), LifetimeBase)
+- uid: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Factory(Solti.Utils.DI.Interfaces.IServiceCollection,System.Type,System.String,System.Linq.Expressions.Expression{Solti.Utils.DI.Interfaces.FactoryDelegate},Solti.Utils.DI.Interfaces.LifetimeBase)
+  name: Factory(IServiceCollection, Type, String, Expression<FactoryDelegate>, LifetimeBase)
+  href: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.html#Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Factory_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_String_System_Linq_Expressions_Expression_Solti_Utils_DI_Interfaces_FactoryDelegate__Solti_Utils_DI_Interfaces_LifetimeBase_
+  commentId: M:Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Factory(Solti.Utils.DI.Interfaces.IServiceCollection,System.Type,System.String,System.Linq.Expressions.Expression{Solti.Utils.DI.Interfaces.FactoryDelegate},Solti.Utils.DI.Interfaces.LifetimeBase)
+  name.vb: Factory(IServiceCollection, Type, String, Expression(Of FactoryDelegate), LifetimeBase)
+  fullName: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Factory(Solti.Utils.DI.Interfaces.IServiceCollection, System.Type, System.String, System.Linq.Expressions.Expression<Solti.Utils.DI.Interfaces.FactoryDelegate>, Solti.Utils.DI.Interfaces.LifetimeBase)
+  fullName.vb: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Factory(Solti.Utils.DI.Interfaces.IServiceCollection, System.Type, System.String, System.Linq.Expressions.Expression(Of Solti.Utils.DI.Interfaces.FactoryDelegate), Solti.Utils.DI.Interfaces.LifetimeBase)
+  nameWithType: IServiceCollectionBasicExtensions.Factory(IServiceCollection, Type, String, Expression<FactoryDelegate>, LifetimeBase)
+  nameWithType.vb: IServiceCollectionBasicExtensions.Factory(IServiceCollection, Type, String, Expression(Of FactoryDelegate), LifetimeBase)
 - uid: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Factory*
   name: Factory
   href: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.html#Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Factory_
   commentId: Overload:Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Factory
   fullName: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Factory
   nameWithType: IServiceCollectionBasicExtensions.Factory
-- uid: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Factory``1(Solti.Utils.DI.Interfaces.IServiceCollection,System.Linq.Expressions.Expression{System.Func{Solti.Utils.DI.Interfaces.IInjector,``0}},Solti.Utils.DI.Interfaces.LifetimeBase)
-  name: Factory<TInterface>(IServiceCollection, Expression<Func<IInjector, TInterface>>, LifetimeBase)
-  href: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.html#Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Factory__1_Solti_Utils_DI_Interfaces_IServiceCollection_System_Linq_Expressions_Expression_System_Func_Solti_Utils_DI_Interfaces_IInjector___0___Solti_Utils_DI_Interfaces_LifetimeBase_
-  commentId: M:Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Factory``1(Solti.Utils.DI.Interfaces.IServiceCollection,System.Linq.Expressions.Expression{System.Func{Solti.Utils.DI.Interfaces.IInjector,``0}},Solti.Utils.DI.Interfaces.LifetimeBase)
-  name.vb: Factory(Of TInterface)(IServiceCollection, Expression(Of Func(Of IInjector, TInterface)), LifetimeBase)
-  fullName: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Factory<TInterface>(Solti.Utils.DI.Interfaces.IServiceCollection, System.Linq.Expressions.Expression<System.Func<Solti.Utils.DI.Interfaces.IInjector, TInterface>>, Solti.Utils.DI.Interfaces.LifetimeBase)
-  fullName.vb: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Factory(Of TInterface)(Solti.Utils.DI.Interfaces.IServiceCollection, System.Linq.Expressions.Expression(Of System.Func(Of Solti.Utils.DI.Interfaces.IInjector, TInterface)), Solti.Utils.DI.Interfaces.LifetimeBase)
-  nameWithType: IServiceCollectionBasicExtensions.Factory<TInterface>(IServiceCollection, Expression<Func<IInjector, TInterface>>, LifetimeBase)
-  nameWithType.vb: IServiceCollectionBasicExtensions.Factory(Of TInterface)(IServiceCollection, Expression(Of Func(Of IInjector, TInterface)), LifetimeBase)
-- uid: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Factory``1(Solti.Utils.DI.Interfaces.IServiceCollection,System.String,System.Linq.Expressions.Expression{System.Func{Solti.Utils.DI.Interfaces.IInjector,``0}},Solti.Utils.DI.Interfaces.LifetimeBase)
-  name: Factory<TInterface>(IServiceCollection, String, Expression<Func<IInjector, TInterface>>, LifetimeBase)
-  href: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.html#Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Factory__1_Solti_Utils_DI_Interfaces_IServiceCollection_System_String_System_Linq_Expressions_Expression_System_Func_Solti_Utils_DI_Interfaces_IInjector___0___Solti_Utils_DI_Interfaces_LifetimeBase_
-  commentId: M:Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Factory``1(Solti.Utils.DI.Interfaces.IServiceCollection,System.String,System.Linq.Expressions.Expression{System.Func{Solti.Utils.DI.Interfaces.IInjector,``0}},Solti.Utils.DI.Interfaces.LifetimeBase)
-  name.vb: Factory(Of TInterface)(IServiceCollection, String, Expression(Of Func(Of IInjector, TInterface)), LifetimeBase)
-  fullName: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Factory<TInterface>(Solti.Utils.DI.Interfaces.IServiceCollection, System.String, System.Linq.Expressions.Expression<System.Func<Solti.Utils.DI.Interfaces.IInjector, TInterface>>, Solti.Utils.DI.Interfaces.LifetimeBase)
-  fullName.vb: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Factory(Of TInterface)(Solti.Utils.DI.Interfaces.IServiceCollection, System.String, System.Linq.Expressions.Expression(Of System.Func(Of Solti.Utils.DI.Interfaces.IInjector, TInterface)), Solti.Utils.DI.Interfaces.LifetimeBase)
-  nameWithType: IServiceCollectionBasicExtensions.Factory<TInterface>(IServiceCollection, String, Expression<Func<IInjector, TInterface>>, LifetimeBase)
-  nameWithType.vb: IServiceCollectionBasicExtensions.Factory(Of TInterface)(IServiceCollection, String, Expression(Of Func(Of IInjector, TInterface)), LifetimeBase)
+- uid: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Factory``1(Solti.Utils.DI.Interfaces.IServiceCollection,System.Linq.Expressions.Expression{Solti.Utils.DI.Interfaces.FactoryDelegate{``0}},Solti.Utils.DI.Interfaces.LifetimeBase)
+  name: Factory<TInterface>(IServiceCollection, Expression<FactoryDelegate<TInterface>>, LifetimeBase)
+  href: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.html#Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Factory__1_Solti_Utils_DI_Interfaces_IServiceCollection_System_Linq_Expressions_Expression_Solti_Utils_DI_Interfaces_FactoryDelegate___0___Solti_Utils_DI_Interfaces_LifetimeBase_
+  commentId: M:Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Factory``1(Solti.Utils.DI.Interfaces.IServiceCollection,System.Linq.Expressions.Expression{Solti.Utils.DI.Interfaces.FactoryDelegate{``0}},Solti.Utils.DI.Interfaces.LifetimeBase)
+  name.vb: Factory(Of TInterface)(IServiceCollection, Expression(Of FactoryDelegate(Of TInterface)), LifetimeBase)
+  fullName: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Factory<TInterface>(Solti.Utils.DI.Interfaces.IServiceCollection, System.Linq.Expressions.Expression<Solti.Utils.DI.Interfaces.FactoryDelegate<TInterface>>, Solti.Utils.DI.Interfaces.LifetimeBase)
+  fullName.vb: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Factory(Of TInterface)(Solti.Utils.DI.Interfaces.IServiceCollection, System.Linq.Expressions.Expression(Of Solti.Utils.DI.Interfaces.FactoryDelegate(Of TInterface)), Solti.Utils.DI.Interfaces.LifetimeBase)
+  nameWithType: IServiceCollectionBasicExtensions.Factory<TInterface>(IServiceCollection, Expression<FactoryDelegate<TInterface>>, LifetimeBase)
+  nameWithType.vb: IServiceCollectionBasicExtensions.Factory(Of TInterface)(IServiceCollection, Expression(Of FactoryDelegate(Of TInterface)), LifetimeBase)
+- uid: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Factory``1(Solti.Utils.DI.Interfaces.IServiceCollection,System.String,System.Linq.Expressions.Expression{Solti.Utils.DI.Interfaces.FactoryDelegate{``0}},Solti.Utils.DI.Interfaces.LifetimeBase)
+  name: Factory<TInterface>(IServiceCollection, String, Expression<FactoryDelegate<TInterface>>, LifetimeBase)
+  href: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.html#Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Factory__1_Solti_Utils_DI_Interfaces_IServiceCollection_System_String_System_Linq_Expressions_Expression_Solti_Utils_DI_Interfaces_FactoryDelegate___0___Solti_Utils_DI_Interfaces_LifetimeBase_
+  commentId: M:Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Factory``1(Solti.Utils.DI.Interfaces.IServiceCollection,System.String,System.Linq.Expressions.Expression{Solti.Utils.DI.Interfaces.FactoryDelegate{``0}},Solti.Utils.DI.Interfaces.LifetimeBase)
+  name.vb: Factory(Of TInterface)(IServiceCollection, String, Expression(Of FactoryDelegate(Of TInterface)), LifetimeBase)
+  fullName: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Factory<TInterface>(Solti.Utils.DI.Interfaces.IServiceCollection, System.String, System.Linq.Expressions.Expression<Solti.Utils.DI.Interfaces.FactoryDelegate<TInterface>>, Solti.Utils.DI.Interfaces.LifetimeBase)
+  fullName.vb: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Factory(Of TInterface)(Solti.Utils.DI.Interfaces.IServiceCollection, System.String, System.Linq.Expressions.Expression(Of Solti.Utils.DI.Interfaces.FactoryDelegate(Of TInterface)), Solti.Utils.DI.Interfaces.LifetimeBase)
+  nameWithType: IServiceCollectionBasicExtensions.Factory<TInterface>(IServiceCollection, String, Expression<FactoryDelegate<TInterface>>, LifetimeBase)
+  nameWithType.vb: IServiceCollectionBasicExtensions.Factory(Of TInterface)(IServiceCollection, String, Expression(Of FactoryDelegate(Of TInterface)), LifetimeBase)
 - uid: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Provider(Solti.Utils.DI.Interfaces.IServiceCollection,System.Type,System.String,System.Type,Solti.Utils.DI.Interfaces.LifetimeBase)
   name: Provider(IServiceCollection, Type, String, Type, LifetimeBase)
   href: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.html#Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Provider_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_String_System_Type_Solti_Utils_DI_Interfaces_LifetimeBase_
@@ -1034,15 +1215,15 @@ references:
   commentId: Overload:Solti.Utils.DI.Interfaces.LifetimeBase.CompareTo
   fullName: Solti.Utils.DI.Interfaces.LifetimeBase.CompareTo
   nameWithType: LifetimeBase.CompareTo
-- uid: Solti.Utils.DI.Interfaces.LifetimeBase.CreateFrom(System.Type,System.String,System.Linq.Expressions.Expression{System.Func{Solti.Utils.DI.Interfaces.IInjector,System.Type,System.Object}})
-  name: CreateFrom(Type, String, Expression<Func<IInjector, Type, Object>>)
-  href: Solti.Utils.DI.Interfaces.LifetimeBase.html#Solti_Utils_DI_Interfaces_LifetimeBase_CreateFrom_System_Type_System_String_System_Linq_Expressions_Expression_System_Func_Solti_Utils_DI_Interfaces_IInjector_System_Type_System_Object___
-  commentId: M:Solti.Utils.DI.Interfaces.LifetimeBase.CreateFrom(System.Type,System.String,System.Linq.Expressions.Expression{System.Func{Solti.Utils.DI.Interfaces.IInjector,System.Type,System.Object}})
-  name.vb: CreateFrom(Type, String, Expression(Of Func(Of IInjector, Type, Object)))
-  fullName: Solti.Utils.DI.Interfaces.LifetimeBase.CreateFrom(System.Type, System.String, System.Linq.Expressions.Expression<System.Func<Solti.Utils.DI.Interfaces.IInjector, System.Type, System.Object>>)
-  fullName.vb: Solti.Utils.DI.Interfaces.LifetimeBase.CreateFrom(System.Type, System.String, System.Linq.Expressions.Expression(Of System.Func(Of Solti.Utils.DI.Interfaces.IInjector, System.Type, System.Object)))
-  nameWithType: LifetimeBase.CreateFrom(Type, String, Expression<Func<IInjector, Type, Object>>)
-  nameWithType.vb: LifetimeBase.CreateFrom(Type, String, Expression(Of Func(Of IInjector, Type, Object)))
+- uid: Solti.Utils.DI.Interfaces.LifetimeBase.CreateFrom(System.Type,System.String,System.Linq.Expressions.Expression{Solti.Utils.DI.Interfaces.FactoryDelegate})
+  name: CreateFrom(Type, String, Expression<FactoryDelegate>)
+  href: Solti.Utils.DI.Interfaces.LifetimeBase.html#Solti_Utils_DI_Interfaces_LifetimeBase_CreateFrom_System_Type_System_String_System_Linq_Expressions_Expression_Solti_Utils_DI_Interfaces_FactoryDelegate__
+  commentId: M:Solti.Utils.DI.Interfaces.LifetimeBase.CreateFrom(System.Type,System.String,System.Linq.Expressions.Expression{Solti.Utils.DI.Interfaces.FactoryDelegate})
+  name.vb: CreateFrom(Type, String, Expression(Of FactoryDelegate))
+  fullName: Solti.Utils.DI.Interfaces.LifetimeBase.CreateFrom(System.Type, System.String, System.Linq.Expressions.Expression<Solti.Utils.DI.Interfaces.FactoryDelegate>)
+  fullName.vb: Solti.Utils.DI.Interfaces.LifetimeBase.CreateFrom(System.Type, System.String, System.Linq.Expressions.Expression(Of Solti.Utils.DI.Interfaces.FactoryDelegate))
+  nameWithType: LifetimeBase.CreateFrom(Type, String, Expression<FactoryDelegate>)
+  nameWithType.vb: LifetimeBase.CreateFrom(Type, String, Expression(Of FactoryDelegate))
 - uid: Solti.Utils.DI.Interfaces.LifetimeBase.CreateFrom(System.Type,System.String,System.Object)
   name: CreateFrom(Type, String, Object)
   href: Solti.Utils.DI.Interfaces.LifetimeBase.html#Solti_Utils_DI_Interfaces_LifetimeBase_CreateFrom_System_Type_System_String_System_Object_
@@ -1169,60 +1350,60 @@ references:
   commentId: Overload:Solti.Utils.DI.Interfaces.RequestNotAllowedException.#ctor
   fullName: Solti.Utils.DI.Interfaces.RequestNotAllowedException.RequestNotAllowedException
   nameWithType: RequestNotAllowedException.RequestNotAllowedException
-- uid: Solti.Utils.DI.Interfaces.ResolveDelegate
-  name: ResolveDelegate
-  href: Solti.Utils.DI.Interfaces.ResolveDelegate.html
-  commentId: T:Solti.Utils.DI.Interfaces.ResolveDelegate
-  fullName: Solti.Utils.DI.Interfaces.ResolveDelegate
-  nameWithType: ResolveDelegate
-- uid: Solti.Utils.DI.Interfaces.ResolveDelegate.#ctor(System.Object,System.IntPtr)
-  name: ResolveDelegate(Object, IntPtr)
-  href: Solti.Utils.DI.Interfaces.ResolveDelegate.html#Solti_Utils_DI_Interfaces_ResolveDelegate__ctor_System_Object_System_IntPtr_
-  commentId: M:Solti.Utils.DI.Interfaces.ResolveDelegate.#ctor(System.Object,System.IntPtr)
-  fullName: Solti.Utils.DI.Interfaces.ResolveDelegate.ResolveDelegate(System.Object, System.IntPtr)
-  nameWithType: ResolveDelegate.ResolveDelegate(Object, IntPtr)
-- uid: Solti.Utils.DI.Interfaces.ResolveDelegate.#ctor*
-  name: ResolveDelegate
-  href: Solti.Utils.DI.Interfaces.ResolveDelegate.html#Solti_Utils_DI_Interfaces_ResolveDelegate__ctor_
-  commentId: Overload:Solti.Utils.DI.Interfaces.ResolveDelegate.#ctor
-  fullName: Solti.Utils.DI.Interfaces.ResolveDelegate.ResolveDelegate
-  nameWithType: ResolveDelegate.ResolveDelegate
-- uid: Solti.Utils.DI.Interfaces.ResolveDelegate.BeginInvoke(Solti.Utils.DI.Interfaces.IInstanceFactory,System.AsyncCallback,System.Object)
+- uid: Solti.Utils.DI.Interfaces.ResolveServiceDelegate
+  name: ResolveServiceDelegate
+  href: Solti.Utils.DI.Interfaces.ResolveServiceDelegate.html
+  commentId: T:Solti.Utils.DI.Interfaces.ResolveServiceDelegate
+  fullName: Solti.Utils.DI.Interfaces.ResolveServiceDelegate
+  nameWithType: ResolveServiceDelegate
+- uid: Solti.Utils.DI.Interfaces.ResolveServiceDelegate.#ctor(System.Object,System.IntPtr)
+  name: ResolveServiceDelegate(Object, IntPtr)
+  href: Solti.Utils.DI.Interfaces.ResolveServiceDelegate.html#Solti_Utils_DI_Interfaces_ResolveServiceDelegate__ctor_System_Object_System_IntPtr_
+  commentId: M:Solti.Utils.DI.Interfaces.ResolveServiceDelegate.#ctor(System.Object,System.IntPtr)
+  fullName: Solti.Utils.DI.Interfaces.ResolveServiceDelegate.ResolveServiceDelegate(System.Object, System.IntPtr)
+  nameWithType: ResolveServiceDelegate.ResolveServiceDelegate(Object, IntPtr)
+- uid: Solti.Utils.DI.Interfaces.ResolveServiceDelegate.#ctor*
+  name: ResolveServiceDelegate
+  href: Solti.Utils.DI.Interfaces.ResolveServiceDelegate.html#Solti_Utils_DI_Interfaces_ResolveServiceDelegate__ctor_
+  commentId: Overload:Solti.Utils.DI.Interfaces.ResolveServiceDelegate.#ctor
+  fullName: Solti.Utils.DI.Interfaces.ResolveServiceDelegate.ResolveServiceDelegate
+  nameWithType: ResolveServiceDelegate.ResolveServiceDelegate
+- uid: Solti.Utils.DI.Interfaces.ResolveServiceDelegate.BeginInvoke(Solti.Utils.DI.Interfaces.IInstanceFactory,System.AsyncCallback,System.Object)
   name: BeginInvoke(IInstanceFactory, AsyncCallback, Object)
-  href: Solti.Utils.DI.Interfaces.ResolveDelegate.html#Solti_Utils_DI_Interfaces_ResolveDelegate_BeginInvoke_Solti_Utils_DI_Interfaces_IInstanceFactory_System_AsyncCallback_System_Object_
-  commentId: M:Solti.Utils.DI.Interfaces.ResolveDelegate.BeginInvoke(Solti.Utils.DI.Interfaces.IInstanceFactory,System.AsyncCallback,System.Object)
-  fullName: Solti.Utils.DI.Interfaces.ResolveDelegate.BeginInvoke(Solti.Utils.DI.Interfaces.IInstanceFactory, System.AsyncCallback, System.Object)
-  nameWithType: ResolveDelegate.BeginInvoke(IInstanceFactory, AsyncCallback, Object)
-- uid: Solti.Utils.DI.Interfaces.ResolveDelegate.BeginInvoke*
+  href: Solti.Utils.DI.Interfaces.ResolveServiceDelegate.html#Solti_Utils_DI_Interfaces_ResolveServiceDelegate_BeginInvoke_Solti_Utils_DI_Interfaces_IInstanceFactory_System_AsyncCallback_System_Object_
+  commentId: M:Solti.Utils.DI.Interfaces.ResolveServiceDelegate.BeginInvoke(Solti.Utils.DI.Interfaces.IInstanceFactory,System.AsyncCallback,System.Object)
+  fullName: Solti.Utils.DI.Interfaces.ResolveServiceDelegate.BeginInvoke(Solti.Utils.DI.Interfaces.IInstanceFactory, System.AsyncCallback, System.Object)
+  nameWithType: ResolveServiceDelegate.BeginInvoke(IInstanceFactory, AsyncCallback, Object)
+- uid: Solti.Utils.DI.Interfaces.ResolveServiceDelegate.BeginInvoke*
   name: BeginInvoke
-  href: Solti.Utils.DI.Interfaces.ResolveDelegate.html#Solti_Utils_DI_Interfaces_ResolveDelegate_BeginInvoke_
-  commentId: Overload:Solti.Utils.DI.Interfaces.ResolveDelegate.BeginInvoke
-  fullName: Solti.Utils.DI.Interfaces.ResolveDelegate.BeginInvoke
-  nameWithType: ResolveDelegate.BeginInvoke
-- uid: Solti.Utils.DI.Interfaces.ResolveDelegate.EndInvoke(System.IAsyncResult)
+  href: Solti.Utils.DI.Interfaces.ResolveServiceDelegate.html#Solti_Utils_DI_Interfaces_ResolveServiceDelegate_BeginInvoke_
+  commentId: Overload:Solti.Utils.DI.Interfaces.ResolveServiceDelegate.BeginInvoke
+  fullName: Solti.Utils.DI.Interfaces.ResolveServiceDelegate.BeginInvoke
+  nameWithType: ResolveServiceDelegate.BeginInvoke
+- uid: Solti.Utils.DI.Interfaces.ResolveServiceDelegate.EndInvoke(System.IAsyncResult)
   name: EndInvoke(IAsyncResult)
-  href: Solti.Utils.DI.Interfaces.ResolveDelegate.html#Solti_Utils_DI_Interfaces_ResolveDelegate_EndInvoke_System_IAsyncResult_
-  commentId: M:Solti.Utils.DI.Interfaces.ResolveDelegate.EndInvoke(System.IAsyncResult)
-  fullName: Solti.Utils.DI.Interfaces.ResolveDelegate.EndInvoke(System.IAsyncResult)
-  nameWithType: ResolveDelegate.EndInvoke(IAsyncResult)
-- uid: Solti.Utils.DI.Interfaces.ResolveDelegate.EndInvoke*
+  href: Solti.Utils.DI.Interfaces.ResolveServiceDelegate.html#Solti_Utils_DI_Interfaces_ResolveServiceDelegate_EndInvoke_System_IAsyncResult_
+  commentId: M:Solti.Utils.DI.Interfaces.ResolveServiceDelegate.EndInvoke(System.IAsyncResult)
+  fullName: Solti.Utils.DI.Interfaces.ResolveServiceDelegate.EndInvoke(System.IAsyncResult)
+  nameWithType: ResolveServiceDelegate.EndInvoke(IAsyncResult)
+- uid: Solti.Utils.DI.Interfaces.ResolveServiceDelegate.EndInvoke*
   name: EndInvoke
-  href: Solti.Utils.DI.Interfaces.ResolveDelegate.html#Solti_Utils_DI_Interfaces_ResolveDelegate_EndInvoke_
-  commentId: Overload:Solti.Utils.DI.Interfaces.ResolveDelegate.EndInvoke
-  fullName: Solti.Utils.DI.Interfaces.ResolveDelegate.EndInvoke
-  nameWithType: ResolveDelegate.EndInvoke
-- uid: Solti.Utils.DI.Interfaces.ResolveDelegate.Invoke(Solti.Utils.DI.Interfaces.IInstanceFactory)
+  href: Solti.Utils.DI.Interfaces.ResolveServiceDelegate.html#Solti_Utils_DI_Interfaces_ResolveServiceDelegate_EndInvoke_
+  commentId: Overload:Solti.Utils.DI.Interfaces.ResolveServiceDelegate.EndInvoke
+  fullName: Solti.Utils.DI.Interfaces.ResolveServiceDelegate.EndInvoke
+  nameWithType: ResolveServiceDelegate.EndInvoke
+- uid: Solti.Utils.DI.Interfaces.ResolveServiceDelegate.Invoke(Solti.Utils.DI.Interfaces.IInstanceFactory)
   name: Invoke(IInstanceFactory)
-  href: Solti.Utils.DI.Interfaces.ResolveDelegate.html#Solti_Utils_DI_Interfaces_ResolveDelegate_Invoke_Solti_Utils_DI_Interfaces_IInstanceFactory_
-  commentId: M:Solti.Utils.DI.Interfaces.ResolveDelegate.Invoke(Solti.Utils.DI.Interfaces.IInstanceFactory)
-  fullName: Solti.Utils.DI.Interfaces.ResolveDelegate.Invoke(Solti.Utils.DI.Interfaces.IInstanceFactory)
-  nameWithType: ResolveDelegate.Invoke(IInstanceFactory)
-- uid: Solti.Utils.DI.Interfaces.ResolveDelegate.Invoke*
+  href: Solti.Utils.DI.Interfaces.ResolveServiceDelegate.html#Solti_Utils_DI_Interfaces_ResolveServiceDelegate_Invoke_Solti_Utils_DI_Interfaces_IInstanceFactory_
+  commentId: M:Solti.Utils.DI.Interfaces.ResolveServiceDelegate.Invoke(Solti.Utils.DI.Interfaces.IInstanceFactory)
+  fullName: Solti.Utils.DI.Interfaces.ResolveServiceDelegate.Invoke(Solti.Utils.DI.Interfaces.IInstanceFactory)
+  nameWithType: ResolveServiceDelegate.Invoke(IInstanceFactory)
+- uid: Solti.Utils.DI.Interfaces.ResolveServiceDelegate.Invoke*
   name: Invoke
-  href: Solti.Utils.DI.Interfaces.ResolveDelegate.html#Solti_Utils_DI_Interfaces_ResolveDelegate_Invoke_
-  commentId: Overload:Solti.Utils.DI.Interfaces.ResolveDelegate.Invoke
-  fullName: Solti.Utils.DI.Interfaces.ResolveDelegate.Invoke
-  nameWithType: ResolveDelegate.Invoke
+  href: Solti.Utils.DI.Interfaces.ResolveServiceDelegate.html#Solti_Utils_DI_Interfaces_ResolveServiceDelegate_Invoke_
+  commentId: Overload:Solti.Utils.DI.Interfaces.ResolveServiceDelegate.Invoke
+  fullName: Solti.Utils.DI.Interfaces.ResolveServiceDelegate.Invoke
+  nameWithType: ResolveServiceDelegate.Invoke
 - uid: Solti.Utils.DI.Interfaces.ScopeOptions
   name: ScopeOptions
   href: Solti.Utils.DI.Interfaces.ScopeOptions.html
@@ -1559,15 +1740,15 @@ references:
   commentId: M:Solti.Utils.DI.Internals.ProducibleServiceEntry.#ctor(System.Type,System.String)
   fullName: Solti.Utils.DI.Internals.ProducibleServiceEntry.ProducibleServiceEntry(System.Type, System.String)
   nameWithType: ProducibleServiceEntry.ProducibleServiceEntry(Type, String)
-- uid: Solti.Utils.DI.Internals.ProducibleServiceEntry.#ctor(System.Type,System.String,System.Linq.Expressions.Expression{System.Func{Solti.Utils.DI.Interfaces.IInjector,System.Type,System.Object}})
-  name: ProducibleServiceEntry(Type, String, Expression<Func<IInjector, Type, Object>>)
-  href: Solti.Utils.DI.Internals.ProducibleServiceEntry.html#Solti_Utils_DI_Internals_ProducibleServiceEntry__ctor_System_Type_System_String_System_Linq_Expressions_Expression_System_Func_Solti_Utils_DI_Interfaces_IInjector_System_Type_System_Object___
-  commentId: M:Solti.Utils.DI.Internals.ProducibleServiceEntry.#ctor(System.Type,System.String,System.Linq.Expressions.Expression{System.Func{Solti.Utils.DI.Interfaces.IInjector,System.Type,System.Object}})
-  name.vb: ProducibleServiceEntry(Type, String, Expression(Of Func(Of IInjector, Type, Object)))
-  fullName: Solti.Utils.DI.Internals.ProducibleServiceEntry.ProducibleServiceEntry(System.Type, System.String, System.Linq.Expressions.Expression<System.Func<Solti.Utils.DI.Interfaces.IInjector, System.Type, System.Object>>)
-  fullName.vb: Solti.Utils.DI.Internals.ProducibleServiceEntry.ProducibleServiceEntry(System.Type, System.String, System.Linq.Expressions.Expression(Of System.Func(Of Solti.Utils.DI.Interfaces.IInjector, System.Type, System.Object)))
-  nameWithType: ProducibleServiceEntry.ProducibleServiceEntry(Type, String, Expression<Func<IInjector, Type, Object>>)
-  nameWithType.vb: ProducibleServiceEntry.ProducibleServiceEntry(Type, String, Expression(Of Func(Of IInjector, Type, Object)))
+- uid: Solti.Utils.DI.Internals.ProducibleServiceEntry.#ctor(System.Type,System.String,System.Linq.Expressions.Expression{Solti.Utils.DI.Interfaces.FactoryDelegate})
+  name: ProducibleServiceEntry(Type, String, Expression<FactoryDelegate>)
+  href: Solti.Utils.DI.Internals.ProducibleServiceEntry.html#Solti_Utils_DI_Internals_ProducibleServiceEntry__ctor_System_Type_System_String_System_Linq_Expressions_Expression_Solti_Utils_DI_Interfaces_FactoryDelegate__
+  commentId: M:Solti.Utils.DI.Internals.ProducibleServiceEntry.#ctor(System.Type,System.String,System.Linq.Expressions.Expression{Solti.Utils.DI.Interfaces.FactoryDelegate})
+  name.vb: ProducibleServiceEntry(Type, String, Expression(Of FactoryDelegate))
+  fullName: Solti.Utils.DI.Internals.ProducibleServiceEntry.ProducibleServiceEntry(System.Type, System.String, System.Linq.Expressions.Expression<Solti.Utils.DI.Interfaces.FactoryDelegate>)
+  fullName.vb: Solti.Utils.DI.Internals.ProducibleServiceEntry.ProducibleServiceEntry(System.Type, System.String, System.Linq.Expressions.Expression(Of Solti.Utils.DI.Interfaces.FactoryDelegate))
+  nameWithType: ProducibleServiceEntry.ProducibleServiceEntry(Type, String, Expression<FactoryDelegate>)
+  nameWithType.vb: ProducibleServiceEntry.ProducibleServiceEntry(Type, String, Expression(Of FactoryDelegate))
 - uid: Solti.Utils.DI.Internals.ProducibleServiceEntry.#ctor(System.Type,System.String,System.Type)
   name: ProducibleServiceEntry(Type, String, Type)
   href: Solti.Utils.DI.Internals.ProducibleServiceEntry.html#Solti_Utils_DI_Internals_ProducibleServiceEntry__ctor_System_Type_System_String_System_Type_
@@ -1586,15 +1767,15 @@ references:
   commentId: Overload:Solti.Utils.DI.Internals.ProducibleServiceEntry.#ctor
   fullName: Solti.Utils.DI.Internals.ProducibleServiceEntry.ProducibleServiceEntry
   nameWithType: ProducibleServiceEntry.ProducibleServiceEntry
-- uid: Solti.Utils.DI.Internals.ProducibleServiceEntry.ApplyProxy(System.Linq.Expressions.Expression{System.Func{Solti.Utils.DI.Interfaces.IInjector,System.Type,System.Object,System.Object}})
-  name: ApplyProxy(Expression<Func<IInjector, Type, Object, Object>>)
-  href: Solti.Utils.DI.Internals.ProducibleServiceEntry.html#Solti_Utils_DI_Internals_ProducibleServiceEntry_ApplyProxy_System_Linq_Expressions_Expression_System_Func_Solti_Utils_DI_Interfaces_IInjector_System_Type_System_Object_System_Object___
-  commentId: M:Solti.Utils.DI.Internals.ProducibleServiceEntry.ApplyProxy(System.Linq.Expressions.Expression{System.Func{Solti.Utils.DI.Interfaces.IInjector,System.Type,System.Object,System.Object}})
-  name.vb: ApplyProxy(Expression(Of Func(Of IInjector, Type, Object, Object)))
-  fullName: Solti.Utils.DI.Internals.ProducibleServiceEntry.ApplyProxy(System.Linq.Expressions.Expression<System.Func<Solti.Utils.DI.Interfaces.IInjector, System.Type, System.Object, System.Object>>)
-  fullName.vb: Solti.Utils.DI.Internals.ProducibleServiceEntry.ApplyProxy(System.Linq.Expressions.Expression(Of System.Func(Of Solti.Utils.DI.Interfaces.IInjector, System.Type, System.Object, System.Object)))
-  nameWithType: ProducibleServiceEntry.ApplyProxy(Expression<Func<IInjector, Type, Object, Object>>)
-  nameWithType.vb: ProducibleServiceEntry.ApplyProxy(Expression(Of Func(Of IInjector, Type, Object, Object)))
+- uid: Solti.Utils.DI.Internals.ProducibleServiceEntry.ApplyProxy(System.Linq.Expressions.Expression{Solti.Utils.DI.Interfaces.ApplyProxyDelegate})
+  name: ApplyProxy(Expression<ApplyProxyDelegate>)
+  href: Solti.Utils.DI.Internals.ProducibleServiceEntry.html#Solti_Utils_DI_Internals_ProducibleServiceEntry_ApplyProxy_System_Linq_Expressions_Expression_Solti_Utils_DI_Interfaces_ApplyProxyDelegate__
+  commentId: M:Solti.Utils.DI.Internals.ProducibleServiceEntry.ApplyProxy(System.Linq.Expressions.Expression{Solti.Utils.DI.Interfaces.ApplyProxyDelegate})
+  name.vb: ApplyProxy(Expression(Of ApplyProxyDelegate))
+  fullName: Solti.Utils.DI.Internals.ProducibleServiceEntry.ApplyProxy(System.Linq.Expressions.Expression<Solti.Utils.DI.Interfaces.ApplyProxyDelegate>)
+  fullName.vb: Solti.Utils.DI.Internals.ProducibleServiceEntry.ApplyProxy(System.Linq.Expressions.Expression(Of Solti.Utils.DI.Interfaces.ApplyProxyDelegate))
+  nameWithType: ProducibleServiceEntry.ApplyProxy(Expression<ApplyProxyDelegate>)
+  nameWithType.vb: ProducibleServiceEntry.ApplyProxy(Expression(Of ApplyProxyDelegate))
 - uid: Solti.Utils.DI.Internals.ProducibleServiceEntry.ApplyProxy*
   name: ApplyProxy
   href: Solti.Utils.DI.Internals.ProducibleServiceEntry.html#Solti_Utils_DI_Internals_ProducibleServiceEntry_ApplyProxy_
