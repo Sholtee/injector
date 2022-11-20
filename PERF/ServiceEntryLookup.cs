@@ -1,5 +1,5 @@
 ﻿/********************************************************************************
-* ServiceResolverLookup.cs                                                      *
+* ServiceEntryLookup.cs                                                         *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
@@ -17,7 +17,7 @@ namespace Solti.Utils.DI.Perf
 
     [MemoryDiagnoser]
     [SimpleJob(RunStrategy.Throughput, invocationCount: 10000000)]
-    public class ServiceResolverLookup
+    public class ServiceEntryLookup
     {
         public static Type[] Interfaces { get; } = typeof(object)
             .Assembly
