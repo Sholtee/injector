@@ -25,7 +25,7 @@ namespace Solti.Utils.DI.Tests
             );
 
             string dotGraph = Root.GetDependencyGraph<IInterface_2>(newLine: "\n");
-            Assert.That(dotGraph, Is.EqualTo(File.ReadAllText("graph_1.txt")));
+            Assert.That(dotGraph, Is.EqualTo(File.ReadAllText("graph_1.txt").Replace("\r", string.Empty)));
         }
 
         [Test]
@@ -41,7 +41,7 @@ namespace Solti.Utils.DI.Tests
             );
 
             string dotGraph = Root.GetDependencyGraph<IInterface_2>(newLine: "\n");
-            Assert.That(dotGraph, Is.EqualTo(File.ReadAllText("graph_2.txt")));
+            Assert.That(dotGraph, Is.EqualTo(File.ReadAllText("graph_2.txt").Replace("\r", string.Empty)));
         }
 
         [Test]
@@ -59,7 +59,7 @@ namespace Solti.Utils.DI.Tests
             );
 
             string dotGraph = Root.GetDependencyGraph<IInterface_4>(newLine: "\n");
-            Assert.That(dotGraph, Is.EqualTo(File.ReadAllText("graph_3.txt")));
+            Assert.That(dotGraph, Is.EqualTo(File.ReadAllText("graph_3.txt").Replace("\r", string.Empty)));
         }
 
         [Test]
@@ -79,7 +79,7 @@ namespace Solti.Utils.DI.Tests
             );
 
             string dotGraph = Root.GetDependencyGraph<IInterface_1>(newLine: "\n");
-            Assert.That(dotGraph, Is.EqualTo(File.ReadAllText("graph_4.txt")));
+            Assert.That(dotGraph, Is.EqualTo(File.ReadAllText("graph_4.txt").Replace("\r", string.Empty)));
         }
     }
 }
