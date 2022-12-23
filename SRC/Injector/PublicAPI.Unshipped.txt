@@ -90,8 +90,6 @@ Solti.Utils.DI.ServiceCollection.ServiceCollection() -> void
 Solti.Utils.DI.ServiceEntryAdvancedExtensions
 Solti.Utils.Proxy.InterfaceInterceptor<TInterface> (forwarded, contained in Solti.Utils.Proxy)
 Solti.Utils.Proxy.InterfaceInterceptor<TInterface>.InterfaceInterceptor(TInterface? target) -> void (forwarded, contained in Solti.Utils.Proxy)
-Solti.Utils.Proxy.InterfaceInterceptor<TInterface>.Proxy.set -> void (forwarded, contained in Solti.Utils.Proxy)
-Solti.Utils.Proxy.InterfaceInterceptor<TInterface>.Target.get -> TInterface? (forwarded, contained in Solti.Utils.Proxy)
 static Solti.Utils.DI.Diagnostics.IScopeFactoryDiagnosticsExtensions.GetDependencyGraph(this Solti.Utils.DI.Interfaces.IScopeFactory! root, System.Type! iface, string? name = null, string? newLine = null) -> string!
 static Solti.Utils.DI.Diagnostics.IScopeFactoryDiagnosticsExtensions.GetDependencyGraph<TService>(this Solti.Utils.DI.Interfaces.IScopeFactory! root, string? name = null, string? newLine = null) -> string!
 static Solti.Utils.DI.Interfaces.IInjectorBasicExtensions.Get<TInterface>(this Solti.Utils.DI.Interfaces.IInjector! self, string? name = null) -> TInterface! (forwarded, contained in Solti.Utils.DI.Interfaces)
@@ -147,4 +145,3 @@ virtual Solti.Utils.DI.Interfaces.AbstractServiceEntry.Lifetime.get -> Solti.Uti
 virtual Solti.Utils.DI.Interfaces.AbstractServiceEntry.Proxies.get -> System.Collections.Generic.IReadOnlyList<System.Linq.Expressions.Expression<Solti.Utils.DI.Interfaces.ApplyProxyDelegate!>!>! (forwarded, contained in Solti.Utils.DI.Interfaces)
 virtual Solti.Utils.DI.Interfaces.AbstractServiceEntry.SetValidated() -> void (forwarded, contained in Solti.Utils.DI.Interfaces)
 virtual Solti.Utils.DI.Interfaces.AbstractServiceEntry.Specialize(params System.Type![]! genericArguments) -> Solti.Utils.DI.Interfaces.AbstractServiceEntry! (forwarded, contained in Solti.Utils.DI.Interfaces)
-virtual Solti.Utils.Proxy.InterfaceInterceptor<TInterface>.Invoke(Solti.Utils.Proxy.InvocationContext! context) -> object? (forwarded, contained in Solti.Utils.Proxy)

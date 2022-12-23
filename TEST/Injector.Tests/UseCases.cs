@@ -148,7 +148,7 @@ namespace Solti.Utils.DI.UseCases
 
             public override object Invoke(InvocationContext context)
             {
-                Logger.Write($"{context.Method.Name}({string.Join(", ", context.Args.Select(arg => arg?.ToString() ?? "null"))})");
+                Logger.Write($"{context.InterfaceMethod.Name}({string.Join(", ", context.Args.Select(arg => arg?.ToString() ?? "null"))})");
 
                 return base.Invoke(context);
             }
