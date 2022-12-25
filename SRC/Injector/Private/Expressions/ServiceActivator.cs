@@ -141,12 +141,11 @@ namespace Solti.Utils.DI.Internals
             return resolver;
         }
 
+        /// <summary>
+        /// <code>(injector, iface)  => (object) new Service(IDependency_1 | Lazy&lt;IDependency_1&gt;, IDependency_2 | Lazy&lt;IDependency_2&gt;,...)</code>
+        /// </summary>
         public static Expression<FactoryDelegate> Get(ConstructorInfo constructor)
         {
-            //
-            // (injector, iface)  => (object) new Service(IDependency_1 | Lazy<IDependency_1>, IDependency_2 | Lazy<IDependency_2>,...)
-            //
-
             return CreateActivator<FactoryDelegate>
             (
                 constructor, 
@@ -173,14 +172,13 @@ namespace Solti.Utils.DI.Internals
             }
         }
 
+        /// <summary>
+        /// <code>(injector, objects)  => (object) new Service(explicit | IDependency_1 | Lazy&lt;IDependency_1&gt;, explicit | IDependency_2 | Lazy&lt;IDependency_2&gt;,...)</code>
+        /// </summary>
         public static Expression<ApplyProxyDelegate> GetLateBound(ConstructorInfo constructor, int argIndex)
         {
             int i = 0;
             ParameterExpression explicitArg = Expression.Parameter(typeof(object), nameof(explicitArg));
-
-            //
-            // (injector, objects)  => (object) new Service(explicit | IDependency_1 | Lazy<IDependency_1>, explicit | IDependency_2 | Lazy<IDependency_2>,...)
-            //
 
             return CreateActivator<ApplyProxyDelegate>
             (
@@ -211,6 +209,9 @@ namespace Solti.Utils.DI.Internals
             }
         }
 
+        /// <summary>
+        /// <code>(injector, iface)  => (object) new Service(IDependency_1 | Lazy&lt;IDependency_1&gt;, IDependency_2 | Lazy&lt;IDependency_2&gt;,...)</code>
+        /// </summary>
         public static Expression<FactoryDelegate> Get(Type type)
         {
             //
@@ -222,17 +223,18 @@ namespace Solti.Utils.DI.Internals
             return Get(type.GetApplicableConstructor());
         }
 
+        /// <summary>
+        /// <code>
+        /// (injector, explicitArgs) =>
+        /// {
+        ///    object arg;
+        ///    return new Service(explicitArgs.TryGetValue(paramName, out arg) ? arg : Lazy&lt;IDependency_1&gt;) | injector.[Try]Get(typeof(IDependency_1)), ...);
+        /// }
+        /// </code>
+        /// </summary>
         public static Expression<FactoryDelegate> Get(ConstructorInfo constructor, IReadOnlyDictionary<string, object?> explicitArgs)
         {
             ParameterExpression arg = Expression.Variable(typeof(object), nameof(arg));
-
-            //
-            // (injector, explicitArgs) =>
-            // {
-            //    object arg;
-            //    return new Service(explicitArgs.TryGetValue(paramName, out arg) ? arg : Lazy<IDependency_1>) | injector.[Try]Get(typeof(IDependency_1)), ...);
-            // }
-            //
 
             return CreateActivator<FactoryDelegate>
             (
@@ -283,6 +285,15 @@ namespace Solti.Utils.DI.Internals
             }
         }
 
+        /// <summary>
+        /// <code>
+        /// (injector, explicitArgs) =>
+        /// {
+        ///    object arg;
+        ///    return new Service(explicitArgs.TryGetValue(paramName, out arg) ? arg : Lazy&lt;IDependency_1&gt;) | injector.[Try]Get(typeof(IDependency_1)), ...);
+        /// }
+        /// </code>
+        /// </summary>
         public static Expression<FactoryDelegate> Get(Type type, IReadOnlyDictionary<string, object?> explicitArgs)
         {
             //
@@ -294,14 +305,14 @@ namespace Solti.Utils.DI.Internals
             return Get(type.GetApplicableConstructor(), explicitArgs);
         }
 
+        /// <summary>
+        /// <code>
+        /// (injector, explicitArgs) => (object) new Service(((ParamzProvider) explicitArgs).argName_1 | Lazy&lt;IDependency_1&gt;() | injector.[Try]Get(typeof(IDependency_1)), ...);
+        /// </code>
+        /// </summary>
         public static Expression<FactoryDelegate> Get(ConstructorInfo constructor, object paramzProvider)
         {
             Type paramzProviderType = paramzProvider.GetType();
-
-            //
-            // (injector, explicitArgs) =>
-            //    return (object) new Service(((ParamzProvider) explicitArgs).argName_1 | Lazy<IDependency_1>() | injector.[Try]Get(typeof(IDependency_1)), ...);
-            //
 
             return CreateActivator<FactoryDelegate>
             (
@@ -342,6 +353,11 @@ namespace Solti.Utils.DI.Internals
             }
         }
 
+        /// <summary>
+        /// <code>
+        /// (injector, explicitArgs) => (object) new Service(((ParamzProvider) explicitArgs).argName_1 | Lazy&lt;IDependency_1&gt;() | injector.[Try]Get(typeof(IDependency_1)), ...);
+        /// </code>
+        /// </summary>
         public static Expression<FactoryDelegate> Get(Type type, object paramzProvider)
         {
             EnsureCanBeInstantiated(type);
