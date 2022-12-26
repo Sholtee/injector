@@ -189,7 +189,7 @@ namespace Solti.Utils.DI.Internals
         /// <summary>
         /// <code>(injector, objects)  => (object) new Service(explicit | IDependency_1 | Lazy&lt;IDependency_1&gt;, explicit | IDependency_2 | Lazy&lt;IDependency_2&gt;,...)</code>
         /// </summary>
-        public static Expression<ApplyProxyDelegate> GetLateBound(ConstructorInfo constructor, int argIndex)
+        public static Expression<ApplyProxyDelegate> GetLateBound(ConstructorInfo constructor, int argIndex) // TODO: delete
         {
             int i = 0;
             ParameterExpression explicitArg = Expression.Parameter(typeof(object), nameof(explicitArg));

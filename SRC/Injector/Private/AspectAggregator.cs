@@ -24,9 +24,9 @@ namespace Solti.Utils.DI.Internals
 
         private readonly IInterfaceInterceptor[] FInterceptors;
 
-        private object? Invoke(IInvocationContext ctx, int index) => index < FInterceptors.Length
-            ? FInterceptors[index].Invoke(ctx, ctx => Invoke(ctx, index + 1))
-            : base.Invoke((InvocationContext) ctx);
+        private object? Invoke(InvocationContextEx ctx, int index) => index < FInterceptors.Length
+            ? FInterceptors[index].Invoke(ctx, () => Invoke(ctx, index + 1))
+            : base.Invoke(ctx);
 
         /// <summary>
         /// Creates a new <see cref="AspectAggregator{TInterface, TTarget}"/> instance.

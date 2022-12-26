@@ -35,5 +35,5 @@ namespace Solti.Utils.DI.Interfaces
     /// <summary>
     /// Defines an interceptor invocation.
     /// </summary>
-    public delegate object? InvokeInterceptorDelegate(IInvocationContext context);
+    public delegate object? InvokeInterceptorDelegate();
 }
