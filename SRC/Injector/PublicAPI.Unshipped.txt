@@ -2,6 +2,7 @@
 override sealed Solti.Utils.DI.Internals.ProducibleServiceEntry.Proxies.get -> System.Collections.Generic.IReadOnlyList<System.Linq.Expressions.Expression<Solti.Utils.DI.Interfaces.ApplyProxyDelegate!>!>!
 override sealed Solti.Utils.DI.Internals.ProducibleServiceEntry.SetValidated() -> void
 override Solti.Utils.DI.Interfaces.AbstractServiceEntry.ToString() -> string! (forwarded, contained in Solti.Utils.DI.Interfaces)
+override Solti.Utils.DI.Internals.AspectAggregator<TInterface, TTarget>.Invoke(Solti.Utils.Proxy.InvocationContext! context) -> object?
 override Solti.Utils.DI.Internals.ProducibleServiceEntry.ApplyProxy(System.Linq.Expressions.Expression<Solti.Utils.DI.Interfaces.ApplyProxyDelegate!>! applyProxy) -> void
 override Solti.Utils.DI.Internals.ProducibleServiceEntry.Build(Solti.Utils.DI.Interfaces.IBuildContext? context, params Solti.Utils.DI.Interfaces.IFactoryVisitor![]! visitors) -> void
 override Solti.Utils.DI.Internals.ProducibleServiceEntry.CreateLifetimeManager(System.Linq.Expressions.Expression! getService, System.Linq.Expressions.ParameterExpression! scope, System.Linq.Expressions.ParameterExpression! disposable) -> System.Linq.Expressions.Expression!
@@ -69,6 +70,8 @@ Solti.Utils.DI.Interfaces.ServiceNotFoundException (forwarded, contained in Solt
 Solti.Utils.DI.Interfaces.ServiceNotFoundException.ServiceNotFoundException() -> void (forwarded, contained in Solti.Utils.DI.Interfaces)
 Solti.Utils.DI.Interfaces.ServiceNotFoundException.ServiceNotFoundException(string! message) -> void (forwarded, contained in Solti.Utils.DI.Interfaces)
 Solti.Utils.DI.Interfaces.ServiceNotFoundException.ServiceNotFoundException(string! message, System.Exception! innerException) -> void (forwarded, contained in Solti.Utils.DI.Interfaces)
+Solti.Utils.DI.Internals.AspectAggregator<TInterface, TTarget>
+Solti.Utils.DI.Internals.AspectAggregator<TInterface, TTarget>.AspectAggregator(TTarget! target, params Solti.Utils.DI.Interfaces.IInterfaceInterceptor![]! interceptors) -> void
 Solti.Utils.DI.Internals.ProducibleServiceEntry
 Solti.Utils.DI.Internals.ProducibleServiceEntry.ExplicitArgs.get -> object?
 Solti.Utils.DI.Internals.ProducibleServiceEntry.ProducibleServiceEntry(System.Type! interface, string? name) -> void

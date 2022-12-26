@@ -15,6 +15,7 @@ namespace Solti.Utils.DI.Internals
     using Interfaces;
     using Primitives;
     using Properties;
+    using Proxy.Generators;
 
     internal static class ServiceActivator
     {
@@ -66,6 +67,76 @@ namespace Solti.Utils.DI.Internals
                 throw new ArgumentException(Resources.PARAMETER_IS_GENERIC, nameof(type));
         }
 
+        /// <summary>
+        /// <code>
+        /// new TClass(..., ..., ...)
+        /// {
+        ///   Prop_1 = ...,
+        ///   Prop_2 = ...
+        /// }
+        /// </code>
+        /// </summary>
+        private static Expression New
+        (
+            ConstructorInfo constructor,
+            ParameterExpression injector,
+            Func<ParameterExpression, Type, string, OptionsAttribute?, Expression> resolveDep
+        ) => Expression.MemberInit
+        (
+            Expression.New
+            (
+                constructor,
+                constructor
+                    .GetParametersSafe()
+                    .Select
+                    (
+                        param => resolveDep
+                        (
+                            injector,
+                            param.ParameterType,
+                            param.Name,
+                            param.GetCustomAttribute<OptionsAttribute>()
+                        )
+                    )
+            ),
+            constructor
+                .ReflectedType
+                .GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.SetProperty | BindingFlags.FlattenHierarchy)
+                .Where(property => property.GetCustomAttribute<InjectAttribute>() is not null)
+                .Select
+                (
+                    property => Expression.Bind
+                    (
+                        property,
+                        resolveDep
+                        (
+                            injector,
+                            property.PropertyType,
+                            property.Name,
+                            property.GetCustomAttribute<OptionsAttribute>()
+                        )
+                    )
+                )
+        );
+
+        private static Expression DefaultDependencyResolver(ParameterExpression injector, Type type, string __, OptionsAttribute? options)
+        {
+            type = GetEffectiveType(type, out bool isLazy) ?? throw new ArgumentException(Resources.INVALID_CONSTRUCTOR);
+
+            return isLazy
+                //
+                // Lazy<IInterface>(() => (IInterface) injector.[Try]Get(typeof(IInterface), svcName))
+                //
+
+                ? CreateLazy(injector, type, options)
+
+                //
+                // (TInterface) injector.[Try]Get(typeof(IInterface), svcName)
+                //
+
+                : GetService(injector, type, options);
+        }
+
         private static Expression<TDelegate> CreateActivator<TDelegate>
         (
             ConstructorInfo constructor,
@@ -93,43 +164,7 @@ namespace Solti.Utils.DI.Internals
                     variables,
                     Expression.Convert
                     (
-                        Expression.MemberInit
-                        (
-                            Expression.New
-                            (
-                                constructor,
-                                constructor
-                                    .GetParametersSafe()
-                                    .Select
-                                    (
-                                        param => resolveDep
-                                        (
-                                            injector,
-                                            param.ParameterType,
-                                            param.Name,
-                                            param.GetCustomAttribute<OptionsAttribute>()
-                                        )
-                                    )
-                            ),
-                            constructor
-                                .ReflectedType
-                                .GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.SetProperty | BindingFlags.FlattenHierarchy)
-                                .Where(property => property.GetCustomAttribute<InjectAttribute>() is not null)
-                                .Select
-                                (
-                                    property => Expression.Bind
-                                    (
-                                        property,
-                                        resolveDep
-                                        (
-                                            injector,
-                                            property.PropertyType,
-                                            property.Name,
-                                            property.GetCustomAttribute<OptionsAttribute>()
-                                        )
-                                    )
-                                )
-                        ),
+                        New(constructor, injector, resolveDep),
                         typeof(object)
                     )
                 ),
@@ -144,33 +179,12 @@ namespace Solti.Utils.DI.Internals
         /// <summary>
         /// <code>(injector, iface)  => (object) new Service(IDependency_1 | Lazy&lt;IDependency_1&gt;, IDependency_2 | Lazy&lt;IDependency_2&gt;,...)</code>
         /// </summary>
-        public static Expression<FactoryDelegate> Get(ConstructorInfo constructor)
-        {
-            return CreateActivator<FactoryDelegate>
-            (
-                constructor, 
-                ResolveDependency,
-                null
-            );
-
-            static Expression ResolveDependency(ParameterExpression injector, Type type, string __, OptionsAttribute? options) 
-            {
-                type = GetEffectiveType(type, out bool isLazy) ?? throw new ArgumentException(Resources.INVALID_CONSTRUCTOR, nameof(constructor));
-
-                return isLazy
-                    //
-                    // Lazy<IInterface>(() => (IInterface) injector.[Try]Get(typeof(IInterface), svcName))
-                    //
-
-                    ? CreateLazy(injector, type, options)
-
-                    //
-                    // (TInterface) injector.[Try]Get(typeof(IInterface), svcName)
-                    //
-
-                    : GetService(injector, type, options);
-            }
-        }
+        public static Expression<FactoryDelegate> Get(ConstructorInfo constructor) => CreateActivator<FactoryDelegate>
+        (
+            constructor, 
+            DefaultDependencyResolver,
+            null
+        );
 
         /// <summary>
         /// <code>(injector, objects)  => (object) new Service(explicit | IDependency_1 | Lazy&lt;IDependency_1&gt;, explicit | IDependency_2 | Lazy&lt;IDependency_2&gt;,...)</code>
@@ -433,5 +447,78 @@ namespace Solti.Utils.DI.Internals
                 Expression.Constant(options?.Name, typeof(string))
             );
         }
+
+        /// <summary>
+        /// <code>
+        /// (injector, current) => new GeneratedProxy // AspectAggregator&lt;TInterface, TTarget&gt;
+        /// (
+        ///   (TTarget) current,
+        ///   new IInterfaceInterceptor[]
+        ///   {
+        ///     new Interceptor_1(injector.Get&lt;IDep_1&gt;(), injector.Get&lt;IDep_2&gt;()),
+        ///     new Interceptor_2(injector.Get&lt;IDep_3&gt;())
+        ///   }
+        /// ); 
+        /// </code>
+        /// </summary>
+        public static Expression<ApplyProxyDelegate> ApplyInterceptors(Type iface, Type target, IEnumerable<Type> interceptorTypes)
+        {
+            Type concreteProxy = new ProxyGenerator
+            (
+                iface,
+                typeof(AspectAggregator<,>).MakeGenericType(iface, target)
+            ).GetGeneratedType();
+
+            ParameterExpression
+                injector = Expression.Parameter(typeof(IInjector), nameof(injector)),
+                current = Expression.Parameter(typeof(object), nameof(current));
+
+            return Expression.Lambda<ApplyProxyDelegate>
+            (
+                Expression.New
+                (
+                    concreteProxy.GetConstructors().Single(),
+                    Expression.Convert(current, target),
+                    Expression.NewArrayInit
+                    (
+                        typeof(IInterfaceInterceptor),
+                        interceptorTypes.Select
+                        (
+                            interceptorType => New
+                            (
+                                interceptorType.GetApplicableConstructor(),
+                                injector,
+                                DefaultDependencyResolver
+                            )
+                        )
+                    )
+                ),
+                injector,
+                current
+            );
+        }
+
+        /// <summary>
+        /// <code>
+        /// (injector, current) => new GeneratedProxy // AspectAggregator&lt;TInterface, TTarget&gt;
+        /// (
+        ///   (TTarget) current,
+        ///   new IInterfaceInterceptor[]
+        ///   {
+        ///     new Interceptor_1(injector.Get&lt;IDep_1&gt;(), injector.Get&lt;IDep_2&gt;()),
+        ///     new Interceptor_2(injector.Get&lt;IDep_3&gt;())
+        ///   }
+        /// ); 
+        /// </code>
+        /// </summary>
+        public static Expression<ApplyProxyDelegate> ApplyAspects(Type iface, Type target) => ApplyInterceptors
+        (
+            iface,
+            target,
+            target
+                .GetCustomAttributes()
+                .OfType<IAspect>()
+                .Select(aspect => aspect.UnderlyingInterceptor)
+        );
     }
 }
