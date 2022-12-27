@@ -15,7 +15,7 @@ namespace Solti.Utils.DI.Interfaces
     /// <summary>
     /// Unconditionaly creates a particular service.
     /// </summary>
-    public delegate object CreteServiceDelegate(IInstanceFactory scope, out object? disposable);
+    public delegate object CreateServiceDelegate(IInstanceFactory scope, out object? disposable);
 
     /// <summary>
     /// Defines the layout of functions used to apply proxies.

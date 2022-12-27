@@ -32,7 +32,7 @@ namespace Solti.Utils.DI.Internals
                 scope = Expression.Parameter(typeof(IInstanceFactory), nameof(scope)),
                 disposable = Expression.Parameter(typeof(object).MakeByRefType(), nameof(disposable));
 
-            return Expression.Lambda<CreteServiceDelegate>
+            return Expression.Lambda<CreateServiceDelegate>
             (
                 entry.CreateLifetimeManager
                 (

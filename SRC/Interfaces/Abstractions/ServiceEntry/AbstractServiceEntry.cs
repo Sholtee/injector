@@ -93,7 +93,7 @@ namespace Solti.Utils.DI.Interfaces
         /// Unconditionaly creates a new service instance.
         /// </summary>
         /// <remarks>To assign value to this property, invoke the <see cref="Build(IBuildContext?, IFactoryVisitor[])"/> method.</remarks>
-        public CreteServiceDelegate? CreateInstance { get; protected set; }
+        public CreateServiceDelegate? CreateInstance { get; protected set; }
 
         /// <summary>
         /// Gets or creates a service instance.

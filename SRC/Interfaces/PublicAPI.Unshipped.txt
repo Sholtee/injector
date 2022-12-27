@@ -7,7 +7,7 @@ override Solti.Utils.DI.Interfaces.ServiceIdComparer.Equals(Solti.Utils.DI.Inter
 override Solti.Utils.DI.Interfaces.ServiceIdComparer.GetHashCode(Solti.Utils.DI.Interfaces.AbstractServiceEntry! obj) -> int
 Solti.Utils.DI.Interfaces.AbstractServiceEntry
 Solti.Utils.DI.Interfaces.AbstractServiceEntry.AbstractServiceEntry(System.Type! interface, string? name, System.Type? implementation, System.Linq.Expressions.Expression<Solti.Utils.DI.Interfaces.FactoryDelegate!>? factory) -> void
-Solti.Utils.DI.Interfaces.AbstractServiceEntry.CreateInstance.get -> Solti.Utils.DI.Interfaces.CreteServiceDelegate?
+Solti.Utils.DI.Interfaces.AbstractServiceEntry.CreateInstance.get -> Solti.Utils.DI.Interfaces.CreateServiceDelegate?
 Solti.Utils.DI.Interfaces.AbstractServiceEntry.CreateInstance.set -> void
 Solti.Utils.DI.Interfaces.AbstractServiceEntry.Factory.get -> System.Linq.Expressions.Expression<Solti.Utils.DI.Interfaces.FactoryDelegate!>?
 Solti.Utils.DI.Interfaces.AbstractServiceEntry.Implementation.get -> System.Type?
@@ -28,7 +28,7 @@ Solti.Utils.DI.Interfaces.CircularReferenceException.CircularReferenceException(
 Solti.Utils.DI.Interfaces.CircularReferenceException.CircularReferenceException(string! message) -> void
 Solti.Utils.DI.Interfaces.CircularReferenceException.CircularReferenceException(string! message, System.Exception! innerException) -> void
 Solti.Utils.DI.Interfaces.Consts
-Solti.Utils.DI.Interfaces.CreteServiceDelegate
+Solti.Utils.DI.Interfaces.CreateServiceDelegate
 Solti.Utils.DI.Interfaces.FactoryDelegate
 Solti.Utils.DI.Interfaces.FactoryDelegate<TInterface>
 Solti.Utils.DI.Interfaces.IAspect

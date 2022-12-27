@@ -154,7 +154,7 @@ namespace Solti.Utils.DI.Internals
                 Debug.WriteLine($"Created factory: {Environment.NewLine}{factoryExpr.GetDebugView()}");
                 context
                     .Compiler
-                    .Compile((Expression<CreteServiceDelegate>) factoryExpr, factory => CreateInstance = factory);
+                    .Compile((Expression<CreateServiceDelegate>) factoryExpr, factory => CreateInstance = factory);
 
                 State = (State | ServiceEntryStates.Built) & ~ServiceEntryStates.Validated;
             }
