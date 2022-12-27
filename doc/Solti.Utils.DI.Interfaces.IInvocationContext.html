@@ -1,0 +1,208 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Interface IInvocationContext
+   | Injector </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Interface IInvocationContext
+   | Injector ">
+    <meta name="generator" content="docfx 2.59.3.0">
+    
+    <link rel="shortcut icon" href="icon.png">
+    <link rel="stylesheet" href="styles/docfx.vendor.css">
+    <link rel="stylesheet" href="styles/docfx.css">
+    <link rel="stylesheet" href="styles/main.css">
+    <meta property="docfx:navrel" content="toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        <div class="article row grid">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Solti.Utils.DI.Interfaces.IInvocationContext">
+  
+  
+  <h1 id="Solti_Utils_DI_Interfaces_IInvocationContext" data-uid="Solti.Utils.DI.Interfaces.IInvocationContext" class="text-break">Interface IInvocationContext
+  </h1>
+  <div class="markdown level0 summary"><p>Contains the related context of a perticular method invocation</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Solti.Utils.DI.Interfaces.html">Solti.Utils.DI.Interfaces</a></h6>
+  <h6><strong>Assembly</strong>: Solti.Utils.DI.Interfaces.dll</h6>
+  <h5 id="Solti_Utils_DI_Interfaces_IInvocationContext_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public interface IInvocationContext</code></pre>
+  </div>
+  <h3 id="properties">Properties
+  </h3>
+  <a id="Solti_Utils_DI_Interfaces_IInvocationContext_Args_" data-uid="Solti.Utils.DI.Interfaces.IInvocationContext.Args*"></a>
+  <h4 id="Solti_Utils_DI_Interfaces_IInvocationContext_Args" data-uid="Solti.Utils.DI.Interfaces.IInvocationContext.Args">Args</h4>
+  <div class="markdown level1 summary"><p>The arguments passed by the caller.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">object[] Args { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Object</a>[]</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Solti_Utils_DI_Interfaces_IInvocationContext_InterfaceMember_" data-uid="Solti.Utils.DI.Interfaces.IInvocationContext.InterfaceMember*"></a>
+  <h4 id="Solti_Utils_DI_Interfaces_IInvocationContext_InterfaceMember" data-uid="Solti.Utils.DI.Interfaces.IInvocationContext.InterfaceMember">InterfaceMember</h4>
+  <div class="markdown level1 summary"><p>The member (property, event or method) that is being invoked.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">MemberInfo InterfaceMember { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.reflection.memberinfo">MemberInfo</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Solti_Utils_DI_Interfaces_IInvocationContext_InterfaceMethod_" data-uid="Solti.Utils.DI.Interfaces.IInvocationContext.InterfaceMethod*"></a>
+  <h4 id="Solti_Utils_DI_Interfaces_IInvocationContext_InterfaceMethod" data-uid="Solti.Utils.DI.Interfaces.IInvocationContext.InterfaceMethod">InterfaceMethod</h4>
+  <div class="markdown level1 summary"><p>The concrete method behind the <a class="xref" href="Solti.Utils.DI.Interfaces.IInvocationContext.html#Solti_Utils_DI_Interfaces_IInvocationContext_InterfaceMember">InterfaceMember</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">MethodInfo InterfaceMethod { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.reflection.methodinfo">MethodInfo</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Solti_Utils_DI_Interfaces_IInvocationContext_TargeteMethod_" data-uid="Solti.Utils.DI.Interfaces.IInvocationContext.TargeteMethod*"></a>
+  <h4 id="Solti_Utils_DI_Interfaces_IInvocationContext_TargeteMethod" data-uid="Solti.Utils.DI.Interfaces.IInvocationContext.TargeteMethod">TargeteMethod</h4>
+  <div class="markdown level1 summary"><p>The concrete method behind the <a class="xref" href="Solti.Utils.DI.Interfaces.IInvocationContext.html#Solti_Utils_DI_Interfaces_IInvocationContext_TargetMember">TargetMember</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">MethodInfo TargeteMethod { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.reflection.methodinfo">MethodInfo</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Solti_Utils_DI_Interfaces_IInvocationContext_TargetMember_" data-uid="Solti.Utils.DI.Interfaces.IInvocationContext.TargetMember*"></a>
+  <h4 id="Solti_Utils_DI_Interfaces_IInvocationContext_TargetMember" data-uid="Solti.Utils.DI.Interfaces.IInvocationContext.TargetMember">TargetMember</h4>
+  <div class="markdown level1 summary"><p>The member (property, event or method) that is being targeted.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">MemberInfo TargetMember { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.reflection.memberinfo">MemberInfo</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="styles/docfx.js"></script>
+    <script type="text/javascript" src="styles/main.js"></script>
+  </body>
+</html>

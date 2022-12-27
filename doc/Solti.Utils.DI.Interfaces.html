@@ -76,6 +76,9 @@
       <h4><a class="xref" href="Solti.Utils.DI.Interfaces.InjectAttribute.html">InjectAttribute</a></h4>
       <section><p>Marks a property to be resolved.</p>
 </section>
+      <h4><a class="xref" href="Solti.Utils.DI.Interfaces.InvokeInterceptorDelegate.html">InvokeInterceptorDelegate</a></h4>
+      <section><p>Defines an interceptor invocation.</p>
+</section>
       <h4><a class="xref" href="Solti.Utils.DI.Interfaces.IScopeFactoryExtensions.html">IScopeFactoryExtensions</a></h4>
       <section><p>Defines some extensions to the <a class="xref" href="Solti.Utils.DI.Interfaces.IScopeFactory.html">IScopeFactory</a> interface.</p>
 </section>
@@ -129,6 +132,9 @@
 </section>
     <h3 id="interfaces">Interfaces
   </h3>
+      <h4><a class="xref" href="Solti.Utils.DI.Interfaces.IAspect.html">IAspect</a></h4>
+      <section><p>Defines the contract of aspects.</p>
+</section>
       <h4><a class="xref" href="Solti.Utils.DI.Interfaces.IBuildContext.html">IBuildContext</a></h4>
       <section><p>Context used during the build phase.</p>
 </section>
@@ -147,8 +153,11 @@
       <h4><a class="xref" href="Solti.Utils.DI.Interfaces.IInstanceFactory.html">IInstanceFactory</a></h4>
       <section><p>Describes the methods how to create servive instances.</p>
 </section>
-      <h4><a class="xref" href="Solti.Utils.DI.Interfaces.IInterceptorFactory-1.html">IInterceptorFactory&lt;TInterceptor&gt;</a></h4>
-      <section><p>Describes the contract how to create interface interceptors. Implementors are supposed to be aspects.</p>
+      <h4><a class="xref" href="Solti.Utils.DI.Interfaces.IInterfaceInterceptor.html">IInterfaceInterceptor</a></h4>
+      <section><p>Describes the contract how to implement an interface method call interceptor.</p>
+</section>
+      <h4><a class="xref" href="Solti.Utils.DI.Interfaces.IInvocationContext.html">IInvocationContext</a></h4>
+      <section><p>Contains the related context of a perticular method invocation</p>
 </section>
       <h4><a class="xref" href="Solti.Utils.DI.Interfaces.IModifiedServiceCollection.html">IModifiedServiceCollection</a></h4>
       <section><p>Extends the <a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollection.html">IServiceCollection</a> interface with a property of <a class="xref" href="Solti.Utils.DI.Interfaces.IModifiedServiceCollection.html#Solti_Utils_DI_Interfaces_IModifiedServiceCollection_LastEntry">LastEntry</a>.</p>

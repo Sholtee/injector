@@ -358,6 +358,18 @@ references:
   commentId: Overload:Solti.Utils.DI.Interfaces.AspectAttribute.#ctor
   fullName: Solti.Utils.DI.Interfaces.AspectAttribute.AspectAttribute
   nameWithType: AspectAttribute.AspectAttribute
+- uid: Solti.Utils.DI.Interfaces.AspectAttribute.UnderlyingInterceptor
+  name: UnderlyingInterceptor
+  href: Solti.Utils.DI.Interfaces.AspectAttribute.html#Solti_Utils_DI_Interfaces_AspectAttribute_UnderlyingInterceptor
+  commentId: P:Solti.Utils.DI.Interfaces.AspectAttribute.UnderlyingInterceptor
+  fullName: Solti.Utils.DI.Interfaces.AspectAttribute.UnderlyingInterceptor
+  nameWithType: AspectAttribute.UnderlyingInterceptor
+- uid: Solti.Utils.DI.Interfaces.AspectAttribute.UnderlyingInterceptor*
+  name: UnderlyingInterceptor
+  href: Solti.Utils.DI.Interfaces.AspectAttribute.html#Solti_Utils_DI_Interfaces_AspectAttribute_UnderlyingInterceptor_
+  commentId: Overload:Solti.Utils.DI.Interfaces.AspectAttribute.UnderlyingInterceptor
+  fullName: Solti.Utils.DI.Interfaces.AspectAttribute.UnderlyingInterceptor
+  nameWithType: AspectAttribute.UnderlyingInterceptor
 - uid: Solti.Utils.DI.Interfaces.CircularReferenceException
   name: CircularReferenceException
   href: Solti.Utils.DI.Interfaces.CircularReferenceException.html
@@ -602,6 +614,24 @@ references:
   fullName.vb: Solti.Utils.DI.Interfaces.FactoryDelegate(Of TInterface).Invoke
   nameWithType: FactoryDelegate<TInterface>.Invoke
   nameWithType.vb: FactoryDelegate(Of TInterface).Invoke
+- uid: Solti.Utils.DI.Interfaces.IAspect
+  name: IAspect
+  href: Solti.Utils.DI.Interfaces.IAspect.html
+  commentId: T:Solti.Utils.DI.Interfaces.IAspect
+  fullName: Solti.Utils.DI.Interfaces.IAspect
+  nameWithType: IAspect
+- uid: Solti.Utils.DI.Interfaces.IAspect.UnderlyingInterceptor
+  name: UnderlyingInterceptor
+  href: Solti.Utils.DI.Interfaces.IAspect.html#Solti_Utils_DI_Interfaces_IAspect_UnderlyingInterceptor
+  commentId: P:Solti.Utils.DI.Interfaces.IAspect.UnderlyingInterceptor
+  fullName: Solti.Utils.DI.Interfaces.IAspect.UnderlyingInterceptor
+  nameWithType: IAspect.UnderlyingInterceptor
+- uid: Solti.Utils.DI.Interfaces.IAspect.UnderlyingInterceptor*
+  name: UnderlyingInterceptor
+  href: Solti.Utils.DI.Interfaces.IAspect.html#Solti_Utils_DI_Interfaces_IAspect_UnderlyingInterceptor_
+  commentId: Overload:Solti.Utils.DI.Interfaces.IAspect.UnderlyingInterceptor
+  fullName: Solti.Utils.DI.Interfaces.IAspect.UnderlyingInterceptor
+  nameWithType: IAspect.UnderlyingInterceptor
 - uid: Solti.Utils.DI.Interfaces.IBuildContext
   name: IBuildContext
   href: Solti.Utils.DI.Interfaces.IBuildContext.html
@@ -800,31 +830,90 @@ references:
   commentId: Overload:Solti.Utils.DI.Interfaces.IInstanceFactory.Super
   fullName: Solti.Utils.DI.Interfaces.IInstanceFactory.Super
   nameWithType: IInstanceFactory.Super
-- uid: Solti.Utils.DI.Interfaces.IInterceptorFactory`1
-  name: IInterceptorFactory<TInterceptor>
-  href: Solti.Utils.DI.Interfaces.IInterceptorFactory-1.html
-  commentId: T:Solti.Utils.DI.Interfaces.IInterceptorFactory`1
-  name.vb: IInterceptorFactory(Of TInterceptor)
-  fullName: Solti.Utils.DI.Interfaces.IInterceptorFactory<TInterceptor>
-  fullName.vb: Solti.Utils.DI.Interfaces.IInterceptorFactory(Of TInterceptor)
-  nameWithType: IInterceptorFactory<TInterceptor>
-  nameWithType.vb: IInterceptorFactory(Of TInterceptor)
-- uid: Solti.Utils.DI.Interfaces.IInterceptorFactory`1.GetInterceptor(System.Type)
-  name: GetInterceptor(Type)
-  href: Solti.Utils.DI.Interfaces.IInterceptorFactory-1.html#Solti_Utils_DI_Interfaces_IInterceptorFactory_1_GetInterceptor_System_Type_
-  commentId: M:Solti.Utils.DI.Interfaces.IInterceptorFactory`1.GetInterceptor(System.Type)
-  fullName: Solti.Utils.DI.Interfaces.IInterceptorFactory<TInterceptor>.GetInterceptor(System.Type)
-  fullName.vb: Solti.Utils.DI.Interfaces.IInterceptorFactory(Of TInterceptor).GetInterceptor(System.Type)
-  nameWithType: IInterceptorFactory<TInterceptor>.GetInterceptor(Type)
-  nameWithType.vb: IInterceptorFactory(Of TInterceptor).GetInterceptor(Type)
-- uid: Solti.Utils.DI.Interfaces.IInterceptorFactory`1.GetInterceptor*
-  name: GetInterceptor
-  href: Solti.Utils.DI.Interfaces.IInterceptorFactory-1.html#Solti_Utils_DI_Interfaces_IInterceptorFactory_1_GetInterceptor_
-  commentId: Overload:Solti.Utils.DI.Interfaces.IInterceptorFactory`1.GetInterceptor
-  fullName: Solti.Utils.DI.Interfaces.IInterceptorFactory<TInterceptor>.GetInterceptor
-  fullName.vb: Solti.Utils.DI.Interfaces.IInterceptorFactory(Of TInterceptor).GetInterceptor
-  nameWithType: IInterceptorFactory<TInterceptor>.GetInterceptor
-  nameWithType.vb: IInterceptorFactory(Of TInterceptor).GetInterceptor
+- uid: Solti.Utils.DI.Interfaces.IInterfaceInterceptor
+  name: IInterfaceInterceptor
+  href: Solti.Utils.DI.Interfaces.IInterfaceInterceptor.html
+  commentId: T:Solti.Utils.DI.Interfaces.IInterfaceInterceptor
+  fullName: Solti.Utils.DI.Interfaces.IInterfaceInterceptor
+  nameWithType: IInterfaceInterceptor
+- uid: Solti.Utils.DI.Interfaces.IInterfaceInterceptor.Invoke(Solti.Utils.DI.Interfaces.IInvocationContext,Solti.Utils.DI.Interfaces.InvokeInterceptorDelegate)
+  name: Invoke(IInvocationContext, InvokeInterceptorDelegate)
+  href: Solti.Utils.DI.Interfaces.IInterfaceInterceptor.html#Solti_Utils_DI_Interfaces_IInterfaceInterceptor_Invoke_Solti_Utils_DI_Interfaces_IInvocationContext_Solti_Utils_DI_Interfaces_InvokeInterceptorDelegate_
+  commentId: M:Solti.Utils.DI.Interfaces.IInterfaceInterceptor.Invoke(Solti.Utils.DI.Interfaces.IInvocationContext,Solti.Utils.DI.Interfaces.InvokeInterceptorDelegate)
+  fullName: Solti.Utils.DI.Interfaces.IInterfaceInterceptor.Invoke(Solti.Utils.DI.Interfaces.IInvocationContext, Solti.Utils.DI.Interfaces.InvokeInterceptorDelegate)
+  nameWithType: IInterfaceInterceptor.Invoke(IInvocationContext, InvokeInterceptorDelegate)
+- uid: Solti.Utils.DI.Interfaces.IInterfaceInterceptor.Invoke*
+  name: Invoke
+  href: Solti.Utils.DI.Interfaces.IInterfaceInterceptor.html#Solti_Utils_DI_Interfaces_IInterfaceInterceptor_Invoke_
+  commentId: Overload:Solti.Utils.DI.Interfaces.IInterfaceInterceptor.Invoke
+  fullName: Solti.Utils.DI.Interfaces.IInterfaceInterceptor.Invoke
+  nameWithType: IInterfaceInterceptor.Invoke
+- uid: Solti.Utils.DI.Interfaces.IInvocationContext
+  name: IInvocationContext
+  href: Solti.Utils.DI.Interfaces.IInvocationContext.html
+  commentId: T:Solti.Utils.DI.Interfaces.IInvocationContext
+  fullName: Solti.Utils.DI.Interfaces.IInvocationContext
+  nameWithType: IInvocationContext
+- uid: Solti.Utils.DI.Interfaces.IInvocationContext.Args
+  name: Args
+  href: Solti.Utils.DI.Interfaces.IInvocationContext.html#Solti_Utils_DI_Interfaces_IInvocationContext_Args
+  commentId: P:Solti.Utils.DI.Interfaces.IInvocationContext.Args
+  fullName: Solti.Utils.DI.Interfaces.IInvocationContext.Args
+  nameWithType: IInvocationContext.Args
+- uid: Solti.Utils.DI.Interfaces.IInvocationContext.Args*
+  name: Args
+  href: Solti.Utils.DI.Interfaces.IInvocationContext.html#Solti_Utils_DI_Interfaces_IInvocationContext_Args_
+  commentId: Overload:Solti.Utils.DI.Interfaces.IInvocationContext.Args
+  fullName: Solti.Utils.DI.Interfaces.IInvocationContext.Args
+  nameWithType: IInvocationContext.Args
+- uid: Solti.Utils.DI.Interfaces.IInvocationContext.InterfaceMember
+  name: InterfaceMember
+  href: Solti.Utils.DI.Interfaces.IInvocationContext.html#Solti_Utils_DI_Interfaces_IInvocationContext_InterfaceMember
+  commentId: P:Solti.Utils.DI.Interfaces.IInvocationContext.InterfaceMember
+  fullName: Solti.Utils.DI.Interfaces.IInvocationContext.InterfaceMember
+  nameWithType: IInvocationContext.InterfaceMember
+- uid: Solti.Utils.DI.Interfaces.IInvocationContext.InterfaceMember*
+  name: InterfaceMember
+  href: Solti.Utils.DI.Interfaces.IInvocationContext.html#Solti_Utils_DI_Interfaces_IInvocationContext_InterfaceMember_
+  commentId: Overload:Solti.Utils.DI.Interfaces.IInvocationContext.InterfaceMember
+  fullName: Solti.Utils.DI.Interfaces.IInvocationContext.InterfaceMember
+  nameWithType: IInvocationContext.InterfaceMember
+- uid: Solti.Utils.DI.Interfaces.IInvocationContext.InterfaceMethod
+  name: InterfaceMethod
+  href: Solti.Utils.DI.Interfaces.IInvocationContext.html#Solti_Utils_DI_Interfaces_IInvocationContext_InterfaceMethod
+  commentId: P:Solti.Utils.DI.Interfaces.IInvocationContext.InterfaceMethod
+  fullName: Solti.Utils.DI.Interfaces.IInvocationContext.InterfaceMethod
+  nameWithType: IInvocationContext.InterfaceMethod
+- uid: Solti.Utils.DI.Interfaces.IInvocationContext.InterfaceMethod*
+  name: InterfaceMethod
+  href: Solti.Utils.DI.Interfaces.IInvocationContext.html#Solti_Utils_DI_Interfaces_IInvocationContext_InterfaceMethod_
+  commentId: Overload:Solti.Utils.DI.Interfaces.IInvocationContext.InterfaceMethod
+  fullName: Solti.Utils.DI.Interfaces.IInvocationContext.InterfaceMethod
+  nameWithType: IInvocationContext.InterfaceMethod
+- uid: Solti.Utils.DI.Interfaces.IInvocationContext.TargeteMethod
+  name: TargeteMethod
+  href: Solti.Utils.DI.Interfaces.IInvocationContext.html#Solti_Utils_DI_Interfaces_IInvocationContext_TargeteMethod
+  commentId: P:Solti.Utils.DI.Interfaces.IInvocationContext.TargeteMethod
+  fullName: Solti.Utils.DI.Interfaces.IInvocationContext.TargeteMethod
+  nameWithType: IInvocationContext.TargeteMethod
+- uid: Solti.Utils.DI.Interfaces.IInvocationContext.TargeteMethod*
+  name: TargeteMethod
+  href: Solti.Utils.DI.Interfaces.IInvocationContext.html#Solti_Utils_DI_Interfaces_IInvocationContext_TargeteMethod_
+  commentId: Overload:Solti.Utils.DI.Interfaces.IInvocationContext.TargeteMethod
+  fullName: Solti.Utils.DI.Interfaces.IInvocationContext.TargeteMethod
+  nameWithType: IInvocationContext.TargeteMethod
+- uid: Solti.Utils.DI.Interfaces.IInvocationContext.TargetMember
+  name: TargetMember
+  href: Solti.Utils.DI.Interfaces.IInvocationContext.html#Solti_Utils_DI_Interfaces_IInvocationContext_TargetMember
+  commentId: P:Solti.Utils.DI.Interfaces.IInvocationContext.TargetMember
+  fullName: Solti.Utils.DI.Interfaces.IInvocationContext.TargetMember
+  nameWithType: IInvocationContext.TargetMember
+- uid: Solti.Utils.DI.Interfaces.IInvocationContext.TargetMember*
+  name: TargetMember
+  href: Solti.Utils.DI.Interfaces.IInvocationContext.html#Solti_Utils_DI_Interfaces_IInvocationContext_TargetMember_
+  commentId: Overload:Solti.Utils.DI.Interfaces.IInvocationContext.TargetMember
+  fullName: Solti.Utils.DI.Interfaces.IInvocationContext.TargetMember
+  nameWithType: IInvocationContext.TargetMember
 - uid: Solti.Utils.DI.Interfaces.IModifiedServiceCollection
   name: IModifiedServiceCollection
   href: Solti.Utils.DI.Interfaces.IModifiedServiceCollection.html
@@ -861,6 +950,60 @@ references:
   commentId: Overload:Solti.Utils.DI.Interfaces.InjectAttribute.#ctor
   fullName: Solti.Utils.DI.Interfaces.InjectAttribute.InjectAttribute
   nameWithType: InjectAttribute.InjectAttribute
+- uid: Solti.Utils.DI.Interfaces.InvokeInterceptorDelegate
+  name: InvokeInterceptorDelegate
+  href: Solti.Utils.DI.Interfaces.InvokeInterceptorDelegate.html
+  commentId: T:Solti.Utils.DI.Interfaces.InvokeInterceptorDelegate
+  fullName: Solti.Utils.DI.Interfaces.InvokeInterceptorDelegate
+  nameWithType: InvokeInterceptorDelegate
+- uid: Solti.Utils.DI.Interfaces.InvokeInterceptorDelegate.#ctor(System.Object,System.IntPtr)
+  name: InvokeInterceptorDelegate(Object, IntPtr)
+  href: Solti.Utils.DI.Interfaces.InvokeInterceptorDelegate.html#Solti_Utils_DI_Interfaces_InvokeInterceptorDelegate__ctor_System_Object_System_IntPtr_
+  commentId: M:Solti.Utils.DI.Interfaces.InvokeInterceptorDelegate.#ctor(System.Object,System.IntPtr)
+  fullName: Solti.Utils.DI.Interfaces.InvokeInterceptorDelegate.InvokeInterceptorDelegate(System.Object, System.IntPtr)
+  nameWithType: InvokeInterceptorDelegate.InvokeInterceptorDelegate(Object, IntPtr)
+- uid: Solti.Utils.DI.Interfaces.InvokeInterceptorDelegate.#ctor*
+  name: InvokeInterceptorDelegate
+  href: Solti.Utils.DI.Interfaces.InvokeInterceptorDelegate.html#Solti_Utils_DI_Interfaces_InvokeInterceptorDelegate__ctor_
+  commentId: Overload:Solti.Utils.DI.Interfaces.InvokeInterceptorDelegate.#ctor
+  fullName: Solti.Utils.DI.Interfaces.InvokeInterceptorDelegate.InvokeInterceptorDelegate
+  nameWithType: InvokeInterceptorDelegate.InvokeInterceptorDelegate
+- uid: Solti.Utils.DI.Interfaces.InvokeInterceptorDelegate.BeginInvoke(System.AsyncCallback,System.Object)
+  name: BeginInvoke(AsyncCallback, Object)
+  href: Solti.Utils.DI.Interfaces.InvokeInterceptorDelegate.html#Solti_Utils_DI_Interfaces_InvokeInterceptorDelegate_BeginInvoke_System_AsyncCallback_System_Object_
+  commentId: M:Solti.Utils.DI.Interfaces.InvokeInterceptorDelegate.BeginInvoke(System.AsyncCallback,System.Object)
+  fullName: Solti.Utils.DI.Interfaces.InvokeInterceptorDelegate.BeginInvoke(System.AsyncCallback, System.Object)
+  nameWithType: InvokeInterceptorDelegate.BeginInvoke(AsyncCallback, Object)
+- uid: Solti.Utils.DI.Interfaces.InvokeInterceptorDelegate.BeginInvoke*
+  name: BeginInvoke
+  href: Solti.Utils.DI.Interfaces.InvokeInterceptorDelegate.html#Solti_Utils_DI_Interfaces_InvokeInterceptorDelegate_BeginInvoke_
+  commentId: Overload:Solti.Utils.DI.Interfaces.InvokeInterceptorDelegate.BeginInvoke
+  fullName: Solti.Utils.DI.Interfaces.InvokeInterceptorDelegate.BeginInvoke
+  nameWithType: InvokeInterceptorDelegate.BeginInvoke
+- uid: Solti.Utils.DI.Interfaces.InvokeInterceptorDelegate.EndInvoke(System.IAsyncResult)
+  name: EndInvoke(IAsyncResult)
+  href: Solti.Utils.DI.Interfaces.InvokeInterceptorDelegate.html#Solti_Utils_DI_Interfaces_InvokeInterceptorDelegate_EndInvoke_System_IAsyncResult_
+  commentId: M:Solti.Utils.DI.Interfaces.InvokeInterceptorDelegate.EndInvoke(System.IAsyncResult)
+  fullName: Solti.Utils.DI.Interfaces.InvokeInterceptorDelegate.EndInvoke(System.IAsyncResult)
+  nameWithType: InvokeInterceptorDelegate.EndInvoke(IAsyncResult)
+- uid: Solti.Utils.DI.Interfaces.InvokeInterceptorDelegate.EndInvoke*
+  name: EndInvoke
+  href: Solti.Utils.DI.Interfaces.InvokeInterceptorDelegate.html#Solti_Utils_DI_Interfaces_InvokeInterceptorDelegate_EndInvoke_
+  commentId: Overload:Solti.Utils.DI.Interfaces.InvokeInterceptorDelegate.EndInvoke
+  fullName: Solti.Utils.DI.Interfaces.InvokeInterceptorDelegate.EndInvoke
+  nameWithType: InvokeInterceptorDelegate.EndInvoke
+- uid: Solti.Utils.DI.Interfaces.InvokeInterceptorDelegate.Invoke
+  name: Invoke()
+  href: Solti.Utils.DI.Interfaces.InvokeInterceptorDelegate.html#Solti_Utils_DI_Interfaces_InvokeInterceptorDelegate_Invoke
+  commentId: M:Solti.Utils.DI.Interfaces.InvokeInterceptorDelegate.Invoke
+  fullName: Solti.Utils.DI.Interfaces.InvokeInterceptorDelegate.Invoke()
+  nameWithType: InvokeInterceptorDelegate.Invoke()
+- uid: Solti.Utils.DI.Interfaces.InvokeInterceptorDelegate.Invoke*
+  name: Invoke
+  href: Solti.Utils.DI.Interfaces.InvokeInterceptorDelegate.html#Solti_Utils_DI_Interfaces_InvokeInterceptorDelegate_Invoke_
+  commentId: Overload:Solti.Utils.DI.Interfaces.InvokeInterceptorDelegate.Invoke
+  fullName: Solti.Utils.DI.Interfaces.InvokeInterceptorDelegate.Invoke
+  nameWithType: InvokeInterceptorDelegate.Invoke
 - uid: Solti.Utils.DI.Interfaces.IScopeFactory
   name: IScopeFactory
   href: Solti.Utils.DI.Interfaces.IScopeFactory.html
@@ -1728,6 +1871,64 @@ references:
   commentId: N:Solti.Utils.DI.Internals
   fullName: Solti.Utils.DI.Internals
   nameWithType: Solti.Utils.DI.Internals
+- uid: Solti.Utils.DI.Internals.AspectAggregator`2
+  name: AspectAggregator<TInterface, TTarget>
+  href: Solti.Utils.DI.Internals.AspectAggregator-2.html
+  commentId: T:Solti.Utils.DI.Internals.AspectAggregator`2
+  name.vb: AspectAggregator(Of TInterface, TTarget)
+  fullName: Solti.Utils.DI.Internals.AspectAggregator<TInterface, TTarget>
+  fullName.vb: Solti.Utils.DI.Internals.AspectAggregator(Of TInterface, TTarget)
+  nameWithType: AspectAggregator<TInterface, TTarget>
+  nameWithType.vb: AspectAggregator(Of TInterface, TTarget)
+- uid: Solti.Utils.DI.Internals.AspectAggregator`2.#ctor(`1,Solti.Utils.DI.Interfaces.IInterfaceInterceptor[])
+  name: AspectAggregator(TTarget, IInterfaceInterceptor[])
+  href: Solti.Utils.DI.Internals.AspectAggregator-2.html#Solti_Utils_DI_Internals_AspectAggregator_2__ctor__1_Solti_Utils_DI_Interfaces_IInterfaceInterceptor___
+  commentId: M:Solti.Utils.DI.Internals.AspectAggregator`2.#ctor(`1,Solti.Utils.DI.Interfaces.IInterfaceInterceptor[])
+  name.vb: AspectAggregator(TTarget, IInterfaceInterceptor())
+  fullName: Solti.Utils.DI.Internals.AspectAggregator<TInterface, TTarget>.AspectAggregator(TTarget, Solti.Utils.DI.Interfaces.IInterfaceInterceptor[])
+  fullName.vb: Solti.Utils.DI.Internals.AspectAggregator(Of TInterface, TTarget).AspectAggregator(TTarget, Solti.Utils.DI.Interfaces.IInterfaceInterceptor())
+  nameWithType: AspectAggregator<TInterface, TTarget>.AspectAggregator(TTarget, IInterfaceInterceptor[])
+  nameWithType.vb: AspectAggregator(Of TInterface, TTarget).AspectAggregator(TTarget, IInterfaceInterceptor())
+- uid: Solti.Utils.DI.Internals.AspectAggregator`2.#ctor*
+  name: AspectAggregator
+  href: Solti.Utils.DI.Internals.AspectAggregator-2.html#Solti_Utils_DI_Internals_AspectAggregator_2__ctor_
+  commentId: Overload:Solti.Utils.DI.Internals.AspectAggregator`2.#ctor
+  fullName: Solti.Utils.DI.Internals.AspectAggregator<TInterface, TTarget>.AspectAggregator
+  fullName.vb: Solti.Utils.DI.Internals.AspectAggregator(Of TInterface, TTarget).AspectAggregator
+  nameWithType: AspectAggregator<TInterface, TTarget>.AspectAggregator
+  nameWithType.vb: AspectAggregator(Of TInterface, TTarget).AspectAggregator
+- uid: Solti.Utils.DI.Internals.AspectAggregator`2.Interceptors
+  name: Interceptors
+  href: Solti.Utils.DI.Internals.AspectAggregator-2.html#Solti_Utils_DI_Internals_AspectAggregator_2_Interceptors
+  commentId: P:Solti.Utils.DI.Internals.AspectAggregator`2.Interceptors
+  fullName: Solti.Utils.DI.Internals.AspectAggregator<TInterface, TTarget>.Interceptors
+  fullName.vb: Solti.Utils.DI.Internals.AspectAggregator(Of TInterface, TTarget).Interceptors
+  nameWithType: AspectAggregator<TInterface, TTarget>.Interceptors
+  nameWithType.vb: AspectAggregator(Of TInterface, TTarget).Interceptors
+- uid: Solti.Utils.DI.Internals.AspectAggregator`2.Interceptors*
+  name: Interceptors
+  href: Solti.Utils.DI.Internals.AspectAggregator-2.html#Solti_Utils_DI_Internals_AspectAggregator_2_Interceptors_
+  commentId: Overload:Solti.Utils.DI.Internals.AspectAggregator`2.Interceptors
+  fullName: Solti.Utils.DI.Internals.AspectAggregator<TInterface, TTarget>.Interceptors
+  fullName.vb: Solti.Utils.DI.Internals.AspectAggregator(Of TInterface, TTarget).Interceptors
+  nameWithType: AspectAggregator<TInterface, TTarget>.Interceptors
+  nameWithType.vb: AspectAggregator(Of TInterface, TTarget).Interceptors
+- uid: Solti.Utils.DI.Internals.AspectAggregator`2.Invoke(Solti.Utils.Proxy.InvocationContext)
+  name: Invoke(InvocationContext)
+  href: Solti.Utils.DI.Internals.AspectAggregator-2.html#Solti_Utils_DI_Internals_AspectAggregator_2_Invoke_Solti_Utils_Proxy_InvocationContext_
+  commentId: M:Solti.Utils.DI.Internals.AspectAggregator`2.Invoke(Solti.Utils.Proxy.InvocationContext)
+  fullName: Solti.Utils.DI.Internals.AspectAggregator<TInterface, TTarget>.Invoke(Solti.Utils.Proxy.InvocationContext)
+  fullName.vb: Solti.Utils.DI.Internals.AspectAggregator(Of TInterface, TTarget).Invoke(Solti.Utils.Proxy.InvocationContext)
+  nameWithType: AspectAggregator<TInterface, TTarget>.Invoke(InvocationContext)
+  nameWithType.vb: AspectAggregator(Of TInterface, TTarget).Invoke(InvocationContext)
+- uid: Solti.Utils.DI.Internals.AspectAggregator`2.Invoke*
+  name: Invoke
+  href: Solti.Utils.DI.Internals.AspectAggregator-2.html#Solti_Utils_DI_Internals_AspectAggregator_2_Invoke_
+  commentId: Overload:Solti.Utils.DI.Internals.AspectAggregator`2.Invoke
+  fullName: Solti.Utils.DI.Internals.AspectAggregator<TInterface, TTarget>.Invoke
+  fullName.vb: Solti.Utils.DI.Internals.AspectAggregator(Of TInterface, TTarget).Invoke
+  nameWithType: AspectAggregator<TInterface, TTarget>.Invoke
+  nameWithType.vb: AspectAggregator(Of TInterface, TTarget).Invoke
 - uid: Solti.Utils.DI.Internals.ProducibleServiceEntry
   name: ProducibleServiceEntry
   href: Solti.Utils.DI.Internals.ProducibleServiceEntry.html
@@ -1887,12 +2088,6 @@ references:
   fullName.vb: Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Instance(Of TInterface)(Solti.Utils.DI.Interfaces.IServiceCollection, System.String, TInterface)
   nameWithType: IServiceCollectionAdvancedExtensions.Instance<TInterface>(IServiceCollection, String, TInterface)
   nameWithType.vb: IServiceCollectionAdvancedExtensions.Instance(Of TInterface)(IServiceCollection, String, TInterface)
-- uid: Solti.Utils.DI.IServiceCollectionAdvancedExtensions.UsingProxy(Solti.Utils.DI.Interfaces.IModifiedServiceCollection,System.Type)
-  name: UsingProxy(IModifiedServiceCollection, Type)
-  href: Solti.Utils.DI.IServiceCollectionAdvancedExtensions.html#Solti_Utils_DI_IServiceCollectionAdvancedExtensions_UsingProxy_Solti_Utils_DI_Interfaces_IModifiedServiceCollection_System_Type_
-  commentId: M:Solti.Utils.DI.IServiceCollectionAdvancedExtensions.UsingProxy(Solti.Utils.DI.Interfaces.IModifiedServiceCollection,System.Type)
-  fullName: Solti.Utils.DI.IServiceCollectionAdvancedExtensions.UsingProxy(Solti.Utils.DI.Interfaces.IModifiedServiceCollection, System.Type)
-  nameWithType: IServiceCollectionAdvancedExtensions.UsingProxy(IModifiedServiceCollection, Type)
 - uid: Solti.Utils.DI.IServiceCollectionAdvancedExtensions.UsingProxy*
   name: UsingProxy
   href: Solti.Utils.DI.IServiceCollectionAdvancedExtensions.html#Solti_Utils_DI_IServiceCollectionAdvancedExtensions_UsingProxy_
