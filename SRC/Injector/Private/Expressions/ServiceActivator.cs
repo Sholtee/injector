@@ -87,7 +87,7 @@ namespace Solti.Utils.DI.Internals
             (
                 constructor,
                 constructor
-                    .GetParametersSafe()
+                    .GetParameters()
                     .Select
                     (
                         param => resolveDep
@@ -119,6 +119,13 @@ namespace Solti.Utils.DI.Internals
                 )
         );
 
+        /// <summary>
+        /// <code>
+        /// (TInterface) injector.[Try]Get(typeof(IInterface), svcName)
+        /// // or
+        /// Lazy&lt;IInterface&gt;(() => (IInterface) injector.[Try]Get(typeof(IInterface), svcName))
+        /// </code>
+        /// </summary>
         private static Expression DefaultDependencyResolver(ParameterExpression injector, Type type, string __, OptionsAttribute? options)
         {
             type = GetEffectiveType(type, out bool isLazy) ?? throw new ArgumentException(Resources.INVALID_CONSTRUCTOR);
@@ -137,25 +144,15 @@ namespace Solti.Utils.DI.Internals
                 : GetService(injector, type, options);
         }
 
-        private static Expression<TDelegate> CreateActivator<TDelegate>
-        (
-            ConstructorInfo constructor,
-            Func<ParameterExpression, Type, string, OptionsAttribute?, Expression> resolveDep,
-            ParameterExpression? additinalParameter,
-            params ParameterExpression[] variables
-        ) where TDelegate : Delegate
+        private static Expression<TDelegate> CreateActivator<TDelegate>(Func<IReadOnlyList<ParameterExpression>, Expression> createInstance, params ParameterExpression[] variables) where TDelegate : Delegate
         {
-            ParameterExpression
-                injector = Expression.Parameter(typeof(IInjector), nameof(injector)),
-                iface = Expression.Parameter(typeof(Type), nameof(iface));
-
-            List<ParameterExpression> paramz = new(3)
-            {
-                injector,
-                iface
-            };
-            if (additinalParameter is not null)
-                paramz.Add(additinalParameter);
+            List<ParameterExpression> paramz = new
+            (
+                typeof(TDelegate)
+                    .GetMethod(nameof(Action.Invoke))
+                    .GetParameters()
+                    .Select(static para => Expression.Parameter(para.ParameterType, para.Name))
+            );
 
             Expression<TDelegate> resolver = Expression.Lambda<TDelegate>
             (
@@ -164,7 +161,7 @@ namespace Solti.Utils.DI.Internals
                     variables,
                     Expression.Convert
                     (
-                        New(constructor, injector, resolveDep),
+                        createInstance(paramz),
                         typeof(object)
                     )
                 ),
@@ -176,55 +173,33 @@ namespace Solti.Utils.DI.Internals
             return resolver;
         }
 
+        private static Expression<TDelegate> CreateActivator<TDelegate>
+        (
+            ConstructorInfo constructor,
+            Func<ParameterExpression, Type, string, OptionsAttribute?, Expression> resolveDep,
+            params ParameterExpression[] variables
+        ) where TDelegate : Delegate => CreateActivator<TDelegate>
+        (
+            paramz => New
+            (
+                constructor,
+                paramz.Single(static param => param.Type == typeof(IInjector)),
+                resolveDep
+            ),
+            variables
+        );
+
         /// <summary>
-        /// <code>(injector, iface)  => (object) new Service(IDependency_1 | Lazy&lt;IDependency_1&gt;, IDependency_2 | Lazy&lt;IDependency_2&gt;,...)</code>
+        /// <code>(injector, iface) => (object) new Service(IDependency_1 | Lazy&lt;IDependency_1&gt;, IDependency_2 | Lazy&lt;IDependency_2&gt;,...)</code>
         /// </summary>
         public static Expression<FactoryDelegate> Get(ConstructorInfo constructor) => CreateActivator<FactoryDelegate>
         (
             constructor, 
-            DefaultDependencyResolver,
-            null
+            DefaultDependencyResolver
         );
 
         /// <summary>
-        /// <code>(injector, objects)  => (object) new Service(explicit | IDependency_1 | Lazy&lt;IDependency_1&gt;, explicit | IDependency_2 | Lazy&lt;IDependency_2&gt;,...)</code>
-        /// </summary>
-        public static Expression<ApplyProxyDelegate> GetLateBound(ConstructorInfo constructor, int argIndex) // TODO: delete
-        {
-            int i = 0;
-            ParameterExpression explicitArg = Expression.Parameter(typeof(object), nameof(explicitArg));
-
-            return CreateActivator<ApplyProxyDelegate>
-            (
-                constructor,
-                ResolveDependency,
-                explicitArg
-            );
-
-            Expression ResolveDependency(ParameterExpression injector, Type type, string __, OptionsAttribute? options)
-            {
-                if (argIndex == i++)
-                    return Expression.Convert(explicitArg, type);
-
-                type = GetEffectiveType(type, out bool isLazy) ?? throw new ArgumentException(Resources.INVALID_CONSTRUCTOR, nameof(constructor));
-
-                return isLazy
-                    //
-                    // Lazy<IInterface>(() => (IInterface) injector.[Try]Get(typeof(IInterface), svcName))
-                    //
-
-                    ? CreateLazy(injector, type, options)
-
-                    //
-                    // (TInterface) injector.[Try]Get(typeof(IInterface), svcName)
-                    //
-
-                    : GetService(injector, type, options);
-            }
-        }
-
-        /// <summary>
-        /// <code>(injector, iface)  => (object) new Service(IDependency_1 | Lazy&lt;IDependency_1&gt;, IDependency_2 | Lazy&lt;IDependency_2&gt;,...)</code>
+        /// <code>(injector, iface) => (object) new Service(IDependency_1 | Lazy&lt;IDependency_1&gt;, IDependency_2 | Lazy&lt;IDependency_2&gt;,...)</code>
         /// </summary>
         public static Expression<FactoryDelegate> Get(Type type)
         {
@@ -254,7 +229,6 @@ namespace Solti.Utils.DI.Internals
             (
                 constructor,
                 ResolveDependency,
-                null,
                 arg
             );
 
@@ -331,8 +305,7 @@ namespace Solti.Utils.DI.Internals
             return CreateActivator<FactoryDelegate>
             (
                 constructor,
-                ResolveDependency,
-                null
+                ResolveDependency
             );
 
             Expression ResolveDependency(ParameterExpression injector, Type type, string name, OptionsAttribute? options)
@@ -461,7 +434,7 @@ namespace Solti.Utils.DI.Internals
         /// ); 
         /// </code>
         /// </summary>
-        public static Expression<ApplyProxyDelegate> ApplyInterceptors(Type iface, Type target, IEnumerable<Type> interceptorTypes)
+        public static Expression<ApplyProxyDelegate> InterceptorsToProxyDelegate(Type iface, Type target, IEnumerable<Type> interceptorTypes)
         {
             Type concreteProxy = new ProxyGenerator
             (
@@ -469,16 +442,12 @@ namespace Solti.Utils.DI.Internals
                 typeof(AspectAggregator<,>).MakeGenericType(iface, target)
             ).GetGeneratedType();
 
-            ParameterExpression
-                injector = Expression.Parameter(typeof(IInjector), nameof(injector)),
-                current = Expression.Parameter(typeof(object), nameof(current));
-
-            return Expression.Lambda<ApplyProxyDelegate>
+            return CreateActivator<ApplyProxyDelegate>
             (
-                Expression.New
+                paramz => Expression.New
                 (
-                    concreteProxy.GetConstructors().Single(),
-                    Expression.Convert(current, target),
+                    concreteProxy.GetApplicableConstructor(),
+                    Expression.Convert(paramz[2], target),
                     Expression.NewArrayInit
                     (
                         typeof(IInterfaceInterceptor),
@@ -487,14 +456,12 @@ namespace Solti.Utils.DI.Internals
                             interceptorType => New
                             (
                                 interceptorType.GetApplicableConstructor(),
-                                injector,
+                                paramz[0],
                                 DefaultDependencyResolver
                             )
                         )
                     )
-                ),
-                injector,
-                current
+                )
             );
         }
 
@@ -511,14 +478,35 @@ namespace Solti.Utils.DI.Internals
         /// ); 
         /// </code>
         /// </summary>
-        public static Expression<ApplyProxyDelegate> ApplyAspects(Type iface, Type target) => ApplyInterceptors
-        (
-            iface,
-            target,
-            target
-                .GetCustomAttributes()
-                .OfType<IAspect>()
-                .Select(aspect => aspect.UnderlyingInterceptor)
-        );
+        public static Expression<ApplyProxyDelegate>? AspectsToProxyDelegate(Type iface, Type target)
+        {
+            IEnumerable<Type> interceptors = GetInterceptors(iface);
+            if (target != iface)
+                interceptors = interceptors.Union(GetInterceptors(target));
+
+            return interceptors.Any()
+                ? InterceptorsToProxyDelegate
+                (
+                    iface,
+                    target,
+                    interceptors
+                )
+                : null;
+
+            static IEnumerable<Type> GetInterceptors(Type type)
+            {
+                IEnumerable<Type> interceptors = type
+                   .GetCustomAttributes()
+                   .OfType<IAspect>()
+                   .Select(static aspect => aspect.UnderlyingInterceptor);
+
+                foreach (Type interceptor in interceptors)
+                {
+                    if (!typeof(IInterfaceInterceptor).IsAssignableFrom(interceptor))
+                        throw new InvalidOperationException(Resources.NOT_AN_INTERCEPTOR);
+                    yield return interceptor;
+                }
+            }
+        }
     }
 }

@@ -1,4 +1,5 @@
-﻿abstract Solti.Utils.DI.Interfaces.LifetimeBase.CompareTo(Solti.Utils.DI.Interfaces.LifetimeBase! other) -> int
+﻿abstract Solti.Utils.DI.Interfaces.AspectAttribute.UnderlyingInterceptor.get -> System.Type!
+abstract Solti.Utils.DI.Interfaces.LifetimeBase.CompareTo(Solti.Utils.DI.Interfaces.LifetimeBase! other) -> int
 const Solti.Utils.DI.Interfaces.Consts.INTERNAL_SERVICE_NAME_PREFIX = "$" -> string!
 override sealed Solti.Utils.DI.Interfaces.AbstractServiceEntry.GetHashCode() -> int
 override Solti.Utils.DI.Interfaces.AbstractServiceEntry.ToString() -> string!
@@ -49,8 +50,6 @@ Solti.Utils.DI.Interfaces.IInjectorBasicExtensions
 Solti.Utils.DI.Interfaces.IInstanceFactory
 Solti.Utils.DI.Interfaces.IInstanceFactory.GetOrCreateInstance(Solti.Utils.DI.Interfaces.AbstractServiceEntry! requested, int? slot) -> object!
 Solti.Utils.DI.Interfaces.IInstanceFactory.Super.get -> Solti.Utils.DI.Interfaces.IInstanceFactory?
-Solti.Utils.DI.Interfaces.IInterceptorFactory<TInterceptor>
-Solti.Utils.DI.Interfaces.IInterceptorFactory<TInterceptor>.GetInterceptor(System.Type! iface) -> TInterceptor
 Solti.Utils.DI.Interfaces.IInterfaceInterceptor
 Solti.Utils.DI.Interfaces.IInterfaceInterceptor.Invoke(Solti.Utils.DI.Interfaces.IInvocationContext! context, Solti.Utils.DI.Interfaces.InvokeInterceptorDelegate! callNext) -> object?
 Solti.Utils.DI.Interfaces.IInvocationContext

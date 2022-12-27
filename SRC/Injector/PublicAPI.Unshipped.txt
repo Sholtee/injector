@@ -1,4 +1,5 @@
-﻿override sealed Solti.Utils.DI.Interfaces.AbstractServiceEntry.GetHashCode() -> int (forwarded, contained in Solti.Utils.DI.Interfaces)
+﻿abstract Solti.Utils.DI.Interfaces.AspectAttribute.UnderlyingInterceptor.get -> System.Type! (forwarded, contained in Solti.Utils.DI.Interfaces)
+override sealed Solti.Utils.DI.Interfaces.AbstractServiceEntry.GetHashCode() -> int (forwarded, contained in Solti.Utils.DI.Interfaces)
 override sealed Solti.Utils.DI.Internals.ProducibleServiceEntry.Proxies.get -> System.Collections.Generic.IReadOnlyList<System.Linq.Expressions.Expression<Solti.Utils.DI.Interfaces.ApplyProxyDelegate!>!>!
 override sealed Solti.Utils.DI.Internals.ProducibleServiceEntry.SetValidated() -> void
 override Solti.Utils.DI.Interfaces.AbstractServiceEntry.ToString() -> string! (forwarded, contained in Solti.Utils.DI.Interfaces)
@@ -29,6 +30,8 @@ Solti.Utils.DI.Interfaces.CircularReferenceException.Circle.init -> void (forwar
 Solti.Utils.DI.Interfaces.CircularReferenceException.CircularReferenceException() -> void (forwarded, contained in Solti.Utils.DI.Interfaces)
 Solti.Utils.DI.Interfaces.CircularReferenceException.CircularReferenceException(string! message) -> void (forwarded, contained in Solti.Utils.DI.Interfaces)
 Solti.Utils.DI.Interfaces.CircularReferenceException.CircularReferenceException(string! message, System.Exception! innerException) -> void (forwarded, contained in Solti.Utils.DI.Interfaces)
+Solti.Utils.DI.Interfaces.IAspect (forwarded, contained in Solti.Utils.DI.Interfaces)
+Solti.Utils.DI.Interfaces.IAspect.UnderlyingInterceptor.get -> System.Type! (forwarded, contained in Solti.Utils.DI.Interfaces)
 Solti.Utils.DI.Interfaces.IInjector (forwarded, contained in Solti.Utils.DI.Interfaces)
 Solti.Utils.DI.Interfaces.IInjector.Get(System.Type! iface, string? name = null) -> object! (forwarded, contained in Solti.Utils.DI.Interfaces)
 Solti.Utils.DI.Interfaces.IInjector.Options.get -> Solti.Utils.DI.Interfaces.ScopeOptions! (forwarded, contained in Solti.Utils.DI.Interfaces)
@@ -37,6 +40,8 @@ Solti.Utils.DI.Interfaces.IInjectorBasicExtensions (forwarded, contained in Solt
 Solti.Utils.DI.Interfaces.IInstanceFactory (forwarded, contained in Solti.Utils.DI.Interfaces)
 Solti.Utils.DI.Interfaces.IInstanceFactory.GetOrCreateInstance(Solti.Utils.DI.Interfaces.AbstractServiceEntry! requested, int? slot) -> object! (forwarded, contained in Solti.Utils.DI.Interfaces)
 Solti.Utils.DI.Interfaces.IInstanceFactory.Super.get -> Solti.Utils.DI.Interfaces.IInstanceFactory? (forwarded, contained in Solti.Utils.DI.Interfaces)
+Solti.Utils.DI.Interfaces.IInterfaceInterceptor (forwarded, contained in Solti.Utils.DI.Interfaces)
+Solti.Utils.DI.Interfaces.IInterfaceInterceptor.Invoke(Solti.Utils.DI.Interfaces.IInvocationContext! context, Solti.Utils.DI.Interfaces.InvokeInterceptorDelegate! callNext) -> object? (forwarded, contained in Solti.Utils.DI.Interfaces)
 Solti.Utils.DI.Interfaces.IModifiedServiceCollection (forwarded, contained in Solti.Utils.DI.Interfaces)
 Solti.Utils.DI.Interfaces.IModifiedServiceCollection.LastEntry.get -> Solti.Utils.DI.Interfaces.AbstractServiceEntry! (forwarded, contained in Solti.Utils.DI.Interfaces)
 Solti.Utils.DI.Interfaces.InjectAttribute (forwarded, contained in Solti.Utils.DI.Interfaces)
@@ -72,6 +77,7 @@ Solti.Utils.DI.Interfaces.ServiceNotFoundException.ServiceNotFoundException(stri
 Solti.Utils.DI.Interfaces.ServiceNotFoundException.ServiceNotFoundException(string! message, System.Exception! innerException) -> void (forwarded, contained in Solti.Utils.DI.Interfaces)
 Solti.Utils.DI.Internals.AspectAggregator<TInterface, TTarget>
 Solti.Utils.DI.Internals.AspectAggregator<TInterface, TTarget>.AspectAggregator(TTarget! target, params Solti.Utils.DI.Interfaces.IInterfaceInterceptor![]! interceptors) -> void
+Solti.Utils.DI.Internals.AspectAggregator<TInterface, TTarget>.Interceptors.get -> System.Collections.Generic.IReadOnlyList<Solti.Utils.DI.Interfaces.IInterfaceInterceptor!>!
 Solti.Utils.DI.Internals.ProducibleServiceEntry
 Solti.Utils.DI.Internals.ProducibleServiceEntry.ExplicitArgs.get -> object?
 Solti.Utils.DI.Internals.ProducibleServiceEntry.ProducibleServiceEntry(System.Type! interface, string? name) -> void
@@ -129,7 +135,6 @@ static Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Instance(this Solti.U
 static Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Instance(this Solti.Utils.DI.Interfaces.IServiceCollection! self, System.Type! iface, string? name, object! instance) -> Solti.Utils.DI.Interfaces.IModifiedServiceCollection!
 static Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Instance<TInterface>(this Solti.Utils.DI.Interfaces.IServiceCollection! self, string? name, TInterface! instance) -> Solti.Utils.DI.Interfaces.IModifiedServiceCollection!
 static Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Instance<TInterface>(this Solti.Utils.DI.Interfaces.IServiceCollection! self, TInterface! instance) -> Solti.Utils.DI.Interfaces.IModifiedServiceCollection!
-static Solti.Utils.DI.IServiceCollectionAdvancedExtensions.UsingProxy(this Solti.Utils.DI.Interfaces.IModifiedServiceCollection! self, System.Type! interceptor) -> Solti.Utils.DI.Interfaces.IModifiedServiceCollection!
 static Solti.Utils.DI.IServiceCollectionAdvancedExtensions.UsingProxy<TInterceptor>(this Solti.Utils.DI.Interfaces.IModifiedServiceCollection! self) -> Solti.Utils.DI.Interfaces.IModifiedServiceCollection!
 static Solti.Utils.DI.Lifetime.Pooled.get -> Solti.Utils.DI.Lifetime!
 static Solti.Utils.DI.Lifetime.Scoped.get -> Solti.Utils.DI.Lifetime!

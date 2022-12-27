@@ -52,6 +52,13 @@ namespace Solti.Utils.DI.Internals
             implementation.GetApplicableConstructor();
             return null;
         }
+
+        private void ApplyAspects()
+        {
+            Expression<ApplyProxyDelegate>? del = ServiceActivator.AspectsToProxyDelegate(Interface, Implementation ?? Interface);
+            if (del is not null)
+                ApplyProxy(del);
+        }
         #endregion
 
         #region Protected

@@ -18,8 +18,6 @@ namespace Solti.Utils.DI.Internals.Tests
     using Interfaces;
     using Primitives.Patterns;
     using Properties;
-    using Proxy;
-    using Proxy.Generators;
 
     [TestFixture]
     public sealed class ServiceActivatorTests
@@ -282,24 +280,6 @@ namespace Solti.Utils.DI.Internals.Tests
         }
 
         [Test]
-        public void ExtendedActivator_ShouldSupportExplicitArguments3()
-        {
-            var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
-            mockInjector.Setup(i => i.Get(It.IsAny<Type>(), It.IsAny<string>()));
-
-            ApplyProxyDelegate factory = ServiceActivator
-                .GetLateBound(typeof(List<string>).GetConstructor(new[] { typeof(int) }), 0)
-                .Compile();
-
-            object lst = factory(mockInjector.Object, null, 10);
-
-            Assert.That(lst, Is.InstanceOf<List<string>>());
-            Assert.That(((List<string>)lst).Capacity, Is.EqualTo(10));
-
-            mockInjector.Verify(i => i.Get(It.IsAny<Type>(), It.IsAny<string>()), Times.Never);
-        }
-
-        [Test]
         public void ExtendedActivator_ShouldSupportExplicitProperties()
         {
             var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
@@ -335,6 +315,13 @@ namespace Solti.Utils.DI.Internals.Tests
             Assert.That(ret.Dep, Is.Not.Null);
         }
 
+        private sealed class MyServiceHavingDependency
+        {
+            public MyServiceHavingDependency(IList<IDictionary> _, [Options(Optional = true)] IDisposable __)
+            {
+            }
+        }
+
         [Test]
         public void ExtendedActivator_ShouldResolveOptionalArguments() 
         {
@@ -347,7 +334,7 @@ namespace Solti.Utils.DI.Internals.Tests
                 .Returns(null);
 
             FactoryDelegate factory = ServiceActivator
-                .Get(typeof(MyInterceptor), new Dictionary<string, object>())
+                .Get(typeof(MyServiceHavingDependency), new Dictionary<string, object>())
                 .Compile();
 
             Assert.DoesNotThrow(() => factory.Invoke(mockInjector.Object, null));
@@ -368,7 +355,7 @@ namespace Solti.Utils.DI.Internals.Tests
                 .Returns(null);
 
             FactoryDelegate factory = ServiceActivator
-                .Get(typeof(MyInterceptor), new { })
+                .Get(typeof(MyServiceHavingDependency), new { })
                 .Compile();
 
             Assert.DoesNotThrow(() => factory.Invoke(mockInjector.Object, null));
@@ -549,26 +536,6 @@ namespace Solti.Utils.DI.Internals.Tests
         }
 
         [Test]
-        public void ExtendedActivator_ExplicitArgumentsShouldSuppressTheInjectorInvocation3()
-        {
-            var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
-            mockInjector
-                .Setup(i => i.Get(It.IsAny<Type>(), It.IsAny<string>()))
-                .Returns<Type, string>((type, name) => null);
-
-            ApplyProxyDelegate factory = ServiceActivator
-                .GetLateBound(typeof(MyClass).GetConstructor(new[] { typeof(IDisposable), typeof(IList) }), 1)
-                .Compile();
-
-            object obj = factory(mockInjector.Object, null, null);
-
-            Assert.That(obj, Is.InstanceOf<MyClass>());
-
-            mockInjector.Verify(i => i.Get(It.Is<Type>(t => t == typeof(IDisposable)), null), Times.Once);
-            mockInjector.Verify(i => i.Get(It.Is<Type>(t => t == typeof(IList)), It.IsAny<string>()), Times.Never);
-        }
-
-        [Test]
         public void ExtendedActivator_ExplicitArgumentsMayContainNonInterfaceValues()
         {
             const int TEN = 10;
@@ -617,95 +584,59 @@ namespace Solti.Utils.DI.Internals.Tests
             mockInjector.Verify(i => i.Get(It.Is<Type>(t => t == typeof(IDisposable)), It.Is<string>(s => s == svcName)), Times.Once);
         }
 
-        public class MyInterceptor : InterfaceInterceptor<IList<IDictionary>> 
+        private sealed class AspectExposingInvalidInterceptor : AspectAttribute
         {
-            public MyInterceptor(IList<IDictionary> target, [Options(Optional = true)] IDisposable _) : base(target)
+            public override Type UnderlyingInterceptor { get; } = typeof(object);
+        }
+
+        public interface IMyService { }
+
+        [AspectExposingInvalidInterceptor]
+        public class MyServiceUsingInvalidAspect : IMyService
+        {
+        }
+
+        [Test]
+        public void AspectsToProxyDelegate_ShouldThrowOnInvalidInterceptor() =>
+            Assert.Throws<InvalidOperationException>(() => ServiceActivator.AspectsToProxyDelegate(typeof(IMyService), typeof(MyServiceUsingInvalidAspect)));
+
+
+        private sealed class MyAspect : AspectAttribute
+        {
+            public sealed class MyInterceptor : IInterfaceInterceptor
             {
+                public MyInterceptor(IList dependency) => Dependency = dependency;
+
+                public IList Dependency { get; }
+
+                public object Invoke(IInvocationContext context, InvokeInterceptorDelegate callNext) => callNext();
             }
+
+            public override Type UnderlyingInterceptor { get; } = typeof(MyInterceptor);
+        }
+
+        [MyAspect]
+        public class MyService : IMyService
+        {
         }
 
         [Test]
-        public void Get_ShouldSupportProxyTypes() 
+        public void ApplyProxyDelegate_ShouldInstantiateTheInterceptors()
         {
-            Type proxy = ProxyGenerator<IList<IDictionary>, MyInterceptor>.GetGeneratedType();
-
-            FactoryDelegate factory = ServiceActivator.Get(proxy).Compile();
-
-            var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
+            Mock<IInjector> mockInjector = new(MockBehavior.Strict);
             mockInjector
-                .Setup(i => i.Get(typeof(IList<IDictionary>), null))
-                .Returns(new List<IDictionary>());
-            mockInjector
-                .Setup(i => i.TryGet(typeof(IDisposable), null))
-                .Returns(null);
+                .Setup(i => i.Get(typeof(IList), null))
+                .Returns(new List<object>());
 
-            Assert.DoesNotThrow(() => factory.Invoke(mockInjector.Object, typeof(IList<IDictionary>)));
+            ApplyProxyDelegate del = ServiceActivator.AspectsToProxyDelegate(typeof(IMyService), typeof(MyService)).Compile();
+            AspectAggregator<IMyService, MyService> proxy = (AspectAggregator<IMyService, MyService>) del
+            (
+                mockInjector.Object, typeof(IMyService), new MyService()
+            );
 
-            mockInjector.Verify(i => i.Get(typeof(IList<IDictionary>), null), Times.Once);
-            mockInjector.Verify(i => i.TryGet(typeof(IDisposable), null), Times.Once);
-        }
-
-        [Test]
-        public void Get_ShouldSupportProxyTypes2()
-        {
-            Type proxy = ProxyGenerator<IList<IDictionary>, MyInterceptor>.GetGeneratedType();
-
-            FactoryDelegate factory = ServiceActivator.Get(proxy, new Dictionary<string, object>()).Compile();
-
-            var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
-            mockInjector
-                .Setup(i => i.Get(typeof(IList<IDictionary>), null))
-                .Returns(new List<IDictionary>());
-            mockInjector
-                .Setup(i => i.TryGet(typeof(IDisposable), null))
-                .Returns(null);
-
-            Assert.DoesNotThrow(() => factory.Invoke(mockInjector.Object, null));
-
-            mockInjector.Verify(i => i.Get(typeof(IList<IDictionary>), null), Times.Once);
-            mockInjector.Verify(i => i.TryGet(typeof(IDisposable), null), Times.Once);
-        }
-
-        [Test]
-        public void Get_ShouldSupportProxyTypes3()
-        {
-            Type proxy = ProxyGenerator<IList<IDictionary>, MyInterceptor>.GetGeneratedType();
-
-            FactoryDelegate factory = ServiceActivator.Get(proxy, new { }).Compile();
-
-            var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
-            mockInjector
-                .Setup(i => i.Get(typeof(IList<IDictionary>), null))
-                .Returns(new List<IDictionary>());
-            mockInjector
-                .Setup(i => i.TryGet(typeof(IDisposable), null))
-                .Returns(null);
-
-            Assert.DoesNotThrow(() => factory.Invoke(mockInjector.Object, null));
-
-            mockInjector.Verify(i => i.Get(typeof(IList<IDictionary>), null), Times.Once);
-            mockInjector.Verify(i => i.TryGet(typeof(IDisposable), null), Times.Once);
-        }
-
-        [Test]
-        public void Get_ShouldSupportProxyTypes4()
-        {
-            Type proxy = ProxyGenerator<IList<IDictionary>, MyInterceptor>.GetGeneratedType();
-
-            ApplyProxyDelegate factory = ServiceActivator.GetLateBound(proxy.GetConstructor(new[] { typeof(IList<IDictionary>), typeof(IDisposable) }), 100).Compile();
-
-            var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
-            mockInjector
-                .Setup(i => i.Get(typeof(IList<IDictionary>), null))
-                .Returns(new List<IDictionary>());
-            mockInjector
-                .Setup(i => i.TryGet(typeof(IDisposable), null))
-                .Returns(null);
-
-            Assert.DoesNotThrow(() => factory.Invoke(mockInjector.Object, null, null));
-
-            mockInjector.Verify(i => i.Get(typeof(IList<IDictionary>), null), Times.Once);
-            mockInjector.Verify(i => i.TryGet(typeof(IDisposable), null), Times.Once);
+            Assert.That(proxy.Interceptors.Count, Is.EqualTo(1));
+            Assert.That(proxy.Interceptors[0], Is.InstanceOf<MyAspect.MyInterceptor>());
+            mockInjector.Verify(i => i.Get(typeof(IList), null), Times.Once);
         }
     }
 }

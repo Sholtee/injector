@@ -10,9 +10,12 @@ namespace Solti.Utils.DI.Interfaces
     /// <summary>
     /// Defines an abstract aspect that can be applied against service interfaces.
     /// </summary>
-    /// <remarks>Derived aspects must implement the <see cref="IInterceptorFactory{TInterceptor}"/> interface.</remarks>
-    [AttributeUsage(AttributeTargets.Interface)]
-    public abstract class AspectAttribute : Attribute
+    [AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class)]
+    public abstract class AspectAttribute : Attribute, IAspect
     {
+        /// <summary>
+        /// See <see cref="IAspect.UnderlyingInterceptor"/>
+        /// </summary>
+        public abstract Type UnderlyingInterceptor { get; }
     }
 }

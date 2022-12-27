@@ -10,48 +10,34 @@ namespace Solti.Utils.DI
     using Interfaces;
     using Interfaces.Properties;
     using Internals;
-    using Proxy;
 
     public static partial class IServiceCollectionAdvancedExtensions
     {
         /// <summary>
-        /// Hooks into the instantiating process to let you decorate the original service. Useful when you want to add additional functionality (e.g. parameter validation). The easiest way to decorate an instance is using the <see cref="InterfaceInterceptor{TInterface}"/> class.
+        /// Hooks into the instantiating process to let you decorate the original service. Useful when you want to add additional functionality (e.g. parameter validation).
         /// </summary>
-        /// <typeparam name="TInterceptor">The interceptor class.</typeparam>
         /// <param name="self">The target <see cref="IServiceCollection"/>.</param>
         /// <remarks>You can't create proxies against instances and open generic services. A service can be decorated multiple times.</remarks>
         /// <exception cref="InvalidOperationException">When proxying is not allowed (see remarks).</exception>
-        public static IModifiedServiceCollection UsingProxy<TInterceptor>(this IModifiedServiceCollection self) => self.UsingProxy(typeof(TInterceptor));
-
-        /// <summary>
-        /// Hooks into the instantiating process to let you decorate the original service. Useful when you want to add additional functionality (e.g. parameter validation). The easiest way to decorate an instance is using the <see cref="InterfaceInterceptor{TInterface}"/> class.
-        /// </summary>
-        /// <param name="self">The target <see cref="IServiceCollection"/>.</param>
-        /// <param name="interceptor">The interceptor class.</param>
-        /// <remarks>You can't create proxies against instances and open generic services. A service can be decorated multiple times.</remarks>
-        /// <exception cref="InvalidOperationException">When proxying is not allowed (see remarks).</exception>
-        public static IModifiedServiceCollection UsingProxy(this IModifiedServiceCollection self, Type interceptor)
+        public static IModifiedServiceCollection UsingProxy<TInterceptor>(this IModifiedServiceCollection self) where TInterceptor: IInterfaceInterceptor
         {
-            //
-            // ProxyGenerator<> will do a comprehensive validation.
-            //
-
             if (self is null)
                 throw new ArgumentNullException(nameof(self));
-
-            if (interceptor is null)
-                throw new ArgumentNullException(nameof(interceptor));
-
-            //
-            // TODO: FIXME:
-            //   We should support proxying even if the LastEntry is a 3rd party implementation
-            //   (should we make ApplyInterceptor static?)
-            //
 
             if (self.LastEntry is not ProducibleServiceEntry pse)
                 throw new NotSupportedException(Resources.PROXYING_NOT_SUPPORTED);
 
-            pse.ApplyProxy(interceptor);
+            pse.ApplyProxy
+            (
+                //
+                // Proxies registered by this way always target the service interface.
+                //
+
+                ServiceActivator.InterceptorsToProxyDelegate(pse.Interface, pse.Interface, new Type[]
+                {
+                    typeof(TInterceptor)
+                })
+            );
 
             return self;
         }

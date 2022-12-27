@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Collections.Generic;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -24,8 +25,8 @@ namespace Solti.Utils.DI.Internals
 
         private readonly IInterfaceInterceptor[] FInterceptors;
 
-        private object? Invoke(InvocationContextEx ctx, int index) => index < FInterceptors.Length
-            ? FInterceptors[index].Invoke(ctx, () => Invoke(ctx, index + 1))
+        private object? Invoke(InvocationContextEx ctx, int index) => index > 0
+            ? FInterceptors[index - 1].Invoke(ctx, () => Invoke(ctx, index - 1))
             : base.Invoke(ctx);
 
         /// <summary>
@@ -40,7 +41,12 @@ namespace Solti.Utils.DI.Internals
         public override object? Invoke(InvocationContext context) => Invoke
         (
             new InvocationContextEx(context),
-            0
+            FInterceptors.Length
         );
+
+        /// <summary>
+        /// Returns the bound interceptors.
+        /// </summary>
+        public IReadOnlyList<IInterfaceInterceptor> Interceptors => FInterceptors;
     }
 }
