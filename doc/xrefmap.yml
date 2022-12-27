@@ -424,69 +424,69 @@ references:
   commentId: F:Solti.Utils.DI.Interfaces.Consts.INTERNAL_SERVICE_NAME_PREFIX
   fullName: Solti.Utils.DI.Interfaces.Consts.INTERNAL_SERVICE_NAME_PREFIX
   nameWithType: Consts.INTERNAL_SERVICE_NAME_PREFIX
-- uid: Solti.Utils.DI.Interfaces.CreteServiceDelegate
-  name: CreteServiceDelegate
-  href: Solti.Utils.DI.Interfaces.CreteServiceDelegate.html
-  commentId: T:Solti.Utils.DI.Interfaces.CreteServiceDelegate
-  fullName: Solti.Utils.DI.Interfaces.CreteServiceDelegate
-  nameWithType: CreteServiceDelegate
-- uid: Solti.Utils.DI.Interfaces.CreteServiceDelegate.#ctor(System.Object,System.IntPtr)
-  name: CreteServiceDelegate(Object, IntPtr)
-  href: Solti.Utils.DI.Interfaces.CreteServiceDelegate.html#Solti_Utils_DI_Interfaces_CreteServiceDelegate__ctor_System_Object_System_IntPtr_
-  commentId: M:Solti.Utils.DI.Interfaces.CreteServiceDelegate.#ctor(System.Object,System.IntPtr)
-  fullName: Solti.Utils.DI.Interfaces.CreteServiceDelegate.CreteServiceDelegate(System.Object, System.IntPtr)
-  nameWithType: CreteServiceDelegate.CreteServiceDelegate(Object, IntPtr)
-- uid: Solti.Utils.DI.Interfaces.CreteServiceDelegate.#ctor*
-  name: CreteServiceDelegate
-  href: Solti.Utils.DI.Interfaces.CreteServiceDelegate.html#Solti_Utils_DI_Interfaces_CreteServiceDelegate__ctor_
-  commentId: Overload:Solti.Utils.DI.Interfaces.CreteServiceDelegate.#ctor
-  fullName: Solti.Utils.DI.Interfaces.CreteServiceDelegate.CreteServiceDelegate
-  nameWithType: CreteServiceDelegate.CreteServiceDelegate
-- uid: Solti.Utils.DI.Interfaces.CreteServiceDelegate.BeginInvoke(Solti.Utils.DI.Interfaces.IInstanceFactory,System.Object@,System.AsyncCallback,System.Object)
+- uid: Solti.Utils.DI.Interfaces.CreateServiceDelegate
+  name: CreateServiceDelegate
+  href: Solti.Utils.DI.Interfaces.CreateServiceDelegate.html
+  commentId: T:Solti.Utils.DI.Interfaces.CreateServiceDelegate
+  fullName: Solti.Utils.DI.Interfaces.CreateServiceDelegate
+  nameWithType: CreateServiceDelegate
+- uid: Solti.Utils.DI.Interfaces.CreateServiceDelegate.#ctor(System.Object,System.IntPtr)
+  name: CreateServiceDelegate(Object, IntPtr)
+  href: Solti.Utils.DI.Interfaces.CreateServiceDelegate.html#Solti_Utils_DI_Interfaces_CreateServiceDelegate__ctor_System_Object_System_IntPtr_
+  commentId: M:Solti.Utils.DI.Interfaces.CreateServiceDelegate.#ctor(System.Object,System.IntPtr)
+  fullName: Solti.Utils.DI.Interfaces.CreateServiceDelegate.CreateServiceDelegate(System.Object, System.IntPtr)
+  nameWithType: CreateServiceDelegate.CreateServiceDelegate(Object, IntPtr)
+- uid: Solti.Utils.DI.Interfaces.CreateServiceDelegate.#ctor*
+  name: CreateServiceDelegate
+  href: Solti.Utils.DI.Interfaces.CreateServiceDelegate.html#Solti_Utils_DI_Interfaces_CreateServiceDelegate__ctor_
+  commentId: Overload:Solti.Utils.DI.Interfaces.CreateServiceDelegate.#ctor
+  fullName: Solti.Utils.DI.Interfaces.CreateServiceDelegate.CreateServiceDelegate
+  nameWithType: CreateServiceDelegate.CreateServiceDelegate
+- uid: Solti.Utils.DI.Interfaces.CreateServiceDelegate.BeginInvoke(Solti.Utils.DI.Interfaces.IInstanceFactory,System.Object@,System.AsyncCallback,System.Object)
   name: BeginInvoke(IInstanceFactory, out Object, AsyncCallback, Object)
-  href: Solti.Utils.DI.Interfaces.CreteServiceDelegate.html#Solti_Utils_DI_Interfaces_CreteServiceDelegate_BeginInvoke_Solti_Utils_DI_Interfaces_IInstanceFactory_System_Object__System_AsyncCallback_System_Object_
-  commentId: M:Solti.Utils.DI.Interfaces.CreteServiceDelegate.BeginInvoke(Solti.Utils.DI.Interfaces.IInstanceFactory,System.Object@,System.AsyncCallback,System.Object)
+  href: Solti.Utils.DI.Interfaces.CreateServiceDelegate.html#Solti_Utils_DI_Interfaces_CreateServiceDelegate_BeginInvoke_Solti_Utils_DI_Interfaces_IInstanceFactory_System_Object__System_AsyncCallback_System_Object_
+  commentId: M:Solti.Utils.DI.Interfaces.CreateServiceDelegate.BeginInvoke(Solti.Utils.DI.Interfaces.IInstanceFactory,System.Object@,System.AsyncCallback,System.Object)
   name.vb: BeginInvoke(IInstanceFactory, ByRef Object, AsyncCallback, Object)
-  fullName: Solti.Utils.DI.Interfaces.CreteServiceDelegate.BeginInvoke(Solti.Utils.DI.Interfaces.IInstanceFactory, out System.Object, System.AsyncCallback, System.Object)
-  fullName.vb: Solti.Utils.DI.Interfaces.CreteServiceDelegate.BeginInvoke(Solti.Utils.DI.Interfaces.IInstanceFactory, ByRef System.Object, System.AsyncCallback, System.Object)
-  nameWithType: CreteServiceDelegate.BeginInvoke(IInstanceFactory, out Object, AsyncCallback, Object)
-  nameWithType.vb: CreteServiceDelegate.BeginInvoke(IInstanceFactory, ByRef Object, AsyncCallback, Object)
-- uid: Solti.Utils.DI.Interfaces.CreteServiceDelegate.BeginInvoke*
+  fullName: Solti.Utils.DI.Interfaces.CreateServiceDelegate.BeginInvoke(Solti.Utils.DI.Interfaces.IInstanceFactory, out System.Object, System.AsyncCallback, System.Object)
+  fullName.vb: Solti.Utils.DI.Interfaces.CreateServiceDelegate.BeginInvoke(Solti.Utils.DI.Interfaces.IInstanceFactory, ByRef System.Object, System.AsyncCallback, System.Object)
+  nameWithType: CreateServiceDelegate.BeginInvoke(IInstanceFactory, out Object, AsyncCallback, Object)
+  nameWithType.vb: CreateServiceDelegate.BeginInvoke(IInstanceFactory, ByRef Object, AsyncCallback, Object)
+- uid: Solti.Utils.DI.Interfaces.CreateServiceDelegate.BeginInvoke*
   name: BeginInvoke
-  href: Solti.Utils.DI.Interfaces.CreteServiceDelegate.html#Solti_Utils_DI_Interfaces_CreteServiceDelegate_BeginInvoke_
-  commentId: Overload:Solti.Utils.DI.Interfaces.CreteServiceDelegate.BeginInvoke
-  fullName: Solti.Utils.DI.Interfaces.CreteServiceDelegate.BeginInvoke
-  nameWithType: CreteServiceDelegate.BeginInvoke
-- uid: Solti.Utils.DI.Interfaces.CreteServiceDelegate.EndInvoke(System.Object@,System.IAsyncResult)
+  href: Solti.Utils.DI.Interfaces.CreateServiceDelegate.html#Solti_Utils_DI_Interfaces_CreateServiceDelegate_BeginInvoke_
+  commentId: Overload:Solti.Utils.DI.Interfaces.CreateServiceDelegate.BeginInvoke
+  fullName: Solti.Utils.DI.Interfaces.CreateServiceDelegate.BeginInvoke
+  nameWithType: CreateServiceDelegate.BeginInvoke
+- uid: Solti.Utils.DI.Interfaces.CreateServiceDelegate.EndInvoke(System.Object@,System.IAsyncResult)
   name: EndInvoke(out Object, IAsyncResult)
-  href: Solti.Utils.DI.Interfaces.CreteServiceDelegate.html#Solti_Utils_DI_Interfaces_CreteServiceDelegate_EndInvoke_System_Object__System_IAsyncResult_
-  commentId: M:Solti.Utils.DI.Interfaces.CreteServiceDelegate.EndInvoke(System.Object@,System.IAsyncResult)
+  href: Solti.Utils.DI.Interfaces.CreateServiceDelegate.html#Solti_Utils_DI_Interfaces_CreateServiceDelegate_EndInvoke_System_Object__System_IAsyncResult_
+  commentId: M:Solti.Utils.DI.Interfaces.CreateServiceDelegate.EndInvoke(System.Object@,System.IAsyncResult)
   name.vb: EndInvoke(ByRef Object, IAsyncResult)
-  fullName: Solti.Utils.DI.Interfaces.CreteServiceDelegate.EndInvoke(out System.Object, System.IAsyncResult)
-  fullName.vb: Solti.Utils.DI.Interfaces.CreteServiceDelegate.EndInvoke(ByRef System.Object, System.IAsyncResult)
-  nameWithType: CreteServiceDelegate.EndInvoke(out Object, IAsyncResult)
-  nameWithType.vb: CreteServiceDelegate.EndInvoke(ByRef Object, IAsyncResult)
-- uid: Solti.Utils.DI.Interfaces.CreteServiceDelegate.EndInvoke*
+  fullName: Solti.Utils.DI.Interfaces.CreateServiceDelegate.EndInvoke(out System.Object, System.IAsyncResult)
+  fullName.vb: Solti.Utils.DI.Interfaces.CreateServiceDelegate.EndInvoke(ByRef System.Object, System.IAsyncResult)
+  nameWithType: CreateServiceDelegate.EndInvoke(out Object, IAsyncResult)
+  nameWithType.vb: CreateServiceDelegate.EndInvoke(ByRef Object, IAsyncResult)
+- uid: Solti.Utils.DI.Interfaces.CreateServiceDelegate.EndInvoke*
   name: EndInvoke
-  href: Solti.Utils.DI.Interfaces.CreteServiceDelegate.html#Solti_Utils_DI_Interfaces_CreteServiceDelegate_EndInvoke_
-  commentId: Overload:Solti.Utils.DI.Interfaces.CreteServiceDelegate.EndInvoke
-  fullName: Solti.Utils.DI.Interfaces.CreteServiceDelegate.EndInvoke
-  nameWithType: CreteServiceDelegate.EndInvoke
-- uid: Solti.Utils.DI.Interfaces.CreteServiceDelegate.Invoke(Solti.Utils.DI.Interfaces.IInstanceFactory,System.Object@)
+  href: Solti.Utils.DI.Interfaces.CreateServiceDelegate.html#Solti_Utils_DI_Interfaces_CreateServiceDelegate_EndInvoke_
+  commentId: Overload:Solti.Utils.DI.Interfaces.CreateServiceDelegate.EndInvoke
+  fullName: Solti.Utils.DI.Interfaces.CreateServiceDelegate.EndInvoke
+  nameWithType: CreateServiceDelegate.EndInvoke
+- uid: Solti.Utils.DI.Interfaces.CreateServiceDelegate.Invoke(Solti.Utils.DI.Interfaces.IInstanceFactory,System.Object@)
   name: Invoke(IInstanceFactory, out Object)
-  href: Solti.Utils.DI.Interfaces.CreteServiceDelegate.html#Solti_Utils_DI_Interfaces_CreteServiceDelegate_Invoke_Solti_Utils_DI_Interfaces_IInstanceFactory_System_Object__
-  commentId: M:Solti.Utils.DI.Interfaces.CreteServiceDelegate.Invoke(Solti.Utils.DI.Interfaces.IInstanceFactory,System.Object@)
+  href: Solti.Utils.DI.Interfaces.CreateServiceDelegate.html#Solti_Utils_DI_Interfaces_CreateServiceDelegate_Invoke_Solti_Utils_DI_Interfaces_IInstanceFactory_System_Object__
+  commentId: M:Solti.Utils.DI.Interfaces.CreateServiceDelegate.Invoke(Solti.Utils.DI.Interfaces.IInstanceFactory,System.Object@)
   name.vb: Invoke(IInstanceFactory, ByRef Object)
-  fullName: Solti.Utils.DI.Interfaces.CreteServiceDelegate.Invoke(Solti.Utils.DI.Interfaces.IInstanceFactory, out System.Object)
-  fullName.vb: Solti.Utils.DI.Interfaces.CreteServiceDelegate.Invoke(Solti.Utils.DI.Interfaces.IInstanceFactory, ByRef System.Object)
-  nameWithType: CreteServiceDelegate.Invoke(IInstanceFactory, out Object)
-  nameWithType.vb: CreteServiceDelegate.Invoke(IInstanceFactory, ByRef Object)
-- uid: Solti.Utils.DI.Interfaces.CreteServiceDelegate.Invoke*
+  fullName: Solti.Utils.DI.Interfaces.CreateServiceDelegate.Invoke(Solti.Utils.DI.Interfaces.IInstanceFactory, out System.Object)
+  fullName.vb: Solti.Utils.DI.Interfaces.CreateServiceDelegate.Invoke(Solti.Utils.DI.Interfaces.IInstanceFactory, ByRef System.Object)
+  nameWithType: CreateServiceDelegate.Invoke(IInstanceFactory, out Object)
+  nameWithType.vb: CreateServiceDelegate.Invoke(IInstanceFactory, ByRef Object)
+- uid: Solti.Utils.DI.Interfaces.CreateServiceDelegate.Invoke*
   name: Invoke
-  href: Solti.Utils.DI.Interfaces.CreteServiceDelegate.html#Solti_Utils_DI_Interfaces_CreteServiceDelegate_Invoke_
-  commentId: Overload:Solti.Utils.DI.Interfaces.CreteServiceDelegate.Invoke
-  fullName: Solti.Utils.DI.Interfaces.CreteServiceDelegate.Invoke
-  nameWithType: CreteServiceDelegate.Invoke
+  href: Solti.Utils.DI.Interfaces.CreateServiceDelegate.html#Solti_Utils_DI_Interfaces_CreateServiceDelegate_Invoke_
+  commentId: Overload:Solti.Utils.DI.Interfaces.CreateServiceDelegate.Invoke
+  fullName: Solti.Utils.DI.Interfaces.CreateServiceDelegate.Invoke
+  nameWithType: CreateServiceDelegate.Invoke
 - uid: Solti.Utils.DI.Interfaces.FactoryDelegate
   name: FactoryDelegate
   href: Solti.Utils.DI.Interfaces.FactoryDelegate.html
