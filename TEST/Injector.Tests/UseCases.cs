@@ -8,7 +8,6 @@ using System.Data;
 using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Text;
 
 using Microsoft.Extensions.Configuration;
@@ -19,9 +18,6 @@ using NUnit.Framework;
 namespace Solti.Utils.DI.UseCases
 {
     using Interfaces;
-    using Primitives;
-    using Proxy;
-    using Proxy.Generators;
 
     [TestFixture]
     public class UseCases
@@ -140,42 +136,28 @@ namespace Solti.Utils.DI.UseCases
             public void Write(string msg) => LastMessage = msg;
         }
 
-        public class MethodInvocationLoggerInterceptor<TInterface> : InterfaceInterceptor<TInterface> where TInterface : class 
+        public class MethodInvocationLoggerInterceptor<TLogger> : IInterfaceInterceptor where TLogger : ILogger, new()
         {
-            private ILogger Logger { get; }
+            private ILogger Logger { get; } = new TLogger();
 
-            public MethodInvocationLoggerInterceptor(TInterface target, ILogger logger): base(target) => Logger = logger;
-
-            public override object Invoke(InvocationContext context)
+            public object Invoke(IInvocationContext context, InvokeInterceptorDelegate callNext)
             {
                 Logger.Write($"{context.InterfaceMethod.Name}({string.Join(", ", context.Args.Select(arg => arg?.ToString() ?? "null"))})");
 
-                return base.Invoke(context);
+                return callNext();
             }
         }
 
         [AttributeUsage(AttributeTargets.Interface, AllowMultiple = true)]
-        public sealed class MethodInvocationLoggerAspect : AspectAttribute, IInterceptorFactory<Expression<ApplyProxyDelegate>>
+        public sealed class MethodInvocationLoggerAspect : AspectAttribute
         {
             public Type Logger { get; }
-            
+
+            public override Type UnderlyingInterceptor => typeof(MethodInvocationLoggerInterceptor<>).MakeGenericType(Logger);
+
             public MethodInvocationLoggerAspect(Type logger) 
             {
                 Logger = logger;
-            }
-
-            public Expression<ApplyProxyDelegate> GetInterceptor(Type iface)
-            {
-                StaticMethod ctor = new ProxyGenerator
-                (
-                    iface,
-                    typeof(MethodInvocationLoggerInterceptor<>).MakeGenericType(iface)
-                )
-                .GetGeneratedType()
-                .GetConstructor(new[] { iface, typeof(ILogger) })
-                .ToStaticDelegate();
-
-                return (injector, type, target) => ctor(target, Activator.CreateInstance(Logger));
             }
         }
     }

@@ -97,15 +97,6 @@ namespace Solti.Utils.DI.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Aspects should implement the IInterceptorFactory interface..
-        /// </summary>
-        internal static string INTERCEPTOR_FACTORY_NOT_IMPLEMENTED {
-            get {
-                return ResourceManager.GetString("INTERCEPTOR_FACTORY_NOT_IMPLEMENTED", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Invalid configuration..
         /// </summary>
         internal static string INVALID_CONFIG {
@@ -138,6 +129,15 @@ namespace Solti.Utils.DI.Properties {
         internal static string LAMBDA_LAYOUT_NOT_SUPPORTED {
             get {
                 return ResourceManager.GetString("LAMBDA_LAYOUT_NOT_SUPPORTED", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Interceptor (&quot;{0}&quot;) shall implement the IInterfaceInterceptor interface..
+        /// </summary>
+        internal static string NOT_AN_INTERCEPTOR {
+            get {
+                return ResourceManager.GetString("NOT_AN_INTERCEPTOR", resourceCulture);
             }
         }
         
@@ -246,15 +246,6 @@ namespace Solti.Utils.DI.Properties {
         internal static string STRICT_DI_SCOPE {
             get {
                 return ResourceManager.GetString("STRICT_DI_SCOPE", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The interceptor must have exactly one constructor parameter for the target object..
-        /// </summary>
-        internal static string TARGET_PARAM_CANNOT_BE_DETERMINED {
-            get {
-                return ResourceManager.GetString("TARGET_PARAM_CANNOT_BE_DETERMINED", resourceCulture);
             }
         }
     }

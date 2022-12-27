@@ -1,4 +1,5 @@
-﻿abstract Solti.Utils.DI.Interfaces.LifetimeBase.CompareTo(Solti.Utils.DI.Interfaces.LifetimeBase! other) -> int
+﻿abstract Solti.Utils.DI.Interfaces.AspectAttribute.UnderlyingInterceptor.get -> System.Type!
+abstract Solti.Utils.DI.Interfaces.LifetimeBase.CompareTo(Solti.Utils.DI.Interfaces.LifetimeBase! other) -> int
 const Solti.Utils.DI.Interfaces.Consts.INTERNAL_SERVICE_NAME_PREFIX = "$" -> string!
 override sealed Solti.Utils.DI.Interfaces.AbstractServiceEntry.GetHashCode() -> int
 override Solti.Utils.DI.Interfaces.AbstractServiceEntry.ToString() -> string!
@@ -30,6 +31,8 @@ Solti.Utils.DI.Interfaces.Consts
 Solti.Utils.DI.Interfaces.CreteServiceDelegate
 Solti.Utils.DI.Interfaces.FactoryDelegate
 Solti.Utils.DI.Interfaces.FactoryDelegate<TInterface>
+Solti.Utils.DI.Interfaces.IAspect
+Solti.Utils.DI.Interfaces.IAspect.UnderlyingInterceptor.get -> System.Type!
 Solti.Utils.DI.Interfaces.IBuildContext
 Solti.Utils.DI.Interfaces.IBuildContext.AssignSlot() -> int
 Solti.Utils.DI.Interfaces.IBuildContext.Compiler.get -> Solti.Utils.DI.Interfaces.IDelegateCompiler!
@@ -47,12 +50,19 @@ Solti.Utils.DI.Interfaces.IInjectorBasicExtensions
 Solti.Utils.DI.Interfaces.IInstanceFactory
 Solti.Utils.DI.Interfaces.IInstanceFactory.GetOrCreateInstance(Solti.Utils.DI.Interfaces.AbstractServiceEntry! requested, int? slot) -> object!
 Solti.Utils.DI.Interfaces.IInstanceFactory.Super.get -> Solti.Utils.DI.Interfaces.IInstanceFactory?
-Solti.Utils.DI.Interfaces.IInterceptorFactory<TInterceptor>
-Solti.Utils.DI.Interfaces.IInterceptorFactory<TInterceptor>.GetInterceptor(System.Type! iface) -> TInterceptor
+Solti.Utils.DI.Interfaces.IInterfaceInterceptor
+Solti.Utils.DI.Interfaces.IInterfaceInterceptor.Invoke(Solti.Utils.DI.Interfaces.IInvocationContext! context, Solti.Utils.DI.Interfaces.InvokeInterceptorDelegate! callNext) -> object?
+Solti.Utils.DI.Interfaces.IInvocationContext
+Solti.Utils.DI.Interfaces.IInvocationContext.Args.get -> object?[]!
+Solti.Utils.DI.Interfaces.IInvocationContext.InterfaceMember.get -> System.Reflection.MemberInfo!
+Solti.Utils.DI.Interfaces.IInvocationContext.InterfaceMethod.get -> System.Reflection.MethodInfo!
+Solti.Utils.DI.Interfaces.IInvocationContext.TargeteMethod.get -> System.Reflection.MethodInfo!
+Solti.Utils.DI.Interfaces.IInvocationContext.TargetMember.get -> System.Reflection.MemberInfo!
 Solti.Utils.DI.Interfaces.IModifiedServiceCollection
 Solti.Utils.DI.Interfaces.IModifiedServiceCollection.LastEntry.get -> Solti.Utils.DI.Interfaces.AbstractServiceEntry!
 Solti.Utils.DI.Interfaces.InjectAttribute
 Solti.Utils.DI.Interfaces.InjectAttribute.InjectAttribute() -> void
+Solti.Utils.DI.Interfaces.InvokeInterceptorDelegate
 Solti.Utils.DI.Interfaces.IScopeFactory
 Solti.Utils.DI.Interfaces.IScopeFactory.CreateScope(object? tag = null) -> Solti.Utils.DI.Interfaces.IInjector!
 Solti.Utils.DI.Interfaces.IScopeFactory.Options.get -> Solti.Utils.DI.Interfaces.ScopeOptions!

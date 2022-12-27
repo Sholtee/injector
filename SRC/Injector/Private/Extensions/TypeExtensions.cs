@@ -4,9 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
-using System.CodeDom.Compiler;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 
@@ -18,34 +16,8 @@ namespace Solti.Utils.DI.Internals
 
     internal static class TypeExtensions
     {
-        public static bool IsProxy(this Type src) => src.GetCustomAttribute<GeneratedCodeAttribute>()?.Tool.Equals("ProxyGen.NET", StringComparison.OrdinalIgnoreCase) is true;
-
-        public static ConstructorInfo GetApplicableConstructor(this Type src) => Cache.GetOrAdd(src, static src => // TODO: remove LINQ
+        public static ConstructorInfo GetApplicableConstructor(this Type src) => Cache.GetOrAdd(src, static src =>
         {
-            if (src.IsProxy())
-            {
-                //
-                // In case of generated proxy types the ServiceActivatorAttribute is not visible as it is placed on the anchestor
-                //
-
-                Type @base = src.BaseType;
-                Debug.Assert(@base is not null);
-
-                //
-                // Since the generated proxy type "inherited" all the public constructor from its anchestor, we can find the proper
-                // one with parameter matching
-                //
-
-                return src.GetConstructor
-                (
-                    @base!
-                        .GetApplicableConstructor()
-                        .GetParameters()
-                        .Select(static p => p.ParameterType)
-                        .ToArray()
-                );
-            }
-
             IReadOnlyList<ConstructorInfo> 
                 publicCtors = src.GetConstructors(),
                 promisingCtors = publicCtors

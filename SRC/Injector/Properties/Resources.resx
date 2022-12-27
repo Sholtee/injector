@@ -159,17 +159,11 @@
   <data name="INJECTOR_IS_BEING_DISPOSED" xml:space="preserve">
     <value>Injector cannot be invoked when it is about to dispose.</value>
   </data>
-  <data name="TARGET_PARAM_CANNOT_BE_DETERMINED" xml:space="preserve">
-    <value>The interceptor must have exactly one constructor parameter for the target object.</value>
-  </data>
   <data name="SERVICE_NOT_FOUND" xml:space="preserve">
     <value>Service "{0}" could not be found.</value>
   </data>
   <data name="NOT_BUILT" xml:space="preserve">
     <value>The entry must be built in order to create service instances.</value>
-  </data>
-  <data name="INTERCEPTOR_FACTORY_NOT_IMPLEMENTED" xml:space="preserve">
-    <value>Aspects should implement the IInterceptorFactory interface.</value>
   </data>
   <data name="STRICT_DI_SCOPE" xml:space="preserve">
     <value>Attempt to request the scope itself.</value>
@@ -182,5 +176,8 @@
   </data>
   <data name="REQUEST_NOT_REPLACEABLE" xml:space="preserve">
     <value>Only request targeting IInstanceFactory can be replaced.</value>
+  </data>
+  <data name="NOT_AN_INTERCEPTOR" xml:space="preserve">
+    <value>Interceptor ("{0}") shall implement the IInterfaceInterceptor interface.</value>
   </data>
 </root>

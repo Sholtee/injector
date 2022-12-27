@@ -31,4 +31,9 @@ namespace Solti.Utils.DI.Interfaces
     /// Defines the layout of functions used as service factory.
     /// </summary>
     public delegate TInterface FactoryDelegate<TInterface>(IInjector scope) where TInterface : class;
+
+    /// <summary>
+    /// Defines an interceptor invocation.
+    /// </summary>
+    public delegate object? InvokeInterceptorDelegate();
 }

@@ -12,20 +12,10 @@ namespace Solti.Utils.DI.Internals.Tests
 {
     using Interfaces;
     using Properties;
-    using Proxy;
-    using Proxy.Generators;
 
     [TestFixture]
     public sealed class TypeExtensionsTests
     {
-        public class InterceptorHavingMultipleCtors<TInterface> : InterfaceInterceptor<TInterface> where TInterface : class
-        {
-            [ServiceActivator]
-            public InterceptorHavingMultipleCtors(TInterface target) : base(target) { }
-
-            public InterceptorHavingMultipleCtors() : base(default(TInterface)) { }
-        }
-
         public class MyClassHavingMultipleCtors
         {
             [ServiceActivator]
@@ -38,7 +28,6 @@ namespace Solti.Utils.DI.Internals.Tests
             get
             {
                 yield return typeof(MyClassHavingMultipleCtors);
-                yield return ProxyGenerator<IDisposable, InterceptorHavingMultipleCtors<IDisposable>>.GetGeneratedType();
             }
         }
 

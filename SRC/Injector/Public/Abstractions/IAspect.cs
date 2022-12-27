@@ -1,10 +1,9 @@
-﻿/********************************************************************************
-* InterfaceInterceptor.cs                                                       *
+/********************************************************************************
+* IAspect.cs                                                                    *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
+using Solti.Utils.DI.Interfaces;
 using System.Runtime.CompilerServices;
 
-using Solti.Utils.Proxy;
-
-[assembly: TypeForwardedTo(typeof(InterfaceInterceptor<>))]
+[assembly: TypeForwardedTo(typeof(IAspect))]

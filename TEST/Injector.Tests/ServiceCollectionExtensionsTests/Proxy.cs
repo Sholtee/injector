@@ -14,17 +14,11 @@ namespace Solti.Utils.DI.Tests
     using Interfaces.Properties;
     using Internals;
 
-    using Utils.Proxy;
-    
     public partial class ServiceCollectionExtensionsTests
     {
         [Test]
         public void Proxy_ShouldBeNullChecked() =>
-            Assert.Throws<ArgumentNullException>(() => IServiceCollectionAdvancedExtensions.UsingProxy(null, typeof(InterfaceInterceptor<IDisposable>)));
-
-        [Test]
-        public void Proxy_ShouldThrowOnInvalidInterceptor([Values(typeof(object), typeof(InterfaceInterceptor<>), typeof(InterfaceInterceptor<IInterface_3<int>>))] Type interceptor) =>
-            Assert.Throws<ArgumentException>(() => Collection.Service<IInterface_1, Implementation_1_No_Dep>(Lifetime.Transient).UsingProxy(interceptor));
+            Assert.Throws<ArgumentNullException>(() => IServiceCollectionAdvancedExtensions.UsingProxy<IInterfaceInterceptor>(null));
 
         [TestCaseSource(nameof(ScopeControlledLifetimes))]
         public void Proxy_ShouldOverwriteTheFactoryFunction(Lifetime lifetime)
@@ -129,7 +123,7 @@ namespace Solti.Utils.DI.Tests
         {
             Collection
                 .Service<IInterface_2, Implementation_2_IInterface_1_Dependant>(lifetime)
-                .UsingProxy<MyProxyWithDependency>();
+                .UsingProxy<MyInterceptorHavingDependency>();
 
             var mockInjector = new Mock<IInstanceFactory>(MockBehavior.Strict);
 
@@ -156,29 +150,30 @@ namespace Solti.Utils.DI.Tests
             Collection.LastEntry.Build(mockBuildContext.Object, new MergeProxiesVisitor(), new ApplyLifetimeManagerVisitor());
             object instance = Collection.LastEntry.CreateInstance(mockInjector.Object, out _);
 
-            Assert.That(instance, Is.InstanceOf<MyProxyWithDependency>());
-
-            var implementor = (MyProxyWithDependency)  instance;
-
-            Assert.That(implementor.Dependency, Is.InstanceOf<Implementation_3_IInterface_1_Dependant<int>>());
-            Assert.That(implementor.Target, Is.InstanceOf<Implementation_2_IInterface_1_Dependant>());
-
-            var original = (Implementation_2_IInterface_1_Dependant) implementor.Target;
-
+            Assert.That(instance, Is.InstanceOf<AspectAggregator<IInterface_2, IInterface_2>>());
+            var proxy = (AspectAggregator<IInterface_2, IInterface_2>) instance;
+            Assert.That(proxy.Interceptors.Count, Is.EqualTo(1));
+            Assert.That(proxy.Interceptors[0], Is.InstanceOf<MyInterceptorHavingDependency>());
+            var interceptor = (MyInterceptorHavingDependency) proxy.Interceptors[0];
+            Assert.That(interceptor.Dependency, Is.InstanceOf<Implementation_3_IInterface_1_Dependant<int>>());
+            Assert.That(proxy.Target, Is.InstanceOf<Implementation_2_IInterface_1_Dependant>());
+            var original = (Implementation_2_IInterface_1_Dependant) proxy.Target;
             Assert.That(original.Interface1, Is.InstanceOf<Implementation_1_No_Dep>());
 
             mockInjector.Verify(i => i.Get(typeof(IInterface_1), null), Times.Once);
             mockInjector.Verify(i => i.Get(typeof(IInterface_3<int>), null), Times.Once);
         }
 
-        public class MyProxyWithDependency : InterfaceInterceptor<IInterface_2>
+        public class MyInterceptorHavingDependency : IInterfaceInterceptor
         {
-            public MyProxyWithDependency(IInterface_3<int> dependency, IInterface_2 target) : base(target)
+            public MyInterceptorHavingDependency(IInterface_3<int> dependency)
             {
                 Dependency = dependency;
             }
 
             public IInterface_3<int> Dependency { get; }
+
+            public object Invoke(IInvocationContext context, InvokeInterceptorDelegate callNext) => callNext();
         }
 
         [TestCaseSource(nameof(ScopeControlledLifetimes))]

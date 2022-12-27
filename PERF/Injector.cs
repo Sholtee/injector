@@ -12,7 +12,6 @@ using BenchmarkDotNet.Engines;
 namespace Solti.Utils.DI.Perf
 {
     using Interfaces;
-    using Proxy;
 
     public class InjectorTestsBase
     {
@@ -87,6 +86,11 @@ namespace Solti.Utils.DI.Perf
     [SimpleJob(RunStrategy.Throughput, invocationCount: INVOCATION_COUNT)]
     public class InjectorGet : InjectorTestsBase
     {
+        private sealed class DummyInterceptor : IInterfaceInterceptor
+        {
+            public object Invoke(IInvocationContext context, InvokeInterceptorDelegate callNext) => callNext();
+        }
+
         public IInjector Injector { get; set; }
 
         public override void Cleanup()
@@ -117,9 +121,9 @@ namespace Solti.Utils.DI.Perf
         (
             container => container
                 .Service<IDependency, Dependency>(DependencyLifetime)
-                .UsingProxy<InterfaceInterceptor<IDependency>>()
+                .UsingProxy<DummyInterceptor>()
                 .Service<IDependant, Dependant>(DependantLifetime)
-                .UsingProxy<InterfaceInterceptor<IDependant>>()
+                .UsingProxy<DummyInterceptor>()
         ).CreateScope();
 
         [Benchmark]

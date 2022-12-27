@@ -1,21 +1,18 @@
 ﻿/********************************************************************************
-* AspectAttribute.cs                                                            *
+* IInterfaceInterceptor.cs                                                      *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
-using System;
-
 namespace Solti.Utils.DI.Interfaces
 {
     /// <summary>
-    /// Defines an abstract aspect that can be applied against service interfaces.
+    /// Describes the contract how to implement an interface method call interceptor.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class)]
-    public abstract class AspectAttribute : Attribute, IAspect
+    public interface IInterfaceInterceptor
     {
         /// <summary>
-        /// See <see cref="IAspect.UnderlyingInterceptor"/>
+        /// Contains the interception logic.
         /// </summary>
-        public abstract Type UnderlyingInterceptor { get; }
+        object? Invoke(IInvocationContext context, InvokeInterceptorDelegate callNext);
     }
 }

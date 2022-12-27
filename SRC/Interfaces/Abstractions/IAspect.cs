@@ -1,5 +1,5 @@
 ﻿/********************************************************************************
-* AspectAttribute.cs                                                            *
+* IAspect.cs                                                                    *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
@@ -8,14 +8,13 @@ using System;
 namespace Solti.Utils.DI.Interfaces
 {
     /// <summary>
-    /// Defines an abstract aspect that can be applied against service interfaces.
+    /// Defines the contract of aspects.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class)]
-    public abstract class AspectAttribute : Attribute, IAspect
+    public interface IAspect
     {
         /// <summary>
-        /// See <see cref="IAspect.UnderlyingInterceptor"/>
+        /// The underlying interceptor <see cref="Type"/> that implements the <see cref="IInterfaceInterceptor"/> interface.
         /// </summary>
-        public abstract Type UnderlyingInterceptor { get; }
+        Type UnderlyingInterceptor { get; }
     }
 }
