@@ -1,5 +1,5 @@
 ﻿/********************************************************************************
-* ServiceEntryLookup.cs                                                         *
+* ServiceEntryLookupBase.cs                                                     *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
@@ -14,16 +14,13 @@ namespace Solti.Utils.DI.Internals
     using Interfaces;
     using Interfaces.Properties;
 
-    /// <summary>
-    /// Resolver lookup shared among scopes.
-    /// </summary>
-    internal sealed class ServiceEntryLookup<TBackend>: IServiceEntryLookup, IBuildContext where TBackend : class, ILookup<CompositeKey, AbstractServiceEntry, TBackend>
+    internal abstract class ServiceEntryLookupBase<TBackend>: IServiceEntryLookup, IBuildContext where TBackend : class, ILookup<CompositeKey, AbstractServiceEntry, TBackend>
     {
         #region Private
-        private volatile TBackend FEntryLookup;
-        private readonly TBackend FGenericEntryLookup;
-        private readonly IGraphBuilder FGraphBuilder;
-        private readonly IDelegateCompiler FCompiler;
+        protected volatile TBackend FEntryLookup;
+        protected readonly TBackend FGenericEntryLookup;
+        protected readonly IGraphBuilder FGraphBuilder;
+        protected readonly IDelegateCompiler FCompiler;
         private readonly bool FInitialized;
         private readonly object FLock = new();
         private int FSlots;
@@ -62,7 +59,7 @@ namespace Solti.Utils.DI.Internals
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private AbstractServiceEntry GetSafe(Type iface, string? name)
+        private AbstractServiceEntry? GetSafe(Type iface, string? name)
         {
             CompositeKey key = new(iface, name);
 
@@ -93,13 +90,12 @@ namespace Solti.Utils.DI.Internals
         }
         #endregion
 
-        public ServiceEntryLookup
+        protected ServiceEntryLookupBase
         (
             IEnumerable<AbstractServiceEntry> entries,
             IDelegateCompiler compiler,
             Func<TBackend> backendFactory,
-            Func<ServiceEntryLookup<TBackend>, IGraphBuilder> graphBuilderFactory,
-            Action<TBackend>? afterConstruction = null
+            Func<IServiceEntryLookup, IBuildContext, IGraphBuilder> graphBuilderFactory
         )
         {
             FEntryLookup = backendFactory();
@@ -122,7 +118,7 @@ namespace Solti.Utils.DI.Internals
             // Now its safe to build (graph builder is able the resolve all the dependencies)
             //
 
-            FGraphBuilder = graphBuilderFactory(this);
+            FGraphBuilder = graphBuilderFactory(this, this);
 
             foreach (AbstractServiceEntry entry in entries)
             {
@@ -135,12 +131,6 @@ namespace Solti.Utils.DI.Internals
                 {
                     FGraphBuilder.Build(entry);
                 }
-            }
-
-            if (afterConstruction is not null)
-            {
-                afterConstruction(FEntryLookup);
-                afterConstruction(FGenericEntryLookup);
             }
 
             FInitialized = true;

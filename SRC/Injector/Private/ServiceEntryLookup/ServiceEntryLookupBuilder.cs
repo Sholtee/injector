@@ -33,20 +33,17 @@ namespace Solti.Utils.DI.Internals
             IServiceEntryLookup result = (scopeOptions.Engine?.ToUpper() ?? (entries.Count <= BTREE_ITEM_THRESHOLD ? BTREE : DICT)) switch
             #pragma warning restore CA1304 // Specify CultureInfo
             {
-                DICT => new ServiceEntryLookup<DictionaryLookup>
+                DICT => new ServiceEntryLookup_Dict
                 (
                     entries,
                     delegateCompiler,
-                    backendFactory: static () => new DictionaryLookup(),
                     graphBuilderFactory: CreateGraphBuilder
                 ),
-                BTREE => new ServiceEntryLookup<CompiledBTreeLookup>
+                BTREE => new ServiceEntryLookup_BTree
                 (
                     entries,
                     delegateCompiler,
-                    backendFactory: () => new CompiledBTreeLookup(delegateCompiler),
-                    graphBuilderFactory: CreateGraphBuilder,
-                    afterConstruction: static backend => backend.Compiled = true
+                    graphBuilderFactory: CreateGraphBuilder
                 ),
                 _ => throw new NotSupportedException()
             };
@@ -54,10 +51,10 @@ namespace Solti.Utils.DI.Internals
             delegateCompiler.Compile();
             return result;
 
-            IGraphBuilder CreateGraphBuilder<TBackend>(ServiceEntryLookup<TBackend> lookup) where TBackend : class, ILookup<CompositeKey, AbstractServiceEntry, TBackend> => scopeOptions.ServiceResolutionMode switch
+            IGraphBuilder CreateGraphBuilder(IServiceEntryLookup lookup, IBuildContext buildContext) => scopeOptions.ServiceResolutionMode switch
             {
-                ServiceResolutionMode.JIT => new ShallowDependencyGraphBuilder(lookup),
-                ServiceResolutionMode.AOT => new RecursiveDependencyGraphBuilder(lookup, lookup, scopeOptions),
+                ServiceResolutionMode.JIT => new ShallowDependencyGraphBuilder(buildContext),
+                ServiceResolutionMode.AOT => new RecursiveDependencyGraphBuilder(lookup, buildContext, scopeOptions),
                 _ => throw new NotSupportedException()
             };
         }
