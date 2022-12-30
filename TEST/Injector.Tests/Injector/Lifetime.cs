@@ -298,14 +298,14 @@ namespace Solti.Utils.DI.Tests
 
         private class DisposableServiceHavingDisposableDependency : Disposable, IDisposableService 
         {
-            public IDisposableEx DisposableDep { get; }
+            public IDisposableEx Dependency { get; }
 
-            public bool DependencyDisposed { get; private set; }
+            public bool DependencyWasDisposed { get; private set; }
 
-            public DisposableServiceHavingDisposableDependency(IDisposableEx disposableDep) => DisposableDep = disposableDep;
+            public DisposableServiceHavingDisposableDependency(IDisposableEx disposableDep) => Dependency = disposableDep;
 
             protected override void Dispose(bool disposeManaged) =>
-                DependencyDisposed = DisposableDep.Disposed;
+                DependencyWasDisposed = Dependency.Disposed;
         }
 
         [Test]
@@ -323,12 +323,12 @@ namespace Solti.Utils.DI.Tests
                 }
 
                 Assert.That(svc.Disposed, Is.False);
-                Assert.That(svc.DisposableDep.Disposed, Is.False);
+                Assert.That(svc.Dependency.Disposed, Is.False);
             }
 
             Assert.That(svc.Disposed);
-            Assert.That(svc.DisposableDep.Disposed);
-            Assert.That(svc.DependencyDisposed, Is.False);
+            Assert.That(svc.Dependency.Disposed);
+            Assert.That(svc.DependencyWasDisposed, Is.False);
         }
 
         [Test]
@@ -345,12 +345,12 @@ namespace Solti.Utils.DI.Tests
                     svc = (DisposableServiceHavingDisposableDependency) injector.Get<IDisposableService>();
                 }
 
-                Assert.That(svc.DisposableDep.Disposed, Is.False);
+                Assert.That(svc.Dependency.Disposed, Is.False);
             }
 
             Assert.That(svc.Disposed);
-            Assert.That(svc.DisposableDep.Disposed);
-            Assert.That(svc.DependencyDisposed, Is.False);
+            Assert.That(svc.Dependency.Disposed);
+            Assert.That(svc.DependencyWasDisposed, Is.False);
         }
 
         [Test]
