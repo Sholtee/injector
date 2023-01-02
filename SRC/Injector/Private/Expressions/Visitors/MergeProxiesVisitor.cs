@@ -15,12 +15,15 @@ namespace Solti.Utils.DI.Internals
     /// Merges proxy lambads to a single expression.
     /// </summary>
     /// <remarks>
-    /// <code>(injector, iface) => new Proxy_2
+    /// <code>
+    /// (injector, iface) => new Proxy_2
     /// (
-    ///     new Proxy_1
+    ///     target: new Proxy_1
     ///     (
-    ///         factory(injector, iface)
-    ///     )
+    ///         target: factory(injector, iface),
+    ///         ...
+    ///     ),
+    ///     ...
     /// )
     /// </code>
     /// </remarks>
