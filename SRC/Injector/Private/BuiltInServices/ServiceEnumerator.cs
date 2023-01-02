@@ -35,14 +35,14 @@ namespace Solti.Utils.DI.Internals
         public IEnumerator<TInterface> GetEnumerator()
         {
             Func<AbstractServiceEntry, bool> isCompatible = !typeof(TInterface).IsGenericType
-                ? entry => entry.Interface == typeof(TInterface)
+                ? static entry => entry.Interface == typeof(TInterface)
 
                 //
                 // a) IList<int> registered
                 // b) IList<> registered
                 //
 
-                : entry => entry.Interface == typeof(TInterface) || entry.Interface == typeof(TInterface).GetGenericTypeDefinition();
+                : static entry => entry.Interface == typeof(TInterface) || entry.Interface == typeof(TInterface).GetGenericTypeDefinition();
 
             //
             // Beside the closed generic its opened counterpart can be included -> Distinct
