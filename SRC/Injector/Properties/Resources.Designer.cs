@@ -97,6 +97,15 @@ namespace Solti.Utils.DI.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The service to be returned must implement the &quot;{0}&quot; interface..
+        /// </summary>
+        internal static string INVALID_CAST {
+            get {
+                return ResourceManager.GetString("INVALID_CAST", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Invalid configuration..
         /// </summary>
         internal static string INVALID_CONFIG {

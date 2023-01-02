@@ -339,13 +339,13 @@ namespace Solti.Utils.DI.Tests
         }
 
         [Test]
-        public void Injector_Get_ShouldBeTypeChecked([ValueSource(nameof(Engines))] string engine, [ValueSource(nameof(ResolutionModes))] ServiceResolutionMode resolutionMode) 
+        public void Injector_Get_ShouldBeTypeChecked([ValueSource(nameof(Lifetimes))] Lifetime lifetime, [ValueSource(nameof(ResolutionModes))] ServiceResolutionMode resolutionMode) 
         {
-            Root = ScopeFactory.Create(svcs => svcs.Factory(typeof(IInterface_1), (injector, iface) => new object(), Lifetime.Transient), new ScopeOptions { Engine = engine, ServiceResolutionMode = resolutionMode });
+            Root = ScopeFactory.Create(svcs => svcs.Factory(typeof(IInterface_1), (injector, iface) => new object(), lifetime), new ScopeOptions { ServiceResolutionMode = resolutionMode });
 
             using (IInjector injector = Root.CreateScope()) 
             {
-                Assert.Throws<InvalidCastException>(() => injector.Get<IInterface_1>());
+                Assert.Throws<InvalidOperationException>(() => injector.Get<IInterface_1>());
             }
         }
 

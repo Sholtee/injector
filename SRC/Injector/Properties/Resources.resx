@@ -180,4 +180,7 @@
   <data name="NOT_AN_INTERCEPTOR" xml:space="preserve">
     <value>Interceptor ("{0}") shall implement the IInterfaceInterceptor interface.</value>
   </data>
+  <data name="INVALID_CAST" xml:space="preserve">
+    <value>The service to be returned must implement the "{0}" interface.</value>
+  </data>
 </root>

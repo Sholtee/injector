@@ -51,17 +51,21 @@ namespace Solti.Utils.DI.Internals
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private object CreateInstanceCore(AbstractServiceEntry requested)
+        private object CreateInstance(AbstractServiceEntry requested)
         {
             object? instance, disposable;
 
-            //
-            // At the root of the dependency graph this validation makes no sense.
-            //
+            if (Options.StrictDI)
+            {
+                AbstractServiceEntry? requestor = FPath?.Last;
+                
+                //
+                // At the root of the dependency graph this validation makes no sense.
+                //
 
-            AbstractServiceEntry? requestor = FPath?.Last;
-            if (Options.StrictDI && requestor?.State.HasFlag(ServiceEntryStates.Validated) is false)
-                ServiceErrors.EnsureNotBreaksTheRuleOfStrictDI(requestor, requested, Options.SupportsServiceProvider);
+                if (requestor?.State.HasFlag(ServiceEntryStates.Validated) is false)
+                    ServiceErrors.EnsureNotBreaksTheRuleOfStrictDI(requestor, requested, Options.SupportsServiceProvider);
+            }
 
             if (!requested.State.HasFlag(ServiceEntryStates.Built))
                 throw new InvalidOperationException(Resources.NOT_BUILT);
@@ -88,10 +92,10 @@ namespace Solti.Utils.DI.Internals
 
             if (instance is null)
                 throw new InvalidOperationException(string.Format(Resources.Culture, Resources.IS_NULL, nameof(instance)));
-/*
-            if (requested.Interface.IsInstanceOfType(instance))
-                throw new InvalidOperationException();
-*/
+
+            if (!requested.Interface.IsInstanceOfType(instance))
+                throw new InvalidOperationException(string.Format(Resources.Culture, Resources.INVALID_CAST, requested.Interface));
+            
             return instance;
         }
 
@@ -144,18 +148,18 @@ namespace Solti.Utils.DI.Internals
             try
             {
                 if (slot is null)
-                    return CreateInstanceCore(requested);
+                    return CreateInstance(requested);
 
                 if (slot >= FSlots.Length)
                     //
-                    // We reach here when we made a service request that triggered a FResolverLookup update.
+                    // We reach here when we made a service request that triggered a ServiceLookup update.
                     // Scopes created after the update won't be affected as they allocate their slot array
                     // with the proper size.
                     //
 
-                    Array.Resize(ref FSlots, slot.Value + 1);
+                    Array.Resize(ref FSlots, ServiceLookup.Slots);
 
-                return FSlots[slot.Value] ??= CreateInstanceCore(requested);
+                return FSlots[slot.Value] ??= CreateInstance(requested);
             }
             finally
             {

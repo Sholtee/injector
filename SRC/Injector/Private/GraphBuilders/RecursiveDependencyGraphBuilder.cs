@@ -39,13 +39,17 @@ namespace Solti.Utils.DI.Internals
         {
             Debug.Assert(!requested.Interface.IsGenericTypeDefinition, "Generic entry cannot be built");
 
-            //
-            // At the root of the dependency graph this validation makes no sense. This validation should run even if
-            // the requested entry is already built.
-            //
+            if (FOptions.StrictDI)
+            {
+                AbstractServiceEntry? requestor = FPath.Last;
+                
+                //
+                // At the root of the dependency graph this validation makes no sense.
+                //
 
-            if (FOptions.StrictDI && FPath.Last is not null)
-                ServiceErrors.EnsureNotBreaksTheRuleOfStrictDI(FPath.Last, requested, FOptions.SupportsServiceProvider);
+                if (requestor?.State.HasFlag(ServiceEntryStates.Validated) is false)
+                    ServiceErrors.EnsureNotBreaksTheRuleOfStrictDI(requestor, requested, FOptions.SupportsServiceProvider);
+            }
 
             if (!requested.Features.HasFlag(ServiceEntryFeatures.SupportsBuild) || requested.State.HasFlag(ServiceEntryStates.Built))
                 return;
