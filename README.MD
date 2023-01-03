@@ -196,14 +196,13 @@ In practice, it's useful to separate common functionality (e.g. parameter valida
 ```csharp
 using Solti.Utils.DI.Interfaces;
 using Solti.Utils.DI;
-using Solti.Utils.Proxy; 
 ...
 svcs
-  .Service<IMyModule, MyModule>(Lifetime.Scoped).UsingProxy<ParameterValidatorProxy<IMyModule>>();
+  .Service<IMyModule, MyModule>(Lifetime.Scoped).UsingProxy<ParameterValidatorProxy>();
 ```
-Where the `ParameterValidatorProxy<TInterface>` is an `InterfaceInterceptor<TInterface>` descendant containing the parameter validation logic:
+Where the `ParameterValidatorProxy` is an `IInterfaceInterceptor` implementation containing the parameter validation logic:
 ```csharp
-using Solti.Utils.Proxy; 
+using Solti.Utils.DI.Interfaces; 
 ...
 // Base class of all the validator attributes
 public abstract class ParameterValidatorAttribute: Attribute
@@ -221,13 +220,14 @@ public class NotNullAttribute : ParameterValidatorAttribute
   }
 }
 ...
-public class ParameterValidatorProxy<TInterface> : InterfaceInterceptor<TInterface> where TInterface : class
+public class ParameterValidatorProxy : IInterfaceInterceptor
 {
-  public ParameterValidator(TInterface target) : base(target)
-  { 
+  public ParameterValidator(IDependency dependency)
+  {
+      ...
   }
 
-  public override object Invoke(InvocationContext context)
+  public override object Invoke(IInvocationContext context, InvokeInterceptorDelegate callNext)
   {
     foreach(var descr in context.Method.GetParameters().Select(
       (p, i) => new 
@@ -243,7 +243,7 @@ public class ParameterValidatorProxy<TInterface> : InterfaceInterceptor<TInterfa
       }
     }
 
-    return base.Invoke(context);
+    return callNext();
   }
 }
 ```
@@ -251,34 +251,42 @@ public class ParameterValidatorProxy<TInterface> : InterfaceInterceptor<TInterfa
 - Proxy pattern can be applied in any number against a service.
 - Applying proxies is done on the service request.
 - Trying to decorate a non producible service (generic, instance) will throw.
-- `ProxyFactory` is an individual component, so you can use it anywhere in your code.
-- Proxies may also have dependencies (`ProxyFactory` supports this scenario).
+- Proxies may also have dependencies.
 - The underlying functionality is provided by the [ProxyGen.NET](https://github.com/Sholtee/proxygen ) library
 ### Aspects
-Decorating services can be done by attributes as well. In this case we declare an attribute (derived from the `AspectAttribute`) that instructs the system which interceptors should be used. Doing so we introduce the [AOP](https://en.wikipedia.org/wiki/Aspect-oriented_programming ) in our code:
+Decorating services can be done using attributes as well. In this case we declare an attribute (derived from the `AspectAttribute`) that instructs the system which interceptors should be used. Doing so we introduce [AOP](https://en.wikipedia.org/wiki/Aspect-oriented_programming ) in our code:
 ```csharp
 ...
 // Define an aspect for the ParameterValidatorProxy (see above)
-[AttributeUsage(AttributeTargets.Interface, AllowMultiple = false)]
+[AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class, AllowMultiple = false)]
 public sealed class ParameterValidatorAspect : AspectAttribute
 {
-  public override Type GetInterceptor(Type iface) => typeof(ParameterValidatorProxy<>).MakeGenericType(iface);
+  public override Type UnderlyingInterceptor { get; } = typeof(ParameterValidatorProxy);
 }
 ...
-// Then annotate the desired interface(s):
+// Then annotate the desired interface ...
 [ParameterValidatorAspect]
 public interface IService
 {
   void DoSomething([NotNull] object arg); 
 }
+
+// ... OR class (recommended)
+
+[ParameterValidatorAspect]
+public class Service: IService
+{
+  // Only methods implementing the above declared interface may be annoteted 
+  void DoSomething([NotNull] object arg) {...} 
+}
 ```
 Notes:
-- As you can see there is no need for registering the `ParameterValidatorProxy<>` manually.
+- There is no need for registering the `ParameterValidatorProxy` manually.
 - Applying aspects is done in the order you use them:
   ```csharp
   // On service invocations the system first validates the user then the method parameters.
   [UserValidatorAspect, ParameterValidatorAspect]
-  public interface IMyService {...}
+  public interface MyService {...}
   ```
 ### Naked aspects
 An aspect is naked when it references its interceptor by name (and the interceptor is placed in a separate assembly). This practice ensures the _separation of concerns_ (the project containing the service interface won't reference logic related assemblies implicitly).

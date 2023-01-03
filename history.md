@@ -264,3 +264,7 @@
   - *breaking:* Modified `AbstractServiceEntry` layout
   - *introduced:* `IInjector.Tag` property
   - *done:* test against `net7.0` (at the moment just in case of local builds due to OpenCover issues)
+- 7.0.0-preview5:
+  - *breaking:* Dropped concept of **naked aspects**
+  - *breaking:* Dropped `ProxyFactory` class
+  - *introduced:* `IInterfaceInterceptor` & `IInvocationContext` interfaces (to replace the `InterfaceInterceptor<>` class)
