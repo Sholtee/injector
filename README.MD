@@ -288,20 +288,6 @@ Notes:
   [UserValidatorAspect, ParameterValidatorAspect]
   public interface MyService {...}
   ```
-### Naked aspects
-An aspect is naked when it references its interceptor by name (and the interceptor is placed in a separate assembly). This practice ensures the _separation of concerns_ (the project containing the service interface won't reference logic related assemblies implicitly).
-```csharp
-...
-[AttributeUsage(AttributeTargets.Interface, AllowMultiple = false)]
-public class NakedValidatorAspectAttribute: AspectAttribute 
-{
-  public override Type GetInterceptor(Type iface)
-  {
-    Type interceptor = Type.GetType("Solti.Utils.Aspects.ParameterValidator`1, Solti.Utils.Aspects, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null", throwOnError: true);
-    return interceptor.MakeGenericType(iface);
-  }
-}
-```
 ### Creating a scope
 ```csharp
 using (IInjector injector = scopeFactory.CreateScope())
