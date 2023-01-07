@@ -28,6 +28,9 @@ namespace Solti.Utils.DI.Internals
         public override void ApplyProxy(Expression<ApplyProxyDelegate> applyProxy)
             => throw new NotSupportedException(Resources.PROXYING_NOT_SUPPORTED);
 
+        public override Expression CreateLifetimeManager(Expression getService, ParameterExpression scope, ParameterExpression disposable)
+            => getService;
+
         public override LifetimeBase? Lifetime { get; } = DI.Lifetime.Instance;
     }
 }

@@ -268,3 +268,4 @@
   - *breaking:* Dropped concept of **naked aspects**
   - *breaking:* Dropped `ProxyFactory` class
   - *introduced:* `IInterfaceInterceptor` & `IInvocationContext` interfaces (to replace the `InterfaceInterceptor<>` class)
+  - *fixed:* Services having `Instance` lifetime should not be disposed by the root container

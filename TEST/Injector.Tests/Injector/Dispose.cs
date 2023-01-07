@@ -78,6 +78,26 @@ namespace Solti.Utils.DI.Tests
             Assert.That(disposable.Disposed);
         }
 
+        [Test]
+        public void Injector_Dispose_ShouldNotFreeInstances()
+        {
+            Disposable disposable = new();
+
+            Root = ScopeFactory.Create(svcs => svcs.Instance<IDisposable>(disposable));
+
+            using (IInjector injector = Root.CreateScope())
+            {
+                injector.Get<IDisposable>();
+            }
+
+            Assert.False(disposable.Disposed);
+
+            Root.Dispose();
+            Root = null;
+
+            Assert.False(disposable.Disposed);
+        }
+
         [TestCaseSource(nameof(ScopeControlledLifetimes))]
         public void Injector_Dispose_ShouldFreeEnumeratedServices(Lifetime lifetime)
         {
