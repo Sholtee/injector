@@ -6,7 +6,6 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Runtime.CompilerServices;
 using System.Threading;
 
 namespace Solti.Utils.DI.Internals
@@ -16,79 +15,13 @@ namespace Solti.Utils.DI.Internals
 
     internal abstract class ServiceEntryLookupBase<TBackend>: IServiceEntryLookup, IBuildContext where TBackend : class, ILookup<CompositeKey, AbstractServiceEntry, TBackend>
     {
-        #region Private
         protected volatile TBackend FEntryLookup;
         protected readonly TBackend FGenericEntryLookup;
         protected readonly IGraphBuilder FGraphBuilder;
         protected readonly IDelegateCompiler FCompiler;
-        private readonly bool FInitialized;
         private readonly object FLock = new();
+        private readonly bool FInitialized;
         private int FSlots;
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private AbstractServiceEntry? GetUnsafe(Type iface, string? name)
-        {
-            Debug.Assert(!FInitialized, "This method is intended for initialization purposes only");
-
-            CompositeKey key = new(iface, name);
-
-            if (!FEntryLookup.TryGet(key, out AbstractServiceEntry entry) && iface.IsConstructedGenericType)
-            {
-                CompositeKey genericKey = new(iface.GetGenericTypeDefinition(), name);
-
-                if (FGenericEntryLookup.TryGet(genericKey, out AbstractServiceEntry genericEntry))
-                {
-                    bool added = FEntryLookup.TryAdd
-                    (
-                        key,
-                        entry = genericEntry.Specialize(iface.GenericTypeArguments)
-                    );
-                    Debug.Assert(added, "Specialized entry should not exist yet");
-                }
-            }
-
-            if (entry is not null)
-                //
-                // In initialization phase, build the full dependency graph even if the related entry already
-                // built. It is required for strict DI validations.
-                //
-
-                FGraphBuilder.Build(entry);
-
-            return entry;
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private AbstractServiceEntry? GetSafe(Type iface, string? name)
-        {
-            CompositeKey key = new(iface, name);
-
-            if (!FEntryLookup.TryGet(key, out AbstractServiceEntry entry) && iface.IsConstructedGenericType)
-            {
-                lock (FLock)
-                {
-                    //
-                    // Another thread might have done this work.
-                    //
-
-                    if (!FEntryLookup.TryGet(key, out entry))
-                    {
-                        CompositeKey genericKey = new(iface.GetGenericTypeDefinition(), name);
-
-                        if (FGenericEntryLookup.TryGet(genericKey, out AbstractServiceEntry genericEntry))
-                        {
-                            entry = genericEntry.Specialize(iface.GenericTypeArguments);
-                            FGraphBuilder.Build(entry);
-
-                            FEntryLookup = FEntryLookup.With(key, entry);
-                        }
-                    }
-                }
-            }
-
-            return entry;
-        }
-        #endregion
 
         protected ServiceEntryLookupBase
         (
@@ -137,17 +70,53 @@ namespace Solti.Utils.DI.Internals
         }
 
         #region IBuildContext
-        IDelegateCompiler IBuildContext.Compiler => FCompiler;
+        public IDelegateCompiler Compiler => FCompiler;
 
-        int IBuildContext.AssignSlot() => Interlocked.Increment(ref FSlots) - 1;
+        public int AssignSlot() => Interlocked.Increment(ref FSlots) - 1;
         #endregion
 
         #region IServiceEntryLookup
-        int IServiceEntryLookup.Slots => FSlots;
+        public int Slots => FSlots;
 
-        AbstractServiceEntry? IServiceEntryLookup.Get(Type iface, string? name) => FInitialized
-            ? GetSafe(iface, name)
-            : GetUnsafe(iface, name);
+        public AbstractServiceEntry? Get(Type iface, string? name)
+        {
+            CompositeKey key = new(iface, name);
+
+            if (FEntryLookup.TryGet(key, out AbstractServiceEntry entry))
+            {
+                if (!FInitialized)
+                    //
+                    // In initialization phase, requested services may be unbuilt.
+                    //
+
+                    FGraphBuilder.Build(entry);
+            }
+            else if (iface.IsConstructedGenericType)
+            {
+                lock (FLock)
+                {
+                    //
+                    // Another thread might have done this work.
+                    //
+
+                    if (!FEntryLookup.TryGet(key, out entry))
+                    {
+                        CompositeKey genericKey = new(iface.GetGenericTypeDefinition(), name);
+
+                        if (FGenericEntryLookup.TryGet(genericKey, out AbstractServiceEntry genericEntry))
+                        {
+                            entry = genericEntry.Specialize(iface.GenericTypeArguments);
+                            FGraphBuilder.Build(entry);
+
+                            FEntryLookup = FEntryLookup.With(key, entry);
+                        }
+                    }
+                }
+            }
+
+            Debug.Assert(entry?.State.HasFlag(ServiceEntryStates.Built) is not false, "Returned entry must be built");
+            return entry;
+        }
         #endregion
     }
 }

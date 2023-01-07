@@ -1,5 +1,5 @@
 ﻿/********************************************************************************
-* ServiceRequestReplacer.cs                                                     *
+* ServiceRequestReplacerVisitor.cs                                              *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
@@ -65,6 +65,8 @@ namespace Solti.Utils.DI.Internals
             //
             // injector.[Try]Get(iface, name) -> entry.Resolve(injector)
             //
+
+            Debug.Assert(entry!.ResolveInstance is not null);
 
             Expression resolve = Expression.Invoke
             (

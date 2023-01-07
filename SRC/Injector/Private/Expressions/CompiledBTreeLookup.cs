@@ -30,6 +30,11 @@ namespace Solti.Utils.DI.Internals
             LabelTarget ret
         )
         {
+            //
+            // if (node is null)
+            //   return false;
+            //
+
             if (node is null)
             {
                 yield return Expression.Return
@@ -41,7 +46,7 @@ namespace Solti.Utils.DI.Internals
             }
 
             //
-            // order = key.CompareTo(node.Data);
+            // order = key.CompareTo(node.Data.Key);
             //
 
             yield return Expression.Assign
@@ -79,7 +84,7 @@ namespace Solti.Utils.DI.Internals
             );
 
             //
-            // entry = ...;
+            // entry = node.Data.Value;
             // return true;
             //
 
