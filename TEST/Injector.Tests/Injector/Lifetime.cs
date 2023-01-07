@@ -674,7 +674,10 @@ namespace Solti.Utils.DI.Tests
             Assert.Throws<ArgumentNullException>(() => lifetime.CreateFrom(null, null, typeof(Disposable)).ToList());
             Assert.Throws<ArgumentNullException>(() => lifetime.CreateFrom(typeof(IDisposable), null, (Type) null).ToList());
             Assert.Throws<ArgumentNullException>(() => lifetime.CreateFrom(typeof(IDisposable), null, typeof(Disposable), null).ToList());
-            Assert.Throws<ArgumentNullException>(() => lifetime.CreateFrom(typeof(IDisposable), null, (Expression<FactoryDelegate>)null).ToList());
+            Assert.Throws<ArgumentNullException>(() => lifetime.CreateFrom(typeof(IDisposable), null, null, new object()).ToList());
+            Assert.Throws<ArgumentNullException>(() => lifetime.CreateFrom(null, null, typeof(Disposable), new object()).ToList());
+            Assert.Throws<ArgumentNullException>(() => lifetime.CreateFrom(typeof(IDisposable), null, (Expression<FactoryDelegate>) null).ToList());
+            Assert.Throws<ArgumentNullException>(() => lifetime.CreateFrom(null, null, (_, __) => new object()).ToList());
         }
 
         [Test]

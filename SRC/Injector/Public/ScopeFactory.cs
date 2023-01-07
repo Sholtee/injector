@@ -21,8 +21,8 @@ namespace Solti.Utils.DI
         /// </summary>
         /// <param name="registerServices">The callback to register services.</param>
         /// <param name="options">The <see cref="ScopeOptions"/> to be applied against all the created scopes.</param>
-        /// <param name="lifetime">Optional hint specifying the object that is responsible for releasing the root scope</param>
-        public static IScopeFactory Create(Action<IServiceCollection> registerServices, ScopeOptions? options = null, object? lifetime = null)
+        /// <param name="tag">Optional user defined data to be bound to the root.</param>
+        public static IScopeFactory Create(Action<IServiceCollection> registerServices, ScopeOptions? options = null, object? tag = null)
         {
             if (registerServices is null)
                 throw new ArgumentNullException(nameof(registerServices));
@@ -30,7 +30,7 @@ namespace Solti.Utils.DI
             ServiceCollection services = new();
             registerServices(services);
 
-            return Create(services, options, lifetime);
+            return Create(services, options, tag);
         }
 
         /// <summary>
@@ -38,8 +38,8 @@ namespace Solti.Utils.DI
         /// </summary>
         /// <param name="services">Register services.</param>
         /// <param name="options">The <see cref="ScopeOptions"/> to be applied against all the created scopes.</param>
-        /// <param name="lifetime">Optional hint specifying the object that is responsible for releasing the root scope</param>
-        public static IScopeFactory Create(IServiceCollection services, ScopeOptions? options = null, object? lifetime = null)
+        /// <param name="tag">Optional user defined data to be bound to the root.</param>
+        public static IScopeFactory Create(IServiceCollection services, ScopeOptions? options = null, object? tag = null)
         {
             if (services is null)
                 throw new ArgumentNullException(nameof(services));
@@ -47,8 +47,8 @@ namespace Solti.Utils.DI
             options ??= new();
 
             return options.SupportsServiceProvider
-                ? new InjectorSupportsServiceProvider(services, options, lifetime)
-                : new Injector(services, options, lifetime);
+                ? new InjectorSupportsServiceProvider(services, options, tag)
+                : new Injector(services, options, tag);
         }
     }
 }

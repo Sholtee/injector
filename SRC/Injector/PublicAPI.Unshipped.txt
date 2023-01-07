@@ -140,8 +140,8 @@ static Solti.Utils.DI.Lifetime.Pooled.get -> Solti.Utils.DI.Lifetime!
 static Solti.Utils.DI.Lifetime.Scoped.get -> Solti.Utils.DI.Lifetime!
 static Solti.Utils.DI.Lifetime.Singleton.get -> Solti.Utils.DI.Lifetime!
 static Solti.Utils.DI.Lifetime.Transient.get -> Solti.Utils.DI.Lifetime!
-static Solti.Utils.DI.ScopeFactory.Create(Solti.Utils.DI.Interfaces.IServiceCollection! services, Solti.Utils.DI.Interfaces.ScopeOptions? options = null, object? lifetime = null) -> Solti.Utils.DI.Interfaces.IScopeFactory!
-static Solti.Utils.DI.ScopeFactory.Create(System.Action<Solti.Utils.DI.Interfaces.IServiceCollection!>! registerServices, Solti.Utils.DI.Interfaces.ScopeOptions? options = null, object? lifetime = null) -> Solti.Utils.DI.Interfaces.IScopeFactory!
+static Solti.Utils.DI.ScopeFactory.Create(Solti.Utils.DI.Interfaces.IServiceCollection! services, Solti.Utils.DI.Interfaces.ScopeOptions? options = null, object? tag = null) -> Solti.Utils.DI.Interfaces.IScopeFactory!
+static Solti.Utils.DI.ScopeFactory.Create(System.Action<Solti.Utils.DI.Interfaces.IServiceCollection!>! registerServices, Solti.Utils.DI.Interfaces.ScopeOptions? options = null, object? tag = null) -> Solti.Utils.DI.Interfaces.IScopeFactory!
 static Solti.Utils.DI.ServiceEntryAdvancedExtensions.IsInstance(this Solti.Utils.DI.Interfaces.AbstractServiceEntry! self) -> bool
 virtual Solti.Utils.DI.Interfaces.AbstractServiceEntry.ApplyProxy(System.Linq.Expressions.Expression<Solti.Utils.DI.Interfaces.ApplyProxyDelegate!>! applyProxy) -> void (forwarded, contained in Solti.Utils.DI.Interfaces)
 virtual Solti.Utils.DI.Interfaces.AbstractServiceEntry.Build(Solti.Utils.DI.Interfaces.IBuildContext? context, params Solti.Utils.DI.Interfaces.IFactoryVisitor![]! visitors) -> void (forwarded, contained in Solti.Utils.DI.Interfaces)
