@@ -5,12 +5,14 @@
 ********************************************************************************/
 using System.IO;
 
+using Moq;
 using NUnit.Framework;
 
 namespace Solti.Utils.DI.Tests
 {
     using Diagnostics;
     using Interfaces;
+    using System;
 
     public partial class InjectorTests
     {
@@ -80,6 +82,22 @@ namespace Solti.Utils.DI.Tests
 
             string dotGraph = Root.GetDependencyGraph<IInterface_1>(newLine: "\n");
             Assert.That(dotGraph, Is.EqualTo(File.ReadAllText("graph_4.txt").Replace("\r", string.Empty)));
+        }
+
+        [Test]
+        public void GetDependencyGraph_ShouldBeNullChecked()
+        {
+            Root = ScopeFactory.Create(svcs => { });
+
+            Assert.Throws<ArgumentNullException>(() => Root.GetDependencyGraph(null));
+            Assert.Throws<ArgumentNullException>(() => IScopeFactoryDiagnosticsExtensions.GetDependencyGraph(null, typeof(IInjector)));
+        }
+
+        [Test]
+        public void GetDependencyGraph_ShouldThrowOnForeignImplementation()
+        {
+            Root = new Mock<IScopeFactory>().Object;
+            Assert.Throws<NotSupportedException>(() => Root.GetDependencyGraph(typeof(IInjector)));
         }
     }
 }

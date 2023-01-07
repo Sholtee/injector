@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -14,6 +15,7 @@ using NUnit.Framework;
 namespace Solti.Utils.DI.Tests
 {
     using Interfaces;
+    using Internals;
     using Primitives.Patterns;
 
     public partial class InjectorTests
@@ -664,6 +666,22 @@ namespace Solti.Utils.DI.Tests
 
             Assert.That(inst.Interface.Disposed);
             Assert.That(((IDisposableEx) inst).Disposed);
+        }
+
+        [Test]
+        public void Lifetime_ShouldBeNullChecked([ValueSource(nameof(Lifetimes))] Lifetime lifetime)
+        {
+            Assert.Throws<ArgumentNullException>(() => lifetime.CreateFrom(null, null, typeof(Disposable)).ToList());
+            Assert.Throws<ArgumentNullException>(() => lifetime.CreateFrom(typeof(IDisposable), null, (Type) null).ToList());
+            Assert.Throws<ArgumentNullException>(() => lifetime.CreateFrom(typeof(IDisposable), null, typeof(Disposable), null).ToList());
+            Assert.Throws<ArgumentNullException>(() => lifetime.CreateFrom(typeof(IDisposable), null, (Expression<FactoryDelegate>)null).ToList());
+        }
+
+        [Test]
+        public void Lifetime_ShouldBeNullChecked()
+        {
+            Assert.Throws<ArgumentNullException>(() => new InstanceLifetime().CreateFrom(typeof(IDisposable), null, (Disposable) null).ToList());
+            Assert.Throws<ArgumentNullException>(() => new InstanceLifetime().CreateFrom(null, null, new Disposable()).ToList());
         }
     }
 }
