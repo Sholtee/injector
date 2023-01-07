@@ -81,5 +81,7 @@ namespace Solti.Utils.DI.Internals
         /// Tries to find an item in this lookup.
         /// </summary>
         public bool TryGet(CompositeKey key, out AbstractServiceEntry data) => FTryGet(key, out data);
+
+        public int Count => FTree.Count;
     }
 }

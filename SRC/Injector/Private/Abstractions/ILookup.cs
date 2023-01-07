@@ -24,5 +24,10 @@ namespace Solti.Utils.DI.Internals
         /// Tries to get the <paramref name="data"/> associated with the given <paramref name="key"/>.
         /// </summary>
         bool TryGet(TKey key, out TData data);
+
+        /// <summary>
+        /// The number of held items.
+        /// </summary>
+        int Count { get; }
     }
 }

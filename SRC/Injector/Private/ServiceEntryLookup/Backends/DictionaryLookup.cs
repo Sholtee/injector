@@ -44,5 +44,7 @@ namespace Solti.Utils.DI.Internals
         }
 
         public bool TryGet(CompositeKey key, out AbstractServiceEntry data) => FDictionary.TryGetValue(key, out data);
+
+        public int Count => FDictionary.Count;
     }
 }

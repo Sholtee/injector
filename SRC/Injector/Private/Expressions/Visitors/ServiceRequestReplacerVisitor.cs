@@ -66,7 +66,7 @@ namespace Solti.Utils.DI.Internals
             // injector.[Try]Get(iface, name) -> entry.Resolve(injector)
             //
 
-            Debug.Assert(entry!.ResolveInstance is not null);
+            Debug.Assert(entry!.ResolveInstance is not null, "Resolver cannot be NULL");
 
             Expression resolve = Expression.Invoke
             (

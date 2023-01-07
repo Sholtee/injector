@@ -5,6 +5,8 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -19,6 +21,13 @@ namespace Solti.Utils.DI.Internals
             Func<IServiceEntryLookup, IBuildContext, IGraphBuilder> graphBuilderFactory
         ) : base(entries, compiler, () => new CompiledBTreeLookup(compiler), graphBuilderFactory)
         {
+            //
+            // Base already filled the lookups so it's time to compile
+            //
+
+            if (entries.Any())
+                Debug.Assert(FEntryLookup.Count > 0 || FGenericEntryLookup.Count > 0, "Uninitialized lookup");
+
             FEntryLookup.Compiled = FGenericEntryLookup.Compiled = true;
         }
     }
