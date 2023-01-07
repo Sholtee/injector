@@ -42,12 +42,15 @@ namespace Solti.Utils.DI.Internals
             get => FCompiled;
             set
             {
-                if (!value)
-                    FTryGet = FTree.TryGet;
-                else
-                    Compile();
+                if (value != FCompiled)
+                {
+                    if (!value)
+                        FTryGet = FTree.TryGet;
+                    else
+                        Compile();
 
-                FCompiled = value;
+                    FCompiled = value;
+                }
             }
         }
 
