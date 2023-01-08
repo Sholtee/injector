@@ -21,6 +21,42 @@ namespace Solti.Utils.DI.Tests
     public partial class ServiceCollectionExtensionsTests
     {
         [Test]
+        public void Aspects_MayBeDisabled([ValueSource(nameof(Lifetimes))] Lifetime lifetime)
+        {
+            Collection = new ServiceCollection
+            (
+                new ServiceOptions
+                {
+                    SupportAspects = false
+                }
+            );
+
+            var mockInjector = new Mock<IInstanceFactory>(MockBehavior.Strict);
+            mockInjector
+                .SetupGet(i => i.Tag)
+                .Returns(new Mock<ILifetimeManager<object>>(MockBehavior.Strict).Object);
+
+            var mockBuildContext = new Mock<IBuildContext>(MockBehavior.Strict);
+            mockBuildContext
+                .SetupGet(ctx => ctx.Compiler)
+                .Returns(new SimpleDelegateCompiler());
+            mockBuildContext
+                .Setup(ctx => ctx.AssignSlot())
+                .Returns(0);
+
+            Collection.Service<IMyServiceHavingAspect, MyService>(lifetime);
+
+            AbstractServiceEntry lastEntry = Collection.LastEntry;
+            lastEntry.Build(mockBuildContext.Object, new MergeProxiesVisitor(), new ApplyLifetimeManagerVisitor());
+
+            IMyServiceHavingAspect instance = (IMyServiceHavingAspect)lastEntry
+                .CreateInstance(mockInjector.Object, out object _);
+
+            Assert.That(instance, Is.Not.Null);
+            Assert.That(instance, Is.InstanceOf<MyService>());
+        }
+
+        [Test]
         public void Aspects_ProxyInstallationShouldBeDoneOnBuild_InterfaceAspect([ValueSource(nameof(Lifetimes))] Lifetime lifetime)
         {
             var mockInjector = new Mock<IInstanceFactory>(MockBehavior.Strict);
