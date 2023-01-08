@@ -37,5 +37,10 @@ namespace Solti.Utils.DI.Interfaces
         /// Specifies the service resolution mode.
         /// </summary>
         public ServiceResolutionMode ServiceResolutionMode { get; init; } = ServiceResolutionMode.AOT;
+
+        /// <summary>
+        /// The default options.
+        /// </summary>
+        public static ScopeOptions Default { get; } = new();
     }
 }

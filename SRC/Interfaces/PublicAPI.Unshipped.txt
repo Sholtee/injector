@@ -152,6 +152,7 @@ static Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Service<TInte
 static Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Service<TInterface, TImplementation>(this Solti.Utils.DI.Interfaces.IServiceCollection! self, string! name, Solti.Utils.DI.Interfaces.LifetimeBase! lifetime) -> Solti.Utils.DI.Interfaces.IModifiedServiceCollection!
 static Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.UsingProxy(this Solti.Utils.DI.Interfaces.IModifiedServiceCollection! self, System.Linq.Expressions.Expression<Solti.Utils.DI.Interfaces.ApplyProxyDelegate!>! decorator) -> Solti.Utils.DI.Interfaces.IModifiedServiceCollection!
 static Solti.Utils.DI.Interfaces.IServiceProviderBasicExtensions.GetService<TInterface>(this System.IServiceProvider! self) -> TInterface?
+static Solti.Utils.DI.Interfaces.ScopeOptions.Default.get -> Solti.Utils.DI.Interfaces.ScopeOptions!
 static Solti.Utils.DI.Interfaces.ServiceEntryExtensions.IsFactory(this Solti.Utils.DI.Interfaces.AbstractServiceEntry! self) -> bool
 static Solti.Utils.DI.Interfaces.ServiceEntryExtensions.IsInternal(this Solti.Utils.DI.Interfaces.AbstractServiceEntry! self) -> bool
 static Solti.Utils.DI.Interfaces.ServiceEntryExtensions.IsService(this Solti.Utils.DI.Interfaces.AbstractServiceEntry! self) -> bool

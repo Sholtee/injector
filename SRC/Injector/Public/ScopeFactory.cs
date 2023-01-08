@@ -44,7 +44,7 @@ namespace Solti.Utils.DI
             if (services is null)
                 throw new ArgumentNullException(nameof(services));
 
-            options ??= new();
+            options ??= ScopeOptions.Default;
 
             return options.SupportsServiceProvider
                 ? new InjectorSupportsServiceProvider(services, options, tag)
