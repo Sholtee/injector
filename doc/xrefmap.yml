@@ -1553,6 +1553,18 @@ references:
   commentId: Overload:Solti.Utils.DI.Interfaces.ScopeOptions.#ctor
   fullName: Solti.Utils.DI.Interfaces.ScopeOptions.ScopeOptions
   nameWithType: ScopeOptions.ScopeOptions
+- uid: Solti.Utils.DI.Interfaces.ScopeOptions.Default
+  name: Default
+  href: Solti.Utils.DI.Interfaces.ScopeOptions.html#Solti_Utils_DI_Interfaces_ScopeOptions_Default
+  commentId: P:Solti.Utils.DI.Interfaces.ScopeOptions.Default
+  fullName: Solti.Utils.DI.Interfaces.ScopeOptions.Default
+  nameWithType: ScopeOptions.Default
+- uid: Solti.Utils.DI.Interfaces.ScopeOptions.Default*
+  name: Default
+  href: Solti.Utils.DI.Interfaces.ScopeOptions.html#Solti_Utils_DI_Interfaces_ScopeOptions_Default_
+  commentId: Overload:Solti.Utils.DI.Interfaces.ScopeOptions.Default
+  fullName: Solti.Utils.DI.Interfaces.ScopeOptions.Default
+  nameWithType: ScopeOptions.Default
 - uid: Solti.Utils.DI.Interfaces.ScopeOptions.Engine
   name: Engine
   href: Solti.Utils.DI.Interfaces.ScopeOptions.html#Solti_Utils_DI_Interfaces_ScopeOptions_Engine
