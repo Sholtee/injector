@@ -49,11 +49,45 @@ namespace Solti.Utils.DI.Tests
             AbstractServiceEntry lastEntry = Collection.LastEntry;
             lastEntry.Build(mockBuildContext.Object, new MergeProxiesVisitor(), new ApplyLifetimeManagerVisitor());
 
-            IMyServiceHavingAspect instance = (IMyServiceHavingAspect)lastEntry
-                .CreateInstance(mockInjector.Object, out object _);
+            object instance = lastEntry.CreateInstance(mockInjector.Object, out object _);
 
             Assert.That(instance, Is.Not.Null);
             Assert.That(instance, Is.InstanceOf<MyService>());
+        }
+
+        [Test]
+        public void Aspects_MayBeDisabled_GenericCase([ValueSource(nameof(Lifetimes))] Lifetime lifetime)
+        {
+            Collection = new ServiceCollection
+            (
+                new ServiceOptions
+                {
+                    SupportAspects = false
+                }
+            );
+
+            var mockInjector = new Mock<IInstanceFactory>(MockBehavior.Strict);
+            mockInjector
+                .SetupGet(i => i.Tag)
+                .Returns(new Mock<ILifetimeManager<object>>(MockBehavior.Strict).Object);
+
+            var mockBuildContext = new Mock<IBuildContext>(MockBehavior.Strict);
+            mockBuildContext
+                .SetupGet(ctx => ctx.Compiler)
+                .Returns(new SimpleDelegateCompiler());
+            mockBuildContext
+                .Setup(ctx => ctx.AssignSlot())
+                .Returns(0);
+
+            Collection.Service(typeof(IMyGenericServiceHavingAspect<>), typeof(MyGenericService<>), lifetime);
+
+            AbstractServiceEntry lastEntry = Collection.LastEntry.Specialize(typeof(int));
+            lastEntry.Build(mockBuildContext.Object, new MergeProxiesVisitor(), new ApplyLifetimeManagerVisitor());
+
+            object instance = lastEntry.CreateInstance(mockInjector.Object, out object _);
+
+            Assert.That(instance, Is.Not.Null);
+            Assert.That(instance, Is.InstanceOf<MyGenericService<int>>());
         }
 
         [Test]
