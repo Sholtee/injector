@@ -11,7 +11,7 @@ using NUnit.Framework;
 namespace Solti.Utils.DI.Interfaces.Tests
 {
     [TestFixture]
-    internal class AbstractServiceEntryTests
+    public sealed class AbstractServiceEntryTests
     {
         private AbstractServiceEntry Entry { get; set; }
 
