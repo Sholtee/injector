@@ -20,13 +20,31 @@ namespace Solti.Utils.DI.Tests
 
     public partial class ServiceCollectionExtensionsTests
     {
-        [TestCaseSource(nameof(Lifetimes))]
-        public void Provider_ShouldThrowOnNonInterfaceKey(Lifetime lifetime) =>
-            Assert.Throws<ArgumentException>(() => Collection.Provider(typeof(object), typeof(DummyProvider), lifetime));
+        [Test]
+        public void Provider_ShouldBeNullChecked()
+        {
+            Assert.Throws<ArgumentNullException>(() => Collection.Provider(null, typeof(DummyProvider), Lifetime.Singleton));
+            Assert.Throws<ArgumentNullException>(() => Collection.Provider(null, typeof(DummyProvider), new object(), Lifetime.Singleton));
+            Assert.Throws<ArgumentNullException>(() => Collection.Provider(typeof(ICloneable), typeof(DummyProvider), null));
+            Assert.Throws<ArgumentNullException>(() => Collection.Provider(typeof(ICloneable), typeof(DummyProvider), new object(), null));
+            Assert.Throws<ArgumentNullException>(() => Collection.Provider(typeof(ICloneable), null, Lifetime.Singleton));
+            Assert.Throws<ArgumentNullException>(() => Collection.Provider(typeof(ICloneable), typeof(DummyProvider), null, Lifetime.Singleton));
+            Assert.Throws<ArgumentNullException>(() => Collection.Provider(typeof(ICloneable), null, new object(), Lifetime.Singleton));
+        }
 
         [TestCaseSource(nameof(Lifetimes))]
-        public void Provider_ShouldThrowIfTheProviderDoesNotImplementTheIServiceProvider(Lifetime lifetime) =>
+        public void Provider_ShouldThrowOnNonInterfaceKey(Lifetime lifetime)
+        {
+            Assert.Throws<ArgumentException>(() => Collection.Provider(typeof(object), typeof(DummyProvider), lifetime));
+            Assert.Throws<ArgumentException>(() => Collection.Provider(typeof(object), typeof(DummyProvider), new object(), lifetime));
+        }
+
+        [TestCaseSource(nameof(Lifetimes))]
+        public void Provider_ShouldThrowIfTheProviderDoesNotImplementTheIServiceProvider(Lifetime lifetime)
+        {
             Assert.Throws<ArgumentException>(() => Collection.Provider(typeof(IInterface_1), typeof(object), lifetime));
+            Assert.Throws<ArgumentException>(() => Collection.Provider(typeof(IInterface_1), typeof(object), new object(), lifetime));
+        }
 
         [TestCaseSource(nameof(Lifetimes))]
         public void Provider_ShouldThrowIfTheProviderHasNonInterfaceDependency(Lifetime lifetime) =>

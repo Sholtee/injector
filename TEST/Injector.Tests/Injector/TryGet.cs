@@ -12,6 +12,7 @@ using NUnit.Framework;
 namespace Solti.Utils.DI.Tests
 {
     using Interfaces;
+    using System.Collections;
 
     public partial class InjectorTests
     {
@@ -32,6 +33,12 @@ namespace Solti.Utils.DI.Tests
                     (typeof(IInterface_7<IInterface_7<INonExisting>>), typeof(Implementation_7_TInterface_Dependant<IInterface_7<INonExisting>>))
                 };
             }
+        }
+
+        [Test]
+        public void Injector_TryGet_ShouldBeNullChecked()
+        {
+            Assert.Throws<ArgumentNullException>(() => IInjectorBasicExtensions.TryGet<IDictionary>(null));
         }
 
         [Test]

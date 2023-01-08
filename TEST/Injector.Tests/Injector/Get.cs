@@ -33,6 +33,12 @@ namespace Solti.Utils.DI.Tests
         }
 
         [Test]
+        public void Injector_Get_ShouldBeNullChecked()
+        {
+            Assert.Throws<ArgumentNullException>(() => IInjectorBasicExtensions.Get<IDictionary>(null));
+        }
+
+        [Test]
         public void Injector_Get_ShouldInstantiate([ValueSource(nameof(Lifetimes))] Lifetime lifetime, [ValueSource(nameof(Engines))] string engine, [ValueSource(nameof(ResolutionModes))] ServiceResolutionMode resolutionMode)
         {
             Root = ScopeFactory.Create(svcs => svcs.Service<IInterface_1, Implementation_1_No_Dep>(lifetime), new ScopeOptions { Engine = engine, ServiceResolutionMode = resolutionMode });

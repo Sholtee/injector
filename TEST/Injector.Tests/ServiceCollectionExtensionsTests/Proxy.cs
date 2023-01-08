@@ -17,8 +17,12 @@ namespace Solti.Utils.DI.Tests
     public partial class ServiceCollectionExtensionsTests
     {
         [Test]
-        public void Proxy_ShouldBeNullChecked() =>
+        public void Proxy_ShouldBeNullChecked()
+        {
+            Assert.Throws<ArgumentNullException>(() => IServiceCollectionBasicExtensions.UsingProxy(null, (_, _, _) => new object()));
             Assert.Throws<ArgumentNullException>(() => IServiceCollectionAdvancedExtensions.UsingProxy<IInterfaceInterceptor>(null));
+            Assert.Throws<ArgumentNullException>(() => Collection.UsingProxy(null));
+        }
 
         [TestCaseSource(nameof(ScopeControlledLifetimes))]
         public void Proxy_ShouldOverwriteTheFactoryFunction(Lifetime lifetime)
