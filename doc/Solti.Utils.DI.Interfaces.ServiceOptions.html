@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Class AspectAttribute
+    <title>Class ServiceOptions
    | Injector </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Class AspectAttribute
+    <meta name="title" content="Class ServiceOptions
    | Injector ">
     <meta name="generator" content="docfx 2.59.3.0">
     
@@ -37,49 +37,45 @@
       <div role="main" class="container body-content hide-when-search">
         <div class="article row grid">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="Solti.Utils.DI.Interfaces.AspectAttribute">
+            <article class="content wrap" id="_content" data-uid="Solti.Utils.DI.Interfaces.ServiceOptions">
   
   
-  <h1 id="Solti_Utils_DI_Interfaces_AspectAttribute" data-uid="Solti.Utils.DI.Interfaces.AspectAttribute" class="text-break">Class AspectAttribute
+  <h1 id="Solti_Utils_DI_Interfaces_ServiceOptions" data-uid="Solti.Utils.DI.Interfaces.ServiceOptions" class="text-break">Class ServiceOptions
   </h1>
-  <div class="markdown level0 summary"><p>Defines an abstract aspect that can be applied against service interfaces or classes.</p>
+  <div class="markdown level0 summary"><p>Specifies the general service behavior.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Object</a></div>
-    <div class="level1"><span class="xref">AspectAttribute</span></div>
-  </div>
-  <div class="implements">
-    <h5>Implements</h5>
-    <div><a class="xref" href="Solti.Utils.DI.Interfaces.IAspect.html">IAspect</a></div>
+    <div class="level1"><span class="xref">ServiceOptions</span></div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Solti.Utils.DI.Interfaces.html">Solti.Utils.DI.Interfaces</a></h6>
   <h6><strong>Assembly</strong>: Solti.Utils.DI.Interfaces.dll</h6>
-  <h5 id="Solti_Utils_DI_Interfaces_AspectAttribute_syntax">Syntax</h5>
+  <h5 id="Solti_Utils_DI_Interfaces_ServiceOptions_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract class AspectAttribute : Attribute, IAspect</code></pre>
+    <pre><code class="lang-csharp hljs">public class ServiceOptions : Object</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
-  <a id="Solti_Utils_DI_Interfaces_AspectAttribute__ctor_" data-uid="Solti.Utils.DI.Interfaces.AspectAttribute.#ctor*"></a>
-  <h4 id="Solti_Utils_DI_Interfaces_AspectAttribute__ctor" data-uid="Solti.Utils.DI.Interfaces.AspectAttribute.#ctor">AspectAttribute()</h4>
+  <a id="Solti_Utils_DI_Interfaces_ServiceOptions__ctor_" data-uid="Solti.Utils.DI.Interfaces.ServiceOptions.#ctor*"></a>
+  <h4 id="Solti_Utils_DI_Interfaces_ServiceOptions__ctor" data-uid="Solti.Utils.DI.Interfaces.ServiceOptions.#ctor">ServiceOptions()</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected AspectAttribute()</code></pre>
+    <pre><code class="lang-csharp hljs">public ServiceOptions()</code></pre>
   </div>
   <h3 id="properties">Properties
   </h3>
-  <a id="Solti_Utils_DI_Interfaces_AspectAttribute_UnderlyingInterceptor_" data-uid="Solti.Utils.DI.Interfaces.AspectAttribute.UnderlyingInterceptor*"></a>
-  <h4 id="Solti_Utils_DI_Interfaces_AspectAttribute_UnderlyingInterceptor" data-uid="Solti.Utils.DI.Interfaces.AspectAttribute.UnderlyingInterceptor">UnderlyingInterceptor</h4>
-  <div class="markdown level1 summary"><p>See <a class="xref" href="Solti.Utils.DI.Interfaces.IAspect.html#Solti_Utils_DI_Interfaces_IAspect_UnderlyingInterceptor">UnderlyingInterceptor</a></p>
+  <a id="Solti_Utils_DI_Interfaces_ServiceOptions_Default_" data-uid="Solti.Utils.DI.Interfaces.ServiceOptions.Default*"></a>
+  <h4 id="Solti_Utils_DI_Interfaces_ServiceOptions_Default" data-uid="Solti.Utils.DI.Interfaces.ServiceOptions.Default">Default</h4>
+  <div class="markdown level1 summary"><p>The default options.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract Type UnderlyingInterceptor { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public static ServiceOptions Default { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -91,15 +87,38 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a></td>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.ServiceOptions.html">ServiceOptions</a></td>
         <td></td>
       </tr>
     </tbody>
   </table>
-  <h3 id="implements">Implements</h3>
-  <div>
-      <a class="xref" href="Solti.Utils.DI.Interfaces.IAspect.html">IAspect</a>
+  <a id="Solti_Utils_DI_Interfaces_ServiceOptions_SupportAspects_" data-uid="Solti.Utils.DI.Interfaces.ServiceOptions.SupportAspects*"></a>
+  <h4 id="Solti_Utils_DI_Interfaces_ServiceOptions_SupportAspects" data-uid="Solti.Utils.DI.Interfaces.ServiceOptions.SupportAspects">SupportAspects</h4>
+  <div class="markdown level1 summary"><p>If set to true, the system tries to apply proxies defined via <a class="xref" href="Solti.Utils.DI.Interfaces.AspectAttribute.html">AspectAttribute</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool SupportAspects { get; set; }</code></pre>
   </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Solti_Utils_DI_Interfaces_ServiceOptions_SupportAspects_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>The default value for this property is <pre><code>true</code></pre></p>
+</div>
 </article>
           </div>
           

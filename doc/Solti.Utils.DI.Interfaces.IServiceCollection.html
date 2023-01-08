@@ -52,7 +52,36 @@
     <pre><code class="lang-csharp hljs">public interface IServiceCollection</code></pre>
   </div>
   <h5 id="Solti_Utils_DI_Interfaces_IServiceCollection_remarks"><strong>Remarks</strong></h5>
-  <div class="markdown level0 remarks"><p><a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollection.html">IServiceCollection</a> interface implements the <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.iset-1">ISet&lt;T&gt;</a> interface so you can register only one entry with the given <a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_Interface">Interface</a> and <a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_Name">Name</a>.</p>
+  <div class="markdown level0 remarks"><p>Only one entry can be registered with a given <a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_Interface">Interface</a> and <a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_Name">Name</a> pair.</p>
+</div>
+  <h3 id="properties">Properties
+  </h3>
+  <a id="Solti_Utils_DI_Interfaces_IServiceCollection_ServiceOptions_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollection.ServiceOptions*"></a>
+  <h4 id="Solti_Utils_DI_Interfaces_IServiceCollection_ServiceOptions" data-uid="Solti.Utils.DI.Interfaces.IServiceCollection.ServiceOptions">ServiceOptions</h4>
+  <div class="markdown level1 summary"><p>Defines the general service behavior.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">ServiceOptions ServiceOptions { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.ServiceOptions.html">ServiceOptions</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Solti_Utils_DI_Interfaces_IServiceCollection_ServiceOptions_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>You can override this setting by calling the Add method directly.</p>
 </div>
   <h3 id="extensionmethods">Extension Methods</h3>
   <div>

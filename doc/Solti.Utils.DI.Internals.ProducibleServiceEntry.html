@@ -78,9 +78,6 @@
       <a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_Lifetime">AbstractServiceEntry.Lifetime</a>
     </div>
     <div>
-      <a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_Features">AbstractServiceEntry.Features</a>
-    </div>
-    <div>
       <a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_State">AbstractServiceEntry.State</a>
     </div>
     <div>
@@ -99,44 +96,13 @@
   <h3 id="constructors">Constructors
   </h3>
   <a id="Solti_Utils_DI_Internals_ProducibleServiceEntry__ctor_" data-uid="Solti.Utils.DI.Internals.ProducibleServiceEntry.#ctor*"></a>
-  <h4 id="Solti_Utils_DI_Internals_ProducibleServiceEntry__ctor_System_Type_System_String_" data-uid="Solti.Utils.DI.Internals.ProducibleServiceEntry.#ctor(System.Type,System.String)">ProducibleServiceEntry(Type, String)</h4>
+  <h4 id="Solti_Utils_DI_Internals_ProducibleServiceEntry__ctor_System_Type_System_String_System_Linq_Expressions_Expression_Solti_Utils_DI_Interfaces_FactoryDelegate__System_Boolean_" data-uid="Solti.Utils.DI.Internals.ProducibleServiceEntry.#ctor(System.Type,System.String,System.Linq.Expressions.Expression{Solti.Utils.DI.Interfaces.FactoryDelegate},System.Boolean)">ProducibleServiceEntry(Type, String, Expression&lt;FactoryDelegate&gt;, Boolean)</h4>
   <div class="markdown level1 summary"><p>Creartes a new <a class="xref" href="Solti.Utils.DI.Internals.ProducibleServiceEntry.html">ProducibleServiceEntry</a> instance.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected ProducibleServiceEntry(Type interface, string name)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a></td>
-        <td><span class="parametername">interface</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">name</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <a id="Solti_Utils_DI_Internals_ProducibleServiceEntry__ctor_" data-uid="Solti.Utils.DI.Internals.ProducibleServiceEntry.#ctor*"></a>
-  <h4 id="Solti_Utils_DI_Internals_ProducibleServiceEntry__ctor_System_Type_System_String_System_Linq_Expressions_Expression_Solti_Utils_DI_Interfaces_FactoryDelegate__" data-uid="Solti.Utils.DI.Internals.ProducibleServiceEntry.#ctor(System.Type,System.String,System.Linq.Expressions.Expression{Solti.Utils.DI.Interfaces.FactoryDelegate})">ProducibleServiceEntry(Type, String, Expression&lt;FactoryDelegate&gt;)</h4>
-  <div class="markdown level1 summary"><p>Creartes a new <a class="xref" href="Solti.Utils.DI.Internals.ProducibleServiceEntry.html">ProducibleServiceEntry</a> instance.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected ProducibleServiceEntry(Type interface, string name, Expression&lt;FactoryDelegate&gt; factory)</code></pre>
+    <pre><code class="lang-csharp hljs">protected ProducibleServiceEntry(Type interface, string name, Expression&lt;FactoryDelegate&gt; factory, bool supportAspects)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -163,16 +129,21 @@
         <td><span class="parametername">factory</span></td>
         <td></td>
       </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">supportAspects</span></td>
+        <td></td>
+      </tr>
     </tbody>
   </table>
   <a id="Solti_Utils_DI_Internals_ProducibleServiceEntry__ctor_" data-uid="Solti.Utils.DI.Internals.ProducibleServiceEntry.#ctor*"></a>
-  <h4 id="Solti_Utils_DI_Internals_ProducibleServiceEntry__ctor_System_Type_System_String_System_Type_" data-uid="Solti.Utils.DI.Internals.ProducibleServiceEntry.#ctor(System.Type,System.String,System.Type)">ProducibleServiceEntry(Type, String, Type)</h4>
+  <h4 id="Solti_Utils_DI_Internals_ProducibleServiceEntry__ctor_System_Type_System_String_System_Type_System_Boolean_" data-uid="Solti.Utils.DI.Internals.ProducibleServiceEntry.#ctor(System.Type,System.String,System.Type,System.Boolean)">ProducibleServiceEntry(Type, String, Type, Boolean)</h4>
   <div class="markdown level1 summary"><p>Creartes a new <a class="xref" href="Solti.Utils.DI.Internals.ProducibleServiceEntry.html">ProducibleServiceEntry</a> instance.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected ProducibleServiceEntry(Type interface, string name, Type implementation)</code></pre>
+    <pre><code class="lang-csharp hljs">protected ProducibleServiceEntry(Type interface, string name, Type implementation, bool supportAspects)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -199,16 +170,21 @@
         <td><span class="parametername">implementation</span></td>
         <td></td>
       </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">supportAspects</span></td>
+        <td></td>
+      </tr>
     </tbody>
   </table>
   <a id="Solti_Utils_DI_Internals_ProducibleServiceEntry__ctor_" data-uid="Solti.Utils.DI.Internals.ProducibleServiceEntry.#ctor*"></a>
-  <h4 id="Solti_Utils_DI_Internals_ProducibleServiceEntry__ctor_System_Type_System_String_System_Type_System_Object_" data-uid="Solti.Utils.DI.Internals.ProducibleServiceEntry.#ctor(System.Type,System.String,System.Type,System.Object)">ProducibleServiceEntry(Type, String, Type, Object)</h4>
+  <h4 id="Solti_Utils_DI_Internals_ProducibleServiceEntry__ctor_System_Type_System_String_System_Type_System_Object_System_Boolean_" data-uid="Solti.Utils.DI.Internals.ProducibleServiceEntry.#ctor(System.Type,System.String,System.Type,System.Object,System.Boolean)">ProducibleServiceEntry(Type, String, Type, Object, Boolean)</h4>
   <div class="markdown level1 summary"><p>Creartes a new <a class="xref" href="Solti.Utils.DI.Internals.ProducibleServiceEntry.html">ProducibleServiceEntry</a> instance.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected ProducibleServiceEntry(Type interface, string name, Type implementation, object explicitArgs)</code></pre>
+    <pre><code class="lang-csharp hljs">protected ProducibleServiceEntry(Type interface, string name, Type implementation, object explicitArgs, bool supportAspects)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -240,6 +216,11 @@
         <td><span class="parametername">explicitArgs</span></td>
         <td></td>
       </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">supportAspects</span></td>
+        <td></td>
+      </tr>
     </tbody>
   </table>
   <h3 id="properties">Properties
@@ -268,6 +249,32 @@
       </tr>
     </tbody>
   </table>
+  <a id="Solti_Utils_DI_Internals_ProducibleServiceEntry_Features_" data-uid="Solti.Utils.DI.Internals.ProducibleServiceEntry.Features*"></a>
+  <h4 id="Solti_Utils_DI_Internals_ProducibleServiceEntry_Features" data-uid="Solti.Utils.DI.Internals.ProducibleServiceEntry.Features">Features</h4>
+  <div class="markdown level1 summary"><p>Features related to this entry.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override ServiceEntryFeatures Features { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.ServiceEntryFeatures.html">ServiceEntryFeatures</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_Features">AbstractServiceEntry.Features</a></div>
   <a id="Solti_Utils_DI_Internals_ProducibleServiceEntry_Proxies_" data-uid="Solti.Utils.DI.Internals.ProducibleServiceEntry.Proxies*"></a>
   <h4 id="Solti_Utils_DI_Internals_ProducibleServiceEntry_Proxies" data-uid="Solti.Utils.DI.Internals.ProducibleServiceEntry.Proxies">Proxies</h4>
   <div class="markdown level1 summary"><p>The applied proxies.</p>
