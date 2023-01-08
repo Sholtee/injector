@@ -145,18 +145,6 @@ references:
   commentId: Overload:Solti.Utils.DI.Interfaces.AbstractServiceEntry.Features
   fullName: Solti.Utils.DI.Interfaces.AbstractServiceEntry.Features
   nameWithType: AbstractServiceEntry.Features
-- uid: Solti.Utils.DI.Interfaces.AbstractServiceEntry.GetHashCode
-  name: GetHashCode()
-  href: Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_GetHashCode
-  commentId: M:Solti.Utils.DI.Interfaces.AbstractServiceEntry.GetHashCode
-  fullName: Solti.Utils.DI.Interfaces.AbstractServiceEntry.GetHashCode()
-  nameWithType: AbstractServiceEntry.GetHashCode()
-- uid: Solti.Utils.DI.Interfaces.AbstractServiceEntry.GetHashCode*
-  name: GetHashCode
-  href: Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_GetHashCode_
-  commentId: Overload:Solti.Utils.DI.Interfaces.AbstractServiceEntry.GetHashCode
-  fullName: Solti.Utils.DI.Interfaces.AbstractServiceEntry.GetHashCode
-  nameWithType: AbstractServiceEntry.GetHashCode
 - uid: Solti.Utils.DI.Interfaces.AbstractServiceEntry.Implementation
   name: Implementation
   href: Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_Implementation
