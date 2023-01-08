@@ -32,7 +32,7 @@ namespace Solti.Utils.DI.Tests
 
             Assert.DoesNotThrow(() => Collection.Factory(typeof(IInterface_3<>), factory, lifetime));
 
-            AbstractServiceEntry expected = lifetime.CreateFrom(typeof(IInterface_3<int>), null, factory).Last();
+            AbstractServiceEntry expected = lifetime.CreateFrom(typeof(IInterface_3<int>), null, factory, false).Last();
 
             Assert.That(Collection.LastEntry.Specialize(typeof(int)), Is.InstanceOf(expected.GetType()).And.EqualTo(expected).Using(ServiceIdComparer.Instance));
         }

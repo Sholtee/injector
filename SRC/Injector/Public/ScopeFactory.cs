@@ -20,17 +20,18 @@ namespace Solti.Utils.DI
         /// Creates a new scope factory. The returned instance defines the root scope too.
         /// </summary>
         /// <param name="registerServices">The callback to register services.</param>
-        /// <param name="options">The <see cref="ScopeOptions"/> to be applied against all the created scopes.</param>
+        /// <param name="scopeOptions">The <see cref="ScopeOptions"/> to be applied against all the created scopes.</param>
+        /// <param name="serviceOptions">The <see cref="ServiceOptions"/> to be applied against all the registered services.</param>
         /// <param name="tag">Optional user defined data to be bound to the root.</param>
-        public static IScopeFactory Create(Action<IServiceCollection> registerServices, ScopeOptions? options = null, object? tag = null)
+        public static IScopeFactory Create(Action<IServiceCollection> registerServices, ScopeOptions? scopeOptions = null, ServiceOptions? serviceOptions = null, object? tag = null)
         {
             if (registerServices is null)
                 throw new ArgumentNullException(nameof(registerServices));
 
-            ServiceCollection services = new();
+            IServiceCollection services = ServiceCollection.Create(serviceOptions);
             registerServices(services);
 
-            return Create(services, options, tag);
+            return Create(services, scopeOptions, tag);
         }
 
         /// <summary>

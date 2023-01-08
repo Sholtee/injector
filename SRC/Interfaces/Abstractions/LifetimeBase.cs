@@ -27,17 +27,17 @@ namespace Solti.Utils.DI.Interfaces
         /// <summary>
         /// Creates one or more service entry against the given <paramref name="implementation"/>.
         /// </summary>
-        public virtual IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Type implementation) => throw NotSupported;
+        public virtual IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Type implementation, bool supportAspects) => throw NotSupported;
 
         /// <summary>
         /// Creates one or more service entry against the given <paramref name="implementation"/> using arbitrary constructor argument.
         /// </summary>
-        public virtual IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Type implementation, object explicitArgs) => throw NotSupported;
+        public virtual IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Type implementation, object explicitArgs, bool supportAspects) => throw NotSupported;
 
         /// <summary>
         /// Creates one or more service entry against the given <paramref name="factory"/>.
         /// </summary>
-        public virtual IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Expression<FactoryDelegate> factory) => throw NotSupported;
+        public virtual IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Expression<FactoryDelegate> factory, bool supportAspects) => throw NotSupported;
 
         /// <summary>
         /// Creates one or more service entry against the given <paramref name="value"/>.

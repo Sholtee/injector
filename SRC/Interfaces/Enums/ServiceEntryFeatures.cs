@@ -4,7 +4,6 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
-using System.Diagnostics.CodeAnalysis;
 
 namespace Solti.Utils.DI.Interfaces
 {
@@ -12,7 +11,6 @@ namespace Solti.Utils.DI.Interfaces
     /// Describes the features of an <see cref="AbstractServiceEntry"/>
     /// </summary>
     [Flags]
-    [SuppressMessage("Design", "CA1008:Enums should have zero value")]
     public enum ServiceEntryFeatures: int
     {
         /// <summary>
@@ -33,7 +31,12 @@ namespace Solti.Utils.DI.Interfaces
         /// <summary>
         /// Calling the <see cref="AbstractServiceEntry.Build(IBuildContext?, IFactoryVisitor[])"/> method is supported.
         /// </summary>
-        SupportsBuild = 1 << 2
+        SupportsBuild = 1 << 2,
+
+        /// <summary>
+        /// Proxying is supported via <see cref="AspectAttribute"/> class.
+        /// </summary>
+        SupportsAspects = 1 << 3
 
         //
         // TBD: SupportsProxying

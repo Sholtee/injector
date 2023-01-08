@@ -672,13 +672,13 @@ namespace Solti.Utils.DI.Tests
         [Test]
         public void Lifetime_ShouldBeNullChecked([ValueSource(nameof(Lifetimes))] Lifetime lifetime)
         {
-            Assert.Throws<ArgumentNullException>(() => lifetime.CreateFrom(null, null, typeof(Disposable)).ToList());
-            Assert.Throws<ArgumentNullException>(() => lifetime.CreateFrom(typeof(IDisposable), null, (Type) null).ToList());
-            Assert.Throws<ArgumentNullException>(() => lifetime.CreateFrom(typeof(IDisposable), null, typeof(Disposable), null).ToList());
-            Assert.Throws<ArgumentNullException>(() => lifetime.CreateFrom(typeof(IDisposable), null, null, new object()).ToList());
-            Assert.Throws<ArgumentNullException>(() => lifetime.CreateFrom(null, null, typeof(Disposable), new object()).ToList());
-            Assert.Throws<ArgumentNullException>(() => lifetime.CreateFrom(typeof(IDisposable), null, (Expression<FactoryDelegate>) null).ToList());
-            Assert.Throws<ArgumentNullException>(() => lifetime.CreateFrom(null, null, (_, __) => new object()).ToList());
+            Assert.Throws<ArgumentNullException>(() => lifetime.CreateFrom(null, null, typeof(Disposable), false).ToList());
+            Assert.Throws<ArgumentNullException>(() => lifetime.CreateFrom(typeof(IDisposable), null, (Type) null, false).ToList());
+            Assert.Throws<ArgumentNullException>(() => lifetime.CreateFrom(typeof(IDisposable), null, typeof(Disposable), null, false).ToList());
+            Assert.Throws<ArgumentNullException>(() => lifetime.CreateFrom(typeof(IDisposable), null, null, new object(), false).ToList());
+            Assert.Throws<ArgumentNullException>(() => lifetime.CreateFrom(null, null, typeof(Disposable), new object(), false).ToList());
+            Assert.Throws<ArgumentNullException>(() => lifetime.CreateFrom(typeof(IDisposable), null, (Expression<FactoryDelegate>) null, false).ToList());
+            Assert.Throws<ArgumentNullException>(() => lifetime.CreateFrom(null, null, (_, __) => new object(), false).ToList());
         }
 
         [Test]
@@ -694,8 +694,8 @@ namespace Solti.Utils.DI.Tests
             LifetimeBase lifetime = new Mock<LifetimeBase>() { CallBase = true }.Object;
             Assert.Throws<NotSupportedException>(() => lifetime.CreateFrom(typeof(IDisposable), null, new Disposable()));
             Assert.Throws<NotSupportedException>(() => lifetime.CreateFrom(typeof(IDisposable), null, typeof(Disposable)));
-            Assert.Throws<NotSupportedException>(() => lifetime.CreateFrom(typeof(IDisposable), null, typeof(Disposable), new object()));
-            Assert.Throws<NotSupportedException>(() => lifetime.CreateFrom(typeof(IDisposable), null, (_, __) => new Disposable(false)));
+            Assert.Throws<NotSupportedException>(() => lifetime.CreateFrom(typeof(IDisposable), null, typeof(Disposable), new object(), false));
+            Assert.Throws<NotSupportedException>(() => lifetime.CreateFrom(typeof(IDisposable), null, (_, __) => new Disposable(false), false));
             Assert.Throws<NotSupportedException>(() => lifetime.Using(new object()));
         }
     }

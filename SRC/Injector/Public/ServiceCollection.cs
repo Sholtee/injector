@@ -3,38 +3,18 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
-using System;
-using System.Collections.Generic;
-
 namespace Solti.Utils.DI
 {
     using Interfaces;
 
     /// <summary>
-    /// Implements the <see cref="IServiceCollection"/> interface.
+    /// Exposes the underlying <see cref="IServiceCollection"/> implementation.
     /// </summary>
-    public sealed class ServiceCollection : HashSet<AbstractServiceEntry>, IModifiedServiceCollection
+    public static class ServiceCollection
     {
-        private AbstractServiceEntry? FLastEntry;
-
-        bool ISet<AbstractServiceEntry>.Add(AbstractServiceEntry item)
-        {
-            if (item is null)
-                throw new ArgumentNullException(nameof(item));
-
-            bool success = Add(item);
-            if (success)
-                FLastEntry = item;
-            
-            return success;
-        }
-
         /// <summary>
-        /// Creates a new <see cref="ServiceCollection"/> instance.
+        /// Creates a new <see cref="IServiceCollection"/> instance.
         /// </summary>
-        public ServiceCollection() : base(ServiceIdComparer.Instance) { }
-
-        /// <inheritdoc/>
-        public AbstractServiceEntry LastEntry => FLastEntry ?? throw new InvalidOperationException();
+        public static IServiceCollection Create(ServiceOptions? serviceOptions = null) => new Internals.ServiceCollection(serviceOptions);
     }
 }

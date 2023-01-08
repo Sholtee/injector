@@ -8,7 +8,7 @@ using System;
 namespace Solti.Utils.DI.Interfaces
 {
     /// <summary>
-    /// Defines an abstract aspect that can be applied against service interfaces.
+    /// Defines an abstract aspect that can be applied against service interfaces or classes.
     /// </summary>
     [AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class)]
     public abstract class AspectAttribute : Attribute, IAspect

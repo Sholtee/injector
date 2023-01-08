@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Linq;
 
 namespace Solti.Utils.DI.Interfaces
 {
@@ -48,9 +49,16 @@ namespace Solti.Utils.DI.Interfaces
             if (iface.IsGenericTypeDefinition)
                 throw new NotSupportedException(Resources.OPEN_GENERIC);
 
+            //
+            // Provider cannot have aspects (as it doesn't implement the service interface directly).
+            //
+
+            if (provider.GetCustomAttributes(true).OfType<IAspect>().Any())
+                throw new NotSupportedException(Resources.PROXYING_NOT_SUPPORTED);
+
             return self
                 .Service(iface, name, provider, explicitArgs, lifetime)
-                .UsingProxy((injector, iface, instance) => ((IServiceProvider) instance).GetService(iface));
+                .UsingProxy(static (injector, iface, instance) => ((IServiceProvider) instance).GetService(iface));
         }
 
         /// <summary>
@@ -86,9 +94,16 @@ namespace Solti.Utils.DI.Interfaces
             if (iface.IsGenericTypeDefinition)
                 throw new NotSupportedException(Resources.OPEN_GENERIC);
 
+            //
+            // Provider cannot have aspects (as it doesn't implement the service interface directly).
+            //
+
+            if (provider.GetCustomAttributes(true).OfType<IAspect>().Any())
+                throw new NotSupportedException(Resources.PROXYING_NOT_SUPPORTED);
+
             return self
                 .Service(iface, name, provider, lifetime)
-                .UsingProxy((injector, iface, instance) => ((IServiceProvider) instance).GetService(iface));
+                .UsingProxy(static (injector, iface, instance) => ((IServiceProvider) instance).GetService(iface));
         }
 
         /// <summary>

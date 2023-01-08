@@ -12,15 +12,15 @@ namespace Solti.Utils.DI.Internals
 
     internal sealed class TransientServiceEntry : ProducibleServiceEntry
     {
-        public TransientServiceEntry(Type @interface, string? name, Expression<FactoryDelegate> factory) : base(@interface, name, factory)
+        public TransientServiceEntry(Type @interface, string? name, Expression<FactoryDelegate> factory, bool supportAspects) : base(@interface, name, factory, supportAspects)
         {
         }
 
-        public TransientServiceEntry(Type @interface, string? name, Type implementation) : base(@interface, name, implementation)
+        public TransientServiceEntry(Type @interface, string? name, Type implementation, bool supportAspects) : base(@interface, name, implementation, supportAspects)
         {
         }
 
-        public TransientServiceEntry(Type @interface, string? name, Type implementation, object explicitArgs) : base(@interface, name, implementation, explicitArgs)
+        public TransientServiceEntry(Type @interface, string? name, Type implementation, object explicitArgs, bool supportAspects) : base(@interface, name, implementation, explicitArgs, supportAspects)
         {
         }
 
@@ -53,20 +53,23 @@ namespace Solti.Utils.DI.Internals
                 (
                     Interface.MakeGenericType(genericArguments),
                     Name,
-                    Implementation.MakeGenericType(genericArguments)
+                    Implementation.MakeGenericType(genericArguments),
+                    Features.HasFlag(ServiceEntryFeatures.SupportsAspects)
                 ),
                 _ when Implementation is not null && ExplicitArgs is not null => new TransientServiceEntry
                 (
                     Interface.MakeGenericType(genericArguments),
                     Name,
                     Implementation.MakeGenericType(genericArguments),
-                    ExplicitArgs
+                    ExplicitArgs,
+                    Features.HasFlag(ServiceEntryFeatures.SupportsAspects)
                 ),
                 _ when Factory is not null => new TransientServiceEntry
                 (
                     Interface.MakeGenericType(genericArguments),
                     Name,
-                    Factory
+                    Factory,
+                    Features.HasFlag(ServiceEntryFeatures.SupportsAspects)
                 ),
                 _ => throw new NotSupportedException()
             };
@@ -74,6 +77,6 @@ namespace Solti.Utils.DI.Internals
 
         public override LifetimeBase? Lifetime { get; } = DI.Lifetime.Transient;
 
-        public override ServiceEntryFeatures Features { get; } = ServiceEntryFeatures.SupportsBuild;
+        public override ServiceEntryFeatures Features => base.Features | ServiceEntryFeatures.SupportsBuild;
     }
 }

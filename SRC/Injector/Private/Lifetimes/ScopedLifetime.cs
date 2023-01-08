@@ -15,7 +15,7 @@ namespace Solti.Utils.DI.Internals
     {
         public ScopedLifetime() : base(precedence: 10) { }
 
-        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Type implementation)
+        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Type implementation, bool supportAspects)
         {
             if (iface is null)
                 throw new ArgumentNullException(nameof(iface));
@@ -23,10 +23,10 @@ namespace Solti.Utils.DI.Internals
             if (implementation is null)
                 throw new ArgumentNullException(nameof(implementation));
 
-            yield return new ScopedServiceEntry(iface, name, implementation);
+            yield return new ScopedServiceEntry(iface, name, implementation, supportAspects);
         }
 
-        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Type implementation, object explicitArgs)
+        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Type implementation, object explicitArgs, bool supportAspects)
         {
             if (iface is null)
                 throw new ArgumentNullException(nameof(iface));
@@ -37,10 +37,10 @@ namespace Solti.Utils.DI.Internals
             if (explicitArgs is null)
                 throw new ArgumentNullException(nameof(explicitArgs));
 
-            yield return new ScopedServiceEntry(iface, name, implementation, explicitArgs);
+            yield return new ScopedServiceEntry(iface, name, implementation, explicitArgs, supportAspects);
         }
 
-        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Expression<FactoryDelegate> factory)
+        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Expression<FactoryDelegate> factory, bool supportAspects)
         {
             if (iface is null)
                 throw new ArgumentNullException(nameof(iface));
@@ -48,7 +48,7 @@ namespace Solti.Utils.DI.Internals
             if (factory is null)
                 throw new ArgumentNullException(nameof(factory));
 
-            yield return new ScopedServiceEntry(iface, name, factory);
+            yield return new ScopedServiceEntry(iface, name, factory, supportAspects);
         }
 
         public override string ToString() => nameof(Scoped);

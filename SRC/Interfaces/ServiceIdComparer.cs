@@ -3,8 +3,6 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
-using System.Diagnostics.CodeAnalysis;
-
 namespace Solti.Utils.DI.Interfaces
 {
     using Primitives;
@@ -22,7 +20,6 @@ namespace Solti.Utils.DI.Interfaces
         /// <summary>
         /// See <see cref="ComparerBase{TConcreteComparer, T}.GetHashCode(T)"/>
         /// </summary>
-        [SuppressMessage("Globalization", "CA1307:Specify StringComparison for clarity")]
         public override int GetHashCode(AbstractServiceEntry obj) => unchecked((obj?.Interface.GetHashCode() ?? 0) ^ (obj?.Name?.GetHashCode() ?? 0));
     }
 }

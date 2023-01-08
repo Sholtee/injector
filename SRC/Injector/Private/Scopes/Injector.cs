@@ -103,34 +103,37 @@ namespace Solti.Utils.DI.Internals
         {
             get
             {
-                yield return new ScopedServiceEntry(typeof(IInjector), null, static (i, _) => i);
+                yield return new ScopedServiceEntry(typeof(IInjector), null, static (i, _) => i, false);
 
                 //
                 // Factory is always the root.
                 //
 
-                yield return new SingletonServiceEntry(typeof(IScopeFactory), null, static (i, _) => i);
+                yield return new SingletonServiceEntry(typeof(IScopeFactory), null, static (i, _) => i, false);
 
 
                 yield return new SingletonServiceEntry
                 (
                     typeof(IReadOnlyCollection<AbstractServiceEntry>),
                     $"{Consts.INTERNAL_SERVICE_NAME_PREFIX}registered_services",
-                    (_, _) => ServiceCollection
+                    (_, _) => ServiceCollection,
+                    false
                 );
 
                 yield return new ScopedServiceEntry
                 (
                     typeof(IEnumerable<>),
                     null,
-                    typeof(ServiceEnumerator<>)
+                    typeof(ServiceEnumerator<>),
+                    false
                 );
 #if DEBUG
                 yield return new ScopedServiceEntry
                 (
                     typeof(ICollection),
                     "captured_disposables",
-                    static (i, _) => ((Injector) i).DisposableStore.CapturedDisposables
+                    static (i, _) => ((Injector) i).DisposableStore.CapturedDisposables,
+                    false
                 );
 #endif
             }

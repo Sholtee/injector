@@ -20,7 +20,7 @@ namespace Solti.Utils.DI.Internals
                 {
                     yield return entry;
                 }
-                yield return new ScopedServiceEntry(typeof(IServiceProvider), null, static (i, _) => i);
+                yield return new ScopedServiceEntry(typeof(IServiceProvider), null, static (i, _) => i, false);
             }
         }
 

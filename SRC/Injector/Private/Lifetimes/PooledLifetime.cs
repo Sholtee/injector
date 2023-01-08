@@ -23,12 +23,13 @@ namespace Solti.Utils.DI.Internals
             entry.Interface.IsGenericTypeDefinition
                 ? typeof(PoolService<>)
                 : typeof(PoolService<>).MakeGenericType(entry.Interface),
-            new { capacity = Capacity, name = entry.Name }
+            new { capacity = Capacity, name = entry.Name },
+            false // IPool<> doesn't use any aspects
         );
 
         public PooledLifetime() : base(precedence: 20) { }
 
-        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Type implementation)
+        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Type implementation, bool supportAspects)
         {
             if (iface is null)
                 throw new ArgumentNullException(nameof(iface));
@@ -36,13 +37,13 @@ namespace Solti.Utils.DI.Internals
             if (implementation is null)
                 throw new ArgumentNullException(nameof(implementation));
 
-            PooledServiceEntry entry = new(iface, name, implementation);
+            PooledServiceEntry entry = new(iface, name, implementation, supportAspects);
 
             yield return GetPoolService(entry);
             yield return entry;
         }
 
-        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Type implementation, object explicitArgs)
+        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Type implementation, object explicitArgs, bool supportAspects)
         {
             if (iface is null)
                 throw new ArgumentNullException(nameof(iface));
@@ -53,13 +54,13 @@ namespace Solti.Utils.DI.Internals
             if (explicitArgs is null)
                 throw new ArgumentNullException(nameof(explicitArgs));
 
-            PooledServiceEntry entry = new(iface, name, implementation, explicitArgs);
+            PooledServiceEntry entry = new(iface, name, implementation, explicitArgs, supportAspects);
 
             yield return GetPoolService(entry);
             yield return entry;
         }
 
-        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Expression<FactoryDelegate> factory)
+        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Expression<FactoryDelegate> factory, bool supportAspects)
         {
             if (iface is null)
                 throw new ArgumentNullException(nameof(iface));
@@ -67,7 +68,7 @@ namespace Solti.Utils.DI.Internals
             if (factory is null)
                 throw new ArgumentNullException(nameof(factory));
 
-            PooledServiceEntry entry = new(iface, name, factory);
+            PooledServiceEntry entry = new(iface, name, factory, supportAspects);
 
             yield return GetPoolService(entry);
             yield return entry;

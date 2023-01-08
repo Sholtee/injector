@@ -65,29 +65,25 @@ namespace Solti.Utils.DI.Internals
         /// <summary>
         /// Creartes a new <see cref="ProducibleServiceEntry"/> instance.
         /// </summary>
-        protected ProducibleServiceEntry(Type @interface, string? name) : base
-        (
-            @interface ?? throw new ArgumentNullException(nameof(@interface)),
-            name,
-            null,
-            null
-        ) { }
-
-        /// <summary>
-        /// Creartes a new <see cref="ProducibleServiceEntry"/> instance.
-        /// </summary>
-        protected ProducibleServiceEntry(Type @interface, string? name, Expression<FactoryDelegate> factory) : base
+        protected ProducibleServiceEntry(Type @interface, string? name, Expression<FactoryDelegate> factory, bool supportAspects) : base
         (
             @interface ?? throw new ArgumentNullException(nameof(@interface)),
             name,
             null,
             factory ?? throw new ArgumentNullException(nameof(factory))
-        ) => ApplyAspects();
+        )
+        {
+            if (supportAspects)
+            {
+                Features |= ServiceEntryFeatures.SupportsAspects;
+                ApplyAspects();
+            }
+        }
 
         /// <summary>
         /// Creartes a new <see cref="ProducibleServiceEntry"/> instance.
         /// </summary>
-        protected ProducibleServiceEntry(Type @interface, string? name, Type implementation) : base
+        protected ProducibleServiceEntry(Type @interface, string? name, Type implementation, bool supportAspects) : base
         (
             @interface ?? throw new ArgumentNullException(nameof(@interface)),
             name,
@@ -99,14 +95,18 @@ namespace Solti.Utils.DI.Internals
             )
         )
         {
-            if (Factory is not null)
-                ApplyAspects();
+            if (supportAspects)
+            {
+                Features |= ServiceEntryFeatures.SupportsAspects;
+                if (Factory is not null)
+                    ApplyAspects();
+            }
         }
 
         /// <summary>
         /// Creartes a new <see cref="ProducibleServiceEntry"/> instance.
         /// </summary>
-        protected ProducibleServiceEntry(Type @interface, string? name, Type implementation, object explicitArgs) : base
+        protected ProducibleServiceEntry(Type @interface, string? name, Type implementation, object explicitArgs, bool supportAspects) : base
         (
             @interface ?? throw new ArgumentNullException(nameof(@interface)),
             name,
@@ -125,8 +125,12 @@ namespace Solti.Utils.DI.Internals
 
             ExplicitArgs = explicitArgs;
 
-            if (Factory is not null)
-                ApplyAspects();
+            if (supportAspects)
+            {
+                Features |= ServiceEntryFeatures.SupportsAspects;
+                if (Factory is not null)
+                    ApplyAspects();
+            }
         }
         #endregion
 
@@ -162,6 +166,9 @@ namespace Solti.Utils.DI.Internals
 
         /// <inheritdoc/>
         public sealed override void SetValidated() => State |= ServiceEntryStates.Validated;
+
+        /// <inheritdoc/>
+        public override ServiceEntryFeatures Features { get; }
 
         /// <inheritdoc/>
         public override void ApplyProxy(Expression<ApplyProxyDelegate> applyProxy)
