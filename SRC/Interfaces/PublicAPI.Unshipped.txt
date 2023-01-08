@@ -1,7 +1,6 @@
 ﻿abstract Solti.Utils.DI.Interfaces.AspectAttribute.UnderlyingInterceptor.get -> System.Type!
 abstract Solti.Utils.DI.Interfaces.LifetimeBase.CompareTo(Solti.Utils.DI.Interfaces.LifetimeBase! other) -> int
 const Solti.Utils.DI.Interfaces.Consts.INTERNAL_SERVICE_NAME_PREFIX = "$" -> string!
-override sealed Solti.Utils.DI.Interfaces.AbstractServiceEntry.GetHashCode() -> int
 override Solti.Utils.DI.Interfaces.AbstractServiceEntry.ToString() -> string!
 override Solti.Utils.DI.Interfaces.ServiceIdComparer.Equals(Solti.Utils.DI.Interfaces.AbstractServiceEntry! x, Solti.Utils.DI.Interfaces.AbstractServiceEntry! y) -> bool
 override Solti.Utils.DI.Interfaces.ServiceIdComparer.GetHashCode(Solti.Utils.DI.Interfaces.AbstractServiceEntry! obj) -> int

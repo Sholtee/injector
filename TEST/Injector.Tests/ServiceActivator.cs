@@ -423,40 +423,15 @@ namespace Solti.Utils.DI.Internals.Tests
         }
 
         [Test]
-        public void ExtendedActivator_ShouldThrowOnNonInterfaceArguments()
+        public void Get_ShouldThrowOnNonInterfaceArguments()
         {
             ConstructorInfo ctor = typeof(MyClass).GetConstructor(new[] { typeof(IDisposable), typeof(IList), typeof(int) });
 
-            //
-            // Sima Get() hivas nem fog mukodni (nem interface parameter).
-            //
-
             Assert.Throws<ArgumentException>(() => ServiceActivator.Get(ctor), Resources.INVALID_CONSTRUCTOR);
-
-            //
-            // Ne mock-oljuk az injector-t h a megfelelo kiveteleket kapjuk
-            //
-
-            using (IScopeFactory root = ScopeFactory.Create(svcs => svcs
-                .Factory<IDisposable>(i => new Disposable(false), Lifetime.Scoped)
-                .Factory<IList>(i => new List<object>(), Lifetime.Scoped)))
-            {
-                IInjector injector = root.CreateScope();
-
-                //
-                // Ez mukodne viszont nem adtuk meg a nem interface parametert.
-                //
-
-                FactoryDelegate factory = ServiceActivator
-                    .Get(ctor, new Dictionary<string, object>(0))
-                    .Compile();
-
-                Assert.Throws<ArgumentException>(() => factory(injector, null), Resources.PARAMETER_NOT_AN_INTERFACE);
-            }
         }
 
         [Test]
-        public void ExtendedActivator_ShouldThrowOnNonInterfaceArguments2()
+        public void Get_ShouldThrowOnNonInterfaceArguments2()
         {
             ConstructorInfo ctor = typeof(MyClass).GetConstructor(new[] { typeof(IDisposable), typeof(IList), typeof(int) });
 

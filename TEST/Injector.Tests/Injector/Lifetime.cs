@@ -10,6 +10,7 @@ using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 
+using Moq;
 using NUnit.Framework;
 
 namespace Solti.Utils.DI.Tests
@@ -685,6 +686,17 @@ namespace Solti.Utils.DI.Tests
         {
             Assert.Throws<ArgumentNullException>(() => new InstanceLifetime().CreateFrom(typeof(IDisposable), null, (Disposable) null).ToList());
             Assert.Throws<ArgumentNullException>(() => new InstanceLifetime().CreateFrom(null, null, new Disposable()).ToList());
+        }
+
+        [Test]
+        public void LifetimeBase_ShouldThrowNotSupportCreate()
+        {
+            LifetimeBase lifetime = new Mock<LifetimeBase>() { CallBase = true }.Object;
+            Assert.Throws<NotSupportedException>(() => lifetime.CreateFrom(typeof(IDisposable), null, new Disposable()));
+            Assert.Throws<NotSupportedException>(() => lifetime.CreateFrom(typeof(IDisposable), null, typeof(Disposable)));
+            Assert.Throws<NotSupportedException>(() => lifetime.CreateFrom(typeof(IDisposable), null, typeof(Disposable), new object()));
+            Assert.Throws<NotSupportedException>(() => lifetime.CreateFrom(typeof(IDisposable), null, (_, __) => new Disposable(false)));
+            Assert.Throws<NotSupportedException>(() => lifetime.Using(new object()));
         }
     }
 }

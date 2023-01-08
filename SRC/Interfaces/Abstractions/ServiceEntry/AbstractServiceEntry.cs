@@ -26,7 +26,7 @@ namespace Solti.Utils.DI.Interfaces
         /// <param name="implementation">The (optional) implementation of the service.</param>
         /// <param name="factory">The (optional) factory of the service.</param>
         /// <exception cref="ArgumentException">The <paramref name="interface"/> is not an interface.</exception>
-        /// <exception cref="ArgumentException">The <paramref name="implementation"/> does not support the <paramref name="interface"/>.</exception>
+        /// <exception cref="ArgumentException">The <paramref name="implementation"/> is not a class.</exception>
         protected AbstractServiceEntry(Type @interface, string? name, Type? implementation, Expression<FactoryDelegate>? factory)
         {
             if (@interface is null)
@@ -165,10 +165,5 @@ namespace Solti.Utils.DI.Interfaces
 
             return result.ToString();
         }
-
-        /// <summary>
-        /// Returns the unique hash code of this entry. Not meant to be overridden.
-        /// </summary>
-        public sealed override int GetHashCode() => base.GetHashCode();
     }
 }
