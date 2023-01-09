@@ -51,6 +51,10 @@
     <div class="level1"><a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html">AbstractServiceEntry</a></div>
     <div class="level2"><span class="xref">MissingServiceEntry</span></div>
   </div>
+  <div class="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="Solti.Utils.DI.Interfaces.IServiceId.html">IServiceId</a></div>
+  </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
@@ -109,7 +113,7 @@
   <h6><strong>Assembly</strong>: Solti.Utils.DI.Interfaces.dll</h6>
   <h5 id="Solti_Utils_DI_Interfaces_MissingServiceEntry_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class MissingServiceEntry : AbstractServiceEntry</code></pre>
+    <pre><code class="lang-csharp hljs">public class MissingServiceEntry : AbstractServiceEntry, IServiceId</code></pre>
   </div>
   <h5 id="Solti_Utils_DI_Interfaces_MissingServiceEntry_remarks"><strong>Remarks</strong></h5>
   <div class="markdown level0 remarks"><p>This entry cannot be instantiated.</p>
@@ -147,6 +151,10 @@
       </tr>
     </tbody>
   </table>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="Solti.Utils.DI.Interfaces.IServiceId.html">IServiceId</a>
+  </div>
   <h3 id="extensionmethods">Extension Methods</h3>
   <div>
       <a class="xref" href="Solti.Utils.DI.ServiceEntryAdvancedExtensions.html#Solti_Utils_DI_ServiceEntryAdvancedExtensions_IsInstance_Solti_Utils_DI_Interfaces_AbstractServiceEntry_">ServiceEntryAdvancedExtensions.IsInstance(AbstractServiceEntry)</a>

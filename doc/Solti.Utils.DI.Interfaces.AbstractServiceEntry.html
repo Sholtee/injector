@@ -52,11 +52,15 @@
       <div class="level2"><a class="xref" href="Solti.Utils.DI.Interfaces.MissingServiceEntry.html">MissingServiceEntry</a></div>
       <div class="level2"><a class="xref" href="Solti.Utils.DI.Internals.ProducibleServiceEntry.html">ProducibleServiceEntry</a></div>
   </div>
+  <div class="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="Solti.Utils.DI.Interfaces.IServiceId.html">IServiceId</a></div>
+  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Solti.Utils.DI.Interfaces.html">Solti.Utils.DI.Interfaces</a></h6>
   <h6><strong>Assembly</strong>: Solti.Utils.DI.Interfaces.dll</h6>
   <h5 id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract class AbstractServiceEntry : Object</code></pre>
+    <pre><code class="lang-csharp hljs">public abstract class AbstractServiceEntry : Object, IServiceId</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
@@ -608,6 +612,10 @@
       </tr>
     </tbody>
   </table>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="Solti.Utils.DI.Interfaces.IServiceId.html">IServiceId</a>
+  </div>
   <h3 id="extensionmethods">Extension Methods</h3>
   <div>
       <a class="xref" href="Solti.Utils.DI.ServiceEntryAdvancedExtensions.html#Solti_Utils_DI_ServiceEntryAdvancedExtensions_IsInstance_Solti_Utils_DI_Interfaces_AbstractServiceEntry_">ServiceEntryAdvancedExtensions.IsInstance(AbstractServiceEntry)</a>
