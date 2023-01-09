@@ -1787,48 +1787,6 @@ references:
   commentId: F:Solti.Utils.DI.Interfaces.ServiceEntryStates.value__
   fullName: Solti.Utils.DI.Interfaces.ServiceEntryStates.value__
   nameWithType: ServiceEntryStates.value__
-- uid: Solti.Utils.DI.Interfaces.ServiceIdComparer
-  name: ServiceIdComparer
-  href: Solti.Utils.DI.Interfaces.ServiceIdComparer.html
-  commentId: T:Solti.Utils.DI.Interfaces.ServiceIdComparer
-  fullName: Solti.Utils.DI.Interfaces.ServiceIdComparer
-  nameWithType: ServiceIdComparer
-- uid: Solti.Utils.DI.Interfaces.ServiceIdComparer.#ctor
-  name: ServiceIdComparer()
-  href: Solti.Utils.DI.Interfaces.ServiceIdComparer.html#Solti_Utils_DI_Interfaces_ServiceIdComparer__ctor
-  commentId: M:Solti.Utils.DI.Interfaces.ServiceIdComparer.#ctor
-  fullName: Solti.Utils.DI.Interfaces.ServiceIdComparer.ServiceIdComparer()
-  nameWithType: ServiceIdComparer.ServiceIdComparer()
-- uid: Solti.Utils.DI.Interfaces.ServiceIdComparer.#ctor*
-  name: ServiceIdComparer
-  href: Solti.Utils.DI.Interfaces.ServiceIdComparer.html#Solti_Utils_DI_Interfaces_ServiceIdComparer__ctor_
-  commentId: Overload:Solti.Utils.DI.Interfaces.ServiceIdComparer.#ctor
-  fullName: Solti.Utils.DI.Interfaces.ServiceIdComparer.ServiceIdComparer
-  nameWithType: ServiceIdComparer.ServiceIdComparer
-- uid: Solti.Utils.DI.Interfaces.ServiceIdComparer.Equals(Solti.Utils.DI.Interfaces.AbstractServiceEntry,Solti.Utils.DI.Interfaces.AbstractServiceEntry)
-  name: Equals(AbstractServiceEntry, AbstractServiceEntry)
-  href: Solti.Utils.DI.Interfaces.ServiceIdComparer.html#Solti_Utils_DI_Interfaces_ServiceIdComparer_Equals_Solti_Utils_DI_Interfaces_AbstractServiceEntry_Solti_Utils_DI_Interfaces_AbstractServiceEntry_
-  commentId: M:Solti.Utils.DI.Interfaces.ServiceIdComparer.Equals(Solti.Utils.DI.Interfaces.AbstractServiceEntry,Solti.Utils.DI.Interfaces.AbstractServiceEntry)
-  fullName: Solti.Utils.DI.Interfaces.ServiceIdComparer.Equals(Solti.Utils.DI.Interfaces.AbstractServiceEntry, Solti.Utils.DI.Interfaces.AbstractServiceEntry)
-  nameWithType: ServiceIdComparer.Equals(AbstractServiceEntry, AbstractServiceEntry)
-- uid: Solti.Utils.DI.Interfaces.ServiceIdComparer.Equals*
-  name: Equals
-  href: Solti.Utils.DI.Interfaces.ServiceIdComparer.html#Solti_Utils_DI_Interfaces_ServiceIdComparer_Equals_
-  commentId: Overload:Solti.Utils.DI.Interfaces.ServiceIdComparer.Equals
-  fullName: Solti.Utils.DI.Interfaces.ServiceIdComparer.Equals
-  nameWithType: ServiceIdComparer.Equals
-- uid: Solti.Utils.DI.Interfaces.ServiceIdComparer.GetHashCode(Solti.Utils.DI.Interfaces.AbstractServiceEntry)
-  name: GetHashCode(AbstractServiceEntry)
-  href: Solti.Utils.DI.Interfaces.ServiceIdComparer.html#Solti_Utils_DI_Interfaces_ServiceIdComparer_GetHashCode_Solti_Utils_DI_Interfaces_AbstractServiceEntry_
-  commentId: M:Solti.Utils.DI.Interfaces.ServiceIdComparer.GetHashCode(Solti.Utils.DI.Interfaces.AbstractServiceEntry)
-  fullName: Solti.Utils.DI.Interfaces.ServiceIdComparer.GetHashCode(Solti.Utils.DI.Interfaces.AbstractServiceEntry)
-  nameWithType: ServiceIdComparer.GetHashCode(AbstractServiceEntry)
-- uid: Solti.Utils.DI.Interfaces.ServiceIdComparer.GetHashCode*
-  name: GetHashCode
-  href: Solti.Utils.DI.Interfaces.ServiceIdComparer.html#Solti_Utils_DI_Interfaces_ServiceIdComparer_GetHashCode_
-  commentId: Overload:Solti.Utils.DI.Interfaces.ServiceIdComparer.GetHashCode
-  fullName: Solti.Utils.DI.Interfaces.ServiceIdComparer.GetHashCode
-  nameWithType: ServiceIdComparer.GetHashCode
 - uid: Solti.Utils.DI.Interfaces.ServiceNotFoundException
   name: ServiceNotFoundException
   href: Solti.Utils.DI.Interfaces.ServiceNotFoundException.html
