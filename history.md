@@ -267,5 +267,7 @@
 - 7.0.0-preview5:
   - *breaking:* Dropped concept of **naked aspects**
   - *breaking:* Dropped `ProxyFactory` class
+  - *breaking:* `IServiceCollection` derives from `ICollection`
   - *introduced:* `IInterfaceInterceptor` & `IInvocationContext` interfaces (to replace the `InterfaceInterceptor<>` class)
+  - *introduced:* `ServiceOptions` class
   - *fixed:* Services having `Instance` lifetime should not be disposed by the root container

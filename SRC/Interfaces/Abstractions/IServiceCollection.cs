@@ -11,7 +11,7 @@ namespace Solti.Utils.DI.Interfaces
     /// Specifies the contract for an <see cref="AbstractServiceEntry"/> set.
     /// </summary>
     /// <remarks>Only one entry can be registered with a given <see cref="AbstractServiceEntry.Interface"/> and <see cref="AbstractServiceEntry.Name"/> pair.</remarks>
-    public interface IServiceCollection : ISet<AbstractServiceEntry>
+    public interface IServiceCollection : ICollection<AbstractServiceEntry>
     {
         /// <summary>
         /// Defines the general service behavior.

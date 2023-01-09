@@ -12,9 +12,9 @@ using NUnit.Framework;
 namespace Solti.Utils.DI.Tests
 {
     using Interfaces;
-    using Interfaces.Properties;
     using Internals;
     using Primitives.Patterns;
+    using Properties;
 
     [TestFixture]
     public partial class InjectorTests

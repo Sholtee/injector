@@ -183,4 +183,7 @@
   <data name="INVALID_CAST" xml:space="preserve">
     <value>The service to be returned must implement the "{0}" interface.</value>
   </data>
+  <data name="SERVICE_ALREADY_REGISTERED" xml:space="preserve">
+    <value>A service with the same ID has already been registered.</value>
+  </data>
 </root>

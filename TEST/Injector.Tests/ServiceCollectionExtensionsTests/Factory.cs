@@ -12,6 +12,7 @@ using NUnit.Framework;
 namespace Solti.Utils.DI.Tests
 {
     using Interfaces;
+    using Internals;
     using Primitives.Patterns;
 
     public partial class ServiceCollectionExtensionsTests

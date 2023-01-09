@@ -11,7 +11,7 @@ using System.Threading;
 namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
-    using Interfaces.Properties;
+    using Properties;
 
     internal abstract class ServiceEntryLookupBase<TBackend>: IServiceEntryLookup, IBuildContext where TBackend : class, ILookup<CompositeKey, AbstractServiceEntry, TBackend>
     {

@@ -2,8 +2,6 @@
 abstract Solti.Utils.DI.Interfaces.LifetimeBase.CompareTo(Solti.Utils.DI.Interfaces.LifetimeBase! other) -> int
 const Solti.Utils.DI.Interfaces.Consts.INTERNAL_SERVICE_NAME_PREFIX = "$" -> string!
 override Solti.Utils.DI.Interfaces.AbstractServiceEntry.ToString() -> string!
-override Solti.Utils.DI.Interfaces.ServiceIdComparer.Equals(Solti.Utils.DI.Interfaces.AbstractServiceEntry! x, Solti.Utils.DI.Interfaces.AbstractServiceEntry! y) -> bool
-override Solti.Utils.DI.Interfaces.ServiceIdComparer.GetHashCode(Solti.Utils.DI.Interfaces.AbstractServiceEntry! obj) -> int
 Solti.Utils.DI.Interfaces.AbstractServiceEntry
 Solti.Utils.DI.Interfaces.AbstractServiceEntry.AbstractServiceEntry(System.Type! interface, string? name, System.Type? implementation, System.Linq.Expressions.Expression<Solti.Utils.DI.Interfaces.FactoryDelegate!>? factory) -> void
 Solti.Utils.DI.Interfaces.AbstractServiceEntry.CreateInstance.get -> Solti.Utils.DI.Interfaces.CreateServiceDelegate?
@@ -112,8 +110,6 @@ Solti.Utils.DI.Interfaces.ServiceEntryStates
 Solti.Utils.DI.Interfaces.ServiceEntryStates.Built = 1 -> Solti.Utils.DI.Interfaces.ServiceEntryStates
 Solti.Utils.DI.Interfaces.ServiceEntryStates.Default = 0 -> Solti.Utils.DI.Interfaces.ServiceEntryStates
 Solti.Utils.DI.Interfaces.ServiceEntryStates.Validated = 2 -> Solti.Utils.DI.Interfaces.ServiceEntryStates
-Solti.Utils.DI.Interfaces.ServiceIdComparer
-Solti.Utils.DI.Interfaces.ServiceIdComparer.ServiceIdComparer() -> void
 Solti.Utils.DI.Interfaces.ServiceNotFoundException
 Solti.Utils.DI.Interfaces.ServiceNotFoundException.ServiceNotFoundException() -> void
 Solti.Utils.DI.Interfaces.ServiceNotFoundException.ServiceNotFoundException(string! message) -> void

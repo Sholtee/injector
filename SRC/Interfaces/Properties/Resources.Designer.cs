@@ -115,15 +115,6 @@ namespace Solti.Utils.DI.Interfaces.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to A service with the same ID has already been registered..
-        /// </summary>
-        internal static string SERVICE_ALREADY_REGISTERED {
-            get {
-                return ResourceManager.GetString("SERVICE_ALREADY_REGISTERED", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to No registered implementation for &quot;{0}&quot;..
         /// </summary>
         internal static string SERVICE_NOT_FOUND {

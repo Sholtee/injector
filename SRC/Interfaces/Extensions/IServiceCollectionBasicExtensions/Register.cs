@@ -3,13 +3,11 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
+using System;
 using System.Collections.Generic;
 
 namespace Solti.Utils.DI.Interfaces
 {
-    using Properties;
-    using System;
-
     public static partial class IServiceCollectionBasicExtensions
     {
         /// <summary>
@@ -24,14 +22,7 @@ namespace Solti.Utils.DI.Interfaces
                 throw new ArgumentNullException(nameof(entries));
 
             foreach (AbstractServiceEntry entry in entries)
-            {
-                //
-                // Add() should throw if the entry is null
-                //
-
-                if (!self.Add(entry))
-                    throw new ServiceAlreadyRegisteredException(Resources.SERVICE_ALREADY_REGISTERED);
-            }
+                self.Add(entry);
 
             return (IModifiedServiceCollection) self;
         }
