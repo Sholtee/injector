@@ -10,23 +10,23 @@ namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
 
-    internal sealed class DictionaryLookup: ILookup<CompositeKey, AbstractServiceEntry, DictionaryLookup>
+    internal sealed class DictionaryLookup: ILookup<IServiceId, AbstractServiceEntry, DictionaryLookup>
     {
-        private readonly Dictionary<CompositeKey, AbstractServiceEntry> FDictionary;
+        private readonly Dictionary<IServiceId, AbstractServiceEntry> FDictionary;
 
-        private DictionaryLookup(Dictionary<CompositeKey, AbstractServiceEntry> dictionary) => FDictionary = dictionary;
+        private DictionaryLookup(Dictionary<IServiceId, AbstractServiceEntry> dictionary) => FDictionary = dictionary;
 
-        public DictionaryLookup() : this(new Dictionary<CompositeKey, AbstractServiceEntry>()) { }
+        public DictionaryLookup() : this(new Dictionary<IServiceId, AbstractServiceEntry>(ServiceIdComparer.Instance)) { }
 
-        public DictionaryLookup With(CompositeKey key, AbstractServiceEntry data) => new
+        public DictionaryLookup With(IServiceId key, AbstractServiceEntry data) => new
         (
-            new Dictionary<CompositeKey, AbstractServiceEntry>(FDictionary)
+            new Dictionary<IServiceId, AbstractServiceEntry>(FDictionary, FDictionary.Comparer)
             {
                 {key, data}
             }
         );
 
-        public bool TryAdd(CompositeKey key, AbstractServiceEntry data)
+        public bool TryAdd(IServiceId key, AbstractServiceEntry data)
         {
 #if NETSTANDARD2_1_OR_GREATER
             return FDictionary.TryAdd(key, data);
@@ -43,7 +43,7 @@ namespace Solti.Utils.DI.Internals
 #endif
         }
 
-        public bool TryGet(CompositeKey key, out AbstractServiceEntry data) => FDictionary.TryGetValue(key, out data);
+        public bool TryGet(IServiceId key, out AbstractServiceEntry data) => FDictionary.TryGetValue(key, out data);
 
         public int Count => FDictionary.Count;
     }

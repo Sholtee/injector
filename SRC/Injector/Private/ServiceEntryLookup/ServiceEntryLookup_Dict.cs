@@ -17,6 +17,6 @@ namespace Solti.Utils.DI.Internals
             IEnumerable<AbstractServiceEntry> entries,
             IDelegateCompiler compiler,
             Func<IServiceEntryLookup, IBuildContext, IGraphBuilder> graphBuilderFactory
-        ) : base (entries, compiler, static () => new DictionaryLookup(), graphBuilderFactory) {}
+        ) : base (entries, compiler, graphBuilderFactory) {}
     }
 }

@@ -12,23 +12,23 @@ namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
 
-    internal sealed class ServiceEntryLookup_BTree : ServiceEntryLookupBase<CompiledBTreeLookup>
+    internal sealed class ServiceEntryLookup_BTree : ServiceEntryLookupBase<BTreeLookup>
     {
         public ServiceEntryLookup_BTree
         (
             IEnumerable<AbstractServiceEntry> entries,
             IDelegateCompiler compiler,
             Func<IServiceEntryLookup, IBuildContext, IGraphBuilder> graphBuilderFactory
-        ) : base(entries, compiler, () => new CompiledBTreeLookup(compiler), graphBuilderFactory)
+        ) : base(entries, compiler, graphBuilderFactory)
         {
             //
             // Base already filled the lookups so it's time to compile
             //
 
-            if (entries.Any())
-                Debug.Assert(FEntryLookup.Count > 0 || FGenericEntryLookup.Count > 0, "Uninitialized lookup");
+            Debug.Assert(!entries.Any() || FEntryLookup.Count > 0 || FGenericEntryLookup.Count > 0, "Uninitialized lookup");
 
-            FEntryLookup.Compiled = FGenericEntryLookup.Compiled = true;
+            FEntryLookup = FEntryLookup.Compile(compiler);
+            FGenericEntryLookup = FGenericEntryLookup.Compile(compiler);
         }
     }
 }

@@ -16,7 +16,7 @@ namespace Solti.Utils.DI.Interfaces
     /// <summary>
     /// Describes an abstract service entry.
     /// </summary>
-    public abstract class AbstractServiceEntry
+    public abstract class AbstractServiceEntry: IServiceId
     {
         /// <summary>
         /// Creates a new <see cref="AbstractServiceEntry"/> instance.

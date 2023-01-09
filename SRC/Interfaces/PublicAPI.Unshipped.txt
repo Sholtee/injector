@@ -67,6 +67,9 @@ Solti.Utils.DI.Interfaces.IScopeFactoryExtensions
 Solti.Utils.DI.Interfaces.IServiceCollection
 Solti.Utils.DI.Interfaces.IServiceCollection.ServiceOptions.get -> Solti.Utils.DI.Interfaces.ServiceOptions!
 Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions
+Solti.Utils.DI.Interfaces.IServiceId
+Solti.Utils.DI.Interfaces.IServiceId.Interface.get -> System.Type!
+Solti.Utils.DI.Interfaces.IServiceId.Name.get -> string?
 Solti.Utils.DI.Interfaces.IServiceProviderBasicExtensions
 Solti.Utils.DI.Interfaces.LifetimeBase
 Solti.Utils.DI.Interfaces.LifetimeBase.LifetimeBase() -> void

@@ -13,10 +13,10 @@ namespace Solti.Utils.DI.Internals
     using Interfaces;
     using Properties;
 
-    internal abstract class ServiceEntryLookupBase<TBackend>: IServiceEntryLookup, IBuildContext where TBackend : class, ILookup<CompositeKey, AbstractServiceEntry, TBackend>
+    internal abstract class ServiceEntryLookupBase<TBackend>: IServiceEntryLookup, IBuildContext where TBackend : class, ILookup<IServiceId, AbstractServiceEntry, TBackend>, new()
     {
-        protected volatile TBackend FEntryLookup;
-        protected readonly TBackend FGenericEntryLookup;
+        protected volatile TBackend FEntryLookup = new();
+        protected /*readonly*/ TBackend FGenericEntryLookup = new();
         protected readonly IGraphBuilder FGraphBuilder;
         protected readonly IDelegateCompiler FCompiler;
         private readonly object FLock = new();
@@ -27,12 +27,9 @@ namespace Solti.Utils.DI.Internals
         (
             IEnumerable<AbstractServiceEntry> entries,
             IDelegateCompiler compiler,
-            Func<TBackend> backendFactory,
             Func<IServiceEntryLookup, IBuildContext, IGraphBuilder> graphBuilderFactory
         )
         {
-            FEntryLookup = backendFactory();
-            FGenericEntryLookup = backendFactory();
             FCompiler = compiler;
 
             foreach (AbstractServiceEntry entry in entries)

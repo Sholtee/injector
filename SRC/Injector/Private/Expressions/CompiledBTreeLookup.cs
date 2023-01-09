@@ -17,13 +17,13 @@ namespace Solti.Utils.DI.Internals
 
     internal partial class CompiledBTreeLookup
     {
-        private static readonly MethodInfo FCompareTo = MethodInfoExtractor.Extract<CompositeKey>(ck => ck.CompareTo(null!));
+        private static readonly MethodInfo FCompareTo = MethodInfoExtractor.Extract<ServiceIdComparer>(static comp => comp.Compare(null!, null!));
 
-        private delegate bool TryGetEntry(CompositeKey key, out AbstractServiceEntry entry);
+        private delegate bool TryGetEntry(IServiceId key, out AbstractServiceEntry entry);
 
         private static IEnumerable<Expression> BuildNode
         (
-            RedBlackTreeNode<KeyValuePair<CompositeKey, AbstractServiceEntry>>? node,
+            RedBlackTreeNode<KeyValuePair<IServiceId, AbstractServiceEntry>>? node,
             ParameterExpression key,
             ParameterExpression entry,
             ParameterExpression order,
@@ -46,7 +46,7 @@ namespace Solti.Utils.DI.Internals
             }
 
             //
-            // order = key.CompareTo(node.Data.Key);
+            // order = ServiceIdComparer.Compare(key, node.Data.Key);
             //
 
             yield return Expression.Assign
@@ -54,8 +54,9 @@ namespace Solti.Utils.DI.Internals
                 order,
                 Expression.Call
                 (
-                    key,
+                    Expression.Constant(ServiceIdComparer.Instance),
                     FCompareTo,
+                    key,
                     Expression.Constant(node.Data.Key)
                 )
             );
@@ -101,10 +102,10 @@ namespace Solti.Utils.DI.Internals
             );
         }
 
-        private static Expression<TryGetEntry> BuildTree(RedBlackTree<KeyValuePair<CompositeKey, AbstractServiceEntry>> tree)
+        private static Expression<TryGetEntry> BuildTree(RedBlackTree<KeyValuePair<IServiceId, AbstractServiceEntry>> tree)
         {
             ParameterExpression
-                key = Expression.Parameter(typeof(CompositeKey), nameof(key)),
+                key = Expression.Parameter(typeof(IServiceId), nameof(key)),
                 entry = Expression.Parameter(typeof(AbstractServiceEntry).MakeByRefType(), nameof(entry));
 
             LabelTarget ret = Expression.Label(typeof(bool), nameof(ret));
