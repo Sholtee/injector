@@ -18,22 +18,22 @@ namespace Solti.Utils.DI.Internals
 
         public DictionaryLookup() : this(new Dictionary<IServiceId, AbstractServiceEntry>(ServiceIdComparer.Instance)) { }
 
-        public DictionaryLookup With(IServiceId key, AbstractServiceEntry data) => new
+        public DictionaryLookup With(AbstractServiceEntry data) => new
         (
             new Dictionary<IServiceId, AbstractServiceEntry>(FDictionary, FDictionary.Comparer)
             {
-                {key, data}
+                {data, data}
             }
         );
 
-        public bool TryAdd(IServiceId key, AbstractServiceEntry data)
+        public bool TryAdd(AbstractServiceEntry data)
         {
 #if NETSTANDARD2_1_OR_GREATER
-            return FDictionary.TryAdd(key, data);
+            return FDictionary.TryAdd(data, data);
 #else
             try
             {
-                FDictionary.Add(key, data);
+                FDictionary.Add(data, data);
                 return true;
             }
             catch (ArgumentException)

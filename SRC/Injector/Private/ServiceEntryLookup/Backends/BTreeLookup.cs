@@ -3,23 +3,14 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
-using System.Collections.Generic;
-
 namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
     using Primitives;
-    using Primitives.Patterns;
 
     internal class BTreeLookup : ILookup<IServiceId, AbstractServiceEntry, BTreeLookup>
     {
-        private sealed class KvpComparer : Singleton<KvpComparer>, IComparer<KeyValuePair<IServiceId, AbstractServiceEntry>>
-        {
-            public int Compare(KeyValuePair<IServiceId, AbstractServiceEntry> x, KeyValuePair<IServiceId, AbstractServiceEntry> y)
-                => ServiceIdComparer.Instance.Compare(x.Key, y.Key);
-        }
-
-        private static bool TryGet(RedBlackTreeNode<KeyValuePair<IServiceId, AbstractServiceEntry>>? node, IServiceId key, out AbstractServiceEntry result)
+        private static bool TryGet(RedBlackTreeNode<AbstractServiceEntry>? node, IServiceId key, out AbstractServiceEntry result)
         {
             if (node is null)
             {
@@ -27,7 +18,7 @@ namespace Solti.Utils.DI.Internals
                 return false;
             }
 
-            int order = ServiceIdComparer.Instance.Compare(key, node.Data.Key);
+            int order = ServiceIdComparer.Instance.Compare(key, node.Data);
 
             if (order < 0)
                 return TryGet(node.Left, key, out result);
@@ -35,38 +26,32 @@ namespace Solti.Utils.DI.Internals
             if (order > 0)
                 return TryGet(node.Right, key, out result);
 
-            result = node.Data.Value;
+            result = node.Data;
             return true;
         }
 
-        protected readonly RedBlackTree<KeyValuePair<IServiceId, AbstractServiceEntry>> FTree;
+        protected readonly RedBlackTree<AbstractServiceEntry> FTree;
 
-        protected BTreeLookup(RedBlackTree<KeyValuePair<IServiceId, AbstractServiceEntry>> tree)
+        protected BTreeLookup(RedBlackTree<AbstractServiceEntry> tree)
             => FTree = tree;
 
         public BTreeLookup() : this
         (
-            new RedBlackTree<KeyValuePair<IServiceId, AbstractServiceEntry>>
+            new RedBlackTree<AbstractServiceEntry>
             (
-                KvpComparer.Instance
+                ServiceIdComparer.Instance
             )
         ) {}
 
         /// <summary>
         /// Extends this tree into a new lookup
         /// </summary>
-        public virtual BTreeLookup With(IServiceId key, AbstractServiceEntry data) => new
+        public virtual BTreeLookup With(AbstractServiceEntry data) => new
         (
-            FTree.With
-            (
-                new KeyValuePair<IServiceId, AbstractServiceEntry>(key, data)
-            )
+            FTree.With(data)
         );
 
-        public virtual bool TryAdd(IServiceId key, AbstractServiceEntry data) => FTree.Add
-        (
-            new KeyValuePair<IServiceId, AbstractServiceEntry>(key, data)
-        );
+        public virtual bool TryAdd(AbstractServiceEntry data) => FTree.Add(data);
 
         /// <summary>
         /// Tries to find an item in this lookup.
@@ -78,8 +63,7 @@ namespace Solti.Utils.DI.Internals
         /// <summary>
         /// Returns the clone of the underlying tree.
         /// </summary>
-        public RedBlackTree<KeyValuePair<IServiceId, AbstractServiceEntry>> GetUnderlyingTree()
-            => FTree.Clone();
+        public RedBlackTree<AbstractServiceEntry> GetUnderlyingTree() => FTree.Clone();
 
         public BTreeLookup Compile(IDelegateCompiler compiler) => new CompiledBTreeLookup(this, compiler);
     }

@@ -36,7 +36,7 @@ namespace Solti.Utils.DI.Internals
             {
                 CompositeKey key = new(entry.Interface, entry.Name);
 
-                if (!(entry.Interface.IsGenericTypeDefinition ? FGenericEntryLookup : FEntryLookup).TryAdd(key, entry))
+                if (!(entry.Interface.IsGenericTypeDefinition ? FGenericEntryLookup : FEntryLookup).TryAdd(entry))
                 {
                     InvalidOperationException ex = new(Resources.SERVICE_ALREADY_REGISTERED);
                     ex.Data[nameof(entry)] = entry;
@@ -105,7 +105,7 @@ namespace Solti.Utils.DI.Internals
                             entry = genericEntry.Specialize(iface.GenericTypeArguments);
                             FGraphBuilder.Build(entry);
 
-                            FEntryLookup = FEntryLookup.With(key, entry);
+                            FEntryLookup = FEntryLookup.With(entry);
                         }
                     }
                 }

@@ -8,17 +8,17 @@ namespace Solti.Utils.DI.Internals
     /// <summary>
     /// Describes a generic lookup.
     /// </summary>
-    internal interface ILookup<TKey, TData, TImplementation> where TImplementation: ILookup<TKey, TData, TImplementation>
+    internal interface ILookup<TKey, TData, TImplementation> where TImplementation: ILookup<TKey, TData, TImplementation> where TData: TKey
     {
         /// <summary>
         /// Tries to expand the current lookup.
         /// </summary>
-        bool TryAdd(TKey key, TData data);
+        bool TryAdd(TData data);
 
         /// <summary>
         /// Adds a new entry, returns the expanded copy of this lookup.
         /// </summary>
-        TImplementation With(TKey key, TData data);
+        TImplementation With(TData data);
 
         /// <summary>
         /// Tries to get the <paramref name="data"/> associated with the given <paramref name="key"/>.

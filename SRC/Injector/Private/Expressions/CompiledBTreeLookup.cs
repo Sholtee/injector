@@ -23,7 +23,7 @@ namespace Solti.Utils.DI.Internals
 
         private static IEnumerable<Expression> BuildNode
         (
-            RedBlackTreeNode<KeyValuePair<IServiceId, AbstractServiceEntry>>? node,
+            RedBlackTreeNode<AbstractServiceEntry>? node,
             ParameterExpression key,
             ParameterExpression entry,
             ParameterExpression order,
@@ -46,7 +46,7 @@ namespace Solti.Utils.DI.Internals
             }
 
             //
-            // order = ServiceIdComparer.Compare(key, node.Data.Key);
+            // order = ServiceIdComparer.Compare(key, node.Data);
             //
 
             yield return Expression.Assign
@@ -57,7 +57,7 @@ namespace Solti.Utils.DI.Internals
                     Expression.Constant(ServiceIdComparer.Instance),
                     FCompareTo,
                     key,
-                    Expression.Constant(node.Data.Key)
+                    Expression.Constant(node.Data)
                 )
             );
 
@@ -85,14 +85,14 @@ namespace Solti.Utils.DI.Internals
             );
 
             //
-            // entry = node.Data.Value;
+            // entry = node.Data;
             // return true;
             //
 
             yield return Expression.Assign
             (
                 entry,
-                Expression.Constant(node.Data.Value)
+                Expression.Constant(node.Data)
             );
 
             yield return Expression.Return
@@ -102,7 +102,7 @@ namespace Solti.Utils.DI.Internals
             );
         }
 
-        private static Expression<TryGetEntry> BuildTree(RedBlackTree<KeyValuePair<IServiceId, AbstractServiceEntry>> tree)
+        private static Expression<TryGetEntry> BuildTree(RedBlackTree<AbstractServiceEntry> tree)
         {
             ParameterExpression
                 key = Expression.Parameter(typeof(IServiceId), nameof(key)),

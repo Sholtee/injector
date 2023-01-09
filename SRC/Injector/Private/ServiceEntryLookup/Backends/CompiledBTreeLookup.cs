@@ -4,7 +4,6 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
-using System.Collections.Generic;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -17,7 +16,7 @@ namespace Solti.Utils.DI.Internals
 
         private readonly IDelegateCompiler FCompiler;
 
-        private CompiledBTreeLookup(RedBlackTree<KeyValuePair<IServiceId, AbstractServiceEntry>> tree, IDelegateCompiler compiler) : base(tree)
+        private CompiledBTreeLookup(RedBlackTree<AbstractServiceEntry> tree, IDelegateCompiler compiler) : base(tree)
         {
             FCompiler = compiler;
             FCompiler.Compile
@@ -31,16 +30,13 @@ namespace Solti.Utils.DI.Internals
         {
         }
 
-        public override BTreeLookup With(IServiceId key, AbstractServiceEntry data) => new CompiledBTreeLookup
+        public override BTreeLookup With(AbstractServiceEntry data) => new CompiledBTreeLookup
         (
-            FTree.With
-            (
-                new KeyValuePair<IServiceId, AbstractServiceEntry>(key, data)
-            ),
+            FTree.With(data),
             FCompiler
         );
 
-        public override bool TryAdd(IServiceId key, AbstractServiceEntry data) => throw new NotSupportedException();
+        public override bool TryAdd(AbstractServiceEntry data) => throw new NotSupportedException();
 
         public override bool TryGet(IServiceId key, out AbstractServiceEntry data) => FTryGet!(key, out data);
     }
