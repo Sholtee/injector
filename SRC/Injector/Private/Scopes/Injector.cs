@@ -130,7 +130,7 @@ namespace Solti.Utils.DI.Internals
 #if DEBUG
                 yield return new ScopedServiceEntry
                 (
-                    typeof(ICollection),
+                    typeof(IReadOnlyCollection<object>),
                     "captured_disposables",
                     static (i, _) => ((Injector) i).DisposableStore.CapturedDisposables,
                     false

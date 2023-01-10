@@ -504,7 +504,7 @@ namespace Solti.Utils.DI.Tests
                 injector.Get<IInterface_1_Disaposable>();
                 injector.Get<IInterface_1_Disaposable>();
 
-                ICollection capturedDisposables = injector.Get<ICollection>("captured_disposables");
+                IReadOnlyCollection<object> capturedDisposables = injector.Get<IReadOnlyCollection<object>>("captured_disposables");
                 Assert.That(capturedDisposables.Count, Is.EqualTo(2));
             }
 
@@ -524,7 +524,7 @@ namespace Solti.Utils.DI.Tests
                 injector.Get<IInterface_1_Disaposable>();
                 injector.Get<IInterface_1_Disaposable>();
 
-                ICollection capturedDisposables = injector.Get<ICollection>("captured_disposables");
+                IReadOnlyCollection<object> capturedDisposables = injector.Get<IReadOnlyCollection<object>>("captured_disposables");
                 Assert.That(capturedDisposables.Count, Is.EqualTo(1));
             }
 
@@ -551,7 +551,7 @@ namespace Solti.Utils.DI.Tests
                     injector.Get<IInterface_1_Disaposable>();
                 }
 
-                ICollection capturedDisposables = ((IInjector) root).Get<ICollection>("captured_disposables");
+                IReadOnlyCollection<object> capturedDisposables = ((IInjector) root).Get<IReadOnlyCollection<object>>("captured_disposables");
                 Assert.That(capturedDisposables.Count, Is.EqualTo(1));
             }
 
