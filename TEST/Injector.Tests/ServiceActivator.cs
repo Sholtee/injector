@@ -572,9 +572,8 @@ namespace Solti.Utils.DI.Internals.Tests
         }
 
         [Test]
-        public void AspectsToProxyDelegate_ShouldThrowOnInvalidInterceptor() =>
-            Assert.Throws<InvalidOperationException>(() => ServiceActivator.AspectsToProxyDelegate(typeof(IMyService), typeof(MyServiceUsingInvalidAspect)));
-
+        public void GetDecoratorForAspects_ShouldThrowOnInvalidInterceptor() =>
+            Assert.Throws<InvalidOperationException>(() => ServiceActivator.GetDecoratorForAspects(typeof(IMyService), typeof(MyServiceUsingInvalidAspect), ProxyEngine.Instance));
 
         private sealed class MyAspect : AspectAttribute
         {
@@ -596,15 +595,15 @@ namespace Solti.Utils.DI.Internals.Tests
         }
 
         [Test]
-        public void ApplyProxyDelegate_ShouldInstantiateTheInterceptors()
+        public void DecoratorForAspects_ShouldInstantiateTheInterceptors()
         {
             Mock<IInjector> mockInjector = new(MockBehavior.Strict);
             mockInjector
                 .Setup(i => i.Get(typeof(IList), null))
                 .Returns(new List<object>());
 
-            ApplyProxyDelegate del = ServiceActivator.AspectsToProxyDelegate(typeof(IMyService), typeof(MyService)).Compile();
-            AspectAggregator<IMyService, MyService> proxy = (AspectAggregator<IMyService, MyService>) del
+            DecoratorDelegate decorator = ServiceActivator.GetDecoratorForAspects(typeof(IMyService), typeof(MyService), ProxyEngine.Instance).Compile();
+            AspectAggregator<IMyService, MyService> proxy = (AspectAggregator<IMyService, MyService>) decorator
             (
                 mockInjector.Object, typeof(IMyService), new MyService()
             );

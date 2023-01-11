@@ -14,7 +14,7 @@ namespace Solti.Utils.DI.Internals
 
     internal sealed class PooledLifetime : Lifetime
     {
-        private AbstractServiceEntry GetPoolService(PooledServiceEntry entry) => new SingletonServiceEntry
+        private AbstractServiceEntry GetPoolService(PooledServiceEntry entry, ServiceOptions serviceOptions) => new SingletonServiceEntry
         (
             entry.Interface.IsGenericTypeDefinition
                 ? typeof(IPool<>)
@@ -24,53 +24,51 @@ namespace Solti.Utils.DI.Internals
                 ? typeof(PoolService<>)
                 : typeof(PoolService<>).MakeGenericType(entry.Interface),
             new { capacity = Capacity, name = entry.Name },
-            false // IPool<> doesn't use any aspects
+            serviceOptions with { SupportAspects = false } // IPool<> doesn't use any aspects
         );
 
         public PooledLifetime() : base(precedence: 20) { }
 
-        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Type implementation, bool supportAspects)
+        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Type implementation, ServiceOptions serviceOptions)
         {
-            if (iface is null)
-                throw new ArgumentNullException(nameof(iface));
+            PooledServiceEntry entry = new
+            (
+                iface ?? throw new ArgumentNullException(nameof(iface)),
+                name,
+                implementation ?? throw new ArgumentNullException(nameof(implementation)),
+                serviceOptions ?? throw new ArgumentNullException(nameof(serviceOptions))
+            );
 
-            if (implementation is null)
-                throw new ArgumentNullException(nameof(implementation));
-
-            PooledServiceEntry entry = new(iface, name, implementation, supportAspects);
-
-            yield return GetPoolService(entry);
+            yield return GetPoolService(entry, serviceOptions);
             yield return entry;
         }
 
-        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Type implementation, object explicitArgs, bool supportAspects)
+        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Type implementation, object explicitArgs, ServiceOptions serviceOptions)
         {
-            if (iface is null)
-                throw new ArgumentNullException(nameof(iface));
+            PooledServiceEntry entry = new
+            (
+                iface ?? throw new ArgumentNullException(nameof(iface)),
+                name,
+                implementation ?? throw new ArgumentNullException(nameof(implementation)),
+                explicitArgs ?? throw new ArgumentNullException(nameof(explicitArgs)),
+                serviceOptions ?? throw new ArgumentNullException(nameof(serviceOptions))
+            );
 
-            if (implementation is null)
-                throw new ArgumentNullException(nameof(implementation));
-
-            if (explicitArgs is null)
-                throw new ArgumentNullException(nameof(explicitArgs));
-
-            PooledServiceEntry entry = new(iface, name, implementation, explicitArgs, supportAspects);
-
-            yield return GetPoolService(entry);
+            yield return GetPoolService(entry, serviceOptions);
             yield return entry;
         }
 
-        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Expression<FactoryDelegate> factory, bool supportAspects)
+        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Expression<FactoryDelegate> factory, ServiceOptions serviceOptions)
         {
-            if (iface is null)
-                throw new ArgumentNullException(nameof(iface));
+            PooledServiceEntry entry = new
+            (
+                iface ?? throw new ArgumentNullException(nameof(iface)),
+                name,
+                factory ?? throw new ArgumentNullException(nameof(factory)),
+                serviceOptions ?? throw new ArgumentNullException(nameof(serviceOptions))
+            );
 
-            if (factory is null)
-                throw new ArgumentNullException(nameof(factory));
-
-            PooledServiceEntry entry = new(iface, name, factory, supportAspects);
-
-            yield return GetPoolService(entry);
+            yield return GetPoolService(entry, serviceOptions);
             yield return entry;
         }
 

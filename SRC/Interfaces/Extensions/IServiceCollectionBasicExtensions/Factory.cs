@@ -39,7 +39,7 @@ namespace Solti.Utils.DI.Interfaces
                 // Further validations are done by the created xXxServiceEntry
                 //
 
-                lifetime.CreateFrom(iface, name, factory, self.ServiceOptions.SupportAspects)
+                lifetime.CreateFrom(iface, name, factory, self.ServiceOptions)
             );
         }
 

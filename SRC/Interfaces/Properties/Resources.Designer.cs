@@ -61,6 +61,15 @@ namespace Solti.Utils.DI.Interfaces.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The entry does not support decorators..
+        /// </summary>
+        internal static string DECORATING_NOT_SUPPORTED {
+            get {
+                return ResourceManager.GetString("DECORATING_NOT_SUPPORTED", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Not owned entry can not be proxied..
         /// </summary>
         internal static string INAPROPRIATE_OWNERSHIP {
@@ -102,15 +111,6 @@ namespace Solti.Utils.DI.Interfaces.Properties {
         internal static string OPEN_GENERIC {
             get {
                 return ResourceManager.GetString("OPEN_GENERIC", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The entry does not support proxying..
-        /// </summary>
-        internal static string PROXYING_NOT_SUPPORTED {
-            get {
-                return ResourceManager.GetString("PROXYING_NOT_SUPPORTED", resourceCulture);
             }
         }
         

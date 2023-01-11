@@ -23,7 +23,7 @@ namespace Solti.Utils.DI.Internals
     public abstract partial class ProducibleServiceEntry : AbstractServiceEntry
     {
         #region Private
-        private readonly List<Expression<ApplyProxyDelegate>> FProxies = new();
+        private readonly List<Expression<DecoratorDelegate>> FDecorators = new();
 
         private static Expression<FactoryDelegate>? GetFactory(Type @interface, Type implementation)
         {
@@ -53,11 +53,25 @@ namespace Solti.Utils.DI.Internals
             return null;
         }
 
-        private void ApplyAspects()
+        private ProducibleServiceEntry(Type @interface, string? name, Type? implementation, Expression<FactoryDelegate>? factory, ServiceOptions options) : base(@interface, name, implementation, factory)
         {
-            Expression<ApplyProxyDelegate>? del = ServiceActivator.AspectsToProxyDelegate(Interface, Implementation ?? Interface);
-            if (del is not null)
-                ApplyProxy(del);
+            Options = options;
+            if (Options.SupportAspects)
+            {
+                Debug.Assert(Decorators.Count is 0, "Aspects must be applied first");
+                Features = ServiceEntryFeatures.SupportsAspects;
+                if (Factory is not null)
+                {
+                    Expression<DecoratorDelegate>? decorator = ServiceActivator.GetDecoratorForAspects
+                    (
+                        Interface,
+                        Implementation ?? Interface,
+                        Options.ProxyEngine ?? ProxyEngine.Instance
+                    );
+                    if (decorator is not null)
+                        Decorate(decorator);
+                }
+            }
         }
         #endregion
 
@@ -65,25 +79,19 @@ namespace Solti.Utils.DI.Internals
         /// <summary>
         /// Creartes a new <see cref="ProducibleServiceEntry"/> instance.
         /// </summary>
-        protected ProducibleServiceEntry(Type @interface, string? name, Expression<FactoryDelegate> factory, bool supportAspects) : base
+        protected ProducibleServiceEntry(Type @interface, string? name, Expression<FactoryDelegate> factory, ServiceOptions options) : this
         (
             @interface ?? throw new ArgumentNullException(nameof(@interface)),
             name,
             null,
-            factory ?? throw new ArgumentNullException(nameof(factory))
-        )
-        {
-            if (supportAspects)
-            {
-                Features |= ServiceEntryFeatures.SupportsAspects;
-                ApplyAspects();
-            }
-        }
+            factory ?? throw new ArgumentNullException(nameof(factory)),
+            options ?? throw new ArgumentNullException(nameof(options))
+        ) {}
 
         /// <summary>
         /// Creartes a new <see cref="ProducibleServiceEntry"/> instance.
         /// </summary>
-        protected ProducibleServiceEntry(Type @interface, string? name, Type implementation, bool supportAspects) : base
+        protected ProducibleServiceEntry(Type @interface, string? name, Type implementation, ServiceOptions options) : this
         (
             @interface ?? throw new ArgumentNullException(nameof(@interface)),
             name,
@@ -92,21 +100,14 @@ namespace Solti.Utils.DI.Internals
             (
                 @interface,
                 implementation
-            )
-        )
-        {
-            if (supportAspects)
-            {
-                Features |= ServiceEntryFeatures.SupportsAspects;
-                if (Factory is not null)
-                    ApplyAspects();
-            }
-        }
+            ),
+            options ?? throw new ArgumentNullException(nameof(options))
+        ) {}
 
         /// <summary>
         /// Creartes a new <see cref="ProducibleServiceEntry"/> instance.
         /// </summary>
-        protected ProducibleServiceEntry(Type @interface, string? name, Type implementation, object explicitArgs, bool supportAspects) : base
+        protected ProducibleServiceEntry(Type @interface, string? name, Type implementation, object explicitArgs, ServiceOptions options) : this
         (
             @interface ?? throw new ArgumentNullException(nameof(@interface)),
             name,
@@ -116,22 +117,14 @@ namespace Solti.Utils.DI.Internals
                 @interface,
                 implementation,
                 explicitArgs ?? throw new ArgumentNullException(nameof(explicitArgs))
-            )
+            ),
+            options ?? throw new ArgumentNullException(nameof(options))
         )
-        {
             //
             // Ancestor does the rest of validation
             //
 
-            ExplicitArgs = explicitArgs;
-
-            if (supportAspects)
-            {
-                Features |= ServiceEntryFeatures.SupportsAspects;
-                if (Factory is not null)
-                    ApplyAspects();
-            }
-        }
+            => ExplicitArgs = explicitArgs;
         #endregion
 
         /// <inheritdoc/>
@@ -171,15 +164,12 @@ namespace Solti.Utils.DI.Internals
         public override ServiceEntryFeatures Features { get; }
 
         /// <inheritdoc/>
-        public override void ApplyProxy(Expression<ApplyProxyDelegate> applyProxy)
+        public override void Decorate(Expression<DecoratorDelegate> decorator)
         {
-            if (applyProxy is null)
-                throw new ArgumentNullException(nameof(applyProxy));
-
             if (Factory is null)
-                throw new NotSupportedException(PROXYING_NOT_SUPPORTED);
+                throw new NotSupportedException(DECORATING_NOT_SUPPORTED);
 
-            FProxies.Add(applyProxy);
+            FDecorators.Add(decorator ?? throw new ArgumentNullException(nameof(decorator)));
         }
 
         /// <summary>
@@ -188,8 +178,13 @@ namespace Solti.Utils.DI.Internals
         public object? ExplicitArgs { get; }
 
         /// <summary>
-        /// The applied proxies.
+        /// Options assigned to this instance.
         /// </summary>
-        public sealed override IReadOnlyList<Expression<ApplyProxyDelegate>> Proxies => FProxies;
+        public ServiceOptions Options { get; }
+
+        /// <summary>
+        /// Bound decorators.
+        /// </summary>
+        public sealed override IReadOnlyList<Expression<DecoratorDelegate>> Decorators => FDecorators;
     }
 }

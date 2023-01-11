@@ -294,12 +294,12 @@ namespace Solti.Utils.DI.Tests
         }
 
         [Test]
-        public void Injector_GetByProxy_ShouldThrowOnCircularReference([ValueSource(nameof(Lifetimes))]Lifetime lifetime, [ValueSource(nameof(Engines))] string engine)
+        public void Injector_GetByDecorator_ShouldThrowOnCircularReference([ValueSource(nameof(Lifetimes))]Lifetime lifetime, [ValueSource(nameof(Engines))] string engine)
         {
             Root = ScopeFactory.Create
             (
                 svcs => svcs
-                    .Service<IInterface_1, Implementation_1_No_Dep>(lifetime).UsingProxy((injector, _, _) => injector.Get<IInterface_1>(null)),
+                    .Service<IInterface_1, Implementation_1_No_Dep>(lifetime).Decorate((injector, _, _) => injector.Get<IInterface_1>(null)),
                 new ScopeOptions { Engine = engine, ServiceResolutionMode = ServiceResolutionMode.JIT }
             );
 

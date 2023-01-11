@@ -10,7 +10,7 @@ namespace Solti.Utils.DI.Interfaces
     /// <summary>
     /// Specifies the scope behavior.
     /// </summary>
-    public class ScopeOptions
+    public record ScopeOptions
     {
         /// <summary>
         /// Instructs the scope system to throw if 

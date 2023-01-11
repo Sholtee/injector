@@ -62,10 +62,10 @@ namespace Solti.Utils.DI.Tests
         ), string.Join(" -> ", typeof(IInterface_4), typeof(IInterface_5), typeof(IInterface_4)));
 
         [Test]
-        public void Injector_CreateUsingProxy_ShouldThrowOnCircularReference([ValueSource(nameof(Lifetimes))] Lifetime lifetime, [ValueSource(nameof(Engines))] string engine) => Assert.Throws<CircularReferenceException>(() => ScopeFactory.Create
+        public void Injector_CreateUsingDecorator_ShouldThrowOnCircularReference([ValueSource(nameof(Lifetimes))] Lifetime lifetime, [ValueSource(nameof(Engines))] string engine) => Assert.Throws<CircularReferenceException>(() => ScopeFactory.Create
         (
             svcs => svcs
-                .Service<IInterface_1, Implementation_1_No_Dep>(lifetime).UsingProxy((injector, _, _) => injector.Get<IInterface_1>(null)),
+                .Service<IInterface_1, Implementation_1_No_Dep>(lifetime).Decorate((injector, _, _) => injector.Get<IInterface_1>(null)),
             new ScopeOptions { Engine = engine, ServiceResolutionMode = ServiceResolutionMode.AOT }
         ), string.Join(" -> ", typeof(IInterface_1), typeof(IInterface_1)));
     }

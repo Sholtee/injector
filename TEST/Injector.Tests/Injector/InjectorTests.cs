@@ -264,6 +264,6 @@ namespace Solti.Utils.DI.Tests
 
         [Test]
         public void Ctor_ShouldThrowOnOverriddenService([ValueSource(nameof(Engines))] string engine, [ValueSource(nameof(ResolutionModes))] ServiceResolutionMode resolutionMode) =>
-            Assert.Throws<InvalidOperationException>(() => ScopeFactory.Create(svcs => svcs.Add(new InstanceServiceEntry(typeof(IInjector), null, new Mock<IInjector>().Object)), new ScopeOptions { Engine = engine, ServiceResolutionMode = resolutionMode }), Resources.SERVICE_ALREADY_REGISTERED);
+            Assert.Throws<ServiceAlreadyRegisteredException>(() => ScopeFactory.Create(svcs => svcs.Add(new InstanceServiceEntry(typeof(IInjector), null, new Mock<IInjector>().Object, ServiceOptions.Default)), new ScopeOptions { Engine = engine, ServiceResolutionMode = resolutionMode }), Resources.SERVICE_ALREADY_REGISTERED);
     }
 }

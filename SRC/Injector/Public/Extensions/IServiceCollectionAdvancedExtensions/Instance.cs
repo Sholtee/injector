@@ -35,7 +35,7 @@ namespace Solti.Utils.DI
                 // Further validations are done by the created InstanceServiceEntry
                 //
 
-                Lifetime.Instance.CreateFrom(iface, name, instance)
+                Lifetime.Instance.CreateFrom(iface, name, instance, self.ServiceOptions)
             );
         }
 

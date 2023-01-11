@@ -4,7 +4,6 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
-using System.Collections.Generic;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -12,19 +11,13 @@ namespace Solti.Utils.DI.Internals
 
     internal class InjectorSupportsServiceProvider : Injector, IServiceProvider
     {
-        protected override IEnumerable<AbstractServiceEntry> BuiltInServices
+        protected override void RegisterBuiltInServices(IServiceCollection services)
         {
-            get
-            {
-                foreach (AbstractServiceEntry entry in base.BuiltInServices)
-                {
-                    yield return entry;
-                }
-                yield return new ScopedServiceEntry(typeof(IServiceProvider), null, static (i, _) => i, false);
-            }
+            base.RegisterBuiltInServices(services);
+            services.Factory<IServiceProvider>(static i => (IServiceProvider) i, Lifetime.Scoped);
         }
 
-        public InjectorSupportsServiceProvider(IEnumerable<AbstractServiceEntry> registeredEntries, ScopeOptions options, object? tag) : base(registeredEntries, options, tag)
+        public InjectorSupportsServiceProvider(IServiceCollection services, ScopeOptions options, object? tag) : base(services, options, tag)
         {
         }
 

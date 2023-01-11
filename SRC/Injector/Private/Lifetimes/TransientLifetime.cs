@@ -15,40 +15,38 @@ namespace Solti.Utils.DI.Internals
     {
         public TransientLifetime() : base(precedence: 10) { }
 
-        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Type implementation, bool supportAspects)
+        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Type implementation, ServiceOptions serviceOptions)
         {
-            if (iface is null)
-                throw new ArgumentNullException(nameof(iface));
-
-            if (implementation is null)
-                throw new ArgumentNullException(nameof(implementation));
-
-            yield return new TransientServiceEntry(iface, name, implementation, supportAspects);
+            yield return new TransientServiceEntry
+            (
+                iface ?? throw new ArgumentNullException(nameof(iface)),
+                name,
+                implementation ?? throw new ArgumentNullException(nameof(implementation)),
+                serviceOptions ?? throw new ArgumentNullException(nameof(serviceOptions))
+            );
         }
 
-        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Type implementation, object explicitArgs, bool supportAspects)
+        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Type implementation, object explicitArgs, ServiceOptions serviceOptions)
         {
-            if (iface is null)
-                throw new ArgumentNullException(nameof(iface));
-
-            if (implementation is null)
-                throw new ArgumentNullException(nameof(implementation));
-
-            if (explicitArgs is null)
-                throw new ArgumentNullException(nameof(explicitArgs));
-
-            yield return new TransientServiceEntry(iface, name, implementation, explicitArgs, supportAspects);
+            yield return new TransientServiceEntry
+            (
+                iface ?? throw new ArgumentNullException(nameof(iface)),
+                name,
+                implementation ?? throw new ArgumentNullException(nameof(implementation)),
+                explicitArgs ?? throw new ArgumentNullException(nameof(explicitArgs)),
+                serviceOptions ?? throw new ArgumentNullException(nameof(serviceOptions))
+            );
         }
 
-        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Expression<FactoryDelegate> factory, bool supportAspects)
+        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Expression<FactoryDelegate> factory, ServiceOptions serviceOptions)
         {
-            if (iface is null)
-                throw new ArgumentNullException(nameof(iface));
-
-            if (factory is null)
-                throw new ArgumentNullException(nameof(factory));
-
-            yield return new TransientServiceEntry(iface, name, factory, supportAspects);
+            yield return new TransientServiceEntry
+            (
+                iface ?? throw new ArgumentNullException(nameof(iface)),
+                name,
+                factory ?? throw new ArgumentNullException(nameof(factory)),
+                serviceOptions ?? throw new ArgumentNullException(nameof(serviceOptions))
+            );
         }
 
         public override string ToString() => nameof(Transient);

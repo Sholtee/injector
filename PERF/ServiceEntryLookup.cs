@@ -47,7 +47,7 @@ namespace Solti.Utils.DI.Perf
         (
             Interfaces
                 .Take(ServiceCount)
-                .Select(t => new TransientServiceEntry(t, null, static (_, _) => null, false))
+                .Select(t => new TransientServiceEntry(t, null, static (_, _) => null, ServiceOptions.Default))
                 .ToList(),
             new ScopeOptions 
             {

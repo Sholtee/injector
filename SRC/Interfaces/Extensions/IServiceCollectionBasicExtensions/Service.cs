@@ -36,7 +36,7 @@ namespace Solti.Utils.DI.Interfaces
 
             return self.Register
             (
-                lifetime.CreateFrom(iface, name, implementation, self.ServiceOptions.SupportAspects)
+                lifetime.CreateFrom(iface, name, implementation, self.ServiceOptions)
             );
         }
 
@@ -69,7 +69,7 @@ namespace Solti.Utils.DI.Interfaces
 
             return self.Register
             (
-                lifetime.CreateFrom(iface, name, implementation, explicitArgs, self.ServiceOptions.SupportAspects)
+                lifetime.CreateFrom(iface, name, implementation, explicitArgs, self.ServiceOptions)
             );
         }
 

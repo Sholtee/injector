@@ -4,7 +4,6 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Threading;
@@ -99,45 +98,15 @@ namespace Solti.Utils.DI.Internals
             return instance;
         }
 
-        protected virtual IEnumerable<AbstractServiceEntry> BuiltInServices
-        {
-            get
-            {
-                yield return new ScopedServiceEntry(typeof(IInjector), null, static (i, _) => i, false);
-
-                //
-                // Factory is always the root.
-                //
-
-                yield return new SingletonServiceEntry(typeof(IScopeFactory), null, static (i, _) => i, false);
-
-
-                yield return new SingletonServiceEntry
-                (
-                    typeof(IReadOnlyCollection<AbstractServiceEntry>),
-                    $"{Consts.INTERNAL_SERVICE_NAME_PREFIX}registered_services",
-                    (_, _) => ServiceCollection,
-                    false
-                );
-
-                yield return new ScopedServiceEntry
-                (
-                    typeof(IEnumerable<>),
-                    null,
-                    typeof(ServiceEnumerator<>),
-                    false
-                );
+        protected virtual void RegisterBuiltInServices(IServiceCollection services) => services
+            .Factory<IInjector>(static i => i, Lifetime.Scoped)
+            .Factory<IScopeFactory>(static i => (IScopeFactory) i, Lifetime.Singleton) // create SF from the root only
+            .Factory<IReadOnlyCollection<AbstractServiceEntry>>($"{Consts.INTERNAL_SERVICE_NAME_PREFIX}registered_services", _ => ServiceCollection, Lifetime.Singleton)
+            .Service(typeof(IEnumerable<>), typeof(ServiceEnumerator<>), Lifetime.Scoped)
 #if DEBUG
-                yield return new ScopedServiceEntry
-                (
-                    typeof(IReadOnlyCollection<object>),
-                    "captured_disposables",
-                    static (i, _) => ((Injector) i).DisposableStore.CapturedDisposables,
-                    false
-                );
+            .Factory<IReadOnlyCollection<object>>("captured_disposables", static i => ((Injector) i).DisposableStore.CapturedDisposables, Lifetime.Scoped)
 #endif
-            }
-        }
+            ;
 
         #region IInstanceFactory
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -226,21 +195,33 @@ namespace Solti.Utils.DI.Internals
         public object? Tag { get; }
         #endregion
 
-        public IServiceEntryLookup ServiceLookup { [MethodImpl(MethodImplOptions.AggressiveInlining)] get; }
-
-        public IReadOnlyCollection<AbstractServiceEntry> ServiceCollection { [MethodImpl(MethodImplOptions.AggressiveInlining)] get; }
-
-        public Injector(IEnumerable<AbstractServiceEntry> registeredEntries, ScopeOptions options, object? tag)
+        public IServiceEntryLookup ServiceLookup
         {
-            List<AbstractServiceEntry> allServices = new(registeredEntries);
-            allServices.AddRange(BuiltInServices);
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get;
+        }
 
-            ServiceLookup     = ServiceEntryLookupBuilder.Build(allServices, options);  
+        public IReadOnlyCollection<AbstractServiceEntry> ServiceCollection
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get;
+        }
+
+        public Injector(IServiceCollection services, ScopeOptions options, object? tag)
+        {
+            //
+            // Copy the collection to be safe to modify it
+            //
+
+            ServiceCollection servicesCopy = new(services);
+            RegisterBuiltInServices(servicesCopy);
+
+            ServiceLookup     = ServiceEntryLookupBuilder.Build(servicesCopy, options);  
             FSlots            = Array<object>.Create(ServiceLookup.Slots);
             FLock             = new object();
             Options           = options;
             Tag               = tag;
-            ServiceCollection = allServices;
+            ServiceCollection = servicesCopy;
         }
 
         public Injector(Injector super, object? tag)

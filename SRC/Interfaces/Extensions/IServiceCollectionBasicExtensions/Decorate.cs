@@ -1,5 +1,5 @@
 /********************************************************************************
-* Proxy.cs                                                                      *
+* Decorate.cs                                                                   *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
@@ -17,7 +17,7 @@ namespace Solti.Utils.DI.Interfaces
         /// <param name="decorator">The decorator funtion. It must return the decorated instance. The original instance can be accessed via the 3rd parameter of the decorator function.</param>
         /// <remarks>You can't create proxies against instances and open generic services. A service can be decorated multiple times.</remarks>
         /// <exception cref="InvalidOperationException">When proxying not allowed (see above).</exception>
-        public static IModifiedServiceCollection UsingProxy(this IModifiedServiceCollection self, Expression<ApplyProxyDelegate> decorator)
+        public static IModifiedServiceCollection Decorate(this IModifiedServiceCollection self, Expression<DecoratorDelegate> decorator)
         {
             if (self is null)
                 throw new ArgumentNullException(nameof(self));
@@ -25,7 +25,7 @@ namespace Solti.Utils.DI.Interfaces
             if (decorator is null)
                 throw new ArgumentNullException(nameof(decorator));
 
-            self.LastEntry.ApplyProxy(decorator);
+            self.LastEntry.Decorate(decorator);
             return self;
         }
     }

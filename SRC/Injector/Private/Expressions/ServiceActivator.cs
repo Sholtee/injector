@@ -434,36 +434,29 @@ namespace Solti.Utils.DI.Internals
         /// ); 
         /// </code>
         /// </summary>
-        public static Expression<ApplyProxyDelegate> InterceptorsToProxyDelegate(Type iface, Type target, IEnumerable<Type> interceptorTypes)
-        {
-            Type concreteProxy = new ProxyGenerator
+        public static Expression<DecoratorDelegate> GetDecoratorForInterceptors(Type iface, Type target, IEnumerable<Type> interceptorTypes, IProxyEngine proxyEngine) => CreateActivator<DecoratorDelegate>
+        (
+            paramz => proxyEngine.CreateActivatorExpression
             (
-                iface,
-                typeof(AspectAggregator<,>).MakeGenericType(iface, target)
-            ).GetGeneratedType();
-
-            return CreateActivator<ApplyProxyDelegate>
-            (
-                paramz => Expression.New
+                proxyEngine.CreateProxy(iface, target),
+                paramz[0],
+                Expression.Convert(paramz[2], target),
+                Expression.NewArrayInit
                 (
-                    concreteProxy.GetApplicableConstructor(),
-                    Expression.Convert(paramz[2], target),
-                    Expression.NewArrayInit
+                    typeof(IInterfaceInterceptor),
+                    interceptorTypes.Select
                     (
-                        typeof(IInterfaceInterceptor),
-                        interceptorTypes.Select
+                        interceptorType => New
                         (
-                            interceptorType => New
-                            (
-                                interceptorType.GetApplicableConstructor(),
-                                paramz[0],
-                                DefaultDependencyResolver
-                            )
+                            interceptorType.GetApplicableConstructor(),
+                            paramz[0],
+                            DefaultDependencyResolver
                         )
                     )
                 )
-            );
-        }
+            )
+        );
+
 
         /// <summary>
         /// <code>
@@ -478,18 +471,19 @@ namespace Solti.Utils.DI.Internals
         /// ); 
         /// </code>
         /// </summary>
-        public static Expression<ApplyProxyDelegate>? AspectsToProxyDelegate(Type iface, Type target)
+        public static Expression<DecoratorDelegate>? GetDecoratorForAspects(Type iface, Type target, IProxyEngine proxyEngine)
         {
             IEnumerable<Type> interceptors = GetInterceptors(iface);
             if (target != iface)
                 interceptors = interceptors.Union(GetInterceptors(target));
 
             return interceptors.Any()
-                ? InterceptorsToProxyDelegate
+                ? GetDecoratorForInterceptors
                 (
                     iface,
                     target,
-                    interceptors
+                    interceptors,
+                    proxyEngine
                 )
                 : null;
 

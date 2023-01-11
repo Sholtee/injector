@@ -14,15 +14,15 @@ namespace Solti.Utils.DI.Internals
     {
         public InstanceLifetime() : base(precedence: 40) { }
 
-        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, object value)
+        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, object value, ServiceOptions serviceOptions)
         {
-            if (iface is null)
-                throw new ArgumentNullException(nameof(iface));
-
-            if (value is null)
-                throw new ArgumentNullException(nameof(value));
-
-            yield return new InstanceServiceEntry(iface, name, value);
+            yield return new InstanceServiceEntry
+            (
+                iface ?? throw new ArgumentNullException(nameof(iface)),
+                name,
+                value ?? throw new ArgumentNullException(nameof(value)),
+                serviceOptions ?? throw new ArgumentNullException(nameof(serviceOptions))
+            );
         }
 
         public override string ToString() => nameof(Instance);

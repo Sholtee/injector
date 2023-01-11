@@ -16,7 +16,6 @@ namespace Solti.Utils.DI.Interfaces
         /// <summary>
         /// Defines the general service behavior.
         /// </summary>
-        /// <remarks>You can override this setting by calling the Add method directly.</remarks>
         ServiceOptions ServiceOptions { get; }
     }
 }

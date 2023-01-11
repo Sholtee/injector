@@ -3,7 +3,6 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
-using System;
 using System.Collections.Generic;
 
 using BenchmarkDotNet.Attributes;
@@ -41,7 +40,15 @@ namespace Solti.Utils.DI.Perf
         public void Setup()
         {
             Injector 
-                root = new(Lifetime.CreateFrom(typeof(IMyService), null, typeof(MyService)), new ScopeOptions(), null),
+                root = new
+                (
+                    DI
+                        .ServiceCollection
+                        .Create(ServiceOptions.Default)
+                        .Service<IMyService, MyService>(Lifetime), 
+                    ScopeOptions.Default, 
+                    null
+                ),
                 scope = new(root, null);
 
             ResolveImpl = scope.ServiceLookup.Get(typeof(IMyService), null).ResolveInstance;

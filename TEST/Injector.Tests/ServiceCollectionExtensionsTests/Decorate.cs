@@ -1,5 +1,5 @@
 ﻿/********************************************************************************
-* Proxy.cs                                                                      *
+* Decorate.cs                                                                   *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
@@ -17,15 +17,15 @@ namespace Solti.Utils.DI.Tests
     public partial class ServiceCollectionExtensionsTests
     {
         [Test]
-        public void Proxy_ShouldBeNullChecked()
+        public void Decorate_ShouldBeNullChecked()
         {
-            Assert.Throws<ArgumentNullException>(() => IServiceCollectionBasicExtensions.UsingProxy(null, (_, _, _) => new object()));
-            Assert.Throws<ArgumentNullException>(() => IServiceCollectionAdvancedExtensions.UsingProxy<IInterfaceInterceptor>(null));
-            Assert.Throws<ArgumentNullException>(() => Collection.UsingProxy(null));
+            Assert.Throws<ArgumentNullException>(() => IServiceCollectionBasicExtensions.Decorate(null, (_, _, _) => new object()));
+            Assert.Throws<ArgumentNullException>(() => Collection.Decorate(null));
+            Assert.Throws<ArgumentNullException>(() => IServiceCollectionAdvancedExtensions.Decorate<IInterfaceInterceptor>(null));
         }
 
         [TestCaseSource(nameof(ScopeControlledLifetimes))]
-        public void Proxy_ShouldOverwriteTheFactoryFunction(Lifetime lifetime)
+        public void Decorate_ShouldOverwriteTheFactoryFunction(Lifetime lifetime)
         {
             var mockCallback1 = new Mock<Func<IInjector, Type, object, object>>(MockBehavior.Strict);
             mockCallback1
@@ -39,8 +39,8 @@ namespace Solti.Utils.DI.Tests
 
             Collection
                 .Service<IInterface_1, Implementation_1_No_Dep>(lifetime)
-                .UsingProxy((injector, iface, curr) => mockCallback1.Object(injector, iface, curr))
-                .UsingProxy((injector, iface, curr) => mockCallback2.Object(injector, iface, curr));
+                .Decorate((injector, iface, curr) => mockCallback1.Object(injector, iface, curr))
+                .Decorate((injector, iface, curr) => mockCallback2.Object(injector, iface, curr));
 
             var mockInjector = new Mock<IInstanceFactory>(MockBehavior.Strict);
             mockInjector
@@ -63,7 +63,7 @@ namespace Solti.Utils.DI.Tests
         }
 
         [TestCaseSource(nameof(ScopeControlledLifetimes))]
-        public void Proxy_ShouldWorkWithClosedGenerics(Lifetime lifetime)
+        public void Decorate_ShouldWorkWithClosedGenerics(Lifetime lifetime)
         {
             var mockCallback = new Mock<Func<IInjector, Type, object, object>>(MockBehavior.Strict);
             mockCallback
@@ -72,7 +72,7 @@ namespace Solti.Utils.DI.Tests
 
             Collection
                 .Service(typeof(IInterface_3<int>), typeof(Implementation_3_IInterface_1_Dependant<int>), lifetime)
-                .UsingProxy((injector, iface, curr) => mockCallback.Object(injector, iface, curr));
+                .Decorate((injector, iface, curr) => mockCallback.Object(injector, iface, curr));
 
             var mockInjector = new Mock<IInstanceFactory>(MockBehavior.Strict);
             
@@ -99,35 +99,35 @@ namespace Solti.Utils.DI.Tests
         }
 
         [TestCaseSource(nameof(Lifetimes))]
-        public void Proxy_ShouldThrowOnGenericService(Lifetime lifetime)
+        public void Decorate_ShouldThrowOnGenericService(Lifetime lifetime)
         {
             Collection.Service(typeof(IInterface_3<>), typeof(Implementation_3_IInterface_1_Dependant<>), lifetime);
 
-            Assert.Throws<NotSupportedException>(() => Collection.UsingProxy((injector, type, inst) => inst), Resources.PROXYING_NOT_SUPPORTED);
+            Assert.Throws<NotSupportedException>(() => Collection.Decorate((injector, type, inst) => inst), Resources.DECORATING_NOT_SUPPORTED);
         }
 
         [Test]
-        public void Proxy_ShouldThrowOnInstances()
+        public void Decorate_ShouldThrowOnInstances()
         {
             Collection.Instance<IInterface_1>(new Implementation_1_No_Dep());
 
-            Assert.Throws<NotSupportedException>(() => Collection.UsingProxy((p1, p2, p3) => default), Resources.PROXYING_NOT_SUPPORTED);
+            Assert.Throws<NotSupportedException>(() => Collection.Decorate((p1, p2, p3) => default), Resources.DECORATING_NOT_SUPPORTED);
         }
 
         [Test]
-        public void Proxy_ShouldThrowOnAbstractService()
+        public void Decorate_ShouldThrowOnAbstractService()
         {
             Collection.Register(new MissingServiceEntry(typeof(IInterface_1), null));
 
-            Assert.Throws<NotSupportedException>(() => Collection.UsingProxy((p1, p2, p3) => default), Resources.PROXYING_NOT_SUPPORTED);
+            Assert.Throws<NotSupportedException>(() => Collection.Decorate((p1, p2, p3) => default), Resources.DECORATING_NOT_SUPPORTED);
         }
 
         [TestCaseSource(nameof(ScopeControlledLifetimes))]
-        public void Proxy_MayHaveDependency(Lifetime lifetime)
+        public void Decorate_MayHaveDependency(Lifetime lifetime)
         {
             Collection
                 .Service<IInterface_2, Implementation_2_IInterface_1_Dependant>(lifetime)
-                .UsingProxy<MyInterceptorHavingDependency>();
+                .Decorate<MyInterceptorHavingDependency>();
 
             var mockInjector = new Mock<IInstanceFactory>(MockBehavior.Strict);
 
@@ -181,10 +181,10 @@ namespace Solti.Utils.DI.Tests
         }
 
         [TestCaseSource(nameof(ScopeControlledLifetimes))]
-        public void Proxy_ShouldHandleNamedServices(Lifetime lifetime) 
+        public void Decorate_ShouldHandleNamedServices(Lifetime lifetime) 
         {
             Collection.Service<IInterface_1, Implementation_1_No_Dep>("cica", lifetime);
-            Assert.DoesNotThrow(() => Collection.UsingProxy((p1, p2, p3) => new DecoratedImplementation_1()));
+            Assert.DoesNotThrow(() => Collection.Decorate((p1, p2, p3) => new DecoratedImplementation_1()));
 
             var mockInjector = new Mock<IInstanceFactory>(MockBehavior.Strict);
 

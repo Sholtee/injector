@@ -54,11 +54,11 @@ namespace Solti.Utils.DI.Interfaces
             //
 
             if (provider.GetCustomAttributes(true).OfType<IAspect>().Any())
-                throw new NotSupportedException(Resources.PROXYING_NOT_SUPPORTED);
+                throw new NotSupportedException(Resources.DECORATING_NOT_SUPPORTED);
 
             return self
                 .Service(iface, name, provider, explicitArgs, lifetime)
-                .UsingProxy(static (injector, iface, instance) => ((IServiceProvider) instance).GetService(iface));
+                .Decorate(static (injector, iface, instance) => ((IServiceProvider) instance).GetService(iface));
         }
 
         /// <summary>
@@ -99,11 +99,11 @@ namespace Solti.Utils.DI.Interfaces
             //
 
             if (provider.GetCustomAttributes(true).OfType<IAspect>().Any())
-                throw new NotSupportedException(Resources.PROXYING_NOT_SUPPORTED);
+                throw new NotSupportedException(Resources.DECORATING_NOT_SUPPORTED);
 
             return self
                 .Service(iface, name, provider, lifetime)
-                .UsingProxy(static (injector, iface, instance) => ((IServiceProvider) instance).GetService(iface));
+                .Decorate(static (injector, iface, instance) => ((IServiceProvider) instance).GetService(iface));
         }
 
         /// <summary>

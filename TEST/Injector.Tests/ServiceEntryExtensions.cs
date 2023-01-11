@@ -18,29 +18,29 @@ namespace Solti.Utils.DI.Tests
         [Test]
         public void IsService_ShouldDetermineIfTheEntryUsesTheServiceRecipe()
         {
-            Assert.False(new TransientServiceEntry(typeof(IDisposable), null, (_, _) => new MyDisposable(), false).IsService());
-            Assert.True(new TransientServiceEntry(typeof(IDisposable), null, typeof(MyDisposable), false).IsService());
+            Assert.False(new TransientServiceEntry(typeof(IDisposable), null, (_, _) => new MyDisposable(), ServiceOptions.Default).IsService());
+            Assert.True(new TransientServiceEntry(typeof(IDisposable), null, typeof(MyDisposable), ServiceOptions.Default).IsService());
         }
 
         [Test]
         public void IsFactory_ShouldDetermineIfTheEntryUsesTheFactoryRecipe()
         {
-            Assert.False(new TransientServiceEntry(typeof(IDisposable), null, typeof(MyDisposable), false).IsFactory());
-            Assert.True(new TransientServiceEntry(typeof(IDisposable), null, (_, _) => new MyDisposable(), false).IsFactory());
+            Assert.False(new TransientServiceEntry(typeof(IDisposable), null, typeof(MyDisposable), ServiceOptions.Default).IsFactory());
+            Assert.True(new TransientServiceEntry(typeof(IDisposable), null, (_, _) => new MyDisposable(), ServiceOptions.Default).IsFactory());
         }
 
         [Test]
         public void IsInternal_ShouldDetermineIfTheEntryHasAnInternalServiceImplementation([Values(null, "cica", "$cica")] string name)
         {
-            Assert.That(new TransientServiceEntry(typeof(IDisposable), name, typeof(MyDisposable), false).IsInternal(), Is.EqualTo(name?.StartsWith("$") is true));
+            Assert.That(new TransientServiceEntry(typeof(IDisposable), name, typeof(MyDisposable), ServiceOptions.Default).IsInternal(), Is.EqualTo(name?.StartsWith("$") is true));
         }
 
         [Test]
         public void IsInstance_ShouldDetermineIfTheEntryUsesTheInstanceRecipe()
         {
-            Assert.False(new TransientServiceEntry(typeof(IDisposable), null, typeof(MyDisposable), false).IsInstance());
-            Assert.False(new TransientServiceEntry(typeof(IDisposable), null, (_, _) => new MyDisposable(), false).IsInstance());
-            Assert.True(new InstanceServiceEntry(typeof(IDisposable), null, new MyDisposable()).IsInstance());
+            Assert.False(new TransientServiceEntry(typeof(IDisposable), null, typeof(MyDisposable), ServiceOptions.Default).IsInstance());
+            Assert.False(new TransientServiceEntry(typeof(IDisposable), null, (_, _) => new MyDisposable(), ServiceOptions.Default).IsInstance());
+            Assert.True(new InstanceServiceEntry(typeof(IDisposable), null, new MyDisposable(), ServiceOptions.Default).IsInstance());
         }
     }
 }

@@ -31,9 +31,9 @@ namespace Solti.Utils.DI.Interfaces.Tests
         }
 
         [Test]
-        public void ApplyProxy_ShouldNotBeSupportedByDefault()
+        public void Decorate_ShouldNotBeSupportedByDefault()
         {
-            Assert.Throws<NotSupportedException>(() => Entry.ApplyProxy(null));
+            Assert.Throws<NotSupportedException>(() => Entry.Decorate(null));
         }
 
         [Test]

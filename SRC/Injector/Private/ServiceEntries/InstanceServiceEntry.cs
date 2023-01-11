@@ -13,7 +13,7 @@ namespace Solti.Utils.DI.Internals
 
     internal sealed class InstanceServiceEntry : SingletonServiceEntry
     {
-        public InstanceServiceEntry(Type iface, string? name, object instance) : base(iface, name, (_, _) => instance, false)
+        public InstanceServiceEntry(Type iface, string? name, object instance, ServiceOptions options) : base(iface, name, (_, _) => instance, options with { SupportAspects = false })
         {
             if (instance is null)
                 throw new ArgumentNullException(nameof(instance));
@@ -25,8 +25,8 @@ namespace Solti.Utils.DI.Internals
         public override AbstractServiceEntry Specialize(params Type[] genericArguments)
             => throw new NotSupportedException();
 
-        public override void ApplyProxy(Expression<ApplyProxyDelegate> applyProxy)
-            => throw new NotSupportedException(Resources.PROXYING_NOT_SUPPORTED);
+        public override void Decorate(Expression<DecoratorDelegate> applyProxy)
+            => throw new NotSupportedException(Resources.DECORATING_NOT_SUPPORTED);
 
         public override Expression CreateLifetimeManager(Expression getService, ParameterExpression scope, ParameterExpression disposable)
             => getService;

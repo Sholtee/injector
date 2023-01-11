@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="DECORATING_NOT_SUPPORTED" xml:space="preserve">
+    <value>The entry does not support decorators.</value>
+  </data>
   <data name="INAPROPRIATE_OWNERSHIP" xml:space="preserve">
     <value>Not owned entry can not be proxied.</value>
   </data>
@@ -131,9 +134,6 @@
   </data>
   <data name="OPEN_GENERIC" xml:space="preserve">
     <value>Open generics are not supported.</value>
-  </data>
-  <data name="PROXYING_NOT_SUPPORTED" xml:space="preserve">
-    <value>The entry does not support proxying.</value>
   </data>
   <data name="SERVICE_NOT_FOUND" xml:space="preserve">
     <value>No registered implementation for "{0}".</value>

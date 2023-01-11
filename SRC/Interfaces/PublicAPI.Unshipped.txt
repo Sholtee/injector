@@ -15,7 +15,6 @@ Solti.Utils.DI.Interfaces.AbstractServiceEntry.ResolveInstance.set -> void
 Solti.Utils.DI.Interfaces.AbstractServiceEntry.State.get -> Solti.Utils.DI.Interfaces.ServiceEntryStates
 Solti.Utils.DI.Interfaces.AbstractServiceEntry.State.set -> void
 Solti.Utils.DI.Interfaces.AbstractServiceEntry.ToString(bool shortForm) -> string!
-Solti.Utils.DI.Interfaces.ApplyProxyDelegate
 Solti.Utils.DI.Interfaces.AspectAttribute
 Solti.Utils.DI.Interfaces.AspectAttribute.AspectAttribute() -> void
 Solti.Utils.DI.Interfaces.CircularReferenceException
@@ -26,6 +25,7 @@ Solti.Utils.DI.Interfaces.CircularReferenceException.CircularReferenceException(
 Solti.Utils.DI.Interfaces.CircularReferenceException.CircularReferenceException(string! message, System.Exception! innerException) -> void
 Solti.Utils.DI.Interfaces.Consts
 Solti.Utils.DI.Interfaces.CreateServiceDelegate
+Solti.Utils.DI.Interfaces.DecoratorDelegate
 Solti.Utils.DI.Interfaces.FactoryDelegate
 Solti.Utils.DI.Interfaces.FactoryDelegate<TInterface>
 Solti.Utils.DI.Interfaces.IAspect
@@ -60,6 +60,9 @@ Solti.Utils.DI.Interfaces.IModifiedServiceCollection.LastEntry.get -> Solti.Util
 Solti.Utils.DI.Interfaces.InjectAttribute
 Solti.Utils.DI.Interfaces.InjectAttribute.InjectAttribute() -> void
 Solti.Utils.DI.Interfaces.InvokeInterceptorDelegate
+Solti.Utils.DI.Interfaces.IProxyEngine
+Solti.Utils.DI.Interfaces.IProxyEngine.CreateActivatorExpression(System.Type! proxy, System.Linq.Expressions.Expression! injector, System.Linq.Expressions.Expression! target, System.Linq.Expressions.Expression! interceptorArray) -> System.Linq.Expressions.Expression!
+Solti.Utils.DI.Interfaces.IProxyEngine.CreateProxy(System.Type! iface, System.Type! target) -> System.Type!
 Solti.Utils.DI.Interfaces.IScopeFactory
 Solti.Utils.DI.Interfaces.IScopeFactory.CreateScope(object? tag = null) -> Solti.Utils.DI.Interfaces.IInjector!
 Solti.Utils.DI.Interfaces.IScopeFactory.Options.get -> Solti.Utils.DI.Interfaces.ScopeOptions!
@@ -89,7 +92,6 @@ Solti.Utils.DI.Interfaces.ResolveServiceDelegate
 Solti.Utils.DI.Interfaces.ScopeOptions
 Solti.Utils.DI.Interfaces.ScopeOptions.Engine.get -> string?
 Solti.Utils.DI.Interfaces.ScopeOptions.Engine.init -> void
-Solti.Utils.DI.Interfaces.ScopeOptions.ScopeOptions() -> void
 Solti.Utils.DI.Interfaces.ScopeOptions.ServiceResolutionMode.get -> Solti.Utils.DI.Interfaces.ServiceResolutionMode
 Solti.Utils.DI.Interfaces.ScopeOptions.ServiceResolutionMode.init -> void
 Solti.Utils.DI.Interfaces.ScopeOptions.StrictDI.get -> bool
@@ -118,7 +120,8 @@ Solti.Utils.DI.Interfaces.ServiceNotFoundException.ServiceNotFoundException() ->
 Solti.Utils.DI.Interfaces.ServiceNotFoundException.ServiceNotFoundException(string! message) -> void
 Solti.Utils.DI.Interfaces.ServiceNotFoundException.ServiceNotFoundException(string! message, System.Exception! innerException) -> void
 Solti.Utils.DI.Interfaces.ServiceOptions
-Solti.Utils.DI.Interfaces.ServiceOptions.ServiceOptions() -> void
+Solti.Utils.DI.Interfaces.ServiceOptions.ProxyEngine.get -> Solti.Utils.DI.Interfaces.IProxyEngine?
+Solti.Utils.DI.Interfaces.ServiceOptions.ProxyEngine.init -> void
 Solti.Utils.DI.Interfaces.ServiceOptions.SupportAspects.get -> bool
 Solti.Utils.DI.Interfaces.ServiceOptions.SupportAspects.init -> void
 Solti.Utils.DI.Interfaces.ServiceResolutionMode
@@ -130,6 +133,7 @@ Solti.Utils.Primitives.Patterns.IResettable.Reset() -> void (forwarded, containe
 static Solti.Utils.DI.Interfaces.IInjectorBasicExtensions.Get<TInterface>(this Solti.Utils.DI.Interfaces.IInjector! self, string? name = null) -> TInterface!
 static Solti.Utils.DI.Interfaces.IInjectorBasicExtensions.TryGet<TInterface>(this Solti.Utils.DI.Interfaces.IInjector! self, string? name = null) -> TInterface?
 static Solti.Utils.DI.Interfaces.IScopeFactoryExtensions.CreateScope(this Solti.Utils.DI.Interfaces.IScopeFactory! self, out System.IServiceProvider! provider) -> Solti.Utils.Primitives.Patterns.IDisposableEx!
+static Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Decorate(this Solti.Utils.DI.Interfaces.IModifiedServiceCollection! self, System.Linq.Expressions.Expression<Solti.Utils.DI.Interfaces.DecoratorDelegate!>! decorator) -> Solti.Utils.DI.Interfaces.IModifiedServiceCollection!
 static Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Factory(this Solti.Utils.DI.Interfaces.IServiceCollection! self, System.Type! iface, string? name, System.Linq.Expressions.Expression<Solti.Utils.DI.Interfaces.FactoryDelegate!>! factory, Solti.Utils.DI.Interfaces.LifetimeBase! lifetime) -> Solti.Utils.DI.Interfaces.IModifiedServiceCollection!
 static Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Factory(this Solti.Utils.DI.Interfaces.IServiceCollection! self, System.Type! iface, System.Linq.Expressions.Expression<Solti.Utils.DI.Interfaces.FactoryDelegate!>! factory, Solti.Utils.DI.Interfaces.LifetimeBase! lifetime) -> Solti.Utils.DI.Interfaces.IModifiedServiceCollection!
 static Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Factory<TInterface>(this Solti.Utils.DI.Interfaces.IServiceCollection! self, string? name, System.Linq.Expressions.Expression<Solti.Utils.DI.Interfaces.FactoryDelegate<TInterface!>!>! factory, Solti.Utils.DI.Interfaces.LifetimeBase! lifetime) -> Solti.Utils.DI.Interfaces.IModifiedServiceCollection!
@@ -155,23 +159,22 @@ static Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Service<TInte
 static Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Service<TInterface, TImplementation>(this Solti.Utils.DI.Interfaces.IServiceCollection! self, Solti.Utils.DI.Interfaces.LifetimeBase! lifetime) -> Solti.Utils.DI.Interfaces.IModifiedServiceCollection!
 static Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Service<TInterface, TImplementation>(this Solti.Utils.DI.Interfaces.IServiceCollection! self, string! name, object! explicitArgs, Solti.Utils.DI.Interfaces.LifetimeBase! lifetime) -> Solti.Utils.DI.Interfaces.IModifiedServiceCollection!
 static Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Service<TInterface, TImplementation>(this Solti.Utils.DI.Interfaces.IServiceCollection! self, string! name, Solti.Utils.DI.Interfaces.LifetimeBase! lifetime) -> Solti.Utils.DI.Interfaces.IModifiedServiceCollection!
-static Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.UsingProxy(this Solti.Utils.DI.Interfaces.IModifiedServiceCollection! self, System.Linq.Expressions.Expression<Solti.Utils.DI.Interfaces.ApplyProxyDelegate!>! decorator) -> Solti.Utils.DI.Interfaces.IModifiedServiceCollection!
 static Solti.Utils.DI.Interfaces.IServiceProviderBasicExtensions.GetService<TInterface>(this System.IServiceProvider! self) -> TInterface?
 static Solti.Utils.DI.Interfaces.ScopeOptions.Default.get -> Solti.Utils.DI.Interfaces.ScopeOptions!
 static Solti.Utils.DI.Interfaces.ServiceEntryExtensions.IsFactory(this Solti.Utils.DI.Interfaces.AbstractServiceEntry! self) -> bool
 static Solti.Utils.DI.Interfaces.ServiceEntryExtensions.IsInternal(this Solti.Utils.DI.Interfaces.AbstractServiceEntry! self) -> bool
 static Solti.Utils.DI.Interfaces.ServiceEntryExtensions.IsService(this Solti.Utils.DI.Interfaces.AbstractServiceEntry! self) -> bool
 static Solti.Utils.DI.Interfaces.ServiceOptions.Default.get -> Solti.Utils.DI.Interfaces.ServiceOptions!
-virtual Solti.Utils.DI.Interfaces.AbstractServiceEntry.ApplyProxy(System.Linq.Expressions.Expression<Solti.Utils.DI.Interfaces.ApplyProxyDelegate!>! applyProxy) -> void
 virtual Solti.Utils.DI.Interfaces.AbstractServiceEntry.Build(Solti.Utils.DI.Interfaces.IBuildContext? context, params Solti.Utils.DI.Interfaces.IFactoryVisitor![]! visitors) -> void
 virtual Solti.Utils.DI.Interfaces.AbstractServiceEntry.CreateLifetimeManager(System.Linq.Expressions.Expression! getService, System.Linq.Expressions.ParameterExpression! scope, System.Linq.Expressions.ParameterExpression! disposable) -> System.Linq.Expressions.Expression!
+virtual Solti.Utils.DI.Interfaces.AbstractServiceEntry.Decorate(System.Linq.Expressions.Expression<Solti.Utils.DI.Interfaces.DecoratorDelegate!>! decorator) -> void
+virtual Solti.Utils.DI.Interfaces.AbstractServiceEntry.Decorators.get -> System.Collections.Generic.IReadOnlyList<System.Linq.Expressions.Expression<Solti.Utils.DI.Interfaces.DecoratorDelegate!>!>!
 virtual Solti.Utils.DI.Interfaces.AbstractServiceEntry.Features.get -> Solti.Utils.DI.Interfaces.ServiceEntryFeatures
 virtual Solti.Utils.DI.Interfaces.AbstractServiceEntry.Lifetime.get -> Solti.Utils.DI.Interfaces.LifetimeBase?
-virtual Solti.Utils.DI.Interfaces.AbstractServiceEntry.Proxies.get -> System.Collections.Generic.IReadOnlyList<System.Linq.Expressions.Expression<Solti.Utils.DI.Interfaces.ApplyProxyDelegate!>!>!
 virtual Solti.Utils.DI.Interfaces.AbstractServiceEntry.SetValidated() -> void
 virtual Solti.Utils.DI.Interfaces.AbstractServiceEntry.Specialize(params System.Type![]! genericArguments) -> Solti.Utils.DI.Interfaces.AbstractServiceEntry!
-virtual Solti.Utils.DI.Interfaces.LifetimeBase.CreateFrom(System.Type! iface, string? name, object! value) -> System.Collections.Generic.IEnumerable<Solti.Utils.DI.Interfaces.AbstractServiceEntry!>!
-virtual Solti.Utils.DI.Interfaces.LifetimeBase.CreateFrom(System.Type! iface, string? name, System.Linq.Expressions.Expression<Solti.Utils.DI.Interfaces.FactoryDelegate!>! factory, bool supportAspects) -> System.Collections.Generic.IEnumerable<Solti.Utils.DI.Interfaces.AbstractServiceEntry!>!
-virtual Solti.Utils.DI.Interfaces.LifetimeBase.CreateFrom(System.Type! iface, string? name, System.Type! implementation, bool supportAspects) -> System.Collections.Generic.IEnumerable<Solti.Utils.DI.Interfaces.AbstractServiceEntry!>!
-virtual Solti.Utils.DI.Interfaces.LifetimeBase.CreateFrom(System.Type! iface, string? name, System.Type! implementation, object! explicitArgs, bool supportAspects) -> System.Collections.Generic.IEnumerable<Solti.Utils.DI.Interfaces.AbstractServiceEntry!>!
+virtual Solti.Utils.DI.Interfaces.LifetimeBase.CreateFrom(System.Type! iface, string? name, object! value, Solti.Utils.DI.Interfaces.ServiceOptions! serviceOptions) -> System.Collections.Generic.IEnumerable<Solti.Utils.DI.Interfaces.AbstractServiceEntry!>!
+virtual Solti.Utils.DI.Interfaces.LifetimeBase.CreateFrom(System.Type! iface, string? name, System.Linq.Expressions.Expression<Solti.Utils.DI.Interfaces.FactoryDelegate!>! factory, Solti.Utils.DI.Interfaces.ServiceOptions! serviceOptions) -> System.Collections.Generic.IEnumerable<Solti.Utils.DI.Interfaces.AbstractServiceEntry!>!
+virtual Solti.Utils.DI.Interfaces.LifetimeBase.CreateFrom(System.Type! iface, string? name, System.Type! implementation, object! explicitArgs, Solti.Utils.DI.Interfaces.ServiceOptions! serviceOptions) -> System.Collections.Generic.IEnumerable<Solti.Utils.DI.Interfaces.AbstractServiceEntry!>!
+virtual Solti.Utils.DI.Interfaces.LifetimeBase.CreateFrom(System.Type! iface, string? name, System.Type! implementation, Solti.Utils.DI.Interfaces.ServiceOptions! serviceOptions) -> System.Collections.Generic.IEnumerable<Solti.Utils.DI.Interfaces.AbstractServiceEntry!>!
 virtual Solti.Utils.DI.Interfaces.LifetimeBase.Using(object! configuration) -> Solti.Utils.DI.Interfaces.LifetimeBase!

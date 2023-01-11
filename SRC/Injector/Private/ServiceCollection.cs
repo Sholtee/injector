@@ -12,7 +12,7 @@ namespace Solti.Utils.DI.Internals
     using Interfaces;
     using Properties;
 
-    internal sealed class ServiceCollection : IModifiedServiceCollection
+    internal sealed class ServiceCollection : IModifiedServiceCollection, IReadOnlyCollection<AbstractServiceEntry>
     {
         private readonly HashSet<AbstractServiceEntry> FUnderlyingCollection = new(ServiceIdComparer.Instance);
         private AbstractServiceEntry? FLastEntry;
@@ -42,6 +42,14 @@ namespace Solti.Utils.DI.Internals
 
         public ServiceCollection(ServiceOptions? serviceOptions = null) : base()
             => ServiceOptions = serviceOptions ?? ServiceOptions.Default;
+
+        public ServiceCollection(IServiceCollection src) : this(src.ServiceOptions)
+        {
+            foreach (AbstractServiceEntry entry in src)
+            {
+                Add(entry);
+            }
+        }
 
         public AbstractServiceEntry LastEntry => FLastEntry ?? throw new InvalidOperationException();
 

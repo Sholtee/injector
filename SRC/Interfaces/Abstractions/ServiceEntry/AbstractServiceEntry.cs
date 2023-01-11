@@ -102,9 +102,9 @@ namespace Solti.Utils.DI.Interfaces
         public ResolveServiceDelegate? ResolveInstance { get; protected set; }
 
         /// <summary>
-        /// Proxies applied.
+        /// Bound decorators.
         /// </summary>
-        public virtual IReadOnlyList<Expression<ApplyProxyDelegate>> Proxies => throw new NotSupportedException(Resources.PROXYING_NOT_SUPPORTED);
+        public virtual IReadOnlyList<Expression<DecoratorDelegate>> Decorators => throw new NotSupportedException(Resources.DECORATING_NOT_SUPPORTED);
         #endregion
 
         /// <summary>
@@ -115,7 +115,7 @@ namespace Solti.Utils.DI.Interfaces
         /// <summary>
         /// If implemented, alters the service instantiation process in order to wrap the original service into a proxy.
         /// </summary>
-        public virtual void ApplyProxy(Expression<ApplyProxyDelegate> applyProxy) => throw new NotSupportedException(Resources.PROXYING_NOT_SUPPORTED);
+        public virtual void Decorate(Expression<DecoratorDelegate> decorator) => throw new NotSupportedException(Resources.DECORATING_NOT_SUPPORTED);
 
         /// <summary>
         /// Builds this entry applying the provided factory <paramref name="visitors"/>.

@@ -7,7 +7,7 @@
 namespace Solti.Utils.DI.Interfaces
 {
     /// <summary>
-    /// Classes implementing this interface may have tag.
+    /// Classes implementing this interface may have a tag.
     /// </summary>
     public interface IHasTag
     {

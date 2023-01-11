@@ -31,7 +31,7 @@ namespace Solti.Utils.DI.Internals
     {
         public LambdaExpression Visit(LambdaExpression factory, AbstractServiceEntry entry)
         {
-            if (entry.Proxies.Count > 0)
+            if (entry.Decorators.Count > 0)
             {
                 ParameterExpression
                     injector = Expression.Parameter(typeof(IInjector), nameof(injector)),
@@ -39,7 +39,7 @@ namespace Solti.Utils.DI.Internals
 
                 return Expression.Lambda<Func<IInjector, Type, object>>
                 (
-                    entry.Proxies.Aggregate
+                    entry.Decorators.Aggregate
                     (
                         UnfoldLambdaExpressionVisitor.Unfold(factory, injector, iface),
                         (inner, proxyExpr) => UnfoldLambdaExpressionVisitor.Unfold(proxyExpr, injector, iface, inner)

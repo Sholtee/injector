@@ -21,15 +21,15 @@ namespace Solti.Utils.DI.Internals
         public string PoolName => 
             FPoolName ??= $"{Consts.INTERNAL_SERVICE_NAME_PREFIX}pool_{(Interface.IsConstructedGenericType ? Interface.GetGenericTypeDefinition() : Interface, Name).GetHashCode():X}";
 
-        public PooledServiceEntry(Type @interface, string? name, Expression<FactoryDelegate> factory, bool supportAspects) : base(@interface, name, factory, supportAspects)
+        public PooledServiceEntry(Type @interface, string? name, Expression<FactoryDelegate> factory, ServiceOptions options) : base(@interface, name, factory, options)
         {
         }
 
-        public PooledServiceEntry(Type @interface, string? name, Type implementation, bool supportAspects) : base(@interface, name, implementation, supportAspects)
+        public PooledServiceEntry(Type @interface, string? name, Type implementation, ServiceOptions options) : base(@interface, name, implementation, options)
         {
         }
 
-        public PooledServiceEntry(Type @interface, string? name, Type implementation, object explicitArgs, bool supportAspects) : base(@interface, name, implementation, explicitArgs, supportAspects)
+        public PooledServiceEntry(Type @interface, string? name, Type implementation, object explicitArgs, ServiceOptions options) : base(@interface, name, implementation, explicitArgs, options)
         {
         }
 
@@ -65,7 +65,7 @@ namespace Solti.Utils.DI.Internals
                     Interface.MakeGenericType(genericArguments),
                     Name,
                     Implementation.MakeGenericType(genericArguments),
-                    Features.HasFlag(ServiceEntryFeatures.SupportsAspects)
+                    Options
                 ),
                 _ when Implementation is not null && ExplicitArgs is not null => new PooledServiceEntry
                 (
@@ -73,14 +73,14 @@ namespace Solti.Utils.DI.Internals
                     Name,
                     Implementation.MakeGenericType(genericArguments),
                     ExplicitArgs,
-                    Features.HasFlag(ServiceEntryFeatures.SupportsAspects)
+                    Options
                 ),
                 _ when Factory is not null => new PooledServiceEntry
                 (
                     Interface.MakeGenericType(genericArguments),
                     Name,
                     Factory,
-                    Features.HasFlag(ServiceEntryFeatures.SupportsAspects)
+                    Options
                 ),
                 _ => throw new NotSupportedException()
             };

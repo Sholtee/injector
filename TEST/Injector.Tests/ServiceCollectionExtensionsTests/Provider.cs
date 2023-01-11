@@ -48,8 +48,8 @@ namespace Solti.Utils.DI.Tests
         [Test]
         public void Provider_ShouldThrowOnImplementationHavingAspects()
         {
-            Assert.Throws<NotSupportedException>(() => Collection.Provider<IList, ProviderHavingAspect>(Lifetime.Scoped), Interfaces.Properties.Resources.PROXYING_NOT_SUPPORTED);
-            Assert.Throws<NotSupportedException>(() => Collection.Provider<IList, ProviderHavingAspect>(new object(), Lifetime.Scoped), Interfaces.Properties.Resources.PROXYING_NOT_SUPPORTED);
+            Assert.Throws<NotSupportedException>(() => Collection.Provider<IList, ProviderHavingAspect>(Lifetime.Scoped), Interfaces.Properties.Resources.DECORATING_NOT_SUPPORTED);
+            Assert.Throws<NotSupportedException>(() => Collection.Provider<IList, ProviderHavingAspect>(new object(), Lifetime.Scoped), Interfaces.Properties.Resources.DECORATING_NOT_SUPPORTED);
         }
 
         [TestCaseSource(nameof(Lifetimes))]

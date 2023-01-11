@@ -672,30 +672,34 @@ namespace Solti.Utils.DI.Tests
         [Test]
         public void Lifetime_ShouldBeNullChecked([ValueSource(nameof(Lifetimes))] Lifetime lifetime)
         {
-            Assert.Throws<ArgumentNullException>(() => lifetime.CreateFrom(null, null, typeof(Disposable), false).ToList());
-            Assert.Throws<ArgumentNullException>(() => lifetime.CreateFrom(typeof(IDisposable), null, (Type) null, false).ToList());
-            Assert.Throws<ArgumentNullException>(() => lifetime.CreateFrom(typeof(IDisposable), null, typeof(Disposable), null, false).ToList());
-            Assert.Throws<ArgumentNullException>(() => lifetime.CreateFrom(typeof(IDisposable), null, null, new object(), false).ToList());
-            Assert.Throws<ArgumentNullException>(() => lifetime.CreateFrom(null, null, typeof(Disposable), new object(), false).ToList());
-            Assert.Throws<ArgumentNullException>(() => lifetime.CreateFrom(typeof(IDisposable), null, (Expression<FactoryDelegate>) null, false).ToList());
-            Assert.Throws<ArgumentNullException>(() => lifetime.CreateFrom(null, null, (_, __) => new object(), false).ToList());
+            Assert.Throws<ArgumentNullException>(() => lifetime.CreateFrom(null, null, typeof(Disposable), ServiceOptions.Default).ToList());
+            Assert.Throws<ArgumentNullException>(() => lifetime.CreateFrom(typeof(IDisposable), null, (Type) null, ServiceOptions.Default).ToList());
+            Assert.Throws<ArgumentNullException>(() => lifetime.CreateFrom(typeof(IDisposable), null, typeof(Disposable), null).ToList());
+            Assert.Throws<ArgumentNullException>(() => lifetime.CreateFrom(typeof(IDisposable), null, typeof(Disposable), null, ServiceOptions.Default).ToList());
+            Assert.Throws<ArgumentNullException>(() => lifetime.CreateFrom(typeof(IDisposable), null, typeof(Disposable), new object(), null).ToList());
+            Assert.Throws<ArgumentNullException>(() => lifetime.CreateFrom(typeof(IDisposable), null, null, new object(), ServiceOptions.Default).ToList());
+            Assert.Throws<ArgumentNullException>(() => lifetime.CreateFrom(null, null, typeof(Disposable), new object(), ServiceOptions.Default).ToList());
+            Assert.Throws<ArgumentNullException>(() => lifetime.CreateFrom(typeof(IDisposable), null, (Expression<FactoryDelegate>) null, ServiceOptions.Default).ToList());
+            Assert.Throws<ArgumentNullException>(() => lifetime.CreateFrom(null, null, (_, __) => new object(), ServiceOptions.Default).ToList());
+            Assert.Throws<ArgumentNullException>(() => lifetime.CreateFrom(typeof(IDisposable), null, (_, __) => new object(), null).ToList());
         }
 
         [Test]
         public void Lifetime_ShouldBeNullChecked()
         {
-            Assert.Throws<ArgumentNullException>(() => new InstanceLifetime().CreateFrom(typeof(IDisposable), null, (Disposable) null).ToList());
-            Assert.Throws<ArgumentNullException>(() => new InstanceLifetime().CreateFrom(null, null, new Disposable()).ToList());
+            Assert.Throws<ArgumentNullException>(() => new InstanceLifetime().CreateFrom(typeof(IDisposable), null, (Disposable) null, ServiceOptions.Default).ToList());
+            Assert.Throws<ArgumentNullException>(() => new InstanceLifetime().CreateFrom(null, null, new Disposable(), ServiceOptions.Default).ToList());
+            Assert.Throws<ArgumentNullException>(() => new InstanceLifetime().CreateFrom(typeof(IDisposable), null, new Disposable(), null).ToList());
         }
 
         [Test]
         public void LifetimeBase_ShouldThrowNotSupportCreate()
         {
             LifetimeBase lifetime = new Mock<LifetimeBase>() { CallBase = true }.Object;
-            Assert.Throws<NotSupportedException>(() => lifetime.CreateFrom(typeof(IDisposable), null, new Disposable()));
-            Assert.Throws<NotSupportedException>(() => lifetime.CreateFrom(typeof(IDisposable), null, typeof(Disposable)));
-            Assert.Throws<NotSupportedException>(() => lifetime.CreateFrom(typeof(IDisposable), null, typeof(Disposable), new object(), false));
-            Assert.Throws<NotSupportedException>(() => lifetime.CreateFrom(typeof(IDisposable), null, (_, __) => new Disposable(false), false));
+            Assert.Throws<NotSupportedException>(() => lifetime.CreateFrom(typeof(IDisposable), null, new Disposable(), ServiceOptions.Default));
+            Assert.Throws<NotSupportedException>(() => lifetime.CreateFrom(typeof(IDisposable), null, typeof(Disposable), ServiceOptions.Default));
+            Assert.Throws<NotSupportedException>(() => lifetime.CreateFrom(typeof(IDisposable), null, typeof(Disposable), new object(), ServiceOptions.Default));
+            Assert.Throws<NotSupportedException>(() => lifetime.CreateFrom(typeof(IDisposable), null, (_, __) => new Disposable(false), ServiceOptions.Default));
             Assert.Throws<NotSupportedException>(() => lifetime.Using(new object()));
         }
     }
