@@ -159,6 +159,30 @@
   <h5 id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_CreateInstance_remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>To assign value to this property, invoke the <a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_Build_Solti_Utils_DI_Interfaces_IBuildContext_Solti_Utils_DI_Interfaces_IFactoryVisitor___">Build(IBuildContext, IFactoryVisitor[])</a> method.</p>
 </div>
+  <a id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_Decorators_" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.Decorators*"></a>
+  <h4 id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_Decorators" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.Decorators">Decorators</h4>
+  <div class="markdown level1 summary"><p>Bound decorators.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual IReadOnlyList&lt;Expression&lt;DecoratorDelegate&gt;&gt; Decorators { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1">IReadOnlyList</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1">Expression</a>&lt;<a class="xref" href="Solti.Utils.DI.Interfaces.DecoratorDelegate.html">DecoratorDelegate</a>&gt;&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   <a id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_Factory_" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.Factory*"></a>
   <h4 id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_Factory" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.Factory">Factory</h4>
   <div class="markdown level1 summary"><p>The (optional) factory of this service.</p>
@@ -309,30 +333,6 @@
   <h5 id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_Name_remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>A service is identified by its <a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_Interface">Interface</a> and <a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_Name">Name</a>.</p>
 </div>
-  <a id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_Proxies_" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.Proxies*"></a>
-  <h4 id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_Proxies" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.Proxies">Proxies</h4>
-  <div class="markdown level1 summary"><p>Proxies applied.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public virtual IReadOnlyList&lt;Expression&lt;ApplyProxyDelegate&gt;&gt; Proxies { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1">IReadOnlyList</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1">Expression</a>&lt;<a class="xref" href="Solti.Utils.DI.Interfaces.ApplyProxyDelegate.html">ApplyProxyDelegate</a>&gt;&gt;</td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
   <a id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_ResolveInstance_" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.ResolveInstance*"></a>
   <h4 id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_ResolveInstance" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.ResolveInstance">ResolveInstance</h4>
   <div class="markdown level1 summary"><p>Gets or creates a service instance.</p>
@@ -386,32 +386,6 @@
   </table>
   <h3 id="methods">Methods
   </h3>
-  <a id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_ApplyProxy_" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.ApplyProxy*"></a>
-  <h4 id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_ApplyProxy_System_Linq_Expressions_Expression_Solti_Utils_DI_Interfaces_ApplyProxyDelegate__" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.ApplyProxy(System.Linq.Expressions.Expression{Solti.Utils.DI.Interfaces.ApplyProxyDelegate})">ApplyProxy(Expression&lt;ApplyProxyDelegate&gt;)</h4>
-  <div class="markdown level1 summary"><p>If implemented, alters the service instantiation process in order to wrap the original service into a proxy.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public virtual void ApplyProxy(Expression&lt;ApplyProxyDelegate&gt; applyProxy)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1">Expression</a>&lt;<a class="xref" href="Solti.Utils.DI.Interfaces.ApplyProxyDelegate.html">ApplyProxyDelegate</a>&gt;</td>
-        <td><span class="parametername">applyProxy</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
   <a id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_Build_" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.Build*"></a>
   <h4 id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_Build_Solti_Utils_DI_Interfaces_IBuildContext_Solti_Utils_DI_Interfaces_IFactoryVisitor___" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.Build(Solti.Utils.DI.Interfaces.IBuildContext,Solti.Utils.DI.Interfaces.IFactoryVisitor[])">Build(IBuildContext, IFactoryVisitor[])</h4>
   <div class="markdown level1 summary"><p>Builds this entry applying the provided factory <code data-dev-comment-type="paramref" class="paramref">visitors</code>.</p>
@@ -493,6 +467,32 @@
     <tbody>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression">Expression</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_Decorate_" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.Decorate*"></a>
+  <h4 id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_Decorate_System_Linq_Expressions_Expression_Solti_Utils_DI_Interfaces_DecoratorDelegate__" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.Decorate(System.Linq.Expressions.Expression{Solti.Utils.DI.Interfaces.DecoratorDelegate})">Decorate(Expression&lt;DecoratorDelegate&gt;)</h4>
+  <div class="markdown level1 summary"><p>If implemented, alters the service instantiation process in order to wrap the original service into a proxy.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void Decorate(Expression&lt;DecoratorDelegate&gt; decorator)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1">Expression</a>&lt;<a class="xref" href="Solti.Utils.DI.Interfaces.DecoratorDelegate.html">DecoratorDelegate</a>&gt;</td>
+        <td><span class="parametername">decorator</span></td>
         <td></td>
       </tr>
     </tbody>

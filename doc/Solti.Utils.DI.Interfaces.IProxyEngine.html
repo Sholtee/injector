@@ -1,0 +1,201 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Interface IProxyEngine
+   | Injector </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Interface IProxyEngine
+   | Injector ">
+    <meta name="generator" content="docfx 2.59.3.0">
+    
+    <link rel="shortcut icon" href="icon.png">
+    <link rel="stylesheet" href="styles/docfx.vendor.css">
+    <link rel="stylesheet" href="styles/docfx.css">
+    <link rel="stylesheet" href="styles/main.css">
+    <meta property="docfx:navrel" content="toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        <div class="article row grid">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Solti.Utils.DI.Interfaces.IProxyEngine">
+  
+  
+  <h1 id="Solti_Utils_DI_Interfaces_IProxyEngine" data-uid="Solti.Utils.DI.Interfaces.IProxyEngine" class="text-break">Interface IProxyEngine
+  </h1>
+  <div class="markdown level0 summary"><p>Describes how to make a proxy engine compatible with this library.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Solti.Utils.DI.Interfaces.html">Solti.Utils.DI.Interfaces</a></h6>
+  <h6><strong>Assembly</strong>: Solti.Utils.DI.Interfaces.dll</h6>
+  <h5 id="Solti_Utils_DI_Interfaces_IProxyEngine_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public interface IProxyEngine</code></pre>
+  </div>
+  <h3 id="methods">Methods
+  </h3>
+  <a id="Solti_Utils_DI_Interfaces_IProxyEngine_CreateActivatorExpression_" data-uid="Solti.Utils.DI.Interfaces.IProxyEngine.CreateActivatorExpression*"></a>
+  <h4 id="Solti_Utils_DI_Interfaces_IProxyEngine_CreateActivatorExpression_System_Type_System_Linq_Expressions_Expression_System_Linq_Expressions_Expression_System_Linq_Expressions_Expression_" data-uid="Solti.Utils.DI.Interfaces.IProxyEngine.CreateActivatorExpression(System.Type,System.Linq.Expressions.Expression,System.Linq.Expressions.Expression,System.Linq.Expressions.Expression)">CreateActivatorExpression(Type, Expression, Expression, Expression)</h4>
+  <div class="markdown level1 summary"><p>Creates an expression that activates the proxy.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Expression CreateActivatorExpression(Type proxy, Expression injector, Expression target, Expression interceptorArray)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a></td>
+        <td><span class="parametername">proxy</span></td>
+        <td><p>The generated proxy type</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression">Expression</a></td>
+        <td><span class="parametername">injector</span></td>
+        <td><p>The injector to resolve dependencies</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression">Expression</a></td>
+        <td><span class="parametername">target</span></td>
+        <td><p>The target instance.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression">Expression</a></td>
+        <td><span class="parametername">interceptorArray</span></td>
+        <td><p>An array containing all the related <a class="xref" href="Solti.Utils.DI.Interfaces.IInterfaceInterceptor.html">IInterfaceInterceptor</a> instance.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression">Expression</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Solti_Utils_DI_Interfaces_IProxyEngine_CreateActivatorExpression_System_Type_System_Linq_Expressions_Expression_System_Linq_Expressions_Expression_System_Linq_Expressions_Expression__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>The returned expression should look like:</p>
+<pre><code>new MyProxy(target, interceptorArray)</code></pre>
+</div>
+  <a id="Solti_Utils_DI_Interfaces_IProxyEngine_CreateProxy_" data-uid="Solti.Utils.DI.Interfaces.IProxyEngine.CreateProxy*"></a>
+  <h4 id="Solti_Utils_DI_Interfaces_IProxyEngine_CreateProxy_System_Type_System_Type_" data-uid="Solti.Utils.DI.Interfaces.IProxyEngine.CreateProxy(System.Type,System.Type)">CreateProxy(Type, Type)</h4>
+  <div class="markdown level1 summary"><p>Creates a new proxy type against the given interfacce and target.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Type CreateProxy(Type iface, Type target)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a></td>
+        <td><span class="parametername">iface</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a></td>
+        <td><span class="parametername">target</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Solti_Utils_DI_Interfaces_IProxyEngine_CreateProxy_System_Type_System_Type__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Target may be either the interface itself or a class implementing the interface.</p>
+</div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="styles/docfx.js"></script>
+    <script type="text/javascript" src="styles/main.js"></script>
+  </body>
+</html>

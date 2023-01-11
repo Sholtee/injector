@@ -50,6 +50,10 @@
     <div class="level0"><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Object</a></div>
     <div class="level1"><span class="xref">ServiceOptions</span></div>
   </div>
+  <div class="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iequatable-1">IEquatable</a>&lt;<a class="xref" href="Solti.Utils.DI.Interfaces.ServiceOptions.html">ServiceOptions</a>&gt;</div>
+  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Solti.Utils.DI.Interfaces.html">Solti.Utils.DI.Interfaces</a></h6>
   <h6><strong>Assembly</strong>: Solti.Utils.DI.Interfaces.dll</h6>
   <h5 id="Solti_Utils_DI_Interfaces_ServiceOptions_syntax">Syntax</h5>
@@ -66,6 +70,31 @@
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public ServiceOptions()</code></pre>
   </div>
+  <a id="Solti_Utils_DI_Interfaces_ServiceOptions__ctor_" data-uid="Solti.Utils.DI.Interfaces.ServiceOptions.#ctor*"></a>
+  <h4 id="Solti_Utils_DI_Interfaces_ServiceOptions__ctor_Solti_Utils_DI_Interfaces_ServiceOptions_" data-uid="Solti.Utils.DI.Interfaces.ServiceOptions.#ctor(Solti.Utils.DI.Interfaces.ServiceOptions)">ServiceOptions(ServiceOptions)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected ServiceOptions(ServiceOptions original)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.ServiceOptions.html">ServiceOptions</a></td>
+        <td><span class="parametername">original</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   <h3 id="properties">Properties
   </h3>
   <a id="Solti_Utils_DI_Interfaces_ServiceOptions_Default_" data-uid="Solti.Utils.DI.Interfaces.ServiceOptions.Default*"></a>
@@ -88,6 +117,53 @@
     <tbody>
       <tr>
         <td><a class="xref" href="Solti.Utils.DI.Interfaces.ServiceOptions.html">ServiceOptions</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Solti_Utils_DI_Interfaces_ServiceOptions_EqualityContract_" data-uid="Solti.Utils.DI.Interfaces.ServiceOptions.EqualityContract*"></a>
+  <h4 id="Solti_Utils_DI_Interfaces_ServiceOptions_EqualityContract" data-uid="Solti.Utils.DI.Interfaces.ServiceOptions.EqualityContract">EqualityContract</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual Type EqualityContract { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Solti_Utils_DI_Interfaces_ServiceOptions_ProxyEngine_" data-uid="Solti.Utils.DI.Interfaces.ServiceOptions.ProxyEngine*"></a>
+  <h4 id="Solti_Utils_DI_Interfaces_ServiceOptions_ProxyEngine" data-uid="Solti.Utils.DI.Interfaces.ServiceOptions.ProxyEngine">ProxyEngine</h4>
+  <div class="markdown level1 summary"><p>The proxy engine to be used. Leave blank to use the default engine.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IProxyEngine ProxyEngine { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.IProxyEngine.html">IProxyEngine</a></td>
         <td></td>
       </tr>
     </tbody>
@@ -119,6 +195,293 @@
   <h5 id="Solti_Utils_DI_Interfaces_ServiceOptions_SupportAspects_remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>The default value for this property is <pre><code>true</code></pre></p>
 </div>
+  <h3 id="methods">Methods
+  </h3>
+  <a id="Solti_Utils_DI_Interfaces_ServiceOptions__Clone___" data-uid="Solti.Utils.DI.Interfaces.ServiceOptions.{Clone}$*"></a>
+  <h4 id="Solti_Utils_DI_Interfaces_ServiceOptions__Clone__" data-uid="Solti.Utils.DI.Interfaces.ServiceOptions.{Clone}$">&lt;Clone&gt;$()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual ServiceOptions &lt;Clone&gt;$()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.ServiceOptions.html">ServiceOptions</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Solti_Utils_DI_Interfaces_ServiceOptions_Equals_" data-uid="Solti.Utils.DI.Interfaces.ServiceOptions.Equals*"></a>
+  <h4 id="Solti_Utils_DI_Interfaces_ServiceOptions_Equals_Solti_Utils_DI_Interfaces_ServiceOptions_" data-uid="Solti.Utils.DI.Interfaces.ServiceOptions.Equals(Solti.Utils.DI.Interfaces.ServiceOptions)">Equals(ServiceOptions)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual bool Equals(ServiceOptions other)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.ServiceOptions.html">ServiceOptions</a></td>
+        <td><span class="parametername">other</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Solti_Utils_DI_Interfaces_ServiceOptions_Equals_" data-uid="Solti.Utils.DI.Interfaces.ServiceOptions.Equals*"></a>
+  <h4 id="Solti_Utils_DI_Interfaces_ServiceOptions_Equals_System_Object_" data-uid="Solti.Utils.DI.Interfaces.ServiceOptions.Equals(System.Object)">Equals(Object)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override bool Equals(object obj)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Object</a></td>
+        <td><span class="parametername">obj</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Solti_Utils_DI_Interfaces_ServiceOptions_GetHashCode_" data-uid="Solti.Utils.DI.Interfaces.ServiceOptions.GetHashCode*"></a>
+  <h4 id="Solti_Utils_DI_Interfaces_ServiceOptions_GetHashCode" data-uid="Solti.Utils.DI.Interfaces.ServiceOptions.GetHashCode">GetHashCode()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override int GetHashCode()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Solti_Utils_DI_Interfaces_ServiceOptions_PrintMembers_" data-uid="Solti.Utils.DI.Interfaces.ServiceOptions.PrintMembers*"></a>
+  <h4 id="Solti_Utils_DI_Interfaces_ServiceOptions_PrintMembers_System_Text_StringBuilder_" data-uid="Solti.Utils.DI.Interfaces.ServiceOptions.PrintMembers(System.Text.StringBuilder)">PrintMembers(StringBuilder)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual bool PrintMembers(StringBuilder builder)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.text.stringbuilder">StringBuilder</a></td>
+        <td><span class="parametername">builder</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Solti_Utils_DI_Interfaces_ServiceOptions_ToString_" data-uid="Solti.Utils.DI.Interfaces.ServiceOptions.ToString*"></a>
+  <h4 id="Solti_Utils_DI_Interfaces_ServiceOptions_ToString" data-uid="Solti.Utils.DI.Interfaces.ServiceOptions.ToString">ToString()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override string ToString()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="operators">Operators
+  </h3>
+  <a id="Solti_Utils_DI_Interfaces_ServiceOptions_op_Equality_" data-uid="Solti.Utils.DI.Interfaces.ServiceOptions.op_Equality*"></a>
+  <h4 id="Solti_Utils_DI_Interfaces_ServiceOptions_op_Equality_Solti_Utils_DI_Interfaces_ServiceOptions_Solti_Utils_DI_Interfaces_ServiceOptions_" data-uid="Solti.Utils.DI.Interfaces.ServiceOptions.op_Equality(Solti.Utils.DI.Interfaces.ServiceOptions,Solti.Utils.DI.Interfaces.ServiceOptions)">Equality(ServiceOptions, ServiceOptions)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool operator ==(ServiceOptions left, ServiceOptions right)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.ServiceOptions.html">ServiceOptions</a></td>
+        <td><span class="parametername">left</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.ServiceOptions.html">ServiceOptions</a></td>
+        <td><span class="parametername">right</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Solti_Utils_DI_Interfaces_ServiceOptions_op_Inequality_" data-uid="Solti.Utils.DI.Interfaces.ServiceOptions.op_Inequality*"></a>
+  <h4 id="Solti_Utils_DI_Interfaces_ServiceOptions_op_Inequality_Solti_Utils_DI_Interfaces_ServiceOptions_Solti_Utils_DI_Interfaces_ServiceOptions_" data-uid="Solti.Utils.DI.Interfaces.ServiceOptions.op_Inequality(Solti.Utils.DI.Interfaces.ServiceOptions,Solti.Utils.DI.Interfaces.ServiceOptions)">Inequality(ServiceOptions, ServiceOptions)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool operator !=(ServiceOptions left, ServiceOptions right)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.ServiceOptions.html">ServiceOptions</a></td>
+        <td><span class="parametername">left</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.ServiceOptions.html">ServiceOptions</a></td>
+        <td><span class="parametername">right</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iequatable-1">System.IEquatable&lt;T&gt;</a>
+  </div>
 </article>
           </div>
           
