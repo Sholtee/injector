@@ -67,15 +67,15 @@ references:
   commentId: Overload:Solti.Utils.DI.Interfaces.AbstractServiceEntry.#ctor
   fullName: Solti.Utils.DI.Interfaces.AbstractServiceEntry.AbstractServiceEntry
   nameWithType: AbstractServiceEntry.AbstractServiceEntry
-- uid: Solti.Utils.DI.Interfaces.AbstractServiceEntry.Build(Solti.Utils.DI.Interfaces.IBuildContext,Solti.Utils.DI.Interfaces.IFactoryVisitor[])
-  name: Build(IBuildContext, IFactoryVisitor[])
-  href: Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_Build_Solti_Utils_DI_Interfaces_IBuildContext_Solti_Utils_DI_Interfaces_IFactoryVisitor___
-  commentId: M:Solti.Utils.DI.Interfaces.AbstractServiceEntry.Build(Solti.Utils.DI.Interfaces.IBuildContext,Solti.Utils.DI.Interfaces.IFactoryVisitor[])
-  name.vb: Build(IBuildContext, IFactoryVisitor())
-  fullName: Solti.Utils.DI.Interfaces.AbstractServiceEntry.Build(Solti.Utils.DI.Interfaces.IBuildContext, Solti.Utils.DI.Interfaces.IFactoryVisitor[])
-  fullName.vb: Solti.Utils.DI.Interfaces.AbstractServiceEntry.Build(Solti.Utils.DI.Interfaces.IBuildContext, Solti.Utils.DI.Interfaces.IFactoryVisitor())
-  nameWithType: AbstractServiceEntry.Build(IBuildContext, IFactoryVisitor[])
-  nameWithType.vb: AbstractServiceEntry.Build(IBuildContext, IFactoryVisitor())
+- uid: Solti.Utils.DI.Interfaces.AbstractServiceEntry.Build(Solti.Utils.DI.Interfaces.IBuildContext,System.Collections.Generic.IReadOnlyList{Solti.Utils.DI.Interfaces.IFactoryVisitor})
+  name: Build(IBuildContext, IReadOnlyList<IFactoryVisitor>)
+  href: Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_Build_Solti_Utils_DI_Interfaces_IBuildContext_System_Collections_Generic_IReadOnlyList_Solti_Utils_DI_Interfaces_IFactoryVisitor__
+  commentId: M:Solti.Utils.DI.Interfaces.AbstractServiceEntry.Build(Solti.Utils.DI.Interfaces.IBuildContext,System.Collections.Generic.IReadOnlyList{Solti.Utils.DI.Interfaces.IFactoryVisitor})
+  name.vb: Build(IBuildContext, IReadOnlyList(Of IFactoryVisitor))
+  fullName: Solti.Utils.DI.Interfaces.AbstractServiceEntry.Build(Solti.Utils.DI.Interfaces.IBuildContext, System.Collections.Generic.IReadOnlyList<Solti.Utils.DI.Interfaces.IFactoryVisitor>)
+  fullName.vb: Solti.Utils.DI.Interfaces.AbstractServiceEntry.Build(Solti.Utils.DI.Interfaces.IBuildContext, System.Collections.Generic.IReadOnlyList(Of Solti.Utils.DI.Interfaces.IFactoryVisitor))
+  nameWithType: AbstractServiceEntry.Build(IBuildContext, IReadOnlyList<IFactoryVisitor>)
+  nameWithType.vb: AbstractServiceEntry.Build(IBuildContext, IReadOnlyList(Of IFactoryVisitor))
 - uid: Solti.Utils.DI.Interfaces.AbstractServiceEntry.Build*
   name: Build
   href: Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_Build_
@@ -2268,15 +2268,15 @@ references:
   commentId: Overload:Solti.Utils.DI.Internals.ProducibleServiceEntry.#ctor
   fullName: Solti.Utils.DI.Internals.ProducibleServiceEntry.ProducibleServiceEntry
   nameWithType: ProducibleServiceEntry.ProducibleServiceEntry
-- uid: Solti.Utils.DI.Internals.ProducibleServiceEntry.Build(Solti.Utils.DI.Interfaces.IBuildContext,Solti.Utils.DI.Interfaces.IFactoryVisitor[])
-  name: Build(IBuildContext, IFactoryVisitor[])
-  href: Solti.Utils.DI.Internals.ProducibleServiceEntry.html#Solti_Utils_DI_Internals_ProducibleServiceEntry_Build_Solti_Utils_DI_Interfaces_IBuildContext_Solti_Utils_DI_Interfaces_IFactoryVisitor___
-  commentId: M:Solti.Utils.DI.Internals.ProducibleServiceEntry.Build(Solti.Utils.DI.Interfaces.IBuildContext,Solti.Utils.DI.Interfaces.IFactoryVisitor[])
-  name.vb: Build(IBuildContext, IFactoryVisitor())
-  fullName: Solti.Utils.DI.Internals.ProducibleServiceEntry.Build(Solti.Utils.DI.Interfaces.IBuildContext, Solti.Utils.DI.Interfaces.IFactoryVisitor[])
-  fullName.vb: Solti.Utils.DI.Internals.ProducibleServiceEntry.Build(Solti.Utils.DI.Interfaces.IBuildContext, Solti.Utils.DI.Interfaces.IFactoryVisitor())
-  nameWithType: ProducibleServiceEntry.Build(IBuildContext, IFactoryVisitor[])
-  nameWithType.vb: ProducibleServiceEntry.Build(IBuildContext, IFactoryVisitor())
+- uid: Solti.Utils.DI.Internals.ProducibleServiceEntry.Build(Solti.Utils.DI.Interfaces.IBuildContext,System.Collections.Generic.IReadOnlyList{Solti.Utils.DI.Interfaces.IFactoryVisitor})
+  name: Build(IBuildContext, IReadOnlyList<IFactoryVisitor>)
+  href: Solti.Utils.DI.Internals.ProducibleServiceEntry.html#Solti_Utils_DI_Internals_ProducibleServiceEntry_Build_Solti_Utils_DI_Interfaces_IBuildContext_System_Collections_Generic_IReadOnlyList_Solti_Utils_DI_Interfaces_IFactoryVisitor__
+  commentId: M:Solti.Utils.DI.Internals.ProducibleServiceEntry.Build(Solti.Utils.DI.Interfaces.IBuildContext,System.Collections.Generic.IReadOnlyList{Solti.Utils.DI.Interfaces.IFactoryVisitor})
+  name.vb: Build(IBuildContext, IReadOnlyList(Of IFactoryVisitor))
+  fullName: Solti.Utils.DI.Internals.ProducibleServiceEntry.Build(Solti.Utils.DI.Interfaces.IBuildContext, System.Collections.Generic.IReadOnlyList<Solti.Utils.DI.Interfaces.IFactoryVisitor>)
+  fullName.vb: Solti.Utils.DI.Internals.ProducibleServiceEntry.Build(Solti.Utils.DI.Interfaces.IBuildContext, System.Collections.Generic.IReadOnlyList(Of Solti.Utils.DI.Interfaces.IFactoryVisitor))
+  nameWithType: ProducibleServiceEntry.Build(IBuildContext, IReadOnlyList<IFactoryVisitor>)
+  nameWithType.vb: ProducibleServiceEntry.Build(IBuildContext, IReadOnlyList(Of IFactoryVisitor))
 - uid: Solti.Utils.DI.Internals.ProducibleServiceEntry.Build*
   name: Build
   href: Solti.Utils.DI.Internals.ProducibleServiceEntry.html#Solti_Utils_DI_Internals_ProducibleServiceEntry_Build_

@@ -332,13 +332,13 @@
   <h3 id="methods">Methods
   </h3>
   <a id="Solti_Utils_DI_Internals_ProducibleServiceEntry_Build_" data-uid="Solti.Utils.DI.Internals.ProducibleServiceEntry.Build*"></a>
-  <h4 id="Solti_Utils_DI_Internals_ProducibleServiceEntry_Build_Solti_Utils_DI_Interfaces_IBuildContext_Solti_Utils_DI_Interfaces_IFactoryVisitor___" data-uid="Solti.Utils.DI.Internals.ProducibleServiceEntry.Build(Solti.Utils.DI.Interfaces.IBuildContext,Solti.Utils.DI.Interfaces.IFactoryVisitor[])">Build(IBuildContext, IFactoryVisitor[])</h4>
+  <h4 id="Solti_Utils_DI_Internals_ProducibleServiceEntry_Build_Solti_Utils_DI_Interfaces_IBuildContext_System_Collections_Generic_IReadOnlyList_Solti_Utils_DI_Interfaces_IFactoryVisitor__" data-uid="Solti.Utils.DI.Internals.ProducibleServiceEntry.Build(Solti.Utils.DI.Interfaces.IBuildContext,System.Collections.Generic.IReadOnlyList{Solti.Utils.DI.Interfaces.IFactoryVisitor})">Build(IBuildContext, IReadOnlyList&lt;IFactoryVisitor&gt;)</h4>
   <div class="markdown level1 summary"><p>Builds this entry applying the provided factory <code data-dev-comment-type="paramref" class="paramref">visitors</code>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override void Build(IBuildContext context, params IFactoryVisitor[] visitors)</code></pre>
+    <pre><code class="lang-csharp hljs">public override void Build(IBuildContext context, IReadOnlyList&lt;IFactoryVisitor&gt; visitors)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -356,14 +356,14 @@
         <td></td>
       </tr>
       <tr>
-        <td><a class="xref" href="Solti.Utils.DI.Interfaces.IFactoryVisitor.html">IFactoryVisitor</a>[]</td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1">IReadOnlyList</a>&lt;<a class="xref" href="Solti.Utils.DI.Interfaces.IFactoryVisitor.html">IFactoryVisitor</a>&gt;</td>
         <td><span class="parametername">visitors</span></td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_Build_Solti_Utils_DI_Interfaces_IBuildContext_Solti_Utils_DI_Interfaces_IFactoryVisitor___">AbstractServiceEntry.Build(IBuildContext, IFactoryVisitor[])</a></div>
+  <div><a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_Build_Solti_Utils_DI_Interfaces_IBuildContext_System_Collections_Generic_IReadOnlyList_Solti_Utils_DI_Interfaces_IFactoryVisitor__">AbstractServiceEntry.Build(IBuildContext, IReadOnlyList&lt;IFactoryVisitor&gt;)</a></div>
   <a id="Solti_Utils_DI_Internals_ProducibleServiceEntry_CreateLifetimeManager_" data-uid="Solti.Utils.DI.Internals.ProducibleServiceEntry.CreateLifetimeManager*"></a>
   <h4 id="Solti_Utils_DI_Internals_ProducibleServiceEntry_CreateLifetimeManager_System_Linq_Expressions_Expression_System_Linq_Expressions_ParameterExpression_System_Linq_Expressions_ParameterExpression_" data-uid="Solti.Utils.DI.Internals.ProducibleServiceEntry.CreateLifetimeManager(System.Linq.Expressions.Expression,System.Linq.Expressions.ParameterExpression,System.Linq.Expressions.ParameterExpression)">CreateLifetimeManager(Expression, ParameterExpression, ParameterExpression)</h4>
   <div class="markdown level1 summary"><p>Creates the lifetime manager expression.</p>
