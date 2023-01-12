@@ -128,7 +128,7 @@ namespace Solti.Utils.DI.Internals
         #endregion
 
         /// <inheritdoc/>
-        public override void Build(IBuildContext context, params IFactoryVisitor[] visitors)
+        public override void Build(IBuildContext context, IReadOnlyList<IFactoryVisitor> visitors)
         {
             if (context is null)
                 throw new ArgumentNullException(nameof(context));

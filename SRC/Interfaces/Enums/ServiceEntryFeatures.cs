@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Collections.Generic;
 
 namespace Solti.Utils.DI.Interfaces
 {
@@ -29,7 +30,7 @@ namespace Solti.Utils.DI.Interfaces
         Shared = 1 << 1,
 
         /// <summary>
-        /// Calling the <see cref="AbstractServiceEntry.Build(IBuildContext?, IFactoryVisitor[])"/> method is supported.
+        /// Calling the <see cref="AbstractServiceEntry.Build(IBuildContext, IReadOnlyList{IFactoryVisitor})"/> method is supported.
         /// </summary>
         SupportsBuild = 1 << 2,
 

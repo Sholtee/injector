@@ -55,7 +55,7 @@ namespace Solti.Utils.DI.Tests
                 .Setup(ctx => ctx.AssignSlot())
                 .Returns(0);
 
-            Collection.LastEntry.Build(mockBuildContext.Object, new MergeProxiesVisitor(), new ApplyLifetimeManagerVisitor());
+            Collection.LastEntry.Build(mockBuildContext.Object, new IFactoryVisitor[] { new MergeProxiesVisitor(), new ApplyLifetimeManagerVisitor() });
             Assert.That(Collection.LastEntry.CreateInstance(mockInjector.Object, out _), Is.InstanceOf<DecoratedImplementation_1>());
 
             mockCallback1.Verify(_ => _(It.IsAny<IInjector>(), typeof(IInterface_1), It.IsAny<IInterface_1>()), Times.Once);
@@ -92,7 +92,7 @@ namespace Solti.Utils.DI.Tests
                 .Setup(ctx => ctx.AssignSlot())
                 .Returns(0);
 
-            Collection.LastEntry.Build(mockBuildContext.Object, new MergeProxiesVisitor(), new ApplyLifetimeManagerVisitor());
+            Collection.LastEntry.Build(mockBuildContext.Object, new IFactoryVisitor[] { new MergeProxiesVisitor(), new ApplyLifetimeManagerVisitor() });
             Assert.That(Collection.LastEntry.CreateInstance(mockInjector.Object, out _), Is.InstanceOf<DecoratedImplementation_3<int>>());
 
             mockCallback.Verify(_ => _(It.IsAny<IInjector>(), typeof(IInterface_3<int>), It.IsAny<IInterface_3<int>>()), Times.Once);
@@ -151,7 +151,7 @@ namespace Solti.Utils.DI.Tests
                 .Setup(ctx => ctx.AssignSlot())
                 .Returns(0);
 
-            Collection.LastEntry.Build(mockBuildContext.Object, new MergeProxiesVisitor(), new ApplyLifetimeManagerVisitor());
+            Collection.LastEntry.Build(mockBuildContext.Object, new IFactoryVisitor[] { new MergeProxiesVisitor(), new ApplyLifetimeManagerVisitor() });
             object instance = Collection.LastEntry.CreateInstance(mockInjector.Object, out _);
 
             Assert.That(instance, Is.InstanceOf<AspectAggregator<IInterface_2, IInterface_2>>());
@@ -200,7 +200,7 @@ namespace Solti.Utils.DI.Tests
                 .Setup(ctx => ctx.AssignSlot())
                 .Returns(0);
 
-            Collection.LastEntry.Build(mockBuildContext.Object, new MergeProxiesVisitor(), new ApplyLifetimeManagerVisitor());
+            Collection.LastEntry.Build(mockBuildContext.Object, new IFactoryVisitor[] { new MergeProxiesVisitor(), new ApplyLifetimeManagerVisitor() });
             Assert.That(Collection.LastEntry.CreateInstance(mockInjector.Object, out _), Is.InstanceOf<DecoratedImplementation_1>());
         }
     }

@@ -98,7 +98,7 @@ namespace Solti.Utils.DI.Tests
                 .Provider<IList, ListProvider>(lifetime)
                 .LastEntry;
 
-            entry.Build(mockBuildContext.Object, new MergeProxiesVisitor(), new ApplyLifetimeManagerVisitor());
+            entry.Build(mockBuildContext.Object, new IFactoryVisitor[] { new MergeProxiesVisitor(), new ApplyLifetimeManagerVisitor() });
 
             var mockInjector = new Mock<IInstanceFactory>(MockBehavior.Strict);
             mockInjector
@@ -122,7 +122,7 @@ namespace Solti.Utils.DI.Tests
             AbstractServiceEntry entry = Collection
                 .Provider<IList<int>, GenericListProvider>(lifetime)
                 .LastEntry;
-            entry.Build(mockBuildContext.Object, new MergeProxiesVisitor(), new ApplyLifetimeManagerVisitor());
+            entry.Build(mockBuildContext.Object, new IFactoryVisitor[] { new MergeProxiesVisitor(), new ApplyLifetimeManagerVisitor() });
 
             var mockInjector = new Mock<IInstanceFactory>(MockBehavior.Strict);
             mockInjector

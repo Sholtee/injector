@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Solti.Utils.DI.Internals
@@ -27,7 +28,7 @@ namespace Solti.Utils.DI.Internals
             FLookup = lookup;
         }
 
-        public IFactoryVisitor[] Visitors { get; }
+        public IReadOnlyList<IFactoryVisitor> Visitors { get; }
 
         public IBuildContext BuildContext { get; } = null!;
 

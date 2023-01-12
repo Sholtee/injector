@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Collections.Generic;
 using System.Linq.Expressions;
 
 namespace Solti.Utils.DI.Internals
@@ -24,7 +25,7 @@ namespace Solti.Utils.DI.Internals
         {
         }
 
-        public override void Build(IBuildContext context, params IFactoryVisitor[] visitors)
+        public override void Build(IBuildContext context, IReadOnlyList<IFactoryVisitor> visitors)
         {
             base.Build(context, visitors);
 

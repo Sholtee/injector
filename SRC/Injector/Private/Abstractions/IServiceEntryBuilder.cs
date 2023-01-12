@@ -3,6 +3,8 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
+using System.Collections.Generic;
+
 namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
@@ -12,7 +14,7 @@ namespace Solti.Utils.DI.Internals
     /// </summary>
     internal interface IServiceEntryBuilder
     {
-        IFactoryVisitor[] Visitors { get; }
+        IReadOnlyList<IFactoryVisitor> Visitors { get; }
 
         IBuildContext BuildContext { get; }
 

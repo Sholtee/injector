@@ -3,6 +3,7 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
+using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace Solti.Utils.DI.Internals
@@ -31,7 +32,7 @@ namespace Solti.Utils.DI.Internals
             BuildContext = buildContext;
         }
 
-        public IFactoryVisitor[] Visitors { get; }
+        public IReadOnlyList<IFactoryVisitor> Visitors { get; }
 
         public IBuildContext BuildContext { get; }
 

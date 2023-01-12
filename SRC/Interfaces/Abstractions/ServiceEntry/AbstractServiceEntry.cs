@@ -92,13 +92,13 @@ namespace Solti.Utils.DI.Interfaces
         /// <summary>
         /// Unconditionaly creates a new service instance.
         /// </summary>
-        /// <remarks>To assign value to this property, invoke the <see cref="Build(IBuildContext?, IFactoryVisitor[])"/> method.</remarks>
+        /// <remarks>To assign value to this property, invoke the <see cref="Build(IBuildContext, IReadOnlyList{IFactoryVisitor})"/> method.</remarks>
         public CreateServiceDelegate? CreateInstance { get; protected set; }
 
         /// <summary>
         /// Gets or creates a service instance.
         /// </summary>
-        /// <remarks>To assign value to this property, invoke the <see cref="Build(IBuildContext?, IFactoryVisitor[])"/> method.</remarks>
+        /// <remarks>To assign value to this property, invoke the <see cref="Build(IBuildContext, IReadOnlyList{IFactoryVisitor})"/> method.</remarks>
         public ResolveServiceDelegate? ResolveInstance { get; protected set; }
 
         /// <summary>
@@ -120,7 +120,7 @@ namespace Solti.Utils.DI.Interfaces
         /// <summary>
         /// Builds this entry applying the provided factory <paramref name="visitors"/>.
         /// </summary>
-        public virtual void Build(IBuildContext context, params IFactoryVisitor[] visitors) => throw new NotSupportedException();
+        public virtual void Build(IBuildContext context, IReadOnlyList<IFactoryVisitor> visitors) => throw new NotSupportedException();
 
         /// <summary>
         /// Creates the lifetime manager expression.

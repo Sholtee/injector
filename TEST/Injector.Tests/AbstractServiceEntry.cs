@@ -39,7 +39,7 @@ namespace Solti.Utils.DI.Interfaces.Tests
         [Test]
         public void Build_ShouldNotBeSupportedByDefault()
         {
-            Assert.Throws<NotSupportedException>(() => Entry.Build(null));
+            Assert.Throws<NotSupportedException>(() => Entry.Build(null, null));
         }
 
         [Test]

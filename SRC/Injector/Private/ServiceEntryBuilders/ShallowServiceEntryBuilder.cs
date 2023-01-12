@@ -3,6 +3,7 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
+using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace Solti.Utils.DI.Internals
@@ -13,7 +14,7 @@ namespace Solti.Utils.DI.Internals
     {
         public ShallowServiceEntryBuilder(IBuildContext buildContext) => BuildContext = buildContext;
 
-        public IFactoryVisitor[] Visitors { get; } = new IFactoryVisitor[]
+        public IReadOnlyList<IFactoryVisitor> Visitors { get; } = new IFactoryVisitor[]
         {
             new MergeProxiesVisitor(),
             new ApplyLifetimeManagerVisitor()
