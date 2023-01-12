@@ -54,7 +54,7 @@ namespace Solti.Utils.DI.Internals
             IServiceEntryBuilder CreateBuilder(IServiceEntryLookup lookup, IBuildContext buildContext) => scopeOptions.ServiceResolutionMode switch
             {
                 ServiceResolutionMode.JIT => new ShallowServiceEntryBuilder(buildContext),
-                ServiceResolutionMode.AOT => new RecursivServiceEntryBuilder(lookup, buildContext, scopeOptions),
+                ServiceResolutionMode.AOT => new RecursiveServiceEntryBuilder(lookup, buildContext, scopeOptions),
                 _ => throw new NotSupportedException()
             };
         }

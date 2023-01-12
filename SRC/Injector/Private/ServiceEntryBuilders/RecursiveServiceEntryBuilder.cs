@@ -1,5 +1,5 @@
 ﻿/********************************************************************************
-* RecursivServiceEntryBuilder.cs                                                *
+* RecursiveServiceEntryBuilder.cs                                               *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
@@ -9,7 +9,7 @@ namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
 
-    internal sealed class RecursivServiceEntryBuilder : IServiceEntryBuilder
+    internal sealed class RecursiveServiceEntryBuilder : IServiceEntryBuilder
     {
         private readonly ServicePath FPath;
 
@@ -17,7 +17,7 @@ namespace Solti.Utils.DI.Internals
 
         private readonly IServiceEntryLookup FLookup;
 
-        public RecursivServiceEntryBuilder(IServiceEntryLookup lookup, IBuildContext buildContext, ScopeOptions options)
+        public RecursiveServiceEntryBuilder(IServiceEntryLookup lookup, IBuildContext buildContext, ScopeOptions options)
         {
             FOptions = options;
             FPath = new ServicePath();
