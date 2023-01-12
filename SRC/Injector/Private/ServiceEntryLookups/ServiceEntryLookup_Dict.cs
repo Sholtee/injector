@@ -16,7 +16,7 @@ namespace Solti.Utils.DI.Internals
         (
             IEnumerable<AbstractServiceEntry> entries,
             IDelegateCompiler compiler,
-            Func<IServiceEntryLookup, IBuildContext, IGraphBuilder> graphBuilderFactory
-        ) : base (entries, compiler, graphBuilderFactory) {}
+            Func<IServiceEntryLookup, IBuildContext, IServiceEntryBuilder> entryBuilderFactory
+        ) : base (entries, compiler, entryBuilderFactory) {}
     }
 }

@@ -24,22 +24,11 @@ namespace Solti.Utils.DI.Internals
         {
         }
 
-        public override void Build(IBuildContext? context, params IFactoryVisitor[] visitors)
+        public override void Build(IBuildContext context, params IFactoryVisitor[] visitors)
         {
             base.Build(context, visitors);
 
-            if (context is not null)
-                ResolveInstance = (IInstanceFactory factory) =>
-                {
-                    //
-                    // Inlining works against non-interface, non-virtual methods only
-                    //
-
-                    if (factory is Injector injector)
-                        return injector.GetOrCreateInstance(this, null);
-
-                    return factory.GetOrCreateInstance(this, null);
-                };
+            ResolveInstance = (IInstanceFactory factory) => factory.GetOrCreateInstance(this, null);
         }
 
         public override AbstractServiceEntry Specialize(params Type[] genericArguments)

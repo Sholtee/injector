@@ -17,7 +17,7 @@ namespace Solti.Utils.DI.Internals
     {
         protected volatile TBackend FEntryLookup = new();
         protected /*readonly*/ TBackend FGenericEntryLookup = new();
-        protected readonly IGraphBuilder FGraphBuilder;
+        protected readonly IServiceEntryBuilder FEntryBuilder;
         protected readonly IDelegateCompiler FCompiler;
         private readonly object FLock = new();
         private readonly bool FInitialized;
@@ -27,7 +27,7 @@ namespace Solti.Utils.DI.Internals
         (
             IEnumerable<AbstractServiceEntry> entries,
             IDelegateCompiler compiler,
-            Func<IServiceEntryLookup, IBuildContext, IGraphBuilder> graphBuilderFactory
+            Func<IServiceEntryLookup, IBuildContext, IServiceEntryBuilder> entryBuilderFactory
         )
         {
             FCompiler = compiler;
@@ -48,7 +48,7 @@ namespace Solti.Utils.DI.Internals
             // Now its safe to build (graph builder is able the resolve all the dependencies)
             //
 
-            FGraphBuilder = graphBuilderFactory(this, this);
+            FEntryBuilder = entryBuilderFactory(this, this);
 
             foreach (AbstractServiceEntry entry in entries)
             {
@@ -59,7 +59,7 @@ namespace Solti.Utils.DI.Internals
 
                 if (!entry.Interface.IsGenericTypeDefinition)
                 {
-                    FGraphBuilder.Build(entry);
+                    FEntryBuilder.Build(entry);
                 }
             }
 
@@ -86,7 +86,7 @@ namespace Solti.Utils.DI.Internals
                     // In initialization phase, requested services may be unbuilt.
                     //
 
-                    FGraphBuilder.Build(entry);
+                    FEntryBuilder.Build(entry);
             }
             else if (iface.IsConstructedGenericType)
             {
@@ -103,7 +103,7 @@ namespace Solti.Utils.DI.Internals
                         if (FGenericEntryLookup.TryGet(genericKey, out AbstractServiceEntry genericEntry))
                         {
                             entry = genericEntry.Specialize(iface.GenericTypeArguments);
-                            FGraphBuilder.Build(entry);
+                            FEntryBuilder.Build(entry);
 
                             FEntryLookup = FEntryLookup.With(entry);
                         }

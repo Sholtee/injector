@@ -24,26 +24,13 @@ namespace Solti.Utils.DI.Internals
         {
         }
 
-        public sealed override void Build(IBuildContext? context, params IFactoryVisitor[] visitors)
+        public sealed override void Build(IBuildContext context, params IFactoryVisitor[] visitors)
         {
             base.Build(context, visitors);
 
-            if (context is null)
-                return;
-
             int assignedSlot = context.AssignSlot();
 
-            ResolveInstance = (IInstanceFactory factory) =>
-            {
-                //
-                // Inlining works against non-interface, non-virtual methods only
-                //
-
-                if (factory is Injector injector)
-                    return injector.GetOrCreateInstance(this, assignedSlot);
-
-                return factory.GetOrCreateInstance(this, assignedSlot);
-            };
+            ResolveInstance = (IInstanceFactory factory) => factory.GetOrCreateInstance(this, assignedSlot);
         }
     }
 }

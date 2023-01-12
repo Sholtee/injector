@@ -10,11 +10,9 @@ namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
 
-    internal sealed class DotGraphBuilder: IGraphBuilder
+    internal sealed class DotGraphBuilder: IServiceEntryBuilder
     {
         private readonly ServicePath FPath = new();
-
-        private readonly DotGraphBuilderVisitor FVisitor;
 
         private readonly IServiceEntryLookup FLookup;
 
@@ -22,9 +20,16 @@ namespace Solti.Utils.DI.Internals
 
         public DotGraphBuilder(IServiceEntryLookup lookup)
         {
-            FVisitor = new DotGraphBuilderVisitor(this);
+            Visitors = new IFactoryVisitor[]
+            {
+                new DotGraphBuilderVisitor(this)
+            };
             FLookup = lookup;
         }
+
+        public IFactoryVisitor[] Visitors { get; }
+
+        public IBuildContext BuildContext { get; } = null!;
 
         public void Build(Type iface, string? name) => Build
         (
@@ -36,6 +41,7 @@ namespace Solti.Utils.DI.Internals
             ServiceNode child = new(entry);
 
             if (FPath.Last is not null)
+            {
                 Graph.Edges.Add
                 (
                     new ServiceEdge
@@ -44,6 +50,7 @@ namespace Solti.Utils.DI.Internals
                         child
                     )
                 );
+            }
 
             Graph.Nodes.Add(child);
 
@@ -59,15 +66,16 @@ namespace Solti.Utils.DI.Internals
                 foreach (ServiceEdge edge in Graph.Edges)
                 {
                     if (cref.Circle.Contains(edge.From.RelatedEntry) && cref.Circle.Contains(edge.To.RelatedEntry))
+                    {
                         edge.MarkRed();
+                    }
                 }
-
                 return;
             }
 
             try
             {
-                entry.Build(null, FVisitor);
+                Visitors.Single().Visit(entry.Factory!, null!);
             }
             finally
             {

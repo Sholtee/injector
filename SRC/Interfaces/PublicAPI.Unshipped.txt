@@ -165,7 +165,7 @@ static Solti.Utils.DI.Interfaces.ServiceEntryExtensions.IsFactory(this Solti.Uti
 static Solti.Utils.DI.Interfaces.ServiceEntryExtensions.IsInternal(this Solti.Utils.DI.Interfaces.AbstractServiceEntry! self) -> bool
 static Solti.Utils.DI.Interfaces.ServiceEntryExtensions.IsService(this Solti.Utils.DI.Interfaces.AbstractServiceEntry! self) -> bool
 static Solti.Utils.DI.Interfaces.ServiceOptions.Default.get -> Solti.Utils.DI.Interfaces.ServiceOptions!
-virtual Solti.Utils.DI.Interfaces.AbstractServiceEntry.Build(Solti.Utils.DI.Interfaces.IBuildContext? context, params Solti.Utils.DI.Interfaces.IFactoryVisitor![]! visitors) -> void
+virtual Solti.Utils.DI.Interfaces.AbstractServiceEntry.Build(Solti.Utils.DI.Interfaces.IBuildContext! context, params Solti.Utils.DI.Interfaces.IFactoryVisitor![]! visitors) -> void
 virtual Solti.Utils.DI.Interfaces.AbstractServiceEntry.CreateLifetimeManager(System.Linq.Expressions.Expression! getService, System.Linq.Expressions.ParameterExpression! scope, System.Linq.Expressions.ParameterExpression! disposable) -> System.Linq.Expressions.Expression!
 virtual Solti.Utils.DI.Interfaces.AbstractServiceEntry.Decorate(System.Linq.Expressions.Expression<Solti.Utils.DI.Interfaces.DecoratorDelegate!>! decorator) -> void
 virtual Solti.Utils.DI.Interfaces.AbstractServiceEntry.Decorators.get -> System.Collections.Generic.IReadOnlyList<System.Linq.Expressions.Expression<Solti.Utils.DI.Interfaces.DecoratorDelegate!>!>!

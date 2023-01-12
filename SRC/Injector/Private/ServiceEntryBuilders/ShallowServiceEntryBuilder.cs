@@ -1,5 +1,5 @@
 ﻿/********************************************************************************
-* ShallowDependencyGraphBuilder.cs                                              *
+* ShallowServiceEntryBuilder.cs                                                 *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
@@ -9,17 +9,17 @@ namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
 
-    internal sealed class ShallowDependencyGraphBuilder : IGraphBuilder
+    internal sealed class ShallowServiceEntryBuilder : IServiceEntryBuilder
     {
-        private readonly IBuildContext FBuildContext;
+        public ShallowServiceEntryBuilder(IBuildContext buildContext) => BuildContext = buildContext;
 
-        private static readonly IFactoryVisitor[] FVisitors = new IFactoryVisitor[]
+        public IFactoryVisitor[] Visitors { get; } = new IFactoryVisitor[]
         {
             new MergeProxiesVisitor(),
             new ApplyLifetimeManagerVisitor()
         };
 
-        public ShallowDependencyGraphBuilder(IBuildContext buildContext) => FBuildContext = buildContext;
+        public IBuildContext BuildContext { get; }
 
         public void Build(AbstractServiceEntry requested)
         {
@@ -28,7 +28,7 @@ namespace Solti.Utils.DI.Internals
             if (!requested.Features.HasFlag(ServiceEntryFeatures.SupportsBuild) || requested.State.HasFlag(ServiceEntryStates.Built))
                 return;
 
-            requested.Build(FBuildContext, FVisitors);
+            requested.Build(BuildContext, Visitors);
         }
     }
 }

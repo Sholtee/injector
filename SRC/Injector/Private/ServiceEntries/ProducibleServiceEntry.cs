@@ -128,8 +128,11 @@ namespace Solti.Utils.DI.Internals
         #endregion
 
         /// <inheritdoc/>
-        public override void Build(IBuildContext? context, params IFactoryVisitor[] visitors)
+        public override void Build(IBuildContext context, params IFactoryVisitor[] visitors)
         {
+            if (context is null)
+                throw new ArgumentNullException(nameof(context));
+
             if (visitors is null)
                 throw new ArgumentNullException(nameof(visitors));
 
@@ -140,21 +143,18 @@ namespace Solti.Utils.DI.Internals
             // Chain all the related delegates
             //
 
-            LambdaExpression factoryExpr = visitors.Aggregate<IFactoryVisitor, LambdaExpression>
+            Expression<CreateServiceDelegate> factoryExpr = (Expression<CreateServiceDelegate>) visitors.Aggregate<IFactoryVisitor, LambdaExpression>
             (
                 Factory,
                 (visited, visitor) => visitor.Visit(visited, this)
             );
 
-            if (context is not null)
-            {
-                Debug.WriteLine($"Created factory: {Environment.NewLine}{factoryExpr.GetDebugView()}");
-                context
-                    .Compiler
-                    .Compile((Expression<CreateServiceDelegate>) factoryExpr, factory => CreateInstance = factory);
+            Debug.WriteLine($"Created factory: {Environment.NewLine}{factoryExpr.GetDebugView()}");
+            context
+                .Compiler
+                .Compile(factoryExpr, factory => CreateInstance = factory);
 
-                State = (State | ServiceEntryStates.Built) & ~ServiceEntryStates.Validated;
-            }
+            State = (State | ServiceEntryStates.Built) & ~ServiceEntryStates.Validated;
         }
 
         /// <inheritdoc/>

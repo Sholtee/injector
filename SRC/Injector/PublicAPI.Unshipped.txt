@@ -3,7 +3,7 @@ override sealed Solti.Utils.DI.Internals.ProducibleServiceEntry.Decorators.get -
 override sealed Solti.Utils.DI.Internals.ProducibleServiceEntry.SetValidated() -> void
 override Solti.Utils.DI.Interfaces.AbstractServiceEntry.ToString() -> string! (forwarded, contained in Solti.Utils.DI.Interfaces)
 override Solti.Utils.DI.Internals.AspectAggregator<TInterface, TTarget>.Invoke(Solti.Utils.Proxy.InvocationContext! context) -> object?
-override Solti.Utils.DI.Internals.ProducibleServiceEntry.Build(Solti.Utils.DI.Interfaces.IBuildContext? context, params Solti.Utils.DI.Interfaces.IFactoryVisitor![]! visitors) -> void
+override Solti.Utils.DI.Internals.ProducibleServiceEntry.Build(Solti.Utils.DI.Interfaces.IBuildContext! context, params Solti.Utils.DI.Interfaces.IFactoryVisitor![]! visitors) -> void
 override Solti.Utils.DI.Internals.ProducibleServiceEntry.CreateLifetimeManager(System.Linq.Expressions.Expression! getService, System.Linq.Expressions.ParameterExpression! scope, System.Linq.Expressions.ParameterExpression! disposable) -> System.Linq.Expressions.Expression!
 override Solti.Utils.DI.Internals.ProducibleServiceEntry.Decorate(System.Linq.Expressions.Expression<Solti.Utils.DI.Interfaces.DecoratorDelegate!>! decorator) -> void
 override Solti.Utils.DI.Internals.ProducibleServiceEntry.Features.get -> Solti.Utils.DI.Interfaces.ServiceEntryFeatures
@@ -143,7 +143,7 @@ static Solti.Utils.DI.ScopeFactory.Create(Solti.Utils.DI.Interfaces.IServiceColl
 static Solti.Utils.DI.ScopeFactory.Create(System.Action<Solti.Utils.DI.Interfaces.IServiceCollection!>! registerServices, Solti.Utils.DI.Interfaces.ScopeOptions? scopeOptions = null, Solti.Utils.DI.Interfaces.ServiceOptions? serviceOptions = null, object? tag = null) -> Solti.Utils.DI.Interfaces.IScopeFactory!
 static Solti.Utils.DI.ServiceCollection.Create(Solti.Utils.DI.Interfaces.ServiceOptions? serviceOptions = null) -> Solti.Utils.DI.Interfaces.IServiceCollection!
 static Solti.Utils.DI.ServiceEntryAdvancedExtensions.IsInstance(this Solti.Utils.DI.Interfaces.AbstractServiceEntry! self) -> bool
-virtual Solti.Utils.DI.Interfaces.AbstractServiceEntry.Build(Solti.Utils.DI.Interfaces.IBuildContext? context, params Solti.Utils.DI.Interfaces.IFactoryVisitor![]! visitors) -> void (forwarded, contained in Solti.Utils.DI.Interfaces)
+virtual Solti.Utils.DI.Interfaces.AbstractServiceEntry.Build(Solti.Utils.DI.Interfaces.IBuildContext! context, params Solti.Utils.DI.Interfaces.IFactoryVisitor![]! visitors) -> void (forwarded, contained in Solti.Utils.DI.Interfaces)
 virtual Solti.Utils.DI.Interfaces.AbstractServiceEntry.CreateLifetimeManager(System.Linq.Expressions.Expression! getService, System.Linq.Expressions.ParameterExpression! scope, System.Linq.Expressions.ParameterExpression! disposable) -> System.Linq.Expressions.Expression! (forwarded, contained in Solti.Utils.DI.Interfaces)
 virtual Solti.Utils.DI.Interfaces.AbstractServiceEntry.Decorate(System.Linq.Expressions.Expression<Solti.Utils.DI.Interfaces.DecoratorDelegate!>! decorator) -> void (forwarded, contained in Solti.Utils.DI.Interfaces)
 virtual Solti.Utils.DI.Interfaces.AbstractServiceEntry.Decorators.get -> System.Collections.Generic.IReadOnlyList<System.Linq.Expressions.Expression<Solti.Utils.DI.Interfaces.DecoratorDelegate!>!>! (forwarded, contained in Solti.Utils.DI.Interfaces)

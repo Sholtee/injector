@@ -37,13 +37,13 @@ namespace Solti.Utils.DI.Internals
                 (
                     entries,
                     delegateCompiler,
-                    graphBuilderFactory: CreateGraphBuilder
+                    CreateBuilder
                 ),
                 BTREE => new ServiceEntryLookup_BTree
                 (
                     entries,
                     delegateCompiler,
-                    graphBuilderFactory: CreateGraphBuilder
+                    CreateBuilder
                 ),
                 _ => throw new NotSupportedException()
             };
@@ -51,10 +51,10 @@ namespace Solti.Utils.DI.Internals
             delegateCompiler.Compile();
             return result;
 
-            IGraphBuilder CreateGraphBuilder(IServiceEntryLookup lookup, IBuildContext buildContext) => scopeOptions.ServiceResolutionMode switch
+            IServiceEntryBuilder CreateBuilder(IServiceEntryLookup lookup, IBuildContext buildContext) => scopeOptions.ServiceResolutionMode switch
             {
-                ServiceResolutionMode.JIT => new ShallowDependencyGraphBuilder(buildContext),
-                ServiceResolutionMode.AOT => new RecursiveDependencyGraphBuilder(lookup, buildContext, scopeOptions),
+                ServiceResolutionMode.JIT => new ShallowServiceEntryBuilder(buildContext),
+                ServiceResolutionMode.AOT => new RecursivServiceEntryBuilder(lookup, buildContext, scopeOptions),
                 _ => throw new NotSupportedException()
             };
         }

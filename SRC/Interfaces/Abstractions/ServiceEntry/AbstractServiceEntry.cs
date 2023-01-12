@@ -120,8 +120,7 @@ namespace Solti.Utils.DI.Interfaces
         /// <summary>
         /// Builds this entry applying the provided factory <paramref name="visitors"/>.
         /// </summary>
-        /// <remarks>If the <paramref name="context"/> is omitted, only the <paramref name="visitors"/> will be applied.</remarks>
-        public virtual void Build(IBuildContext? context, params IFactoryVisitor[] visitors) => throw new NotSupportedException();
+        public virtual void Build(IBuildContext context, params IFactoryVisitor[] visitors) => throw new NotSupportedException();
 
         /// <summary>
         /// Creates the lifetime manager expression.

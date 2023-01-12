@@ -1,5 +1,5 @@
 ﻿/********************************************************************************
-* RecursiveDependencyGraphBuilder.cs                                            *
+* RecursivServiceEntryBuilder.cs                                                *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
@@ -9,31 +9,31 @@ namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
 
-    internal sealed class RecursiveDependencyGraphBuilder: IGraphBuilder
+    internal sealed class RecursivServiceEntryBuilder : IServiceEntryBuilder
     {
         private readonly ServicePath FPath;
 
         private readonly ScopeOptions FOptions;
 
-        private readonly IFactoryVisitor[] FVisitors;
-
-        private readonly IBuildContext FBuildContext;
-
         private readonly IServiceEntryLookup FLookup;
 
-        public RecursiveDependencyGraphBuilder(IServiceEntryLookup lookup, IBuildContext buildContext, ScopeOptions options)
+        public RecursivServiceEntryBuilder(IServiceEntryLookup lookup, IBuildContext buildContext, ScopeOptions options)
         {
             FOptions = options;
             FPath = new ServicePath();
             FLookup = lookup;
-            FVisitors = new IFactoryVisitor[]
+            Visitors = new IFactoryVisitor[]
             {
                 new MergeProxiesVisitor(),
                 new ApplyLifetimeManagerVisitor(),
                 new ServiceRequestReplacerVisitor(FLookup, FPath, options.SupportsServiceProvider)
             };
-            FBuildContext = buildContext;
+            BuildContext = buildContext;
         }
+
+        public IFactoryVisitor[] Visitors { get; }
+
+        public IBuildContext BuildContext { get; }
 
         public void Build(AbstractServiceEntry requested)
         {
@@ -61,7 +61,7 @@ namespace Solti.Utils.DI.Internals
             FPath.Push(requested);
             try
             {
-                requested.Build(FBuildContext, FVisitors);
+                requested.Build(BuildContext, Visitors);
             }
             finally
             {
