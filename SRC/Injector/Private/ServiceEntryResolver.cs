@@ -17,6 +17,7 @@ namespace Solti.Utils.DI.Internals
 
     internal sealed class ServiceEntryResolver : IServiceEntryResolver, IBuildContext
     {
+        #region Private
         private readonly IServiceEntryBuilder FEntryBuilder;
         private readonly IDelegateCompiler FCompiler;
         private readonly ConcurrentDictionary<object, AbstractServiceEntry?> FEntries = new();
@@ -58,6 +59,8 @@ namespace Solti.Utils.DI.Internals
             if (!FEntries.TryGetValue(genericKey, out AbstractServiceEntry? genericEntry))
                 return null;
 
+            Debug.Assert(genericEntry is not null, "Generic entry cannot be null here");
+
             //
             // The factory function may be invoked multiple times:
             // https://learn.microsoft.com/en-us/dotnet/api/system.collections.concurrent.concurrentdictionary-2.getoradd?view=net-7.0
@@ -76,7 +79,7 @@ namespace Solti.Utils.DI.Internals
             }
         }
 
-        public ServiceEntryResolver
+        private ServiceEntryResolver
         (
             IEnumerable<AbstractServiceEntry> entries,
             IDelegateCompiler compiler,
@@ -140,6 +143,7 @@ namespace Solti.Utils.DI.Internals
 
             FInitialized = true;
         }
+        #endregion
 
         #region IBuildContext
         public IDelegateCompiler Compiler => FCompiler;
@@ -168,7 +172,7 @@ namespace Solti.Utils.DI.Internals
 
         public IEnumerable<AbstractServiceEntry> ResolveMany(Type iface) => FNamedServices.GetOrAdd(iface, iface =>
         {
-            List<AbstractServiceEntry> entries = new();
+            List<AbstractServiceEntry> entries = new(FNames.Count);
 
             foreach (string? name in FNames)
             {
@@ -180,5 +184,16 @@ namespace Solti.Utils.DI.Internals
             return entries;
         });
         #endregion
+
+        public static ServiceEntryResolver Create(IEnumerable<AbstractServiceEntry> entries, ScopeOptions scopeOptions)
+        {
+            BatchedDelegateCompiler delegateCompiler = new();
+            delegateCompiler.BeginBatch();
+
+            ServiceEntryResolver result = new(entries, delegateCompiler, scopeOptions);
+
+            delegateCompiler.Compile();
+            return result;
+        }
     }
 }

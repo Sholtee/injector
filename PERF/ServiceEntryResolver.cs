@@ -33,7 +33,7 @@ namespace Solti.Utils.DI.Perf
         private Internals.ServiceEntryResolver Resolver { get; set; }
 
         [GlobalSetup(Target = nameof(Resolve))]
-        public void SetupResolve() => Resolver = ServiceEntryResolverBuilder.Build
+        public void SetupResolve() => Resolver = Internals.ServiceEntryResolver.Create
         (
             Interfaces
                 .Take(ServiceCount)

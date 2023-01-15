@@ -211,7 +211,7 @@ namespace Solti.Utils.DI.Internals
             ServiceCollection servicesCopy = new(services);
             RegisterBuiltInServices(servicesCopy);
 
-            ServiceEntryResolver = ServiceEntryResolverBuilder.Build(servicesCopy, options);  
+            ServiceEntryResolver = ServiceEntryResolver.Create(servicesCopy, options);  
             FSlots               = Array<object>.Create(ServiceEntryResolver.Slots);
             FLock                = new object();
             Options              = options;

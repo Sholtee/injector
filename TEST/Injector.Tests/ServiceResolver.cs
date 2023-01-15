@@ -36,7 +36,7 @@ namespace Solti.Utils.DI.Internals.Tests
                 .SetupGet(f => f.Super)
                 .Returns(mockSuperFactory.Object);
 
-            IServiceEntryResolver resolver = ServiceEntryResolverBuilder.Build(new[] { entry }, new ScopeOptions { ServiceResolutionMode = resolutionMode });
+            IServiceEntryResolver resolver = ServiceEntryResolver.Create(new[] { entry }, new ScopeOptions { ServiceResolutionMode = resolutionMode });
 
             AbstractServiceEntry grabed = resolver.Resolve(typeof(IList), name);
 
@@ -58,7 +58,7 @@ namespace Solti.Utils.DI.Internals.Tests
                 .SetupGet(f => f.Super)
                 .Returns((IInstanceFactory) null);
 
-            IServiceEntryResolver resolver = ServiceEntryResolverBuilder.Build(new[] { entry }, new ScopeOptions { ServiceResolutionMode = resolutionMode });
+            IServiceEntryResolver resolver = ServiceEntryResolver.Create(new[] { entry }, new ScopeOptions { ServiceResolutionMode = resolutionMode });
 
             AbstractServiceEntry grabed = resolver.Resolve(typeof(IList), name);
 
@@ -80,7 +80,7 @@ namespace Solti.Utils.DI.Internals.Tests
                 .SetupGet(f => f.Super)
                 .Returns((IInstanceFactory) null);
 
-            IServiceEntryResolver resolver = ServiceEntryResolverBuilder.Build(new[] { entry }, new ScopeOptions { ServiceResolutionMode = resolutionMode });
+            IServiceEntryResolver resolver = ServiceEntryResolver.Create(new[] { entry }, new ScopeOptions { ServiceResolutionMode = resolutionMode });
 
             AbstractServiceEntry grabed = resolver.Resolve(typeof(IList), name);
 
@@ -104,7 +104,7 @@ namespace Solti.Utils.DI.Internals.Tests
                 .SetupGet(f => f.Super)
                 .Returns((IInstanceFactory) null);
 
-            IServiceEntryResolver resolver = ServiceEntryResolverBuilder.Build(new[] { entry }, new ScopeOptions { ServiceResolutionMode = resolutionMode });
+            IServiceEntryResolver resolver = ServiceEntryResolver.Create(new[] { entry }, new ScopeOptions { ServiceResolutionMode = resolutionMode });
 
             AbstractServiceEntry grabed = resolver.Resolve(typeof(IList<int>), name);
 
@@ -134,7 +134,7 @@ namespace Solti.Utils.DI.Internals.Tests
                 .SetupGet(f => f.Super)
                 .Returns((IInstanceFactory) null);
 
-            IServiceEntryResolver resolver = ServiceEntryResolverBuilder.Build(new[] { entry1, entry2 }, new ScopeOptions { ServiceResolutionMode = resolutionMode });
+            IServiceEntryResolver resolver = ServiceEntryResolver.Create(new[] { entry1, entry2 }, new ScopeOptions { ServiceResolutionMode = resolutionMode });
 
             AbstractServiceEntry entry = resolver.Resolve(typeof(IList), 0.ToString());
 
@@ -164,7 +164,7 @@ namespace Solti.Utils.DI.Internals.Tests
                 .SetupGet(f => f.Super)
                 .Returns((IInstanceFactory) null);
 
-            IServiceEntryResolver resolver = ServiceEntryResolverBuilder.Build(new[] { entry1, entry2 }, new ScopeOptions { ServiceResolutionMode = resolutionMode });
+            IServiceEntryResolver resolver = ServiceEntryResolver.Create(new[] { entry1, entry2 }, new ScopeOptions { ServiceResolutionMode = resolutionMode });
 
             AbstractServiceEntry entry = resolver.Resolve(typeof(IList), name);
 
@@ -194,7 +194,7 @@ namespace Solti.Utils.DI.Internals.Tests
                 .SetupGet(f => f.Super)
                 .Returns((IInstanceFactory) null);
 
-            IServiceEntryResolver resolver = ServiceEntryResolverBuilder.Build(new[] { genericEntry, specializedEntry }, new ScopeOptions { ServiceResolutionMode = resolutionMode });
+            IServiceEntryResolver resolver = ServiceEntryResolver.Create(new[] { genericEntry, specializedEntry }, new ScopeOptions { ServiceResolutionMode = resolutionMode });
 
             AbstractServiceEntry entry = resolver.Resolve(typeof(IList<int>), name);
 
@@ -222,7 +222,7 @@ namespace Solti.Utils.DI.Internals.Tests
                 .SetupGet(f => f.Super)
                 .Returns((IInstanceFactory) null);
 
-            IServiceEntryResolver resolver = ServiceEntryResolverBuilder.Build(new[] { genericEntry }, new ScopeOptions { ServiceResolutionMode = resolutionMode });
+            IServiceEntryResolver resolver = ServiceEntryResolver.Create(new[] { genericEntry }, new ScopeOptions { ServiceResolutionMode = resolutionMode });
 
             AbstractServiceEntry entry = resolver.Resolve(typeof(IList<int>), name);
 
@@ -244,7 +244,7 @@ namespace Solti.Utils.DI.Internals.Tests
                 .SetupGet(f => f.Super)
                 .Returns((IInstanceFactory) null);
 
-            IServiceEntryResolver resolver = ServiceEntryResolverBuilder.Build(new[] { genericEntry }, new ScopeOptions { ServiceResolutionMode = resolutionMode });
+            IServiceEntryResolver resolver = ServiceEntryResolver.Create(new[] { genericEntry }, new ScopeOptions { ServiceResolutionMode = resolutionMode });
 
             AbstractServiceEntry entry = resolver.Resolve(typeof(IList<int>), name);
 
@@ -256,19 +256,19 @@ namespace Solti.Utils.DI.Internals.Tests
         [Test]
         public void Resolver_ShouldReturnNullOnNonRegisteredService([Values(ServiceResolutionMode.JIT, ServiceResolutionMode.AOT)] ServiceResolutionMode resolutionMode)
         {
-            Assert.IsNull(ServiceEntryResolverBuilder.Build(Array<AbstractServiceEntry>.Empty, new ScopeOptions { ServiceResolutionMode = resolutionMode }).Resolve(typeof(IList), null));
+            Assert.IsNull(ServiceEntryResolver.Create(Array<AbstractServiceEntry>.Empty, new ScopeOptions { ServiceResolutionMode = resolutionMode }).Resolve(typeof(IList), null));
         }
 
         [Test]
         public void Resolver_ShouldReturnNullOnNonRegisteredService_GenericCase([Values(ServiceResolutionMode.JIT, ServiceResolutionMode.AOT)] ServiceResolutionMode resolutionMode)
         {
-            Assert.IsNull(ServiceEntryResolverBuilder.Build(new AbstractServiceEntry[] { new ScopedServiceEntry(typeof(IList<object>), null, typeof(MyLiyt<object>), ServiceOptions.Default) }, new ScopeOptions { ServiceResolutionMode = resolutionMode }).Resolve(typeof(IList<int>), null));
+            Assert.IsNull(ServiceEntryResolver.Create(new AbstractServiceEntry[] { new ScopedServiceEntry(typeof(IList<object>), null, typeof(MyLiyt<object>), ServiceOptions.Default) }, new ScopeOptions { ServiceResolutionMode = resolutionMode }).Resolve(typeof(IList<int>), null));
         }
 
         [Test]
         public void Resolver_ShouldReturnNullOnNonRegisteredService_NamedCase([Values(ServiceResolutionMode.JIT, ServiceResolutionMode.AOT)] ServiceResolutionMode resolutionMode)
         {
-            Assert.IsNull(ServiceEntryResolverBuilder.Build(new AbstractServiceEntry[] { new ScopedServiceEntry(typeof(IList), 0.ToString(), typeof(MyLiyt<object>), ServiceOptions.Default) }, new ScopeOptions { ServiceResolutionMode = resolutionMode }).Resolve(typeof(IList), null));
+            Assert.IsNull(ServiceEntryResolver.Create(new AbstractServiceEntry[] { new ScopedServiceEntry(typeof(IList), 0.ToString(), typeof(MyLiyt<object>), ServiceOptions.Default) }, new ScopeOptions { ServiceResolutionMode = resolutionMode }).Resolve(typeof(IList), null));
         }
     }
 }
