@@ -22,9 +22,11 @@ namespace Solti.Utils.DI.Perf
             get
             {
                 yield return Lifetime.Transient;
+                /*
                 yield return Lifetime.Scoped;
                 yield return Lifetime.Singleton;
                 yield return Lifetime.Pooled.Using(new PoolConfig(Capacity: 4));
+                */
             }
         }
 

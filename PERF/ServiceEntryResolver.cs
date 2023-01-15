@@ -27,6 +27,9 @@ namespace Solti.Utils.DI.Perf
         [Params(1, 2, 5, 10, 20, 50, 80)]
         public int ServiceCount { get; set; }
 
+        [Params(null, "name")]
+        public string Name { get; set; }
+
         private Internals.ServiceEntryResolver Resolver { get; set; }
 
         [GlobalSetup(Target = nameof(Resolve))]
@@ -34,7 +37,7 @@ namespace Solti.Utils.DI.Perf
         (
             Interfaces
                 .Take(ServiceCount)
-                .Select(t => new TransientServiceEntry(t, null, static (_, _) => null, ServiceOptions.Default))
+                .Select(iface => new TransientServiceEntry(iface, Name, static (_, _) => null, ServiceOptions.Default))
                 .ToList(),
             new ScopeOptions 
             {
@@ -45,6 +48,6 @@ namespace Solti.Utils.DI.Perf
         private int Index;
 
         [Benchmark]
-        public object Resolve() => Resolver.Resolve(Interfaces[Index++ % ServiceCount], null);
+        public object Resolve() => Resolver.Resolve(Interfaces[Index++ % ServiceCount], Name);
     }
 }
