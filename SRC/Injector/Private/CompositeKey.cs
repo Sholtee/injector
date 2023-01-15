@@ -20,5 +20,9 @@ namespace Solti.Utils.DI.Internals
         public Type Interface { get; }
 
         public string? Name { get; }
+
+        public override int GetHashCode() => unchecked(Interface.GetHashCode() ^ (Name?.GetHashCode() ?? 0));
+
+        public override bool Equals(object obj) => obj is CompositeKey other && other.Interface == Interface && other.Name == Name;
     }
 }

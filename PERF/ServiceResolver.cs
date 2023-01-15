@@ -51,7 +51,7 @@ namespace Solti.Utils.DI.Perf
                 ),
                 scope = new(root, null);
 
-            ResolveImpl = scope.ServiceLookup.Get(typeof(IMyService), null).ResolveInstance;
+            ResolveImpl = scope.ServiceEntryResolver.Resolve(typeof(IMyService), null).ResolveInstance;
 
             Scope = scope;
         }

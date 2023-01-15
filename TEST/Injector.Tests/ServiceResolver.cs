@@ -19,7 +19,7 @@ namespace Solti.Utils.DI.Internals.Tests
     internal sealed class ServiceResolverTests
     {
         [Test]
-        public void Resolver_ShouldResolveFromSuperFactoryInCaseOfSharedEntry([Values(null, "cica")] string name, [Values(ServiceEntryLookupBuilder.DICT, ServiceEntryLookupBuilder.BTREE)] string engine, [Values(ServiceResolutionMode.JIT, ServiceResolutionMode.AOT)] ServiceResolutionMode resolutionMode)
+        public void Resolver_ShouldResolveFromSuperFactoryInCaseOfSharedEntry([Values(null, "cica")] string name, [Values(ServiceResolutionMode.JIT, ServiceResolutionMode.AOT)] ServiceResolutionMode resolutionMode)
         {
             SingletonServiceEntry entry = new(typeof(IList), name, (_, _) => new List<object>(), ServiceOptions.Default);
 
@@ -36,9 +36,9 @@ namespace Solti.Utils.DI.Internals.Tests
                 .SetupGet(f => f.Super)
                 .Returns(mockSuperFactory.Object);
 
-            IServiceEntryLookup lookup = ServiceEntryLookupBuilder.Build(new[] { entry }, new ScopeOptions { ServiceResolutionMode = resolutionMode, Engine = engine });
+            IServiceEntryResolver resolver = ServiceEntryResolverBuilder.Build(new[] { entry }, new ScopeOptions { ServiceResolutionMode = resolutionMode });
 
-            AbstractServiceEntry grabed = lookup.Get(typeof(IList), name);
+            AbstractServiceEntry grabed = resolver.Resolve(typeof(IList), name);
 
             Assert.DoesNotThrow(() => grabed.ResolveInstance(mockFactory.Object));
             mockSuperFactory
@@ -46,7 +46,7 @@ namespace Solti.Utils.DI.Internals.Tests
         }
 
         [Test]
-        public void Resolver_ShouldResolveFromCurrentFactoryInCaseOfNonSharedEntry1([Values(null, "cica")] string name, [Values(ServiceEntryLookupBuilder.DICT, ServiceEntryLookupBuilder.BTREE)] string engine, [Values(ServiceResolutionMode.JIT, ServiceResolutionMode.AOT)] ServiceResolutionMode resolutionMode)
+        public void Resolver_ShouldResolveFromCurrentFactoryInCaseOfNonSharedEntry1([Values(null, "cica")] string name, [Values(ServiceResolutionMode.JIT, ServiceResolutionMode.AOT)] ServiceResolutionMode resolutionMode)
         {
             ScopedServiceEntry entry = new(typeof(IList), name, (_, _) => new List<object>(), ServiceOptions.Default);
 
@@ -58,9 +58,9 @@ namespace Solti.Utils.DI.Internals.Tests
                 .SetupGet(f => f.Super)
                 .Returns((IInstanceFactory) null);
 
-            IServiceEntryLookup lookup = ServiceEntryLookupBuilder.Build(new[] { entry }, new ScopeOptions { ServiceResolutionMode = resolutionMode, Engine = engine });
+            IServiceEntryResolver resolver = ServiceEntryResolverBuilder.Build(new[] { entry }, new ScopeOptions { ServiceResolutionMode = resolutionMode });
 
-            AbstractServiceEntry grabed = lookup.Get(typeof(IList), name);
+            AbstractServiceEntry grabed = resolver.Resolve(typeof(IList), name);
 
             Assert.DoesNotThrow(() => grabed.ResolveInstance(mockFactory.Object));
             mockFactory
@@ -68,7 +68,7 @@ namespace Solti.Utils.DI.Internals.Tests
         }
 
         [Test]
-        public void Resolver_ShouldResolveFromCurrentFactoryInCaseOfNonSharedEntry2([Values(null, "cica")] string name, [Values(ServiceEntryLookupBuilder.DICT, ServiceEntryLookupBuilder.BTREE)] string engine, [Values(ServiceResolutionMode.JIT, ServiceResolutionMode.AOT)] ServiceResolutionMode resolutionMode)
+        public void Resolver_ShouldResolveFromCurrentFactoryInCaseOfNonSharedEntry2([Values(null, "cica")] string name, [Values(ServiceResolutionMode.JIT, ServiceResolutionMode.AOT)] ServiceResolutionMode resolutionMode)
         {
             TransientServiceEntry entry = new(typeof(IList), name, (_, _) => new List<object>(), ServiceOptions.Default);
 
@@ -80,9 +80,9 @@ namespace Solti.Utils.DI.Internals.Tests
                 .SetupGet(f => f.Super)
                 .Returns((IInstanceFactory) null);
 
-            IServiceEntryLookup lookup = ServiceEntryLookupBuilder.Build(new[] { entry }, new ScopeOptions { ServiceResolutionMode = resolutionMode, Engine = engine });
+            IServiceEntryResolver resolver = ServiceEntryResolverBuilder.Build(new[] { entry }, new ScopeOptions { ServiceResolutionMode = resolutionMode });
 
-            AbstractServiceEntry grabed = lookup.Get(typeof(IList), name);
+            AbstractServiceEntry grabed = resolver.Resolve(typeof(IList), name);
 
             Assert.DoesNotThrow(() => grabed.ResolveInstance(mockFactory.Object));
             mockFactory
@@ -92,7 +92,7 @@ namespace Solti.Utils.DI.Internals.Tests
         public class MyLiyt<T>: List<T> { }
 
         [Test]
-        public void Resolver_ShouldBeAssignedToTheProperSlot_GenericCase([Values(null, "cica")] string name, [Values(ServiceEntryLookupBuilder.DICT, ServiceEntryLookupBuilder.BTREE)] string engine, [Values(ServiceResolutionMode.JIT, ServiceResolutionMode.AOT)] ServiceResolutionMode resolutionMode)
+        public void Resolver_ShouldBeAssignedToTheProperSlot_GenericCase([Values(null, "cica")] string name, [Values(ServiceResolutionMode.JIT, ServiceResolutionMode.AOT)] ServiceResolutionMode resolutionMode)
         {
             ScopedServiceEntry entry = new(typeof(IList<>), name, typeof(MyLiyt<>), ServiceOptions.Default);
 
@@ -104,15 +104,15 @@ namespace Solti.Utils.DI.Internals.Tests
                 .SetupGet(f => f.Super)
                 .Returns((IInstanceFactory) null);
 
-            IServiceEntryLookup lookup = ServiceEntryLookupBuilder.Build(new[] { entry }, new ScopeOptions { ServiceResolutionMode = resolutionMode, Engine = engine });
+            IServiceEntryResolver resolver = ServiceEntryResolverBuilder.Build(new[] { entry }, new ScopeOptions { ServiceResolutionMode = resolutionMode });
 
-            AbstractServiceEntry grabed = lookup.Get(typeof(IList<int>), name);
+            AbstractServiceEntry grabed = resolver.Resolve(typeof(IList<int>), name);
 
             Assert.DoesNotThrow(() => grabed.ResolveInstance(mockFactory.Object));
             mockFactory
                 .Verify(f => f.GetOrCreateInstance(It.Is<ScopedServiceEntry>(e => e.Interface == typeof(IList<int>)), 0), Times.Once);
 
-            grabed = lookup.Get(typeof(IList<string>), name);
+            grabed = resolver.Resolve(typeof(IList<string>), name);
 
             Assert.DoesNotThrow(() => grabed.ResolveInstance(mockFactory.Object));
             mockFactory
@@ -120,7 +120,7 @@ namespace Solti.Utils.DI.Internals.Tests
         }
 
         [Test]
-        public void Resolver_ShouldBeAssignedToTheProperSlot_NamedCase([Values(ServiceEntryLookupBuilder.DICT, ServiceEntryLookupBuilder.BTREE)] string engine, [Values(ServiceResolutionMode.JIT, ServiceResolutionMode.AOT)] ServiceResolutionMode resolutionMode)
+        public void Resolver_ShouldBeAssignedToTheProperSlot_NamedCase([Values(ServiceResolutionMode.JIT, ServiceResolutionMode.AOT)] ServiceResolutionMode resolutionMode)
         {
             ScopedServiceEntry
                 entry1 = new(typeof(IList), 0.ToString(), typeof(MyLiyt<object>), ServiceOptions.Default),
@@ -134,15 +134,15 @@ namespace Solti.Utils.DI.Internals.Tests
                 .SetupGet(f => f.Super)
                 .Returns((IInstanceFactory) null);
 
-            IServiceEntryLookup lookup = ServiceEntryLookupBuilder.Build(new[] { entry1, entry2 }, new ScopeOptions { ServiceResolutionMode = resolutionMode, Engine = engine });
+            IServiceEntryResolver resolver = ServiceEntryResolverBuilder.Build(new[] { entry1, entry2 }, new ScopeOptions { ServiceResolutionMode = resolutionMode });
 
-            AbstractServiceEntry entry = lookup.Get(typeof(IList), 0.ToString());
+            AbstractServiceEntry entry = resolver.Resolve(typeof(IList), 0.ToString());
 
             Assert.DoesNotThrow(() => entry.ResolveInstance(mockFactory.Object));
             mockFactory
                 .Verify(f => f.GetOrCreateInstance(It.Is<ScopedServiceEntry>(e => e.Interface == typeof(IList) && e.Name == 0.ToString()), 0), Times.Once);
 
-            entry = lookup.Get(typeof(IList), 1.ToString());
+            entry = resolver.Resolve(typeof(IList), 1.ToString());
 
             Assert.DoesNotThrow(() => entry.ResolveInstance(mockFactory.Object));
             mockFactory
@@ -150,7 +150,7 @@ namespace Solti.Utils.DI.Internals.Tests
         }
 
         [Test]
-        public void Resolver_ShouldBeAssignedToTheProperSlot_RegularCase([Values(null, "cica")] string name, [Values(ServiceEntryLookupBuilder.DICT, ServiceEntryLookupBuilder.BTREE)] string engine, [Values(ServiceResolutionMode.JIT, ServiceResolutionMode.AOT)] ServiceResolutionMode resolutionMode)
+        public void Resolver_ShouldBeAssignedToTheProperSlot_RegularCase([Values(null, "cica")] string name, [Values(ServiceResolutionMode.JIT, ServiceResolutionMode.AOT)] ServiceResolutionMode resolutionMode)
         {
             ScopedServiceEntry
                 entry1 = new(typeof(IList), name, typeof(MyLiyt<object>), ServiceOptions.Default),
@@ -164,15 +164,15 @@ namespace Solti.Utils.DI.Internals.Tests
                 .SetupGet(f => f.Super)
                 .Returns((IInstanceFactory) null);
 
-            IServiceEntryLookup lookup = ServiceEntryLookupBuilder.Build(new[] { entry1, entry2 }, new ScopeOptions { ServiceResolutionMode = resolutionMode, Engine = engine });
+            IServiceEntryResolver resolver = ServiceEntryResolverBuilder.Build(new[] { entry1, entry2 }, new ScopeOptions { ServiceResolutionMode = resolutionMode });
 
-            AbstractServiceEntry entry = lookup.Get(typeof(IList), name);
+            AbstractServiceEntry entry = resolver.Resolve(typeof(IList), name);
 
             Assert.DoesNotThrow(() => entry.ResolveInstance(mockFactory.Object));
             mockFactory
                 .Verify(f => f.GetOrCreateInstance(It.Is<ScopedServiceEntry>(e => e.Interface == typeof(IList)), 0), Times.Once);
 
-            entry = lookup.Get(typeof(IDisposable), name);
+            entry = resolver.Resolve(typeof(IDisposable), name);
 
             Assert.DoesNotThrow(() => entry.ResolveInstance(mockFactory.Object));
             mockFactory
@@ -180,7 +180,7 @@ namespace Solti.Utils.DI.Internals.Tests
         }
 
         [Test]
-        public void Resolver_ShouldSpecializeOnlyIfTheConstructedGenericServiceCannotBeFound([Values(null, "cica")] string name, [Values(ServiceEntryLookupBuilder.DICT, ServiceEntryLookupBuilder.BTREE)] string engine, [Values(ServiceResolutionMode.JIT, ServiceResolutionMode.AOT)] ServiceResolutionMode resolutionMode)
+        public void Resolver_ShouldSpecializeOnlyIfTheConstructedGenericServiceCannotBeFound([Values(null, "cica")] string name, [Values(ServiceResolutionMode.JIT, ServiceResolutionMode.AOT)] ServiceResolutionMode resolutionMode)
         {
             TransientServiceEntry 
                 genericEntry = new(typeof(IList<>), name, typeof(MyLiyt<>), ServiceOptions.Default),
@@ -194,15 +194,15 @@ namespace Solti.Utils.DI.Internals.Tests
                 .SetupGet(f => f.Super)
                 .Returns((IInstanceFactory) null);
 
-            IServiceEntryLookup lookup = ServiceEntryLookupBuilder.Build(new[] { genericEntry, specializedEntry }, new ScopeOptions { ServiceResolutionMode = resolutionMode, Engine = engine });
+            IServiceEntryResolver resolver = ServiceEntryResolverBuilder.Build(new[] { genericEntry, specializedEntry }, new ScopeOptions { ServiceResolutionMode = resolutionMode });
 
-            AbstractServiceEntry entry = lookup.Get(typeof(IList<int>), name);
+            AbstractServiceEntry entry = resolver.Resolve(typeof(IList<int>), name);
 
             Assert.DoesNotThrow(() => entry.ResolveInstance(mockFactory.Object));
             mockFactory
                 .Verify(f => f.GetOrCreateInstance(specializedEntry, null), Times.Once);
 
-            entry = lookup.Get(typeof(IList<object>), name);
+            entry = resolver.Resolve(typeof(IList<object>), name);
 
             Assert.DoesNotThrow(() => entry.ResolveInstance(mockFactory.Object));
             mockFactory
@@ -210,7 +210,7 @@ namespace Solti.Utils.DI.Internals.Tests
         }
 
         [Test]
-        public void Resolver_ShouldSpecialize1([Values(null, "cica")] string name, [Values(ServiceEntryLookupBuilder.DICT, ServiceEntryLookupBuilder.BTREE)] string engine, [Values(ServiceResolutionMode.JIT, ServiceResolutionMode.AOT)] ServiceResolutionMode resolutionMode)
+        public void Resolver_ShouldSpecialize1([Values(null, "cica")] string name, [Values(ServiceResolutionMode.JIT, ServiceResolutionMode.AOT)] ServiceResolutionMode resolutionMode)
         {
             TransientServiceEntry genericEntry = new(typeof(IList<>), name, typeof(MyLiyt<>), ServiceOptions.Default);
 
@@ -222,9 +222,9 @@ namespace Solti.Utils.DI.Internals.Tests
                 .SetupGet(f => f.Super)
                 .Returns((IInstanceFactory) null);
 
-            IServiceEntryLookup lookup = ServiceEntryLookupBuilder.Build(new[] { genericEntry }, new ScopeOptions { ServiceResolutionMode = resolutionMode, Engine = engine });
+            IServiceEntryResolver resolver = ServiceEntryResolverBuilder.Build(new[] { genericEntry }, new ScopeOptions { ServiceResolutionMode = resolutionMode });
 
-            AbstractServiceEntry entry = lookup.Get(typeof(IList<int>), name);
+            AbstractServiceEntry entry = resolver.Resolve(typeof(IList<int>), name);
 
             Assert.DoesNotThrow(() => entry.ResolveInstance(mockFactory.Object));
             mockFactory
@@ -232,7 +232,7 @@ namespace Solti.Utils.DI.Internals.Tests
         }
 
         [Test]
-        public void Resolver_ShouldSpecialize2([Values(null, "cica")] string name, [Values(ServiceEntryLookupBuilder.DICT, ServiceEntryLookupBuilder.BTREE)] string engine, [Values(ServiceResolutionMode.JIT, ServiceResolutionMode.AOT)] ServiceResolutionMode resolutionMode)
+        public void Resolver_ShouldSpecialize2([Values(null, "cica")] string name, [Values(ServiceResolutionMode.JIT, ServiceResolutionMode.AOT)] ServiceResolutionMode resolutionMode)
         {
             ScopedServiceEntry genericEntry = new(typeof(IList<>), name, typeof(MyLiyt<>), ServiceOptions.Default);
 
@@ -244,9 +244,9 @@ namespace Solti.Utils.DI.Internals.Tests
                 .SetupGet(f => f.Super)
                 .Returns((IInstanceFactory) null);
 
-            IServiceEntryLookup lookup = ServiceEntryLookupBuilder.Build(new[] { genericEntry }, new ScopeOptions { ServiceResolutionMode = resolutionMode, Engine = engine });
+            IServiceEntryResolver resolver = ServiceEntryResolverBuilder.Build(new[] { genericEntry }, new ScopeOptions { ServiceResolutionMode = resolutionMode });
 
-            AbstractServiceEntry entry = lookup.Get(typeof(IList<int>), name);
+            AbstractServiceEntry entry = resolver.Resolve(typeof(IList<int>), name);
 
             Assert.DoesNotThrow(() => entry.ResolveInstance(mockFactory.Object));
             mockFactory
@@ -254,21 +254,21 @@ namespace Solti.Utils.DI.Internals.Tests
         }
 
         [Test]
-        public void Resolver_ShouldReturnNullOnNonRegisteredService([Values(ServiceEntryLookupBuilder.DICT, ServiceEntryLookupBuilder.BTREE)] string engine, [Values(ServiceResolutionMode.JIT, ServiceResolutionMode.AOT)] ServiceResolutionMode resolutionMode)
+        public void Resolver_ShouldReturnNullOnNonRegisteredService([Values(ServiceResolutionMode.JIT, ServiceResolutionMode.AOT)] ServiceResolutionMode resolutionMode)
         {
-            Assert.IsNull(ServiceEntryLookupBuilder.Build(Array<AbstractServiceEntry>.Empty, new ScopeOptions { ServiceResolutionMode = resolutionMode, Engine = engine }).Get(typeof(IList), null));
+            Assert.IsNull(ServiceEntryResolverBuilder.Build(Array<AbstractServiceEntry>.Empty, new ScopeOptions { ServiceResolutionMode = resolutionMode }).Resolve(typeof(IList), null));
         }
 
         [Test]
-        public void Resolver_ShouldReturnNullOnNonRegisteredService_GenericCase([Values(ServiceEntryLookupBuilder.DICT, ServiceEntryLookupBuilder.BTREE)] string engine, [Values(ServiceResolutionMode.JIT, ServiceResolutionMode.AOT)] ServiceResolutionMode resolutionMode)
+        public void Resolver_ShouldReturnNullOnNonRegisteredService_GenericCase([Values(ServiceResolutionMode.JIT, ServiceResolutionMode.AOT)] ServiceResolutionMode resolutionMode)
         {
-            Assert.IsNull(ServiceEntryLookupBuilder.Build(new AbstractServiceEntry[] { new ScopedServiceEntry(typeof(IList<object>), null, typeof(MyLiyt<object>), ServiceOptions.Default) }, new ScopeOptions { ServiceResolutionMode = resolutionMode, Engine = engine }).Get(typeof(IList<int>), null));
+            Assert.IsNull(ServiceEntryResolverBuilder.Build(new AbstractServiceEntry[] { new ScopedServiceEntry(typeof(IList<object>), null, typeof(MyLiyt<object>), ServiceOptions.Default) }, new ScopeOptions { ServiceResolutionMode = resolutionMode }).Resolve(typeof(IList<int>), null));
         }
 
         [Test]
-        public void Resolver_ShouldReturnNullOnNonRegisteredService_NamedCase([Values(ServiceEntryLookupBuilder.DICT, ServiceEntryLookupBuilder.BTREE)] string engine, [Values(ServiceResolutionMode.JIT, ServiceResolutionMode.AOT)] ServiceResolutionMode resolutionMode)
+        public void Resolver_ShouldReturnNullOnNonRegisteredService_NamedCase([Values(ServiceResolutionMode.JIT, ServiceResolutionMode.AOT)] ServiceResolutionMode resolutionMode)
         {
-            Assert.IsNull(ServiceEntryLookupBuilder.Build(new AbstractServiceEntry[] { new ScopedServiceEntry(typeof(IList), 0.ToString(), typeof(MyLiyt<object>), ServiceOptions.Default) }, new ScopeOptions { ServiceResolutionMode = resolutionMode, Engine = engine }).Get(typeof(IList), null));
+            Assert.IsNull(ServiceEntryResolverBuilder.Build(new AbstractServiceEntry[] { new ScopedServiceEntry(typeof(IList), 0.ToString(), typeof(MyLiyt<object>), ServiceOptions.Default) }, new ScopeOptions { ServiceResolutionMode = resolutionMode }).Resolve(typeof(IList), null));
         }
     }
 }

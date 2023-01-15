@@ -14,7 +14,7 @@ namespace Solti.Utils.DI.Internals
 
     internal sealed class ServiceCollection : IModifiedServiceCollection, IReadOnlyCollection<AbstractServiceEntry>
     {
-        private readonly HashSet<AbstractServiceEntry> FUnderlyingCollection = new(ServiceIdComparer.Instance);
+        private readonly HashSet<AbstractServiceEntry> FUnderlyingCollection = new(ServiceIdComparer<AbstractServiceEntry>.Instance);
         private AbstractServiceEntry? FLastEntry;
 
         public void Add(AbstractServiceEntry item)

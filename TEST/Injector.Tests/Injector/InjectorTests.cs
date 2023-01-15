@@ -49,15 +49,6 @@ namespace Solti.Utils.DI.Tests
             }
         }
 
-        public static IEnumerable<string> Engines
-        {
-            get
-            {
-                yield return ServiceEntryLookupBuilder.BTREE;
-                yield return ServiceEntryLookupBuilder.DICT;
-            }
-        }
-
         public static IEnumerable<ServiceResolutionMode> ResolutionModes
         {
             get
@@ -263,7 +254,7 @@ namespace Solti.Utils.DI.Tests
         }
 
         [Test]
-        public void Ctor_ShouldThrowOnOverriddenService([ValueSource(nameof(Engines))] string engine, [ValueSource(nameof(ResolutionModes))] ServiceResolutionMode resolutionMode) =>
-            Assert.Throws<ServiceAlreadyRegisteredException>(() => ScopeFactory.Create(svcs => svcs.Add(new InstanceServiceEntry(typeof(IInjector), null, new Mock<IInjector>().Object, ServiceOptions.Default)), new ScopeOptions { Engine = engine, ServiceResolutionMode = resolutionMode }), Resources.SERVICE_ALREADY_REGISTERED);
+        public void Ctor_ShouldThrowOnOverriddenService([ValueSource(nameof(ResolutionModes))] ServiceResolutionMode resolutionMode) =>
+            Assert.Throws<ServiceAlreadyRegisteredException>(() => ScopeFactory.Create(svcs => svcs.Add(new InstanceServiceEntry(typeof(IInjector), null, new Mock<IInjector>().Object, ServiceOptions.Default)), new ScopeOptions { ServiceResolutionMode = resolutionMode }), Resources.SERVICE_ALREADY_REGISTERED);
     }
 }

@@ -1,10 +1,9 @@
 ﻿/********************************************************************************
-* ServiceEntryLookup.cs                                                         *
+* ServiceEntryResolver.cs                                                       *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
-using System.Collections.Generic;
 using System.Linq;
 
 using BenchmarkDotNet.Attributes;
@@ -17,7 +16,7 @@ namespace Solti.Utils.DI.Perf
 
     [MemoryDiagnoser]
     [SimpleJob(RunStrategy.Throughput, invocationCount: 10000000)]
-    public class ServiceEntryLookup
+    public class ServiceEntryResolver
     {
         public static Type[] Interfaces { get; } = typeof(object)
             .Assembly
@@ -28,22 +27,10 @@ namespace Solti.Utils.DI.Perf
         [Params(1, 2, 5, 10, 20, 50, 80)]
         public int ServiceCount { get; set; }
 
-        public static IEnumerable<string> Engines
-        {
-            get
-            {
-                yield return ServiceEntryLookupBuilder.DICT;
-                yield return ServiceEntryLookupBuilder.BTREE;
-            }
-        }
-
-        [ParamsSource(nameof(Engines))]
-        public string Engine { get; set; }
-
-        private IServiceEntryLookup Lookup { get; set; }
+        private Internals.ServiceEntryResolver Resolver { get; set; }
 
         [GlobalSetup(Target = nameof(Resolve))]
-        public void SetupResolve() => Lookup = ServiceEntryLookupBuilder.Build
+        public void SetupResolve() => Resolver = ServiceEntryResolverBuilder.Build
         (
             Interfaces
                 .Take(ServiceCount)
@@ -51,14 +38,13 @@ namespace Solti.Utils.DI.Perf
                 .ToList(),
             new ScopeOptions 
             {
-                ServiceResolutionMode = ServiceResolutionMode.JIT,
-                Engine = Engine
+                ServiceResolutionMode = ServiceResolutionMode.JIT
             }
         );
 
         private int Index;
 
         [Benchmark]
-        public object Resolve() => Lookup.Get(Interfaces[Index++ % ServiceCount], null);
+        public object Resolve() => Resolver.Resolve(Interfaces[Index++ % ServiceCount], null);
     }
 }

@@ -90,8 +90,6 @@ Solti.Utils.DI.Interfaces.RequestNotAllowedException.RequestNotAllowedException(
 Solti.Utils.DI.Interfaces.RequestNotAllowedException.RequestNotAllowedException(string! message, System.Exception! innerException) -> void
 Solti.Utils.DI.Interfaces.ResolveServiceDelegate
 Solti.Utils.DI.Interfaces.ScopeOptions
-Solti.Utils.DI.Interfaces.ScopeOptions.Engine.get -> string?
-Solti.Utils.DI.Interfaces.ScopeOptions.Engine.init -> void
 Solti.Utils.DI.Interfaces.ScopeOptions.ServiceResolutionMode.get -> Solti.Utils.DI.Interfaces.ServiceResolutionMode
 Solti.Utils.DI.Interfaces.ScopeOptions.ServiceResolutionMode.init -> void
 Solti.Utils.DI.Interfaces.ScopeOptions.StrictDI.get -> bool
