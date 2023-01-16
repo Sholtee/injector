@@ -156,7 +156,7 @@ namespace Solti.Utils.DI.Internals
 
         public AbstractServiceEntry? Resolve(Type iface, string? name)
         {
-            Debug.Assert(!iface.IsGenericTypeDefinition, "Only specialized types can be resolved");
+            Debug.Assert(!iface.IsGenericTypeDefinition, "Open generic types cannot be resolved");
 
             AbstractServiceEntry? entry = FEntries.GetOrAdd(GetKey(iface, name), FValueFactory);
             if (entry is not null && !FInitialized)
