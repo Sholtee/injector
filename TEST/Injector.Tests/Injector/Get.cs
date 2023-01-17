@@ -229,6 +229,26 @@ namespace Solti.Utils.DI.Tests
             }
         }
 
+        [Test]
+        public void Injector_GetByProvider_ShouldThrowIfTheProviderReturnsNull([ValueSource(nameof(Lifetimes))] Lifetime lifetime, [Values(ServiceResolutionMode.JIT, ServiceResolutionMode.AOT)] ServiceResolutionMode resolutionMode)
+        {
+            Root = ScopeFactory.Create
+            (
+                svcs => svcs.Provider<IInterface_1, ServiceProviderReturningNull>(lifetime),
+                new ScopeOptions { ServiceResolutionMode = resolutionMode }
+            );
+
+            using (IInjector injector = Root.CreateScope())
+            {
+                Assert.Throws<InvalidOperationException>(() => injector.Get<IInterface_1>(), Resources.IS_NULL);
+            }
+        }
+
+        private sealed class ServiceProviderReturningNull : IServiceProvider
+        {
+            public object GetService(Type serviceType) => null;
+        }
+
         private sealed class CdepProvider : IServiceProvider 
         {
             public CdepProvider(IInterface_4 dep) { }
@@ -268,6 +288,21 @@ namespace Solti.Utils.DI.Tests
             {
                 Assert.Throws<CircularReferenceException>(() => injector.Get<IInterface_4>(), string.Join(" -> ", typeof(IInterface_4), typeof(IInterface_5), typeof(IInterface_4)));
                 Assert.Throws<CircularReferenceException>(() => injector.Get<IInterface_5>(), string.Join(" -> ", typeof(IInterface_5), typeof(IInterface_4), typeof(IInterface_5)));
+            }
+        }
+
+        [Test]
+        public void Injector_GetByFactory_ShouldThrowIfTheFactoryReturnsNull([ValueSource(nameof(Lifetimes))] Lifetime lifetime, [Values(ServiceResolutionMode.JIT, ServiceResolutionMode.AOT)] ServiceResolutionMode resolutionMode)
+        {
+            Root = ScopeFactory.Create
+            (
+                svcs => svcs.Factory<IInterface_1>(injector => (IInterface_1) null, lifetime),
+                new ScopeOptions { ServiceResolutionMode = resolutionMode }
+            );
+
+            using (IInjector injector = Root.CreateScope())
+            {
+                Assert.Throws<InvalidOperationException>(() => injector.Get<IInterface_1>(), Resources.IS_NULL);
             }
         }
 
