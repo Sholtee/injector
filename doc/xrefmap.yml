@@ -878,6 +878,18 @@ references:
   commentId: Overload:Solti.Utils.DI.Interfaces.IInvocationContext.InterfaceMethod
   fullName: Solti.Utils.DI.Interfaces.IInvocationContext.InterfaceMethod
   nameWithType: IInvocationContext.InterfaceMethod
+- uid: Solti.Utils.DI.Interfaces.IInvocationContext.ProxyInstance
+  name: ProxyInstance
+  href: Solti.Utils.DI.Interfaces.IInvocationContext.html#Solti_Utils_DI_Interfaces_IInvocationContext_ProxyInstance
+  commentId: P:Solti.Utils.DI.Interfaces.IInvocationContext.ProxyInstance
+  fullName: Solti.Utils.DI.Interfaces.IInvocationContext.ProxyInstance
+  nameWithType: IInvocationContext.ProxyInstance
+- uid: Solti.Utils.DI.Interfaces.IInvocationContext.ProxyInstance*
+  name: ProxyInstance
+  href: Solti.Utils.DI.Interfaces.IInvocationContext.html#Solti_Utils_DI_Interfaces_IInvocationContext_ProxyInstance_
+  commentId: Overload:Solti.Utils.DI.Interfaces.IInvocationContext.ProxyInstance
+  fullName: Solti.Utils.DI.Interfaces.IInvocationContext.ProxyInstance
+  nameWithType: IInvocationContext.ProxyInstance
 - uid: Solti.Utils.DI.Interfaces.IInvocationContext.TargeteMethod
   name: TargeteMethod
   href: Solti.Utils.DI.Interfaces.IInvocationContext.html#Solti_Utils_DI_Interfaces_IInvocationContext_TargeteMethod
