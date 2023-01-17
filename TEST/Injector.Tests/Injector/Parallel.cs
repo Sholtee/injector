@@ -30,7 +30,6 @@ namespace Solti.Utils.DI.Tests
             [ValueSource(nameof(Lifetimes))] Lifetime l1,
             [ValueSource(nameof(Lifetimes))] Lifetime l2,
             [ValueSource(nameof(Lifetimes))] Lifetime l3,
-            [ValueSource(nameof(Engines))] string engine,
             [ValueSource(nameof(ResolutionModes))] ServiceResolutionMode resolutionMode) 
         {
             Root = ScopeFactory.Create
@@ -39,7 +38,7 @@ namespace Solti.Utils.DI.Tests
                     .Service(typeof(IList<>), typeof(MyList<>), l1)
                     .Service<IInterface_7<IList<object>>, Implementation_7_TInterface_Dependant<IList<object>>>(l2)
                     .Service<IInterface_7<IInterface_7<IList<object>>>, Implementation_7_TInterface_Dependant<IInterface_7<IList<object>>>>(l3),
-                new ScopeOptions { Engine = engine, ServiceResolutionMode = resolutionMode }
+                new ScopeOptions { ServiceResolutionMode = resolutionMode }
             );
 
             Assert.DoesNotThrow(() => Task.WaitAll
@@ -62,7 +61,6 @@ namespace Solti.Utils.DI.Tests
             [ValueSource(nameof(Lifetimes))] Lifetime l1,
             [ValueSource(nameof(Lifetimes))] Lifetime l2,
             [ValueSource(nameof(Lifetimes))] Lifetime l3,
-            [ValueSource(nameof(Engines))] string engine,
             [ValueSource(nameof(ResolutionModes))] ServiceResolutionMode resolutionMode)
         {
             Root = ScopeFactory.Create
@@ -71,7 +69,7 @@ namespace Solti.Utils.DI.Tests
                     .Service(typeof(IList<>), typeof(MyList<>), l1)
                     .Service<IInterface_7<IList<object>>, Implementation_7_TInterface_Dependant<IList<object>>>(l2)
                     .Service<IInterface_7<IInterface_7<IList<object>>>, Implementation_7_TInterface_Dependant<IInterface_7<IList<object>>>>(l3),
-                new ScopeOptions { Engine = engine, ServiceResolutionMode = resolutionMode }
+                new ScopeOptions { ServiceResolutionMode = resolutionMode }
             );
 
             IInjector injector = (IInjector) Root;
@@ -89,9 +87,9 @@ namespace Solti.Utils.DI.Tests
         }
 
         [Test]
-        public void Parallelism_SpecializationInASeparateScope([ValueSource(nameof(Lifetimes))] Lifetime lifetime, [ValueSource(nameof(Engines))] string engine, [ValueSource(nameof(ResolutionModes))] ServiceResolutionMode resolutionMode)
+        public void Parallelism_SpecializationInASeparateScope([ValueSource(nameof(Lifetimes))] Lifetime lifetime, [ValueSource(nameof(ResolutionModes))] ServiceResolutionMode resolutionMode)
         {
-            Root = ScopeFactory.Create(svcs => svcs.Service(typeof(IList<>), typeof(MyList<>), lifetime), new ScopeOptions { Engine = engine, ServiceResolutionMode = resolutionMode });
+            Root = ScopeFactory.Create(svcs => svcs.Service(typeof(IList<>), typeof(MyList<>), lifetime), new ScopeOptions { ServiceResolutionMode = resolutionMode });
 
             Assert.DoesNotThrow(() => Task.WaitAll
             (
@@ -109,9 +107,9 @@ namespace Solti.Utils.DI.Tests
         }
 
         [Test]
-        public void Parallelism_SpecializationInTheSameScope([ValueSource(nameof(Lifetimes))] Lifetime lifetime, [ValueSource(nameof(Engines))] string engine, [ValueSource(nameof(ResolutionModes))] ServiceResolutionMode resolutionMode)
+        public void Parallelism_SpecializationInTheSameScope([ValueSource(nameof(Lifetimes))] Lifetime lifetime, [ValueSource(nameof(ResolutionModes))] ServiceResolutionMode resolutionMode)
         {
-            Root = ScopeFactory.Create(svcs => svcs.Service(typeof(IList<>), typeof(MyList<>), lifetime), new ScopeOptions { Engine = engine, ServiceResolutionMode = resolutionMode });
+            Root = ScopeFactory.Create(svcs => svcs.Service(typeof(IList<>), typeof(MyList<>), lifetime), new ScopeOptions { ServiceResolutionMode = resolutionMode });
 
             IInjector injector = (IInjector) Root;
 

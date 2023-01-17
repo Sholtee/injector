@@ -100,8 +100,9 @@ namespace Solti.Utils.DI.Internals
 
         protected virtual void RegisterBuiltInServices(IServiceCollection services) => services
             .Factory<IInjector>(static i => i, Lifetime.Scoped)
+            .Factory<IInstanceFactory>(static i => (IInstanceFactory) i, Lifetime.Scoped)
             .Factory<IScopeFactory>(static i => (IScopeFactory) i, Lifetime.Singleton) // create SF from the root only
-            .Factory<IReadOnlyCollection<AbstractServiceEntry>>($"{Consts.INTERNAL_SERVICE_NAME_PREFIX}registered_services", _ => ServiceCollection, Lifetime.Singleton)
+            .Factory<IServiceEntryResolver>(_ => ServiceEntryResolver, Lifetime.Singleton)
             .Service(typeof(IEnumerable<>), typeof(ServiceEnumerator<>), Lifetime.Scoped)
 #if DEBUG
             .Factory<IReadOnlyCollection<object>>("captured_disposables", static i => ((Injector) i).DisposableStore.CapturedDisposables, Lifetime.Scoped)
@@ -129,7 +130,7 @@ namespace Solti.Utils.DI.Internals
                     // with the proper size.
                     //
 
-                    Array.Resize(ref FSlots, ServiceLookup.Slots);
+                    Array.Resize(ref FSlots, ServiceEntryResolver.Slots);
 
                 return FSlots[slot.Value] ??= CreateInstance(requested);
             }
@@ -170,8 +171,8 @@ namespace Solti.Utils.DI.Internals
             if (iface.IsGenericTypeDefinition)
                 throw new ArgumentException(Resources.PARAMETER_IS_GENERIC, nameof(iface));
 
-            return ServiceLookup
-                .Get(iface, name)
+            return ServiceEntryResolver
+                .Resolve(iface, name)
                 ?.ResolveInstance
                 ?.Invoke(this);
         }
@@ -195,13 +196,7 @@ namespace Solti.Utils.DI.Internals
         public object? Tag { get; }
         #endregion
 
-        public IServiceEntryLookup ServiceLookup
-        {
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            get;
-        }
-
-        public IReadOnlyCollection<AbstractServiceEntry> ServiceCollection
+        public ServiceEntryResolver ServiceEntryResolver
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             get;
@@ -216,12 +211,11 @@ namespace Solti.Utils.DI.Internals
             ServiceCollection servicesCopy = new(services);
             RegisterBuiltInServices(servicesCopy);
 
-            ServiceLookup     = ServiceEntryLookupBuilder.Build(servicesCopy, options);  
-            FSlots            = Array<object>.Create(ServiceLookup.Slots);
-            FLock             = new object();
-            Options           = options;
-            Tag               = tag;
-            ServiceCollection = servicesCopy;
+            ServiceEntryResolver = ServiceEntryResolver.Create(servicesCopy, options);  
+            FSlots               = Array<object>.Create(ServiceEntryResolver.Slots);
+            FLock                = new object();
+            Options              = options;
+            Tag                  = tag;
         }
 
         public Injector(Injector super, object? tag)
@@ -230,13 +224,12 @@ namespace Solti.Utils.DI.Internals
             // Assuming this successor is not shared we don't need lock
             //
 
-            FLock             = null;
-            ServiceLookup     = super.ServiceLookup;
-            FSlots            = Array<object>.Create(ServiceLookup.Slots);
-            Options           = super.Options;
-            Tag               = tag;
-            ServiceCollection = super.ServiceCollection;
-            Super             = super;
+            FLock                = null;
+            ServiceEntryResolver = super.ServiceEntryResolver;
+            FSlots               = Array<object>.Create(ServiceEntryResolver.Slots);
+            Options              = super.Options;
+            Tag                  = tag;
+            Super                = super;
         }
     }
 }

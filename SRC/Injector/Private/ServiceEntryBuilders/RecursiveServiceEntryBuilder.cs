@@ -16,9 +16,9 @@ namespace Solti.Utils.DI.Internals
 
         private readonly ScopeOptions FOptions;
 
-        private readonly IServiceEntryLookup FLookup;
+        private readonly IServiceEntryResolver FLookup;
 
-        public RecursiveServiceEntryBuilder(IServiceEntryLookup lookup, IBuildContext buildContext, ScopeOptions options)
+        public RecursiveServiceEntryBuilder(IServiceEntryResolver lookup, IBuildContext buildContext, ScopeOptions options)
         {
             FOptions = options;
             FPath = new ServicePath();

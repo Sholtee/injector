@@ -31,13 +31,7 @@ namespace Solti.Utils.DI.Internals
             for(; foundIndex < FPath.Count; foundIndex++)
             {
                 AbstractServiceEntry that = FPath[foundIndex];
-
-                //
-                // In most of cases ReferenceEquals() is fine, the only exception is when we compare
-                // specialized entries [entry.Specialize(MyType) != entry.Specialize(MyType)]
-                //
-
-                if (ReferenceEquals(that, entry) || ServiceIdComparer.Instance.Equals(that, entry))
+                if (ServiceIdComparer.Instance.Equals(that, entry))
                     break;
             }
 

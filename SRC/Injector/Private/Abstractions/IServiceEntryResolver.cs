@@ -1,22 +1,26 @@
 ﻿/********************************************************************************
-* IServiceEntryLookup.cs                                                        *
+* IServiceEntryResolver.cs                                                      *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
-using System.Diagnostics.CodeAnalysis;
+using System.Collections.Generic;
 
 namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
 
-    internal interface IServiceEntryLookup
+    internal interface IServiceEntryResolver
     {
         /// <summary>
-        /// Gets the service associated with the given interface and name.
+        /// Resolves the service associated with the given interface and name.
         /// </summary>
-        [SuppressMessage("Naming", "CA1716:Identifiers should not match keywords")]
-        AbstractServiceEntry? Get(Type iface, string? name);
+        AbstractServiceEntry? Resolve(Type iface, string? name);
+
+        /// <summary>
+        /// Resolves the services associated with the given interface regardless their name.
+        /// </summary>
+        IEnumerable<AbstractServiceEntry> ResolveMany(Type iface);
 
         /// <summary>
         /// Slots required to store scoped services.
