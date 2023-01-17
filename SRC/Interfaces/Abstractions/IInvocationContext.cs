@@ -18,6 +18,12 @@ namespace Solti.Utils.DI.Interfaces
         public object?[] Args { get; }
 
         /// <summary>
+        /// The underlying proxy instance. It's safe to cast it to the actual interface.
+        /// </summary>
+        /// <remarks>This property is useful when you want to invoke interface members involving their interceptors too.</remarks>
+        public object ProxyInstance { get; }
+
+        /// <summary>
         /// The concrete method behind the <see cref="InterfaceMember"/>.
         /// </summary>
         public MethodInfo InterfaceMethod { get; }

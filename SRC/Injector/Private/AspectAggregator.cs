@@ -5,6 +5,7 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -18,9 +19,13 @@ namespace Solti.Utils.DI.Internals
     {
         private sealed class InvocationContextEx : InvocationContext, IInvocationContext
         {
-            public InvocationContextEx(InvocationContext original) : base(original.Args, original)
+            public InvocationContextEx(InvocationContext original, object proxyInstance) : base(original.Args, original)
             {
+                Debug.Assert(proxyInstance is TInterface, "Got a proxy not implementing the service interface");
+                ProxyInstance = proxyInstance;
             }
+
+            public object ProxyInstance { get; }
         }
 
         private readonly IInterfaceInterceptor[] FInterceptors;
@@ -40,7 +45,7 @@ namespace Solti.Utils.DI.Internals
         /// </summary>
         public override object? Invoke(InvocationContext context) => Invoke
         (
-            new InvocationContextEx(context),
+            new InvocationContextEx(context, this),
             FInterceptors.Length
         );
 
