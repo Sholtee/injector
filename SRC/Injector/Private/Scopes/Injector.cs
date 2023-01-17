@@ -5,6 +5,7 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
@@ -66,8 +67,7 @@ namespace Solti.Utils.DI.Internals
                     ServiceErrors.EnsureNotBreaksTheRuleOfStrictDI(requestor, requested, Options.SupportsServiceProvider);
             }
 
-            if (!requested.State.HasFlag(ServiceEntryStates.Built))
-                throw new InvalidOperationException(Resources.NOT_BUILT);
+            Debug.Assert(requested.State.HasFlag(ServiceEntryStates.Built), "The requested service must be built");
 
             if (!requested.State.HasFlag(ServiceEntryStates.Validated))
             {

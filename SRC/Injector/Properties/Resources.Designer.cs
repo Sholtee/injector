@@ -151,15 +151,6 @@ namespace Solti.Utils.DI.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The entry must be built in order to create service instances..
-        /// </summary>
-        internal static string NOT_BUILT {
-            get {
-                return ResourceManager.GetString("NOT_BUILT", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to The given values are not equal..
         /// </summary>
         internal static string NOT_EQUAL {
