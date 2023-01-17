@@ -1667,18 +1667,6 @@ references:
   commentId: Overload:Solti.Utils.DI.Interfaces.ScopeOptions.Default
   fullName: Solti.Utils.DI.Interfaces.ScopeOptions.Default
   nameWithType: ScopeOptions.Default
-- uid: Solti.Utils.DI.Interfaces.ScopeOptions.Engine
-  name: Engine
-  href: Solti.Utils.DI.Interfaces.ScopeOptions.html#Solti_Utils_DI_Interfaces_ScopeOptions_Engine
-  commentId: P:Solti.Utils.DI.Interfaces.ScopeOptions.Engine
-  fullName: Solti.Utils.DI.Interfaces.ScopeOptions.Engine
-  nameWithType: ScopeOptions.Engine
-- uid: Solti.Utils.DI.Interfaces.ScopeOptions.Engine*
-  name: Engine
-  href: Solti.Utils.DI.Interfaces.ScopeOptions.html#Solti_Utils_DI_Interfaces_ScopeOptions_Engine_
-  commentId: Overload:Solti.Utils.DI.Interfaces.ScopeOptions.Engine
-  fullName: Solti.Utils.DI.Interfaces.ScopeOptions.Engine
-  nameWithType: ScopeOptions.Engine
 - uid: Solti.Utils.DI.Interfaces.ScopeOptions.EqualityContract
   name: EqualityContract
   href: Solti.Utils.DI.Interfaces.ScopeOptions.html#Solti_Utils_DI_Interfaces_ScopeOptions_EqualityContract
