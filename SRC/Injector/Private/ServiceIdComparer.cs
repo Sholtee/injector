@@ -11,11 +11,10 @@ namespace Solti.Utils.DI.Internals
     /// <summary>
     /// ServiceId comparer
     /// </summary>
-    /// <remarks>Don't specialize this comparer against <see cref="IServiceId"/> to let the compiler inline.</remarks>
-    internal sealed class ServiceIdComparer<TServiceId> : ComparerBase<ServiceIdComparer<TServiceId>, TServiceId> where TServiceId : class, IServiceId
+    internal sealed class ServiceIdComparer : ComparerBase<ServiceIdComparer, IServiceId>
     {
-        public override bool Equals(TServiceId x, TServiceId y) => x.Interface == y.Interface && x.Name == y.Name;
+        public override bool Equals(IServiceId x, IServiceId y) => x.Interface == y.Interface && x.Name == y.Name;
 
-        public override int GetHashCode(TServiceId obj) => unchecked(obj.Interface.GetHashCode() ^ (obj.Name?.GetHashCode() ?? 0));
+        public override int GetHashCode(IServiceId obj) => unchecked(obj.Interface.GetHashCode() ^ (obj.Name?.GetHashCode() ?? 0));
     }
 }

@@ -21,6 +21,10 @@ namespace Solti.Utils.DI.Internals
 
         public string? Name { get; }
 
+        //
+        // DON'T use ServiceIdComparer here as it significantly degrades the performance
+        //
+
         public override int GetHashCode() => unchecked(Interface.GetHashCode() ^ (Name?.GetHashCode() ?? 0));
 
         public override bool Equals(object obj) => obj is CompositeKey other && other.Interface == Interface && other.Name == Name;
