@@ -35,6 +35,24 @@ namespace Solti.Utils.DI.Tests
         }
 
         [TestCaseSource(nameof(ScopeControlledLifetimes))]
+        public void Injector_Dispose_ShouldFreeServicesImplementingIAsyncDisposableInterfaceOnly(Lifetime lifetime)
+        {
+            var mockDisposable = new Mock<IAsyncDisposable>(MockBehavior.Strict);
+            mockDisposable
+                .Setup(s => s.DisposeAsync())
+                .Returns(default(ValueTask));
+
+            Root = ScopeFactory.Create(svcs => svcs.Factory(inj => mockDisposable.Object, lifetime));
+
+            using (IInjector injector = Root.CreateScope())
+            {
+                injector.Get<IAsyncDisposable>();
+            }
+
+            mockDisposable.Verify(s => s.DisposeAsync(), Times.Once);
+        }
+
+        [TestCaseSource(nameof(ScopeControlledLifetimes))]
         public async Task Injector_DisposeAsync_ShouldFreeServicesAsynchronously(Lifetime lifetime)
         {
             var mockDisposable = new Mock<IAsyncDisposable>(MockBehavior.Strict);
@@ -50,6 +68,22 @@ namespace Solti.Utils.DI.Tests
             }
 
             mockDisposable.Verify(s => s.DisposeAsync(), Times.Once);
+        }
+
+        [TestCaseSource(nameof(ScopeControlledLifetimes))]
+        public async Task Injector_DisposeAsync_ShouldFreeServicesImplementingIDisposableAsynchronously(Lifetime lifetime)
+        {
+            var mockDisposable = new Mock<IDisposable>(MockBehavior.Strict);
+            mockDisposable.Setup(s => s.Dispose());
+
+            Root = ScopeFactory.Create(svcs => svcs.Factory(inj => mockDisposable.Object, lifetime));
+
+            await using (IInjector injector = Root.CreateScope())
+            {
+                injector.Get<IDisposable>();
+            }
+
+            mockDisposable.Verify(s => s.Dispose(), Times.Once);
         }
 
         [TestCaseSource(nameof(ScopeControlledLifetimes))]

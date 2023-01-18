@@ -3,7 +3,7 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
-using System.Collections.Generic;
+using System;
 
 using NUnit.Framework;
 
@@ -21,6 +21,13 @@ namespace Solti.Utils.DI.Tests
 
             Assert.That(ex.Data["requested"], Is.InstanceOf<MissingServiceEntry>().And.EqualTo(new MissingServiceEntry(typeof(IInterface_1), null)).Using(ServiceIdComparer.Instance));
             Assert.That(ex.Data["requestor"], Is.EqualTo(new DummyServiceEntry(typeof(IInterface_7<IInterface_1>), null)).Using(ServiceIdComparer.Instance));
+        }
+
+        [Test]
+        public void Injector_Create_ShouldBeNullChecked()
+        {
+            Assert.Throws<ArgumentNullException>(() => ScopeFactory.Create(registerServices: null));
+            Assert.Throws<ArgumentNullException>(() => ScopeFactory.Create(services: null));
         }
 
         [Test]
