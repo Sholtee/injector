@@ -29,7 +29,7 @@ namespace Solti.Utils.DI.Internals
 
         private sealed class CompositeKey : IServiceId
         {
-            public CompositeKey(Type iface, string? name)
+            public CompositeKey(Type iface, string name)
             {
                 Interface = iface;
                 Name = name;
@@ -37,13 +37,13 @@ namespace Solti.Utils.DI.Internals
 
             public Type Interface { get; }
 
-            public string? Name { get; }
+            public string Name { get; }
 
             //
             // DON'T use ServiceIdComparer here as it significantly degrades the performance
             //
 
-            public override int GetHashCode() => unchecked(Interface.GetHashCode() ^ (Name?.GetHashCode() ?? 0));
+            public override int GetHashCode() => unchecked(Interface.GetHashCode() ^ Name.GetHashCode());
 
             public override bool Equals(object obj) => obj is CompositeKey other && other.Interface == Interface && other.Name == Name;
         }
