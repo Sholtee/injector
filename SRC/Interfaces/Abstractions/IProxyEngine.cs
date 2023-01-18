@@ -9,7 +9,7 @@ using System.Linq.Expressions;
 namespace Solti.Utils.DI.Interfaces
 {
     /// <summary>
-    /// Describes how to make a proxy engine compatible with this library.
+    /// Describes how to wrap a proxy engine to be compatible with this library.
     /// </summary>
     public interface IProxyEngine
     {

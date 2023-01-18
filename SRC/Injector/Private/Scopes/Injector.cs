@@ -208,14 +208,14 @@ namespace Solti.Utils.DI.Internals
             // Copy the collection to be safe to modify it
             //
 
-            ServiceCollection servicesCopy = new(services);
-            RegisterBuiltInServices(servicesCopy);
+            services = new ServiceCollection(services);
+            RegisterBuiltInServices(services);
 
-            ServiceResolver = ServiceResolver.Create(servicesCopy, options);  
-            FSlots               = Array<object>.Create(ServiceResolver.Slots);
-            FLock                = new object();
-            Options              = options;
-            Tag                  = tag;
+            ServiceResolver = ServiceResolver.Create(services, options);  
+            FSlots          = Array<object>.Create(ServiceResolver.Slots);
+            FLock           = new object();
+            Options         = options;
+            Tag             = tag;
         }
 
         public Injector(Injector super, object? tag)
@@ -224,12 +224,12 @@ namespace Solti.Utils.DI.Internals
             // Assuming this successor is not shared we don't need lock
             //
 
-            FLock                = null;
+            FLock           = null;
             ServiceResolver = super.ServiceResolver;
-            FSlots               = Array<object>.Create(ServiceResolver.Slots);
-            Options              = super.Options;
-            Tag                  = tag;
-            Super                = super;
+            FSlots          = Array<object>.Create(ServiceResolver.Slots);
+            Options         = super.Options;
+            Tag             = tag;
+            Super           = super;
         }
     }
 }

@@ -4,41 +4,27 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
-using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
     using Properties;
 
-    internal sealed class ServiceCollection : IModifiedServiceCollection, IReadOnlyCollection<AbstractServiceEntry>
+    //
+    // Don't expose this class directly as it lacks some List<AbstractServiceEntry> overrides
+    //
+
+    internal sealed class ServiceCollection : List<AbstractServiceEntry>, IModifiedServiceCollection
     {
-        private readonly HashSet<AbstractServiceEntry> FUnderlyingCollection = new(ServiceIdComparer.Instance);
-        private AbstractServiceEntry? FLastEntry;
-
-        public void Add(AbstractServiceEntry item)
+        public new void Add(AbstractServiceEntry item)
         {
-            if (item is null)
-                throw new ArgumentNullException(nameof(item));
-
-            if (!FUnderlyingCollection.Add(item ?? throw new ArgumentNullException(nameof(item))))
+            if (this.Contains(item ?? throw new ArgumentNullException(nameof(item)), ServiceIdComparer.Instance))
                 throw new ServiceAlreadyRegisteredException(Resources.SERVICE_ALREADY_REGISTERED);
   
-            FLastEntry = item;
+            base.Add(item);
         }
-
-        public void Clear() => FUnderlyingCollection.Clear();
-
-        public bool Contains(AbstractServiceEntry item) => FUnderlyingCollection.Contains(item ?? throw new ArgumentNullException(nameof(item)));
-
-        public void CopyTo(AbstractServiceEntry[] array, int arrayIndex) => FUnderlyingCollection.CopyTo(array ?? throw new ArgumentNullException(nameof(array)), arrayIndex);
-
-        public bool Remove(AbstractServiceEntry item) => FUnderlyingCollection.Remove(item ?? throw new ArgumentNullException(nameof(item)));
-
-        public IEnumerator<AbstractServiceEntry> GetEnumerator() => FUnderlyingCollection.GetEnumerator();
-
-        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
         public ServiceCollection(ServiceOptions? serviceOptions = null) : base()
             => ServiceOptions = serviceOptions ?? ServiceOptions.Default;
@@ -51,12 +37,10 @@ namespace Solti.Utils.DI.Internals
             }
         }
 
-        public AbstractServiceEntry LastEntry => FLastEntry ?? throw new InvalidOperationException();
+        public AbstractServiceEntry LastEntry => Count > 0
+            ? this[^1]
+            : throw new InvalidOperationException();
 
         public ServiceOptions ServiceOptions { get; }
-
-        public int Count => FUnderlyingCollection.Count;
-
-        public bool IsReadOnly { get; }
     }
 }

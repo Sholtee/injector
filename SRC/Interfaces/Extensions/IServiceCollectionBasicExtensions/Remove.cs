@@ -4,6 +4,8 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Diagnostics;
+using System.Linq;
 
 namespace Solti.Utils.DI.Interfaces
 {
@@ -25,13 +27,21 @@ namespace Solti.Utils.DI.Interfaces
             if (iface is null)
                 throw new ArgumentNullException(nameof(iface));
 
-            //
-            // Entries are stored by their interface and name so this way of removal works.
-            //
-
-            AbstractServiceEntry entryToRemove = new MissingServiceEntry(iface, name);
-            if (!self.Remove(entryToRemove))
-                throw new ServiceNotFoundException(string.Format(Resources.Culture, Resources.SERVICE_NOT_FOUND, entryToRemove.ToString(shortForm: true)));
+            AbstractServiceEntry entry = self.SingleOrDefault
+            (
+                svc => svc.Interface == iface && svc.Name == name
+            ) ?? throw new ServiceNotFoundException
+            (
+                string.Format
+                (
+                    Resources.Culture,
+                    Resources.SERVICE_NOT_FOUND,
+                    new MissingServiceEntry(iface, name).ToString(shortForm: true)
+                )
+            );
+            
+            bool removed = self.Remove(entry);
+            Debug.Assert(removed, "Entry cannot be removed");
 
             return self;
         }

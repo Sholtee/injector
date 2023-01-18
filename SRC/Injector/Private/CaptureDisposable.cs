@@ -59,7 +59,7 @@ namespace Solti.Utils.DI.Internals
             }
 
             //
-            // Don't call the base here since it would invoke the Dispose method().
+            // Don't call the base here since it would invoke the Dispose() method.
             //
         }
 
