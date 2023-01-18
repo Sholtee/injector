@@ -16,18 +16,18 @@ namespace Solti.Utils.DI.Internals
 
         private readonly ScopeOptions FOptions;
 
-        private readonly IServiceEntryResolver FLookup;
+        private readonly IServiceResolver FResolver;
 
-        public RecursiveServiceEntryBuilder(IServiceEntryResolver lookup, IBuildContext buildContext, ScopeOptions options)
+        public RecursiveServiceEntryBuilder(IServiceResolver resolver, IBuildContext buildContext, ScopeOptions options)
         {
             FOptions = options;
             FPath = new ServicePath();
-            FLookup = lookup;
+            FResolver = resolver;
             Visitors = new IFactoryVisitor[]
             {
                 new MergeProxiesVisitor(),
                 new ApplyLifetimeManagerVisitor(),
-                new ServiceRequestReplacerVisitor(FLookup, FPath, options.SupportsServiceProvider)
+                new ServiceRequestReplacerVisitor(FResolver, FPath, options.SupportsServiceProvider)
             };
             BuildContext = buildContext;
         }

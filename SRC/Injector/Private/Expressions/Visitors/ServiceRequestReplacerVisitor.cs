@@ -15,18 +15,18 @@ namespace Solti.Utils.DI.Internals
     /// <summary>
     /// Replaces the <see cref="IInjector"/> invocations with the corresponing <see cref="AbstractServiceEntry.ResolveInstance"/> calls.
     /// </summary>
-    /// <remarks>This results a faster generated delegate since it saves a <see cref="IServiceEntryResolver.Resolve(Type, string?)"/> invocation for each dependency.</remarks>
+    /// <remarks>This results a faster generated delegate since it saves a <see cref="IServiceResolver.Resolve(Type, string?)"/> invocation for each dependency.</remarks>
     internal sealed class ServiceRequestReplacerVisitor : ServiceRequestVisitor, IFactoryVisitor
     {
-        private readonly IServiceEntryResolver FLookup;
+        private readonly IServiceResolver FResolver;
 
         private readonly ServicePath FPath;
 
         private readonly bool FPermissive;
 
-        public ServiceRequestReplacerVisitor(IServiceEntryResolver lookup, ServicePath path, bool permissive)
+        public ServiceRequestReplacerVisitor(IServiceResolver resolver, ServicePath path, bool permissive)
         {
-            FLookup = lookup;
+            FResolver = resolver;
             FPath = path;
             FPermissive = permissive;
         }
@@ -45,7 +45,7 @@ namespace Solti.Utils.DI.Internals
             // It specializes generic services ahead of time
             //
 
-            AbstractServiceEntry? entry = FLookup.Resolve(iface, name);
+            AbstractServiceEntry? entry = FResolver.Resolve(iface, name);
             if (entry is null)
             {
                 //

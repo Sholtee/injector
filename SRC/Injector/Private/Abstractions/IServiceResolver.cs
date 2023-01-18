@@ -1,5 +1,5 @@
 ﻿/********************************************************************************
-* IServiceEntryResolver.cs                                                      *
+* IServiceResolver.cs                                                           *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
@@ -10,7 +10,7 @@ namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
 
-    internal interface IServiceEntryResolver
+    internal interface IServiceResolver
     {
         /// <summary>
         /// Resolves the service associated with the given interface and name.

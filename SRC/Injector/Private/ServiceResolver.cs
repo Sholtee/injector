@@ -1,5 +1,5 @@
 ﻿/********************************************************************************
-* ServiceEntryResolver.cs                                                       *
+* ServiceResolver.cs                                                            *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
@@ -15,7 +15,7 @@ namespace Solti.Utils.DI.Internals
     using Interfaces;
     using Properties;
 
-    internal sealed class ServiceEntryResolver : IServiceEntryResolver, IBuildContext
+    internal sealed class ServiceResolver : IServiceResolver, IBuildContext
     {
         #region Private
         private readonly IServiceEntryBuilder FEntryBuilder;
@@ -26,6 +26,27 @@ namespace Solti.Utils.DI.Internals
         private readonly bool FInitialized;
         private readonly Func<object, AbstractServiceEntry?> FValueFactory;
         private int FSlots;
+
+        private sealed class CompositeKey : IServiceId
+        {
+            public CompositeKey(Type iface, string? name)
+            {
+                Interface = iface;
+                Name = name;
+            }
+
+            public Type Interface { get; }
+
+            public string? Name { get; }
+
+            //
+            // DON'T use ServiceIdComparer here as it significantly degrades the performance
+            //
+
+            public override int GetHashCode() => unchecked(Interface.GetHashCode() ^ (Name?.GetHashCode() ?? 0));
+
+            public override bool Equals(object obj) => obj is CompositeKey other && other.Interface == Interface && other.Name == Name;
+        }
 
         //
         // Dictionary<> is definitely faster against Type keys so try to avoid using CompositeKey
@@ -79,7 +100,7 @@ namespace Solti.Utils.DI.Internals
             }
         }
 
-        private ServiceEntryResolver
+        private ServiceResolver
         (
             IEnumerable<AbstractServiceEntry> entries,
             IDelegateCompiler compiler,
@@ -185,12 +206,12 @@ namespace Solti.Utils.DI.Internals
         });
         #endregion
 
-        public static ServiceEntryResolver Create(IEnumerable<AbstractServiceEntry> entries, ScopeOptions scopeOptions)
+        public static ServiceResolver Create(IEnumerable<AbstractServiceEntry> entries, ScopeOptions scopeOptions)
         {
             BatchedDelegateCompiler delegateCompiler = new();
             delegateCompiler.BeginBatch();
 
-            ServiceEntryResolver result = new(entries, delegateCompiler, scopeOptions);
+            ServiceResolver result = new(entries, delegateCompiler, scopeOptions);
 
             delegateCompiler.Compile();
             return result;

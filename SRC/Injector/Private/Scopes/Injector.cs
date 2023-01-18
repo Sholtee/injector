@@ -102,7 +102,7 @@ namespace Solti.Utils.DI.Internals
             .Factory<IInjector>(static i => i, Lifetime.Scoped)
             .Factory<IInstanceFactory>(static i => (IInstanceFactory) i, Lifetime.Scoped)
             .Factory<IScopeFactory>(static i => (IScopeFactory) i, Lifetime.Singleton) // create SF from the root only
-            .Factory<IServiceEntryResolver>(_ => ServiceEntryResolver, Lifetime.Singleton)
+            .Factory<IServiceResolver>(_ => ServiceResolver, Lifetime.Singleton)
             .Service(typeof(IEnumerable<>), typeof(ServiceEnumerator<>), Lifetime.Scoped)
 #if DEBUG
             .Factory<IReadOnlyCollection<object>>("captured_disposables", static i => ((Injector) i).DisposableStore.CapturedDisposables, Lifetime.Scoped)
@@ -130,7 +130,7 @@ namespace Solti.Utils.DI.Internals
                     // with the proper size.
                     //
 
-                    Array.Resize(ref FSlots, ServiceEntryResolver.Slots);
+                    Array.Resize(ref FSlots, ServiceResolver.Slots);
 
                 return FSlots[slot.Value] ??= CreateInstance(requested);
             }
@@ -171,7 +171,7 @@ namespace Solti.Utils.DI.Internals
             if (iface.IsGenericTypeDefinition)
                 throw new ArgumentException(Resources.PARAMETER_IS_GENERIC, nameof(iface));
 
-            return ServiceEntryResolver
+            return ServiceResolver
                 .Resolve(iface, name)
                 ?.ResolveInstance
                 ?.Invoke(this);
@@ -196,7 +196,7 @@ namespace Solti.Utils.DI.Internals
         public object? Tag { get; }
         #endregion
 
-        public ServiceEntryResolver ServiceEntryResolver
+        public ServiceResolver ServiceResolver
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             get;
@@ -211,8 +211,8 @@ namespace Solti.Utils.DI.Internals
             ServiceCollection servicesCopy = new(services);
             RegisterBuiltInServices(servicesCopy);
 
-            ServiceEntryResolver = ServiceEntryResolver.Create(servicesCopy, options);  
-            FSlots               = Array<object>.Create(ServiceEntryResolver.Slots);
+            ServiceResolver = ServiceResolver.Create(servicesCopy, options);  
+            FSlots               = Array<object>.Create(ServiceResolver.Slots);
             FLock                = new object();
             Options              = options;
             Tag                  = tag;
@@ -225,8 +225,8 @@ namespace Solti.Utils.DI.Internals
             //
 
             FLock                = null;
-            ServiceEntryResolver = super.ServiceEntryResolver;
-            FSlots               = Array<object>.Create(ServiceEntryResolver.Slots);
+            ServiceResolver = super.ServiceResolver;
+            FSlots               = Array<object>.Create(ServiceResolver.Slots);
             Options              = super.Options;
             Tag                  = tag;
             Super                = super;

@@ -15,17 +15,17 @@ namespace Solti.Utils.DI.Internals
     {
         private readonly ServicePath FPath = new();
 
-        private readonly IServiceEntryResolver FLookup;
+        private readonly IServiceResolver FResolver;
 
         public DotGraph Graph { get; } = new();
 
-        public DotGraphBuilder(IServiceEntryResolver lookup)
+        public DotGraphBuilder(IServiceResolver resolver)
         {
             Visitors = new IFactoryVisitor[]
             {
                 new DotGraphBuilderVisitor(this)
             };
-            FLookup = lookup;
+            FResolver = resolver;
         }
 
         public IReadOnlyList<IFactoryVisitor> Visitors { get; }
@@ -34,7 +34,7 @@ namespace Solti.Utils.DI.Internals
 
         public void Build(Type iface, string? name) => Build
         (
-            FLookup.Resolve(iface, name) ?? new MissingServiceEntry(iface, name)
+            FResolver.Resolve(iface, name) ?? new MissingServiceEntry(iface, name)
         );
 
         public void Build(AbstractServiceEntry entry)

@@ -1,5 +1,5 @@
 ﻿/********************************************************************************
-* ServiceEntryResolver.cs                                                       *
+* ServiceResolver.cs                                                            *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
@@ -16,7 +16,7 @@ namespace Solti.Utils.DI.Perf
 
     [MemoryDiagnoser]
     [SimpleJob(RunStrategy.Throughput, invocationCount: 10000000)]
-    public class ServiceEntryResolver
+    public class ServiceResolver
     {
         public static Type[] Interfaces { get; } = typeof(object)
             .Assembly
@@ -30,10 +30,10 @@ namespace Solti.Utils.DI.Perf
         [Params(null, "name")]
         public string Name { get; set; }
 
-        private Internals.ServiceEntryResolver Resolver { get; set; }
+        private Internals.ServiceResolver Resolver { get; set; }
 
         [GlobalSetup(Target = nameof(Resolve))]
-        public void SetupResolve() => Resolver = Internals.ServiceEntryResolver.Create
+        public void SetupResolve() => Resolver = Internals.ServiceResolver.Create
         (
             Interfaces
                 .Take(ServiceCount)
