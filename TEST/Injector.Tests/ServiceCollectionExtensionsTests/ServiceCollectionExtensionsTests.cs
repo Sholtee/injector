@@ -16,7 +16,7 @@ namespace Solti.Utils.DI.Tests
     [TestFixture]
     public partial class ServiceCollectionExtensionsTests
     {
-        public IModifiedServiceCollection Collection { get; set; }
+        public IServiceCollection Collection { get; set; }
 
         [SetUp]
         public void SetUp()

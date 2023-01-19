@@ -4,7 +4,6 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
@@ -36,7 +35,7 @@ namespace Solti.Utils.DI.Tests
 
             AbstractServiceEntry expected = lifetime.CreateFrom(typeof(IInterface_3<int>), null, factory, ServiceOptions.Default).Last();
 
-            Assert.That(Collection.LastEntry.Specialize(typeof(int)), Is.InstanceOf(expected.GetType()).And.EqualTo(expected).Using(ServiceIdComparer.Instance));
+            Assert.That(Collection.Last().Specialize(typeof(int)), Is.InstanceOf(expected.GetType()).And.EqualTo(expected).Using(ServiceIdComparer.Instance));
         }
 
         [TestCase(null)]

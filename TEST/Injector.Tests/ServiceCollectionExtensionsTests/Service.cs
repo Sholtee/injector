@@ -5,6 +5,7 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 
 using Moq;
@@ -48,7 +49,7 @@ namespace Solti.Utils.DI.Tests
         {
             Collection.Service(typeof(IInterface_3<>), typeof(Implementation_3_IInterface_1_Dependant<>), lifetime);
 
-            AbstractServiceEntry entry = Collection.LastEntry.Specialize(typeof(int));
+            AbstractServiceEntry entry = Collection.Last().Specialize(typeof(int));
 
             Assert.That(entry, Is.Not.Null);
             Assert.That(entry.Interface, Is.EqualTo(typeof(IInterface_3<int>)));
@@ -59,7 +60,7 @@ namespace Solti.Utils.DI.Tests
         public void Service_ShouldHandleNamedServices(Lifetime lifetime) 
         {
             Assert.DoesNotThrow(() => Collection.Service<IInterface_1, Implementation_1_No_Dep>("svc1", lifetime));
-            Assert.That(Collection.LastEntry.Name, Is.EqualTo("svc1"));
+            Assert.That(Collection.Last().Name, Is.EqualTo("svc1"));
         }
 
         private interface IServiceHavingNonInterfaceCtorArg
@@ -79,7 +80,7 @@ namespace Solti.Utils.DI.Tests
         {
             Collection.Service<IServiceHavingNonInterfaceCtorArg, ServiceHavingNonInterfaceCtorArg>(new Dictionary<string, object> { ["para"] = "cica" }, lifetime);
 
-            Expression<FactoryDelegate> fact = Collection.LastEntry.Factory;
+            Expression<FactoryDelegate> fact = Collection.Last().Factory;
 
             Assert.That(fact, Is.Not.Null);
 
@@ -100,7 +101,7 @@ namespace Solti.Utils.DI.Tests
         {
             Collection.Service<IServiceHavingNonInterfaceCtorArg, ServiceHavingNonInterfaceCtorArg>(new { para = "cica" }, lifetime);
 
-            Expression<FactoryDelegate> fact = Collection.LastEntry.Factory;
+            Expression<FactoryDelegate> fact = Collection.Last().Factory;
 
             Assert.That(fact, Is.Not.Null);
 
@@ -133,7 +134,7 @@ namespace Solti.Utils.DI.Tests
         {
             Collection.Service(typeof(IServiceHavingNonInterfaceCtorArg<>), typeof(ServiceHavingNonInterfaceCtorArg<>), new Dictionary<string, object> { ["para"] = "cica" }, lifetime);
 
-            Expression<FactoryDelegate> fact = Collection.LastEntry.Specialize(typeof(object)).Factory;
+            Expression<FactoryDelegate> fact = Collection.Last().Specialize(typeof(object)).Factory;
 
             Assert.That(fact, Is.Not.Null);
 
@@ -154,7 +155,7 @@ namespace Solti.Utils.DI.Tests
         {
             Collection.Service(typeof(IServiceHavingNonInterfaceCtorArg<>), typeof(ServiceHavingNonInterfaceCtorArg<>), new { para = "cica" }, lifetime);
 
-            Expression<FactoryDelegate> fact = Collection.LastEntry.Specialize(typeof(object)).Factory;
+            Expression<FactoryDelegate> fact = Collection.Last().Specialize(typeof(object)).Factory;
 
             Assert.That(fact, Is.Not.Null);
 
@@ -192,10 +193,10 @@ namespace Solti.Utils.DI.Tests
         public void Service_ShouldBeInstructedByServiceActivator(Lifetime lifetime)
         {
             Assert.DoesNotThrow(() => Collection.Service<IInterface_1, Implementation_8_MultiCtor>(lifetime));
-            Assert.That(Collection.LastEntry.Factory.GetDebugView(), Is.EqualTo(ServiceActivator.Get(typeof(Implementation_8_MultiCtor).GetConstructor(Type.EmptyTypes)).GetDebugView()));
+            Assert.That(Collection.Last().Factory.GetDebugView(), Is.EqualTo(ServiceActivator.Get(typeof(Implementation_8_MultiCtor).GetConstructor(Type.EmptyTypes)).GetDebugView()));
 
             Assert.DoesNotThrow(() => Collection.Service(typeof(IInterface_3<>), typeof(Implementation_9_MultiCtor<>), lifetime));
-            Assert.That(Collection.LastEntry.Specialize(typeof(int)).Factory.GetDebugView(), Is.EqualTo(ServiceActivator.Get(typeof(Implementation_9_MultiCtor<int>).GetConstructor(new Type[] { typeof(IInterface_1) })).GetDebugView()));
+            Assert.That(Collection.Last().Specialize(typeof(int)).Factory.GetDebugView(), Is.EqualTo(ServiceActivator.Get(typeof(Implementation_9_MultiCtor<int>).GetConstructor(new Type[] { typeof(IInterface_1) })).GetDebugView()));
         }
 
         [TestCaseSource(nameof(Lifetimes))]

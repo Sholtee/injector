@@ -18,7 +18,7 @@ namespace Solti.Utils.DI
         /// <param name="iface">The service interface to be registered. It can not be null and can be registered only once (with the given <paramref name="name"/>).</param>
         /// <param name="name">The (optional) name of the service.</param>
         /// <param name="instance">The pre-created instance to be registered. It can not be null and must implement the <paramref name="iface"/> interface.</param>
-        public static IModifiedServiceCollection Instance(this IServiceCollection self, Type iface, string? name, object instance)
+        public static IServiceCollection Instance(this IServiceCollection self, Type iface, string? name, object instance)
         {
             if (self is null)
                 throw new ArgumentNullException(nameof(self));
@@ -45,7 +45,7 @@ namespace Solti.Utils.DI
         /// <param name="self">The target <see cref="IServiceCollection"/>.</param>
         /// <param name="iface">The service interface to be registered. It can not be null and can be registered only once.</param>
         /// <param name="instance">The pre-created instance to be registered. It can not be null and must implement the <paramref name="iface"/> interface.</param>
-        public static IModifiedServiceCollection Instance(this IServiceCollection self, Type iface, object instance)
+        public static IServiceCollection Instance(this IServiceCollection self, Type iface, object instance)
             => self.Instance(iface, null, instance);
 
         /// <summary>
@@ -55,7 +55,7 @@ namespace Solti.Utils.DI
         /// <param name="self">The target <see cref="IServiceCollection"/>.</param>
         /// <param name="name">The (optional) name of the service.</param>
         /// <param name="instance">The pre-created instance to be registered.</param>
-        public static IModifiedServiceCollection Instance<TInterface>(this IServiceCollection self, string? name, TInterface instance) where TInterface: class 
+        public static IServiceCollection Instance<TInterface>(this IServiceCollection self, string? name, TInterface instance) where TInterface: class 
             => self.Instance(typeof(TInterface), name, instance);
 
         /// <summary>
@@ -64,7 +64,7 @@ namespace Solti.Utils.DI
         /// <typeparam name="TInterface">The service interface to be registered. It can be registered only once.</typeparam>
         /// <param name="self">The target <see cref="IServiceCollection"/>.</param>
         /// <param name="instance">The pre-created instance to be registered.</param>
-        public static IModifiedServiceCollection Instance<TInterface>(this IServiceCollection self, TInterface instance) where TInterface: class
+        public static IServiceCollection Instance<TInterface>(this IServiceCollection self, TInterface instance) where TInterface: class
             => self.Instance(null, instance);
     }
 }

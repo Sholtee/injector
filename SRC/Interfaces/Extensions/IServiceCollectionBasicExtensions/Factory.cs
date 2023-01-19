@@ -19,7 +19,7 @@ namespace Solti.Utils.DI.Interfaces
         /// <param name="factory">The factory function that is responsible for the instantiation. Its call count depends on the value of the <paramref name="lifetime"/> parameter. Note that the second parameter of the <paramref name="factory"/> is never generic, even if you registered the factory for an open generic interface.</param>
         /// <param name="lifetime">The lifetime of service.</param>
         /// <remarks>You can register generic services (where the <paramref name="iface"/> parameter is an open generic type).</remarks>
-        public static IModifiedServiceCollection Factory(this IServiceCollection self, Type iface, string? name, Expression<FactoryDelegate> factory, LifetimeBase lifetime)
+        public static IServiceCollection Factory(this IServiceCollection self, Type iface, string? name, Expression<FactoryDelegate> factory, LifetimeBase lifetime)
         {
             if (self is null)
                 throw new ArgumentNullException(nameof(self));
@@ -51,7 +51,7 @@ namespace Solti.Utils.DI.Interfaces
         /// <param name="factory">The factory function that is responsible for the instantiation. Its call count depends on the value of the <paramref name="lifetime"/> parameter. Note that the second parameter of the <paramref name="factory"/> is never generic, even if you registered the factory for an open generic interface.</param>
         /// <param name="lifetime">The lifetime of service.</param>
         /// <remarks>You can register generic services (where the <paramref name="iface"/> parameter is an open generic type).</remarks>
-        public static IModifiedServiceCollection Factory(this IServiceCollection self, Type iface, Expression<FactoryDelegate> factory, LifetimeBase lifetime) 
+        public static IServiceCollection Factory(this IServiceCollection self, Type iface, Expression<FactoryDelegate> factory, LifetimeBase lifetime) 
             => self.Factory(iface, null, factory, lifetime);
 
         /// <summary>
@@ -62,7 +62,7 @@ namespace Solti.Utils.DI.Interfaces
         /// <param name="name">The (optional) name of the service.</param>
         /// <param name="factory">The factory function that is responsible for the instantiation. Its call count depends on the value of the <paramref name="lifetime"/> parameter.</param>
         /// <param name="lifetime">The lifetime of service.</param>
-        public static IModifiedServiceCollection Factory<TInterface>(this IServiceCollection self, string? name, Expression<FactoryDelegate<TInterface>> factory, LifetimeBase lifetime) where TInterface : class
+        public static IServiceCollection Factory<TInterface>(this IServiceCollection self, string? name, Expression<FactoryDelegate<TInterface>> factory, LifetimeBase lifetime) where TInterface : class
             => self.Factory(typeof(TInterface), name, WrapToStandardFactory(factory), lifetime);
 
         /// <summary>
@@ -72,7 +72,7 @@ namespace Solti.Utils.DI.Interfaces
         /// <param name="self">The target <see cref="IServiceCollection"/>.</param>
         /// <param name="factory">The factory function that is responsible for the instantiation. Its call count depends on the value of the <paramref name="lifetime"/> parameter.</param>
         /// <param name="lifetime">The lifetime of service.</param>
-        public static IModifiedServiceCollection Factory<TInterface>(this IServiceCollection self, Expression<FactoryDelegate<TInterface>> factory, LifetimeBase lifetime) where TInterface : class
+        public static IServiceCollection Factory<TInterface>(this IServiceCollection self, Expression<FactoryDelegate<TInterface>> factory, LifetimeBase lifetime) where TInterface : class
             => self.Factory(typeof(TInterface), null, WrapToStandardFactory(factory), lifetime);
 
         private static Expression<FactoryDelegate> WrapToStandardFactory<TInterface>(Expression<FactoryDelegate<TInterface>> factory) where TInterface : class

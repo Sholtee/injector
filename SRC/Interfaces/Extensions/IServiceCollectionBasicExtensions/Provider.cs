@@ -22,7 +22,7 @@ namespace Solti.Utils.DI.Interfaces
         /// <param name="explicitArgs">Explicit arguments, provided by the user.</param>
         /// <param name="lifetime">The lifetime of service.</param>
         /// <remarks>The provided <see cref="IServiceProvider"/> implementation won't be disposed even if it implements the <see cref="IDisposable"/> interface.</remarks>
-        public static IModifiedServiceCollection Provider(this IServiceCollection self, Type iface, string? name, Type provider, object explicitArgs, LifetimeBase lifetime)
+        public static IServiceCollection Provider(this IServiceCollection self, Type iface, string? name, Type provider, object explicitArgs, LifetimeBase lifetime)
         {
             if (self is null)
                 throw new ArgumentNullException(nameof(self));
@@ -70,7 +70,7 @@ namespace Solti.Utils.DI.Interfaces
         /// <param name="provider">The type of the provider. It may have dependencies and must implement the <see cref="IServiceProvider"/> interface.</param>
         /// <param name="lifetime">The lifetime of service.</param>
         /// <remarks>The provided <see cref="IServiceProvider"/> implementation won't be disposed even if it implements the <see cref="IDisposable"/> interface.</remarks>
-        public static IModifiedServiceCollection Provider(this IServiceCollection self, Type iface, string? name, Type provider, LifetimeBase lifetime)
+        public static IServiceCollection Provider(this IServiceCollection self, Type iface, string? name, Type provider, LifetimeBase lifetime)
         {
             if (self is null)
                 throw new ArgumentNullException(nameof(self));
@@ -114,7 +114,7 @@ namespace Solti.Utils.DI.Interfaces
         /// <param name="provider">The type of the provider. It may have dependencies and must implement the <see cref="IServiceProvider"/> interface.</param>
         /// <param name="lifetime">The lifetime of service.</param>
         /// <remarks>The provided <see cref="IServiceProvider"/> implementation won't be disposed even if it implements the <see cref="IDisposable"/> interface.</remarks>
-        public static IModifiedServiceCollection Provider(this IServiceCollection self, Type iface, Type provider, LifetimeBase lifetime) => self.Provider(iface, null, provider, lifetime);
+        public static IServiceCollection Provider(this IServiceCollection self, Type iface, Type provider, LifetimeBase lifetime) => self.Provider(iface, null, provider, lifetime);
 
         /// <summary>
         /// Registers a new provider. Providers are "factory services" responsible for creating the concrete service.
@@ -125,7 +125,7 @@ namespace Solti.Utils.DI.Interfaces
         /// <param name="explicitArgs">Explicit arguments, provided by the user.</param>
         /// <param name="lifetime">The lifetime of service.</param>
         /// <remarks>The provided <see cref="IServiceProvider"/> implementation won't be disposed even if it implements the <see cref="IDisposable"/> interface.</remarks>
-        public static IModifiedServiceCollection Provider(this IServiceCollection self, Type iface, Type provider, object explicitArgs, LifetimeBase lifetime) => self.Provider(iface, null, provider, explicitArgs, lifetime);
+        public static IServiceCollection Provider(this IServiceCollection self, Type iface, Type provider, object explicitArgs, LifetimeBase lifetime) => self.Provider(iface, null, provider, explicitArgs, lifetime);
 
         /// <summary>
         /// Registers a new provider. Providers are "factory services" responsible for creating the concrete service.
@@ -136,7 +136,7 @@ namespace Solti.Utils.DI.Interfaces
         /// <param name="name">The (optional) name of the service.</param>
         /// <param name="lifetime">The lifetime of service.</param>
         /// <remarks>The provided <see cref="IServiceProvider"/> implementation won't be disposed even if it implements the <see cref="IDisposable"/> interface.</remarks>
-        public static IModifiedServiceCollection Provider<TInterface, TProvider>(this IServiceCollection self, string? name, LifetimeBase lifetime) where TProvider : class, IServiceProvider where TInterface : class
+        public static IServiceCollection Provider<TInterface, TProvider>(this IServiceCollection self, string? name, LifetimeBase lifetime) where TProvider : class, IServiceProvider where TInterface : class
             => self.Provider(typeof(TInterface), name, typeof(TProvider), lifetime);
 
         /// <summary>
@@ -147,7 +147,7 @@ namespace Solti.Utils.DI.Interfaces
         /// <param name="self">The target <see cref="IServiceCollection"/>.</param>
         /// <param name="lifetime">The lifetime of service.</param>
         /// <remarks>The provided <see cref="IServiceProvider"/> implementation won't be disposed even if it implements the <see cref="IDisposable"/> interface.</remarks>
-        public static IModifiedServiceCollection Provider<TInterface, TProvider>(this IServiceCollection self, LifetimeBase lifetime) where TProvider : class, IServiceProvider where TInterface : class
+        public static IServiceCollection Provider<TInterface, TProvider>(this IServiceCollection self, LifetimeBase lifetime) where TProvider : class, IServiceProvider where TInterface : class
             => self.Provider<TInterface, TProvider>(name: null, lifetime);
 
         /// <summary>
@@ -159,7 +159,7 @@ namespace Solti.Utils.DI.Interfaces
         /// <param name="explicitArgs">Explicit arguments, provided by the user.</param>
         /// <param name="lifetime">The lifetime of service.</param>
         /// <remarks>The provided <see cref="IServiceProvider"/> implementation won't be disposed even if it implements the <see cref="IDisposable"/> interface.</remarks>
-        public static IModifiedServiceCollection Provider<TInterface, TProvider>(this IServiceCollection self, object explicitArgs, LifetimeBase lifetime) where TProvider : class, IServiceProvider where TInterface : class
+        public static IServiceCollection Provider<TInterface, TProvider>(this IServiceCollection self, object explicitArgs, LifetimeBase lifetime) where TProvider : class, IServiceProvider where TInterface : class
             => self.Provider(typeof(TInterface), typeof(TProvider), explicitArgs, lifetime);
     }
 }

@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Linq;
 using System.Linq.Expressions;
 
 namespace Solti.Utils.DI.Interfaces
@@ -17,7 +18,7 @@ namespace Solti.Utils.DI.Interfaces
         /// <param name="decorator">The decorator funtion. It must return the decorated instance. The original instance can be accessed via the 3rd parameter of the decorator function.</param>
         /// <remarks>You can't create proxies against instances and open generic services. A service can be decorated multiple times.</remarks>
         /// <exception cref="InvalidOperationException">When proxying not allowed (see above).</exception>
-        public static IModifiedServiceCollection Decorate(this IModifiedServiceCollection self, Expression<DecoratorDelegate> decorator)
+        public static IServiceCollection Decorate(this IServiceCollection self, Expression<DecoratorDelegate> decorator)
         {
             if (self is null)
                 throw new ArgumentNullException(nameof(self));
@@ -25,7 +26,7 @@ namespace Solti.Utils.DI.Interfaces
             if (decorator is null)
                 throw new ArgumentNullException(nameof(decorator));
 
-            self.LastEntry.Decorate(decorator);
+            self.Last().Decorate(decorator);
             return self;
         }
     }

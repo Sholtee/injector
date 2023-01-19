@@ -5,6 +5,7 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 
 using BenchmarkDotNet.Attributes;
@@ -76,10 +77,10 @@ namespace Solti.Utils.DI.Perf
         [GlobalSetup]
         public void Setup()
         {
-            IModifiedServiceCollection coll = DI.ServiceCollection.Create()
+            IServiceCollection coll = DI.ServiceCollection.Create()
                 .Service<IService, MyService>(Lifetime);
 
-            Entry = coll.LastEntry;
+            Entry = coll.Last();
             Injector = (IInstanceFactory) ScopeFactory.Create(coll).CreateScope();
         }
 

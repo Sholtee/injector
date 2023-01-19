@@ -69,7 +69,7 @@ namespace Solti.Utils.DI.Tests
 
         [TestCaseSource(nameof(Lifetimes))]
         public void Provider_ShouldBeAService(Lifetime lifetime) =>
-            Assert.That(Collection.Provider<IInterface_1, ProviderHavingOverloadedCtor>(lifetime).LastEntry.IsService());
+            Assert.That(Collection.Provider<IInterface_1, ProviderHavingOverloadedCtor>(lifetime).Last().IsService());
 
         [TestCaseSource(nameof(Lifetimes))]
         public void Provider_ShouldSupportExplicitArgs(Lifetime lifetime) =>
@@ -96,7 +96,7 @@ namespace Solti.Utils.DI.Tests
 
             AbstractServiceEntry entry = Collection
                 .Provider<IList, ListProvider>(lifetime)
-                .LastEntry;
+                .Last();
 
             entry.Build(mockBuildContext.Object, new IFactoryVisitor[] { new MergeProxiesVisitor(), new ApplyLifetimeManagerVisitor() });
 
@@ -121,7 +121,7 @@ namespace Solti.Utils.DI.Tests
 
             AbstractServiceEntry entry = Collection
                 .Provider<IList<int>, GenericListProvider>(lifetime)
-                .LastEntry;
+                .Last();
             entry.Build(mockBuildContext.Object, new IFactoryVisitor[] { new MergeProxiesVisitor(), new ApplyLifetimeManagerVisitor() });
 
             var mockInjector = new Mock<IInstanceFactory>(MockBehavior.Strict);

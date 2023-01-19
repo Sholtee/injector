@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Linq;
 
 namespace Solti.Utils.DI
 {
@@ -19,12 +20,12 @@ namespace Solti.Utils.DI
         /// <param name="self">The target <see cref="IServiceCollection"/>.</param>
         /// <remarks>You can't create proxies against instances and open generic services. A service can be decorated multiple times.</remarks>
         /// <exception cref="InvalidOperationException">When proxying is not allowed (see remarks).</exception>
-        public static IModifiedServiceCollection Decorate<TInterceptor>(this IModifiedServiceCollection self) where TInterceptor: IInterfaceInterceptor
+        public static IServiceCollection Decorate<TInterceptor>(this IServiceCollection self) where TInterceptor: IInterfaceInterceptor
         {
             if (self is null)
                 throw new ArgumentNullException(nameof(self));
 
-            if (self.LastEntry is not ProducibleServiceEntry pse)
+            if (self.Last() is not ProducibleServiceEntry pse)
                 throw new NotSupportedException(Resources.DECORATING_NOT_SUPPORTED);
 
             pse.Decorate

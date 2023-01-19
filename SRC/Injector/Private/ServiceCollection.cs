@@ -16,7 +16,7 @@ namespace Solti.Utils.DI.Internals
     // Don't expose this class directly as it lacks some List<AbstractServiceEntry> overrides
     //
 
-    internal sealed class ServiceCollection : List<AbstractServiceEntry>, IModifiedServiceCollection
+    internal sealed class ServiceCollection : List<AbstractServiceEntry>, IServiceCollection
     {
         public new void Add(AbstractServiceEntry item)
         {
@@ -36,10 +36,6 @@ namespace Solti.Utils.DI.Internals
                 Add(entry);
             }
         }
-
-        public AbstractServiceEntry LastEntry => Count > 0
-            ? this[^1]
-            : throw new InvalidOperationException();
 
         public ServiceOptions ServiceOptions { get; }
     }

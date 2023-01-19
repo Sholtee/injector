@@ -46,7 +46,7 @@ namespace Solti.Utils.DI.Tests
 
             Collection.Service<IMyServiceHavingAspect, MyService>(lifetime);
 
-            AbstractServiceEntry lastEntry = Collection.LastEntry;
+            AbstractServiceEntry lastEntry = Collection.Last();
             lastEntry.Build(mockBuildContext.Object, new IFactoryVisitor[] { new MergeProxiesVisitor(), new ApplyLifetimeManagerVisitor() });
 
             object instance = lastEntry.CreateInstance(mockInjector.Object, out object _);
@@ -81,7 +81,7 @@ namespace Solti.Utils.DI.Tests
 
             Collection.Service(typeof(IMyGenericServiceHavingAspect<>), typeof(MyGenericService<>), lifetime);
 
-            AbstractServiceEntry lastEntry = Collection.LastEntry.Specialize(typeof(int));
+            AbstractServiceEntry lastEntry = Collection.Last().Specialize(typeof(int));
             lastEntry.Build(mockBuildContext.Object, new IFactoryVisitor[] { new MergeProxiesVisitor(), new ApplyLifetimeManagerVisitor() });
 
             object instance = lastEntry.CreateInstance(mockInjector.Object, out object _);
@@ -108,7 +108,7 @@ namespace Solti.Utils.DI.Tests
 
             Collection.Service<IMyServiceHavingAspect, MyService>(lifetime);
 
-            AbstractServiceEntry lastEntry = Collection.LastEntry;
+            AbstractServiceEntry lastEntry = Collection.Last();
             lastEntry.Build(mockBuildContext.Object, new IFactoryVisitor[] { new MergeProxiesVisitor(), new ApplyLifetimeManagerVisitor() });
 
             IMyServiceHavingAspect instance = (IMyServiceHavingAspect) lastEntry
@@ -139,7 +139,7 @@ namespace Solti.Utils.DI.Tests
 
             Collection.Service<IMyService, MyServiceHavingAspect>(lifetime);
 
-            AbstractServiceEntry lastEntry = Collection.LastEntry;
+            AbstractServiceEntry lastEntry = Collection.Last();
             lastEntry.Build(mockBuildContext.Object, new IFactoryVisitor[] { new MergeProxiesVisitor(), new ApplyLifetimeManagerVisitor() });
 
             IMyService instance = (IMyService) lastEntry
@@ -173,7 +173,7 @@ namespace Solti.Utils.DI.Tests
 
             Collection.Factory(i => new Mock<IMyServiceHavingDependantAspect>().Object, lifetime);
 
-            AbstractServiceEntry lastEntry = Collection.LastEntry;
+            AbstractServiceEntry lastEntry = Collection.Last();
             lastEntry.Build(mockBuildContext.Object, new IFactoryVisitor[] { new MergeProxiesVisitor(), new ApplyLifetimeManagerVisitor() });
 
             lastEntry.CreateInstance(mockInjector.Object, out object _);
@@ -202,7 +202,7 @@ namespace Solti.Utils.DI.Tests
 
             Collection.Service<IMyService, MyServiceHavingDependantAspect>(lifetime);
 
-            AbstractServiceEntry lastEntry = Collection.LastEntry;
+            AbstractServiceEntry lastEntry = Collection.Last();
             lastEntry.Build(mockBuildContext.Object, new IFactoryVisitor[] { new MergeProxiesVisitor(), new ApplyLifetimeManagerVisitor() });
 
             lastEntry.CreateInstance(mockInjector.Object, out object _);
@@ -228,7 +228,7 @@ namespace Solti.Utils.DI.Tests
 
             Collection.Service(typeof(IMyGenericServiceHavingAspect<>), typeof(MyGenericService<>), lifetime);
 
-            AbstractServiceEntry lastEntry = Collection.LastEntry;
+            AbstractServiceEntry lastEntry = Collection.Last();
             Assert.That(lastEntry.Factory, Is.Null);
 
             lastEntry = lastEntry.Specialize(typeof(int));
@@ -261,7 +261,7 @@ namespace Solti.Utils.DI.Tests
 
             Collection.Service(typeof(IMyGenericService<>), typeof(MyGenericServiceHavingAspect<>), lifetime);
 
-            AbstractServiceEntry lastEntry = Collection.LastEntry;
+            AbstractServiceEntry lastEntry = Collection.Last();
             Assert.That(lastEntry.Factory, Is.Null);
 
             lastEntry = lastEntry.Specialize(typeof(int));
@@ -303,7 +303,7 @@ namespace Solti.Utils.DI.Tests
 
             Collection.Factory(i => mockService.Object, lifetime);
 
-            AbstractServiceEntry lastEntry = Collection.LastEntry;
+            AbstractServiceEntry lastEntry = Collection.Last();
             lastEntry.Build(mockBuildContext.Object, new IFactoryVisitor[] { new MergeProxiesVisitor(), new ApplyLifetimeManagerVisitor() });
 
             IOrderInspectingService svc = (IOrderInspectingService) lastEntry.CreateInstance(mockInjector.Object, out object _);

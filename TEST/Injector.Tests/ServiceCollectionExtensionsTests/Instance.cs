@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Linq;
 
 using NUnit.Framework;
 
@@ -26,7 +27,7 @@ namespace Solti.Utils.DI.Tests
         public void Instance_ShouldHaveItsOwnLifetime()
         {
             Collection.Instance<IInterface_1>(new Implementation_1_No_Dep());
-            Assert.That(Collection.LastEntry.IsInstance());
+            Assert.That(Collection.Last().IsInstance());
         }
 
         [Test]

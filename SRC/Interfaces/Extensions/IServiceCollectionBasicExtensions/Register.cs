@@ -13,7 +13,7 @@ namespace Solti.Utils.DI.Interfaces
         /// <summary>
         /// Registers a set of services.
         /// </summary>
-        public static IModifiedServiceCollection Register(this IServiceCollection self, IEnumerable<AbstractServiceEntry> entries)
+        public static IServiceCollection Register(this IServiceCollection self, IEnumerable<AbstractServiceEntry> entries)
         {
             if (self is null)
                 throw new ArgumentNullException(nameof(self));
@@ -22,14 +22,16 @@ namespace Solti.Utils.DI.Interfaces
                 throw new ArgumentNullException(nameof(entries));
 
             foreach (AbstractServiceEntry entry in entries)
+            {
                 self.Add(entry);
+            }
 
-            return (IModifiedServiceCollection) self;
+            return self;
         }
 
         /// <summary>
         /// Registers a set of services.
         /// </summary>
-        public static IModifiedServiceCollection Register(this IServiceCollection self, params AbstractServiceEntry[] entries) => self.Register((IEnumerable<AbstractServiceEntry>) entries);
+        public static IServiceCollection Register(this IServiceCollection self, params AbstractServiceEntry[] entries) => self.Register((IEnumerable<AbstractServiceEntry>) entries);
     }
 }
