@@ -136,13 +136,13 @@
     </tbody>
   </table>
   <a id="Solti_Utils_DI_IServiceCollectionAdvancedExtensions_Instance_" data-uid="Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Instance*"></a>
-  <h4 id="Solti_Utils_DI_IServiceCollectionAdvancedExtensions_Instance_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_Object_" data-uid="Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Instance(Solti.Utils.DI.Interfaces.IServiceCollection,System.Type,System.Object)">Instance(IServiceCollection, Type, Object)</h4>
+  <h4 id="Solti_Utils_DI_IServiceCollectionAdvancedExtensions_Instance_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_Object_Solti_Utils_DI_Interfaces_ServiceOptions_" data-uid="Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Instance(Solti.Utils.DI.Interfaces.IServiceCollection,System.Type,System.Object,Solti.Utils.DI.Interfaces.ServiceOptions)">Instance(IServiceCollection, Type, Object, ServiceOptions)</h4>
   <div class="markdown level1 summary"><p>Registers a pre-created instance. Useful to creating &quot;constant&quot; values (e.g. command-line arguments).</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static IServiceCollection Instance(this IServiceCollection self, Type iface, object instance)</code></pre>
+    <pre><code class="lang-csharp hljs">public static IServiceCollection Instance(this IServiceCollection self, Type iface, object instance, ServiceOptions options = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -172,6 +172,12 @@
         <td><p>The pre-created instance to be registered. It can not be null and must implement the <code data-dev-comment-type="paramref" class="paramref">iface</code> interface.</p>
 </td>
       </tr>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.ServiceOptions.html">ServiceOptions</a></td>
+        <td><span class="parametername">options</span></td>
+        <td><p>Options to be assigned to the service being registered.</p>
+</td>
+      </tr>
     </tbody>
   </table>
   <h5 class="returns">Returns</h5>
@@ -190,13 +196,13 @@
     </tbody>
   </table>
   <a id="Solti_Utils_DI_IServiceCollectionAdvancedExtensions_Instance_" data-uid="Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Instance*"></a>
-  <h4 id="Solti_Utils_DI_IServiceCollectionAdvancedExtensions_Instance_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_String_System_Object_" data-uid="Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Instance(Solti.Utils.DI.Interfaces.IServiceCollection,System.Type,System.String,System.Object)">Instance(IServiceCollection, Type, String, Object)</h4>
+  <h4 id="Solti_Utils_DI_IServiceCollectionAdvancedExtensions_Instance_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_String_System_Object_Solti_Utils_DI_Interfaces_ServiceOptions_" data-uid="Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Instance(Solti.Utils.DI.Interfaces.IServiceCollection,System.Type,System.String,System.Object,Solti.Utils.DI.Interfaces.ServiceOptions)">Instance(IServiceCollection, Type, String, Object, ServiceOptions)</h4>
   <div class="markdown level1 summary"><p>Registers a pre-created instance. Useful to creating &quot;constant&quot; values (e.g. command-line arguments).</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static IServiceCollection Instance(this IServiceCollection self, Type iface, string name, object instance)</code></pre>
+    <pre><code class="lang-csharp hljs">public static IServiceCollection Instance(this IServiceCollection self, Type iface, string name, object instance, ServiceOptions options = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -232,6 +238,12 @@
         <td><p>The pre-created instance to be registered. It can not be null and must implement the <code data-dev-comment-type="paramref" class="paramref">iface</code> interface.</p>
 </td>
       </tr>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.ServiceOptions.html">ServiceOptions</a></td>
+        <td><span class="parametername">options</span></td>
+        <td><p>Options to be assigned to the service being registered.</p>
+</td>
+      </tr>
     </tbody>
   </table>
   <h5 class="returns">Returns</h5>
@@ -250,13 +262,13 @@
     </tbody>
   </table>
   <a id="Solti_Utils_DI_IServiceCollectionAdvancedExtensions_Instance_" data-uid="Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Instance*"></a>
-  <h4 id="Solti_Utils_DI_IServiceCollectionAdvancedExtensions_Instance__1_Solti_Utils_DI_Interfaces_IServiceCollection___0_" data-uid="Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Instance``1(Solti.Utils.DI.Interfaces.IServiceCollection,``0)">Instance&lt;TInterface&gt;(IServiceCollection, TInterface)</h4>
+  <h4 id="Solti_Utils_DI_IServiceCollectionAdvancedExtensions_Instance__1_Solti_Utils_DI_Interfaces_IServiceCollection___0_Solti_Utils_DI_Interfaces_ServiceOptions_" data-uid="Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Instance``1(Solti.Utils.DI.Interfaces.IServiceCollection,``0,Solti.Utils.DI.Interfaces.ServiceOptions)">Instance&lt;TInterface&gt;(IServiceCollection, TInterface, ServiceOptions)</h4>
   <div class="markdown level1 summary"><p>Registers a pre-created instance. Useful when creating &quot;constant&quot; values (e.g. from command-line arguments).</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static IServiceCollection Instance&lt;TInterface&gt;(this IServiceCollection self, TInterface instance)
+    <pre><code class="lang-csharp hljs">public static IServiceCollection Instance&lt;TInterface&gt;(this IServiceCollection self, TInterface instance, ServiceOptions options = null)
     where TInterface : class</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
@@ -279,6 +291,12 @@
         <td><span class="xref">TInterface</span></td>
         <td><span class="parametername">instance</span></td>
         <td><p>The pre-created instance to be registered.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.ServiceOptions.html">ServiceOptions</a></td>
+        <td><span class="parametername">options</span></td>
+        <td><p>Options to be assigned to the service being registered.</p>
 </td>
       </tr>
     </tbody>
@@ -315,13 +333,13 @@
     </tbody>
   </table>
   <a id="Solti_Utils_DI_IServiceCollectionAdvancedExtensions_Instance_" data-uid="Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Instance*"></a>
-  <h4 id="Solti_Utils_DI_IServiceCollectionAdvancedExtensions_Instance__1_Solti_Utils_DI_Interfaces_IServiceCollection_System_String___0_" data-uid="Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Instance``1(Solti.Utils.DI.Interfaces.IServiceCollection,System.String,``0)">Instance&lt;TInterface&gt;(IServiceCollection, String, TInterface)</h4>
+  <h4 id="Solti_Utils_DI_IServiceCollectionAdvancedExtensions_Instance__1_Solti_Utils_DI_Interfaces_IServiceCollection_System_String___0_Solti_Utils_DI_Interfaces_ServiceOptions_" data-uid="Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Instance``1(Solti.Utils.DI.Interfaces.IServiceCollection,System.String,``0,Solti.Utils.DI.Interfaces.ServiceOptions)">Instance&lt;TInterface&gt;(IServiceCollection, String, TInterface, ServiceOptions)</h4>
   <div class="markdown level1 summary"><p>Registers a pre-created instance. Useful when creating &quot;constant&quot; values (e.g. from command-line arguments).</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static IServiceCollection Instance&lt;TInterface&gt;(this IServiceCollection self, string name, TInterface instance)
+    <pre><code class="lang-csharp hljs">public static IServiceCollection Instance&lt;TInterface&gt;(this IServiceCollection self, string name, TInterface instance, ServiceOptions options = null)
     where TInterface : class</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
@@ -350,6 +368,12 @@
         <td><span class="xref">TInterface</span></td>
         <td><span class="parametername">instance</span></td>
         <td><p>The pre-created instance to be registered.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.ServiceOptions.html">ServiceOptions</a></td>
+        <td><span class="parametername">options</span></td>
+        <td><p>Options to be assigned to the service being registered.</p>
 </td>
       </tr>
     </tbody>

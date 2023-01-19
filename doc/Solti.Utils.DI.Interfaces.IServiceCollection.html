@@ -54,83 +54,57 @@
   <h5 id="Solti_Utils_DI_Interfaces_IServiceCollection_remarks"><strong>Remarks</strong></h5>
   <div class="markdown level0 remarks"><p>Only one entry can be registered with a given <a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_Interface">Interface</a> and <a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_Name">Name</a> pair.</p>
 </div>
-  <h3 id="properties">Properties
-  </h3>
-  <a id="Solti_Utils_DI_Interfaces_IServiceCollection_ServiceOptions_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollection.ServiceOptions*"></a>
-  <h4 id="Solti_Utils_DI_Interfaces_IServiceCollection_ServiceOptions" data-uid="Solti.Utils.DI.Interfaces.IServiceCollection.ServiceOptions">ServiceOptions</h4>
-  <div class="markdown level1 summary"><p>Defines the general service behavior.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">ServiceOptions ServiceOptions { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Solti.Utils.DI.Interfaces.ServiceOptions.html">ServiceOptions</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
   <h3 id="extensionmethods">Extension Methods</h3>
   <div>
       <a class="xref" href="Solti.Utils.DI.IServiceCollectionAdvancedExtensions.html#Solti_Utils_DI_IServiceCollectionAdvancedExtensions_Decorate__1_Solti_Utils_DI_Interfaces_IServiceCollection_">IServiceCollectionAdvancedExtensions.Decorate&lt;TInterceptor&gt;(IServiceCollection)</a>
   </div>
   <div>
-      <a class="xref" href="Solti.Utils.DI.IServiceCollectionAdvancedExtensions.html#Solti_Utils_DI_IServiceCollectionAdvancedExtensions_Instance_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_String_System_Object_">IServiceCollectionAdvancedExtensions.Instance(IServiceCollection, Type, String, Object)</a>
+      <a class="xref" href="Solti.Utils.DI.IServiceCollectionAdvancedExtensions.html#Solti_Utils_DI_IServiceCollectionAdvancedExtensions_Instance_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_String_System_Object_Solti_Utils_DI_Interfaces_ServiceOptions_">IServiceCollectionAdvancedExtensions.Instance(IServiceCollection, Type, String, Object, ServiceOptions)</a>
   </div>
   <div>
-      <a class="xref" href="Solti.Utils.DI.IServiceCollectionAdvancedExtensions.html#Solti_Utils_DI_IServiceCollectionAdvancedExtensions_Instance_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_Object_">IServiceCollectionAdvancedExtensions.Instance(IServiceCollection, Type, Object)</a>
+      <a class="xref" href="Solti.Utils.DI.IServiceCollectionAdvancedExtensions.html#Solti_Utils_DI_IServiceCollectionAdvancedExtensions_Instance_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_Object_Solti_Utils_DI_Interfaces_ServiceOptions_">IServiceCollectionAdvancedExtensions.Instance(IServiceCollection, Type, Object, ServiceOptions)</a>
   </div>
   <div>
-      <a class="xref" href="Solti.Utils.DI.IServiceCollectionAdvancedExtensions.html#Solti_Utils_DI_IServiceCollectionAdvancedExtensions_Instance__1_Solti_Utils_DI_Interfaces_IServiceCollection_System_String___0_">IServiceCollectionAdvancedExtensions.Instance&lt;TInterface&gt;(IServiceCollection, String, TInterface)</a>
+      <a class="xref" href="Solti.Utils.DI.IServiceCollectionAdvancedExtensions.html#Solti_Utils_DI_IServiceCollectionAdvancedExtensions_Instance__1_Solti_Utils_DI_Interfaces_IServiceCollection_System_String___0_Solti_Utils_DI_Interfaces_ServiceOptions_">IServiceCollectionAdvancedExtensions.Instance&lt;TInterface&gt;(IServiceCollection, String, TInterface, ServiceOptions)</a>
   </div>
   <div>
-      <a class="xref" href="Solti.Utils.DI.IServiceCollectionAdvancedExtensions.html#Solti_Utils_DI_IServiceCollectionAdvancedExtensions_Instance__1_Solti_Utils_DI_Interfaces_IServiceCollection___0_">IServiceCollectionAdvancedExtensions.Instance&lt;TInterface&gt;(IServiceCollection, TInterface)</a>
+      <a class="xref" href="Solti.Utils.DI.IServiceCollectionAdvancedExtensions.html#Solti_Utils_DI_IServiceCollectionAdvancedExtensions_Instance__1_Solti_Utils_DI_Interfaces_IServiceCollection___0_Solti_Utils_DI_Interfaces_ServiceOptions_">IServiceCollectionAdvancedExtensions.Instance&lt;TInterface&gt;(IServiceCollection, TInterface, ServiceOptions)</a>
   </div>
   <div>
       <a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.html#Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Decorate_Solti_Utils_DI_Interfaces_IServiceCollection_System_Linq_Expressions_Expression_Solti_Utils_DI_Interfaces_DecoratorDelegate__">IServiceCollectionBasicExtensions.Decorate(IServiceCollection, Expression&lt;DecoratorDelegate&gt;)</a>
   </div>
   <div>
-      <a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.html#Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Factory_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_String_System_Linq_Expressions_Expression_Solti_Utils_DI_Interfaces_FactoryDelegate__Solti_Utils_DI_Interfaces_LifetimeBase_">IServiceCollectionBasicExtensions.Factory(IServiceCollection, Type, String, Expression&lt;FactoryDelegate&gt;, LifetimeBase)</a>
+      <a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.html#Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Factory_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_String_System_Linq_Expressions_Expression_Solti_Utils_DI_Interfaces_FactoryDelegate__Solti_Utils_DI_Interfaces_LifetimeBase_Solti_Utils_DI_Interfaces_ServiceOptions_">IServiceCollectionBasicExtensions.Factory(IServiceCollection, Type, String, Expression&lt;FactoryDelegate&gt;, LifetimeBase, ServiceOptions)</a>
   </div>
   <div>
-      <a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.html#Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Factory_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_Linq_Expressions_Expression_Solti_Utils_DI_Interfaces_FactoryDelegate__Solti_Utils_DI_Interfaces_LifetimeBase_">IServiceCollectionBasicExtensions.Factory(IServiceCollection, Type, Expression&lt;FactoryDelegate&gt;, LifetimeBase)</a>
+      <a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.html#Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Factory_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_Linq_Expressions_Expression_Solti_Utils_DI_Interfaces_FactoryDelegate__Solti_Utils_DI_Interfaces_LifetimeBase_Solti_Utils_DI_Interfaces_ServiceOptions_">IServiceCollectionBasicExtensions.Factory(IServiceCollection, Type, Expression&lt;FactoryDelegate&gt;, LifetimeBase, ServiceOptions)</a>
   </div>
   <div>
-      <a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.html#Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Factory__1_Solti_Utils_DI_Interfaces_IServiceCollection_System_String_System_Linq_Expressions_Expression_Solti_Utils_DI_Interfaces_FactoryDelegate___0___Solti_Utils_DI_Interfaces_LifetimeBase_">IServiceCollectionBasicExtensions.Factory&lt;TInterface&gt;(IServiceCollection, String, Expression&lt;FactoryDelegate&lt;TInterface&gt;&gt;, LifetimeBase)</a>
+      <a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.html#Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Factory__1_Solti_Utils_DI_Interfaces_IServiceCollection_System_String_System_Linq_Expressions_Expression_Solti_Utils_DI_Interfaces_FactoryDelegate___0___Solti_Utils_DI_Interfaces_LifetimeBase_Solti_Utils_DI_Interfaces_ServiceOptions_">IServiceCollectionBasicExtensions.Factory&lt;TInterface&gt;(IServiceCollection, String, Expression&lt;FactoryDelegate&lt;TInterface&gt;&gt;, LifetimeBase, ServiceOptions)</a>
   </div>
   <div>
-      <a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.html#Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Factory__1_Solti_Utils_DI_Interfaces_IServiceCollection_System_Linq_Expressions_Expression_Solti_Utils_DI_Interfaces_FactoryDelegate___0___Solti_Utils_DI_Interfaces_LifetimeBase_">IServiceCollectionBasicExtensions.Factory&lt;TInterface&gt;(IServiceCollection, Expression&lt;FactoryDelegate&lt;TInterface&gt;&gt;, LifetimeBase)</a>
+      <a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.html#Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Factory__1_Solti_Utils_DI_Interfaces_IServiceCollection_System_Linq_Expressions_Expression_Solti_Utils_DI_Interfaces_FactoryDelegate___0___Solti_Utils_DI_Interfaces_LifetimeBase_Solti_Utils_DI_Interfaces_ServiceOptions_">IServiceCollectionBasicExtensions.Factory&lt;TInterface&gt;(IServiceCollection, Expression&lt;FactoryDelegate&lt;TInterface&gt;&gt;, LifetimeBase, ServiceOptions)</a>
   </div>
   <div>
-      <a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.html#Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Provider_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_String_System_Type_System_Object_Solti_Utils_DI_Interfaces_LifetimeBase_">IServiceCollectionBasicExtensions.Provider(IServiceCollection, Type, String, Type, Object, LifetimeBase)</a>
+      <a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.html#Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Provider_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_String_System_Type_System_Object_Solti_Utils_DI_Interfaces_LifetimeBase_Solti_Utils_DI_Interfaces_ServiceOptions_">IServiceCollectionBasicExtensions.Provider(IServiceCollection, Type, String, Type, Object, LifetimeBase, ServiceOptions)</a>
   </div>
   <div>
-      <a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.html#Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Provider_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_String_System_Type_Solti_Utils_DI_Interfaces_LifetimeBase_">IServiceCollectionBasicExtensions.Provider(IServiceCollection, Type, String, Type, LifetimeBase)</a>
+      <a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.html#Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Provider_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_String_System_Type_Solti_Utils_DI_Interfaces_LifetimeBase_Solti_Utils_DI_Interfaces_ServiceOptions_">IServiceCollectionBasicExtensions.Provider(IServiceCollection, Type, String, Type, LifetimeBase, ServiceOptions)</a>
   </div>
   <div>
-      <a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.html#Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Provider_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_Type_Solti_Utils_DI_Interfaces_LifetimeBase_">IServiceCollectionBasicExtensions.Provider(IServiceCollection, Type, Type, LifetimeBase)</a>
+      <a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.html#Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Provider_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_Type_Solti_Utils_DI_Interfaces_LifetimeBase_Solti_Utils_DI_Interfaces_ServiceOptions_">IServiceCollectionBasicExtensions.Provider(IServiceCollection, Type, Type, LifetimeBase, ServiceOptions)</a>
   </div>
   <div>
-      <a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.html#Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Provider_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_Type_System_Object_Solti_Utils_DI_Interfaces_LifetimeBase_">IServiceCollectionBasicExtensions.Provider(IServiceCollection, Type, Type, Object, LifetimeBase)</a>
+      <a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.html#Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Provider_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_Type_System_Object_Solti_Utils_DI_Interfaces_LifetimeBase_Solti_Utils_DI_Interfaces_ServiceOptions_">IServiceCollectionBasicExtensions.Provider(IServiceCollection, Type, Type, Object, LifetimeBase, ServiceOptions)</a>
   </div>
   <div>
-      <a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.html#Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Provider__2_Solti_Utils_DI_Interfaces_IServiceCollection_System_String_Solti_Utils_DI_Interfaces_LifetimeBase_">IServiceCollectionBasicExtensions.Provider&lt;TInterface, TProvider&gt;(IServiceCollection, String, LifetimeBase)</a>
+      <a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.html#Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Provider__2_Solti_Utils_DI_Interfaces_IServiceCollection_System_String_Solti_Utils_DI_Interfaces_LifetimeBase_Solti_Utils_DI_Interfaces_ServiceOptions_">IServiceCollectionBasicExtensions.Provider&lt;TInterface, TProvider&gt;(IServiceCollection, String, LifetimeBase, ServiceOptions)</a>
   </div>
   <div>
-      <a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.html#Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Provider__2_Solti_Utils_DI_Interfaces_IServiceCollection_Solti_Utils_DI_Interfaces_LifetimeBase_">IServiceCollectionBasicExtensions.Provider&lt;TInterface, TProvider&gt;(IServiceCollection, LifetimeBase)</a>
+      <a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.html#Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Provider__2_Solti_Utils_DI_Interfaces_IServiceCollection_Solti_Utils_DI_Interfaces_LifetimeBase_Solti_Utils_DI_Interfaces_ServiceOptions_">IServiceCollectionBasicExtensions.Provider&lt;TInterface, TProvider&gt;(IServiceCollection, LifetimeBase, ServiceOptions)</a>
   </div>
   <div>
-      <a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.html#Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Provider__2_Solti_Utils_DI_Interfaces_IServiceCollection_System_Object_Solti_Utils_DI_Interfaces_LifetimeBase_">IServiceCollectionBasicExtensions.Provider&lt;TInterface, TProvider&gt;(IServiceCollection, Object, LifetimeBase)</a>
+      <a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.html#Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Provider__2_Solti_Utils_DI_Interfaces_IServiceCollection_System_Object_Solti_Utils_DI_Interfaces_LifetimeBase_Solti_Utils_DI_Interfaces_ServiceOptions_">IServiceCollectionBasicExtensions.Provider&lt;TInterface, TProvider&gt;(IServiceCollection, Object, LifetimeBase, ServiceOptions)</a>
   </div>
   <div>
       <a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.html#Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Register_Solti_Utils_DI_Interfaces_IServiceCollection_System_Collections_Generic_IEnumerable_Solti_Utils_DI_Interfaces_AbstractServiceEntry__">IServiceCollectionBasicExtensions.Register(IServiceCollection, IEnumerable&lt;AbstractServiceEntry&gt;)</a>
@@ -151,28 +125,28 @@
       <a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.html#Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Remove__1_Solti_Utils_DI_Interfaces_IServiceCollection_">IServiceCollectionBasicExtensions.Remove&lt;TInterface&gt;(IServiceCollection)</a>
   </div>
   <div>
-      <a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.html#Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Service_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_String_System_Type_Solti_Utils_DI_Interfaces_LifetimeBase_">IServiceCollectionBasicExtensions.Service(IServiceCollection, Type, String, Type, LifetimeBase)</a>
+      <a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.html#Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Service_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_String_System_Type_Solti_Utils_DI_Interfaces_LifetimeBase_Solti_Utils_DI_Interfaces_ServiceOptions_">IServiceCollectionBasicExtensions.Service(IServiceCollection, Type, String, Type, LifetimeBase, ServiceOptions)</a>
   </div>
   <div>
-      <a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.html#Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Service_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_String_System_Type_System_Object_Solti_Utils_DI_Interfaces_LifetimeBase_">IServiceCollectionBasicExtensions.Service(IServiceCollection, Type, String, Type, Object, LifetimeBase)</a>
+      <a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.html#Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Service_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_String_System_Type_System_Object_Solti_Utils_DI_Interfaces_LifetimeBase_Solti_Utils_DI_Interfaces_ServiceOptions_">IServiceCollectionBasicExtensions.Service(IServiceCollection, Type, String, Type, Object, LifetimeBase, ServiceOptions)</a>
   </div>
   <div>
-      <a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.html#Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Service_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_Type_Solti_Utils_DI_Interfaces_LifetimeBase_">IServiceCollectionBasicExtensions.Service(IServiceCollection, Type, Type, LifetimeBase)</a>
+      <a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.html#Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Service_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_Type_Solti_Utils_DI_Interfaces_LifetimeBase_Solti_Utils_DI_Interfaces_ServiceOptions_">IServiceCollectionBasicExtensions.Service(IServiceCollection, Type, Type, LifetimeBase, ServiceOptions)</a>
   </div>
   <div>
-      <a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.html#Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Service_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_Type_System_Object_Solti_Utils_DI_Interfaces_LifetimeBase_">IServiceCollectionBasicExtensions.Service(IServiceCollection, Type, Type, Object, LifetimeBase)</a>
+      <a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.html#Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Service_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_Type_System_Object_Solti_Utils_DI_Interfaces_LifetimeBase_Solti_Utils_DI_Interfaces_ServiceOptions_">IServiceCollectionBasicExtensions.Service(IServiceCollection, Type, Type, Object, LifetimeBase, ServiceOptions)</a>
   </div>
   <div>
-      <a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.html#Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Service__2_Solti_Utils_DI_Interfaces_IServiceCollection_Solti_Utils_DI_Interfaces_LifetimeBase_">IServiceCollectionBasicExtensions.Service&lt;TInterface, TImplementation&gt;(IServiceCollection, LifetimeBase)</a>
+      <a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.html#Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Service__2_Solti_Utils_DI_Interfaces_IServiceCollection_Solti_Utils_DI_Interfaces_LifetimeBase_Solti_Utils_DI_Interfaces_ServiceOptions_">IServiceCollectionBasicExtensions.Service&lt;TInterface, TImplementation&gt;(IServiceCollection, LifetimeBase, ServiceOptions)</a>
   </div>
   <div>
-      <a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.html#Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Service__2_Solti_Utils_DI_Interfaces_IServiceCollection_System_Object_Solti_Utils_DI_Interfaces_LifetimeBase_">IServiceCollectionBasicExtensions.Service&lt;TInterface, TImplementation&gt;(IServiceCollection, Object, LifetimeBase)</a>
+      <a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.html#Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Service__2_Solti_Utils_DI_Interfaces_IServiceCollection_System_Object_Solti_Utils_DI_Interfaces_LifetimeBase_Solti_Utils_DI_Interfaces_ServiceOptions_">IServiceCollectionBasicExtensions.Service&lt;TInterface, TImplementation&gt;(IServiceCollection, Object, LifetimeBase, ServiceOptions)</a>
   </div>
   <div>
-      <a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.html#Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Service__2_Solti_Utils_DI_Interfaces_IServiceCollection_System_String_Solti_Utils_DI_Interfaces_LifetimeBase_">IServiceCollectionBasicExtensions.Service&lt;TInterface, TImplementation&gt;(IServiceCollection, String, LifetimeBase)</a>
+      <a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.html#Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Service__2_Solti_Utils_DI_Interfaces_IServiceCollection_System_String_Solti_Utils_DI_Interfaces_LifetimeBase_Solti_Utils_DI_Interfaces_ServiceOptions_">IServiceCollectionBasicExtensions.Service&lt;TInterface, TImplementation&gt;(IServiceCollection, String, LifetimeBase, ServiceOptions)</a>
   </div>
   <div>
-      <a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.html#Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Service__2_Solti_Utils_DI_Interfaces_IServiceCollection_System_String_System_Object_Solti_Utils_DI_Interfaces_LifetimeBase_">IServiceCollectionBasicExtensions.Service&lt;TInterface, TImplementation&gt;(IServiceCollection, String, Object, LifetimeBase)</a>
+      <a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.html#Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Service__2_Solti_Utils_DI_Interfaces_IServiceCollection_System_String_System_Object_Solti_Utils_DI_Interfaces_LifetimeBase_Solti_Utils_DI_Interfaces_ServiceOptions_">IServiceCollectionBasicExtensions.Service&lt;TInterface, TImplementation&gt;(IServiceCollection, String, Object, LifetimeBase, ServiceOptions)</a>
   </div>
 </article>
           </div>
