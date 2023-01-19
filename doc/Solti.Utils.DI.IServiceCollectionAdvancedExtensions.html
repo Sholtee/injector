@@ -59,13 +59,13 @@
   <h3 id="methods">Methods
   </h3>
   <a id="Solti_Utils_DI_IServiceCollectionAdvancedExtensions_Decorate_" data-uid="Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Decorate*"></a>
-  <h4 id="Solti_Utils_DI_IServiceCollectionAdvancedExtensions_Decorate__1_Solti_Utils_DI_Interfaces_IModifiedServiceCollection_" data-uid="Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Decorate``1(Solti.Utils.DI.Interfaces.IModifiedServiceCollection)">Decorate&lt;TInterceptor&gt;(IModifiedServiceCollection)</h4>
+  <h4 id="Solti_Utils_DI_IServiceCollectionAdvancedExtensions_Decorate__1_Solti_Utils_DI_Interfaces_IServiceCollection_" data-uid="Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Decorate``1(Solti.Utils.DI.Interfaces.IServiceCollection)">Decorate&lt;TInterceptor&gt;(IServiceCollection)</h4>
   <div class="markdown level1 summary"><p>Hooks into the instantiating process to let you decorate the original service. Useful when you want to add additional functionality (e.g. parameter validation).</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static IModifiedServiceCollection Decorate&lt;TInterceptor&gt;(this IModifiedServiceCollection self)
+    <pre><code class="lang-csharp hljs">public static IServiceCollection Decorate&lt;TInterceptor&gt;(this IServiceCollection self)
     where TInterceptor : IInterfaceInterceptor</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
@@ -79,7 +79,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Solti.Utils.DI.Interfaces.IModifiedServiceCollection.html">IModifiedServiceCollection</a></td>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollection.html">IServiceCollection</a></td>
         <td><span class="parametername">self</span></td>
         <td><p>The target <a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollection.html">IServiceCollection</a>.</p>
 </td>
@@ -96,7 +96,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Solti.Utils.DI.Interfaces.IModifiedServiceCollection.html">IModifiedServiceCollection</a></td>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollection.html">IServiceCollection</a></td>
         <td></td>
       </tr>
     </tbody>
@@ -116,7 +116,7 @@
       </tr>
     </tbody>
   </table>
-  <h5 id="Solti_Utils_DI_IServiceCollectionAdvancedExtensions_Decorate__1_Solti_Utils_DI_Interfaces_IModifiedServiceCollection__remarks">Remarks</h5>
+  <h5 id="Solti_Utils_DI_IServiceCollectionAdvancedExtensions_Decorate__1_Solti_Utils_DI_Interfaces_IServiceCollection__remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>You can&apos;t create proxies against instances and open generic services. A service can be decorated multiple times.</p>
 </div>
   <h5 class="exceptions">Exceptions</h5>
@@ -142,7 +142,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static IModifiedServiceCollection Instance(this IServiceCollection self, Type iface, object instance)</code></pre>
+    <pre><code class="lang-csharp hljs">public static IServiceCollection Instance(this IServiceCollection self, Type iface, object instance)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -184,7 +184,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Solti.Utils.DI.Interfaces.IModifiedServiceCollection.html">IModifiedServiceCollection</a></td>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollection.html">IServiceCollection</a></td>
         <td></td>
       </tr>
     </tbody>
@@ -196,7 +196,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static IModifiedServiceCollection Instance(this IServiceCollection self, Type iface, string name, object instance)</code></pre>
+    <pre><code class="lang-csharp hljs">public static IServiceCollection Instance(this IServiceCollection self, Type iface, string name, object instance)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -244,7 +244,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Solti.Utils.DI.Interfaces.IModifiedServiceCollection.html">IModifiedServiceCollection</a></td>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollection.html">IServiceCollection</a></td>
         <td></td>
       </tr>
     </tbody>
@@ -256,7 +256,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static IModifiedServiceCollection Instance&lt;TInterface&gt;(this IServiceCollection self, TInterface instance)
+    <pre><code class="lang-csharp hljs">public static IServiceCollection Instance&lt;TInterface&gt;(this IServiceCollection self, TInterface instance)
     where TInterface : class</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
@@ -293,7 +293,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Solti.Utils.DI.Interfaces.IModifiedServiceCollection.html">IModifiedServiceCollection</a></td>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollection.html">IServiceCollection</a></td>
         <td></td>
       </tr>
     </tbody>
@@ -321,7 +321,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static IModifiedServiceCollection Instance&lt;TInterface&gt;(this IServiceCollection self, string name, TInterface instance)
+    <pre><code class="lang-csharp hljs">public static IServiceCollection Instance&lt;TInterface&gt;(this IServiceCollection self, string name, TInterface instance)
     where TInterface : class</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
@@ -364,7 +364,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Solti.Utils.DI.Interfaces.IModifiedServiceCollection.html">IModifiedServiceCollection</a></td>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollection.html">IServiceCollection</a></td>
         <td></td>
       </tr>
     </tbody>
