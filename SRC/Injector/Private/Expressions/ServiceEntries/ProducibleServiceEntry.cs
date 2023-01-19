@@ -8,11 +8,19 @@ using System.Linq.Expressions;
 
 namespace Solti.Utils.DI.Internals
 {
+    using Interfaces;
+
     public abstract partial class ProducibleServiceEntry
     {
         /// <inheritdoc/>
         public override Expression CreateLifetimeManager(Expression getService, ParameterExpression scope, ParameterExpression disposable)
         {
+            if (Options.DisposalMode is ServiceDisposalMode.Suppress)
+                return getService;
+
+            if (Options.DisposalMode is ServiceDisposalMode.Default && !typeof(IDisposable).IsAssignableFrom(Interface) && ! typeof(IAsyncDisposable).IsAssignableFrom(Interface))
+                return getService;
+
             //
             // disposable = service as IDisposable ?? (object?) (service as IAsyncDisposable);
             // return service;

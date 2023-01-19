@@ -14,7 +14,7 @@ namespace Solti.Utils.DI.Internals
 
     internal sealed class PooledLifetime : Lifetime
     {
-        private AbstractServiceEntry GetPoolService(PooledServiceEntry entry, ServiceOptions serviceOptions) => new SingletonServiceEntry
+        private AbstractServiceEntry GetPoolService(PooledServiceEntry entry) => new SingletonServiceEntry
         (
             entry.Interface.IsGenericTypeDefinition
                 ? typeof(IPool<>)
@@ -24,7 +24,7 @@ namespace Solti.Utils.DI.Internals
                 ? typeof(PoolService<>)
                 : typeof(PoolService<>).MakeGenericType(entry.Interface),
             new { capacity = Capacity, name = entry.Name },
-            serviceOptions with { SupportAspects = false } // IPool<> doesn't use any aspects
+            ServiceOptions.Default with { SupportAspects = false }
         );
 
         public PooledLifetime() : base(precedence: 20) { }
@@ -39,7 +39,7 @@ namespace Solti.Utils.DI.Internals
                 serviceOptions ?? throw new ArgumentNullException(nameof(serviceOptions))
             );
 
-            yield return GetPoolService(entry, serviceOptions);
+            yield return GetPoolService(entry);
             yield return entry;
         }
 
@@ -54,7 +54,7 @@ namespace Solti.Utils.DI.Internals
                 serviceOptions ?? throw new ArgumentNullException(nameof(serviceOptions))
             );
 
-            yield return GetPoolService(entry, serviceOptions);
+            yield return GetPoolService(entry);
             yield return entry;
         }
 
@@ -68,7 +68,7 @@ namespace Solti.Utils.DI.Internals
                 serviceOptions ?? throw new ArgumentNullException(nameof(serviceOptions))
             );
 
-            yield return GetPoolService(entry, serviceOptions);
+            yield return GetPoolService(entry);
             yield return entry;
         }
 
