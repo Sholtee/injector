@@ -15,6 +15,6 @@ namespace Solti.Utils.DI
         /// <summary>
         /// Creates a new <see cref="IServiceCollection"/> instance.
         /// </summary>
-        public static IServiceCollection Create(ServiceOptions? serviceOptions = null) => new Internals.ServiceCollection(serviceOptions);
+        public static IServiceCollection Create() => new Internals.ServiceCollection();
     }
 }

@@ -13,7 +13,7 @@ namespace Solti.Utils.DI.Internals
 
     internal sealed class InstanceServiceEntry : SingletonServiceEntry
     {
-        public InstanceServiceEntry(Type iface, string? name, object instance, ServiceOptions options) : base(iface, name, (_, _) => instance, options with { SupportAspects = false })
+        public InstanceServiceEntry(Type iface, string? name, object instance, ServiceOptions options) : base(iface, name, (_, _) => instance, options)
         {
             if (instance is null)
                 throw new ArgumentNullException(nameof(instance));

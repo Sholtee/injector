@@ -26,17 +26,14 @@ namespace Solti.Utils.DI.Internals
             base.Add(item);
         }
 
-        public ServiceCollection(ServiceOptions? serviceOptions = null) : base()
-            => ServiceOptions = serviceOptions ?? ServiceOptions.Default;
+        public ServiceCollection() { }
 
-        public ServiceCollection(IServiceCollection src) : this(src.ServiceOptions)
+        public ServiceCollection(IServiceCollection src)
         {
             foreach (AbstractServiceEntry entry in src)
             {
                 Add(entry);
             }
         }
-
-        public ServiceOptions ServiceOptions { get; }
     }
 }

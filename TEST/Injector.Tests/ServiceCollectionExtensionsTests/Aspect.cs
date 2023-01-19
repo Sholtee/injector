@@ -23,13 +23,7 @@ namespace Solti.Utils.DI.Tests
         [Test]
         public void Aspects_MayBeDisabled([ValueSource(nameof(Lifetimes))] Lifetime lifetime)
         {
-            Collection = new ServiceCollection
-            (
-                new ServiceOptions
-                {
-                    SupportAspects = false
-                }
-            );
+            Collection = new ServiceCollection();
 
             var mockInjector = new Mock<IInstanceFactory>(MockBehavior.Strict);
             mockInjector
@@ -44,7 +38,7 @@ namespace Solti.Utils.DI.Tests
                 .Setup(ctx => ctx.AssignSlot())
                 .Returns(0);
 
-            Collection.Service<IMyServiceHavingAspect, MyService>(lifetime);
+            Collection.Service<IMyServiceHavingAspect, MyService>(lifetime, ServiceOptions.Default with { SupportAspects = false});
 
             AbstractServiceEntry lastEntry = Collection.Last();
             lastEntry.Build(mockBuildContext.Object, new IFactoryVisitor[] { new MergeProxiesVisitor(), new ApplyLifetimeManagerVisitor() });
@@ -58,13 +52,7 @@ namespace Solti.Utils.DI.Tests
         [Test]
         public void Aspects_MayBeDisabled_GenericCase([ValueSource(nameof(Lifetimes))] Lifetime lifetime)
         {
-            Collection = new ServiceCollection
-            (
-                new ServiceOptions
-                {
-                    SupportAspects = false
-                }
-            );
+            Collection = new ServiceCollection();
 
             var mockInjector = new Mock<IInstanceFactory>(MockBehavior.Strict);
             mockInjector
@@ -79,7 +67,7 @@ namespace Solti.Utils.DI.Tests
                 .Setup(ctx => ctx.AssignSlot())
                 .Returns(0);
 
-            Collection.Service(typeof(IMyGenericServiceHavingAspect<>), typeof(MyGenericService<>), lifetime);
+            Collection.Service(typeof(IMyGenericServiceHavingAspect<>), typeof(MyGenericService<>), lifetime, ServiceOptions.Default with { SupportAspects = false });
 
             AbstractServiceEntry lastEntry = Collection.Last().Specialize(typeof(int));
             lastEntry.Build(mockBuildContext.Object, new IFactoryVisitor[] { new MergeProxiesVisitor(), new ApplyLifetimeManagerVisitor() });
@@ -278,7 +266,7 @@ namespace Solti.Utils.DI.Tests
 
         [Test]
         public void Aspects_ShouldThrowOnInstances() =>
-            Assert.Throws<NotSupportedException>(() => Collection.Instance<IMyServiceHavingAspect>(new MyService()).Decorate((_, _, _) => null), Resources.DECORATING_NOT_SUPPORTED);
+            Assert.Throws<NotSupportedException>(() => Collection.Instance<IMyServiceHavingAspect>(new MyService()), Resources.DECORATING_NOT_SUPPORTED);
 
         [Test]
         public void Aspects_ApplyingAspectsShouldBeSequential([ValueSource(nameof(Lifetimes))] Lifetime lifetime)

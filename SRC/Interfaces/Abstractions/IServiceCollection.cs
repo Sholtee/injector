@@ -13,9 +13,5 @@ namespace Solti.Utils.DI.Interfaces
     /// <remarks>Only one entry can be registered with a given <see cref="AbstractServiceEntry.Interface"/> and <see cref="AbstractServiceEntry.Name"/> pair.</remarks>
     public interface IServiceCollection : ICollection<AbstractServiceEntry>
     {
-        /// <summary>
-        /// Defines the general service behavior.
-        /// </summary>
-        ServiceOptions ServiceOptions { get; }
     }
 }

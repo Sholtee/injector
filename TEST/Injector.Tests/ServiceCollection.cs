@@ -27,7 +27,7 @@ namespace Solti.Utils.DI.Internals.Tests
         [Test]
         public void Add_ShouldExpandTheCollection()
         {
-            AbstractServiceEntry entry = new TransientServiceEntry(typeof(IMyService), null, typeof(MyService), Collection.ServiceOptions);
+            AbstractServiceEntry entry = new TransientServiceEntry(typeof(IMyService), null, typeof(MyService), ServiceOptions.Default);
             Collection.Add(entry);
 
             Assert.That(Collection.Count, Is.EqualTo(1));
@@ -43,18 +43,18 @@ namespace Solti.Utils.DI.Internals.Tests
         [Test]
         public void Add_ShouldThrowOnDuplicateServiceRegistration()
         {
-            AbstractServiceEntry entry = new TransientServiceEntry(typeof(IMyService), null, typeof(MyService), Collection.ServiceOptions);
+            AbstractServiceEntry entry = new TransientServiceEntry(typeof(IMyService), null, typeof(MyService), ServiceOptions.Default);
             Collection.Add(entry);
 
             Assert.Throws<ServiceAlreadyRegisteredException>(() => Collection.Add(entry));
-            Assert.Throws<ServiceAlreadyRegisteredException>(() => Collection.Add(new TransientServiceEntry(typeof(IMyService), null, typeof(MyService), Collection.ServiceOptions)));
-            Assert.Throws<ServiceAlreadyRegisteredException>(() => Collection.Add(new SingletonServiceEntry(typeof(IMyService), null, typeof(MyService), Collection.ServiceOptions)));
+            Assert.Throws<ServiceAlreadyRegisteredException>(() => Collection.Add(new TransientServiceEntry(typeof(IMyService), null, typeof(MyService), ServiceOptions.Default)));
+            Assert.Throws<ServiceAlreadyRegisteredException>(() => Collection.Add(new SingletonServiceEntry(typeof(IMyService), null, typeof(MyService), ServiceOptions.Default)));
         }
 
         [Test]
         public void Clear_ShouldEmptyTheCollection()
         {
-            Collection.Add(new TransientServiceEntry(typeof(IMyService), null, typeof(MyService), Collection.ServiceOptions));
+            Collection.Add(new TransientServiceEntry(typeof(IMyService), null, typeof(MyService), ServiceOptions.Default));
             Collection.Clear();
 
             Assert.That(Collection.Count, Is.EqualTo(0));

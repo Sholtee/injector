@@ -3,7 +3,6 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
-#pragma warning disable RS0026 // Do not add multiple public overloads with optional parameters
 using System;
 
 namespace Solti.Utils.DI
@@ -21,14 +20,13 @@ namespace Solti.Utils.DI
         /// </summary>
         /// <param name="registerServices">The callback to register services.</param>
         /// <param name="scopeOptions">The <see cref="ScopeOptions"/> to be applied against all the created scopes.</param>
-        /// <param name="serviceOptions">The <see cref="ServiceOptions"/> to be applied against all the registered services.</param>
         /// <param name="tag">Optional user defined data to be bound to the root.</param>
-        public static IScopeFactory Create(Action<IServiceCollection> registerServices, ScopeOptions? scopeOptions = null, ServiceOptions? serviceOptions = null, object? tag = null)
+        public static IScopeFactory Create(Action<IServiceCollection> registerServices, ScopeOptions? scopeOptions = null, object? tag = null)
         {
             if (registerServices is null)
                 throw new ArgumentNullException(nameof(registerServices));
 
-            IServiceCollection services = ServiceCollection.Create(serviceOptions);
+            IServiceCollection services = ServiceCollection.Create();
             registerServices(services);
 
             return Create(services, scopeOptions, tag);

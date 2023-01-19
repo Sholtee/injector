@@ -42,7 +42,7 @@ namespace Solti.Utils.DI
                     {
                         typeof(TInterceptor)
                     },
-                    self.ServiceOptions.ProxyEngine ?? ProxyEngine.Instance
+                    pse.Options.ProxyEngine ?? ProxyEngine.Instance
                 )
             );
 
