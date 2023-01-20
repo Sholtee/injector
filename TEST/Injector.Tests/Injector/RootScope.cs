@@ -24,7 +24,7 @@ namespace Solti.Utils.DI.Tests
         }
 
         [Test]
-        public void Injector_Create_ShouldThrowOnInvalidDisposableMode([ValueSource(nameof(Lifetimes))] Lifetime lifetime)
+        public void Injector_Create_ShouldThrowOnInvalidDisposalMode([ValueSource(nameof(Lifetimes))] Lifetime lifetime)
         {
             Assert.Throws<NotSupportedException>
             (
