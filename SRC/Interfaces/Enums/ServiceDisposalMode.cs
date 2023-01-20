@@ -23,7 +23,7 @@ namespace Solti.Utils.DI.Interfaces
         Force,
 
         /// <summary>
-        /// No disosal takes place.
+        /// No disposal takes place.
         /// </summary>
         Suppress
     }
