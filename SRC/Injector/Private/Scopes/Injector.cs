@@ -103,8 +103,8 @@ namespace Solti.Utils.DI.Internals
             ServiceOptions suppressDispose = ServiceOptions.Default with { DisposalMode = ServiceDisposalMode.Suppress };
             services
                 .Factory<IInjector>(static i => i, Lifetime.Scoped, suppressDispose)
-                .Factory<IInstanceFactory>(static i => (IInstanceFactory)i, Lifetime.Scoped, suppressDispose)
-                .Factory<IScopeFactory>(static i => (IScopeFactory)i, Lifetime.Singleton, suppressDispose) // create SF from the root only
+                .Factory<IInstanceFactory>(static i => (IInstanceFactory) i, Lifetime.Scoped, suppressDispose)
+                .Factory<IScopeFactory>(static i => (IScopeFactory) i, Lifetime.Singleton, suppressDispose) // create SF from the root only
                 .Factory<IServiceResolver>(_ => ServiceResolver, Lifetime.Singleton, suppressDispose)
                 .Service(typeof(IEnumerable<>), typeof(ServiceEnumerator<>), Lifetime.Scoped)
 #if DEBUG
