@@ -15,41 +15,47 @@ namespace Solti.Utils.DI.Internals
         /// <inheritdoc/>
         public override Expression CreateLifetimeManager(Expression getService, ParameterExpression scope, ParameterExpression disposable)
         {
-            if (Options.DisposalMode is ServiceDisposalMode.Suppress)
-                return getService;
+            switch (Options.DisposalMode)
+            {
+                case ServiceDisposalMode.Default:
+                    if (typeof(IDisposable).IsAssignableFrom(Interface) || typeof(IAsyncDisposable).IsAssignableFrom(Interface))
+                        goto case ServiceDisposalMode.Force;
+                    return getService;
+                case ServiceDisposalMode.Force:
+                    //
+                    // disposable = service as IDisposable ?? (object?) (service as IAsyncDisposable);
+                    // return service;
+                    //
 
-            if (Options.DisposalMode is ServiceDisposalMode.Default && !typeof(IDisposable).IsAssignableFrom(Interface) && ! typeof(IAsyncDisposable).IsAssignableFrom(Interface))
-                return getService;
+                    ParameterExpression service = Expression.Parameter(getService.Type, nameof(service));
 
-            //
-            // disposable = service as IDisposable ?? (object?) (service as IAsyncDisposable);
-            // return service;
-            //
-
-            ParameterExpression service = Expression.Parameter(getService.Type, nameof(service));
-
-            return Expression.Block
-            (
-                type: typeof(object),
-                variables: new[] { service },
-                Expression.Assign(service, getService),
-                Expression.Assign
-                (
-                    disposable,
-                    Expression.Condition
+                    return Expression.Block
                     (
-                        Expression.Or
+                        type: typeof(object),
+                        variables: new[] { service },
+                        Expression.Assign(service, getService),
+                        Expression.Assign
                         (
-                            Expression.TypeIs(service, typeof(IDisposable)),
-                            Expression.TypeIs(service, typeof(IAsyncDisposable))
+                            disposable,
+                            Expression.Condition
+                            (
+                                Expression.Or
+                                (
+                                    Expression.TypeIs(service, typeof(IDisposable)),
+                                    Expression.TypeIs(service, typeof(IAsyncDisposable))
+                                ),
+                                service,
+                                Expression.Default(disposable.Type),
+                                disposable.Type
+                            )
                         ),
-                        service,
-                        Expression.Default(disposable.Type),
-                        disposable.Type
-                    )
-                ),
-                service
-            );
+                        service
+                    );
+                case ServiceDisposalMode.Suppress:
+                    return getService;
+                default:
+                    throw new NotSupportedException();
+            }
         }
     }
 }
