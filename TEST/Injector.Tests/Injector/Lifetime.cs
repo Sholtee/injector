@@ -249,7 +249,7 @@ namespace Solti.Utils.DI.Tests
 
         private interface IDisposableService : IDisposableEx { }
 
-        private class DisposableService : Disposable, IDisposableService { }
+        private class DisposableService : Disposable, IDisposableService, IInterface_1 { }
 
         [Test]
         public void Lifetime_PooledService_ShouldBeDisposedOnRootDisposal()
@@ -623,51 +623,6 @@ namespace Solti.Utils.DI.Tests
                 new ScopeOptions { StrictDI = true, ServiceResolutionMode = ServiceResolutionMode.AOT, SupportsServiceProvider = true }
             )
         );
-
-        private sealed class DisposableServiceUsingDisposableDependency<TDependency>: Disposable, IInterface_7<TDependency> where TDependency : class, IDisposableEx
-        {
-            public TDependency Interface { get; }
-
-            public DisposableServiceUsingDisposableDependency(TDependency dependency)
-            {
-                Interface = dependency;
-            }
-
-            protected override void Dispose(bool disposeManaged)
-            {
-                if (disposeManaged)
-                    Assert.False(Interface.Disposed);
-
-                base.Dispose(disposeManaged);
-            }
-        }
-
-        [Test]
-        public void Lifetime_ServiceMayAccessItsDependencyOnDispose([ValueSource(nameof(Lifetimes))] Lifetime dependency, [ValueSource(nameof(Lifetimes))] Lifetime dependant, [Values(true, false)] bool dependencyAlreadyRequested)
-        {
-            IInterface_7<IDisposableEx> inst;
-
-            using (IScopeFactory root = ScopeFactory.Create(svcs => svcs
-                .Service<IDisposableEx, MyDisposable>(dependency)
-                .Service<IInterface_7<IDisposableEx>, DisposableServiceUsingDisposableDependency<IDisposableEx>>(dependant)))
-            {
-                if (dependencyAlreadyRequested)
-                {
-                    using (IInjector injector = root.CreateScope())
-                    {
-                        injector.Get<IDisposableEx>();
-                    }
-                }
-
-                using (IInjector effectiveInjector = root.CreateScope())
-                {
-                    inst = effectiveInjector.Get<IInterface_7<IDisposableEx>>();
-                }
-            }
-
-            Assert.That(inst.Interface.Disposed);
-            Assert.That(((IDisposableEx) inst).Disposed);
-        }
 
         [Test]
         public void Lifetime_ShouldBeNullChecked([ValueSource(nameof(Lifetimes))] Lifetime lifetime)

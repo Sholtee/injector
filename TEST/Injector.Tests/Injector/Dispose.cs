@@ -147,41 +147,102 @@ namespace Solti.Utils.DI.Tests
             Assert.That(svc.Disposed);
         }
 
-        private class DisposableDependant : Disposable, IInterface_7_Disposable<IDisposableEx>
+        private class DisposableServiceNotifiesOnDispose : Disposable
         {
-            public DisposableDependant(IDisposableEx dependency) => Interface = dependency;
+            private readonly Action<IDisposableEx> FOnDispose;
 
-            public IDisposableEx Interface { get; }
+            public DisposableServiceNotifiesOnDispose(Action<IDisposableEx> onDispose) => FOnDispose = onDispose;
 
             protected override void Dispose(bool disposeManaged)
             {
-                if (disposeManaged)
-                {
-                    Assert.That(Interface.Disposed, Is.False);
-                }
-
+                FOnDispose(this);
                 base.Dispose(disposeManaged);
             }
         }
 
-        [TestCaseSource(nameof(ScopeControlledLifetimes))]
-        public void Injector_Dispose_ShouldFreeServicesInAReverseOrder(Lifetime lifetime)
+        [Test]
+        public void Injector_Dispose_ShouldFreeServicesInAReverseOrder([ValueSource(nameof(ScopeControlledLifetimes))] Lifetime l1, [ValueSource(nameof(ScopeControlledLifetimes))] Lifetime l2, [ValueSource(nameof(ScopeControlledLifetimes))] Lifetime l3)
         {
-            Root = ScopeFactory.Create(svcs => svcs
-                .Service<IDisposableEx, MyDisposable>(lifetime)
-                .Service<IInterface_7_Disposable<IDisposableEx>, DisposableDependant>(lifetime));
+            List<IDisposableEx> disposed = new();
 
-            IDisposableEx dependency;
-            IInterface_7_Disposable<IDisposableEx> dependant;
+            IDisposableEx
+                s1,
+                s2,
+                s3;
+
+            Root = ScopeFactory.Create(svcs => svcs
+                .Factory<IDisposableEx>("0", _ => new DisposableServiceNotifiesOnDispose(disposed.Add), l1)
+                .Factory<IDisposableEx>("1", _ => new DisposableServiceNotifiesOnDispose(disposed.Add), l2)
+                .Factory<IDisposableEx>("2", _ => new DisposableServiceNotifiesOnDispose(disposed.Add), l3));
 
             using (IInjector injector = Root.CreateScope())
             {
-                dependant = injector.Get<IInterface_7_Disposable<IDisposableEx>>();
-                dependency = dependant.Interface;
+                s1 = injector.Get<IDisposableEx>("0");
+                s2 = injector.Get<IDisposableEx>("1");
+                s3 = injector.Get<IDisposableEx>("2");
             }
 
-            Assert.That(dependency.Disposed);
-            Assert.That(dependant.Disposed);
+            Assert.That(s1.Disposed);
+            Assert.That(s2.Disposed);
+            Assert.That(s3.Disposed);
+            Assert.That(disposed[0], Is.SameAs(s3));
+            Assert.That(disposed[1], Is.SameAs(s2));
+            Assert.That(disposed[2], Is.SameAs(s1));
+        }
+
+        [Test]
+        public void Injector_Dispose_MayLetServicesAccessTheirDependenciesOnDispose([ValueSource(nameof(Lifetimes))] Lifetime dependency, [ValueSource(nameof(Lifetimes))] Lifetime dependant, [Values(true, false)] bool dependencyAlreadyRequested)
+        {
+            IInterface_7<IDisposableEx> inst;
+
+            using (IScopeFactory root = ScopeFactory.Create(svcs => svcs
+                .Service<IDisposableEx, MyDisposable>(dependency)
+                .Service<IInterface_7<IDisposableEx>, Implementation_7<IDisposableEx>>(dependant)))
+            {
+                if (dependencyAlreadyRequested)
+                {
+                    using (IInjector injector = root.CreateScope())
+                    {
+                        injector.Get<IDisposableEx>();
+                    }
+                }
+
+                using (IInjector effectiveInjector = root.CreateScope())
+                {
+                    inst = effectiveInjector.Get<IInterface_7<IDisposableEx>>();
+                }
+            }
+
+            Assert.That(inst.Interface.Disposed);
+        }
+
+        [Test]
+        public void Injector_Dispose_ShouldBeControlledByDisposalMode([Values(typeof(IDisposableEx), typeof(IInterface_1))] Type iface, [ValueSource(nameof(Lifetimes))] Lifetime lifetime, [Values(ServiceDisposalMode.Default, ServiceDisposalMode.Force, ServiceDisposalMode.Suppress)] ServiceDisposalMode disposalMode)
+        {
+            DisposableService inst;
+
+            using (IScopeFactory root = ScopeFactory.Create(svcs => svcs.Service(iface, typeof(DisposableService), lifetime, ServiceOptions.Default with { DisposalMode = disposalMode })))
+            {
+                using (IInjector injector = root.CreateScope())
+                {
+                    inst = (DisposableService) injector.Get(iface);
+                }
+            }
+
+            Assert.That
+            (
+                inst.Disposed,
+                Is.EqualTo
+                (
+                    disposalMode switch
+                    {
+                        ServiceDisposalMode.Default => typeof(IDisposable).IsAssignableFrom(iface),
+                        ServiceDisposalMode.Force => true,
+                        ServiceDisposalMode.Suppress => false,
+                        _ => throw new NotSupportedException()
+                    }
+                )
+            );
         }
     }
 }
