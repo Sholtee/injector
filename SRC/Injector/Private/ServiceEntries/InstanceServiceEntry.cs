@@ -13,7 +13,13 @@ namespace Solti.Utils.DI.Internals
 
     internal sealed class InstanceServiceEntry : SingletonServiceEntry
     {
-        public InstanceServiceEntry(Type iface, string? name, object instance, ServiceOptions options) : base(iface, name, (_, _) => instance, options)
+        public InstanceServiceEntry(Type iface, string? name, object instance, ServiceOptions options) : base
+        (
+            iface,
+            name,
+            (_, _) => instance,
+            options with { DisposalMode = ServiceDisposalMode.Suppress }
+        )
         {
             if (instance is null)
                 throw new ArgumentNullException(nameof(instance));
@@ -27,9 +33,6 @@ namespace Solti.Utils.DI.Internals
 
         public override void Decorate(Expression<DecoratorDelegate> applyProxy)
             => throw new NotSupportedException(Resources.DECORATING_NOT_SUPPORTED);
-
-        public override Expression CreateLifetimeManager(Expression getService, ParameterExpression scope, ParameterExpression disposable)
-            => getService;
 
         public override LifetimeBase? Lifetime { get; } = DI.Lifetime.Instance;
     }
