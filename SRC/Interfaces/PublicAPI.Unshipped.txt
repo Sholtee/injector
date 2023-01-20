@@ -100,6 +100,10 @@ Solti.Utils.DI.Interfaces.ServiceAlreadyRegisteredException
 Solti.Utils.DI.Interfaces.ServiceAlreadyRegisteredException.ServiceAlreadyRegisteredException() -> void
 Solti.Utils.DI.Interfaces.ServiceAlreadyRegisteredException.ServiceAlreadyRegisteredException(string! message) -> void
 Solti.Utils.DI.Interfaces.ServiceAlreadyRegisteredException.ServiceAlreadyRegisteredException(string! message, System.Exception! innerException) -> void
+Solti.Utils.DI.Interfaces.ServiceDisposalMode
+Solti.Utils.DI.Interfaces.ServiceDisposalMode.Default = 0 -> Solti.Utils.DI.Interfaces.ServiceDisposalMode
+Solti.Utils.DI.Interfaces.ServiceDisposalMode.Force = 1 -> Solti.Utils.DI.Interfaces.ServiceDisposalMode
+Solti.Utils.DI.Interfaces.ServiceDisposalMode.Suppress = 2 -> Solti.Utils.DI.Interfaces.ServiceDisposalMode
 Solti.Utils.DI.Interfaces.ServiceEntryExtensions
 Solti.Utils.DI.Interfaces.ServiceEntryFeatures
 Solti.Utils.DI.Interfaces.ServiceEntryFeatures.CreateSingleInstance = 1 -> Solti.Utils.DI.Interfaces.ServiceEntryFeatures
@@ -116,6 +120,8 @@ Solti.Utils.DI.Interfaces.ServiceNotFoundException.ServiceNotFoundException() ->
 Solti.Utils.DI.Interfaces.ServiceNotFoundException.ServiceNotFoundException(string! message) -> void
 Solti.Utils.DI.Interfaces.ServiceNotFoundException.ServiceNotFoundException(string! message, System.Exception! innerException) -> void
 Solti.Utils.DI.Interfaces.ServiceOptions
+Solti.Utils.DI.Interfaces.ServiceOptions.DisposalMode.get -> Solti.Utils.DI.Interfaces.ServiceDisposalMode
+Solti.Utils.DI.Interfaces.ServiceOptions.DisposalMode.init -> void
 Solti.Utils.DI.Interfaces.ServiceOptions.ProxyEngine.get -> Solti.Utils.DI.Interfaces.IProxyEngine?
 Solti.Utils.DI.Interfaces.ServiceOptions.ProxyEngine.init -> void
 Solti.Utils.DI.Interfaces.ServiceOptions.SupportAspects.get -> bool

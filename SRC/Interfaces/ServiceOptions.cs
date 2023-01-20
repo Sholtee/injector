@@ -23,6 +23,11 @@ namespace Solti.Utils.DI.Interfaces
         public IProxyEngine? ProxyEngine { get; init; }
 
         /// <summary>
+        /// Contains the method how to dispose the created service instances.
+        /// </summary>
+        public ServiceDisposalMode DisposalMode { get; init; }
+
+        /// <summary>
         /// The default options.
         /// </summary>
         public static ServiceOptions Default { get; } = new();

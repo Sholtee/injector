@@ -24,6 +24,31 @@ namespace Solti.Utils.DI.Tests
         }
 
         [Test]
+        public void Injector_Create_ShouldThrowOnInvalidDisposalMode([ValueSource(nameof(Lifetimes))] Lifetime lifetime)
+        {
+            Assert.Throws<NotSupportedException>
+            (
+                () => ScopeFactory.Create
+                (
+                    svcs => svcs.Service<IInterface_1, Implementation_1>(lifetime, ServiceOptions.Default with { DisposalMode = (ServiceDisposalMode) 1986 })
+                )
+            );
+        }
+
+        [Test]
+        public void Injector_Create_ShouldThrowOnInvalidResolutionMode([ValueSource(nameof(Lifetimes))] Lifetime lifetime)
+        {
+            Assert.Throws<NotSupportedException>
+            (
+                () => ScopeFactory.Create
+                (
+                    svcs => svcs.Service<IInterface_1, Implementation_1>(lifetime),
+                    ScopeOptions.Default with { ServiceResolutionMode = (ServiceResolutionMode) 1986 }
+                )
+            );
+        }
+
+        [Test]
         public void Injector_Create_ShouldBeNullChecked()
         {
             Assert.Throws<ArgumentNullException>(() => ScopeFactory.Create(registerServices: null));

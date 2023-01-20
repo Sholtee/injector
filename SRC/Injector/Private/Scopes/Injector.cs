@@ -98,16 +98,20 @@ namespace Solti.Utils.DI.Internals
             return instance;
         }
 
-        protected virtual void RegisterBuiltInServices(IServiceCollection services) => services
-            .Factory<IInjector>(static i => i, Lifetime.Scoped)
-            .Factory<IInstanceFactory>(static i => (IInstanceFactory) i, Lifetime.Scoped)
-            .Factory<IScopeFactory>(static i => (IScopeFactory) i, Lifetime.Singleton) // create SF from the root only
-            .Factory<IServiceResolver>(_ => ServiceResolver, Lifetime.Singleton)
-            .Service(typeof(IEnumerable<>), typeof(ServiceEnumerator<>), Lifetime.Scoped)
+        protected virtual void RegisterBuiltInServices(IServiceCollection services)
+        {
+            ServiceOptions suppressDispose = ServiceOptions.Default with { DisposalMode = ServiceDisposalMode.Suppress };
+            services
+                .Factory<IInjector>(static i => i, Lifetime.Scoped, suppressDispose)
+                .Factory<IInstanceFactory>(static i => (IInstanceFactory) i, Lifetime.Scoped, suppressDispose)
+                .Factory<IScopeFactory>(static i => (IScopeFactory) i, Lifetime.Singleton, suppressDispose) // create SF from the root only
+                .Factory<IServiceResolver>(_ => ServiceResolver, Lifetime.Singleton, suppressDispose)
+                .Service(typeof(IEnumerable<>), typeof(ServiceEnumerator<>), Lifetime.Scoped)
 #if DEBUG
-            .Factory<IReadOnlyCollection<object>>("captured_disposables", static i => ((Injector) i).DisposableStore.CapturedDisposables, Lifetime.Scoped)
+                .Factory<IReadOnlyCollection<object>>("captured_disposables", static i => ((Injector)i).DisposableStore.CapturedDisposables, Lifetime.Scoped, suppressDispose)
 #endif
-            ;
+                ;
+        }
 
         #region IInstanceFactory
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
