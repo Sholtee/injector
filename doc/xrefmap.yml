@@ -1811,6 +1811,36 @@ references:
   commentId: Overload:Solti.Utils.DI.Interfaces.ServiceAlreadyRegisteredException.#ctor
   fullName: Solti.Utils.DI.Interfaces.ServiceAlreadyRegisteredException.ServiceAlreadyRegisteredException
   nameWithType: ServiceAlreadyRegisteredException.ServiceAlreadyRegisteredException
+- uid: Solti.Utils.DI.Interfaces.ServiceDisposalMode
+  name: ServiceDisposalMode
+  href: Solti.Utils.DI.Interfaces.ServiceDisposalMode.html
+  commentId: T:Solti.Utils.DI.Interfaces.ServiceDisposalMode
+  fullName: Solti.Utils.DI.Interfaces.ServiceDisposalMode
+  nameWithType: ServiceDisposalMode
+- uid: Solti.Utils.DI.Interfaces.ServiceDisposalMode.Default
+  name: Default
+  href: Solti.Utils.DI.Interfaces.ServiceDisposalMode.html#Solti_Utils_DI_Interfaces_ServiceDisposalMode_Default
+  commentId: F:Solti.Utils.DI.Interfaces.ServiceDisposalMode.Default
+  fullName: Solti.Utils.DI.Interfaces.ServiceDisposalMode.Default
+  nameWithType: ServiceDisposalMode.Default
+- uid: Solti.Utils.DI.Interfaces.ServiceDisposalMode.Force
+  name: Force
+  href: Solti.Utils.DI.Interfaces.ServiceDisposalMode.html#Solti_Utils_DI_Interfaces_ServiceDisposalMode_Force
+  commentId: F:Solti.Utils.DI.Interfaces.ServiceDisposalMode.Force
+  fullName: Solti.Utils.DI.Interfaces.ServiceDisposalMode.Force
+  nameWithType: ServiceDisposalMode.Force
+- uid: Solti.Utils.DI.Interfaces.ServiceDisposalMode.Suppress
+  name: Suppress
+  href: Solti.Utils.DI.Interfaces.ServiceDisposalMode.html#Solti_Utils_DI_Interfaces_ServiceDisposalMode_Suppress
+  commentId: F:Solti.Utils.DI.Interfaces.ServiceDisposalMode.Suppress
+  fullName: Solti.Utils.DI.Interfaces.ServiceDisposalMode.Suppress
+  nameWithType: ServiceDisposalMode.Suppress
+- uid: Solti.Utils.DI.Interfaces.ServiceDisposalMode.value__
+  name: value__
+  href: Solti.Utils.DI.Interfaces.ServiceDisposalMode.html#Solti_Utils_DI_Interfaces_ServiceDisposalMode_value__
+  commentId: F:Solti.Utils.DI.Interfaces.ServiceDisposalMode.value__
+  fullName: Solti.Utils.DI.Interfaces.ServiceDisposalMode.value__
+  nameWithType: ServiceDisposalMode.value__
 - uid: Solti.Utils.DI.Interfaces.ServiceEntryExtensions
   name: ServiceEntryExtensions
   href: Solti.Utils.DI.Interfaces.ServiceEntryExtensions.html
@@ -2003,6 +2033,18 @@ references:
   commentId: Overload:Solti.Utils.DI.Interfaces.ServiceOptions.Default
   fullName: Solti.Utils.DI.Interfaces.ServiceOptions.Default
   nameWithType: ServiceOptions.Default
+- uid: Solti.Utils.DI.Interfaces.ServiceOptions.DisposalMode
+  name: DisposalMode
+  href: Solti.Utils.DI.Interfaces.ServiceOptions.html#Solti_Utils_DI_Interfaces_ServiceOptions_DisposalMode
+  commentId: P:Solti.Utils.DI.Interfaces.ServiceOptions.DisposalMode
+  fullName: Solti.Utils.DI.Interfaces.ServiceOptions.DisposalMode
+  nameWithType: ServiceOptions.DisposalMode
+- uid: Solti.Utils.DI.Interfaces.ServiceOptions.DisposalMode*
+  name: DisposalMode
+  href: Solti.Utils.DI.Interfaces.ServiceOptions.html#Solti_Utils_DI_Interfaces_ServiceOptions_DisposalMode_
+  commentId: Overload:Solti.Utils.DI.Interfaces.ServiceOptions.DisposalMode
+  fullName: Solti.Utils.DI.Interfaces.ServiceOptions.DisposalMode
+  nameWithType: ServiceOptions.DisposalMode
 - uid: Solti.Utils.DI.Interfaces.ServiceOptions.EqualityContract
   name: EqualityContract
   href: Solti.Utils.DI.Interfaces.ServiceOptions.html#Solti_Utils_DI_Interfaces_ServiceOptions_EqualityContract
