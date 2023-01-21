@@ -6,6 +6,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 using Moq;
 using NUnit.Framework;
@@ -325,6 +328,57 @@ namespace Solti.Utils.DI.Internals.Tests
         public void Resolver_ShouldReturnNullOnNonRegisteredService_NamedCase([Values(ServiceResolutionMode.JIT, ServiceResolutionMode.AOT)] ServiceResolutionMode resolutionMode)
         {
             Assert.IsNull(ServiceResolver.Create(new AbstractServiceEntry[] { new ScopedServiceEntry(typeof(IList), 0.ToString(), typeof(MyLiyt<object>), ServiceOptions.Default) }, new ScopeOptions { ServiceResolutionMode = resolutionMode }).Resolve(typeof(IList), null));
+        }
+
+        [Test]
+        public void Resolver_SpecializationShouldBeThreadSafe([Values(ServiceResolutionMode.JIT, ServiceResolutionMode.AOT)] ServiceResolutionMode resolutionMode)
+        {
+            IServiceResolver resolver = ServiceResolver.Create
+            (
+                new[]
+                {
+                    new TransientServiceEntry
+                    (
+                        typeof(IList<>),
+                        null,
+                        (_, _) => null,
+                        ServiceOptions.Default
+                    )
+                },
+                ScopeOptions.Default with { ServiceResolutionMode = resolutionMode }
+            );
+
+            ManualResetEventSlim evt = new();
+
+            Task<AbstractServiceEntry>[] tasks = StartTasks().ToArray();
+
+            Assert.That(Task.WaitAny(tasks, 1000, default), Is.EqualTo(-1));
+
+            evt.Set();
+
+            Assert.That(Task.WaitAll(tasks, 1000));
+
+            Task<AbstractServiceEntry> prev = null;
+
+            foreach (Task<AbstractServiceEntry> task in tasks)
+            {
+                Assert.NotNull(task.Result);
+                if (prev != null)
+                    Assert.AreSame(prev.Result, task.Result);
+                prev = task;
+            }
+
+            IEnumerable<Task<AbstractServiceEntry>> StartTasks()
+            {
+                for (int i = 0; i < 5; i++)
+                {
+                    yield return Task<AbstractServiceEntry>.Factory.StartNew(() =>
+                    {
+                        evt.Wait();
+                        return resolver.Resolve(typeof(IList<int>), null);
+                    });
+                }
+            }
         }
     }
 }
