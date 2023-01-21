@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 using NUnit.Framework;
@@ -41,13 +42,19 @@ namespace Solti.Utils.DI.Tests
                 new ScopeOptions { ServiceResolutionMode = resolutionMode }
             );
 
-            Assert.DoesNotThrow(() => Task.WaitAll
-            (
-                Enumerable.Repeat(0, TASK_COUNT).Select(_ => Task.Run(Worker)).ToArray()
-            ));
+            ManualResetEventSlim evt = new();
+
+            Task[] tasks = Enumerable.Repeat(0, TASK_COUNT).Select(_ => Task.Run(Worker)).ToArray();
+
+            Thread.Sleep(10);
+
+            evt.Set();
+
+            Assert.DoesNotThrow(() => Task.WaitAll(tasks));
 
             void Worker() 
             {
+                evt.Wait();
                 using (IInjector injector = Root.CreateScope())
                 {
                     for (int i = 0; i < 50; i++)
@@ -74,13 +81,19 @@ namespace Solti.Utils.DI.Tests
 
             IInjector injector = (IInjector) Root;
 
-            Assert.DoesNotThrow(() => Task.WaitAll
-            (
-                Enumerable.Repeat(0, TASK_COUNT).Select(_ => Task.Run(Worker)).ToArray()
-            ));
+            ManualResetEventSlim evt = new();
+
+            Task[] tasks = Enumerable.Repeat(0, TASK_COUNT).Select(_ => Task.Run(Worker)).ToArray();
+
+            Thread.Sleep(10);
+
+            evt.Set();
+
+            Assert.DoesNotThrow(() => Task.WaitAll(tasks));
 
             void Worker()
             {
+                evt.Wait();
                 for (int i = 0; i < 50; i++)
                     injector.Get<IInterface_7<IInterface_7<IList<object>>>>();
             }
@@ -91,13 +104,19 @@ namespace Solti.Utils.DI.Tests
         {
             Root = ScopeFactory.Create(svcs => svcs.Service(typeof(IList<>), typeof(MyList<>), lifetime), new ScopeOptions { ServiceResolutionMode = resolutionMode });
 
-            Assert.DoesNotThrow(() => Task.WaitAll
-            (
-                Enumerable.Repeat(0, TASK_COUNT).Select(_ => Task.Run(Worker)).ToArray()
-            ));
+            ManualResetEventSlim evt = new();
+
+            Task[] tasks = Enumerable.Repeat(0, TASK_COUNT).Select(_ => Task.Run(Worker)).ToArray();
+
+            Thread.Sleep(10);
+
+            evt.Set();
+
+            Assert.DoesNotThrow(() => Task.WaitAll(tasks));
 
             void Worker()
             {
+                evt.Wait();
                 using (IInjector injector = Root.CreateScope())
                 {
                     foreach (Type type in RandomTypes.Take(20))
@@ -113,13 +132,19 @@ namespace Solti.Utils.DI.Tests
 
             IInjector injector = (IInjector) Root;
 
-            Assert.DoesNotThrow(() => Task.WaitAll
-            (
-                Enumerable.Repeat(0, TASK_COUNT).Select(_ => Task.Run(Worker)).ToArray()
-            ));
+            ManualResetEventSlim evt = new();
+
+            Task[] tasks = Enumerable.Repeat(0, TASK_COUNT).Select(_ => Task.Run(Worker)).ToArray();
+
+            Thread.Sleep(10);
+
+            evt.Set();
+
+            Assert.DoesNotThrow(() => Task.WaitAll(tasks));
 
             void Worker()
             {
+                evt.Wait();
                 foreach (Type type in RandomTypes.Take(20))
                     injector.Get(typeof(IList<>).MakeGenericType(type));
             }

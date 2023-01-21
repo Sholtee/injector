@@ -352,11 +352,11 @@ namespace Solti.Utils.DI.Internals.Tests
 
             Task<AbstractServiceEntry>[] tasks = StartTasks().ToArray();
 
-            Assert.That(Task.WaitAny(tasks, 1000, default), Is.EqualTo(-1));
+            Assert.That(Task.WaitAny(tasks, 10, default), Is.EqualTo(-1));
 
             evt.Set();
 
-            Assert.That(Task.WaitAll(tasks, 1000));
+            Assert.That(Task.WaitAll(tasks, 10));
 
             Task<AbstractServiceEntry> prev = null;
 

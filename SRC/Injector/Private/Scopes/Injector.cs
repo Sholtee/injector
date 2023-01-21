@@ -31,13 +31,6 @@ namespace Solti.Utils.DI.Internals
 
         private object?[] FSlots;
 
-        //
-        // It locks all the write operations related to this scope. Reading already produced services
-        // can be done parallelly.
-        //
-
-        private readonly object? FLock;
-
         private CaptureDisposable DisposableStore
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -133,8 +126,12 @@ namespace Solti.Utils.DI.Internals
             if (slot < FSlots.Length && FSlots[slot.Value] is not null)
                 return FSlots[slot.Value]!;
 
-            if (FLock is not null)
-                Monitor.Enter(FLock);
+            //
+            // In root we need to lock
+            //
+
+            if (Super is null)
+                Monitor.Enter(requested);
             try
             {
                 if (slot is null)
@@ -153,8 +150,8 @@ namespace Solti.Utils.DI.Internals
             }
             finally
             {
-                if (FLock is not null)
-                    Monitor.Exit(FLock);
+                if (Super is null)
+                    Monitor.Exit(requested);
             }
         }
 
@@ -230,18 +227,12 @@ namespace Solti.Utils.DI.Internals
 
             ServiceResolver = ServiceResolver.Create(services, options);  
             FSlots          = Array<object>.Create(ServiceResolver.Slots);
-            FLock           = new object();
             Options         = options;
             Tag             = tag;
         }
 
         public Injector(Injector super, object? tag)
         {
-            //
-            // Assuming this successor is not shared we don't need lock
-            //
-
-            FLock           = null;
             ServiceResolver = super.ServiceResolver;
             FSlots          = Array<object>.Create(ServiceResolver.Slots);
             Options         = super.Options;
