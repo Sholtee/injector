@@ -494,15 +494,6 @@
       </tr>
     </tbody>
   </table>
-  <a id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_SetValidated_" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.SetValidated*"></a>
-  <h4 id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_SetValidated" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.SetValidated">SetValidated()</h4>
-  <div class="markdown level1 summary"><p>If supported, sets the <a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_State">State</a> of this entry to <a class="xref" href="Solti.Utils.DI.Interfaces.ServiceEntryStates.html#Solti_Utils_DI_Interfaces_ServiceEntryStates_Validated">Validated</a>.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public virtual void SetValidated()</code></pre>
-  </div>
   <a id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_Specialize_" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.Specialize*"></a>
   <h4 id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_Specialize_System_Type___" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.Specialize(System.Type[])">Specialize(Type[])</h4>
   <div class="markdown level1 summary"><p>Specializes a service entry if it is generic.</p>
@@ -605,6 +596,32 @@
     <tbody>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_UpdateState_" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.UpdateState*"></a>
+  <h4 id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_UpdateState_Solti_Utils_DI_Interfaces_ServiceEntryStates_" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.UpdateState(Solti.Utils.DI.Interfaces.ServiceEntryStates)">UpdateState(ServiceEntryStates)</h4>
+  <div class="markdown level1 summary"><p>If supported, sets the <a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_State">State</a> of this entry to <a class="xref" href="Solti.Utils.DI.Interfaces.ServiceEntryStates.html#Solti_Utils_DI_Interfaces_ServiceEntryStates_Validated">Validated</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void UpdateState(ServiceEntryStates newState)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.ServiceEntryStates.html">ServiceEntryStates</a></td>
+        <td><span class="parametername">newState</span></td>
         <td></td>
       </tr>
     </tbody>

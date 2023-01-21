@@ -445,17 +445,34 @@
   </table>
   <h5 class="overrides">Overrides</h5>
   <div><a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_Decorate_System_Linq_Expressions_Expression_Solti_Utils_DI_Interfaces_DecoratorDelegate__">AbstractServiceEntry.Decorate(Expression&lt;DecoratorDelegate&gt;)</a></div>
-  <a id="Solti_Utils_DI_Internals_ProducibleServiceEntry_SetValidated_" data-uid="Solti.Utils.DI.Internals.ProducibleServiceEntry.SetValidated*"></a>
-  <h4 id="Solti_Utils_DI_Internals_ProducibleServiceEntry_SetValidated" data-uid="Solti.Utils.DI.Internals.ProducibleServiceEntry.SetValidated">SetValidated()</h4>
+  <a id="Solti_Utils_DI_Internals_ProducibleServiceEntry_UpdateState_" data-uid="Solti.Utils.DI.Internals.ProducibleServiceEntry.UpdateState*"></a>
+  <h4 id="Solti_Utils_DI_Internals_ProducibleServiceEntry_UpdateState_Solti_Utils_DI_Interfaces_ServiceEntryStates_" data-uid="Solti.Utils.DI.Internals.ProducibleServiceEntry.UpdateState(Solti.Utils.DI.Interfaces.ServiceEntryStates)">UpdateState(ServiceEntryStates)</h4>
   <div class="markdown level1 summary"><p>If supported, sets the <a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_State">State</a> of this entry to <a class="xref" href="Solti.Utils.DI.Interfaces.ServiceEntryStates.html#Solti_Utils_DI_Interfaces_ServiceEntryStates_Validated">Validated</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public sealed override void SetValidated()</code></pre>
+    <pre><code class="lang-csharp hljs">public sealed override void UpdateState(ServiceEntryStates newState)</code></pre>
   </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.ServiceEntryStates.html">ServiceEntryStates</a></td>
+        <td><span class="parametername">newState</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_SetValidated">AbstractServiceEntry.SetValidated()</a></div>
+  <div><a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_UpdateState_Solti_Utils_DI_Interfaces_ServiceEntryStates_">AbstractServiceEntry.UpdateState(ServiceEntryStates)</a></div>
   <h3 id="implements">Implements</h3>
   <div>
       <a class="xref" href="Solti.Utils.DI.Interfaces.IServiceId.html">IServiceId</a>

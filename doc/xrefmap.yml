@@ -217,18 +217,6 @@ references:
   commentId: Overload:Solti.Utils.DI.Interfaces.AbstractServiceEntry.ResolveInstance
   fullName: Solti.Utils.DI.Interfaces.AbstractServiceEntry.ResolveInstance
   nameWithType: AbstractServiceEntry.ResolveInstance
-- uid: Solti.Utils.DI.Interfaces.AbstractServiceEntry.SetValidated
-  name: SetValidated()
-  href: Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_SetValidated
-  commentId: M:Solti.Utils.DI.Interfaces.AbstractServiceEntry.SetValidated
-  fullName: Solti.Utils.DI.Interfaces.AbstractServiceEntry.SetValidated()
-  nameWithType: AbstractServiceEntry.SetValidated()
-- uid: Solti.Utils.DI.Interfaces.AbstractServiceEntry.SetValidated*
-  name: SetValidated
-  href: Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_SetValidated_
-  commentId: Overload:Solti.Utils.DI.Interfaces.AbstractServiceEntry.SetValidated
-  fullName: Solti.Utils.DI.Interfaces.AbstractServiceEntry.SetValidated
-  nameWithType: AbstractServiceEntry.SetValidated
 - uid: Solti.Utils.DI.Interfaces.AbstractServiceEntry.Specialize(System.Type[])
   name: Specialize(Type[])
   href: Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_Specialize_System_Type___
@@ -274,6 +262,18 @@ references:
   commentId: Overload:Solti.Utils.DI.Interfaces.AbstractServiceEntry.ToString
   fullName: Solti.Utils.DI.Interfaces.AbstractServiceEntry.ToString
   nameWithType: AbstractServiceEntry.ToString
+- uid: Solti.Utils.DI.Interfaces.AbstractServiceEntry.UpdateState(Solti.Utils.DI.Interfaces.ServiceEntryStates)
+  name: UpdateState(ServiceEntryStates)
+  href: Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_UpdateState_Solti_Utils_DI_Interfaces_ServiceEntryStates_
+  commentId: M:Solti.Utils.DI.Interfaces.AbstractServiceEntry.UpdateState(Solti.Utils.DI.Interfaces.ServiceEntryStates)
+  fullName: Solti.Utils.DI.Interfaces.AbstractServiceEntry.UpdateState(Solti.Utils.DI.Interfaces.ServiceEntryStates)
+  nameWithType: AbstractServiceEntry.UpdateState(ServiceEntryStates)
+- uid: Solti.Utils.DI.Interfaces.AbstractServiceEntry.UpdateState*
+  name: UpdateState
+  href: Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_UpdateState_
+  commentId: Overload:Solti.Utils.DI.Interfaces.AbstractServiceEntry.UpdateState
+  fullName: Solti.Utils.DI.Interfaces.AbstractServiceEntry.UpdateState
+  nameWithType: AbstractServiceEntry.UpdateState
 - uid: Solti.Utils.DI.Interfaces.AspectAttribute
   name: AspectAttribute
   href: Solti.Utils.DI.Interfaces.AspectAttribute.html
@@ -1943,6 +1943,12 @@ references:
   commentId: F:Solti.Utils.DI.Interfaces.ServiceEntryStates.Default
   fullName: Solti.Utils.DI.Interfaces.ServiceEntryStates.Default
   nameWithType: ServiceEntryStates.Default
+- uid: Solti.Utils.DI.Interfaces.ServiceEntryStates.Instantiated
+  name: Instantiated
+  href: Solti.Utils.DI.Interfaces.ServiceEntryStates.html#Solti_Utils_DI_Interfaces_ServiceEntryStates_Instantiated
+  commentId: F:Solti.Utils.DI.Interfaces.ServiceEntryStates.Instantiated
+  fullName: Solti.Utils.DI.Interfaces.ServiceEntryStates.Instantiated
+  nameWithType: ServiceEntryStates.Instantiated
 - uid: Solti.Utils.DI.Interfaces.ServiceEntryStates.Validated
   name: Validated
   href: Solti.Utils.DI.Interfaces.ServiceEntryStates.html#Solti_Utils_DI_Interfaces_ServiceEntryStates_Validated
@@ -2370,18 +2376,18 @@ references:
   commentId: Overload:Solti.Utils.DI.Internals.ProducibleServiceEntry.Options
   fullName: Solti.Utils.DI.Internals.ProducibleServiceEntry.Options
   nameWithType: ProducibleServiceEntry.Options
-- uid: Solti.Utils.DI.Internals.ProducibleServiceEntry.SetValidated
-  name: SetValidated()
-  href: Solti.Utils.DI.Internals.ProducibleServiceEntry.html#Solti_Utils_DI_Internals_ProducibleServiceEntry_SetValidated
-  commentId: M:Solti.Utils.DI.Internals.ProducibleServiceEntry.SetValidated
-  fullName: Solti.Utils.DI.Internals.ProducibleServiceEntry.SetValidated()
-  nameWithType: ProducibleServiceEntry.SetValidated()
-- uid: Solti.Utils.DI.Internals.ProducibleServiceEntry.SetValidated*
-  name: SetValidated
-  href: Solti.Utils.DI.Internals.ProducibleServiceEntry.html#Solti_Utils_DI_Internals_ProducibleServiceEntry_SetValidated_
-  commentId: Overload:Solti.Utils.DI.Internals.ProducibleServiceEntry.SetValidated
-  fullName: Solti.Utils.DI.Internals.ProducibleServiceEntry.SetValidated
-  nameWithType: ProducibleServiceEntry.SetValidated
+- uid: Solti.Utils.DI.Internals.ProducibleServiceEntry.UpdateState(Solti.Utils.DI.Interfaces.ServiceEntryStates)
+  name: UpdateState(ServiceEntryStates)
+  href: Solti.Utils.DI.Internals.ProducibleServiceEntry.html#Solti_Utils_DI_Internals_ProducibleServiceEntry_UpdateState_Solti_Utils_DI_Interfaces_ServiceEntryStates_
+  commentId: M:Solti.Utils.DI.Internals.ProducibleServiceEntry.UpdateState(Solti.Utils.DI.Interfaces.ServiceEntryStates)
+  fullName: Solti.Utils.DI.Internals.ProducibleServiceEntry.UpdateState(Solti.Utils.DI.Interfaces.ServiceEntryStates)
+  nameWithType: ProducibleServiceEntry.UpdateState(ServiceEntryStates)
+- uid: Solti.Utils.DI.Internals.ProducibleServiceEntry.UpdateState*
+  name: UpdateState
+  href: Solti.Utils.DI.Internals.ProducibleServiceEntry.html#Solti_Utils_DI_Internals_ProducibleServiceEntry_UpdateState_
+  commentId: Overload:Solti.Utils.DI.Internals.ProducibleServiceEntry.UpdateState
+  fullName: Solti.Utils.DI.Internals.ProducibleServiceEntry.UpdateState
+  nameWithType: ProducibleServiceEntry.UpdateState
 - uid: Solti.Utils.DI.IServiceCollectionAdvancedExtensions
   name: IServiceCollectionAdvancedExtensions
   href: Solti.Utils.DI.IServiceCollectionAdvancedExtensions.html
