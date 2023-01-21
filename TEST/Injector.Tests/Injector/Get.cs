@@ -592,5 +592,25 @@ namespace Solti.Utils.DI.Tests
 
             mockDisposable.Verify(d => d.Dispose(), Times.Once);
         }
+
+        [Test]
+        public void Injector_Get_ShouldUpdateTheEntryState([ValueSource(nameof(Lifetimes))] Lifetime lifetime, [ValueSource(nameof(ResolutionModes))] ServiceResolutionMode resolutionMode)
+        {
+            AbstractServiceEntry entry = null;
+
+            using (IScopeFactory root = ScopeFactory.Create(svcs => { svcs.Service<IInterface_1, Implementation_1>(lifetime); entry = svcs.Last(); }, ScopeOptions.Default with { ServiceResolutionMode = resolutionMode }))
+            {
+                Assert.That(entry.State.HasFlag(ServiceEntryStates.Validated), Is.EqualTo(resolutionMode is ServiceResolutionMode.AOT));
+                Assert.False(entry.State.HasFlag(ServiceEntryStates.Instantiated));
+
+                using (IInjector injector = root.CreateScope())
+                {
+                    injector.Get<IInterface_1>();
+                }
+
+                Assert.That(entry.State.HasFlag(ServiceEntryStates.Validated));
+                Assert.That(entry.State.HasFlag(ServiceEntryStates.Instantiated));
+            }
+        }
     }
 }

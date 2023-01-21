@@ -114,6 +114,7 @@ Solti.Utils.DI.Interfaces.ServiceEntryFeatures.SupportsBuild = 4 -> Solti.Utils.
 Solti.Utils.DI.Interfaces.ServiceEntryStates
 Solti.Utils.DI.Interfaces.ServiceEntryStates.Built = 1 -> Solti.Utils.DI.Interfaces.ServiceEntryStates
 Solti.Utils.DI.Interfaces.ServiceEntryStates.Default = 0 -> Solti.Utils.DI.Interfaces.ServiceEntryStates
+Solti.Utils.DI.Interfaces.ServiceEntryStates.Instantiated = 4 -> Solti.Utils.DI.Interfaces.ServiceEntryStates
 Solti.Utils.DI.Interfaces.ServiceEntryStates.Validated = 2 -> Solti.Utils.DI.Interfaces.ServiceEntryStates
 Solti.Utils.DI.Interfaces.ServiceNotFoundException
 Solti.Utils.DI.Interfaces.ServiceNotFoundException.ServiceNotFoundException() -> void
@@ -173,8 +174,8 @@ virtual Solti.Utils.DI.Interfaces.AbstractServiceEntry.Decorate(System.Linq.Expr
 virtual Solti.Utils.DI.Interfaces.AbstractServiceEntry.Decorators.get -> System.Collections.Generic.IReadOnlyList<System.Linq.Expressions.Expression<Solti.Utils.DI.Interfaces.DecoratorDelegate!>!>!
 virtual Solti.Utils.DI.Interfaces.AbstractServiceEntry.Features.get -> Solti.Utils.DI.Interfaces.ServiceEntryFeatures
 virtual Solti.Utils.DI.Interfaces.AbstractServiceEntry.Lifetime.get -> Solti.Utils.DI.Interfaces.LifetimeBase?
-virtual Solti.Utils.DI.Interfaces.AbstractServiceEntry.SetValidated() -> void
 virtual Solti.Utils.DI.Interfaces.AbstractServiceEntry.Specialize(params System.Type![]! genericArguments) -> Solti.Utils.DI.Interfaces.AbstractServiceEntry!
+virtual Solti.Utils.DI.Interfaces.AbstractServiceEntry.UpdateState(Solti.Utils.DI.Interfaces.ServiceEntryStates newState) -> void
 virtual Solti.Utils.DI.Interfaces.LifetimeBase.CreateFrom(System.Type! iface, string? name, object! value, Solti.Utils.DI.Interfaces.ServiceOptions! serviceOptions) -> System.Collections.Generic.IEnumerable<Solti.Utils.DI.Interfaces.AbstractServiceEntry!>!
 virtual Solti.Utils.DI.Interfaces.LifetimeBase.CreateFrom(System.Type! iface, string? name, System.Linq.Expressions.Expression<Solti.Utils.DI.Interfaces.FactoryDelegate!>! factory, Solti.Utils.DI.Interfaces.ServiceOptions! serviceOptions) -> System.Collections.Generic.IEnumerable<Solti.Utils.DI.Interfaces.AbstractServiceEntry!>!
 virtual Solti.Utils.DI.Interfaces.LifetimeBase.CreateFrom(System.Type! iface, string? name, System.Type! implementation, object! explicitArgs, Solti.Utils.DI.Interfaces.ServiceOptions! serviceOptions) -> System.Collections.Generic.IEnumerable<Solti.Utils.DI.Interfaces.AbstractServiceEntry!>!

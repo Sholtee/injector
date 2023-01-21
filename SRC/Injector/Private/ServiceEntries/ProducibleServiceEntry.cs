@@ -158,7 +158,11 @@ namespace Solti.Utils.DI.Internals
         }
 
         /// <inheritdoc/>
-        public sealed override void SetValidated() => State |= ServiceEntryStates.Validated;
+        public sealed override void UpdateState(ServiceEntryStates newState)
+        {
+            Debug.WriteLineIf(newState < State, $"Downgrading state of {this}");
+            State |= newState;
+        }
 
         /// <inheritdoc/>
         public override ServiceEntryFeatures Features { get; }

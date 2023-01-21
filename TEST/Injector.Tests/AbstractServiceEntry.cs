@@ -27,7 +27,7 @@ namespace Solti.Utils.DI.Interfaces.Tests
         [Test]
         public void SetValidated_ShouldNotBeSupportedByDefault()
         {
-            Assert.Throws<NotSupportedException>(() => Entry.SetValidated());
+            Assert.Throws<NotSupportedException>(() => Entry.UpdateState(ServiceEntryStates.Default));
         }
 
         [Test]

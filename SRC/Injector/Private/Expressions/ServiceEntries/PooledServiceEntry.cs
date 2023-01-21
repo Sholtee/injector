@@ -16,58 +16,55 @@ namespace Solti.Utils.DI.Internals
     {
         private delegate object InvokePoolDelegate(IPool pool, out object disposable);
 
-        /// <inheritdoc/>
-        public override Expression CreateLifetimeManager(Expression getService, ParameterExpression scope, ParameterExpression disposable)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static object InvokePool(IPool pool, out object disposable)
         {
-            /*
-            if (scope.Tag is ILifetimeManager<object>)
-                //
-                // In pool, we call the original factory
-                //
+            object result = pool.Get();
+            disposable = new PoolItemCheckin(pool, result);
+            return result;
+        }
 
-                return base.CreateInstance(scope, out lifetime);
-            else
-            {
-                //
-                // On consumer side we get the item from the pool
-                //
+        /*
+        if (scope.Tag is ILifetimeManager<object>)
+            //
+            // In pool, we call the original factory
+            //
 
-                IPool relatedPool = (IPool) scope.Get(PoolType, PoolName);
+            return base.CreateInstance(scope, out lifetime);
+        else
+        {
+            //
+            // On consumer side we get the item from the pool
+            //
 
-                object result = relatedPool.Get();
-                lifetime = new PoolItemCheckin(relatedPool, result);
-                return result;
-            }
-            */
+            IPool relatedPool = (IPool) scope.Get(PoolType, PoolName);
 
-            return Expression.Condition
+            object result = relatedPool.Get();
+            lifetime = new PoolItemCheckin(relatedPool, result);
+            return result;
+        }
+        */
+
+        /// <inheritdoc/>
+        public override Expression CreateLifetimeManager(Expression getService, ParameterExpression scope, ParameterExpression disposable) => Expression.Condition
+        (
+            test: UnfoldLambdaExpressionVisitor.Unfold
             (
-                test: UnfoldLambdaExpressionVisitor.Unfold
+                (Expression<Func<IInjector, bool>>) (scope => scope.Tag is ILifetimeManager<object>),
+                scope
+            ),
+            ifTrue: base.CreateLifetimeManager(getService, scope, disposable),
+            ifFalse: Expression.Invoke
+            (
+                Expression.Constant((InvokePoolDelegate) InvokePool),
+                UnfoldLambdaExpressionVisitor.Unfold
                 (
-                    (Expression<Func<IInjector, bool>>) (scope => scope.Tag is ILifetimeManager<object>),
+                    (Expression<Func<IInjector, IPool>>) (scope => (IPool) scope.Get(PoolType, PoolName)),
                     scope
                 ),
-                ifTrue: base.CreateLifetimeManager(getService, scope, disposable),
-                ifFalse: Expression.Invoke
-                (
-                    Expression.Constant((InvokePoolDelegate) InvokePool),
-                    UnfoldLambdaExpressionVisitor.Unfold
-                    (
-                        (Expression<Func<IInjector, IPool>>) (scope => (IPool) scope.Get(PoolType, PoolName)),
-                        scope
-                    ),
-                    disposable
-                ),
-                type: typeof(object)
-            );
-
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            static object InvokePool(IPool pool, out object disposable)
-            {
-                object result = pool.Get();
-                disposable = new PoolItemCheckin(pool, result);
-                return result;
-            }
-        }
+                disposable
+            ),
+            type: typeof(object)
+        );
     }
 }

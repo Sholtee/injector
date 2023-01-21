@@ -73,7 +73,7 @@ namespace Solti.Utils.DI.Internals
             // No circular reference, no Strict DI violation... entry is validated
             //
 
-            requested.SetValidated();
+            requested.UpdateState(ServiceEntryStates.Validated);
         }
     }
 }

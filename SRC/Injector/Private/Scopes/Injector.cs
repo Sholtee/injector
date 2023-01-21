@@ -71,6 +71,10 @@ namespace Solti.Utils.DI.Internals
 
             if (!requested.State.HasFlag(ServiceEntryStates.Validated))
             {
+                //
+                // Validate the graph
+                //
+
                 Path.Push(requested);
                 try
                 {
@@ -81,7 +85,7 @@ namespace Solti.Utils.DI.Internals
                     Path.Pop();
                 }
 
-                requested.SetValidated();
+                requested.UpdateState(ServiceEntryStates.Validated);
             }
             else
                 instance = requested.CreateInstance!(this, out disposable);
@@ -89,12 +93,21 @@ namespace Solti.Utils.DI.Internals
             if (disposable is not null)
                 DisposableStore.Capture(disposable);
 
-            if (instance is null)
-                throw new InvalidOperationException(string.Format(Resources.Culture, Resources.IS_NULL, nameof(instance)));
+            if (!requested.State.HasFlag(ServiceEntryStates.Instantiated))
+            {
+                //
+                // Check the returned insance (only once to improve performance).
+                //
 
-            if (!requested.Interface.IsInstanceOfType(instance))
-                throw new InvalidOperationException(string.Format(Resources.Culture, Resources.INVALID_CAST, requested.Interface));
-            
+                if (instance is null)
+                    throw new InvalidOperationException(string.Format(Resources.Culture, Resources.IS_NULL, nameof(instance)));
+
+                if (!requested.Interface.IsInstanceOfType(instance))
+                    throw new InvalidOperationException(string.Format(Resources.Culture, Resources.INVALID_CAST, requested.Interface));
+
+                requested.UpdateState(ServiceEntryStates.Instantiated);
+            }
+
             return instance;
         }
 

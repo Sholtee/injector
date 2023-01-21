@@ -74,11 +74,14 @@ namespace Solti.Utils.DI.Perf
         [ParamsSource(nameof(Lifetimes))]
         public Lifetime Lifetime { get; set; }
 
+        [Params(ServiceDisposalMode.Suppress, ServiceDisposalMode.Force)]
+        public ServiceDisposalMode DisposalMode { get; set; }
+
         [GlobalSetup]
         public void Setup()
         {
             IServiceCollection coll = DI.ServiceCollection.Create()
-                .Service<IService, MyService>(Lifetime);
+                .Service<IService, MyService>(Lifetime, ServiceOptions.Default with { DisposalMode = DisposalMode });
 
             Entry = coll.Last();
             Injector = (IInstanceFactory) ScopeFactory.Create(coll).CreateScope();

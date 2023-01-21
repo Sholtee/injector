@@ -130,7 +130,7 @@ namespace Solti.Utils.DI.Interfaces
         /// <summary>
         /// If supported, sets the <see cref="State"/> of this entry to <see cref="ServiceEntryStates.Validated"/>.
         /// </summary>
-        public virtual void SetValidated() => throw new NotSupportedException();
+        public virtual void UpdateState(ServiceEntryStates newState) => throw new NotSupportedException();
 
         /// <summary>
         /// Returns the short string representation of this entry.

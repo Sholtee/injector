@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Collections;
 
 using BenchmarkDotNet.Attributes;
 
@@ -21,5 +22,12 @@ namespace Solti.Utils.DI.Perf
 
         [Benchmark]
         public IntPtr GetHandle() => typeof(TypeBench).TypeHandle.Value;
+
+        private readonly Type
+            FList = typeof(IList),
+            FArray = typeof(Array);
+
+        [Benchmark]
+        public void IsAssignableFrom() => FList.IsAssignableFrom(FArray);
     }
 }
