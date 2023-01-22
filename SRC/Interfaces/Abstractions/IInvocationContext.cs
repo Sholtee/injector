@@ -36,7 +36,7 @@ namespace Solti.Utils.DI.Interfaces
         /// <summary>
         /// The concrete method behind the <see cref="TargetMember"/>.
         /// </summary>  
-        public MethodInfo TargeteMethod { get; }
+        public MethodInfo TargetMethod { get; }
 
         /// <summary>
         /// The member (property, event or method) that is being targeted.
