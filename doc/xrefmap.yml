@@ -890,18 +890,6 @@ references:
   commentId: Overload:Solti.Utils.DI.Interfaces.IInvocationContext.ProxyInstance
   fullName: Solti.Utils.DI.Interfaces.IInvocationContext.ProxyInstance
   nameWithType: IInvocationContext.ProxyInstance
-- uid: Solti.Utils.DI.Interfaces.IInvocationContext.TargeteMethod
-  name: TargeteMethod
-  href: Solti.Utils.DI.Interfaces.IInvocationContext.html#Solti_Utils_DI_Interfaces_IInvocationContext_TargeteMethod
-  commentId: P:Solti.Utils.DI.Interfaces.IInvocationContext.TargeteMethod
-  fullName: Solti.Utils.DI.Interfaces.IInvocationContext.TargeteMethod
-  nameWithType: IInvocationContext.TargeteMethod
-- uid: Solti.Utils.DI.Interfaces.IInvocationContext.TargeteMethod*
-  name: TargeteMethod
-  href: Solti.Utils.DI.Interfaces.IInvocationContext.html#Solti_Utils_DI_Interfaces_IInvocationContext_TargeteMethod_
-  commentId: Overload:Solti.Utils.DI.Interfaces.IInvocationContext.TargeteMethod
-  fullName: Solti.Utils.DI.Interfaces.IInvocationContext.TargeteMethod
-  nameWithType: IInvocationContext.TargeteMethod
 - uid: Solti.Utils.DI.Interfaces.IInvocationContext.TargetMember
   name: TargetMember
   href: Solti.Utils.DI.Interfaces.IInvocationContext.html#Solti_Utils_DI_Interfaces_IInvocationContext_TargetMember
@@ -914,6 +902,18 @@ references:
   commentId: Overload:Solti.Utils.DI.Interfaces.IInvocationContext.TargetMember
   fullName: Solti.Utils.DI.Interfaces.IInvocationContext.TargetMember
   nameWithType: IInvocationContext.TargetMember
+- uid: Solti.Utils.DI.Interfaces.IInvocationContext.TargetMethod
+  name: TargetMethod
+  href: Solti.Utils.DI.Interfaces.IInvocationContext.html#Solti_Utils_DI_Interfaces_IInvocationContext_TargetMethod
+  commentId: P:Solti.Utils.DI.Interfaces.IInvocationContext.TargetMethod
+  fullName: Solti.Utils.DI.Interfaces.IInvocationContext.TargetMethod
+  nameWithType: IInvocationContext.TargetMethod
+- uid: Solti.Utils.DI.Interfaces.IInvocationContext.TargetMethod*
+  name: TargetMethod
+  href: Solti.Utils.DI.Interfaces.IInvocationContext.html#Solti_Utils_DI_Interfaces_IInvocationContext_TargetMethod_
+  commentId: Overload:Solti.Utils.DI.Interfaces.IInvocationContext.TargetMethod
+  fullName: Solti.Utils.DI.Interfaces.IInvocationContext.TargetMethod
+  nameWithType: IInvocationContext.TargetMethod
 - uid: Solti.Utils.DI.Interfaces.InjectAttribute
   name: InjectAttribute
   href: Solti.Utils.DI.Interfaces.InjectAttribute.html
