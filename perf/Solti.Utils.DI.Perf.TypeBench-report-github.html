@@ -38,7 +38,7 @@
             <article class="content wrap" id="_content" data-uid="">
 
 <pre><code class="lang-ini">
-BenchmarkDotNet=v0.13.2, OS=Windows 10 (10.0.17763.2366/1809/October2018Update/Redstone5), VM=Hyper-V
+BenchmarkDotNet=v0.13.4, OS=Windows 10 (10.0.17763.2366/1809/October2018Update/Redstone5), VM=Hyper-V
 Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 .NET SDK=7.0.100
   [Host]     : .NET 7.0.0 (7.0.22.51805), X64 RyuJIT AVX2
@@ -57,16 +57,23 @@ Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 <tbody>
 <tr>
 <td>GetGuid</td>
-<td style="text-align:right">1,461.888 ns</td>
-<td style="text-align:right">27.2408 ns</td>
-<td style="text-align:right">24.1483 ns</td>
+<td style="text-align:right">1,229.123 ns</td>
+<td style="text-align:right">6.3694 ns</td>
+<td style="text-align:right">5.3187 ns</td>
 <td style="text-align:right">-</td>
 </tr>
 <tr>
 <td>GetHandle</td>
-<td style="text-align:right">1.940 ns</td>
-<td style="text-align:right">0.0301 ns</td>
-<td style="text-align:right">0.0252 ns</td>
+<td style="text-align:right">1.748 ns</td>
+<td style="text-align:right">0.0205 ns</td>
+<td style="text-align:right">0.0192 ns</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td>IsAssignableFrom</td>
+<td style="text-align:right">9.937 ns</td>
+<td style="text-align:right">0.1551 ns</td>
+<td style="text-align:right">0.1451 ns</td>
 <td style="text-align:right">-</td>
 </tr>
 </tbody>
