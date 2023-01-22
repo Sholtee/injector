@@ -32,7 +32,7 @@ namespace Solti.Utils.DI.Perf
             public IDisposable CreateScope(out IServiceProvider provider)
             {
                 IDependencyResolver scope = FUnderlyingContainer.BeginScope();
-                provider = new StashboxRequiredServiceProvider(scope);
+                provider = new StashboxServiceProvider(scope);
                 return scope;
             }
 
