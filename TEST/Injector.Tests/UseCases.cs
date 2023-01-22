@@ -8,6 +8,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 
 using Microsoft.Extensions.Configuration;
@@ -43,8 +44,20 @@ namespace Solti.Utils.DI.UseCases
             public void DoSomethingElse() { }
         }
 
+        [ParameterValidatorAspect]
+        public class Module3UsingAspect : IModule
+        {
+            public void DoSomething([NotNull] object arg)
+            {             
+            }
+
+            public void DoSomethingElse()
+            {
+            }
+        }
+
         [MethodInvocationLoggerAspect(typeof(MyLogger))]
-        public interface IModuleWithAspects : IModule 
+        public interface IModuleUsingAspect : IModule 
         { 
         }
 
@@ -53,7 +66,7 @@ namespace Solti.Utils.DI.UseCases
         {
             const string connString = "Data Source=MSSQL1;Initial Catalog=MyCatalog;Integrated Security=true;";
 
-            using IScopeFactory root = ScopeFactory.Create(svcs => svcs
+            using IScopeFactory root = ScopeFactory.Create(static svcs => svcs
                 .Provider<IDbConnection, DbConnectionProvider>(Lifetime.Scoped)
                 .Factory<IConfiguration>(_ => new ConfigurationBuilder().AddJsonStream
                 (
@@ -114,11 +127,11 @@ namespace Solti.Utils.DI.UseCases
         [Test]
         public void LoggerAspectTest()
         {
-            using IScopeFactory root = ScopeFactory.Create(svcs => svcs.Factory(i => new Mock<IModuleWithAspects>().Object, Lifetime.Transient));
+            using IScopeFactory root = ScopeFactory.Create(svcs => svcs.Factory(i => new Mock<IModuleUsingAspect>().Object, Lifetime.Transient));
 
             IInjector injector = root.CreateScope();
 
-            IModule module = injector.Get<IModuleWithAspects>();
+            IModule module = injector.Get<IModuleUsingAspect>();
 
             Assert.DoesNotThrow(() => module.DoSomething("cica"));
             Assert.That(MyLogger.LastMessage, Is.EqualTo("DoSomething(cica)"));
@@ -136,7 +149,7 @@ namespace Solti.Utils.DI.UseCases
             public void Write(string msg) => LastMessage = msg;
         }
 
-        public class MethodInvocationLoggerInterceptor<TLogger> : IInterfaceInterceptor where TLogger : ILogger, new()
+        public sealed class MethodInvocationLoggerInterceptor<TLogger> : IInterfaceInterceptor where TLogger : ILogger, new()
         {
             private ILogger Logger { get; } = new TLogger();
 
@@ -159,6 +172,63 @@ namespace Solti.Utils.DI.UseCases
             {
                 Logger = logger;
             }
+        }
+
+        [Test]
+        public void ParameterValidatorAspectTest()
+        {
+            using IScopeFactory root = ScopeFactory.Create(svcs => svcs.Service<IModule, Module3UsingAspect>(Lifetime.Transient));
+
+            IInjector injector = root.CreateScope();
+
+            IModule module = injector.Get<IModule>();
+
+            Assert.DoesNotThrow(() => module.DoSomething("cica"));
+            Assert.Throws<ArgumentNullException>(() => module.DoSomething(null));
+        }
+
+        public abstract class ParameterValidatorAttribute : Attribute
+        {
+            public abstract void Validate(ParameterInfo param, object value);
+        }
+
+        // Sample validator
+        [AttributeUsage(AttributeTargets.Parameter, AllowMultiple = false)]
+        public sealed class NotNullAttribute : ParameterValidatorAttribute
+        {
+            public override void Validate(ParameterInfo param, object value)
+            {
+                if (value is null)
+                    throw new ArgumentNullException(param.Name);
+            }
+        }
+
+        public sealed class ParameterValidatorProxy : IInterfaceInterceptor
+        {
+            public object Invoke(IInvocationContext context, InvokeInterceptorDelegate callNext)
+            {
+                foreach (var descr in context.TargetMethod.GetParameters().Select(
+                  (p, i) => new
+                  {
+                      Parameter = p,
+                      Value = context.Args[i],
+                      Validators = p.GetCustomAttributes<ParameterValidatorAttribute>()
+                  }))
+                {
+                    foreach (ParameterValidatorAttribute validator in descr.Validators)
+                    {
+                        validator.Validate(descr.Parameter, descr.Value);
+                    }
+                }
+
+                return callNext();
+            }
+        }
+
+        [AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class, AllowMultiple = false)]
+        public sealed class ParameterValidatorAspect : AspectAttribute
+        {
+            public override Type UnderlyingInterceptor { get; } = typeof(ParameterValidatorProxy);
         }
     }
 }
