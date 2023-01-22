@@ -267,7 +267,10 @@
 - 7.0.0-preview5:
   - *breaking:* Dropped concept of **naked aspects**
   - *breaking:* Dropped `ProxyFactory` class
-  - *breaking:* `IServiceCollection` derives from `ICollection`
+  - *breaking:* Dropped `IModifiedServiceCollection` interface
+  - *breaking:* Derive `IServiceCollection` from `ICollection` instead of `ISet`
+  - *breaking:* Renamed `IServiceCollection[Basic|Advanced]Extensions.UsingProxy()` -> `Decorte()`
   - *introduced:* `IInterfaceInterceptor` & `IInvocationContext` interfaces (to replace the `InterfaceInterceptor<>` class)
   - *introduced:* `ServiceOptions` class
+  - *introduced:* `ServiceDisposalMode` enum
   - *fixed:* Services having `Instance` lifetime should not be disposed by the root container
