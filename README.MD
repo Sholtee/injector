@@ -197,8 +197,14 @@ In practice, it's useful to separate common functionality (e.g. parameter valida
 using Solti.Utils.DI.Interfaces;
 using Solti.Utils.DI;
 ...
+public interfce IMyModule
+{
+    // When using the Decorate() function, only the interface members can be annotated
+    void DoSomethig([NotNull] string param);
+}
+...
 svcs
-  .Service<IMyModule, MyModule>(Lifetime.Scoped).UsingProxy<ParameterValidatorProxy>();
+  .Service<IMyModule, MyModule>(Lifetime.Scoped).Decorate<ParameterValidatorProxy>();
 ```
 Where the `ParameterValidatorProxy` is an `IInterfaceInterceptor` implementation containing the parameter validation logic:
 ```csharp
@@ -227,9 +233,9 @@ public class ParameterValidatorProxy : IInterfaceInterceptor
       ...
   }
 
-  public override object Invoke(IInvocationContext context, InvokeInterceptorDelegate callNext)
+  public object Invoke(IInvocationContext context, InvokeInterceptorDelegate callNext)
   {
-    foreach(var descr in context.Method.GetParameters().Select(
+    foreach(var descr in context.TargetMethod.GetParameters().Select(
       (p, i) => new 
       { 
         Parameter = p, 
@@ -276,7 +282,7 @@ public interface IService
 [ParameterValidatorAspect]
 public class Service: IService
 {
-  // Only methods implementing the above declared interface may be annoteted 
+  // Only methods implementing the above declared interface can be annoteted 
   void DoSomething([NotNull] object arg) {...} 
 }
 ```
