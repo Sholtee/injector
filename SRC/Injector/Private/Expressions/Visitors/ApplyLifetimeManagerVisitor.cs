@@ -29,7 +29,7 @@ namespace Solti.Utils.DI.Internals
         public LambdaExpression Visit(LambdaExpression factory, AbstractServiceEntry entry)
         {
             ParameterExpression
-                scope = Expression.Parameter(typeof(IInstanceFactory), nameof(scope)),
+                scope = Expression.Parameter(typeof(IServiceFactory), nameof(scope)),
                 disposable = Expression.Parameter(typeof(object).MakeByRefType(), nameof(disposable));
 
             return Expression.Lambda<CreateServiceDelegate>

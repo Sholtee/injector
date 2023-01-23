@@ -31,7 +31,7 @@ namespace Solti.Utils.DI.Internals
 
             int assignedSlot = context.AssignSlot();
 
-            ResolveInstance = (IInstanceFactory factory) => (factory.Super ?? factory).GetOrCreateInstance(this, assignedSlot);
+            ResolveInstance = (IServiceFactory factory) => (factory.Super ?? factory).GetOrCreateInstance(this, assignedSlot);
          }
 
         public override AbstractServiceEntry Specialize(params Type[] genericArguments)

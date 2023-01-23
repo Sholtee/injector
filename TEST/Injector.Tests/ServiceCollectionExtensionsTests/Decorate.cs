@@ -43,7 +43,7 @@ namespace Solti.Utils.DI.Tests
                 .Decorate((injector, iface, curr) => mockCallback1.Object(injector, iface, curr))
                 .Decorate((injector, iface, curr) => mockCallback2.Object(injector, iface, curr));
 
-            var mockInjector = new Mock<IInstanceFactory>(MockBehavior.Strict);
+            var mockInjector = new Mock<IServiceFactory>(MockBehavior.Strict);
             mockInjector
                 .SetupGet(i => i.Options)
                 .Returns(new ScopeOptions());
@@ -75,7 +75,7 @@ namespace Solti.Utils.DI.Tests
                 .Service(typeof(IInterface_3<int>), typeof(Implementation_3_IInterface_1_Dependant<int>), lifetime)
                 .Decorate((injector, iface, curr) => mockCallback.Object(injector, iface, curr));
 
-            var mockInjector = new Mock<IInstanceFactory>(MockBehavior.Strict);
+            var mockInjector = new Mock<IServiceFactory>(MockBehavior.Strict);
             
             mockInjector
                 .Setup(i => i.Get(It.Is<Type>(t => t == typeof(IInterface_1)), null))
@@ -130,7 +130,7 @@ namespace Solti.Utils.DI.Tests
                 .Service<IInterface_2, Implementation_2_IInterface_1_Dependant>(lifetime)
                 .Decorate<MyInterceptorHavingDependency>();
 
-            var mockInjector = new Mock<IInstanceFactory>(MockBehavior.Strict);
+            var mockInjector = new Mock<IServiceFactory>(MockBehavior.Strict);
 
             mockInjector
                 .Setup(i => i.Get(typeof(IInterface_1), null))
@@ -187,7 +187,7 @@ namespace Solti.Utils.DI.Tests
             Collection.Service<IInterface_1, Implementation_1_No_Dep>("cica", lifetime);
             Assert.DoesNotThrow(() => Collection.Decorate((p1, p2, p3) => new DecoratedImplementation_1()));
 
-            var mockInjector = new Mock<IInstanceFactory>(MockBehavior.Strict);
+            var mockInjector = new Mock<IServiceFactory>(MockBehavior.Strict);
 
             mockInjector
                 .SetupGet(i => i.Options)

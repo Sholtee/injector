@@ -100,7 +100,7 @@ namespace Solti.Utils.DI.Tests
 
             entry.Build(mockBuildContext.Object, new IFactoryVisitor[] { new MergeProxiesVisitor(), new ApplyLifetimeManagerVisitor() });
 
-            var mockInjector = new Mock<IInstanceFactory>(MockBehavior.Strict);
+            var mockInjector = new Mock<IServiceFactory>(MockBehavior.Strict);
             mockInjector
                 .SetupGet(i => i.Tag)
                 .Returns(new Mock<ILifetimeManager<object>>().Object);
@@ -124,7 +124,7 @@ namespace Solti.Utils.DI.Tests
                 .Last();
             entry.Build(mockBuildContext.Object, new IFactoryVisitor[] { new MergeProxiesVisitor(), new ApplyLifetimeManagerVisitor() });
 
-            var mockInjector = new Mock<IInstanceFactory>(MockBehavior.Strict);
+            var mockInjector = new Mock<IServiceFactory>(MockBehavior.Strict);
             mockInjector
                 .SetupGet(i => i.Tag)
                 .Returns(new Mock<ILifetimeManager<object>>().Object);

@@ -57,7 +57,7 @@ namespace Solti.Utils.DI.Perf
     [SimpleJob(RunStrategy.Throughput, invocationCount: 10000000)]
     public class ServiceActivating
     {
-        private IInstanceFactory Injector { get; set; }
+        private IServiceFactory Injector { get; set; }
 
         private AbstractServiceEntry Entry { get; set; }
 
@@ -84,7 +84,7 @@ namespace Solti.Utils.DI.Perf
                 .Service<IService, MyService>(Lifetime, ServiceOptions.Default with { DisposalMode = DisposalMode });
 
             Entry = coll.Last();
-            Injector = (IInstanceFactory) ScopeFactory.Create(coll).CreateScope();
+            Injector = (IServiceFactory) ScopeFactory.Create(coll).CreateScope();
         }
 
         [Benchmark]

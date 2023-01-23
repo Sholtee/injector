@@ -19,7 +19,7 @@ namespace Solti.Utils.DI.Internals
     internal class Injector :
         Disposable,
         IScopeFactory,
-        IInstanceFactory
+        IServiceFactory
     {
         //
         // This list should not be thread safe since it is invoked inside the write lock.
@@ -109,7 +109,7 @@ namespace Solti.Utils.DI.Internals
             ServiceOptions suppressDispose = ServiceOptions.Default with { DisposalMode = ServiceDisposalMode.Suppress };
             services
                 .Factory<IInjector>(static i => i, Lifetime.Scoped, suppressDispose)
-                .Factory<IInstanceFactory>(static i => (IInstanceFactory) i, Lifetime.Scoped, suppressDispose)
+                .Factory<IServiceFactory>(static i => (IServiceFactory) i, Lifetime.Scoped, suppressDispose)
                 .Factory<IScopeFactory>(static i => (IScopeFactory) i, Lifetime.Singleton, suppressDispose) // create SF from the root only
                 .Factory<IServiceResolver>(_ => ServiceResolver, Lifetime.Singleton, suppressDispose)
                 .Service(typeof(IEnumerable<>), typeof(ServiceEnumerator<>), Lifetime.Scoped)
@@ -119,7 +119,7 @@ namespace Solti.Utils.DI.Internals
                 ;
         }
 
-        #region IInstanceFactory
+        #region IServiceFactory
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public object GetOrCreateInstance(AbstractServiceEntry requested, int slot)
         {
@@ -155,7 +155,7 @@ namespace Solti.Utils.DI.Internals
             }
         }
 
-        public IInstanceFactory? Super
+        public IServiceFactory? Super
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             get;

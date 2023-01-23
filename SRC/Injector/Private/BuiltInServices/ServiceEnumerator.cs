@@ -12,13 +12,13 @@ namespace Solti.Utils.DI.Internals
 
     internal sealed class ServiceEnumerator<TInterface>: IEnumerable<TInterface> where TInterface: class
     {
-        public ServiceEnumerator(IInstanceFactory scope, IServiceResolver resolver)
+        public ServiceEnumerator(IServiceFactory scope, IServiceResolver resolver)
         {
             Scope = scope;
             ServiceResolver = resolver;
         }
 
-        public IInstanceFactory Scope { get; }
+        public IServiceFactory Scope { get; }
 
         public IServiceResolver ServiceResolver { get; }
 

@@ -27,15 +27,15 @@ namespace Solti.Utils.DI.Internals.Tests
         {
             SingletonServiceEntry entry = new(typeof(IList), name, (_, _) => new List<object>(), ServiceOptions.Default);
 
-            Mock<IInstanceFactory> mockSuperFactory = new(MockBehavior.Strict);
+            Mock<IServiceFactory> mockSuperFactory = new(MockBehavior.Strict);
             mockSuperFactory
                 .Setup(f => f.GetOrCreateInstance(entry, 0))
                 .Returns(new object());
             mockSuperFactory
                 .SetupGet(f => f.Super)
-                .Returns((IInstanceFactory) null);
+                .Returns((IServiceFactory) null);
 
-            Mock<IInstanceFactory> mockFactory = new(MockBehavior.Strict);
+            Mock<IServiceFactory> mockFactory = new(MockBehavior.Strict);
             mockFactory
                 .SetupGet(f => f.Super)
                 .Returns(mockSuperFactory.Object);
@@ -54,13 +54,13 @@ namespace Solti.Utils.DI.Internals.Tests
         {
             ScopedServiceEntry entry = new(typeof(IList), name, (_, _) => new List<object>(), ServiceOptions.Default);
 
-            Mock<IInstanceFactory> mockFactory = new(MockBehavior.Strict);
+            Mock<IServiceFactory> mockFactory = new(MockBehavior.Strict);
             mockFactory
                 .Setup(f => f.GetOrCreateInstance(entry, 0))
                 .Returns(new object());
             mockFactory
                 .SetupGet(f => f.Super)
-                .Returns((IInstanceFactory) null);
+                .Returns((IServiceFactory) null);
 
             IServiceResolver resolver = ServiceResolver.Create(new[] { entry }, new ScopeOptions { ServiceResolutionMode = resolutionMode });
 
@@ -76,13 +76,13 @@ namespace Solti.Utils.DI.Internals.Tests
         {
             TransientServiceEntry entry = new(typeof(IList), name, (_, _) => new List<object>(), ServiceOptions.Default);
 
-            Mock<IInstanceFactory> mockFactory = new(MockBehavior.Strict);
+            Mock<IServiceFactory> mockFactory = new(MockBehavior.Strict);
             mockFactory
                 .Setup(f => f.GetOrCreateInstance(entry, Consts.CREATE_ALWAYS))
                 .Returns(new object());
             mockFactory
                 .SetupGet(f => f.Super)
-                .Returns((IInstanceFactory) null);
+                .Returns((IServiceFactory) null);
 
             IServiceResolver resolver = ServiceResolver.Create(new[] { entry }, new ScopeOptions { ServiceResolutionMode = resolutionMode });
 
@@ -100,13 +100,13 @@ namespace Solti.Utils.DI.Internals.Tests
         {
             ScopedServiceEntry entry = new(typeof(IList<>), name, typeof(MyLiyt<>), ServiceOptions.Default);
 
-            Mock<IInstanceFactory> mockFactory = new(MockBehavior.Strict);
+            Mock<IServiceFactory> mockFactory = new(MockBehavior.Strict);
             mockFactory
                 .Setup(f => f.GetOrCreateInstance(It.Is<ScopedServiceEntry>(e => e.Interface.GetGenericTypeDefinition() == typeof(IList<>)), It.IsAny<int>()))
                 .Returns(new object());
             mockFactory
                 .SetupGet(f => f.Super)
-                .Returns((IInstanceFactory) null);
+                .Returns((IServiceFactory) null);
 
             IServiceResolver resolver = ServiceResolver.Create(new[] { entry }, new ScopeOptions { ServiceResolutionMode = resolutionMode });
 
@@ -130,13 +130,13 @@ namespace Solti.Utils.DI.Internals.Tests
                 entry1 = new(typeof(IList), 0.ToString(), typeof(MyLiyt<object>), ServiceOptions.Default),
                 entry2 = new(typeof(IList), 1.ToString(), typeof(MyLiyt<object>), ServiceOptions.Default);
 
-            Mock<IInstanceFactory> mockFactory = new(MockBehavior.Strict);
+            Mock<IServiceFactory> mockFactory = new(MockBehavior.Strict);
             mockFactory
                 .Setup(f => f.GetOrCreateInstance(It.Is<ScopedServiceEntry>(e => e.Interface == typeof(IList)), It.IsAny<int>()))
                 .Returns(new object());
             mockFactory
                 .SetupGet(f => f.Super)
-                .Returns((IInstanceFactory) null);
+                .Returns((IServiceFactory) null);
 
             IServiceResolver resolver = ServiceResolver.Create(new[] { entry1, entry2 }, new ScopeOptions { ServiceResolutionMode = resolutionMode });
 
@@ -160,13 +160,13 @@ namespace Solti.Utils.DI.Internals.Tests
                 entry1 = new(typeof(IList), name, typeof(MyLiyt<object>), ServiceOptions.Default),
                 entry2 = new(typeof(IDisposable), name, typeof(MyDisposable), ServiceOptions.Default);
 
-            Mock<IInstanceFactory> mockFactory = new(MockBehavior.Strict);
+            Mock<IServiceFactory> mockFactory = new(MockBehavior.Strict);
             mockFactory
                 .Setup(f => f.GetOrCreateInstance(It.IsAny<ScopedServiceEntry>(), It.IsAny<int>()))
                 .Returns(new object());
             mockFactory
                 .SetupGet(f => f.Super)
-                .Returns((IInstanceFactory) null);
+                .Returns((IServiceFactory) null);
 
             IServiceResolver resolver = ServiceResolver.Create(new[] { entry1, entry2 }, new ScopeOptions { ServiceResolutionMode = resolutionMode });
 
@@ -190,13 +190,13 @@ namespace Solti.Utils.DI.Internals.Tests
                 genericEntry = new(typeof(IList<>), name, typeof(MyLiyt<>), ServiceOptions.Default),
                 specializedEntry = new(typeof(IList<int>), name, typeof(MyLiyt<int>), ServiceOptions.Default);
 
-            Mock<IInstanceFactory> mockFactory = new(MockBehavior.Strict);
+            Mock<IServiceFactory> mockFactory = new(MockBehavior.Strict);
             mockFactory
                 .Setup(f => f.GetOrCreateInstance(It.IsAny<TransientServiceEntry>(), Consts.CREATE_ALWAYS))
                 .Returns(new object());
             mockFactory
                 .SetupGet(f => f.Super)
-                .Returns((IInstanceFactory) null);
+                .Returns((IServiceFactory) null);
 
             IServiceResolver resolver = ServiceResolver.Create(new[] { genericEntry, specializedEntry }, new ScopeOptions { ServiceResolutionMode = resolutionMode });
 
@@ -218,13 +218,13 @@ namespace Solti.Utils.DI.Internals.Tests
         {
             TransientServiceEntry genericEntry = new(typeof(IList<>), name, typeof(MyLiyt<>), ServiceOptions.Default);
 
-            Mock<IInstanceFactory> mockFactory = new(MockBehavior.Strict);
+            Mock<IServiceFactory> mockFactory = new(MockBehavior.Strict);
             mockFactory
                 .Setup(f => f.GetOrCreateInstance(It.IsAny<TransientServiceEntry>(), Consts.CREATE_ALWAYS))
                 .Returns(new object());
             mockFactory
                 .SetupGet(f => f.Super)
-                .Returns((IInstanceFactory) null);
+                .Returns((IServiceFactory) null);
 
             IServiceResolver resolver = ServiceResolver.Create(new[] { genericEntry }, new ScopeOptions { ServiceResolutionMode = resolutionMode });
 
@@ -240,13 +240,13 @@ namespace Solti.Utils.DI.Internals.Tests
         {
             ScopedServiceEntry genericEntry = new(typeof(IList<>), name, typeof(MyLiyt<>), ServiceOptions.Default);
 
-            Mock<IInstanceFactory> mockFactory = new(MockBehavior.Strict);
+            Mock<IServiceFactory> mockFactory = new(MockBehavior.Strict);
             mockFactory
                 .Setup(f => f.GetOrCreateInstance(It.IsAny<ScopedServiceEntry>(), 0))
                 .Returns(new object());
             mockFactory
                 .SetupGet(f => f.Super)
-                .Returns((IInstanceFactory) null);
+                .Returns((IServiceFactory) null);
 
             IServiceResolver resolver = ServiceResolver.Create(new[] { genericEntry }, new ScopeOptions { ServiceResolutionMode = resolutionMode });
 

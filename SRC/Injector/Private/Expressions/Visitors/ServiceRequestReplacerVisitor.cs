@@ -35,7 +35,7 @@ namespace Solti.Utils.DI.Internals
 
         protected override Expression VisitServiceRequest(MethodCallExpression request, Expression target, Type iface, string? name)
         {
-            if (target.Type != typeof(IInstanceFactory))
+            if (target.Type != typeof(IServiceFactory))
             {
                 Trace.TraceWarning(Resources.REQUEST_NOT_REPLACEABLE);
                 return request;

@@ -45,9 +45,6 @@ Solti.Utils.DI.Interfaces.IInjector.Get(System.Type! iface, string? name = null)
 Solti.Utils.DI.Interfaces.IInjector.Options.get -> Solti.Utils.DI.Interfaces.ScopeOptions!
 Solti.Utils.DI.Interfaces.IInjector.TryGet(System.Type! iface, string? name = null) -> object?
 Solti.Utils.DI.Interfaces.IInjectorBasicExtensions
-Solti.Utils.DI.Interfaces.IInstanceFactory
-Solti.Utils.DI.Interfaces.IInstanceFactory.GetOrCreateInstance(Solti.Utils.DI.Interfaces.AbstractServiceEntry! requested, int slot) -> object!
-Solti.Utils.DI.Interfaces.IInstanceFactory.Super.get -> Solti.Utils.DI.Interfaces.IInstanceFactory?
 Solti.Utils.DI.Interfaces.IInterfaceInterceptor
 Solti.Utils.DI.Interfaces.IInterfaceInterceptor.Invoke(Solti.Utils.DI.Interfaces.IInvocationContext! context, Solti.Utils.DI.Interfaces.InvokeInterceptorDelegate! callNext) -> object?
 Solti.Utils.DI.Interfaces.IInvocationContext
@@ -69,6 +66,9 @@ Solti.Utils.DI.Interfaces.IScopeFactory.Options.get -> Solti.Utils.DI.Interfaces
 Solti.Utils.DI.Interfaces.IScopeFactoryExtensions
 Solti.Utils.DI.Interfaces.IServiceCollection
 Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions
+Solti.Utils.DI.Interfaces.IServiceFactory
+Solti.Utils.DI.Interfaces.IServiceFactory.GetOrCreateInstance(Solti.Utils.DI.Interfaces.AbstractServiceEntry! requested, int slot) -> object!
+Solti.Utils.DI.Interfaces.IServiceFactory.Super.get -> Solti.Utils.DI.Interfaces.IServiceFactory?
 Solti.Utils.DI.Interfaces.IServiceId
 Solti.Utils.DI.Interfaces.IServiceId.Interface.get -> System.Type!
 Solti.Utils.DI.Interfaces.IServiceId.Name.get -> string?
