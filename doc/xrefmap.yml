@@ -352,6 +352,12 @@ references:
   commentId: T:Solti.Utils.DI.Interfaces.Consts
   fullName: Solti.Utils.DI.Interfaces.Consts
   nameWithType: Consts
+- uid: Solti.Utils.DI.Interfaces.Consts.CREATE_ALWAYS
+  name: CREATE_ALWAYS
+  href: Solti.Utils.DI.Interfaces.Consts.html#Solti_Utils_DI_Interfaces_Consts_CREATE_ALWAYS
+  commentId: F:Solti.Utils.DI.Interfaces.Consts.CREATE_ALWAYS
+  fullName: Solti.Utils.DI.Interfaces.Consts.CREATE_ALWAYS
+  nameWithType: Consts.CREATE_ALWAYS
 - uid: Solti.Utils.DI.Interfaces.Consts.INTERNAL_SERVICE_NAME_PREFIX
   name: INTERNAL_SERVICE_NAME_PREFIX
   href: Solti.Utils.DI.Interfaces.Consts.html#Solti_Utils_DI_Interfaces_Consts_INTERNAL_SERVICE_NAME_PREFIX
@@ -791,15 +797,12 @@ references:
   commentId: T:Solti.Utils.DI.Interfaces.IInstanceFactory
   fullName: Solti.Utils.DI.Interfaces.IInstanceFactory
   nameWithType: IInstanceFactory
-- uid: Solti.Utils.DI.Interfaces.IInstanceFactory.GetOrCreateInstance(Solti.Utils.DI.Interfaces.AbstractServiceEntry,System.Nullable{System.Int32})
-  name: GetOrCreateInstance(AbstractServiceEntry, Nullable<Int32>)
-  href: Solti.Utils.DI.Interfaces.IInstanceFactory.html#Solti_Utils_DI_Interfaces_IInstanceFactory_GetOrCreateInstance_Solti_Utils_DI_Interfaces_AbstractServiceEntry_System_Nullable_System_Int32__
-  commentId: M:Solti.Utils.DI.Interfaces.IInstanceFactory.GetOrCreateInstance(Solti.Utils.DI.Interfaces.AbstractServiceEntry,System.Nullable{System.Int32})
-  name.vb: GetOrCreateInstance(AbstractServiceEntry, Nullable(Of Int32))
-  fullName: Solti.Utils.DI.Interfaces.IInstanceFactory.GetOrCreateInstance(Solti.Utils.DI.Interfaces.AbstractServiceEntry, System.Nullable<System.Int32>)
-  fullName.vb: Solti.Utils.DI.Interfaces.IInstanceFactory.GetOrCreateInstance(Solti.Utils.DI.Interfaces.AbstractServiceEntry, System.Nullable(Of System.Int32))
-  nameWithType: IInstanceFactory.GetOrCreateInstance(AbstractServiceEntry, Nullable<Int32>)
-  nameWithType.vb: IInstanceFactory.GetOrCreateInstance(AbstractServiceEntry, Nullable(Of Int32))
+- uid: Solti.Utils.DI.Interfaces.IInstanceFactory.GetOrCreateInstance(Solti.Utils.DI.Interfaces.AbstractServiceEntry,System.Int32)
+  name: GetOrCreateInstance(AbstractServiceEntry, Int32)
+  href: Solti.Utils.DI.Interfaces.IInstanceFactory.html#Solti_Utils_DI_Interfaces_IInstanceFactory_GetOrCreateInstance_Solti_Utils_DI_Interfaces_AbstractServiceEntry_System_Int32_
+  commentId: M:Solti.Utils.DI.Interfaces.IInstanceFactory.GetOrCreateInstance(Solti.Utils.DI.Interfaces.AbstractServiceEntry,System.Int32)
+  fullName: Solti.Utils.DI.Interfaces.IInstanceFactory.GetOrCreateInstance(Solti.Utils.DI.Interfaces.AbstractServiceEntry, System.Int32)
+  nameWithType: IInstanceFactory.GetOrCreateInstance(AbstractServiceEntry, Int32)
 - uid: Solti.Utils.DI.Interfaces.IInstanceFactory.GetOrCreateInstance*
   name: GetOrCreateInstance
   href: Solti.Utils.DI.Interfaces.IInstanceFactory.html#Solti_Utils_DI_Interfaces_IInstanceFactory_GetOrCreateInstance_
