@@ -42,7 +42,7 @@ namespace Solti.Utils.DI.Interfaces
             if (self is null)
                 throw new ArgumentNullException(nameof(self));
 
-            return self.Name?.StartsWith(Consts.INTERNAL_SERVICE_NAME_PREFIX, StringComparison.Ordinal) is true;
+            return self.Name?.StartsWith(IServiceCollection.Consts.INTERNAL_SERVICE_NAME_PREFIX, StringComparison.Ordinal) is true;
         }
     }
 }

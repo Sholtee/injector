@@ -1,7 +1,7 @@
 ﻿abstract Solti.Utils.DI.Interfaces.AspectAttribute.UnderlyingInterceptor.get -> System.Type!
 abstract Solti.Utils.DI.Interfaces.LifetimeBase.CompareTo(Solti.Utils.DI.Interfaces.LifetimeBase! other) -> int
-const Solti.Utils.DI.Interfaces.Consts.CREATE_ALWAYS = -1 -> int
-const Solti.Utils.DI.Interfaces.Consts.INTERNAL_SERVICE_NAME_PREFIX = "$" -> string!
+const Solti.Utils.DI.Interfaces.IServiceCollection.Consts.INTERNAL_SERVICE_NAME_PREFIX = "$" -> string!
+const Solti.Utils.DI.Interfaces.IServiceFactory.Consts.CREATE_ALWAYS = -1 -> int
 override Solti.Utils.DI.Interfaces.AbstractServiceEntry.ToString() -> string!
 Solti.Utils.DI.Interfaces.AbstractServiceEntry
 Solti.Utils.DI.Interfaces.AbstractServiceEntry.AbstractServiceEntry(System.Type! interface, string? name, System.Type? implementation, System.Linq.Expressions.Expression<Solti.Utils.DI.Interfaces.FactoryDelegate!>? factory) -> void
@@ -24,7 +24,6 @@ Solti.Utils.DI.Interfaces.CircularReferenceException.Circle.init -> void
 Solti.Utils.DI.Interfaces.CircularReferenceException.CircularReferenceException() -> void
 Solti.Utils.DI.Interfaces.CircularReferenceException.CircularReferenceException(string! message) -> void
 Solti.Utils.DI.Interfaces.CircularReferenceException.CircularReferenceException(string! message, System.Exception! innerException) -> void
-Solti.Utils.DI.Interfaces.Consts
 Solti.Utils.DI.Interfaces.CreateServiceDelegate
 Solti.Utils.DI.Interfaces.DecoratorDelegate
 Solti.Utils.DI.Interfaces.FactoryDelegate
@@ -65,8 +64,10 @@ Solti.Utils.DI.Interfaces.IScopeFactory.CreateScope(object? tag = null) -> Solti
 Solti.Utils.DI.Interfaces.IScopeFactory.Options.get -> Solti.Utils.DI.Interfaces.ScopeOptions!
 Solti.Utils.DI.Interfaces.IScopeFactoryExtensions
 Solti.Utils.DI.Interfaces.IServiceCollection
+Solti.Utils.DI.Interfaces.IServiceCollection.Consts
 Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions
 Solti.Utils.DI.Interfaces.IServiceFactory
+Solti.Utils.DI.Interfaces.IServiceFactory.Consts
 Solti.Utils.DI.Interfaces.IServiceFactory.GetOrCreateInstance(Solti.Utils.DI.Interfaces.AbstractServiceEntry! requested, int slot) -> object!
 Solti.Utils.DI.Interfaces.IServiceFactory.Super.get -> Solti.Utils.DI.Interfaces.IServiceFactory?
 Solti.Utils.DI.Interfaces.IServiceId

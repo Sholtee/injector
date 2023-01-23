@@ -1,4 +1,6 @@
 ﻿abstract Solti.Utils.DI.Interfaces.AspectAttribute.UnderlyingInterceptor.get -> System.Type! (forwarded, contained in Solti.Utils.DI.Interfaces)
+const Solti.Utils.DI.Interfaces.IServiceCollection.Consts.INTERNAL_SERVICE_NAME_PREFIX = "$" -> string! (forwarded, contained in Solti.Utils.DI.Interfaces)
+const Solti.Utils.DI.Interfaces.IServiceFactory.Consts.CREATE_ALWAYS = -1 -> int (forwarded, contained in Solti.Utils.DI.Interfaces)
 override sealed Solti.Utils.DI.Internals.ProducibleServiceEntry.Decorators.get -> System.Collections.Generic.IReadOnlyList<System.Linq.Expressions.Expression<Solti.Utils.DI.Interfaces.DecoratorDelegate!>!>!
 override sealed Solti.Utils.DI.Internals.ProducibleServiceEntry.UpdateState(Solti.Utils.DI.Interfaces.ServiceEntryStates newState) -> void
 override Solti.Utils.DI.Interfaces.AbstractServiceEntry.ToString() -> string! (forwarded, contained in Solti.Utils.DI.Interfaces)
@@ -51,8 +53,10 @@ Solti.Utils.DI.Interfaces.IScopeFactory (forwarded, contained in Solti.Utils.DI.
 Solti.Utils.DI.Interfaces.IScopeFactory.CreateScope(object? tag = null) -> Solti.Utils.DI.Interfaces.IInjector! (forwarded, contained in Solti.Utils.DI.Interfaces)
 Solti.Utils.DI.Interfaces.IScopeFactory.Options.get -> Solti.Utils.DI.Interfaces.ScopeOptions! (forwarded, contained in Solti.Utils.DI.Interfaces)
 Solti.Utils.DI.Interfaces.IServiceCollection (forwarded, contained in Solti.Utils.DI.Interfaces)
+Solti.Utils.DI.Interfaces.IServiceCollection.Consts (forwarded, contained in Solti.Utils.DI.Interfaces)
 Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions (forwarded, contained in Solti.Utils.DI.Interfaces)
 Solti.Utils.DI.Interfaces.IServiceFactory (forwarded, contained in Solti.Utils.DI.Interfaces)
+Solti.Utils.DI.Interfaces.IServiceFactory.Consts (forwarded, contained in Solti.Utils.DI.Interfaces)
 Solti.Utils.DI.Interfaces.IServiceFactory.GetOrCreateInstance(Solti.Utils.DI.Interfaces.AbstractServiceEntry! requested, int slot) -> object! (forwarded, contained in Solti.Utils.DI.Interfaces)
 Solti.Utils.DI.Interfaces.IServiceFactory.Super.get -> Solti.Utils.DI.Interfaces.IServiceFactory? (forwarded, contained in Solti.Utils.DI.Interfaces)
 Solti.Utils.DI.Interfaces.IServiceProviderBasicExtensions (forwarded, contained in Solti.Utils.DI.Interfaces)

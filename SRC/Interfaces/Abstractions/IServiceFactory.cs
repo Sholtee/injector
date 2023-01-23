@@ -11,6 +11,17 @@ namespace Solti.Utils.DI.Interfaces
     public interface IServiceFactory: IInjector
     {
         /// <summary>
+        /// Contains some constants related to the <see cref="IServiceFactory"/> interface.
+        /// </summary>
+        public static class Consts
+        {
+            /// <summary>
+            /// The service requires to be created each time it is requested.
+            /// </summary>
+            public const int CREATE_ALWAYS = -1;
+        }
+
+        /// <summary>
         /// The parent factory. NULL in case of root factory.
         /// </summary>
         IServiceFactory? Super { get; }

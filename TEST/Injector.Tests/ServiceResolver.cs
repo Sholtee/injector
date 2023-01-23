@@ -78,7 +78,7 @@ namespace Solti.Utils.DI.Internals.Tests
 
             Mock<IServiceFactory> mockFactory = new(MockBehavior.Strict);
             mockFactory
-                .Setup(f => f.GetOrCreateInstance(entry, Consts.CREATE_ALWAYS))
+                .Setup(f => f.GetOrCreateInstance(entry, IServiceFactory.Consts.CREATE_ALWAYS))
                 .Returns(new object());
             mockFactory
                 .SetupGet(f => f.Super)
@@ -90,7 +90,7 @@ namespace Solti.Utils.DI.Internals.Tests
 
             Assert.DoesNotThrow(() => grabed.ResolveInstance(mockFactory.Object));
             mockFactory
-                .Verify(f => f.GetOrCreateInstance(entry, Consts.CREATE_ALWAYS), Times.Once);
+                .Verify(f => f.GetOrCreateInstance(entry, IServiceFactory.Consts.CREATE_ALWAYS), Times.Once);
         }
 
         public class MyLiyt<T>: List<T> { }
@@ -192,7 +192,7 @@ namespace Solti.Utils.DI.Internals.Tests
 
             Mock<IServiceFactory> mockFactory = new(MockBehavior.Strict);
             mockFactory
-                .Setup(f => f.GetOrCreateInstance(It.IsAny<TransientServiceEntry>(), Consts.CREATE_ALWAYS))
+                .Setup(f => f.GetOrCreateInstance(It.IsAny<TransientServiceEntry>(), IServiceFactory.Consts.CREATE_ALWAYS))
                 .Returns(new object());
             mockFactory
                 .SetupGet(f => f.Super)
@@ -204,13 +204,13 @@ namespace Solti.Utils.DI.Internals.Tests
 
             Assert.DoesNotThrow(() => entry.ResolveInstance(mockFactory.Object));
             mockFactory
-                .Verify(f => f.GetOrCreateInstance(specializedEntry, Consts.CREATE_ALWAYS), Times.Once);
+                .Verify(f => f.GetOrCreateInstance(specializedEntry, IServiceFactory.Consts.CREATE_ALWAYS), Times.Once);
 
             entry = resolver.Resolve(typeof(IList<object>), name);
 
             Assert.DoesNotThrow(() => entry.ResolveInstance(mockFactory.Object));
             mockFactory
-                .Verify(f => f.GetOrCreateInstance(It.Is<TransientServiceEntry>(e => e.Interface == typeof(IList<object>)), Consts.CREATE_ALWAYS), Times.Once);
+                .Verify(f => f.GetOrCreateInstance(It.Is<TransientServiceEntry>(e => e.Interface == typeof(IList<object>)), IServiceFactory.Consts.CREATE_ALWAYS), Times.Once);
         }
 
         [Test]
@@ -220,7 +220,7 @@ namespace Solti.Utils.DI.Internals.Tests
 
             Mock<IServiceFactory> mockFactory = new(MockBehavior.Strict);
             mockFactory
-                .Setup(f => f.GetOrCreateInstance(It.IsAny<TransientServiceEntry>(), Consts.CREATE_ALWAYS))
+                .Setup(f => f.GetOrCreateInstance(It.IsAny<TransientServiceEntry>(), IServiceFactory.Consts.CREATE_ALWAYS))
                 .Returns(new object());
             mockFactory
                 .SetupGet(f => f.Super)
@@ -232,7 +232,7 @@ namespace Solti.Utils.DI.Internals.Tests
 
             Assert.DoesNotThrow(() => entry.ResolveInstance(mockFactory.Object));
             mockFactory
-                .Verify(f => f.GetOrCreateInstance(It.Is<TransientServiceEntry>(e => e.Interface == typeof(IList<int>)), Consts.CREATE_ALWAYS), Times.Once);
+                .Verify(f => f.GetOrCreateInstance(It.Is<TransientServiceEntry>(e => e.Interface == typeof(IList<int>)), IServiceFactory.Consts.CREATE_ALWAYS), Times.Once);
         }
 
         [Test]

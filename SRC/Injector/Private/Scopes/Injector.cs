@@ -123,7 +123,7 @@ namespace Solti.Utils.DI.Internals
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public object GetOrCreateInstance(AbstractServiceEntry requested, int slot)
         {
-            if (slot > Consts.CREATE_ALWAYS && slot < FSlots.Length && FSlots[slot] is not null)
+            if (slot > IServiceFactory.Consts.CREATE_ALWAYS && slot < FSlots.Length && FSlots[slot] is not null)
                 return FSlots[slot]!;
 
             //
@@ -134,7 +134,7 @@ namespace Solti.Utils.DI.Internals
                 Monitor.Enter(requested);
             try
             {
-                if (slot <= Consts.CREATE_ALWAYS)
+                if (slot <= IServiceFactory.Consts.CREATE_ALWAYS)
                     return CreateInstance(requested);
 
                 if (slot >= FSlots.Length)
