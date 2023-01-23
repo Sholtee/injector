@@ -44,7 +44,7 @@ Solti.Utils.DI.Interfaces.IInjector.Options.get -> Solti.Utils.DI.Interfaces.Sco
 Solti.Utils.DI.Interfaces.IInjector.TryGet(System.Type! iface, string? name = null) -> object? (forwarded, contained in Solti.Utils.DI.Interfaces)
 Solti.Utils.DI.Interfaces.IInjectorBasicExtensions (forwarded, contained in Solti.Utils.DI.Interfaces)
 Solti.Utils.DI.Interfaces.IInstanceFactory (forwarded, contained in Solti.Utils.DI.Interfaces)
-Solti.Utils.DI.Interfaces.IInstanceFactory.GetOrCreateInstance(Solti.Utils.DI.Interfaces.AbstractServiceEntry! requested, int? slot) -> object! (forwarded, contained in Solti.Utils.DI.Interfaces)
+Solti.Utils.DI.Interfaces.IInstanceFactory.GetOrCreateInstance(Solti.Utils.DI.Interfaces.AbstractServiceEntry! requested, int slot) -> object! (forwarded, contained in Solti.Utils.DI.Interfaces)
 Solti.Utils.DI.Interfaces.IInstanceFactory.Super.get -> Solti.Utils.DI.Interfaces.IInstanceFactory? (forwarded, contained in Solti.Utils.DI.Interfaces)
 Solti.Utils.DI.Interfaces.IInterfaceInterceptor (forwarded, contained in Solti.Utils.DI.Interfaces)
 Solti.Utils.DI.Interfaces.IInterfaceInterceptor.Invoke(Solti.Utils.DI.Interfaces.IInvocationContext! context, Solti.Utils.DI.Interfaces.InvokeInterceptorDelegate! callNext) -> object? (forwarded, contained in Solti.Utils.DI.Interfaces)

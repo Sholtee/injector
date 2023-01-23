@@ -17,5 +17,10 @@ namespace Solti.Utils.DI.Interfaces
         /// </summary>
         [SuppressMessage("Naming", "CA1707:Identifiers should not contain underscores", Justification = "Using upper case and underscore together highlights that the member is a constant value")]
         public const string INTERNAL_SERVICE_NAME_PREFIX = "$";
+
+        /// <summary>
+        /// The service requires to be created each time it is requested.
+        /// </summary>
+        public const int CREATE_ALWAYS = -1;
     }
 }

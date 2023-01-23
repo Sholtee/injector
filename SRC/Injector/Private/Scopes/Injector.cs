@@ -121,10 +121,10 @@ namespace Solti.Utils.DI.Internals
 
         #region IInstanceFactory
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public object GetOrCreateInstance(AbstractServiceEntry requested, int? slot)
+        public object GetOrCreateInstance(AbstractServiceEntry requested, int slot)
         {
-            if (slot < FSlots.Length && FSlots[slot.Value] is not null)
-                return FSlots[slot.Value]!;
+            if (slot > Consts.CREATE_ALWAYS && slot < FSlots.Length && FSlots[slot] is not null)
+                return FSlots[slot]!;
 
             //
             // In root we need to lock
@@ -134,7 +134,7 @@ namespace Solti.Utils.DI.Internals
                 Monitor.Enter(requested);
             try
             {
-                if (slot is null)
+                if (slot <= Consts.CREATE_ALWAYS)
                     return CreateInstance(requested);
 
                 if (slot >= FSlots.Length)
@@ -146,7 +146,7 @@ namespace Solti.Utils.DI.Internals
 
                     Array.Resize(ref FSlots, ServiceResolver.Slots);
 
-                return FSlots[slot.Value] ??= CreateInstance(requested);
+                return FSlots[slot] ??= CreateInstance(requested);
             }
             finally
             {

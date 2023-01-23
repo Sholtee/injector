@@ -18,7 +18,7 @@ namespace Solti.Utils.DI.Interfaces
         /// <summary>
         /// Gets or creates a service instance assigned to the given slot.
         /// </summary>
-        /// <remarks>If <paramref name="slot"/> is null, a new instance will be created.</remarks>
-        object GetOrCreateInstance(AbstractServiceEntry requested, int? slot);
+        /// <remarks>Setting the <paramref name="slot"/> to <see cref="Consts.CREATE_ALWAYS"/> will instruct the system to instantiate a new instance on each request.</remarks>
+        object GetOrCreateInstance(AbstractServiceEntry requested, int slot);
     }
 }

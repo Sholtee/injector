@@ -29,7 +29,7 @@ namespace Solti.Utils.DI.Internals
         {
             base.Build(context, visitors);
 
-            ResolveInstance = (IInstanceFactory factory) => factory.GetOrCreateInstance(this, null);
+            ResolveInstance = (IInstanceFactory factory) => factory.GetOrCreateInstance(this, Consts.CREATE_ALWAYS);
         }
 
         public override AbstractServiceEntry Specialize(params Type[] genericArguments)
