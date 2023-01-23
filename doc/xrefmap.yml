@@ -346,24 +346,6 @@ references:
   commentId: Overload:Solti.Utils.DI.Interfaces.CircularReferenceException.Circle
   fullName: Solti.Utils.DI.Interfaces.CircularReferenceException.Circle
   nameWithType: CircularReferenceException.Circle
-- uid: Solti.Utils.DI.Interfaces.Consts
-  name: Consts
-  href: Solti.Utils.DI.Interfaces.Consts.html
-  commentId: T:Solti.Utils.DI.Interfaces.Consts
-  fullName: Solti.Utils.DI.Interfaces.Consts
-  nameWithType: Consts
-- uid: Solti.Utils.DI.Interfaces.Consts.CREATE_ALWAYS
-  name: CREATE_ALWAYS
-  href: Solti.Utils.DI.Interfaces.Consts.html#Solti_Utils_DI_Interfaces_Consts_CREATE_ALWAYS
-  commentId: F:Solti.Utils.DI.Interfaces.Consts.CREATE_ALWAYS
-  fullName: Solti.Utils.DI.Interfaces.Consts.CREATE_ALWAYS
-  nameWithType: Consts.CREATE_ALWAYS
-- uid: Solti.Utils.DI.Interfaces.Consts.INTERNAL_SERVICE_NAME_PREFIX
-  name: INTERNAL_SERVICE_NAME_PREFIX
-  href: Solti.Utils.DI.Interfaces.Consts.html#Solti_Utils_DI_Interfaces_Consts_INTERNAL_SERVICE_NAME_PREFIX
-  commentId: F:Solti.Utils.DI.Interfaces.Consts.INTERNAL_SERVICE_NAME_PREFIX
-  fullName: Solti.Utils.DI.Interfaces.Consts.INTERNAL_SERVICE_NAME_PREFIX
-  nameWithType: Consts.INTERNAL_SERVICE_NAME_PREFIX
 - uid: Solti.Utils.DI.Interfaces.CreateServiceDelegate
   name: CreateServiceDelegate
   href: Solti.Utils.DI.Interfaces.CreateServiceDelegate.html
@@ -1046,6 +1028,18 @@ references:
   commentId: T:Solti.Utils.DI.Interfaces.IServiceCollection
   fullName: Solti.Utils.DI.Interfaces.IServiceCollection
   nameWithType: IServiceCollection
+- uid: Solti.Utils.DI.Interfaces.IServiceCollection.Consts
+  name: IServiceCollection.Consts
+  href: Solti.Utils.DI.Interfaces.IServiceCollection.Consts.html
+  commentId: T:Solti.Utils.DI.Interfaces.IServiceCollection.Consts
+  fullName: Solti.Utils.DI.Interfaces.IServiceCollection.Consts
+  nameWithType: IServiceCollection.Consts
+- uid: Solti.Utils.DI.Interfaces.IServiceCollection.Consts.INTERNAL_SERVICE_NAME_PREFIX
+  name: INTERNAL_SERVICE_NAME_PREFIX
+  href: Solti.Utils.DI.Interfaces.IServiceCollection.Consts.html#Solti_Utils_DI_Interfaces_IServiceCollection_Consts_INTERNAL_SERVICE_NAME_PREFIX
+  commentId: F:Solti.Utils.DI.Interfaces.IServiceCollection.Consts.INTERNAL_SERVICE_NAME_PREFIX
+  fullName: Solti.Utils.DI.Interfaces.IServiceCollection.Consts.INTERNAL_SERVICE_NAME_PREFIX
+  nameWithType: IServiceCollection.Consts.INTERNAL_SERVICE_NAME_PREFIX
 - uid: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions
   name: IServiceCollectionBasicExtensions
   href: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.html
@@ -1298,6 +1292,18 @@ references:
   commentId: T:Solti.Utils.DI.Interfaces.IServiceFactory
   fullName: Solti.Utils.DI.Interfaces.IServiceFactory
   nameWithType: IServiceFactory
+- uid: Solti.Utils.DI.Interfaces.IServiceFactory.Consts
+  name: IServiceFactory.Consts
+  href: Solti.Utils.DI.Interfaces.IServiceFactory.Consts.html
+  commentId: T:Solti.Utils.DI.Interfaces.IServiceFactory.Consts
+  fullName: Solti.Utils.DI.Interfaces.IServiceFactory.Consts
+  nameWithType: IServiceFactory.Consts
+- uid: Solti.Utils.DI.Interfaces.IServiceFactory.Consts.CREATE_ALWAYS
+  name: CREATE_ALWAYS
+  href: Solti.Utils.DI.Interfaces.IServiceFactory.Consts.html#Solti_Utils_DI_Interfaces_IServiceFactory_Consts_CREATE_ALWAYS
+  commentId: F:Solti.Utils.DI.Interfaces.IServiceFactory.Consts.CREATE_ALWAYS
+  fullName: Solti.Utils.DI.Interfaces.IServiceFactory.Consts.CREATE_ALWAYS
+  nameWithType: IServiceFactory.Consts.CREATE_ALWAYS
 - uid: Solti.Utils.DI.Interfaces.IServiceFactory.GetOrCreateInstance(Solti.Utils.DI.Interfaces.AbstractServiceEntry,System.Int32)
   name: GetOrCreateInstance(AbstractServiceEntry, Int32)
   href: Solti.Utils.DI.Interfaces.IServiceFactory.html#Solti_Utils_DI_Interfaces_IServiceFactory_GetOrCreateInstance_Solti_Utils_DI_Interfaces_AbstractServiceEntry_System_Int32_
