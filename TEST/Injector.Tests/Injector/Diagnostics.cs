@@ -3,6 +3,7 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
+using System;
 using System.IO;
 
 using Moq;
@@ -12,7 +13,7 @@ namespace Solti.Utils.DI.Tests
 {
     using Diagnostics;
     using Interfaces;
-    using System;
+    using Primitives.Patterns;
 
     public partial class InjectorTests
     {
@@ -83,6 +84,22 @@ namespace Solti.Utils.DI.Tests
             string dotGraph = Root.GetDependencyGraph<IInterface_1>(newLine: "\n");
             Assert.That(dotGraph, Is.EqualTo(File.ReadAllText("graph_4.txt").Replace("\r", string.Empty)));
         }
+        
+        [Test]
+        public void GetDependencyGraph_ShouldTakeProxiesIntoAccount()
+        {
+            Root = ScopeFactory.Create
+            (
+                svcs => svcs
+                    .Factory<IDisposable>(_ => new Disposable(false), Lifetime.Scoped)
+                    .Service<IInterface_1, Implementation_1_No_Dep>(Lifetime.Scoped).Decorate((scope, _, current) => DummyDecorator(scope.Get<IDisposable>(null), current))
+            );
+
+            string dotGraph = Root.GetDependencyGraph<IInterface_1>(newLine: "\n");
+            Assert.That(dotGraph, Is.EqualTo(File.ReadAllText("graph_5.txt").Replace("\r", string.Empty)));
+        }
+
+        private static object DummyDecorator(IDisposable dep, object current) => current;
 
         [Test]
         public void GetDependencyGraph_ShouldBeNullChecked()

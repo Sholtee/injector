@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -23,6 +24,7 @@ namespace Solti.Utils.DI.Internals
         {
             Visitors = new IFactoryVisitor[]
             {
+                new MergeProxiesVisitor(),
                 new DotGraphBuilderVisitor(this)
             };
             FResolver = resolver;
@@ -76,7 +78,11 @@ namespace Solti.Utils.DI.Internals
 
             try
             {
-                Visitors.Single().Visit(entry.Factory!, null!);
+                Visitors.Aggregate<IFactoryVisitor, LambdaExpression>
+                (
+                    entry.Factory!,
+                    (visited, visitor) => visitor.Visit(visited, entry)
+                );
             }
             finally
             {
