@@ -29,7 +29,12 @@ namespace Solti.Utils.DI.Internals
 
         private ServicePath? FPath; // Not required when AOT building is enabled 
 
-        private object?[] FSlots;
+        //
+        // "volatile" is required as slots can be accessed parallelly in the root scope
+        // (a thread may read FSlots while the other may try to lenghen it).
+        //
+
+        private volatile object?[] FSlots;
 
         private CaptureDisposable DisposableStore
         {
@@ -123,6 +128,12 @@ namespace Solti.Utils.DI.Internals
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public object GetOrCreateInstance(AbstractServiceEntry requested, int slot)
         {
+            //
+            // Although the value of FSlots might be chnaged by another thread while we are doing
+            // this check, it won't cause any issues as the new value must contain the same items
+            // in the same order.
+            //
+
             if (slot > IServiceFactory.Consts.CREATE_ALWAYS && slot < FSlots.Length && FSlots[slot] is not null)
                 return FSlots[slot]!;
 
@@ -139,12 +150,16 @@ namespace Solti.Utils.DI.Internals
 
                 if (slot >= FSlots.Length)
                     //
-                    // We reach here when we made a service request that triggered a ServiceLookup update.
+                    // We reach here when we made a service request that triggered a ServiceResolver update.
                     // Scopes created after the update won't be affected as they allocate their slot array
                     // with the proper size.
                     //
 
-                    Array.Resize(ref FSlots, ServiceResolver.Slots);
+                    FSlots = Array<object?>.Lengthen(FSlots, ServiceResolver.Slots);
+
+                //
+                // "??" is required as another thread may have done this work while we reached here.
+                //
 
                 return FSlots[slot] ??= CreateInstance(requested);
             }
