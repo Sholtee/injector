@@ -155,7 +155,7 @@ namespace Solti.Utils.DI.Internals
                     // with the proper size.
                     //
 
-                    FSlots = Array<object?>.Lengthen(FSlots, ServiceResolver.Slots);
+                    FSlots = Array<object?>.Resize(FSlots, ServiceResolver.Slots);
 
                 //
                 // "??" is required as another thread may have done this work while we reached here.
