@@ -14,7 +14,7 @@ namespace Solti.Utils.DI.Internals
         protected override void RegisterBuiltInServices(IServiceCollection services)
         {
             base.RegisterBuiltInServices(services);
-            services.Factory<IServiceProvider>(static i => (IServiceProvider) i, Lifetime.Scoped);
+            services.Factory(typeof(IServiceProvider), static (i, _) =>  i, Lifetime.Scoped);
         }
 
         public InjectorSupportsServiceProvider(IServiceCollection services, ScopeOptions options, object? tag) : base(services, options, tag)
