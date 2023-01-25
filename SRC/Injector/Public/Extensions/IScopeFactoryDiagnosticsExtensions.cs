@@ -3,7 +3,6 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
-#pragma warning disable RS0026 // Overloads differ in in type arguments too
 using System;
 
 namespace Solti.Utils.DI.Diagnostics
@@ -27,10 +26,10 @@ namespace Solti.Utils.DI.Diagnostics
             if (iface is null)
                 throw new ArgumentNullException(nameof(iface));
 
-            if (root is not Injector injector)
+            if (root is not IInjector injector)
                 throw new NotSupportedException();
 
-            DotGraphBuilder graphBuilder = new(injector.ServiceResolver);
+            DotGraphBuilder graphBuilder = new(injector.Get<IServiceResolver>());
             graphBuilder.Build(iface, name);
 
             return graphBuilder.Graph.ToString(newLine ?? Environment.NewLine);

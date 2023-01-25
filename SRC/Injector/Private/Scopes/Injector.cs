@@ -22,10 +22,16 @@ namespace Solti.Utils.DI.Internals
         IServiceFactory
     {
         //
-        // This list should not be thread safe since it is invoked inside the write lock.
+        // IServiceResolver is thread safe
         //
 
-        private CaptureDisposable? FDisposableStore;
+        private readonly IServiceResolver FServiceResolver;
+
+        //
+        // These fields are always accessed in a write lock.
+        //
+
+        private CaptureDisposable? FDisposableStore;  // Not required when there is no disposable service requested
 
         private ServicePath? FPath; // Not required when AOT building is enabled 
 
@@ -100,7 +106,7 @@ namespace Solti.Utils.DI.Internals
                 if (instance is null)
                     throw new InvalidOperationException(string.Format(Resources.Culture, Resources.IS_NULL, nameof(instance)));
 
-                if (!requested.Interface.IsInstanceOfType(instance))
+                if (!requested.Interface.IsInstanceOfType(instance))  // according to perf tests this check is quite slow
                     throw new InvalidOperationException(string.Format(Resources.Culture, Resources.INVALID_CAST, requested.Interface));
 
                 requested.UpdateState(ServiceEntryStates.Instantiated);
@@ -109,14 +115,19 @@ namespace Solti.Utils.DI.Internals
             return instance;
         }
 
-        protected virtual void RegisterBuiltInServices(IServiceCollection services)
+        protected static IServiceCollection RegisterBuiltInServices(IServiceCollection services)
         {
             ServiceOptions suppressDispose = ServiceOptions.Default with { DisposalMode = ServiceDisposalMode.Suppress };
-            services
+
+            //
+            // Copy the collection to be safe to modify it
+            //
+
+            return new ServiceCollection(services)
                 .Factory(typeof(IInjector), static (i, _) => i, Lifetime.Scoped, suppressDispose)
                 .Factory(typeof(IServiceFactory), static (i, _) => i, Lifetime.Scoped, suppressDispose)
                 .Factory(typeof(IScopeFactory), static (i, _) => i, Lifetime.Singleton, suppressDispose) // create SF from the root only
-                .Factory(typeof(IServiceResolver), static (i, _) => ((Injector) i).ServiceResolver, Lifetime.Singleton, suppressDispose)
+                .Factory(typeof(IServiceResolver), static (i, _) => ((Injector) i).FServiceResolver, Lifetime.Singleton, suppressDispose)
                 .Service(typeof(IEnumerable<>), typeof(ServiceEnumerator<>), Lifetime.Scoped)
 #if DEBUG
                 .Factory(typeof(IReadOnlyCollection<object>), "captured_disposables", static (i, _) => ((Injector) i).DisposableStore.CapturedDisposables, Lifetime.Scoped, suppressDispose)
@@ -125,7 +136,6 @@ namespace Solti.Utils.DI.Internals
         }
 
         #region IServiceFactory
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public object GetOrCreateInstance(AbstractServiceEntry requested, int slot)
         {
             //
@@ -155,7 +165,7 @@ namespace Solti.Utils.DI.Internals
                     // with the proper size.
                     //
 
-                    FSlots = Array<object?>.Resize(FSlots, ServiceResolver.Slots);
+                    FSlots = Array<object?>.Resize(FSlots, FServiceResolver.Slots);
 
                 //
                 // "??" is required as another thread may have done this work while we reached here.
@@ -170,11 +180,7 @@ namespace Solti.Utils.DI.Internals
             }
         }
 
-        public IServiceFactory? Super
-        {
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            get;
-        }
+        public IServiceFactory? Super { get; }
         #endregion
 
         #region IInjector
@@ -200,7 +206,7 @@ namespace Solti.Utils.DI.Internals
             if (iface.IsGenericTypeDefinition)
                 throw new ArgumentException(Resources.PARAMETER_IS_GENERIC, nameof(iface));
 
-            return ServiceResolver
+            return FServiceResolver
                 .Resolve(iface, name)
                 ?.ResolveInstance
                 ?.Invoke(this);
@@ -225,34 +231,28 @@ namespace Solti.Utils.DI.Internals
         public object? Tag { get; }
         #endregion
 
-        public ServiceResolver ServiceResolver
+        public Injector(IServiceResolver resolver, ScopeOptions options, object? tag)
         {
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            get;
+            FServiceResolver = resolver;
+            FSlots           = Array<object>.Create(resolver.Slots);
+            Options          = options;
+            Tag              = tag;
         }
 
-        public Injector(IServiceCollection services, ScopeOptions options, object? tag)
+        public Injector(IServiceCollection services, ScopeOptions options, object? tag): this
+        (
+            ServiceResolver.Create
+            (
+                RegisterBuiltInServices(services),
+                options
+            ),
+            options,
+            tag
+        ) {}
+
+        public Injector(Injector super, object? tag): this(super.FServiceResolver, super.Options, tag)
         {
-            //
-            // Copy the collection to be safe to modify it
-            //
-
-            services = new ServiceCollection(services);
-            RegisterBuiltInServices(services);
-
-            ServiceResolver = ServiceResolver.Create(services, options);  
-            FSlots          = Array<object>.Create(ServiceResolver.Slots);
-            Options         = options;
-            Tag             = tag;
-        }
-
-        public Injector(Injector super, object? tag)
-        {
-            ServiceResolver = super.ServiceResolver;
-            FSlots          = Array<object>.Create(ServiceResolver.Slots);
-            Options         = super.Options;
-            Tag             = tag;
-            Super           = super;
+            Super = super;
         }
     }
 }

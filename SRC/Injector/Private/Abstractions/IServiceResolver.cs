@@ -10,6 +10,10 @@ namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
 
+    /// <summary>
+    /// Describes the constract how to resolve services.
+    /// </summary>
+    /// <remarks>Implementations must be thread-safe.</remarks>
     internal interface IServiceResolver
     {
         /// <summary>

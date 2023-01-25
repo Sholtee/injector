@@ -11,15 +11,20 @@ namespace Solti.Utils.DI.Internals
 
     internal class InjectorSupportsServiceProvider : Injector, IServiceProvider
     {
-        protected override void RegisterBuiltInServices(IServiceCollection services)
-        {
-            base.RegisterBuiltInServices(services);
-            services.Factory(typeof(IServiceProvider), static (i, _) =>  i, Lifetime.Scoped);
-        }
+        protected static new IServiceCollection RegisterBuiltInServices(IServiceCollection services) => Injector
+            .RegisterBuiltInServices(services)
+            .Factory(typeof(IServiceProvider), static (i, _) =>  i, Lifetime.Scoped, ServiceOptions.Default with { DisposalMode = ServiceDisposalMode.Suppress });
 
-        public InjectorSupportsServiceProvider(IServiceCollection services, ScopeOptions options, object? tag) : base(services, options, tag)
-        {
-        }
+        public InjectorSupportsServiceProvider(IServiceCollection services, ScopeOptions options, object? tag) : base
+        (
+            ServiceResolver.Create
+            (
+                RegisterBuiltInServices(services),
+                options
+            ),
+            options,
+            tag
+        ) {}
 
         public InjectorSupportsServiceProvider(InjectorSupportsServiceProvider super, object? tag) : base(super, tag)
         {
