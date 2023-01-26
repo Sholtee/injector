@@ -152,7 +152,7 @@ namespace Solti.Utils.DI.Tests
             }
         }
 
-        [Test, Ignore("TBD whether this feature is required")]
+        [Test]
         public void Injector_ServiceEnumerator_ShouldWorkWithBuiltInServices([Values(typeof(IInjector), typeof(IScopeFactory))] Type svc)
         {
             Root = ScopeFactory.Create(svcs => { });
