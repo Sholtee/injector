@@ -132,6 +132,32 @@
   </table>
   <h3 id="properties">Properties
   </h3>
+  <a id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_AssignedSlot_" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.AssignedSlot*"></a>
+  <h4 id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_AssignedSlot" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.AssignedSlot">AssignedSlot</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int AssignedSlot { get; protected set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_AssignedSlot_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>To assign a proper value to this property, invoke the <a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_Build_Solti_Utils_DI_Interfaces_IBuildContext_System_Collections_Generic_IReadOnlyList_Solti_Utils_DI_Interfaces_IFactoryVisitor__">Build(IBuildContext, IReadOnlyList&lt;IFactoryVisitor&gt;)</a> method.</p>
+</div>
   <a id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_CreateInstance_" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.CreateInstance*"></a>
   <h4 id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_CreateInstance" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.CreateInstance">CreateInstance</h4>
   <div class="markdown level1 summary"><p>Unconditionaly creates a new service instance.</p>
@@ -332,33 +358,6 @@
   </table>
   <h5 id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_Name_remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>A service is identified by its <a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_Interface">Interface</a> and <a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_Name">Name</a>.</p>
-</div>
-  <a id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_ResolveInstance_" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.ResolveInstance*"></a>
-  <h4 id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_ResolveInstance" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.ResolveInstance">ResolveInstance</h4>
-  <div class="markdown level1 summary"><p>Gets or creates a service instance.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public ResolveServiceDelegate ResolveInstance { get; protected set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Solti.Utils.DI.Interfaces.ResolveServiceDelegate.html">ResolveServiceDelegate</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_ResolveInstance_remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>To assign value to this property, invoke the <a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_Build_Solti_Utils_DI_Interfaces_IBuildContext_System_Collections_Generic_IReadOnlyList_Solti_Utils_DI_Interfaces_IFactoryVisitor__">Build(IBuildContext, IReadOnlyList&lt;IFactoryVisitor&gt;)</a> method.</p>
 </div>
   <a id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_State_" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.State*"></a>
   <h4 id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_State" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.State">State</h4>
