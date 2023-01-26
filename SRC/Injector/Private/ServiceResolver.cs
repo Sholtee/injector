@@ -25,6 +25,7 @@ namespace Solti.Utils.DI.Internals
         private readonly IReadOnlyCollection<string?> FNames; // all the possible service names including NULL
         private readonly bool FInitialized;
         private readonly Func<object, AbstractServiceEntry?> FValueFactory;
+        private readonly object FBuildLock = new();
         private int FSlots;
 
         private sealed class CompositeKey : IServiceId
@@ -83,17 +84,19 @@ namespace Solti.Utils.DI.Internals
             Debug.Assert(genericEntry is not null, "Generic entry cannot be null here");
 
             //
-            // The factory function may be invoked multiple times:
-            // https://learn.microsoft.com/en-us/dotnet/api/system.collections.concurrent.concurrentdictionary-2.getoradd?view=net-7.0
-            //
-            // And we don't want unnecessary AssignSlot() calls
+            // Since IServiceEntryBuilder is not meant to be thread-safe, every write operations
+            // need to be exclusive.
             //
 
-            lock (genericEntry!)
+            lock (FBuildLock)
             {
+                //
+                // Another thread may have done this work while we reached here
+                //
+
                 if (!FEntries.TryGetValue(key, out AbstractServiceEntry? specialized))
                 {
-                    specialized = genericEntry.Specialize(iface.GenericTypeArguments);
+                    specialized = genericEntry!.Specialize(iface.GenericTypeArguments);
                     FEntryBuilder.Build(specialized);
                 }
                 return specialized;
