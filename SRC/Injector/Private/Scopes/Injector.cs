@@ -29,6 +29,8 @@ namespace Solti.Utils.DI.Internals
 
         private readonly Injector? FSuper;
 
+        private readonly object? FLock;
+
         //
         // These fields are always accessed in a write lock.
         //
@@ -163,12 +165,8 @@ namespace Solti.Utils.DI.Internals
             if (slot > IServiceFactory.Consts.CREATE_ALWAYS && slot < FSlots.Length && FSlots[slot] is not null)
                 return FSlots[slot]!;
 
-            //
-            // In root we need to lock
-            //
-
-            if (FSuper is null)
-                Monitor.Enter(requested);
+            if (FLock is not null)
+                Monitor.Enter(FLock);
             try
             {
                 if (slot <= IServiceFactory.Consts.CREATE_ALWAYS)
@@ -191,8 +189,8 @@ namespace Solti.Utils.DI.Internals
             }
             finally
             {
-                if (FSuper is null)
-                    Monitor.Exit(requested);
+                if (FLock is not null)
+                    Monitor.Exit(FLock);
             }
         }
 
@@ -257,6 +255,7 @@ namespace Solti.Utils.DI.Internals
         {
             FServiceResolver = resolver;
             FSlots           = Array<object>.Create(resolver.Slots);
+            FLock            = new object();  // lock required in the root scope only
             Options          = options;
             Tag              = tag;
         }
