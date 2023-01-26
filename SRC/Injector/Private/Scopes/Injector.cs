@@ -27,6 +27,8 @@ namespace Solti.Utils.DI.Internals
 
         private readonly IServiceResolver FServiceResolver;
 
+        private readonly Injector? FSuper;
+
         //
         // These fields are always accessed in a write lock.
         //
@@ -136,12 +138,21 @@ namespace Solti.Utils.DI.Internals
         }
 
         #region IServiceFactory
-        public object GetOrCreateInstance(AbstractServiceEntry requested, int slot)
+        public object GetOrCreateInstance(AbstractServiceEntry requested)
         {
             CheckNotDisposed();
 
             if (requested is null)
                 throw new ArgumentNullException(nameof(requested));
+
+            //
+            // Shared entries are resolved from the root scope.
+            //
+
+            if (requested.Features.HasFlag(ServiceEntryFeatures.Shared) && FSuper is not null)
+                return FSuper.GetOrCreateInstance(requested);
+
+            int slot = requested.AssignedSlot;
 
             //
             // Although the value of FSlots might be chnaged by another thread while we are doing
@@ -156,7 +167,7 @@ namespace Solti.Utils.DI.Internals
             // In root we need to lock
             //
 
-            if (Super is null)
+            if (FSuper is null)
                 Monitor.Enter(requested);
             try
             {
@@ -180,12 +191,12 @@ namespace Solti.Utils.DI.Internals
             }
             finally
             {
-                if (Super is null)
+                if (FSuper is null)
                     Monitor.Exit(requested);
             }
         }
 
-        public IServiceFactory? Super { get; }
+        public IServiceFactory? Super => FSuper;
         #endregion
 
         #region IInjector
@@ -262,8 +273,6 @@ namespace Solti.Utils.DI.Internals
         ) {}
 
         public Injector(Injector super, object? tag): this(super.FServiceResolver, super.Options, tag)
-        {
-            Super = super;
-        }
+            => FSuper = super;
     }
 }

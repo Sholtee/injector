@@ -10,7 +10,7 @@ namespace Solti.Utils.DI.Interfaces
     /// <summary>
     /// Gets or creates a particular service.
     /// </summary>
-    public delegate object ResolveServiceDelegate(IServiceFactory instanceFactory);
+    public delegate object ResolveServiceDelegate(IServiceFactory instanceFactory);  // TODO: REMOVE
 
     /// <summary>
     /// Unconditionaly creates a particular service.

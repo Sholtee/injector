@@ -21,7 +21,7 @@ namespace Solti.Utils.DI.Internals.Tests
         {
             private readonly Func<MethodCallExpression, Expression, Type, string, Expression> FVisitor;
 
-            protected override Expression VisitServiceRequest(MethodCallExpression method, Expression target, Type iface, string name) => FVisitor(method, target, iface, name);
+            protected override Expression VisitServiceRequest(MethodCallExpression method, Expression scope, Type iface, string name) => FVisitor(method, scope, iface, name);
 
             public ServiceRequestVisitorEx(Func<MethodCallExpression, Expression, Type, string, Expression> visitor) => FVisitor = visitor;
         }

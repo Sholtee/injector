@@ -16,6 +16,11 @@ namespace Solti.Utils.DI.Interfaces
         public static class Consts
         {
             /// <summary>
+            /// Invalid slot..
+            /// </summary>
+            public const int INVALID_SLOT = CREATE_ALWAYS;
+
+            /// <summary>
             /// The service requires to be created each time it is requested.
             /// </summary>
             public const int CREATE_ALWAYS = -1;
@@ -24,12 +29,11 @@ namespace Solti.Utils.DI.Interfaces
         /// <summary>
         /// The parent factory. NULL in case of root factory.
         /// </summary>
-        IServiceFactory? Super { get; }
+        IServiceFactory? Super { get; } // TODO: REMOVE
 
         /// <summary>
-        /// Gets or creates a service instance assigned to the given slot.
+        /// Gets or creates a service instance.
         /// </summary>
-        /// <remarks>Setting the <paramref name="slot"/> to <see cref="Consts.CREATE_ALWAYS"/> will instruct the system to instantiate a new instance on each request.</remarks>
-        object GetOrCreateInstance(AbstractServiceEntry requested, int slot);
+        object GetOrCreateInstance(AbstractServiceEntry requested);
     }
 }

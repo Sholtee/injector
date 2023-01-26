@@ -21,7 +21,7 @@ namespace Solti.Utils.DI.Tests
             IServiceFactory fact = (IServiceFactory) Root.CreateScope();
             fact.Dispose();
 
-            Assert.Throws<ObjectDisposedException>(() => fact.GetOrCreateInstance(new MissingServiceEntry(typeof(IInterface_1), null), 0));
+            Assert.Throws<ObjectDisposedException>(() => fact.GetOrCreateInstance(new MissingServiceEntry(typeof(IInterface_1), null)));
         }
 
         [Test]
@@ -31,7 +31,7 @@ namespace Solti.Utils.DI.Tests
 
             using IServiceFactory fact = (IServiceFactory) Root.CreateScope();;
 
-            Assert.Throws<ArgumentNullException>(() => fact.GetOrCreateInstance(null, 0));
+            Assert.Throws<ArgumentNullException>(() => fact.GetOrCreateInstance(null));
         }
     }
 }

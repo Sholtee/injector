@@ -6,6 +6,7 @@
 using System;
 using System.Diagnostics;
 using System.Linq.Expressions;
+using System.Reflection;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -18,7 +19,9 @@ namespace Solti.Utils.DI.Internals
     /// <remarks>This results a faster generated delegate since it saves a <see cref="IServiceResolver.Resolve(Type, string?)"/> invocation for each dependency.</remarks>
     internal sealed class ServiceRequestReplacerVisitor : ServiceRequestVisitor, IFactoryVisitor
     {
-        private readonly IServiceResolver FResolver;
+        private static readonly MethodInfo FGetOrCreate = MethodInfoExtractor.Extract<IServiceFactory>(fact => fact.GetOrCreateInstance(null!));
+
+        private readonly IServiceResolver FServiceResolver;
 
         private readonly ServicePath FPath;
 
@@ -26,16 +29,16 @@ namespace Solti.Utils.DI.Internals
 
         public ServiceRequestReplacerVisitor(IServiceResolver resolver, ServicePath path, bool permissive)
         {
-            FResolver = resolver;
+            FServiceResolver = resolver;
             FPath = path;
             FPermissive = permissive;
         }
 
         public LambdaExpression Visit(LambdaExpression factory, AbstractServiceEntry entry) => (LambdaExpression) Visit(factory);
 
-        protected override Expression VisitServiceRequest(MethodCallExpression request, Expression target, Type iface, string? name)
+        protected override Expression VisitServiceRequest(MethodCallExpression request, Expression scope, Type iface, string? name)
         {
-            if (target.Type != typeof(IServiceFactory))
+            if (scope.Type != typeof(IServiceFactory))
             {
                 Trace.TraceWarning(Resources.REQUEST_NOT_REPLACEABLE);
                 return request;
@@ -45,7 +48,7 @@ namespace Solti.Utils.DI.Internals
             // It specializes generic services ahead of time
             //
 
-            AbstractServiceEntry? entry = FResolver.Resolve(iface, name);
+            AbstractServiceEntry? entry = FServiceResolver.Resolve(iface, name);
             if (entry is null)
             {
                 //
@@ -63,15 +66,14 @@ namespace Solti.Utils.DI.Internals
             }
 
             //
-            // injector.[Try]Get(iface, name) -> entry.Resolve(injector)
+            // injector.[Try]Get(iface, name) -> injector.GetOrCreateInstance(entry)
             //
 
-            Debug.Assert(entry!.ResolveInstance is not null, "Resolver cannot be NULL");
-
-            Expression resolve = Expression.Invoke
+            Expression resolve = Expression.Call
             (
-                Expression.Constant(entry!.ResolveInstance),
-                target
+                scope,
+                FGetOrCreate,
+                Expression.Constant(entry, typeof(AbstractServiceEntry))
             );
 
             return request.Method.ReturnType != iface
