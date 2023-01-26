@@ -102,12 +102,6 @@ namespace Solti.Utils.DI.Interfaces
         public CreateServiceDelegate? CreateInstance { get; protected set; }
 
         /// <summary>
-        /// Gets or creates a service instance.
-        /// </summary>
-        /// <remarks>To assign value to this property, invoke the <see cref="Build(IBuildContext, IReadOnlyList{IFactoryVisitor})"/> method.</remarks>
-        public ResolveServiceDelegate? ResolveInstance { get; protected set; }  // TODO: REMOVE
-
-        /// <summary>
         /// Bound decorators.
         /// </summary>
         public virtual IReadOnlyList<Expression<DecoratorDelegate>> Decorators => throw new NotSupportedException(Resources.DECORATING_NOT_SUPPORTED);

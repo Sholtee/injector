@@ -224,10 +224,10 @@ namespace Solti.Utils.DI.Internals
             if (iface.IsGenericTypeDefinition)
                 throw new ArgumentException(Resources.PARAMETER_IS_GENERIC, nameof(iface));
 
-            return FServiceResolver
-                .Resolve(iface, name)
-                ?.ResolveInstance
-                ?.Invoke(this);
+            AbstractServiceEntry? entry = FServiceResolver.Resolve(iface, name);
+            return entry is not null
+                ? GetOrCreateInstance(entry)
+                : null;
         }
         #endregion
 

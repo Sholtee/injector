@@ -14,8 +14,6 @@ Solti.Utils.DI.Interfaces.AbstractServiceEntry.Factory.get -> System.Linq.Expres
 Solti.Utils.DI.Interfaces.AbstractServiceEntry.Implementation.get -> System.Type?
 Solti.Utils.DI.Interfaces.AbstractServiceEntry.Interface.get -> System.Type!
 Solti.Utils.DI.Interfaces.AbstractServiceEntry.Name.get -> string?
-Solti.Utils.DI.Interfaces.AbstractServiceEntry.ResolveInstance.get -> Solti.Utils.DI.Interfaces.ResolveServiceDelegate?
-Solti.Utils.DI.Interfaces.AbstractServiceEntry.ResolveInstance.set -> void
 Solti.Utils.DI.Interfaces.AbstractServiceEntry.State.get -> Solti.Utils.DI.Interfaces.ServiceEntryStates
 Solti.Utils.DI.Interfaces.AbstractServiceEntry.State.set -> void
 Solti.Utils.DI.Interfaces.AbstractServiceEntry.ToString(bool shortForm) -> string!
@@ -91,7 +89,6 @@ Solti.Utils.DI.Interfaces.RequestNotAllowedException
 Solti.Utils.DI.Interfaces.RequestNotAllowedException.RequestNotAllowedException() -> void
 Solti.Utils.DI.Interfaces.RequestNotAllowedException.RequestNotAllowedException(string! message) -> void
 Solti.Utils.DI.Interfaces.RequestNotAllowedException.RequestNotAllowedException(string! message, System.Exception! innerException) -> void
-Solti.Utils.DI.Interfaces.ResolveServiceDelegate
 Solti.Utils.DI.Interfaces.ScopeOptions
 Solti.Utils.DI.Interfaces.ScopeOptions.ServiceResolutionMode.get -> Solti.Utils.DI.Interfaces.ServiceResolutionMode
 Solti.Utils.DI.Interfaces.ScopeOptions.ServiceResolutionMode.init -> void
