@@ -138,6 +138,11 @@ namespace Solti.Utils.DI.Internals
         #region IServiceFactory
         public object GetOrCreateInstance(AbstractServiceEntry requested, int slot)
         {
+            CheckNotDisposed();
+
+            if (requested is null)
+                throw new ArgumentNullException(nameof(requested));
+
             //
             // Although the value of FSlots might be chnaged by another thread while we are doing
             // this check, it won't cause any issues as the new value must contain the same items
@@ -197,6 +202,8 @@ namespace Solti.Utils.DI.Internals
 
         public object? TryGet(Type iface, string? name)
         {
+            CheckNotDisposed();
+
             if (iface is null)
                 throw new ArgumentNullException(nameof(iface));
 
@@ -224,7 +231,11 @@ namespace Solti.Utils.DI.Internals
         #endregion
 
         #region IScopeFactory
-        public virtual IInjector CreateScope(object? tag) => new Injector(this, tag);
+        public virtual IInjector CreateScope(object? tag)
+        {
+            CheckNotDisposed();
+            return new Injector(this, tag);
+        }
         #endregion
 
         #region IHasTag

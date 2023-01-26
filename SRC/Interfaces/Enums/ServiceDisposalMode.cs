@@ -13,7 +13,7 @@ namespace Solti.Utils.DI.Interfaces
     public enum ServiceDisposalMode
     {
         /// <summary>
-        /// The service gets disposed only when its interface is an <see cref="IDisposable"/> descendant
+        /// The service gets disposed only when its interface is an <see cref="IDisposable"/> descendant.
         /// </summary>
         Default,
 

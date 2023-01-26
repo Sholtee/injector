@@ -34,6 +34,10 @@ namespace Solti.Utils.DI.Internals
 
         public object GetService(Type serviceType) => TryGet(serviceType, null)!;
 
-        public override IInjector CreateScope(object? tag) => new InjectorSupportsServiceProvider(this, tag);
+        public override IInjector CreateScope(object? tag)
+        {
+            CheckNotDisposed();
+            return new InjectorSupportsServiceProvider(this, tag);
+        }
     }
 }

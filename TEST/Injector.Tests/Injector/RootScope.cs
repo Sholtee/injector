@@ -36,6 +36,15 @@ namespace Solti.Utils.DI.Tests
         }
 
         [Test]
+        public void Injector_CreateScope_ShouldThrowOnDisposedRoot([Values(true, false)] bool supportsServiceProvider)
+        {
+            IScopeFactory root = ScopeFactory.Create(svcs => { }, ScopeOptions.Default with { SupportsServiceProvider = supportsServiceProvider });
+            root.Dispose();
+
+            Assert.Throws<ObjectDisposedException>(() => root.CreateScope());
+        }
+
+        [Test]
         public void Injector_Create_ShouldThrowOnInvalidResolutionMode([ValueSource(nameof(Lifetimes))] Lifetime lifetime)
         {
             Assert.Throws<NotSupportedException>

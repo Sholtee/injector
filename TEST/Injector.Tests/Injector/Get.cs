@@ -33,6 +33,17 @@ namespace Solti.Utils.DI.Tests
         }
 
         [Test]
+        public void Injector_Get_ShouldThrowOnDisposedScope()
+        {
+            Root = ScopeFactory.Create(svcs => svcs.Service<IInterface_1, Implementation_1>(Lifetime.Scoped));
+            
+            IInjector injector = Root.CreateScope();
+            injector.Dispose();
+
+            Assert.Throws<ObjectDisposedException>(() => injector.Get<IInterface_1>());
+        }
+
+        [Test]
         public void Injector_Get_ShouldBeNullChecked()
         {
             Assert.Throws<ArgumentNullException>(() => IInjectorBasicExtensions.Get<IDictionary>(null));
