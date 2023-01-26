@@ -4,7 +4,6 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
-using System.Collections.Generic;
 using System.Linq.Expressions;
 
 namespace Solti.Utils.DI.Internals
@@ -23,13 +22,6 @@ namespace Solti.Utils.DI.Internals
 
         public TransientServiceEntry(Type @interface, string? name, Type implementation, object explicitArgs, ServiceOptions options) : base(@interface, name, implementation, explicitArgs, options)
         {
-        }
-
-        public override void Build(IBuildContext context, IReadOnlyList<IFactoryVisitor> visitors)
-        {
-            base.Build(context, visitors);
-
-            ResolveInstance = (IServiceFactory factory) => factory.GetOrCreateInstance(this, IServiceFactory.Consts.CREATE_ALWAYS);
         }
 
         public override AbstractServiceEntry Specialize(params Type[] genericArguments)

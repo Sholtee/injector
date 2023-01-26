@@ -28,10 +28,7 @@ namespace Solti.Utils.DI.Internals
         public sealed override void Build(IBuildContext context, IReadOnlyList<IFactoryVisitor> visitors)
         {
             base.Build(context, visitors);
-
-            int assignedSlot = context.AssignSlot();
-
-            ResolveInstance = (IServiceFactory factory) => factory.GetOrCreateInstance(this, assignedSlot);
+            AssignedSlot = context.AssignSlot();
         }
     }
 }

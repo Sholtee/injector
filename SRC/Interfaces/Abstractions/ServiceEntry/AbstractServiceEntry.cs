@@ -90,16 +90,16 @@ namespace Solti.Utils.DI.Interfaces
         public ServiceEntryStates State { get; protected set; }
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>To assign a proper value to this property, invoke the <see cref="Build(IBuildContext, IReadOnlyList{IFactoryVisitor})"/> method.</remarks>
+        public int AssignedSlot { get; protected set; } = IServiceFactory.Consts.INVALID_SLOT;
+
+        /// <summary>
         /// Unconditionaly creates a new service instance.
         /// </summary>
         /// <remarks>To assign value to this property, invoke the <see cref="Build(IBuildContext, IReadOnlyList{IFactoryVisitor})"/> method.</remarks>
         public CreateServiceDelegate? CreateInstance { get; protected set; }
-
-        /// <summary>
-        /// Gets or creates a service instance.
-        /// </summary>
-        /// <remarks>To assign value to this property, invoke the <see cref="Build(IBuildContext, IReadOnlyList{IFactoryVisitor})"/> method.</remarks>
-        public ResolveServiceDelegate? ResolveInstance { get; protected set; }
 
         /// <summary>
         /// Bound decorators.

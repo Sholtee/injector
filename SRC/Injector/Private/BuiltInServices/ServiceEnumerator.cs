@@ -26,7 +26,7 @@ namespace Solti.Utils.DI.Internals
         {
             foreach (AbstractServiceEntry entry in ServiceResolver.ResolveMany(typeof(TInterface)))
             {
-                yield return (TInterface) entry.ResolveInstance!(Scope);
+                yield return (TInterface) Scope.GetOrCreateInstance(entry);
             }
         }
 

@@ -91,6 +91,6 @@ namespace Solti.Utils.DI.Perf
         public object ViaFactory() => Entry.CreateInstance(Injector, out _);
 
         [Benchmark]
-        public object ViaResolver() => Entry.ResolveInstance(Injector);
+        public object ViaResolver() => Injector.GetOrCreateInstance(Entry);
     }
 }

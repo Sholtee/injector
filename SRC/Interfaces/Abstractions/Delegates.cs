@@ -8,11 +8,6 @@ using System;
 namespace Solti.Utils.DI.Interfaces
 {
     /// <summary>
-    /// Gets or creates a particular service.
-    /// </summary>
-    public delegate object ResolveServiceDelegate(IServiceFactory instanceFactory);
-
-    /// <summary>
     /// Unconditionaly creates a particular service.
     /// </summary>
     public delegate object CreateServiceDelegate(IServiceFactory scope, out object? disposable);
