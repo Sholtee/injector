@@ -30,7 +30,7 @@ namespace Solti.Utils.DI.Internals.Tests
             public ValueTask DisposeAsync() => default;
 
             public abstract object Get(Type iface, string name = null);
-            public abstract object GetOrCreateInstance(AbstractServiceEntry requested, int slot);
+            public abstract object GetOrCreateInstance(AbstractServiceEntry requested);
             public abstract object TryGet(Type iface, string name = null);
         }
 
@@ -97,10 +97,7 @@ namespace Solti.Utils.DI.Internals.Tests
                     .Setup(i => i.Get(typeof(IList), null))
                     .Returns(new List<object>());
             mockInjector
-                .Setup(i => i.GetOrCreateInstance(dependency, IServiceFactory.Consts.CREATE_ALWAYS))
-                .Returns(new List<object>());
-            mockInjector
-                .Setup(i => i.GetOrCreateInstance(dependency, It.IsAny<int>()))
+                .Setup(i => i.GetOrCreateInstance(dependency))
                 .Returns(new List<object>());
 
             Root = ScopeFactory.Create
@@ -119,16 +116,20 @@ namespace Solti.Utils.DI.Internals.Tests
             if (resolutionMode is ServiceResolutionMode.JIT)
             {
                 if (optional)
+                {
+                    mockInjector.Verify(i => i.Get(typeof(IList), null), Times.Never);
                     mockInjector.Verify(i => i.TryGet(typeof(IList), null), Times.Once);
+                }
                 else
+                {
                     mockInjector.Verify(i => i.Get(typeof(IList), null), Times.Once);
-                mockInjector.Verify(i => i.GetOrCreateInstance(It.IsAny<AbstractServiceEntry>(), IServiceFactory.Consts.CREATE_ALWAYS), Times.Never);
-                mockInjector.Verify(i => i.GetOrCreateInstance(It.IsAny<AbstractServiceEntry>(), It.IsAny<int>()), Times.Never);
+                    mockInjector.Verify(i => i.TryGet(typeof(IList), null), Times.Never);
+                }
+                mockInjector.Verify(i => i.GetOrCreateInstance(It.IsAny<AbstractServiceEntry>()), Times.Never);
             }
             else if (resolutionMode is ServiceResolutionMode.AOT)
             {
-                mockInjector.Verify(i => i.GetOrCreateInstance(dependency, IServiceFactory.Consts.CREATE_ALWAYS), Times.Exactly(!dependency.Features.HasFlag(ServiceEntryFeatures.CreateSingleInstance) ? 1 : 0));
-                mockInjector.Verify(i => i.GetOrCreateInstance(dependency, It.Is<int>(slot => slot > IServiceFactory.Consts.CREATE_ALWAYS)), Times.Exactly(dependency.Features.HasFlag(ServiceEntryFeatures.CreateSingleInstance) ? 1 : 0));
+                mockInjector.Verify(i => i.GetOrCreateInstance(dependency), Times.Once);
                 mockInjector.Verify(i => i.TryGet(It.IsAny<Type>(), It.IsAny<string>()), Times.Never);
                 mockInjector.Verify(i => i.Get(It.IsAny<Type>(), It.IsAny<string>()), Times.Never);
             }
@@ -183,10 +184,7 @@ namespace Solti.Utils.DI.Internals.Tests
                 .Setup(i => i.Get(typeof(IList<int>), null))
                 .Returns(new List<int>());
             mockInjector
-                .Setup(i => i.GetOrCreateInstance(It.Is<AbstractServiceEntry>(se => se.Interface == typeof(IList<int>)), IServiceFactory.Consts.CREATE_ALWAYS))
-                .Returns(new List<int>());
-            mockInjector
-                .Setup(i => i.GetOrCreateInstance(It.Is<AbstractServiceEntry>(se => se.Interface == typeof(IList<int>)), It.IsAny<int>()))
+                .Setup(i => i.GetOrCreateInstance(It.Is<AbstractServiceEntry>(se => se.Interface == typeof(IList<int>))))
                 .Returns(new List<int>());
 
             Root = ScopeFactory.Create
@@ -205,14 +203,14 @@ namespace Solti.Utils.DI.Internals.Tests
             if (resolutionMode is ServiceResolutionMode.JIT)
             {
                 mockInjector.Verify(i => i.Get(typeof(IList<int>), null), Times.Once);
-                mockInjector.Verify(i => i.GetOrCreateInstance(It.IsAny<AbstractServiceEntry>(), IServiceFactory.Consts.CREATE_ALWAYS), Times.Never);
-                mockInjector.Verify(i => i.GetOrCreateInstance(It.IsAny<AbstractServiceEntry>(), It.IsAny<int>()), Times.Never);
+                mockInjector.Verify(i => i.TryGet(typeof(IList<int>), null), Times.Never);
+                mockInjector.Verify(i => i.GetOrCreateInstance(It.IsAny<AbstractServiceEntry>()), Times.Never);
             }
             else if (resolutionMode is ServiceResolutionMode.AOT)
             {
-                mockInjector.Verify(i => i.GetOrCreateInstance(It.Is<AbstractServiceEntry>(se => se.Interface == typeof(IList<int>)), IServiceFactory.Consts.CREATE_ALWAYS), Times.Exactly(!dependency.Features.HasFlag(ServiceEntryFeatures.CreateSingleInstance) ? 1 : 0));
-                mockInjector.Verify(i => i.GetOrCreateInstance(It.Is<AbstractServiceEntry>(se => se.Interface == typeof(IList<int>)), It.Is<int>(slot => slot > IServiceFactory.Consts.CREATE_ALWAYS)), Times.Exactly(dependency.Features.HasFlag(ServiceEntryFeatures.CreateSingleInstance) ? 1 : 0));
+                mockInjector.Verify(i => i.GetOrCreateInstance(It.Is<AbstractServiceEntry>(se => se.Interface == typeof(IList<int>))), Times.Once);
                 mockInjector.Verify(i => i.Get(It.IsAny<Type>(), It.IsAny<string>()), Times.Never);
+                mockInjector.Verify(i => i.TryGet(It.IsAny<Type>(), It.IsAny<string>()), Times.Never);
             }
             else Assert.Fail("Unknown resolution mode");
         }

@@ -29,7 +29,7 @@ namespace Solti.Utils.DI.Internals.Tests
 
             Mock<IServiceFactory> mockSuperFactory = new(MockBehavior.Strict);
             mockSuperFactory
-                .Setup(f => f.GetOrCreateInstance(entry, 0))
+                .Setup(f => f.GetOrCreateInstance(entry))
                 .Returns(new object());
             mockSuperFactory
                 .SetupGet(f => f.Super)
@@ -44,9 +44,8 @@ namespace Solti.Utils.DI.Internals.Tests
 
             AbstractServiceEntry grabed = resolver.Resolve(typeof(IList), name);
 
-            Assert.DoesNotThrow(() => grabed.ResolveInstance(mockFactory.Object));
-            mockSuperFactory
-                .Verify(f => f.GetOrCreateInstance(entry, 0), Times.Once);
+            Assert.That(grabed, Is.SameAs(entry));
+            Assert.That(grabed.AssignedSlot, Is.EqualTo(0));
         }
 
         [Test]
@@ -56,7 +55,7 @@ namespace Solti.Utils.DI.Internals.Tests
 
             Mock<IServiceFactory> mockFactory = new(MockBehavior.Strict);
             mockFactory
-                .Setup(f => f.GetOrCreateInstance(entry, 0))
+                .Setup(f => f.GetOrCreateInstance(entry))
                 .Returns(new object());
             mockFactory
                 .SetupGet(f => f.Super)
@@ -66,9 +65,8 @@ namespace Solti.Utils.DI.Internals.Tests
 
             AbstractServiceEntry grabed = resolver.Resolve(typeof(IList), name);
 
-            Assert.DoesNotThrow(() => grabed.ResolveInstance(mockFactory.Object));
-            mockFactory
-                .Verify(f => f.GetOrCreateInstance(entry, 0), Times.Once);
+            Assert.That(grabed, Is.SameAs(entry));
+            Assert.That(grabed.AssignedSlot, Is.EqualTo(0));
         }
 
         [Test]
@@ -78,7 +76,7 @@ namespace Solti.Utils.DI.Internals.Tests
 
             Mock<IServiceFactory> mockFactory = new(MockBehavior.Strict);
             mockFactory
-                .Setup(f => f.GetOrCreateInstance(entry, IServiceFactory.Consts.CREATE_ALWAYS))
+                .Setup(f => f.GetOrCreateInstance(entry))
                 .Returns(new object());
             mockFactory
                 .SetupGet(f => f.Super)
@@ -88,9 +86,8 @@ namespace Solti.Utils.DI.Internals.Tests
 
             AbstractServiceEntry grabed = resolver.Resolve(typeof(IList), name);
 
-            Assert.DoesNotThrow(() => grabed.ResolveInstance(mockFactory.Object));
-            mockFactory
-                .Verify(f => f.GetOrCreateInstance(entry, IServiceFactory.Consts.CREATE_ALWAYS), Times.Once);
+            Assert.That(grabed, Is.SameAs(entry));
+            Assert.That(grabed.AssignedSlot, Is.EqualTo(IServiceFactory.Consts.CREATE_ALWAYS));
         }
 
         public class MyLiyt<T>: List<T> { }
@@ -102,7 +99,7 @@ namespace Solti.Utils.DI.Internals.Tests
 
             Mock<IServiceFactory> mockFactory = new(MockBehavior.Strict);
             mockFactory
-                .Setup(f => f.GetOrCreateInstance(It.Is<ScopedServiceEntry>(e => e.Interface.GetGenericTypeDefinition() == typeof(IList<>)), It.IsAny<int>()))
+                .Setup(f => f.GetOrCreateInstance(It.Is<ScopedServiceEntry>(e => e.Interface.GetGenericTypeDefinition() == typeof(IList<>))))
                 .Returns(new object());
             mockFactory
                 .SetupGet(f => f.Super)
@@ -112,17 +109,18 @@ namespace Solti.Utils.DI.Internals.Tests
 
             AbstractServiceEntry grabed = resolver.Resolve(typeof(IList<int>), name);
 
-            Assert.DoesNotThrow(() => grabed.ResolveInstance(mockFactory.Object));
-            mockFactory
-                .Verify(f => f.GetOrCreateInstance(It.Is<ScopedServiceEntry>(e => e.Interface == typeof(IList<int>)), 0), Times.Once);
+            Assert.That(grabed.Interface, Is.EqualTo(typeof(IList<int>)));
+            Assert.That(grabed.Name, Is.EqualTo(name));
+            Assert.That(grabed.AssignedSlot, Is.EqualTo(0));
 
             grabed = resolver.Resolve(typeof(IList<string>), name);
 
-            Assert.DoesNotThrow(() => grabed.ResolveInstance(mockFactory.Object));
-            mockFactory
-                .Verify(f => f.GetOrCreateInstance(It.Is<ScopedServiceEntry>(e => e.Interface == typeof(IList<string>)), 1), Times.Once);
+            Assert.That(grabed.Interface, Is.EqualTo(typeof(IList<string>)));
+            Assert.That(grabed.Name, Is.EqualTo(name));
+            Assert.That(grabed.AssignedSlot, Is.EqualTo(1));
         }
 
+        // Same interface, differ only in name
         [Test]
         public void Resolver_ShouldBeAssignedToTheProperSlot_NamedCase([Values(ServiceResolutionMode.JIT, ServiceResolutionMode.AOT)] ServiceResolutionMode resolutionMode)
         {
@@ -132,7 +130,7 @@ namespace Solti.Utils.DI.Internals.Tests
 
             Mock<IServiceFactory> mockFactory = new(MockBehavior.Strict);
             mockFactory
-                .Setup(f => f.GetOrCreateInstance(It.Is<ScopedServiceEntry>(e => e.Interface == typeof(IList)), It.IsAny<int>()))
+                .Setup(f => f.GetOrCreateInstance(It.Is<ScopedServiceEntry>(e => e.Interface == typeof(IList))))
                 .Returns(new object());
             mockFactory
                 .SetupGet(f => f.Super)
@@ -140,17 +138,17 @@ namespace Solti.Utils.DI.Internals.Tests
 
             IServiceResolver resolver = ServiceResolver.Create(new[] { entry1, entry2 }, new ScopeOptions { ServiceResolutionMode = resolutionMode });
 
-            AbstractServiceEntry entry = resolver.Resolve(typeof(IList), 0.ToString());
+            AbstractServiceEntry grabed = resolver.Resolve(typeof(IList), 0.ToString());
 
-            Assert.DoesNotThrow(() => entry.ResolveInstance(mockFactory.Object));
-            mockFactory
-                .Verify(f => f.GetOrCreateInstance(It.Is<ScopedServiceEntry>(e => e.Interface == typeof(IList) && e.Name == 0.ToString()), 0), Times.Once);
+            Assert.That(grabed.Interface, Is.EqualTo(typeof(IList)));
+            Assert.That(grabed.Name, Is.EqualTo(0.ToString()));
+            Assert.That(grabed.AssignedSlot, Is.EqualTo(0));
 
-            entry = resolver.Resolve(typeof(IList), 1.ToString());
+            grabed = resolver.Resolve(typeof(IList), 1.ToString());
 
-            Assert.DoesNotThrow(() => entry.ResolveInstance(mockFactory.Object));
-            mockFactory
-                .Verify(f => f.GetOrCreateInstance(It.Is<ScopedServiceEntry>(e => e.Interface == typeof(IList) && e.Name == 1.ToString()), 1), Times.Once);
+            Assert.That(grabed.Interface, Is.EqualTo(typeof(IList)));
+            Assert.That(grabed.Name, Is.EqualTo(1.ToString()));
+            Assert.That(grabed.AssignedSlot, Is.EqualTo(1));
         }
 
         [Test]
@@ -162,7 +160,7 @@ namespace Solti.Utils.DI.Internals.Tests
 
             Mock<IServiceFactory> mockFactory = new(MockBehavior.Strict);
             mockFactory
-                .Setup(f => f.GetOrCreateInstance(It.IsAny<ScopedServiceEntry>(), It.IsAny<int>()))
+                .Setup(f => f.GetOrCreateInstance(It.IsAny<ScopedServiceEntry>()))
                 .Returns(new object());
             mockFactory
                 .SetupGet(f => f.Super)
@@ -170,17 +168,17 @@ namespace Solti.Utils.DI.Internals.Tests
 
             IServiceResolver resolver = ServiceResolver.Create(new[] { entry1, entry2 }, new ScopeOptions { ServiceResolutionMode = resolutionMode });
 
-            AbstractServiceEntry entry = resolver.Resolve(typeof(IList), name);
+            AbstractServiceEntry grabed = resolver.Resolve(typeof(IList), name);
 
-            Assert.DoesNotThrow(() => entry.ResolveInstance(mockFactory.Object));
-            mockFactory
-                .Verify(f => f.GetOrCreateInstance(It.Is<ScopedServiceEntry>(e => e.Interface == typeof(IList)), 0), Times.Once);
+            Assert.That(grabed.Interface, Is.EqualTo(typeof(IList)));
+            Assert.That(grabed.Name, Is.EqualTo(name));
+            Assert.That(grabed.AssignedSlot, Is.EqualTo(0));
 
-            entry = resolver.Resolve(typeof(IDisposable), name);
+            grabed = resolver.Resolve(typeof(IDisposable), name);
 
-            Assert.DoesNotThrow(() => entry.ResolveInstance(mockFactory.Object));
-            mockFactory
-                .Verify(f => f.GetOrCreateInstance(It.Is<ScopedServiceEntry>(e => e.Interface == typeof(IDisposable)), 1), Times.Once);
+            Assert.That(grabed.Interface, Is.EqualTo(typeof(IDisposable)));
+            Assert.That(grabed.Name, Is.EqualTo(name));
+            Assert.That(grabed.AssignedSlot, Is.EqualTo(1));
         }
 
         [Test]
@@ -192,7 +190,7 @@ namespace Solti.Utils.DI.Internals.Tests
 
             Mock<IServiceFactory> mockFactory = new(MockBehavior.Strict);
             mockFactory
-                .Setup(f => f.GetOrCreateInstance(It.IsAny<TransientServiceEntry>(), IServiceFactory.Consts.CREATE_ALWAYS))
+                .Setup(f => f.GetOrCreateInstance(It.IsAny<TransientServiceEntry>()))
                 .Returns(new object());
             mockFactory
                 .SetupGet(f => f.Super)
@@ -200,17 +198,16 @@ namespace Solti.Utils.DI.Internals.Tests
 
             IServiceResolver resolver = ServiceResolver.Create(new[] { genericEntry, specializedEntry }, new ScopeOptions { ServiceResolutionMode = resolutionMode });
 
-            AbstractServiceEntry entry = resolver.Resolve(typeof(IList<int>), name);
+            AbstractServiceEntry grabed = resolver.Resolve(typeof(IList<int>), name);
 
-            Assert.DoesNotThrow(() => entry.ResolveInstance(mockFactory.Object));
-            mockFactory
-                .Verify(f => f.GetOrCreateInstance(specializedEntry, IServiceFactory.Consts.CREATE_ALWAYS), Times.Once);
+            Assert.That(grabed, Is.SameAs(specializedEntry));
+            Assert.That(grabed.AssignedSlot, Is.EqualTo(IServiceFactory.Consts.CREATE_ALWAYS));
 
-            entry = resolver.Resolve(typeof(IList<object>), name);
+            grabed = resolver.Resolve(typeof(IList<object>), name);
 
-            Assert.DoesNotThrow(() => entry.ResolveInstance(mockFactory.Object));
-            mockFactory
-                .Verify(f => f.GetOrCreateInstance(It.Is<TransientServiceEntry>(e => e.Interface == typeof(IList<object>)), IServiceFactory.Consts.CREATE_ALWAYS), Times.Once);
+            Assert.That(grabed.Interface, Is.EqualTo(typeof(IList<object>)));
+            Assert.That(grabed.Name, Is.EqualTo(name));
+            Assert.That(grabed.AssignedSlot, Is.EqualTo(IServiceFactory.Consts.CREATE_ALWAYS));
         }
 
         [Test]
@@ -220,7 +217,7 @@ namespace Solti.Utils.DI.Internals.Tests
 
             Mock<IServiceFactory> mockFactory = new(MockBehavior.Strict);
             mockFactory
-                .Setup(f => f.GetOrCreateInstance(It.IsAny<TransientServiceEntry>(), IServiceFactory.Consts.CREATE_ALWAYS))
+                .Setup(f => f.GetOrCreateInstance(It.IsAny<TransientServiceEntry>()))
                 .Returns(new object());
             mockFactory
                 .SetupGet(f => f.Super)
@@ -228,11 +225,11 @@ namespace Solti.Utils.DI.Internals.Tests
 
             IServiceResolver resolver = ServiceResolver.Create(new[] { genericEntry }, new ScopeOptions { ServiceResolutionMode = resolutionMode });
 
-            AbstractServiceEntry entry = resolver.Resolve(typeof(IList<int>), name);
+            AbstractServiceEntry grabed = resolver.Resolve(typeof(IList<int>), name);
 
-            Assert.DoesNotThrow(() => entry.ResolveInstance(mockFactory.Object));
-            mockFactory
-                .Verify(f => f.GetOrCreateInstance(It.Is<TransientServiceEntry>(e => e.Interface == typeof(IList<int>)), IServiceFactory.Consts.CREATE_ALWAYS), Times.Once);
+            Assert.That(grabed.Interface, Is.EqualTo(typeof(IList<int>)));
+            Assert.That(grabed.Name, Is.EqualTo(name));
+            Assert.That(grabed.AssignedSlot, Is.EqualTo(IServiceFactory.Consts.CREATE_ALWAYS));
         }
 
         [Test]
@@ -242,7 +239,7 @@ namespace Solti.Utils.DI.Internals.Tests
 
             Mock<IServiceFactory> mockFactory = new(MockBehavior.Strict);
             mockFactory
-                .Setup(f => f.GetOrCreateInstance(It.IsAny<ScopedServiceEntry>(), 0))
+                .Setup(f => f.GetOrCreateInstance(It.IsAny<ScopedServiceEntry>()))
                 .Returns(new object());
             mockFactory
                 .SetupGet(f => f.Super)
@@ -250,11 +247,11 @@ namespace Solti.Utils.DI.Internals.Tests
 
             IServiceResolver resolver = ServiceResolver.Create(new[] { genericEntry }, new ScopeOptions { ServiceResolutionMode = resolutionMode });
 
-            AbstractServiceEntry entry = resolver.Resolve(typeof(IList<int>), name);
+            AbstractServiceEntry grabed = resolver.Resolve(typeof(IList<int>), name);
 
-            Assert.DoesNotThrow(() => entry.ResolveInstance(mockFactory.Object));
-            mockFactory
-                .Verify(f => f.GetOrCreateInstance(It.Is<ScopedServiceEntry>(e => e.Interface == typeof(IList<int>)), 0), Times.Once);
+            Assert.That(grabed.Interface, Is.EqualTo(typeof(IList<int>)));
+            Assert.That(grabed.Name, Is.EqualTo(name));
+            Assert.That(grabed.AssignedSlot, Is.EqualTo(0));
         }
 
         [Test]

@@ -29,7 +29,7 @@ namespace Solti.Utils.DI.Interfaces
         /// <summary>
         /// The parent factory. NULL in case of root factory.
         /// </summary>
-        IServiceFactory? Super { get; } // TODO: REMOVE
+        IServiceFactory? Super { get; }
 
         /// <summary>
         /// Gets or creates a service instance.
