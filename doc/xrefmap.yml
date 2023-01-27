@@ -94,6 +94,18 @@ references:
   commentId: Overload:Solti.Utils.DI.Interfaces.AbstractServiceEntry.Build
   fullName: Solti.Utils.DI.Interfaces.AbstractServiceEntry.Build
   nameWithType: AbstractServiceEntry.Build
+- uid: Solti.Utils.DI.Interfaces.AbstractServiceEntry.Consts
+  name: AbstractServiceEntry.Consts
+  href: Solti.Utils.DI.Interfaces.AbstractServiceEntry.Consts.html
+  commentId: T:Solti.Utils.DI.Interfaces.AbstractServiceEntry.Consts
+  fullName: Solti.Utils.DI.Interfaces.AbstractServiceEntry.Consts
+  nameWithType: AbstractServiceEntry.Consts
+- uid: Solti.Utils.DI.Interfaces.AbstractServiceEntry.Consts.INVALID_SLOT
+  name: INVALID_SLOT
+  href: Solti.Utils.DI.Interfaces.AbstractServiceEntry.Consts.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_Consts_INVALID_SLOT
+  commentId: F:Solti.Utils.DI.Interfaces.AbstractServiceEntry.Consts.INVALID_SLOT
+  fullName: Solti.Utils.DI.Interfaces.AbstractServiceEntry.Consts.INVALID_SLOT
+  nameWithType: AbstractServiceEntry.Consts.INVALID_SLOT
 - uid: Solti.Utils.DI.Interfaces.AbstractServiceEntry.CreateInstance
   name: CreateInstance
   href: Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_CreateInstance
@@ -1028,24 +1040,6 @@ references:
   commentId: T:Solti.Utils.DI.Interfaces.IServiceActivator
   fullName: Solti.Utils.DI.Interfaces.IServiceActivator
   nameWithType: IServiceActivator
-- uid: Solti.Utils.DI.Interfaces.IServiceActivator.Consts
-  name: IServiceActivator.Consts
-  href: Solti.Utils.DI.Interfaces.IServiceActivator.Consts.html
-  commentId: T:Solti.Utils.DI.Interfaces.IServiceActivator.Consts
-  fullName: Solti.Utils.DI.Interfaces.IServiceActivator.Consts
-  nameWithType: IServiceActivator.Consts
-- uid: Solti.Utils.DI.Interfaces.IServiceActivator.Consts.CREATE_ALWAYS
-  name: CREATE_ALWAYS
-  href: Solti.Utils.DI.Interfaces.IServiceActivator.Consts.html#Solti_Utils_DI_Interfaces_IServiceActivator_Consts_CREATE_ALWAYS
-  commentId: F:Solti.Utils.DI.Interfaces.IServiceActivator.Consts.CREATE_ALWAYS
-  fullName: Solti.Utils.DI.Interfaces.IServiceActivator.Consts.CREATE_ALWAYS
-  nameWithType: IServiceActivator.Consts.CREATE_ALWAYS
-- uid: Solti.Utils.DI.Interfaces.IServiceActivator.Consts.INVALID_SLOT
-  name: INVALID_SLOT
-  href: Solti.Utils.DI.Interfaces.IServiceActivator.Consts.html#Solti_Utils_DI_Interfaces_IServiceActivator_Consts_INVALID_SLOT
-  commentId: F:Solti.Utils.DI.Interfaces.IServiceActivator.Consts.INVALID_SLOT
-  fullName: Solti.Utils.DI.Interfaces.IServiceActivator.Consts.INVALID_SLOT
-  nameWithType: IServiceActivator.Consts.INVALID_SLOT
 - uid: Solti.Utils.DI.Interfaces.IServiceActivator.GetOrCreateInstance(Solti.Utils.DI.Interfaces.AbstractServiceEntry)
   name: GetOrCreateInstance(AbstractServiceEntry)
   href: Solti.Utils.DI.Interfaces.IServiceActivator.html#Solti_Utils_DI_Interfaces_IServiceActivator_GetOrCreateInstance_Solti_Utils_DI_Interfaces_AbstractServiceEntry_
