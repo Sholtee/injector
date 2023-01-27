@@ -9,7 +9,7 @@ namespace Solti.Utils.DI.Interfaces
     /// <summary>
     /// Specifies the general service behavior.
     /// </summary>
-    public record ServiceOptions
+    public sealed record ServiceOptions
     {
         /// <summary>
         /// If set to true, the system tries to apply proxies defined via <see cref="AspectAttribute"/> class.
