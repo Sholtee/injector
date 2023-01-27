@@ -1562,12 +1562,6 @@ references:
   commentId: M:Solti.Utils.DI.Interfaces.ScopeOptions.#ctor
   fullName: Solti.Utils.DI.Interfaces.ScopeOptions.ScopeOptions()
   nameWithType: ScopeOptions.ScopeOptions()
-- uid: Solti.Utils.DI.Interfaces.ScopeOptions.#ctor(Solti.Utils.DI.Interfaces.ScopeOptions)
-  name: ScopeOptions(ScopeOptions)
-  href: Solti.Utils.DI.Interfaces.ScopeOptions.html#Solti_Utils_DI_Interfaces_ScopeOptions__ctor_Solti_Utils_DI_Interfaces_ScopeOptions_
-  commentId: M:Solti.Utils.DI.Interfaces.ScopeOptions.#ctor(Solti.Utils.DI.Interfaces.ScopeOptions)
-  fullName: Solti.Utils.DI.Interfaces.ScopeOptions.ScopeOptions(Solti.Utils.DI.Interfaces.ScopeOptions)
-  nameWithType: ScopeOptions.ScopeOptions(ScopeOptions)
 - uid: Solti.Utils.DI.Interfaces.ScopeOptions.#ctor*
   name: ScopeOptions
   href: Solti.Utils.DI.Interfaces.ScopeOptions.html#Solti_Utils_DI_Interfaces_ScopeOptions__ctor_
@@ -1598,18 +1592,6 @@ references:
   commentId: Overload:Solti.Utils.DI.Interfaces.ScopeOptions.Default
   fullName: Solti.Utils.DI.Interfaces.ScopeOptions.Default
   nameWithType: ScopeOptions.Default
-- uid: Solti.Utils.DI.Interfaces.ScopeOptions.EqualityContract
-  name: EqualityContract
-  href: Solti.Utils.DI.Interfaces.ScopeOptions.html#Solti_Utils_DI_Interfaces_ScopeOptions_EqualityContract
-  commentId: P:Solti.Utils.DI.Interfaces.ScopeOptions.EqualityContract
-  fullName: Solti.Utils.DI.Interfaces.ScopeOptions.EqualityContract
-  nameWithType: ScopeOptions.EqualityContract
-- uid: Solti.Utils.DI.Interfaces.ScopeOptions.EqualityContract*
-  name: EqualityContract
-  href: Solti.Utils.DI.Interfaces.ScopeOptions.html#Solti_Utils_DI_Interfaces_ScopeOptions_EqualityContract_
-  commentId: Overload:Solti.Utils.DI.Interfaces.ScopeOptions.EqualityContract
-  fullName: Solti.Utils.DI.Interfaces.ScopeOptions.EqualityContract
-  nameWithType: ScopeOptions.EqualityContract
 - uid: Solti.Utils.DI.Interfaces.ScopeOptions.Equals(Solti.Utils.DI.Interfaces.ScopeOptions)
   name: Equals(ScopeOptions)
   href: Solti.Utils.DI.Interfaces.ScopeOptions.html#Solti_Utils_DI_Interfaces_ScopeOptions_Equals_Solti_Utils_DI_Interfaces_ScopeOptions_
@@ -1664,18 +1646,6 @@ references:
   commentId: Overload:Solti.Utils.DI.Interfaces.ScopeOptions.op_Inequality
   fullName: Solti.Utils.DI.Interfaces.ScopeOptions.Inequality
   nameWithType: ScopeOptions.Inequality
-- uid: Solti.Utils.DI.Interfaces.ScopeOptions.PrintMembers(System.Text.StringBuilder)
-  name: PrintMembers(StringBuilder)
-  href: Solti.Utils.DI.Interfaces.ScopeOptions.html#Solti_Utils_DI_Interfaces_ScopeOptions_PrintMembers_System_Text_StringBuilder_
-  commentId: M:Solti.Utils.DI.Interfaces.ScopeOptions.PrintMembers(System.Text.StringBuilder)
-  fullName: Solti.Utils.DI.Interfaces.ScopeOptions.PrintMembers(System.Text.StringBuilder)
-  nameWithType: ScopeOptions.PrintMembers(StringBuilder)
-- uid: Solti.Utils.DI.Interfaces.ScopeOptions.PrintMembers*
-  name: PrintMembers
-  href: Solti.Utils.DI.Interfaces.ScopeOptions.html#Solti_Utils_DI_Interfaces_ScopeOptions_PrintMembers_
-  commentId: Overload:Solti.Utils.DI.Interfaces.ScopeOptions.PrintMembers
-  fullName: Solti.Utils.DI.Interfaces.ScopeOptions.PrintMembers
-  nameWithType: ScopeOptions.PrintMembers
 - uid: Solti.Utils.DI.Interfaces.ScopeOptions.ServiceResolutionMode
   name: ServiceResolutionMode
   href: Solti.Utils.DI.Interfaces.ScopeOptions.html#Solti_Utils_DI_Interfaces_ScopeOptions_ServiceResolutionMode
@@ -1778,18 +1748,18 @@ references:
   commentId: T:Solti.Utils.DI.Interfaces.ServiceDisposalMode
   fullName: Solti.Utils.DI.Interfaces.ServiceDisposalMode
   nameWithType: ServiceDisposalMode
-- uid: Solti.Utils.DI.Interfaces.ServiceDisposalMode.Default
-  name: Default
-  href: Solti.Utils.DI.Interfaces.ServiceDisposalMode.html#Solti_Utils_DI_Interfaces_ServiceDisposalMode_Default
-  commentId: F:Solti.Utils.DI.Interfaces.ServiceDisposalMode.Default
-  fullName: Solti.Utils.DI.Interfaces.ServiceDisposalMode.Default
-  nameWithType: ServiceDisposalMode.Default
 - uid: Solti.Utils.DI.Interfaces.ServiceDisposalMode.Force
   name: Force
   href: Solti.Utils.DI.Interfaces.ServiceDisposalMode.html#Solti_Utils_DI_Interfaces_ServiceDisposalMode_Force
   commentId: F:Solti.Utils.DI.Interfaces.ServiceDisposalMode.Force
   fullName: Solti.Utils.DI.Interfaces.ServiceDisposalMode.Force
   nameWithType: ServiceDisposalMode.Force
+- uid: Solti.Utils.DI.Interfaces.ServiceDisposalMode.Soft
+  name: Soft
+  href: Solti.Utils.DI.Interfaces.ServiceDisposalMode.html#Solti_Utils_DI_Interfaces_ServiceDisposalMode_Soft
+  commentId: F:Solti.Utils.DI.Interfaces.ServiceDisposalMode.Soft
+  fullName: Solti.Utils.DI.Interfaces.ServiceDisposalMode.Soft
+  nameWithType: ServiceDisposalMode.Soft
 - uid: Solti.Utils.DI.Interfaces.ServiceDisposalMode.Suppress
   name: Suppress
   href: Solti.Utils.DI.Interfaces.ServiceDisposalMode.html#Solti_Utils_DI_Interfaces_ServiceDisposalMode_Suppress
@@ -1964,12 +1934,6 @@ references:
   commentId: M:Solti.Utils.DI.Interfaces.ServiceOptions.#ctor
   fullName: Solti.Utils.DI.Interfaces.ServiceOptions.ServiceOptions()
   nameWithType: ServiceOptions.ServiceOptions()
-- uid: Solti.Utils.DI.Interfaces.ServiceOptions.#ctor(Solti.Utils.DI.Interfaces.ServiceOptions)
-  name: ServiceOptions(ServiceOptions)
-  href: Solti.Utils.DI.Interfaces.ServiceOptions.html#Solti_Utils_DI_Interfaces_ServiceOptions__ctor_Solti_Utils_DI_Interfaces_ServiceOptions_
-  commentId: M:Solti.Utils.DI.Interfaces.ServiceOptions.#ctor(Solti.Utils.DI.Interfaces.ServiceOptions)
-  fullName: Solti.Utils.DI.Interfaces.ServiceOptions.ServiceOptions(Solti.Utils.DI.Interfaces.ServiceOptions)
-  nameWithType: ServiceOptions.ServiceOptions(ServiceOptions)
 - uid: Solti.Utils.DI.Interfaces.ServiceOptions.#ctor*
   name: ServiceOptions
   href: Solti.Utils.DI.Interfaces.ServiceOptions.html#Solti_Utils_DI_Interfaces_ServiceOptions__ctor_
@@ -2012,18 +1976,6 @@ references:
   commentId: Overload:Solti.Utils.DI.Interfaces.ServiceOptions.DisposalMode
   fullName: Solti.Utils.DI.Interfaces.ServiceOptions.DisposalMode
   nameWithType: ServiceOptions.DisposalMode
-- uid: Solti.Utils.DI.Interfaces.ServiceOptions.EqualityContract
-  name: EqualityContract
-  href: Solti.Utils.DI.Interfaces.ServiceOptions.html#Solti_Utils_DI_Interfaces_ServiceOptions_EqualityContract
-  commentId: P:Solti.Utils.DI.Interfaces.ServiceOptions.EqualityContract
-  fullName: Solti.Utils.DI.Interfaces.ServiceOptions.EqualityContract
-  nameWithType: ServiceOptions.EqualityContract
-- uid: Solti.Utils.DI.Interfaces.ServiceOptions.EqualityContract*
-  name: EqualityContract
-  href: Solti.Utils.DI.Interfaces.ServiceOptions.html#Solti_Utils_DI_Interfaces_ServiceOptions_EqualityContract_
-  commentId: Overload:Solti.Utils.DI.Interfaces.ServiceOptions.EqualityContract
-  fullName: Solti.Utils.DI.Interfaces.ServiceOptions.EqualityContract
-  nameWithType: ServiceOptions.EqualityContract
 - uid: Solti.Utils.DI.Interfaces.ServiceOptions.Equals(Solti.Utils.DI.Interfaces.ServiceOptions)
   name: Equals(ServiceOptions)
   href: Solti.Utils.DI.Interfaces.ServiceOptions.html#Solti_Utils_DI_Interfaces_ServiceOptions_Equals_Solti_Utils_DI_Interfaces_ServiceOptions_
@@ -2078,18 +2030,6 @@ references:
   commentId: Overload:Solti.Utils.DI.Interfaces.ServiceOptions.op_Inequality
   fullName: Solti.Utils.DI.Interfaces.ServiceOptions.Inequality
   nameWithType: ServiceOptions.Inequality
-- uid: Solti.Utils.DI.Interfaces.ServiceOptions.PrintMembers(System.Text.StringBuilder)
-  name: PrintMembers(StringBuilder)
-  href: Solti.Utils.DI.Interfaces.ServiceOptions.html#Solti_Utils_DI_Interfaces_ServiceOptions_PrintMembers_System_Text_StringBuilder_
-  commentId: M:Solti.Utils.DI.Interfaces.ServiceOptions.PrintMembers(System.Text.StringBuilder)
-  fullName: Solti.Utils.DI.Interfaces.ServiceOptions.PrintMembers(System.Text.StringBuilder)
-  nameWithType: ServiceOptions.PrintMembers(StringBuilder)
-- uid: Solti.Utils.DI.Interfaces.ServiceOptions.PrintMembers*
-  name: PrintMembers
-  href: Solti.Utils.DI.Interfaces.ServiceOptions.html#Solti_Utils_DI_Interfaces_ServiceOptions_PrintMembers_
-  commentId: Overload:Solti.Utils.DI.Interfaces.ServiceOptions.PrintMembers
-  fullName: Solti.Utils.DI.Interfaces.ServiceOptions.PrintMembers
-  nameWithType: ServiceOptions.PrintMembers
 - uid: Solti.Utils.DI.Interfaces.ServiceOptions.ProxyEngine
   name: ProxyEngine
   href: Solti.Utils.DI.Interfaces.ServiceOptions.html#Solti_Utils_DI_Interfaces_ServiceOptions_ProxyEngine

@@ -58,13 +58,13 @@
   </div>
   <h3 id="fields">Fields
   </h3>
-  <h4 id="Solti_Utils_DI_Interfaces_ServiceDisposalMode_Default" data-uid="Solti.Utils.DI.Interfaces.ServiceDisposalMode.Default">Default</h4>
-  <div class="markdown level1 summary"><p>The service gets disposed only when its interface is an <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.idisposable">IDisposable</a> descendant.</p>
+  <h4 id="Solti_Utils_DI_Interfaces_ServiceDisposalMode_Force" data-uid="Solti.Utils.DI.Interfaces.ServiceDisposalMode.Force">Force</h4>
+  <div class="markdown level1 summary"><p>The service gets disposed if it can be casted to <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.idisposable">IDisposable</a> regardlesss its interfce.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const ServiceDisposalMode Default</code></pre>
+    <pre><code class="lang-csharp hljs">public const ServiceDisposalMode Force</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -81,13 +81,13 @@
       </tr>
     </tbody>
   </table>
-  <h4 id="Solti_Utils_DI_Interfaces_ServiceDisposalMode_Force" data-uid="Solti.Utils.DI.Interfaces.ServiceDisposalMode.Force">Force</h4>
-  <div class="markdown level1 summary"><p>The service gets disposed if it can be casted to <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.idisposable">IDisposable</a> regardlesss its interfce.</p>
+  <h4 id="Solti_Utils_DI_Interfaces_ServiceDisposalMode_Soft" data-uid="Solti.Utils.DI.Interfaces.ServiceDisposalMode.Soft">Soft</h4>
+  <div class="markdown level1 summary"><p>The service gets disposed only when its interface is an <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.idisposable">IDisposable</a> descendant.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const ServiceDisposalMode Force</code></pre>
+    <pre><code class="lang-csharp hljs">public const ServiceDisposalMode Soft</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">

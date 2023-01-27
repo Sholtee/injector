@@ -58,7 +58,7 @@
   <h6><strong>Assembly</strong>: Solti.Utils.DI.Interfaces.dll</h6>
   <h5 id="Solti_Utils_DI_Interfaces_ScopeOptions_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class ScopeOptions : Object</code></pre>
+    <pre><code class="lang-csharp hljs">public sealed class ScopeOptions : Object</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
@@ -70,31 +70,6 @@
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public ScopeOptions()</code></pre>
   </div>
-  <a id="Solti_Utils_DI_Interfaces_ScopeOptions__ctor_" data-uid="Solti.Utils.DI.Interfaces.ScopeOptions.#ctor*"></a>
-  <h4 id="Solti_Utils_DI_Interfaces_ScopeOptions__ctor_Solti_Utils_DI_Interfaces_ScopeOptions_" data-uid="Solti.Utils.DI.Interfaces.ScopeOptions.#ctor(Solti.Utils.DI.Interfaces.ScopeOptions)">ScopeOptions(ScopeOptions)</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected ScopeOptions(ScopeOptions original)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Solti.Utils.DI.Interfaces.ScopeOptions.html">ScopeOptions</a></td>
-        <td><span class="parametername">original</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
   <h3 id="properties">Properties
   </h3>
   <a id="Solti_Utils_DI_Interfaces_ScopeOptions_Default_" data-uid="Solti.Utils.DI.Interfaces.ScopeOptions.Default*"></a>
@@ -117,29 +92,6 @@
     <tbody>
       <tr>
         <td><a class="xref" href="Solti.Utils.DI.Interfaces.ScopeOptions.html">ScopeOptions</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <a id="Solti_Utils_DI_Interfaces_ScopeOptions_EqualityContract_" data-uid="Solti.Utils.DI.Interfaces.ScopeOptions.EqualityContract*"></a>
-  <h4 id="Solti_Utils_DI_Interfaces_ScopeOptions_EqualityContract" data-uid="Solti.Utils.DI.Interfaces.ScopeOptions.EqualityContract">EqualityContract</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected virtual Type EqualityContract { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a></td>
         <td></td>
       </tr>
     </tbody>
@@ -228,7 +180,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public virtual ScopeOptions &lt;Clone&gt;$()</code></pre>
+    <pre><code class="lang-csharp hljs">public ScopeOptions &lt;Clone&gt;$()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -251,7 +203,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public virtual bool Equals(ScopeOptions other)</code></pre>
+    <pre><code class="lang-csharp hljs">public bool Equals(ScopeOptions other)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -344,46 +296,6 @@
     <tbody>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">Int32</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <a id="Solti_Utils_DI_Interfaces_ScopeOptions_PrintMembers_" data-uid="Solti.Utils.DI.Interfaces.ScopeOptions.PrintMembers*"></a>
-  <h4 id="Solti_Utils_DI_Interfaces_ScopeOptions_PrintMembers_System_Text_StringBuilder_" data-uid="Solti.Utils.DI.Interfaces.ScopeOptions.PrintMembers(System.Text.StringBuilder)">PrintMembers(StringBuilder)</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected virtual bool PrintMembers(StringBuilder builder)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.text.stringbuilder">StringBuilder</a></td>
-        <td><span class="parametername">builder</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
         <td></td>
       </tr>
     </tbody>
