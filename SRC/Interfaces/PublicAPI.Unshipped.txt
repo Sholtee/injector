@@ -91,11 +91,11 @@ Solti.Utils.DI.Interfaces.RequestNotAllowedException.RequestNotAllowedException(
 Solti.Utils.DI.Interfaces.RequestNotAllowedException.RequestNotAllowedException(string! message, System.Exception! innerException) -> void
 Solti.Utils.DI.Interfaces.ScopeOptions
 Solti.Utils.DI.Interfaces.ScopeOptions.ServiceResolutionMode.get -> Solti.Utils.DI.Interfaces.ServiceResolutionMode
-Solti.Utils.DI.Interfaces.ScopeOptions.ServiceResolutionMode.init -> void
+Solti.Utils.DI.Interfaces.ScopeOptions.ServiceResolutionMode.set -> void
 Solti.Utils.DI.Interfaces.ScopeOptions.StrictDI.get -> bool
-Solti.Utils.DI.Interfaces.ScopeOptions.StrictDI.init -> void
+Solti.Utils.DI.Interfaces.ScopeOptions.StrictDI.set -> void
 Solti.Utils.DI.Interfaces.ScopeOptions.SupportsServiceProvider.get -> bool
-Solti.Utils.DI.Interfaces.ScopeOptions.SupportsServiceProvider.init -> void
+Solti.Utils.DI.Interfaces.ScopeOptions.SupportsServiceProvider.set -> void
 Solti.Utils.DI.Interfaces.ServiceActivatorAttribute
 Solti.Utils.DI.Interfaces.ServiceActivatorAttribute.ServiceActivatorAttribute() -> void
 Solti.Utils.DI.Interfaces.ServiceAlreadyRegisteredException
@@ -124,11 +124,11 @@ Solti.Utils.DI.Interfaces.ServiceNotFoundException.ServiceNotFoundException(stri
 Solti.Utils.DI.Interfaces.ServiceNotFoundException.ServiceNotFoundException(string! message, System.Exception! innerException) -> void
 Solti.Utils.DI.Interfaces.ServiceOptions
 Solti.Utils.DI.Interfaces.ServiceOptions.DisposalMode.get -> Solti.Utils.DI.Interfaces.ServiceDisposalMode
-Solti.Utils.DI.Interfaces.ServiceOptions.DisposalMode.init -> void
+Solti.Utils.DI.Interfaces.ServiceOptions.DisposalMode.set -> void
 Solti.Utils.DI.Interfaces.ServiceOptions.ProxyEngine.get -> Solti.Utils.DI.Interfaces.IProxyEngine?
-Solti.Utils.DI.Interfaces.ServiceOptions.ProxyEngine.init -> void
+Solti.Utils.DI.Interfaces.ServiceOptions.ProxyEngine.set -> void
 Solti.Utils.DI.Interfaces.ServiceOptions.SupportAspects.get -> bool
-Solti.Utils.DI.Interfaces.ServiceOptions.SupportAspects.init -> void
+Solti.Utils.DI.Interfaces.ServiceOptions.SupportAspects.set -> void
 Solti.Utils.DI.Interfaces.ServiceResolutionMode
 Solti.Utils.DI.Interfaces.ServiceResolutionMode.AOT = 1 -> Solti.Utils.DI.Interfaces.ServiceResolutionMode
 Solti.Utils.DI.Interfaces.ServiceResolutionMode.JIT = 0 -> Solti.Utils.DI.Interfaces.ServiceResolutionMode
