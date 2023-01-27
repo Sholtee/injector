@@ -16,10 +16,7 @@ namespace Solti.Utils.DI.Internals
     using Primitives.Patterns;
     using Properties;
 
-    internal class Injector :
-        Disposable,
-        IScopeFactory,
-        IServiceActivator
+    internal class Injector: Disposable, IScopeFactory, IServiceActivator
     {
         #region Private
         //
