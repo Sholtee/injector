@@ -11,17 +11,6 @@ namespace Solti.Utils.DI.Interfaces
     public interface IServiceActivator: IInjector
     {
         /// <summary>
-        /// Contains some constants related to the <see cref="IServiceActivator"/> interface.
-        /// </summary>
-        public static class Consts
-        {
-            /// <summary>
-            /// Invalid slot..
-            /// </summary>
-            public const int INVALID_SLOT = -1;
-        }
-
-        /// <summary>
         /// The parent factory. NULL in case of root factory.
         /// </summary>
         IServiceActivator? Super { get; }

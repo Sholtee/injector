@@ -19,6 +19,17 @@ namespace Solti.Utils.DI.Interfaces
     public abstract class AbstractServiceEntry: IServiceId
     {
         /// <summary>
+        /// Contains some constants related to the <see cref="IServiceActivator"/> interface.
+        /// </summary>
+        public static class Consts
+        {
+            /// <summary>
+            /// Invalid slot..
+            /// </summary>
+            public const int INVALID_SLOT = -1;
+        }
+
+        /// <summary>
         /// Creates a new <see cref="AbstractServiceEntry"/> instance.
         /// </summary>
         /// <param name="interface">The interface of the service.</param>
@@ -93,7 +104,7 @@ namespace Solti.Utils.DI.Interfaces
         /// The assigned slot (in case of scoped services).
         /// </summary>
         /// <remarks>To assign a proper value to this property, invoke the <see cref="Build(IBuildContext, IReadOnlyList{IFactoryVisitor})"/> method.</remarks>
-        public int AssignedSlot { get; protected set; } = IServiceActivator.Consts.INVALID_SLOT;
+        public int AssignedSlot { get; protected set; } = Consts.INVALID_SLOT;
 
         /// <summary>
         /// Unconditionaly creates a new service instance.

@@ -87,7 +87,7 @@ namespace Solti.Utils.DI.Internals.Tests
             AbstractServiceEntry grabed = resolver.Resolve(typeof(IList), name);
 
             Assert.That(grabed, Is.SameAs(entry));
-            Assert.That(grabed.AssignedSlot, Is.EqualTo(IServiceActivator.Consts.CREATE_ALWAYS));
+            Assert.That(grabed.AssignedSlot, Is.EqualTo(AbstractServiceEntry.Consts.INVALID_SLOT));
         }
 
         public class MyLiyt<T>: List<T> { }
@@ -201,13 +201,13 @@ namespace Solti.Utils.DI.Internals.Tests
             AbstractServiceEntry grabed = resolver.Resolve(typeof(IList<int>), name);
 
             Assert.That(grabed, Is.SameAs(specializedEntry));
-            Assert.That(grabed.AssignedSlot, Is.EqualTo(IServiceActivator.Consts.CREATE_ALWAYS));
+            Assert.That(grabed.AssignedSlot, Is.EqualTo(AbstractServiceEntry.Consts.INVALID_SLOT));
 
             grabed = resolver.Resolve(typeof(IList<object>), name);
 
             Assert.That(grabed.Interface, Is.EqualTo(typeof(IList<object>)));
             Assert.That(grabed.Name, Is.EqualTo(name));
-            Assert.That(grabed.AssignedSlot, Is.EqualTo(IServiceActivator.Consts.CREATE_ALWAYS));
+            Assert.That(grabed.AssignedSlot, Is.EqualTo(AbstractServiceEntry.Consts.INVALID_SLOT));
         }
 
         [Test]
@@ -229,7 +229,7 @@ namespace Solti.Utils.DI.Internals.Tests
 
             Assert.That(grabed.Interface, Is.EqualTo(typeof(IList<int>)));
             Assert.That(grabed.Name, Is.EqualTo(name));
-            Assert.That(grabed.AssignedSlot, Is.EqualTo(IServiceActivator.Consts.CREATE_ALWAYS));
+            Assert.That(grabed.AssignedSlot, Is.EqualTo(AbstractServiceEntry.Consts.INVALID_SLOT));
         }
 
         [Test]
