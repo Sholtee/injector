@@ -15,10 +15,10 @@ namespace Solti.Utils.DI.Internals
     using Interfaces;
     using Primitives;
     using Properties;
-    using Proxy.Generators;
 
     internal static class ServiceActivator
     {
+        #region Private
         private static readonly MethodInfo
             //
             // Csak kifejezesek, nem tenyleges metodus hivas
@@ -29,6 +29,10 @@ namespace Solti.Utils.DI.Internals
             FDictTryGetValue = MethodInfoExtractor.Extract<IReadOnlyDictionary<string, object?>, object?>((dict, outVal) => dict.TryGetValue(default!, out outVal)),
             FCreateLazy      = MethodInfoExtractor.Extract(() => CreateLazy<object>(null!, null)).GetGenericMethodDefinition(),
             FCreateLazyOpt   = MethodInfoExtractor.Extract(() => CreateLazyOpt<object>(null!, null)).GetGenericMethodDefinition();
+
+        private static Lazy<TService> CreateLazy<TService>(IInjector injector, string? name) => new Lazy<TService>(() => (TService)injector.Get(typeof(TService), name));
+
+        private static Lazy<TService> CreateLazyOpt<TService>(IInjector injector, string? name) => new Lazy<TService>(() => (TService)injector.TryGet(typeof(TService), name)!);
 
         private static Type? GetEffectiveType(Type type, out bool isLazy)
         {
@@ -188,6 +192,7 @@ namespace Solti.Utils.DI.Internals
             ),
             variables
         );
+        #endregion
 
         /// <summary>
         /// <code>(injector, iface) => (object) new Service(IDependency_1 | Lazy&lt;IDependency_1&gt;, IDependency_2 | Lazy&lt;IDependency_2&gt;,...)</code>
@@ -363,11 +368,7 @@ namespace Solti.Utils.DI.Internals
             iface
         );
 
-        private static Lazy<TService> CreateLazy<TService>(IInjector injector, string? name) => new Lazy<TService>(() => (TService) injector.Get(typeof(TService), name));
-
-        private static Lazy<TService> CreateLazyOpt<TService>(IInjector injector, string? name) => new Lazy<TService>(() => (TService) injector.TryGet(typeof(TService), name)!);
-
-        internal static Expression CreateLazy(ParameterExpression injector, Type iface, OptionsAttribute? options)
+        public static Expression CreateLazy(ParameterExpression injector, Type iface, OptionsAttribute? options)
         {
             if (!iface.IsInterface)
                 throw new ArgumentException(Resources.PARAMETER_NOT_AN_INTERFACE, nameof(iface));
