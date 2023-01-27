@@ -364,15 +364,15 @@ references:
   commentId: Overload:Solti.Utils.DI.Interfaces.CreateServiceDelegate.#ctor
   fullName: Solti.Utils.DI.Interfaces.CreateServiceDelegate.CreateServiceDelegate
   nameWithType: CreateServiceDelegate.CreateServiceDelegate
-- uid: Solti.Utils.DI.Interfaces.CreateServiceDelegate.BeginInvoke(Solti.Utils.DI.Interfaces.IServiceFactory,System.Object@,System.AsyncCallback,System.Object)
-  name: BeginInvoke(IServiceFactory, out Object, AsyncCallback, Object)
-  href: Solti.Utils.DI.Interfaces.CreateServiceDelegate.html#Solti_Utils_DI_Interfaces_CreateServiceDelegate_BeginInvoke_Solti_Utils_DI_Interfaces_IServiceFactory_System_Object__System_AsyncCallback_System_Object_
-  commentId: M:Solti.Utils.DI.Interfaces.CreateServiceDelegate.BeginInvoke(Solti.Utils.DI.Interfaces.IServiceFactory,System.Object@,System.AsyncCallback,System.Object)
-  name.vb: BeginInvoke(IServiceFactory, ByRef Object, AsyncCallback, Object)
-  fullName: Solti.Utils.DI.Interfaces.CreateServiceDelegate.BeginInvoke(Solti.Utils.DI.Interfaces.IServiceFactory, out System.Object, System.AsyncCallback, System.Object)
-  fullName.vb: Solti.Utils.DI.Interfaces.CreateServiceDelegate.BeginInvoke(Solti.Utils.DI.Interfaces.IServiceFactory, ByRef System.Object, System.AsyncCallback, System.Object)
-  nameWithType: CreateServiceDelegate.BeginInvoke(IServiceFactory, out Object, AsyncCallback, Object)
-  nameWithType.vb: CreateServiceDelegate.BeginInvoke(IServiceFactory, ByRef Object, AsyncCallback, Object)
+- uid: Solti.Utils.DI.Interfaces.CreateServiceDelegate.BeginInvoke(Solti.Utils.DI.Interfaces.IServiceActivator,System.Object@,System.AsyncCallback,System.Object)
+  name: BeginInvoke(IServiceActivator, out Object, AsyncCallback, Object)
+  href: Solti.Utils.DI.Interfaces.CreateServiceDelegate.html#Solti_Utils_DI_Interfaces_CreateServiceDelegate_BeginInvoke_Solti_Utils_DI_Interfaces_IServiceActivator_System_Object__System_AsyncCallback_System_Object_
+  commentId: M:Solti.Utils.DI.Interfaces.CreateServiceDelegate.BeginInvoke(Solti.Utils.DI.Interfaces.IServiceActivator,System.Object@,System.AsyncCallback,System.Object)
+  name.vb: BeginInvoke(IServiceActivator, ByRef Object, AsyncCallback, Object)
+  fullName: Solti.Utils.DI.Interfaces.CreateServiceDelegate.BeginInvoke(Solti.Utils.DI.Interfaces.IServiceActivator, out System.Object, System.AsyncCallback, System.Object)
+  fullName.vb: Solti.Utils.DI.Interfaces.CreateServiceDelegate.BeginInvoke(Solti.Utils.DI.Interfaces.IServiceActivator, ByRef System.Object, System.AsyncCallback, System.Object)
+  nameWithType: CreateServiceDelegate.BeginInvoke(IServiceActivator, out Object, AsyncCallback, Object)
+  nameWithType.vb: CreateServiceDelegate.BeginInvoke(IServiceActivator, ByRef Object, AsyncCallback, Object)
 - uid: Solti.Utils.DI.Interfaces.CreateServiceDelegate.BeginInvoke*
   name: BeginInvoke
   href: Solti.Utils.DI.Interfaces.CreateServiceDelegate.html#Solti_Utils_DI_Interfaces_CreateServiceDelegate_BeginInvoke_
@@ -394,15 +394,15 @@ references:
   commentId: Overload:Solti.Utils.DI.Interfaces.CreateServiceDelegate.EndInvoke
   fullName: Solti.Utils.DI.Interfaces.CreateServiceDelegate.EndInvoke
   nameWithType: CreateServiceDelegate.EndInvoke
-- uid: Solti.Utils.DI.Interfaces.CreateServiceDelegate.Invoke(Solti.Utils.DI.Interfaces.IServiceFactory,System.Object@)
-  name: Invoke(IServiceFactory, out Object)
-  href: Solti.Utils.DI.Interfaces.CreateServiceDelegate.html#Solti_Utils_DI_Interfaces_CreateServiceDelegate_Invoke_Solti_Utils_DI_Interfaces_IServiceFactory_System_Object__
-  commentId: M:Solti.Utils.DI.Interfaces.CreateServiceDelegate.Invoke(Solti.Utils.DI.Interfaces.IServiceFactory,System.Object@)
-  name.vb: Invoke(IServiceFactory, ByRef Object)
-  fullName: Solti.Utils.DI.Interfaces.CreateServiceDelegate.Invoke(Solti.Utils.DI.Interfaces.IServiceFactory, out System.Object)
-  fullName.vb: Solti.Utils.DI.Interfaces.CreateServiceDelegate.Invoke(Solti.Utils.DI.Interfaces.IServiceFactory, ByRef System.Object)
-  nameWithType: CreateServiceDelegate.Invoke(IServiceFactory, out Object)
-  nameWithType.vb: CreateServiceDelegate.Invoke(IServiceFactory, ByRef Object)
+- uid: Solti.Utils.DI.Interfaces.CreateServiceDelegate.Invoke(Solti.Utils.DI.Interfaces.IServiceActivator,System.Object@)
+  name: Invoke(IServiceActivator, out Object)
+  href: Solti.Utils.DI.Interfaces.CreateServiceDelegate.html#Solti_Utils_DI_Interfaces_CreateServiceDelegate_Invoke_Solti_Utils_DI_Interfaces_IServiceActivator_System_Object__
+  commentId: M:Solti.Utils.DI.Interfaces.CreateServiceDelegate.Invoke(Solti.Utils.DI.Interfaces.IServiceActivator,System.Object@)
+  name.vb: Invoke(IServiceActivator, ByRef Object)
+  fullName: Solti.Utils.DI.Interfaces.CreateServiceDelegate.Invoke(Solti.Utils.DI.Interfaces.IServiceActivator, out System.Object)
+  fullName.vb: Solti.Utils.DI.Interfaces.CreateServiceDelegate.Invoke(Solti.Utils.DI.Interfaces.IServiceActivator, ByRef System.Object)
+  nameWithType: CreateServiceDelegate.Invoke(IServiceActivator, out Object)
+  nameWithType.vb: CreateServiceDelegate.Invoke(IServiceActivator, ByRef Object)
 - uid: Solti.Utils.DI.Interfaces.CreateServiceDelegate.Invoke*
   name: Invoke
   href: Solti.Utils.DI.Interfaces.CreateServiceDelegate.html#Solti_Utils_DI_Interfaces_CreateServiceDelegate_Invoke_
@@ -1022,6 +1022,54 @@ references:
   commentId: Overload:Solti.Utils.DI.Interfaces.IScopeFactoryExtensions.CreateScope
   fullName: Solti.Utils.DI.Interfaces.IScopeFactoryExtensions.CreateScope
   nameWithType: IScopeFactoryExtensions.CreateScope
+- uid: Solti.Utils.DI.Interfaces.IServiceActivator
+  name: IServiceActivator
+  href: Solti.Utils.DI.Interfaces.IServiceActivator.html
+  commentId: T:Solti.Utils.DI.Interfaces.IServiceActivator
+  fullName: Solti.Utils.DI.Interfaces.IServiceActivator
+  nameWithType: IServiceActivator
+- uid: Solti.Utils.DI.Interfaces.IServiceActivator.Consts
+  name: IServiceActivator.Consts
+  href: Solti.Utils.DI.Interfaces.IServiceActivator.Consts.html
+  commentId: T:Solti.Utils.DI.Interfaces.IServiceActivator.Consts
+  fullName: Solti.Utils.DI.Interfaces.IServiceActivator.Consts
+  nameWithType: IServiceActivator.Consts
+- uid: Solti.Utils.DI.Interfaces.IServiceActivator.Consts.CREATE_ALWAYS
+  name: CREATE_ALWAYS
+  href: Solti.Utils.DI.Interfaces.IServiceActivator.Consts.html#Solti_Utils_DI_Interfaces_IServiceActivator_Consts_CREATE_ALWAYS
+  commentId: F:Solti.Utils.DI.Interfaces.IServiceActivator.Consts.CREATE_ALWAYS
+  fullName: Solti.Utils.DI.Interfaces.IServiceActivator.Consts.CREATE_ALWAYS
+  nameWithType: IServiceActivator.Consts.CREATE_ALWAYS
+- uid: Solti.Utils.DI.Interfaces.IServiceActivator.Consts.INVALID_SLOT
+  name: INVALID_SLOT
+  href: Solti.Utils.DI.Interfaces.IServiceActivator.Consts.html#Solti_Utils_DI_Interfaces_IServiceActivator_Consts_INVALID_SLOT
+  commentId: F:Solti.Utils.DI.Interfaces.IServiceActivator.Consts.INVALID_SLOT
+  fullName: Solti.Utils.DI.Interfaces.IServiceActivator.Consts.INVALID_SLOT
+  nameWithType: IServiceActivator.Consts.INVALID_SLOT
+- uid: Solti.Utils.DI.Interfaces.IServiceActivator.GetOrCreateInstance(Solti.Utils.DI.Interfaces.AbstractServiceEntry)
+  name: GetOrCreateInstance(AbstractServiceEntry)
+  href: Solti.Utils.DI.Interfaces.IServiceActivator.html#Solti_Utils_DI_Interfaces_IServiceActivator_GetOrCreateInstance_Solti_Utils_DI_Interfaces_AbstractServiceEntry_
+  commentId: M:Solti.Utils.DI.Interfaces.IServiceActivator.GetOrCreateInstance(Solti.Utils.DI.Interfaces.AbstractServiceEntry)
+  fullName: Solti.Utils.DI.Interfaces.IServiceActivator.GetOrCreateInstance(Solti.Utils.DI.Interfaces.AbstractServiceEntry)
+  nameWithType: IServiceActivator.GetOrCreateInstance(AbstractServiceEntry)
+- uid: Solti.Utils.DI.Interfaces.IServiceActivator.GetOrCreateInstance*
+  name: GetOrCreateInstance
+  href: Solti.Utils.DI.Interfaces.IServiceActivator.html#Solti_Utils_DI_Interfaces_IServiceActivator_GetOrCreateInstance_
+  commentId: Overload:Solti.Utils.DI.Interfaces.IServiceActivator.GetOrCreateInstance
+  fullName: Solti.Utils.DI.Interfaces.IServiceActivator.GetOrCreateInstance
+  nameWithType: IServiceActivator.GetOrCreateInstance
+- uid: Solti.Utils.DI.Interfaces.IServiceActivator.Super
+  name: Super
+  href: Solti.Utils.DI.Interfaces.IServiceActivator.html#Solti_Utils_DI_Interfaces_IServiceActivator_Super
+  commentId: P:Solti.Utils.DI.Interfaces.IServiceActivator.Super
+  fullName: Solti.Utils.DI.Interfaces.IServiceActivator.Super
+  nameWithType: IServiceActivator.Super
+- uid: Solti.Utils.DI.Interfaces.IServiceActivator.Super*
+  name: Super
+  href: Solti.Utils.DI.Interfaces.IServiceActivator.html#Solti_Utils_DI_Interfaces_IServiceActivator_Super_
+  commentId: Overload:Solti.Utils.DI.Interfaces.IServiceActivator.Super
+  fullName: Solti.Utils.DI.Interfaces.IServiceActivator.Super
+  nameWithType: IServiceActivator.Super
 - uid: Solti.Utils.DI.Interfaces.IServiceCollection
   name: IServiceCollection
   href: Solti.Utils.DI.Interfaces.IServiceCollection.html
@@ -1286,54 +1334,6 @@ references:
   fullName.vb: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Service(Of TInterface, TImplementation)(Solti.Utils.DI.Interfaces.IServiceCollection, System.String, System.Object, Solti.Utils.DI.Interfaces.LifetimeBase, Solti.Utils.DI.Interfaces.ServiceOptions)
   nameWithType: IServiceCollectionBasicExtensions.Service<TInterface, TImplementation>(IServiceCollection, String, Object, LifetimeBase, ServiceOptions)
   nameWithType.vb: IServiceCollectionBasicExtensions.Service(Of TInterface, TImplementation)(IServiceCollection, String, Object, LifetimeBase, ServiceOptions)
-- uid: Solti.Utils.DI.Interfaces.IServiceFactory
-  name: IServiceFactory
-  href: Solti.Utils.DI.Interfaces.IServiceFactory.html
-  commentId: T:Solti.Utils.DI.Interfaces.IServiceFactory
-  fullName: Solti.Utils.DI.Interfaces.IServiceFactory
-  nameWithType: IServiceFactory
-- uid: Solti.Utils.DI.Interfaces.IServiceFactory.Consts
-  name: IServiceFactory.Consts
-  href: Solti.Utils.DI.Interfaces.IServiceFactory.Consts.html
-  commentId: T:Solti.Utils.DI.Interfaces.IServiceFactory.Consts
-  fullName: Solti.Utils.DI.Interfaces.IServiceFactory.Consts
-  nameWithType: IServiceFactory.Consts
-- uid: Solti.Utils.DI.Interfaces.IServiceFactory.Consts.CREATE_ALWAYS
-  name: CREATE_ALWAYS
-  href: Solti.Utils.DI.Interfaces.IServiceFactory.Consts.html#Solti_Utils_DI_Interfaces_IServiceFactory_Consts_CREATE_ALWAYS
-  commentId: F:Solti.Utils.DI.Interfaces.IServiceFactory.Consts.CREATE_ALWAYS
-  fullName: Solti.Utils.DI.Interfaces.IServiceFactory.Consts.CREATE_ALWAYS
-  nameWithType: IServiceFactory.Consts.CREATE_ALWAYS
-- uid: Solti.Utils.DI.Interfaces.IServiceFactory.Consts.INVALID_SLOT
-  name: INVALID_SLOT
-  href: Solti.Utils.DI.Interfaces.IServiceFactory.Consts.html#Solti_Utils_DI_Interfaces_IServiceFactory_Consts_INVALID_SLOT
-  commentId: F:Solti.Utils.DI.Interfaces.IServiceFactory.Consts.INVALID_SLOT
-  fullName: Solti.Utils.DI.Interfaces.IServiceFactory.Consts.INVALID_SLOT
-  nameWithType: IServiceFactory.Consts.INVALID_SLOT
-- uid: Solti.Utils.DI.Interfaces.IServiceFactory.GetOrCreateInstance(Solti.Utils.DI.Interfaces.AbstractServiceEntry)
-  name: GetOrCreateInstance(AbstractServiceEntry)
-  href: Solti.Utils.DI.Interfaces.IServiceFactory.html#Solti_Utils_DI_Interfaces_IServiceFactory_GetOrCreateInstance_Solti_Utils_DI_Interfaces_AbstractServiceEntry_
-  commentId: M:Solti.Utils.DI.Interfaces.IServiceFactory.GetOrCreateInstance(Solti.Utils.DI.Interfaces.AbstractServiceEntry)
-  fullName: Solti.Utils.DI.Interfaces.IServiceFactory.GetOrCreateInstance(Solti.Utils.DI.Interfaces.AbstractServiceEntry)
-  nameWithType: IServiceFactory.GetOrCreateInstance(AbstractServiceEntry)
-- uid: Solti.Utils.DI.Interfaces.IServiceFactory.GetOrCreateInstance*
-  name: GetOrCreateInstance
-  href: Solti.Utils.DI.Interfaces.IServiceFactory.html#Solti_Utils_DI_Interfaces_IServiceFactory_GetOrCreateInstance_
-  commentId: Overload:Solti.Utils.DI.Interfaces.IServiceFactory.GetOrCreateInstance
-  fullName: Solti.Utils.DI.Interfaces.IServiceFactory.GetOrCreateInstance
-  nameWithType: IServiceFactory.GetOrCreateInstance
-- uid: Solti.Utils.DI.Interfaces.IServiceFactory.Super
-  name: Super
-  href: Solti.Utils.DI.Interfaces.IServiceFactory.html#Solti_Utils_DI_Interfaces_IServiceFactory_Super
-  commentId: P:Solti.Utils.DI.Interfaces.IServiceFactory.Super
-  fullName: Solti.Utils.DI.Interfaces.IServiceFactory.Super
-  nameWithType: IServiceFactory.Super
-- uid: Solti.Utils.DI.Interfaces.IServiceFactory.Super*
-  name: Super
-  href: Solti.Utils.DI.Interfaces.IServiceFactory.html#Solti_Utils_DI_Interfaces_IServiceFactory_Super_
-  commentId: Overload:Solti.Utils.DI.Interfaces.IServiceFactory.Super
-  fullName: Solti.Utils.DI.Interfaces.IServiceFactory.Super
-  nameWithType: IServiceFactory.Super
 - uid: Solti.Utils.DI.Interfaces.IServiceId
   name: IServiceId
   href: Solti.Utils.DI.Interfaces.IServiceId.html

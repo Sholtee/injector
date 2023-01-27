@@ -91,12 +91,12 @@
   <h3 id="methods">Methods
   </h3>
   <a id="Solti_Utils_DI_Interfaces_CreateServiceDelegate_BeginInvoke_" data-uid="Solti.Utils.DI.Interfaces.CreateServiceDelegate.BeginInvoke*"></a>
-  <h4 id="Solti_Utils_DI_Interfaces_CreateServiceDelegate_BeginInvoke_Solti_Utils_DI_Interfaces_IServiceFactory_System_Object__System_AsyncCallback_System_Object_" data-uid="Solti.Utils.DI.Interfaces.CreateServiceDelegate.BeginInvoke(Solti.Utils.DI.Interfaces.IServiceFactory,System.Object@,System.AsyncCallback,System.Object)">BeginInvoke(IServiceFactory, out Object, AsyncCallback, Object)</h4>
+  <h4 id="Solti_Utils_DI_Interfaces_CreateServiceDelegate_BeginInvoke_Solti_Utils_DI_Interfaces_IServiceActivator_System_Object__System_AsyncCallback_System_Object_" data-uid="Solti.Utils.DI.Interfaces.CreateServiceDelegate.BeginInvoke(Solti.Utils.DI.Interfaces.IServiceActivator,System.Object@,System.AsyncCallback,System.Object)">BeginInvoke(IServiceActivator, out Object, AsyncCallback, Object)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public virtual IAsyncResult BeginInvoke(IServiceFactory scope, out object disposable, AsyncCallback callback, object object)</code></pre>
+    <pre><code class="lang-csharp hljs">public virtual IAsyncResult BeginInvoke(IServiceActivator scope, out object disposable, AsyncCallback callback, object object)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -109,7 +109,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Solti.Utils.DI.Interfaces.IServiceFactory.html">IServiceFactory</a></td>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.IServiceActivator.html">IServiceActivator</a></td>
         <td><span class="parametername">scope</span></td>
         <td></td>
       </tr>
@@ -191,12 +191,12 @@
     </tbody>
   </table>
   <a id="Solti_Utils_DI_Interfaces_CreateServiceDelegate_Invoke_" data-uid="Solti.Utils.DI.Interfaces.CreateServiceDelegate.Invoke*"></a>
-  <h4 id="Solti_Utils_DI_Interfaces_CreateServiceDelegate_Invoke_Solti_Utils_DI_Interfaces_IServiceFactory_System_Object__" data-uid="Solti.Utils.DI.Interfaces.CreateServiceDelegate.Invoke(Solti.Utils.DI.Interfaces.IServiceFactory,System.Object@)">Invoke(IServiceFactory, out Object)</h4>
+  <h4 id="Solti_Utils_DI_Interfaces_CreateServiceDelegate_Invoke_Solti_Utils_DI_Interfaces_IServiceActivator_System_Object__" data-uid="Solti.Utils.DI.Interfaces.CreateServiceDelegate.Invoke(Solti.Utils.DI.Interfaces.IServiceActivator,System.Object@)">Invoke(IServiceActivator, out Object)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public virtual object Invoke(IServiceFactory scope, out object disposable)</code></pre>
+    <pre><code class="lang-csharp hljs">public virtual object Invoke(IServiceActivator scope, out object disposable)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -209,7 +209,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Solti.Utils.DI.Interfaces.IServiceFactory.html">IServiceFactory</a></td>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.IServiceActivator.html">IServiceActivator</a></td>
         <td><span class="parametername">scope</span></td>
         <td></td>
       </tr>
