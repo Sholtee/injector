@@ -25,7 +25,7 @@ namespace Solti.Utils.DI.Tests
         {
             Collection = new ServiceCollection();
 
-            var mockInjector = new Mock<IServiceFactory>(MockBehavior.Strict);
+            var mockInjector = new Mock<IServiceActivator>(MockBehavior.Strict);
             mockInjector
                 .SetupGet(i => i.Tag)
                 .Returns(new Mock<ILifetimeManager<object>>(MockBehavior.Strict).Object);
@@ -54,7 +54,7 @@ namespace Solti.Utils.DI.Tests
         {
             Collection = new ServiceCollection();
 
-            var mockInjector = new Mock<IServiceFactory>(MockBehavior.Strict);
+            var mockInjector = new Mock<IServiceActivator>(MockBehavior.Strict);
             mockInjector
                 .SetupGet(i => i.Tag)
                 .Returns(new Mock<ILifetimeManager<object>>(MockBehavior.Strict).Object);
@@ -81,7 +81,7 @@ namespace Solti.Utils.DI.Tests
         [Test]
         public void Aspects_ProxyInstallationShouldBeDoneOnBuild_InterfaceAspect([ValueSource(nameof(Lifetimes))] Lifetime lifetime)
         {
-            var mockInjector = new Mock<IServiceFactory>(MockBehavior.Strict);
+            var mockInjector = new Mock<IServiceActivator>(MockBehavior.Strict);
             mockInjector
                 .SetupGet(i => i.Tag)
                 .Returns(new Mock<ILifetimeManager<object>>(MockBehavior.Strict).Object);
@@ -112,7 +112,7 @@ namespace Solti.Utils.DI.Tests
         [Test]
         public void Aspects_ProxyInstallationShouldBeDoneOnBuild_ClassAspect([ValueSource(nameof(Lifetimes))] Lifetime lifetime)
         {
-            var mockInjector = new Mock<IServiceFactory>(MockBehavior.Strict);
+            var mockInjector = new Mock<IServiceActivator>(MockBehavior.Strict);
             mockInjector
                 .SetupGet(i => i.Tag)
                 .Returns(new Mock<ILifetimeManager<object>>(MockBehavior.Strict).Object);
@@ -143,7 +143,7 @@ namespace Solti.Utils.DI.Tests
         [Test]
         public void Aspects_MayHaveDependency_InterfaceAspect([ValueSource(nameof(Lifetimes))] Lifetime lifetime)
         {
-            var mockInjector = new Mock<IServiceFactory>(MockBehavior.Strict);
+            var mockInjector = new Mock<IServiceActivator>(MockBehavior.Strict);
             mockInjector
                 .Setup(i => i.Get(It.Is<Type>(t => t == typeof(IDisposable)), null))
                 .Returns(new Disposable());
@@ -172,7 +172,7 @@ namespace Solti.Utils.DI.Tests
         [Test]
         public void Aspects_MayHaveDependency_ClassAspect([ValueSource(nameof(Lifetimes))] Lifetime lifetime)
         {
-            var mockInjector = new Mock<IServiceFactory>(MockBehavior.Strict);
+            var mockInjector = new Mock<IServiceActivator>(MockBehavior.Strict);
             mockInjector
                 .Setup(i => i.Get(It.Is<Type>(t => t == typeof(IDisposable)), null))
                 .Returns(new Disposable());
@@ -201,7 +201,7 @@ namespace Solti.Utils.DI.Tests
         [Test]
         public void Aspects_ShouldWorkWithGenericServices_InterfaceAspect([ValueSource(nameof(Lifetimes))] Lifetime lifetime)
         {
-            var mockInjector = new Mock<IServiceFactory>(MockBehavior.Strict);
+            var mockInjector = new Mock<IServiceActivator>(MockBehavior.Strict);
             mockInjector
                 .SetupGet(i => i.Tag)
                 .Returns(new Mock<ILifetimeManager<object>>(MockBehavior.Strict).Object);
@@ -234,7 +234,7 @@ namespace Solti.Utils.DI.Tests
         [Test]
         public void Aspects_ShouldWorkWithGenericServices_ClassAspect([ValueSource(nameof(Lifetimes))] Lifetime lifetime)
         {
-            var mockInjector = new Mock<IServiceFactory>(MockBehavior.Strict);
+            var mockInjector = new Mock<IServiceActivator>(MockBehavior.Strict);
             mockInjector
                 .SetupGet(i => i.Tag)
                 .Returns(new Mock<ILifetimeManager<object>>(MockBehavior.Strict).Object);
@@ -276,7 +276,7 @@ namespace Solti.Utils.DI.Tests
                 .Setup(x => x.GetAspectsOrder())
                 .Returns(Array.Empty<string>());
 
-            var mockInjector = new Mock<IServiceFactory>(MockBehavior.Strict);
+            var mockInjector = new Mock<IServiceActivator>(MockBehavior.Strict);
             mockInjector
                 .SetupGet(i => i.Tag)
                 .Returns(new Mock<ILifetimeManager<object>>(MockBehavior.Strict).Object);

@@ -1,5 +1,5 @@
 ﻿/********************************************************************************
-* IServiceFactory.cs                                                            *
+* IServiceActivator.cs                                                          *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
@@ -8,10 +8,10 @@ namespace Solti.Utils.DI.Interfaces
     /// <summary>
     /// Describes the contract how to create servive instances.
     /// </summary>
-    public interface IServiceFactory: IInjector
+    public interface IServiceActivator: IInjector
     {
         /// <summary>
-        /// Contains some constants related to the <see cref="IServiceFactory"/> interface.
+        /// Contains some constants related to the <see cref="IServiceActivator"/> interface.
         /// </summary>
         public static class Consts
         {
@@ -29,11 +29,11 @@ namespace Solti.Utils.DI.Interfaces
         /// <summary>
         /// The parent factory. NULL in case of root factory.
         /// </summary>
-        IServiceFactory? Super { get; }
+        IServiceActivator? Super { get; }
 
         /// <summary>
         /// Gets or creates a service instance.
         /// </summary>
-        object GetOrCreateInstance(AbstractServiceEntry requested);
+        object GetOrCreateInstance(AbstractServiceEntry service);
     }
 }

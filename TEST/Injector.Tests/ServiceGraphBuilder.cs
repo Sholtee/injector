@@ -20,9 +20,9 @@ namespace Solti.Utils.DI.Internals.Tests
     [TestFixture]
     public sealed class ServiceGraphBuilderTests
     {
-        public abstract class DummyInjector : IInjector, IServiceFactory
+        public abstract class DummyInjector : IInjector, IServiceActivator
         {
-            public IServiceFactory Super { get; }
+            public IServiceActivator Super { get; }
             public object Tag { get; } = new Mock<ILifetimeManager<object>>().Object;
             public ScopeOptions Options { get; }
             public bool Disposed { get; }

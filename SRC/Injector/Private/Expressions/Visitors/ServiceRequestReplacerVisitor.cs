@@ -14,12 +14,12 @@ namespace Solti.Utils.DI.Internals
     using Properties;
 
     /// <summary>
-    /// Replaces the <see cref="IInjector.Get(Type, string?)"/> invocations with the corresponing <see cref="IServiceFactory.GetOrCreateInstance(AbstractServiceEntry)"/> calls.
+    /// Replaces the <see cref="IInjector.Get(Type, string?)"/> invocations with the corresponing <see cref="IServiceActivator.GetOrCreateInstance(AbstractServiceEntry)"/> calls.
     /// </summary>
     /// <remarks>This results a quicker delegate since it saves a <see cref="IServiceResolver.Resolve(Type, string?)"/> invocation for each dependency.</remarks>
     internal sealed class ServiceRequestReplacerVisitor : ServiceRequestVisitor, IFactoryVisitor
     {
-        private static readonly MethodInfo FGetOrCreate = MethodInfoExtractor.Extract<IServiceFactory>(fact => fact.GetOrCreateInstance(null!));
+        private static readonly MethodInfo FGetOrCreate = MethodInfoExtractor.Extract<IServiceActivator>(fact => fact.GetOrCreateInstance(null!));
 
         private readonly IServiceResolver FServiceResolver;
 
@@ -38,7 +38,7 @@ namespace Solti.Utils.DI.Internals
 
         protected override Expression VisitServiceRequest(MethodCallExpression request, Expression scope, Type iface, string? name)
         {
-            if (scope.Type != typeof(IServiceFactory))
+            if (scope.Type != typeof(IServiceActivator))
             {
                 Trace.TraceWarning(Resources.REQUEST_NOT_REPLACEABLE);
                 return request;

@@ -90,10 +90,10 @@ namespace Solti.Utils.DI.Interfaces
         public ServiceEntryStates State { get; protected set; }
 
         /// <summary>
-        /// 
+        /// The assigned slot (in case of scoped services).
         /// </summary>
         /// <remarks>To assign a proper value to this property, invoke the <see cref="Build(IBuildContext, IReadOnlyList{IFactoryVisitor})"/> method.</remarks>
-        public int AssignedSlot { get; protected set; } = IServiceFactory.Consts.INVALID_SLOT;
+        public int AssignedSlot { get; protected set; } = IServiceActivator.Consts.INVALID_SLOT;
 
         /// <summary>
         /// Unconditionaly creates a new service instance.

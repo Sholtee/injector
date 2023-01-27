@@ -18,7 +18,7 @@ namespace Solti.Utils.DI.Tests
         {
             Root = ScopeFactory.Create(svcs => svcs.Service<IInterface_1, Implementation_1>(Lifetime.Scoped));
 
-            IServiceFactory fact = (IServiceFactory) Root.CreateScope();
+            IServiceActivator fact = (IServiceActivator) Root.CreateScope();
             fact.Dispose();
 
             Assert.Throws<ObjectDisposedException>(() => fact.GetOrCreateInstance(new MissingServiceEntry(typeof(IInterface_1), null)));
@@ -29,7 +29,7 @@ namespace Solti.Utils.DI.Tests
         {
             Root = ScopeFactory.Create(svcs => svcs.Service<IInterface_1, Implementation_1>(Lifetime.Scoped));
 
-            using IServiceFactory fact = (IServiceFactory) Root.CreateScope();;
+            using IServiceActivator fact = (IServiceActivator) Root.CreateScope();;
 
             Assert.Throws<ArgumentNullException>(() => fact.GetOrCreateInstance(null));
         }

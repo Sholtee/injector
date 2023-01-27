@@ -19,8 +19,9 @@ namespace Solti.Utils.DI.Internals
     internal class Injector :
         Disposable,
         IScopeFactory,
-        IServiceFactory
+        IServiceActivator
     {
+        #region Private
         //
         // IServiceResolver is thread safe
         //
@@ -118,6 +119,7 @@ namespace Solti.Utils.DI.Internals
 
             return instance;
         }
+        #endregion
 
         protected static IServiceCollection RegisterBuiltInServices(IServiceCollection services)
         {
@@ -129,7 +131,7 @@ namespace Solti.Utils.DI.Internals
 
             return new ServiceCollection(services)
                 .Factory(typeof(IInjector), static (i, _) => i, Lifetime.Scoped, suppressDispose)
-                .Factory(typeof(IServiceFactory), static (i, _) => i, Lifetime.Scoped, suppressDispose)
+                .Factory(typeof(IServiceActivator), static (i, _) => i, Lifetime.Scoped, suppressDispose)
                 .Factory(typeof(IScopeFactory), static (i, _) => i, Lifetime.Singleton, suppressDispose) // create SF from the root only
                 .Factory(typeof(IServiceResolver), static (i, _) => ((Injector) i).FServiceResolver, Lifetime.Singleton, suppressDispose)
                 .Service(typeof(IEnumerable<>), typeof(ServiceEnumerator<>), Lifetime.Scoped)
@@ -139,7 +141,7 @@ namespace Solti.Utils.DI.Internals
                 ;
         }
 
-        #region IServiceFactory
+        #region IServiceActivator
         public object GetOrCreateInstance(AbstractServiceEntry requested)
         {
             CheckNotDisposed();
@@ -162,14 +164,14 @@ namespace Solti.Utils.DI.Internals
             // in the same order.
             //
 
-            if (slot > IServiceFactory.Consts.CREATE_ALWAYS && slot < FSlots.Length && FSlots[slot] is not null)
+            if (slot > IServiceActivator.Consts.CREATE_ALWAYS && slot < FSlots.Length && FSlots[slot] is not null)
                 return FSlots[slot]!;
 
             if (FInstantiationLock is not null)
                 Monitor.Enter(FInstantiationLock);
             try
             {
-                if (slot <= IServiceFactory.Consts.CREATE_ALWAYS)
+                if (slot <= IServiceActivator.Consts.CREATE_ALWAYS)
                     return CreateInstance(requested);
 
                 if (slot >= FSlots.Length)
@@ -194,7 +196,7 @@ namespace Solti.Utils.DI.Internals
             }
         }
 
-        public IServiceFactory? Super => FSuper;
+        public IServiceActivator? Super => FSuper;
         #endregion
 
         #region IInjector
