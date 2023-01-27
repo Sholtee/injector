@@ -103,8 +103,8 @@ Solti.Utils.DI.Interfaces.ServiceAlreadyRegisteredException.ServiceAlreadyRegist
 Solti.Utils.DI.Interfaces.ServiceAlreadyRegisteredException.ServiceAlreadyRegisteredException(string! message) -> void
 Solti.Utils.DI.Interfaces.ServiceAlreadyRegisteredException.ServiceAlreadyRegisteredException(string! message, System.Exception! innerException) -> void
 Solti.Utils.DI.Interfaces.ServiceDisposalMode
-Solti.Utils.DI.Interfaces.ServiceDisposalMode.Default = 0 -> Solti.Utils.DI.Interfaces.ServiceDisposalMode
 Solti.Utils.DI.Interfaces.ServiceDisposalMode.Force = 1 -> Solti.Utils.DI.Interfaces.ServiceDisposalMode
+Solti.Utils.DI.Interfaces.ServiceDisposalMode.Soft = 0 -> Solti.Utils.DI.Interfaces.ServiceDisposalMode
 Solti.Utils.DI.Interfaces.ServiceDisposalMode.Suppress = 2 -> Solti.Utils.DI.Interfaces.ServiceDisposalMode
 Solti.Utils.DI.Interfaces.ServiceEntryExtensions
 Solti.Utils.DI.Interfaces.ServiceEntryFeatures

@@ -17,7 +17,7 @@ namespace Solti.Utils.DI.Internals
         {
             switch (Options.DisposalMode)
             {
-                case ServiceDisposalMode.Default:
+                case ServiceDisposalMode.Soft:
                     if (typeof(IDisposable).IsAssignableFrom(Interface) || typeof(IAsyncDisposable).IsAssignableFrom(Interface))
                         goto case ServiceDisposalMode.Force;
                     return getService;

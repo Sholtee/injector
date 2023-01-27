@@ -217,7 +217,7 @@ namespace Solti.Utils.DI.Tests
         }
 
         [Test]
-        public void Injector_Dispose_ShouldBeControlledByDisposalMode([Values(typeof(IDisposableEx), typeof(IInterface_1))] Type iface, [ValueSource(nameof(Lifetimes))] Lifetime lifetime, [Values(ServiceDisposalMode.Default, ServiceDisposalMode.Force, ServiceDisposalMode.Suppress)] ServiceDisposalMode disposalMode)
+        public void Injector_Dispose_ShouldBeControlledByDisposalMode([Values(typeof(IDisposableEx), typeof(IInterface_1))] Type iface, [ValueSource(nameof(Lifetimes))] Lifetime lifetime, [Values(ServiceDisposalMode.Soft, ServiceDisposalMode.Force, ServiceDisposalMode.Suppress)] ServiceDisposalMode disposalMode)
         {
             DisposableService inst;
 
@@ -236,7 +236,7 @@ namespace Solti.Utils.DI.Tests
                 (
                     disposalMode switch
                     {
-                        ServiceDisposalMode.Default => typeof(IDisposable).IsAssignableFrom(iface),
+                        ServiceDisposalMode.Soft => typeof(IDisposable).IsAssignableFrom(iface),
                         ServiceDisposalMode.Force => true,
                         ServiceDisposalMode.Suppress => false,
                         _ => throw new NotSupportedException()

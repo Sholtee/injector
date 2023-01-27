@@ -25,7 +25,7 @@ namespace Solti.Utils.DI.Interfaces
         /// <summary>
         /// Contains the method how to dispose the created service instances.
         /// </summary>
-        public ServiceDisposalMode DisposalMode { get; set; }
+        public ServiceDisposalMode DisposalMode { get; set; } = ServiceDisposalMode.Force;
 
         /// <summary>
         /// The default options.
