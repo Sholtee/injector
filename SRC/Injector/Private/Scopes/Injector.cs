@@ -153,25 +153,27 @@ namespace Solti.Utils.DI.Internals
             // Shared entries are resolved from the root scope.
             //
 
-            if (requested.Features.HasFlag(ServiceEntryFeatures.Shared) && FSuper is not null)
+            ServiceEntryFeatures features = requested.Features;
+            if (features.HasFlag(ServiceEntryFeatures.Shared) && FSuper is not null)
                 return FSuper.GetOrCreateInstance(requested);
-
-            int slot = requested.AssignedSlot;
 
             //
             // Although the value of FSlots might be chnaged by another thread while we are doing
             // this check, it won't cause any issues as the new value must contain the same items
             // in the same order.
+            // "slot" might be greater than "FSlots.Length" if we request a scoped service that
+            // needs to be specialized run-time.
             //
 
-            if (slot > IServiceActivator.Consts.CREATE_ALWAYS && slot < FSlots.Length && FSlots[slot] is not null)
+            int slot = requested.AssignedSlot;
+            if (features.HasFlag(ServiceEntryFeatures.CreateSingleInstance) && slot < FSlots.Length && FSlots[slot] is not null)
                 return FSlots[slot]!;
 
             if (FInstantiationLock is not null)
                 Monitor.Enter(FInstantiationLock);
             try
             {
-                if (slot <= IServiceActivator.Consts.CREATE_ALWAYS)
+                if (!features.HasFlag(ServiceEntryFeatures.CreateSingleInstance))
                     return CreateInstance(requested);
 
                 if (slot >= FSlots.Length)

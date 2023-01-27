@@ -18,12 +18,7 @@ namespace Solti.Utils.DI.Interfaces
             /// <summary>
             /// Invalid slot..
             /// </summary>
-            public const int INVALID_SLOT = CREATE_ALWAYS;
-
-            /// <summary>
-            /// The service requires to be created each time it is requested.
-            /// </summary>
-            public const int CREATE_ALWAYS = -1;
+            public const int INVALID_SLOT = -1;
         }
 
         /// <summary>

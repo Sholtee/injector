@@ -1,6 +1,5 @@
 ﻿abstract Solti.Utils.DI.Interfaces.AspectAttribute.UnderlyingInterceptor.get -> System.Type!
 abstract Solti.Utils.DI.Interfaces.LifetimeBase.CompareTo(Solti.Utils.DI.Interfaces.LifetimeBase! other) -> int
-const Solti.Utils.DI.Interfaces.IServiceActivator.Consts.CREATE_ALWAYS = -1 -> int
 const Solti.Utils.DI.Interfaces.IServiceActivator.Consts.INVALID_SLOT = -1 -> int
 const Solti.Utils.DI.Interfaces.IServiceCollection.Consts.INTERNAL_SERVICE_NAME_PREFIX = "$" -> string!
 override Solti.Utils.DI.Interfaces.AbstractServiceEntry.ToString() -> string!

@@ -1,5 +1,4 @@
 ﻿abstract Solti.Utils.DI.Interfaces.AspectAttribute.UnderlyingInterceptor.get -> System.Type! (forwarded, contained in Solti.Utils.DI.Interfaces)
-const Solti.Utils.DI.Interfaces.IServiceActivator.Consts.CREATE_ALWAYS = -1 -> int (forwarded, contained in Solti.Utils.DI.Interfaces)
 const Solti.Utils.DI.Interfaces.IServiceActivator.Consts.INVALID_SLOT = -1 -> int (forwarded, contained in Solti.Utils.DI.Interfaces)
 const Solti.Utils.DI.Interfaces.IServiceCollection.Consts.INTERNAL_SERVICE_NAME_PREFIX = "$" -> string! (forwarded, contained in Solti.Utils.DI.Interfaces)
 override sealed Solti.Utils.DI.Internals.ProducibleServiceEntry.Decorators.get -> System.Collections.Generic.IReadOnlyList<System.Linq.Expressions.Expression<Solti.Utils.DI.Interfaces.DecoratorDelegate!>!>!
