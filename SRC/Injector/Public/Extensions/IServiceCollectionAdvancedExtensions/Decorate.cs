@@ -34,7 +34,7 @@ namespace Solti.Utils.DI
                 // Proxies registered by this way always target the service interface.
                 //
 
-                ServiceActivator.GetDecoratorForInterceptors
+                DecoratorResolver.Resolve
                 (
                     pse.Interface,
                     pse.Interface,

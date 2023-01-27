@@ -28,7 +28,7 @@ namespace Solti.Utils.DI.Internals
         private static Expression<FactoryDelegate>? GetFactory(Type @interface, Type implementation)
         {
             if (!@interface.IsGenericTypeDefinition)
-                return ServiceActivator.Get(implementation);
+                return FactoryResolver.Resolve(implementation);
 
             //
             // Just to validate the implementation.
@@ -42,8 +42,8 @@ namespace Solti.Utils.DI.Internals
         {
             if (!@interface.IsGenericTypeDefinition)
                 return explicitArgs is IReadOnlyDictionary<string, object?> dict
-                    ? ServiceActivator.Get(implementation, dict)
-                    : ServiceActivator.Get(implementation, explicitArgs);
+                    ? FactoryResolver.Resolve(implementation, dict)
+                    : FactoryResolver.Resolve(implementation, explicitArgs);
 
             //
             // Just to validate the implementation.
@@ -62,7 +62,7 @@ namespace Solti.Utils.DI.Internals
                 Features = ServiceEntryFeatures.SupportsAspects;
                 if (Factory is not null)
                 {
-                    Expression<DecoratorDelegate>? decorator = ServiceActivator.GetDecoratorForAspects
+                    Expression<DecoratorDelegate>? decorator = DecoratorResolver.ResolveForAspects
                     (
                         Interface,
                         Implementation ?? Interface,

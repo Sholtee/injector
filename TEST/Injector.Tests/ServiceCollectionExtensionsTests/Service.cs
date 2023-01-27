@@ -190,13 +190,13 @@ namespace Solti.Utils.DI.Tests
         }
 
         [TestCaseSource(nameof(Lifetimes))]
-        public void Service_ShouldBeInstructedByServiceActivator(Lifetime lifetime)
+        public void Service_ShouldAssignAFactoryFunction(Lifetime lifetime)
         {
             Assert.DoesNotThrow(() => Collection.Service<IInterface_1, Implementation_8_MultiCtor>(lifetime));
-            Assert.That(Collection.Last().Factory.GetDebugView(), Is.EqualTo(ServiceActivator.Get(typeof(Implementation_8_MultiCtor).GetConstructor(Type.EmptyTypes)).GetDebugView()));
+            Assert.That(Collection.Last().Factory.GetDebugView(), Is.EqualTo(FactoryResolver.Resolve(typeof(Implementation_8_MultiCtor).GetConstructor(Type.EmptyTypes)).GetDebugView()));
 
             Assert.DoesNotThrow(() => Collection.Service(typeof(IInterface_3<>), typeof(Implementation_9_MultiCtor<>), lifetime));
-            Assert.That(Collection.Last().Specialize(typeof(int)).Factory.GetDebugView(), Is.EqualTo(ServiceActivator.Get(typeof(Implementation_9_MultiCtor<int>).GetConstructor(new Type[] { typeof(IInterface_1) })).GetDebugView()));
+            Assert.That(Collection.Last().Specialize(typeof(int)).Factory.GetDebugView(), Is.EqualTo(FactoryResolver.Resolve(typeof(Implementation_9_MultiCtor<int>).GetConstructor(new Type[] { typeof(IInterface_1) })).GetDebugView()));
         }
 
         [TestCaseSource(nameof(Lifetimes))]

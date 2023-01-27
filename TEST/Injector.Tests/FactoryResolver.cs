@@ -1,5 +1,5 @@
 ﻿/********************************************************************************
-* ServiceActivator.cs                                                           *
+* FactoryResolver.cs                                                            *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
@@ -20,7 +20,7 @@ namespace Solti.Utils.DI.Internals.Tests
     using Properties;
 
     [TestFixture]
-    public sealed class ServiceActivatorTests
+    public sealed class FactoryResolverTests
     {
         private class MyClass
         {
@@ -34,11 +34,11 @@ namespace Solti.Utils.DI.Internals.Tests
                 Dep2 = dep2;
             }
 
-            public MyClass(IDisposable dep1, IList dep2, int @int)
+            public MyClass(IDisposable dep1, IList dep2, int _int)
             {
                 Dep1 = dep1;
                 Dep2 = dep2;
-                Int  = @int;
+                Int  = _int;
             }
 
             public MyClass([Options(Name = "cica")] Lazy<IDisposable> dep1, Lazy<IList> dep2)
@@ -82,19 +82,19 @@ namespace Solti.Utils.DI.Internals.Tests
             {
                 yield return ctor =>
                 {
-                    FactoryDelegate factory = ServiceActivator.Get(ctor).Compile();
+                    FactoryDelegate factory = FactoryResolver.Resolve(ctor).Compile();
                     return injector => factory(injector, null);
                 };
 
                 yield return ctor =>
                 {
-                    FactoryDelegate factory = ServiceActivator.Get(ctor, new Dictionary<string, object>(0)).Compile();
+                    FactoryDelegate factory = FactoryResolver.Resolve(ctor, new Dictionary<string, object>(0)).Compile();
                     return injector => factory(injector, null);
                 };
 
                 yield return ctor =>
                 {
-                    FactoryDelegate factory = ServiceActivator.Get(ctor, new { }).Compile();
+                    FactoryDelegate factory = FactoryResolver.Resolve(ctor, new { }).Compile();
                     return injector => factory(injector, null);
                 };
             }
@@ -106,7 +106,7 @@ namespace Solti.Utils.DI.Internals.Tests
         [TestCase(1, typeof(Lazy<IDisposable>), "cica", typeof(Lazy<IList>), null)]
         [TestCase(2, typeof(IDisposable), null, typeof(IList), "cica")]
         [TestCase(2, typeof(Lazy<IDisposable>), "cica", typeof(Lazy<IList>), null)]
-        public void Activator_ShouldResolveDependencies
+        public void Factory_ShouldResolveDependencies
         (
             int activatorFactoryIdx,
             Type dep1,
@@ -147,7 +147,7 @@ namespace Solti.Utils.DI.Internals.Tests
         }
 
         [Test]
-        public void Activator_ShouldResolveProperties([ValueSource(nameof(Activators))] Func<ConstructorInfo, Func<IInjector, object>> activatorFactory)
+        public void Factory_ShouldResolveProperties([ValueSource(nameof(Activators))] Func<ConstructorInfo, Func<IInjector, object>> activatorFactory)
         {
             var mockDisposable = new Mock<IDisposable>();
             var mockList = new Mock<IList>();
@@ -176,7 +176,7 @@ namespace Solti.Utils.DI.Internals.Tests
         }
 
         [Test]
-        public void Activator_ShouldResolveLazyProperties([ValueSource(nameof(Activators))] Func<ConstructorInfo, Func<IInjector, object>> activatorFactory)
+        public void Factory_ShouldResolveLazyProperties([ValueSource(nameof(Activators))] Func<ConstructorInfo, Func<IInjector, object>> activatorFactory)
         {
             var mockDisposable = new Mock<IDisposable>();
             var mockList = new Mock<IList>();
@@ -207,14 +207,14 @@ namespace Solti.Utils.DI.Internals.Tests
         }
 
         [Test]
-        public void Activator_ShouldResolveOptionalProperties()
+        public void Factory_ShouldResolveOptionalProperties()
         {
             var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
             mockInjector
                 .Setup(i => i.TryGet(typeof(IList), null))
                 .Returns(new List<IDictionary>());
 
-            FactoryDelegate factory = ServiceActivator.Get(typeof(MyClassHavingOptionalProperty)).Compile();
+            FactoryDelegate factory = FactoryResolver.Resolve(typeof(MyClassHavingOptionalProperty)).Compile();
 
             Assert.DoesNotThrow(() => factory.Invoke(mockInjector.Object, typeof(IList)));
 
@@ -222,12 +222,12 @@ namespace Solti.Utils.DI.Internals.Tests
         }
 
         [Test]
-        public void Get_ShouldHandleParameterlessConstructors()
+        public void Factory_ShouldHandleParameterlessConstructors()
         {
             var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
             mockInjector.Setup(i => i.Get(It.IsAny<Type>(), It.IsAny<string>()));
 
-            FactoryDelegate factory = ServiceActivator.Get(typeof(MyClass).GetConstructor(Type.EmptyTypes)).Compile();
+            FactoryDelegate factory = FactoryResolver.Resolve(typeof(MyClass).GetConstructor(Type.EmptyTypes)).Compile();
 
             Assert.That(factory, Is.Not.Null);
 
@@ -241,13 +241,13 @@ namespace Solti.Utils.DI.Internals.Tests
         }
 
         [Test]
-        public void ExtendedActivator_ShouldSupportExplicitArguments()
+        public void Factory_ShouldSupportExplicitArguments()
         {
             var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
             mockInjector.Setup(i => i.Get(It.IsAny<Type>(), It.IsAny<string>()));
 
-            FactoryDelegate factory = ServiceActivator
-                .Get(typeof(List<string>).GetConstructor(new[] {typeof(int)}), new Dictionary<string, object>
+            FactoryDelegate factory = FactoryResolver
+                .Resolve(typeof(List<string>).GetConstructor(new[] {typeof(int)}), new Dictionary<string, object>
                 {
                     {"capacity", 10}
                 })
@@ -262,13 +262,13 @@ namespace Solti.Utils.DI.Internals.Tests
         }
 
         [Test]
-        public void ExtendedActivator_ShouldSupportExplicitArguments2()
+        public void Factory_ShouldSupportExplicitArguments2()
         {
             var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
             mockInjector.Setup(i => i.Get(It.IsAny<Type>(), It.IsAny<string>()));
 
-            FactoryDelegate factory = ServiceActivator
-                .Get(typeof(List<string>).GetConstructor(new[] { typeof(int) }), new { capacity = 10 })
+            FactoryDelegate factory = FactoryResolver
+                .Resolve(typeof(List<string>).GetConstructor(new[] { typeof(int) }), new { capacity = 10 })
                 .Compile();
 
             object lst = factory(mockInjector.Object, null);
@@ -280,12 +280,12 @@ namespace Solti.Utils.DI.Internals.Tests
         }
 
         [Test]
-        public void ExtendedActivator_ShouldSupportExplicitProperties()
+        public void Factory_ShouldSupportExplicitProperties()
         {
             var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
 
-            FactoryDelegate factory = ServiceActivator
-                .Get(typeof(MyClassHavingOptionalProperty).GetConstructor(Type.EmptyTypes), new Dictionary<string, object>
+            FactoryDelegate factory = FactoryResolver
+                .Resolve(typeof(MyClassHavingOptionalProperty).GetConstructor(Type.EmptyTypes), new Dictionary<string, object>
                 {
                     {nameof(MyClassHavingOptionalProperty.Dep), new List<string>()}
                 })
@@ -298,14 +298,14 @@ namespace Solti.Utils.DI.Internals.Tests
         }
 
         [Test]
-        public void ExtendedActivator_ShouldSupportExplicitProperties2()
+        public void Factory_ShouldSupportExplicitProperties2()
         {
             var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
 
-            FactoryDelegate factory = ServiceActivator
-                .Get(typeof(MyClassHavingOptionalProperty).GetConstructor(Type.EmptyTypes), new
+            FactoryDelegate factory = FactoryResolver
+                .Resolve(typeof(MyClassHavingOptionalProperty).GetConstructor(Type.EmptyTypes), new
                 {
-                    Dep = (IList)new List<string>()
+                    Dep = (IList) new List<string>()
                 })
                 .Compile();
 
@@ -323,7 +323,7 @@ namespace Solti.Utils.DI.Internals.Tests
         }
 
         [Test]
-        public void ExtendedActivator_ShouldResolveOptionalArguments() 
+        public void Factory_UsingExplicitArgs_ShouldResolveOptionalArguments() 
         {
             var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
             mockInjector
@@ -333,8 +333,8 @@ namespace Solti.Utils.DI.Internals.Tests
                 .Setup(i => i.TryGet(typeof(IDisposable), null))
                 .Returns(null);
 
-            FactoryDelegate factory = ServiceActivator
-                .Get(typeof(MyServiceHavingDependency), new Dictionary<string, object>())
+            FactoryDelegate factory = FactoryResolver
+                .Resolve(typeof(MyServiceHavingDependency), new Dictionary<string, object>())
                 .Compile();
 
             Assert.DoesNotThrow(() => factory.Invoke(mockInjector.Object, null));
@@ -344,7 +344,7 @@ namespace Solti.Utils.DI.Internals.Tests
         }
 
         [Test]
-        public void ExtendedActivator_ShouldResolveOptionalArguments2()
+        public void Factory_UsingExplicitArgs_ShouldResolveOptionalArguments2()
         {
             var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
             mockInjector
@@ -354,8 +354,8 @@ namespace Solti.Utils.DI.Internals.Tests
                 .Setup(i => i.TryGet(typeof(IDisposable), null))
                 .Returns(null);
 
-            FactoryDelegate factory = ServiceActivator
-                .Get(typeof(MyServiceHavingDependency), new { })
+            FactoryDelegate factory = FactoryResolver
+                .Resolve(typeof(MyServiceHavingDependency), new { })
                 .Compile();
 
             Assert.DoesNotThrow(() => factory.Invoke(mockInjector.Object, null));
@@ -365,15 +365,15 @@ namespace Solti.Utils.DI.Internals.Tests
         }
 
         [Test]
-        public void ExtendedActivator_ShouldResolveOptionalProperties()
+        public void Factory_UsingExplicitArgs_ShouldResolveOptionalProperties()
         {
             var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
             mockInjector
                 .Setup(i => i.TryGet(typeof(IList), null))
                 .Returns(new List<IDictionary>());
 
-            FactoryDelegate factory = ServiceActivator
-                .Get(typeof(MyClassHavingOptionalProperty), new Dictionary<string, object>())
+            FactoryDelegate factory = FactoryResolver
+                .Resolve(typeof(MyClassHavingOptionalProperty), new Dictionary<string, object>())
                 .Compile();
 
             Assert.DoesNotThrow(() => factory.Invoke(mockInjector.Object, null));
@@ -382,15 +382,15 @@ namespace Solti.Utils.DI.Internals.Tests
         }
 
         [Test]
-        public void ExtendedActivator_ShouldResolveOptionalProperties2()
+        public void Factory_UsingExplicitArgs_ShouldResolveOptionalProperties2()
         {
             var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
             mockInjector
                 .Setup(i => i.TryGet(typeof(IList), null))
                 .Returns(new List<IDictionary>());
 
-            FactoryDelegate factory = ServiceActivator
-                .Get(typeof(MyClassHavingOptionalProperty), new {})
+            FactoryDelegate factory = FactoryResolver
+                .Resolve(typeof(MyClassHavingOptionalProperty), new {})
                 .Compile();
 
             Assert.DoesNotThrow(() => factory.Invoke(mockInjector.Object, null));
@@ -399,81 +399,81 @@ namespace Solti.Utils.DI.Internals.Tests
         }
 
         [Test]
-        public void ExtendedActivator_ShouldResolveLazyArguments()
+        public void Factory_UsingExplicitArgs_ShouldResolveLazyArguments()
         {
             var mockInjector = new Mock<IInjector>(MockBehavior.Loose);
 
-            FactoryDelegate factory =  ServiceActivator
-                .Get(typeof(MyClass).GetConstructor(new[] { typeof(Lazy<IDisposable>), typeof(Lazy<IList>) }), new Dictionary<string, object>())
+            FactoryDelegate factory =  FactoryResolver
+                .Resolve(typeof(MyClass).GetConstructor(new[] { typeof(Lazy<IDisposable>), typeof(Lazy<IList>) }), new Dictionary<string, object>())
                 .Compile();
 
             Assert.DoesNotThrow(() => factory.Invoke(mockInjector.Object, null));
         }
 
         [Test]
-        public void ExtendedActivator_ShouldResolveLazyArguments2()
+        public void Factory_UsingExplicitArgs_ShouldResolveLazyArguments2()
         {
             var mockInjector = new Mock<IInjector>(MockBehavior.Loose);
 
-            FactoryDelegate factory = ServiceActivator
-                .Get(typeof(MyClass).GetConstructor(new[] { typeof(Lazy<IDisposable>), typeof(Lazy<IList>) }), new { })
+            FactoryDelegate factory = FactoryResolver
+                .Resolve(typeof(MyClass).GetConstructor(new[] { typeof(Lazy<IDisposable>), typeof(Lazy<IList>) }), new { })
                 .Compile();
 
             Assert.DoesNotThrow(() => factory.Invoke(mockInjector.Object, null));
         }
 
         [Test]
-        public void Get_ShouldThrowOnNonInterfaceArguments()
+        public void Resolve_ShouldThrowOnNonInterfaceArguments()
         {
             ConstructorInfo ctor = typeof(MyClass).GetConstructor(new[] { typeof(IDisposable), typeof(IList), typeof(int) });
 
-            Assert.Throws<ArgumentException>(() => ServiceActivator.Get(ctor), Resources.INVALID_CONSTRUCTOR);
+            Assert.Throws<ArgumentException>(() => FactoryResolver.Resolve(ctor), Resources.INVALID_CONSTRUCTOR);
         }
 
         [Test]
-        public void Get_ShouldThrowOnNonInterfaceArguments2()
+        public void Resolve_ShouldThrowOnNonInterfaceArguments2()
         {
             ConstructorInfo ctor = typeof(MyClass).GetConstructor(new[] { typeof(IDisposable), typeof(IList), typeof(int) });
 
-            Assert.Throws<ArgumentException>(() => ServiceActivator.Get(ctor, new { }), Resources.INVALID_CONSTRUCTOR);
+            Assert.Throws<ArgumentException>(() => FactoryResolver.Resolve(ctor, new { }), Resources.INVALID_CONSTRUCTOR);
         }
 
         [Test]
-        public void Get_ShouldValidate() 
+        public void Resolve_ShouldValidate() 
         {
-            Assert.Throws<ArgumentException>(() => ServiceActivator.Get(typeof(IDisposable)), Resources.PARAMETER_NOT_A_CLASS);
-            Assert.Throws<ArgumentException>(() => ServiceActivator.Get(typeof(IList<>)), Resources.PARAMETER_IS_GENERIC);
-            Assert.Throws<ArgumentException>(() => ServiceActivator.Get(typeof(AbstractClass)), Resources.PARAMETER_IS_ABSTRACT);
+            Assert.Throws<ArgumentException>(() => FactoryResolver.Resolve(typeof(IDisposable)), Resources.PARAMETER_NOT_A_CLASS);
+            Assert.Throws<ArgumentException>(() => FactoryResolver.Resolve(typeof(IList<>)), Resources.PARAMETER_IS_GENERIC);
+            Assert.Throws<ArgumentException>(() => FactoryResolver.Resolve(typeof(AbstractClass)), Resources.PARAMETER_IS_ABSTRACT);
         }
 
         [Test]
-        public void GetExtended_ShouldValidate()
+        public void Resolve_ShouldValidate2()
         {
-            Assert.Throws<ArgumentException>(() => ServiceActivator.Get(typeof(IDisposable), new { }), Resources.PARAMETER_NOT_A_CLASS);
-            Assert.Throws<ArgumentException>(() => ServiceActivator.Get(typeof(IList<>), new { }), Resources.PARAMETER_IS_GENERIC);
-            Assert.Throws<ArgumentException>(() => ServiceActivator.Get(typeof(AbstractClass), new { }), Resources.PARAMETER_IS_ABSTRACT);
+            Assert.Throws<ArgumentException>(() => FactoryResolver.Resolve(typeof(IDisposable), new { }), Resources.PARAMETER_NOT_A_CLASS);
+            Assert.Throws<ArgumentException>(() => FactoryResolver.Resolve(typeof(IList<>), new { }), Resources.PARAMETER_IS_GENERIC);
+            Assert.Throws<ArgumentException>(() => FactoryResolver.Resolve(typeof(AbstractClass), new { }), Resources.PARAMETER_IS_ABSTRACT);
         }
 
         [Test]
-        public void GetExtended_ShouldValidate2()
+        public void Resolve_ShouldValidate3()
         {
-            Assert.Throws<ArgumentException>(() => ServiceActivator.Get(typeof(IDisposable), new Dictionary<string, object>()), Resources.PARAMETER_NOT_A_CLASS);
-            Assert.Throws<ArgumentException>(() => ServiceActivator.Get(typeof(IList<>), new Dictionary<string, object>()), Resources.PARAMETER_IS_GENERIC);
-            Assert.Throws<ArgumentException>(() => ServiceActivator.Get(typeof(AbstractClass), new Dictionary<string, object>()), Resources.PARAMETER_IS_ABSTRACT);
+            Assert.Throws<ArgumentException>(() => FactoryResolver.Resolve(typeof(IDisposable), new Dictionary<string, object>()), Resources.PARAMETER_NOT_A_CLASS);
+            Assert.Throws<ArgumentException>(() => FactoryResolver.Resolve(typeof(IList<>), new Dictionary<string, object>()), Resources.PARAMETER_IS_GENERIC);
+            Assert.Throws<ArgumentException>(() => FactoryResolver.Resolve(typeof(AbstractClass), new Dictionary<string, object>()), Resources.PARAMETER_IS_ABSTRACT);
         }
 
         private abstract class AbstractClass { }
 
         [Test]
-        public void ExtendedActivator_ExplicitArgumentsShouldSuppressTheInjectorInvocation()
+        public void Factory_ExplicitArgumentsShouldSuppressTheInjectorInvocation()
         {
             var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
             mockInjector
                 .Setup(i => i.Get(It.IsAny<Type>(), It.IsAny<string>()))
                 .Returns<Type, string>((type, name) => null);
 
-            FactoryDelegate factory = ServiceActivator
-                .Get(typeof(MyClass).GetConstructor(new[] {typeof(IDisposable), typeof(IList) }), new Dictionary<string, object>
+            FactoryDelegate factory = FactoryResolver
+                .Resolve(typeof(MyClass).GetConstructor(new[] {typeof(IDisposable), typeof(IList) }), new Dictionary<string, object>
                 {
                     {"dep2", null}
                 })
@@ -488,15 +488,15 @@ namespace Solti.Utils.DI.Internals.Tests
         }
 
         [Test]
-        public void ExtendedActivator_ExplicitArgumentsShouldSuppressTheInjectorInvocation2()
+        public void Factory_ExplicitArgumentsShouldSuppressTheInjectorInvocation2()
         {
             var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
             mockInjector
                 .Setup(i => i.Get(It.IsAny<Type>(), It.IsAny<string>()))
                 .Returns<Type, string>((type, name) => null);
 
-            FactoryDelegate factory = ServiceActivator
-                .Get(typeof(MyClass).GetConstructor(new[] { typeof(IDisposable), typeof(IList) }), new
+            FactoryDelegate factory = FactoryResolver
+                .Resolve(typeof(MyClass).GetConstructor(new[] { typeof(IDisposable), typeof(IList) }), new
                 {
                     dep2 = (IList) null
                 })
@@ -511,7 +511,7 @@ namespace Solti.Utils.DI.Internals.Tests
         }
 
         [Test]
-        public void ExtendedActivator_ExplicitArgumentsMayContainNonInterfaceValues()
+        public void Factory_ExplicitArgumentsMayContainNonInterfaceValues()
         {
             const int TEN = 10;
 
@@ -522,8 +522,8 @@ namespace Solti.Utils.DI.Internals.Tests
                 .Setup(i => i.Get(It.IsAny<Type>(), It.IsAny<string>()))
                 .Returns<Type, string>((type, name) => null);
 
-            MyClass obj = ServiceActivator
-                .Get(ctor, new Dictionary<string, object> { { "int", TEN } })
+            MyClass obj = FactoryResolver
+                .Resolve(ctor, new Dictionary<string, object> { { "_int", TEN } })
                 .Compile()
                 .Invoke(mockInjector.Object, null) as MyClass;
 
@@ -531,9 +531,31 @@ namespace Solti.Utils.DI.Internals.Tests
             Assert.That(obj.Int, Is.EqualTo(TEN));
         }
 
+        [Test]
+        public void Factory_ExplicitArgumentsMayContainNonInterfaceValues2()
+        {
+            const int TEN = 10;
+
+            ConstructorInfo ctor = typeof(MyClass).GetConstructor(new[] { typeof(IDisposable), typeof(IList), typeof(int) });
+
+            var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
+            mockInjector
+                .Setup(i => i.Get(It.IsAny<Type>(), It.IsAny<string>()))
+                .Returns<Type, string>((type, name) => null);
+
+            MyClass obj = FactoryResolver
+                .Resolve(ctor, new { _int = TEN })
+                .Compile()
+                .Invoke(mockInjector.Object, null) as MyClass;
+
+            Assert.That(obj, Is.Not.Null);
+            Assert.That(obj.Int, Is.EqualTo(TEN));
+        }
+
+
         [TestCase(null)]
         [TestCase("cica")]
-        public void CreateLazy_ShouldReturnProperLazyInstance(string svcName)
+        public void ResolveLazyService_ShouldReturnProperLazyInstance(string svcName)
         {
             var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
             mockInjector
@@ -544,7 +566,7 @@ namespace Solti.Utils.DI.Internals.Tests
 
             Func<IInjector, Lazy<IDisposable>> factory = Expression.Lambda<Func<IInjector, Lazy<IDisposable>>>
             (
-                ServiceActivator.CreateLazy(injector, typeof(IDisposable), new OptionsAttribute { Name = svcName }),
+                FactoryResolver.ResolveLazyService(injector, typeof(IDisposable), new OptionsAttribute { Name = svcName }),
                 injector
             ).Compile();
 
@@ -557,60 +579,6 @@ namespace Solti.Utils.DI.Internals.Tests
             Assert.That(retval, Is.InstanceOf<Disposable>());
 
             mockInjector.Verify(i => i.Get(It.Is<Type>(t => t == typeof(IDisposable)), It.Is<string>(s => s == svcName)), Times.Once);
-        }
-
-        private sealed class AspectExposingInvalidInterceptor : AspectAttribute
-        {
-            public override Type UnderlyingInterceptor { get; } = typeof(object);
-        }
-
-        public interface IMyService { }
-
-        [AspectExposingInvalidInterceptor]
-        public class MyServiceUsingInvalidAspect : IMyService
-        {
-        }
-
-        [Test]
-        public void GetDecoratorForAspects_ShouldThrowOnInvalidInterceptor() =>
-            Assert.Throws<InvalidOperationException>(() => ServiceActivator.GetDecoratorForAspects(typeof(IMyService), typeof(MyServiceUsingInvalidAspect), ProxyEngine.Instance));
-
-        private sealed class MyAspect : AspectAttribute
-        {
-            public sealed class MyInterceptor : IInterfaceInterceptor
-            {
-                public MyInterceptor(IList dependency) => Dependency = dependency;
-
-                public IList Dependency { get; }
-
-                public object Invoke(IInvocationContext context, InvokeInterceptorDelegate callNext) => callNext();
-            }
-
-            public override Type UnderlyingInterceptor { get; } = typeof(MyInterceptor);
-        }
-
-        [MyAspect]
-        public class MyService : IMyService
-        {
-        }
-
-        [Test]
-        public void DecoratorForAspects_ShouldInstantiateTheInterceptors()
-        {
-            Mock<IInjector> mockInjector = new(MockBehavior.Strict);
-            mockInjector
-                .Setup(i => i.Get(typeof(IList), null))
-                .Returns(new List<object>());
-
-            DecoratorDelegate decorator = ServiceActivator.GetDecoratorForAspects(typeof(IMyService), typeof(MyService), ProxyEngine.Instance).Compile();
-            AspectAggregator<IMyService, MyService> proxy = (AspectAggregator<IMyService, MyService>) decorator
-            (
-                mockInjector.Object, typeof(IMyService), new MyService()
-            );
-
-            Assert.That(proxy.Interceptors.Count, Is.EqualTo(1));
-            Assert.That(proxy.Interceptors[0], Is.InstanceOf<MyAspect.MyInterceptor>());
-            mockInjector.Verify(i => i.Get(typeof(IList), null), Times.Once);
         }
     }
 }
